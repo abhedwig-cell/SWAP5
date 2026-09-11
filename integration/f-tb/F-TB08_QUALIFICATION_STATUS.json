@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "work_unit": "F-TB08",
-  "status": "PREQUALIFICATION",
-  "decision": null,
+  "status": "QUALIFIED_CLOSED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
   "branch": "work/f-tb08-external-accuracy-adapter-testbank-adoption",
   "composition_base": "4172e7e639d13e178fb75471263636a6cfa792fc",
   "canonical_authority": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
@@ -10,6 +10,12 @@
   "fgc14_authority": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
   "fci46_adapter_admitted": true,
   "fci47_moving_preservation_green": true,
+  "precloseout_fast": {
+    "head": "e2f9717d934fea1ec482aec1ae83071ed83c369f",
+    "workflow_run": 34647272253,
+    "fast_job": 103420942218,
+    "conclusion": "success"
+  },
   "production_source_changed": false,
   "reference_changed": false,
   "physics_changed": false,
@@ -19,6 +25,8 @@
   "RB1_reopened": false,
   "case_count": 8,
   "profile_counts": {"FAST": 3, "CANONICAL": 7, "RELEASE": 8, "DEEP": 8},
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
   "hard_nonclaims": [
     "no numeric H_app or A_temporal is selected",
     "no external source bytes or digests are verified by the adapter",
@@ -27,6 +35,5 @@
     "no production SWAP-MODFLOW coupling is admitted",
     "mass conservation is not relaxed"
   ],
-  "target_decision": "QUALIFIED_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
-  "closeout_rule": "The final F-TB08 authority is valid only if the exact final [ftb08-release] head passes both FAST and RELEASE jobs, including support-only delta and exact-head start/end gates."
+  "validity_rule": "This conditional closeout becomes final only when the workflow triggered by this exact commit succeeds with FAST and RELEASE both successful, support-only delta successful, and exact-head start/end successful. No additional closeout commit is required or permitted after that green exact-head run."
 }
