@@ -1,0 +1,43 @@
+name: F-CI45P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45p-current-canonical-postimage-reconciliation
+    paths:
+      - .github/workflows/fci45p-current-canonical-postimage-reconciliation.yml
+      - tests/fci/run_fci45p_current_canonical_postimage_reconciliation.sh
+      - integration/f-ci/F-CI45P_ARCHITECTURE_RECONCILIATION.json
+      - integration/f-ci/F-CI45P_EVIDENCE.json
+      - integration/f-ci/F-CI45P_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert exact head
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI45P_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI45P gate
+        run: bash tests/fci/run_fci45p_current_canonical_postimage_reconciliation.sh
+      - name: Assert immutable postimage source
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git status --porcelain -- src reference)"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "07877429f94ccf07c353fa5f8ba969c341ad88dd"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_restart_state_contract.f90)" = "bb2c37efce37a73441181f14d15847c652ab45ea"
+          echo "FCI45P_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
