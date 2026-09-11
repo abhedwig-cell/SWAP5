@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15R",
+  "title": "F-KT15 Current-Canonical Producer/Transport/Dynamic-Top Recomposition",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_RECOMPOSITION_READY_FOR_FKT15_TASK2_IMPLEMENTATION",
+  "branch": "work/f-kt15r-production-solver-service-current-canonical-recomposition",
+  "canonical_base": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+  "qualified_precloseout_head": "faec89d031834b74e37f822ef187c42180f898b1",
+  "qualification": {
+    "workflow_run": 34650548129,
+    "conclusion": "success",
+    "first_race_guard_run": 34650370456,
+    "first_race_guard_classification": "EXPECTED_FAIL_CLOSED_CANONICAL_MOVEMENT_FCI48_TO_FCI48P_BEFORE_CONTENT_REPLAY"
+  },
+  "qualified_scope": {
+    "combined_F_SI28_F_KT14_F_SI30_source_postimage_recomposed_on_F_CI48P": true,
+    "F_SI30_recomposed_source_replay": true,
+    "F_KT14_accepted_transport_O0_O2_replay": true,
+    "F_CI48_optional_state_source_preserved": true,
+    "reference_changed": false,
+    "new_F_KT15_task2_logic": false,
+    "new_physics": false,
+    "new_tangent_authority": false,
+    "new_nonlinear_tangent_trajectory": false,
+    "production_groundwater_coupling_admission": false
+  },
+  "downstream_handoff": {
+    "owner": "F-KT15",
+    "requirement": "Implement the already-designed narrow SoilWater task-2 typed solver-service route only from this qualified recomposition authority. Preserve SoilWater task-3 ownership, direct HeadCalc fallback for unsupported states, hard mass conservation, F-SI30 dynamic top regimes, F-SI28 single-authority tangent generation and F-KT14 accepted-only sensitivity publication.",
+    "forbidden": "Do not claim whole-coupling-window derivative or MODFLOW mapping."
+  },
+  "all_30_invariants_audited": true,
+  "exact_head_rule": "This closeout commit must itself pass the unchanged F-KT15R workflow before becoming final authority."
+}
