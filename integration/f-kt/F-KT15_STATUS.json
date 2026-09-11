@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "title": "Production Soil-Water Solver-Service Transaction Composition",
+  "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+  "phase": "SOURCE_RECONCILIATION_AND_DESIGN",
+  "source_authority": {
+    "canonical_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "governance_overlay": "F-CI38"
+  },
+  "upstream": {
+    "F_SI28_qualified_production_head": "85dbe882aa967d19021174066c95105d8cf838ea",
+    "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+    "F_KT14_closeout_head": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "F_KT14_exact_head_workflow": 34545458355,
+    "F_KT14_effective_decision": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED"
+  },
+  "problem": "The current B1.10 physical transaction executes legacy soilwater/HeadCalc directly and therefore never receives the structured F-SI28 soil_water_solve_result_t needed by the qualified F-KT14 bridge.",
+  "goal": "Qualify a real production physical transaction composition that obtains its soil-water result from the existing qualified solver service and maps the accepted sensitivity into the F-KT14 transaction carrier without creating another hydraulic authority.",
+  "hard_constraints": [
+    "Do not add interface-tangent computation to legacy HeadCalc.",
+    "Do not run a second nonlinear trajectory merely to obtain a tangent.",
+    "Do not duplicate the F-SI28 Jacobian/tangent authority.",
+    "Preserve B1.10 physical results and hard water balance within the admitted scope.",
+    "Rejected/retried solver results and transactions publish no sensitivity.",
+    "Preserve worker-owned scratch and compact committed physical state.",
+    "Do not add MODFLOW sign conversion.",
+    "Do not claim a local-terminal tangent is a whole-coupling-window derivative."
+  ],
+  "first_design_gate": {
+    "question": "Can the existing B1.10 transaction adapter delegate only the soil-water solve to reference_richards_legacy_solver_t while keeping the surrounding physical interval/process ordering identical, or is a narrower production composition seam required first?",
+    "fail_closed_rule": "If exact equivalence of surrounding B1.10 process sequencing/state/mass ownership cannot be established, do not replace the legacy interval wholesale; qualify a narrower seam first."
+  },
+  "planned_evidence": [
+    "exact upstream blob materialization locks",
+    "baseline versus solver-service physical state and flux identity",
+    "water-balance identity",
+    "accepted sensitivity reaches trial_outcome_t through the F-KT14 bridge",
+    "retry/rollback stale-result exclusion",
+    "zero additional nonlinear tangent trajectories and zero additional Jacobian builds",
+    "O0/O2 exact-head qualification"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "RESEARCH_IN_PROGRESS_FAIL_CLOSED",
+  "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH"
+}
