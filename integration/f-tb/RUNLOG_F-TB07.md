@@ -1,0 +1,32 @@
+# F-TB07 run log
+
+## Live start
+
+- No F-TB07 or equivalent testbank branch existed at start.
+- Exact F-TB06 parent authority: `163ed723cc4f2277746bdd54f338c4b06e2eaaa9`.
+- Current canonical rechecked at `c7379b6b5b5f529ff96de3087379712bd665276a`.
+- Current canonical source tree: `d5aec38b432242d2674885c8b8bd21d7f0fa0836`.
+- Current canonical reference tree: `9d08625217d7c0a7385df9da6a04183bcd9cb9e6`.
+
+## Gap selection
+
+F-TB01 requires moving-current preservation for canonical capabilities. Surface evaporation already has permanent release-bank coverage through F-TB03 and restricted soil temperature now has F-TB06. The canonically admitted F-GC10/F-CI44 groundwater application-accuracy contract had no dedicated permanent testbank adoption.
+
+F-TB07 therefore adopts that contract seam only. It does not create a numeric accuracy policy or production coupling claim.
+
+## Authority
+
+- F-GC10 closeout: `a1201dc870e4f5088f50b8d00e92e83457743174`.
+- F-GC10 decision: `QUALIFIED_F_GC09_APPLICATION_ACCURACY_CONTRACT_FOR_CANONICAL_ADMISSION_WITH_EXPLICIT_TEMPORAL_INDICATOR_BINDING`.
+- Application contract module blob: `c07d573d21e7d013ab962c0a9d28102ab7b5cdfc`.
+- Immutable F-CI44 contract test blob: `54200c6ded7b2783375e02cc646ec00f61b70770`.
+
+## Persist-first design
+
+Eight stable F-TB01-compatible cases were registered before execution. The executable gate preserves the historical F-CI44 test matrix but checks the current post-F-CI45 consumer binding directly rather than falsifying the historical F-CI44 backend blob lock.
+
+The work-unit contract, registry, validator, qualification runner, documentation, prequalification status and 30-invariant audit were persisted before qualification.
+
+## Qualification
+
+Pending exact-head FAST and RELEASE execution.
