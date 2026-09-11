@@ -16,10 +16,10 @@ module mod_coupling_application_accuracy_adapter
   integer, parameter, public :: FGC14_ADAPTER_INVALID_TEMPORAL_ALLOCATION = 7
   integer, parameter, public :: FGC14_ADAPTER_INVALID_TEMPORAL_BUDGET = 8
 
-  ! This is a typed boundary view, not a file or JSON representation. An
-  ! external adapter/governance layer must first validate the F-GC13 packet and
-  ! verify the recorded source digests against the exact governed source bytes.
-  ! Only the canonicalized values and verification attestations cross this seam.
+  ! This is a typed boundary view, not a file or external-format representation.
+  ! An external adapter/governance layer must first validate the F-GC13 packet
+  ! and verify the recorded source digests against the exact governed source
+  ! bytes. Only canonicalized values and verification attestations cross here.
   type, public :: coupling_application_accuracy_packet_view_t
     integer :: evidence_schema_version = 0
     logical :: fgc13_packet_validated = .false.
