@@ -1,0 +1,312 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC06",
+  "title": "RB1 ET, Root and Restricted Surface-Evaporation Traceability",
+  "release_id": "SWAP5-RB1-v1",
+  "base_authority": {
+    "fdoc05": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+    "rb1_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_source_tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "rb1_src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+    "rb1_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "scope": {
+    "bounded_capabilities": [
+      "RB1-ET-ROOT-SERIAL",
+      "RB1-ROOT-PARALLEL",
+      "RB1-SURFACE-EVAP-RESTRICTED"
+    ],
+    "rule": "F-DOC06 documents only the frozen RB1 ET/root and restricted surface-evaporation capability chains. It does not change or requalify physics, production source, reference data, solvers, tolerances, performance policy or release authority.",
+    "surface_evaporation_performance_boundary": "Functional MultiSWAP compatibility is frozen RB1 scope. Throughput/scaling and call-local copy/allocation work remain a separate performance workunit and are not reopened here."
+  },
+  "source_pins": [
+    {
+      "path": "src/process/mod_reference_et_demand_process.f90",
+      "blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+      "role": "restricted reference potential ET demand process"
+    },
+    {
+      "path": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+      "blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+      "role": "generic-time reference ET runtime binding"
+    },
+    {
+      "path": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+      "blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+      "role": "authoritative potential-transpiration handoff into root input"
+    },
+    {
+      "path": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+      "blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+      "role": "restricted reference-ET/root-uptake composition"
+    },
+    {
+      "path": "src/crop/mod_crop_root_uptake_input_contract.f90",
+      "blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+      "role": "explicit crop-to-root input contract"
+    },
+    {
+      "path": "src/process/mod_root_water_uptake_process.f90",
+      "blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+      "role": "restricted Macro/Feddes drought-only root-water-uptake process"
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+      "blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+      "role": "runtime crop/root input adapter"
+    },
+    {
+      "path": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+      "blob": "2fc348f18e8561096fa34dd3c11c64b359583f11",
+      "role": "root-water-uptake process runtime binding"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+      "role": "serialized committed root-attribution publication in the frozen RB1 postimage"
+    },
+    {
+      "path": "src/runtime/mod_fmr_parallel_root_uptake_pool.f90",
+      "blob": "c78c13997642617376b8d118122c86c60ca77189",
+      "role": "restricted root-active parallel 2/4-worker execution"
+    },
+    {
+      "path": "src/solver/mod_b110_root_sink_provider.f90",
+      "blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "role": "reference root sink provider used by frozen root-active profiles"
+    },
+    {
+      "path": "src/process/mod_restricted_surface_evaporation.f90",
+      "blob": "a213af4deec2fe854d79120899827852a57237d1",
+      "role": "restricted stateless SWINTER=0 SWREDU=0 surface evaporation process"
+    },
+    {
+      "path": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+      "blob": "bc40bc6b121f56071d2b811195759f86130defeb",
+      "role": "frozen RB1 restricted surface-evaporation runtime materialization"
+    },
+    {
+      "path": "src/solver/mod_surface_evaporation_capacity_contract.f90",
+      "blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "role": "surface-evaporation hydraulic capacity contract"
+    },
+    {
+      "path": "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+      "blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2",
+      "role": "restricted B1.10 hydraulic capacity provider"
+    }
+  ],
+  "qualification_authorities": {
+    "reference_et_runtime": {
+      "work_unit": "F-CI27",
+      "status_path": "integration/f-ci/F-CI27_STATUS.json",
+      "decision": "QUALIFIED_CLOSED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION",
+      "production_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+      "scope_note": "Potential ET rates and generic contained time interval are qualified here; F-CI27 itself explicitly did not yet bind root uptake or reconcile ptra ownership."
+    },
+    "serialized_root_attribution": {
+      "work_unit": "F-CI34",
+      "status_path": "integration/f-ci/F-CI34_STATUS.json",
+      "source_admitted_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+      "governance_reconciled_head": "e900e6115a6bf8b65af8460eb3e336257be4d1bf",
+      "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
+      "independent_work_unit": "F-VQ50",
+      "independent_closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+      "independent_decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE",
+      "authoritative_scientific_run": 34485954675,
+      "exact_closeout_rerun": 34486274895,
+      "lineage_rule": "F-DOC06 binds the F-CI34/F-VQ50 scientific lineage as preserved in the later frozen RB1 source and release. It does not upgrade historical F-CI34 metadata wording into a broader or newer claim."
+    },
+    "parallel_root": {
+      "work_unit": "F-MQ30",
+      "closeout_head": "48ee2841d783ee023c29391a7ea1e5d7ee0d20e0",
+      "matrix_blob": "40b45112f0e14accbcc08c015b988f39bf376eb7",
+      "status_blob": "3fafdbad7f923023b550d264ba5edb398c1903f3",
+      "workers": [2, 4],
+      "hard_mass_gate_cm": 1e-12,
+      "performance_speedup_claimed": false,
+      "root_active_restart_claimed": false
+    },
+    "surface_evaporation_science_and_postimage": {
+      "work_unit": "F-CI41P",
+      "status_path": "integration/f-ci/F-CI41P_STATUS.json",
+      "decision": "QUALIFIED_CURRENT_CANONICAL_SURFACE_EVAPORATION_RUNTIME_POSTIMAGE_GOVERNANCE_RECONCILIATION",
+      "independent_work_unit": "F-VQ56",
+      "independent_head": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+      "independent_decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
+      "postimage_process_blob": "a213af4deec2fe854d79120899827852a57237d1",
+      "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+      "performance_scope": "NO_THROUGHPUT_OR_SCALING_CHANGE; EXISTING_CALL_LOCAL_COPY_ALLOCATION_DEBT_REMAINS_DEFERRED"
+    },
+    "surface_evaporation_preservation": {
+      "runner_path": "tests/fpe/run_fpe11_surface_evaporation_allocation_qualification.sh",
+      "runner_blob": "f3068802d4428e6941bef6e76a65d78c2e3d264d",
+      "fci41p_base": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+      "fvq56": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+      "required_markers": [
+        "FPE11_FCI41P_OBSERVABLE_IDENTITY=PASS",
+        "FPE11_O0_O2_IDENTITY=PASS",
+        "FPE11_COMMITTED_STATE_IMMUTABILITY=PASS",
+        "FPE11_ABA_DETERMINISM=PASS",
+        "FPE11_NO_AUTHORITATIVE_MASS_BOOKING=PASS",
+        "FPE11_FUNCTIONAL_QUALIFICATION=PASS",
+        "FPE11_THROUGHPUT_SCALING_CLAIM=NOT_YET_MADE"
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "SW5-ALG-7601",
+      "tier": "T8",
+      "kind": "algorithm",
+      "title": "Restricted reference-ET to drought-only root-uptake composition and accepted attribution",
+      "status": "ACTIVE",
+      "authority": "Frozen RB1 source plus F-CI27/F-CI34/F-VQ50 lineage"
+    },
+    {
+      "id": "SW5-CONTRACT-7601",
+      "tier": "T9",
+      "kind": "software_contract",
+      "title": "Reference ET ptra and root-uptake input/composition contracts",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_paths": [
+        "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+        "src/crop/mod_crop_root_uptake_input_contract.f90",
+        "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+      ]
+    },
+    {
+      "id": "SW5-IMPL-7601",
+      "tier": "T10",
+      "kind": "implementation_mapping",
+      "title": "Frozen serialized ET/root and actual-transpiration attribution implementation",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_paths": [
+        "src/process/mod_reference_et_demand_process.f90",
+        "src/process/mod_root_water_uptake_process.f90",
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+      ]
+    },
+    {
+      "id": "SW5-ALG-7602",
+      "tier": "T8",
+      "kind": "algorithm",
+      "title": "Restricted root-active deterministic parallel 2/4-worker execution",
+      "status": "ACTIVE",
+      "authority": "F-MQ30 frozen qualification"
+    },
+    {
+      "id": "SW5-CONTRACT-7602",
+      "tier": "T9",
+      "kind": "software_contract",
+      "title": "Parallel root-active pool contract",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_parallel_root_uptake_pool.f90",
+      "source_blob": "c78c13997642617376b8d118122c86c60ca77189"
+    },
+    {
+      "id": "SW5-IMPL-7602",
+      "tier": "T10",
+      "kind": "implementation_mapping",
+      "title": "Restricted parallel root-active implementation",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_parallel_root_uptake_pool.f90",
+      "source_blob": "c78c13997642617376b8d118122c86c60ca77189"
+    },
+    {
+      "id": "SW5-ALG-7603",
+      "tier": "T8",
+      "kind": "algorithm",
+      "title": "Restricted stateless surface-evaporation demand/capacity materialization",
+      "status": "ACTIVE",
+      "authority": "F-CI41P/F-VQ56/F-PE11 frozen lineage"
+    },
+    {
+      "id": "SW5-CONTRACT-7603",
+      "tier": "T9",
+      "kind": "software_contract",
+      "title": "Restricted surface-evaporation process and hydraulic-capacity contract",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_paths": [
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/solver/mod_surface_evaporation_capacity_contract.f90"
+      ]
+    },
+    {
+      "id": "SW5-IMPL-7603",
+      "tier": "T10",
+      "kind": "implementation_mapping",
+      "title": "Frozen restricted surface-evaporation materialization implementation",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+      "source_blob": "bc40bc6b121f56071d2b811195759f86130defeb"
+    }
+  ],
+  "capabilities": [
+    {
+      "capability_id": "RB1-ET-ROOT-SERIAL",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": [
+          "F-CI27 generic-time reference ET runtime authority",
+          "F-CI34/F-VQ50 exact-forcing root-uptake attribution lineage preserved in frozen RB1",
+          "F-RB01 current F-CI28 ET preservation and release composition"
+        ]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "Restricted drought-only precomputed QROT scope only; no crop lifecycle advancement, time-varying QROT substep admission or complete controlled theory-to-equation trace is inferred."
+    },
+    {
+      "capability_id": "RB1-ROOT-PARALLEL",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": [
+          "F-MQ30 serialized versus 2-worker versus 4-worker exact scientific identity",
+          "F-MQ30 actual-transpiration attribution oracle and no duplicate booking",
+          "F-MQ30 hard per-column water-mass residual <= 1e-12 cm and fail-closed negative matrix"
+        ]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "2/4 workers only; no root-active restart, performance speedup, unsupported parallel physics or application-validation claim."
+    },
+    {
+      "capability_id": "RB1-SURFACE-EVAP-RESTRICTED",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": [
+          "F-CI41P/F-VQ56 restricted SWINTER=0 SWREDU=0 scientific/postimage authority",
+          "F-PE11 observable identity, O0/O2 identity, committed-state immutability, ABA determinism and no authoritative mass booking",
+          "F-RB01 frozen release composition"
+        ]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "SWINTER=0 and SWREDU=0 only. Functional MultiSWAP compatibility does not imply throughput/scaling qualification. Call-local copy/allocation performance debt remains separate and closed science is not reopened."
+    }
+  ],
+  "global_nonclaims": [
+    "F-DOC06 does not claim FULLY_TRACED for any capability.",
+    "F-DOC06 does not invent or backfill a controlled T1 scientific authority where the repository does not provide one.",
+    "F-DOC06 does not claim T12 application validation.",
+    "F-DOC06 does not claim Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC06 does not change the frozen 15-capability RB1 denominator.",
+    "F-DOC06 does not reopen immutable RB1 scientific or release authority.",
+    "F-DOC06 does not broaden drought-only QROT, parallel worker counts, surface-interception or surface-reduction physics.",
+    "F-DOC06 does not make a performance speedup, throughput or scaling claim.",
+    "F-DOC06 does not reopen call-local surface-evaporation copy/allocation performance work.",
+    "F-DOC06 does not add a second authoritative water-mass booking for root attribution or surface evaporation."
+  ]
+}
