@@ -62,6 +62,8 @@ Release qualification is evidence for released behaviour inside the frozen RB1 s
 
 F-DOC01 established a T0-T14 architecture and explicitly blocked Status A readiness/compliance language until the controlled WR-QA-2024 authority is obtained/reconciled and the evidence dossier is completed through the competent WUR process.
 
+The external-authority gate remains exactly `formal_2024_reconciliation = PENDING_CONTROLLED_COPY`.
+
 F-DOC07 does not change that boundary. Even after 15/15 capability population coverage:
 
 - `ready_for_status_a_review = false`;
@@ -77,7 +79,7 @@ The maximum claim from this workunit is therefore:
 
 The aggregation keeps all important downstream nonclaims intact.
 
-For temporal acceptance, no universal `H_budget`, groundwater-head accuracy budget or universal temporal tolerance is created. Application-specific error-budget selection remains external.
+No universal `H_budget`, groundwater-head accuracy budget or universal temporal tolerance is created. Application-specific error-budget selection remains external.
 
 For root-active parallel execution, the frozen 2/4-worker and physics-profile limits remain unchanged; no speedup or root-active restart claim is added.
 
