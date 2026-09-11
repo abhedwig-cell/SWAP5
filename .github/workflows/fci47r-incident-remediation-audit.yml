@@ -1,0 +1,33 @@
+name: F-CI47R incident remediation audit
+
+on:
+  push:
+    branches:
+      - qualification/f-ci47r-accidental-support-file-remediation-record
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI47R_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Mechanical incident remediation audit
+        run: python3 tests/fci/run_fci47r_incident_remediation_audit.py
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI47R_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
