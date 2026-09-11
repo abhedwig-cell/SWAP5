@@ -1,0 +1,22 @@
+name: F-CI41 surface evaporation runtime canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci41-fpm06f-surface-evaporation-runtime-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI41 source-bound canonical admission qualification
+        run: bash tests/fci/run_fci41_surface_evaporation_runtime_canonical_admission.sh
