@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.frb01_release_candidate.v1",
+  "work_unit": "F-RB01",
+  "checkpoint": 4,
+  "stage": "PERSISTED",
+  "candidate_frozen": true,
+  "RB1_RELEASE_CANDIDATE_SHA": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "RB1_RELEASE_CANDIDATE_TREE": "c77ac75aea522ac20a60da012595af9166efcff6",
+  "RB1_RELEASE_CANDIDATE_SRC_TREE": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+  "RB1_RELEASE_CANDIDATE_REFERENCE_TREE": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "source_authority_branch_at_freeze": "integration/f-ci-canonical",
+  "source_authority_closeout": "F-CI42P",
+  "release_evidence_branch": "release/f-rb01-restricted-production-baseline-v1",
+  "release_branch_pre_freeze_evidence_head": "03004ba35ffedd59e2aa247c579b51825b2f887f",
+  "pre_freeze_compare": {
+    "base": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "release_branch_ahead_by": 3,
+    "release_branch_behind_by": 0,
+    "changed_paths": [
+      "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json",
+      "release/f-rb01/RB1_CAPABILITY_EVIDENCE_MATRIX.json",
+      "release/f-rb01/RB1_BLOCKER_CLASSIFICATION.json"
+    ],
+    "production_src_delta": false,
+    "reference_delta": false,
+    "tests_delta": false,
+    "tools_delta": false
+  },
+  "candidate_rule": "The scientific/production candidate is the exact immutable source authority above. F-RB01 evidence, workflow and documentation commits may advance only the release branch and must preserve src and reference tree identity. Any src or reference change invalidates this candidate and requires a new RB1_RELEASE_CANDIDATE_SHA/TREE plus all applicable decisive gates.",
+  "historical_evidence_rule": "Frozen historical admission workflows remain bound to their exact admitted heads. The RB1 suite may replay those frozen authorities and must separately establish preservation/integration on this exact RB1 source candidate.",
+  "new_capability_rule": "Production admissions completed after this freeze are NEXT_RELEASE by default and do not enter RB1."
+}
