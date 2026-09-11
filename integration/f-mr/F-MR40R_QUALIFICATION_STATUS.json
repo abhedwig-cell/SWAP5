@@ -1,0 +1,55 @@
+{
+  "work_unit": "F-MR40R",
+  "title": "Restricted Soil-Temperature Current-Canonical Runtime Recomposition",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_CURRENT_CANONICAL_RECOMPOSITION_READY_FOR_SEPARATE_CANONICAL_ADMISSION",
+  "canonical_base": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "canonical_base_role": "F-CI44P finalized current-canonical postimage",
+  "historical_runtime_authority": "F-MR39@87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "recomposition_source_commit": "be789dc55dafb513ea793fc0c1ae12ed9d7733d8",
+  "qualified_authority_head": "e9a7aeb1632ab9ce9ba7d0d56730f05a1ee7834a",
+  "materialized_source_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "preserved_current_canonical_authorities": {
+    "F_CI44_application_accuracy_contract_module": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "F_CI44P_status_blob": "b29cb2f8b94d6d52614650a513b913f2b20b6a50"
+  },
+  "qualification": {
+    "run": 34632934767,
+    "job": 103373908605,
+    "conclusion": "success",
+    "current_canonical_race_guard": "PASS",
+    "exact_FMR39_source_recomposition": "PASS",
+    "bounded_production_delta": "PASS",
+    "F_CI44P_postimage_authority_preserved": "PASS",
+    "FMR39_full_rebound_replay": "PASS",
+    "FMR39_runtime_fingerprint_identity": "PASS",
+    "F_CI44_contract_oracle_O0_O2": "PASS",
+    "reference_and_science_preservation": "PASS",
+    "clean_source_tree": "PASS"
+  },
+  "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+  "production_delta": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "claims": [
+    "the qualified F-MR39 thermal runtime source is compatible with the finalized F-CI44P current canonical postimage",
+    "transactional rollback, retry, restart, optional thermal state and restricted MultiSWAP isolation retain the F-MR39 qualified behavior",
+    "the F-CI44 application-accuracy contract remains behaviorally qualified on the recomposed tree",
+    "the frozen reference tree and F-VQ58 scientific authority are not modified"
+  ],
+  "nonclaims": [
+    "F-MR40R does not perform canonical admission",
+    "no new soil-temperature physics or numerical policy is introduced",
+    "no snow-plus-soil-temperature profile is admitted",
+    "no frost or latent-heat phase-change physics is admitted",
+    "no thermal-active parallel scaling or throughput qualification is made",
+    "no production SWAP-MODFLOW coupling admission is made",
+    "mass conservation is not relaxed",
+    "RB1 is not modified or reopened"
+  ],
+  "next_required_step": "Use this exact qualified authority as the source-bound donor for the already-created separate F-CI45 canonical-admission workunit, with a fresh current-canonical race guard and no wholesale merge of historical F-MR39 governance history."
+}
