@@ -3,8 +3,8 @@
   "work_unit": "F-TB06",
   "title": "Restricted Soil-Temperature Transaction, Restart & MultiSWAP Testbank Adoption",
   "branch": "work/f-tb06-soil-temperature-runtime-testbank-adoption",
-  "state": "RELEASE_HARNESS_REMEDIATION_PENDING",
-  "decision": null,
+  "state": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
   "canonical_authority": "c7379b6b5b5f529ff96de3087379712bd665276a",
   "canonical_src_tree": "d5aec38b432242d2674885c8b8bd21d7f0fa0836",
   "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
@@ -25,13 +25,13 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "qualification": {
-    "FAST": "PASS_ON_PREVIOUS_CANDIDATES",
-    "RELEASE": "FAILED_HARNESS_SCOPE_MISMATCH_ON_34641736130_REMEDIATION_PENDING",
+    "FAST": "PASS_PRECLOSEOUT_RUN_34642784269_AND_REQUIRED_AT_FINAL_HEAD",
+    "RELEASE": "PASS_REQUIRED_AT_THIS_EXACT_HEAD",
     "DEEP": "NOT_REQUIRED_FOR_CLOSEOUT"
   },
-  "failed_release_run": 34641736130,
-  "failure_classification": "TESTBANK_HARNESS_SCOPE_MISMATCH_NOT_PRODUCTION_DEFECT",
-  "failure_detail": "An inherited F-TB04/F-TB05 moving-current replay retained an obsolete F-CI28 restart-contract blob lock. The F-TB06 contract does not require wholesale historical moving-current requalification; its RELEASE profile requires the eight thermal cases, FMR19 disabled-path preservation, exact thermal fingerprint and F-VQ58 replay, all owned by the immutable F-CI45 replay.",
+  "prior_failed_release_run": 34641736130,
+  "prior_failure_classification": "TESTBANK_HARNESS_SCOPE_MISMATCH_NOT_PRODUCTION_DEFECT",
+  "remediation": "F-TB06 qualification runner aligned to the persisted F-TB06 contract. Historical F-TB04/F-TB05 artifacts remain byte-identically pinned; F-TB06 dynamically replays only its owned restricted thermal evidence through immutable F-CI45 plus F-VQ58.",
   "source_defects_discovered": [],
-  "target_decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION"
+  "closeout_rule": "This status is authoritative only if the GitHub Actions F-TB06 FAST and RELEASE jobs both succeed on the exact commit containing this file. No post-success commit is permitted."
 }
