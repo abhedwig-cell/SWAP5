@@ -1,0 +1,25 @@
+name: F-VQ58 independent F-PM07B restricted soil-temperature qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq58-fpm07b-restricted-soil-temperature
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-VQ58 source-bound independent qualification
+        run: bash tests/fvq/run_fvq58_restricted_soil_temperature_requalification.sh
