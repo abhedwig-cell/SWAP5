@@ -1,0 +1,36 @@
+name: F-PM08D7 restart lifecycle owner gate
+
+on:
+  push:
+    branches:
+      - work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate
+    paths:
+      - 'src/runtime/mod_fmr_optional_state_layouts.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'src/runtime/mod_fmr_committed_restart.f90'
+      - 'tests/fpm/test_fpm08d7_restart_lifecycle.f90'
+      - 'tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh'
+      - '.github/workflows/fpm08d7-restart-lifecycle-owner.yml'
+  workflow_dispatch:
+
+jobs:
+  restart-lifecycle:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact F-PM08D7 head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-PM08D7 restart lifecycle owner gate
+        env:
+          FPM08D7_RESTART_EVIDENCE_DIR: _fpm08d7_restart_evidence
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+      - name: Upload F-PM08D7 restart evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-PM08D7-restart-lifecycle-owner-evidence
+          path: _fpm08d7_restart_evidence
+          if-no-files-found: error
