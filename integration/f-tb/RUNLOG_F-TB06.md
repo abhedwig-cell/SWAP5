@@ -20,6 +20,12 @@ A support-only composition was created at `1af50b7517bc4ac794ee0a4b300e079629141
 - Thermal replay uses the immutable F-CI45 gate with only its obsolete prepromotion canonical race assertion rebound to the promoted F-CI45P canonical head.
 - All 30 architecture invariants were audited with hard mass conservation unchanged.
 
-## Qualification state
+## Precloseout qualification
 
-Execution has not yet established closeout. FAST and exact-head RELEASE remain required. No production-source defect has been established at this stage.
+FAST succeeded on exact head `f55135c17bb02b67099d176d9e56a5e044a92721` in Actions run `34641642827`, job `103402571631`.
+
+This established registry/provenance validity, byte-identical inherited F-TB05 support, exact current-canonical source/reference trees, exact F-MR39 runtime-oracle provenance and no RB1 reopening.
+
+## Closeout state
+
+No production-source defect has been established. Final closeout still requires a new exact-head `[ftb06-release]` candidate with both FAST and the complete RELEASE qualification green on that same head.
