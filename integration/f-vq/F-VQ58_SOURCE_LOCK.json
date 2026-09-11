@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.independent_soil_temperature_source_lock.v1",
+  "work_unit": "F-VQ58",
+  "qualification_branch": "qualification/f-vq58-fpm07b-restricted-soil-temperature",
+  "qualification_base": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "qualification_base_tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+  "immutable_release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "owner_closeout": "1b541514405cf18450a4b2c73eb758270df527a7",
+  "owner_status_blob": "dcabd9c57f61050ad7cfb71d5593bcf0d97a9980",
+  "qualified_candidate_source_head": "3f387d820adf46b1260c37d52019a2b83b2d8c74",
+  "qualified_candidate_tree": "3b96c0e05d10901b91d17e9234df48c18b779a37",
+  "production_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "canonical_dependency_blobs": {
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6"
+  },
+  "legacy_source_identity": {
+    "outer_archive": "SWAP_4.3.1(6).zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive": "SWAP.ZIP",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "temperature_f90_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "independently_recomputed_in_F_VQ58_session": true
+  },
+  "legacy_restricted_route": {
+    "top_boundary": "SWTOPBHEA=2 prescribed soil-surface temperature after external interpolation",
+    "bottom_boundary": "SWBOTBHEA=1 zero heat flux",
+    "thermal_water_content": "theave=0.5*(theta+thetm1)",
+    "face_conductivity": "surface uses top-node conductivity; internal faces use arithmetic mean of adjacent nodal conductivities",
+    "time_step": "implicit tridiagonal sensible-heat solve using dt",
+    "heat_capacity_units": "J/cm3/K",
+    "conductivity_units": "J/cm/K/day"
+  }
+}
