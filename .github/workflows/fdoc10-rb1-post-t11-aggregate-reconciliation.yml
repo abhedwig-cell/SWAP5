@@ -1,0 +1,92 @@
+name: F-DOC10 RB1 post-T11 aggregate reconciliation
+
+on:
+  push:
+    branches:
+      - work/f-doc10-rb1-post-t11-aggregate-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact upstream authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          authorities=(
+            2a4a8738496329001a3c3af9b5e50a9f31d0c44f
+            492b984bca282d6ec11dcaa727227b34c0ff3a84
+            8e5863510004ec11ab377b5bc9d3bd5df6d69777
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0
+          )
+          for sha in "${authorities[@]}"; do
+            git cat-file -e "${sha}^{commit}" 2>/dev/null || git fetch --quiet --no-tags origin "$sha"
+            git cat-file -e "${sha}^{commit}"
+          done
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FDOC10_EXACT_CHECKOUT=PASS"
+
+      - name: Validate post-T11 aggregate reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc10_rb1_post_t11_aggregate_reconciliation.py | tee _fdoc10_validator.log
+          grep -Fq 'FDOC10_ZERO_PRODUCTION_SOURCE_DELTA=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_ZERO_REFERENCE_DELTA=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_EXACT_UPSTREAM_BLOBS=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_REMEDIATION_AUTHORITIES=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_AGGREGATE_GAP_STATE=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_NO_STATUS_A_PROMOTION=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_INVARIANT_AUDIT_30_OF_30=PASS' _fdoc10_validator.log
+          grep -Fq 'FDOC10_VALIDATION=PASS' _fdoc10_validator.log
+
+      - name: Verify bounded aggregate maturity semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          reg=json.loads(Path('docs/scientific/registries/rb1-post-t11-aggregate-traceability-reconciliation.json').read_text())
+          cov=reg['aggregate_coverage_after_remediation']
+          assert cov['required_denominator']==15
+          assert cov['covered_exactly_once']==15
+          assert cov['duplicate_assignments']==0
+          assert cov['unassigned_required_capabilities']==0
+          assert cov['population_coverage_changed_by_fdoc08_or_fdoc09'] is False
+          gaps={x['id']:x for x in reg['aggregate_gap_state']}
+          assert gaps['GAP-T11-COMPLETE-GRAPHS']['state']=='OPEN_NARROWED'
+          assert gaps['GAP-CONTROLLED-THEORY-FORMAL']['state']=='OPEN'
+          assert gaps['GAP-T12-APPLICATION-VALIDATION']['state']=='OPEN'
+          sa=reg['status_a_boundary']
+          assert sa['ready_for_status_a_review'] is False
+          assert sa['status_a_compliant'] is False
+          assert sa['status_aa_compliant'] is False
+          audit=json.loads(Path('integration/f-doc/F-DOC10_INVARIANT_AUDIT.json').read_text())
+          assert audit['overall']=='30_OF_30_NO_ADVERSE_DELTA'
+          assert audit['mass_conservation']=='HARD_UNCHANGED'
+          print('FDOC10_BOUNDED_AGGREGATE_SEMANTICS=PASS')
+          PY
+
+      - name: Preserve exact-head qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc10-rb1-post-t11-aggregate-evidence-${{ github.sha }}
+          path: |
+            _fdoc10_aggregate_evidence.json
+            _fdoc10_validator.log
+          if-no-files-found: warn
+          retention-days: 90
