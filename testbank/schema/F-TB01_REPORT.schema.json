@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/testbank/F-TB01_REPORT.schema.json",
+  "title": "SWAP5 Testbank Execution Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_authority", "profile", "matrix_id", "environment", "cases", "summary"],
+  "properties": {
+    "schema_version": {"const": "swap5.testbank.report.v1"},
+    "source_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo", "commit", "tree"],
+      "properties": {
+        "repo": {"const": "abhedwig-cell/SWAP5"},
+        "ref": {"type": ["string", "null"]},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "profile": {"enum": ["FAST", "CANONICAL", "RELEASE", "DEEP"]},
+    "matrix_id": {"type": "string", "minLength": 1},
+    "environment": {
+      "type": "object",
+      "required": ["os", "compiler", "build_flags"],
+      "properties": {
+        "os": {"type": "string"},
+        "compiler": {"type": "string"},
+        "build_flags": {"type": "string"},
+        "workers": {"type": ["integer", "null"], "minimum": 1}
+      },
+      "additionalProperties": true
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "status", "oracle_id", "tolerance_ids", "mass_gate", "diagnostics"],
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["PASS", "FAIL", "UNSUPPORTED", "TIMEOUT", "SKIP_NOT_REQUIRED"]},
+          "oracle_id": {"type": "string", "minLength": 1},
+          "tolerance_ids": {"type": "array", "items": {"type": "string"}},
+          "mass_gate": {
+            "type": "object",
+            "required": ["mode", "status"],
+            "properties": {
+              "mode": {"enum": ["REQUIRED", "NOT_APPLICABLE"]},
+              "status": {"enum": ["PASS", "FAIL", "NOT_APPLICABLE"]},
+              "residual": {"type": ["number", "null"]},
+              "unit": {"type": ["string", "null"]}
+            },
+            "additionalProperties": true
+          },
+          "diagnostics": {"type": "object", "additionalProperties": true},
+          "evidence": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["executed", "passed", "failed", "unsupported", "timeouts", "mandatory_missing", "mass_failures"],
+      "properties": {
+        "executed": {"type": "integer", "minimum": 0},
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "unsupported": {"type": "integer", "minimum": 0},
+        "timeouts": {"type": "integer", "minimum": 0},
+        "mandatory_missing": {"type": "integer", "minimum": 0},
+        "mass_failures": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}
