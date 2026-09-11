@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "FSI30_CANONICAL_RECONCILIATION_RESOLVED",
+  "qualification": false,
+  "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+  "authorities": {
+    "current_canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "F_SI30_closeout": "27b10ac0bca17a68e2746431b4c6a986e3910175",
+    "F_SI30_tested_candidate": "46735abda379aa4bf4908f00a49c0926adee0693",
+    "F_KT15_pre_reconcile_head": "37b2a32f5db03e65fcbac8e1f6955558ee9da106",
+    "canonical_merge_commit": "7008e116f451483477e4209177eb9c31b7cf3006",
+    "FSI30_merge_commit": "5cf83669bae383ede039589c92a6029bcf8fc4e4"
+  },
+  "merge_evidence": {
+    "canonical_forward_sync_pr": 77,
+    "canonical_forward_sync_mergeable": true,
+    "FSI30_postimage_pr": 78,
+    "FSI30_postimage_mergeable": true,
+    "method": "two explicit Git merge edges; no force update and no whole-tree overwrite"
+  },
+  "qualified_FSI30_blob_guards_at_FKT15_postimage": {
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf"
+  },
+  "current_canonical_postimage_guards": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "resolved_blocker": "The F-SI30 explicit flux/head dynamic top-boundary interface and HeadCalc bridge are now present on top of the current canonical authority without discarding later canonical runtime/restart changes.",
+  "still_open": [
+    "Materialize the real B1.10 SoilWater task-2 typed solver-service transaction route for the already-admitted restricted predicate.",
+    "Preserve exact direct-HeadCalc fallback for unsupported configurations.",
+    "Feed accepted-only F-SI28 tangent into the already-qualified F-KT14 result bridge.",
+    "Prove retry/rollback stale-result exclusion, task-3 ownership, mass identity, cost bounds, O0/O2 and worker isolation.",
+    "Do not infer whole-coupling-window derivative semantics from the local-terminal tangent."
+  ],
+  "architecture_invariants": {
+    "7_transactional_steps": "OPEN_IMPLEMENTATION_EVIDENCE_REQUIRED",
+    "13_mass_conservation": "OPEN_IMPLEMENTATION_EVIDENCE_REQUIRED",
+    "14_interface_sensitivities": "QUALIFIED_COMPONENTS_PRESENT_COMPOSITION_OPEN",
+    "21_reuse_SWAP_physics": "PASS_SOURCE_RECONCILIATION",
+    "22_no_HeadCalc_internal_coupling": "PASS_SOURCE_RECONCILIATION",
+    "23_physics_solver_policy_separation": "PASS_SOURCE_RECONCILIATION",
+    "29_no_silent_dependencies": "PASS_SOURCE_RECONCILIATION",
+    "30_architecture_change_review": "PASS_FOR_RECONCILIATION_ONLY"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "source_reconciled": true,
+    "predecessor_blocker_closed": true,
+    "implementation_open": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "F_KT15_SOURCE_RECONCILED_READY_FOR_TRANSACTION_COMPOSITION_IMPLEMENTATION"
+}
