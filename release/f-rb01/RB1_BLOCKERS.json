@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.frb01_blockers.v1",
+  "work_unit": "F-RB01",
+  "checkpoint": 3,
+  "stage": "PERSISTED",
+  "scope_frozen": true,
+  "required_denominator": 15,
+  "blockers": [
+    {
+      "id": "FRB01-B01",
+      "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
+      "description": "No decisive current-head integrated RB1 suite has yet been executed on one immutable release candidate.",
+      "required_resolution": "Freeze an RB1 release candidate with unchanged production/reference trees, run the integrated suite, and bind results to that exact candidate SHA/tree."
+    },
+    {
+      "id": "FRB01-B02",
+      "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
+      "description": "Current-head standalone versus serialized versus restricted-parallel equivalence has not yet been demonstrated as one RB1 composition gate.",
+      "required_resolution": "Run current production source against frozen admitted fixtures, irregular batch sizes, reordered inputs and 2/4-worker assignments; require the qualified identity/equivalence rule and hard mass."
+    },
+    {
+      "id": "FRB01-B03",
+      "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
+      "description": "Current-head committed-boundary split-run and parallel continuation replay must be re-exercised after all later admitted source evolution without replaying historical one-delta admission assumptions.",
+      "required_resolution": "Rehydrate the immutable independent restart attack/oracle and execute it against the frozen RB1 source tree with governance pins rebound only to the RB1 source authority."
+    },
+    {
+      "id": "FRB01-B04",
+      "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
+      "description": "Current-head restricted parallel root-uptake and surface-evaporation scientific oracles must be exercised together with the current production postimage.",
+      "required_resolution": "Replay the independent F-MQ30/F-VQ56-derived scientific attacks on the frozen RB1 source tree while preserving their physics/oracle content."
+    },
+    {
+      "id": "FRB01-B05",
+      "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
+      "description": "A release-specific all-30 architecture-invariant audit and fail-closed unsupported-profile check has not yet been bound to the frozen RB1 scope.",
+      "required_resolution": "Persist the RB1 invariant audit and execute static/dynamic negative gates on the decisive candidate."
+    },
+    {
+      "id": "FRB01-B06",
+      "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
+      "description": "The restricted release description and readiness dashboard are not yet finalized against decisive qualification evidence.",
+      "required_resolution": "After CI, persist release scope/nonclaims, toolchain, candidate identity, decisive workflow, TB01/DOC01 crosswalk and fixed-denominator readiness."
+    }
+  ],
+  "non_blocking": [
+    {"classification": "POST_RB1", "item": "additional SWAP 4.3.1 option migration"},
+    {"classification": "RESEARCH_ONLY", "item": "RossFast production qualification"},
+    {"classification": "POST_RB1", "item": "broader MODFLOW predictor-corrector application release"},
+    {"classification": "POST_RB1", "item": "universal or application-class groundwater head-accuracy budget beyond separately qualified classes"},
+    {"classification": "POST_RB1", "item": "active WOFOST/crop lifecycle runtime"},
+    {"classification": "POST_RB1", "item": "parallel active DIVDRA"},
+    {"classification": "RESEARCH_ONLY", "item": "BALANCED/THROUGHPUT/FALLBACK execution classes"},
+    {"classification": "POST_RB1", "item": "representative accepted difficult-column p50/p95/p99 production-tail distribution"},
+    {"classification": "STATUS_A_FOLLOWUP", "item": "formal Status-A package completion"},
+    {"classification": "STATUS_AA_FOLLOWUP", "item": "Status-AA qualification"}
+  ],
+  "counts": {
+    "RB1_SCIENTIFIC_BLOCKER": 0,
+    "RB1_MASS_BLOCKER": 0,
+    "RB1_TRANSACTION_BLOCKER": 0,
+    "RB1_RESTART_BLOCKER": 0,
+    "RB1_RUNTIME_BLOCKER": 0,
+    "RB1_ARCHITECTURE_BLOCKER": 0,
+    "RB1_RELEASE_EVIDENCE_BLOCKER": 6
+  },
+  "rule": "Only blockers in the RB1_* classes above may prevent RB1. POST_RB1, RESEARCH_ONLY, STATUS_A_FOLLOWUP and STATUS_AA_FOLLOWUP do not enlarge the frozen denominator."
+}
