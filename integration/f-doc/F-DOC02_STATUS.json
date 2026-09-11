@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC02",
+  "title": "SWAP5 RB1 Release-Bound Scientific Traceability Population",
+  "branch": "work/f-doc02-rb1-scientific-traceability-population",
+  "stage": "PERSISTED_PENDING_MACHINE_VALIDATION",
+  "decision_if_green": "QUALIFIED_RB1_RELEASE_BOUND_TRACEABILITY_INDEX_WITH_EXPLICIT_GAPS",
+  "architecture_authority": {
+    "work_unit": "F-DOC01",
+    "commit": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe",
+    "tree": "fef5d8fea98e63abaebe95c4d0c7643869ef4762",
+    "decision": "QUALIFIED_SCIENTIFIC_DOCUMENTATION_TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION"
+  },
+  "rb1_authorities": {
+    "release_id": "SWAP5-RB1-v1",
+    "scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "required_capability_denominator": 15,
+    "moving_denominator_forbidden": true
+  },
+  "scope": {
+    "required_capabilities_indexed": 15,
+    "optional_capabilities_outside_required_denominator": 2,
+    "traceability_tiers_per_capability": 15,
+    "tier_range": "T0_THROUGH_T14",
+    "population_policy": "Only exact existing authorities are resolved. Missing theory, formulation, implementation mapping, validation or applicability evidence remains an explicit gap and is never inferred from release PASS status."
+  },
+  "status_a_boundary": {
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "formal_2024_reconciliation": "PENDING_CONTROLLED_COPY",
+    "claim": "RB1 release-bound traceability index only, not a Status A dossier"
+  },
+  "scope_holds": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "physics_changed": false,
+    "solver_changed": false,
+    "scientific_qualification_reopened": false,
+    "rb1_denominator_changed": false,
+    "historical_evidence_reinterpreted": false,
+    "status_a_readiness_claimed": false
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "populate exact 15-capability release-bound traceability index",
+      "machine validation against RB1 frozen scope and capability matrix",
+      "30-invariant no-adverse-delta audit",
+      "exact-head CI and self-bound closeout"
+    ]
+  }
+}
