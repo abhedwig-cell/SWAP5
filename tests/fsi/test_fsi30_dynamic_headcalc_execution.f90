@@ -23,7 +23,7 @@ program test_fsi30_dynamic_headcalc_execution
   use mod_b110_dynamic_top_boundary_provider, only: B110_DYN_TOP_ATMOSPHERIC_HEAD_CM
   implicit none
 
-  real(real64), parameter :: total_dt = 0.25_real64
+  real(real64), parameter :: total_dt = 0.125_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
