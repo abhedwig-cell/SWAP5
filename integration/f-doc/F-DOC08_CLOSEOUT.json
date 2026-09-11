@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.fdoc08_closeout.v1",
+  "work_unit": "F-DOC08",
+  "title": "RB1 Temporal Acceptance T11 Equation-to-Test Traceability",
+  "base": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+  "capability": "RB1-TIME-REFERENCE",
+  "decision": "QUALIFIED_BOUNDED_RB1_TIME_REFERENCE_T11_RELATION_TO_TEST_GRAPH",
+  "closeout_state": "FINAL_WHEN_EXACT_HEAD_CI_GREEN",
+  "finality_rule": "Final only when .github/workflows/fdoc08-rb1-time-reference-t11-traceability.yml succeeds with head_sha equal to the exact final branch head containing this closeout and F-DOC08_STATUS.json. The first-green run is persisted qualification evidence; a successful exact-final-head run closes the workunit and must not be followed by metadata mutation.",
+  "bounded_result": {
+    "relation_nodes": 8,
+    "mapped_relation_nodes": 8,
+    "unmapped_relation_nodes": 0,
+    "bounded_temporal_acceptance_t11_complete": true,
+    "universal_application_accuracy_t11_complete": false,
+    "fully_traced_rb1": false
+  },
+  "scientific_semantics_preserved": {
+    "formula": "C_h=B_inf/H_budget",
+    "H_budget_owner": "explicit numerical configuration",
+    "H_budget_validity": "supplied AND finite AND >0",
+    "default_H_budget": null,
+    "invalid_or_missing_H_budget": "certificate unavailable, fail closed",
+    "no_history": "certificate unavailable, no bootstrap",
+    "acceptance_boundary": "C_h <= 1",
+    "hard_mass_before_certificate": true,
+    "certificate_can_override_mass_failure": false,
+    "certificate_rejection_preserves_committed_state": true,
+    "retry_is_bounded": true,
+    "shorter_dt_monotonicity_assumed": false
+  },
+  "authorities": {
+    "F_DOC07": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "F_DOC04": "a703747ce1991c5601b76a84f04969b602298268",
+    "F_VQ34_closeout": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "F_VQ34_tested_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+    "F_VQ34_workflow_run": 34364081068,
+    "F_CI21": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "F_CI40": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6"
+  },
+  "evidence": {
+    "first_green_head": "100c4d86ee1cb43c69f58a336a76541e134cfe06",
+    "first_green_workflow_run": 34642605989,
+    "first_green_job": 103405706630,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10280582690,
+    "first_green_artifact_name": "fdoc08-rb1-time-reference-t11-evidence-100c4d86ee1cb43c69f58a336a76541e134cfe06",
+    "first_green_artifact_digest": "sha256:4e73d185e193097b9bd6197ba888ab71b491de1c85c40b2ee8d0496d1f5bbad9",
+    "failed_prequalification_run": 34642491574,
+    "failed_prequalification_classification": "VALIDATOR_DOCUMENTATION_SENTINEL_CASE_MISMATCH_ONLY_NOT_QUALIFICATION",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
+  },
+  "negative_evidence": {
+    "F_VQ33_remains_failed": true,
+    "F_VQ33_used_as_positive_evidence": false,
+    "failed_F_DOC08_prequalification_used_as_positive_evidence": false
+  },
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "acceptance_threshold": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "F-DOC08 does not select, recommend, default or qualify a numeric H_budget for any application.",
+    "F-DOC08 does not establish a universal temporal tolerance or groundwater-head accuracy budget.",
+    "F-DOC08 does not qualify B_inf or C_h as a general nonlinear true-error upper bound.",
+    "F-DOC08 does not assert shorter-dt monotonicity.",
+    "F-DOC08 does not qualify arbitrary restart, forcing/event, topology-discontinuity or coupling-window continuation.",
+    "F-DOC08 does not establish Status A or Status AA.",
+    "F-DOC08 does not close T12 application validation or WR-QA-2024 controlled-source reconciliation.",
+    "F-DOC08 does not reopen RB1 or alter production source, reference data, physics, solver, scientific tolerance, acceptance threshold or performance policy.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ],
+  "remaining_open_dependencies": [
+    "Application-specific H_budget selection and temporal/groundwater accuracy budget",
+    "T12 application validation",
+    "WR-QA-2024 controlled-source reconciliation",
+    "Other RB1 T0-T11 maturity gaps outside this bounded temporal graph as recorded by F-DOC07",
+    "Surface-evaporation throughput/scaling and call-local allocation performance"
+  ]
+}
