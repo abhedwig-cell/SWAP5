@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI29",
+  "title": "Restricted B1.10 Dynamic Atmospheric Top-Boundary Provider Qualification",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+  "branch": "work/f-si29-production-dynamic-top-boundary-provider",
+  "source_authority": {
+    "frozen_canonical_head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tested_candidate_head": "8f274f0d9038027f2ba8222405a1ab1f0f6da14b",
+    "provider_blob": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "current_canonical_recheck_head": "d201904a85f3b595e028242978e52c02f5122a09",
+    "current_canonical_upstream_blobs_still_identical": true
+  },
+  "upstream_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+  },
+  "legacy_oracle_authority": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "boundtop_f90_sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+    "oracle_independence_guard": true
+  },
+  "qualification_execution": {
+    "workflow_run": 34621872292,
+    "workflow_job": 103337557984,
+    "head": "8f274f0d9038027f2ba8222405a1ab1f0f6da14b",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "observable_identity_O0_O2": true
+  },
+  "evidence": {
+    "targeted_component_cases": 54,
+    "targeted_worst_surface_mass_residual_cm": 2.2204460492503131e-15,
+    "independent_oracle_cases": 9072,
+    "oracle_atmospheric_head_cases": 1608,
+    "oracle_flux_cases": 6216,
+    "oracle_ponded_head_cases": 1052,
+    "oracle_linear_runoff_cases": 196,
+    "oracle_worst_surface_mass_residual_cm": 5.5511151231257827e-16,
+    "eight_context_interleaved_replay": "PASS",
+    "request_immutability": "PASS",
+    "architecture_source_guard": "PASS"
+  },
+  "qualified_scope": {
+    "hydraulics": "B1.10 default MvG restricted profile",
+    "conductivity_mean_methods": [1,2,3,4,5,6],
+    "dynamic_regimes": ["surface flux", "atmospheric prescribed head", "ponded prescribed head", "linear runoff"],
+    "atmospheric_head_cm": -275000.0,
+    "ksat_extension": "disabled",
+    "macropore": "inactive",
+    "frost": "inactive",
+    "swinter": 0,
+    "swredu": 0,
+    "active_runoff": "rsroexp=1 only",
+    "provider_is_stateless": true,
+    "persistent_solver_state_added": false,
+    "hidden_HeadCalc_dependency_added": false,
+    "file_IO_added": false
+  },
+  "explicit_nonclaims": {
+    "HeadCalc_replacement_qualified": false,
+    "production_transaction_composition_qualified": false,
+    "accepted_surface_metadata_commit_transport_qualified": false,
+    "whole_coupling_window_sensitivity_qualified": false,
+    "nonlinear_runoff_qualified": false,
+    "macropore_or_frost_qualified": false,
+    "swdra2_surface_water_coupling_qualified": false,
+    "time_dependent_pondmx_qualified": false
+  },
+  "architecture_invariant_reconciliation": {
+    "2_kernel_io_separation": "PASS: pure in-memory request/result component",
+    "3_explicit_data_separation": "PASS: trial boundary inputs and outputs are explicit DTO fields",
+    "4_compact_persistent_state": "PASS: no persistent column state added",
+    "5_scratch_per_worker": "PASS: no module-global or SAVE scratch introduced",
+    "7_transactional_steps": "PASS_AS_COMPONENT: candidate pond/runoff outputs remain trial-local; commit ownership remains downstream",
+    "13_mass_conservation": "PASS: hard surface-balance evidence is near machine precision",
+    "21_reuse_SWAP_physics": "PASS: qualified default-MvG and restricted surface-evaporation primitives are reused",
+    "22_no_HeadCalc_internal_coupling": "PASS: component does not call or expose HeadCalc internals",
+    "23_physics_solver_policy_separation": "PASS: no numerical policy changes physics",
+    "27_optional_functionality_scales_with_use": "PASS: stateless component has no inactive-column storage",
+    "29_no_silent_dependencies": "PASS: restricted profile is explicit",
+    "30_architecture_change_review": "PASS_WITH_EXPLICIT_NONCLAIMS"
+  },
+  "downstream_handoff": {
+    "owner": "F-KT15",
+    "disposition": "DYNAMIC_TOP_BOUNDARY_PREDECESSOR_QUALIFIED_READY_FOR_PRODUCTION_SOLVER_SERVICE_TRANSACTION_COMPOSITION",
+    "requirement": "Materialize this exact provider postimage into the current production composition and prove dynamic flux/head switching, trial-local ponding/runoff, rollback/retry exclusion, mass preservation and F-SI28 sensitivity publication without duplicating HeadCalc authority."
+  }
+}

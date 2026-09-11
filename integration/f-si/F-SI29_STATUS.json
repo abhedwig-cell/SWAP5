@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI29",
+  "title": "Production Dynamic Atmospheric Top-Boundary Provider Qualification",
+  "branch": "work/f-si29-production-dynamic-top-boundary-provider",
+  "canonical_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "upstream_blocker": "F-KT15@858c4a4298d192060b07afb30f2561edc58eedf3",
+  "upstream_physics": {
+    "F-PM06E_owner_closeout": "13ce03cdd01440090a71a82a9e3409f764a7bdd2",
+    "F-PM06E_canonical_scope": "QUALIFIED_RESTRICTED_SCALAR_SURFACE_EVAPORATION_HYDRAULIC_CAPACITY",
+    "F-PM06F_canonical_runtime": "F-CI41 admitted restricted surface-evaporation runtime materialization"
+  },
+  "phase": "CONTRACT_GAP_ANALYSIS",
+  "formal_status": "CURRENT_TOP_BOUNDARY_PROVIDER_CONTRACT_INSUFFICIENT_FOR_DYNAMIC_LEGACY_SURFACE_SEMANTICS",
+  "finding": "The current explicit top-boundary provider interface cannot represent the admitted legacy B1.10 atmospheric boundary without loss of physics. HeadCalc's provider bridge forces ftoph=false, while the legacy boundary may switch between flux and prescribed-surface-head regimes. The head regime also requires the surface-face conductivity in the residual/Jacobian. Accepted ponding, evaporation partition and runoff values are not represented by the current provider result contract.",
+  "hard_scope": {
+    "no_new_surface_physics": true,
+    "no_tolerance_relaxation": true,
+    "no_fixed_flux_substitution": true,
+    "no_persistent_solver_scratch": true,
+    "no_hidden_HeadCalc_internal_dependency": true,
+    "mass_conservation_hard": true,
+    "macropore": "FAIL_CLOSED_OUTSIDE_FIRST_RESTRICTED_PROFILE",
+    "frost": "FAIL_CLOSED_OUTSIDE_FIRST_RESTRICTED_PROFILE",
+    "swinter": 0,
+    "swredu": 0
+  },
+  "source_evidence": {
+    "solver_contract": {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+      "fact": "top_boundary_provider_t returns only actual_top_flux, surface_head and runoff_flux"
+    },
+    "headcalc": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+      "facts": [
+        "vector_F evaluates the top boundary on every residual evaluation",
+        "the explicit-provider bridge forces ftoph=false",
+        "the flux branch adds qtop directly to F(1)",
+        "the head branch uses hsurf and kmean(1) in F(1)",
+        "jacobian_F adds kmean(1)/disnod(1) only when ftoph is true",
+        "legacy pond-balance convergence uses pond, pondm1, reva, epd, runots and qtop"
+      ]
+    },
+    "fixed_flux_provider": {
+      "path": "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "blob": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "fact": "fixed qtop, no regime switching, no runoff physics"
+    },
+    "evaporation_capacity": {
+      "path": "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+      "blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2",
+      "fact": "qualified reusable Emax capability exists for the restricted default-MvG profile"
+    },
+    "surface_evaporation_runtime": {
+      "path": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+      "blob": "bc40bc6b121f56071d2b811195759f86130defeb",
+      "fact": "qualified committed-state demand/capacity materialization exists but does not own dynamic Newton-iterate top-boundary regime switching"
+    }
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "next_gate": "Freeze the minimal dynamic top-boundary evaluation/result contract and prove that it can carry legacy flux/head regime, surface-face conductance, accepted ponding, evaporation partition and runoff without hidden global state before implementing a provider.",
+  "decision": "F_SI29_CONTINUE_WITH_EXPLICIT_DYNAMIC_TOP_BOUNDARY_CONTRACT_MATERIALIZATION_FAIL_CLOSED"
+}
