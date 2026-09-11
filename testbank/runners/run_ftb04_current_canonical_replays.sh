@@ -163,6 +163,31 @@ new=f'''git merge-base --is-ancestor "$BASE" HEAD || fail 'admission head not de
 [[ "$(git rev-parse HEAD:reference)" == "{ref}" ]] || fail 'F-TB04 current-canonical reference tree drift'
 echo 'FTB04_FCI35_CURRENT_CANONICAL_GOVERNANCE_REBOUND=PASS' '''.rstrip()
 s=s.replace(old,new,1)
+
+# FCI35's historical source-component postimage locks belonged to its original
+# canonical admission. F-TB04 already locks the complete current src tree above,
+# so remove only those obsolete source locks from the temporary replay copy.
+outer_source_locks=[
+"check_blob src/runtime/mod_fmr_committed_restart.f90 19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+"check_blob src/runtime/mod_fmr_restart_state_contract.f90 f1359f97d02408d8b700b0c93fe961a6ba46742c",
+"check_blob src/runtime/mod_fmr_parallel_physical_scheduler.f90 544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+"check_blob src/runtime/mod_fmr_parallel_worker_pool.f90 0e700797cbaed4aaab7f04db0054f72faddcfc15",
+"check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 fe5a06c9af59308cdad86c5126379f413591b0cd",
+"check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 9af5a494526810324dc00706b444e448e770cba9",
+"check_blob src/runtime/mod_fmr_runtime_core.f90 adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+"check_blob src/runtime/mod_fmr_accepted_commit_receipt.f90 6798b3296b426950bf028814585c3f5de9be950b",
+"check_blob src/runtime/mod_canonical_contracts.f90 c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+"check_blob src/transaction/mod_transaction_reference.f90 2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+]
+for line in outer_source_locks:
+    if line not in s:
+        raise SystemExit('FTB04_FCI35_REBIND_FAIL:historical source component lock not found: '+line)
+    s=s.replace(line,'',1)
+marker="echo 'FCI35_EXACT_CURRENT_CANONICAL_POSTIMAGE=PASS'"
+if marker not in s:
+    raise SystemExit('FTB04_FCI35_REBIND_FAIL:postimage marker not found')
+s=s.replace(marker,"echo 'FTB04_FCI35_HISTORICAL_COMPONENT_POSTIMAGE_REBOUND=PASS'\n"+marker,1)
+
 needle='''s=s.replace("integration/f-mq/F-MQ29_QUALIFICATION_MATRIX.json",matrix)
 p.write_text(s)'''
 if needle not in s:
@@ -173,15 +198,38 @@ new_guard="[[ \\\"$(git rev-parse HEAD:src)\\\" == \\\"{src}\\\" ]] || fail 'F-T
 if old_guard not in s:
     raise SystemExit('FTB04_FMQ29_REBIND_FAIL:historical source-drift guard not found')
 s=s.replace(old_guard,new_guard,1)
+source_locks=[
+"check_blob src/runtime/mod_fmr_committed_restart.f90 19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+"check_blob src/runtime/mod_fmr_restart_state_contract.f90 f1359f97d02408d8b700b0c93fe961a6ba46742c",
+"check_blob src/runtime/mod_fmr_parallel_physical_scheduler.f90 544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+"check_blob src/runtime/mod_fmr_parallel_worker_pool.f90 0e700797cbaed4aaab7f04db0054f72faddcfc15",
+"check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 fe5a06c9af59308cdad86c5126379f413591b0cd",
+"check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 9af5a494526810324dc00706b444e448e770cba9",
+"check_blob src/runtime/mod_fmr_runtime_core.f90 adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+]
+for line in source_locks:
+    if line not in s:
+        raise SystemExit('FTB04_FMQ29_REBIND_FAIL:historical source component lock not found: '+line)
+    s=s.replace(line,'',1)
+inner_marker="echo 'FMQ29_CURRENT_CANONICAL_SOURCE_LOCK=PASS'"
+if inner_marker not in s:
+    raise SystemExit('FTB04_FMQ29_REBIND_FAIL:source-lock marker not found')
+s=s.replace(inner_marker,"echo 'FTB04_FMQ29_HISTORICAL_COMPONENT_POSTIMAGE_REBOUND=PASS'\\n"+inner_marker,1)
 p.write_text(s)'''
 s=s.replace(needle,insert,1)
+post="echo 'FCI35_EXACT_FMQ29_REPLAY_ON_CURRENT_CANONICAL=PASS'"
+if post not in s:
+    raise SystemExit('FTB04_FCI35_REBIND_FAIL:FMQ29 success marker not found')
+s=s.replace(post,post+"\necho 'FTB04_FMQ29_HISTORICAL_COMPONENT_POSTIMAGE_REBOUND=PASS'",1)
 p.write_text(s)
 PY
   chmod +x "$TMP"
   bash "$TMP" | tee "$BUILD/fci35.txt"
   for marker in \
     'FTB04_FCI35_CURRENT_CANONICAL_GOVERNANCE_REBOUND=PASS' \
+    'FTB04_FCI35_HISTORICAL_COMPONENT_POSTIMAGE_REBOUND=PASS' \
     'FCI35_EXACT_FMQ29_REPLAY_ON_CURRENT_CANONICAL=PASS' \
+    'FTB04_FMQ29_HISTORICAL_COMPONENT_POSTIMAGE_REBOUND=PASS' \
     'FCI35_HELDOUT_CROSS_WORKER_RESTART_REPLAY=PASS' \
     'FCI35_HARD_MASS_AND_CANONICAL_PUBLICATION_REPLAY=PASS' \
     'FCI35_DECISION=READY_FOR_CANONICAL_CAPABILITY_ADMISSION'; do
