@@ -1,7 +1,7 @@
 module mod_kernel_transactions
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_transaction_reference, only: transaction_state_t
+  use mod_transaction_reference, only: transaction_state_t, transaction_interface_sensitivity_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
        CANONICAL_STATUS_INVALID_REQUEST
@@ -107,6 +107,7 @@ module mod_kernel_transactions
     real(real64) :: requested_t1 = 0.0_real64
     real(real64) :: completed_t = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
+    type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type kernel_result_t
 
   type, public :: kernel_diagnostics_t
@@ -688,6 +689,7 @@ contains
     result%requested_t1 = runtime_result%requested_t1
     result%completed_t = runtime_result%completed_t
     result%mass = runtime_result%mass
+    result%interface_sensitivity = runtime_result%interface_sensitivity
   end subroutine map_runtime_result
 
   subroutine map_transaction_diagnostics(runtime_diagnostics, diagnostics)
