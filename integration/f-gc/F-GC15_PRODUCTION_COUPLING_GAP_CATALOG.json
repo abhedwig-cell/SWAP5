@@ -1,0 +1,165 @@
+{
+  "schema": "swap5.fgc15_gap_catalog.v1",
+  "work_unit": "F-GC15",
+  "canonical_base": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "classification": "PRODUCTION_COUPLING_NOT_YET_ADMITTED",
+  "existing_qualified_building_blocks": [
+    {
+      "id": "BB01",
+      "capability": "transactional checkpoint/trial/retry/rollback/commit core",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "BB02",
+      "capability": "canonical interval runtime with hard mass accounting and generic [t0,t1]",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "BB03",
+      "capability": "application accuracy contract plus external evidence adapter",
+      "status": "CANONICAL",
+      "note": "does not supply project H_app/A_temporal itself"
+    },
+    {
+      "id": "BB04",
+      "capability": "native qbot dh_bottom_dq_bottom same-factorization solver primitive",
+      "status": "QUALIFIED_SOLVER_PRIMITIVE",
+      "authority": "F-SI28@5b514e678d0d794e5837f161033b0bac58385707",
+      "note": "not whole-window, transaction or MODFLOW mapping qualification"
+    },
+    {
+      "id": "BB05",
+      "capability": "predictor/corrector temporal and cost characterization",
+      "status": "QUALIFIED_RESEARCH_HARNESS",
+      "authority": "F-GC07@277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+      "note": "no production source and no production admission"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "GC15-G01",
+      "name": "Accepted interface-result and sensitivity transport",
+      "status": "MISSING_IN_CANONICAL_RESULT_PATH",
+      "evidence": [
+        "transaction_result_t carries no interface sensitivity",
+        "canonical_result_t carries no interface sensitivity",
+        "F-SI28 explicitly leaves transaction-result sensitivity transport and canonical interval aggregation unqualified"
+      ],
+      "required_capability": "Transport accepted bottom-interface result data, including optional dh_bottom_dq_bottom, only from the accepted candidate/transaction into runtime/coupler-visible results. Rejected trials must never publish stale sensitivity.",
+      "must_preserve": ["transactionality", "mass conservation", "optional-cost semantics", "solver abstraction"],
+      "invariants": [7,8,13,14,15,20,22,26,27],
+      "recommended_next_workunit": "F-GC16 or equivalent accepted-interface-result transport qualification"
+    },
+    {
+      "id": "GC15-G02",
+      "name": "Typed groundwater interface contract and sign/unit mapping",
+      "status": "MISSING",
+      "evidence": [
+        "F-SI28 retains native SWAP qbot sign and explicitly does not qualify MODFLOW sign transformation",
+        "no production groundwater/MODFLOW interface module is present in canonical runtime"
+      ],
+      "required_capability": "Explicit typed runtime/coupler contract for H_SWAP, H_GW, q_SWAP, q_GW, units, orientation/sign, interface residuals, provenance and availability, with target H_SWAP=H_MF and q_SWAP=-q_MF.",
+      "must_preserve": ["zero silent sign conversion", "flux conservation", "kernel independence from MODFLOW"],
+      "invariants": [2,11,12,13,28,29],
+      "depends_on": ["GC15-G01"],
+      "recommended_next_workunit": "typed groundwater interface contract qualification"
+    },
+    {
+      "id": "GC15-G03",
+      "name": "Transactional coupling-window orchestrator",
+      "status": "MISSING_IN_PRODUCTION",
+      "evidence": [
+        "F-GC07 predictor/corrector exists only as research harness characterization",
+        "no production coupling_window/predictor_corrector/groundwater_coupler module is present in canonical runtime"
+      ],
+      "required_capability": "Generic [t0,t1] coupling-window orchestration that checkpoints committed SWAP state, performs predictor/corrector trials from the correct committed origin, retries or rolls back failed trials and commits only an accepted coupled state.",
+      "must_preserve": ["generic time", "flexible coupling window", "rejected trials never booked", "predictor+corrector normal cost target"],
+      "invariants": [7,8,9,10,11,13,15,24,26,29],
+      "depends_on": ["GC15-G01", "GC15-G02"],
+      "recommended_next_workunit": "restricted production coupling-window orchestrator candidate"
+    },
+    {
+      "id": "GC15-G04",
+      "name": "Whole-window response/tangent composition",
+      "status": "UNQUALIFIED",
+      "evidence": [
+        "F-SI28 qualifies only a solver-layer native-qbot tangent",
+        "F-GC07 explicitly does not qualify end-to-end tangent-corrector or whole-window derivative composition"
+      ],
+      "required_capability": "Compose accepted solver/interface sensitivities through the coupling-window map and groundwater response without extra full SWAP trajectories on the normal path; finite-difference +/-deltaq remains reference/fallback only.",
+      "must_preserve": ["same committed physical origin", "mass conservation", "diagnostic availability/fallback"],
+      "invariants": [8,11,13,14,15,25,26],
+      "depends_on": ["GC15-G01", "GC15-G02", "GC15-G03"],
+      "recommended_next_workunit": "whole-window response tangent qualification"
+    },
+    {
+      "id": "GC15-G05",
+      "name": "Application accuracy contract consumption by coupling controller",
+      "status": "SEAM_PRESENT_CONSUMER_MISSING",
+      "evidence": [
+        "canonical F-GC09/F-GC14 contract and adapter exist",
+        "no production coupling controller exists to consume H_temporal_budget",
+        "no real project H_app or A_temporal is currently qualified"
+      ],
+      "required_capability": "Optional controller binding that consumes an externally qualified temporal head-error budget to constrain coupling-window adaptation without changing physics or inventing policy.",
+      "must_preserve": ["absence is explicit", "no default numeric policy", "physics/policy separation"],
+      "invariants": [9,10,23,25,26,29],
+      "depends_on": ["GC15-G03"],
+      "external_blocker": "real project H_app and independent temporal allocation remain externally governed",
+      "recommended_next_workunit": "controller accuracy-policy binding after orchestrator exists"
+    },
+    {
+      "id": "GC15-G06",
+      "name": "MultiSWAP tile and MODFLOW-cell aggregation",
+      "status": "MISSING_FOR_COUPLING",
+      "required_capability": "Runtime/coupler ownership of one-to-many tile-to-groundwater-cell relationships, fractions summing to one, selective SWAP use per tile, surface-weighted flux aggregation and isolation/batching without a mandatory 1:1 SWAP-column:MODFLOW-cell relation.",
+      "must_preserve": ["MultiSWAP primary use", "tile physics unchanged", "aggregation mass conservation"],
+      "invariants": [6,16,17,27,28],
+      "depends_on": ["GC15-G02", "GC15-G03"],
+      "recommended_next_workunit": "MultiSWAP coupling composition qualification"
+    },
+    {
+      "id": "GC15-G07",
+      "name": "Optional deep-vadose transfer-zone composition",
+      "status": "ARCHITECTURE_REQUIRED_WHEN_APPLICABLE_NOT_PRODUCTION_QUALIFIED",
+      "required_capability": "External mass-conserving transfer component for cases where SWAP bottom flux is not direct groundwater recharge, including conservative transition between direct and transfer-zone modes.",
+      "must_preserve": ["component remains outside SWAP", "no water loss/double counting"],
+      "invariants": [13,18,19,28],
+      "depends_on": ["GC15-G02"],
+      "recommended_next_workunit": "separate deep-vadose component qualification, not SWAP kernel work"
+    },
+    {
+      "id": "GC15-G08",
+      "name": "External groundwater-model adapter",
+      "status": "MISSING",
+      "required_capability": "Adapter outside the kernel for MODFLOW or another groundwater model, implementing typed exchange, sign/unit conversion, coupling-window handshake, failure propagation and batched execution without embedding MODFLOW knowledge in SWAP.",
+      "must_preserve": ["one SWAP kernel", "kernel no I/O", "runtime/coupler owns composition"],
+      "invariants": [1,2,10,11,12,16,17,28,29],
+      "depends_on": ["GC15-G02", "GC15-G03"],
+      "recommended_next_workunit": "external groundwater adapter qualification"
+    },
+    {
+      "id": "GC15-G09",
+      "name": "Production coupling admission and bounded-cost qualification",
+      "status": "NOT_READY",
+      "required_capability": "End-to-end qualification across reference/balanced/throughput policies, restart/split-run, deterministic replay, mass/interface conservation, failure/fallback diagnostics, difficult-column bounded cost, MultiSWAP isolation and coupling-window convergence.",
+      "must_preserve": ["reference mode", "absolute mass conservation", "diagnosable fallback", "no systematic 6-9 full SWAP runs per window"],
+      "invariants": [7,8,10,11,12,13,14,15,16,24,25,26,30],
+      "depends_on": ["GC15-G01", "GC15-G02", "GC15-G03", "GC15-G04", "GC15-G06", "GC15-G08"],
+      "recommended_next_workunit": "final production coupling admission only after predecessor capabilities qualify"
+    }
+  ],
+  "implementation_order": [
+    "GC15-G01",
+    "GC15-G02",
+    "GC15-G03",
+    "GC15-G04",
+    "GC15-G05",
+    "GC15-G06",
+    "GC15-G07",
+    "GC15-G08",
+    "GC15-G09"
+  ],
+  "decision": "PRODUCTION_COUPLING_RUNTIME_NOT_READY_IMPLEMENT_MISSING_CAPABILITIES_IN_DEPENDENCY_ORDER",
+  "mass_conservation_relaxed": false
+}
