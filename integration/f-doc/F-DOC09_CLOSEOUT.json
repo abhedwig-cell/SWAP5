@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.fdoc09_closeout.v1",
+  "work_unit": "F-DOC09",
+  "title": "RB1 Full Richards REFERENCE Route Bounded T11 Verification Evidence Graph",
+  "base": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+  "capability": "RB1-SW-REFERENCE",
+  "decision": "QUALIFIED_BOUNDED_RB1_SW_REFERENCE_T11_EVIDENCE_GRAPH_WITH_EXPLICIT_RESIDUAL_GAPS",
+  "closeout_state": "FINAL_WHEN_EXACT_HEAD_CI_GREEN",
+  "finality_rule": "Final only when .github/workflows/fdoc09-rb1-sw-reference-t11-evidence-graph.yml succeeds with head_sha equal to the exact final branch head containing this closeout and F-DOC09_STATUS.json. The first-green run is persisted qualification evidence; a successful exact-final-head run closes the workunit and must not be followed by metadata mutation.",
+  "bounded_result": {
+    "verification_relation_nodes": 8,
+    "qualified_scoped_and_cross_cutting_relation_nodes": 7,
+    "release_preservation_relation_nodes": 1,
+    "diagnostic_support_nodes": 1,
+    "residual_gap_nodes": 5,
+    "bounded_reference_route_evidence_inventory_complete": true,
+    "complete_full_richards_equation_to_test_graph": false,
+    "T1_complete": false,
+    "T3_T8_complete": false,
+    "T11_complete_for_entire_reference_route": false,
+    "T12_complete": false,
+    "fully_traced": false,
+    "ready_for_status_a_review": false
+  },
+  "positive_scoped_evidence": {
+    "free_drainage_bottom_route": "F-SI13 qualified focused residual/request-authority/fail-closed/identity evidence",
+    "grid_geometry": "F-SI14 qualified request-geometry/poison-isolation/same-geometry/focused-residual evidence",
+    "inactive_macropore": "F-SI15 qualified physical-option/fail-closed/focused-residual/identity evidence",
+    "prescribed_bottom_head_qbot": "F-SI16 qualified Darcy-gradient/qbot-continuity/direct-B1.10 evidence",
+    "reference_linear_solver": "F-SI19 qualified direct-legacy-oracle and linear-solver-seam evidence",
+    "cross_cutting": "Qualified O0/O2, ABA, scratch, request-immutability, serialized-isolation, F-KT and mass-boundary regressions where exercised",
+    "release_preservation": "F-RB01 frozen source/reference and release replay, explicitly not equation authority"
+  },
+  "diagnostic_only": {
+    "F_SI18": "Retained only as harness-fidelity diagnostic support. The test-only reference TRIDAG control is not promoted into positive scientific admission."
+  },
+  "authorities": {
+    "F_DOC08": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+    "F_DOC04": "a703747ce1991c5601b76a84f04969b602298268",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_SI_authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "F_SI19_candidate": "8e6121ecfcdfb71c79a111153835d4400d37ff89",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "evidence": {
+    "first_green_head": "8763888d224a4639ec843626b95b177e15517567",
+    "first_green_workflow_run": 34643355232,
+    "first_green_job": 103408165307,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10281140281,
+    "first_green_artifact_name": "fdoc09-rb1-sw-reference-t11-evidence-8763888d224a4639ec843626b95b177e15517567",
+    "first_green_artifact_digest": "sha256:e3b1ccebbfe21ef81682b15a545428e2d60845e3b3caec4a4df922ede4737faa",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
+  },
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "mass_criterion": "NONE",
+    "temporal_acceptance": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "F-DOC09 does not create or infer a missing Full Richards T1 theory authority from production code, legacy behavior or release PASS.",
+    "F-DOC09 does not claim a complete equation-to-test graph for the entire Full Richards REFERENCE route.",
+    "F-DOC09 does not promote F-SI18 diagnostic fixture evidence into positive scientific admission.",
+    "F-DOC09 does not establish Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC09 does not close T12 application validation or controlled-source reconciliation gaps.",
+    "F-DOC09 does not reopen RB1 or alter production source, reference data, physics, solver, scientific tolerance, mass criterion, temporal acceptance or performance policy.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ],
+  "remaining_open_dependencies": [
+    "Controlled complete Full Richards T1 scientific-theory authority",
+    "Controlled complete T3-T8 formulation/discretisation/numerical-method graph",
+    "Complete whole-route T11 equation-to-test graph",
+    "T12 independent application validation",
+    "Controlled-source reconciliation gaps recorded by F-DOC07",
+    "Surface-evaporation throughput/scaling and call-local allocation performance"
+  ]
+}
