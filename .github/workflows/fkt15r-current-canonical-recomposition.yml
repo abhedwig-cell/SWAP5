@@ -104,28 +104,49 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Lock candidate producer blobs to exact qualified F-SI28 authority
+      - name: Lock candidate to qualified F-SI28 -> F-SI30 producer composition
         run: |
           set -euo pipefail
-          AUTH=85dbe882aa967d19021174066c95105d8cf838ea
+          FSI28=85dbe882aa967d19021174066c95105d8cf838ea
+          FSI30=27b10ac0bca17a68e2746431b4c6a986e3910175
           FSI27_FIXTURE=f7b891ce636b63bdae7e43f0ed54195f067f8bcc
           FSI27_MATERIALIZATION=5dfd4528245e63a087426197b0d8cb28598deae8
-          BASE=c0fc660c1e68064f77f4ec4f3376d385fbe88b4a
-          for rev in "$AUTH" "$FSI27_FIXTURE" "$FSI27_MATERIALIZATION" "$BASE"; do
+          FSI28_BASE=c0fc660c1e68064f77f4ec4f3376d385fbe88b4a
+          for rev in "$FSI28" "$FSI30" "$FSI27_FIXTURE" "$FSI27_MATERIALIZATION" "$FSI28_BASE"; do
             git cat-file -e "$rev^{commit}" 2>/dev/null || git fetch --no-tags origin "$rev"
           done
+
+          # Same-factorization numerical primitives are byte-identical through F-SI30.
           for path in \
-            src/adapter/mod_reference_richards_legacy_binding.f90 \
             src/solver/mod_reference_linear_solver.f90 \
-            src/solver/mod_reference_richards_workspace.f90 \
-            src/solver/mod_soil_water_solver_contract.f90 \
-            src/legacy/b1_10_port/headcalc.f90; do
-            test "$(git rev-parse HEAD:$path)" = "$(git rev-parse $AUTH:$path)" || {
-              echo "FKT15R F-SI28 producer blob drift: $path" >&2
+            src/solver/mod_reference_richards_workspace.f90; do
+            test "$(git rev-parse $FSI28:$path)" = "$(git rev-parse $FSI30:$path)" || {
+              echo "FKT15R unexpected F-SI28/F-SI30 primitive drift: $path" >&2
+              exit 1
+            }
+            test "$(git rev-parse HEAD:$path)" = "$(git rev-parse $FSI28:$path)" || {
+              echo "FKT15R candidate primitive drift: $path" >&2
               exit 1
             }
           done
-          echo 'FKT15R_FSI28_PRODUCER_BLOB_LOCK=PASS'
+          echo 'FKT15R_FSI28_UNCHANGED_PRIMITIVE_BLOB_LOCK=PASS'
+
+          # F-SI30 deliberately superseded these producer postimages while preserving
+          # F-SI28 tangent semantics; current candidate must use that exact qualified postimage.
+          for path in \
+            src/adapter/mod_reference_richards_legacy_binding.f90 \
+            src/solver/mod_soil_water_solver_contract.f90 \
+            src/legacy/b1_10_port/headcalc.f90; do
+            test "$(git rev-parse HEAD:$path)" = "$(git rev-parse $FSI30:$path)" || {
+              echo "FKT15R candidate does not match superseding F-SI30 producer: $path" >&2
+              exit 1
+            }
+          done
+          grep -Fq "result%interface_sensitivity%method = 'same-tridag-factor'" src/adapter/mod_reference_richards_legacy_binding.f90
+          grep -Fq 'fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot' src/legacy/b1_10_port/headcalc.f90
+          grep -Fq 'logical :: request_interface_sensitivity = .false.' src/solver/mod_soil_water_solver_contract.f90
+          echo 'FKT15R_FSI30_SUPERSEDING_PRODUCER_BLOB_LOCK=PASS'
+          echo 'FKT15R_FSI28_TO_FSI30_PRODUCER_COMPOSITION_LOCK=PASS'
       - name: Replay exact qualified F-SI28 authority gates
         run: |
           set -euo pipefail
@@ -140,3 +161,4 @@ jobs:
             bash tests/fsi/run_fsi28_fallback_failclosed_gate.sh
           )
           echo 'FKT15R_FSI28_QUALIFIED_REPLAY=PASS'
+          echo 'FKT15R_FSI30_FSI28_PRESERVATION_ROUTE=PASS'
