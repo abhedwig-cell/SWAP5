@@ -1,0 +1,109 @@
+{
+  "schema": "swap5.fvq56_surface_evaporation_runtime_evidence.v1",
+  "work_unit": "F-VQ56",
+  "title": "Independent Restricted Surface-Evaporation Runtime Materialization Qualification",
+  "branch": "qualification/f-vq56-fpm06f-surface-evaporation-runtime-materialization",
+  "canonical_source_authority": {
+    "head": "af9ec34ec587be76deea95763186a204f3ed32cd",
+    "tree": "5116f1af87e72601f99b303d5f3c69c7f21b7564",
+    "src_tree": "fd07bc662410a7bfbd64b4960295997c9e05e19a",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "owner_authority": {
+    "work_unit": "F-PM06F",
+    "closeout": "4a76095df80435ff466e52bc65984300bc45ea06",
+    "owner_exact_head_run": 34548003044,
+    "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_READY_FOR_INDEPENDENT_FVQ",
+    "production_commit": "fdb0e745b362c81a042faba7f81cab53b1372d97"
+  },
+  "immutable_candidate": {
+    "materialization_commit": "50f0955a5b2a4e98e4a325523cfb6b4c1c26be07",
+    "direct_child_of_canonical_source_authority": true,
+    "tree_identical_to_owner_production_commit": true,
+    "production_files": {
+      "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+    },
+    "production_repair_in_fvq": false
+  },
+  "upstream_independent_authorities": {
+    "structural_process": {
+      "work_unit": "F-VQ52",
+      "head": "003209963ead7f14e375fca7f7d5d4b2a1996ae8",
+      "exact_status_head_run": 34530975329,
+      "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_STRUCTURAL_CANDIDATE_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE"
+    },
+    "hydraulic_capacity": {
+      "work_unit": "F-VQ54",
+      "head": "7cf8f6685ca24f855621f872bcf906f346edfa72",
+      "exact_status_head_run": 34544824222,
+      "decision": "QUALIFIED_RESTRICTED_SCALAR_SURFACE_EVAPORATION_HYDRAULIC_CAPACITY_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE"
+    }
+  },
+  "decisive_qualification": {
+    "run": 34548607585,
+    "job": 103106532097,
+    "head": "8757056afe4d6435c4f327dd46d6d9e04472b466",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "abstract_provider_oracle_output_sha256": "810417a1924174b04a44f15d3c36731cf8dd5615d0e4d90b655160bca6d7676e",
+    "real_b110_provider_oracle_output_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4",
+    "O0_O2_identity": "PASS",
+    "real_b110_O0_O2_identity": "PASS",
+    "transactional_noninterference": "PASS",
+    "hard_mass_authority": "UNCHANGED",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA"
+  },
+  "independent_matrix": {
+    "current_canonical_source_composition": "PASS",
+    "immutable_owner_candidate_materialization": "PASS",
+    "no_production_repair": "PASS",
+    "upstream_independent_authorities_pinned": "PASS",
+    "runtime_process_architecture_guards": "PASS",
+    "exact_committed_base_to_capacity_provider": "PASS",
+    "dry_positive_capacity": "PASS",
+    "dry_zero_capacity": "PASS",
+    "signed_negative_capacity_preserved_then_structurally_clamped": "PASS",
+    "ponding_below_exact_above_threshold": "PASS",
+    "ponded_route_independent_of_signed_capacity": "PASS",
+    "available_nonfinite_capacity_fail_closed": "PASS",
+    "unsupported_capacity_status_fail_closed": "PASS",
+    "rejected_demand_short_circuit": "PASS",
+    "negative_et_demand_process_fail_closed": "PASS",
+    "uninitialized_committed_state_fail_closed": "PASS",
+    "aba_deterministic_replay": "PASS",
+    "committed_state_nonmutation": "PASS",
+    "real_b110_dry_integration_against_direct_provider": "PASS",
+    "real_b110_ponded_integration_against_direct_provider": "PASS",
+    "no_authoritative_mass_booking": "PASS"
+  },
+  "qualification_harness_history": [
+    {
+      "run": 34548268284,
+      "classification": "QUALIFICATION_HARNESS_WARNING_POLICY_ERROR",
+      "detail": "-Werror promoted pre-existing canonical warnings outside the F-PM06F production delta",
+      "candidate_defect": false,
+      "production_source_changed": false
+    },
+    {
+      "run": 34548539171,
+      "classification": "QUALIFICATION_HARNESS_FORTRAN_IDENTIFIER_LENGTH",
+      "detail": "held-out test program identifier exceeded the Fortran 2008 identifier-length limit; only the transient test-build identifier was shortened",
+      "candidate_defect": false,
+      "production_source_changed": false
+    }
+  ],
+  "observed_nonblocking_warnings": [
+    "pre-existing unused-dummy warnings in canonical solver contracts/providers",
+    "pre-existing exact-real-comparison warnings in serialized runtime code",
+    "legacy HeadCalc maybe-uninitialized compiler warnings",
+    "intentional exact-real-comparison warnings in held-out state-identity checks"
+  ],
+  "performance_scope": {
+    "functional_multiswap_compatibility": "QUALIFIED_WITHIN_FROZEN_SCOPE",
+    "throughput_or_scaling_claim": false,
+    "known_debt": "committed snapshot to hydraulic view to detached capacity state currently entails call-local copies/allocations",
+    "disposition": "DEFER_TO_SEPARATE_PERFORMANCE_WORKUNIT_AFTER_SCIENTIFIC_ADMISSION"
+  },
+  "mass_contract": "RESULT_DECOMPOSITION_ONLY; ACCEPTED_SOLVER_EXTERNAL_TOP_FLUX_REMAINS_THE_SOLE_AUTHORITATIVE_TOP_WATER_MASS_CONTRIBUTION"
+}
