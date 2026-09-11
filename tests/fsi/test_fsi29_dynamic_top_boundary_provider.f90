@@ -239,13 +239,19 @@ contains
     integer, intent(in) :: code
     real(real64) :: scale
     scale = max(1.0_real64, abs(actual), abs(expected))
-    if (abs(actual-expected) > 4096.0_real64*epsilon(1.0_real64)*scale) error stop code
+    if (abs(actual-expected) > 4096.0_real64*epsilon(1.0_real64)*scale) then
+      write(*,'(A,I0)') 'FSI29_TEST_FAIL_CODE=', code
+      error stop 1
+    end if
   end subroutine require_close
 
   subroutine require(condition, code)
     logical, intent(in) :: condition
     integer, intent(in) :: code
-    if (.not. condition) error stop code
+    if (.not. condition) then
+      write(*,'(A,I0)') 'FSI29_TEST_FAIL_CODE=', code
+      error stop 1
+    end if
   end subroutine require
 
 end program test_fsi29_dynamic_top_boundary_provider
