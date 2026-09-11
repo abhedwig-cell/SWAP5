@@ -8,8 +8,16 @@
     "commit": "3c5f5bd3686e1632058b906be21abd73883e30ef",
     "tree": "6baaf40271497db831698c5a01de355b5d296dbe"
   },
-  "phase": "ARCHITECTURE_IMPLEMENTED_PENDING_EXACT_HEAD_CI",
-  "decision": "PENDING_FAIL_CLOSED",
+  "phase": "ARCHITECTURE_AND_CASE_REGISTRY_QUALIFIED_READY_FOR_INCREMENTAL_IMPLEMENTATION",
+  "decision": "SWAP5_TESTBANK_ARCHITECTURE_AND_CASE_REGISTRY_READY_FOR_INCREMENTAL_IMPLEMENTATION",
+  "qualification_evidence": {
+    "precloseout_exact_head": "b4b91fc795c67384dbdaa11d4f9624c6d69d91ab",
+    "precloseout_run": 34551359196,
+    "precloseout_conclusion": "success",
+    "registry_schema_reconciliation": "PoC registry was reconciled to the later F-TB01_CASE_REGISTRY.schema.json contract before qualification",
+    "final_exact_status_head_run": null,
+    "final_exact_status_head_conclusion": "PENDING"
+  },
   "deliverables": {
     "architecture": "docs/testbank/F-TB01_TESTBANK_ARCHITECTURE.md",
     "oracle_policy": "docs/testbank/F-TB01_ORACLE_POLICY.md",
@@ -25,6 +33,7 @@
     "status_closeout": "integration/f-tb/F-TB01_STATUS.json"
   },
   "supporting_mechanics": {
+    "case_registry_schema": "testbank/schema/F-TB01_CASE_REGISTRY.schema.json",
     "validator": "testbank/runners/validate_ftb01_registry.py",
     "workflow": ".github/workflows/ftb01-testbank-architecture.yml"
   },
@@ -40,9 +49,10 @@
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "architecture_qualified": false,
-    "full_scientific_catalog_qualified": false
+    "tested": true,
+    "architecture_qualified": true,
+    "full_scientific_catalog_qualified": false,
+    "canonical_admitted": false
   },
   "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
   "mass": "HARD_UNCHANGED",
