@@ -1,0 +1,111 @@
+{
+  "schema": "swap5.fvq58_evidence.v1",
+  "work_unit": "F-VQ58",
+  "title": "Independent Restricted Soil-Temperature Process Qualification Evidence",
+  "qualification_branch": "qualification/f-vq58-fpm07b-restricted-soil-temperature",
+  "qualification_base": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "qualified_candidate_source_head": "3f387d820adf46b1260c37d52019a2b83b2d8c74",
+  "candidate_production_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "decisive_qualification_head": "ebe98e4e2ffa07963aa8256f03f5681ad5dfadb2",
+  "decisive_workflow": {
+    "run_id": 34612082211,
+    "job_id": 103304794114,
+    "conclusion": "success",
+    "output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "source_and_architecture_gates": {
+    "qualification_production_immutable": "PASS",
+    "canonical_seams_pinned": "PASS",
+    "exact_candidate_scope": "PASS",
+    "owner_handoff_exact": "PASS",
+    "explicit_data_and_state_separation": "PASS",
+    "mandatory_energy_closure_guard": "PASS",
+    "no_io_calendar_or_solver_internals": "PASS",
+    "minimal_restart_schema_guard": "PASS",
+    "held_frost_snow_scope_guard": "PASS",
+    "diff_check": "PASS"
+  },
+  "independent_scientific_oracle": {
+    "method": "separately coded SWAP 4.3.1 De Vries sensible-heat reconstruction plus dense finite-volume matrix solved by Gaussian elimination with partial pivoting",
+    "candidate_numerical_method_not_reused": "candidate tridiagonal solver is not used by the oracle",
+    "cases": 6,
+    "coverage": [
+      "dry regime",
+      "thetaDry boundary",
+      "transition regime",
+      "thetaWet boundary",
+      "wet regime",
+      "mixed-node and changing hydraulic profile",
+      "nonuniform cell thickness and node spacing",
+      "nonuniform quartz/clay/organic fractions",
+      "multiple interval durations",
+      "hot and cold prescribed surface temperature"
+    ],
+    "profile_equivalence": "PASS",
+    "top_heat_flux_equivalence": "PASS",
+    "sensible_storage_equivalence": "PASS",
+    "boundary_energy_equivalence": "PASS",
+    "energy_residual_equivalence": "PASS",
+    "zero_gradient_identity_with_scale_aware_roundoff_bound": "PASS",
+    "boundary_flux_sign": "PASS",
+    "zero_bottom_heat_flux": "PASS",
+    "temporal_refinement": "PASS"
+  },
+  "transaction_restart_runtime": {
+    "trial_committed_state_immutability": "PASS",
+    "explicit_commit": "PASS",
+    "continuous_split_restart_identity": "PASS",
+    "minimal_restart_payload": "PASS",
+    "transaction_clone": "PASS",
+    "semantic_temperature_view": "PASS",
+    "fail_closed_invalid_interval": "PASS",
+    "fail_closed_invalid_hydraulic_view": "PASS",
+    "multiswap_interleaving_isolation": "PASS",
+    "repeated_run_determinism_O0": "PASS",
+    "repeated_run_determinism_O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "review_harness_history": [
+    {
+      "run_id": 34611663754,
+      "conclusion": "failure",
+      "classification": "QUALIFICATION_HARNESS_DIAGNOSTIC_DEFECT",
+      "candidate_source_changed": false,
+      "finding": "runtime oracle failure output was redirected and not surfaced; harness changed only to emit the exact failed assertion"
+    },
+    {
+      "run_id": 34611819903,
+      "conclusion": "failure",
+      "classification": "QUALIFICATION_HARNESS_ROUNDOFF_ASSERTION_DEFECT",
+      "candidate_source_changed": false,
+      "evidence_before_failure": [
+        "FVQ58_DENSE_ORACLE_CASES=6",
+        "FVQ58_LEGACY_DEVRIES_DENSE_ORACLE=PASS"
+      ],
+      "finding": "an extra zero-gradient absolute flux threshold of 1e-12 was not scale-aware although the independent scientific oracle had already passed",
+      "remediation": "replace the arbitrary absolute assertion by a conductivity/temperature/spacing-scaled IEEE real64 roundoff bound and require candidate-to-dense-oracle agreement; no physics or candidate tolerance was relaxed"
+    },
+    {
+      "run_id": 34612082211,
+      "conclusion": "success",
+      "classification": "DECISIVE_EXACT_HEAD_QUALIFICATION",
+      "candidate_source_changed": false
+    }
+  ],
+  "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04 GitHub Actions",
+  "known_dependency_warning": "unused dummy-argument warnings originate in the pinned existing mod_soil_water_solver_contract dependency; candidate modules and F-VQ58 test compile under -Werror",
+  "hard_nonclaims": [
+    "canonical admission",
+    "runtime call-site composition",
+    "frost physics qualification",
+    "snow thermal-boundary qualification",
+    "phase-change or latent-heat qualification",
+    "analytic annual-wave temperature-provider qualification",
+    "alternative thermal boundary modes",
+    "large-batch throughput qualification",
+    "RB1 modification or reopening"
+  ]
+}
