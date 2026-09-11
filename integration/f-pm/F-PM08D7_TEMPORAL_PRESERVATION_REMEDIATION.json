@@ -1,0 +1,28 @@
+{
+  "workunit": "F-PM08D7",
+  "purpose": "Owner-side preservation remediation for base physical temporal identity only",
+  "canonical_authority": {
+    "head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "semantic_authority": "ordinary base physical and snow state temporal identity uses numeric equality, so +0.0 and -0.0 are equivalent"
+  },
+  "candidate_pre_remediation": {
+    "head": "7380176c44b014eb9d3dc50544a688eee4ed0c54",
+    "backend_blob": "3c2f7dac1b808594c5e632bcff950d5863b46cfd",
+    "defect": "base_physical_states_identical used same_real_bits for ordinary physical and snow state, making D7 stricter than canonical"
+  },
+  "allowed_production_delta": {
+    "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "scope": "base_physical_states_identical only",
+    "required_change": "restore canonical numeric equality for ordinary base physical and snow state",
+    "forbidden_changes": [
+      "temporal tolerance changes",
+      "fixed-weir SWST temporal metric changes",
+      "model-certificate admission",
+      "mass-accounting changes",
+      "solver-policy changes",
+      "same_real_bits removal from unrelated deliberate identity uses"
+    ]
+  },
+  "qualification_boundary": "This remediation is owner-side preservation work only and is not independent scientific qualification."
+}
