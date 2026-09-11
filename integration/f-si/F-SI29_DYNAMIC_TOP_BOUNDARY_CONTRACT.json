@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI29",
+  "artifact": "DYNAMIC_TOP_BOUNDARY_CONTRACT",
+  "parent_checkpoint": "9bbafaf72f63b6d051cc014cdfd937d636d4e27f",
+  "qualification": false,
+  "purpose": "Define the minimal solver-facing dynamic surface-boundary evaluation needed to reproduce the restricted legacy B1.10 atmospheric boundary without using HeadCalc globals as an API.",
+  "restricted_profile": {
+    "hydraulics": "B1.10 default MvG",
+    "conductivity_mean_methods": [1,2,3,4,5,6],
+    "ksat_extension": "disabled",
+    "frost": "inactive",
+    "macropore": "inactive",
+    "swinter": 0,
+    "swredu": 0,
+    "surface_water_coupling_swdra2": "not admitted",
+    "time_dependent_pondmx": "not admitted",
+    "active_runoff": "linear rsroexp=1 only",
+    "atmospheric_head_cm": -275000.0,
+    "ponded_classification_threshold_cm": 1.0e-10,
+    "flux_to_ponding_head_threshold_cm": 1.0e-6
+  },
+  "evaluation_inputs": {
+    "trial_h_top_cm": "current Newton/backtracking top-node pressure head",
+    "trial_theta_top": "current top-node water content",
+    "candidate_ponding_depth_cm": "trial-local current pond value used by legacy pondrunoff iteration",
+    "previous_ponding_depth_cm": "committed step-start pondm1",
+    "step_duration_day": "current internal Richards step",
+    "precipitation_rate_cm_per_day": "effective current liquid precipitation",
+    "irrigation_rate_cm_per_day": "current irrigation supply",
+    "snowmelt_rate_cm_per_day": "current snowmelt supply",
+    "runon_rate_cm_per_day": "current runon supply",
+    "potential_bare_soil_evaporation_cm_per_day": "qualified demand input",
+    "potential_pond_evaporation_cm_per_day": "qualified demand input",
+    "ponding_max_cm": "static runoff threshold in first admitted profile",
+    "runoff_resistance_day": "legacy rsro",
+    "runoff_exponent": "must equal 1 within admitted active-runoff profile"
+  },
+  "evaluation_outputs": {
+    "regime": ["FLUX", "PRESCRIBED_SURFACE_HEAD"],
+    "actual_top_flux_cm_per_day": "used only in FLUX regime",
+    "surface_head_cm": "used only in PRESCRIBED_SURFACE_HEAD regime",
+    "surface_face_conductivity_cm_per_day": "required by residual and Jacobian in head regime",
+    "candidate_ponding_depth_cm": "trial-local surface storage after boundary evaluation",
+    "bare_soil_evaporation_cm_per_day": "legacy reva equivalent",
+    "ponded_water_evaporation_cm_per_day": "legacy epd equivalent",
+    "runoff_depth_cm": "legacy runots equivalent over the current internal step",
+    "net_potential_surface_flux_cm_per_day": "legacy q0 equivalent for diagnostics/mass reconciliation",
+    "runoff_potential": "legacy FlRunoff equivalent"
+  },
+  "mapping_to_reference_richards": [
+    "FLUX => ftoph=false and F(1) receives actual_top_flux",
+    "PRESCRIBED_SURFACE_HEAD => ftoph=true and F(1)/J(1,1) use surface_head plus surface_face_conductivity",
+    "candidate ponding and runoff remain trial-local until solve acceptance",
+    "evaporation outputs are accepted process flux metadata, not persistent solver scratch",
+    "rejected/retried trial publishes none of these outputs"
+  ],
+  "ownership": {
+    "surface_evaporation_capacity": "reuse F-PM06E physics",
+    "evaporation_demand_and_dry_vs_ponded_partition": "reuse canonical F-PM06F/F-CI41 semantics",
+    "dynamic_flux_head_regime_selection": "F-SI29 provider",
+    "Newton_Jacobian_and_linear_solver": "reference Richards solver",
+    "commit_rollback": "transaction runtime",
+    "authoritative_mass_booking": "unchanged existing transaction/runtime path"
+  },
+  "why_current_interface_fails": [
+    "top_boundary_provider_t has no regime output",
+    "HeadCalc explicit-provider bridge forces ftoph=false",
+    "provider cannot return surface-face conductivity required by head-regime residual/Jacobian",
+    "accepted ponding and evaporation partition are absent from the current provider result surface"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "RESTRICTED_DYNAMIC_TOP_BOUNDARY_CONTRACT_FROZEN_READY_FOR_PURE_PROVIDER_CANDIDATE"
+}
