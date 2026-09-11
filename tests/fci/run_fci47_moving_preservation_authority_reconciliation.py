@@ -72,30 +72,49 @@ ADDITIONS = [
     "src/runtime/mod_coupling_application_accuracy_adapter.f90",
 ]
 
+# Each current blob is bound to the latest admission status that actually owns
+# that exact canonical image.  F-CI42 supersedes F-CI41 for the surface runtime
+# materialization blob, so F-CI41 is intentionally used only for its still-current
+# restricted process blob.
 ADMISSION_STATUS = {
     "integration/f-ci/F-CI41_STATUS.json": (
         "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_FOR_CURRENT_CANONICAL_ADMISSION_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
-        ["src/process/mod_restricted_surface_evaporation.f90", "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"],
+        {
+            "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+        },
     ),
     "integration/f-ci/F-CI42_STATUS.json": (
         "QUALIFIED_FPE11_SURFACE_EVAPORATION_ALLOCATION_PERFORMANCE_ADMITTED_TO_CURRENT_CANONICAL",
-        ["src/runtime/mod_fmr_process_hydraulic_view_binding.f90", "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"],
+        {
+            "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+            "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "bc40bc6b121f56071d2b811195759f86130defeb",
+        },
     ),
     "integration/f-ci/F-CI43_STATUS.json": (
         "QUALIFIED_FPM07B_RESTRICTED_SOIL_TEMPERATURE_FOR_CURRENT_CANONICAL_ADMISSION",
-        ["src/process/mod_soil_temperature_contract.f90", "src/process/mod_restricted_soil_temperature.f90"],
+        {
+            "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+            "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85",
+        },
     ),
     "integration/f-ci/F-CI44_STATUS.json": (
         "QUALIFIED_FGC10_APPLICATION_ACCURACY_CONTRACT_FOR_CURRENT_CANONICAL_ADMISSION",
-        ["src/runtime/mod_coupling_application_accuracy_contract.f90"],
+        {
+            "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+        },
     ),
     "integration/f-ci/F-CI45_STATUS.json": (
         "QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_FOR_CURRENT_CANONICAL_ADMISSION",
-        ["src/runtime/mod_fmr_serialized_reference_backend.f90", "src/runtime/mod_fmr_restart_state_contract.f90"],
+        {
+            "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+            "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea",
+        },
     ),
     "integration/f-ci/F-CI46_STATUS.json": (
         "QUALIFIED_FGC14_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_FOR_CURRENT_CANONICAL_ADMISSION",
-        ["src/runtime/mod_coupling_application_accuracy_adapter.f90"],
+        {
+            "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e",
+        },
     ),
 }
 
@@ -123,14 +142,19 @@ def main() -> None:
     require(local_prod_delta == "", f"F-CI47 production/reference delta: {local_prod_delta}")
     print("FCI47_NO_PRODUCTION_OR_REFERENCE_DELTA=PASS")
 
+    bound_files: set[str] = set()
     for path, (decision, files) in ADMISSION_STATUS.items():
         obj = json.loads(Path(path).read_text())
         require(obj.get("decision") == decision, f"decision mismatch: {path}")
         serialized = json.dumps(obj, sort_keys=True)
-        for filename in files:
+        for filename, expected_blob in files.items():
             require(filename in serialized, f"admission provenance missing {filename} in {path}")
-            require(git("rev-parse", f"HEAD:{filename}") == git("rev-parse", f"{BASE}:{filename}"), f"target blob drift: {filename}")
-    print("FCI47_FCI41_THROUGH_FCI46_ADMISSION_PROVENANCE=PASS")
+            require(expected_blob in serialized, f"admission status does not bind exact current blob {expected_blob} for {filename} in {path}")
+            require(git("rev-parse", f"HEAD:{filename}") == expected_blob, f"HEAD blob differs from admitted blob: {filename}")
+            require(git("rev-parse", f"{BASE}:{filename}") == expected_blob, f"target authority blob differs from admitted blob: {filename}")
+            bound_files.add(filename)
+    require(bound_files == EXPECTED_SRC_DELTA, f"admission provenance does not cover exact nine-file delta: {sorted(EXPECTED_SRC_DELTA - bound_files)}")
+    print("FCI47_FCI41_THROUGH_FCI46_EXACT_BLOB_PROVENANCE=PASS")
 
     base_text = git("show", f"{BASE}:{WORKFLOW.as_posix()}") + "\n"
     current_text = WORKFLOW.read_text()
@@ -163,6 +187,7 @@ def main() -> None:
     require(audit.get("overall") == "30_OF_30_NO_ADVERSE_DELTA", "architecture audit overall")
     require(audit.get("mass_conservation") == "HARD_UNCHANGED", "mass conservation audit")
     require(len(audit.get("invariants", [])) == 30, "architecture audit does not contain 30 invariants")
+    require(sorted(x.get("id") for x in audit["invariants"]) == list(range(1, 31)), "architecture invariant IDs are not exactly 1..30")
     require(all(x.get("status") == "PASS" for x in audit["invariants"]), "architecture invariant failure")
     print("FCI47_ARCHITECTURE_INVARIANTS=PASS:30_OF_30")
     print("FCI47_MASS_CONSERVATION=HARD_UNCHANGED")
