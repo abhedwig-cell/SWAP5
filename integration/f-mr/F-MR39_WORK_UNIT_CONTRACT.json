@@ -1,0 +1,57 @@
+{
+  "schema":"swap5.fmr39_work_unit_contract.v1",
+  "work_unit":"F-MR39",
+  "title":"Restricted Soil-Temperature Transactional Runtime Composition",
+  "branch":"work/f-mr39-restricted-soil-temperature-runtime-composition",
+  "canonical_base":"d201904a85f3b595e028242978e52c02f5122a09",
+  "qualified_scientific_authority":"F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "canonical_scientific_blobs":{
+    "src/process/mod_soil_temperature_contract.f90":"baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90":"fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "goal":"Compose the already-qualified restricted soil-temperature capability into the serialized reference runtime without changing its science, using the same outer transaction as soil water so water and thermal state publish or roll back together.",
+  "required_semantics":[
+    "capture hydraulic start view before Richards mutation and hydraulic end view after a converged Richards trial",
+    "run restricted soil temperature only after the water solve has converged",
+    "thermal rejection fails the same transaction attempt; no water-only publication is possible",
+    "accepted attempts publish water and temperature together through the existing kernel candidate commit",
+    "inactive columns carry no allocated thermal physical state and no persistent thermal scratch",
+    "thermal workspace belongs to the worker-local backend model",
+    "restart persists thermal continuation through the existing polymorphic committed-state persistence path",
+    "runtime and process communicate through process_hydraulic_view_t rather than HeadCalc internals",
+    "water mass accounting remains authoritative and unchanged by sensible-heat accounting",
+    "time remains generic [t0,t1]"
+  ],
+  "bounded_production_scope":[
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+  ],
+  "permitted_support_scope":[
+    "tests/** F-MR39-specific qualification assets",
+    ".github/workflows/** F-MR39 branch-only CI",
+    "integration/f-mr/F-MR39_*"
+  ],
+  "hard_holds":[
+    "no change to qualified soil-temperature process equations or constitutive formulas",
+    "no Richards solver science change",
+    "no tolerance relaxation",
+    "no new kernel transaction API",
+    "no canonical admission",
+    "no claim of parallel throughput qualification",
+    "no implicit day or midnight boundary",
+    "no per-column Newton/Jacobian/thermal scratch persistence"
+  ],
+  "qualification_matrix":[
+    "thermal-disabled path preserves existing runtime behavior",
+    "enabled single-column water plus thermal success",
+    "thermal failure rolls back water and temperature",
+    "retry starts again from the same committed water and temperature state",
+    "split/restart continuation correctness",
+    "mixed enabled/disabled MultiSWAP isolation",
+    "water mass residual identity with thermal disabled and no thermal mass term when enabled",
+    "F-VQ58 scientific oracle replay",
+    "O0/O2 deterministic qualification",
+    "all 30 architecture invariants"
+  ]
+}
