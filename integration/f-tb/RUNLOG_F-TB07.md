@@ -27,6 +27,12 @@ Eight stable F-TB01-compatible cases were registered before execution. The execu
 
 The work-unit contract, registry, validator, qualification runner, documentation, prequalification status and 30-invariant audit were persisted before qualification.
 
-## Qualification
+## FAST precloseout qualification
 
-Pending exact-head FAST and RELEASE execution.
+FAST succeeded on exact head `fb778d2581a18620f6f1a15cd4f00d58e1a2d201` in Actions run `34643569680`, job `103408874460`.
+
+This established exact F-TB06 ancestry, the eight-case registry, profile counts, current-canonical source/reference trees, the immutable F-GC10 closeout and F-CI44 contract test, fail-closed scalar/provenance policy, current post-F-CI45 consumer normalization binding, and preservation of the hard nonclaims.
+
+## Closeout state
+
+No production-source defect has been established. Final closeout requires FAST and RELEASE success on one exact `[ftb07-release]` head. RELEASE must execute the immutable contract matrix at O0/O2, require repeat and optimization-level transcript identity, preserve the current consumer binding and confirm zero `src/**` or `reference/**` delta.
