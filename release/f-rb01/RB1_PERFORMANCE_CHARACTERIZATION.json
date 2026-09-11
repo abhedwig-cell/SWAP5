@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.frb01_performance_characterization.v1",
+  "work_unit": "F-RB01",
+  "stage": "PERSISTED",
+  "policy": {
+    "absolute_release_sla": null,
+    "reason": "No externally justified absolute production runtime or tail threshold exists for the frozen RB1 scope. F-RB01 therefore characterizes cost and scaling honestly and does not manufacture a post-hoc threshold.",
+    "physics_or_mass_concessions_allowed": false,
+    "reference_mode": "Full Richards REFERENCE"
+  },
+  "evidence": [
+    {
+      "authority": "F-PE07",
+      "scope": "restricted parallel V1 wall-clock scaling, 32 logical columns, batch_size=9, frozen V1 profile",
+      "results": {
+        "workers_2_median_speedup_range": [1.6585457519181832, 1.6801520451711023],
+        "workers_2_parallel_efficiency_range": [0.8292728759590916, 0.8400760225855511],
+        "workers_2_paired_blocks_speedup_gt_1": "60/60",
+        "workers_4_median_speedup_range": [1.2533711110530559, 1.8095376555726792],
+        "workers_4_parallel_efficiency_range": [0.31334277776326397, 0.4523844138931698],
+        "workers_4_paired_blocks_speedup_gt_1": "60/60"
+      },
+      "interpretation": "Two-worker scaling is reproducibly positive on the frozen fixture. Four-worker scaling is positive but not robust in magnitude and is host/runtime sensitive on the small workload.",
+      "nonclaims": ["no universal speedup", "no SLA", "no worker count above 4", "no large-scale MultiSWAP extrapolation"]
+    },
+    {
+      "authority": "F-PE03-FVQ25-RECHAR",
+      "scope": "REFERENCE difficult/rejected route cost characterization",
+      "accepted_baseline_cost_vector": [3,0,3,3,3,3,0],
+      "cost_vector_order": ["nonlinear_iterations","internal_retries","headcalc_calls","jacobian_builds","linear_solves","backtracking_attempts","alternative_solver_calls"],
+      "max_rejected_cost_vector": [33,2,6,33,33,36,0],
+      "accepted_higher_cost_routes_found": 0,
+      "interpretation": "Rejected trials can be materially more expensive than the admitted accepted baseline. No representative accepted p50/p95/p99 tail distribution or bounded-cost threshold is established.",
+      "nonclaims": ["no representative production tail distribution", "no bounded-cost SLA", "no BALANCED/THROUGHPUT/FALLBACK admission"]
+    },
+    {
+      "authority": "F-PE08",
+      "scope": "historically qualified worker scratch de-duplication in frozen parallel V1 scope",
+      "four_node_fixture": {"before_bytes_per_worker":2792,"after_bytes_per_worker":2380,"removed_bytes_per_worker":412,"known_payload_reduction_percent":14.756446991404011},
+      "interpretation": "Demonstrates the architecture's worker-owned scratch reduction direction. Exact byte figures belong to the qualified F-PE08 postimage and are not silently asserted as current-RB1 exact payload after later source evolution.",
+      "nonclaims": ["no RSS guarantee", "no current exact payload claim from this historical fixture", "no runtime speedup guarantee"]
+    },
+    {
+      "authority": "F-PE09",
+      "scope": "exact-shape worker parameter/forcing cache reuse in frozen V1 scope",
+      "runner_bound_runtime_reduction_percent": {"workers_1":7.1569351909,"workers_2":6.2217546416,"workers_4":6.1001027201},
+      "interpretation": "Qualified worker-local exact-shape reuse with full refresh/recompute and no persistent per-column cache state; timing is runner-bound only.",
+      "nonclaims": ["no portable speedup guarantee", "no production throughput SLA", "no RSS guarantee"]
+    },
+    {
+      "authority": "F-PE10",
+      "scope": "forcing-only trial-scoped direct immutable view research/qualification",
+      "disposition": "NOT_RETAINED_AS_PRODUCTION_DEFAULT",
+      "removed_payload_formula_bytes_per_active_worker": "8*n*(drainage_levels+2)",
+      "interpretation": "Copy elimination was real but worker-scaled and too small without attributable runtime benefit to justify added alias-lifetime complexity. Evidence is retained, candidate is not an RB1 capability.",
+      "nonclaims": ["not RB1 production authority", "no zero-copy requirement"]
+    },
+    {
+      "authority": "F-PE11/F-CI42P",
+      "scope": "surface-evaporation local materialization microkernel allocation/ownership improvement",
+      "paired_candidate_faster_rounds": "20/20",
+      "median_runtime_reduction_percent_by_profile_nodes": {"2":35.197,"20":35.170,"60":31.862,"200":34.597,"1000":34.750},
+      "interpretation": "Local runner-bound microkernel improvement retained in current canonical without changing surface-evaporation science, transaction semantics or mass policy.",
+      "nonclaims": ["no whole-SWAP speedup", "no MultiSWAP speedup", "no hardware-independent guarantee"]
+    }
+  ],
+  "rb1_release_interpretation": {
+    "runtime": "CHARACTERIZED_WITHOUT_ABSOLUTE_SLA",
+    "memory": "WORKER_OWNED_AND_BOUNDED_BY_ACTIVE_WORKERS_WITH_HISTORICAL_PAYLOAD_CHARACTERIZATION",
+    "allocations": "LOCAL_SURFACE_MATERIALIZATION_COPY_CHURN_REDUCED; OTHER CALL-LOCAL/WORKER ALLOCATION COSTS ARE NOT GENERALIZED INTO A RELEASE CLAIM",
+    "solver_iterations_and_retries": "EXPOSED_IN_RUNTIME_RESULTS_AND CHARACTERIZED_BY_REFERENCE_COST_EVIDENCE",
+    "tail_behavior": "NEGATIVE_EVIDENCE_RETAINED; REPRESENTATIVE_ACCEPTED_TAIL_DISTRIBUTION_NOT_CLAIMED",
+    "serialized_vs_parallel": "2-worker positive scaling demonstrated on bounded fixture; 4-worker magnitude explicitly variable",
+    "release_blocker": false
+  },
+  "hard_nonclaim": "RB1 production viability means a scientifically qualified, deterministic, mass-conserving restricted runtime with bounded declared execution profiles and measured performance characteristics. It does not mean universal speedup, a hardware-independent SLA or solved difficult-column tail policy."
+}
