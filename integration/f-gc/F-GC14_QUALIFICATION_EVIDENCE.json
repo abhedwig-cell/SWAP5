@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC14",
+  "title": "External Accuracy Packet to Runtime Contract Adapter Boundary Qualification Evidence",
+  "status": "QUALIFIED_PRE_CLOSEOUT",
+  "authority": {
+    "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "canonical_stage": "F-CI45P",
+    "upstream_F_GC13_final_authority": "0c776f7c3d910c6727ec5659ae6437ca993fb20d",
+    "pre_registration_commit": "aae0c735fbdd035f364d25195104f8d00da4fbe8",
+    "initial_source_candidate_commit": "370adad58e85ee05d0e93a15f451bd5e78eca747",
+    "first_green_candidate_head": "a547bfca4e3dddbeb565bde9c5c33af368d66cca",
+    "adapter_source_blob": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "canonical_application_accuracy_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "red_green_history": [
+    {
+      "head": "9059e8b51bee09a55a25d550b425b7c626dcf1f9",
+      "workflow_run": 34644022660,
+      "workflow_job": 103410350670,
+      "conclusion": "failure",
+      "failure": "FGC14_GATE_FAIL: format/path coupling: json",
+      "diagnosis": "Static gate matched the word JSON in a source comment describing that the boundary was not a file/format representation. No executable adapter statement performed format parsing.",
+      "remediation": "Comment-only wording changed to external-format representation; executable statements, data layout, validation path and mapping semantics were unchanged."
+    },
+    {
+      "head": "a547bfca4e3dddbeb565bde9c5c33af368d66cca",
+      "workflow_run": 34644190094,
+      "workflow_job": 103410897648,
+      "conclusion": "success"
+    }
+  ],
+  "qualification_results": {
+    "upstream_authority_lock": "PASS",
+    "source_allowlist": "PASS: only src/runtime/mod_coupling_application_accuracy_adapter.f90",
+    "typed_fail_closed_boundary": "PASS",
+    "nonfinite_guard_inheritance": "PASS_PINNED_CANONICAL_GUARDS_AND_ADAPTER_CALL_PATH",
+    "head_fraction_mapping": "PASS: synthetic H_app=8 cm and A_temporal=0.25 produce 2 cm temporal budget",
+    "drawdown_canonicalized_direct_budget_mapping": "PASS: synthetic H_app=10 cm and canonicalized A_temporal=0.2 produce 2 cm temporal budget",
+    "dynamic_fail_closed_rejection_matrix": "PASS_12_OF_12",
+    "O0_O2_identity": "PASS",
+    "mass_conservation_relaxed": false,
+    "production_coupling_admission": false
+  },
+  "dynamic_rejection_oracles": [
+    "unsupported evidence schema version",
+    "F-GC13 packet validation attestation absent",
+    "application source digest content-verification attestation absent",
+    "temporal source digest content-verification attestation absent",
+    "application and temporal provenance ID reuse",
+    "invalid zero contract identity",
+    "unsupported QOI",
+    "non-positive H_app",
+    "missing application provenance ID",
+    "non-positive A_temporal",
+    "A_temporal greater than one",
+    "missing temporal provenance ID"
+  ],
+  "nonfinite_assurance_boundary": {
+    "fresh_dynamic_nan_inf_test_in_F_GC14": false,
+    "reason": "The attempted standalone IEEE nonfinite probe was not persisted. F-GC14 therefore does not claim a new dynamic NaN/Inf qualification.",
+    "qualified_inheritance": true,
+    "basis": [
+      "immutable canonical application-accuracy contract blob c07d573d21e7d013ab962c0a9d28102ab7b5cdfc is pinned",
+      "that contract contains ieee_is_finite guards for h_app_cm and a_temporal",
+      "the F-GC14 adapter is statically required to call application_requirement_valid(), temporal_allocation_valid(), and temporal_budget_ready() before materialization",
+      "the canonical F-GC10 contract was previously dynamically qualified for NaN/Inf rejection"
+    ],
+    "claim": "F-GC14 inherits the already-qualified canonical nonfinite guards through a pinned, exercised validation call path; it does not add or weaken those guards."
+  },
+  "qualified_boundary": {
+    "input": "typed canonicalized project-accuracy view plus upstream verification attestations",
+    "output": "coupling_application_accuracy_contract_t",
+    "upstream_required": [
+      "F-GC13 evidence/governance packet validated",
+      "recorded application source digest independently verified against exact governed source bytes outside this adapter",
+      "recorded temporal source digest independently verified against exact governed source bytes outside this adapter"
+    ],
+    "adapter_does_not": [
+      "parse evidence files or F-GC13 JSON",
+      "fetch or hash external project/regulator documents",
+      "select H_app",
+      "select A_temporal",
+      "reinterpret a direct temporal budget after F-GC13 canonicalization",
+      "modify kernel state, solver state, transactions or physics"
+    ],
+    "fail_closed_output": "Any rejected input leaves the returned coupling_application_accuracy_contract_t in its default unconfigured state and materialized=false."
+  },
+  "architecture_invariants": {
+    "2": "PASS typed runtime boundary only; kernel remains independent of files, formats, parsing, units and paths",
+    "3": "PASS application accuracy policy remains separate from physics parameters, dynamic state, forcing and numerical solver state",
+    "9": "PASS no calendar unit or calendar boundary assumption introduced",
+    "10": "PASS no coupling-window duration is selected or hard-coded",
+    "11": "PASS coupling policy transport is explicit runtime/coupler functionality",
+    "12": "PASS_WITH_SCOPE adapter does not alter the hard H_SWAP=H_MF and q_SWAP=-q_MF interface contract",
+    "13": "PASS mass conservation is untouched and never relaxed",
+    "15": "PASS adapter materialization adds no structural SWAP trajectory or coupling iteration",
+    "23": "PASS application/numerical accuracy policy is not encoded as physical configuration",
+    "25": "PASS reference mode is unchanged",
+    "26": "PASS diagnostics expose validation/materialization status and fail-closed reason classes",
+    "28": "PASS system composition and external evidence verification remain outside the SWAP kernel",
+    "29": "PASS no hidden file, format, MODFLOW, calendar, timestep or project-policy dependency is introduced",
+    "30": "PASS preregistration, source allowlist, red-green CI, positive mappings, negative matrix and O0/O2 identity were explicitly qualified"
+  },
+  "hard_nonclaims": [
+    "no real project H_app is qualified",
+    "no real project A_temporal is qualified",
+    "no real project direct temporal head-error budget is qualified",
+    "the adapter does not itself verify source bytes or source-digest correctness",
+    "the adapter does not parse files or external formats",
+    "the adapter does not select project policy",
+    "the adapter source is not yet admitted to integration/f-ci-canonical",
+    "no production SWAP-MODFLOW coupling is admitted",
+    "no mass-conservation tolerance or relaxation is introduced",
+    "F-GC07 through F-GC13 remain closed and are not reopened"
+  ],
+  "exact_head_requirement": "The commit introducing this qualification evidence must itself pass the F-GC14 workflow before closeout may be written."
+}
