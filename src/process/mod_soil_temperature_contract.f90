@@ -36,7 +36,6 @@ module mod_soil_temperature_contract
   end type soil_temperature_parameters_t
 
   type, public :: soil_temperature_numerical_config_t
-    logical :: require_energy_closure = .true.
     real(real64) :: energy_abs_tolerance_j_cm2 = 1.0e-9_real64
   end type soil_temperature_numerical_config_t
 
