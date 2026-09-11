@@ -1,0 +1,113 @@
+name: F-DOC07 RB1 aggregate traceability reconciliation qualification
+
+on:
+  push:
+    branches:
+      - work/f-doc07-rb1-aggregate-traceability-reconciliation
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rb1-aggregate-traceability-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact population and release authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            refs/heads/work/f-doc03-rb1-core-capability-traceability:refs/remotes/origin/work/f-doc03-rb1-core-capability-traceability \
+            refs/heads/work/f-doc04-rb1-reference-temporal-traceability:refs/remotes/origin/work/f-doc04-rb1-reference-temporal-traceability \
+            refs/heads/work/f-doc05-rb1-execution-restart-traceability:refs/remotes/origin/work/f-doc05-rb1-execution-restart-traceability \
+            refs/heads/work/f-doc06-rb1-et-root-surface-evap-traceability:refs/remotes/origin/work/f-doc06-rb1-et-root-surface-evap-traceability \
+            refs/heads/release/f-rb01-restricted-production-baseline-v1:refs/remotes/origin/release/f-rb01-restricted-production-baseline-v1 \
+            refs/heads/release/f-rb02-restricted-production-baseline-v1-final-authority:refs/remotes/origin/release/f-rb02-restricted-production-baseline-v1-final-authority
+          for sha in \
+            0c25d97bd180378a916fbb14a1e45768af9ec63a \
+            a703747ce1991c5601b76a84f04969b602298268 \
+            919f228d8aedc1029b5080bb019fbe61d2e1d7c6 \
+            c20c0fd4c53ef65f3c8d375362908a25f0855a4b \
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0; do
+            git cat-file -e "${sha}^{commit}"
+          done
+
+      - name: Verify immutable upstream workflow evidence live
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in \
+            '34596210450 0c25d97bd180378a916fbb14a1e45768af9ec63a .github/workflows/fdoc03-rb1-core-traceability.yml' \
+            '34610822444 a703747ce1991c5601b76a84f04969b602298268 .github/workflows/fdoc04-rb1-reference-temporal-traceability.yml' \
+            '34612402892 919f228d8aedc1029b5080bb019fbe61d2e1d7c6 .github/workflows/fdoc05-rb1-execution-restart-traceability.yml' \
+            '34620809727 c20c0fd4c53ef65f3c8d375362908a25f0855a4b .github/workflows/fdoc06-rb1-et-root-surface-evap-traceability.yml' \
+            '34586202805 b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 .github/workflows/frb02-final-release-authority.yml'; do
+            set -- $spec
+            run="$1"; sha="$2"; path="$3"
+            curl -fsSL \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${run}" \
+              > "_fdoc07_run_${run}.json"
+            python3 - "$run" "$sha" "$path" <<'PY'
+          import json, pathlib, sys
+          run, sha, path = sys.argv[1:]
+          x = json.loads(pathlib.Path(f'_fdoc07_run_{run}.json').read_text())
+          assert x['head_sha'] == sha, (run, x['head_sha'], sha)
+          assert x['status'] == 'completed', (run, x['status'])
+          assert x['conclusion'] == 'success', (run, x['conclusion'])
+          assert x['path'] == path, (run, x['path'], path)
+          print(f'FDOC07_UPSTREAM_RUN_{run}=PASS')
+          PY
+          done
+
+      - name: Validate aggregate RB1 traceability reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc07_rb1_aggregate_traceability_reconciliation.py | tee _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_POPULATION_ASSIGNMENT_COUNT_15=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_POPULATION_UNIQUE_CAPABILITY_COUNT_15=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_NO_DUPLICATE_ASSIGNMENTS=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_EXACT_RB1_CAPABILITY_SET=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_NO_UNASSIGNED_REQUIRED_CAPABILITY=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_RB1_RELEASE_PASS_15=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_FDOC04_NO_UNIVERSAL_H_BUDGET=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_FDOC06_NO_SURFACE_THROUGHPUT=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_FDOC01_STATUS_A_REVIEW_BLOCKED=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_FDOC01_WRQA2024_PENDING=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_ZERO_PRODUCTION_DELTA=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_ZERO_REFERENCE_DELTA=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_INVARIANT_OVERALL=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_MASS_HARD_UNCHANGED=PASS' _fdoc07_validator_stdout.txt
+          grep -Fq 'FDOC07_VALIDATION=PASS' _fdoc07_validator_stdout.txt
+
+      - name: Preserve exact-head aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc07-rb1-aggregate-traceability-evidence-${{ github.sha }}
+          path: |
+            _fdoc07_run_34596210450.json
+            _fdoc07_run_34610822444.json
+            _fdoc07_run_34612402892.json
+            _fdoc07_run_34620809727.json
+            _fdoc07_run_34586202805.json
+            _fdoc07_validator_stdout.txt
+            docs/scientific/registries/rb1-aggregate-traceability-reconciliation.json
+            docs/scientific/F-DOC07_RB1_AGGREGATE_TRACEABILITY_RECONCILIATION.md
+            integration/f-doc/F-DOC07_STATUS.json
+            integration/f-doc/F-DOC07_INVARIANT_AUDIT.json
+            integration/f-doc/F-DOC07_CLOSEOUT.json
+          if-no-files-found: warn
+          retention-days: 90
