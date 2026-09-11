@@ -113,12 +113,13 @@ b=s.index("  end subroutine build_fixture",a)
 seg=s[a:b]
 needle="call configure_parameters(parameters(1),seed,conductivity0)"
 assert needle in seg
+# F-TB04 tests registry/reference ownership only. Keep the already-qualified
+# hydraulic physics bit-identical and distinguish the second immutable bundle
+# solely by parameter_set_id. Perturbing cofgen here would add a new scientific
+# convergence case that is outside this testbank workunit.
 seg=seg.replace(needle,needle+"""
     parameters(2)=parameters(1)
-    parameters(2)%parameter_set_id=926002_int64
-    parameters(2)%cofgen(3,:)=1.02_real64*parameters(1)%cofgen(3,:)
-    parameters(2)%cofgen(10,:)=parameters(2)%cofgen(3,:)
-    parameters(2)%cofgen(12,:)=0.99_real64*parameters(2)%cofgen(3,:)""",1)
+    parameters(2)%parameter_set_id=926002_int64""",1)
 needle="columns(j)%parameter_ref = 1_int64"
 assert needle in seg
 seg=seg.replace(needle,"columns(j)%parameter_ref = merge(1_int64,2_int64,mod(j,2)==1)",1)
