@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "DYNAMIC_TOP_REGIME_INTERFACE_BLOCKER",
+  "qualification": false,
+  "source_head_before_persist": "a7242e1831491de0a37c521c3875b0bfbcad7e13",
+  "formal_status": "BLOCKED_ON_EXPLICIT_TOP_BOUNDARY_REGIME_TRANSPORT",
+  "finding": "F-SI29 qualifies the dynamic B1.10 top-boundary component, but the current soil-water top-boundary interface cannot transport whether a provider selected a flux or prescribed-head regime. HeadCalc therefore cannot consume all F-SI29-qualified regimes through the typed solver-service path.",
+  "evidence": {
+    "fsi29_closeout": {
+      "path": "integration/f-si/F-SI29_CLOSEOUT.json",
+      "decision": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+      "qualified_regimes": ["surface flux", "atmospheric prescribed head", "ponded prescribed head", "linear runoff"],
+      "explicit_nonclaims": ["HeadCalc_replacement_qualified=false", "production_transaction_composition_qualified=false", "accepted_surface_metadata_commit_transport_qualified=false"]
+    },
+    "solver_contract": {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "top_boundary_evaluate_signature": "actual_top_flux, surface_head, runoff_flux",
+      "missing_output": "explicit selected top-boundary regime / head-vs-flux discriminator"
+    },
+    "headcalc": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "behavior": "boundtop_state_bridge() sets state%ftoph=.false. unconditionally whenever provider_top_active, then marks provider runoff resolved",
+      "consequence": "An explicit provider can currently drive only the flux residual branch even when F-SI29 selected atmospheric-head or ponded-head physics."
+    }
+  },
+  "architectural_consequence": "Proceeding in F-KT15 now would silently replace qualified dynamic head/flux switching with a flux-only top boundary and violate physics-vs-policy separation, SWAP-physics reuse and the frozen F-KT15 fail-closed contract.",
+  "required_predecessor": {
+    "suggested_work_unit": "F-SI30",
+    "scope": "Extend the common top-boundary provider result contract with an explicit regime discriminator and make HeadCalc consume it without changing F-SI29 physics; qualify flux, atmospheric-head and ponded-head residual routing plus linear-runoff metadata, fallback and O0/O2 identity.",
+    "must_not": [
+      "broaden F-SI29 scientific scope",
+      "change prescribed-qbot tangent semantics",
+      "add persistent per-column solver state",
+      "introduce a second nonlinear trajectory",
+      "move task-3 bookkeeping into the solver"
+    ]
+  },
+  "fkt15_rule_until_predecessor_qualified": "Fail closed. Keep SoilWater(2) on unchanged direct HeadCalc production routing and publish no solver-service sensitivity from that route.",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "F_KT15_COMPOSITION_BLOCKED_PENDING_TYPED_TOP_REGIME_TRANSPORT_QUALIFICATION"
+}
