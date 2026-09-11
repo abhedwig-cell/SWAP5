@@ -26,11 +26,9 @@ fail() { echo "FTB07_QUALIFICATION_FAIL:$*" >&2; exit 47; }
 
 python3 testbank/runners/validate_ftb07_application_accuracy_adoption.py
 
-# Current canonical must remain the pinned source authority for this adoption.
 git fetch --no-tags origin integration/f-ci-canonical >/dev/null 2>&1 || fail 'cannot fetch canonical'
 [[ "$(git rev-parse origin/integration/f-ci-canonical)" == "$CANONICAL" ]] || fail 'canonical race'
 
-# Static policy ownership and fail-closed contract checks.
 grep -Fq 'logical :: h_app_available = .false.' "$MODULE" || fail 'H_app absence default'
 grep -Fq 'real(real64) :: h_app_cm = 0.0_real64' "$MODULE" || fail 'H_app scalar default'
 grep -Fq 'logical :: a_temporal_available = .false.' "$MODULE" || fail 'A_temporal absence default'
@@ -52,9 +50,6 @@ fi
 echo 'FTB07_FAIL_CLOSED_CONTRACT_STATIC=PASS'
 echo 'FTB07_NO_IO_OR_HIDDEN_NUMERIC_POLICY_STATIC=PASS'
 
-# Current post-F-CI45 consumer binding. We deliberately do not replay F-CI44's
-# historical backend-blob lock because soil-temperature admission later changed
-# that backend. The semantic binding itself must still be explicit and exact.
 grep -Fq 'model_temporal_indicator_budget_available' "$CONTRACTS" || fail 'generic carrier availability missing'
 grep -Fq 'model_temporal_indicator_budget' "$CONTRACTS" || fail 'generic carrier value missing'
 grep -Fq 'self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available' "$BACKEND" || fail 'budget availability binding missing'
@@ -66,7 +61,6 @@ grep -Fq 'indicator_result%head_inf_bound = bounded_norm/sqrt(indicator_result%m
 echo 'FTB07_CURRENT_CANONICAL_CONSUMER_BINDING=PASS'
 echo 'FTB07_DIMENSIONLESS_CERTIFICATE_NORMALIZATION=PASS'
 
-# Preserve F-GC10 nonclaims as executable governance requirements.
 git show "$FGC10:integration/f-gc/F-GC10_CLOSEOUT.json" > "$BUILD/fgc10.json"
 python3 - "$BUILD/fgc10.json" <<'PY'
 import json,sys
@@ -88,7 +82,9 @@ fi
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 run_one() {
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   mkdir -p "$out"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c "$TRANSACTION" -o "$out/transaction.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c "$CONTRACTS" -o "$out/contracts.o"
@@ -114,7 +110,6 @@ if [[ "$PROFILE" == CANONICAL ]]; then
   exit 0
 fi
 
-# RELEASE and DEEP require exact repeat and optimization-level transcript identity.
 "$BUILD/o0/ftb07.exe" > "$BUILD/o0/output-repeat.txt"
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o0/output-repeat.txt" || fail 'O0 repeated-run transcript drift'
 run_one -O2 o2
