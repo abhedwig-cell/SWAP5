@@ -1,0 +1,83 @@
+name: F-DOC02 RB1 release-bound traceability qualification
+
+on:
+  push:
+    branches:
+      - work/f-doc02-rb1-scientific-traceability-population
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rb1-release-traceability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch immutable RB1 authority refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            refs/heads/release/f-rb01-restricted-production-baseline-v1:refs/remotes/origin/release/f-rb01-restricted-production-baseline-v1 \
+            refs/heads/release/f-rb02-restricted-production-baseline-v1-final-authority:refs/remotes/origin/release/f-rb02-restricted-production-baseline-v1-final-authority
+          git cat-file -e aeb74560d801c4ac7314df7b8845fcc5daf8bba6^{commit}
+          git cat-file -e b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0^{commit}
+
+      - name: Verify definitive F-RB02 exact-head release authority live
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fsSL \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/34586202805" \
+            > _fdoc02_frb02_run.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x = json.loads(Path('_fdoc02_frb02_run.json').read_text())
+          assert x['head_sha'] == 'b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0', x['head_sha']
+          assert x['status'] == 'completed', x['status']
+          assert x['conclusion'] == 'success', x['conclusion']
+          assert x['path'] == '.github/workflows/frb02-final-release-authority.yml', x['path']
+          print('FDOC02_FRB02_EXACT_HEAD_LIVE=PASS')
+          PY
+
+      - name: Validate F-DOC02 release-bound traceability and gaps
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc02_rb1_traceability.py | tee _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_RB1_REQUIRED_DENOMINATOR_15=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_RB1_MATRIX_15_OF_15_PASS=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_REGISTRY_EXACT_REQUIRED_IDS_15=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_DEFAULT_OPEN_TIERS_T0_T10_T12=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_SURFACE_EVAP_PERFORMANCE_SCOPE_HOLD=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_REGISTRY_NOT_STATUS_A_READY=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_ZERO_PRODUCTION_DELTA=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_ZERO_REFERENCE_DELTA=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_INVARIANTS_30_OF_30_PASS=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_HARD_MASS_UNCHANGED=PASS' _fdoc02_validator_stdout.txt
+          grep -Fq 'FDOC02_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_RB1_RELEASE_BOUND_TRACEABILITY_INDEX_WITH_EXPLICIT_GAPS' _fdoc02_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc02-rb1-traceability-evidence-${{ github.sha }}
+          path: |
+            _fdoc02_frb02_run.json
+            _fdoc02_validator_stdout.txt
+            _fdoc02_rb1_traceability_evidence.json
+            docs/scientific/registries/rb1-release-traceability-index.json
+            integration/f-doc/F-DOC02_INVARIANT_AUDIT.json
+          if-no-files-found: warn
+          retention-days: 90
