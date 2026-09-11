@@ -1,0 +1,138 @@
+{
+  "schema": "swap5.frb01_closeout.v1",
+  "work_unit": "F-RB01",
+  "title": "SWAP5 Restricted Production Baseline V1 Qualification",
+  "status": "COMPLETE_QUALIFIED_READY_FOR_RELEASE_AUTHORITY",
+  "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY",
+  "branch": "release/f-rb01-restricted-production-baseline-v1",
+  "frozen_scope": {
+    "file": "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json",
+    "required_denominator": 15,
+    "required_pass": 15,
+    "required_gap": 0,
+    "moving_denominator_forbidden": true
+  },
+  "production_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "latest_closeout": "F-CI42P"
+  },
+  "release_candidate": {
+    "sha": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+    "tree": "3716898eae3c33bf62616e43a2690e9aeb71d434",
+    "production_delta_from_canonical": "NONE",
+    "reference_delta_from_canonical": "NONE"
+  },
+  "decisive_qualification": {
+    "workflow": ".github/workflows/frb01-release-qualification.yml",
+    "run": 34569690664,
+    "workflow_head": "05092df17222c1761b42940bca369208ae009654",
+    "conclusion": "success",
+    "artifact_id": 10187339980,
+    "artifact_digest": "sha256:e28c99c248256e6cf7a230c06be51ca3ba0653d6ea1c9ab30e8272c1740834a3",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "qualification_summary": {
+    "temporal_scientific_authority": "PASS",
+    "current_temporal_dependency_preservation": "PASS",
+    "hard_mass": "PASS",
+    "transactionality": "PASS",
+    "restart": "PASS",
+    "determinism": "PASS",
+    "negative_fail_closed": "PASS",
+    "standalone_n1": "PASS",
+    "serialized_multiswap": "PASS",
+    "restricted_parallel_v1": "PASS",
+    "restricted_parallel_root": "PASS",
+    "restricted_surface_evaporation": "PASS",
+    "parallel_committed_restart": "PASS",
+    "architecture_invariants": "30_AUDITED_0_FAIL",
+    "required_capabilities": "15_OF_15_PASS"
+  },
+  "resolved_release_blockers": 6,
+  "open_rb1_blockers": 0,
+  "production_changes_by_frb01": [],
+  "scientific_authority_changes_by_frb01": [],
+  "qualification_harness_history": [
+    {
+      "run": 34569233381,
+      "conclusion": "failure",
+      "classification": "HARNESS_GOVERNANCE_LINEAGE_ASSERTION_DEFECT",
+      "scientific_failure": false,
+      "production_failure": false
+    },
+    {
+      "run": 34569400262,
+      "conclusion": "failure",
+      "classification": "HARNESS_OBSERVABILITY_MARKER_DEFECT",
+      "scientific_failure": false,
+      "production_failure": false
+    },
+    {
+      "run": 34569690664,
+      "conclusion": "success",
+      "classification": "DECISIVE_GREEN"
+    }
+  ],
+  "performance_disposition": {
+    "absolute_runtime_sla": null,
+    "universal_speedup_claim": false,
+    "portable_peak_rss_claim": false,
+    "representative_p95_p99_tail_claim": false,
+    "existing_positive_parallel_scaling_evidence_retained": true,
+    "negative_tail_evidence_retained": true,
+    "surface_evaporation_local_performance_evidence_retained": true,
+    "surface_evaporation_multiswap_throughput_scaling": "SEPARATE_WORKUNIT_NOT_REOPENED_BY_FRB01"
+  },
+  "release_nonclaims": [
+    "not complete SWAP 4.3.1 functionality",
+    "not all physical options",
+    "not universal MODFLOW coupling accuracy",
+    "not production RossFast",
+    "not Status A",
+    "not Status AA",
+    "not universal performance superiority",
+    "not validation for every application domain"
+  ],
+  "post_rb1": [
+    "additional SWAP 4.3.1 option migration",
+    "active WOFOST/crop lifecycle runtime",
+    "parallel active DIVDRA and broader drainage profiles",
+    "RossFast and alternative/reduced production solvers",
+    "BALANCED/THROUGHPUT/FALLBACK production policies",
+    "broader MODFLOW predictor-corrector application release",
+    "application-class groundwater head-accuracy budgets",
+    "representative accepted difficult-column p50/p95/p99 and bounded-cost policy",
+    "formal Status-A and later Status-AA qualification"
+  ],
+  "testbank_handoff": {
+    "crosswalk": "release/f-rb01/RB1_TESTBANK_CROSSWALK.json",
+    "central_ftb01_registry_modified": false,
+    "bounded_release_fragments_available_for_future_ftb_adoption": true
+  },
+  "files": {
+    "scope": "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json",
+    "capability_matrix": "release/f-rb01/RB1_CAPABILITY_MATRIX.json",
+    "architecture_audit": "release/f-rb01/RB1_ARCHITECTURE_INVARIANT_AUDIT.json",
+    "performance_characterization": "release/f-rb01/RB1_PERFORMANCE_CHARACTERIZATION.json",
+    "candidate": "release/f-rb01/RB1_RELEASE_CANDIDATE.json",
+    "qualification": "release/f-rb01/RB1_RELEASE_QUALIFICATION.json",
+    "blockers": "release/f-rb01/RB1_BLOCKERS.json",
+    "readiness_dashboard": "release/f-rb01/RB1_READINESS_DASHBOARD.json",
+    "release_description": "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE.md",
+    "testbank_crosswalk": "release/f-rb01/RB1_TESTBANK_CROSSWALK.json"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "open": []
+  },
+  "governance_rule": "This closeout qualifies the frozen RB1 subset for release authority. Later production-source or reference changes require a new governed candidate and release qualification. Later capabilities default to NEXT_RELEASE and do not retroactively enlarge RB1."
+}
