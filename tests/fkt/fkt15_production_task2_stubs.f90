@@ -5,6 +5,9 @@ module MOD_swap_base
   integer :: swpondmx = 0
   integer :: swfrost = 0
   integer :: swrunon = 0
+  integer :: swinco = 3
+  integer :: swhyst = 0
+  integer :: swsolve = 1
   integer :: i_instance = 1
 end module MOD_swap_base
 
@@ -62,6 +65,14 @@ module variables
 
   real(8) :: pondmx = 10.0d0, rsro = 0.5d0, rsroexp = 1.0d0
   integer :: swredu = 0
+
+  real(8), allocatable :: htb(:)
+  integer :: nhead = 0
+  real(8) :: gwli = -2.0d0
+  real(8) :: gwltab(8) = 0.0d0
+  real(8) :: volact = 0.0d0
+  real(8) :: ithetabeg(numnod) = 0.0d0
+  real(8) :: volini = 0.0d0, pondini = 0.0d0, ivolbeg = 0.0d0, ipondbeg = 0.0d0
 end module variables
 
 module MOD_MvG
@@ -117,6 +128,25 @@ contains
   end subroutine pondrunoff
 end module MOD_top
 
+module MOD_gwl
+  implicit none
+contains
+  subroutine calcgwl()
+    use variables, only: gwl
+    gwl = gwl
+  end subroutine calcgwl
+end module MOD_gwl
+
+module MOD_sss
+  implicit none
+contains
+  subroutine sss_solver()
+  end subroutine sss_solver
+  real(8) function sss_solver_gwl()
+    sss_solver_gwl = -2.0d0
+  end function sss_solver_gwl
+end module MOD_sss
+
 module MOD_meteo
   implicit none
   real(8) :: nraidt = 0.0d0
@@ -132,6 +162,10 @@ contains
     integer, intent(in) :: task
     if (task < 0) error stop 'invalid macropore task'
   end subroutine macropore
+  subroutine macrostatevar(task)
+    integer, intent(in) :: task
+    if (task < 0) error stop 'invalid macrostatevar task'
+  end subroutine macrostatevar
 end module MOD_macropore
 
 module MOD_rootextraction
@@ -237,6 +271,30 @@ real(8) function afgen(table, n, x)
   if (n <= 0 .or. table(1) > huge(table(1)) .or. x > huge(x)) error stop 'invalid afgen arguments'
   afgen = 0.0d0
 end function afgen
+
+subroutine afgen_2(table, n, x, value, ipos)
+  implicit none
+  integer, intent(in) :: n
+  integer, intent(inout) :: ipos
+  real(8), intent(in) :: table(*), x
+  real(8), intent(out) :: value
+  if (n < 0 .or. x > huge(x)) error stop 'invalid afgen_2 arguments'
+  if (n > 0 .and. table(1) > huge(table(1))) error stop 'invalid afgen_2 table'
+  ipos = max(0,ipos)
+  value = 0.0d0
+end subroutine afgen_2
+
+subroutine watstor()
+  use variables, only: volact, theta
+  use MOD_grid, only: dz
+  volact = sum(theta*dz)
+end subroutine watstor
+
+subroutine fluxes()
+end subroutine fluxes
+
+subroutine hysteresis()
+end subroutine hysteresis
 
 subroutine dtdpst(mode, time, text)
   implicit none
