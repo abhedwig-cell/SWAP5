@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fvq56_qualification_plan.v1",
+  "work_unit": "F-VQ56",
+  "title": "Independent Restricted Surface-Evaporation Runtime Materialization Requalification",
+  "branch": "qualification/f-vq56-fpm06f-surface-evaporation-runtime-requalification",
+  "qualification_base": "af9ec34ec587be76deea95763186a204f3ed32cd",
+  "candidate_owner": "F-PM06F",
+  "owner_closeout": "4a76095df80435ff466e52bc65984300bc45ea06",
+  "production_candidate": "fdb0e745b362c81a042faba7f81cab53b1372d97",
+  "production_files": {
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+  },
+  "independence": {
+    "owner_test_used_as_oracle": false,
+    "owner_gate_used_as_scientific_truth": false,
+    "oracle_strategy": "closed-form result oracle plus an independent state-derived hydraulic-capacity provider over held-out state, demand and ponding combinations",
+    "qualification_branch_based_on_owner_branch": false
+  },
+  "required_checks": [
+    "exact candidate blob identity",
+    "qualification source immutability",
+    "held-out dry-route oracle",
+    "held-out ponded-route oracle",
+    "capacity provider receives exact detached committed physical base state",
+    "ponding threshold exact and just-above classification",
+    "negative finite capacity clamps dry evaporation to zero but remains diagnostic",
+    "invalid ET binding fails closed before capacity call",
+    "invalid capacity result fails closed before process publication",
+    "uninitialized committed state fails closed",
+    "active physical-zero remains available",
+    "A-B-A repeatability",
+    "committed state remains unchanged",
+    "O0/O2 transcript identity",
+    "no mass-ledger mutation or second water booking",
+    "all 30 architecture invariants have no adverse delta within frozen scope"
+  ],
+  "frozen_scope": {
+    "SWINTER": 0,
+    "SWREDU": 0,
+    "surface_routes": ["dry bare-soil scalar capacity", "ponded-water demand"],
+    "time_semantics": "trial-local materialization only; no accepted interval integration in this workunit"
+  },
+  "nonclaims": [
+    "interception evaporation",
+    "wet-canopy effects",
+    "soil evaporation reduction or history",
+    "pond-store depletion",
+    "full ET runtime",
+    "accepted mass-ledger accounting",
+    "top-boundary replacement",
+    "throughput-efficiency qualification",
+    "frost or macropore scope widening"
+  ],
+  "decision_rule": "qualify only if all independent source, numerical, transaction and architecture checks pass on the exact immutable two-file candidate under O0 and O2"
+}
