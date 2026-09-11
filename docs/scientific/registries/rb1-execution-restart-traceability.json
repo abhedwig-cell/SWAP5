@@ -1,0 +1,268 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC05",
+  "title": "RB1 Execution and Restart Traceability",
+  "release_id": "SWAP5-RB1-v1",
+  "base_authority": {
+    "fdoc04": "a703747ce1991c5601b76a84f04969b602298268",
+    "rb1_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_source_tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "scope": {
+    "bounded_capabilities": [
+      "RB1-STANDALONE-N1",
+      "RB1-MULTISWAP-SERIAL",
+      "RB1-MULTISWAP-PARALLEL-V1",
+      "RB1-RESTART-SERIAL",
+      "RB1-RESTART-PARALLEL"
+    ],
+    "excluded_for_later_physics_traceability": [
+      "RB1-ET-ROOT-SERIAL",
+      "RB1-ROOT-PARALLEL",
+      "RB1-SURFACE-EVAP-RESTRICTED"
+    ],
+    "rule": "F-DOC05 documents frozen RB1 execution topology and committed-boundary restart semantics only. It does not change or requalify production science, physics, solver behaviour, tolerances, performance or release authority."
+  },
+  "source_pins": [
+    {
+      "path": "src/runtime/mod_fmr_runtime_core.f90",
+      "blob": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+      "role": "logical columns, templates and shared runtime identity"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+      "role": "shared serialized physical MultiSWAP execution, including N=1"
+    },
+    {
+      "path": "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "blob": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+      "role": "deterministic parallel assignment"
+    },
+    {
+      "path": "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "blob": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+      "role": "restricted 2/4-worker V1 execution with worker-owned runtime/solver context"
+    },
+    {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "blob": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+      "role": "worker execution context and scratch ownership"
+    },
+    {
+      "path": "src/runtime/mod_fmr_committed_restart.f90",
+      "blob": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+      "role": "serialization-neutral committed-boundary export/restore contract"
+    },
+    {
+      "path": "src/runtime/mod_fmr_restart_state_contract.f90",
+      "blob": "f1359f97d02408d8b700b0c93fe961a6ba46742c",
+      "role": "fail-closed state-family/template matching"
+    },
+    {
+      "path": "src/runtime/mod_fmr_deterministic_runtime.f90",
+      "blob": "6f567600e42bc4e37e0e175ef4a3edc97a945592",
+      "role": "deterministic runtime ordering/publication support"
+    }
+  ],
+  "qualification_authorities": {
+    "f_mq27_serial_restart": {
+      "closeout_head": "33beccd7b38f5a3c29131025e1b06166026851e3",
+      "qualified_candidate": "9064004f815e81f95eb4bdee218af29cb95039c1",
+      "matrix_blob": "efee0213881dff04d2111e4eccb879d50247324c",
+      "status_blob": "8368b2095b4996a63ed2bd1992b70cbf7c3318b0",
+      "workflow_run": 34451553550,
+      "hard_mass_tolerance_cm": 1e-12,
+      "column_counts": [1, 2, 7, 8, 17, 31, 32],
+      "calendar_boundary_required": false
+    },
+    "f_mq29_parallel_restart": {
+      "qualified_evidence_head": "5ea88d81a63e6c706c87e99ac360f91f08711fc1",
+      "matrix_blob": "d080220c26f390eb08d6f32a64af685ec1c50746",
+      "status_blob": "b39f4475f111018f0a95d05c37e10f28b793ebe2",
+      "authoritative_qualification_run": 34496804763,
+      "worker_origins": [2, 4],
+      "worker_continuations": [2, 4],
+      "cross_worker_transitions": ["2_TO_4", "4_TO_2"],
+      "hard_mass_required": true
+    },
+    "f_mq30_parallel_v1": {
+      "closeout_head": "48ee2841d783ee023c29391a7ea1e5d7ee0d20e0",
+      "matrix_blob": "40b45112f0e14accbcc08c015b988f39bf376eb7",
+      "status_blob": "3fafdbad7f923023b550d264ba5edb398c1903f3",
+      "authoritative_qualification_run": 34528662051,
+      "admitted_worker_counts": [2, 4],
+      "worker_count_1_parallel_claim": false,
+      "performance_speedup_claimed": false
+    },
+    "rb1_capability_matrix": {
+      "commit": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "blob": "e20e0b2cae1cfde91c8736ad632059b4fe480d88",
+      "required_denominator": 15,
+      "all_required_pass": true
+    }
+  },
+  "nodes": [
+    {
+      "id": "SW5-ALG-7501",
+      "tier": "T8",
+      "kind": "algorithm",
+      "title": "Shared serialized execution algorithm for one or many logical columns",
+      "status": "ACTIVE",
+      "authority": "F-DOC05 documentation of frozen RB1 runtime",
+      "notes": "N=1 is a cardinality of the same serialized runtime path, not a separate standalone kernel."
+    },
+    {
+      "id": "SW5-CONTRACT-7501",
+      "tier": "T9",
+      "kind": "software_contract",
+      "title": "Serialized physical MultiSWAP execution contract",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "symbol": "fmr_run_serialized_physical_multiswap",
+      "source_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1"
+    },
+    {
+      "id": "SW5-IMPL-7501",
+      "tier": "T10",
+      "kind": "implementation_mapping",
+      "title": "Shared serialized runtime implementation for standalone N=1 and serial MultiSWAP",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "symbol": "fmr_run_serialized_physical_multiswap",
+      "source_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1"
+    },
+    {
+      "id": "SW5-ALG-7502",
+      "tier": "T8",
+      "kind": "algorithm",
+      "title": "Restricted deterministic parallel V1 scheduling and canonical publication",
+      "status": "ACTIVE",
+      "authority": "F-DOC05 documentation of frozen RB1 runtime",
+      "notes": "Multiworker production admission is bounded to 2 and 4 workers in RB1; worker_count=1 delegates to the serialized route and is not evidence for a parallel speedup claim."
+    },
+    {
+      "id": "SW5-CONTRACT-7502",
+      "tier": "T9",
+      "kind": "software_contract",
+      "title": "Restricted parallel worker-pool execution contract",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "symbol": "fmr_run_parallel_physical_multiswap",
+      "source_blob": "0e700797cbaed4aaab7f04db0054f72faddcfc15"
+    },
+    {
+      "id": "SW5-IMPL-7502",
+      "tier": "T10",
+      "kind": "implementation_mapping",
+      "title": "Parallel V1 scheduler, pool and worker-scratch implementation",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "symbol": "fmr_run_parallel_physical_multiswap",
+      "source_blob": "0e700797cbaed4aaab7f04db0054f72faddcfc15"
+    },
+    {
+      "id": "SW5-ALG-7503",
+      "tier": "T8",
+      "kind": "algorithm",
+      "title": "Committed-boundary export, reconstruct and atomic restore",
+      "status": "ACTIVE",
+      "authority": "F-DOC05 documentation of frozen RB1 restart semantics",
+      "notes": "Only committed physical continuation state plus stable identities are persisted. Immutable parameter payloads and worker/Newton/Jacobian/warm-start scratch are excluded. Negative restores publish no partial target state."
+    },
+    {
+      "id": "SW5-CONTRACT-7503",
+      "tier": "T9",
+      "kind": "software_contract",
+      "title": "Serialization-neutral committed restart bundle and record contract",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_committed_restart.f90",
+      "symbol": "fmr_committed_restart_record_t; fmr_committed_restart_bundle_t; fmr_export_committed_restart; fmr_restore_committed_restart",
+      "source_blob": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37"
+    },
+    {
+      "id": "SW5-IMPL-7503",
+      "tier": "T10",
+      "kind": "implementation_mapping",
+      "title": "Fail-closed restart reconstruction and state-family binding",
+      "status": "ACTIVE",
+      "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "repository_path": "src/runtime/mod_fmr_committed_restart.f90",
+      "symbol": "fmr_restore_committed_restart",
+      "source_blob": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37"
+    }
+  ],
+  "capabilities": [
+    {
+      "capability_id": "RB1-STANDALONE-N1",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": ["F-MQ27 N=1 continuous/restart qualification", "F-RB01 current serialized/restart release attack"]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "No separate standalone kernel or legacy file-I/O release API is inferred."
+    },
+    {
+      "capability_id": "RB1-MULTISWAP-SERIAL",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": ["F-MQ27 irregular column-count restart matrix", "F-RB01 serial/restart deterministic release attack"]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "Only explicitly admitted process profiles compose; no whole-domain performance claim."
+    },
+    {
+      "capability_id": "RB1-MULTISWAP-PARALLEL-V1",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": ["F-MQ30 restricted 2/4-worker qualification aspects", "F-RB01 current-production V1 preservation"]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "No universal speedup, throughput or unsupported-worker-count claim; root-process science remains outside F-DOC05."
+    },
+    {
+      "capability_id": "RB1-RESTART-SERIAL",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": ["F-MQ27 committed-boundary continuation, deterministic replay, hard mass and atomic negative matrix"]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "No filesystem format, cross-version migration, mid-transaction restart or worker/Newton/Jacobian/warm-start persistence."
+    },
+    {
+      "capability_id": "RB1-RESTART-PARALLEL",
+      "release_gate": "PASS",
+      "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+      "T11": {
+        "status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+        "evidence": ["F-MQ29 committed-boundary 2/4-worker continuation including 2-to-4 and 4-to-2, hard mass and atomic restore"]
+      },
+      "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+      "nonclaim": "No mid-transaction restart, trial-state persistence, scratch persistence, file format, cross-version migration or production-scale performance claim."
+    }
+  ],
+  "global_nonclaims": [
+    "F-DOC05 does not claim FULLY_TRACED for any capability.",
+    "F-DOC05 does not invent a physical or scientific T1 authority for execution topology or restart mechanics.",
+    "F-DOC05 does not claim T12 application validation.",
+    "F-DOC05 does not claim Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC05 does not change the frozen 15-capability RB1 denominator.",
+    "F-DOC05 does not reopen immutable RB1 scientific, qualification or release authority.",
+    "F-DOC05 does not qualify root-process science, surface-evaporation throughput/scaling or general performance superiority."
+  ]
+}
