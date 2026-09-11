@@ -77,7 +77,7 @@ compile_fci44(){
 compile_fci44 -O0 "$BUILD/fci44-o0"
 compile_fci44 -O2 "$BUILD/fci44-o2"
 cmp "$BUILD/fci44-o0/output.txt" "$BUILD/fci44-o2/output.txt" || fail 'F-CI44 focused O0/O2 drift'
-grep -Fq 'FCI44_APPLICATION_ACCURACY_CONTRACT_TEST PASS' "$BUILD/fci44-o0/output.txt" || fail 'F-CI44 oracle missing close marker'
+grep -Fq 'FCI44_APPLICATION_ACCURACY_CONTRACT=PASS' "$BUILD/fci44-o0/output.txt" || fail 'F-CI44 oracle missing close marker'
 echo 'FMR40R_FCI44_CONTRACT_ORACLE_O0_O2=PASS'
 
 git diff --check "$BASE" -- src integration/f-mr tests/fmr .github/workflows || fail 'diff check failed'
