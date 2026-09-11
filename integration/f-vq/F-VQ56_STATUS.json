@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.fvq56_status.v1",
+  "work_unit": "F-VQ56",
+  "title": "Independent Restricted Surface-Evaporation Runtime Materialization Qualification",
+  "branch": "qualification/f-vq56-fpm06f-surface-evaporation-runtime-materialization",
+  "phase": "INDEPENDENT_QUALIFICATION_PENDING_DECISIVE_CI",
+  "decision": "PENDING_FAIL_CLOSED",
+  "source_authority": "integration/f-ci-canonical@af9ec34ec587be76deea95763186a204f3ed32cd",
+  "owner_closeout": "F-PM06F@4a76095df80435ff466e52bc65984300bc45ea06",
+  "owner_exact_closeout_run": 34548003044,
+  "owner_candidate": "fdb0e745b362c81a042faba7f81cab53b1372d97",
+  "materialized_candidate": "50f0955a5b2a4e98e4a325523cfb6b4c1c26be07",
+  "production_blobs": {
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+  },
+  "frozen_scope": "SWINTER=0; SWREDU=0; frost inactive; macropore surface scaling inactive; trial-local result materialization only; no active top-boundary replacement; no accepted result publication",
+  "qualification_design": {
+    "owner_assertions_used_as_scientific_oracle": false,
+    "heldout_abstract_provider_oracle": true,
+    "heldout_real_b110_capacity_integration_oracle": true,
+    "o0_o2_identity_required": true,
+    "committed_state_nonmutation_required": true,
+    "hard_mass_noninterference_required": true
+  },
+  "known_failed_run": {
+    "run": 34548268284,
+    "head": "2490180ba931f2a1fbc6d6ef2345178653e880e4",
+    "classification": "QUALIFICATION_HARNESS_FAILURE_ONLY",
+    "cause": "global -Werror promoted pre-existing warnings in canonical dependency mod_soil_water_solver_contract.f90 before the held-out runtime oracle executed",
+    "production_candidate_changed": false
+  },
+  "performance_scope": {
+    "functional_multiswap_compatibility_may_be_qualified": true,
+    "throughput_efficiency_qualified_here": false,
+    "known_call_local_copy_chain": "committed snapshot -> process hydraulic view -> detached soil-water physical state",
+    "hold": "do not bypass abstract interfaces through B1.10 internals; any copy-cost optimization requires separate measured qualification"
+  },
+  "state": {
+    "immutable_candidate_materialized": true,
+    "qualification_evidence_persisted": true,
+    "tested": false,
+    "independently_qualified": false,
+    "canonical_admitted": false
+  },
+  "next_required_step": "run decisive exact-head independent CI; on any candidate-behavior failure remain fail-closed and return to owner remediation; no production repair is allowed in F-VQ56"
+}

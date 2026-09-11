@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.fvq56_source_lock.v1",
+  "work_unit": "F-VQ56",
+  "canonical": {
+    "head": "af9ec34ec587be76deea95763186a204f3ed32cd",
+    "tree": "5116f1af87e72601f99b303d5f3c69c7f21b7564",
+    "src_tree": "fd07bc662410a7bfbd64b4960295997c9e05e19a",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "owner": {
+    "closeout": "4a76095df80435ff466e52bc65984300bc45ea06",
+    "candidate": "fdb0e745b362c81a042faba7f81cab53b1372d97",
+    "exact_closeout_run": 34548003044
+  },
+  "qualification_materialization": {
+    "commit": "50f0955a5b2a4e98e4a325523cfb6b4c1c26be07",
+    "direct_parent": "af9ec34ec587be76deea95763186a204f3ed32cd",
+    "tree_equals_owner_candidate": true
+  },
+  "production_scope": {
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+  },
+  "upstream_independent_authorities": {
+    "structural": "F-VQ52@003209963ead7f14e375fca7f7d5d4b2a1996ae8",
+    "hydraulic_capacity": "F-VQ54@7cf8f6685ca24f855621f872bcf906f346edfa72"
+  },
+  "qualification_rule": "no src/** mutation after immutable materialization; fail closed on canonical src/reference drift or any candidate-behavior failure"
+}
