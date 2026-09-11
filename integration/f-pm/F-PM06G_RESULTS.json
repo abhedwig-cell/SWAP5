@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.fpm06g_results.v1",
+  "work_unit": "F-PM06G",
+  "title": "Restricted Surface-Evaporation Accepted Publication Readiness",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "qualified_candidate_head": "f3f20f16df24cb956ac61e6ab1395ef2f56aef7e",
+  "production_delta": {
+    "files": ["src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90"],
+    "exact_single_source_delta": true,
+    "publication_module_blob": "3ab9cb4be6eb211e8f6cd86f89665bb42c2332e1",
+    "fci42_binding_blob_preserved": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "fci42_materializer_blob_preserved": "bc40bc6b121f56071d2b811195759f86130defeb",
+    "restricted_process_blob_preserved": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "qualified_behavior": {
+    "prepared_metadata_worker_local": true,
+    "accepted_commit_receipt_is_publication_authority": true,
+    "lineage_bound": true,
+    "origin_revision_bound": true,
+    "origin_interval_bound": true,
+    "dry_route_rate_publication": true,
+    "ponded_route_rate_publication": true,
+    "invalid_or_nonfinite_result_fail_closed": true,
+    "precommit_publication_rejected": true,
+    "lineage_mismatch_rejected": true,
+    "revision_mismatch_rejected": true,
+    "time_mismatch_rejected": true,
+    "rate_values_preserved_without_generic_time_integration": true,
+    "publication_finalization_does_not_recommit": true,
+    "mass_ledger_mutation_added": false,
+    "duplicate_surface_evaporation_mass_booking_added": false,
+    "persistent_per_column_state_added": false,
+    "file_io_added": false,
+    "headcalc_or_legacy_internal_dependency_added": false
+  },
+  "qualification": {
+    "workflow": ".github/workflows/fpm06g-surface-evaporation-accepted-publication.yml",
+    "runner": "tests/fpm/run_fpm06g_surface_evaporation_accepted_publication.sh",
+    "successful_run": 34559972124,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "markers": [
+      "FPM06G_EXACT_ONE_SOURCE_PRODUCTION_DELTA=PASS",
+      "FPM06G_FROZEN_SURFACE_EVAPORATION_AUTHORITIES=PASS",
+      "FPM06G_ATTRIBUTION_ONLY_NO_MASS_LEDGER_MUTATION=PASS",
+      "FPM06G_ALLOCATION_FREE_PUBLICATION_SEAM=PASS",
+      "FPM06G_NO_IO_OR_SOLVER_INTERNAL_DEPENDENCY=PASS",
+      "FPM06G_NO_GENERIC_TIME_RATE_INTEGRATION=PASS",
+      "FPM06G_O0_O2_PUBLICATION_ORACLE_IDENTITY=PASS",
+      "FPM06G_FVQ56_UPSTREAM_ORACLE_O0_O2=PASS",
+      "FPM06G_OWNER_QUALIFICATION_GATE PASS"
+    ],
+    "upstream_independent_oracle": {
+      "work_unit": "F-VQ56",
+      "commit": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+      "source_rehydrated_exactly": true,
+      "local_program_identifier_normalization_only": true,
+      "O0_O2_replay": "PASS"
+    }
+  },
+  "prior_red_runs": [
+    {
+      "run": 34559830525,
+      "classification": "HARNESS_ONLY",
+      "cause": "GNU Fortran function-elimination warning promoted by -Werror for impure candidate readiness combined inside test expressions",
+      "production_defect": false,
+      "remediation": "split test-only assertions"
+    },
+    {
+      "run": 34559909922,
+      "classification": "HARNESS_ONLY",
+      "cause": "rehydrated F-VQ56 program identifier exceeded the Fortran identifier-length limit",
+      "production_defect": false,
+      "remediation": "apply the same local identifier normalization already used by F-PE11 before compiling the frozen oracle"
+    }
+  ],
+  "mass": {
+    "policy": "HARD_UNCHANGED",
+    "authoritative_top_water_mass_still_owned_by_solver_external_top_flux": true,
+    "published_surface_evaporation_is_decomposition_metadata_only": true
+  },
+  "architecture_invariants": {
+    "explicitly_rechecked": [3,4,5,7,9,13,16,22,23,26,27,29,30],
+    "adverse_delta": false
+  },
+  "nonclaims": [
+    "surface evaporation drives the production top-boundary flux",
+    "surface evaporation is composed end-to-end into the production serialized MultiSWAP execution path",
+    "published surface-evaporation rates are additional authoritative mass terms",
+    "SWINTER or SWREDU scope is widened",
+    "F-PM06G is canonically admitted"
+  ],
+  "next_gap": "compose the qualified accepted-publication seam into a real runtime execution path after a separate current-authority workunit and qualification; do not perform this composition or canonical admission inside F-PM06G"
+}

@@ -3,29 +3,49 @@
   "work_unit": "F-PM06G",
   "title": "Restricted Surface-Evaporation Accepted Publication Readiness",
   "branch": "work/f-pm06g-surface-evaporation-accepted-publication-readiness",
-  "phase": "PROTOCOL_PERSISTED_IMPLEMENTATION_PENDING",
+  "phase": "OWNER_CLOSEOUT_PENDING_EXACT_HEAD_CI",
   "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
-  "decision": "OPEN_ACCEPTED_PUBLICATION_READINESS",
-  "analysis": {
-    "gap_confirmed": true,
-    "gap": "F-PM06F materializes a trial-local restricted surface-evaporation result but deliberately does not publish it as accepted result metadata",
-    "existing_authority_reused": "fmr_accepted_commit_receipt_t",
-    "time_unit_risk": "surface-evaporation values are rates while kernel time is generic; F-PM06G must not multiply by t1-t0 or assume days",
-    "mass_risk": "surface evaporation is decomposition metadata only; accepted solver external top flux remains the sole authoritative top-water mass contribution"
+  "qualified_candidate_head": "f3f20f16df24cb956ac61e6ab1395ef2f56aef7e",
+  "qualified_candidate_run": 34559972124,
+  "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_READY_FOR_SEPARATE_RUNTIME_COMPOSITION",
+  "scientific_authority": {
+    "runtime_materialization": "F-PM06F / F-VQ56 / F-CI41P",
+    "performance": "F-PE11 / F-CI42P",
+    "reopened": false
+  },
+  "qualified_effect": {
+    "accepted_only_provenance_bound_rate_publication": true,
+    "publication_before_commit_possible": false,
+    "generic_time_unit_assumption_added": false,
+    "mass_ledger_mutation_added": false,
+    "persistent_per_column_state_added": false,
+    "fci42_runtime_blobs_changed": false
+  },
+  "qualification_history": {
+    "successful_run": 34559972124,
+    "prior_red_runs": [34559830525,34559909922],
+    "prior_red_runs_classification": "HARNESS_ONLY_NO_PRODUCTION_DEFECT"
   },
   "state": {
     "analysis_complete": true,
     "protocol_persisted": true,
-    "production_realized": false,
-    "tests_persisted": false,
-    "tested": false,
+    "production_realized": true,
+    "production_persisted": true,
+    "tests_persisted": true,
+    "tested": true,
+    "owner_qualified_candidate": true,
+    "closeout_metadata_persisted": true,
+    "exact_closeout_head_ci_green": false,
     "owner_qualified": false,
-    "closed": false
+    "closed": false,
+    "canonical_admission_performed": false
+  },
+  "exact_closeout_gate": {
+    "require_same_owner_workflow_on_this_metadata_head": true,
+    "no_production_test_or_workflow_changes_permitted_after_candidate_qualification": true
   },
   "open": [
-    "implement narrow provenance-bound publication seam",
-    "add owner qualification oracle and source guards",
-    "run exact-head O0/O2 qualification",
-    "close or fail closed based on evidence"
+    "run exact owner qualification on this closeout metadata head",
+    "if green update only status metadata to final closeout and rerun exact head once more if the status mutation changes the head"
   ]
 }
