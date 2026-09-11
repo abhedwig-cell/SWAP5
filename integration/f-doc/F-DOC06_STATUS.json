@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.fdoc06_status.v1",
+  "work_unit": "F-DOC06",
+  "title": "RB1 ET, Root and Restricted Surface-Evaporation Traceability",
+  "branch": "work/f-doc06-rb1-et-root-surface-evap-traceability",
+  "base": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "capabilities": [
+    "RB1-ET-ROOT-SERIAL",
+    "RB1-ROOT-PARALLEL",
+    "RB1-SURFACE-EVAP-RESTRICTED"
+  ],
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_ET_ROOT_SURFACE_EVAP_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "validity_rule": "This status is final only when .github/workflows/fdoc06-rb1-et-root-surface-evap-traceability.yml completes successfully with head_sha equal to the exact branch head containing the final F-DOC06 status and closeout files.",
+  "traceability_boundary": {
+    "fully_traced_claimed": false,
+    "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+    "t11_status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+    "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+    "t1_scientific_authority_invented": false,
+    "t12_application_validation_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false,
+    "parallel_speedup_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false,
+    "surface_evaporation_performance_debt_reopened": false
+  },
+  "authority_chain": {
+    "f_ci27_status_blob": "f8059ea8d8aaad4451ab64c46d398bd77aa1cd9e",
+    "f_ci34_status_blob": "b21b6bd58e45a8734b24517f24bfec5a7640c4b8",
+    "f_ci41p_status_blob": "f5a359c7d3f80ede80c15eadc44afb155aaab845",
+    "f_mq30_closeout": "48ee2841d783ee023c29391a7ea1e5d7ee0d20e0",
+    "f_mq30_matrix_blob": "40b45112f0e14accbcc08c015b988f39bf376eb7",
+    "fpe11_runner_blob": "f3068802d4428e6941bef6e76a65d78c2e3d264d",
+    "f_vq56_head": "0cdbc193976c73bef208a82547b3c9ea81c4102c"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "qualification_evidence": {
+    "first_green_head": null,
+    "first_green_workflow_run": null,
+    "first_green_artifact": null,
+    "first_green_artifact_digest": null,
+    "final_exact_head_run": null
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "qualification_is_subject_to_exact_head_validity_rule": true,
+    "scientific_scope_reopened": false,
+    "open": [
+      "T0-T7 controlled theory/conceptual/formal/numerical traceability remains intentionally unresolved in this bounded workunit",
+      "Complete T11 equation-to-test graphs",
+      "T12 application validation",
+      "Surface-evaporation throughput/scaling and call-local allocation performance remain separate performance work"
+    ]
+  }
+}
