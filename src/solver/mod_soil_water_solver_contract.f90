@@ -94,10 +94,19 @@ module mod_soil_water_solver_contract
      procedure(root_sink_evaluate_ifc), deferred :: evaluate
   end type root_sink_provider_t
 
+  ! Frozen F-SI28 ABI: simple providers remain flux-only and keep the exact
+  ! legacy explicit-provider signature.
   type, abstract, public :: top_boundary_provider_t
    contains
      procedure(top_boundary_evaluate_ifc), deferred :: evaluate
   end type top_boundary_provider_t
+
+  ! F-SI30 opt-in sibling. Rich dynamic surface physics is isolated from the
+  ! already-qualified fixed-flux provider ABI and pays no cost when unused.
+  type, abstract, public :: dynamic_top_boundary_provider_t
+   contains
+     procedure(dynamic_top_boundary_evaluate_ifc), deferred :: evaluate
+  end type dynamic_top_boundary_provider_t
 
   type, abstract, public :: macropore_exchange_provider_t
    contains
@@ -109,6 +118,7 @@ module mod_soil_water_solver_contract
      class(source_sink_provider_t), pointer :: source_sink => null()
      class(root_sink_provider_t), pointer :: root_sink => null()
      class(top_boundary_provider_t), pointer :: top_boundary => null()
+     class(dynamic_top_boundary_provider_t), pointer :: dynamic_top_boundary => null()
      class(macropore_exchange_provider_t), pointer :: macropore => null()
   end type hydraulic_evaluation_context_t
 
@@ -206,16 +216,29 @@ module mod_soil_water_solver_contract
        real(real64), intent(out) :: root_sink(:)
      end subroutine root_sink_evaluate_ifc
 
-     subroutine top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, candidate_ponding_depth, &
-                                           requested, result)
-       import :: top_boundary_provider_t, soil_water_boundary_conditions_t, soil_water_top_boundary_result_t, real64
+     subroutine top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, requested, &
+                                           actual_top_flux, surface_head, runoff_flux)
+       import :: top_boundary_provider_t, soil_water_boundary_conditions_t, real64
        class(top_boundary_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head_top
+       real(real64), intent(in) :: water_content_top
+       type(soil_water_boundary_conditions_t), intent(in) :: requested
+       real(real64), intent(out) :: actual_top_flux
+       real(real64), intent(out) :: surface_head
+       real(real64), intent(out) :: runoff_flux
+     end subroutine top_boundary_evaluate_ifc
+
+     subroutine dynamic_top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, candidate_ponding_depth, &
+                                                   requested, result)
+       import :: dynamic_top_boundary_provider_t, soil_water_boundary_conditions_t, &
+            soil_water_top_boundary_result_t, real64
+       class(dynamic_top_boundary_provider_t), intent(in) :: self
        real(real64), intent(in) :: pressure_head_top
        real(real64), intent(in) :: water_content_top
        real(real64), intent(in) :: candidate_ponding_depth
        type(soil_water_boundary_conditions_t), intent(in) :: requested
        type(soil_water_top_boundary_result_t), intent(out) :: result
-     end subroutine top_boundary_evaluate_ifc
+     end subroutine dynamic_top_boundary_evaluate_ifc
 
      subroutine macropore_evaluate_ifc(self, pressure_head, exchange_flux, active)
        import :: macropore_exchange_provider_t, real64
