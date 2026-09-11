@@ -1,0 +1,172 @@
+{
+  "schema": "swap5.fdoc11_controlled_theory_formal_gap_decomposition.v1",
+  "work_unit": "F-DOC11",
+  "title": "RB1 Controlled Theory/Formal Gap Decomposition",
+  "release_id": "SWAP5-RB1-v1",
+  "base_authority": {
+    "fdoc10": "ef34a9f5a01d78ff9c2628315b484c5a8ff4f717",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "purpose": "Decompose the remaining F-DOC10 GAP-CONTROLLED-THEORY-FORMAL across the fixed 15-capability RB1 denominator without inventing theory, reopening science, promoting FULLY_TRACED status, or claiming Status A readiness.",
+  "tier_scope": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+  "decomposition_policy": {
+    "resolution_claimed": false,
+    "allowed_dispositions": [
+      "CONTROLLED_SCIENTIFIC_AUTHORITY_REQUIRED",
+      "CONTROLLED_FORMAL_NUMERICAL_AUTHORITY_REQUIRED",
+      "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "APPLICABILITY_REVIEW_REQUIRED",
+      "EXTERNAL_POLICY_OR_VALIDATION_DEPENDENCY"
+    ],
+    "rule": "A decomposition entry classifies the kind of missing controlled authority. It does not resolve any T0-T7 tier and cannot promote capability maturity by itself.",
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false,
+    "fully_traced_promotions": 0
+  },
+  "family_classes": {
+    "PHYSICAL_SCIENCE": "Physical-process capabilities require controlled phenomenon, theory, conceptual, formal and SWAP-specific formulation lineage before numerical tiers can be closed.",
+    "NUMERICAL_METHOD": "Numerical acceptance/solver capabilities require controlled formal numerical semantics, discretisation and method authority; application accuracy policy remains distinct.",
+    "RUNTIME_ARCHITECTURE": "Runtime/state/restart/execution capabilities require controlled architecture and formal state-transition semantics; physical-theory tiers may ultimately be NOT_APPLICABLE only with explicit rationale.",
+    "HYBRID": "Capabilities that combine physical process and runtime/numerical behaviour require both scientific and architecture/numerical authority strands."
+  },
+  "capabilities": [
+    {
+      "capability_id": "RB1-CORE-INTERVAL",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T0 applicability", "T1 applicability", "T2 interval semantics", "T3 formal [t0,t1] contract", "T6 event/time partitioning", "T7 acceptance/retry interaction"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-CORE-DATA",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T0-T1 applicability rationale", "T2 data-category model", "T3 ownership invariants", "T4 SWAP-specific category separation"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-CORE-TRANSACTION",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T2 checkpoint/trial/commit concept", "T3 state-transition model", "T6 timestep transaction boundaries", "T7 retry/rollback semantics"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-CORE-MASS",
+      "family": "HYBRID",
+      "primary_disposition": "CONTROLLED_FORMAL_NUMERICAL_AUTHORITY_REQUIRED",
+      "focus": ["T1 conservation principle", "T3 canonical balance equation", "T4 accepted-only SWAP ledger", "T6 discrete conservation placement", "T7 retry-safe accounting"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-CORE-DIAGNOSTICS",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T0-T1 applicability rationale", "T2 diagnostic semantics", "T3 deterministic publication obligations", "T7 solver/retry diagnostic semantics"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-SW-REFERENCE",
+      "family": "PHYSICAL_SCIENCE",
+      "primary_disposition": "CONTROLLED_SCIENTIFIC_AUTHORITY_REQUIRED",
+      "focus": ["T0 vadose-zone water system", "T1 Richards/constitutive theory", "T2 conceptual stores/fluxes", "T3 full formal equations and boundary conditions", "T4 SWAP-specific branches", "T5 continuous computational form", "T6 discretisation", "T7 nonlinear/linear solution method"],
+      "known_boundary": "F-DOC09 provides bounded T11 evidence inventory only; it does not close T1, T3-T8 or whole-route theory authority.",
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-TIME-REFERENCE",
+      "family": "NUMERICAL_METHOD",
+      "primary_disposition": "CONTROLLED_FORMAL_NUMERICAL_AUTHORITY_REQUIRED",
+      "focus": ["T1 temporal-error/acceptance rationale", "T3 formal acceptance quantities", "T5 continuous temporal quantity definitions", "T6 time-step/coupling discretisation", "T7 acceptance/retry method"],
+      "known_boundary": "F-VQ34 and F-DOC08 qualify bounded temporal-acceptance behaviour; no universal application H_budget or groundwater-head accuracy budget is selected.",
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-STANDALONE-N1",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "APPLICABILITY_REVIEW_REQUIRED",
+      "focus": ["Determine which T0-T7 tiers are applicable to execution topology versus inherited from physical solver/process capabilities", "Controlled N=1 shared-kernel execution semantics"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-MULTISWAP-SERIAL",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T2 logical-column composition", "T3 isolation/equivalence invariants", "T6 batching semantics", "T7 deterministic execution policy"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-MULTISWAP-PARALLEL-V1",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T2 worker/column ownership", "T3 isolation and deterministic equivalence invariants", "T6 execution partitioning", "T7 bounded worker policy"],
+      "nonclaim": "No parallel speedup or throughput superiority is claimed.",
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-ET-ROOT-SERIAL",
+      "family": "PHYSICAL_SCIENCE",
+      "primary_disposition": "CONTROLLED_SCIENTIFIC_AUTHORITY_REQUIRED",
+      "focus": ["T0 crop-soil-atmosphere water uptake", "T1 ET/root-stress theory", "T2 process concept", "T3 uptake/stress equations", "T4 restricted Macro/Feddes choices", "T5-T7 computational/numerical treatment"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-ROOT-PARALLEL",
+      "family": "HYBRID",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["Inherit physical theory only from qualified root-process authority", "T2-T3 execution/isolation semantics", "T6-T7 parallel numerical/runtime policy"],
+      "nonclaim": "Parallel qualification does not independently establish root-process science.",
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-SURFACE-EVAP-RESTRICTED",
+      "family": "PHYSICAL_SCIENCE",
+      "primary_disposition": "CONTROLLED_SCIENTIFIC_AUTHORITY_REQUIRED",
+      "focus": ["T0 surface evaporation process", "T1 evaporation-reduction theory", "T2 restricted-process concept", "T3-T5 scalar formulation", "T6-T7 numerical/runtime materialisation"],
+      "nonclaim": "Functional MultiSWAP compatibility is separate from throughput/scaling; call-local copy/allocation performance remains separate work.",
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-RESTART-SERIAL",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T2 continuation concept", "T3 persistent-state sufficiency and identity", "T6 split-run boundary semantics", "T7 restart equivalence requirements"],
+      "resolved_by_fdoc11": []
+    },
+    {
+      "capability_id": "RB1-RESTART-PARALLEL",
+      "family": "RUNTIME_ARCHITECTURE",
+      "primary_disposition": "CONTROLLED_ARCHITECTURE_SEMANTICS_AUTHORITY_REQUIRED",
+      "focus": ["T2 parallel continuation concept", "T3 column/state isolation", "T6 split-run plus worker repartition semantics", "T7 deterministic restart equivalence"],
+      "resolved_by_fdoc11": []
+    }
+  ],
+  "decomposition_summary": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "physical_science": 3,
+    "numerical_method": 1,
+    "runtime_architecture": 9,
+    "hybrid": 2,
+    "resolved_t0_t7_by_fdoc11": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0
+  },
+  "residual_external_dependencies": [
+    "Controlled WR-QA-2024 copy and exact reconciliation",
+    "Application-specific temporal/groundwater H_budget policy",
+    "T12 independent application validation",
+    "Surface-evaporation throughput/scaling and call-local allocation performance"
+  ],
+  "hard_nonclaims": [
+    "No T0-T7 tier is marked resolved by F-DOC11.",
+    "No capability is promoted to FULLY_TRACED.",
+    "No Status A or Status AA readiness/compliance is claimed.",
+    "No scientific theory, equation, discretisation or numerical method is invented from release evidence.",
+    "No production source, reference data, physics, solver, tolerance, mass criterion, temporal acceptance or performance policy is changed.",
+    "No universal H_budget, temporal tolerance or groundwater-head accuracy budget is established."
+  ]
+}
