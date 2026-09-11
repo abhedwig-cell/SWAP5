@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC10",
+  "title": "RB1 Post-T11 Aggregate Traceability Reconciliation",
+  "release_id": "SWAP5-RB1-v1",
+  "base_authority": {
+    "work_unit": "F-DOC09",
+    "commit": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f"
+  },
+  "population_authority": {
+    "work_unit": "F-DOC07",
+    "commit": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "registry": "docs/scientific/registries/rb1-aggregate-traceability-reconciliation.json",
+    "registry_blob": "2ff4bb671ebafdaa92efc24c511f3466ac897724",
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0
+  },
+  "post_population_remediations": [
+    {
+      "work_unit": "F-DOC08",
+      "head": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+      "capability": "RB1-TIME-REFERENCE",
+      "status_blob": "8184a7a3ddbbe5e28d31899278f9daae6852a633",
+      "closeout_blob": "e862d10ef84b34c4f3ba1abe89abe5f7d401b5d0",
+      "final_exact_head_run": 34642744759,
+      "decision": "QUALIFIED_BOUNDED_RB1_TIME_REFERENCE_T11_RELATION_TO_TEST_GRAPH",
+      "maturity_delta": "CLOSES_BOUNDED_TEMPORAL_ACCEPTANCE_RELATION_TO_TEST_GRAPH_ONLY",
+      "remaining_limits": [
+        "universal application-accuracy T11 remains open",
+        "no numeric or universal H_budget",
+        "T12 remains open",
+        "not fully traced",
+        "not Status A ready"
+      ]
+    },
+    {
+      "work_unit": "F-DOC09",
+      "head": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f",
+      "capability": "RB1-SW-REFERENCE",
+      "status_blob": "7a166383d86e575700daba650bec66f0b53b144e",
+      "closeout_blob": "c04c3df5eb51d81335c4fe85aac5f42621aba5c2",
+      "final_exact_head_run": 34643460050,
+      "decision": "QUALIFIED_BOUNDED_RB1_SW_REFERENCE_T11_EVIDENCE_GRAPH_WITH_EXPLICIT_RESIDUAL_GAPS",
+      "maturity_delta": "QUALIFIES_BOUNDED_REFERENCE_ROUTE_VERIFICATION_EVIDENCE_INVENTORY_AND_GAP_DECOMPOSITION",
+      "remaining_limits": [
+        "controlled complete T1 theory authority remains open",
+        "controlled complete T3-T8 formulation/discretisation/numerical graph remains open",
+        "whole-route T11 equation-to-test graph remains open",
+        "T12 remains open",
+        "not fully traced",
+        "not Status A ready"
+      ]
+    }
+  ],
+  "frozen_release_authorities": {
+    "scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "required_denominator": 15
+  },
+  "aggregate_coverage_after_remediation": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0,
+    "release_pass_required_capabilities": 15,
+    "population_coverage_changed_by_fdoc08_or_fdoc09": false,
+    "population_coverage_claim": "COMPLETE_REQUIRED_CAPABILITY_POPULATION_COVERAGE",
+    "traceability_maturity_claim": "IMPROVED_BOUNDED_TRACEABILITY_WITH_EXPLICIT_RESIDUAL_GAPS_NOT_FULLY_TRACED"
+  },
+  "maturity_deltas": {
+    "RB1-TIME-REFERENCE": {
+      "before": "SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED",
+      "after": "BOUNDED_TEMPORAL_ACCEPTANCE_T11_GRAPH_COMPLETE_WITH_EXTERNAL_APPLICATION_ACCURACY_DEPENDENCY",
+      "whole_capability_fully_traced": false
+    },
+    "RB1-SW-REFERENCE": {
+      "before": "SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED",
+      "after": "BOUNDED_REFERENCE_ROUTE_T11_EVIDENCE_INVENTORY_COMPLETE_WITH_EXPLICIT_T1_T3_T8_T11_RESIDUAL_GAPS",
+      "whole_capability_fully_traced": false
+    },
+    "other_13_required_capabilities": {
+      "maturity_changed_by_fdoc08_or_fdoc09": false,
+      "authority": "F-DOC07 population reconciliation plus owning F-DOC03/F-DOC05/F-DOC06 records"
+    }
+  },
+  "aggregate_gap_state": [
+    {
+      "id": "GAP-CONTROLLED-THEORY-FORMAL",
+      "state": "OPEN",
+      "change": "UNCHANGED_PROGRAM_GAP",
+      "description": "Controlled T0-T7 theory, conceptual, formal and numerical traceability remains incomplete across the full RB1 denominator. F-DOC09 makes the Full Richards T1/T3-T8 subset more explicit but does not close it."
+    },
+    {
+      "id": "GAP-T11-COMPLETE-GRAPHS",
+      "state": "OPEN_NARROWED",
+      "change": "PARTIALLY_REMEDIATED_BY_FDOC08_AND_FDOC09",
+      "description": "F-DOC08 closes the bounded temporal-acceptance relation-to-test graph. F-DOC09 qualifies a bounded Full Richards reference-route verification evidence inventory. Complete equation-to-test graphs remain unestablished for the entire RB1 denominator and for the entire Full Richards route."
+    },
+    {
+      "id": "GAP-T12-APPLICATION-VALIDATION",
+      "state": "OPEN",
+      "change": "UNCHANGED_PROGRAM_GAP",
+      "description": "Release and verification qualification do not constitute application-class validation."
+    },
+    {
+      "id": "GAP-WR-QA-2024-CONTROLLED-COPY",
+      "state": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+      "change": "UNCHANGED_EXTERNAL_DEPENDENCY",
+      "description": "Controlled Revised checklist Status A/AA 2024 copy and exact reconciliation remain unavailable/pending under F-DOC01 governance."
+    },
+    {
+      "id": "GAP-APPLICATION-TEMPORAL-H-BUDGET",
+      "state": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+      "change": "UNCHANGED_EXTERNAL_DEPENDENCY",
+      "description": "F-DOC08 deliberately does not select a numeric or universal H_budget; application-specific temporal/groundwater error-budget selection remains external."
+    },
+    {
+      "id": "GAP-SURFACE-EVAP-PERFORMANCE",
+      "state": "OPEN_SEPARATE_PERFORMANCE_WORK",
+      "change": "UNCHANGED_SEPARATE_WORK",
+      "description": "Functional MultiSWAP compatibility is qualified, but throughput/scaling and call-local copy/allocation performance remain separate and do not reopen science."
+    }
+  ],
+  "status_a_boundary": {
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "external_audit_performed": false,
+    "formal_2024_reconciliation": "PENDING_CONTROLLED_COPY",
+    "maximum_claim": "COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_IMPROVED_BOUNDED_T11_TRACEABILITY_AND_EXPLICIT_RESIDUAL_MATURITY_GAPS",
+    "reason": "F-DOC08 and F-DOC09 improve specific T11 evidence, but do not close program-wide T0-T12 traceability, T12 validation, controlled WR-QA-2024 reconciliation or competent external audit requirements."
+  },
+  "hard_nonclaims": [
+    "F-DOC10 does not change the fixed 15-capability RB1 denominator or any capability assignment.",
+    "F-DOC10 does not promote any capability to FULLY_TRACED by aggregation.",
+    "F-DOC10 does not turn F-DOC08 bounded temporal T11 completion into a universal application-accuracy claim or H_budget.",
+    "F-DOC10 does not turn F-DOC09 bounded reference evidence inventory into a complete Full Richards theory or equation-to-test authority.",
+    "F-DOC10 does not use release PASS as a substitute for missing T0-T12 evidence.",
+    "F-DOC10 does not establish Status A readiness/compliance, Status AA compliance or external audit completion.",
+    "F-DOC10 does not alter production source, reference data, physics, solver, tolerances, mass criteria, temporal acceptance or performance policy.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ]
+}
