@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fdoc03_concurrency_reconciliation.v1",
+  "work_unit": "F-DOC03",
+  "title": "Concurrent duplicate qualification-path reconciliation",
+  "status": "RECONCILED_PENDING_EXACT_HEAD_CANONICAL_CI",
+  "canonical_qualified_ancestor": {
+    "head": "9c331163bffc5e2c8a78f80b884c46c44e28f977",
+    "workflow": ".github/workflows/fdoc03-rb1-core-traceability.yml",
+    "run": 34595910048,
+    "conclusion": "success",
+    "artifact": 10262022541,
+    "artifact_digest": "sha256:6c71c1e41ad789d1bf30236212d65cc86f7d04a34d75f231e9478ab4c359ade3"
+  },
+  "concurrent_commits": [
+    {
+      "sha": "9877e35355c9fff827a79a49fa63a57b50f92dcb",
+      "message": "test(F-DOC03): add fail-closed core traceability validator",
+      "added_path": "tools/docs/validate_fdoc03_core_traceability.py",
+      "classification": "DUPLICATE_NONCANONICAL_VALIDATOR"
+    },
+    {
+      "sha": "2c24826adb19497296563c3d4585184ea1cc94aa",
+      "message": "ci(F-DOC03): add exact-head core traceability qualification",
+      "added_path": ".github/workflows/fdoc03-core-traceability.yml",
+      "classification": "DUPLICATE_NONCANONICAL_WORKFLOW"
+    }
+  ],
+  "failed_concurrent_head_runs": [
+    {
+      "run": 34595959629,
+      "head": "2c24826adb19497296563c3d4585184ea1cc94aa",
+      "workflow": ".github/workflows/fdoc03-rb1-core-traceability.yml",
+      "conclusion": "failure"
+    },
+    {
+      "run": 34595959672,
+      "head": "2c24826adb19497296563c3d4585184ea1cc94aa",
+      "workflow": ".github/workflows/fdoc03-core-traceability.yml",
+      "conclusion": "failure"
+    }
+  ],
+  "finding": "The two concurrent commits duplicated F-DOC03 qualification machinery after the already green canonical closeout/status head. The duplicate validator was non-equivalent to the canonical validator and expected RB1-CORE-MASS T1 capability status GAP rather than the canonical GAP_SOURCE_BINDING_OPEN with a referenced T1 node whose node status is GAP. The duplicate workflow therefore cannot become a second authority path.",
+  "reconciliation": {
+    "remove_from_final_tree": [
+      "tools/docs/validate_fdoc03_core_traceability.py",
+      ".github/workflows/fdoc03-core-traceability.yml"
+    ],
+    "retain_as_canonical": [
+      "tools/docs/validate_fdoc03_rb1_core_traceability.py",
+      ".github/workflows/fdoc03-rb1-core-traceability.yml"
+    ],
+    "registry_changed": false,
+    "scientific_content_changed": false,
+    "traceability_scope_changed": false,
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "validity_rule": "This reconciliation becomes final F-DOC03 authority only when the retained canonical workflow .github/workflows/fdoc03-rb1-core-traceability.yml succeeds with head_sha equal to the exact reconciliation commit and the branch ref remains on that exact head.",
+  "decision_if_exact_head_canonical_ci_green": "QUALIFIED_BOUNDED_RB1_CORE_TRACEABILITY_POPULATION_WITH_EXPLICIT_GAPS",
+  "open_gaps_unchanged": [
+    "RB1-CORE-MASS T1 controlled independent source binding",
+    "Complete T11 verification graph for all five bounded core capabilities"
+  ]
+}
