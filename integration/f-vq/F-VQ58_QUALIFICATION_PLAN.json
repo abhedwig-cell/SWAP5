@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.independent_qualification_plan.v1",
+  "work_unit": "F-VQ58",
+  "title": "Independent Restricted Soil-Temperature Process Qualification",
+  "candidate_owner": "F-PM07B",
+  "qualification_branch": "qualification/f-vq58-fpm07b-restricted-soil-temperature",
+  "assurance_model": "INDEPENDENT_QUALIFICATION_DO_NOT_INHERIT_OWNER_CONCLUSION",
+  "independence": {
+    "branch_from_current_canonical": true,
+    "owner_tests_not_used_as_scientific_oracle": true,
+    "candidate_loaded_only_by_exact_commit_and_blob": true,
+    "qualification_branch_has_no_src_or_reference_delta": true,
+    "legacy_equations_reconstructed_separately": true,
+    "dense_linear_oracle_independent_of_candidate_tridiagonal_solver": true
+  },
+  "frozen_profile": {
+    "provider": "numerical_1d_sensible_soil_heat_conduction",
+    "top_boundary": "prescribed soil-surface temperature",
+    "bottom_boundary": "zero heat flux",
+    "hydraulic_input": "interval-start/end water content averaged as 0.5*(theta_start+theta_end)",
+    "frost": false,
+    "snow": false,
+    "latent_heat": false,
+    "analytic_temperature_provider": false,
+    "air_temperature_top_boundary": false,
+    "prescribed_top_heat_flux": false,
+    "prescribed_bottom_temperature": false
+  },
+  "scientific_reconstruction": {
+    "oracle": "independent reconstruction of SWAP 4.3.1 De Vries sensible heat capacity/conductivity plus implicit finite-volume heat equation",
+    "dense_matrix_solver": "independent Gaussian elimination with partial pivoting",
+    "de_vries_regimes": ["dry", "thetaDry_boundary", "transition", "thetaWet_boundary", "wet", "mixed_profile"],
+    "boundary_flux_sign": "positive into soil",
+    "zero_bottom_flux_checked": true,
+    "nonuniform_geometry_checked": true,
+    "nonuniform_material_fractions_checked": true,
+    "variable_interval_lengths_checked": true,
+    "temporal_refinement_checked": true,
+    "sensible_energy_closure_checked_independently": true
+  },
+  "state_runtime_contract": {
+    "trial_does_not_mutate_committed_state": true,
+    "commit_is_explicit": true,
+    "restart_payload_minimality_checked": true,
+    "continuous_split_restart_identity_checked": true,
+    "transaction_clone_checked": true,
+    "semantic_temperature_view_checked": true,
+    "fail_closed_invalid_interval_checked": true,
+    "fail_closed_invalid_hydraulic_view_checked": true,
+    "multiswap_interleaving_isolation_checked": true,
+    "repeated_run_determinism_checked": true,
+    "O0_O2_identity_required": true
+  },
+  "architecture_invariants_requiring_explicit_recheck": [1,2,3,4,5,6,7,8,9,16,20,21,22,23,25,26,27,29,30],
+  "pass_rule": "all source/provenance locks, independent scientific oracle cases, mandatory energy-closure guards, transaction/restart/isolation checks, architecture guards, repeated-run determinism and O0/O2 identity must pass",
+  "hard_nonclaims": [
+    "canonical admission",
+    "runtime call-site composition",
+    "frost physics qualification",
+    "snow thermal-boundary qualification",
+    "phase-change or latent-heat qualification",
+    "analytic annual-wave provider qualification",
+    "alternative thermal boundary modes",
+    "large-batch throughput qualification",
+    "RB1 modification or reopening"
+  ]
+}
