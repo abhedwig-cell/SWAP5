@@ -1,0 +1,36 @@
+name: F-MR39 exact-head candidate requalification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-mr39-restricted-soil-temperature-runtime-composition
+    paths:
+      - .github/workflows/fmr39-exact-head-requalification.yml
+
+permissions:
+  contents: read
+
+jobs:
+  exact-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout immutable F-MR39 candidate
+        run: |
+          git checkout --detach 87b553094b66980006b69f5ba8b53d70ccd0a8e0
+          test "$(git rev-parse HEAD)" = "87b553094b66980006b69f5ba8b53d70ccd0a8e0"
+          echo "FMR39_EXACT_CANDIDATE_CHECKOUT=PASS:$(git rev-parse HEAD)"
+      - name: Toolchain
+        run: |
+          python3 --version
+          gfortran --version
+      - name: Requalify exact immutable candidate
+        run: bash tests/fmr/run_fmr39_soil_temperature_runtime_gate.sh
+      - name: Assert exact candidate remained checked out
+        run: |
+          test "$(git rev-parse HEAD)" = "87b553094b66980006b69f5ba8b53d70ccd0a8e0"
+          test -z "$(git status --porcelain -- src)"
+          echo "FMR39_EXACT_CANDIDATE_HEAD=PASS:87b553094b66980006b69f5ba8b53d70ccd0a8e0"
