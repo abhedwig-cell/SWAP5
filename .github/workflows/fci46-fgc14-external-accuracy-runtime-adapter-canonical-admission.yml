@@ -1,0 +1,24 @@
+name: F-CI46 F-GC14 external accuracy runtime adapter canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci46-fgc14-external-accuracy-runtime-adapter-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          gfortran --version
+      - name: F-CI46 exact donor-bound canonical admission
+        run: python3 tests/fci/run_fci46_fgc14_external_accuracy_adapter_canonical_admission.py
