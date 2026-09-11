@@ -1,0 +1,227 @@
+{
+  "work_unit": "F-MR41",
+  "title": "Typed Optional-State Layout Identity & Fail-Closed Runtime Contract",
+  "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "candidate_source_authority": "50b8bd32b03946d947b9c8b87a17192684843b6e",
+  "audit_result": "PASS_WITH_EXPLICIT_SCOPE_BOUNDARIES",
+  "scope_statement": "F-MR41 types already-qualified optional physical-state layout identities and makes unknown layout identities fail closed. It does not add physics, a new state family, a new solver, or canonical admission.",
+  "invariants": [
+    {
+      "id": 1,
+      "name": "one computational kernel",
+      "status": "PRESERVED",
+      "evidence": "No kernel source changed; F-MR39 exact runtime authority remains byte-output identical under the typed contract.",
+      "rationale": "The change is confined to runtime template identity/admission and restart matching."
+    },
+    {
+      "id": 2,
+      "name": "kernel independent of I/O",
+      "status": "PRESERVED",
+      "evidence": "Only runtime core, serialized runtime admission, and restart-state matching changed; no I/O or parsing code changed.",
+      "rationale": "No file, path, unit, or format dependency was introduced into the kernel."
+    },
+    {
+      "id": 3,
+      "name": "explicit data separation",
+      "status": "QUALIFIED",
+      "evidence": "optional_state_layout_id remains template metadata and numerical_continuation_layout_id remains a separate numerical-policy axis.",
+      "rationale": "Physical optional-state topology is now explicitly typed rather than inferred from an arbitrary positive integer."
+    },
+    {
+      "id": 4,
+      "name": "compact persistent state",
+      "status": "QUALIFIED",
+      "evidence": "FMR41_INACTIVE_TYPED_CAPABILITY_SEMANTICS=PASS; typed snow/thermal templates may match a column with no allocated optional state.",
+      "rationale": "A template capability ID does not force optional state allocation for inactive columns."
+    },
+    {
+      "id": 5,
+      "name": "scratch per worker",
+      "status": "PRESERVED",
+      "evidence": "No workspace or scratch ownership code changed; F-MR39 exact runtime output remains unchanged.",
+      "rationale": "F-MR41 introduces constants and admission checks only."
+    },
+    {
+      "id": 6,
+      "name": "scalable memory layout",
+      "status": "PRESERVED",
+      "evidence": "No per-column fields or persistent arrays were added; fmr_template_t field layout is unchanged.",
+      "rationale": "Named integer constants replace implicit value ranges without increasing column state."
+    },
+    {
+      "id": 7,
+      "name": "transactional timesteps",
+      "status": "PRESERVED",
+      "evidence": "F-MR39 transactional runtime oracle replays exactly and retains its expected SHA256.",
+      "rationale": "Checkpoint, trial, commit, rollback, and retry code paths were not modified."
+    },
+    {
+      "id": 8,
+      "name": "cheap recomputation and warm start",
+      "status": "PRESERVED",
+      "evidence": "No committed/trial state or warm-start mechanism changed.",
+      "rationale": "Typed state-layout identity affects admission only."
+    },
+    {
+      "id": 9,
+      "name": "generic time",
+      "status": "PRESERVED",
+      "evidence": "No interval or calendar logic changed.",
+      "rationale": "No time assumptions are introduced by layout typing."
+    },
+    {
+      "id": 10,
+      "name": "flexible coupling windows",
+      "status": "PRESERVED",
+      "evidence": "No coupling-window or interval contract changed.",
+      "rationale": "The workunit is orthogonal to coupling-window size."
+    },
+    {
+      "id": 11,
+      "name": "coupling as core functionality",
+      "status": "PRESERVED",
+      "evidence": "No coupling transaction, interface residual, or response-tangent source changed.",
+      "rationale": "Runtime layout identity remains compatible with existing coupling architecture."
+    },
+    {
+      "id": 12,
+      "name": "explicit groundwater interface contract",
+      "status": "PRESERVED",
+      "evidence": "No groundwater head/flux interface source changed.",
+      "rationale": "F-MR41 has no groundwater-interface semantics."
+    },
+    {
+      "id": 13,
+      "name": "absolute mass conservation",
+      "status": "PRESERVED",
+      "evidence": "F-MR39 valid runtime output SHA256 is unchanged; F-MR19 base/restart preservation passes at O0 and O2.",
+      "rationale": "No storage, flux, or mass-accounting formula changed."
+    },
+    {
+      "id": 14,
+      "name": "interface sensitivities first-class output",
+      "status": "PRESERVED",
+      "evidence": "No sensitivity or Jacobian interface source changed.",
+      "rationale": "State-layout typing does not alter sensitivity production."
+    },
+    {
+      "id": 15,
+      "name": "bounded coupling cost",
+      "status": "PRESERVED",
+      "evidence": "No solver/coupling execution count logic changed.",
+      "rationale": "Added checks are constant-time integer comparisons."
+    },
+    {
+      "id": 16,
+      "name": "MultiSWAP primary use case",
+      "status": "QUALIFIED",
+      "evidence": "F-MR39 mixed enabled/disabled MultiSWAP oracle is replayed unchanged; FMR41_INACTIVE_TYPED_CAPABILITY_SEMANTICS=PASS.",
+      "rationale": "The typed ID is template-level capability metadata and does not force state allocation on inactive columns."
+    },
+    {
+      "id": 17,
+      "name": "no mandatory one-to-one MODFLOW relation",
+      "status": "PRESERVED",
+      "evidence": "No tile, fraction, aggregation, or MODFLOW mapping source changed.",
+      "rationale": "Optional-state typing is column-template local."
+    },
+    {
+      "id": 18,
+      "name": "deep-vadose optional separate component",
+      "status": "PRESERVED",
+      "evidence": "No deep-vadose component or transfer-zone source changed.",
+      "rationale": "No new coupling between SWAP state and deep-vadose state was introduced."
+    },
+    {
+      "id": 19,
+      "name": "mass-conserving component transitions",
+      "status": "PRESERVED",
+      "evidence": "No component transition or storage-transfer code changed.",
+      "rationale": "F-MR41 does not alter component handoff semantics."
+    },
+    {
+      "id": 20,
+      "name": "alternative soil-water solvers remain open",
+      "status": "PRESERVED",
+      "evidence": "No soil-water solver interface or implementation changed.",
+      "rationale": "Optional-state topology remains runtime metadata independent of Richards implementation."
+    },
+    {
+      "id": 21,
+      "name": "maximum reuse of SWAP physics",
+      "status": "PRESERVED",
+      "evidence": "No physics module was copied, forked, or changed.",
+      "rationale": "Existing snow and soil-temperature state families are referenced by identity only."
+    },
+    {
+      "id": 22,
+      "name": "other modules do not depend on HeadCalc internals",
+      "status": "PRESERVED",
+      "evidence": "No HeadCalc dependency was added; changed files contain only runtime/state-contract logic.",
+      "rationale": "Hydraulic interface boundaries are untouched."
+    },
+    {
+      "id": 23,
+      "name": "physics options separated from solver policy",
+      "status": "QUALIFIED",
+      "evidence": "FMR_OPTIONAL_STATE_LAYOUT_* identities are separate from FMR_NUMERICAL_CONTINUATION_* identities and the two fields remain distinct.",
+      "rationale": "F-MR41 explicitly prevents arbitrary numerical/layout values from being interpreted as a physical optional-state capability."
+    },
+    {
+      "id": 24,
+      "name": "predictable compute time",
+      "status": "PRESERVED",
+      "evidence": "No nonlinear solve, fallback, retry, or iteration policy changed.",
+      "rationale": "Admission adds only bounded constant-time checks."
+    },
+    {
+      "id": 25,
+      "name": "reference mode remains available",
+      "status": "PRESERVED",
+      "evidence": "Serialized reference backend remains operational; F-MR39 and F-MR19 reference-path tests pass at O0/O2.",
+      "rationale": "No reference solver functionality was removed."
+    },
+    {
+      "id": 26,
+      "name": "diagnostics are runtime functionality",
+      "status": "PRESERVED",
+      "evidence": "Unknown-layout admission uses the existing KERNEL_STATUS_NOT_ADMITTED and admission_rejections diagnostics path.",
+      "rationale": "F-MR41 fails closed through established diagnostics rather than silently coercing a layout."
+    },
+    {
+      "id": 27,
+      "name": "optional functionality scales with use",
+      "status": "QUALIFIED",
+      "evidence": "FMR41_INACTIVE_TYPED_CAPABILITY_SEMANTICS=PASS and no new per-column storage is introduced.",
+      "rationale": "A typed-capability template can serve inactive columns without allocating snow or thermal state."
+    },
+    {
+      "id": 28,
+      "name": "runtime/coupler organizes system composition",
+      "status": "QUALIFIED",
+      "evidence": "Optional physical-state topology identities are centralized in runtime template metadata and checked at runtime/restart boundaries.",
+      "rationale": "The kernel is not made aware of deployment composition or tile relations."
+    },
+    {
+      "id": 29,
+      "name": "no silent dependencies",
+      "status": "QUALIFIED",
+      "evidence": "FMR41_UNKNOWN_POSITIVE_LAYOUT_FAIL_CLOSED=PASS and the mutated F-MR39 oracle using 390502 is rejected at O0 and O2.",
+      "rationale": "The previous silent assumption 'any positive optional_state_layout_id means thermal' is removed."
+    },
+    {
+      "id": 30,
+      "name": "audit every architecture change",
+      "status": "QUALIFIED",
+      "evidence": "This file explicitly assesses all 30 architecture invariants against candidate 50b8bd32b03946d947b9c8b87a17192684843b6e.",
+      "rationale": "Scope boundaries and nonclaims are recorded rather than inferred."
+    }
+  ],
+  "bounded_nonclaims": [
+    "F-MR41 does not requalify snow-process physics or the full historical F-MR06 snow runtime on current canonical source.",
+    "F-MR41 does not qualify a snow-plus-soil-temperature combined profile; that combination remains rejected.",
+    "F-MR41 does not add or qualify a new optional-state family or a new layout identity beyond the already evidenced base, snow, and restricted soil-temperature identities.",
+    "F-MR41 does not perform canonical admission or change RB1 release authority.",
+    "F-MR41 makes no performance or parallel-throughput claim beyond constant-time contract checks and preservation of existing qualified paths."
+  ]
+}
