@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI30",
+  "artifact": "HEADCALC_DYNAMIC_PROVIDER_BRIDGE_MAPPING",
+  "source_parent": "b306256c129461560ec9c0007a6b77e6b27a945a",
+  "headcalc_parent_blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+  "upstream_provider": {
+    "authority": "F-SI29",
+    "decision": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+    "provider_blob": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d"
+  },
+  "routing": {
+    "simple_fixed_flux": "FSI_TOP_MODE_EXPLICIT_FLUX remains bound exclusively to top_boundary_provider_t and preserves the qualified F-SI28 ABI and behavior.",
+    "dynamic": "FSI_TOP_MODE_DYNAMIC_PROVIDER requires an associated dynamic_top_boundary_provider_t. No implicit fallback to legacy boundtop or the simple provider is allowed.",
+    "dynamic_flux": "Set ftoph=false and qtop=result.actual_top_flux; the existing HeadCalc residual retains F(1)+=qtop.",
+    "dynamic_head": "Set ftoph=true, hsurf=result.surface_head and kmean(1)=result.surface_face_conductivity; the existing HeadCalc residual retains F(1)-=kmean(1)*gradient and the existing top Jacobian retains +kmean(1)/grid_disnod(1).",
+    "runoff": "Set candidate ponding from result.candidate_ponding_depth and runots from result.runoff_depth. The rich provider resolves runoff, so legacy pondrunoff is not invoked on the dynamic route."
+  },
+  "mass_balance": {
+    "legacy_expression": "pond-pondm1 + epd*dt + reva*dt - (nraidt+nird+melt)*dt - runon*dt + runots - qtop*dt",
+    "dynamic_equivalent": "pond-pondm1 - net_potential_surface_flux*dt + runoff_depth - qtop*dt",
+    "basis": "F-SI29 defines net_potential_surface_flux = precipitation + irrigation + snowmelt + runon - bare_soil_evaporation - ponded_water_evaporation.",
+    "rule": "When the dynamic provider is active, the convergence pond-balance check must use only the rich provider result plus explicit trial state; it must not read hidden legacy forcing globals for these terms."
+  },
+  "lifecycle": {
+    "provider_result": "trial-local scratch only",
+    "candidate_ponding": "existing candidate physical state, committed only by the outer transaction",
+    "new_committed_state": false,
+    "additional_nonlinear_trajectory": false,
+    "additional_jacobian_build": false
+  },
+  "fail_closed": [
+    "dynamic mode without an associated dynamic provider",
+    "associated dynamic provider used with a non-dynamic top mode",
+    "provider status other than SW_TOP_BOUNDARY_AVAILABLE",
+    "regime other than FLUX or HEAD",
+    "HEAD regime with nonpositive surface-face conductivity",
+    "dynamic result without surface mass terms or resolved runoff"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "BRIDGE_MAPPING_FROZEN_IMPLEMENTATION_OPEN"
+}
