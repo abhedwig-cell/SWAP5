@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.fdoc03_status.v1",
+  "work_unit": "F-DOC03",
+  "title": "RB1 Core Capability Traceability Population",
+  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "base": "18942fee83eb385fccc1663230772ae03dcc9ae6",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "capabilities": [
+    "RB1-CORE-INTERVAL",
+    "RB1-CORE-DATA",
+    "RB1-CORE-TRANSACTION",
+    "RB1-CORE-MASS",
+    "RB1-CORE-DIAGNOSTICS"
+  ],
+  "realized": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "traceability_boundary": {
+    "fully_traced_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false,
+    "core_mass_t1_source_binding": "OPEN",
+    "t11_complete_test_graph": "OPEN_FOR_ALL_FIVE"
+  },
+  "decision_if_exact_head_ci_green": "QUALIFIED_BOUNDED_RB1_CORE_TRACEABILITY_POPULATION_WITH_EXPLICIT_GAPS"
+}
