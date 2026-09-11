@@ -3,10 +3,12 @@
   "work_unit": "F-PM06G",
   "title": "Restricted Surface-Evaporation Accepted Publication Readiness",
   "branch": "work/f-pm06g-surface-evaporation-accepted-publication-readiness",
-  "phase": "OWNER_CLOSEOUT_PENDING_EXACT_HEAD_CI",
+  "phase": "FINAL_OWNER_CLOSEOUT_COMPLETE",
   "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
   "qualified_candidate_head": "f3f20f16df24cb956ac61e6ab1395ef2f56aef7e",
   "qualified_candidate_run": 34559972124,
+  "closeout_evidence_head": "a6a9c13d5c896628fe9e9fa0cad017f9ac4fd578",
+  "closeout_evidence_run": 34560115390,
   "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_READY_FOR_SEPARATE_RUNTIME_COMPOSITION",
   "scientific_authority": {
     "runtime_materialization": "F-PM06F / F-VQ56 / F-CI41P",
@@ -22,7 +24,8 @@
     "fci42_runtime_blobs_changed": false
   },
   "qualification_history": {
-    "successful_run": 34559972124,
+    "candidate_green_run": 34559972124,
+    "metadata_closeout_green_run": 34560115390,
     "prior_red_runs": [34559830525,34559909922],
     "prior_red_runs_classification": "HARNESS_ONLY_NO_PRODUCTION_DEFECT"
   },
@@ -35,17 +38,16 @@
     "tested": true,
     "owner_qualified_candidate": true,
     "closeout_metadata_persisted": true,
-    "exact_closeout_head_ci_green": false,
-    "owner_qualified": false,
-    "closed": false,
+    "exact_closeout_evidence_head_ci_green": true,
+    "owner_qualified": true,
+    "closed": true,
     "canonical_admission_performed": false
   },
-  "exact_closeout_gate": {
-    "require_same_owner_workflow_on_this_metadata_head": true,
-    "no_production_test_or_workflow_changes_permitted_after_candidate_qualification": true
+  "final_status_head_policy": {
+    "same_owner_workflow_must_be_green_on_this_final_status_commit": true,
+    "no_production_test_or_workflow_changes_are_allowed_in_this_final_status_commit": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
   },
-  "open": [
-    "run exact owner qualification on this closeout metadata head",
-    "if green update only status metadata to final closeout and rerun exact head once more if the status mutation changes the head"
-  ]
+  "next_step": "A separate current-authority runtime-composition workunit may consume this qualified seam. It must not treat F-PM06G as canonical admission and must preserve the accepted-only provenance and hard mass-accounting boundaries.",
+  "open": []
 }
