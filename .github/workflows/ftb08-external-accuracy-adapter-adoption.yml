@@ -1,0 +1,89 @@
+name: F-TB08 external accuracy adapter testbank adoption
+
+on:
+  push:
+    branches:
+      - work/f-tb08-external-accuracy-adapter-testbank-adoption
+    paths:
+      - 'testbank/manifests/F-TB08_*'
+      - 'testbank/runners/*ftb08*'
+      - 'integration/f-tb/F-TB08_*'
+      - 'integration/f-tb/RUNLOG_F-TB08.md'
+      - 'docs/testbank/F-TB08_*'
+      - '.github/workflows/ftb08-external-accuracy-adapter-adoption.yml'
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Qualification profile
+        required: true
+        default: CANONICAL
+        type: choice
+        options: [FAST, CANONICAL, RELEASE, DEEP]
+
+permissions:
+  contents: read
+
+jobs:
+  fast:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB08_FAST_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Validate F-TB08 adoption
+        run: python3 testbank/runners/run_ftb08_qualification.py FAST
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB08_FAST_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
+
+  requested:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile != 'FAST' }}
+    needs: fast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute requested profile
+        run: python3 testbank/runners/run_ftb08_qualification.py "${{ inputs.profile }}"
+      - name: Exact requested head
+        run: test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+
+  release:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[ftb08-release]') }}
+    needs: fast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact release head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB08_RELEASE_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Execute release qualification
+        run: python3 testbank/runners/run_ftb08_qualification.py RELEASE
+      - name: Verify support-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only 4172e7e639d13e178fb75471263636a6cfa792fc..HEAD -- src reference)"
+          test "$(git rev-parse HEAD:src)" = "c03a94cdfdf96e61e1a7a5aa92ff4d7533d234be"
+          test "$(git rev-parse HEAD:reference)" = "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+      - name: Exact release head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB08_RELEASE_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
