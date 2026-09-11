@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB05",
+  "title": "SWAP5 Current-Canonical Continuous Qualification Adoption of F-TB04",
+  "state": "PERSISTED_BEFORE_EXECUTION",
+  "branch": "work/f-tb05-current-canonical-continuous-qualification",
+  "composition_baseline": "b38d04632845e2c6c6329eb1b3037d0186172df9",
+  "authorities": {
+    "current_canonical": "d201904a85f3b595e028242978e52c02f5122a09",
+    "current_canonical_src_tree": "d6f4816be543044b090d11294808b5be986b2ee8",
+    "current_canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "F-TB04_closeout": "85280c6c436a73c211b70996f9a22f4ad6b04f9c",
+    "F-TB04_testbank_tree": "f5a95626363f3c997d68951e170a0d8734056fa5"
+  },
+  "goal": "Re-execute the immutable F-TB04 transaction, restart, determinism and MultiSWAP qualification bank against the later exact canonical authority without rewriting F-TB04 history.",
+  "hard_scope": {
+    "production_source_changes": false,
+    "reference_changes": false,
+    "new_physics": false,
+    "new_solver": false,
+    "scientific_tolerance_relaxation": false,
+    "F-TB04_case_catalog_rewrite": false,
+    "RB1_reopened": false
+  },
+  "required_preservation": {
+    "F-TB04_case_ids_and_metadata": "BYTE_IDENTICAL",
+    "F-TB04_historical_closeout": "IMMUTABLE",
+    "current_canonical_source": "EXACT_TREE_LOCK",
+    "current_canonical_reference": "EXACT_TREE_LOCK"
+  },
+  "nonclaims": [
+    "soil-temperature restart qualification",
+    "soil-temperature MultiSWAP qualification",
+    "soil-temperature optional-state persistence qualification",
+    "frost or latent-heat qualification",
+    "new RB1 coverage"
+  ],
+  "defect_policy": "Any production-source defect is persisted and routed to a separate owner workunit; F-TB05 does not patch production source.",
+  "target_decision": "QUALIFIED_FTB04_CONTINUOUS_QUALIFICATION_ADOPTED_ON_CURRENT_CANONICAL"
+}

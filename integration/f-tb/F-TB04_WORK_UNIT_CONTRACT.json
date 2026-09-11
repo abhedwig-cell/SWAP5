@@ -1,0 +1,34 @@
+{
+  "work_unit": "F-TB04",
+  "title": "SWAP5 Transaction, Restart, Determinism & MultiSWAP Qualification Case Catalog",
+  "state": "PERSISTED_BEFORE_EXECUTION",
+  "composition_baseline": "5c7b76655c910046f574753a39278d9a3cc3dbf3",
+  "authorities": {
+    "current_canonical": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F-TB03": "65d5e5202446212390dbdd84b06e6b2a80e7121c",
+    "F-TB01_registry_blob": "4b4fcaa20e09a915428e459922d7b6b2a6a381b7",
+    "F-TB02_registry_blob": "f5cc721b98bd8167fd14b6218193526807f9c3b6",
+    "F-TB03_registry_blob": "afa0275b3d20856eb1e310e90186e5ee8e8f0a66"
+  },
+  "hard_scope": {
+    "production_source_changes": false,
+    "new_physics": false,
+    "new_solver": false,
+    "scientific_tolerance_relaxation": false,
+    "RB1_reopened": false,
+    "historical_RB1_evidence_rewritten": false
+  },
+  "catalog_targets": {
+    "transaction_cases": 10,
+    "restart_cases": 9,
+    "determinism_cases": 6,
+    "multiswap_cases": 10,
+    "total_cases": 35,
+    "profiles": ["FAST", "CANONICAL", "RELEASE", "DEEP"],
+    "required_invariants": [3,4,5,6,7,8,9,13,16,23,24,26,27,29,30],
+    "determinism_classes": ["BIT_IDENTITY_REQUIRED", "NUMERICAL_EQUIVALENCE_REQUIRED"]
+  },
+  "tolerance_policy": "NO_NEW_NONZERO_TOLERANCE; inherited hard mass gate 1e-12 only where already qualified",
+  "defect_policy": "Persist and classify source defects, open a separate owner workunit, never patch production source in F-TB04.",
+  "target_decision": "QUALIFIED_TRANSACTION_RESTART_DETERMINISM_MULTISWAP_TESTBANK_CATALOG_READY_FOR_CONTINUOUS_QUALIFICATION"
+}
