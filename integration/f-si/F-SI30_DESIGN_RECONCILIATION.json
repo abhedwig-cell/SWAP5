@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI30",
+  "artifact": "DESIGN_RECONCILIATION",
+  "status": "IMPLEMENTATION_DIRECTION_REFINED_BEFORE_EXECUTABLE_QUALIFICATION",
+  "finding": "The existing fixed-flux top-boundary provider ABI is already part of qualified F-SI28 source. Replacing that ABI globally would create avoidable regression surface. The dynamic F-SI29 capability needs richer trial output, but fixed-flux users do not.",
+  "refinement": {
+    "preserve": "Keep top_boundary_provider_t and fixed_flux_top_boundary_provider_t on their exact legacy explicit-flux evaluate signature.",
+    "add": "Add a sibling dynamic_top_boundary_provider_t interface carrying candidate ponding plus an explicit rich result DTO with flux/head regime, surface-face conductivity and trial-local surface mass terms.",
+    "context": "hydraulic_evaluation_context_t gains an optional dynamic_top_boundary pointer; existing top_boundary pointer remains unchanged.",
+    "routing": "FSI_TOP_MODE_EXPLICIT_FLUX selects only the old fixed/simple provider path. FSI_TOP_MODE_DYNAMIC_PROVIDER selects only the new dynamic provider path. No implicit substitution is allowed.",
+    "headcalc": "HeadCalc consumes only the generic dynamic provider contract and remains unaware of F-SI29-specific types or equations."
+  },
+  "contract_reconciliation": "This refines the F-SI30 contract toward a narrower and more backward-compatible realization while preserving every frozen semantic gate. It does not relax physics, tolerances, mass conservation, determinism or qualification scope.",
+  "architecture_reason": [
+    "physics-vs-policy separation",
+    "optional functionality scales with use",
+    "no silent dependencies",
+    "preserve qualified F-SI28 fixed-flux source where possible",
+    "avoid forcing richer trial-state DTOs onto providers that do not need them"
+  ],
+  "state": {
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  }
+}
