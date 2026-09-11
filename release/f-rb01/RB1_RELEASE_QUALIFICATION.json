@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.frb01_release_qualification.v1",
+  "work_unit": "F-RB01",
+  "status": "QUALIFIED",
+  "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY",
+  "frozen_release_candidate": {
+    "sha": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+    "tree": "3716898eae3c33bf62616e43a2690e9aeb71d434",
+    "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "production_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "closeout": "F-CI42P"
+  },
+  "decisive_ci": {
+    "workflow": "F-RB01 restricted production baseline v1 release qualification",
+    "run": 34569690664,
+    "workflow_head": "05092df17222c1761b42940bca369208ae009654",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "artifact_id": 10187339980,
+    "artifact_digest": "sha256:e28c99c248256e6cf7a230c06be51ca3ba0653d6ea1c9ab30e8272c1740834a3"
+  },
+  "temporal_authority": {
+    "frozen_scientific_authority": "PASS",
+    "current_dependency_preservation": "PASS",
+    "combined_gate": "PASS"
+  },
+  "release_gates": {
+    "immutable_release_candidate": "PASS",
+    "canonical_source_authority_still_frozen": "PASS",
+    "fixed_required_denominator_15": "PASS",
+    "architecture_invariants_30_of_30_no_fail": "PASS",
+    "worker_owned_heavy_scratch": "PASS",
+    "restart_excludes_solver_scratch": "PASS",
+    "kernel_runtime_no_legacy_io_assumption": "PASS",
+    "historical_fci03_fci18_authority": "PASS",
+    "current_serial_and_standalone_n1_restart": "PASS",
+    "current_parallel_v1_and_root_active": "PASS",
+    "current_parallel_committed_restart": "PASS",
+    "current_restricted_surface_evaporation": "PASS",
+    "excluded_scope_explicit": "PASS",
+    "moving_denominator_forbidden": "PASS",
+    "build_compiler": "PASS",
+    "determinism": "PASS",
+    "hard_mass": "PASS",
+    "transactionality": "PASS",
+    "restart": "PASS",
+    "standalone_serialized_parallel_restricted_composition": "PASS",
+    "negative_fail_closed": "PASS",
+    "architecture": "PASS"
+  },
+  "selected_exact_evidence": {
+    "serialized_restart": [
+      "FMR19_BATCH_SIZE_1/2/7/8/17/31/32=PASS",
+      "FMR19_EXACT_LINEAGE_REVISION_TIME_CONTINUATION=PASS",
+      "FMR19_EXACT_INTERVAL_MASS_CONTINUATION=PASS",
+      "FMR19_CONTINUOUS_VS_RESTARTED_ENDPOINT_IDENTITY=PASS",
+      "FMR19_DETERMINISTIC_REPLAY=PASS",
+      "FMQ27_FULL_NEGATIVE_MATRIX=PASS",
+      "FCI28_O0_O2_OUTPUT_IDENTITY=PASS"
+    ],
+    "parallel_root": [
+      "FMQ30_O0=PASS",
+      "FMQ30_O2=PASS",
+      "FMQ30_O0_O2_EXACT_OUTPUT_IDENTITY=PASS",
+      "FMQ30_HARD_MASS_CONSERVATION=PASS",
+      "FMQ30_DECISION=QUALIFIED_IF_WORKFLOW_GREEN"
+    ],
+    "parallel_restart": [
+      "FMQ29_O0=PASS",
+      "FMQ29_O2=PASS",
+      "FMQ29_O0_O2_EXACT_OUTPUT_IDENTITY=PASS",
+      "FMQ29_HARD_MASS_CONSERVATION=PASS",
+      "FMQ29_DECISION=QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION"
+    ],
+    "surface_evaporation": [
+      "FPE11_FCI41P_OBSERVABLE_IDENTITY=PASS",
+      "FPE11_O0_O2_IDENTITY=PASS",
+      "FPE11_COMMITTED_STATE_IMMUTABILITY=PASS",
+      "FPE11_ABA_DETERMINISM=PASS",
+      "FPE11_NO_AUTHORITATIVE_MASS_BOOKING=PASS",
+      "FPE11_FUNCTIONAL_QUALIFICATION=PASS",
+      "FPE11_THROUGHPUT_SCALING_CLAIM=NOT_YET_MADE"
+    ]
+  },
+  "evidence_file_sha256": {
+    "current_surface_evaporation.txt": "0599a3f56f71790689be8805099725d7870c4191a13c51eb5969745a728b3c35",
+    "current_parallel_root.txt": "18fea4091fafa39e1b3977ce69cc6b3413f7ad0188fa7b1254309e1d3a85ee6b",
+    "current_parallel_restart.txt": "543fc68493f7d890b0a68cb72457479e24e068cc197a8df3f1961fac9dd19f19",
+    "historical_fci03_fci18.txt": "58755994a7f13cff81b177b78428c4c3dbf5898e4667c76df2d9976f3420adb3",
+    "current_serial_restart.txt": "ab8db8bde07e2777f3e61ed29df42380ebfdf4700fb360f916f090fe0d8eeb3b"
+  },
+  "qualification_observations": [
+    "Compilation emitted warnings in legacy/current sources and test-derived drivers, including real-equality, impure-function short-circuit and possible-uninitialized diagnostics. No decisive gate failed because of these warnings; F-RB01 does not reinterpret them as proof of a runtime defect.",
+    "No absolute production runtime SLA, p95/p99 tail bound, universal speedup or peak-RSS guarantee is established by this workunit.",
+    "Surface-evaporation throughput/scaling beyond the already qualified local materialization change remains outside this release claim."
+  ],
+  "production_change_by_frb01": "NONE",
+  "scientific_authority_reopened": false,
+  "scope_denominator_changed": false
+}
