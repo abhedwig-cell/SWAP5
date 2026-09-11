@@ -11,7 +11,8 @@ module mod_reference_richards_legacy_binding
        release_reference_tridag_factorization_capture
   use mod_reference_linear_solver, only: reference_tridag_backsolve
   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
-       initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX
+       initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX, &
+       FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_temporal_indicator, only: evaluate_reference_richards_temporal_indicator
   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, &
        a23bu_initialize_worker, a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
@@ -308,14 +309,21 @@ contains
        route = 'legacy-bottom-mode-deferred'
        return
     end if
-    if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) then
+    select case (request%boundary%top_mode)
+    case (FSI_TOP_MODE_EXPLICIT_FLUX)
+       if (.not. associated(request%evaluation%top_boundary)) then
+          route = 'explicit-top-provider-required'
+          return
+       end if
+    case (FSI_TOP_MODE_DYNAMIC_PROVIDER)
+       if (.not. associated(request%evaluation%dynamic_top_boundary)) then
+          route = 'dynamic-top-provider-required'
+          return
+       end if
+    case default
        route = 'explicit-top-mode-required'
        return
-    end if
-    if (.not. associated(request%evaluation%top_boundary)) then
-       route = 'explicit-top-provider-required'
-       return
-    end if
+    end select
     if (.not. associated(request%evaluation%source_sink)) then
        route = 'source-sink-provider-required'
        return
