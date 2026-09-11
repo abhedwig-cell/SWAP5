@@ -1,0 +1,101 @@
+name: F-MR41 typed optional-state layout contract
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-mr41-typed-optional-state-layout-contract
+    paths:
+      - integration/f-mr/materialize_fmr41.py
+      - tests/fmr/test_fmr41_optional_state_layout_contract.f90
+      - tests/fmr/run_fmr41_optional_state_layout_gate.sh
+      - .github/workflows/fmr41-typed-optional-state-layout-contract.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize-and-qualify:
+    if: ${{ !contains(github.event.head_commit.message, '[fmr41-materialized]') }}
+    runs-on: ubuntu-24.04
+    outputs:
+      candidate: ${{ steps.publish.outputs.candidate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          python3 --version
+          gfortran --version
+      - name: Verify exact pre-materialization production authority
+        run: |
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_runtime_core.f90)" = "adc2b7514cc062c0cde4e71582ba8ed7776a7335"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "07877429f94ccf07c353fa5f8ba969c341ad88dd"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_restart_state_contract.f90)" = "bb2c37efce37a73441181f14d15847c652ab45ea"
+      - name: Repair prepublication working-tree delta inspection
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/fmr/run_fmr41_optional_state_layout_gate.sh')
+          s=p.read_text()
+          old='git diff --name-only "$BASE"..HEAD -- src | sort'
+          new='git diff --name-only "$BASE" -- src | sort'
+          if new not in s:
+              if s.count(old) != 1:
+                  raise SystemExit(f'FMR41 gate delta-repair count={s.count(old)}')
+              p.write_text(s.replace(old,new,1))
+          print('FMR41_GATE_WORKTREE_DELTA_REPAIR=PASS')
+          PY
+      - name: Materialize typed optional-state layout contract
+        run: python3 integration/f-mr/materialize_fmr41.py
+      - name: Qualify materialized contract before publication
+        run: bash tests/fmr/run_fmr41_optional_state_layout_gate.sh | tee fmr41-prepublication.log
+      - name: Publish only green materialization
+        id: publish
+        run: |
+          test -n "$(git status --porcelain -- src/runtime)"
+          git config user.name "SWAP5 qualification bot"
+          git config user.email "swap5-qualification@users.noreply.github.com"
+          git add \
+            src/runtime/mod_fmr_runtime_core.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            src/runtime/mod_fmr_restart_state_contract.f90 \
+            integration/f-mr/materialize_fmr41.py \
+            tests/fmr/test_fmr41_optional_state_layout_contract.f90 \
+            tests/fmr/run_fmr41_optional_state_layout_gate.sh \
+            .github/workflows/fmr41-typed-optional-state-layout-contract.yml
+          git commit -m "materialize(F-MR41): type optional-state layout identity fail-closed [fmr41-materialized]"
+          candidate="$(git rev-parse HEAD)"
+          echo "candidate=$candidate" >> "$GITHUB_OUTPUT"
+          git push origin HEAD:work/f-mr41-typed-optional-state-layout-contract
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fmr41-prepublication-${{ github.run_id }}
+          path: fmr41-prepublication.log
+          if-no-files-found: error
+
+  exact-head-requalification:
+    needs: materialize-and-qualify
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact published candidate
+        env:
+          CANDIDATE: ${{ needs.materialize-and-qualify.outputs.candidate }}
+        run: |
+          test -n "$CANDIDATE"
+          git fetch --no-tags origin work/f-mr41-typed-optional-state-layout-contract
+          git checkout --detach "$CANDIDATE"
+          test "$(git rev-parse HEAD)" = "$CANDIDATE"
+          test -z "$(git status --porcelain)"
+          echo "FMR41_EXACT_CANDIDATE_HEAD=$CANDIDATE"
+      - name: Requalify exact immutable candidate
+        run: bash tests/fmr/run_fmr41_optional_state_layout_gate.sh | tee fmr41-exact-head.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fmr41-exact-head-${{ needs.materialize-and-qualify.outputs.candidate }}
+          path: fmr41-exact-head.log
+          if-no-files-found: error
