@@ -1,0 +1,111 @@
+name: F-PM08D7 one-shot temporal preservation remediation
+
+on:
+  push:
+    branches:
+      - work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate
+    paths:
+      - '.github/workflows/fpm08d7-temporal-preservation-remediation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  remediate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact remediation trigger head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact preservation-only patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH='work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate'
+          EXPECTED_PARENT='a364b8f88460121003b5944ee819f9c7aceb54d2'
+          BACKEND='src/runtime/mod_fmr_serialized_reference_backend.f90'
+          EXPECTED_BLOB='3c2f7dac1b808594c5e632bcff950d5863b46cfd'
+
+          [[ "$(git rev-parse HEAD^)" == "$EXPECTED_PARENT" ]] || {
+            echo 'FPM08D7_REMEDIATION_FAIL unexpected trigger parent' >&2; exit 87;
+          }
+          [[ "$(git rev-parse HEAD:$BACKEND)" == "$EXPECTED_BLOB" ]] || {
+            echo 'FPM08D7_REMEDIATION_FAIL backend blob drift' >&2; exit 87;
+          }
+
+          python3 - "$BACKEND" <<'PY'
+          from pathlib import Path
+          import sys
+          p = Path(sys.argv[1])
+          s = p.read_text()
+          old = '''    same = all(same_real_bits(full%pressure_head, half%pressure_head)) .and. &
+               all(same_real_bits(full%water_content, half%water_content)) .and. &
+               same_real_bits(full%ponding_depth, half%ponding_depth) .and. &
+               same_real_bits(full%groundwater_level, half%groundwater_level)
+              if (.not. same) return
+              same = allocated(full%snow) .eqv. allocated(half%snow)
+              if (same .and. allocated(full%snow)) then
+                same = same_real_bits(full%snow%process%snow_water_storage, half%snow%process%snow_water_storage) .and. &
+                     same_real_bits(full%snow%process%liquid_water_storage, half%snow%process%liquid_water_storage) .and. &
+                     (full%snow%event_applied .eqv. half%snow%event_applied) .and. &
+                     same_real_bits(full%snow%event_t0, half%snow%event_t0)
+              end if
+          '''
+          new = '''    same = all(full%pressure_head == half%pressure_head) .and. &
+               all(full%water_content == half%water_content) .and. &
+               full%ponding_depth == half%ponding_depth .and. &
+               full%groundwater_level == half%groundwater_level
+              if (.not. same) return
+              same = allocated(full%snow) .eqv. allocated(half%snow)
+              if (same .and. allocated(full%snow)) then
+                same = full%snow%process%snow_water_storage == half%snow%process%snow_water_storage .and. &
+                     full%snow%process%liquid_water_storage == half%snow%process%liquid_water_storage .and. &
+                     (full%snow%event_applied .eqv. half%snow%event_applied) .and. &
+                     full%snow%event_t0 == half%snow%event_t0
+              end if
+          '''
+          if s.count(old) != 1:
+              raise SystemExit(f'FPM08D7_REMEDIATION_FAIL exact helper body count={s.count(old)}')
+          out = s.replace(old, new, 1)
+          # Preserve all D7-specific temporal policy outside the base helper.
+          if 'value = abs(full%surface_water%storage - half%surface_water%storage)' not in out:
+              raise SystemExit('FPM08D7_REMEDIATION_FAIL SWST metric drift')
+          if 'same_real_bits(a, b)' not in out:
+              raise SystemExit('FPM08D7_REMEDIATION_FAIL unrelated bit-identity helper removed')
+          p.write_text(out)
+          print('FPM08D7_EXACT_BASE_TEMPORAL_IDENTITY_REPLACEMENT=PASS')
+          PY
+
+          git diff --check
+          [[ "$(git diff --name-only)" == "$BACKEND" ]] || {
+            echo 'FPM08D7_REMEDIATION_FAIL production delta not single backend file' >&2; git diff --name-only >&2; exit 87;
+          }
+          python3 - "$BACKEND" <<'PY'
+          from pathlib import Path
+          import sys
+          s = Path(sys.argv[1]).read_text()
+          a = s.index('  logical function base_physical_states_identical')
+          b = s.index('  end function base_physical_states_identical', a)
+          block = s[a:b]
+          if 'same_real_bits(' in block:
+              raise SystemExit('FPM08D7_REMEDIATION_FAIL bit comparison remains in base helper')
+          required = [
+              'all(full%pressure_head == half%pressure_head)',
+              'all(full%water_content == half%water_content)',
+              'full%ponding_depth == half%ponding_depth',
+              'full%groundwater_level == half%groundwater_level',
+              'full%snow%process%snow_water_storage == half%snow%process%snow_water_storage',
+              'full%snow%process%liquid_water_storage == half%snow%process%liquid_water_storage',
+              'full%snow%event_t0 == half%snow%event_t0',
+          ]
+          if not all(x in block for x in required):
+              raise SystemExit('FPM08D7_REMEDIATION_FAIL canonical numeric-equality pattern incomplete')
+          print('FPM08D7_CANONICAL_NUMERIC_EQUALITY_PATTERN=PASS')
+          PY
+
+          git config user.name 'abhedwig-cell'
+          git config user.email 'abhedwig@gmail.com'
+          git add "$BACKEND"
+          git commit -m 'fix(F-PM08D7): restore canonical base temporal identity'
+          git push origin "HEAD:$BRANCH"
