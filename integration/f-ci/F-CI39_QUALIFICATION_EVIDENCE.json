@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.fci_admission_evidence.v1",
+  "work_unit": "F-CI39",
+  "pre_admission": {
+    "f_pm06e_owner_exact_head": "13ce03cdd01440090a71a82a9e3409f764a7bdd2",
+    "f_pm06e_owner_exact_head_run": 34540196376,
+    "f_vq54_closeout": "7cf8f6685ca24f855621f872bcf906f346edfa72",
+    "f_vq54_exact_closeout_run": 34544824222,
+    "f_vq54_exact_closeout_job": 103095072355,
+    "f_vq54_gate": "PASS",
+    "f_vq54_output_sha256": "e77388e86bf1726e486165606ef80edaef25361f7b7ad4ae1a2f8e1fcdbccbaa"
+  },
+  "admission_requirements": {
+    "canonical_source_unchanged": "REQUIRED",
+    "exact_owner_tree_identity": "REQUIRED",
+    "exact_three_blob_source_delta": "REQUIRED",
+    "reference_tree_unchanged": "REQUIRED",
+    "independent_oracle_replay_on_composed_source": "REQUIRED",
+    "o0_o2_identity": "REQUIRED",
+    "held_scope_fail_closed": "REQUIRED",
+    "architecture_30_of_30": "REQUIRED",
+    "hard_mass_unchanged": "REQUIRED",
+    "fci38_moving_preservation_advanced": "REQUIRED"
+  },
+  "nonclaims": [
+    "runtime composition",
+    "full BOUNDTOP migration",
+    "SWKMEAN=7",
+    "frost-active evaporation",
+    "macropore surface scaling",
+    "accepted-flux publication"
+  ],
+  "qualification_run": null,
+  "qualification_job": null,
+  "canonical_promotion": false,
+  "post_promotion_canonical_run": null
+}
