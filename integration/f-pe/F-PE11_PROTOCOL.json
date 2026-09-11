@@ -1,0 +1,62 @@
+{
+  "workunit": "F-PE11",
+  "title": "Surface-Evaporation Call-Local Allocation and Scaling Qualification",
+  "branch": "performance/f-pe11-surface-evaporation-allocation-scaling",
+  "source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "head": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "authority": "F-CI41P"
+  },
+  "scope_boundary": {
+    "scientific_authority_reopened": false,
+    "canonical_scientific_admission_reopened": false,
+    "functional_multiswap_qualification_reopened": false,
+    "performance_question_only": true,
+    "statement": "F-PE11 addresses only call-local copying/allocation and throughput/scaling in the already-qualified restricted surface-evaporation runtime path. Existing scientific equations, constants, provider physics, supported-configuration scope and accepted observable semantics remain reference authority."
+  },
+  "baseline_characterization": {
+    "runtime_materializer": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+    "committed_binding": "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+    "capacity_provider": "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+    "confirmed_owning_steps": [
+      "kernel_committed_state_t%snapshot clones the private physical transaction state",
+      "fmr_build_committed_process_hydraulic_view allocates and copies pressure_head and water_content into soil_water_physical_state_t",
+      "build_process_hydraulic_view allocates and copies both profile arrays again",
+      "detached_state_from_view allocates and copies both profile arrays again before capacity evaluation"
+    ],
+    "capacity_state_usage": [
+      "active_nodes",
+      "pressure_head(1)",
+      "ponding_depth"
+    ],
+    "capacity_water_content_profile_used": false
+  },
+  "candidate": {
+    "strategy": "detached-clone ownership transfer",
+    "description": "Retain the transactionally safe committed snapshot clone, then transfer the cloned allocatable profile arrays into a soil_water_physical_state_t with move_alloc. Route surface evaporation directly through that detached state. Do not alias committed state and do not change the surface-capacity provider contract.",
+    "expected_profile_copy_reduction": "from committed clone plus three downstream full-profile copies to committed clone only in the surface-evaporation materialization path",
+    "performance_claim_prequalification": "NONE"
+  },
+  "non_goals": [
+    "no change to restricted surface-evaporation equations or constants",
+    "no change to B110 surface-capacity equations or conductivity-mean policy",
+    "no widening of SWINTER/SWREDU or other qualified physical scope",
+    "no direct pointer/view into private committed physical state",
+    "no change to checkpoint, trial, commit or rollback semantics",
+    "no new mass-booking path",
+    "no canonical promotion in this workunit"
+  ],
+  "qualification_gates": [
+    "compile at -O0 and -O2 with runtime checks",
+    "paired candidate-versus-F-CI41P observable identity using the frozen F-VQ56 surface-runtime oracles",
+    "O0/O2 identity",
+    "detached ownership: mutating extracted temporary state cannot mutate committed state",
+    "committed state remains readable and identical after repeated extraction",
+    "no production changes outside the narrow runtime binding/materialization path",
+    "static allocation guard proving removed downstream allocate/copy sites do not reappear",
+    "paired timing characterization with identical workload and warm-up policy before any throughput claim",
+    "MultiSWAP scaling characterization before any scaling claim"
+  ],
+  "architecture_invariants_checked": [3, 5, 6, 7, 13, 16, 23, 25, 26, 27, 30],
+  "status": "PROTOCOL_FROZEN_CANDIDATE_NOT_YET_QUALIFIED"
+}
