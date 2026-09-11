@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.ftb01.status.v1",
+  "work_unit": "F-TB01",
+  "title": "SWAP5 Scientific Verification, Qualification & Release Testbank Architecture",
+  "branch": "work/f-tb01-swap5-testbank-architecture",
+  "source_authority": {
+    "ref": "integration/f-ci-canonical",
+    "commit": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "tree": "6baaf40271497db831698c5a01de355b5d296dbe"
+  },
+  "phase": "ARCHITECTURE_IMPLEMENTED_PENDING_EXACT_HEAD_CI",
+  "decision": "PENDING_FAIL_CLOSED",
+  "deliverables": {
+    "architecture": "docs/testbank/F-TB01_TESTBANK_ARCHITECTURE.md",
+    "oracle_policy": "docs/testbank/F-TB01_ORACLE_POLICY.md",
+    "tolerance_governance": "docs/testbank/F-TB01_TOLERANCE_GOVERNANCE.md",
+    "case_identity_versioning": "docs/testbank/F-TB01_CASE_IDENTITY_AND_VERSIONING.md",
+    "mass_gate_contract": "docs/testbank/F-TB01_MASS_GATE_CONTRACT.md",
+    "execution_profiles": "docs/testbank/F-TB01_EXECUTION_PROFILES.md",
+    "current_test_inventory": "docs/testbank/F-TB01_CURRENT_TEST_INVENTORY.md",
+    "coverage_model": "docs/testbank/F-TB01_COVERAGE_MODEL.md",
+    "report_schema": "testbank/schema/F-TB01_REPORT.schema.json",
+    "invariant_audit": "integration/f-tb/F-TB01_INVARIANT_AUDIT.json",
+    "proof_of_concept_registry": "testbank/manifests/F-TB01_CASE_REGISTRY.json",
+    "status_closeout": "integration/f-tb/F-TB01_STATUS.json"
+  },
+  "supporting_mechanics": {
+    "validator": "testbank/runners/validate_ftb01_registry.py",
+    "workflow": ".github/workflows/ftb01-testbank-architecture.yml"
+  },
+  "scope_holds": {
+    "production_source_changed": false,
+    "existing_test_changed": false,
+    "qualified_reference_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "runtime_semantics_changed": false,
+    "io_adapter_changed": false
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "architecture_qualified": false,
+    "full_scientific_catalog_qualified": false
+  },
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass": "HARD_UNCHANGED",
+  "known_incremental_followups": [
+    "source-locked SWAP 4.3.1 scientific/golden corpus with legacy-defect classifications",
+    "analytical/manufactured/property case expansion",
+    "complete optional-state restart corpus",
+    "large-scale MultiSWAP and difficult-column performance corpus",
+    "MODFLOW coupling application-class corpus",
+    "alternative/reduced/coarse solver qualification",
+    "cross-platform performance gates",
+    "historical-defect regression catalog"
+  ],
+  "exit_target": "SWAP5_TESTBANK_ARCHITECTURE_AND_CASE_REGISTRY_READY_FOR_INCREMENTAL_IMPLEMENTATION"
+}
