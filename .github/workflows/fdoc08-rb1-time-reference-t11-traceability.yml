@@ -1,0 +1,90 @@
+name: F-DOC08 RB1 temporal T11 traceability
+
+on:
+  push:
+    branches:
+      - work/f-doc08-rb1-time-reference-t11-traceability
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact upstream authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          authorities=(
+            492b984bca282d6ec11dcaa727227b34c0ff3a84
+            a703747ce1991c5601b76a84f04969b602298268
+            df9b1123ba33ece022ce6649e70dcb538e44837f
+            31e3f85ae83fe8bab9554da5467de0598446c0bd
+            6e9a684baff6812c3e1be5286f48447a6b4bff76
+            697755068253cfb5a2f838c63894e1609a85ff51
+            a0331164a8dfc2642becdbe96cab969eabead392
+            d81ef430ebaa601469a165dfc5b9866b813b71aa
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6
+          )
+          for sha in "${authorities[@]}"; do
+            git cat-file -e "${sha}^{commit}" 2>/dev/null || git fetch --quiet --no-tags origin "$sha"
+            git cat-file -e "${sha}^{commit}"
+          done
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FDOC08_EXACT_CHECKOUT=PASS"
+
+      - name: Validate bounded temporal T11 graph
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc08_rb1_time_reference_t11_traceability.py | tee _fdoc08_validator.log
+          grep -Fq 'FDOC08_ZERO_PRODUCTION_SOURCE_DELTA=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_ZERO_REFERENCE_DELTA=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_EXACT_AUTHORITY_BLOBS=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_BOUNDED_T11_GRAPH=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_NO_UNIVERSAL_H_BUDGET_CLAIM=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_FVQ33_NEGATIVE_EVIDENCE_LOCK=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_INVARIANT_AUDIT_30_OF_30=PASS' _fdoc08_validator.log
+          grep -Fq 'FDOC08_VALIDATION=PASS' _fdoc08_validator.log
+
+      - name: Verify invariant audit and hard nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          audit=json.loads(Path('integration/f-doc/F-DOC08_INVARIANT_AUDIT.json').read_text())
+          assert audit['overall']=='30_OF_30_NO_ADVERSE_DELTA'
+          assert audit['mass_conservation']=='HARD_UNCHANGED'
+          assert len(audit['invariants'])==30
+          assert [x['id'] for x in audit['invariants']]==list(range(1,31))
+          assert all(x['status']=='PASS' for x in audit['invariants'])
+          reg=json.loads(Path('docs/scientific/registries/rb1-time-reference-t11-traceability.json').read_text())
+          assert reg['coverage']['t11_bounded_temporal_acceptance_graph_complete'] is True
+          assert reg['coverage']['t11_universal_application_accuracy_graph_complete'] is False
+          assert reg['negative_evidence']['F_VQ33_remains_failed'] is True
+          assert reg['negative_evidence']['F_VQ33_used_as_positive_evidence'] is False
+          assert any('No numeric H_budget' in x for x in reg['hard_nonclaims'])
+          assert any('No universal temporal tolerance' in x for x in reg['hard_nonclaims'])
+          print('FDOC08_HARD_NONCLAIMS_AND_INVARIANTS=PASS')
+          PY
+
+      - name: Preserve exact-head qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc08-rb1-time-reference-t11-evidence-${{ github.sha }}
+          path: |
+            _fdoc08_t11_evidence.json
+            _fdoc08_validator.log
+          if-no-files-found: warn
+          retention-days: 90
