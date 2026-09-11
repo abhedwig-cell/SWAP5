@@ -43,18 +43,32 @@ contains
   pure logical function application_requirement_valid(self)
     class(coupling_application_accuracy_contract_t), intent(in) :: self
 
-    application_requirement_valid = identity_and_qoi_valid(self) .and. self%h_app_available .and. &
-         self%h_app_externally_qualified .and. self%application_provenance_id > 0_int64 .and. &
-         ieee_is_finite(self%h_app_cm) .and. self%h_app_cm > 0.0_real64
+    ! Use explicit guards rather than relying on logical-expression
+    ! short-circuiting. Fortran does not require short-circuit evaluation, and
+    ! comparing a NaN after a failed ieee_is_finite check can raise invalid
+    ! when runtime floating-point traps are enabled.
+    application_requirement_valid = .false.
+    if (.not. identity_and_qoi_valid(self)) return
+    if (.not. self%h_app_available) return
+    if (.not. self%h_app_externally_qualified) return
+    if (self%application_provenance_id <= 0_int64) return
+    if (.not. ieee_is_finite(self%h_app_cm)) return
+    if (self%h_app_cm <= 0.0_real64) return
+    application_requirement_valid = .true.
   end function application_requirement_valid
 
   pure logical function temporal_allocation_valid(self)
     class(coupling_application_accuracy_contract_t), intent(in) :: self
 
-    temporal_allocation_valid = identity_and_qoi_valid(self) .and. self%a_temporal_available .and. &
-         self%a_temporal_externally_qualified .and. self%temporal_allocation_provenance_id > 0_int64 .and. &
-         ieee_is_finite(self%a_temporal) .and. self%a_temporal > 0.0_real64 .and. &
-         self%a_temporal <= 1.0_real64
+    temporal_allocation_valid = .false.
+    if (.not. identity_and_qoi_valid(self)) return
+    if (.not. self%a_temporal_available) return
+    if (.not. self%a_temporal_externally_qualified) return
+    if (self%temporal_allocation_provenance_id <= 0_int64) return
+    if (.not. ieee_is_finite(self%a_temporal)) return
+    if (self%a_temporal <= 0.0_real64) return
+    if (self%a_temporal > 1.0_real64) return
+    temporal_allocation_valid = .true.
   end function temporal_allocation_valid
 
   pure logical function temporal_budget_ready(self)
@@ -66,7 +80,9 @@ contains
     if (.not. self%temporal_allocation_valid()) return
 
     budget_cm = self%h_app_cm * self%a_temporal
-    temporal_budget_ready = ieee_is_finite(budget_cm) .and. budget_cm > 0.0_real64
+    if (.not. ieee_is_finite(budget_cm)) return
+    if (budget_cm <= 0.0_real64) return
+    temporal_budget_ready = .true.
   end function temporal_budget_ready
 
   pure subroutine evaluate_temporal_budget_cm(self, budget_cm, available)
@@ -85,7 +101,7 @@ contains
     logical, intent(out) :: materialized
     real(real64) :: budget_cm
 
-    ! Fail closed and clear any previous application-owned value first.  The
+    ! Fail closed and clear any previous application-owned value first. The
     ! canonical field remains a generic model-owned carrier; application
     ! provenance and allocation semantics stay in this runtime/coupler contract.
     config%model_temporal_indicator_budget_available = .false.
