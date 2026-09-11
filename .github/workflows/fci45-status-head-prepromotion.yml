@@ -1,0 +1,53 @@
+name: F-CI45 status-head prepromotion qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
+    paths:
+      - integration/f-ci/F-CI45_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  status-head:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert exact status head and status contract
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('integration/f-ci/F-CI45_STATUS.json').read_text())
+          assert s['work_unit']=='F-CI45'
+          assert s['status']=='QUALIFIED_READY_FOR_CANONICAL_ADMISSION'
+          assert s['decision']=='QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_READY_FOR_CANONICAL_ADMISSION'
+          assert s['canonical_base']=='e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2'
+          assert s['source_composition_commit']=='97515d75c96e9766f3b8697a7b40b28ec237118f'
+          assert s['first_exact_head_qualification']['run']==34633372426
+          assert s['first_exact_head_qualification']['job']==103375339565
+          assert s['promotion']['allowed'] is True
+          assert s['promotion']['method']=='TRUE_TWO_PARENT_MERGE_ONLY'
+          assert s['postimage_reconciliation_required'] is True
+          print('FCI45_STATUS_CONTRACT=PASS')
+          PY
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Requalify exact status head
+        run: bash tests/fci/run_fci45_fmr39_soil_temperature_runtime_canonical_admission.sh
+      - name: Final immutable-head assertion
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git status --porcelain -- src)"
+          echo "FCI45_STATUS_HEAD_PREPROMOTION=PASS:${GITHUB_SHA}"
