@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC07",
+  "title": "RB1 Aggregate Traceability Coverage and Gap Reconciliation",
+  "release_id": "SWAP5-RB1-v1",
+  "base": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
+  "frozen_authorities": {
+    "scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "required_denominator": 15
+  },
+  "population_authorities": [
+    {
+      "work_unit": "F-DOC03",
+      "head": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+      "status_blob": "7cac1ea40fe489cd16bb366cad26870c1ececedd",
+      "exact_head_run": 34596210450,
+      "decision": "QUALIFIED_BOUNDED_RB1_CORE_TRACEABILITY_POPULATION_WITH_EXPLICIT_GAPS",
+      "capabilities": [
+        "RB1-CORE-INTERVAL",
+        "RB1-CORE-DATA",
+        "RB1-CORE-TRANSACTION",
+        "RB1-CORE-MASS",
+        "RB1-CORE-DIAGNOSTICS"
+      ]
+    },
+    {
+      "work_unit": "F-DOC04",
+      "head": "a703747ce1991c5601b76a84f04969b602298268",
+      "status_blob": "ac5dbba8fdc454a5fda4a5450415fede130af386",
+      "exact_head_run": 34610822444,
+      "decision": "QUALIFIED_BOUNDED_RB1_REFERENCE_TEMPORAL_TRACEABILITY_WITH_EXPLICIT_GAPS",
+      "capabilities": [
+        "RB1-SW-REFERENCE",
+        "RB1-TIME-REFERENCE"
+      ]
+    },
+    {
+      "work_unit": "F-DOC05",
+      "head": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+      "status_blob": "d9bc41819613b6b7b9be74a009f46ea4c89e6945",
+      "exact_head_run": 34612402892,
+      "decision": "QUALIFIED_BOUNDED_RB1_EXECUTION_RESTART_TRACEABILITY_WITH_EXPLICIT_GAPS",
+      "capabilities": [
+        "RB1-STANDALONE-N1",
+        "RB1-MULTISWAP-SERIAL",
+        "RB1-MULTISWAP-PARALLEL-V1",
+        "RB1-RESTART-SERIAL",
+        "RB1-RESTART-PARALLEL"
+      ]
+    },
+    {
+      "work_unit": "F-DOC06",
+      "head": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
+      "status_blob": "25be319c1eb5caa7a46bae87f2cfe4863c0f2598",
+      "exact_head_run": 34620809727,
+      "decision": "QUALIFIED_BOUNDED_RB1_ET_ROOT_SURFACE_EVAP_TRACEABILITY_WITH_EXPLICIT_GAPS",
+      "capabilities": [
+        "RB1-ET-ROOT-SERIAL",
+        "RB1-ROOT-PARALLEL",
+        "RB1-SURFACE-EVAP-RESTRICTED"
+      ]
+    }
+  ],
+  "coverage": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0,
+    "release_pass_required_capabilities": 15,
+    "coverage_claim": "COMPLETE_REQUIRED_CAPABILITY_POPULATION_COVERAGE",
+    "traceability_maturity_claim": "BOUNDED_WITH_EXPLICIT_GAPS_NOT_FULLY_TRACED"
+  },
+  "capability_to_population_work_unit": {
+    "RB1-CORE-INTERVAL": "F-DOC03",
+    "RB1-CORE-DATA": "F-DOC03",
+    "RB1-CORE-TRANSACTION": "F-DOC03",
+    "RB1-CORE-MASS": "F-DOC03",
+    "RB1-CORE-DIAGNOSTICS": "F-DOC03",
+    "RB1-SW-REFERENCE": "F-DOC04",
+    "RB1-TIME-REFERENCE": "F-DOC04",
+    "RB1-STANDALONE-N1": "F-DOC05",
+    "RB1-MULTISWAP-SERIAL": "F-DOC05",
+    "RB1-MULTISWAP-PARALLEL-V1": "F-DOC05",
+    "RB1-RESTART-SERIAL": "F-DOC05",
+    "RB1-RESTART-PARALLEL": "F-DOC05",
+    "RB1-ET-ROOT-SERIAL": "F-DOC06",
+    "RB1-ROOT-PARALLEL": "F-DOC06",
+    "RB1-SURFACE-EVAP-RESTRICTED": "F-DOC06"
+  },
+  "aggregate_gap_classes": [
+    {
+      "id": "GAP-CONTROLLED-THEORY-FORMAL",
+      "state": "OPEN",
+      "description": "Controlled T0-T7 theory, conceptual, formal and numerical traceability is not complete across the full RB1 denominator. Individual workunits preserve narrower known bindings and gaps."
+    },
+    {
+      "id": "GAP-T11-COMPLETE-GRAPHS",
+      "state": "OPEN",
+      "description": "Scoped verification/qualification evidence is bound, but complete equation-to-test graphs are not established for the entire denominator."
+    },
+    {
+      "id": "GAP-T12-APPLICATION-VALIDATION",
+      "state": "OPEN",
+      "description": "Release qualification does not constitute application-class validation; T12 remains an explicit program-level gap."
+    },
+    {
+      "id": "GAP-WR-QA-2024-CONTROLLED-COPY",
+      "state": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+      "description": "The controlled Revised checklist Status A/AA 2024 copy and exact reconciliation remain unavailable/pending under F-DOC01."
+    },
+    {
+      "id": "GAP-APPLICATION-TEMPORAL-H-BUDGET",
+      "state": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+      "description": "F-DOC04 qualifies no universal H_budget; application-specific groundwater-head/error-budget selection remains external."
+    },
+    {
+      "id": "GAP-SURFACE-EVAP-PERFORMANCE",
+      "state": "OPEN_SEPARATE_PERFORMANCE_WORK",
+      "description": "Functional MultiSWAP compatibility is qualified, but throughput/scaling and call-local copy/allocation performance remain a separate workunit and do not reopen science."
+    }
+  ],
+  "status_a_boundary": {
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "external_audit_performed": false,
+    "formal_2024_reconciliation": "PENDING_CONTROLLED_COPY",
+    "maximum_claim": "COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_EXPLICIT_MATURITY_GAPS",
+    "reason": "Complete capability coverage is not equivalent to complete T0-T14 evidence, controlled WR-QA-2024 reconciliation, application validation or competent external audit."
+  },
+  "hard_nonclaims": [
+    "No production source, reference data, physics, solver, tolerance, acceptance threshold or performance policy is changed.",
+    "No frozen RB1 authority or denominator is reopened or mutated.",
+    "No capability is promoted to FULLY_TRACED by aggregation alone.",
+    "No release PASS is used as a substitute for missing T0-T12 evidence.",
+    "No Status A readiness/compliance or Status AA compliance is claimed.",
+    "No external audit is claimed.",
+    "No universal groundwater-head accuracy or H_budget is introduced.",
+    "No surface-evaporation throughput/scaling qualification is introduced."
+  ]
+}
