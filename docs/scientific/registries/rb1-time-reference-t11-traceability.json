@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-DOC08",
+  "title": "RB1 Temporal Acceptance T11 Equation-to-Test Traceability",
+  "base_authority": {
+    "work_unit": "F-DOC07",
+    "commit": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "tree": "51e9b59f7ffe6c1a66d9fdf59b63ae78e91e8136",
+    "decision": "QUALIFIED_COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_EXPLICIT_MATURITY_GAPS"
+  },
+  "capability": "RB1-TIME-REFERENCE",
+  "traceability_level": "T11_BOUNDED_TEMPORAL_ACCEPTANCE_SEMANTICS",
+  "claim": "The already-qualified restricted Richards temporal certificate semantics are now linked by an explicit, immutable relation-to-test graph from scientific qualification through materialization and RB1 release replay.",
+  "authorities": {
+    "F_DOC04": {
+      "commit": "a703747ce1991c5601b76a84f04969b602298268",
+      "registry_path": "docs/scientific/registries/rb1-reference-temporal-traceability.json",
+      "registry_blob": "de9690e061ef6f28cc3a786ab474644ffbec3990"
+    },
+    "F_VQ34": {
+      "closeout_commit": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+      "candidate_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+      "tested_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+      "workflow_run": 34364081068,
+      "closeout_path": "integration/f-vq/F-VQ34_CLOSEOUT.json",
+      "closeout_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270",
+      "plan_path": "integration/f-vq/F-VQ34_QUALIFICATION_PLAN.json",
+      "plan_blob": "4f3f7c8883397ed96d3af2f6585f25698c58e7b4",
+      "runner_path": "tests/fvq/run_fvq34_remediated_head_budget_certificate.sh",
+      "runner_blob": "d72403e00ad1a1a9cb69fac89cc680e3dc847262"
+    },
+    "F_CI21": {
+      "closeout_commit": "697755068253cfb5a2f838c63894e1609a85ff51",
+      "materialized_production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+      "closeout_path": "integration/f-ci/F-CI21_CLOSEOUT.json",
+      "closeout_blob": "57f670c02a58cd21fc442a076c7a2ad06087254a",
+      "vq34_replay_path": "integration/f-ci/F-CI21_VQ34_REMEDIATED_CERTIFICATE_REPLAY_EVIDENCE.json",
+      "vq34_replay_blob": "578fbfdd2a2b137a4119335beb648af0e90d283c"
+    },
+    "F_CI40": {
+      "current_temporal_dependency_authority_commit": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+      "binding_evidence": "F-RB01 temporal runner compares eight temporal dependency paths against this exact commit."
+    },
+    "F_RB01": {
+      "commit": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "runner_path": "tests/frb01/run_frb01_temporal_authority.sh",
+      "runner_blob": "4e3a789f649a5b427a3fe0d89d01f09dc7277cfe",
+      "release_decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY"
+    }
+  },
+  "relation_nodes": [
+    {
+      "id": "R01",
+      "relation": "C_h = B_inf / H_budget",
+      "owner": "F-VQ34",
+      "scope": "restricted Richards temporal certificate normalization"
+    },
+    {
+      "id": "R02",
+      "relation": "H_budget is supplied numerical configuration and is valid only when finite and > 0",
+      "owner": "F-VQ34"
+    },
+    {
+      "id": "R03",
+      "relation": "certificate is available only with valid budget and required temporal history; missing or invalid budget and no-history fail closed",
+      "owner": "F-VQ34"
+    },
+    {
+      "id": "R04",
+      "relation": "C_h <= 1 is the acceptance boundary exercised by the qualified certificate path",
+      "owner": "F-VQ34"
+    },
+    {
+      "id": "R05",
+      "relation": "certificate rejection preserves committed state and bounded retry/rollback does not depend on a shorter-dt monotonicity claim",
+      "owner": "F-VQ34"
+    },
+    {
+      "id": "R06",
+      "relation": "hard mass rejection precedes temporal certificate acceptance; the certificate cannot override mass failure",
+      "owner": "F-VQ34"
+    },
+    {
+      "id": "R07",
+      "relation": "materialized postimage must preserve R01-R06 without changing formula, matrix, tolerance, or negative F-VQ33 evidence",
+      "owner": "F-CI21"
+    },
+    {
+      "id": "R08",
+      "relation": "RB1 release replay must pass frozen F-CI21 temporal scientific replay and preserve the current temporal dependency surface against F-CI40",
+      "owner": "F-RB01"
+    }
+  ],
+  "test_nodes": [
+    {
+      "id": "T01",
+      "authority": "F-VQ34",
+      "evidence": "fresh 12-case independent matrix",
+      "cases": [1, 2, 10, 11, 12],
+      "probes": ["VALID_ACCEPT", "VALID_REJECT", "BOUNDARY_ACCEPT"],
+      "optimization_modes": ["O0", "O2"]
+    },
+    {
+      "id": "T02",
+      "authority": "F-VQ34",
+      "evidence": "fresh 12-case independent matrix",
+      "cases": [3, 4, 7, 8, 9],
+      "probes": ["MISSING_BUDGET", "INVALID_ZERO_BUDGET", "INVALID_NEGATIVE_BUDGET", "INVALID_NAN_BUDGET", "INVALID_POSITIVE_INFINITY_BUDGET"]
+    },
+    {
+      "id": "T03",
+      "authority": "F-VQ34",
+      "case": 5,
+      "probe": "NO_HISTORY_WITH_VALID_BUDGET"
+    },
+    {
+      "id": "T04",
+      "authority": "F-VQ34",
+      "case": 6,
+      "probe": "BOUNDED_RETRY_NO_MONOTONICITY_CLAIM"
+    },
+    {
+      "id": "T05",
+      "authority": "F-VQ34",
+      "evidence": "source-order lock plus source-locked existing F-KT09 executable mass-failure oracle",
+      "gate": "G09"
+    },
+    {
+      "id": "T06",
+      "authority": "F-VQ34",
+      "evidence": "24 matrix executions with O0/O2 identity",
+      "gate": "G11"
+    },
+    {
+      "id": "T07",
+      "authority": "F-CI21",
+      "evidence_path": "integration/f-ci/F-CI21_VQ34_REMEDIATED_CERTIFICATE_REPLAY_EVIDENCE.json",
+      "result": "PASS_MATERIALIZED_FVQ34_REMEDIATED_CERTIFICATE_BEHAVIOR_PRESERVED"
+    },
+    {
+      "id": "T08",
+      "authority": "F-RB01",
+      "evidence_path": "tests/frb01/run_frb01_temporal_authority.sh",
+      "required_markers": ["FRB01_FROZEN_TEMPORAL_SCIENTIFIC_AUTHORITY=PASS", "FRB01_CURRENT_TEMPORAL_DEPENDENCY_PRESERVATION=PASS", "FRB01_TEMPORAL_AUTHORITY_AND_CURRENT_PRESERVATION=PASS"]
+    }
+  ],
+  "edges": [
+    {"relation": "R01", "tests": ["T01", "T06", "T07", "T08"]},
+    {"relation": "R02", "tests": ["T01", "T02", "T07", "T08"]},
+    {"relation": "R03", "tests": ["T02", "T03", "T07", "T08"]},
+    {"relation": "R04", "tests": ["T01", "T07", "T08"]},
+    {"relation": "R05", "tests": ["T04", "T07", "T08"]},
+    {"relation": "R06", "tests": ["T05", "T07", "T08"]},
+    {"relation": "R07", "tests": ["T07", "T08"]},
+    {"relation": "R08", "tests": ["T08"]}
+  ],
+  "coverage": {
+    "bounded_relation_nodes": 8,
+    "nodes_with_test_edges": 8,
+    "unmapped_bounded_relation_nodes": 0,
+    "t11_bounded_temporal_acceptance_graph_complete": true,
+    "t11_universal_application_accuracy_graph_complete": false
+  },
+  "negative_evidence": {
+    "F_VQ33_remains_failed": true,
+    "F_VQ33_used_as_positive_evidence": false
+  },
+  "hard_nonclaims": [
+    "No numeric H_budget is selected, recommended, defaulted, or qualified for any application.",
+    "No universal temporal tolerance or groundwater-head accuracy budget is established.",
+    "B_inf and C_h are not qualified as general nonlinear true-error upper bounds.",
+    "No shorter-dt monotonicity claim is made.",
+    "No new restart, forcing-event, topology-discontinuity, or coupling-window continuation scope is qualified.",
+    "No production source, reference data, scientific tolerance, physics, solver, or performance policy is changed.",
+    "F-DOC08 does not establish Status A or Status AA and does not close T12 application validation.",
+    "F-DOC08 does not close the controlled WR-QA-2024 source gap."
+  ],
+  "remaining_open_dependencies": [
+    "application-specific H_budget selection and accuracy budget remain external policy/application evidence",
+    "T12 application validation remains open",
+    "WR-QA-2024 controlled source remains open",
+    "other RB1 T0-T11 maturity gaps remain as recorded by F-DOC07",
+    "surface-evaporation throughput/scaling remains a separate workunit"
+  ]
+}
