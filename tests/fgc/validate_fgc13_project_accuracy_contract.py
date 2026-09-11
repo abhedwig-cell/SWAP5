@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import copy
 import json
 import math
 import sys
@@ -83,7 +82,14 @@ def require_positive_finite(value, code, path):
     return numeric
 
 
-def validate_provenance(value, expected_claim_type, path):
+def require_sha256_digest(value, path):
+    digest = require_string(value, path)
+    if len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest):
+        reject("INVALID_SOURCE_DIGEST", f"{path} must be 64 lowercase hexadecimal characters")
+    return digest
+
+
+def validate_provenance(value, expected_claim_type, expected_basis_kind, path):
     keys = {
         "provenance_id",
         "claim_id",
@@ -94,6 +100,8 @@ def validate_provenance(value, expected_claim_type, path):
         "locator",
         "governance_status",
         "claim_type",
+        "evidence_basis_kind",
+        "source_digest_sha256",
         "external_to_swap_numerical_behavior",
     }
     require_exact_keys(value, keys, path)
@@ -105,6 +113,12 @@ def validate_provenance(value, expected_claim_type, path):
         reject("UNAPPROVED_GOVERNANCE_STATUS", f"{path}.governance_status is not an admitted external status")
     if value["claim_type"] != expected_claim_type:
         reject("CLAIM_TYPE_MISMATCH", f"{path}.claim_type must be {expected_claim_type}")
+    if value["evidence_basis_kind"] != expected_basis_kind:
+        reject(
+            "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+            f"{path}.evidence_basis_kind must be {expected_basis_kind}",
+        )
+    require_sha256_digest(value["source_digest_sha256"], f"{path}.source_digest_sha256")
     require_true(
         value["external_to_swap_numerical_behavior"],
         "SWAP_DERIVED_POLICY_FORBIDDEN",
@@ -163,6 +177,7 @@ def validate_packet(packet):
     app_provenance_id, app_claim_id = validate_provenance(
         app["provenance"],
         "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+        "EXPLICIT_NUMERICAL_PREDICTION_ERROR_ACCEPTANCE_RULE",
         "packet.application_requirement.provenance",
     )
 
@@ -197,6 +212,7 @@ def validate_packet(packet):
         if temporal["direct_budget_cm"] is not None:
             reject("AMBIGUOUS_TEMPORAL_POLICY", "fraction mode must not also carry a direct budget")
         expected_claim_type = "TEMPORAL_ERROR_ALLOCATION_FRACTION"
+        expected_basis_kind = "EXPLICIT_TEMPORAL_ALLOCATION_RULE"
         temporal_budget_cm = h_app_cm * a_temporal
     elif mode == "DIRECT_HEAD_ERROR_BUDGET_CM":
         if temporal["allocation_fraction"] is not None:
@@ -211,6 +227,7 @@ def validate_packet(packet):
         a_temporal = direct_budget_cm / h_app_cm
         temporal_budget_cm = direct_budget_cm
         expected_claim_type = "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET"
+        expected_basis_kind = "EXPLICIT_DIRECT_TEMPORAL_ERROR_BUDGET_RULE"
     else:
         reject("UNSUPPORTED_TEMPORAL_POLICY_MODE", "unsupported temporal policy mode")
 
@@ -220,7 +237,10 @@ def validate_packet(packet):
         reject("INVALID_TEMPORAL_BUDGET", "derived temporal budget is not positive and finite")
 
     temporal_provenance_id, temporal_claim_id = validate_provenance(
-        temporal["provenance"], expected_claim_type, "packet.temporal_policy.provenance"
+        temporal["provenance"],
+        expected_claim_type,
+        expected_basis_kind,
+        "packet.temporal_policy.provenance",
     )
     if app_claim_id == temporal_claim_id:
         reject("CLAIM_ID_REUSE_FORBIDDEN", "application and temporal governance require distinct claim identities")
