@@ -31,8 +31,8 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "precloseout_FAST": {
-    "head": "1cf21b3174a8caa207de3e0d5db80e12b01a09d1",
-    "run": 34610783746,
+    "head": "5d5decd81066c8f4028da5e64f3bf6b3c111dce1",
+    "run": 34620259605,
     "conclusion": "success"
   },
   "exact_head_qualification": {
@@ -44,7 +44,7 @@
   "release_scope": {
     "restart": "immutable FCI28 restart oracle replayed against exact work-unit canonical authority with historical whole-source governance guard rebound only",
     "parallel_multiswap": "immutable FMQ26 serialized/2-worker/4-worker and publication-order oracle blobs executed directly against exact work-unit canonical authority at O0/O2",
-    "heterogeneous_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-parameter-reference case",
+    "distinct_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-reference case; registry entries have distinct parameter_set_id values but retain bit-identical already-qualified physical parameters so the test isolates reference resolution/ownership rather than adding new physics",
     "parallel_restart": "immutable FCI35/FMQ29 held-out cross-worker committed-boundary restart oracle with historical whole-source governance guards rebound only"
   },
   "source_defects_discovered": [],
@@ -71,6 +71,15 @@
       "remediation_head": "1cf21b3174a8caa207de3e0d5db80e12b01a09d1",
       "production_source_changed": false,
       "scientific_oracle_changed": false
+    },
+    {
+      "failed_run": 34619840900,
+      "failed_head": "86954e763daa831012e1cbdda0e61332075c500e",
+      "classification": "FTB04_PARAMETER_REFERENCE_FIXTURE_PHYSICS_CONTAMINATION",
+      "remediation_head": "5d5decd81066c8f4028da5e64f3bf6b3c111dce1",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false,
+      "note": "The failed extension changed both parameter-reference identity and hydraulic cofgen. Remediation retains distinct immutable parameter-set identities while restoring bit-identical qualified hydraulic physics."
     }
   ],
   "state": {
