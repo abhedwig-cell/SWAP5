@@ -1,5 +1,5 @@
 program test_fpm08d7_fixed_weir_process
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_restricted_fixed_weir_surface_water, only: fixed_weir_surface_water_parameters_t, &
        fixed_weir_surface_water_state_t, fixed_weir_surface_water_forcing_t, &
        fixed_weir_surface_water_numerical_config_t, fixed_weir_surface_water_result_t, &
@@ -34,7 +34,7 @@ program test_fpm08d7_fixed_weir_process
 
   call fixed_weir_storage_from_level(p, p%level_knots(11), storage, ok, exact)
   call require(ok .and. exact, 'exact knot policy was not explicit')
-  call require(storage == p%storage_knots(11), 'exact knot did not return authoritative stored coordinate')
+  call require(same_bits(storage, p%storage_knots(11)), 'exact knot did not return authoritative stored coordinate')
 
   ! Stable no-discharge route below the weir target.
   s%storage = 80.0_real64
@@ -42,7 +42,7 @@ program test_fpm08d7_fixed_weir_process
   f%supply_capacity_rate = 0.0_real64
   call evaluate_restricted_fixed_weir_surface_water(p,n,s,f,dt,r)
   call require(r%status == FIXED_WEIR_AVAILABLE, 'no-discharge route rejected')
-  call require(r%discharge_rate == 0.0_real64, 'unexpected discharge below target')
+  call require(same_bits(r%discharge_rate, 0.0_real64), 'unexpected discharge below target')
   call require(abs(r%mass_residual) <= 1.0e-13_real64, 'no-discharge mass residual')
 
   ! Supply route: storage is below h_weir-WLDIP and capacity is sufficient.
@@ -51,7 +51,7 @@ program test_fpm08d7_fixed_weir_process
   f%supply_capacity_rate = 100.0_real64
   call evaluate_restricted_fixed_weir_surface_water(p,n,s,f,dt,r)
   call require(r%status == FIXED_WEIR_AVAILABLE, 'supply route rejected')
-  call require(r%supply_rate > 0.0_real64 .and. r%discharge_rate == 0.0_real64, 'supply route classification')
+  call require(r%supply_rate > 0.0_real64 .and. same_bits(r%discharge_rate, 0.0_real64), 'supply route classification')
   call require(abs(r%mass_residual) <= 1.0e-13_real64, 'supply mass residual')
 
   ! Power-rating discharge route above target.
@@ -85,6 +85,11 @@ program test_fpm08d7_fixed_weir_process
   write(*,'(A)') 'PASS_FPM08D7_FIXED_WEIR_PROCESS'
   write(*,'(A,ES24.16)') 'LAST_LEVEL=', level
 contains
+  pure logical function same_bits(a, b) result(same)
+    real(real64), intent(in) :: a, b
+    same = transfer(a, 0_int64) == transfer(b, 0_int64)
+  end function same_bits
+
   subroutine require(condition, message)
     logical, intent(in) :: condition
     character(len=*), intent(in) :: message
