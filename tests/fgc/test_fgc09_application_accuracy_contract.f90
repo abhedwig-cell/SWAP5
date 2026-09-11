@@ -97,7 +97,9 @@ program test_fgc09_application_accuracy_contract
   call check(.not. contract%temporal_budget_ready(), 'missing contract version fails closed', failures)
 
   call set_valid_contract(contract, COUPLING_QOI_GROUNDWATER_HEAD, huge(0.0_real64), 1.0_real64)
-  call check(.not. contract%temporal_budget_ready(), 'overflowed composed budget fails closed', failures)
+  call check(contract%temporal_budget_ready(), 'largest finite H_app has no invented upper policy limit', failures)
+  call contract%evaluate_temporal_budget_cm(budget, available)
+  call check(available .and. budget == huge(0.0_real64), 'largest finite budget composes without clipping', failures)
 
   if (failures /= 0) then
     write(*,'(A,I0)') 'FGC09_FAILURES=', failures
