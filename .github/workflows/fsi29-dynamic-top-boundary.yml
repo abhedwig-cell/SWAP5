@@ -1,0 +1,20 @@
+name: F-SI29 dynamic top-boundary component gate
+
+on:
+  push:
+    branches:
+      - work/f-si29-production-dynamic-top-boundary-provider
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  component-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-SI29 dynamic top-boundary component gate
+        run: bash tests/fsi/run_fsi29_dynamic_top_boundary_component_gate.sh
