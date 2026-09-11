@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI48",
+  "title": "F-MR41 Typed Optional-State Layout Canonical Admission",
+  "branch": "qualification/f-ci48-fmr41-typed-optional-state-layout-canonical-admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FMR41_TYPED_OPTIONAL_STATE_LAYOUT_FOR_CURRENT_CANONICAL_ADMISSION",
+  "canonical_base": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "composition_head": "8abead33cf706ea7df8092bf0ce29f19e59bf771",
+  "donor_source_authority": "F-MR41@50b8bd32b03946d947b9c8b87a17192684843b6e",
+  "donor_closeout_authority": "F-MR41@e7165e598b035282a2cb7527b2fb2f466f1dbbff",
+  "production_blobs": {
+    "src/runtime/mod_fmr_runtime_core.f90": "88adf19e274956ab0f97fe6b4f6307fbfb453790",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "2364c765935813675dee0d2838a7ce183d81f560",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d"
+  },
+  "first_green_admission": {
+    "head": "cdc1e175a2b90a784eac53758d551ba0020a057d",
+    "run": 34648706383,
+    "job": 103425567198,
+    "conclusion": "success",
+    "fmr39_runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942"
+  },
+  "state": {
+    "composition_realized": true,
+    "typed_layout_identity_qualified": true,
+    "unknown_positive_layout_fail_closed": true,
+    "valid_fmr39_thermal_runtime_preserved": true,
+    "fmr19_base_restart_preserved": true,
+    "reference_unchanged": true,
+    "water_mass_path_relaxed": false,
+    "all_30_architecture_invariants_reconciled": true,
+    "canonical_promoted": false,
+    "RB1_modified_or_reopened": false
+  },
+  "qualified_scope": {
+    "optional_state_layout_identity": "explicit typed physical optional-state topology identity",
+    "known_layouts": ["BASE", "SNOW", "RESTRICTED_SOIL_TEMPERATURE"],
+    "unknown_positive_ids": "fail closed",
+    "inactive_state": "capability identity does not force optional physical state allocation",
+    "numerical_continuation": "remains separate FMR_NUMERICAL_CONTINUATION_NONE namespace",
+    "mass": "water mass remains hard and unchanged"
+  },
+  "hard_holds": [
+    "no new physics",
+    "no new solver",
+    "no scientific tolerance relaxation",
+    "no water-mass accounting change",
+    "no snow plus soil-temperature combined runtime profile",
+    "no new parallel-throughput or performance claim",
+    "no production SWAP-MODFLOW admission",
+    "no RB1 modification or reopening"
+  ],
+  "architecture_audit": "integration/f-ci/F-CI48_ARCHITECTURE_AUDIT.json",
+  "exact_status_head_rerun_policy": {
+    "workflow": ".github/workflows/fci48-fmr41-typed-optional-state-layout-canonical-admission.yml",
+    "status_updates_trigger_full_gate": true,
+    "source_mutation_after_first_green_forbidden": true
+  },
+  "promotion_gate": {
+    "require_current_canonical_still_exactly_base": true,
+    "require_exact_status_head_F_CI48_success": true,
+    "require_exact_three_production_blobs": true,
+    "require_reference_unchanged": true,
+    "require_true_two_parent_merge_commit": true,
+    "force_update_forbidden": true,
+    "post_promotion_reconciliation_required": true
+  },
+  "next_required_step": "Require the automatically triggered full F-CI48 gate on this exact status head to finish green. Only then, while canonical remains exactly pinned, may canonical be advanced by a true two-parent merge followed by F-CI48P current-canonical postimage reconciliation."
+}
