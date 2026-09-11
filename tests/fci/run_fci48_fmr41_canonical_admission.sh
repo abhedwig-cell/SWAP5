@@ -152,9 +152,12 @@ python3 - "$BUILD/fmr39-valid.f90" "$BUILD/fmr39-unknown.f90" <<'PY'
 from pathlib import Path
 import sys
 src=Path(sys.argv[1]).read_text()
-if src.count('390501_int64') != 1:
-    raise SystemExit(f'FCI48 mutation anchor count={src.count("390501_int64")}')
-Path(sys.argv[2]).write_text(src.replace('390501_int64','390502_int64',1))
+anchor='templates(1)%optional_state_layout_id = 390501_int64'
+replacement='templates(1)%optional_state_layout_id = 390502_int64'
+count=src.count(anchor)
+if count != 1:
+    raise SystemExit(f'FCI48 mutation anchor count={count}')
+Path(sys.argv[2]).write_text(src.replace(anchor,replacement,1))
 print('FCI48_UNKNOWN_THERMAL_LAYOUT_ORACLE_MATERIALIZED=PASS')
 PY
 
