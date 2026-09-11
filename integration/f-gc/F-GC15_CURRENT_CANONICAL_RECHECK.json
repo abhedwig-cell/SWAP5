@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.fgc15_current_canonical_recheck.v1",
+  "work_unit": "F-GC15",
+  "frozen_catalog_base": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "rechecked_live_canonical": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "live_canonical_change": "F-CI48 typed optional-state layout admission",
+  "compare_summary": {
+    "base_is_ancestor": true,
+    "production_paths_changed": [
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "coupling_accuracy_contract_changed": false,
+    "coupling_accuracy_adapter_changed": false,
+    "transaction_result_contract_changed": false,
+    "canonical_result_contract_changed": false,
+    "soil_water_solver_sensitivity_contract_changed": false,
+    "canonical_interval_runtime_changed": false
+  },
+  "revalidated_findings": {
+    "production_groundwater_or_MODFLOW_orchestrator_present": false,
+    "transaction_result_interface_sensitivity_carrier_present": false,
+    "canonical_result_interface_sensitivity_carrier_present": false,
+    "F_GC14_accuracy_seam_remains_present": true,
+    "gap_catalog_decision_changed": false
+  },
+  "disposition": "F-CI48 does not invalidate F-GC15. Preserve the preregistered frozen base and additionally require the qualification gate to verify these current-canonical facts mechanically.",
+  "production_source_changed_by_F_GC15": false
+}
