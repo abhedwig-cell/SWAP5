@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI30",
+  "title": "Dynamic Top-Boundary Solver-Interface Adapter & HeadCalc Provider Bridge",
+  "branch": "work/f-si30-dynamic-top-boundary-solver-interface",
+  "base_head": "a7242e1831491de0a37c521c3875b0bfbcad7e13",
+  "qualification": false,
+  "purpose": "Qualify the solver-facing interface seam required to consume the already-qualified F-SI29 restricted dynamic B1.10 top-boundary evaluator inside the existing HeadCalc residual/Jacobian trajectory without introducing a second hydraulic authority.",
+  "upstream_authorities": {
+    "F_SI29_closeout": "a58f300277775ae7f5ac33563d20cad2ae22738f",
+    "F_SI29_provider_blob": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "F_SI29_decision": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+    "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+    "HeadCalc_blob_at_start": "55893f1f5ccba2052ad681743aa155b69f351246"
+  },
+  "scope": {
+    "allow": [
+      "extend the generic top-boundary provider result contract so one evaluation can express flux or prescribed-head regime explicitly",
+      "carry trial-local surface face conductivity, candidate ponding, evaporation, runoff depth and net surface flux required by the existing residual/mass checks",
+      "adapt the exact F-SI29 evaluator behind that generic provider contract",
+      "make HeadCalc consume the generic provider result without calling F-SI29-specific APIs",
+      "preserve the fixed-flux provider as the simple flux-only implementation",
+      "add executable equivalence, mass, retry-independent and deterministic qualification gates"
+    ],
+    "forbid": [
+      "changing F-SI29 physical equations or thresholds",
+      "changing bottom-boundary physics or F-SI28 tangent equations",
+      "routing production SoilWater(2) through the typed solver service",
+      "changing transaction commit/rollback ownership",
+      "persisting top-boundary trial outputs as committed solver state",
+      "adding MODFLOW sign conversion",
+      "broadening nonlinear runoff, macropore, frost, swdra2 or time-dependent pondmx scope"
+    ]
+  },
+  "required_semantics": [
+    "provider evaluation is a pure trial evaluation from explicit/current trial inputs plus request-local immutable provider context",
+    "result explicitly distinguishes flux and prescribed-head regimes",
+    "head regime provides the exact surface-face conductivity used by residual and Jacobian",
+    "candidate ponding and runoff remain trial-local until outer transaction acceptance",
+    "surface water balance can be evaluated without reading hidden legacy precipitation/evaporation globals when the dynamic provider is active",
+    "unsupported/invalid provider results fail closed and do not silently fall back to a different surface physics route",
+    "fixed-flux provider behavior remains unchanged in its admitted scope",
+    "HeadCalc remains the single nonlinear Richards trajectory and does not gain F-SI29-specific science"
+  ],
+  "qualification_gates": [
+    "generic-adapter output identity with direct F-SI29 over the frozen 9072-case oracle matrix",
+    "flux/head/ponded-head/linear-runoff routes all represented through the generic contract",
+    "provider request/context immutability and interleaved worker-style replay",
+    "HeadCalc explicit-provider route exercises both flux and head regimes with hard mass-balance closure",
+    "fixed-flux regression unchanged",
+    "F-SI28 prescribed-qbot tangent path remains available and no additional nonlinear trajectory/Jacobian is introduced",
+    "O0/O2 observable identity",
+    "exact-head CI green"
+  ],
+  "downstream_handoff": {
+    "owner": "F-KT15",
+    "rule": "Only after F-SI30 qualification may production SoilWater(2) construct the dynamic provider context, invoke the typed solver service and materialize its accepted output capsule."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "CONTRACT_FROZEN_IMPLEMENTATION_OPEN_FAIL_CLOSED"
+}
