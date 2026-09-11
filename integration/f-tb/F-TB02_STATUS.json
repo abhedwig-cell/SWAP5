@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB02",
+  "title": "Hydraulic Constitutive Verification Catalog",
+  "branch": "work/f-tb02-hydraulic-constitutive-case-catalog",
+  "architecture_authority": {
+    "commit": "1d039292d5768496c4550a8e1b35a92c6f836504",
+    "tree": "217ad406db38b564a8b03e6c34c26b9123b58c6c"
+  },
+  "current_canonical_context": {
+    "commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "semantics": "SOURCE_CONTEXT_ONLY_NOT_AUTOMATIC_PRESERVATION_AUTHORITY"
+  },
+  "phase": "HYDRAULIC_CASE_CATALOG_FOUNDATION_QUALIFIED",
+  "decision": "QUALIFIED_FTB02_HYDRAULIC_CASE_CATALOG_FOUNDATION_READY_FOR_INCREMENTAL_ORACLE_EXPANSION",
+  "qualification_evidence": {
+    "persistent_catalog_checkpoint": "7e19f5c17b6a77e5f7b84da13f6531f051215de1",
+    "substantive_validation_head": "9170d9f0fd23d42c99a4f2f3a3c6f028b021f880",
+    "substantive_validation_tree": "bffb2cf1b9aae72ef1761db64a88ee082080be70",
+    "substantive_validation_run": 34559027570,
+    "substantive_validation_conclusion": "success",
+    "registered_cases": 5,
+    "registered_layers": ["TB-L0", "TB-L1", "TB-L3"],
+    "exact_source_authorities": "PASS",
+    "swap009_b16_admission_binding": "PASS",
+    "swap011_fail_closed_characterization": "PASS",
+    "current_source_presence_not_preservation": "PASS",
+    "kelvin_replay_max_relative_error": 2.3022583789890894e-11,
+    "kelvin_replay": "PASS",
+    "non_target_exact_identity": "PASS",
+    "architecture_invariants": "30/30_PASS",
+    "hard_mass_policy": "PASS",
+    "required_deliverables": "7/7_PASS",
+    "final_closeout_policy": "Final closeout is valid only if the same F-TB02 workflow succeeds externally on the exact final status head. This status file intentionally does not self-reference that future run."
+  },
+  "scope_holds": {
+    "production_source_changed": false,
+    "existing_test_changed": false,
+    "qualified_reference_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "runtime_semantics_changed": false,
+    "io_adapter_changed": false
+  },
+  "catalog": {
+    "registered_cases": 5,
+    "layers": ["TB-L0", "TB-L1", "TB-L3"],
+    "historical_swap009_cases": 3,
+    "swap011_characterization_cases": 1,
+    "current_canonical_characterization_cases": 1,
+    "moving_current_preservation_cases": 0
+  },
+  "mass": "HARD_UNCHANGED",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "machine_validated": true,
+    "historical_evidence_replayed": true,
+    "scientific_requalification_performed": false,
+    "moving_current_preservation_qualified": false,
+    "canonical_admitted": false
+  },
+  "known_incremental_followups": [
+    "all supported hydraulic families and parameter domains",
+    "theta(h) exact/property coverage",
+    "C(h) versus independently differentiated dtheta/dh with discontinuity classification",
+    "K(h) limiting, monotonicity and finite-value properties",
+    "dK/dh exact/independent-reference coverage for every supported model",
+    "inverse prhead identities where mathematically applicable",
+    "dry and saturation limits plus parameter-boundary adversarial cases",
+    "dedicated current-canonical hydraulic scientific requalification before moving-current preservation",
+    "TB-L3 Full Richards integration qualification remains separate"
+  ],
+  "exit_target": "QUALIFIED_FTB02_HYDRAULIC_CASE_CATALOG_FOUNDATION_READY_FOR_INCREMENTAL_ORACLE_EXPANSION"
+}
