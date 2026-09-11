@@ -1,0 +1,22 @@
+name: F-CI39P postimage governance reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci39p-current-canonical-postimage-governance-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI39P exact postimage governance reconciliation
+        run: bash tests/fci/run_fci39p_postimage_governance_reconciliation.sh

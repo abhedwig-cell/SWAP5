@@ -1,51 +1,81 @@
 {
-  "schema": "swap5.fci39p_status.v1",
+  "schema": "swap5.fci39p_status.v2",
   "work_unit": "F-CI39P",
   "title": "F-CI39 Postimage Moving-Canonical Preservation Governance Reconciliation",
   "branch": "qualification/f-ci39p-current-canonical-postimage-governance-reconciliation",
+  "preparation_authority": "dfbeec2396bcb67eb1dd09e31a892b4f763f4389",
   "preparation_base": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
-  "canonical_source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
-  "fci39_candidate_postimage": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
-  "fci39_candidate_parent": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "final_canonical_authority": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+  "final_canonical_tree": "ebec5e647c68181ba958432ad575f9c95a9c752b",
+  "canonical_src_tree": "7264753a19a481043434ba782d4f81bc585fed85",
+  "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "fci39_admission_head": "25ed89861e592420b4bbdb6e42a4c083337ebabc",
+  "fci39_production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
   "fpm06e_candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
   "fvq54_authority": "7cf8f6685ca24f855621f872bcf906f346edfa72",
-  "fvq54_exact_head_run": 34544824222,
-  "fvq54_conclusion": "success",
-  "phase": "PREPARATION_BLOCKED_PENDING_FCI39_EXACT_QUALIFIED_HEAD",
-  "decision": "BLOCKED_NOT_READY_FOR_CANONICAL_PROMOTION",
-  "triggering_governance_mismatch": {
-    "workflow": ".github/workflows/fci-canonical.yml",
-    "job": "current-restricted-canonical-preservation",
-    "frozen_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
-    "conflicting_path": "src/solver/mod_b110_default_mvg_provider.f90",
-    "fci37_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
-    "fci39_candidate_blob": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+  "phase": "FINAL_RECONCILIATION_CANDIDATE_PENDING_EXACT_HEAD_CI",
+  "decision": "QUALIFIED_FCI39P_GOVERNANCE_RECONCILIATION_NO_ADDITIONAL_CANONICAL_DELTA_REQUIRED_IF_EXACT_HEAD_CI_GREEN",
+  "original_blocker": {
     "classification": "EXPECTED_QUALIFIED_CAPABILITY_DELTA_REJECTED_BY_STALE_MOVING_PRESERVATION_POINTER",
     "scientific_regression": false,
-    "mass_regression": false
+    "mass_regression": false,
+    "resolved": true,
+    "resolution_owner": "F-CI39",
+    "resolution": "F-CI39 advanced the moving preservation authority to c9a73f2f37c9306e7a6fbf60b713b66d82c4a372 before source admission and retained F-CI37 as a frozen historical authority."
   },
-  "required_reconciliation_after_fci39_qualification": [
-    "bind the exact final qualified F-CI39 admission head as a new immutable authority",
-    "retain F-CI37 as frozen historical authority and do not rewrite its historical result",
-    "update broad moving-canonical preservation so the qualified F-CI39 dependency surface is authoritative",
-    "replay F-VQ54 scalar-capacity evidence or an exact frozen equivalent in the canonical preservation chain",
-    "require zero additional src/reference/science delta in F-CI39P",
-    "require broad canonical regression green on the exact reconciled postimage before non-forced promotion"
-  ],
-  "hard_holds": [
-    "no canonical promotion from c9a73f2f37c9306e7a6fbf60b713b66d82c4a372 while the stale F-CI37 moving-preservation pointer remains",
-    "no modification of active F-CI39 production candidate inside F-CI39P",
-    "no weakening of hard mass conservation",
-    "no rewriting of historical F-CI37 qualification",
-    "no F-CI40 MR38 admission before F-CI39/F-CI39P canonical authority is final"
-  ],
+  "postpromotion_evidence": {
+    "fci39_exact_admission_run": 34545646563,
+    "fci39_exact_admission_job": 103097547625,
+    "fci39_exact_admission_conclusion": "success",
+    "first_canonical_push_run": 34545722727,
+    "first_canonical_push_conclusion": "success",
+    "final_canonical_governance_head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+    "final_canonical_push_run": 34545751793,
+    "final_canonical_push_conclusion": "success",
+    "final_canonical_push_jobs": "14_OF_14_SUCCESS",
+    "final_canonical_pr_run": 34545754692,
+    "final_canonical_pr_conclusion": "success",
+    "frozen_fci39_source_job": 103097857961,
+    "frozen_fci39_source_conclusion": "success",
+    "moving_preservation_job": 103098234446,
+    "moving_preservation_conclusion": "success",
+    "historical_admission_scope_separation_preserved": true
+  },
+  "scope": {
+    "governance_only": true,
+    "src_delta_from_final_canonical": [],
+    "reference_delta_from_final_canonical": [],
+    "science_delta": false,
+    "scientific_tolerance_delta": false,
+    "mass_authority_delta": false,
+    "runtime_activation_delta": false
+  },
+  "architecture": {
+    "invariants_reviewed": 30,
+    "result": "NO_ADVERSE_ARCHITECTURE_DELTA_IF_EXACT_HEAD_GATE_GREEN",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
   "state": {
     "governance_blocker_identified": true,
     "preparation_persisted": true,
-    "fci39_exact_qualified_head_available": false,
-    "governance_reconciliation_implemented": false,
-    "tested": false,
-    "canonical_promoted": false
+    "fci39_exact_qualified_head_available": true,
+    "governance_reconciliation_implemented_in_fci39": true,
+    "canonical_promoted": true,
+    "post_promotion_gate_persisted": true,
+    "final_broad_canonical_passed": true,
+    "zero_delta_recomposition_persisted": true,
+    "exact_final_governance_head_requalified": false,
+    "additional_canonical_promotion_required": false
   },
-  "next_gate": "Wait for an exact qualified F-CI39 admission head. Recompose this governance-only branch from that head, then update the broad B-preservation authority without changing src/reference/science."
+  "final_gate": {
+    "exact_fci39p_branch_head_must_pass": true,
+    "canonical_must_still_equal_1fab3e1b27d774f2869a003876d035b07c601ccf": true,
+    "src_reference_must_equal_final_canonical": true,
+    "f_vq54_oracle_replay_on_final_canonical_required": true,
+    "moving_fci39_pointer_and_frozen_fci37_history_required": true,
+    "no_additional_canonical_delta_permitted": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "exit_target": "QUALIFIED_FCI39P_GOVERNANCE_RECONCILIATION_COMPLETE_NO_ADDITIONAL_CANONICAL_DELTA_REQUIRED",
+  "next_after_exit": "F-CI40 may be considered only after a live recheck of current canonical and any existing F-CI40 or equivalent authority."
 }

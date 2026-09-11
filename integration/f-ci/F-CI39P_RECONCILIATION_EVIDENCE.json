@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.fci39p_reconciliation_evidence.v1",
+  "work_unit": "F-CI39P",
+  "preparation_head": "dfbeec2396bcb67eb1dd09e31a892b4f763f4389",
+  "final_canonical_head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+  "final_canonical_parent_admission": "25ed89861e592420b4bbdb6e42a4c083337ebabc",
+  "fci39_production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+  "f_vq54_authority": "7cf8f6685ca24f855621f872bcf906f346edfa72",
+  "evidence": {
+    "fci39_exact_admission_run": 34545646563,
+    "fci39_exact_admission_job": 103097547625,
+    "fci39_exact_admission": "SUCCESS",
+    "first_canonical_push_run": 34545722727,
+    "first_canonical_push": "SUCCESS",
+    "post_promotion_gate_blob": "ff0afa9198576f75257cb6731dfe7d85eb079709",
+    "final_canonical_push_run": 34545751793,
+    "final_canonical_push_jobs": "14_OF_14_SUCCESS",
+    "final_canonical_pr_run": 34545754692,
+    "final_canonical_pr": "SUCCESS",
+    "frozen_fci39_source_job": 103097857961,
+    "frozen_fci39_source": "SUCCESS",
+    "moving_preservation_job": 103098234446,
+    "moving_preservation": "SUCCESS",
+    "fci37_historical_authority_retained": true,
+    "fci38_scope_separation_retained": true,
+    "same_sha_vq_reference_run": 34545754676,
+    "same_sha_vq_reference": "SUCCESS",
+    "same_sha_documentation_run": 34545754793,
+    "same_sha_documentation": "SUCCESS"
+  },
+  "required_exact_branch_replay": {
+    "zero_src_reference_delta": true,
+    "f_vq54_oracle_cases": 180,
+    "f_vq54_constitutive_cases": 30,
+    "expected_output_sha256": "e77388e86bf1726e486165606ef80edaef25361f7b7ad4ae1a2f8e1fcdbccbaa",
+    "o0_o2_identity": true,
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "disposition": "F-CI39P is a postimage reconciliation proof only. F-CI39 already contains the moving-preservation fix and the final canonical governance head has passed the broad regression, so F-CI39P must not introduce another canonical source, science, runtime, tolerance, or mass-authority delta."
+}
