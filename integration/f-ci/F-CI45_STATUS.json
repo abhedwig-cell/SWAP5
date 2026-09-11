@@ -58,6 +58,11 @@
   ],
   "architecture_audit": "integration/f-ci/F-CI45_ARCHITECTURE_AUDIT.json",
   "evidence": "integration/f-ci/F-CI45_EVIDENCE.json",
+  "exact_status_head_rerun_policy": {
+    "workflow": ".github/workflows/fci45-exact-head-qualification.yml",
+    "status_and_evidence_updates_trigger_full_gate": true,
+    "source_mutation_after_first_green_forbidden": true
+  },
   "promotion_gate": {
     "require_current_canonical_still_exactly_base": true,
     "require_exact_status_head_F_CI45_success": true,
@@ -67,5 +72,5 @@
     "force_update_forbidden": true,
     "post_promotion_reconciliation_required": true
   },
-  "next_required_step": "Run the full F-CI45 gate on this exact status/evidence head. Only if green while canonical remains exactly pinned may canonical be advanced by a true two-parent merge, followed by separate F-CI45P postimage reconciliation."
+  "next_required_step": "Require the automatically triggered full F-CI45 gate on this exact status/evidence head to finish green. Only then, while canonical remains exactly pinned, may canonical be advanced by a true two-parent merge followed by separate F-CI45P postimage reconciliation."
 }
