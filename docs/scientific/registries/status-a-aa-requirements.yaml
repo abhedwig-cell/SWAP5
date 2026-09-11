@@ -1,0 +1,35 @@
+schema_version: 1
+workunit: F-DOC01
+authority:
+  formal_project_criterion: WR-QA-2024
+  public_mapping_baseline: WR-QA-PUBLIC-22
+  formal_2024_reconciliation: PENDING_CONTROLLED_COPY
+perspectives: 3
+themes: 7
+requirements:
+  - {id: '1.1', theme: ST.1, perspective: Science & Technology, heading: General model/dataset description, a: 'purpose; application domain; theoretical framework; paradigms', aa: NO_PUBLIC_ADDITIONAL_AA_TEXT_IDENTIFIED}
+  - {id: '1.2', theme: ST.1, perspective: Science & Technology, heading: Conceptual and formal model documented, a: 'conceptual/formal model; assumptions; simplifications; scientific literature', aa: 'motivated complexity relative to use; peer-reviewed scientific publication'}
+  - {id: '2.1', theme: ST.2, perspective: Science & Technology, heading: Implementation documented, a: 'implementation structure and flow mapped to technical design', aa: 'code commenting; motivated modular design; code review external to development team'}
+  - {id: '2.2', theme: ST.2, perspective: Science & Technology, heading: Technical environment documented, a: 'language; environment; versions; critical settings; implementation limitations', aa: NO_PUBLIC_ADDITIONAL_AA_TEXT_IDENTIFIED}
+  - {id: '2.3', theme: ST.2, perspective: Science & Technology, heading: Model/dataset tested, a: 'test protocol; results; deviations; explicitly untested components', aa: 'scheduled tests; periodic completeness review'}
+  - {id: '3.1', theme: ST.3, perspective: Science & Technology, heading: Parameters and variables documented, a: 'meaning; units; defaults; default-source provenance', aa: 'possible/likely ranges; default uncertainty; precision'}
+  - {id: '3.2', theme: ST.3, perspective: Science & Technology, heading: Calibration described, a: 'calibration/tuning procedure and consequences/results where applicable', aa: NO_PUBLIC_ADDITIONAL_AA_TEXT_IDENTIFIED}
+  - {id: '3.3', theme: ST.3, perspective: Science & Technology, heading: Input and output described, a: 'structure; format; quantities; units; precision; model-variable links; version traceability', aa: 'relevant standards; input/settings/execution-time traceability'}
+  - {id: '3.4', theme: ST.3, perspective: Science & Technology, heading: Origin of input data described, a: 'source-to-model preparation pipeline; tested preparation scripts', aa: 'raw-data acquisition protocol where applicable; periodic update'}
+  - {id: '4.1', theme: ST.4, perspective: Science & Technology, heading: Sensitivity analysis performed, a: 'method-appropriate documented and interpreted sensitivity analysis', aa: 'repeatable protocol; periodic completeness review'}
+  - {id: '4.2', theme: ST.4, perspective: Science & Technology, heading: Uncertainty analysis performed, a: 'qualitative uncertainty covering assumptions structure data and known/unknown uncertainty', aa: 'quantitative uncertainty; motivated method; periodic scope review'}
+  - {id: '4.3', theme: ST.4, perspective: Science & Technology, heading: Model/dataset validated, a: 'external-information validation; method; unvalidated components; interpretation consequences', aa: 'version-aware validation protocol; periodic breadth review'}
+  - {id: '4.4', theme: ST.4, perspective: Science & Technology, heading: Use monitored, a: 'uses and example studies monitored and referenced', aa: 'use/user experience tracked evaluated documented and fed to development plan'}
+  - {id: '4.5', theme: ST.4, perspective: Science & Technology, heading: General quality assessment, a: 'fitness for purpose relates tests sensitivity uncertainty validation and use to purpose/domain', aa: 'data reliability/accuracy/precision; external scientific review'}
+  - {id: '5.1', theme: DO.5, perspective: Development & Organisation, heading: Development plan, a: 'planned development and progress informed by evaluation', aa: 'timeline; further evaluation; periodic plan update'}
+  - {id: '5.2', theme: DO.5, perspective: Development & Organisation, heading: Version control system, a: 'development/release versioning; acceptance criteria; version differences; central archiving', aa: 'documentation and code-commenting protocol'}
+  - {id: '6.1', theme: DO.6, perspective: Development & Organisation, heading: Metadata available, a: 'domain-appropriate metadata including required WR model metadata', aa: 'up-to-date public FAIR metadata'}
+  - {id: '6.2', theme: DO.6, perspective: Development & Organisation, heading: Management plan, a: 'scientific/content; technical; succession; ownership; financial-cover responsibilities', aa: 'future-use/development vision; opportunities/threats; periodic update'}
+  - {id: '6.3', theme: DO.6, perspective: Development & Organisation, heading: Dependencies discussed, a: 'input/output and third-party dependencies relevant to continuity', aa: 'dependency availability/demand risks obligations liabilities tracked'}
+  - {id: '6.4', theme: DO.6, perspective: Development & Organisation, heading: External use formalised, a: 'conditions for external use and named support responsibility', aa: 'legally checked ownership-aligned user agreement including financial arrangements'}
+  - {id: '7.1', theme: IU.7, perspective: Interpretation & Use, heading: Interpretation guidance, a: 'purpose; domain; theory/assumptions; evaluation summary; when not to use', aa: 'reflection on purpose/domain versus complexity implementation limits data quality/availability and performance'}
+  - {id: '7.2', theme: IU.7, perspective: Interpretation & Use, heading: User manual, a: 'operation; installation; technical summary; minimum requirements; user I/O; support contact', aa: NO_PUBLIC_ADDITIONAL_AA_TEXT_IDENTIFIED}
+default_fields:
+  formal_2024_reconciliation: PENDING_2024_RECONCILIATION
+  assessment: NOT_ASSESSED
+  evidence: []
