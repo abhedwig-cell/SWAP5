@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC12",
+  "qualification_mode": "MECHANICAL_GITHUB_OBJECT_REPLAY_NO_ACTIONS_WORKFLOW",
+  "qualified_candidate_head": "a98170acfd4257e936e0e0fe2418f0117883d32e",
+  "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "canonical_stage": "F-CI45P",
+  "actions_exact_head_qualification": false,
+  "actions_nonclaim_reason": "The available execution environment did not permit creation of a new GitHub Actions workflow for this research-only workunit. No Actions success is claimed. Qualification therefore uses repository-object replay and immutable GitHub compare/file evidence only.",
+  "mechanical_checks": {
+    "branch_status_vs_canonical": "ahead",
+    "merge_base_equals_canonical_base": true,
+    "ahead_by": 3,
+    "behind_by": 0,
+    "changed_files": [
+      "integration/f-gc/F-GC12_PRE_REGISTRATION.json",
+      "integration/f-gc/F-GC12_RESEARCH_EVIDENCE.json",
+      "tests/fgc/run_fgc12_wht_project_specific_accuracy.sh"
+    ],
+    "production_source_delta": false,
+    "project_identity_frozen": true,
+    "approval_id": "SSI-8863",
+    "numeric_H_app_qualified": false,
+    "numeric_A_temporal_qualified": false,
+    "direct_temporal_budget_qualified": false,
+    "positive_budget_materialized": false,
+    "physical_threshold_reuse_rejected": true,
+    "calibration_metric_reuse_rejected": true,
+    "uncertainty_band_reuse_without_acceptance_rule_rejected": true,
+    "model_timestep_reuse_as_allocation_rejected": true,
+    "mass_conservation_relaxed": false
+  },
+  "external_evidence_resolution": {
+    "project_approval_requires_quantitative_predictive_uncertainty": true,
+    "project_approval_requires_independent_peer_review": true,
+    "project_approval_supplies_numeric_prediction_accuracy_acceptance_limit": false,
+    "project_approval_supplies_numeric_temporal_or_coupling_error_allocation": false,
+    "published_project_HIR_contains_uncertainty_analysis": true,
+    "published_project_HIR_uncertainty_output_is_external_acceptance_requirement": false
+  },
+  "decision": "FAIL_CLOSED_WHT_PROJECT_DOES_NOT_SUPPLY_ADMISSIBLE_NUMERIC_H_APP_AND_TEMPORAL_ALLOCATION",
+  "qualification_result": "PASS_FAIL_CLOSED_DECISION_IS_SUPPORTED",
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "production_source_changed": false
+}
