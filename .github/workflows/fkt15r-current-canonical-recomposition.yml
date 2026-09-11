@@ -1,0 +1,24 @@
+name: F-KT15R Current-Canonical Solver-Service Recomposition
+
+on:
+  push:
+    branches:
+      - work/f-kt15r-production-solver-service-current-canonical-recomposition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-recomposition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify F-KT15R current-canonical recomposition
+        shell: bash
+        run: bash tests/fkt/run_fkt15r_current_canonical_recomposition_gate.sh
