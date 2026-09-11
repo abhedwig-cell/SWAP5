@@ -28,3 +28,5 @@ jobs:
           done
       - name: Run focused F-KT15 production task-2 gate
         run: bash tests/fkt/run_fkt15_production_task2_gate.sh
+      - name: Run accepted-only F-KT14 transport gate
+        run: bash tests/fkt/run_fkt15_reference_model_transport_gate.sh
