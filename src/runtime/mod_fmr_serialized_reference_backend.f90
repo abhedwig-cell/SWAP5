@@ -1112,17 +1112,17 @@ contains
     if (.not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
     if (size(full%pressure_head) /= size(half%pressure_head) .or. &
         size(full%water_content) /= size(half%water_content)) return
-    same = all(same_real_bits(full%pressure_head, half%pressure_head)) .and. &
-         all(same_real_bits(full%water_content, half%water_content)) .and. &
-         same_real_bits(full%ponding_depth, half%ponding_depth) .and. &
-         same_real_bits(full%groundwater_level, half%groundwater_level)
+    same = all(full%pressure_head == half%pressure_head) .and. &
+         all(full%water_content == half%water_content) .and. &
+         full%ponding_depth == half%ponding_depth .and. &
+         full%groundwater_level == half%groundwater_level
     if (.not. same) return
     same = allocated(full%snow) .eqv. allocated(half%snow)
     if (same .and. allocated(full%snow)) then
-      same = same_real_bits(full%snow%process%snow_water_storage, half%snow%process%snow_water_storage) .and. &
-           same_real_bits(full%snow%process%liquid_water_storage, half%snow%process%liquid_water_storage) .and. &
+      same = full%snow%process%snow_water_storage == half%snow%process%snow_water_storage .and. &
+           full%snow%process%liquid_water_storage == half%snow%process%liquid_water_storage .and. &
            (full%snow%event_applied .eqv. half%snow%event_applied) .and. &
-           same_real_bits(full%snow%event_t0, half%snow%event_t0)
+           full%snow%event_t0 == half%snow%event_t0
     end if
   end function base_physical_states_identical
 
