@@ -65,6 +65,16 @@ Inspection of the runtime contract showed that multiple in-range `parameter_ref`
 
 The failure is therefore classified as `FTB04_PARAMETER_REFERENCE_FIXTURE_PHYSICS_CONTAMINATION`, not as evidence of a production defect. At `5d5decd81066c8f4028da5e64f3bf6b3c111dce1` the test-only transform was narrowed: parameter registry entries 1 and 2 retain bit-identical already-qualified physical parameters but have distinct immutable `parameter_set_id` values, while columns alternate `parameter_ref` 1/2. This isolates reference resolution, immutable ownership, serialized/parallel equivalence and O0/O2 determinism without introducing new physics. FAST remained green on this remediation head in workflow run `34620259605`.
 
+## Fourth exact-head RELEASE attempt and FCI35/FMQ29 source-postimage remediation
+
+The fourth exact-head candidate was `60ad2bf8c17ae3def9e195ce93bdd016e1a5a880`, workflow run `34620386863`. FAST succeeded. RELEASE passed the rebound FCI28 restart matrix, the immutable FMQ26 parallel and publication-order matrices, hard mass, serialized/2-worker/4-worker equivalence, and the narrowed distinct-parameter-reference case including O0/O2 bit identity.
+
+The first remaining failure occurred only when entering the historical FCI35/FMQ29 parallel-restart replay. FCI35 accepted the F-TB04 exact source-authority rebound, then rejected `src/runtime/mod_fmr_serialized_multiswap_runtime.f90` because its original admission-time postimage lock expected blob `fe5a06c9af59308cdad86c5126379f413591b0cd`, while the exact F-TB04 pinned canonical authority contains the later legitimately admitted blob `f06a2eef7b47880e449cf9b201342d7bd1e197e1`. No held-out restart case or scientific/mass oracle had run yet.
+
+Inspection of the immutable FMQ29 runner showed the same distinction. Its source-component blob checks represent the original FCI35/FMQ29 admission postimage, while the actual independent restart attack is separately bound to immutable FMQ26 attack blobs, the FMQ27 restart-contract test blob, the F-MQ29 candidate/matrix authority, held-out cases `N=[3,5,9,16,23,33]`, cross-worker origin/continuation routes, O0/O2 identity and hard mass gates.
+
+This failure is classified as `FTB04_FCI35_FMQ29_HISTORICAL_COMPONENT_POSTIMAGE_INCOMPATIBILITY`, not as a production or restart defect. F-TB04 already locks the complete pinned `src` tree to `8ceeb70a64012631ebba295f5c045ea908b0681f` and the complete `reference` tree to `9d08625217d7c0a7385df9da6a04183bcd9cb9e6`. At remediation head `e67840a8fdd9ba96f9a2fd825be6cf24e7a82450`, only historical `src/**` component-postimage checks in the temporary FCI35 and rehydrated FMQ29 scripts are therefore rebound to that exact tree authority. Immutable attack/test blobs, FMQ29 qualification metadata, held-out matrices, hard-mass gates, state/result-identity checks and O0/O2 oracles are unchanged. FAST remained green on this remediation head in workflow run `34620625492`.
+
 ## Canonical advancement during the workunit
 
 After the F-TB04 contract had already frozen authority `0aeb0a2ed4096e1f9493d3dabc70962ea5270182`, the live `integration/f-ci-canonical` branch advanced to `d201904a85f3b595e028242978e52c02f5122a09` through F-CI43/F-CI43P. The delta is the separately admitted restricted soil-temperature capability and its qualification/governance evidence.
