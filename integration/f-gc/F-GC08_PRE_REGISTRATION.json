@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC08",
+  "title": "External Application Head-Requirement Binding and Decision-Margin Qualification",
+  "status": "PRE_REGISTERED_INDEPENDENT_RESEARCH_IN_PROGRESS",
+  "branch": "work/f-gc08-external-head-requirement-binding",
+  "research_only": true,
+  "production_source_changed": false,
+  "upstream": {
+    "F_GC07_closeout_head": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+    "F_GC07_decision": "QUALIFIED_COUPLING_TEMPORAL_ERROR_CHARACTERIZATION_READY_FOR_APPLICATION_CLASS_BUDGET_COMPOSITION",
+    "F_GC06_decision": "FAIL_CLOSED_NO_NARROW_APPLICATION_CLASS_HAS_COMPLETE_INDEPENDENT_H_APP_AND_A_TEMPORAL"
+  },
+  "canonical_context": {
+    "branch": "integration/f-ci-canonical",
+    "observed_head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "authority_note": "Context only; F-GC08 is research and does not modify canonical production source."
+  },
+  "frozen_application_class": {
+    "id": "AC02_GW_MANAGEMENT_HEAD_THRESHOLD",
+    "scope": "A groundwater-management or environmental-impact decision in which head or drawdown is compared with an externally governed threshold at specified locations and times.",
+    "reason_for_selection": "This is the only F-GC06 class in which groundwater head or drawdown itself is the decision quantity, so an external decision requirement could in principle bind directly to H_app without crop-response or recharge-sensitivity propagation."
+  },
+  "research_question": "Can an independently governed decision threshold be accompanied by a traceable allowable predictive error or decision margin that can legitimately instantiate H_app and then be composed with F-GC07 temporal/coupling characterization?",
+  "candidate_source_classes": [
+    "government or regulator groundwater-impact guidance",
+    "project approval or compliance documents with explicit head/drawdown triggers",
+    "independent uncertainty guidance for groundwater decision support",
+    "published groundwater impact assessments only when the provenance of their decision margin is traceable"
+  ],
+  "acceptance_rule": {
+    "threshold_alone_is_H_app": false,
+    "calibration_residual_is_H_app": false,
+    "solver_closure_criterion_is_H_app": false,
+    "measurement_detectability_alone_is_H_app": false,
+    "required_for_numeric_H_app": "An external source must state, or make mechanically derivable from an explicit governed decision rule, the acceptable prediction error or safety margin for the head/drawdown decision. The value must be independent of SWAP5, MODFLOW solver tolerance, F-GC02 target behavior and F-GC07 numerical results.",
+    "required_for_numeric_H_budget": "A defensible temporal allocation must additionally be specified or derived from an independently governed total-error allocation rule. F-GC07 estimator ratios may characterize numerical behavior but may not choose the policy fraction.",
+    "fail_closed": "If the source supplies only an impact/management threshold but no acceptable predictive error or decision margin, do not infer H_app from the threshold magnitude."
+  },
+  "transfer_rule": {
+    "GC07_evidence_may_support": [
+      "expected coupling-window refinement behavior",
+      "predictor-corrector correction as a same-window numerical signal",
+      "residual contraction as a numerical signal",
+      "cost and mass-conservation characterization within the tested domain"
+    ],
+    "GC07_evidence_may_not_support": [
+      "application acceptability",
+      "universal A_temporal",
+      "universal centimetre threshold",
+      "physical-model uncertainty budget"
+    ]
+  },
+  "target_leakage_lock": {
+    "F_GC02_may_be_inspected_or_rerun": false,
+    "F_GC07_error_magnitude_may_select_H_app": false,
+    "F_GC07_error_magnitude_may_select_A_temporal": false,
+    "failed_candidate_may_trigger_posthoc_margin_tuning": false
+  },
+  "mass_contract": {
+    "q_SWAP_equals_minus_q_GW": true,
+    "mass_conservation_is_absolute": true,
+    "mass_mismatch_may_enter_accuracy_budget": false
+  },
+  "possible_decisions": [
+    "QUALIFIED_EXTERNAL_APPLICATION_HEAD_REQUIREMENT_READY_FOR_TEMPORAL_BUDGET_COMPOSITION",
+    "FAIL_CLOSED_EXTERNAL_THRESHOLD_NOT_EQUIVALENT_TO_APPLICATION_PREDICTION_ACCURACY_REQUIREMENT"
+  ],
+  "architecture_invariants_requiring_closeout_audit": [9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
