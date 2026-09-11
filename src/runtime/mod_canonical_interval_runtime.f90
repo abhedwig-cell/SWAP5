@@ -1,9 +1,9 @@
 module mod_canonical_interval_runtime
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_transaction_reference, only: transaction_state_t, transaction_result_t, execute_reference_interval, &
-       TX_STATUS_ACCEPTED, TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
-       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_interface_sensitivity_t, &
+       execute_reference_interval, TX_STATUS_ACCEPTED, TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, &
+       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
        CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
@@ -25,11 +25,13 @@ contains
 
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
+    type(transaction_interface_sensitivity_t) :: terminal_sensitivity
     real(real64) :: cursor, next_cursor, tol
     logical :: aggregate_mass_complete
     integer :: isub
 
     result = canonical_result_t()
+    terminal_sensitivity = transaction_interface_sensitivity_t()
     result%requested_t0 = interval%t0
     result%requested_t1 = interval%t1
     result%completed_t = interval%t0
@@ -44,7 +46,9 @@ contains
 
     ! The externally committed physical state remains untouched until the full
     ! requested [t0,t1] interval has completed. Accepted internal substeps are
-    ! committed only into this private working state.
+    ! committed only into this private working state. Sensitivity follows the
+    ! same publication rule: only a fully completed canonical interval exposes
+    ! its final accepted local-terminal tangent.
     call committed%clone(working)
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
@@ -64,6 +68,7 @@ contains
       end if
 
       call accumulate_accepted_mass(result, tx, aggregate_mass_complete)
+      terminal_sensitivity = tx%interface_sensitivity
       next_cursor = tx%accepted_t1
       tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
       if (next_cursor <= cursor .or. next_cursor > interval%t1 + tol) then
@@ -84,6 +89,13 @@ contains
         result%completed = .true.
         result%diagnostics%external_commits = 1
         call finalize_interval_mass(result, aggregate_mass_complete)
+        result%interface_sensitivity = terminal_sensitivity
+        if (result%interface_sensitivity%available) then
+          result%interface_sensitivity%covers_requested_interval = &
+               result%mass%accepted_transaction_count == 1 .and. &
+               result%interface_sensitivity%origin_t0 == interval%t0 .and. &
+               result%interface_sensitivity%origin_t1 == interval%t1
+        end if
         return
       end if
     end do
