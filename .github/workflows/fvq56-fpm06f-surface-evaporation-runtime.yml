@@ -19,4 +19,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-VQ56 source-bound independent qualification
-        run: bash tests/fvq/run_fvq56_surface_evaporation_runtime_independent.sh
+        run: bash tests/fvq/run_fvq56_surface_evaporation_runtime_independent_v2.sh
