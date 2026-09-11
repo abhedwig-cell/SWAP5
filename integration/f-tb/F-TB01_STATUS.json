@@ -11,12 +11,11 @@
   "phase": "ARCHITECTURE_AND_CASE_REGISTRY_QUALIFIED_READY_FOR_INCREMENTAL_IMPLEMENTATION",
   "decision": "SWAP5_TESTBANK_ARCHITECTURE_AND_CASE_REGISTRY_READY_FOR_INCREMENTAL_IMPLEMENTATION",
   "qualification_evidence": {
-    "precloseout_exact_head": "b4b91fc795c67384dbdaa11d4f9624c6d69d91ab",
-    "precloseout_run": 34551359196,
-    "precloseout_conclusion": "success",
+    "qualified_status_predecessor_head": "b2df9901395edc5ab6f4399d72ea4dfc7065ce68",
+    "qualified_status_predecessor_run": 34551414910,
+    "qualified_status_predecessor_conclusion": "success",
     "registry_schema_reconciliation": "PoC registry was reconciled to the later F-TB01_CASE_REGISTRY.schema.json contract before qualification",
-    "final_exact_status_head_run": null,
-    "final_exact_status_head_conclusion": "PENDING"
+    "exact_closeout_head_policy": "The final status blob is valid only with an external exact-head F-TB01 workflow success; that run is intentionally not self-referential inside this status blob."
   },
   "deliverables": {
     "architecture": "docs/testbank/F-TB01_TESTBANK_ARCHITECTURE.md",
