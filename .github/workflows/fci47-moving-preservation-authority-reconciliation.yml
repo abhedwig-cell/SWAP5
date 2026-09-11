@@ -1,0 +1,32 @@
+name: F-CI47 moving preservation authority reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci47-moving-preservation-authority-reconciliation
+  workflow_dispatch:
+
+jobs:
+  exact-head-governance-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI47_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Fetch pinned canonical
+        shell: bash
+        run: git fetch --no-tags origin integration/f-ci-canonical
+      - name: Reconcile moving preservation authority
+        run: python3 tests/fci/run_fci47_moving_preservation_authority_reconciliation.py
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI47_EXACT_HEAD_END=PASS:${GITHUB_SHA}"

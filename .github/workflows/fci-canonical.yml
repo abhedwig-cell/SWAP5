@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=d81ef430ebaa601469a165dfc5b9866b813b71aa
+          AUTH=e765d96ee80af0629fb399e18bf58124dade7641
           git merge-base --is-ancestor "$AUTH" HEAD
           dependency_surface=(
             src/runtime/mod_a23bu_worker_execution_context.f90
@@ -348,6 +348,13 @@ jobs:
             src/runtime/mod_fmr_divdra_runtime_binding.f90
             src/runtime/mod_fmr_divdra_serialized_composition.f90
             src/runtime/mod_fmr_divdra_serialized_runtime.f90
+            src/process/mod_restricted_surface_evaporation.f90
+            src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90
+            src/runtime/mod_fmr_process_hydraulic_view_binding.f90
+            src/process/mod_soil_temperature_contract.f90
+            src/process/mod_restricted_soil_temperature.f90
+            src/runtime/mod_coupling_application_accuracy_contract.f90
+            src/runtime/mod_coupling_application_accuracy_adapter.f90
           )
           for path in "${dependency_surface[@]}"; do
             test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || {
@@ -361,5 +368,12 @@ jobs:
           echo 'FCI37_MOVING_PARALLEL_ROOT_UPTAKE_PRESERVATION=PASS'
           echo 'FCI39_MOVING_SURFACE_EVAPORATION_CAPACITY_PRESERVATION=PASS'
           echo 'FCI40_MOVING_EFFECTIVE_FORCING_EXECUTOR_PRESERVATION=PASS'
+          echo 'FCI41_MOVING_SURFACE_EVAPORATION_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI42_MOVING_SURFACE_EVAPORATION_ALLOCATION_PRESERVATION=PASS'
+          echo 'FCI43_MOVING_SOIL_TEMPERATURE_PROCESS_PRESERVATION=PASS'
+          echo 'FCI44_MOVING_APPLICATION_ACCURACY_CONTRACT_PRESERVATION=PASS'
+          echo 'FCI45_MOVING_SOIL_TEMPERATURE_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI46_MOVING_EXTERNAL_ACCURACY_ADAPTER_PRESERVATION=PASS'
+          echo 'FCI47_MOVING_PRESERVATION_AUTHORITY_RECONCILED=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'

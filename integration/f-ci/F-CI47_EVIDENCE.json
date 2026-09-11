@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.fci47_evidence.v1",
+  "work_unit": "F-CI47",
+  "title": "Moving Canonical Preservation Authority Reconciliation Evidence",
+  "canonical_base": "e765d96ee80af0629fb399e18bf58124dade7641",
+  "stale_moving_authority": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+  "reconciled_moving_authority": "e765d96ee80af0629fb399e18bf58124dade7641",
+  "first_green_candidate": {
+    "head": "27c84ad29fb9aa2aa4fcc7fe2a138460e6a5669d",
+    "run": 34646169129,
+    "job": 103417365230,
+    "conclusion": "success"
+  },
+  "mechanical_results": {
+    "F_CI40_to_F_CI46P_exact_source_delta_count": 9,
+    "F_CI40_to_F_CI46P_exact_source_delta": [
+      "src/process/mod_restricted_soil_temperature.f90",
+      "src/process/mod_restricted_surface_evaporation.f90",
+      "src/process/mod_soil_temperature_contract.f90",
+      "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+      "src/runtime/mod_coupling_application_accuracy_contract.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+    ],
+    "F_CI41_through_F_CI46_admission_provenance": "PASS",
+    "frozen_workflow_prefix_byte_identity": "PASS",
+    "old_dependency_surface_retained": "PASS",
+    "later_admitted_dependency_paths_added": 7,
+    "candidate_moving_surface_matches_reconciled_authority": "PASS",
+    "src_tree_identity_to_canonical_base": "PASS",
+    "reference_tree_identity_to_canonical_base": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "workflow": {
+    "historical_blob": "734d2452eef7f8581a1d5be2209ad58fc6e060f0",
+    "candidate_blob": "16a007335277ee794b2a1c6930bf01b1b491f640",
+    "allowed_mutation": "current-restricted-canonical-preservation job only",
+    "historical_frozen_prefix_changed": false,
+    "historical_admission_authorities_rewritten": false
+  },
+  "debt_reconciled": {
+    "classification": "PRE_EXISTING_MOVING_PRESERVATION_AUTHORITY_DEBT_NOT_F_CI46_REGRESSION",
+    "pre_F_CI46_failed_run": 34643889299,
+    "pre_F_CI46_failed_job": 103410410009,
+    "post_F_CI46_failed_run": 34644943806,
+    "post_F_CI46_failed_job": 103413832816,
+    "cause": "F-CI40 moving authority was stale after later qualified F-CI41 through F-CI46 source admissions",
+    "remediation": "advance only the moving-preservation baseline to immutable F-CI46P canonical and add exactly seven later-admitted dependency paths"
+  },
+  "hard_nonclaims": [
+    "no production source change",
+    "no reference change",
+    "no new science or physics",
+    "no solver change",
+    "no scientific tolerance change",
+    "no historical admission rewrite",
+    "no numeric H_app or A_temporal qualification",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation relaxation",
+    "RB1 not reopened"
+  ]
+}
