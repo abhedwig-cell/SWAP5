@@ -8,8 +8,17 @@
   "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
   "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
   "capabilities": ["RB1-SW-REFERENCE", "RB1-TIME-REFERENCE"],
-  "status": "PERSISTED_PENDING_EXACT_HEAD_CI",
-  "decision_if_exact_head_ci_green": "QUALIFIED_BOUNDED_RB1_REFERENCE_TEMPORAL_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "status": "COMPLETE_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_REFERENCE_TEMPORAL_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc04-rb1-reference-temporal-traceability.yml to complete successfully with head_sha equal to the exact commit containing this final status and F-DOC04_CLOSEOUT.json.",
+  "first_green_qualification": {
+    "head": "1eae858ab31d113e5b0093c8e10922c59a6eac1a",
+    "workflow_run": 34610556113,
+    "workflow_job": 103299669909,
+    "conclusion": "success",
+    "artifact": 10267967573,
+    "artifact_digest": "sha256:1cb3eb01cf3549baa20693e8d8e56b4e14a39d9ba9a4f376fab167b35895a2f6"
+  },
   "traceability_boundary": {
     "fully_traced_claimed": false,
     "sw_reference_t1_source_binding": "OPEN_NO_SINGLE_CONTROLLED_T1_AUTHORITY_IDENTIFIED",
@@ -54,12 +63,11 @@
   "work_state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
-    "closed": false,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
     "scientific_scope_reopened": false,
     "open": [
-      "Exact-head CI qualification",
       "RB1-SW-REFERENCE controlled complete T1 theory binding",
       "RB1-SW-REFERENCE complete T11 equation-to-test graph",
       "Application-specific H_budget selection remains external to F-DOC04"
