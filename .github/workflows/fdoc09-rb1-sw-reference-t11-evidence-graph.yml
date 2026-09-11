@@ -1,0 +1,91 @@
+name: F-DOC09 RB1 SW reference T11 evidence graph
+
+on:
+  push:
+    branches:
+      - work/f-doc09-rb1-sw-reference-t11-evidence-graph
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact upstream authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          authorities=(
+            8e5863510004ec11ab377b5bc9d3bd5df6d69777
+            a703747ce1991c5601b76a84f04969b602298268
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182
+            d3a1bc8eef243b6109af8871398c06e1840fb367
+            8e6121ecfcdfb71c79a111153835d4400d37ff89
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0
+          )
+          for sha in "${authorities[@]}"; do
+            git cat-file -e "${sha}^{commit}" 2>/dev/null || git fetch --quiet --no-tags origin "$sha"
+            git cat-file -e "${sha}^{commit}"
+          done
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FDOC09_EXACT_CHECKOUT=PASS"
+
+      - name: Validate bounded SW reference T11 evidence graph
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc09_rb1_sw_reference_t11_evidence_graph.py | tee _fdoc09_validator.log
+          grep -Fq 'FDOC09_ZERO_PRODUCTION_SOURCE_DELTA=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_ZERO_REFERENCE_DELTA=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_EXACT_AUTHORITY_BLOBS=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_CANONICAL_SOURCE_PINS=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_BOUNDED_EVIDENCE_GRAPH=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_RESIDUAL_T1_T11_GAPS_LOCKED=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_FSI18_DIAGNOSTIC_ONLY=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_INVARIANT_AUDIT_30_OF_30=PASS' _fdoc09_validator.log
+          grep -Fq 'FDOC09_VALIDATION=PASS' _fdoc09_validator.log
+
+      - name: Verify hard nonclaims and incomplete whole-route trace
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          audit=json.loads(Path('integration/f-doc/F-DOC09_INVARIANT_AUDIT.json').read_text())
+          assert audit['overall']=='30_OF_30_NO_ADVERSE_DELTA'
+          assert audit['mass_conservation']=='HARD_UNCHANGED'
+          assert len(audit['invariants'])==30
+          assert all(x['status']=='PASS' for x in audit['invariants'])
+          reg=json.loads(Path('docs/scientific/registries/rb1-sw-reference-t11-evidence-graph.json').read_text())
+          cov=reg['coverage']
+          assert cov['bounded_reference_route_evidence_inventory_complete'] is True
+          assert cov['complete_full_richards_equation_to_test_graph'] is False
+          assert cov['T1_complete'] is False
+          assert cov['T3_T8_complete'] is False
+          assert cov['T11_complete_for_entire_reference_route'] is False
+          assert cov['fully_traced'] is False
+          assert cov['ready_for_status_a_review'] is False
+          assert reg['diagnostic_support'][0]['positive_scientific_admission'] is False
+          print('FDOC09_HARD_NONCLAIMS_AND_GAPS=PASS')
+          PY
+
+      - name: Preserve exact-head qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc09-rb1-sw-reference-t11-evidence-${{ github.sha }}
+          path: |
+            _fdoc09_sw_reference_t11_evidence.json
+            _fdoc09_validator.log
+          if-no-files-found: warn
+          retention-days: 90
