@@ -162,10 +162,13 @@ cmp -s "$BUILD/baseline-o0/output.txt" "$BUILD/candidate-o0/output.txt" || {
 }
 cmp -s "$BUILD/baseline-o2/output.txt" "$BUILD/candidate-o2/output.txt" || fail 'candidate differs from F-CI41P observable oracle output at O2'
 
+grep -Fxq 'FVQ56_DERIVED_BASE_STATE_ORACLE=PASS' "$BUILD/candidate-o0/output.txt" || fail 'derived base-state oracle marker missing'
 grep -Fxq 'FVQ56_COMMITTED_STATE_IMMUTABLE=PASS' "$BUILD/candidate-o0/output.txt" || fail 'committed immutability marker missing'
 grep -Fxq 'FVQ56_COLUMN_ORDER_ABA_DETERMINISM=PASS' "$BUILD/candidate-o0/output.txt" || fail 'ABA determinism marker missing'
-grep -Fxq 'FVQ56_INDEPENDENT_ORACLE=PASS' "$BUILD/candidate-o0/output.txt" || fail 'independent oracle marker missing'
+grep -Fxq 'FVQ56_REAL_B110_DRY_INTEGRATION=PASS' "$BUILD/candidate-o0/output.txt" || fail 'real B110 dry marker missing'
+grep -Fxq 'FVQ56_REAL_B110_PONDED_INTEGRATION=PASS' "$BUILD/candidate-o0/output.txt" || fail 'real B110 ponded marker missing'
 grep -Fxq 'FVQ56_NO_AUTHORITATIVE_MASS_BOOKING=PASS' "$BUILD/candidate-o0/output.txt" || fail 'mass-booking marker missing'
+grep -Fxq 'FVQ56_INDEPENDENT_RUNTIME_ORACLE=PASS' "$BUILD/candidate-o0/output.txt" || fail 'independent runtime oracle marker missing'
 
 echo "FPE11_BASELINE_ORACLE_SHA256=$(sha256sum "$BUILD/baseline-o0/output.txt" | awk '{print $1}')"
 echo "FPE11_CANDIDATE_ORACLE_SHA256=$(sha256sum "$BUILD/candidate-o0/output.txt" | awk '{print $1}')"
