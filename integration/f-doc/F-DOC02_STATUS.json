@@ -3,7 +3,7 @@
   "work_unit": "F-DOC02",
   "title": "SWAP5 RB1 Release-Bound Scientific Traceability Population",
   "branch": "work/f-doc02-rb1-scientific-traceability-population",
-  "stage": "PERSISTED_PENDING_MACHINE_VALIDATION",
+  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
   "decision_if_green": "QUALIFIED_RB1_RELEASE_BOUND_TRACEABILITY_INDEX_WITH_EXPLICIT_GAPS",
   "architecture_authority": {
     "work_unit": "F-DOC01",
@@ -13,8 +13,24 @@
   },
   "rb1_authorities": {
     "release_id": "SWAP5-RB1-v1",
-    "scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
-    "qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "scientific_source": {
+      "commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+      "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+      "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+    },
+    "qualification": {
+      "commit": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY"
+    },
+    "release_metadata": {
+      "commit": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+      "tree": "9fd636cb35503d59654495186c9b4ec33287f344",
+      "exact_head_run": 34586202805,
+      "conclusion": "success",
+      "evidence_artifact": 10193678464,
+      "evidence_digest": "sha256:8730e91708395dd03af0cb7f3ad51b04dc48cfb797be2a9557ba89e37038f82a"
+    },
     "required_capability_denominator": 15,
     "moving_denominator_forbidden": true
   },
@@ -23,7 +39,13 @@
     "optional_capabilities_outside_required_denominator": 2,
     "traceability_tiers_per_capability": 15,
     "tier_range": "T0_THROUGH_T14",
-    "population_policy": "Only exact existing authorities are resolved. Missing theory, formulation, implementation mapping, validation or applicability evidence remains an explicit gap and is never inferred from release PASS status."
+    "resolved_or_linked": {
+      "T11": "SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED",
+      "T13": "RESOLVED_RB1_RELEASE_SCOPE",
+      "T14": "RESOLVED_RB1_RELEASE_AUTHORITY"
+    },
+    "explicit_open_tiers_per_capability": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+    "population_policy": "Only exact existing authorities are resolved. Missing theory, formulation, implementation mapping or validation evidence remains an explicit gap and is never inferred from release PASS status."
   },
   "status_a_boundary": {
     "ready_for_status_a_review": false,
@@ -40,7 +62,9 @@
     "scientific_qualification_reopened": false,
     "rb1_denominator_changed": false,
     "historical_evidence_reinterpreted": false,
-    "status_a_readiness_claimed": false
+    "status_a_readiness_claimed": false,
+    "application_validation_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false
   },
   "state": {
     "realized": true,
@@ -48,10 +72,8 @@
     "tested": false,
     "qualified": false,
     "open": [
-      "populate exact 15-capability release-bound traceability index",
-      "machine validation against RB1 frozen scope and capability matrix",
-      "30-invariant no-adverse-delta audit",
-      "exact-head CI and self-bound closeout"
+      "exact-head CI",
+      "final self-bound closeout"
     ]
   }
 }
