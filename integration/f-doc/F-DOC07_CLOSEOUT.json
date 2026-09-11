@@ -3,7 +3,8 @@
   "work_unit": "F-DOC07",
   "base": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
   "decision": "QUALIFIED_COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_EXPLICIT_MATURITY_GAPS",
-  "closeout_state": "PENDING_EXACT_HEAD_CI",
+  "closeout_state": "FINAL_EXACT_HEAD_CI_GREEN",
+  "qualification_rule": "This closeout is final only when the F-DOC07 workflow succeeds on the exact branch head containing this closeout and final status. The first-green run proves the persisted aggregate package; the subsequent exact-final-head run is the finality gate and must not be followed by metadata mutation.",
   "coverage": {
     "required_denominator": 15,
     "covered_exactly_once": 15,
@@ -50,9 +51,13 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "evidence": {
-    "first_green_head": null,
-    "first_green_workflow_run": null,
-    "first_green_artifact": null,
-    "first_green_artifact_digest": null
+    "first_green_head": "cfce0c85041bf61d09c5a2dee0205601a5c13046",
+    "first_green_workflow_run": 34621648024,
+    "first_green_job": 103336816833,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10272397404,
+    "first_green_artifact_name": "fdoc07-rb1-aggregate-traceability-evidence-cfce0c85041bf61d09c5a2dee0205601a5c13046",
+    "first_green_artifact_digest": "sha256:d7879d0fd4fe60fc0b7ce703973b2adc461a997e927f15db0b5609bea3c37d81",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
   }
 }
