@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.fkt15r_preregistration.v1",
+  "work_unit": "F-KT15R",
+  "title": "Current-Canonical Recomposition of Qualified F-SI30 and F-KT14 Preconditions for F-KT15",
+  "status": "PRE_REGISTERED",
+  "branch": "work/f-kt15r-current-canonical-transaction-composition",
+  "current_canonical_base": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "donor_reconciled_F_KT15_head": "eacdacb60524221d0c286571444271089347dbcc",
+  "donor_recorded_canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "upstream_authorities": {
+    "F_GC15_final_authority": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "F_KT14_effective_qualified_head": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "F_KT14_exact_head_run": 34545458355,
+    "F_SI30_closeout": "27b10ac0bca17a68e2746431b4c6a986e3910175",
+    "F_SI30_tested_candidate": "46735abda379aa4bf4908f00a49c0926adee0693"
+  },
+  "mechanical_no_overlap_precondition": {
+    "later_current_canonical_source_changes_after_c737": [
+      "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "donor_source_paths": [
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "src/solver/mod_reference_linear_solver.f90",
+      "src/solver/mod_reference_richards_state_binding.f90",
+      "src/solver/mod_reference_richards_workspace.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "intersection": [],
+    "rule": "Every donor source path in the recomposed candidate must be byte-identical to the exact F-KT15 reconciled donor head. Every later current-canonical source path outside this donor set must remain byte-identical to current canonical."
+  },
+  "frozen_scope": {
+    "stage": "SOURCE_RECOMPOSITION_ONLY",
+    "new_F_KT15_task2_implementation": false,
+    "allowed_production_source_delta": "exactly the 13 donor_source_paths and no others",
+    "donor_semantics_may_be_modified": false,
+    "new_physics": false,
+    "new_solver": false,
+    "scientific_tolerance_change": false,
+    "mass_policy_change": false,
+    "MODFLOW_sign_mapping": false,
+    "whole_window_tangent_claim": false,
+    "canonical_admission": false,
+    "RB1_reopen": false
+  },
+  "qualification_requirements": [
+    "current canonical remains the pinned F-CI48 base during source composition",
+    "c737-to-current source delta remains disjoint from all 13 donor source paths",
+    "candidate source delta versus current canonical is exactly the 13 declared donor paths",
+    "every candidate donor-path blob equals the exact blob at F-KT15 donor head eacdacb60524221d0c286571444271089347dbcc",
+    "current-canonical application-accuracy adapter and all F-MR41 optional-state runtime blobs remain unchanged",
+    "F-KT14 accepted-only sensitivity transport tests replay on the recomposed postimage",
+    "F-SI30 dynamic-top and F-SI28 tangent-preservation qualification gates replay on the recomposed postimage",
+    "O0/O2 identity and hard mass gates remain unchanged",
+    "all relevant architecture invariants are explicitly audited",
+    "exact-head CI required before this recomposition is considered qualified"
+  ],
+  "downstream_after_green": "Only after F-KT15R source recomposition is exact-head green may a separate implementation workunit materialize the narrow SoilWater task-2 typed solver-service transaction route described by F-KT15. Do not mutate F-KT15R source donor semantics during implementation.",
+  "hard_nonclaims": [
+    "F-KT15R does not implement the real SoilWater task-2 typed route",
+    "F-KT15R does not admit production coupling",
+    "F-KT15R does not claim whole-window derivative semantics",
+    "F-KT15R does not select H_app or A_temporal",
+    "F-KT15R does not weaken mass conservation"
+  ]
+}
