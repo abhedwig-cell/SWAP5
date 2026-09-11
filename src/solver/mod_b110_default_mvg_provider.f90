@@ -1,4 +1,5 @@
 module mod_b110_default_mvg_provider
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
   implicit none
@@ -22,6 +23,7 @@ module mod_b110_default_mvg_provider
 
   public :: initialize_b110_default_mvg_parameters
   public :: bind_b110_default_mvg_provider
+  public :: evaluate_b110_default_mvg_conductivity
 
 contains
 
@@ -97,6 +99,32 @@ contains
     provider%parameters => parameters
     provider%step_duration = step_duration
   end subroutine bind_b110_default_mvg_provider
+
+  subroutine evaluate_b110_default_mvg_conductivity(parameters, node_index, pressure_head, conductivity, ok)
+    type(b110_default_mvg_parameters_t), intent(in) :: parameters
+    integer, intent(in) :: node_index
+    real(real64), intent(in) :: pressure_head
+    real(real64), intent(out) :: conductivity
+    logical, intent(out) :: ok
+    real(real64) :: theta
+
+    conductivity = 0.0_real64
+    ok = .false.
+    if (parameters%active_nodes <= 0 .or. .not. allocated(parameters%cofgen)) return
+    if (size(parameters%cofgen,1) < B110_MCOF_REQUIRED .or. &
+        size(parameters%cofgen,2) /= parameters%active_nodes) return
+    if (node_index < 1 .or. node_index > parameters%active_nodes) return
+    if (.not. ieee_is_finite(pressure_head)) return
+
+    theta = b110_watcon(parameters%cofgen(:,node_index), pressure_head)
+    if (.not. ieee_is_finite(theta)) return
+    conductivity = b110_hconduc(parameters%cofgen(:,node_index), pressure_head, theta)
+    if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
+       conductivity = 0.0_real64
+       return
+    end if
+    ok = .true.
+  end subroutine evaluate_b110_default_mvg_conductivity
 
   subroutine b110_default_mvg_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
     class(b110_default_mvg_provider_t), intent(in) :: self
