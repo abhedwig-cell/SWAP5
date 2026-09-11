@@ -6,6 +6,8 @@ on:
       - qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
     paths:
       - .github/workflows/fci45-exact-head-qualification.yml
+      - integration/f-ci/F-CI45_STATUS.json
+      - integration/f-ci/F-CI45_EVIDENCE.json
   workflow_dispatch:
 
 permissions:
