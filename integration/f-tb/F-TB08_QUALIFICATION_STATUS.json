@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB08",
+  "status": "PREQUALIFICATION",
+  "decision": null,
+  "branch": "work/f-tb08-external-accuracy-adapter-testbank-adoption",
+  "composition_base": "4172e7e639d13e178fb75471263636a6cfa792fc",
+  "canonical_authority": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "testbank_parent_authority": "4fd0e3a4cb30254135c8da086a733eb3c790b834",
+  "fgc14_authority": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+  "fci46_adapter_admitted": true,
+  "fci47_moving_preservation_green": true,
+  "production_source_changed": false,
+  "reference_changed": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "scientific_tolerance_relaxed": false,
+  "mass_conservation_relaxed": false,
+  "RB1_reopened": false,
+  "case_count": 8,
+  "profile_counts": {"FAST": 3, "CANONICAL": 7, "RELEASE": 8, "DEEP": 8},
+  "hard_nonclaims": [
+    "no numeric H_app or A_temporal is selected",
+    "no external source bytes or digests are verified by the adapter",
+    "no file/JSON parser is introduced",
+    "no project policy is selected or derived",
+    "no production SWAP-MODFLOW coupling is admitted",
+    "mass conservation is not relaxed"
+  ],
+  "target_decision": "QUALIFIED_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
+  "closeout_rule": "The final F-TB08 authority is valid only if the exact final [ftb08-release] head passes both FAST and RELEASE jobs, including support-only delta and exact-head start/end gates."
+}
