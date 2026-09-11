@@ -99,11 +99,18 @@ print('FVQ58_HELD_FROST_SNOW_SCOPE_GUARD=PASS')
 PY
 
 git diff --check "$BASE" -- tests/fvq integration/f-vq .github/workflows
-
 echo 'FVQ58_DIFF_CHECK=PASS'
 
 DEP_FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Wno-error=unused-dummy-argument -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 STRICT_FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+
+run_or_report() {
+  local executable="$1" output="$2"
+  if ! "$executable" > "$output" 2>&1; then
+    cat "$output" >&2
+    return 1
+  fi
+}
 
 compile_and_run() {
   local opt="$1" dir="$2"
@@ -114,8 +121,8 @@ compile_and_run() {
   gfortran "${STRICT_FLAGS[@]}" "$opt" -J "$dir" -I "$dir" -c "$BUILD/candidate/mod_restricted_soil_temperature.f90" -o "$dir/temp_provider.o"
   gfortran "${STRICT_FLAGS[@]}" "$opt" -J "$dir" -I "$dir" -c "$TEST" -o "$dir/test.o"
   gfortran "$opt" "$dir/tx.o" "$dir/solver_contract.o" "$dir/hydraulic_view.o" "$dir/temp_contract.o" "$dir/temp_provider.o" "$dir/test.o" -o "$dir/fvq58.exe"
-  "$dir/fvq58.exe" > "$dir/output.txt" 2>&1
-  "$dir/fvq58.exe" > "$dir/output-repeat.txt" 2>&1
+  run_or_report "$dir/fvq58.exe" "$dir/output.txt"
+  run_or_report "$dir/fvq58.exe" "$dir/output-repeat.txt"
   cmp "$dir/output.txt" "$dir/output-repeat.txt"
 }
 
