@@ -1,0 +1,43 @@
+name: F-MR41 optional-state usage audit
+
+on:
+  push:
+    branches:
+      - work/f-mr41-typed-optional-state-layout-contract
+    paths:
+      - .github/workflows/fmr41-usage-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Inventory optional-state layout usage
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p integration/f-mr
+          {
+            echo "F-MR41 optional-state layout usage audit"
+            echo "source_head=$(git rev-parse HEAD)"
+            echo "canonical_base=c7379b6b5b5f529ff96de3087379712bd665276a"
+            echo
+            echo "== optional_state_layout_id and FMR_OPTIONAL_STATE occurrences =="
+            git grep -n -E 'optional_state_layout_id|FMR_OPTIONAL_STATE' -- src tests integration || true
+            echo
+            echo "== literal assignments to optional_state_layout_id =="
+            git grep -n -E 'optional_state_layout_id[[:space:]]*=' -- src tests integration || true
+          } > integration/f-mr/F-MR41_OPTIONAL_STATE_USAGE_AUDIT.txt
+          cat integration/f-mr/F-MR41_OPTIONAL_STATE_USAGE_AUDIT.txt
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add integration/f-mr/F-MR41_OPTIONAL_STATE_USAGE_AUDIT.txt
+          git diff --cached --check
+          git commit -m "audit(F-MR41): inventory optional-state layout usage"
+          git push origin HEAD:work/f-mr41-typed-optional-state-layout-contract
