@@ -14,6 +14,7 @@ repl={
     "'FCI13_GATE PASS'":"FCI13_GATE_PASS",
     "'FCI14_GATE PASS'":"FCI14_GATE_PASS",
     "FCI28_PROCESS_RESTART_O0_O2_IDENTITY=PASS":"FCI28_O0_O2_OUTPUT_IDENTITY=PASS",
+    "git merge-base --is-ancestor \"$CANDIDATE\" \"$RB1_SOURCE_SHA\" || fail 'root-active candidate not in RB1 source lineage'":"git merge-base --is-ancestor 85e17bb7ca26d2df070f99b2bf16ecf0abebec19 \"$RB1_SOURCE_SHA\" || fail 'final F-CI37 authority not in RB1 source lineage'",
 }
 for old,new in repl.items():
     if old not in s:
