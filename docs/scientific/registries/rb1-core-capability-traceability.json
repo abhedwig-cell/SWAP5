@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-DOC03",
+  "release_id": "SWAP5-RB1-v1",
+  "source_authority": {
+    "commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6"
+  },
+  "scope": "Bounded capability-specific traceability population for the five RB1 core runtime capabilities. This registry documents the immutable RB1 source; it does not modify or reopen RB1 science, physics, numerics, performance or release scope.",
+  "denominator_definition": "Exactly RB1-CORE-INTERVAL, RB1-CORE-DATA, RB1-CORE-TRANSACTION, RB1-CORE-MASS and RB1-CORE-DIAGNOSTICS; the frozen 15-capability RB1 release denominator is unchanged.",
+  "authorities": {
+    "fdoc01": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe",
+    "fdoc02": "18942fee83eb385fccc1663230772ae03dcc9ae6",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "rb1_release_run": 34586202805
+  },
+  "source_pins": [
+    {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+      "symbols": ["canonical_state_t", "canonical_forcing_t", "canonical_interval_t", "canonical_numerical_config_t", "canonical_mass_accounting_t", "canonical_run_diagnostics_t", "canonical_result_t", "canonical_physical_model_t"]
+    },
+    {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+      "symbols": ["run_canonical_interval", "accumulate_accepted_mass", "finalize_interval_mass", "accumulate_transaction"]
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "symbols": ["transaction_state_t", "transaction_attempt_context_t", "trial_outcome_t", "transaction_model_t", "transaction_policy_t", "transaction_result_t", "execute_reference_interval"]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "SW5-DISC-7301", "kind": "temporal_discretisation", "tier": "T6", "title": "Generic interval partition into accepted committed substeps", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 runtime", "record_version": 1,
+      "notes": "A requested [t0,t1] interval is advanced through one or more accepted transaction substeps without a calendar-day assumption."
+    },
+    {
+      "id": "SW5-ALG-7301", "kind": "algorithm", "tier": "T8", "title": "Canonical interval atomic publication algorithm", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 runtime", "record_version": 1,
+      "notes": "Clone committed state to private working state; execute accepted substeps; publish externally only after the full requested interval completes."
+    },
+    {
+      "id": "SW5-CONTRACT-7301", "kind": "software_contract", "tier": "T9", "title": "Canonical generic interval execution contract", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_contracts.f90", "symbol": "canonical_interval_t; canonical_result_t; canonical_physical_model_t", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true
+    },
+    {
+      "id": "SW5-IMPL-7301", "kind": "implementation_mapping", "tier": "T10", "title": "Canonical interval runtime implementation", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_interval_runtime.f90", "symbol": "run_canonical_interval", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true,
+      "notes": "Frozen blob 55f3d271aa6200a994fd0144d6fce0701c918a74."
+    },
+    {
+      "id": "SW5-CONTRACT-7302", "kind": "software_contract", "tier": "T9", "title": "Canonical explicit data-category contract", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_contracts.f90", "symbol": "canonical_state_t; canonical_forcing_t; canonical_numerical_config_t; canonical_result_t", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true,
+      "notes": "The contract separates committed dynamic state, forcing, numerical configuration and results/diagnostics. Model-specific immutable parameters remain model-owned rather than being folded into state."
+    },
+    {
+      "id": "SW5-IMPL-7302", "kind": "implementation_mapping", "tier": "T10", "title": "Canonical data-category type implementation", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_contracts.f90", "symbol": "module mod_canonical_contracts", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true,
+      "notes": "Frozen blob c06aa869a0bd479df4c7d6e1d0b4f5c07a207144."
+    },
+    {
+      "id": "SW5-NUM-7301", "kind": "numerical_method", "tier": "T7", "title": "Transactional accept, reject and retry method", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 transaction core", "record_version": 1,
+      "notes": "Each trial starts from the same checkpoint/context; failed solver, mass or temporal gates reject the trial and reduce/retry according to policy; only an accepted route may replace committed state."
+    },
+    {
+      "id": "SW5-ALG-7302", "kind": "algorithm", "tier": "T8", "title": "Checkpoint trial retry commit rollback algorithm", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 transaction core", "record_version": 1,
+      "notes": "Checkpoint committed physical state and worker-local attempt context; run independent trial branches; restore on rejection; commit exactly the accepted branch."
+    },
+    {
+      "id": "SW5-CONTRACT-7303", "kind": "software_contract", "tier": "T9", "title": "Reference transaction state, policy and result contract", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/transaction/mod_transaction_reference.f90", "symbol": "transaction_state_t; transaction_attempt_context_t; transaction_policy_t; transaction_result_t; transaction_model_t", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true
+    },
+    {
+      "id": "SW5-IMPL-7303", "kind": "implementation_mapping", "tier": "T10", "title": "Reference transaction implementation", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/transaction/mod_transaction_reference.f90", "symbol": "execute_reference_interval", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true
+    },
+    {
+      "id": "SW5-PHEN-7301", "kind": "physical_phenomenon", "tier": "T0", "title": "Water storage change and boundary/source flux exchange over an interval", "status": "ACTIVE", "authority": "F-DOC03 bounded RB1 documentation", "record_version": 1,
+      "notes": "Scope is the canonical accounting identity only, not a new hydrological process model."
+    },
+    {
+      "id": "SW5-TH-7301", "kind": "scientific_theory", "tier": "T1", "title": "Independent source binding for conservation-of-water principle", "status": "GAP", "authority": "F-DOC03 gap declaration", "record_version": 1,
+      "notes": "The conservation principle is operationally required by RB1, but F-DOC03 does not invent or retroactively assign a primary literature/source binding. A controlled theory/source citation remains to be reconciled."
+    },
+    {
+      "id": "SW5-CONCEPT-7301", "kind": "conceptual_model", "tier": "T2", "title": "Accepted-state water ledger", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 semantics", "record_version": 1,
+      "notes": "Authoritative accounting contains starting storage, ending storage, accepted inflow, accepted outflow and a completeness mask; rejected trials do not enter the authoritative ledger."
+    },
+    {
+      "id": "SW5-EQ-7301", "kind": "formal_equation", "tier": "T3", "title": "Canonical interval water-balance residual", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 equation", "record_version": 1,
+      "notes": "R = (S_end - S_start) - (Q_in - Q_out), where interval flux terms are accumulated amounts over accepted transactions. Closure requires the relevant accounting to be complete and finite and the applicable hard gate to pass."
+    },
+    {
+      "id": "SW5-FORM-7301", "kind": "swap_specific_formulation", "tier": "T4", "title": "Accepted-only canonical mass accounting", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 formulation", "record_version": 1,
+      "notes": "Only accepted transaction contributions are accumulated. Missing contribution bits and non-finite terms make interval accounting incomplete rather than silently closing the balance."
+    },
+    {
+      "id": "SW5-FORM-7302", "kind": "computational_continuous_formulation", "tier": "T5", "title": "Interval conservation accounting formulation", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 formulation", "record_version": 1,
+      "notes": "The continuous conservation requirement is represented over arbitrary [t0,t1], independently of calendar boundaries."
+    },
+    {
+      "id": "SW5-DISC-7302", "kind": "discretisation", "tier": "T6", "title": "Accepted-transaction mass aggregation", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 runtime", "record_version": 1,
+      "notes": "Interval totals are the sum of accepted transaction inflows/outflows; storage change is endpoint difference."
+    },
+    {
+      "id": "SW5-NUM-7302", "kind": "numerical_method", "tier": "T7", "title": "Hard per-transaction mass acceptance gate", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 transaction core", "record_version": 1,
+      "notes": "Reference transaction trials whose mass residual exceeds the configured hard mass tolerance are rejected; RB1 qualification separately requires hard mass conservation."
+    },
+    {
+      "id": "SW5-ALG-7303", "kind": "algorithm", "tier": "T8", "title": "Accepted-only mass ledger algorithm", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 runtime", "record_version": 1,
+      "notes": "Accumulate accepted transaction amounts exactly once, compute endpoint storage change and interval residual, propagate completeness/missing-contribution state."
+    },
+    {
+      "id": "SW5-CONTRACT-7304", "kind": "software_contract", "tier": "T9", "title": "Canonical mass accounting contract", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_contracts.f90", "symbol": "canonical_mass_accounting_t; canonical_result_t", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true
+    },
+    {
+      "id": "SW5-IMPL-7304", "kind": "implementation_mapping", "tier": "T10", "title": "Canonical accepted-only interval ledger implementation", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_interval_runtime.f90", "symbol": "accumulate_accepted_mass; finalize_interval_mass", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true,
+      "notes": "Frozen blob 55f3d271aa6200a994fd0144d6fce0701c918a74; transaction-level hard mass rejection is in execute_reference_interval."
+    },
+    {
+      "id": "SW5-ALG-7304", "kind": "algorithm", "tier": "T8", "title": "Deterministic canonical diagnostics aggregation", "status": "ACTIVE", "authority": "F-DOC03 documentation of frozen RB1 runtime", "record_version": 1,
+      "notes": "Transaction counts, retries, rollbacks, rejection categories, solver counters, temporal indicators and mass residual extrema are accumulated deterministically into interval diagnostics."
+    },
+    {
+      "id": "SW5-CONTRACT-7305", "kind": "software_contract", "tier": "T9", "title": "Canonical run diagnostics contract", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_contracts.f90", "symbol": "canonical_run_diagnostics_t; canonical_result_t", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true
+    },
+    {
+      "id": "SW5-IMPL-7305", "kind": "implementation_mapping", "tier": "T10", "title": "Canonical diagnostics publication implementation", "status": "ACTIVE", "authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "record_version": 1,
+      "repository_path": "src/runtime/mod_canonical_interval_runtime.f90", "symbol": "accumulate_transaction; run_canonical_interval", "source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182", "source_tree": "c77ac75aea522ac20a60da012595af9166efcff6", "production": true,
+      "notes": "Diagnostics type is defined in frozen blob c06aa869a0bd479df4c7d6e1d0b4f5c07a207144 and aggregation in frozen blob 55f3d271aa6200a994fd0144d6fce0701c918a74."
+    },
+    {
+      "id": "SW5-VRF-7301", "kind": "verification_binding", "tier": "T11", "title": "RB1 core interval scoped verification binding", "status": "PROVISIONAL", "authority": "F-RB01/F-DOC02", "record_version": 1,
+      "sources": ["release/f-rb01/RB1_CAPABILITY_MATRIX.json", "release/f-rb01/RB1_RELEASE_QUALIFICATION.json"],
+      "notes": "Historical F-CI03..18 replay plus current serial/restart composition. Evidence is linked but is not represented here as a complete equation-to-test graph."
+    },
+    {
+      "id": "SW5-VRF-7302", "kind": "verification_binding", "tier": "T11", "title": "RB1 core data scoped verification binding", "status": "PROVISIONAL", "authority": "F-RB01/F-DOC02", "record_version": 1,
+      "sources": ["release/f-rb01/RB1_ARCHITECTURE_INVARIANT_AUDIT.json", "release/f-rb01/RB1_RELEASE_QUALIFICATION.json"],
+      "notes": "Architecture invariant 3 plus current runtime/restart composition; not a complete test graph."
+    },
+    {
+      "id": "SW5-VRF-7303", "kind": "verification_binding", "tier": "T11", "title": "RB1 core transaction scoped verification binding", "status": "PROVISIONAL", "authority": "F-RB01/F-DOC02", "record_version": 1,
+      "sources": ["release/f-rb01/RB1_CAPABILITY_MATRIX.json", "release/f-rb01/RB1_RELEASE_QUALIFICATION.json"],
+      "notes": "Rejected-trial, atomicity, continuation and current runtime gates; not a complete test graph."
+    },
+    {
+      "id": "SW5-VRF-7304", "kind": "verification_binding", "tier": "T11", "title": "RB1 core mass scoped verification binding", "status": "PROVISIONAL", "authority": "F-RB01/F-DOC02", "record_version": 1,
+      "sources": ["release/f-rb01/RB1_CAPABILITY_MATRIX.json", "release/f-rb01/RB1_RELEASE_QUALIFICATION.json", "release/f-rb01/RB1_ARCHITECTURE_INVARIANT_AUDIT.json"],
+      "notes": "Hard mass gates in serialized/restart/parallel qualification and invariant 13; evidence linked but not reduced to one unit-test locator."
+    },
+    {
+      "id": "SW5-VRF-7305", "kind": "verification_binding", "tier": "T11", "title": "RB1 core diagnostics scoped verification binding", "status": "PROVISIONAL", "authority": "F-RB01/F-DOC02", "record_version": 1,
+      "sources": ["release/f-rb01/RB1_CAPABILITY_MATRIX.json", "release/f-rb01/RB1_ARCHITECTURE_INVARIANT_AUDIT.json"],
+      "notes": "Deterministic diagnostics publication in admitted profiles and invariant 26; not a complete field-by-field test graph."
+    },
+    {
+      "id": "SW5-QUAL-7301", "kind": "qualification_binding", "tier": "T13", "title": "RB1 five-core capability qualification binding", "status": "ACTIVE", "authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6", "record_version": 1,
+      "sources": ["release/f-rb01/RB1_CAPABILITY_MATRIX.json", "release/f-rb01/RB1_RELEASE_QUALIFICATION.json"],
+      "notes": "The five capabilities in this bounded tranche are REQUIRED_PASS within the frozen 15-capability RB1 denominator."
+    },
+    {
+      "id": "SW5-REL-7301", "kind": "release_authority", "tier": "T14", "title": "SWAP5 Restricted Production Baseline v1 final release authority", "status": "ACTIVE", "authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0", "record_version": 1,
+      "sources": ["release/f-rb02/F-RB02_CLOSEOUT.json"],
+      "notes": "F-RB02 exact-head workflow 34586202805 succeeded."
+    }
+  ],
+  "edges": [
+    {"from":"SW5-DISC-7301","to":"SW5-ALG-7301","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03","rationale":"The generic interval is advanced as accepted substeps and atomically published at interval completion."},
+    {"from":"SW5-ALG-7301","to":"SW5-CONTRACT-7301","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-CONTRACT-7301","to":"SW5-IMPL-7301","relationship":"IMPLEMENTED_BY","status":"VERIFIED","authority":"0aeb0a2ed4096e1f9493d3dabc70962ea5270182"},
+    {"from":"SW5-IMPL-7301","to":"SW5-VRF-7301","relationship":"VERIFIED_BY","status":"PROVISIONAL","authority":"F-RB01/F-DOC02"},
+
+    {"from":"SW5-CONTRACT-7302","to":"SW5-IMPL-7302","relationship":"IMPLEMENTED_BY","status":"VERIFIED","authority":"0aeb0a2ed4096e1f9493d3dabc70962ea5270182"},
+    {"from":"SW5-IMPL-7302","to":"SW5-VRF-7302","relationship":"VERIFIED_BY","status":"PROVISIONAL","authority":"F-RB01/F-DOC02"},
+
+    {"from":"SW5-NUM-7301","to":"SW5-ALG-7302","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-ALG-7302","to":"SW5-CONTRACT-7303","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-CONTRACT-7303","to":"SW5-IMPL-7303","relationship":"IMPLEMENTED_BY","status":"VERIFIED","authority":"0aeb0a2ed4096e1f9493d3dabc70962ea5270182"},
+    {"from":"SW5-IMPL-7303","to":"SW5-VRF-7303","relationship":"VERIFIED_BY","status":"PROVISIONAL","authority":"F-RB01/F-DOC02"},
+
+    {"from":"SW5-PHEN-7301","to":"SW5-TH-7301","relationship":"DESCRIBES_PHENOMENON","status":"GAP","authority":"F-DOC03","rationale":"Independent controlled theory/source binding remains open."},
+    {"from":"SW5-TH-7301","to":"SW5-CONCEPT-7301","relationship":"FORMALISES","status":"GAP","authority":"F-DOC03","rationale":"Concept is documented but its controlled T1 source binding remains open."},
+    {"from":"SW5-CONCEPT-7301","to":"SW5-EQ-7301","relationship":"FORMALISES","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-EQ-7301","to":"SW5-FORM-7301","relationship":"SPECIALISES","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-FORM-7301","to":"SW5-FORM-7302","relationship":"SPECIALISES","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-FORM-7302","to":"SW5-DISC-7302","relationship":"DISCRETISES","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-DISC-7302","to":"SW5-NUM-7302","relationship":"SOLVES","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-NUM-7302","to":"SW5-ALG-7303","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-ALG-7303","to":"SW5-CONTRACT-7304","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-CONTRACT-7304","to":"SW5-IMPL-7304","relationship":"IMPLEMENTED_BY","status":"VERIFIED","authority":"0aeb0a2ed4096e1f9493d3dabc70962ea5270182"},
+    {"from":"SW5-IMPL-7304","to":"SW5-VRF-7304","relationship":"VERIFIED_BY","status":"PROVISIONAL","authority":"F-RB01/F-DOC02"},
+
+    {"from":"SW5-ALG-7304","to":"SW5-CONTRACT-7305","relationship":"REALISES_ALGORITHM","status":"ASSERTED","authority":"F-DOC03"},
+    {"from":"SW5-CONTRACT-7305","to":"SW5-IMPL-7305","relationship":"IMPLEMENTED_BY","status":"VERIFIED","authority":"0aeb0a2ed4096e1f9493d3dabc70962ea5270182"},
+    {"from":"SW5-IMPL-7305","to":"SW5-VRF-7305","relationship":"VERIFIED_BY","status":"PROVISIONAL","authority":"F-RB01/F-DOC02"},
+
+    {"from":"SW5-VRF-7301","to":"SW5-QUAL-7301","relationship":"QUALIFIED_BY","status":"VERIFIED","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+    {"from":"SW5-VRF-7302","to":"SW5-QUAL-7301","relationship":"QUALIFIED_BY","status":"VERIFIED","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+    {"from":"SW5-VRF-7303","to":"SW5-QUAL-7301","relationship":"QUALIFIED_BY","status":"VERIFIED","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+    {"from":"SW5-VRF-7304","to":"SW5-QUAL-7301","relationship":"QUALIFIED_BY","status":"VERIFIED","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+    {"from":"SW5-VRF-7305","to":"SW5-QUAL-7301","relationship":"QUALIFIED_BY","status":"VERIFIED","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+    {"from":"SW5-QUAL-7301","to":"SW5-REL-7301","relationship":"RELEASED_IN","status":"VERIFIED","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+  ],
+  "capabilities": [
+    {
+      "capability_id": "RB1-CORE-INTERVAL",
+      "classification": "NON_SCIENTIFIC_RUNTIME_INFRASTRUCTURE_WITH_NUMERICAL_DISCRETISATION_SEMANTICS",
+      "tiers": {
+        "T0":{"status":"NOT_APPLICABLE","rationale":"Generic interval orchestration is not itself a physical phenomenon."},
+        "T1":{"status":"NOT_APPLICABLE","rationale":"No physical theory is introduced by generic interval orchestration."},
+        "T2":{"status":"NOT_APPLICABLE","rationale":"No independent physical conceptual model is introduced."},
+        "T3":{"status":"NOT_APPLICABLE","rationale":"No independent physical equation system is defined by this capability."},
+        "T4":{"status":"NOT_APPLICABLE","rationale":"No SWAP-specific physical parameterisation belongs to this capability."},
+        "T5":{"status":"NOT_APPLICABLE","rationale":"No independent continuous physical formulation belongs to this runtime capability."},
+        "T6":{"status":"RESOLVED","node":"SW5-DISC-7301"},
+        "T7":{"status":"NOT_APPLICABLE","rationale":"Acceptance/retry numerical policy is owned by RB1-CORE-TRANSACTION and temporal-science capabilities, not by interval orchestration itself."},
+        "T8":{"status":"RESOLVED","node":"SW5-ALG-7301"},
+        "T9":{"status":"RESOLVED","node":"SW5-CONTRACT-7301"},
+        "T10":{"status":"RESOLVED","node":"SW5-IMPL-7301"},
+        "T11":{"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","node":"SW5-VRF-7301"},
+        "T12":{"status":"NOT_APPLICABLE","rationale":"Observational validation is not the appropriate evidence class for generic runtime interval atomicity; physical application validation belongs to process/model capabilities."},
+        "T13":{"status":"RESOLVED_RB1_RELEASE_SCOPE","node":"SW5-QUAL-7301"},
+        "T14":{"status":"RESOLVED_RB1_RELEASE_AUTHORITY","node":"SW5-REL-7301"}
+      },
+      "overall":"PARTIALLY_TRACED_T11_REMAINS_SCOPED"
+    },
+    {
+      "capability_id": "RB1-CORE-DATA",
+      "classification": "NON_SCIENTIFIC_ARCHITECTURE_INFRASTRUCTURE",
+      "tiers": {
+        "T0":{"status":"NOT_APPLICABLE","rationale":"Data-category separation is software architecture, not a physical phenomenon."},
+        "T1":{"status":"NOT_APPLICABLE","rationale":"No scientific theory is asserted by the data ownership split."},
+        "T2":{"status":"NOT_APPLICABLE","rationale":"No physical conceptual model is asserted."},
+        "T3":{"status":"NOT_APPLICABLE","rationale":"No physical equation is asserted."},
+        "T4":{"status":"NOT_APPLICABLE","rationale":"No physical formulation is asserted."},
+        "T5":{"status":"NOT_APPLICABLE","rationale":"No continuous physical formulation is asserted."},
+        "T6":{"status":"NOT_APPLICABLE","rationale":"No discretisation is defined by data ownership itself."},
+        "T7":{"status":"NOT_APPLICABLE","rationale":"No numerical solver method is defined by data ownership itself."},
+        "T8":{"status":"NOT_APPLICABLE","rationale":"The capability is a structural contract rather than an execution algorithm."},
+        "T9":{"status":"RESOLVED","node":"SW5-CONTRACT-7302"},
+        "T10":{"status":"RESOLVED","node":"SW5-IMPL-7302"},
+        "T11":{"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","node":"SW5-VRF-7302"},
+        "T12":{"status":"NOT_APPLICABLE","rationale":"Observational validation is not applicable to software data-category separation."},
+        "T13":{"status":"RESOLVED_RB1_RELEASE_SCOPE","node":"SW5-QUAL-7301"},
+        "T14":{"status":"RESOLVED_RB1_RELEASE_AUTHORITY","node":"SW5-REL-7301"}
+      },
+      "overall":"PARTIALLY_TRACED_T11_REMAINS_SCOPED"
+    },
+    {
+      "capability_id": "RB1-CORE-TRANSACTION",
+      "classification": "NON_SCIENTIFIC_RUNTIME_INFRASTRUCTURE_WITH_NUMERICAL_ACCEPTANCE_SEMANTICS",
+      "tiers": {
+        "T0":{"status":"NOT_APPLICABLE","rationale":"Transaction atomicity is runtime semantics, not a physical phenomenon."},
+        "T1":{"status":"NOT_APPLICABLE","rationale":"No physical theory is introduced."},
+        "T2":{"status":"NOT_APPLICABLE","rationale":"No physical conceptual model is introduced."},
+        "T3":{"status":"NOT_APPLICABLE","rationale":"No independent physical equation system is introduced."},
+        "T4":{"status":"NOT_APPLICABLE","rationale":"No physical parameterisation is introduced."},
+        "T5":{"status":"NOT_APPLICABLE","rationale":"No continuous physical formulation is introduced."},
+        "T6":{"status":"NOT_APPLICABLE","rationale":"The transaction protocol itself is independent of a specific spatial/temporal discretisation; temporal trial routes are numerical acceptance machinery."},
+        "T7":{"status":"RESOLVED","node":"SW5-NUM-7301"},
+        "T8":{"status":"RESOLVED","node":"SW5-ALG-7302"},
+        "T9":{"status":"RESOLVED","node":"SW5-CONTRACT-7303"},
+        "T10":{"status":"RESOLVED","node":"SW5-IMPL-7303"},
+        "T11":{"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","node":"SW5-VRF-7303"},
+        "T12":{"status":"NOT_APPLICABLE","rationale":"Observational validation is not the appropriate evidence class for transaction atomicity."},
+        "T13":{"status":"RESOLVED_RB1_RELEASE_SCOPE","node":"SW5-QUAL-7301"},
+        "T14":{"status":"RESOLVED_RB1_RELEASE_AUTHORITY","node":"SW5-REL-7301"}
+      },
+      "overall":"PARTIALLY_TRACED_T11_REMAINS_SCOPED"
+    },
+    {
+      "capability_id": "RB1-CORE-MASS",
+      "classification": "SCIENTIFIC_CONSERVATION_AND_RUNTIME_ACCOUNTING_CAPABILITY",
+      "tiers": {
+        "T0":{"status":"RESOLVED","node":"SW5-PHEN-7301"},
+        "T1":{"status":"GAP_SOURCE_BINDING_OPEN","node":"SW5-TH-7301"},
+        "T2":{"status":"RESOLVED","node":"SW5-CONCEPT-7301"},
+        "T3":{"status":"RESOLVED","node":"SW5-EQ-7301"},
+        "T4":{"status":"RESOLVED","node":"SW5-FORM-7301"},
+        "T5":{"status":"RESOLVED","node":"SW5-FORM-7302"},
+        "T6":{"status":"RESOLVED","node":"SW5-DISC-7302"},
+        "T7":{"status":"RESOLVED","node":"SW5-NUM-7302"},
+        "T8":{"status":"RESOLVED","node":"SW5-ALG-7303"},
+        "T9":{"status":"RESOLVED","node":"SW5-CONTRACT-7304"},
+        "T10":{"status":"RESOLVED","node":"SW5-IMPL-7304"},
+        "T11":{"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","node":"SW5-VRF-7304"},
+        "T12":{"status":"NOT_APPLICABLE","rationale":"Conservation/accounting correctness is verified as an identity and hard numerical invariant at T11; observational application validation belongs to the physical model/process capabilities whose fluxes feed the ledger."},
+        "T13":{"status":"RESOLVED_RB1_RELEASE_SCOPE","node":"SW5-QUAL-7301"},
+        "T14":{"status":"RESOLVED_RB1_RELEASE_AUTHORITY","node":"SW5-REL-7301"}
+      },
+      "overall":"PARTIALLY_TRACED_T1_AND_T11_OPEN"
+    },
+    {
+      "capability_id": "RB1-CORE-DIAGNOSTICS",
+      "classification": "NON_SCIENTIFIC_RUNTIME_OBSERVABILITY_INFRASTRUCTURE",
+      "tiers": {
+        "T0":{"status":"NOT_APPLICABLE","rationale":"Diagnostics aggregation is observability infrastructure, not a physical phenomenon."},
+        "T1":{"status":"NOT_APPLICABLE","rationale":"No scientific theory is introduced."},
+        "T2":{"status":"NOT_APPLICABLE","rationale":"No physical conceptual model is introduced."},
+        "T3":{"status":"NOT_APPLICABLE","rationale":"No physical equation system is introduced."},
+        "T4":{"status":"NOT_APPLICABLE","rationale":"No physical formulation is introduced."},
+        "T5":{"status":"NOT_APPLICABLE","rationale":"No continuous physical formulation is introduced."},
+        "T6":{"status":"NOT_APPLICABLE","rationale":"Diagnostics aggregation does not define discretisation."},
+        "T7":{"status":"NOT_APPLICABLE","rationale":"Diagnostics aggregation does not define the solver method it observes."},
+        "T8":{"status":"RESOLVED","node":"SW5-ALG-7304"},
+        "T9":{"status":"RESOLVED","node":"SW5-CONTRACT-7305"},
+        "T10":{"status":"RESOLVED","node":"SW5-IMPL-7305"},
+        "T11":{"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","node":"SW5-VRF-7305"},
+        "T12":{"status":"NOT_APPLICABLE","rationale":"Observational validation is not applicable to deterministic runtime diagnostics aggregation."},
+        "T13":{"status":"RESOLVED_RB1_RELEASE_SCOPE","node":"SW5-QUAL-7301"},
+        "T14":{"status":"RESOLVED_RB1_RELEASE_AUTHORITY","node":"SW5-REL-7301"}
+      },
+      "overall":"PARTIALLY_TRACED_T11_REMAINS_SCOPED"
+    }
+  ],
+  "nonclaims": [
+    "F-DOC03 does not claim FULLY_TRACED for any capability in this tranche.",
+    "F-DOC03 does not claim Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC03 does not convert RB1 release PASS results into missing theory or validation evidence.",
+    "F-DOC03 does not alter the fixed 15-capability RB1 denominator.",
+    "F-DOC03 makes no production-source, reference-data, physics, solver, threshold or performance change.",
+    "The missing frozen test tests/runtime/test_canonical_runtime.f90 is not cited; no such path exists on the RB1 source authority.",
+    "Surface-evaporation throughput/scaling remains a separate performance workunit and is outside F-DOC03."
+  ]
+}
