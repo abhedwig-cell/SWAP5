@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC11",
+  "title": "NSW SSD/SSI Application-Class Accuracy Instantiation and Temporal Allocation Qualification Closeout",
+  "status": "CLOSED_FAIL_CLOSED",
+  "decision": "FAIL_CLOSED_AC03_NO_INDEPENDENT_NUMERIC_H_APP_OR_TEMPORAL_ALLOCATION",
+  "application_class": "AC03_NSW_SSD_SSI_AQUIFER_INTERFERENCE_DRAWDOWN_DECISION",
+  "authority": {
+    "starting_current_canonical": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+    "upstream_F_GC10_closeout": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "pre_registration_commit": "c8d94d8a11f0bdd54da12897913a16810fbf7d20",
+    "research_evidence_commit": "5e390594418e1a9936fbcd7d5b111e98e8872fa6",
+    "pre_closeout_gate_head": "24a19d0b5dd520a09192aa667323c3d0cb14c104",
+    "pre_closeout_workflow_run": 34632889246,
+    "pre_closeout_job": 103373756995,
+    "pre_closeout_workflow_conclusion": "success"
+  },
+  "qualification_result": {
+    "jurisdictional_application_class_bound": true,
+    "external_decision_margin_structure_qualified": true,
+    "canonical_contract_architecture_compatible": true,
+    "numeric_H_app_qualified": false,
+    "numeric_A_temporal_qualified": false,
+    "numeric_H_temporal_budget_qualified": false,
+    "production_SWAP_MODFLOW_admission": false,
+    "canonical_admission": false
+  },
+  "scientific_finding": {
+    "summary": "The NSW SSD/SSI aquifer-interference framework is a real decision context in which groundwater drawdown predictions, model accuracy, uncertainty, monitoring and mitigation matter. The available application-class authorities do not prescribe a transferable numerical prediction-accuracy allowance and do not allocate a numerical share of such an allowance to coupling temporal error.",
+    "H_app_finding": "The NSW Aquifer Interference Policy explicitly compares near-threshold exceedance with the accuracy of an otherwise robust model, which validates the decision-margin concept, but does not provide a numerical application-class prediction-accuracy requirement. The IESC uncertainty guidance independently states that acceptable mismatch and acceptable risk are project/QoI specific.",
+    "A_temporal_finding": "NSW modelling guidance requires temporal discretisation to be appropriate to objectives and stress changes and requires uncertainty analysis, but supplies no numerical fraction or amount of prediction-error budget reserved for coupling temporal error.",
+    "consequence": "The canonical F-GC09/F-GC10 contract seam must remain uninstantiated for AC03 until a concrete project, regulator-approved modelling plan, condition of approval or equivalent governed application contract supplies both numerical policy inputs with provenance."
+  },
+  "rejected_substitutions": [
+    "physical Level-1 drawdown threshold used as H_app",
+    "calibration residual, RMS or normalised RMS target used as H_app",
+    "measurement or instrument accuracy used as H_app without a decision rule",
+    "solver closure tolerance used as H_app",
+    "generic stress-period/time-step guidance used as A_temporal",
+    "arbitrary fixed temporal allocation percentage",
+    "F-GC07 coupling error magnitude or convergence rate used to choose H_app or A_temporal"
+  ],
+  "architecture_invariants": {
+    "9": "PASS: no day/month/year coupling assumption introduced",
+    "10": "PASS: flexible coupling windows remain possible; no fixed window selected",
+    "11": "PASS: coupling policy remains explicit runtime/coupler functionality",
+    "12": "PASS: application head-error policy remains separate from the hard head/flux interface contract",
+    "13": "PASS: mass conservation remains absolute and is not allocated into the error budget",
+    "14": "PASS: GC07 numerical sensitivities/indicators remain first-class evidence but cannot choose application policy",
+    "15": "PASS: no extra production SWAP runs introduced",
+    "23": "PASS: application accuracy policy remains separate from physics and solver policy",
+    "25": "PASS: reference mode unchanged",
+    "26": "PASS: provenance and fail-closed diagnostics are explicit",
+    "28": "PASS: application-class composition remains runtime/coupler responsibility",
+    "29": "PASS: no silent NSW, calendar, file-format or MODFLOW dependency added to the kernel",
+    "30": "PASS: architecture consequence explicitly audited"
+  },
+  "source_scope": {
+    "production_source_changed": false,
+    "new_physics": false,
+    "new_solver": false,
+    "scientific_tolerance_relaxed": false,
+    "F_GC02_inspected": false,
+    "F_GC02_executed": false,
+    "F_GC06_reopened": false,
+    "F_GC07_reopened": false,
+    "F_GC08_reopened": false,
+    "F_GC09_reopened": false,
+    "F_GC10_reopened": false,
+    "RB1_reopened": false,
+    "mass_conservation_relaxed": false
+  },
+  "hard_nonclaims": [
+    "No numeric H_app for NSW SSD/SSI is qualified.",
+    "No numeric A_temporal is qualified.",
+    "No numeric coupling head-error budget is qualified.",
+    "No statement is made that all NSW projects share one prediction accuracy.",
+    "No regulatory impact threshold is relabelled as numerical model tolerance.",
+    "No production SWAP-MODFLOW coupling configuration is admitted."
+  ],
+  "downstream": {
+    "recommended_next_unit": "F-GC12_PROJECT_SPECIFIC_APPLICATION_ACCURACY_CONTRACT_INSTANTIATION",
+    "entry_condition": "A concrete project-specific or regulator-approved source must explicitly provide a numerical groundwater-head/drawdown prediction-accuracy requirement or decision margin, plus an independently governed numerical allocation to coupling temporal error. If only one is supplied, the other remains fail-closed.",
+    "may_use_canonical_contract_seam": true,
+    "may_use_F_GC07_to_test_supplied_budget": true,
+    "may_use_F_GC07_to_choose_budget": false
+  },
+  "exact_head_requirement": "The commit introducing this closeout must pass the F-GC11 NSW application-class accuracy qualification workflow."
+}
