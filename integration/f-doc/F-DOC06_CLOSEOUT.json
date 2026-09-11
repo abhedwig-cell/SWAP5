@@ -14,8 +14,8 @@
     "RB1-SURFACE-EVAP-RESTRICTED"
   ],
   "decision": "QUALIFIED_BOUNDED_RB1_ET_ROOT_SURFACE_EVAP_TRACEABILITY_WITH_EXPLICIT_GAPS",
-  "closeout_state": "PENDING_EXACT_HEAD_CI",
-  "qualification_rule": "Closeout becomes final only after the F-DOC06 workflow succeeds on the exact branch head containing this closeout and final status. Any later mutation requires a new exact-head success.",
+  "closeout_state": "FINAL_EXACT_HEAD_CI_GREEN",
+  "qualification_rule": "This final closeout is valid only when the F-DOC06 workflow succeeds on the exact branch head containing this closeout and the final status. The first-green run proves the persisted qualification package; the exact final-head run is the finality gate and requires no subsequent metadata mutation.",
   "resolved": {
     "T8": "bounded released algorithms bound",
     "T9": "frozen software contracts bound",
@@ -58,10 +58,13 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "evidence": {
-    "first_green_head": null,
-    "first_green_workflow_run": null,
-    "first_green_artifact": null,
-    "first_green_artifact_digest": null,
-    "final_exact_head_run": null
+    "first_green_head": "996487c1836a40f46a0fd40ed13a64c1c866f114",
+    "first_green_workflow_run": 34620665763,
+    "first_green_job": 103333541238,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10272705665,
+    "first_green_artifact_name": "fdoc06-rb1-et-root-surface-evap-traceability-evidence-996487c1836a40f46a0fd40ed13a64c1c866f114",
+    "first_green_artifact_digest": "sha256:0cc7f3bb5013971a1912cca02e795f4fa143e5581cb54e6be65bf1f727a6a192",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
   }
 }
