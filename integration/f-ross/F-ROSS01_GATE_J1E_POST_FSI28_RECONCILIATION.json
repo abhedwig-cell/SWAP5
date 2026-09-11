@@ -1,13 +1,13 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "gate": "J1E_TRANSACTIONAL_BOUNDARY_INTEGRATION",
-  "artifact": "POST_FSI27_FSI28_BLOCKER_RECONCILIATION",
-  "status": "BLOCKER_NARROWED_ACCEPTED_RESULT_TRANSPORT_AND_INTERVAL_SEMANTICS_REMAIN_OPEN",
+  "artifact": "POST_FSI27_FSI28_FKT14_BLOCKER_RECONCILIATION",
+  "status": "BLOCKER_NARROWED_TO_REAL_PRODUCTION_SOLVER_SERVICE_COMPOSITION_AND_WINDOW_RESPONSE_SEMANTICS",
   "branch": "work/f-ross01-fast-mfp-feasibility",
   "reconciliation_authorities": {
-    "ross_parent_head": "b5d5c2ba612da12010513fd8ce6bfd9407c09644",
+    "ross_parent_head": "6fb7caa89f602cb29aaac9f9fcd6009a591881c4",
     "historical_j1e_blocker_artifact": "integration/f-ross/F-ROSS01_GATE_J1E_TRANSACTIONAL_BOUNDARY_INTEGRATION_RESULT.json",
     "F_SI27_closeout_head": "777015b8daffbd859e737f894cb585bd9ce96612",
     "F_SI27_qualification_head": "0d8c776bad779b6094d8afbd56b721038f758a77",
@@ -17,120 +17,115 @@
     "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
     "F_SI28_final_workflow_run": 34532305631,
     "F_SI28_final_workflow_conclusion": "success",
-    "current_canonical_observed_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
-    "current_canonical_observed_message": "status(F-CI37P): persist pre-promotion governance reconciliation state"
+    "F_KT14_closeout_head": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "F_KT14_exact_head_workflow_run": 34545458355,
+    "F_KT14_exact_head_workflow_conclusion": "success",
+    "F_KT14_effective_decision": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED",
+    "current_canonical_observed_head": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "definitive_physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "current_canonical_governance_overlay": "F-CI38"
   },
   "resolved_historical_findings": [
     {
       "id": "J1E-B1",
-      "previous_component": "reference Richards production binding",
       "resolution": "RESOLVED_BY_F_SI27",
-      "evidence": "F-SI27 independently qualified explicit prescribed native SWAP qbot as SWBOTB=2 production boundary control without changing native sign semantics."
+      "evidence": "Explicit prescribed native SWAP qbot is qualified as SWBOTB=2 without changing native sign semantics."
     },
     {
       "id": "J1E-B2",
-      "previous_component": "reference Richards production solve",
       "resolution": "RESOLVED_BY_F_SI28",
-      "evidence": "F-SI28 qualified dh_bottom_dq_bottom as an explicit solver-result sensitivity from the production reference solve with exactly one additional tangent backsolve, zero additional nonlinear trajectories and zero additional Jacobian builds."
+      "evidence": "dh_bottom_dq_bottom is qualified from the production reference solve using the accepted normal TRIDAG factorization with exactly one tangent backsolve, zero additional nonlinear trajectories and zero additional Jacobian builds."
     },
     {
       "id": "J1E-B3",
-      "previous_component": "soil-water request contract",
       "resolution": "RESOLVED_BY_F_SI28",
-      "evidence": "F-SI28 qualified explicit opt-in sensitivity request semantics; unrequested solves perform zero tangent backsolves and leave sensitivity unavailable."
+      "evidence": "Sensitivity is explicit opt-in solver output; unrequested and retry/failure solves leave it unavailable and incur zero tangent backsolves."
+    },
+    {
+      "id": "J1E-B4",
+      "resolution": "RESOLVED_BY_F_KT14",
+      "evidence": "F-KT14 qualified accepted-only transaction transport with hard stale-result exclusion. Rejected/retried trial sensitivity is cleared; TWO_HALF publication is sourced only from the terminal half2 outcome."
+    },
+    {
+      "id": "J1E-B5",
+      "resolution": "RESOLVED_FOR_EXPLICIT_LOCAL_TERMINAL_RESULT_SEMANTIC_BY_F_KT14",
+      "evidence": "F-KT14 qualified canonical publication of the final accepted local-terminal tangent with exact originating subinterval. A single accepted substep may be marked as spanning the requested interval; multiple accepted substeps are explicitly not represented as a whole-window derivative."
+    },
+    {
+      "id": "J1E-B6",
+      "resolution": "RESOLVED_BY_F_KT14",
+      "evidence": "F-KT14 qualified kernel_result_t transport of the accepted SWAP-native sensitivity and provenance without committed-state mutation or implicit MODFLOW sign transformation."
     },
     {
       "id": "J1E-B7",
-      "previous_component": "reference tridiagonal linear solver",
       "resolution": "RESOLVED_BY_F_SI28",
-      "evidence": "F-SI28 qualified worker-owned reusable TRIDAG factorization/backsolve scratch serving the accepted normal correction and the tangent right-hand side without persistent per-column factorization state."
+      "evidence": "Worker-owned reusable TRIDAG factorization/backsolve scratch is qualified without persistent per-column factorization state."
     },
     {
       "id": "J1E-D2",
-      "previous_component": "Jacobian sign convention",
       "resolution": "RESOLVED_BY_F_SI28_WITH_J1D_REFERENCE",
-      "evidence": "Production native-qbot tangent uses J*(partial h/partial qbot)=e_N and was verified directly against independent central finite-difference qbot trajectories for negative, zero and minimal positive qbot; J1D interface-coordinate qualification remains consistent and is not substituted for production evidence."
+      "evidence": "Native-qbot tangent uses J*(partial h/partial qbot)=e_N and agrees with independent central finite-difference qbot trajectories without changing the SWAP-native sign convention."
     }
   ],
   "open_findings": [
     {
-      "id": "J1E-B4",
+      "id": "J1E-B8",
       "severity": "BLOCKING",
-      "component": "transaction result lifecycle",
-      "finding": "Accepted-only interface sensitivity transport is still not qualified through the transaction result seam. Rejected or retried trial sensitivity must never become externally visible.",
-      "required_resolution": "Introduce and independently qualify a typed accepted-only sensitivity carrier or equivalent model-result seam through transaction processing, with rollback/retry stale-publication tests."
-    },
-    {
-      "id": "J1E-B5",
-      "severity": "BLOCKING",
-      "component": "canonical runtime result",
-      "finding": "Canonical interval result transport and aggregation semantics for interface sensitivity remain unqualified.",
-      "required_resolution": "Define availability/provenance semantics and qualify canonical publication across accepted internal substeps without storing sensitivity in committed physical state."
-    },
-    {
-      "id": "J1E-B6",
-      "severity": "BLOCKING",
-      "component": "kernel public result",
-      "finding": "The coupling-facing kernel result path still requires qualified transport of the accepted SWAP-native dh_bottom_dq_bottom value.",
-      "required_resolution": "Transport accepted canonical sensitivity through kernel_result_t and result mapping without implicit MODFLOW sign transformation or committed-state mutation."
+      "component": "real production physical transaction composition",
+      "finding": "The current B1.10 physical interval still reaches legacy soilwater/HeadCalc directly. It therefore does not receive a soil_water_solve_result_t and cannot feed the qualified F-SI28 tangent into the F-KT14 solver-result bridge. F-KT14 deliberately leaves this path sensitivity-unavailable rather than creating a second HeadCalc tangent authority or running a second nonlinear trajectory.",
+      "required_resolution": "Own and independently qualify a production physical transaction composition in which the relevant soil-water solve is executed through the qualified F-SI28 soil-water solver service and its accepted result is mapped through the F-KT14 bridge. Preserve the exact B1.10 physical result, mass accounting, transaction rollback semantics and solver-cost bounds."
     },
     {
       "id": "J1E-D1",
-      "severity": "DESIGN_REQUIRED_BEFORE_QUALIFICATION",
-      "component": "coupling-window and internal-substep semantics",
-      "finding": "A single interval-level sensitivity cannot be assumed to mean the final local substep tangent when a canonical interval contains multiple accepted internal substeps.",
-      "required_resolution": "Freeze whether the coupling contract requires a whole-window response derivative, a final-boundary local derivative, or another explicitly composed quantity before end-to-end J1E qualification."
+      "severity": "DESIGN_REQUIRED_BEFORE_COUPLING_QUALIFICATION",
+      "component": "coupling-window response semantics",
+      "finding": "F-KT14 removes result-lifecycle ambiguity by defining a local-terminal carrier, but a local terminal tangent after multiple accepted internal substeps is not automatically the derivative of final interface head with respect to a boundary-flux perturbation applied over the full coupling window.",
+      "required_resolution": "Before J1E is used as a coupling-window response operator, qualify either true whole-window derivative composition or an explicitly justified coupling algorithm that consumes local-terminal tangents without relabelling them as whole-window derivatives."
     }
   ],
-  "fsi28_preserved_limits": {
-    "transaction_result_sensitivity_transport_qualified": false,
-    "canonical_interval_sensitivity_aggregation_qualified": false,
-    "kernel_public_result_sensitivity_transport_qualified": false,
+  "fkt14_qualified_limits": {
+    "transaction_result_sensitivity_transport_qualified": true,
+    "canonical_local_terminal_sensitivity_publication_qualified": true,
+    "kernel_public_result_sensitivity_transport_qualified": true,
+    "solver_result_to_trial_result_bridge_qualified": true,
     "whole_coupling_window_derivative_composition_qualified": false,
+    "legacy_direct_b110_headcalc_composition_qualified": false,
     "MODFLOW_sign_transformation_qualified": false,
     "MODFLOW_coupling_admitted": false,
     "alternative_solver_fallback_reachability_or_frequency_qualified": false
   },
   "canonical_branching_hold": {
-    "active": true,
-    "reason": "The observed integration/f-ci-canonical head is the active F-CI37P pre-promotion governance reconciliation state and is explicitly not closed. J1E downstream production remediation must not fork from this moving interim authority.",
-    "F_CI37P_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
-    "F_CI37P_phase": "RECONCILIATION_PASS_PENDING_EXACT_METADATA_HEAD_REPLAY",
-    "F_CI37P_decision": "QUALIFIED_GOVERNANCE_RECONCILIATION_PENDING_EXACT_METADATA_HEAD_REPLAY",
-    "F_CI37P_closed": false,
-    "F_CI37P_metadata_head_requalified": false,
-    "F_CI37P_post_promotion_passed": false,
-    "F_CI37_post_promotion_passed": false,
-    "broad_canonical_passed": false,
-    "F_CI37P_next_gate": "Exact final F-CI37P metadata head must pass the dedicated reconciliation workflow; canonical must still equal the pinned base before non-forced fast-forward; post-promotion F-CI37P, F-CI37 and broad canonical workflows must all pass before closeout.",
-    "F_KT14_branch_found_at_reconciliation": false,
-    "required_source_authority": "Definitive post-F-CI37 canonical authority after F-CI37P is closed and required post-promotion canonical gates are green."
+    "active": false,
+    "reason": "The earlier moving F-CI37P governance hold is closed. F-CI37 commit 85e17bb7ca26d2df070f99b2bf16ecf0abebec19 is the definitive physical source authority; current canonical adf79478f55458c05444ad9b90e52644e6cf36b6 adds the F-CI38 governance-only overlay.",
+    "definitive_source_authority_established": true
   },
   "next_owner": {
-    "suggested_work_unit": "F-KT14_OR_LATER_AUTHORIZED_TRANSACTION_RUNTIME_INTERFACE_SENSITIVITY_TRANSPORT",
-    "start_condition": "Definitive F-CI37 canonical authority established",
+    "suggested_work_unit": "F-KT15_PRODUCTION_SOIL_WATER_SOLVER_SERVICE_TRANSACTION_COMPOSITION",
+    "branch_exists_at_reconciliation": false,
+    "clean_start_rule": "Start from current canonical authority and materialize only exact qualified upstream candidate blobs/contracts; do not fork a hidden second hydraulic authority from legacy HeadCalc internals.",
     "scope": [
-      "accepted-only transaction sensitivity transport",
-      "canonical interval sensitivity semantics and publication",
-      "kernel public result sensitivity transport",
-      "rollback/retry stale-sensitivity exclusion",
-      "hard mass preservation",
-      "no persistent solver scratch or tangent state",
-      "no implicit SWAP-to-MODFLOW sign conversion"
+      "route the production physical transaction soil-water solve through the qualified F-SI28 solver service",
+      "map the real accepted soil-water result through the qualified F-KT14 bridge",
+      "keep retry/rejected sensitivity unavailable",
+      "preserve B1.10 physical state and water balance exactly within qualified scope",
+      "preserve zero extra nonlinear tangent trajectories and zero extra Jacobian builds",
+      "preserve worker-owned scratch and compact committed state",
+      "do not introduce MODFLOW sign conversion or whole-window derivative claims"
     ],
-    "after_owner_closeout": "Return to F-ROSS01 J1E for independent end-to-end qualification against the exact remediated production blob."
+    "after_owner_closeout": "Return to F-ROSS01 J1E for independent exact-blob end-to-end qualification; address J1E-D1 separately if a true whole-coupling-window response derivative is required."
   },
   "qualification_state": {
     "implemented_solver_primitive": true,
-    "persisted_solver_primitive": true,
-    "tested_solver_primitive": true,
     "qualified_solver_primitive": true,
-    "implemented_end_to_end_j1e": false,
-    "tested_end_to_end_j1e": false,
+    "implemented_result_transport": true,
+    "qualified_result_transport": true,
+    "implemented_real_production_solver_service_transaction_composition": false,
+    "qualified_real_production_solver_service_transaction_composition": false,
+    "qualified_whole_window_response_semantics": false,
     "qualified_end_to_end_j1e": false
   },
   "pass": false,
-  "decision": "J1E_BLOCKER_NARROWED_TO_ACCEPTED_TANGENT_RESULT_LIFECYCLE_AND_INTERVAL_SEMANTICS",
+  "decision": "J1E_BLOCKER_NARROWED_TO_REAL_PRODUCTION_SOLVER_SERVICE_COMPOSITION_AND_WINDOW_RESPONSE_SEMANTICS",
   "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH",
   "preserved_nonclaims": {
     "J1E_qualified": false,
