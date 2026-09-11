@@ -1,0 +1,25 @@
+name: F-GC13 project accuracy evidence governance
+
+on:
+  push:
+    branches:
+      - work/f-gc13-project-accuracy-evidence-governance-template
+    paths:
+      - 'integration/f-gc/F-GC13_*.json'
+      - 'integration/f-gc/templates/project_accuracy_contract_*.json'
+      - 'tests/fgc/fixtures/fgc13/**'
+      - 'tests/fgc/validate_fgc13_project_accuracy_contract.py'
+      - 'tests/fgc/run_fgc13_project_accuracy_evidence_governance.sh'
+      - '.github/workflows/fgc13-project-accuracy-evidence-governance.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-GC13 project accuracy evidence governance gate
+        run: bash tests/fgc/run_fgc13_project_accuracy_evidence_governance.sh
