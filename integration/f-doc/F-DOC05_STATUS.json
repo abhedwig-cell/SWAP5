@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.fdoc05_status.v1",
+  "work_unit": "F-DOC05",
+  "title": "RB1 Execution and Restart Traceability",
+  "branch": "work/f-doc05-rb1-execution-restart-traceability",
+  "base": "a703747ce1991c5601b76a84f04969b602298268",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "capabilities": [
+    "RB1-STANDALONE-N1",
+    "RB1-MULTISWAP-SERIAL",
+    "RB1-MULTISWAP-PARALLEL-V1",
+    "RB1-RESTART-SERIAL",
+    "RB1-RESTART-PARALLEL"
+  ],
+  "status": "PERSISTED_AWAITING_EXACT_HEAD_CI",
+  "decision_if_exact_head_ci_green": "QUALIFIED_BOUNDED_RB1_EXECUTION_RESTART_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc05-rb1-execution-restart-traceability.yml to complete successfully with head_sha equal to the exact commit containing final F-DOC05_STATUS.json and F-DOC05_CLOSEOUT.json.",
+  "traceability_boundary": {
+    "fully_traced_claimed": false,
+    "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+    "t11_status": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+    "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+    "t1_scientific_authority_invented": false,
+    "t12_application_validation_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false,
+    "parallel_speedup_claimed": false,
+    "root_process_science_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false
+  },
+  "authority_chain": {
+    "f_mq27_closeout": "33beccd7b38f5a3c29131025e1b06166026851e3",
+    "f_mq29_qualified_evidence": "5ea88d81a63e6c706c87e99ac360f91f08711fc1",
+    "f_mq30_closeout": "48ee2841d783ee023c29391a7ea1e5d7ee0d20e0",
+    "f_mq27_matrix_blob": "efee0213881dff04d2111e4eccb879d50247324c",
+    "f_mq29_matrix_blob": "d080220c26f390eb08d6f32a64af685ec1c50746",
+    "f_mq30_matrix_blob": "40b45112f0e14accbcc08c015b988f39bf376eb7"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "scientific_scope_reopened": false,
+    "open": [
+      "Exact-head F-DOC05 CI qualification",
+      "T0-T7 traceability remains intentionally unresolved in this bounded workunit",
+      "Complete T11 equation-to-test graphs",
+      "T12 application validation"
+    ]
+  }
+}
