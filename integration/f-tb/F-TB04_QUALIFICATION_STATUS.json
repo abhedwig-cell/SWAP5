@@ -1,0 +1,16 @@
+{
+  "work_unit": "F-TB04",
+  "state": "PERSISTED_AWAITING_EXACT_HEAD_QUALIFICATION",
+  "decision": null,
+  "composition_baseline": "5c7b76655c910046f574753a39278d9a3cc3dbf3",
+  "current_canonical": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "F-TB03": "65d5e5202446212390dbdd84b06e6b2a80e7121c",
+  "production_source_changed": false,
+  "RB1_reopened": false,
+  "case_count": 35,
+  "domain_counts": {"TRANSACTION": 10, "RESTART": 9, "DETERMINISM": 6, "MULTISWAP": 10},
+  "profile_case_counts": {"FAST": 9, "CANONICAL": 18, "RELEASE": 34, "DEEP": 35},
+  "source_defects_discovered": [],
+  "qualification": {"FAST": "PENDING", "RELEASE": "PENDING", "DEEP": "EXPLICIT_NOT_REQUIRED_FOR_CLOSEOUT"},
+  "target_decision": "QUALIFIED_TRANSACTION_RESTART_DETERMINISM_MULTISWAP_TESTBANK_CATALOG_READY_FOR_CONTINUOUS_QUALIFICATION"
+}
