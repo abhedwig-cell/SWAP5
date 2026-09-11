@@ -1,7 +1,6 @@
 module mod_fixed_flux_top_boundary_provider
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t, soil_water_boundary_conditions_t, &
-       soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_FLUX
+  use mod_soil_water_solver_contract, only: top_boundary_provider_t, soil_water_boundary_conditions_t
   implicit none
   private
 
@@ -12,22 +11,16 @@ module mod_fixed_flux_top_boundary_provider
 
 contains
 
-  subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, candidate_ponding_depth, &
-                                     requested, result)
+  subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+                                     actual_top_flux, surface_head, runoff_flux)
     class(fixed_flux_top_boundary_provider_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head_top, water_content_top, candidate_ponding_depth
+    real(real64), intent(in) :: pressure_head_top, water_content_top
     type(soil_water_boundary_conditions_t), intent(in) :: requested
-    type(soil_water_top_boundary_result_t), intent(out) :: result
+    real(real64), intent(out) :: actual_top_flux, surface_head, runoff_flux
 
-    result = soil_water_top_boundary_result_t()
-    result%status = SW_TOP_BOUNDARY_AVAILABLE
-    result%regime = SW_TOP_BOUNDARY_REGIME_FLUX
-    result%actual_top_flux = requested%top_flux
-    result%surface_head = pressure_head_top
-    result%candidate_ponding_depth = candidate_ponding_depth
-    result%carries_surface_mass_terms = .false.
-    result%runoff_resolved = .true.
-    result%route = 'fixed-flux'
+    actual_top_flux = requested%top_flux
+    surface_head = pressure_head_top
+    runoff_flux = 0.0_real64
   end subroutine fixed_flux_top_evaluate
 
 end module mod_fixed_flux_top_boundary_provider
