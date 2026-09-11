@@ -1,0 +1,50 @@
+name: F-PM08D7 exact-head owner qualification
+
+on:
+  push:
+    branches:
+      - work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate
+    paths:
+      - '.github/workflows/fpm08d7-exact-head-owner.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-head-owner:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact F-PM08D7 head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Pure fixed-weir process gate
+        run: bash tests/fpm/run_fpm08d7_fixed_weir_process_checkpoint.sh
+      - name: Runtime dependency compile gate
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+      - name: Transactional mass rollback gate
+        env:
+          FPM08D7_TX_EVIDENCE_DIR: _fpm08d7_exact_head/transaction
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+      - name: Restart lifecycle gate
+        env:
+          FPM08D7_RESTART_EVIDENCE_DIR: _fpm08d7_exact_head/restart
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+      - name: Canonical temporal preservation gate
+        run: bash tests/fpm/run_fpm08d7_temporal_preservation_owner.sh
+      - name: Record exact-head authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _fpm08d7_exact_head/authority
+          git rev-parse HEAD > _fpm08d7_exact_head/authority/tested-head.txt
+          git rev-parse HEAD:src > _fpm08d7_exact_head/authority/src-tree.txt
+          git rev-parse HEAD:reference > _fpm08d7_exact_head/authority/reference-tree.txt
+          git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90 > _fpm08d7_exact_head/authority/backend-blob.txt
+          printf '%s\n' '0aeb0a2ed4096e1f9493d3dabc70962ea5270182' > _fpm08d7_exact_head/authority/canonical-authority.txt
+      - name: Upload exact-head owner evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-PM08D7-exact-head-owner-evidence
+          path: _fpm08d7_exact_head
+          if-no-files-found: error
