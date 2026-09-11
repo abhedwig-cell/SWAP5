@@ -3,7 +3,8 @@
   "work_unit": "F-CI40",
   "title": "Restricted Explicit Effective-Forcing Executor Canonical Admission",
   "branch": "qualification/f-ci40-fmr38-effective-forcing-executor-canonical-admission",
-  "phase": "CURRENT_CANONICAL_RECOMPOSITION_PERSISTED_PENDING_EXACT_HEAD_CI",
+  "phase": "CURRENT_CANONICAL_RECOMPOSITION_AND_ADMISSION_GATE_QUALIFIED_READY_FOR_NON_FORCE_PROMOTION",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_EXPLICIT_EFFECTIVE_FORCING_EXECUTOR_READY_FOR_CANONICAL_PROMOTION",
   "source_authority": {
     "canonical_head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
     "canonical_tree": "ebec5e647c68181ba958432ad575f9c95a9c752b",
@@ -20,6 +21,14 @@
   ],
   "production_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
   "qualified_scope": "GENERIC_RESOLVED_SERIALIZED_COLUMN_EXECUTOR_WITH_EXPLICIT_READ_ONLY_EPHEMERAL_EFFECTIVE_FORCING",
+  "qualification": {
+    "workflow": "F-CI40 F-MR38 effective-forcing executor canonical admission",
+    "run": 34546323128,
+    "job": 103099624152,
+    "head": "23387826b391fe344326e798d91641191022d2e2",
+    "conclusion": "success",
+    "gate": "FCI40_CANONICAL_ADMISSION_GATE=PASS"
+  },
   "hard_holds": [
     "no active parallel DIVDRA",
     "no drainage-specific worker pool",
@@ -29,18 +38,19 @@
     "no drainage science change"
   ],
   "mass": "ONLY_ACCEPTED_PHYSICAL_TRANSFERS_ENTER_AUTHORITATIVE_LEDGER",
-  "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA_REQUIRED",
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
   "state": {
     "source_recomposed": true,
     "production_blob_identity_verified": true,
     "governance_persisted": true,
-    "tested": false,
-    "qualified_for_admission": false,
+    "tested": true,
+    "qualified_for_admission": true,
     "canonical_promoted": false
   },
-  "promotion_rule": "SEPARATE_NON_FORCE_FAST_FORWARD_ONLY_AFTER_GREEN_EXACT_HEAD_ADMISSION_CI_AND_EXPLICIT_MOVING_CANONICAL_AUTHORITY_TRANSITION",
+  "promotion_rule": "SEPARATE_NON_FORCE_FAST_FORWARD_ONLY_AFTER_GREEN_EXACT_STATUS_HEAD_ADMISSION_CI_AND_NO_CANONICAL_DRIFT",
   "post_promotion_rule": "FINAL_CANONICAL_HEAD_REQUIRES_GREEN_PUSH_RUN_OF_BROAD_FCI_CANONICAL_QUALIFICATION",
   "closeout_gate": {
+    "require_exact_status_head_ci_green": true,
     "no_further_status_mutation_required_after_green_exact_head": true,
     "fail_closed_on_canonical_drift": true
   }
