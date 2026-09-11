@@ -21,13 +21,12 @@ program test_fsi29_dynamic_top_boundary_provider
   type(b110_dynamic_top_boundary_request_t) :: req, req_before
   type(b110_dynamic_top_boundary_result_t) :: r, r2, a1, b, a2
   real(real64) :: raw(24,nnode)
-  real(real64) :: supplies(8), pond_demands(6), mass_residual, worst_mass
+  real(real64) :: supplies(8), mass_residual, worst_mass
   logical :: ok, found_flux, found_ponded, found_atmospheric, found_runoff
   integer :: method, i, cases
 
   supplies = [0.0_real64, 0.01_real64, 0.1_real64, 0.5_real64, &
               1.0_real64, 5.0_real64, 20.0_real64, 100.0_real64]
-  pond_demands = [0.01_real64, 0.1_real64, 0.5_real64, 1.0_real64, 5.0_real64, 20.0_real64]
   worst_mass = 0.0_real64
   cases = 0
 
@@ -80,22 +79,18 @@ program test_fsi29_dynamic_top_boundary_provider
     call require(found_flux, 2909)
     call require(found_ponded, 2910)
 
-    ! Atmospheric-head switching is a distinct head regime and must not be collapsed to fixed qtop.
+    ! Target the exact legacy q1>Emax switch rather than relying on an arbitrary demand grid.
     found_atmospheric = .false.
-    do i = 1, size(pond_demands)
-      call initialize_request(req, method)
-      req%previous_ponding_depth_cm = 1.0e-8_real64
-      req%potential_pond_evaporation_cm_per_day = pond_demands(i)
-      req%potential_bare_soil_evaporation_cm_per_day = 0.0_real64
-      req%ponding_max_cm = 1000.0_real64
-      call evaluate_b110_dynamic_top_boundary(geometry, hydraulics, req, r)
-      call require(r%status == B110_DYN_TOP_AVAILABLE, 2911)
-      cases = cases + 1
-      if (r%regime == B110_DYN_TOP_REGIME_HEAD .and. r%surface_head_cm < 0.0_real64) then
-        found_atmospheric = .true.
-        exit
-      end if
-    end do
+    call initialize_request(req, method)
+    req%previous_ponding_depth_cm = 1.0e-8_real64
+    req%potential_pond_evaporation_cm_per_day = max(1.0_real64, &
+         capacity%evaporation_capacity + max(1.0_real64, abs(capacity%evaporation_capacity)))
+    req%potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    req%ponding_max_cm = 1000.0_real64
+    call evaluate_b110_dynamic_top_boundary(geometry, hydraulics, req, r)
+    call require(r%status == B110_DYN_TOP_AVAILABLE, 2911)
+    cases = cases + 1
+    found_atmospheric = r%regime == B110_DYN_TOP_REGIME_HEAD .and. r%surface_head_cm < 0.0_real64
     call require(found_atmospheric, 2912)
 
     ! Active linear runoff needs the same trial-local pond carry used by legacy pondrunoff.
