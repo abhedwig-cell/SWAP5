@@ -1,0 +1,26 @@
+name: F-CI44P current canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci44p-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Reconcile promoted F-CI44 current-canonical postimage
+        run: bash tests/fci/run_fci44p_current_canonical_postimage_reconciliation.sh

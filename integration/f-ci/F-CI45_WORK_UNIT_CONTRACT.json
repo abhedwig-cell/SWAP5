@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fci_workunit_contract.v1",
+  "work_unit": "F-CI45",
+  "title": "F-MR39 Restricted Soil-Temperature Runtime Current-Canonical Admission",
+  "branch": "qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission",
+  "canonical_base": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "donor_source_authority": "F-MR39@87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "donor_closeout_authority": "F-MR39@843af75b8545b0644aece5cf58b5f499d7b5b600",
+  "scientific_authority": "F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "purpose": "Recompose the already-qualified F-MR39 transactional restricted soil-temperature runtime capability onto the exact current canonical authority and qualify it for canonical admission without altering science, runtime semantics or numerical tolerances.",
+  "exact_production_delta": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "required_qualification": [
+    "current canonical remains exactly the pinned base throughout prepromotion qualification",
+    "net production delta from pinned canonical is exactly the two F-MR39 runtime files",
+    "both production blobs are byte-identical to the immutable F-MR39 source authority",
+    "F-MR39 closeout status and explicit 30-invariant audit are pinned",
+    "F-VQ58 process science and process blobs remain unchanged",
+    "water plus thermal commit is atomic",
+    "thermal rejection rolls back the whole physical trial including Richards candidate",
+    "retry reproduces a fresh run from the same committed origin",
+    "split/restart endpoint identity holds",
+    "mixed enabled/disabled MultiSWAP isolation holds",
+    "inactive columns carry no persistent thermal state",
+    "worker-local thermal scratch remains nonpersistent",
+    "water mass accounting excludes thermal energy and remains hard",
+    "thermal-disabled F-MR19 path remains preserved",
+    "O0/O2 and repeated-run deterministic identity holds",
+    "F-VQ58 exact scientific replay remains green",
+    "F-CI44/F-CI44P application-accuracy-contract postimage is preserved",
+    "all 30 architecture invariants are explicitly reconciled against current canonical"
+  ],
+  "hard_holds": [
+    "no new soil-temperature science",
+    "no new Richards science",
+    "no numerical tolerance relaxation",
+    "no new combined water plus thermal timestep acceptance policy",
+    "no snow plus soil-temperature combined profile",
+    "no frost or latent-heat phase-change physics",
+    "no parallel-throughput or large-batch performance claim",
+    "no production SWAP-MODFLOW admission",
+    "no numeric application-accuracy policy",
+    "no RB1 modification or reopening",
+    "no force update of canonical"
+  ],
+  "promotion_rule": "Only after exact-head green qualification while integration/f-ci-canonical still equals the pinned base may F-CI45 be promoted by a true two-parent merge. A separate postimage reconciliation is required afterwards."
+}

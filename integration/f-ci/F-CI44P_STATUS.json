@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI44P",
+  "title": "Current Canonical Postimage Reconciliation after F-CI44 Promotion",
+  "branch": "qualification/f-ci44p-current-canonical-postimage-reconciliation",
+  "phase": "QUALIFIED_POSTIMAGE_RECONCILIATION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI44_PROMOTED_APPLICATION_ACCURACY_CONTRACT_POSTIMAGE_RECONCILIATION",
+  "promoted_canonical_head": "536042620038014057427a7915c212a3ac78f84d",
+  "F_CI44_prepromotion_authority": "b7996d73845588368aba93bdbb85374e07b97bd7",
+  "previous_canonical_head": "d201904a85f3b595e028242978e52c02f5122a09",
+  "admitted_module_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+  "moving_canonical_push_qualification": {
+    "run": 34631530129,
+    "conclusion": "success",
+    "unexpected_exact_admission_trigger": false
+  },
+  "first_green_reconciliation": {
+    "head": "3c85ee7948e711549046522584d8ceefedf591e2",
+    "run": 34631787272,
+    "job": 103370105253,
+    "conclusion": "success"
+  },
+  "state": {
+    "promotion_parentage_verified": true,
+    "current_canonical_source_postimage_verified": true,
+    "reference_tree_unchanged": true,
+    "consumer_semantics_unchanged": true,
+    "F_CI44_authority_preserved": true,
+    "production_source_delta_in_F_CI44P": false,
+    "reference_delta_in_F_CI44P": false,
+    "governance_defect_found": false,
+    "numeric_application_policy_added": false,
+    "production_SWAP_MODFLOW_admitted": false,
+    "mass_conservation_relaxed": false,
+    "RB1_modified_or_reopened": false
+  },
+  "hard_nonclaims": [
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no numeric project H_budget",
+    "no application-class prediction-accuracy qualification",
+    "no universal groundwater-head or drawdown accuracy claim",
+    "no equivalence between regulatory/management thresholds and model prediction accuracy",
+    "no full coupled-system error budget",
+    "no production SWAP-MODFLOW admission",
+    "no weakening or tradeoff of mass conservation",
+    "no reopening of F-GC06 through F-GC10",
+    "no reopening or modification of RB1"
+  ],
+  "finalization_gate": {
+    "require_exact_status_head_F_CI44P_success": true,
+    "require_canonical_still_exactly_promoted_head": true,
+    "require_zero_src_and_reference_delta_from_promoted_head": true,
+    "require_true_two_parent_final_reconciliation_merge": true,
+    "force_update_forbidden": true,
+    "require_final_moving_canonical_push_qualification_success": true
+  },
+  "next_required_step": "Re-run F-CI44P on the exact metadata authority. If green and canonical remains pinned, finalize by true two-parent merge [promoted canonical, F-CI44P authority], then require the moving canonical push suite to pass on that exact final merge head."
+}
