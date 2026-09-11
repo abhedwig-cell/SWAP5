@@ -6,7 +6,7 @@
   "base": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
   "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
   "decision": "QUALIFIED_COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_EXPLICIT_MATURITY_GAPS",
-  "validity_rule": "Final only when the F-DOC07 workflow succeeds on the exact branch head containing final status and closeout.",
+  "validity_rule": "This status is final only when .github/workflows/fdoc07-rb1-aggregate-traceability-reconciliation.yml succeeds with head_sha equal to the exact branch head containing this final status and closeout. First-green evidence is persisted; no metadata rewrite is required after successful exact-final-head qualification.",
   "coverage": {
     "required_denominator": 15,
     "covered_exactly_once": 15,
@@ -55,17 +55,22 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "qualification_evidence": {
-    "first_green_head": null,
-    "first_green_workflow_run": null,
-    "first_green_artifact": null,
-    "first_green_artifact_digest": null
+    "first_green_head": "cfce0c85041bf61d09c5a2dee0205601a5c13046",
+    "first_green_workflow_run": 34621648024,
+    "first_green_job": 103336816833,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10272397404,
+    "first_green_artifact_name": "fdoc07-rb1-aggregate-traceability-evidence-cfce0c85041bf61d09c5a2dee0205601a5c13046",
+    "first_green_artifact_digest": "sha256:d7879d0fd4fe60fc0b7ce703973b2adc461a997e927f15db0b5609bea3c37d81",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
   },
   "work_state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
-    "closed": false,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "qualification_is_subject_to_exact_head_validity_rule": true,
     "scientific_scope_reopened": false
   }
 }
