@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.canonical_governance_incident.v1",
+  "work_unit": "F-CI47R",
+  "title": "Accidental Empty Canonical Support File Incident and Fast-Forward Remediation Record",
+  "status": "RECORDED_PENDING_EXACT_HEAD_VALIDATION",
+  "classification": "TOOLING_CONNECTOR_ACTION_ERROR_WITH_NO_NET_REPOSITORY_CONTENT_DELTA",
+  "valid_F_CI47_promotion": {
+    "commit": "37a146cab2207668e500379cbd569e9241be4bdb",
+    "tree": "80f3b62037eec92e83d981df1f57489ddd1af76e",
+    "first_parent": "e765d96ee80af0629fb399e18bf58124dade7641",
+    "second_parent": "ab1ad7094a714e6ed13bbcf4d05386eec81390a9",
+    "message": "promote(F-CI47): reconcile moving canonical preservation authority"
+  },
+  "incident": {
+    "commit": "a840c0ce545eb2aafd74b90c46864da166af2f1e",
+    "parent": "37a146cab2207668e500379cbd569e9241be4bdb",
+    "tree": "3fdf0a09ee0199b5aaa26710fb82cff54397ca45",
+    "cause": "wrong GitHub connector action was invoked while attempting a canonical ref update after the valid F-CI47 promotion had already occurred in a parallel workstream",
+    "accidental_path": "dummy",
+    "accidental_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "accidental_content": "empty file",
+    "production_src_changed": false,
+    "reference_changed": false,
+    "physics_changed": false,
+    "solver_changed": false,
+    "scientific_tolerance_changed": false,
+    "mass_policy_changed": false,
+    "RB1_reopened": false
+  },
+  "remediation": {
+    "commit": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+    "parent": "a840c0ce545eb2aafd74b90c46864da166af2f1e",
+    "tree": "80f3b62037eec92e83d981df1f57489ddd1af76e",
+    "method": "ordinary fast-forward commit deleting only the accidental empty root file; no force update and no history rewrite",
+    "net_tree_equals_valid_F_CI47_promotion_tree": true,
+    "production_src_changed_relative_to_valid_promotion": false,
+    "reference_changed_relative_to_valid_promotion": false
+  },
+  "post_remediation_qualification": {
+    "canonical_workflow_run": 34646474926,
+    "head": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+    "overall_conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103418971290,
+    "current_restricted_canonical_preservation_conclusion": "success",
+    "moving_authority": "e765d96ee80af0629fb399e18bf58124dade7641",
+    "governance_debt_from_F_CI46P": "CLOSED_BY_F_CI47_AND_CONFIRMED_GREEN_AFTER_REMEDIATION"
+  },
+  "audit_assertions": [
+    "the valid F-CI47 promotion predates and is the parent of the accidental commit",
+    "the accidental commit adds only the empty root file dummy",
+    "the remediation commit removes only that file",
+    "the remediation tree is byte-identical to the valid F-CI47 promotion tree",
+    "src and reference are unchanged by both incident and remediation",
+    "the broad canonical workflow is green after remediation",
+    "current-restricted-canonical-preservation is green after remediation"
+  ],
+  "disposition": "Keep this branch as immutable audit evidence. Do not merge F-CI47R into integration/f-ci-canonical merely to record the incident, because that would move an already requalified clean canonical postimage and trigger another unnecessary broad qualification cycle."
+}
