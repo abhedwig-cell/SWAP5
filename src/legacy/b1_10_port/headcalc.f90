@@ -19,9 +19,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
    use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
-        FSI_TOP_MODE_EXPLICIT_FLUX
+        FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-        soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
+        soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
+        soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
+        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -62,12 +64,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(reference_richards_state_binding_t), target :: local_state_binding
    type(reference_richards_state_binding_t), pointer :: state
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
+   type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
    type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
    type(soil_water_physical_config_t), intent(in), optional :: physical_config
    real(8), intent(in), optional :: explicit_step_duration
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
-   logical :: legacy_state_binding, state_ok, provider_top_active, provider_runoff_resolved
+   logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
 !  local
@@ -166,6 +169,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       critdevponddt = numerical_config%ponding_tolerance
    end if
    provider_top_active = .false.
+   provider_dynamic_top_active = .false.
+   provider_dynamic_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
    provider_source_sink_active = .false.
    provider_root_sink_active = .false.
@@ -181,6 +186,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    if (.not. legacy_state_binding .and. present(evaluation_context) .and. present(boundary_conditions)) then
       provider_top_active = associated(evaluation_context%top_boundary) .and. &
                             boundary_conditions%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX
+      provider_dynamic_top_active = associated(evaluation_context%dynamic_top_boundary) .and. &
+                                    boundary_conditions%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER
+      if (boundary_conditions%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. .not. provider_top_active) &
+           error stop 'HeadCalc: explicit-flux top mode requires fixed top-boundary provider'
+      if (boundary_conditions%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER .and. .not. provider_dynamic_top_active) &
+           error stop 'HeadCalc: dynamic top mode requires dynamic top-boundary provider'
    end if
    provider_runoff_resolved = .false.
    if (present(fsi_workspace)) then
@@ -484,7 +495,17 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
 
 !     test for waterbalance of ponding layer
-      if (state%ftoph) then
+      if (provider_dynamic_top_active) then
+         if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
+         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
+            deviat = state%pond - state%pondm1 - provider_dynamic_top_result%net_potential_surface_flux*dt + &
+                     state%runots - state%qtop * dt
+            if (abs(deviat) > CritDevPondDt) then
+               flnonconv3 = .TRUE.
+               flnonconv  = .TRUE.
+            end if
+         end if
+      else if (state%ftoph) then
          state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
          if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
             deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt
@@ -778,6 +799,35 @@ subroutine boundtop_state_bridge(task)
    type(reference_richards_state_binding_t) :: saved
    real(8) :: provider_runoff_flux
    provider_runoff_resolved = .false.
+   if (provider_dynamic_top_active) then
+      call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
+           boundary_conditions, provider_dynamic_top_result)
+      if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
+           error stop 'HeadCalc: dynamic top-boundary provider unavailable'
+      if (.not. provider_dynamic_top_result%carries_surface_mass_terms) &
+           error stop 'HeadCalc: dynamic top-boundary provider omitted surface mass terms'
+      if (.not. provider_dynamic_top_result%runoff_resolved) &
+           error stop 'HeadCalc: dynamic top-boundary provider left runoff unresolved'
+      state%qtop = provider_dynamic_top_result%actual_top_flux
+      state%hsurf = provider_dynamic_top_result%surface_head
+      state%pond = provider_dynamic_top_result%candidate_ponding_depth
+      state%runots = provider_dynamic_top_result%runoff_depth
+      state%flrunoff = provider_dynamic_top_result%runoff_potential .or. &
+                       abs(provider_dynamic_top_result%runoff_depth) > 0.0d0
+      select case (provider_dynamic_top_result%regime)
+      case (SW_TOP_BOUNDARY_REGIME_FLUX)
+         state%ftoph = .false.
+      case (SW_TOP_BOUNDARY_REGIME_HEAD)
+         if (provider_dynamic_top_result%surface_face_conductivity <= 0.0d0) &
+              error stop 'HeadCalc: dynamic head regime requires positive surface-face conductivity'
+         state%ftoph = .true.
+         state%kmean(1) = provider_dynamic_top_result%surface_face_conductivity
+      case default
+         error stop 'HeadCalc: dynamic top-boundary provider returned invalid regime'
+      end select
+      provider_runoff_resolved = .true.
+      return
+   end if
    if (provider_top_active) then
       call evaluation_context%top_boundary%evaluate(state%h(1), state%theta(1), boundary_conditions, &
            state%qtop, state%hsurf, provider_runoff_flux)
