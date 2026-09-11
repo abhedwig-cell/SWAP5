@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.fci48p_postimage_evidence.v1",
+  "work_unit": "F-CI48P",
+  "title": "F-MR41 Typed Optional-State Layout Current-Canonical Postimage Reconciliation Evidence",
+  "promoted_canonical_postimage": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "prepromotion_canonical": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "prepromotion_admission_head": "effb42a36cf369293825484598fa17c53f4a2250",
+  "prepromotion_exact_status_run": 34648891355,
+  "first_green_admission_run": 34648706383,
+  "failed_broad_canonical_run": 34649007705,
+  "failed_job": 103426962103,
+  "failure_line": "FCI_CANONICAL_PRESERVATION_FAIL admitted dependency drift: src/runtime/mod_fmr_runtime_core.f90",
+  "classification": "STALE_MOVING_PRESERVATION_AUTHORITY_AFTER_QUALIFIED_SOURCE_ADMISSION",
+  "classification_basis": [
+    "F-CI48 deliberately and exactly admitted the already-qualified F-MR41 mod_fmr_runtime_core.f90 blob",
+    "the moving-preservation sentinel still used F-CI47 authority e765d96ee80af0629fb399e18bf58124dade7641",
+    "all frozen historical authority jobs in broad canonical run 34649007705 passed",
+    "VQ reference qualification run 34649016020 passed on the promoted F-CI48 head",
+    "the failure occurred before any broad runtime/scientific assertion and reported only byte drift against the stale moving authority"
+  ],
+  "production_regression_detected": false,
+  "scientific_regression_detected": false,
+  "mass_regression_detected": false,
+  "required_remediation": "Advance only the moving-current preservation authority to the exact promoted F-CI48 postimage and add an explicit F-CI48 preservation marker. Preserve all frozen historical jobs, production source, reference data, scientific tolerances and mass policy.",
+  "fmr41_source_authority": "50b8bd32b03946d947b9c8b87a17192684843b6e",
+  "fmr41_production_blobs": {
+    "src/runtime/mod_fmr_runtime_core.f90": "88adf19e274956ab0f97fe6b4f6307fbfb453790",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "2364c765935813675dee0d2838a7ce183d81f560",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d"
+  },
+  "hard_holds": [
+    "no production source mutation",
+    "no reference mutation",
+    "no new physics",
+    "no new solver",
+    "no scientific tolerance relaxation",
+    "no water-mass accounting change",
+    "no weakening or disabling of moving preservation",
+    "no rewrite of frozen historical admission authorities",
+    "no RB1 modification or reopening"
+  ]
+}
