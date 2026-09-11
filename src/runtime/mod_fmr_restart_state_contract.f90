@@ -2,7 +2,9 @@ module mod_fmr_restart_state_contract
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t
+  use mod_fmr_optional_state_layouts, only: FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
+       fmr_b110_fixed_weir_surface_water_state_t
   implicit none
   private
 
@@ -18,6 +20,20 @@ contains
 
     select case (template%compatible_backend_id)
     case (FMR_BACKEND_SERIALIZED_REFERENCE)
+      if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER) then
+        ! D7 is deliberately a separate physical optional-state topology.  It
+        ! cannot be inferred from a payload or combined with Richards temporal
+        ! continuation under the first restricted candidate.
+        if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+        select type (state)
+        type is (fmr_b110_fixed_weir_surface_water_state_t)
+          matches = .true.
+        class default
+          matches = .false.
+        end select
+        return
+      end if
+
       select case (template%numerical_continuation_layout_id)
       case (FMR_NUMERICAL_CONTINUATION_NONE)
         select type (state)
