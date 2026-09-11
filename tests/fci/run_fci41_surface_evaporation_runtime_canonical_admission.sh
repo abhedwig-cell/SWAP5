@@ -37,8 +37,18 @@ git fetch --no-tags origin integration/f-ci-canonical >/dev/null 2>&1 || fail 'c
 test "$(git rev-parse ${BASE}^{tree})" = "$BASE_TREE" || fail 'base tree drift'
 test "$(git rev-parse ${BASE}:src)" = "$BASE_SRC" || fail 'base src tree drift'
 test "$(git rev-parse ${BASE}:reference)" = "$BASE_REF" || fail 'base reference tree drift'
-test "$(git rev-parse origin/integration/f-ci-canonical)" = "$BASE" || fail 'canonical moved after F-CI41 activation; recomposition required'
-test "$(git rev-parse ${COMPOSITION}^)" = "$BASE" || fail 'composition is not direct child of current canonical'
+CANONICAL_HEAD="$(git rev-parse origin/integration/f-ci-canonical)"
+if [[ "$CANONICAL_HEAD" == "$BASE" ]]; then
+  echo 'FCI41_PREPROMOTION_CANONICAL_BASE=PASS'
+else
+  git merge-base --is-ancestor "$COMPOSITION" "$CANONICAL_HEAD" || fail 'post-promotion canonical does not descend from qualified composition'
+  test "$(git rev-parse ${CANONICAL_HEAD}:$PROCESS)" = "$PROCESS_BLOB" || fail 'post-promotion canonical structural process blob drift'
+  test "$(git rev-parse ${CANONICAL_HEAD}:$RUNTIME)" = "$RUNTIME_BLOB" || fail 'post-promotion canonical runtime materialization blob drift'
+  test "$(git rev-parse ${CANONICAL_HEAD}:reference)" = "$BASE_REF" || fail 'post-promotion canonical reference tree drift'
+  echo "FCI41_POSTPROMOTION_CANONICAL_HEAD=${CANONICAL_HEAD}"
+  echo 'FCI41_POSTPROMOTION_CANONICAL_IDENTITY=PASS'
+fi
+test "$(git rev-parse ${COMPOSITION}^)" = "$BASE" || fail 'composition is not direct child of source authority'
 test "$(git rev-parse ${COMPOSITION}^{tree})" = "$COMPOSITION_TREE" || fail 'composition tree drift'
 test "$(git rev-parse ${OWNER}^{tree})" = "$COMPOSITION_TREE" || fail 'composition tree is not owner-candidate tree-identical'
 test "$(git rev-parse ${COMPOSITION}:$PROCESS)" = "$PROCESS_BLOB" || fail 'structural process blob drift'
@@ -46,11 +56,10 @@ test "$(git rev-parse ${COMPOSITION}:$RUNTIME)" = "$RUNTIME_BLOB" || fail 'runti
 test "$(git rev-parse HEAD:$PROCESS)" = "$PROCESS_BLOB" || fail 'governance changed structural process blob'
 test "$(git rev-parse HEAD:$RUNTIME)" = "$RUNTIME_BLOB" || fail 'governance changed runtime materialization blob'
 git diff --quiet "$COMPOSITION"..HEAD -- src || fail 'post-composition governance changed production source'
-test "$(git rev-parse HEAD:reference)" = "$BASE_REF" || fail 'F-CI41 changed reference source'
+test "$(git rev-parse HEAD:reference)" = "$BASE_REF" || fail 'F-CI41 governance changed reference source'
 mapfile -t delta < <(git diff --name-only "$BASE".."$COMPOSITION" -- src | sort)
 expected=("$PROCESS" "$RUNTIME")
 [[ "${delta[*]}" == "${expected[*]}" ]] || fail "unexpected production delta: ${delta[*]:-none}"
-echo 'FCI41_CURRENT_CANONICAL_EXACT_BASE=PASS'
 echo 'FCI41_EXACT_TWO_FILE_PRODUCTION_SCOPE=PASS'
 echo 'FCI41_OWNER_TREE_IDENTITY=PASS'
 echo 'FCI41_REFERENCE_IMMUTABLE=PASS'
