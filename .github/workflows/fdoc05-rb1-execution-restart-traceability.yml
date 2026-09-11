@@ -1,0 +1,117 @@
+name: F-DOC05 RB1 execution restart traceability qualification
+
+on:
+  push:
+    branches:
+      - work/f-doc05-rb1-execution-restart-traceability
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rb1-execution-restart-traceability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact authority lineages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            refs/heads/work/f-doc04-rb1-reference-temporal-traceability:refs/remotes/origin/work/f-doc04-rb1-reference-temporal-traceability \
+            refs/heads/integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical \
+            refs/heads/release/f-rb01-restricted-production-baseline-v1:refs/remotes/origin/release/f-rb01-restricted-production-baseline-v1 \
+            refs/heads/release/f-rb02-restricted-production-baseline-v1-final-authority:refs/remotes/origin/release/f-rb02-restricted-production-baseline-v1-final-authority \
+            refs/heads/qualification/f-mq27-fmr21-restart-schema-requalification:refs/remotes/origin/qualification/f-mq27-fmr21-restart-schema-requalification \
+            refs/heads/qualification/f-mq29-parallel-committed-restart-composition:refs/remotes/origin/qualification/f-mq29-parallel-committed-restart-composition \
+            refs/heads/qualification/f-mq30-fmr35-parallel-root-uptake:refs/remotes/origin/qualification/f-mq30-fmr35-parallel-root-uptake
+          for sha in \
+            a703747ce1991c5601b76a84f04969b602298268 \
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182 \
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 \
+            33beccd7b38f5a3c29131025e1b06166026851e3 \
+            5ea88d81a63e6c706c87e99ac360f91f08711fc1 \
+            48ee2841d783ee023c29391a7ea1e5d7ee0d20e0; do
+            git cat-file -e "${sha}^{commit}"
+          done
+
+      - name: Verify immutable upstream workflow evidence live
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in \
+            '34610822444 a703747ce1991c5601b76a84f04969b602298268 .github/workflows/fdoc04-rb1-reference-temporal-traceability.yml' \
+            '34586202805 b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 .github/workflows/frb02-final-release-authority.yml' \
+            '34451553550 d0cb2472ece9f77e85ae95e2e6b92693aa653388 .github/workflows/fmq27-restart-requalification.yml' \
+            '34496804763 0d12ae06bd49b21540c403a29ced55add4c531bd .github/workflows/fmq29-parallel-committed-restart-qualification.yml' \
+            '34528662051 84c6bd293686d20ff91028d53ab201c4116a4d5d .github/workflows/fmq30-parallel-root-uptake-qualification.yml'; do
+            set -- $spec
+            run="$1"; sha="$2"; path="$3"
+            curl -fsSL \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${run}" \
+              > "_fdoc05_run_${run}.json"
+            python3 - "$run" "$sha" "$path" <<'PY'
+          import json, pathlib, sys
+          run, sha, path = sys.argv[1:]
+          x = json.loads(pathlib.Path(f'_fdoc05_run_{run}.json').read_text())
+          assert x['head_sha'] == sha, (run, x['head_sha'], sha)
+          assert x['status'] == 'completed', (run, x['status'])
+          assert x['conclusion'] == 'success', (run, x['conclusion'])
+          assert x['path'] == path, (run, x['path'], path)
+          print(f'FDOC05_UPSTREAM_RUN_{run}=PASS')
+          PY
+          done
+
+      - name: Validate bounded execution and restart traceability
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc05_rb1_execution_restart_traceability.py | tee _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_EXACT_FIVE_CAPABILITIES=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_SERIAL_SHARED_ENTRYPOINT=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_PARALLEL_ONE_DELEGATES_SERIAL=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_PARALLEL_MULTIWORKER_BOUND_2_4=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_WORKER_OWNED_CONTEXT_ALLOCATION=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ27_COUNTS_INCLUDE_N1=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ27_GENERIC_TIME=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ27_ATOMIC_NEGATIVE_RESTORE=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ29_CROSS_WORKER_RESTART=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ29_HARD_MASS=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ30_WORKERS_2_4=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_FMQ30_NO_PERFORMANCE_SPEEDUP=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_ZERO_PRODUCTION_DELTA=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_ZERO_REFERENCE_DELTA=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_INVARIANT_OVERALL=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_MASS_HARD_UNCHANGED=PASS' _fdoc05_validator_stdout.txt
+          grep -Fq 'FDOC05_VALIDATION=PASS' _fdoc05_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc05-rb1-execution-restart-traceability-evidence-${{ github.sha }}
+          path: |
+            _fdoc05_run_34610822444.json
+            _fdoc05_run_34586202805.json
+            _fdoc05_run_34451553550.json
+            _fdoc05_run_34496804763.json
+            _fdoc05_run_34528662051.json
+            _fdoc05_validator_stdout.txt
+            docs/scientific/registries/rb1-execution-restart-traceability.json
+            docs/scientific/F-DOC05_RB1_EXECUTION_RESTART_TRACEABILITY.md
+            integration/f-doc/F-DOC05_STATUS.json
+            integration/f-doc/F-DOC05_INVARIANT_AUDIT.json
+            integration/f-doc/F-DOC05_CLOSEOUT.json
+          if-no-files-found: warn
+          retention-days: 90
