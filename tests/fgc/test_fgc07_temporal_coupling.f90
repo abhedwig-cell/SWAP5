@@ -41,9 +41,9 @@ program test_fgc07_temporal_coupling
 
 contains
 
-  subroutine read_inputs(storage_coefficient, dtc, nint, method)
+  subroutine read_inputs(storage_coefficient, dtc, nsub, method)
     real(real64), intent(out) :: storage_coefficient, dtc
-    integer, intent(out) :: nint
+    integer, intent(out) :: nsub
     character(len=*), intent(out) :: method
     character(len=128) :: arg
     integer :: stat
@@ -52,8 +52,8 @@ contains
     if (stat /= 0 .or. storage_coefficient <= 0.0_real64) error stop 'bad Sy'
     call get_command_argument(2,arg); read(arg,*,iostat=stat) dtc
     if (stat /= 0 .or. dtc <= 0.0_real64) error stop 'bad DeltaT'
-    call get_command_argument(3,arg); read(arg,*,iostat=stat) nint
-    if (stat /= 0 .or. nint <= 0) error stop 'bad n_internal'
+    call get_command_argument(3,arg); read(arg,*,iostat=stat) nsub
+    if (stat /= 0 .or. nsub <= 0) error stop 'bad n_internal'
     call get_command_argument(4,method)
     method = adjustl(method)
     if (trim(method) /= 'PRED' .and. trim(method) /= 'PC1' .and. trim(method) /= 'PC4') then
@@ -111,9 +111,9 @@ contains
     call bind_b110_source_sink_provider(sp,qdra,qssdi,qrot)
   end subroutine configure_problem
 
-  subroutine run_trajectory(storage_coefficient, dtc, nint, method, top_k)
+  subroutine run_trajectory(storage_coefficient, dtc, nsub, method, top_k)
     real(real64), intent(in) :: storage_coefficient, dtc, top_k
-    integer, intent(in) :: nint
+    integer, intent(in) :: nsub
     character(len=*), intent(in) :: method
     type(soil_water_physical_state_t) :: state, base_state, predictor_state, trial_state
     real(real64) :: hgw, h0, candidate_h, hnext, qvol, accepted_qvol
@@ -143,7 +143,7 @@ contains
       base_state = state
       h0 = hgw
 
-      call swap_trial(base_state,h0,dtc,nint,top_k,predictor_state,qvol,trial_mass,t_nl,t_linear,t_jac,t_retry,ok)
+      call swap_trial(base_state,h0,dtc,nsub,top_k,predictor_state,qvol,trial_mass,t_nl,t_linear,t_jac,t_retry,ok)
       call require(ok, 'predictor SWAP trial')
       trials = trials + 1; nonlinear = nonlinear + t_nl; linear = linear + t_linear
       jacobians = jacobians + t_jac; retries = retries + t_retry
@@ -162,7 +162,7 @@ contains
       else
         candidate_h = hnext
         do iter = 1, merge(1,max_correctors,trim(method) == 'PC1')
-          call swap_trial(base_state,candidate_h,dtc,nint,top_k,trial_state,qvol,trial_mass, &
+          call swap_trial(base_state,candidate_h,dtc,nsub,top_k,trial_state,qvol,trial_mass, &
                t_nl,t_linear,t_jac,t_retry,ok)
           call require(ok, 'corrector SWAP trial')
           trials = trials + 1; nonlinear = nonlinear + t_nl; linear = linear + t_linear
@@ -195,7 +195,7 @@ contains
 
     write(*,'(A,ES24.15E3,A,ES24.15E3,A,I0,A,A,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3, &
          A,ES24.15E3,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3)') &
-         'FGC07_RESULT:SY=',storage_coefficient,':DTC=',dtc,':NINT=',nint,':SCHEME=',trim(method), &
+         'FGC07_RESULT:SY=',storage_coefficient,':DTC=',dtc,':NINT=',nsub,':SCHEME=',trim(method), &
          ':FINAL_H_CM=',hgw,':CUM_QSWAP_CM=',cumulative_qswap,':MAX_HEAD_RES_CM=',max_head_residual, &
          ':MAX_SWAP_MASS_CM=',max_swap_mass,':INTERFACE_MASS_CM=',interface_mass_residual, &
          ':TRIALS=',trials,':NONLINEAR=',nonlinear,':LINEAR=',linear,':JAC=',jacobians,':RETRIES=',retries, &
@@ -207,11 +207,11 @@ contains
     write(*,'(A)') 'FGC07_TEMPORAL_COUPLING_CASE PASS'
   end subroutine run_trajectory
 
-  subroutine swap_trial(base_state,bottom_head,window_dt,nint,top_k,end_state,qswap_volume,max_mass, &
+  subroutine swap_trial(base_state,bottom_head,window_dt,nsub,top_k,end_state,qswap_volume,max_mass, &
                         nonlinear,linear,jacobians,retries,ok)
     type(soil_water_physical_state_t), intent(in) :: base_state
     real(real64), intent(in) :: bottom_head, window_dt, top_k
-    integer, intent(in) :: nint
+    integer, intent(in) :: nsub
     type(soil_water_physical_state_t), intent(out) :: end_state
     real(real64), intent(out) :: qswap_volume, max_mass
     integer, intent(out) :: nonlinear,linear,jacobians,retries
@@ -224,12 +224,12 @@ contains
 
     ok = .false.
     local_state = base_state
-    step_dt = window_dt/real(nint,real64)
+    step_dt = window_dt/real(nsub,real64)
     qswap_volume = 0.0_real64
     max_mass = 0.0_real64
     nonlinear = 0; linear = 0; jacobians = 0; retries = 0
 
-    do j = 1, nint
+    do j = 1, nsub
       call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,step_dt)
       request = soil_water_solve_request_t()
       request%parameters => parameters
