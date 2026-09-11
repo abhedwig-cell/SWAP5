@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.fdoc10_status.v1",
+  "work_unit": "F-DOC10",
+  "title": "RB1 Post-T11 Aggregate Traceability Reconciliation",
+  "branch": "work/f-doc10-rb1-post-t11-aggregate-reconciliation",
+  "base": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_RB1_POST_T11_AGGREGATE_TRACEABILITY_RECONCILIATION_WITH_RESIDUAL_GAPS",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc10-rb1-post-t11-aggregate-reconciliation.yml to complete successfully with head_sha equal to the exact final branch head containing this status and F-DOC10_CLOSEOUT.json. The first-green run qualifies the persisted aggregate reconciliation; no metadata rewrite is required after a successful exact-final-head run.",
+  "scope": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0,
+    "population_coverage_changed": false,
+    "post_population_remediations": ["F-DOC08", "F-DOC09"],
+    "t11_program_gap_state": "OPEN_NARROWED",
+    "fully_traced_claimed": false,
+    "fully_traced_promotions": 0,
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "external_audit_performed": false
+  },
+  "maturity_delta": {
+    "RB1-TIME-REFERENCE": "BOUNDED_TEMPORAL_ACCEPTANCE_T11_GRAPH_COMPLETE_WITH_EXTERNAL_APPLICATION_ACCURACY_DEPENDENCY",
+    "RB1-SW-REFERENCE": "BOUNDED_REFERENCE_ROUTE_T11_EVIDENCE_INVENTORY_COMPLETE_WITH_EXPLICIT_T1_T3_T8_T11_RESIDUAL_GAPS",
+    "other_13_required_capabilities": "UNCHANGED_BY_FDOC08_FDOC09"
+  },
+  "remaining_gap_state": {
+    "controlled_T0_T7_theory_formal": "OPEN",
+    "complete_T11_graphs_program_wide": "OPEN_NARROWED",
+    "T12_application_validation": "OPEN",
+    "WR_QA_2024_controlled_copy": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "application_temporal_H_budget": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "surface_evaporation_performance": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "authority_chain": {
+    "F_DOC07_population": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "F_DOC08": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+    "F_DOC09": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "qualification_evidence": {
+    "first_green_head": "48ffec4435528863c8d2ee762f7721539eceb8c4",
+    "first_green_workflow_run": 34643717230,
+    "first_green_job": 103409361334,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10281370296,
+    "first_green_artifact_name": "fdoc10-rb1-post-t11-aggregate-evidence-48ffec4435528863c8d2ee762f7721539eceb8c4",
+    "first_green_artifact_digest": "sha256:589e20981fd3874c499c8f3c51ed91cd9ae4d32f6b22df5f660229994d55aeb0",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "scientific_tolerance_delta": "NONE",
+    "mass_criterion_delta": "NONE",
+    "temporal_acceptance_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "Controlled T0-T7 theory/formal/numerical traceability across the RB1 denominator",
+      "Complete program-wide T11 equation-to-test graphs",
+      "T12 independent application validation",
+      "Controlled WR-QA-2024 copy and exact reconciliation",
+      "Application-specific temporal/groundwater H_budget policy",
+      "Surface-evaporation throughput/scaling and call-local allocation performance"
+    ]
+  }
+}
