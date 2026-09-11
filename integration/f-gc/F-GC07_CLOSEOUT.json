@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC07",
+  "title": "SWAP5-Groundwater Coupling Temporal Error Budget, Window Convergence and Predictor-Corrector Qualification Closeout",
+  "decision": "QUALIFIED_COUPLING_TEMPORAL_ERROR_CHARACTERIZATION_READY_FOR_APPLICATION_CLASS_BUDGET_COMPOSITION",
+  "qualified": true,
+  "production_admission": false,
+  "source_authority": {
+    "canonical_head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "closeout_parent_head": "c7fad797a4e568608a54add19bed535b42b6e64d",
+    "pre_registration_commit": "ddc9e6a6ae55ef3bbaad3d8655fafc31560abe6f",
+    "production_source_changed": false
+  },
+  "F_GC06_relationship": {
+    "head": "cc28f2ceabd583484c00a3fd36373dc7ab1f202e",
+    "decision": "FAIL_CLOSED_NO_NARROW_APPLICATION_CLASS_HAS_COMPLETE_INDEPENDENT_H_APP_AND_A_TEMPORAL",
+    "reopened": false,
+    "statement": "F-GC07 qualifies only temporal/coupling error and does not instantiate H_app or alter F-GC06."
+  },
+  "qualification_run": {
+    "tested_head": "3b9f9a5affc3f4b13fc97a51db0808d6b78791cc",
+    "workflow_run": 34602383089,
+    "workflow_job": 103272577597,
+    "conclusion": "success",
+    "raw_run_count": 36,
+    "O0_O2_smoke_identity": true,
+    "results_sha256": "0c3024bf49c55e830e696ea3a9b820bd41dfcdabac3f0d13da65d1ca26420c2f",
+    "decomposition_sha256": "c7c1327d0674d148356dd983769b735bf6baff63b2eb81c01ab93c46a949aa4e"
+  },
+  "permanent_evidence": {
+    "raw_results": "integration/f-gc/evidence/fgc07/fgc07_raw_results.csv@086ac3e9e8f0d3b3e43c1447e3a86ae298a7deef",
+    "error_decomposition": "integration/f-gc/evidence/fgc07/fgc07_error_decomposition.csv@20a2571736403d8e3cac02b7d3be0df7175957d3",
+    "convergence_plot": "integration/f-gc/evidence/fgc07/fgc07_head_convergence.svg@813e23636f587d18b30b0ea1c30cdb731bea540b"
+  },
+  "test_domain": {
+    "aquifer_classes_Sy": [0.2, 0.05],
+    "DeltaT_day": [0.5, 0.25, 0.125, 0.0625, 0.03125],
+    "time_origin_day": 4100.125,
+    "reference": "PC4 at DeltaT=1/128 day; numerical reference, not physical truth"
+  },
+  "characterization": {
+    "predictor_empirical_order": "approximately first order in both test classes",
+    "PC1_fixed_higher_order_supported": false,
+    "PC1_trials_per_predictor_trial": 2.0,
+    "PC1_linear_and_nonlinear_cost_ratio_range": [1.8693181818181819, 2.376068376068376],
+    "corrector_R1_over_R0_range_Sy_0_2": [0.007217064025686307, 0.011693501943877823],
+    "corrector_R1_over_R0_range_Sy_0_05": [0.028994255187274543, 0.04710679673780283],
+    "fine_total_error_over_internal_refinement_delta_range_Sy_0_2": [3.3088802209316786, 26745.255235245822],
+    "fine_total_error_over_internal_refinement_delta_range_Sy_0_05": [3.5372668469900157, 46921.02006245542],
+    "internal_error_dominance_crossover_observed": false,
+    "max_abs_interface_mass_residual_cm": 0.0,
+    "max_SWAP_mass_residual_cm": 5.803690861228006e-14
+  },
+  "temporal_estimators": {
+    "application_A_temporal_coefficient": null,
+    "predictor_step_doubling_error_over_eta_range_Sy_0_2": [1.8467869428807995, 2.100980495279164],
+    "predictor_step_doubling_error_over_eta_range_Sy_0_05": [1.8485670520575535, 2.0995584465121153],
+    "PC1_error_over_same_window_predictor_corrector_difference_Sy_0_2": [0.06682528306492513, 0.2325937566313694],
+    "PC1_error_over_same_window_predictor_corrector_difference_Sy_0_05": [0.09973216108434757, 0.2540199961315729],
+    "scope": "test-class numerical characterization only; no universal error coefficient"
+  },
+  "adaptation_logic": {
+    "shrink": "when predictor-corrector correction grows, residual contraction degrades, extra correction is required, or a qualified temporal allocation is exceeded",
+    "grow": "only after sustained small contracting corrections with the independent SWAP temporal indicator acceptable; growth must be bounded and reversible",
+    "universal_numeric_threshold_qualified": false,
+    "calendar_day_boundary_required": false,
+    "mass_mismatch_may_be_tolerance": false
+  },
+  "tangent": {
+    "first_class_dh_bottom_dq_bottom_carrier_on_frozen_source": true,
+    "frozen_reference_solver_emits_tangent": false,
+    "later_F_SI28_same_factorization_primitive_qualified": true,
+    "later_F_SI28_extra_backsolves": 1,
+    "later_F_SI28_extra_nonlinear_trajectories": 0,
+    "whole_coupling_window_derivative_composition_qualified": false,
+    "GC07_tangent_corrector_speed_or_stability_claim": false
+  },
+  "architecture_invariants": {
+    "7": "PASS transactional predictor/corrector trials from same committed T0; rejected trials not booked",
+    "8": "PASS within harness scope; repeated physical start is committed T0, no new production warm-start claim",
+    "9": "PASS generic non-midnight time and fractional windows",
+    "10": "PASS flexible coupling windows across five DeltaT values",
+    "11": "PASS within research scope; predictor/corrector, residual, rollback semantics and cost explicit",
+    "12": "PASS controlled interface: q_SWAP=-q_GW and head mismatch studied; no MODFLOW admission",
+    "13": "PASS hard mass conservation",
+    "14": "PASS at contract level; tangent carrier first-class, end-to-end composition held",
+    "15": "PASS characterized normal path is predictor plus one corrector; PC4 is research reference only",
+    "23": "PASS physics unchanged and numerical policy separate",
+    "25": "PASS reference mode retained",
+    "26": "PASS harness records solver cost, residual and mass diagnostics",
+    "29": "PASS no silent midnight, daily, file or MODFLOW dependency",
+    "30": "PASS no production source mutation"
+  },
+  "hard_nonclaims": [
+    "no universal groundwater-head accuracy requirement",
+    "no numeric application H_app or universal A_temporal",
+    "no claim PC1 is second order",
+    "no claim numerical reference is physical truth",
+    "no extrapolated internal-error crossover",
+    "no universal residual/contraction threshold",
+    "no end-to-end tangent-corrector qualification",
+    "no MODFLOW production admission",
+    "no weakening of mass conservation"
+  ],
+  "downstream": {
+    "ready_for": "APPLICATION_CLASS_BUDGET_COMPOSITION",
+    "requires": "independent H_app, defensible temporal allocation, and transfer qualification from GC07 test-class evidence to the application class",
+    "possible_form": "H_budget = A_temporal * H_app or a better source-bound equivalent"
+  },
+  "exact_head_self_verification": "The commit introducing this closeout must pass the full F-GC07 workflow; that successful run is the final branch authority and no additional production admission is implied."
+}
