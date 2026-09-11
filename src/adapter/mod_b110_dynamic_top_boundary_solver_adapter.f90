@@ -123,13 +123,9 @@ contains
     result%runoff_depth = b110_result%runoff_depth_cm
     result%net_potential_surface_flux = b110_result%net_potential_surface_flux_cm_per_day
     result%carries_surface_mass_terms = .true.
+    result%runoff_potential = b110_result%runoff_potential
     result%runoff_resolved = .true.
     result%route = b110_result%route
-
-    ! requested remains part of the generic provider ABI.  The qualified F-SI29
-    ! profile obtains its forcing from this request-local adapter context instead
-    ! of treating requested%top_flux as an immutable replacement for BoundTop.
-    if (requested%top_mode == huge(requested%top_mode)) result%status = SW_TOP_BOUNDARY_UNAVAILABLE
   end subroutine b110_dynamic_solver_top_evaluate
 
 end module mod_b110_dynamic_top_boundary_solver_adapter
