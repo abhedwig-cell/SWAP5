@@ -1,6 +1,6 @@
 module mod_b110_dynamic_top_boundary_solver_adapter
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t, soil_water_boundary_conditions_t, &
+  use mod_soil_water_solver_contract, only: dynamic_top_boundary_provider_t, soil_water_boundary_conditions_t, &
        soil_water_top_boundary_result_t, soil_water_parameter_set_t, &
        SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_UNAVAILABLE, &
        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
@@ -11,7 +11,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
   implicit none
   private
 
-  type, extends(top_boundary_provider_t), public :: b110_dynamic_top_boundary_solver_provider_t
+  type, extends(dynamic_top_boundary_provider_t), public :: b110_dynamic_top_boundary_solver_provider_t
      type(soil_water_parameter_set_t), pointer :: geometry => null()
      type(b110_default_mvg_parameters_t), pointer :: hydraulics => null()
      integer :: conductivity_mean_method = 0
