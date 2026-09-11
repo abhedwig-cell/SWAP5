@@ -22,7 +22,7 @@ Current restart contracts at the pinned authority expose schema, template, param
 
 FCI28 provides real process split-run plus negative restart qualification. FCI30/FMQ26 evidence provides serialized/2-worker/4-worker equivalence, ordering, rejection isolation, worker overlap, deterministic replay and hard mass. FCI35/FMQ29 evidence provides held-out parallel committed-boundary restart composition.
 
-The FMQ26 parallel fixture uses one parameter reference. FMR18 confirms multiple parameter references are a supported serialized runtime pattern. F-TB04 therefore adds a test-only temporary transform of immutable FMQ26 blob `26cc6e0ace986dc40db7635de7192958a1c0b868` to exercise two immutable parameter references inside one template under serialized, 2-worker and 4-worker execution. No owner evidence or production source is changed.
+The FMQ26 parallel fixture uses one parameter reference. The serialized runtime contract resolves `column%parameter_ref` as a one-based immutable parameter-registry index and accepts any in-range reference; the resolved bundle is then passed explicitly into the transaction/backend path. F-TB04 therefore adds a test-only temporary transform of immutable FMQ26 blob `26cc6e0ace986dc40db7635de7192958a1c0b868` to exercise two immutable parameter references inside one template under serialized, 2-worker and 4-worker execution. No owner evidence or production source is changed.
 
 ## Persisted catalog
 
@@ -57,6 +57,14 @@ The second exact-head candidate was `65699416faf8448b4f5fdda6e2cfbc24dd26a21c`, 
 
 This was classified as `FTB04_HISTORICAL_REPLAY_ROOT_SEMANTICS_ERROR`, not as a production or scientific failure. At `1cf21b3174a8caa207de3e0d5db80e12b01a09d1` the adapter was corrected so temporary FCI28 and FCI35 copies remain under `tests/fci/.ftb04-*` and therefore preserve their original repository-root semantics. No production/reference source, historical evidence blob, numerical oracle or tolerance changed. The push run on this remediation head, `34610783746`, has FAST `success`; RELEASE was intentionally skipped because the remediation commit was not marked as an exact-head closeout trigger.
 
+## Third exact-head RELEASE attempt and parameter-reference fixture remediation
+
+The third exact-head candidate was `86954e763daa831012e1cbdda0e61332075c500e`, workflow run `34619840900`. FAST succeeded. RELEASE then passed the full rebound FCI28 restart matrix and the immutable FMQ26 parallel/publication matrices at O0/O2, including hard mass and serialized/2-worker/4-worker equivalence. It failed only in the new F-TB04 two-parameter-reference extension, already in its serialized reference run.
+
+Inspection of the runtime contract showed that multiple in-range `parameter_ref` values are structurally supported and are resolved to separate immutable registry entries before the transaction/backend call. The F-TB04 fixture itself had, however, changed two things at once: it created a second parameter-set identity and additionally perturbed hydraulic `cofgen` values by 2%. That second change introduced a new physical/non-equilibrium convergence case that is outside the purpose of this testbank workunit and outside the already-qualified FMQ26 physical fixture.
+
+The failure is therefore classified as `FTB04_PARAMETER_REFERENCE_FIXTURE_PHYSICS_CONTAMINATION`, not as evidence of a production defect. At `5d5decd81066c8f4028da5e64f3bf6b3c111dce1` the test-only transform was narrowed: parameter registry entries 1 and 2 retain bit-identical already-qualified physical parameters but have distinct immutable `parameter_set_id` values, while columns alternate `parameter_ref` 1/2. This isolates reference resolution, immutable ownership, serialized/parallel equivalence and O0/O2 determinism without introducing new physics. FAST remained green on this remediation head in workflow run `34620259605`.
+
 ## Canonical advancement during the workunit
 
 After the F-TB04 contract had already frozen authority `0aeb0a2ed4096e1f9493d3dabc70962ea5270182`, the live `integration/f-ci-canonical` branch advanced to `d201904a85f3b595e028242978e52c02f5122a09` through F-CI43/F-CI43P. The delta is the separately admitted restricted soil-temperature capability and its qualification/governance evidence.
@@ -65,8 +73,8 @@ F-TB04 does not silently retarget this moving branch. Its closeout remains bound
 
 ## Defect status
 
-No production-source defect has been discovered. All observed failures were F-TB04 harness/preservation-governance defects and were remediated strictly outside production source. No separate production owner workunit is required on the evidence observed so far.
+No production-source defect has been discovered. All observed failures were F-TB04 harness, preservation-governance or fixture-scope defects and were remediated strictly outside production source. No separate production owner workunit is required on the evidence observed so far.
 
 ## Final exact-head rule
 
-F-TB04 follows the established F-TB03 closeout pattern. The final decision is valid only if the F-TB04 workflow concludes success with `head_sha` equal to the exact commit containing the final qualification status. That exact-head run must execute both FAST and RELEASE. RELEASE executes the pinned-canonical rebound FCI28 restart matrix, immutable FMQ26 serialized/parallel and publication-order matrices, the F-TB04 heterogeneous-parameter-reference MultiSWAP case, and pinned-canonical rebound FCI35/FMQ29 held-out cross-worker committed-boundary restart qualification. DEEP remains explicit and is not required for closeout because the historical VQ31 replay performs a test-only overlay commit in its isolated checkout.
+F-TB04 follows the established F-TB03 closeout pattern. The final decision is valid only if the F-TB04 workflow concludes success with `head_sha` equal to the exact commit containing the final qualification status. That exact-head run must execute both FAST and RELEASE. RELEASE executes the pinned-canonical rebound FCI28 restart matrix, immutable FMQ26 serialized/parallel and publication-order matrices, the F-TB04 distinct-parameter-reference MultiSWAP case, and pinned-canonical rebound FCI35/FMQ29 held-out cross-worker committed-boundary restart qualification. DEEP remains explicit and is not required for closeout because the historical VQ31 replay performs a test-only overlay commit in its isolated checkout.
