@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC08",
+  "title": "External Application Head-Requirement Binding and Decision-Margin Qualification Closeout",
+  "decision": "FAIL_CLOSED_EXTERNAL_THRESHOLD_NOT_EQUIVALENT_TO_APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+  "qualified_numeric_H_app": false,
+  "qualified_external_decision_margin_structure": true,
+  "production_admission": false,
+  "production_source_changed": false,
+  "mass_conservation_relaxed": false,
+  "F_GC07_reopened": false,
+  "F_GC06_reopened": false,
+  "authority": {
+    "upstream_F_GC07_closeout": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+    "pre_registration_commit": "9ae765311b0dde84a43ef8f754527f90863defd4",
+    "research_evidence_commit": "eb0ec56f65d0e1242995e3fee4567cd8771520b5",
+    "pre_closeout_gate_head": "f000aac84e70eb4246a2a72c9c6ada775d32c5b1",
+    "pre_closeout_workflow_run": 34610824864,
+    "pre_closeout_workflow_conclusion": "success"
+  },
+  "application_class": "AC02_GW_MANAGEMENT_HEAD_THRESHOLD",
+  "scientific_finding": {
+    "external_regulatory_thresholds_exist": true,
+    "external_policy_explicitly_recognizes_model_accuracy_near_threshold": true,
+    "transferable_numeric_prediction_accuracy_requirement_found": false,
+    "numeric_A_temporal_found": false,
+    "numeric_H_budget_ready": false,
+    "interpretation": "The NSW Aquifer Interference Policy provides a genuine external decision-margin structure: near-threshold exceedance may be judged against the accuracy of an otherwise robust model. However, the policy does not prescribe a transferable numerical prediction-accuracy value. IESC uncertainty guidance independently confirms that acceptable prediction error and risk are quantity-of-interest, project and decision specific. Therefore the physical threshold magnitude cannot be reused as H_app."
+  },
+  "rejected_substitutions": [
+    "0.2 m or 2 m physical drawdown threshold as H_app",
+    "calibration RMSE or normalised RMSE as prediction accuracy",
+    "measurement detectability as application tolerance",
+    "MODFLOW or Richards solver convergence tolerance as application accuracy",
+    "F-GC07 observed coupling error as H_app or A_temporal",
+    "mass imbalance as an accuracy allocation"
+  ],
+  "architecture_result": {
+    "H_app_owner": "external application/runtime/coupler policy",
+    "kernel_owns_H_app": false,
+    "universal_SWAP_H_app_constant_allowed": false,
+    "required_contract": "A concrete application supplies a versioned numerical prediction-accuracy or decision-margin requirement with provenance, quantity of interest, receptor/location, time horizon and uncertainty semantics.",
+    "GC07_composition_role": "F-GC07 supplies temporal/coupling numerical characterization and estimator signals. Those signals may be evaluated only after the external application contract supplies an admissible temporal allocation or equivalent numerical-error budget.",
+    "mass_contract": "q_SWAP = -q_GW remains absolute."
+  },
+  "downstream": {
+    "recommended_next_unit": "F-GC09_EXTERNAL_APPLICATION_ACCURACY_CONTRACT_AND_RUNTIME_POLICY_SEAM",
+    "purpose": "Materialize the versioned external application-accuracy contract and its composition seam without selecting a universal number. A concrete project can later instantiate that contract and qualify a numeric budget.",
+    "numeric_policy_selection_allowed_in_F_GC09": false,
+    "F_GC02_target_testing_allowed": false
+  },
+  "architecture_invariants": {
+    "9": "PASS generic time retained",
+    "10": "PASS no daily coupling assumption introduced",
+    "11": "PASS coupling treated as explicit runtime policy composition",
+    "12": "PASS head requirement separated from hard interface flux identity",
+    "13": "PASS mass conservation remains absolute",
+    "14": "PASS GC07 sensitivity/estimator capability remains first-class and separate from application policy",
+    "15": "PASS no extra production-run burden introduced",
+    "23": "PASS application accuracy policy is separate from physics",
+    "25": "PASS reference mode unchanged",
+    "26": "PASS provenance and qualification status are explicit runtime-policy requirements",
+    "28": "PASS system composition belongs to runtime/coupler, not SWAP kernel",
+    "29": "PASS no silent project, calendar or MODFLOW dependency introduced",
+    "30": "PASS architecture consequence explicitly audited"
+  },
+  "hard_nonclaims": [
+    "no universal groundwater-head accuracy requirement",
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no numeric H_budget",
+    "no claim that a regulatory impact threshold equals model accuracy",
+    "no F-GC02 rerun or inspection",
+    "no production coupling admission"
+  ],
+  "exact_head_requirement": "The commit introducing this closeout must pass the F-GC08 research qualification workflow."
+}
