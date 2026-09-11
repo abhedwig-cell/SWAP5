@@ -33,6 +33,14 @@ FAST succeeded on exact head `fb778d2581a18620f6f1a15cd4f00d58e1a2d201` in Actio
 
 This established exact F-TB06 ancestry, the eight-case registry, profile counts, current-canonical source/reference trees, the immutable F-GC10 closeout and F-CI44 contract test, fail-closed scalar/provenance policy, current post-F-CI45 consumer normalization binding, and preservation of the hard nonclaims.
 
+## First RELEASE attempt and fail-closed remediation
+
+The first final candidate `d584f51340d024f43120fda2cceea2c5af7a69d6` ran as Actions `34643652390`. FAST passed on that exact SHA. RELEASE reached and passed all registry/provenance/static gates, including current consumer binding, dimensionless certificate normalization and F-GC10 nonclaim preservation, then stopped before compilation with:
+
+`testbank/runners/run_ftb07_qualification.sh: line 91: tag: unbound variable`
+
+Classification: testbank runner shell-initialization defect, not production source, physics, solver or scientific-oracle defect. With `set -u`, `local opt="$1" tag="$2" out="$BUILD/$tag"` evaluated `tag` before binding it. Remediation separates the three local declarations. No qualification marker, tolerance, case, source binding or nonclaim was changed.
+
 ## Closeout state
 
-No production-source defect has been established. Final closeout requires FAST and RELEASE success on one exact `[ftb07-release]` head. RELEASE must execute the immutable contract matrix at O0/O2, require repeat and optimization-level transcript identity, preserve the current consumer binding and confirm zero `src/**` or `reference/**` delta.
+No production-source defect has been established. Final closeout still requires FAST and RELEASE success on one later exact `[ftb07-release]` head. RELEASE must execute the immutable contract matrix at O0/O2, require repeat and optimization-level transcript identity, preserve the current consumer binding and confirm zero `src/**` or `reference/**` delta.
