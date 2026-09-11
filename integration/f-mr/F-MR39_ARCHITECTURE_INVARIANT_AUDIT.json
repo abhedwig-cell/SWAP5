@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.fmr39_architecture_invariant_audit.v1",
+  "work_unit": "F-MR39",
+  "title": "Restricted Soil-Temperature Transactional Runtime Composition Architecture-Invariant Audit",
+  "audited_candidate": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "canonical_base": "d201904a85f3b595e028242978e52c02f5122a09",
+  "scientific_authority": "F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "audit_basis": [
+    "integration/f-mr/F-MR39_WORK_UNIT_CONTRACT.json",
+    "tests/fmr/run_fmr39_soil_temperature_runtime_gate.sh",
+    "tests/fmr/test_fmr39_soil_temperature_runtime_composition.f90",
+    "exact candidate requalification run 34631572194 / job 103369388981",
+    "production diff d201904a85f3b595e028242978e52c02f5122a09..87b553094b66980006b69f5ba8b53d70ccd0a8e0"
+  ],
+  "interpretation": {
+    "DIRECTLY_QUALIFIED": "The invariant is materially exercised by F-MR39 source and qualification evidence.",
+    "PRESERVED_BY_SCOPE_LOCK": "F-MR39 does not modify the governing seam and the bounded/source-blob locks provide evidence that no conflicting dependency was introduced.",
+    "AUDITED_NONCLAIM": "The invariant was reviewed, but the corresponding broader capability is deliberately not qualified by F-MR39. The nonclaim is retained explicitly."
+  },
+  "overall_conclusion": "NO_ARCHITECTURE_INVARIANT_VIOLATION_FOUND_WITHIN_FMR39_BOUNDED_SCOPE",
+  "invariants": [
+    {"id":1,"status":"DIRECTLY_QUALIFIED","evidence":"Soil temperature is composed into the existing kernel/runtime path; no second kernel or use-case-specific SWAP kernel is introduced."},
+    {"id":2,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"Only bounded runtime modules change. No file, parser, path, file unit or legacy-I/O dependency is added to kernel or process code."},
+    {"id":3,"status":"DIRECTLY_QUALIFIED","evidence":"Thermal parameters, forcing, committed state, numerical configuration/workspace and observations remain distinct typed categories in the serialized runtime backend."},
+    {"id":4,"status":"DIRECTLY_QUALIFIED","evidence":"soil_temperature is an allocatable substate of the committed physical state and is absent for inactive columns; mixed enabled/disabled qualification verifies compact optional state."},
+    {"id":5,"status":"DIRECTLY_QUALIFIED","evidence":"soil_temperature_workspace is owned by the backend model/worker and is absent from committed state and parameter carriers; the static gate checks this explicitly."},
+    {"id":6,"status":"DIRECTLY_QUALIFIED","evidence":"Optional thermal state does not force allocation on inactive logical columns; mixed MultiSWAP isolation passes. No parallel-throughput or vector-layout performance claim is made."},
+    {"id":7,"status":"DIRECTLY_QUALIFIED","evidence":"Richards and thermal updates execute inside one outer candidate transaction. Injected thermal failure leaves revision, time and full committed-state fingerprint unchanged."},
+    {"id":8,"status":"DIRECTLY_QUALIFIED","evidence":"After a rejected thermal trial, rerun with corrected forcing is fingerprint-identical to a fresh run from the same committed origin, qualifying exact retry origin semantics."},
+    {"id":9,"status":"DIRECTLY_QUALIFIED","evidence":"The runtime passes generic numeric t0,t1 to the thermal process; qualification uses non-calendar-aligned fractional times and introduces no day/month/year boundary."},
+    {"id":10,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"No coupling-window code or fixed 00:00 boundary is introduced; generic interval semantics are preserved."},
+    {"id":11,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"Kernel transaction and coupling architecture are blob-locked/unmodified; F-MR39 composes only a process into the existing transaction path."},
+    {"id":12,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"No groundwater interface contract, head/flux sign convention or groundwater residual handling is changed."},
+    {"id":13,"status":"DIRECTLY_QUALIFIED","evidence":"Enabled runs retain hard water-mass closure; thermal energy is not added to water storage/mass. The gate verifies water mass and the storage routine excludes soil_temperature."},
+    {"id":14,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"No groundwater-interface sensitivity API or Jacobian/factorisation path is changed by this runtime-composition workunit."},
+    {"id":15,"status":"DIRECTLY_QUALIFIED","evidence":"The composed path performs the existing Richards solve once and then a local restricted thermal update; no additional full-column water solve is introduced. Coupling production-cost qualification itself is out of scope."},
+    {"id":16,"status":"DIRECTLY_QUALIFIED","evidence":"A mixed enabled/disabled serialized MultiSWAP population is exercised and each column matches its isolated reference endpoint. Parallel throughput/scaling remains an explicit nonclaim."},
+    {"id":17,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"No MODFLOW-cell/tile mapping or one-to-one groundwater-cell assumption is added to SWAP state or process code."},
+    {"id":18,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"No deep-vadose transfer-zone functionality is moved into SWAP or altered."},
+    {"id":19,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"No deep-vadose/direct-coupling transition logic or associated storage accounting is changed."},
+    {"id":20,"status":"PRESERVED_BY_SCOPE_LOCK","evidence":"The soil-water solver contract and qualified hydraulic-view seam are blob-locked. Thermal composition consumes semantic hydraulic views and does not bind the process to Richards internals."},
+    {"id":21,"status":"DIRECTLY_QUALIFIED","evidence":"The F-VQ58 restricted soil-temperature process is reused byte-for-byte and replayed from its exact scientific authority; no duplicate or rewritten thermal physics is introduced."},
+    {"id":22,"status":"DIRECTLY_QUALIFIED","evidence":"Thermal physics receives process_hydraulic_view_t start/end views. The hydraulic-view, kernel and transaction seam blobs are locked, and no HeadCalc internals are imported by the thermal composition."},
+    {"id":23,"status":"DIRECTLY_QUALIFIED","evidence":"soil_temperature_active is a physical configuration choice; numerical configuration/workspace remains separate and no scientific tolerance is relaxed."},
+    {"id":24,"status":"AUDITED_NONCLAIM","evidence":"F-MR39 does not qualify thermal-active throughput, bounded-cost fallback or batch wall-time predictability. It adds no extra full Richards solve, but performance qualification is explicitly deferred."},
+    {"id":25,"status":"DIRECTLY_QUALIFIED","evidence":"The serialized reference backend remains the qualification path and exact F-VQ58 scientific authority is replayed in O0/O2."},
+    {"id":26,"status":"DIRECTLY_QUALIFIED","evidence":"Runtime observation exposes thermal active/executed/status plus energy-accounting diagnostics while existing water solver diagnostics remain available."},
+    {"id":27,"status":"DIRECTLY_QUALIFIED","evidence":"Inactive columns have no thermal physical-state allocation; persistent thermal state appears only when active, while scratch is backend/worker-local."},
+    {"id":28,"status":"DIRECTLY_QUALIFIED","evidence":"Composition occurs in runtime/backend. The qualified thermal process receives local state/forcing/views and is not given MODFLOW tile fractions, transfer-zone relationships or system-composition knowledge."},
+    {"id":29,"status":"DIRECTLY_QUALIFIED","evidence":"No midnight/day-run, .swp-file, MODFLOW-attachment or direct solver-internal assumption is introduced; time is generic and process dependencies are explicit typed inputs/views."},
+    {"id":30,"status":"DIRECTLY_QUALIFIED","evidence":"This artifact records an explicit per-invariant audit for the F-MR39 architecture change and distinguishes directly qualified behavior from preserved seams and bounded nonclaims."}
+  ],
+  "bounded_nonclaims": [
+    "no current-canonical admission",
+    "no thermal-active parallel-throughput or scaling qualification",
+    "no bounded-cost fallback qualification for difficult thermal columns",
+    "no snow-plus-soil-temperature combined profile",
+    "no frost or latent-heat phase-change physics",
+    "no new soil-temperature science or tolerance policy"
+  ],
+  "canonical_drift_note": "The audited candidate remains qualified against its frozen canonical base. Current canonical advanced to 536042620038014057427a7915c212a3ac78f84d via F-CI44; recomposition and requalification are required before canonical admission."
+}
