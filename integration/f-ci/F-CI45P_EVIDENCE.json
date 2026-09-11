@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.fci_postimage_evidence.v1",
+  "work_unit": "F-CI45P",
+  "promoted_canonical_head": "14db7be4827e73650da18d494af5cf190e687490",
+  "previous_canonical_head": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "admission_authority": "2decde7d4d2ac3cee040d63b25ff7a97ca6db63e",
+  "primary_postimage_reconciliation": {
+    "head_before_corroboration": "5c19d08e3f5612c9e1d516e5a5a57beec42ce0c5",
+    "run": 34634014532,
+    "conclusion": "success",
+    "basis": "exact two-parent promotion topology, promoted tree equals qualified admission tree, exact two-file production delta, no postpromotion source drift, reference immutable, F-CI45 metadata and 30-invariant authority preserved"
+  },
+  "strong_runtime_replay": {
+    "head": "e7d667d703f7e9f1e62cfab5d3457172540259e1",
+    "run": 34634089100,
+    "job": 103377667419,
+    "conclusion": "success",
+    "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+    "checks": {
+      "promotion_topology": "PASS",
+      "promoted_tree_equals_admission_tree": "PASS",
+      "exact_two_blob_promoted_scope": "PASS",
+      "no_production_or_reference_delta": "PASS",
+      "FCI45_authority_preserved": "PASS",
+      "FCI44P_authority_preserved": "PASS",
+      "runtime_O0_O2": "PASS",
+      "FMR19_preservation": "PASS",
+      "FVQ58_replay": "PASS",
+      "FCI44_contract_oracle": "PASS",
+      "all_30_invariants": "PASS"
+    }
+  },
+  "production_equivalence": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "strong_replay_and_final_reconciliation_production_trees_must_match": true
+  },
+  "prepromotion_exact_status_head": {
+    "head": "2decde7d4d2ac3cee040d63b25ff7a97ca6db63e",
+    "full_gate_run": 34633690114,
+    "full_gate_job": 103376369124,
+    "status_gate_run": 34633690125,
+    "status_gate_job": 103376369188,
+    "conclusions": "success"
+  },
+  "holds": {
+    "production_source_changed_by_F_CI45P": false,
+    "reference_changed_by_F_CI45P": false,
+    "parallel_thermal_throughput_claim": false,
+    "snow_plus_thermal_profile_admitted": false,
+    "frost_or_latent_heat_admitted": false,
+    "combined_water_thermal_timestep_policy_added": false,
+    "production_SWAP_MODFLOW_admission": false,
+    "numeric_application_accuracy_policy_set": false,
+    "mass_conservation_relaxed": false,
+    "RB1_reopened": false
+  }
+}
