@@ -1,0 +1,54 @@
+name: F-MR40R closeout integrity
+
+on:
+  push:
+    branches:
+      - work/f-mr40r-soil-temperature-current-canonical-recomposition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  closeout-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve exact qualified source authority
+        run: |
+          set -euo pipefail
+          AUTH=e9a7aeb1632ab9ce9ba7d0d56730f05a1ee7834a
+          test "$(git rev-parse ${AUTH}:src/runtime/mod_fmr_serialized_reference_backend.f90)" = 07877429f94ccf07c353fa5f8ba969c341ad88dd
+          test "$(git rev-parse ${AUTH}:src/runtime/mod_fmr_restart_state_contract.f90)" = bb2c37efce37a73441181f14d15847c652ab45ea
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = 07877429f94ccf07c353fa5f8ba969c341ad88dd
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_restart_state_contract.f90)" = bb2c37efce37a73441181f14d15847c652ab45ea
+          git diff --quiet "$AUTH"..HEAD -- src
+          echo FMR40R_CLOSEOUT_SOURCE_AUTHORITY_PRESERVED=PASS
+      - name: Validate closeout evidence
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status=json.loads(Path('integration/f-mr/F-MR40R_QUALIFICATION_STATUS.json').read_text())
+          audit=json.loads(Path('integration/f-mr/F-MR40R_INVARIANT_AUDIT.json').read_text())
+          assert status['status']=='CLOSED_QUALIFIED'
+          assert status['qualified_authority_head']=='e9a7aeb1632ab9ce9ba7d0d56730f05a1ee7834a'
+          assert status['canonical_base']=='e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2'
+          assert status['qualification']['conclusion']=='success'
+          assert status['runtime_output_sha256']=='cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942'
+          assert audit['audit_result']=='PASS_ALL_30_WITH_SCOPE_NONCLAIMS'
+          assert len(audit['invariants'])==30
+          print('FMR40R_CLOSEOUT_METADATA=PASS')
+          PY
+      - name: Confirm canonical observation boundary
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          CURRENT=$(git rev-parse origin/integration/f-ci-canonical)
+          test "$CURRENT" = e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2
+          echo FMR40R_CLOSEOUT_CANONICAL_PIN=PASS:$CURRENT
+      - name: Closeout gate
+        run: echo FMR40R_CLOSEOUT_INTEGRITY_GATE=PASS
