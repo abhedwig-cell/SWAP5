@@ -1,0 +1,24 @@
+name: F-GC11 NSW application-class accuracy qualification
+
+on:
+  push:
+    branches:
+      - work/f-gc11-nsw-application-class-accuracy-instantiation
+    paths:
+      - 'integration/f-gc/F-GC11_*.json'
+      - 'tests/fgc/run_fgc11_nsw_application_class_accuracy.sh'
+      - '.github/workflows/fgc11-nsw-application-class-accuracy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify frozen NSW application class
+        run: bash tests/fgc/run_fgc11_nsw_application_class_accuracy.sh
