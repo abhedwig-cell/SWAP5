@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -10,6 +9,8 @@ SCI = "0aeb0a2ed4096e1f9493d3dabc70962ea5270182"
 SRC_TREE = "8ceeb70a64012631ebba295f5c045ea908b0681f"
 REF_TREE = "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
 MANIFEST = Path("release/f-rb02/SWAP5_RB1_V1_RELEASE_AUTHORITY.json")
+FINAL_MANIFEST = Path("release/f-rb02/SWAP5_RB1_V1_FINAL_RELEASE_MANIFEST.json")
+DECISION = "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE_AUTHORITY_ESTABLISHED"
 
 EXPECTED_BLOBS = {
     "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json": "09df8417fe12bcc2eca9d9320117264737ffc83a",
@@ -50,7 +51,7 @@ closeout = load("release/f-rb01/F-RB01_CLOSEOUT.json")
 head = sh("git", "rev-parse", "HEAD")
 head_tree = sh("git", "rev-parse", "HEAD^{tree}")
 
-require(sh("git", "merge-base", HEAD if False else "HEAD", BASE) == BASE, "FRB01_BASE_ANCESTRY")
+require(sh("git", "merge-base", "HEAD", BASE) == BASE, "FRB01_BASE_ANCESTRY")
 require(sh("git", "rev-parse", f"{SCI}:src") == SRC_TREE, "SCIENTIFIC_SOURCE_SRC_TREE")
 require(sh("git", "rev-parse", f"{SCI}:reference") == REF_TREE, "SCIENTIFIC_SOURCE_REFERENCE_TREE")
 require(sh("git", "rev-parse", "HEAD:src") == SRC_TREE, "HEAD_SRC_TREE_IDENTITY")
@@ -77,9 +78,19 @@ require(closeout["open_rb1_blockers"] == 0, "ZERO_OPEN_RB1_BLOCKERS")
 require(closeout["production_changes_by_frb01"] == [] and closeout["scientific_authority_changes_by_frb01"] == [], "FRB01_ZERO_PRODUCTION_SCIENTIFIC_DELTA")
 require(m["scope_change"] is False and m["production_source_change"] is False and m["reference_change"] is False and m["acceptance_threshold_change"] is False, "FRB02_ZERO_SCIENTIFIC_DELTA_DECLARATION")
 
-# Preserve the explicit performance scope boundary rather than silently broadening it.
 nonclaims = "\n".join(m["explicit_release_nonclaims"])
 require("throughput/scaling remains a separate performance workunit" in nonclaims, "SURFACE_EVAP_THROUGHPUT_NONCLAIM")
+
+if FINAL_MANIFEST.exists():
+    fm = load(FINAL_MANIFEST)
+    require(fm["release_id"] == "SWAP5-RB1-v1", "FINAL_MANIFEST_RELEASE_ID")
+    require(fm["decision"] == DECISION, "FINAL_MANIFEST_DECISION")
+    require(fm["validity_rule"] == "VALID_ONLY_WHEN_FRB02_EXACT_HEAD_WORKFLOW_IS_GREEN_FOR_THIS_COMMIT", "FINAL_MANIFEST_SELF_BINDING")
+    require(fm["scientific_source_authority"]["sha"] == SCI, "FINAL_MANIFEST_SCIENTIFIC_AUTHORITY")
+    require(fm["qualification_authority"]["frb01_final_head"] == BASE, "FINAL_MANIFEST_QUALIFICATION_AUTHORITY")
+    require(fm["frozen_scope"]["required_total"] == 15 and fm["frozen_scope"]["required_pass"] == 15, "FINAL_MANIFEST_15_OF_15")
+    require(fm["architecture_invariants"]["fail"] == 0, "FINAL_MANIFEST_ZERO_INVARIANT_FAIL")
+    require(fm["zero_production_delta"] is True and fm["zero_reference_delta"] is True, "FINAL_MANIFEST_ZERO_PRODUCTION_REFERENCE_DELTA")
 
 report = {
     "schema": "swap5.frb02_exact_head_evidence.v1",
@@ -95,8 +106,9 @@ report = {
     "architecture_fail": 0,
     "open_rb1_blockers": 0,
     "zero_production_delta": True,
+    "final_manifest_present": FINAL_MANIFEST.exists(),
 }
 Path("_frb02_release_authority_evidence.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 print(f"FRB02_EXACT_HEAD_SHA={head}")
 print(f"FRB02_EXACT_HEAD_TREE={head_tree}")
-print("FRB02_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE_AUTHORITY_ESTABLISHED")
+print(f"FRB02_DECISION_IF_WORKFLOW_GREEN={DECISION}")
