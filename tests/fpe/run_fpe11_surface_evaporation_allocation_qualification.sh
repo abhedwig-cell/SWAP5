@@ -37,32 +37,65 @@ expected=("$BINDING" "$RUNTIME")
 echo 'FPE11_FROZEN_SCIENTIFIC_AUTHORITY=PASS'
 echo 'FPE11_EXACT_TWO_FILE_RUNTIME_SCOPE=PASS'
 
-python3 - "$BINDING" "$RUNTIME" <<'PY'
+python3 - "$BASE" "$BINDING" "$RUNTIME" <<'PY'
 from pathlib import Path
-import re, sys
-b = Path(sys.argv[1]).read_text().lower()
-r = Path(sys.argv[2]).read_text().lower()
-assert 'subroutine fmr_detach_committed_soil_water_state' in b
-assert 'call committed%snapshot(snapshot, available)' in b
-assert 'call move_alloc(physical%pressure_head, state%pressure_head)' in b
-assert 'call move_alloc(physical%water_content, state%water_content)' in b
-assert 'fmr_build_committed_process_hydraulic_view' in b
-assert 'fmr_detach_committed_soil_water_state' in r
-assert 'process_hydraulic_view_t' not in r
-assert 'detached_state_from_view' not in r
-assert not re.search(r'\ballocate\s*\(', r)
-assert 'call capacity_provider%evaluate(base_state, capacity)' in r
-assert 'call evaluate_restricted_surface_evaporation(demand, hydraulic, result)' in r
+import re, subprocess, sys
+base, binding_path, runtime_path = sys.argv[1:]
+b = Path(binding_path).read_text()
+r = Path(runtime_path).read_text()
+base_b = subprocess.check_output(['git','show',f'{base}:{binding_path}'], text=True)
+base_r = subprocess.check_output(['git','show',f'{base}:{runtime_path}'], text=True)
+
+def normalized_public_decls(text):
+    out=[]
+    for raw in text.splitlines():
+        line=raw.split('!',1)[0].strip().lower()
+        if 'public' in line and '::' in line:
+            out.append(re.sub(r'\s+',' ',line))
+    return out
+
+def subroutine_signature(text, name):
+    lines=text.splitlines()
+    for i, raw in enumerate(lines):
+        if re.match(rf'^\s*subroutine\s+{re.escape(name)}\s*\(', raw, re.I):
+            acc=raw.strip()
+            j=i
+            while acc.rstrip().endswith('&'):
+                j += 1
+                acc += ' ' + lines[j].strip()
+            return re.sub(r'\s+',' ',acc.lower().replace('&',''))
+    raise AssertionError(f'missing {name}')
+
+assert normalized_public_decls(b) == normalized_public_decls(base_b)
+assert normalized_public_decls(r) == normalized_public_decls(base_r)
+assert subroutine_signature(b, 'fmr_build_committed_process_hydraulic_view') == subroutine_signature(base_b, 'fmr_build_committed_process_hydraulic_view')
+assert subroutine_signature(r, 'fmr_materialize_restricted_surface_evaporation') == subroutine_signature(base_r, 'fmr_materialize_restricted_surface_evaporation')
+
+bl=b.lower(); rl=r.lower()
+assert 'fmr_detach_committed_soil_water_state' not in bl
+assert 'fmr_detach_committed_soil_water_state' not in rl
+assert 'call committed%snapshot(snapshot, available)' in bl
+assert 'call move_alloc(physical%pressure_head, view%pressure_head)' in bl
+assert 'call move_alloc(physical%water_content, view%water_content)' in bl
+assert 'call fmr_build_committed_process_hydraulic_view(committed, view, ok)' in rl
+assert 'subroutine detached_state_from_view(view, state, ok)' in rl
+assert 'type(process_hydraulic_view_t), intent(inout) :: view' in rl
+assert 'call move_alloc(view%pressure_head, state%pressure_head)' in rl
+assert 'call move_alloc(view%water_content, state%water_content)' in rl
+assert not re.search(r'\ballocate\s*\(', bl)
+assert not re.search(r'\ballocate\s*\(', rl)
+assert 'call capacity_provider%evaluate(base_state, capacity)' in rl
+assert 'call evaluate_restricted_surface_evaporation(demand, hydraulic, result)' in rl
 for forbidden in ('headcalc','modflow','.swp','file_unit','pathname','midnight','day_of','month_of','year_of'):
-    assert forbidden not in r, forbidden
-print('FPE11_OWNERSHIP_TRANSFER_SOURCE_GUARD=PASS')
-print('FPE11_SURFACE_MATERIALIZER_NO_EXPLICIT_PROFILE_ALLOCATE=PASS')
+    assert forbidden not in rl, forbidden
+print('FPE11_PUBLIC_SURFACE_IDENTITY=PASS')
+print('FPE11_DETACHED_OWNERSHIP_TRANSFER_SOURCE_GUARD=PASS')
+print('FPE11_NO_DOWNSTREAM_EXPLICIT_PROFILE_ALLOCATE=PASS')
 PY
 
 # Materialize the exact F-CI41P source tree and the exact independent F-VQ56 oracle.
 git archive "$BASE" | tar -x -C "$BASE_TREE"
 git show ${FVQ56}:tests/fvq/test_fvq56_surface_evaporation_runtime_materialization_independent.f90 > "$BUILD/fvq56.f90"
-# Shorten only the overlong program identifier in the transient oracle copy.
 sed -i 's/test_fvq56_surface_evaporation_runtime_materialization_independent/fpe11_fvq56/g' "$BUILD/fvq56.f90"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -pedantic -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -132,6 +165,7 @@ cmp -s "$BUILD/baseline-o2/output.txt" "$BUILD/candidate-o2/output.txt" || fail 
 grep -Fxq 'FVQ56_COMMITTED_STATE_IMMUTABLE=PASS' "$BUILD/candidate-o0/output.txt" || fail 'committed immutability marker missing'
 grep -Fxq 'FVQ56_COLUMN_ORDER_ABA_DETERMINISM=PASS' "$BUILD/candidate-o0/output.txt" || fail 'ABA determinism marker missing'
 grep -Fxq 'FVQ56_INDEPENDENT_ORACLE=PASS' "$BUILD/candidate-o0/output.txt" || fail 'independent oracle marker missing'
+grep -Fxq 'FVQ56_NO_AUTHORITATIVE_MASS_BOOKING=PASS' "$BUILD/candidate-o0/output.txt" || fail 'mass-booking marker missing'
 
 echo "FPE11_BASELINE_ORACLE_SHA256=$(sha256sum "$BUILD/baseline-o0/output.txt" | awk '{print $1}')"
 echo "FPE11_CANDIDATE_ORACLE_SHA256=$(sha256sum "$BUILD/candidate-o0/output.txt" | awk '{print $1}')"
@@ -139,5 +173,6 @@ echo 'FPE11_FCI41P_OBSERVABLE_IDENTITY=PASS'
 echo 'FPE11_O0_O2_IDENTITY=PASS'
 echo 'FPE11_COMMITTED_STATE_IMMUTABILITY=PASS'
 echo 'FPE11_ABA_DETERMINISM=PASS'
+echo 'FPE11_NO_AUTHORITATIVE_MASS_BOOKING=PASS'
 echo 'FPE11_FUNCTIONAL_QUALIFICATION=PASS'
 echo 'FPE11_THROUGHPUT_SCALING_CLAIM=NOT_YET_MADE'
