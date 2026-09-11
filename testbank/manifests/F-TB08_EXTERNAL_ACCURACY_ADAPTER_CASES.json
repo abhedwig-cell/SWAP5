@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB08",
+  "title": "External Accuracy Runtime Adapter Permanent Cases",
+  "parent_testbank_authority": "4fd0e3a4cb30254135c8da086a733eb3c790b834",
+  "canonical_authority": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "fgc14_authority": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+  "cases": [
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-HEAD-0001-v1",
+      "title": "Typed groundwater-head packet maps to canonical temporal budget",
+      "profiles": ["FAST", "CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "FGC14_HEAD_FRACTION_MAPPING=PASS",
+      "determinism_class": "NUMERICAL_EQUIVALENCE_REQUIRED",
+      "tolerance": "MASS1E-12_INHERITED",
+      "authority": "F-GC14 immutable donor test"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-DRAWDOWN-0002-v1",
+      "title": "Typed groundwater-drawdown packet maps to canonicalized temporal budget",
+      "profiles": ["CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "FGC14_DRAWDOWN_CANONICALIZED_DIRECT_BUDGET_MAPPING=PASS",
+      "determinism_class": "NUMERICAL_EQUIVALENCE_REQUIRED",
+      "tolerance": "MASS1E-12_INHERITED",
+      "authority": "F-GC14 immutable donor test"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-ATTEST-0003-v1",
+      "title": "Upstream packet validation is mandatory and fail closed",
+      "profiles": ["FAST", "CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "FGC14_FAIL_CLOSED_REJECTION_MATRIX=PASS:12",
+      "determinism_class": "BIT_IDENTITY_REQUIRED",
+      "tolerance": "EXACT",
+      "authority": "F-GC14 adapter status semantics"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-SOURCEVERIFY-0004-v1",
+      "title": "Application and temporal source verification remain upstream attestations",
+      "profiles": ["CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "application and temporal source-verification false cases reject with unconfigured output",
+      "determinism_class": "BIT_IDENTITY_REQUIRED",
+      "tolerance": "EXACT",
+      "authority": "F-GC14 immutable donor test and closeout nonclaims"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-PROVENANCE-0005-v1",
+      "title": "Application and temporal provenance IDs are separated and reuse rejects",
+      "profiles": ["CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "FGC14_ADAPTER_PROVENANCE_REUSE rejection with default contract",
+      "determinism_class": "BIT_IDENTITY_REQUIRED",
+      "tolerance": "EXACT",
+      "authority": "F-GC14 immutable donor test"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-VALIDATION-0006-v1",
+      "title": "Canonical requirement/allocation validation rejects invalid materialization atomically",
+      "profiles": ["FAST", "CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "invalid contract/QOI/H_app/provenance/A_temporal paths reject and leave default unconfigured output",
+      "determinism_class": "BIT_IDENTITY_REQUIRED",
+      "tolerance": "EXACT",
+      "authority": "F-GC14 plus canonical application-accuracy contract"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-DETERMINISM-0007-v1",
+      "title": "Adapter transcript repeats identically and is O0/O2 bit-identical",
+      "profiles": ["RELEASE", "DEEP"],
+      "oracle": "repeat transcript identity and O0/O2 transcript identity",
+      "determinism_class": "BIT_IDENTITY_REQUIRED",
+      "tolerance": "EXACT",
+      "authority": "F-GC14 qualification replay"
+    },
+    {
+      "case_id": "SWAP5-TB-COUPLING-EXTACC-NONCLAIM-0008-v1",
+      "title": "Adapter boundary does not absorb source verification, parsing, project policy or production coupling",
+      "profiles": ["CANONICAL", "RELEASE", "DEEP"],
+      "oracle": "static and provenance nonclaim gates",
+      "determinism_class": "BIT_IDENTITY_REQUIRED",
+      "tolerance": "EXACT",
+      "authority": "F-GC14 closeout, F-CI46 admission, F-CI47 moving preservation"
+    }
+  ]
+}
