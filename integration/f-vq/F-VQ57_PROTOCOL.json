@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.fvq57_protocol.v1",
+  "work_unit": "F-VQ57",
+  "title": "Independent Restricted Surface-Evaporation Accepted Publication Provenance Qualification",
+  "branch": "qualification/f-vq57-fpm06g-surface-evaporation-accepted-publication",
+  "source_authority": "integration/f-ci-canonical@0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "candidate_authority": {
+    "owner": "F-PM06G",
+    "owner_closeout": "a5e31470091e2008512141934fced47983449983",
+    "owner_final_exact_head_run": 34560166721,
+    "production_file": "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90",
+    "production_blob": "3ab9cb4be6eb211e8f6cd86f89665bb42c2332e1"
+  },
+  "assurance_model": "INDEPENDENT_QUALIFICATION_DO_NOT_INHERIT_OWNER_CONCLUSION",
+  "qualification_branch_policy": {
+    "production_src_delta_allowed": false,
+    "candidate_compiled_from_exact_pinned_owner_blob": true,
+    "owner_tests_may_be_controls_but_not_decisive_evidence": true
+  },
+  "frozen_scope": {
+    "SWINTER": 0,
+    "SWREDU": 0,
+    "accepted_publication_only": true,
+    "no_top_boundary_replacement": true,
+    "no_mass_authority_change": true
+  },
+  "primary_risk": "the accepted commit receipt may bind publication to candidate A while the surface_evaporation_result_t supplied to preparation may have been computed from a different physical state/candidate B because the process result itself carries no enforceable provenance",
+  "decisive_hard_negative": {
+    "id": "HN1_SURFACE_RESULT_CANDIDATE_BINDING",
+    "construction": "obtain or construct two distinct valid surface-evaporation results representing different physical cases; prepare the B result against candidate A and attempt publication with A's valid accepted commit receipt",
+    "required_safe_behavior": "mismatched B result must be rejected before or at accepted publication",
+    "fail_closed_rule": "if mismatched result can be published, F-VQ57 closes NOT_QUALIFIED and routes back to the owner/runtime composition boundary without running broader confirmatory matrices as a substitute"
+  },
+  "positive_controls": [
+    "exact candidate blob source lock",
+    "clean canonical qualification branch with no src delta",
+    "matching result/candidate/receipt path publishes",
+    "generic kernel transaction remains hard-mass complete",
+    "rates remain rates and are not multiplied by generic transaction time"
+  ],
+  "secondary_checks_if_HN1_passes": [
+    "lineage mismatch",
+    "origin revision mismatch",
+    "origin interval mismatch",
+    "precommit rejection",
+    "dry/ponded route consistency",
+    "O0/O2 identity",
+    "F-VQ56 upstream materialization preservation"
+  ],
+  "architecture_invariants_requiring_explicit_recheck": [3,5,7,9,13,16,22,23,26,27,29,30],
+  "hard_nonclaims": [
+    "canonical admission",
+    "runtime composition",
+    "MultiSWAP throughput qualification",
+    "surface-evaporation physics expansion"
+  ]
+}
