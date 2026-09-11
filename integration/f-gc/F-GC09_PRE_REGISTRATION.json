@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC09",
+  "title": "External Application Accuracy Contract and Runtime Policy Seam",
+  "status": "PRE_REGISTERED_BEFORE_SOURCE_MUTATION",
+  "branch": "work/f-gc09-external-application-accuracy-contract",
+  "lineage": {
+    "F_GC08_closeout_head": "96e39932c925c862f41d01a2a0f5c44c88cbaca7",
+    "F_GC08_decision": "FAIL_CLOSED_EXTERNAL_THRESHOLD_NOT_EQUIVALENT_TO_APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+    "F_GC07_closeout_head": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+    "canonical_source_head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "canonical_contracts_blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"
+  },
+  "purpose": "Materialize a narrow immutable/shareable runtime contract that can carry an externally supplied groundwater head or drawdown application requirement and an independently supplied temporal allocation, validate their provenance/semantics, and compose them into the existing generic model_temporal_indicator_budget carrier without selecting any numeric policy.",
+  "hard_scope": {
+    "numeric_policy_selection": false,
+    "default_H_app": false,
+    "default_A_temporal": false,
+    "F_GC02_inspection_or_execution": false,
+    "production_coupling_admission": false,
+    "solver_change": false,
+    "physics_change": false,
+    "mass_policy_change": false,
+    "file_or_parsing_IO": false
+  },
+  "ownership": {
+    "contract_owner": "runtime/coupler application policy layer",
+    "not_owner": ["SWAP physical kernel", "Richards solver", "canonical transaction core"],
+    "canonical_numerical_config_role": "consumer carrier only; model_temporal_indicator_budget_available/value already exist and remain generic/model-owned",
+    "forbidden": "Do not store H_app, A_temporal, application provenance, receptor semantics or decision-threshold semantics directly in canonical_numerical_config_t."
+  },
+  "contract_semantics": {
+    "supported_qoi": ["GROUNDWATER_HEAD", "GROUNDWATER_DRAWDOWN"],
+    "internal_head_unit": "cm",
+    "H_app": "positive finite externally supplied application prediction-accuracy requirement in the supported head-domain quantity of interest",
+    "A_temporal": "positive finite independently supplied fraction of H_app allocated to temporal/coupling numerical error; 0 < A_temporal <= 1",
+    "H_temporal_budget": "H_app * A_temporal",
+    "composition_claim": "pure policy composition only; multiplication does not qualify either input or make F-GC07 a physical truth/error-bound guarantee",
+    "absence_semantics": "absence is explicit and valid as an unconfigured contract state; it must never imply a positive fallback budget"
+  },
+  "provenance_semantics": {
+    "contract_id": "positive integer reference into external/runtime policy registry",
+    "contract_version": "positive integer version",
+    "application_provenance_id": "positive integer reference; immutable external requirement provenance",
+    "temporal_allocation_provenance_id": "positive integer reference; allocation-rule provenance",
+    "memory_rule": "per-column runtime state carries only compact IDs/scalars; strings/documents remain outside the kernel and may be shared in registries"
+  },
+  "qualification_matrix": [
+    "unconfigured contract has no materializable temporal budget",
+    "H_app without A_temporal has no materializable temporal budget",
+    "A_temporal without H_app has no materializable temporal budget",
+    "unqualified/provenance-missing inputs fail closed",
+    "nonpositive/nonfinite H_app fails closed",
+    "A_temporal <= 0, > 1 or nonfinite fails closed",
+    "unsupported QOI fails closed",
+    "configured HEAD example composes exactly",
+    "configured DRAWDOWN example composes exactly",
+    "materialization only writes existing generic model temporal budget carrier and does not alter transaction/mass policy",
+    "O0/O2 output identity"
+  ],
+  "source_mutation_allowlist": [
+    "one new runtime/coupler-facing application accuracy contract module",
+    "F-GC09 tests and workflow",
+    "F-GC09 integration evidence/closeout"
+  ],
+  "source_mutation_denylist": [
+    "src/kernel/**",
+    "src/solver/**",
+    "src/transaction/**",
+    "src/runtime/mod_canonical_contracts.f90",
+    "existing Richards backend files"
+  ],
+  "success_decision_candidate": "QUALIFIED_EXTERNAL_APPLICATION_ACCURACY_CONTRACT_SEAM_NO_NUMERIC_POLICY",
+  "fail_closed_rule": "Any need for a built-in numeric H_app/A_temporal, silent fallback, coupling-target tuning, duplicated budget path, or relaxation of hard mass conservation closes F-GC09 unqualified.",
+  "architecture_invariants_requiring_closeout_audit": [1,2,3,4,6,9,10,11,12,13,14,15,16,23,26,27,28,29,30]
+}
