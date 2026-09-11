@@ -5,9 +5,19 @@
   "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
   "phase": "SOURCE_RECONCILIATION_AND_DESIGN",
   "source_authority": {
-    "canonical_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
-    "physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
-    "governance_overlay": "F-CI38"
+    "canonical_base": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+    "production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+    "governance_overlay": "F-CI39",
+    "superseded_initial_checkpoint_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "source_reconciliation_reason": "F-CI39 admitted F-PM06E production changes on the B1.10 soil-water dependency surface after the initial F-KT15 checkpoint; production implementation must therefore continue from the green F-CI39 canonical authority."
+  },
+  "source_reconciliation": {
+    "fci39_exact_canonical_head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+    "fci39_push_workflow": 34545751793,
+    "fci39_push_conclusion": "success",
+    "fci39_pr_workflow": 34545754692,
+    "fci39_pr_conclusion": "success",
+    "method": "NON_FORCE_MERGE_PRESERVING_FKT15_CHECKPOINT_LINEAGE"
   },
   "upstream": {
     "F_SI28_qualified_production_head": "85dbe882aa967d19021174066c95105d8cf838ea",
@@ -26,24 +36,28 @@
     "Rejected/retried solver results and transactions publish no sensitivity.",
     "Preserve worker-owned scratch and compact committed physical state.",
     "Do not add MODFLOW sign conversion.",
-    "Do not claim a local-terminal tangent is a whole-coupling-window derivative."
+    "Do not claim a local-terminal tangent is a whole-coupling-window derivative.",
+    "Preserve the admitted F-PM06E surface-evaporation-capacity production source and fail closed outside its qualified scope."
   ],
   "first_design_gate": {
-    "question": "Can the existing B1.10 transaction adapter delegate only the soil-water solve to reference_richards_legacy_solver_t while keeping the surrounding physical interval/process ordering identical, or is a narrower production composition seam required first?",
-    "fail_closed_rule": "If exact equivalence of surrounding B1.10 process sequencing/state/mass ownership cannot be established, do not replace the legacy interval wholesale; qualify a narrower seam first."
+    "question": "Can the existing B1.10 transaction adapter delegate only the soil-water solve to reference_richards_legacy_solver_t while keeping the surrounding physical interval/process ordering and all continuation-relevant HeadCalc state identical, or is a narrower state-complete production composition seam required first?",
+    "fail_closed_rule": "If exact equivalence of surrounding B1.10 process sequencing, continuation state and mass ownership cannot be established, do not replace the legacy interval wholesale; qualify a narrower state-complete seam first."
   },
   "planned_evidence": [
+    "HeadCalc state ownership and lifetime matrix",
     "exact upstream blob materialization locks",
-    "baseline versus solver-service physical state and flux identity",
+    "baseline versus solver-service physical continuation state and flux identity",
     "water-balance identity",
     "accepted sensitivity reaches trial_outcome_t through the F-KT14 bridge",
     "retry/rollback stale-result exclusion",
     "zero additional nonlinear tangent trajectories and zero additional Jacobian builds",
+    "F-PM06E admitted dependency preservation",
     "O0/O2 exact-head qualification"
   ],
   "state": {
     "realized": true,
     "persisted": true,
+    "source_reconciled": false,
     "implemented": false,
     "tested": false,
     "qualified": false

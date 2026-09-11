@@ -253,12 +253,32 @@ jobs:
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_parallel_root_uptake_pool.f90)" = c78c13997642617376b8d118122c86c60ca77189
           echo 'FCI37_FROZEN_FINAL_PARALLEL_ROOT_UPTAKE_AUTHORITY=PASS'
 
+  frozen-fci39-surface-evaporation-capacity-source-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c9a73f2f37c9306e7a6fbf60b713b66d82c4a372
+          fetch-depth: 0
+      - name: Freeze F-CI39 production source authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^{tree})" = 8e518c70f14cb72582936c7ec21744d88743fda4
+          test "$(git rev-parse HEAD:src)" = 7264753a19a481043434ba782d4f81bc585fed85
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6
+          test "$(git rev-parse HEAD:src/solver/mod_surface_evaporation_capacity_contract.f90)" = 551513f77caeb9c54e8c8b1cdc326be0e9d01982
+          test "$(git rev-parse HEAD:src/solver/mod_b110_surface_evaporation_capacity_provider.f90)" = 8909cdf342527a2b0266c8d9a5fc918f98556ea2
+          echo 'FCI39_FROZEN_RESTRICTED_SURFACE_EVAPORATION_CAPACITY_SOURCE_AUTHORITY=PASS'
+
   current-restricted-canonical-preservation:
     needs:
       - frozen-fci31-reference-et-root-uptake-authority
       - frozen-fci34-root-attribution-authority
       - frozen-fci36-divdra-active-runtime-authority
       - frozen-fci37-parallel-root-uptake-authority
+      - frozen-fci39-surface-evaporation-capacity-source-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -270,7 +290,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=85e17bb7ca26d2df070f99b2bf16ecf0abebec19
+          AUTH=c9a73f2f37c9306e7a6fbf60b713b66d82c4a372
           git merge-base --is-ancestor "$AUTH" HEAD
           dependency_surface=(
             src/runtime/mod_a23bu_worker_execution_context.f90
@@ -291,6 +311,8 @@ jobs:
             src/solver/mod_fixed_flux_top_boundary_provider.f90
             src/solver/mod_reference_linear_solver.f90
             src/solver/mod_reference_richards_temporal_indicator.f90
+            src/solver/mod_surface_evaporation_capacity_contract.f90
+            src/solver/mod_b110_surface_evaporation_capacity_provider.f90
             src/legacy/b1_10_port/headcalc.f90
             src/adapter/mod_reference_richards_legacy_binding.f90
             src/adapter/mod_b110_serialized_context_binding.f90
@@ -312,12 +334,13 @@ jobs:
           for path in "${dependency_surface[@]}"; do
             test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || {
               echo "FCI_CANONICAL_PRESERVATION_FAIL admitted dependency drift: $path" >&2
-              exit 38
+              exit 39
             }
           done
           echo 'FCI34_MOVING_ROOT_ATTRIBUTION_PRESERVATION=PASS'
           echo 'FCI35_MOVING_PARALLEL_RESTART_DEPENDENCY_PRESERVATION=PASS'
           echo 'FCI36_MOVING_DIVDRA_ACTIVE_RUNTIME_PRESERVATION=PASS'
           echo 'FCI37_MOVING_PARALLEL_ROOT_UPTAKE_PRESERVATION=PASS'
+          echo 'FCI39_MOVING_SURFACE_EVAPORATION_CAPACITY_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
