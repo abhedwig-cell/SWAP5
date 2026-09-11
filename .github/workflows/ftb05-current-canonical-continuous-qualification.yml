@@ -1,0 +1,75 @@
+name: F-TB05 current-canonical continuous qualification
+
+on:
+  push:
+    branches:
+      - 'work/f-tb05-current-canonical-continuous-qualification'
+    paths:
+      - 'testbank/**'
+      - 'integration/f-tb/**'
+      - 'docs/testbank/**'
+      - '.github/workflows/ftb05-current-canonical-continuous-qualification.yml'
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Qualification profile
+        required: true
+        default: RELEASE
+        type: choice
+        options: [FAST, CANONICAL, RELEASE, DEEP]
+
+permissions:
+  contents: read
+
+jobs:
+  fast:
+    name: F-TB05 FAST adoption
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          python3 --version
+          gfortran --version
+      - name: Execute FAST adoption
+        run: bash testbank/runners/run_ftb05_qualification.sh FAST
+
+  release:
+    name: F-TB05 exact-head RELEASE adoption
+    if: >-
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[ftb05-release]')) ||
+      (github.event_name == 'workflow_dispatch' && (inputs.profile == 'RELEASE' || inputs.profile == 'DEEP'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute RELEASE adoption
+        run: bash testbank/runners/run_ftb05_qualification.sh RELEASE
+      - name: Exact head
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB05_EXACT_HEAD_RELEASE=PASS:${GITHUB_SHA}"
+
+  canonical:
+    name: F-TB05 CANONICAL dispatch
+    if: github.event_name == 'workflow_dispatch' && inputs.profile == 'CANONICAL'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash testbank/runners/run_ftb05_qualification.sh CANONICAL
+
+  deep:
+    name: F-TB05 DEEP dispatch
+    if: github.event_name == 'workflow_dispatch' && inputs.profile == 'DEEP'
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash testbank/runners/run_ftb05_qualification.sh DEEP

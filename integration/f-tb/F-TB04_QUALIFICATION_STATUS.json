@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB04",
+  "title": "SWAP5 Transaction, Restart, Determinism & MultiSWAP Qualification Case Catalog",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_TRANSACTION_RESTART_DETERMINISM_MULTISWAP_TESTBANK_CATALOG_READY_FOR_CONTINUOUS_QUALIFICATION",
+  "validity_rule": "This F-TB04 closeout is final only when .github/workflows/ftb04-transaction-restart-determinism-multiswap.yml concludes success with head_sha equal to the exact commit containing this status file, with both FAST and exact-head RELEASE jobs successful.",
+  "composition_baseline": "5c7b76655c910046f574753a39278d9a3cc3dbf3",
+  "workunit_canonical_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "live_canonical_at_finalization": "d201904a85f3b595e028242978e52c02f5122a09",
+  "live_canonical_coverage_claim": false,
+  "live_canonical_note": "The work-unit contract froze 0aeb0a2ed4096e1f9493d3dabc70962ea5270182 before execution. Later F-CI43/F-CI43P canonical advancement is not silently retargeted or claimed by this closeout.",
+  "F-TB03": "65d5e5202446212390dbdd84b06e6b2a80e7121c",
+  "production_source_changed": false,
+  "reference_changed": false,
+  "RB1_reopened": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "scientific_tolerance_relaxed": false,
+  "historical_RB1_evidence_rewritten": false,
+  "case_count": 35,
+  "domain_counts": {"TRANSACTION": 10, "RESTART": 9, "DETERMINISM": 6, "MULTISWAP": 10},
+  "profile_case_counts": {"FAST": 9, "CANONICAL": 18, "RELEASE": 34, "DEEP": 35},
+  "determinism_classes": ["BIT_IDENTITY_REQUIRED", "NUMERICAL_EQUIVALENCE_REQUIRED"],
+  "mapped_architecture_invariants": [3,4,5,6,7,8,9,13,16,23,24,26,27,29,30],
+  "architecture_audit": {
+    "path": "integration/f-tb/F-TB04_INVARIANT_AUDIT.json",
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "precloseout_FAST": {
+    "head": "e67840a8fdd9ba96f9a2fd825be6cf24e7a82450",
+    "run": 34620625492,
+    "conclusion": "success"
+  },
+  "exact_head_qualification": {
+    "workflow": ".github/workflows/ftb04-transaction-restart-determinism-multiswap.yml",
+    "FAST": "SUCCESS_REQUIRED_ON_THIS_EXACT_HEAD",
+    "RELEASE": "SUCCESS_REQUIRED_ON_THIS_EXACT_HEAD",
+    "DEEP": "EXPLICIT_NOT_REQUIRED_FOR_CLOSEOUT"
+  },
+  "release_scope": {
+    "restart": "immutable FCI28 restart oracle replayed against exact work-unit canonical authority with historical whole-source governance guard rebound only",
+    "parallel_multiswap": "immutable FMQ26 serialized/2-worker/4-worker and publication-order oracle blobs executed directly against exact work-unit canonical authority at O0/O2",
+    "distinct_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-reference case; registry entries have distinct parameter_set_id values but retain bit-identical already-qualified physical parameters so the test isolates reference resolution/ownership rather than adding new physics",
+    "parallel_restart": "immutable FCI35/FMQ29 held-out cross-worker committed-boundary restart oracle replayed against the exact work-unit canonical source/reference trees; historical source-component postimage checks are rebound, while immutable attack/test blobs, qualification metadata, held-out cases, hard mass, state/result identity and O0/O2 oracles remain unchanged"
+  },
+  "source_defects_discovered": [],
+  "harness_defects_remediated": [
+    {
+      "failed_run": 34602863572,
+      "failed_head": "f1b4e1298be992f41d06939980747af51b3d6af0",
+      "classification": "FTB04_VALIDATOR_AUTHORITY_PATH_ERROR",
+      "remediation_head": "0a77bc04061d2bf3dc267d073770ea2203781ac4",
+      "production_source_changed": false
+    },
+    {
+      "failed_run": 34610037573,
+      "failed_head": "a44494e982bf45842b89f350a1f8548a0f193f04",
+      "classification": "FTB04_HISTORICAL_REPLAY_GOVERNANCE_INCOMPATIBILITY",
+      "remediation_head": "a39df0fb8b725ce79cf290a6b56578d9cfc08ed8",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false
+    },
+    {
+      "failed_run": 34610668938,
+      "failed_head": "65699416faf8448b4f5fdda6e2cfbc24dd26a21c",
+      "classification": "FTB04_HISTORICAL_REPLAY_ROOT_SEMANTICS_ERROR",
+      "remediation_head": "1cf21b3174a8caa207de3e0d5db80e12b01a09d1",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false
+    },
+    {
+      "failed_run": 34619840900,
+      "failed_head": "86954e763daa831012e1cbdda0e61332075c500e",
+      "classification": "FTB04_PARAMETER_REFERENCE_FIXTURE_PHYSICS_CONTAMINATION",
+      "remediation_head": "5d5decd81066c8f4028da5e64f3bf6b3c111dce1",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false,
+      "note": "The failed extension changed both parameter-reference identity and hydraulic cofgen. Remediation retains distinct immutable parameter-set identities while restoring bit-identical qualified hydraulic physics."
+    },
+    {
+      "failed_run": 34620386863,
+      "failed_head": "60ad2bf8c17ae3def9e195ce93bdd016e1a5a880",
+      "classification": "FTB04_FCI35_FMQ29_HISTORICAL_COMPONENT_POSTIMAGE_INCOMPATIBILITY",
+      "remediation_head": "e67840a8fdd9ba96f9a2fd825be6cf24e7a82450",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false,
+      "note": "The complete pinned src/reference trees remain exact-locked. Only historical src component-postimage checks in temporary FCI35/FMQ29 replays are rebound; immutable attack/test blobs, qualification metadata, held-out cases, hard mass and O0/O2 oracles are unchanged."
+    }
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "precloseout_fast_tested": true,
+    "qualified": "CONDITIONAL_ON_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": ["EXACT_HEAD_FAST_AND_RELEASE_CI"]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB07",
+  "title": "Groundwater Application-Accuracy Contract Testbank Adoption",
+  "branch": "work/f-tb07-application-accuracy-contract-testbank-adoption",
+  "state": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_GROUNDWATER_APPLICATION_ACCURACY_CONTRACT_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
+  "canonical_authority": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "canonical_src_tree": "d5aec38b432242d2674885c8b8bd21d7f0fa0836",
+  "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "F-TB06_authority": "163ed723cc4f2277746bdd54f338c4b06e2eaaa9",
+  "F-GC10_authority": "a1201dc870e4f5088f50b8d00e92e83457743174",
+  "F-CI44_contract_test_blob": "54200c6ded7b2783375e02cc646ec00f61b70770",
+  "application_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+  "case_count": 8,
+  "profile_counts": {"FAST":3,"CANONICAL":7,"RELEASE":8,"DEEP":8},
+  "production_source_changed": false,
+  "reference_changed": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "scientific_tolerance_relaxed": false,
+  "mass_conservation_relaxed": false,
+  "RB1_reopened": false,
+  "architecture_audit": {
+    "path": "integration/f-tb/F-TB07_INVARIANT_AUDIT.json",
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "qualification": {
+    "FAST": "PASS_PRECLOSEOUT_RUN_34643802510_AND_REQUIRED_AT_FINAL_HEAD",
+    "RELEASE": "PASS_REQUIRED_AT_THIS_EXACT_HEAD",
+    "DEEP": "NOT_REQUIRED_FOR_CLOSEOUT"
+  },
+  "prior_failed_release_run": 34643652390,
+  "prior_failure_classification": "TESTBANK_RUNNER_SHELL_INITIALIZATION_NOT_PRODUCTION_DEFECT",
+  "remediation": "Runner-only local variable initialization was split into ordered declarations under set -u. No case, oracle, tolerance, source binding, nonclaim or scientific requirement changed.",
+  "hard_nonclaims": [
+    "no universal groundwater-head accuracy requirement",
+    "no universal drawdown accuracy requirement",
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no complete coupled-system head-error budget",
+    "no application-class accuracy qualification",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation tradeoff"
+  ],
+  "source_defects_discovered": [],
+  "closeout_rule": "This status is authoritative only if the GitHub Actions F-TB07 FAST and RELEASE jobs both succeed on the exact commit containing this file. No post-success commit is permitted."
+}

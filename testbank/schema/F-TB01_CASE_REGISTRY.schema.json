@@ -1,0 +1,573 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWAP5 F-TB01 testbank case registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_id",
+    "source_authority",
+    "cases"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "registry_id": {
+      "type": "string",
+      "pattern": "^F-TB01-[A-Z0-9_-]+$"
+    },
+    "source_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "ref",
+        "commit",
+        "tree"
+      ],
+      "properties": {
+        "repository": {
+          "const": "abhedwig-cell/SWAP5"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "version",
+          "title",
+          "layer",
+          "category",
+          "artifact_kind",
+          "physics",
+          "solver",
+          "parameters",
+          "forcing",
+          "initial_state",
+          "interval",
+          "oracle",
+          "tolerance_policy",
+          "provenance",
+          "source_authority",
+          "test_matrix_authority",
+          "evidence_authority",
+          "governance_authority",
+          "admission_purpose",
+          "maturity",
+          "compiler_requirements",
+          "cost_class",
+          "profiles",
+          "requiredness",
+          "invariants",
+          "negative_paths",
+          "mass_gate",
+          "current_preservation_eligible",
+          "lineage",
+          "notes"
+        ],
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "pattern": "^SWAP5-TB-[A-Z0-9_-]+-[0-9]{3,5}-v[1-9][0-9]*$"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layer": {
+            "enum": [
+              "TB-L0",
+              "TB-L1",
+              "TB-L2",
+              "TB-L3",
+              "TB-L4",
+              "TB-L5",
+              "TB-L6",
+              "TB-L7",
+              "TB-L8",
+              "TB-L9",
+              "TB-L10",
+              "TB-L11",
+              "TB-L12"
+            ]
+          },
+          "category": {
+            "enum": [
+              "PRIMITIVE",
+              "HYDRAULICS",
+              "PROCESS",
+              "SOLVER",
+              "TRANSACTION",
+              "RESTART",
+              "INTEGRATED",
+              "LEGACY_REFERENCE",
+              "COUPLING",
+              "MULTISWAP",
+              "PERFORMANCE",
+              "ROBUSTNESS",
+              "RELEASE"
+            ]
+          },
+          "artifact_kind": {
+            "enum": [
+              "SOURCE_TEST",
+              "QUALIFICATION_EVIDENCE",
+              "GOVERNANCE_REPLAY"
+            ]
+          },
+          "physics": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "solver": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parameters": {
+            "$ref": "#/$defs/identityBinding"
+          },
+          "forcing": {
+            "$ref": "#/$defs/identityBinding"
+          },
+          "initial_state": {
+            "$ref": "#/$defs/identityBinding"
+          },
+          "interval": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "t0",
+              "t1",
+              "time_basis",
+              "calendar_required"
+            ],
+            "properties": {
+              "t0": {
+                "type": "string",
+                "minLength": 1
+              },
+              "t1": {
+                "type": "string",
+                "minLength": 1
+              },
+              "time_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "calendar_required": {
+                "type": "boolean"
+              }
+            }
+          },
+          "oracle": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "class",
+              "id",
+              "version",
+              "authority_ref"
+            ],
+            "properties": {
+              "class": {
+                "enum": [
+                  "O1_MATHEMATICAL_EXACT",
+                  "O2_MANUFACTURED_SOLUTION",
+                  "O3_INDEPENDENT_NUMERICAL_REFERENCE",
+                  "O4_QUALIFIED_FULL_RICHARDS_REFERENCE",
+                  "O5_LEGACY_SWAP431_SOURCE_BOUND",
+                  "O6_PROPERTY_INVARIANT",
+                  "O7_CROSS_SOLVER_CONSISTENCY"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "authority_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "tolerance_policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "bindings",
+              "inheritance_authority"
+            ],
+            "properties": {
+              "mode": {
+                "enum": [
+                  "EXACT_OR_HARD_ONLY",
+                  "INHERITED_PINNED_AUTHORITY",
+                  "GOVERNED_BINDINGS"
+                ]
+              },
+              "bindings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/toleranceBinding"
+                }
+              },
+              "inheritance_authority": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "primary_path",
+              "registration_basis"
+            ],
+            "properties": {
+              "primary_path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "registration_basis": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "source_authority": {
+            "$ref": "#/$defs/sourceAuthority"
+          },
+          "test_matrix_authority": {
+            "$ref": "#/$defs/authorityBinding"
+          },
+          "evidence_authority": {
+            "$ref": "#/$defs/authorityBinding"
+          },
+          "governance_authority": {
+            "$ref": "#/$defs/authorityBinding"
+          },
+          "admission_purpose": {
+            "enum": [
+              "HISTORICAL_QUALIFICATION",
+              "MOVING_CURRENT_PRESERVATION",
+              "BROAD_RELEASE_REGRESSION",
+              "OWNER_VERIFICATION",
+              "CHARACTERIZATION"
+            ]
+          },
+          "maturity": {
+            "enum": [
+              "CHARACTERIZATION",
+              "OWNER_TESTED",
+              "INDEPENDENTLY_QUALIFIED",
+              "CANONICAL_PRESERVATION",
+              "RELEASE_MANDATORY"
+            ]
+          },
+          "compiler_requirements": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "requirement",
+              "platform_scope"
+            ],
+            "properties": {
+              "requirement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "platform_scope": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "cost_class": {
+            "enum": [
+              "TINY",
+              "SMALL",
+              "MEDIUM",
+              "LARGE",
+              "EXTERNAL_LONG_RUNNING"
+            ]
+          },
+          "profiles": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "FAST",
+                "CANONICAL",
+                "RELEASE",
+                "DEEP"
+              ]
+            }
+          },
+          "requiredness": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mandatory_profiles",
+              "optional_profiles"
+            ],
+            "properties": {
+              "mandatory_profiles": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "FAST",
+                    "CANONICAL",
+                    "RELEASE",
+                    "DEEP"
+                  ]
+                }
+              },
+              "optional_profiles": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "FAST",
+                    "CANONICAL",
+                    "RELEASE",
+                    "DEEP"
+                  ]
+                }
+              }
+            }
+          },
+          "invariants": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            }
+          },
+          "negative_paths": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "mass_gate": {
+            "enum": [
+              "REQUIRED",
+              "NOT_WATER_BEARING",
+              "INHERITED_EXACT_AUTHORITY"
+            ]
+          },
+          "current_preservation_eligible": {
+            "type": "boolean"
+          },
+          "lineage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "predecessor",
+              "evidence_disposition"
+            ],
+            "properties": {
+              "predecessor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "evidence_disposition": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "authority_ref"
+      ],
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sourceAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "ref",
+        "commit",
+        "tree",
+        "path"
+      ],
+      "properties": {
+        "repository": {
+          "const": "abhedwig-cell/SWAP5"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authorityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "reference",
+        "requalified_by_ftb01"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requalified_by_ftb01": {
+          "type": "boolean"
+        }
+      }
+    },
+    "toleranceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "class",
+        "quantity",
+        "unit",
+        "meaning",
+        "scope",
+        "rationale",
+        "provenance",
+        "owner",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "class": {
+          "enum": [
+            "FP_IDENTITY",
+            "NUMERICAL_SOLVER",
+            "SCIENTIFIC_COMPARISON",
+            "APPLICATION",
+            "COUPLING"
+          ]
+        },
+        "quantity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "meaning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

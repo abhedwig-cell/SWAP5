@@ -1,0 +1,79 @@
+name: F-TB06 soil-temperature runtime testbank adoption
+
+on:
+  push:
+    branches:
+      - work/f-tb06-soil-temperature-runtime-testbank-adoption
+    paths:
+      - 'testbank/manifests/F-TB06_*'
+      - 'testbank/runners/*ftb06*'
+      - 'integration/f-tb/F-TB06_*'
+      - 'integration/f-tb/RUNLOG_F-TB06.md'
+      - 'docs/testbank/F-TB06_*'
+      - '.github/workflows/ftb06-soil-temperature-runtime-adoption.yml'
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Qualification profile
+        required: true
+        default: CANONICAL
+        type: choice
+        options: [FAST, CANONICAL, RELEASE, DEEP]
+
+permissions:
+  contents: read
+
+jobs:
+  fast:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB06_FAST_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Validate F-TB06 adoption
+        run: bash testbank/runners/run_ftb06_qualification.sh FAST
+      - name: Exact head end
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB06_FAST_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
+
+  requested:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile != 'FAST' }}
+    needs: fast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute requested profile
+        run: bash testbank/runners/run_ftb06_qualification.sh "${{ inputs.profile }}"
+      - name: Exact requested head
+        run: test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+
+  release:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[ftb06-release]') }}
+    needs: fast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact release head start
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB06_RELEASE_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Execute release qualification
+        run: bash testbank/runners/run_ftb06_qualification.sh RELEASE
+      - name: Verify support-only delta
+        run: |
+          test -z "$(git diff --name-only c7379b6b5b5f529ff96de3087379712bd665276a..HEAD -- src reference)"
+          test "$(git rev-parse HEAD:src)" = "d5aec38b432242d2674885c8b8bd21d7f0fa0836"
+          test "$(git rev-parse HEAD:reference)" = "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+      - name: Exact release head end
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB06_RELEASE_EXACT_HEAD_END=PASS:${GITHUB_SHA}"

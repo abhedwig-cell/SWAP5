@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.ftb01.invariant_audit.v1",
+  "work_unit": "F-TB01",
+  "source_authority": {
+    "commit": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "tree": "6baaf40271497db831698c5a01de355b5d296dbe"
+  },
+  "scope": "test architecture, inventory, governance, registry prototype and CI only; no production or qualified-reference changes",
+  "overall": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
+  "items": [
+    {"id": 1, "result": "PASS", "assessment": "One-kernel architecture is indexed, not forked into use-case-specific kernels."},
+    {"id": 2, "result": "PASS", "assessment": "Testbank I/O and orchestration remain outside the computational kernel."},
+    {"id": 3, "result": "PASS", "assessment": "Registry distinguishes parameters, state, forcing, numerical configuration and results."},
+    {"id": 4, "result": "PASS", "assessment": "No persistent column state is added; registry metadata is external."},
+    {"id": 5, "result": "PASS", "assessment": "No worker scratch ownership is changed."},
+    {"id": 6, "result": "PASS", "assessment": "No storage-layout constraint is introduced; MultiSWAP scale remains an explicit qualification axis."},
+    {"id": 7, "result": "PASS", "assessment": "Checkpoint, trial/retry, commit and rollback are a required TB-L4 contract."},
+    {"id": 8, "result": "PASS", "assessment": "Replay and warm-start qualification are supported without changing committed physical-state authority."},
+    {"id": 9, "result": "PASS", "assessment": "Cases use generic [t0,t1]; calendar assumptions are not introduced."},
+    {"id": 10, "result": "PASS", "assessment": "Coupling cases are defined for generic windows rather than day boundaries."},
+    {"id": 11, "result": "PASS", "assessment": "Coupling is a first-class TB-L8 qualification layer."},
+    {"id": 12, "result": "PASS", "assessment": "Head and flux interface contract is explicit; flux conservation is hard and head tolerance application-bound."},
+    {"id": 13, "result": "PASS", "assessment": "Hard mass gate is horizontal and cannot be waived by execution profile."},
+    {"id": 14, "result": "PASS", "assessment": "Interface sensitivities and response tangents are explicit solver/coupling qualification targets."},
+    {"id": 15, "result": "PASS", "assessment": "Coupling cost is separated from scientific correctness and retained as a qualification target."},
+    {"id": 16, "result": "PASS", "assessment": "MultiSWAP is a primary TB-L9/TB-L10 axis including large-scale future cases."},
+    {"id": 17, "result": "PASS", "assessment": "Tile aggregation and non-1:1 groundwater mapping remain coupler/runtime concerns."},
+    {"id": 18, "result": "PASS", "assessment": "Deep-vadose transfer is treated as an optional external coupling component."},
+    {"id": 19, "result": "PASS", "assessment": "Transition between transfer-zone and direct coupling is required to conserve stored water."},
+    {"id": 20, "result": "PASS", "assessment": "Alternative soil-water solvers are first-class TB-L3 targets behind a common interface."},
+    {"id": 21, "result": "PASS", "assessment": "Shared process physics is qualified across solver variants rather than duplicated."},
+    {"id": 22, "result": "PASS", "assessment": "Hydraulic information is tested through contracts, not HeadCalc internals."},
+    {"id": 23, "result": "PASS", "assessment": "Physical switches and solver/numerical policy are separate registry dimensions."},
+    {"id": 24, "result": "PASS", "assessment": "Bounded-cost and difficult-column qualification cannot override mass or science gates."},
+    {"id": 25, "result": "PASS", "assessment": "Full/reference mode remains an explicit oracle/reference route."},
+    {"id": 26, "result": "PASS", "assessment": "Diagnostics, retries, fallbacks, solver cost and mass residuals are report fields."},
+    {"id": 27, "result": "PASS", "assessment": "Optional functionality and inactive-option cost/state are explicit coverage targets."},
+    {"id": 28, "result": "PASS", "assessment": "System composition relationships remain outside the SWAP kernel."},
+    {"id": 29, "result": "PASS", "assessment": "Registry and architecture add no hidden midnight, daily, file-format or direct-MODFLOW assumptions."},
+    {"id": 30, "result": "PASS", "assessment": "This audit explicitly assesses all architecture invariants for the F-TB01 change."}
+  ]
+}

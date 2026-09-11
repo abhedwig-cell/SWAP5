@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB07",
+  "title": "Groundwater Application-Accuracy Contract Testbank Adoption",
+  "branch": "work/f-tb07-application-accuracy-contract-testbank-adoption",
+  "testbank_parent_authority": "F-TB06@163ed723cc4f2277746bdd54f338c4b06e2eaaa9",
+  "canonical_authority": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "canonical_src_tree": "d5aec38b432242d2674885c8b8bd21d7f0fa0836",
+  "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "scientific_contract_authority": "F-GC10@a1201dc870e4f5088f50b8d00e92e83457743174",
+  "canonical_admission_evidence": "F-CI44 plus F-CI44P preserved in current canonical",
+  "goal": "Permanently register and continuously replay the canonically admitted groundwater application-accuracy contract seam without inventing a numeric application requirement or broadening production coupling claims.",
+  "allowed_changes": [
+    "add one bounded F-TB07 contract-case registry",
+    "add F-TB07 validator, replay runner and workflow",
+    "add F-TB07 documentation, run log, qualification status and invariant audit"
+  ],
+  "forbidden_changes": [
+    "production source",
+    "reference tree",
+    "F-TB01 through F-TB06 manifests or semantics",
+    "numeric H_app",
+    "numeric A_temporal",
+    "application-class accuracy qualification",
+    "production SWAP-MODFLOW admission",
+    "scientific tolerance relaxation",
+    "mass-conservation relaxation",
+    "canonical branch"
+  ],
+  "required_coverage": [
+    "GROUNDWATER_HEAD budget composition",
+    "GROUNDWATER_DRAWDOWN budget composition",
+    "external qualification and provenance fail-closed behavior",
+    "finite positive H_app and bounded A_temporal validation",
+    "stale model-owned budget clearing before every materialization attempt",
+    "current-canonical model-owned temporal-indicator consumer binding",
+    "dimensionless certificate normalization from native head-domain indicator",
+    "repeat and O0/O2 determinism",
+    "explicit absence of hidden numeric policy and production coupling claim"
+  ],
+  "profiles": {
+    "FAST": "registry, provenance, source immutability and static binding checks",
+    "CANONICAL": "compile and execute the immutable F-CI44 contract matrix against current canonical source at O0",
+    "RELEASE": "CANONICAL plus O2 and repeat transcript identity plus current-canonical consumer binding",
+    "DEEP": "same qualified evidence set; no silent broadening"
+  },
+  "hard_nonclaims": [
+    "no universal groundwater-head accuracy requirement",
+    "no universal drawdown accuracy requirement",
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no complete coupled-system head-error budget",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation tradeoff"
+  ],
+  "target_decision": "QUALIFIED_GROUNDWATER_APPLICATION_ACCURACY_CONTRACT_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION"
+}

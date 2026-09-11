@@ -1,0 +1,75 @@
+name: F-TB04 transaction restart determinism MultiSWAP qualification
+
+on:
+  push:
+    branches:
+      - 'work/f-tb04-transaction-restart-determinism-multiswap-catalog'
+    paths:
+      - 'testbank/**'
+      - 'docs/testbank/**'
+      - 'integration/f-tb/**'
+      - '.github/workflows/ftb04-transaction-restart-determinism-multiswap.yml'
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Qualification profile
+        required: true
+        default: RELEASE
+        type: choice
+        options: [FAST, CANONICAL, RELEASE, DEEP]
+
+permissions:
+  contents: read
+
+jobs:
+  fast:
+    name: F-TB04 FAST
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          python3 --version
+          gfortran --version
+      - name: Validate and execute FAST catalog
+        run: bash testbank/runners/run_ftb04_qualification.sh FAST
+
+  release:
+    name: F-TB04 exact-head RELEASE
+    if: >-
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[ftb04-release]')) ||
+      (github.event_name == 'workflow_dispatch' && (inputs.profile == 'RELEASE' || inputs.profile == 'DEEP'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute RELEASE catalog
+        run: bash testbank/runners/run_ftb04_qualification.sh RELEASE
+      - name: Exact head
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB04_EXACT_HEAD_RELEASE=PASS:${GITHUB_SHA}"
+
+  canonical:
+    name: F-TB04 CANONICAL dispatch
+    if: github.event_name == 'workflow_dispatch' && inputs.profile == 'CANONICAL'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash testbank/runners/run_ftb04_qualification.sh CANONICAL
+
+  deep:
+    name: F-TB04 DEEP dispatch
+    if: github.event_name == 'workflow_dispatch' && inputs.profile == 'DEEP'
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash testbank/runners/run_ftb04_qualification.sh DEEP

@@ -1,0 +1,70 @@
+name: F-TB01 testbank architecture
+
+on:
+  push:
+    branches:
+      - work/f-tb01-swap5-testbank-architecture
+    paths:
+      - 'docs/testbank/**'
+      - 'testbank/**'
+      - 'integration/f-tb/**'
+      - '.github/workflows/ftb01-testbank-architecture.yml'
+  pull_request:
+    paths:
+      - 'docs/testbank/**'
+      - 'testbank/**'
+      - 'integration/f-tb/**'
+      - '.github/workflows/ftb01-testbank-architecture.yml'
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify F-TB01 source and scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=3c5f5bd3686e1632058b906be21abd73883e30ef
+          git cat-file -e "$BASE^{commit}"
+          changed="$(git diff --name-only "$BASE"...HEAD)"
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -Eq '^(src/|tests/|reference/)'; then
+            echo "F-TB01 must not modify production source, existing tests, or qualified reference material" >&2
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Ev '^(docs/testbank/|testbank/|integration/f-tb/|\.github/workflows/ftb01-testbank-architecture\.yml$)' | grep -q .; then
+            echo "F-TB01 contains an out-of-scope path" >&2
+            exit 1
+          fi
+          test "$(git rev-parse "$BASE^{tree}")" = "6baaf40271497db831698c5a01de355b5d296dbe"
+      - name: Validate machine-readable contracts
+        run: |
+          python3 testbank/runners/validate_ftb01_registry.py
+          python3 -m json.tool testbank/manifests/F-TB01_CASE_REGISTRY.json >/dev/null
+          python3 -m json.tool testbank/schema/F-TB01_REPORT.schema.json >/dev/null
+          python3 -m json.tool integration/f-tb/F-TB01_INVARIANT_AUDIT.json >/dev/null
+          python3 -m json.tool integration/f-tb/F-TB01_STATUS.json >/dev/null
+      - name: Confirm twelve required F-TB01 deliverables
+        shell: bash
+        run: |
+          set -euo pipefail
+          for p in \
+            docs/testbank/F-TB01_TESTBANK_ARCHITECTURE.md \
+            docs/testbank/F-TB01_ORACLE_POLICY.md \
+            docs/testbank/F-TB01_TOLERANCE_GOVERNANCE.md \
+            docs/testbank/F-TB01_CASE_IDENTITY_AND_VERSIONING.md \
+            docs/testbank/F-TB01_MASS_GATE_CONTRACT.md \
+            docs/testbank/F-TB01_EXECUTION_PROFILES.md \
+            docs/testbank/F-TB01_CURRENT_TEST_INVENTORY.md \
+            docs/testbank/F-TB01_COVERAGE_MODEL.md \
+            testbank/schema/F-TB01_REPORT.schema.json \
+            integration/f-tb/F-TB01_INVARIANT_AUDIT.json \
+            testbank/manifests/F-TB01_CASE_REGISTRY.json \
+            integration/f-tb/F-TB01_STATUS.json
+          do
+            test -s "$p"
+          done
+          echo "F-TB01_REQUIRED_DELIVERABLES=12/12_PASS"

@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB06",
+  "title": "Restricted Soil-Temperature Transaction, Restart & MultiSWAP Testbank Adoption",
+  "branch": "work/f-tb06-soil-temperature-runtime-testbank-adoption",
+  "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "composition_support_authority": "F-TB05@81d4f0479a99bc456803f583457862387c267ec0",
+  "composition_commit": "1af50b7517bc4ac794ee0a4b300e0796291416bd",
+  "scientific_authority": "F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "runtime_source_authority": "F-MR39@87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "canonical_admission_authority": "F-CI45@14db7be4827e73650da18d494af5cf190e687490",
+  "postimage_authority": "F-CI45P@c7379b6b5b5f529ff96de3087379712bd665276a",
+  "goal": "Permanently register and continuously replay the newly canonical restricted soil-temperature transactional runtime evidence without modifying the closed F-TB04 catalog or weakening prior testbank authorities.",
+  "allowed_changes": [
+    "add one bounded F-TB06 soil-temperature fragment registry",
+    "add F-TB06 validator/runner/workflow",
+    "add F-TB06 documentation, run log, qualification status and invariant audit",
+    "reuse immutable F-MR39 and F-VQ58 source-test authorities through temporary replay extraction"
+  ],
+  "forbidden_changes": [
+    "production source",
+    "reference tree",
+    "F-TB01/F-TB02/F-TB03/F-TB04/F-TB05 manifests or semantics",
+    "scientific tolerances",
+    "soil-temperature physics",
+    "solver policy",
+    "RB1 authority or archived RB1 bank",
+    "canonical branch"
+  ],
+  "required_coverage": [
+    "atomic water-plus-thermal commit",
+    "thermal-failure rollback of complete physical trial",
+    "retry from identical committed origin",
+    "split/restart endpoint identity with thermal optional state",
+    "mixed thermal-active/inactive MultiSWAP isolation",
+    "inactive-column optional-state compactness",
+    "O0/O2 and repeated-run deterministic runtime transcript",
+    "separate hard water-mass and thermal energy-accounting semantics",
+    "exact F-VQ58 scientific-authority replay"
+  ],
+  "profiles": {
+    "FAST": "registry/provenance/immutability/static architecture validation only",
+    "CANONICAL": "full restricted thermal runtime replay on the pinned current-canonical source plus F-VQ58 replay",
+    "RELEASE": "CANONICAL plus FMR19 disabled-path preservation and exact runtime fingerprint",
+    "DEEP": "same qualified evidence set; reserved for explicit future additions, not expanded silently"
+  },
+  "hard_nonclaims": [
+    "no frost or latent-heat phase-change qualification",
+    "no snow plus soil-temperature combined profile",
+    "no thermal-active parallel-throughput qualification",
+    "no new combined water-plus-thermal timestep acceptance policy",
+    "no production SWAP-MODFLOW qualification",
+    "no new numeric application-accuracy policy",
+    "no mass-conservation relaxation"
+  ]
+}
