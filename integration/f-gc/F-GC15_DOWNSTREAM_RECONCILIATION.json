@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.fgc15_downstream_reconciliation.v1",
+  "work_unit": "F-GC15",
+  "current_canonical": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "gap": "GC15-G01",
+  "gap_name": "Accepted interface-result and sensitivity transport",
+  "canonical_status": "OPEN_MISSING_IN_CURRENT_CANONICAL_RESULT_PATH",
+  "existing_workstreams": {
+    "F_KT14": {
+      "branch": "work/f-kt14-interface-sensitivity-result-transport",
+      "final_metadata_head": "2f7995df362c65916671278a5552ed9976ed39b3",
+      "exact_head_workflow": "F-KT14 Interface Sensitivity Transport",
+      "exact_head_run": 34545458355,
+      "exact_head_conclusion": "success",
+      "effective_decision": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED",
+      "qualified_scope": [
+        "accepted-only transaction interface-sensitivity transport",
+        "rollback/retry stale-sensitivity exclusion",
+        "soil_water_solve_result_t to trial_outcome_t fail-closed bridge",
+        "canonical interval publication with local-terminal provenance",
+        "kernel public result transport",
+        "mass-accounting preservation",
+        "native SWAP bottom-flux sign preservation"
+      ],
+      "important_exclusion": "The real legacy B1.10 physical interval still reaches HeadCalc directly and therefore is not an end-to-end production sensitivity publication route.",
+      "canonical_admission": false
+    },
+    "F_KT15": {
+      "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+      "current_branch_head": "eacdacb60524221d0c286571444271089347dbcc",
+      "recorded_source_authority_canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+      "phase": "SOURCE_RECONCILED_IMPLEMENTATION_OPEN",
+      "decision": "F_KT15_SOURCE_RECONCILED_IMPLEMENTATION_OPEN_NOT_YET_TESTED_OR_QUALIFIED",
+      "implemented": false,
+      "tested": false,
+      "qualified": false,
+      "purpose": "Compose the already-qualified typed reference Richards solver service into the real SoilWater task-2 transaction so accepted F-SI28/F-KT14 sensitivity can arise on the production physical path without a second tangent authority or extra nonlinear trajectory."
+    }
+  },
+  "roadmap_consequence": {
+    "create_new_F_GC16_for_G01_from_scratch": false,
+    "reason": "That would duplicate F-KT14/F-KT15 ownership and risk competing sensitivity authorities.",
+    "next_owner": "F-KT15 or an explicitly named current-canonical recomposition/remediation of F-KT15",
+    "next_required_step": "Recheck/recompose the F-KT15 implementation work against the then-current canonical postimage before source mutation, because its recorded source authority predates F-CI48. Then implement and qualify the production task-2 typed solver-service path while preserving F-KT14 semantics and hard mass conservation.",
+    "G02_may_start_before_G01_canonical_admission": false,
+    "G02_reason": "Freeze accepted interface-result semantics and sign/provenance publication first; avoid designing a groundwater contract against a transient or competing result carrier."
+  },
+  "hard_nonclaims": [
+    "F-KT14 is not currently admitted to integration/f-ci-canonical",
+    "F-KT15 is not implemented, tested or qualified",
+    "no whole-window tangent is qualified",
+    "no MODFLOW sign conversion or coupling is admitted",
+    "no mass-conservation relaxation is introduced"
+  ]
+}
