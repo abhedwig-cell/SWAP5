@@ -11,10 +11,17 @@
   "phase": "ARCHITECTURE_AND_CASE_REGISTRY_QUALIFIED_READY_FOR_INCREMENTAL_IMPLEMENTATION",
   "decision": "SWAP5_TESTBANK_ARCHITECTURE_AND_CASE_REGISTRY_READY_FOR_INCREMENTAL_IMPLEMENTATION",
   "qualification_evidence": {
-    "qualified_status_predecessor_head": "b2df9901395edc5ab6f4399d72ea4dfc7065ce68",
-    "qualified_status_predecessor_run": 34551414910,
-    "qualified_status_predecessor_conclusion": "success",
-    "registry_schema_reconciliation": "PoC registry was reconciled to the later F-TB01_CASE_REGISTRY.schema.json contract before qualification",
+    "superseded_schema_only_head": "b4b91fc795c67384dbdaa11d4f9624c6d69d91ab",
+    "superseded_schema_only_run": 34551359196,
+    "supersession_reason": "That run was green but the validator did not yet require registered primary asset paths to resolve. Adversarial closeout review then found one non-existent FSI09 registry path, so the run is retained as history but is not decisive qualification evidence.",
+    "registry_path_remediation_commit": "a103c02bca2021fae7cbc187e6a30e7cb23d2087",
+    "fail_closed_asset_resolution_validator_commit": "6452b7fbfac458c08762e39dc06cc63e7da6e7ac",
+    "single_authoritative_registry_commit": "c2686ab25430f0c79c119b14f29653665da4acc0",
+    "decisive_remediated_exact_head": "c2686ab25430f0c79c119b14f29653665da4acc0",
+    "decisive_remediated_run": 34551579846,
+    "decisive_remediated_conclusion": "success",
+    "registered_primary_assets_required_to_resolve": "9/9",
+    "registry_schema_reconciliation": "The single authoritative PoC registry conforms to F-TB01_CASE_REGISTRY.schema.json.",
     "exact_closeout_head_policy": "The final status blob is valid only with an external exact-head F-TB01 workflow success; that run is intentionally not self-referential inside this status blob."
   },
   "deliverables": {
@@ -26,13 +33,13 @@
     "execution_profiles": "docs/testbank/F-TB01_EXECUTION_PROFILES.md",
     "current_test_inventory": "docs/testbank/F-TB01_CURRENT_TEST_INVENTORY.md",
     "coverage_model": "docs/testbank/F-TB01_COVERAGE_MODEL.md",
+    "case_registry_schema": "testbank/schema/F-TB01_CASE_REGISTRY.schema.json",
     "report_schema": "testbank/schema/F-TB01_REPORT.schema.json",
     "invariant_audit": "integration/f-tb/F-TB01_INVARIANT_AUDIT.json",
     "proof_of_concept_registry": "testbank/manifests/F-TB01_CASE_REGISTRY.json",
     "status_closeout": "integration/f-tb/F-TB01_STATUS.json"
   },
   "supporting_mechanics": {
-    "case_registry_schema": "testbank/schema/F-TB01_CASE_REGISTRY.schema.json",
     "validator": "testbank/runners/validate_ftb01_registry.py",
     "workflow": ".github/workflows/ftb01-testbank-architecture.yml"
   },
