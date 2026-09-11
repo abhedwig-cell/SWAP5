@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "title": "Restricted Production Soil-Water Task-2 Solver-Service Transaction Composition",
+  "branch": "work/f-kt15-task2-solver-service-production-composition",
+  "base_authority": {
+    "F_KT15R_closeout": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+    "current_canonical_at_start": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+    "F_KT15R_exact_head_workflow": 34650762145
+  },
+  "upstream_qualified_capabilities": {
+    "F_SI28": "OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY",
+    "F_KT14": "ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT",
+    "F_SI29": "RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+    "F_SI30": "DYNAMIC_TOP_BOUNDARY_SOLVER_INTERFACE_AND_HEADCALC_PROVIDER_BRIDGE"
+  },
+  "implementation_scope": {
+    "seam": "SoilWater task 2 only",
+    "typed_route": "one reference_richards_legacy_solver_t solve per admitted hydraulic trial",
+    "legacy_task3_owner": true,
+    "unsupported_route": "unchanged direct HeadCalc",
+    "accepted_materialization": ["h", "theta", "pond", "gwl", "qtop", "qbot"],
+    "sensitivity_transport": "worker-local trial capsule -> F-KT14 mapper -> trial_outcome_t"
+  },
+  "restricted_admission": {
+    "worker_required": true,
+    "swmacro": 0,
+    "active_root_extraction": false,
+    "frost_conductivity_reduction": false,
+    "swdra2_surface_water_coupling": false,
+    "time_dependent_pondmx": false,
+    "swkimpl": 0,
+    "runoff_exponent": 1.0,
+    "bottom_modes": [7, -2, 5, 2],
+    "dynamic_top_boundary": "F-SI29/F-SI30 exact restricted semantics"
+  },
+  "hard_rules": [
+    "Do not call the typed solver and direct HeadCalc for the same admitted hydraulic trial.",
+    "Retry-advised or failed typed trials publish no interface sensitivity.",
+    "No module-global last-tangent or other hidden cross-column state.",
+    "No second nonlinear trajectory and no extra Jacobian build for interface sensitivity.",
+    "No MODFLOW sign conversion in this workunit.",
+    "SoilWater task 3 remains sole owner of post-solve K/Kmean/GWL/storage/flux bookkeeping.",
+    "Hard water balance is not relaxed.",
+    "Unsupported physics remains on the unchanged legacy HeadCalc route."
+  ],
+  "qualification_required": [
+    "typed/direct physical postimage identity in admitted fixtures",
+    "dynamic flux/head/ponded/linear-runoff route identity",
+    "task-3 exactly-once ownership on accept and zero execution on retry",
+    "hard water-balance identity",
+    "accepted F-SI28 sensitivity reaches trial_outcome_t via F-KT14",
+    "retry/rollback stale-sensitivity exclusion",
+    "exactly one tangent backsolve, zero extra nonlinear trajectory, zero extra Jacobian build",
+    "unsupported route remains direct HeadCalc and sensitivity-unavailable",
+    "O0/O2 identity",
+    "1/2/4/8 worker isolation"
+  ],
+  "explicit_nonclaims": [
+    "canonical admission",
+    "production SWAP-MODFLOW coupling",
+    "whole-coupling-window response derivative",
+    "macropore typed-route support",
+    "frost typed-route support",
+    "active root-extraction typed-route support",
+    "SWDRA=2 typed-route support",
+    "time-dependent PONDMX typed-route support",
+    "nonlinear runoff-exponent typed-route support",
+    "typed-route throughput or allocation-performance qualification"
+  ],
+  "decision": "IMPLEMENTATION_OPEN_FAIL_CLOSED"
+}
