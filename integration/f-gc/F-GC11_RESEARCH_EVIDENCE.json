@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC11",
+  "application_class": "AC03_NSW_SSD_SSI_AQUIFER_INTERFERENCE_DRAWDOWN_DECISION",
+  "research_date": "2026-09-11",
+  "research_policy": "Use external official or government-sponsored groundwater-model guidance. Do not infer H_app from physical thresholds, calibration statistics, observation accuracy or SWAP numerical behaviour. Do not invent A_temporal from generic time-step guidance.",
+  "sources": [
+    {
+      "id": "NSW_AIP_2012_CURRENT_HOST",
+      "title": "NSW Aquifer Interference Policy",
+      "publisher": "NSW Office of Water / NSW Government",
+      "publication_year": 2012,
+      "current_host_checked_2026_09_11": "https://www.water.nsw.gov.au/sites/default/files/2025-10/NSW-Aquifer-Interference-Policy-2012.pdf",
+      "relevant_finding": "The policy states that where predicted impacts exceed Level-1 minimal-impact thresholds by no more than the accuracy of an otherwise robust model, impacts may remain within the range of acceptability with monitoring/mitigation. If exceedance is greater than model accuracy, additional studies are required.",
+      "numeric_prediction_accuracy_requirement_found": false,
+      "why_not_H_app": "The policy invokes model accuracy as a decision-margin concept but does not prescribe a transferable numeric prediction-accuracy value for this application class. The physical Level-1 threshold itself is an impact threshold, not the model prediction-error allowance."
+    },
+    {
+      "id": "NSW_MIN_GW_MODELLING_2022",
+      "title": "Minimum Groundwater Modelling Requirements for SSD/SSI Projects",
+      "publisher": "NSW Department of Planning and Environment",
+      "publication_year": 2022,
+      "url": "https://publications.water.nsw.gov.au/watergroupjspui/bitstream/100/890/1/Minimum_Groundwater_Modelling_Requirements_for_SSD-SSI-Projects.pdf",
+      "relevant_findings": [
+        "Model objectives and the conceptual model must drive discretisation in time and space.",
+        "Calibration results must report residual statistics and model mass balance, but these are calibration diagnostics rather than a prescribed application prediction-error allowance.",
+        "Stress periods are divided into time steps; shorter steps better resolve sudden stress changes and longer steps may be suitable for gradual changes.",
+        "Prediction uncertainty must be addressed when it may materially affect the environment or authorised water users, and independent review/fit-for-purpose assessment is required."
+      ],
+      "numeric_prediction_accuracy_requirement_found": false,
+      "numeric_temporal_error_allocation_found": false,
+      "why_not_A_temporal": "The document gives qualitative time-step and discretisation guidance tied to objectives and stress changes, but no independently governed fraction or amount of application prediction error allocated specifically to coupling temporal error."
+    },
+    {
+      "id": "IESC_PEETERS_MIDDLEMIS_2023",
+      "title": "Information Guidelines Explanatory Note: Uncertainty analysis for groundwater modelling",
+      "publisher": "Independent Expert Scientific Committee / Australian Government",
+      "publication_year": 2023,
+      "url": "https://www.iesc.gov.au/sites/default/files/2022-07/information-guidelines-explanatory-note-uncertainty-analysis.pdf",
+      "relevant_findings": [
+        "Each project is unique and the guidance is intentionally not prescriptive.",
+        "The quantity of interest must be defined with a specific spatial and temporal setting relevant to the decision.",
+        "Acceptable risk is context dependent and value laden.",
+        "The acceptable mismatch between observations and simulations is project- and model-specific; common normalised-RMSE targets are often misinterpreted.",
+        "Decision-critical prediction uncertainty must not be underestimated."
+      ],
+      "numeric_prediction_accuracy_requirement_found": false,
+      "numeric_temporal_error_allocation_found": false,
+      "interpretation": "This source independently blocks promotion of a generic calibration criterion or universal mismatch value to H_app and supports requiring project/QoI-specific governance."
+    }
+  ],
+  "application_class_result": {
+    "external_decision_margin_structure_exists": true,
+    "numeric_H_app_found": false,
+    "numeric_A_temporal_found": false,
+    "numeric_H_temporal_budget_ready": false,
+    "physical_threshold_reuse_rejected": true,
+    "calibration_metric_reuse_rejected": true,
+    "measurement_accuracy_reuse_rejected": true,
+    "solver_tolerance_reuse_rejected": true,
+    "F_GC07_back_calculation_rejected": true
+  },
+  "decision": "FAIL_CLOSED_AC03_NO_INDEPENDENT_NUMERIC_H_APP_OR_TEMPORAL_ALLOCATION",
+  "scientific_interpretation": "The real NSW SSD/SSI aquifer-interference decision framework is compatible with the SWAP5 external application-accuracy contract architecture, because it explicitly treats model accuracy and uncertainty as part of decision making. It does not, however, supply the two numeric policy inputs required by the canonical contract seam. A real project or regulator-approved Groundwater Modelling Plan/decision rule must therefore instantiate both the prediction-accuracy requirement and the temporal numerical-error allocation before SWAP5 may materialize a numerical coupling head-error budget.",
+  "hard_nonclaims": [
+    "No numeric H_app is qualified.",
+    "No numeric A_temporal is qualified.",
+    "No numeric H_temporal_budget is qualified.",
+    "No NSW physical impact threshold is reinterpreted as prediction accuracy.",
+    "No calibration RMSE criterion is reinterpreted as prediction accuracy.",
+    "No SWAP-MODFLOW production admission is made.",
+    "No mass-conservation tolerance is introduced."
+  ]
+}
