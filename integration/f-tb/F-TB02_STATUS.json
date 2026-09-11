@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB02",
+  "title": "Hydraulic Constitutive Verification Catalog",
+  "branch": "work/f-tb02-hydraulic-constitutive-case-catalog",
+  "architecture_authority": {
+    "commit": "1d039292d5768496c4550a8e1b35a92c6f836504",
+    "tree": "217ad406db38b564a8b03e6c34c26b9123b58c6c"
+  },
+  "current_canonical_context": {
+    "commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6"
+  },
+  "phase": "CATALOG_FRAGMENT_PERSISTED_PENDING_MACHINE_VALIDATION",
+  "decision": "PENDING_VALIDATION",
+  "scope_holds": {
+    "production_source_changed": false,
+    "existing_test_changed": false,
+    "qualified_reference_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "runtime_semantics_changed": false,
+    "io_adapter_changed": false
+  },
+  "catalog": {
+    "registered_cases": 5,
+    "layers": ["TB-L0", "TB-L1", "TB-L3"],
+    "historical_swap009_cases": 3,
+    "swap011_characterization_cases": 1,
+    "current_canonical_characterization_cases": 1,
+    "moving_current_preservation_cases": 0
+  },
+  "mass": "HARD_UNCHANGED",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "machine_validated": false,
+    "scientific_requalification_performed": false,
+    "canonical_admitted": false
+  },
+  "exit_target": "QUALIFIED_FTB02_HYDRAULIC_CASE_CATALOG_FOUNDATION_READY_FOR_INCREMENTAL_ORACLE_EXPANSION"
+}
