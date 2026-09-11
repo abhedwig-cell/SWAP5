@@ -47,7 +47,7 @@ program test_fsi30_dynamic_headcalc_execution
   ! exercised here because qtop is state-independent inside the smooth flux regime.
   call run_dynamic_case('flux', -75.0_real64, 0.0_real64, &
        k_flux, 0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, &
-       0.0_real64, 0.0_real64, 10.0_real64, 0.5_real64, 1.0_real64, &
+       0.0_real64, 10.0_real64, 0.5_real64, 1.0_real64, &
        'surface-flux', .true.)
 
   ! Case B: atmospheric-head branch at its own fixed head. With no external
@@ -56,7 +56,7 @@ program test_fsi30_dynamic_headcalc_execution
   ! below the pre-existing hard mass gate.
   call run_dynamic_case('atmospheric', B110_DYN_TOP_ATMOSPHERIC_HEAD_CM, 0.0_real64, &
        0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, &
-       0.0_real64, 0.0_real64, 10.0_real64, 0.5_real64, 1.0_real64, &
+       0.0_real64, 10.0_real64, 0.5_real64, 1.0_real64, &
        'atmospheric-head', .false.)
 
   ! Case C: saturated ponded-head equilibrium. For zero surface forcing and
@@ -66,7 +66,7 @@ program test_fsi30_dynamic_headcalc_execution
   call require(ponded_head > 0.0_real64, 'ponded-head frozen start remains saturated')
   call run_dynamic_case('ponded', ponded_head, 2.0_real64, &
        0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, &
-       0.0_real64, 0.0_real64, 10.0_real64, 0.5_real64, 1.0_real64, &
+       0.0_real64, 10.0_real64, 0.5_real64, 1.0_real64, &
        'ponded-head', .false.)
 
   ! Case D: exact linear-runoff ponded-head equilibrium. The closed form below
@@ -77,7 +77,7 @@ program test_fsi30_dynamic_headcalc_execution
   call require(runoff_head > 0.1_real64, 'linear-runoff frozen start exceeds ponding threshold')
   call run_dynamic_case('linear-runoff', runoff_head, 3.0_real64, &
        0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, 0.0_real64, &
-       0.0_real64, 0.0_real64, 0.1_real64, 0.5_real64, 1.0_real64, &
+       0.0_real64, 0.1_real64, 0.5_real64, 1.0_real64, &
        'ponded-head-linear-runoff', .false.)
 
   call run_fixed_flux_regression(-75.0_real64, -k_flux)
