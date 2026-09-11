@@ -20,9 +20,9 @@ Current transaction contracts show checkpoint cloning, candidate provenance, sta
 
 Current restart contracts expose schema, template, parameter-set, per-column parameter, state-family and target-initialization fail-closed paths, with atomic publication only after full reconstruction succeeds.
 
-Current FCI28 provides real process split-run plus negative restart qualification. Current FCI30 provides serialized/2-worker/4-worker equivalence, ordering, rejection isolation, worker overlap, deterministic replay and hard mass. Current FCI35 provides held-out parallel committed-boundary restart composition.
+Current FCI28 provides real process split-run plus negative restart qualification. Current FCI30/FMQ26 evidence provides serialized/2-worker/4-worker equivalence, ordering, rejection isolation, worker overlap, deterministic replay and hard mass. Current FCI35/FMQ29 evidence provides held-out parallel committed-boundary restart composition.
 
-The FCI30 FMQ26 parallel fixture uses one parameter reference. FMR18 confirms multiple parameter references are a supported serialized runtime pattern. F-TB04 therefore adds a test-only temporary transform of immutable FMQ26 blob `26cc6e0ace986dc40db7635de7192958a1c0b868` to exercise two immutable parameter references inside one template under serialized, 2-worker and 4-worker execution. No owner evidence or production source is changed.
+The FMQ26 parallel fixture uses one parameter reference. FMR18 confirms multiple parameter references are a supported serialized runtime pattern. F-TB04 therefore adds a test-only temporary transform of immutable FMQ26 blob `26cc6e0ace986dc40db7635de7192958a1c0b868` to exercise two immutable parameter references inside one template under serialized, 2-worker and 4-worker execution. No owner evidence or production source is changed.
 
 ## Persisted catalog
 
@@ -41,10 +41,20 @@ Live inspection of F-TB03 showed that RB1 permanence is represented by exact sci
 
 The corrected FAST run `34609684896` on `0a77bc04061d2bf3dc267d073770ea2203781ac4` concluded `success`. It established catalog schema/counts, invariant mapping, determinism-class separation, no-new-tolerance policy, current-canonical source immutability, RB1 authority immutability, prior-testbank authority immutability, transaction semantics and O0/O2 transaction transcript identity.
 
+## First exact-head RELEASE attempt and replay-governance remediation
+
+The first exact-head closeout attempt was `a44494e982bf45842b89f350a1f8548a0f193f04`, workflow run `34610037573`. FAST succeeded. RELEASE failed before the FCI28 scientific/restart matrix executed because the historical FCI28 wrapper asserted that no production source anywhere in `src` could have evolved after its original restart candidate. That historical admission-time guard is not a valid preservation condition on the later current canonical, where unrelated subsequently admitted production capabilities legitimately exist.
+
+This was classified as `FTB04_HISTORICAL_REPLAY_GOVERNANCE_INCOMPATIBILITY`, not as a source defect. The immutable FCI28 replay blob remains hash-locked. F-TB04 now runs a temporary copy in which only the obsolete post-candidate whole-source drift guard is rebound to the exact current-canonical `src` and `reference` trees. All restart module blob locks, fixtures, numerical tests, O0/O2 comparisons, negative cases, mass gates and expected markers remain unchanged.
+
+The same preservation principle is applied proactively to the parallel and parallel-restart evidence. The obsolete FCI30 admission wrapper is not used as a current preservation authority because it locks an older serialized-runtime postimage. Instead, its immutable FMQ26 parallel matrix blob `26cc6e0ace986dc40db7635de7192958a1c0b868` and publication-order blob `f2584b0236e85d4f6e8b687cee97981eaaa909c9` are compiled and executed directly against the exact current-canonical source at O0 and O2. FCI35 is retained as the cross-worker restart authority through a temporary governance rebound; both its outer historical whole-source guard and the same guard inside its rehydrated immutable FMQ29 runner are rebound to the exact current-canonical source/reference trees, while all critical restart/parallel blob locks and held-out matrices remain intact.
+
+The resulting replay adapter was added at `testbank/runners/run_ftb04_current_canonical_replays.sh`. FAST remained green after the adapter integration on `a39df0fb8b725ce79cf290a6b56578d9cfc08ed8`, run `34610533357`.
+
 ## Defect status
 
-No production-source defect was discovered. The only observed failure was the F-TB04 validator path error described above and was remediated strictly inside the testbank harness. No separate production owner workunit is therefore required.
+No production-source defect has been discovered. Both observed failures were F-TB04 harness/preservation-governance defects and were remediated strictly outside production source. No separate production owner workunit is required on the evidence observed so far.
 
 ## Final exact-head rule
 
-F-TB04 follows the established F-TB03 closeout pattern. The final decision is valid only if the F-TB04 workflow concludes success with `head_sha` equal to the exact commit containing the final qualification status. That exact-head run must execute both FAST and RELEASE. RELEASE includes FCI28 restart qualification, FCI30 serialized/parallel qualification, the F-TB04 heterogeneous-parameter-reference MultiSWAP case, and FCI35 cross-worker committed-boundary restart qualification. DEEP remains explicit and is not required for closeout because the historical VQ31 replay performs a test-only overlay commit in its isolated checkout.
+F-TB04 follows the established F-TB03 closeout pattern. The final decision is valid only if the F-TB04 workflow concludes success with `head_sha` equal to the exact commit containing the final qualification status. That exact-head run must execute both FAST and RELEASE. RELEASE executes the current-canonical rebound FCI28 restart matrix, immutable FMQ26 serialized/parallel and publication-order matrices, the F-TB04 heterogeneous-parameter-reference MultiSWAP case, and current-canonical rebound FCI35/FMQ29 held-out cross-worker committed-boundary restart qualification. DEEP remains explicit and is not required for closeout because the historical VQ31 replay performs a test-only overlay commit in its isolated checkout.
