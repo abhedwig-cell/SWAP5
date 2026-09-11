@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.fdoc10_closeout.v1",
+  "work_unit": "F-DOC10",
+  "title": "RB1 Post-T11 Aggregate Traceability Reconciliation",
+  "base": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f",
+  "decision": "QUALIFIED_RB1_POST_T11_AGGREGATE_TRACEABILITY_RECONCILIATION_WITH_RESIDUAL_GAPS",
+  "closeout_state": "FINAL_WHEN_EXACT_HEAD_CI_GREEN",
+  "finality_rule": "Final only when .github/workflows/fdoc10-rb1-post-t11-aggregate-reconciliation.yml succeeds with head_sha equal to the exact final branch head containing this closeout and F-DOC10_STATUS.json. The first-green run is persisted qualification evidence; a successful exact-final-head run closes the workunit and must not be followed by metadata mutation.",
+  "aggregate_result": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0,
+    "population_coverage_changed": false,
+    "post_population_remediations": ["F-DOC08", "F-DOC09"],
+    "t11_program_gap_state": "OPEN_NARROWED",
+    "fully_traced_promotions": 0,
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false
+  },
+  "maturity_result": {
+    "RB1-TIME-REFERENCE": "Bounded temporal-acceptance T11 relation-to-test graph qualified; universal application accuracy and application H_budget remain external.",
+    "RB1-SW-REFERENCE": "Bounded reference-route verification evidence inventory qualified; complete T1, T3-T8 and whole-route T11 remain open.",
+    "other_13_required_capabilities": "No maturity promotion is made by F-DOC10."
+  },
+  "remaining_gap_state": {
+    "GAP-CONTROLLED-THEORY-FORMAL": "OPEN",
+    "GAP-T11-COMPLETE-GRAPHS": "OPEN_NARROWED",
+    "GAP-T12-APPLICATION-VALIDATION": "OPEN",
+    "GAP-WR-QA-2024-CONTROLLED-COPY": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "GAP-APPLICATION-TEMPORAL-H-BUDGET": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "GAP-SURFACE-EVAP-PERFORMANCE": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "authorities": {
+    "F_DOC07_population": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "F_DOC08": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+    "F_DOC09": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "evidence": {
+    "first_green_head": "48ffec4435528863c8d2ee762f7721539eceb8c4",
+    "first_green_workflow_run": 34643717230,
+    "first_green_job": 103409361334,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10281370296,
+    "first_green_artifact_name": "fdoc10-rb1-post-t11-aggregate-evidence-48ffec4435528863c8d2ee762f7721539eceb8c4",
+    "first_green_artifact_digest": "sha256:589e20981fd3874c499c8f3c51ed91cd9ae4d32f6b22df5f660229994d55aeb0",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
+  },
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "mass_criterion": "NONE",
+    "temporal_acceptance": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "F-DOC10 does not change the fixed 15-capability RB1 denominator or capability ownership.",
+    "F-DOC10 does not promote any capability to FULLY_TRACED by aggregation.",
+    "F-DOC10 does not convert F-DOC08 bounded temporal T11 qualification into universal application accuracy or a universal H_budget.",
+    "F-DOC10 does not convert F-DOC09 bounded reference verification evidence into a complete Full Richards theory or whole-route equation-to-test authority.",
+    "F-DOC10 does not establish Status A readiness, Status A compliance, Status AA compliance or external audit completion.",
+    "F-DOC10 does not reopen RB1 or alter production source, reference data, physics, solver, tolerances, mass criteria, temporal acceptance or performance policy.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ]
+}
