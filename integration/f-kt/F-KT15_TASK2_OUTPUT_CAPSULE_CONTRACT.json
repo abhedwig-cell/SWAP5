@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "TASK2_OUTPUT_CAPSULE_CONTRACT",
+  "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+  "source_head_before_persist": "0d1f111159c7cc585acca13da15c2cbddcc451d2",
+  "qualification": false,
+  "formal_status": "MINIMAL_TASK2_OUTPUT_CAPSULE_SOURCE_PROVEN_READY_FOR_IMPLEMENTATION",
+  "purpose": "Freeze the narrow reversible materialization seam between the qualified F-SI28 soil-water solve and the existing legacy SoilWater(3) acceptance/postsolve path. This is not a second transaction and does not broaden F-SI28 scientific admission.",
+  "github_source_evidence": {
+    "soilwater": {
+      "path": "src/legacy/b1_10_port/soilwater.f90",
+      "blob": "470bc81a380e114d70fecd75426ec2331c1c9fcc",
+      "finding_task2": "SoilWater(2) first calls SoilWaterStateVar(1), then delegates the hydraulic solve to HeadCalc; no accepted postsolve bookkeeping occurs in task 2.",
+      "finding_task3": "SoilWater(3) recomputes k/kmean from accepted h/theta, recomputes gwl via calcgwl(), then calls watstor() and fluxes()."
+    },
+    "controller_retry": {
+      "path": "src/legacy/b1_10_port/swap_part02.inc",
+      "blob": "a1bc342949362ccc00e4d1112147b9d69e12e7c4",
+      "finding": "SoilWater(2) executes inside the fldtreduce retry loop. If fldecdt becomes true, SoilWaterStateVar(2) restores the hydraulic state and TimeControl(5) drives retry; task 3 is not executed for that rejected trial."
+    },
+    "controller_accept": {
+      "path": "src/legacy/b1_10_port/swap_part03.inc",
+      "blob": "14482290cfa4ef1daeb03813c1290b2c793b27a9",
+      "finding": "After successful exit from the retry loop, SoilWater(3) is called exactly once before integral(3) and downstream accepted-step processes."
+    },
+    "solver_binding": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "finding": "F-SI28 returns candidate pressure_head/water_content/ponding_depth/groundwater_level plus top_flux/bottom_flux, diagnostics and optional result-only interface sensitivity. Solver scratch remains workspace-owned."
+    }
+  },
+  "independent_legacy_crosscheck": {
+    "authority_kind": "SUPPLEMENTARY_SOURCE_ARCHIVE_CROSSCHECK_NOT_GITHUB_PRODUCTION_AUTHORITY",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "files": {
+      "SWAP/soilwater.f90": "027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8",
+      "SWAP/watstor.f90": "f82ad4d35f98b7e9d7591762a0a986e0a070cfec13ec1ee1edb02f01fadd9b97",
+      "SWAP/fluxes.f90": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550"
+    },
+    "finding": "watstor() consumes theta for profile storage. fluxes() recomputes q(:) from accepted theta/thetm1, qtop, qbot and already-owned sink/drainage/storage terms; it does not require HeadCalc Jacobian/factorization/Newton scratch or a q(:) postimage from the solver service."
+  },
+  "minimal_accepted_materialization": {
+    "required": [
+      "h(1:numnod) <- result.candidate_state.pressure_head",
+      "theta(1:numnod) <- result.candidate_state.water_content",
+      "pond <- result.candidate_state.ponding_depth",
+      "qtop <- result.top_flux",
+      "qbot <- result.bottom_flux"
+    ],
+    "conservative_but_recomputed_by_task3": [
+      "gwl <- result.candidate_state.groundwater_level; SoilWater(3) subsequently recomputes gwl from accepted h via calcgwl(), so gwl is not a hidden task2 dependency"
+    ],
+    "result_metadata_not_physical_state": [
+      "interface_sensitivity",
+      "solver diagnostics",
+      "unrounded mass-balance residual"
+    ]
+  },
+  "explicitly_forbidden_capsule_content": [
+    "q(:)",
+    "k(:)",
+    "kmean(:)",
+    "dimoca(:)",
+    "watstor intermediates",
+    "fluxes intermediates",
+    "Newton vectors",
+    "Jacobian arrays",
+    "TRIDAG factorization/capture arrays",
+    "solver workspace/scratch",
+    "a second copy of outer transaction continuation state"
+  ],
+  "retry_and_accept_rules": {
+    "converged": "Materialize only the accepted fields above, expose F-SI28 result metadata to the F-KT14 bridge, then allow the unchanged SoilWater(3) postsolve path exactly once.",
+    "retry_advised": "Do not publish sensitivity or accepted result metadata; map to the existing legacy fldecdt/retry path so SoilWaterStateVar(2) restores the current-step state and SoilWater(3) is skipped.",
+    "failed": "Fail closed without accepted postimage publication or SoilWater(3) execution.",
+    "unsupported_route": "Use the unchanged direct legacy HeadCalc path; do not execute both the typed solver and HeadCalc for one hydraulic trial."
+  },
+  "invariant_checks": {
+    "single_hydraulic_authority": "PASS_DESIGN",
+    "compact_persistent_state": "PASS_DESIGN",
+    "scratch_per_worker": "PASS_DESIGN",
+    "transactional_rollback": "PASS_DESIGN",
+    "task3_exactly_once_on_accept": "PASS_DESIGN",
+    "mass_conservation": "OPEN_IMPLEMENTATION_AND_EXECUTABLE_GATE",
+    "accepted_sensitivity_transport": "OPEN_IMPLEMENTATION_GATE",
+    "unsupported_route_identity": "OPEN_EXECUTABLE_GATE"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "MINIMAL_TASK2_OUTPUT_CAPSULE_FROZEN_PRODUCTION_COMPOSITION_IMPLEMENTATION_READY"
+}
