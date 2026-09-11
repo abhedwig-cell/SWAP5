@@ -11,7 +11,9 @@ module mod_fmr_serialized_reference_backend
        KERNEL_STATUS_NOT_ADMITTED
   use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
+       fmr_optional_state_layout_known
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
@@ -454,8 +456,26 @@ contains
       diagnostics%admission_rejections = 1
       return
     end select
+    if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
+      result = kernel_result_t()
+      result%status = KERNEL_STATUS_NOT_ADMITTED
+      candidate = kernel_candidate_state_t()
+      diagnostics = kernel_diagnostics_t()
+      diagnostics%admission_rejections = 1
+      return
+    end if
     if (parameters%soil_temperature_active) then
-      if (template%optional_state_layout_id <= 0_int64 .or. parameters%snow_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .or. &
+          parameters%snow_active) then
+        result = kernel_result_t()
+        result%status = KERNEL_STATUS_NOT_ADMITTED
+        candidate = kernel_candidate_state_t()
+        diagnostics = kernel_diagnostics_t()
+        diagnostics%admission_rejections = 1
+        return
+      end if
+    else if (parameters%snow_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_SNOW) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
         candidate = kernel_candidate_state_t()

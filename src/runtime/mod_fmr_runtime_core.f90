@@ -13,6 +13,14 @@ module mod_fmr_runtime_core
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_NONE = 0_int64
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY = 1_int64
 
+  ! Qualified optional physical-state topology identities.  The layout ID is a
+  ! template capability identity; it does not imply that every column using the
+  ! template currently allocates the corresponding optional state.
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BASE = 0_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_SNOW = 60605_int64
+  integer(int64), parameter, public :: &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE = 390501_int64
+
   type, public :: fmr_logical_column_t
     integer(int64) :: column_id = 0_int64
     integer(int64) :: template_id = 0_int64
@@ -86,8 +94,21 @@ module mod_fmr_runtime_core
   public :: fmr_build_execution_order
   public :: fmr_count_templates
   public :: fmr_metadata_bytes_per_column
+  public :: fmr_optional_state_layout_known
 
 contains
+
+  pure logical function fmr_optional_state_layout_known(layout_id) result(known)
+    integer(int64), intent(in) :: layout_id
+
+    select case (layout_id)
+    case (FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &
+          FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE)
+      known = .true.
+    case default
+      known = .false.
+    end select
+  end function fmr_optional_state_layout_known
 
   logical function fmr_assignment_compatible(template, physics_topology_id, state_layout_id, backend_id)
     type(fmr_template_t), intent(in) :: template
