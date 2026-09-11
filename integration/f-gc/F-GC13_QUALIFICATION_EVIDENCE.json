@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC13",
+  "title": "Project Accuracy Contract Evidence Ingestion & Governance Template Qualification Evidence",
+  "status": "QUALIFIED_PRE_CLOSEOUT",
+  "authority": {
+    "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "canonical_stage": "F-CI45P",
+    "canonical_application_accuracy_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "pre_registration_commit": "11c70850de1f5569a9aebf25fbe0de920b465da9",
+    "qualified_head": "1da98c5f34c795e4352dad8c2b6de7074dc77d85",
+    "workflow_run": 34643009577,
+    "workflow_job": 103407033602,
+    "workflow_conclusion": "success"
+  },
+  "qualification_results": {
+    "canonical_contract_lock": "PASS",
+    "production_source_delta": "PASS_NONE",
+    "json_artifacts": "PASS",
+    "schema_profile_consistency": "PASS",
+    "classified_immutable_provenance": "PASS",
+    "positive_mapping_oracles": "PASS",
+    "rejection_matrix": "PASS_19_OF_19",
+    "forbidden_policy_substitutions": "PASS",
+    "external_provenance_separation": "PASS",
+    "direct_budget_reparameterization": "PASS",
+    "mass_conservation_relaxed": false
+  },
+  "positive_oracles": [
+    {
+      "fixture": "accepted_fraction_packet.json",
+      "qoi": "GROUNDWATER_HEAD",
+      "synthetic_H_app_cm": 8.0,
+      "synthetic_A_temporal": 0.25,
+      "expected_temporal_budget_cm": 2.0,
+      "result": "PASS",
+      "note": "Synthetic qualification-only values; not project defaults or policy recommendations."
+    },
+    {
+      "fixture": "accepted_direct_budget_packet.json",
+      "qoi": "GROUNDWATER_DRAWDOWN",
+      "synthetic_H_app_cm": 10.0,
+      "synthetic_direct_temporal_budget_cm": 2.0,
+      "expected_reparameterized_A_temporal": 0.2,
+      "expected_temporal_budget_cm": 2.0,
+      "result": "PASS",
+      "note": "The fraction is a deterministic representation of an externally supplied direct budget; SWAP does not select the fraction."
+    }
+  ],
+  "adversarial_rejection_oracles": [
+    "MISSING_H_APP:H_APP_NOT_AVAILABLE",
+    "UNQUALIFIED_H_APP:H_APP_NOT_EXTERNALLY_QUALIFIED",
+    "PHYSICAL_THRESHOLD_AS_H_APP:EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+    "CALIBRATION_METRIC_AS_H_APP:EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+    "MODEL_UNCERTAINTY_AS_H_APP:EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+    "MONITORING_TRIGGER_AS_H_APP:EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+    "INVALID_APPLICATION_SOURCE_DIGEST:INVALID_SOURCE_DIGEST",
+    "MISSING_TEMPORAL_POLICY:TEMPORAL_POLICY_NOT_AVAILABLE",
+    "SWAP_BEHAVIOR_AS_TEMPORAL_POLICY:EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+    "SWAP_DERIVED_EXTERNALITY_FALSE:SWAP_DERIVED_POLICY_FORBIDDEN",
+    "TIMESTEP_SCHEDULE_AS_ALLOCATION:EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH",
+    "SECONDARY_ATTESTATION_FALSE:FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED",
+    "FRACTION_ABOVE_ONE:INVALID_TEMPORAL_FRACTION",
+    "DIRECT_BUDGET_EXCEEDS_H_APP:DIRECT_TEMPORAL_BUDGET_EXCEEDS_H_APP",
+    "AMBIGUOUS_DIRECT_AND_FRACTION:AMBIGUOUS_TEMPORAL_POLICY",
+    "TEMPORAL_CLAIM_TYPE_MISMATCH:CLAIM_TYPE_MISMATCH",
+    "CLAIM_ID_REUSE:CLAIM_ID_REUSE_FORBIDDEN",
+    "PROVENANCE_ID_REUSE:PROVENANCE_ID_REUSE_FORBIDDEN",
+    "CANONICAL_PROVENANCE_MAPPING_MISMATCH:APPLICATION_PROVENANCE_MAPPING_MISMATCH"
+  ],
+  "governance_properties": {
+    "application_claim_requires_explicit_prediction_error_acceptance_rule": true,
+    "temporal_fraction_requires_explicit_temporal_allocation_rule": true,
+    "direct_temporal_budget_requires_explicit_direct_budget_rule": true,
+    "claim_basis_classification_required": true,
+    "source_digest_sha256_required": true,
+    "application_and_temporal_claim_ids_distinct": true,
+    "application_and_temporal_provenance_ids_distinct": true,
+    "same_governing_document_allowed_with_distinct_clause_level_claims": true,
+    "kernel_policy_selection": false,
+    "kernel_file_parsing": false,
+    "positive_budget_on_reject": false
+  },
+  "hard_nonclaims": [
+    "no real project H_app is qualified",
+    "no real project A_temporal is qualified",
+    "synthetic fixture numbers are not defaults",
+    "no project policy is selected by SWAP",
+    "no production SWAP-MODFLOW admission",
+    "no production source change",
+    "no canonical branch change",
+    "no mass-conservation relaxation",
+    "F-GC07 through F-GC12 are not reopened"
+  ],
+  "exact_head_requirement": "The commit introducing this qualification evidence must itself pass the F-GC13 workflow before closeout is written."
+}
