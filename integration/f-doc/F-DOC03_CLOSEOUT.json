@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.fdoc03_closeout.v1",
+  "work_unit": "F-DOC03",
+  "title": "RB1 Core Capability Traceability Population",
+  "release_id": "SWAP5-RB1-v1",
+  "status": "COMPLETE_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_CORE_TRACEABILITY_POPULATION_WITH_EXPLICIT_GAPS",
+  "validity_rule": "This closeout is final only when .github/workflows/fdoc03-rb1-core-traceability.yml completes successfully with head_sha equal to the exact commit containing this closeout.",
+  "base_authority": {
+    "fdoc02": "18942fee83eb385fccc1663230772ae03dcc9ae6",
+    "rb1_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_source_tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "rb1_release_run": 34586202805
+  },
+  "bounded_capabilities": [
+    "RB1-CORE-INTERVAL",
+    "RB1-CORE-DATA",
+    "RB1-CORE-TRANSACTION",
+    "RB1-CORE-MASS",
+    "RB1-CORE-DIAGNOSTICS"
+  ],
+  "first_green_qualification": {
+    "head": "dc781a51e5e0b3b9f8a15a9a0db13c6d32dd5033",
+    "workflow_run": 34595787407,
+    "conclusion": "success",
+    "artifact": 10261857406,
+    "artifact_digest": "sha256:5f8610d2ff66449d80b227a0b727b5f9b156a6af7681bf23b60ab55bb8d7545b"
+  },
+  "remediation_record": {
+    "initial_run": 34595591273,
+    "initial_head": "e941e2c9f0d3a6bbb825a119de6706063896d8ae",
+    "initial_conclusion": "failure",
+    "cause": "Validator incorrectly required the entire F-DOC02 src tree to equal the older frozen RB1 scientific-source src tree, although F-DOC03 only documents exact RB1 source objects and must preserve the F-DOC02 production tree without change.",
+    "correction": "Retain zero-production and zero-reference delta relative to exact F-DOC02, while binding described RB1 contracts by exact historical source authority, tree and three exact Git blob identities.",
+    "scientific_content_changed_by_remediation": false,
+    "registry_scope_changed_by_remediation": false
+  },
+  "traceability_result": {
+    "fully_traced_claimed": false,
+    "core_mass_t1_source_binding": "OPEN",
+    "t11_complete_test_graph": "OPEN_FOR_ALL_FIVE",
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false,
+    "classification": "BOUNDED_PARTIAL_TRACEABILITY_WITH_EXPLICIT_GAPS"
+  },
+  "source_pins": {
+    "src/runtime/mod_canonical_contracts.f90": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "src/runtime/mod_canonical_interval_runtime.f90": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+  },
+  "immutability": {
+    "production_delta_by_fdoc03": "NONE",
+    "reference_delta_by_fdoc03": "NONE",
+    "physics_delta_by_fdoc03": "NONE",
+    "solver_delta_by_fdoc03": "NONE",
+    "acceptance_threshold_delta_by_fdoc03": "NONE",
+    "performance_delta_by_fdoc03": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "nonclaims": [
+    "F-DOC03 does not claim FULLY_TRACED for any capability.",
+    "F-DOC03 does not claim Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC03 does not replace missing T1 source provenance or missing complete T11 equation-to-test graphs with release PASS evidence.",
+    "F-DOC03 does not alter the fixed 15-capability RB1 release denominator.",
+    "F-DOC03 does not reopen immutable RB1 science or release authority.",
+    "Surface-evaporation call-local copy/allocation throughput and scaling remain outside this workunit."
+  ],
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "RB1-CORE-MASS T1 controlled independent source binding",
+      "Complete T11 verification graph for all five core capabilities"
+    ]
+  }
+}
