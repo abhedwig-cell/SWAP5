@@ -14,9 +14,17 @@
     "RB1-RESTART-SERIAL",
     "RB1-RESTART-PARALLEL"
   ],
-  "status": "PERSISTED_AWAITING_EXACT_HEAD_CI",
-  "decision_if_exact_head_ci_green": "QUALIFIED_BOUNDED_RB1_EXECUTION_RESTART_TRACEABILITY_WITH_EXPLICIT_GAPS",
-  "validity_rule": "Final qualification and closure require .github/workflows/fdoc05-rb1-execution-restart-traceability.yml to complete successfully with head_sha equal to the exact commit containing final F-DOC05_STATUS.json and F-DOC05_CLOSEOUT.json.",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_EXECUTION_RESTART_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "validity_rule": "This status is final only when .github/workflows/fdoc05-rb1-execution-restart-traceability.yml completes successfully with head_sha equal to the exact branch head containing this final status and F-DOC05_CLOSEOUT.json.",
+  "first_green_qualification": {
+    "head": "e4d1cb76173b865fd83609ce60284f8dfbe44ca8",
+    "workflow_run": 34612136320,
+    "job": 103304979486,
+    "conclusion": "success",
+    "artifact": 10268119676,
+    "artifact_digest": "sha256:a8d9e058b6f872c92dd636669851865189c2ba3868d2c59f71015e5f7b92e4d0"
+  },
   "traceability_boundary": {
     "fully_traced_claimed": false,
     "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
@@ -60,12 +68,12 @@
   "work_state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
-    "closed": false,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "qualification_is_subject_to_exact_head_validity_rule": true,
     "scientific_scope_reopened": false,
     "open": [
-      "Exact-head F-DOC05 CI qualification",
       "T0-T7 traceability remains intentionally unresolved in this bounded workunit",
       "Complete T11 equation-to-test graphs",
       "T12 application validation"
