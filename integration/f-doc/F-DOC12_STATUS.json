@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.fdoc12_status.v1",
+  "work_unit": "F-DOC12",
+  "title": "RB1 Runtime Architecture T0-T7 Applicability and State-Transition Authority",
+  "branch": "work/f-doc12-rb1-runtime-architecture-tier-applicability",
+  "base": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_RB1_RUNTIME_ARCHITECTURE_T0_T7_APPLICABILITY_AND_STATE_TRANSITION_AUTHORITY_WITH_ZERO_SCIENTIFIC_PROMOTION",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc12-rb1-runtime-architecture-tier-applicability.yml to complete successfully with head_sha equal to the exact final branch head containing this status and F-DOC12_CLOSEOUT.json. After a successful exact-final-head run no metadata rewrite is required or allowed absent a genuine defect.",
+  "scope": {
+    "family": "RUNTIME_ARCHITECTURE",
+    "capabilities": 9,
+    "tier_scope": ["T0","T1","T2","T3","T4","T5","T6","T7"],
+    "carried_from_fdoc03": 4,
+    "materialised_by_fdoc12": 5,
+    "t0_t7_unresolved_after_fdoc12": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "scientific_authority_invented": false
+  },
+  "remaining_gap_state": {
+    "controlled_T0_T7_physical_science_and_hybrid": "OPEN_SEPARATE_FAMILIES",
+    "controlled_T0_T7_time_reference_numerical_method": "OPEN_SEPARATE_FAMILY",
+    "complete_T11_graphs_program_wide": "OPEN_NARROWED",
+    "T12_application_validation": "OPEN",
+    "WR_QA_2024_controlled_copy": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "application_temporal_H_budget": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "surface_evaporation_performance": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "scientific_tolerance_delta": "NONE",
+    "mass_criterion_delta": "NONE",
+    "temporal_acceptance_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false,
+    "universal_H_budget_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "Controlled physical-science/hybrid T0-T7 authority",
+      "Controlled RB1-TIME-REFERENCE numerical/formal authority",
+      "Remaining complete T11 graphs",
+      "T12 independent application validation",
+      "Controlled WR-QA-2024 copy and reconciliation",
+      "Application-specific temporal/groundwater H_budget policy",
+      "Surface-evaporation throughput/scaling and call-local allocation performance"
+    ]
+  }
+}
