@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "ACCEPTED_SURFACE_METADATA_RECONCILIATION",
+  "finding": "F-SI30 qualified dynamic top-boundary physics and solver consumption but explicitly did not qualify accepted surface-metadata commit transport. A production typed task-2 route that only materializes h/theta/pond/qtop/qbot would therefore omit accepted reva/epd/runots and top-regime metadata that direct legacy HeadCalc publishes.",
+  "resolution": {
+    "method": "DETERMINISTIC_FINAL_PROVIDER_REEVALUATION_AFTER_CONVERGED_TYPED_SOLVE",
+    "physics_owner": "unchanged F-SI29/F-SI30 provider",
+    "accepted_only": true,
+    "materialized_surface_fields": [
+      "reva <- bare_soil_evaporation",
+      "epd <- ponded_water_evaporation",
+      "runots <- runoff_depth",
+      "MOD_top.q0 <- net_potential_surface_flux",
+      "MOD_top.hsurf <- surface_head",
+      "MOD_top.ftoph <- final head/flux regime",
+      "MOD_top.flrunoff <- runoff potential/actual",
+      "kmean(1) <- surface_face_conductivity only for final head regime"
+    ],
+    "retry_or_failure_publication": false,
+    "new_physics_formula": false
+  },
+  "production_scope_guards": [
+    "SWRUNON=0 so no hidden runon callback is needed",
+    "SWPONDMX=0 so pondmx is explicit and time-invariant inside the admitted trial",
+    "SWDRA!=2 so external surface-water composition is not claimed",
+    "RSROEXP=1 for already-qualified linear runoff when runoff is active"
+  ],
+  "architecture": {
+    "persistent_state_added": false,
+    "worker_scratch_added": "small trial-result capsule only",
+    "mass_relaxation": false,
+    "duplicate_surface_physics": false,
+    "modflow_sign_conversion": false
+  },
+  "decision": "SURFACE_METADATA_SEAM_RESOLVED_FOR_RESTRICTED_IMPLEMENTATION_SUBJECT_TO_EXECUTABLE_QUALIFICATION"
+}
