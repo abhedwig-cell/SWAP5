@@ -1,0 +1,36 @@
+name: F-MR40 current-canonical soil-temperature recomposition
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-mr40-soil-temperature-current-canonical-recomposition
+    paths:
+      - .github/workflows/fmr40-current-canonical-recomposition.yml
+
+permissions:
+  contents: read
+
+jobs:
+  exact-recomposition-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout immutable F-MR40 candidate
+        run: |
+          git checkout --detach 6df43d73ae21676712873e2993ce1ecf385e5faa
+          test "$(git rev-parse HEAD)" = "6df43d73ae21676712873e2993ce1ecf385e5faa"
+          echo "FMR40_EXACT_CANDIDATE_CHECKOUT=PASS:$(git rev-parse HEAD)"
+      - name: Toolchain
+        run: |
+          python3 --version
+          gfortran --version
+      - name: Qualify current-canonical recomposition
+        run: bash tests/fmr/run_fmr40_current_canonical_recomposition_gate.sh
+      - name: Assert immutable candidate and clean source tree
+        run: |
+          test "$(git rev-parse HEAD)" = "6df43d73ae21676712873e2993ce1ecf385e5faa"
+          test -z "$(git status --porcelain -- src)"
+          echo "FMR40_EXACT_CANDIDATE_HEAD=PASS:6df43d73ae21676712873e2993ce1ecf385e5faa"
