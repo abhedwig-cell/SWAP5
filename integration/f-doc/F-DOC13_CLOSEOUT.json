@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fdoc13_closeout.v1",
+  "work_unit": "F-DOC13",
+  "title": "RB1 TIME-REFERENCE Restricted Numerical/Formal T0-T7 Authority",
+  "base": "e34caabe225986db3c60551f4168869f3e4cc2a2",
+  "decision": "QUALIFIED_RB1_TIME_REFERENCE_RESTRICTED_T0_T7_NUMERICAL_FORMAL_AUTHORITY_WITH_EXPLICIT_APPLICATION_ACCURACY_NONCLAIM",
+  "closeout_state": "FINAL_WHEN_EXACT_HEAD_CI_GREEN",
+  "finality_rule": "Final only when .github/workflows/fdoc13-rb1-time-reference-numerical-formal-authority.yml succeeds with head_sha equal to the exact final branch head containing this closeout and F-DOC13_STATUS.json. No metadata rewrite is required after that exact-final-head success.",
+  "result": {
+    "capability": "RB1-TIME-REFERENCE",
+    "family": "NUMERICAL_METHOD",
+    "tier_scope": ["T0","T1","T2","T3","T4","T5","T6","T7"],
+    "explicit_tier_dispositions": 8,
+    "unresolved_T0_T7_within_time_reference": 0,
+    "exact_linear_theorem_preserved": true,
+    "general_nonlinear_true_error_bound_created": false,
+    "numeric_H_budget_selected": false,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0
+  },
+  "authorities": {
+    "F_DOC12": "e34caabe225986db3c60551f4168869f3e4cc2a2",
+    "F_DOC11": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+    "F_DOC08": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+    "F_SI24_GATE_B_TESTED_HEAD": "546b16a8dcc12acf7e213ced593668e769ddc870",
+    "F_VQ30_TESTED_HEAD": "c83abe23bff2005c6211cf45d0a1c46738e08b7e",
+    "F_SI25_TESTED_HEAD": "bb51a0700bcf1484066b2c38d699654e697c007b",
+    "F_SI26_TESTED_HEAD": "d487641bee37940085df03bca07d956fc4a017a7",
+    "F_VQ34_CLOSEOUT": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "F_VQ34_TESTED_HEAD": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "remaining_gap_state": {
+    "GAP-APPLICATION-H-BUDGET-AND-TOTAL-ERROR-BUDGET": "OPEN_EXTERNAL_POLICY_APPLICATION_EVIDENCE",
+    "GAP-T12-APPLICATION-VALIDATION": "OPEN",
+    "GAP-WR-QA-2024-CONTROLLED-COPY": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "GAP-CONTROLLED-THEORY-FORMAL-PHYSICAL-HYBRID": "OPEN_SEPARATE_FAMILIES",
+    "GAP-REMAINING-T8-T10-AND-T11": "OPEN_AS_GOVERNED_BY_EXISTING_TRACEABILITY_REGISTRIES",
+    "GAP-SURFACE-EVAP-PERFORMANCE": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "mass_criterion": "NONE",
+    "temporal_acceptance": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "No numeric or default H_budget is selected, recommended or qualified for an application.",
+    "No universal temporal tolerance, coupling-window accuracy budget or groundwater-head accuracy budget is established.",
+    "The F-SI24 exact-linear true-error theorem is not generalized to nonlinear Richards; nonlinear evidence remains bounded transfer/finite-comparator evidence.",
+    "No shorter-dt monotonicity theorem is claimed.",
+    "No new bootstrap, arbitrary restart-history reconstruction, forcing/event/topology-discontinuity or coupling-window continuation scope is added.",
+    "No production source, reference data, physics, solver, tolerance, mass criterion, temporal acceptance or performance policy is changed.",
+    "No capability is promoted to FULLY_TRACED and no Status A or Status AA readiness/compliance is established.",
+    "RB1 scientific, qualification and release authorities remain immutable."
+  ]
+}
