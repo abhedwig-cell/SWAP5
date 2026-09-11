@@ -1,0 +1,15 @@
+name: F-PM08D7 fixed-weir checkpoint
+on:
+  push:
+    branches:
+      - work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate
+  workflow_dispatch:
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Restricted fixed-weir process checkpoint
+        run: bash tests/fpm/run_fpm08d7_fixed_weir_process_checkpoint.sh
