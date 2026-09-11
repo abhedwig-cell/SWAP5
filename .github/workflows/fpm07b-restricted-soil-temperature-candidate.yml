@@ -1,0 +1,22 @@
+name: F-PM07B Restricted Soil Temperature Candidate
+
+on:
+  push:
+    branches:
+      - work/f-pm07b-restricted-soil-temperature-candidate
+  workflow_dispatch:
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-PM07B candidate gate
+        run: bash tests/fpm/run_fpm07b_restricted_soil_temperature_candidate_gate.sh
