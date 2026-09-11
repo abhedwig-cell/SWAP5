@@ -1,0 +1,44 @@
+{
+  "workunit": "F-PM08D7",
+  "title": "Restricted Fixed-Weir Transactional Runtime Candidate",
+  "status": "DESIGN_PERSISTED_BEFORE_RUNTIME_SOURCE",
+  "source_authority": {
+    "canonical_source_head": "e4bafab3f6c6547113f5f8717da2467901f49a42",
+    "later_canonical_head_checked": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "later_delta": "governance-only F-CI41P status; no production-source delta"
+  },
+  "pure_operator_checkpoint": {
+    "head": "8994dc48bb35e5ddf688481355e6cb66dba2f010",
+    "workflow_run": 34551158567,
+    "conclusion": "success"
+  },
+  "architecture": {
+    "persistent_state": "Dedicated fmr_b110_fixed_weir_surface_water_state_t subclass. Only active columns carry SWST; inactive base-state layout is unchanged.",
+    "surface_water_state": "Exactly one physical continuation scalar: storage (SWST). Water level is derived from the qualified level/storage mapping and is not separately persisted.",
+    "parameters": "Feature-scoped immutable fixed-weir parameter registry outside the base soil parameter object.",
+    "forcing": "Feature-scoped surface-water forcing carries authoritative secondary-drainage scalar and external supply capacity; drainage node field remains Richards-only transient composition scratch.",
+    "numerics": "Feature-scoped fixed-weir numerical config remains separate from physical parameters/forcing and from the generic canonical numerical contract.",
+    "transaction_path": "Reuse the existing fmr_execute_serialized_resolved_physical_column -> kernel transaction -> canonical interval route. No second commit authority is introduced.",
+    "worker_context": "A D7 wrapper configures worker-local surface-water context before invoking the existing resolved executor and clears it afterwards.",
+    "mass_accounting": "When D7 is active, node drainage is internal soil-to-surface-water transfer and is excluded from external ledger. SWST gains the authoritative scalar transfer. Only supply is external-in and fixed-weir discharge is external-out. Scalar/node disagreement therefore remains visible as a hard transaction mass residual.",
+    "temporal_policy": "D7 admits only TX_TEMPORAL_EXTERNAL_FULL_HALF. Existing non-surface-water physical identity must remain exact; surface-water temporal error is abs(SWST_full - SWST_two_half). TX_TEMPORAL_MODEL_CERTIFICATE is held because the current model certificate covers Richards only.",
+    "restart": "The existing serialization-neutral committed-state persistence can carry the D7 state subclass without a byte-format/schema change, but restart admission must bind the state subclass to an explicit optional_state_layout_id and reject mismatched profiles.",
+    "snow_composition": "Held from the first D7 candidate to avoid an unqualified combined optional-state topology. D7 active requires snow inactive.",
+    "negative_drainage": "Held. The restricted candidate accepts nonnegative secondary drainage only.",
+    "runots_macropore_automatic_management": "Held outside D7."
+  },
+  "required_candidate_tests": [
+    "active one-step combined soil+SWST mass closure",
+    "inactive path preserves legacy external drainage accounting",
+    "scalar/node mismatch is transactionally mass-rejected",
+    "rejected/infeasible trial cannot mutate committed SWST",
+    "checkpoint retry starts from the same committed SWST",
+    "accepted commit publishes SWST exactly once",
+    "supply/discharge external-ledger sign checks",
+    "full-vs-two-half SWST temporal retry/acceptance behavior",
+    "D7 model-certificate mode fail-closed",
+    "restart export/restore preserves SWST and rejects optional-layout mismatch",
+    "O0/O2 identity for the D7 candidate route"
+  ],
+  "qualification_boundary": "This design and subsequent owner tests can establish a structural/runtime candidate only. Scientific equivalence, independent qualification and canonical admission require separate downstream evidence."
+}
