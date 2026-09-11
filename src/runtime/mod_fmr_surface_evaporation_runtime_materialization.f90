@@ -122,7 +122,7 @@ contains
   end subroutine fmr_materialize_restricted_surface_evaporation
 
   subroutine detached_state_from_view(view, state, ok)
-    type(process_hydraulic_view_t), intent(in) :: view
+    type(process_hydraulic_view_t), intent(inout) :: view
     type(soil_water_physical_state_t), intent(out) :: state
     logical, intent(out) :: ok
     integer :: n
@@ -138,9 +138,8 @@ contains
     if (.not. ieee_is_finite(view%groundwater_level)) return
 
     state%active_nodes = n
-    allocate(state%pressure_head(n), state%water_content(n))
-    state%pressure_head = view%pressure_head
-    state%water_content = view%water_content
+    call move_alloc(view%pressure_head, state%pressure_head)
+    call move_alloc(view%water_content, state%water_content)
     state%ponding_depth = view%ponding_depth
     state%groundwater_level = view%groundwater_level
     ok = .true.
