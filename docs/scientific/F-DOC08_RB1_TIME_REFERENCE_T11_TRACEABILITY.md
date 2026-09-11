@@ -58,7 +58,7 @@ F-VQ33 remains failed. Its source contradiction concerning native invalid-budget
 
 F-DOC08 marks complete only the bounded T11 graph for the already-qualified restricted temporal certificate semantics of `RB1-TIME-REFERENCE`.
 
-It does not claim a complete graph for application accuracy. In particular, no value or selection rule for `H_budget` is introduced. The application/runtime provenance that supplies an explicit finite positive `H_budget` remains external, and an application-specific temporal or groundwater-head error budget remains outside this workunit.
+It does not claim a complete graph for application accuracy. No value or selection rule for `H_budget` is introduced. The application/runtime provenance that supplies an explicit finite positive `H_budget` remains external, and an application-specific temporal or groundwater-head error budget remains outside this workunit.
 
 ## Hard nonclaims
 
