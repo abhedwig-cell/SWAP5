@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC12",
+  "project": "Western Harbour Tunnel and Warringah Freeway Upgrade SSI-8863",
+  "evidence_date": "2026-09-11",
+  "decision": "FAIL_CLOSED_WHT_PROJECT_DOES_NOT_SUPPLY_ADMISSIBLE_NUMERIC_H_APP_AND_TEMPORAL_ALLOCATION",
+  "numeric_H_app_found": false,
+  "numeric_A_temporal_found": false,
+  "direct_numeric_temporal_budget_found": false,
+  "numeric_H_temporal_budget_ready": false,
+  "sources": [
+    {
+      "id": "WHT_CONSOLIDATED_APPROVAL_MOD3",
+      "authority": "NSW Government Planning Portal",
+      "title": "Western Harbour Tunnel & Warringah Freeway Upgrade SSI-8863 MOD 3 Consolidated Approval",
+      "url": "https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSI-8863-MOD-3!20251028T222046.160+GMT",
+      "relevant_conditions": ["E216", "E218", "E219", "E220"],
+      "finding": "E219 requires a quantitative assessment of model predictive uncertainty at locations of primary importance, statistical calibration evaluation, independent expert peer review and consultation with DPE Water. It does not prescribe a numerical acceptable groundwater-head/drawdown prediction error that can serve as H_app, and it does not allocate any fraction of such an error requirement to numerical temporal/coupling error. Searches of the approval instrument for 'time step', 'time-step', 'temporal' and 'numerical error' returned no temporal-error allocation rule."
+    },
+    {
+      "id": "WHT_GT02_HIR_REV_C",
+      "authority": "Western Harbour Tunnel project public construction portal / published project report",
+      "title": "GT02 Project Wide Hydrogeological Interpretive Report, WHTP2-AAJV-NWW-GE-GT02-RPT-000001 Rev C, 24 June 2024",
+      "url": "https://media.caapp.com.au/pdf/xA7wNXxV66HX/4085aacc-d7ef-4722-a194-85e0db3952cb/Project%20Wide%20Hydrogeological%20Interpretive%20Report%20%28HIR%29%20%28Rev%20C%2C%20June%202024%29.pdf",
+      "finding": "The published report contains dedicated sections for predictions, sensitivity analysis, model uncertainty and limitations, uncertainty analysis and confidence-level classification. Such model-generated uncertainty characterization is evidence about prediction uncertainty, not by itself an externally governed acceptance requirement. No project/regulator statement was identified that converts an uncertainty percentile, calibration statistic or confidence classification into an admissible H_app or a temporal/coupling allocation."
+    },
+    {
+      "id": "WHT_INDEPENDENT_AUDIT_TRAIL",
+      "authority": "Western Harbour Tunnel independent audit publications",
+      "title": "Independent audit evidence for SSI-8863 condition E219",
+      "url": "https://media.caapp.com.au/X5tlgo5dvJvk.pdf",
+      "finding": "The audit trail confirms the project-wide HIR, independent peer review and regulator consultation/submission process. This strengthens project provenance but does not introduce a numerical application prediction-accuracy acceptance limit or a temporal numerical-error allocation."
+    }
+  ],
+  "project_specific_findings": {
+    "external_project_identity_bound": true,
+    "quantitative_predictive_uncertainty_required": true,
+    "independent_peer_review_required": true,
+    "monitoring_and_model_update_required": true,
+    "physical_inflow_limit_exists": true,
+    "physical_inflow_limit_value": "1 L/s/km",
+    "physical_inflow_limit_is_H_app": false,
+    "settlement_or_drawdown_impact_criteria_are_H_app": false,
+    "calibration_statistics_are_H_app": false,
+    "model_prediction_interval_is_H_app_without_external_acceptance_rule": false,
+    "model_time_step_schedule_is_A_temporal": false,
+    "external_numeric_prediction_accuracy_requirement_identified": false,
+    "external_numeric_temporal_allocation_identified": false
+  },
+  "rejected_substitutions": [
+    "1 L/s/km tunnel inflow compliance criterion as groundwater-head prediction accuracy",
+    "drawdown, settlement or receptor impact thresholds as prediction error tolerance",
+    "calibration residual or RMSE as prospective prediction-accuracy requirement",
+    "model ensemble spread, percentile or confidence class as H_app without an external acceptance rule",
+    "monitoring trigger or observed model-data difference as H_app without a governed project decision rule",
+    "groundwater model time-step schedule as A_temporal",
+    "F-GC07 empirical coupling error or estimator magnitude as A_temporal",
+    "arbitrary percentage split of total application accuracy to coupling temporal error"
+  ],
+  "contract_instantiation": {
+    "contract_id": null,
+    "contract_version": null,
+    "qoi_kind": "GROUNDWATER_HEAD_OR_DRAWDOWN",
+    "h_app_available": false,
+    "h_app_cm": null,
+    "h_app_externally_qualified": false,
+    "application_provenance_id": null,
+    "a_temporal_available": false,
+    "a_temporal": null,
+    "a_temporal_externally_qualified": false,
+    "temporal_allocation_provenance_id": null,
+    "materialize_model_temporal_budget": false
+  },
+  "architecture_result": {
+    "project_policy_owner": "external project/regulator/runtime-coupler policy",
+    "SWAP_kernel_selects_numbers": false,
+    "canonical_runtime_contract_remains_valid": true,
+    "no_positive_budget_materialized": true,
+    "mass_conservation_policy_unchanged": true,
+    "production_coupling_admission": false
+  },
+  "required_to_reopen_positive_instantiation": [
+    "a versioned project or regulator-approved numerical groundwater-head/drawdown prediction-accuracy requirement with receptor/location/time-horizon and uncertainty semantics",
+    "an independently governed numerical temporal/coupling allocation or direct temporal head-error budget tied to that application requirement"
+  ],
+  "nonclaims": [
+    "the project does not lack useful groundwater uncertainty analysis",
+    "the project groundwater model is not declared scientifically inadequate",
+    "no statement is made that the project HIR uncertainty analysis is wrong",
+    "no universal H_app is inferred",
+    "no universal A_temporal is inferred",
+    "no SWAP-MODFLOW production admission follows",
+    "no mass-conservation tolerance is introduced"
+  ]
+}
