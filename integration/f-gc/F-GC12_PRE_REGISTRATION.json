@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC12",
+  "title": "Western Harbour Tunnel Project-Specific Application Accuracy Contract Instantiation",
+  "status": "PRE_REGISTERED",
+  "branch": "work/f-gc12-wht-project-specific-accuracy-contract",
+  "authority": {
+    "current_canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "current_canonical_stage": "F-CI45P",
+    "F_GC10_closeout": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "F_GC11_closeout": "d14b995f135a6c719d39f370c36797b4de4678b8"
+  },
+  "frozen_project": {
+    "project_name": "Western Harbour Tunnel and Warringah Freeway Upgrade",
+    "approval_id": "SSI-8863",
+    "jurisdiction": "New South Wales, Australia",
+    "qoi": "groundwater head/drawdown prediction at decision-relevant receptors and monitoring locations",
+    "project_specific": true
+  },
+  "purpose": "Attempt the first concrete project-specific instantiation of the canonical coupling application-accuracy contract. Admit a numerical temporal head budget only if project or regulator-controlled evidence independently supplies both an admissible numerical prediction-accuracy requirement H_app and an admissible temporal/coupling allocation A_temporal, each with provenance.",
+  "hard_scope": {
+    "production_source_change": false,
+    "canonical_change": false,
+    "new_physics": false,
+    "solver_change": false,
+    "mass_tolerance_relaxation": false,
+    "derive_H_app_from_physical_impact_threshold": false,
+    "derive_H_app_from_calibration_residual": false,
+    "derive_A_temporal_from_F_GC07_observed_error": false,
+    "invent_percentage_allocation": false,
+    "production_MODFLOW_admission": false
+  },
+  "admission_rule": {
+    "numeric_H_app_required": true,
+    "numeric_A_temporal_or_direct_temporal_budget_required": true,
+    "both_must_be_external_to_SWAP_numerical_behavior": true,
+    "both_must_be_project_specific_and_provenance_bound": true,
+    "uncertainty_distribution_is_not_itself_an_accuracy_requirement": true,
+    "physical_drawdown_or_settlement_limit_is_not_itself_H_app": true,
+    "calibration_RMSE_is_not_itself_H_app": true,
+    "model_time_step_schedule_is_not_itself_A_temporal": true
+  },
+  "success_decision_candidate": "QUALIFIED_WHT_PROJECT_SPECIFIC_APPLICATION_ACCURACY_CONTRACT",
+  "fail_closed_decision_candidate": "FAIL_CLOSED_WHT_PROJECT_DOES_NOT_SUPPLY_ADMISSIBLE_NUMERIC_H_APP_AND_TEMPORAL_ALLOCATION",
+  "fail_closed_rule": "If either a project-specific numerical prediction-accuracy requirement or an independently governed temporal/coupling allocation is absent, no positive numerical budget is materialized and no production coupling claim follows.",
+  "architecture_invariants_requiring_closeout_audit": [9,10,11,12,13,15,23,25,26,28,29,30]
+}
