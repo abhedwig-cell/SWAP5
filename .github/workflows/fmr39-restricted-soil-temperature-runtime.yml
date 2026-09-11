@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   materialize-and-qualify:
+    if: ${{ !contains(github.event.head_commit.message, '[fmr39-materialized]') }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +28,35 @@ jobs:
         run: |
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "9af5a494526810324dc00706b444e448e770cba9"
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_restart_state_contract.f90)" = "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+      - name: Repair v1 ambiguous observation anchor deterministically
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('integration/f-mr/materialize_fmr39.py')
+          s=p.read_text()
+          old='''s=replace_once(s,
+          """    self%last_observation = fmr_serialized_physical_observation_t()
+              self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+          """,
+          """    self%last_observation = fmr_serialized_physical_observation_t()
+              self%last_observation%soil_temperature_active = self%soil_temperature_active
+              self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+          """,'advance thermal observation active')'''
+          new='''s=replace_once(s,
+          """    outcome = trial_outcome_t()
+              self%last_observation = fmr_serialized_physical_observation_t()
+              self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+          """,
+          """    outcome = trial_outcome_t()
+              self%last_observation = fmr_serialized_physical_observation_t()
+              self%last_observation%soil_temperature_active = self%soil_temperature_active
+              self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+          """,'advance thermal observation active')'''
+          if s.count(old) != 1:
+              raise SystemExit(f'FMR39 anchor-repair count={s.count(old)}')
+          p.write_text(s.replace(old,new,1))
+          print('FMR39_MATERIALIZER_ANCHOR_REPAIR=PASS')
+          PY
       - name: Materialize bounded runtime composition
         run: python3 integration/f-mr/materialize_fmr39.py
       - name: Qualify materialized composition before publication
@@ -36,6 +66,6 @@ jobs:
           test -n "$(git status --porcelain -- src/runtime)"
           git config user.name "SWAP5 qualification bot"
           git config user.email "swap5-qualification@users.noreply.github.com"
-          git add src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_restart_state_contract.f90
+          git add integration/f-mr/materialize_fmr39.py src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_restart_state_contract.f90
           git commit -m "materialize(F-MR39): compose restricted soil temperature transactionally [fmr39-materialized]"
           git push origin HEAD:work/f-mr39-restricted-soil-temperature-runtime-composition
