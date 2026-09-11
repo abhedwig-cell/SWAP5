@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.fgc15_preregistration.v1",
+  "work_unit": "F-GC15",
+  "title": "Production Groundwater Coupling Runtime Gap Decomposition and Implementation Order",
+  "status": "PRE_REGISTERED",
+  "branch": "work/f-gc15-production-groundwater-coupling-runtime-gap-decomposition",
+  "canonical_base": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "scope": {
+    "production_source_change": false,
+    "new_physics": false,
+    "new_solver": false,
+    "scientific_tolerance_change": false,
+    "production_coupling_admission": false,
+    "numeric_project_policy_selection": false,
+    "RB1_reopen": false
+  },
+  "live_observation": {
+    "canonical_accuracy_contract_present": true,
+    "canonical_accuracy_adapter_present": true,
+    "production_groundwater_coupling_window_orchestrator_found": false,
+    "production_MODFLOW_adapter_found": false,
+    "production_predictor_corrector_orchestrator_found": false
+  },
+  "pinned_authorities": {
+    "F_GC07_closeout": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+    "F_GC07_decision": "QUALIFIED_COUPLING_TEMPORAL_ERROR_CHARACTERIZATION_READY_FOR_APPLICATION_CLASS_BUDGET_COMPOSITION",
+    "F_GC14_closeout": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+    "F_GC14_adapter_blob_now_canonical": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "F_SI28_closeout_branch_head": "5b514e678d0d794e5837f161033b0bac58385707",
+    "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE"
+  },
+  "critical_scope_boundaries": [
+    "F-GC07 is research-harness temporal/coupling characterization only and does not admit a production coupler",
+    "F-SI28 is a solver-layer native-qbot sensitivity primitive only; transaction result transport, whole-window derivative composition and MODFLOW sign transformation remain explicitly unqualified there",
+    "F-GC14 only transports externally validated application-accuracy policy into the canonical runtime contract; it does not implement coupling orchestration",
+    "H_app and A_temporal remain externally governed and may not be invented by F-GC15"
+  ],
+  "qualification_goal": "Produce a machine-checkable, evidence-bound catalog of the remaining production groundwater-coupling runtime capabilities, their dependency order, their admission blockers and architecture-invariant obligations. A green F-GC15 means the gap decomposition is qualified, not that production coupling exists.",
+  "hard_nonclaims": [
+    "no production SWAP-MODFLOW coupling is admitted",
+    "no coupling window algorithm is added to production source",
+    "no universal predictor-corrector threshold is selected",
+    "no whole-window response tangent is qualified",
+    "no numeric H_app or A_temporal is selected",
+    "mass conservation is not relaxed"
+  ]
+}
