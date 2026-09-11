@@ -1,0 +1,45 @@
+name: F-DOC01 scientific documentation traceability architecture
+
+on:
+  push:
+    branches:
+      - work/f-doc01-status-a-aa-theory-code-traceability
+
+permissions:
+  contents: read
+
+jobs:
+  traceability-architecture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate F-DOC01 architecture and fail-closed Status A boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc01_traceability_architecture.py | tee _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_PUBLIC_REQUIREMENT_IDS_22_OF_22=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_STATUS_A_MATRIX_22_OF_22=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_STATUS_AA_MATRIX_22_OF_22=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_CONTROLLED_COPY_NOT_FABRICATED=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_STATUS_BOUNDARY_FALSE_READY_FOR_STATUS_A_REVIEW=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_ZERO_PRODUCTION_DELTA=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_ZERO_REFERENCE_DELTA=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_INVARIANTS_30_OF_30_PASS=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_HARD_MASS_UNCHANGED=PASS' _fdoc01_validator_stdout.txt
+          grep -Fq 'FDOC01_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_SCIENTIFIC_DOCUMENTATION_TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION' _fdoc01_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc01-traceability-evidence-${{ github.sha }}
+          path: |
+            _fdoc01_validator_stdout.txt
+            _fdoc01_traceability_evidence.json
+          if-no-files-found: warn
+          retention-days: 90
