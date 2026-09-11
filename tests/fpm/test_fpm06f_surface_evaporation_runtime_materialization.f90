@@ -2,12 +2,19 @@ module mod_fpm06f_fake_capacity_provider
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t
   use mod_surface_evaporation_capacity_contract, only: surface_evaporation_capacity_provider_t, &
-       surface_evaporation_capacity_result_t, SURFACE_EVAP_CAPACITY_AVAILABLE
+       surface_evaporation_capacity_result_t, SURFACE_EVAP_CAPACITY_AVAILABLE, &
+       SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION
   implicit none
 
   type, extends(surface_evaporation_capacity_provider_t) :: fake_capacity_provider_t
     real(real64) :: value = 0.0_real64
     integer :: return_status = SURFACE_EVAP_CAPACITY_AVAILABLE
+    logical :: check_base_state = .false.
+    integer :: expected_active_nodes = 0
+    real(real64) :: expected_pressure_head(2) = 0.0_real64
+    real(real64) :: expected_water_content(2) = 0.0_real64
+    real(real64) :: expected_ponding_depth = 0.0_real64
+    real(real64) :: expected_groundwater_level = 0.0_real64
   contains
     procedure :: evaluate => fake_capacity_evaluate
   end type fake_capacity_provider_t
@@ -20,6 +27,33 @@ contains
     type(surface_evaporation_capacity_result_t), intent(out) :: result
 
     result = surface_evaporation_capacity_result_t()
+
+    if (self%check_base_state) then
+      if (base_state%active_nodes /= self%expected_active_nodes) then
+        result%status = SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION
+        result%route = 'base-mismatch'
+        return
+      end if
+      if (.not. allocated(base_state%pressure_head) .or. .not. allocated(base_state%water_content)) then
+        result%status = SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION
+        result%route = 'base-mismatch'
+        return
+      end if
+      if (size(base_state%pressure_head) /= 2 .or. size(base_state%water_content) /= 2) then
+        result%status = SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION
+        result%route = 'base-mismatch'
+        return
+      end if
+      if (any(base_state%pressure_head /= self%expected_pressure_head) .or. &
+          any(base_state%water_content /= self%expected_water_content) .or. &
+          base_state%ponding_depth /= self%expected_ponding_depth .or. &
+          base_state%groundwater_level /= self%expected_groundwater_level) then
+        result%status = SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION
+        result%route = 'base-mismatch'
+        return
+      end if
+    end if
+
     result%status = self%return_status
     result%evaporation_capacity = self%value
     if (base_state%active_nodes > 0) result%route = 'fake-capacity'
@@ -29,6 +63,7 @@ end module mod_fpm06f_fake_capacity_provider
 
 program test_fpm06f_surface_evaporation_runtime_materialization
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_surface_evaporation_capacity_contract, only: SURFACE_EVAP_CAPACITY_AVAILABLE, &
@@ -47,13 +82,15 @@ program test_fpm06f_surface_evaporation_runtime_materialization
   use mod_fpm06f_fake_capacity_provider, only: fake_capacity_provider_t
   implicit none
 
-  type(kernel_committed_state_t) :: dry_state, threshold_state, ponded_state, capacity_state, uninitialized_state
+  type(kernel_committed_state_t) :: dry_state, threshold_state, just_above_state, ponded_state, &
+       capacity_state, uninitialized_state
   type(reference_et_demand_result_t) :: et
   type(fmr_reference_et_binding_diagnostics_t) :: et_diag, rejected_et_diag
   type(fake_capacity_provider_t) :: provider
   type(surface_evaporation_result_t) :: result, a1, b, a2
   type(fmr_surface_evaporation_runtime_diagnostics_t) :: diag
   type(process_hydraulic_view_t) :: before_view, after_view
+  real(real64) :: nanv
   logical :: ok
 
   et = reference_et_demand_result_t()
@@ -65,12 +102,14 @@ program test_fpm06f_surface_evaporation_runtime_materialization
 
   call make_committed(0.0_real64, 101_int64, dry_state)
   call make_committed(FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM, 102_int64, threshold_state)
-  call make_committed(10.0_real64*FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM, 103_int64, ponded_state)
-  call make_committed(0.0_real64, 104_int64, capacity_state)
+  call make_committed(1.000001_real64*FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM, 103_int64, just_above_state)
+  call make_committed(10.0_real64*FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM, 104_int64, ponded_state)
+  call make_committed(0.0_real64, 105_int64, capacity_state)
 
   call fmr_build_committed_process_hydraulic_view(dry_state, before_view, ok)
   call require(ok, 601)
 
+  call expect_base(provider, 0.0_real64)
   provider%value = 0.25_real64
   provider%return_status = SURFACE_EVAP_CAPACITY_AVAILABLE
   call fmr_materialize_restricted_surface_evaporation(dry_state, et, et_diag, provider, result, diag)
@@ -81,7 +120,9 @@ program test_fpm06f_surface_evaporation_runtime_materialization
   call require_close(result%bare_soil_evaporation, 0.25_real64, 606)
   call require_close(result%ponded_water_evaporation, 0.0_real64, 607)
   write(*,'(A)') 'FPM06F_DRY_CAPACITY_LIMIT=PASS'
+  write(*,'(A)') 'FPM06F_CAPACITY_RECEIVES_EXACT_COMMITTED_BASE=PASS'
 
+  call expect_base(provider, 0.0_real64)
   provider%value = -0.10_real64
   call fmr_materialize_restricted_surface_evaporation(dry_state, et, et_diag, provider, result, diag)
   call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 608)
@@ -90,6 +131,7 @@ program test_fpm06f_surface_evaporation_runtime_materialization
   call require_close(result%ponded_water_evaporation, 0.0_real64, 611)
   write(*,'(A)') 'FPM06F_DRY_NEGATIVE_RAW_CAPACITY=PASS'
 
+  call expect_base(provider, FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM)
   provider%value = 0.30_real64
   call fmr_materialize_restricted_surface_evaporation(threshold_state, et, et_diag, provider, result, diag)
   call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 612)
@@ -97,62 +139,96 @@ program test_fpm06f_surface_evaporation_runtime_materialization
   call require_close(result%bare_soil_evaporation, 0.30_real64, 614)
   write(*,'(A)') 'FPM06F_PONDING_THRESHOLD_EXACT=PASS'
 
-  provider%value = -0.15_real64
-  call fmr_materialize_restricted_surface_evaporation(ponded_state, et, et_diag, provider, result, diag)
+  call expect_base(provider, 1.000001_real64*FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM)
+  provider%value = 0.30_real64
+  call fmr_materialize_restricted_surface_evaporation(just_above_state, et, et_diag, provider, result, diag)
   call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 615)
   call require(diag%surface_is_ponded, 616)
-  call require_close(diag%raw_evaporation_capacity, -0.15_real64, 617)
-  call require_close(result%bare_soil_evaporation, 0.0_real64, 618)
-  call require_close(result%ponded_water_evaporation, 0.60_real64, 619)
+  call require_close(result%bare_soil_evaporation, 0.0_real64, 617)
+  call require_close(result%ponded_water_evaporation, 0.60_real64, 618)
+  write(*,'(A)') 'FPM06F_PONDING_JUST_ABOVE_THRESHOLD=PASS'
+
+  call expect_base(provider, 10.0_real64*FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM)
+  provider%value = -0.15_real64
+  call fmr_materialize_restricted_surface_evaporation(ponded_state, et, et_diag, provider, result, diag)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 619)
+  call require(diag%surface_is_ponded, 620)
+  call require_close(diag%raw_evaporation_capacity, -0.15_real64, 621)
+  call require_close(result%bare_soil_evaporation, 0.0_real64, 622)
+  call require_close(result%ponded_water_evaporation, 0.60_real64, 623)
   write(*,'(A)') 'FPM06F_PONDED_DEMAND=PASS'
 
   rejected_et_diag = et_diag
   rejected_et_diag%result_produced = .false.
+  call expect_base(provider, 0.0_real64)
   provider%value = 0.25_real64
   call fmr_materialize_restricted_surface_evaporation(dry_state, et, rejected_et_diag, provider, result, diag)
-  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_DEMAND_REJECTED, 620)
-  call require(.not. diag%capacity_called .and. .not. diag%process_called .and. .not. diag%result_produced, 621)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_DEMAND_REJECTED, 624)
+  call require(.not. diag%capacity_called .and. .not. diag%process_called .and. .not. diag%result_produced, 625)
   write(*,'(A)') 'FPM06F_INVALID_DEMAND_FAIL_CLOSED=PASS'
 
   call fmr_materialize_restricted_surface_evaporation(uninitialized_state, et, et_diag, provider, result, diag)
-  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_COMMITTED_VIEW_REJECTED, 622)
-  call require(.not. diag%capacity_called .and. .not. diag%result_produced, 623)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_COMMITTED_VIEW_REJECTED, 626)
+  call require(.not. diag%capacity_called .and. .not. diag%result_produced, 627)
   write(*,'(A)') 'FPM06F_UNINITIALIZED_COMMITTED_FAIL_CLOSED=PASS'
 
+  call expect_base(provider, 0.0_real64)
   provider%value = 0.25_real64
   provider%return_status = SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION
   call fmr_materialize_restricted_surface_evaporation(capacity_state, et, et_diag, provider, result, diag)
-  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_CAPACITY_REJECTED, 624)
-  call require(diag%capacity_called .and. .not. diag%process_called .and. .not. diag%result_produced, 625)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_CAPACITY_REJECTED, 628)
+  call require(diag%capacity_called .and. .not. diag%process_called .and. .not. diag%result_produced, 629)
   write(*,'(A)') 'FPM06F_CAPACITY_FAIL_CLOSED=PASS'
 
+  nanv = ieee_value(0.0_real64, ieee_quiet_nan)
+  call expect_base(provider, 0.0_real64)
+  provider%return_status = SURFACE_EVAP_CAPACITY_AVAILABLE
+  provider%value = nanv
+  call fmr_materialize_restricted_surface_evaporation(capacity_state, et, et_diag, provider, result, diag)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_CAPACITY_REJECTED, 630)
+  call require(diag%capacity_called .and. .not. diag%process_called .and. .not. diag%result_produced, 631)
+  write(*,'(A)') 'FPM06F_AVAILABLE_NONFINITE_CAPACITY_FAIL_CLOSED=PASS'
+
+  call expect_base(provider, 0.0_real64)
   provider%return_status = SURFACE_EVAP_CAPACITY_AVAILABLE
   provider%value = 0.20_real64
   call fmr_materialize_restricted_surface_evaporation(dry_state, et, et_diag, provider, a1, diag)
-  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 626)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 632)
   provider%value = 0.35_real64
   call fmr_materialize_restricted_surface_evaporation(dry_state, et, et_diag, provider, b, diag)
-  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 627)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 633)
   provider%value = 0.20_real64
   call fmr_materialize_restricted_surface_evaporation(dry_state, et, et_diag, provider, a2, diag)
-  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 628)
-  call require_close(a1%bare_soil_evaporation, a2%bare_soil_evaporation, 629)
-  call require_close(a1%ponded_water_evaporation, a2%ponded_water_evaporation, 630)
-  call require(abs(b%bare_soil_evaporation-a1%bare_soil_evaporation) > 1.0e-12_real64, 631)
+  call require(diag%status == FMR_SURFACE_EVAP_RUNTIME_OK, 634)
+  call require_close(a1%bare_soil_evaporation, a2%bare_soil_evaporation, 635)
+  call require_close(a1%ponded_water_evaporation, a2%ponded_water_evaporation, 636)
+  call require(abs(b%bare_soil_evaporation-a1%bare_soil_evaporation) > 1.0e-12_real64, 637)
   write(*,'(A)') 'FPM06F_ABA_REPEATABILITY=PASS'
 
   call fmr_build_committed_process_hydraulic_view(dry_state, after_view, ok)
-  call require(ok, 632)
-  call require(before_view%active_nodes == after_view%active_nodes, 633)
-  call require(all(before_view%pressure_head == after_view%pressure_head), 634)
-  call require(all(before_view%water_content == after_view%water_content), 635)
-  call require(before_view%ponding_depth == after_view%ponding_depth, 636)
-  call require(before_view%groundwater_level == after_view%groundwater_level, 637)
+  call require(ok, 638)
+  call require(before_view%active_nodes == after_view%active_nodes, 639)
+  call require(all(before_view%pressure_head == after_view%pressure_head), 640)
+  call require(all(before_view%water_content == after_view%water_content), 641)
+  call require(before_view%ponding_depth == after_view%ponding_depth, 642)
+  call require(before_view%groundwater_level == after_view%groundwater_level, 643)
   write(*,'(A)') 'FPM06F_COMMITTED_BASE_UNCHANGED=PASS'
   write(*,'(A)') 'FPM06F_NO_MASS_BOOKING_RESULT_ONLY=PASS'
   write(*,'(A)') 'FPM06F_RUNTIME_MATERIALIZATION_TEST PASS'
 
 contains
+
+  subroutine expect_base(value, ponding)
+    type(fake_capacity_provider_t), intent(inout) :: value
+    real(real64), intent(in) :: ponding
+
+    value%check_base_state = .true.
+    value%expected_active_nodes = 2
+    value%expected_pressure_head = [-100.0_real64, -250.0_real64]
+    value%expected_water_content = [0.20_real64, 0.24_real64]
+    value%expected_ponding_depth = ponding
+    value%expected_groundwater_level = -180.0_real64
+  end subroutine expect_base
 
   subroutine make_committed(ponding, lineage, committed)
     real(real64), intent(in) :: ponding
@@ -168,7 +244,7 @@ contains
     state%ponding_depth = ponding
     state%groundwater_level = -180.0_real64
     call fmr_new_b110_committed_state(committed, lineage, state, 12.5_real64, initialized)
-    call require(initialized, 638)
+    call require(initialized, 644)
   end subroutine make_committed
 
   subroutine require(condition, code)
