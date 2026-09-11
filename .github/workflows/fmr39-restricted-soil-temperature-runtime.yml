@@ -57,6 +57,19 @@ jobs:
           p.write_text(s.replace(old,new,1))
           print('FMR39_MATERIALIZER_ANCHOR_REPAIR=PASS')
           PY
+      - name: Repair prepublication source-delta inspection
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/fmr/run_fmr39_soil_temperature_runtime_gate.sh')
+          s=p.read_text()
+          old='mapfile -t changed_src < <(git diff --name-only "$CANONICAL"..HEAD -- src | sort)'
+          new='mapfile -t changed_src < <(git diff --name-only "$CANONICAL" -- src | sort)'
+          if s.count(old) != 1:
+              raise SystemExit(f'FMR39 gate working-tree-delta repair count={s.count(old)}')
+          p.write_text(s.replace(old,new,1))
+          print('FMR39_GATE_WORKTREE_DELTA_REPAIR=PASS')
+          PY
       - name: Materialize bounded runtime composition
         run: python3 integration/f-mr/materialize_fmr39.py
       - name: Qualify materialized composition before publication
@@ -66,6 +79,6 @@ jobs:
           test -n "$(git status --porcelain -- src/runtime)"
           git config user.name "SWAP5 qualification bot"
           git config user.email "swap5-qualification@users.noreply.github.com"
-          git add integration/f-mr/materialize_fmr39.py src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_restart_state_contract.f90
+          git add integration/f-mr/materialize_fmr39.py tests/fmr/run_fmr39_soil_temperature_runtime_gate.sh src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_restart_state_contract.f90
           git commit -m "materialize(F-MR39): compose restricted soil temperature transactionally [fmr39-materialized]"
           git push origin HEAD:work/f-mr39-restricted-soil-temperature-runtime-composition
