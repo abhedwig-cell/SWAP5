@@ -3,7 +3,7 @@
   "work_unit": "F-CI41P",
   "title": "Surface-Evaporation Runtime Post-Promotion Governance Reconciliation",
   "branch": "qualification/f-ci41p-current-canonical-postimage-governance-reconciliation",
-  "phase": "QUALIFIED_GOVERNANCE_RECONCILIATION_PENDING_EXACT_STATUS_HEAD_AND_CANONICAL_REPLAY",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
   "decision": "QUALIFIED_CURRENT_CANONICAL_SURFACE_EVAPORATION_RUNTIME_POSTIMAGE_GOVERNANCE_RECONCILIATION",
   "postpromotion_canonical_source": {
     "head": "cc3196ef5294f8ed6c1b68389ef33c42b476f053",
@@ -48,6 +48,16 @@
     "workflow_commit": "c9838da484e35004bc71bcdca6312b33a1c10f0e",
     "workflow_exact_head_run": 34549498704,
     "workflow_exact_head_conclusion": "success",
+    "status_precloseout_head": "e4bafab3f6c6547113f5f8717da2467901f49a42",
+    "status_precloseout_exact_head_run": 34549634222,
+    "status_precloseout_exact_head_conclusion": "success",
+    "promoted_canonical_head": "e4bafab3f6c6547113f5f8717da2467901f49a42",
+    "promoted_canonical_fci41_run": 34549708661,
+    "promoted_canonical_fci41_conclusion": "success",
+    "promoted_canonical_broad_run": 34549708711,
+    "promoted_canonical_broad_conclusion": "success",
+    "promoted_canonical_vq_reference_run": 34549711052,
+    "promoted_canonical_vq_reference_conclusion": "success",
     "authority_logic": "accept the immutable pre-promotion base before promotion, or a current-canonical descendant of the exact qualified composition only when both production blobs and the reference tree remain exact",
     "production_delta": false,
     "reference_delta": false,
@@ -61,17 +71,16 @@
     "reference_unchanged": true,
     "governance_reconciled": true,
     "reconciliation_tested": true,
-    "exact_status_head_requalified": false,
-    "governance_promoted_to_canonical": false,
-    "exact_promoted_canonical_fci41_green": false,
-    "exact_promoted_canonical_broad_green": false,
-    "final_closeout_complete": false
+    "exact_status_head_requalified": true,
+    "governance_promoted_to_canonical": true,
+    "exact_promoted_canonical_fci41_green": true,
+    "exact_promoted_canonical_broad_green": true,
+    "final_closeout_complete": true
   },
-  "final_gate": {
-    "require_exact_status_head_fci41_replay_green": true,
-    "then_fast_forward_current_canonical_governance_only": true,
-    "then_require_exact_promoted_canonical_fci41_replay_green": true,
-    "then_require_exact_promoted_canonical_broad_fci_green": true,
+  "closeout_metadata_policy": {
+    "this_commit_changes_status_metadata_only": true,
+    "require_exact_closeout_head_fci41_replay_before_any_further_promotion": true,
+    "if_promoted_require_exact_canonical_fci41_and_broad_replay": true,
     "no_production_or_reference_mutation_allowed": true
   }
 }
