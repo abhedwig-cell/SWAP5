@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.fci39p_status.v1",
+  "work_unit": "F-CI39P",
+  "title": "F-CI39 Postimage Moving-Canonical Preservation Governance Reconciliation",
+  "branch": "qualification/f-ci39p-current-canonical-postimage-governance-reconciliation",
+  "preparation_base": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+  "canonical_source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "fci39_candidate_postimage": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+  "fci39_candidate_parent": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "fpm06e_candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+  "fvq54_authority": "7cf8f6685ca24f855621f872bcf906f346edfa72",
+  "fvq54_exact_head_run": 34544824222,
+  "fvq54_conclusion": "success",
+  "phase": "PREPARATION_BLOCKED_PENDING_FCI39_EXACT_QUALIFIED_HEAD",
+  "decision": "BLOCKED_NOT_READY_FOR_CANONICAL_PROMOTION",
+  "triggering_governance_mismatch": {
+    "workflow": ".github/workflows/fci-canonical.yml",
+    "job": "current-restricted-canonical-preservation",
+    "frozen_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "conflicting_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "fci37_blob": "c1b482fa9233902080716385606d22a52dc2b026",
+    "fci39_candidate_blob": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "classification": "EXPECTED_QUALIFIED_CAPABILITY_DELTA_REJECTED_BY_STALE_MOVING_PRESERVATION_POINTER",
+    "scientific_regression": false,
+    "mass_regression": false
+  },
+  "required_reconciliation_after_fci39_qualification": [
+    "bind the exact final qualified F-CI39 admission head as a new immutable authority",
+    "retain F-CI37 as frozen historical authority and do not rewrite its historical result",
+    "update broad moving-canonical preservation so the qualified F-CI39 dependency surface is authoritative",
+    "replay F-VQ54 scalar-capacity evidence or an exact frozen equivalent in the canonical preservation chain",
+    "require zero additional src/reference/science delta in F-CI39P",
+    "require broad canonical regression green on the exact reconciled postimage before non-forced promotion"
+  ],
+  "hard_holds": [
+    "no canonical promotion from c9a73f2f37c9306e7a6fbf60b713b66d82c4a372 while the stale F-CI37 moving-preservation pointer remains",
+    "no modification of active F-CI39 production candidate inside F-CI39P",
+    "no weakening of hard mass conservation",
+    "no rewriting of historical F-CI37 qualification",
+    "no F-CI40 MR38 admission before F-CI39/F-CI39P canonical authority is final"
+  ],
+  "state": {
+    "governance_blocker_identified": true,
+    "preparation_persisted": true,
+    "fci39_exact_qualified_head_available": false,
+    "governance_reconciliation_implemented": false,
+    "tested": false,
+    "canonical_promoted": false
+  },
+  "next_gate": "Wait for an exact qualified F-CI39 admission head. Recompose this governance-only branch from that head, then update the broad B-preservation authority without changing src/reference/science."
+}
