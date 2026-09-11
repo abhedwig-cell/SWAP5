@@ -1,0 +1,28 @@
+name: F-GC09 application accuracy contract qualification
+
+on:
+  push:
+    branches:
+      - work/f-gc09-external-application-accuracy-contract
+    paths:
+      - 'src/runtime/mod_coupling_application_accuracy_contract.f90'
+      - 'tests/fgc/test_fgc09_application_accuracy_contract.f90'
+      - 'tests/fgc/run_fgc09_application_accuracy_contract.sh'
+      - 'integration/f-gc/F-GC09_*.json'
+      - '.github/workflows/fgc09-application-accuracy-contract.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: Run F-GC09 qualification
+        run: bash tests/fgc/run_fgc09_application_accuracy_contract.sh
