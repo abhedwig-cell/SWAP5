@@ -14,11 +14,17 @@
 
 F-CI46/F-CI46P admitted the typed adapter. F-CI47 reconciled moving canonical preservation and the broad canonical workflow run `34646474926` passed on repaired current canonical head `82280e350ea7514cc9f394db882d5cb3ef25b18c`, including `current-restricted-canonical-preservation`.
 
-The separate audit authority `qualification/f-ci47r-accidental-support-file-remediation-record` records the temporary empty-root-file tooling incident and its fast-forward remediation. That audit branch is not part of F-TB08 and is not merged into canonical.
+The separate exact-head-green audit authority `qualification/f-ci47r-accidental-support-file-remediation-record@1b6affe15e1e823c6f5d08dc6e36959c7b43d3b3` records the temporary empty-root-file tooling incident and its fast-forward remediation. Audit workflow `34646802638` passed. That audit branch is not part of F-TB08 and is not merged into canonical.
 
 ## Qualification history
 
-Pending FAST and exact-head RELEASE qualification.
+Precloseout FAST passed on `e2f9717d934fea1ec482aec1ae83071ed83c369f`:
+- workflow run `34647272253`
+- FAST job `103420942218`
+- exact-head start/end PASS
+- registry/provenance/source/reference/support composition PASS
+
+The final closeout head must still pass FAST and RELEASE on the same exact `[ftb08-release]` commit before the target decision becomes final.
 
 ## Frozen nonclaims
 
