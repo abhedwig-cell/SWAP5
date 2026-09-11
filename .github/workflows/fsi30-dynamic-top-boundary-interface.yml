@@ -36,3 +36,12 @@ jobs:
         run: gfortran --version
       - name: Run F-SI30 9072-case adapter identity gate
         run: bash tests/fsi/run_fsi30_adapter_identity_gate.sh
+
+  dynamic-headcalc-execution:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-SI30 real dynamic HeadCalc execution gate
+        run: bash tests/fsi/run_fsi30_dynamic_headcalc_execution_gate.sh
