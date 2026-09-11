@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC09",
+  "title": "External Application Accuracy Contract and Runtime Policy Seam Qualification Evidence",
+  "status": "QUALIFICATION_EVIDENCE_RECORDED",
+  "candidate_decision": "QUALIFIED_EXTERNAL_APPLICATION_ACCURACY_CONTRACT_SEAM_NO_NUMERIC_POLICY",
+  "canonical_admission": false,
+  "production_admission": false,
+  "authority": {
+    "F_GC08_closeout_head": "96e39932c925c862f41d01a2a0f5c44c88cbaca7",
+    "F_GC07_closeout_head": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+    "canonical_source_head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "pre_registration_commit": "52a2ad6f89eaaff63c922985f3a26e01c928c965",
+    "implementation_commit": "9707855467d03f9d73a575a1c6307539e756ec72",
+    "qualification_candidate_head": "7ddc4fd6970fc72ffe064ce074341d1166eea0ae",
+    "qualification_workflow_run": 34612548625,
+    "qualification_workflow_conclusion": "success"
+  },
+  "scope_result": {
+    "new_production_runtime_module": "src/runtime/mod_coupling_application_accuracy_contract.f90",
+    "changed_existing_production_source": false,
+    "canonical_contract_schema_changed": false,
+    "transaction_core_changed": false,
+    "solver_changed": false,
+    "physics_changed": false,
+    "mass_policy_changed": false,
+    "file_or_parsing_IO_added": false,
+    "numeric_H_app_selected": false,
+    "numeric_A_temporal_selected": false,
+    "silent_fallback_budget_added": false
+  },
+  "contract_result": {
+    "owner": "runtime/coupler application policy layer",
+    "supported_qoi": ["GROUNDWATER_HEAD", "GROUNDWATER_DRAWDOWN"],
+    "head_unit": "cm",
+    "H_app_semantics": "positive finite externally supplied and externally qualified application prediction-accuracy requirement with positive provenance id",
+    "A_temporal_semantics": "positive finite externally qualified allocation fraction with positive provenance id and 0 < A_temporal <= 1",
+    "composition": "H_temporal_budget = H_app * A_temporal",
+    "downstream_carrier": "existing canonical_numerical_config_t model_temporal_indicator_budget_available/value",
+    "carrier_schema_modified": false,
+    "stale_carrier_policy": "clear availability and value before attempting materialization so an invalid or incomplete new contract cannot retain an earlier application-owned budget",
+    "absence_policy": "explicitly unavailable; never infer a positive budget"
+  },
+  "source_bound_gates": {
+    "source_allowlist": "PASS: relative to F-GC08, src/ contains only src/runtime/mod_coupling_application_accuracy_contract.f90",
+    "canonical_contract_blob_lock": "PASS: c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "transaction_core_blob_lock": "PASS: 2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "no_IO_or_hidden_default_policy": "PASS",
+    "trap_safe_validation": "PASS",
+    "contract_matrix": "PASS",
+    "no_default_numeric_policy": "PASS",
+    "stale_budget_clearing": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "red_to_green_provenance": [
+    {
+      "stage": 1,
+      "head": "371f352b7274adacb1d188679ec4a1e91947db77",
+      "workflow_run": 34612193214,
+      "conclusion": "failure",
+      "classification": "TEST_COMPILE_QUALITY_FAILURE",
+      "finding": "The qualification test used direct REAL equality comparisons while compiling the test with -Werror; gfortran promoted -Wcompare-reals warnings to errors.",
+      "remediation": "Replace warning-producing REAL equality checks with warning-clean finite/value checks without relaxing scientific or contract semantics.",
+      "production_source_defect": false
+    },
+    {
+      "stage": 2,
+      "head": "45e1bcc2bcc180d00aabc337f340226e3ec1baf7",
+      "workflow_run": 34612299570,
+      "conclusion": "failure",
+      "classification": "REAL_RUNTIME_ROBUSTNESS_DEFECT",
+      "finding": "Under -ffpe-trap=invalid, a NaN contract input triggered SIGFPE because Fortran does not guarantee short-circuit evaluation of .and.; ieee_is_finite(x) being false did not guarantee that x > 0 would not also be evaluated.",
+      "remediation": "Rewrite floating-point validation as explicit sequential guards before relational comparisons.",
+      "production_source_defect": true
+    },
+    {
+      "stage": 3,
+      "head": "4ab9b2e94b0460a1c488f259f981951ad49efc09",
+      "workflow_run": 34612463715,
+      "conclusion": "failure",
+      "classification": "HARNESS_STRUCTURAL_ASSERTION_STALE",
+      "finding": "The runtime defect was fixed, but the shell gate still searched for the old textual form 'A_temporal <= 1' and therefore rejected the equivalent trap-safe guard 'if (A_temporal > 1) return'.",
+      "remediation": "Align the source-structure gate with the trap-safe implementation form while retaining the same 0 < A_temporal <= 1 semantic requirement.",
+      "production_source_defect": false
+    },
+    {
+      "stage": 4,
+      "head": "7ddc4fd6970fc72ffe064ce074341d1166eea0ae",
+      "workflow_run": 34612548625,
+      "conclusion": "success",
+      "classification": "QUALIFIED_CANDIDATE",
+      "finding": "All source-bound, runtime matrix, fail-closed, stale-clearing and O0/O2 identity gates passed under bounds/runtime checks and floating-point traps.",
+      "production_source_defect": false
+    }
+  ],
+  "pre_ci_lineage": [
+    {
+      "commit": "9707855467d03f9d73a575a1c6307539e756ec72",
+      "purpose": "materialize runtime/coupler application accuracy contract seam"
+    },
+    {
+      "commit": "c040cb5259a623544c0dc4029c61c62e431bf532",
+      "purpose": "add contract qualification matrix"
+    },
+    {
+      "commit": "234689ce4ecb24a182d696685fdeca38d9224369",
+      "purpose": "correct finite upper-range test expectation before CI admission"
+    },
+    {
+      "commit": "07751c43a34fe633bc06b97cea31ef7bb932b7e2",
+      "purpose": "add source-bound qualification gate"
+    }
+  ],
+  "scientific_and_architecture_nonclaims": [
+    "no universal groundwater-head or drawdown prediction-accuracy requirement",
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no numeric project H_budget",
+    "no claim that multiplication of H_app and A_temporal qualifies either input",
+    "no claim that F-GC07 temporal characterization is a universal physical error bound",
+    "no relaxation of q_SWAP = -q_GW mass conservation",
+    "no production SWAP-MODFLOW coupling admission",
+    "no canonical admission"
+  ],
+  "architecture_invariants": {
+    "1": "PASS one kernel retained; contract is outside the physical kernel",
+    "2": "PASS no file I/O or parsing in the new runtime contract",
+    "3": "PASS application policy/provenance remains separate from dynamic state and physics",
+    "4": "PASS only compact scalar/id contract data are carried; external documents/strings remain registry-owned",
+    "6": "PASS contract is compact and shareable and does not prescribe object-per-column heavy storage",
+    "9": "PASS no day/month/year assumption introduced",
+    "10": "PASS no fixed coupling-window duration introduced",
+    "11": "PASS coupling accuracy policy is represented as explicit runtime/coupler composition",
+    "12": "PASS application head accuracy remains separate from the hard H_SWAP/H_GW and q interface contract",
+    "13": "PASS mass conservation remains absolute and untouched",
+    "14": "PASS interface sensitivities/temporal certificates remain separate first-class inputs rather than hidden policy",
+    "15": "PASS no additional full SWAP production runs are required by this contract",
+    "16": "PASS compact contract semantics remain compatible with MultiSWAP batching and shared registries",
+    "23": "PASS numerical/application policy is not encoded as physics",
+    "26": "PASS qualification/provenance/availability are explicit",
+    "27": "PASS unconfigured application accuracy consumes no optional process state",
+    "28": "PASS project/application composition belongs to runtime/coupler, not SWAP kernel",
+    "29": "PASS no silent MODFLOW, calendar, file-format or project-specific dependency introduced",
+    "30": "PASS architecture consequences explicitly audited"
+  },
+  "closeout_rule": "Create a separate F-GC09 closeout commit after this evidence commit has itself passed the same F-GC09 qualification workflow; then require the exact closeout head to pass again before declaring F-GC09 closed."
+}
