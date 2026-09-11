@@ -73,13 +73,15 @@ cmp -s "$BUILD/txn-o0/out.txt" "$BUILD/txn-o2/out.txt" || fail "transaction O0/O
 echo 'FTB04_TRANSACTION_CORE_O0_O2_BIT_IDENTITY=PASS'
 
 if [[ "$PROFILE" == CANONICAL || "$PROFILE" == RELEASE || "$PROFILE" == DEEP ]]; then
-  bash tests/fci/run_fci28_restart_current_canonical_admission.sh | tee "$BUILD/fci28.txt"
+  bash testbank/runners/run_ftb04_current_canonical_replays.sh restart | tee "$BUILD/restart.txt"
   for marker in \
+    'FTB04_FCI28_CURRENT_CANONICAL_GOVERNANCE_REBOUND=PASS' \
     'FCI28_O0_O2_OUTPUT_IDENTITY=PASS' \
     'FCI28_RESTART_MASS_AND_CONTINUATION=PASS' \
     'FCI28_FAIL_CLOSED_STATE_FAMILY_AND_ATOMICITY=PASS' \
-    'FCI28_RESTART_CURRENT_CANONICAL_ADMISSION_GATE=PASS'; do
-    grep -Fq "$marker" "$BUILD/fci28.txt" || fail "FCI28 marker $marker"
+    'FCI28_RESTART_CURRENT_CANONICAL_ADMISSION_GATE=PASS' \
+    'FTB04_CURRENT_CANONICAL_RESTART_REPLAY=PASS'; do
+    grep -Fq "$marker" "$BUILD/restart.txt" || fail "restart marker $marker"
   done
 fi
 
@@ -171,22 +173,24 @@ PY
 }
 
 if [[ "$PROFILE" == RELEASE || "$PROFILE" == DEEP ]]; then
-  bash tests/fci/run_fci30_parallel_v1_canonical_admission.sh | tee "$BUILD/fci30.txt"
+  bash testbank/runners/run_ftb04_current_canonical_replays.sh parallel | tee "$BUILD/parallel.txt"
   for marker in \
-    'FCI30_PARALLEL_O0_O2_OUTPUT_IDENTITY=PASS' \
-    'FCI30_WORKER_OWNED_HEAVY_RUNTIME_SEAM=PASS' \
-    'FCI30_CANONICAL_SCHEDULER_AND_PUBLICATION_SEAMS=PASS'; do
-    grep -Fq "$marker" "$BUILD/fci30.txt" || fail "FCI30 marker $marker"
+    'FTB04_CURRENT_PARALLEL_MATRIX_O0_O2_BIT_IDENTITY=PASS' \
+    'FTB04_CURRENT_PARALLEL_PUBLICATION_O0_O2_BIT_IDENTITY=PASS' \
+    'FTB04_CURRENT_PARALLEL_SERIAL_2W_4W_EQUIVALENCE=PASS'; do
+    grep -Fq "$marker" "$BUILD/parallel.txt" || fail "parallel marker $marker"
   done
   echo 'FTB04_SERIALIZED_REPEATABILITY=PASS'
   run_heteroparam
-  bash tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh | tee "$BUILD/fci35.txt"
+  bash testbank/runners/run_ftb04_current_canonical_replays.sh parallel-restart | tee "$BUILD/parallel-restart.txt"
   for marker in \
+    'FTB04_FCI35_CURRENT_CANONICAL_GOVERNANCE_REBOUND=PASS' \
     'FCI35_EXACT_FMQ29_REPLAY_ON_CURRENT_CANONICAL=PASS' \
     'FCI35_HELDOUT_CROSS_WORKER_RESTART_REPLAY=PASS' \
     'FCI35_HARD_MASS_AND_CANONICAL_PUBLICATION_REPLAY=PASS' \
-    'FCI35_DECISION=READY_FOR_CANONICAL_CAPABILITY_ADMISSION'; do
-    grep -Fq "$marker" "$BUILD/fci35.txt" || fail "FCI35 marker $marker"
+    'FCI35_DECISION=READY_FOR_CANONICAL_CAPABILITY_ADMISSION' \
+    'FTB04_CURRENT_CANONICAL_PARALLEL_RESTART_REPLAY=PASS'; do
+    grep -Fq "$marker" "$BUILD/parallel-restart.txt" || fail "parallel restart marker $marker"
   done
 fi
 
