@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.fdoc05_closeout.v1",
+  "work_unit": "F-DOC05",
+  "title": "RB1 Execution and Restart Traceability",
+  "release_id": "SWAP5-RB1-v1",
+  "status": "CONDITIONAL_AWAITING_EXACT_HEAD_CI_GREEN",
+  "decision_if_exact_head_ci_green": "QUALIFIED_BOUNDED_RB1_EXECUTION_RESTART_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "validity_rule": "This closeout becomes final only when .github/workflows/fdoc05-rb1-execution-restart-traceability.yml succeeds with head_sha equal to the exact commit containing the final closeout and final status.",
+  "base_authority": {
+    "fdoc04": "a703747ce1991c5601b76a84f04969b602298268",
+    "rb1_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_source_tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "bounded_capabilities": [
+    "RB1-STANDALONE-N1",
+    "RB1-MULTISWAP-SERIAL",
+    "RB1-MULTISWAP-PARALLEL-V1",
+    "RB1-RESTART-SERIAL",
+    "RB1-RESTART-PARALLEL"
+  ],
+  "traceability_result": {
+    "classification": "BOUNDED_PARTIAL_TRACEABILITY_WITH_EXPLICIT_GAPS",
+    "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
+    "t11": "SCOPED_QUALIFICATION_EVIDENCE_BOUND_NOT_COMPLETE_GRAPH",
+    "open_tiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12"],
+    "fully_traced_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false
+  },
+  "qualification_evidence": {
+    "f_mq27": {
+      "closeout_head": "33beccd7b38f5a3c29131025e1b06166026851e3",
+      "matrix_blob": "efee0213881dff04d2111e4eccb879d50247324c",
+      "status_blob": "8368b2095b4996a63ed2bd1992b70cbf7c3318b0",
+      "run": 34451553550
+    },
+    "f_mq29": {
+      "qualified_evidence_head": "5ea88d81a63e6c706c87e99ac360f91f08711fc1",
+      "matrix_blob": "d080220c26f390eb08d6f32a64af685ec1c50746",
+      "status_blob": "b39f4475f111018f0a95d05c37e10f28b793ebe2",
+      "run": 34496804763
+    },
+    "f_mq30": {
+      "closeout_head": "48ee2841d783ee023c29391a7ea1e5d7ee0d20e0",
+      "matrix_blob": "40b45112f0e14accbcc08c015b988f39bf376eb7",
+      "status_blob": "3fafdbad7f923023b550d264ba5edb398c1903f3",
+      "run": 34528662051
+    }
+  },
+  "frozen_execution_restart_semantics": {
+    "standalone_n1": "same serialized runtime path as serial MultiSWAP; no separate kernel",
+    "parallel_v1_workers": [2, 4],
+    "worker_count_1_generic_pool": "delegates to serialized route and is not a multiworker speedup claim",
+    "restart_boundary": "COMMITTED_ONLY",
+    "cross_worker_restart": ["2_TO_4", "4_TO_2"],
+    "restart_persists_solver_newton_jacobian_scratch": false,
+    "restart_persists_worker_warm_start": false,
+    "restart_defines_filesystem_format": false,
+    "cross_version_restart_migration_claimed": false,
+    "hard_mass_conservation": "UNCHANGED"
+  },
+  "immutability": {
+    "production_delta_by_fdoc05": "NONE",
+    "reference_delta_by_fdoc05": "NONE",
+    "physics_delta_by_fdoc05": "NONE",
+    "solver_delta_by_fdoc05": "NONE",
+    "acceptance_threshold_delta_by_fdoc05": "NONE",
+    "performance_delta_by_fdoc05": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "nonclaims": [
+    "F-DOC05 does not claim FULLY_TRACED for any bounded capability.",
+    "F-DOC05 does not invent T1 physical/scientific theory authority for execution topology or restart mechanics.",
+    "F-DOC05 does not claim T12 application validation or Status A/AA.",
+    "F-DOC05 does not claim universal parallel speedup, throughput or performance superiority.",
+    "F-DOC05 does not qualify root-process science or surface-evaporation throughput/scaling.",
+    "F-DOC05 does not reopen immutable RB1 science, qualification or release authority."
+  ],
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "open": ["Exact-head CI qualification", "T0-T7 bounded traceability gaps", "complete T11 graphs", "T12 validation"]
+  }
+}
