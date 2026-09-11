@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.fdoc04_status.v1",
+  "work_unit": "F-DOC04",
+  "title": "RB1 Reference Richards and Temporal Acceptance Traceability",
+  "branch": "work/f-doc04-rb1-reference-temporal-traceability",
+  "base": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "capabilities": ["RB1-SW-REFERENCE", "RB1-TIME-REFERENCE"],
+  "status": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "decision_if_exact_head_ci_green": "QUALIFIED_BOUNDED_RB1_REFERENCE_TEMPORAL_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "traceability_boundary": {
+    "fully_traced_claimed": false,
+    "sw_reference_t1_source_binding": "OPEN_NO_SINGLE_CONTROLLED_T1_AUTHORITY_IDENTIFIED",
+    "sw_reference_complete_t11_graph": "OPEN",
+    "time_reference_scientific_policy": "QUALIFIED_WITHIN_FVQ34_FROZEN_SCOPE",
+    "time_reference_application_budget_policy": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "universal_H_budget_claimed": false,
+    "application_H_budget_selected": false,
+    "universal_temporal_tolerance_claimed": false,
+    "universal_groundwater_head_accuracy_budget_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false
+  },
+  "authority_chain": {
+    "f_si19_reference_linear_solver_seam": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "f_vq34_temporal_policy": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "f_ci21_temporal_materialization": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "f_ci40_temporal_dependency_preservation": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "frb01_temporal_runner_blob": "4e3a789f649a5b427a3fe0d89d01f09dc7277cfe"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false,
+    "f_vq33_reinterpreted_as_pass": false,
+    "surface_evaporation_throughput_scaling_claimed": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "scientific_scope_reopened": false,
+    "open": [
+      "Exact-head CI qualification",
+      "RB1-SW-REFERENCE controlled complete T1 theory binding",
+      "RB1-SW-REFERENCE complete T11 equation-to-test graph",
+      "Application-specific H_budget selection remains external to F-DOC04"
+    ]
+  }
+}
