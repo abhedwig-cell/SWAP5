@@ -3,17 +3,14 @@
   "work_unit": "F-TB06",
   "title": "Restricted Soil-Temperature Transaction, Restart & MultiSWAP Testbank Adoption",
   "branch": "work/f-tb06-soil-temperature-runtime-testbank-adoption",
-  "state": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
-  "decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
-  "validity_rule": "This closeout is final only when .github/workflows/ftb06-soil-temperature-runtime-adoption.yml concludes success with head_sha equal to the exact commit containing this status file, with both FAST and RELEASE jobs successful.",
+  "state": "RELEASE_HARNESS_REMEDIATION_PENDING",
+  "decision": null,
   "canonical_authority": "c7379b6b5b5f529ff96de3087379712bd665276a",
   "canonical_src_tree": "d5aec38b432242d2674885c8b8bd21d7f0fa0836",
   "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
   "F-TB05_authority": "81d4f0479a99bc456803f583457862387c267ec0",
   "F-MR39_authority": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
   "F-VQ58_authority": "5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
-  "F-CI45_authority": "14db7be4827e73650da18d494af5cf190e687490",
-  "F-CI45P_authority": "c7379b6b5b5f529ff96de3087379712bd665276a",
   "case_count": 8,
   "profile_counts": {"FAST":1,"CANONICAL":7,"RELEASE":8,"DEEP":8},
   "production_source_changed": false,
@@ -27,34 +24,14 @@
     "overall": "30_OF_30_NO_ADVERSE_DELTA",
     "mass_conservation": "HARD_UNCHANGED"
   },
-  "precloseout_FAST": {
-    "head": "f55135c17bb02b67099d176d9e56a5e044a92721",
-    "run": 34641642827,
-    "job": 103402571631,
-    "conclusion": "success"
-  },
-  "release_scope": {
-    "inherited_transaction_restart_multiswap": "F-TB04/F-TB05 moving-current replays rebound to F-CI45P canonical c7379b6",
-    "thermal_transaction": "atomic commit, complete rollback and same-origin retry from immutable F-MR39 oracle",
-    "thermal_restart": "continuous versus split/reconstruct/restore endpoint identity with optional thermal state",
-    "thermal_multiswap": "serialized mixed active/inactive column isolation and inactive-state compactness",
-    "thermal_determinism": "repeat and O0/O2 transcript identity with SHA256 cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
-    "thermal_science": "exact F-VQ58 scientific-authority replay",
-    "mass": "hard water-mass authority unchanged; thermal energy remains separate"
-  },
-  "nonclaims": [
-    "frost or latent heat",
-    "snow plus soil-temperature combined profile",
-    "thermal-active parallel throughput",
-    "new combined water-plus-thermal timestep acceptance policy",
-    "production SWAP-MODFLOW qualification",
-    "new numeric application-accuracy policy",
-    "new RB1 coverage"
-  ],
   "qualification": {
-    "FAST": "PASS_PRECLOSEOUT_AND_REQUIRED_ON_THIS_HEAD",
-    "RELEASE": "REQUIRED_ON_THIS_HEAD",
+    "FAST": "PASS_ON_PREVIOUS_CANDIDATES",
+    "RELEASE": "FAILED_HARNESS_SCOPE_MISMATCH_ON_34641736130_REMEDIATION_PENDING",
     "DEEP": "NOT_REQUIRED_FOR_CLOSEOUT"
   },
-  "source_defects_discovered": []
+  "failed_release_run": 34641736130,
+  "failure_classification": "TESTBANK_HARNESS_SCOPE_MISMATCH_NOT_PRODUCTION_DEFECT",
+  "failure_detail": "An inherited F-TB04/F-TB05 moving-current replay retained an obsolete F-CI28 restart-contract blob lock. The F-TB06 contract does not require wholesale historical moving-current requalification; its RELEASE profile requires the eight thermal cases, FMR19 disabled-path preservation, exact thermal fingerprint and F-VQ58 replay, all owned by the immutable F-CI45 replay.",
+  "source_defects_discovered": [],
+  "target_decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION"
 }
