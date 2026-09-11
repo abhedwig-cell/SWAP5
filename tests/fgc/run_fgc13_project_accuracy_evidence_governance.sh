@@ -48,12 +48,19 @@ schema = json.load(open('integration/f-gc/templates/project_accuracy_contract_ev
 profile = json.load(open('integration/f-gc/templates/project_accuracy_contract_governance_v1.json', encoding='utf-8'))
 assert schema['properties']['schema_id']['const'] == 'SWAP5_PROJECT_ACCURACY_CONTRACT_EVIDENCE_V1'
 assert set(schema['properties']['project']['properties']['qoi_kind']['enum']) == {'GROUNDWATER_HEAD','GROUNDWATER_DRAWDOWN'}
+provenance_required = set(schema['$defs']['provenance']['required'])
+assert 'evidence_basis_kind' in provenance_required
+assert 'source_digest_sha256' in provenance_required
+assert schema['$defs']['provenance']['properties']['source_digest_sha256']['pattern'] == '^[0-9a-f]{64}$'
 assert profile['ownership']['kernel_policy_selection'] is False
 assert profile['ownership']['kernel_file_parsing'] is False
+assert profile['provenance_integrity']['source_digest_sha256_required'] is True
+assert profile['provenance_integrity']['evidence_basis_classification_required'] is True
 assert profile['fail_closed_behavior']['positive_budget_on_reject'] is False
 assert profile['fail_closed_behavior']['mass_conservation_policy_change'] is False
 assert len(profile['forbidden_substitutions']) >= 6
 print('FGC13_SCHEMA_PROFILE_CONSISTENCY=PASS')
+print('FGC13_CLASSIFIED_IMMUTABLE_PROVENANCE=PASS')
 PY
 
 fraction_output="$(python3 "$VALIDATOR" "$FIXTURES/accepted_fraction_packet.json")"
