@@ -33,10 +33,13 @@ grep -Fq 'logical :: h_app_available = .false.' "$MODULE" || fail 'H_app absence
 grep -Fq 'real(real64) :: h_app_cm = 0.0_real64' "$MODULE" || fail 'H_app scalar default changed'
 grep -Fq 'logical :: a_temporal_available = .false.' "$MODULE" || fail 'A_temporal absence default changed'
 grep -Fq 'real(real64) :: a_temporal = 0.0_real64' "$MODULE" || fail 'A_temporal scalar default changed'
-grep -Fq 'self%a_temporal <= 1.0_real64' "$MODULE" || fail 'temporal allocation upper-bound validation missing'
+grep -Fq 'if (self%a_temporal > 1.0_real64) return' "$MODULE" || fail 'temporal allocation upper-bound validation missing'
+grep -Fq 'if (.not. ieee_is_finite(self%h_app_cm)) return' "$MODULE" || fail 'trap-safe H_app finite guard missing'
+grep -Fq 'if (.not. ieee_is_finite(self%a_temporal)) return' "$MODULE" || fail 'trap-safe allocation finite guard missing'
 grep -Fq 'config%model_temporal_indicator_budget_available = .false.' "$MODULE" || fail 'stale budget clearing missing'
 grep -Fq 'config%model_temporal_indicator_budget = 0.0_real64' "$MODULE" || fail 'stale budget value clearing missing'
 echo 'FGC09_NO_IO_OR_HIDDEN_DEFAULT_POLICY=PASS'
+echo 'FGC09_TRAP_SAFE_VALIDATION=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 
