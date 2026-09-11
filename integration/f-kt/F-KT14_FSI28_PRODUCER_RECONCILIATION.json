@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-KT14",
-  "purpose": "Reconcile the exact qualified F-SI28 producer dependency before adding transactional result transport.",
+  "purpose": "Reconcile the exact qualified F-SI28 producer dependency and its fail-closed mapping into generic transaction trial-result transport.",
   "canonical_branch_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
   "physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
   "physical_source_tree": "bca9d2d4dd3c8c42edf635b0887ee62b475b5abd",
@@ -35,19 +35,52 @@
       }
     ]
   },
+  "bridge": {
+    "path": "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+    "producer_type": "soil_water_solve_result_t.interface_sensitivity",
+    "consumer_type": "trial_outcome_t.interface_sensitivity",
+    "accepted_source_status": "SW_SOLVE_CONVERGED",
+    "destination_cleared_before_mapping": true,
+    "retry_or_failed_source_is_unavailable": true,
+    "native_value_and_sign_preserved": true,
+    "producer_method_preserved": true,
+    "temporal_provenance_assigned_by_bridge": false,
+    "modflow_sign_transformation": false
+  },
+  "evidence": {
+    "precloseout_exact_head": "cc425f77e14e1fddd1af4039d7731d27d2b932f1",
+    "precloseout_workflow": 34545339968,
+    "precloseout_conclusion": "success",
+    "transport_matrix": ["O0", "O2"],
+    "qualified_f_si28_blob_lock": "PASS",
+    "qualified_f_si28_exact_authority_replay": [
+      "run_fsi28_interface_sensitivity_gate.sh",
+      "run_fsi28_cross_sign_gate.sh",
+      "run_fsi28_fallback_failclosed_gate.sh"
+    ],
+    "bridge_fail_closed_test": "tests/fkt/test_fkt14_solver_result_bridge.f90"
+  },
   "reconciliation": {
     "canonical_contained_interface_sensitivity_result_type_before_materialization": true,
     "canonical_contained_full_qualified_opt_in_producer_before_materialization": false,
     "qualified_producer_materialized_byte_exact": true,
     "later_canonical_changes_since_merge_base_touched_these_four_paths": false,
     "claims_f_si28_was_already_canonical": false,
-    "production_physics_changed_by_f_kt14_transport_work": false
+    "new_hydraulic_tangent_authority_created": false,
+    "headcalc_tangent_authority_added": false,
+    "second_nonlinear_tangent_trajectory_added": false,
+    "solver_result_to_trial_result_bridge_implemented": true,
+    "transaction_result_transport_implemented": true,
+    "canonical_local_terminal_publication_implemented": true,
+    "kernel_public_result_transport_implemented": true
   },
-  "preserved_limits": [
-    "transaction_result_sensitivity_transport remains to be implemented by F-KT14",
-    "canonical interval whole-window derivative composition is not admitted",
-    "MODFLOW sign transformation is not admitted",
-    "MODFLOW coupling is not admitted",
-    "solver scratch and tangent state remain worker-owned and non-persistent"
-  ]
+  "explicit_exclusions": [
+    "The legacy B1.10 physical interval path still calls HeadCalc directly and does not expose the structured F-SI28 solver result; it therefore remains interface-sensitivity unavailable rather than inventing a second tangent authority.",
+    "F-KT14 does not qualify a direct B1.10 legacy SWAP/HeadCalc production composition for interface sensitivity.",
+    "Canonical interval whole-window derivative composition is not admitted.",
+    "MODFLOW sign transformation is not admitted.",
+    "MODFLOW coupling is not admitted.",
+    "Solver scratch and tangent state remain worker-owned and non-persistent."
+  ],
+  "next_blocker": "A production physical transaction composition that actually routes its soil-water solve through the qualified F-SI28 solver service must be owned and qualified separately before F-ROSS01 J1E can claim real end-to-end production tangent publication."
 }
