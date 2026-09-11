@@ -1,5 +1,5 @@
 program test_fsi29_dynamic_top_boundary_provider
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64, error_unit
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
   use mod_surface_evaporation_capacity_contract, only: surface_evaporation_capacity_result_t, &
@@ -240,7 +240,7 @@ contains
     real(real64) :: scale
     scale = max(1.0_real64, abs(actual), abs(expected))
     if (abs(actual-expected) > 4096.0_real64*epsilon(1.0_real64)*scale) then
-      write(*,'(A,I0)') 'FSI29_TEST_FAIL_CODE=', code
+      write(error_unit,'(A,I0)') 'FSI29_TEST_FAIL_CODE=', code
       error stop 1
     end if
   end subroutine require_close
@@ -249,7 +249,7 @@ contains
     logical, intent(in) :: condition
     integer, intent(in) :: code
     if (.not. condition) then
-      write(*,'(A,I0)') 'FSI29_TEST_FAIL_CODE=', code
+      write(error_unit,'(A,I0)') 'FSI29_TEST_FAIL_CODE=', code
       error stop 1
     end if
   end subroutine require
