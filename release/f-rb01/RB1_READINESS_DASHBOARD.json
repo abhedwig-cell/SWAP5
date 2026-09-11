@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.frb01_readiness_dashboard.v1",
+  "work_unit": "F-RB01",
+  "status": "QUALIFIED_READY_FOR_RELEASE_AUTHORITY",
+  "required_denominator": 15,
+  "required_pass": 15,
+  "required_fail": 0,
+  "required_gap": 0,
+  "readiness_percent_fixed_denominator": 100.0,
+  "decisive_run": 34569690664,
+  "decisive_workflow_head": "05092df17222c1761b42940bca369208ae009654",
+  "frozen_release_candidate": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+  "production_source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "toolchain": {
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "hard_gates": {
+    "scientific": "PASS_WITHIN_FROZEN_SCOPE",
+    "mass_conservation": "PASS_HARD",
+    "transactionality": "PASS",
+    "restart": "PASS_RESTRICTED_COMMITTED_BOUNDARY_SCOPE",
+    "determinism": "PASS",
+    "O0_O2": "PASS_WHERE_REQUIRED_BY_ADMITTED_PROFILE",
+    "negative_fail_closed": "PASS",
+    "architecture_invariants": "30_AUDITED_0_FAIL",
+    "production_source_changed_by_frb01": false
+  },
+  "required_capabilities": [
+    {"id":"RB1-CORE-INTERVAL","status":"PASS"},
+    {"id":"RB1-CORE-DATA","status":"PASS"},
+    {"id":"RB1-CORE-TRANSACTION","status":"PASS"},
+    {"id":"RB1-CORE-MASS","status":"PASS"},
+    {"id":"RB1-CORE-DIAGNOSTICS","status":"PASS"},
+    {"id":"RB1-SW-REFERENCE","status":"PASS"},
+    {"id":"RB1-TIME-REFERENCE","status":"PASS"},
+    {"id":"RB1-STANDALONE-N1","status":"PASS"},
+    {"id":"RB1-MULTISWAP-SERIAL","status":"PASS"},
+    {"id":"RB1-MULTISWAP-PARALLEL-V1","status":"PASS"},
+    {"id":"RB1-ET-ROOT-SERIAL","status":"PASS"},
+    {"id":"RB1-ROOT-PARALLEL","status":"PASS"},
+    {"id":"RB1-SURFACE-EVAP-RESTRICTED","status":"PASS"},
+    {"id":"RB1-RESTART-SERIAL","status":"PASS"},
+    {"id":"RB1-RESTART-PARALLEL","status":"PASS"}
+  ],
+  "admitted_optional": [
+    {"id":"RB1-DIVDRA-SERIAL-1L-POS","status":"ADMITTED_OPTIONAL_NOT_IN_REQUIRED_DENOMINATOR"},
+    {"id":"RB1-SURFACE-EVAP-LOCAL-PERF","status":"ADMITTED_OPTIONAL_NOT_IN_REQUIRED_DENOMINATOR"}
+  ],
+  "blockers": {
+    "scientific": 0,
+    "mass": 0,
+    "transaction": 0,
+    "restart": 0,
+    "runtime": 0,
+    "architecture": 0,
+    "release_evidence": 0
+  },
+  "performance_readiness": {
+    "status": "BOUNDED_CHARACTERIZATION_SUFFICIENT_FOR_RB1_NON_SLA_RELEASE_CLAIM",
+    "absolute_runtime_sla": null,
+    "universal_speedup_claim": false,
+    "portable_peak_rss_claim": false,
+    "representative_p95_p99_difficult_column_claim": false,
+    "parallel_v1_positive_scaling_evidence": true,
+    "negative_tail_evidence_preserved": true,
+    "surface_evaporation_local_allocation_improvement_preserved": true,
+    "surface_evaporation_multiswap_throughput_claim": false
+  },
+  "release_classification": {
+    "all_swap431_functionality": false,
+    "all_physical_options": false,
+    "universal_modflow_accuracy": false,
+    "rossfast_production": false,
+    "status_a": false,
+    "status_aa": false,
+    "every_application_domain_validated": false
+  },
+  "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY"
+}
