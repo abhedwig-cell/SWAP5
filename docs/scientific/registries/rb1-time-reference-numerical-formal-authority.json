@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.fdoc13_time_reference_numerical_formal_authority.v1",
+  "work_unit": "F-DOC13",
+  "title": "RB1 TIME-REFERENCE Restricted Numerical/Formal T0-T7 Authority",
+  "release_id": "SWAP5-RB1-v1",
+  "base_authority": {
+    "fdoc12": "e34caabe225986db3c60551f4168869f3e4cc2a2",
+    "fdoc11": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "capability": {
+    "capability_id": "RB1-TIME-REFERENCE",
+    "family": "NUMERICAL_METHOD",
+    "scope": "Restricted reference-Richards temporal indicator, explicit head-budget normalization, model-certificate acceptance and bounded transactional retry semantics already admitted to RB1.",
+    "tier_scope": ["T0","T1","T2","T3","T4","T5","T6","T7"]
+  },
+  "authority_chain": {
+    "F_SI24": {
+      "role": "analytic and owner-verified bounded stiffness-aware indicator basis",
+      "derivation_path": "integration/f-si/F-SI24_GATE_A_LINEAR_DEFECT_BOUND_DERIVATION.json",
+      "derivation_blob": "c674633b4de8779af3b58998ab028dc7591bac8f",
+      "status_path": "integration/f-si/F-SI24_STATUS.json",
+      "status_blob": "32b83b7bdd3bc9ffeb051a2efcece8375d63f1f8",
+      "exact_linear_scope": "M*u_dot + A*u = 0 with constant SPD M, constant SPSD A and backward Euler over dt>0",
+      "nonlinear_boundary": "NO_GENERAL_NONLINEAR_BOUND"
+    },
+    "F_VQ30": {
+      "role": "independent held-out qualification of the fixed F-SI24 indicator candidate and exact manufactured linear reproduction",
+      "closeout_path": "integration/f-vq/F-VQ30_CLOSEOUT.json",
+      "closeout_blob": "6663bcc1149f07962bb9921840958d6d7de628a4",
+      "tested_head": "c83abe23bff2005c6211cf45d0a1c46738e08b7e",
+      "workflow_run": 34332303346,
+      "nonlinear_boundary": "FINITE_COMPARATOR_CONSISTENT_NOT_TRUE_GENERAL_NONLINEAR_ERROR_BOUND"
+    },
+    "F_SI25": {
+      "role": "production solver-owned accepted-state operator and indicator seam",
+      "closeout_path": "integration/f-si/F-SI25_CLOSEOUT.json",
+      "closeout_blob": "5bbb3613fe53ab68ec083e979dc7b062c117349c",
+      "tested_head": "bb51a0700bcf1484066b2c38d699654e697c007b",
+      "workflow_run": 34338272775
+    },
+    "F_SI26": {
+      "role": "controlled dimensional normalization candidate",
+      "closeout_path": "integration/f-si/F-SI26_CLOSEOUT.json",
+      "closeout_blob": "a07afb736ef3dd4a4fd937c9b04f83bcf77e70c0",
+      "tested_head": "d487641bee37940085df03bca07d956fc4a017a7",
+      "workflow_run": 34349176535,
+      "formula": "C_h=B_inf/H_budget",
+      "default_H_budget": null
+    },
+    "F_VQ34": {
+      "role": "fresh independent qualification of remediated explicit-budget production policy binding",
+      "closeout_commit": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+      "closeout_path": "integration/f-vq/F-VQ34_CLOSEOUT.json",
+      "closeout_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270",
+      "plan_blob": "4f3f7c8883397ed96d3af2f6585f25698c58e7b4",
+      "tested_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+      "workflow_run": 34364081068,
+      "decision": "QUALIFIED_REMEDIATED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITHIN_FROZEN_SCOPE"
+    },
+    "F_DOC08": {
+      "role": "bounded T11 relation-to-test graph",
+      "final_head": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+      "workflow_run": 34642744759,
+      "registry_path": "docs/scientific/registries/rb1-time-reference-t11-traceability.json",
+      "registry_blob": "1dc7983a3a89546093fcf0f46ee6007401b26d35"
+    }
+  },
+  "canonical_source_pins": [
+    {"path":"src/solver/mod_reference_richards_temporal_indicator.f90","blob":"fe8f87d11257d4c6bc019f1d628ac41ba3106d4e"},
+    {"path":"src/solver/mod_soil_water_solver_contract.f90","blob":"dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0"},
+    {"path":"src/transaction/mod_transaction_reference.f90","blob":"2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"}
+  ],
+  "tier_dispositions": {
+    "T0": {
+      "status": "NOT_APPLICABLE",
+      "rationale": "RB1-TIME-REFERENCE is a numerical temporal-control capability, not an independently modelled physical phenomenon. Physical-process phenomena belong to the composed process capabilities."
+    },
+    "T1": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-SI24","F-VQ30","F-SI26","F-VQ34"],
+      "meaning": "Controlled rationale exists for a backward-Euler temporal defect/head indicator, its explicit dimensionless head-budget normalization and fail-closed model-certificate use. The exact true-error theorem is limited to the stated constant linear dissipative semi-discrete scope; nonlinear B1.10 evidence is transfer/consistency evidence, not a general true-error theorem."
+    },
+    "T2": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-SI25","F-SI26","F-VQ34"],
+      "meaning": "Conceptual model: a converged Richards candidate is observed without changing its principal state; previous accepted right-derivative history plus current endpoint derivative feed a model-owned temporal indicator; an explicitly supplied valid H_budget normalizes B_inf to C_h; unavailable/invalid prerequisites fail closed."
+    },
+    "T3": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-SI24","F-SI26","F-VQ34"],
+      "relations": [
+        "u_dot_np1=(u_np1-u_n)/dt for the accepted-state/candidate endpoint derivative representation used by the implementation",
+        "e_raw=0.5*dt*(u_dot_np1-u_dot_n)",
+        "J_BE*delta=(M/dt)*e_raw within the admitted indicator construction",
+        "B_M=min(||e_raw||_M,2||delta||_M)",
+        "B_inf=B_M/sqrt(m_min) for positive diagonal M in the qualified construction",
+        "C_h=B_inf/H_budget",
+        "H_budget must be explicitly supplied, finite and >0 in cm pressure head",
+        "certificate validity additionally requires qualified temporal history and an available finite nonnegative B_inf",
+        "model-certificate acceptance boundary is C_h<=1 after hard mass acceptance"
+      ]
+    },
+    "T4": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-SI25","F-VQ34"],
+      "meaning": "SWAP-specific admitted envelope is the reference Richards legacy binding with explicit fixed-flux top boundary, bottom mode 5, no macropore operator, no active root-sink provider, admitted B1.10 head-independent source/sink semantics, conductivity_implicit_mode=0 and conductivity_mean_method=1. Unsupported routes return indicator unavailable/fail closed rather than silently changing physics."
+    },
+    "T5": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-SI24","F-VQ30"],
+      "meaning": "The controlled continuous/semi-discrete numerical basis is M*u_dot+A*u=0 with constant SPD M and constant SPSD A for the exact-linear theorem scope. Backward-Euler endpoint error is bounded by the fixed F-SI24 construction in that scope. This tier does not elevate the nonlinear production indicator to a general nonlinear true-error upper bound; nonlinear evidence remains finite-comparator consistency/transfer only."
+    },
+    "T6": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-SI24","F-VQ34"],
+      "meaning": "Time discretisation is generic backward-Euler trial stepping over dt=t1-t0>0 with qualified previous accepted right-derivative history. Rejected model-certificate trials use bounded transactional retry with reduced attempt dt; no day boundary and no theorem of monotone C_h improvement under shorter dt is assumed."
+    },
+    "T7": {
+      "status": "RESOLVED_RESTRICTED",
+      "authority": ["F-VQ34","F-DOC08"],
+      "meaning": "Method authority: solve candidate from checkpoint, require hard mass gate first, require available finite nonnegative certificate and C_h<=1, otherwise rollback and bounded retry, and commit candidate state only after all acceptance gates pass. No default H_budget is supplied."
+    }
+  },
+  "formal_scope_boundary": {
+    "exact_linear_true_error_bound": true,
+    "general_nonlinear_true_error_bound": false,
+    "nonlinear_finite_comparator_transfer": true,
+    "numeric_H_budget_selected": false,
+    "universal_H_budget": false,
+    "universal_temporal_tolerance": false,
+    "groundwater_head_accuracy_budget": false,
+    "shorter_dt_monotonicity": false,
+    "arbitrary_no_history_bootstrap": false,
+    "arbitrary_restart_event_topology_continuation": false,
+    "hard_mass_precedence": true,
+    "calendar_boundary_dependency": false
+  },
+  "result": {
+    "numerical_method_capabilities_in_fdoc11_denominator": 1,
+    "time_reference_t0_t7_explicit_dispositions": 8,
+    "time_reference_t0_t7_unresolved_after_fdoc13": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0,
+    "rb1_science_reopened": false,
+    "rb1_release_reopened": false
+  },
+  "remaining_open_dependencies": [
+    "Application-specific H_budget selection and total temporal/groundwater head-accuracy budget remain external policy/application evidence.",
+    "T12 independent application validation remains open.",
+    "Controlled WR-QA-2024 source and exact reconciliation remain open.",
+    "Physical-science and hybrid T0-T7 authority families remain separate work.",
+    "Whole-capability T8-T10 and any still-open complete T11 requirements remain governed by the existing traceability gap registry.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ],
+  "hard_nonclaims": [
+    "No production source, reference data, physics, solver, scientific tolerance, mass criterion, temporal acceptance or performance policy is changed by F-DOC13.",
+    "No numeric or default H_budget is selected, recommended or qualified for an application.",
+    "No universal temporal tolerance or groundwater-head accuracy budget is established.",
+    "B_inf and C_h are not promoted to general nonlinear true-error upper bounds.",
+    "No shorter-dt monotonicity theorem is claimed.",
+    "No unsupported bootstrap, restart-history reconstruction, forcing/event/topology continuation or coupling-window scope is added.",
+    "No capability is promoted to FULLY_TRACED and no Status A or Status AA readiness/compliance is claimed.",
+    "RB1 science, qualification and release authorities remain immutable."
+  ]
+}
