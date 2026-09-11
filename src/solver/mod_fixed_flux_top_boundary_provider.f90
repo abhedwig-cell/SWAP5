@@ -19,7 +19,6 @@ contains
     type(soil_water_boundary_conditions_t), intent(in) :: requested
     type(soil_water_top_boundary_result_t), intent(out) :: result
 
-    if (water_content_top < -huge(1.0_real64) .or. self%reserved_marker() /= 0) error stop 'unreachable'
     result = soil_water_top_boundary_result_t()
     result%status = SW_TOP_BOUNDARY_AVAILABLE
     result%regime = SW_TOP_BOUNDARY_REGIME_FLUX
@@ -30,10 +29,5 @@ contains
     result%runoff_resolved = .true.
     result%route = 'fixed-flux'
   end subroutine fixed_flux_top_evaluate
-
-  integer function reserved_marker(self) result(marker)
-    class(fixed_flux_top_boundary_provider_t), intent(in) :: self
-    marker = 0
-  end function reserved_marker
 
 end module mod_fixed_flux_top_boundary_provider
