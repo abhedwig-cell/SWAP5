@@ -1,0 +1,22 @@
+name: F-PM06G surface evaporation accepted publication readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm06g-surface-evaporation-accepted-publication-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PM06G exact owner qualification
+        run: bash tests/fpm/run_fpm06g_surface_evaporation_accepted_publication.sh
