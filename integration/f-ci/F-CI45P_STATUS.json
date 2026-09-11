@@ -23,6 +23,22 @@
     "status_validation_job": 103376369188,
     "conclusions": "success"
   },
+  "initial_postimage_reconciliation": {
+    "head": "5c19d08e3f5612c9e1d516e5a5a57beec42ce0c5",
+    "run": 34634014532,
+    "conclusion": "success"
+  },
+  "corroborating_promoted_runtime_replay": {
+    "head": "e7d667d703f7e9f1e62cfab5d3457172540259e1",
+    "run": 34634089100,
+    "job": 103377667419,
+    "conclusion": "success",
+    "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+    "FMR19_preservation": "PASS",
+    "FVQ58_replay": "PASS",
+    "FCI44_contract_oracle": "PASS",
+    "all_30_invariants": "PASS"
+  },
   "qualification_transfer_basis": {
     "promoted_tree_is_exact_qualified_candidate_tree": true,
     "postpromotion_production_delta": "NONE",
@@ -30,12 +46,18 @@
     "F_CI45_status_blob": "8ed79e93798a8a92f8b4540c6bafa1fba5bde34b",
     "F_CI45_evidence_blob": "b9ce85c47141fe1f95dc1b485a3d592e19f52fd8",
     "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
-    "all_30_architecture_invariants_preserved": true
+    "all_30_architecture_invariants_preserved": true,
+    "postimage_specific_architecture_reconciliation_present": true,
+    "strong_replay_production_and_reference_equivalent_to_final_authority": true
   },
+  "evidence": "integration/f-ci/F-CI45P_EVIDENCE.json",
+  "architecture_reconciliation": "integration/f-ci/F-CI45P_ARCHITECTURE_RECONCILIATION.json",
   "final_freeze_gate": {
     "require_reconciliation_workflow_success_on_exact_branch_head": true,
     "require_canonical_still_exactly_promoted_head": true,
     "require_support_only_reconciliation_delta": true,
+    "require_no_src_or_reference_delta": true,
+    "require_strong_promoted_runtime_replay_bound": true,
     "require_true_two_parent_final_reconciliation_merge": true,
     "force_update_forbidden": true
   },
@@ -46,6 +68,8 @@
     "no new combined water plus thermal timestep acceptance policy",
     "no production SWAP-MODFLOW admission",
     "no numeric application-accuracy policy",
+    "no mass-conservation relaxation",
     "no RB1 reopening"
-  ]
+  ],
+  "next_required_step": "Require the automatically triggered reconciliation workflow to pass on this exact final status/evidence head while canonical remains exactly 14db7be4827e73650da18d494af5cf190e687490. Then finalize F-CI45P by a true two-parent merge [14db7be..., exact F-CI45P authority], never by force update."
 }
