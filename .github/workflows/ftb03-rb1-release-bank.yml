@@ -69,6 +69,27 @@ jobs:
           grep -Fq 'FTB03_SURFACE_EVAP_THROUGHPUT_NONCLAIM=PASS' _ftb03_validator_stdout.txt
           grep -Fq 'FTB03_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_RB1_RELEASE_BANK_FRAGMENT_PERMANENTLY_ADOPTED' _ftb03_validator_stdout.txt
 
+      - name: Validate 30-invariant no-adverse-delta audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee _ftb03_invariant_stdout.txt
+          import json
+          p='integration/f-tb/F-TB03_INVARIANT_AUDIT.json'
+          a=json.load(open(p,encoding='utf-8'))
+          assert a['schema_version']=='1.0'
+          assert a['work_unit']=='F-TB03'
+          assert a['overall']=='30_OF_30_NO_ADVERSE_DELTA'
+          assert a['mass_conservation']=='HARD_UNCHANGED'
+          items=a['items']
+          assert len(items)==30
+          assert [x['id'] for x in items]==list(range(1,31))
+          assert all(x['result']=='PASS' for x in items)
+          assert all(isinstance(x['rationale'],str) and x['rationale'].strip() for x in items)
+          print('FTB03_INVARIANT_AUDIT_30_OF_30=PASS')
+          print('FTB03_HARD_MASS_POLICY_UNCHANGED=PASS')
+          PY
+
       - name: Preserve exact-head adoption evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -77,6 +98,8 @@ jobs:
           path: |
             _ftb03_upstream_runs.json
             _ftb03_validator_stdout.txt
+            _ftb03_invariant_stdout.txt
             _ftb03_release_bank_evidence.json
+            integration/f-tb/F-TB03_INVARIANT_AUDIT.json
           if-no-files-found: warn
           retention-days: 90
