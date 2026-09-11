@@ -8,6 +8,7 @@ on:
       - 'tests/fgc/test_fgc07_temporal_coupling.f90'
       - 'tests/fgc/run_fgc07_temporal_coupling.sh'
       - 'tools/fgc/fgc07_analyze.py'
+      - 'tools/fgc/fgc07_decompose.py'
       - 'integration/f-gc/F-GC07_*.json'
       - '.github/workflows/fgc07-temporal-coupling.yml'
   workflow_dispatch:
