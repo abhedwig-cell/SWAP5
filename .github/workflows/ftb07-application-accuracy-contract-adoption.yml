@@ -1,0 +1,79 @@
+name: F-TB07 application accuracy contract testbank adoption
+
+on:
+  push:
+    branches:
+      - work/f-tb07-application-accuracy-contract-testbank-adoption
+    paths:
+      - 'testbank/manifests/F-TB07_*'
+      - 'testbank/runners/*ftb07*'
+      - 'integration/f-tb/F-TB07_*'
+      - 'integration/f-tb/RUNLOG_F-TB07.md'
+      - 'docs/testbank/F-TB07_*'
+      - '.github/workflows/ftb07-application-accuracy-contract-adoption.yml'
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Qualification profile
+        required: true
+        default: CANONICAL
+        type: choice
+        options: [FAST, CANONICAL, RELEASE, DEEP]
+
+permissions:
+  contents: read
+
+jobs:
+  fast:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB07_FAST_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Validate F-TB07 adoption
+        run: bash testbank/runners/run_ftb07_qualification.sh FAST
+      - name: Exact head end
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB07_FAST_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
+
+  requested:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile != 'FAST' }}
+    needs: fast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute requested profile
+        run: bash testbank/runners/run_ftb07_qualification.sh "${{ inputs.profile }}"
+      - name: Exact requested head
+        run: test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+
+  release:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[ftb07-release]') }}
+    needs: fast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact release head start
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB07_RELEASE_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Execute release qualification
+        run: bash testbank/runners/run_ftb07_qualification.sh RELEASE
+      - name: Verify support-only delta
+        run: |
+          test -z "$(git diff --name-only 163ed723cc4f2277746bdd54f338c4b06e2eaaa9..HEAD -- src reference)"
+          test "$(git rev-parse HEAD:src)" = "d5aec38b432242d2674885c8b8bd21d7f0fa0836"
+          test "$(git rev-parse HEAD:reference)" = "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+      - name: Exact release head end
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FTB07_RELEASE_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
