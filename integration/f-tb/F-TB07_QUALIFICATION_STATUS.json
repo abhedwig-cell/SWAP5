@@ -3,8 +3,8 @@
   "work_unit": "F-TB07",
   "title": "Groundwater Application-Accuracy Contract Testbank Adoption",
   "branch": "work/f-tb07-application-accuracy-contract-testbank-adoption",
-  "state": "RELEASE_HARNESS_REMEDIATION_PENDING",
-  "decision": null,
+  "state": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_GROUNDWATER_APPLICATION_ACCURACY_CONTRACT_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION",
   "canonical_authority": "c7379b6b5b5f529ff96de3087379712bd665276a",
   "canonical_src_tree": "d5aec38b432242d2674885c8b8bd21d7f0fa0836",
   "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
@@ -27,13 +27,23 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "qualification": {
-    "FAST": "PASS_ON_PRIOR_AND_REMEDIATION_CANDIDATES",
-    "RELEASE": "FAILED_HARNESS_LOCAL_INITIALIZATION_ON_RUN_34643652390_REMEDIATION_PENDING",
+    "FAST": "PASS_PRECLOSEOUT_RUN_34643802510_AND_REQUIRED_AT_FINAL_HEAD",
+    "RELEASE": "PASS_REQUIRED_AT_THIS_EXACT_HEAD",
     "DEEP": "NOT_REQUIRED_FOR_CLOSEOUT"
   },
-  "failed_release_run": 34643652390,
-  "failure_classification": "TESTBANK_RUNNER_SHELL_INITIALIZATION_NOT_PRODUCTION_DEFECT",
-  "failure_detail": "set -u evaluated out=$BUILD/$tag in the same local declaration before tag was bound. All registry, provenance, static contract, current consumer-binding, normalization and nonclaim gates had already passed. Runner-only remediation separates local declarations; no oracle or criterion changed.",
+  "prior_failed_release_run": 34643652390,
+  "prior_failure_classification": "TESTBANK_RUNNER_SHELL_INITIALIZATION_NOT_PRODUCTION_DEFECT",
+  "remediation": "Runner-only local variable initialization was split into ordered declarations under set -u. No case, oracle, tolerance, source binding, nonclaim or scientific requirement changed.",
+  "hard_nonclaims": [
+    "no universal groundwater-head accuracy requirement",
+    "no universal drawdown accuracy requirement",
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no complete coupled-system head-error budget",
+    "no application-class accuracy qualification",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation tradeoff"
+  ],
   "source_defects_discovered": [],
-  "target_decision": "QUALIFIED_GROUNDWATER_APPLICATION_ACCURACY_CONTRACT_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION"
+  "closeout_rule": "This status is authoritative only if the GitHub Actions F-TB07 FAST and RELEASE jobs both succeed on the exact commit containing this file. No post-success commit is permitted."
 }
