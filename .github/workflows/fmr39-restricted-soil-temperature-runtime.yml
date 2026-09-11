@@ -70,6 +70,19 @@ jobs:
           p.write_text(s.replace(old,new,1))
           print('FMR39_GATE_WORKTREE_DELTA_REPAIR=PASS')
           PY
+      - name: Repair F-MR39 fixed-top-provider test import
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/fmr/test_fmr39_soil_temperature_runtime_composition.f90')
+          s=p.read_text()
+          old='use mod_fmr04_fixed_flux_top_provider, only: fmr04_fixed_flux_top_provider_t'
+          new='use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t'
+          if s.count(old) != 1:
+              raise SystemExit(f'FMR39 fixed-top-provider import repair count={s.count(old)}')
+          p.write_text(s.replace(old,new,1))
+          print('FMR39_TEST_PROVIDER_IMPORT_REPAIR=PASS')
+          PY
       - name: Materialize bounded runtime composition
         run: python3 integration/f-mr/materialize_fmr39.py
       - name: Qualify materialized composition before publication
@@ -79,6 +92,6 @@ jobs:
           test -n "$(git status --porcelain -- src/runtime)"
           git config user.name "SWAP5 qualification bot"
           git config user.email "swap5-qualification@users.noreply.github.com"
-          git add integration/f-mr/materialize_fmr39.py tests/fmr/run_fmr39_soil_temperature_runtime_gate.sh src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_restart_state_contract.f90
+          git add integration/f-mr/materialize_fmr39.py tests/fmr/run_fmr39_soil_temperature_runtime_gate.sh tests/fmr/test_fmr39_soil_temperature_runtime_composition.f90 src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_restart_state_contract.f90
           git commit -m "materialize(F-MR39): compose restricted soil temperature transactionally [fmr39-materialized]"
           git push origin HEAD:work/f-mr39-restricted-soil-temperature-runtime-composition
