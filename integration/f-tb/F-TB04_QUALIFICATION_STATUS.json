@@ -31,8 +31,8 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "precloseout_FAST": {
-    "head": "5d5decd81066c8f4028da5e64f3bf6b3c111dce1",
-    "run": 34620259605,
+    "head": "e67840a8fdd9ba96f9a2fd825be6cf24e7a82450",
+    "run": 34620625492,
     "conclusion": "success"
   },
   "exact_head_qualification": {
@@ -45,7 +45,7 @@
     "restart": "immutable FCI28 restart oracle replayed against exact work-unit canonical authority with historical whole-source governance guard rebound only",
     "parallel_multiswap": "immutable FMQ26 serialized/2-worker/4-worker and publication-order oracle blobs executed directly against exact work-unit canonical authority at O0/O2",
     "distinct_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-reference case; registry entries have distinct parameter_set_id values but retain bit-identical already-qualified physical parameters so the test isolates reference resolution/ownership rather than adding new physics",
-    "parallel_restart": "immutable FCI35/FMQ29 held-out cross-worker committed-boundary restart oracle with historical whole-source governance guards rebound only"
+    "parallel_restart": "immutable FCI35/FMQ29 held-out cross-worker committed-boundary restart oracle replayed against the exact work-unit canonical source/reference trees; historical source-component postimage checks are rebound, while immutable attack/test blobs, qualification metadata, held-out cases, hard mass, state/result identity and O0/O2 oracles remain unchanged"
   },
   "source_defects_discovered": [],
   "harness_defects_remediated": [
@@ -80,6 +80,15 @@
       "production_source_changed": false,
       "scientific_oracle_changed": false,
       "note": "The failed extension changed both parameter-reference identity and hydraulic cofgen. Remediation retains distinct immutable parameter-set identities while restoring bit-identical qualified hydraulic physics."
+    },
+    {
+      "failed_run": 34620386863,
+      "failed_head": "60ad2bf8c17ae3def9e195ce93bdd016e1a5a880",
+      "classification": "FTB04_FCI35_FMQ29_HISTORICAL_COMPONENT_POSTIMAGE_INCOMPATIBILITY",
+      "remediation_head": "e67840a8fdd9ba96f9a2fd825be6cf24e7a82450",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false,
+      "note": "The complete pinned src/reference trees remain exact-locked. Only historical src component-postimage checks in temporary FCI35/FMQ29 replays are rebound; immutable attack/test blobs, qualification metadata, held-out cases, hard mass and O0/O2 oracles are unchanged."
     }
   ],
   "state": {
