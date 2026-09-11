@@ -1,0 +1,22 @@
+name: F-PM06F restricted surface evaporation runtime materialization
+
+on:
+  push:
+    branches:
+      - work/f-pm06f-restricted-surface-evaporation-runtime-materialization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PM06F exact owner qualification
+        run: bash tests/fpm/run_fpm06f_surface_evaporation_runtime_materialization.sh
