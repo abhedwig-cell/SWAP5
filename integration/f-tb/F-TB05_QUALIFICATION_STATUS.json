@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB05",
+  "title": "SWAP5 Current-Canonical Continuous Qualification Adoption of F-TB04",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_FTB04_CONTINUOUS_QUALIFICATION_ADOPTED_ON_CURRENT_CANONICAL",
+  "validity_rule": "This closeout is final only when .github/workflows/ftb05-current-canonical-continuous-qualification.yml concludes success with head_sha equal to the exact commit containing this status file, with both FAST and exact-head RELEASE adoption jobs successful.",
+  "branch": "work/f-tb05-current-canonical-continuous-qualification",
+  "composition_baseline": "b38d04632845e2c6c6329eb1b3037d0186172df9",
+  "canonical_authority": "d201904a85f3b595e028242978e52c02f5122a09",
+  "canonical_src_tree": "d6f4816be543044b090d11294808b5be986b2ee8",
+  "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "F-TB04_closeout": "85280c6c436a73c211b70996f9a22f4ad6b04f9c",
+  "F-TB04_case_count": 35,
+  "F-TB04_case_catalog_rewritten": false,
+  "production_source_changed": false,
+  "reference_changed": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "scientific_tolerance_relaxed": false,
+  "RB1_reopened": false,
+  "architecture_audit": {
+    "path": "integration/f-tb/F-TB05_INVARIANT_AUDIT.json",
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "precloseout_FAST": {
+    "head": "ff7d9d074cd6f99ffc09c37df7b7b365058e4f5e",
+    "run": 34621786809,
+    "job": 103337276140,
+    "conclusion": "success"
+  },
+  "release_scope": {
+    "transaction": "immutable F-TB04 transaction source/executable oracles rebound only through the F-TB05 authority validator",
+    "restart": "immutable F-TB04 FCI28 restart replay against d201904 current-canonical source/reference trees",
+    "parallel_multiswap": "immutable F-TB04/FMQ26 serialized, 2-worker, 4-worker, ordering, deterministic replay and hard-mass qualification against d201904",
+    "distinct_parameter_references": "unchanged F-TB04 test-only two-reference case",
+    "parallel_restart": "immutable F-TB04 FCI35/FMQ29 held-out cross-worker committed-boundary restart replay against d201904"
+  },
+  "nonclaims": [
+    "soil-temperature restart qualification",
+    "soil-temperature MultiSWAP qualification",
+    "soil-temperature optional-state persistence qualification",
+    "frost or latent-heat qualification",
+    "new RB1 coverage"
+  ],
+  "source_defects_discovered": [],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "precloseout_fast_tested": true,
+    "qualified": "CONDITIONAL_ON_EXACT_HEAD_CI_GREEN",
+    "open": ["EXACT_HEAD_FAST_AND_RELEASE_ADOPTION_CI"]
+  }
+}
