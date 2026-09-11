@@ -176,7 +176,8 @@ contains
     call require(local_ok, 'other checkpoint')
     call local_kernel%advance_interval(parameters, local_committed, forcing, config, start_time, end_time, &
          local_result, local_candidate, local_diag, local_checkpoint)
-    call require(local_result%completed .and. local_candidate%ready(), 'other candidate')
+    call require(local_result%completed, 'other result completion')
+    call require(local_candidate%ready(), 'other candidate ready')
     call fmr_commit_candidate_with_receipt(local_kernel, local_checkpoint, local_committed, local_candidate, local_diag, &
          local_commit, receipt, local_receipt_status, local_commit_status)
     call require(local_commit .and. local_receipt_status == FMR_COMMIT_RECEIPT_OK .and. receipt%ready(), 'other receipt')
@@ -202,13 +203,15 @@ contains
     call local_committed%capture_checkpoint(cp, local_ok)
     call require(local_ok, 'revision first checkpoint')
     call local_kernel%advance_interval(parameters, local_committed, forcing, config, initial_time, second_t0, res, cand, diag, cp)
-    call require(res%completed .and. cand%ready(), 'revision first candidate')
+    call require(res%completed, 'revision first result completion')
+    call require(cand%ready(), 'revision first candidate ready')
     call fmr_commit_candidate_with_receipt(local_kernel, cp, local_committed, cand, diag, local_commit, first_receipt, rs, cs)
     call require(local_commit .and. rs == FMR_COMMIT_RECEIPT_OK, 'revision first commit')
     call local_committed%capture_checkpoint(cp, local_ok)
     call require(local_ok, 'revision second checkpoint')
     call local_kernel%advance_interval(parameters, local_committed, forcing, config, second_t0, second_t1, res, cand, diag, cp)
-    call require(res%completed .and. cand%ready(), 'revision second candidate')
+    call require(res%completed, 'revision second result completion')
+    call require(cand%ready(), 'revision second candidate ready')
     call fmr_commit_candidate_with_receipt(local_kernel, cp, local_committed, cand, diag, local_commit, receipt, rs, cs)
     call require(local_commit .and. rs == FMR_COMMIT_RECEIPT_OK .and. receipt%ready(), 'revision second receipt')
   end subroutine build_revision_one_receipt
