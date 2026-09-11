@@ -1,12 +1,13 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-KT14",
   "title": "Accepted Interface Sensitivity Result Transport",
   "branch": "work/f-kt14-interface-sensitivity-result-transport",
-  "phase": "IMPLEMENTATION_STARTED",
+  "phase": "OWNER_CLOSEOUT_PENDING_EXACT_HEAD_CI",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "branch_base_commit": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "canonical_rechecked_unchanged_before_closeout": true,
     "physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
     "physical_source_tree": "bca9d2d4dd3c8c42edf635b0887ee62b475b5abd",
     "governance_overlay": "F-CI38",
@@ -15,15 +16,18 @@
   "upstream": {
     "F_SI28_final_head": "5b514e678d0d794e5837f161033b0bac58385707",
     "F_SI28_qualified_production_head": "85dbe882aa967d19021174066c95105d8cf838ea",
-    "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE"
+    "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+    "F_SI28_exact_blobs_replayed": true
   },
-  "scope": [
+  "qualified_scope": [
     "accepted-only transaction interface-sensitivity transport",
     "rollback/retry stale-sensitivity exclusion",
+    "fail-closed soil_water_solve_result_t to trial_outcome_t adapter mapping",
     "canonical interval publication with explicit local-terminal provenance",
     "kernel public result transport",
     "mass-accounting preservation",
-    "SWAP-native bottom-flux sign preservation"
+    "SWAP-native bottom-flux sign preservation",
+    "exact replay of the qualified F-SI28 producer authority"
   ],
   "frozen_semantics": {
     "published_quantity": "accepted local-terminal dh_bottom_dq_bottom",
@@ -32,32 +36,69 @@
     "multi_substep_whole_window_derivative_claim": false,
     "multi_substep_rule": "publish only the final accepted local-terminal tangent with its exact originating subinterval",
     "failed_interval_publication": "unavailable",
+    "bridge_temporal_provenance_ownership": "transaction acceptance layer",
     "modflow_sign_transformation": false
   },
-  "non_goals": [
+  "explicit_exclusions": [
     "whole-coupling-window derivative composition",
     "MODFLOW sign conversion",
+    "MODFLOW coupling admission",
     "persistent tangent or solver-scratch state",
-    "new nonlinear trajectories or Jacobian builds",
-    "F-ROSS01 J1E qualification"
+    "new nonlinear trajectories or Jacobian builds for result transport",
+    "F-ROSS01 J1E end-to-end qualification",
+    "direct legacy B1.10 SWAP/HeadCalc interface-sensitivity production composition"
   ],
+  "legacy_direct_composition": {
+    "status": "EXCLUDED_FAIL_CLOSED",
+    "reason": "The current B1.10 physical interval reaches HeadCalc directly and does not expose the structured F-SI28 soil-water solver result. F-KT14 does not create a second HeadCalc tangent authority or add a second nonlinear solve merely to publish a tangent.",
+    "required_follow_up": "Own and qualify a production physical transaction composition that routes the relevant soil-water solve through the qualified F-SI28 solver service before claiming real B1.10 end-to-end tangent publication."
+  },
   "hard_gates": [
     "rejected and retried trial sensitivities are never externally visible",
     "two-half acceptance publishes half2 sensitivity, never full or half1",
     "canonical failure after earlier accepted internal substeps publishes no sensitivity",
     "multi-substep success is explicitly local-terminal and not mislabelled whole-window",
     "kernel value and provenance match canonical result exactly without sign conversion",
-    "water-balance accounting is unchanged"
+    "water-balance accounting is unchanged",
+    "solver-result bridge clears stale destination before every mapping",
+    "retry/failed solver results remain unavailable even with malformed source sensitivity metadata",
+    "current F-SI28 producer blobs exactly match qualified production authority",
+    "qualified F-SI28 interface, cross-sign and fallback fail-closed gates replay successfully"
   ],
+  "precloseout_evidence": {
+    "head": "cc425f77e14e1fddd1af4039d7731d27d2b932f1",
+    "workflow_run": 34545339968,
+    "conclusion": "success",
+    "optimization_matrix": ["O0", "O2"]
+  },
+  "final_gate": {
+    "require_exact_branch_head_workflow": "F-KT14 Interface Sensitivity Transport",
+    "require_conclusion": "success",
+    "no_status_mutation_required_after_green": true,
+    "effective_decision_after_green": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED"
+  },
   "state": {
     "realized": true,
     "persisted": true,
-    "implemented": false,
-    "tested": false,
-    "qualified": false,
-    "production_src_changed": false,
+    "implemented": true,
+    "tested": true,
+    "owner_qualified": false,
+    "production_src_changed_relative_to_branch_base": true,
+    "transport_changes_physical_equations": false,
     "committed_physical_state_changed": false,
-    "solver_scratch_persisted": false
+    "solver_scratch_persisted": false,
+    "legacy_headcalc_changed": false
   },
-  "overall": "F_KT14_IMPLEMENTATION_IN_PROGRESS_F_ROSS01_J1E_REMAINS_OPEN"
+  "architecture_invariants": {
+    "transactional_trials": "PASS",
+    "mass_conservation": "PASS",
+    "scratch_per_worker": "PASS",
+    "generic_time": "PASS",
+    "interface_sensitivity_first_class_result": "PASS",
+    "coupling_cost_no_extra_nonlinear_trajectory": "PASS",
+    "no_headcalc_internal_dependency_added": "PASS",
+    "no_silent_modflow_sign_dependency": "PASS"
+  },
+  "decision": "QUALIFIED_IF_EXACT_METADATA_HEAD_CI_GREEN",
+  "overall": "F_KT14_OWNER_CLOSEOUT_PENDING_EXACT_HEAD_CI_F_ROSS01_J1E_REMAINS_OPEN"
 }
