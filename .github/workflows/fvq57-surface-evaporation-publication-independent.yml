@@ -1,0 +1,22 @@
+name: F-VQ57 independent surface evaporation publication provenance
+
+on:
+  push:
+    branches:
+      - qualification/f-vq57-fpm06g-surface-evaporation-accepted-publication
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-hard-negative:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ57 independent HN1 provenance gate
+        run: bash tests/fvq/run_fvq57_surface_result_candidate_binding_gate.sh
