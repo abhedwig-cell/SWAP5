@@ -1,0 +1,98 @@
+{
+  "matrix_id": "FGC13_PROJECT_ACCURACY_REJECTION_MATRIX_V1",
+  "cases": [
+    {
+      "id": "MISSING_H_APP",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "application_requirement.available", "value": false}],
+      "expected_code": "H_APP_NOT_AVAILABLE"
+    },
+    {
+      "id": "UNQUALIFIED_H_APP",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "application_requirement.externally_qualified", "value": false}],
+      "expected_code": "H_APP_NOT_EXTERNALLY_QUALIFIED"
+    },
+    {
+      "id": "PHYSICAL_THRESHOLD_SUBSTITUTION",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "forbidden_substitution_attestations.not_physical_impact_threshold_only", "value": false}],
+      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+    },
+    {
+      "id": "CALIBRATION_METRIC_SUBSTITUTION",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "forbidden_substitution_attestations.not_calibration_metric_only", "value": false}],
+      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+    },
+    {
+      "id": "MODEL_UNCERTAINTY_SUBSTITUTION",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "forbidden_substitution_attestations.not_model_generated_uncertainty_only", "value": false}],
+      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+    },
+    {
+      "id": "MISSING_TEMPORAL_POLICY",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "temporal_policy.available", "value": false}],
+      "expected_code": "TEMPORAL_POLICY_NOT_AVAILABLE"
+    },
+    {
+      "id": "SWAP_DERIVED_TEMPORAL_POLICY",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "temporal_policy.provenance.external_to_swap_numerical_behavior", "value": false}],
+      "expected_code": "SWAP_DERIVED_POLICY_FORBIDDEN"
+    },
+    {
+      "id": "TIMESTEP_SCHEDULE_AS_ALLOCATION",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "forbidden_substitution_attestations.not_model_timestep_schedule", "value": false}],
+      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+    },
+    {
+      "id": "FRACTION_ABOVE_ONE",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "temporal_policy.allocation_fraction", "value": 1.01}],
+      "expected_code": "INVALID_TEMPORAL_FRACTION"
+    },
+    {
+      "id": "DIRECT_BUDGET_EXCEEDS_H_APP",
+      "base_fixture": "accepted_direct_budget_packet.json",
+      "mutations": [{"path": "temporal_policy.direct_budget_cm", "value": 10.01}],
+      "expected_code": "DIRECT_TEMPORAL_BUDGET_EXCEEDS_H_APP"
+    },
+    {
+      "id": "AMBIGUOUS_DIRECT_AND_FRACTION",
+      "base_fixture": "accepted_direct_budget_packet.json",
+      "mutations": [{"path": "temporal_policy.allocation_fraction", "value": 0.2}],
+      "expected_code": "AMBIGUOUS_TEMPORAL_POLICY"
+    },
+    {
+      "id": "TEMPORAL_CLAIM_TYPE_MISMATCH",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "temporal_policy.provenance.claim_type", "value": "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET"}],
+      "expected_code": "CLAIM_TYPE_MISMATCH"
+    },
+    {
+      "id": "CLAIM_ID_REUSE",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "temporal_policy.provenance.claim_id", "value": "SYNTH-APP-001"}],
+      "expected_code": "CLAIM_ID_REUSE_FORBIDDEN"
+    },
+    {
+      "id": "PROVENANCE_ID_REUSE",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [
+        {"path": "temporal_policy.provenance.provenance_id", "value": 13001},
+        {"path": "canonical_mapping.temporal_allocation_provenance_id", "value": 13001}
+      ],
+      "expected_code": "PROVENANCE_ID_REUSE_FORBIDDEN"
+    },
+    {
+      "id": "CANONICAL_PROVENANCE_MAPPING_MISMATCH",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "canonical_mapping.application_provenance_id", "value": 99999}],
+      "expected_code": "APPLICATION_PROVENANCE_MAPPING_MISMATCH"
+    }
+  ]
+}
