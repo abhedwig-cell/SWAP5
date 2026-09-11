@@ -1,0 +1,25 @@
+name: F-PM08D7 runtime compile checkpoint
+
+on:
+  push:
+    branches:
+      - work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate
+    paths:
+      - 'src/process/mod_restricted_fixed_weir_surface_water.f90'
+      - 'src/runtime/mod_fmr_optional_state_layouts.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh'
+      - '.github/workflows/fpm08d7-runtime-compile-checkpoint.yml'
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Compile D7 serialized runtime integration O0/O2
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
