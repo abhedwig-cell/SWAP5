@@ -3,8 +3,8 @@
   "work_unit": "F-CI42",
   "title": "Surface-Evaporation Allocation Performance Canonical Admission",
   "branch": "qualification/f-ci42-fpe11-surface-evaporation-allocation-canonical-admission",
-  "phase": "PROMOTED_PENDING_GOVERNANCE_TRIGGER_REMEDIATION_AND_BROAD_REQUALIFICATION",
-  "decision": "QUALIFIED_FPE11_SURFACE_EVAPORATION_ALLOCATION_PERFORMANCE_FOR_CURRENT_CANONICAL_ADMISSION",
+  "phase": "PROMOTED_AND_BROAD_QUALIFIED_HANDOFF_TO_FCI42P",
+  "decision": "QUALIFIED_FPE11_SURFACE_EVAPORATION_ALLOCATION_PERFORMANCE_ADMITTED_TO_CURRENT_CANONICAL",
   "source_authority": {
     "work_unit": "F-CI41P",
     "head": "3c5f5bd3686e1632058b906be21abd73883e30ef",
@@ -33,65 +33,70 @@
     "other_production_source_changed": false
   },
   "admission_scope": "PERFORMANCE_ONLY_OWNERSHIP_TRANSFER_BEHIND_EXISTING_PUBLIC_RUNTIME_SEAMS",
-  "admission_qualification": {
-    "first_green_run": {
+  "qualification_chain": {
+    "initial_exact_head": {
+      "head": "1861d41e4f7c53ea8a828273b70a21e889f756ea",
       "run": 34557823726,
       "job": 103134161564,
-      "head": "1861d41e4f7c53ea8a828273b70a21e889f756ea",
       "conclusion": "success"
     },
-    "exact_status_head_recheck": {
-      "run": 34557944445,
+    "exact_status_head": {
       "head": "3060f3f4316878e8815b849d4486e1f91167bab4",
+      "run": 34557944445,
       "conclusion": "success"
     },
-    "oracle_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4",
-    "paired_local_timing_first_green": {
-      "profile_nodes": [2,20,60,200,1000],
-      "candidate_faster_paired_rounds": "20/20",
-      "candidate_median_runtime_reduction_percent": {
-        "2": 35.197,
-        "20": 35.170,
-        "60": 31.862,
-        "200": 34.597,
-        "1000": 34.750
-      }
-    }
+    "first_promoted_canonical": {
+      "head": "3060f3f4316878e8815b849d4486e1f91167bab4",
+      "F_CI42_run": 34557997278,
+      "F_CI42_conclusion": "success",
+      "broad_canonical_run": 34557997273,
+      "broad_canonical_conclusion": "success",
+      "current_restricted_preservation": "success"
+    },
+    "governance_remediation": {
+      "head": "6f82c926516fe49e76f88a2345ad7b2676aa7300",
+      "exact_branch_run": 34558142587,
+      "exact_branch_conclusion": "success",
+      "promoted_F_CI42_run": 34558203843,
+      "promoted_F_CI42_conclusion": "success",
+      "promoted_broad_canonical_run": 34558203826,
+      "promoted_broad_canonical_conclusion": "success",
+      "promoted_current_restricted_preservation": "success"
+    },
+    "oracle_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4"
   },
-  "canonical_promotion": {
-    "promoted_head": "3060f3f4316878e8815b849d4486e1f91167bab4",
-    "fast_forward_only": true,
-    "force_used": false,
-    "source_authority_race_check_before_promotion": "PASS"
+  "performance_evidence": {
+    "paired_same_runner_balanced_order_O2": true,
+    "profile_nodes": [2,20,60,200,1000],
+    "candidate_faster_paired_rounds": "20/20",
+    "candidate_median_runtime_reduction_percent_first_admission_run": {
+      "2": 35.197,
+      "20": 35.170,
+      "60": 31.862,
+      "200": 34.597,
+      "1000": 34.750
+    },
+    "claim_scope": "LOCAL_SURFACE_MATERIALIZATION_MICROKERNEL_ONLY",
+    "whole_SWAP_speedup_claim": false,
+    "MultiSWAP_speedup_claim": false,
+    "portable_speedup_claim": false
   },
   "post_promotion_governance_defect": {
-    "detected": true,
-    "workflow": ".github/workflows/fci41-surface-evaporation-runtime-canonical-admission.yml",
+    "failed_workflow": ".github/workflows/fci41-surface-evaporation-runtime-canonical-admission.yml",
     "failed_run": 34557997309,
     "failure": "FCI41_GATE_FAIL post-promotion canonical runtime materialization blob drift",
+    "candidate_defect": false,
     "classification": [
       "2_STALE_HISTORICAL_ADMISSION_GATE",
       "3_GOVERNANCE_WORKFLOW_TRIGGER_SCOPE_DEFECT"
     ],
-    "governing_precedent": "F-CI38 Historical Admission Gate Scope Separation & Moving-Canonical Regression Governance",
-    "remediation": "remove integration/f-ci-canonical push trigger from F-CI41 workflow; leave F-CI41 historical runner and scientific authority unchanged",
-    "production_src_changed_by_remediation": false,
-    "reference_changed_by_remediation": false,
-    "historical_runner_changed": false,
-    "historical_decision_rewritten": false
+    "governing_authority": "F-CI38 Historical Admission Gate Scope Separation & Moving-Canonical Regression Governance",
+    "remediation": "integration/f-ci-canonical push trigger removed from F-CI41 historical admission workflow; F-CI41 runner, science and historical decision unchanged",
+    "production_source_delta": false,
+    "reference_delta": false,
+    "historical_runner_delta": false,
+    "scientific_tolerance_delta": false
   },
-  "hard_holds": [
-    "do not reopen F-CI41/F-CI41P scientific authority",
-    "no surface-evaporation equation or constant change",
-    "no capacity-provider contract change",
-    "no public runtime API expansion",
-    "no direct alias into private committed state",
-    "no transaction or mass-policy change",
-    "no persistent per-column state",
-    "no whole-SWAP speedup claim",
-    "no MultiSWAP speedup or throughput/scaling claim",
-    "no portable hardware-independent speedup claim"
-  ],
   "architecture_invariants": [1,3,5,6,7,13,16,20,22,23,25,26,27,30],
   "state": {
     "composition_realized": true,
@@ -102,16 +107,11 @@
     "admission_qualified": true,
     "exact_status_head_requalified": true,
     "canonical_promoted": true,
-    "governance_trigger_defect_remediated_in_candidate_tree": true,
-    "promoted_FCI42_qualified": false,
-    "broad_canonical_qualified": false,
+    "governance_trigger_defect_remediated": true,
+    "promoted_FCI42_qualified": true,
+    "broad_canonical_qualified": true,
+    "handoff_to_FCI42P_complete": true,
     "final_closeout_complete": false
   },
-  "final_closeout_gate": {
-    "require_governance_remediation_exact_head_FCI42_green": true,
-    "then_fast_forward_canonical_to_governance_remediation_head": true,
-    "then_require_exact_promoted_canonical_FCI42_and_broad_canonical_green": true,
-    "then_use_no-production-no-reference_F_CI42P_reconciliation_for_final_closeout": true,
-    "no_production_or_reference_mutation_allowed_after_composition": true
-  }
+  "final_authority": "F-CI42P"
 }
