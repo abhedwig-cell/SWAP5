@@ -193,8 +193,7 @@ contains
     call require(abs(interface_mass_residual) <= hard_interface_mass_gate_cm*max(1.0_real64,abs(cumulative_qswap)), &
          'q_SWAP equals negative q_GW cumulatively')
 
-    write(*,'(A,ES24.15E3,A,ES24.15E3,A,I0,A,A,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3, &
-         A,ES24.15E3,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3)') &
+    write(*,'(A,ES24.15E3,A,ES24.15E3,A,I0,A,A,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3)') &
          'FGC07_RESULT:SY=',storage_coefficient,':DTC=',dtc,':NINT=',nsub,':SCHEME=',trim(method), &
          ':FINAL_H_CM=',hgw,':CUM_QSWAP_CM=',cumulative_qswap,':MAX_HEAD_RES_CM=',max_head_residual, &
          ':MAX_SWAP_MASS_CM=',max_swap_mass,':INTERFACE_MASS_CM=',interface_mass_residual, &
