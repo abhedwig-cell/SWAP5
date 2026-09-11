@@ -1,0 +1,167 @@
+{
+  "schema": "swap5.fdoc12_runtime_architecture_tier_applicability.v1",
+  "work_unit": "F-DOC12",
+  "title": "RB1 Runtime Architecture T0-T7 Applicability and State-Transition Authority",
+  "release_id": "SWAP5-RB1-v1",
+  "base_authority": {
+    "fdoc11": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+    "fdoc03": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+    "fdoc05": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "scope": {
+    "family": "RUNTIME_ARCHITECTURE",
+    "capability_count": 9,
+    "tier_scope": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+    "rule": "Resolve only architecture applicability and state/execution semantics. No physical science, production/reference change, numerical-policy change or whole-capability maturity promotion may be inferred."
+  },
+  "source_pins": [
+    {"path":"src/runtime/mod_fmr_runtime_core.f90","blob":"adc2b7514cc062c0cde4e71582ba8ed7776a7335"},
+    {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"f06a2eef7b47880e449cf9b201342d7bd1e197e1"},
+    {"path":"src/runtime/mod_fmr_parallel_physical_scheduler.f90","blob":"544a1ca16fdeebdfce7f89d1ddf1825fa32fa654"},
+    {"path":"src/runtime/mod_fmr_parallel_worker_pool.f90","blob":"0e700797cbaed4aaab7f04db0054f72faddcfc15"},
+    {"path":"src/runtime/mod_fmr_committed_restart.f90","blob":"19ea410e0ed48e65b5d73887a8e1dba59c7c4f37"},
+    {"path":"src/runtime/mod_fmr_restart_state_contract.f90","blob":"f1359f97d02408d8b700b0c93fe961a6ba46742c"},
+    {"path":"src/runtime/mod_fmr_deterministic_runtime.f90","blob":"6f567600e42bc4e37e0e175ef4a3edc97a945592"}
+  ],
+  "applicability_policy": {
+    "T0_T1": "NOT_APPLICABLE for pure runtime topology/state semantics where no physical phenomenon or scientific theory is introduced; process science remains inherited.",
+    "T2_T3": "May be RESOLVED as controlled conceptual, ownership and state-transition semantics even when no physical-process model is introduced.",
+    "T4_T5": "NOT_APPLICABLE where runtime composition selects or changes no physical formulation.",
+    "T6": "Applicable to interval partitioning, batching, worker partitioning or committed split-run boundaries; runtime scheduling is not thereby reclassified as physical discretisation.",
+    "T7": "Applicable only where the capability itself defines numerical acceptance/solver semantics. Scheduling, worker-count admission and persistence are not silently promoted into numerical-method authority."
+  },
+  "capabilities": [
+    {
+      "capability_id":"RB1-CORE-INTERVAL","disposition":"CARRIED_FORWARD_FROM_FDOC03",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Interval orchestration is not a physical phenomenon."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"No scientific theory is introduced."},
+      "T2":{"status":"NOT_APPLICABLE","rationale":"No independent physical conceptual model is introduced."},
+      "T3":{"status":"NOT_APPLICABLE","rationale":"No independent physical equation system is defined."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"No physical parameterisation belongs to interval orchestration."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"No independent continuous physical formulation belongs to interval orchestration."},
+      "T6":{"status":"RESOLVED","authority":"F-DOC03","node":"SW5-DISC-7301","meaning":"Generic [t0,t1] partition into accepted committed substeps."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Acceptance/retry numerical policy belongs to transaction/temporal capabilities."}
+    },
+    {
+      "capability_id":"RB1-CORE-DATA","disposition":"CARRIED_FORWARD_FROM_FDOC03",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Data-category separation is software architecture."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"No scientific theory is asserted."},
+      "T2":{"status":"NOT_APPLICABLE","rationale":"No physical conceptual model is asserted."},
+      "T3":{"status":"NOT_APPLICABLE","rationale":"No physical equation system is asserted."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"No physical formulation is asserted."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"No continuous physical formulation is asserted."},
+      "T6":{"status":"NOT_APPLICABLE","rationale":"Data ownership itself defines no discretisation."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Data ownership itself defines no numerical method."}
+    },
+    {
+      "capability_id":"RB1-CORE-TRANSACTION","disposition":"CARRIED_FORWARD_FROM_FDOC03",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Transaction atomicity is runtime semantics."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"No scientific theory is introduced."},
+      "T2":{"status":"NOT_APPLICABLE","rationale":"No independent physical conceptual model is introduced."},
+      "T3":{"status":"NOT_APPLICABLE","rationale":"No independent physical equation system is introduced."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"No physical parameterisation is introduced."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"No continuous physical formulation is introduced."},
+      "T6":{"status":"NOT_APPLICABLE","rationale":"The transaction protocol is independent of a specific physical discretisation."},
+      "T7":{"status":"RESOLVED","authority":"F-DOC03","node":"SW5-NUM-7301","meaning":"Checkpoint/trial/reject/retry/commit acceptance semantics."}
+    },
+    {
+      "capability_id":"RB1-CORE-DIAGNOSTICS","disposition":"CARRIED_FORWARD_FROM_FDOC03",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Diagnostics aggregation is runtime observability."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"No scientific theory is introduced."},
+      "T2":{"status":"NOT_APPLICABLE","rationale":"No physical conceptual model is introduced."},
+      "T3":{"status":"NOT_APPLICABLE","rationale":"No physical equation system is introduced."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"No physical formulation is introduced."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"No continuous physical formulation is introduced."},
+      "T6":{"status":"NOT_APPLICABLE","rationale":"Diagnostics aggregation defines no discretisation."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Diagnostics observe numerical methods but do not define one."}
+    },
+    {
+      "capability_id":"RB1-STANDALONE-N1","disposition":"MATERIALISED_BY_FDOC12",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"N=1 is execution cardinality, not a physical phenomenon."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"N=1 introduces no scientific theory; process theory is inherited."},
+      "T2":{"status":"RESOLVED","meaning":"One logical column uses the same serialized physical MultiSWAP composition as N>1; there is no separate standalone kernel."},
+      "T3":{"status":"RESOLVED","meaning":"Cardinality changes only logical-column count; explicit template, parameter, forcing and committed-state identities remain unchanged."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"N=1 selects no physical parameterisation."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"N=1 introduces no continuous physical formulation."},
+      "T6":{"status":"RESOLVED","meaning":"Execution covers caller-supplied [t0,t1] and deterministic batching may contain one logical column without calendar-boundary semantics."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"N=1 introduces no independent numerical solver/acceptance method."},
+      "nonclaim":"No separate standalone kernel or legacy file-I/O release API is inferred."
+    },
+    {
+      "capability_id":"RB1-MULTISWAP-SERIAL","disposition":"MATERIALISED_BY_FDOC12",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Serial MultiSWAP is runtime composition, not a physical phenomenon."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"Serial MultiSWAP introduces no independent scientific theory."},
+      "T2":{"status":"RESOLVED","meaning":"Logical columns reference template, immutable parameter, forcing and committed-state identities while sharing the serialized physical route."},
+      "T3":{"status":"RESOLVED","meaning":"Explicit column/template/state identity, deterministic execution order and non-aliased authoritative state define isolation/equivalence semantics."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"Serial composition changes no physical parameterisation."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"Serial composition changes no continuous physical formulation."},
+      "T6":{"status":"RESOLVED","meaning":"The ordered column set is partitioned into deterministic batches over one caller-supplied [t0,t1]."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Serial MultiSWAP defines no new solver/acceptance method; kernel numerical policy is inherited."},
+      "nonclaim":"No whole-domain performance or speedup claim is introduced."
+    },
+    {
+      "capability_id":"RB1-MULTISWAP-PARALLEL-V1","disposition":"MATERIALISED_BY_FDOC12",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Parallel scheduling is runtime execution, not a physical phenomenon."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"Parallel scheduling introduces no scientific theory."},
+      "T2":{"status":"RESOLVED","meaning":"Logical columns remain independently identified; worker-owned backends/transaction controls provide worker-local execution context while immutable/template identities are shared references."},
+      "T3":{"status":"RESOLVED","meaning":"Unique column/state ownership, deterministic assignment/publication and equivalence to the admitted serialized column route are required invariants."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"Parallel scheduling changes no physical parameterisation."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"Parallel scheduling changes no continuous physical formulation."},
+      "T6":{"status":"RESOLVED","meaning":"RB1 deterministically partitions admitted columns across exactly 2 or 4 workers with batch barriers and canonical publication over the same [t0,t1]."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Worker-count admission/scheduling is runtime policy, not a replacement numerical solver or acceptance method."},
+      "nonclaim":"No speedup, throughput superiority or unsupported-worker-count claim is introduced."
+    },
+    {
+      "capability_id":"RB1-RESTART-SERIAL","disposition":"MATERIALISED_BY_FDOC12",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Restart is persistence/runtime semantics, not a physical phenomenon."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"Restart semantics introduce no scientific theory."},
+      "T2":{"status":"RESOLVED","meaning":"Continuation contains compact committed physical state plus stable runtime/template/parameter identity; immutable parameters, forcing and solver scratch are excluded."},
+      "T3":{"status":"RESOLVED","meaning":"Committed readiness, schema/template/parameter identity, state-family sufficiency and atomic all-record restore are required invariants; failed restore publishes no partial target state."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"Restart persistence changes no physical parameterisation."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"Restart persistence changes no continuous physical formulation."},
+      "T6":{"status":"RESOLVED","meaning":"A split-run boundary is a committed model-time boundary carried by persisted state, independent of midnight/day boundaries."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Persistence defines no post-restore numerical solver; continuation equivalence is a verification/qualification obligation."},
+      "nonclaim":"No filesystem format, cross-version migration, mid-transaction restart or solver/Newton/Jacobian/warm-start persistence is claimed."
+    },
+    {
+      "capability_id":"RB1-RESTART-PARALLEL","disposition":"MATERIALISED_BY_FDOC12",
+      "T0":{"status":"NOT_APPLICABLE","rationale":"Parallel restart is runtime continuation semantics, not a physical phenomenon."},
+      "T1":{"status":"NOT_APPLICABLE","rationale":"Parallel restart introduces no scientific theory."},
+      "T2":{"status":"RESOLVED","meaning":"Restart state is per logical column and independent of worker identity; worker-local scratch is excluded so committed continuation can be rebound to an admitted worker topology."},
+      "T3":{"status":"RESOLVED","meaning":"Column/template/parameter/state-family identity and atomic restore are preserved; worker repartition must not alter restored committed physical state."},
+      "T4":{"status":"NOT_APPLICABLE","rationale":"Parallel restart changes no physical parameterisation."},
+      "T5":{"status":"NOT_APPLICABLE","rationale":"Parallel restart changes no continuous physical formulation."},
+      "T6":{"status":"RESOLVED","meaning":"Committed split-run boundaries are worker-count independent; RB1 qualification includes admitted 2-to-4 and 4-to-2 continuation."},
+      "T7":{"status":"NOT_APPLICABLE","rationale":"Worker repartition is runtime policy, not a numerical solver method; deterministic equivalence belongs to verification/qualification."},
+      "nonclaim":"No mid-transaction restart, trial-state persistence or worker/Newton/Jacobian/warm-start persistence is claimed."
+    }
+  ],
+  "summary": {
+    "runtime_capabilities": 9,
+    "carried_from_fdoc03": 4,
+    "materialised_by_fdoc12": 5,
+    "t0_t7_unresolved_after_fdoc12": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0
+  },
+  "residual_gaps": [
+    "T11 complete graphs remain governed by existing F-DOC10/F-DOC11 gap state except where separately closed.",
+    "T12 validation/applicability remains outside this T0-T7 architecture review.",
+    "Controlled physical-science authority for PHYSICAL_SCIENCE and HYBRID families remains separate.",
+    "Controlled numerical/formal authority for RB1-TIME-REFERENCE remains separate.",
+    "Controlled WR-QA-2024 copy/reconciliation remains external.",
+    "Application-specific temporal/groundwater H_budget policy remains external.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ],
+  "hard_nonclaims": [
+    "No RB1 science or release authority is reopened.",
+    "No production source, reference data, physics, solver, scientific tolerance, mass criterion, temporal acceptance or performance policy changes.",
+    "No physical theory is inferred from runtime code or release PASS evidence.",
+    "No FULLY_TRACED or Status A/AA readiness/compliance promotion.",
+    "No universal H_budget, temporal tolerance or groundwater-head accuracy budget.",
+    "No surface-evaporation throughput/scaling claim."
+  ]
+}
