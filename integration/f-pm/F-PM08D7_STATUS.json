@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "work_unit": "F-PM08D7",
+  "branch": "work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate",
+  "status": "RECONCILED_SOURCE_AUTHORITY_PERSISTED_PREPRODUCTION",
+  "phase": "CONTRACT_PERSISTED_PRODUCTION_NOT_YET_MATERIALIZED",
+  "exact_branch_base": "e4bafab3f6c6547113f5f8717da2467901f49a42",
+  "source_authority_verified": true,
+  "source_authority_evidence": {
+    "fci41_run": 34549708661,
+    "fci41_job": 103109842032,
+    "fci41_conclusion": "success",
+    "broad_canonical_run": 34549708711,
+    "broad_canonical_conclusion": "success",
+    "broad_fci36_replay_job": 103109842760,
+    "broad_current_preservation_job": 103110161173
+  },
+  "superseded_preproduction_archive": {
+    "branch": "archive/f-pm08d7-preproduction-85e17bb7",
+    "head": "d2d03ec8a52842de7812c152af21479bd43855bb",
+    "production_source_changed": false
+  },
+  "implementation_scope": {
+    "fixed_weir_SWQHR1": true,
+    "single_level_positive_DIVDRA": true,
+    "optional_SWST_state": true,
+    "q_rapid_zero": true,
+    "RUNOTS_zero": true,
+    "automatic_management": false,
+    "SWQHR2": false,
+    "negative_or_multilevel_drainage": false
+  },
+  "architecture_findings": {
+    "coupled_drainage_is_internal_combined_transfer": true,
+    "DIVDRA_node_field_is_not_additional_mass": true,
+    "authoritative_qdrain_scalar_must_be_explicit": true,
+    "existing_FKT_remains_only_commit_authority": true,
+    "FCI40_effective_forcing_seam_must_be_preserved": true,
+    "FCI41_surface_evaporation_seam_must_be_preserved": true
+  },
+  "progress": {
+    "reconciled_contract_persisted": true,
+    "production_code_persisted": false,
+    "tests_persisted": false,
+    "architecture_audit_persisted": false,
+    "workflow_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "scientifically_independently_qualified": false,
+    "canonical_admitted": false
+  },
+  "next_required_step": "materialize the smallest fixed-weir process operator and feature-optional SWST transaction lifecycle while preserving F-CI40/F-CI41 runtime behavior; persist source before long-running tests"
+}
