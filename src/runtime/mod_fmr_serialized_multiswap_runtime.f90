@@ -83,6 +83,7 @@ module mod_fmr_serialized_multiswap_runtime
 
   public :: fmr_run_serialized_physical_multiswap
   public :: fmr_execute_serialized_physical_column
+  public :: fmr_execute_serialized_resolved_physical_column
 
 contains
 
@@ -193,10 +194,9 @@ contains
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
   end subroutine fmr_run_serialized_physical_multiswap
 
-  ! Explicit worker-only no-receipt seam. This restores the historical
-  ! per-column parallel composition contract while preserving F-MR18's
-  ! receipt-aware batch API. Parallel V1 does not accept or emit commit
-  ! receipts; the current private executor remains the single transaction path.
+  ! Registry-facing worker seam retained for current parallel callers.  Handle
+  ! validation and resolution remain here; the transaction path below consumes
+  ! only the one selected forcing object.
   subroutine fmr_execute_serialized_physical_column(backend, transaction_control, column, templates, parameter_registry, &
                                                      forcing_registry, state_registry, numerical_config, t0, t1, &
                                                      output, diagnostic, runtime, active_physical_calls)
@@ -217,6 +217,38 @@ contains
     call execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
          state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
   end subroutine fmr_execute_serialized_physical_column
+
+  ! Resolved worker seam for ephemeral effective forcing.  The caller owns and
+  ! pre-resolves template, parameter, forcing and committed-state objects.  The
+  ! forcing object is read-only scratch/input and is never persisted here.
+  subroutine fmr_execute_serialized_resolved_physical_column(backend, transaction_control, column, template, parameters, &
+                                                              effective_forcing, committed_state, numerical_config, t0, t1, &
+                                                              output, diagnostic, runtime, active_physical_calls)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_executor_t), intent(inout) :: transaction_control
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing
+    type(kernel_committed_state_t), intent(inout) :: committed_state
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(inout) :: active_physical_calls
+
+    if (.not. resolved_column_is_routable(column, template)) then
+      output%admission_status = 'ROUTING_REJECTED'
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'ROUTING_REJECTED'
+      call update_committed_provenance(committed_state, output, diagnostic)
+      return
+    end if
+
+    call execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
+         committed_state, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
+  end subroutine fmr_execute_serialized_resolved_physical_column
 
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     type(fmr_logical_column_t), intent(in) :: columns(:)
@@ -327,6 +359,9 @@ contains
     valid = .true.
   end function registry_structure_valid
 
+  ! Registry-facing resolver.  Existing callers retain the same routing
+  ! contract and provenance behavior; only the resolved objects cross the
+  ! shared transaction boundary.
   subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
                             state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
                             commit_receipt)
@@ -345,13 +380,7 @@ contains
     integer, intent(inout) :: active_physical_calls
     type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
 
-    type(kernel_checkpoint_t) :: checkpoint
-    type(kernel_result_t) :: kernel_result
-    type(kernel_candidate_state_t) :: candidate
-    type(kernel_diagnostics_t) :: kernel_diag
-    type(fmr_serialized_physical_observation_t) :: observation
-    integer :: state_index, parameter_index, forcing_index, commit_status, receipt_status, simultaneous_physical_calls
-    logical :: checkpoint_ok, candidate_ready, did_commit
+    integer :: state_index, parameter_index, forcing_index, template_index
 
     if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
       output%admission_status = 'ROUTING_REJECTED'
@@ -364,14 +393,55 @@ contains
     state_index = int(column%state_handle)
     parameter_index = int(column%parameter_ref)
     forcing_index = int(column%forcing_handle)
-    output%initial_revision = state_registry(state_index)%current_revision()
+    template_index = find_template_index(column%template_id, templates)
 
-    call fmr_capture_checkpoint(state_registry(state_index), checkpoint, checkpoint_ok)
+    if (present(commit_receipt)) then
+      call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
+           parameter_registry(parameter_index), forcing_registry(forcing_index), state_registry(state_index), &
+           numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, commit_receipt)
+    else
+      call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
+           parameter_registry(parameter_index), forcing_registry(forcing_index), state_registry(state_index), &
+           numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
+    end if
+  end subroutine execute_column
+
+  ! Single authoritative physical transaction body.  It receives already
+  ! resolved objects and therefore does not know forcing registries or handles.
+  subroutine execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
+                                     committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
+                                     active_physical_calls, commit_receipt)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_executor_t), intent(inout) :: transaction_control
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing
+    type(kernel_committed_state_t), intent(inout) :: committed_state
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(inout) :: active_physical_calls
+    type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
+
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: kernel_result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: kernel_diag
+    type(fmr_serialized_physical_observation_t) :: observation
+    integer :: commit_status, receipt_status, simultaneous_physical_calls
+    logical :: checkpoint_ok, candidate_ready, did_commit
+
+    output%initial_revision = committed_state%current_revision()
+
+    call fmr_capture_checkpoint(committed_state, checkpoint, checkpoint_ok)
     if (.not. checkpoint_ok) then
       output%admission_status = 'CHECKPOINT_CAPTURE_FAILED'
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'CHECKPOINT_CAPTURE_FAILED'
-      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      call update_committed_provenance(committed_state, output, diagnostic)
       return
     end if
 
@@ -383,8 +453,7 @@ contains
     active_physical_calls = active_physical_calls + 1
     simultaneous_physical_calls = active_physical_calls
     !$omp end atomic
-    call backend%run_trial(column, templates(find_template_index(column%template_id, templates)), &
-         parameter_registry(parameter_index), state_registry(state_index), forcing_registry(forcing_index), &
+    call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
          numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
 
     output%kernel_status = kernel_result%status
@@ -431,7 +500,7 @@ contains
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'KERNEL_REJECTED'
-      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      call update_committed_provenance(committed_state, output, diagnostic)
       return
     end if
 
@@ -440,23 +509,23 @@ contains
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'MASS_INCOMPLETE'
-      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      call update_committed_provenance(committed_state, output, diagnostic)
       return
     end if
 
     if (.not. candidate_ready) then
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'CANDIDATE_INVALID'
-      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      call update_committed_provenance(committed_state, output, diagnostic)
       return
     end if
 
     if (present(commit_receipt)) then
-      call fmr_commit_candidate_with_receipt(transaction_control, checkpoint, state_registry(state_index), candidate, &
+      call fmr_commit_candidate_with_receipt(transaction_control, checkpoint, committed_state, candidate, &
            kernel_diag, did_commit, commit_receipt, receipt_status, commit_status)
     else
       receipt_status = FMR_COMMIT_RECEIPT_OK
-      call fmr_commit_candidate(transaction_control, state_registry(state_index), candidate, kernel_diag, &
+      call fmr_commit_candidate(transaction_control, committed_state, candidate, kernel_diag, &
            did_commit, commit_status)
     end if
     output%commit_status = commit_status
@@ -468,7 +537,7 @@ contains
       else
         diagnostic%failure_classification = 'COMMIT_REJECTED'
       end if
-      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      call update_committed_provenance(committed_state, output, diagnostic)
       return
     end if
     if (present(commit_receipt)) then
@@ -476,15 +545,14 @@ contains
            error stop 'F-MR18: successful physical commit without ready accepted receipt'
     end if
 
-    call bind_committed_actual_transpiration(parameter_registry(parameter_index), forcing_registry(forcing_index), &
-         t0, t1, output)
+    call bind_committed_actual_transpiration(parameters, effective_forcing, t0, t1, output)
     output%completed = .true.
     output%committed = .true.
     diagnostic%accepted = 1
     diagnostic%failure_classification = 'NONE'
     diagnostic%unrounded_mass_residual = output%mass%residual
-    call update_committed_provenance(state_registry(state_index), output, diagnostic)
-  end subroutine execute_column
+    call update_committed_provenance(committed_state, output, diagnostic)
+  end subroutine execute_resolved_column
 
   subroutine bind_committed_actual_transpiration(parameters, forcing, t0, t1, output)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
@@ -526,6 +594,15 @@ contains
          column%forcing_handle <= int(size(forcing_registry), int64)
     if (routable) routable = templates(template_index)%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
   end function column_is_routable
+
+  logical function resolved_column_is_routable(column, template) result(routable)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+
+    routable = column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
+         template%template_id == column%template_id .and. &
+         template%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
+  end function resolved_column_is_routable
 
   integer function find_template_index(template_id, templates) result(index)
     integer(int64), intent(in) :: template_id

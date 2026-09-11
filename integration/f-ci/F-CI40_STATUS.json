@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.fci40_status.v1",
+  "work_unit": "F-CI40",
+  "title": "Restricted Explicit Effective-Forcing Executor Canonical Admission",
+  "branch": "qualification/f-ci40-fmr38-effective-forcing-executor-canonical-admission",
+  "phase": "CANONICAL_SOURCE_ADMITTED_BROAD_GATE_GREEN_PENDING_EXACT_FINAL_GOVERNANCE_HEAD_REQUALIFICATION",
+  "decision": "CANONICAL_ADMITTED_CURRENT_CANONICAL_EXPLICIT_EFFECTIVE_FORCING_EXECUTOR_WITHIN_FROZEN_SCOPE_PENDING_EXACT_FINAL_GOVERNANCE_HEAD_REQUALIFICATION",
+  "source_authority": {
+    "pre_admission_canonical_head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+    "pre_admission_canonical_tree": "ebec5e647c68181ba958432ad575f9c95a9c752b",
+    "composition": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "composition_tree": "2c0fb6cca501a65e931c3f185500b4913a46a26e",
+    "composition_src_tree": "fd07bc662410a7bfbd64b4960295997c9e05e19a",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "owner": "F-MR38@eb7300829be05e1500ef94720673a13cb10cdeca",
+  "independent_qualification": "F-VQ55@00a27ac101db1492b7b1eec6d6944f846389e153",
+  "independent_exact_closeout_head_run": 34541001158,
+  "production_scope": [
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "production_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+  "qualified_scope": "GENERIC_RESOLVED_SERIALIZED_COLUMN_EXECUTOR_WITH_EXPLICIT_READ_ONLY_EPHEMERAL_EFFECTIVE_FORCING",
+  "admission_qualification": {
+    "workflow": "F-CI40 F-MR38 effective-forcing executor canonical admission",
+    "run": 34546323128,
+    "job": 103099624152,
+    "head": "23387826b391fe344326e798d91641191022d2e2",
+    "conclusion": "success",
+    "gate": "FCI40_CANONICAL_ADMISSION_GATE=PASS"
+  },
+  "canonical_admission": {
+    "head": "23387826b391fe344326e798d91641191022d2e2",
+    "tree": "50df8a979c17143fcdeb127684db99923bd676ab",
+    "ancestry": "FAST_FORWARD_ANCESTRY_FROM_PRE_ADMISSION_CANONICAL_VERIFIED",
+    "broad_push_run": 34546441988,
+    "broad_push_conclusion": "success"
+  },
+  "post_promotion_harness_history": {
+    "run": 34546628104,
+    "head": "15f14ba2ad1501d84d91f7ab9b6a2ce1c0f1a892",
+    "conclusion": "failure",
+    "classification": "GOVERNANCE_HARNESS_ONLY_POST_PROMOTION_PHASE_MISMATCH",
+    "production_failure": false,
+    "scientific_failure": false,
+    "remediation": "POST_PROMOTION_AWARE_V2_WRAPPER"
+  },
+  "hard_holds": [
+    "no active parallel DIVDRA",
+    "no drainage-specific worker pool",
+    "no forcing-registry deep copy",
+    "no shared forcing mutation",
+    "no persistent effective-forcing state",
+    "no drainage science change"
+  ],
+  "mass": "ONLY_ACCEPTED_PHYSICAL_TRANSFERS_ENTER_AUTHORITATIVE_LEDGER",
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+  "state": {
+    "source_recomposed": true,
+    "production_blob_identity_verified": true,
+    "governance_persisted": true,
+    "tested": true,
+    "qualified_for_admission": true,
+    "canonical_promoted": true,
+    "broad_canonical_qualified": true,
+    "final_governance_head_requalified": false,
+    "final_closeout_complete": false
+  },
+  "final_closeout_gate": {
+    "require_exact_status_head_fci40_ci_green": true,
+    "then_fast_forward_canonical_governance_only": true,
+    "then_require_exact_final_canonical_head_broad_push_ci_green": true,
+    "no_further_status_mutation_required_after_green_final_head": true,
+    "production_or_reference_mutation_forbidden": true
+  }
+}

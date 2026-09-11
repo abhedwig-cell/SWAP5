@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.fci41p_postpromotion_governance_reconciliation_status.v1",
+  "work_unit": "F-CI41P",
+  "title": "Surface-Evaporation Runtime Post-Promotion Governance Reconciliation",
+  "branch": "qualification/f-ci41p-current-canonical-postimage-governance-reconciliation",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_SURFACE_EVAPORATION_RUNTIME_POSTIMAGE_GOVERNANCE_RECONCILIATION",
+  "postpromotion_canonical_source": {
+    "head": "cc3196ef5294f8ed6c1b68389ef33c42b476f053",
+    "production_composition_ancestor": "1ff184f96cce252c039295b82c6b0ed5c5921f34",
+    "process_blob": "a213af4deec2fe854d79120899827852a57237d1",
+    "runtime_blob": "afd2de6893aced7b48eac33f6b3a51876b2c1d12",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "independent_scientific_authority": {
+    "work_unit": "F-VQ56",
+    "head": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+    "exact_status_head_run": 34548837037,
+    "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE"
+  },
+  "prepromotion_admission_authority": {
+    "work_unit": "F-CI41",
+    "exact_status_head": "2e5f7f463b544d0acd0a32c5f8afe9e2d49feb64",
+    "exact_status_head_run": 34549196561,
+    "promotion_governance_head": "cc3196ef5294f8ed6c1b68389ef33c42b476f053",
+    "promotion_governance_head_run": 34549246845
+  },
+  "postpromotion_failure": {
+    "run": 34549340649,
+    "job": 103108753507,
+    "classification": "GOVERNANCE_PREIMAGE_ASSERTION_ON_VALID_POSTIMAGE",
+    "detail": "the F-CI41 runner still required current canonical to equal the pre-admission base after the intended promotion; failure occurred before scientific replay",
+    "candidate_defect": false,
+    "production_source_changed": false,
+    "reference_changed": false,
+    "mass_semantics_changed": false
+  },
+  "postpromotion_system_evidence_before_reconciliation": {
+    "canonical_qualification_run": 34549340655,
+    "canonical_qualification_conclusion": "success",
+    "vq_reference_run": 34549343187,
+    "vq_reference_conclusion": "success",
+    "documentation_run": 34549343184,
+    "documentation_conclusion": "success"
+  },
+  "reconciliation": {
+    "runner_commit": "fe126e18aa468c31bb9ebe7f8fc01563d19e5cc9",
+    "workflow_commit": "c9838da484e35004bc71bcdca6312b33a1c10f0e",
+    "workflow_exact_head_run": 34549498704,
+    "workflow_exact_head_conclusion": "success",
+    "status_precloseout_head": "e4bafab3f6c6547113f5f8717da2467901f49a42",
+    "status_precloseout_exact_head_run": 34549634222,
+    "status_precloseout_exact_head_conclusion": "success",
+    "promoted_canonical_head": "e4bafab3f6c6547113f5f8717da2467901f49a42",
+    "promoted_canonical_fci41_run": 34549708661,
+    "promoted_canonical_fci41_conclusion": "success",
+    "promoted_canonical_broad_run": 34549708711,
+    "promoted_canonical_broad_conclusion": "success",
+    "promoted_canonical_vq_reference_run": 34549711052,
+    "promoted_canonical_vq_reference_conclusion": "success",
+    "authority_logic": "accept the immutable pre-promotion base before promotion, or a current-canonical descendant of the exact qualified composition only when both production blobs and the reference tree remain exact",
+    "production_delta": false,
+    "reference_delta": false,
+    "scientific_oracle_delta": false
+  },
+  "mass": "HARD_UNCHANGED; ACCEPTED_SOLVER_EXTERNAL_TOP_FLUX_REMAINS_THE_SOLE_AUTHORITATIVE_TOP_WATER_MASS_CONTRIBUTION",
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+  "performance_scope": "NO_THROUGHPUT_OR_SCALING_CHANGE; EXISTING_CALL_LOCAL_COPY_ALLOCATION_DEBT_REMAINS_DEFERRED",
+  "state": {
+    "production_unchanged": true,
+    "reference_unchanged": true,
+    "governance_reconciled": true,
+    "reconciliation_tested": true,
+    "exact_status_head_requalified": true,
+    "governance_promoted_to_canonical": true,
+    "exact_promoted_canonical_fci41_green": true,
+    "exact_promoted_canonical_broad_green": true,
+    "final_closeout_complete": true
+  },
+  "closeout_metadata_policy": {
+    "this_commit_changes_status_metadata_only": true,
+    "require_exact_closeout_head_fci41_replay_before_any_further_promotion": true,
+    "if_promoted_require_exact_canonical_fci41_and_broad_replay": true,
+    "no_production_or_reference_mutation_allowed": true
+  }
+}

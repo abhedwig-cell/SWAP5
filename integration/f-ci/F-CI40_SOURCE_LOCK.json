@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fci40_source_lock.v1",
+  "work_unit": "F-CI40",
+  "title": "Restricted Explicit Effective-Forcing Executor Canonical Admission",
+  "branch": "qualification/f-ci40-fmr38-effective-forcing-executor-canonical-admission",
+  "canonical_base": {
+    "head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+    "tree": "ebec5e647c68181ba958432ad575f9c95a9c752b",
+    "authority": "F-CI39"
+  },
+  "owner_authority": {
+    "work_unit": "F-MR38",
+    "closeout": "eb7300829be05e1500ef94720673a13cb10cdeca",
+    "candidate": "b2e31bc8993075bc346f80ad7eb9dc4d92ff7ded",
+    "candidate_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1"
+  },
+  "independent_authority": {
+    "work_unit": "F-VQ55",
+    "closeout": "00a27ac101db1492b7b1eec6d6944f846389e153",
+    "status_blob": "e2c1c72f64f4ecea4b663bedee8c0e52bab9100f",
+    "decision": "QUALIFIED_CURRENT_CANONICAL_EXPLICIT_EFFECTIVE_FORCING_EXECUTOR_WITHIN_FROZEN_SCOPE",
+    "qualification_run": 34540807677,
+    "qualification_head": "c4038cbd071308b5f2e8840a9336423aa2198339",
+    "exact_closeout_head_run": 34541001158,
+    "exact_closeout_head": "00a27ac101db1492b7b1eec6d6944f846389e153",
+    "exact_closeout_head_conclusion": "success"
+  },
+  "current_canonical_composition": {
+    "source_runtime_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "composition_commit": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "composition_tree": "2c0fb6cca501a65e931c3f185500b4913a46a26e",
+    "composition_src_tree": "fd07bc662410a7bfbd64b4960295997c9e05e19a",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "allowed_production_delta": [
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "production_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+    "immutable_blob_reuse": true
+  },
+  "qualified_scope": {
+    "executor": "generic resolved serialized physical column executor",
+    "effective_forcing": "caller-resolved read-only ephemeral input",
+    "transaction_semantics": "checkpoint -> trial -> commit/discard",
+    "mass_semantics": "only accepted physical transfers enter authoritative ledger",
+    "determinism": "qualified under O0/O2 and replay fixtures"
+  },
+  "hard_holds": [
+    "no active parallel DIVDRA",
+    "no drainage-specific worker pool",
+    "no forcing-registry deep copy",
+    "no shared forcing mutation",
+    "no persistent effective-forcing state",
+    "no drainage science change",
+    "no scope expansion beyond the one qualified runtime blob"
+  ]
+}
