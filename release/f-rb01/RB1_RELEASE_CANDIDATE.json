@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.frb01_release_candidate.v4",
+  "schema": "swap5.frb01_release_candidate.v5",
   "work_unit": "F-RB01",
-  "checkpoint": 4,
-  "stage": "PERSISTED",
+  "checkpoint": 6,
+  "stage": "CLOSEOUT_REQUALIFICATION_REQUESTED",
   "candidate_frozen": true,
   "release_candidate_sha": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
   "release_candidate_tree": "3716898eae3c33bf62616e43a2690e9aeb71d434",
@@ -27,6 +27,21 @@
     "integrated_runner": "tests/frb01/run_frb01_release_qualification_v2.sh",
     "temporal_runner": "tests/frb01/run_frb01_temporal_authority.sh"
   },
+  "decisive_green_authority": {
+    "run": 34569690664,
+    "workflow_head": "05092df17222c1761b42940bca369208ae009654",
+    "conclusion": "success",
+    "artifact_id": 10187339980,
+    "artifact_digest": "sha256:e28c99c248256e6cf7a230c06be51ca3ba0653d6ea1c9ab30e8272c1740834a3"
+  },
+  "final_closeout_requalification": {
+    "required": true,
+    "pretrigger_closeout_head": "9bb3842af3f186d63a66cc84b47910f88c30b736",
+    "purpose": "Run the unchanged decisive suite once more on the exact final governance/evidence branch head after blocker closure, matrix reconciliation, readiness dashboard, release description and closeout persistence.",
+    "production_or_reference_change_since_candidate": false,
+    "test_or_workflow_change_since_candidate": false,
+    "expected_result": "same scientific decision if governance/evidence descendants preserve the frozen candidate"
+  },
   "supersedes": [
     {
       "descriptor": "swap5.frb01_release_candidate.v1",
@@ -37,18 +52,27 @@
       "workflow_run": 34569233381,
       "conclusion": "failure",
       "failure_classification": "HARNESS_GOVERNANCE_LINEAGE_ASSERTION_DEFECT",
-      "detail": "The wrapper incorrectly required the F-MR35 owner candidate commit itself to be an ancestor of canonical. Correct governance is the admitted F-CI37 final authority in canonical lineage plus exact current candidate blob identity. Temporal authority was green and no production/reference/scientific source changed."
+      "scientific_failure": false,
+      "production_failure": false
     },
     {
       "descriptor": "swap5.frb01_release_candidate.v3",
       "workflow_run": 34569400262,
       "conclusion": "failure",
       "failure_classification": "HARNESS_OBSERVABILITY_MARKER_DEFECT",
-      "detail": "The independent F-MQ30 runner passed its internal held-out, fail-closed, worker-count, publication-order, O0/O2 and hard-mass gates and exported its summary PASS markers, but the outer RB1 wrapper incorrectly required internal per-case markers that the runner intentionally does not publish to stdout. The same latent wrapper defect was pre-emptively corrected for F-MQ29. No independent scientific attack, production source, reference source or acceptance threshold was changed."
+      "scientific_failure": false,
+      "production_failure": false
+    },
+    {
+      "descriptor": "swap5.frb01_release_candidate.v4",
+      "workflow_run": 34569690664,
+      "conclusion": "success",
+      "failure_classification": null,
+      "scientific_decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY"
     }
   ],
-  "immutability_rule": "During decisive qualification, src, reference, tests/frb01 and the decisive workflow must remain byte-identical to this candidate. Any production source or reference change invalidates RB1 scientific release qualification and requires a fresh candidate after governed owner qualification/canonical admission. Any decisive test-harness change also requires a fresh release candidate before rerun.",
-  "evidence_only_rule": "This descriptor update and later qualification/closeout records may advance the release branch without changing the scientifically tested src/reference trees. Such evidence-only descendants remain explicitly distinguishable from the frozen release candidate above.",
+  "immutability_rule": "During decisive qualification, src, reference, tests/frb01 and the decisive workflow must remain byte-identical to the frozen release candidate. Any production source or reference change invalidates RB1 scientific release qualification and requires a fresh candidate after governed owner qualification/canonical admission. Any decisive test-harness change also requires a fresh release candidate before rerun.",
+  "evidence_only_rule": "Qualification, dashboard, blocker closure, release description, closeout and this requalification-request descriptor may advance the release branch without changing the scientifically tested src/reference trees. Such evidence-only descendants remain explicitly distinguishable from the frozen release candidate.",
   "historical_evidence_rule": "Historical admission gates remain bound to their exact admitted heads. F-RB01 separately establishes current canonical preservation and integrated behavior without replaying historical one-delta assumptions as moving-current requirements.",
   "scope_creep_rule": "Capabilities admitted after the frozen RB1 scope remain NEXT_RELEASE by default and do not enlarge the denominator."
 }
