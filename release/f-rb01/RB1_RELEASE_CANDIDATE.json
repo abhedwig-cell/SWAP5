@@ -1,32 +1,38 @@
 {
-  "schema": "swap5.frb01_release_candidate.v1",
+  "schema": "swap5.frb01_release_candidate.v2",
   "work_unit": "F-RB01",
   "checkpoint": 4,
   "stage": "PERSISTED",
   "candidate_frozen": true,
-  "RB1_RELEASE_CANDIDATE_SHA": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
-  "RB1_RELEASE_CANDIDATE_TREE": "c77ac75aea522ac20a60da012595af9166efcff6",
+  "release_candidate_sha": "37cf0bbd97978231082b1db69948f52dc79d5398",
+  "release_candidate_tree": "03754c8cce6fcdfc2a057e0cf9329598c27611ed",
+  "RB1_RELEASE_CANDIDATE_SHA": "37cf0bbd97978231082b1db69948f52dc79d5398",
+  "RB1_RELEASE_CANDIDATE_TREE": "03754c8cce6fcdfc2a057e0cf9329598c27611ed",
   "RB1_RELEASE_CANDIDATE_SRC_TREE": "8ceeb70a64012631ebba295f5c045ea908b0681f",
   "RB1_RELEASE_CANDIDATE_REFERENCE_TREE": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
-  "source_authority_branch_at_freeze": "integration/f-ci-canonical",
-  "source_authority_closeout": "F-CI42P",
-  "release_evidence_branch": "release/f-rb01-restricted-production-baseline-v1",
-  "release_branch_pre_freeze_evidence_head": "03004ba35ffedd59e2aa247c579b51825b2f887f",
-  "pre_freeze_compare": {
-    "base": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
-    "release_branch_ahead_by": 3,
-    "release_branch_behind_by": 0,
-    "changed_paths": [
-      "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json",
-      "release/f-rb01/RB1_CAPABILITY_EVIDENCE_MATRIX.json",
-      "release/f-rb01/RB1_BLOCKER_CLASSIFICATION.json"
-    ],
-    "production_src_delta": false,
-    "reference_delta": false,
-    "tests_delta": false,
-    "tools_delta": false
+  "production_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "closeout": "F-CI42P",
+    "exact_broad_canonical_workflow": 34558475585,
+    "exact_broad_canonical_conclusion": "success"
   },
-  "candidate_rule": "The scientific/production candidate is the exact immutable source authority above. F-RB01 evidence, workflow and documentation commits may advance only the release branch and must preserve src and reference tree identity. Any src or reference change invalidates this candidate and requires a new RB1_RELEASE_CANDIDATE_SHA/TREE plus all applicable decisive gates.",
-  "historical_evidence_rule": "Frozen historical admission workflows remain bound to their exact admitted heads. The RB1 suite may replay those frozen authorities and must separately establish preservation/integration on this exact RB1 source candidate.",
-  "new_capability_rule": "Production admissions completed after this freeze are NEXT_RELEASE by default and do not enter RB1."
+  "release_harness_authority": {
+    "sha": "37cf0bbd97978231082b1db69948f52dc79d5398",
+    "tree": "03754c8cce6fcdfc2a057e0cf9329598c27611ed",
+    "decisive_workflow": ".github/workflows/frb01-release-qualification.yml",
+    "integrated_runner": "tests/frb01/run_frb01_release_qualification_v2.sh",
+    "temporal_runner": "tests/frb01/run_frb01_temporal_authority.sh"
+  },
+  "supersedes": {
+    "previous_descriptor_version": "swap5.frb01_release_candidate.v1",
+    "reason": "The first descriptor predated final release-harness reconciliation, architecture-count correction, TB01 crosswalk and retirement of the superseded workflow/matrix files. It is retained in Git history as checkpoint evidence but is not decisive release authority."
+  },
+  "immutability_rule": "During decisive qualification, src, reference, tests/frb01 and the decisive workflow must remain byte-identical to this candidate. Any production source or reference change invalidates RB1 scientific release qualification and requires a fresh candidate after governed owner qualification/canonical admission. Any decisive test-harness change also requires a fresh release candidate before rerun.",
+  "evidence_only_rule": "This descriptor update and later qualification/closeout records may advance the release branch without changing the scientifically tested src/reference trees. Such evidence-only descendants must remain explicitly distinguishable from the frozen release candidate above.",
+  "historical_evidence_rule": "Historical admission gates remain bound to their exact admitted heads. F-RB01 separately establishes current canonical preservation and integrated behavior without replaying historical one-delta assumptions as moving-current requirements.",
+  "scope_creep_rule": "Capabilities admitted after the frozen RB1 scope remain NEXT_RELEASE by default and do not enlarge the denominator."
 }
