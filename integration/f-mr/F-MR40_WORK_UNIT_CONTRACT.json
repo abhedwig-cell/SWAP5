@@ -1,0 +1,42 @@
+{
+  "work_unit": "F-MR40",
+  "title": "Restricted Soil-Temperature Runtime Current-Canonical Recomposition & Requalification",
+  "purpose": "Recompose the already-qualified F-MR39 runtime source authority onto the current post-F-CI44 canonical authority without changing soil-temperature science, runtime semantics or the F-CI44 application-accuracy contract.",
+  "current_canonical_base": "536042620038014057427a7915c212a3ac78f84d",
+  "current_canonical_change_since_fmr39_base": "F-CI44 application-accuracy-contract canonical admission",
+  "fmr39_source_authority": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "fmr39_scientific_authority": "F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "recomposition_source_commit": "bad8dabcfe95931aab548748305840d2ba191228",
+  "required_production_delta_from_current_canonical": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "required_exact_fmr39_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "fci44_preservation": {
+    "module": "src/runtime/mod_coupling_application_accuracy_contract.f90",
+    "required_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "require_targeted_o0_o2_replay": true
+  },
+  "qualification_requirements": [
+    "fail closed if integration/f-ci-canonical no longer equals 536042620038014057427a7915c212a3ac78f84d",
+    "production source delta from current canonical is exactly the two F-MR39 runtime files",
+    "both runtime files are byte-identical to the qualified F-MR39 source blobs",
+    "the complete F-MR39 runtime gate is replayed using the exact F-MR39 test/gate authority with only its canonical-base pin rebound to F-CI44",
+    "F-VQ58 exact scientific authority replay remains green",
+    "F-MR19 disabled thermal path remains green at O0 and O2",
+    "F-CI44 application-accuracy contract module remains byte-identical and its focused contract oracle passes at O0 and O2",
+    "no canonical promotion is performed by F-MR40"
+  ],
+  "nonclaims": [
+    "no new thermal physics",
+    "no parallel thermal throughput qualification",
+    "no snow-plus-thermal combination",
+    "no frost or latent heat",
+    "no new water-plus-thermal timestep policy",
+    "no production SWAP-MODFLOW coupling admission",
+    "no canonical admission"
+  ]
+}
