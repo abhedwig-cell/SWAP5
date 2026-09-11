@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.fdoc11_invariant_audit.v1",
+  "work_unit": "F-DOC11",
+  "base": "ef34a9f5a01d78ff9c2628315b484c5a8ff4f717",
+  "scope": "Documentation/traceability gap decomposition only. No production, reference, physics, solver, tolerance, mass, temporal-acceptance or performance-policy change.",
+  "summary": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "invariants": [
+    {"id": 1, "status": "PASS", "rationale": "No kernel split or use-case-specific implementation introduced."},
+    {"id": 2, "status": "PASS", "rationale": "No kernel or I/O code changed."},
+    {"id": 3, "status": "PASS", "rationale": "Existing data-category separation is unchanged."},
+    {"id": 4, "status": "PASS", "rationale": "Persistent-state layout is unchanged."},
+    {"id": 5, "status": "PASS", "rationale": "Worker scratch ownership is unchanged."},
+    {"id": 6, "status": "PASS", "rationale": "Memory layout and batching are unchanged."},
+    {"id": 7, "status": "PASS", "rationale": "Transactional timestep semantics are unchanged and explicitly retained as a traceability target."},
+    {"id": 8, "status": "PASS", "rationale": "Recomputation and warm-start semantics are unchanged."},
+    {"id": 9, "status": "PASS", "rationale": "Generic [t0,t1] time remains explicit in the interval traceability target."},
+    {"id": 10, "status": "PASS", "rationale": "Flexible coupling-window capability is not narrowed."},
+    {"id": 11, "status": "PASS", "rationale": "Coupling-first architecture is not altered."},
+    {"id": 12, "status": "PASS", "rationale": "Groundwater interface contract is unchanged; no new accuracy budget is claimed."},
+    {"id": 13, "status": "PASS", "rationale": "Mass conservation remains hard and unchanged."},
+    {"id": 14, "status": "PASS", "rationale": "Interface-sensitivity output expectations are unchanged."},
+    {"id": 15, "status": "PASS", "rationale": "No coupling-cost policy change is made."},
+    {"id": 16, "status": "PASS", "rationale": "MultiSWAP remains primary; execution traceability is classified without changing runtime."},
+    {"id": 17, "status": "PASS", "rationale": "No 1:1 MODFLOW mapping assumption is introduced."},
+    {"id": 18, "status": "PASS", "rationale": "Deep-vadose remains optional and external."},
+    {"id": 19, "status": "PASS", "rationale": "No component transition or storage accounting is changed."},
+    {"id": 20, "status": "PASS", "rationale": "Alternative soil-water solver openness is unchanged."},
+    {"id": 21, "status": "PASS", "rationale": "No physics duplication or legacy structure adoption occurs."},
+    {"id": 22, "status": "PASS", "rationale": "No module is coupled to HeadCalc internals."},
+    {"id": 23, "status": "PASS", "rationale": "Physical science and numerical/runtime authority classes are explicitly kept separate."},
+    {"id": 24, "status": "PASS", "rationale": "No runtime-cost or fallback policy change is made."},
+    {"id": 25, "status": "PASS", "rationale": "Reference mode remains available and untouched."},
+    {"id": 26, "status": "PASS", "rationale": "Runtime diagnostics are unchanged; diagnostics traceability remains explicit."},
+    {"id": 27, "status": "PASS", "rationale": "Optional-functionality scaling is unchanged."},
+    {"id": 28, "status": "PASS", "rationale": "Runtime/coupler system composition remains outside kernel."},
+    {"id": 29, "status": "PASS", "rationale": "No silent day, file-format or MODFLOW dependency is introduced."},
+    {"id": 30, "status": "PASS", "rationale": "This file is the explicit architecture-invariant audit for F-DOC11."}
+  ],
+  "hard_nonclaims": [
+    "No production source or reference data changed.",
+    "No T0-T7 tier is resolved by F-DOC11.",
+    "No FULLY_TRACED or Status A/AA promotion is made.",
+    "No universal H_budget or groundwater-head accuracy budget is established.",
+    "Surface-evaporation throughput/scaling remains separate performance work."
+  ]
+}
