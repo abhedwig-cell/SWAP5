@@ -25,7 +25,14 @@ jobs:
           gfortran --version
           python3 --version
 
-      - name: Decisive F-RB01 release qualification
+      - name: Restricted temporal scientific authority and current preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/frb01/run_frb01_temporal_authority.sh | tee _frb01_temporal_stdout.txt
+          grep -Fq 'FRB01_TEMPORAL_AUTHORITY_AND_CURRENT_PRESERVATION=PASS' _frb01_temporal_stdout.txt
+
+      - name: Decisive F-RB01 integrated release qualification
         shell: bash
         run: |
           set -euo pipefail
@@ -38,6 +45,7 @@ jobs:
         with:
           name: frb01-release-evidence-${{ github.sha }}
           path: |
+            _frb01_temporal_stdout.txt
             _frb01_release_stdout.txt
             _frb01_release_evidence/
           if-no-files-found: warn
