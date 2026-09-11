@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.fdoc09_status.v1",
+  "work_unit": "F-DOC09",
+  "title": "RB1 Full Richards REFERENCE Route Bounded T11 Verification Evidence Graph",
+  "branch": "work/f-doc09-rb1-sw-reference-t11-evidence-graph",
+  "base": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+  "capability": "RB1-SW-REFERENCE",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_SW_REFERENCE_T11_EVIDENCE_GRAPH_WITH_EXPLICIT_RESIDUAL_GAPS",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc09-rb1-sw-reference-t11-evidence-graph.yml to complete successfully with head_sha equal to the exact final branch head containing this status and F-DOC09_CLOSEOUT.json. The first-green run qualifies the persisted bounded package; no metadata rewrite is required after a successful exact-final-head run.",
+  "scope": {
+    "bounded_evidence_inventory_complete": true,
+    "verification_relation_nodes": 8,
+    "qualified_scoped_and_cross_cutting_relation_nodes": 7,
+    "release_preservation_relation_nodes": 1,
+    "diagnostic_support_nodes": 1,
+    "residual_gap_nodes": 5,
+    "complete_full_richards_equation_to_test_graph": false,
+    "T1_complete": false,
+    "T3_T8_complete": false,
+    "T11_complete_for_entire_reference_route": false,
+    "T12_complete": false,
+    "fully_traced": false,
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false
+  },
+  "authority_chain": {
+    "F_DOC08": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+    "F_DOC04": "a703747ce1991c5601b76a84f04969b602298268",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_SI13_to_F_SI19_closeout_authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "F_SI19_candidate": "8e6121ecfcdfb71c79a111153835d4400d37ff89",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "qualification_evidence": {
+    "first_green_head": "8763888d224a4639ec843626b95b177e15517567",
+    "first_green_workflow_run": 34643355232,
+    "first_green_job": 103408165307,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10281140281,
+    "first_green_artifact_name": "fdoc09-rb1-sw-reference-t11-evidence-8763888d224a4639ec843626b95b177e15517567",
+    "first_green_artifact_digest": "sha256:e3b1ccebbfe21ef81682b15a545428e2d60845e3b3caec4a4df922ede4737faa",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
+  },
+  "evidence_classification": {
+    "F_SI13_to_F_SI16": "QUALIFIED_SCOPED_SOURCE_BOUND_VERIFICATION",
+    "F_SI18": "DIAGNOSTIC_TEST_ARCHITECTURE_SUPPORT_ONLY_NOT_POSITIVE_SCIENTIFIC_ADMISSION",
+    "F_SI19": "QUALIFIED_REFERENCE_LINEAR_SOLVER_SEAM_ONLY",
+    "F_RB01": "RELEASE_PRESERVATION_NOT_EQUATION_AUTHORITY"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "scientific_tolerance_delta": "NONE",
+    "mass_criterion_delta": "NONE",
+    "temporal_acceptance_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false,
+    "surface_evaporation_performance_debt_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "Controlled complete Full Richards T1 scientific-theory authority",
+      "Controlled complete T3-T8 Full Richards formulation/discretisation/numerical-method graph",
+      "Complete whole-route T11 equation-to-test graph including all interior, closure, top-boundary, source/sink and root-sink terms",
+      "T12 independent application validation",
+      "Controlled-source reconciliation gaps recorded by the F-DOC aggregate authority",
+      "Surface-evaporation throughput/scaling and call-local allocation performance remain separate"
+    ]
+  }
+}
