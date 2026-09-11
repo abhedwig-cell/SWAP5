@@ -14,7 +14,7 @@
   ],
   "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
   "decision": "QUALIFIED_BOUNDED_RB1_ET_ROOT_SURFACE_EVAP_TRACEABILITY_WITH_EXPLICIT_GAPS",
-  "validity_rule": "This status is final only when .github/workflows/fdoc06-rb1-et-root-surface-evap-traceability.yml completes successfully with head_sha equal to the exact branch head containing the final F-DOC06 status and closeout files.",
+  "validity_rule": "This status is final only when .github/workflows/fdoc06-rb1-et-root-surface-evap-traceability.yml completes successfully with head_sha equal to the exact branch head containing this final status and closeout. The first-green run is persisted evidence; no metadata rewrite is required after a successful exact-final-head run.",
   "traceability_boundary": {
     "fully_traced_claimed": false,
     "resolved_tiers": ["T8", "T9", "T10", "T13", "T14"],
@@ -57,18 +57,21 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "qualification_evidence": {
-    "first_green_head": null,
-    "first_green_workflow_run": null,
-    "first_green_artifact": null,
-    "first_green_artifact_digest": null,
-    "final_exact_head_run": null
+    "first_green_head": "996487c1836a40f46a0fd40ed13a64c1c866f114",
+    "first_green_workflow_run": 34620665763,
+    "first_green_job": 103333541238,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10272705665,
+    "first_green_artifact_name": "fdoc06-rb1-et-root-surface-evap-traceability-evidence-996487c1836a40f46a0fd40ed13a64c1c866f114",
+    "first_green_artifact_digest": "sha256:0cc7f3bb5013971a1912cca02e795f4fa143e5581cb54e6be65bf1f727a6a192",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
   },
   "work_state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
-    "closed": false,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
     "qualification_is_subject_to_exact_head_validity_rule": true,
     "scientific_scope_reopened": false,
     "open": [
