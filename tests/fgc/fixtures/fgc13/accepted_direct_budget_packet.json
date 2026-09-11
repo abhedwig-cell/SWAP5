@@ -1,0 +1,65 @@
+{
+  "schema_id": "SWAP5_PROJECT_ACCURACY_CONTRACT_EVIDENCE_V1",
+  "packet_id": "SYNTHETIC-FGC13-DIRECT-001",
+  "packet_version": 1,
+  "project": {
+    "project_id": "SYNTHETIC-GW-002",
+    "name": "Synthetic direct temporal budget groundwater case",
+    "jurisdiction": "Synthetic qualification jurisdiction",
+    "decision_context": "Qualification-only example; not a real project requirement.",
+    "qoi_kind": "GROUNDWATER_DRAWDOWN",
+    "spatial_scope": "Synthetic receptor set D1-D2",
+    "time_horizon": "Synthetic governed decision interval"
+  },
+  "application_requirement": {
+    "available": true,
+    "externally_qualified": true,
+    "value_cm": 10.0,
+    "requirement_semantics": "MAX_ABSOLUTE_PREDICTION_ERROR",
+    "provenance": {
+      "provenance_id": 13101,
+      "claim_id": "SYNTH-APP-002",
+      "issuer": "Synthetic External Decision Authority",
+      "document_title": "Synthetic Drawdown Prediction Accuracy Requirement",
+      "document_version": "v1",
+      "clause": "5.4",
+      "locator": "qualification fixture application clause 5.4",
+      "governance_status": "FORMALLY_ADOPTED",
+      "claim_type": "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+      "external_to_swap_numerical_behavior": true
+    }
+  },
+  "temporal_policy": {
+    "available": true,
+    "externally_qualified": true,
+    "mode": "DIRECT_HEAD_ERROR_BUDGET_CM",
+    "allocation_fraction": null,
+    "direct_budget_cm": 2.0,
+    "provenance": {
+      "provenance_id": 13102,
+      "claim_id": "SYNTH-TEMP-002",
+      "issuer": "Synthetic External Decision Authority",
+      "document_title": "Synthetic Direct Temporal Head Error Budget",
+      "document_version": "v1",
+      "clause": "2.3",
+      "locator": "qualification fixture temporal clause 2.3",
+      "governance_status": "FORMALLY_ADOPTED",
+      "claim_type": "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET",
+      "external_to_swap_numerical_behavior": true
+    }
+  },
+  "forbidden_substitution_attestations": {
+    "not_physical_impact_threshold_only": true,
+    "not_calibration_metric_only": true,
+    "not_model_generated_uncertainty_only": true,
+    "not_monitoring_trigger_only": true,
+    "not_swap_numerical_behavior": true,
+    "not_model_timestep_schedule": true
+  },
+  "canonical_mapping": {
+    "contract_id": 1311,
+    "contract_version": 1,
+    "application_provenance_id": 13101,
+    "temporal_allocation_provenance_id": 13102
+  }
+}
