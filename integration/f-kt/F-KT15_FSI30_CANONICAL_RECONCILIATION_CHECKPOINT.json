@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "FSI30_CURRENT_CANONICAL_RECONCILIATION_CHECKPOINT",
+  "qualification": false,
+  "status": "PERSISTED_RECONCILIATION_REQUIRED_BEFORE_IMPLEMENTATION",
+  "authorities": {
+    "fkt15_head_before_checkpoint": "989d87ad9e597b27568c37244923183f556acc1e",
+    "qualified_fsi30_closeout": "27b10ac0bca17a68e2746431b4c6a986e3910175",
+    "current_canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "fsi30_current_canonical_merge_base": "d201904a85f3b595e028242978e52c02f5122a09",
+    "fkt15_fsi30_merge_base": "a7242e1831491de0a37c521c3875b0bfbcad7e13"
+  },
+  "live_relationships": {
+    "current_canonical_vs_fsi30": {
+      "status": "diverged",
+      "fsi30_ahead_by": 65,
+      "fsi30_behind_by": 29
+    },
+    "fkt15_vs_fsi30": {
+      "status": "diverged",
+      "finding": "The two F-KT15-only commits after the shared base change only F-KT15 governance/status artifacts; production source changes are on the F-SI30 lineage."
+    }
+  },
+  "overlap_paths_requiring_semantic_reconciliation": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_reference_richards_workspace.f90",
+    "src/solver/mod_reference_linear_solver.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_contracts.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/kernel/mod_kernel_transactions.f90"
+  ],
+  "fsi30_specific_paths_to_preserve": [
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "frozen_rules": [
+    "F-SI30 is a qualified source postimage, not a canonical admission.",
+    "Do not overwrite later canonical functionality by copying the F-SI30 tree wholesale.",
+    "Do not discard F-SI28/F-KT14 same-factorization sensitivity or accepted-only transport while preserving later canonical changes.",
+    "Do not broaden F-KT15 scientific admission predicates during source reconciliation.",
+    "Do not introduce a second hydraulic authority or a second nonlinear tangent trajectory.",
+    "Do not alter scientific tolerances or water-balance gates.",
+    "Do not infer whole-coupling-window derivative semantics from the accepted local-terminal tangent."
+  ],
+  "next_gate": {
+    "required": "Three-way semantic reconciliation of current canonical, qualified F-SI30 and the frozen F-KT15/F-KT14 contracts on every overlapping source path.",
+    "implementation_allowed_after": "A combined candidate preserves both the current canonical postimage and the qualified F-SI30/F-SI28/F-KT14 behavior with explicit executable evidence."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "F_KT15_SOURCE_IMPLEMENTATION_BLOCKED_PENDING_SEMANTIC_CURRENT_CANONICAL_FSI30_RECONCILIATION"
+}
