@@ -1,0 +1,102 @@
+{
+  "work_unit": "F-MR41",
+  "title": "Typed Optional-State Layout Identity & Fail-Closed Runtime Contract",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_TYPED_OPTIONAL_STATE_LAYOUT_IDENTITY_AND_FAIL_CLOSED_RUNTIME_CONTRACT",
+  "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "candidate_source_authority": "50b8bd32b03946d947b9c8b87a17192684843b6e",
+  "branch": "work/f-mr41-typed-optional-state-layout-contract",
+  "production_source_delta": [
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "candidate_source_blobs": {
+    "src/runtime/mod_fmr_runtime_core.f90": "88adf19e274956ab0f97fe6b4f6307fbfb453790",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "2364c765935813675dee0d2838a7ce183d81f560",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d"
+  },
+  "typed_layout_contract": {
+    "base": {
+      "id": 0,
+      "symbol": "FMR_OPTIONAL_STATE_LAYOUT_BASE",
+      "meaning": "recognized base/default optional-state topology; not a universal assertion that optional state can never exist in all future profiles"
+    },
+    "snow": {
+      "id": 60605,
+      "symbol": "FMR_OPTIONAL_STATE_LAYOUT_SNOW",
+      "historical_authority": "F-MR06@99d96d8a0b4d2752d254fd0f4f3fc1a0f4181dc3",
+      "historical_oracle_blob": "ed4b742b76e97ff0ad27b386850c1d093e4f03d1"
+    },
+    "restricted_soil_temperature": {
+      "id": 390501,
+      "symbol": "FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE",
+      "historical_authority": "F-MR39@87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+      "historical_oracle_blob": "00a0d30fd4f1f3ef3888dbc03cf71d41770c4fab"
+    },
+    "identity_semantics": "optional_state_layout_id is template capability/topology metadata; it does not imply that every column using a typed template currently allocates that optional state",
+    "unknown_identity_semantics": "fail closed; arbitrary positive IDs are not inferred as thermal or snow"
+  },
+  "runtime_admission_contract": {
+    "unknown_layout": "KERNEL_STATUS_NOT_ADMITTED with admission_rejections incremented",
+    "soil_temperature_active": "requires exact restricted-soil-temperature layout ID 390501 and rejects simultaneous snow-active configuration",
+    "snow_active": "requires exact snow layout ID 60605 when soil temperature is inactive",
+    "inactive_optional_physics": "recognized typed layout capability may remain present without allocating optional state"
+  },
+  "restart_contract": {
+    "unknown_layout": "fails closed",
+    "base_layout": "requires neither snow nor soil-temperature state allocated",
+    "snow_layout": "rejects thermal state; snow state may be allocated or absent for inactive columns",
+    "restricted_soil_temperature_layout": "rejects snow state; thermal state may be absent for inactive columns; allocated thermal state must be ready and node-count compatible",
+    "simultaneous_snow_and_thermal_state": "rejected"
+  },
+  "qualification_evidence": {
+    "usage_audit_head": "531974d57b5f4ffe1cbd4bc14c265f26cf24fbc2",
+    "usage_audit_workflow_run": 34641459759,
+    "qualification_workflow_run": 34643811428,
+    "qualification_workflow_conclusion": "success",
+    "prepublication_job": 103409669161,
+    "prepublication_job_conclusion": "success",
+    "exact_head_requalification_job": 103409728468,
+    "exact_head_requalification_job_conclusion": "success",
+    "bounded_three_file_production_delta": "PASS",
+    "canonical_race_guard": "PASS",
+    "historical_layout_identities_pinned": "PASS",
+    "static_typed_layout_contract": "PASS",
+    "known_layout_identity_matrix": "PASS",
+    "inactive_typed_capability_semantics": "PASS",
+    "snow_layout_restart_identity": "PASS",
+    "unknown_positive_layout_restart_fail_closed": "PASS",
+    "unknown_positive_thermal_layout_390502_rejected_o0": "PASS",
+    "unknown_positive_thermal_layout_390502_rejected_o2": "PASS",
+    "valid_fmr39_thermal_authority_preserved_o0_o2": "PASS",
+    "fmr39_runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+    "fmr19_base_restart_preservation_o0_o2": "PASS",
+    "o0_o2_determinism": "PASS",
+    "exact_candidate_head": "50b8bd32b03946d947b9c8b87a17192684843b6e",
+    "architecture_invariant_audit": "integration/f-mr/F-MR41_INVARIANT_AUDIT.json",
+    "architecture_invariant_audit_result": "PASS_WITH_EXPLICIT_SCOPE_BOUNDARIES"
+  },
+  "scientific_and_architecture_scope": {
+    "new_physics": false,
+    "new_solver": false,
+    "new_optional_state_family": false,
+    "scientific_tolerance_relaxation": false,
+    "mass_accounting_change": false,
+    "canonical_admission": false,
+    "rb1_change": false
+  },
+  "nonclaims": [
+    "No new science, physics, solver method, optional-state family, or scientific tolerance is qualified by F-MR41.",
+    "F-MR41 does not requalify snow-process physics or replay the full historical F-MR06 snow runtime against current canonical source; it pins the historical snow layout identity and qualifies current typed identity/restart semantics.",
+    "F-MR41 does not qualify a snow-plus-soil-temperature combined runtime profile; the combination remains rejected.",
+    "F-MR41 makes no new performance, scaling, or parallel-throughput claim.",
+    "F-MR41 performs no canonical promotion and does not reopen or modify immutable RB1 release authority."
+  ],
+  "closeout_replay": {
+    "workflow": ".github/workflows/fmr41-closeout-evidence.yml",
+    "purpose": "replay the full F-MR41 gate on the evidence head while asserting that the three production blobs remain identical to the qualified candidate source authority",
+    "trigger": "this qualification-status commit"
+  },
+  "downstream_rule": "Any canonical admission must recheck the then-current integration/f-ci-canonical head and recompose/requalify if canonical has moved. Do not infer canonical authority from this closed work branch."
+}
