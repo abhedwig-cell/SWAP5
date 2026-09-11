@@ -5,7 +5,7 @@ module mod_b110_production_soil_water_task2
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_top_boundary_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
-       SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_HEAD
+       SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
@@ -46,9 +46,10 @@ contains
     type(reference_richards_legacy_workspace_t) :: workspace
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: result
-    type(soil_water_top_boundary_result_t) :: accepted_surface
+    type(soil_water_top_boundary_result_t) :: initial_surface, accepted_surface
     real(real64), allocatable, target :: drainage_copy(:,:), subsurface_copy(:), root_copy(:)
     real(real64) :: potential_bare_evaporation
+    logical :: sensitivity_route_admitted
     integer :: n, stat_index
 
     handled = .false.
@@ -115,7 +116,17 @@ contains
     request%evaluation%constitutive => constitutive
     request%evaluation%source_sink => source_sink
     request%evaluation%dynamic_top_boundary => dynamic_top
-    request%request_interface_sensitivity = (swbotb == 2)
+
+    ! F-SI28/F-SI30 qualify the local qbot tangent only on the smooth dynamic
+    ! surface-flux route. Do not infer tangent validity for atmospheric-head,
+    ! ponded-head or runoff regimes merely because SWBOTB=2 is active.
+    call dynamic_top%evaluate(h(1), theta(1), pond, request%boundary, initial_surface)
+    if (initial_surface%status /= SW_TOP_BOUNDARY_AVAILABLE) &
+         error stop 'F-KT15: initial dynamic surface route unavailable'
+    sensitivity_route_admitted = swbotb == 2 .and. &
+         initial_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX .and. &
+         trim(initial_surface%route) == 'surface-flux'
+    request%request_interface_sensitivity = sensitivity_route_admitted
 
     call solver%solve(request, workspace, result)
     call accumulate_solver_diagnostics(worker, result)
@@ -160,7 +171,10 @@ contains
       end if
 
       worker%soil_water_trial%typed_accepted = .true.
-      if (result%interface_sensitivity%available) then
+      if (sensitivity_route_admitted .and. &
+          accepted_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX .and. &
+          trim(accepted_surface%route) == 'surface-flux' .and. &
+          result%interface_sensitivity%available) then
         worker%soil_water_trial%sensitivity_available = .true.
         worker%soil_water_trial%dh_bottom_dq_bottom = &
              result%interface_sensitivity%dh_bottom_dq_bottom
@@ -169,7 +183,7 @@ contains
 
     case (SW_SOLVE_RETRY_ADVISED)
       ! Existing SoilWaterStateVar(2) + TimeControl retry path owns restoration.
-      ! Do not publish candidate state or sensitivity from this rejected trial.
+      ! Do not publish sensitivity or accepted result metadata from this rejected trial.
       worker%soil_water_trial%retry_advised = .true.
       worker%soil_water_trial%sensitivity_available = .false.
       fldecdt = .true.
