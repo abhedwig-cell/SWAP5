@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.fdoc08_status.v1",
+  "work_unit": "F-DOC08",
+  "title": "RB1 Temporal Acceptance T11 Equation-to-Test Traceability",
+  "branch": "work/f-doc08-rb1-time-reference-t11-traceability",
+  "base": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+  "capability": "RB1-TIME-REFERENCE",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_TIME_REFERENCE_T11_RELATION_TO_TEST_GRAPH",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc08-rb1-time-reference-t11-traceability.yml to complete successfully with head_sha equal to the exact final branch head containing this status and F-DOC08_CLOSEOUT.json. The first-green run proves the persisted bounded package; no metadata rewrite is required after a successful exact-final-head run.",
+  "scope": {
+    "bounded_t11_graph_complete": true,
+    "universal_application_accuracy_t11_complete": false,
+    "relation_nodes": 8,
+    "mapped_relation_nodes": 8,
+    "unmapped_relation_nodes": 0,
+    "fully_traced_rb1_claimed": false,
+    "numeric_H_budget_selected": false,
+    "universal_temporal_tolerance_claimed": false,
+    "universal_groundwater_head_accuracy_budget_claimed": false,
+    "shorter_dt_monotonicity_claimed": false,
+    "t12_application_validation_complete": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false
+  },
+  "authority_chain": {
+    "fdoc07": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "fdoc04": "a703747ce1991c5601b76a84f04969b602298268",
+    "f_vq34_closeout": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "f_vq34_tested_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+    "f_ci21_temporal_materialization": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "f_ci40_temporal_dependency_authority": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "f_rb01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6"
+  },
+  "qualification_evidence": {
+    "first_green_head": "100c4d86ee1cb43c69f58a336a76541e134cfe06",
+    "first_green_workflow_run": 34642605989,
+    "first_green_job": 103405706630,
+    "first_green_conclusion": "success",
+    "first_green_artifact": 10280582690,
+    "first_green_artifact_name": "fdoc08-rb1-time-reference-t11-evidence-100c4d86ee1cb43c69f58a336a76541e134cfe06",
+    "first_green_artifact_digest": "sha256:4e73d185e193097b9bd6197ba888ab71b491de1c85c40b2ee8d0496d1f5bbad9",
+    "failed_prequalification_run": 34642491574,
+    "failed_prequalification_reason": "Documentation sentinel capitalization mismatch only; scientific and provenance gates preceding the sentinel passed. This failed run is retained as negative CI provenance and is not qualification evidence.",
+    "final_exact_head_run": "REQUIRED_LIVE_ON_FINAL_HEAD_NO_METADATA_REWRITE_AFTER_SUCCESS"
+  },
+  "negative_evidence": {
+    "f_vq33_remains_failed": true,
+    "f_vq33_used_as_positive_evidence": false,
+    "failed_fdoc08_prequalification_used_as_positive_evidence": false
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "scientific_tolerance_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false,
+    "surface_evaporation_performance_debt_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "Application-specific H_budget selection and temporal/groundwater accuracy budget remain external",
+      "T12 application validation remains open",
+      "WR-QA-2024 controlled-source reconciliation remains open",
+      "Other RB1 T0-T11 maturity gaps outside this bounded temporal graph remain as recorded by F-DOC07",
+      "Surface-evaporation throughput/scaling and call-local allocation performance remain separate"
+    ]
+  }
+}
