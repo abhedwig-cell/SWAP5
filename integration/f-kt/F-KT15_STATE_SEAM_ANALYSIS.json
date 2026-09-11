@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "analysis_kind": "SOIL_WATER_STATE_SEAM_LIFECYCLE_CLASSIFICATION",
+  "source_head": "505641788b89e274d945871dd4f54b04544184cf",
+  "canonical_authority": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+  "production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+  "evidence": {
+    "soilwater": {
+      "path": "src/legacy/b1_10_port/soilwater.f90",
+      "blob": "470bc81a380e114d70fecd75426ec2331c1c9fcc",
+      "finding": "SoilWater(2) calls SoilWaterStateVar(1) immediately before HeadCalc. That operation copies h->hm1, theta->thetm1, gwl->gwlm1 and pond->pondm1. These *_m1 values are therefore start-of-current-hydraulic-step shadows, used for the step residual/reset, rather than independent long-lived hydraulic state that must be added to the compact generic solver state."
+    },
+    "headcalc": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+      "finding": "HeadCalc reads the *_m1 step shadows in storage residuals and restores h/theta/gwl/pond from them after non-convergence. It does not own volact, ldwet, spev or saev."
+    },
+    "state_binding": {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "blob": "e68d88382c6502c571713cc97fddd4e18434e271",
+      "finding": "The explicit solver binding reconstructs hm1/thetm1/pondm1/gwlm1 from the supplied current base state for each solve, matching the SoilWater(2) step-start lifecycle. k, kmean, dimoca, itnumb and related HeadCalc working/output fields stay in the solve-local binding/workspace and are not generic committed state."
+    },
+    "transaction_water_checkpoint": {
+      "path": "src/adapter/mod_b1_10_water_checkpoint.f90",
+      "blob": "f8171d0263325b5103ac2df7cd353c443e27c925",
+      "finding": "The B1.10 outer transaction deliberately checkpoints h/theta plus *_m1 shadows and process continuation variables volact/ldwet/spev/saev so a rejected whole physical trial can restore its exact legacy image. This broader rollback image must not be mistaken for the minimal soil-water solver state contract."
+    },
+    "fsi28_solver_binding": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+      "finding": "F-SI28 solves HeadCalc against an explicit state binding and returns compact candidate h/theta/pond/gwl plus top/bottom flux, diagnostics and optional interface sensitivity. It does not publish the binding back into legacy globals."
+    }
+  },
+  "classification": {
+    "persistent_hydraulic_state": [
+      "h",
+      "theta",
+      "pond",
+      "gwl"
+    ],
+    "per_hydraulic_step_start_shadow": [
+      "hm1",
+      "thetm1",
+      "pondm1",
+      "gwlm1"
+    ],
+    "outer_process_or_mass_continuation_retained_by_b1_10_transaction": [
+      "volact",
+      "ldwet",
+      "spev",
+      "saev"
+    ],
+    "solver_binding_or_worker_data_not_to_become_committed_column_state": [
+      "k",
+      "kmean",
+      "dimoca",
+      "itnumb",
+      "numbit",
+      "HeadCalc residual/Jacobian/factorization/Newton arrays"
+    ]
+  },
+  "design_conclusion": {
+    "direct_whole_transaction_candidate_commit": "REJECTED",
+    "reason": "A whole-transaction replacement that commits only the compact F-SI28 candidate would bypass B1.10 process continuation and post-solve bookkeeping.",
+    "qualified_direction_to_implement": "NARROW_SOILWATER_TASK2_SOLVE_SEAM",
+    "seam": "Keep SoilWater/process sequencing and the existing B1.10 outer transaction checkpoint authority. At SoilWater task 2, preserve its existing step-start shadow save, delegate the single hydraulic solve to the qualified solver service, and materialize only the solver outputs required by the existing task-3/post-solve path. The same HeadCalc trajectory is then the sole hydraulic authority.",
+    "critical_next_gate": "Determine and explicitly materialize the minimal legacy output set needed between solver-service completion and SoilWater(3), including h/theta/pond/gwl and any qtop/qbot/control diagnostics that downstream process code consumes. Do not implement until that output set is source-proven."
+  },
+  "invariant_checks": {
+    "compact_persistent_state": "PASS_DESIGN",
+    "scratch_per_worker": "PASS_DESIGN",
+    "transactional_rollback": "PASS_DESIGN",
+    "single_hydraulic_authority": "PASS_DESIGN",
+    "mass_conservation": "OPEN_IMPLEMENTATION_GATE",
+    "fsi28_same_factorization_tangent": "PRESERVED_BY_DIRECTION",
+    "no_modflow_sign_transform": "PASS_DESIGN"
+  },
+  "decision": "STATE_SEAM_CLASSIFIED_READY_FOR_MINIMAL_OUTPUT_MATERIALIZATION_ANALYSIS"
+}
