@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.fdoc04_closeout.v1",
+  "work_unit": "F-DOC04",
+  "title": "RB1 Reference Richards and Temporal Acceptance Traceability",
+  "release_id": "SWAP5-RB1-v1",
+  "status": "COMPLETE_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_BOUNDED_RB1_REFERENCE_TEMPORAL_TRACEABILITY_WITH_EXPLICIT_GAPS",
+  "validity_rule": "This closeout is final only when .github/workflows/fdoc04-rb1-reference-temporal-traceability.yml completes successfully with head_sha equal to the exact commit containing this closeout and final F-DOC04 status.",
+  "base_authority": {
+    "fdoc03": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+    "rb1_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "rb1_source_tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "rb1_release_run": 34586202805
+  },
+  "bounded_capabilities": ["RB1-SW-REFERENCE", "RB1-TIME-REFERENCE"],
+  "first_green_qualification": {
+    "head": "1eae858ab31d113e5b0093c8e10922c59a6eac1a",
+    "workflow_run": 34610556113,
+    "workflow_job": 103299669909,
+    "conclusion": "success",
+    "artifact": 10267967573,
+    "artifact_digest": "sha256:1cb3eb01cf3549baa20693e8d8e56b4e14a39d9ba9a4f376fab167b35895a2f6"
+  },
+  "traceability_result": {
+    "fully_traced_claimed": false,
+    "sw_reference_t1": "OPEN_NO_SINGLE_CONTROLLED_T1_AUTHORITY_IDENTIFIED",
+    "sw_reference_complete_t11": "OPEN",
+    "time_reference_scientific_policy": "QUALIFIED_WITHIN_FVQ34_FROZEN_SCOPE",
+    "time_reference_application_H_budget": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "universal_H_budget_claimed": false,
+    "universal_temporal_tolerance_claimed": false,
+    "universal_groundwater_head_accuracy_budget_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false,
+    "classification": "BOUNDED_PARTIAL_TRACEABILITY_WITH_EXPLICIT_GAPS"
+  },
+  "scientific_evidence_boundary": {
+    "f_si19_closeout": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "f_si19_role": "qualified reference linear-solver seam only, not complete Full Richards theory authority",
+    "f_vq34_closeout": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "f_vq34_tested_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+    "f_vq34_run": 34364081068,
+    "f_vq34_default_H_budget": null,
+    "f_ci21_temporal_authority": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "f_ci40_current_dependency_authority": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "f_vq33_remains_failed": true,
+    "negative_evidence_reused_as_positive": false
+  },
+  "source_pins": {
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_reference_linear_solver.f90": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "src/solver/mod_reference_richards_state_binding.f90": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "src/solver/mod_reference_richards_temporal_indicator.f90": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9"
+  },
+  "immutability": {
+    "production_delta_by_fdoc04": "NONE",
+    "reference_delta_by_fdoc04": "NONE",
+    "physics_delta_by_fdoc04": "NONE",
+    "solver_delta_by_fdoc04": "NONE",
+    "acceptance_threshold_delta_by_fdoc04": "NONE",
+    "performance_delta_by_fdoc04": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "nonclaims": [
+    "F-DOC04 does not claim FULLY_TRACED for either capability.",
+    "F-DOC04 does not claim Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC04 does not invent a complete Full Richards theory authority from source or release evidence.",
+    "F-DOC04 does not select, recommend or default H_budget.",
+    "F-DOC04 does not establish a universal temporal tolerance or groundwater-head accuracy budget.",
+    "F-DOC04 does not reinterpret F-VQ33 as positive evidence.",
+    "F-DOC04 does not reopen immutable RB1 science or release authority."
+  ],
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "RB1-SW-REFERENCE controlled complete T1 theory binding",
+      "RB1-SW-REFERENCE complete T11 equation-to-test graph",
+      "Application-specific H_budget selection remains external to F-DOC04"
+    ]
+  }
+}
