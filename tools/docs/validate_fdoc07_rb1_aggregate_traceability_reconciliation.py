@@ -130,7 +130,7 @@ require(blob(BASE, "integration/f-doc/F-DOC02_STATUS.json") == "2b51205b3e6ed954
 fdoc01 = git_json(BASE, "integration/f-doc/F-DOC01_STATUS.json")
 fdoc02 = git_json(BASE, "integration/f-doc/F-DOC02_STATUS.json")
 require(fdoc01["status_a_boundary"]["ready_for_status_a_review"] is False, "FDOC01_STATUS_A_REVIEW_BLOCKED")
-require(fdoc01["status_a_boundary"]["formal_2024_reconciliation"] == "PENDING_CONTROLLED_COPY", "FDOC01_WRQA2024_PENDING")
+require(fdoc01["external_quality_authority"]["formal_2024_reconciliation"] == "PENDING_CONTROLLED_COPY", "FDOC01_WRQA2024_PENDING")
 require(fdoc02["status_a_boundary"]["ready_for_status_a_review"] is False, "FDOC02_STATUS_A_REVIEW_BLOCKED")
 require(fdoc02["status_a_boundary"]["formal_2024_reconciliation"] == "PENDING_CONTROLLED_COPY", "FDOC02_WRQA2024_PENDING")
 require(fdoc02["traceability_population"]["required_capabilities_indexed"] == 15, "FDOC02_INDEXED_15")
