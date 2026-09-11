@@ -1,0 +1,210 @@
+{
+  "schema": "swap5.frb02_release_authority.v1",
+  "work_unit": "F-RB02",
+  "title": "SWAP5 Restricted Production Baseline v1 Final Release Authority & Immutable Release Freeze",
+  "release_id": "SWAP5-RB1-v1",
+  "created_utc_date": "2026-09-11",
+  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "target_decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE_AUTHORITY_ESTABLISHED",
+  "scope_change": false,
+  "scientific_requalification_campaign_started": false,
+  "production_source_change": false,
+  "reference_change": false,
+  "acceptance_threshold_change": false,
+  "three_authorities": {
+    "RB1_SCIENTIFIC_SOURCE_AUTHORITY": {
+      "branch_at_freeze": "integration/f-ci-canonical",
+      "sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+      "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+      "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+      "canonical_closeout": "F-CI42P",
+      "meaning": "Immutable scientific/production source authority for RB1. Later canonical development does not mutate this authority."
+    },
+    "RB1_QUALIFICATION_AUTHORITY": {
+      "frozen_release_candidate_sha": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+      "frozen_release_candidate_tree": "3716898eae3c33bf62616e43a2690e9aeb71d434",
+      "candidate_src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+      "candidate_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+      "production_delta_from_scientific_source": "NONE",
+      "reference_delta_from_scientific_source": "NONE",
+      "decisive_scientific_release_run": 34569690664,
+      "decisive_scientific_release_workflow_head": "05092df17222c1761b42940bca369208ae009654",
+      "decisive_scientific_release_conclusion": "success",
+      "decisive_scientific_release_artifact_id": 10187339980,
+      "decisive_scientific_release_artifact_digest": "sha256:e28c99c248256e6cf7a230c06be51ca3ba0653d6ea1c9ab30e8272c1740834a3",
+      "frb01_final_qualification_head": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "frb01_final_qualification_tree": "71a5b96f550b21567685884b5405b43820f865bf",
+      "frb01_final_exact_head_run": 34570204719,
+      "frb01_final_exact_head_conclusion": "success",
+      "frb01_final_exact_head_artifact_id": 10187525352,
+      "frb01_final_exact_head_artifact_digest": "sha256:796b14b15fc7780455f8d9a4b308a668d793a4c46eace73368d0289db168c644",
+      "frb01_decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY"
+    },
+    "RB1_RELEASE_METADATA_AUTHORITY": {
+      "branch": "release/f-rb02-restricted-production-baseline-v1-final-authority",
+      "base_frozen_frb01_head": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "final_exact_head_sha": null,
+      "final_exact_head_tree": null,
+      "final_exact_head_ci_run": null,
+      "status": "PENDING_EXACT_HEAD_CI",
+      "meaning": "Governance/release metadata descendant only. It may document and cite RB1 but may not alter RB1 scientific source, reference data, frozen scope, thresholds or scientific conclusions."
+    }
+  },
+  "frozen_scope": {
+    "path": "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json",
+    "git_blob_sha1": "09df8417fe12bcc2eca9d9320117264737ffc83a",
+    "required_denominator": 15,
+    "required_pass": 15,
+    "required_gap": 0,
+    "moving_denominator_forbidden": true,
+    "scope_name": "RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE"
+  },
+  "frozen_capability_matrix": {
+    "path": "release/f-rb01/RB1_CAPABILITY_MATRIX.json",
+    "git_blob_sha1": "e20e0b2cae1cfde91c8736ad632059b4fe480d88",
+    "required_total": 15,
+    "required_integrated_pass": 15,
+    "optional_admitted_total": 2,
+    "required_gap": 0
+  },
+  "architecture_invariants": {
+    "path": "release/f-rb01/RB1_ARCHITECTURE_INVARIANT_AUDIT.json",
+    "git_blob_sha1": "ea9ac771a47e9d165af0e3a5ab445b23578b9160",
+    "total": 30,
+    "pass": 24,
+    "not_applicable_to_rb1": 6,
+    "fail": 0,
+    "applicable_failures": 0,
+    "decision": "PASS"
+  },
+  "qualification_provenance": {
+    "frb01_release_qualification_path": "release/f-rb01/RB1_RELEASE_QUALIFICATION.json",
+    "frb01_release_qualification_git_blob_sha1": "f2d55a945dde6e379f2df1c3cbbd8706b1bbaa09",
+    "frb01_closeout_path": "release/f-rb01/F-RB01_CLOSEOUT.json",
+    "frb01_closeout_commit": "9bb3842af3f186d63a66cc84b47910f88c30b736",
+    "frb01_release_description_path": "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE.md",
+    "frb01_release_description_git_blob_sha1": "04d0f9e7c887773279c5ebcd85b03444264b8ddd",
+    "frb01_testbank_crosswalk_path": "release/f-rb01/RB1_TESTBANK_CROSSWALK.json",
+    "frb01_testbank_crosswalk_git_blob_sha1": "e47deeb03e58825deab3331ab4b5f293a65dec71"
+  },
+  "qualified_required_capabilities": [
+    "RB1-CORE-INTERVAL",
+    "RB1-CORE-DATA",
+    "RB1-CORE-TRANSACTION",
+    "RB1-CORE-MASS",
+    "RB1-CORE-DIAGNOSTICS",
+    "RB1-SW-REFERENCE",
+    "RB1-TIME-REFERENCE",
+    "RB1-STANDALONE-N1",
+    "RB1-MULTISWAP-SERIAL",
+    "RB1-MULTISWAP-PARALLEL-V1",
+    "RB1-ET-ROOT-SERIAL",
+    "RB1-ROOT-PARALLEL",
+    "RB1-SURFACE-EVAP-RESTRICTED",
+    "RB1-RESTART-SERIAL",
+    "RB1-RESTART-PARALLEL"
+  ],
+  "admitted_optional_capabilities": [
+    "RB1-DIVDRA-SERIAL-1L-POS",
+    "RB1-SURFACE-EVAP-LOCAL-PERF"
+  ],
+  "research_only_capabilities": [
+    "RossFast and other alternative/reduced soil-water production solvers",
+    "BALANCED execution class",
+    "THROUGHPUT execution class",
+    "FALLBACK execution class",
+    "universal or representative p50/p95/p99 difficult-column production-tail claims"
+  ],
+  "explicit_release_nonclaims": [
+    "not complete SWAP 4.3.1 functionality",
+    "not all physical options",
+    "not universal MODFLOW coupling accuracy",
+    "not production RossFast",
+    "not Status A",
+    "not Status AA",
+    "not universal performance superiority",
+    "not validation for every application domain",
+    "no absolute runtime SLA",
+    "no portable peak-RSS guarantee",
+    "no representative accepted difficult-column p50/p95/p99 tail claim",
+    "surface-evaporation functional MultiSWAP compatibility is qualified but throughput/scaling remains a separate performance workunit"
+  ],
+  "current_canonical_relationship": {
+    "live_checked_canonical_head_at_frb02_start": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "equals_rb1_scientific_source_authority_at_start": true,
+    "rule": "RB1 is an immutable historical release. integration/f-ci-canonical may continue after RB1. Later canonical movement never changes SWAP5-RB1-v1. Any future release must identify RB1 as ancestor/reference where applicable, enumerate the source/reference/scope delta, and requalify that new candidate."
+  },
+  "reproducibility": {
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "frb01_temporal_entrypoint": "bash tests/frb01/run_frb01_temporal_authority.sh",
+    "frb01_integrated_entrypoint": "bash tests/frb01/run_frb01_release_qualification_v2.sh",
+    "frb02_metadata_validator": "python3 release/f-rb02/validate_release_authority.py",
+    "source_checkout": "git checkout 0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualified_release_evidence_checkout": "git checkout aeb74560d801c4ac7314df7b8845fcc5daf8bba6"
+  },
+  "handoffs": {
+    "documentation": {
+      "targets": ["F-DOC01", "F-DOC02"],
+      "purpose": "Status-A-ready traceability and public-facing scientific documentation only after their own governance gates.",
+      "may_reopen_rb1_science": false,
+      "status_a_claim_made_here": false,
+      "status_aa_claim_made_here": false
+    },
+    "testbank": {
+      "targets": ["F-TB01", "F-TB03"],
+      "purpose": "Adopt bounded RB1 release fragments into permanent release-bank/testbank governance without changing the frozen RB1 source, oracle or scientific authority.",
+      "may_modify_central_registry_here": false,
+      "may_reopen_rb1_science": false,
+      "existing_ftb01_closeout": "1d039292d5768496c4550a8e1b35a92c6f836504"
+    }
+  },
+  "immutability_contract": {
+    "forbidden_in_frb02": [
+      "production source changes",
+      "reference-data changes",
+      "acceptance-threshold changes",
+      "physics changes",
+      "solver changes",
+      "performance changes",
+      "scope-denominator changes",
+      "new coupling capability claims",
+      "RossFast production claims",
+      "Status A claims",
+      "Status AA claims"
+    ],
+    "allowed_in_frb02": [
+      "release metadata",
+      "governance validation",
+      "immutable source/scope references",
+      "reproducibility records",
+      "handoff records",
+      "tag/release metadata if publication is performed"
+    ],
+    "future_change_rule": "Any change to scientific source, reference tree, fixed scope, required denominator, acceptance thresholds or qualified capability semantics creates a new candidate and cannot be called SWAP5-RB1-v1."
+  },
+  "closeout_gate": {
+    "required": [
+      "exact RB1 src tree identity",
+      "exact RB1 reference tree identity",
+      "frozen scope blob identity",
+      "frozen capability matrix blob identity",
+      "architecture audit blob identity",
+      "F-RB01 final exact-head workflow success",
+      "15 of 15 denominator unchanged",
+      "zero open RB1 blockers",
+      "only governance/release-metadata changes since F-RB01 exact head",
+      "F-RB02 exact-head CI success"
+    ],
+    "fail_closed": true
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "release_authority_established": false,
+    "open": ["F-RB02 exact-head CI", "final metadata-authority pin", "optional tag/release publication"]
+  }
+}
