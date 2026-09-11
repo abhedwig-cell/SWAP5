@@ -44,7 +44,7 @@
     "all_30_architecture_invariants_audited": "PASS_WITH_EXPLICIT_MATRIX",
     "exact_candidate_head_assertion": "PASS"
   },
-  "architecture_invariant_audit": "integration/f-mr/F-MR39_ARCHITECTURE_INVARIANT_AUDIT.json",
+  "architecture_invariant_audit": "integration/f-mr/F-MR39_INVARIANT_AUDIT.json",
   "runtime_contract": {
     "persistent_state": "soil-temperature state is an optional substate of the existing committed physical state",
     "scratch": "soil-temperature workspace is backend/worker-local and not persisted per column",
