@@ -45,6 +45,7 @@ assert 'soil_temperature_restart_payload_t' in contract
 assert 'soil_temperature_workspace_t' in contract
 assert 'soil_temperature_field_view_t' in contract
 assert 'procedure :: clone => soil_temperature_state_clone' in contract
+assert 'require_energy_closure' not in contract
 assert 'save' not in contract.lower()
 for forbidden in ['open(', 'read(', 'write(', 'daynr', 't1900', 'swpfilnam', 'pathwork', 'headcalc', 'jacobian', 'newton']:
     assert forbidden not in contract.lower(), forbidden
@@ -53,6 +54,8 @@ assert 'use mod_process_hydraulic_view, only: process_hydraulic_view_t' in proce
 assert '0.5_real64*(hydraulic_start%water_content+hydraulic_end%water_content)' in process
 assert 'prescribed_surface_temperature_c' in process
 assert 'energy_residual_j_cm2' in process
+assert 'abs(residual)>numerical%energy_abs_tolerance_j_cm2' in process
+assert 'require_energy_closure' not in process
 assert 't1<=t0' in process
 assert 'save' not in process.lower()
 for forbidden in ['headcalc', 'pressure_head', 'jacobian', 'newton', 'open(', 'read(', 'write(', 'daynr', 't1900', 'swpfilnam', 'afgen', 'snow', 'frost', 'latent', 'ice']:
@@ -63,6 +66,7 @@ print('FPM07B_TRANSACTION_STATE_CONTRACT=PASS')
 print('FPM07B_NO_LEGACY_IO_OR_CALENDAR_ASSUMPTION=PASS')
 print('FPM07B_NO_HEADCALC_OR_SOLVER_INTERNALS=PASS')
 print('FPM07B_NO_FROST_OR_SNOW_SCOPE_CREEP=PASS')
+print('FPM07B_ENERGY_CLOSURE_HARD_GATE=PASS')
 PY
 
 DEPS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
