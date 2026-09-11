@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC08",
+  "title": "External Application Head-Requirement Binding and Decision-Margin Research Evidence",
+  "pre_registration_commit": "9ae765311b0dde84a43ef8f754527f90863defd4",
+  "target_leakage": false,
+  "F_GC02_inspected": false,
+  "F_GC02_executed": false,
+  "production_source_changed": false,
+  "application_class": "AC02_GW_MANAGEMENT_HEAD_THRESHOLD",
+  "independent_sources": [
+    {
+      "id": "NSW_AIP_2012_CURRENTLY_REFERENCED_2026",
+      "citation": "NSW Department of Primary Industries, NSW Aquifer Interference Policy, September 2012; still referenced by the NSW Planning Portal groundwater guidance in 2026.",
+      "urls": [
+        "https://www.water.nsw.gov.au/sites/default/files/2025-10/NSW-Aquifer-Interference-Policy-2012.pdf",
+        "https://www.planningportal.nsw.gov.au/major-projects/assessment/policies-and-guidelines/key-guidance/water"
+      ],
+      "finding": "The policy defines Level-1 impact thresholds and states in section 3.2.1 that predicted impacts exceeding a Level-1 threshold by no more than the accuracy of an otherwise robust model may remain within the range of acceptability, subject to monitoring and possible mitigation/remediation. If exceedance is greater than model accuracy, additional studies are required.",
+      "numeric_prediction_accuracy_prescribed": false,
+      "importance": "This is an externally governed decision-margin structure. It does not provide a transferable numerical model-accuracy allowance."
+    },
+    {
+      "id": "IESC_PEETERS_MIDDLEMIS_2023",
+      "citation": "Peeters, L.J.M. and Middlemis, H. (2023), Information Guidelines Explanatory Note: Uncertainty analysis for groundwater modelling, Independent Expert Scientific Committee on Coal Seam Gas and Large Coal Mining Development.",
+      "url": "https://www.iesc.gov.au/publications/information-guidelines-explanatory-note-uncertainty-analysis",
+      "finding": "Model adequacy and potential error must be judged for the decision quantity of interest. Acceptable risk is a value-laden project decision; acceptable observation-model mismatch is project- and model-specific. The guidance requires objective evidence that uncertainty in decision-critical predictions is not underestimated and does not prescribe a universal groundwater-head prediction tolerance.",
+      "numeric_prediction_accuracy_prescribed": false
+    },
+    {
+      "id": "NSW_WESTERN_HARBOUR_TUNNEL_APPROVAL",
+      "citation": "NSW planning approval conditions for Western Harbour Tunnel and Warringah Freeway Upgrade, groundwater modelling requirements.",
+      "url": "https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSI-8863-MOD-2%2120240324T220626.214+GMT",
+      "finding": "The approval requires quantitative assessment of model predictive uncertainty at locations important for drawdown-induced settlement, contaminant mobilisation and surface-water impacts, plus independent peer review. It does not set a transferable absolute head-prediction error tolerance.",
+      "numeric_prediction_accuracy_prescribed": false
+    },
+    {
+      "id": "BIOREGIONAL_ASSESSMENT_PROBABILISTIC_DRAWDOWN",
+      "citation": "Australian Bioregional Assessment groundwater uncertainty analyses and related probabilistic drawdown studies.",
+      "urls": [
+        "https://www.bioregionalassessments.gov.au/assessments/262-groundwater-numerical-modelling-clarence-moreton-bioregion/26281-factors-included-formal-uncertainty-analysis",
+        "https://www.mdpi.com/2073-4441/12/11/3177"
+      ],
+      "finding": "Regulatory drawdown thresholds such as 0.2 m may be evaluated through probabilities of exceedance and predictive distributions. Such thresholds characterize physical impact or decision risk; they are not themselves numerical model-error allowances.",
+      "numeric_prediction_accuracy_prescribed": false
+    }
+  ],
+  "external_decision_margin_structure": {
+    "qualified_as_real_policy_structure": true,
+    "structure": "Compare predicted physical impact with an externally governed threshold; explicitly account for project-specific predictive accuracy/uncertainty when judging near-threshold cases.",
+    "numeric_H_app_available_from_policy_alone": false,
+    "reason": "The policy refers to the accuracy of an otherwise robust model but does not assign a number or a universal method that mechanically yields a prediction-error allowance independent of the concrete project and quantity of interest."
+  },
+  "rejected_numeric_routes": [
+    {
+      "route": "Use a 0.2 m or 2 m AIP drawdown threshold directly as H_app",
+      "rejected_because": "These are physical impact or management thresholds. They define what physical drawdown matters, not how much numerical prediction error is acceptable."
+    },
+    {
+      "route": "Use the full distance between a prediction and the regulatory threshold as a universal H_app",
+      "rejected_because": "That headroom is case-specific and changes with location, scenario, prediction and uncertainty distribution. It can be a run-specific decision margin but not a transferable application-class constant."
+    },
+    {
+      "route": "Use calibration RMSE or normalised RMSE as H_app",
+      "rejected_because": "IESC explicitly treats acceptable observation-model mismatch as project- and model-specific; calibration fit is not the same quantity as prediction accuracy at a future decision receptor."
+    },
+    {
+      "route": "Use measurement detectability as H_app",
+      "rejected_because": "Detectability constrains observation interpretation; it does not by itself state acceptable prediction error for the decision."
+    },
+    {
+      "route": "Use MODFLOW or Richards solver closure tolerance as H_app or A_temporal",
+      "rejected_because": "Solver convergence is a numerical termination criterion and is semantically distinct from application prediction accuracy and temporal coupling allocation."
+    },
+    {
+      "route": "Use F-GC07 predictor-corrector error magnitude to choose H_app or A_temporal",
+      "rejected_because": "F-GC07 characterizes temporal/coupling error but deliberately does not define application acceptability or a policy allocation fraction."
+    }
+  ],
+  "architecture_consequence": {
+    "H_app_ownership": "external application/coupler policy, not SWAP kernel physics and not a universal SWAP constant",
+    "required_runtime_input_form": "a versioned application accuracy or decision-margin contract supplied by the concrete application, with provenance and scope",
+    "GC07_role": "supply qualified numerical signals and coupling-window characterization that can be checked against an externally supplied temporal allocation",
+    "mass_contract": "q_SWAP = -q_GW remains absolute and is not part of the accuracy trade-off"
+  },
+  "qualification_result": {
+    "external_threshold_found": true,
+    "external_policy_recognizes_model_accuracy_near_threshold": true,
+    "transferable_numeric_prediction_error_found": false,
+    "numeric_H_app_defensible": false,
+    "numeric_A_temporal_defensible": false,
+    "numeric_H_budget_defensible": false,
+    "decision": "FAIL_CLOSED_EXTERNAL_THRESHOLD_NOT_EQUIVALENT_TO_APPLICATION_PREDICTION_ACCURACY_REQUIREMENT"
+  },
+  "next_scientific_dependency": "A concrete application must supply a versioned, independently governed numerical prediction-accuracy requirement or decision-margin rule with enough project information to instantiate a numeric H_app. Only then may a temporal fraction be allocated and composed with F-GC07 evidence.",
+  "architecture_invariants_checked": [9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
