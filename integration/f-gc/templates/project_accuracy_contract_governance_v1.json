@@ -1,0 +1,99 @@
+{
+  "profile_id": "SWAP5_PROJECT_ACCURACY_CONTRACT_GOVERNANCE_V1",
+  "profile_version": 1,
+  "ownership": {
+    "policy_owner": "external project/regulator governance",
+    "ingestion_owner": "runtime/coupler adapter outside SWAP kernel",
+    "kernel_policy_selection": false,
+    "kernel_file_parsing": false
+  },
+  "accepted_application_claim": {
+    "claim_type": "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+    "required_semantics": [
+      "MAX_ABSOLUTE_PREDICTION_ERROR",
+      "OTHER_EXPLICIT_NUMERICAL_PREDICTION_ERROR_LIMIT"
+    ],
+    "units_for_canonical_mapping": "cm",
+    "must_be_external_to_swap_numerical_behavior": true,
+    "must_be_formally_governed": true
+  },
+  "accepted_temporal_claims": [
+    {
+      "mode": "FRACTION_OF_APPLICATION_REQUIREMENT",
+      "claim_type": "TEMPORAL_ERROR_ALLOCATION_FRACTION",
+      "domain": "0 < allocation_fraction <= 1",
+      "canonical_mapping": "a_temporal = allocation_fraction"
+    },
+    {
+      "mode": "DIRECT_HEAD_ERROR_BUDGET_CM",
+      "claim_type": "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET",
+      "domain": "0 < direct_budget_cm <= H_app_cm",
+      "canonical_mapping": "a_temporal = direct_budget_cm / H_app_cm",
+      "interpretation": "Deterministic reparameterization of an externally governed direct budget; SWAP does not choose the fraction."
+    }
+  ],
+  "forbidden_substitutions": [
+    {
+      "kind": "PHYSICAL_IMPACT_THRESHOLD_ONLY",
+      "examples": ["drawdown trigger", "settlement threshold", "tunnel inflow limit"],
+      "reason": "A physical or regulatory impact criterion is not automatically a prediction-error requirement."
+    },
+    {
+      "kind": "CALIBRATION_METRIC_ONLY",
+      "examples": ["RMSE", "mean residual", "normalized RMS"],
+      "reason": "Calibration fit is not automatically a prospective application-accuracy requirement."
+    },
+    {
+      "kind": "MODEL_GENERATED_UNCERTAINTY_ONLY",
+      "examples": ["ensemble spread", "confidence interval", "prediction percentile"],
+      "reason": "A model-generated uncertainty quantity needs an external acceptance rule before it can become H_app."
+    },
+    {
+      "kind": "MONITORING_TRIGGER_ONLY",
+      "reason": "A monitoring trigger is not automatically a model prediction-error requirement."
+    },
+    {
+      "kind": "SWAP_NUMERICAL_BEHAVIOR",
+      "examples": ["F-GC07 observed coupling error", "step-doubling estimator magnitude", "corrector delta"],
+      "reason": "SWAP numerical behavior may test a supplied budget but may not select project policy."
+    },
+    {
+      "kind": "MODEL_TIMESTEP_SCHEDULE",
+      "reason": "A chosen timestep or coupling-window schedule is not an allocation of application accuracy."
+    }
+  ],
+  "positive_instantiation_requirements": [
+    "explicit project identity and decision context",
+    "GROUNDWATER_HEAD or GROUNDWATER_DRAWDOWN QOI",
+    "explicit spatial scope",
+    "explicit time horizon",
+    "positive finite H_app_cm",
+    "externally qualified application claim with positive provenance id",
+    "positive externally qualified temporal fraction or direct temporal budget",
+    "distinct claim identity for application and temporal governance",
+    "positive temporal provenance id",
+    "all forbidden-substitution attestations true"
+  ],
+  "canonical_runtime_mapping": {
+    "contract_id": "packet.canonical_mapping.contract_id",
+    "contract_version": "packet.canonical_mapping.contract_version",
+    "qoi_kind": "packet.project.qoi_kind",
+    "h_app_available": true,
+    "h_app_cm": "packet.application_requirement.value_cm",
+    "h_app_externally_qualified": true,
+    "application_provenance_id": "packet.canonical_mapping.application_provenance_id",
+    "a_temporal_available": true,
+    "a_temporal": "temporal fraction after allowed direct-budget reparameterization",
+    "a_temporal_externally_qualified": true,
+    "temporal_allocation_provenance_id": "packet.canonical_mapping.temporal_allocation_provenance_id",
+    "model_temporal_indicator_budget": "h_app_cm * a_temporal"
+  },
+  "fail_closed_behavior": {
+    "any_missing_required_governance": "reject packet",
+    "ambiguous_or_forbidden_policy_origin": "reject packet",
+    "invalid_numeric_domain": "reject packet",
+    "positive_budget_on_reject": false,
+    "mass_conservation_policy_change": false,
+    "production_coupling_admission": false
+  }
+}
