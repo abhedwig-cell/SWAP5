@@ -1,0 +1,50 @@
+schema_version: 1
+workunit: F-DOC01
+retrieval_date: 2026-09-11
+canonical_source:
+  branch: integration/f-ci-canonical
+  commit: 3c5f5bd3686e1632058b906be21abd73883e30ef
+  tree: 6baaf40271497db831698c5a01de355b5d296dbe
+external_authorities:
+  - id: WR-QA-PROCESS-CURRENT
+    title: Quality of Models and Databases The Statutory Research Tasks Unit for Nature & the Environment
+    issuing_organisation: Wageningen Research
+    role: current_process_authority
+    url: https://support.wur.nl/esc/en/wageningen-research-research-funding/quality-of-models-and-databases-the?id=kb_article&sysparm_article=KB0017434
+    verification: VERIFIED
+    claims:
+      requirement_count: 22
+      status_a: baseline_quality_level
+      status_aa: status_a_plus_additional_requirements
+      audit_required_for_certification: true
+  - id: WR-QA-2024
+    title: Revised checklist Status A/AA
+    issuing_organisation: Wageningen Research
+    version: '2024'
+    role: formal_project_criterion_authority
+    direct_controlled_copy: null
+    verification: PINNED_INDIRECTLY_CONTROLLED_COPY_REQUIRED
+    provenance:
+      title: Towards digital knowledge management at Wageningen University & Research
+      report: Wageningen Environmental Research Report 3421
+      year: 2025
+      doi: 10.18174/689500
+    compliance_gate: BLOCKED_UNTIL_CONTROLLED_COPY_RECONCILED
+  - id: WR-QA-PUBLIC-22
+    title: A checklist for the Quality of Models, Datasets and Indicators to be used in policy and decision support
+    issuing_organisation: Wageningen University & Research
+    role: public_architecture_baseline
+    version: UNSTATED_IN_PUBLIC_DOCUMENT
+    url: https://assets.foleon.com/eu-west-2/uploads-7e3kk3/20634/wrqualitycriteriamodelsdatasets_2.d65c4f6abfac.pdf
+    publication_route: https://magazines.wur.nl/kb-magazine-2023-en/a-quality-checklist
+    verification: VERIFIED_PUBLIC
+    quality_levels: 2
+    requirement_count: 22
+    themes: 7
+    perspectives: 3
+    compliance_use: PROVISIONAL_MAPPING_ONLY
+prohibited_claims_without_external_audit:
+  - STATUS_A_COMPLIANT
+  - STATUS_AA_COMPLIANT
+  - SWAP5_HAS_STATUS_A
+  - STATUS_A_QUALIFIED
