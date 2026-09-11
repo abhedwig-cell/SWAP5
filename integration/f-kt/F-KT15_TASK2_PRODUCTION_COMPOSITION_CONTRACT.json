@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15-TASK2",
+  "artifact": "PRODUCTION_SOIL_WATER_SOLVER_SERVICE_TRANSACTION_COMPOSITION_CONTRACT",
+  "branch": "work/f-kt15-task2-solver-service-production-composition",
+  "branch_base": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+  "canonical_authority": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+  "qualification": false,
+  "formal_status": "TASK2_COMPOSITION_CONTRACT_PERSISTED_IMPLEMENTATION_OPEN",
+  "purpose": "Compose the already-qualified typed reference Richards solver service into the real B1.10 SoilWater task-2 transaction for the restricted admitted predicate, while preserving the unchanged direct HeadCalc route for unsupported states and preserving SoilWater task-3 bookkeeping ownership.",
+  "frozen_authorities": {
+    "F_KT15R_recomposition": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+    "F_SI28": "qualified optional same-factorization qbot tangent primitive",
+    "F_KT14": "qualified accepted-only local-terminal sensitivity transport with stale-result exclusion",
+    "F_SI29_F_SI30": "qualified restricted dynamic B1.10 top-boundary provider and solver adapter"
+  },
+  "production_seam": {
+    "solve_site": "src/legacy/b1_10_port/soilwater.f90: SoilWater task=2",
+    "retry_owner": "src/legacy/b1_10_port/swap_part02.inc",
+    "accepted_postsolve_owner": "src/legacy/b1_10_port/soilwater.f90: SoilWater task=3",
+    "transaction_result_bridge": "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+    "outer_model": "src/adapter/mod_b1_10_recoverable_reference_model.f90"
+  },
+  "minimal_task2_output_capsule": {
+    "physical_postimage": [
+      "h(1:numnod)",
+      "theta(1:numnod)",
+      "pond",
+      "gwl",
+      "qtop",
+      "qbot"
+    ],
+    "ephemeral_result_metadata": [
+      "solver status",
+      "solver diagnostics",
+      "unrounded mass-balance residual",
+      "interface_sensitivity"
+    ],
+    "forbidden": [
+      "q(:)",
+      "k(:)",
+      "kmean(:)",
+      "dimoca(:)",
+      "watstor intermediates",
+      "fluxes intermediates",
+      "Newton vectors",
+      "Jacobian arrays",
+      "TRIDAG factorization/capture arrays",
+      "solver workspace/scratch",
+      "a duplicate outer transaction continuation state"
+    ]
+  },
+  "restricted_route_predicate": {
+    "macropore_active": false,
+    "conductivity_implicit_mode": 0,
+    "legacy_fldtmin": false,
+    "bottom_modes": [7, -2, 5, 2],
+    "constitutive": "qualified B1.10 default MvG provider only",
+    "source_sink": "qualified B1.10 source/sink provider; active root extraction not admitted",
+    "dynamic_top_boundary": {
+      "authority": "F-SI29/F-SI30 restricted profile",
+      "frost": "inactive",
+      "macropore": "inactive",
+      "surface_water_coupling_swdra2": "not admitted",
+      "time_dependent_pondmx": "not admitted",
+      "active_runoff": "linear rsroexp=1 only",
+      "no_scientific_broadening": true
+    },
+    "unsupported_rule": "Select the unchanged direct legacy HeadCalc route before executing a typed solve. Never execute typed solver plus direct HeadCalc for the same hydraulic trial. Unsupported route publishes no typed sensitivity."
+  },
+  "transaction_rules": [
+    "Call SoilWaterStateVar(1) exactly once before either hydraulic route.",
+    "Only SW_SOLVE_CONVERGED may materialize the typed physical postimage.",
+    "SW_SOLVE_RETRY_ADVISED must enter the existing fldecdt/TimeControl(5) rollback-and-retry path and must publish no sensitivity.",
+    "A failed typed solve fails closed; it does not silently rerun the same trial through direct HeadCalc.",
+    "SoilWater task 3 remains the sole owner of accepted k/kmean/gwl/storage/flux bookkeeping and executes exactly once only after the hydraulic retry loop accepts.",
+    "For a physical interval containing multiple internal hydraulic steps, only the last accepted typed task-2 solve may supply the local-terminal interface sensitivity; unsupported/retried/failed later trials clear it.",
+    "Interface sensitivity remains result metadata and is never committed physical column state.",
+    "No second nonlinear Richards trajectory is permitted for interface sensitivity; the F-SI28 same-factorization one-backsolve route is the only admitted production path.",
+    "No MODFLOW sign conversion is introduced in this workunit."
+  ],
+  "diagnostics_rules": [
+    "Typed solver diagnostics must be accumulated into the production worker diagnostics for every typed hydraulic solve in the physical trial.",
+    "Direct HeadCalc continues to update the production worker diagnostics itself.",
+    "Typed-route diagnostic forwarding must not double-count nonlinear iterations, Jacobian builds, linear solves, backtracking or alternative-solver calls."
+  ],
+  "required_executable_gates": [
+    "admitted typed route versus direct HeadCalc physical postimage identity",
+    "dynamic top flux/head regime identity within the F-SI29/F-SI30 admitted profile",
+    "SoilWater task-3 exactly-once-on-accept and skipped-on-retry semantics",
+    "hard water-balance identity",
+    "accepted local-terminal sensitivity reaches trial_outcome_t through the F-KT14 bridge",
+    "retry/unsupported/failed route cannot publish stale sensitivity",
+    "qbot mode 2 tangent adds exactly one backsolve and no additional nonlinear trajectory or Jacobian build",
+    "unsupported configuration remains direct HeadCalc route-equivalent",
+    "O0/O2 identity",
+    "1/2/4/8-worker isolation",
+    "exact-head CI guard"
+  ],
+  "nonclaims": [
+    "No whole-coupling-window derivative is qualified here; the result remains a local-terminal solve sensitivity.",
+    "No active root-extraction typed route is admitted.",
+    "No macropore, frost, swdra=2 surface-water coupling, time-dependent pondmx or nonlinear-runoff typed route is admitted.",
+    "No alternative-solver fallback reachability or frequency claim is added.",
+    "No change to C2B/Phi or RossFast normalization is permitted.",
+    "This workunit does not by itself close downstream F-ROSS01/J1E."
+  ],
+  "invariant_checks": {
+    "one_compute_kernel": "PRESERVED_BY_DESIGN",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_state_result_separation": "REQUIRED",
+    "compact_persistent_state": "REQUIRED",
+    "scratch_per_worker": "REQUIRED",
+    "transactional_rollback": "REQUIRED",
+    "mass_conservation": "HARD_GATE",
+    "interface_sensitivity_first_class": "TARGET_OF_THIS_COMPOSITION",
+    "bounded_coupling_cost": "REQUIRES_NO_SECOND_NONLINEAR_TRAJECTORY",
+    "multiswap_isolation": "HARD_GATE",
+    "physics_solver_policy_separation": "REQUIRED",
+    "diagnostics_runtime_owned": "REQUIRED"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "TASK2_PRODUCTION_COMPOSITION_SCOPE_FROZEN_READY_FOR_IMPLEMENTATION"
+}
