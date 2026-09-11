@@ -6,7 +6,10 @@
   "decision": "QUALIFIED_TRANSACTION_RESTART_DETERMINISM_MULTISWAP_TESTBANK_CATALOG_READY_FOR_CONTINUOUS_QUALIFICATION",
   "validity_rule": "This F-TB04 closeout is final only when .github/workflows/ftb04-transaction-restart-determinism-multiswap.yml concludes success with head_sha equal to the exact commit containing this status file, with both FAST and exact-head RELEASE jobs successful.",
   "composition_baseline": "5c7b76655c910046f574753a39278d9a3cc3dbf3",
-  "current_canonical": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "workunit_canonical_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "live_canonical_at_finalization": "d201904a85f3b595e028242978e52c02f5122a09",
+  "live_canonical_coverage_claim": false,
+  "live_canonical_note": "The work-unit contract froze 0aeb0a2ed4096e1f9493d3dabc70962ea5270182 before execution. Later F-CI43/F-CI43P canonical advancement is not silently retargeted or claimed by this closeout.",
   "F-TB03": "65d5e5202446212390dbdd84b06e6b2a80e7121c",
   "production_source_changed": false,
   "reference_changed": false,
@@ -28,8 +31,8 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "precloseout_FAST": {
-    "head": "a39df0fb8b725ce79cf290a6b56578d9cfc08ed8",
-    "run": 34610533357,
+    "head": "1cf21b3174a8caa207de3e0d5db80e12b01a09d1",
+    "run": 34610783746,
     "conclusion": "success"
   },
   "exact_head_qualification": {
@@ -39,8 +42,8 @@
     "DEEP": "EXPLICIT_NOT_REQUIRED_FOR_CLOSEOUT"
   },
   "release_scope": {
-    "restart": "immutable FCI28 restart oracle replayed against exact current canonical with historical whole-source governance guard rebound only",
-    "parallel_multiswap": "immutable FMQ26 serialized/2-worker/4-worker and publication-order oracle blobs executed directly against exact current canonical at O0/O2",
+    "restart": "immutable FCI28 restart oracle replayed against exact work-unit canonical authority with historical whole-source governance guard rebound only",
+    "parallel_multiswap": "immutable FMQ26 serialized/2-worker/4-worker and publication-order oracle blobs executed directly against exact work-unit canonical authority at O0/O2",
     "heterogeneous_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-parameter-reference case",
     "parallel_restart": "immutable FCI35/FMQ29 held-out cross-worker committed-boundary restart oracle with historical whole-source governance guards rebound only"
   },
@@ -58,6 +61,14 @@
       "failed_head": "a44494e982bf45842b89f350a1f8548a0f193f04",
       "classification": "FTB04_HISTORICAL_REPLAY_GOVERNANCE_INCOMPATIBILITY",
       "remediation_head": "a39df0fb8b725ce79cf290a6b56578d9cfc08ed8",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false
+    },
+    {
+      "failed_run": 34610668938,
+      "failed_head": "65699416faf8448b4f5fdda6e2cfbc24dd26a21c",
+      "classification": "FTB04_HISTORICAL_REPLAY_ROOT_SEMANTICS_ERROR",
+      "remediation_head": "1cf21b3174a8caa207de3e0d5db80e12b01a09d1",
       "production_source_changed": false,
       "scientific_oracle_changed": false
     }
