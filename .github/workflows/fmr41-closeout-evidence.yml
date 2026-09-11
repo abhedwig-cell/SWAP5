@@ -1,0 +1,56 @@
+name: F-MR41 closeout evidence replay
+
+on:
+  push:
+    branches:
+      - work/f-mr41-typed-optional-state-layout-contract
+    paths:
+      - integration/f-mr/F-MR41_QUALIFICATION_STATUS.json
+
+permissions:
+  contents: read
+
+jobs:
+  closeout-replay:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Pin qualified source authority and evidence structure
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+
+          candidate='50b8bd32b03946d947b9c8b87a17192684843b6e'
+          expected={
+            'src/runtime/mod_fmr_runtime_core.f90':'88adf19e274956ab0f97fe6b4f6307fbfb453790',
+            'src/runtime/mod_fmr_serialized_reference_backend.f90':'2364c765935813675dee0d2838a7ce183d81f560',
+            'src/runtime/mod_fmr_restart_state_contract.f90':'4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d',
+          }
+          status=json.loads(Path('integration/f-mr/F-MR41_QUALIFICATION_STATUS.json').read_text())
+          audit=json.loads(Path('integration/f-mr/F-MR41_INVARIANT_AUDIT.json').read_text())
+          assert status['candidate_source_authority']==candidate
+          assert status['status']=='CLOSED_QUALIFIED'
+          assert status['decision']=='QUALIFIED_TYPED_OPTIONAL_STATE_LAYOUT_IDENTITY_AND_FAIL_CLOSED_RUNTIME_CONTRACT'
+          assert audit['candidate_source_authority']==candidate
+          inv=audit['invariants']
+          assert len(inv)==30
+          assert sorted(x['id'] for x in inv)==list(range(1,31))
+          assert all(x['status'] in {'QUALIFIED','PRESERVED','BOUNDED_NONCLAIM'} for x in inv)
+          for path, blob in expected.items():
+              actual=subprocess.check_output(['git','rev-parse',f'HEAD:{path}'],text=True).strip()
+              source=subprocess.check_output(['git','rev-parse',f'{candidate}:{path}'],text=True).strip()
+              assert actual==blob==source, (path,actual,source,blob)
+          print('FMR41_CLOSEOUT_SOURCE_BLOBS_PINNED=PASS')
+          print('FMR41_CLOSEOUT_30_INVARIANT_AUDIT=PASS')
+          print('FMR41_CLOSEOUT_STATUS_STRUCTURE=PASS')
+          PY
+      - name: Replay full qualification gate on evidence head
+        run: bash tests/fmr/run_fmr41_optional_state_layout_gate.sh | tee fmr41-closeout.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fmr41-closeout-${{ github.sha }}
+          path: fmr41-closeout.log
+          if-no-files-found: error
