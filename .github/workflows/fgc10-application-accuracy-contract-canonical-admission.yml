@@ -1,0 +1,28 @@
+name: F-GC10 application accuracy contract canonical admission
+
+on:
+  push:
+    branches:
+      - work/f-gc10-application-accuracy-contract-canonical-admission
+    paths:
+      - 'src/runtime/mod_coupling_application_accuracy_contract.f90'
+      - 'tests/fgc/test_fgc10_application_accuracy_contract.f90'
+      - 'tests/fgc/run_fgc10_application_accuracy_contract_admission.sh'
+      - 'integration/f-gc/F-GC10_*.json'
+      - '.github/workflows/fgc10-application-accuracy-contract-canonical-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: Run F-GC10 canonical admission qualification
+        run: bash tests/fgc/run_fgc10_application_accuracy_contract_admission.sh
