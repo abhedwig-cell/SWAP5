@@ -1,0 +1,22 @@
+name: F-GC08 external head requirement qualification
+
+on:
+  push:
+    branches:
+      - work/f-gc08-external-head-requirement-binding
+    paths:
+      - 'integration/f-gc/F-GC08_*.json'
+      - 'tests/fgc/run_fgc08_external_requirement.sh'
+      - '.github/workflows/fgc08-external-requirement.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-GC08 research qualification
+        run: bash tests/fgc/run_fgc08_external_requirement.sh
