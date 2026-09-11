@@ -1,46 +1,54 @@
 {
-  "schema": "swap5.frb01_blockers.v1",
+  "schema": "swap5.frb01_blockers.v2",
   "work_unit": "F-RB01",
-  "checkpoint": 3,
-  "stage": "PERSISTED",
+  "checkpoint": 5,
+  "stage": "QUALIFIED",
   "scope_frozen": true,
   "required_denominator": 15,
-  "blockers": [
+  "decisive_qualification": {
+    "run": 34569690664,
+    "workflow_head": "05092df17222c1761b42940bca369208ae009654",
+    "frozen_candidate": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+    "conclusion": "success",
+    "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY"
+  },
+  "open_blockers": [],
+  "resolved_blockers": [
     {
       "id": "FRB01-B01",
       "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
-      "description": "No decisive current-head integrated RB1 suite has yet been executed on one immutable release candidate.",
-      "required_resolution": "Freeze an RB1 release candidate with unchanged production/reference trees, run the integrated suite, and bind results to that exact candidate SHA/tree."
+      "status": "CLOSED",
+      "resolution": "One immutable release candidate was qualified by decisive run 34569690664; candidate identity and evidence hashes are persisted in RB1_RELEASE_QUALIFICATION.json."
     },
     {
       "id": "FRB01-B02",
       "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
-      "description": "Current-head standalone versus serialized versus restricted-parallel equivalence has not yet been demonstrated as one RB1 composition gate.",
-      "required_resolution": "Run current production source against frozen admitted fixtures, irregular batch sizes, reordered inputs and 2/4-worker assignments; require the qualified identity/equivalence rule and hard mass."
+      "status": "CLOSED",
+      "resolution": "Current serial/standalone-N1 and restricted parallel/root composition passed with irregular batch/reorder coverage inherited from the independent qualification attacks, deterministic replay, O0/O2 identity where applicable and hard mass."
     },
     {
       "id": "FRB01-B03",
       "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
-      "description": "Current-head committed-boundary split-run and parallel continuation replay must be re-exercised after all later admitted source evolution without replaying historical one-delta admission assumptions.",
-      "required_resolution": "Rehydrate the immutable independent restart attack/oracle and execute it against the frozen RB1 source tree with governance pins rebound only to the RB1 source authority."
+      "status": "CLOSED",
+      "resolution": "Current committed-boundary restart and parallel continuation passed the rebound immutable F-CI28/F-MQ29 scientific attacks, including exact continuation, cross-worker continuation, O0/O2 identity and hard mass."
     },
     {
       "id": "FRB01-B04",
       "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
-      "description": "Current-head restricted parallel root-uptake and surface-evaporation scientific oracles must be exercised together with the current production postimage.",
-      "required_resolution": "Replay the independent F-MQ30/F-VQ56-derived scientific attacks on the frozen RB1 source tree while preserving their physics/oracle content."
+      "status": "CLOSED",
+      "resolution": "Current root-active parallel and restricted surface-evaporation paths passed the independent F-MQ30/F-VQ56-derived attacks without changing their scientific oracles."
     },
     {
       "id": "FRB01-B05",
       "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
-      "description": "A release-specific all-30 architecture-invariant audit and fail-closed unsupported-profile check has not yet been bound to the frozen RB1 scope.",
-      "required_resolution": "Persist the RB1 invariant audit and execute static/dynamic negative gates on the decisive candidate."
+      "status": "CLOSED",
+      "resolution": "All 30 architecture invariants were explicitly audited with zero applicable FAIL results; decisive static/dynamic unsupported-profile guards passed."
     },
     {
       "id": "FRB01-B06",
       "classification": "RB1_RELEASE_EVIDENCE_BLOCKER",
-      "description": "The restricted release description and readiness dashboard are not yet finalized against decisive qualification evidence.",
-      "required_resolution": "After CI, persist release scope/nonclaims, toolchain, candidate identity, decisive workflow, TB01/DOC01 crosswalk and fixed-denominator readiness."
+      "status": "CLOSED",
+      "resolution": "Restricted release scope, exact nonclaims, performance characterization, testbank crosswalk, qualification record, readiness dashboard and closeout are persisted on the release branch."
     }
   ],
   "non_blocking": [
@@ -53,7 +61,8 @@
     {"classification": "RESEARCH_ONLY", "item": "BALANCED/THROUGHPUT/FALLBACK execution classes"},
     {"classification": "POST_RB1", "item": "representative accepted difficult-column p50/p95/p99 production-tail distribution"},
     {"classification": "STATUS_A_FOLLOWUP", "item": "formal Status-A package completion"},
-    {"classification": "STATUS_AA_FOLLOWUP", "item": "Status-AA qualification"}
+    {"classification": "STATUS_AA_FOLLOWUP", "item": "Status-AA qualification"},
+    {"classification": "POST_RB1", "item": "compiler-warning cleanup where warnings can be removed without changing admitted scientific behavior"}
   ],
   "counts": {
     "RB1_SCIENTIFIC_BLOCKER": 0,
@@ -62,7 +71,7 @@
     "RB1_RESTART_BLOCKER": 0,
     "RB1_RUNTIME_BLOCKER": 0,
     "RB1_ARCHITECTURE_BLOCKER": 0,
-    "RB1_RELEASE_EVIDENCE_BLOCKER": 6
+    "RB1_RELEASE_EVIDENCE_BLOCKER": 0
   },
-  "rule": "Only blockers in the RB1_* classes above may prevent RB1. POST_RB1, RESEARCH_ONLY, STATUS_A_FOLLOWUP and STATUS_AA_FOLLOWUP do not enlarge the frozen denominator."
+  "rule": "The frozen F-RB01 denominator is closed. POST_RB1, RESEARCH_ONLY, STATUS_A_FOLLOWUP and STATUS_AA_FOLLOWUP remain outside RB1 and cannot retroactively enlarge it. Any production-source change requires a new governed candidate rather than reopening this closeout in place."
 }
