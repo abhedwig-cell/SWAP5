@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fdoc07_status.v1",
+  "work_unit": "F-DOC07",
+  "title": "RB1 Aggregate Traceability Coverage and Gap Reconciliation",
+  "branch": "work/f-doc07-rb1-aggregate-traceability-reconciliation",
+  "base": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_EXPLICIT_MATURITY_GAPS",
+  "validity_rule": "Final only when the F-DOC07 workflow succeeds on the exact branch head containing final status and closeout.",
+  "coverage": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicates": 0,
+    "unassigned": 0,
+    "fully_traced_claimed": false
+  },
+  "population_authorities": {
+    "F-DOC03": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+    "F-DOC04": "a703747ce1991c5601b76a84f04969b602298268",
+    "F-DOC05": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+    "F-DOC06": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b"
+  },
+  "status_a_boundary": {
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "external_audit_performed": false,
+    "formal_2024_reconciliation": "PENDING_CONTROLLED_COPY"
+  },
+  "open_gap_classes": [
+    "T0-T7 controlled theory/conceptual/formal/numerical evidence remains incomplete across the denominator",
+    "Complete T11 equation-to-test graphs remain incomplete across the denominator",
+    "T12 application validation remains open",
+    "WR-QA-2024 controlled-copy reconciliation remains pending",
+    "Application-specific temporal/groundwater H_budget remains external",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate"
+  ],
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "acceptance_threshold_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "historical_population_authority_reopened": false,
+    "universal_h_budget_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "qualification_evidence": {
+    "first_green_head": null,
+    "first_green_workflow_run": null,
+    "first_green_artifact": null,
+    "first_green_artifact_digest": null
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "scientific_scope_reopened": false
+  }
+}
