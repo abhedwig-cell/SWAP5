@@ -3,8 +3,10 @@
   "work_unit": "F-DOC02",
   "title": "SWAP5 RB1 Release-Bound Scientific Traceability Population",
   "branch": "work/f-doc02-rb1-scientific-traceability-population",
-  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "stage": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_RB1_RELEASE_BOUND_TRACEABILITY_INDEX_WITH_EXPLICIT_GAPS",
   "decision_if_green": "QUALIFIED_RB1_RELEASE_BOUND_TRACEABILITY_INDEX_WITH_EXPLICIT_GAPS",
+  "validity_rule": "Final only when .github/workflows/fdoc02-rb1-traceability.yml concludes success with head_sha equal to the exact commit containing this status file.",
   "architecture_authority": {
     "work_unit": "F-DOC01",
     "commit": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe",
@@ -34,7 +36,9 @@
     "required_capability_denominator": 15,
     "moving_denominator_forbidden": true
   },
-  "scope": {
+  "traceability_population": {
+    "registry": "docs/scientific/registries/rb1-release-traceability-index.json",
+    "gap_matrix": "docs/scientific/F-DOC02_RB1_RELEASE_TRACEABILITY_GAP_MATRIX.md",
     "required_capabilities_indexed": 15,
     "optional_capabilities_outside_required_denominator": 2,
     "traceability_tiers_per_capability": 15,
@@ -46,6 +50,21 @@
     },
     "explicit_open_tiers_per_capability": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
     "population_policy": "Only exact existing authorities are resolved. Missing theory, formulation, implementation mapping or validation evidence remains an explicit gap and is never inferred from release PASS status."
+  },
+  "precloseout_validation": {
+    "head": "d3ba5b4086c2f0465dc899986b2362b558977a38",
+    "tree": "2971d743552d7e716c244a105d1941cac7564ea4",
+    "exact_head_run": 34592727093,
+    "conclusion": "success",
+    "evidence_artifact": 10196274804,
+    "evidence_digest": "sha256:1782cb3a0f36236f40f72b836a23e77fbb2bd615e22ba91aec7db6a326b21e74"
+  },
+  "architecture_audit": {
+    "path": "integration/f-doc/F-DOC02_INVARIANT_AUDIT.json",
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "mass_conservation": "HARD_UNCHANGED"
   },
   "status_a_boundary": {
     "ready_for_status_a_review": false,
@@ -66,14 +85,20 @@
     "application_validation_claimed": false,
     "surface_evaporation_throughput_scaling_claimed": false
   },
+  "follow_on_rule": "Future documentation work may resolve individual T0-T12 gaps with stable F-DOC01 scientific IDs and exact edges. It may not mutate SWAP5-RB1-v1, reinterpret historical qualification authority, infer T12 validation from numerical qualification, or use Status A readiness/compliance language until the F-DOC01 external-authority and evidence gates are satisfied.",
   "state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
+    "status_a_ready": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "rb1_science_reopened": false,
     "open": [
-      "exact-head CI",
-      "final self-bound closeout"
+      "capability-specific T0-T10 scientific traceability population",
+      "application-class T12 validation evidence",
+      "WR-QA-2024 controlled-copy reconciliation before any Status A readiness claim"
     ]
   }
 }
