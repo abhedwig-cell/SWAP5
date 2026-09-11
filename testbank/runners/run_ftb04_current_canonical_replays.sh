@@ -4,8 +4,10 @@ MODE="${1:-}"
 case "$MODE" in restart|parallel|parallel-restart) ;; *) echo "usage: $0 {restart|parallel|parallel-restart}" >&2; exit 2;; esac
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-ftb04-replay-$$-$MODE"
+TMP28="$ROOT/tests/fci/.ftb04-fci28-rebound-$$.sh"
+TMP35="$ROOT/tests/fci/.ftb04-fci35-rebound-$$.sh"
 mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+trap 'rm -rf "$BUILD"; rm -f "$TMP28" "$TMP35"' EXIT
 cd "$ROOT"
 fail(){ echo "FTB04_CURRENT_REPLAY_FAIL:$MODE:$*" >&2; exit 44; }
 
@@ -19,7 +21,7 @@ echo "FTB04_CURRENT_CANONICAL_SOURCE_AUTHORITY=PASS:MODE=$MODE"
 run_restart() {
   local HIST=tests/fci/run_fci28_restart_current_canonical_admission.sh
   local BLOB=5cf6523628b6df2dcf9c98baf05de103c24222f5
-  local TMP="$BUILD/fci28-rebound.sh"
+  local TMP="$TMP28"
   [[ "$(git rev-parse HEAD:$HIST)" == "$BLOB" ]] || fail 'FCI28 historical replay blob drift'
   cp "$HIST" "$TMP"
   python3 - "$TMP" "$SRC_TREE" "$REF_TREE" <<'PY'
@@ -32,7 +34,6 @@ old='''if ! git diff --quiet "$CANDIDATE"..HEAD -- src; then
 fi
 echo 'FCI28_EXACT_CANDIDATE_SOURCE_DELTA=PASS'
 echo 'FCI28_QUALIFICATION_PRODUCTION_IMMUTABLE=PASS' '''
-# Exact historical script has no trailing space; use a second strict spelling.
 if old not in s:
     old='''if ! git diff --quiet "$CANDIDATE"..HEAD -- src; then
   git diff --name-only "$CANDIDATE"..HEAD -- src >&2
@@ -143,7 +144,7 @@ run_parallel() {
 run_parallel_restart() {
   local HIST=tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh
   local BLOB=3c4e92369058b72c4b71e0f94dc51e76ac989db7
-  local TMP="$BUILD/fci35-rebound.sh"
+  local TMP="$TMP35"
   [[ "$(git rev-parse HEAD:$HIST)" == "$BLOB" ]] || fail 'FCI35 historical replay blob drift'
   cp "$HIST" "$TMP"
   python3 - "$TMP" "$SRC_TREE" "$REF_TREE" <<'PY'
