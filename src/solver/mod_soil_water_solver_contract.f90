@@ -13,6 +13,13 @@ module mod_soil_water_solver_contract
   integer, parameter, public :: SW_TEMPORAL_INDICATOR_UNAVAILABLE = 2
   integer, parameter, public :: SW_TEMPORAL_INDICATOR_FAILED = 3
 
+  integer, parameter, public :: SW_TOP_BOUNDARY_NOT_RUN = 0
+  integer, parameter, public :: SW_TOP_BOUNDARY_AVAILABLE = 1
+  integer, parameter, public :: SW_TOP_BOUNDARY_UNAVAILABLE = 2
+  integer, parameter, public :: SW_TOP_BOUNDARY_REGIME_NONE = 0
+  integer, parameter, public :: SW_TOP_BOUNDARY_REGIME_FLUX = 1
+  integer, parameter, public :: SW_TOP_BOUNDARY_REGIME_HEAD = 2
+
   type, public :: soil_water_parameter_set_t
      integer(int64) :: parameter_set_id = 0_int64
      integer :: active_nodes = 0
@@ -54,6 +61,22 @@ module mod_soil_water_solver_contract
      real(real64) :: head_rel_tolerance = 0.0_real64
      real(real64) :: ponding_tolerance = 0.0_real64
   end type soil_water_numerical_config_t
+
+  type, public :: soil_water_top_boundary_result_t
+     integer :: status = SW_TOP_BOUNDARY_NOT_RUN
+     integer :: regime = SW_TOP_BOUNDARY_REGIME_NONE
+     real(real64) :: actual_top_flux = 0.0_real64
+     real(real64) :: surface_head = 0.0_real64
+     real(real64) :: surface_face_conductivity = 0.0_real64
+     real(real64) :: candidate_ponding_depth = 0.0_real64
+     real(real64) :: bare_soil_evaporation = 0.0_real64
+     real(real64) :: ponded_water_evaporation = 0.0_real64
+     real(real64) :: runoff_depth = 0.0_real64
+     real(real64) :: net_potential_surface_flux = 0.0_real64
+     logical :: carries_surface_mass_terms = .false.
+     logical :: runoff_resolved = .false.
+     character(len=48) :: route = 'not-run'
+  end type soil_water_top_boundary_result_t
 
   type, abstract, public :: constitutive_hydraulics_provider_t
    contains
@@ -182,16 +205,15 @@ module mod_soil_water_solver_contract
        real(real64), intent(out) :: root_sink(:)
      end subroutine root_sink_evaluate_ifc
 
-     subroutine top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, requested, &
-                                           actual_top_flux, surface_head, runoff_flux)
-       import :: top_boundary_provider_t, soil_water_boundary_conditions_t, real64
+     subroutine top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, candidate_ponding_depth, &
+                                           requested, result)
+       import :: top_boundary_provider_t, soil_water_boundary_conditions_t, soil_water_top_boundary_result_t, real64
        class(top_boundary_provider_t), intent(in) :: self
        real(real64), intent(in) :: pressure_head_top
        real(real64), intent(in) :: water_content_top
+       real(real64), intent(in) :: candidate_ponding_depth
        type(soil_water_boundary_conditions_t), intent(in) :: requested
-       real(real64), intent(out) :: actual_top_flux
-       real(real64), intent(out) :: surface_head
-       real(real64), intent(out) :: runoff_flux
+       type(soil_water_top_boundary_result_t), intent(out) :: result
      end subroutine top_boundary_evaluate_ifc
 
      subroutine macropore_evaluate_ifc(self, pressure_head, exchange_flux, active)
