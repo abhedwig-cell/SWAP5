@@ -1,0 +1,112 @@
+name: F-DOC06 RB1 ET root surface evaporation traceability qualification
+
+on:
+  push:
+    branches:
+      - work/f-doc06-rb1-et-root-surface-evap-traceability
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rb1-et-root-surface-evap-traceability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact authority lineages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            refs/heads/work/f-doc05-rb1-execution-restart-traceability:refs/remotes/origin/work/f-doc05-rb1-execution-restart-traceability \
+            refs/heads/integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical \
+            refs/heads/release/f-rb01-restricted-production-baseline-v1:refs/remotes/origin/release/f-rb01-restricted-production-baseline-v1 \
+            refs/heads/release/f-rb02-restricted-production-baseline-v1-final-authority:refs/remotes/origin/release/f-rb02-restricted-production-baseline-v1-final-authority \
+            refs/heads/qualification/f-mq30-fmr35-parallel-root-uptake:refs/remotes/origin/qualification/f-mq30-fmr35-parallel-root-uptake
+          for sha in \
+            919f228d8aedc1029b5080bb019fbe61d2e1d7c6 \
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182 \
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 \
+            48ee2841d783ee023c29391a7ea1e5d7ee0d20e0; do
+            git cat-file -e "${sha}^{commit}"
+          done
+
+      - name: Verify immutable upstream workflow evidence live
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in \
+            '34612402892 919f228d8aedc1029b5080bb019fbe61d2e1d7c6 .github/workflows/fdoc05-rb1-execution-restart-traceability.yml' \
+            '34586202805 b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 .github/workflows/frb02-final-release-authority.yml' \
+            '34528662051 84c6bd293686d20ff91028d53ab201c4116a4d5d .github/workflows/fmq30-parallel-root-uptake-qualification.yml' \
+            '34548837037 0cdbc193976c73bef208a82547b3c9ea81c4102c .github/workflows/fvq56-fpm06f-surface-evaporation-runtime.yml'; do
+            set -- $spec
+            run="$1"; sha="$2"; path="$3"
+            curl -fsSL \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${run}" \
+              > "_fdoc06_run_${run}.json"
+            python3 - "$run" "$sha" "$path" <<'PY'
+          import json, pathlib, sys
+          run, sha, path = sys.argv[1:]
+          x = json.loads(pathlib.Path(f'_fdoc06_run_{run}.json').read_text())
+          assert x['head_sha'] == sha, (run, x['head_sha'], sha)
+          assert x['status'] == 'completed', (run, x['status'])
+          assert x['conclusion'] == 'success', (run, x['conclusion'])
+          assert x['path'] == path, (run, x['path'], path)
+          print(f'FDOC06_UPSTREAM_RUN_{run}=PASS')
+          PY
+          done
+
+      - name: Validate bounded ET root and surface evaporation traceability
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc06_rb1_et_root_surface_evap_traceability.py | tee _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_EXACT_THREE_CAPABILITIES=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI27_ROOT_NOT_YET_BOUND=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI27_PTRA_NOT_YET_RECONCILED=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI34_FVQ50_DECISION=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI34_GATE_HARD_MASS_BALANCE=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FMQ30_WORKERS_2_4=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FMQ30_HARD_MASS=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FMQ30_NO_SPEEDUP_CLAIM=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI41P_FINAL_CLOSEOUT=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI41P_NO_THROUGHPUT_SCALING_CHANGE=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FCI41P_ALLOCATION_DEBT_DEFERRED=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_FPE11_MARKER_THROUGHPUT_SCALING_CLAIM=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_RB1_SURFACE_THROUGHPUT_SEPARATE=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_ZERO_PRODUCTION_DELTA=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_ZERO_REFERENCE_DELTA=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_INVARIANT_OVERALL=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_MASS_HARD_UNCHANGED=PASS' _fdoc06_validator_stdout.txt
+          grep -Fq 'FDOC06_VALIDATION=PASS' _fdoc06_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc06-rb1-et-root-surface-evap-traceability-evidence-${{ github.sha }}
+          path: |
+            _fdoc06_run_34612402892.json
+            _fdoc06_run_34586202805.json
+            _fdoc06_run_34528662051.json
+            _fdoc06_run_34548837037.json
+            _fdoc06_validator_stdout.txt
+            docs/scientific/registries/rb1-et-root-surface-evap-traceability.json
+            docs/scientific/F-DOC06_RB1_ET_ROOT_SURFACE_EVAP_TRACEABILITY.md
+            integration/f-doc/F-DOC06_STATUS.json
+            integration/f-doc/F-DOC06_INVARIANT_AUDIT.json
+            integration/f-doc/F-DOC06_CLOSEOUT.json
+          if-no-files-found: warn
+          retention-days: 90
