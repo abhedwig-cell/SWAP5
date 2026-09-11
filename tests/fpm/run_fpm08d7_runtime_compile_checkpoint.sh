@@ -11,6 +11,7 @@ MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
+  src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
