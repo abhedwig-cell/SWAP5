@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "TOP_BOUNDARY_PROVIDER_BLOCKER",
+  "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+  "source_head_before_persist": "143ecec96668dfb7bcc650a29c76c1fec18b5519",
+  "qualification": false,
+  "formal_status": "BLOCKED_ON_QUALIFIED_DYNAMIC_LEGACY_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+  "finding": "The previously planned production materialization via fixed_flux_top_boundary_provider_t is not generally physics-equivalent to the legacy production HeadCalc route. Legacy HeadCalc calls boundtop_state_bridge(2) on every residual evaluation. The legacy boundtop calculation depends on current top-node head/conductivity, computes evaporation limitation, may switch between flux and prescribed-head surface regimes, and may activate ponding/runoff. Therefore current qtop is not a generally valid pre-resolved immutable forcing for the typed solve.",
+  "production_evidence": {
+    "headcalc": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+      "facts": [
+        "vector_F() invokes boundtop_state_bridge(2) for each residual evaluation",
+        "when an explicit top provider is active, HeadCalc delegates top-boundary evaluation to that provider instead of legacy boundtop",
+        "the currently qualified fixed-flux provider simply returns requested%top_flux and cannot reproduce legacy dynamic regime switching"
+      ]
+    },
+    "fixed_flux_provider": {
+      "path": "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "blob": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "fact": "evaluate() returns requested top_flux, surface_head=pressure_head_top and zero runoff; it has no legacy atmospheric-demand/ponding/runoff semantics."
+    },
+    "fsi28_binding": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "f8acd89e54b410fe70792ddee29ddd47134a401d",
+      "facts": [
+        "validate_legacy_request() requires FSI_TOP_MODE_EXPLICIT_FLUX and an associated top_boundary provider",
+        "F-SI28 therefore cannot currently use the internal legacy boundtop branch while remaining in its qualified explicit-provider route"
+      ]
+    }
+  },
+  "supplementary_legacy_source_crosscheck": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "boundtop_behavior": [
+      "computes atmospheric-head conductivity and Darcy evaporation capacity from current h(1)",
+      "computes actual soil evaporation reva",
+      "forms q1 from precipitation/irrigation/snow/runon/evaporation and prior ponding",
+      "switches to atmospheric prescribed-head when demand exceeds Emax",
+      "otherwise tests whether the flux condition implies surface head <= threshold",
+      "may switch to ponded prescribed-head/runoff state"
+    ]
+  },
+  "architectural_consequence": "Implementing KT15 with the fixed-flux provider would make numerical/transaction composition silently alter surface physics, violating physics-vs-policy separation and the requirement to maximally reuse SWAP physics. KT15 must not do this.",
+  "required_predecessor": {
+    "suggested_work_unit": "F-SI29",
+    "scope": "Qualify a production-bound explicit top-boundary provider that reproduces the admitted legacy B1.10 atmospheric/evaporation/ponding/runoff surface boundary semantics without depending on HeadCalc internals or persistent solver scratch.",
+    "must_preserve": [
+      "F-PM06E admitted surface-evaporation-capacity physics",
+      "legacy flux/head regime selection in qualified scope",
+      "ponding/runoff mass conservation",
+      "request/base-state immutability",
+      "worker isolation and deterministic replay",
+      "no silent simplification to fixed qtop"
+    ]
+  },
+  "kt15_rule_until_predecessor_qualified": "Fail closed: do not modify SoilWater(2) production routing and do not claim solver-service production composition. The existing direct legacy HeadCalc path remains the sole production hydraulic authority.",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "F_KT15_PRODUCTION_COMPOSITION_BLOCKED_PENDING_REAL_TOP_BOUNDARY_PROVIDER_QUALIFICATION"
+}
