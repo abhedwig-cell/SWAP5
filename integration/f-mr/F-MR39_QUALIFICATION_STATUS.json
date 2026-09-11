@@ -1,0 +1,75 @@
+{
+  "work_unit": "F-MR39",
+  "title": "Restricted Soil-Temperature Transactional Runtime Composition",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_TRANSACTIONAL_RUNTIME_COMPOSITION",
+  "canonical_base": "d201904a85f3b595e028242978e52c02f5122a09",
+  "candidate_source_authority": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "scientific_authority": "F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "scientific_process_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "bounded_production_source_delta": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "materialized_source_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "qualification_evidence": {
+    "prepublication_materialization_run": 34631376676,
+    "exact_immutable_candidate_run": 34631572194,
+    "exact_candidate_job": 103369388981,
+    "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+    "bounded_source_delta": "PASS",
+    "science_kernel_transaction_hydraulic_seam_locks": "PASS",
+    "optional_committed_thermal_state": "PASS",
+    "worker_local_thermal_scratch": "PASS",
+    "richards_then_thermal_trial_order": "PASS",
+    "water_storage_and_mass_exclude_thermal_energy": "PASS",
+    "restart_fail_closed_thermal_shape": "PASS",
+    "enabled_water_thermal_atomic_commit": "PASS",
+    "thermal_failure_rolls_back_water_and_temperature": "PASS",
+    "retry_from_same_committed_state": "PASS",
+    "split_restart_water_thermal_identity": "PASS",
+    "existing_polymorphic_restart_state_reused": "PASS",
+    "mixed_enabled_disabled_multiswap_isolation": "PASS",
+    "inactive_column_no_thermal_physical_state": "PASS",
+    "disabled_path_fmr19_preservation_o0": "PASS",
+    "disabled_path_fmr19_preservation_o2": "PASS",
+    "runtime_o0_o2_output_identity": "PASS",
+    "fvq58_exact_scientific_authority_replay": "PASS",
+    "all_30_architecture_invariants_audited": "PASS",
+    "exact_candidate_head_assertion": "PASS"
+  },
+  "runtime_contract": {
+    "persistent_state": "soil-temperature state is an optional substate of the existing committed physical state",
+    "scratch": "soil-temperature workspace is backend/worker-local and not persisted per column",
+    "transaction": "Richards and restricted soil temperature execute inside one outer checkpoint/trial/retry/commit-or-rollback transaction",
+    "failure_semantics": "a failed thermal trial rejects the whole physical trial including the successful Richards candidate",
+    "restart": "the existing polymorphic committed physical-state restart record carries the optional thermal state; no second serializer is introduced",
+    "mass": "water mass remains the authoritative water balance and excludes thermal energy; the qualified thermal process retains its separate energy closure",
+    "hydraulic_dependency": "thermal physics consumes semantic process hydraulic views and does not depend on HeadCalc internals",
+    "time": "generic numeric [t0,t1]; no day-boundary assumption introduced",
+    "multiswap": "restricted serialized MultiSWAP active/inactive isolation is qualified"
+  },
+  "nonclaims": [
+    "no canonical admission is performed by F-MR39",
+    "no parallel-throughput or scaling qualification for thermal-active columns",
+    "no snow-plus-soil-temperature combined profile",
+    "no frost or latent-heat phase-change physics",
+    "no new soil-temperature science or formula change",
+    "no new combined water-plus-thermal timestep acceptance tolerance",
+    "no performance qualification",
+    "no broader legacy soil-temperature option coverage"
+  ],
+  "downstream_recomposition_requirement": {
+    "required": true,
+    "reason": "canonical advanced after the F-MR39 base was frozen",
+    "current_canonical_observed_at_closeout": "536042620038014057427a7915c212a3ac78f84d",
+    "current_canonical_change": "F-CI44 application-accuracy-contract canonical admission",
+    "rule": "F-MR39 must be recomposed and requalified against the then-current canonical authority before any canonical admission; do not merge or promote 87b553094b66980006b69f5ba8b53d70ccd0a8e0 directly as current canonical."
+  }
+}
