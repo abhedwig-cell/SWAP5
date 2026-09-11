@@ -1,16 +1,65 @@
 {
+  "schema_version": "1.0",
   "work_unit": "F-TB04",
-  "state": "PERSISTED_AWAITING_EXACT_HEAD_QUALIFICATION",
-  "decision": null,
+  "title": "SWAP5 Transaction, Restart, Determinism & MultiSWAP Qualification Case Catalog",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_TRANSACTION_RESTART_DETERMINISM_MULTISWAP_TESTBANK_CATALOG_READY_FOR_CONTINUOUS_QUALIFICATION",
+  "validity_rule": "This F-TB04 closeout is final only when .github/workflows/ftb04-transaction-restart-determinism-multiswap.yml concludes success with head_sha equal to the exact commit containing this status file, with both FAST and exact-head RELEASE jobs successful.",
   "composition_baseline": "5c7b76655c910046f574753a39278d9a3cc3dbf3",
   "current_canonical": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
   "F-TB03": "65d5e5202446212390dbdd84b06e6b2a80e7121c",
   "production_source_changed": false,
+  "reference_changed": false,
   "RB1_reopened": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "scientific_tolerance_relaxed": false,
+  "historical_RB1_evidence_rewritten": false,
   "case_count": 35,
   "domain_counts": {"TRANSACTION": 10, "RESTART": 9, "DETERMINISM": 6, "MULTISWAP": 10},
   "profile_case_counts": {"FAST": 9, "CANONICAL": 18, "RELEASE": 34, "DEEP": 35},
+  "determinism_classes": ["BIT_IDENTITY_REQUIRED", "NUMERICAL_EQUIVALENCE_REQUIRED"],
+  "mapped_architecture_invariants": [3,4,5,6,7,8,9,13,16,23,24,26,27,29,30],
+  "architecture_audit": {
+    "path": "integration/f-tb/F-TB04_INVARIANT_AUDIT.json",
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "precloseout_FAST": {
+    "head": "0a77bc04061d2bf3dc267d073770ea2203781ac4",
+    "run": 34609684896,
+    "conclusion": "success"
+  },
+  "exact_head_qualification": {
+    "workflow": ".github/workflows/ftb04-transaction-restart-determinism-multiswap.yml",
+    "FAST": "SUCCESS_REQUIRED_ON_THIS_EXACT_HEAD",
+    "RELEASE": "SUCCESS_REQUIRED_ON_THIS_EXACT_HEAD",
+    "DEEP": "EXPLICIT_NOT_REQUIRED_FOR_CLOSEOUT"
+  },
+  "release_scope": {
+    "restart": "FCI28 current-canonical restart qualification",
+    "parallel_multiswap": "FCI30 serialized/2-worker/4-worker qualification",
+    "heterogeneous_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-parameter-reference case",
+    "parallel_restart": "FCI35 held-out cross-worker committed-boundary restart qualification"
+  },
   "source_defects_discovered": [],
-  "qualification": {"FAST": "PENDING", "RELEASE": "PENDING", "DEEP": "EXPLICIT_NOT_REQUIRED_FOR_CLOSEOUT"},
-  "target_decision": "QUALIFIED_TRANSACTION_RESTART_DETERMINISM_MULTISWAP_TESTBANK_CATALOG_READY_FOR_CONTINUOUS_QUALIFICATION"
+  "harness_defects_remediated": [
+    {
+      "failed_run": 34602863572,
+      "failed_head": "f1b4e1298be992f41d06939980747af51b3d6af0",
+      "classification": "FTB04_VALIDATOR_AUTHORITY_PATH_ERROR",
+      "remediation_head": "0a77bc04061d2bf3dc267d073770ea2203781ac4",
+      "production_source_changed": false
+    }
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "precloseout_fast_tested": true,
+    "qualified": "CONDITIONAL_ON_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": ["EXACT_HEAD_FAST_AND_RELEASE_CI"]
+  }
 }
