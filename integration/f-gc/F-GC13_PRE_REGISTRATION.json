@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC13",
+  "title": "Project Accuracy Contract Evidence Ingestion & Governance Template",
+  "status": "PRE_REGISTERED_BEFORE_TEMPLATE_IMPLEMENTATION",
+  "branch": "work/f-gc13-project-accuracy-evidence-governance-template",
+  "authority": {
+    "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "canonical_stage": "F-CI45P",
+    "canonical_application_accuracy_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "F_GC10_closeout": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "F_GC11_closeout": "d14b995f135a6c719d39f370c36797b4de4678b8",
+    "F_GC12_closeout": "0904c55b65b3dcfa22ff32f693ee9fabfa8c66a1"
+  },
+  "purpose": "Define a reusable, machine-checkable evidence packet and governance validator for future project-specific instantiation of the canonical groundwater application-accuracy contract. The template must distinguish externally governed prediction-accuracy requirements from physical impact thresholds, calibration statistics and model-generated uncertainty, and must independently govern temporal/coupling allocation before any positive numerical budget may be materialized.",
+  "hard_scope": {
+    "production_source_change": false,
+    "canonical_change": false,
+    "kernel_change": false,
+    "solver_change": false,
+    "physics_change": false,
+    "new_numeric_H_app": false,
+    "new_numeric_A_temporal": false,
+    "choose_project_policy": false,
+    "infer_policy_from_F_GC07": false,
+    "mass_tolerance_relaxation": false,
+    "production_MODFLOW_admission": false,
+    "file_parsing_inside_kernel": false
+  },
+  "deliverables": [
+    "versioned project-accuracy evidence packet schema",
+    "machine-checkable governance validator",
+    "accepted complete synthetic governance fixture",
+    "fail-closed incomplete and forbidden-substitution fixtures",
+    "mapping from accepted evidence fields to the canonical coupling_application_accuracy_contract_t fields",
+    "qualification gate and immutable closeout evidence"
+  ],
+  "required_governance_semantics": {
+    "project_identity_explicit": true,
+    "qoi_explicit": true,
+    "spatial_scope_explicit": true,
+    "time_horizon_explicit": true,
+    "H_app_must_be_prediction_error_requirement": true,
+    "H_app_must_be_external_and_provenance_bound": true,
+    "H_app_must_not_be_physical_impact_threshold_only": true,
+    "H_app_must_not_be_calibration_metric_only": true,
+    "H_app_must_not_be_model_uncertainty_output_only": true,
+    "temporal_allocation_must_be_external_and_provenance_bound": true,
+    "temporal_allocation_must_not_be_derived_from_SWAP_behavior": true,
+    "a_temporal_domain": "0 < A_temporal <= 1",
+    "positive_budget_requires_both_qualified_claims": true,
+    "absence_or_ambiguity_fails_closed": true
+  },
+  "canonical_mapping_target": {
+    "contract_id": "positive stable integer assigned outside kernel",
+    "contract_version": "positive version",
+    "qoi_kind": ["GROUNDWATER_HEAD", "GROUNDWATER_DRAWDOWN"],
+    "h_app_cm": "positive finite externally qualified prediction-error requirement",
+    "application_provenance_id": "positive stable provenance id",
+    "a_temporal": "positive finite externally governed allocation fraction <= 1",
+    "temporal_allocation_provenance_id": "positive stable provenance id",
+    "derived_temporal_budget_cm": "H_app_cm * A_temporal"
+  },
+  "success_decision_candidate": "QUALIFIED_REUSABLE_PROJECT_ACCURACY_EVIDENCE_INGESTION_AND_GOVERNANCE_TEMPLATE",
+  "fail_closed_decision_candidate": "BLOCKED_PROJECT_ACCURACY_TEMPLATE_DOES_NOT_ENFORCE_EXTERNAL_POLICY_SEPARATION",
+  "architecture_invariants_requiring_closeout_audit": [2,3,9,10,11,12,13,15,23,25,26,28,29,30]
+}
