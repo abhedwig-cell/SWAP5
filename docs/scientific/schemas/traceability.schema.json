@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SW5/F-DOC01/traceability.schema.json",
+  "title": "SWAP5 scientific traceability registry",
+  "type": "object",
+  "required": ["schema_version", "source_authority", "nodes", "edges"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "source_authority": {"type": "object", "required": ["commit"], "properties": {"commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "tree": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"}}},
+    "scope": {"type": "string"},
+    "denominator_definition": {"type": ["string", "null"]},
+    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "kind", "tier", "title", "status", "authority", "record_version"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^SW5-[A-Z]+-[0-9]{4}$"},
+        "kind": {"type": "string"},
+        "tier": {"type": "string", "pattern": "^T(?:[0-9]|1[0-4])$"},
+        "title": {"type": "string", "minLength": 1},
+        "status": {"enum": ["DRAFT", "PROVISIONAL", "ACTIVE", "GAP", "HISTORICAL_REFERENCE", "SUPERSEDED", "RETIRED"]},
+        "authority": {"type": "string", "minLength": 1},
+        "record_version": {"type": "integer", "minimum": 1},
+        "repository_path": {"type": "string"},
+        "symbol": {"type": "string"},
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "production": {"type": "boolean"},
+        "sources": {"type": "array", "items": {"type": "string"}},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": ["from", "to", "relationship", "status"],
+      "properties": {
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "relationship": {"type": "string"},
+        "status": {"enum": ["ASSERTED", "VERIFIED", "PROVISIONAL", "GAP", "SUPERSEDED"]},
+        "authority": {"type": "string"},
+        "rationale": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

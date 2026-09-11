@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SW5/F-DOC01/status-a-audit.schema.json",
+  "title": "SWAP5 component Status A readiness audit",
+  "type": "object",
+  "required": ["component_id", "scope", "criterion_authority", "applicable_requirements", "audit_status", "gaps", "evidence"],
+  "properties": {
+    "component_id": {"type": "string"},
+    "scope": {"type": "string"},
+    "criterion_authority": {"type": "string"},
+    "applicable_requirements": {"type": "array", "items": {"type": "string", "pattern": "^[1-7]\\.[1-5]$"}},
+    "theory_completeness": {"type": "string"},
+    "formal_model_completeness": {"type": "string"},
+    "code_traceability": {"type": "string"},
+    "parameter_documentation": {"type": "string"},
+    "input_provenance": {"type": "string"},
+    "verification": {"type": "string"},
+    "validation": {"type": "string"},
+    "sensitivity": {"type": "string"},
+    "uncertainty": {"type": "string"},
+    "fitness_for_purpose": {"type": "string"},
+    "ownership": {"type": "string"},
+    "user_documentation": {"type": "string"},
+    "gaps": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "audit_status": {"enum": ["NOT_ASSESSED", "GAP_ANALYSED", "PARTIALLY_READY", "READY_FOR_STATUS_A_REVIEW", "STATUS_A_EXTERNAL_REVIEW_PENDING", "STATUS_A_QUALIFIED"]}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SW5/F-DOC01/ownership-maintenance.schema.json",
+  "title": "SWAP5 ownership and maintenance record",
+  "type": "object",
+  "required": ["scope", "roles", "status"],
+  "properties": {
+    "scope": {"type": "string"},
+    "roles": {
+      "type": "object",
+      "properties": {
+        "scientific_owner": {"type": ["string", "null"]},
+        "software_owner": {"type": ["string", "null"]},
+        "release_authority": {"type": ["string", "null"]},
+        "maintenance_owner": {"type": ["string", "null"]},
+        "external_dependency_owner": {"type": ["string", "null"]},
+        "user_support_owner": {"type": ["string", "null"]},
+        "next_in_line_or_successor": {"type": ["string", "null"]},
+        "documentation_owner": {"type": ["string", "null"]},
+        "quality_audit_contact": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "review_cadence": {"type": ["string", "null"]},
+    "continuity_notes": {"type": ["string", "null"]},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "status": {"enum": ["GAP", "PARTIAL", "COMPLETE"]}
+  },
+  "additionalProperties": true
+}

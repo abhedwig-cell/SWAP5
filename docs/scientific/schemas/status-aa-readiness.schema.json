@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SW5/F-DOC01/status-aa-readiness.schema.json",
+  "title": "SWAP5 component Status AA readiness",
+  "type": "object",
+  "required": ["component_id", "criterion_authority", "status_a_complete", "aa_additional_requirements_known", "remaining_gaps"],
+  "properties": {
+    "component_id": {"type": "string"},
+    "criterion_authority": {"type": "string"},
+    "status_a_complete": {"type": "boolean"},
+    "aa_additional_requirements_known": {"type": "boolean"},
+    "aa_evidence_available": {"type": "boolean"},
+    "independent_or_external_review_complete": {"type": "boolean"},
+    "quantitative_uncertainty_complete": {"type": "boolean"},
+    "validation_breadth_sufficient": {"type": "boolean"},
+    "fair_and_management_requirements_satisfied": {"type": "boolean"},
+    "remaining_gaps": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
