@@ -74,6 +74,7 @@ module mod_soil_water_solver_contract
      real(real64) :: runoff_depth = 0.0_real64
      real(real64) :: net_potential_surface_flux = 0.0_real64
      logical :: carries_surface_mass_terms = .false.
+     logical :: runoff_potential = .false.
      logical :: runoff_resolved = .false.
      character(len=48) :: route = 'not-run'
   end type soil_water_top_boundary_result_t
