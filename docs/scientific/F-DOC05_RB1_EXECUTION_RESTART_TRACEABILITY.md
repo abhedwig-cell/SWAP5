@@ -32,7 +32,7 @@ No universal speedup, throughput or performance-superiority claim is made. Unsup
 
 The restart contract is serialization-neutral. `fmr_committed_restart_record_t` and `fmr_committed_restart_bundle_t` in `src/runtime/mod_fmr_committed_restart.f90` carry stable runtime identity and the compact committed physical continuation state required to resume a column.
 
-The contract deliberately excludes immutable parameter payload duplication and excludes solver/Newton/Jacobian scratch and worker warm starts. It is not a filesystem format. It does not claim cross-version migration and it does not persist trial state or mid-transaction state.
+The contract deliberately excludes immutable parameter payload duplication and excludes solver/Newton/Jacobian scratch and worker warm starts. Equivalently, no worker/Newton/Jacobian scratch state is part of the persistent restart payload. It is not a filesystem format. It does not claim cross-version migration and it does not persist trial state or mid-transaction state.
 
 F-MQ27 qualifies serial committed-boundary continuation with continuous-versus-restarted result identity, endpoint-state identity, lineage/revision/time continuation, deterministic replay, hard mass and a fail-closed negative matrix. Malformed or incompatible restore attempts must leave fresh targets uninitialized, so failed restores cannot partially publish state.
 
