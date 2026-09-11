@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.fci48p_status.v1",
+  "work_unit": "F-CI48P",
+  "title": "F-MR41 Typed Optional-State Layout Current-Canonical Postimage Reconciliation",
+  "branch": "qualification/f-ci48p-current-canonical-postimage-reconciliation",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI48_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FOR_PROMOTION",
+  "canonical_postimage": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "prepromotion_canonical": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "fci48_admission_head": "effb42a36cf369293825484598fa17c53f4a2250",
+  "fmr41_source_authority": "50b8bd32b03946d947b9c8b87a17192684843b6e",
+  "first_green_postimage_reconciliation": {
+    "head": "f5793c9fff32c423cce1e2184d1c9ae3e6896255",
+    "run": 34650077071,
+    "conclusion": "success"
+  },
+  "failed_broad_canonical_before_reconciliation": {
+    "run": 34649007705,
+    "job": 103426962103,
+    "classification": "STALE_MOVING_PRESERVATION_AUTHORITY_AFTER_QUALIFIED_SOURCE_ADMISSION"
+  },
+  "state": {
+    "fci48_true_two_parent_merge_verified": true,
+    "exact_fmr41_three_blob_postimage_verified": true,
+    "production_source_changed_by_fci48p": false,
+    "reference_changed_by_fci48p": false,
+    "scientific_tolerance_changed": false,
+    "mass_conservation_relaxed": false,
+    "moving_preservation_disabled_or_weakened": false,
+    "historical_frozen_authority_rewritten": false,
+    "moving_preservation_authority_advanced_to_fci48_postimage": true,
+    "all_30_architecture_invariants_reconciled": true,
+    "canonical_reconciliation_promoted": false,
+    "post_reconciliation_broad_canonical_green": false,
+    "RB1_reopened": false
+  },
+  "architecture_audit": "integration/f-ci/F-CI48P_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI48P_EVIDENCE.json",
+  "promotion_gate": {
+    "require_live_canonical_still_exactly_fci48_postimage": true,
+    "require_exact_status_head_fci48p_success": true,
+    "require_src_tree_identity_to_fci48_postimage": true,
+    "require_reference_tree_identity_to_fci48_postimage": true,
+    "require_true_two_parent_governance_merge_commit": true,
+    "force_update_forbidden": true,
+    "require_post_promotion_broad_canonical_success": true,
+    "require_current_restricted_canonical_preservation_job_success": true
+  },
+  "hard_nonclaims": [
+    "no new science, physics or solver behavior",
+    "no performance qualification",
+    "no scientific tolerance relaxation",
+    "no weakening or disabling of moving preservation",
+    "no immutable historical admission authority rewrite",
+    "no production or reference mutation",
+    "no mass-conservation relaxation",
+    "no RB1 modification or reopening"
+  ],
+  "next_required_step": "Require the automatically triggered F-CI48P gate on this exact status head to finish green. If canonical remains exactly 0b284b5f4e224c5f76d7d78b9dbb51c99514479d, promote by a true two-parent governance merge. Then require the broad F-CI canonical workflow, especially current-restricted-canonical-preservation, to finish green on the promoted canonical head before final closeout."
+}

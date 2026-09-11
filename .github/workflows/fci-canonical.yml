@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=e765d96ee80af0629fb399e18bf58124dade7641
+          AUTH=0b284b5f4e224c5f76d7d78b9dbb51c99514479d
           git merge-base --is-ancestor "$AUTH" HEAD
           dependency_surface=(
             src/runtime/mod_a23bu_worker_execution_context.f90
@@ -375,5 +375,6 @@ jobs:
           echo 'FCI45_MOVING_SOIL_TEMPERATURE_RUNTIME_PRESERVATION=PASS'
           echo 'FCI46_MOVING_EXTERNAL_ACCURACY_ADAPTER_PRESERVATION=PASS'
           echo 'FCI47_MOVING_PRESERVATION_AUTHORITY_RECONCILED=PASS'
+          echo 'FCI48_MOVING_TYPED_OPTIONAL_STATE_LAYOUT_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'

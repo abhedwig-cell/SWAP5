@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE="0b284b5f4e224c5f76d7d78b9dbb51c99514479d"
+BASE="4f62af04df8ad686a8066f6c164cdcf79d319999"
 CANONICAL_BRANCH="integration/f-ci-canonical"
 DONOR_BRANCH="work/f-kt15-production-soil-water-solver-service-transaction-composition"
 DONOR="eacdacb60524221d0c286571444271089347dbcc"
@@ -10,11 +10,10 @@ FKT14="2f7995df362c65916671278a5552ed9976ed39b3"
 
 fail(){ echo "FKT15R_FAIL $*" >&2; exit 1; }
 
-# The recomposition is meaningful only against this exact current canonical.
 git fetch --no-tags origin "${CANONICAL_BRANCH}:refs/remotes/origin/${CANONICAL_BRANCH}" >/dev/null 2>&1
 actual_canonical="$(git rev-parse refs/remotes/origin/${CANONICAL_BRANCH})"
 [[ "$actual_canonical" == "$BASE" ]] || fail "canonical race expected $BASE got $actual_canonical"
-git merge-base --is-ancestor "$BASE" HEAD || fail "HEAD is not descended from F-CI48 base"
+git merge-base --is-ancestor "$BASE" HEAD || fail "HEAD is not descended from F-CI48P base"
 echo "FKT15R_CANONICAL_RACE_GUARD=PASS"
 
 allowed=(
@@ -39,7 +38,6 @@ diff -u /tmp/fkt15r-expected-src /tmp/fkt15r-actual-src || fail "source allowlis
 if git diff --name-only "$BASE"..HEAD -- reference | grep -q .; then fail "reference delta forbidden"; fi
 echo "FKT15R_EXACT_SOURCE_ALLOWLIST=PASS"
 
-# Pin the combined qualified owner postimage.
 git fetch --no-tags origin "${DONOR_BRANCH}:refs/remotes/origin/${DONOR_BRANCH}" >/dev/null 2>&1
 [[ "$(git rev-parse refs/remotes/origin/${DONOR_BRANCH})" == "$DONOR" ]] || fail "combined donor branch moved"
 for path in "${allowed[@]}"; do
@@ -47,15 +45,12 @@ for path in "${allowed[@]}"; do
 done
 echo "FKT15R_COMBINED_DONOR_BLOB_IDENTITY=PASS"
 
-# F-CI48 optional-state layout source must remain untouched.
 check_blob(){ local p="$1" e="$2" a; a="$(git rev-parse HEAD:$p)"; [[ "$a" == "$e" ]] || fail "F-CI48 lock drift $p $a"; }
 check_blob src/runtime/mod_fmr_restart_state_contract.f90 4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d
 check_blob src/runtime/mod_fmr_runtime_core.f90 88adf19e274956ab0f97fe6b4f6307fbfb453790
 check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 2364c765935813675dee0d2838a7ce183d81f560
-echo "FKT15R_FCI48_NONOVERLAP_LOCKS=PASS"
+echo "FKT15R_FCI48P_NONOVERLAP_LOCKS=PASS"
 
-# Bring exact closed qualification tests into an isolated worktree, but run them
-# against THIS recomposed source postimage rather than the historical source trees.
 for rev in "$FSI30" "$FKT14"; do git cat-file -e "$rev^{commit}" 2>/dev/null || git fetch --no-tags origin "$rev"; done
 WT="${RUNNER_TEMP:-/tmp}/fkt15r-recomposition-${GITHUB_RUN_ID:-local}"
 rm -rf "$WT"
@@ -75,8 +70,6 @@ git archive "$FKT14" tests/fkt | tar -x -C "$WT"
 )
 echo "FKT15R_FSI30_RECOMPOSED_SOURCE_REPLAY=PASS"
 
-# Re-run F-KT14 accepted transport and solver-result bridge against the recomposed
-# F-SI30-compatible contract layer at O0 and O2 and require observable identity.
 for opt in 0 2; do
   B="$WT/build/fkt15r-fkt14-o${opt}"
   mkdir -p "$B"
@@ -101,7 +94,6 @@ diff -u "$WT/build/fkt15r-fkt14-o0/transport.out" "$WT/build/fkt15r-fkt14-o2/tra
 diff -u "$WT/build/fkt15r-fkt14-o0/bridge.out" "$WT/build/fkt15r-fkt14-o2/bridge.out"
 echo "FKT15R_FKT14_ACCEPTED_TRANSPORT_O0_O2=PASS"
 
-# Ensure this workunit has not yet changed the real SoilWater task-2 callsite.
 [[ "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" == "$(git rev-parse $BASE:src/legacy/b1_10_port/soilwater.f90)" ]] || fail "task-2 production route changed during recomposition"
 echo "FKT15R_TASK2_IMPLEMENTATION_NOT_YET_STARTED=PASS"
 

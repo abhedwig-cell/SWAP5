@@ -1,12 +1,19 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-KT15R",
   "title": "F-KT15 Current-Canonical Producer/Transport/Dynamic-Top Recomposition",
   "branch": "work/f-kt15r-production-solver-service-current-canonical-recomposition",
   "status": "RECOMPOSITION_CANDIDATE_NOT_YET_QUALIFIED",
-  "canonical_base": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
-  "canonical_stage": "F-CI48 typed optional-state layout admission",
-  "source_composition_commit": "fd16bfc4e9f34dc5b2a2ab3c5a7b41fa184479f3",
+  "canonical_base": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+  "canonical_stage": "F-CI48P moving-preservation reconciliation after F-CI48",
+  "canonical_source_equivalence": "F-CI48P changes no src/** files relative to F-CI48",
+  "first_attempt": {
+    "head": "47b5f6abc44e794ab8aa0cb41b3ee39283e9c54b",
+    "workflow_run": 34650370456,
+    "conclusion": "failure_before_content_replay",
+    "classification": "EXPECTED_CANONICAL_RACE_GUARD",
+    "observed_new_canonical": "4f62af04df8ad686a8066f6c164cdcf79d319999"
+  },
   "combined_donor": "F-KT15@eacdacb60524221d0c286571444271089347dbcc",
   "donor_semantics": {
     "F_SI28": "qualified same-factorization native-qbot sensitivity producer",
@@ -14,7 +21,7 @@
     "F_SI29": "qualified restricted dynamic atmospheric top-boundary provider",
     "F_SI30": "qualified dynamic top-boundary solver interface and HeadCalc provider bridge preserving F-SI28 tangent behavior"
   },
-  "purpose": "Re-establish the already-qualified combined owner source postimage on the current F-CI48 canonical tree before any new F-KT15 SoilWater task-2 production composition is implemented.",
+  "purpose": "Re-establish the already-qualified combined owner source postimage on the current F-CI48P canonical tree before any new F-KT15 SoilWater task-2 production composition is implemented.",
   "scope": {
     "new_FKT15_task2_logic": false,
     "new_physics": false,
@@ -39,16 +46,16 @@
     "src/solver/mod_soil_water_solver_contract.f90",
     "src/transaction/mod_transaction_reference.f90"
   ],
-  "F_CI48_nonoverlap_locks": {
+  "F_CI48_source_locks_preserved_through_F_CI48P": {
     "src/runtime/mod_fmr_restart_state_contract.f90": "4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d",
     "src/runtime/mod_fmr_runtime_core.f90": "88adf19e274956ab0f97fe6b4f6307fbfb453790",
     "src/runtime/mod_fmr_serialized_reference_backend.f90": "2364c765935813675dee0d2838a7ce183d81f560"
   },
   "qualification_requirements": [
-    "live canonical must remain exactly F-CI48 base",
+    "live canonical must remain exactly F-CI48P base",
     "source delta must equal the 13-path allowlist",
     "every recomposed source blob must equal the combined qualified F-KT15 donor postimage",
-    "F-CI48 optional-state runtime blobs must remain byte-identical",
+    "F-CI48 typed optional-state runtime blobs must remain byte-identical through F-CI48P",
     "F-SI30 ABI, adapter identity, HeadCalc compile and real dynamic HeadCalc execution gates must pass on the recomposed source",
     "F-KT14 accepted-result and solver-result bridge harnesses must pass at O0 and O2 on the recomposed source",
     "no task-2 production routing is claimed by F-KT15R"
