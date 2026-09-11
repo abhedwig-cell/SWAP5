@@ -11,8 +11,6 @@ fail() { echo "FKT15_RUNNER_FAIL $*" >&2; exit 1; }
 BASE=1b3d8ba6cc70d74a124f20f01f0c47a102763ae0
 CANONICAL=4f62af04df8ad686a8066f6c164cdcf79d319999
 
-# Fail closed on moving canonical. A later canonical requires explicit recomposition,
-# never a silently relaxed qualification gate.
 if git remote get-url origin >/dev/null 2>&1; then
   live="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
   [[ "$live" == "$CANONICAL" ]] || fail "canonical moved: $live"
@@ -20,8 +18,6 @@ fi
 
 git merge-base --is-ancestor "$BASE" HEAD || fail 'F-KT15R closeout is not an ancestor'
 
-# Production delta is deliberately narrow. Tests, workflow and integration evidence
-# are support artifacts; reference data is immutable.
 mapfile -t prod < <(git diff --name-only "$BASE"..HEAD -- 'src/**' | sort)
 expected=(
   src/adapter/mod_b110_production_soil_water_task2.f90
@@ -38,7 +34,6 @@ if git diff --name-only "$BASE"..HEAD | grep -q '^reference/'; then
   fail 'reference tree changed'
 fi
 
-# Immutable owner-source locks from F-KT15R: F-KT15 may compose them but not edit them.
 declare -A locks=(
  [src/solver/mod_soil_water_solver_contract.f90]=276941d76ba951a89c43899e61fd0532418d8230
  [src/solver/mod_reference_richards_state_binding.f90]=a2488ce3a6a6eff665a59d3dd68907d26f8304ec
@@ -59,7 +54,10 @@ grep -Fq 'call headcalc(worker, history=worker%history)' src/legacy/b1_10_port/s
 [[ "$(grep -c 'call try_b110_production_task2' src/legacy/b1_10_port/soilwater.f90)" == 1 ]] || fail 'typed task2 must occur exactly once'
 grep -Fq 'call map_soil_water_interface_sensitivity_to_trial' src/adapter/mod_b1_10_reference_model.f90 || fail 'F-KT14 mapper not used'
 grep -Fq 'call a23bu_reset_soil_water_trial_result(worker)' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'trial result reset missing'
-grep -Fq 'request%request_interface_sensitivity = (swbotb == 2)' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'sensitivity request predicate missing'
+grep -Fq 'sensitivity_route_admitted = swbotb == 2' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'bottom sensitivity gate missing'
+grep -Fq 'initial_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'initial smooth-flux sensitivity gate missing'
+grep -Fq 'accepted_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'accepted smooth-flux sensitivity gate missing'
+grep -Fq "trim(accepted_surface%route) == 'surface-flux'" src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'accepted surface-flux route gate missing'
 grep -Fq "error stop 'F-KT15: admitted typed soil-water solve failed closed'" src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'post-admission failure must fail closed'
 echo 'FKT15_SOURCE_GUARD=PASS'
 
@@ -96,6 +94,13 @@ for opt in 0 2; do
     gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c "$src" -o "$obj"
     objects+=("$obj")
   done
+  # Compile the actual legacy callsite against the production adapter. It is kept
+  # out of the focused executable link because this gate tests the adapter itself,
+  # but this catches module/interface drift in SoilWater(2).
+  gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c \
+    src/legacy/b1_10_port/soilwater.f90 -o "$out/soilwater_callsite.o"
+  echo "FKT15_SOILWATER_TASK2_CALLSITE_COMPILE_O${opt}=PASS"
+
   gfortran "${FLAGS[@]}" -O"$opt" "${objects[@]}" -o "$out/test_fkt15"
   if ! timeout 90s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fkt15" > "$out/output.txt"; then
     cat "$out/output.txt" || true
