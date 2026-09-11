@@ -19,5 +19,5 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-CI40 current-canonical admission gate
-        run: bash tests/fci/run_fci40_fmr38_effective_forcing_executor_canonical_admission.sh
+      - name: F-CI40 pre/post-promotion exact admission gate
+        run: bash tests/fci/run_fci40_fmr38_effective_forcing_executor_canonical_admission_v2.sh
