@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC02",
+  "release_id": "SWAP5-RB1-v1",
+  "purpose": "Release-bound traceability population over the fixed 15-capability RB1 denominator. Release qualification is not promoted into theory, implementation mapping, validation or Status A evidence.",
+  "authorities": {
+    "fdoc01_architecture": {
+      "commit": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe",
+      "tree": "fef5d8fea98e63abaebe95c4d0c7643869ef4762"
+    },
+    "rb1_scientific_source": {
+      "commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+      "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+      "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+    },
+    "rb1_qualification": {
+      "commit": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "scope_blob": "09df8417fe12bcc2eca9d9320117264737ffc83a",
+      "capability_matrix_blob": "e20e0b2cae1cfde91c8736ad632059b4fe480d88",
+      "release_qualification_blob": "f2d55a945dde6e379f2df1c3cbbd8706b1bbaa09"
+    },
+    "rb1_release_metadata": {
+      "commit": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+      "tree": "9fd636cb35503d59654495186c9b4ec33287f344",
+      "exact_head_run": 34586202805,
+      "conclusion": "success",
+      "evidence_artifact": 10193678464,
+      "evidence_digest": "sha256:8730e91708395dd03af0cb7f3ad51b04dc48cfb797be2a9557ba89e37038f82a"
+    }
+  },
+  "denominator": {
+    "required": 15,
+    "moving_denominator_forbidden": true,
+    "optional_admitted_outside_required_denominator": 2
+  },
+  "tier_semantics": {
+    "T0": "physical system / phenomenon",
+    "T1": "scientific theory",
+    "T2": "conceptual model",
+    "T3": "formal mathematical model",
+    "T4": "SWAP-specific formulation",
+    "T5": "computational continuous formulation",
+    "T6": "discretisation",
+    "T7": "numerical method",
+    "T8": "algorithm",
+    "T9": "software contract",
+    "T10": "implementation mapping",
+    "T11": "verification",
+    "T12": "validation",
+    "T13": "qualification and applicability",
+    "T14": "release authority"
+  },
+  "population_policy": {
+    "unresolved_tier_status": "GAP_NOT_POPULATED",
+    "verification_status": "SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED",
+    "qualification_status": "RESOLVED_RB1_RELEASE_SCOPE",
+    "release_status": "RESOLVED_RB1_RELEASE_AUTHORITY",
+    "default_unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+    "rule": "A PASS in RB1 qualification resolves T13 and supports a scoped T11 evidence link, but does not infer missing T0-T10 theory/code traceability or T12 application validation."
+  },
+  "capabilities": [
+    {
+      "capability_id": "RB1-CORE-INTERVAL",
+      "scope": "generic [t0,t1] kernel intervals without calendar-day assumptions",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"F-RB01 capability matrix: historical F-CI03..18 replay plus current serial/restart composition"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-CORE-DATA",
+      "scope": "explicit parameter/state/forcing/numerical-config/result separation",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"F-RB01 architecture audit plus current runtime/restart composition"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-CORE-TRANSACTION",
+      "scope": "checkpoint, trial/retry, commit/rollback and accepted-state authority",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"rejected-trial, atomicity, continuation and current runtime gates"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-CORE-MASS",
+      "scope": "hard accepted-only canonical water ledger with no retry double booking",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"hard mass gates in serial, restart, parallel-root and parallel-restart qualification"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-CORE-DIAGNOSTICS",
+      "scope": "deterministic process/runtime, solver/retry and canonical mass diagnostics in admitted profiles",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"deterministic current runtime publication and diagnostics in admitted profiles"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-SW-REFERENCE",
+      "scope": "Full Richards REFERENCE route in the frozen RB1 hydraulic/profile scope",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"frozen Full Richards authority, temporal authority replay and current production preservation"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-TIME-REFERENCE",
+      "scope": "restricted temporal acceptance machinery with explicit finite positive H_budget where exercised",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"FRB01 frozen temporal scientific authority plus current dependency preservation"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-STANDALONE-N1",
+      "scope": "single logical column through the same kernel/runtime contracts used by MultiSWAP",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"current serialized/restart attack includes N=1 shared-kernel/runtime path"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-MULTISWAP-SERIAL",
+      "scope": "restricted serialized real-physics MultiSWAP with deterministic canonical result publication",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"serial/restart attack with irregular batch sizes, reordered records and deterministic replay"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-MULTISWAP-PARALLEL-V1",
+      "scope": "restricted real-physics parallel V1 profile with worker-owned heavy scratch and 2/4 workers",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"independent F-MQ30-derived V1 preservation and root-active attack on current production"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-ET-ROOT-SERIAL",
+      "scope": "REFERENCE ET ptra to restricted Macro/Feddes drought-only root uptake and actual-transpiration attribution",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"current F-CI28 ET preservation plus frozen F-CI34/root-attribution lineage"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-ROOT-PARALLEL",
+      "scope": "restricted root-active parallel 2/4-worker profile with deterministic publication and hard mass",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"FMQ30 O0/O2 exact identity and hard mass with held-out/fail-closed matrix"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-SURFACE-EVAP-RESTRICTED",
+      "scope": "stateless SWINTER=0, SWREDU=0 restricted surface-evaporation runtime materialization",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"FPE11/F-CI41P observable identity, O0/O2 identity, committed-state immutability and no duplicate mass booking"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6","nonclaim":"functional MultiSWAP compatibility only; throughput/scaling remains separate"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-RESTART-SERIAL",
+      "scope": "committed-boundary external reconstruction and serialized process restart",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"FMR19/FMQ27 committed-boundary continuation, malformed-state and atomicity matrix"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    },
+    {
+      "capability_id": "RB1-RESTART-PARALLEL",
+      "scope": "committed-boundary restart followed by restricted 2/4-worker parallel continuation including 2-to-4 and 4-to-2",
+      "rb1_release_gate": "PASS",
+      "unresolved_tiers": ["T0","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T12"],
+      "T11": {"status":"SCOPED_EVIDENCE_LINKED_NOT_FULLY_TRACED","evidence":"FMQ29 O0/O2 exact identity, hard mass and 2-to-4/4-to-2 held-out restart matrix"},
+      "T13": {"status":"RESOLVED_RB1_RELEASE_SCOPE","authority":"aeb74560d801c4ac7314df7b8845fcc5daf8bba6"},
+      "T14": {"status":"RESOLVED_RB1_RELEASE_AUTHORITY","authority":"b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"}
+    }
+  ],
+  "status_a_boundary": {
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "formal_2024_reconciliation": "PENDING_CONTROLLED_COPY"
+  }
+}
