@@ -1,0 +1,169 @@
+{
+  "schema": "swap5.frb01_rb1_scope.v1",
+  "work_unit": "F-RB01",
+  "checkpoint": 1,
+  "stage": "PERSISTED",
+  "scope_name": "RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE",
+  "scope_frozen": true,
+  "moving_denominator_forbidden": true,
+  "canonical_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "latest_closeout": "F-CI42P",
+    "latest_closeout_decision": "QUALIFIED_CURRENT_CANONICAL_SURFACE_EVAPORATION_ALLOCATION_PERFORMANCE_POSTIMAGE_GOVERNANCE_RECONCILIATION"
+  },
+  "definition_of_100_percent": "Every capability classified REQUIRED below passes every applicable RB1 scientific, numerical, architecture, hard-mass, transaction, restart, runtime and release gate on the immutable RB1 source candidate. The denominator is fixed by this file and cannot grow during F-RB01.",
+  "required_capabilities": [
+    {
+      "id": "RB1-CORE-INTERVAL",
+      "classification": "REQUIRED",
+      "scope": "one SWAP5 kernel executing generic [t0,t1] intervals without calendar-day assumptions"
+    },
+    {
+      "id": "RB1-CORE-DATA",
+      "classification": "REQUIRED",
+      "scope": "explicit separation of immutable parameters, committed dynamic state, forcing, numerical configuration and results"
+    },
+    {
+      "id": "RB1-CORE-TRANSACTION",
+      "classification": "REQUIRED",
+      "scope": "checkpoint -> trial/retry -> commit or rollback; accepted-state authority; rejected-trial immutability; revision/lineage semantics"
+    },
+    {
+      "id": "RB1-CORE-MASS",
+      "classification": "REQUIRED",
+      "scope": "hard accepted-only canonical water ledger with no disable switch and no retry double booking"
+    },
+    {
+      "id": "RB1-CORE-DIAGNOSTICS",
+      "classification": "REQUIRED",
+      "scope": "deterministic accepted/rejected status, retry/solver-cost diagnostics where produced by the admitted REFERENCE route, canonical mass diagnostics and process/runtime status; fallback diagnostics are not applicable because fallback is excluded"
+    },
+    {
+      "id": "RB1-SW-REFERENCE",
+      "classification": "REQUIRED",
+      "scope": "Full Richards REFERENCE route only, frozen B1.10/default-MVG hydraulic provider lineage, SWKIMPL=0, SWSOPHY=0, fixed-flux top-boundary profile and bottom mode 7 where the restricted runtime profile requires it"
+    },
+    {
+      "id": "RB1-TIME-REFERENCE",
+      "classification": "REQUIRED",
+      "scope": "qualified restricted temporal acceptance machinery; explicit finite positive H_budget where that certificate is exercised; no default or application-specific H_budget claim"
+    },
+    {
+      "id": "RB1-STANDALONE-N1",
+      "classification": "REQUIRED",
+      "scope": "single logical column through the same production kernel/runtime contracts used by MultiSWAP; no separate standalone kernel"
+    },
+    {
+      "id": "RB1-MULTISWAP-SERIAL",
+      "classification": "REQUIRED",
+      "scope": "restricted serialized real-physics MultiSWAP with deterministic canonical result publication"
+    },
+    {
+      "id": "RB1-MULTISWAP-PARALLEL-V1",
+      "classification": "REQUIRED",
+      "scope": "restricted real-physics parallel V1 profile with worker-owned heavy scratch, 2 and 4 workers only, unsupported profiles fail closed"
+    },
+    {
+      "id": "RB1-ET-ROOT-SERIAL",
+      "classification": "REQUIRED",
+      "scope": "REFERENCE ET ptra to stateless restricted Macro/Feddes drought-only precomputed-QROT root uptake plus exact-runtime-forcing actual-transpiration attribution in the admitted serialized scope"
+    },
+    {
+      "id": "RB1-ROOT-PARALLEL",
+      "classification": "REQUIRED",
+      "scope": "root-active parallel profile: fixed-flux top boundary, bottom mode 7, SWKIMPL=0, SWSOPHY=0, finite non-negative QROT including active-zero, 2/4 workers, deterministic publication and hard mass"
+    },
+    {
+      "id": "RB1-SURFACE-EVAP-RESTRICTED",
+      "classification": "REQUIRED",
+      "scope": "stateless SWINTER=0, SWREDU=0 surface-evaporation runtime materialization using qualified ET demand, committed-base ponding classification and qualified signed hydraulic capacity; accepted external solver top flux remains the sole authoritative top-water mass booking"
+    },
+    {
+      "id": "RB1-RESTART-SERIAL",
+      "classification": "REQUIRED",
+      "scope": "committed-boundary external reconstruction and serialized process restart; no solver/Newton/Jacobian scratch persistence"
+    },
+    {
+      "id": "RB1-RESTART-PARALLEL",
+      "classification": "REQUIRED",
+      "scope": "restricted committed-boundary restart followed by 2/4-worker parallel continuation, including qualified 2-to-4 and 4-to-2 worker changes; whole-registry atomic restore before dispatch"
+    }
+  ],
+  "required_capability_denominator": 15,
+  "admitted_optional": [
+    {
+      "id": "RB1-DIVDRA-SERIAL-1L-POS",
+      "classification": "ADMITTED_OPTIONAL",
+      "scope": "restricted serialized single-level positive DIVDRA active runtime callsite with explicit hydraulic views and external scalar transfer",
+      "hard_nonclaims": ["parallel active DIVDRA", "negative/infiltration drainage", "multilevel drainage", "surface-water-controlled drainage", "fully implicit trial-state drainage response"]
+    },
+    {
+      "id": "RB1-SURFACE-EVAP-LOCAL-PERF",
+      "classification": "ADMITTED_OPTIONAL",
+      "scope": "F-PE11/F-CI42 local surface-materialization allocation/ownership performance improvement only",
+      "hard_nonclaims": ["whole-SWAP speedup", "MultiSWAP speedup", "portable hardware-independent speedup"]
+    }
+  ],
+  "explicitly_excluded": [
+    "active WOFOST/crop lifecycle production runtime",
+    "rainfall/infiltration process physics beyond externally resolved admitted top-flux forcing",
+    "surface storage/runoff physics beyond the exact already-used committed-base surface classification needed by restricted surface evaporation",
+    "parallel active DIVDRA",
+    "SWKIMPL=1",
+    "SWSOPHY options outside the frozen reference profile",
+    "SWINTER=1/2/3",
+    "SWREDU=1/2",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore root uptake",
+    "active macropores",
+    "broad frost/snow physics",
+    "soil-temperature physics",
+    "solute transport",
+    "unqualified irrigation runtime composition",
+    "bottom-boundary modes outside the frozen profile",
+    "worker_count other than 2 or 4 for restricted parallel execution",
+    "arbitrary composition of individually admitted optional process profiles",
+    "mid-transaction restart",
+    "trial-state persistence",
+    "solver/Newton/Jacobian/warm-start scratch persistence",
+    "restart file-format or cross-version migration claims"
+  ],
+  "research_only": [
+    "RossFast and other alternative/reduced soil-water production solvers",
+    "BALANCED execution class",
+    "THROUGHPUT execution class",
+    "FALLBACK execution class",
+    "universal or representative p50/p95/p99 difficult-column production-tail claims"
+  ],
+  "future_release": [
+    "broader MODFLOW predictor-corrector application release",
+    "application-class groundwater head-accuracy budgets",
+    "broader process combinations",
+    "additional parallel execution classes and worker counts",
+    "active WOFOST/crop runtime after explicit canonical admission",
+    "broader drainage profiles",
+    "accepted difficult-column bounded-cost policy if independently qualified"
+  ],
+  "blocked_not_required_for_rb1": [
+    "universal groundwater-coupling accuracy requirement",
+    "complete SWAP 4.3.1 option migration",
+    "Status A completion",
+    "Status AA completion",
+    "production RossFast qualification",
+    "representative accepted high-cost REFERENCE tail distribution"
+  ],
+  "anti_scope_creep_rule": "After this checkpoint, newly completed capabilities default to NEXT_RELEASE and do not change the RB1 denominator unless omission makes an already-required RB1 capability scientifically invalid.",
+  "scientific_nonclaims": [
+    "RB1 is not all SWAP 4.3.1 functionality.",
+    "RB1 does not qualify all physical options.",
+    "RB1 does not establish universal MODFLOW coupling accuracy.",
+    "RB1 does not qualify RossFast for production.",
+    "RB1 is not Status A certification.",
+    "RB1 is not Status AA certification.",
+    "RB1 makes no universal performance-superiority claim.",
+    "RB1 is not validation for every application domain."
+  ]
+}
