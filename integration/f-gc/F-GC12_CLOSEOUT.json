@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC12",
+  "title": "Western Harbour Tunnel Project-Specific Application Accuracy Contract Instantiation Closeout",
+  "status": "CLOSED_FAIL_CLOSED",
+  "decision": "FAIL_CLOSED_WHT_PROJECT_DOES_NOT_SUPPLY_ADMISSIBLE_NUMERIC_H_APP_AND_TEMPORAL_ALLOCATION",
+  "qualification_mode": "MECHANICAL_GITHUB_OBJECT_REPLAY_NO_ACTIONS_WORKFLOW",
+  "actions_exact_head_qualification": false,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "production_source_changed": false,
+  "mass_conservation_relaxed": false,
+  "authority": {
+    "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "canonical_stage": "F-CI45P",
+    "F_GC10_closeout": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "F_GC11_closeout": "d14b995f135a6c719d39f370c36797b4de4678b8",
+    "pre_registration_commit": "226536759b345a745ea513de81b78f34b43a5a02",
+    "research_evidence_commit": "eafea6616058cc5ba40a0174ed0feaa8f382262e",
+    "qualification_gate_commit": "a98170acfd4257e936e0e0fe2418f0117883d32e",
+    "qualification_evidence_commit": "8e7dc2e7ba467365c8dda90aed5d5228a5c682dc"
+  },
+  "project": {
+    "name": "Western Harbour Tunnel and Warringah Freeway Upgrade",
+    "approval_id": "SSI-8863",
+    "jurisdiction": "New South Wales, Australia",
+    "qoi": "groundwater head/drawdown prediction at decision-relevant receptors and monitoring locations"
+  },
+  "scientific_and_policy_finding": {
+    "project_requires_quantitative_predictive_uncertainty_assessment": true,
+    "project_requires_independent_peer_review": true,
+    "project_has_monitoring_and_model_update_governance": true,
+    "project_specific_numeric_prediction_accuracy_requirement_found": false,
+    "project_specific_numeric_temporal_allocation_found": false,
+    "direct_project_specific_numeric_temporal_budget_found": false,
+    "numeric_H_temporal_budget_ready": false,
+    "interpretation": "SSI-8863 provides strong project-specific groundwater modelling, uncertainty, monitoring, update and peer-review governance. That is not the same as an externally governed numerical acceptance limit on groundwater-head/drawdown prediction error. No admissible numerical H_app was identified, and no independently governed allocation of application accuracy to temporal/coupling numerical error was identified. Therefore the canonical runtime contract cannot be positively instantiated for this project without inventing policy."
+  },
+  "rejected_shortcuts": [
+    "1 L/s/km tunnel inflow criterion as H_app",
+    "drawdown, settlement or receptor impact thresholds as H_app",
+    "calibration RMSE or residuals as prospective H_app",
+    "model ensemble spread, uncertainty percentile or confidence class as H_app without external acceptance semantics",
+    "monitoring trigger as H_app without a governed prediction-error rule",
+    "groundwater model timestep schedule as A_temporal",
+    "F-GC07 empirical coupling error as A_temporal",
+    "arbitrary percentage allocation to coupling temporal error"
+  ],
+  "contract_instantiation_result": {
+    "h_app_available": false,
+    "h_app_cm": null,
+    "h_app_externally_qualified": false,
+    "a_temporal_available": false,
+    "a_temporal": null,
+    "a_temporal_externally_qualified": false,
+    "materialize_model_temporal_budget": false,
+    "positive_budget_materialized": false
+  },
+  "qualification_result": {
+    "canonical_ancestry": "PASS",
+    "merge_base_equals_F_CI45P": "PASS",
+    "production_source_delta": "PASS_NONE",
+    "project_identity_and_approval_binding": "PASS",
+    "external_predictive_uncertainty_governance": "PASS",
+    "numeric_H_app": "NOT_QUALIFIED",
+    "numeric_A_temporal": "NOT_QUALIFIED",
+    "direct_numeric_temporal_budget": "NOT_QUALIFIED",
+    "hidden_numeric_policy": "PASS_NONE",
+    "positive_budget_materialization": "PASS_NONE",
+    "mass_conservation_nonrelaxation": "PASS",
+    "github_actions_exact_head": "NOT_CLAIMED"
+  },
+  "architecture_invariants": {
+    "9": "PASS no calendar or fixed-day numerical policy introduced",
+    "10": "PASS no fixed coupling-window duration introduced",
+    "11": "PASS application accuracy remains explicit coupling/runtime policy",
+    "12": "PASS_WITH_SCOPE project prediction-accuracy policy remains separate from hard head/flux interface conservation; no production coupling admission",
+    "13": "PASS mass conservation remains absolute and untouched",
+    "15": "PASS no additional production SWAP runs or coupling cost imposed",
+    "23": "PASS application/numerical policy remains separate from physics",
+    "25": "PASS reference mode unchanged",
+    "26": "PASS unavailable qualification state and provenance requirements are explicit",
+    "28": "PASS project composition remains outside the SWAP kernel",
+    "29": "PASS no hidden project, file-format, calendar or MODFLOW assumptions introduced into kernel code",
+    "30": "PASS project-specific evidence, rejected substitutions and fail-closed decision explicitly audited"
+  },
+  "hard_nonclaims": [
+    "no claim that Western Harbour Tunnel groundwater modelling is scientifically inadequate",
+    "no claim that its uncertainty analysis is invalid",
+    "no universal H_app",
+    "no universal A_temporal",
+    "no numeric WHT coupling head-error budget",
+    "no production SWAP-MODFLOW admission",
+    "no canonical source change",
+    "no Actions exact-head success claim",
+    "no mass-conservation relaxation"
+  ],
+  "reopen_condition": "A positive project-specific instantiation requires new versioned evidence that explicitly governs a numerical groundwater-head/drawdown prediction-accuracy requirement and an independently governed temporal/coupling allocation or direct temporal head-error budget. Model outputs or calibration statistics alone are insufficient.",
+  "recommended_next_unit": "F-GC13_PROJECT_ACCURACY_CONTRACT_EVIDENCE_INGESTION_AND_GOVERNANCE_TEMPLATE",
+  "recommended_next_purpose": "Define a reusable evidence-ingestion and governance template so future real projects can supply H_app and A_temporal without changing SWAP kernel or inventing project policy inside scientific workunits. This next unit must not choose numbers itself."
+}
