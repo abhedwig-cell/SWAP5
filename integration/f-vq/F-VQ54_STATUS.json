@@ -15,15 +15,26 @@
       "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
     }
   },
-  "numbering_note": "F-VQ53 was already persisted for an earlier PM06E qualification attempt and is not reused; F-VQ54 is the clean authoritative handoff workunit.",
-  "phase": "INDEPENDENT_QUALIFICATION_NOT_STARTED",
+  "numbering_note": "F-VQ53 remains a non-authoritative earlier qualification attempt; F-VQ54 is the clean authoritative handoff workunit.",
+  "phase": "INDEPENDENT_QUALIFICATION_PENDING",
   "decision": "PENDING_FAIL_CLOSED",
   "state": {
     "handoff_persisted": true,
+    "qualification_persisted": true,
     "production_materialized": false,
     "tested": false,
     "independently_qualified": false,
     "canonical_admitted": false
+  },
+  "qualification": {
+    "workflow": "F-VQ54 independent F-PM06E surface evaporation capacity qualification",
+    "run": null,
+    "job": null,
+    "expected_gate": "FVQ54_GATE=PASS"
+  },
+  "architecture": {
+    "invariants": "30_OF_30_NO_ADVERSE_DELTA_IF_GATE_GREEN",
+    "mass_conservation": "HARD_UNCHANGED"
   },
   "hard_holds": [
     "no runtime composition",
@@ -31,5 +42,5 @@
     "no canonical admission",
     "Emax remains capacity only and is never a second mass booking"
   ],
-  "next_required_step": "independently materialize only the immutable candidate blobs on this clean canonical branch and qualify the frozen scope before any admission"
+  "next_required_step": "run the exact-head independent gate and fail closed; only after green qualification may a separate canonical-admission workunit be considered"
 }

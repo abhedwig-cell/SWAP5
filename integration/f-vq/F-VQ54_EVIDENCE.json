@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.independent_qualification_evidence.v1",
+  "work_unit": "F-VQ54",
+  "candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+  "owner_closeout": "13ce03cdd01440090a71a82a9e3409f764a7bdd2",
+  "owner_exact_head_run": 34540196376,
+  "independent_evidence": {
+    "qualification_branch_src_tree_equals_canonical": "REQUIRED_BY_GATE",
+    "qualification_branch_reference_tree_equals_canonical": "REQUIRED_BY_GATE",
+    "exact_candidate_blobs": "REQUIRED_BY_GATE",
+    "direct_candidate_parent_is_canonical": "REQUIRED_BY_GATE",
+    "independent_constitutive_oracle_cases": 30,
+    "independent_emax_oracle_cases": 180,
+    "conductivity_mean_policies": [1,2,3,4,5,6],
+    "near_saturation_branches": ["c9_gt_hcrit", "c9_le_hcrit"],
+    "zero_crossing": "REQUIRED_BY_GATE",
+    "signed_negative_emax": "REQUIRED_BY_GATE",
+    "ponding_independence": "REQUIRED_BY_GATE",
+    "held_scope_fail_closed": "REQUIRED_BY_GATE",
+    "state_bit_identity": "REQUIRED_BY_GATE",
+    "aba_replay": "REQUIRED_BY_GATE",
+    "o0_o2_identity": "REQUIRED_BY_GATE"
+  },
+  "non_claims": [
+    "SWKMEAN=7 is not qualified",
+    "frost-active surface evaporation is not qualified",
+    "macropore surface scaling is not qualified",
+    "full BOUNDTOP is not qualified",
+    "runtime composition is not qualified",
+    "canonical admission is not performed by F-VQ54"
+  ]
+}

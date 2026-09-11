@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.independent_qualification_plan.v1",
+  "work_unit": "F-VQ54",
+  "candidate_owner": "F-PM06E",
+  "independence": {
+    "branch_from_canonical_not_owner": true,
+    "owner_tests_not_used_as_scientific_oracle": true,
+    "candidate_loaded_only_by_exact_commit_and_blob": true,
+    "qualification_branch_has_no_src_or_reference_delta": true
+  },
+  "scientific_reconstruction": {
+    "oracle": "independent reconstruction of frozen B1.10 WatCon, HConduc, HCOMEAN and Emax equations",
+    "hydraulic_parameter_families": 3,
+    "includes_standard_near_saturation_branch": true,
+    "includes_modified_near_saturation_branch": true,
+    "pressure_heads_per_family": 10,
+    "conductivity_mean_policies": [1,2,3,4,5,6],
+    "emax_oracle_cases": 180,
+    "constitutive_oracle_cases": 30,
+    "zero_crossing_checked": true,
+    "negative_signed_emax_checked": true,
+    "ponding_independence_checked": true,
+    "state_bit_identity_checked": true,
+    "aba_replay_checked": true,
+    "o0_o2_identity_required": true
+  },
+  "fail_closed": {
+    "swkmean_7": "must return unsupported configuration",
+    "frost_active": "must return unsupported configuration",
+    "macropore_active": "must return unsupported configuration",
+    "unknown_mean_policy": "must return unsupported configuration",
+    "invalid_state_or_geometry": "must return invalid input"
+  },
+  "pass_rule": "all source locks, independent numerical oracle cases, fail-closed held scope, read-only lifecycle checks, architecture guards and O0/O2 identity must pass"
+}
