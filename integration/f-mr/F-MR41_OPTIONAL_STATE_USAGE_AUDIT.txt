@@ -1,0 +1,26 @@
+F-MR41 optional-state layout usage audit
+source_head=d3fdcefc2f5de81a35c1befecba4d8ff9ccce37c
+canonical_base=c7379b6b5b5f529ff96de3087379712bd665276a
+
+== optional_state_layout_id and FMR_OPTIONAL_STATE occurrences ==
+integration/f-ci/F-CI21_TEMPORAL_DEPENDENCY_CLOSURE.json:36:      "architecture_correction": "numerical_continuation_layout_id is separate from physical optional_state_layout_id"
+src/runtime/mod_fmr_committed_restart.f90:264:         left%optional_state_layout_id == right%optional_state_layout_id .and. &
+src/runtime/mod_fmr_parallel_root_uptake_pool.f90:182:          templates(template_index)%optional_state_layout_id /= 0_int64) return
+src/runtime/mod_fmr_parallel_worker_pool.f90:195:          templates(template_index)%optional_state_layout_id /= 0_int64) return
+src/runtime/mod_fmr_restart_state_contract.f90:53:    matches = template%optional_state_layout_id > 0 .and. .not. allocated(state%snow) .and. &
+src/runtime/mod_fmr_runtime_core.f90:35:    integer(int64) :: optional_state_layout_id = 0_int64
+src/runtime/mod_fmr_serialized_reference_backend.f90:458:      if (template%optional_state_layout_id <= 0_int64 .or. parameters%snow_active) then
+tests/fci/run_fci21_temporal_materialization_gate.sh:61:assert 'optional_state_layout_id' in core
+tests/fci/run_fci45_fmr39_soil_temperature_runtime_canonical_admission.sh:113:assert 'optional_state_layout_id > 0' in r and 'soil_temperature%ready()' in r and 'soil_temperature%node_count()' in r
+tests/fmq/test_fmq27_restart_contract_requalification.f90:183:  bad_templates(1)%optional_state_layout_id = bad_templates(1)%optional_state_layout_id + 1_int64
+tests/fmq/test_fmq27_restart_contract_requalification.f90:229:    fixture_templates(1)%optional_state_layout_id = 0_int64
+tests/fmr/test_fmr18_multiswap_receipt_integration.f90:126:    templates(1)%optional_state_layout_id = 0_int64
+tests/fmr/test_fmr19_process_restart.f90:224:    templates(1)%optional_state_layout_id = 0_int64
+
+== literal assignments to optional_state_layout_id ==
+src/runtime/mod_fmr_committed_restart.f90:264:         left%optional_state_layout_id == right%optional_state_layout_id .and. &
+src/runtime/mod_fmr_runtime_core.f90:35:    integer(int64) :: optional_state_layout_id = 0_int64
+tests/fmq/test_fmq27_restart_contract_requalification.f90:183:  bad_templates(1)%optional_state_layout_id = bad_templates(1)%optional_state_layout_id + 1_int64
+tests/fmq/test_fmq27_restart_contract_requalification.f90:229:    fixture_templates(1)%optional_state_layout_id = 0_int64
+tests/fmr/test_fmr18_multiswap_receipt_integration.f90:126:    templates(1)%optional_state_layout_id = 0_int64
+tests/fmr/test_fmr19_process_restart.f90:224:    templates(1)%optional_state_layout_id = 0_int64
