@@ -1,13 +1,13 @@
 {
-  "schema": "swap5.frb01_release_candidate.v2",
+  "schema": "swap5.frb01_release_candidate.v3",
   "work_unit": "F-RB01",
   "checkpoint": 4,
   "stage": "PERSISTED",
   "candidate_frozen": true,
-  "release_candidate_sha": "37cf0bbd97978231082b1db69948f52dc79d5398",
-  "release_candidate_tree": "03754c8cce6fcdfc2a057e0cf9329598c27611ed",
-  "RB1_RELEASE_CANDIDATE_SHA": "37cf0bbd97978231082b1db69948f52dc79d5398",
-  "RB1_RELEASE_CANDIDATE_TREE": "03754c8cce6fcdfc2a057e0cf9329598c27611ed",
+  "release_candidate_sha": "bc444d2a0af9be698c359e47a3fddad35f787ee9",
+  "release_candidate_tree": "3103e3d54793fb60e5b16aed7a8d455644f5389e",
+  "RB1_RELEASE_CANDIDATE_SHA": "bc444d2a0af9be698c359e47a3fddad35f787ee9",
+  "RB1_RELEASE_CANDIDATE_TREE": "3103e3d54793fb60e5b16aed7a8d455644f5389e",
   "RB1_RELEASE_CANDIDATE_SRC_TREE": "8ceeb70a64012631ebba295f5c045ea908b0681f",
   "RB1_RELEASE_CANDIDATE_REFERENCE_TREE": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
   "production_source_authority": {
@@ -21,18 +21,27 @@
     "exact_broad_canonical_conclusion": "success"
   },
   "release_harness_authority": {
-    "sha": "37cf0bbd97978231082b1db69948f52dc79d5398",
-    "tree": "03754c8cce6fcdfc2a057e0cf9329598c27611ed",
+    "sha": "bc444d2a0af9be698c359e47a3fddad35f787ee9",
+    "tree": "3103e3d54793fb60e5b16aed7a8d455644f5389e",
     "decisive_workflow": ".github/workflows/frb01-release-qualification.yml",
     "integrated_runner": "tests/frb01/run_frb01_release_qualification_v2.sh",
     "temporal_runner": "tests/frb01/run_frb01_temporal_authority.sh"
   },
-  "supersedes": {
-    "previous_descriptor_version": "swap5.frb01_release_candidate.v1",
-    "reason": "The first descriptor predated final release-harness reconciliation, architecture-count correction, TB01 crosswalk and retirement of the superseded workflow/matrix files. It is retained in Git history as checkpoint evidence but is not decisive release authority."
-  },
+  "supersedes": [
+    {
+      "descriptor": "swap5.frb01_release_candidate.v1",
+      "reason": "pre-final harness/governance checkpoint"
+    },
+    {
+      "descriptor": "swap5.frb01_release_candidate.v2",
+      "workflow_run": 34569233381,
+      "conclusion": "failure",
+      "failure_classification": "HARNESS_GOVERNANCE_LINEAGE_ASSERTION_DEFECT",
+      "detail": "The wrapper incorrectly required the F-MR35 owner candidate commit itself to be an ancestor of canonical. Correct governance is the admitted F-CI37 final authority in canonical lineage plus exact current candidate blob identity. Temporal authority and all gates reached before this assertion were green; no production/reference/scientific source changed."
+    }
+  ],
   "immutability_rule": "During decisive qualification, src, reference, tests/frb01 and the decisive workflow must remain byte-identical to this candidate. Any production source or reference change invalidates RB1 scientific release qualification and requires a fresh candidate after governed owner qualification/canonical admission. Any decisive test-harness change also requires a fresh release candidate before rerun.",
-  "evidence_only_rule": "This descriptor update and later qualification/closeout records may advance the release branch without changing the scientifically tested src/reference trees. Such evidence-only descendants must remain explicitly distinguishable from the frozen release candidate above.",
+  "evidence_only_rule": "This descriptor update and later qualification/closeout records may advance the release branch without changing the scientifically tested src/reference trees. Such evidence-only descendants remain explicitly distinguishable from the frozen release candidate above.",
   "historical_evidence_rule": "Historical admission gates remain bound to their exact admitted heads. F-RB01 separately establishes current canonical preservation and integrated behavior without replaying historical one-delta assumptions as moving-current requirements.",
   "scope_creep_rule": "Capabilities admitted after the frozen RB1 scope remain NEXT_RELEASE by default and do not enlarge the denominator."
 }
