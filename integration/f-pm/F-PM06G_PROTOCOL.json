@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.fpm06g_protocol.v1",
+  "work_unit": "F-PM06G",
+  "title": "Restricted Surface-Evaporation Accepted Publication Readiness",
+  "branch": "work/f-pm06g-surface-evaporation-accepted-publication-readiness",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "scientific_authorities": {
+    "runtime_materialization": "F-PM06F / F-VQ56 / F-CI41P",
+    "performance": "F-PE11 / F-CI42P",
+    "reopened": false
+  },
+  "goal": "provide an accepted-only provenance-bound publication seam for the already-qualified restricted surface-evaporation result without changing physics, top-boundary mass authority or transaction semantics",
+  "frozen_scope": {
+    "SWINTER": 0,
+    "SWREDU": 0,
+    "active_top_boundary_replacement": false,
+    "full_BOUNDTOP_migration": false,
+    "scope_widening": false
+  },
+  "design_constraints": [
+    "reuse fmr_accepted_commit_receipt_t as sole postcommit publication authority",
+    "prepare only worker/job-local scalar result metadata before commit",
+    "final publication requires exact lineage, origin revision and origin interval match with a ready accepted commit receipt",
+    "publish surface-evaporation rates and route exactly as already materialized; do not integrate rates over generic [t0,t1]",
+    "do not assume transaction time is expressed in days",
+    "do not mutate canonical or kernel mass accounting",
+    "do not add surface evaporation to total_out a second time",
+    "no persistent per-column state",
+    "no direct HeadCalc or legacy runtime-internal dependency",
+    "no change to F-CI42 ownership-transfer blobs unless a blocking defect is demonstrated",
+    "no new file I/O or calendar semantics"
+  ],
+  "qualification_requirements": [
+    "exact source-authority ancestry",
+    "strict compile O0 and O2",
+    "valid dry and ponded result preparation",
+    "invalid or nonfinite result fail-closed",
+    "precommit publication rejected",
+    "lineage mismatch rejected",
+    "revision mismatch rejected",
+    "time-interval mismatch rejected",
+    "successful real generic commit receipt permits publication",
+    "published rates and route exactly equal prepared materialized result",
+    "committed physical state not mutated by preparation/finalization",
+    "no mass-ledger mutation or inferred evaporation amount",
+    "O0/O2 observable identity"
+  ],
+  "architecture_invariants_requiring_explicit_recheck": [3,4,5,7,9,13,16,22,23,26,27,29,30],
+  "hard_nonclaims": [
+    "surface evaporation drives the production top-boundary flux",
+    "surface evaporation is end-to-end composed into MultiSWAP execution",
+    "published rates are authoritative additional water-mass terms",
+    "SWINTER or SWREDU scope expansion"
+  ]
+}

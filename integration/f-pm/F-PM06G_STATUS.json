@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.fpm06g_status.v1",
+  "work_unit": "F-PM06G",
+  "title": "Restricted Surface-Evaporation Accepted Publication Readiness",
+  "branch": "work/f-pm06g-surface-evaporation-accepted-publication-readiness",
+  "phase": "PROTOCOL_PERSISTED_IMPLEMENTATION_PENDING",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "decision": "OPEN_ACCEPTED_PUBLICATION_READINESS",
+  "analysis": {
+    "gap_confirmed": true,
+    "gap": "F-PM06F materializes a trial-local restricted surface-evaporation result but deliberately does not publish it as accepted result metadata",
+    "existing_authority_reused": "fmr_accepted_commit_receipt_t",
+    "time_unit_risk": "surface-evaporation values are rates while kernel time is generic; F-PM06G must not multiply by t1-t0 or assume days",
+    "mass_risk": "surface evaporation is decomposition metadata only; accepted solver external top flux remains the sole authoritative top-water mass contribution"
+  },
+  "state": {
+    "analysis_complete": true,
+    "protocol_persisted": true,
+    "production_realized": false,
+    "tests_persisted": false,
+    "tested": false,
+    "owner_qualified": false,
+    "closed": false
+  },
+  "open": [
+    "implement narrow provenance-bound publication seam",
+    "add owner qualification oracle and source guards",
+    "run exact-head O0/O2 qualification",
+    "close or fail closed based on evidence"
+  ]
+}
