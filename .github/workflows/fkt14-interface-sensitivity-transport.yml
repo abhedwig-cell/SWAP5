@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
-      - name: Build F-KT14 focused harness
+      - name: Build F-KT14 focused transport harness
         run: |
           set -euo pipefail
           mkdir -p build/fkt14/${{ matrix.opt }}
@@ -31,5 +31,67 @@ jobs:
             src/kernel/mod_kernel_transactions.f90 \
             tests/fkt/test_fkt14_interface_sensitivity_transport.f90 \
             -o build/fkt14/${{ matrix.opt }}/test_fkt14
-      - name: Run F-KT14 focused harness
+      - name: Run F-KT14 focused transport harness
         run: build/fkt14/${{ matrix.opt }}/test_fkt14
+      - name: Build F-KT14 solver-result bridge harness
+        run: |
+          set -euo pipefail
+          gfortran -std=f2008 -ffree-line-length-none -${{ matrix.opt }} \
+            -Jbuild/fkt14/${{ matrix.opt }} -Ibuild/fkt14/${{ matrix.opt }} \
+            src/solver/mod_soil_water_solver_contract.f90 \
+            src/transaction/mod_transaction_reference.f90 \
+            src/adapter/mod_soil_water_transaction_result_bridge.f90 \
+            tests/fkt/test_fkt14_solver_result_bridge.f90 \
+            -o build/fkt14/${{ matrix.opt }}/test_fkt14_bridge
+      - name: Run F-KT14 solver-result bridge harness
+        run: build/fkt14/${{ matrix.opt }}/test_fkt14_bridge
+
+  qualified-fsi28-producer-replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Lock current producer blobs to qualified F-SI28 authority
+        run: |
+          set -euo pipefail
+          QUALIFIED=85dbe882aa967d19021174066c95105d8cf838ea
+          FSI27_FIXTURE=f7b891ce636b63bdae7e43f0ed54195f067f8bcc
+          FSI27_MATERIALIZATION=5dfd4528245e63a087426197b0d8cb28598deae8
+          BASE=c0fc660c1e68064f77f4ec4f3376d385fbe88b4a
+          for rev in "$QUALIFIED" "$FSI27_FIXTURE" "$FSI27_MATERIALIZATION" "$BASE"; do
+            git cat-file -e "$rev^{commit}" 2>/dev/null || git fetch --no-tags origin "$rev"
+          done
+          for path in \
+            src/adapter/mod_reference_richards_legacy_binding.f90 \
+            src/solver/mod_reference_linear_solver.f90 \
+            src/solver/mod_reference_richards_workspace.f90 \
+            src/solver/mod_soil_water_solver_contract.f90; do
+            test "$(git rev-parse HEAD:$path)" = "$(git rev-parse $QUALIFIED:$path)" || {
+              echo "F-KT14 producer blob drift: $path" >&2
+              exit 1
+            }
+          done
+          test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = \
+               "$(git rev-parse $QUALIFIED:src/legacy/b1_10_port/headcalc.f90)" || {
+            echo 'F-KT14 HeadCalc authority drift' >&2
+            exit 1
+          }
+          echo 'F-KT14 F-SI28 producer blob lock PASS'
+      - name: Replay exact qualified F-SI28 producer gates
+        run: |
+          set -euo pipefail
+          QUALIFIED=85dbe882aa967d19021174066c95105d8cf838ea
+          WORKTREE="${RUNNER_TEMP}/fsi28-qualified"
+          git worktree add --detach "$WORKTREE" "$QUALIFIED"
+          trap 'git worktree remove --force "$WORKTREE" >/dev/null 2>&1 || true' EXIT
+          (
+            cd "$WORKTREE"
+            bash tests/fsi/run_fsi28_interface_sensitivity_gate.sh
+            bash tests/fsi/run_fsi28_cross_sign_gate.sh
+            bash tests/fsi/run_fsi28_fallback_failclosed_gate.sh
+          )
