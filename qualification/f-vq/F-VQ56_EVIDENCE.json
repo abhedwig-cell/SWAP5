@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.fvq56_evidence.v1",
+  "work_unit": "F-VQ56",
+  "candidate_owner": "F-PM06F",
+  "qualification_base": "af9ec34ec587be76deea95763186a204f3ed32cd",
+  "owner_closeout": "4a76095df80435ff466e52bc65984300bc45ea06",
+  "production_candidate": "fdb0e745b362c81a042faba7f81cab53b1372d97",
+  "production_blobs": {
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+  },
+  "authoritative_independent_run": {
+    "run": 34548669585,
+    "job": 103106719274,
+    "head": "8da1c75cccfd96c68db04bcf06ff63ada8080d3b",
+    "workflow": "F-VQ56 F-PM06F surface evaporation runtime requalification",
+    "conclusion": "success"
+  },
+  "independent_evidence": {
+    "closed_form_heldout_cases": 144,
+    "state_profiles": 3,
+    "ponding_classes_probed": 4,
+    "bare_soil_demands": 4,
+    "ponded_water_demands": 3,
+    "state_derived_capacity_provider": true,
+    "owner_test_used_as_oracle": false,
+    "exact_detached_committed_state_transfer": "PASS_BY_STATE_DERIVED_CAPACITY_ORACLE",
+    "dry_route": "PASS",
+    "ponded_route": "PASS",
+    "threshold_exact_dry": "PASS",
+    "threshold_just_above_ponded": "PASS",
+    "negative_finite_capacity_dry_clamp": "PASS",
+    "active_zero_available": "PASS",
+    "demand_provenance_fail_closed": "PASS",
+    "capacity_status_fail_closed": "PASS",
+    "nonfinite_capacity_fail_closed": "PASS",
+    "invalid_process_demand_fail_closed": "PASS",
+    "uninitialized_committed_state_fail_closed": "PASS",
+    "aba_repeatability": "PASS",
+    "committed_state_immutable": "PASS",
+    "o0_o2_transcript_identity": "PASS",
+    "no_second_mass_booking": "PASS",
+    "transactional_noninterference": "PASS"
+  },
+  "source_evidence": {
+    "qualification_src_delta_exactly_two_candidate_files": true,
+    "candidate_blobs_byte_identical_to_owner": true,
+    "reference_tree_unchanged": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "direct_headcalc_newton_jacobian_dependency": false,
+    "direct_b110_capacity_implementation_dependency": false,
+    "file_io_dependency": false,
+    "calendar_or_midnight_dependency": false,
+    "mass_ledger_mutation": false,
+    "persistent_optional_state_added": false
+  },
+  "architecture_audit": "qualification/f-vq/F-VQ56_ARCHITECTURE_AUDIT.json",
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA_WITHIN_FROZEN_SCOPE",
+  "scientific_disposition": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
+  "nonclaims": [
+    "interception evaporation",
+    "wet-canopy effects",
+    "soil evaporation reduction/history",
+    "pond storage depletion",
+    "full ET runtime",
+    "accepted mass-ledger accounting",
+    "top-boundary replacement",
+    "throughput efficiency",
+    "frost/macropore scope widening"
+  ]
+}
