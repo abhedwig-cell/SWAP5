@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "SOURCE_RECONCILIATION",
+  "qualification": false,
+  "pre_reconciliation_head": "48462d331ebf7338a7fbf7529027f1008f5ecca0",
+  "pre_reconciliation_tree": "826192cad634de32b864cc92b1588cb47a3a302d",
+  "later_production_authority": "1fab3e1b27d774f2869a003876d035b07c601ccf",
+  "fkt14_source_authority": "2f7995df362c65916671278a5552ed9976ed39b3",
+  "fkt14_tree": "5d5a63f6a7b16f6b38de14c991a4ea92232ed77a",
+  "common_canonical_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "method": "BYTE_EXACT_FKT14_SOURCE_POSTIMAGE_RESTORE_ON_NON_OVERLAPPING_PATHS",
+  "overlap_evidence": {
+    "later_production_vs_common_base": "F-CI39/F-PM06E changes do not modify any of the eight restored F-KT14 solver/transaction/runtime/kernel paths.",
+    "fkt15_vs_later_production": "F-KT15 is three commits ahead of 1fab3e1b27d774f2869a003876d035b07c601ccf and those commits modify only integration/f-kt/F-KT15_STATUS.json and integration/f-kt/F-KT15_STATE_SEAM_ANALYSIS.json.",
+    "surface_evaporation_preservation": "F-CI39/F-PM06E surface-evaporation provider and legacy production paths are intentionally untouched by this reconciliation."
+  },
+  "restored_paths": [
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "fce00f4fe5f5dfc905986278a4d239182ea049ca",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "blob": "74f99556005ae39614f9df678467b1e19097bae2",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "blob": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "f8acd89e54b410fe70792ddee29ddd47134a401d",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "1dd257b39d31229ce8146025e762de02743d4b3e",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "blob": "bb02e7f5979b7e2c9703d97604b83f5a74bffc9d",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob": "b509dc37ee87a744a890da1c88f40c37d42df19c",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    },
+    {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "blob": "4bde0f7a3a56fbbc75f312c5fe8d3f4526d9115d",
+      "disposition": "BYTE_EXACT_FKT14_RESTORE"
+    }
+  ],
+  "preserved_constraints": [
+    "No F-PM06E production physics path is overwritten.",
+    "No new hydraulic authority is introduced.",
+    "No additional nonlinear tangent trajectory is introduced by source reconciliation.",
+    "No MODFLOW sign transform is introduced.",
+    "F-KT15 remains unqualified until the real production solver-service transaction bridge and exact-head evidence are complete."
+  ],
+  "decision": "SOURCE_RECONCILIATION_READY_FOR_PRODUCTION_BRIDGE_IMPLEMENTATION"
+}

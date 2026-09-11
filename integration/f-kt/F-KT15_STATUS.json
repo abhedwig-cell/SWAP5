@@ -3,13 +3,13 @@
   "work_unit": "F-KT15",
   "title": "Production Soil-Water Solver-Service Transaction Composition",
   "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
-  "phase": "SOURCE_RECONCILIATION_AND_DESIGN",
+  "phase": "PRODUCTION_BRIDGE_IMPLEMENTATION",
   "source_authority": {
     "canonical_base": "1fab3e1b27d774f2869a003876d035b07c601ccf",
     "production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
     "governance_overlay": "F-CI39",
     "superseded_initial_checkpoint_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
-    "source_reconciliation_reason": "F-CI39 admitted F-PM06E production changes on the B1.10 soil-water dependency surface after the initial F-KT15 checkpoint; production implementation must therefore continue from the green F-CI39 canonical authority."
+    "source_reconciliation_reason": "F-CI39 admitted F-PM06E production changes after the initial F-KT15 checkpoint. F-KT14/F-SI28 sensitivity source postimage is therefore restored only on proven non-overlapping solver/transaction/runtime/kernel paths while preserving the later production physics."
   },
   "source_reconciliation": {
     "fci39_exact_canonical_head": "1fab3e1b27d774f2869a003876d035b07c601ccf",
@@ -17,7 +17,10 @@
     "fci39_push_conclusion": "success",
     "fci39_pr_workflow": 34545754692,
     "fci39_pr_conclusion": "success",
-    "method": "NON_FORCE_MERGE_PRESERVING_FKT15_CHECKPOINT_LINEAGE"
+    "fkt14_source_authority": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "common_canonical_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "method": "BYTE_EXACT_FKT14_SOURCE_POSTIMAGE_RESTORE_ON_NON_OVERLAPPING_PATHS",
+    "evidence_artifact": "integration/f-kt/F-KT15_SOURCE_RECONCILIATION.json"
   },
   "upstream": {
     "F_SI28_qualified_production_head": "85dbe882aa967d19021174066c95105d8cf838ea",
@@ -57,11 +60,11 @@
   "state": {
     "realized": true,
     "persisted": true,
-    "source_reconciled": false,
+    "source_reconciled": true,
     "implemented": false,
     "tested": false,
     "qualified": false
   },
-  "decision": "RESEARCH_IN_PROGRESS_FAIL_CLOSED",
+  "decision": "SOURCE_RECONCILED_PRODUCTION_BRIDGE_OPEN_FAIL_CLOSED",
   "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH"
 }
