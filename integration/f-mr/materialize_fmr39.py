@@ -273,10 +273,12 @@ s=replace_once(s,
 """,'advance thermal locals')
 
 s=replace_once(s,
-"""    self%last_observation = fmr_serialized_physical_observation_t()
+"""    outcome = trial_outcome_t()
+    self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
 """,
-"""    self%last_observation = fmr_serialized_physical_observation_t()
+"""    outcome = trial_outcome_t()
+    self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
 """,'advance thermal observation active')

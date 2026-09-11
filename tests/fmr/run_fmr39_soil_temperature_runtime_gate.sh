@@ -16,7 +16,7 @@ KERNEL_BLOB=f1acff10dd99c308a00f434440d6a9ef14632f0d
 TX_BLOB=2fd932b74dbd0ffc0ec089f49e632b7ac8852df4
 
 # Only the bounded runtime composition modules may change production source.
-mapfile -t changed_src < <(git diff --name-only "$CANONICAL"..HEAD -- src | sort)
+mapfile -t changed_src < <(git diff --name-only "$CANONICAL" -- src | sort)
 printf '%s\n' "${changed_src[@]}" > "$BUILD/changed-src.txt"
 printf '%s\n' src/runtime/mod_fmr_restart_state_contract.f90 src/runtime/mod_fmr_serialized_reference_backend.f90 | sort > "$BUILD/expected-src.txt"
 cmp -s "$BUILD/changed-src.txt" "$BUILD/expected-src.txt" || { cat "$BUILD/changed-src.txt" >&2; fail 'unexpected production source delta'; }

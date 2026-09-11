@@ -20,7 +20,7 @@ program test_fmr39_soil_temperature_runtime_composition
        fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
        initialize_soil_temperature_parameters, initialize_soil_temperature_state, copy_soil_temperature_profile
-  use mod_fmr04_fixed_flux_top_provider, only: fmr04_fixed_flux_top_provider_t
+  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
