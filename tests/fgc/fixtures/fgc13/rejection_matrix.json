@@ -14,22 +14,34 @@
       "expected_code": "H_APP_NOT_EXTERNALLY_QUALIFIED"
     },
     {
-      "id": "PHYSICAL_THRESHOLD_SUBSTITUTION",
+      "id": "PHYSICAL_THRESHOLD_AS_H_APP",
       "base_fixture": "accepted_fraction_packet.json",
-      "mutations": [{"path": "forbidden_substitution_attestations.not_physical_impact_threshold_only", "value": false}],
-      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+      "mutations": [{"path": "application_requirement.provenance.evidence_basis_kind", "value": "PHYSICAL_IMPACT_THRESHOLD_ONLY"}],
+      "expected_code": "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH"
     },
     {
-      "id": "CALIBRATION_METRIC_SUBSTITUTION",
+      "id": "CALIBRATION_METRIC_AS_H_APP",
       "base_fixture": "accepted_fraction_packet.json",
-      "mutations": [{"path": "forbidden_substitution_attestations.not_calibration_metric_only", "value": false}],
-      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+      "mutations": [{"path": "application_requirement.provenance.evidence_basis_kind", "value": "CALIBRATION_METRIC_ONLY"}],
+      "expected_code": "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH"
     },
     {
-      "id": "MODEL_UNCERTAINTY_SUBSTITUTION",
+      "id": "MODEL_UNCERTAINTY_AS_H_APP",
       "base_fixture": "accepted_fraction_packet.json",
-      "mutations": [{"path": "forbidden_substitution_attestations.not_model_generated_uncertainty_only", "value": false}],
-      "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
+      "mutations": [{"path": "application_requirement.provenance.evidence_basis_kind", "value": "MODEL_GENERATED_UNCERTAINTY_ONLY"}],
+      "expected_code": "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH"
+    },
+    {
+      "id": "MONITORING_TRIGGER_AS_H_APP",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "application_requirement.provenance.evidence_basis_kind", "value": "MONITORING_TRIGGER_ONLY"}],
+      "expected_code": "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH"
+    },
+    {
+      "id": "INVALID_APPLICATION_SOURCE_DIGEST",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "application_requirement.provenance.source_digest_sha256", "value": "not-a-sha256"}],
+      "expected_code": "INVALID_SOURCE_DIGEST"
     },
     {
       "id": "MISSING_TEMPORAL_POLICY",
@@ -38,7 +50,13 @@
       "expected_code": "TEMPORAL_POLICY_NOT_AVAILABLE"
     },
     {
-      "id": "SWAP_DERIVED_TEMPORAL_POLICY",
+      "id": "SWAP_BEHAVIOR_AS_TEMPORAL_POLICY",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "temporal_policy.provenance.evidence_basis_kind", "value": "SWAP_NUMERICAL_BEHAVIOR"}],
+      "expected_code": "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH"
+    },
+    {
+      "id": "SWAP_DERIVED_EXTERNALITY_FALSE",
       "base_fixture": "accepted_fraction_packet.json",
       "mutations": [{"path": "temporal_policy.provenance.external_to_swap_numerical_behavior", "value": false}],
       "expected_code": "SWAP_DERIVED_POLICY_FORBIDDEN"
@@ -46,7 +64,13 @@
     {
       "id": "TIMESTEP_SCHEDULE_AS_ALLOCATION",
       "base_fixture": "accepted_fraction_packet.json",
-      "mutations": [{"path": "forbidden_substitution_attestations.not_model_timestep_schedule", "value": false}],
+      "mutations": [{"path": "temporal_policy.provenance.evidence_basis_kind", "value": "MODEL_TIMESTEP_SCHEDULE"}],
+      "expected_code": "EVIDENCE_BASIS_FORBIDDEN_OR_MISMATCH"
+    },
+    {
+      "id": "SECONDARY_ATTESTATION_FALSE",
+      "base_fixture": "accepted_fraction_packet.json",
+      "mutations": [{"path": "forbidden_substitution_attestations.not_physical_impact_threshold_only", "value": false}],
       "expected_code": "FORBIDDEN_SUBSTITUTION_NOT_EXCLUDED"
     },
     {
