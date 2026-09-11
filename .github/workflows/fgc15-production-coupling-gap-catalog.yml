@@ -1,0 +1,25 @@
+name: F-GC15 production coupling gap catalog
+
+on:
+  push:
+    branches:
+      - work/f-gc15-production-groundwater-coupling-runtime-gap-decomposition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact branch head
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FGC15_EXACT_HEAD_CHECK=PASS"
+      - name: Run production coupling readiness gap gate
+        run: python3 tests/fgc/run_fgc15_production_coupling_gap_catalog.py
