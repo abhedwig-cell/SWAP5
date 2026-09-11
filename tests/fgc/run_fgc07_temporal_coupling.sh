@@ -77,7 +77,9 @@ cmp "$BUILD/smoke_o0.txt" "$BUILD/smoke_o2.txt" || { diff -u "$BUILD/smoke_o0.tx
 echo 'FGC07_O0_O2_SMOKE_IDENTITY=PASS'
 
 python3 tools/fgc/fgc07_analyze.py "$BUILD/o2/fgc07" "$ART"
+python3 tools/fgc/fgc07_decompose.py "$BUILD/o2/fgc07" "$ART"
 cp "$BUILD/smoke_o2.txt" "$ART/fgc07_smoke.txt"
 sha256sum "$ART"/* > "$ART/SHA256SUMS.txt"
 echo "FGC07_RESULTS_SHA256=$(sha256sum "$ART/fgc07_results.json" | cut -d' ' -f1)"
+echo "FGC07_DECOMPOSITION_SHA256=$(sha256sum "$ART/fgc07_error_decomposition.json" | cut -d' ' -f1)"
 echo 'FGC07_TEMPORAL_COUPLING_GATE PASS'
