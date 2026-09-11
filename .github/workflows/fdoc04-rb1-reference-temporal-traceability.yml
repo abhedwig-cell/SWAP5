@@ -1,0 +1,112 @@
+name: F-DOC04 RB1 reference temporal traceability qualification
+
+on:
+  push:
+    branches:
+      - work/f-doc04-rb1-reference-temporal-traceability
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rb1-reference-temporal-traceability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact authority lineages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            refs/heads/work/f-doc03-rb1-core-capability-traceability:refs/remotes/origin/work/f-doc03-rb1-core-capability-traceability \
+            refs/heads/integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical \
+            refs/heads/release/f-rb01-restricted-production-baseline-v1:refs/remotes/origin/release/f-rb01-restricted-production-baseline-v1 \
+            refs/heads/release/f-rb02-restricted-production-baseline-v1-final-authority:refs/remotes/origin/release/f-rb02-restricted-production-baseline-v1-final-authority \
+            refs/heads/work/f-si19-reference-linear-solver-seam:refs/remotes/origin/work/f-si19-reference-linear-solver-seam \
+            refs/heads/qualification/f-vq34-remediated-richards-head-budget-certificate:refs/remotes/origin/qualification/f-vq34-remediated-richards-head-budget-certificate \
+            refs/heads/integration/f-ci21-temporal-certificate-materialization:refs/remotes/origin/integration/f-ci21-temporal-certificate-materialization
+          for sha in \
+            0c25d97bd180378a916fbb14a1e45768af9ec63a \
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182 \
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 \
+            d3a1bc8eef243b6109af8871398c06e1840fb367 \
+            8e6121ecfcdfb71c79a111153835d4400d37ff89 \
+            df9b1123ba33ece022ce6649e70dcb538e44837f \
+            31e3f85ae83fe8bab9554da5467de0598446c0bd \
+            697755068253cfb5a2f838c63894e1609a85ff51 \
+            d81ef430ebaa601469a165dfc5b9866b813b71aa; do
+            git cat-file -e "${sha}^{commit}"
+          done
+
+      - name: Verify immutable upstream workflow evidence live
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in \
+            '34586202805 b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 .github/workflows/frb02-final-release-authority.yml' \
+            '34364081068 31e3f85ae83fe8bab9554da5467de0598446c0bd .github/workflows/fvq34-remediated-richards-head-budget-certificate.yml'; do
+            set -- $spec
+            run="$1"; sha="$2"; path="$3"
+            curl -fsSL \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${run}" \
+              > "_fdoc04_run_${run}.json"
+            python3 - "$run" "$sha" "$path" <<'PY'
+          import json, pathlib, sys
+          run, sha, path = sys.argv[1:]
+          x = json.loads(pathlib.Path(f'_fdoc04_run_{run}.json').read_text())
+          assert x['head_sha'] == sha, (x['head_sha'], sha)
+          assert x['status'] == 'completed', x['status']
+          assert x['conclusion'] == 'success', x['conclusion']
+          assert x['path'] == path, (x['path'], path)
+          print(f'FDOC04_UPSTREAM_RUN_{run}=PASS')
+          PY
+          done
+
+      - name: Validate bounded reference and temporal traceability
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc04_rb1_reference_temporal_traceability.py | tee _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_EXACT_TWO_CAPABILITIES=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_SOURCE_PINS_EXACT=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_FSI19_SEAM_BLOB_PRESERVED=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_FVQ34_NO_DEFAULT_H_BUDGET=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_FVQ34_NO_UNIVERSAL_TEMPORAL_TOLERANCE=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_FCI21_VQ33_REMAINS_FAILED=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_TEMPORAL_DEPENDENCY_SURFACE_PRESERVED=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_SW_REFERENCE_T1_GAP_EXPLICIT=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_TIME_REFERENCE_APPLICATION_BUDGET_OPEN=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_ZERO_PRODUCTION_DELTA=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_ZERO_REFERENCE_DELTA=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_INVARIANTS_30_OF_30_PASS=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_HARD_MASS_UNCHANGED=PASS' _fdoc04_validator_stdout.txt
+          grep -Fq 'FDOC04_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_BOUNDED_RB1_REFERENCE_TEMPORAL_TRACEABILITY_WITH_EXPLICIT_GAPS' _fdoc04_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc04-rb1-reference-temporal-traceability-evidence-${{ github.sha }}
+          path: |
+            _fdoc04_run_34586202805.json
+            _fdoc04_run_34364081068.json
+            _fdoc04_validator_stdout.txt
+            _fdoc04_rb1_reference_temporal_traceability_evidence.json
+            docs/scientific/registries/rb1-reference-temporal-traceability.json
+            docs/scientific/F-DOC04_RB1_REFERENCE_TEMPORAL_TRACEABILITY.md
+            integration/f-doc/F-DOC04_STATUS.json
+            integration/f-doc/F-DOC04_INVARIANT_AUDIT.json
+            integration/f-doc/F-DOC04_CLOSEOUT.json
+          if-no-files-found: warn
+          retention-days: 90
