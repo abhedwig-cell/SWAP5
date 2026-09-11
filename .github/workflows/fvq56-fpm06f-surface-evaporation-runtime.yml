@@ -1,0 +1,22 @@
+name: F-VQ56 independent surface evaporation runtime qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq56-fpm06f-surface-evaporation-runtime-materialization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ56 source-bound independent qualification
+        run: bash tests/fvq/run_fvq56_surface_evaporation_runtime_independent.sh
