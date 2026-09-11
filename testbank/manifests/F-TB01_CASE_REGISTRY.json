@@ -9,23 +9,23 @@
   },
   "cases": [
     {
-      "case_id": "SWAP5-TB-CONSTITUTIVE-B110-0001",
+      "case_id": "SWAP5-TB-SOLVER-B110-0001",
       "version": 1,
-      "title": "B1.10 constitutive provider preservation",
-      "layer": "TB-L1",
-      "category": "HYDRAULICS",
+      "title": "B1.10 nonlinear Richards and constitutive-provider gate",
+      "layer": "TB-L3",
+      "category": "SOLVER",
       "artifact_kind": "SOURCE_TEST",
-      "primary_path": "tests/fsi/run_fsi09_b110_constitutive_provider.sh",
+      "primary_path": "tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90",
       "authority_ref": "integration/f-ci-canonical@3c5f5bd3686e1632058b906be21abd73883e30ef",
       "admission_purpose": "MOVING_CURRENT_PRESERVATION",
       "maturity": "CANONICAL_PRESERVATION",
       "oracle_class": "O6_PROPERTY_INVARIANT",
       "profiles": ["FAST", "CANONICAL", "RELEASE", "DEEP"],
-      "invariants": [20, 22, 25],
-      "negative_paths": ["invalid hydraulic parameters", "dry/saturation limits"],
-      "mass_gate": "NOT_WATER_BEARING",
+      "invariants": [13, 20, 22, 23, 25, 26],
+      "negative_paths": ["non-convergence or invalid iteration path", "constitutive finite/positive bootstrap failure"],
+      "mass_gate": "REQUIRED",
       "current_preservation_eligible": true,
-      "notes": "Constitutive/property test; exact current source binding does not reinterpret its historical scientific evidence."
+      "notes": "Existing FSI24 asset directly exercises the B1.10 constitutive provider inside the reference Richards solve and applies hard water-mass checks. It is not a substitute for a future complete standalone constitutive-function bank."
     },
     {
       "case_id": "SWAP5-TB-RESTART-0001",
