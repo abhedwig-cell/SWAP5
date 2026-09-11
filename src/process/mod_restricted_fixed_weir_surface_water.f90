@@ -1,5 +1,5 @@
 module mod_restricted_fixed_weir_surface_water
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   implicit none
   private
@@ -55,6 +55,11 @@ module mod_restricted_fixed_weir_surface_water
 
 contains
 
+  pure logical function same_real_bits(a, b) result(same)
+    real(real64), intent(in) :: a, b
+    same = transfer(a, 0_int64) == transfer(b, 0_int64)
+  end function same_real_bits
+
   pure subroutine validate_fixed_weir_surface_water_parameters(parameters, ok)
     type(fixed_weir_surface_water_parameters_t), intent(in) :: parameters
     logical, intent(out) :: ok
@@ -107,7 +112,7 @@ contains
     ! This is a named disposition of the frozen D1 endpoint-rounding seam,
     ! not a tolerance, clamp or hidden change of the admissible domain.
     do i = 1, n
-      if (level == parameters%level_knots(i)) then
+      if (same_real_bits(level, parameters%level_knots(i))) then
         storage = parameters%storage_knots(i)
         exact = .true.
         ok = ieee_is_finite(storage)
@@ -150,7 +155,7 @@ contains
     if (storage > parameters%storage_knots(1) .or. storage < parameters%storage_knots(n)) return
 
     do i = 1, n
-      if (storage == parameters%storage_knots(i)) then
+      if (same_real_bits(storage, parameters%storage_knots(i))) then
         level = parameters%level_knots(i)
         exact = .true.
         ok = ieee_is_finite(level)
@@ -310,7 +315,7 @@ contains
     residual_mid = huge(0.0_real64)
     do iteration = 1, numerical%max_bisection_iterations
       mid = 0.5_real64 * (lo + hi)
-      if (mid == lo .or. mid == hi) exit
+      if (same_real_bits(mid, lo) .or. same_real_bits(mid, hi)) exit
       call fixed_weir_storage_from_level(parameters, mid, storage_mid, ok, exact)
       if (.not. ok) then
         result%status = FIXED_WEIR_MAPPING_REJECTED
