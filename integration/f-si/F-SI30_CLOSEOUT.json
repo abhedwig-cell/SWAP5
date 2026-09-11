@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI30",
+  "title": "Dynamic Top-Boundary Solver-Interface Adapter & HeadCalc Provider Bridge Qualification",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_DYNAMIC_TOP_BOUNDARY_SOLVER_INTERFACE_AND_HEADCALC_PROVIDER_BRIDGE",
+  "branch": "work/f-si30-dynamic-top-boundary-solver-interface",
+  "source_authority": {
+    "frozen_branch_base": "a7242e1831491de0a37c521c3875b0bfbcad7e13",
+    "tested_candidate_head": "46735abda379aa4bf4908f00a49c0926adee0693",
+    "current_canonical_recheck_head": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "canonical_admission_claimed": false
+  },
+  "qualified_source_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf"
+  },
+  "upstream_authorities": {
+    "F_SI29_decision": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+    "F_SI29_provider_blob": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "F_SI28_requirement": "qualified optional same-factorization native-qbot interface sensitivity production solve",
+    "fixed_flux_provider_abi_preserved": true
+  },
+  "qualification_execution": {
+    "workflow_run": 34642032398,
+    "head": "46735abda379aa4bf4908f00a49c0926adee0693",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "jobs": {
+      "dynamic_headcalc_execution": 103403859724,
+      "abi_adapter_compile": 103403859895,
+      "adapter_identity_9072": 103403860017,
+      "headcalc_bridge_compile": 103403860122
+    },
+    "optimization_modes": ["O0", "O2"],
+    "observable_identity_O0_O2": true
+  },
+  "evidence": {
+    "adapter_identity_cases": 9072,
+    "adapter_direct_F_SI29_identity": "PASS",
+    "eight_context_interleaved_replay": "PASS",
+    "adapter_O0_O2_identity": "PASS",
+    "real_headcalc_routes": {
+      "surface_flux": "PASS",
+      "atmospheric_head": "PASS",
+      "ponded_head": "PASS",
+      "ponded_head_linear_runoff": "PASS"
+    },
+    "real_headcalc_O0_O2_identity": "PASS",
+    "hard_mass_gate_cm": 1.0e-12,
+    "execution_interval_day": 0.125,
+    "execution_mass_residuals_cm": {
+      "surface_flux": 0.0,
+      "atmospheric_head": 6.0720410745309717e-13,
+      "ponded_head": 0.0,
+      "linear_runoff_surface": -2.2204460492503131e-16,
+      "linear_runoff_total": -6.6613381477509392e-16
+    },
+    "solver_mass_residual_max_cm": 0.0,
+    "F_SI28_tangent_preservation": "PASS",
+    "fixed_flux_regression": "PASS",
+    "dynamic_missing_provider_fail_closed": "PASS",
+    "HeadCalc_dynamic_flux_and_head_source_guard": "PASS",
+    "fixed_flux_provider_blob_guard": "PASS"
+  },
+  "qualification_remediation": {
+    "trigger": "The first real atmospheric-head fixture at dt=0.25 day had the unavoidable K_atm*dt surface remainder just above the unchanged 1e-12 cm hard gate.",
+    "action": "Reduce only the qualification fixture interval from 0.25 to 0.125 day.",
+    "scientific_tolerance_changed": false,
+    "production_physics_changed": false,
+    "production_source_changed_by_remediation": false,
+    "result": "The same atmospheric-head route closes at 6.0720410745309717e-13 cm under the unchanged hard mass gate."
+  },
+  "qualified_scope": {
+    "interface_design": "Preserve simple top_boundary_provider_t fixed-flux ABI and add opt-in sibling dynamic_top_boundary_provider_t.",
+    "dynamic_mode": "FSI_TOP_MODE_DYNAMIC_PROVIDER",
+    "dynamic_regimes": ["surface flux", "atmospheric prescribed head", "ponded prescribed head", "linear runoff"],
+    "HeadCalc_consumption": "generic dynamic provider result only; no F-SI29-specific science embedded in HeadCalc",
+    "surface_mass_terms": "provider-carried trial-local ponding/runoff/evaporation/net-surface-flux terms",
+    "fixed_flux_behavior_preserved": true,
+    "F_SI28_tangent_behavior_preserved": true,
+    "new_committed_state": false,
+    "new_nonlinear_trajectory": false,
+    "new_jacobian_build": false,
+    "file_IO_added": false
+  },
+  "explicit_nonclaims": {
+    "F_KT15_production_transaction_composition_qualified": false,
+    "canonical_admission_qualified": false,
+    "rollback_retry_transaction_transport_qualified_by_F_SI30": false,
+    "accepted_surface_metadata_commit_transport_qualified": false,
+    "whole_coupling_window_response_tangent_qualified": false,
+    "nonlinear_runoff_qualified": false,
+    "macropore_or_frost_qualified": false,
+    "swdra2_surface_water_coupling_qualified": false,
+    "time_dependent_pondmx_qualified": false
+  },
+  "architecture_invariant_reconciliation": {
+    "2_kernel_io_separation": "PASS: no file I/O added; bridge is in-memory request/result plumbing.",
+    "3_explicit_data_separation": "PASS: dynamic boundary data is carried through explicit provider result fields.",
+    "4_compact_persistent_state": "PASS: no committed per-column state added.",
+    "5_scratch_per_worker": "PASS: provider result remains trial-local scratch; no new SAVE/module-global scratch.",
+    "7_transactional_steps": "PASS_AS_COMPONENT: candidate ponding/runoff remain trial-local; outer transaction ownership is unchanged and must be qualified in F-KT15.",
+    "13_mass_conservation": "PASS: real HeadCalc flux/head/ponded/runoff fixtures satisfy the unchanged 1e-12 cm hard mass gate.",
+    "14_interface_sensitivities": "PASS_AS_PRESERVATION: F-SI28 same-factorization qbot tangent remains available on the smooth dynamic-flux case without changing the physical trajectory.",
+    "21_reuse_SWAP_physics": "PASS: exact qualified F-SI29 provider science is adapted rather than duplicated.",
+    "22_no_HeadCalc_internal_coupling": "PASS: solver-facing code uses the generic dynamic top-boundary contract; HeadCalc does not expose its internals to other processes.",
+    "23_physics_solver_policy_separation": "PASS: no numerical policy change alters top-boundary physics.",
+    "27_optional_functionality_scales_with_use": "PASS: dynamic provider route is opt-in and fixed-flux ABI remains unchanged.",
+    "29_no_silent_dependencies": "PASS: dynamic top mode and missing-provider failure are explicit.",
+    "30_architecture_change_review": "PASS_WITH_EXPLICIT_NONCLAIMS"
+  },
+  "downstream_handoff": {
+    "owner": "F-KT15",
+    "disposition": "F_SI30_QUALIFIED_READY_TO_RESUME_PRODUCTION_SOIL_WATER_SOLVER_SERVICE_TRANSACTION_COMPOSITION",
+    "requirement": "Forward-sync/reconcile this exact qualified F-SI30 postimage with the current canonical authority, then prove the real B1.10 physical transaction routes through the typed soil-water solver service, preserves rollback/retry semantics and mass balance, and publishes accepted-only F-SI28 sensitivity through the already-qualified F-KT14 transport. Do not infer whole-coupling-window tangent semantics from a local terminal tangent."
+  }
+}

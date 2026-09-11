@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI30",
+  "artifact": "WIP_SOURCE_RECONCILIATION",
+  "qualification": false,
+  "observed_head": "8732ad82e71f22cb3e599cfb16157bf2867bc338",
+  "finding": "The branch already contained unqualified F-SI30 WIP source before continuation. That WIP had globally changed top_boundary_provider_t to the rich dynamic signature while HeadCalc still invoked the frozen six-argument fixed-flux ABI, so the tree was internally inconsistent and contradicted the later F-SI30_DESIGN_RECONCILIATION sibling-interface decision.",
+  "preexisting_wip_commits_observed": [
+    "0eab606cde2ba622a6b94052f57d90379b5df47c",
+    "2060ea1e77d832896a72c9c424890cbf2a8f049c"
+  ],
+  "reconciliation_commits": {
+    "sibling_contract": "08cedf5fa5f377bee277803275a0d8cb65a94d17",
+    "fixed_flux_abi_restore": "b3969002a9d249f1356e113b0e08efd07e50b181",
+    "dynamic_adapter_rebind": "a460e860c8e37c80ee3167e7824f8cf46fa98ff8"
+  },
+  "preservation": {
+    "fixed_flux_provider_blob_restored": "fb226f133bd48d8ab945f111c76897aeff49facf",
+    "simple_top_boundary_provider_signature": "unchanged from qualified F-SI28 lineage",
+    "dynamic_route": "opt-in sibling dynamic_top_boundary_provider_t",
+    "committed_state_added": false,
+    "new_nonlinear_trajectory_added": false
+  },
+  "remaining_before_test": [
+    "HeadCalc dynamic-provider result consumption and explicit flux/head residual routing",
+    "dynamic surface mass-balance use without hidden legacy forcing globals",
+    "reference solver validation for FSI_TOP_MODE_DYNAMIC_PROVIDER",
+    "qualification tests and CI"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "WIP_RECONCILED_TO_FROZEN_SIBLING_INTERFACE_DESIGN_IMPLEMENTATION_CONTINUES"
+}
