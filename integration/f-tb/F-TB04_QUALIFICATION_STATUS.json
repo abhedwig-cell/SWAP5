@@ -28,8 +28,8 @@
     "mass_conservation": "HARD_UNCHANGED"
   },
   "precloseout_FAST": {
-    "head": "0a77bc04061d2bf3dc267d073770ea2203781ac4",
-    "run": 34609684896,
+    "head": "a39df0fb8b725ce79cf290a6b56578d9cfc08ed8",
+    "run": 34610533357,
     "conclusion": "success"
   },
   "exact_head_qualification": {
@@ -39,10 +39,10 @@
     "DEEP": "EXPLICIT_NOT_REQUIRED_FOR_CLOSEOUT"
   },
   "release_scope": {
-    "restart": "FCI28 current-canonical restart qualification",
-    "parallel_multiswap": "FCI30 serialized/2-worker/4-worker qualification",
+    "restart": "immutable FCI28 restart oracle replayed against exact current canonical with historical whole-source governance guard rebound only",
+    "parallel_multiswap": "immutable FMQ26 serialized/2-worker/4-worker and publication-order oracle blobs executed directly against exact current canonical at O0/O2",
     "heterogeneous_parameter_references": "F-TB04 test-only immutable-FMQ26-derived two-parameter-reference case",
-    "parallel_restart": "FCI35 held-out cross-worker committed-boundary restart qualification"
+    "parallel_restart": "immutable FCI35/FMQ29 held-out cross-worker committed-boundary restart oracle with historical whole-source governance guards rebound only"
   },
   "source_defects_discovered": [],
   "harness_defects_remediated": [
@@ -52,6 +52,14 @@
       "classification": "FTB04_VALIDATOR_AUTHORITY_PATH_ERROR",
       "remediation_head": "0a77bc04061d2bf3dc267d073770ea2203781ac4",
       "production_source_changed": false
+    },
+    {
+      "failed_run": 34610037573,
+      "failed_head": "a44494e982bf45842b89f350a1f8548a0f193f04",
+      "classification": "FTB04_HISTORICAL_REPLAY_GOVERNANCE_INCOMPATIBILITY",
+      "remediation_head": "a39df0fb8b725ce79cf290a6b56578d9cfc08ed8",
+      "production_source_changed": false,
+      "scientific_oracle_changed": false
     }
   ],
   "state": {
