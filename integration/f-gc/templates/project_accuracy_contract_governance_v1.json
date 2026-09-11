@@ -7,8 +7,18 @@
     "kernel_policy_selection": false,
     "kernel_file_parsing": false
   },
+  "provenance_integrity": {
+    "claim_identity_required": true,
+    "source_digest_sha256_required": true,
+    "evidence_basis_classification_required": true,
+    "application_and_temporal_claim_ids_must_differ": true,
+    "application_and_temporal_provenance_ids_must_differ": true,
+    "same_governing_document_allowed": true,
+    "interpretation": "The same approved document may govern both claims, but each claim must have its own clause-level identity/provenance record. A source digest binds the classification to exact source content."
+  },
   "accepted_application_claim": {
     "claim_type": "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+    "evidence_basis_kind": "EXPLICIT_NUMERICAL_PREDICTION_ERROR_ACCEPTANCE_RULE",
     "required_semantics": [
       "MAX_ABSOLUTE_PREDICTION_ERROR",
       "OTHER_EXPLICIT_NUMERICAL_PREDICTION_ERROR_LIMIT"
@@ -21,12 +31,14 @@
     {
       "mode": "FRACTION_OF_APPLICATION_REQUIREMENT",
       "claim_type": "TEMPORAL_ERROR_ALLOCATION_FRACTION",
+      "evidence_basis_kind": "EXPLICIT_TEMPORAL_ALLOCATION_RULE",
       "domain": "0 < allocation_fraction <= 1",
       "canonical_mapping": "a_temporal = allocation_fraction"
     },
     {
       "mode": "DIRECT_HEAD_ERROR_BUDGET_CM",
       "claim_type": "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET",
+      "evidence_basis_kind": "EXPLICIT_DIRECT_TEMPORAL_ERROR_BUDGET_RULE",
       "domain": "0 < direct_budget_cm <= H_app_cm",
       "canonical_mapping": "a_temporal = direct_budget_cm / H_app_cm",
       "interpretation": "Deterministic reparameterization of an externally governed direct budget; SWAP does not choose the fraction."
@@ -68,10 +80,11 @@
     "explicit spatial scope",
     "explicit time horizon",
     "positive finite H_app_cm",
-    "externally qualified application claim with positive provenance id",
-    "positive externally qualified temporal fraction or direct temporal budget",
+    "externally qualified application claim classified as an explicit numerical prediction-error acceptance rule",
+    "positive externally qualified temporal fraction or direct temporal budget with matching explicit temporal evidence classification",
+    "immutable SHA-256 source digest for both claims",
     "distinct claim identity for application and temporal governance",
-    "positive temporal provenance id",
+    "distinct positive provenance ids for application and temporal governance",
     "all forbidden-substitution attestations true"
   ],
   "canonical_runtime_mapping": {
@@ -91,6 +104,7 @@
   "fail_closed_behavior": {
     "any_missing_required_governance": "reject packet",
     "ambiguous_or_forbidden_policy_origin": "reject packet",
+    "unclassified_or_digest-unbound_evidence": "reject packet",
     "invalid_numeric_domain": "reject packet",
     "positive_budget_on_reject": false,
     "mass_conservation_policy_change": false,
