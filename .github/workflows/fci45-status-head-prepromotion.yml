@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Assert exact status head and status contract
+      - name: Assert exact status/evidence contract
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
@@ -27,17 +27,25 @@ jobs:
           import json
           from pathlib import Path
           s=json.loads(Path('integration/f-ci/F-CI45_STATUS.json').read_text())
+          e=json.loads(Path('integration/f-ci/F-CI45_EVIDENCE.json').read_text())
           assert s['work_unit']=='F-CI45'
-          assert s['status']=='QUALIFIED_READY_FOR_CANONICAL_ADMISSION'
-          assert s['decision']=='QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_READY_FOR_CANONICAL_ADMISSION'
+          assert s['phase']=='QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED'
+          assert s['decision']=='QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_FOR_CURRENT_CANONICAL_ADMISSION'
           assert s['canonical_base']=='e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2'
-          assert s['source_composition_commit']=='97515d75c96e9766f3b8697a7b40b28ec237118f'
-          assert s['first_exact_head_qualification']['run']==34633372426
-          assert s['first_exact_head_qualification']['job']==103375339565
-          assert s['promotion']['allowed'] is True
-          assert s['promotion']['method']=='TRUE_TWO_PARENT_MERGE_ONLY'
-          assert s['postimage_reconciliation_required'] is True
-          print('FCI45_STATUS_CONTRACT=PASS')
+          assert s['composition_head']=='97515d75c96e9766f3b8697a7b40b28ec237118f'
+          assert s['first_green_admission']['run']==34633372426
+          assert s['first_green_admission']['job']==103375339565
+          assert s['state']['canonical_promoted'] is False
+          assert s['state']['all_30_architecture_invariants_reconciled'] is True
+          assert s['promotion_gate']['require_current_canonical_still_exactly_base'] is True
+          assert s['promotion_gate']['require_exact_status_head_F_CI45_success'] is True
+          assert s['promotion_gate']['require_true_two_parent_merge_commit'] is True
+          assert s['promotion_gate']['force_update_forbidden'] is True
+          assert s['promotion_gate']['post_promotion_reconciliation_required'] is True
+          assert e['first_green_run']==34633372426 and e['first_green_job']==103375339565
+          assert e['corroborating_F_MR40R']['result']=='PASS'
+          assert e['runtime_output_sha256']=='cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942'
+          print('FCI45_STATUS_EVIDENCE_CONTRACT=PASS')
           PY
       - name: Toolchain
         run: |
