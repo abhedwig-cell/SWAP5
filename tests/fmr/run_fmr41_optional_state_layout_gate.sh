@@ -26,7 +26,7 @@ CURRENT="$(git rev-parse origin/integration/f-ci-canonical)"
 [[ "$CURRENT" == "$BASE" ]] || fail "canonical race: expected $BASE got $CURRENT"
 echo 'FMR41_CANONICAL_RACE_GUARD=PASS'
 
-mapfile -t changed_src < <(git diff --name-only "$BASE"..HEAD -- src | sort)
+mapfile -t changed_src < <(git diff --name-only "$BASE" -- src | sort)
 printf '%s\n' "${changed_src[@]}" > "$BUILD/changed-src.txt"
 printf '%s\n' \
   src/runtime/mod_fmr_restart_state_contract.f90 \
