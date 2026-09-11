@@ -10,11 +10,14 @@
   "provenance_integrity": {
     "claim_identity_required": true,
     "source_digest_sha256_required": true,
+    "source_digest_validator_scope": "The F-GC13 packet validator verifies presence and SHA-256 lexical form. It does not fetch or re-hash external source bytes.",
+    "source_digest_content_verification_owner": "upstream external evidence governance/reviewer",
+    "source_digest_content_verification_required_for_real_project_admission": true,
     "evidence_basis_classification_required": true,
     "application_and_temporal_claim_ids_must_differ": true,
     "application_and_temporal_provenance_ids_must_differ": true,
     "same_governing_document_allowed": true,
-    "interpretation": "The same approved document may govern both claims, but each claim must have its own clause-level identity/provenance record. A source digest binds the classification to exact source content."
+    "interpretation": "The same approved document may govern both claims, but each claim must have its own clause-level identity/provenance record. The packet records a SHA-256 content identifier; real-project admission requires the external evidence-governance process to verify that identifier against the exact source bytes before the packet is treated as governed evidence."
   },
   "accepted_application_claim": {
     "claim_type": "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
@@ -82,7 +85,7 @@
     "positive finite H_app_cm",
     "externally qualified application claim classified as an explicit numerical prediction-error acceptance rule",
     "positive externally qualified temporal fraction or direct temporal budget with matching explicit temporal evidence classification",
-    "immutable SHA-256 source digest for both claims",
+    "SHA-256 source content identifier for both claims whose source-byte match is verified by upstream evidence governance for any real project admission",
     "distinct claim identity for application and temporal governance",
     "distinct positive provenance ids for application and temporal governance",
     "all forbidden-substitution attestations true"
@@ -104,7 +107,8 @@
   "fail_closed_behavior": {
     "any_missing_required_governance": "reject packet",
     "ambiguous_or_forbidden_policy_origin": "reject packet",
-    "unclassified_or_digest-unbound_evidence": "reject packet",
+    "unclassified_or_missing_digest_identifier": "reject packet",
+    "external_digest_content_match_not_verified_for_real_project": "do not admit as governed real-project evidence",
     "invalid_numeric_domain": "reject packet",
     "positive_budget_on_reject": false,
     "mass_conservation_policy_change": false,
