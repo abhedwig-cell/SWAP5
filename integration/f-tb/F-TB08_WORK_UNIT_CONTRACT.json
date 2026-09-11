@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB08",
+  "title": "External Accuracy Runtime Adapter Testbank Adoption",
+  "branch": "work/f-tb08-external-accuracy-adapter-testbank-adoption",
+  "testbank_parent_authority": "F-TB07@4fd0e3a4cb30254135c8da086a733eb3c790b834",
+  "composition_base": "4172e7e639d13e178fb75471263636a6cfa792fc",
+  "canonical_authority": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "canonical_tree": "80f3b62037eec92e83d981df1f57489ddd1af76e",
+  "canonical_src_tree": "c03a94cdfdf96e61e1a7a5aa92ff4d7533d234be",
+  "canonical_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "scientific_governance_authority": "F-GC14@6d91bedc305504cc2fa08b196e6a9903c48c9461",
+  "canonical_admission": "F-CI46 plus F-CI46P preserved by F-CI47",
+  "adapter_path": "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+  "adapter_blob": "9212d600e89c85287e9280832c7e0a94befb642e",
+  "canonical_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+  "immutable_F_GC14_test_blob": "7f4f8f044b06ad3e445e4499b575bb98e424c2a0",
+  "goal": "Permanently register and continuously replay the canonically admitted typed external-accuracy packet-to-runtime-contract adapter boundary without moving external source verification, policy selection, file parsing, numerical accuracy selection or production coupling admission into SWAP5.",
+  "allowed_changes": [
+    "add one bounded F-TB08 adapter-case registry",
+    "add F-TB08 validator, replay runner and workflow",
+    "add F-TB08 documentation, run log, qualification status and invariant audit"
+  ],
+  "forbidden_changes": [
+    "production source",
+    "reference tree",
+    "F-TB01 through F-TB07 manifests, case IDs or semantics",
+    "numeric H_app",
+    "numeric A_temporal",
+    "external source byte verification inside SWAP5",
+    "file or JSON parsing in the kernel/runtime adapter",
+    "project policy selection or derivation",
+    "production SWAP-MODFLOW coupling admission",
+    "scientific tolerance relaxation",
+    "mass-conservation relaxation",
+    "canonical branch"
+  ],
+  "required_coverage": [
+    "typed GROUNDWATER_HEAD mapping",
+    "typed GROUNDWATER_DRAWDOWN mapping",
+    "upstream packet-validation attestation fail-closed behavior",
+    "application and temporal source-verification attestation fail-closed behavior",
+    "application-versus-temporal provenance separation and reuse rejection",
+    "canonical application-requirement and temporal-allocation validation with default-unconfigured output on rejection",
+    "repeat and O0/O2 determinism",
+    "explicit source-verification, parsing, policy-selection, production-coupling and mass-conservation nonclaims"
+  ],
+  "profiles": {
+    "FAST": "registry, immutable-parent support, canonical source/reference, adapter provenance and static boundary checks",
+    "CANONICAL": "compile and execute immutable F-GC14 adapter tests against current canonical source at O0",
+    "RELEASE": "CANONICAL plus repeated O0 and O2 transcript identity plus support-only delta check",
+    "DEEP": "same qualified evidence set; no silent broadening into project-specific accuracy or production coupling"
+  },
+  "hard_nonclaims": [
+    "no real project H_app is qualified",
+    "no real project A_temporal is qualified",
+    "no real project direct temporal head-error budget is qualified",
+    "no external source bytes or digests are verified by the adapter",
+    "no file or JSON format is parsed by the adapter",
+    "no project policy is selected or derived",
+    "no production SWAP-MODFLOW coupling is admitted",
+    "no physical coupling equation or solver is changed",
+    "mass conservation remains hard and unrelaxed"
+  ],
+  "target_decision": "QUALIFIED_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_TESTBANK_ADOPTION_READY_FOR_CONTINUOUS_QUALIFICATION"
+}
