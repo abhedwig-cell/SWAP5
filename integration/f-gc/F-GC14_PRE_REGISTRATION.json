@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC14",
+  "title": "External Accuracy Packet to Runtime Contract Adapter Boundary",
+  "status": "PRE_REGISTERED",
+  "branch": "work/f-gc14-external-accuracy-runtime-contract-adapter-boundary",
+  "authority": {
+    "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "canonical_stage": "F-CI45P",
+    "upstream_F_GC13_final_authority": "0c776f7c3d910c6727ec5659ae6437ca993fb20d",
+    "canonical_application_accuracy_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "objective": "Define and qualify a typed non-kernel runtime adapter boundary that consumes only an already F-GC13-validated and externally source-digest-content-verified project-accuracy view, then materializes coupling_application_accuracy_contract_t without selecting project policy or parsing external evidence files.",
+  "frozen_scope": {
+    "allowed_production_source_addition": "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+    "existing_production_source_modification": false,
+    "kernel_source_modification": false,
+    "solver_source_modification": false,
+    "transaction_source_modification": false,
+    "file_or_json_parsing_in_runtime_adapter": false,
+    "external_document_fetching": false,
+    "project_policy_selection": false,
+    "numeric_H_app_default": false,
+    "numeric_A_temporal_default": false,
+    "production_SWAP_MODFLOW_admission": false,
+    "mass_conservation_relaxation": false
+  },
+  "adapter_contract": {
+    "input_kind": "typed verified project-accuracy view",
+    "required_upstream_attestations": [
+      "F-GC13 packet governance validation completed",
+      "application evidence source digest verified against exact governed source bytes upstream",
+      "temporal evidence source digest verified against exact governed source bytes upstream",
+      "F-GC13 schema version supported by adapter"
+    ],
+    "mapping": [
+      "contract_id -> coupling_application_accuracy_contract_t%contract_id",
+      "contract_version -> coupling_application_accuracy_contract_t%contract_version",
+      "qoi_kind -> coupling_application_accuracy_contract_t%qoi_kind",
+      "h_app_cm -> coupling_application_accuracy_contract_t%h_app_cm with availability/external qualification asserted only after adapter acceptance",
+      "application_provenance_id -> coupling_application_accuracy_contract_t%application_provenance_id",
+      "a_temporal -> coupling_application_accuracy_contract_t%a_temporal with availability/external qualification asserted only after adapter acceptance",
+      "temporal_allocation_provenance_id -> coupling_application_accuracy_contract_t%temporal_allocation_provenance_id"
+    ],
+    "fail_closed_output": "On any rejected input, return the default unconfigured coupling_application_accuracy_contract_t and diagnostics with materialized=false.",
+    "defense_in_depth": [
+      "require positive supported evidence schema version",
+      "require upstream F-GC13 validation attestation",
+      "require both external source digest content-verification attestations",
+      "require distinct positive application and temporal provenance IDs",
+      "reuse canonical coupling_application_accuracy_contract_t validity and temporal-budget checks"
+    ]
+  },
+  "qualification_plan": {
+    "positive_oracles": [
+      "HEAD canonicalized fraction path: H_app=8 cm, A_temporal=0.25 -> 2 cm temporal budget",
+      "DRAWDOWN canonicalized direct-budget path: H_app=10 cm, A_temporal=0.2 -> 2 cm temporal budget"
+    ],
+    "negative_oracles": [
+      "unsupported evidence schema version",
+      "packet not F-GC13 validated",
+      "application source digest not content-verified",
+      "temporal source digest not content-verified",
+      "application and temporal provenance ID reuse",
+      "invalid contract identity",
+      "unsupported QOI",
+      "invalid H_app including nonfinite",
+      "invalid A_temporal including nonfinite/out-of-range",
+      "missing provenance IDs"
+    ],
+    "compiler_modes": ["-O0", "-O2"],
+    "require_O0_O2_identity": true,
+    "require_exact_head_CI": true,
+    "source_allowlist": ["src/runtime/mod_coupling_application_accuracy_adapter.f90"]
+  },
+  "architecture_invariants_explicitly_in_scope": [2,3,9,10,11,12,13,15,23,25,26,28,29,30],
+  "hard_nonclaims": [
+    "No real project H_app or A_temporal is qualified by this workunit.",
+    "The adapter does not verify external source bytes itself; it requires upstream verification attestations.",
+    "The adapter does not parse F-GC13 JSON or any project document.",
+    "The adapter does not make project-policy choices.",
+    "This is not production SWAP-MODFLOW admission.",
+    "F-GC07 through F-GC13 remain closed and are not reopened."
+  ]
+}
