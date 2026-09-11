@@ -1,4 +1,4 @@
-program test_fkt14_interface_sensitivity_transport
+module fkt14_test_support
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t, transaction_model_t, trial_outcome_t, &
        transaction_policy_t, transaction_result_t, transaction_attempt_context_t, execute_reference_interval, &
@@ -6,8 +6,7 @@ program test_fkt14_interface_sensitivity_transport
        TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE, &
        TX_INTERFACE_SENSITIVITY_LOCAL_TERMINAL, TX_MASS_MISSING_NONE
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
-       canonical_result_t, canonical_physical_model_t, CANONICAL_STATUS_COMPLETED, &
-       CANONICAL_STATUS_TRANSACTION_FAILED
+       canonical_result_t, CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_TRANSACTION_FAILED
   use mod_canonical_interval_runtime, only: run_canonical_interval
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t
@@ -45,18 +44,19 @@ program test_fkt14_interface_sensitivity_transport
     procedure :: execution_admitted => test_execution_admitted
   end type test_model_t
 
-  call test_two_half_terminal_only()
-  call test_retry_stale_exclusion()
-  call test_retry_exhausted_unavailable()
-  call test_canonical_single_substep()
-  call test_canonical_multi_substep_terminal_only()
-  call test_canonical_failure_suppresses_prior_acceptance()
-  call test_canonical_mass_identity_with_without_sensitivity()
-  call test_kernel_exact_publication()
-
-  print '(a)', 'F-KT14 PASS: accepted-only local-terminal sensitivity transport'
-
 contains
+
+  subroutine run_fkt14_tests()
+    call test_two_half_terminal_only()
+    call test_retry_stale_exclusion()
+    call test_retry_exhausted_unavailable()
+    call test_canonical_single_substep()
+    call test_canonical_multi_substep_terminal_only()
+    call test_canonical_failure_suppresses_prior_acceptance()
+    call test_canonical_mass_identity_with_without_sensitivity()
+    call test_kernel_exact_publication()
+    print '(a)', 'F-KT14 PASS: accepted-only local-terminal sensitivity transport'
+  end subroutine run_fkt14_tests
 
   subroutine fail(message)
     character(len=*), intent(in) :: message
@@ -449,4 +449,10 @@ contains
     call require(diagnostics%committed_state_mutations == 0, 'kernel trial mutated committed state')
   end subroutine test_kernel_exact_publication
 
+end module fkt14_test_support
+
+program test_fkt14_interface_sensitivity_transport
+  use fkt14_test_support, only: run_fkt14_tests
+  implicit none
+  call run_fkt14_tests()
 end program test_fkt14_interface_sensitivity_transport
