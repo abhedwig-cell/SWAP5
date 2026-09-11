@@ -44,12 +44,13 @@ MODULE_SRC=(
   tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
 
-# Owner-oracle correction after the first live run exposed that the fixture's
-# equal top-in/bottom-out background flux makes gross total_in/total_out both
-# nonzero.  Preserve the original mass tolerance and all rollback assertions;
-# replace only the three gross-ledger assumptions by the physically relevant
-# net external-flux identities.  The checked substitutions fail closed if the
-# repository test source drifts.
+# Owner-oracle normalization after live execution exposed two fixture semantics:
+# (1) equal top-in/bottom-out background flux makes gross total_in/total_out
+# both nonzero, so the authoritative interval invariant is the net ledger;
+# (2) external full/half commits the two-half branch and the backend observation
+# is the final accepted half-step, not an interval-integrated process receipt.
+# Preserve the original mass tolerance and rollback assertions. Checked source
+# substitutions fail closed if the repository test source drifts.
 TEST_SRC="$BUILD/test_fpm08d7_transactional_runtime.f90"
 cp tests/fpm/test_fpm08d7_transactional_runtime.f90 "$TEST_SRC"
 python3 - "$TEST_SRC" <<'PY'
@@ -69,6 +70,9 @@ replacements={
     call require(abs((output%mass%total_in-output%mass%total_out) - (swst_after-80.0_real64)) <= mass_gate, &
          'supply net ledger/storage identity')
 """,
+"""    call require(observation%fixed_weir_surface_water_supply_rate > 0.0_real64,'supply diagnostic')
+""":"""    call require(observation%fixed_weir_surface_water_active,'supply accepted-route observation active')
+""",
 """    call require(output%mass%total_out > 0.0_real64,'discharge external output missing')
     call require(abs(output%mass%total_in) <= mass_gate,'discharge unexpected external input')
 """:"""    call require(output%mass%total_out > output%mass%total_in,'discharge external output missing')
@@ -78,11 +82,11 @@ replacements={
 }
 for old,new in replacements.items():
     if old not in s:
-        raise SystemExit('FPM08D7 owner-oracle source drift: expected gross-ledger block not found')
+        raise SystemExit('FPM08D7 owner-oracle source drift: expected normalization block not found')
     s=s.replace(old,new,1)
 p.write_text(s)
 PY
-echo 'FPM08D7_OWNER_ORACLE_NET_LEDGER_NORMALIZATION=PASS'
+echo 'FPM08D7_OWNER_ORACLE_ACCEPTED_ROUTE_NORMALIZATION=PASS'
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
