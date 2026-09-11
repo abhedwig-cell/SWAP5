@@ -38,9 +38,6 @@ required = ['surface_evaporation_result_t','kernel_candidate_state_t','fmr_accep
 for token in required:
     if token not in s:
         raise SystemExit(f'missing candidate token: {token}')
-# Candidate-level risk characterization: the surface result type supplied to
-# prepare has no result-side lineage/revision/interval receipt. Dynamic HN1 is
-# the decisive gate; this source check merely documents why the attack is valid.
 print('FVQ57_CANDIDATE_INTERFACE_RISK_CHARACTERIZED=PASS')
 PY
 
@@ -89,12 +86,12 @@ for opt in 0 2; do
   fi
 done
 
-# Observable fail-open must reproduce across optimization levels. Normalize the
-# compiler's final ERROR STOP line before comparing because runtime formatting
-# can contain non-semantic process metadata.
-sed '/^ERROR STOP 57$/d' "$BUILD/o0/out.txt" > "$BUILD/o0.norm"
-sed '/^ERROR STOP 57$/d' "$BUILD/o2/out.txt" > "$BUILD/o2.norm"
-cmp -s "$BUILD/o0.norm" "$BUILD/o2.norm" || { diff -u "$BUILD/o0.norm" "$BUILD/o2.norm" >&2 || true; fail 'O0/O2 HN1 observation drift'; }
+# Only semantic oracle markers are compared. Runtime backtrace addresses are
+# expected to vary across separately linked O0/O2 executables and are not part
+# of the scientific observation.
+grep '^FVQ57_' "$BUILD/o0/out.txt" > "$BUILD/o0.norm"
+grep '^FVQ57_' "$BUILD/o2/out.txt" > "$BUILD/o2.norm"
+cmp -s "$BUILD/o0.norm" "$BUILD/o2.norm" || { diff -u "$BUILD/o0.norm" "$BUILD/o2.norm" >&2 || true; fail 'O0/O2 HN1 semantic observation drift'; }
 echo 'FVQ57_O0_O2_HN1_OBSERVATION_IDENTITY=PASS'
 
 if [[ $hn1_fail_open -eq 2 ]]; then
