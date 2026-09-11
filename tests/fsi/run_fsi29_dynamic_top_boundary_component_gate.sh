@@ -57,3 +57,5 @@ run_one 2
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'FSI29_O0_O2_IDENTITY=PASS'
 echo 'FSI29_DYNAMIC_TOP_BOUNDARY_COMPONENT_GATE=PASS'
+
+bash tests/fsi/run_fsi29_legacy_boundtop_oracle_gate.sh
