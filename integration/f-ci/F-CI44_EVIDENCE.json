@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.fci44_evidence.v1",
+  "work_unit": "F-CI44",
+  "title": "F-GC10 Application Accuracy Contract Canonical Admission Evidence",
+  "canonical_base": {
+    "head": "d201904a85f3b595e028242978e52c02f5122a09",
+    "tree": "e2045ccb17092d60cf266b98124ad6171c088b96",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "composition": {
+    "head": "2c2c1f3ef00b467284e480d8b39b399523e3fc83",
+    "tree": "28767f0fb6cb9513ebc7e2aeeba7eb6111076ceb",
+    "direct_child_of_canonical_base": true,
+    "production_delta_exactly": ["src/runtime/mod_coupling_application_accuracy_contract.f90"]
+  },
+  "donor_authority": {
+    "work_unit": "F-GC10",
+    "closeout_head": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "closeout_blob": "5fb26cbf003721791f38bbc7b78f5073886645c4",
+    "decision": "QUALIFIED_F_GC09_APPLICATION_ACCURACY_CONTRACT_FOR_CANONICAL_ADMISSION_WITH_EXPLICIT_TEMPORAL_INDICATOR_BINDING",
+    "module_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "pinned_current_consumer_postimage": {
+    "canonical_contracts_blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "transaction_reference_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "serialized_reference_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "reference_richards_temporal_indicator_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "binding": "head_inf_bound / temporal_head_budget -> dimensionless transaction certificate"
+  },
+  "first_prepromotion_admission_run": {
+    "head": "0cf79a500e2d850733d699f8b228f017aa18dba8",
+    "run": 34631303888,
+    "job": 103368507091,
+    "conclusion": "success",
+    "canonical_race_guard": "PASS",
+    "exact_one_blob_scope": "PASS",
+    "reference_immutable": "PASS",
+    "F_GC10_authority_pinned": "PASS",
+    "current_canonical_consumer_binding": "PASS",
+    "dimensionless_certificate_normalization": "PASS",
+    "no_io_or_hidden_numeric_policy": "PASS",
+    "fail_closed_and_stale_clearing": "PASS",
+    "contract_matrix": "PASS",
+    "repeated_run_determinism_O0_O2": "PASS"
+  },
+  "admission_nonclaims": [
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no numeric project H_budget",
+    "no qualified application class",
+    "no universal groundwater-head or drawdown prediction-accuracy requirement",
+    "no production SWAP-MODFLOW admission",
+    "no relaxation of mass conservation",
+    "no reopening of F-GC06, F-GC07, F-GC08, F-GC09 or F-GC10",
+    "no change to RB1"
+  ],
+  "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04 GitHub Actions"
+}
