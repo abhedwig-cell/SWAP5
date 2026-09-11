@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-TB03",
+  "title": "SWAP5 RB1 Release Qualification Bank Permanent Adoption",
+  "branch": "work/f-tb03-rb1-release-qualification-bank",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_RB1_RELEASE_BANK_FRAGMENT_PERMANENTLY_ADOPTED",
+  "validity_rule": "This F-TB03 closeout is final only when .github/workflows/ftb03-rb1-release-bank.yml concludes success with head_sha equal to the exact commit containing this status file.",
+  "architecture_authority": {
+    "work_unit": "F-TB01",
+    "commit": "1d039292d5768496c4550a8e1b35a92c6f836504",
+    "tree": "217ad406db38b564a8b03e6c34c26b9123b58c6c",
+    "decision": "QUALIFIED_RICH_TESTBANK_REGISTRY_ARCHITECTURE"
+  },
+  "upstream_catalog_authority": {
+    "work_unit": "F-TB02",
+    "commit": "549531e2e233cccab1416dba04edb266653a5da5",
+    "tree": "13b1f3be0771f05bfa4ba21bca9d820df1e3b5f6",
+    "exact_head_run": 34559093286,
+    "conclusion": "success",
+    "decision": "QUALIFIED_RICH_HYDRAULIC_CONSTITUTIVE_CATALOG_FOUNDATION"
+  },
+  "rb1_authorities": {
+    "scientific_source": {
+      "commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+      "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+      "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+    },
+    "qualification": {
+      "commit": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "tree": "71a5b96f550b21567685884b5405b43820f865bf",
+      "exact_head_run": 34570204719,
+      "conclusion": "success",
+      "evidence_artifact": 10187525352,
+      "evidence_digest": "sha256:796b14b15fc7780455f8d9a4b308a668d793a4c46eace73368d0289db168c644"
+    },
+    "release_metadata": {
+      "commit": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+      "tree": "9fd636cb35503d59654495186c9b4ec33287f344",
+      "exact_head_run": 34586202805,
+      "conclusion": "success",
+      "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE_AUTHORITY_ESTABLISHED"
+    }
+  },
+  "release_bank_fragment": {
+    "path": "testbank/manifests/F-TB03_RB1_RELEASE_BANK.json",
+    "case_count": 4,
+    "cases": [
+      "SWAP5-TB-RELEASE-PARALLEL-RESTART-0001-v1",
+      "SWAP5-TB-RELEASE-PARALLEL-ROOT-0001-v1",
+      "SWAP5-TB-RELEASE-SURFACE-EVAP-0001-v1",
+      "SWAP5-TB-RELEASE-ARCHITECTURE-0001-v1"
+    ],
+    "precursors": [
+      "FRB01-RELEASE-PARALLEL-RESTART-0001-v1",
+      "FRB01-RELEASE-PARALLEL-ROOT-0001-v1",
+      "FRB01-RELEASE-SURFACE-EVAP-0001-v1",
+      "FRB01-RELEASE-ARCHITECTURE-0001-v1"
+    ],
+    "layer": "TB-L12",
+    "profile": "RELEASE",
+    "admission_purpose": "BROAD_RELEASE_REGRESSION",
+    "current_preservation_eligible": false
+  },
+  "precloseout_validation": {
+    "head": "a3a70e8c8fa8aaff3936ea0ce224074454f76bb8",
+    "tree": "be265e4d4c661c7809a5756bf4ebc910b86acb64",
+    "exact_head_run": 34587933200,
+    "conclusion": "success",
+    "evidence_artifact": 10194373546,
+    "evidence_digest": "sha256:8fcfb14e6fee90fdcfba7b0ae61a350206174e086f1fff9d453f661909fc1833"
+  },
+  "architecture_audit": {
+    "path": "integration/f-tb/F-TB03_INVARIANT_AUDIT.json",
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "scope_holds": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "existing_scientific_test_changed": false,
+    "scientific_requalification_performed": false,
+    "historical_oracle_reinterpreted": false,
+    "tolerance_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "performance_claim_changed": false,
+    "moving_current_preservation_claim_created": false,
+    "central_ftb01_poc_registry_rewritten": false
+  },
+  "nonclaims": [
+    "not Status A",
+    "not Status AA",
+    "not production RossFast",
+    "not broader MODFLOW coupling accuracy",
+    "not moving-current preservation authority",
+    "not a new scientific qualification campaign",
+    "not a surface-evaporation throughput or MultiSWAP scaling claim"
+  ],
+  "future_rule": "Later canonical source movement does not mutate these immutable RB1 release cases. Any moving-current rebinding or later release must use a separate governed qualification/adoption workunit with explicit delta and authority.",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "permanently_adopted": true,
+    "scientific_scope_reopened": false,
+    "open": []
+  }
+}

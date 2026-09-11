@@ -1,0 +1,68 @@
+name: F-TB02 hydraulic constitutive case catalog
+
+on:
+  push:
+    branches:
+      - work/f-tb02-hydraulic-constitutive-case-catalog
+    paths:
+      - 'docs/testbank/F-TB02_*'
+      - 'testbank/manifests/F-TB02_*'
+      - 'testbank/schema/F-TB02_*'
+      - 'testbank/runners/validate_ftb02_*'
+      - 'integration/f-tb/F-TB02_*'
+      - '.github/workflows/ftb02-hydraulic-case-catalog.yml'
+  pull_request:
+    paths:
+      - 'docs/testbank/F-TB02_*'
+      - 'testbank/manifests/F-TB02_*'
+      - 'testbank/schema/F-TB02_*'
+      - 'testbank/runners/validate_ftb02_*'
+      - 'integration/f-tb/F-TB02_*'
+      - '.github/workflows/ftb02-hydraulic-case-catalog.yml'
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify F-TB02 architecture base and scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=1d039292d5768496c4550a8e1b35a92c6f836504
+          test "$(git rev-parse "$BASE^{tree}")" = "217ad406db38b564a8b03e6c34c26b9123b58c6c"
+          changed="$(git diff --name-only "$BASE"...HEAD)"
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -Eq '^(src/|tests/|reference/)'; then
+            echo "F-TB02 must not modify production source, existing tests, or frozen reference evidence" >&2
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Ev '^(docs/testbank/F-TB02_|testbank/manifests/F-TB02_|testbank/schema/F-TB02_|testbank/runners/validate_ftb02_|integration/f-tb/F-TB02_|\.github/workflows/ftb02-hydraulic-case-catalog\.yml$)' | grep -q .; then
+            echo "F-TB02 contains an out-of-scope path" >&2
+            exit 1
+          fi
+      - name: Validate catalog and replay frozen evidence
+        run: |
+          python3 testbank/runners/validate_ftb02_hydraulic_catalog.py
+          python3 -m json.tool testbank/manifests/F-TB02_HYDRAULIC_CASE_REGISTRY.json >/dev/null
+          python3 -m json.tool testbank/schema/F-TB02_HYDRAULIC_CASE_REGISTRY.schema.json >/dev/null
+          python3 -m json.tool integration/f-tb/F-TB02_INVARIANT_AUDIT.json >/dev/null
+          python3 -m json.tool integration/f-tb/F-TB02_STATUS.json >/dev/null
+      - name: Confirm bounded F-TB02 deliverables
+        shell: bash
+        run: |
+          set -euo pipefail
+          for p in \
+            docs/testbank/F-TB02_HYDRAULIC_CASE_CATALOG.md \
+            docs/testbank/F-TB02_SOURCE_AND_ORACLE_MAP.md \
+            testbank/manifests/F-TB02_HYDRAULIC_CASE_REGISTRY.json \
+            testbank/schema/F-TB02_HYDRAULIC_CASE_REGISTRY.schema.json \
+            testbank/runners/validate_ftb02_hydraulic_catalog.py \
+            integration/f-tb/F-TB02_INVARIANT_AUDIT.json \
+            integration/f-tb/F-TB02_STATUS.json
+          do
+            test -s "$p"
+          done
+          echo "F-TB02_REQUIRED_DELIVERABLES=7/7_PASS"
