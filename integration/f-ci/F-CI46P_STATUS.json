@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.fci_postimage_status.v1",
+  "work_unit": "F-CI46P",
+  "title": "F-CI46 External Accuracy Runtime Adapter Current-Canonical Postimage Reconciliation",
+  "status": "QUALIFIED_POSTIMAGE_RECONCILIATION_READY_FOR_FINAL_CANONICAL_FREEZE_WITH_PREEXISTING_MOVING_PRESERVATION_GOVERNANCE_DEBT",
+  "decision": "QUALIFIED_FCI46_CURRENT_CANONICAL_POSTIMAGE_NO_ADAPTER_REGRESSION_WITH_PREEXISTING_MOVING_PRESERVATION_DEBT",
+  "promoted_canonical_head": "c65471e544b5fa25ab13f944b9db13bd47fba8fa",
+  "prepromotion_canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "F_CI46_exact_green_authority": "f87c1ec05293f43f60e87c6436a0f6cf5e2041df",
+  "F_GC14_final_authority": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+  "promotion_topology": {
+    "first_parent": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "second_parent": "f87c1ec05293f43f60e87c6436a0f6cf5e2041df",
+    "tree": "46f56a4f22c64fc4a1ae68668182098a8153df8b",
+    "true_two_parent_merge": true,
+    "force_update_used": false
+  },
+  "production_blobs": {
+    "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "postimage_qualification": {
+    "first_green_head": "731100b49d5a5ecb9f5a1d8ac15ebf480685f144",
+    "first_green_run": 34645140220,
+    "first_green_job": 103413994022,
+    "evidence_commit": "97bec6df5651e470f50cf32c7edd2f1d4f009652",
+    "evidence_exact_head_run": 34645360357,
+    "evidence_exact_head_job": 103414720027,
+    "conclusions": "success"
+  },
+  "qualification_transfer_basis": {
+    "promoted_source_delta_exactly_one_adapter_blob": true,
+    "postpromotion_production_delta": "NONE",
+    "postpromotion_reference_delta": "NONE",
+    "F_CI46_status_blob": "3c49657ad84294c4c48e080dba3726bdd3f1734a",
+    "F_CI46_architecture_audit_blob": "0aa0654c1057e20c3be1ed82ed6e0a106c71ba66",
+    "exact_F_GC14_executable_replay": true,
+    "dynamic_rejection_matrix": "PASS_12_OF_12",
+    "O0_O2_repeated_run_determinism": true,
+    "all_30_architecture_invariants_preserved": true,
+    "mass_conservation_relaxed": false
+  },
+  "broad_canonical_governance_debt": {
+    "open": true,
+    "job": "current-restricted-canonical-preservation",
+    "classification": "PRE_EXISTING_MOVING_PRESERVATION_AUTHORITY_DEBT_NOT_F_CI46_REGRESSION",
+    "F_CI38_taxonomy": "MOVING_CANONICAL_PRESERVATION_REGRESSION",
+    "failure_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "moving_authority_in_failing_job": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "pre_F_CI46_failure": {
+      "canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+      "run": 34643889299,
+      "job": 103410410009,
+      "conclusion": "failure"
+    },
+    "post_F_CI46_failure": {
+      "canonical": "c65471e544b5fa25ab13f944b9db13bd47fba8fa",
+      "run": 34644943806,
+      "job": 103413832816,
+      "conclusion": "failure"
+    },
+    "backend_blob_pre_and_post_F_CI46": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "introduced_by_F_CI46": false,
+    "cleared_by_F_CI46P": false,
+    "required_action": "Separate governance remediation must advance/reconcile the moving preservation authority against later qualified canonical backend changes. F-CI46P must not modify production source or the historical F-CI46/F-GC14 authorities to make this check green."
+  },
+  "hard_nonclaims": [
+    "not all broad canonical checks are green",
+    "F-CI46P does not remediate the pre-existing moving-preservation governance debt",
+    "no numeric H_app is selected or qualified",
+    "no numeric A_temporal is selected or qualified",
+    "no real-project temporal head-error budget is qualified",
+    "no universal or application-class accuracy claim is established",
+    "external source-byte/digest verification remains outside the SWAP runtime and kernel",
+    "no production SWAP-MODFLOW coupling is admitted",
+    "no mass-conservation relaxation is introduced",
+    "RB1 is not reopened"
+  ],
+  "final_freeze_gate": {
+    "require_reconciliation_workflow_success_on_exact_status_head": true,
+    "require_canonical_still_exactly_promoted_head": true,
+    "require_support_only_F_CI46P_delta": true,
+    "require_no_src_or_reference_delta": true,
+    "require_true_two_parent_final_reconciliation_merge": true,
+    "force_update_forbidden": true,
+    "broad_preservation_debt_must_remain_explicit_until_separately_remediated": true
+  },
+  "next_required_step": "Run F-CI46P on this exact status head. If green and canonical remains c65471e544b5fa25ab13f944b9db13bd47fba8fa, freeze F-CI46P metadata by a true two-parent merge. Then address the pre-existing moving-preservation authority debt in a separate governance workunit."
+}
