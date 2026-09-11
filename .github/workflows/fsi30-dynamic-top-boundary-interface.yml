@@ -27,3 +27,12 @@ jobs:
         run: gfortran --version
       - name: Run F-SI30 HeadCalc bridge compile gate
         run: bash tests/fsi/run_fsi30_headcalc_compile_gate.sh
+
+  adapter-identity-9072:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-SI30 9072-case adapter identity gate
+        run: bash tests/fsi/run_fsi30_adapter_identity_gate.sh
