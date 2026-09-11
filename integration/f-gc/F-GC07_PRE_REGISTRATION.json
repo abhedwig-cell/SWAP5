@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC07",
+  "title": "SWAP5-Groundwater Coupling Temporal Error Budget, Window Convergence and Predictor-Corrector Qualification",
+  "branch": "work/f-gc07-coupling-temporal-error-budget",
+  "start_authority": {
+    "current_canonical_head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "current_canonical_authority": "F-CI42P final post-promotion governance reconciliation",
+    "F_GC01_head": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
+    "F_GC02_head": "5c8275cc9443d33fd3bc41c333464f333df20275",
+    "F_GC03_head": "ac123c51b1fb545ad19755bce04e79a80489cd74",
+    "F_GC04_head": "9574c5659b9f5bd78e2067db45032a6ed9fa4ef2",
+    "F_GC05_head": "12d829474870216b7b14fc452cdef54836255bd4",
+    "F_GC06_head": "cc28f2ceabd583484c00a3fd36373dc7ab1f202e",
+    "F_GC06_exact_decision": "FAIL_CLOSED_NO_NARROW_APPLICATION_CLASS_HAS_COMPLETE_INDEPENDENT_H_APP_AND_A_TEMPORAL"
+  },
+  "purpose": "Qualify only the temporal/coupling contribution to SWAP5-groundwater interface error. Do not choose or imply an application head-accuracy requirement and do not retroactively modify F-GC06.",
+  "frozen_questions": [
+    "How do interface head and flux errors vary with coupling-window DeltaT?",
+    "What empirical convergence order is visible without assuming an order a priori?",
+    "How does SWAP internal temporal refinement change error at fixed coupling-window DeltaT?",
+    "How do predictor-only and predictor-corrector paths compare?",
+    "How many corrector iterations are needed in the controlled test classes?",
+    "When does coupling-window error dominate SWAP internal integration error and vice versa?",
+    "Can a practical temporal/coupling estimator be constructed from independent observable quantities?",
+    "Can dh_bottom/dq_bottom reduce corrector cost or improve stability when the source-bound capability exists?",
+    "What evidence supports shrinking DeltaT?",
+    "What evidence supports growing DeltaT?"
+  ],
+  "hard_scope": {
+    "research_and_qualification_only": true,
+    "production_source_change_allowed": false,
+    "measurement_harness_only": true,
+    "universal_application_accuracy_claim": false,
+    "arbitrary_head_tolerance": false,
+    "MODFLOW_production_admission": false,
+    "mass_conservation_relaxation": false,
+    "fixed_daily_coupling_assumption": false,
+    "production_admission": false
+  },
+  "mass_contract": {
+    "required_interface_identity": "q_SWAP = -q_GW",
+    "flux_residual": "r_q = q_SWAP + q_GW",
+    "mass_mismatch_as_accuracy_tradeoff": false,
+    "rejected_predictor_booked_to_mass_ledger": false,
+    "accepted_transfer_booked_exactly_once": true
+  },
+  "transaction_contract": {
+    "predictor_origin": "committed T0 checkpoint",
+    "predictor_commit": false,
+    "corrector_origin": "same committed T0 checkpoint",
+    "predictor_physical_state_may_seed_corrector": false,
+    "worker_local_numerical_warm_start_may_be_studied": true,
+    "accepted_commit_count_per_window": 1
+  },
+  "time_contract": {
+    "window": "[t0,t1] with finite t1 > t0",
+    "calendar_boundary_required": false,
+    "DeltaT_is_generic": true,
+    "coupling_window_and_internal_SW_step_are_separate_controls": true
+  },
+  "experiment_policy": {
+    "controlled_groundwater_component": "independent deterministic simple aquifer response model",
+    "window_family": "multiple physically meaningful and approximately log-spaced DeltaT values, including non-daily and non-midnight windows",
+    "temporal_reference": "strongly refined numerical reference; explicitly not physical truth",
+    "internal_refinement_at_fixed_DeltaT": true,
+    "predictor_only_comparison": true,
+    "predictor_corrector_comparison": true,
+    "cost_accounting": "SWAP trials, groundwater updates, nonlinear iterations, linear solves, retries and corrector iterations where observable",
+    "required_case_record": ["exact initial state", "forcing", "groundwater response", "DeltaT", "SWAP internal stepping", "predictor state", "corrector state", "interface residual", "cumulative interface flux", "mass closure", "computational cost"]
+  },
+  "estimator_policy": {
+    "no_coefficient_preselected": true,
+    "candidate_signals": ["predictor-corrector head difference", "predictor-corrector flux difference", "coupling residual history", "SWAP temporal indicator head_inf_bound", "step-doubling discrepancy"],
+    "accept_only_if_source_bound_and_empirically_qualified": true,
+    "A_temporal_may_remain_uninstantiated": true
+  },
+  "tangent_policy": {
+    "contract_field": "soil_water_interface_sensitivity_t%dh_bottom_dq_bottom",
+    "current_reference_solver_emission_must_be_rechecked": true,
+    "finite_difference_may_be_reference_or_fallback": true,
+    "no_claim_of_available_production_tangent_without_live_evidence": true
+  },
+  "literature_priors_not_acceptance_thresholds": [
+    {"source": "Brandhorst, Erdal and Neuweiler 2021, HESS 25, 4041-4059", "doi": "10.5194/hess-25-4041-2021", "use": "iterative versus non-iterative saturated-unsaturated coupling; coupling-step convergence as case-specific evidence"},
+    {"source": "Beegum et al. 2018, Vadose Zone Journal", "doi": "10.2136/vzj2018.02.0034", "use": "stepwise groundwater-head exchange can introduce bottom-flux artefacts; separate internal vadose stepping from groundwater/coupling step"},
+    {"source": "Kyllingstad, Sadjina and Skjong 2025, Simulation Modelling Practice and Theory 145, 103209", "doi": "10.1016/j.simpat.2025.103209", "use": "co-simulation macro-step error estimation and adaptive step-size control"},
+    {"source": "Meyer and Schweizer 2015, PAMM 15, 63-64", "doi": "10.1002/pamm.201510022", "use": "predictor-corrector difference as candidate local macro-step error estimator"},
+    {"source": "USGS MODFLOW 6 Description of Input and Output, ATS utility", "use": "independent precedent for shrinking/growing internal groundwater time steps from numerical behavior; not an application error budget"}
+  ],
+  "success_decision_candidate": "QUALIFIED_COUPLING_TEMPORAL_ERROR_CHARACTERIZATION_READY_FOR_APPLICATION_CLASS_BUDGET_COMPOSITION",
+  "fail_closed_rule": "If the controlled evidence cannot separate coupling-window error from SWAP internal temporal error, cannot preserve hard interface mass, or cannot support an estimator/window policy without target tuning, close with an explicit blocker and no numeric A_temporal coefficient.",
+  "architecture_invariants_requiring_explicit_closeout_audit": [7,8,9,10,11,12,13,14,15,23,25,26,29,30]
+}
