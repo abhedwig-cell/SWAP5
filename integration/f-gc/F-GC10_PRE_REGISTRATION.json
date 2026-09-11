@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC10",
+  "title": "External Application Accuracy Contract Canonical Admission and Temporal-Indicator Binding Review",
+  "status": "PRE_REGISTERED_BEFORE_ANY_CANDIDATE_SOURCE_MUTATION",
+  "branch": "work/f-gc10-application-accuracy-contract-canonical-admission",
+  "authority": {
+    "canonical_base": "d201904a85f3b595e028242978e52c02f5122a09",
+    "canonical_stage": "F-CI43P current canonical postimage at preregistration",
+    "F_GC09_branch_head_reviewed": "7cbb4c564eb519da9c33555a0500f031cd470c31",
+    "F_GC09_decision": "QUALIFIED_EXTERNAL_APPLICATION_ACCURACY_CONTRACT_SEAM_NO_NUMERIC_POLICY",
+    "F_GC09_canonical_admission": false,
+    "F_GC09_candidate_source_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "current_canonical_contract_blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"
+  },
+  "purpose": "Determine whether the isolated F-GC09 runtime/coupler application-accuracy contract seam is safe and semantically complete enough for canonical admission against the current F-CI43P postimage, without introducing any numeric application policy or silently assigning model-specific temporal-indicator semantics to the generic canonical carrier.",
+  "hard_scope": {
+    "production_coupling_admission": false,
+    "numeric_H_app": false,
+    "numeric_A_temporal": false,
+    "numeric_project_budget": false,
+    "universal_accuracy_claim": false,
+    "mass_tolerance_relaxation": false,
+    "fixed_day_or_midnight_assumption": false,
+    "solver_change": false,
+    "physics_change": false,
+    "transaction_core_change": false,
+    "canonical_contract_schema_change": false
+  },
+  "live_postimage_observation": {
+    "canonical_carrier_available": "canonical_numerical_config_t:model_temporal_indicator_budget_available/value",
+    "carrier_contract": "generic model-owned temporal-indicator budget; canonical runtime and F-KT transaction core attach no physical units or estimator semantics; selected model owns interpretation and must normalize its native indicator into the dimensionless F-KT09 certificate surface",
+    "F_GC09_native_budget": "H_app_cm * A_temporal, therefore a head/drawdown-domain budget in cm",
+    "unit_conclusion": "cm is not intrinsically incompatible because the generic carrier is deliberately unit-agnostic",
+    "open_admission_question": "whether the current canonical coupling/model layer contains an explicit, testable binding between this cm budget and the native temporal indicator/certificate normalization that consumes it"
+  },
+  "admission_gates": [
+    "GC09 source must remain compatible with the current canonical contract blob without schema mutation",
+    "no hidden positive fallback budget and no stale budget survival",
+    "disabled/unconfigured behavior must remain unchanged",
+    "head/drawdown native units and selected model indicator semantics must be explicitly bound before the generic budget can control transaction acceptance",
+    "the model-owned normalization to the dimensionless F-KT09 certificate surface must be explicit and testable",
+    "no application-policy provenance may leak into kernel persistent state",
+    "mass conservation remains absolute and independent of head-accuracy policy",
+    "no production MODFLOW coupling claim may follow from admitting the seam"
+  ],
+  "success_decision_candidate": "QUALIFIED_F_GC09_APPLICATION_ACCURACY_CONTRACT_FOR_CANONICAL_ADMISSION_WITH_EXPLICIT_TEMPORAL_INDICATOR_BINDING",
+  "fail_closed_decision_candidate": "BLOCKED_CANONICAL_ADMISSION_UNBOUND_TEMPORAL_INDICATOR_SEMANTICS",
+  "fail_closed_rule": "If the current canonical postimage does not provide an explicit coupling/model consumer that interprets the materialized native head/drawdown budget and normalizes the corresponding native temporal indicator into the F-KT09 certificate surface, F-GC10 must close blocked. The dormant F-GC09 seam remains independently qualified but is not promoted by this workunit.",
+  "source_mutation_policy": {
+    "default": "review/evidence only",
+    "candidate_source_copy_allowed_only_if_all_admission_gates_pass": true,
+    "production_source_change_if_blocked": false
+  },
+  "architecture_invariants_requiring_closeout_audit": [7,8,9,10,11,12,13,14,15,23,25,26,29,30]
+}
