@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.fgc15_closeout.v1",
+  "work_unit": "F-GC15",
+  "title": "Production Groundwater Coupling Runtime Gap Decomposition and Implementation Order",
+  "status": "CLOSED_QUALIFIED_READINESS_GAP_DECOMPOSITION",
+  "decision": "QUALIFIED_PRODUCTION_GROUNDWATER_COUPLING_RUNTIME_GAP_DECOMPOSITION_PRODUCTION_ADMISSION_NOT_READY",
+  "branch": "work/f-gc15-production-groundwater-coupling-runtime-gap-decomposition",
+  "authority_basis": {
+    "frozen_catalog_base": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+    "live_canonical_rechecked": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+    "qualification_evidence_head": "528d9ed36e3a6c4ae3ee039256557afbb082d2d6",
+    "qualification_evidence_run": 34649763220,
+    "qualification_evidence_job": 103428912071,
+    "qualification_evidence_conclusion": "success"
+  },
+  "scope_result": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "canonical_branch_changed": false,
+    "production_coupling_admitted": false,
+    "new_physics": false,
+    "new_solver": false,
+    "scientific_tolerance_relaxed": false,
+    "mass_conservation_relaxed": false,
+    "numeric_H_app_selected": false,
+    "numeric_A_temporal_selected": false
+  },
+  "qualified_gap_catalog": {
+    "gap_count": 9,
+    "implementation_order": [
+      "GC15-G01",
+      "GC15-G02",
+      "GC15-G03",
+      "GC15-G04",
+      "GC15-G05",
+      "GC15-G06",
+      "GC15-G07",
+      "GC15-G08",
+      "GC15-G09"
+    ],
+    "G01": "accepted interface-result and sensitivity transport into the real production physical transaction/result path",
+    "G02": "typed groundwater interface contract and explicit sign/unit mapping",
+    "G03": "transactional generic coupling-window predictor/corrector orchestrator",
+    "G04": "whole-window response/tangent composition",
+    "G05": "optional application-accuracy contract consumption by coupling controller",
+    "G06": "MultiSWAP tile-to-groundwater-cell aggregation and isolation",
+    "G07": "optional external deep-vadose transfer-zone composition",
+    "G08": "external groundwater-model/MODFLOW adapter outside the kernel",
+    "G09": "end-to-end production coupling admission including bounded cost, restart, determinism, mass/interface conservation and diagnostics"
+  },
+  "existing_capabilities_not_to_duplicate": {
+    "F_GC07": {
+      "authority": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+      "qualified": "predictor/corrector temporal and cost characterization in research harness",
+      "not_qualified": "production coupling or whole-window tangent"
+    },
+    "F_SI28": {
+      "authority": "5b514e678d0d794e5837f161033b0bac58385707",
+      "qualified": "optional same-factorization native-qbot dh_bottom_dq_bottom solver primitive",
+      "not_qualified": "transaction/canonical transport, whole-window composition or MODFLOW sign mapping"
+    },
+    "F_KT14": {
+      "authority": "2f7995df362c65916671278a5552ed9976ed39b3",
+      "exact_head_run": 34545458355,
+      "exact_head_conclusion": "success",
+      "effective_decision": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED",
+      "canonical_admission": false
+    },
+    "F_GC14": {
+      "authority": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+      "qualified": "typed external accuracy packet to canonical runtime accuracy-contract adapter",
+      "canonical_adapter_blob": "9212d600e89c85287e9280832c7e0a94befb642e"
+    }
+  },
+  "downstream_owner_reconciliation": {
+    "do_not_create_duplicate_F_GC16_for_G01": true,
+    "F_KT15_branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+    "F_KT15_head_at_recheck": "eacdacb60524221d0c286571444271089347dbcc",
+    "F_KT15_phase": "SOURCE_RECONCILED_IMPLEMENTATION_OPEN",
+    "F_KT15_implemented": false,
+    "F_KT15_tested": false,
+    "F_KT15_qualified": false,
+    "F_KT15_recorded_canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "next_required_action": "Continue F-KT15 only after a fresh current-canonical recomposition/recheck. Implement and qualify the real B1.10 SoilWater task-2 typed solver-service transaction route while preserving F-KT14 accepted-only publication semantics, F-SI28 single-authority tangent generation, unsupported direct-HeadCalc fallback behavior and hard mass conservation. Do not start G02 before G01 is stabilized on current canonical."
+  },
+  "architecture_audit": {
+    "all_30_invariants_covered": true,
+    "result": "PASS_WITH_EXPLICIT_DOWNSTREAM_REQUIREMENTS"
+  },
+  "hard_nonclaims": [
+    "SWAP5 does not yet have an admitted production SWAP-MODFLOW coupling runtime",
+    "F-GC15 does not add a coupling-window orchestrator",
+    "F-GC15 does not qualify a whole-window response tangent",
+    "F-GC15 does not qualify MODFLOW sign conversion",
+    "F-GC15 does not qualify a real project H_app or A_temporal",
+    "F-GC15 does not imply that F-KT14 is canonically admitted",
+    "F-GC15 does not imply that F-KT15 is implemented or qualified",
+    "mass conservation remains absolute"
+  ],
+  "exact_head_requirement": "The commit introducing this closeout must itself pass the F-GC15 workflow. Only that exact green closeout head is the final F-GC15 authority."
+}
