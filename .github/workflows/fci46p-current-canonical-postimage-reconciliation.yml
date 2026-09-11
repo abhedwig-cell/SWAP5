@@ -1,0 +1,23 @@
+name: F-CI46P current canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci46p-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: gfortran --version
+      - name: Reconcile promoted F-CI46 current-canonical postimage
+        run: python3 tests/fci/run_fci46p_current_canonical_postimage_reconciliation.py
