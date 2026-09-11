@@ -3,19 +3,36 @@
   "work_unit": "F-TB01",
   "title": "SWAP5 Scientific Verification, Qualification & Release Testbank Architecture",
   "branch": "work/f-tb01-swap5-testbank-architecture",
-  "source_authority": {"ref":"integration/f-ci-canonical","commit":"3c5f5bd3686e1632058b906be21abd73883e30ef","tree":"6baaf40271497db831698c5a01de355b5d296dbe"},
-  "phase": "RICH_CASE_METADATA_REMEDIATION_PENDING_EXACT_HEAD_REQUALIFICATION",
-  "decision": "PENDING_EXACT_HEAD_REQUALIFICATION",
+  "source_authority": {
+    "ref": "integration/f-ci-canonical",
+    "commit": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "tree": "6baaf40271497db831698c5a01de355b5d296dbe"
+  },
+  "phase": "ARCHITECTURE_AND_CASE_REGISTRY_QUALIFIED_READY_FOR_INCREMENTAL_CATALOG_BUILDOUT",
+  "decision": "QUALIFIED_SWAP5_TESTBANK_ARCHITECTURE_READY_FOR_INCREMENTAL_CASE_CATALOG_BUILDOUT",
   "qualification_evidence": {
     "superseded_schema_only_head": "b4b91fc795c67384dbdaa11d4f9624c6d69d91ab",
     "superseded_schema_only_run": 34551359196,
     "path_resolution_remediated_head": "c2686ab25430f0c79c119b14f29653665da4acc0",
     "path_resolution_remediated_run": 34551579846,
-    "metadata_incomplete_closeout_head": "e2128c4cde45a271792fc451c8da4b81dd9ddaf2",
-    "metadata_incomplete_closeout_run": 34551684754,
-    "metadata_incomplete_reason": "Adversarial closeout reconciliation found that the case-identity contract declared rich mandatory metadata that registry schema 1.0 and its validator did not machine-enforce.",
-    "remediation_target": "Registry schema 1.1 and report schema v1.1 enforce rich case identity, authority separation and explicit tolerance-binding semantics before closeout.",
-    "exact_closeout_head_policy": "Final qualified status is valid only with an external exact-head F-TB01 workflow success; no status blob self-references its own future run."
+    "superseded_metadata_incomplete_closeout_head": "e2128c4cde45a271792fc451c8da4b81dd9ddaf2",
+    "superseded_metadata_incomplete_closeout_run": 34551684754,
+    "rich_metadata_remediation_head": "41f1eb6684a45b2f358936d7e3eaf22e722b9452",
+    "rich_metadata_remediation_tree": "d5b27541a01d2736778b58519d88a304f5d63308",
+    "rich_metadata_remediation_run": 34552952686,
+    "rich_metadata_remediation_conclusion": "success",
+    "registry_schema_version": "1.1",
+    "report_schema_version": "swap5.testbank.report.v1.1",
+    "registered_cases": 9,
+    "registered_layers": 7,
+    "registered_primary_assets_resolved": "9/9",
+    "required_case_metadata": "PASS",
+    "authority_separation": "PASS",
+    "tolerance_binding_semantics": "PASS",
+    "hard_mass_policy": "PASS",
+    "architecture_invariants": "30/30_PASS",
+    "required_deliverables": "12/12_PASS",
+    "closeout_binding": "The remediation run qualifies the substantive registry/schema contract. Final closeout validity additionally requires an external F-TB01 workflow success on the exact final status head; the status blob intentionally does not self-reference that future run."
   },
   "deliverables": {
     "architecture": "docs/testbank/F-TB01_TESTBANK_ARCHITECTURE.md",
@@ -31,11 +48,40 @@
     "proof_of_concept_registry": "testbank/manifests/F-TB01_CASE_REGISTRY.json",
     "status_closeout": "integration/f-tb/F-TB01_STATUS.json"
   },
-  "supporting_mechanics": {"case_registry_schema":"testbank/schema/F-TB01_CASE_REGISTRY.schema.json","validator":"testbank/runners/validate_ftb01_registry.py","workflow":".github/workflows/ftb01-testbank-architecture.yml"},
-  "scope_holds": {"production_source_changed":false,"existing_test_changed":false,"qualified_reference_changed":false,"physics_changed":false,"solver_policy_changed":false,"runtime_semantics_changed":false,"io_adapter_changed":false},
-  "state": {"implemented":true,"persisted":true,"tested":false,"architecture_qualified":true,"case_registry_qualified":false,"full_scientific_catalog_qualified":false,"canonical_admitted":false},
+  "supporting_mechanics": {
+    "case_registry_schema": "testbank/schema/F-TB01_CASE_REGISTRY.schema.json",
+    "validator": "testbank/runners/validate_ftb01_registry.py",
+    "workflow": ".github/workflows/ftb01-testbank-architecture.yml"
+  },
+  "scope_holds": {
+    "production_source_changed": false,
+    "existing_test_changed": false,
+    "qualified_reference_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "runtime_semantics_changed": false,
+    "io_adapter_changed": false
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "architecture_qualified": true,
+    "case_registry_qualified": true,
+    "full_scientific_catalog_qualified": false,
+    "canonical_admitted": false
+  },
   "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
   "mass": "HARD_UNCHANGED",
-  "known_incremental_followups": ["source-locked SWAP 4.3.1 scientific/golden corpus with legacy-defect classifications","analytical/manufactured/property case expansion","complete optional-state restart corpus","large-scale MultiSWAP and difficult-column performance corpus","MODFLOW coupling application-class corpus","alternative/reduced/coarse solver qualification","cross-platform performance gates","historical-defect regression catalog"],
+  "known_incremental_followups": [
+    "source-locked SWAP 4.3.1 scientific/golden corpus with legacy-defect classifications",
+    "analytical/manufactured/property case expansion",
+    "complete optional-state restart corpus",
+    "large-scale MultiSWAP and difficult-column performance corpus",
+    "MODFLOW coupling application-class corpus",
+    "alternative/reduced/coarse solver qualification",
+    "cross-platform performance gates",
+    "historical-defect regression catalog"
+  ],
   "exit_target": "SWAP5_TESTBANK_ARCHITECTURE_AND_CASE_REGISTRY_READY_FOR_INCREMENTAL_IMPLEMENTATION"
 }
