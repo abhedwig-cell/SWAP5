@@ -3,32 +3,66 @@
   "work_unit": "F-PM06F",
   "title": "Restricted Surface-Evaporation Runtime Materialization",
   "branch": "work/f-pm06f-restricted-surface-evaporation-runtime-materialization",
-  "phase": "PRODUCTION_CANDIDATE_PERSISTED_PENDING_EXACT_HEAD_OWNER_CI",
-  "decision": "PENDING_EXACT_HEAD_OWNER_CI",
+  "phase": "OWNER_QUALIFIED_CLOSEOUT_PERSISTED_PENDING_EXACT_CLOSEOUT_HEAD_CI",
+  "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_READY_FOR_INDEPENDENT_FVQ",
   "source_authority": "af9ec34ec587be76deea95763186a204f3ed32cd",
   "production_candidate": "fdb0e745b362c81a042faba7f81cab53b1372d97",
   "production_scope": [
     "src/process/mod_restricted_surface_evaporation.f90",
     "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
   ],
+  "production_blobs": {
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+  },
   "upstream_authorities": {
     "structural": "F-VQ52@003209963ead7f14e375fca7f7d5d4b2a1996ae8",
     "hydraulic_capacity": "F-VQ54@7cf8f6685ca24f855621f872bcf906f346edfa72",
     "committed_hydraulic_view": "F-MR07 qualified blobs d7d85fe71ced0d94b29c8d9395859ae1834f7dd6 / 37f5968ffe00b1ff56f824f77ab94d3825171acf"
   },
-  "qualified_target_scope": "trial-local SWINTER=0 SWREDU=0 surface-evaporation materialization from already-qualified ET demand, committed/base ponding classification and abstract signed hydraulic-capacity provider",
+  "qualified_scope": "trial-local SWINTER=0 SWREDU=0 surface-evaporation materialization from already-qualified ET demand, committed/base ponding classification and abstract signed hydraulic-capacity provider",
+  "owner_qualification": {
+    "workflow": "F-PM06F restricted surface evaporation runtime materialization",
+    "run": 34547871361,
+    "job": 103104281571,
+    "head": "18b37cb537717f4b4df9d28913063985d648eaa8",
+    "conclusion": "success",
+    "gate": "FPM06F_GATE=PASS",
+    "evidence": [
+      "exact two-file production scope",
+      "F-VQ52 structural authority pinned",
+      "F-VQ54 hydraulic-capacity authority and independent oracle replayed O0/O2",
+      "exact committed-base state identity delivered to capacity provider",
+      "ponding_depth == 1e-10 cm classified dry",
+      "ponding_depth just above 1e-10 cm classified ponded",
+      "finite negative raw capacity retained diagnostically and dry structural evaporation clamped to zero",
+      "AVAILABLE plus nonfinite capacity fails closed before structural process",
+      "invalid ET demand and uninitialized committed state fail closed",
+      "A-B-A repeatability",
+      "committed state unchanged",
+      "O0/O2 output identity",
+      "no second mass booking"
+    ]
+  },
   "state": {
     "production_realized": true,
     "production_persisted": true,
     "tests_persisted": true,
     "architecture_audit_persisted": true,
-    "tested": false,
-    "owner_qualified": false,
+    "tested": true,
+    "owner_qualified": true,
+    "exact_closeout_head_ci_green": false,
     "reference_modified": false,
     "canonical_admitted": false
   },
   "mass": "RESULT_DECOMPOSITION_ONLY; ACCEPTED_SOLVER_EXTERNAL_TOP_FLUX_REMAINS_SOLE_AUTHORITATIVE_TOP_WATER_MASS_CONTRIBUTION",
   "transaction": "COMMITTED_BASE_READ_ONLY; MATERIALIZATION_NON_COMMITTING; REJECTED_OR_RETRIED_CALLS_HAVE_NO_AUTHORITATIVE_EFFECT",
+  "performance_qualification": {
+    "functional_multiswap_compatibility": "PASS",
+    "throughput_efficiency_qualified": false,
+    "known_active_call_cost": "current committed-view and capacity interfaces require call-local snapshot/copy reconstruction; this is not persistent state and is not optimized in F-PM06F",
+    "hold": "do not bypass abstract interfaces through B1.10 internals; performance redesign requires separate qualification"
+  },
   "hard_holds": [
     "no active top-boundary replacement",
     "no full BOUNDTOP migration",
@@ -36,7 +70,13 @@
     "no second mass booking",
     "no persistent optional state",
     "no SWINTER/SWREDU scope widening",
-    "no frost/macropore scope widening"
+    "no frost/macropore scope widening",
+    "no HeadCalc or B1.10 runtime-internal dependency"
   ],
-  "next_required_step": "run exact-head owner qualification; if green, persist owner closeout and rerun exact closeout head before any independent F-VQ workunit"
+  "closeout_gate": {
+    "require_exact_status_head_ci_green": true,
+    "no_further_status_mutation_required_after_green_exact_head": true,
+    "independent_fvq_may_start_only_after_green_exact_closeout_head": true
+  },
+  "next_required_step": "after this exact closeout head is green, hand the immutable production candidate to a new independent F-VQ workunit; no production repair or canonical admission is allowed in that qualification"
 }
