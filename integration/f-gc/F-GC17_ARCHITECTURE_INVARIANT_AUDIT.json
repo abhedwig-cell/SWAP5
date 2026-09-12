@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC17",
+  "decision": "PASS_WITHIN_RESTRICTED_TYPED_INTERFACE_SCOPE",
+  "invariants": {
+    "1_one_kernel": "PASS: no alternate SWAP kernel or use-case-specific solver is introduced.",
+    "2_kernel_io_separation": "PASS: typed runtime values only; no files, paths, parsers or file units enter the kernel.",
+    "3_explicit_data_separation": "PASS: interface data, lineage and numerical head-convergence policy are distinct types.",
+    "7_transactional_timesteps": "PASS_WITHIN_SCOPE: lineage/revision fields support downstream checkpoint/trial composition; GC17 itself does not mutate state.",
+    "9_generic_time": "PASS: finite increasing [t0,t1], no day or calendar boundary semantics.",
+    "10_flexible_coupling_windows": "PASS: contract imposes no fixed duration or midnight boundary.",
+    "11_coupling_core_functionality": "PASS: direct interface quantities are first-class runtime contracts.",
+    "12_explicit_groundwater_interface": "PASS: H_SWAP and H_GW are typed separately; H_SWAP uses explicit H=z+psi datum conversion; q_GW=-q_SWAP assignment is exact.",
+    "13_mass_conservation_absolute": "PASS: no mass tolerance exists; head convergence is explicitly separate from flux/mass residuals.",
+    "14_interface_sensitivity_first_class": "PASS_NOT_EXPANDED: GC17 does not alter or hide the already admitted sensitivity path; tangent composition remains F-GC23.",
+    "15_limit_coupling_cost": "PASS_NOT_EXPANDED: GC17 adds pure conversions/residual evaluation only and no extra SWAP trajectory.",
+    "16_multiswap_primary": "PASS: contracts contain no singleton/global state and are reusable per tile/cell mapping.",
+    "17_no_required_one_to_one_modflow": "PASS: no MODFLOW-cell ownership or 1:1 mapping is encoded.",
+    "18_deep_vadose_external": "PASS: no transfer-zone physics is introduced into SWAP.",
+    "22_no_headcalc_internal_coupling": "PASS: contract depends on no HeadCalc arrays or legacy internals.",
+    "23_physics_solver_policy_separation": "PASS: head-convergence policy is explicit runtime numerical policy and changes no physics.",
+    "25_reference_mode": "PASS: no reference-mode path is removed or modified.",
+    "26_runtime_diagnostics": "PASS_FOUNDATION: explicit status codes, lineage and residuals support downstream diagnostics; aggregation remains F-GC19/F-GC21.",
+    "28_runtime_coupler_composition": "PASS: datum/sign/unit mapping is runtime/coupler contract, not SWAP-column composition knowledge.",
+    "29_no_silent_dependencies": "PASS: datum, units, sign convention, provenance and coupling window are explicit; no midnight/day or implicit tolerance assumption.",
+    "30_architecture_change_audit": "PASS: this file records the explicit invariant review before closeout."
+  },
+  "additional_hard_findings": [
+    "The earlier physical F-GC02 harness numerically treated prescribed bottom pressure head as coupling head after cm-to-m conversion. GC17 intentionally does not preserve that shortcut: direct groundwater coupling requires a common hydraulic datum and lower-boundary elevation so H_SWAP=z_bottom+psi_bottom.",
+    "Native SWAP qbot is cm/day positive into SWAP; public q_SWAP is m/s positive leaving SWAP. The conversion and sign reversal are now explicit and tested.",
+    "H_interface_tol defaults to an invalid zero carrier and becomes usable only with explicit externally governed qualified provenance.",
+    "F-GC17 does not bind H_interface_tol to H_app or A_temporal. That compatibility/allocation remains owned by F-GC22."
+  ],
+  "canonical_drift_disposition": "F-CI49P changed no src/ files after the GC17 branch base. Owner qualification remains source-valid; canonical admission must still use a clean then-current canonical composition rather than direct merge by assumption."
+}
