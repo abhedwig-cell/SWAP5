@@ -1,0 +1,36 @@
+name: F-GC19 groundwater interface mass ledger
+
+on:
+  push:
+    branches:
+      - work/f-gc19-interface-mass-ledger-diagnostics
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-ledger:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-GC19 mass ledger qualification
+        run: bash tests/fgc/run_fgc19_groundwater_interface_mass_ledger.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
