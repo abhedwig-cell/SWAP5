@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.fdoc15_status.v1",
+  "work_unit": "F-DOC15",
+  "title": "SWAP5 RB1 and Current-Canonical Status-A Readiness Final Gap Assessment & Closure Plan",
+  "branch": "work/f-doc15-rb1-current-canonical-status-a-final-gap-assessment",
+  "base_authority": "1c63aeede05180d3628873083d9351da6e67175f",
+  "qualified_documentation_authorities": {
+    "F-DOC01": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe",
+    "F-DOC02": "18942fee83eb385fccc1663230772ae03dcc9ae6",
+    "F-DOC03": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+    "F-DOC04": "a703747ce1991c5601b76a84f04969b602298268",
+    "F-DOC05": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+    "F-DOC06": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
+    "F-DOC07": "492b984bca282d6ec11dcaa727227b34c0ff3a84",
+    "F-DOC08": "8e5863510004ec11ab377b5bc9d3bd5df6d69777",
+    "F-DOC09": "2a4a8738496329001a3c3af9b5e50a9f31d0c44f",
+    "F-DOC10": "ef34a9f5a01d78ff9c2628315b484c5a8ff4f717",
+    "F-DOC11": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+    "F-DOC12": "e34caabe225986db3c60551f4168869f3e4cc2a2",
+    "F-DOC13": "1c63aeede05180d3628873083d9351da6e67175f"
+  },
+  "excluded_documentation_authorities": {
+    "F-DOC14": {
+      "branch_head": "1c63aeede05180d3628873083d9351da6e67175f",
+      "reason": "No independent F-DOC14_STATUS.json exists; branch is an alias of the F-DOC13 authority and is not counted as a qualified authority."
+    }
+  },
+  "wur_authority": {
+    "project_control_target": "WR-QA-2024",
+    "controlled_full_text_status": "NOT_OBTAINED",
+    "inspectable_baseline": "WR-QA-PUBLIC-22",
+    "public_requirement_denominator": 22,
+    "family_denominator": 7,
+    "reconciliation_state": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "authority_head": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe"
+  },
+  "rb1": {
+    "scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "immutable": true,
+    "status_a_ready_for_formal_assessment": false,
+    "classification_counts": {
+      "SATISFIED": 2,
+      "EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE": 0,
+      "DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE": 4,
+      "PARTIAL": 14,
+      "MISSING": 2,
+      "NOT_APPLICABLE_WITH_RATIONALE": 0
+    }
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "snapshot_head": "42544af575db522d012db491db801615577048df",
+    "snapshot_tree": "4360cd08fd0e952978df9e2742bcc34fdede9ef1",
+    "latest_admission": "F-CI49 definitive F-KT15 solver-service transaction composition",
+    "moving_target": true,
+    "status_a_ready_for_formal_assessment": false,
+    "classification_counts": {
+      "SATISFIED": 2,
+      "EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE": 3,
+      "DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE": 4,
+      "PARTIAL": 11,
+      "MISSING": 2,
+      "NOT_APPLICABLE_WITH_RATIONALE": 0
+    }
+  },
+  "requirement_classifications": [
+    {"requirement":"1.1","family":"ST.1","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"1.2","family":"ST.1","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"2.1","family":"ST.2","rb1":"PARTIAL","current":"EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE"},
+    {"requirement":"2.2","family":"ST.2","rb1":"PARTIAL","current":"EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE"},
+    {"requirement":"2.3","family":"ST.2","rb1":"PARTIAL","current":"EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE"},
+    {"requirement":"3.1","family":"ST.3","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"3.2","family":"ST.3","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"3.3","family":"ST.3","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"3.4","family":"ST.3","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"4.1","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"4.2","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"4.3","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"4.4","family":"ST.4","rb1":"MISSING","current":"MISSING"},
+    {"requirement":"4.5","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"5.1","family":"DO.5","rb1":"SATISFIED","current":"SATISFIED"},
+    {"requirement":"5.2","family":"DO.5","rb1":"SATISFIED","current":"SATISFIED"},
+    {"requirement":"6.1","family":"DO.6","rb1":"MISSING","current":"MISSING"},
+    {"requirement":"6.2","family":"DO.6","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"6.3","family":"DO.6","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"6.4","family":"DO.6","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"7.1","family":"IU.7","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"7.2","family":"IU.7","rb1":"PARTIAL","current":"PARTIAL"}
+  ],
+  "hard_findings": {
+    "verification_is_validation": false,
+    "t12_application_validation_open": true,
+    "sensitivity_evidence_complete": false,
+    "uncertainty_evidence_complete": false,
+    "fitness_for_purpose_records_complete": false,
+    "parameter_provenance_complete": false,
+    "user_guidance_complete": false,
+    "controlled_physical_and_hybrid_theory_complete": false,
+    "current_canonical_documentation_reconciled_to_exact_snapshot": false,
+    "mass_conservation_relaxed": false,
+    "rb1_reopened": false,
+    "status_a_certified": false
+  },
+  "global_blockers": [
+    "G0_CONTROLLED_WR_QA_2024_RECONCILIATION",
+    "G1_EXACT_CURRENT_CANONICAL_ASSESSMENT_CANDIDATE_AND_DELTA_RECONCILIATION_CURRENT_ONLY"
+  ],
+  "decision": "QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED_WHEN_EXACT_HEAD_CI_GREEN",
+  "formal_status_a_readiness_decision": "NOT_READY",
+  "formal_status_a_certification": "NOT_PERFORMED_AND_NOT_CLAIMED",
+  "closure_backlog": "integration/f-doc/F-DOC15_CLOSURE_BACKLOG.json",
+  "assessment": "docs/scientific/F-DOC15_STATUS_A_READINESS_FINAL_GAP_ASSESSMENT.md",
+  "validity_rule": "Final qualification requires .github/workflows/fdoc15-status-a-readiness-final-gap-assessment.yml to complete successfully with head_sha equal to the exact final branch head containing this status, backlog, assessment and closeout. No post-green metadata rewrite is required or permitted absent a genuine defect.",
+  "architecture_invariants": {
+    "total": 30,
+    "adverse_delta": 0,
+    "mass_conservation": "HARD_UNCHANGED"
+  }
+}
