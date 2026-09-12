@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "F-CI55R",
   "title": "F-CI55 Moving Canonical Preservation Authority Reconciliation",
-  "phase": "QUALIFICATION_PENDING",
-  "decision": "PENDING_DEDICATED_AND_BROAD_GATE",
+  "phase": "QUALIFIED_REPLACEMENT_PR_READY_EXACT_STATUS_HEAD_RECHECK_REQUIRED",
+  "decision": "QUALIFIED_F_CI55R_FOR_REPLACEMENT_PR_NOT_YET_CANONICAL_PROMOTION",
   "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
   "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
   "blocked_fci55_candidate": "860f697cd785f3de01a36c9f0f06043e6dcb689a",
@@ -17,19 +17,26 @@
   "target_moving_preservation_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
   "reconciliation_commit": "41de29f585c9446911799d6671bd38e69addc509",
   "reconciliation_scope": "one-line moving-preservation AUTH update only; dependency_surface byte-identical; no production/reference mutation",
+  "first_green_reconciliation": {
+    "head": "e1f8fa702ba2e92fcd9a764c6258e5737da4afbb",
+    "run": 34718435020,
+    "job": 103619730442,
+    "conclusion": "success"
+  },
   "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_MOVING_PRESERVATION_RECONCILIATION",
   "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
-  "dedicated_qualification_green": false,
+  "dedicated_qualification_green": true,
   "broad_fci_canonical_green": false,
   "canonical_admission": false,
   "production_groundwater_coupling_admission": false,
+  "ready_for_replacement_pr": true,
   "ready_for_canonical_promotion": false,
   "required_before_promotion": [
-    "Dedicated F-CI55R qualification must be green on the exact final qualification head.",
+    "This exact status head must rerun the dedicated F-CI55R qualification green.",
+    "The blocked PR #89 must not be merged and is superseded by the replacement F-CI55R PR.",
     "Replacement PR broad F-CI canonical qualification must be green, including current-restricted-canonical-preservation.",
     "integration/f-ci-canonical must still equal the pinned restart canonical immediately before promotion, otherwise recompose/requalify.",
-    "Promotion must be a true two-parent merge; force, squash and rebase are forbidden.",
-    "Blocked F-CI55 candidate 860f697cd785f3de01a36c9f0f06043e6dcb689a must not be promoted directly."
+    "Promotion must be a true two-parent merge; force, squash and rebase are forbidden."
   ],
   "hard_nonclaims": [
     "No full F-GC21 predictor-corrector orchestration admission.",
@@ -37,5 +44,6 @@
     "No MODFLOW/aquifer end-to-end qualification.",
     "No crash-recovery, distributed-runtime or large-batch throughput qualification.",
     "RB1 remains frozen."
-  ]
+  ],
+  "closeout_rule": "Do not self-reference the containing status commit. The exact branch head is replacement-PR authority only after the automatically triggered dedicated workflow succeeds on that head and no production/reference delta exists beyond the already qualified F-CI55 composition."
 }
