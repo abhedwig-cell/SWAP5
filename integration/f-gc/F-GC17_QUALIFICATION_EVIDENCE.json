@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC17",
+  "qualified_head": "7ca3c880197a31217c0b08da1a6d989f06c5f608",
+  "workflow": ".github/workflows/fgc17-typed-groundwater-interface.yml",
+  "workflow_run": 34678250907,
+  "workflow_job": 103511903625,
+  "conclusion": "success",
+  "gates": {
+    "exact_head_start": "PASS",
+    "compiler_identity": "PASS",
+    "typed_interface_qualification": "PASS",
+    "exact_head_end": "PASS",
+    "O0_O2_identity": "PASS",
+    "source_allowlist": "PASS",
+    "no_numeric_head_tolerance_default": "PASS",
+    "datum_required": "PASS",
+    "H_equals_z_plus_psi": "PASS",
+    "qbot_sign_unit_mapping": "PASS",
+    "exact_action_reaction_flux_pairing": "PASS",
+    "nonfinite_fail_closed": "PASS",
+    "provenance_bound_head_policy": "PASS"
+  },
+  "canonical_drift_after_branch_start": {
+    "branch_start_canonical": "42544af575db522d012db491db801615577048df",
+    "observed_current_canonical": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "cause": "F-CI49P current-canonical postimage preservation reconciliation",
+    "compare_status": "42544af_to_ca1dbf6_ahead_by_7",
+    "production_src_delta": false,
+    "changed_classes": ["CI workflow", "F-CI49P evidence/status/audit", "F-CI49P test runner"],
+    "disposition": "SOURCE_COMPATIBLE_OWNER_QUALIFICATION; SEPARATE_CANONICAL_ADMISSION_MUST_RECOMPOSE_ON_THEN_CURRENT_CANONICAL"
+  },
+  "production_source_modified": true,
+  "production_source_files": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/runtime/mod_groundwater_coupling_policy.f90"
+  ],
+  "production_groundwater_coupling_admitted": false
+}
