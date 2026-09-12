@@ -1,0 +1,61 @@
+{
+  "workunit": "F-GC18A",
+  "title": "Groundwater Owner-Evidence Canonicalization Audit",
+  "scope": "Governance, canonicalization, and evidence-integrity audit only. No production implementation changes.",
+  "program_authority": {
+    "branch": "regie/f-rg01-post-rb1-program-rebaseline",
+    "commit": "09ef05c60c5e45af218980001c8ad8ec30da2e9e"
+  },
+  "canonical_baseline": {
+    "branch": "integration/f-ci-canonical",
+    "head_at_final_prewrite_recheck": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "owner_candidate": {
+    "branch": "work/f-gc18r-two-phase-commit-readiness",
+    "exact_owner_head": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+    "production_authority": "e96a160dfa6d7202c2ece80306af7282cd40d831",
+    "workflow_run_id": 34680882694,
+    "workflow_conclusion": "success",
+    "owner_approved": true,
+    "owner_status_canonical_admission": false
+  },
+  "owner_production_delta_files": [
+    "src/f_driver/calcmodel_driver.f90",
+    "src/kernel/kernel_api.f90",
+    "src/kernel/kernel_types.f90"
+  ],
+  "evidence_integrity": {
+    "owner_exact_head_gate": "VERIFIED",
+    "independent_qualification": "MISSING",
+    "current_canonical_contains_f_gc_owner_evidence_directory": false,
+    "f_ci50_admission_precedent_applies": true,
+    "f_gc18a_imports_owner_production_changes": false,
+    "f_gc18a_allocates_verifier_identity": false
+  },
+  "f_ci50_precedent": {
+    "prepromotion_qualification_head": "bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b",
+    "postpromotion_reconciliation_head": "a8da1d72800df8afd539b21a2040caeed7ead3bd",
+    "postpromotion_r1_head": "96d274ddebf7c566dba84cdf9402a41c064978c3",
+    "resulting_current_canonical_closeout": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+    "required_pattern": [
+      "independent prepromotion qualification",
+      "true history-preserving canonical admission",
+      "postpromotion evidence preservation and revalidation"
+    ]
+  },
+  "decision": "BLOCKED_PENDING_INDEPENDENT_QUALIFICATION",
+  "canonical_admission": false,
+  "production_changes_by_f_gc18a": false,
+  "architecture_change_by_f_gc18a": false,
+  "architecture_invariants": {
+    "all_30_invariants_modified": false,
+    "transactional_semantics_weakened": false,
+    "groundwater_interface_contract_weakened": false,
+    "mass_conservation_weakened": false,
+    "coupling_window_semantics_weakened": false,
+    "runtime_coupler_separation_weakened": false,
+    "silent_dependency_introduced": false
+  },
+  "required_next_step": "Run an independently owned qualification against the exact pinned F-GC18R owner authority and the then-current canonical. Only after a positive result may a separate canonical-integration workunit perform a true history-preserving admission followed by postpromotion verification.",
+  "downstream_rule": "F-GC18R may be cited as an explicit owner/development dependency, but not as current-canonical authority until independent qualification and canonical admission are complete."
+}
