@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC17",
+  "title": "Typed Direct Groundwater Interface, Datum, Sign, Units & Convergence Policy",
+  "branch": "work/f-gc17-typed-direct-groundwater-interface-convergence-policy",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "42544af575db522d012db491db801615577048df",
+    "tree": "4360cd08fd0e952978df9e2742bcc34fdede9ef1",
+    "F_CI49_admitted": true,
+    "F_CI49_qualified_status_head": "40e674db6c48f494fb5f49e52951c2a9ae3dfe9d",
+    "F_CI49_exact_head_run": 34677720953,
+    "F_CI49_exact_head_job": 103510472684,
+    "F_CI49_exact_head_conclusion": "success"
+  },
+  "upstream_authorities": {
+    "F_GC16_closeout": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+    "F_GC16_decision": "QUALIFIED_RESTRICTED_PRODUCTION_GROUNDWATER_COUPLING_COMPOSITION_PLAN_READY_FOR_IMPLEMENTATION",
+    "F_GC01_interface_contract_blob": "fb1d0df4c78cffb74dabaa7ef1c2ff1bf992763c",
+    "F_GC01_window_contract_blob": "c9bf2f241019dcedf44002333d446415b8a67a05",
+    "F_GC01_mass_contract_blob": "7055880b8e77ebf9753d6c6725d967b011bac648",
+    "F_GC15_closeout": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "F_KT15_canonical_admission": "42544af575db522d012db491db801615577048df"
+  },
+  "production_source_allowlist": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/runtime/mod_groundwater_coupling_policy.f90"
+  ],
+  "read_only_authority_audit": [
+    "src/runtime/mod_coupling_application_accuracy_contract.f90",
+    "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+    "src/runtime/mod_canonical_contracts.f90",
+    "qualified prescribed-bottom-head mode-5 owner contracts and source"
+  ],
+  "hard_contract": [
+    "Typed direct-coupling quantities must keep H_SWAP, H_GW, q_SWAP, q_GW, r_H and r_q distinct.",
+    "The interface head datum and any SWAP-native pressure-head conversion must be explicit; no pressure-head/elevation-head equivalence may be assumed silently.",
+    "q_SWAP is positive leaving SWAP; q_GW is positive leaving groundwater; r_q=q_SWAP+q_GW.",
+    "Direct interface mass pairing is exact q_GW=-q_SWAP and has no tolerance.",
+    "The coupling window is generic finite [t0,t1] with no midnight/day semantics.",
+    "H_interface_tol is explicit, finite, positive and provenance-bound; there is no numeric default.",
+    "H_interface_tol is not automatically equivalent to Richards temporal H_budget, nonlinear solver tolerance, predictor perturbation, regulatory threshold or application H_app.",
+    "Mass conservation is outside the allocatable head-accuracy budget and cannot be relaxed by this policy."
+  ],
+  "implementation_scope": [
+    "Materialize typed direct groundwater interface data and validation.",
+    "Materialize explicit datum/unit conversion only after live owner semantics are audited.",
+    "Materialize a fail-closed head-convergence policy carrier with provenance requirements.",
+    "Provide pure/deterministic residual and conversion operations sufficient for downstream F-GC18 through F-GC22 composition."
+  ],
+  "qualification_plan": [
+    "positive sign/unit/datum round trips",
+    "exact q_GW=-q_SWAP assignment and r_q identity",
+    "finite generic non-midnight window validation",
+    "NaN/Inf/missing datum or provenance fail closed",
+    "head residual and flux/mass residual remain type-separated",
+    "missing or non-positive H_interface_tol fails closed",
+    "forbidden tolerance-substitution matrix",
+    "O0/O2 deterministic identity",
+    "source allowlist and no unrelated production delta",
+    "architecture invariant audit"
+  ],
+  "hard_nonclaims": [
+    "no predictor-corrector orchestrator",
+    "no groundwater service implementation",
+    "no MODFLOW adapter",
+    "no application/temporal accuracy binding",
+    "no numeric production head tolerance",
+    "no new physics",
+    "no solver or transaction modification",
+    "no production groundwater coupling admission",
+    "no deep-vadose implementation",
+    "no canonical admission in F-GC17"
+  ],
+  "architecture_invariants_to_audit": [1,2,3,7,9,10,11,12,13,14,15,16,17,18,22,23,25,26,28,29,30],
+  "exit_target": "QUALIFIED_TYPED_DIRECT_GROUNDWATER_INTERFACE_DATUM_SIGN_UNITS_CONVERGENCE_POLICY_READY_FOR_CANONICAL_ADMISSION"
+}
