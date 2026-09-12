@@ -16,12 +16,13 @@
   "owner_authorities": {
     "drainage_runtime": "F-CI36 frozen admitted authority at 8fa79a70a9faccaf8b63826df607a685eb75b046",
     "independent_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff",
-    "current_preservation_rule": "current canonical preserves F-CI36 as a frozen replay authority on its qualified postimage; F-TB10 separately verifies the admitted DIVDRA production blobs remain byte-identical in current canonical",
-    "soil_water_solver": "current-canonical serialized reference Full Richards path",
-    "mass": "F-TB01 hard mass gate plus current canonical mass-accounting contract"
+    "temporal_negative_authority": "F-VQ28 rejects selecting a generic nonzero production tolerance for the existing external full-half shape",
+    "certificate_authority": "F-VQ34/F-CI21 qualify normalized Richards head-budget certificate semantics but no application numeric H_budget",
+    "accuracy_transport": "F-CI44/F-CI46 consume externally qualified application policy and choose no H_app/A_temporal",
+    "groundwater_binding_nonowner": "F-GC22 is direct-groundwater-coupling-specific, not canonical at assessment, and chooses no numeric application policy"
   },
   "scope": {
-    "purpose": "Execute and qualify the first bounded F-TB09 integrated interaction case that is already realizable on current production composition without changing production source.",
+    "purpose": "Attempt scientific execution of the bounded F-TB09 drainage x changing-bottom interaction without modifying production source, and if existing admitted numerical policy is insufficient, stop fail-closed and hand the policy gap to its proper owner.",
     "runtime_profile": "restricted serialized single-column Full Richards runtime with single-level positive DIVDRA, explicit hydraulic view and prescribed-head SWBOTB=5 lower boundary",
     "time_profile": "two consecutive generic numeric intervals with a committed boundary between them",
     "first_interval": {
@@ -46,7 +47,7 @@
   "oracle": {
     "primary_class": "O6_PROPERTY_INVARIANT",
     "id": "TB09-DRAIN-BOTTOM-SIGNED-LEDGER",
-    "requirements": [
+    "scientific_requirements_if_reexecuted_after_owner_gap_closure": [
       "active DIVDRA publication in both intervals",
       "prescribed bottom head changes across the committed interval boundary",
       "the resulting signed bottom flux changes",
@@ -54,7 +55,7 @@
       "both interval ledgers are complete and individually satisfy the hard mass gate",
       "full-window combined ledger satisfies the same hard mass gate",
       "O0 and O2 executions are bitwise text-identical",
-      "F-CI36 frozen admitted authority and its F-VQ51 provenance are pinned while the current-canonical DIVDRA production blobs are verified identical to the admitted blobs"
+      "numerical temporal acceptance is governed by an independently qualified policy/provenance applicable to this runtime scope"
     ]
   },
   "mass_contract": {
@@ -63,8 +64,8 @@
     "tolerance_meaning": "arithmetic closure gate only; never an allowance for lost water",
     "interval_identity": "Delta(S_soil) = signed external water amount over the interval",
     "full_window_identity": "Delta(S_soil,t0->t1) = sum(interval total_in) - sum(interval total_out)",
-    "derived_signed_bottom_flux": "qbot = (total_in-total_out)/DeltaT + qtop + Q_divdra for this restricted fixture, because root uptake, irrigation/source terms, surface storage and runoff are inactive",
-    "bottom_sign_rule": "bottom flux is represented exactly once; no upward/downward double booking"
+    "bottom_sign_rule": "bottom flux is represented exactly once; no upward/downward double booking",
+    "blocker_policy": "Mass conservation remains hard while blocked; no temporal policy may override a mass failure."
   },
   "source_policy": {
     "production_source_change_allowed": false,
@@ -73,16 +74,26 @@
     "ftb09_modified": false,
     "test_and_evidence_only": true
   },
+  "blocked_finding": {
+    "observed_run": 34680289804,
+    "observed_head": "3a3017de9b71430deb053a141b7d9ce762346ebd",
+    "result": "first integrated interval not committed",
+    "current_temporal_policy": "TX_TEMPORAL_EXTERNAL_FULL_HALF with zero tolerance",
+    "owner_gap": "No admitted numeric temporal acceptance policy/provenance covers this genuine nonstationary standalone/integrated Richards interaction.",
+    "production_defect_claim": false
+  },
   "nonclaims": [
     "No direct SWAP-MODFLOW coupling qualification.",
     "No drainage exchange-law science qualification beyond the already admitted F-CI36 restricted owner scope.",
-    "No fully implicit or trial-state drainage response.",
-    "No negative/infiltration drainage or multilevel drainage qualification.",
-    "No surface-water-controlled drainage qualification.",
-    "No parallel active-DIVDRA throughput qualification.",
-    "No qualification of all bottom-boundary modes; this workunit uses prescribed-head SWBOTB=5 only.",
+    "No proof that the observed noncommit is a production-physics defect.",
+    "No generic temporal tolerance is selected.",
+    "No application H_budget is selected.",
+    "No F-GC22 coupling accuracy budget is imported into standalone TB10.",
+    "No mass-conservation relaxation.",
     "No promotion of the other seven F-TB09 catalog cases."
   ],
-  "exit_target": "QUALIFIED_TB09_003_RESTRICTED_DRAIN_BOTTOM_INTERACTION",
-  "close_rule": "The exit target is attained only on an exact branch head for which the dedicated GitHub Actions workflow passes its start-head check, qualification runner and end-head check. Any later commit requires a new exact-head run."
+  "exit_target": "BLOCKED_OWNER_TEMPORAL_ACCEPTANCE_POLICY_REQUIRED",
+  "decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP",
+  "return_condition": "A separate owner workunit must qualify and, where required, canonically admit temporal acceptance policy/provenance explicitly covering this profile before scientific execution resumes.",
+  "close_rule": "F-TB10 closes only as a blocked assessment when an exact-head CI run validates the blocker evidence, owner handoff, unchanged production/reference scope, hard mass policy and architecture audit."
 }
