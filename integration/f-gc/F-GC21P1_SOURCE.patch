@@ -108,6 +108,15 @@ diff --git a/src/runtime/mod_canonical_interval_runtime.f90 b/src/runtime/mod_ca
 +        end if
          result%interface_sensitivity = terminal_sensitivity
 @@
+          result%interface_sensitivity%covers_requested_interval = &
+               result%mass%accepted_transaction_count == 1 .and. &
+-              result%interface_sensitivity%origin_t0 == interval%t0 .and. &
+-              result%interface_sensitivity%origin_t1 == interval%t1
++              result%interface_sensitivity%origin_t0 <= interval%t0 .and. &
++              result%interface_sensitivity%origin_t0 >= interval%t0 .and. &
++              result%interface_sensitivity%origin_t1 <= interval%t1 .and. &
++              result%interface_sensitivity%origin_t1 >= interval%t1
+@@
    end subroutine accumulate_accepted_mass
 +
 +  subroutine accumulate_accepted_bottom_interface(tx, aggregate_available, aggregate_exchange, terminal_flux)
