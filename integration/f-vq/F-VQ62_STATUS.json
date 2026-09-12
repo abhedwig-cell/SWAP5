@@ -3,21 +3,28 @@
   "work_unit": "F-VQ62",
   "title": "F-GC19R-R1 Prepared Ledger Provenance Independent Qualification",
   "branch": "qualification/f-vq62-fgc19r-r1-prepared-ledger-provenance-independent-qualification",
-  "phase": "INDEPENDENT_QUALIFICATION_EXACT_HEAD_RUN_PENDING",
-  "decision": "PENDING_INDEPENDENT_QUALIFICATION",
+  "phase": "INDEPENDENTLY_QUALIFIED_EXACT_STATUS_HEAD_RECHECK_REQUIRED",
+  "decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
   "owner_authority": "work/f-gc19r-r1-prepared-ledger-provenance-remediation@3bf3fec344ee67dd56f5f54b293b3a0a47214efb",
   "owner_source_blob": "d37f1926dafde9d941939cf4147d799cb7478bfc",
   "frozen_blocked_authority": "qualification/f-gc19r-prepared-ledger-publication-owner-qualification@c4b0dc78af0b444edcc4b349cc598b5b6167bd1d",
   "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
   "current_canonical_at_start": "c262ae3c0c06a8fdeb5e87dde2177417c1465f91",
   "maximum_positive_decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "first_green_independent_qualification": {
+    "head": "98fe6e07cb256be9f5255d30165599a422f5e163",
+    "run": 34695157654,
+    "job": 103557272985,
+    "conclusion": "success"
+  },
   "state": {
-    "independently_qualified_for_canonical_admission": false,
+    "independently_qualified_for_canonical_admission": true,
     "canonical_admission": false,
     "production_coupling_admission": false,
     "production_source_changed_by_verifier": false,
     "reference_changed_by_verifier": false,
     "mass_conservation_relaxed": false,
+    "all_30_architecture_invariants_independently_verified": true,
     "RB1_reopened": false
   },
   "architecture_audit": "integration/f-vq/F-VQ62_ARCHITECTURE_AUDIT.json",
@@ -25,8 +32,9 @@
   "independent_gate": "tests/fvq/run_fvq62_fgc19r_r1_prepared_ledger_provenance.sh",
   "independent_test": "tests/fvq/test_fvq62_fgc19r_r1_prepared_ledger_provenance.f90",
   "composition_obligation": "A later production runtime/coupler qualification must prove stable unique ledger_id assignment across simultaneously live logical ledgers. F-VQ62 qualifies the component's checked contract, not that future allocator.",
+  "mass_conservation": "HARD_PRESERVED_WITH_PROVENANCE_SAFE_PUBLICATION",
   "hard_nonclaims": [
-    "No canonical admission.",
+    "Independent qualification is not canonical admission.",
     "No production coupling admission.",
     "No MODFLOW adapter or aquifer solver.",
     "No end-to-end predictor-corrector convergence or coupled aquifer mass closure.",
@@ -35,5 +43,5 @@
     "No claim that a future runtime allocator is already qualified for ledger_id uniqueness.",
     "RB1 remains frozen."
   ],
-  "next_required_step": "Run the exact-head independent adversarial workflow. If green, update only this status to the maximum positive independent decision and require an exact-status-head rerun before freezing F-VQ62."
+  "next_required_step": "Require the automatically triggered exact-status-head F-VQ62 workflow to finish green. If green, freeze this independent authority. Any current-canonical admission must occur in a separate canonical-integration workunit restarted from the then-live integration/f-ci-canonical head."
 }
