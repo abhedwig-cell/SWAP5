@@ -2,20 +2,20 @@
 
 ## Scope
 
-EB-I01 adds generic energy-accounting infrastructure to the SWAP5 kernel/runtime transaction model. It does not add or change a physical heat solver and it does not replace any existing mass-accounting authority.
+EB-I01 adds generic energy-conservation accounting infrastructure to SWAP5. It is an accounting contract and transactional publication seam, not a new heat solver and not a replacement for the existing mass-conservation authority.
 
-The production delta is intentionally additive:
+The production source delta is deliberately limited to:
 
 - `src/kernel/mod_energy_conservation_types.f90`
 - `src/runtime/mod_energy_conservation_ledger.f90`
 
-Existing mass, groundwater, state-transition and solver implementations remain unchanged.
+The kernel energy types know no files, parsers, paths, calendars, MODFLOW cell fractions or groundwater-specific mass ledger.
 
 ## Units and reference area
 
-All stored-energy values named `*_energy_j_m2`, transfer values named `*_j_m2`, and balance terms in `energy_balance_t` are interval-integrated energy in J/m2.
+All energy storage and transfer quantities in EB-I01 are interval-integrated energy per unit reference area, in J/m2.
 
-The reference area is the owning logical SWAP column or tile area. EB-I01 does not know the fraction of a MODFLOW cell occupied by a tile and does not aggregate tile energy or fluxes to a groundwater-cell area. Surface-fraction weighting, cell-area conversion and system composition belong to the runtime/coupler outside the SWAP kernel.
+The reference area is the owning logical SWAP column or tile area. EB-I01 does not perform tile-fraction or MODFLOW-cell weighting. Those composition operations remain responsibilities of the runtime/coupler.
 
 ## Components and transfers
 
@@ -27,68 +27,65 @@ For a nested control volume, a registered positive component that is not selecte
 
 A transfer is represented by a non-negative magnitude plus explicit direction:
 
-`source_component -> target_component : amount_j_m2`
-
-Negative transfer magnitudes are invalid. Reversing a physical transfer is represented by reversing source and target.
+`source_component -> target_component`
 
 For a selected control volume:
 
-- outside -> inside contributes to `boundary_input_j_m2`;
-- inside -> outside contributes to `boundary_output_j_m2`;
-- inside -> inside contributes to `internal_transfer_j_m2` only;
-- outside -> outside is irrelevant to that control volume.
+- outside -> inside contributes to boundary input;
+- inside -> outside contributes to boundary output;
+- inside -> inside is an internal-transfer diagnostic and cancels from the outer conservation residual;
+- outside -> outside does not affect that control volume.
 
-`internal_transfer_j_m2` is a gross diagnostic. It is deliberately excluded from the net conservation residual.
+This makes the same directed transfer reusable for nested control volumes without changing sign conventions.
 
-The conservation identity is:
+## Conservation identity
 
-`residual = (final_storage - initial_storage) - boundary_input + boundary_output`
+For any selected control volume, EB-I01 reports:
 
-A closed balance therefore has `residual_j_m2 = 0` within the numerical tolerance selected by the caller or qualification test. EB-I01 itself does not silently relax conservation.
+`residual = delta_storage - boundary_input + boundary_output`
 
-## Nested control volumes
+A closed balance has residual zero within the numerical policy chosen by the caller. EB-I01 itself does not introduce an acceptance tolerance or silently relax a failed balance.
 
-The same transfer can be internal for an outer control volume and a boundary transfer for a nested control volume. EB-I01 therefore records directed trial transfers rather than only pre-aggregated in/out totals.
-
-Nested projections are available while the trial event stream exists. `prepare_trial` freezes the total-column result needed for commit publication and discards the detailed event stream. The committed EB-I01 record is intentionally compact and does not preserve a permanent transfer graph for each column.
+The test fixture demonstrates a soil plus canopy system in which a soil -> canopy transfer is internal for the combined control volume, but becomes a boundary output for the soil-only volume and a boundary input for the canopy-only volume.
 
 ## Transaction contract
 
-The energy ledger does not decide whether a physical state is accepted.
+Energy accounting is trial-local until the physical kernel transaction is accepted.
 
-1. `begin_trial` creates worker-local accounting for one physical origin lineage, revision and generic interval `[t0,t1]`.
-2. `record_transfer` and `set_end_storage` populate only that trial.
-3. `prepare_trial` computes and validates the energy balance before the physical commit. It freezes a compact prepared handle and discards trial scratch.
-4. A successful physical kernel commit creates the existing `fmr_accepted_commit_receipt_t` authority.
-5. `commit_prepared` may publish an `energy_commit_record_t` only when lineage, origin revision and interval match that accepted receipt.
-6. A rejected or rolled-back physical trial uses `discard_trial` or `abort_prepared` and publishes no energy commit record.
-7. Recalculation from the same committed physical origin creates a new trial and can be committed normally after a new accepted receipt.
+The lifecycle is:
 
-The ledger has no independent commit bit, transaction engine or mutable post-commit publication counter. The existing physical transaction remains authoritative.
+1. begin an energy trial from explicit lineage, origin revision and `[t0,t1]`;
+2. record directed energy transfers and final component storage;
+3. optionally project nested control-volume balances while the trial event stream exists;
+4. prepare the trial, which freezes the aggregate whole-system energy balance and consumes the detailed trial event stream;
+5. let F-KT perform the physical commit through the existing accepted-commit receipt path;
+6. publish the prepared energy balance only if the `fmr_accepted_commit_receipt_t` exactly matches lineage, origin revision and interval;
+7. on rollback or abort, publish nothing.
 
-## Lifetime and memory ownership
+The receipt remains the physical commit authority. EB-I01 cannot independently accept a physical candidate.
 
-`energy_trial_ledger_t` is intended as worker/job scratch, not persistent per-column physical state. Its transfer array exists only while energy accounting is active for a trial. A prepared trial retains only compact provenance plus the aggregate balance required for controlled publication.
+## Memory ownership
 
-Instantiation policy is therefore a runtime responsibility: MultiSWAP workers may reuse ledger objects across columns/jobs, while columns for which energy accounting is inactive need not carry this scratch allocation.
+The event stream and component arrays are worker/job scratch for an active trial. They are not added to the persistent physical column state. The committed energy record is deliberately compact: transaction provenance plus the aggregate whole-system energy balance.
+
+Arbitrary nested control-volume reconstruction after commit is therefore not claimed by EB-I01. If later audit or diagnostics require selected nested balances to persist, that should be added as an optional diagnostics/history product rather than retaining every trial transfer graph on every column.
 
 ## Relationship to mass accounting
 
-EB-I01 is orthogonal to existing mass accounting. It does not import the groundwater-specific mass ledger and does not change canonical water-balance equations, groundwater exchange publication, candidate acceptance or committed mass state.
+Energy accounting is orthogonal to the existing mass-conservation and groundwater-interface mass ledgers. EB-I01 changes no existing mass source, mass acceptance rule or groundwater flux sign convention.
 
-Mass conservation remains a separate hard invariant. The EB-I01 gate recompiles and executes the unchanged FMR18 accepted-commit/mass transaction test without linking the new energy modules.
+The qualification gate recompiles and executes the unchanged FMR18 accepted-commit-receipt/mass transaction test without linking the EB-I01 modules.
 
-## Explicit non-claims
+## Non-claims
 
-EB-I01 does not yet prove that existing SWAP heat, canopy, surface, snow or soil-temperature processes emit complete energy transfers into this ledger. That physical wiring belongs to subsequent energy-balance workunits.
+EB-I01 does not claim:
 
-EB-I01 also does not yet qualify:
-
-- large-batch MultiSWAP throughput or memory scaling;
-- thread-race behavior under concurrent workers;
-- a bounded-cost policy for unusually large transfer graphs;
-- runtime-wide reporting/serialization of energy diagnostics;
-- MODFLOW-cell or tile-fraction aggregation;
-- a physical heat solver or its scientific accuracy.
-
-Those are separate qualifications and must not be inferred from the EB-I01 accounting gate.
+- complete wiring of current SWAP heat, canopy, surface or phase-change processes into this ledger;
+- scientific qualification of a heat solver;
+- large-batch MultiSWAP throughput or memory qualification;
+- concurrent-worker race/stress qualification;
+- bounded-cost production behavior for arbitrarily large transfer graphs;
+- runtime-wide reporting or serialization admission;
+- MODFLOW-cell or tile-fraction energy aggregation;
+- independent verifier qualification;
+- current-canonical admission.
