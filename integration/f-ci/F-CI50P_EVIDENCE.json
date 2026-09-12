@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50P",
+  "F_CI50_postimage": "39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+  "prepromotion_canonical": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+  "F_CI50_admission_head": "bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b",
+  "F_GC17_closeout": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+  "postpromotion_broad_canonical_run": {
+    "run": 34678610128,
+    "conclusion": "success",
+    "current_restricted_preservation_job": 103513068810,
+    "current_restricted_preservation_conclusion": "success"
+  },
+  "F_CI50_source_blobs": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+  },
+  "observations": {
+    "production_regression_detected": false,
+    "scientific_regression_detected": false,
+    "transaction_regression_detected": false,
+    "mass_regression_detected": false,
+    "reference_regression_detected": false,
+    "postimage_is_true_two_parent_merge": true,
+    "existing_broad_canonical_suite_green": true,
+    "moving_preservation_needs_explicit_new_path_coverage": true
+  },
+  "reconciliation_delta": {
+    "workflow_semantic_additions": 4,
+    "workflow_semantic_deletions": 1,
+    "AUTH_advance": "42544af575db522d012db491db801615577048df -> 39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+    "new_dependency_paths": [
+      "src/runtime/mod_groundwater_coupling_contract.f90",
+      "src/runtime/mod_groundwater_coupling_policy.f90"
+    ],
+    "new_marker": "FCI50_MOVING_FGC17_TYPED_GROUNDWATER_INTERFACE_PRESERVATION=PASS"
+  },
+  "production_source_changed_by_F_CI50P": false,
+  "reference_changed_by_F_CI50P": false,
+  "mass_policy_changed": false,
+  "scientific_tolerances_changed": false
+}
