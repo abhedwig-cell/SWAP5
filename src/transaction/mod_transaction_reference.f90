@@ -552,8 +552,7 @@ contains
     published%method = source%method
     published%origin_t0 = origin_t0
     published%origin_t1 = origin_t1
-    published%covers_requested_interval = origin_t0 <= requested_t0 .and. origin_t0 >= requested_t0 .and. &
-         origin_t1 <= requested_t1 .and. origin_t1 >= requested_t1
+    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1
   end subroutine publish_local_terminal_sensitivity
 
   subroutine reject_and_retry(result, retry_index, policy, attempt_dt)

@@ -104,10 +104,8 @@ contains
         if (result%interface_sensitivity%available) then
           result%interface_sensitivity%covers_requested_interval = &
                result%mass%accepted_transaction_count == 1 .and. &
-               result%interface_sensitivity%origin_t0 <= interval%t0 .and. &
-               result%interface_sensitivity%origin_t0 >= interval%t0 .and. &
-               result%interface_sensitivity%origin_t1 <= interval%t1 .and. &
-               result%interface_sensitivity%origin_t1 >= interval%t1
+               result%interface_sensitivity%origin_t0 == interval%t0 .and. &
+               result%interface_sensitivity%origin_t1 == interval%t1
         end if
         return
       end if
