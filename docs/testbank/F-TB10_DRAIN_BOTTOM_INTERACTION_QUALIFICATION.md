@@ -1,61 +1,141 @@
 # F-TB10: drainage x changing bottom-boundary qualification
 
-F-TB10 is the first execution workunit derived from the integrated interaction catalog established by F-TB09. It qualifies only `SWAP5-TB09-DRAIN-BOTTOM-003-v1` and does so without modifying production physics or the F-TB09 catalog.
+F-TB10 is an execution workunit derived from the integrated interaction catalog established by F-TB09. Its target is `SWAP5-TB09-DRAIN-BOTTOM-003-v1`.
+
+F-TB10 does **not** qualify that scientific case. It closes fail-closed as:
+
+`BLOCKED_OWNER_TEMPORAL_ACCEPTANCE_POLICY_REQUIRED`
+
+with decision:
+
+`NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP`
+
+No production source, reference corpus or F-TB09 catalog content is changed by this workunit.
 
 ## Scientific question
 
 Can the current-canonical serialized Full Richards runtime conserve water while the already admitted restricted DIVDRA process remains active across a change in the lower hydraulic boundary and a simultaneous change in the explicit hydraulic view used to distribute drainage?
 
-The question is intentionally narrower than groundwater coupling. No MODFLOW model or direct coupling interface participates in this test.
+The intended experiment is deliberately narrower than groundwater coupling. No MODFLOW model or direct SWAP-MODFLOW interface participates.
 
 ## Admitted composition reused
 
-The case reuses the F-CI36 restricted DIVDRA runtime callsite. That owner scope is single-level, positive drainage with an explicit process hydraulic view and an externally supplied scalar transfer. F-TB10 does not alter or re-derive the drainage exchange law.
+The case reuses the F-CI36 restricted DIVDRA callsite: positive single-level drainage with an explicit process hydraulic view and an externally supplied scalar transfer. F-TB10 does not alter or re-derive the drainage exchange law.
 
-F-CI36 is preserved by the canonical qualification workflow as a frozen admitted authority on postimage `8fa79a70a9faccaf8b63826df607a685eb75b046`, with F-VQ51 as its independent verifier provenance. F-TB10 does not reinterpret the historical F-VQ51 test program as a moving-current integration test. Instead it verifies that the admitted DIVDRA production blobs are unchanged in the frozen current-canonical base and then supplies new current-canonical interaction evidence with its own case.
+F-CI36 remains a frozen admitted authority on postimage `8fa79a70a9faccaf8b63826df607a685eb75b046`, with F-VQ51 as independent verifier provenance. The current-canonical DIVDRA composition, runtime, process and binding blobs used by F-TB10 match that admitted authority.
 
-The soil-water solve remains the current-canonical reference Full Richards path. The lower boundary uses `SWBOTB=5`, which prescribes lower-boundary head and makes the corresponding `qbot` a solver output.
+The soil-water path is the current-canonical reference Full Richards implementation.
 
-## Why `SWBOTB=5`
+## Fixture corrections before the scientific attempt
 
-An initial fixture considered `SWBOTB=7`, inherited from the existing independent DIVDRA verifier. Source inspection showed that mode 7 is free drainage. Changing `bottom_head` or `bottom_flux` under that mode would therefore not prove interaction with a changing hydraulic boundary.
+Two test-fixture errors were found and removed before interpreting the scientific result.
 
-F-TB10 instead uses the prescribed-head mode 5. The final case changes the prescribed bottom head from -123 cm to -120 cm between two committed generic intervals. The qualification requires the signed bottom flux reconstructed from the authoritative mass ledger to change as a consequence.
+First, the original fixture inherited `SWBOTB=7`. That is free drainage, so changing a bottom-head input would not prove a changing hydraulic lower boundary. The final fixture uses `SWBOTB=5`, the prescribed-head route for which bottom head is physically active and `qbot` is solver output.
 
-## Scenario
+Second, the original fixture preallocated the DIVDRA forcing target. The admitted DIVDRA wrapper intentionally owns that transient materialization and rejects an already bound target. The fixture was corrected so the wrapper materializes and cleans the drainage forcing itself.
 
-The first interval uses an explicit drainage-view groundwater level of -0.35 m and the second -1.55 m. A positive single-level DIVDRA scalar transfer of 0.0002 cm/day remains active in both intervals. This deliberately crosses a drainage spatial-distribution water-table node while the lower Richards boundary is perturbed.
+A separate provenance mistake was also corrected: the historical F-VQ51 test program is not treated as a moving-current integration test. Its frozen authority is pinned instead.
 
-Root uptake, surface storage and runoff, snow, soil temperature, macropores and frost are disabled so the accounting seam is bounded and interpretable.
+## Attempted scenario
 
-## Oracle and water balance
+The planned interaction consists of two generic consecutive intervals.
 
-The primary oracle is F-TB09 O6 property/invariant `TB09-DRAIN-BOTTOM-SIGNED-LEDGER`. Each interval must produce a complete authoritative mass ledger with no missing contributions and residual magnitude no larger than `1e-12`.
+Interval 1 uses:
 
-For this restricted fixture the signed bottom flux can be reconstructed from the ledger as
+- prescribed bottom head -123 cm;
+- explicit drainage-view groundwater level -0.35 m;
+- positive single-level DIVDRA scalar transfer 0.0002 cm/day.
 
-`qbot = (total_in - total_out) / DeltaT + qtop + Q_divdra`
+Interval 2 would use:
 
-because root uptake, irrigation/source terms, surface storage and runoff are inactive. This reconstruction is used only as a diagnostic decomposition of the already authoritative mass ledger. It does not replace that ledger or create a second accounting authority.
+- prescribed bottom head -120 cm;
+- explicit drainage-view groundwater level -1.55 m;
+- the same positive DIVDRA scalar transfer.
 
-The combined window must also satisfy
+Root uptake, surface storage/runoff, snow, soil temperature, macropores and frost are inactive so the interaction and mass ledger remain bounded.
 
-`S(t1) - S(t0) = sum(total_in_i) - sum(total_out_i)`
+## Physical execution result
 
-within the same arithmetic hard gate. The tolerance is not a water-loss budget.
+GitHub Actions run `34680289804` executed the corrected current-canonical composition on exact head `3a3017de9b71430deb053a141b7d9ce762346ebd`.
 
-## Preservation evidence
+Before failure it established the intended production/reference immutability, F-TB09 authority, F-CI36/F-VQ51 provenance, unchanged admitted DIVDRA blobs, active `SWBOTB=5` route and successful entry into the real DIVDRA runtime composition.
 
-The dedicated runner pins the frozen F-CI36 postimage and exact F-VQ51 provenance, verifies that the canonical qualification workflow still carries F-CI36 as a frozen replay authority, and checks that the admitted DIVDRA composition, runtime, spatial-distribution and binding blobs are byte-identical on the F-TB10 current-canonical base.
+The first nonstationary interval was not committed. The executable stopped at:
 
-The new interaction case itself is then compiled and executed at `-O0` and `-O2`, with exact textual output identity required. This separates historical authority preservation from new moving-current interaction evidence.
+`FTB10_TEST_FAIL first interval committed`
+
+That is negative evidence. It does not establish that production physics is wrong, and it does not by itself establish which internal rejection category was decisive.
+
+## Why F-TB10 must stop instead of tuning the run
+
+The F-TB10 template does not activate temporal-history continuation state. Its numerical route is therefore the standard external full-versus-two-half transaction estimator. The fixture uses `temporal_tolerance = 0`, which demands exact temporal identity.
+
+For a genuine nonstationary workload, F-TB10 is not allowed to make that criterion easier merely to obtain a green run.
+
+### Existing external full-half policy
+
+F-VQ28 explicitly failed closed for a generic production numeric profile. It selected neither a production temporal metric nor a production temporal tolerance and did not admit a universal absolute tolerance. Its handoff requires a separate owner/runtime-policy workunit rather than local tuning.
+
+F-VQ19 does not fill this gap: its zero-tolerance result is restricted to an exact-identity fixture and is not a universal nonstationary Richards policy.
+
+### Normalized Richards certificate
+
+F-VQ34, preserved by F-CI21, qualifies the mechanism
+
+`C_h = B_inf / H_budget`.
+
+That route requires explicit, finite, positive application/runtime accuracy-budget provenance. It deliberately has no universal/default numeric `H_budget`, and hard mass rejection always has precedence.
+
+F-CI44 and F-CI46 provide the typed application-accuracy contract and external adapter, but both only carry already qualified `H_app` and `A_temporal`. They explicitly select no numeric application policy.
+
+### Why F-GC22 does not solve this
+
+F-GC22 subsequently qualified a branch capability named `Application and Temporal Accuracy Binding for Direct Groundwater Coupling`.
+
+It is not a TB10 authority because:
+
+- its scope is the groundwater-head QoI for restricted direct groundwater coupling;
+- it is not canonically admitted at this assessment;
+- it is not production-coupling admitted;
+- it chooses no universal or project numeric `H_app`, temporal allocation or interface allocation;
+- its binding module consumes already externally qualified application accuracy rather than creating it.
+
+Using F-GC22 as a standalone integrated-column numeric policy would therefore cross its qualified scope and still would not supply the missing numeric application requirement.
+
+## Water balance remains a hard gate
+
+The intended F-TB09 oracle remains `TB09-DRAIN-BOTTOM-SIGNED-LEDGER`. A future accepted execution must still prove complete interval ledgers, hard mass closure and full-window closure. The `1e-12` arithmetic closure gate is not a water-loss budget.
+
+The blocker does not weaken this requirement. No temporal certificate, tolerance, fallback or performance policy may override missing water.
+
+## Required owner work
+
+`integration/f-tb/F-TB10_OWNER_HANDOFF.json` defines the separate owner task. Before TB09-003 can return to F-TB10 execution, that work must qualify an application-appropriate temporal acceptance policy/provenance for genuine nonstationary standalone/integrated reference-Richards intervals.
+
+Acceptable design directions may reuse the existing full-half or normalized certificate infrastructure, but must explicitly govern the metric/budget, provenance, scope, retry behavior and diagnostics. Hidden defaults are forbidden.
+
+The owner must also maintain separation between physical options and numerical policy, preserve reference mode, keep hard mass precedence, and audit all 30 SWAP architecture invariants.
 
 ## Explicit nonclaims
 
-F-TB10 does not qualify direct SWAP-MODFLOW coupling, the `H_SWAP = H_MF` interface condition, drainage exchange-law science outside the F-CI36 scope, fully implicit or trial-state drainage response, negative or multilevel drainage, surface-water-controlled drainage, parallel active-DIVDRA throughput, or every possible bottom-boundary mode.
+F-TB10 does not qualify:
 
-The other F-TB09 catalog cases remain `CATALOGED_NOT_PHYSICS_QUALIFIED` unless and until their own owner workunits establish execution evidence.
+- TB09-003 itself;
+- direct SWAP-MODFLOW coupling;
+- `H_SWAP = H_MF` convergence;
+- drainage exchange-law science beyond F-CI36;
+- a generic temporal tolerance;
+- an application `H_budget`;
+- fully implicit or trial-state drainage response;
+- negative or multilevel drainage;
+- surface-water-controlled drainage;
+- parallel active-DIVDRA throughput;
+- any other F-TB09 catalog case.
+
+The observed noncommit is also not promoted to a production-defect finding.
 
 ## Closeout
 
-The scientific decision is `QUALIFIED_TB09_003_RESTRICTED_DRAIN_BOTTOM_INTERACTION` only if the dedicated exact-head CI workflow passes on the live F-TB10 branch head. No production source or reference change is part of that decision.
+The F-TB10 branch closes only as a **blocked assessment**, after exact-head CI validates the blocker evidence, owner handoff, unchanged production/reference scope, architecture audit and hard nonclaims.
+
+Scientific qualification of `SWAP5-TB09-DRAIN-BOTTOM-003-v1` remains open for a future execution after the temporal-policy owner gap has been qualified and, where required, canonically admitted.
