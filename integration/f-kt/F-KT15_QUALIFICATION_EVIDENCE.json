@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "QUALIFICATION_EVIDENCE",
+  "branch": "work/f-kt15-task2-solver-service-production-composition",
+  "basis": {
+    "F_KT15R_closeout": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+    "canonical_authority_at_qualification": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+    "tested_candidate": "8ca0b0fb587cdb4dfb7cc5037f571406778f38c8"
+  },
+  "exact_head_ci": {
+    "workflow": "F-KT15 Production Task-2 Solver-Service Composition",
+    "run": 34675363793,
+    "job": 103504154271,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_levels": ["O0", "O2"]
+  },
+  "production_delta_from_F_KT15R": [
+    "src/adapter/mod_b110_production_soil_water_task2.f90",
+    "src/adapter/mod_b1_10_reference_model.f90",
+    "src/legacy/b1_10_port/soilwater.f90",
+    "src/runtime/mod_a23bu_worker_execution_context.f90"
+  ],
+  "qualification_results": {
+    "source_guard": "PASS",
+    "real_soilwater_task2_callsite_compile_O0": "PASS",
+    "real_soilwater_task2_callsite_compile_O2": "PASS",
+    "accepted_typed_route": "PASS",
+    "accepted_interface_sensitivity": "PASS",
+    "single_hydraulic_authority": "PASS",
+    "unsupported_direct_fallback_seam": "PASS",
+    "stale_sensitivity_exclusion": "PASS",
+    "eight_worker_trial_capsule_isolation": "PASS",
+    "retry_fail_closed": "PASS",
+    "task2_O0": "PASS",
+    "task2_O2": "PASS",
+    "task2_O0_O2_identity": "PASS",
+    "surface_flux_regime": "PASS",
+    "atmospheric_head_regime": "PASS",
+    "ponded_head_regime": "PASS",
+    "linear_runoff_regime": "PASS",
+    "accepted_surface_metadata_identity": "PASS",
+    "surface_hard_mass": "PASS",
+    "flux_only_qbot_tangent_scope": "PASS",
+    "surface_regimes_O0_O2_identity": "PASS",
+    "F_KT14_accepted_transport": "PASS",
+    "F_KT14_rejected_stale_exclusion": "PASS",
+    "direct_fallback_sensitivity_unavailable": "PASS",
+    "reference_transport_O0_O2_identity": "PASS"
+  },
+  "transaction_semantics": {
+    "task2_checkpoint_owner_unchanged": true,
+    "typed_and_direct_solver_never_both_execute_for_one_admitted_trial": true,
+    "retry_trial_publishes_no_interface_sensitivity": true,
+    "failed_admitted_typed_trial_fails_closed": true,
+    "task3_postsolve_bookkeeping_owner_unchanged": true,
+    "interface_sensitivity_is_worker_local_result_metadata_not_committed_state": true
+  },
+  "coupling_cost_semantics": {
+    "second_nonlinear_trajectory_for_sensitivity": false,
+    "extra_jacobian_build_for_sensitivity": false,
+    "qualified_sensitivity_route": "same-factorization local-terminal qbot tangent from F-SI28, transported by F-KT14",
+    "whole_coupling_window_derivative_qualified": false
+  },
+  "scope_nonclaims": [
+    "No canonical admission is claimed by F-KT15.",
+    "No production SWAP-MODFLOW coupler is admitted.",
+    "No whole-coupling-window response derivative is qualified.",
+    "No active root-extraction typed route is admitted.",
+    "No macropore, frost, SWDRA=2 surface-water coupling, time-dependent PONDMX or nonlinear-runoff typed route is admitted.",
+    "No throughput or allocation-performance qualification is claimed.",
+    "No mass-balance tolerance is relaxed."
+  ],
+  "decision": "QUALIFIED_RESTRICTED_PRODUCTION_SOIL_WATER_TASK2_SOLVER_SERVICE_TRANSACTION_COMPOSITION_READY_FOR_SEPARATE_CANONICAL_ADMISSION"
+}
