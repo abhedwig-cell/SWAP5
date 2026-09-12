@@ -9,7 +9,7 @@ trap 'rm -rf "$BUILD"' EXIT
 
 fail() { echo "FKT15_RUNNER_FAIL $*" >&2; exit 1; }
 BASE=1b3d8ba6cc70d74a124f20f01f0c47a102763ae0
-CANONICAL=4f62af04df8ad686a8066f6c164cdcf79d319999
+CANONICAL=e537baf521e633c432a9f33de495fab9f18e918d
 
 if git remote get-url origin >/dev/null 2>&1; then
   live="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
