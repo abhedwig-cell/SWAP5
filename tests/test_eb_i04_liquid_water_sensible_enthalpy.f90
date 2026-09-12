@@ -18,7 +18,8 @@ program test_eb_i04_liquid_water_sensible_enthalpy
   ! them explicit inputs rather than creating a second hidden constant source.
   call initialize_liquid_water_sensible_enthalpy_parameters(1000.0_real64, 4180.0_real64, &
        0.0_real64, reference_zero, status)
-  if (status /= LWSE_OK .or. .not. reference_zero%ready()) error stop 'EB-I04 reference-zero properties invalid'
+  if (status /= LWSE_OK) error stop 'EB-I04 reference-zero initialization failed'
+  if (.not. reference_zero%ready()) error stop 'EB-I04 reference-zero properties invalid'
 
   call liquid_water_sensible_storage_j_m2(2.0_real64, 10.0_real64, reference_zero, energy, status)
   if (status /= LWSE_OK) error stop 'EB-I04 storage evaluation failed'
