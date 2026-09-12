@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC16",
+  "profile_id": "RESTRICTED_DIRECT_GROUNDWATER_COUPLING_V1",
+  "classification": "COMPOSITION_TARGET_NOT_YET_PRODUCTION_ADMITTED",
+  "scope": {
+    "composition": "DIRECT",
+    "deep_vadose": "EXCLUDED_FROM_DIRECT_PROFILE",
+    "groundwater_model": "external through typed runtime/coupler service",
+    "supported_SWAP_bottom_boundary": "prescribed lower-boundary head only, corresponding to qualified bottom mode 5 ownership",
+    "other_bottom_boundaries": "FAIL_CLOSED",
+    "kernel_MODFLOW_knowledge": false,
+    "kernel_file_IO": false
+  },
+  "interface_quantities": {
+    "external_head_domain": "common hydraulic-head datum in metres, explicitly mapped by the coupling contract",
+    "SWAP_native_boundary_input": "qualified prescribed bottom-head representation, with explicit unit/datum mapping outside solver physics",
+    "q_SWAP_sign": "positive water leaving SWAP through the bottom interface",
+    "q_GW_sign": "positive water leaving groundwater through the same interface",
+    "head_residual": "r_H = H_SWAP - H_GW",
+    "flux_residual": "r_q = q_SWAP + q_GW",
+    "target_head": "abs(r_H) <= H_interface_tol",
+    "target_flux": "r_q = 0 by exact opposite assignment",
+    "mass_tolerance": "NONE"
+  },
+  "accuracy_policy": {
+    "application_contract": "existing coupling_application_accuracy_contract_t and qualified external adapter boundary",
+    "H_app": "external, positive, finite, qualified and provenance-bound",
+    "A_temporal": "external, positive, finite, qualified and provenance-bound",
+    "H_temporal_budget": "H_app * A_temporal",
+    "H_interface_tol": "required explicit coupling convergence policy input with immutable provenance; no default",
+    "prohibited_equivalence": "H_interface_tol must not silently be equated to the Richards temporal-indicator budget, predictor perturbation, solver tolerance or physical/regulatory threshold",
+    "compatibility_rule": "A production run must prove the selected H_interface_tol is governed consistently with the active application/temporal accuracy contract. A later owner workunit must qualify the exact allocation/binding rule before production admission.",
+    "absence": "FAIL_CLOSED_BEFORE_COUPLING_TRIAL"
+  },
+  "coupling_window": {
+    "domain": "finite generic [t0,t1] with t1 > t0",
+    "delta_T": "t1 - t0; may be subdaily, non-midnight, greater than one day, or adaptively changed by an outer controller",
+    "calendar_boundary_required": false,
+    "checkpoint_rule": "capture committed SWAP and groundwater-side states at t0 before any predictor trial",
+    "physical_origin_rule": "predictor and corrector both start from the same committed t0 checkpoints",
+    "warm_start_rule": "worker-local numerical guesses may be reused; candidate physical states never become the origin of another unaccepted trial",
+    "commit_rule": "commit both sides exactly once only after the accepted corrector satisfies every gate",
+    "rollback_rule": "any rejected or failed trial restores/retains both committed t0 states and publishes no accepted exchange"
+  },
+  "groundwater_side_abstraction": {
+    "required_capabilities": [
+      "checkpoint committed groundwater state at t0",
+      "provide or derive a predictor groundwater boundary head for [t0,t1]",
+      "evaluate a groundwater trial using the exact opposite interface transfer",
+      "return groundwater interface head on the common datum",
+      "optionally return a qualified groundwater response sensitivity",
+      "commit an accepted groundwater trial exactly once",
+      "rollback/discard rejected groundwater trials",
+      "expose deterministic lineage/revision and diagnostics"
+    ],
+    "forbidden": [
+      "SWAP kernel dependence on MODFLOW types",
+      "file parsing or path ownership in the SWAP kernel",
+      "implicit sign conversion",
+      "implicit unit or datum conversion",
+      "groundwater state mutation by a rejected coupling trial"
+    ]
+  },
+  "predictor": {
+    "origin": "committed t0 state on both sides",
+    "boundary": "groundwater-side predictor head mapped explicitly to the prescribed SWAP bottom-head control",
+    "SWAP_action": "run one complete transactional SWAP interval trial on a clone of committed t0 state",
+    "SWAP_outputs": [
+      "accepted bottom/interface flux",
+      "bottom/interface head on the common contract domain",
+      "complete SWAP mass accounting",
+      "temporal certificate/indicator diagnostics",
+      "accepted interface sensitivity when available"
+    ],
+    "groundwater_action": "evaluate paired groundwater trial using q_GW = -q_SWAP from the same groundwater t0 checkpoint",
+    "result": "predictor interface residual and response information; predictor is never committed"
+  },
+  "corrector": {
+    "count_normal_path": 1,
+    "origin": "same committed t0 checkpoints as predictor",
+    "candidate_derivation": "coupling response operator derives one corrected interface candidate from predictor residual plus qualified SWAP and groundwater response information",
+    "tangent_preference": "use qualified whole-window composition of accepted interface sensitivities when available",
+    "finite_difference_role": "reference or bounded fallback qualification only; never a structural requirement for the normal production path",
+    "SWAP_action": "run one corrected transactional SWAP interval trial",
+    "groundwater_action": "run the paired corrected groundwater trial with exact opposite interface transfer",
+    "publication": "only the corrected candidate may become the accepted coupled result"
+  },
+  "convergence": {
+    "all_required": [
+      "SWAP interval completed successfully",
+      "SWAP mass accounting complete with no missing contribution",
+      "groundwater trial completed successfully",
+      "abs(H_SWAP - H_GW) <= qualified H_interface_tol",
+      "q_GW assigned exactly as -q_SWAP on the authoritative accepted transfer",
+      "interface mass ledger closes exactly by construction",
+      "active temporal/application accuracy gates pass",
+      "all interval, lineage, candidate and commit provenance agree"
+    ],
+    "head_tolerance_may_be_nonzero": true,
+    "flux_or_mass_tolerance_allowed": false
+  },
+  "bounded_cost_policy": {
+    "normal_full_SWAP_trajectories_per_window": 2,
+    "normal_sequence": "predictor + one corrector",
+    "max_corrector_iterations_per_window_attempt": 1,
+    "automatic_same_window_coupling_retry": 0,
+    "failure_recommendation": "rollback and return a diagnosable retry-with-smaller-window request to the outer runtime; any smaller interval is a new coupling window with a fresh checkpoint protocol",
+    "structural_6_to_9_full_SWAP_runs": false,
+    "internal_SWAP_transaction_retries": "remain governed independently by the qualified SWAP transaction/numerical policy and are reported separately"
+  },
+  "failure_behavior": {
+    "on_predictor_failure": "discard both trials, retain committed t0, book no interface transfer, return failure diagnostics",
+    "on_corrector_failure": "discard both candidates, retain committed t0, book no interface transfer, recommend a smaller new coupling window when policy permits",
+    "on_head_nonconvergence": "same fail-closed rollback behavior; no relaxed mass or silent uncoupled fallback",
+    "on_mass_or_provenance_failure": "hard reject; no retry may convert incomplete or inconsistent mass into an accepted result",
+    "fallback_modes": "must be explicit, separately qualified and diagnosable; deep-vadose is not a fallback for direct coupling"
+  },
+  "mass_ledger": {
+    "authoritative_SWAP_mass": "canonical accepted SWAP interval mass accounting",
+    "authoritative_interface_transfer": "accepted corrected q_SWAP integrated over the accepted coupling interval and tile area basis",
+    "groundwater_pair": "exact negative of the authoritative SWAP transfer",
+    "rejected_trials": "excluded",
+    "retry_double_counting": "forbidden",
+    "head_residual": "never booked as mass",
+    "cell_aggregation": "q_cell = sum(fraction_i * q_i) for the complete deterministic tile composition"
+  },
+  "diagnostics": {
+    "required_per_window": [
+      "coupling_id, t0, t1, delta_T",
+      "SWAP and groundwater lineage/revision identifiers",
+      "predictor and corrector heads, fluxes and head residuals",
+      "qualified H_interface_tol identity and provenance",
+      "application H_app/A_temporal materialization status and H_temporal_budget",
+      "temporal certificate/indicator status",
+      "interface sensitivity availability, provenance, covers-requested-window flag and whether used",
+      "groundwater response sensitivity availability and whether used",
+      "SWAP transaction calls, internal retries, nonlinear iterations, Jacobian builds and linear solves",
+      "coupling corrector count and requested smaller-window fallback status",
+      "SWAP mass completeness/residual and interface mass ledger",
+      "normal/relaxed/fallback/fail classification with explicit reason"
+    ]
+  },
+  "restart": {
+    "restart_point": "accepted coupling-window boundary only",
+    "persistent": [
+      "committed SWAP physical state through the existing SWAP restart contract",
+      "committed groundwater-side state through its owner adapter/model restart contract",
+      "coupling lineage/revision and mapping-version identifiers required to prove continuation",
+      "accepted cumulative/interface ledger state only if needed to continue balance reporting"
+    ],
+    "not_persistent": [
+      "predictor or rejected corrector physical states",
+      "Newton vectors/Jacobians or solver scratch",
+      "trial-only response tangents",
+      "uncommitted groundwater adapter state"
+    ],
+    "qualification": "continuous run and split/restart run must give identical accepted states, accepted interface transfers and deterministic diagnostics within the qualified deterministic contract"
+  },
+  "MultiSWAP": {
+    "mapping_owner": "runtime/coupler",
+    "relation": "one groundwater cell may own one or more surface tiles; no 1:1 requirement",
+    "fractions": "complete cell fractions sum to one or fail closed",
+    "component_kinds": ["SWAP", "NON_SWAP", "OPEN_WATER", "TRANSFER_ZONE"],
+    "direct_profile_component_kind": "SWAP tiles marked DIRECT only",
+    "aggregation": "surface-fraction-weighted interface transfer on groundwater-cell area basis",
+    "groundwater_head": "groundwater-cell head is supplied through the typed interface; SWAP never knows its cell fraction",
+    "cell_atomicity": "for the restricted profile, all active direct-coupled SWAP tiles participating in one groundwater-cell window must satisfy their gates before that cell exchange commits; one failing tile rejects that cell-window composition",
+    "cross_cell_isolation": "failure of one groundwater-cell coupling transaction must not mutate or reject already independent cells",
+    "batching": "columns may remain grouped by compatible SWAP execution template; coupling metadata must not create one heavyweight solver per logical column"
+  },
+  "deep_vadose_seam": {
+    "direct_and_transfer_zone_are_distinct_compositions": true,
+    "SWAP_kernel_component": false,
+    "future_owner": "external transfer-zone component composed by runtime/coupler",
+    "future_contract": "dS/dt = q_SWAP_bottom - q_gw and q_gw = S/tau or another separately qualified conservative transfer model",
+    "transition_requirement": "stored water must be explicitly retained/transferred/discharged so no water disappears or is double counted",
+    "restricted_direct_profile_behavior": "TRANSFER_ZONE mapping is rejected as out of scope, not silently treated as direct recharge"
+  },
+  "admission_blockers": [
+    "F-CI49 must canonically admit the definitive F-KT15 accepted interface-result and sensitivity transport postimage",
+    "typed direct groundwater interface, datum/sign/unit and explicit head-convergence policy are not yet production implemented",
+    "production coupling-window orchestrator is not yet implemented",
+    "whole-window response/tangent composition is not yet qualified",
+    "controller binding from external application/temporal policy to coupling convergence is not yet qualified",
+    "MultiSWAP groundwater-cell execution composition is not yet implemented",
+    "external groundwater-model adapter conformance is not yet production qualified",
+    "coupled restart/replay and end-to-end bounded-cost admission are not yet qualified"
+  ]
+}
