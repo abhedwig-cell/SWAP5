@@ -227,6 +227,15 @@ contains
       source_id = transfers(i)%source_component()
       target_id = transfers(i)%target_component()
       amount = transfers(i)%amount_j_m2()
+      status = ENERGY_CONSERVATION_MISSING_COMPONENT
+      if (source_id /= ENERGY_EXTERNAL_COMPONENT) then
+        if (.not. initial_snapshot%contains_component(source_id) .or. &
+            .not. final_snapshot%contains_component(source_id)) return
+      end if
+      if (target_id /= ENERGY_EXTERNAL_COMPONENT) then
+        if (.not. initial_snapshot%contains_component(target_id) .or. &
+            .not. final_snapshot%contains_component(target_id)) return
+      end if
       status = ENERGY_CONSERVATION_ARITHMETIC_FAILURE
       source_inside = component_in_set(source_id, control_volume_ids)
       target_inside = component_in_set(target_id, control_volume_ids)
