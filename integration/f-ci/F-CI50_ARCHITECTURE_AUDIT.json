@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50",
+  "decision": "PASS_FGC17_TYPED_GROUNDWATER_INTERFACE_CANONICAL_ADMISSION_SCOPE",
+  "canonical_base": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+  "donor": "F-GC17@f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+  "invariants": {
+    "1_one_kernel": "PASS: two runtime contracts only; no alternate kernel.",
+    "2_kernel_io_separation": "PASS: no files, parsers, units or paths in the admitted contract.",
+    "3_explicit_data_separation": "PASS: interface quantities, lineage/datum and numerical convergence policy remain distinct.",
+    "7_transactional_timesteps": "PASS_WITHIN_SCOPE: lineage and revision contract supports trial composition without state mutation.",
+    "9_generic_time": "PASS: finite increasing [t0,t1], no calendar semantics.",
+    "10_flexible_coupling_windows": "PASS: no fixed duration or midnight assumption.",
+    "11_coupling_core_functionality": "PASS: direct groundwater interface is explicit runtime functionality.",
+    "12_groundwater_interface_contract": "PASS: common-datum H=z+psi; r_H=H_SWAP-H_GW; exact q_GW=-q_SWAP and r_q=q_SWAP+q_GW.",
+    "13_mass_conservation_absolute": "PASS: no mass tolerance and exact opposite flux assignment.",
+    "14_interface_sensitivity": "PASS_NOT_CHANGED: existing tangent authority untouched; response composition remains downstream F-GC23.",
+    "15_coupling_cost": "PASS: pure contract/conversion operations add no SWAP trajectory.",
+    "16_multiswap_primary": "PASS: no globals or per-column heavy solver ownership introduced.",
+    "17_no_one_to_one_modflow": "PASS: no cell mapping constraint encoded.",
+    "18_deep_vadose_external": "PASS: no transfer-zone physics admitted.",
+    "22_no_headcalc_internals": "PASS: admitted files depend on no HeadCalc arrays or legacy globals.",
+    "23_physics_solver_policy_separation": "PASS: H_interface_tol is explicit numerical coupling policy and does not alter physics.",
+    "25_reference_mode": "PASS: reference implementation untouched.",
+    "26_diagnostics": "PASS_FOUNDATION: statuses, residuals, datum and lineage are explicit for downstream diagnostics.",
+    "28_runtime_coupler_composition": "PASS: groundwater datum/sign/unit boundary is outside SWAP physics ownership.",
+    "29_no_silent_dependencies": "PASS: datum, units, signs, provenance and time window are explicit.",
+    "30_architecture_audit": "PASS: explicit admission audit recorded."
+  },
+  "scientific_contract": {
+    "mode5_native_quantity": "lower-boundary pressure head psi_bottom in cm",
+    "public_head": "hydraulic head in m on explicit common datum",
+    "mapping": "H_SWAP=z_bottom+0.01*psi_bottom",
+    "native_qbot": "cm/day positive into SWAP",
+    "public_q_swap": "m/s positive leaving SWAP",
+    "mapping_q": "q_SWAP=-qbot*0.01/86400",
+    "action_reaction": "q_GW=-q_SWAP exact",
+    "mass_tolerance": "NONE",
+    "head_tolerance": "explicit positive provenance-bound value with no numeric default"
+  },
+  "scope_guards": {
+    "donor_source_modified_in_F_CI50": false,
+    "new_physics": false,
+    "solver_modified": false,
+    "transaction_modified": false,
+    "application_accuracy_binding_added": false,
+    "predictor_corrector_added": false,
+    "MODFLOW_adapter_added": false,
+    "deep_vadose_added": false,
+    "mass_tolerance_relaxed": false
+  }
+}
