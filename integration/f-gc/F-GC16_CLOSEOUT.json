@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC16",
+  "decision": "QUALIFIED_RESTRICTED_PRODUCTION_GROUNDWATER_COUPLING_COMPOSITION_PLAN_READY_FOR_IMPLEMENTATION",
+  "branch": "work/f-gc16-production-groundwater-coupling-minimal-viable-composition-admission-plan",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e537baf521e633c432a9f33de495fab9f18e918d",
+    "tree": "b55f077657fc82b421a63f927965ff47821fc987",
+    "rechecked_at_closeout": true,
+    "unchanged_since_preregistration": true
+  },
+  "F_GC15_authority": {
+    "sha": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "decision_context": "qualified production coupling runtime gap decomposition"
+  },
+  "F_KT15_F_CI49_dependency": {
+    "definitive_owner": "work/f-kt15-task2-solver-service-production-composition@48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "qualified_current_canonical_ancestry_source_postimage": "9465be74c01fe6455466e5ba7f62a761986ad450",
+    "F_CI49_branch": "qualification/f-ci49-fkt15-task2-solver-service-canonical-admission",
+    "F_CI49_live_head_at_closeout": "6e7601b5ec2d9435fcd3b78132c2a8ab62b082c9",
+    "current_canonical_contains_F_KT15": false,
+    "status_for_F_GC16": "HARD_ENTRY_GATE_STILL_OPEN",
+    "rule": "Do not recreate G01 in an F-GC owner branch. Finish F-CI49 canonical admission first."
+  },
+  "qualified_profile": {
+    "id": "RESTRICTED_DIRECT_GROUNDWATER_COUPLING_V1",
+    "bottom_boundary": "qualified prescribed lower-boundary head / mode 5 only",
+    "time": "generic finite [t0,t1]; no midnight/day assumption",
+    "transaction": "checkpoint both sides at t0; predictor and one corrector from same committed origin; commit accepted corrector once; otherwise rollback",
+    "head": "H_SWAP approximately equals H_GW under explicit provenance-bound H_interface_tol governed consistently with active application/temporal accuracy policy",
+    "flux": "q_SWAP = -q_GW by exact opposite assignment",
+    "mass": "hard; no interface mass tolerance",
+    "normal_cost": "two full SWAP trajectories per coupling window: predictor + one corrector",
+    "same_window_coupling_retry": 0,
+    "failure": "fail closed and request a smaller new outer coupling window; never silently weaken mass or switch composition",
+    "tangent": "consume accepted whole-window response composition where qualified; finite difference is reference/fallback only",
+    "MultiSWAP": "runtime-owned tile/cell mapping with area-fraction aggregation and cell-window atomicity in the restricted profile",
+    "restart": "accepted coupling-window boundaries only; no rejected state/scratch/tangent persistence",
+    "deep_vadose": "separate external transfer-zone composition; no SWAP-kernel physics"
+  },
+  "implementation_plan": {
+    "entry_gate": "P0_F_CI49",
+    "owner_sequence": [
+      "F-GC17 typed direct interface/datum/sign/units/convergence policy",
+      "F-GC18 transactional groundwater exchange service abstraction",
+      "F-GC19 interface mass ledger and diagnostics",
+      "F-GC20 groundwater-cell/tile mapping and aggregation primitive",
+      "F-GC21 restricted predictor-corrector coupling-window orchestrator",
+      "F-GC22 application/temporal accuracy binding",
+      "F-GC23 whole-window response tangent and one-corrector composition",
+      "F-GC24 coupled restart/split-run/replay composition",
+      "F-GC25 MultiSWAP direct groundwater coupling execution composition",
+      "F-GC26 external groundwater/MODFLOW adapter conformance and integration qualification",
+      "F-GC27 restricted end-to-end production groundwater coupling admission"
+    ],
+    "parallel_waves": {
+      "after_F_GC17": ["F-GC18", "F-GC19", "F-GC20", "F-GC22"],
+      "after_F_GC21": ["F-GC23", "F-GC24", "F-GC25", "F-GC26"]
+    }
+  },
+  "qualification": {
+    "workflow": ".github/workflows/fgc16-production-groundwater-coupling-composition-plan.yml",
+    "runner": "tests/fgc/run_fgc16_composition_plan_qualification.py",
+    "qualified_input_head": "2f811afb73e0959156dea556a9c58705789f552e",
+    "workflow_run": 34677612628,
+    "workflow_job": 103510184408,
+    "job_conclusion": "success",
+    "validated": [
+      "complete F-GC01 through F-GC15 authority chain",
+      "F-CI49 remains a nonduplicated hard entry gate",
+      "restricted bottom-boundary scope",
+      "generic transaction semantics",
+      "two-trajectory normal coupling cost",
+      "explicit no-default head convergence policy",
+      "exact flux pairing and no mass tolerance",
+      "deep-vadose external ownership",
+      "acyclic F-GC17 through F-GC27 owner DAG",
+      "all 30 architecture invariants",
+      "no production src/ delta"
+    ]
+  },
+  "production_state": {
+    "production_source_modified_by_F_GC16": false,
+    "new_physics": false,
+    "new_solver_functionality": false,
+    "production_groundwater_coupling_admitted": false,
+    "canonical_admission_performed": false,
+    "reason": "F-GC16 qualifies the composition/admission plan only. Required owner implementations and their independent qualifications remain downstream work."
+  },
+  "next_action": "Complete F-CI49. After its canonical admission, start F-GC17 from the then-current canonical head. F-GC17 freezes the typed direct groundwater interface and convergence-policy contract before any parallel downstream production work begins."
+}
