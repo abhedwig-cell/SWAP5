@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.ftb_workunit_contract.v1",
+  "work_unit": "F-TB10",
+  "title": "SWAP5 TB09-003 Restricted Drainage x Changing Bottom Boundary Integrated Qualification",
+  "branch": "work/f-tb10-drain-bottom-integrated-qualification",
+  "frozen_current_canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "catalog_authority": {
+    "work_unit": "F-TB09",
+    "commit": "fe3545c4537b11cefd0186aa401048d4f4b10eb9",
+    "stable_case_id": "SWAP5-TB09-DRAIN-BOTTOM-003-v1",
+    "catalog_state_at_start": "CATALOGED_NOT_PHYSICS_QUALIFIED"
+  },
+  "owner_authorities": {
+    "drainage_runtime": "F-CI36 current-canonical admitted restricted DIVDRA callsite",
+    "independent_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff",
+    "soil_water_solver": "current-canonical serialized reference Full Richards path",
+    "mass": "F-TB01 hard mass gate plus current canonical mass-accounting contract"
+  },
+  "scope": {
+    "purpose": "Execute and qualify the first bounded F-TB09 integrated interaction case that is already realizable on current production composition without changing production source.",
+    "runtime_profile": "restricted serialized single-column Full Richards runtime with single-level positive DIVDRA, explicit hydraulic view and prescribed-head SWBOTB=5 lower boundary",
+    "time_profile": "two consecutive generic numeric intervals with a committed boundary between them",
+    "first_interval": {
+      "bottom_head_cm": -123.0,
+      "explicit_drainage_groundwater_level_m": -0.35,
+      "positive_divdra_transfer_cm_per_day": 0.0002
+    },
+    "second_interval": {
+      "bottom_head_cm": -120.0,
+      "explicit_drainage_groundwater_level_m": -1.55,
+      "positive_divdra_transfer_cm_per_day": 0.0002
+    },
+    "physics_disabled": [
+      "root uptake/transpiration",
+      "surface storage/runoff",
+      "snow",
+      "soil temperature",
+      "macropores",
+      "frost"
+    ]
+  },
+  "oracle": {
+    "primary_class": "O6_PROPERTY_INVARIANT",
+    "id": "TB09-DRAIN-BOTTOM-SIGNED-LEDGER",
+    "requirements": [
+      "active DIVDRA publication in both intervals",
+      "prescribed bottom head changes across the committed interval boundary",
+      "the resulting signed bottom flux changes",
+      "explicit drainage hydraulic view changes enough to alter the selected water-table node",
+      "both interval ledgers are complete and individually satisfy the hard mass gate",
+      "full-window combined ledger satisfies the same hard mass gate",
+      "O0 and O2 executions are bitwise text-identical",
+      "exact F-VQ51 restricted DIVDRA verifier remains green against the current production composition"
+    ]
+  },
+  "mass_contract": {
+    "hard": true,
+    "tolerance": 1e-12,
+    "tolerance_meaning": "arithmetic closure gate only; never an allowance for lost water",
+    "interval_identity": "Delta(S_soil) = signed external water amount over the interval",
+    "full_window_identity": "Delta(S_soil,t0->t1) = sum(interval total_in) - sum(interval total_out)",
+    "derived_signed_bottom_flux": "qbot = (total_in-total_out)/DeltaT + qtop + Q_divdra for this restricted fixture, because root uptake, irrigation/source terms, surface storage and runoff are inactive",
+    "bottom_sign_rule": "bottom flux is represented exactly once; no upward/downward double booking"
+  },
+  "source_policy": {
+    "production_source_change_allowed": false,
+    "reference_change_allowed": false,
+    "rb1_reopened": false,
+    "ftb09_modified": false,
+    "test_and_evidence_only": true
+  },
+  "nonclaims": [
+    "No direct SWAP-MODFLOW coupling qualification.",
+    "No drainage exchange-law science qualification beyond the already admitted F-CI36 restricted owner scope.",
+    "No fully implicit or trial-state drainage response.",
+    "No negative/infiltration drainage or multilevel drainage qualification.",
+    "No surface-water-controlled drainage qualification.",
+    "No parallel active-DIVDRA throughput qualification.",
+    "No qualification of all bottom-boundary modes; this workunit uses prescribed-head SWBOTB=5 only.",
+    "No promotion of the other seven F-TB09 catalog cases."
+  ],
+  "exit_target": "QUALIFIED_TB09_003_RESTRICTED_DRAIN_BOTTOM_INTERACTION",
+  "close_rule": "The exit target is attained only on an exact branch head for which the dedicated GitHub Actions workflow passes its start-head check, qualification runner and end-head check. Any later commit requires a new exact-head run."
+}
