@@ -1,0 +1,76 @@
+name: F-GC21P1-R1 warning-hygiene remediation
+
+on:
+  push:
+    branches:
+      - work/f-gc21p1-r1-warning-hygiene-remediation
+    paths:
+      - .github/workflows/fgc21p1-r1-warning-hygiene-remediation.yml
+      - integration/f-gc/F-GC21P1_R1_PRE_REGISTRATION.json
+      - integration/f-gc/apply_fgc21p1_r1_warning_hygiene_remediation.py
+      - tests/fgc/run_fgc21p1_r1_warning_hygiene_remediation.sh
+      - tests/fgc/test_fgc21p1_exact_bottom_interface_result.f90
+      - src/transaction/mod_transaction_reference.f90
+      - src/runtime/mod_canonical_interval_runtime.f90
+
+permissions:
+  contents: write
+
+jobs:
+  remediate-and-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact candidate head and lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          BLOCKED=95e05490d3f60325361a9036dc720c7954093307
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$BLOCKED" HEAD
+          test "$(git rev-parse integration/f-ci-canonical)" = c6494f913303b7aefc4f9c53c6c157082d54ea4b || \
+            test "$(git merge-base c6494f913303b7aefc4f9c53c6c157082d54ea4b HEAD)" = c6494f913303b7aefc4f9c53c6c157082d54ea4b
+          echo 'FGC21P1_R1_LINEAGE=PASS'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Restore canonical equality predicates exactly
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 integration/f-gc/apply_fgc21p1_r1_warning_hygiene_remediation.py
+          git diff --check
+          changed="$(git diff --name-only -- src | sort)"
+          expected="$(printf '%s\n' src/runtime/mod_canonical_interval_runtime.f90 src/transaction/mod_transaction_reference.f90 | sort)"
+          if test -n "$changed"; then
+            test "$changed" = "$expected"
+            git diff --binary -- src > /tmp/fgc21p1-r1-remediation.patch
+            git apply --check --reverse /tmp/fgc21p1-r1-remediation.patch
+            echo 'FGC21P1_R1_REVERSE_APPLY_CHECK=PASS'
+          else
+            echo 'FGC21P1_R1_SOURCE_ALREADY_PUBLISHED=PASS'
+          fi
+      - name: Owner qualification on corrected production state
+        run: bash tests/fgc/run_fgc21p1_r1_warning_hygiene_remediation.sh
+      - name: Publish only qualified two-file remediation
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- src/transaction/mod_transaction_reference.f90 src/runtime/mod_canonical_interval_runtime.f90; then
+            echo 'FGC21P1_R1_NO_UNPUBLISHED_SOURCE_DELTA=PASS'
+            exit 0
+          fi
+          changed="$(git diff --name-only -- src | sort)"
+          expected="$(printf '%s\n' src/runtime/mod_canonical_interval_runtime.f90 src/transaction/mod_transaction_reference.f90 | sort)"
+          test "$changed" = "$expected"
+          git add src/transaction/mod_transaction_reference.f90 src/runtime/mod_canonical_interval_runtime.f90
+          test "$(git diff --cached --name-only | sort)" = "$expected"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          git config user.name 'swap5-fgc21p1-r1-bot'
+          git config user.email 'swap5-fgc21p1-r1-bot@users.noreply.github.com'
+          git commit -m 'F-GC21P1-R1: restore canonical equality semantics'
+          git push origin "HEAD:$GITHUB_REF_NAME"
