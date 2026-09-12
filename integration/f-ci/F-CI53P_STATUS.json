@@ -3,8 +3,8 @@
   "work_unit": "F-CI53P",
   "title": "GC18R Transactional Groundwater Exchange Current-Canonical Postimage Reconciliation",
   "branch": "qualification/f-ci53p-current-canonical-postimage-reconciliation",
-  "phase": "CANDIDATE_MATERIALIZED",
-  "decision": "PENDING_EXACT_HEAD_QUALIFICATION",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI53P_POSTIMAGE_RECONCILIATION_FOR_PROMOTION_PENDING_EXACT_STATUS_HEAD_RERUN",
   "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
   "restart_authority": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
   "prepromotion_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
@@ -14,6 +14,12 @@
   "owner_authority": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
   "f_vq61_authority": "e83fe9a4955275935903730c4484c77fb0b117ff",
   "f_vq60_frozen_blocked_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "first_green_postimage_reconciliation": {
+    "head": "c60ce91313cfb1e1ce77b6a8e7b7c401e4178a44",
+    "run": 34692471190,
+    "job": 103550064079,
+    "conclusion": "success"
+  },
   "source_postimage_evidence": {
     "fci53_broad_prepromotion_run": 34691542403,
     "fci53_postpromotion_broad_run": 34691652502,
@@ -22,11 +28,11 @@
     "current_restricted_canonical_preservation_conclusion": "success"
   },
   "state": {
-    "fci53_true_two_parent_source_merge_verified": false,
-    "exact_transactional_service_blob_verified": false,
-    "exact_typed_groundwater_contract_blob_verified": false,
-    "owner_and_independent_authorities_rechecked": false,
-    "frozen_f_vq60_history_preserved": false,
+    "fci53_true_two_parent_source_merge_verified": true,
+    "exact_transactional_service_blob_verified": true,
+    "exact_typed_groundwater_contract_blob_verified": true,
+    "owner_and_independent_authorities_rechecked": true,
+    "frozen_f_vq60_history_preserved": true,
     "production_source_changed_by_fci53p": false,
     "reference_changed_by_fci53p": false,
     "canonical_workflow_changed_by_fci53p": false,
@@ -66,5 +72,5 @@
     "No mass-conservation relaxation is permitted.",
     "RB1 remains frozen."
   ],
-  "next_required_step": "Run the exact-head F-CI53P qualification. If green, pin that run in this status, require a second exact-status-head qualification, then promote governance-only by a true two-parent merge if current canonical is still the pinned F-CI53 source postimage."
+  "next_required_step": "Require the automatically triggered exact-head F-CI53P qualification on this status commit to finish green. If current canonical remains exactly ccfaed51beeff8f3bc7de9ee2feef538af724bc9, open and broadly qualify the governance-only PR, then promote by a true two-parent merge and require the full broad canonical workflow including current-restricted-canonical-preservation to finish green."
 }
