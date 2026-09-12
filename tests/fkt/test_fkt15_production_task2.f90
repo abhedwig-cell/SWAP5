@@ -23,8 +23,9 @@ program test_fkt15_production_task2
   real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
   real(real64) :: k_flux
   real(real64) :: h_before(numnod), theta_before(numnod), pond_before, qtop_before, qbot_before
+  integer, parameter :: worker_counts(4) = [1,2,4,8]
   logical :: handled
-  integer :: i
+  integer :: i, icase, nw
 
   call configure_hydraulic_family()
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, cofgen(:,1:numnod))
@@ -73,22 +74,37 @@ program test_fkt15_production_task2
   write(*,'(A)') 'FKT15_UNSUPPORTED_DIRECT_FALLBACK_SEAM=PASS'
   write(*,'(A)') 'FKT15_STALE_SENSITIVITY_CLEAR=PASS'
 
-  ! Interleaved worker-owned capsules: no module-global last-result state.
-  do i = 1, 8
-    call seed_equilibrium(water, k_flux)
-    call a23bu_initialize_worker(workers(i), numnod, i)
-    call try_b110_production_task2(workers(i), handled)
-    call require(handled .and. workers(i)%soil_water_trial%typed_accepted, 'worker accepted')
-    call require(workers(i)%soil_water_trial%sensitivity_available, 'worker sensitivity available')
+  ! Worker-owned result capsules are exercised as 1/2/4/8 logical-worker groups.
+  ! Execution is intentionally interleaved rather than a throughput benchmark: the
+  ! purpose here is absence of a module-global last-result/tangent state.
+  do icase = 1, 4
+    nw = worker_counts(icase)
+    do i = 1, nw
+      call seed_equilibrium(water, k_flux)
+      call a23bu_initialize_worker(workers(i), numnod, i)
+      call try_b110_production_task2(workers(i), handled)
+      call require(handled .and. workers(i)%soil_water_trial%typed_accepted, 'worker accepted')
+      call require(workers(i)%soil_water_trial%sensitivity_available, 'worker sensitivity available')
+    end do
+    swfrost = 1
+    call try_b110_production_task2(workers(nw), handled)
+    call require(.not. handled, 'selected worker unsupported route')
+    call require(.not. workers(nw)%soil_water_trial%sensitivity_available, 'selected worker cleared')
+    do i = 1, nw-1
+      call require(workers(i)%soil_water_trial%sensitivity_available, 'other worker capsule preserved')
+    end do
+    swfrost = 0
+    select case (nw)
+    case (1)
+      write(*,'(A)') 'FKT15_WORKER_ISOLATION_1=PASS'
+    case (2)
+      write(*,'(A)') 'FKT15_WORKER_ISOLATION_2=PASS'
+    case (4)
+      write(*,'(A)') 'FKT15_WORKER_ISOLATION_4=PASS'
+    case (8)
+      write(*,'(A)') 'FKT15_WORKER_ISOLATION_8=PASS'
+    end select
   end do
-  swfrost = 1
-  call try_b110_production_task2(workers(4), handled)
-  call require(.not. handled, 'worker4 unsupported route')
-  call require(.not. workers(4)%soil_water_trial%sensitivity_available, 'worker4 cleared')
-  do i = 1, 8
-    if (i /= 4) call require(workers(i)%soil_water_trial%sensitivity_available, 'other worker capsule preserved')
-  end do
-  swfrost = 0
   write(*,'(A)') 'FKT15_EIGHT_WORKER_CAPSULE_ISOLATION=PASS'
 
   ! Deliberately impossible prescribed bottom flux with one Newton iteration.
