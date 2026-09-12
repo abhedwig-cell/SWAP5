@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ07",
+  "title": "Final F-CI Development-Baseline Exit Handoff Admission",
+  "oracle": "B1.10",
+  "qualification_only": true,
+  "production_source_change_allowed": false,
+  "fci_exit_lineage": {
+    "scope_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "scope_qualification_evidence_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+    "gate_promotion_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "gate_promotion_push_run": 34114164800,
+    "gate_promotion_fci18_job": 101717589931,
+    "closeout_push_run": 34114481363,
+    "closeout_fci18_job": 101718655619,
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6"
+  },
+  "qualification_targets": [
+    "exact final F-CI exit lineage and green source-bound push replays",
+    "all ten required F-CI exit gates QUALIFIED with downstream_release_allowed=true",
+    "no F-CI18 production or corrected-reference source mutation",
+    "final F-CI canonical-development-baseline handoff admissible to downstream qualification work",
+    "preservation of downstream governance and fail-closed capability boundaries"
+  ],
+  "explicit_non_targets": [
+    "production B1.10 execute_reference_interval admission",
+    "numeric B1.10 temporal-profile qualification",
+    "optional-process snow/macropore completeness",
+    "full legacy-backend reentrancy or parallel qualification",
+    "overall SWAP5 production release qualification"
+  ]
+}

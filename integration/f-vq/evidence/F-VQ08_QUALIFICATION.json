@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ08",
+  "decision": "QUALIFIED_TEMPORAL_CHARACTERIZATION_READINESS_ONLY",
+  "qualification_scope": "TEMPORAL_CHARACTERIZATION_PREREQUISITES_AND_FAIL_CLOSED_BOUNDARY",
+  "basis": {
+    "fvq07_final_head": "4ae2fc87970d46ff2103553930e583dd05a59f0b",
+    "fci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10"
+  },
+  "persist_first_checkpoint": "2f0d04daa1607fa8854c0d42dd3348fdc0587fbb",
+  "tested_postimage": "b097203be56b9891c8e73ecdcc84f76c94b33656",
+  "qualification_run": {
+    "workflow": "VQ reference qualification",
+    "run_id": 34117585838,
+    "job_id": 101727896875,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "fvq08_unit_tests": 11,
+    "fvq08_gate": "PASS",
+    "fci10_gate": "PASS",
+    "fci11_gate": "PASS",
+    "real_full_runner_shell_contract": "PASS"
+  },
+  "documentation_run": {
+    "run_id": 34117585832,
+    "conclusion": "success"
+  },
+  "qualified_claims": ["FVQ08-C01", "FVQ08-C02", "FVQ08-C03", "FVQ08-C04"],
+  "blocked_or_prohibited_claims": ["FVQ08-C05", "FVQ08-C06", "FVQ08-C07", "FVQ08-C08", "FVQ08-C09"],
+  "production_source_changed": false,
+  "real_b1_10_temporal_characterization_qualified": false,
+  "production_temporal_profile_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "complete_optional_process_scope_qualified": false,
+  "hard_mass_conservation_relaxed": false,
+  "key_findings": [
+    "F-VQ05 metric and lagged-diagnostic contract is exact and all production numeric limits remain null.",
+    "F-CI10/F-CI11 Hupsel evidence is source-bound and hard-mass qualified, but F-CI11 explicitly does not qualify a temporal error metric and its detailed raw matrix is outside canonical Git.",
+    "The qualified Hupsel profile has crop, fixed irrigation, heat and solute active, so current water-focused checkpoint coverage is not complete process-scope temporal coverage.",
+    "The real F-CI07 full-runner requires externally supplied exact B1.10 source, TTUTIL and Hupsel case assets and is a physical rerun gate rather than a full-vs-two-half temporal probe."
+  ],
+  "explicit_non_claims": [
+    "No real B1.10 temporal-characterization execution route is qualified by F-VQ08.",
+    "No per-metric production temporal tolerance or acceptance profile is qualified.",
+    "Production execute_reference_interval remains fail-closed.",
+    "No complete optional-process temporal scope is qualified.",
+    "Hard mass conservation remains a separate absolute admission condition."
+  ]
+}
