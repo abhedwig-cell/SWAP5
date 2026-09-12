@@ -23,6 +23,7 @@ files={
 }
 current={k:Path(v).read_text() for k,v in files.items()}
 baseline={k:subprocess.check_output(['git','show',f'{restart}:{v}'],text=True) for k,v in files.items()}
+backend=Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
 
 tx_pred='    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1\n'
 can_pred=(
@@ -41,11 +42,11 @@ for text,label in [(current['tx'],'tx'),(current['can'],'can')]:
     assert 'origin_t1 <= interval%t1' not in text,(label,'paired ordered canonical identity')
 
 # The P1 exchange feature must still be present after warning-hygiene remediation.
-for token in ['accepted_bottom_outward_exchange_native','-attempt%bottom_flux * transaction_step%dt']:
-    assert token in current['tx'],token
+assert 'accepted_bottom_outward_exchange_native' in current['tx']
 for token in ['candidate_exchange = aggregate_exchange + tx%accepted_bottom_outward_exchange_native',
               'bottom_outward_exchange_native']:
     assert token in current['can'],token
+assert 'outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration' in backend
 print('FGC21P1_R1_CANONICAL_EQUALITY_RESTORED=PASS')
 print('FGC21P1_R1_P1_EXCHANGE_FEATURE_PRESERVED=PASS')
 PY
@@ -135,12 +136,12 @@ for opt in 0 2; do
     src/kernel/mod_kernel_transactions.f90 -o "$OUT/mod_kernel_transactions.o" 2>>"$OUT/compiler.txt"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     tests/fgc/test_fgc21p1_exact_bottom_interface_result.f90 -o "$OUT/test.o" 2>>"$OUT/compiler.txt"
-  if grep -E 'Warning:' "$OUT/compiler.txt" | grep -v -E 'Equality comparison for .REAL|Inequality comparison for .REAL'; then
+  if grep -E 'Warning:' "$OUT/compiler.txt" | grep -v -F '[-Wcompare-reals]'; then
     echo "FGC21P1_R1_UNEXPECTED_NON_COMPARE_REAL_WARNING_O${opt}" >&2
     cat "$OUT/compiler.txt" >&2
     exit 1
   fi
-  grep -Eq 'Warning:.*comparison for .REAL|Warning: Equality comparison for .REAL' "$OUT/compiler.txt" || {
+  grep -Fq '[-Wcompare-reals]' "$OUT/compiler.txt" || {
     echo "FGC21P1_R1_EXPECTED_CANONICAL_COMPARE_REAL_WARNING_NOT_OBSERVED_O${opt}" >&2
     cat "$OUT/compiler.txt" >&2
     exit 1
