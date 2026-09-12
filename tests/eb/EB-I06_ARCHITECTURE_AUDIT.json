@@ -1,0 +1,61 @@
+{
+  "workunit": "EB-I06",
+  "title": "Oriented Water Donor Temperature Contract",
+  "status": "owner_qualified_not_independently_verified_not_canonical_admitted",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/eb-i06-oriented-water-donor-temperature-contract",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a"
+  },
+  "owner_qualification": {
+    "qualified_content_head": "ec8a58335047ef322cba70b8965f3d968e472381",
+    "successful_run": 34723155525,
+    "successful_job": 103632549039,
+    "production_delta": [
+      "src/process/mod_oriented_water_donor_temperature.f90"
+    ]
+  },
+  "invariants": [
+    {"id":1,"status":"PASS","evidence":"Adds one generic donor-temperature selector for the single SWAP5 architecture; no standalone/MultiSWAP/MODFLOW-specific kernel variant is created."},
+    {"id":2,"status":"PASS","evidence":"Production code has no files, paths, parsing, formats or unit-number dependencies."},
+    {"id":3,"status":"PASS","evidence":"The selector consumes an explicit transfer amount plus endpoint temperature availability/data and returns a separate result; it introduces no mixed persistent state/configuration object."},
+    {"id":4,"status":"PASS","evidence":"No persistent per-column dynamic or restart state is added."},
+    {"id":5,"status":"PASS","evidence":"No solver scratch, Newton vector, Jacobian or constitutive cache is introduced."},
+    {"id":6,"status":"PARTIAL","evidence":"The scalar selector is layout-independent and trivially batchable, but SoA/SIMD/cache behavior is not benchmarked."},
+    {"id":7,"status":"PARTIAL","evidence":"The selector is stateless and trial-safe, but commit/rollback-aware energy publication is a later composition concern."},
+    {"id":8,"status":"PASS","evidence":"Selection is deterministic and cheaply recomputable from the same signed amount and endpoint inputs with no hidden history."},
+    {"id":9,"status":"PASS","evidence":"No calendar or fixed timestep exists; the amount can belong to any qualified interval."},
+    {"id":10,"status":"PASS","evidence":"No coupling-window duration or midnight/day boundary is encoded."},
+    {"id":11,"status":"PARTIAL","evidence":"The contract is explicitly designed for later conservation/coupling composition, but no coupling runtime is wired here."},
+    {"id":12,"status":"PASS","evidence":"No SWAP-MODFLOW head/flux contract is modified. Groundwater temperature, if needed later, must arrive through an explicit external interface rather than being inferred."},
+    {"id":13,"status":"PASS","evidence":"The signed water amount is preserved and never thresholded or altered; EB-I06 cannot create, destroy or rebalance water."},
+    {"id":14,"status":"NOT_APPLICABLE","evidence":"No groundwater response tangent or sensitivity is changed or added."},
+    {"id":15,"status":"PASS","evidence":"Donor selection is constant-cost local algebra and requires no additional SWAP solve or coupling iteration."},
+    {"id":16,"status":"PARTIAL","evidence":"No heavy per-column object or persistent state is introduced, but large-batch MultiSWAP throughput is not measured."},
+    {"id":17,"status":"PASS","evidence":"A/B endpoints are generic and know nothing about MODFLOW-cell tile fractions or aggregation."},
+    {"id":18,"status":"NOT_APPLICABLE","evidence":"No deep-vadose component behavior is changed."},
+    {"id":19,"status":"NOT_APPLICABLE","evidence":"No transition between deep-vadose and direct coupling is changed."},
+    {"id":20,"status":"PASS","evidence":"The donor rule depends only on an oriented transfer amount and endpoint temperatures, not on a particular Richards implementation."},
+    {"id":21,"status":"PASS","evidence":"The contract supports future reuse of SWAP transport physics without importing legacy globals or module internals."},
+    {"id":22,"status":"PASS","evidence":"No HeadCalc or soil-water-solver internal arrays are referenced."},
+    {"id":23,"status":"PASS","evidence":"The donor/upwind rule is explicit physical/numerical transport semantics; no performance policy changes physics and no boundary temperature is silently invented."},
+    {"id":24,"status":"NOT_QUALIFIED","evidence":"The primitive itself is bounded constant-cost algebra, but bounded-cost behavior in complete difficult-column energy composition is not qualified here."},
+    {"id":25,"status":"PASS","evidence":"No reference solver or existing physics is replaced; current canonical remains intact."},
+    {"id":26,"status":"PARTIAL","evidence":"The result exposes status, donor endpoint and availability explicitly, but runtime-wide diagnostics/provenance publication is deferred."},
+    {"id":27,"status":"PASS","evidence":"Unused columns incur no additional persistent state or workspace cost."},
+    {"id":28,"status":"PASS","evidence":"Mapping real processes to A/B, supplying external donor temperatures and aggregating tiles remain runtime/coupler/component responsibilities."},
+    {"id":29,"status":"PASS","evidence":"No .swp, filesystem, midnight, one-day, direct-MODFLOW or implicit boundary-temperature assumption is present."},
+    {"id":30,"status":"PASS","evidence":"EB-I06 is explicitly assessed against all 30 SWAP core architecture invariants in this audit."}
+  ],
+  "hard_nonclaims": [
+    "No full SWAP5 energy balance is qualified.",
+    "No Joule or heat-flux calculation is performed.",
+    "No external water-temperature source or inference rule is qualified.",
+    "No temporal averaging or flux-weighted donor-temperature quadrature is qualified.",
+    "No higher-order advection, mixing, dispersion or thermal equilibration during transit is represented.",
+    "No vapor or latent transport and no phase-change transport is represented.",
+    "Runtime commit/rollback publication, MultiSWAP throughput and bounded-cost behavior are not qualified.",
+    "Independent verification and canonical admission are not claimed."
+  ]
+}
