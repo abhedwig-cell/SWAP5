@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC20",
+  "title": "Groundwater Cell Tile Mapping and Aggregation Primitive",
+  "decision": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION",
+  "qualified": true,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "production_source": "src/runtime/mod_groundwater_tile_aggregation.f90",
+  "first_qualified_head": "bc2e28b3de42960a4689d289371c7f1deb089b75",
+  "first_qualified_workflow_run": 34680075299,
+  "first_qualified_workflow_job": 103516995217,
+  "qualification": {
+    "O0_O2_identity": true,
+    "no_silent_normalization": true,
+    "multi_tile_cell": true,
+    "mixed_component_tiles": true,
+    "exact_qgw_negative_qswap": true
+  },
+  "architecture_audit": "integration/f-gc/F-GC20_ARCHITECTURE_AUDIT.json",
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
+  "hard_nonclaims": [
+    "no predictor-corrector orchestrator",
+    "no groundwater model adapter",
+    "no forced 1-to-1 SWAP column to groundwater cell mapping",
+    "no silent repair or normalization of invalid area fractions",
+    "no canonical or end-to-end production admission"
+  ],
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-GC20 workflow. That exact green head is the final F-GC20 branch authority."
+}
