@@ -1,0 +1,25 @@
+name: EB-I02 soil thermal conservation contract
+
+on:
+  push:
+    branches:
+      - work/eb-i02-soil-thermal-conservation-contract
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: EB-I02 soil thermal conservation gate
+        run: bash tests/eb/run_ebi02_soil_thermal_conservation_gate.sh
