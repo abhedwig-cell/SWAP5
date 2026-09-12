@@ -30,6 +30,7 @@ module MOD_SoilWater
       use MOD_top,       only: boundtop
       use MOD_gwl,       only: calcgwl
       use MOD_swap_mp,   only: frarmtrx
+      use mod_b110_production_soil_water_task2, only: try_b110_production_task2
       use variables,     only: swkmean
       use variables,     only: htb,nhead, swbotb, gwli, gwltab, t1900, dt
 !     inout
@@ -61,6 +62,7 @@ module MOD_SoilWater
       type(a23bu_worker_context_t), intent(inout), optional :: worker
 ! --- local variables
       integer              :: node, i, j, ipos
+      logical              :: typed_task2_handled
       
 !     functions
       real(8)              :: afgen, hcomean
@@ -170,7 +172,10 @@ module MOD_SoilWater
 ! ---    calculate new soil water state variables
          if (swsolve == 1) then
             if (present(worker)) then
-               call headcalc(worker, history=worker%history)
+               call try_b110_production_task2(worker, typed_task2_handled)
+               if (.not. typed_task2_handled) then
+                  call headcalc(worker, history=worker%history)
+               end if
             else
                call headcalc(legacy_headcalc_worker, history=legacy_headcalc_history)
             end if

@@ -28,6 +28,19 @@ module mod_a23bu_worker_execution_context
     integer :: internal_retries = 0
   end type a23bu_solver_diagnostics_t
 
+  ! F-KT15 trial-local metadata only. This is worker-owned numerical/result scratch,
+  ! never committed column state. It is reset before every hydraulic task-2 trial.
+  type, public :: a23bu_soil_water_trial_result_t
+    logical :: typed_attempted = .false.
+    logical :: typed_accepted = .false.
+    logical :: retry_advised = .false.
+    logical :: sensitivity_available = .false.
+    real(real64) :: dh_bottom_dq_bottom = 0.0_real64
+    character(len=24) :: sensitivity_method = 'not-available'
+    character(len=32) :: route = 'not-run'
+    integer :: interface_sensitivity_backsolves = 0
+  end type a23bu_soil_water_trial_result_t
+
   type, public :: a23bu_numerical_control_t
     integer :: last_numbit = 0
     logical :: request_dt_reduction = .false.
@@ -64,6 +77,7 @@ module mod_a23bu_worker_execution_context
     type(a23bu_headcalc_scratch_t) :: headcalc
     type(a23bu_solver_history_t) :: history
     type(a23bu_solver_diagnostics_t) :: diagnostics
+    type(a23bu_soil_water_trial_result_t) :: soil_water_trial
     type(a23bu_numerical_control_t) :: control
     type(a23bu_execution_time_t) :: time
     type(a23bu_reporting_progress_t) :: reporting
@@ -71,6 +85,7 @@ module mod_a23bu_worker_execution_context
 
   public :: a23bu_initialize_worker, a23bu_release_worker
   public :: a23bu_reset_attempt_diagnostics, a23bu_record_internal_retry
+  public :: a23bu_reset_soil_water_trial_result
   public :: a23bu_reset_attempt_control, a23bu_reset_all_numerical_control
   public :: a23bu_seed_timestep_control, a23bu_request_dt_reduction
   public :: a23bu_seed_execution_window, a23bu_reset_calendar_events
@@ -111,6 +126,7 @@ contains
     worker%headcalc%flunsatok = .false.
     worker%history = a23bu_solver_history_t()
     worker%diagnostics = a23bu_solver_diagnostics_t()
+    worker%soil_water_trial = a23bu_soil_water_trial_result_t()
     worker%control = a23bu_numerical_control_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
@@ -134,6 +150,7 @@ contains
     worker%active_nodes = 0
     worker%history = a23bu_solver_history_t()
     worker%diagnostics = a23bu_solver_diagnostics_t()
+    worker%soil_water_trial = a23bu_soil_water_trial_result_t()
     worker%control = a23bu_numerical_control_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
@@ -143,6 +160,11 @@ contains
     type(a23bu_worker_context_t), intent(inout) :: worker
     worker%diagnostics = a23bu_solver_diagnostics_t()
   end subroutine a23bu_reset_attempt_diagnostics
+
+  subroutine a23bu_reset_soil_water_trial_result(worker)
+    type(a23bu_worker_context_t), intent(inout) :: worker
+    worker%soil_water_trial = a23bu_soil_water_trial_result_t()
+  end subroutine a23bu_reset_soil_water_trial_result
 
   subroutine a23bu_reset_attempt_control(worker)
     type(a23bu_worker_context_t), intent(inout) :: worker
