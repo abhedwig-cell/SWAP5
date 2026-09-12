@@ -1,0 +1,58 @@
+name: F-DOC15 Status-A readiness gap assessment
+
+on:
+  push:
+    branches:
+      - work/f-doc15-status-a-readiness-final-gap-assessment
+
+permissions:
+  contents: read
+
+jobs:
+  status-a-readiness-gap-assessment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate authority ancestry and bounded paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=1c63aeede05180d3628873083d9351da6e67175f
+          git cat-file -e "${base}^{commit}"
+          test "$(git merge-base "${base}" HEAD)" = "${base}"
+          changed="$(git diff --name-only "${base}"..HEAD)"
+          test -n "${changed}"
+          if printf '%s\n' "${changed}" | grep -Eq '^(src|reference)/'; then
+            echo "F-DOC15 may not change production source or reference data" >&2
+            exit 1
+          fi
+          if printf '%s\n' "${changed}" | grep -Ev '^(docs/scientific/|tools/docs/validate_fdoc15_status_a_readiness.py$|\.github/workflows/fdoc15-status-a-readiness-gap-assessment.yml$)' | grep -q .; then
+            echo "Unexpected F-DOC15 changed path" >&2
+            printf '%s\n' "${changed}" >&2
+            exit 1
+          fi
+          echo "FDOC15_BOUNDED_CHANGED_PATHS=PASS"
+          echo "FDOC15_ZERO_PRODUCTION_REFERENCE_DELTA=PASS"
+
+      - name: Validate readiness assessment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc15_status_a_readiness.py | tee _fdoc15_validator_stdout.txt
+          grep -Fq 'FDOC15_DENOMINATOR_22_EXACT=PASS' _fdoc15_validator_stdout.txt
+          grep -Fq 'FDOC15_RB1_CURRENT_SEPARATED=PASS' _fdoc15_validator_stdout.txt
+          grep -Fq 'FDOC15_SCI_FOUND_01_OPEN_BLOCKER=PASS' _fdoc15_validator_stdout.txt
+          grep -Fq 'FDOC15_VERIFICATION_NOT_VALIDATION=PASS' _fdoc15_validator_stdout.txt
+          grep -Fq 'FDOC15_NO_STATUS_A_CERTIFICATION=PASS' _fdoc15_validator_stdout.txt
+          grep -Fq 'FDOC15_DECISION_IF_EXACT_HEAD_GREEN=QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED' _fdoc15_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc15-status-a-readiness-gap-${{ github.sha }}
+          path: _fdoc15_validator_stdout.txt
