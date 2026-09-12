@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ63",
+  "title": "F-GC21P1-R1 Exact Accepted Bottom Interface Exchange Result Independent Qualification",
+  "decision_at_preregistration": "INDEPENDENT_QUALIFICATION_OPEN_NOT_YET_QUALIFIED",
+  "candidate": "work/f-gc21p1-r1-warning-hygiene-remediation@dcde6360f902081c94927486455e5233b81dfc1b",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "owner_status": "integration/f-gc/F-GC21P1_R1_STATUS.json",
+  "owner_architecture_audit": "integration/f-gc/F-GC21P1_R1_ARCHITECTURE_AUDIT.json",
+  "scope_blocked_parent_candidate": "95e05490d3f60325361a9036dc720c7954093307",
+  "qualification_questions": [
+    "Does the accepted bottom-interface exchange result contain only accepted-path exchange, excluding rejected full/half/retry trials?",
+    "Does two-half acceptance publish the sum of accepted half exchanges while terminal flux comes from the accepted terminal half?",
+    "Does canonical interval aggregation sum accepted substep exchange and refuse publication for incomplete intervals?",
+    "Does missing/nonfinite interface-exchange information fail closed instead of fabricating a result?",
+    "Is the backend sign/time integration generic: outward native exchange = -bottom_flux * accepted step duration, with no day/calendar conversion assumption?",
+    "Did R1 restore the two baseline REAL equality predicates exactly rather than changing production semantics to satisfy warning policy?",
+    "Are O0 and O2 independently observed outputs identical?",
+    "Are hard mass-conservation and all 30 architecture invariants preserved without adverse delta?"
+  ],
+  "independence_requirements": [
+    "Use a newly authored F-VQ63 test/runner rather than invoking the owner runner as the qualification decision.",
+    "Pin exact owner authority, source blobs and governance authority.",
+    "Reproduce core behavior with test scenarios independently selected from the owner test harness.",
+    "Treat the owner test as supporting evidence only; F-VQ63 must fail closed on its own checks.",
+    "Do not modify production source in this branch."
+  ],
+  "hard_constraints": [
+    "Mass conservation is absolute; no tolerance relaxation may qualify a defect.",
+    "No hidden 86400/day/midnight/.swp/MODFLOW dependency.",
+    "No production groundwater-coupling, canonical-admission, crash-recovery, distributed-runtime or throughput claim.",
+    "RB1 remains frozen.",
+    "Any production-source delta from the exact owner authority blocks qualification."
+  ],
+  "success_state": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "failure_state": "BLOCKED_REMEDIATION_REQUIRED_BEFORE_CANONICAL_ADMISSION"
+}
