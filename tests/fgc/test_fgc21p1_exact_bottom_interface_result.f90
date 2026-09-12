@@ -47,13 +47,13 @@ contains
     end select
   end subroutine test_state_clone
 
-  subroutine test_prepare_interval(self, forcing_in, interval_in, config_in)
+  subroutine test_prepare_interval(self, forcing, interval, config)
     class(test_model_t), intent(inout) :: self
-    class(canonical_forcing_t), intent(in) :: forcing_in
-    type(canonical_interval_t), intent(in) :: interval_in
-    type(canonical_numerical_config_t), intent(in) :: config_in
-    if (.not. same_type_as(self, self) .or. .not. same_type_as(forcing_in, forcing_in) .or. &
-        interval_in%t1 <= interval_in%t0 .or. config_in%max_committed_substeps <= 0) then
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(canonical_interval_t), intent(in) :: interval
+    type(canonical_numerical_config_t), intent(in) :: config
+    if (.not. same_type_as(self, self) .or. .not. same_type_as(forcing, forcing) .or. &
+        interval%t1 <= interval%t0 .or. config%max_committed_substeps <= 0) then
       error stop 'invalid synthetic canonical preparation'
     end if
   end subroutine test_prepare_interval
