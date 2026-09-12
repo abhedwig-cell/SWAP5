@@ -1,9 +1,19 @@
 {
-  "workunit":"F-TB09","status":"QUALIFIED_CLOSED_WHEN_EXACT_HEAD_CI_GREEN","decision":"QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED",
-  "canonical_base":{"commit":"42544af575db522d012db491db801615577048df","tree":"4360cd08fd0e952978df9e2742bcc34fdede9ef1"},
-  "branch":"work/f-tb09-integrated-column-physics-process-interaction-catalog","case_count":8,
-  "profiles":{"FAST":3,"CANONICAL":6,"RELEASE":7,"DEEP":5},"hard_mass_cases":8,"production_source_changed":false,"integrated_physics_results_qualified":false,
-  "qualification_boundary":"Exact-head CI qualifies catalog integrity, authority pinning, coverage, hard-mass metadata, bounded pairwise/risk selection and support-only diff. Each physics case remains separately executable/admissible only with owner evidence.",
-  "defect_policy":"Do not repair source defects in F-TB09; route any discovered defect to a separate owner workunit.",
-  "close_condition":"The branch HEAD must equal the successful F-TB09 workflow run head SHA. No commit may be added after the green run without rerunning exact-head CI."
+  "workunit": "F-TB09",
+  "status": "QUALIFIED_CLOSED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED",
+  "canonical_base": {"commit":"42544af575db522d012db491db801615577048df","tree":"4360cd08fd0e952978df9e2742bcc34fdede9ef1"},
+  "post_base_live_canonical_reconciled": {"commit":"ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868","classification":"F-CI49P_GOVERNANCE_ONLY_NO_TB09_SCOPE_DELTA"},
+  "branch": "work/f-tb09-integrated-column-physics-process-interaction-catalog",
+  "case_count": 8,
+  "profiles": {"FAST":3,"CANONICAL":6,"RELEASE":7,"DEEP":5},
+  "hard_mass_cases": 8,
+  "production_source_changed": false,
+  "integrated_physics_results_qualified": false,
+  "authority_recheck": "integration/f-tb/F-TB09_AUTHORITY_RECHECK.json",
+  "initial_authority_run_metadata_superseded_for": ["F-TB04","F-TB05","F-TB06","F-TB07"],
+  "qualification_boundary": "Exact-head CI qualifies catalog integrity, corrected live authority pinning, permanent-case deduplication, coverage, hard-mass metadata, bounded pairwise/risk selection and support-only diff. Each physics case remains separately executable/admissible only with owner evidence.",
+  "mass_notation_authority": "F-TB09_AUTHORITY_RECHECK.mass_notation_clarification",
+  "defect_policy": "Do not repair source defects in F-TB09; route any discovered defect to a separate owner workunit.",
+  "close_condition": "The successful workflow must verify the live branch ref equals GITHUB_SHA both before and after validation. No later commit may be added without rerunning exact-head CI."
 }

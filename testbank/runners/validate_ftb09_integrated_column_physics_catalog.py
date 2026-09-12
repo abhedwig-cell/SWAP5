@@ -1,164 +1,145 @@
 #!/usr/bin/env python3
 """Validate the F-TB09 integrated-column qualification catalog.
 
-This validator qualifies the catalog contract and support-only change boundary.
-It deliberately does not claim that catalogued physics cases have executed or passed.
+This gate qualifies the catalog/governance contract only. It never upgrades a
+catalog specification into executed or scientifically qualified physics.
 """
 from __future__ import annotations
+import argparse, json, pathlib, re, subprocess, sys
 
-import argparse
-import json
-import pathlib
-import re
-import subprocess
-import sys
-
-EXPECTED_WORKUNIT = "F-TB09"
-EXPECTED_TARGET = "QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED"
-ALLOWED_PROFILES = {"FAST", "CANONICAL", "RELEASE", "DEEP"}
-ORACLE_ORDER = {
-    "O1_MATHEMATICAL_EXACT": 1,
-    "O2_MANUFACTURED_SOLUTION": 2,
-    "O3_INDEPENDENT_NUMERICAL_REFERENCE": 3,
-    "O4_QUALIFIED_FULL_RICHARDS_REFERENCE": 4,
-    "O5_LEGACY_SWAP431_SOURCE_BOUND": 5,
-    "O6_PROPERTY_INVARIANT": 6,
-    "O7_CROSS_SOLVER_CONSISTENCY": 7,
+EXPECTED_WORKUNIT="F-TB09"
+EXPECTED_TARGET="QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED"
+EXPECTED_BASE="42544af575db522d012db491db801615577048df"
+EXPECTED_POST_BASE="ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868"
+EXPECTED_RUNS={
+ "F-TB01":("1d039292d5768496c4550a8e1b35a92c6f836504","34553040742"),
+ "F-TB02":("549531e2e233cccab1416dba04edb266653a5da5","34559093286"),
+ "F-TB03":("65d5e5202446212390dbdd84b06e6b2a80e7121c","34588150201"),
+ "F-TB04":("85280c6c436a73c211b70996f9a22f4ad6b04f9c","34620867757"),
+ "F-TB05":("81d4f0479a99bc456803f583457862387c267ec0","34621948220"),
+ "F-TB06":("163ed723cc4f2277746bdd54f338c4b06e2eaaa9","34642847060"),
+ "F-TB07":("4fd0e3a4cb30254135c8da086a733eb3c790b834","34643844345"),
+ "F-TB08":("d240d5e90a4cb778429af7286250435cdc4f03c3","34647338808"),
 }
-CASE_ID = re.compile(r"^SWAP5-TB09-[A-Z0-9-]+-\d{3}-v\d+$")
-ALLOWED_CHANGED_PATHS = (
-    ".github/workflows/ftb09-integrated-column-physics-catalog.yml",
-    "docs/testbank/F-TB09_",
-    "testbank/manifests/F-TB09_",
-    "testbank/runners/validate_ftb09_",
-    "integration/f-tb/F-TB09_",
-    "integration/f-tb/RUNLOG_F-TB09.md",
-)
-REQUIRED_CASE_KEYS = {"stable_id","title","physics_scope","coverage","oracle","water_balance","tolerance_provenance","execution_profiles","expected_diagnostics","theory_equation_refs","architecture_invariants","owner_evidence_reused","execution_state","qualification_state","risk_selection_rationale"}
+REQUIRED_PERMANENT_IDS={
+ "SWAP5-TB-DIVDRA-RUNTIME-0001-v1","SWAP5-TB-SURFEVAP-RUNTIME-0001-v1",
+ "SWAP5-TB-ROOTUPTAKE-PARALLEL-0001-v1","SWAP5-TB-EFFECTIVE-FORCING-0001-v1",
+ "SWAP5-TB-RELEASE-PARALLEL-ROOT-0001-v1","SWAP5-TB-RELEASE-SURFACE-EVAP-0001-v1",
+ "SWAP5-TB-RST-SPLIT-0011-v1","SWAP5-TB-RST-MASS-0013-v1",
+ "SWAP5-TB-THERMAL-ATOMIC-0001-v1","SWAP5-TB-THERMAL-RESTART-0004-v1",
+}
+ALLOWED_PROFILES={"FAST","CANONICAL","RELEASE","DEEP"}
+ORACLE_ORDER={"O1_MATHEMATICAL_EXACT":1,"O2_MANUFACTURED_SOLUTION":2,"O3_INDEPENDENT_NUMERICAL_REFERENCE":3,"O4_QUALIFIED_FULL_RICHARDS_REFERENCE":4,"O5_LEGACY_SWAP431_SOURCE_BOUND":5,"O6_PROPERTY_INVARIANT":6,"O7_CROSS_SOLVER_CONSISTENCY":7}
+CASE_ID=re.compile(r"^SWAP5-TB09-[A-Z0-9-]+-\d{3}-v\d+$")
+ALLOWED_CHANGED_PATHS=(".github/workflows/ftb09-integrated-column-physics-catalog.yml","docs/testbank/F-TB09_","testbank/manifests/F-TB09_","testbank/runners/validate_ftb09_","integration/f-tb/F-TB09_","integration/f-tb/RUNLOG_F-TB09.md")
+REQUIRED_CASE_KEYS={"stable_id","title","physics_scope","coverage","oracle","water_balance","tolerance_provenance","execution_profiles","expected_diagnostics","theory_equation_refs","architecture_invariants","owner_evidence_reused","execution_state","qualification_state","risk_selection_rationale"}
 
+def fail(msg): raise AssertionError(msg)
+def load(path): return json.loads(path.read_text(encoding="utf-8"))
+def git(root,*args): return subprocess.check_output(["git","-C",str(root),*args],text=True).strip()
+def allowed(path): return any(path==p or path.startswith(p) for p in ALLOWED_CHANGED_PATHS)
 
-def fail(msg: str) -> None:
-    raise AssertionError(msg)
+def validate_support_only(root,base):
+ if base!=EXPECTED_BASE: fail(f"unexpected base {base}")
+ subprocess.check_call(["git","-C",str(root),"merge-base","--is-ancestor",base,"HEAD"])
+ changed=[p for p in git(root,"diff","--name-only",f"{base}..HEAD").splitlines() if p]
+ bad=[p for p in changed if not allowed(p)]
+ if bad: fail("Production/non-TB09 paths changed: "+", ".join(bad))
+ if not changed: fail("No F-TB09 support changes found")
+ return changed
 
+def validate_recheck(root,manifest):
+ doc=load(root/"integration/f-tb/F-TB09_AUTHORITY_RECHECK.json")
+ if doc.get("workunit")!=EXPECTED_WORKUNIT: fail("wrong recheck workunit")
+ if doc.get("composition_base",{}).get("commit")!=EXPECTED_BASE: fail("recheck base drift")
+ rows=doc.get("predecessor_exact_head_recheck",[])
+ actual={r.get("id"):(r.get("commit"),r.get("exact_head_ci_run")) for r in rows}
+ if actual!=EXPECTED_RUNS: fail(f"live predecessor map mismatch: {actual!r}")
+ if any(r.get("status")!="SUCCESS" for r in rows): fail("predecessor not exact-head successful")
+ chain={r.get("workunit"):r.get("commit") for r in manifest.get("authority_chain",[])}
+ if chain!={k:v[0] for k,v in EXPECTED_RUNS.items()}: fail("manifest predecessor commits disagree with recheck")
+ cross={x.get("case_id") for x in doc.get("existing_permanent_case_crosswalk",[])}
+ missing=REQUIRED_PERMANENT_IDS-cross
+ if missing: fail("missing permanent case IDs: "+", ".join(sorted(missing)))
+ if any(x.get("disposition")!="REUSE_NOT_DUPLICATE" for x in doc.get("existing_permanent_case_crosswalk",[])): fail("dedup disposition invalid")
+ mass=doc.get("mass_notation_clarification",{})
+ if "positive signed amount enters" not in mass.get("canonical_accounting_identity",""): fail("signed mass convention missing")
+ if "never book both representations" not in mass.get("case_equation_Q_bottom_rule",""): fail("bottom-flux single-booking rule missing")
+ if "hard" not in mass.get("tolerance_rule","").lower(): fail("hard mass rule missing")
+ post=doc.get("post_base_current_canonical_recheck",{})
+ if post.get("live_current_canonical")!=EXPECTED_POST_BASE: fail("post-base canonical pin mismatch")
+ if post.get("classification")!="GOVERNANCE_ONLY_NO_TB09_SCOPE_DELTA": fail("post-base delta not governance-only")
+ ev=post.get("evidence",{})
+ for f in ("production_source_changed","reference_changed","scientific_tolerances_changed","solver_functionality_changed"):
+  if ev.get(f) is not False: fail(f"post-base reconciliation changed {f}")
+ if ev.get("mass_conservation")!="HARD_UNCHANGED": fail("post-base mass policy changed")
+ if doc.get("production_source_changed") is not False or doc.get("mass_conservation_relaxed") is not False: fail("support-only/hard-mass boundary violated")
+ return doc
 
-def git(root: pathlib.Path, *args: str) -> str:
-    return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
+def validate_manifest(doc):
+ if doc.get("workunit")!=EXPECTED_WORKUNIT: fail("wrong workunit")
+ if doc.get("exit_target")!=EXPECTED_TARGET: fail("wrong exit target")
+ if doc.get("qualification_claim")!="CATALOG_AND_ORACLE_CONTRACT_ONLY": fail("physics overclaim")
+ if doc.get("catalog_status")!="QUALIFIED_CATALOG_CONTRACT_WHEN_EXACT_HEAD_CI_GREEN": fail("catalog status not conditional")
+ op=doc["oracle_policy"]
+ if op.get("hierarchy")!=list(ORACLE_ORDER): fail("oracle hierarchy changed")
+ if op.get("tb09_uses_legacy_o5") or op.get("corrected_golden_baseline_constructed"): fail("legacy/golden policy violation")
+ mass=doc["mass_contract"]
+ if not mass.get("required_for_all_water_bearing_cases") or mass.get("soft_mass_tolerance_allowed"): fail("mass gate not hard")
+ dims=doc.get("coverage_dimensions",[])
+ if len(dims)!=11 or len(set(dims))!=11: fail("coverage dimensions invalid")
+ cases=doc.get("cases",[])
+ if len(cases)!=8: fail("expected eight bounded cases")
+ ids=[c.get("stable_id") for c in cases]
+ if len(ids)!=len(set(ids)): fail("duplicate case IDs")
+ for c in cases:
+  missing=REQUIRED_CASE_KEYS-set(c)
+  if missing: fail(f"{c.get('stable_id')}: missing {sorted(missing)}")
+  cid=c["stable_id"]
+  if not CASE_ID.fullmatch(cid): fail(f"invalid stable ID {cid}")
+  if set(c["coverage"])!=set(dims): fail(f"{cid}: coverage keys mismatch")
+  active=[d for d,f in c["coverage"].items() if f=="P"]
+  if not active or len(active)>doc["pairwise_risk_policy"]["max_primary_interaction_dimensions_per_case"]: fail(f"{cid}: unbounded/empty interaction")
+  if any(f not in {"P","-"} for f in c["coverage"].values()): fail(f"{cid}: invalid coverage flag")
+  primary=c["oracle"].get("primary_class")
+  if primary not in ORACLE_ORDER or primary=="O5_LEGACY_SWAP431_SOURCE_BOUND": fail(f"{cid}: invalid oracle")
+  wb=c["water_balance"]
+  if not wb.get("required") or wb.get("soft_tolerance_tradeoff_allowed"): fail(f"{cid}: mass not hard")
+  for field in ("equation_id","equation","active_storage","inputs","outputs","closure_rule","transaction_rule"):
+   if field not in wb or wb[field] in (None,"",[]): fail(f"{cid}: incomplete mass metadata {field}")
+  if not any(d=="hard_mass_residual" or d.startswith("hard_mass_residual") for d in c["expected_diagnostics"]): fail(f"{cid}: hard mass diagnostic missing")
+  if not c["tolerance_provenance"]: fail(f"{cid}: tolerance provenance missing")
+  profiles=set(c["execution_profiles"])
+  if not profiles or not profiles<=ALLOWED_PROFILES: fail(f"{cid}: invalid profile")
+  if not c["theory_equation_refs"]: fail(f"{cid}: theory refs missing")
+  inv=c["architecture_invariants"]
+  if 13 not in inv or 30 not in inv or any(not isinstance(i,int) or not 1<=i<=30 for i in inv): fail(f"{cid}: invariant mapping invalid")
+  if c["qualification_state"]!="CATALOGED_NOT_PHYSICS_QUALIFIED": fail(f"{cid}: physics overclaim")
+ for d in dims:
+  if not any(c["coverage"][d]=="P" for c in cases): fail(f"uncovered dimension {d}")
+ for a,b in doc["pairwise_risk_policy"]["mandatory_pairs"]:
+  if not any(c["coverage"][a]=="P" and c["coverage"][b]=="P" for c in cases): fail(f"missing pair {a} x {b}")
+ if not any(c.get("restart_interaction") for c in cases): fail("restart-mid-interaction case missing")
+ if not any(c["oracle"].get("primary_class")=="O4_QUALIFIED_FULL_RICHARDS_REFERENCE" for c in cases): fail("O4 integrated reference case missing")
+ if doc.get("production_source_changed") is not False or doc.get("source_defects_fixed") is not False or doc.get("integrated_physics_results_qualified") is not False: fail("scope/qualification boundary violated")
 
+def validate_closeout(root):
+ status=load(root/"integration/f-tb/F-TB09_QUALIFICATION_STATUS.json")
+ contract=load(root/"integration/f-tb/F-TB09_WORK_UNIT_CONTRACT.json")
+ if status.get("decision")!=EXPECTED_TARGET: fail("closeout decision mismatch")
+ if status.get("authority_recheck")!="integration/f-tb/F-TB09_AUTHORITY_RECHECK.json": fail("status lacks final recheck authority")
+ if status.get("integrated_physics_results_qualified") is not False: fail("status overclaims physics")
+ if contract.get("exit_target")!=EXPECTED_TARGET: fail("contract exit mismatch")
+ if contract.get("qualification",{}).get("mass_conservation")!="HARD_FOR_EVERY_WATER_BEARING_CASE": fail("contract weakens mass")
 
-def changed_path_allowed(path: str) -> bool:
-    return any(path == prefix or path.startswith(prefix) for prefix in ALLOWED_CHANGED_PATHS)
+def main():
+ p=argparse.ArgumentParser(); p.add_argument("--manifest",required=True); p.add_argument("--base",required=True); p.add_argument("--repo-root",default="."); a=p.parse_args()
+ root=pathlib.Path(a.repo_root).resolve(); mp=(root/a.manifest).resolve()
+ if root not in mp.parents: fail("manifest outside repo")
+ manifest=load(mp); validate_manifest(manifest); validate_recheck(root,manifest); validate_closeout(root); changed=validate_support_only(root,a.base)
+ print("F-TB09 catalog contract: PASS"); print(f"cases={len(manifest['cases'])}"); print("predecessor_authorities=8 exact-head success"); print("permanent_case_crosswalk=PASS"); print("post_base_canonical_reconciliation=GOVERNANCE_ONLY_NO_SCOPE_DELTA"); print("mass_policy=HARD_UNCHANGED"); print("changed_paths="+",".join(changed)); print(EXPECTED_TARGET); return 0
 
-
-def validate_support_only(root: pathlib.Path, base: str) -> list[str]:
-    subprocess.check_call(["git", "-C", str(root), "merge-base", "--is-ancestor", base, "HEAD"])
-    changed = [p for p in git(root, "diff", "--name-only", f"{base}..HEAD").splitlines() if p]
-    forbidden = [p for p in changed if not changed_path_allowed(p)]
-    if forbidden:
-        fail("Production/non-TB09 paths changed: " + ", ".join(forbidden))
-    if not changed:
-        fail("No F-TB09 support changes found.")
-    return changed
-
-
-def validate_manifest(doc: dict) -> None:
-    if doc.get("workunit") != EXPECTED_WORKUNIT: fail("Wrong workunit.")
-    if doc.get("exit_target") != EXPECTED_TARGET: fail("Wrong or missing exit target.")
-    if doc.get("qualification_claim") != "CATALOG_AND_ORACLE_CONTRACT_ONLY": fail("TB09 must not overclaim executed physics qualification.")
-    if doc.get("catalog_status") != "QUALIFIED_CATALOG_CONTRACT_WHEN_EXACT_HEAD_CI_GREEN": fail("Catalog status must remain conditional on exact-head CI.")
-
-    chain = doc.get("authority_chain", [])
-    expected = [f"F-TB{i:02d}" for i in range(1, 9)]
-    actual = [x.get("workunit") for x in chain]
-    if actual != expected: fail(f"Authority chain must be exactly F-TB01..F-TB08, got {actual!r}")
-    for auth in chain:
-        if not re.fullmatch(r"[0-9a-f]{40}", auth.get("commit", "")): fail(f"Unpinned authority commit: {auth}")
-        if auth.get("ci_status") != "success" or not auth.get("exact_head_ci_run"): fail(f"Authority lacks successful exact-head CI: {auth['workunit']}")
-
-    oracle_policy = doc["oracle_policy"]
-    if oracle_policy.get("hierarchy") != list(ORACLE_ORDER): fail("F-TB01 oracle hierarchy changed or reordered.")
-    if oracle_policy.get("tb09_uses_legacy_o5"): fail("TB09 currently has no scientifically justified O5 legacy case.")
-    if oracle_policy.get("corrected_golden_baseline_constructed"): fail("TB09 may not construct a corrected golden baseline.")
-
-    mass = doc["mass_contract"]
-    if not mass.get("required_for_all_water_bearing_cases"): fail("Hard water mass gate is required.")
-    if mass.get("soft_mass_tolerance_allowed"): fail("Soft mass tolerance tradeoff is forbidden.")
-
-    dimensions = doc.get("coverage_dimensions", [])
-    if len(dimensions) != 11 or len(set(dimensions)) != len(dimensions): fail("Coverage dimensions must contain the 11 unique TB09 physics dimensions.")
-
-    cases = doc.get("cases", [])
-    if not cases: fail("No integrated cases catalogued.")
-    ids = [c.get("stable_id") for c in cases]
-    if len(ids) != len(set(ids)): fail("Duplicate stable case IDs.")
-
-    for case in cases:
-        missing = REQUIRED_CASE_KEYS - set(case)
-        if missing: fail(f"{case.get('stable_id')}: missing metadata {sorted(missing)}")
-        cid = case["stable_id"]
-        if not CASE_ID.fullmatch(cid): fail(f"Invalid stable ID: {cid}")
-        if set(case["coverage"]) != set(dimensions): fail(f"{cid}: coverage keys differ from catalog dimensions.")
-        active = [d for d, flag in case["coverage"].items() if flag == "P"]
-        if not active: fail(f"{cid}: no active physics dimensions.")
-        if len(active) > doc["pairwise_risk_policy"]["max_primary_interaction_dimensions_per_case"]: fail(f"{cid}: violates bounded interaction size without an admitted exception.")
-        if any(flag not in {"P", "-"} for flag in case["coverage"].values()): fail(f"{cid}: coverage flags must be P or -.")
-
-        primary = case["oracle"].get("primary_class")
-        if primary not in ORACLE_ORDER: fail(f"{cid}: unknown primary oracle {primary!r}.")
-        if primary == "O5_LEGACY_SWAP431_SOURCE_BOUND": fail(f"{cid}: O5 requires separate scientific justification/provenance and is not admitted in this catalog.")
-
-        wb = case["water_balance"]
-        if not wb.get("required"): fail(f"{cid}: water balance must be explicit and required.")
-        if wb.get("soft_tolerance_tradeoff_allowed"): fail(f"{cid}: mass conservation cannot be traded for a soft tolerance.")
-        for field in ("equation_id","equation","active_storage","inputs","outputs","closure_rule","transaction_rule"):
-            if field not in wb or wb[field] in (None, "", []): fail(f"{cid}: incomplete water-balance metadata: {field}")
-        if not any(d == "hard_mass_residual" or d.startswith("hard_mass_residual") for d in case["expected_diagnostics"]): fail(f"{cid}: expected diagnostics lack hard mass residual.")
-        if not case["tolerance_provenance"]: fail(f"{cid}: missing tolerance provenance.")
-        profiles = set(case["execution_profiles"])
-        if not profiles or not profiles <= ALLOWED_PROFILES: fail(f"{cid}: invalid execution profiles {profiles}.")
-        if not case["theory_equation_refs"]: fail(f"{cid}: missing theory/equation references.")
-        inv = case["architecture_invariants"]
-        if 13 not in inv or 30 not in inv: fail(f"{cid}: invariants 13 and 30 are mandatory.")
-        if any(not isinstance(i, int) or i < 1 or i > 30 for i in inv): fail(f"{cid}: invalid architecture invariant ID.")
-        if case["qualification_state"] != "CATALOGED_NOT_PHYSICS_QUALIFIED": fail(f"{cid}: TB09 may not claim executed physics qualification.")
-
-    for dim in dimensions:
-        if not any(c["coverage"][dim] == "P" for c in cases): fail(f"No case covers dimension: {dim}")
-    for left, right in doc["pairwise_risk_policy"]["mandatory_pairs"]:
-        if not any(c["coverage"][left] == "P" and c["coverage"][right] == "P" for c in cases): fail(f"Mandatory risk pair not covered: {left} x {right}")
-
-    restart_cases = [c for c in cases if c.get("restart_interaction")]
-    if not restart_cases: fail("No restart-mid-interaction case.")
-    for c in restart_cases:
-        if "F-TB04" not in " ".join(c["owner_evidence_reused"]): fail(f"{c['stable_id']}: restart interaction must reuse F-TB04 authority.")
-    if not any(c["oracle"].get("primary_class") == "O4_QUALIFIED_FULL_RICHARDS_REFERENCE" for c in cases): fail("No bounded Full Richards reference-oriented integrated case.")
-
-    if doc.get("production_source_changed") is not False: fail("Manifest must explicitly state production_source_changed=false.")
-    if doc.get("source_defects_fixed") is not False: fail("TB09 must not repair source defects.")
-    if doc.get("integrated_physics_results_qualified") is not False: fail("Catalog establishment is not executed physics qualification.")
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--manifest", required=True)
-    parser.add_argument("--base", required=True)
-    parser.add_argument("--repo-root", default=".")
-    args = parser.parse_args()
-    root = pathlib.Path(args.repo_root).resolve()
-    manifest_path = (root / args.manifest).resolve()
-    if root not in manifest_path.parents: fail("Manifest must live inside repository.")
-    doc = json.loads(manifest_path.read_text(encoding="utf-8"))
-    validate_manifest(doc)
-    changed = validate_support_only(root, args.base)
-    print("F-TB09 catalog contract: PASS")
-    print(f"cases={len(doc['cases'])}")
-    print("changed_paths=" + ",".join(changed))
-    print(EXPECTED_TARGET)
-    return 0
-
-
-if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except (AssertionError, subprocess.CalledProcessError, json.JSONDecodeError, KeyError) as exc:
-        print(f"F-TB09 catalog contract: FAIL: {exc}", file=sys.stderr)
-        raise SystemExit(1)
+if __name__=="__main__":
+ try: raise SystemExit(main())
+ except (AssertionError,subprocess.CalledProcessError,json.JSONDecodeError,KeyError) as exc:
+  print(f"F-TB09 catalog contract: FAIL: {exc}",file=sys.stderr); raise SystemExit(1)

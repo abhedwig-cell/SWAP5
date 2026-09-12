@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "workunit": "F-TB09",
+  "purpose": "Final live predecessor-authority, permanent-case deduplication and post-base canonical reconciliation authority.",
+  "composition_base": {
+    "commit": "42544af575db522d012db491db801615577048df",
+    "tree": "4360cd08fd0e952978df9e2742bcc34fdede9ef1"
+  },
+  "predecessor_exact_head_recheck": [
+    {"id":"F-TB01","commit":"1d039292d5768496c4550a8e1b35a92c6f836504","exact_head_ci_run":"34553040742","status":"SUCCESS"},
+    {"id":"F-TB02","commit":"549531e2e233cccab1416dba04edb266653a5da5","exact_head_ci_run":"34559093286","status":"SUCCESS"},
+    {"id":"F-TB03","commit":"65d5e5202446212390dbdd84b06e6b2a80e7121c","exact_head_ci_run":"34588150201","status":"SUCCESS"},
+    {"id":"F-TB04","commit":"85280c6c436a73c211b70996f9a22f4ad6b04f9c","exact_head_ci_run":"34620867757","status":"SUCCESS"},
+    {"id":"F-TB05","commit":"81d4f0479a99bc456803f583457862387c267ec0","exact_head_ci_run":"34621948220","status":"SUCCESS"},
+    {"id":"F-TB06","commit":"163ed723cc4f2277746bdd54f338c4b06e2eaaa9","exact_head_ci_run":"34642847060","status":"SUCCESS"},
+    {"id":"F-TB07","commit":"4fd0e3a4cb30254135c8da086a733eb3c790b834","exact_head_ci_run":"34643844345","status":"SUCCESS"},
+    {"id":"F-TB08","commit":"d240d5e90a4cb778429af7286250435cdc4f03c3","exact_head_ci_run":"34647338808","status":"SUCCESS"}
+  ],
+  "supersedes_initial_metadata": {
+    "reason": "The initial TB09 manifest/work-unit contract contained non-resolvable or non-latest exact-head run IDs for F-TB04 through F-TB07. This final recheck is authoritative for predecessor CI run identity.",
+    "fields_superseded": ["authority_chain[*].exact_head_ci_run", "precondition_check.ftb_authorities[*].exact_head_ci_run"],
+    "affected_workunits": ["F-TB04","F-TB05","F-TB06","F-TB07"]
+  },
+  "existing_permanent_case_crosswalk": [
+    {"authority":"F-TB01","case_id":"SWAP5-TB-DIVDRA-RUNTIME-0001-v1","scope":"integrated active DIVDRA runtime","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB01","case_id":"SWAP5-TB-SURFEVAP-RUNTIME-0001-v1","scope":"integrated restricted surface-evaporation runtime","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB01","case_id":"SWAP5-TB-ROOTUPTAKE-PARALLEL-0001-v1","scope":"restricted root-uptake preservation","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB01","case_id":"SWAP5-TB-EFFECTIVE-FORCING-0001-v1","scope":"effective-forcing executor","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB03","case_id":"SWAP5-TB-RELEASE-PARALLEL-ROOT-0001-v1","scope":"immutable RB1 restricted root-active release","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB03","case_id":"SWAP5-TB-RELEASE-SURFACE-EVAP-0001-v1","scope":"immutable RB1 restricted surface-evaporation release","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB04","case_id":"SWAP5-TB-RST-SPLIT-0011-v1","scope":"generic committed-boundary split/restart","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB04","case_id":"SWAP5-TB-RST-MASS-0013-v1","scope":"restart hard interval water accounting","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB06","case_id":"SWAP5-TB-THERMAL-ATOMIC-0001-v1","scope":"restricted water plus thermal atomic commit","disposition":"REUSE_NOT_DUPLICATE"},
+    {"authority":"F-TB06","case_id":"SWAP5-TB-THERMAL-RESTART-0004-v1","scope":"restricted water plus thermal restart","disposition":"REUSE_NOT_DUPLICATE"}
+  ],
+  "deduplication_rule": "TB09 case IDs qualify interaction seams only. Primitive or already-permanent cases listed here remain owned by their predecessor authorities and are not reissued.",
+  "mass_notation_clarification": {
+    "canonical_accounting_identity": "delta_storage = sum(signed_external_amounts), where positive signed amount enters the SWAP accounting domain and negative signed amount leaves it.",
+    "residual": "residual = delta_storage - sum(signed_external_amounts)",
+    "case_equation_Q_bottom_rule": "Where an initial TB09 expanded case equation writes '- Q_bottom', Q_bottom denotes the non-negative outward bottom-flux amount listed under outputs. An upward bottom flux is represented only as a positive input. Implementation evidence must use one canonical signed bottom amount and must never book both representations.",
+    "internal_transfer_rule": "Internal transfers between SWAP-owned stores, including surface-to-soil infiltration, cancel from the external ledger.",
+    "tolerance_rule": "Mass conservation remains hard. No head, physics, fallback or performance tolerance may absorb missing water."
+  },
+  "post_base_current_canonical_recheck": {
+    "live_current_canonical": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "tree": "d3142c34b55befaae129aeb360c415ec7d56043c",
+    "workunit": "F-CI49P",
+    "commit_message": "promote(F-CI49P): reconcile moving preservation after F-CI49",
+    "classification": "GOVERNANCE_ONLY_NO_TB09_SCOPE_DELTA",
+    "evidence": {
+      "production_source_changed": false,
+      "reference_changed": false,
+      "scientific_tolerances_changed": false,
+      "solver_functionality_changed": false,
+      "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+      "mass_conservation": "HARD_UNCHANGED"
+    },
+    "composition_decision": "KEEP_FROZEN_BASE_42544AF. F-CI49P is a post-promotion moving-preservation/governance reconciliation and does not add or alter integrated column process physics. Chasing this postimage commit would add no scientific coverage and would create needless branch churn."
+  },
+  "production_source_changed": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "mass_conservation_relaxed": false
+}

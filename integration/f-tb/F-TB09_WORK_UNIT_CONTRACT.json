@@ -4,20 +4,26 @@
   "branch": "work/f-tb09-integrated-column-physics-process-interaction-catalog",
   "canonical_base": {"branch":"integration/f-ci-canonical","commit":"42544af575db522d012db491db801615577048df","tree":"4360cd08fd0e952978df9e2742bcc34fdede9ef1"},
   "precondition_check": {
+    "authority_source": "integration/f-tb/F-TB09_AUTHORITY_RECHECK.json",
     "ftb_authorities": [
       {"id":"F-TB01","commit":"1d039292d5768496c4550a8e1b35a92c6f836504","exact_head_ci_run":"34553040742","status":"SUCCESS"},
       {"id":"F-TB02","commit":"549531e2e233cccab1416dba04edb266653a5da5","exact_head_ci_run":"34559093286","status":"SUCCESS"},
       {"id":"F-TB03","commit":"65d5e5202446212390dbdd84b06e6b2a80e7121c","exact_head_ci_run":"34588150201","status":"SUCCESS"},
-      {"id":"F-TB04","commit":"85280c6c436a73c211b70996f9a22f4ad6b04f9c","exact_head_ci_run":"34592361616","status":"SUCCESS"},
-      {"id":"F-TB05","commit":"81d4f0479a99bc456803f583457862387c267ec0","exact_head_ci_run":"34619764701","status":"SUCCESS"},
-      {"id":"F-TB06","commit":"163ed723cc4f2277746bdd54f338c4b06e2eaaa9","exact_head_ci_run":"34623777188","status":"SUCCESS"},
-      {"id":"F-TB07","commit":"4fd0e3a4cb30254135c8da086a733eb3c790b834","exact_head_ci_run":"34637123036","status":"SUCCESS"},
+      {"id":"F-TB04","commit":"85280c6c436a73c211b70996f9a22f4ad6b04f9c","exact_head_ci_run":"34620867757","status":"SUCCESS"},
+      {"id":"F-TB05","commit":"81d4f0479a99bc456803f583457862387c267ec0","exact_head_ci_run":"34621948220","status":"SUCCESS"},
+      {"id":"F-TB06","commit":"163ed723cc4f2277746bdd54f338c4b06e2eaaa9","exact_head_ci_run":"34642847060","status":"SUCCESS"},
+      {"id":"F-TB07","commit":"4fd0e3a4cb30254135c8da086a733eb3c790b834","exact_head_ci_run":"34643844345","status":"SUCCESS"},
       {"id":"F-TB08","commit":"d240d5e90a4cb778429af7286250435cdc4f03c3","exact_head_ci_run":"34647338808","status":"SUCCESS"}
     ],
-    "result": "F-TB01_THROUGH_F-TB08_RECHECKED_QUALIFIED"
+    "result": "F-TB01_THROUGH_F-TB08_RECHECKED_QUALIFIED_EXACT_HEAD"
+  },
+  "post_base_reconciliation": {
+    "live_current_canonical": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "classification": "F-CI49P_GOVERNANCE_ONLY_NO_TB09_SCOPE_DELTA",
+    "composition_base_retained": true,
+    "authority": "integration/f-tb/F-TB09_AUTHORITY_RECHECK.json"
   },
   "scope": {"production_source_changes_allowed":false,"catalog_and_testbank_support_only":true,"new_physics_allowed":false,"source_defect_repair_allowed":false,"corrected_golden_baseline_allowed":false,"legacy_swap431_allowed_as_oracle_only_if_scientifically_justified":true},
-  "qualification": {"catalog_contract":"EXACT_HEAD_CI_REQUIRED","physics_execution":"NOT_CLAIMED_BY_F-TB09","mass_conservation":"HARD_FOR_EVERY_WATER_BEARING_CASE","selection":"PAIRWISE_AND_RISK_BASED_BOUNDED"},
-  "exit_target": "QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED",
-  "canonical_increment_rechecked":{"workunit":"F-CI49","commit":"42544af575db522d012db491db801615577048df","effect_on_tb09":"NO_SCOPE_EXPANSION; qualified transaction/solver-service infrastructure may be reused, integrated process physics remains separately catalogued"}
+  "qualification": {"catalog_contract":"EXACT_HEAD_CI_REQUIRED_AT_START_AND_END","physics_execution":"NOT_CLAIMED_BY_F-TB09","mass_conservation":"HARD_FOR_EVERY_WATER_BEARING_CASE","selection":"PAIRWISE_AND_RISK_BASED_BOUNDED","permanent_case_deduplication":"EXPLICIT_CASE_ID_CROSSWALK_REQUIRED"},
+  "exit_target": "QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED"
 }

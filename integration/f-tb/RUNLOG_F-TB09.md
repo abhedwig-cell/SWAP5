@@ -1,45 +1,46 @@
 # F-TB09 run log
 
-## Live precondition recheck
+## Composition
 
-Repository: `abhedwig-cell/SWAP5`
+Frozen base: `integration/f-ci-canonical@42544af575db522d012db491db801615577048df` tree `4360cd08fd0e952978df9e2742bcc34fdede9ef1`.
 
-Current canonical used as the clean TB09 base:
+The initial TB09 commit was created only after canonical had advanced through F-CI49. During final review canonical advanced once more to `ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868` through F-CI49P. F-CI49P is a moving-preservation/governance reconciliation with no production source, reference, scientific tolerance or solver-functionality delta. The frozen TB09 base therefore remains scientifically current for this workunit.
 
-* branch: `integration/f-ci-canonical`
-* commit: `42544af575db522d012db491db801615577048df`
-* tree: `4360cd08fd0e952978df9e2742bcc34fdede9ef1`
+## Live F-TB01 through F-TB08 recheck
 
-F-TB01 through F-TB08 were rechecked at their live branch heads. The latest workflow run for each exact head was `completed/success`. Exact immutable heads and run IDs are stored in `F-TB09_WORK_UNIT_CONTRACT.json` and the case manifest.
+The authoritative final run IDs are stored in `F-TB09_AUTHORITY_RECHECK.json`:
 
-Canonical moved during the workunit from the initially observed `e537baf...` to the F-CI49 promotion at `42544af...`. TB09 had no commits, so its branch was fast-forwarded cleanly before any materialization. F-CI49 adds qualified restricted solver-service transaction/dynamic-top-boundary infrastructure and a hard mass gate, but does not close the integrated process-interaction gap.
+- F-TB01 `1d039292d5768496c4550a8e1b35a92c6f836504` run `34553040742`: success
+- F-TB02 `549531e2e233cccab1416dba04edb266653a5da5` run `34559093286`: success
+- F-TB03 `65d5e5202446212390dbdd84b06e6b2a80e7121c` run `34588150201`: success
+- F-TB04 `85280c6c436a73c211b70996f9a22f4ad6b04f9c` run `34620867757`: success
+- F-TB05 `81d4f0479a99bc456803f583457862387c267ec0` run `34621948220`: success
+- F-TB06 `163ed723cc4f2277746bdd54f338c4b06e2eaaa9` run `34642847060`: success
+- F-TB07 `4fd0e3a4cb30254135c8da086a733eb3c790b834` run `34643844345`: success
+- F-TB08 `d240d5e90a4cb778429af7286250435cdc4f03c3` run `34647338808`: success
 
-Important ancestry finding: F-TB08 and the current canonical are diverged. Therefore no whole-branch merge/cherry-pick is used. Earlier F-TB contracts are consumed by exact commit authority; TB09 support files are authored cleanly on the current canonical.
+The initial TB09 manifest/work-unit contract recorded stale or non-resolvable run IDs for F-TB04 through F-TB07. Those metadata fields are superseded, not silently retained as authority.
 
-## Inventory finding
+## Permanent-case inventory
 
-Permanent/canonical building-block coverage already exists for transaction/restart/MultiSWAP, root uptake, surface evaporation, drainage, variable forcing, WOFOST and restricted soil-temperature runtime. F-TB09 does not duplicate those primitive owner tests.
+The final deduplication crosswalk names the already-permanent cases explicitly. It includes the F-TB01 integrated DIVDRA and surface-evaporation cases, F-TB01 root/effective-forcing cases, the F-TB03 RB1 release cases, F-TB04 restart cases and F-TB06 thermal cases.
 
-The missing permanent layer is the explicit interaction catalog: bounded process combinations, a single water ledger across the interaction, transition diagnostics and restart inside an active interaction.
+This matters because TB09 is an interaction layer. Existing primitive or already-integrated cases are reused, not cloned under new TB09 IDs.
 
-Targeted repository searches for `ponding runoff`, `root uptake evaporation` and `restart mass balance` returned no direct integrated-case hits. This was used only as a duplication check, not as proof that the underlying physics is absent.
+## Catalog
 
-## Catalog construction
+Eight bounded, pairwise/risk-selected interaction specifications remain. Every case has stable identity, physics scope, F-TB01 oracle class, explicit hard water balance, tolerance provenance, profiles, expected diagnostics, theory/equation references and invariant IDs.
 
-Eight bounded cases are registered. Selection is risk-based/pairwise, not all-combinations. Every requested physics dimension occurs at least once and the high-risk pairs declared in the manifest are covered.
+No TB09 entry claims executed physics qualification. The catalog decision qualifies the catalog contract only.
 
-Every case has stable ID, physics scope, oracle, explicit mass equation, tolerance provenance, execution profile, expected diagnostics, theory/equation references and architecture invariant IDs.
+## Conservation clarification
 
-No SWAP4.3.1 corrected golden baseline is created. No O5 legacy case is admitted.
-
-## Qualification boundary
-
-The F-TB09 workflow validates pinned F-TB01..F-TB08 authority, F-TB01 oracle order, mandatory metadata and IDs, hard mass metadata, requested coverage/risk pairs, bounded case size, restart reuse of F-TB04, an O4 Full-Richards reference-oriented DEEP case, and the support-only diff from the canonical base.
-
-It intentionally does not pretend to execute integrated physics cases whose production executor/evidence is not yet pinned. Those remain `CATALOGED_NOT_PHYSICS_QUALIFIED`.
+The canonical accounting sign is positive into the SWAP domain and negative out. Expanded case equations that subtract `Q_bottom` use it as a positive outward magnitude. Upward flow is an input and must never be double-booked. The machine-readable authority is `F-TB09_AUTHORITY_RECHECK.json`.
 
 ## Source boundary
 
-Production source changes: **none permitted**.
+Production source changes: none. Source defects fixed: none. Mass tolerance relaxed: none.
 
-Any source defect exposed later by this catalog must be routed to a separate owner workunit.
+## Exact-head closeout
+
+The amended workflow verifies that the live branch ref equals `GITHUB_SHA` at workflow start and end, then validates the support-only diff and catalog/recheck authorities. A later commit invalidates the closeout until exact-head CI runs again.

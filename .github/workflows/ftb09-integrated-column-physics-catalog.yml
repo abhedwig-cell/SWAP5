@@ -4,14 +4,6 @@ on:
   push:
     branches:
       - work/f-tb09-integrated-column-physics-process-interaction-catalog
-  pull_request:
-    paths:
-      - '.github/workflows/ftb09-integrated-column-physics-catalog.yml'
-      - 'docs/testbank/F-TB09_*'
-      - 'testbank/manifests/F-TB09_*'
-      - 'testbank/runners/validate_ftb09_*'
-      - 'integration/f-tb/F-TB09_*'
-      - 'integration/f-tb/RUNLOG_F-TB09.md'
   workflow_dispatch:
 
 permissions:
@@ -19,7 +11,7 @@ permissions:
 
 jobs:
   qualify-catalog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,9 +19,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FTB09_EXACT_HEAD_START=PASS:$GITHUB_SHA"
       - name: Validate F-TB09 catalog contract
         run: |
           python testbank/runners/validate_ftb09_integrated_column_physics_catalog.py \
             --manifest testbank/manifests/F-TB09_INTEGRATED_COLUMN_PHYSICS_CASES.json \
             --base 42544af575db522d012db491db801615577048df \
             --repo-root .
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FTB09_EXACT_HEAD_END=PASS:$GITHUB_SHA"
