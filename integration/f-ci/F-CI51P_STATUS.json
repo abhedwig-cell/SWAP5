@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "work_unit": "F-CI51P-R2",
+  "title": "WOF43A Current-Canonical Moving Preservation Reconciliation after F-CI52 race",
+  "phase": "PREPROMOTION_QUALIFICATION_REQUIRED",
+  "decision": "F_CI51P_R2_GOVERNANCE_ONLY_PRESERVATION_CANDIDATE",
+  "branch": "qualification/f-ci51p-r2-wof43a-current-canonical-preservation",
+  "preservation_base": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "f_ci51_postimage": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+  "qualified_capability": {
+    "owner_candidate": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "owner_closeout": "df72af4d2dc5b3255777733f8a725dca20583785",
+    "independent_authority": "3dc40ec16620433de2001c9662ebad647909aa48",
+    "provider_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "direct_dependency_blob": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"
+  },
+  "race_reconciliation": {
+    "r1_candidate": "ddeea1ea16c893e642d41286461b2bc6538aa3b7",
+    "r1_qualification_run": 34688375751,
+    "r1_promoted": false,
+    "intervening_current_canonical": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+    "intervening_work_unit": "F-CI52",
+    "f_ci51_byte_preservation_reverified": true
+  },
+  "scope_guards": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "new_physics": false,
+    "solver_functionality_changed": false,
+    "transaction_behavior_changed": false,
+    "mass_conservation": "HARD_UNCHANGED",
+    "force_update_allowed": false
+  },
+  "qualification_requirements": {
+    "preservation_base_must_be_ancestor": true,
+    "f_ci51_postimage_must_be_ancestor_of_preservation_base": true,
+    "provider_blob_must_match_qualified_authority": true,
+    "direct_dependency_blob_must_match_admitted_authority": true,
+    "owner_and_f_vq37_provenance_must_match": true,
+    "qualification_branch_src_tree_must_equal_preservation_base": true,
+    "qualification_branch_reference_tree_must_equal_preservation_base": true,
+    "qualification_branch_delta_governance_only": true,
+    "architecture_invariants_30_of_30": true
+  },
+  "external_current_canonical_condition": {
+    "f_ci52_broad_canonical_run": 34688308275,
+    "conclusion": "failure",
+    "classification": "UNRELATED_F_CI52_MOVING_PRESERVATION_GAP",
+    "f_ci51p_must_not_modify_f_ci52_runtime_or_preservation_scope": true
+  },
+  "promotion_rule": "After exact-head F-CI51P-R2 success, promote only if integration/f-ci-canonical still equals the preservation base and the unrelated F-CI52 moving-preservation closeout no longer leaves the current canonical broad qualification red. If F-CI52 advances canonical first, do not promote R2; recompose again from the new canonical head.",
+  "architecture_audit": "integration/f-ci/F-CI51P_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI51P_EVIDENCE.json",
+  "exit_target": "QUALIFIED_FCI51_WOF43A_MOVING_PRESERVATION_READY_FOR_RACE_SAFE_PROMOTION"
+}
