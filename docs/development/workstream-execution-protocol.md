@@ -12,6 +12,8 @@ persist early, test second
 
 This protocol applies to all SWAP5 workstreams and work units, including F-CI and F-MQ.
 
+It operates together with the [Status A to Status AA quality governance](quality-governance-a-aa.md). The execution protocol protects recoverability; the quality policy additionally governs scientific traceability, documentation, precision policy, parallel ownership and long-term model-quality evidence.
+
 ## Required state model
 
 A work unit must distinguish these states explicitly:
@@ -49,6 +51,8 @@ FILES / ARTIFACTS PERSISTED
 IMPLEMENTATION STATUS
 TEST STATUS
 QUALIFICATION STATUS
+DOCUMENTATION / QUALITY STATUS
+SHARED CONTRACT CHANGE
 NEXT EXPENSIVE ACTION
 RECOVERY POINT
 DEPENDENCIES / BLOCKERS
@@ -87,12 +91,16 @@ implemented
 persisted
 tested
 qualified
+documentation_status
+shared_contract_change
 next_action
 recovery_point
 blockers
 ```
 
 A status record must not claim `tested` or `qualified` before the corresponding gate has actually completed.
+
+For a material parallel workstream that can affect a shared integration surface, the status or handoff record must also identify its merge contract as defined in the quality governance policy: owned production surface, read-only shared contracts, interfaces permitted to change, interfaces held fixed, dependencies, expected integration point and required qualification.
 
 ## Recovery after interruption
 
@@ -130,11 +138,35 @@ checkpoint(F-MQ01): persist deterministic harness before scale gate
 
 Final qualification commits remain separate when useful. Checkpoint commits may later be squashed or reorganized during canonical integration, provided the qualified lineage remains reconstructible.
 
+## Shared-semantics integration rule
+
+Parallel development is permitted only while ownership and integration boundaries remain clear. The operational rule is:
+
+```text
+parallel where ownership is disjoint
+serial where semantics are shared
+```
+
+Changes to shared state layout, canonical kernel/time contracts, transaction semantics, exchange types, numerical policy, mass-accounting infrastructure or common solver/runtime interfaces require an explicit integration point. A workstream must not silently widen its local scope when it discovers that one of these shared contracts must change.
+
+## Documentation and scientific traceability at closeout
+
+Before a material work unit is declared fully closed, determine whether it changes any of the following:
+
+- scientific or formal model meaning;
+- parameter or variable semantics;
+- state ownership;
+- coupling or exchange contracts;
+- numerical or precision policy;
+- applicability or operational behaviour.
+
+If it does, the corresponding canonical documentation or discrepancy record must be updated, or the documentation/quality status must remain explicitly open. Passing executable tests alone is not sufficient to erase a known documentation gap.
+
 ## Relation to architecture invariants
 
 This is a development and qualification execution protocol. It does not change SWAP physics, numerical policy, transactional semantics, runtime semantics or the Core Architecture Invariants.
 
-The architecture invariants define what the system must mean. This protocol defines how development work is persisted and recovered safely while reaching that system.
+The architecture invariants define what the system must mean. This protocol defines how development work is persisted and recovered safely while reaching that system. The Status A to Status AA quality governance defines how scientific traceability, evidence, documentation and model-quality maturity are accumulated without retrospectively reconstructing them.
 
 ## Minimum rule for every new work unit
 
