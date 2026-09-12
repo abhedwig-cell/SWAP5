@@ -1,0 +1,131 @@
+name: F-DOC15 Status-A readiness final gap assessment
+
+on:
+  push:
+    branches:
+      - work/f-doc15-rb1-current-canonical-status-a-final-gap-assessment
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FDOC15_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+
+      - name: Scope guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=1c63aeede05180d3628873083d9351da6e67175f
+          git cat-file -e "$base^{commit}"
+          bad="$(git diff --name-only "$base"..HEAD | grep -Ev '^(docs/scientific/F-DOC15_STATUS_A_READINESS_FINAL_GAP_ASSESSMENT\.md|integration/f-doc/F-DOC15_(CLOSURE_BACKLOG\.json|STATUS\.json|CLOSEOUT\.md)|\.github/workflows/fdoc15-status-a-readiness-final-gap-assessment\.yml)$' || true)"
+          test -z "$bad" || { echo "$bad"; exit 1; }
+          test ! -e integration/f-doc/F-DOC14_STATUS.json
+          echo "FDOC15_SCOPE_GUARD=PASS"
+
+      - name: Authority and denominator gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          status = json.loads(Path('integration/f-doc/F-DOC15_STATUS.json').read_text())
+          backlog = json.loads(Path('integration/f-doc/F-DOC15_CLOSURE_BACKLOG.json').read_text())
+
+          allowed = {
+              'SATISFIED',
+              'EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE',
+              'DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE',
+              'PARTIAL',
+              'MISSING',
+              'NOT_APPLICABLE_WITH_RATIONALE',
+          }
+          rows = status['requirement_classifications']
+          assert len(rows) == 22
+          assert len({r['requirement'] for r in rows}) == 22
+          assert status['wur_authority']['public_requirement_denominator'] == 22
+          assert status['wur_authority']['controlled_full_text_status'] == 'NOT_OBTAINED'
+          assert status['wur_authority']['inspectable_baseline'] == 'WR-QA-PUBLIC-22'
+          assert set(status['qualified_documentation_authorities']) == {f'F-DOC{i:02d}' for i in range(1,14)}
+          assert 'F-DOC14' in status['excluded_documentation_authorities']
+          assert all(r['rb1'] in allowed and r['current'] in allowed for r in rows)
+          assert sum(status['rb1']['classification_counts'].values()) == 22
+          assert sum(status['current_canonical']['classification_counts'].values()) == 22
+          assert status['rb1']['classification_counts']['SATISFIED'] == 2
+          assert status['current_canonical']['classification_counts']['SATISFIED'] == 2
+          assert status['rb1']['status_a_ready_for_formal_assessment'] is False
+          assert status['current_canonical']['status_a_ready_for_formal_assessment'] is False
+          assert status['hard_findings']['verification_is_validation'] is False
+          assert status['hard_findings']['t12_application_validation_open'] is True
+          assert status['formal_status_a_certification'] == 'NOT_PERFORMED_AND_NOT_CLAIMED'
+          assert len(backlog['requirement_gaps']) == 20
+          assert len(backlog['satisfied_without_closure_backlog']) == 2
+          assert {r['requirement'] for r in backlog['satisfied_without_closure_backlog']} == {'5.1','5.2'}
+          assert {r['requirement'] for r in backlog['requirement_gaps']} == ({r['requirement'] for r in rows} - {'5.1','5.2'})
+          assert len(backlog['global_blockers']) == 2
+          assert all(g['suggested_workunit_id'] for g in backlog['requirement_gaps'])
+          assert all(g['owner'] and g['evidence_needed'] and g['work_required'] and g['dependency'] for g in backlog['requirement_gaps'])
+          print('FDOC15_DENOMINATOR_AND_BACKLOG=PASS')
+          PY
+
+      - name: Pinned authority existence and current-canonical snapshot gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in \
+            999d4fa3da6fa08c5d57e23b9949f3920de37fbe \
+            18942fee83eb385fccc1663230772ae03dcc9ae6 \
+            0c25d97bd180378a916fbb14a1e45768af9ec63a \
+            a703747ce1991c5601b76a84f04969b602298268 \
+            919f228d8aedc1029b5080bb019fbe61d2e1d7c6 \
+            c20c0fd4c53ef65f3c8d375362908a25f0855a4b \
+            492b984bca282d6ec11dcaa727227b34c0ff3a84 \
+            8e5863510004ec11ab377b5bc9d3bd5df6d69777 \
+            2a4a8738496329001a3c3af9b5e50a9f31d0c44f \
+            ef34a9f5a01d78ff9c2628315b484c5a8ff4f717 \
+            df438f8d0eaa4117e3e6df13a7061985fe233a16 \
+            e34caabe225986db3c60551f4168869f3e4cc2a2 \
+            1c63aeede05180d3628873083d9351da6e67175f \
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182 \
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 \
+            42544af575db522d012db491db801615577048df; do
+            git cat-file -e "$sha^{commit}"
+          done
+          current="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
+          test "$current" = 42544af575db522d012db491db801615577048df
+          echo "FDOC15_AUTHORITY_AND_CURRENT_SNAPSHOT=PASS:$current"
+
+      - name: Hard nonclaim gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED' integration/f-doc/F-DOC15_CLOSEOUT.md
+          grep -q 'Verification was not relabelled as validation' integration/f-doc/F-DOC15_CLOSEOUT.md
+          grep -q 'never self-certifies Status A' docs/scientific/F-DOC15_STATUS_A_READINESS_FINAL_GAP_ASSESSMENT.md
+          echo "FDOC15_NONCLAIMS=PASS"
+
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FDOC15_EXACT_HEAD_END=PASS:$GITHUB_SHA"
