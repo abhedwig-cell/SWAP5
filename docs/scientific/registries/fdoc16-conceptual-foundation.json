@@ -1,0 +1,221 @@
+{
+  "schema": "swap5.fdoc16_conceptual_foundation.v1",
+  "work_unit": "F-DOC16",
+  "sci_foundation_id": "SCI-FOUND-01",
+  "decision_if_exact_head_green": "QUALIFIED_SCI_FOUND_01_CONCEPTUAL_FOUNDATION_AUTHORITY",
+  "base_documentation_authority": {
+    "work_unit": "F-DOC15",
+    "sha": "1c4d97de16cf6d1eaf6289e920a32c4167536060",
+    "tree": "4fc5f0d44be496f2ebfe66d74a53e78b7d875d1b"
+  },
+  "live_context_snapshot": {
+    "integration_branch": "integration/f-ci-canonical",
+    "sha": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "tree": "d3142c34b55befaae129aeb360c415ec7d56043c",
+    "role": "context only; moving integration branch is not a release authority"
+  },
+  "rb1_immutable_authorities": {
+    "scientific_source_sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_sha": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_metadata_sha": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "required_capability_denominator": 15
+  },
+  "authority_scope": {
+    "authoritative_for": [
+      "physical-system scope",
+      "modelling purpose",
+      "spatial and temporal abstraction",
+      "system boundaries",
+      "1D column admissibility conditions",
+      "conceptual entities",
+      "process disposition categories",
+      "model-foundation assumptions and nonclaims",
+      "foundation-level downstream traceability obligations"
+    ],
+    "not_authoritative_for": [
+      "process-specific T1-T4 equations and closures",
+      "T6-T7 numerical methods except conceptual generic-time dependency",
+      "T10 implementation mapping",
+      "T11 verification completion",
+      "T12 validation",
+      "application-specific fitness-for-purpose evidence",
+      "Status A or Status AA certification"
+    ]
+  },
+  "required_chain": [
+    "physical_system",
+    "modelling_purpose",
+    "spatial_temporal_scales",
+    "system_boundary",
+    "abstraction_idealisation",
+    "conceptual_model",
+    "formal_mathematical_model",
+    "numerical_realization",
+    "implementation"
+  ],
+  "source_provenance": [
+    {
+      "id": "SRC-FDOC16-001",
+      "title": "SWAP: theory and user guide, Chapter 1 Model overview",
+      "authors_or_issuer": "Working Group SWAP / Wageningen Environmental Research",
+      "year": 2026,
+      "version": "4.3.024 as published online",
+      "locator": "https://swap.wur.nl/manual/01_model_overview.html",
+      "retrieved": "2026-09-12",
+      "provenance_class": "LEGACY_MANUAL",
+      "lineage": "STRUCTURALLY_REIMPLEMENTED",
+      "scope": "1D vertical model domain, field-scale support, assumptions, application limits and uncertainty context",
+      "relationship": "scientific lineage and conceptual source; not SWAP5 implementation authority"
+    },
+    {
+      "id": "SRC-FDOC16-002",
+      "title": "SWAP version 4; Theory description and user manual",
+      "authors_or_issuer": "Kroes et al., Wageningen Environmental Research",
+      "year": 2017,
+      "persistent_identifier": "doi:10.18174/416321",
+      "provenance_class": "SWAP_TECHNICAL_REPORT",
+      "lineage": "STRUCTURALLY_REIMPLEMENTED",
+      "scope": "historical model domain and process-family authority",
+      "relationship": "historical scientific source; not automatic SWAP5 process admission"
+    },
+    {
+      "id": "SRC-FDOC16-003",
+      "title": "Field-scale water flow and solute transport: SWAP model concepts, parameter estimation and case studies",
+      "authors_or_issuer": "J.C. van Dam, Wageningen University",
+      "year": 2000,
+      "persistent_identifier": "doi:10.18174/121243",
+      "provenance_class": "PEER_REVIEWED_SOURCE",
+      "lineage": "UNCHANGED_SCIENTIFIC_CONTINUITY",
+      "scope": "field-scale agro-/ecohydrological modelling purpose and conceptual lineage",
+      "relationship": "supports model purpose and field-scale concept"
+    },
+    {
+      "id": "SRC-FDOC16-004",
+      "title": "SWAP 50 years: Advances in modelling soil-water-atmosphere-plant interactions",
+      "authors_or_issuer": "Heinen et al.",
+      "year": 2024,
+      "persistent_identifier": "doi:10.1016/j.agwat.2024.108883",
+      "provenance_class": "PEER_REVIEWED_SOURCE",
+      "lineage": "UNCHANGED_SCIENTIFIC_CONTINUITY",
+      "scope": "current scientific domain and major process families",
+      "relationship": "supports scientific domain; not implementation/release evidence"
+    },
+    {
+      "id": "SRC-FDOC16-005",
+      "title": "SWAP5 target architecture overview, component ownership map and core invariants",
+      "authors_or_issuer": "SWAP5 repository authority",
+      "year": 2026,
+      "locator": "integration/f-ci-canonical@ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+      "provenance_class": "NEW_SWAP5_FORMULATION",
+      "lineage": "STRUCTURALLY_REIMPLEMENTED",
+      "scope": "generic time, kernel/runtime/coupler boundaries, MultiSWAP, tiles, direct groundwater coupling and deep-vadose composition",
+      "relationship": "modern SWAP5 composition authority context"
+    }
+  ],
+  "physical_phenomena": [
+    {
+      "id": "SW5-PHEN-0001",
+      "title": "Local soil-plant-atmosphere hydrological system",
+      "tier": "T0",
+      "status": "ACTIVE"
+    }
+  ],
+  "conceptual_entities": [
+    {"id": "SW5-CONCEPT-0001", "title": "Representative one-dimensional column", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0002", "title": "Upper atmosphere/surface interface", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0003", "title": "Layered soil and root-zone domain", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0004", "title": "Lateral exchange abstraction", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0005", "title": "Bottom interface", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0006", "title": "Generic time interval", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0007", "title": "Standalone column composition", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0008", "title": "MultiSWAP column ensemble", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0009", "title": "Surface tiles and area fractions", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0010", "title": "Direct groundwater coupling interface", "tier": "T2", "status": "ACTIVE"},
+    {"id": "SW5-CONCEPT-0011", "title": "Optional deep-vadose transfer composition", "tier": "T2", "status": "ACTIVE"}
+  ],
+  "one_d_admissibility_conditions": [
+    "vertical storage and transport are the dominant internally resolved spatial dynamics for the target outputs",
+    "unresolved horizontal variability is negligible at the application tolerance or represented by effective parameters, multiple columns/tiles or an external spatial model",
+    "material lateral exchanges are represented by parameterised source/sink terms, explicit boundary exchange or an external coupler",
+    "forcing, parameters and boundary conditions are representative of the chosen horizontal support",
+    "target outputs do not require a resolved 2D or 3D distribution inside the column support"
+  ],
+  "process_dispositions": [
+    {"process": "meteorological drivers", "disposition": "FORCING"},
+    {"process": "precipitation", "disposition": "FORCING"},
+    {"process": "prescribed irrigation/management water", "disposition": "FORCING"},
+    {"process": "canopy interception", "disposition": "RESOLVED"},
+    {"process": "snow/frost", "disposition": "RESOLVED"},
+    {"process": "surface water storage/ponding", "disposition": "RESOLVED"},
+    {"process": "infiltration/exfiltration at soil surface", "disposition": "RESOLVED"},
+    {"process": "surface runoff generation", "disposition": "RESOLVED"},
+    {"process": "soil evaporation", "disposition": "RESOLVED"},
+    {"process": "crop transpiration and root uptake", "disposition": "RESOLVED"},
+    {"process": "vertical matrix soil-water flow", "disposition": "RESOLVED"},
+    {"process": "macropore/preferential flow", "disposition": "RESOLVED"},
+    {"process": "lateral drainage/infiltration exchange", "disposition": "PARAMETERISED"},
+    {"process": "imposed surface-water/drainage-system state", "disposition": "BOUNDARY_CONDITION"},
+    {"process": "bottom head or bottom flux", "disposition": "BOUNDARY_CONDITION"},
+    {"process": "groundwater aquifer dynamics", "disposition": "EXTERNAL_COMPONENT"},
+    {"process": "deep-vadose travel/storage below SWAP column", "disposition": "EXTERNAL_COMPONENT"},
+    {"process": "MultiSWAP spatial aggregation and tile fractions", "disposition": "EXTERNAL_COMPONENT"},
+    {"process": "soil heat transport", "disposition": "RESOLVED"},
+    {"process": "solute transport", "disposition": "RESOLVED"},
+    {"process": "detailed pesticide chemistry beyond admitted SWAP solute physics", "disposition": "EXTERNAL_COMPONENT"},
+    {"process": "detailed nutrient biogeochemistry beyond admitted SWAP nutrient physics", "disposition": "EXTERNAL_COMPONENT"},
+    {"process": "dynamic crop growth", "disposition": "RESOLVED"},
+    {"process": "horizontal unsaturated flow field", "disposition": "OUT_OF_SCOPE"},
+    {"process": "regional surface-water routing", "disposition": "OUT_OF_SCOPE"},
+    {"process": "atmospheric circulation/turbulence field", "disposition": "OUT_OF_SCOPE"},
+    {"process": "economic/social/policy-system dynamics", "disposition": "OUT_OF_SCOPE"}
+  ],
+  "allowed_process_dispositions": [
+    "RESOLVED",
+    "PARAMETERISED",
+    "FORCING",
+    "BOUNDARY_CONDITION",
+    "EXTERNAL_COMPONENT",
+    "OUT_OF_SCOPE"
+  ],
+  "foundation_questions": [
+    {"question": "represented physical system", "state": "CLOSED_AT_CONCEPTUAL_FOUNDATION"},
+    {"question": "1D abstraction admissibility", "state": "CLOSED_AT_CONCEPTUAL_FOUNDATION"},
+    {"question": "process disposition", "state": "CLOSED_AT_CONCEPTUAL_FOUNDATION"},
+    {"question": "assumptions and limitations", "state": "CLOSED_AT_CONCEPTUAL_FOUNDATION"},
+    {"question": "MultiSWAP/groundwater/tiles/transfer relation", "state": "CLOSED_AT_CONCEPTUAL_FOUNDATION"},
+    {"question": "model-foundation fitness limits", "state": "CLOSED_AT_CONCEPTUAL_FOUNDATION"},
+    {"question": "concept-to-formal authority traceability", "state": "CLOSED_AT_FOUNDATION_EDGE_LEVEL"}
+  ],
+  "remaining_open_gaps": [
+    "process-specific physical-science T0-T7 authority population",
+    "complete T11 equation-to-test traceability",
+    "T12 application validation",
+    "sensitivity evidence",
+    "uncertainty evidence",
+    "application-specific fitness-for-purpose population",
+    "parameter/calibration/input provenance population",
+    "Status-A-ready interpretation and user guidance",
+    "controlled WR-QA-2024 reconciliation",
+    "frozen exact post-RB1 assessment/release candidate"
+  ],
+  "hard_nonclaims": {
+    "broad_process_table_is_rb1_feature_list": false,
+    "bottom_flux_is_universally_groundwater_recharge": false,
+    "multiple_columns_are_a_horizontally_coupled_soil_model": false,
+    "conceptual_admissibility_is_validation": false,
+    "process_equations_adopted_by_this_workunit": false,
+    "ready_for_formal_status_a_assessment": false,
+    "status_a_certified": false,
+    "status_aa_certified": false
+  },
+  "mass_conservation": "HARD_UNCHANGED",
+  "production_source_changed": false,
+  "reference_data_changed": false,
+  "rb1_scientific_source_reopened": false,
+  "invariant_review": {
+    "count": 30,
+    "all_reviewed": true,
+    "adverse_delta": false,
+    "direct_bindings": [1, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 28, 29, 30]
+  }
+}
