@@ -1,0 +1,68 @@
+{
+  "workunit": "EB-I04",
+  "title": "Liquid-Water Sensible Enthalpy Contract",
+  "status": "owner_qualified_not_independently_verified_not_canonical_admitted",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/eb-i04-liquid-water-sensible-enthalpy-contract",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a"
+  },
+  "owner_qualification": {
+    "qualified_content_head": "09335cfd8233d2b1c5747ce50bbc3772afe9fd98",
+    "successful_run": 34721280461,
+    "successful_job": 103627495883,
+    "production_delta": [
+      "src/process/mod_liquid_water_sensible_enthalpy.f90"
+    ],
+    "preserved_blobs": {
+      "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+      "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+    }
+  },
+  "invariants": [
+    {"id":1,"status":"PASS","evidence":"Adds one solver-independent energy primitive to the single SWAP5 kernel/process architecture; no use-case-specific SWAP implementation is introduced."},
+    {"id":2,"status":"PASS","evidence":"Production code contains no file, path, parser, format or unit-number dependency."},
+    {"id":3,"status":"PASS","evidence":"Liquid-water thermophysical properties are explicit parameters and computed storage/transport energies are result data; no forcing, numerical policy or dynamic state is mixed into the parameter object."},
+    {"id":4,"status":"PASS","evidence":"EB-I04 adds no persistent per-column physical state or restart payload."},
+    {"id":5,"status":"PASS","evidence":"The algebraic routines require no Newton vectors, Jacobians or other persistent scratch; no worker scratch is moved into column state."},
+    {"id":6,"status":"PARTIAL","evidence":"The primitive is scalar and layout-agnostic, but batched/SoA/SIMD execution and cache behavior are not qualified here."},
+    {"id":7,"status":"PARTIAL","evidence":"The routines mutate no committed state and are safe to evaluate during a trial, but transaction-aware publication into an accepted energy ledger is explicitly deferred."},
+    {"id":8,"status":"PASS","evidence":"All evaluations are deterministic and cheaply recomputable from the same explicit inputs; no hidden history is introduced."},
+    {"id":9,"status":"PASS","evidence":"The contract uses generic storage endpoints and oriented transport amounts; no day, month, year, midnight or fixed step duration is fundamental."},
+    {"id":10,"status":"PASS","evidence":"No coupling-window size or calendar boundary is encoded."},
+    {"id":11,"status":"PARTIAL","evidence":"The primitive is designed for later transactional coupling/conservation composition but does not itself wire coupling or runtime publication."},
+    {"id":12,"status":"PASS","evidence":"No groundwater head/flux interface contract is changed. Groundwater-carried sensible energy requires an explicitly supplied transport amount and temperature in a later composition."},
+    {"id":13,"status":"PASS","evidence":"EB-I04 neither modifies nor repairs any water balance; energy calculations consume already defined water storage/transport amounts and cannot create or destroy water."},
+    {"id":14,"status":"NOT_APPLICABLE","evidence":"No groundwater response tangent or sensitivity contract is changed or added."},
+    {"id":15,"status":"PASS","evidence":"The algebraic evaluation requires no extra full SWAP run or predictor/corrector solve."},
+    {"id":16,"status":"PARTIAL","evidence":"No heavy per-column solver instance or persistent state is added, but hundred-thousand-column throughput is not benchmarked in this workunit."},
+    {"id":17,"status":"PASS","evidence":"The primitive is per logical SWAP column/control volume and contains no MODFLOW-cell fraction or tile aggregation logic."},
+    {"id":18,"status":"NOT_APPLICABLE","evidence":"No deep-vadose component behavior is changed."},
+    {"id":19,"status":"NOT_APPLICABLE","evidence":"No deep-vadose/direct-coupling transition logic is changed."},
+    {"id":20,"status":"PASS","evidence":"The sensible-enthalpy law is independent of a particular Richards implementation and can consume transport from any soil-water solver that satisfies the later common transport contract."},
+    {"id":21,"status":"PASS","evidence":"The implementation reuses the admitted SWAP liquid-water property values only as test/reference inputs while keeping production properties explicit; no legacy global state or module boundary is imported."},
+    {"id":22,"status":"PASS","evidence":"No HeadCalc or soil-water-solver internal arrays are referenced."},
+    {"id":23,"status":"PASS","evidence":"Physical thermophysical parameters are explicit and no numerical policy silently changes them. Missing vapor/ice/phase-change physics is represented as out of scope, not approximated away."},
+    {"id":24,"status":"NOT_QUALIFIED","evidence":"Operations are constant-cost scalar algebra, but bounded-cost behavior at full runtime/MultiSWAP composition scale is not independently measured or qualified here."},
+    {"id":25,"status":"PASS","evidence":"Current canonical thermal/reference physics remains byte-identical and available; EB-I04 does not replace the reference solver."},
+    {"id":26,"status":"PARTIAL","evidence":"Status codes and decomposition residuals are available locally, but runtime-wide diagnostics, provenance and reporting are deferred to later composition."},
+    {"id":27,"status":"PASS","evidence":"The capability allocates no optional persistent state; unused columns incur no state memory cost from EB-I04."},
+    {"id":28,"status":"PASS","evidence":"Donor-temperature choice, tile aggregation, groundwater composition and energy-ledger publication remain runtime/coupler responsibilities outside this primitive."},
+    {"id":29,"status":"PASS","evidence":"No .swp input, filesystem, midnight, one-day or mandatory-MODFLOW assumption exists in production code."},
+    {"id":30,"status":"PASS","evidence":"EB-I04 is explicitly assessed against all 30 SWAP core architecture invariants in this audit."}
+  ],
+  "hard_nonclaims": [
+    "No full SWAP5 energy balance is qualified.",
+    "No complete soil enthalpy or total sensible-storage law is qualified.",
+    "No vapor sensible or latent transport is represented.",
+    "No ice storage or freeze/thaw latent heat is represented.",
+    "No pressure enthalpy, salinity effect or temperature-dependent liquid-water property law is qualified.",
+    "No donor/upwind temperature rule for internal or boundary water transport is qualified.",
+    "No precipitation, irrigation or groundwater temperature physics is inferred.",
+    "The liquid-water theta_avg*DeltaT contribution must not be double-counted against the admitted De Vries sensible-storage term in a later composition.",
+    "Gas/air sensible storage under changing water content remains unresolved for full-soil closure.",
+    "Runtime commit/rollback publication, large-batch MultiSWAP throughput and bounded-cost behavior are not qualified.",
+    "Independent verification and canonical admission are not claimed."
+  ]
+}
