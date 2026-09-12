@@ -2,11 +2,11 @@ program test_energy_conservation_types
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_energy_conservation_types
   implicit none
-  integer(int64), parameter :: SOIL = 1_int64, CANOPY = 2_int64
+  integer(int64), parameter :: SOIL = 1_int64, CANOPY = 2_int64, UNKNOWN = 99_int64
   integer(int64) :: all_ids(2), soil_only(1), canopy_only(1), dup_ids(2)
   real(real64) :: initial_energy(2), final_energy(2)
   type(energy_storage_snapshot_t) :: initial_snapshot, final_snapshot, invalid_snapshot
-  type(energy_transfer_t) :: transfers(3), invalid_transfer
+  type(energy_transfer_t) :: transfers(3), invalid_transfer, unknown_transfer
   type(energy_balance_t) :: balance
   integer :: status
 
@@ -52,6 +52,14 @@ program test_energy_conservation_types
   call require(exact(balance%boundary_output_j_m2, 5.0_real64), 'canopy output')
   call require(exact(balance%residual_j_m2, 0.0_real64), 'canopy residual')
   print '(a)', 'EBI01_NESTED_CONTROL_VOLUMES_CLOSE=PASS'
+
+  unknown_transfer = make_energy_transfer(UNKNOWN, SOIL, 1.0_real64, status)
+  call require(status == ENERGY_CONSERVATION_OK .and. unknown_transfer%ready(), &
+       'directed transfer record is structurally valid before snapshot validation')
+  call project_energy_balance(initial_snapshot, final_snapshot, [unknown_transfer], all_ids, balance, status)
+  call require(status == ENERGY_CONSERVATION_MISSING_COMPONENT .and. .not. balance%available, &
+       'undeclared positive transfer endpoint rejected')
+  print '(a)', 'EBI01_UNDECLARED_TRANSFER_ENDPOINT_REJECTED=PASS'
 
   invalid_transfer = make_energy_transfer(SOIL, CANOPY, -1.0_real64, status)
   call require(status == ENERGY_CONSERVATION_INVALID_TRANSFER .and. .not. invalid_transfer%ready(), &
