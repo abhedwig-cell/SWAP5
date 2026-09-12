@@ -6,68 +6,76 @@
 
 Branch: `work/f-doc15-rb1-current-canonical-status-a-final-gap-assessment`
 
-Base: `F-DOC13@1c63aeede05180d3628873083d9351da6e67175f`.
+Base documentation authority: `F-DOC13@1c63aeede05180d3628873083d9351da6e67175f`.
 
 ## Live authority recheck
 
-F-DOC01 through F-DOC13 were rechecked as independent qualified exact-head authorities. F-DOC14 is not an independent authority: its live branch head equals F-DOC13 and no `integration/f-doc/F-DOC14_STATUS.json` exists at that head. F-DOC14 is therefore excluded.
+F-DOC01 through F-DOC13 were rechecked as independent qualified exact-head authorities. F-DOC14 is excluded because its branch aliases the F-DOC13 head and no independent F-DOC14 status authority exists.
 
-The immutable RB1 assessment object is pinned by:
+Later branch material is explicitly noncanonical for this closeout:
+
+- F-DOC16 `b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b`: exact-head qualified branch-only conceptual-foundation closure input, not admitted current authority.
+- F-DOC18 `448265df8b5a4be8941b688bde378a490751c5f1`: T0-T7 candidate-only input with no exact-head qualification run found at the live recheck.
+
+## Assessment objects
+
+Immutable RB1:
 
 - scientific source `0aeb0a2ed4096e1f9493d3dabc70962ea5270182`;
 - qualification authority `aeb74560d801c4ac7314df7b8845fcc5daf8bba6`;
-- release authority `b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0`.
+- release authority `b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0`;
+- release artifact `release/f-rb02/F-RB02_CLOSEOUT.json`.
 
-The moving current-canonical snapshot was rechecked immediately before closeout and remained:
+Current-canonical snapshot frozen by F-DOC15:
 
-`integration/f-ci-canonical@42544af575db522d012db491db801615577048df`
+- `integration/f-ci-canonical@eba90d79010b095b6556e93bd8b77a8c28d25560`;
+- tree `ed3187c068697f17886cc85ddb9291dfbbd161d4`;
+- commit `F-CI50P R1: finalize post-reconciliation closeout`.
 
-with tree `4360cd08fd0e952978df9e2742bcc34fdede9ef1`, after F-CI49 definitive F-KT15 solver-service transaction composition admission.
+The snapshot includes qualified post-RB1 admission through F-CI50/F-CI50P. Later canonical movement does not rewrite this assessment. A later formal assessment must pin its own exact candidate SHA and reconcile only affected deltas.
 
-## WUR requirement denominator
+## Requirement authority and verdict
 
-The exact F-DOC01 authority is preserved:
+F-DOC01 remains authoritative for the requirement architecture:
 
-- project target `WR-QA-2024`;
+- project criterion target `WR-QA-2024`;
 - controlled full text `NOT_OBTAINED`;
-- inspectable baseline `WR-QA-PUBLIC-22`;
-- fixed denominator 22 public requirements in seven families.
+- inspectable denominator `WR-QA-PUBLIC-22`, 22 requirements.
 
-No percentage is used. Every public requirement has one RB1 and one current-canonical classification in `F-DOC15_STATUS.json` and the assessment document.
+The executive readiness verdict is:
 
-## Main decision
+`NOT_READY`
 
-Neither RB1 nor the current-canonical snapshot is ready for formal Status-A assessment yet.
+This is not a Status-A failure/certification decision. The controlled 2024 criterion must first be obtained and reconciled.
 
-The hard blockers include controlled `WR-QA-2024` reconciliation, controlled physical/hybrid theory completion, parameter/provenance completion, sensitivity and uncertainty evidence, T12/application validation, monitored-use/application evidence, application-class fitness for purpose, required model metadata and comprehensive user interpretation/operation guidance.
+## Main scientific finding
 
-Current canonical has an additional bounded requirement: an exact assessment candidate and post-RB1 documentation/evidence delta reconciliation. RB1 does not inherit that moving-target blocker.
+The strongest current evidence is downstream: exact-SHA release/admission provenance, software/runtime contracts, transactions, coupling contracts, conservation and verification.
 
-Verification was not relabelled as validation. Legacy preservation, mass balance, restart identity, exact-head CI and cross-solver qualification remain verification/qualification evidence only unless independently connected to empirical/application evidence.
+The main ST.1 break remains upstream. The admitted chain does not yet close from physical world and modelling purpose through system boundary, conceptual states/reservoirs/fluxes, assumptions and the complete formal physical model. Existing good process documentation is preserved. The preferred closure is a thin normative foundation above it, not wholesale rewriting.
 
-## Closure backlog
+Verification was not relabelled as validation. External validation, sensitivity/uncertainty and application-class fitness evidence remain separate closure obligations.
 
-`integration/f-doc/F-DOC15_CLOSURE_BACKLOG.json` gives every unsatisfied public requirement:
+## Final finite backlog
 
-- evidence needed;
-- accountable owner role;
-- work type;
-- dependencies;
-- RB1/current blocking effect;
-- bounded suggested workunit ID;
-- priority.
+`integration/f-doc/F-DOC15_CLOSURE_BACKLOG.json` contains exactly ten grouped closure objects, not one workunit per requirement:
 
-Two cross-cutting prerequisite gaps are separately recorded as G0/G1.
+1. controlled Status-A authority reconciliation;
+2. conceptual foundation;
+3. formal physical-model chain;
+4. current technical documentation;
+5. parameter/variable/I-O reference;
+6. input provenance and calibration;
+7. sensitivity and uncertainty;
+8. external validation;
+9. monitored use and fitness for purpose;
+10. metadata/management/external-use/user guidance.
 
-The backlog deliberately avoids a generic sequence of further F-DOC workunits. New work should be opened only to close a named scientific, QA, technical, metadata or user-guidance gap.
+No broad verification or release/reproducibility gap is invented because those evidence areas are comparatively strong.
 
-## Scope and invariants
+## Scope and nonclaims
 
-F-DOC15 changes documentation/governance only. No production source, reference data, physics, solver functionality, numerical tolerance, performance policy, mass criterion, state ownership, coupling contract or RB1 authority is changed.
-
-All 30 SWAP architecture invariants therefore have no adverse delta. Mass conservation remains hard.
-
-## Exit
+F-DOC15 changes documentation/governance only. It changes no production source, physics, solver functionality, numerical tolerance, mass criterion, state ownership, coupling semantics or RB1 authority. All 30 architecture invariants therefore have no adverse delta and mass conservation remains hard.
 
 Expected exact-head qualified exit:
 
@@ -79,4 +87,4 @@ Not claimed:
 - Status A compliance/certification;
 - Status AA compliance/certification.
 
-Final qualification is valid only after the dedicated F-DOC15 exact-head workflow is green on the exact final branch head containing this file, the status, assessment and closure backlog.
+Final qualification is valid only when the dedicated F-DOC15 workflow is green on the exact branch head containing the assessment, status, backlog, closeout and workflow.

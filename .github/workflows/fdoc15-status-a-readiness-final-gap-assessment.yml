@@ -37,7 +37,7 @@ jobs:
           test ! -e integration/f-doc/F-DOC14_STATUS.json
           echo "FDOC15_SCOPE_GUARD=PASS"
 
-      - name: Authority and denominator gate
+      - name: Status and finite backlog gate
         shell: bash
         run: |
           set -euo pipefail
@@ -48,43 +48,34 @@ jobs:
           status = json.loads(Path('integration/f-doc/F-DOC15_STATUS.json').read_text())
           backlog = json.loads(Path('integration/f-doc/F-DOC15_CLOSURE_BACKLOG.json').read_text())
 
-          allowed = {
-              'SATISFIED',
-              'EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE',
-              'DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE',
-              'PARTIAL',
-              'MISSING',
-              'NOT_APPLICABLE_WITH_RATIONALE',
-          }
+          allowed = {'CLOSED','PARTIAL','STATUS-A GAP','OUT OF SCOPE FOR STATUS-A','NOT APPLICABLE'}
           rows = status['requirement_classifications']
+          assert status['schema'] == 'swap5.fdoc15_status.v2'
+          assert status['executive_verdict'] == 'NOT_READY'
+          assert status['formal_status_a_certification'] == 'NOT_PERFORMED_AND_NOT_CLAIMED'
           assert len(rows) == 22
           assert len({r['requirement'] for r in rows}) == 22
-          assert status['wur_authority']['public_requirement_denominator'] == 22
-          assert status['wur_authority']['controlled_full_text_status'] == 'NOT_OBTAINED'
-          assert status['wur_authority']['inspectable_baseline'] == 'WR-QA-PUBLIC-22'
-          assert set(status['qualified_documentation_authorities']) == {f'F-DOC{i:02d}' for i in range(1,14)}
-          assert 'F-DOC14' in status['excluded_documentation_authorities']
           assert all(r['rb1'] in allowed and r['current'] in allowed for r in rows)
-          assert sum(status['rb1']['classification_counts'].values()) == 22
-          assert sum(status['current_canonical']['classification_counts'].values()) == 22
-          assert status['rb1']['classification_counts']['SATISFIED'] == 2
-          assert status['current_canonical']['classification_counts']['SATISFIED'] == 2
-          assert status['rb1']['status_a_ready_for_formal_assessment'] is False
-          assert status['current_canonical']['status_a_ready_for_formal_assessment'] is False
+          assert {r['requirement'] for r in rows if r['rb1'] == 'CLOSED'} == {'5.1','5.2'}
+          assert {r['requirement'] for r in rows if r['current'] == 'CLOSED'} == {'5.1','5.2'}
+          assert status['wur_authority']['controlled_full_text_status'] == 'NOT_OBTAINED'
+          assert status['wur_authority']['public_requirement_denominator'] == 22
+          assert set(status['qualified_documentation_authorities']) == {f'F-DOC{i:02d}' for i in range(1,14)}
+          assert status['excluded_or_noncanonical_documentation']['F-DOC14']['state'] == 'NOT_INDEPENDENT_AUTHORITY'
+          assert status['excluded_or_noncanonical_documentation']['F-DOC16']['state'].startswith('QUALIFIED_BRANCH_ONLY')
+          assert status['excluded_or_noncanonical_documentation']['F-DOC18']['state'] == 'CANDIDATE_ONLY_UNQUALIFIED'
+          assert status['rb1']['release_artifact'] == 'release/f-rb02/F-RB02_CLOSEOUT.json'
+          assert status['current_canonical']['snapshot_head'] == 'eba90d79010b095b6556e93bd8b77a8c28d25560'
           assert status['hard_findings']['verification_is_validation'] is False
-          assert status['hard_findings']['t12_application_validation_open'] is True
-          assert status['formal_status_a_certification'] == 'NOT_PERFORMED_AND_NOT_CLAIMED'
-          assert len(backlog['requirement_gaps']) == 20
-          assert len(backlog['satisfied_without_closure_backlog']) == 2
-          assert {r['requirement'] for r in backlog['satisfied_without_closure_backlog']} == {'5.1','5.2'}
-          assert {r['requirement'] for r in backlog['requirement_gaps']} == ({r['requirement'] for r in rows} - {'5.1','5.2'})
-          assert len(backlog['global_blockers']) == 2
-          assert all(g['suggested_workunit_id'] for g in backlog['requirement_gaps'])
-          assert all(g['owner'] and g['evidence_needed'] and g['work_required'] and g['dependency'] for g in backlog['requirement_gaps'])
-          print('FDOC15_DENOMINATOR_AND_BACKLOG=PASS')
+          assert status['hard_findings']['mass_conservation_relaxed'] is False
+          assert backlog['schema'] == 'swap5.fdoc15_closure_backlog.v2'
+          assert len(backlog['gaps']) == 10
+          assert [g['id'] for g in backlog['gaps']] == status['final_gap_ids']
+          assert all(g['missing'] and g['minimal_closure'] and g['owner'] for g in backlog['gaps'])
+          print('FDOC15_STATUS_AND_FINITE_BACKLOG=PASS')
           PY
 
-      - name: Pinned authority existence and current-canonical snapshot gate
+      - name: Pinned authority and canonical-lineage gate
         shell: bash
         run: |
           set -euo pipefail
@@ -105,21 +96,35 @@ jobs:
             0aeb0a2ed4096e1f9493d3dabc70962ea5270182 \
             aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
             b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 \
-            42544af575db522d012db491db801615577048df; do
+            eba90d79010b095b6556e93bd8b77a8c28d25560 \
+            b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b \
+            448265df8b5a4be8941b688bde378a490751c5f1; do
             git cat-file -e "$sha^{commit}"
           done
-          current="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
-          test "$current" = 42544af575db522d012db491db801615577048df
-          echo "FDOC15_AUTHORITY_AND_CURRENT_SNAPSHOT=PASS:$current"
+          test -f release/f-rb02/F-RB02_CLOSEOUT.json || git show b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0:release/f-rb02/F-RB02_CLOSEOUT.json >/dev/null
 
-      - name: Hard nonclaim gate
+          git fetch origin refs/heads/integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical
+          current="$(git rev-parse refs/remotes/origin/integration/f-ci-canonical)"
+          git merge-base --is-ancestor eba90d79010b095b6556e93bd8b77a8c28d25560 "$current"
+          echo "FDOC15_CANONICAL_SNAPSHOT_IS_LIVE_OR_ANCESTOR=PASS:$current"
+
+      - name: Required assessment sections and nonclaims
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED' integration/f-doc/F-DOC15_CLOSEOUT.md
+          doc=docs/scientific/F-DOC15_STATUS_A_READINESS_FINAL_GAP_ASSESSMENT.md
+          grep -q '## Executive verdict' "$doc"
+          grep -q '## Requirement-by-requirement readiness matrix' "$doc"
+          grep -q '## ST.1 layer-by-layer theory-to-evidence traceability' "$doc"
+          grep -q '## Representative end-to-end capability audit' "$doc"
+          grep -q '## Canonical-authority architecture' "$doc"
+          grep -q '## Final gap register' "$doc"
+          grep -q '## Minimal closure plan' "$doc"
+          grep -q '## Deferred post-Status-A improvements' "$doc"
+          grep -q 'never self-certifies Status A' "$doc"
           grep -q 'Verification was not relabelled as validation' integration/f-doc/F-DOC15_CLOSEOUT.md
-          grep -q 'never self-certifies Status A' docs/scientific/F-DOC15_STATUS_A_READINESS_FINAL_GAP_ASSESSMENT.md
-          echo "FDOC15_NONCLAIMS=PASS"
+          grep -q 'QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED' integration/f-doc/F-DOC15_CLOSEOUT.md
+          echo "FDOC15_REQUIRED_PRODUCTS_AND_NONCLAIMS=PASS"
 
       - name: Exact head end
         shell: bash
