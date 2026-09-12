@@ -28,6 +28,8 @@ program test_ftb10_drain_bottom_interaction
   real(real64), parameter :: tm = 7312.1875_real64
   real(real64), parameter :: t1 = 7312.3125_real64
   real(real64), parameter :: initial_head = -123.0_real64
+  real(real64), parameter :: bottom_head_first = -123.0_real64
+  real(real64), parameter :: bottom_head_second = -120.0_real64
   real(real64), parameter :: mass_gate = 1.0e-12_real64
   real(real64), parameter :: drainage_transfer = 2.0e-4_real64
   real(real64), parameter :: gwl_first = -0.35_real64
@@ -56,7 +58,7 @@ contains
     type(fmr04_fixed_flux_top_provider_t), target :: top
     type(canonical_mass_accounting_t) :: mass_first, mass_second
     real(real64) :: storage0, storage1, storage2
-    real(real64) :: bottom_first, bottom_second, combined_residual
+    real(real64) :: qbot_first, qbot_second, combined_residual, dt1, dt2
     integer :: dispatch_status, composition_status, wt_first, wt_second
 
     call initialize_runtime(columns, templates, parameters, forcings, states, config)
@@ -65,7 +67,7 @@ contains
     call make_request(request(1), drainage_transfer)
 
     storage0 = soil_storage(states(1))
-    bottom_first = forcings(1)%bottom_flux
+    call require(same_bits(forcings(1)%bottom_head, bottom_head_first), 'first prescribed bottom head configured')
     call reset_legacy()
     call fmr_run_serialized_physical_multiswap_with_divdra(columns, templates, parameters, forcings, states, config, &
          top, t0, tm, 1, request, distribution, view, results, diagnostics, aggregate, dispatch_status, &
@@ -83,11 +85,12 @@ contains
     storage1 = soil_storage(states(1))
     mass_first = results(1)%mass
     wt_first = records(1)%binding%process%water_table_node
+    dt1 = tm-t0
+    qbot_first = ((mass_first%total_in-mass_first%total_out)/dt1) + forcings(1)%top_flux + drainage_transfer
 
-    bottom_second = 0.9_real64 * bottom_first
-    forcings(1)%bottom_flux = bottom_second
-    forcings(1)%bottom_head = forcings(1)%bottom_head + 25.0_real64
+    forcings(1)%bottom_head = bottom_head_second
     call configure_view(view(1), gwl_second)
+    call require(.not. same_bits(bottom_head_first, forcings(1)%bottom_head), 'prescribed bottom head changed')
 
     call reset_legacy()
     call fmr_run_serialized_physical_multiswap_with_divdra(columns, templates, parameters, forcings, states, config, &
@@ -106,9 +109,11 @@ contains
     storage2 = soil_storage(states(1))
     mass_second = results(1)%mass
     wt_second = records(1)%binding%process%water_table_node
+    dt2 = t1-tm
+    qbot_second = ((mass_second%total_in-mass_second%total_out)/dt2) + forcings(1)%top_flux + drainage_transfer
 
-    call require(.not. same_bits(bottom_first, bottom_second), 'bottom boundary changed')
     call require(wt_first /= wt_second, 'explicit groundwater view crossed drainage distribution node')
+    call require(abs(qbot_second-qbot_first) > 1.0e-12_real64, 'prescribed-head change altered signed bottom flux')
     call require(same_bits(mass_first%storage_end, mass_second%storage_start), 'committed interval storage continuity')
     call require(abs(mass_first%storage_start-storage0) <= mass_gate, 'first ledger origin storage')
     call require(abs(mass_first%storage_end-storage1) <= mass_gate, 'first ledger endpoint storage')
@@ -119,13 +124,15 @@ contains
     call require(abs(combined_residual) <= mass_gate, 'full-window hard mass closure')
 
     write(*,'(A)') 'FTB10_TB09_003_ACTIVE_DIVDRA=PASS'
-    write(*,'(A)') 'FTB10_TB09_003_BOTTOM_BOUNDARY_CHANGE=PASS'
+    write(*,'(A)') 'FTB10_TB09_003_BOTTOM_HEAD_CHANGE=PASS'
+    write(*,'(A)') 'FTB10_TB09_003_BOTTOM_FLUX_RESPONSE=PASS'
     write(*,'(A)') 'FTB10_TB09_003_GROUNDWATER_VIEW_CHANGE=PASS'
     write(*,'(A)') 'FTB10_TB09_003_INTERVAL1_HARD_MASS=PASS'
     write(*,'(A)') 'FTB10_TB09_003_INTERVAL2_HARD_MASS=PASS'
     write(*,'(A)') 'FTB10_TB09_003_FULL_WINDOW_HARD_MASS=PASS'
     write(*,'(A,I0,A,I0)') 'FTB10_TB09_003_WATER_TABLE_NODES=', wt_first, ':', wt_second
-    write(*,'(A,ES24.16,A,ES24.16)') 'FTB10_TB09_003_BOTTOM_FLUX_INPUTS=', bottom_first, ':', bottom_second
+    write(*,'(A,ES24.16,A,ES24.16)') 'FTB10_TB09_003_BOTTOM_HEADS=', bottom_head_first, ':', bottom_head_second
+    write(*,'(A,ES24.16,A,ES24.16)') 'FTB10_TB09_003_DERIVED_SIGNED_QBOT=', qbot_first, ':', qbot_second
     write(*,'(A,ES24.16)') 'FTB10_TB09_003_COMBINED_RESIDUAL=', combined_residual
   end subroutine verify_changing_bottom_boundary_with_active_divdra
 
@@ -194,7 +201,7 @@ contains
       p%cofgen(9,k)=0.0_real64; p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64
       p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode = 7
+    p%bottom_mode = 5
     p%swkimpl = 0
     p%swkmean = 1
     p%swsophy = 0
@@ -226,8 +233,8 @@ contains
     real(real64), intent(in) :: k0
     f%top_flux = -k0
     f%top_head = initial_head
-    f%bottom_flux = -k0
-    f%bottom_head = -321.0_real64
+    f%bottom_flux = 0.0_real64
+    f%bottom_head = bottom_head_first
     allocate(f%drainage_flux_by_level(1,numnod), f%subsurface_irrigation_source(numnod), &
          f%root_extraction_sink(numnod))
     f%drainage_flux_by_level = 0.0_real64
@@ -257,6 +264,8 @@ contains
     type(process_hydraulic_view_t), intent(out) :: hv
     real(real64), intent(in) :: gwl
     hv%active_nodes = numnod
+    if (allocated(hv%pressure_head)) deallocate(hv%pressure_head)
+    if (allocated(hv%water_content)) deallocate(hv%water_content)
     allocate(hv%pressure_head(numnod), hv%water_content(numnod))
     hv%pressure_head = [-45.0_real64,-90.0_real64,-180.0_real64,-360.0_real64]
     hv%water_content = [0.31_real64,0.29_real64,0.27_real64,0.25_real64]
