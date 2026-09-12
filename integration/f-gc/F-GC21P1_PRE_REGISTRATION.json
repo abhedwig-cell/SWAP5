@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fgc21p1_pre_registration.v1",
+  "work_unit": "F-GC21P1",
+  "title": "Exact Accepted Bottom-Interface Exchange Result Transport",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "parent_work_unit": "F-GC21",
+  "reason": "Current canonical can rerun SWAP transactionally from the same checkpoint, and the serialized reference backend already accounts the exact per-trial bottom contribution as bottom_flux * accepted step duration, but trial_outcome_t, transaction_result_t, canonical_result_t and kernel_result_t do not publish that contribution separately. F-GC21 therefore cannot stage the F-GC19R-R1 mass ledger from an exact accepted whole-window SWAP interface exchange without either forbidden reconstruction from aggregate mass totals or an invalid terminal-flux-times-window approximation.",
+  "scope": {
+    "production_source_change": true,
+    "new_physics": false,
+    "predictor_corrector_orchestrator": false,
+    "modflow_adapter": false,
+    "groundwater_solver": false,
+    "mass_tolerance_change": false,
+    "calendar_assumption": false,
+    "goal": "Transport the already-accounted accepted bottom-interface exchange and accepted terminal bottom flux as explicit model-native result data, preserving accepted-route provenance across retries, full/two-half temporal qualification and model-certificate qualification."
+  },
+  "required_semantics": [
+    "A rejected full trial, rejected half trial, failed retry or rolled-back attempt must never contribute to the published interface exchange.",
+    "For TX_ROUTE_TWO_HALF, accepted bottom exchange is exactly the sum of half1 and half2 accepted bottom exchanges; terminal bottom flux is the accepted half2 terminal value.",
+    "For TX_ROUTE_MODEL_CERTIFIED, accepted bottom exchange and terminal bottom flux come only from the accepted certified outcome.",
+    "Across canonical internal accepted substeps, exact bottom exchange is accumulated only from accepted transaction results; terminal flux comes from the final accepted substep.",
+    "A non-completed canonical interval must not publish a whole-window exchange as available.",
+    "Kernel candidate/result transport must preserve the exact accepted result without exposing HeadCalc or solver-private arrays.",
+    "The transaction/canonical/kernel result stays in model-native depth and flux units. Unit conversion to the groundwater contract remains an explicit runtime/coupler responsibility through F-GC17.",
+    "No inference from canonical total_in/total_out and no terminal_flux * whole_window approximation is allowed.",
+    "Existing hard mass accounting is unchanged and remains independently checkable against the separated bottom contribution."
+  ],
+  "pinned_evidence": {
+    "f_gc17_contract_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "f_gc19r_r1_ledger_blob": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+    "transaction_reference_blob": "1dd257b39d31229ce8146025e762de02743d4b3e",
+    "canonical_contracts_blob": "bb02e7f5979b7e2c9703d97604b83f5a74bffc9d",
+    "canonical_interval_runtime_blob": "b509dc37ee87a744a890da1c88f40c37d42df19c",
+    "kernel_transactions_blob": "4bde0f7a3a56fbbc75f312c5fe8d3f4526d9115d",
+    "serialized_reference_backend_blob": "830605cc7c804ffaa57ed8f6c150e0527c863bff"
+  },
+  "architecture_constraints": {
+    "mass_conservation": "HARD_UNCHANGED",
+    "kernel_io_separation": true,
+    "generic_time": true,
+    "no_headcalc_internal_dependency": true,
+    "multi_swap_layout_compatible": true,
+    "all_30_invariants_must_be_rechecked": true
+  },
+  "qualification_required_before_parent_f_gc21": true,
+  "status": "PRE_REGISTERED_OWNER_IMPLEMENTATION_REQUIRED"
+}
