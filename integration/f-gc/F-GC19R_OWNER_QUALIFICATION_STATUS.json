@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.fgc19r_owner_qualification_status.v1",
+  "work_unit": "F-GC19R owner qualification",
+  "title": "Prepared groundwater-interface ledger publication owner qualification",
+  "branch": "qualification/f-gc19r-prepared-ledger-publication-owner-qualification",
+  "phase": "BLOCKED_EVIDENCE_RUN_PENDING",
+  "decision": "BLOCKED_REMEDIATION_REQUIRED_BEFORE_INDEPENDENT_QUALIFICATION",
+  "candidate": "work/f-gc19r-prepared-ledger-publication@d92b84c815f9e6c5509d280953b4d659c5cb14ac",
+  "candidate_source_blob": "b0887577774d8c015ac9b1324b547e880059789e",
+  "f_gc19_authority": "215313675c074c18dff251b74581269085f7658e",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "current_canonical_at_qualification_start": "c262ae3c0c06a8fdeb5e87dde2177417c1465f91",
+  "finding": {
+    "id": "FGC19R-B1",
+    "severity": "BLOCKING",
+    "class": "PREPARED_HANDLE_PROVENANCE",
+    "statement": "groundwater_interface_mass_prepared_t contains only initialized plus generation. Distinct ledgers with the same local generation accept the same prepared-handle value, allowing a foreign handle to authorize irreversible publication on the wrong logical ledger.",
+    "required_contract": "A prepared publication handle must be bound to the exact ledger reservation that created it, and foreign, stale, copied-after-consumption, or otherwise mismatched handles must fail closed before committed mass or diagnostic state changes.",
+    "blocking_invariants": [7,11,13,26,29]
+  },
+  "verified_preserved_properties": {
+    "same_ledger_stale_replay_rejected": true,
+    "abort_preserves_committed_mass": true,
+    "exact_q_action_reaction_preserved": true,
+    "counter_exhaustion_guard_present": true,
+    "preparation_generation_exhaustion_guard_present": true,
+    "generic_time_preserved": true,
+    "no_kernel_io_dependency": true,
+    "no_mass_tolerance_relaxation": true
+  },
+  "state": {
+    "owner_qualified": false,
+    "independent_qualification_allowed": false,
+    "canonical_admission_allowed": false,
+    "production_coupling_admission": false,
+    "production_source_changed_by_qualification": false,
+    "reference_changed_by_qualification": false,
+    "RB1_reopened": false
+  },
+  "architecture_audit": "integration/f-gc/F-GC19R_OWNER_QUALIFICATION_ARCHITECTURE_AUDIT.json",
+  "evidence_gate": "tests/fgc/run_fgc19r_prepared_ledger_publication_owner_qualification.sh",
+  "evidence_test": "tests/fgc/test_fgc19r_prepared_ledger_publication_adversarial.f90",
+  "required_remediation": [
+    "Bind each prepared handle to an explicit ledger/reservation identity in addition to generation.",
+    "Reject foreign or stale handles before commit_prepared or abort_prepared can mutate ledger state.",
+    "Preserve O(1) local publication, compact state, exact q action-reaction, and existing counter/generation exhaustion guards.",
+    "Re-run O0/O2 runtime-check qualification and all 30 architecture invariants.",
+    "Only after owner remediation is green, start a separate independent qualification workunit."
+  ],
+  "hard_nonclaims": [
+    "A green blocker-reproduction workflow means the qualification correctly reproduced the defect; it does not qualify the candidate.",
+    "No F-GC19R production source is modified by this qualification branch.",
+    "No MODFLOW adapter, aquifer solver, end-to-end coupled mass closure, distributed transaction protocol, crash recovery, or throughput qualification is claimed.",
+    "No current-canonical admission is claimed.",
+    "RB1 remains frozen."
+  ],
+  "next_required_step": "Run the exact-head blocker-reproduction workflow. If green, freeze this candidate as blocked evidence and start F-GC19R-R1 owner remediation from the blocked candidate without rewriting this qualification history."
+}
