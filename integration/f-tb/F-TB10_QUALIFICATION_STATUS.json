@@ -10,8 +10,9 @@
   "ftb09_catalog_authority": "fe3545c4537b11cefd0186aa401048d4f4b10eb9",
   "stable_case_id": "SWAP5-TB09-DRAIN-BOTTOM-003-v1",
   "owner_authorities": {
-    "divdra_current_canonical": "F-CI36",
-    "independent_divdra_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff"
+    "divdra_frozen_admitted_postimage": "F-CI36@8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "independent_divdra_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff",
+    "current_canonical_preservation": "F-CI canonical replays F-CI36 on its frozen qualified postimage; F-TB10 verifies current-canonical admitted DIVDRA blobs remain identical"
   },
   "qualified_scope_on_green": {
     "runtime": "current-canonical serialized Full Richards runtime through fmr_run_serialized_physical_multiswap_with_divdra",
@@ -21,7 +22,7 @@
     "mass": "complete hard mass closure on interval 1, interval 2 and the combined t0-to-t1 window",
     "response": "derived signed qbot must change after the prescribed-head perturbation",
     "determinism": "O0/O2 exact text identity",
-    "preservation": "exact F-VQ51 independent restricted-DIVDRA verifier replayed against the unchanged current production composition"
+    "preservation": "frozen F-CI36/F-VQ51 authority chain pinned plus current-canonical DIVDRA production blobs matched to the admitted authority"
   },
   "state": {
     "production_source_changed": false,
