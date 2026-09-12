@@ -3,7 +3,7 @@
   "work_unit": "F-CI53",
   "title": "GC18R Transactional Groundwater Exchange Current-Canonical Admission",
   "branch": "qualification/f-ci53-gc18r-transactional-groundwater-exchange-current-canonical-admission",
-  "phase": "PREPROMOTION_QUALIFICATION_REQUIRED",
+  "phase": "PREPROMOTION_EXACT_HEAD_REVALIDATION_REQUIRED",
   "decision": "F_CI53_CURRENT_CANONICAL_ADMISSION_CANDIDATE",
   "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
   "canonical_base": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
@@ -16,17 +16,30 @@
     "file": "src/runtime/mod_groundwater_exchange_service_contract.f90",
     "blob": "f0fc25592624360802713a9487813d119e7dc4e9"
   },
+  "qualification_evidence": {
+    "initial_exact_head": "6cebfc987e3f7fb863ee7fd920939ab03f46ac99",
+    "initial_run": 34691447786,
+    "initial_job": 103547290726,
+    "initial_conclusion": "success",
+    "owner_replay": true,
+    "independent_f_vq61_replay": true,
+    "exact_admission_image_o0_o2": true,
+    "architecture_invariants_30_of_30": true,
+    "mass_conservation": "HARD_UNCHANGED",
+    "transactional_publication": "EXACTLY_ONCE_GUARDED"
+  },
   "state": {
     "owner_qualified": true,
     "independent_qualified": true,
-    "prepromotion_exact_head_qualified": false,
+    "initial_prepromotion_gate_green": true,
+    "final_status_head_revalidated": false,
     "broad_canonical_pr_qualified": false,
     "canonical_admitted": false,
     "postpromotion_reconciled": false,
     "production_coupling_admitted": false,
     "RB1_reopened": false
   },
-  "promotion_hold": "Do not promote until the dedicated exact-head gate is green, the broad canonical PR workflow has been inspected, and integration/f-ci-canonical still equals the pinned base. Promotion must be a true two-parent merge without force update.",
+  "promotion_hold": "Do not promote this status-writing head until it itself passes the exact-head F-CI53 workflow, the broad canonical PR workflow has been inspected, and integration/f-ci-canonical still equals the pinned base. Promotion must be a true two-parent merge without force update.",
   "architecture_audit": "integration/f-ci/F-CI53_ARCHITECTURE_AUDIT.json",
   "pre_registration": "integration/f-ci/F-CI53_PRE_REGISTRATION.json",
   "hard_nonclaims": [
