@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC22",
+  "title": "Application and Temporal Accuracy Binding for Direct Groundwater Coupling",
+  "decision": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION",
+  "qualified": true,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "production_source": "src/runtime/mod_groundwater_accuracy_binding.f90",
+  "first_qualified_head": "5415f96302a84447773fbe870f48fe8b832e6008",
+  "first_qualified_workflow_run": 34680342414,
+  "first_qualified_workflow_job": 103517735283,
+  "qualification": {
+    "O0_O2_identity": true,
+    "no_project_numeric_default": true,
+    "separate_interface_allocation_fraction": true,
+    "temporal_plus_interface_allocation_bounded_by_application_budget": true,
+    "temporal_budget_not_aliased_to_interface_tolerance": true,
+    "upstream_accuracy_authority_blobs_locked": true
+  },
+  "architecture_audit": "integration/f-gc/F-GC22_ARCHITECTURE_AUDIT.json",
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
+  "non_authoritative_failed_runs": [
+    {"workflow_run":34679905057,"reason":"qualification build omitted mod_transaction_reference dependency","scientific_authority":false},
+    {"workflow_run":34680273355,"reason":"qualification build used the correct module name but wrong source directory","scientific_authority":false}
+  ],
+  "hard_nonclaims": [
+    "no universal numeric H_app",
+    "no universal numeric temporal or interface allocation",
+    "no equality assumption between temporal head-error budget and interface head tolerance",
+    "no mass-conservation relaxation",
+    "no predictor-corrector orchestration",
+    "no canonical or end-to-end production admission"
+  ],
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-GC22 workflow. That exact green head is the final F-GC22 branch authority."
+}
