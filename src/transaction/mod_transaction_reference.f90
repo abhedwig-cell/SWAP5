@@ -15,6 +15,9 @@ module mod_transaction_reference
   integer, parameter, public :: TX_TEMPORAL_EXTERNAL_FULL_HALF = 1
   integer, parameter, public :: TX_TEMPORAL_MODEL_CERTIFICATE = 2
 
+  integer, parameter, public :: TX_INTERFACE_SENSITIVITY_NONE = 0
+  integer, parameter, public :: TX_INTERFACE_SENSITIVITY_LOCAL_TERMINAL = 1
+
   integer(int64), parameter, public :: TX_MASS_MISSING_NONE = 0_int64
   integer(int64), parameter, public :: TX_MASS_MISSING_STORAGE_START = 1_int64
   integer(int64), parameter, public :: TX_MASS_MISSING_STORAGE_END = 2_int64
@@ -34,6 +37,20 @@ module mod_transaction_reference
   type, public :: transaction_attempt_context_t
   end type transaction_attempt_context_t
 
+  ! Generic accepted-result carrier. It is deliberately result metadata rather
+  ! than committed physical state or solver scratch. A model may populate the
+  ! value/method on a trial outcome; the transaction core owns accepted-route
+  ! provenance and never publishes a rejected trial's value.
+  type, public :: transaction_interface_sensitivity_t
+    logical :: available = .false.
+    integer :: semantic = TX_INTERFACE_SENSITIVITY_NONE
+    real(real64) :: dh_bottom_dq_bottom = 0.0_real64
+    character(len=24) :: method = 'not-available'
+    real(real64) :: origin_t0 = 0.0_real64
+    real(real64) :: origin_t1 = 0.0_real64
+    logical :: covers_requested_interval = .false.
+  end type transaction_interface_sensitivity_t
+
   type, public :: trial_outcome_t
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
@@ -49,6 +66,7 @@ module mod_transaction_reference
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type trial_outcome_t
 
   type, abstract, public :: transaction_model_t
@@ -113,6 +131,7 @@ module mod_transaction_reference
     real(real64) :: temporal_indicator = huge(0.0_real64)
     real(real64) :: full_mass_residual = huge(0.0_real64)
     real(real64) :: half_mass_residual = huge(0.0_real64)
+    type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type transaction_result_t
 
   public :: execute_reference_interval
@@ -226,8 +245,6 @@ contains
       attempt_t1 = t0 + attempt_dt
       midpoint = t0 + 0.5_real64 * attempt_dt
 
-      ! Every independent full trial starts from exactly the same physical
-      ! checkpoint and the same worker/job-local attempt context.
       call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(full_state)
       call model%advance(full_state, t0, attempt_t1, full_outcome)
@@ -251,7 +268,6 @@ contains
       storage_full = model%storage(full_state)
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
 
-      ! The two-half route is a second branch from the same checkpoint context.
       call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(half_state)
       call model%advance(half_state, t0, midpoint, half1_outcome)
@@ -265,8 +281,6 @@ contains
       result%alternative_solver_calls = result%alternative_solver_calls + half1_outcome%alternative_solver_calls
 
       if (half1_outcome%solver_ok) then
-        ! Capture midpoint non-persistent context so half two continues the
-        ! accepted half-one branch rather than whichever trial ran before it.
         call model%capture_attempt_context(half_context)
         call model%restore_attempt_context(half_context)
         call model%advance(half_state, midpoint, attempt_t1, half2_outcome)
@@ -345,8 +359,6 @@ contains
            half1_outcome%mass_accounting_complete .and. half2_outcome%mass_accounting_complete .and. &
            accepted_missing_mask == TX_MASS_MISSING_NONE
 
-      ! Physical state and worker/job-local context commit together. The context
-      ! is restored into the backend, but is never inserted into column state.
       call model%restore_attempt_context(half_context)
       call move_alloc(half_state, committed)
       result%status = TX_STATUS_ACCEPTED
@@ -360,6 +372,8 @@ contains
       result%accepted_linear_solves = half1_outcome%linear_solves + half2_outcome%linear_solves
       result%accepted_backtracking_attempts = half1_outcome%backtracking_attempts + half2_outcome%backtracking_attempts
       result%accepted_alternative_solver_calls = half1_outcome%alternative_solver_calls + half2_outcome%alternative_solver_calls
+      call publish_local_terminal_sensitivity(half2_outcome%interface_sensitivity, midpoint, attempt_t1, &
+           t0, t1, result%interface_sensitivity)
       result%commits = result%commits + 1
       return
     end do
@@ -485,6 +499,8 @@ contains
       result%accepted_linear_solves = outcome%linear_solves
       result%accepted_backtracking_attempts = outcome%backtracking_attempts
       result%accepted_alternative_solver_calls = outcome%alternative_solver_calls
+      call publish_local_terminal_sensitivity(outcome%interface_sensitivity, t0, attempt_t1, &
+           t0, t1, result%interface_sensitivity)
       result%commits = result%commits + 1
       return
     end do
@@ -492,6 +508,22 @@ contains
     call model%restore_attempt_context(checkpoint_context)
     result%status = TX_STATUS_RETRY_EXHAUSTED
   end subroutine execute_model_certificate_interval
+
+  subroutine publish_local_terminal_sensitivity(source, origin_t0, origin_t1, requested_t0, requested_t1, published)
+    type(transaction_interface_sensitivity_t), intent(in) :: source
+    real(real64), intent(in) :: origin_t0, origin_t1, requested_t0, requested_t1
+    type(transaction_interface_sensitivity_t), intent(out) :: published
+
+    published = transaction_interface_sensitivity_t()
+    if (.not. source%available) return
+    published%available = .true.
+    published%semantic = TX_INTERFACE_SENSITIVITY_LOCAL_TERMINAL
+    published%dh_bottom_dq_bottom = source%dh_bottom_dq_bottom
+    published%method = source%method
+    published%origin_t0 = origin_t0
+    published%origin_t1 = origin_t1
+    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1
+  end subroutine publish_local_terminal_sensitivity
 
   subroutine reject_and_retry(result, retry_index, policy, attempt_dt)
     type(transaction_result_t), intent(inout) :: result

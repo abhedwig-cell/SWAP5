@@ -6,6 +6,7 @@ module mod_reference_richards_state_binding
 
   integer, parameter, public :: FSI_TOP_MODE_LEGACY_CONTEXT = -9001
   integer, parameter, public :: FSI_TOP_MODE_EXPLICIT_FLUX = -9002
+  integer, parameter, public :: FSI_TOP_MODE_DYNAMIC_PROVIDER = -9003
 
   type, public :: reference_richards_state_binding_t
      integer :: active_nodes = 0

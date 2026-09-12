@@ -1,6 +1,8 @@
 module mod_b1_10_reference_model
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
+  use mod_soil_water_solver_contract, only: soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_soil_water_transaction_result_bridge, only: map_soil_water_interface_sensitivity_to_trial
   use mod_b1_10_transaction_binding, only: b1_10_transaction_model_t
   use mod_b1_10_process_checkpoint, only: b1_10_process_state_t, capture_b1_10_process_state, restore_b1_10_process_state
   use mod_b1_10_mass_seam, only: b1_10_qualified_profile_storage
@@ -48,6 +50,7 @@ contains
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
     type(b1_10_trial_mass_t) :: trial_mass
+    type(soil_water_solve_result_t) :: accepted_soil_water_result
     logical :: normal_return
 
     outcome = trial_outcome_t()
@@ -75,6 +78,22 @@ contains
     outcome%mass_in = trial_mass%total_in
     outcome%mass_out = trial_mass%total_out
     call copy_worker_diagnostics(self%worker, outcome)
+
+    ! F-KT15 keeps the full typed solve result trial-local. Reconstruct only the
+    ! accepted sensitivity metadata needed by the already-qualified F-KT14 bridge.
+    ! Direct-HeadCalc fallback leaves the default outcome unchanged.
+    if (self%worker%soil_water_trial%typed_accepted) then
+      accepted_soil_water_result = soil_water_solve_result_t()
+      accepted_soil_water_result%status = SW_SOLVE_CONVERGED
+      if (self%worker%soil_water_trial%sensitivity_available) then
+        accepted_soil_water_result%interface_sensitivity%available = .true.
+        accepted_soil_water_result%interface_sensitivity%dh_bottom_dq_bottom = &
+             self%worker%soil_water_trial%dh_bottom_dq_bottom
+        accepted_soil_water_result%interface_sensitivity%method = &
+             self%worker%soil_water_trial%sensitivity_method
+      end if
+      call map_soil_water_interface_sensitivity_to_trial(accepted_soil_water_result, outcome)
+    end if
   end subroutine b1_10_advance_qualified_interval
 
   function b1_10_storage_qualified_profile(self, state) result(value)

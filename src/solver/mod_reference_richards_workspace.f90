@@ -43,6 +43,8 @@ module mod_reference_richards_workspace
   public :: poison_reference_workspace
   public :: release_reference_workspace
   public :: reference_workspace_payload_bytes
+  public :: prepare_reference_tridag_factorization_capture
+  public :: release_reference_tridag_factorization_capture
 
 contains
 
@@ -105,6 +107,38 @@ contains
     workspace%diagnostics = soil_water_solver_diagnostics_t()
     workspace%poisoned = .false.
   end subroutine reset_reference_workspace
+
+  subroutine prepare_reference_tridag_factorization_capture(workspace)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+    real(real64), allocatable :: expanded(:)
+    integer :: n
+
+    n = workspace%active_nodes
+    if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) &
+         error stop 'TRIDAG factorization capture requires initialized workspace'
+    if (size(workspace%tridag_gamma) /= 2*n) then
+       allocate(expanded(2*n))
+       expanded = 0.0_real64
+       deallocate(workspace%tridag_gamma)
+       call move_alloc(expanded, workspace%tridag_gamma)
+    else
+       workspace%tridag_gamma = 0.0_real64
+    end if
+  end subroutine prepare_reference_tridag_factorization_capture
+
+  subroutine release_reference_tridag_factorization_capture(workspace)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+    real(real64), allocatable :: compact(:)
+    integer :: n
+
+    n = workspace%active_nodes
+    if (n <= 0 .or. .not. allocated(workspace%tridag_gamma)) return
+    if (size(workspace%tridag_gamma) == n) return
+    allocate(compact(n))
+    compact = 0.0_real64
+    deallocate(workspace%tridag_gamma)
+    call move_alloc(compact, workspace%tridag_gamma)
+  end subroutine release_reference_tridag_factorization_capture
 
   subroutine poison_reference_workspace(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
