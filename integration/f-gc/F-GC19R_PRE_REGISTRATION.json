@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC19R",
+  "title": "Groundwater Interface Mass Ledger Prepared Publication Remediation",
+  "base_authority": {
+    "F_GC19_final_head": "215313675c074c18dff251b74581269085f7658e",
+    "F_GC19_source_blob": "4d31ec121d5d58efacd2c447212b01922a34104c"
+  },
+  "trigger": "F-GC21 atomicity review found that F-GC19 commit_trial still performs floating-point accumulation and integer increment at publication time. A recoverable or arithmetic failure after coupled physical publication would make accounting asymmetric.",
+  "objective": "Move every recoverable ledger publication check before coupled physical publication. Add a reversible prepared ledger reservation whose final commit is deterministic assignment only and has no recoverable normal-runtime rejection path.",
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90"
+  ],
+  "required_semantics": [
+    "preserve the existing stage_exchange/discard_trial/commit_trial API",
+    "prepare_trial preflights finite accumulation before performing the sum",
+    "prepare_trial preflights committed-exchange counter increment",
+    "prepare_trial reserves a unique bounded generation and consumes the active trial",
+    "prepared state blocks new staging until commit or abort",
+    "prepare mutates no committed mass total or committed exchange count",
+    "abort_prepared changes no committed mass total or committed exchange count",
+    "commit_prepared performs assignment of precomputed values only and exposes no recoverable status result",
+    "old commit_trial is implemented as prepare plus deterministic prepared commit",
+    "groundwater cumulative amount remains the exact arithmetic negative of the one canonical SWAP cumulative amount",
+    "no interface mass tolerance",
+    "no external-model, file-format, calendar or timestep assumption"
+  ],
+  "qualification": [
+    "existing F-GC19 qualification remains green",
+    "prepare then abort leaves committed ledger unchanged",
+    "prepare then commit publishes exactly once",
+    "new staging is blocked while a reservation is prepared",
+    "overflow-prone real accumulation is rejected before floating-point addition and without FPE",
+    "counter/generation increments are guarded before arithmetic",
+    "O0/O2 identity with runtime/FPE checks",
+    "all 30 architecture invariants"
+  ],
+  "hard_nonclaims": [
+    "no predictor-corrector orchestration",
+    "no physical SWAP or groundwater commit",
+    "no relaxation of mass conservation",
+    "no canonical admission",
+    "no MODFLOW adapter"
+  ]
+}
