@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/contracts/b2-reference-result-contract.schema.json",
+  "title": "SWAP5 B2 reference result contract declaration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "implementation",
+    "interval",
+    "endpoint_state",
+    "result_values",
+    "mass_accounting",
+    "transaction",
+    "diagnostics",
+    "provenance",
+    "execution_class_semantics"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "SWAP5-B2-reference-result-v1"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "canonical_record_schema"],
+      "properties": {
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "canonical_record_schema": {"const": "tools/vq/contracts/b2-reference-result-record.schema.json"}
+      }
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t0_explicit", "t1_explicit", "generic_t0_t1", "calendar_boundary_required", "returned_interval_matches_request"],
+      "properties": {
+        "t0_explicit": {"const": true},
+        "t1_explicit": {"const": true},
+        "generic_t0_t1": {"const": true},
+        "calendar_boundary_required": {"const": false},
+        "returned_interval_matches_request": {"const": true}
+      }
+    },
+    "endpoint_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["explicit", "committed_only", "rejected_trial_endpoint_can_replace_committed", "stable_variable_ids"],
+      "properties": {
+        "explicit": {"const": true},
+        "committed_only": {"const": true},
+        "rejected_trial_endpoint_can_replace_committed": {"const": false},
+        "stable_variable_ids": {"const": true}
+      }
+    },
+    "result_values": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stable_result_ids", "units_explicit", "unrounded", "rejected_trials_excluded", "retry_totals_exactly_once"],
+      "properties": {
+        "stable_result_ids": {"const": true},
+        "units_explicit": {"const": true},
+        "unrounded": {"const": true},
+        "rejected_trials_excluded": {"const": true},
+        "retry_totals_exactly_once": {"const": true}
+      }
+    },
+    "mass_accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_schema", "start_end_storage_unrounded", "signed_external_terms_unrounded", "residual_recomputed_by_vq", "reported_residual_diagnostic_only", "rounded_acceptance_allowed", "identity"],
+      "properties": {
+        "record_schema": {"const": "tools/vq/contracts/mass-accounting-record.schema.json"},
+        "start_end_storage_unrounded": {"const": true},
+        "signed_external_terms_unrounded": {"const": true},
+        "residual_recomputed_by_vq": {"const": true},
+        "reported_residual_diagnostic_only": {"const": true},
+        "rounded_acceptance_allowed": {"const": false},
+        "identity": {"const": "delta_storage_minus_net_external"}
+      }
+    },
+    "transaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_fields", "exactly_one_commit_for_accepted", "rejected_trials_excluded_from_committed_totals", "retry_history_diagnostic_only"],
+      "properties": {
+        "required_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "exactly_one_commit_for_accepted": {"const": true},
+        "rejected_trials_excluded_from_committed_totals": {"const": true},
+        "retry_history_diagnostic_only": {"const": true}
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_fields", "defines_physical_result"],
+      "properties": {
+        "required_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "defines_physical_result": {"const": false}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_fields", "implementation_commit_bound_to_result", "numerical_policy_bound_to_result", "result_contract_version"],
+      "properties": {
+        "required_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "implementation_commit_bound_to_result": {"const": true},
+        "numerical_policy_bound_to_result": {"const": true},
+        "result_contract_version": {"const": "v1"}
+      }
+    },
+    "execution_class_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["same_physical_result_schema", "same_mass_identity", "policy_changes_physics"],
+      "properties": {
+        "same_physical_result_schema": {"const": true},
+        "same_mass_identity": {"const": true},
+        "policy_changes_physics": {"const": false}
+      }
+    }
+  }
+}

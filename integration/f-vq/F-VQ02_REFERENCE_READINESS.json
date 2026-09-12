@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ02",
+  "target": "canonical_reference_execution",
+  "source_commit": "7098aeaa4ca38dc375a965340a35c9870a33de28",
+  "oracle": "B1.10",
+  "status": "BLOCKED_REFERENCE_ROUTE_NOT_ADMITTED",
+  "capabilities": {
+    "generic_physical_interval_executor_binding": true,
+    "unrounded_trial_mass_projection": true,
+    "qualified_profile_storage_projection": true,
+    "worker_diagnostics_projection": true,
+    "transaction_state_isolation_testdouble": true,
+    "recoverable_legacy_solver_failure_status": false,
+    "complete_optional_process_temporal_characterization": false,
+    "scalar_temporal_error_metric": false,
+    "scalar_temporal_tolerance_policy": false,
+    "execute_reference_interval_for_b1_10": false,
+    "production_canonical_result_route": false,
+    "real_b1_10_reference_end_to_end": false,
+    "snow_macropore_complete_storage": false,
+    "reentrant_parallel_legacy_backend": false
+  },
+  "admission": {
+    "verifier_contracts_may_be_executed": true,
+    "synthetic_transaction_time_harness_may_be_executed": true,
+    "fci12_binding_gate_may_be_reexecuted": true,
+    "production_reference_adapter_may_be_declared_ready": false,
+    "b1_10_to_canonical_reference_numerical_qualification_may_start": false,
+    "production_warm_start_claim_may_be_qualified": false,
+    "production_temporal_equivalence_claim_may_be_qualified": false
+  },
+  "blocking_dependencies": [
+    "qualified recoverable solver-failure/status propagation",
+    "qualified temporal acceptance policy or accepted redesign",
+    "complete active-process temporal scope",
+    "real execute_reference_interval-equivalent canonical route",
+    "production canonical result/diagnostic projection on that route",
+    "source-bound end-to-end B1.10 reference qualification"
+  ]
+}
