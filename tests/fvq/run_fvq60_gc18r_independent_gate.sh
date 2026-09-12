@@ -74,6 +74,7 @@ for forbidden in ['modflow', '.swp', 'midnight', '86400']:
 assert 'groundwater_coupling_window_t' in source
 assert 'commit_prepared_backend' in source
 assert 'abort_prepared_backend' in source
+assert 'candidate_revision_value = checkpoint%origin_revision_value + 1_int64' in source
 contract=subprocess.check_output(['git','show',f'{CANONICAL}:src/runtime/mod_groundwater_coupling_contract.f90'], text=True)
 assert 'self%t1 <= self%t0' in contract
 assert 'q_groundwater_m_per_s = -q_swap_m_per_s' in contract
@@ -124,12 +125,17 @@ compile_probe O0 "$work/probe-o0.txt"
 compile_probe O2 "$work/probe-o2.txt"
 diff -u "$work/probe-o0.txt" "$work/probe-o2.txt"
 for marker in \
-  FVQ60_BLOCKER_COPIED_PREPARED_REPLAY_REACHES_PUBLICATION \
-  FVQ60_BLOCKER_COPIED_PREPARED_ABORT_REPLAY \
+  FVQ60_PREPARE_REFUSAL_PRESERVES_COMMITTED_STATE \
+  FVQ60_INVALID_PARTICIPANT_REJECTED_BEFORE_PREPARE; do
+  grep -q "^${marker}=PASS$" "$work/probe-o0.txt"
+done
+for marker in \
+  FVQ60_CONTRACT_GAP_COPIED_PREPARED_REPLAY_REACHES_PUBLICATION \
+  FVQ60_CONTRACT_GAP_COPIED_PREPARED_ABORT_REPLAY \
   FVQ60_BLOCKER_REVISION_OVERFLOW_ACCEPTED; do
   grep -q "^${marker}=REPRODUCED$" "$work/probe-o0.txt"
 done
-grep -q '^FVQ60_ADVERSARIAL_AUDIT=PASS_BLOCKERS_CONFIRMED$' "$work/probe-o0.txt"
+grep -q '^FVQ60_INDEPENDENT_NEGATIVE_PATH_AUDIT=PASS_BLOCKERS_CONFIRMED$' "$work/probe-o0.txt"
 cat "$work/probe-o0.txt"
 echo 'FVQ60_O0_O2_ADVERSARIAL_IDENTITY=PASS'
 echo 'FVQ60_DECISION=BLOCKED_REMEDIATION_REQUIRED'
