@@ -25,7 +25,9 @@ test "$(git rev-parse HEAD:src/runtime/mod_groundwater_coupling_contract.f90)" =
 
 work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
 compile_and_run() {
-  local opt="$1" out="$2" dir="$work/$opt"
+  local opt="$1"
+  local out="$2"
+  local dir="$work/$opt"
   mkdir -p "$dir"
   gfortran "-$opt" -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -J"$dir" -I"$dir" \
