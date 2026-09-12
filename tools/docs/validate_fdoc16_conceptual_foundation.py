@@ -116,7 +116,7 @@ for token in [
     "The lower boundary is **not universally identical to deep groundwater recharge**",
     "A day, month or year is not a fundamental computational unit",
     "process-specific T1-T4",
-    "The broader conceptual process table above must not be read as an RB1 feature list",
+    "broader conceptual process table above must not be read as an RB1 feature list",
     "conceptual screening rule. It does not substitute for T12 validation",
     "SCI-FOUND-01 is closed **only as the missing model-foundation authority**",
     "does not claim `READY_FOR_FORMAL_STATUS_A_ASSESSMENT`",
@@ -126,7 +126,10 @@ for token in [
 if STATUS.exists():
     s = json.loads(STATUS.read_text())
     assert s["decision"] == "QUALIFIED_SCI_FOUND_01_CONCEPTUAL_FOUNDATION_AUTHORITY_WHEN_EXACT_HEAD_CI_GREEN"
-    assert s["sci_found_01"] == "CLOSED_AT_CONCEPTUAL_FOUNDATION_WHEN_EXACT_HEAD_CI_GREEN"
+    assert s["science"]["sci_found_01"] == "CLOSED_AT_CONCEPTUAL_FOUNDATION_WHEN_EXACT_HEAD_CI_GREEN"
+    assert s["science"]["process_specific_t1_t4_replaced"] is False
+    assert s["science"]["application_validation_closed"] is False
+    assert s["rb1"]["scope_broadened"] is False
     assert s["ready_for_formal_status_a_assessment"] is False
     assert s["status_a_certified"] is False
     assert s["production_source_changed"] is False
