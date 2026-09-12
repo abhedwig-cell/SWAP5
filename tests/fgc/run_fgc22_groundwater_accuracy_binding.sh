@@ -46,6 +46,7 @@ compile_and_run() {
   mkdir -p "$dir"
   gfortran "-$opt" -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -J"$dir" -I"$dir" \
+    src/runtime/mod_transaction_reference.f90 \
     src/runtime/mod_canonical_contracts.f90 \
     src/runtime/mod_coupling_application_accuracy_contract.f90 \
     src/runtime/mod_groundwater_coupling_policy.f90 \
