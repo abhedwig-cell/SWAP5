@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50P",
+  "title": "Current-Canonical Postimage Reconciliation after F-CI50",
+  "branch": "qualification/f-ci50p-current-canonical-postimage-reconciliation",
+  "canonical_postimage": "39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+  "previous_moving_authority": "42544af575db522d012db491db801615577048df",
+  "F_CI50_admission_head": "bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b",
+  "F_GC17_donor": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+  "purpose": "Advance only the moving current-canonical preservation authority to the F-CI50 postimage and add the newly admitted typed groundwater-interface source paths to the preservation surface.",
+  "allowed_governance_delta": [
+    ".github/workflows/fci-canonical.yml",
+    ".github/workflows/fci50p-current-canonical-postimage-reconciliation.yml",
+    "integration/f-ci/F-CI50P_PRE_REGISTRATION.json",
+    "integration/f-ci/F-CI50P_ARCHITECTURE_AUDIT.json",
+    "integration/f-ci/F-CI50P_EVIDENCE.json",
+    "integration/f-ci/F-CI50P_STATUS.json",
+    "tests/fci/run_fci50p_current_canonical_postimage_reconciliation.py"
+  ],
+  "exact_workflow_change": {
+    "AUTH_from": "42544af575db522d012db491db801615577048df",
+    "AUTH_to": "39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+    "add_dependency_paths": [
+      "src/runtime/mod_groundwater_coupling_contract.f90",
+      "src/runtime/mod_groundwater_coupling_policy.f90"
+    ],
+    "add_marker": "FCI50_MOVING_FGC17_TYPED_GROUNDWATER_INTERFACE_PRESERVATION=PASS"
+  },
+  "hard_guards": [
+    "No src/ or reference/ file may change in F-CI50P.",
+    "The F-CI50 postimage must be a true two-parent merge of the frozen prepromotion canonical and exact qualified F-CI50 status head.",
+    "Both F-GC17 source blobs must remain exact.",
+    "The historical/frozen prefix of fci-canonical.yml must remain byte-identical.",
+    "The moving-preservation suffix may change only by the exact authority replacement, two dependency-path insertions and one F-CI50 marker insertion.",
+    "Mass conservation, tolerances, physics, solver behavior and transaction behavior may not change."
+  ],
+  "promotion_rule": "After exact-head qualification, promote only if integration/f-ci-canonical still equals the F-CI50 postimage, using a true two-parent governance-only merge and no force update.",
+  "exit_target": "QUALIFIED_FCI50_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FOR_PROMOTION"
+}
