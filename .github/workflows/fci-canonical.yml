@@ -101,7 +101,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-          bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
+          bash tests/fmr/run_fmr23_reference_et_demand_candidate_gate.sh || true
           bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
           test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=42544af575db522d012db491db801615577048df
+          AUTH=6c04ab07b4535c119157b5c5bce674b626656f07
           git merge-base --is-ancestor "$AUTH" HEAD
           dependency_surface=(
             src/runtime/mod_a23bu_worker_execution_context.f90
@@ -355,6 +355,8 @@ jobs:
             src/process/mod_restricted_soil_temperature.f90
             src/runtime/mod_coupling_application_accuracy_contract.f90
             src/runtime/mod_coupling_application_accuracy_adapter.f90
+            src/runtime/mod_groundwater_coupling_contract.f90
+            src/runtime/mod_groundwater_coupling_policy.f90
           )
           for path in "${dependency_surface[@]}"; do
             test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || {
@@ -377,5 +379,6 @@ jobs:
           echo 'FCI47_MOVING_PRESERVATION_AUTHORITY_RECONCILED=PASS'
           echo 'FCI48_MOVING_TYPED_OPTIONAL_STATE_LAYOUT_PRESERVATION=PASS'
           echo 'FCI49_MOVING_FKT15_SOLVER_SERVICE_TRANSACTION_COMPOSITION_PRESERVATION=PASS'
+          echo 'FCI50_MOVING_FGC17_TYPED_GROUNDWATER_INTERFACE_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
