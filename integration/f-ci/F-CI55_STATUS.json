@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI55",
+  "title": "F-GC21P1-R1 Exact Accepted Bottom-Interface Exchange Result Current-Canonical Admission",
+  "phase": "QUALIFICATION_IN_PROGRESS",
+  "decision": "QUALIFICATION_IN_PROGRESS_NOT_READY_FOR_CANONICAL_PROMOTION",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "independent_authority": "a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+  "independent_final_head_run": 34716004112,
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_CANONICAL_ADMISSION",
+  "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
+  "composition_verified": true,
+  "five_production_blobs_match_independent_source_postimage": true,
+  "qualification_green": false,
+  "ready_for_canonical_promotion": false,
+  "canonical_admission": false,
+  "production_groundwater_coupling_admission": false,
+  "required_before_ready": [
+    "F-CI55 admission workflow must pass on the exact qualification branch head",
+    "live canonical, owner and F-VQ63 authorities must remain pinned",
+    "independent F-VQ63 adversarial test must pass on the composed source at O0 and O2",
+    "qualification delta must remain governance/test/workflow only"
+  ],
+  "hard_nonclaims": [
+    "No full F-GC21 predictor-corrector orchestration admission.",
+    "No production groundwater-coupling admission.",
+    "No MODFLOW/aquifer end-to-end qualification.",
+    "No crash-recovery, distributed-runtime or large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ]
+}
