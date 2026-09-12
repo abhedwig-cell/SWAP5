@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI55R",
+  "title": "F-CI55 Moving Canonical Preservation Authority Reconciliation",
+  "phase": "QUALIFICATION_PENDING",
+  "decision": "PENDING_DEDICATED_AND_BROAD_GATE",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "blocked_fci55_candidate": "860f697cd785f3de01a36c9f0f06043e6dcb689a",
+  "blocked_broad_run": 34717007154,
+  "blocking_preservation_job": 103616157347,
+  "qualified_production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "independent_authority": "a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "stale_moving_preservation_authority": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "target_moving_preservation_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "reconciliation_commit": "41de29f585c9446911799d6671bd38e69addc509",
+  "reconciliation_scope": "one-line moving-preservation AUTH update only; dependency_surface byte-identical; no production/reference mutation",
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_MOVING_PRESERVATION_RECONCILIATION",
+  "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
+  "dedicated_qualification_green": false,
+  "broad_fci_canonical_green": false,
+  "canonical_admission": false,
+  "production_groundwater_coupling_admission": false,
+  "ready_for_canonical_promotion": false,
+  "required_before_promotion": [
+    "Dedicated F-CI55R qualification must be green on the exact final qualification head.",
+    "Replacement PR broad F-CI canonical qualification must be green, including current-restricted-canonical-preservation.",
+    "integration/f-ci-canonical must still equal the pinned restart canonical immediately before promotion, otherwise recompose/requalify.",
+    "Promotion must be a true two-parent merge; force, squash and rebase are forbidden.",
+    "Blocked F-CI55 candidate 860f697cd785f3de01a36c9f0f06043e6dcb689a must not be promoted directly."
+  ],
+  "hard_nonclaims": [
+    "No full F-GC21 predictor-corrector orchestration admission.",
+    "No production groundwater-coupling admission.",
+    "No MODFLOW/aquifer end-to-end qualification.",
+    "No crash-recovery, distributed-runtime or large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ]
+}
