@@ -1,0 +1,50 @@
+name: F-CI52 R1 PM08D7 post-F-CI51 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci52r1-fpm08d7-post-fci51-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI52R1_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI52 R1 admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _fci52r1_evidence
+          git rev-parse HEAD | tee _fci52r1_evidence/tested-head.txt
+          printf '%s\n' 8695974b783e76b3807890be9e1c0ecb5d2f8d5f | tee _fci52r1_evidence/canonical-base.txt
+          printf '%s\n' 7a35e123d263c3783a2a0a14ea467e5e065b821c | tee _fci52r1_evidence/composition-commit.txt
+          printf '%s\n' f65f170fc6ec5f1a228ade2def3732cb36942ebd | tee _fci52r1_evidence/fvq59-authority.txt
+          bash tests/fci/run_fci52r1_fpm08d7_post_fci51_canonical_admission.sh | tee _fci52r1_evidence/admission.log
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI52R1_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
+      - name: Upload F-CI52 R1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI52R1-PM08D7-post-FCI51-admission-evidence
+          path: _fci52r1_evidence
+          if-no-files-found: warn
