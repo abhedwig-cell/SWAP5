@@ -62,7 +62,7 @@ grep -Fq "error stop 'F-KT15: admitted typed soil-water solve failed closed'" sr
 echo 'FKT15_SOURCE_GUARD=PASS'
 
 FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -fopenmp)
-SOURCES=(
+MODULE_SOURCES=(
   tests/fkt/fkt15_production_task2_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
@@ -81,30 +81,32 @@ SOURCES=(
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_production_soil_water_task2.f90
-  tests/fkt/test_fkt15_production_task2.f90
 )
 
 for opt in 0 2; do
   out="$BUILD/o$opt"
   mkdir -p "$out"
-  objects=()
-  for src in "${SOURCES[@]}"; do
+  common_objects=()
+  for src in "${MODULE_SOURCES[@]}"; do
     [[ -f "$src" ]] || fail "missing compile dependency $src"
     obj="$out/$(basename "${src%.*}").o"
     gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c "$src" -o "$obj"
-    objects+=("$obj")
+    common_objects+=("$obj")
   done
+
   # Compile the actual legacy callsite against the production adapter. It is kept
-  # out of the focused executable link because this gate tests the adapter itself,
-  # but this catches module/interface drift in SoilWater(2).
+  # out of the focused executable links but catches module/interface drift in SoilWater(2).
   gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c \
     src/legacy/b1_10_port/soilwater.f90 -o "$out/soilwater_callsite.o"
   echo "FKT15_SOILWATER_TASK2_CALLSITE_COMPILE_O${opt}=PASS"
 
-  gfortran "${FLAGS[@]}" -O"$opt" "${objects[@]}" -o "$out/test_fkt15"
+  gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c \
+    tests/fkt/test_fkt15_production_task2.f90 -o "$out/test_fkt15_production_task2.o"
+  gfortran "${FLAGS[@]}" -O"$opt" "${common_objects[@]}" "$out/test_fkt15_production_task2.o" \
+    -o "$out/test_fkt15"
   if ! timeout 90s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fkt15" > "$out/output.txt"; then
     cat "$out/output.txt" || true
-    fail "O${opt} execution failed"
+    fail "O${opt} task2 execution failed"
   fi
   for marker in \
     FKT15_ACCEPTED_TYPED_ROUTE=PASS \
@@ -119,7 +121,32 @@ for opt in 0 2; do
   done
   cat "$out/output.txt"
   echo "FKT15_TASK2_O${opt}=PASS"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c \
+    tests/fkt/test_fkt15_production_surface_regimes.f90 -o "$out/test_fkt15_surface_regimes.o"
+  gfortran "${FLAGS[@]}" -O"$opt" "${common_objects[@]}" "$out/test_fkt15_surface_regimes.o" \
+    -o "$out/test_fkt15_surface_regimes"
+  if ! timeout 90s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fkt15_surface_regimes" > "$out/surface_output.txt"; then
+    cat "$out/surface_output.txt" || true
+    fail "O${opt} surface-regime execution failed"
+  fi
+  for marker in \
+    FKT15_PRODUCTION_SURFACE_FLUX=PASS \
+    FKT15_PRODUCTION_ATMOSPHERIC_HEAD=PASS \
+    FKT15_PRODUCTION_PONDED_HEAD=PASS \
+    FKT15_PRODUCTION_LINEAR_RUNOFF=PASS \
+    FKT15_PRODUCTION_SURFACE_METADATA_IDENTITY=PASS \
+    FKT15_PRODUCTION_SURFACE_HARD_MASS=PASS \
+    FKT15_PRODUCTION_FLUX_ONLY_TANGENT_SCOPE=PASS \
+    FKT15_PRODUCTION_SURFACE_REGIMES_GATE=PASS; do
+    grep -Fq "$marker" "$out/surface_output.txt" || fail "O${opt} missing $marker"
+  done
+  cat "$out/surface_output.txt"
+  echo "FKT15_SURFACE_REGIMES_O${opt}=PASS"
 done
-cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || fail 'O0/O2 observable output differs'
+
+cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || fail 'task2 O0/O2 observable output differs'
+cmp "$BUILD/o0/surface_output.txt" "$BUILD/o2/surface_output.txt" || fail 'surface O0/O2 observable output differs'
 echo 'FKT15_TASK2_O0_O2_IDENTITY=PASS'
+echo 'FKT15_SURFACE_REGIMES_O0_O2_IDENTITY=PASS'
 echo 'FKT15_PRODUCTION_TASK2_RUNNER=PASS'
