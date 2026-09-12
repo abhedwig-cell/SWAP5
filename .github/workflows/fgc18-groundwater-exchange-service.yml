@@ -1,0 +1,24 @@
+name: F-GC18 groundwater exchange service
+
+on:
+  push:
+    branches:
+      - work/f-gc18-transactional-groundwater-exchange-service-abstraction
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-service:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out run head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-GC18 transactional service qualification
+        run: bash tests/fgc/run_fgc18_groundwater_exchange_service.sh

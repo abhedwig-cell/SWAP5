@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC18R",
+  "title": "Transactional Groundwater Exchange Two-Phase Commit Readiness Remediation",
+  "base_authority": {
+    "F_GC18_final_head": "774c01d69c619f463e0d471eb797f8f0418fee07",
+    "F_GC18_status": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION"
+  },
+  "trigger": "F-GC21 pre-implementation atomicity audit found that two sequential component commits are not formally atomic while the groundwater commit_backend remains recoverably fallible after all orchestrator acceptance checks.",
+  "problem": "If SWAP commits and the groundwater backend subsequently rejects commit, or groundwater commits and SWAP subsequently rejects commit, the coupled window can become half-committed. That is incompatible with transactional time-step semantics and hard coupled mass conservation.",
+  "objective": "Strengthen the F-GC18 service with an opt-in preparable subtype. A groundwater candidate may first enter a reversible prepared/reserved state. Once prepared, final groundwater publication has no recoverable rejection path. GC21 can then prepare groundwater, attempt the fully prevalidated SWAP commit, abort groundwater preparation if SWAP refuses, and perform deterministic groundwater publication only after SWAP succeeds.",
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_exchange_service_contract.f90"
+  ],
+  "required_semantics": [
+    "retain the existing F-GC18 base service ABI and behavior",
+    "add an opt-in preparable service subtype rather than forcing all groundwater services to support two-phase commit",
+    "prepare validates checkpoint/candidate provenance and creates one opaque prepared handle",
+    "prepared state remains reversible until final publication",
+    "abort prepared leaves committed groundwater state unchanged",
+    "final commit of a valid prepared handle has no recoverable status return and therefore cannot be refused as a normal runtime outcome",
+    "prepared handle is single-use",
+    "no coupled orchestration is implemented in this remediation",
+    "no external-model-specific API, file or calendar assumption"
+  ],
+  "qualification": [
+    "existing F-GC18 lifecycle tests remain green",
+    "prepare then abort leaves committed state unchanged",
+    "prepare then commit publishes exactly once",
+    "duplicate prepare/commit misuse fails closed before publication",
+    "stale or mismatched candidate cannot prepare",
+    "O0/O2 identity with runtime checks",
+    "all 30 architecture invariants"
+  ],
+  "hard_nonclaims": [
+    "no F-GC21 predictor-corrector orchestration",
+    "no distributed transaction protocol over files or networks",
+    "no claim that process crashes are recoverable without later restart work",
+    "no MODFLOW adapter",
+    "no canonical admission",
+    "no relaxation of mass conservation"
+  ]
+}

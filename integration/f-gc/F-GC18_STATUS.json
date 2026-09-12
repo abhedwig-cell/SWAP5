@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC18",
+  "title": "Transactional Groundwater Exchange Service Abstraction",
+  "decision": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION",
+  "qualified": true,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "production_source": "src/runtime/mod_groundwater_exchange_service_contract.f90",
+  "first_qualified_head": "300a55e8e3b6b41a2d09130ec84c435d2aabef9b",
+  "first_qualified_workflow_run": 34680448387,
+  "first_qualified_workflow_job": 103518014865,
+  "qualification": {
+    "O0_O2_identity": true,
+    "checkpoint_before_trial": true,
+    "trial_does_not_mutate_committed_state": true,
+    "discard_leaves_committed_state_unchanged": true,
+    "multiple_trials_from_same_origin": true,
+    "single_commit_semantics": true,
+    "stale_candidate_rejection": true,
+    "generic_non_midnight_window": true,
+    "FGC17_contract_locked": true
+  },
+  "architecture_audit": "integration/f-gc/F-GC18_ARCHITECTURE_AUDIT.json",
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
+  "contract_boundary": "The service exposes only model-agnostic checkpoint/candidate handles, lineage/revision provenance, generic coupling windows and groundwater head/flux trial results. External groundwater state and backend implementation remain outside SWAP.",
+  "hard_nonclaims": [
+    "no predictor-corrector sequencing",
+    "no groundwater physics",
+    "no MODFLOW adapter",
+    "no interface mass ledger",
+    "no tile/cell aggregation",
+    "no application accuracy binding",
+    "no canonical or end-to-end production admission"
+  ],
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-GC18 workflow. That exact green head is the final F-GC18 branch authority."
+}
