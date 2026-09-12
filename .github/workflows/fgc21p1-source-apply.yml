@@ -1,0 +1,52 @@
+name: F-GC21P1 staged source apply
+
+on:
+  push:
+    branches:
+      - work/f-gc21p1-exact-accepted-bottom-interface-exchange-result
+    paths:
+      - .github/workflows/fgc21p1-source-apply.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact candidate head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Check and apply staged source diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git apply --check integration/f-gc/F-GC21P1_SOURCE.patch
+          git apply integration/f-gc/F-GC21P1_SOURCE.patch
+          git diff --check
+      - name: Owner qualification before publication
+        run: bash tests/fgc/run_fgc21p1_exact_bottom_interface_result.sh
+      - name: Publish only qualified production sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/kernel/mod_kernel_transactions.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+          test "$(git diff --cached --name-only | wc -l)" -eq 5
+          git config user.name 'swap5-fgc21p1-bot'
+          git config user.email 'swap5-fgc21p1-bot@users.noreply.github.com'
+          git commit -m 'F-GC21P1: transport exact accepted bottom-interface exchange result'
+          git push origin "HEAD:$GITHUB_REF_NAME"
