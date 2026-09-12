@@ -286,20 +286,23 @@ program test_fgc18r_prepared_commit
   use mod_groundwater_exchange_service_contract, only: groundwater_exchange_checkpoint_t, &
        groundwater_exchange_candidate_t, groundwater_exchange_prepared_t, groundwater_exchange_trial_result_t, &
        groundwater_capture_checkpoint, groundwater_trial_from_checkpoint, groundwater_commit_candidate, &
-       groundwater_prepare_candidate, groundwater_commit_prepared, groundwater_abort_prepared, &
-       GW_EXCHANGE_OK, GW_EXCHANGE_ALREADY_PREPARED, GW_EXCHANGE_STALE_CANDIDATE
+       groundwater_discard_candidate, groundwater_prepare_candidate, groundwater_commit_prepared, &
+       groundwater_abort_prepared, GW_EXCHANGE_OK, GW_EXCHANGE_ALREADY_PREPARED, &
+       GW_EXCHANGE_STALE_CANDIDATE, GW_EXCHANGE_STALE_PREPARED, GW_EXCHANGE_REVISION_EXHAUSTED
   use mod_fgc18r_fake_preparable_service, only: fake_preparable_service_t
   implicit none
 
-  type(fake_preparable_service_t) :: service
-  type(groundwater_exchange_checkpoint_t) :: checkpoint, stale_checkpoint, commit_checkpoint
-  type(groundwater_exchange_candidate_t) :: candidate, stale_candidate, commit_candidate, blocked_candidate
-  type(groundwater_exchange_prepared_t) :: prepared
+  type(fake_preparable_service_t) :: service, near_limit_service, exhausted_service
+  type(groundwater_exchange_checkpoint_t) :: checkpoint, stale_checkpoint, commit_checkpoint, &
+       abort_checkpoint_copy, commit_checkpoint_copy, near_limit_checkpoint, exhausted_checkpoint
+  type(groundwater_exchange_candidate_t) :: candidate, stale_candidate, commit_candidate, blocked_candidate, &
+       near_limit_candidate, exhausted_candidate
+  type(groundwater_exchange_prepared_t) :: prepared, abort_prepared_copy, commit_prepared_copy
   type(groundwater_exchange_trial_result_t) :: result
-  type(groundwater_coupling_window_t) :: window, next_window
-  integer(int64) :: revision0
+  type(groundwater_coupling_window_t) :: window, next_window, boundary_window
+  integer(int64) :: revision0, revision_after_commit
   real(real64) :: time0, head0
-  integer :: status, prepare_calls_before
+  integer :: status, prepare_calls_before, candidates_before
 
   call groundwater_capture_checkpoint(service, checkpoint, status)
   call require(status == GW_EXCHANGE_OK, 'initial checkpoint')
@@ -318,6 +321,11 @@ program test_fgc18r_prepared_commit
   call require(service%committed_revision == revision0 .and. service%committed_time == time0 .and. &
        service%committed_head_m == head0, 'prepare mutated committed state')
 
+  ! Intrinsic assignment deliberately copies both public handles. These copies
+  ! must never be able to reach a later backend publication or abort.
+  abort_checkpoint_copy = checkpoint
+  abort_prepared_copy = prepared
+
   prepare_calls_before = service%prepare_calls
   call groundwater_trial_from_checkpoint(service, checkpoint, window, 3.0e-7_real64, blocked_candidate, result, status)
   call require(status == GW_EXCHANGE_ALREADY_PREPARED, 'trial allowed during prepare reservation')
@@ -331,16 +339,36 @@ program test_fgc18r_prepared_commit
   call require(service%committed_revision == revision0 .and. service%committed_time == time0 .and. &
        service%committed_head_m == head0, 'abort mutated committed state')
 
+  ! Force backend token reuse. Wrapper slot generation, not token uniqueness,
+  ! must keep the stale copied handle from aliasing the new live reservation.
+  service%next_prepare_token = 5000_int64
   call groundwater_trial_from_checkpoint(service, checkpoint, window, 4.0e-7_real64, candidate, result, status)
   call require(status == GW_EXCHANGE_OK, 'trial after abort')
   call groundwater_prepare_candidate(service, checkpoint, candidate, prepared, status)
   call require(status == GW_EXCHANGE_OK, 'second prepare')
+  call require(service%reservation_token == 5001_int64, 'forced backend token reuse failed')
+
+  call groundwater_abort_prepared(service, abort_checkpoint_copy, abort_prepared_copy, status)
+  call require(status == GW_EXCHANGE_STALE_PREPARED, 'copied stale abort was not rejected')
+  call require(service%prepared_abort_calls == 1, 'copied stale abort reached backend')
+  call require(service%reservation_active, 'copied stale abort consumed live backend reservation')
+  call require(prepared%ready() .and. checkpoint%is_prepared(), 'copied stale abort damaged live handles')
+  call require(service%committed_revision == revision0, 'copied stale abort changed committed revision')
+
+  commit_checkpoint_copy = checkpoint
+  commit_prepared_copy = prepared
   call groundwater_commit_prepared(service, checkpoint, prepared, status)
   call require(status == GW_EXCHANGE_OK, 'prepared commit wrapper')
   call require(service%prepared_commit_calls == 1, 'prepared commit count')
   call require(service%committed_revision == revision0+1_int64, 'prepared commit revision')
   call require(abs(service%committed_time-window%t1) < 1.0e-12_real64, 'prepared commit time')
   call require(.not. checkpoint%ready() .and. .not. prepared%ready(), 'commit handles not consumed')
+  revision_after_commit = service%committed_revision
+
+  call groundwater_commit_prepared(service, commit_checkpoint_copy, commit_prepared_copy, status)
+  call require(status == GW_EXCHANGE_STALE_PREPARED, 'copied stale commit was not rejected')
+  call require(service%prepared_commit_calls == 1, 'copied stale commit reached backend')
+  call require(service%committed_revision == revision_after_commit, 'copied stale commit republished groundwater')
 
   call groundwater_commit_prepared(service, checkpoint, prepared, status)
   call require(status /= GW_EXCHANGE_OK, 'duplicate prepared commit accepted')
@@ -367,10 +395,44 @@ program test_fgc18r_prepared_commit
   call require(.not. prepared%ready() .and. stale_candidate%ready(), 'failed prepare consumed candidate')
   call require(service%prepare_calls == prepare_calls_before+1, 'stale prepare did not reach backend guard')
 
+  ! The last legal revision advance is INT64_MAX-1 -> INT64_MAX. No expression
+  ! may wrap, including candidate%ready() and result provenance checks.
+  near_limit_service%committed_revision = huge(0_int64) - 1_int64
+  call groundwater_capture_checkpoint(near_limit_service, near_limit_checkpoint, status)
+  call require(status == GW_EXCHANGE_OK .and. near_limit_checkpoint%ready(), 'near-limit checkpoint')
+  boundary_window%t0 = near_limit_service%committed_time
+  boundary_window%t1 = boundary_window%t0 + 0.0625_real64
+  call groundwater_trial_from_checkpoint(near_limit_service, near_limit_checkpoint, boundary_window, &
+       1.0e-8_real64, near_limit_candidate, result, status)
+  call require(status == GW_EXCHANGE_OK, 'last legal revision advance rejected')
+  call require(near_limit_candidate%ready(), 'INT64_MAX candidate not ready')
+  call require(result%candidate_revision == huge(0_int64), 'last legal candidate revision incorrect')
+  call groundwater_discard_candidate(near_limit_service, near_limit_candidate, status)
+  call require(status == GW_EXCHANGE_OK, 'near-limit candidate discard')
+
+  ! INT64_MAX itself has no successor. Reject before trial_backend so no wrapped
+  ! negative candidate revision or backend trial side effect can exist.
+  exhausted_service%committed_revision = huge(0_int64)
+  call groundwater_capture_checkpoint(exhausted_service, exhausted_checkpoint, status)
+  call require(status == GW_EXCHANGE_OK .and. exhausted_checkpoint%ready(), 'exhausted checkpoint capture')
+  boundary_window%t0 = exhausted_service%committed_time
+  boundary_window%t1 = boundary_window%t0 + 0.0625_real64
+  candidates_before = exhausted_service%n_candidates
+  call groundwater_trial_from_checkpoint(exhausted_service, exhausted_checkpoint, boundary_window, &
+       1.0e-8_real64, exhausted_candidate, result, status)
+  call require(status == GW_EXCHANGE_REVISION_EXHAUSTED, 'INT64_MAX revision did not fail closed')
+  call require(result%status == GW_EXCHANGE_REVISION_EXHAUSTED, 'revision exhaustion missing from result')
+  call require(.not. exhausted_candidate%ready(), 'revision-exhausted candidate became ready')
+  call require(exhausted_service%n_candidates == candidates_before, 'revision exhaustion reached trial backend')
+
   print '(a)', 'FGC18R_PREPARE_ABORT_NO_PUBLICATION=PASS'
   print '(a)', 'FGC18R_PREPARE_BLOCKS_NEW_TRIAL=PASS'
   print '(a)', 'FGC18R_PREPARED_COMMIT_ONCE=PASS'
   print '(a)', 'FGC18R_STALE_PREPARE_REJECTED=PASS'
+  print '(a)', 'FGC18R_COPIED_ABORT_REPLAY_REJECTED=PASS'
+  print '(a)', 'FGC18R_COPIED_COMMIT_REPLAY_REJECTED=PASS'
+  print '(a)', 'FGC18R_BACKEND_TOKEN_REUSE_GENERATION_GUARDED=PASS'
+  print '(a)', 'FGC18R_REVISION_INT64_BOUNDARY_FAIL_CLOSED=PASS'
   print '(a)', 'FGC18R_NO_RECOVERABLE_FINAL_COMMIT_STATUS=PASS'
   print '(a)', 'FGC18R_BASE_SERVICE_ABI_RETAINED=PASS'
 
