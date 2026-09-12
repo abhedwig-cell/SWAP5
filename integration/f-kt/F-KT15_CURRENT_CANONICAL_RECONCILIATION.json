@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "CURRENT_CANONICAL_RECONCILIATION",
+  "branch": "work/f-kt15-task2-solver-service-production-composition",
+  "original_canonical_authority": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+  "current_canonical_authority": "e537baf521e633c432a9f33de495fab9f18e918d",
+  "canonical_delta": {
+    "ahead_by": 1,
+    "behind_by": 0,
+    "merge_base_is_original_canonical": true,
+    "changed_files": [
+      "integration/f-ci/F-CI48P_STATUS.json"
+    ],
+    "src_delta_count": 0,
+    "reference_delta_count": 0,
+    "workflow_delta_count": 0,
+    "classification": "METADATA_ONLY_F_CI48P_FINAL_CLOSEOUT"
+  },
+  "production_equivalence": {
+    "F_KT15_four_path_production_postimage_unchanged_by_canonical_move": true,
+    "scientific_or_numerical_semantics_changed_by_canonical_move": false,
+    "mass_policy_changed_by_canonical_move": false,
+    "qualification_replay_required_after_repin": true
+  },
+  "race_evidence": {
+    "failed_metadata_head": "33b22c5ac8c7d30b777554c7e4a504235d9501f0",
+    "failed_run": 34675503601,
+    "failed_job": 103504538329,
+    "failure": "FKT15_RUNNER_FAIL canonical moved: e537baf521e633c432a9f33de495fab9f18e918d",
+    "production_failure": false,
+    "classification": "EXPECTED_FAIL_CLOSED_CANONICAL_RACE_GUARD"
+  },
+  "repin": {
+    "gate_repin_commit": "14e232e5a3aca6f44aa125fe833a90d371639386",
+    "workflow_fetch_repin_commit": "6aff4e7b83358391799c09ba1c96c79214a3f48b",
+    "exact_head_run": 34675600769,
+    "conclusion": "success"
+  },
+  "governance": {
+    "old_failed_run_preserved_as_evidence": true,
+    "race_guard_removed_or_weakened": false,
+    "production_source_changed_for_reconciliation": false,
+    "reference_changed_for_reconciliation": false,
+    "scientific_tolerance_changed": false,
+    "mass_conservation_relaxed": false
+  },
+  "decision": "RECONCILED_METADATA_ONLY_CANONICAL_MOVEMENT_FKT15_QUALIFICATION_REMAINS_VALID_SUBJECT_TO_FINAL_EXACT_HEAD_CLOSEOUT_CI"
+}
