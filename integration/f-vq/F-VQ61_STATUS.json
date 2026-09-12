@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ61",
+  "title": "GC18R-R1 Transactional Groundwater Exchange Independent Requalification",
+  "branch": "qualification/f-vq61-gc18r-r1-transactional-groundwater-exchange-independent-requalification",
+  "phase": "INDEPENDENT_QUALIFICATION_COMPLETE",
+  "decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "current_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "owner_candidate": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+  "merge_base": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "frozen_blocked_f_vq60_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "original_blocked_candidate": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+  "production_delta": {
+    "production_source_file_count": 1,
+    "production_source_files": ["src/runtime/mod_groundwater_exchange_service_contract.f90"],
+    "total_changed_files_from_current_canonical": 15,
+    "verifier_branch_imported_production_source": false
+  },
+  "independent_run": {
+    "precloseout_verifier_head": "0eff5d3d55de98b9c600dcf080f3bc8527453d83",
+    "run": 34690978402,
+    "job": 103546029070,
+    "conclusion": "success",
+    "compiler_modes": ["O0", "O2"],
+    "runtime_checks": ["-fcheck=all", "-ffpe-trap=invalid,zero,overflow"],
+    "owner_qualification_replayed": true,
+    "o0_o2_adversarial_output_identity": true
+  },
+  "f_vq60_blocker_requalification": {
+    "FVQ60-B1": {
+      "verdict": "CLOSED_INDEPENDENTLY_VERIFIED",
+      "evidence": "INT64_MAX-1 to INT64_MAX remains legal; INT64_MAX returns GW_EXCHANGE_REVISION_EXHAUSTED before trial_backend, with no ready candidate and no wrapped revision."
+    },
+    "FVQ60-B2": {
+      "verdict": "CLOSED_INDEPENDENTLY_VERIFIED",
+      "evidence": "A verifier backend with no one-shot reservation registry and deliberate prepare-token reuse cannot receive a copied stale commit or abort after the wrapper-owned slot generation is consumed."
+    }
+  },
+  "transaction_verdict": "PASS_WITHIN_GROUNDWATER_EXCHANGE_CONTRACT_SCOPE",
+  "mass_verdict": "PASS_HARD_TYPED_INTERFACE_AND_EXACTLY_ONCE_PUBLICATION_WITHIN_CONTRACT_SCOPE",
+  "transaction_findings": [
+    "prepare refusal preserves committed origin and retry handles",
+    "participant mismatch is rejected before backend prepare",
+    "abort preserves committed groundwater state",
+    "copied prepared commit replay is rejected before irreversible backend publication",
+    "copied prepared abort replay is rejected before backend abort",
+    "backend prepare-token reuse cannot alias a later reservation generation",
+    "revision exhaustion fails closed before backend trial"
+  ],
+  "mass_findings": [
+    "F-GC17 q_GW=-q_SWAP sign convention is unchanged",
+    "interface flux residual remains q_SWAP+q_GW",
+    "no mass tolerance is introduced or relaxed",
+    "duplicate irreversible groundwater publication through copied handles is prevented"
+  ],
+  "architecture_audit": "integration/f-vq/F-VQ61_ARCHITECTURE_AUDIT.json",
+  "independently_qualified_for_canonical_admission": true,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "limitations": [
+    "No MODFLOW adapter, aquifer physics or end-to-end groundwater mass ledger is qualified here.",
+    "No full predictor-corrector convergence or crash-recovery protocol is qualified here.",
+    "No distributed/network transaction protocol is qualified here.",
+    "No large-batch throughput benchmark is claimed.",
+    "The previous F-VQ60 blocked authority remains immutable historical evidence and is not superseded retroactively."
+  ],
+  "required_next_step": "Start a separate F-CI canonical-admission work unit from the then-current integration/f-ci-canonical. Recheck current canonical live, preserve owner candidate cfa4e9dcd9a283d85ade316651d34cac93958a4a and this F-VQ61 authority, perform a true history-preserving admission, and require postpromotion reconciliation before claiming current-canonical capability."
+}
