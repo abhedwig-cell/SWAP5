@@ -97,14 +97,10 @@ contains
     real(real64), intent(out) :: sink(:)
 
     if (size(pressure_head) /= size(water_content)) error stop 'dummy provider shape mismatch'
-    if (self%reserved_marker() /= 0) error stop 'dummy provider marker mismatch'
+    if (size(source) /= size(pressure_head) .or. size(sink) /= size(pressure_head)) &
+         error stop 'dummy provider output shape mismatch'
     source = 0.0_real64
     sink = 0.0_real64
   end subroutine dummy_source_sink_evaluate
-
-  integer function reserved_marker(self)
-    class(dummy_source_sink_t), intent(in) :: self
-    reserved_marker = 0
-  end function reserved_marker
 
 end program test_eb_i03_phase_flux_view
