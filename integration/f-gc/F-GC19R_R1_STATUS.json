@@ -3,8 +3,8 @@
   "work_unit": "F-GC19R-R1",
   "title": "Prepared Ledger Provenance Remediation",
   "branch": "work/f-gc19r-r1-prepared-ledger-provenance-remediation",
-  "phase": "OWNER_REMEDIATION_CANDIDATE_EXACT_HEAD_RUN_PENDING",
-  "decision": "OWNER_REMEDIATION_PENDING_QUALIFICATION",
+  "phase": "OWNER_QUALIFIED_EXACT_STATUS_HEAD_RECHECK_REQUIRED",
+  "decision": "OWNER_QUALIFIED_FGC19R_B1_REMEDIATION_NOT_INDEPENDENTLY_QUALIFIED_NOT_CANONICALLY_ADMITTED",
   "blocked_candidate": "d92b84c815f9e6c5509d280953b4d659c5cb14ac",
   "blocked_qualification_authority": "qualification/f-gc19r-prepared-ledger-publication-owner-qualification@c4b0dc78af0b444edcc4b349cc598b5b6167bd1d",
   "blocked_evidence_runs": [34694635451, 34694739135],
@@ -13,6 +13,12 @@
   "f_gc17_contract_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
   "production_source": "src/runtime/mod_groundwater_interface_mass_ledger.f90",
   "production_source_blob_after_remediation": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+  "first_green_owner_qualification": {
+    "head": "3f8f13a1d159d1052385c6e38ee9d2695d3c0b0e",
+    "run": 34694979247,
+    "job": 103556799592,
+    "conclusion": "success"
+  },
   "remediation": {
     "finding_closed_by_design": "FGC19R-B1",
     "mechanism": "Explicit runtime/coupler-owned stable positive ledger_id is stored in the ledger and each externally prepared handle. prepared_ready_for_commit requires exact ledger_id and generation equality before commit or abort can mutate state.",
@@ -28,7 +34,8 @@
     "generation_exhaustion_guard_preserved": true,
     "counter_exhaustion_guard_preserved": true,
     "abort_committed_mass_preservation": true,
-    "exact_q_action_reaction_preserved": true
+    "exact_q_action_reaction_preserved": true,
+    "legacy_f_gc19_O0_O2_compatibility_verified": true
   },
   "identity_contract": {
     "assignment_owner": "runtime_or_coupler",
@@ -38,24 +45,25 @@
     "later_composition_obligation": "Multi-ledger production composition must independently qualify uniqueness assignment and lifecycle discipline."
   },
   "state": {
-    "owner_qualified": false,
+    "owner_qualified": true,
     "independent_qualification": false,
     "canonical_admission": false,
     "production_coupling_admission": false,
     "production_source_changed": true,
     "reference_changed": false,
     "mass_conservation_relaxed": false,
+    "all_30_architecture_invariants_owner_qualified": true,
     "RB1_reopened": false
   },
   "architecture_audit": "integration/f-gc/F-GC19R_R1_ARCHITECTURE_AUDIT.json",
   "qualification_gate": "tests/fgc/run_fgc19r_r1_prepared_ledger_provenance.sh",
   "qualification_test": "tests/fgc/test_fgc19r_r1_prepared_ledger_provenance.f90",
   "hard_nonclaims": [
-    "This status does not substitute owner qualification before the exact-head workflow is green.",
-    "Owner qualification will not substitute independent qualification.",
+    "Owner qualification does not substitute independent qualification.",
     "No current-canonical admission is claimed.",
     "No MODFLOW adapter, aquifer solver, end-to-end coupled mass closure, distributed transaction protocol, crash recovery or throughput qualification is claimed.",
+    "Runtime/coupler uniqueness and lifecycle of ledger_id remain a later composition-level qualification obligation.",
     "RB1 remains frozen."
   ],
-  "next_required_step": "Run the exact-head F-GC19R-R1 owner qualification at O0/O2 with the frozen blocked-authority race guard, legacy F-GC19 compatibility probe and 30-invariant audit."
+  "next_required_step": "Require the automatically triggered exact-status-head F-GC19R-R1 workflow to finish green. If green, freeze this owner authority and start a separate independent qualification workunit from the exact owner-qualified head."
 }
