@@ -1,16 +1,41 @@
-program test_eb_i03_phase_flux_view
+module eb_i03_test_support
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, source_sink_provider_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED
-  use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
-  use mod_soil_water_phase_flux_view, only: soil_water_phase_flux_view_t, SW_FACE_FLUX_POSITIVE_UPWARD
-  use mod_reference_richards_phase_flux_binding, only: build_reference_richards_phase_flux_view
+  use mod_soil_water_solver_contract, only: source_sink_provider_t
   implicit none
+  private
 
-  type, extends(source_sink_provider_t) :: dummy_source_sink_t
+  type, extends(source_sink_provider_t), public :: dummy_source_sink_t
    contains
      procedure :: evaluate => dummy_source_sink_evaluate
   end type dummy_source_sink_t
+
+contains
+
+  subroutine dummy_source_sink_evaluate(self, pressure_head, water_content, source, sink)
+    class(dummy_source_sink_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:)
+    real(real64), intent(in) :: water_content(:)
+    real(real64), intent(out) :: source(:)
+    real(real64), intent(out) :: sink(:)
+
+    if (size(pressure_head) /= size(water_content)) error stop 'dummy provider shape mismatch'
+    if (size(source) /= size(pressure_head) .or. size(sink) /= size(pressure_head)) &
+         error stop 'dummy provider output shape mismatch'
+    source = 0.0_real64
+    sink = 0.0_real64
+  end subroutine dummy_source_sink_evaluate
+
+end module eb_i03_test_support
+
+program test_eb_i03_phase_flux_view
+  use, intrinsic :: iso_fortran_env, only: real64
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
+       soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED
+  use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
+  use mod_soil_water_phase_flux_view, only: soil_water_phase_flux_view_t, SW_FACE_FLUX_POSITIVE_UPWARD
+  use mod_reference_richards_phase_flux_binding, only: build_reference_richards_phase_flux_view
+  use eb_i03_test_support, only: dummy_source_sink_t
+  implicit none
 
   type(soil_water_parameter_set_t), target :: parameters
   type(soil_water_solve_request_t) :: request
@@ -86,21 +111,4 @@ program test_eb_i03_phase_flux_view
   if (ok) error stop 'EB-I03 hidden source/sink route must fail closed'
 
   print '(a)', 'EB-I03 phase flux view: PASS'
-
-contains
-
-  subroutine dummy_source_sink_evaluate(self, pressure_head, water_content, source, sink)
-    class(dummy_source_sink_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head(:)
-    real(real64), intent(in) :: water_content(:)
-    real(real64), intent(out) :: source(:)
-    real(real64), intent(out) :: sink(:)
-
-    if (size(pressure_head) /= size(water_content)) error stop 'dummy provider shape mismatch'
-    if (size(source) /= size(pressure_head) .or. size(sink) /= size(pressure_head)) &
-         error stop 'dummy provider output shape mismatch'
-    source = 0.0_real64
-    sink = 0.0_real64
-  end subroutine dummy_source_sink_evaluate
-
 end program test_eb_i03_phase_flux_view
