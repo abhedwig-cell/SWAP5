@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC16",
+  "plan": "RESTRICTED_DIRECT_GROUNDWATER_COUPLING_IMPLEMENTATION_DAG_V1",
+  "production_implementation_in_F_GC16": false,
+  "entry_gate": {
+    "id": "P0_F_CI49",
+    "owner": "F-CI49 canonical admission",
+    "purpose": "Canonically admit the definitive F-KT15 Task2 solver-service transaction composition and accepted-only interface-sensitivity result transport.",
+    "source_authority": "work/f-kt15-task2-solver-service-production-composition@48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "qualified_source_postimage": "9465be74c01fe6455466e5ba7f62a761986ad450",
+    "production_files": "the fixed 17-path F-KT15 allowlist; GC16 must not duplicate or modify this ownership",
+    "contract": "accepted canonical interval result may expose only accepted terminal interface sensitivity; rejected trials publish no stale sensitivity; transactionality and hard mass remain unchanged",
+    "tests": "F-CI49 exact-source locks, transaction/restart/determinism/mass replay and canonical integration gates",
+    "qualification": "existing F-CI49 must close green on the then-current canonical postimage",
+    "dependency": [],
+    "expected_canonical_admission": "F-CI49 itself",
+    "status_at_F_GC16_preregistration": "OPEN_NOT_YET_CANONICAL_ADMITTED"
+  },
+  "owner_workunits": [
+    {
+      "id": "F-GC17",
+      "title": "Typed Direct Groundwater Interface, Datum, Sign, Units & Convergence Policy",
+      "owner": "runtime/coupler groundwater interface contract",
+      "production_files": [
+        "src/runtime/mod_groundwater_coupling_contract.f90",
+        "src/runtime/mod_groundwater_coupling_policy.f90"
+      ],
+      "contract": [
+        "typed H_SWAP, H_GW, q_SWAP, q_GW, r_H, r_q, [t0,t1], lineage and revision fields",
+        "common hydraulic-head datum and explicit m <-> SWAP-native mapping",
+        "q_SWAP positive leaving SWAP; q_GW positive leaving groundwater; r_q=q_SWAP+q_GW",
+        "required explicit provenance-bound H_interface_tol with no numeric default",
+        "no automatic equivalence between H_interface_tol and Richards temporal budget, predictor perturbation, solver tolerance or regulatory threshold"
+      ],
+      "tests": [
+        "positive unit/datum/sign round trips",
+        "sign inversion oracle q_GW=-q_SWAP",
+        "NaN/Inf and missing-provenance fail-closed matrix",
+        "non-midnight and non-day interval identity",
+        "head residual and mass residual kept type-separate"
+      ],
+      "qualification": "independent contract VQ plus O0/O2 identity and source allowlist; no physics or solver source delta",
+      "dependency": ["P0_F_CI49"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC17 qualification"
+    },
+    {
+      "id": "F-GC18",
+      "title": "Transactional Groundwater Exchange Service Abstraction",
+      "owner": "runtime/coupler external-groundwater service boundary",
+      "production_files": [
+        "src/runtime/mod_groundwater_exchange_contract.f90",
+        "src/adapter/mod_groundwater_external_gateway.f90"
+      ],
+      "contract": [
+        "checkpoint, predictor-head request, trial response, optional response sensitivity, commit and rollback",
+        "no MODFLOW concrete types in SWAP kernel/runtime contracts",
+        "rejected groundwater trial cannot mutate committed groundwater state",
+        "deterministic lineage/revision exposed on every response",
+        "no file/path/parser ownership in the SWAP kernel"
+      ],
+      "tests": [
+        "dummy deterministic groundwater service A/B/A replay",
+        "checkpoint/trial/rollback isolation",
+        "failure propagation and stale-response rejection",
+        "optional-sensitivity unavailable path",
+        "sign/unit/datum conformance against F-GC17"
+      ],
+      "qualification": "service-contract conformance qualification with a deterministic in-process test provider; no claim of concrete MODFLOW production adapter yet",
+      "dependency": ["F-GC17"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC18 qualification"
+    },
+    {
+      "id": "F-GC19",
+      "title": "Direct Coupling Interface Mass Ledger & Diagnostics",
+      "owner": "runtime/coupler accounting and observability",
+      "production_files": [
+        "src/runtime/mod_groundwater_coupling_ledger.f90",
+        "src/runtime/mod_groundwater_coupling_diagnostics.f90"
+      ],
+      "contract": [
+        "book exactly one accepted interface transfer per committed coupling window",
+        "groundwater transfer is exact negative of authoritative SWAP accepted transfer",
+        "rejected predictor/corrector trials never enter ledger",
+        "head residual is diagnostic only and never a mass term",
+        "expose trial counts, costs, residuals, tangent availability/use, policy provenance and failure class"
+      ],
+      "tests": [
+        "exact opposite assignment",
+        "retry/rejection no-double-booking",
+        "non-finite transfer fail closed",
+        "interval/lineage mismatch fail closed",
+        "diagnostic completeness and deterministic replay"
+      ],
+      "qualification": "hard mass oracle with zero allowed interface mass tolerance plus diagnostic schema qualification",
+      "dependency": ["F-GC17"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC19 qualification"
+    },
+    {
+      "id": "F-GC20",
+      "title": "Groundwater Cell to Tile Mapping & Aggregation Primitive",
+      "owner": "MultiSWAP runtime/coupler composition",
+      "production_files": [
+        "src/runtime/mod_groundwater_tile_cell_mapping.f90"
+      ],
+      "contract": [
+        "one groundwater cell to one or more tiles; no mandatory 1:1 relation",
+        "fractions form a complete deterministic cell composition or fail closed",
+        "q_cell=sum(f_i*q_i) on groundwater-cell area basis",
+        "component kinds remain explicit: SWAP, NON_SWAP, OPEN_WATER, TRANSFER_ZONE",
+        "SWAP column never receives its groundwater-cell area fraction"
+      ],
+      "tests": [
+        "single-tile identity",
+        "multi-tile weighted aggregation",
+        "fraction completeness rejection",
+        "mixed component-kind dispatch",
+        "order-independent deterministic aggregation",
+        "no cross-cell state aliasing"
+      ],
+      "qualification": "MultiSWAP composition VQ with hard aggregate mass identities; no coupling execution yet",
+      "dependency": ["F-GC17"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC20 qualification"
+    },
+    {
+      "id": "F-GC21",
+      "title": "Restricted Transactional Predictor-Corrector Coupling Window Orchestrator",
+      "owner": "runtime groundwater coupling controller",
+      "production_files": [
+        "src/runtime/mod_groundwater_coupling_window.f90"
+      ],
+      "read_only_dependencies": [
+        "src/runtime/mod_canonical_interval_runtime.f90",
+        "src/runtime/mod_canonical_contracts.f90",
+        "src/runtime/mod_fmr_checkpoint_orchestrator.f90"
+      ],
+      "contract": [
+        "generic finite [t0,t1]",
+        "SWAP and groundwater committed t0 checkpoints captured before predictor",
+        "predictor and one corrector both run physically from the same committed t0 origin",
+        "normal path exactly two full SWAP interval trajectories",
+        "accepted corrector commits both sides exactly once",
+        "failure leaves both committed states unchanged and requests a smaller new outer coupling window rather than looping indefinitely"
+      ],
+      "tests": [
+        "non-midnight, subdaily and >1-day windows",
+        "same-T0 predictor/corrector lineage oracle",
+        "predictor cannot commit",
+        "corrector single-commit oracle",
+        "predictor and corrector rejection rollback",
+        "hard two-trajectory normal-path cost counter",
+        "solver/internal retries reported separately from coupling iterations"
+      ],
+      "qualification": "transaction/restart precursor VQ with deterministic replay, hard SWAP mass and interface-ledger gates",
+      "dependency": ["P0_F_CI49", "F-GC18", "F-GC19"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC21 qualification"
+    },
+    {
+      "id": "F-GC22",
+      "title": "Application & Temporal Accuracy Binding to Coupling Convergence",
+      "owner": "runtime/coupler numerical policy binding",
+      "production_files": [
+        "src/runtime/mod_groundwater_coupling_accuracy_binding.f90"
+      ],
+      "read_only_dependencies": [
+        "src/runtime/mod_coupling_application_accuracy_contract.f90",
+        "src/runtime/mod_coupling_application_accuracy_adapter.f90"
+      ],
+      "contract": [
+        "consume only externally qualified H_app and A_temporal materialized through existing contracts",
+        "bind a separately governed H_interface_tol to the coupling controller without inventing a default",
+        "prove compatibility/allocation between interface residual tolerance and application temporal accuracy envelope",
+        "absence or provenance mismatch fails closed before coupling trial",
+        "mass conservation is not part of the allocatable accuracy budget"
+      ],
+      "tests": [
+        "valid synthetic governed packet mapping",
+        "missing H_app/A_temporal rejection",
+        "missing H_interface_tol rejection",
+        "forbidden substitution matrix for solver tolerance, predictor perturbation and physical thresholds",
+        "stale-policy clearing",
+        "temporal indicator plus interface residual diagnostics"
+      ],
+      "qualification": "policy-binding VQ; synthetic values are structural fixtures only and cannot become production defaults",
+      "dependency": ["F-GC17"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC22 qualification"
+    },
+    {
+      "id": "F-GC23",
+      "title": "Whole-Window Coupling Response Tangent & One-Corrector Composition",
+      "owner": "coupling numerical response composition",
+      "production_files": [
+        "src/runtime/mod_groundwater_coupling_response.f90"
+      ],
+      "read_only_dependencies": [
+        "canonical_result_t%interface_sensitivity after F-CI49 admission",
+        "F-SI28 native same-factorization dh_bottom_dq_bottom capability"
+      ],
+      "contract": [
+        "compose only accepted and provenance-matching SWAP sensitivity with groundwater-side response information",
+        "derive one safeguarded corrector candidate from predictor residual",
+        "normal path adds no finite-difference full SWAP trajectories",
+        "finite-difference +/-delta remains reference/fallback qualification only",
+        "unavailable/non-window-covering tangent is explicit and cannot be silently treated as valid"
+      ],
+      "tests": [
+        "analytic/transported tangent against finite-difference reference cases",
+        "stale/rejected tangent exclusion",
+        "covers-requested-window gating",
+        "one-corrector residual contraction characterization",
+        "no extra nonlinear trajectory counter on native tangent path"
+      ],
+      "qualification": "reference-mode and difficult-case VQ proving accuracy, guarded fallback and predictor+corrector normal cost target",
+      "dependency": ["F-GC21", "F-GC22"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC23 qualification"
+    },
+    {
+      "id": "F-GC24",
+      "title": "Coupled Restart, Split-Run & Replay Composition",
+      "owner": "runtime/coupler restart composition",
+      "production_files": [
+        "src/runtime/mod_groundwater_coupling_restart.f90"
+      ],
+      "read_only_dependencies": [
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "src/runtime/mod_fmr_committed_restart.f90"
+      ],
+      "contract": [
+        "restart only from accepted coupling-window boundary",
+        "persist committed states and minimal lineage/mapping/ledger continuation metadata",
+        "never persist rejected trials, solver scratch or trial-only tangent state",
+        "external groundwater model remains owner of its own restart payload"
+      ],
+      "tests": [
+        "continuous vs split-run accepted-state identity",
+        "continuous vs split-run interface-transfer identity",
+        "restart after rejected trial",
+        "mapping/provenance mismatch fail closed",
+        "O0/O2 replay identity"
+      ],
+      "qualification": "restart/determinism VQ using permanent TB04-style transaction/restart cases",
+      "dependency": ["F-GC21", "F-GC19"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC24 qualification"
+    },
+    {
+      "id": "F-GC25",
+      "title": "MultiSWAP Direct Groundwater Coupling Execution Composition",
+      "owner": "MultiSWAP runtime scheduling/coupler",
+      "production_files": [
+        "src/runtime/mod_groundwater_multiswap_coupler.f90",
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90 only if a minimal explicit hook is proven necessary"
+      ],
+      "contract": [
+        "execute direct-coupled SWAP tiles through shared worker/batch infrastructure",
+        "cell-window commit is atomic over participating direct-coupled SWAP tiles in restricted profile",
+        "one failing tile rejects that cell window without corrupting other cells",
+        "aggregate accepted tile transfers by deterministic area fractions",
+        "no one-heavy-solver-per-column requirement"
+      ],
+      "tests": [
+        "single-column equivalence",
+        "two-or-more tiles per cell",
+        "multiple independent cells with one failing cell",
+        "permutation/order determinism",
+        "worker isolation and no state bleed",
+        "surface-fraction mass aggregation",
+        "bounded per-window trial counts under batching"
+      ],
+      "qualification": "MultiSWAP isolation/equivalence and scaling qualification; no scientific tolerance relaxation",
+      "dependency": ["F-GC20", "F-GC21", "F-GC22"],
+      "expected_canonical_admission": "separate next-available F-CI admission after F-GC25 qualification"
+    },
+    {
+      "id": "F-GC26",
+      "title": "External Groundwater/MODFLOW Adapter Conformance & Integration Qualification",
+      "owner": "external groundwater adapter layer, outside SWAP kernel",
+      "production_files": [
+        "src/adapter/mod_groundwater_external_gateway.f90 only if F-GC18 did not already fully materialize the SWAP-side gateway",
+        "concrete MODFLOW adapter/package is owned outside the SWAP kernel and may live outside this repository"
+      ],
+      "contract": [
+        "implement the F-GC18 typed exchange service without leaking MODFLOW types into SWAP",
+        "explicit head datum/unit/sign conversion at adapter boundary",
+        "paired checkpoint/trial/commit/rollback handshake",
+        "batched cell exchange supported",
+        "adapter failure propagates fail closed"
+      ],
+      "tests": [
+        "conformance suite against deterministic groundwater reference provider",
+        "real adapter sign/unit/datum round trip",
+        "rollback and restart handshake",
+        "batched multi-cell exchange",
+        "fault injection for stale revision, partial response and adapter failure"
+      ],
+      "qualification": "adapter conformance first; concrete MODFLOW integration separately qualified against a controlled model fixture before final production admission",
+      "dependency": ["F-GC18", "F-GC21"],
+      "expected_canonical_admission": "SWAP-side gateway requires separate F-CI admission if source changes; concrete external adapter follows its own repository/release authority"
+    },
+    {
+      "id": "F-GC27",
+      "title": "Restricted Production Groundwater Coupling End-to-End Admission",
+      "owner": "independent integration/admission authority",
+      "production_files": "NONE unless a concrete defect is found; defects return to the owning predecessor workunit",
+      "contract": [
+        "restricted DIRECT profile only",
+        "prescribed bottom-head coupling only",
+        "qualified application/interface accuracy policy required",
+        "q_SWAP=-q_GW exact pairing and hard whole-system mass closure",
+        "generic coupling windows",
+        "predictor+one-corrector normal path",
+        "bounded fail-closed cost",
+        "restart/determinism/MultiSWAP isolation",
+        "deep-vadose excluded except documented seam"
+      ],
+      "tests": [
+        "standalone regression unchanged",
+        "single-column direct coupling reference cases",
+        "non-midnight/subdaily/>1-day windows",
+        "window split convergence characterization",
+        "restart/split-run replay",
+        "hard interface and total mass conservation",
+        "tangent vs finite-difference reference",
+        "predictor+corrector normal cost counter",
+        "difficult-column bounded-cost/fail-closed cases",
+        "MultiSWAP tile aggregation and isolation",
+        "external-adapter fault injection"
+      ],
+      "qualification": "reference, balanced and throughput policies qualified without changing physical results outside their stated numerical envelopes; reference mode remains available; no systematic 6-9 full SWAP trajectories per window",
+      "dependency": ["F-GC23", "F-GC24", "F-GC25", "F-GC26"],
+      "expected_canonical_admission": "final dedicated F-CI production-coupling admission only after every predecessor is independently qualified and current-canonical ancestry is rechecked"
+    }
+  ],
+  "parallel_execution_waves": [
+    {
+      "wave": 0,
+      "work": ["P0_F_CI49"],
+      "parallel_safe": false,
+      "reason": "accepted interface-result/tangent transport must have one canonical authority before groundwater production work consumes it"
+    },
+    {
+      "wave": 1,
+      "work": ["F-GC17"],
+      "parallel_safe": false,
+      "reason": "the typed interface and convergence policy is the contract root for all downstream owners"
+    },
+    {
+      "wave": 2,
+      "work": ["F-GC18", "F-GC19", "F-GC20", "F-GC22"],
+      "parallel_safe": true,
+      "reason": "separate files and ownership domains after F-GC17 freezes shared types; no production file overlap is planned"
+    },
+    {
+      "wave": 3,
+      "work": ["F-GC21"],
+      "parallel_safe": false,
+      "reason": "orchestrator composes exchange service and ledger and defines the execution seam consumed downstream"
+    },
+    {
+      "wave": 4,
+      "work": ["F-GC23", "F-GC24", "F-GC25", "F-GC26"],
+      "parallel_safe": true,
+      "reason": "response, restart, MultiSWAP execution and external adapter have distinct primary ownership; integration happens only after their contracts freeze"
+    },
+    {
+      "wave": 5,
+      "work": ["F-GC27"],
+      "parallel_safe": false,
+      "reason": "final end-to-end admission consumes every production predecessor and may not repair them by cross-owner patching"
+    }
+  ],
+  "deep_vadose_future_seam": {
+    "new_direct_profile_dependency": false,
+    "future_separate_workunit": "F-GC-DV01 or equivalent external transfer-zone composition",
+    "kernel_source_change_expected": false,
+    "required_later_qualification": [
+      "storage continuity",
+      "interval mass closure",
+      "rollback of rejected mode switch",
+      "tau or transfer-model parameter provenance",
+      "direct/transfer transition replay"
+    ]
+  }
+}
