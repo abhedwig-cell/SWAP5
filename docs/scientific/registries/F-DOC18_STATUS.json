@@ -1,0 +1,41 @@
+{
+  "work_unit": "F-DOC18",
+  "branch": "work/f-doc18-rb1-physical-science-t0-t7-authority",
+  "decision": "QUALIFIED_RB1_PHYSICAL_SCIENCE_T0_T7_AUTHORITY_WHEN_EXACT_HEAD_CI_GREEN",
+  "base_authority": {
+    "work_unit": "F-DOC16",
+    "sha": "b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+    "tree": "fe0a864e1d3ea9fb46e302a3307fec4957ba9199"
+  },
+  "science": {
+    "fdoc11_physical_science_capability_count": 3,
+    "capabilities_with_explicit_t0_t7_dispositions": 3,
+    "t0_t7_unresolved_after_exact_head_green": 0,
+    "rb1_sw_reference_t0_t7": "CLOSED_RESTRICTED_WHEN_EXACT_HEAD_CI_GREEN",
+    "rb1_et_root_serial_t0_t7": "CLOSED_RESTRICTED_WHEN_EXACT_HEAD_CI_GREEN",
+    "rb1_surface_evap_restricted_t0_t7": "CLOSED_RESTRICTED_WHEN_EXACT_HEAD_CI_GREEN",
+    "root_t6_t7": "NOT_APPLICABLE_WITH_RATIONALE",
+    "surface_evap_t6_t7": "NOT_APPLICABLE_WITH_RATIONALE",
+    "process_theory_inferred_from_code_only": false,
+    "legacy_manual_broader_options_admitted": false,
+    "t11_complete_closed": false,
+    "t12_validation_closed": false,
+    "fully_traced_promoted": false
+  },
+  "rb1": {
+    "scientific_source_sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_sha": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_metadata_sha": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "scope_broadened": false,
+    "release_reopened": false
+  },
+  "production_source_changed": false,
+  "reference_data_changed": false,
+  "mass_conservation": "HARD_UNCHANGED",
+  "surface_evap_throughput_scaling_qualified": false,
+  "ready_for_formal_status_a_assessment": false,
+  "status_a_certified": false,
+  "status_aa_certified": false,
+  "all_30_invariants_reviewed": true,
+  "adverse_invariant_delta": false
+}
