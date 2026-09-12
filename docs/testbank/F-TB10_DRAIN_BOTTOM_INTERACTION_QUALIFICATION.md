@@ -12,6 +12,8 @@ The question is intentionally narrower than groundwater coupling. No MODFLOW mod
 
 The case reuses the F-CI36 restricted DIVDRA runtime callsite. That owner scope is single-level, positive drainage with an explicit process hydraulic view and an externally supplied scalar transfer. F-TB10 does not alter or re-derive the drainage exchange law.
 
+F-CI36 is preserved by the canonical qualification workflow as a frozen admitted authority on postimage `8fa79a70a9faccaf8b63826df607a685eb75b046`, with F-VQ51 as its independent verifier provenance. F-TB10 does not reinterpret the historical F-VQ51 test program as a moving-current integration test. Instead it verifies that the admitted DIVDRA production blobs are unchanged in the frozen current-canonical base and then supplies new current-canonical interaction evidence with its own case.
+
 The soil-water solve remains the current-canonical reference Full Richards path. The lower boundary uses `SWBOTB=5`, which prescribes lower-boundary head and makes the corresponding `qbot` a solver output.
 
 ## Why `SWBOTB=5`
@@ -44,7 +46,9 @@ within the same arithmetic hard gate. The tolerance is not a water-loss budget.
 
 ## Preservation evidence
 
-The dedicated runner replays the exact independent F-VQ51 restricted-DIVDRA verifier against the unchanged current production composition. F-TB10 additionally compiles and executes its own interaction case at `-O0` and `-O2` and requires exact textual output identity.
+The dedicated runner pins the frozen F-CI36 postimage and exact F-VQ51 provenance, verifies that the canonical qualification workflow still carries F-CI36 as a frozen replay authority, and checks that the admitted DIVDRA composition, runtime, spatial-distribution and binding blobs are byte-identical on the F-TB10 current-canonical base.
+
+The new interaction case itself is then compiled and executed at `-O0` and `-O2`, with exact textual output identity required. This separates historical authority preservation from new moving-current interaction evidence.
 
 ## Explicit nonclaims
 
