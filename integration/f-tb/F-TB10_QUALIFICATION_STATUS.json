@@ -3,7 +3,7 @@
   "work_unit": "F-TB10",
   "title": "SWAP5 TB09-003 Restricted Drainage x Changing Bottom Boundary Integrated Qualification",
   "branch": "work/f-tb10-drain-bottom-integrated-qualification",
-  "phase": "BLOCKER_ESTABLISHED_EXACT_HEAD_CLOSEOUT_REQUIRED",
+  "phase": "BLOCKED_CLOSEOUT_AUTHORITY_EXACT_HEAD_RERUN_REQUIRED",
   "status": "BLOCKED_OWNER_TEMPORAL_ACCEPTANCE_POLICY_REQUIRED",
   "decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP",
   "frozen_current_canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
@@ -12,9 +12,9 @@
   "owner_authorities": {
     "divdra_frozen_admitted_postimage": "F-CI36@8fa79a70a9faccaf8b63826df607a685eb75b046",
     "independent_divdra_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff",
-    "temporal_negative_authority": "F-VQ28: existing generic external full-half numeric profile not admitted",
-    "normalized_certificate_authority": "F-VQ34/F-CI21: mechanism admitted, numeric application H_budget not selected",
-    "application_accuracy_transport": "F-CI44/F-CI46: transport externally qualified H_app/A_temporal; no numeric policy selection",
+    "temporal_negative_authority": "F-VQ28@d8bcb1c90e897812ae8b91295be98e58023e10fb: existing generic external full-half numeric profile not admitted",
+    "normalized_certificate_authority": "F-VQ34@df9b1123ba33ece022ce6649e70dcb538e44837f plus F-CI21: mechanism admitted, numeric application H_budget not selected",
+    "application_accuracy_transport": "F-CI44/F-CI46 on frozen canonical base: transport externally qualified H_app/A_temporal; no numeric policy selection",
     "groundwater_only_latest_binding": "F-GC22@c50f3770ae8e4bee7c276a080be00156218944f1: branch-qualified direct-groundwater binding, not canonical and no numeric defaults"
   },
   "attempted_scope": {
@@ -35,6 +35,13 @@
     "mass_defect_proven": false,
     "scientific_case_qualified": false
   },
+  "first_green_blocked_validator": {
+    "head": "97b061bf8213d0549749229f239dbb223c59da94",
+    "workflow_run": 34681336211,
+    "workflow_job": 103520398924,
+    "conclusion": "success",
+    "authority": "integration/f-tb/F-TB10_BLOCKED_CLOSEOUT_EVIDENCE.json"
+  },
   "state": {
     "production_source_changed": false,
     "reference_changed": false,
@@ -42,7 +49,7 @@
     "ftb09_catalog_modified": false,
     "all_30_architecture_invariants_audited": true,
     "scientific_result_qualified": false,
-    "blocked_closeout_exact_head_ci_green": false
+    "blocked_assessment_established": true
   },
   "forbidden_interpretations": [
     "A blocked closeout is not scientific qualification of TB09-003.",
@@ -54,13 +61,15 @@
   "evidence_files": [
     "tests/ftb/test_ftb10_drain_bottom_interaction.f90",
     "tests/ftb/run_ftb10_drain_bottom_interaction.sh",
+    "tests/ftb/validate_ftb10_blocked_closeout.py",
     "integration/f-tb/F-TB10_WORK_UNIT_CONTRACT.json",
     "integration/f-tb/F-TB10_INVARIANT_AUDIT.json",
     "integration/f-tb/F-TB10_BLOCKER_EVIDENCE.json",
     "integration/f-tb/F-TB10_OWNER_HANDOFF.json",
+    "integration/f-tb/F-TB10_BLOCKED_CLOSEOUT_EVIDENCE.json",
     "integration/f-tb/RUNLOG_F-TB10.md",
     "docs/testbank/F-TB10_DRAIN_BOTTOM_INTERACTION_QUALIFICATION.md"
   ],
-  "return_condition": "Reopen execution only after a separate owner workunit qualifies and, where necessary, canonically admits a temporal acceptance policy/provenance explicitly covering this standalone/integrated nonstationary profile.",
-  "close_condition": "The dedicated F-TB10 workflow must validate this blocked decision on the exact live branch head, with start and end branch-ref checks. Any later commit invalidates that blocked closeout run."
+  "return_condition": "Reopen scientific execution only after a separate owner workunit qualifies and, where necessary, canonically admits a temporal acceptance policy/provenance explicitly covering this standalone/integrated nonstationary profile.",
+  "close_condition": "This metadata commit is authoritative only if the dedicated blocked-closeout workflow is green on this exact live branch head and verifies the frozen canonical base at both start and end. Any later commit requires another exact-head run."
 }
