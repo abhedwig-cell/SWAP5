@@ -101,7 +101,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-          bash tests/fmr/run_fmr23_reference_et_demand_candidate_gate.sh || true
+          bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
           bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
           test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
