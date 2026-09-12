@@ -7,7 +7,7 @@ program test_eb_i06_oriented_water_donor_temperature
        select_oriented_water_donor_temperature
   implicit none
 
-  type(oriented_water_donor_temperature_result_t) :: positive, negative, zero, missing, reversed, tiny, invalid
+  type(oriented_water_donor_temperature_result_t) :: positive, negative, zero, missing, reversed, tiny_transfer, invalid
   real(real64) :: nan_value
   real(real64), parameter :: tol = 0.0_real64
 
@@ -73,8 +73,9 @@ program test_eb_i06_oriented_water_donor_temperature
   ! There is intentionally no small-flux tolerance: any nonzero transported
   ! water amount still needs a donor temperature for conservation accounting.
   call select_oriented_water_donor_temperature(tiny(1.0_real64), 0.0_real64, .false., &
-       8.0_real64, .true., tiny)
-  if (tiny%status /= OWDT_DONOR_UNAVAILABLE) error stop 'EB-I06 tiny positive transfer was silently zeroed'
+       8.0_real64, .true., tiny_transfer)
+  if (tiny_transfer%status /= OWDT_DONOR_UNAVAILABLE) &
+       error stop 'EB-I06 tiny positive transfer was silently zeroed'
 
   print '(a)', 'EB-I06 oriented water donor temperature: PASS'
 end program test_eb_i06_oriented_water_donor_temperature
