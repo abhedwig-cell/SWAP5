@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ60",
+  "title": "GC18R Transactional Groundwater Exchange Service Current-Canonical Independent Qualification & Canonical-Admission Readiness",
+  "branch": "qualification/f-vq60-gc18r-transactional-groundwater-exchange-current-canonical-qualification",
+  "decision": "BLOCKED_REMEDIATION_REQUIRED_BEFORE_CANONICAL_ADMISSION",
+  "independently_qualified_for_canonical_admission": false,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "program_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "current_canonical_baseline": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "candidate": {
+    "branch": "work/f-gc18r-two-phase-commit-readiness",
+    "exact_head": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+    "first_qualified_head": "e96cd130753d17c411be18d691931149478d4663",
+    "first_owner_run": 34680847196,
+    "exact_head_owner_run": 34680882694
+  },
+  "f_gc18_base": "774c01d69c619f463e0d471eb797f8f0418fee07",
+  "f_gc18a_governance_handoff": "ac25e009b795f231a522d2f048795ccc1d64417c",
+  "merge_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "canonical_race_handling": {
+    "initial_baseline": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+    "stale_baseline_workflow_run": 34688362043,
+    "stale_baseline_conclusion": "failure",
+    "classification": "EXPECTED_FAIL_CLOSED_CURRENT_CANONICAL_MOVED_TO_F_CI52",
+    "restart_baseline": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30"
+  },
+  "independent_workflows": {
+    "restart_gate_run": 34688447031,
+    "restart_gate_job": 103539439525,
+    "restart_gate_conclusion": "success",
+    "enhanced_negative_path_run": 34688672518,
+    "enhanced_negative_path_job": 103540023757,
+    "enhanced_negative_path_conclusion": "success",
+    "meaning_of_success": "The verifier workflow itself executed successfully and reproduced the registered blocking cases. Success is not a positive qualification decision."
+  },
+  "ancestry": {
+    "candidate_current_canonical_relationship": "DIVERGED_FROM_COMMON_F_CI50P_R1_CLOSEOUT",
+    "candidate_current_canonical_merge_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+    "f_gc18_is_ancestor_of_candidate": true,
+    "f_gc18_merge_base_with_candidate": "774c01d69c619f463e0d471eb797f8f0418fee07",
+    "production_and_owner_evidence_same_candidate_lineage": true
+  },
+  "production_delta": {
+    "candidate_production": [
+      "src/runtime/mod_groundwater_exchange_service_contract.f90"
+    ],
+    "candidate_tests": [
+      "tests/fgc/run_fgc18_groundwater_exchange_service.sh",
+      "tests/fgc/run_fgc18r_prepared_commit.sh",
+      "tests/fgc/test_fgc18_groundwater_exchange_service.f90",
+      "tests/fgc/test_fgc18r_prepared_commit.f90"
+    ],
+    "candidate_workflow_ci": [
+      ".github/workflows/fgc18-groundwater-exchange-service.yml",
+      ".github/workflows/fgc18r-prepared-commit.yml"
+    ],
+    "candidate_evidence_governance": [
+      "integration/f-gc/F-GC18_ARCHITECTURE_AUDIT.json",
+      "integration/f-gc/F-GC18_PRE_REGISTRATION.json",
+      "integration/f-gc/F-GC18_STATUS.json",
+      "integration/f-gc/F-GC18R_ARCHITECTURE_AUDIT.json",
+      "integration/f-gc/F-GC18R_PRE_REGISTRATION.json",
+      "integration/f-gc/F-GC18R_STATUS.json"
+    ],
+    "unrelated_current_canonical_production": [
+      "src/crop/mod_crop_et_canopy_view_provider.f90",
+      "src/process/mod_restricted_fixed_weir_surface_water.f90",
+      "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "hidden_candidate_production_change": false
+  },
+  "verified_positive_properties": {
+    "f_gc17_typed_contract_blob_preserved_in_candidate_and_current_canonical": true,
+    "generic_finite_t0_t1_window": true,
+    "no_midnight_or_fixed_day_assumption": true,
+    "no_modflow_or_file_format_dependency": true,
+    "exact_q_groundwater_equals_negative_q_swap": true,
+    "no_mass_tolerance": true,
+    "prepare_refusal_preserves_committed_origin": true,
+    "participant_mismatch_rejected_before_backend_prepare": true,
+    "normal_prepare_abort_preserves_committed_groundwater_state": true,
+    "normal_prepare_commit_owner_fixture_publishes_once": true,
+    "owner_o0_o2_replay": true,
+    "independent_o0_o2_negative_path_identity": true,
+    "temporary_history_preserving_merge_with_current_canonical": true,
+    "f_ci51_and_f_ci52_changes_are_disjoint_from_gc18r_source": true
+  },
+  "blockers": [
+    {
+      "id": "FVQ60-B1",
+      "severity": "ADMISSION_BLOCKING",
+      "title": "Unchecked transaction revision overflow",
+      "finding": "An origin revision equal to INT64_MAX is accepted. Trial/readiness logic evaluates origin_revision + 1_int64 without a headroom guard. The verifier reproduces an accepted ready candidate with a negative wrapped candidate revision.",
+      "impact": "Exact lineage/provenance is not fail-closed. This violates typed transaction provenance and creates undefined admission behavior at the revision boundary.",
+      "required_remediation": "Reject or otherwise handle origin_revision == INT64_MAX before any increment. Use checked revision advance everywhere and prove candidate/result revisions never wrap or become negative under O0/O2 runtime/FPE qualification."
+    },
+    {
+      "id": "FVQ60-B2",
+      "severity": "ADMISSION_BLOCKING_CONTRACT_GAP",
+      "title": "Prepared-handle single-use is not self-contained in the production contract",
+      "finding": "Public checkpoint/prepared derived values are copyable. Wrapper consumption invalidates only the passed value. A verifier backend that satisfies the deferred callback signatures but does not independently retain a one-shot reservation registry can receive a copied stale prepare token a second time and publish twice. The production callback contract does not explicitly require stale-generation rejection before publication even though owner governance claims prepared_handle_single_use.",
+      "impact": "The exact-once property required for transactional composition and absolute coupled mass conservation depends on an unstated backend discipline rather than a closed service contract.",
+      "qualification_boundary": "This adversarial reproduction does not show that every intended backend duplicates publication. A backend with an atomic one-shot reservation registry can fail-stop stale replay. The blocker is that this requirement is neither enforced by the wrapper nor normatively closed at the production backend boundary.",
+      "required_remediation": "Make one-shot reservation identity a mandatory production contract. Enforce stale/replayed prepare-token rejection before irreversible publication, either in service-owned state or by a precisely documented mandatory backend reservation-generation rule. Add copied-handle commit/abort replay qualification proving fail-closed behavior before publication."
+    }
+  ],
+  "transaction_composition": {
+    "nominal_sequence_supported": [
+      "start from committed SWAP state",
+      "prepare groundwater candidate",
+      "run and commit fully prevalidated SWAP corrector",
+      "abort groundwater reservation if SWAP refuses",
+      "publish prepared groundwater only after successful SWAP commit"
+    ],
+    "admission_sufficiency": "BLOCKED_BY_FVQ60_B1_AND_B2",
+    "downstream_runtime_responsibilities": [
+      "exclusive participant/column ownership during composition",
+      "SWAP-side prevalidation and commit/refusal sequencing",
+      "predictor-corrector convergence",
+      "interface residual convergence",
+      "physical groundwater adapter/backend",
+      "end-to-end mass ledger and restart/crash behavior"
+    ]
+  },
+  "mass_conservation": {
+    "verdict": "BLOCKED_NOT_PROVEN_FOR_CANONICAL_ADMISSION",
+    "proven": [
+      "typed interface requires q_GW = -q_SWAP exactly",
+      "head tolerance is distinct from flux/mass balance",
+      "normal prepare and abort do not publish committed groundwater mass",
+      "no mass tolerance or compensating adjustment is introduced"
+    ],
+    "not_proven": [
+      "exactly-once irreversible publication for all public-handle usage until B2 is remediated",
+      "physical MODFLOW exchange mass closure",
+      "end-to-end SWAP-groundwater coupling mass closure"
+    ]
+  },
+  "f_ci50_precedent": {
+    "prepromotion_qualification": "bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b",
+    "postpromotion_reconciliation": "a8da1d72800df8afd539b21a2040caeed7ead3bd",
+    "postpromotion_r1": "96d274ddebf7c566dba84cdf9402a41c064978c3",
+    "historical_closeout": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+    "required_pattern": [
+      "independent prepromotion qualification",
+      "separate true history-preserving canonical admission",
+      "postpromotion verification and preservation reconciliation"
+    ]
+  },
+  "later_groundwater_authorities_reconciled": {
+    "F_GC19": "215313675c074c18dff251b74581269085f7658e",
+    "F_GC19R": "d92b84c815f9e6c5509d280953b4d659c5cb14ac",
+    "F_GC20": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+    "F_GC22": "c50f3770ae8e4bee7c276a080be00156218944f1",
+    "effect_on_candidate": "No later branch is current-canonical authority for the GC18R exchange-service source and none supersedes the pinned GC18R candidate. F-GC19R overflow remediation concerns the separate mass-ledger source."
+  },
+  "architecture_audit": "integration/f-vq/F-VQ60_ARCHITECTURE_AUDIT.json",
+  "hard_nonclaims": [
+    "no MODFLOW adapter",
+    "no groundwater physics",
+    "no predictor-corrector convergence qualification",
+    "no process-crash recovery qualification",
+    "no distributed or network transaction protocol",
+    "no end-to-end production coupling admission",
+    "no current-canonical status",
+    "no throughput or large-MultiSWAP performance qualification"
+  ],
+  "required_next_step": "Remediate F-GC18R B1 and B2 on an owner branch, add exact negative-path regression tests, then rerun independent qualification from the then-current canonical. Do not start a GC18R canonical-integration admission while this F-VQ60 decision remains blocked.",
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-VQ60 workflow with the current canonical still exactly pinned. That exact green head is the immutable F-VQ60 blocked-verdict authority."
+}
