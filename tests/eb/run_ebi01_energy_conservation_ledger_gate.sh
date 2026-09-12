@@ -84,6 +84,7 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/out.txt" 2>&1 || { cat "$OUT/out.txt" >&2; fail "receipt integration O$opt"; }
   for marker in \
+    'EBI01_UNREGISTERED_INTERNAL_COMPONENT_REJECTED=PASS' \
     'EBI01_REAL_FKT_RECEIPT_PUBLISHES_ENERGY_ONCE=PASS' \
     'EBI01_ROLLBACK_PUBLISHES_NO_ENERGY=PASS' \
     'EBI01_ROLLBACK_REPLAY_FROM_SAME_COMMITTED_ORIGIN=PASS' \
@@ -93,6 +94,7 @@ for opt in 0 2; do
   done
 done
 cmp "$BUILD/receipt-o0/out.txt" "$BUILD/receipt-o2/out.txt" || fail "receipt integration O0/O2 output mismatch"
+echo 'EBI01_REGISTERED_COMPONENT_BOUNDARY=PASS'
 echo 'EBI01_RECEIPT_INTEGRATION_O0_O2_IDENTITY=PASS'
 
 # Existing receipt/mass transaction behavior must still compile and execute
