@@ -26,7 +26,7 @@ jobs:
           test "$(git rev-parse "HEAD:src/process/mod_soil_temperature_contract.f90")" = "baa13df3975de2c699b0ec910477bcfa9b47f15e"
           test "$(git rev-parse "HEAD:src/process/mod_restricted_soil_temperature.f90")" = "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
 
-      - name: Check EB-I05 technical delta
+      - name: Check EB-I05 production and evidence delta
         shell: bash
         run: |
           set -euo pipefail
@@ -35,6 +35,8 @@ jobs:
           cat > allowed.txt <<'EOF'
           .github/workflows/eb-i05-owner-gate.yml
           src/process/mod_linear_mixture_sensible_storage.f90
+          tests/eb/EB-I05_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I05_CONTRACT.md
           tests/test_eb_i05_linear_mixture_sensible_storage.f90
           EOF
           sort -o allowed.txt allowed.txt
@@ -42,6 +44,8 @@ jobs:
           ! grep -Eiq '(open\s*\(|read\s*\(|write\s*\(|\.swp|modflow)' src/process/mod_linear_mixture_sensible_storage.f90
           ! grep -Eiq 'mod_energy_conservation|mod_liquid_water_sensible_enthalpy|mod_soil_water_phase_flux_view' \
               src/process/mod_linear_mixture_sensible_storage.f90
+          python3 -m json.tool tests/eb/EB-I05_ARCHITECTURE_AUDIT.json >/dev/null
+          test "$(grep -c '\"id\"' tests/eb/EB-I05_ARCHITECTURE_AUDIT.json)" -eq 30
 
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
