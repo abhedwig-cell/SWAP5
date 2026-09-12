@@ -1,65 +1,160 @@
 {
-  "schema": "swap5.fdoc15_status.v1",
+  "schema": "swap5.fdoc15_status.v2",
   "work_unit": "F-DOC15",
+  "revision": "R1",
   "title": "SWAP5 RB1 and Current-Canonical Status-A Readiness Final Gap Assessment & Closure Plan",
-  "decision": "QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED_WHEN_EXACT_HEAD_CI_GREEN",
-  "branch": "work/f-doc15-status-a-readiness-final-gap-assessment",
-  "base_authority": {
-    "work_unit": "F-DOC13",
-    "sha": "1c63aeede05180d3628873083d9351da6e67175f",
-    "role": "latest distinct qualified documentation authority at F-DOC15 start"
+  "decision": "QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_RECONCILED_R1_WHEN_EXACT_HEAD_CI_GREEN",
+  "prior_qualified_authority": {
+    "sha": "1c4d97de16cf6d1eaf6289e920a32c4167536060",
+    "workflow_run": 34678212271
   },
-  "live_recheck_at_assessment": {
-    "fdoc01_head": "999d4fa3da6fa08c5d57e23b9949f3920de37fbe",
-    "fdoc02_head": "18942fee83eb385fccc1663230772ae03dcc9ae6",
-    "fdoc03_head": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
-    "fdoc13_head": "1c63aeede05180d3628873083d9351da6e67175f",
-    "fdoc14_observed_head": "1c63aeede05180d3628873083d9351da6e67175f",
-    "fdoc14_independent_authority": false,
-    "current_canonical_sha": "e537baf521e633c432a9f33de495fab9f18e918d",
-    "current_canonical_tree": "b55f077657fc82b421a63f927965ff47821fc987"
+  "qualified_downstream_closure_inputs": {
+    "F-DOC16": {
+      "sha": "b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+      "workflow_run": 34678704795,
+      "effect": "SCI-FOUND-01 conceptual foundation closed"
+    },
+    "F-DOC18": {
+      "sha": "bddb43d821fd757a307aad88528464dd0c89a484",
+      "workflow_run": 34679868415,
+      "effect": "all three PHYSICAL_SCIENCE capabilities closed at T0-T7"
+    }
   },
-  "authorities_used": {
-    "qualified_documentation_authorities": ["F-DOC01","F-DOC02","F-DOC03","F-DOC04","F-DOC05","F-DOC06","F-DOC07","F-DOC08","F-DOC09","F-DOC10","F-DOC11","F-DOC12","F-DOC13"],
-    "excluded_as_not_independently_qualified": ["F-DOC14"],
-    "rb1_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
-    "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
-    "rb1_release_metadata": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  "parallel_candidate_not_authority": {
+    "branch": "work/f-doc15-rb1-current-canonical-status-a-final-gap-assessment",
+    "sha": "81af9e509445b8e31caba00ef7c1d158da17dc45",
+    "workflow_run": 34678058468,
+    "reason": "diverged from the qualified F-DOC15 -> F-DOC16 -> F-DOC18 lineage"
   },
-  "criterion_state": {
-    "formal_authority": "WR-QA-2024",
-    "formal_controlled_copy": "NOT_OBTAINED",
-    "public_readiness_denominator": "WR-QA-PUBLIC-22",
-    "requirements": 22,
+  "criterion_authority": {
+    "formal": "WR-QA-2024",
+    "controlled_full_text_status": "NOT_OBTAINED",
+    "readiness_denominator": "WR-QA-PUBLIC-22",
+    "public_requirement_count": 22,
     "percentage_reported": false
   },
-  "assessment": {
-    "rb1_ready_for_formal_status_a_assessment": false,
-    "current_canonical_ready_for_formal_status_a_assessment": false,
-    "status_a_certified": false,
-    "status_aa_certified": false,
-    "sci_found_01": "OPEN_BLOCKER",
-    "verification_is_validation": false
+  "rb1": {
+    "release_id": "SWAP5-RB1-v1",
+    "scientific_source_sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_sha": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_authority_sha": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "release_authority_path": "release/f-rb02/F-RB02_CLOSEOUT.json",
+    "immutable": true,
+    "status_a_ready_for_formal_assessment": false
   },
-  "primary_blockers": [
-    "SCI-FOUND-01",
-    "WR-QA-2024 controlled authority reconciliation",
-    "physical-science T0-T7 authority",
-    "application-class validation",
-    "parameter/calibration/input provenance",
-    "sensitivity evidence",
-    "uncertainty evidence",
-    "fitness-for-purpose population",
-    "complete T11 equation-to-test traceability",
-    "organisational management and external-use authority",
-    "use monitoring",
-    "Status-A-ready user guidance",
-    "frozen post-RB1 assessment candidate for current canonical"
+  "current_canonical_snapshot": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+    "tree": "ed3187c068697f17886cc85ddb9291dfbbd161d4",
+    "commit_title": "F-CI50P R1: finalize post-reconciliation closeout",
+    "ahead_of_rb1_scientific_source": 112,
+    "moving_target": true,
+    "formal_assessment_requires_frozen_candidate": true,
+    "status_a_ready_for_formal_assessment": false
+  },
+  "t0_t7_reconciliation": {
+    "runtime_architecture": {"capabilities": 9, "authority": "F-DOC12", "unresolved": 0},
+    "numerical_method": {"capabilities": 1, "authority": "F-DOC13", "unresolved": 0},
+    "physical_science": {"capabilities": 3, "authority": "F-DOC18", "unresolved": 0},
+    "hybrid": {
+      "capabilities": 2,
+      "authority": "OPEN",
+      "unresolved": 2,
+      "capability_ids": ["RB1-CORE-MASS", "RB1-ROOT-PARALLEL"]
+    },
+    "total_capabilities": 15,
+    "families_closed_capability_count": 13,
+    "remaining_capability_count": 2
+  },
+  "scientific_foundation": {
+    "id": "SCI-FOUND-01",
+    "state": "CLOSED_BY_QUALIFIED_F-DOC16",
+    "authority_sha": "b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+    "conceptual_admissibility_is_validation": false
+  },
+  "classification_counts": {
+    "rb1": {
+      "SATISFIED": 2,
+      "EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE": 0,
+      "DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE": 3,
+      "PARTIAL": 13,
+      "MISSING": 4,
+      "NOT_APPLICABLE_WITH_RATIONALE": 0
+    },
+    "current": {
+      "SATISFIED": 2,
+      "EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE": 0,
+      "DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE": 3,
+      "PARTIAL": 13,
+      "MISSING": 4,
+      "NOT_APPLICABLE_WITH_RATIONALE": 0
+    }
+  },
+  "requirement_classifications": [
+    {"requirement":"1.1","family":"ST.1","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"1.2","family":"ST.1","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"2.1","family":"ST.2","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"2.2","family":"ST.2","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"2.3","family":"ST.2","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"3.1","family":"ST.3","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"3.2","family":"ST.3","rb1":"MISSING","current":"MISSING"},
+    {"requirement":"3.3","family":"ST.3","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"3.4","family":"ST.3","rb1":"MISSING","current":"MISSING"},
+    {"requirement":"4.1","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"4.2","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"4.3","family":"ST.4","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE"},
+    {"requirement":"4.4","family":"ST.4","rb1":"MISSING","current":"MISSING"},
+    {"requirement":"4.5","family":"ST.4","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"5.1","family":"DO.5","rb1":"SATISFIED","current":"SATISFIED"},
+    {"requirement":"5.2","family":"DO.5","rb1":"SATISFIED","current":"SATISFIED"},
+    {"requirement":"6.1","family":"DO.6","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"6.2","family":"DO.6","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"6.3","family":"DO.6","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"6.4","family":"DO.6","rb1":"MISSING","current":"MISSING"},
+    {"requirement":"7.1","family":"IU.7","rb1":"PARTIAL","current":"PARTIAL"},
+    {"requirement":"7.2","family":"IU.7","rb1":"PARTIAL","current":"PARTIAL"}
   ],
+  "primary_open_blockers": [
+    "WR-QA-2024-CONTROLLED-RECONCILIATION",
+    "RB1-HYBRID-T0-T7: RB1-CORE-MASS and RB1-ROOT-PARALLEL",
+    "COMPLETE-T8-T11-TRACEABILITY",
+    "PARAMETER-VARIABLE-CALIBRATION-INPUT-PROVENANCE",
+    "APPLICATION-VALIDATION-T12",
+    "SENSITIVITY-EVIDENCE",
+    "UNCERTAINTY-EVIDENCE",
+    "FITNESS-FOR-PURPOSE-AND-APPLICABILITY",
+    "USE-MONITORING",
+    "METADATA-MANAGEMENT-DEPENDENCIES-EXTERNAL-USE",
+    "STATUS-A-READY-USER-GUIDANCE",
+    "CURRENT-CANONICAL-FROZEN-CANDIDATE-AND-POST-RB1-REBASELINE"
+  ],
+  "hard_findings": {
+    "verification_is_validation": false,
+    "sci_found_01_open": false,
+    "physical_science_t0_t7_open": false,
+    "hybrid_t0_t7_open": true,
+    "complete_t11_open": true,
+    "t12_application_validation_open": true,
+    "sensitivity_evidence_complete": false,
+    "uncertainty_evidence_complete": false,
+    "parameter_provenance_complete": false,
+    "fitness_for_purpose_complete": false,
+    "user_guidance_complete": false,
+    "mass_conservation_relaxed": false,
+    "rb1_reopened": false,
+    "status_a_certified": false,
+    "status_aa_certified": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "reviewed": 30,
+    "adverse_delta": 0,
+    "mass_conservation": "HARD_UNCHANGED"
+  },
   "production_source_changed": false,
   "reference_data_changed": false,
-  "rb1_scientific_authority_reopened": false,
   "ready_for_formal_status_a_assessment": false,
   "status_a_certified": false,
-  "validity_rule": "This status is qualified only when the exact branch head containing this file passes .github/workflows/fdoc15-status-a-readiness-gap-assessment.yml."
+  "status_aa_certified": false,
+  "validity_rule": "R1 is qualified only when the exact branch head containing this status, the R1 registry, assessment, validator and workflow passes .github/workflows/fdoc15-status-a-readiness-gap-assessment.yml."
 }
