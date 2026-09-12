@@ -16,6 +16,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Exact head start
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
       - name: Compiler identity
         run: gfortran --version
       - name: Fetch qualification authorities
@@ -30,3 +36,9 @@ jobs:
         run: bash tests/fkt/run_fkt15_production_task2_gate.sh
       - name: Run accepted-only F-KT14 transport gate
         run: bash tests/fkt/run_fkt15_reference_model_transport_gate.sh
+      - name: Exact head end
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
