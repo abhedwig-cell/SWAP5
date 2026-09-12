@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.fdoc16_status.v1",
+  "work_unit": "F-DOC16",
+  "title": "SWAP5 Physical-System Scope, 1D Column Abstraction & Conceptual Model Authority",
+  "decision": "QUALIFIED_SCI_FOUND_01_CONCEPTUAL_FOUNDATION_AUTHORITY_WHEN_EXACT_HEAD_CI_GREEN",
+  "branch": "work/f-doc16-physical-system-1d-column-conceptual-authority",
+  "base_authority": {
+    "work_unit": "F-DOC15",
+    "sha": "1c4d97de16cf6d1eaf6289e920a32c4167536060",
+    "tree": "4fc5f0d44be496f2ebfe66d74a53e78b7d875d1b"
+  },
+  "live_context_snapshot": {
+    "integration_branch": "integration/f-ci-canonical",
+    "sha": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "tree": "d3142c34b55befaae129aeb360c415ec7d56043c",
+    "role": "context only; moving integration branch is not the F-DOC16 authority"
+  },
+  "science": {
+    "sci_found_01": "CLOSED_AT_CONCEPTUAL_FOUNDATION_WHEN_EXACT_HEAD_CI_GREEN",
+    "foundation_authority": "physical_system_scope_1d_column_abstraction_and_conceptual_model",
+    "process_specific_t1_t4_replaced": false,
+    "application_validation_closed": false,
+    "fitness_for_purpose_application_evidence_closed": false,
+    "conceptual_admissibility_is_validation": false
+  },
+  "rb1": {
+    "scientific_source_sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_sha": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_metadata_sha": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "required_capability_denominator": 15,
+    "scope_broadened": false,
+    "broader_process_table_is_feature_list": false,
+    "scientific_source_reopened": false
+  },
+  "post_rb1": {
+    "current_canonical_is_moving": true,
+    "frozen_assessment_candidate_established": false,
+    "post_rb1_capabilities_require_own_downstream_evidence": true
+  },
+  "remaining_open_gaps": [
+    "process-specific physical-science T0-T7 authority population",
+    "complete T11 equation-to-test traceability",
+    "T12 application validation",
+    "sensitivity evidence",
+    "uncertainty evidence",
+    "application-specific fitness-for-purpose population",
+    "parameter/calibration/input provenance population",
+    "Status-A-ready interpretation and user guidance",
+    "controlled WR-QA-2024 reconciliation",
+    "frozen exact post-RB1 assessment/release candidate"
+  ],
+  "mass_conservation": "HARD_UNCHANGED",
+  "production_source_changed": false,
+  "reference_data_changed": false,
+  "all_30_invariants_reviewed": true,
+  "adverse_invariant_delta": false,
+  "ready_for_formal_status_a_assessment": false,
+  "status_a_certified": false,
+  "status_aa_certified": false,
+  "validity_rule": "This status becomes qualified only when the exact branch head containing this file passes .github/workflows/fdoc16-conceptual-foundation.yml."
+}
