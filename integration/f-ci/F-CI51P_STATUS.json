@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI51P",
+  "title": "WOF43A Current-Canonical Moving Preservation Reconciliation",
+  "phase": "PREPROMOTION_QUALIFICATION_REQUIRED",
+  "decision": "F_CI51P_GOVERNANCE_ONLY_PRESERVATION_CANDIDATE",
+  "branch": "qualification/f-ci51p-wof43a-current-canonical-preservation",
+  "preservation_base": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+  "qualified_capability": {
+    "owner_candidate": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "owner_closeout": "df72af4d2dc5b3255777733f8a725dca20583785",
+    "independent_authority": "3dc40ec16620433de2001c9662ebad647909aa48",
+    "provider_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "direct_dependency_blob": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"
+  },
+  "scope_guards": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "new_physics": false,
+    "solver_functionality_changed": false,
+    "transaction_behavior_changed": false,
+    "mass_conservation": "HARD_UNCHANGED",
+    "force_update_allowed": false
+  },
+  "qualification_requirements": {
+    "preservation_base_must_be_ancestor": true,
+    "provider_blob_must_match_qualified_authority": true,
+    "direct_dependency_blob_must_match_admitted_authority": true,
+    "owner_and_f_vq37_provenance_must_match": true,
+    "qualification_branch_src_tree_must_equal_preservation_base": true,
+    "qualification_branch_reference_tree_must_equal_preservation_base": true,
+    "qualification_branch_delta_governance_only": true,
+    "architecture_invariants_30_of_30": true
+  },
+  "promotion_rule": "Promote only after the exact F-CI51P branch head succeeds and integration/f-ci-canonical still equals 8695974b783e76b3807890be9e1c0ecb5d2f8d5f. Promotion must be a true two-parent governance-only merge with no force update, followed by successful canonical push qualification and F-CI51P preservation checks.",
+  "architecture_audit": "integration/f-ci/F-CI51P_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI51P_EVIDENCE.json",
+  "exit_target": "QUALIFIED_FCI51_WOF43A_MOVING_PRESERVATION_READY_FOR_PROMOTION"
+}

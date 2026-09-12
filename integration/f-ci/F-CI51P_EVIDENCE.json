@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI51P",
+  "title": "WOF43A Current-Canonical Moving Preservation Evidence",
+  "program_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "f_ci51": {
+    "canonical_preimage": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+    "recomposition_candidate": "3f8492fc4ac36e7afd6132f130836a4a45aea3f2",
+    "admission_postimage": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+    "pr": 80
+  },
+  "qualified_sources": {
+    "owner_production_candidate": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "owner_closeout": "df72af4d2dc5b3255777733f8a725dca20583785",
+    "independent_f_vq37_authority": "3dc40ec16620433de2001c9662ebad647909aa48"
+  },
+  "immutable_blobs": {
+    "src/crop/mod_crop_et_canopy_view_provider.f90": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "src/crop/mod_wofost_rate_table.f90": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"
+  },
+  "qualification_runs": {
+    "f_ci51_candidate_push": 34687737251,
+    "f_ci51_candidate_pr": 34687748548,
+    "broad_canonical_pr": 34687748517,
+    "f_ci51_postimage_canonical_push": 34687857041
+  },
+  "observed_gap": "The existing moving-current preservation job remains pinned to pre-F-CI51 authority 6c04ab07b4535c119157b5c5bce674b626656f07 and therefore does not protect the newly admitted WOF43A provider.",
+  "remediation": "Add an independent moving preservation workflow that pins the admitted WOF43A provider and its unchanged direct rate-table dependency on every integration/f-ci-canonical push, while requiring a governance-only delta on the F-CI51P qualification branch.",
+  "production_source_changed_by_f_ci51p": false,
+  "reference_changed_by_f_ci51p": false,
+  "mass_policy_changed": false,
+  "scientific_tolerances_changed": false
+}

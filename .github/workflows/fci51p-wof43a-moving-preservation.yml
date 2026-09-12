@@ -1,0 +1,57 @@
+name: F-CI51P WOF43A moving current-canonical preservation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci51p-wof43a-current-canonical-preservation
+      - integration/f-ci-canonical
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preserve-qualified-wof43a:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact admitted WOF43A authority and governance-only qualification delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=8695974b783e76b3807890be9e1c0ecb5d2f8d5f
+          PROVIDER_PATH=src/crop/mod_crop_et_canopy_view_provider.f90
+          PROVIDER_BLOB=1234bcb8e3b47ebe8e67b0bac6af35e09e9056da
+          DEP_PATH=src/crop/mod_wofost_rate_table.f90
+          DEP_BLOB=5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5
+          OWNER_CANDIDATE=b163ae0d2a97694b67dbd2d41a036bfb5d695f87
+          FVQ37_AUTH=3dc40ec16620433de2001c9662ebad647909aa48
+
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse "HEAD:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
+          test "$(git rev-parse "HEAD:$DEP_PATH")" = "$DEP_BLOB"
+
+          git fetch --no-tags origin work/f-wof43a-crop-et-canopy-view-provider
+          git fetch --no-tags origin qualification/f-vq37-fwof43a-crop-et-canopy-view-provider
+          test "$(git rev-parse "$OWNER_CANDIDATE:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
+          test "$(git rev-parse "$FVQ37_AUTH:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
+          test "$(git rev-parse "$OWNER_CANDIDATE:$DEP_PATH")" = "$DEP_BLOB"
+          test "$(git rev-parse "$FVQ37_AUTH:$DEP_PATH")" = "$DEP_BLOB"
+
+          if [[ "$GITHUB_REF_NAME" == "qualification/f-ci51p-wof43a-current-canonical-preservation" ]]; then
+            test "$(git rev-parse HEAD:src)" = "$(git rev-parse "$BASE:src")"
+            test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$BASE:reference")"
+            while IFS= read -r path; do
+              case "$path" in
+                .github/workflows/fci51p-wof43a-moving-preservation.yml|integration/f-ci/F-CI51P_ARCHITECTURE_AUDIT.json|integration/f-ci/F-CI51P_EVIDENCE.json|integration/f-ci/F-CI51P_STATUS.json) ;;
+                *) echo "FCI51P_FAIL unexpected qualification delta: $path" >&2; exit 51 ;;
+              esac
+            done < <(git diff --name-only "$BASE"...HEAD)
+          fi
+
+          echo "FCI51P_WOF43A_PROVIDER_BLOB_PRESERVED=PASS:$PROVIDER_BLOB"
+          echo "FCI51P_WOF43A_DIRECT_DEPENDENCY_PRESERVED=PASS:$DEP_BLOB"
+          echo "FCI51P_OWNER_AND_FVQ37_PROVENANCE_PRESERVED=PASS"
+          echo "FCI51P_MOVING_CURRENT_CANONICAL_PRESERVATION=PASS"
