@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "F-CI55",
   "title": "F-GC21P1-R1 Exact Accepted Bottom-Interface Exchange Result Current-Canonical Admission",
-  "phase": "QUALIFICATION_IN_PROGRESS",
-  "decision": "QUALIFICATION_IN_PROGRESS_NOT_READY_FOR_CANONICAL_PROMOTION",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI55_READY_FOR_CANONICAL_PROMOTION",
   "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
   "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
   "production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
@@ -15,21 +15,32 @@
   "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
   "composition_verified": true,
   "five_production_blobs_match_independent_source_postimage": true,
-  "qualification_green": false,
-  "ready_for_canonical_promotion": false,
+  "qualification_green": true,
+  "qualification_evidence": {
+    "first_green_run": 34716884586,
+    "job_id": 103615623509,
+    "head_sha": "b4db1a6ef1b2f3ee3b37e884afcad0665738fded",
+    "conclusion": "success",
+    "replayed_independent_oracle_at_O0_and_O2": true,
+    "O0_O2_output_identity": true
+  },
+  "ready_for_canonical_promotion": true,
   "canonical_admission": false,
   "production_groundwater_coupling_admission": false,
-  "required_before_ready": [
-    "F-CI55 admission workflow must pass on the exact qualification branch head",
-    "live canonical, owner and F-VQ63 authorities must remain pinned",
-    "independent F-VQ63 adversarial test must pass on the composed source at O0 and O2",
-    "qualification delta must remain governance/test/workflow only"
+  "promotion_requirements": [
+    "This final status head itself must pass the F-CI55 admission workflow before promotion.",
+    "Immediately before promotion, integration/f-ci-canonical must still equal the restart canonical or F-CI55 must be recomposed and requalified.",
+    "Promotion must be a true two-parent merge with the then-live canonical as first parent and the exact final qualified F-CI55 head as second parent.",
+    "Force, squash and rebase promotion are forbidden.",
+    "Broad postpromotion canonical qualification including current-restricted-canonical-preservation must be green before closeout."
   ],
   "hard_nonclaims": [
     "No full F-GC21 predictor-corrector orchestration admission.",
     "No production groundwater-coupling admission.",
     "No MODFLOW/aquifer end-to-end qualification.",
+    "No proof here of H_SWAP=H_GW convergence or q_SWAP=-q_GW end-to-end coupling closure.",
     "No crash-recovery, distributed-runtime or large-batch throughput qualification.",
     "RB1 remains frozen."
-  ]
+  ],
+  "closeout_policy": "Freeze this qualification branch once the workflow is green on this exact final status head. Do not add a self-referential metadata commit merely to record that later run."
 }
