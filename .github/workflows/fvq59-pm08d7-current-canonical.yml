@@ -45,6 +45,49 @@ jobs:
       - name: Restart lifecycle qualification
         run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
 
+      - name: Current-canonical MultiSWAP and legacy preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --quiet "$FPM08D7_CANONICAL_BASE"..HEAD -- reference
+          git diff --quiet "$FPM08D7_CANONICAL_BASE"..HEAD -- src/legacy/b1_10_port/headcalc.f90
+          git diff --quiet "$FPM08D7_CANONICAL_BASE"..HEAD -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git diff --quiet "$FPM08D7_CANONICAL_BASE"..HEAD -- src/runtime/mod_fmr_checkpoint_orchestrator.f90
+          git rev-parse "$FPM08D7_CANONICAL_BASE":reference > _fvq59_evidence/canonical-reference-tree.txt
+          git rev-parse HEAD:reference > _fvq59_evidence/candidate-reference-tree.txt
+          git rev-parse "$FPM08D7_CANONICAL_BASE":src/legacy/b1_10_port/headcalc.f90 > _fvq59_evidence/canonical-headcalc-blob.txt
+          git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90 > _fvq59_evidence/candidate-headcalc-blob.txt
+          git rev-parse "$FPM08D7_CANONICAL_BASE":src/runtime/mod_fmr_serialized_multiswap_runtime.f90 > _fvq59_evidence/canonical-multiswap-runtime-blob.txt
+          git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90 > _fvq59_evidence/candidate-multiswap-runtime-blob.txt
+          echo F_VQ59_REFERENCE_LEGACY_MULTISWAP_RUNTIME_BIT_PRESERVED=PASS
+
+      - name: PM08D7 MultiSWAP column-isolation structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          backend = Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text().lower()
+          wrapper = Path('src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90').read_text().lower()
+          process = Path('src/process/mod_restricted_fixed_weir_surface_water.f90').read_text().lower()
+          base_start = backend.index('type, extends(canonical_state_t), public :: fmr_b110_physical_state_t')
+          base_end = backend.index('end type fmr_b110_physical_state_t', base_start)
+          fixed_start = backend.index('type, extends(fmr_b110_physical_state_t), public :: fmr_b110_fixed_weir_surface_water_state_t')
+          fixed_end = backend.index('end type fmr_b110_fixed_weir_surface_water_state_t', fixed_start)
+          assert 'surface_water' not in backend[base_start:base_end]
+          assert 'type(fixed_weir_surface_water_state_t) :: surface_water' in backend[fixed_start:fixed_end]
+          assert 'type(kernel_committed_state_t), intent(inout) :: committed' in wrapper
+          assert 'type(fmr_logical_column_t), intent(in) :: column' in wrapper
+          assert 'call backend%clear_fixed_weir_surface_water()' in wrapper
+          for text, label in [(wrapper, 'wrapper'), (process, 'process')]:
+              assert ' save' not in text, label
+              assert '\ncommon' not in text, label
+          print('F_VQ59_PM08D7_PER_COLUMN_OPTIONAL_STATE=PASS')
+          print('F_VQ59_PM08D7_EXPLICIT_COMMITTED_COLUMN_OWNERSHIP=PASS')
+          print('F_VQ59_PM08D7_BACKEND_CONTEXT_CLEARED_AFTER_COLUMN=PASS')
+          PY
+          echo F_VQ59_PM08D7_MULTISWAP_COLUMN_ISOLATION=PASS
+
       - name: No hidden I-O or process-owned persistent scratch
         shell: bash
         run: |
