@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ61",
+  "title": "GC18R R1 Transactional Groundwater Exchange Independent Requalification after F-VQ60 Remediation",
+  "branch": "qualification/f-vq61-gc18r-r1-transactional-groundwater-exchange-independent-requalification",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "current_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "owner_candidate": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+  "frozen_blocked_verifier_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "original_blocked_candidate": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+  "scope": "Independent requalification of the complete GC18/GC18R groundwater exchange capability as remediated by F-GC18R-R1, against the live current canonical. The verifier must independently prove closure of F-VQ60 B1 and B2 and recheck transaction, mass, typed-interface, generic-time, MultiSWAP/runtime ownership and architecture-invariant compatibility.",
+  "positive_max_outcome": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "negative_rule": "Any authority drift, compile/runtime failure, replay reachability, revision wrap, mass ambiguity, hidden dependency or material architecture uncertainty blocks qualification.",
+  "required_independent_probes": [
+    "prepare refusal preserves committed origin and live retry handles",
+    "participant provenance mismatch fails before backend prepare",
+    "copied prepared commit replay is rejected before backend publication by production wrapper semantics",
+    "copied prepared abort replay is rejected before backend abort by production wrapper semantics",
+    "exact backend prepare-token reuse cannot alias a new wrapper reservation generation",
+    "last legal revision INT64_MAX-1 to INT64_MAX remains valid",
+    "origin revision INT64_MAX fails closed before backend trial with no wrapped candidate",
+    "O0 and O2 adversarial outputs are identical under runtime and FPE checks",
+    "pinned owner qualification is replayed independently",
+    "F-GC17 typed q_GW=-q_SWAP and flux residual convention remains unchanged",
+    "all 30 SWAP architecture invariants are independently assessed"
+  ],
+  "authority_rules": {
+    "f_vq60_is_frozen_blocked_evidence": true,
+    "owner_candidate_must_remain_exact": true,
+    "current_canonical_must_remain_exact_during_qualification": true,
+    "verifier_branch_may_not_import_production_source": true,
+    "canonical_merge_allowed_in_this_work_unit": false,
+    "production_coupling_admission_allowed_in_this_work_unit": false
+  },
+  "hard_nonclaims": [
+    "No canonical admission is performed by F-VQ61.",
+    "No MODFLOW adapter or groundwater physics is introduced or qualified here.",
+    "No full predictor-corrector convergence or crash-recovery protocol is qualified here.",
+    "No large-batch throughput benchmark is claimed; only architecture/scaling behavior of the reservation contract is checked.",
+    "Positive independent qualification does not itself make GC18/GC18R current canonical."
+  ]
+}
