@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI53",
+  "title": "GC18R Transactional Groundwater Exchange Current-Canonical Admission",
+  "branch": "qualification/f-ci53-gc18r-transactional-groundwater-exchange-current-canonical-admission",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "canonical_base": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "composition_commit": "e0e8462c0d09034dcbdadb99ec16670667d37715",
+  "owner_authority": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+  "independent_authority": "e83fe9a4955275935903730c4484c77fb0b117ff",
+  "frozen_blocked_f_vq60": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "f_gc18a_evidence_authority": "ac25e009b795f231a522d2f048795ccc1d64417c",
+  "production_scope": {
+    "exact_file_count": 1,
+    "files": ["src/runtime/mod_groundwater_exchange_service_contract.f90"],
+    "service_blob": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "typed_groundwater_contract_blob_preserved": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+  },
+  "qualification_requirements": [
+    "current canonical and governance authority remain exact during prepromotion qualification",
+    "owner and independent qualification authorities remain exact",
+    "composition is a direct child of current canonical and changes exactly one production source file",
+    "production service blob is byte-identical to owner-qualified authority",
+    "F-GC17 typed groundwater interface remains byte-identical",
+    "F-GC18R-R1 owner qualification is replayed from the immutable owner authority",
+    "F-VQ61 independent adversarial qualification is replayed from the immutable verifier authority",
+    "F-VQ60 remains frozen blocked historical evidence and is not rewritten",
+    "all 30 SWAP architecture invariants remain preserved or qualified",
+    "hard mass conservation is not relaxed",
+    "no MODFLOW, file-format, calendar-day or fixed-coupling-window dependency is introduced",
+    "broad F-CI canonical PR qualification must be green before promotion"
+  ],
+  "promotion_rule": "Promote only if integration/f-ci-canonical still equals the pinned base after exact-head F-CI53 qualification and the broad canonical PR qualification is acceptable. Promotion must be a true two-parent merge with live canonical as first parent and the exact qualified F-CI53 candidate as second parent. No squash, rebase or force update.",
+  "postpromotion_rule": "F-CI53 admission is not finally closed until the postimage has dedicated F-CI53 verification and the broad canonical workflow is green, with governance-only reconciliation if a moving-preservation authority requires it.",
+  "hard_nonclaims": [
+    "No MODFLOW adapter or physical aquifer implementation is admitted by F-CI53.",
+    "No end-to-end predictor-corrector convergence, process-crash recovery or distributed transaction protocol is admitted by F-CI53.",
+    "No large-MultiSWAP throughput benchmark is claimed.",
+    "F-CI53 does not reopen RB1."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI53",
+  "title": "GC18R Transactional Groundwater Exchange Current-Canonical Admission",
+  "branch": "qualification/f-ci53-gc18r-transactional-groundwater-exchange-current-canonical-admission",
+  "phase": "PREPROMOTION_QUALIFICATION_REQUIRED",
+  "decision": "F_CI53_CURRENT_CANONICAL_ADMISSION_CANDIDATE",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "canonical_base": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "composition_commit": "e0e8462c0d09034dcbdadb99ec16670667d37715",
+  "owner_authority": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+  "independent_authority": "e83fe9a4955275935903730c4484c77fb0b117ff",
+  "frozen_blocked_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "production_scope": {
+    "exact_file_count": 1,
+    "file": "src/runtime/mod_groundwater_exchange_service_contract.f90",
+    "blob": "f0fc25592624360802713a9487813d119e7dc4e9"
+  },
+  "state": {
+    "owner_qualified": true,
+    "independent_qualified": true,
+    "prepromotion_exact_head_qualified": false,
+    "broad_canonical_pr_qualified": false,
+    "canonical_admitted": false,
+    "postpromotion_reconciled": false,
+    "production_coupling_admitted": false,
+    "RB1_reopened": false
+  },
+  "promotion_hold": "Do not promote until the dedicated exact-head gate is green, the broad canonical PR workflow has been inspected, and integration/f-ci-canonical still equals the pinned base. Promotion must be a true two-parent merge without force update.",
+  "architecture_audit": "integration/f-ci/F-CI53_ARCHITECTURE_AUDIT.json",
+  "pre_registration": "integration/f-ci/F-CI53_PRE_REGISTRATION.json",
+  "hard_nonclaims": [
+    "This status is not canonical admission.",
+    "No MODFLOW adapter or physical groundwater model is admitted.",
+    "No end-to-end production coupling admission is claimed.",
+    "No large-batch throughput benchmark is claimed."
+  ]
+}
