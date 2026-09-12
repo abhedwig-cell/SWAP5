@@ -15,6 +15,16 @@ module mod_groundwater_exchange_service_contract
   integer, parameter, public :: GW_EXCHANGE_BACKEND_REJECTED = 7
   integer, parameter, public :: GW_EXCHANGE_ALREADY_PREPARED = 8
   integer, parameter, public :: GW_EXCHANGE_INVALID_PREPARED = 9
+  integer, parameter, public :: GW_EXCHANGE_STALE_PREPARED = 10
+  integer, parameter, public :: GW_EXCHANGE_REVISION_EXHAUSTED = 11
+  integer, parameter, public :: GW_EXCHANGE_RESERVATION_UNAVAILABLE = 12
+  integer, parameter :: INITIAL_RESERVATION_CAPACITY = 8
+
+  type :: groundwater_reservation_slot_t
+    logical :: active = .false.
+    integer(int64) :: generation = 0_int64
+    integer(int64) :: backend_prepare_token = 0_int64
+  end type groundwater_reservation_slot_t
 
   type, public :: groundwater_exchange_checkpoint_t
     private
@@ -66,6 +76,8 @@ module mod_groundwater_exchange_service_contract
     integer(int64) :: checkpoint_token = 0_int64
     integer(int64) :: candidate_token = 0_int64
     integer(int64) :: backend_prepare_token = 0_int64
+    integer :: reservation_slot = 0
+    integer(int64) :: reservation_generation = 0_int64
   contains
     procedure, public :: ready => prepared_ready
     procedure, public :: service_id => prepared_service_id
@@ -95,15 +107,24 @@ module mod_groundwater_exchange_service_contract
 
   ! Opt-in stronger participant contract for coupled atomic publication. Existing
   ! F-GC18 implementations remain valid through groundwater_exchange_service_t.
-  ! A preparable implementation additionally guarantees that, after a successful
-  ! prepare_backend call, commit_prepared_backend has no recoverable rejection
-  ! path. abort_prepared_backend similarly releases the reservation without
-  ! changing committed groundwater state.
+  ! The preparable subtype owns a compact reservation registry. Each successful
+  ! prepare is assigned a wrapper slot and generation before its opaque backend
+  ! token is exposed through a prepared handle. Commit or abort must consume that
+  ! exact slot generation before the backend callback is entered. Intrinsic copies
+  ! of a prepared handle therefore cannot replay irreversible publication.
+  !
+  ! Registry storage is allocated only for preparable services and grows with the
+  ! maximum number of concurrently reserved transactions, not with logical SWAP
+  ! columns or historical transactions. Calls mutating one service instance require
+  ! exclusive runtime ownership; unsynchronised concurrent calls to the same
+  ! service object are outside this local contract.
   type, abstract, extends(groundwater_exchange_service_t), public :: groundwater_preparable_exchange_service_t
+    private
+    type(groundwater_reservation_slot_t), allocatable :: reservation_slots(:)
   contains
-    procedure(gw_prepare_backend_ifc), deferred :: prepare_backend
-    procedure(gw_commit_prepared_backend_ifc), deferred :: commit_prepared_backend
-    procedure(gw_abort_prepared_backend_ifc), deferred :: abort_prepared_backend
+    procedure(gw_prepare_backend_ifc), deferred, public :: prepare_backend
+    procedure(gw_commit_prepared_backend_ifc), deferred, public :: commit_prepared_backend
+    procedure(gw_abort_prepared_backend_ifc), deferred, public :: abort_prepared_backend
   end type groundwater_preparable_exchange_service_t
 
   public :: groundwater_capture_checkpoint
@@ -217,7 +238,7 @@ contains
     type(groundwater_exchange_trial_result_t), intent(out) :: result
     integer, intent(out) :: status
 
-    integer(int64) :: candidate_token
+    integer(int64) :: candidate_token, candidate_revision_value
     real(real64) :: h_groundwater_m
 
     candidate = groundwater_exchange_candidate_t()
@@ -239,6 +260,13 @@ contains
     status = GW_EXCHANGE_INVALID_FLUX
     if (.not. ieee_is_finite(q_groundwater_m_per_s)) return
 
+    candidate_revision_value = safe_revision_successor(checkpoint%origin_revision_value)
+    if (candidate_revision_value < 0_int64) then
+      status = GW_EXCHANGE_REVISION_EXHAUSTED
+      result%status = status
+      return
+    end if
+
     candidate_token = 0_int64
     h_groundwater_m = 0.0_real64
     call service%trial_backend(checkpoint%backend_token, window, q_groundwater_m_per_s, &
@@ -252,7 +280,7 @@ contains
     candidate%service_id_value = checkpoint%service_id_value
     candidate%lineage_id_value = checkpoint%lineage_id_value
     candidate%origin_revision_value = checkpoint%origin_revision_value
-    candidate%candidate_revision_value = checkpoint%origin_revision_value + 1_int64
+    candidate%candidate_revision_value = candidate_revision_value
     candidate%t0_value = window%t0
     candidate%t1_value = window%t1
     candidate%checkpoint_token = checkpoint%backend_token
@@ -265,7 +293,7 @@ contains
     result%window = window
     result%groundwater_lineage_id = checkpoint%lineage_id_value
     result%origin_revision = checkpoint%origin_revision_value
-    result%candidate_revision = checkpoint%origin_revision_value + 1_int64
+    result%candidate_revision = candidate_revision_value
     status = GW_EXCHANGE_OK
   end subroutine groundwater_trial_from_checkpoint
 
@@ -316,7 +344,8 @@ contains
     type(groundwater_exchange_prepared_t), intent(out) :: prepared
     integer, intent(out) :: status
 
-    integer(int64) :: prepare_token
+    integer(int64) :: prepare_token, reservation_generation
+    integer :: reservation_slot
 
     prepared = groundwater_exchange_prepared_t()
     status = GW_EXCHANGE_INVALID_CHECKPOINT
@@ -331,13 +360,22 @@ contains
     status = GW_EXCHANGE_ORIGIN_MISMATCH
     if (.not. candidate_matches_checkpoint(candidate, checkpoint)) return
 
+    call reserve_prepared_slot(service, reservation_slot, reservation_generation, status)
+    if (status /= GW_EXCHANGE_OK) return
+
     prepare_token = 0_int64
     call service%prepare_backend(checkpoint%backend_token, candidate%backend_token, prepare_token, status)
-    if (status /= GW_EXCHANGE_OK) return
+    if (status /= GW_EXCHANGE_OK) then
+      call cancel_prepared_slot(service, reservation_slot, reservation_generation)
+      return
+    end if
     if (prepare_token <= 0_int64) then
+      call cancel_prepared_slot(service, reservation_slot, reservation_generation)
       status = GW_EXCHANGE_BACKEND_REJECTED
       return
     end if
+
+    service%reservation_slots(reservation_slot)%backend_prepare_token = prepare_token
 
     prepared%service_id_value = candidate%service_id_value
     prepared%lineage_id_value = candidate%lineage_id_value
@@ -348,6 +386,8 @@ contains
     prepared%checkpoint_token = candidate%checkpoint_token
     prepared%candidate_token = candidate%backend_token
     prepared%backend_prepare_token = prepare_token
+    prepared%reservation_slot = reservation_slot
+    prepared%reservation_generation = reservation_generation
     prepared%initialized = .true.
 
     candidate%initialized = .false.
@@ -372,10 +412,20 @@ contains
     status = GW_EXCHANGE_ORIGIN_MISMATCH
     if (.not. prepared_matches_checkpoint(prepared, checkpoint)) return
 
-    ! This backend publication deliberately has no recoverable status return.
-    ! A preparable service may reject during prepare, never after prepare has
-    ! succeeded. This is the local participant guarantee required by F-GC21 to
-    ! avoid a normal-runtime half commit after SWAP publication.
+    ! Consume the service-owned wrapper reservation before entering irreversible
+    ! backend publication. A copied stale handle fails here and cannot reach the
+    ! backend callback, even when the backend token value itself is reusable.
+    call consume_prepared_slot(service, prepared%reservation_slot, prepared%reservation_generation, &
+         prepared%backend_prepare_token, status)
+    if (status /= GW_EXCHANGE_OK) then
+      prepared%initialized = .false.
+      checkpoint%initialized = .false.
+      checkpoint%prepared = .false.
+      return
+    end if
+
+    ! For a live reservation this backend publication has no recoverable status
+    ! path. The local wrapper has already made replay impossible before entry.
     call service%commit_prepared_backend(prepared%backend_prepare_token)
 
     prepared%initialized = .false.
@@ -401,15 +451,110 @@ contains
     status = GW_EXCHANGE_ORIGIN_MISMATCH
     if (.not. prepared_matches_checkpoint(prepared, checkpoint)) return
 
-    ! Reservation release also has no recoverable backend refusal. A failed SWAP
-    ! publication can therefore return the groundwater side to its committed
-    ! origin without changing physical groundwater state.
+    ! Reservation release is also one-shot at the wrapper boundary. The registry
+    ! is consumed before the backend is asked to release its reservation.
+    call consume_prepared_slot(service, prepared%reservation_slot, prepared%reservation_generation, &
+         prepared%backend_prepare_token, status)
+    if (status /= GW_EXCHANGE_OK) then
+      prepared%initialized = .false.
+      checkpoint%initialized = .false.
+      checkpoint%prepared = .false.
+      return
+    end if
+
     call service%abort_prepared_backend(prepared%backend_prepare_token)
 
     prepared%initialized = .false.
     checkpoint%prepared = .false.
     status = GW_EXCHANGE_OK
   end subroutine groundwater_abort_prepared
+
+  subroutine reserve_prepared_slot(service, slot, generation, status)
+    class(groundwater_preparable_exchange_service_t), intent(inout) :: service
+    integer, intent(out) :: slot
+    integer(int64), intent(out) :: generation
+    integer, intent(out) :: status
+
+    type(groundwater_reservation_slot_t), allocatable :: grown(:)
+    integer :: i, old_size, growth, new_size, alloc_status
+
+    slot = 0
+    generation = 0_int64
+    status = GW_EXCHANGE_RESERVATION_UNAVAILABLE
+
+    if (.not. allocated(service%reservation_slots)) then
+      allocate(service%reservation_slots(INITIAL_RESERVATION_CAPACITY), stat=alloc_status)
+      if (alloc_status /= 0) return
+    end if
+
+    do i = 1, size(service%reservation_slots)
+      if (.not. service%reservation_slots(i)%active .and. &
+          service%reservation_slots(i)%generation < huge(0_int64)) then
+        call activate_slot(service, i, slot, generation)
+        status = GW_EXCHANGE_OK
+        return
+      end if
+    end do
+
+    old_size = size(service%reservation_slots)
+    growth = max(old_size, INITIAL_RESERVATION_CAPACITY)
+    if (growth > huge(old_size) - old_size) return
+    new_size = old_size + growth
+    allocate(grown(new_size), stat=alloc_status)
+    if (alloc_status /= 0) return
+    grown(1:old_size) = service%reservation_slots
+    call move_alloc(grown, service%reservation_slots)
+
+    call activate_slot(service, old_size + 1, slot, generation)
+    status = GW_EXCHANGE_OK
+  end subroutine reserve_prepared_slot
+
+  subroutine activate_slot(service, index, slot, generation)
+    class(groundwater_preparable_exchange_service_t), intent(inout) :: service
+    integer, intent(in) :: index
+    integer, intent(out) :: slot
+    integer(int64), intent(out) :: generation
+
+    service%reservation_slots(index)%generation = service%reservation_slots(index)%generation + 1_int64
+    service%reservation_slots(index)%backend_prepare_token = 0_int64
+    service%reservation_slots(index)%active = .true.
+    slot = index
+    generation = service%reservation_slots(index)%generation
+  end subroutine activate_slot
+
+  subroutine cancel_prepared_slot(service, slot, generation)
+    class(groundwater_preparable_exchange_service_t), intent(inout) :: service
+    integer, intent(in) :: slot
+    integer(int64), intent(in) :: generation
+
+    if (.not. allocated(service%reservation_slots)) return
+    if (slot < 1 .or. slot > size(service%reservation_slots)) return
+    if (.not. service%reservation_slots(slot)%active) return
+    if (service%reservation_slots(slot)%generation /= generation) return
+    service%reservation_slots(slot)%active = .false.
+    service%reservation_slots(slot)%backend_prepare_token = 0_int64
+  end subroutine cancel_prepared_slot
+
+  subroutine consume_prepared_slot(service, slot, generation, backend_prepare_token, status)
+    class(groundwater_preparable_exchange_service_t), intent(inout) :: service
+    integer, intent(in) :: slot
+    integer(int64), intent(in) :: generation, backend_prepare_token
+    integer, intent(out) :: status
+
+    status = GW_EXCHANGE_STALE_PREPARED
+    if (.not. allocated(service%reservation_slots)) return
+    if (slot < 1 .or. slot > size(service%reservation_slots)) return
+    if (.not. service%reservation_slots(slot)%active) return
+    if (service%reservation_slots(slot)%generation /= generation) return
+    if (service%reservation_slots(slot)%backend_prepare_token /= backend_prepare_token) return
+    if (backend_prepare_token <= 0_int64) return
+
+    ! Consumption precedes commit/abort callbacks. Reused slots receive a new
+    ! generation, so stale copies cannot alias a later reservation in that slot.
+    service%reservation_slots(slot)%active = .false.
+    service%reservation_slots(slot)%backend_prepare_token = 0_int64
+    status = GW_EXCHANGE_OK
+  end subroutine consume_prepared_slot
 
   pure logical function checkpoint_ready(self) result(ready)
     class(groundwater_exchange_checkpoint_t), intent(in) :: self
@@ -452,12 +597,15 @@ contains
 
   pure logical function candidate_ready(self) result(ready)
     class(groundwater_exchange_candidate_t), intent(in) :: self
-    ready = self%initialized .and. self%service_id_value > 0_int64 .and. &
-         self%lineage_id_value > 0_int64 .and. self%origin_revision_value >= 0_int64 .and. &
-         self%candidate_revision_value == self%origin_revision_value + 1_int64 .and. &
-         self%checkpoint_token > 0_int64 .and. self%backend_token > 0_int64 .and. &
-         ieee_is_finite(self%t0_value) .and. ieee_is_finite(self%t1_value) .and. &
-         self%t1_value > self%t0_value
+
+    ready = .false.
+    if (.not. self%initialized) return
+    if (self%service_id_value <= 0_int64 .or. self%lineage_id_value <= 0_int64) return
+    if (.not. revision_is_successor(self%origin_revision_value, self%candidate_revision_value)) return
+    if (self%checkpoint_token <= 0_int64 .or. self%backend_token <= 0_int64) return
+    if (.not. ieee_is_finite(self%t0_value) .or. .not. ieee_is_finite(self%t1_value)) return
+    if (self%t1_value <= self%t0_value) return
+    ready = .true.
   end function candidate_ready
 
   pure integer(int64) function candidate_service_id(self) result(value)
@@ -494,12 +642,17 @@ contains
 
   pure logical function prepared_ready(self) result(ready)
     class(groundwater_exchange_prepared_t), intent(in) :: self
-    ready = self%initialized .and. self%service_id_value > 0_int64 .and. &
-         self%lineage_id_value > 0_int64 .and. self%origin_revision_value >= 0_int64 .and. &
-         self%candidate_revision_value == self%origin_revision_value + 1_int64 .and. &
-         self%checkpoint_token > 0_int64 .and. self%candidate_token > 0_int64 .and. &
-         self%backend_prepare_token > 0_int64 .and. ieee_is_finite(self%t0_value) .and. &
-         ieee_is_finite(self%t1_value) .and. self%t1_value > self%t0_value
+
+    ready = .false.
+    if (.not. self%initialized) return
+    if (self%service_id_value <= 0_int64 .or. self%lineage_id_value <= 0_int64) return
+    if (.not. revision_is_successor(self%origin_revision_value, self%candidate_revision_value)) return
+    if (self%checkpoint_token <= 0_int64 .or. self%candidate_token <= 0_int64) return
+    if (self%backend_prepare_token <= 0_int64) return
+    if (self%reservation_slot <= 0 .or. self%reservation_generation <= 0_int64) return
+    if (.not. ieee_is_finite(self%t0_value) .or. .not. ieee_is_finite(self%t1_value)) return
+    if (self%t1_value <= self%t0_value) return
+    ready = .true.
   end function prepared_ready
 
   pure integer(int64) function prepared_service_id(self) result(value)
@@ -542,7 +695,7 @@ contains
     if (candidate%service_id_value /= checkpoint%service_id_value) return
     if (candidate%lineage_id_value /= checkpoint%lineage_id_value) return
     if (candidate%origin_revision_value /= checkpoint%origin_revision_value) return
-    if (candidate%candidate_revision_value /= checkpoint%origin_revision_value + 1_int64) return
+    if (.not. revision_is_successor(checkpoint%origin_revision_value, candidate%candidate_revision_value)) return
     if (candidate%checkpoint_token /= checkpoint%backend_token) return
     if (.not. same_exchange_time(candidate%t0_value, checkpoint%origin_time_value)) return
     matches = .true.
@@ -556,11 +709,30 @@ contains
     if (prepared%service_id_value /= checkpoint%service_id_value) return
     if (prepared%lineage_id_value /= checkpoint%lineage_id_value) return
     if (prepared%origin_revision_value /= checkpoint%origin_revision_value) return
-    if (prepared%candidate_revision_value /= checkpoint%origin_revision_value + 1_int64) return
+    if (.not. revision_is_successor(checkpoint%origin_revision_value, prepared%candidate_revision_value)) return
     if (prepared%checkpoint_token /= checkpoint%backend_token) return
     if (.not. same_exchange_time(prepared%t0_value, checkpoint%origin_time_value)) return
     matches = .true.
   end function prepared_matches_checkpoint
+
+  pure integer(int64) function safe_revision_successor(origin_revision) result(next_revision)
+    integer(int64), intent(in) :: origin_revision
+
+    next_revision = -1_int64
+    if (origin_revision < 0_int64) return
+    if (origin_revision >= huge(0_int64)) return
+    next_revision = origin_revision + 1_int64
+  end function safe_revision_successor
+
+  pure logical function revision_is_successor(origin_revision, candidate_revision_value) result(matches)
+    integer(int64), intent(in) :: origin_revision, candidate_revision_value
+    integer(int64) :: next_revision
+
+    matches = .false.
+    next_revision = safe_revision_successor(origin_revision)
+    if (next_revision < 0_int64) return
+    matches = candidate_revision_value == next_revision
+  end function revision_is_successor
 
   pure logical function same_exchange_time(a, b) result(matches)
     real(real64), intent(in) :: a, b
