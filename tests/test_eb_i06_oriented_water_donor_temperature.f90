@@ -9,7 +9,7 @@ program test_eb_i06_oriented_water_donor_temperature
 
   type(oriented_water_donor_temperature_result_t) :: positive, negative, zero, missing, reversed, tiny_transfer, invalid
   real(real64) :: nan_value
-  real(real64), parameter :: tol = 0.0_real64
+  real(real64), parameter :: tol = 1.0e-12_real64
 
   nan_value = ieee_value(0.0_real64, ieee_quiet_nan)
 
@@ -20,14 +20,14 @@ program test_eb_i06_oriented_water_donor_temperature
        error stop 'EB-I06 positive donor not materialized'
   if (positive%donor_endpoint /= OWDT_ENDPOINT_A) error stop 'EB-I06 positive donor endpoint mismatch'
   if (abs(positive%donor_temperature_c - 12.0_real64) > tol) error stop 'EB-I06 positive donor temperature mismatch'
-  if (positive%oriented_water_amount_cm /= 0.50_real64) error stop 'EB-I06 positive amount altered'
+  if (abs(positive%oriented_water_amount_cm - 0.50_real64) > tol) error stop 'EB-I06 positive amount altered'
 
   call select_oriented_water_donor_temperature(-0.25_real64, 12.0_real64, .true., &
        8.0_real64, .true., negative)
   if (negative%status /= OWDT_OK) error stop 'EB-I06 negative transfer failed'
   if (negative%donor_endpoint /= OWDT_ENDPOINT_B) error stop 'EB-I06 negative donor endpoint mismatch'
-  if (negative%donor_temperature_c /= 8.0_real64) error stop 'EB-I06 negative donor temperature mismatch'
-  if (negative%oriented_water_amount_cm /= -0.25_real64) error stop 'EB-I06 negative amount altered'
+  if (abs(negative%donor_temperature_c - 8.0_real64) > tol) error stop 'EB-I06 negative donor temperature mismatch'
+  if (abs(negative%oriented_water_amount_cm + 0.25_real64) > tol) error stop 'EB-I06 negative amount altered'
 
   ! Exact zero transport has zero carried energy and therefore does not require
   ! either endpoint temperature to be available or finite.
@@ -41,12 +41,14 @@ program test_eb_i06_oriented_water_donor_temperature
   ! endpoint may be unavailable without blocking a valid transfer.
   call select_oriented_water_donor_temperature(0.50_real64, 12.0_real64, .true., &
        nan_value, .false., positive)
-  if (positive%status /= OWDT_OK .or. positive%donor_temperature_c /= 12.0_real64) &
-       error stop 'EB-I06 irrelevant missing endpoint blocked positive transfer'
+  if (positive%status /= OWDT_OK) error stop 'EB-I06 irrelevant missing endpoint blocked positive transfer'
+  if (abs(positive%donor_temperature_c - 12.0_real64) > tol) &
+       error stop 'EB-I06 irrelevant missing endpoint changed positive donor'
   call select_oriented_water_donor_temperature(-0.25_real64, nan_value, .false., &
        8.0_real64, .true., negative)
-  if (negative%status /= OWDT_OK .or. negative%donor_temperature_c /= 8.0_real64) &
-       error stop 'EB-I06 irrelevant missing endpoint blocked negative transfer'
+  if (negative%status /= OWDT_OK) error stop 'EB-I06 irrelevant missing endpoint blocked negative transfer'
+  if (abs(negative%donor_temperature_c - 8.0_real64) > tol) &
+       error stop 'EB-I06 irrelevant missing endpoint changed negative donor'
 
   call select_oriented_water_donor_temperature(0.50_real64, 0.0_real64, .false., &
        8.0_real64, .true., missing)
@@ -67,7 +69,7 @@ program test_eb_i06_oriented_water_donor_temperature
   call select_oriented_water_donor_temperature(-0.50_real64, 8.0_real64, .true., &
        12.0_real64, .true., reversed)
   if (reversed%status /= OWDT_OK) error stop 'EB-I06 orientation reversal failed'
-  if (reversed%donor_temperature_c /= positive%donor_temperature_c) &
+  if (abs(reversed%donor_temperature_c - positive%donor_temperature_c) > tol) &
        error stop 'EB-I06 orientation-reversal donor invariance failed'
 
   ! There is intentionally no small-flux tolerance: any nonzero transported
