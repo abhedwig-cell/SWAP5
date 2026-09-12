@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC18R",
+  "title": "Transactional Groundwater Exchange Two-Phase Commit Readiness Remediation",
+  "decision": "QUALIFIED_PREPARED_GROUNDWATER_PUBLICATION_READY_FOR_F_GC21_COMPOSITION",
+  "qualified": true,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "supersedes_for_F_GC21_service_source": "F-GC18 direct fallible commit path",
+  "preserves_F_GC18_base_service_ABI": true,
+  "base_authority": "774c01d69c619f463e0d471eb797f8f0418fee07",
+  "production_source": "src/runtime/mod_groundwater_exchange_service_contract.f90",
+  "first_qualified_head": "e96cd130753d17c411be18d691931149478d4663",
+  "first_qualified_workflow_run": 34680847196,
+  "first_qualified_workflow_job": 103519090652,
+  "qualified_capability": {
+    "opt_in_preparable_subtype": true,
+    "base_service_remains_supported": true,
+    "prepare_is_reversible": true,
+    "prepare_consumes_candidate_and_reserves_checkpoint": true,
+    "abort_changes_no_committed_groundwater_state": true,
+    "prepared_final_publication_has_no_recoverable_status_return": true,
+    "prepared_handle_single_use": true,
+    "stale_prepare_rejected_before_publication": true,
+    "old_F_GC18_fixture_requalified": true,
+    "O0_O2_identity": true
+  },
+  "downstream_atomic_composition_rule": "F-GC21 may prepare the accepted groundwater candidate first. If the subsequent fully prevalidated SWAP commit refuses, it must abort the groundwater reservation. Only after SWAP commit succeeds may F-GC21 invoke the no-recoverable-refusal groundwater prepared publication. Runtime ownership must prevent concurrent mutation of the same committed SWAP column or groundwater participant during this sequence.",
+  "architecture_audit": "integration/f-gc/F-GC18R_ARCHITECTURE_AUDIT.json",
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
+  "hard_nonclaims": [
+    "no networked or file-backed distributed transaction protocol",
+    "no process-crash recovery claim",
+    "no predictor-corrector sequencing",
+    "no groundwater physics",
+    "no MODFLOW adapter",
+    "no canonical admission",
+    "no end-to-end coupling production admission"
+  ],
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-GC18R workflow. Only that exact green head is the final F-GC18R authority."
+}

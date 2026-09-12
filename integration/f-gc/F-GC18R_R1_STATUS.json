@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC18R-R1",
+  "title": "Prepared Transaction Remediation after F-VQ60",
+  "branch": "work/f-gc18r-r1-prepared-transaction-remediation",
+  "phase": "OWNER_REMEDIATION_QUALIFIED_PENDING_INDEPENDENT_REQUALIFICATION",
+  "decision": "OWNER_QUALIFIED_FVQ60_B1_B2_REMEDIATION_NOT_CANONICALLY_ADMITTED",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "blocked_verifier_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "original_gc18r_candidate": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+  "current_canonical_restart": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "current_canonical_rechecked_after_owner_run": true,
+  "current_canonical_production_delta_since_previous_restart": false,
+  "history_preserving_composition_head": "099c84a4338aaae63795af90ee83230d33536d3b",
+  "history_preserving_composition": {
+    "first_parent_current_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+    "second_parent_green_owner_remediation": "69c8a8876b9e010d41f5c7e1477d68c9846090d6",
+    "force_update_used": false,
+    "f_ci51p_closeout_blob_preserved": "c828da40c5b9874e43e8eaca5380d79b4592b2fa"
+  },
+  "f_vq60_blocker_closure": {
+    "FVQ60-B1": {
+      "status": "OWNER_REMEDIATED",
+      "problem": "unchecked int64 transaction revision successor could wrap at INT64_MAX",
+      "remediation": "all successor checks route through safe_revision_successor; INT64_MAX-1 to INT64_MAX remains legal; an origin at INT64_MAX returns GW_EXCHANGE_REVISION_EXHAUSTED before trial_backend",
+      "qualification": "O0 and O2 with -fcheck=all and floating-point traps; boundary test proves legal max candidate and fail-closed exhausted-origin path without backend trial side effect"
+    },
+    "FVQ60-B2": {
+      "status": "OWNER_REMEDIATED",
+      "problem": "intrinsic copies of prepared handles could replay an opaque prepare token unless a backend independently supplied one-shot identity",
+      "remediation": "the preparable service owns a private slot-generation registry; commit and abort atomically consume exact wrapper reservation identity before backend callback; stale copies cannot reach irreversible publication",
+      "qualification": "copied abort and copied commit replay are rejected; exact backend token reuse is forced and shown unable to alias the new generation"
+    }
+  },
+  "scaling_remediation": {
+    "registry_storage": "O(peak concurrent prepared reservations per preparable service)",
+    "reserve_release": "O(1) free-list operations except amortized geometric pool growth",
+    "per_logical_column_persistent_state_added": false,
+    "non_preparable_service_registry_cost": false,
+    "same_service_mutation_ownership": "exclusive runtime ownership required; unsynchronised concurrent mutation of one service object is outside the local contract"
+  },
+  "immutable_or_qualified_blobs": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "tests/fgc/test_fgc18r_prepared_commit.f90": "a9bf9b44360e78d20e271ed466cde0ea22943d85",
+    "tests/fgc/run_fgc18r_prepared_commit.sh": "481b3da99f9838f7f0d55844f6a9fe77721d4d62",
+    ".github/workflows/fgc18r-prepared-commit.yml": "ffe52a1df77a3591a0d97a0d4273f9b3498041de"
+  },
+  "owner_qualification": {
+    "initial_b1_b2_run": 34690248821,
+    "initial_b1_b2_job": 103544114288,
+    "initial_b1_b2_conclusion": "success",
+    "o1_registry_run": 34690427346,
+    "o1_registry_conclusion": "success",
+    "current_canonical_composition_run": 34690475203,
+    "current_canonical_composition_job": 103544709622,
+    "current_canonical_composition_conclusion": "success",
+    "compiler_modes": ["O0", "O2"],
+    "runtime_checks": ["-fcheck=all", "-ffpe-trap=invalid,zero,overflow"],
+    "base_f_gc18_regression_preserved": true,
+    "copied_abort_replay_rejected": true,
+    "copied_commit_replay_rejected": true,
+    "backend_token_reuse_generation_guarded": true,
+    "int64_revision_boundary_fail_closed": true,
+    "o0_o2_output_identity": true
+  },
+  "authority_state": {
+    "owner_remediation_qualified": true,
+    "f_vq60_rewritten": false,
+    "independent_requalification_complete": false,
+    "canonical_admission_complete": false,
+    "production_coupling_admission_complete": false,
+    "mass_conservation_relaxed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "base_service_abi_retained": true
+  },
+  "architecture_audit": "integration/f-gc/F-GC18R_R1_ARCHITECTURE_AUDIT.json",
+  "hard_nonclaims": [
+    "F-VQ60 remains a frozen blocked verifier authority and is not rewritten by this owner remediation.",
+    "Owner qualification does not substitute for independent qualification.",
+    "GC18/GC18R is still absent from integration/f-ci-canonical at this owner closeout.",
+    "No claim is made here that the full production coupling stack is admitted or Status-A complete."
+  ],
+  "required_next_step": "Start a new independent F-VQ requalification from the then-current integration/f-ci-canonical, preserve this owner candidate as immutable evidence, re-run full GC18/GC18R transaction and adversarial B1/B2 qualification, and only after independent success consider a separate canonical-admission workunit."
+}
