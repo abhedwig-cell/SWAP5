@@ -28,13 +28,16 @@ jobs:
         run: |
           set -euo pipefail
           BLOCKED=95e05490d3f60325361a9036dc720c7954093307
+          PUBLISHED_SOURCE=2ab864e99f16f2ca9e06f11f5e7658e36276d0a2
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
           test "$live" = "$GITHUB_SHA"
           git merge-base --is-ancestor "$BLOCKED" HEAD
+          git merge-base --is-ancestor "$PUBLISHED_SOURCE" HEAD
           test "$(git rev-parse integration/f-ci-canonical)" = c6494f913303b7aefc4f9c53c6c157082d54ea4b || \
             test "$(git merge-base c6494f913303b7aefc4f9c53c6c157082d54ea4b HEAD)" = c6494f913303b7aefc4f9c53c6c157082d54ea4b
           echo 'FGC21P1_R1_LINEAGE=PASS'
+          echo 'FGC21P1_R1_PUBLISHED_SOURCE_ANCESTRY=PASS'
       - name: Compiler identity
         run: gfortran --version
       - name: Restore canonical equality predicates exactly
