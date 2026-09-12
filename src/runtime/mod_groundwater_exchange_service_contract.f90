@@ -24,6 +24,7 @@ module mod_groundwater_exchange_service_contract
     logical :: active = .false.
     integer(int64) :: generation = 0_int64
     integer(int64) :: backend_prepare_token = 0_int64
+    integer :: next_free = 0
   end type groundwater_reservation_slot_t
 
   type, public :: groundwater_exchange_checkpoint_t
@@ -115,12 +116,14 @@ module mod_groundwater_exchange_service_contract
   !
   ! Registry storage is allocated only for preparable services and grows with the
   ! maximum number of concurrently reserved transactions, not with logical SWAP
-  ! columns or historical transactions. Calls mutating one service instance require
-  ! exclusive runtime ownership; unsynchronised concurrent calls to the same
-  ! service object are outside this local contract.
+  ! columns or historical transactions. Free slots are maintained as an O(1) stack;
+  ! geometric registry growth makes allocation amortized O(1). Calls mutating one
+  ! service instance require exclusive runtime ownership; unsynchronised concurrent
+  ! calls to the same service object are outside this local contract.
   type, abstract, extends(groundwater_exchange_service_t), public :: groundwater_preparable_exchange_service_t
     private
     type(groundwater_reservation_slot_t), allocatable :: reservation_slots(:)
+    integer :: free_reservation_slot = 0
   contains
     procedure(gw_prepare_backend_ifc), deferred, public :: prepare_backend
     procedure(gw_commit_prepared_backend_ifc), deferred, public :: commit_prepared_backend
@@ -476,7 +479,7 @@ contains
     integer, intent(out) :: status
 
     type(groundwater_reservation_slot_t), allocatable :: grown(:)
-    integer :: i, old_size, growth, new_size, alloc_status
+    integer :: old_size, growth, new_size, alloc_status
 
     slot = 0
     generation = 0_int64
@@ -485,42 +488,52 @@ contains
     if (.not. allocated(service%reservation_slots)) then
       allocate(service%reservation_slots(INITIAL_RESERVATION_CAPACITY), stat=alloc_status)
       if (alloc_status /= 0) return
+      call push_new_free_slots(service, 1, size(service%reservation_slots))
     end if
 
-    do i = 1, size(service%reservation_slots)
-      if (.not. service%reservation_slots(i)%active .and. &
-          service%reservation_slots(i)%generation < huge(0_int64)) then
-        call activate_slot(service, i, slot, generation)
+    do
+      do while (service%free_reservation_slot > 0)
+        slot = service%free_reservation_slot
+        service%free_reservation_slot = service%reservation_slots(slot)%next_free
+        service%reservation_slots(slot)%next_free = 0
+
+        ! A slot whose generation counter is exhausted is permanently retired.
+        ! It is never returned to the free stack, so generation increment cannot
+        ! wrap and no stale handle can alias a future reservation.
+        if (service%reservation_slots(slot)%generation >= huge(0_int64)) cycle
+
+        service%reservation_slots(slot)%generation = service%reservation_slots(slot)%generation + 1_int64
+        service%reservation_slots(slot)%backend_prepare_token = 0_int64
+        service%reservation_slots(slot)%active = .true.
+        generation = service%reservation_slots(slot)%generation
         status = GW_EXCHANGE_OK
         return
-      end if
+      end do
+
+      old_size = size(service%reservation_slots)
+      growth = max(old_size, INITIAL_RESERVATION_CAPACITY)
+      if (growth > huge(old_size) - old_size) return
+      new_size = old_size + growth
+      allocate(grown(new_size), stat=alloc_status)
+      if (alloc_status /= 0) return
+      grown(1:old_size) = service%reservation_slots
+      call move_alloc(grown, service%reservation_slots)
+      call push_new_free_slots(service, old_size + 1, new_size)
     end do
-
-    old_size = size(service%reservation_slots)
-    growth = max(old_size, INITIAL_RESERVATION_CAPACITY)
-    if (growth > huge(old_size) - old_size) return
-    new_size = old_size + growth
-    allocate(grown(new_size), stat=alloc_status)
-    if (alloc_status /= 0) return
-    grown(1:old_size) = service%reservation_slots
-    call move_alloc(grown, service%reservation_slots)
-
-    call activate_slot(service, old_size + 1, slot, generation)
-    status = GW_EXCHANGE_OK
   end subroutine reserve_prepared_slot
 
-  subroutine activate_slot(service, index, slot, generation)
+  subroutine push_new_free_slots(service, first_slot, last_slot)
     class(groundwater_preparable_exchange_service_t), intent(inout) :: service
-    integer, intent(in) :: index
-    integer, intent(out) :: slot
-    integer(int64), intent(out) :: generation
+    integer, intent(in) :: first_slot, last_slot
+    integer :: i
 
-    service%reservation_slots(index)%generation = service%reservation_slots(index)%generation + 1_int64
-    service%reservation_slots(index)%backend_prepare_token = 0_int64
-    service%reservation_slots(index)%active = .true.
-    slot = index
-    generation = service%reservation_slots(index)%generation
-  end subroutine activate_slot
+    do i = last_slot, first_slot, -1
+      service%reservation_slots(i)%active = .false.
+      service%reservation_slots(i)%backend_prepare_token = 0_int64
+      service%reservation_slots(i)%next_free = service%free_reservation_slot
+      service%free_reservation_slot = i
+    end do
+  end subroutine push_new_free_slots
 
   subroutine cancel_prepared_slot(service, slot, generation)
     class(groundwater_preparable_exchange_service_t), intent(inout) :: service
@@ -531,8 +544,7 @@ contains
     if (slot < 1 .or. slot > size(service%reservation_slots)) return
     if (.not. service%reservation_slots(slot)%active) return
     if (service%reservation_slots(slot)%generation /= generation) return
-    service%reservation_slots(slot)%active = .false.
-    service%reservation_slots(slot)%backend_prepare_token = 0_int64
+    call release_prepared_slot(service, slot)
   end subroutine cancel_prepared_slot
 
   subroutine consume_prepared_slot(service, slot, generation, backend_prepare_token, status)
@@ -551,10 +563,23 @@ contains
 
     ! Consumption precedes commit/abort callbacks. Reused slots receive a new
     ! generation, so stale copies cannot alias a later reservation in that slot.
-    service%reservation_slots(slot)%active = .false.
-    service%reservation_slots(slot)%backend_prepare_token = 0_int64
+    call release_prepared_slot(service, slot)
     status = GW_EXCHANGE_OK
   end subroutine consume_prepared_slot
+
+  subroutine release_prepared_slot(service, slot)
+    class(groundwater_preparable_exchange_service_t), intent(inout) :: service
+    integer, intent(in) :: slot
+
+    service%reservation_slots(slot)%active = .false.
+    service%reservation_slots(slot)%backend_prepare_token = 0_int64
+    if (service%reservation_slots(slot)%generation < huge(0_int64)) then
+      service%reservation_slots(slot)%next_free = service%free_reservation_slot
+      service%free_reservation_slot = slot
+    else
+      service%reservation_slots(slot)%next_free = 0
+    end if
+  end subroutine release_prepared_slot
 
   pure logical function checkpoint_ready(self) result(ready)
     class(groundwater_exchange_checkpoint_t), intent(in) :: self
