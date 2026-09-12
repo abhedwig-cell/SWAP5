@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC20",
+  "title": "Groundwater Cell Tile Mapping and Aggregation Primitive",
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "governing_authorities": {
+    "F_GC15": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "F_GC16": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+    "F_GC17": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "F_CI50P_R1_final_canonical": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "objective": "Define a runtime-owned, model-agnostic tile-to-groundwater-cell mapping and area-weighted aggregation primitive supporting multiple surface fractions per groundwater cell without exposing cell fractions to the SWAP kernel.",
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_tile_aggregation.f90"
+  ],
+  "required_semantics": [
+    "one groundwater cell may own multiple tiles",
+    "tile fractions are explicit finite positive values",
+    "cell fractions must sum to one under a fixed machine-precision identity rule and are never silently normalized",
+    "SWAP and non-SWAP tiles can coexist because aggregation consumes typed tile exchange contributions rather than solver objects",
+    "cell flux is area-weighted sum of tile fluxes",
+    "tile lineage remains visible for diagnostics",
+    "invalid or duplicate tile mappings fail closed",
+    "no one-to-one SWAP/MODFLOW assumption",
+    "no kernel ownership of area fractions"
+  ],
+  "hard_nonclaims": [
+    "no MODFLOW adapter",
+    "no groundwater physics",
+    "no predictor-corrector orchestration",
+    "no deep-vadose implementation",
+    "no exchange-service lifecycle ownership",
+    "no application-accuracy policy",
+    "no automatic fraction renormalization"
+  ],
+  "parallel_ownership_exclusions": {
+    "F_GC18": "groundwater exchange service lifecycle",
+    "F_GC19": "interface mass ledger",
+    "F_GC22": "application/temporal accuracy binding",
+    "F_GC21": "predictor-corrector orchestration"
+  },
+  "qualification": [
+    "single-tile identity",
+    "multi-tile weighted aggregation",
+    "mixed SWAP/non-SWAP contribution records",
+    "invalid fraction sum fails closed",
+    "duplicate tile id fails closed",
+    "order-independent aggregation within floating-point identity envelope",
+    "compile O0/O2",
+    "exact-head workflow",
+    "all 30 architecture invariants"
+  ]
+}
