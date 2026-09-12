@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.fci54_status.v1",
+  "work_unit": "F-CI54",
+  "title": "F-GC19R-R1 Prepared Groundwater Interface Mass Ledger Current-Canonical Admission",
+  "branch": "qualification/f-ci54-fgc19r-r1-current-canonical-admission",
+  "phase": "QUALIFICATION_EXACT_HEAD_RUN_PENDING",
+  "decision": "PENDING_F_CI54_QUALIFICATION",
+  "restart_canonical": "c262ae3c0c06a8fdeb5e87dde2177417c1465f91",
+  "production_composition": "66f6ba0ec63d0f3a7ceb6f84dc67494bd2befc61",
+  "owner_authority": "3bf3fec344ee67dd56f5f54b293b3a0a47214efb",
+  "independent_authority": "9017c8350c5f05deab235a6e59cc53ffdcf6f8dd",
+  "frozen_blocked_authority": "c4b0dc78af0b444edcc4b349cc598b5b6167bd1d",
+  "qualified_source_blob": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+  "state": {
+    "composition_direct_child_of_restart_canonical": true,
+    "production_delta_exactly_one_source_file": true,
+    "source_byte_identical_to_independent_authority": true,
+    "qualified_for_canonical_promotion": false,
+    "canonical_admission": false,
+    "production_coupling_admission": false,
+    "source_drift_after_composition": false,
+    "reference_changed": false,
+    "mass_conservation_relaxed": false,
+    "RB1_reopened": false
+  },
+  "architecture_audit": "integration/f-ci/F-CI54_ARCHITECTURE_AUDIT.json",
+  "pre_registration": "integration/f-ci/F-CI54_PRE_REGISTRATION.json",
+  "qualification_gate": "tests/fci/run_fci54_fgc19r_r1_current_canonical_admission.sh",
+  "promotion_gate": {
+    "require_live_canonical_still_restart_authority": true,
+    "require_exact_qualified_head_green": true,
+    "require_true_two_parent_merge": true,
+    "require_restart_canonical_as_first_parent": true,
+    "require_qualified_fci54_head_as_second_parent": true,
+    "force_squash_rebase_forbidden": true,
+    "require_postpromotion_broad_canonical_success": true,
+    "require_current_restricted_canonical_preservation_success": true
+  },
+  "composition_obligation": "Canonical admission of the ledger primitive does not qualify a future runtime ledger_id allocator. Stable unique assignment across live ledgers remains a later system-composition gate.",
+  "hard_nonclaims": [
+    "No production coupling admission.",
+    "No MODFLOW adapter or aquifer solver.",
+    "No end-to-end predictor-corrector convergence or coupled aquifer mass closure.",
+    "No process-crash recovery or distributed transaction protocol.",
+    "No large-batch throughput qualification.",
+    "No runtime ledger_id allocator is admitted by F-CI54.",
+    "RB1 remains frozen."
+  ],
+  "next_required_step": "Run the exact-head F-CI54 qualification. If green, update status to QUALIFIED_F_CI54_READY_FOR_CANONICAL_PROMOTION, require exact-status-head green, then perform a fresh canonical race guard before PR and promotion."
+}
