@@ -1,0 +1,65 @@
+name: F-DOC16 conceptual foundation
+
+on:
+  push:
+    branches:
+      - work/f-doc16-physical-system-1d-column-conceptual-authority
+
+permissions:
+  contents: read
+
+jobs:
+  conceptual-foundation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate authority ancestry and bounded paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=1c4d97de16cf6d1eaf6289e920a32c4167536060
+          git cat-file -e "${base}^{commit}"
+          test "$(git merge-base "${base}" HEAD)" = "${base}"
+          changed="$(git diff --name-only "${base}"..HEAD)"
+          test -n "${changed}"
+          if printf '%s\n' "${changed}" | grep -Eq '^(src|reference)/'; then
+            echo "F-DOC16 may not change production source or reference data" >&2
+            exit 1
+          fi
+          if printf '%s\n' "${changed}" | grep -Ev '^(docs/scientific/F-DOC16_PHYSICAL_SYSTEM_1D_COLUMN_CONCEPTUAL_MODEL_AUTHORITY\.md|docs/scientific/registries/fdoc16-conceptual-foundation\.json|docs/scientific/registries/F-DOC16_STATUS\.json|tools/docs/validate_fdoc16_conceptual_foundation\.py|\.github/workflows/fdoc16-conceptual-foundation\.yml)$' | grep -q .; then
+            echo "Unexpected F-DOC16 changed path" >&2
+            printf '%s\n' "${changed}" >&2
+            exit 1
+          fi
+          echo "FDOC16_BOUNDED_CHANGED_PATHS=PASS"
+          echo "FDOC16_ZERO_PRODUCTION_REFERENCE_DELTA=PASS"
+
+      - name: Validate conceptual foundation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc16_conceptual_foundation.py | tee _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_BASE_FDOC15_EXACT=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_SCI_FOUND_01_FOUNDATION_CLOSED=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_1D_ADMISSIBILITY_CONDITIONAL=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_PROCESS_DISPOSITIONS_EXPLICIT=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_BOTTOM_FLUX_NOT_UNIVERSAL_RECHARGE=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_MULTISWAP_NOT_HORIZONTAL_SOIL_MODEL=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_RB1_SCOPE_NOT_BROADENED=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_PROCESS_FORMAL_AUTHORITIES_NOT_REPLACED=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_VALIDATION_REMAINS_SEPARATE=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_MASS_CONSERVATION_HARD=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_ALL_30_INVARIANTS_REVIEWED=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_NO_STATUS_A_CERTIFICATION=PASS' _fdoc16_validator_stdout.txt
+          grep -Fq 'FDOC16_DECISION_IF_EXACT_HEAD_GREEN=QUALIFIED_SCI_FOUND_01_CONCEPTUAL_FOUNDATION_AUTHORITY' _fdoc16_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc16-conceptual-foundation-${{ github.sha }}
+          path: _fdoc16_validator_stdout.txt
