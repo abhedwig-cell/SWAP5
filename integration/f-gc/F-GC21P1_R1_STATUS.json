@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC21P1-R1",
+  "title": "Exact Accepted Bottom Interface Exchange Result Warning-Hygiene Remediation",
+  "phase": "OWNER_CLOSEOUT_COMPLETE",
+  "decision": "OWNER_QUALIFIED_F_GC21P1_AFTER_WARNING_HYGIENE_REMEDIATION_NOT_INDEPENDENTLY_QUALIFIED_NOT_CANONICALLY_ADMITTED",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "scope_blocked_parent_candidate": "95e05490d3f60325361a9036dc720c7954093307",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "source_publication_commit": "2ab864e99f16f2ca9e06f11f5e7658e36276d0a2",
+  "qualification_evidence": [
+    {
+      "run_id": 34715597755,
+      "head_sha": "431d1e1d21fef96e853bcc7230d47868bedcbea5",
+      "conclusion": "success",
+      "meaning": "pre-publication corrected-state owner qualification and exact two-file source publication"
+    },
+    {
+      "run_id": 34715669502,
+      "job_id": 103612340294,
+      "head_sha": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+      "conclusion": "success",
+      "meaning": "post-publication qualification on the actual persisted source postimage; no unpublished source delta"
+    }
+  ],
+  "source_scope": {
+    "production_files_changed_from_restart_canonical": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "R1_source_files_changed_from_scope_blocked_parent": [
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "R1_effect": "restore exact canonical REAL equality predicates; no change to F-GC21P1 exchange semantics"
+  },
+  "qualified_behavior": [
+    "Accepted bottom-interface exchange is carried as an explicit accepted result and canonical interval aggregate.",
+    "Rejected full/half/retry trials do not contribute exchange publication.",
+    "Two-half acceptance aggregates accepted half-step exchanges and carries the terminal accepted flux from the second half.",
+    "Canonical substeps aggregate accepted exchange across the completed requested interval.",
+    "Missing interface result fails closed rather than fabricating a coupling exchange.",
+    "Backend exchange integration is generic in accepted step duration and uses native outward-bottom sign convention.",
+    "O0 and O2 qualification outputs are identical.",
+    "Pre-existing compare-real warnings are isolated in the qualification harness; production equality semantics match the restart canonical exactly."
+  ],
+  "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_AFTER_WARNING_HYGIENE_REMEDIATION",
+  "owner_qualified": true,
+  "independently_qualified": false,
+  "canonical_admission": false,
+  "production_groundwater_coupling_admission": false,
+  "next_required_gate": "Independent qualification in a separate F-VQ workunit before any canonical-admission workunit may consume this capability.",
+  "hard_nonclaims": [
+    "No MODFLOW/aquifer/full predictor-corrector qualification.",
+    "No crash-recovery or distributed-runtime qualification.",
+    "No large-batch throughput qualification.",
+    "No canonical or production-coupling admission.",
+    "RB1 remains frozen."
+  ],
+  "closeout_policy": "This status is metadata-only above the green qualified source postimage. Do not modify F-GC21P1-R1 further solely to self-record its own final commit SHA; external branch-head verification is authoritative."
+}
