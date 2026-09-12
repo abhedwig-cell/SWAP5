@@ -28,7 +28,7 @@ jobs:
         run: gfortran --version
       - name: Definitive F-KT15 canonical admission gate
         shell: bash
-        run: bash tests/fci/run_fci49_fkt15_solver_service_canonical_admission.sh
+        run: bash tests/fci/run_fci49_fkt15_solver_service_canonical_admission_reconciled.sh
       - name: Exact head end
         shell: bash
         run: |
