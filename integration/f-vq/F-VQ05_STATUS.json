@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI14 Temporal Acceptance Contract Admission",
+  "basis": {
+    "oracle": "B1.10",
+    "fci14_qualified_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "fci14_canonical_workflow_run": 34107845964,
+    "fci14_canonical_job": 101697462464,
+    "fvq04_final_head": "b406382a49f264e8f05441442a6e22eab4f0f6ac"
+  },
+  "integration_overlay": {
+    "canonical_commit": "927b7fb831ac91f77da11eb375e71b1975e1749f",
+    "work_unit": "F-CI17",
+    "role": "FORMAL_CLOSEOUT_ONLY",
+    "consumed_as_fvq05_qualification_basis": false,
+    "production_source_delta_from_previous_overlay": false,
+    "ci_g10": "QUALIFIED",
+    "downstream_release_allowed": false
+  },
+  "qualification": {
+    "tested_postimage": "e4e527cf3d7b8d5be228abad7099533d7802e0be",
+    "vq_workflow_run": 34111912287,
+    "vq_job": 101709861455,
+    "corrected_reference_job": 101709861145,
+    "fvq04_replay_job": 101709861378,
+    "documentation_workflow_run": 34111912328,
+    "result": "PASS"
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed_since_overlay": false,
+  "contract_semantics_qualified": true,
+  "production_temporal_profile_qualified": false,
+  "real_b1_10_temporal_acceptance_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "status": "QUALIFIED_FCI14_TEMPORAL_ACCEPTANCE_CONTRACT_ONLY",
+  "next_action": "Keep the numerical profile and production B1.10 reference execution blocked until independently qualified source-bound temporal limits and real execution evidence exist.",
+  "blockers": [
+    "No independently qualified numeric limits exist for the eight B1.10 endpoint metrics.",
+    "No admitted real B1.10 execute_reference_interval route exists.",
+    "Thermal, solute, irrigation, crop and WOFOST temporal state remain uncharacterized for this contract.",
+    "Real B1.10 full-versus-two-half production temporal acceptance has not been qualified.",
+    "Complete snow/macropore result accounting and reentrant parallel legacy-backend qualification remain open."
+  ],
+  "holds": [
+    "Normalized threshold 1.0 is contract arithmetic only, not a physical tolerance.",
+    "Deterministic F-CI14 fixture limits remain non-production test data.",
+    "Nonlinear solver and mass-balance tolerances remain separate from temporal-accuracy policy.",
+    "Active optional-process state may not be silently omitted from temporal qualification.",
+    "F-CI17 closeout is carried for canonical ancestry only and is not temporal qualification evidence."
+  ]
+}
