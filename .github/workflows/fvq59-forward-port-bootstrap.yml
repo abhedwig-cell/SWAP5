@@ -1,0 +1,77 @@
+name: F-VQ59 PM08D7 current-canonical forward-port bootstrap
+
+on:
+  push:
+    branches:
+      - qualification/f-vq59-fpm08d7-fixed-weir-current-canonical
+
+permissions:
+  contents: write
+
+jobs:
+  forward-port:
+    if: ${{ !contains(github.event.head_commit.message, '[f-vq59-forward-port]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Three-way replay PM08D7 semantic delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin refs/heads/work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate:refs/remotes/origin/fpm08d7-owner
+          git diff --full-index --binary e4bafab3f6c6547113f5f8717da2467901f49a42 de90d3bff15b022c45a4e515cb5b97ead7498f25 -- \
+            src/process/mod_restricted_fixed_weir_surface_water.f90 \
+            src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90 \
+            src/runtime/mod_fmr_restart_state_contract.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            tests/fpm/run_fpm08d7_fixed_weir_process_checkpoint.sh \
+            tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh \
+            tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh \
+            tests/fpm/run_fpm08d7_temporal_preservation_owner.sh \
+            tests/fpm/run_fpm08d7_transactional_runtime_owner.sh \
+            tests/fpm/test_fpm08d7_fixed_weir_process.f90 \
+            tests/fpm/test_fpm08d7_restart_lifecycle.f90 \
+            tests/fpm/test_fpm08d7_transactional_runtime.f90 \
+            > /tmp/fpm08d7.patch
+          if ! git apply --3way --index /tmp/fpm08d7.patch; then
+            echo 'F-VQ59_FORWARD_PORT_CONFLICT'
+            git status --short
+            git diff --cc || true
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          core = Path('src/runtime/mod_fmr_runtime_core.f90')
+          s = core.read_text()
+          anchor = "  integer(int64), parameter, public :: &\n       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE = 390501_int64\n"
+          addition = anchor + "  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER = 43107_int64\n"
+          assert anchor in s and 'FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER' not in s
+          s = s.replace(anchor, addition, 1)
+          old = "    case (FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &\n          FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE)\n"
+          new = "    case (FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &\n          FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &\n          FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER)\n"
+          assert old in s
+          core.write_text(s.replace(old, new, 1))
+
+          for path in [Path('src/runtime/mod_fmr_serialized_reference_backend.f90'),
+                       Path('src/runtime/mod_fmr_restart_state_contract.f90')]:
+              s = path.read_text()
+              old_use = '  use mod_fmr_optional_state_layouts, only: FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER\n'
+              assert old_use in s
+              new_use = '  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER\n'
+              s = s.replace(old_use, new_use, 1)
+              s = s.replace('FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER',
+                            'FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER')
+              path.write_text(s)
+          PY
+
+          git add src tests/fpm
+          git diff --cached --check
+          git status --short
+          git commit -m "qualification(F-VQ59): [f-vq59-forward-port] recompose PM08D7 on current canonical"
+          git push origin HEAD:qualification/f-vq59-fpm08d7-fixed-weir-current-canonical
