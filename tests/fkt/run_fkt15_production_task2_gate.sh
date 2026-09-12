@@ -52,6 +52,15 @@ grep -Fq 'call try_b110_production_task2(worker, typed_task2_handled)' src/legac
 grep -Fq 'if (.not. typed_task2_handled) then' src/legacy/b1_10_port/soilwater.f90 || fail 'direct fallback guard missing'
 grep -Fq 'call headcalc(worker, history=worker%history)' src/legacy/b1_10_port/soilwater.f90 || fail 'direct HeadCalc fallback missing'
 [[ "$(grep -c 'call try_b110_production_task2' src/legacy/b1_10_port/soilwater.f90)" == 1 ]] || fail 'typed task2 must occur exactly once'
+
+grep -Fq 'if (.NOT.fldecdt) call SoilWater(2, worker)' src/legacy/b1_10_port/swap_part02.inc || fail 'accepted/retry task2 guard missing'
+grep -Fq 'if (fldecdt .OR. (swmacro == 1 .AND. FlDecMpRat)) then' src/legacy/b1_10_port/swap_part02.inc || fail 'retry branch missing'
+grep -Fq 'call SoilWaterStateVar(2)' src/legacy/b1_10_port/swap_part02.inc || fail 'retry state restore missing'
+grep -Fq 'call TimeControl(5)' src/legacy/b1_10_port/swap_part03.inc || fail 'retry timestep control missing'
+grep -Fq 'call SoilWater(3, worker)' src/legacy/b1_10_port/swap_part03.inc || fail 'accepted task3 continuation missing'
+[[ "$(grep -h -c 'call SoilWater(3, worker)' src/legacy/b1_10_port/swap_part0{2,3}.inc | awk '{s+=$1} END {print s+0}')" == 1 ]] || fail 'task3 must have one accepted continuation callsite'
+echo 'FKT15_TASK3_OWNERSHIP_STATIC_GATE=PASS'
+
 grep -Fq 'call map_soil_water_interface_sensitivity_to_trial' src/adapter/mod_b1_10_reference_model.f90 || fail 'F-KT14 mapper not used'
 grep -Fq 'call a23bu_reset_soil_water_trial_result(worker)' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'trial result reset missing'
 grep -Fq 'sensitivity_route_admitted = swbotb == 2' src/adapter/mod_b110_production_soil_water_task2.f90 || fail 'bottom sensitivity gate missing'
@@ -94,8 +103,6 @@ for opt in 0 2; do
     common_objects+=("$obj")
   done
 
-  # Compile the actual legacy callsite against the production adapter. It is kept
-  # out of the focused executable links but catches module/interface drift in SoilWater(2).
   gfortran "${FLAGS[@]}" -O"$opt" -J"$out" -I"$out" -c \
     src/legacy/b1_10_port/soilwater.f90 -o "$out/soilwater_callsite.o"
   echo "FKT15_SOILWATER_TASK2_CALLSITE_COMPILE_O${opt}=PASS"
@@ -114,6 +121,10 @@ for opt in 0 2; do
     FKT15_SINGLE_HYDRAULIC_AUTHORITY=PASS \
     FKT15_UNSUPPORTED_DIRECT_FALLBACK_SEAM=PASS \
     FKT15_STALE_SENSITIVITY_CLEAR=PASS \
+    FKT15_WORKER_ISOLATION_1=PASS \
+    FKT15_WORKER_ISOLATION_2=PASS \
+    FKT15_WORKER_ISOLATION_4=PASS \
+    FKT15_WORKER_ISOLATION_8=PASS \
     FKT15_EIGHT_WORKER_CAPSULE_ISOLATION=PASS \
     FKT15_RETRY_FAIL_CLOSED=PASS \
     FKT15_PRODUCTION_TASK2_GATE=PASS; do
