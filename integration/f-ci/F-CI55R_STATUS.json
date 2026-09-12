@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI55R",
+  "title": "F-CI55 Moving Canonical Preservation Authority Reconciliation",
+  "phase": "QUALIFIED_READY_FOR_CANONICAL_PROMOTION_EXACT_FINAL_HEAD_GATES_REQUIRED",
+  "decision": "QUALIFIED_F_CI55R_READY_FOR_CANONICAL_PROMOTION_SUBJECT_TO_EXACT_FINAL_HEAD_GATES",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "blocked_fci55_candidate": "860f697cd785f3de01a36c9f0f06043e6dcb689a",
+  "blocked_pr": 89,
+  "blocked_broad_run": 34717007154,
+  "blocking_preservation_job": 103616157347,
+  "replacement_pr": 91,
+  "qualified_production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "independent_authority": "a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "stale_moving_preservation_authority": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "target_moving_preservation_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "reconciliation_commit": "41de29f585c9446911799d6671bd38e69addc509",
+  "reconciliation_scope": "one-line moving-preservation AUTH update only; dependency_surface byte-identical; no production/reference mutation",
+  "dedicated_qualification_evidence": [
+    {"head":"e1f8fa702ba2e92fcd9a764c6258e5737da4afbb","run":34718435020,"job":103619730442,"conclusion":"success"},
+    {"head":"6dc9b434d38fb334e3eb337599473996306bd3a8","run":34718494392,"conclusion":"success"}
+  ],
+  "replacement_pr_broad_evidence": {
+    "head": "6dc9b434d38fb334e3eb337599473996306bd3a8",
+    "run": 34718542097,
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103620274394,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_MOVING_PRESERVATION_RECONCILIATION",
+  "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
+  "dedicated_qualification_green": true,
+  "broad_fci_canonical_green": true,
+  "canonical_admission": false,
+  "production_groundwater_coupling_admission": false,
+  "ready_for_replacement_pr": true,
+  "ready_for_canonical_promotion": true,
+  "required_before_promotion": [
+    "The automatically triggered dedicated F-CI55R workflow must succeed on the exact containing status head.",
+    "The automatically retriggered replacement-PR broad F-CI canonical qualification must succeed on the exact containing status head, including current-restricted-canonical-preservation.",
+    "integration/f-ci-canonical must still equal c6494f913303b7aefc4f9c53c6c157082d54ea4b immediately before promotion; otherwise recompose/requalify.",
+    "Owner dcde6360f902081c94927486455e5233b81dfc1b and independent authority a76f338f5fdebed8346ffdbbd04dc7461d15a137 must remain exact.",
+    "Promotion must be a true two-parent merge with canonical first parent and the exact qualified F-CI55R head second; force, squash and rebase are forbidden."
+  ],
+  "hard_nonclaims": [
+    "No full F-GC21 predictor-corrector orchestration admission.",
+    "No production groundwater-coupling admission.",
+    "No MODFLOW/aquifer end-to-end qualification.",
+    "No crash-recovery, distributed-runtime or large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ],
+  "closeout_rule": "The containing commit is the final prepromotion F-CI55R qualification head only after external CI succeeds on that exact head. Do not add another prepromotion metadata commit merely to record those later runs; their evidence is external GitHub Actions authority."
+}

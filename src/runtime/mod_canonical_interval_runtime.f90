@@ -26,8 +26,8 @@ contains
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
-    real(real64) :: cursor, next_cursor, tol
-    logical :: aggregate_mass_complete
+    real(real64) :: cursor, next_cursor, tol, aggregate_bottom_exchange, terminal_bottom_flux
+    logical :: aggregate_mass_complete, aggregate_bottom_available
     integer :: isub
 
     result = canonical_result_t()
@@ -53,6 +53,9 @@ contains
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
     aggregate_mass_complete = .true.
+    aggregate_bottom_available = .true.
+    aggregate_bottom_exchange = 0.0_real64
+    terminal_bottom_flux = 0.0_real64
     cursor = interval%t0
 
     do isub = 1, config%max_committed_substeps
@@ -68,6 +71,8 @@ contains
       end if
 
       call accumulate_accepted_mass(result, tx, aggregate_mass_complete)
+      call accumulate_accepted_bottom_interface(tx, aggregate_bottom_available, aggregate_bottom_exchange, &
+           terminal_bottom_flux)
       terminal_sensitivity = tx%interface_sensitivity
       next_cursor = tx%accepted_t1
       tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
@@ -89,6 +94,12 @@ contains
         result%completed = .true.
         result%diagnostics%external_commits = 1
         call finalize_interval_mass(result, aggregate_mass_complete)
+        if (aggregate_bottom_available .and. ieee_is_finite(aggregate_bottom_exchange) .and. &
+            ieee_is_finite(terminal_bottom_flux)) then
+          result%bottom_interface_exchange_available = .true.
+          result%bottom_outward_exchange_native = aggregate_bottom_exchange
+          result%terminal_bottom_outward_flux_native = terminal_bottom_flux
+        end if
         result%interface_sensitivity = terminal_sensitivity
         if (result%interface_sensitivity%available) then
           result%interface_sensitivity%covers_requested_interval = &
@@ -123,6 +134,32 @@ contains
          tx%accepted_missing_contribution_mask)
     aggregate_complete = aggregate_complete .and. tx%accepted_mass_complete
   end subroutine accumulate_accepted_mass
+
+  subroutine accumulate_accepted_bottom_interface(tx, aggregate_available, aggregate_exchange, terminal_flux)
+    type(transaction_result_t), intent(in) :: tx
+    logical, intent(inout) :: aggregate_available
+    real(real64), intent(inout) :: aggregate_exchange, terminal_flux
+    real(real64) :: candidate_exchange
+
+    if (tx%status /= TX_STATUS_ACCEPTED) return
+    if (.not. aggregate_available) return
+    if (.not. tx%bottom_interface_exchange_available) then
+      aggregate_available = .false.
+      aggregate_exchange = 0.0_real64
+      terminal_flux = 0.0_real64
+      return
+    end if
+    candidate_exchange = aggregate_exchange + tx%accepted_bottom_outward_exchange_native
+    if (.not. ieee_is_finite(candidate_exchange) .or. &
+        .not. ieee_is_finite(tx%terminal_bottom_outward_flux_native)) then
+      aggregate_available = .false.
+      aggregate_exchange = 0.0_real64
+      terminal_flux = 0.0_real64
+      return
+    end if
+    aggregate_exchange = candidate_exchange
+    terminal_flux = tx%terminal_bottom_outward_flux_native
+  end subroutine accumulate_accepted_bottom_interface
 
   subroutine finalize_interval_mass(result, aggregate_complete)
     type(canonical_result_t), intent(inout) :: result

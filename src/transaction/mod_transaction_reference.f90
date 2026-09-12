@@ -55,6 +55,9 @@ module mod_transaction_reference
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
+    logical :: bottom_interface_exchange_available = .false.
+    real(real64) :: bottom_outward_exchange_native = 0.0_real64
+    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
     logical :: mass_accounting_complete = .false.
     integer(int64) :: missing_mass_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     logical :: temporal_certificate_available = .false.
@@ -122,6 +125,9 @@ module mod_transaction_reference
     real(real64) :: accepted_storage_change = 0.0_real64
     real(real64) :: accepted_total_in = 0.0_real64
     real(real64) :: accepted_total_out = 0.0_real64
+    logical :: bottom_interface_exchange_available = .false.
+    real(real64) :: accepted_bottom_outward_exchange_native = 0.0_real64
+    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
     real(real64) :: accepted_mass_residual = huge(0.0_real64)
     real(real64) :: requested_t0 = 0.0_real64
     real(real64) :: requested_t1 = 0.0_real64
@@ -353,6 +359,19 @@ contains
       result%accepted_storage_change = storage_half - storage0
       result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
       result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
+      result%bottom_interface_exchange_available = half1_outcome%bottom_interface_exchange_available .and. &
+           half2_outcome%bottom_interface_exchange_available
+      if (result%bottom_interface_exchange_available) then
+        result%accepted_bottom_outward_exchange_native = half1_outcome%bottom_outward_exchange_native + &
+             half2_outcome%bottom_outward_exchange_native
+        result%terminal_bottom_outward_flux_native = half2_outcome%terminal_bottom_outward_flux_native
+        if (.not. ieee_is_finite(result%accepted_bottom_outward_exchange_native) .or. &
+            .not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) then
+          result%bottom_interface_exchange_available = .false.
+          result%accepted_bottom_outward_exchange_native = 0.0_real64
+          result%terminal_bottom_outward_flux_native = 0.0_real64
+        end if
+      end if
       result%accepted_mass_residual = half_mass_residual
       result%accepted_missing_contribution_mask = accepted_missing_mask
       result%accepted_mass_complete = storage_start_complete .and. storage_end_complete .and. &
@@ -482,6 +501,17 @@ contains
       result%accepted_storage_change = storage_candidate - storage0
       result%accepted_total_in = outcome%mass_in
       result%accepted_total_out = outcome%mass_out
+      result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
+      if (result%bottom_interface_exchange_available) then
+        result%accepted_bottom_outward_exchange_native = outcome%bottom_outward_exchange_native
+        result%terminal_bottom_outward_flux_native = outcome%terminal_bottom_outward_flux_native
+        if (.not. ieee_is_finite(result%accepted_bottom_outward_exchange_native) .or. &
+            .not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) then
+          result%bottom_interface_exchange_available = .false.
+          result%accepted_bottom_outward_exchange_native = 0.0_real64
+          result%terminal_bottom_outward_flux_native = 0.0_real64
+        end if
+      end if
       result%accepted_missing_contribution_mask = accepted_missing_mask
       result%accepted_mass_complete = storage_start_complete .and. storage_end_complete .and. &
            outcome%mass_accounting_complete .and. accepted_missing_mask == TX_MASS_MISSING_NONE

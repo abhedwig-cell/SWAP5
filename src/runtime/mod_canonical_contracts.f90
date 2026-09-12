@@ -86,6 +86,9 @@ module mod_canonical_contracts
     type(canonical_mass_accounting_t) :: mass
     type(canonical_run_diagnostics_t) :: diagnostics
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
+    logical :: bottom_interface_exchange_available = .false.
+    real(real64) :: bottom_outward_exchange_native = 0.0_real64
+    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
   end type canonical_result_t
 
   type, abstract, extends(transaction_model_t), public :: canonical_physical_model_t
