@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC19",
+  "title": "Groundwater Interface Mass Ledger and Diagnostics",
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "governing_authorities": {
+    "F_GC15": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "F_GC16": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+    "F_GC17": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "F_CI50P_R1_final_canonical": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "objective": "Define transaction-scoped interface water accounting and diagnostics in which one accepted exchange amount is assigned with exact opposite sign to SWAP and groundwater, rejected trials are discardable, and diagnostic residuals never become a mass-loss tolerance.",
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90"
+  ],
+  "must_reuse_without_modification": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/transaction/mod_transaction_reference.f90"
+  ],
+  "required_semantics": [
+    "single-source exchange amount per trial/window",
+    "exact opposite SWAP and groundwater assignments",
+    "finite increasing [t0,t1] identity",
+    "trial ledger separated from committed ledger",
+    "rejected trial contributes zero to committed accounting",
+    "accepted trial committed at most once",
+    "head and flux residual diagnostics remain separate",
+    "roundoff residual may be reported but cannot authorize imbalance",
+    "no configurable interface mass tolerance"
+  ],
+  "hard_nonclaims": [
+    "no alteration of existing internal transaction mass-tolerance machinery",
+    "no predictor-corrector sequencing",
+    "no groundwater exchange service lifecycle ownership",
+    "no tile/cell aggregation",
+    "no accuracy binding",
+    "no MODFLOW adapter"
+  ],
+  "parallel_ownership_exclusions": {
+    "F_GC18": "groundwater exchange service lifecycle",
+    "F_GC20": "tile/cell mapping and aggregation",
+    "F_GC22": "application/temporal accuracy binding",
+    "F_GC21": "predictor-corrector orchestration"
+  },
+  "qualification": [
+    "compile O0/O2 with traps",
+    "exact opposite assignment tests",
+    "commit-once and discard tests",
+    "nonfinite fail-closed tests",
+    "no mass tolerance symbol or acceptance branch",
+    "exact-head workflow",
+    "all 30 architecture invariants"
+  ]
+}
