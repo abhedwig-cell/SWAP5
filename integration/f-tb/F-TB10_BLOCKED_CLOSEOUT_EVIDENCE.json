@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ftb_blocked_closeout_evidence.v1",
+  "work_unit": "F-TB10",
+  "decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP",
+  "status": "BLOCKED_OWNER_TEMPORAL_ACCEPTANCE_POLICY_REQUIRED",
+  "first_green_blocked_validator": {
+    "head": "97b061bf8213d0549749229f239dbb223c59da94",
+    "workflow_run": 34681336211,
+    "workflow_job": 103520398924,
+    "conclusion": "success",
+    "steps": {
+      "checkout_exact_candidate": "success",
+      "exact_head_and_canonical_start": "success",
+      "materialize_pinned_authorities": "success",
+      "validate_blocked_authority": "success",
+      "exact_head_and_canonical_end": "success"
+    }
+  },
+  "canonical_base_verified_by_run": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "authority_pins_verified_by_run": {
+    "F_TB09": "fe3545c4537b11cefd0186aa401048d4f4b10eb9",
+    "F_VQ28": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "F_VQ34": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "F_GC22_scope_check": "c50f3770ae8e4bee7c276a080be00156218944f1"
+  },
+  "validated_claims": [
+    "no production src delta from frozen canonical base",
+    "no reference delta from frozen canonical base",
+    "TB09-003 remains CATALOGED_NOT_PHYSICS_QUALIFIED",
+    "F-VQ28 remains negative authority with no production metric/tolerance and no mass relaxation",
+    "F-VQ34 normalized certificate has no default H_budget and preserves hard-mass precedence",
+    "F-CI44/F-CI46 transport accuracy policy but select no numeric application budget",
+    "F-GC22 is direct-groundwater specific, not canonical at assessment and selects no universal numeric application policy",
+    "all 30 core architecture invariants remain reconciled",
+    "blocked closeout does not claim a production defect or scientific qualification"
+  ],
+  "exact_head_rule": "This first green run proves the blocked-closeout validator. Because this evidence file and final status metadata are later commits, the definitive F-TB10 branch authority requires a new green run on the final exact branch head."
+}
