@@ -19,7 +19,11 @@ The reference area is the owning logical SWAP column or tile area. EB-I01 does n
 
 ## Components and transfers
 
-A positive component id denotes an energy-accounting component inside a logical model composition. Component id `0` (`ENERGY_EXTERNAL_COMPONENT`) denotes the exterior of the selected control volume.
+A positive component id denotes a registered energy-accounting component inside the logical model composition. Component id `0` (`ENERGY_EXTERNAL_COMPONENT`) denotes the environment outside that registered system.
+
+Every positive transfer endpoint must occur in the registered trial storage snapshot. An unknown positive endpoint is invalid and may not be silently reclassified as external. The runtime rejects it when the transfer is recorded, and the generic control-volume projector independently rejects a transfer whose positive endpoint is absent from its storage snapshots.
+
+For a nested control volume, a registered positive component that is not selected is outside that particular control volume even though it remains part of the registered logical system. This distinction is what allows one directed transfer to be internal in a larger control volume and a boundary transfer in a nested one.
 
 A transfer is represented by a non-negative magnitude plus explicit direction:
 
