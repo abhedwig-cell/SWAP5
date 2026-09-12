@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.fvq62_pre_registration.v1",
+  "work_unit": "F-VQ62",
+  "title": "F-GC19R-R1 Prepared Ledger Provenance Independent Qualification",
+  "candidate": "work/f-gc19r-r1-prepared-ledger-provenance-remediation@3bf3fec344ee67dd56f5f54b293b3a0a47214efb",
+  "candidate_source_blob": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+  "frozen_blocked_authority": "qualification/f-gc19r-prepared-ledger-publication-owner-qualification@c4b0dc78af0b444edcc4b349cc598b5b6167bd1d",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "current_canonical_at_start": "c262ae3c0c06a8fdeb5e87dde2177417c1465f91",
+  "maximum_positive_decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "canonical_admission_by_this_work_unit": false,
+  "production_coupling_admission_by_this_work_unit": false,
+  "independence_rules": [
+    "Do not use the owner F-GC19R-R1 test program as the independent behavioral verifier.",
+    "Pin the exact owner-qualified head and source blob and fail closed on authority movement.",
+    "Retain the earlier blocked authority unchanged as negative provenance.",
+    "Use an independently written adversarial test and independent qualification gate.",
+    "A positive result qualifies only the component contract; runtime allocation must later qualify ledger_id uniqueness and lifecycle during production composition."
+  ],
+  "required_probes": [
+    "unbound external preparation fails closed without consuming the active trial",
+    "invalid identity is rejected",
+    "ledger identity cannot be changed after binding",
+    "two ledgers with distinct identities but identical lineage and local generation reject each other's prepared handles",
+    "copied same-ledger handle is stale after exactly one publication",
+    "new preparation generation rejects the earlier generation",
+    "abort of a valid prepared reservation changes no committed mass",
+    "legacy atomic commit_trial remains valid without external identity",
+    "groundwater exchange remains the exact arithmetic negative of the canonical SWAP exchange",
+    "no mass tolerance, hidden global identity generator, pointer identity, file-format, external-model or calendar assumption",
+    "counter and generation exhaustion guards remain fail closed",
+    "O0/O2 identity with runtime and FPE checks",
+    "all 30 architecture invariants independently assessed"
+  ],
+  "hard_nonclaims": [
+    "no canonical admission",
+    "no production coupling admission",
+    "no MODFLOW adapter or aquifer solver",
+    "no end-to-end predictor-corrector convergence",
+    "no process-crash or distributed transaction protocol",
+    "no large-batch throughput qualification",
+    "no proof here that a future runtime assigns globally unique ledger_id values",
+    "RB1 remains frozen"
+  ]
+}
