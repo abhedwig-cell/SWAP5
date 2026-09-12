@@ -1,0 +1,83 @@
+name: EB-I03 owner qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i03-phase-resolved-hydraulic-flux-seam
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard current canonical and frozen hydraulic seams
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          test "$(git rev-parse "$CANONICAL:src/solver/mod_soil_water_solver_contract.f90")" = "276941d76ba951a89c43899e61fd0532418d8230"
+          test "$(git rev-parse "$CANONICAL:src/solver/mod_reference_richards_workspace.f90")" = "74f99556005ae39614f9df678467b1e19097bae2"
+          test "$(git rev-parse "HEAD:src/solver/mod_soil_water_solver_contract.f90")" = "276941d76ba951a89c43899e61fd0532418d8230"
+          test "$(git rev-parse "HEAD:src/solver/mod_reference_richards_workspace.f90")" = "74f99556005ae39614f9df678467b1e19097bae2"
+
+      - name: Check EB-I03 production delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i03-owner-gate.yml
+          src/adapter/mod_reference_richards_phase_flux_binding.f90
+          src/solver/mod_soil_water_phase_flux_view.f90
+          tests/test_eb_i03_phase_flux_view.f90
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Compile and run O0
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o0
+          cd build-o0
+          gfortran -std=f2008 -ffree-line-length-none -O0 \
+            ../src/solver/mod_soil_water_solver_contract.f90 \
+            ../src/solver/mod_reference_richards_workspace.f90 \
+            ../src/solver/mod_soil_water_phase_flux_view.f90 \
+            ../src/adapter/mod_reference_richards_phase_flux_binding.f90 \
+            ../tests/test_eb_i03_phase_flux_view.f90 \
+            -o test-eb-i03
+          ./test-eb-i03 | tee ../eb-i03-o0.txt
+
+      - name: Compile and run O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o2
+          cd build-o2
+          gfortran -std=f2008 -ffree-line-length-none -O2 \
+            ../src/solver/mod_soil_water_solver_contract.f90 \
+            ../src/solver/mod_reference_richards_workspace.f90 \
+            ../src/solver/mod_soil_water_phase_flux_view.f90 \
+            ../src/adapter/mod_reference_richards_phase_flux_binding.f90 \
+            ../tests/test_eb_i03_phase_flux_view.f90 \
+            -o test-eb-i03
+          ./test-eb-i03 | tee ../eb-i03-o2.txt
+
+      - name: Require optimization-invariant evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'EB-I03 phase flux view: PASS' eb-i03-o0.txt
+          grep -Fx 'EB-I03 phase flux view: PASS' eb-i03-o2.txt
+          cmp eb-i03-o0.txt eb-i03-o2.txt
