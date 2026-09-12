@@ -52,6 +52,15 @@ diff --git a/src/transaction/mod_transaction_reference.f90 b/src/transaction/mod
 +        end if
 +      end if
        result%accepted_missing_contribution_mask = accepted_missing_mask
+@@
+     published%method = source%method
+     published%origin_t0 = origin_t0
+     published%origin_t1 = origin_t1
+-    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1
++    published%covers_requested_interval = origin_t0 <= requested_t0 .and. origin_t0 >= requested_t0 .and. &
++         origin_t1 <= requested_t1 .and. origin_t1 >= requested_t1
+   end subroutine publish_local_terminal_sensitivity
+
 diff --git a/src/runtime/mod_canonical_contracts.f90 b/src/runtime/mod_canonical_contracts.f90
 --- a/src/runtime/mod_canonical_contracts.f90
 +++ b/src/runtime/mod_canonical_contracts.f90
@@ -67,6 +76,7 @@ diff --git a/src/runtime/mod_canonical_contracts.f90 b/src/runtime/mod_canonical
 +    real(real64) :: bottom_outward_exchange_native = 0.0_real64
 +    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
    end type canonical_result_t
+
 diff --git a/src/runtime/mod_canonical_interval_runtime.f90 b/src/runtime/mod_canonical_interval_runtime.f90
 --- a/src/runtime/mod_canonical_interval_runtime.f90
 +++ b/src/runtime/mod_canonical_interval_runtime.f90
@@ -129,6 +139,7 @@ diff --git a/src/runtime/mod_canonical_interval_runtime.f90 b/src/runtime/mod_ca
 +  end subroutine accumulate_accepted_bottom_interface
  
    subroutine finalize_interval_mass(result, aggregate_complete)
+
 diff --git a/src/kernel/mod_kernel_transactions.f90 b/src/kernel/mod_kernel_transactions.f90
 --- a/src/kernel/mod_kernel_transactions.f90
 +++ b/src/kernel/mod_kernel_transactions.f90
@@ -152,6 +163,7 @@ diff --git a/src/kernel/mod_kernel_transactions.f90 b/src/kernel/mod_kernel_tran
 +    result%bottom_outward_exchange_native = runtime_result%bottom_outward_exchange_native
 +    result%terminal_bottom_outward_flux_native = runtime_result%terminal_bottom_outward_flux_native
    end subroutine map_runtime_result
+
 diff --git a/src/runtime/mod_fmr_serialized_reference_backend.f90 b/src/runtime/mod_fmr_serialized_reference_backend.f90
 --- a/src/runtime/mod_fmr_serialized_reference_backend.f90
 +++ b/src/runtime/mod_fmr_serialized_reference_backend.f90
