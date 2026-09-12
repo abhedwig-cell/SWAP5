@@ -1,25 +1,32 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "work_unit": "F-KT15",
   "title": "Restricted Production Soil-Water Task-2 Solver-Service Transaction Composition",
   "branch": "work/f-kt15-task2-solver-service-production-composition",
-  "status": "CLOSEOUT_REMEDIATION_PENDING_EXACT_HEAD",
-  "decision": "QUALIFIED_RESTRICTED_PRODUCTION_SOIL_WATER_TASK2_SOLVER_SERVICE_TRANSACTION_COMPOSITION_READY_FOR_SEPARATE_CANONICAL_ADMISSION_SUBJECT_TO_FINAL_EXACT_HEAD_REPLAY",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_RESTRICTED_PRODUCTION_SOIL_WATER_TASK2_SOLVER_SERVICE_TRANSACTION_COMPOSITION_READY_FOR_SEPARATE_CANONICAL_ADMISSION",
   "authorities": {
     "F_KT15R_recomposition": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
     "finalized_current_canonical": "e537baf521e633c432a9f33de495fab9f18e918d",
     "qualified_production_candidate": "8ca0b0fb587cdb4dfb7cc5037f571406778f38c8",
     "failed_premature_closeout": "f8a7890bd88c17cd7b76e88dd9c6cc43465ac8db",
-    "true_canonical_ancestry_merge": "49198b9bdd8fbc5ebe07177183e0ae914a2a3630"
+    "superseded_side_merge_not_in_final_lineage": "49198b9bdd8fbc5ebe07177183e0ae914a2a3630",
+    "true_canonical_ancestry_merge": "9465be74c01fe6455466e5ba7f62a761986ad450"
   },
   "qualification_evidence": {
     "primary_candidate_run": 34675363793,
     "primary_candidate_job": 103504154271,
     "primary_candidate_conclusion": "success",
+    "repinned_current_canonical_run": 34675600769,
+    "repinned_current_canonical_conclusion": "success",
+    "reconciliation_record_run": 34675647276,
+    "reconciliation_record_conclusion": "success",
     "premature_closeout_run": 34675686333,
     "premature_closeout_conclusion": "failure",
     "premature_closeout_classification": "EXPECTED_FAIL_CLOSED_MISSING_FINALIZED_CANONICAL_ANCESTRY",
-    "final_exact_head_run": "REQUIRED_ON_FINAL_COMMIT_CONTAINING_THIS_RECORD"
+    "true_ancestry_merge_exact_head_run": 34675799563,
+    "true_ancestry_merge_exact_head_conclusion": "success",
+    "closeout_record_exact_head_gate": "REQUIRED_AND_AUTOMATIC_ON_THIS_STATUS_COMMIT"
   },
   "canonical_race_reconciliation": {
     "old_canonical": "4f62af04df8ad686a8066f6c164cdcf79d319999",
@@ -28,7 +35,12 @@
     "src_delta": 0,
     "reference_delta": 0,
     "true_two_parent_ancestry_required": true,
-    "true_two_parent_merge": "49198b9bdd8fbc5ebe07177183e0ae914a2a3630",
+    "true_two_parent_merge": "9465be74c01fe6455466e5ba7f62a761986ad450",
+    "true_two_parent_merge_parents": [
+      "73558f28953755f3893945cf88f8223645f8c1d6",
+      "e537baf521e633c432a9f33de495fab9f18e918d"
+    ],
+    "canonical_is_ancestor_of_qualified_lineage": true,
     "race_guard_weakened": false
   },
   "qualified_production_delta_from_F_KT15R": [
@@ -62,7 +74,12 @@
     "swdra2_surface_water_coupling": false,
     "time_dependent_pondmx": false,
     "nonlinear_runoff_exponent": false,
-    "surface_regimes_qualified": ["surface-flux", "atmospheric-head", "ponded-head", "ponded-head-linear-runoff"],
+    "surface_regimes_qualified": [
+      "surface-flux",
+      "atmospheric-head",
+      "ponded-head",
+      "ponded-head-linear-runoff"
+    ],
     "interface_sensitivity_publication": "only qualified smooth surface-flux route with SWBOTB=2"
   },
   "hard_nonclaims": [
@@ -75,5 +92,8 @@
     "no project/application accuracy-policy change",
     "no water-balance or scientific-tolerance relaxation"
   ],
-  "final_closeout_rule": "Only a successful exact-head workflow on the final branch head after the true canonical ancestry merge may change status to CLOSED_QUALIFIED."
+  "next_required_step": {
+    "action": "SEPARATE_CANONICAL_ADMISSION_WORKUNIT_OR_J1E_CONSUMER_RECONCILIATION",
+    "rule": "Consumers may use only the exact restricted F-KT15 capability above. Whole-coupling-window response semantics remain outside F-KT15."
+  }
 }
