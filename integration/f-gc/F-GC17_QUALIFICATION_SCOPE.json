@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC17",
+  "canonical_base": "42544af575db522d012db491db801615577048df",
+  "qualified_profile": "TYPED_DIRECT_GROUNDWATER_INTERFACE_CONTRACT_ONLY",
+  "production_source_allowlist": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/runtime/mod_groundwater_coupling_policy.f90"
+  ],
+  "required_gates": [
+    "generic finite non-midnight coupling window",
+    "explicit datum and lower-boundary elevation",
+    "H_SWAP = z_bottom + psi_bottom conversion",
+    "SWAP qbot cm/day positive-in to q_SWAP m/s positive-out mapping",
+    "exact q_GW = -q_SWAP assignment",
+    "typed head and flux residual separation",
+    "explicit provenance-bound positive H_interface_tol",
+    "no numeric tolerance default",
+    "fail-closed NaN/Inf and missing provenance",
+    "O0/O2 deterministic identity",
+    "production source allowlist"
+  ],
+  "excluded": [
+    "predictor-corrector orchestration",
+    "groundwater state service",
+    "application/temporal accuracy binding",
+    "MODFLOW adapter",
+    "mass-ledger implementation",
+    "deep-vadose physics",
+    "production coupling admission"
+  ],
+  "canonical_admission": "SEPARATE_F_CI_REQUIRED_AFTER_F_GC17_CLOSEOUT"
+}
