@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ63",
+  "title": "F-GC21P1-R1 Exact Accepted Bottom Interface Exchange Result Independent Qualification",
+  "phase": "INDEPENDENT_QUALIFICATION_CLOSEOUT_PENDING_FINAL_HEAD_RECHECK",
+  "decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "candidate_owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "first_independent_green": {
+    "run_id": 34715950169,
+    "job_id": 103613095966,
+    "head_sha": "8ea00f4065c84aaf0861de82e0b3b1be9524bbf4",
+    "conclusion": "success"
+  },
+  "qualified_behavior": [
+    "Rejected full-trial interface exchange is excluded from accepted two-half result.",
+    "Rejected retry attempts do not leak interface exchange into the accepted result.",
+    "Accepted two-half exchange is the sum of accepted half exchanges and terminal flux is from the accepted terminal half.",
+    "Model-certificate acceptance exposes only the accepted candidate exchange.",
+    "Missing and nonfinite interface exchange fail closed to unavailable/zero publication.",
+    "Canonical interval exchange aggregates only accepted substeps and publishes only after the full requested interval completes.",
+    "Substep-limit failure does not publish partial exchange and does not mutate external committed state.",
+    "Generic non-calendar time windows are supported by the tested contract.",
+    "R1 equality predicates match the restart canonical exactly; warning hygiene no longer changes production semantics.",
+    "O0/O2 outputs are identical for the independent adversarial suite."
+  ],
+  "mass_conservation": "HARD_PRESERVED_INDEPENDENTLY_VERIFIED_NO_TOLERANCE_RELAXATION",
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_INDEPENDENTLY_VERIFIED",
+  "owner_qualified": true,
+  "independently_qualified": true,
+  "canonical_admission": false,
+  "production_groundwater_coupling_admission": false,
+  "current_canonical_at_closeout_creation": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "next_required_gate": "A separate canonical-integration workunit must recheck the then-current integration/f-ci-canonical, compose the exact qualified source postimage, preserve F-VQ63 evidence and execute broad postpromotion preservation before any canonical-admission claim.",
+  "hard_nonclaims": [
+    "No MODFLOW/aquifer/full predictor-corrector qualification.",
+    "No production groundwater-coupling admission.",
+    "No crash-recovery or distributed-runtime qualification.",
+    "No large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ],
+  "closeout_rule": "This status deliberately does not self-reference its containing commit. The workflow is configured to rerun on this metadata path; the exact final branch head is authority only after that run is green and no production-source delta exists relative to the owner authority."
+}
