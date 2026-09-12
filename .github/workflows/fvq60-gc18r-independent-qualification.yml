@@ -1,0 +1,24 @@
+name: F-VQ60 GC18R independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq60-gc18r-transactional-groundwater-exchange-current-canonical-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-gc18r-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact verifier head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-VQ60 independent gate
+        run: bash tests/fvq/run_fvq60_gc18r_independent_gate.sh

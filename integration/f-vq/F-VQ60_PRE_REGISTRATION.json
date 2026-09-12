@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ60",
+  "title": "GC18R Transactional Groundwater Exchange Service Current-Canonical Independent Qualification & Canonical-Admission Readiness",
+  "verifier_branch": "qualification/f-vq60-gc18r-transactional-groundwater-exchange-current-canonical-qualification",
+  "independent_verification": true,
+  "program_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "current_canonical_baseline": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "canonical_baseline_note": "F-CI52 moved current canonical from 8695974b783e76b3807890be9e1c0ecb5d2f8d5f during the first verifier attempt. F-VQ60 therefore restarted cleanly from 828ba0f0ed933fb62107f849ae0bb7cc32c47c30.",
+  "superseded_stale_baseline_attempt": {
+    "baseline": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+    "workflow_run": 34688362043,
+    "conclusion": "failure",
+    "reason": "moving current-canonical authority correctly tripped the fail-closed baseline pin"
+  },
+  "candidate": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+  "candidate_branch": "work/f-gc18r-two-phase-commit-readiness",
+  "merge_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "f_gc18_base_authority": "774c01d69c619f463e0d471eb797f8f0418fee07",
+  "f_gc18a_governance_handoff": "ac25e009b795f231a522d2f048795ccc1d64417c",
+  "owner_first_qualified_head": "e96cd130753d17c411be18d691931149478d4663",
+  "owner_first_qualified_run": 34680847196,
+  "owner_exact_head_run": 34680882694,
+  "owner_evidence_is_not_independent_authority": true,
+  "production_delta_expected_after_recomputation": [
+    "src/runtime/mod_groundwater_exchange_service_contract.f90"
+  ],
+  "canonical_only_unrelated_production_delta": [
+    "src/crop/mod_crop_et_canopy_view_provider.f90",
+    "src/process/mod_restricted_fixed_weir_surface_water.f90",
+    "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "qualification_method": [
+    "pin and recheck all moving authorities",
+    "prove F-GC18 to F-GC18R ancestry and current-canonical merge base",
+    "recompute production deltas",
+    "replay pinned owner O0/O2 qualification without treating it as independent evidence",
+    "perform an uncommitted history-preserving temporary merge with current canonical",
+    "compile and run verifier-owned O0/O2 adversarial transaction probes",
+    "inspect typed groundwater sign, datum, residual and generic-window contracts",
+    "audit all 30 SWAP architecture invariants",
+    "fail closed on any atomicity, replay, lineage, mass or provenance uncertainty"
+  ],
+  "adversarial_questions": [
+    "can a copied prepared/checkpoint value replay irreversible publication",
+    "can a copied prepared/checkpoint value replay abort",
+    "does INT64_MAX origin revision fail closed before candidate_revision = origin_revision + 1",
+    "does current-canonical recomposition preserve F-CI51, F-CI52 and GC18R sources without conflict"
+  ],
+  "maximum_positive_decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "forbidden_claims": [
+    "CURRENT_CANONICAL",
+    "PRODUCTION_COUPLING_ADMITTED",
+    "MODFLOW_ADAPTER_PRESENT",
+    "GROUNDWATER_PHYSICS_PRESENT",
+    "PREDICTOR_CORRECTOR_CONVERGENCE_PROVEN",
+    "PROCESS_CRASH_RECOVERY_PROVEN",
+    "DISTRIBUTED_TRANSACTION_PROTOCOL_PROVEN"
+  ]
+}
