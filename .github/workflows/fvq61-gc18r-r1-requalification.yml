@@ -1,0 +1,24 @@
+name: F-VQ61 GC18R-R1 independent requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq61-gc18r-r1-transactional-groundwater-remediation-requalification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-requalification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact run head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ61 independent adversarial qualification
+        run: bash tests/fvq/fvq61/run_fvq61_gc18r_requalification.sh
