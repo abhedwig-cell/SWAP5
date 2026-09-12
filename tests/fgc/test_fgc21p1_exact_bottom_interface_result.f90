@@ -1,12 +1,8 @@
-program test_fgc21p1_exact_bottom_interface_result
+module mod_fgc21p1_exact_bottom_interface_test_support
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, transaction_policy_t, &
-       transaction_result_t, execute_reference_interval, TX_ROUTE_TWO_HALF, TX_ROUTE_MODEL_CERTIFIED, &
-       TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE, TX_MASS_MISSING_NONE
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
-       canonical_numerical_config_t, canonical_result_t, canonical_physical_model_t, CANONICAL_STATUS_COMPLETED, &
-       CANONICAL_STATUS_SUBSTEP_LIMIT
-  use mod_canonical_interval_runtime, only: run_canonical_interval
+       canonical_numerical_config_t, canonical_physical_model_t
   implicit none
 
   type, extends(canonical_state_t) :: test_state_t
@@ -28,109 +24,6 @@ program test_fgc21p1_exact_bottom_interface_result
     procedure :: storage_accounting_status => test_storage_accounting_status
     procedure :: prepare_interval => test_prepare_interval
   end type test_model_t
-
-  type(test_model_t) :: model
-  type(transaction_policy_t) :: policy
-  type(transaction_result_t) :: tx
-  type(canonical_numerical_config_t) :: config
-  type(canonical_interval_t) :: interval
-  type(canonical_result_t) :: result
-  type(test_forcing_t) :: forcing
-  class(transaction_state_t), allocatable :: committed
-
-  call new_state(committed, 10.0_real64)
-  model%temporal_difference = .false.
-  model%publish_bottom = .true.
-  policy = transaction_policy_t()
-  policy%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-  policy%temporal_tolerance = 0.0_real64
-  policy%mass_tolerance = 1.0e-12_real64
-  call execute_reference_interval(model, committed, 0.0_real64, 2.0_real64, policy, tx)
-  call require(tx%accepted_route == TX_ROUTE_TWO_HALF, 'two-half route not accepted')
-  call require(tx%bottom_interface_exchange_available, 'two-half bottom exchange unavailable')
-  call close_to(tx%accepted_bottom_outward_exchange_native, 2.0_real64, 'rejected full trial leaked into accepted exchange')
-  call close_to(tx%terminal_bottom_outward_flux_native, 102.0_real64, 'wrong accepted terminal bottom flux')
-  call close_to(tx%accepted_total_out, 2.0_real64, 'accepted mass route changed')
-  call state_close(committed, 8.0_real64, 'two-half committed state mismatch')
-  print *, 'FGC21P1_TWO_HALF_REJECTED_FULL_EXCLUDED=PASS'
-
-  call new_state(committed, 10.0_real64)
-  model%temporal_difference = .true.
-  model%publish_bottom = .true.
-  policy = transaction_policy_t()
-  policy%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-  policy%temporal_tolerance = 0.75_real64
-  policy%mass_tolerance = 1.0e-12_real64
-  policy%retry_scale = 0.5_real64
-  policy%max_retries = 2
-  call execute_reference_interval(model, committed, 0.0_real64, 2.0_real64, policy, tx)
-  call require(tx%accepted_route == TX_ROUTE_TWO_HALF, 'retry route not accepted')
-  call require(tx%attempts == 2 .and. tx%retries == 1 .and. tx%rollbacks == 1, 'retry provenance mismatch')
-  call close_to(tx%accepted_t1, 1.0_real64, 'retry accepted interval mismatch')
-  call require(tx%bottom_interface_exchange_available, 'retry bottom exchange unavailable')
-  call close_to(tx%accepted_bottom_outward_exchange_native, 0.5_real64, 'rejected retry exchange leaked')
-  call close_to(tx%terminal_bottom_outward_flux_native, 101.0_real64, 'retry terminal flux mismatch')
-  call state_close(committed, 9.5_real64, 'retry committed state mismatch')
-  print *, 'FGC21P1_RETRY_REJECTED_EXCHANGE_EXCLUDED=PASS'
-
-  call new_state(committed, 10.0_real64)
-  model%temporal_difference = .false.
-  model%publish_bottom = .true.
-  policy = transaction_policy_t()
-  policy%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
-  policy%mass_tolerance = 1.0e-12_real64
-  call execute_reference_interval(model, committed, 0.0_real64, 2.0_real64, policy, tx)
-  call require(tx%accepted_route == TX_ROUTE_MODEL_CERTIFIED, 'model-certificate route not accepted')
-  call require(tx%bottom_interface_exchange_available, 'model-certificate bottom exchange unavailable')
-  call close_to(tx%accepted_bottom_outward_exchange_native, 4.0_real64, 'model-certificate exchange mismatch')
-  call close_to(tx%terminal_bottom_outward_flux_native, 102.0_real64, 'model-certificate terminal flux mismatch')
-  print *, 'FGC21P1_MODEL_CERTIFICATE_ACCEPTED_ONLY=PASS'
-
-  call new_state(committed, 10.0_real64)
-  model%temporal_difference = .false.
-  model%publish_bottom = .false.
-  policy = transaction_policy_t()
-  policy%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-  policy%temporal_tolerance = 0.0_real64
-  policy%mass_tolerance = 1.0e-12_real64
-  call execute_reference_interval(model, committed, 0.0_real64, 1.0_real64, policy, tx)
-  call require(.not. tx%bottom_interface_exchange_available, 'missing bottom exchange did not fail closed')
-  call close_to(tx%accepted_bottom_outward_exchange_native, 0.0_real64, 'missing bottom exchange published value')
-  print *, 'FGC21P1_MISSING_INTERFACE_RESULT_FAILS_CLOSED=PASS'
-
-  call new_state(committed, 10.0_real64)
-  model%temporal_difference = .true.
-  model%publish_bottom = .true.
-  config = canonical_numerical_config_t()
-  config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-  config%transaction%temporal_tolerance = 0.75_real64
-  config%transaction%mass_tolerance = 1.0e-12_real64
-  config%transaction%retry_scale = 0.5_real64
-  config%transaction%max_retries = 2
-  config%max_committed_substeps = 4
-  interval%t0 = 0.0_real64
-  interval%t1 = 2.0_real64
-  call run_canonical_interval(model, committed, forcing, interval, config, result)
-  call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'canonical interval did not complete')
-  call require(result%mass%accepted_transaction_count == 2, 'canonical accepted-substep count mismatch')
-  call require(result%bottom_interface_exchange_available, 'canonical whole-window exchange unavailable')
-  call close_to(result%bottom_outward_exchange_native, 1.0_real64, 'canonical accepted exchange aggregation mismatch')
-  call close_to(result%terminal_bottom_outward_flux_native, 102.0_real64, 'canonical terminal flux mismatch')
-  call close_to(result%mass%total_out, 1.0_real64, 'canonical mass total changed')
-  call state_close(committed, 9.0_real64, 'canonical committed state mismatch')
-  print *, 'FGC21P1_CANONICAL_ACCEPTED_SUBSTEP_AGGREGATION=PASS'
-
-  call new_state(committed, 10.0_real64)
-  config%max_committed_substeps = 1
-  call run_canonical_interval(model, committed, forcing, interval, config, result)
-  call require(result%status == CANONICAL_STATUS_SUBSTEP_LIMIT .and. .not. result%completed, &
-       'substep-limit failure not reproduced')
-  call require(.not. result%bottom_interface_exchange_available, 'partial canonical exchange leaked on failed interval')
-  call close_to(result%bottom_outward_exchange_native, 0.0_real64, 'failed canonical interval published exchange')
-  call state_close(committed, 10.0_real64, 'failed canonical interval mutated external committed state')
-  print *, 'FGC21P1_INCOMPLETE_CANONICAL_INTERVAL_NO_PUBLICATION=PASS'
-
-  print *, 'FGC21P1_EXACT_BOTTOM_INTERFACE_RESULT_TEST PASS'
 
 contains
 
@@ -245,6 +138,12 @@ contains
     end select
   end subroutine test_storage_accounting_status
 
+  subroutine fail(message)
+    character(len=*), intent(in) :: message
+    write(*,'(A)') 'FGC21P1_TEST_FAILURE: '//trim(message)
+    error stop 1
+  end subroutine fail
+
   subroutine state_close(state, expected, message)
     class(transaction_state_t), allocatable, intent(in) :: state
     real(real64), intent(in) :: expected
@@ -253,7 +152,7 @@ contains
     type is (test_state_t)
       call close_to(s%storage_value, expected, message)
     class default
-      error stop message
+      call fail(message)
     end select
   end subroutine state_close
 
@@ -262,14 +161,131 @@ contains
     character(len=*), intent(in) :: message
     if (abs(actual - expected) > 1.0e-12_real64) then
       write(*,*) 'actual=', actual, ' expected=', expected
-      error stop message
+      call fail(message)
     end if
   end subroutine close_to
 
   subroutine require(condition, message)
     logical, intent(in) :: condition
     character(len=*), intent(in) :: message
-    if (.not. condition) error stop message
+    if (.not. condition) call fail(message)
   end subroutine require
+
+end module mod_fgc21p1_exact_bottom_interface_test_support
+
+program test_fgc21p1_exact_bottom_interface_result
+  use, intrinsic :: iso_fortran_env, only: real64
+  use mod_transaction_reference, only: transaction_state_t, transaction_policy_t, transaction_result_t, &
+       execute_reference_interval, TX_ROUTE_TWO_HALF, TX_ROUTE_MODEL_CERTIFIED, &
+       TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_interval_t, canonical_result_t, &
+       CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_SUBSTEP_LIMIT
+  use mod_canonical_interval_runtime, only: run_canonical_interval
+  use mod_fgc21p1_exact_bottom_interface_test_support, only: test_model_t, test_forcing_t, new_state, &
+       require, close_to, state_close
+  implicit none
+
+  type(test_model_t) :: model
+  type(transaction_policy_t) :: policy
+  type(transaction_result_t) :: tx
+  type(canonical_numerical_config_t) :: config
+  type(canonical_interval_t) :: interval
+  type(canonical_result_t) :: result
+  type(test_forcing_t) :: forcing
+  class(transaction_state_t), allocatable :: committed
+
+  call new_state(committed, 10.0_real64)
+  model%temporal_difference = .false.
+  model%publish_bottom = .true.
+  policy = transaction_policy_t()
+  policy%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+  policy%temporal_tolerance = 0.0_real64
+  policy%mass_tolerance = 1.0e-12_real64
+  call execute_reference_interval(model, committed, 0.0_real64, 2.0_real64, policy, tx)
+  call require(tx%accepted_route == TX_ROUTE_TWO_HALF, 'two-half route not accepted')
+  call require(tx%bottom_interface_exchange_available, 'two-half bottom exchange unavailable')
+  call close_to(tx%accepted_bottom_outward_exchange_native, 2.0_real64, 'rejected full trial leaked into accepted exchange')
+  call close_to(tx%terminal_bottom_outward_flux_native, 102.0_real64, 'wrong accepted terminal bottom flux')
+  call close_to(tx%accepted_total_out, 2.0_real64, 'accepted mass route changed')
+  call state_close(committed, 8.0_real64, 'two-half committed state mismatch')
+  print *, 'FGC21P1_TWO_HALF_REJECTED_FULL_EXCLUDED=PASS'
+
+  call new_state(committed, 10.0_real64)
+  model%temporal_difference = .true.
+  model%publish_bottom = .true.
+  policy = transaction_policy_t()
+  policy%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+  policy%temporal_tolerance = 0.75_real64
+  policy%mass_tolerance = 1.0e-12_real64
+  policy%retry_scale = 0.5_real64
+  policy%max_retries = 2
+  call execute_reference_interval(model, committed, 0.0_real64, 2.0_real64, policy, tx)
+  call require(tx%accepted_route == TX_ROUTE_TWO_HALF, 'retry route not accepted')
+  call require(tx%attempts == 2 .and. tx%retries == 1 .and. tx%rollbacks == 1, 'retry provenance mismatch')
+  call close_to(tx%accepted_t1, 1.0_real64, 'retry accepted interval mismatch')
+  call require(tx%bottom_interface_exchange_available, 'retry bottom exchange unavailable')
+  call close_to(tx%accepted_bottom_outward_exchange_native, 0.5_real64, 'rejected retry exchange leaked')
+  call close_to(tx%terminal_bottom_outward_flux_native, 101.0_real64, 'retry terminal flux mismatch')
+  call state_close(committed, 9.5_real64, 'retry committed state mismatch')
+  print *, 'FGC21P1_RETRY_REJECTED_EXCHANGE_EXCLUDED=PASS'
+
+  call new_state(committed, 10.0_real64)
+  model%temporal_difference = .false.
+  model%publish_bottom = .true.
+  policy = transaction_policy_t()
+  policy%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+  policy%mass_tolerance = 1.0e-12_real64
+  call execute_reference_interval(model, committed, 0.0_real64, 2.0_real64, policy, tx)
+  call require(tx%accepted_route == TX_ROUTE_MODEL_CERTIFIED, 'model-certificate route not accepted')
+  call require(tx%bottom_interface_exchange_available, 'model-certificate bottom exchange unavailable')
+  call close_to(tx%accepted_bottom_outward_exchange_native, 4.0_real64, 'model-certificate exchange mismatch')
+  call close_to(tx%terminal_bottom_outward_flux_native, 102.0_real64, 'model-certificate terminal flux mismatch')
+  print *, 'FGC21P1_MODEL_CERTIFICATE_ACCEPTED_ONLY=PASS'
+
+  call new_state(committed, 10.0_real64)
+  model%temporal_difference = .false.
+  model%publish_bottom = .false.
+  policy = transaction_policy_t()
+  policy%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+  policy%temporal_tolerance = 0.0_real64
+  policy%mass_tolerance = 1.0e-12_real64
+  call execute_reference_interval(model, committed, 0.0_real64, 1.0_real64, policy, tx)
+  call require(.not. tx%bottom_interface_exchange_available, 'missing bottom exchange did not fail closed')
+  call close_to(tx%accepted_bottom_outward_exchange_native, 0.0_real64, 'missing bottom exchange published value')
+  print *, 'FGC21P1_MISSING_INTERFACE_RESULT_FAILS_CLOSED=PASS'
+
+  call new_state(committed, 10.0_real64)
+  model%temporal_difference = .true.
+  model%publish_bottom = .true.
+  config = canonical_numerical_config_t()
+  config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+  config%transaction%temporal_tolerance = 0.75_real64
+  config%transaction%mass_tolerance = 1.0e-12_real64
+  config%transaction%retry_scale = 0.5_real64
+  config%transaction%max_retries = 2
+  config%max_committed_substeps = 4
+  interval%t0 = 0.0_real64
+  interval%t1 = 2.0_real64
+  call run_canonical_interval(model, committed, forcing, interval, config, result)
+  call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'canonical interval did not complete')
+  call require(result%mass%accepted_transaction_count == 2, 'canonical accepted-substep count mismatch')
+  call require(result%bottom_interface_exchange_available, 'canonical whole-window exchange unavailable')
+  call close_to(result%bottom_outward_exchange_native, 1.0_real64, 'canonical accepted exchange aggregation mismatch')
+  call close_to(result%terminal_bottom_outward_flux_native, 102.0_real64, 'canonical terminal flux mismatch')
+  call close_to(result%mass%total_out, 1.0_real64, 'canonical mass total changed')
+  call state_close(committed, 9.0_real64, 'canonical committed state mismatch')
+  print *, 'FGC21P1_CANONICAL_ACCEPTED_SUBSTEP_AGGREGATION=PASS'
+
+  call new_state(committed, 10.0_real64)
+  config%max_committed_substeps = 1
+  call run_canonical_interval(model, committed, forcing, interval, config, result)
+  call require(result%status == CANONICAL_STATUS_SUBSTEP_LIMIT .and. .not. result%completed, &
+       'substep-limit failure not reproduced')
+  call require(.not. result%bottom_interface_exchange_available, 'partial canonical exchange leaked on failed interval')
+  call close_to(result%bottom_outward_exchange_native, 0.0_real64, 'failed canonical interval published exchange')
+  call state_close(committed, 10.0_real64, 'failed canonical interval mutated external committed state')
+  print *, 'FGC21P1_INCOMPLETE_CANONICAL_INTERVAL_NO_PUBLICATION=PASS'
+
+  print *, 'FGC21P1_EXACT_BOTTOM_INTERFACE_RESULT_TEST PASS'
 
 end program test_fgc21p1_exact_bottom_interface_result
