@@ -153,7 +153,7 @@ program test_ebi01_energy_ledger_receipt_integration
   type(canonical_numerical_config_t) :: config
   type(kernel_candidate_state_t) :: candidate
   type(kernel_diagnostics_t) :: diagnostics
-  type(energy_trial_ledger_t) :: ledger
+  type(energy_trial_ledger_t) :: ledger, validation_ledger
   type(prepared_energy_trial_t) :: prepared
   type(energy_commit_record_t) :: record, rollback_record
   type(fmr_accepted_commit_receipt_t) :: receipt, old_receipt
@@ -165,6 +165,18 @@ program test_ebi01_energy_ledger_receipt_integration
   soil_only = [SOIL]
   initial_energy = [100.0_real64, 20.0_real64]
   final_energy = [120.0_real64, 25.0_real64]
+
+  call validation_ledger%begin_trial(8199_int64, 0_int64, 0.0_real64, 0.5_real64, ids, initial_energy, status, 1)
+  call require(status == ENERGY_LEDGER_OK, 'start component registration validation')
+  call validation_ledger%record_transfer(SOIL, 99_int64, 1.0_real64, status)
+  call require(status == ENERGY_LEDGER_UNKNOWN_COMPONENT, 'unknown target component rejected')
+  call validation_ledger%record_transfer(99_int64, CANOPY, 1.0_real64, status)
+  call require(status == ENERGY_LEDGER_UNKNOWN_COMPONENT, 'unknown source component rejected')
+  call require(validation_ledger%has_active_trial(), 'component rejection leaves trial intact')
+  call validation_ledger%discard_trial(status)
+  call require(status == ENERGY_LEDGER_OK .and. .not. validation_ledger%has_active_trial(), &
+       'component validation trial discarded cleanly')
+  print '(a)', 'EBI01_UNREGISTERED_INTERNAL_COMPONENT_REJECTED=PASS'
 
   call setup_solver(parameters, forcing, config)
   call kernel%bind_model(model)
