@@ -153,7 +153,7 @@ contains
     real(real64) :: swap_time, groundwater_time
     logical :: swap_checkpoint_ok, swap_time_available, groundwater_time_available
     logical :: converged, did_commit
-    integer :: status, cleanup_status, commit_status
+    integer :: status, cleanup_status, commit_status, ledger_failure_status
 
     result = groundwater_pc_result_t()
     result%diagnostics%route = 'restricted-pc1'
@@ -195,8 +195,6 @@ contains
       return
     end if
 
-    ! Predictor: one SWAP trial from the immutable T0 checkpoint at the last
-    ! accepted groundwater head. No predictor state is ever publishable.
     call materializer%materialize(origin%accepted_h_groundwater_m, datum, forcing, status)
     result%diagnostics%forcing_status = status
     if (status /= GW_SWAP_FORCING_OK .or. .not. allocated(forcing)) then
@@ -241,8 +239,6 @@ contains
     end if
     result%diagnostics%predictor_discarded = .true.
 
-    ! Corrector: repeat SWAP from the exact same T0 checkpoint using the
-    ! groundwater predictor response as prescribed typed interface head.
     if (allocated(forcing)) deallocate(forcing)
     call materializer%materialize(result%predictor_h_groundwater_m, datum, forcing, status)
     result%diagnostics%forcing_status = status
@@ -289,7 +285,11 @@ contains
     if (status /= GW_INTERFACE_OK .or. abs(result%residual%flux_residual_m_per_s) > 0.0_real64) then
       call discard_corrector_candidates(executor, corrector_swap_candidate, result%diagnostics%corrector_swap, &
            groundwater, corrector_groundwater_candidate, cleanup_status)
-      call fail_result(result, GW_PC_INTERFACE_FAILED, .true., 'interface-residual')
+      if (cleanup_status /= GW_EXCHANGE_OK) then
+        call fail_result(result, GW_PC_PREPUBLICATION_ABORT_FAILED, .true., 'interface-discard')
+      else
+        call fail_result(result, GW_PC_INTERFACE_FAILED, .true., 'interface-residual')
+      end if
       return
     end if
 
@@ -299,7 +299,11 @@ contains
     if (status /= GW_HEAD_POLICY_OK) then
       call discard_corrector_candidates(executor, corrector_swap_candidate, result%diagnostics%corrector_swap, &
            groundwater, corrector_groundwater_candidate, cleanup_status)
-      call fail_result(result, GW_PC_INTERFACE_FAILED, .true., 'head-policy')
+      if (cleanup_status /= GW_EXCHANGE_OK) then
+        call fail_result(result, GW_PC_PREPUBLICATION_ABORT_FAILED, .true., 'head-policy-discard')
+      else
+        call fail_result(result, GW_PC_INTERFACE_FAILED, .true., 'head-policy')
+      end if
       return
     end if
     if (.not. converged) then
@@ -319,7 +323,11 @@ contains
     if (status /= GW_MASS_LEDGER_OK) then
       call discard_corrector_candidates(executor, corrector_swap_candidate, result%diagnostics%corrector_swap, &
            groundwater, corrector_groundwater_candidate, cleanup_status)
-      call fail_result(result, GW_PC_LEDGER_STAGE_FAILED, .true., 'ledger-stage')
+      if (cleanup_status /= GW_EXCHANGE_OK) then
+        call fail_result(result, GW_PC_PREPUBLICATION_ABORT_FAILED, .true., 'ledger-stage-discard')
+      else
+        call fail_result(result, GW_PC_LEDGER_STAGE_FAILED, .true., 'ledger-stage')
+      end if
       return
     end if
 
@@ -327,29 +335,37 @@ contains
          prepared_groundwater, status)
     result%diagnostics%groundwater_status = status
     if (status /= GW_EXCHANGE_OK) then
+      cleanup_status = GW_EXCHANGE_OK
       if (corrector_groundwater_candidate%ready()) then
         call groundwater_discard_candidate(groundwater, corrector_groundwater_candidate, cleanup_status)
-      else
-        cleanup_status = GW_EXCHANGE_OK
       end if
-      if (ledger%has_active_trial()) call ledger%discard_trial(result%diagnostics%ledger_status)
+      ledger_failure_status = GW_MASS_LEDGER_OK
+      if (ledger%has_active_trial()) call ledger%discard_trial(ledger_failure_status)
+      result%diagnostics%ledger_status = ledger_failure_status
       call rollback_swap_candidate(executor, corrector_swap_candidate, result%diagnostics%corrector_swap)
-      call fail_result(result, GW_PC_GROUNDWATER_PREPARE_FAILED, .true., 'groundwater-prepare')
+      if (cleanup_status /= GW_EXCHANGE_OK .or. ledger_failure_status /= GW_MASS_LEDGER_OK) then
+        call fail_result(result, GW_PC_PREPUBLICATION_ABORT_FAILED, .true., 'groundwater-prepare-cleanup')
+      else
+        call fail_result(result, GW_PC_GROUNDWATER_PREPARE_FAILED, .true., 'groundwater-prepare')
+      end if
       return
     end if
     result%diagnostics%groundwater_prepared = .true.
 
     call ledger%prepare_trial(prepared_ledger, status)
-    result%diagnostics%ledger_status = status
-    if (status /= GW_MASS_LEDGER_OK) then
+    ledger_failure_status = status
+    result%diagnostics%ledger_status = ledger_failure_status
+    if (ledger_failure_status /= GW_MASS_LEDGER_OK) then
       call groundwater_abort_prepared(groundwater, groundwater_checkpoint, prepared_groundwater, cleanup_status)
-      if (ledger%has_active_trial()) call ledger%discard_trial(result%diagnostics%ledger_status)
+      status = GW_MASS_LEDGER_OK
+      if (ledger%has_active_trial()) call ledger%discard_trial(status)
       call rollback_swap_candidate(executor, corrector_swap_candidate, result%diagnostics%corrector_swap)
-      if (cleanup_status /= GW_EXCHANGE_OK) then
+      if (cleanup_status /= GW_EXCHANGE_OK .or. status /= GW_MASS_LEDGER_OK) then
         call fail_result(result, GW_PC_PREPUBLICATION_ABORT_FAILED, .true., 'ledger-prepare-abort')
       else
         call fail_result(result, GW_PC_LEDGER_PREPARE_FAILED, .true., 'ledger-prepare')
       end if
+      result%diagnostics%ledger_status = ledger_failure_status
       return
     end if
     result%diagnostics%ledger_prepared = .true.
@@ -368,12 +384,6 @@ contains
     end if
     result%diagnostics%publication_preflight_passed = .true.
 
-    ! Publication is in-process and exclusively owned. SWAP commits first because
-    ! its API still returns a recoverable status; all such conditions were
-    ! preflighted. Only after a successful SWAP commit do we enter the prepared
-    ! groundwater callback, whose admitted contract has no recoverable backend
-    ! status path for a live reservation. Crash/distributed atomicity is outside
-    ! this workunit and is intentionally not claimed.
     call executor%commit_candidate(committed, corrector_swap_candidate, result%diagnostics%corrector_swap, &
          did_commit, commit_status)
     result%diagnostics%swap_commit_status = commit_status
@@ -388,6 +398,10 @@ contains
     end if
     result%diagnostics%swap_committed = .true.
 
+    ! From here publication is irreversible for this in-process workunit. The
+    ! admitted F-GC18 prepared backend has no recoverable callback status after
+    ! its wrapper reservation has been consumed. An unexpected status here is a
+    ! programming/ownership invariant violation, not a recoverable coupling path.
     call groundwater_commit_prepared(groundwater, groundwater_checkpoint, prepared_groundwater, status)
     if (status /= GW_EXCHANGE_OK) then
       error stop 'F-GC21 atomic publication invariant: groundwater commit failed after SWAP commit'
@@ -558,7 +572,7 @@ contains
     if (.not. next_origin%finite_and_structurally_valid()) return
     if (.not. same_time(next_origin%accepted_time, window%t1)) return
     if (next_origin%swap_revision /= current_revision + 1_int64) return
-    if (next_origin%groundwater_revision /= prepared_groundwater%prepared_candidate_revision()) return
+    if (next_origin%groundwater_revision /= prepared_groundwater%candidate_revision()) return
     ready = .true.
   end function publication_preflight
 
