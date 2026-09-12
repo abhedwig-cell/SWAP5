@@ -29,7 +29,7 @@ jobs:
           set -euo pipefail
           for rev in \
             1b3d8ba6cc70d74a124f20f01f0c47a102763ae0 \
-            4f62af04df8ad686a8066f6c164cdcf79d319999; do
+            e537baf521e633c432a9f33de495fab9f18e918d; do
             git cat-file -e "$rev^{commit}" 2>/dev/null || git fetch --no-tags origin "$rev"
           done
       - name: Run focused F-KT15 production task-2 gate
