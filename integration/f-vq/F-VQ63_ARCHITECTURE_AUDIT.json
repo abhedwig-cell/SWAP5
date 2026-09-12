@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ63",
+  "title": "F-GC21P1-R1 Exact Accepted Bottom Interface Exchange Result Independent Architecture Audit",
+  "candidate_owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "independent_run": {
+    "run_id": 34715950169,
+    "job_id": 103613095966,
+    "head_sha": "8ea00f4065c84aaf0861de82e0b3b1be9524bbf4",
+    "conclusion": "success"
+  },
+  "independent_evidence": [
+    "Different nonlinear exchange law and different time windows from owner test.",
+    "Rejected full-trial exchange numerically separated from accepted-half sum: 28.5 versus 8.25.",
+    "Retry adversarial case independently separates rejected 4-unit attempt from accepted 2-unit retry.",
+    "Direct model-certificate accepted exchange verified independently.",
+    "Missing and positive-infinity interface exchange both verified fail-closed.",
+    "Canonical two-substep exchange aggregation, exact mass residual and terminal flux independently verified.",
+    "Substep-limit path independently verifies no partial exchange publication and no external committed-state mutation.",
+    "O0 and O2 output identity verified.",
+    "Exact source blob set pinned to owner authority; qualification branch contains no production-source delta.",
+    "Two REAL equality predicates independently verified identical to restart canonical baseline."
+  ],
+  "mass_conservation": {
+    "status": "HARD_PRESERVED_INDEPENDENTLY_VERIFIED",
+    "tolerance_relaxed": false,
+    "canonical_exact_residual_case": 0.0,
+    "rejected_trial_exchange_excluded": true,
+    "partial_canonical_publication_excluded": true
+  },
+  "invariants": {
+    "1": "NO_ADVERSE_DELTA_INDEPENDENTLY_VERIFIED: one shared kernel/runtime path",
+    "2": "NO_ADVERSE_DELTA: no kernel I/O dependency",
+    "3": "NO_ADVERSE_DELTA: exchange is explicit result metadata",
+    "4": "NO_ADVERSE_DELTA: no new persistent per-column state",
+    "5": "NO_ADVERSE_DELTA: solver scratch ownership unchanged",
+    "6": "NO_ADVERSE_DELTA: no storage-layout restriction",
+    "7": "INDEPENDENTLY_VERIFIED: rejected trials excluded and partial canonical state not externally committed",
+    "8": "NO_ADVERSE_DELTA: retry starts from committed/checkpoint state",
+    "9": "INDEPENDENTLY_VERIFIED: generic non-day time intervals used in tests",
+    "10": "NO_ADVERSE_DELTA: no fixed coupling-window duration",
+    "11": "INDEPENDENTLY_VERIFIED: accepted interface exchange is explicit transactional/canonical runtime output",
+    "12": "NO_ADVERSE_DELTA: no direct MODFLOW equality claim introduced",
+    "13": "INDEPENDENTLY_VERIFIED_HARD: exact mass residual case closes and no tolerance relaxation qualifies interface exchange",
+    "14": "NO_ADVERSE_DELTA: sensitivity contract preserved with exact baseline equality predicates",
+    "15": "NO_ADVERSE_DELTA: no structural extra production runs introduced",
+    "16": "NO_ADVERSE_DELTA: no one-heavy-solver-per-column requirement",
+    "17": "NO_ADVERSE_DELTA: no 1:1 MODFLOW-cell assumption",
+    "18": "NO_ADVERSE_DELTA: deep-vadose remains external",
+    "19": "NO_ADVERSE_DELTA: no transfer-component storage transition change",
+    "20": "NO_ADVERSE_DELTA: interface result contract not tied to one Richards solver",
+    "21": "NO_ADVERSE_DELTA: existing transaction/runtime physics reused",
+    "22": "INDEPENDENTLY_VERIFIED_STATIC: no HeadCalc-internal dependency added",
+    "23": "NO_ADVERSE_DELTA: physical and numerical-policy separation unchanged",
+    "24": "NO_ADVERSE_DELTA: bounded-cost/fallback policy unchanged",
+    "25": "NO_ADVERSE_DELTA: reference mode retained",
+    "26": "INDEPENDENTLY_VERIFIED: exchange availability/value and fail-closed state are explicit diagnostics/results",
+    "27": "NO_ADVERSE_DELTA: no optional persistent allocation",
+    "28": "NO_ADVERSE_DELTA: tile/system composition remains runtime/coupler responsibility",
+    "29": "INDEPENDENTLY_VERIFIED_STATIC: no 86400/midnight/.swp/MODFLOW/unit-conversion hidden assumption in production delta",
+    "30": "SATISFIED: all 30 invariants independently assessed"
+  },
+  "overall": "30_OF_30_NO_ADVERSE_DELTA_INDEPENDENTLY_VERIFIED",
+  "admission_boundary": {
+    "independent_component_qualification": true,
+    "canonical_admission": false,
+    "production_groundwater_coupling_admission": false,
+    "full_predictor_corrector_qualification": false
+  },
+  "hard_nonclaims": [
+    "No MODFLOW/aquifer integration qualification.",
+    "No full predictor-corrector qualification.",
+    "No crash-recovery/distributed-runtime qualification.",
+    "No large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ]
+}
