@@ -14,8 +14,9 @@
     "catalog_state_at_start": "CATALOGED_NOT_PHYSICS_QUALIFIED"
   },
   "owner_authorities": {
-    "drainage_runtime": "F-CI36 current-canonical admitted restricted DIVDRA callsite",
+    "drainage_runtime": "F-CI36 frozen admitted authority at 8fa79a70a9faccaf8b63826df607a685eb75b046",
     "independent_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff",
+    "current_preservation_rule": "current canonical preserves F-CI36 as a frozen replay authority on its qualified postimage; F-TB10 separately verifies the admitted DIVDRA production blobs remain byte-identical in current canonical",
     "soil_water_solver": "current-canonical serialized reference Full Richards path",
     "mass": "F-TB01 hard mass gate plus current canonical mass-accounting contract"
   },
@@ -53,7 +54,7 @@
       "both interval ledgers are complete and individually satisfy the hard mass gate",
       "full-window combined ledger satisfies the same hard mass gate",
       "O0 and O2 executions are bitwise text-identical",
-      "exact F-VQ51 restricted DIVDRA verifier remains green against the current production composition"
+      "F-CI36 frozen admitted authority and its F-VQ51 provenance are pinned while the current-canonical DIVDRA production blobs are verified identical to the admitted blobs"
     ]
   },
   "mass_contract": {
