@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC17",
+  "title": "Typed Direct Groundwater Interface, Datum, Sign, Units & Convergence Policy",
+  "decision": "QUALIFIED_TYPED_DIRECT_GROUNDWATER_INTERFACE_DATUM_SIGN_UNITS_CONVERGENCE_POLICY_READY_FOR_CANONICAL_ADMISSION",
+  "branch": "work/f-gc17-typed-direct-groundwater-interface-convergence-policy",
+  "branch_base": {
+    "canonical_sha": "42544af575db522d012db491db801615577048df",
+    "canonical_tree": "4360cd08fd0e952978df9e2742bcc34fdede9ef1",
+    "F_CI49_admission": "QUALIFIED_AND_CANONICALLY_ADMITTED"
+  },
+  "live_canonical_at_closeout_precheck": {
+    "sha": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "tree": "d3142c34b55befaae129aeb360c415ec7d56043c",
+    "advance": "F-CI49P preservation reconciliation",
+    "production_src_delta_from_branch_base": false,
+    "admission_rule": "Do not directly assume mergeability. A separate F-CI admission must recompose/replay F-GC17 on then-current canonical."
+  },
+  "qualified_production_files": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/runtime/mod_groundwater_coupling_policy.f90"
+  ],
+  "qualified_contract": {
+    "time": "finite generic [t0,t1], T1>T0, no calendar semantics",
+    "head_quantities": "H_SWAP and H_GW are hydraulic heads in m on one explicit common datum",
+    "swap_mode5_native_head": "lower-boundary face pressure head psi_bottom in cm",
+    "head_mapping": "H_SWAP_m = z_bottom_m + 0.01*psi_bottom_cm",
+    "inverse_head_mapping": "psi_bottom_cm = 100*(H_GW_m-z_bottom_m)",
+    "datum": "mandatory available datum_id plus finite lower-boundary elevation z_bottom_m",
+    "native_bottom_flux": "SWAP qbot in cm/day, positive into SWAP soil profile",
+    "public_swap_flux": "q_SWAP in m/s, positive leaving SWAP",
+    "flux_mapping": "q_SWAP = -qbot*0.01/86400",
+    "groundwater_flux": "q_GW = -q_SWAP by exact opposite assignment",
+    "head_residual": "r_H = H_SWAP-H_GW",
+    "flux_residual": "r_q = q_SWAP+q_GW",
+    "mass_tolerance": "NONE",
+    "head_policy": "explicit finite positive H_interface_tol with externally governed qualified provenance; no numeric default"
+  },
+  "policy_separation": {
+    "automatic_equivalence_to_H_app": false,
+    "automatic_equivalence_to_A_temporal": false,
+    "automatic_equivalence_to_Richards_H_budget": false,
+    "automatic_equivalence_to_solver_tolerance": false,
+    "automatic_equivalence_to_predictor_perturbation": false,
+    "automatic_equivalence_to_regulatory_threshold": false,
+    "F_GC22_still_required_for_accuracy_binding": true
+  },
+  "qualification": {
+    "qualified_scope_head": "7ca3c880197a31217c0b08da1a6d989f06c5f608",
+    "workflow_run": 34678250907,
+    "workflow_job": 103511903625,
+    "conclusion": "success",
+    "gates": [
+      "generic non-midnight window",
+      "datum required and H=z+psi",
+      "head conversion round trip",
+      "qbot sign/unit conversion round trip",
+      "exact q_GW=-q_SWAP and zero flux residual",
+      "typed head/flux residual separation",
+      "lineage/revision validity",
+      "default convergence policy fail closed",
+      "positive provenance-bound explicit tolerance",
+      "NaN/Inf fail closed",
+      "source allowlist",
+      "policy separation from application/Richards contracts",
+      "O0/O2 output identity"
+    ]
+  },
+  "architecture_audit": "integration/f-gc/F-GC17_ARCHITECTURE_INVARIANT_AUDIT.json",
+  "scientific_correction": {
+    "finding": "A production direct-coupling interface may not equate SWAP lower-boundary pressure head numerically with groundwater hydraulic head after unit conversion alone.",
+    "qualified_replacement": "Use the explicit common-datum mapping H_SWAP=z_bottom+psi_bottom.",
+    "effect_on_old_F_GC02": "The old harness remains historical coupling-seam evidence, not production datum-contract authority. No closed production admission is reopened because F-GC02 itself was never production-admitted."
+  },
+  "production_state": {
+    "new_physics": false,
+    "solver_modified": false,
+    "transaction_core_modified": false,
+    "legacy_source_modified": false,
+    "accuracy_adapter_modified": false,
+    "production_groundwater_coupling_admitted": false,
+    "canonical_admission_performed_by_F_GC17": false
+  },
+  "downstream": {
+    "next_gate": "separate F-CI canonical admission/recomposition for F-GC17",
+    "parallel_after_canonical_admission": ["F-GC18", "F-GC19", "F-GC20", "F-GC22"],
+    "F_GC21_blocked_until": ["F-GC18", "F-GC19"],
+    "deep_vadose": "remains separate external composition"
+  }
+}
