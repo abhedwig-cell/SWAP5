@@ -1,0 +1,16 @@
+name: F-DOC18 RB1 physical science
+
+on:
+  push:
+    branches:
+      - work/f-doc18-rb1-physical-science-t0-t7-authority
+
+permissions:
+  contents: read
+
+jobs:
+  physical-science:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/docs/validate_fdoc18_rb1_physical_science.py
