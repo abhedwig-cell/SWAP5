@@ -42,6 +42,45 @@
     "current_restricted_canonical_preservation_job": 103548028821,
     "current_restricted_canonical_preservation_conclusion": "success"
   },
+  "fci53p_qualification": {
+    "first_green_head": "c60ce91313cfb1e1ce77b6a8e7b7c401e4178a44",
+    "first_green_run": 34692471190,
+    "first_green_job": 103550064079,
+    "first_green_conclusion": "success",
+    "qualified_status_head": "55c2f665e470c36b7738d05e726e2745766e77bc",
+    "qualified_status_run": 34692515420,
+    "qualified_status_job": 103550175991,
+    "qualified_status_conclusion": "success"
+  },
+  "fci53p_broad_prepromotion": {
+    "pull_request": 87,
+    "head": "55c2f665e470c36b7738d05e726e2745766e77bc",
+    "base": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+    "run": 34692558717,
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103550467944,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "fci53p_promotion": {
+    "promoted_reconciliation_head": "5a5ad00bd4e3f160043c8c397f3864019104de0c",
+    "first_parent": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+    "second_parent": "55c2f665e470c36b7738d05e726e2745766e77bc",
+    "tree": "237d8665b805c330ec44626a3a0b857b38816b40",
+    "true_two_parent_governance_merge": true,
+    "production_source_changed": false,
+    "reference_changed": false,
+    "canonical_workflow_changed": false
+  },
+  "fci53p_postpromotion_broad_canonical": {
+    "run": 34692710169,
+    "head": "5a5ad00bd4e3f160043c8c397f3864019104de0c",
+    "event": "push",
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103550897155,
+    "current_restricted_canonical_preservation_conclusion": "success",
+    "supplementary_fci51p_r3_moving_preservation_run": 34692710173,
+    "supplementary_fci51p_r3_moving_preservation_conclusion": "success"
+  },
   "reconciliation_classification": {
     "stale_moving_preservation_failure_observed": false,
     "moving_preservation_reconciliation_required": false,
@@ -53,5 +92,15 @@
     "reference_regression": false,
     "classification": "POSTIMAGE_ALREADY_GREEN_RECONCILIATION_AND_CLOSEOUT_ONLY"
   },
-  "scope_statement": "F-CI53P reconciles and closes the already admitted F-CI53 postimage. It does not repair or advance moving-preservation authority because the admitted postimage already passed that gate."
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED_WITH_EXACTLY_ONCE_PUBLICATION_GUARD_PRESERVED",
+  "scope_statement": "F-CI53P reconciles and closes the already admitted F-CI53 transactional groundwater exchange postimage. Moving-preservation repair was neither needed nor performed because both the admitted F-CI53 postimage and the promoted F-CI53P governance postimage passed current-restricted-canonical-preservation.",
+  "hard_nonclaims": [
+    "No MODFLOW adapter, aquifer solver or physical groundwater response model is admitted.",
+    "No end-to-end production coupling admission or full predictor-corrector convergence is claimed.",
+    "No process-crash recovery or distributed transaction protocol is claimed.",
+    "No large-batch MultiSWAP throughput qualification is claimed.",
+    "Physical aquifer and end-to-end coupled mass closure remain later integration responsibilities.",
+    "RB1 remains frozen."
+  ]
 }
