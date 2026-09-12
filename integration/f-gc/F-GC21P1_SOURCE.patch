@@ -1,0 +1,170 @@
+diff --git a/src/transaction/mod_transaction_reference.f90 b/src/transaction/mod_transaction_reference.f90
+--- a/src/transaction/mod_transaction_reference.f90
++++ b/src/transaction/mod_transaction_reference.f90
+@@
+   type, public :: trial_outcome_t
+     logical :: solver_ok = .false.
+     real(real64) :: mass_in = 0.0_real64
+     real(real64) :: mass_out = 0.0_real64
++    logical :: bottom_interface_exchange_available = .false.
++    real(real64) :: bottom_outward_exchange_native = 0.0_real64
++    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
+     logical :: mass_accounting_complete = .false.
+@@
+     real(real64) :: accepted_storage_change = 0.0_real64
+     real(real64) :: accepted_total_in = 0.0_real64
+     real(real64) :: accepted_total_out = 0.0_real64
++    logical :: bottom_interface_exchange_available = .false.
++    real(real64) :: accepted_bottom_outward_exchange_native = 0.0_real64
++    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
+     real(real64) :: accepted_mass_residual = huge(0.0_real64)
+@@
+       result%accepted_storage_change = storage_half - storage0
+       result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
+       result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
++      result%bottom_interface_exchange_available = half1_outcome%bottom_interface_exchange_available .and. &
++           half2_outcome%bottom_interface_exchange_available
++      if (result%bottom_interface_exchange_available) then
++        result%accepted_bottom_outward_exchange_native = half1_outcome%bottom_outward_exchange_native + &
++             half2_outcome%bottom_outward_exchange_native
++        result%terminal_bottom_outward_flux_native = half2_outcome%terminal_bottom_outward_flux_native
++        if (.not. ieee_is_finite(result%accepted_bottom_outward_exchange_native) .or. &
++            .not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) then
++          result%bottom_interface_exchange_available = .false.
++          result%accepted_bottom_outward_exchange_native = 0.0_real64
++          result%terminal_bottom_outward_flux_native = 0.0_real64
++        end if
++      end if
+       result%accepted_mass_residual = half_mass_residual
+@@
+       result%accepted_storage_change = storage_candidate - storage0
+       result%accepted_total_in = outcome%mass_in
+       result%accepted_total_out = outcome%mass_out
++      result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
++      if (result%bottom_interface_exchange_available) then
++        result%accepted_bottom_outward_exchange_native = outcome%bottom_outward_exchange_native
++        result%terminal_bottom_outward_flux_native = outcome%terminal_bottom_outward_flux_native
++        if (.not. ieee_is_finite(result%accepted_bottom_outward_exchange_native) .or. &
++            .not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) then
++          result%bottom_interface_exchange_available = .false.
++          result%accepted_bottom_outward_exchange_native = 0.0_real64
++          result%terminal_bottom_outward_flux_native = 0.0_real64
++        end if
++      end if
+       result%accepted_missing_contribution_mask = accepted_missing_mask
+diff --git a/src/runtime/mod_canonical_contracts.f90 b/src/runtime/mod_canonical_contracts.f90
+--- a/src/runtime/mod_canonical_contracts.f90
++++ b/src/runtime/mod_canonical_contracts.f90
+@@
+   type, public :: canonical_result_t
+     integer :: status = CANONICAL_STATUS_INVALID_REQUEST
+     logical :: completed = .false.
+@@
+     type(canonical_mass_accounting_t) :: mass
+     type(canonical_run_diagnostics_t) :: diagnostics
+     type(transaction_interface_sensitivity_t) :: interface_sensitivity
++    logical :: bottom_interface_exchange_available = .false.
++    real(real64) :: bottom_outward_exchange_native = 0.0_real64
++    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
+   end type canonical_result_t
+diff --git a/src/runtime/mod_canonical_interval_runtime.f90 b/src/runtime/mod_canonical_interval_runtime.f90
+--- a/src/runtime/mod_canonical_interval_runtime.f90
++++ b/src/runtime/mod_canonical_interval_runtime.f90
+@@
+     type(transaction_result_t) :: tx
+     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
+-    real(real64) :: cursor, next_cursor, tol
+-    logical :: aggregate_mass_complete
++    real(real64) :: cursor, next_cursor, tol, aggregate_bottom_exchange, terminal_bottom_flux
++    logical :: aggregate_mass_complete, aggregate_bottom_available
+@@
+     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
+     aggregate_mass_complete = .true.
++    aggregate_bottom_available = .true.
++    aggregate_bottom_exchange = 0.0_real64
++    terminal_bottom_flux = 0.0_real64
+     cursor = interval%t0
+@@
+       call accumulate_accepted_mass(result, tx, aggregate_mass_complete)
++      call accumulate_accepted_bottom_interface(tx, aggregate_bottom_available, aggregate_bottom_exchange, &
++           terminal_bottom_flux)
+       terminal_sensitivity = tx%interface_sensitivity
+@@
+         result%diagnostics%external_commits = 1
+         call finalize_interval_mass(result, aggregate_mass_complete)
++        if (aggregate_bottom_available .and. ieee_is_finite(aggregate_bottom_exchange) .and. &
++            ieee_is_finite(terminal_bottom_flux)) then
++          result%bottom_interface_exchange_available = .true.
++          result%bottom_outward_exchange_native = aggregate_bottom_exchange
++          result%terminal_bottom_outward_flux_native = terminal_bottom_flux
++        end if
+         result%interface_sensitivity = terminal_sensitivity
+@@
+   end subroutine accumulate_accepted_mass
++
++  subroutine accumulate_accepted_bottom_interface(tx, aggregate_available, aggregate_exchange, terminal_flux)
++    type(transaction_result_t), intent(in) :: tx
++    logical, intent(inout) :: aggregate_available
++    real(real64), intent(inout) :: aggregate_exchange, terminal_flux
++    real(real64) :: candidate_exchange
++
++    if (tx%status /= TX_STATUS_ACCEPTED) return
++    if (.not. aggregate_available) return
++    if (.not. tx%bottom_interface_exchange_available) then
++      aggregate_available = .false.
++      aggregate_exchange = 0.0_real64
++      terminal_flux = 0.0_real64
++      return
++    end if
++    candidate_exchange = aggregate_exchange + tx%accepted_bottom_outward_exchange_native
++    if (.not. ieee_is_finite(candidate_exchange) .or. &
++        .not. ieee_is_finite(tx%terminal_bottom_outward_flux_native)) then
++      aggregate_available = .false.
++      aggregate_exchange = 0.0_real64
++      terminal_flux = 0.0_real64
++      return
++    end if
++    aggregate_exchange = candidate_exchange
++    terminal_flux = tx%terminal_bottom_outward_flux_native
++  end subroutine accumulate_accepted_bottom_interface
+ 
+   subroutine finalize_interval_mass(result, aggregate_complete)
+diff --git a/src/kernel/mod_kernel_transactions.f90 b/src/kernel/mod_kernel_transactions.f90
+--- a/src/kernel/mod_kernel_transactions.f90
++++ b/src/kernel/mod_kernel_transactions.f90
+@@
+   type, public :: kernel_result_t
+     integer :: status = CANONICAL_STATUS_INVALID_REQUEST
+     logical :: completed = .false.
+@@
+     real(real64) :: completed_t = 0.0_real64
+     type(canonical_mass_accounting_t) :: mass
+     type(transaction_interface_sensitivity_t) :: interface_sensitivity
++    logical :: bottom_interface_exchange_available = .false.
++    real(real64) :: bottom_outward_exchange_native = 0.0_real64
++    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
+   end type kernel_result_t
+@@
+     result%completed_t = runtime_result%completed_t
+     result%mass = runtime_result%mass
+     result%interface_sensitivity = runtime_result%interface_sensitivity
++    result%bottom_interface_exchange_available = runtime_result%bottom_interface_exchange_available
++    result%bottom_outward_exchange_native = runtime_result%bottom_outward_exchange_native
++    result%terminal_bottom_outward_flux_native = runtime_result%terminal_bottom_outward_flux_native
+   end subroutine map_runtime_result
+diff --git a/src/runtime/mod_fmr_serialized_reference_backend.f90 b/src/runtime/mod_fmr_serialized_reference_backend.f90
+--- a/src/runtime/mod_fmr_serialized_reference_backend.f90
++++ b/src/runtime/mod_fmr_serialized_reference_backend.f90
+@@
+     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
+          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
++    outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration
++    outcome%terminal_bottom_outward_flux_native = -solve_result%bottom_flux
++    if (.not. ieee_is_finite(outcome%bottom_outward_exchange_native) .or. &
++        .not. ieee_is_finite(outcome%terminal_bottom_outward_flux_native)) then
++      outcome%bottom_outward_exchange_native = 0.0_real64
++      outcome%terminal_bottom_outward_flux_native = 0.0_real64
++      return
++    end if
++    outcome%bottom_interface_exchange_available = .true.
+     outcome%mass_accounting_complete = .true.
