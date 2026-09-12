@@ -1,0 +1,32 @@
+name: EB-I01 energy conservation ledger
+
+on:
+  push:
+    branches:
+      - work/eb-i01-energy-conservation-ledger
+    paths:
+      - 'src/kernel/mod_energy_conservation_types.f90'
+      - 'src/runtime/mod_energy_conservation_ledger.f90'
+      - 'tests/eb/**'
+      - '.github/workflows/ebi01-energy-conservation-ledger.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate with history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Run EB-I01 qualification gate
+        run: bash tests/eb/run_ebi01_energy_conservation_ledger_gate.sh
