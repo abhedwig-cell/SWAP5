@@ -1,0 +1,83 @@
+{
+  "workunit": "EB-I01",
+  "title": "Energy Conservation Ledger",
+  "status": "workbranch_qualified_not_canonical_admitted",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/eb-i01-energy-conservation-ledger",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "c6494f913303b7aefc4f9c53c6c157082d54ea4b"
+  },
+  "implementation_qualification": {
+    "source_and_gate_head": "0b52cc4d728cbe739fc76adbc763b0db8fe8a248",
+    "successful_github_actions_run": 34717387426,
+    "successful_job": 103616953644,
+    "failed_predecessor_run": 34717330601,
+    "failed_predecessor_reason": "The first gate applied -Werror to unchanged canonical dependencies and exposed the pre-existing REAL equality warning in mod_transaction_reference.f90. The gate was corrected so all new EB-I01 production code and tests remain under -Werror while only unchanged canonical dependencies permit compare-reals warnings.",
+    "production_source_delta": [
+      "src/kernel/mod_energy_conservation_types.f90",
+      "src/runtime/mod_energy_conservation_ledger.f90"
+    ],
+    "successful_gate_markers": [
+      "EBI01_EXACT_ADDITIVE_SOURCE_DELTA=PASS",
+      "EBI01_NO_GROUNDWATER_MASS_LEDGER_DEPENDENCY=PASS",
+      "EBI01_KERNEL_RUNTIME_IO_SEPARATION=PASS",
+      "EBI01_TYPES_O0_O2_IDENTITY=PASS",
+      "EBI01_RECEIPT_INTEGRATION_O0_O2_IDENTITY=PASS",
+      "EBI01_EXISTING_RECEIPT_MASS_TRANSACTION_REPLAY=PASS",
+      "EBI01_ENERGY_CONSERVATION_LEDGER_GATE PASS"
+    ]
+  },
+  "contract": {
+    "units": "interval-integrated J/m2",
+    "reference_area": "owning logical SWAP column or tile area",
+    "direction_convention": "non-negative magnitude with explicit source_component -> target_component direction",
+    "external_component_id": 0,
+    "residual_identity": "delta_storage - boundary_input + boundary_output",
+    "tile_or_modflow_area_weighting": "runtime/coupler responsibility outside the kernel",
+    "transaction_authority": "existing fmr_accepted_commit_receipt_t after successful physical kernel commit",
+    "trial_storage": "worker/job scratch",
+    "committed_energy_record": "compact provenance plus aggregate balance; no persistent transfer graph"
+  },
+  "invariant_assessment": [
+    {"id": 1, "status": "PASS", "evidence": "Generic kernel energy-accounting types are not use-case-specific and add no alternate SWAP kernel."},
+    {"id": 2, "status": "PASS", "evidence": "Production energy modules contain no file, path, parser or I/O primitive dependency; gate checks this explicitly."},
+    {"id": 3, "status": "PASS", "evidence": "Energy storage snapshots, directed transfers, transaction provenance and committed diagnostics are explicit separate types and do not modify forcing or physical state types."},
+    {"id": 4, "status": "PASS", "evidence": "No persistent per-column physical state is added. The committed record is compact and the trial transfer graph is discarded before publication."},
+    {"id": 5, "status": "PASS", "evidence": "energy_trial_ledger_t is defined for worker/job trial scratch; transfer storage exists only for an active trial."},
+    {"id": 6, "status": "PARTIAL", "evidence": "The API does not require object-per-column persistent storage and permits worker reuse, but large-batch memory/cache/vectorization performance is not qualified by EB-I01."},
+    {"id": 7, "status": "PASS", "evidence": "prepare -> accepted physical commit receipt -> publish is explicit. Rollback/abort publishes no energy record and replay from the same committed origin is tested."},
+    {"id": 8, "status": "PASS", "evidence": "Remote integration test proves rollback followed by replay from the same committed physical revision and interval."},
+    {"id": 9, "status": "PASS", "evidence": "Ledger provenance uses generic real-valued [t0,t1] intervals and contains no day, month, year or midnight assumption."},
+    {"id": 10, "status": "PASS", "evidence": "No fixed coupling-window duration or calendar boundary is encoded."},
+    {"id": 11, "status": "PASS", "evidence": "Energy publication is aligned with the existing transactional runtime receipt and is usable in coupled execution without depending on a groundwater-specific ledger."},
+    {"id": 12, "status": "NOT_APPLICABLE", "evidence": "EB-I01 does not alter the SWAP-MODFLOW head/flux interface contract."},
+    {"id": 13, "status": "PASS", "evidence": "No existing mass source is changed. The unchanged FMR18 receipt/mass transaction test is recompiled and executed without linking EB-I01, O0/O2-identically."},
+    {"id": 14, "status": "NOT_APPLICABLE", "evidence": "EB-I01 adds conservation accounting only and does not alter groundwater interface sensitivities."},
+    {"id": 15, "status": "PASS", "evidence": "The ledger adds bookkeeping to an existing trial and accepted commit; it does not require extra full SWAP predictor/corrector runs."},
+    {"id": 16, "status": "PARTIAL", "evidence": "Worker-local lifetime and optional allocation are compatible with MultiSWAP, but no hundred-thousand-column throughput or concurrency qualification is claimed."},
+    {"id": 17, "status": "PASS", "evidence": "The ledger knows only the logical column/tile reference area. Tile fractions and MODFLOW-cell aggregation are explicitly excluded from the kernel contract."},
+    {"id": 18, "status": "NOT_APPLICABLE", "evidence": "No deep-vadose transfer-zone behavior is changed."},
+    {"id": 19, "status": "NOT_APPLICABLE", "evidence": "No component transition between deep-vadose and direct groundwater coupling is changed."},
+    {"id": 20, "status": "PASS", "evidence": "Accounting components and transfers are generic and have no dependency on one Richards implementation."},
+    {"id": 21, "status": "PARTIAL", "evidence": "The accounting API is available to shared physics, but existing heat/canopy/surface process wiring into it is intentionally deferred to later energy workunits."},
+    {"id": 22, "status": "PASS", "evidence": "No HeadCalc internals or legacy hydraulic arrays are referenced."},
+    {"id": 23, "status": "PASS", "evidence": "The accounting contract introduces no solver policy and changes no physical option."},
+    {"id": 24, "status": "NOT_QUALIFIED", "evidence": "No bounded-cost large-transfer-graph or pathological-column performance qualification is part of EB-I01. Projection and duplicate validation costs are therefore not claimed as production-scale bounded."},
+    {"id": 25, "status": "PASS", "evidence": "Existing reference transaction behavior is preserved and replayed unchanged; EB-I01 does not remove or weaken reference-mode capability."},
+    {"id": 26, "status": "PARTIAL", "evidence": "A compact committed energy balance with transaction provenance is available, but runtime-wide diagnostics aggregation/reporting is not yet wired."},
+    {"id": 27, "status": "PASS", "evidence": "Transfer arrays are allocated only for an active energy trial; EB-I01 adds no mandatory energy allocation to every canonical column state."},
+    {"id": 28, "status": "PASS", "evidence": "Tile-area composition and MODFLOW aggregation remain outside the kernel; runtime receipt authority controls publication."},
+    {"id": 29, "status": "PASS", "evidence": "Production code contains no .swp, MODFLOW, calendar-start, midnight or fixed-duration assumption."},
+    {"id": 30, "status": "PASS", "evidence": "This audit explicitly records the EB-I01 change against all SWAP core architecture invariants."}
+  ],
+  "explicit_non_claims": [
+    "Existing SWAP physical heat/energy processes are not yet wired into the ledger.",
+    "No scientific qualification of a heat solver is provided by EB-I01.",
+    "No large-batch MultiSWAP throughput or memory benchmark is provided by EB-I01.",
+    "No concurrent-worker race/stress test is provided by EB-I01.",
+    "No MODFLOW-cell or tile-fraction energy aggregation is performed by EB-I01.",
+    "No runtime-wide serialization/reporting contract is admitted by EB-I01.",
+    "Current-canonical admission is not claimed by this workbranch audit."
+  ]
+}
