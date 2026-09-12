@@ -2,7 +2,8 @@ module mod_energy_conservation_ledger
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_energy_conservation_types, only: energy_transfer_t, energy_storage_snapshot_t, energy_balance_t, &
-       make_energy_transfer, make_energy_storage_snapshot, project_energy_balance, ENERGY_CONSERVATION_OK
+       make_energy_transfer, make_energy_storage_snapshot, project_energy_balance, ENERGY_CONSERVATION_OK, &
+       ENERGY_EXTERNAL_COMPONENT
   use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t
   implicit none
   private
@@ -19,6 +20,7 @@ module mod_energy_conservation_ledger
   integer, parameter, public :: ENERGY_LEDGER_GENERATION_EXHAUSTED = 9
   integer, parameter, public :: ENERGY_LEDGER_ACCUMULATION_FAILED = 10
   integer, parameter, public :: ENERGY_LEDGER_CAPACITY_EXHAUSTED = 11
+  integer, parameter, public :: ENERGY_LEDGER_UNKNOWN_COMPONENT = 12
 
   type, public :: prepared_energy_trial_t
     private
@@ -146,6 +148,18 @@ contains
     transfer_record = make_energy_transfer(source_component_id, target_component_id, amount_j_m2, transfer_status)
     status = ENERGY_LEDGER_INVALID_TRANSFER
     if (transfer_status /= ENERGY_CONSERVATION_OK .or. .not. transfer_record%ready()) return
+
+    ! Component id zero is the only explicit outside world. Every positive
+    ! endpoint must belong to the registered trial snapshot. This prevents a
+    ! missing internal energy store from being silently reclassified as a
+    ! control-volume boundary flux in the whole-system balance.
+    status = ENERGY_LEDGER_UNKNOWN_COMPONENT
+    if (source_component_id /= ENERGY_EXTERNAL_COMPONENT) then
+      if (.not. registered_component(self, source_component_id)) return
+    end if
+    if (target_component_id /= ENERGY_EXTERNAL_COMPONENT) then
+      if (.not. registered_component(self, target_component_id)) return
+    end if
 
     if (self%transfer_count >= size(self%transfers)) then
       call grow_transfer_capacity(self, status)
@@ -376,6 +390,21 @@ contains
       balance = energy_balance_t()
     end if
   end subroutine energy_record_balance
+
+  pure logical function registered_component(self, component_id) result(found)
+    class(energy_trial_ledger_t), intent(in) :: self
+    integer(int64), intent(in) :: component_id
+    integer :: i
+
+    found = .false.
+    if (.not. allocated(self%component_ids)) return
+    do i = 1, size(self%component_ids)
+      if (self%component_ids(i) == component_id) then
+        found = .true.
+        return
+      end if
+    end do
+  end function registered_component
 
   subroutine grow_transfer_capacity(self, status)
     class(energy_trial_ledger_t), intent(inout) :: self
