@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC16",
+  "qualification_type": "COMPOSITION_PLAN_ONLY",
+  "production_admission": false,
+  "production_source_may_change": false,
+  "required_checks": [
+    "F-GC01 through F-GC15 authority chain complete",
+    "F-CI49 represented as unresolved canonical entry gate",
+    "restricted direct profile uses prescribed bottom head only",
+    "generic non-calendar [t0,t1] semantics",
+    "same-t0 predictor/corrector transaction semantics",
+    "normal cost predictor plus one corrector",
+    "explicit provenance-bound head convergence policy with no default",
+    "q_SWAP=-q_GW exact opposite assignment and no mass tolerance",
+    "deep-vadose excluded from SWAP kernel",
+    "F-GC17 through F-GC27 dependency graph has no forward dependency",
+    "all 30 architecture invariants reviewed",
+    "no src/ delta from the F-GC16 canonical base"
+  ],
+  "workflow": ".github/workflows/fgc16-production-groundwater-coupling-composition-plan.yml",
+  "runner": "tests/fgc/run_fgc16_composition_plan_qualification.py",
+  "success_decision": "QUALIFIED_RESTRICTED_PRODUCTION_GROUNDWATER_COUPLING_COMPOSITION_PLAN_READY_FOR_IMPLEMENTATION",
+  "failure_decision": "FAIL_CLOSED_F_GC16_PLAN_NOT_READY"
+}
