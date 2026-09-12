@@ -3,13 +3,20 @@
   "work_unit": "F-GC19R owner qualification",
   "title": "Prepared groundwater-interface ledger publication owner qualification",
   "branch": "qualification/f-gc19r-prepared-ledger-publication-owner-qualification",
-  "phase": "BLOCKED_EVIDENCE_RUN_PENDING",
+  "phase": "BLOCKED_EVIDENCE_FROZEN_EXACT_STATUS_HEAD_RECHECK_REQUIRED",
   "decision": "BLOCKED_REMEDIATION_REQUIRED_BEFORE_INDEPENDENT_QUALIFICATION",
   "candidate": "work/f-gc19r-prepared-ledger-publication@d92b84c815f9e6c5509d280953b4d659c5cb14ac",
   "candidate_source_blob": "b0887577774d8c015ac9b1324b547e880059789e",
   "f_gc19_authority": "215313675c074c18dff251b74581269085f7658e",
   "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
   "current_canonical_at_qualification_start": "c262ae3c0c06a8fdeb5e87dde2177417c1465f91",
+  "blocked_evidence": {
+    "verifier_head": "3f64b04a0325306a1b3c58c5d74e1ab447bc0482",
+    "run": 34694635451,
+    "job": 103555889682,
+    "conclusion": "success",
+    "meaning": "The workflow independently reproduced the owner-candidate blocker under O0 and O2 runtime checks. Success is evidence of the blocker, not qualification of the candidate."
+  },
   "finding": {
     "id": "FGC19R-B1",
     "severity": "BLOCKING",
@@ -29,6 +36,7 @@
     "no_mass_tolerance_relaxation": true
   },
   "state": {
+    "blocked_evidence_frozen": true,
     "owner_qualified": false,
     "independent_qualification_allowed": false,
     "canonical_admission_allowed": false,
@@ -54,5 +62,5 @@
     "No current-canonical admission is claimed.",
     "RB1 remains frozen."
   ],
-  "next_required_step": "Run the exact-head blocker-reproduction workflow. If green, freeze this candidate as blocked evidence and start F-GC19R-R1 owner remediation from the blocked candidate without rewriting this qualification history."
+  "next_required_step": "Require the automatically triggered exact-status-head blocker reproduction run to finish green, then keep this qualification authority immutable and remediate from the blocked candidate d92b84c815f9e6c5509d280953b4d659c5cb14ac."
 }
