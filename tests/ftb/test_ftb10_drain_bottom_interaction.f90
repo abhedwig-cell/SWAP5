@@ -68,13 +68,14 @@ contains
 
     storage0 = soil_storage(states(1))
     call require(same_bits(forcings(1)%bottom_head, bottom_head_first), 'first prescribed bottom head configured')
+    call require(.not. allocated(forcings(1)%drainage_flux_by_level), 'DIVDRA target initially runtime-owned and unbound')
     call reset_legacy()
     call fmr_run_serialized_physical_multiswap_with_divdra(columns, templates, parameters, forcings, states, config, &
          top, t0, tm, 1, request, distribution, view, results, diagnostics, aggregate, dispatch_status, &
          composition_status, records)
 
-    call require(dispatch_status == FMR_SERIAL_DISPATCH_OK, 'first interval dispatch')
     call require(composition_status == FMR_DIVDRA_COMPOSE_OK, 'first interval composition')
+    call require(dispatch_status == FMR_SERIAL_DISPATCH_OK, 'first interval dispatch')
     call require(size(results) == 1 .and. results(1)%committed .and. results(1)%completed, 'first interval committed')
     call require(size(records) == 1 .and. records(1)%binding%published, 'first interval drainage published')
     call require(same_bits(records(1)%binding%authoritative_scalar_transfer, drainage_transfer), 'first drainage scalar')
@@ -91,14 +92,15 @@ contains
     forcings(1)%bottom_head = bottom_head_second
     call configure_view(view(1), gwl_second)
     call require(.not. same_bits(bottom_head_first, forcings(1)%bottom_head), 'prescribed bottom head changed')
+    call require(.not. allocated(forcings(1)%drainage_flux_by_level), 'DIVDRA target unbound before second composition')
 
     call reset_legacy()
     call fmr_run_serialized_physical_multiswap_with_divdra(columns, templates, parameters, forcings, states, config, &
          top, tm, t1, 1, request, distribution, view, results, diagnostics, aggregate, dispatch_status, &
          composition_status, records)
 
-    call require(dispatch_status == FMR_SERIAL_DISPATCH_OK, 'second interval dispatch')
     call require(composition_status == FMR_DIVDRA_COMPOSE_OK, 'second interval composition')
+    call require(dispatch_status == FMR_SERIAL_DISPATCH_OK, 'second interval dispatch')
     call require(size(results) == 1 .and. results(1)%committed .and. results(1)%completed, 'second interval committed')
     call require(size(records) == 1 .and. records(1)%binding%published, 'second interval drainage published')
     call require(same_bits(records(1)%binding%authoritative_scalar_transfer, drainage_transfer), 'second drainage scalar')
@@ -235,9 +237,7 @@ contains
     f%top_head = initial_head
     f%bottom_flux = 0.0_real64
     f%bottom_head = bottom_head_first
-    allocate(f%drainage_flux_by_level(1,numnod), f%subsurface_irrigation_source(numnod), &
-         f%root_extraction_sink(numnod))
-    f%drainage_flux_by_level = 0.0_real64
+    allocate(f%subsurface_irrigation_source(numnod), f%root_extraction_sink(numnod))
     f%subsurface_irrigation_source = 0.0_real64
     f%root_extraction_sink = 0.0_real64
   end subroutine configure_forcing
