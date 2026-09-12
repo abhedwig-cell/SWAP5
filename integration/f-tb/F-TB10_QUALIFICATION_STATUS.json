@@ -3,26 +3,37 @@
   "work_unit": "F-TB10",
   "title": "SWAP5 TB09-003 Restricted Drainage x Changing Bottom Boundary Integrated Qualification",
   "branch": "work/f-tb10-drain-bottom-integrated-qualification",
-  "phase": "QUALIFICATION_IMPLEMENTED_EXACT_HEAD_CI_REQUIRED",
-  "status": "QUALIFIED_CLOSED_WHEN_EXACT_HEAD_CI_GREEN",
-  "decision_on_green": "QUALIFIED_TB09_003_RESTRICTED_DRAIN_BOTTOM_INTERACTION",
+  "phase": "BLOCKER_ESTABLISHED_EXACT_HEAD_CLOSEOUT_REQUIRED",
+  "status": "BLOCKED_OWNER_TEMPORAL_ACCEPTANCE_POLICY_REQUIRED",
+  "decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP",
   "frozen_current_canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
   "ftb09_catalog_authority": "fe3545c4537b11cefd0186aa401048d4f4b10eb9",
   "stable_case_id": "SWAP5-TB09-DRAIN-BOTTOM-003-v1",
   "owner_authorities": {
     "divdra_frozen_admitted_postimage": "F-CI36@8fa79a70a9faccaf8b63826df607a685eb75b046",
     "independent_divdra_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff",
-    "current_canonical_preservation": "F-CI canonical replays F-CI36 on its frozen qualified postimage; F-TB10 verifies current-canonical admitted DIVDRA blobs remain identical"
+    "temporal_negative_authority": "F-VQ28: existing generic external full-half numeric profile not admitted",
+    "normalized_certificate_authority": "F-VQ34/F-CI21: mechanism admitted, numeric application H_budget not selected",
+    "application_accuracy_transport": "F-CI44/F-CI46: transport externally qualified H_app/A_temporal; no numeric policy selection",
+    "groundwater_only_latest_binding": "F-GC22@c50f3770ae8e4bee7c276a080be00156218944f1: branch-qualified direct-groundwater binding, not canonical and no numeric defaults"
   },
-  "qualified_scope_on_green": {
+  "attempted_scope": {
     "runtime": "current-canonical serialized Full Richards runtime through fmr_run_serialized_physical_multiswap_with_divdra",
     "drainage": "restricted single-level positive DIVDRA with explicit hydraulic view and external scalar transfer",
-    "bottom_boundary": "prescribed-head SWBOTB=5 changed between two consecutive generic intervals",
-    "interaction": "active drainage remains composed while both the lower hydraulic boundary and explicit drainage groundwater view change",
-    "mass": "complete hard mass closure on interval 1, interval 2 and the combined t0-to-t1 window",
-    "response": "derived signed qbot must change after the prescribed-head perturbation",
-    "determinism": "O0/O2 exact text identity",
-    "preservation": "frozen F-CI36/F-VQ51 authority chain pinned plus current-canonical DIVDRA production blobs matched to the admitted authority"
+    "bottom_boundary": "prescribed-head SWBOTB=5",
+    "target_interaction": "nonstationary drainage plus changing bottom boundary over two generic intervals",
+    "mass_requirement": "hard and non-negotiable"
+  },
+  "blocker": {
+    "classification": "NONSTATIONARY_TEMPORAL_ACCEPTANCE_POLICY_GAP",
+    "observed_run": 34680289804,
+    "observed_run_head": "3a3017de9b71430deb053a141b7d9ce762346ebd",
+    "observed_failure": "FTB10_TEST_FAIL first interval committed",
+    "current_fixture_policy": "TX_TEMPORAL_EXTERNAL_FULL_HALF with temporal_tolerance=0",
+    "policy_gap": "No admitted generic positive full-half tolerance exists for this runtime scope, and no application/runtime provenance exists in F-TB10 for a normalized Richards H_budget certificate.",
+    "production_defect_proven": false,
+    "mass_defect_proven": false,
+    "scientific_case_qualified": false
   },
   "state": {
     "production_source_changed": false,
@@ -31,27 +42,25 @@
     "ftb09_catalog_modified": false,
     "all_30_architecture_invariants_audited": true,
     "scientific_result_qualified": false,
-    "exact_head_ci_green": false
+    "blocked_closeout_exact_head_ci_green": false
   },
-  "nonclaims": [
-    "direct SWAP-MODFLOW coupling",
-    "H_SWAP equals H_MF qualification",
-    "drainage exchange-law science beyond the admitted F-CI36 owner scope",
-    "fully implicit or trial-state drainage response",
-    "negative/infiltration drainage",
-    "multilevel drainage",
-    "surface-water-controlled drainage",
-    "parallel active-DIVDRA throughput",
-    "all bottom-boundary modes",
-    "any other F-TB09 catalog case"
+  "forbidden_interpretations": [
+    "A blocked closeout is not scientific qualification of TB09-003.",
+    "The failed physical run is not evidence of a production-physics defect by itself.",
+    "F-GC22 is not a standalone TB10 numeric accuracy authority.",
+    "No positive temporal_tolerance or H_budget may be invented inside F-TB10.",
+    "Mass conservation may not be relaxed to remove the blocker."
   ],
   "evidence_files": [
     "tests/ftb/test_ftb10_drain_bottom_interaction.f90",
     "tests/ftb/run_ftb10_drain_bottom_interaction.sh",
     "integration/f-tb/F-TB10_WORK_UNIT_CONTRACT.json",
     "integration/f-tb/F-TB10_INVARIANT_AUDIT.json",
+    "integration/f-tb/F-TB10_BLOCKER_EVIDENCE.json",
+    "integration/f-tb/F-TB10_OWNER_HANDOFF.json",
     "integration/f-tb/RUNLOG_F-TB10.md",
     "docs/testbank/F-TB10_DRAIN_BOTTOM_INTERACTION_QUALIFICATION.md"
   ],
-  "close_condition": "Dedicated F-TB10 workflow must prove local HEAD == GITHUB_SHA and live branch ref == GITHUB_SHA before and after the qualification runner. A later branch commit invalidates the prior run for closeout purposes."
+  "return_condition": "Reopen execution only after a separate owner workunit qualifies and, where necessary, canonically admits a temporal acceptance policy/provenance explicitly covering this standalone/integrated nonstationary profile.",
+  "close_condition": "The dedicated F-TB10 workflow must validate this blocked decision on the exact live branch head, with start and end branch-ref checks. Any later commit invalidates that blocked closeout run."
 }
