@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ03",
+  "decision": "QUALIFIED_FCI13_SOURCE_BOUND_STATUS_CONTRACT_ONLY",
+  "qualification_scope": "FCI13_SOURCE_BOUND_STATUS_AND_TRANSACTION_SEMANTICS",
+  "qualified_postimage": "32f015c29f75e7d6cc4171b8c49d4ea0e1208a72",
+  "oracle": "B1.10",
+  "production_source_changed": false,
+  "recoverable_status_contract_qualified": true,
+  "real_terminal_failure_physics_qualified": false,
+  "production_physics_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "basis": {
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_canonical_workflow_run": 34104845258,
+    "fci13_canonical_job": 101687946143,
+    "fvq02_final_head": "0a042426a83fc8bfbc31f36b67c0d8e49447724c"
+  },
+  "qualification_run": {
+    "workflow_run": 34106539643,
+    "job_id": 101692747939,
+    "job_name": "F-VQ03 qualified F-CI13 status admission",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "executed_checks": {
+    "fvq03_gate": "PASS",
+    "fvq03_unit_tests": {"passed": 6, "failed": 0},
+    "imported_semantic_validator_and_fault_injection_tests": {"passed": 32, "failed": 0},
+    "tx_time_fixture_cases": {"passed": 11, "failed": 0},
+    "stored_tx_time_evidence_consistent": true,
+    "corrected_b1_10_reference_job": "PASS",
+    "fci13_gate_rerun": "FCI13_GATE_PASS"
+  },
+  "qualified_claims": [
+    "source-bound F-CI13 three-class physical-trial status contract",
+    "canonical mapping of persistent minimum-dt Richards nonconvergence to retryable numerical status",
+    "failed-trial physical state restoration and unrounded trial-mass invalidation on the admitted canonical status path",
+    "continued separation of fatal contract/configuration failure from retryable numerical failure",
+    "carried-forward F-VQ02 verifier infrastructure on the F-CI13 basis"
+  ],
+  "explicit_non_claims": [
+    "No naturally occurring real B1.10 terminal minimum-dt nonconvergence case was qualification-tested.",
+    "Deterministic failure forcing does not qualify hydrological terminal-failure regression.",
+    "The synthetic TX/TIME harness does not qualify production physics or production mass tolerance.",
+    "No scalar temporal-error acceptance policy is qualified.",
+    "No B1.10 execute_reference_interval route is admitted.",
+    "No real canonical reference end-to-end result route is admitted."
+  ],
+  "remaining_blockers": [
+    "real B1.10 terminal minimum-dt nonconvergence qualification fixture if a stable case can be constructed without physics changes",
+    "scalar temporal-error metric and tolerance policy",
+    "execute_reference_interval for B1.10",
+    "real end-to-end B1.10 canonical reference execution and production result route",
+    "complete snow/macropore storage and failure qualification",
+    "reentrant parallel legacy-backend qualification"
+  ]
+}

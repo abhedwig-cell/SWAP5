@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ12",
+  "oracle": "B1.10",
+  "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT05_FSI05_ADMISSION_WITH_CONTRACTUAL_NONCONFLICT_ONLY",
+  "basis": {
+    "fvq11_final_head": "efdc11f35e2251eebbab888e05d74085892e05fd",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt05_tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "fkt05_qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "fkt05_status_promotion_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "fkt05_qualification_run": 34125537033,
+    "fkt05_focused_job": 101753225852,
+    "fkt05_fci_regression_job": 101753290988,
+    "fsi05_tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "fsi05_documented_postimage_head": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+    "fsi05_final_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "fsi05_test_run": 34124675751,
+    "fsi05_test_job": 101750448325,
+    "fsi05_documented_postimage_run": 34125047417,
+    "fsi05_documented_postimage_job": 101751648325
+  },
+  "positive_admission_targets": [
+    "F-KT05 reusable opaque committed checkpoint carrier and same-committed-state replay contract",
+    "F-SI05 committed production HeadCalc workspace seam on its qualified focused routes",
+    "F-KT05/F-SI05 contractual non-conflict: transaction semantics, generic time semantics and shared F-KT type ownership remain unchanged"
+  ],
+  "not_implied": [
+    "one composed F-KT05 + F-SI05 executable production postimage",
+    "full reference Richards reentrancy",
+    "parallel real HeadCalc 1/2/4/8 worker qualification",
+    "full unrounded SWAP water-balance identity",
+    "production B1.10 reference admission",
+    "production MultiSWAP runtime admission",
+    "macropore, implicit conductivity, minimum-timestep and all bottom-boundary path qualification",
+    "MODFLOW coupling qualification"
+  ],
+  "production_source_changed_by_fvq12": false,
+  "reference_source_changed_by_fvq12": false,
+  "physics_changed_by_fvq12": false,
+  "numerical_policy_changed_by_fvq12": false,
+  "mass_policy_changed_by_fvq12": false
+}
