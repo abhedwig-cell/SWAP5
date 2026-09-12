@@ -37,15 +37,56 @@ jobs:
             tests/fpm/test_fpm08d7_restart_lifecycle.f90 \
             tests/fpm/test_fpm08d7_transactional_runtime.f90 \
             > /tmp/fpm08d7.patch
-          if ! git apply --3way --index /tmp/fpm08d7.patch; then
-            echo 'F-VQ59_FORWARD_PORT_CONFLICT'
-            git status --short
-            git diff --cc || true
-            exit 1
-          fi
+          git apply --3way --index /tmp/fpm08d7.patch || true
 
           python3 - <<'PY'
           from pathlib import Path
+
+          def resolve_conflicts(path):
+              text = path.read_text()
+              out = []
+              pos = 0
+              count = 0
+              while True:
+                  a = text.find('<<<<<<< ours\n', pos)
+                  if a < 0:
+                      out.append(text[pos:])
+                      break
+                  out.append(text[pos:a])
+                  b = text.find('=======\n', a)
+                  c = text.find('>>>>>>> theirs\n', b)
+                  assert b >= 0 and c >= 0, f'unbalanced conflict markers in {path}'
+                  ours = text[a + len('<<<<<<< ours\n'):b]
+                  theirs = text[b + len('=======\n'):c]
+                  joined = ours + theirs
+                  if path.name == 'mod_fmr_restart_state_contract.f90':
+                      chosen = ours
+                  elif 'FMR_OPTIONAL_STATE_LAYOUT_SNOW' in joined and 'FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER' in joined:
+                      chosen = ours
+                  elif 'mod_process_hydraulic_view' in joined and 'mod_restricted_fixed_weir_surface_water' in joined:
+                      chosen = ours + theirs
+                  elif 'soil_temperature_active = .false.' in joined and 'fixed_weir_surface_water_status' in joined:
+                      chosen = ours + theirs
+                  elif 'type(soil_temperature_parameters_t)' in joined and 'fixed_weir_surface_water_parameters' in joined:
+                      chosen = ours + theirs
+                  elif 'last_observation%soil_temperature_active' in joined and 'fixed_weir_surface_water_result' in joined:
+                      chosen = ours + theirs
+                  elif 'base_physical_states_identical' in joined:
+                      chosen = ours
+                  else:
+                      raise AssertionError(f'unclassified semantic conflict in {path}: {joined[:400]}')
+                  out.append(chosen)
+                  pos = c + len('>>>>>>> theirs\n')
+                  count += 1
+              path.write_text(''.join(out))
+              return count
+
+          restart = Path('src/runtime/mod_fmr_restart_state_contract.f90')
+          backend = Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
+          n_restart = resolve_conflicts(restart)
+          n_backend = resolve_conflicts(backend)
+          assert n_restart == 1, n_restart
+          assert n_backend == 6, n_backend
 
           core = Path('src/runtime/mod_fmr_runtime_core.f90')
           s = core.read_text()
@@ -58,16 +99,30 @@ jobs:
           assert old in s
           core.write_text(s.replace(old, new, 1))
 
-          for path in [Path('src/runtime/mod_fmr_serialized_reference_backend.f90'),
-                       Path('src/runtime/mod_fmr_restart_state_contract.f90')]:
-              s = path.read_text()
-              old_use = '  use mod_fmr_optional_state_layouts, only: FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER\n'
-              assert old_use in s
-              new_use = '  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER\n'
-              s = s.replace(old_use, new_use, 1)
-              s = s.replace('FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER',
-                            'FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER')
-              path.write_text(s)
+          s = restart.read_text()
+          anchor = "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t\n"
+          assert anchor in s
+          s = s.replace(anchor,
+              "  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER\n"
+              "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &\n"
+              "       fmr_b110_fixed_weir_surface_water_state_t\n", 1)
+          s = s.replace('FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER',
+                        'FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER')
+          restart.write_text(s)
+
+          s = backend.read_text()
+          anchor = "  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &\n"
+          assert anchor in s
+          s = s.replace(anchor,
+              "  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER\n" + anchor, 1)
+          s = s.replace('FMR_OPTIONAL_STATE_FIXED_WEIR_SURFACE_WATER',
+                        'FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER')
+          backend.write_text(s)
+
+          for path in (restart, backend):
+              t = path.read_text()
+              assert '<<<<<<<' not in t and '=======' not in t and '>>>>>>>' not in t
+              assert 'mod_fmr_optional_state_layouts' not in t
           PY
 
           git add src tests/fpm
