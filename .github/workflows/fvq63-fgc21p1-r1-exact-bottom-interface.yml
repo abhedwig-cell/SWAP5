@@ -1,0 +1,40 @@
+name: F-VQ63 F-GC21P1-R1 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq63-fgc21p1-r1-exact-bottom-interface-independent-qualification
+    paths:
+      - .github/workflows/fvq63-fgc21p1-r1-exact-bottom-interface.yml
+      - integration/f-vq/F-VQ63_PRE_REGISTRATION.json
+      - integration/f-vq/F-VQ63_ARCHITECTURE_AUDIT.json
+      - integration/f-vq/F-VQ63_STATUS.json
+      - tests/fvq/test_fvq63_fgc21p1_r1_exact_bottom_interface.f90
+      - tests/fvq/run_fvq63_fgc21p1_r1_exact_bottom_interface.sh
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact qualification head and owner ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          OWNER=dcde6360f902081c94927486455e5233b81dfc1b
+          SOURCE=89f7d11413e1f3ae24c648f24f56577b982f23e6
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$OWNER" HEAD
+          git merge-base --is-ancestor "$SOURCE" HEAD
+          echo 'FVQ63_EXACT_HEAD_AND_OWNER_ANCESTRY=PASS'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent qualification gate
+        run: bash tests/fvq/run_fvq63_fgc21p1_r1_exact_bottom_interface.sh
