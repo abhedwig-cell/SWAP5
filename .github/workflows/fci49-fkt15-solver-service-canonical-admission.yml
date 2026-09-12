@@ -1,0 +1,39 @@
+name: F-CI49 definitive F-KT15 solver-service canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci49-fkt15-task2-solver-service-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FCI49_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Definitive F-KT15 canonical admission gate
+        shell: bash
+        run: bash tests/fci/run_fci49_fkt15_solver_service_canonical_admission.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FCI49_EXACT_HEAD_END=PASS:$GITHUB_SHA"
