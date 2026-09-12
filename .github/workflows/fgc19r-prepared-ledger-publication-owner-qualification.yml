@@ -1,0 +1,36 @@
+name: F-GC19R prepared ledger publication owner qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-gc19r-prepared-ledger-publication-owner-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-blocker:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reproduce F-GC19R foreign prepared-handle blocker
+        run: bash tests/fgc/run_fgc19r_prepared_ledger_publication_owner_qualification.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
