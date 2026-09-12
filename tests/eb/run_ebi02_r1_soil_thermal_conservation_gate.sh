@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"; cd "$ROOT"
-BASE=4023a16c32f4437f23fa1806a3ee0573f81fa1f3
+BASE=2a0db2524fba6e258316ce82630c60ea1c9c673a
 ENERGY=src/process/mod_soil_thermal_energy_contract.f90
 TEST=tests/eb/test_ebi02_soil_thermal_energy_contract.f90
 TEMP_CONTRACT=src/process/mod_soil_temperature_contract.f90
