@@ -2,7 +2,7 @@ module mod_fmr_serialized_reference_backend
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE, &
-       TX_MASS_MISSING_UNSPECIFIED
+       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
@@ -14,6 +14,7 @@ module mod_fmr_serialized_reference_backend
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
+  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
@@ -33,6 +34,11 @@ module mod_fmr_serialized_reference_backend
        soil_temperature_numerical_config_t, soil_temperature_forcing_t, soil_temperature_state_t, &
        soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t, &
        trial_restricted_soil_temperature, commit_soil_temperature_state
+  use mod_restricted_fixed_weir_surface_water, only: fixed_weir_surface_water_parameters_t, &
+       fixed_weir_surface_water_state_t, fixed_weir_surface_water_forcing_t, &
+       fixed_weir_surface_water_numerical_config_t, fixed_weir_surface_water_result_t, &
+       evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
+       FIXED_WEIR_AVAILABLE
   implicit none
   private
 
@@ -62,6 +68,14 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: temporal_history_available => fmr_b110_temporal_history_available
     procedure, public :: temporal_history_snapshot => fmr_b110_temporal_history_snapshot
   end type fmr_b110_temporal_indicator_state_t
+
+  ! D7 physical optional-state family.  SWST exists only on feature-active
+  ! columns; inactive B1.10 states retain their previous layout and footprint.
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_fixed_weir_surface_water_state_t
+    type(fixed_weir_surface_water_state_t) :: surface_water
+  contains
+    procedure :: clone => fmr_b110_fixed_weir_surface_water_state_clone
+  end type fmr_b110_fixed_weir_surface_water_state_t
 
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
@@ -143,6 +157,16 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: soil_temperature_top_heat_flux_j_cm2_day = 0.0_real64
     real(real64) :: soil_temperature_storage_change_j_cm2 = 0.0_real64
     real(real64) :: soil_temperature_boundary_energy_j_cm2 = 0.0_real64
+    logical :: fixed_weir_surface_water_active = .false.
+    integer :: fixed_weir_surface_water_status = 0
+    real(real64) :: fixed_weir_surface_water_storage = 0.0_real64
+    real(real64) :: fixed_weir_surface_water_level = 0.0_real64
+    real(real64) :: fixed_weir_surface_water_supply_rate = 0.0_real64
+    real(real64) :: fixed_weir_surface_water_discharge_rate = 0.0_real64
+    real(real64) :: fixed_weir_surface_water_mass_residual = 0.0_real64
+    real(real64) :: fixed_weir_surface_water_rating_residual = 0.0_real64
+    integer :: fixed_weir_surface_water_iterations = 0
+    character(len=32) :: fixed_weir_surface_water_route = 'not-run'
   end type fmr_serialized_physical_observation_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
@@ -193,6 +217,12 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
     type(soil_temperature_workspace_t) :: soil_temperature_workspace
+    logical :: fixed_weir_surface_water_active = .false.
+    logical :: fixed_weir_surface_water_configured = .false.
+    type(fixed_weir_surface_water_parameters_t) :: fixed_weir_surface_water_parameters
+    type(fixed_weir_surface_water_forcing_t) :: fixed_weir_surface_water_forcing
+    type(fixed_weir_surface_water_numerical_config_t) :: fixed_weir_surface_water_numerical
+    type(fixed_weir_surface_water_result_t) :: fixed_weir_surface_water_result
     type(fmr_serialized_physical_observation_t) :: last_observation
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
@@ -213,10 +243,13 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: observation => fmr_serialized_backend_observation
+    procedure, public :: configure_fixed_weir_surface_water => fmr_serialized_backend_configure_fixed_weir_surface_water
+    procedure, public :: clear_fixed_weir_surface_water => fmr_serialized_backend_clear_fixed_weir_surface_water
   end type fmr_serialized_reference_backend_t
 
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
+  public :: fmr_new_b110_fixed_weir_surface_water_committed_state
 
 contains
 
@@ -275,6 +308,17 @@ contains
     end select
   end subroutine fmr_b110_temporal_indicator_state_clone
 
+  subroutine fmr_b110_fixed_weir_surface_water_state_clone(self, copy)
+    class(fmr_b110_fixed_weir_surface_water_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_fixed_weir_surface_water_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_fixed_weir_surface_water_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%surface_water = self%surface_water
+    end select
+  end subroutine fmr_b110_fixed_weir_surface_water_state_clone
+
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     available = self%temporal_history%available(self%active_nodes)
@@ -330,14 +374,36 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_temporal_indicator_committed_state
 
-  logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled) result(matches)
+  subroutine fmr_new_b110_fixed_weir_surface_water_committed_state(committed, lineage_id, state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_fixed_weir_surface_water_state_t), intent(in) :: state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. ieee_is_finite(state%surface_water%storage)) return
+    allocate(fmr_b110_fixed_weir_surface_water_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_fixed_weir_surface_water_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%surface_water = state%surface_water
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_fixed_weir_surface_water_committed_state
+
+  logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
+                                                               fixed_weir_surface_water_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled
+    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
     select type (state)
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled
-    class is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled
+      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active
+    type is (fmr_b110_fixed_weir_surface_water_state_t)
+      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active
+    type is (fmr_b110_physical_state_t)
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active
     class default
       matches = .false.
     end select
@@ -370,9 +436,11 @@ contains
     model%soil_temperature_active = parameters%soil_temperature_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
+    if (model%fixed_weir_surface_water_active .and. parameters%snow_active) return
     call committed%snapshot(snapshot, available)
     if (.not. available) return
-    if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled)) return
+    if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
+                                                           model%fixed_weir_surface_water_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -411,9 +479,51 @@ contains
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
+    call self%clear_fixed_weir_surface_water()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
+
+  subroutine fmr_serialized_backend_configure_fixed_weir_surface_water(self, parameters, forcing, numerical, ok)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(fixed_weir_surface_water_parameters_t), intent(in) :: parameters
+    type(fixed_weir_surface_water_forcing_t), intent(in) :: forcing
+    type(fixed_weir_surface_water_numerical_config_t), intent(in) :: numerical
+    logical, intent(out) :: ok
+    logical :: parameters_ok
+
+    call self%clear_fixed_weir_surface_water()
+    ok = .false.
+    if (.not. self%initialized) return
+    call validate_fixed_weir_surface_water_parameters(parameters, parameters_ok)
+    if (.not. parameters_ok) return
+    if (.not. ieee_is_finite(forcing%secondary_drainage_rate) .or. &
+        .not. ieee_is_finite(forcing%supply_capacity_rate)) return
+    if (forcing%secondary_drainage_rate < 0.0_real64 .or. forcing%supply_capacity_rate < 0.0_real64) return
+    if (numerical%max_bisection_iterations <= 0 .or. &
+        .not. ieee_is_finite(numerical%rating_storage_abs_tolerance) .or. &
+        .not. ieee_is_finite(numerical%rating_storage_rel_tolerance)) return
+    if (numerical%rating_storage_abs_tolerance <= 0.0_real64 .or. &
+        numerical%rating_storage_rel_tolerance < 0.0_real64) return
+
+    self%model%fixed_weir_surface_water_parameters = parameters
+    self%model%fixed_weir_surface_water_forcing = forcing
+    self%model%fixed_weir_surface_water_numerical = numerical
+    self%model%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
+    self%model%fixed_weir_surface_water_configured = .true.
+    self%model%fixed_weir_surface_water_active = .true.
+    ok = .true.
+  end subroutine fmr_serialized_backend_configure_fixed_weir_surface_water
+
+  subroutine fmr_serialized_backend_clear_fixed_weir_surface_water(self)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    self%model%fixed_weir_surface_water_active = .false.
+    self%model%fixed_weir_surface_water_configured = .false.
+    self%model%fixed_weir_surface_water_parameters = fixed_weir_surface_water_parameters_t()
+    self%model%fixed_weir_surface_water_forcing = fixed_weir_surface_water_forcing_t()
+    self%model%fixed_weir_surface_water_numerical = fixed_weir_surface_water_numerical_config_t()
+    self%model%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
+  end subroutine fmr_serialized_backend_clear_fixed_weir_surface_water
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics)
@@ -436,11 +546,19 @@ contains
     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
-      result = kernel_result_t()
-      result%status = KERNEL_STATUS_NOT_ADMITTED
-      candidate = kernel_candidate_state_t()
-      diagnostics = kernel_diagnostics_t()
-      diagnostics%admission_rejections = 1
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+    if (self%model%fixed_weir_surface_water_active) then
+      if (.not. self%model%fixed_weir_surface_water_configured .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. parameters%snow_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER) then
+      call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
     select case (template%numerical_continuation_layout_id)
@@ -449,11 +567,7 @@ contains
     case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
       self%model%temporal_indicator_history_enabled = .true.
     case default
-      result = kernel_result_t()
-      result%status = KERNEL_STATUS_NOT_ADMITTED
-      candidate = kernel_candidate_state_t()
-      diagnostics = kernel_diagnostics_t()
-      diagnostics%admission_rejections = 1
+      call reject_backend_trial(result, candidate, diagnostics)
       return
     end select
     if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
@@ -489,6 +603,17 @@ contains
          result, candidate, diagnostics)
   end subroutine fmr_serialized_backend_run_trial
 
+  subroutine reject_backend_trial(result, candidate, diagnostics)
+    type(kernel_result_t), intent(out) :: result
+    type(kernel_candidate_state_t), intent(out) :: candidate
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+    result = kernel_result_t()
+    result%status = KERNEL_STATUS_NOT_ADMITTED
+    candidate = kernel_candidate_state_t()
+    diagnostics = kernel_diagnostics_t()
+    diagnostics%admission_rejections = 1
+  end subroutine reject_backend_trial
+
   function fmr_serialized_backend_observation(self) result(obs)
     class(fmr_serialized_reference_backend_t), intent(in) :: self
     type(fmr_serialized_physical_observation_t) :: obs
@@ -502,6 +627,10 @@ contains
     logical :: ok
     ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
          self%state_profile_admitted
+    if (self%fixed_weir_surface_water_active) then
+      ok = ok .and. self%fixed_weir_surface_water_configured .and. .not. self%temporal_indicator_history_enabled .and. &
+           numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF
+    end if
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       ok = ok .and. parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
@@ -516,7 +645,8 @@ contains
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
       if (parameters%snow_active) then
-        ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared
+        ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
+             .not. self%fixed_weir_surface_water_active
       else
         ok = ok .and. .not. allocated(parameters%snow) .and. .not. self%snow_event_prepared
       end if
@@ -587,6 +717,7 @@ contains
     self%forcing_admitted = .false.
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+    self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available
     self%temporal_indicator_budget_valid = .false.
     if (self%temporal_indicator_budget_supplied) then
@@ -668,6 +799,22 @@ contains
       self%last_observation%snow_mass = self%snow_diagnostics%mass
     end if
   end subroutine populate_snow_observation
+
+  subroutine populate_fixed_weir_surface_water_observation(self)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
+    if (.not. self%fixed_weir_surface_water_active) return
+    self%last_observation%fixed_weir_surface_water_status = self%fixed_weir_surface_water_result%status
+    self%last_observation%fixed_weir_surface_water_storage = self%fixed_weir_surface_water_result%candidate_state%storage
+    self%last_observation%fixed_weir_surface_water_level = self%fixed_weir_surface_water_result%water_level
+    self%last_observation%fixed_weir_surface_water_supply_rate = self%fixed_weir_surface_water_result%supply_rate
+    self%last_observation%fixed_weir_surface_water_discharge_rate = self%fixed_weir_surface_water_result%discharge_rate
+    self%last_observation%fixed_weir_surface_water_mass_residual = self%fixed_weir_surface_water_result%mass_residual
+    self%last_observation%fixed_weir_surface_water_rating_residual = &
+         self%fixed_weir_surface_water_result%rating_storage_residual
+    self%last_observation%fixed_weir_surface_water_iterations = self%fixed_weir_surface_water_result%bisection_iterations
+    self%last_observation%fixed_weir_surface_water_route = self%fixed_weir_surface_water_result%route
+  end subroutine populate_fixed_weir_surface_water_observation
 
   subroutine evaluate_temporal_history_service(self, state, request, solve_result, outcome, ok)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
@@ -768,6 +915,7 @@ contains
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
     self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
@@ -782,12 +930,14 @@ contains
       self%last_observation%temporal_certificate_unavailable_reason = 'indicator-not-evaluated'
     end if
     call populate_snow_observation(self)
+    call populate_fixed_weir_surface_water_observation(self)
     snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
-    if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled)) return
+    if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
+                                                           self%fixed_weir_surface_water_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
@@ -875,6 +1025,18 @@ contains
       call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
       if (.not. temporal_history_ok) return
     end if
+    if (self%fixed_weir_surface_water_active) then
+      select type (physical => state)
+      type is (fmr_b110_fixed_weir_surface_water_state_t)
+        call evaluate_restricted_fixed_weir_surface_water(self%fixed_weir_surface_water_parameters, &
+             self%fixed_weir_surface_water_numerical, physical%surface_water, &
+             self%fixed_weir_surface_water_forcing, step_duration, self%fixed_weir_surface_water_result)
+        call populate_fixed_weir_surface_water_observation(self)
+        if (self%fixed_weir_surface_water_result%status /= FIXED_WEIR_AVAILABLE) return
+      class default
+        return
+      end select
+    end if
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
       if (self%soil_temperature_active) then
@@ -908,6 +1070,14 @@ contains
     class default
       return
     end select
+    if (self%fixed_weir_surface_water_active) then
+      select type (physical => state)
+      type is (fmr_b110_fixed_weir_surface_water_state_t)
+        physical%surface_water = self%fixed_weir_surface_water_result%candidate_state
+      class default
+        return
+      end select
+    end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
     outcome%mass_accounting_complete = .true.
@@ -935,16 +1105,21 @@ contains
         total_out = total_out - value
       end if
     end do
-    do level = 1, size(self%qdra,1)
-      do i = 1, size(self%qdra,2)
-        value = self%qdra(level,i) * step_duration
-        if (value >= 0.0_real64) then
-          total_out = total_out + value
-        else
-          total_in = total_in - value
-        end if
+    if (self%fixed_weir_surface_water_active) then
+      total_in = total_in + self%fixed_weir_surface_water_result%supply_rate * step_duration
+      total_out = total_out + self%fixed_weir_surface_water_result%discharge_rate * step_duration
+    else
+      do level = 1, size(self%qdra,1)
+        do i = 1, size(self%qdra,2)
+          value = self%qdra(level,i) * step_duration
+          if (value >= 0.0_real64) then
+            total_out = total_out + value
+          else
+            total_in = total_in - value
+          end if
+        end do
       end do
-    end do
+    end if
     do i = 1, size(self%qrot)
       value = self%qrot(i) * step_duration
       if (value >= 0.0_real64) then
@@ -964,7 +1139,14 @@ contains
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
     select type (physical => state)
+    type is (fmr_b110_fixed_weir_surface_water_state_t)
+      if (.not. self%fixed_weir_surface_water_active) error stop 'F-PM08D7 inactive model with fixed-weir state'
+      if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
+      if (allocated(physical%snow)) error stop 'F-PM08D7 fixed-weir state may not carry snow'
+      value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
+           physical%surface_water%storage
     class is (fmr_b110_physical_state_t)
+      if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
       if (self%snow_active) then
@@ -985,7 +1167,15 @@ contains
     missing_mask = TX_MASS_MISSING_UNSPECIFIED
     if (.not. associated(self%soil_parameters)) return
     select type (physical => state)
+    type is (fmr_b110_fixed_weir_surface_water_state_t)
+      if (.not. self%fixed_weir_surface_water_active) return
+      complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
+           allocated(physical%water_content) .and. .not. allocated(physical%snow) .and. &
+           ieee_is_finite(physical%surface_water%storage)
+      if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
+           size(physical%water_content) == physical%active_nodes
     class is (fmr_b110_physical_state_t)
+      if (self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
            allocated(physical%water_content)
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
@@ -1012,6 +1202,27 @@ contains
       value = huge(0.0_real64)
       return
     end if
+
+    if (self%fixed_weir_surface_water_active) then
+      value = huge(0.0_real64)
+      select type (full => full_state)
+      type is (fmr_b110_fixed_weir_surface_water_state_t)
+        select type (half => half_state)
+        type is (fmr_b110_fixed_weir_surface_water_state_t)
+          same = base_physical_states_identical(full, half)
+          if (same .and. ieee_is_finite(full%surface_water%storage) .and. &
+              ieee_is_finite(half%surface_water%storage)) then
+            value = abs(full%surface_water%storage - half%surface_water%storage)
+          end if
+        class default
+          return
+        end select
+      class default
+        return
+      end select
+      return
+    end if
+
     same = .false.
     select type (full => full_state)
     class is (fmr_b110_physical_state_t)
@@ -1042,7 +1253,29 @@ contains
     end if
   end function fmr_serialized_temporal_identity
 
-  pure logical function same_real_bits(a, b) result(same)
+  logical function base_physical_states_identical(full, half) result(same)
+    class(fmr_b110_physical_state_t), intent(in) :: full, half
+    same = .false.
+    if (full%active_nodes /= half%active_nodes) return
+    if (.not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head)) return
+    if (.not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
+    if (size(full%pressure_head) /= size(half%pressure_head) .or. &
+        size(full%water_content) /= size(half%water_content)) return
+    same = all(full%pressure_head == half%pressure_head) .and. &
+         all(full%water_content == half%water_content) .and. &
+         full%ponding_depth == half%ponding_depth .and. &
+         full%groundwater_level == half%groundwater_level
+    if (.not. same) return
+    same = allocated(full%snow) .eqv. allocated(half%snow)
+    if (same .and. allocated(full%snow)) then
+      same = full%snow%process%snow_water_storage == half%snow%process%snow_water_storage .and. &
+           full%snow%process%liquid_water_storage == half%snow%process%liquid_water_storage .and. &
+           (full%snow%event_applied .eqv. half%snow%event_applied) .and. &
+           full%snow%event_t0 == half%snow%event_t0
+    end if
+  end function base_physical_states_identical
+
+  pure elemental logical function same_real_bits(a, b) result(same)
     real(real64), intent(in) :: a, b
     same = transfer(a, 0_int64) == transfer(b, 0_int64)
   end function same_real_bits
