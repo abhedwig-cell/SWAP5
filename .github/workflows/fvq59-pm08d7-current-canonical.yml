@@ -1,0 +1,74 @@
+name: F-VQ59 PM08D7 current-canonical independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq59-fpm08d7-fixed-weir-current-canonical
+  workflow_dispatch:
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FPM08D7_TX_EVIDENCE_DIR: _fvq59_evidence/transaction
+      FPM08D7_RESTART_EVIDENCE_DIR: _fvq59_evidence/restart
+      FPM08D7_CANONICAL_BASE: eba90d79010b095b6556e93bd8b77a8c28d25560
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Pin current-canonical ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git merge-base "$FPM08D7_CANONICAL_BASE" HEAD)" = "$FPM08D7_CANONICAL_BASE"
+          test "$(git rev-list --count HEAD.."$FPM08D7_CANONICAL_BASE")" = 0
+          mkdir -p _fvq59_evidence
+          git rev-parse HEAD | tee _fvq59_evidence/tested-head.txt
+          printf '%s\n' "$FPM08D7_CANONICAL_BASE" | tee _fvq59_evidence/canonical-base.txt
+          git diff --name-status "$FPM08D7_CANONICAL_BASE"..HEAD | tee _fvq59_evidence/current-canonical-diff.txt
+
+      - name: Restricted fixed-weir process qualification
+        run: bash tests/fpm/run_fpm08d7_fixed_weir_process_checkpoint.sh
+
+      - name: Current runtime compile qualification
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+
+      - name: Transaction mass rollback qualification
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+
+      - name: Restart lifecycle qualification
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+
+      - name: No hidden I-O or process-owned persistent scratch
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eni '(^|[^[:alnum:]_])(open|read|write|close)[[:space:]]*\(' src/process/mod_restricted_fixed_weir_surface_water.f90 src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90
+          ! grep -Eni '(^|[^[:alnum:]_])(save|common)[^[:alnum:]_]' src/process/mod_restricted_fixed_weir_surface_water.f90 src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90
+          echo F_VQ59_NO_HIDDEN_IO_OR_PERSISTENT_SCRATCH=PASS
+
+      - name: Preserve F-MR41 ownership boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e src/runtime/mod_fmr_optional_state_layouts.f90
+          grep -Fq 'FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER' src/runtime/mod_fmr_runtime_core.f90
+          grep -Fq 'tests/fpm/mod_fpm08d7_optional_state_compat.f90' tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+          echo F_VQ59_FMR41_OPTIONAL_STATE_OWNER_PRESERVED=PASS
+
+      - name: Diff hygiene
+        run: git diff --check "$FPM08D7_CANONICAL_BASE"..HEAD
+
+      - name: Upload independent qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-VQ59-PM08D7-current-canonical-evidence
+          path: _fvq59_evidence
+          if-no-files-found: warn
