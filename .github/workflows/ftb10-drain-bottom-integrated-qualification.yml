@@ -1,0 +1,71 @@
+name: F-TB10 drain-bottom integrated qualification
+
+on:
+  push:
+    branches:
+      - work/f-tb10-drain-bottom-integrated-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          REMOTE="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test -n "$REMOTE"
+          test "$REMOTE" = "$GITHUB_SHA"
+          echo "FTB10_EXACT_HEAD_START=$GITHUB_SHA"
+
+      - name: Run F-TB10 qualification
+        shell: bash
+        run: bash tests/ftb/run_ftb10_drain_bottom_interaction.sh
+
+      - name: Validate conditional closeout metadata
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status=json.loads(Path('integration/f-tb/F-TB10_QUALIFICATION_STATUS.json').read_text())
+          audit=json.loads(Path('integration/f-tb/F-TB10_INVARIANT_AUDIT.json').read_text())
+          contract=json.loads(Path('integration/f-tb/F-TB10_WORK_UNIT_CONTRACT.json').read_text())
+          assert status['status']=='QUALIFIED_CLOSED_WHEN_EXACT_HEAD_CI_GREEN'
+          assert status['decision_on_green']=='QUALIFIED_TB09_003_RESTRICTED_DRAIN_BOTTOM_INTERACTION'
+          assert status['state']['production_source_changed'] is False
+          assert status['state']['scientific_result_qualified'] is False
+          assert audit['overall']=='30_OF_30_NO_ADVERSE_DELTA'
+          assert audit['hard_mass_conservation']=='ENFORCED'
+          assert len(audit['invariants'])==30
+          assert sorted(x['id'] for x in audit['invariants'])==list(range(1,31))
+          assert contract['source_policy']['production_source_change_allowed'] is False
+          assert contract['source_policy']['reference_change_allowed'] is False
+          print('FTB10_CONDITIONAL_CLOSEOUT_METADATA=PASS')
+          PY
+
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          REMOTE="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test -n "$REMOTE"
+          test "$REMOTE" = "$GITHUB_SHA"
+          echo "FTB10_EXACT_HEAD_END=$GITHUB_SHA"
