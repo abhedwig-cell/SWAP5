@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "decision": "QUALIFIED_FCI14_TEMPORAL_ACCEPTANCE_CONTRACT_ONLY",
+  "qualification_scope": "FCI14_TEMPORAL_ACCEPTANCE_CONTRACT_ONLY",
+  "tested_postimage": "e4e527cf3d7b8d5be228abad7099533d7802e0be",
+  "oracle": "B1.10",
+  "production_source_changed_since_overlay": false,
+  "contract_semantics_qualified": true,
+  "production_temporal_profile_qualified": false,
+  "real_b1_10_temporal_acceptance_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "basis": {
+    "fci14_qualified_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "fci14_canonical_workflow_run": 34107845964,
+    "fci14_canonical_job": 101697462464,
+    "fvq04_final_head": "b406382a49f264e8f05441442a6e22eab4f0f6ac"
+  },
+  "canonical_overlay": {
+    "commit": "927b7fb831ac91f77da11eb375e71b1975e1749f",
+    "work_unit": "F-CI17",
+    "role": "FORMAL_CLOSEOUT_ONLY",
+    "consumed_as_fvq05_qualification_basis": false,
+    "qualified_registry_postimage": "4ec5ce2a638047a2468967944902bc7d92f37339",
+    "fci17_canonical_workflow_run": 34110319677,
+    "fci17_job": 101705702221,
+    "ci_g10": "QUALIFIED",
+    "downstream_release_allowed": false,
+    "production_source_changed": false
+  },
+  "qualification_run": {
+    "workflow_run": 34111912287,
+    "job_id": 101709861455,
+    "job_name": "F-VQ05 F-CI14 temporal acceptance contract admission",
+    "corrected_reference_job": 101709861145,
+    "fvq04_immutable_replay_job": 101709861378,
+    "documentation_workflow_run": 34111912328,
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "executed_checks": {
+    "fvq05_temporal_contract_gate": "PASS",
+    "fvq05_profile_promotion_guards": {"passed": 7, "failed": 0},
+    "corrected_b1_10_reference_job": "PASS",
+    "fci14_gate_rerun": "FCI14_GATE_PASS",
+    "fci15_gate_rerun": "FCI15_GATE_PASS",
+    "fci16_gate_rerun": "FCI16_GATE_PASS",
+    "fci17_gate_rerun": "FCI17_GATE_PASS",
+    "fvq04_replay_on_qualified_postimage": "PASS",
+    "overlay_base_is_ancestor": true,
+    "no_src_changes_since_overlay": true,
+    "qualification_paths_only_since_overlay": true,
+    "all_eight_production_temporal_limits_null": true,
+    "normalized_threshold_is_contract_only": true,
+    "reference_execution_fail_closed": true
+  },
+  "qualified_claims": [
+    "same-t1 endpoint comparison semantics",
+    "lagged continuation variables are diagnostic-only for temporal acceptance",
+    "eight metric-specific endpoint quantities participate in the temporal norm",
+    "dimensionless max(delta_i/limit_i) normalization contract",
+    "normalized acceptance boundary <= 1.0 as contract arithmetic only",
+    "zero-limit exact-equality semantics",
+    "negative or unconfigured limits fail closed",
+    "unsupported optional-process temporal scope fails closed",
+    "temporal-accuracy policy remains separate from nonlinear solver policy",
+    "hard mass conservation remains a separate non-negotiable gate",
+    "F-CI17 formal closeout ancestry is carried without production-source delta"
+  ],
+  "explicit_non_claims": [
+    "No physical B1.10 temporal tolerance is inferred from normalized threshold 1.0.",
+    "No deterministic F-CI14 testfixture limit is qualified as production policy.",
+    "No complete eight-metric B1.10 numerical temporal profile is qualified.",
+    "No real B1.10 full-step versus two-half-step temporal acceptance is qualified.",
+    "No production execute_reference_interval route is admitted.",
+    "Thermal, solute, irrigation, crop and WOFOST temporal behavior are not qualified by F-VQ05.",
+    "Complete snow/macropore storage and result accounting remain unqualified.",
+    "Parallel/reentrant legacy-backend execution remains unqualified.",
+    "F-CI17 closeout evidence is not consumed as temporal or physical qualification evidence."
+  ],
+  "remaining_blockers": [
+    "independently qualified source-bound numerical limits for h_cm, theta, pond_cm, gwl_cm, volact_cm, ldwet_cm, spev_cm and saev_cm",
+    "real B1.10 full-versus-two-half production observations with immutable provenance",
+    "admitted real B1.10 execute_reference_interval route",
+    "optional-process temporal characterization for all active process classes",
+    "complete snow/macropore storage and result accounting",
+    "reentrant parallel legacy-backend qualification"
+  ],
+  "superseded_prequalification_attempt": {
+    "workflow_run": 34111210494,
+    "result": "FAIL",
+    "reason": "Historical F-VQ04 change-scope guard was replayed against a later canonical overlay. F-VQ05 itself passed. The workflow was corrected to replay F-VQ04 on its own qualified postimage without weakening the F-VQ04 gate."
+  }
+}

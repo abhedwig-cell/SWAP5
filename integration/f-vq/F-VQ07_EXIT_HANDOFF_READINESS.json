@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ07",
+  "oracle": "B1.10",
+  "basis": {
+    "fvq06_final_head": "f7d68248a22d0912fe91e2277ac51f64293e449c",
+    "fci18_scope_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "fci18_scope_qualification_evidence_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+    "fci18_gate_promotion_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fci18_gate_promotion_push_run": 34114164800,
+    "fci18_gate_promotion_job": 101717589931,
+    "fci18_closeout_push_run": 34114481363,
+    "fci18_closeout_job": 101718655619,
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6"
+  },
+  "fci_exit_state": {
+    "status": "QUALIFIED_EXIT",
+    "gate_promotion": "QUALIFIED",
+    "all_required_gates": "QUALIFIED",
+    "required_gate_count": 10,
+    "downstream_release_allowed": true,
+    "remaining_fci_blockers": []
+  },
+  "source_bound_replays": {
+    "promotion": "PASS_RUN_34114164800_JOB_101717589931",
+    "closeout": "PASS_RUN_34114481363_JOB_101718655619",
+    "closeout_full_dependency_chain": "PASS_FCI03_THROUGH_FCI18"
+  },
+  "non_delegable": {
+    "provenance_integrity": true,
+    "transaction_correctness_and_rollback_isolation": true,
+    "hard_mass_conservation_for_every_admitted_path": true,
+    "fail_closed_unqualified_reference_or_optional_process_capability": true,
+    "single_canonical_development_baseline": true
+  },
+  "downstream_capability_boundaries": {
+    "production_reference_execution_admitted": false,
+    "production_temporal_profile_qualified": false,
+    "real_b1_10_temporal_acceptance_qualified": false,
+    "optional_process_scope_qualified": false,
+    "parallel_backend_qualified": false,
+    "overall_swap5_release_qualified": false
+  },
+  "final_exit_handoff_admission": "QUALIFIED_FVQ07_FINAL_FCI_EXIT_HANDOFF",
+  "fci_final_exit_handoff_qualified": true,
+  "canonical_development_baseline_admitted_for_downstream_qualification": true,
+  "production_source_changed_by_fvq07": false
+}

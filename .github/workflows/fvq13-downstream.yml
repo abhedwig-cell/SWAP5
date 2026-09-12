@@ -1,0 +1,59 @@
+name: F-VQ13 F-KT06 F-SI06 admission
+
+on:
+  pull_request:
+    paths:
+      - 'integration/f-vq/**'
+      - 'tools/vq/**'
+      - 'docs/verification/**'
+      - '.github/workflows/fvq13-downstream.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fvq13-fkt06-fsi06-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact F-VQ13 head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ13 source-bound admission gate
+        run: python -m tools.vq.fvq13_fkt06_fsi06_gate
+      - name: F-VQ13 negative-promotion guards
+        run: python -m unittest tools.vq.test_fvq13_fkt06_fsi06_gate
+      - name: Re-run exact qualified F-KT06 focused gate and selected F-CI regressions
+        run: |
+          git checkout --detach 80a68dea3bfa45d7e8d533ec5a67fc89bdb786db
+          bash tests/fkt/run_fkt06_gate.sh
+          bash tests/fci/run_fci03_gate.sh
+          bash tests/fci/run_fci04_gate.sh
+          bash tests/fci/run_fci08_gate.sh
+          bash tests/fci/run_fci09_gate.sh
+          bash tests/fci/run_fci10_gate.sh
+          bash tests/fci/run_fci11_gate.sh
+          bash tests/fci/run_fci13_gate.sh
+          bash tests/fci/run_fci14_gate.sh
+      - name: Re-run exact F-SI06 tested history-isolation gate
+        run: |
+          git checkout --detach dfed799dbc0930bdf5218e713934ea0f148e3872
+          bash tests/fsi/run_fsi06_gate.sh
+      - name: Re-run documented F-SI06 closeout postimage gate
+        run: |
+          git checkout --detach 2fa63c41a4d7248ab7f4b5af46f72caddfda4f29
+          bash tests/fsi/run_fsi06_gate.sh
+      - name: Re-run exact qualified F-VQ12 admission gate
+        run: |
+          git checkout --detach 7cd06ba606429c891dab7f355a85b58ca56a3bca
+          python -m tools.vq.fvq12_fkt05_fsi05_gate
+          python -m unittest tools.vq.test_fvq12_fkt05_fsi05_gate

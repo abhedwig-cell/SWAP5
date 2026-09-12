@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "overlay_commit": "927b7fb831ac91f77da11eb375e71b1975e1749f",
+  "overlay_work_unit": "F-CI17",
+  "files_carried_from_current_canonical_overlay": [
+    ".github/workflows/fci-canonical.yml",
+    "integration/f-ci/F-CI16_EXIT_GATES.json",
+    "integration/f-ci/F-CI17_BASELINE_REGISTRY.json",
+    "integration/f-ci/F-CI17_QUALIFICATION.md",
+    "integration/f-ci/F-CI17_STATUS.json",
+    "tests/fci/run_fci17_gate.sh",
+    "tools/fci/fci16_exit_gate_assessment_gate.py",
+    "tools/fci/fci17_canonical_baseline_registry_gate.py",
+    "integration/f-ci/F-CI17_CLOSEOUT.md",
+    "integration/f-ci/F-CI17_CLOSEOUT_STATUS.json",
+    "integration/f-ci/F-CI17_EXIT_GATES.json",
+    "integration/f-ci/F-CI17_FORMAL_CLOSEOUT_PENDING_REPLACEMENT.txt"
+  ],
+  "production_source_files_changed_by_overlay": [],
+  "consumed_as_temporal_qualification_evidence": false,
+  "status": "F-CI17_FORMAL_CLOSEOUT_OVERLAY_FILESET_PINNED"
+}

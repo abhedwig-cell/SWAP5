@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ13",
+  "claims": [
+    {"claim_id":"FVQ13-C01","description":"F-VQ12 final qualified admission is the exact F-VQ13 qualification ancestor","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ13-C02","description":"F-KT06 optional-process continuation lifecycle is source-bound admitted","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ13-C03","description":"F-SI06 HeadCalc history isolation is source-bound admitted on the qualified serial common-reference route","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ13-C04","description":"F-KT06 and F-SI06 ownership decisions align: physics-affecting continuation is per-column transaction state while reporting-only history remains outside committed physical state","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ13-C05","description":"Both admitted downstream lineages descend from F-CI18 canonical closeout","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ13-C06","description":"One composed F-KT06 plus F-SI06 executable production postimage","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"No joint executable production postimage has been qualified"},
+    {"claim_id":"FVQ13-C07","description":"Real HeadCalc parallel 1/2/4/8 worker reentrancy","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-SI06 explicitly identifies shared legacy module-global request/candidate translation as blocker"},
+    {"claim_id":"FVQ13-C08","description":"Macropore production admission and nstep transactional materialization","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-KT06 and F-SI06 both require adapter-specific transactional materialization before macropore admission"},
+    {"claim_id":"FVQ13-C09","description":"Full unrounded SWAP water-balance identity","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-SI06 qualifies only a focused unrounded equation residual identity"},
+    {"claim_id":"FVQ13-C10","description":"Production B1.10 reference execution","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Real B1.10 temporal characterization and production temporal profile remain unqualified"},
+    {"claim_id":"FVQ13-C11","description":"Production MultiSWAP runtime admission","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"No production real-physics runtime row is qualified here"},
+    {"claim_id":"FVQ13-C12","description":"Implicit-conductivity, minimum-timestep, non-free-drainage bottom paths and interface tangent completeness","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Explicitly deferred or not implemented in F-SI06"}
+  ]
+}
