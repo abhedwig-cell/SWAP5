@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC22",
+  "title": "Application and Temporal Accuracy Binding for Groundwater Head Convergence",
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "governing_authorities": {
+    "F_GC14_accuracy_adapter_blob": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "F_GC15": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "F_GC16": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+    "F_GC17": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "F_CI50P_R1_final_canonical": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "objective": "Bind the explicit F-GC17 interface-head convergence policy to already verified project application accuracy and temporal allocation evidence without choosing a project-specific H_app, A_temporal, solver tolerance or hidden numerical default.",
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_accuracy_binding.f90"
+  ],
+  "must_reuse_without_modification": [
+    "src/runtime/mod_coupling_application_accuracy_contract.f90",
+    "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+    "src/runtime/mod_groundwater_coupling_policy.f90",
+    "src/solver/mod_reference_richards_temporal_indicator.f90"
+  ],
+  "required_semantics": [
+    "only an externally qualified application accuracy contract may bind interface policy",
+    "groundwater-head QoI only for the restricted direct-head profile",
+    "H_app and A_temporal provenance remain distinct and visible",
+    "temporal budget is H_app times A_temporal and remains solver/model budget, not automatically the interface tolerance",
+    "interface tolerance must be explicitly supplied or derived by an explicit governed allocation factor",
+    "any derived interface tolerance must be positive, finite and no larger than H_app",
+    "binding provenance must combine rather than erase upstream provenance",
+    "fail closed when any evidence, provenance or allocation is missing",
+    "no project-specific numeric defaults"
+  ],
+  "hard_nonclaims": [
+    "no selection of H_app",
+    "no selection of A_temporal",
+    "no selection of an interface allocation factor",
+    "no change to Richards temporal-indicator implementation",
+    "no predictor-corrector orchestration",
+    "no mass policy",
+    "no MODFLOW adapter"
+  ],
+  "parallel_ownership_exclusions": {
+    "F_GC18": "groundwater exchange service lifecycle",
+    "F_GC19": "interface mass ledger",
+    "F_GC20": "tile/cell mapping and aggregation",
+    "F_GC21": "predictor-corrector orchestration"
+  },
+  "qualification": [
+    "external accuracy contract validity",
+    "QoI restriction",
+    "separate provenance preservation",
+    "explicit allocation factor path",
+    "missing or invalid evidence fail closed",
+    "no hidden equality between temporal budget and interface tolerance",
+    "compile O0/O2 with traps",
+    "exact-head workflow",
+    "all 30 architecture invariants"
+  ]
+}
