@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC16",
+  "title": "SWAP5 Production Groundwater Coupling Minimal Viable Composition & Admission Plan",
+  "mode": "COMPOSITION_AND_ADMISSION_PLANNING_ONLY",
+  "branch": "work/f-gc16-production-groundwater-coupling-minimal-viable-composition-admission-plan",
+  "live_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e537baf521e633c432a9f33de495fab9f18e918d",
+    "tree": "b55f077657fc82b421a63f927965ff47821fc987",
+    "contains_definitive_F_KT15": false
+  },
+  "authority_chain": {
+    "F_GC01": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
+    "F_GC02": "5c8275cc9443d33fd3bc41c333464f333df20275",
+    "F_GC03": "ac123c51b1fb545ad19755bce04e79a80489cd74",
+    "F_GC04": "9574c5659b9f5bd78e2067db45032a6ed9fa4ef2",
+    "F_GC05": "12d829474870216b7b14fc452cdef54836255bd4",
+    "F_GC06": "cc28f2ceabd583484c00a3fd36373dc7ab1f202e",
+    "F_GC07": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+    "F_GC08": "96e39932c925c862f41d01a2a0f5c44c88cbaca7",
+    "F_GC09": "7cbb4c564eb519da9c33555a0500f031cd470c31",
+    "F_GC10": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "F_GC11": "d14b995f135a6c719d39f370c36797b4de4678b8",
+    "F_GC12": "0904c55b65b3dcfa22ff32f693ee9fabfa8c66a1",
+    "F_GC13": "0c776f7c3d910c6727ec5659ae6437ca993fb20d",
+    "F_GC14": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+    "F_GC15": "95ab51e6a9d4d9288af2e8ac371b4aec37268954"
+  },
+  "F_GC15_decision": "QUALIFIED_PRODUCTION_GROUNDWATER_COUPLING_RUNTIME_GAP_DECOMPOSITION_PRODUCTION_ADMISSION_NOT_READY",
+  "post_F_GC15_reconciliation": {
+    "F_KT15_lineage_reconciliation": "a67897f18636ba9b8edcd87bcba82cd546e322a5",
+    "definitive_owner_branch": "work/f-kt15-task2-solver-service-production-composition",
+    "definitive_owner_head": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "definitive_current_canonical_ancestry_source_postimage": "9465be74c01fe6455466e5ba7f62a761986ad450",
+    "canonical_admission_branch": "qualification/f-ci49-fkt15-task2-solver-service-canonical-admission",
+    "canonical_admission_head_at_preregistration": "a67897f18636ba9b8edcd87bcba82cd546e322a5",
+    "canonical_admission_status": "OPEN_NOT_YET_CANONICAL_ADMITTED",
+    "GC15_G01_rule": "DO_NOT_DUPLICATE; F-KT15/F-CI49 owns accepted interface-result and sensitivity transport"
+  },
+  "hard_scope": {
+    "production_source_changes": false,
+    "new_physics": false,
+    "new_solver_functionality": false,
+    "opportunistic_refactor": false,
+    "production_coupling_admission": false,
+    "deep_vadose_in_kernel": false,
+    "numeric_application_tolerance_invented": false,
+    "mass_conservation_relaxed": false
+  },
+  "hard_physical_contract": {
+    "direct_head_target": "H_SWAP approximately equals H_GW within an explicitly qualified coupling/application head tolerance",
+    "flux_identity": "q_SWAP = -q_GW",
+    "mass_conservation": "ABSOLUTE",
+    "mass_tolerance": "NONE",
+    "head_residual_and_mass_residual_are_distinct": true
+  },
+  "planning_rules": [
+    "generic coupling interval [t0,t1] only; no midnight or one-day assumption",
+    "every coupling trial starts physically from the same committed T0 checkpoint",
+    "rejected trials publish no accepted interface result and book no mass",
+    "normal production path targets predictor plus one corrector",
+    "whole-window response tangent must be consumed where qualified without structural finite-difference full-run cost",
+    "application accuracy policy remains external and provenance-bound; absence fails closed",
+    "direct coupling and deep-vadose transfer are different runtime compositions",
+    "MultiSWAP tile/cell composition remains outside the SWAP kernel"
+  ],
+  "exit_target": "QUALIFIED_RESTRICTED_PRODUCTION_GROUNDWATER_COUPLING_COMPOSITION_PLAN_READY_FOR_IMPLEMENTATION"
+}
