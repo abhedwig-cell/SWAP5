@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.fdoc15_status_a_readiness_gap_assessment.v1",
+  "work_unit": "F-DOC15",
+  "decision": "QUALIFIED_STATUS_A_READINESS_GAP_ASSESSMENT_AND_CLOSURE_PLAN_ESTABLISHED_WHEN_EXACT_HEAD_CI_GREEN",
+  "formal_status_a_certification_claimed": false,
+  "ready_for_formal_status_a_assessment": false,
+  "criterion_authority": {
+    "formal": "WR-QA-2024",
+    "formal_state": "CONTROLLED_COPY_REQUIRED",
+    "readiness_denominator": "WR-QA-PUBLIC-22",
+    "denominator_count": 22,
+    "percentage_reporting": false
+  },
+  "documentation_authority_recheck": {
+    "qualified": ["F-DOC01","F-DOC02","F-DOC03","F-DOC04","F-DOC05","F-DOC06","F-DOC07","F-DOC08","F-DOC09","F-DOC10","F-DOC11","F-DOC12","F-DOC13"],
+    "not_independent_authority": ["F-DOC14"],
+    "fdoc14_reason": "live branch points to F-DOC13 head and has no independent F-DOC14 closeout/qualification authority"
+  },
+  "assessment_objects": {
+    "rb1": {
+      "release_id": "SWAP5-RB1-v1",
+      "scientific_source_sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "qualification_sha": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "release_metadata_sha": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+      "immutable": true
+    },
+    "current_canonical_snapshot": {
+      "branch": "integration/f-ci-canonical",
+      "sha": "e537baf521e633c432a9f33de495fab9f18e918d",
+      "tree": "b55f077657fc82b421a63f927965ff47821fc987",
+      "moving_branch": true,
+      "formal_assessment_requires_frozen_candidate": true
+    }
+  },
+  "allowed_classifications": [
+    "SATISFIED",
+    "EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE",
+    "DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE",
+    "PARTIAL",
+    "MISSING",
+    "NOT_APPLICABLE_WITH_RATIONALE"
+  ],
+  "requirements": [
+    {"id":"1.1","theme":"ST.1","heading":"General model description","rb1":"PARTIAL","current":"PARTIAL","blockers":["SCI-FOUND-01"]},
+    {"id":"1.2","theme":"ST.1","heading":"Conceptual and formal model documented","rb1":"PARTIAL","current":"PARTIAL","blockers":["SCI-FOUND-01","PHYSICAL-SCIENCE-T0-T7"]},
+    {"id":"2.1","theme":"ST.2","heading":"Implementation documented","rb1":"PARTIAL","current":"PARTIAL","blockers":["COMPLETE-T8-T10","POST-RB1-REBASELINE"]},
+    {"id":"2.2","theme":"ST.2","heading":"Technical environment documented","rb1":"PARTIAL","current":"PARTIAL","blockers":["RELEASE-BOUND-ENVIRONMENT-DOSSIER"]},
+    {"id":"2.3","theme":"ST.2","heading":"Model tested","rb1":"PARTIAL","current":"PARTIAL","blockers":["COMPLETE-T11-GRAPH"]},
+    {"id":"3.1","theme":"ST.3","heading":"Parameters and variables documented","rb1":"PARTIAL","current":"PARTIAL","blockers":["PARAMETER-REGISTRY-POPULATION"]},
+    {"id":"3.2","theme":"ST.3","heading":"Calibration described","rb1":"MISSING","current":"MISSING","blockers":["CALIBRATION-OR-NA-AUTHORITY"]},
+    {"id":"3.3","theme":"ST.3","heading":"Input and output described","rb1":"PARTIAL","current":"PARTIAL","blockers":["USER-IO-SEMANTICS"]},
+    {"id":"3.4","theme":"ST.3","heading":"Origin of input data described","rb1":"MISSING","current":"MISSING","blockers":["RAW-INPUT-PROVENANCE"]},
+    {"id":"4.1","theme":"ST.4","heading":"Sensitivity analysis performed","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","blockers":["SENSITIVITY-EVIDENCE"]},
+    {"id":"4.2","theme":"ST.4","heading":"Uncertainty analysis performed","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","blockers":["UNCERTAINTY-EVIDENCE"]},
+    {"id":"4.3","theme":"ST.4","heading":"Model validated","rb1":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","current":"DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE","blockers":["APPLICATION-VALIDATION-T12"]},
+    {"id":"4.4","theme":"ST.4","heading":"Use monitored","rb1":"MISSING","current":"MISSING","blockers":["USE-MONITORING"]},
+    {"id":"4.5","theme":"ST.4","heading":"General quality assessment","rb1":"PARTIAL","current":"PARTIAL","blockers":["SCI-FOUND-01","FITNESS-FOR-PURPOSE-EVIDENCE"]},
+    {"id":"5.1","theme":"DO.5","heading":"Development plan","rb1":"SATISFIED","current":"SATISFIED","blockers":[]},
+    {"id":"5.2","theme":"DO.5","heading":"Version control system","rb1":"SATISFIED","current":"SATISFIED","blockers":[]},
+    {"id":"6.1","theme":"DO.6","heading":"Metadata available","rb1":"PARTIAL","current":"PARTIAL","blockers":["WR-QA-2024-RECONCILIATION","RELEASE-BOUND-METADATA-PACKAGE"]},
+    {"id":"6.2","theme":"DO.6","heading":"Management plan","rb1":"PARTIAL","current":"PARTIAL","blockers":["ORGANISATIONAL-OWNERSHIP-POPULATION"]},
+    {"id":"6.3","theme":"DO.6","heading":"Dependencies discussed","rb1":"PARTIAL","current":"PARTIAL","blockers":["EXTERNAL-DEPENDENCY-OWNERSHIP"]},
+    {"id":"6.4","theme":"DO.6","heading":"External use formalised","rb1":"MISSING","current":"MISSING","blockers":["EXTERNAL-USE-AUTHORITY"]},
+    {"id":"7.1","theme":"IU.7","heading":"Interpretation guidance","rb1":"PARTIAL","current":"PARTIAL","blockers":["SCI-FOUND-01","FITNESS-FOR-PURPOSE-EVIDENCE","USER-INTERPRETATION-GUIDANCE"]},
+    {"id":"7.2","theme":"IU.7","heading":"User manual","rb1":"PARTIAL","current":"PARTIAL","blockers":["STATUS-A-READY-USER-MANUAL"]}
+  ],
+  "scientific_foundation": {
+    "id": "SCI-FOUND-01",
+    "state": "OPEN_BLOCKER",
+    "rb1_closed": false,
+    "current_closed": false,
+    "required_chain": ["physical_system","modelling_purpose","spatial_temporal_scales","system_boundary","abstraction_idealisation","conceptual_model","formal_mathematical_model","numerical_realization","implementation"],
+    "closure_authority_scope": "system scope, abstraction and conceptualisation",
+    "process_specific_formal_authorities_remain_authoritative": true,
+    "suggested_workunit": "F-DOC16"
+  },
+  "closure_backlog": [
+    {"priority":"P0","id":"SCI-FOUND-01","owner":"scientific model owner + documentation owner","work":"SCIENCE+DOCUMENTATION","blocks":true,"workunit":"F-DOC16"},
+    {"priority":"P0","id":"WR-QA-2024","owner":"quality-audit/documentation owner","work":"GOVERNANCE+DOCUMENTATION","blocks":true,"workunit":"F-DOC17"},
+    {"priority":"P0","id":"PHYSICAL-SCIENCE-T0-T7","owner":"scientific process owners","work":"SCIENCE+DOCUMENTATION","blocks":true,"workunit":"F-DOC18"},
+    {"priority":"P0","id":"APPLICATION-VALIDATION-T12","owner":"validation/scientific owner","work":"SCIENCE","blocks":true,"workunit":"F-VAL01"},
+    {"priority":"P0","id":"PARAMETER-INPUT-PROVENANCE","owner":"parameter/data owner","work":"SCIENCE+DATA+DOCUMENTATION","blocks":true,"workunit":"F-DOC19"},
+    {"priority":"P0","id":"CURRENT-CANONICAL-FREEZE","owner":"release authority + integration owner","work":"RELEASE+GOVERNANCE","blocks_current":true,"workunit":"F-RB03"},
+    {"priority":"P1","id":"SENSITIVITY","owner":"scientific analysis owner","work":"SCIENCE","blocks":true,"workunit":"F-SENS01"},
+    {"priority":"P1","id":"UNCERTAINTY","owner":"scientific analysis owner","work":"SCIENCE","blocks":true,"workunit":"F-UNC01"},
+    {"priority":"P1","id":"FITNESS-FOR-PURPOSE","owner":"scientific owner + application owner","work":"SCIENCE+DOCUMENTATION","blocks":true,"workunit":"F-FFP01"},
+    {"priority":"P1","id":"COMPLETE-T11-GRAPH","owner":"verification/testbank owner","work":"VERIFICATION+DOCUMENTATION","blocks":true,"workunit":"F-DOC20"},
+    {"priority":"P1","id":"ORGANISATIONAL-MANAGEMENT","owner":"model management","work":"GOVERNANCE","blocks":true,"workunit":"F-GOV02"},
+    {"priority":"P1","id":"EXTERNAL-USE","owner":"model management + legal/support owner","work":"GOVERNANCE+USER_GUIDANCE","blocks":true,"workunit":"F-GOV03"},
+    {"priority":"P1","id":"USE-MONITORING","owner":"model management + scientific owner","work":"GOVERNANCE+SCIENCE","blocks":true,"workunit":"F-USE01"},
+    {"priority":"P2","id":"USER-MANUAL","owner":"documentation/user-support owner","work":"DOCUMENTATION+USER_GUIDANCE","blocks":true,"workunit":"F-DOC21"},
+    {"priority":"P2","id":"METADATA-ENVIRONMENT","owner":"release/documentation owner","work":"DOCUMENTATION","blocks":true,"workunit":"F-DOC22"}
+  ],
+  "hard_nonclaims": [
+    "not Status A certification",
+    "not Status AA certification",
+    "not ready for formal Status A assessment",
+    "verification is not validation",
+    "implementation existence is not conceptual-model validity",
+    "legacy code/manual is not automatically SWAP5 scientific authority",
+    "F-DOC14 branch existence is not physical-science closure",
+    "moving current canonical is not a certified release"
+  ]
+}
