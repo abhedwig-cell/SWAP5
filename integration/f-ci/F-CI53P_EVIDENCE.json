@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.fci53p_evidence.v1",
+  "work_unit": "F-CI53P",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "prepromotion_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "production_composition": "e0e8462c0d09034dcbdadb99ec16670667d37715",
+  "fci53_qualified_admission_head": "da401b186a3b7f8a1f93881fa61ad45137561f99",
+  "source_admission_postimage": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+  "owner_authority": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+  "f_vq61_authority": "e83fe9a4955275935903730c4484c77fb0b117ff",
+  "f_vq60_frozen_blocked_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "admitted_source_delta": [
+    ".github/workflows/fci53-gc18r-current-canonical-admission.yml",
+    "integration/f-ci/F-CI53_ARCHITECTURE_AUDIT.json",
+    "integration/f-ci/F-CI53_PRE_REGISTRATION.json",
+    "integration/f-ci/F-CI53_STATUS.json",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90",
+    "tests/fci/run_fci53_gc18r_current_canonical_admission.sh"
+  ],
+  "qualified_blobs": {
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+  },
+  "fci53_dedicated_qualification": {
+    "initial_run": 34691447786,
+    "initial_job": 103547290726,
+    "initial_conclusion": "success",
+    "status_revalidation_run": 34691486613,
+    "status_revalidation_job": 103547391060,
+    "status_revalidation_conclusion": "success",
+    "final_exact_status_run": 34691514702,
+    "final_exact_status_conclusion": "success"
+  },
+  "fci53_broad_prepromotion": {
+    "run": 34691542403,
+    "conclusion": "success"
+  },
+  "fci53_postpromotion_broad_canonical": {
+    "run": 34691652502,
+    "head": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103548028821,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "reconciliation_classification": {
+    "stale_moving_preservation_failure_observed": false,
+    "moving_preservation_reconciliation_required": false,
+    "fci_canonical_workflow_change_required": false,
+    "production_regression": false,
+    "scientific_regression": false,
+    "transaction_regression": false,
+    "mass_regression": false,
+    "reference_regression": false,
+    "classification": "POSTIMAGE_ALREADY_GREEN_RECONCILIATION_AND_CLOSEOUT_ONLY"
+  },
+  "scope_statement": "F-CI53P reconciles and closes the already admitted F-CI53 postimage. It does not repair or advance moving-preservation authority because the admitted postimage already passed that gate."
+}
