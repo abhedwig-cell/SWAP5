@@ -160,10 +160,14 @@ contains
     class(groundwater_interface_mass_ledger_t), intent(in) :: self
     type(groundwater_interface_mass_prepared_t), intent(in) :: prepared
 
-    ready = self%prepared_active .and. prepared%ready() .and. &
-         prepared%generation == self%prepared_generation .and. &
-         ieee_is_finite(self%prepared_total_swap_m) .and. &
-         self%prepared_committed_exchange_count == self%committed_exchange_count + 1
+    ready = .false.
+    if (.not. self%prepared_active) return
+    if (.not. prepared%ready()) return
+    if (prepared%generation /= self%prepared_generation) return
+    if (.not. ieee_is_finite(self%prepared_total_swap_m)) return
+    if (self%committed_exchange_count >= huge(self%committed_exchange_count)) return
+    if (self%prepared_committed_exchange_count /= self%committed_exchange_count + 1) return
+    ready = .true.
   end function groundwater_mass_prepared_ready_for_commit
 
   subroutine groundwater_mass_commit_prepared(self, prepared)
