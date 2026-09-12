@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1E_TRANSACTIONAL_BOUNDARY_INTEGRATION",
+  "artifact": "POST_FKT15_PRODUCTION_COMPOSITION_RECONCILIATION",
+  "status": "BLOCKER_NARROWED_TO_WHOLE_WINDOW_RESPONSE_SEMANTICS_AND_SEPARATE_CANONICAL_ADMISSION",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "authorities": {
+    "ross_parent_head": "b4147b4bd09ded0957232a2989fef9bbc73c531c",
+    "prior_j1e_reconciliation": "integration/f-ross/F-ROSS01_GATE_J1E_POST_FSI28_RECONCILIATION.json",
+    "F_SI28_final_head": "5b514e678d0d794e5837f161033b0bac58385707",
+    "F_KT14_closeout_head": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "F_KT15_final_head": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "F_KT15_qualified_production_candidate": "8ca0b0fb587cdb4dfb7cc5037f571406778f38c8",
+    "F_KT15_true_canonical_ancestry_merge": "9465be74c01fe6455466e5ba7f62a761986ad450",
+    "F_KT15_final_exact_head_run": 34675851064,
+    "F_KT15_final_exact_head_job": 103505456771,
+    "F_KT15_final_exact_head_conclusion": "success",
+    "current_canonical_observed_head": "e537baf521e633c432a9f33de495fab9f18e918d"
+  },
+  "fkt15_evidence_reconciliation": {
+    "status": "CLOSED_QUALIFIED",
+    "decision": "QUALIFIED_RESTRICTED_PRODUCTION_SOIL_WATER_TASK2_SOLVER_SERVICE_TRANSACTION_COMPOSITION_READY_FOR_SEPARATE_CANONICAL_ADMISSION",
+    "final_run_exact_head_start": "PASS",
+    "final_run_focused_task2_gate": "PASS",
+    "final_run_fkt14_transport_gate": "PASS",
+    "final_run_exact_head_end": "PASS",
+    "qualified_candidate_to_final_head_src_delta": 0,
+    "qualified_candidate_to_final_head_note": "All changes after 8ca0b0fb are qualification, CI, governance or test evidence; the qualified production source postimage is unchanged.",
+    "canonical_admission_completed": false
+  },
+  "resolved_finding": {
+    "id": "J1E-B8",
+    "resolution": "RESOLVED_FOR_EXACT_FKT15_RESTRICTED_LOCAL_TERMINAL_PROFILE",
+    "evidence": [
+      "The real B1.10 SoilWater task-2 path has a qualified typed solver-service route in the F-KT15 candidate.",
+      "The accepted solver result is transported through the already-qualified F-KT14 accepted-only result bridge.",
+      "Rejected/retried trials do not publish stale sensitivity.",
+      "The qualified qbot sensitivity remains same-factorization only: one tangent backsolve, no second nonlinear trajectory and no extra Jacobian build.",
+      "Task-3 accepted postsolve ownership, rollback behavior, hard mass gates, O0/O2 identity and restricted 1/2/4/8 worker isolation are preserved in the F-KT15 qualification evidence."
+    ],
+    "scope_limit": "This resolution applies only to the exact restricted F-KT15 profile and exact production source postimage. It is not a canonical admission and does not extend sensitivity semantics to head/runoff surface regimes or unsupported physics."
+  },
+  "remaining_open_findings": [
+    {
+      "id": "J1E-D1",
+      "severity": "DESIGN_REQUIRED_BEFORE_COUPLING_QUALIFICATION",
+      "component": "coupling-window response semantics",
+      "finding": "The qualified quantity is an accepted local-terminal derivative from the terminal soil-water solve. If a coupling window contains multiple accepted internal soil-water substeps, this quantity is not automatically the derivative of final interface head with respect to a boundary-flux perturbation applied over the complete coupling window.",
+      "required_resolution": "Qualify either (a) a true whole-window response derivative that composes state-transition and boundary-response sensitivities over all accepted internal substeps, or (b) an explicitly justified predictor-corrector/coupling algorithm whose mathematical contract consumes local-terminal tangents without relabelling them as whole-window derivatives."
+    },
+    {
+      "id": "J1E-A1",
+      "severity": "ADMISSION_REQUIRED_FOR_CANONICAL_PRODUCTION_AVAILABILITY",
+      "component": "canonical production authority",
+      "finding": "F-KT15 is qualified but explicitly not canonically admitted. Current canonical e537baf5 does not by this reconciliation acquire the F-KT15 production postimage.",
+      "required_resolution": "Use a separate canonical-admission workunit if the F-KT15 restricted production route is to become part of canonical production authority. Do not treat this ROSS research reconciliation as admission."
+    }
+  ],
+  "qualified_local_terminal_profile": {
+    "real_production_task2_solver_service_composition": true,
+    "accepted_only_result_transport": true,
+    "kernel_result_transport": true,
+    "native_SWAP_qbot_sign_preserved": true,
+    "same_factorization_tangent": true,
+    "extra_tangent_backsolves": 1,
+    "second_nonlinear_tangent_trajectory": false,
+    "extra_jacobian_build_for_sensitivity": false,
+    "stale_rejected_trial_publication": false,
+    "solver_scratch_persisted_as_committed_state": false,
+    "mass_conservation_relaxed": false,
+    "whole_window_response_derivative": false,
+    "canonical_production_admission": false,
+    "MODFLOW_sign_transform": false,
+    "MODFLOW_coupling_admitted": false
+  },
+  "qualification_state": {
+    "implemented_solver_primitive": true,
+    "qualified_solver_primitive": true,
+    "implemented_result_transport": true,
+    "qualified_result_transport": true,
+    "implemented_real_production_solver_service_transaction_composition_in_FKT15_candidate": true,
+    "qualified_real_production_solver_service_transaction_composition_in_FKT15_candidate": true,
+    "qualified_restricted_local_terminal_transactional_integration": true,
+    "qualified_whole_window_response_semantics": false,
+    "canonically_admitted_FKT15_production_composition": false,
+    "qualified_end_to_end_J1E_for_coupling_window_operator": false
+  },
+  "pass": false,
+  "decision": "J1E_RESTRICTED_LOCAL_TERMINAL_TRANSACTIONAL_INTEGRATION_QUALIFIED_BUT_WHOLE_WINDOW_RESPONSE_SEMANTICS_AND_CANONICAL_ADMISSION_REMAIN_OPEN",
+  "next_owner": {
+    "scientific_design": "A separate response-semantics workunit should resolve J1E-D1 without changing the already-qualified local-terminal tangent primitive.",
+    "canonical_availability": "A separate canonical-admission workunit may admit the exact F-KT15 production postimage after live canonical recheck.",
+    "do_not": [
+      "do not reopen C2B/Phi tuning",
+      "do not relabel a local-terminal tangent as a whole-window derivative",
+      "do not add MODFLOW sign conversion inside the SWAP solver kernel",
+      "do not relax mass conservation or scientific tolerances"
+    ]
+  },
+  "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH",
+  "preserved_nonclaims": {
+    "J1E_whole_window_coupling_operator_qualified": false,
+    "F_KT15_canonically_admitted": false,
+    "C2B_or_Phi_reopened": false,
+    "production_MODFLOW_coupling_admitted": false
+  }
+}
