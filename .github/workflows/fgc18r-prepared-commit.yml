@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - work/f-gc18r-two-phase-commit-readiness
+      - work/f-gc18r-r1-prepared-transaction-remediation
   workflow_dispatch:
 
 permissions:
