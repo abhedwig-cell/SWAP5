@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.fci49p_status.v1",
+  "work_unit": "F-CI49P",
+  "title": "Current-Canonical Postimage Reconciliation after F-CI49",
+  "branch": "qualification/f-ci49p-current-canonical-postimage-reconciliation",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI49_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FOR_PROMOTION",
+  "fci49_exit_target": "QUALIFIED_FKT15_SOLVER_SERVICE_TRANSACTION_COMPOSITION_ADMITTED_TO_CURRENT_CANONICAL",
+  "fci49_promoted_postimage": "42544af575db522d012db491db801615577048df",
+  "fci49_prepromotion_canonical": "e537baf521e633c432a9f33de495fab9f18e918d",
+  "fci49_admission_head": "40e674db6c48f494fb5f49e52951c2a9ae3dfe9d",
+  "definitive_fkt15_source": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+  "definitive_fkt15_source_tree": "f981d8b26f340d5710021cd08682045579bcd63a",
+  "first_green_postimage_reconciliation": {
+    "head": "c9b022cb250ac4da111a0c75eb740e684b5cd629",
+    "tree": "eb3a6c79b39327d7e4c0f38c684940ed94ed3928",
+    "run": 34678047739,
+    "conclusion": "success"
+  },
+  "postpromotion_broad_failure": {
+    "run": 34677787757,
+    "job": 103510848450,
+    "classification": "STALE_MOVING_PRESERVATION_AUTHORITY_AFTER_QUALIFIED_SOURCE_ADMISSION",
+    "production_regression": false,
+    "scientific_regression": false,
+    "owner": "F-CI49P"
+  },
+  "reconciliation": {
+    "old_moving_authority": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+    "new_moving_authority": "42544af575db522d012db491db801615577048df",
+    "authority_advanced_exactly_once": true,
+    "fci49_marker_added_exactly_once": true,
+    "frozen_workflow_prefix_byte_identical": true,
+    "governance_only_delta": true
+  },
+  "qualified_checks": {
+    "canonical_postimage_pin": "PASS",
+    "true_two_parent_fci49_merge": "PASS",
+    "production_reference_postimage_immutable": "PASS",
+    "exact_definitive_fkt15_17_blobs_preserved": "PASS",
+    "fci49_prepromotion_admission_authority_pinned": "PASS",
+    "postpromotion_failure_classified": "PASS",
+    "governance_only_branch_delta": "PASS",
+    "frozen_workflow_prefix_byte_identity": "PASS",
+    "moving_authority_advanced_exactly_once": "PASS",
+    "architecture_invariants_30_of_30": "PASS",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "scope_guards": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "new_physics": false,
+    "new_solver_functionality": false,
+    "scientific_tolerance_relaxed": false,
+    "mass_conservation_relaxed": false,
+    "kt15_production_remediation": false,
+    "second_kt15_production_branch": false,
+    "RB1_reopened": false
+  },
+  "promotion_requirements": {
+    "canonical_must_still_equal": "42544af575db522d012db491db801615577048df",
+    "exact_status_head_workflow_must_succeed": true,
+    "src_reference_must_remain_postimage_identical": true,
+    "true_two_parent_governance_merge_required": true,
+    "first_parent": "42544af575db522d012db491db801615577048df",
+    "second_parent": "EXACT_QUALIFIED_FCI49P_STATUS_HEAD",
+    "force_update_forbidden": true,
+    "postpromotion_broad_canonical_run_must_succeed": true,
+    "current_restricted_preservation_job_must_succeed": true
+  },
+  "next_required_step": "Run exact-head F-CI49P qualification on this status commit. If green and canonical remains the F-CI49 postimage, promote as a true two-parent governance-only merge, then require a fully green broad canonical run."
+}
