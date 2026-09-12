@@ -15,6 +15,9 @@ module mod_groundwater_interface_mass_ledger
   integer, parameter, public :: GW_MASS_LEDGER_ALREADY_PREPARED = 7
   integer, parameter, public :: GW_MASS_LEDGER_COUNTER_EXHAUSTED = 8
   integer, parameter, public :: GW_MASS_LEDGER_GENERATION_EXHAUSTED = 9
+  integer, parameter, public :: GW_MASS_LEDGER_IDENTITY_REQUIRED = 10
+  integer, parameter, public :: GW_MASS_LEDGER_INVALID_IDENTITY = 11
+  integer, parameter, public :: GW_MASS_LEDGER_IDENTITY_ALREADY_BOUND = 12
 
   type, public :: groundwater_interface_mass_snapshot_t
     logical :: available = .false.
@@ -23,6 +26,8 @@ module mod_groundwater_interface_mass_ledger
     logical :: discarded_trial_count_saturated = .false.
     logical :: trial_active = .false.
     logical :: prepared_active = .false.
+    logical :: identity_bound = .false.
+    integer(int64) :: ledger_id = 0_int64
     real(real64) :: committed_swap_outward_exchange_m = 0.0_real64
     real(real64) :: committed_groundwater_outward_exchange_m = 0.0_real64
     real(real64) :: conservation_residual_m = 0.0_real64
@@ -31,6 +36,7 @@ module mod_groundwater_interface_mass_ledger
   type, public :: groundwater_interface_mass_prepared_t
     private
     logical :: initialized = .false.
+    integer(int64) :: ledger_id = 0_int64
     integer(int64) :: generation = 0_int64
   contains
     procedure, public :: ready => groundwater_mass_prepared_ready
@@ -38,6 +44,7 @@ module mod_groundwater_interface_mass_ledger
 
   type, public :: groundwater_interface_mass_ledger_t
     private
+    integer(int64) :: ledger_id = 0_int64
     real(real64) :: committed_swap_outward_exchange_m = 0.0_real64
     integer :: committed_exchange_count = 0
     integer :: discarded_trial_count = 0
@@ -54,6 +61,8 @@ module mod_groundwater_interface_mass_ledger
     real(real64) :: prepared_total_swap_m = 0.0_real64
     integer :: prepared_committed_exchange_count = 0
   contains
+    procedure, public :: bind_identity => groundwater_mass_bind_identity
+    procedure, public :: has_identity => groundwater_mass_has_identity
     procedure, public :: stage_exchange => groundwater_mass_stage_exchange
     procedure, public :: discard_trial => groundwater_mass_discard_trial
     procedure, public :: prepare_trial => groundwater_mass_prepare_trial
@@ -67,6 +76,36 @@ module mod_groundwater_interface_mass_ledger
   end type groundwater_interface_mass_ledger_t
 
 contains
+
+  subroutine groundwater_mass_bind_identity(self, ledger_id, status)
+    class(groundwater_interface_mass_ledger_t), intent(inout) :: self
+    integer(int64), intent(in) :: ledger_id
+    integer, intent(out) :: status
+
+    status = GW_MASS_LEDGER_INVALID_IDENTITY
+    if (ledger_id <= 0_int64) return
+
+    if (self%ledger_id > 0_int64) then
+      status = GW_MASS_LEDGER_OK
+      if (self%ledger_id == ledger_id) return
+      status = GW_MASS_LEDGER_IDENTITY_ALREADY_BOUND
+      return
+    end if
+
+    status = GW_MASS_LEDGER_ALREADY_PREPARED
+    if (self%prepared_active) return
+
+    status = GW_MASS_LEDGER_TRIAL_ALREADY_ACTIVE
+    if (self%trial_active) return
+
+    self%ledger_id = ledger_id
+    status = GW_MASS_LEDGER_OK
+  end subroutine groundwater_mass_bind_identity
+
+  pure logical function groundwater_mass_has_identity(self) result(bound)
+    class(groundwater_interface_mass_ledger_t), intent(in) :: self
+    bound = self%ledger_id > 0_int64
+  end function groundwater_mass_has_identity
 
   subroutine groundwater_mass_stage_exchange(self, window, lineage, swap_outward_exchange_m, status)
     class(groundwater_interface_mass_ledger_t), intent(inout) :: self
@@ -119,6 +158,15 @@ contains
     type(groundwater_interface_mass_prepared_t), intent(out) :: prepared
     integer, intent(out) :: status
 
+    call groundwater_mass_prepare_trial_impl(self, prepared, status, .true.)
+  end subroutine groundwater_mass_prepare_trial
+
+  subroutine groundwater_mass_prepare_trial_impl(self, prepared, status, require_identity)
+    class(groundwater_interface_mass_ledger_t), intent(inout) :: self
+    type(groundwater_interface_mass_prepared_t), intent(out) :: prepared
+    integer, intent(out) :: status
+    logical, intent(in) :: require_identity
+
     real(real64) :: candidate_total
     logical :: sum_ok
 
@@ -129,6 +177,11 @@ contains
 
     status = GW_MASS_LEDGER_NO_ACTIVE_TRIAL
     if (.not. self%trial_active) return
+
+    if (require_identity) then
+      status = GW_MASS_LEDGER_IDENTITY_REQUIRED
+      if (self%ledger_id <= 0_int64) return
+    end if
 
     status = GW_MASS_LEDGER_ACCUMULATION_FAILED
     call safe_real_sum(self%committed_swap_outward_exchange_m, self%trial_exchange_m, &
@@ -143,18 +196,20 @@ contains
 
     ! All recoverable arithmetic/counter failures have occurred before a
     ! reservation is published. The final prepared commit performs assignments
-    ! of these precomputed values only.
+    ! of these precomputed values only. Externally exposed prepared handles also
+    ! carry the explicit logical-ledger identity supplied by the runtime/coupler.
     self%prepared_total_swap_m = candidate_total
     self%prepared_committed_exchange_count = self%committed_exchange_count + 1
     self%prepared_generation = self%preparation_generation + 1_int64
     self%preparation_generation = self%prepared_generation
     self%prepared_active = .true.
 
+    prepared%ledger_id = self%ledger_id
     prepared%generation = self%prepared_generation
     prepared%initialized = .true.
     call clear_trial(self)
     status = GW_MASS_LEDGER_OK
-  end subroutine groundwater_mass_prepare_trial
+  end subroutine groundwater_mass_prepare_trial_impl
 
   pure logical function groundwater_mass_prepared_ready_for_commit(self, prepared) result(ready)
     class(groundwater_interface_mass_ledger_t), intent(in) :: self
@@ -163,6 +218,7 @@ contains
     ready = .false.
     if (.not. self%prepared_active) return
     if (.not. prepared%ready()) return
+    if (prepared%ledger_id /= self%ledger_id) return
     if (prepared%generation /= self%prepared_generation) return
     if (.not. ieee_is_finite(self%prepared_total_swap_m)) return
     if (self%committed_exchange_count >= huge(self%committed_exchange_count)) return
@@ -181,8 +237,7 @@ contains
     self%committed_swap_outward_exchange_m = self%prepared_total_swap_m
     self%committed_exchange_count = self%prepared_committed_exchange_count
     call clear_prepared(self)
-    prepared%initialized = .false.
-    prepared%generation = 0_int64
+    call clear_prepared_handle(prepared)
   end subroutine groundwater_mass_commit_prepared
 
   subroutine groundwater_mass_abort_prepared(self, prepared)
@@ -198,8 +253,7 @@ contains
     ! explicitly instead of risking integer overflow in a rollback path.
     call increment_discard_counter(self)
     call clear_prepared(self)
-    prepared%initialized = .false.
-    prepared%generation = 0_int64
+    call clear_prepared_handle(prepared)
   end subroutine groundwater_mass_abort_prepared
 
   subroutine groundwater_mass_commit_trial(self, status)
@@ -207,9 +261,11 @@ contains
     integer, intent(out) :: status
     type(groundwater_interface_mass_prepared_t) :: prepared
 
-    ! Backward-compatible F-GC19 entry point. All recoverable rejection now
-    ! happens in prepare_trial, before the deterministic assignment-only commit.
-    call self%prepare_trial(prepared, status)
+    ! Backward-compatible F-GC19 atomic entry point. It never exposes the
+    ! prepared credential, so legacy callers need no externally assigned ledger
+    ! identity. All recoverable rejection still happens before deterministic
+    ! assignment-only publication.
+    call groundwater_mass_prepare_trial_impl(self, prepared, status, .false.)
     if (status /= GW_MASS_LEDGER_OK) return
     call self%commit_prepared(prepared)
     status = GW_MASS_LEDGER_OK
@@ -227,6 +283,8 @@ contains
     snapshot%discarded_trial_count_saturated = self%discarded_trial_count_saturated
     snapshot%trial_active = self%trial_active
     snapshot%prepared_active = self%prepared_active
+    snapshot%identity_bound = self%ledger_id > 0_int64
+    snapshot%ledger_id = self%ledger_id
     snapshot%committed_swap_outward_exchange_m = self%committed_swap_outward_exchange_m
     snapshot%committed_groundwater_outward_exchange_m = -self%committed_swap_outward_exchange_m
     snapshot%conservation_residual_m = snapshot%committed_swap_outward_exchange_m + &
@@ -275,6 +333,13 @@ contains
     self%prepared_total_swap_m = 0.0_real64
     self%prepared_committed_exchange_count = 0
   end subroutine clear_prepared
+
+  subroutine clear_prepared_handle(prepared)
+    type(groundwater_interface_mass_prepared_t), intent(inout) :: prepared
+    prepared%initialized = .false.
+    prepared%ledger_id = 0_int64
+    prepared%generation = 0_int64
+  end subroutine clear_prepared_handle
 
   pure subroutine safe_real_sum(a, b, value, ok)
     real(real64), intent(in) :: a, b
