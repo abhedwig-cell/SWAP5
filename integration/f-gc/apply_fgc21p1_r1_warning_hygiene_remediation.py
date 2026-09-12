@@ -3,6 +3,7 @@ from pathlib import Path
 
 TX = Path("src/transaction/mod_transaction_reference.f90")
 CAN = Path("src/runtime/mod_canonical_interval_runtime.f90")
+BACKEND = Path("src/runtime/mod_fmr_serialized_reference_backend.f90")
 
 TX_OLD = """    published%covers_requested_interval = origin_t0 <= requested_t0 .and. origin_t0 >= requested_t0 .and. &\n         origin_t1 <= requested_t1 .and. origin_t1 >= requested_t1\n"""
 TX_NEW = """    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1\n"""
@@ -34,11 +35,12 @@ restore_exact(CAN, CAN_OLD, CAN_NEW)
 # F-GC21P1 functional transport must remain present after the scope remediation.
 tx = TX.read_text()
 can = CAN.read_text()
+backend = BACKEND.read_text()
 required = {
     "transaction accepted exchange": (tx, "accepted_bottom_outward_exchange_native"),
-    "transaction exact attempt exchange": (tx, "-attempt%bottom_flux * transaction_step%dt"),
     "canonical aggregate": (can, "candidate_exchange = aggregate_exchange + tx%accepted_bottom_outward_exchange_native"),
     "canonical publication": (can, "bottom_outward_exchange_native"),
+    "backend exact accepted exchange": (backend, "outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration"),
 }
 for label, (text, token) in required.items():
     if token not in text:
