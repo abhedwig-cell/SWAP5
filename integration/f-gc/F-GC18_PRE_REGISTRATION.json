@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC18",
+  "title": "Transactional Groundwater Exchange Service Abstraction",
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "governing_authorities": {
+    "F_GC15": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+    "F_GC16": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+    "F_GC17": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "F_CI50_source_postimage": "39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+    "F_CI50P_R1_final_canonical": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "objective": "Define a model-agnostic transactional groundwater-side exchange service seam that can checkpoint, run a trial over a generic coupling window, commit one accepted candidate, or discard a rejected candidate without embedding predictor-corrector orchestration or a MODFLOW API.",
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_exchange_service_contract.f90"
+  ],
+  "must_reuse_without_modification": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+    "src/kernel/mod_kernel_transactions.f90"
+  ],
+  "required_semantics": [
+    "generic finite increasing [t0,t1] window",
+    "explicit lineage and origin revision",
+    "checkpoint before trial",
+    "trial cannot mutate committed state through the contract",
+    "commit only a candidate derived from the matching checkpoint and window",
+    "rollback/discard leaves committed state unchanged",
+    "service implementation remains external-model agnostic",
+    "no files, paths, parsing, MODFLOW types or calendar assumptions"
+  ],
+  "hard_nonclaims": [
+    "no predictor-corrector sequencing",
+    "no groundwater physics",
+    "no MODFLOW adapter",
+    "no mass-ledger ownership",
+    "no tile/cell aggregation",
+    "no application-accuracy binding",
+    "no production coupled execution admission"
+  ],
+  "parallel_ownership_exclusions": {
+    "F_GC19": "interface mass ledger and diagnostics",
+    "F_GC20": "tile/cell mapping and aggregation",
+    "F_GC22": "application/temporal accuracy binding",
+    "F_GC21": "predictor-corrector coupling-window orchestration"
+  },
+  "qualification": [
+    "compile at O0 and O2 with runtime checks",
+    "fake groundwater service checkpoint-trial-discard-commit lifecycle",
+    "same-origin and same-window enforcement",
+    "stale candidate rejection",
+    "non-midnight/non-day window",
+    "exact-head workflow",
+    "all 30 architecture invariants"
+  ]
+}
