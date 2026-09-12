@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/contracts/b2-reference-seam.schema.json",
+  "title": "SWAP5 B2 reference seam declaration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "implementation",
+    "policy",
+    "inputs",
+    "transaction",
+    "outputs",
+    "mass_accounting",
+    "diagnostics",
+    "forbidden_dependencies"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "SWAP5-B2-reference-seam-v1"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "integrated", "entrypoint_path", "entrypoint_symbol", "result_contract_path"],
+      "properties": {
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "integrated": {"const": true},
+        "entrypoint_path": {"type": "string", "minLength": 1},
+        "entrypoint_symbol": {"type": "string", "minLength": 1},
+        "result_contract_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_policy_id", "full_accuracy", "changes_physics"],
+      "properties": {
+        "reference_policy_id": {"const": "reference"},
+        "full_accuracy": {"const": true},
+        "changes_physics": {"const": false}
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameters", "committed_state", "forcing", "numerical_config", "interval"],
+      "properties": {
+        "parameters": {"$ref": "#/$defs/explicitInput"},
+        "committed_state": {"$ref": "#/$defs/explicitInput"},
+        "forcing": {"$ref": "#/$defs/explicitInput"},
+        "numerical_config": {"$ref": "#/$defs/explicitInput"},
+        "interval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["generic_t0_t1", "calendar_boundary_required"],
+          "properties": {
+            "generic_t0_t1": {"const": true},
+            "calendar_boundary_required": {"const": false}
+          }
+        }
+      }
+    },
+    "transaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checkpoint_trial_commit_rollback",
+        "rejected_trial_mutates_committed_state",
+        "trial_endpoint_returned_explicitly"
+      ],
+      "properties": {
+        "checkpoint_trial_commit_rollback": {"const": true},
+        "rejected_trial_mutates_committed_state": {"const": false},
+        "trial_endpoint_returned_explicitly": {"const": true}
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["endpoint_state", "canonical_results", "unrounded_mass_accounting", "transaction_diagnostics"],
+      "properties": {
+        "endpoint_state": {"const": true},
+        "canonical_results": {"const": true},
+        "unrounded_mass_accounting": {"const": true},
+        "transaction_diagnostics": {"const": true}
+      }
+    },
+    "mass_accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hard_acceptance", "identity", "rounded_acceptance_allowed"],
+      "properties": {
+        "hard_acceptance": {"const": true},
+        "identity": {"const": "delta_storage_minus_net_external"},
+        "rounded_acceptance_allowed": {"const": false}
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_fields"],
+      "properties": {
+        "required_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1},
+          "allOf": [
+            {"contains": {"const": "accepted"}},
+            {"contains": {"const": "execution_class"}},
+            {"contains": {"const": "retry_count"}},
+            {"contains": {"const": "solver_cost"}},
+            {"contains": {"const": "balance_residual"}}
+          ]
+        }
+      }
+    },
+    "forbidden_dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kernel_file_io",
+        "kernel_path_dependency",
+        "kernel_modflow_tile_fraction",
+        "hidden_calendar_day_assumption"
+      ],
+      "properties": {
+        "kernel_file_io": {"const": false},
+        "kernel_path_dependency": {"const": false},
+        "kernel_modflow_tile_fraction": {"const": false},
+        "hidden_calendar_day_assumption": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "explicitInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["explicit", "file_path_required"],
+      "properties": {
+        "explicit": {"const": true},
+        "file_path_required": {"const": false}
+      }
+    }
+  }
+}

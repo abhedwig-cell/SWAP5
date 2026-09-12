@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ01",
+  "mode": "QUALIFICATION_ONLY",
+  "baseline": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+    "qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+    "canonical_workflow_run": 34100440481,
+    "oracle": "B1.10"
+  },
+  "qualified_fvq_postimage": "dc2fe8087749ad3e08510f353ca8c4c95d23ad55",
+  "fvq_qualification_workflow_run": 34103657080,
+  "fvq_qualification_job": 101683624001,
+  "fvq_qualification_evidence": "integration/f-vq/evidence/F-VQ01_QUALIFICATION.json",
+  "checkpoint_commit": "dc2fe8087749ad3e08510f353ca8c4c95d23ad55",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed": false,
+  "status": "QUALIFIED",
+  "qualification_decision": "QUALIFIED_FVQ01_ADMISSION_ONLY",
+  "persisted_artifacts": [
+    "integration/f-vq/F-VQ01_ASSET_INVENTORY.json",
+    "integration/f-vq/F-VQ01_ADMISSION_MATRIX.json",
+    "integration/f-vq/evidence/F-VQ01_QUALIFICATION.json",
+    "tools/vq/fvq01_admission.py",
+    "tools/vq/test_fvq01_admission.py",
+    "docs/verification/f-vq01-fci11-admission.md",
+    ".github/workflows/vq-reference.yml"
+  ],
+  "tested_results": {
+    "b1_10_admission": "PASS",
+    "fvq01_admission_gate": "PASS",
+    "fvq01_unit_tests": "8/8 PASS",
+    "fci07_gate": "PASS",
+    "fci08_gate": "PASS",
+    "fci09_gate": "PASS_WITH_EXPECTED_REFERENCE_LOCKS",
+    "fci10_gate": "PASS_WITH_EXPECTED_SNOW_MACROPORE_FAIL_CLOSED",
+    "fci11_gate": "PASS_WITH_TEMPORAL_ERROR_NOT_CLAIMED",
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
+  },
+  "next_action": "Proceed with F-VQ02: rebase verifier seam/result and transaction-time contracts onto the exact B1.10/F-CI qualification basis without claiming production physics.",
+  "recovery_point": "qualification/f-vq01-admission; qualified executable postimage dc2fe8087749ad3e08510f353ca8c4c95d23ad55; qualification evidence is persisted separately and changes no production source.",
+  "blockers": [
+    "F-CI12: bind qualified generic advance and mass seam in b1_10_transaction_model_t",
+    "Qualified physical temporal-error metric and tolerances are absent",
+    "Real B1.10 execution through execute_reference_interval is not yet admitted",
+    "Complete snow storage accounting is absent",
+    "Complete macropore storage accounting is absent",
+    "Full reentrant/parallel qualification of the legacy backend is absent"
+  ],
+  "holds": [
+    "No production source changes are permitted in F-VQ.",
+    "A testdouble PASS cannot qualify real SWAP5 physics.",
+    "Focused physical qualification does not qualify optional physics outside the exercised profile.",
+    "B2/canonical-reference admission remains fail-closed until the real canonical physical entrypoint and result contract are executable."
+  ]
+}
