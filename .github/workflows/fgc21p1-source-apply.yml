@@ -6,6 +6,10 @@ on:
       - work/f-gc21p1-exact-accepted-bottom-interface-exchange-result
     paths:
       - .github/workflows/fgc21p1-source-apply.yml
+      - integration/f-gc/F-GC21P1_SOURCE.patch
+      - integration/f-gc/apply_fgc21p1_source_patch.py
+      - tests/fgc/run_fgc21p1_exact_bottom_interface_result.sh
+      - tests/fgc/test_fgc21p1_exact_bottom_interface_result.f90
 
 permissions:
   contents: write
