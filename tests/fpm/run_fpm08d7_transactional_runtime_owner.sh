@@ -23,6 +23,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_soil_temperature_contract.f90
+  src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
@@ -36,7 +38,7 @@ MODULE_SRC=(
   src/process/mod_snow_process.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
-  src/runtime/mod_fmr_optional_state_layouts.f90
+  tests/fpm/mod_fpm08d7_optional_state_compat.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
