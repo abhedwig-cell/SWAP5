@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.ftb_qualification_status.v1",
+  "work_unit": "F-TB10",
+  "title": "SWAP5 TB09-003 Restricted Drainage x Changing Bottom Boundary Integrated Qualification",
+  "branch": "work/f-tb10-drain-bottom-integrated-qualification",
+  "phase": "QUALIFICATION_IMPLEMENTED_EXACT_HEAD_CI_REQUIRED",
+  "status": "QUALIFIED_CLOSED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision_on_green": "QUALIFIED_TB09_003_RESTRICTED_DRAIN_BOTTOM_INTERACTION",
+  "frozen_current_canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "ftb09_catalog_authority": "fe3545c4537b11cefd0186aa401048d4f4b10eb9",
+  "stable_case_id": "SWAP5-TB09-DRAIN-BOTTOM-003-v1",
+  "owner_authorities": {
+    "divdra_current_canonical": "F-CI36",
+    "independent_divdra_verifier": "F-VQ51@716d0952c2a9580b213cd22d8c3c1dc824f53dff"
+  },
+  "qualified_scope_on_green": {
+    "runtime": "current-canonical serialized Full Richards runtime through fmr_run_serialized_physical_multiswap_with_divdra",
+    "drainage": "restricted single-level positive DIVDRA with explicit hydraulic view and external scalar transfer",
+    "bottom_boundary": "prescribed-head SWBOTB=5 changed between two consecutive generic intervals",
+    "interaction": "active drainage remains composed while both the lower hydraulic boundary and explicit drainage groundwater view change",
+    "mass": "complete hard mass closure on interval 1, interval 2 and the combined t0-to-t1 window",
+    "response": "derived signed qbot must change after the prescribed-head perturbation",
+    "determinism": "O0/O2 exact text identity",
+    "preservation": "exact F-VQ51 independent restricted-DIVDRA verifier replayed against the unchanged current production composition"
+  },
+  "state": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "rb1_reopened": false,
+    "ftb09_catalog_modified": false,
+    "all_30_architecture_invariants_audited": true,
+    "scientific_result_qualified": false,
+    "exact_head_ci_green": false
+  },
+  "nonclaims": [
+    "direct SWAP-MODFLOW coupling",
+    "H_SWAP equals H_MF qualification",
+    "drainage exchange-law science beyond the admitted F-CI36 owner scope",
+    "fully implicit or trial-state drainage response",
+    "negative/infiltration drainage",
+    "multilevel drainage",
+    "surface-water-controlled drainage",
+    "parallel active-DIVDRA throughput",
+    "all bottom-boundary modes",
+    "any other F-TB09 catalog case"
+  ],
+  "evidence_files": [
+    "tests/ftb/test_ftb10_drain_bottom_interaction.f90",
+    "tests/ftb/run_ftb10_drain_bottom_interaction.sh",
+    "integration/f-tb/F-TB10_WORK_UNIT_CONTRACT.json",
+    "integration/f-tb/F-TB10_INVARIANT_AUDIT.json",
+    "integration/f-tb/RUNLOG_F-TB10.md",
+    "docs/testbank/F-TB10_DRAIN_BOTTOM_INTERACTION_QUALIFICATION.md"
+  ],
+  "close_condition": "Dedicated F-TB10 workflow must prove local HEAD == GITHUB_SHA and live branch ref == GITHUB_SHA before and after the qualification runner. A later branch commit invalidates the prior run for closeout purposes."
+}
