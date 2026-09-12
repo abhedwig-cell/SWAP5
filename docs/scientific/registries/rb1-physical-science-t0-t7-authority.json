@@ -1,0 +1,186 @@
+{
+  "schema": "swap5.fdoc18_rb1_physical_science_t0_t7_authority.v1",
+  "work_unit": "F-DOC18",
+  "title": "RB1 Physical-Science T0-T7 Authority",
+  "decision_if_exact_head_green": "QUALIFIED_RB1_PHYSICAL_SCIENCE_T0_T7_AUTHORITY",
+  "base_documentation_authority": {
+    "work_unit": "F-DOC16",
+    "sha": "b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+    "tree": "fe0a864e1d3ea9fb46e302a3307fec4957ba9199",
+    "decision": "QUALIFIED_SCI_FOUND_01_CONCEPTUAL_FOUNDATION_AUTHORITY"
+  },
+  "fdoc11_gap_decomposition": {
+    "sha": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+    "physical_science_capabilities": [
+      "RB1-SW-REFERENCE",
+      "RB1-ET-ROOT-SERIAL",
+      "RB1-SURFACE-EVAP-RESTRICTED"
+    ],
+    "count": 3
+  },
+  "rb1_immutable_authorities": {
+    "release_id": "SWAP5-RB1-v1",
+    "scientific_source_sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_sha": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_metadata_sha": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "required_capability_denominator": 15
+  },
+  "source_provenance": [
+    {
+      "id": "SRC-FDOC18-001",
+      "title": "SWAP: theory and user guide, Chapter 2 Soil water flow",
+      "issuer": "Working Group SWAP / Wageningen Environmental Research",
+      "version": "4.3.024",
+      "published": "2026-06-30",
+      "locator": "https://swap.wur.nl/manual/02_soil_water_flow.html",
+      "provenance_class": "LEGACY_MANUAL_SCIENTIFIC_LINEAGE",
+      "role": "Darcy-Buckingham, continuity, Richards equation, implicit backward finite-difference scheme, Newton-Raphson and backtracking scientific/numerical lineage; not SWAP5 release authority"
+    },
+    {
+      "id": "SRC-FDOC18-002",
+      "title": "SWAP: theory and user guide, Chapter 3 Evapotranspiration and rainfall interception",
+      "issuer": "Working Group SWAP / Wageningen Environmental Research",
+      "version": "4.3.024",
+      "published": "2026-06-30",
+      "locator": "https://swap.wur.nl/manual/03_evapotranspiration_and_rainfall_interception.html",
+      "provenance_class": "LEGACY_MANUAL_SCIENTIFIC_LINEAGE",
+      "role": "Feddes root-water-uptake and Darcy-limited actual-soil-evaporation scientific lineage; broader options remain excluded unless admitted by RB1"
+    },
+    {
+      "id": "SRC-FDOC18-003",
+      "title": "SWAP version 4; Theory description and user manual",
+      "issuer": "Kroes et al., Wageningen Environmental Research",
+      "year": 2017,
+      "persistent_identifier": "doi:10.18174/416321",
+      "provenance_class": "SWAP_TECHNICAL_REPORT",
+      "role": "historical process-theory and numerical-method continuity"
+    },
+    {
+      "id": "SRC-FDOC18-004",
+      "title": "F-DOC16 physical-system and conceptual-model authority",
+      "locator": "F-DOC16@b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+      "provenance_class": "SWAP5_QUALIFIED_DOCUMENTATION_AUTHORITY",
+      "role": "T0/T2 physical system, 1D abstraction, system boundary and conceptual-entity foundation"
+    },
+    {
+      "id": "SRC-FDOC18-005",
+      "title": "F-DOC04 RB1 Reference Richards and Temporal Acceptance Traceability",
+      "provenance_class": "SWAP5_QUALIFIED_DOCUMENTATION_AUTHORITY",
+      "role": "frozen RB1-SW-REFERENCE scope and implementation/release traceability"
+    },
+    {
+      "id": "SRC-FDOC18-006",
+      "title": "F-DOC06 RB1 ET, Root and Restricted Surface-Evaporation Traceability",
+      "provenance_class": "SWAP5_QUALIFIED_DOCUMENTATION_AUTHORITY",
+      "role": "frozen RB1 ET/root and restricted surface-evaporation scope and implementation/release traceability"
+    }
+  ],
+  "capabilities": [
+    {
+      "capability_id": "RB1-SW-REFERENCE",
+      "family": "PHYSICAL_SCIENCE",
+      "conceptual_bindings": ["SW5-PHEN-0001", "SW5-CONCEPT-0001", "SW5-CONCEPT-0003", "SW5-CONCEPT-0005", "SW5-CONCEPT-0006"],
+      "rb1_scope": "Full Richards REFERENCE route in the frozen RB1 hydraulic/profile scope; SWKIMPL=0, SWSOPHY=0, frozen reference boundary profile, RossFast excluded.",
+      "source_pins": [
+        {"path": "src/adapter/mod_reference_richards_legacy_binding.f90", "blob": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f"},
+        {"path": "src/legacy/b1_10_port/headcalc.f90", "blob": "55893f1f5ccba2052ad681743aa155b69f351246"}
+      ],
+      "tier_dispositions": {
+        "T0": {"status": "RESOLVED_RESTRICTED", "meaning": "Vertical water storage and variably saturated matrix flow in the representative one-dimensional soil column."},
+        "T1": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-001", "SRC-FDOC18-003"], "meaning": "Water-mass conservation plus Darcy-Buckingham flow yields the one-dimensional Richards equation with admitted constitutive theta(h), K(h) and C=dtheta/dh."},
+        "T2": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-004"], "meaning": "Layered vertical compartments exchange Darcy flux; explicit top/bottom interfaces and admitted source/sink terms close the 1D column process model."},
+        "T3": {"status": "RESOLVED_RESTRICTED", "relation": "dtheta/dt = d/dz[K(h)(dh/dz+1)] - admitted_sinks + admitted_sources", "boundary": "Equation is broad scientific lineage; RB1 activates only its frozen admitted profile."},
+        "T4": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-005"], "meaning": "RB1 Full Richards REFERENCE, SWKIMPL=0, SWSOPHY=0, frozen reference boundary profile; no RossFast or scope broadening."},
+        "T5": {"status": "RESOLVED_RESTRICTED", "meaning": "Mass-conservative continuous initial-boundary-value problem over generic model time; calendar boundaries are not intrinsic."},
+        "T6": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-001"], "meaning": "Implicit backward finite-difference compartment discretisation using actual water-content storage difference and internodal Darcy flux; frozen RB1 uses the admitted explicit-conductivity-linearization route."},
+        "T7": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-001"], "meaning": "Reference Newton-Raphson residual solve with Jacobian/tridiagonal linear solve, full-step attempt, backtracking and admitted convergence/mass criteria; surrounding transaction owns retry/commit."}
+      }
+    },
+    {
+      "capability_id": "RB1-ET-ROOT-SERIAL",
+      "family": "PHYSICAL_SCIENCE",
+      "conceptual_bindings": ["SW5-PHEN-0001", "SW5-CONCEPT-0002", "SW5-CONCEPT-0003", "SW5-CONCEPT-0006"],
+      "rb1_scope": "Restricted reference ET partition and drought-only precomputed-QROT root-water-uptake profile already admitted to RB1.",
+      "source_pins": [
+        {"path": "src/process/mod_reference_et_demand_process.f90", "blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"},
+        {"path": "src/process/mod_root_water_uptake_process.f90", "blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"}
+      ],
+      "tier_dispositions": {
+        "T0": {"status": "RESOLVED_RESTRICTED", "meaning": "Atmospheric evaporative demand partitioned into potential transpiration/surface demand, followed by drought-limited root extraction from soil."},
+        "T1": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-002", "SRC-FDOC18-003"], "meaning": "Potential root extraction is distributed by root fraction and reduced on the released drought branch of the Feddes pressure-head response; broader wet/oxygen/salinity/process-based root physics is excluded."},
+        "T2": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-004"], "meaning": "Reference ET demand -> explicit ptra handoff -> rooted-compartment potential sink -> pressure-head drought reduction -> actual root sink; actual transpiration is attribution of the same sink, not second mass."},
+        "T3": {"status": "RESOLVED_RESTRICTED", "relations": ["S_p,i=(f_i+1-f_i)*T_p", "S_a,i=alpha_dry(h_i;h3(T_p),h4)*S_p,i", "alpha_dry=0 below h4, linear h4..h3, 1 above h3 within released drought profile"], "reference_et_partition": "ET_ref partitioning by cover, crop factor, pond factor and CO2 factor as frozen in mod_reference_et_demand_process"},
+        "T4": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-006"], "meaning": "Frozen ET route SWETR=1, SWMETDETAIL=0, SWCFBS=0, SWINTER=0 plus released drought-only precomputed-QROT root profile."},
+        "T5": {"status": "RESOLVED_RESTRICTED", "meaning": "Direct algebraic process rates over the caller interval; root-extraction rate enters the soil-water balance once."},
+        "T6": {"status": "NOT_APPLICABLE_WITH_RATIONALE", "rationale": "No independent ET/root spatial/time state discretisation is introduced. Evaluation uses existing soil compartments/root fractions; water-state discretisation belongs to RB1-SW-REFERENCE."},
+        "T7": {"status": "NOT_APPLICABLE_WITH_RATIONALE", "rationale": "The released ET/root process is direct algebraic evaluation and has no independent Newton/linear/adaptive solver. Water-state advancement and acceptance belong to the soil-water solver/transaction route."}
+      }
+    },
+    {
+      "capability_id": "RB1-SURFACE-EVAP-RESTRICTED",
+      "family": "PHYSICAL_SCIENCE",
+      "conceptual_bindings": ["SW5-PHEN-0001", "SW5-CONCEPT-0002", "SW5-CONCEPT-0003", "SW5-CONCEPT-0006"],
+      "rb1_scope": "Stateless SWINTER=0, SWREDU=0 surface-evaporation profile already admitted to RB1.",
+      "source_pins": [
+        {"path": "src/process/mod_restricted_surface_evaporation.f90", "blob": "a213af4deec2fe854d79120899827852a57237d1"}
+      ],
+      "tier_dispositions": {
+        "T0": {"status": "RESOLVED_RESTRICTED", "meaning": "Evaporative water loss from an unponded soil surface or ponded surface to the atmosphere."},
+        "T1": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-002", "SRC-FDOC18-003"], "meaning": "Wet/ponded evaporation can meet demand; unponded dry-soil evaporation is constrained by hydraulic/Darcy supply. Black and Boesten/Stroosnijder empirical reductions are excluded from SWREDU=0."},
+        "T2": {"status": "RESOLVED_RESTRICTED", "meaning": "Atmospheric bare-soil/pond demand plus hydraulic ponding/capacity view produce one active evaporation route; evaluator is stateless and does not own authoritative mass booking."},
+        "T3": {"status": "RESOLVED_RESTRICTED", "relations": ["unponded: E_soil=min(E_soil_pot,max(0,E_capacity)), E_pond=0", "ponded: E_soil=0, E_pond=E_pond_pot", "scientific-lineage hydraulic capacity: E_max=K_1/2*((h_atm-h_1-z_1)/z_1) under manual convention"]},
+        "T4": {"status": "RESOLVED_RESTRICTED", "authority": ["SRC-FDOC18-006"], "meaning": "Frozen stateless SWINTER=0, SWREDU=0 profile only; no Black/Boesten-Stroosnijder cumulative-state route and no performance/scaling admission."},
+        "T5": {"status": "RESOLVED_RESTRICTED", "meaning": "Local algebraic boundary-flux rate law; persistent surface/soil storage advancement remains outside the evaluator and authoritative mass is booked once."},
+        "T6": {"status": "NOT_APPLICABLE_WITH_RATIONALE", "rationale": "The stateless evaluator has no independent temporal or spatial state discretisation; hydraulic capacity comes from the already discretised soil-water system."},
+        "T7": {"status": "NOT_APPLICABLE_WITH_RATIONALE", "rationale": "The evaluator is direct branch/min algebra and has no nonlinear solver, retry or time-step controller."}
+      }
+    }
+  ],
+  "closure_result": {
+    "physical_science_capabilities_in_fdoc11_denominator": 3,
+    "capabilities_with_explicit_t0_t7_dispositions": 3,
+    "t0_t7_tier_slots_total": 24,
+    "tier_slots_resolved_restricted": 20,
+    "tier_slots_not_applicable_with_rationale": 4,
+    "tier_slots_unresolved_after_fdoc18_if_exact_head_green": 0,
+    "fully_traced_promotions": 0,
+    "t11_complete_graph_promotions": 0,
+    "t12_validation_promotions": 0,
+    "status_a_readiness_promotions": 0
+  },
+  "remaining_open_dependencies": [
+    "Hybrid T0-T7 authority for RB1-CORE-MASS and RB1-ROOT-PARALLEL remains separate unless already closed by another qualified workunit.",
+    "Complete T11 equation-to-test traceability remains open where not already bounded complete.",
+    "T12 independent application validation remains open.",
+    "Sensitivity, uncertainty and application-specific fitness-for-purpose evidence remain open.",
+    "Parameter/variable/calibration/input-provenance population remains open.",
+    "Controlled WR-QA-2024 reconciliation remains open.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work.",
+    "A frozen exact post-RB1 Status-A assessment/release candidate remains open."
+  ],
+  "hard_nonclaims": {
+    "rb1_scope_broadened": false,
+    "production_source_changed": false,
+    "reference_data_changed": false,
+    "rossfast_admitted": false,
+    "active_macropore_admitted": false,
+    "broader_root_stress_admitted": false,
+    "surface_evap_swredu_1_or_2_admitted": false,
+    "surface_evap_throughput_scaling_qualified": false,
+    "second_water_mass_booking_created": false,
+    "universal_timestep_or_accuracy_selected": false,
+    "t11_complete_closed": false,
+    "t12_validation_closed": false,
+    "fully_traced_promoted": false,
+    "ready_for_formal_status_a_assessment": false,
+    "status_a_certified": false,
+    "status_aa_certified": false
+  },
+  "mass_conservation": "HARD_UNCHANGED",
+  "invariant_review": {
+    "count": 30,
+    "all_reviewed": true,
+    "adverse_delta": false,
+    "direct_bindings": [1, 7, 8, 9, 13, 20, 21, 22, 23, 25, 27, 28, 29, 30]
+  }
+}
