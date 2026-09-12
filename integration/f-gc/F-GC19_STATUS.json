@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC19",
+  "title": "Groundwater Interface Mass Ledger and Diagnostics",
+  "decision": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION",
+  "qualified": true,
+  "canonical_admission": false,
+  "production_coupling_admission": false,
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "production_source": "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+  "first_qualified_head": "d345a7901ab7a592ef4388dda7ac4e5452344952",
+  "first_qualified_workflow_run": 34680059945,
+  "first_qualified_workflow_job": 103516947855,
+  "qualification": {
+    "O0_O2_identity": true,
+    "rejected_trial_not_booked": true,
+    "commit_once": true,
+    "exact_action_reaction": true,
+    "interface_mass_tolerance": false,
+    "FGC17_contract_locked": true
+  },
+  "architecture_audit": "integration/f-gc/F-GC19_ARCHITECTURE_AUDIT.json",
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED",
+  "non_authoritative_failed_run": {
+    "workflow_run": 34680030172,
+    "reason": "qualification shell helper referenced a same-line local variable under set -u before assignment; production Fortran had not failed",
+    "scientific_authority": false
+  },
+  "hard_nonclaims": [
+    "no predictor-corrector orchestrator",
+    "no groundwater physics",
+    "no tile/cell aggregation",
+    "no application accuracy policy",
+    "no MODFLOW adapter",
+    "no canonical or end-to-end production admission"
+  ],
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-GC19 workflow. That exact green head is the final F-GC19 branch authority."
+}
