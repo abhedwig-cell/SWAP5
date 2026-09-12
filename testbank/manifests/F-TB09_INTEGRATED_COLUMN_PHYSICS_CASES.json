@@ -1,0 +1,215 @@
+{
+  "schema_version": "F-TB09-CATALOG-v1",
+  "workunit": "F-TB09",
+  "title": "SWAP5 Integrated Column Physics, Process Interaction & Conservation Qualification Catalog",
+  "catalog_status": "QUALIFIED_CATALOG_CONTRACT_WHEN_EXACT_HEAD_CI_GREEN",
+  "qualification_claim": "CATALOG_AND_ORACLE_CONTRACT_ONLY",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "42544af575db522d012db491db801615577048df",
+    "tree": "4360cd08fd0e952978df9e2742bcc34fdede9ef1"
+  },
+  "authority_chain": [
+    {
+      "workunit": "F-TB01",
+      "commit": "1d039292d5768496c4550a8e1b35a92c6f836504",
+      "exact_head_ci_run": "34553040742",
+      "ci_status": "success",
+      "workflow": "F-TB01 testbank architecture contract"
+    },
+    {
+      "workunit": "F-TB02",
+      "commit": "549531e2e233cccab1416dba04edb266653a5da5",
+      "exact_head_ci_run": "34559093286",
+      "ci_status": "success",
+      "workflow": "F-TB02 hydraulic constitutive catalog"
+    },
+    {
+      "workunit": "F-TB03",
+      "commit": "65d5e5202446212390dbdd84b06e6b2a80e7121c",
+      "exact_head_ci_run": "34588150201",
+      "ci_status": "success",
+      "workflow": "F-TB03 RB1 release qualification bank"
+    },
+    {
+      "workunit": "F-TB04",
+      "commit": "85280c6c436a73c211b70996f9a22f4ad6b04f9c",
+      "exact_head_ci_run": "34592361616",
+      "ci_status": "success",
+      "workflow": "F-TB04 transaction restart determinism MultiSWAP catalog"
+    },
+    {
+      "workunit": "F-TB05",
+      "commit": "81d4f0479a99bc456803f583457862387c267ec0",
+      "exact_head_ci_run": "34619764701",
+      "ci_status": "success",
+      "workflow": "F-TB05 current canonical continuous qualification"
+    },
+    {
+      "workunit": "F-TB06",
+      "commit": "163ed723cc4f2277746bdd54f338c4b06e2eaaa9",
+      "exact_head_ci_run": "34623777188",
+      "ci_status": "success",
+      "workflow": "F-TB06 soil temperature runtime testbank adoption"
+    },
+    {
+      "workunit": "F-TB07",
+      "commit": "4fd0e3a4cb30254135c8da086a733eb3c790b834",
+      "exact_head_ci_run": "34637123036",
+      "ci_status": "success",
+      "workflow": "F-TB07 application accuracy contract testbank adoption"
+    },
+    {
+      "workunit": "F-TB08",
+      "commit": "d240d5e90a4cb778429af7286250435cdc4f03c3",
+      "exact_head_ci_run": "34647338808",
+      "ci_status": "success",
+      "workflow": "F-TB08 external accuracy adapter testbank adoption"
+    }
+  ],
+  "oracle_policy": {
+    "authority": {
+      "workunit": "F-TB01",
+      "commit": "1d039292d5768496c4550a8e1b35a92c6f836504",
+      "path": "docs/testbank/F-TB01_ORACLE_POLICY.md"
+    },
+    "hierarchy": [
+      "O1_MATHEMATICAL_EXACT",
+      "O2_MANUFACTURED_SOLUTION",
+      "O3_INDEPENDENT_NUMERICAL_REFERENCE",
+      "O4_QUALIFIED_FULL_RICHARDS_REFERENCE",
+      "O5_LEGACY_SWAP431_SOURCE_BOUND",
+      "O6_PROPERTY_INVARIANT",
+      "O7_CROSS_SOLVER_CONSISTENCY"
+    ],
+    "legacy_o5_allowed_only_with_classification_and_provenance": true,
+    "tb09_uses_legacy_o5": false,
+    "corrected_golden_baseline_constructed": false
+  },
+  "mass_contract": {
+    "required_for_all_water_bearing_cases": true,
+    "soft_mass_tolerance_allowed": false,
+    "primary_authority": {
+      "workunit": "F-TB01",
+      "commit": "1d039292d5768496c4550a8e1b35a92c6f836504",
+      "path": "docs/testbank/F-TB01_MASS_GATE_CONTRACT.md",
+      "equation_id": "FTB01-MASS-LEDGER"
+    },
+    "current_canonical_authority": {
+      "commit": "42544af575db522d012db491db801615577048df",
+      "path": "docs/verification/mass-accounting-contract.md",
+      "equation_id": "CANONICAL-HARD-MASS-RESIDUAL"
+    },
+    "sign_convention": "flux into modeled soil-column control volume is positive; listed outputs are positive outward",
+    "roundoff_rule": "machine/arithmetic closure only; roundoff allowance is never a water-loss budget"
+  },
+  "coverage_dimensions": [
+    "infiltration",
+    "surface_storage",
+    "runoff",
+    "soil_evaporation",
+    "transpiration_root_uptake",
+    "drainage",
+    "crop_wofost",
+    "soil_temperature",
+    "bottom_boundary",
+    "variable_forcing",
+    "wetting_drying_transitions"
+  ],
+  "pairwise_risk_policy": {
+    "strategy": "RISK_BASED_PAIRWISE_NOT_FULL_COMBINATORIAL",
+    "mandatory_pairs": [
+      ["infiltration", "surface_storage"],
+      ["infiltration", "runoff"],
+      ["surface_storage", "runoff"],
+      ["soil_evaporation", "transpiration_root_uptake"],
+      ["drainage", "bottom_boundary"],
+      ["crop_wofost", "transpiration_root_uptake"],
+      ["variable_forcing", "wetting_drying_transitions"],
+      ["soil_temperature", "variable_forcing"]
+    ],
+    "intentionally_not_exhaustive": true,
+    "max_primary_interaction_dimensions_per_case": 6
+  },
+  "existing_permanent_coverage_reused_not_duplicated": [
+    {"scope":"transaction/restart/MultiSWAP semantics","authority":"F-TB04","commit":"85280c6c436a73c211b70996f9a22f4ad6b04f9c","reuse_rule":"TB09 restart case adds a process-interaction seam only; generic restart identity remains owned by F-TB04."},
+    {"scope":"surface evaporation capacity/runtime","current_owner_evidence":["F-PM06E","F-CI39","F-CI41"],"reuse_rule":"TB09 consumes admitted primitive behaviour and does not create a second surface-evaporation owner test."},
+    {"scope":"root attribution/root uptake","current_owner_evidence":["F-MR35","F-CI37"],"reuse_rule":"TB09 tests partition/interactions only."},
+    {"scope":"drainage/DIVDRA runtime","current_owner_evidence":["F-MR36","F-CI36"],"reuse_rule":"TB09 combines drainage with a changing bottom boundary; the drainage primitive remains separately owned."},
+    {"scope":"effective/variable forcing executor","current_owner_evidence":["F-MR38","F-CI40"],"reuse_rule":"TB09 uses forcing changes to cross process transitions rather than re-testing forcing translation in isolation."},
+    {"scope":"WOFOST development/ET physical binding","current_owner_evidence":["F-WOF36","F-CI21"],"reuse_rule":"TB09 adds crop-development x root-uptake interaction and hard column water accounting."},
+    {"scope":"restricted soil-temperature runtime","authority":"F-TB06","commit":"163ed723cc4f2277746bdd54f338c4b06e2eaaa9","current_owner_evidence":["F-CI43"],"reuse_rule":"TB09 remains inside the admitted restricted runtime scope and makes no claim of new thermally coupled hydraulic physics."}
+  ],
+  "cases": [
+    {
+      "stable_id": "SWAP5-TB09-RAIN-POND-RUNOFF-001-v1",
+      "title": "Rainfall to infiltration, surface storage and runoff transition",
+      "physics_scope": "Bounded variable-rainfall event crossing infiltration capacity, ponding onset and depletion, and runoff onset; ET and crop disabled.",
+      "coverage": {"infiltration":"P","surface_storage":"P","runoff":"P","soil_evaporation":"-","transpiration_root_uptake":"-","drainage":"-","crop_wofost":"-","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"P"},
+      "oracle": {"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-RAIN-POND-RUNOFF-TRANSITIONS","secondary_reference":"O4_QUALIFIED_FULL_RICHARDS_REFERENCE when an admitted integrated executor exposes the case; O4 does not replace the hard mass gate"},
+      "water_balance": {"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-001","equation":"Delta(S_soil + S_surface) = P - Q_runoff - Q_bottom","active_storage":["soil_water","surface_water"],"inputs":["precipitation"],"outputs":["runoff","bottom_flux_outward"],"zero_terms":["soil_evaporation","transpiration","drainage"]},
+      "tolerance_provenance": "Transition timing/value tolerances must be inherited from admitted process owners or pinned reference evidence; no tolerance is allowed on lost water.",
+      "execution_profiles":["FAST","CANONICAL","RELEASE"],
+      "expected_diagnostics":["hard_mass_residual","soil_storage_change","surface_storage","infiltration_flux","runoff_flux","bottom_flux","ponding_onset_event","ponding_depletion_event"],
+      "theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-CI40 effective forcing authority"],
+      "architecture_invariants":[9,13,21,23,25,26,29,30],
+      "owner_evidence_reused":["F-CI40","F-PM06E/F-CI39/F-CI41","F-CI49"],
+      "execution_state":"CATALOG_SPEC_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"High-risk surface transition seam: precipitation forcing, infiltration capacity, ponding and runoff share one water ledger.","restart_interaction":false,"nonclaims":[]
+    },
+    {
+      "stable_id":"SWAP5-TB09-ET-PARTITION-DRYDOWN-002-v1","title":"ET partition under drydown","physics_scope":"Bounded drydown with soil evaporation and transpiration/root uptake active under changing atmospheric demand; no drainage.",
+      "coverage":{"infiltration":"-","surface_storage":"-","runoff":"-","soil_evaporation":"P","transpiration_root_uptake":"P","drainage":"-","crop_wofost":"-","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"P"},
+      "oracle":{"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-ET-PARTITION-CONSERVATION","secondary_reference":"O4_QUALIFIED_FULL_RICHARDS_REFERENCE for hydraulic state where applicable"},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-002","equation":"Delta(S_soil) = P - E_soil - T_root - Q_bottom","active_storage":["soil_water"],"inputs":["precipitation_if_nonzero"],"outputs":["soil_evaporation","root_uptake_transpiration","bottom_flux_outward"],"zero_terms":["surface_runoff","drainage"]},
+      "tolerance_provenance":"ET component tolerances inherit pinned F-PM06E/F-MR35 authorities; mass closure remains hard and independent.","execution_profiles":["FAST","CANONICAL","RELEASE"],"expected_diagnostics":["hard_mass_residual","soil_storage_change","soil_evaporation","root_uptake_total","bottom_flux","drying_regime_transition","forcing_interval_id"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-PM06E","F-MR35","F-MR38"],"architecture_invariants":[3,7,9,13,21,23,25,26,29,30],"owner_evidence_reused":["F-PM06E","F-CI39","F-CI41","F-MR35","F-CI37","F-MR38","F-CI40"],"execution_state":"CATALOG_SPEC_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"ET partition is an interaction risk: duplicate extraction or missing attribution can conserve neither state nor component totals.","restart_interaction":false,"nonclaims":[]
+    },
+    {
+      "stable_id":"SWAP5-TB09-DRAIN-BOTTOM-003-v1","title":"Drainage with changing groundwater/bottom boundary","physics_scope":"Bounded single-column event with admitted drainage active while the bottom hydraulic boundary changes; no direct MODFLOW coupling claim.",
+      "coverage":{"infiltration":"-","surface_storage":"-","runoff":"-","soil_evaporation":"-","transpiration_root_uptake":"-","drainage":"P","crop_wofost":"-","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"P"},
+      "oracle":{"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-DRAIN-BOTTOM-SIGNED-LEDGER","secondary_reference":"O4_QUALIFIED_FULL_RICHARDS_REFERENCE for hydraulic response"},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-003","equation":"Delta(S_soil) = P - E_soil - T_root - Q_drain - Q_bottom","active_storage":["soil_water"],"inputs":["precipitation_if_nonzero","upward_bottom_flux_if_present"],"outputs":["soil_evaporation_if_active","root_uptake_if_active","drainage","downward_bottom_flux_if_present"],"signed_bottom_flux_rule":"Represent bottom flux once with the canonical sign; never count upward flux as an output."},
+      "tolerance_provenance":"Drainage response tolerances inherit F-MR36/F-CI36; changing-boundary hydraulic comparison may use pinned O4 reference. Water balance is hard.","execution_profiles":["CANONICAL","RELEASE","DEEP"],"expected_diagnostics":["hard_mass_residual","soil_storage_change","drainage_flux","bottom_flux_signed","bottom_boundary_value","boundary_change_event"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-MR36","F-CI36"],"architecture_invariants":[9,13,20,21,22,23,25,26,29,30],"owner_evidence_reused":["F-MR36","F-CI36"],"execution_state":"CATALOG_SPEC_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"Drainage and a moving lower boundary can double-count or sign-invert water if process ownership is not explicit.","restart_interaction":false,"nonclaims":["Does not qualify the direct SWAP-MODFLOW head/flux contract and must not be presented as groundwater coupling evidence."]
+    },
+    {
+      "stable_id":"SWAP5-TB09-WOFOST-ROOT-004-v1","title":"Crop development and root uptake","physics_scope":"Bounded WOFOST development window with root uptake/transpiration and variable forcing, crossing at least one admitted crop-development update.",
+      "coverage":{"infiltration":"-","surface_storage":"-","runoff":"-","soil_evaporation":"P","transpiration_root_uptake":"P","drainage":"-","crop_wofost":"P","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"-"},
+      "oracle":{"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-WOFOST-ROOT-WATER-OWNERSHIP","secondary_reference":"Qualified WOFOST owner tests for crop development plus O4 hydraulic reference where applicable"},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-004","equation":"Delta(S_soil) = P - E_soil - T_root - Q_bottom","active_storage":["soil_water"],"inputs":["precipitation_if_nonzero"],"outputs":["soil_evaporation","root_uptake_transpiration","bottom_flux_outward"],"crop_state_rule":"Crop-development state is not itself a water storage term unless a separately admitted water-bearing crop storage is explicitly activated."},
+      "tolerance_provenance":"Crop/development tolerances inherit F-WOF36/F-CI21; root uptake tolerances inherit F-MR35/F-CI37. No SWAP4.3.1 golden output is introduced.","execution_profiles":["CANONICAL","RELEASE","DEEP"],"expected_diagnostics":["hard_mass_residual","soil_storage_change","development_stage","root_depth_or_active_root_support","root_uptake_total","soil_evaporation","bottom_flux"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-WOF36","F-MR35"],"architecture_invariants":[3,13,21,22,23,25,26,27,29,30],"owner_evidence_reused":["F-WOF36","F-CI21","F-MR35","F-CI37"],"execution_state":"CATALOG_SPEC_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"Crop state changes the root-uptake pathway; this seam needs ownership and conservation checks rather than a second crop unit test.","restart_interaction":false,"nonclaims":[]
+    },
+    {
+      "stable_id":"SWAP5-TB09-WET-DRY-REVERSAL-005-v1","title":"Storm to drydown wetting/drying reversal","physics_scope":"Short wetting pulse followed by a dry forcing interval, exercising infiltration then soil evaporation across a wet/dry transition.",
+      "coverage":{"infiltration":"P","surface_storage":"-","runoff":"-","soil_evaporation":"P","transpiration_root_uptake":"-","drainage":"-","crop_wofost":"-","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"P"},
+      "oracle":{"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-WET-DRY-REVERSAL","secondary_reference":"O4_QUALIFIED_FULL_RICHARDS_REFERENCE"},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-005","equation":"Delta(S_soil) = P - E_soil - Q_bottom","active_storage":["soil_water"],"inputs":["precipitation"],"outputs":["soil_evaporation","bottom_flux_outward"],"zero_terms":["runoff","drainage","transpiration"]},
+      "tolerance_provenance":"Transition and hydraulic-state tolerances require pinned O4/process-owner evidence; hard mass closure is independent.","execution_profiles":["FAST","CANONICAL","RELEASE"],"expected_diagnostics":["hard_mass_residual","soil_storage_change","infiltration_flux","soil_evaporation","bottom_flux","wetting_to_drying_transition"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-PM06E","F-MR38"],"architecture_invariants":[9,13,20,21,23,25,26,29,30],"owner_evidence_reused":["F-PM06E","F-CI41","F-MR38","F-CI40"],"execution_state":"CATALOG_SPEC_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"Direction changes are high-risk for stale constitutive/process state and inconsistent cumulative flux accounting.","restart_interaction":false,"nonclaims":[]
+    },
+    {
+      "stable_id":"SWAP5-TB09-SOILTEMP-FORCING-006-v1","title":"Restricted soil-temperature runtime with variable forcing","physics_scope":"Restricted admitted soil-temperature runtime co-executed with a water-bearing column under variable forcing, without asserting new temperature feedback on hydraulic constitutives.",
+      "coverage":{"infiltration":"-","surface_storage":"-","runoff":"-","soil_evaporation":"-","transpiration_root_uptake":"-","drainage":"-","crop_wofost":"-","soil_temperature":"P","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"-"},
+      "oracle":{"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-SOILTEMP-RUNTIME-NONINTERFERENCE","secondary_reference":"F-TB06 restricted soil-temperature runtime authority"},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-006","equation":"Delta(S_soil) = P - E_soil - T_root - Q_drain - Q_bottom, with only actually active water terms populated","active_storage":["soil_water"],"inputs":["all_active_water_inputs"],"outputs":["all_active_water_outputs"],"temperature_rule":"Temperature state is not silently inserted into the water ledger; any admitted phase-change water storage would require a new case version and explicit storage term."},
+      "tolerance_provenance":"Soil-temperature tolerances are inherited from F-TB06/F-CI43 restricted authority. No new thermal-hydraulic tolerance or physics is admitted.","execution_profiles":["RELEASE","DEEP"],"expected_diagnostics":["hard_mass_residual","soil_storage_change","soil_temperature_state_or_result","forcing_interval_id","runtime_mode"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-TB06","F-CI43"],"architecture_invariants":[3,13,21,23,25,26,27,29,30],"owner_evidence_reused":["F-TB06","F-CI43"],"execution_state":"CATALOG_SPEC_RESTRICTED_SCOPE_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"Optional soil temperature must not perturb water accounting merely by being enabled; broader hydrothermal coupling remains outside admitted scope.","restart_interaction":false,"nonclaims":["No claim of fully coupled thermal effects on Richards constitutives, evaporation physics, freezing, or phase-change storage."]
+    },
+    {
+      "stable_id":"SWAP5-TB09-RESTART-PONDING-007-v1","title":"Restart during rainfall, ponding and runoff interaction","physics_scope":"Checkpoint/restart inside the rainfall-infiltration-surface-storage/runoff interaction, before completion of ponding depletion.",
+      "coverage":{"infiltration":"P","surface_storage":"P","runoff":"P","soil_evaporation":"-","transpiration_root_uptake":"-","drainage":"-","crop_wofost":"-","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"P"},
+      "oracle":{"primary_class":"O6_PROPERTY_INVARIANT","id":"TB09-RESTART-INTERACTION-EQUIVALENCE","secondary_reference":"F-TB04 transaction/restart authority plus uninterrupted current-canonical execution"},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-007","equation":"Delta(S_soil + S_surface) = P - Q_runoff - Q_bottom over the full window, and ledger_pre_checkpoint + ledger_post_restart = ledger_uninterrupted","active_storage":["soil_water","surface_water"],"inputs":["precipitation"],"outputs":["runoff","bottom_flux_outward"],"restart_rule":"Serialization/checkpoint/restart is neither source nor sink; committed cumulative tallies and lineage continue exactly according to F-TB04 semantics."},
+      "tolerance_provenance":"Restart/state equivalence tolerances inherit F-TB04. Physical interaction tolerances inherit relevant process owners. Mass accounting is hard on uninterrupted and restarted paths.","execution_profiles":["CANONICAL","RELEASE","DEEP"],"expected_diagnostics":["hard_mass_residual_uninterrupted","hard_mass_residual_restarted","committed_state_equivalence","cumulative_flux_equivalence","checkpoint_lineage","surface_storage","runoff_flux"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","F-TB04 restart contract","F-CI28"],"architecture_invariants":[7,8,9,13,16,23,25,26,29,30],"owner_evidence_reused":["F-TB04","F-CI28","F-CI35","F-CI40","F-CI49"],"execution_state":"CATALOG_SPEC_OWNER_EXECUTOR_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"Restart correctness must survive an active process transition, not only a quiescent or generic state round-trip.","restart_interaction":true,"nonclaims":[]
+    },
+    {
+      "stable_id":"SWAP5-TB09-RICHARDS-RISK-008-v1","title":"Full-Richards high-risk integrated reference case","physics_scope":"DEEP reference-oriented wetting/drying column combining variable forcing, root uptake and changing bottom boundary without optional crop or temperature modules.",
+      "coverage":{"infiltration":"P","surface_storage":"-","runoff":"-","soil_evaporation":"P","transpiration_root_uptake":"P","drainage":"-","crop_wofost":"-","soil_temperature":"-","bottom_boundary":"P","variable_forcing":"P","wetting_drying_transitions":"P"},
+      "oracle":{"primary_class":"O4_QUALIFIED_FULL_RICHARDS_REFERENCE","id":"TB09-FULL-RICHARDS-INTEGRATED-REFERENCE","qualification_rule":"The case cannot become physics-qualified until the referenced Full Richards execution is pinned to exact evidence and passes the same hard mass gate."},
+      "water_balance":{"required":true,"soft_tolerance_tradeoff_allowed":false,"closure_rule":"machine/arithmetic closure under F-TB01 hard mass gate; any physics tolerance is separate","transaction_rule":"rejected trials/checkpoints are not sources or sinks and may not mutate committed cumulative tallies","equation_id":"TB09-MASS-008","equation":"Delta(S_soil) = P - E_soil - T_root - Q_bottom","active_storage":["soil_water"],"inputs":["precipitation","upward_bottom_flux_if_present"],"outputs":["soil_evaporation","root_uptake_transpiration","downward_bottom_flux_if_present"],"signed_bottom_flux_rule":"Use one signed bottom term in implementation evidence; the expanded input/output description is explanatory only."},
+      "tolerance_provenance":"No unpinned numerical tolerance. Reference tolerances must be attached to exact Full Richards authority/evidence before physics admission.","execution_profiles":["DEEP"],"expected_diagnostics":["hard_mass_residual","soil_storage_change","infiltration_flux","soil_evaporation","root_uptake_total","bottom_flux_signed","solver_path","nonlinear_cost"],"theory_equation_refs":["FTB01-MASS-LEDGER","CANONICAL-HARD-MASS-RESIDUAL","O4 Full Richards reference policy"],"architecture_invariants":[13,20,21,22,23,24,25,26,29,30],"owner_evidence_reused":["F-CI49"],"execution_state":"CATALOG_SPEC_REFERENCE_EXECUTION_REQUIRED","qualification_state":"CATALOGED_NOT_PHYSICS_QUALIFIED","risk_selection_rationale":"A bounded difficult case anchors integrated interaction qualification to the designated Full Richards numerical reference without multiplying production runs.","restart_interaction":false,"nonclaims":[]
+    }
+  ],
+  "exit_target":"QUALIFIED_INTEGRATED_COLUMN_PHYSICS_TESTBANK_CATALOG_ESTABLISHED",
+  "production_source_changed":false,
+  "source_defects_fixed":false,
+  "integrated_physics_results_qualified":false,
+  "defect_routing":"Any production defect exposed by a future TB09 case must open a separate owner workunit; TB09 remains evidence/catalog-only.",
+  "current_canonical_increment":{"workunit":"F-CI49","commit":"42544af575db522d012db491db801615577048df","decision":"definitive F-KT15 solver-service transaction composition admitted to current canonical","tb09_relevance":"Adds qualified restricted solver-service transaction/dynamic-top-boundary infrastructure; it does not itself qualify the integrated column process combinations catalogued by F-TB09.","hard_mass_gate":"PASS_HARD"}
+}
