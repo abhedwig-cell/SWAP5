@@ -108,6 +108,9 @@ module mod_kernel_transactions
     real(real64) :: completed_t = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
+    logical :: bottom_interface_exchange_available = .false.
+    real(real64) :: bottom_outward_exchange_native = 0.0_real64
+    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
   end type kernel_result_t
 
   type, public :: kernel_diagnostics_t
@@ -690,6 +693,9 @@ contains
     result%completed_t = runtime_result%completed_t
     result%mass = runtime_result%mass
     result%interface_sensitivity = runtime_result%interface_sensitivity
+    result%bottom_interface_exchange_available = runtime_result%bottom_interface_exchange_available
+    result%bottom_outward_exchange_native = runtime_result%bottom_outward_exchange_native
+    result%terminal_bottom_outward_flux_native = runtime_result%terminal_bottom_outward_flux_native
   end subroutine map_runtime_result
 
   subroutine map_transaction_diagnostics(runtime_diagnostics, diagnostics)

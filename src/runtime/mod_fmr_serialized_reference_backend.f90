@@ -1080,6 +1080,15 @@ contains
     end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
+    outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration
+    outcome%terminal_bottom_outward_flux_native = -solve_result%bottom_flux
+    if (.not. ieee_is_finite(outcome%bottom_outward_exchange_native) .or. &
+        .not. ieee_is_finite(outcome%terminal_bottom_outward_flux_native)) then
+      outcome%bottom_outward_exchange_native = 0.0_real64
+      outcome%terminal_bottom_outward_flux_native = 0.0_real64
+      return
+    end if
+    outcome%bottom_interface_exchange_available = .true.
     outcome%mass_accounting_complete = .true.
     outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
     outcome%solver_ok = .true.
