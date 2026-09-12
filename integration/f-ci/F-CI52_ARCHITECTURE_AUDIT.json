@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.fci_architecture_audit.v1",
+  "work_unit": "F-CI52",
+  "title": "F-PM08D7 restricted fixed-weir transactional runtime current-canonical admission",
+  "governance_authority": "regie/f-rg01-post-rb1-program-rebaseline@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "canonical_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "composition_commit": "8c1617021ec935bc862b6cbc9be4ac6bcc94c51a",
+  "qualification_authority": "qualification/f-vq59-fpm08d7-fixed-weir-current-canonical@f65f170fc6ec5f1a228ade2def3732cb36942ebd",
+  "owner_authority": "F-PM08D7@de90d3bff15b022c45a4e515cb5b97ead7498f25",
+  "scope": {
+    "new_physics": true,
+    "physics_added": "restricted fixed-weir surface-water storage, supply, drainage attribution and weir discharge on explicitly feature-active columns",
+    "new_soil_water_solver": false,
+    "scientific_tolerance_relaxation": false,
+    "mass_accounting_extension": true,
+    "mass_conservation": "HARD_UNCHANGED",
+    "reference_mode_removed_or_weakened": false,
+    "RB1_modified_or_reopened": false,
+    "large_batch_throughput_claim": false,
+    "new_groundwater_coupling_capability": false
+  },
+  "production_scope": {
+    "exact_file_count": 5,
+    "files": [
+      "src/process/mod_restricted_fixed_weir_surface_water.f90",
+      "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ]
+  },
+  "invariants": [
+    {"id": 1, "status": "PRESERVED", "basis": "The capability is composed into the existing canonical kernel/runtime and introduces no alternate SWAP kernel."},
+    {"id": 2, "status": "QUALIFIED", "basis": "The fixed-weir process and runtime wrapper contain no file-format, path or file-I/O ownership; F-VQ59 no-hidden-I/O checks passed."},
+    {"id": 3, "status": "QUALIFIED", "basis": "Fixed-weir parameters, forcing, committed state, numerical configuration, observations and transaction results remain separate typed data categories."},
+    {"id": 4, "status": "QUALIFIED", "basis": "Surface-water storage is persistent only in the feature-active fixed-weir optional-state subtype; inactive B1.10 columns retain the base state layout."},
+    {"id": 5, "status": "QUALIFIED", "basis": "No SAVE or COMMON process-owned persistent scratch is introduced; temporary solve data remain call-local."},
+    {"id": 6, "status": "QUALIFIED", "basis": "The canonical MultiSWAP dispatcher is bit-preserved and the feature state is column-local, retaining batching/layout freedom."},
+    {"id": 7, "status": "QUALIFIED", "basis": "Mismatch and infeasible fixed-weir trials fail closed and leave committed state and revision unchanged; accepted trials commit exactly once."},
+    {"id": 8, "status": "PRESERVED", "basis": "Existing retry, restart and recomputation contracts are retained; PM08D7 does not make trial state authoritative over committed state."},
+    {"id": 9, "status": "QUALIFIED", "basis": "Qualification exercises explicit generic t0,t1 intervals and introduces no day, month, year or midnight requirement."},
+    {"id": 10, "status": "PRESERVED", "basis": "Groundwater coupling-window semantics are untouched by the surface-water feature."},
+    {"id": 11, "status": "PRESERVED", "basis": "Canonical transaction and coupling infrastructure remains in place; the feature composes through existing runtime transaction services."},
+    {"id": 12, "status": "PRESERVED", "basis": "The admitted groundwater head/flux interface contract is not modified."},
+    {"id": 13, "status": "QUALIFIED", "basis": "Accepted fixed-weir routes require complete hard water balance. Supply is external input, weir discharge is external output, internal drainage is not double-counted, and rejected trials roll back."},
+    {"id": 14, "status": "PRESERVED", "basis": "Groundwater interface-sensitivity outputs and their transport are untouched."},
+    {"id": 15, "status": "PRESERVED", "basis": "The capability introduces no additional predictor/corrector or full-column groundwater coupling runs."},
+    {"id": 16, "status": "QUALIFIED", "basis": "F-VQ59 qualified explicit per-column committed-state ownership, backend-context clearing and MultiSWAP column isolation while preserving the canonical dispatcher."},
+    {"id": 17, "status": "PRESERVED", "basis": "MODFLOW cell fractions and tile aggregation remain runtime/coupler concerns outside this capability."},
+    {"id": 18, "status": "PRESERVED", "basis": "The optional deep-vadose component boundary is untouched."},
+    {"id": 19, "status": "PRESERVED", "basis": "No deep-vadose/direct-coupling transition or stored-water transfer semantics are changed."},
+    {"id": 20, "status": "PRESERVED", "basis": "The common soil-water solver interfaces remain intact; PM08D7 adds no alternative soil-water solver implementation."},
+    {"id": 21, "status": "PRESERVED", "basis": "Existing soil-water, drainage, transaction and runtime services are reused instead of duplicating SWAP physics."},
+    {"id": 22, "status": "PRESERVED", "basis": "The fixed-weir process/runtime uses typed runtime/solver contracts and does not expose HeadCalc internal arrays to other modules."},
+    {"id": 23, "status": "QUALIFIED", "basis": "Fixed-weir physical parameters and forcing are separate from the fixed-weir numerical configuration; no performance policy silently changes physical options."},
+    {"id": 24, "status": "QUALIFIED", "basis": "The fixed-weir scalar solve has a bounded bisection iteration limit and fail-closed rollback on infeasible/non-admitted routes; no mass-conservation relaxation is allowed."},
+    {"id": 25, "status": "QUALIFIED", "basis": "The canonical reference tree and legacy HeadCalc source remain bit-preserved; full reference capability is not removed or weakened."},
+    {"id": 26, "status": "QUALIFIED", "basis": "Surface-water observations, transaction outcomes, context status and failure routes remain explicit and test-visible in runtime diagnostics/results."},
+    {"id": 27, "status": "QUALIFIED", "basis": "Fixed-weir persistent state is present only for columns using the fixed-weir optional-state layout; inactive columns do not pay that state footprint."},
+    {"id": 28, "status": "PRESERVED", "basis": "Tile fractions, MODFLOW mapping and other system-composition relationships remain outside the SWAP kernel."},
+    {"id": 29, "status": "QUALIFIED", "basis": "No .swp, path, direct-MODFLOW, midnight or one-day assumptions are introduced in the process/runtime implementation."},
+    {"id": 30, "status": "QUALIFIED", "basis": "F-CI52 explicitly rechecks all 30 architecture invariants against the exact current-canonical composition and F-VQ59 evidence."}
+  ],
+  "admission_holds": [
+    "promotion is forbidden if integration/f-ci-canonical moves away from eba90d79010b095b6556e93bd8b77a8c28d25560 before pre-promotion qualification completes",
+    "promotion must preserve the exact five qualified production blobs",
+    "F-MR41 remains owner of typed optional-state layout identities",
+    "no RB1 modification or reopening",
+    "no large-batch throughput claim is made by this admission",
+    "no new groundwater-coupling capability is claimed"
+  ]
+}
