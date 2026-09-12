@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.ftb_blocker_evidence.v1",
+  "work_unit": "F-TB10",
+  "stable_case_id": "SWAP5-TB09-DRAIN-BOTTOM-003-v1",
+  "assessment_base": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+  "classification": "BLOCKED_NONSTATIONARY_TEMPORAL_ACCEPTANCE_POLICY_REQUIRED",
+  "scientific_qualification_attained": false,
+  "production_defect_proven": false,
+  "mass_conservation_relaxation_allowed": false,
+  "observed_execution": {
+    "workflow_run": 34680289804,
+    "head": "3a3017de9b71430deb053a141b7d9ce762346ebd",
+    "conclusion": "failure",
+    "positive_preconditions_before_failure": [
+      "exact branch head checkout",
+      "no production src delta",
+      "no reference delta",
+      "F-TB09 case authority pinned",
+      "frozen F-CI36/F-VQ51 authority chain pinned",
+      "current-canonical DIVDRA production blobs matched the admitted authority",
+      "prescribed-head SWBOTB=5 route confirmed active",
+      "DIVDRA composition and dispatch reached the real current-canonical runtime"
+    ],
+    "failure_marker": "FTB10_TEST_FAIL first interval committed",
+    "interpretation_limit": "The run proves that the bounded nonstationary integrated interval is not accepted by the current F-TB10 numerical policy. The run by itself does not prove a production-physics defect or uniquely identify the rejecting sub-gate."
+  },
+  "current_ftb10_policy": {
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "why": "The F-TB10 template does not activate a numerical temporal-history continuation layout, so the transaction policy remains the external full-versus-two-half estimator.",
+    "temporal_tolerance": 0.0,
+    "meaning": "Only exact/full-half temporal identity is accepted by this fixture; a nonzero tolerance may not be invented merely to obtain acceptance."
+  },
+  "negative_and_bounded_authorities": {
+    "F_VQ28": {
+      "authority": "qualification/f-vq28-richards-temporal-numeric-profile",
+      "result": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+      "binding": [
+        "no production temporal metric selected",
+        "no production temporal tolerance selected",
+        "universal absolute tolerance not admitted",
+        "a separate owner/runtime-policy workunit is required if nonstationary prescribed-head temporal acceptance remains needed"
+      ]
+    },
+    "F_VQ19": {
+      "authority": "qualification/f-vq19-fmr08-nonstationary-temporal",
+      "binding": "Exact zero-tolerance acceptance is qualified only for its restricted exact-identity fixture and is not a generic numeric temporal policy."
+    },
+    "F_VQ34_F_CI21": {
+      "mechanism": "C_h = B_inf / H_budget",
+      "status": "qualified certificate mechanism preserved on current canonical",
+      "hard_hold": "No universal/default numeric H_budget is selected. Missing application/runtime budget provenance fails closed."
+    },
+    "F_CI44": {
+      "scope": "application accuracy contract",
+      "hard_holds": ["no numeric H_app", "no numeric A_temporal", "no project H_budget"]
+    },
+    "F_CI46": {
+      "scope": "external accuracy runtime adapter",
+      "hard_holds": ["no numeric H_app", "no numeric A_temporal", "no real-project temporal head-error budget"]
+    },
+    "F_GC22": {
+      "branch_head_checked": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "title": "Application and Temporal Accuracy Binding for Direct Groundwater Coupling",
+      "canonical_admission": false,
+      "production_coupling_admission": false,
+      "scope_restriction": "groundwater-head QoI for restricted direct-head groundwater coupling",
+      "hard_holds": ["no universal numeric H_app", "no universal numeric temporal allocation", "no project-specific numeric defaults"],
+      "tb10_disposition": "NOT_REUSABLE_AS_TB10_NUMERIC_POLICY: F-TB10 is not a direct groundwater-coupling case and F-GC22 selects no numeric application accuracy anyway."
+    }
+  },
+  "why_no_local_workaround_is_admissible": [
+    "Choosing a positive external full-half tolerance in F-TB10 would create an unqualified numeric solver policy contrary to F-VQ28.",
+    "Switching to the Richards certificate path with an arbitrary H_budget would violate F-VQ34/F-CI21 provenance requirements.",
+    "Borrowing F-GC22 would cross an explicit groundwater-coupling scope boundary and still would not supply a numeric H_app or A_temporal.",
+    "Adding a compensating water source to reproduce the old stationary DIVDRA verifier would remove the physical nonstationary interaction that TB09-003 is meant to qualify.",
+    "Relaxing or bypassing hard mass conservation is forbidden."
+  ],
+  "blocker": "Before TB09-003 can be scientifically qualified, an owner workunit must provide a qualified temporal-acceptance policy/provenance for genuine nonstationary standalone/integrated reference-Richards intervals, or otherwise establish a different already-governed acceptance semantic applicable to this case. The policy must remain separate from physics and preserve hard mass precedence.",
+  "decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP"
+}
