@@ -17,6 +17,7 @@ if git remote get-url origin >/dev/null 2>&1; then
 fi
 
 git merge-base --is-ancestor "$BASE" HEAD || fail 'F-KT15R closeout is not an ancestor'
+git merge-base --is-ancestor "$CANONICAL" HEAD || fail 'finalized F-CI48P canonical is not an ancestor'
 
 mapfile -t prod < <(git diff --name-only "$BASE"..HEAD -- 'src/**' | sort)
 expected=(
