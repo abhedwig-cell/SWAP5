@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC21P1-R1",
+  "title": "Exact Accepted Bottom Interface Exchange Result Warning-Hygiene Remediation",
+  "decision_at_preregistration": "REMEDIATION_OPEN_NOT_QUALIFIED",
+  "branch": "work/f-gc21p1-r1-warning-hygiene-remediation",
+  "restart_authorities": {
+    "current_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+    "scope_blocked_parent_candidate": "95e05490d3f60325361a9036dc720c7954093307",
+    "governance": "09ef05c60c5e45af218980001c8ad8ec30da2e9e"
+  },
+  "blocker": {
+    "class": "QUALIFICATION_HARNESS_WARNING_HYGIENE_LEAKED_INTO_PRODUCTION_SOURCE",
+    "finding": "F-GC21P1 replaced two pre-existing REAL equality checks by paired <= and >= comparisons solely to satisfy a global -Werror/-Wcompare-reals qualification policy. That production delta is outside the preregistered exact accepted bottom-exchange result scope and is not admitted as semantically identity-preserving for all IEEE behavior.",
+    "affected_production_files": [
+      "src/transaction/mod_transaction_reference.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90"
+    ]
+  },
+  "remediation_scope": {
+    "production": [
+      "Restore the two affected interval identity predicates exactly to the canonical equality form.",
+      "Preserve every F-GC21P1 bottom_outward_exchange_native transport and accumulation change unchanged."
+    ],
+    "qualification": [
+      "Keep warnings fatal except that the pre-existing compare-reals warning class may be non-fatal for the restored canonical equality predicates.",
+      "Prove the restored predicates match the current-canonical baseline and that F-GC21P1 adds no new compare-real predicate outside those baseline locations.",
+      "Re-run owner qualification at O0 and O2 on the corrected production state."
+    ]
+  },
+  "hard_constraints": [
+    "No mass-balance tolerance or numerical workaround.",
+    "No change to accepted-exchange sign, units, accumulation, retry, two-half, commit or fallback semantics.",
+    "No MODFLOW-specific semantics or production-coupling admission claim.",
+    "No independent qualification or canonical-admission claim in this work unit.",
+    "No change to RB1 or closed F-CI54 authority.",
+    "Fail closed if warning hygiene cannot be isolated without broadening production scope."
+  ],
+  "architecture_intent": {
+    "invariants_7_11_13_26_29": "must remain hard-preserved",
+    "all_30_invariants": "explicitly re-audited before owner closeout"
+  },
+  "downstream": {
+    "owner_closeout_required": true,
+    "independent_F_VQ_required_after_owner_closeout": true,
+    "canonical_admission_separate": true,
+    "parent_F_GC21_may_not_use_this_capability_before_independent_qualification_and_required_admission": true
+  }
+}
