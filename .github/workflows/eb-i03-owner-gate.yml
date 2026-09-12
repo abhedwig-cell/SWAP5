@@ -23,10 +23,12 @@ jobs:
           test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
           test "$(git rev-parse "$CANONICAL:src/solver/mod_soil_water_solver_contract.f90")" = "276941d76ba951a89c43899e61fd0532418d8230"
           test "$(git rev-parse "$CANONICAL:src/solver/mod_reference_richards_workspace.f90")" = "74f99556005ae39614f9df678467b1e19097bae2"
+          test "$(git rev-parse "$CANONICAL:src/solver/mod_process_hydraulic_view.f90")" = "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6"
           test "$(git rev-parse "HEAD:src/solver/mod_soil_water_solver_contract.f90")" = "276941d76ba951a89c43899e61fd0532418d8230"
           test "$(git rev-parse "HEAD:src/solver/mod_reference_richards_workspace.f90")" = "74f99556005ae39614f9df678467b1e19097bae2"
+          test "$(git rev-parse "HEAD:src/solver/mod_process_hydraulic_view.f90")" = "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6"
 
-      - name: Check EB-I03 production delta
+      - name: Check EB-I03 production and evidence delta
         shell: bash
         run: |
           set -euo pipefail
@@ -36,6 +38,8 @@ jobs:
           .github/workflows/eb-i03-owner-gate.yml
           src/adapter/mod_reference_richards_phase_flux_binding.f90
           src/solver/mod_soil_water_phase_flux_view.f90
+          tests/eb/EB-I03_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I03_CONTRACT.md
           tests/test_eb_i03_phase_flux_view.f90
           EOF
           sort -o allowed.txt allowed.txt
