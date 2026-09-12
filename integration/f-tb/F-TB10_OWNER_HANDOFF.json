@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.ftb_owner_handoff.v1",
+  "work_unit": "F-TB10",
+  "source_case": "SWAP5-TB09-DRAIN-BOTTOM-003-v1",
+  "handoff_class": "TEMPORAL_ACCEPTANCE_POLICY_OWNER_REQUIRED",
+  "recommended_new_workunit": "SEPARATE_OWNER_WORKUNIT_NOT_F_TB10",
+  "problem_statement": "A real nonstationary integrated Full Richards + active DIVDRA + prescribed-head-bottom interval is not scientifically qualifiable with the policies currently admitted for F-TB10. The existing external full-half route has no admitted generic nonzero production tolerance, while the normalized Richards certificate route requires explicit application/runtime accuracy-budget provenance that F-TB10 does not own.",
+  "required_owner_decisions": [
+    "Define the intended application class for nonstationary standalone/integrated column qualification independently of direct groundwater coupling.",
+    "Choose and preregister the temporal acceptance semantic: retain external full-half with a newly qualified metric/tolerance, or use the normalized Richards head-budget certificate with explicitly governed budget provenance, or establish another qualified semantic.",
+    "If a numeric accuracy budget is required, define who owns it, how it is derived, its units, provenance and applicability bounds; no hidden/default value is allowed.",
+    "Demonstrate that hard mass rejection precedes any temporal acceptance and can never be overridden.",
+    "Qualify continuation/restart boundaries needed by the intended integrated cases rather than assuming no-history bootstrap.",
+    "Separate physical options from numerical policy and keep reference mode available.",
+    "Define bounded retry/cost behavior without making dt-monotonicity claims unless separately demonstrated.",
+    "Provide diagnostics sufficient to identify temporal rejection, mass rejection, nonlinear failure, retry and fallback use per interval."
+  ],
+  "minimum_qualification_matrix": [
+    "stationary exact-identity control",
+    "nonstationary prescribed-head lower-boundary perturbation without drainage",
+    "active positive single-level DIVDRA with nonstationary prescribed-head lower boundary",
+    "at least one wetting/drying or forcing-change interaction from the F-TB09 catalog where the same policy is intended to apply",
+    "O0/O2 reproducibility",
+    "rollback/retry correctness",
+    "hard interval and full-window water balance",
+    "absence/invalid-provenance fail-closed cases"
+  ],
+  "authorities_to_reuse": [
+    "F-VQ28 negative authority for the existing universal full-half tolerance route",
+    "F-VQ34 and F-CI21 normalized Richards head-budget certificate semantics",
+    "F-CI44 application accuracy contract only where its QoI/application scope is actually applicable",
+    "F-CI46 external accuracy adapter only for already qualified external policy",
+    "F-CI36 frozen restricted DIVDRA owner authority",
+    "F-TB01 hard oracle hierarchy and mass policy",
+    "F-TB09 integrated interaction catalog"
+  ],
+  "authorities_not_to_cross_scope": [
+    "F-GC22 may inform design but is restricted to direct groundwater-head coupling and is not canonical at this handoff. It must not be treated as a standalone TB10 numeric budget authority.",
+    "F-VQ19 exact zero-tolerance fixture must not be generalized to arbitrary nonstationary Richards interactions."
+  ],
+  "forbidden_shortcuts": [
+    "arbitrary positive temporal_tolerance",
+    "arbitrary H_budget",
+    "using interface head tolerance as temporal budget by equality assumption",
+    "compensating source/sink that removes the target physical interaction",
+    "softening mass conservation",
+    "production physics changes inside the testbank owner workunit"
+  ],
+  "return_condition_to_F_TB10": "Return only after a separately qualified and, where required, canonically admitted temporal policy/provenance explicitly covers the TB09-003 standalone/integrated runtime profile. F-TB10 may then be re-executed from a fresh qualified base without rewriting the closed F-TB09 catalog.",
+  "architecture_requirements": "Explicitly audit all 30 SWAP core architecture invariants; invariants 7, 9, 13, 23, 24, 25, 26, 29 and 30 are directly implicated."
+}
