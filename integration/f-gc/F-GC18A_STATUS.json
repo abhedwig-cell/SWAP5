@@ -13,19 +13,23 @@
   "owner_candidate": {
     "branch": "work/f-gc18r-two-phase-commit-readiness",
     "exact_owner_head": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
-    "production_authority": "e96a160dfa6d7202c2ece80306af7282cd40d831",
-    "workflow_run_id": 34680882694,
-    "workflow_conclusion": "success",
-    "owner_approved": true,
-    "owner_status_canonical_admission": false
+    "first_qualified_head": "e96cd130753d17c411be18d691931149478d4663",
+    "first_qualified_workflow_run_id": 34680847196,
+    "first_qualified_workflow_conclusion": "success",
+    "exact_head_workflow_run_id": 34680882694,
+    "exact_head_workflow_conclusion": "success",
+    "qualified": true,
+    "owner_status_decision": "QUALIFIED_PREPARED_GROUNDWATER_PUBLICATION_READY_FOR_F_GC21_COMPOSITION",
+    "canonical_admission": false,
+    "production_coupling_admission": false
   },
   "owner_production_delta_files": [
-    "src/f_driver/calcmodel_driver.f90",
-    "src/kernel/kernel_api.f90",
-    "src/kernel/kernel_types.f90"
+    "src/runtime/mod_groundwater_exchange_service_contract.f90"
   ],
   "evidence_integrity": {
     "owner_exact_head_gate": "VERIFIED",
+    "owner_first_qualified_head_gate": "VERIFIED",
+    "production_delta_reconciled_against_pinned_current_canonical": true,
     "independent_qualification": "MISSING",
     "current_canonical_contains_f_gc_owner_evidence_directory": false,
     "f_ci50_admission_precedent_applies": true,
@@ -55,6 +59,13 @@
     "coupling_window_semantics_weakened": false,
     "runtime_coupler_separation_weakened": false,
     "silent_dependency_introduced": false
+  },
+  "evidence_correction": {
+    "corrects_initial_f_gc18a_metadata": true,
+    "corrected_nonexistent_production_authority_sha": true,
+    "corrected_owner_production_delta": true,
+    "corrected_status_field_attribution": true,
+    "decision_changed": false
   },
   "required_next_step": "Run an independently owned qualification against the exact pinned F-GC18R owner authority and the then-current canonical. Only after a positive result may a separate canonical-integration workunit perform a true history-preserving admission followed by postpromotion verification.",
   "downstream_rule": "F-GC18R may be cited as an explicit owner/development dependency, but not as current-canonical authority until independent qualification and canonical admission are complete."

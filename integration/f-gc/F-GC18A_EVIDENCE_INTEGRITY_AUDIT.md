@@ -23,7 +23,7 @@ Final pre-write recheck for this workunit:
 - commit: `eba90d79010b095b6556e93bd8b77a8c28d25560`
 - commit message: `F-CI50P R1: finalize post-reconciliation closeout`
 
-This F-GC18A branch is created directly from that exact current-canonical commit.
+This F-GC18A branch was created directly from that exact current-canonical commit.
 
 The current canonical does not contain the `integration/f-gc/` owner-evidence directory and does not itself carry the F-GC18/F-GC18R owner evidence as canonical evidence.
 
@@ -32,29 +32,29 @@ The current canonical does not contain the `integration/f-gc/` owner-evidence di
 F-GC18R owner authority:
 
 - branch: `work/f-gc18r-two-phase-commit-readiness`
-- exact signed owner head: `7c1c5251a2dff94291db381cf0b66631b81e9f05`
-- production authority recorded by F-GC18R: `e96a160dfa6d7202c2ece80306af7282cd40d831`
-- exact-head owner workflow run: `34680882694`
-- workflow conclusion: `success`
+- exact final owner head: `7c1c5251a2dff94291db381cf0b66631b81e9f05`
+- first qualified head recorded by F-GC18R: `e96cd130753d17c411be18d691931149478d4663`
+- first qualified workflow run: `34680847196`, conclusion `success`
+- exact-final-head owner workflow run: `34680882694`, conclusion `success`
 
 `integration/f-gc/F-GC18R_STATUS.json` at the pinned owner head explicitly records:
 
-- `owner_approved: true`
+- `qualified: true`
 - `canonical_admission: false`
-- canonical and end-to-end admission are outside F-GC18R scope
-- the result is ready for later composition, not itself canonical admission
+- `production_coupling_admission: false`
+- decision `QUALIFIED_PREPARED_GROUNDWATER_PUBLICATION_READY_FOR_F_GC21_COMPOSITION`
+- the production source `src/runtime/mod_groundwater_exchange_service_contract.f90`
+- no canonical or end-to-end coupling production admission claim
 
-The owner branch therefore provides valid owner evidence for the repaired transactional groundwater exchange contract, but it does not provide independent qualification or canonical authority.
+The owner branch therefore provides valid owner qualification evidence for the repaired transactional groundwater exchange contract, but it does not provide independent qualification or canonical authority.
 
 ## Production delta represented by the owner line
 
-Relative to the current-canonical baseline, the F-GC18/F-GC18R owner line changes production files including:
+A direct compare of the exact F-GC18R owner head against the pinned current-canonical baseline shows one production source file in the owner delta:
 
-- `src/f_driver/calcmodel_driver.f90`
-- `src/kernel/kernel_api.f90`
-- `src/kernel/kernel_types.f90`
+- `src/runtime/mod_groundwater_exchange_service_contract.f90`
 
-F-GC18A does not copy, modify, merge, or otherwise admit those production files.
+The remainder of the delta consists of owner workflows, tests, and F-GC evidence files. F-GC18A does not copy, modify, merge, or otherwise admit the owner production source.
 
 ## Independent-qualification audit
 
@@ -87,7 +87,7 @@ F-GC18R has not yet passed the equivalent independent prepromotion qualification
 
 F-GC18R remains a valid owner-qualified development authority, but it is not current-canonical authority and is not yet eligible for canonical admission.
 
-The next legally valid step is an independent qualification workunit that starts from the then-current `integration/f-ci-canonical`, pins the exact F-GC18R owner and production authorities, independently rechecks the relevant production delta and transactional/mass-conservation contracts, and emits an explicit admission decision.
+The next legally valid step is an independent qualification workunit that starts from the then-current `integration/f-ci-canonical`, pins the exact F-GC18R owner authority, independently rechecks its ancestry, production delta, owner qualification evidence, transactional semantics, and mass-conservation contract, and emits an explicit admission decision.
 
 Only after a positive independent qualification may a separate canonical-integration workunit perform a true history-preserving admission and postpromotion verification following the F-CI50 precedent.
 
@@ -100,3 +100,7 @@ F-GC18A changes no architecture or production semantics. All 30 SWAP core archit
 The fail-closed decision specifically protects the transactional and coupling invariants around checkpoint/trial/commit/rollback, explicit groundwater interface semantics, mass conservation, generic coupling windows, runtime/coupler composition, and the prohibition on silent dependencies. It also satisfies the governance requirement that important architecture changes be explicitly assessed rather than silently promoted.
 
 No claim is made here that the F-GC18R owner scaffold constitutes full real-production-tree, MODFLOW, MultiSWAP, or end-to-end qualification. Those limitations remain exactly as recorded by the owner evidence.
+
+## Evidence correction note
+
+The initial F-GC18A evidence commit contained three metadata errors discovered during the handoff recheck: a non-existent `production_authority` SHA, an incorrect three-file production-delta list, and wording that attributed an `owner_approved` field to F-GC18R status. This revision corrects those claims directly against the live F-GC18R status, workflow runs, and current-canonical compare. The fail-closed decision is unchanged.
