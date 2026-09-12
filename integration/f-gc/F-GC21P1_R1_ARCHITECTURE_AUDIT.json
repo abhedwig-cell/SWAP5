@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC21P1-R1",
+  "title": "Exact Accepted Bottom Interface Exchange Result Warning-Hygiene Remediation Architecture Audit",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "scope_blocked_parent_candidate": "95e05490d3f60325361a9036dc720c7954093307",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "postpublication_owner_run": {
+    "run_id": 34715669502,
+    "job_id": 103612340294,
+    "conclusion": "success",
+    "head_sha": "89f7d11413e1f3ae24c648f24f56577b982f23e6"
+  },
+  "production_source_blobs": {
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/transaction/mod_transaction_reference.f90": "834487df4e7a38c7c8ffd83805d98933714c6977"
+  },
+  "remediation_finding": {
+    "resolved": true,
+    "description": "Two pre-existing REAL equality predicates had been rewritten as paired ordered comparisons only to silence -Wcompare-reals under global -Werror. R1 restores the exact canonical equality predicates and isolates that pre-existing warning class in the qualification harness rather than changing production semantics.",
+    "source_delta_from_scope_blocked_candidate": [
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "functional_F_GC21P1_exchange_semantics_changed_by_R1": false
+  },
+  "mass_conservation": {
+    "status": "HARD_UNCHANGED",
+    "tolerance_relaxed": false,
+    "rejected_trial_exchange_published": false,
+    "accepted_exchange_route": "accepted transaction/canonical aggregate only",
+    "sign_and_unit_contract": "native outward-bottom exchange; backend integrates -bottom_flux * accepted dt"
+  },
+  "invariants": {
+    "1": "NO_ADVERSE_DELTA: one kernel/runtime contract path retained",
+    "2": "NO_ADVERSE_DELTA: no file or format I/O added to kernel/runtime semantics",
+    "3": "NO_ADVERSE_DELTA: accepted exchange remains result metadata, not mixed with parameters/state/forcing",
+    "4": "NO_ADVERSE_DELTA: no persistent per-column state added",
+    "5": "NO_ADVERSE_DELTA: no solver scratch moved into column state",
+    "6": "NO_ADVERSE_DELTA: no layout constraint added",
+    "7": "PRESERVED: exchange published only from accepted transactional path; rejected trials excluded",
+    "8": "NO_ADVERSE_DELTA: retry/warm-start committed-state semantics unchanged",
+    "9": "PRESERVED: integration uses generic accepted dt; no day/calendar assumption",
+    "10": "PRESERVED: no fixed coupling-window assumption",
+    "11": "PRESERVED: exact accepted bottom-interface exchange is promoted as coupling-relevant runtime result",
+    "12": "NO_ADVERSE_DELTA: no direct MODFLOW head/flux acceptance claim introduced",
+    "13": "PRESERVED_HARD: no mass tolerance relaxation; exact accepted exchange accounting retained",
+    "14": "NO_ADVERSE_DELTA: sensitivity interface retained; canonical equality semantics restored",
+    "15": "NO_ADVERSE_DELTA: no extra production SWAP runs required by this result transport",
+    "16": "NO_ADVERSE_DELTA: scalar result transport does not require one heavy solver per logical column",
+    "17": "NO_ADVERSE_DELTA: no 1:1 MODFLOW mapping assumption",
+    "18": "NO_ADVERSE_DELTA: no deep-vadose ownership moved into SWAP",
+    "19": "NO_ADVERSE_DELTA: no component transition/storage semantics changed",
+    "20": "NO_ADVERSE_DELTA: result contract is independent of one Richards implementation",
+    "21": "NO_ADVERSE_DELTA: existing transaction/runtime physics reused",
+    "22": "PRESERVED: no HeadCalc-internal dependency added",
+    "23": "NO_ADVERSE_DELTA: no physical option changed by numerical policy",
+    "24": "NO_ADVERSE_DELTA: no bounded-cost/fallback policy altered",
+    "25": "NO_ADVERSE_DELTA: reference mode remains available",
+    "26": "PRESERVED: accepted exchange availability/value are explicit diagnostics/results",
+    "27": "NO_ADVERSE_DELTA: no optional per-column storage allocation added",
+    "28": "PRESERVED: tile/MODFLOW composition remains outside kernel",
+    "29": "PRESERVED: no midnight/86400/.swp/MODFLOW hidden dependency; warning remediation removes a harness-driven hidden production change",
+    "30": "SATISFIED: this audit explicitly evaluates all 30 architecture invariants"
+  },
+  "overall": "30_OF_30_NO_ADVERSE_DELTA_AFTER_WARNING_HYGIENE_REMEDIATION",
+  "hard_nonclaims": [
+    "Not independently qualified.",
+    "Not canonically admitted.",
+    "Not production groundwater-coupling admitted.",
+    "No full predictor-corrector, MODFLOW, aquifer, crash-recovery, distributed-runtime or throughput qualification claim.",
+    "RB1 remains frozen and is not reopened."
+  ]
+}
