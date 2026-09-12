@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ09",
+  "record_type": "REAL_B1_10_FULL_VS_TWO_HALF_RAW_OBSERVATION",
+  "purpose": "Raw characterization evidence only; this schema contains no temporal acceptance limits.",
+  "required_provenance": [
+    "fvq09_harness_commit",
+    "qualified_production_source_head",
+    "b0_distribution_sha256",
+    "b1_10_source_manifest_sha256",
+    "materialized_physical_source_manifest_sha256",
+    "ttutil_manifest_sha256",
+    "hupsel_case_manifest_sha256",
+    "compiler_identity",
+    "optimization"
+  ],
+  "required_interval": ["t0_days", "tmid_days", "t1_days", "prefix_days", "duration_days"],
+  "required_endpoint_differences": [
+    "h_cm",
+    "theta",
+    "pond_cm",
+    "gwl_cm",
+    "volact_cm",
+    "ldwet_cm",
+    "spev_cm",
+    "saev_cm"
+  ],
+  "required_lagged_diagnostics": [
+    "hm1_cm",
+    "thetm1",
+    "pondm1_cm",
+    "gwlm1_cm"
+  ],
+  "required_mass_fields": {
+    "full_path": ["storage_t0_cm", "mass_in_cm", "mass_out_cm", "storage_t1_cm", "residual_cm", "hard_limit_cm", "pass"],
+    "two_half_path": ["storage_t0_cm", "mass_in_cm", "mass_out_cm", "storage_t1_cm", "residual_cm", "hard_limit_cm", "pass"]
+  },
+  "required_scope_flags": [
+    "compatible",
+    "water_scope_complete",
+    "optional_process_state_present",
+    "process_scope_complete",
+    "allocation_mismatches"
+  ],
+  "hard_mass_limit_cm": 1e-06,
+  "temporal_numeric_limits": null,
+  "normalized_temporal_score": null,
+  "raw_observation_is_production_temporal_acceptance": false,
+  "mass_gate_relation": "SEPARATE_ABSOLUTE_GATE_NEVER_NORMALIZED_OR_RELAXED"
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ10",
+  "decision": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
+  "qualification_scope": "TEMPORAL_PROFILE_QUALIFICATION_AND_PROMOTION_CONTRACT_ONLY",
+  "oracle": "B1.10",
+  "tested_postimage": "95bccf47dfaf40fa725e376708b8597429ad3656",
+  "qualification_run": {
+    "workflow": "VQ reference qualification",
+    "run_id": 34123210957,
+    "job_id": 101745783626,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "unit_tests": 10
+  },
+  "documentation_run": {
+    "run_id": 34123210944,
+    "conclusion": "success"
+  },
+  "basis": {
+    "fvq09_final_head": "7af5b30ec1707ac064a93f3af84bff403a203a6d",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
+  },
+  "qualified_contracts": {
+    "exact_metric_units_and_fci14_semantics": true,
+    "disjoint_calibration_validation_sets": true,
+    "candidate_profile_frozen_before_validation": true,
+    "validation_retuning_forbidden": true,
+    "separate_absolute_mass_gate": true,
+    "solver_and_mass_tolerance_substitution_forbidden": true,
+    "optional_process_scope_fail_closed": true,
+    "validation_result_cannot_self_promote": true
+  },
+  "production_source_changed_by_fvq10": false,
+  "real_b1_10_temporal_characterization_qualified": false,
+  "production_temporal_profile_qualified": false,
+  "numeric_limits_introduced_by_fvq10": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "complete_optional_process_scope_qualified": false,
+  "fci14_profile_unchanged": true,
+  "fci14_numeric_limits_remain_null": true,
+  "mass_conservation_policy": "SEPARATE_ABSOLUTE_HARD_GATE",
+  "synthetic_test_values_are_production_evidence": false
+}

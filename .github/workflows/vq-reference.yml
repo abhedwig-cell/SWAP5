@@ -6,6 +6,7 @@ on:
       - 'reference/swap-4.3.1/**'
       - 'tools/vq/**'
       - 'docs/verification/**'
+      - 'integration/f-vq/**'
       - '.github/workflows/vq-reference.yml'
   push:
     branches:
@@ -14,6 +15,7 @@ on:
       - 'reference/swap-4.3.1/**'
       - 'tools/vq/**'
       - 'docs/verification/**'
+      - 'integration/f-vq/**'
       - '.github/workflows/vq-reference.yml'
   workflow_dispatch:
 
@@ -25,36 +27,239 @@ jobs:
     name: Verify current corrected reference
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out exact qualification head
         uses: actions/checkout@v4
-
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install gate dependency
         run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
-
       - name: Check B1.9 predecessor identity
         run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-9-reference-pin.json
-
       - name: Check B1.10 admission identity and ordered preimage
         run: python tools/vq/b1_10_admission_gate.py
-
       - name: Recheck SWAP-012 predecessor inverse evidence
         run: python reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py
-
       - name: Check SWAP-002 source-bound compiled tillage-start gate
         run: |
           gfortran --version
           python reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py
-
-      - name: Check VQ gate unit tests
+      - name: Check existing B1/B2 admission unit tests
         run: |
           python -m unittest \
             tools.vq.test_b1_snapshot_identity \
             tools.vq.test_b2_reference_gate
-
       - name: Check deterministic B1.10 reconstructor syntax
         run: python -m py_compile tools/vq/b1_10_reconstruct.py
+
+  fvq04-real-failure-fixture:
+    name: F-VQ04 real B1.10 terminal-failure fixture readiness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualified F-VQ04 postimage
+        uses: actions/checkout@v4
+        with:
+          ref: b406382a49f264e8f05441442a6e22eab4f0f6ac
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gate dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ04 fail-closed real failure fixture admission gate
+        run: python -m tools.vq.fvq04_failure_fixture_gate
+      - name: F-VQ04 promotion and scope guard tests
+        run: python -m unittest tools.vq.test_fvq04_failure_fixture_gate
+      - name: Re-run exact F-CI13 recoverable-status qualification gate
+        run: bash tests/fci/run_fci13_gate.sh
+      - name: Re-run qualified verifier semantic and fault-injection tests
+        run: |
+          python -m unittest \
+            tools.vq.test_b2_seam_contract \
+            tools.vq.test_b2_result_contract \
+            tools.vq.test_b2_result_record \
+            tools.vq.test_tx_time_harness
+      - name: Re-run stored 11-case transaction/time verifier projection
+        run: |
+          python tools/vq/tx_time_harness.py \
+            --fixture-suite \
+            --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+
+  fvq05-temporal-contract:
+    name: F-VQ05 F-CI14 temporal acceptance contract admission
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualified F-VQ05 postimage
+        uses: actions/checkout@v4
+        with:
+          ref: f14cbc4c1a1ba0dc16a46bddc658cd4731733945
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gate dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ05 temporal contract admission gate
+        run: python -m tools.vq.fvq05_temporal_contract_gate
+      - name: F-VQ05 profile-promotion guards
+        run: python -m unittest tools.vq.test_fvq05_temporal_contract_gate
+      - name: Re-run exact F-CI14 temporal acceptance gate
+        run: bash tests/fci/run_fci14_gate.sh
+      - name: Re-run carried F-CI15 exit-gate contract
+        run: bash tests/fci/run_fci15_gate.sh
+      - name: Re-run carried F-CI16 exit-gate assessment
+        run: bash tests/fci/run_fci16_gate.sh
+      - name: Re-run carried F-CI17 canonical baseline registry
+        run: bash tests/fci/run_fci17_gate.sh
+
+  fvq06-fci18-handoff-readiness:
+    name: F-VQ06 qualified F-CI18 scope/ownership handoff replay
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualified F-VQ06 postimage
+        uses: actions/checkout@v4
+        with:
+          ref: f7d68248a22d0912fe91e2277ac51f64293e449c
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ06 qualified handoff gate
+        run: python -m tools.vq.fvq06_fci18_handoff_gate
+      - name: F-VQ06 promotion and scope guards
+        run: python -m unittest tools.vq.test_fvq06_fci18_handoff_gate
+      - name: Re-run qualified F-CI17 canonical baseline gate
+        run: bash tests/fci/run_fci17_gate.sh
+      - name: Diagnostic-only F-CI18 gate on exact source-commit context
+        run: |
+          git checkout --detach a0fdf73b67aa57456d8cbe6700ce707d672981cd
+          bash tests/fci/run_fci18_gate.sh
+
+  fvq07-final-fci-exit:
+    name: F-VQ07 final F-CI development-baseline exit handoff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualified F-VQ07 postimage
+        uses: actions/checkout@v4
+        with:
+          ref: 4ae2fc87970d46ff2103553930e583dd05a59f0b
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ07 final F-CI exit handoff gate
+        run: python -m tools.vq.fvq07_final_fci_exit_gate
+      - name: F-VQ07 promotion and negative capability guards
+        run: python -m unittest tools.vq.test_fvq07_final_fci_exit_gate
+      - name: Re-run exact canonical closeout exit gates
+        run: |
+          git checkout --detach 7f906fcc53a4133b0e410eac7cf79fbb4eb672ab
+          bash tests/fci/run_fci15_gate.sh
+          bash tests/fci/run_fci16_gate.sh
+          bash tests/fci/run_fci17_gate.sh
+          bash tests/fci/run_fci18_gate.sh
+
+  fvq08-temporal-characterization-readiness:
+    name: F-VQ08 real B1.10 temporal-characterization readiness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ08 fail-closed readiness gate
+        run: python -m tools.vq.fvq08_temporal_characterization_gate
+      - name: F-VQ08 fault-injection and promotion guards
+        run: python -m unittest tools.vq.test_fvq08_temporal_characterization_gate
+      - name: Check real full-runner shell contract
+        run: bash -n tests/fci/run_fci07_full_b1_10_gate.sh
+      - name: Re-run exact F-CI10 mass gate
+        run: bash tests/fci/run_fci10_gate.sh
+      - name: Re-run exact F-CI11 generic interval and mass gate
+        run: bash tests/fci/run_fci11_gate.sh
+
+  fvq09-real-temporal-harness-contract:
+    name: F-VQ09 real B1.10 temporal harness contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ09 harness and fail-closed asset gate
+        run: python -m tools.vq.fvq09_harness_gate
+      - name: F-VQ09 fault-injection tests
+        run: python -m unittest tools.vq.test_fvq09_harness_gate
+      - name: Check F-VQ09 runner and Python syntax without external assets
+        run: |
+          bash -n tools/vq/run_fvq09_real_temporal_probe.sh
+          python -m py_compile \
+            tools/vq/fvq09_asset_bundle.py \
+            tools/vq/fvq09_materialize_production_source.py \
+            tools/vq/fvq09_observation.py \
+            tools/vq/fvq09_harness_gate.py
+      - name: Re-run F-CI11 generic interval and mass gate
+        run: bash tests/fci/run_fci11_gate.sh
+      - name: Re-run F-CI13 recoverable-status gate
+        run: bash tests/fci/run_fci13_gate.sh
+      - name: Re-run F-CI14 temporal-policy contract gate
+        run: bash tests/fci/run_fci14_gate.sh
+
+  fvq10-temporal-profile-promotion-contract:
+    name: F-VQ10 temporal profile qualification and promotion contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ10 promotion contract gate
+        run: python -m tools.vq.fvq10_profile_promotion_gate
+      - name: F-VQ10 partition, freeze, mass and promotion guards
+        run: python -m unittest tools.vq.test_fvq10_profile_promotion
+      - name: Check F-VQ10 Python syntax
+        run: |
+          python -m py_compile \
+            tools/vq/fvq10_profile_promotion.py \
+            tools/vq/fvq10_profile_promotion_gate.py
+      - name: Re-run exact qualified F-VQ09 harness contract
+        run: python -m tools.vq.fvq09_harness_gate
+      - name: Re-run exact F-CI14 temporal-policy contract gate
+        run: bash tests/fci/run_fci14_gate.sh

@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ09",
+  "oracle": "B1.10",
+  "basis": {
+    "fvq08_final_head": "0be60f6da7e575eaf992eb049ce600a4a4b35b58",
+    "persist_first_checkpoint": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "initial_testable_postimage": "4f979e87449c9cb18e436c4bb3fc5adbb25733f3",
+    "source_lineage_fix_checkpoint": "958d7a6da9b60d5b28db65fa9e21b271de4eb4d2",
+    "tested_postimage": "fb9a272c409ee5577a24d4353db41ced90d631d5",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "qualified_fci14_canonical_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "qualified_fci14_candidate_model_blob": "594436176333e9fb04121dcf287b507a93723dfe"
+  },
+  "qualification_scope": "REAL_B1_10_TEMPORAL_HARNESS_AND_EXTERNAL_ASSET_BUNDLE_CONTRACT_ONLY",
+  "qualified": true,
+  "decision": "QUALIFIED_REAL_TEMPORAL_HARNESS_CONTRACT_ONLY",
+  "tested_postimage": "fb9a272c409ee5577a24d4353db41ced90d631d5",
+  "qualification_run": {
+    "workflow": "VQ reference qualification",
+    "run_id": 34121158005,
+    "job_id": 101739243357,
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "documentation_run": {
+    "run_id": 34121157896,
+    "conclusion": "success"
+  },
+  "persisted_before_long_tests": true,
+  "production_source_changed_by_fvq09": false,
+  "external_asset_bundle_status": "BLOCKED_PENDING_EXACT_TTUTIL_AND_HUPSEL_CASE_ADMISSION",
+  "real_b1_10_temporal_characterization_qualified": false,
+  "production_temporal_profile_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "complete_optional_process_scope_qualified": false,
+  "mass_conservation_policy": "SEPARATE_ABSOLUTE_HARD_GATE",
+  "qualification_correction": {
+    "initial_run_id": 34120644191,
+    "initial_job_id": 101737649561,
+    "initial_result": "FAIL_SOURCE_LINEAGE_GATE_ONLY",
+    "finding": "The initial gate incorrectly required the entire current src tree to equal qualified production-source head da5026d8. F-CI14 qualified canonical postimage c226988 legitimately adds exactly one fail-closed candidate-model source file after that production-source commit.",
+    "correction": "Require da5026d8 as ancestor and allow exactly src/adapter/mod_b1_10_reference_policy_candidate_model.f90 at blob 594436176333e9fb04121dcf287b507a93723dfe, identical to c226988; no other src delta is admitted.",
+    "physics_changed": false,
+    "production_source_changed": false
+  },
+  "notes": [
+    "The canonical B0 distribution remains an external licensed artifact and is never fabricated or substituted by a hash-mismatching archive.",
+    "TTUTIL and the Hupsel qualification case remain external until exact byte manifests are independently admitted.",
+    "The physical source materializer binds the legacy path through the F-CI13 recoverable-status guard and preserves the qualified F-CI14 production-source lineage plus only the exact fail-closed candidate-model postimage from c226988.",
+    "F-VQ09 qualifies harness, source-lineage and validation contracts only; no real B1.10 temporal characterization has executed under this work unit."
+  ]
+}
