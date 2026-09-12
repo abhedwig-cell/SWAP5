@@ -1,0 +1,20 @@
+name: F-GC16 Production Groundwater Coupling Composition Plan
+
+on:
+  push:
+    branches:
+      - work/f-gc16-production-groundwater-coupling-minimal-viable-composition-admission-plan
+  workflow_dispatch:
+
+jobs:
+  qualify-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate F-GC16 composition plan
+        run: python tests/fgc/run_fgc16_composition_plan_qualification.py
