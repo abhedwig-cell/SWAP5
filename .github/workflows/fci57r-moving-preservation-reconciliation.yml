@@ -1,0 +1,26 @@
+name: F-CI57R moving preservation reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci57r-moving-preservation-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact reconciliation head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI57R reconciliation gate
+        run: bash tests/fci/run_fci57r_moving_preservation_reconciliation.sh
