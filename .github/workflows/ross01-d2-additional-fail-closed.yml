@@ -20,6 +20,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Install research dependencies
         run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
       - name: Syntax check
@@ -38,13 +40,16 @@ jobs:
         if: always()
         run: |
           set -euo pipefail
+          branch=work/f-ross01-d2-fsi31-v1-research-adapter
           test -f integration/f-ross/F-ROSS01_D2_ADDITIONAL_FAIL_CLOSED_EVIDENCE.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add integration/f-ross/F-ROSS01_D2_ADDITIONAL_FAIL_CLOSED_EVIDENCE.json
           if ! git diff --cached --quiet; then
             git commit -m "evidence(F-ROSS01 D2): persist additional fail-closed run $GITHUB_RUN_ID"
-            git push origin HEAD:work/f-ross01-d2-fsi31-v1-research-adapter
+            git fetch origin "$branch"
+            git rebase "origin/$branch"
+            git push origin HEAD:"$branch"
           fi
       - name: Enforce additional probes
         if: always()
