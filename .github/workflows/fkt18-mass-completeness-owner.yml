@@ -66,7 +66,7 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: Requalify solver service restart MultiSWAP parallel and coupling semantics
-        run: bash tests/fkt/run_fkt18_current_preservation_gate.sh
+        run: bash tests/fkt/run_fkt18_current_preservation_gate_v2.sh
       - name: Exact candidate head end
         shell: bash
         run: |
