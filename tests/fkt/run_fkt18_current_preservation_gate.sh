@@ -50,6 +50,9 @@ RESTART_SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_soil_temperature_contract.f90
+  src/process/mod_restricted_soil_temperature.f90
+  src/process/mod_restricted_fixed_weir_surface_water.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
@@ -102,6 +105,9 @@ PAR_SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_soil_temperature_contract.f90
+  src/process/mod_restricted_soil_temperature.f90
+  src/process/mod_restricted_fixed_weir_surface_water.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
