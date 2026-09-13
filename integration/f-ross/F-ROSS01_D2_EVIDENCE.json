@@ -1,0 +1,420 @@
+{
+  "adapter_contract": "integration/f-ross/F-ROSS01_D2_ADAPTER_CONTRACT.json",
+  "authorities": {
+    "canonical_observation": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "contract_blob": "d5e934df4b3fbaa573e994cbe675257cf6a47304",
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "schema_blob": "86bfa60468d891e071c735569d944570f75fa205",
+    "start": "9deddef0294ea14ea1ed418ce6688bfc7b136c53"
+  },
+  "capability_declaration": "integration/f-ross/F-ROSS01_D2_FSI31_V1_CAPABILITY_DECLARATION.json",
+  "compiler_optimization": "NOT_APPLICABLE_PYTHON_RESEARCH_ADAPTER",
+  "d1_tangent": {
+    "adapter_unavailable_gate_qualified": true,
+    "method": "SAME_FACTORIZATION_DIRECT_QBOT_BACKSOLVE",
+    "scope": "LOCAL_TERMINAL_SUBSTEP_ONLY",
+    "upstream_non_smooth_detector_requalified": false,
+    "use": "bounded proposal/preconditioner only",
+    "whole_window_authority": false
+  },
+  "decision": "ROSSFAST_FSI31_V1_ADAPTER_GAPS_IDENTIFIED",
+  "exact_next_research_step": "close only reproducible D2 failures: ['positive_matrix', 'generic_time']",
+  "failed_tests": [
+    "positive_matrix",
+    "generic_time"
+  ],
+  "invariant_audit": {
+    "1": "PASS_RESEARCH_ONLY_NO_PRODUCTION_KERNEL_REPLACEMENT",
+    "11": "PASS_RESEARCH_CANDIDATE_EXCHANGE",
+    "13": "PASS_HARD_MASS_GATE",
+    "14": "PASS_LOCAL_SCOPE_EXPLICIT_WHOLE_WINDOW_UNSUPPORTED",
+    "16": "PASS_ARCHITECTURE_ONLY_NO_PER_COLUMN_HEAVY_SOLVER_COMMITMENT",
+    "20": "PASS_EXECUTABLE_ALTERNATIVE_SOLVER_SEAM",
+    "21": "PASS_NO_NEW_PROCESS_PHYSICS",
+    "22": "PASS_PROCESS_VIEW_ONLY",
+    "23": "PASS_PHYSICS_AND_NUMERICAL_POLICY_SEPARATE",
+    "26": "PASS_DIAGNOSTICS_EXPOSED",
+    "27": "PASS_OPTIONAL_TANGENT_COST_ONLY_WHEN_REQUESTED",
+    "29": "PASS_NO_FILE_OR_CALENDAR_SEMANTICS_IN_REQUEST",
+    "3": "PASS_FIVE_CATEGORIES_SEPARATED",
+    "30": "PASS_EXPLICIT_AUDIT",
+    "4": "PASS_NO_SCRATCH_AS_PERSISTENT_COLUMN_STATE",
+    "5": "PASS_FRESH_WORKER_PER_TRIAL",
+    "7": "PASS_CANDIDATE_ONLY_TRANSACTION",
+    "8": "PASS_RETRY_FROM_IDENTICAL_COMMITTED_BASE",
+    "9": "PASS_GENERIC_T0_T1"
+  },
+  "mass": {
+    "double_booking_on_reject_retry": false,
+    "hard_tolerance_cm": 1e-12,
+    "max_abs_unrounded_residual_cm": 6.7453709313194e-15,
+    "relaxation_allowed": false
+  },
+  "multiswap_runtime": "no_production_qualification",
+  "negative_fail_closed_cases": [
+    {
+      "classification": "UNSUPPORTED_TOP_BOUNDARY",
+      "name": "dynamic_top",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "UNSUPPORTED_BOTTOM_BOUNDARY",
+      "name": "prescribed_head",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "UNSUPPORTED_BOTTOM_BOUNDARY",
+      "name": "legacy_7",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "UNSUPPORTED_BOTTOM_BOUNDARY",
+      "name": "legacy_minus2",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "CONSTITUTIVE_MATERIAL_OUTSIDE_DECLARED_SCOPE",
+      "name": "material_out_of_scope",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "GRID_GEOMETRY_OUTSIDE_DECLARED_SCOPE",
+      "name": "grid_out_of_scope",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "MISSING_REQUIRED_CAPABILITY",
+      "name": "missing_capability",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "INVALID_NUMERICAL_REQUEST",
+      "name": "invalid_numerical",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "INVALID_TIME_INTERVAL",
+      "name": "t1_le_t0",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "PERSISTENT_SCRATCH_FORBIDDEN",
+      "name": "persistent_scratch",
+      "pass": true,
+      "stage": "adapter_preflight"
+    },
+    {
+      "classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "name": "local_terminal_unavailable",
+      "pass": true,
+      "stage": "adapter_postflight"
+    }
+  ],
+  "positive_executable_cases": [
+    {
+      "case": "baseline",
+      "checks": {
+        "candidate_exchange_only": true,
+        "candidate_only": true,
+        "candidate_ready": true,
+        "committed_unmutated": true,
+        "input_state_exact": true,
+        "local_scope": true,
+        "mass_hard": true,
+        "mass_ledger": true,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": true,
+        "whole_window_not_claimed": true,
+        "worker_isolated": true
+      },
+      "mass_residual_cm": -1.800883716603065e-15,
+      "material": "B01",
+      "pass": true
+    },
+    {
+      "case": "perturbed_prescribed_flux",
+      "checks": {
+        "candidate_exchange_only": false,
+        "candidate_only": true,
+        "candidate_ready": false,
+        "committed_unmutated": true,
+        "mass_hard": false,
+        "mass_ledger": false,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": false,
+        "whole_window_not_claimed": false,
+        "worker_isolated": false
+      },
+      "mass_residual_cm": null,
+      "material": "B01",
+      "pass": false
+    },
+    {
+      "case": "baseline",
+      "checks": {
+        "candidate_exchange_only": true,
+        "candidate_only": true,
+        "candidate_ready": true,
+        "committed_unmutated": true,
+        "input_state_exact": true,
+        "local_scope": true,
+        "mass_hard": true,
+        "mass_ledger": true,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": true,
+        "whole_window_not_claimed": true,
+        "worker_isolated": true
+      },
+      "mass_residual_cm": 6.7453709313194e-15,
+      "material": "B12",
+      "pass": true
+    },
+    {
+      "case": "perturbed_prescribed_flux",
+      "checks": {
+        "candidate_exchange_only": false,
+        "candidate_only": true,
+        "candidate_ready": false,
+        "committed_unmutated": true,
+        "mass_hard": false,
+        "mass_ledger": false,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": false,
+        "whole_window_not_claimed": false,
+        "worker_isolated": false
+      },
+      "mass_residual_cm": null,
+      "material": "B12",
+      "pass": false
+    },
+    {
+      "case": "baseline",
+      "checks": {
+        "candidate_exchange_only": true,
+        "candidate_only": true,
+        "candidate_ready": true,
+        "committed_unmutated": true,
+        "input_state_exact": true,
+        "local_scope": true,
+        "mass_hard": true,
+        "mass_ledger": true,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": true,
+        "whole_window_not_claimed": true,
+        "worker_isolated": true
+      },
+      "mass_residual_cm": 4.945700791006643e-17,
+      "material": "O01",
+      "pass": true
+    },
+    {
+      "case": "perturbed_prescribed_flux",
+      "checks": {
+        "candidate_exchange_only": false,
+        "candidate_only": true,
+        "candidate_ready": false,
+        "committed_unmutated": true,
+        "mass_hard": false,
+        "mass_ledger": false,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": false,
+        "whole_window_not_claimed": false,
+        "worker_isolated": false
+      },
+      "mass_residual_cm": null,
+      "material": "O01",
+      "pass": false
+    },
+    {
+      "case": "baseline",
+      "checks": {
+        "candidate_exchange_only": true,
+        "candidate_only": true,
+        "candidate_ready": true,
+        "committed_unmutated": true,
+        "input_state_exact": true,
+        "local_scope": true,
+        "mass_hard": true,
+        "mass_ledger": true,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": true,
+        "whole_window_not_claimed": true,
+        "worker_isolated": true
+      },
+      "mass_residual_cm": -1.1712018105674681e-16,
+      "material": "O05",
+      "pass": true
+    },
+    {
+      "case": "perturbed_prescribed_flux",
+      "checks": {
+        "candidate_exchange_only": false,
+        "candidate_only": true,
+        "candidate_ready": false,
+        "committed_unmutated": true,
+        "mass_hard": false,
+        "mass_ledger": false,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": false,
+        "whole_window_not_claimed": false,
+        "worker_isolated": false
+      },
+      "mass_residual_cm": null,
+      "material": "O05",
+      "pass": false
+    },
+    {
+      "case": "baseline",
+      "checks": {
+        "candidate_exchange_only": true,
+        "candidate_only": true,
+        "candidate_ready": true,
+        "committed_unmutated": true,
+        "input_state_exact": true,
+        "local_scope": true,
+        "mass_hard": true,
+        "mass_ledger": true,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": true,
+        "whole_window_not_claimed": true,
+        "worker_isolated": true
+      },
+      "mass_residual_cm": -3.4368365275914584e-15,
+      "material": "O14",
+      "pass": true
+    },
+    {
+      "case": "perturbed_prescribed_flux",
+      "checks": {
+        "candidate_exchange_only": false,
+        "candidate_only": true,
+        "candidate_ready": false,
+        "committed_unmutated": true,
+        "mass_hard": false,
+        "mass_ledger": false,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": false,
+        "whole_window_not_claimed": false,
+        "worker_isolated": false
+      },
+      "mass_residual_cm": null,
+      "material": "O14",
+      "pass": false
+    },
+    {
+      "case": "baseline",
+      "checks": {
+        "candidate_exchange_only": true,
+        "candidate_only": true,
+        "candidate_ready": true,
+        "committed_unmutated": true,
+        "input_state_exact": true,
+        "local_scope": true,
+        "mass_hard": true,
+        "mass_ledger": true,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": true,
+        "whole_window_not_claimed": true,
+        "worker_isolated": true
+      },
+      "mass_residual_cm": -2.15471956156116e-15,
+      "material": "O18",
+      "pass": true
+    },
+    {
+      "case": "perturbed_prescribed_flux",
+      "checks": {
+        "candidate_exchange_only": false,
+        "candidate_only": true,
+        "candidate_ready": false,
+        "committed_unmutated": true,
+        "mass_hard": false,
+        "mass_ledger": false,
+        "no_fallback": true,
+        "process_head": true,
+        "process_theta": true,
+        "qbot_sign": false,
+        "whole_window_not_claimed": false,
+        "worker_isolated": false
+      },
+      "mass_residual_cm": null,
+      "material": "O18",
+      "pass": false
+    }
+  ],
+  "process_hydraulic_view": {
+    "groundwater_level": "unsupported",
+    "ponding": "unsupported",
+    "pressure_head": "qualified",
+    "solver_internals_exposed": false,
+    "water_content": "qualified"
+  },
+  "production_source_delta": [],
+  "replay": {
+    "declared": "contract_equivalent",
+    "pass": true
+  },
+  "restart": "unsupported_not_qualified",
+  "schema_version": 1,
+  "tests": {
+    "capability_schema_valid": true,
+    "contract_blob": true,
+    "generic_time": false,
+    "mass_hard_gate": true,
+    "negative_fail_closed": true,
+    "positive_matrix": false,
+    "replay_contract_equivalent": true,
+    "restart_unsupported": true,
+    "schema_blob": true,
+    "transaction_reject_retry_commit": true,
+    "whole_window_unsupported": true
+  },
+  "transaction": {
+    "commit_performed_only_by_harness_runtime": true,
+    "reject_committed_unchanged": true,
+    "retry_same_committed_origin": true
+  },
+  "whole_window_derivative": {
+    "n_times_local_generalized": false,
+    "qualified": false,
+    "status": "unsupported"
+  },
+  "work_unit": "F-ROSS01 D2",
+  "workflow": {
+    "job": "executable-fsi31-adapter-qualification",
+    "run_id": "34787963690",
+    "run_number": "2",
+    "trigger_sha": "e9e0dc7709f50da3a8fdf6fccc5777012868037e"
+  }
+}
