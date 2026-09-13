@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.fpm10.evidence.v1",
+  "work_unit": "F-PM10",
+  "owner_qualification_source_head": "6c9783f78b08b0c0ca4a6cb6b4069ca432fa95e3",
+  "base_canonical": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "production_source_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "13d264cc905a0acf5082b9bfeba018e4ee25183e"
+  },
+  "frozen_unchanged_authorities": {
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b"
+  },
+  "owner_ci": {
+    "workflow": ".github/workflows/fpm10-surface-evaporation-publication-provenance.yml",
+    "successful_run_id": 34777736791,
+    "successful_job_id": 103778827066,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_matrix": ["O0", "O2"],
+    "o0_o2_exact_stdout_identity": true,
+    "markers": [
+      "FPM10_EXACT_BOUNDED_PRODUCTION_SCOPE=PASS",
+      "FPM10_SOURCE_PROVENANCE_BY_CONSTRUCTION=PASS",
+      "FPM10_NO_SECOND_MASS_AUTHORITY=PASS",
+      "FPM10_NO_IO_OR_CALENDAR_DEPENDENCY=PASS",
+      "FPM10_REAL_FKT_CANDIDATES_AND_HARD_MASS=PASS",
+      "FPM10_BOUND_RESULT_POSITIVE_CONTROLS=PASS",
+      "FPM10_SOURCE_BIND_CROSS_CANDIDATE_REJECTED=PASS",
+      "FPM10_ACCEPTED_PUBLICATION_A_POSITIVE=PASS",
+      "FPM10_HN1_CROSS_CANDIDATE_SUBSTITUTION_REJECTED=PASS",
+      "FPM10_ACCEPTED_PUBLICATION_B_POSITIVE=PASS",
+      "FPM10_NO_SECOND_MASS_BOOKING=PASS",
+      "FPM10_OWNER_ORACLE_O0_O2_EXACT_IDENTITY=PASS",
+      "FPM10_EXISTING_MATERIALIZATION_PATH_PRESERVED=PASS",
+      "FPM10_OWNER_GATE=PASS"
+    ]
+  },
+  "superseded_red_run": {
+    "run_id": 34777703114,
+    "classification": "TEST_HARNESS_ONLY",
+    "cause": "expected source path array order did not match sorted actual path order",
+    "production_source_changed_by_fix": false,
+    "fixed_by_commit": "6c9783f78b08b0c0ca4a6cb6b4069ca432fa95e3"
+  },
+  "owner_findings": {
+    "old_raw_result_plus_candidate_stamping_api_removed_from_publication_module": true,
+    "cross_candidate_B_result_with_A_receipt_rejected": true,
+    "positive_A_with_A_receipt": true,
+    "positive_B_with_B_receipt": true,
+    "existing_raw_materialization_path_preserved": true,
+    "second_mass_booking_introduced": false,
+    "physics_changed": false,
+    "reference_source_changed": false
+  },
+  "bounded_nonclaims": [
+    "No independent qualification is claimed.",
+    "No canonical admission is claimed.",
+    "No globally unique solver-attempt token beyond existing F-KT lineage/origin-revision/interval provenance is claimed.",
+    "Owner evidence does not close FPM09-G02 or FPM09-G03."
+  ]
+}
