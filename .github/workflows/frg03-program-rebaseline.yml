@@ -1,0 +1,74 @@
+name: F-RG03 program rebaseline qualification
+
+on:
+  push:
+    branches:
+      - regie/f-rg03-post-ci59p-program-rebaseline
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FRG03_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+      - name: Verify live canonical and frozen authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          canonical=379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b
+          live="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
+          test "$live" = "$canonical"
+          git fetch --no-tags origin 56b86e29e0960e396059caf47c193440d571b709 >/dev/null 2>&1 || true
+          git cat-file -e 56b86e29e0960e396059caf47c193440d571b709^{commit}
+          echo "FRG03_CANONICAL_AND_DENOMINATOR_AUTHORITY=PASS"
+      - name: Enforce governance-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b
+          changed="$(git diff --name-only "$base"..HEAD)"
+          test -n "$changed"
+          if printf '%s\n' "$changed" | grep -Eq '^(src|reference)/'; then
+            echo "F-RG03 must not change production or reference source" >&2
+            exit 1
+          fi
+          bad="$(printf '%s\n' "$changed" | grep -Ev '^(integration/f-rg/|tools/governance/validate_frg03_program_rebaseline.py$|\.github/workflows/frg03-program-rebaseline.yml$)' || true)"
+          test -z "$bad" || { echo "$bad" >&2; exit 1; }
+          echo "FRG03_GOVERNANCE_ONLY_DELTA=PASS"
+      - name: Validate completion model
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/governance/validate_frg03_program_rebaseline.py | tee _frg03.txt
+          grep -Fq 'FRG03_DENOMINATOR_FROZEN=PASS' _frg03.txt
+          grep -Fq 'FRG03_CAPABILITY_MAP_46_UNIQUE_43_FROZEN=PASS' _frg03.txt
+          grep -Fq 'FRG03_OVERALL_EARNED_83_004545454545=PASS' _frg03.txt
+          grep -Fq 'FRG03_TECHNICAL_REPORTED_89_CEILING=PASS' _frg03.txt
+          grep -Fq 'FRG03_FOUR_PRIMARY_LANES=PASS' _frg03.txt
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FRG03_EXACT_HEAD_END=PASS:$GITHUB_SHA"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frg03-${{ github.sha }}
+          path: _frg03.txt
