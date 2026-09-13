@@ -1,0 +1,71 @@
+{
+  "workunit": "F-RG01A",
+  "title": "Parallel Research Isolation & Contract Ownership Policy",
+  "status": "QUALIFIED_PARALLEL_RESEARCH_ISOLATION_AND_CONTRACT_OWNERSHIP_POLICY_ESTABLISHED",
+  "policy_id": "F-RG01A-PRICO",
+  "policy_version": "1.0.0",
+  "policy_path": "integration/f-rg/F-RG01A_PARALLEL_RESEARCH_ISOLATION_AND_CONTRACT_OWNERSHIP_POLICY.md",
+  "policy_definition_authority": {
+    "commit": "33a94697e031d3003bf0812bff73bf8d30ef9d80",
+    "tree": "71a45ebd9b46c65a0d4200bc19c81a71e7bac414",
+    "policy_blob": "ba84b3b5ef9728b9016f14ed40dad2c6aa742fd9"
+  },
+  "parent_f_rg01_authority": {
+    "branch": "regie/f-rg01-post-rb1-program-rebaseline",
+    "commit": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "tree": "92faf36b3aa746f0b6dca0681c8fc046a8d815f9"
+  },
+  "current_canonical_snapshot_at_establishment": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "tree": "8d48f92612eb4a72469b99877ec5805ff2cd113a",
+    "meaning": "F-CI55R: finalize accepted bottom exchange canonical admission closeout"
+  },
+  "governance_effect": {
+    "f_rg01_historical_authority_rewritten": false,
+    "f_rg01_parallelism_guidance_normatively_updated": true,
+    "update_location": "F-RG01A policy sections 4, 7 and 9",
+    "future_parallel_workunit_prompts_must_apply_contract_ownership_gate": true,
+    "production_source_changed": false,
+    "current_canonical_changed_by_this_workunit": false,
+    "rb1_reopened": false,
+    "scientific_qualification_reopened": false
+  },
+  "research_maturity_states": [
+    "RESEARCH_ISOLATED",
+    "CONTRACT_COMPATIBLE",
+    "INTEGRATION_CANDIDATE",
+    "PRODUCTION_ADMITTED"
+  ],
+  "rossfast": {
+    "classification": "OPTIONAL_STRETCH_CAPABILITY",
+    "maturity": "RESEARCH_ISOLATED",
+    "observed_research_head": "3a78d4f8199ebc15908e6e8108a2e4adb8cb5b15",
+    "swap5_v1_completion_weight_percent": 0,
+    "full_richards_sufficient_for_swap5_v1": true,
+    "continuous_current_canonical_tracking_required": false,
+    "may_block_swap5_v1": false,
+    "production_admission_authorized": false,
+    "required_parallelism_rule": "PARALLEL_AFTER_PINNING when consuming a frozen SoilWaterSolver contract; SERIAL_REQUIRED if co-owning a moving SoilWaterSolver contract"
+  },
+  "live_workstream_reclassification": {
+    "wof43a": "Do not treat the surviving source branch as a separate active production owner. F-CI51 preservation evidence exists; current production status is derived from the canonical admission chain.",
+    "pm08d7": "Do not treat the surviving candidate branch as a separate active production owner. F-CI52 admission evidence exists; current production status is derived from the canonical admission chain.",
+    "gc18_family": "Historical owner/remediation branches do not imply concurrent ownership. F-CI53 admission/preservation evidence exists. Any new work on the same moving groundwater transaction contract must use explicit handoff or SERIAL_REQUIRED.",
+    "gc19_family": "Historical owner/remediation/qualification branches do not imply concurrent ownership. F-CI54 admission evidence exists. Shared moving coupling semantics require explicit ownership and serialization until frozen handoff.",
+    "current_coupling_successor": "Current canonical is F-CI55R for accepted bottom exchange. It is the current production reference for the established snapshot, not older GC18/GC19 source branches.",
+    "tb09": "TESTBANK_ONLY consumer. PARALLEL_AFTER_PINNING when qualifying a moving producer contract; SAFE_PARALLEL only against frozen/disjoint semantics.",
+    "doc16": "Documentation/conceptual authority. SAFE_PARALLEL only against frozen implementation/conceptual semantics; otherwise PARALLEL_AFTER_PINNING or SERIAL_REQUIRED.",
+    "rossfast": "OPTIONAL_STRETCH_CAPABILITY / RESEARCH_ISOLATED. Zero SWAP5-v1 completion weight."
+  },
+  "unwanted_parallel_ownership_assessment": {
+    "confirmed_unwanted_parallel_production_ownership": false,
+    "note": "Multiple surviving branches were observed in GC18/GC19 and other families, but branch multiplicity is not semantic ownership. No live evidence reviewed for this governance workunit proves two current production workunits simultaneously own the same moving contract. The new policy makes such co-ownership SERIAL_REQUIRED if it arises."
+  },
+  "changed_paths": [
+    "integration/f-rg/F-RG01A_PARALLEL_RESEARCH_ISOLATION_AND_CONTRACT_OWNERSHIP_POLICY.md",
+    "integration/f-rg/F-RG01A_STATUS.json"
+  ],
+  "production_paths_changed": [],
+  "exit_target": "QUALIFIED_PARALLEL_RESEARCH_ISOLATION_AND_CONTRACT_OWNERSHIP_POLICY_ESTABLISHED"
+}
