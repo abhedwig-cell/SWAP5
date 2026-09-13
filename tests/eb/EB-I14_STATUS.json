@@ -1,0 +1,31 @@
+{
+  "work_unit": "EB-I14",
+  "title": "Bottom Liquid-Water Sensible-Energy Quadrature Contract Freeze",
+  "restart_authority": "work/eb-i13-bottom-thermal-carrier-implementation@c3458c3df0428de0f2500e211391122c64c2de33",
+  "decision": "DESIGN_FROZEN_NO_PRODUCTION_IMPLEMENTATION",
+  "implemented": false,
+  "production_delta": false,
+  "contract_frozen": true,
+  "qualified_when": "The EB-I14 bottom advective energy quadrature contract workflow succeeds on the exact branch HEAD containing this status file and EB-I14_CLOSURE.md.",
+  "qualification_workflow": ".github/workflows/eb-i14-contract.yml",
+  "frozen_rule": {
+    "water_amount": "Q_b = -q_b,end * Delta_t, positive outward from SWAP",
+    "local_outward_donor_temperature": "T_bottom,end from the same accepted model advance",
+    "sample_energy": "E_b = 0.01*rho_w*c_p_w*Q_b*(T_adv-T_ref), outward-positive J/m2",
+    "zero_transfer": "exact zero requires no donor temperature and contributes exactly zero energy",
+    "external_inward": "requires explicit finite same-sample external donor-water temperature; otherwise total energy is incomplete",
+    "aggregation": "sum accepted-route sample energies only; aggregate-water-times-final-temperature is forbidden",
+    "accuracy": "first-order current-reference temporal accounting aligned with terminal-flux water transfer"
+  },
+  "hydrology_policy": "Missing optional energy provenance does not retroactively reject an otherwise valid mass-conserving hydrologic transaction in the current restricted-thermal architecture.",
+  "blockers_to_production_implementation": [],
+  "remaining_nonclaims": [
+    "production Joule evaluator",
+    "external donor temperature physics/binding",
+    "accepted energy commit publication",
+    "closed energy balance",
+    "higher-order temporal advective-energy accuracy",
+    "canonical admission"
+  ],
+  "next_action": "Implement the frozen candidate-scoped bottom sensible-energy evaluator on a new workunit, requalifying the constant-property enthalpy algebra against the current base and failing closed on incomplete inward samples."
+}
