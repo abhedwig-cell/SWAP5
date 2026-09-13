@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.fvq72.status.v1",
+  "work_unit": "F-VQ72",
+  "branch": "qualification/f-vq72-fpm12-surface-publication-provenance-requalification",
+  "phase": "CLOSED_INDEPENDENT_REQUALIFICATION",
+  "decision": "QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE",
+  "candidate": {
+    "branch": "work/f-pm12-surface-evaporation-accepted-publication-closure-remediation",
+    "sha": "82189c148a38b90b6a5a326d03f282ccbee52960",
+    "tree": "4ecd975f239b911c0e5779685c1a8ef6961fd61f"
+  },
+  "tested_head": {
+    "sha": "30ad6104f91e4a10bb7f9863c6c8fff0dacddfa6",
+    "tree": "8ab7e90760362d1367481b4252725f5d468498f3",
+    "workflow_run": 34784624580,
+    "workflow_job": 103797728292,
+    "conclusion": "success"
+  },
+  "results": {
+    "F_VQ57_attack": "CLOSED",
+    "reject_publication": "IMPOSSIBLE_FAIL_CLOSED",
+    "reject_immutability": "PASS_EXACT_COMMITTED_PHYSICAL_STATE",
+    "retry_provenance": "PASS",
+    "retry_exhaustion": "PASS_NO_ACCEPTED_PUBLICATION",
+    "stale_preloaded_output": "PASS_CLEARED",
+    "mass": "PASS_NO_SECOND_MASS_BOOKING",
+    "restart": "PASS",
+    "standalone_serialized_MultiSWAP": "PASS_EQUIVALENT",
+    "parallel_frozen_v1": "PASS",
+    "O0_O2": "PASS_EXACT_SEMANTIC_IDENTITY",
+    "F_PM11_100_percent_completion": "PASS_PRESERVED"
+  },
+  "F_PM09_closure": {
+    "G01": "CLOSED_BY_F_PM12_OWNER_AND_F_VQ72_INDEPENDENT_REQUALIFICATION",
+    "G02": "CLOSED_INDEPENDENTLY_F_VQ71_HISTORICAL_AND_F_VQ72_CURRENT_CANONICAL_REQUALIFICATION",
+    "G03": "CLOSED_BY_F_CI59_AND_F_CI59P"
+  },
+  "scope_guards": {
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "persistent_state_changed": false
+  },
+  "F_KT20_non_admissible_route": "EXCLUDED",
+  "independently_qualified": true,
+  "closed": true,
+  "next_required_step": "F-CI60 current-canonical reconciliation and qualification preservation; no duplicate production admission if exact blobs are already present."
+}
