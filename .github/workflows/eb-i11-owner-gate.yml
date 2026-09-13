@@ -1,0 +1,83 @@
+name: EB-I11 owner qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i11-production-water-thermal-provenance-readiness
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard current canonical and source authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          test "$(git rev-parse "$CANONICAL:src/kernel/mod_kernel_transactions.f90")" = c7c5b7d3357e4e6739c8f647d6232baca45563e6
+          test "$(git rev-parse "$CANONICAL:src/runtime/mod_canonical_contracts.f90")" = 3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse "$CANONICAL:src/runtime/mod_canonical_interval_runtime.f90")" = f41f725df4be883d277a8fd5afe5a6f1bc14ad1b
+          test "$(git rev-parse "$CANONICAL:src/runtime/mod_fmr_serialized_reference_backend.f90")" = d565b893a08d92c46077995fdec544584aa04664
+          test "$(git rev-parse "$CANONICAL:src/runtime/mod_fmr_accepted_commit_receipt.f90")" = 6798b3296b426950bf028814585c3f5de9be950b
+          test "$(git rev-parse "$CANONICAL:src/process/mod_soil_temperature_contract.f90")" = baa13df3975de2c699b0ec910477bcfa9b47f15e
+          test "$(git rev-parse "$CANONICAL:src/process/mod_restricted_soil_temperature.f90")" = fa4e1d7b48d3515e6569c9080d497178c25c4e85
+
+      - name: Require audit-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i11-owner-gate.yml
+          tests/eb/EB-I11_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I11_PRODUCTION_CALLSITE_MATRIX.json
+          tests/eb/EB-I11_READINESS.md
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          ! git diff --name-only "$CANONICAL" HEAD | grep -E '^src/'
+
+      - name: Validate evidence artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool tests/eb/EB-I11_PRODUCTION_CALLSITE_MATRIX.json >/dev/null
+          python -m json.tool tests/eb/EB-I11_ARCHITECTURE_AUDIT.json >/dev/null
+          test "$(jq '.findings | length' tests/eb/EB-I11_PRODUCTION_CALLSITE_MATRIX.json)" = "10"
+          test "$(jq '.invariants | length' tests/eb/EB-I11_ARCHITECTURE_AUDIT.json)" = "30"
+          jq -e '[.invariants[].id] == [range(1;31)]' tests/eb/EB-I11_ARCHITECTURE_AUDIT.json >/dev/null
+          grep -Fq 'DO_NOT_IMPLEMENT_AGGREGATE_BOTTOM_MASS_TIMES_TERMINAL_TEMPERATURE' tests/eb/EB-I11_ARCHITECTURE_AUDIT.json
+          grep -Fq 'aggregate bottom exchange * terminal bottom-node enthalpy' tests/eb/EB-I11_READINESS.md
+          grep -Fq 'A ready `kernel_candidate_state_t` supports `snapshot()`' tests/eb/EB-I11_READINESS.md
+          grep -Fq 'upward/inward water into SWAP' tests/eb/EB-I11_READINESS.md
+
+      - name: Verify source-level callsite claims
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'call trial_restricted_soil_temperature' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'call accumulate_accepted_bottom_interface' src/runtime/mod_canonical_interval_runtime.f90
+          grep -Fq 'result%mass%accepted_transaction_count = result%mass%accepted_transaction_count + 1' src/runtime/mod_canonical_interval_runtime.f90
+          grep -Fq 'procedure, public :: snapshot => kernel_snapshot_candidate' src/kernel/mod_kernel_transactions.f90
+          grep -Fq 'call self%state%clone(copy)' src/kernel/mod_kernel_transactions.f90
+          grep -Fq 'public :: build_soil_temperature_field_view' src/process/mod_soil_temperature_contract.f90
+          grep -Fq 'call kernel%commit_candidate' src/runtime/mod_fmr_accepted_commit_receipt.f90
+
+      - name: Require no shortcut already exists in current canonical
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -R -E 'bottom_outward_exchange_native.*temperature|temperature.*bottom_outward_exchange_native' src --include='*.f90'
+          ! grep -R -E 'accepted_bottom.*enthalpy|bottom.*advective.*energy' src --include='*.f90'
+
+      - name: Evidence summary
+        run: echo 'EB-I11 production water-thermal provenance readiness: PASS'
