@@ -48,3 +48,30 @@ jobs:
           live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
           test "$live" = "$GITHUB_SHA"
           echo "FKT18_EXACT_HEAD_END=PASS:$GITHUB_SHA"
+
+  current-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact candidate head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FKT18_PRESERVATION_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Requalify solver service restart MultiSWAP parallel and coupling semantics
+        run: bash tests/fkt/run_fkt18_current_preservation_gate.sh
+      - name: Exact candidate head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FKT18_PRESERVATION_EXACT_HEAD_END=PASS:$GITHUB_SHA"
