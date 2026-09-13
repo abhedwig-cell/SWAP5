@@ -12,7 +12,7 @@
     "branch": "integration/f-ci-canonical",
     "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
     "tree": "8d48f92612eb4a72469b99877ec5805ff2cd113a",
-    "recheck_result": "current canonical remained F-CI55R at F-SI31 branch creation"
+    "recheck_result": "current canonical remained F-CI55R at branch creation and final qualification recheck"
   },
   "research_governance": {
     "branch": "regie/f-rg01a-parallel-research-isolation-contract-ownership-policy",
@@ -26,8 +26,17 @@
     "version": "1.0.0",
     "major_line": "v1",
     "normative_path": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md",
+    "normative_blob": "d5e934df4b3fbaa573e994cbe675257cf6a47304",
     "capability_schema_path": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CAPABILITY_SCHEMA_V1.json",
+    "capability_schema_blob": "86bfa60468d891e071c735569d944570f75fa205",
     "semantic_role": "stable research compatibility seam, not production ABI replacement"
+  },
+  "integrity_review": {
+    "qualified_candidate_head": "28238d2d1f38cff09acded79ea2073705ca08891",
+    "qualified_candidate_tree": "dc5f80db257f40dd4b011b400529aee76546fca7",
+    "schema_correction": "sensitivity capability schema was corrected to avoid additionalProperties composition conflict; no contract semantics changed",
+    "diff_scope": "three added artifacts under integration/f-si only; no src, test, build or physics file changed",
+    "result": "PASS"
   },
   "reconciled_authorities": [
     {
