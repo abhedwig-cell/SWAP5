@@ -4,7 +4,15 @@
   "title": "Restricted Transactional Predictor-Corrector Coupling Window Orchestrator — Architecture Invariant Audit",
   "restart_authority": "integration/f-ci-canonical@2a0db2524fba6e258316ce82630c60ea1c9c673a",
   "governance_authority": "regie/f-rg01-post-rb1-program-rebaseline@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
-  "implementation_head": "26c3c5cf4139970f68ca9a81f9b890b911747a06",
+  "implementation_head": "0ba31e5e6ab6702dfd6ddc76aba71e7162d80947",
+  "implementation_source_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+  "owner_qualification_precloseout": {
+    "head": "7249639c89047241ba052fc5b8854989935ba622",
+    "workflow_run": 34744454914,
+    "workflow_job": 103689658365,
+    "conclusion": "success",
+    "owner_output_sha256": "945517741dd7f7693575545e5c2684f9c5a4dc97e1df13bfec6219453c822ce7"
+  },
   "overall": "30_OF_30_NO_ADVERSE_DELTA_OWNER_RESTRICTED_PC_ORCHESTRATOR",
   "mass_conservation": "HARD_EXACT_ACTION_REACTION_AND_ACCEPTED_EXCHANGE_LEDGER",
   "scope": "Owner-side restricted composition audit only; independent qualification and canonical/production admission remain separate gates.",
@@ -15,6 +23,7 @@
     "Exact accepted whole-window bottom exchange from F-GC21P1 is converted to the typed F-GC17 flux pair; terminal bottom flux is not extrapolated over the whole window.",
     "Groundwater flux is assigned as the exact opposite of SWAP flux and the committed interface ledger requires an exact zero conservation residual; no mass tolerance is introduced.",
     "Concrete FMR forcing adaptation uses the typed F-GC17 common-datum head conversion and does not expose solver-private HeadCalc arrays to the orchestrator.",
+    "The O2 remediation at 0ba31e5e6ab6702dfd6ddc76aba71e7162d80947 only makes evaluation of impure transactional readiness/preflight functions explicit; it does not change accepted/rejected publication semantics.",
     "Stable unique ledger identity remains runtime/coupler-owned; F-GC21 does not generate global ledger IDs.",
     "Ledger and groundwater stale/copied/replay/exhaustion semantics remain owned by their admitted components and are rerun by the owner qualification gate.",
     "No direct MODFLOW, tile aggregation, deep-vadose, crash-consistency, distributed-atomicity or throughput claim is made."
