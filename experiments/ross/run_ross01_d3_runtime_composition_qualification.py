@@ -123,8 +123,6 @@ def main() -> int:
         ],
     )
 
-    # Use a generic absolute coordinate so D3 does not accidentally reintroduce
-    # day-boundary or zero-origin assumptions.
     full_req = d2q.base_request("B01", t0=37.125, steps=8, perturb=0.0, pre=False)
     committed_before = copy.deepcopy(full_req["committed_state"])
     full = adapter.execute_research_trial(full_req)
@@ -147,9 +145,6 @@ def main() -> int:
         bottom.get("candidate_only") is True and bottom.get("accepted_exchange") is False
     )
 
-    # Current canonical's default external full-vs-two-half route necessarily
-    # asks the model for half of the requested interval. D2 intentionally
-    # qualifies exactly 0.0016 day and must therefore fail closed here.
     half_req = copy.deepcopy(full_req)
     half_req["forcing_process_requests"]["t1_day"] = (
         half_req["forcing_process_requests"]["t0_day"] + 0.5 * adapter.HORIZON_DAY
@@ -162,8 +157,6 @@ def main() -> int:
         and half.get("committed_state_mutated") is False
     )
 
-    # Canonical reject/retry uses the same 0.5 shrink by default. This is the
-    # same structural duration mismatch, now exercised as a retry request.
     retry_req = copy.deepcopy(full_req)
     retry_req["forcing_process_requests"]["t1_day"] = (
         retry_req["forcing_process_requests"]["t0_day"] + 0.5 * adapter.HORIZON_DAY
@@ -176,10 +169,6 @@ def main() -> int:
         and retry_req["committed_state"] == committed_before
     )
 
-    # The alternative current-canonical route avoids external half trials only
-    # when the model returns an explicit normalized temporal certificate.
-    # D2 did not qualify one, so D3 must not synthesize it from solver work or
-    # the D1 local-terminal response.
     tests["d2_model_temporal_certificate_absent"] = (
         "temporal_certificate_available" not in full
         and "temporal_indicator" not in full
@@ -277,13 +266,13 @@ def main() -> int:
             "runtime_commit_ownership": "REPRESENTABLE_BUT_NOT_END_TO_END_QUALIFIED_BECAUSE_TEMPORAL_ADMISSION_BLOCKS_BEFORE_COMMIT",
             "restart": "OUT_OF_D3_SCOPE_AND_D2_UNSUPPORTED",
             "multiswap": "OUT_OF_D3_SCOPE_AND_NOT_PRODUCTION_QUALIFIED",
-            "production_admission": false,
+            "production_admission": False,
         },
         "gaps": gaps,
         "minimal_closure_requirement": {
             "primary": "Qualify a RossFast research-adapter interval-duration family matching the exact current-canonical transaction/retry policy to be exercised, including every half/retry duration that can reach the solver, while preserving the D2 hard mass gate and candidate-only ownership.",
             "alternative_or_additional": "If TX_TEMPORAL_MODEL_CERTIFICATE is intended, independently define and qualify a RossFast temporal certificate with explicit accuracy semantics; it may not be inferred from solver convergence, mass residual, or the D1 local-terminal hydraulic response.",
-            "no_scope_reduction": true,
+            "no_scope_reduction": True,
         },
         "invariant_audit": {
             "1": "PASS_NO_PRODUCTION_KERNEL_FORK",
