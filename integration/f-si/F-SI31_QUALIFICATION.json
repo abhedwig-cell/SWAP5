@@ -1,0 +1,219 @@
+{
+  "workunit": "F-SI31",
+  "title": "SWAP5 Research Soil-Water Solver Compatibility Contract Freeze",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1_FROZEN",
+  "scope": "research compatibility contract only",
+  "production_code_changed": false,
+  "physics_changed": false,
+  "rossfast_algorithm_changed": false,
+  "production_full_richards_replaced": false,
+  "base_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "tree": "8d48f92612eb4a72469b99877ec5805ff2cd113a",
+    "recheck_result": "current canonical remained F-CI55R at F-SI31 branch creation"
+  },
+  "research_governance": {
+    "branch": "regie/f-rg01a-parallel-research-isolation-contract-ownership-policy",
+    "policy_definition_commit": "33a94697e031d3003bf0812bff73bf8d30ef9d80",
+    "close_commit": "4553204468695553cf69a48d1c97598c471156d6",
+    "result": "APPLIED",
+    "effect": "research consumers may pin a frozen owned contract and are not required to chase later current-canonical movement"
+  },
+  "contract": {
+    "id": "SoilWaterSolverResearchContract",
+    "version": "1.0.0",
+    "major_line": "v1",
+    "normative_path": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md",
+    "capability_schema_path": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CAPABILITY_SCHEMA_V1.json",
+    "semantic_role": "stable research compatibility seam, not production ABI replacement"
+  },
+  "reconciled_authorities": [
+    {
+      "authority": "F-SI27 prescribed qbot boundary",
+      "branch": "work/f-si27-explicit-prescribed-qbot-boundary",
+      "commit": "777015b8daffbd859e737f894cb585bd9ce96612",
+      "use": "prescribed-qbot boundary semantics"
+    },
+    {
+      "authority": "F-SI28 interface sensitivity production solve",
+      "branch": "work/f-si28-interface-sensitivity-production-solve",
+      "commit": "5b514e678d0d794e5837f161033b0bac58385707",
+      "tree": "a0ca733f0ee7028806c361955de38533ac1457d5",
+      "use": "optional same-factorization whole-window qbot tangent authority"
+    },
+    {
+      "authority": "F-SI29 production dynamic top-boundary provider",
+      "branch": "work/f-si29-production-dynamic-top-boundary-provider",
+      "commit": "a58f300277775ae7f5ac33563d20cad2ae22738f",
+      "tree": "e1098d56c7d5de2c947fe3d3c9f9a595bc9f11b6",
+      "use": "qualified restricted dynamic top-boundary provider evidence"
+    },
+    {
+      "authority": "F-SI30 dynamic top-boundary solver interface",
+      "branch": "work/f-si30-dynamic-top-boundary-solver-interface",
+      "commit": "27b10ac0bca17a68e2746431b4c6a986e3910175",
+      "use": "opt-in dynamic-top solver seam while preserving frozen fixed-flux path"
+    },
+    {
+      "authority": "F-KT14 interface sensitivity result transport owner line",
+      "branch": "work/f-kt14-interface-sensitivity-result-transport",
+      "commit": "2f7995df362c65916671278a5552ed9976ed39b3",
+      "tree": "5d5a63f6a7b16f6b38de14c991a4ea92232ed77a",
+      "use": "accepted-only sensitivity transport lineage; current composition authority is F-KT15R"
+    },
+    {
+      "authority": "F-KT15R production solver service current-canonical recomposition",
+      "branch": "work/f-kt15r-production-solver-service-current-canonical-recomposition",
+      "commit": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+      "tree": "c6a4f3c5bde3a69990ad8f11592029f36590b831",
+      "use": "current transaction/service ownership and production composition authority"
+    },
+    {
+      "authority": "F-ROSS01 research implementation evidence",
+      "branch": "work/f-ross01-fast-mfp-feasibility",
+      "commit": "3a78d4f8199ebc15908e6e8108a2e4adb8cb5b15",
+      "tree": "82de76295476e31f87416a8ef9a3dfbdf92916e7",
+      "use": "restricted conceptual implementation mapping only, not production evidence"
+    }
+  ],
+  "canonical_implementation_evidence": {
+    "production_contract": "src/solver/mod_soil_water_solver_contract.f90",
+    "production_contract_blob": "276941d76ba951a89c43899e61fd0532418d8230",
+    "process_hydraulic_view": "src/solver/mod_process_hydraulic_view.f90",
+    "process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "full_richards_state_binding": "src/solver/mod_reference_richards_state_binding.f90",
+    "full_richards_state_binding_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "full_richards_adapter": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "full_richards_adapter_blob": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "transaction_reference": "src/transaction/mod_transaction_reference.f90",
+    "restart_contract": "src/runtime/mod_fmr_restart_state_contract.f90",
+    "committed_restart": "src/runtime/mod_fmr_committed_restart.f90",
+    "checkpoint_orchestrator": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+    "serialized_runtime": "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  },
+  "full_richards_mapping": {
+    "result": "PASS_REPRESENTABLE_WITH_ADAPTER",
+    "mapping": [
+      "soil_water_parameter_set_t -> immutable grid/parameter input",
+      "base_state -> read-only committed trial base",
+      "step_duration -> adapter representation of t1-t0; duration is not frozen as research time semantics",
+      "F-SI28 fixed-flux top provider -> top.prescribed_flux",
+      "F-SI30 dynamic provider -> top.dynamic_provider",
+      "bottom mode 5 -> bottom.prescribed_head",
+      "bottom mode 2 -> bottom.prescribed_flux",
+      "bottom modes 7 and -2 -> separately named legacy capabilities without inventing new semantics",
+      "candidate_state/top_flux/bottom_flux -> candidate result",
+      "process_hydraulic_view_t -> process-facing hydraulic view",
+      "HeadCalc/Newton/factorization storage -> worker-local scratch, never process contract",
+      "eligible F-SI28 same-factorization backsolve -> optional whole-window dh_bottom_dq_bottom",
+      "F-KT/runtime acceptance and commit -> remain outside solver ownership"
+    ],
+    "runtime_scope_note": "The current serialized reference runtime directly admits bottom modes 7, -2 and 5. Prescribed-qbot mode 2 is supported by the Full Richards solver binding and coupling/service paths but is not therefore claimed as directly admitted by every serialized runtime path."
+  },
+  "rossfast_mapping": {
+    "result": "PASS_RESTRICTED_RESEARCH_MAPPING",
+    "evidence": [
+      "F-ROSS01 J1D prescribed-qbot local node-balance/sign mapping passed for the documented research setup and six tested materials",
+      "F-ROSS01 J1E candidate ownership, reject-without-committed-mutation, retry and commit choreography are representable",
+      "terminal candidate q_bottom can populate bottom_exchange.candidate_flux",
+      "RossFast local dh_compute_cm/dqbot is explicitly not mapped to the authoritative whole-window F-SI28 dh_bottom/dq_bottom"
+    ],
+    "supported_or_restricted_capabilities": {
+      "bottom.prescribed_flux": "restricted",
+      "bottom_exchange.candidate_flux": "restricted",
+      "transaction_candidate_ownership": "supported by research evidence",
+      "rollback_retry_choreography": "supported by research evidence"
+    },
+    "unsupported_or_unqualified_capabilities": [
+      "top.dynamic_provider",
+      "general production top-boundary compatibility",
+      "bottom.prescribed_head",
+      "bottom.legacy_mode_7",
+      "bottom.legacy_mode_minus2",
+      "authoritative whole-window dh_bottom_dq_bottom",
+      "production restart compatibility",
+      "complete production process-hydraulic-view obligations",
+      "general source/sink and root-sink closure",
+      "full Richards nonlinear time stepping equivalence",
+      "heterogeneous-cell coupling",
+      "general saturation handling",
+      "unrestricted grid/geometry support",
+      "unrestricted constitutive-model support",
+      "crop/no-crop process closure",
+      "production MultiSWAP/runtime admission",
+      "production/reference equivalence"
+    ],
+    "production_readiness": false
+  },
+  "state_ownership_qualification": {
+    "result": "PASS",
+    "committed_state": "runtime-owned and read-only to trial",
+    "candidate_state": "solver-produced and runtime-evaluated",
+    "commit": "runtime-owned",
+    "rollback": "candidate discard/replacement, no inverse committed mutation",
+    "scratch": "worker/job-local",
+    "immutable_parameters": "shareable by stable ID/reference",
+    "hidden_mutable_global_state": "prohibited"
+  },
+  "restart_qualification": {
+    "result": "PASS_CONTRACT_SEMANTICS",
+    "persistent": "committed physical continuation state plus stable identities/references",
+    "excluded": "rejected candidates, solver scratch, Newton/Jacobian/factorization state and local warm-start caches",
+    "research_solver_requirement": "declare supported/restricted/unsupported; v1 compliance alone does not prove production restart compatibility"
+  },
+  "boundary_qualification": {
+    "result": "PASS_CAPABILITY_GATED",
+    "rule": "unsupported, undeclared or out-of-range boundary requests fail closed before committed-state mutation",
+    "accepted_exchange_rule": "solver reports candidate bottom exchange; exchange becomes accepted only after runtime acceptance/commit"
+  },
+  "sensitivity_qualification": {
+    "result": "PASS_OPTIONAL_EXACT_SCOPE",
+    "named_quantity": "dh_bottom_dq_bottom",
+    "research_requirement": "optional and capability-declared",
+    "finite_difference_required": false,
+    "scope_rule": "local or terminal tangents may not be relabelled as whole-window sensitivity without dedicated qualification"
+  },
+  "invariant_audit": [
+    { "id": 1, "result": "PASS", "reason": "one production kernel remains authoritative" },
+    { "id": 3, "result": "PASS", "reason": "parameters, state, forcing/process requests, numerical policy and scratch are distinct" },
+    { "id": 4, "result": "PASS", "reason": "persistent state is limited to physical continuation state; immutable data are shareable" },
+    { "id": 5, "result": "PASS", "reason": "solver scratch is worker/job-local" },
+    { "id": 7, "result": "PASS", "reason": "trial candidate cannot mutate or commit the committed base" },
+    { "id": 8, "result": "PASS", "reason": "retry/replay starts physically from committed state; declared local warm starts remain possible" },
+    { "id": 9, "result": "PASS", "reason": "v1 time is generic [t0,t1]" },
+    { "id": 11, "result": "PASS", "reason": "transactional exchange and optional sensitivity seams are representable without runtime ownership leakage" },
+    { "id": 13, "result": "PASS", "reason": "mass residual and balance terms are contract outputs; no conservation relaxation is permitted" },
+    { "id": 14, "result": "PASS", "reason": "interface sensitivity is first-class optional output and finite difference is not mandatory" },
+    { "id": 16, "result": "PASS", "reason": "contract permits shared immutable data, worker scratch and batched layouts" },
+    { "id": 20, "result": "PASS", "reason": "Full Richards and research alternatives are representable behind one semantic seam" },
+    { "id": 21, "result": "PASS", "reason": "production process physics remain reusable and outside research solver ownership" },
+    { "id": 22, "result": "PASS", "reason": "process hydraulic view excludes HeadCalc internals" },
+    { "id": 23, "result": "PASS", "reason": "physical capabilities and numerical policy are separate" },
+    { "id": 25, "result": "PASS", "reason": "Full Richards remains production/reference authority" },
+    { "id": 29, "result": "PASS", "reason": "no midnight/day/file-format/MODFLOW dependency is introduced" },
+    { "id": 30, "result": "PASS", "reason": "F-SI31 records explicit architecture, authority, gap and invariant qualification" }
+  ],
+  "known_intentional_gaps": [
+    "v1 is a semantic research contract, not a frozen Fortran memory ABI",
+    "not all production boundary modes are mandatory for a research solver",
+    "restart and whole-window interface sensitivity are optional research capabilities",
+    "performance layout, batching and solver-internal algorithms remain implementation choices",
+    "RossFast remains restricted research evidence and is not production ready"
+  ],
+  "research_isolation": {
+    "rossfast_may_proceed_as": "RESEARCH_ISOLATED",
+    "condition": "pin SoilWaterSolverResearchContract v1 and publish an honest fail-closed capability declaration; do not claim production compatibility from contract compliance alone",
+    "canonical_chasing_required": false
+  },
+  "future_production_integration_conditions": [
+    "map the research solver through a dedicated adapter to the then-current production interface",
+    "prove every production-required boundary, process-hydraulic-view, transaction, mass-balance, restart and sensitivity capability rather than relying on v1 research compliance",
+    "qualify numerical/physical results against production Full Richards reference authority within explicit acceptance bounds",
+    "qualify MultiSWAP/runtime behaviour, bounded failure handling and diagnostics where required by the target production use case",
+    "perform normal owner qualification, independent qualification and canonical admission",
+    "do not alter production physics or solver semantics implicitly during interface admission"
+  ],
+  "exit": "QUALIFIED_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1_FROZEN"
+}
