@@ -309,10 +309,16 @@ jobs:
         run: |
           set -euo pipefail
           AUTH=8a1aeedbaeb5bd015e7e8d098d605968bbecd94e
+          TX=src/transaction/mod_transaction_reference.f90
+          TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
+          test "$(git rev-parse "HEAD:$TX")" = "$TX_BLOB" || {
+            echo "FCI_CANONICAL_PRESERVATION_FAIL admitted F-KT18 transaction postimage drift: $TX" >&2
+            exit 41
+          }
+          echo 'FCI57P_MOVING_TRANSACTION_REFERENCE_POSTIMAGE=PASS'
           dependency_surface=(
             src/runtime/mod_a23bu_worker_execution_context.f90
-            src/transaction/mod_transaction_reference.f90
             src/transaction/mod_fkt_temporal_indicator_history.f90
             src/runtime/mod_canonical_contracts.f90
             src/runtime/mod_canonical_interval_runtime.f90
@@ -381,5 +387,6 @@ jobs:
           echo 'FCI49_MOVING_FKT15_SOLVER_SERVICE_TRANSACTION_COMPOSITION_PRESERVATION=PASS'
           echo 'FCI50_MOVING_FGC17_TYPED_GROUNDWATER_INTERFACE_PRESERVATION=PASS'
           echo 'FCI52_MOVING_PM08D7_FIXED_WEIR_TRANSACTIONAL_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI57_MOVING_FAIL_CLOSED_MASS_COMPLETENESS_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
