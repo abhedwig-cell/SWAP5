@@ -4,7 +4,6 @@ set -euo pipefail
 CANON=df51575e18777856a47a5d0d1e2e1c7456be4601
 CANON_TREE=9102c9ac3c9bfceea8b7a9e94b2d1ef48c81b363
 RG01C_DEF=971e732551abad86acccfd5f01811d855e51e939
-RG01C_CLOSE=56b86e29e0960e396059caf47c193440d571b709
 PRESERVE=8a1aeedbaeb5bd015e7e8d098d605968bbecd94e
 AUTH=integration/f-mr/F-MR42_SERIALIZED_MULTISWAP_V1_COMPLETION_AUTHORITY.json
 
@@ -38,7 +37,6 @@ check_blob src/runtime/mod_fmr_restart_state_contract.f90 872c28bbc345f40073396c
 check_blob src/kernel/mod_kernel_committed_persistence.f90 ffd886c3401fc12739a456fe60a8741c12b9848b
 echo 'FMR42_CURRENT_RUNTIME_BLOB_BINDING=PASS'
 
-# Recheck the frozen denominator from its definition authority, not from this audit branch.
 MODEL="$(mktemp)"
 trap 'rm -f "$MODEL"' EXIT
 git show "$RG01C_DEF:integration/f-rg/SWAP5_V1_COMPLETION_MODEL_V1.json" > "$MODEL"
@@ -78,7 +76,6 @@ print('FMR42_FIXED_DENOMINATOR_D10_M10=PASS')
 print('FMR42_MACHINE_READABLE_COMPLETION_AUTHORITY=PASS')
 PY
 
-# Verify current-canonical closeout states that carry D10 and its dependencies.
 python3 - <<'PY'
 import json, subprocess
 CANON = 'df51575e18777856a47a5d0d1e2e1c7456be4601'
@@ -88,24 +85,30 @@ def read(path):
 
 f35 = read('integration/f-ci/F-CI35_STATUS.json')
 assert f35['phase'] == 'CLOSED_CANONICAL_ADMITTED'
-assert f35['state']['canonical_admission_complete'] is True
-assert f35['state']['independent_qualification_complete'] is True
-assert f35['state']['postpromotion_preservation_complete'] is True
+assert f35['state']['canonical_admitted'] is True
+assert f35['state']['independently_qualified'] is True
+assert f35['state']['post_promotion_replay_passed'] is True
+assert f35['production_delta'] == []
+assert f35['reference_delta'] == []
 
 f48p = read('integration/f-ci/F-CI48P_STATUS.json')
 assert f48p['phase'] == 'FINAL_CLOSEOUT_COMPLETE'
 assert f48p['state']['current_restricted_canonical_preservation_green'] is True
-assert f48p['state']['source_admission_finalized'] is True
+assert f48p['state']['canonical_reconciliation_promoted'] is True
+assert f48p['state']['final_closeout_complete'] is True
+assert f48p['state']['mass_conservation_relaxed'] is False
 
 f49p = read('integration/f-ci/F-CI49P_STATUS.json')
 assert f49p['phase'] == 'FINAL_CLOSEOUT_COMPLETE'
 assert f49p['state']['current_restricted_canonical_preservation_green'] is True
+assert f49p['state']['final_closeout_complete'] is True
 assert f49p['state']['mass_conservation_relaxed'] is False
 
 f52p = read('integration/f-ci/F-CI52P_STATUS.json')
 assert f52p['phase'] == 'FINAL_CLOSEOUT_COMPLETE'
 assert f52p['state']['fmr41_optional_state_layout_ownership_preserved'] is True
 assert f52p['state']['current_restricted_canonical_preservation_green'] is True
+assert f52p['state']['source_admission_finalized'] is True
 assert f52p['state']['mass_conservation_relaxed'] is False
 
 f55r = read('integration/f-ci/F-CI55R_STATUS.json')
@@ -118,8 +121,6 @@ assert f55r['canonical_admission'] is True
 print('FMR42_CANONICAL_AUTHORITY_CHAIN=PASS')
 PY
 
-# Source-bind D10 to the latest moving preservation authority. Include the
-# restart/persistence path even where the broad F-CI gate has a larger shared surface.
 d10_surface=(
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
@@ -148,8 +149,6 @@ for path in "${d10_surface[@]}"; do
 done
 echo 'FMR42_D10_DEPENDENCY_SURFACE_CURRENT_PRESERVED=PASS'
 
-# Verify that the broad current-canonical gate itself pins the same moving authority
-# and explicitly protects the major frozen process/runtime seams used by D10.
 FCI="$(git show "$CANON:.github/workflows/fci-canonical.yml")"
 grep -Fq "AUTH=$PRESERVE" <<<"$FCI" || fail "canonical preservation authority mismatch"
 for token in \
@@ -166,7 +165,6 @@ for token in \
 done
 echo 'FMR42_CURRENT_CANONICAL_PRESERVATION_GATE_BOUND=PASS'
 
-# Prevent accidental scope gaming in the completion authority.
 python3 - "$AUTH" <<'PY'
 import json, sys
 x=json.load(open(sys.argv[1], encoding='utf-8'))
