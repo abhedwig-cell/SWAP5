@@ -2,11 +2,18 @@
 
 ## Decision
 
-`QUALIFIED_DESIGN_FREEZE_PENDING_EXACT_HEAD_CI`
+`QUALIFIED_DESIGN_FREEZE_CLOSED_PENDING_CANONICAL_ADMISSION`
 
-EB-I14 closes the scientific/numerical contract needed between the qualified EB-I13 accepted-route carrier and a later production Joule evaluator. It intentionally contains no production implementation.
+EB-I14 closes the scientific/numerical contract needed between the qualified EB-I13 accepted-route carrier and a later production Joule evaluator. It intentionally contains no production implementation and makes no canonical-admission claim.
 
-The authoritative closure condition is a successful `EB-I14 bottom advective energy quadrature contract` workflow on the exact branch HEAD containing this document. A green run on an older commit is supporting evidence only.
+Supporting qualification evidence before this final disposition:
+
+- source head: `a5aa6a1c81afe35940567bd0b6af0bf5707594d3`;
+- workflow: `EB-I14 bottom advective energy quadrature contract`;
+- run: `34789546804`;
+- conclusion: `success`.
+
+The authoritative final closure condition remains a successful same workflow on the exact branch HEAD containing this final disposition. A green run on an older commit is supporting evidence only.
 
 ## Closed decision
 
@@ -25,6 +32,12 @@ With explicit constant-property energy configuration,
 with positive `Q_b` and positive `E_b` oriented outward from SWAP.
 
 This is a first-order discrete-consistency rule. It is not presented as an exact continuous-time integral or as a higher-order quadrature.
+
+## Why terminal temperature, not the endpoint mean
+
+The EB-I13 reference water authority itself uses the accepted terminal bottom flux multiplied by the accepted step duration. Using `0.5*(T_start+T_end)` with that terminal-flux rectangle would mix two different temporal discretizations without jointly qualifying the water and temperature quadrature. EB-I14 therefore keeps the current reference rule internally consistent at the right endpoint.
+
+A future higher-order method remains allowed, but it must jointly qualify both water-flux and donor-temperature sampling and demonstrate temporal convergence against reference evidence.
 
 ## Fail-closed boundary
 
@@ -49,8 +62,14 @@ A different jointly qualified water-and-temperature quadrature remains allowed a
 
 The executable contract gate additionally requires that the branch contain no production delta relative to the qualified EB-I13 restart authority.
 
+## Legacy disposition
+
+Independent inspection of the supplied SWAP 4.3.1 source confirms that the legacy numerical soil-temperature route is conductive. For the zero-flux thermal bottom boundary it explicitly sets `qhbot = 0`; no bottom `qbot * liquid-water sensible enthalpy` term was found. The EB-I14 rule is therefore recorded as model evolution, not as claimed parity with an existing legacy advective-energy algorithm.
+
 ## Next workunit
 
-The next production workunit may implement a candidate-scoped bottom sensible-energy evaluator. It must independently prove the implementation gates listed in `EB-I14_CONTRACT.md`, including sample-wise Joule algebra, exact-zero behavior, fail-closed inward provenance, reference-gauge identity, adversarial rejection of the aggregate shortcut, zero additional physical solves, unchanged hydrology/restart and bounded O(Nsample) cost.
+The next production workunit may implement a candidate-scoped bottom sensible-energy evaluator. It must independently prove the implementation gates listed in `EB-I14_CONTRACT.md`, including sample-wise Joule algebra, exact-zero behavior, fail-closed inward provenance, reference-gauge identity, adversarial rejection of the aggregate shortcut, zero additional physical solves, unchanged hydrology/restart, bounded O(Nsample) cost and temporal-refinement behavior.
+
+Because the EB-I13 restart baseline does not contain the historical EB-I04/EB-I06 production modules, a production implementation must explicitly recompose or equivalence-qualify those semantics on its actual source authority rather than silently treating historical branch code as canonical.
 
 Accepted energy commit/publication and external groundwater/deep-vadose temperature physics remain separate later work unless independently qualified in that implementation workunit.
