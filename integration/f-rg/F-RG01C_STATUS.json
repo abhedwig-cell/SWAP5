@@ -1,0 +1,99 @@
+{
+  "workunit": "F-RG01C",
+  "title": "SWAP5 Fixed-Denominator Completion Model & Reproducible Program Progress Authority",
+  "status": "QUALIFIED_FIXED_DENOMINATOR_SWAP5_V1_COMPLETION_MODEL_ESTABLISHED",
+  "governance_only": true,
+  "model": {
+    "id": "SWAP5_V1_COMPLETION_MODEL_V1",
+    "version": "1.0.0",
+    "frozen_overall_denominator": 100.0,
+    "frozen_technical_domain_weight_denominator": 79.0,
+    "definition_authority_commit": "971e732551abad86acccfd5f01811d855e51e939",
+    "definition_authority_tree": "5aee7c968774f38a2d16d25aa7eafe7d17b8369f",
+    "readable_policy_path": "integration/f-rg/F-RG01C_FIXED_DENOMINATOR_COMPLETION_MODEL.md",
+    "readable_policy_blob": "efd171702dae5e796f8683bfcd49831df1cc6631",
+    "machine_model_path": "integration/f-rg/SWAP5_V1_COMPLETION_MODEL_V1.json",
+    "machine_model_blob": "f1f969b84de4bacaf3aaf110e13e08caaaf172d3",
+    "current_snapshot_path": "integration/f-rg/SWAP5_V1_COMPLETION_SNAPSHOT_20260913.json",
+    "current_snapshot_blob": "5c07bfea27d2373412e6862caf0b33779c1784ab"
+  },
+  "parent_governance": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01B": "5e2561d9051fba81769565291b1bf3089c7ddcd9"
+  },
+  "calculation_authority": {
+    "current_canonical": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+    "current_canonical_tree": "9102c9ac3c9bfceea8b7a9e94b2d1ef48c81b363",
+    "canonical_parent_fci55r": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "rb1_release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "rb1_qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "moving_F_VQ64_final": "466119889a3f09b33ede638322e897bded2472a3",
+    "F_VQ64_exact_head_run": 34745309838,
+    "F_VQ64_decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION"
+  },
+  "headline_completion": {
+    "restricted_production_baseline_percent": 100.0,
+    "technical_engine_measured_percent": 89.145569620253,
+    "technical_engine_gate_capped_readiness_percent": 89.0,
+    "overall_swap5_v1_measured_percent": 82.404545454545,
+    "overall_swap5_v1_reported_readiness_percent": 82.404545454545
+  },
+  "active_hard_ceilings": [
+    "HG06_PRODUCTION_CRITICAL_QUALIFICATION: technical/overall ceiling 89% because required macropore and bounded-cost/fallback capabilities remain below independently qualified",
+    "HG07_CRITICAL_TESTBANK: overall ceiling 92% because F-TB10 integrated scientific qualification is blocked",
+    "HG08_STATUS_A_READINESS: overall ceiling 95% because formal readiness remains 2/22"
+  ],
+  "hard_failures_not_observed": [
+    "mass-conservation failure",
+    "transaction correctness failure",
+    "restart correctness failure",
+    "Full Richards reference-solver unavailability",
+    "unresolved competing production ownership"
+  ],
+  "top_remaining_overall_percentage_points": {
+    "Status_A_readiness": 4.545454545455,
+    "required_production_physics": 3.0,
+    "scientific_traceability_documentation": 2.9,
+    "groundwater_coupling": 2.4,
+    "performance_bounded_cost_fallback": 2.35,
+    "permanent_testbank": 1.125,
+    "parallel_MultiSWAP": 0.825,
+    "release_evidence": 0.45
+  },
+  "optional_zero_weight": {
+    "RossFast": "OPTIONAL_STRETCH_CAPABILITY / RESEARCH_ISOLATED / 0% SWAP5-v1 weight",
+    "energy_balance": "NOT_FROZEN_AS_SWAP5_V1_REQUIREMENT / 0% weight; inclusion requires explicit model V2 governance decision",
+    "deep_vadose": "OPTIONAL_EXTERNAL_COMPONENT / 0% SWAP-kernel-v1 weight"
+  },
+  "denominator_governance": {
+    "implicit_changes_forbidden": true,
+    "ordinary_recalculation_changes_weights": false,
+    "new_scope_requires_new_version": true,
+    "historical_restating_required_for_new_version": true
+  },
+  "recalculation_protocol": [
+    "after approximately 5-10 substantive closeouts",
+    "after a major canonical admission such as F-GC21",
+    "after resolution of a major hard or serial gate",
+    "after an explicit frozen-v1 scope/model-version decision",
+    "before a major release/readiness decision"
+  ],
+  "governance_effect": {
+    "production_source_changed": false,
+    "current_canonical_changed_by_F_RG01C": false,
+    "RB1_reopened": false,
+    "scientific_qualification_reopened": false,
+    "F_RG01A_weakened": false,
+    "F_RG01B_weakened": false,
+    "research_counted_as_production_completion": false,
+    "branch_commit_workunit_counts_used_as_denominator": false
+  },
+  "changed_paths": [
+    "integration/f-rg/SWAP5_V1_COMPLETION_MODEL_V1.json",
+    "integration/f-rg/SWAP5_V1_COMPLETION_SNAPSHOT_20260913.json",
+    "integration/f-rg/F-RG01C_FIXED_DENOMINATOR_COMPLETION_MODEL.md",
+    "integration/f-rg/F-RG01C_STATUS.json"
+  ],
+  "exit_target": "QUALIFIED_FIXED_DENOMINATOR_SWAP5_V1_COMPLETION_MODEL_ESTABLISHED"
+}
