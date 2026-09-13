@@ -1,0 +1,32 @@
+name: EB-I17 external bottom thermal binding implementation
+
+on:
+  push:
+    branches:
+      - work/eb-i17-external-bottom-thermal-binding-implementation
+  workflow_dispatch:
+
+jobs:
+  qualify-eb-i17:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I17_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I17_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: EB-I17 external binding implementation gate
+        run: bash tests/eb/run_eb_i17_external_binding_gate.sh
+      - name: FPM08D7 runtime compile preservation
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+      - name: FPM08D7 transactional owner preservation
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+      - name: FPM08D7 restart owner preservation
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+      - name: Exact I17 scope whitespace check
+        run: git diff --check eacf7e4a05eb8ee9c9304c4184d85427b2587ee9..HEAD
