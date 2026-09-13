@@ -10,6 +10,10 @@
   "frozen_domain": "SWAP5_V1_COMPLETION_MODEL_V1:D03",
   "frozen_weight": 8.0,
   "earned_weight": 8.0,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "denominator_changed": false,
+  "scope_reduced": false,
   "current_canonical": {
     "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
     "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
@@ -72,6 +76,18 @@
     "source_blob_guards_must_pass": true,
     "no_self_referential_post_run_status_commit_required": true
   },
+  "qualification_history": [
+    {
+      "head": "348025b7fff11ac9955b12a8862ef265edf680d6",
+      "run": 34767178837,
+      "job": 103750118667,
+      "conclusion": "failure",
+      "classification": "F_SI33_GATE_SCHEMA_PATH_ERROR",
+      "capability_failure": false,
+      "production_or_reference_failure": false,
+      "detail": "The gate looked for production_source_changed at status top level while the first status schema stored it only under exit_report. Canonical fetch and all preceding source-blob checks passed. This status revision adds the same false source-change facts at top level without changing audited source."
+    }
+  ],
   "historical_integrity": {
     "F_VQ28_negative_evidence_retained": true,
     "F_VQ29_negative_evidence_retained": true,
