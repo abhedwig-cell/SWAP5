@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-eb-i15-$$"
+BASE="a5aa6a1c81afe35940567bd0b6af0bf5707594d3"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
@@ -17,6 +18,8 @@ echo 'EB_I15_I04_PRIMITIVE_BYTE_IDENTICAL=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
+import json
+
 src = Path('src/runtime/mod_fmr_bottom_sensible_energy.f90').read_text().lower()
 for forbidden in [
     'mod_kernel_transactions',
@@ -37,8 +40,23 @@ required = [
 for token in required:
     if token not in src:
         raise SystemExit(f'EB_I15_GATE_FAIL missing evaluator contract token: {token}')
+
+p = Path('tests/eb/EB-I15_ARCHITECTURE_AUDIT.json')
+if not p.exists():
+    raise SystemExit('EB_I15_GATE_FAIL architecture audit missing')
+audit = json.loads(p.read_text())
+items = audit.get('invariants', [])
+ids = [item.get('id') for item in items]
+if ids != list(range(1, 31)):
+    raise SystemExit(f'EB_I15_GATE_FAIL architecture invariant ids are not exactly 1..30: {ids}')
+if any(item.get('status') not in ('pass', 'preserved') for item in items):
+    raise SystemExit('EB_I15_GATE_FAIL architecture audit contains unresolved invariant status')
+if audit.get('scope') != 'PURE_CANDIDATE_EVALUATOR_NOT_RUNTIME_PUBLICATION':
+    raise SystemExit('EB_I15_GATE_FAIL architecture scope drift')
+
 print('EB_I15_RUNTIME_DEPENDENCY_DIRECTION=PASS')
 print('EB_I15_EXTERNAL_FAIL_CLOSED_STATIC=PASS')
+print('EB_I15_ARCHITECTURE_INVARIANTS_1_30=PASS')
 PY
 
 for opt in 0 2; do
@@ -82,5 +100,24 @@ echo "EB_I15_OUTPUT_SHA256=$HASH"
 echo 'EB_I15_O0_O2_EXACT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
 
-git diff --check a5aa6a1c81afe35940567bd0b6af0bf5707594d3..HEAD || fail 'branch whitespace check'
+while IFS= read -r path; do
+  [[ -z "$path" ]] && continue
+  case "$path" in
+    src/process/mod_liquid_water_sensible_enthalpy.f90|\
+    src/runtime/mod_fmr_bottom_sensible_energy.f90|\
+    tests/eb/test_eb_i15_bottom_sensible_energy.f90|\
+    tests/eb/run_eb_i15_bottom_sensible_energy_gate.sh|\
+    tests/eb/EB-I15_ARCHITECTURE_AUDIT.json|\
+    tests/eb/EB-I15_STATUS.json|\
+    tests/eb/EB-I15_CLOSURE.md|\
+    .github/workflows/eb-i15-qualification.yml)
+      ;;
+    *)
+      fail "unexpected EB-I15 branch delta: $path"
+      ;;
+  esac
+done < <(git diff --name-only "$BASE"..HEAD)
+
+echo 'EB_I15_EXACT_SCOPE_ALLOWLIST=PASS'
+git diff --check "$BASE"..HEAD || fail 'branch whitespace check'
 echo 'EB_I15_BOTTOM_SENSIBLE_ENERGY_QUALIFICATION_GATE=PASS'
