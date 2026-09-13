@@ -96,12 +96,18 @@ jobs:
       - name: Diagnose physical ON OFF identity
         run: |
           if grep -Eq 'FSI37_FAIL ON/OFF' "$BUILD/o0/output.txt"; then exit 1; fi
-      - name: Diagnose FD state derivative
+      - name: Diagnose FD state convergence
         run: |
-          if grep -Eq 'FSI37_FAIL (FD state derivative convergence|FD state derivative absolute/relative gate)' "$BUILD/o0/output.txt"; then exit 1; fi
-      - name: Diagnose FD bottom flux derivative
+          if grep -Fq 'FSI37_FAIL FD state derivative convergence' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose FD state magnitude
         run: |
-          if grep -Eq 'FSI37_FAIL (FD bottom-flux derivative convergence|FD bottom-flux derivative absolute/relative gate)' "$BUILD/o0/output.txt"; then exit 1; fi
+          if grep -Fq 'FSI37_FAIL FD state derivative absolute/relative gate' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose FD bottom flux convergence
+        run: |
+          if grep -Fq 'FSI37_FAIL FD bottom-flux derivative convergence' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose FD bottom flux magnitude
+        run: |
+          if grep -Fq 'FSI37_FAIL FD bottom-flux derivative absolute/relative gate' "$BUILD/o0/output.txt"; then exit 1; fi
       - name: Diagnose fail closed routes
         run: |
           if grep -Eq 'FSI37_FAIL (unqualified provider physical solve remains valid|unqualified provider derivative fails closed|forced nonacceptance advises retry|retry produces no accepted directional result)' "$BUILD/o0/output.txt"; then exit 1; fi
