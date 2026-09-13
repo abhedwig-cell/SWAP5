@@ -1,4 +1,4 @@
-program test_fgc21_restricted_predictor_corrector_window
+module mod_fgc21_restricted_predictor_corrector_owner_test
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE, &
@@ -20,8 +20,6 @@ program test_fgc21_restricted_predictor_corrector_window
        run_restricted_groundwater_coupling_window, GW_PC_OK, GW_PC_NOT_CONVERGED, GW_PC_INVALID_ORIGIN, &
        GW_PC_PREDICTOR_GROUNDWATER_FAILED
   implicit none
-
-  integer :: failures
 
   type, extends(canonical_state_t) :: dummy_state_t
     real(real64) :: storage = 0.0_real64
@@ -85,19 +83,23 @@ program test_fgc21_restricted_predictor_corrector_window
     procedure :: abort_prepared_backend => dummy_gw_abort_prepared
   end type dummy_groundwater_service_t
 
-  failures = 0
-  call test_converged_commit(failures)
-  call test_nonconverged_rolls_back_everything(failures)
-  call test_stale_origin_fails_before_trials(failures)
-  call test_predictor_groundwater_rejection_is_fail_closed(failures)
-
-  if (failures /= 0) then
-    write(*,'(A,I0)') 'F-GC21 OWNER HARNESS FAILURES=', failures
-    error stop 1
-  end if
-  write(*,'(A)') 'F-GC21 OWNER HARNESS PASS'
-
 contains
+
+  subroutine run_tests()
+    integer :: failures
+
+    failures = 0
+    call test_converged_commit(failures)
+    call test_nonconverged_rolls_back_everything(failures)
+    call test_stale_origin_fails_before_trials(failures)
+    call test_predictor_groundwater_rejection_is_fail_closed(failures)
+
+    if (failures /= 0) then
+      write(*,'(A,I0)') 'F-GC21 OWNER HARNESS FAILURES=', failures
+      error stop 1
+    end if
+    write(*,'(A)') 'F-GC21 OWNER HARNESS PASS'
+  end subroutine run_tests
 
   subroutine test_converged_commit(failures)
     integer, intent(inout) :: failures
@@ -719,4 +721,10 @@ contains
     call check(ieee_is_finite(actual) .and. abs(actual-expected) <= tolerance, message, failures)
   end subroutine check_close
 
+end module mod_fgc21_restricted_predictor_corrector_owner_test
+
+program test_fgc21_restricted_predictor_corrector_window
+  use mod_fgc21_restricted_predictor_corrector_owner_test, only: run_tests
+  implicit none
+  call run_tests()
 end program test_fgc21_restricted_predictor_corrector_window
