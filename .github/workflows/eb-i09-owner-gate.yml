@@ -24,7 +24,7 @@ jobs:
           test "$(git rev-parse "$CANONICAL:src/transaction/mod_transaction_reference.f90")" = 834487df4e7a38c7c8ffd83805d98933714c6977
           test "$(git rev-parse "$CANONICAL:src/process/mod_soil_temperature_contract.f90")" = baa13df3975de2c699b0ec910477bcfa9b47f15e
 
-      - name: Check EB-I09 technical delta
+      - name: Check EB-I09 production and evidence delta
         shell: bash
         run: |
           set -euo pipefail
@@ -33,6 +33,8 @@ jobs:
           cat > allowed.txt <<'EOF'
           .github/workflows/eb-i09-owner-gate.yml
           src/process/mod_local_soil_water_temperature_binding.f90
+          tests/eb/EB-I09_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I09_CONTRACT.md
           tests/test_eb_i09_local_soil_water_temperature_binding.f90
           EOF
           sort -o allowed.txt allowed.txt
@@ -40,6 +42,31 @@ jobs:
           ! grep -Eiq '(open\s*\(|read\s*\(|write\s*\(|\.swp|modflow)' src/process/mod_local_soil_water_temperature_binding.f90
           ! grep -Eiq '(drain|root|groundwater|runoff|irrigation|precipitation|snow)' src/process/mod_local_soil_water_temperature_binding.f90
           ! grep -Eiq 'mod_(energy|liquid_water|oriented_water|external_liquid)' src/process/mod_local_soil_water_temperature_binding.f90
+
+      - name: Validate contract and architecture evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          audit=json.loads(Path('tests/eb/EB-I09_ARCHITECTURE_AUDIT.json').read_text())
+          assert audit['canonical']=='2a0db2524fba6e258316ce82630c60ea1c9c673a'
+          assert [x['id'] for x in audit['audit']]==list(range(1,31))
+          assert all(x['status'] in {'PASS','PARTIAL','PRESERVED','NOT_QUALIFIED'} for x in audit['audit'])
+          for p in ['tests/eb/EB-I09_ARCHITECTURE_AUDIT.json','tests/eb/EB-I09_CONTRACT.md']:
+              text=Path(p).read_text()
+              assert '\u2013' not in text and '\u2014' not in text
+          contract=Path('tests/eb/EB-I09_CONTRACT.md').read_text()
+          for phrase in [
+              'Exact zero outflow requires no thermal field and no meaningful donor node.',
+              'There is no small-transfer tolerance or cutoff.',
+              'The caller that owns the water-transfer semantics must provide the donor node explicitly.',
+              'does not prove by itself that `outflow_amount` and `temperature_view` originate from the same physical trial or accepted interval.',
+              'does not add temperature to `process_hydraulic_view_t`.'
+          ]:
+              assert phrase in contract
+          PY
 
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
