@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "workunit": "F-KT17",
+  "program_authority_target": "F-RG01",
+  "frozen_dimension": {
+    "id": "D01",
+    "name": "Kernel / transactions / generic time / mass",
+    "weight": 8
+  },
+  "baseline_canonical": {
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452"
+  },
+  "fixed_denominator": {
+    "changed": false,
+    "pre_audit_raw_earned": 8.0,
+    "total": 8.0,
+    "pre_audit_raw_percent": 100.0
+  },
+  "qualification_result": {
+    "decision": "KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+    "qualified_100_percent": false,
+    "qualified_state": "HARD_GATE_BLOCKED",
+    "blocking_gap_ids": ["F-KT17-G01"],
+    "blocking_gate": "ABSOLUTE_MASS_CONSERVATION_AND_COMPLETE_MASS_ACCOUNTING",
+    "instruction_to_f_rg01": "Do not represent D01 as qualified 100% completion until F-KT17-G01 is remediated, independently qualified, and admitted/preserved on current canonical. Preserve the fixed denominator and do not substitute a rounded or estimated percentage."
+  },
+  "gap": {
+    "id": "F-KT17-G01",
+    "classification": "MASS_GAP",
+    "secondary_classification": "IMPLEMENTATION_GAP",
+    "summary": "Current generic transaction admission can accept an explicitly incomplete mass ledger when the residual computed from known terms is inside tolerance; the completed interval can then materialize and commit a kernel candidate without a mass-completeness check.",
+    "production_source_change_required_for_closure": true,
+    "minimal_owner": "src/transaction/mod_transaction_reference.f90"
+  },
+  "nonclaims": [
+    "This result does not reduce the frozen v1 denominator.",
+    "This result does not invalidate F-KT16 state/persistence/restart 100% authority.",
+    "This result does not invalidate the independently qualified current predictor-corrector interface conservation contract.",
+    "This result does not claim arbitrary MODFLOW application-class completion.",
+    "This result does not assign a synthetic 99.x completion percentage."
+  ],
+  "audit_evidence": "integration/f-kt/F_KT17_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_COMPLETION_AUDIT.json",
+  "recommended_next_workunit": "F-KT18"
+}
