@@ -1,0 +1,28 @@
+name: F-VQ71 atomic surface publication independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq71-fmr43-atomic-surface-evaporation-publication
+    paths:
+      - 'src/**'
+      - 'reference/**'
+      - 'tests/fvq/test_fvq71_atomic_surface_publication_independent.f90'
+      - 'tests/fvq/fvq71_forbidden_split_surface_publication.f90'
+      - 'tests/fvq/run_fvq71_atomic_surface_publication_independent.sh'
+      - 'integration/f-vq/F-VQ71_PROTOCOL.json'
+      - '.github/workflows/fvq71-atomic-surface-publication-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fvq/run_fvq71_atomic_surface_publication_independent.sh
