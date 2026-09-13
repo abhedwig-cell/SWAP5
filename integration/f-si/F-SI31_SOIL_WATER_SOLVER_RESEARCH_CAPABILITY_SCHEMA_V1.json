@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:swap5:soil-water-solver-research-capability:v1",
+  "title": "SWAP5 SoilWaterSolverResearchContract v1 capability declaration",
+  "description": "Machine-readable fail-closed capability declaration for research soil-water solvers. Contract compliance is not production admission.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "solver_id",
+    "solver_version_or_authority",
+    "contract_id",
+    "contract_version",
+    "research_status",
+    "boundaries",
+    "physics",
+    "grid_geometry",
+    "constitutive_models",
+    "sources_sinks",
+    "process_hydraulic_view",
+    "sensitivities",
+    "transactions",
+    "restart",
+    "time",
+    "diagnostics",
+    "mass_conservation",
+    "restrictions"
+  ],
+  "properties": {
+    "solver_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "solver_version_or_authority": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contract_id": {
+      "const": "SoilWaterSolverResearchContract"
+    },
+    "contract_version": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "research_status": {
+      "enum": [
+        "RESEARCH_ISOLATED",
+        "RESEARCH_CANDIDATE"
+      ]
+    },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "top.prescribed_flux",
+        "top.dynamic_provider",
+        "bottom.prescribed_head",
+        "bottom.prescribed_flux",
+        "bottom.legacy_mode_7",
+        "bottom.legacy_mode_minus2",
+        "bottom_exchange.candidate_flux"
+      ],
+      "properties": {
+        "top.prescribed_flux": { "$ref": "#/$defs/capability" },
+        "top.dynamic_provider": { "$ref": "#/$defs/capability" },
+        "bottom.prescribed_head": { "$ref": "#/$defs/capability" },
+        "bottom.prescribed_flux": { "$ref": "#/$defs/capability" },
+        "bottom.legacy_mode_7": { "$ref": "#/$defs/capability" },
+        "bottom.legacy_mode_minus2": { "$ref": "#/$defs/capability" },
+        "bottom_exchange.candidate_flux": { "$ref": "#/$defs/capability" }
+      }
+    },
+    "physics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assumptions", "excluded_physics"],
+      "properties": {
+        "assumptions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "excluded_physics": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "grid_geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "restrictions"],
+      "properties": {
+        "status": { "$ref": "#/$defs/capabilityStatus" },
+        "restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "constitutive_models": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "supported_ids_or_families", "restrictions"],
+      "properties": {
+        "status": { "$ref": "#/$defs/capabilityStatus" },
+        "supported_ids_or_families": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "sources_sinks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["general_sources_sinks", "root_sink"],
+      "properties": {
+        "general_sources_sinks": { "$ref": "#/$defs/capability" },
+        "root_sink": { "$ref": "#/$defs/capability" }
+      }
+    },
+    "process_hydraulic_view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pressure_head",
+        "water_content",
+        "ponding_depth",
+        "groundwater_level",
+        "additional_quantities"
+      ],
+      "properties": {
+        "pressure_head": { "$ref": "#/$defs/capability" },
+        "water_content": { "$ref": "#/$defs/capability" },
+        "ponding_depth": { "$ref": "#/$defs/capability" },
+        "groundwater_level": { "$ref": "#/$defs/capability" },
+        "additional_quantities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "sensitivities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dh_bottom_dq_bottom"],
+      "properties": {
+        "dh_bottom_dq_bottom": {
+          "allOf": [
+            { "$ref": "#/$defs/capability" },
+            {
+              "type": "object",
+              "properties": {
+                "scope": { "type": "string" },
+                "method": { "type": "string" },
+                "quality_rule": { "type": "string" }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "transactions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_only_committed_base",
+        "distinct_candidate_state",
+        "solver_never_commits",
+        "rollback_without_inverse_mutation",
+        "retry_from_committed_state"
+      ],
+      "properties": {
+        "read_only_committed_base": { "type": "boolean" },
+        "distinct_candidate_state": { "type": "boolean" },
+        "solver_never_commits": { "type": "boolean" },
+        "rollback_without_inverse_mutation": { "type": "boolean" },
+        "retry_from_committed_state": { "type": "boolean" }
+      }
+    },
+    "restart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "persistent_state", "excluded_scratch", "restrictions"],
+      "properties": {
+        "status": { "$ref": "#/$defs/capabilityStatus" },
+        "persistent_state": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "excluded_scratch": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interval_model", "status", "limitations", "deterministic_replay"],
+      "properties": {
+        "interval_model": { "const": "[t0,t1]" },
+        "status": { "$ref": "#/$defs/capabilityStatus" },
+        "limitations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "deterministic_replay": {
+          "enum": ["bitwise", "contract_equivalent", "unsupported"]
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "convergence_status",
+        "work_units",
+        "retry_failure_classification",
+        "fallback_or_restricted_indicator",
+        "mass_residual",
+        "quality_indicator",
+        "execution_route"
+      ],
+      "properties": {
+        "convergence_status": { "type": "boolean" },
+        "work_units": { "type": "boolean" },
+        "retry_failure_classification": { "type": "boolean" },
+        "fallback_or_restricted_indicator": { "type": "boolean" },
+        "mass_residual": { "type": "boolean" },
+        "quality_indicator": { "type": "boolean" },
+        "execution_route": { "type": "boolean" }
+      }
+    },
+    "mass_conservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["storage_change_reported", "boundary_terms_reported", "source_sink_terms_reported", "unrounded_residual_reported", "relaxation_allowed"],
+      "properties": {
+        "storage_change_reported": { "type": "boolean" },
+        "boundary_terms_reported": { "type": "boolean" },
+        "source_sink_terms_reported": { "type": "boolean" },
+        "unrounded_residual_reported": { "type": "boolean" },
+        "relaxation_allowed": { "const": false }
+      }
+    },
+    "restrictions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "capabilityStatus": {
+      "enum": ["supported", "restricted", "unsupported"]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "restrictions"],
+      "properties": {
+        "status": { "$ref": "#/$defs/capabilityStatus" },
+        "restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "research_status": { "const": "RESEARCH_ISOLATED" }
+        }
+      },
+      "then": {
+        "properties": {
+          "transactions": {
+            "properties": {
+              "read_only_committed_base": { "const": true },
+              "distinct_candidate_state": { "const": true },
+              "solver_never_commits": { "const": true },
+              "rollback_without_inverse_mutation": { "const": true },
+              "retry_from_committed_state": { "const": true }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "x-swap5-fail-closed-rules": [
+    "Unsupported, undeclared or out-of-range requested capabilities must fail before committed-state mutation.",
+    "Restricted capabilities must satisfy their declared restrictions or fail closed.",
+    "A numerical policy must not silently substitute different physics.",
+    "Research-contract compliance is not production admission or Full Richards equivalence.",
+    "A local or terminal sensitivity may not be relabelled as a whole-window sensitivity without dedicated qualification."
+  ]
+}
