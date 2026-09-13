@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.fci59.protocol.v1",
+  "work_unit": "F-CI59",
+  "title": "F-MR43 Atomic Surface-Evaporation Accepted Publication Current-Canonical Admission",
+  "restart_canonical": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "production_composition_authority": "2d8b08c06b67132f57b2c757f493d1b31a954a92",
+  "owner_authority": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+  "independent_authority": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+  "independent_workflow_run": 34780009887,
+  "independent_workflow_job": 103785176480,
+  "admitted_product_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649"
+  },
+  "frozen_unchanged_authorities": {
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "required_gates": [
+    "exact two-file production composition and no reference delta",
+    "independent F-VQ71 source-bound replay at O0 and O2",
+    "same-origin stale alternate fail closed",
+    "cross-lineage precommit fail closed",
+    "historical split publication API compile attack fail closed",
+    "no second mass authority or mass regression",
+    "cross-executor accepted publication positive",
+    "canonical moving-preservation workflow updated without removing historical gates",
+    "all architecture invariants relevant to this runtime-only delta remain satisfied"
+  ],
+  "promotion_policy": "Promote only if current canonical is still restart_canonical. Promotion must be a true two-parent merge; no force, squash or rebase. Then perform postimage reconciliation before F-PM09 100 percent rerun."
+}
