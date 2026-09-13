@@ -218,9 +218,13 @@ contains
     class(fmr_bottom_thermal_candidate_t), intent(in) :: self
     integer :: i
 
-    ready = self%initialized .and. allocated(self%samples) .and. size(self%samples) > 0 .and. &
-         ieee_is_finite(self%t0_value) .and. ieee_is_finite(self%t1_value) .and. self%t1_value > self%t0_value
-    if (.not. ready) return
+    ready = .false.
+    if (.not. self%initialized) return
+    if (.not. allocated(self%samples)) return
+    if (size(self%samples) <= 0) return
+    if (.not. ieee_is_finite(self%t0_value) .or. .not. ieee_is_finite(self%t1_value)) return
+    if (self%t1_value <= self%t0_value) return
+    ready = .true.
     if (.not. same_time(self%samples(1)%t0, self%t0_value)) then
       ready = .false.
       return
