@@ -6,6 +6,7 @@ on:
       - work/f-ross01-d1-chat-pilot
     paths:
       - .github/workflows/ross01-gate-j1e-d1-local-terminal-coupling-preconditioner.yml
+      - experiments/ross/run_ross01_gate_j1e_d1_head_space_trust_preconditioner.py
       - experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py
       - integration/f-ross/F-ROSS01_GATE_J1E_D1_LOCAL_TERMINAL_COUPLING_PRECONDITIONER_CONTRACT.json
       - experiments/ross/run_ross01_gate_f_timestep_convergence.py
@@ -39,7 +40,7 @@ jobs:
           out="ross01-j1e-d1-${{ matrix.material }}"
           rm -rf "$out"
           mkdir -p "$out"
-          python3 experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py \
+          python3 experiments/ross/run_ross01_gate_j1e_d1_head_space_trust_preconditioner.py \
             "${{ matrix.material }}" "$out/F-ROSS01_J1E_D1_${{ matrix.material }}_RESULT.json" \
             | tee "$out/F-ROSS01_J1E_D1_${{ matrix.material }}_STDOUT.txt"
       - name: Upload evidence
