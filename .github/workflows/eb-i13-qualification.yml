@@ -1,0 +1,28 @@
+name: EB-I13 bottom thermal carrier qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i13-bottom-thermal-carrier-implementation
+  workflow_dispatch:
+
+jobs:
+  qualify-eb-i13:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: EB-I13 bottom thermal carrier gate
+        run: bash tests/eb/run_eb_i13_bottom_thermal_carrier_gate.sh
+      - name: FPM08D7 runtime compile preservation
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+      - name: FPM08D7 transactional owner preservation
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+      - name: FPM08D7 restart owner preservation
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+      - name: Scope whitespace check
+        run: git diff --check HEAD~7..HEAD
