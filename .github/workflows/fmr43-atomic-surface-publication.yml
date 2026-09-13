@@ -1,0 +1,16 @@
+name: F-MR43 atomic surface accepted publication
+on:
+  push:
+    branches: [work/f-mr43-atomic-surface-evaporation-accepted-publication]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fmr43_atomic_surface_publication.sh
