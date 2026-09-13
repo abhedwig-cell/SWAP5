@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.fsi33.status.v1",
+  "work_unit": "F-SI33",
+  "title": "SWAP5 Full Richards Reference Solver v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "branch": "work/f-si33-full-richards-reference-solver-v1-completion-audit",
+  "phase": "FINAL_COMPLETION_CLOSED_SUBJECT_TO_EXACT_HEAD_GATE",
+  "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE",
+  "closed": true,
+  "completion_percent": 100.0,
+  "frozen_domain": "SWAP5_V1_COMPLETION_MODEL_V1:D03",
+  "frozen_weight": 8.0,
+  "earned_weight": 8.0,
+  "current_canonical": {
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "last_live_recheck": "PASS_EXACT_BEFORE_FINAL_STATUS"
+  },
+  "governance": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01C": "56b86e29e0960e396059caf47c193440d571b709",
+    "fixed_denominator_definition": "971e732551abad86acccfd5f01811d855e51e939"
+  },
+  "artifacts": {
+    "audit": {
+      "path": "integration/f-si/F-SI33_COMPLETENESS_AUDIT.json",
+      "creation_commit": "f1588ba82280a032442ffa2a6848831ef0f2833a"
+    },
+    "completion_authority": {
+      "path": "integration/f-si/F-SI33_FULL_RICHARDS_REFERENCE_SOLVER_V1_COMPLETION_AUTHORITY.json",
+      "creation_commit": "a722d1ce9ade7b50b37cd2d67186f579120a7e2c"
+    },
+    "F_RG01C_completion_result": {
+      "path": "integration/f-si/F-SI33_F_RG01C_COMPLETION_RESULT.json",
+      "creation_commit": "30f8dc72715b6cda4c94170a3862fdb32e7734cc"
+    },
+    "qualification_gate": {
+      "path": "tests/fsi/run_fsi33_full_richards_v1_completion_gate.py",
+      "creation_commit": "aa32eac063a8a4da7f7b2ba0d22d04c6ae4c98d7"
+    },
+    "workflow": {
+      "path": ".github/workflows/fsi33-full-richards-v1-final-qualification.yml",
+      "creation_commit": "81cfb09e4929980fcd808b497cd5de5313401390"
+    }
+  },
+  "exit_report": {
+    "production_reference_binding": "PASS",
+    "solver_interface_isolation": "PASS",
+    "HeadCalc_isolation": "PASS",
+    "scratch_ownership": "PASS",
+    "transaction_state": "PASS",
+    "generic_time": "PASS",
+    "boundary_contracts": "PASS",
+    "nonlinear_linear_solve": "PASS",
+    "temporal_reference_accuracy": "PASS",
+    "mass": "PASS",
+    "restart": "PASS",
+    "MultiSWAP_equivalence": "PASS",
+    "sensitivity": "PASS",
+    "preservation": "PASS",
+    "hard_blockers": [],
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "gap_count": 0,
+    "completion_100_percent": true
+  },
+  "qualification_policy": {
+    "workflow": ".github/workflows/fsi33-full-richards-v1-final-qualification.yml",
+    "gate": "tests/fsi/run_fsi33_full_richards_v1_completion_gate.py",
+    "required_terminal_marker": "FSI33_GATE QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE",
+    "exact_status_head_must_pass": true,
+    "live_canonical_must_still_equal_recorded_authority": true,
+    "source_blob_guards_must_pass": true,
+    "no_self_referential_post_run_status_commit_required": true
+  },
+  "historical_integrity": {
+    "F_VQ28_negative_evidence_retained": true,
+    "F_VQ29_negative_evidence_retained": true,
+    "F_VQ33_negative_evidence_retained": true,
+    "F_VQ34_remediated_positive_authority_used": true,
+    "performance_tail_gap_not_misclassified_as_reference_solver_gap": true
+  },
+  "hard_nonclaims": [
+    "No denominator change or scope reduction.",
+    "No production/reference source change by F-SI33.",
+    "No RossFast or other alternative-solver production qualification.",
+    "No bounded-cost/fallback or throughput completion claim.",
+    "No separate macropore production-completion claim.",
+    "No universal nonlinear temporal true-error bound or default H_budget.",
+    "No whole-window coupling sensitivity claim.",
+    "No arbitrary future MODFLOW, Status AA, energy-balance or future-physics claim."
+  ],
+  "completion_statement": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE"
+}
