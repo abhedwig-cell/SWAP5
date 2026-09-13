@@ -1,0 +1,25 @@
+name: F-CI43P current canonical postimage governance reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci43p-current-canonical-postimage-governance-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-CI43P promoted-postimage governance reconciliation
+        run: bash tests/fci/run_fci43p_current_canonical_postimage_governance_reconciliation.sh

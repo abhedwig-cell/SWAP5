@@ -1,0 +1,17 @@
+name: F-CI21 temporal materialization
+
+on:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+  workflow_dispatch:
+
+jobs:
+  source-and-compile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-CI21 temporal materialization gate
+        run: bash tests/fci/run_fci21_temporal_materialization_gate.sh

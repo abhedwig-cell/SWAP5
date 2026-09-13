@@ -1,0 +1,20 @@
+{
+  "schema":"swap5.fci35_attempt_classification.v1",
+  "work_unit":"F-CI35",
+  "attempt":1,
+  "head":"7b406990c2a56018945f48b7901c0e1ce33f30e1",
+  "workflow_run":34497466250,
+  "job":102939467747,
+  "conclusion":"failure",
+  "failure_text":"FCI35_GATE_FAIL missing heldout n=3",
+  "classification":"QUALIFICATION_WRAPPER_OBSERVABILITY_DEFECT_NOT_SCIENTIFIC_OR_PRODUCTION_DEFECT",
+  "basis":[
+    "Current-canonical source and production/reference immutability checks passed before failure.",
+    "Exact F-MQ29 qualification authority and decision/scope locks passed before failure.",
+    "The pinned F-MQ29 replay completed its own internal held-out checks and returned success; F-CI35 then failed in a redundant outer grep for a private marker that F-MQ29 does not emit to stdout.",
+    "F-MQ29 itself internally greps FMQ29_HELDOUT_N{3,5,9,16,23,33}_ markers before emitting FMQ29_O0/O2=PASS, so absence of those private markers from outer replay stdout is not missing scientific evidence."
+  ],
+  "remediation":{"commit":"692db28996832bdd2a569148bdc45fd98c7612fe","scope":"F-CI35 test wrapper only","production_source_change":false,"reference_change":false,"change":"Remove redundant outer grep for private held-out markers; retain exact F-MQ29 replay and its externally published success contract."},
+  "remediated_run":{"run":34497825051,"job":102940675165,"head":"692db28996832bdd2a569148bdc45fd98c7612fe","conclusion":"success"},
+  "canonical_ref_was_advanced_during_failed_attempt":false
+}

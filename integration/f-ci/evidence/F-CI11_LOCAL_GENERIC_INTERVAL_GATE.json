@@ -1,0 +1,51 @@
+{
+  "classification": "QUALIFIED_TEST_OR_CONTRACT",
+  "day_start_split": {
+    "optimization_levels": ["O0", "O2"],
+    "pass_count": 8,
+    "profile_count": 4
+  },
+  "full_vs_two_half_state_identity_required": false,
+  "generic_interval": {
+    "includes_cross_calendar_day": true,
+    "includes_non_midnight": true,
+    "optimization_levels": ["O0", "O2"],
+    "pass_count": 8,
+    "profile_count": 4
+  },
+  "hard_mass_limit_cm": 1e-06,
+  "materializer_exact_preimage_postimage_pass": true,
+  "max_abs_residual_cm": 1.8590012175467852e-07,
+  "note": "Detailed raw local run matrix remains outside canonical Git; this canonical evidence summary records the qualified assertions and metrics. The earlier F-CI06 header-only standalone comparison is explicitly not qualification evidence.",
+  "o0_o2_identity": true,
+  "representative_temporal_difference": {
+    "cross_day_offset_760_prefix_0_25_duration_1_00": {
+      "full_residual_cm": -8.02212934969404e-08,
+      "max_process_diff": 3.420019213441577,
+      "split_residual_cm": -9.252752175559209e-09
+    },
+    "day_start_offset_760": {
+      "h_diff": 0.013828285486688685,
+      "max_process_diff": 0.14035096130091063,
+      "split_residual_cm": 1.6377508815779152e-07
+    }
+  },
+  "schema_version": 1,
+  "source_basis": {
+    "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "fci06_controlled_port": true,
+    "fci10_mass_formulation": true,
+    "official_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "standalone": {
+    "comparison_basis": "F-CI10_QUALIFIED_MASS_WIRING_CANDIDATE",
+    "fci10_candidate_vs_fci11_identical": true,
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "normalized_swap_wrn_sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567",
+    "note": "The earlier F-CI06 standalone comparison used an incomplete header-only baseline and is not qualification evidence. The direct source parent for the promoted mass wiring is the qualified F-CI10 candidate.",
+    "o0_o2_identical": true
+  },
+  "temporal_error_metric_qualified": false,
+  "work_unit": "F-CI11"
+}

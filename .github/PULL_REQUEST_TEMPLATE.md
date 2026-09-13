@@ -1,6 +1,7 @@
 ## Workstream
 
-- ID: `TX | HY | RT | DOC | VQ | MP | other`
+- ID: `F-CI | F-MQ | TX | HY | RT | DOC | VQ | MP | other`
+- Work unit:
 - Baseline commit/tag:
 
 ## Scope
@@ -18,6 +19,17 @@ State `none` or list each shared interface/type/contract changed. If a shared ar
 ## Architecture invariants affected
 
 List the relevant invariant numbers, or state `none` for a purely documentary/non-architectural change.
+
+## Recovery / checkpoint
+
+Follow `docs/development/workstream-execution-protocol.md`.
+
+- Recovery commit:
+- Persisted postimage:
+- Implementation status: `implemented | persisted | tested | qualified | blocked`
+- Last durably recorded gate:
+- Next incomplete action:
+- [ ] Any timeout-sensitive or expensive gate was started only after the useful postimage was committed and recoverable.
 
 ## Verification / qualification
 

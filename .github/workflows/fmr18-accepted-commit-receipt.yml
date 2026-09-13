@@ -1,0 +1,27 @@
+name: F-MR18 accepted commit receipt qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr18-generic-accepted-commit-receipt
+    paths:
+      - 'src/runtime/mod_fmr_accepted_commit_receipt.f90'
+      - 'tests/fmr/test_fmr18_accepted_commit_receipt.f90'
+      - 'tests/fmr/run_fmr18_accepted_commit_receipt_gate.sh'
+      - '.github/workflows/fmr18-accepted-commit-receipt.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-MR18 accepted commit receipt gate
+        run: bash tests/fmr/run_fmr18_accepted_commit_receipt_gate.sh

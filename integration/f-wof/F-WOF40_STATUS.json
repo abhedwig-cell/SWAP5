@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF40",
+  "title": "WOFOST Crop Transaction True Process-Boundary Restart Qualification",
+  "branch": "work/f-wof40-true-process-restart",
+  "base": "e42273264a8da87a38287a9497861474299e4b7d",
+  "production_implementation": false,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "RESTRICTED_WOFOST_CROP_TRANSACTION_TRUE_PROCESS_BOUNDARY_RESTART_USING_F_KT13_EXTERNAL_RECONSTRUCTION_AND_CANDIDATE_OWNER_PERSISTENCE_API",
+  "qualification": {
+    "definitive_tested_head": "2394431312932df27e52d77b25475f72f11fa38d",
+    "run": 34371941978,
+    "job": 102535083501,
+    "conclusion": "success",
+    "producer_consumer_separate_OS_processes": true,
+    "fresh_committed_state_reconstruction": true,
+    "stale_consumed_event_rejected_after_restart": true,
+    "subsequent_event_continues_after_restart": true,
+    "continuous_vs_restarted_endpoint_exact": true,
+    "retired_accepted_window_not_persisted": true,
+    "negative_payload_count": 10,
+    "negative_payloads_fail_closed": true,
+    "O0_O2_external_representation_identity": true,
+    "F_WOF38_preserved": true,
+    "F_WOF39_preserved": true
+  },
+  "production_binding": {
+    "F_KT13_external_reconstruction_source_present": true,
+    "WOFOST_owner_persistence_API_in_production_source": false,
+    "owner_persistence_API_current_form": "QUALIFICATION_TIME_CANDIDATE_MATERIALIZATION",
+    "external_codec_current_form": "QUALIFICATION_ADAPTER_OUTSIDE_KERNEL",
+    "production_restart_format_established": false
+  },
+  "persistent_state_boundary": {
+    "kernel_lineage_revision_time": true,
+    "crop_owner_continuation": true,
+    "last_consumed_event_receipt": true,
+    "retired_accepted_window_cache": false,
+    "parameters": false,
+    "forcing": false,
+    "solver_scratch": false,
+    "derived_crop_views": false
+  },
+  "scope_holds": {
+    "single_kernel_preserved": true,
+    "kernel_IO_separation_preserved": true,
+    "crop_physics_changed": false,
+    "water_mass_accounting_changed": false,
+    "mass_tolerance_relaxed": false,
+    "mid_transaction_restart_claimed": false,
+    "full_MultiSWAP_restart_claimed": false,
+    "canonical_promotion": false
+  },
+  "evidence": "integration/f-wof/F-WOF40_QUALIFICATION_EVIDENCE.json",
+  "closeout_docs_begin": "2308992be60f3b1dd54a160e511d9e8ca51b512d",
+  "post_test_closeout_docs_only": true,
+  "not_qualified": [
+    "production binding of owner-controlled WOFOST persistence API",
+    "production SWAP-wide restart serialization or file format",
+    "all WOFOST optional state layouts",
+    "active unretired accepted-window persistence",
+    "mid-transaction trial/candidate persistence",
+    "full MultiSWAP checkpoint/restart",
+    "canonical promotion"
+  ],
+  "recommended_next": "F-WOF41 should materialize the already-qualified owner-controlled persistence view and reconstruction APIs directly in production owner modules, remove qualification-time source generation from the positive path, and rerun the complete F-WOF40 process-boundary qualification unchanged as a preservation gate.",
+  "affected_invariants": [1,2,3,4,5,7,8,9,21,23,27,29,30],
+  "decision": "QUALIFIED_TRUE_PROCESS_RESTART_BEHAVIOR_WITH_OWNER_PERSISTENCE_API_CANDIDATE_NOT_YET_PRODUCTION_BOUND",
+  "status": "QUALIFIED_RESTRICTED_TRUE_PROCESS_RESTART_CANDIDATE_PRODUCTION_OWNER_API_BINDING_OPEN"
+}

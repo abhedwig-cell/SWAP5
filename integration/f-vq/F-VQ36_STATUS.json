@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ36",
+  "title": "Independent Qualification of F-MR23 Generic-Time Reference-ET Runtime Binding",
+  "branch": "qualification/f-vq36-fmr23-reference-et-runtime-binding",
+  "status": "QUALIFIED_INDEPENDENT_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING",
+  "decision": "QUALIFIED_INDEPENDENT_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING",
+  "candidate_closeout": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
+  "candidate_tested_head": "3965b15ad0432b46134513eb13ec02a17f7d6b17",
+  "candidate_runtime_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+  "upstream_reference_et_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+  "qualification_tested_head": "11e4b98ec0beb386306fc75f0bcdc812d7e0754a",
+  "workflow_run_id": 34452333985,
+  "workflow_job_id": 102790680355,
+  "workflow_conclusion": "success",
+  "independent_grid_cases": 13824,
+  "qualification_output_sha256": "551d7c7dbdc2610529230d42205046bfc55b930823d460a480f6c9304cde283a",
+  "production_source_changed_by_fvq36": false,
+  "owner_tests_changed_by_fvq36": false,
+  "qualified_scope": "RESTRICTED_REFERENCE_ET_POTENTIAL_DEMAND_RATES_GENERIC_CONTAINED_RUNTIME_INTERVAL_WITH_EXPLICIT_FORCING_VALIDITY_SPAN",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "candidate_tested": true,
+    "independently_qualified": true,
+    "root_uptake_bound": false,
+    "mass_ledger_bound": false,
+    "canonical_admitted": false
+  },
+  "evidence": "integration/f-vq/F-VQ36_QUALIFICATION.json",
+  "not_qualified": [
+    "root-uptake composition",
+    "ptra ownership reconciliation with crop_root_uptake_input_t",
+    "actual evaporation",
+    "interception",
+    "mass-ledger binding",
+    "accepted-interval rate integration",
+    "canonical admission"
+  ],
+  "blocking_architecture_issue_for_root_uptake_composition": "crop_root_uptake_input_t already contains potential_transpiration. A separate ownership reconciliation must establish one authoritative ptra producer before F-MR23 is connected to root uptake.",
+  "next_action": "Use a separate canonical-admission workunit to transplant the exact qualified F-MR23 runtime source onto the current canonical lineage. Keep ptra-to-root-uptake composition blocked until the ownership seam is explicitly reconciled."
+}

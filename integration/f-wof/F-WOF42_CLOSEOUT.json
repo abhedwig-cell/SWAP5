@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF42",
+  "title": "Crop Persistence Layout Completeness Closeout",
+  "decision": "QUALIFIED_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_READY_FOR_NEXT_RUNTIME/CANONICAL_COMPOSITION",
+  "tested_source": {
+    "head": "ec19be20e8ba71b94b54e8dd6c7d185aac52baa5",
+    "tree": "d1d2085a549a60a5c566f700d24e0bf7ec98d5f2",
+    "workflow_run": 34374672539,
+    "conclusion": "success"
+  },
+  "closeout_chain": {
+    "qualification_evidence_commit": "bba01f9c14c6df5e586a9ff1e0a5f0247f9fed5f",
+    "status_commit": "5305c7b46047464aba4ccad3463c7b4000f79bff"
+  },
+  "source_after_test": "NO_PRODUCTION_SOURCE_MUTATION; CLOSEOUT_ARTIFACTS_ONLY",
+  "qualified": true,
+  "production_persisted": true,
+  "tested": true,
+  "canonical_admitted": false,
+  "next_action": "Reconcile F-WOF42 production lineage and dependencies in F-CI20. Do not open a new WOF production workunit solely because F-WOF42 is closed.",
+  "nonclaims": [
+    "no new crop physics",
+    "no kernel file format",
+    "no cross-version schema migration",
+    "no full MultiSWAP checkpoint orchestration",
+    "no canonical promotion by this closeout"
+  ]
+}

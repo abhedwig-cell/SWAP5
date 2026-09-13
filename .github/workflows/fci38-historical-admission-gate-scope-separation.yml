@@ -1,0 +1,240 @@
+name: F-CI38 Historical Admission Gate Scope Separation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci38-historical-admission-gate-scope-separation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governance-scope:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact F-CI37 canonical source authority and governance-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=85e17bb7ca26d2df070f99b2bf16ecf0abebec19
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --quiet "$BASE"..HEAD -- src reference tests tools
+          mapfile -t changed < <(git diff --name-only "$BASE"..HEAD)
+          for path in "${changed[@]}"; do
+            case "$path" in
+              .github/workflows/fci-canonical.yml|\
+              .github/workflows/fci34-fmr31-root-attribution-canonical-admission.yml|\
+              .github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml|\
+              .github/workflows/fci35-parallel-restart-current-canonical-admission.yml|\
+              .github/workflows/fci36-divdra-active-runtime-canonical-admission.yml|\
+              .github/workflows/fci37-parallel-root-uptake-canonical-admission.yml|\
+              .github/workflows/fci37p-current-canonical-governance-reconciliation.yml|\
+              .github/workflows/fci38-historical-admission-gate-scope-separation.yml|\
+              integration/f-ci/F-CI38_GOVERNANCE.json|\
+              integration/f-ci/F-CI38_ARCHITECTURE_AUDIT.json|\
+              integration/f-ci/F-CI38_STATUS.json) ;;
+              *) echo "FCI38_FAIL non-governance delta: $path" >&2; exit 38 ;;
+            esac
+          done
+          echo 'FCI38_EXACT_FCI37_SOURCE_AUTHORITY=PASS'
+          echo 'FCI38_ZERO_PRODUCTION_REFERENCE_TEST_TOOL_DELTA=PASS'
+          echo 'FCI38_EXACT_GOVERNANCE_ONLY_ALLOWLIST=PASS'
+      - name: Verify historical gate bodies and scientific runners are unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=85e17bb7ca26d2df070f99b2bf16ecf0abebec19
+          python3 - "$BASE" <<'PY'
+          from pathlib import Path
+          import subprocess, sys
+          base=sys.argv[1]
+          workflows=[
+            '.github/workflows/fci34-fmr31-root-attribution-canonical-admission.yml',
+            '.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml',
+            '.github/workflows/fci35-parallel-restart-current-canonical-admission.yml',
+            '.github/workflows/fci36-divdra-active-runtime-canonical-admission.yml',
+            '.github/workflows/fci37-parallel-root-uptake-canonical-admission.yml',
+            '.github/workflows/fci37p-current-canonical-governance-reconciliation.yml',
+          ]
+          for path in workflows:
+              old=subprocess.check_output(['git','show',f'{base}:{path}'], text=True)
+              new=Path(path).read_text()
+              assert old[old.index('jobs:\n'):] == new[new.index('jobs:\n'):], path
+          runners=[
+            'tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh',
+            'tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh',
+            'tests/fci/run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh',
+            'tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh',
+            'tests/fci/run_fci37p_current_canonical_governance_reconciliation.sh',
+          ]
+          for path in runners:
+              old=subprocess.check_output(['git','rev-parse',f'{base}:{path}'], text=True).strip()
+              new=subprocess.check_output(['git','rev-parse',f'HEAD:{path}'], text=True).strip()
+              assert old == new, path
+          print('FCI38_HISTORICAL_JOB_BODIES_BYTE_IDENTICAL=PASS')
+          print('FCI38_HISTORICAL_SCIENTIFIC_RUNNERS_BYTE_IDENTICAL=PASS')
+          PY
+      - name: Verify class-A historical trigger isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          expected={
+            '.github/workflows/fci34-fmr31-root-attribution-canonical-admission.yml':
+              'qualification/f-ci34-current-canonical-root-attribution-admission',
+            '.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml':
+              'qualification/f-ci34p-root-attribution-post-promotion-reconciliation',
+            '.github/workflows/fci35-parallel-restart-current-canonical-admission.yml':
+              'qualification/f-ci35-parallel-committed-restart-current-canonical-admission',
+            '.github/workflows/fci36-divdra-active-runtime-canonical-admission.yml':
+              'qualification/f-ci36-fmr36-divdra-active-runtime-canonical-admission',
+            '.github/workflows/fci37-parallel-root-uptake-canonical-admission.yml':
+              'qualification/f-ci37-fmr35-parallel-root-uptake-canonical-admission',
+            '.github/workflows/fci37p-current-canonical-governance-reconciliation.yml':
+              'qualification/f-ci37p-current-canonical-postimage-governance-reconciliation',
+          }
+          for path, branch in expected.items():
+              text=Path(path).read_text()
+              header=text.split('jobs:\n',1)[0]
+              assert '- integration/f-ci-canonical' not in header, path
+              assert f'- {branch}' in header, path
+              assert 'workflow_dispatch:' in header, path
+          p=Path('.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml').read_text()
+          header=p.split('jobs:\n',1)[0]
+          assert 'pull_request:' not in header
+          print('FCI38_CLASS_A_HISTORICAL_TRIGGER_ISOLATION=PASS')
+          PY
+      - name: Verify class-B moving preservation and class-C broad ownership
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/fci-canonical.yml').read_text()
+          assert '- integration/f-ci-canonical' in p
+          assert 'frozen-fci34-root-attribution-authority:' in p
+          assert 'ref: e900e6115a6bf8b65af8460eb3e336257be4d1bf' in p
+          assert 'frozen-fci36-divdra-active-runtime-authority:' in p
+          assert 'ref: 8fa79a70a9faccaf8b63826df607a685eb75b046' in p
+          assert 'frozen-fci37-parallel-root-uptake-authority:' in p
+          assert 'ref: 85e17bb7ca26d2df070f99b2bf16ecf0abebec19' in p
+          assert 'current-restricted-canonical-preservation:' in p
+          current=p.split('current-restricted-canonical-preservation:',1)[1]
+          forbidden=[
+            'run_fci34_fmr31_root_attribution_canonical_admission.sh',
+            'run_fci35_parallel_restart_current_canonical_admission.sh',
+            'run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh',
+            'run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh',
+            'git diff --name-only',
+            'git diff --quiet',
+            'HEAD:src)" =',
+            'HEAD:reference)" ='
+          ]
+          assert not any(x in current for x in forbidden), [x for x in forbidden if x in current]
+          required=[
+            'git merge-base --is-ancestor "$AUTH" HEAD',
+            'dependency_surface=(',
+            'src/runtime/mod_fmr_serialized_multiswap_runtime.f90',
+            'src/runtime/mod_fmr_divdra_serialized_runtime.f90',
+            'src/runtime/mod_fmr_parallel_root_uptake_pool.f90',
+            'src/runtime/mod_fmr_committed_restart.f90',
+            'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
+          ]
+          assert all(x in current for x in required)
+          print('FCI38_CLASS_B_MOVING_PRESERVATION=PASS')
+          print('FCI38_CLASS_C_BROAD_CANONICAL_OWNERSHIP=PASS')
+          PY
+      - name: Verify machine-readable governance and all 30 architecture invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          g=json.load(open('integration/f-ci/F-CI38_GOVERNANCE.json', encoding='utf-8'))
+          a=json.load(open('integration/f-ci/F-CI38_ARCHITECTURE_AUDIT.json', encoding='utf-8'))
+          s=json.load(open('integration/f-ci/F-CI38_STATUS.json', encoding='utf-8'))
+          assert g['source_authority']['head']=='85e17bb7ca26d2df070f99b2bf16ecf0abebec19'
+          assert g['source_authority']['decision']=='QUALIFIED_FINAL_FCI37_CANONICAL_AUTHORITY_ESTABLISHED'
+          assert [x['classification_primary'] for x in g['same_head_red_classification']] == [
+              '2_STALE_HISTORICAL_ADMISSION_GATE',
+              '2_STALE_HISTORICAL_RECONCILIATION_GATE'
+          ]
+          assert g['hard_rules']['production_src_changed'] is False
+          assert g['hard_rules']['reference_source_changed'] is False
+          assert g['hard_rules']['scientific_tolerances_changed'] is False
+          assert g['hard_rules']['historical_qualification_decisions_changed'] is False
+          assert g['hard_rules']['canonical_promoted_by_fci38'] is False
+          assert a['overall']=='NO_ADVERSE_ARCHITECTURE_DELTA_GOVERNANCE_ONLY'
+          assert [x['id'] for x in a['invariants']] == list(range(1,31))
+          assert all(x['status']=='NO_ADVERSE_DELTA_GOVERNANCE_ONLY' for x in a['invariants'])
+          assert s['canonical_promotion']=='SEPARATE_SERIAL_GOVERNANCE_ACTION_NOT_PART_OF_FCI38_QUALIFICATION'
+          assert s['exit_target']=='QUALIFIED_CANONICAL_GATE_SCOPE_SEPARATION_NO_SCIENTIFIC_OR_PRODUCTION_DELTA'
+          print('FCI38_MACHINE_READABLE_GOVERNANCE=PASS')
+          print('FCI38_ARCHITECTURE_INVARIANTS_30_OF_30=PASS')
+          PY
+
+  frozen-fci34-replay:
+    needs: governance-scope
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e900e6115a6bf8b65af8460eb3e336257be4d1bf
+          fetch-depth: 0
+      - name: Replay immutable F-CI34 admission authority
+        run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
+
+  frozen-fci35-replay:
+    needs: governance-scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 43790409c689c8ceca372794a1ff3244254c04e5
+          fetch-depth: 0
+      - name: Replay immutable F-CI35 admission authority
+        run: bash tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh
+
+  frozen-fci36-replay:
+    needs: governance-scope
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8fa79a70a9faccaf8b63826df607a685eb75b046
+          fetch-depth: 0
+      - name: Replay immutable F-CI36 admission authority
+        run: bash tests/fci/run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh
+
+  frozen-fci37-replay:
+    needs: governance-scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 85e17bb7ca26d2df070f99b2bf16ecf0abebec19
+          fetch-depth: 0
+      - name: Replay immutable final F-CI37 admission authority
+        env:
+          FCI37_EVIDENCE_DIR: _fci38_fci37_replay
+        run: bash tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh
+
+  qualification-closeout:
+    needs:
+      - governance-scope
+      - frozen-fci34-replay
+      - frozen-fci35-replay
+      - frozen-fci36-replay
+      - frozen-fci37-replay
+    runs-on: ubuntu-24.04
+    steps:
+      - name: F-CI38 qualification decision
+        run: |
+          echo 'FCI38_DECISION=QUALIFIED_CANONICAL_GATE_SCOPE_SEPARATION_NO_SCIENTIFIC_OR_PRODUCTION_DELTA'

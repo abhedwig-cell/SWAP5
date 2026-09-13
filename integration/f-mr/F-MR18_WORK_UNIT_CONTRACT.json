@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR18",
+  "title": "Generic Accepted-Commit Receipt and Transaction-Safe Side-Effect Handoff",
+  "branch": "work/f-mr18-generic-accepted-commit-receipt",
+  "base": {
+    "commit": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
+    "source_lineage": "F-WOF35 composed postimage plus F-WOF36 metadata-only owner closeout"
+  },
+  "trigger": {
+    "from": "F-WOF36 Gate A",
+    "decision": "QUALIFIED_NEGATIVE_SHARED_RUNTIME_OWNER_SEAM_REQUIRED",
+    "reason": "The physical F-KT commit point is owned by F-MR/F-KT. A domain-specific postcommit wrapper cannot guarantee that expected side-effect admission failures occur before physical publication."
+  },
+  "goal": "Qualify a generic, domain-independent runtime seam that emits non-forgeable proof of one actual successful F-KT candidate commit, while keeping every expected failure condition before physical publication. The seam must be sufficient for domain owners to prevalidate trial-local metadata before commit and perform a total/non-recoverable-error publication after receipt issuance without moving F-KT commit authority out of the kernel transaction owner.",
+  "gate_A_design_selection": {
+    "candidates": [
+      {
+        "name": "postcommit callback or observer",
+        "initial_position": "DISFAVORED",
+        "risk": "Arbitrary domain callback code can fail after physical state publication, creating a normal-error partial composition state."
+      },
+      {
+        "name": "generic accepted commit receipt",
+        "initial_position": "PREFERRED_CANDIDATE",
+        "reason": "Runtime can derive immutable provenance only after did_commit=true, with no domain import or domain mutation in the physical commit path. Domain-specific expected errors can be prevalidated before commit."
+      },
+      {
+        "name": "embed all optional domain side effects inside kernel physical state",
+        "initial_position": "NOT_SELECTED_FOR_THIS_WORKUNIT",
+        "risk": "Would broaden kernel state ownership and couple generic physical publication to optional process-state composition before necessity is established."
+      }
+    ],
+    "questions": [
+      "Can a receipt be generated only from a successful actual F-KT commit and remain non-forgeable outside F-MR?",
+      "Can its lineage, origin revision, committed revision, t0 and t1 be source-bound without changing F-KT semantics?",
+      "Can all receipt validation that may return a normal status occur before kernel_commit_candidate?",
+      "Can the postcommit receipt materialization be total and allocation-free?",
+      "Can rejected and commit-rejected candidates produce no ready receipt?",
+      "Can receipt support remain optional with no persistent per-column allocation for inactive domains?",
+      "Can MultiSWAP ordering and A-B-A replay remain deterministic?"
+    ]
+  },
+  "candidate_receipt_contract": {
+    "type": "fmr_accepted_commit_receipt_t",
+    "fields_private": true,
+    "ready": true,
+    "provenance": [
+      "lineage_id",
+      "origin_revision",
+      "committed_revision",
+      "t0",
+      "t1"
+    ],
+    "creation_authority": "F-MR commit helper only after did_commit=true",
+    "expected_relation": "committed_revision = origin_revision + 1",
+    "time_relation": "receipt t0/t1 are exactly the candidate origin interval admitted by F-KT",
+    "persistent_column_state": false,
+    "solver_scratch": false,
+    "domain_payload": false,
+    "calendar_dependency": false
+  },
+  "candidate_runtime_composition": {
+    "precommit": [
+      "capture checkpoint",
+      "physical trial",
+      "mass/candidate checks",
+      "domain owner may separately prevalidate its attempt-local payload against checkpoint/candidate provenance"
+    ],
+    "commit": "existing F-KT fmr_commit_candidate/kernel_commit_candidate remains authoritative and unchanged unless evidence proves a minimal API extension is required",
+    "postcommit": "on did_commit=true, produce receipt by total assignment from already prevalidated candidate/checkpoint metadata or authoritative committed provenance; no domain callback is invoked",
+    "reject": "receipt remains not-ready and domain attempt-local scratch is discarded by its owner"
+  },
+  "hard_holds": [
+    "No WOFOST, snow, irrigation or other process-specific imports in the generic receipt module.",
+    "Do not weaken F-KT lineage, revision, time, mass or candidate validation.",
+    "Do not make a receipt sufficient to forge or directly mutate committed state.",
+    "Do not allocate optional domain state for inactive columns.",
+    "Do not claim crash/restart atomicity for external side effects; restart ownership remains a separate gate.",
+    "Do not change physics, numerical policy or mass accounting.",
+    "Do not move canonical integration refs in this workunit."
+  ],
+  "qualification_after_gate_A": [
+    "real commit creates exactly one ready receipt",
+    "commit rejection creates no ready receipt",
+    "stale revision, lineage mismatch and time mismatch create no ready receipt",
+    "receipt provenance exactly matches checkpoint/candidate/committed transition",
+    "no postcommit normal-error branch in receipt creation",
+    "O0/O2 identity",
+    "F-KT09 transaction regression",
+    "F-WOF35 composition preservation regression",
+    "single-column and MultiSWAP deterministic replay",
+    "source scan proving no domain-specific dependency"
+  ],
+  "affected_invariants": [3,4,5,6,7,8,9,13,16,23,25,26,27,28,29,30]
+}

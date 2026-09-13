@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.fci53p_evidence.v1",
+  "work_unit": "F-CI53P",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "prepromotion_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+  "production_composition": "e0e8462c0d09034dcbdadb99ec16670667d37715",
+  "fci53_qualified_admission_head": "da401b186a3b7f8a1f93881fa61ad45137561f99",
+  "source_admission_postimage": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+  "owner_authority": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+  "f_vq61_authority": "e83fe9a4955275935903730c4484c77fb0b117ff",
+  "f_vq60_frozen_blocked_authority": "773b1dec23957f2d86648b82ab76f8daede2cbbc",
+  "admitted_source_delta": [
+    ".github/workflows/fci53-gc18r-current-canonical-admission.yml",
+    "integration/f-ci/F-CI53_ARCHITECTURE_AUDIT.json",
+    "integration/f-ci/F-CI53_PRE_REGISTRATION.json",
+    "integration/f-ci/F-CI53_STATUS.json",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90",
+    "tests/fci/run_fci53_gc18r_current_canonical_admission.sh"
+  ],
+  "qualified_blobs": {
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+  },
+  "fci53_dedicated_qualification": {
+    "initial_run": 34691447786,
+    "initial_job": 103547290726,
+    "initial_conclusion": "success",
+    "status_revalidation_run": 34691486613,
+    "status_revalidation_job": 103547391060,
+    "status_revalidation_conclusion": "success",
+    "final_exact_status_run": 34691514702,
+    "final_exact_status_conclusion": "success"
+  },
+  "fci53_broad_prepromotion": {
+    "run": 34691542403,
+    "conclusion": "success"
+  },
+  "fci53_postpromotion_broad_canonical": {
+    "run": 34691652502,
+    "head": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103548028821,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "fci53p_qualification": {
+    "first_green_head": "c60ce91313cfb1e1ce77b6a8e7b7c401e4178a44",
+    "first_green_run": 34692471190,
+    "first_green_job": 103550064079,
+    "first_green_conclusion": "success",
+    "qualified_status_head": "55c2f665e470c36b7738d05e726e2745766e77bc",
+    "qualified_status_run": 34692515420,
+    "qualified_status_job": 103550175991,
+    "qualified_status_conclusion": "success"
+  },
+  "fci53p_broad_prepromotion": {
+    "pull_request": 87,
+    "head": "55c2f665e470c36b7738d05e726e2745766e77bc",
+    "base": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+    "run": 34692558717,
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103550467944,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "fci53p_promotion": {
+    "promoted_reconciliation_head": "5a5ad00bd4e3f160043c8c397f3864019104de0c",
+    "first_parent": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+    "second_parent": "55c2f665e470c36b7738d05e726e2745766e77bc",
+    "tree": "237d8665b805c330ec44626a3a0b857b38816b40",
+    "true_two_parent_governance_merge": true,
+    "production_source_changed": false,
+    "reference_changed": false,
+    "canonical_workflow_changed": false
+  },
+  "fci53p_postpromotion_broad_canonical": {
+    "run": 34692710169,
+    "head": "5a5ad00bd4e3f160043c8c397f3864019104de0c",
+    "event": "push",
+    "conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103550897155,
+    "current_restricted_canonical_preservation_conclusion": "success",
+    "supplementary_fci51p_r3_moving_preservation_run": 34692710173,
+    "supplementary_fci51p_r3_moving_preservation_conclusion": "success"
+  },
+  "reconciliation_classification": {
+    "stale_moving_preservation_failure_observed": false,
+    "moving_preservation_reconciliation_required": false,
+    "fci_canonical_workflow_change_required": false,
+    "production_regression": false,
+    "scientific_regression": false,
+    "transaction_regression": false,
+    "mass_regression": false,
+    "reference_regression": false,
+    "classification": "POSTIMAGE_ALREADY_GREEN_RECONCILIATION_AND_CLOSEOUT_ONLY"
+  },
+  "architecture_result": "30_OF_30_NO_ADVERSE_DELTA",
+  "mass_conservation": "HARD_UNCHANGED_WITH_EXACTLY_ONCE_PUBLICATION_GUARD_PRESERVED",
+  "scope_statement": "F-CI53P reconciles and closes the already admitted F-CI53 transactional groundwater exchange postimage. Moving-preservation repair was neither needed nor performed because both the admitted F-CI53 postimage and the promoted F-CI53P governance postimage passed current-restricted-canonical-preservation.",
+  "hard_nonclaims": [
+    "No MODFLOW adapter, aquifer solver or physical groundwater response model is admitted.",
+    "No end-to-end production coupling admission or full predictor-corrector convergence is claimed.",
+    "No process-crash recovery or distributed transaction protocol is claimed.",
+    "No large-batch MultiSWAP throughput qualification is claimed.",
+    "Physical aquifer and end-to-end coupled mass closure remain later integration responsibilities.",
+    "RB1 remains frozen."
+  ]
+}

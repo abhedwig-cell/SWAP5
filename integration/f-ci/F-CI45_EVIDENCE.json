@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.fci_evidence.v1",
+  "work_unit": "F-CI45",
+  "canonical_base": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "composition_head": "97515d75c96e9766f3b8697a7b40b28ec237118f",
+  "first_green_exact_head": "de1bb42e096a870141db543654b05732d13dd4b8",
+  "first_green_run": 34633372426,
+  "first_green_job": 103375339565,
+  "first_green_conclusion": "success",
+  "production_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "authorities": {
+    "F_MR39_source": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+    "F_MR39_closeout": "843af75b8545b0644aece5cf58b5f499d7b5b600",
+    "F_VQ58": "5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+    "F_MR40R_current_canonical_requalification_head": "e9a7aeb1632ab9ce9ba7d0d56730f05a1ee7834a",
+    "F_MR40R_closeout_branch_head_observed": "2d7bf2aef4cda203d9e613f68a9b0f8ae3eb8bc3"
+  },
+  "corroborating_F_MR40R": {
+    "qualification_run": 34632934767,
+    "qualification_job": 103373908605,
+    "closeout_integrity_run": 34633221146,
+    "closeout_integrity_job": 103374841816,
+    "result": "PASS",
+    "meaning": "The same two immutable F-MR39 runtime blobs were independently recomposed onto the exact F-CI44P canonical base and reproduced the F-MR39 runtime fingerprint while preserving the F-CI44 contract oracle."
+  },
+  "exact_head_gate_results": {
+    "prepromotion_canonical_race_guard": "PASS",
+    "exact_FMR39_two_blob_production_scope": "PASS",
+    "reference_immutable": "PASS",
+    "FMR39_closed_authority_pinned": "PASS",
+    "science_kernel_transaction_hydraulic_and_FCI44P_seams_pinned": "PASS",
+    "all_30_architecture_invariants_explicitly_reconciled": "PASS",
+    "transactional_thermal_state_architecture": "PASS",
+    "worker_local_thermal_scratch": "PASS",
+    "Richards_then_thermal_order": "PASS",
+    "water_storage_excludes_thermal_energy": "PASS",
+    "restart_fail_closed_thermal_shape": "PASS",
+    "disabled_path_FMR19_O0": "PASS",
+    "disabled_path_FMR19_O2": "PASS",
+    "runtime_repeated_run_and_O0_O2_determinism": "PASS",
+    "F_VQ58_exact_scientific_authority_replay": "PASS",
+    "exact_head_immutable_source_assertion": "PASS"
+  },
+  "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+  "holds": {
+    "parallel_throughput_claim": false,
+    "snow_plus_thermal_profile_admitted": false,
+    "frost_or_latent_heat_admitted": false,
+    "production_SWAP_MODFLOW_admission": false,
+    "numeric_application_accuracy_policy_set": false,
+    "mass_conservation_relaxed": false,
+    "RB1_reopened": false
+  }
+}

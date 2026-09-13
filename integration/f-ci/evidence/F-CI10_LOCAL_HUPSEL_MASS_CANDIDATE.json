@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI10",
+  "classification": "QUALIFIED_TEST_OR_CONTRACT",
+  "production_integration_status": "NOT_YET_MATERIALIZED",
+  "source_basis": {
+    "official_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "fci06_controlled_port": true,
+    "candidate_integral_postimage_sha256": "1512362dc18a737efd0fd30d4d441e1c77be27aa2ea7e8d9e84eecbf71b5e30d",
+    "candidate_swap_postimage_sha256": "b8637e1bc374a034b79358e6c7215f17ad06b5398a90739e902b03ca1bee91c9",
+    "candidate_swap_main_postimage_sha256": "d492c0cd997af828f0b393fc892fcdaa405d8f977eb4c9e5cc4dfc14e9491665"
+  },
+  "qualified_profile": {
+    "case": "Hupselbrook",
+    "SWCROP": 1,
+    "SWIRFIX": 1,
+    "SWMACRO": 0,
+    "SWSNOW": 0,
+    "SWDRA": 1,
+    "SWHEA": 1,
+    "SWSOLU": 1
+  },
+  "method": "Dedicated worker/job-local unrounded trial accumulator fed from the same timestep terms used by MOD_integral; storage = volact + pond + sicact for this qualified profile.",
+  "results": [
+    {"optimization":"O0","offset":499,"total_in":0.25,"total_out":0.36570642484478927,"residual_cm":3.206964749313812e-09},
+    {"optimization":"O0","offset":520,"total_in":0.25,"total_out":0.14261057259562993,"residual_cm":-2.680584643144357e-10},
+    {"optimization":"O0","offset":760,"total_in":0.9799999999999999,"total_out":0.24632637516228845,"residual_cm":1.587818254655815e-07},
+    {"optimization":"O0","offset":800,"total_in":0.0,"total_out":0.06126939255298566,"residual_cm":-3.153502459163349e-11},
+    {"optimization":"O2","offset":499,"total_in":0.25,"total_out":0.36570642484478927,"residual_cm":3.206964749313812e-09},
+    {"optimization":"O2","offset":520,"total_in":0.25,"total_out":0.14261057259562993,"residual_cm":-2.680584643144357e-10},
+    {"optimization":"O2","offset":760,"total_in":0.9799999999999999,"total_out":0.24632637516228845,"residual_cm":1.587818254655815e-07},
+    {"optimization":"O2","offset":800,"total_in":0.0,"total_out":0.06126939255298566,"residual_cm":-3.153502459163349e-11}
+  ],
+  "max_abs_residual_cm": 1.587818254655815e-07,
+  "hard_mass_limit_cm": 1e-06,
+  "o0_o2_identity": true,
+  "result": "PASS_CANDIDATE_MASS_FORMULATION",
+  "restriction": "This evidence qualifies the formulation and source-port candidate only. It does not claim that the legacy timestep accumulator is already canonical production source."
+}

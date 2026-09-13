@@ -1,0 +1,126 @@
+{
+  "schema": "swap5.canonical_post_promotion_reconciliation_plan.v2",
+  "work_unit": "F-CI34P",
+  "branch": "qualification/f-ci34p-root-attribution-post-promotion-reconciliation",
+  "base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "goal": "Reconcile all moving canonical governance with the already source-admitted F-CI34 root-attribution runtime while preserving all prior canonical production and historical qualification authorities.",
+  "classification": "GOVERNANCE_AND_GATE_RECONCILIATION_ONLY",
+  "authorities": {
+    "prior_canonical": "545e07c65338b9fe61b963468675c41f3e931816",
+    "f_ci34_promoted_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+    "f_mr31_production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "f_vq50_closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "f_ci34r_closeout": "0960657594a987e03de7b8d77d86527f55d7bb91",
+    "f_ci34r_exact_head_run": 34488917737,
+    "f_ci34_canonical_run": 34488927851,
+    "failed_broad_canonical_run": 34488927973
+  },
+  "frozen_postimage": {
+    "src_tree": "02aa1516a6f452d311ea03c195cbeaf271d3db28",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "f_ci33_divdra_runtime_path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "f_ci33_divdra_runtime_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "f_ci34_root_attribution_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "f_ci34_root_attribution_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "observed_governance_failures": [
+    {
+      "workflow": "F-CI canonical qualification",
+      "run": 34488927973,
+      "job": 102911134666,
+      "failure": "FCI33_FAIL G03_EXACT_ONE_NEW_SOURCE_PATH",
+      "classification": "STALE_FCI33_CURRENT_POSTIMAGE_POINTER"
+    },
+    {
+      "workflow": "F-CI33 F-MR33 DIVDRA runtime canonical admission",
+      "run": 34488927996,
+      "classification": "HISTORICAL_EXACT_ONE_SOURCE_ADMISSION_WORKFLOW_STILL_AUTO_TRIGGERED_ON_MOVING_CANONICAL"
+    },
+    {
+      "workflow": "F-CI33R current canonical postimage reconciliation",
+      "run": 34488927866,
+      "classification": "HISTORICAL_FCI33_POSTIMAGE_WORKFLOW_STILL_AUTO_TRIGGERED_AFTER_FCI34_SOURCE_ADMISSION"
+    }
+  ],
+  "refinement_from_v1": {
+    "reason": "Live exact-head post-promotion evidence showed that retiring only the broad canonical F-CI33 pointer would leave two obsolete F-CI33/F-CI33R automatic canonical checks red on every later valid canonical source move.",
+    "historical_gate_code_may_change": false,
+    "historical_runner_code_may_change": false,
+    "workflow_trigger_retirement_added": true,
+    "scientific_scope_changed": false
+  },
+  "required_changes": [
+    "replace the stale F-CI33-only current-postimage replay in the broad canonical workflow with the unchanged F-CI34 exact-source admission replay",
+    "retain explicit exact-blob preservation assertions for both F-CI33 DIVDRA and F-CI34 root-attribution runtime authorities",
+    "retire integration/f-ci-canonical from the automatic push triggers of the historical F-CI33 and F-CI33R workflows while preserving their qualification-branch and workflow_dispatch replay paths",
+    "add a branch-and-canonical F-CI34P governance workflow that forbids src/reference drift from the promoted F-CI34 base",
+    "replay the unchanged F-CI34 strong qualification runner and a current-source DIVDRA O0/O2 smoke inside F-CI34P"
+  ],
+  "qualification_steps": [
+    "verify F-CI34P branch ancestry from base 2efba343d425770e5d581d8137cd60e83d8b7ac5",
+    "verify git diff from base contains no src or reference changes",
+    "verify exact F-CI33 and F-CI34 runtime blobs",
+    "verify historical F-CI33/F-CI33R gate and runner files are byte-identical to base",
+    "verify obsolete automatic canonical triggers are removed without removing qualification/manual replay",
+    "verify broad canonical moving pointer invokes F-CI34 rather than F-CI33",
+    "replay tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh",
+    "replay current DIVDRA smoke O0/O2 with identical output",
+    "verify all 30 architecture invariants remain no-adverse-delta because no production/reference content changes",
+    "require exact-head F-CI34P workflow success before any promotion",
+    "recheck integration/f-ci-canonical still equals base immediately before promotion",
+    "promote only by non-forced fast-forward",
+    "require F-CI34 dedicated gate, F-CI34P dedicated gate and broad F-CI canonical qualification all green on promoted canonical head",
+    "persist final F-CI34 status and require exact final-head reruns after that final governance-only mutation"
+  ],
+  "architecture_invariants": {
+    "count": 30,
+    "expected_disposition": "NO_ADVERSE_DELTA_GOVERNANCE_ONLY",
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT",
+    "production_physics": "UNCHANGED",
+    "solver_policy": "UNCHANGED",
+    "persistent_state": "UNCHANGED",
+    "coupling_contract": "UNCHANGED",
+    "multiswap_runtime_candidate": "UNCHANGED_EXACT_FCI34_BLOB"
+  },
+  "allowed_scope": [
+    ".github/workflows/fci-canonical.yml",
+    ".github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml",
+    ".github/workflows/fci33r-current-canonical-postimage-reconciliation.yml",
+    ".github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml",
+    "integration/f-ci/F-CI34P_STATUS.json",
+    "integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json",
+    "integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json",
+    "integration/f-ci/F-CI34P_EVIDENCE.json",
+    "integration/f-ci/F-CI34_STATUS.json"
+  ],
+  "forbidden": [
+    "any src modification",
+    "any reference modification",
+    "any historical F-CI33/F-CI33R gate or runner modification",
+    "scientific requalification or scope expansion",
+    "mass tolerance relaxation",
+    "force update of integration/f-ci-canonical",
+    "promotion if canonical has moved from the F-CI34 promoted base"
+  ],
+  "supporting_non_authoritative_prototype": {
+    "branch": "qualification/f-ci34g-current-canonical-postimage-governance",
+    "run": 34490054769,
+    "job": 102914136741,
+    "conclusion": "success",
+    "use": "supports governance design only; F-CI34P remains the authoritative post-promotion workunit"
+  },
+  "exit_criteria": {
+    "prepromotion_f_ci34p_gate_green": true,
+    "no_src_delta": true,
+    "no_reference_delta": true,
+    "f_ci33_blob_preserved": true,
+    "f_ci34_blob_preserved": true,
+    "historical_gate_code_preserved": true,
+    "obsolete_moving_triggers_retired": true,
+    "architecture_30_of_30_no_adverse_delta": true,
+    "postpromotion_f_ci34_gate_green": true,
+    "postpromotion_f_ci34p_gate_green": true,
+    "postpromotion_broad_canonical_gate_green": true,
+    "final_exact_head_reruns_green": true
+  }
+}

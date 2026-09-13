@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI23",
+  "source_path": "src/transaction/mod_transaction_reference.f90",
+  "provenance_class": "EXPLICIT_QUALIFIED_FORWARD_EVOLUTION",
+  "fci03_original_git_blob": "5614ff261c9078def61959944aa57fd04c0d324a",
+  "fci08_intermediate_git_blob": "4a573316b77252b56bcb429fd519aa57123e9a06",
+  "admitted_git_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+  "candidate_authority": {
+    "work_unit": "F-KT09",
+    "candidate_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "candidate_source_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "decision_contract_path": "integration/f-kt/F-KT09_DECISION_CONTRACT.json",
+    "decision_contract_blob": "7957c07ba3a1e31469f315b437f9ac3248a860e0",
+    "owner_scope": "Generic transaction/runtime semantics only. No Richards or soil-water specific estimator or numerical limit is owned here.",
+    "production_richards_admitted": false
+  },
+  "canonical_admission_authority": {
+    "work_unit": "F-CI19",
+    "candidate_a_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "full_source_lineage_audit_path": "integration/f-ci/F-CI19_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT.json",
+    "full_source_lineage_audit_blob": "5985d659c8aa4e22c34243417111b9b013a3a12f",
+    "source_lineage_gate_blob": "9444001ca56e4158e211060221dd4ecd63f7d7ef",
+    "source_lineage_run": 34320967298,
+    "source_lineage_job": 102367277768,
+    "source_lineage_conclusion": "success",
+    "status_path": "integration/f-ci/F-CI19_STATUS.json",
+    "status_blob": "b9a02d6e2ae61aac7fbe0788aaffc4b7e2896779",
+    "candidate_composition_preservation": "PASS",
+    "candidate_source_lineage_reachability": "PASS"
+  },
+  "qualified_semantics": {
+    "generic_transaction_seam": true,
+    "richards_specific_logic": false,
+    "calendar_specific_logic": false,
+    "coupling_specific_logic": false,
+    "file_io_added": false,
+    "physics_formula_changed": false,
+    "numerical_policy_changed": false,
+    "persistent_column_state_expanded": false,
+    "hard_mass_gate_preserved": true,
+    "rollback_semantics_preserved": true,
+    "existing_default_transaction_mode_preserved": true,
+    "model_owned_certificate_is_explicit_opt_in": true,
+    "production_richards_certificate_admitted_by_F_KT09_or_F_CI19": false
+  },
+  "later_materialization": {
+    "F_CI19_governed_postimage_commit": "ef3e3dc3ba9722a942f7296b089bccdd05d55b96",
+    "F_CI22_canonical_admission_head": "e5662a513846296585a1a7005729896c165091ac",
+    "transaction_blob_changed_after_F_KT09_candidate": false
+  },
+  "interpretation": "This record does not newly qualify transaction physics. It makes the already-qualified F-KT09 to F-CI19 forward evolution explicit to the older F-CI03 provenance reader.",
+  "decision": "ADMIT_EXACT_FKT09_FCI19_TRANSACTION_BLOB_AS_EXPLICIT_FORWARD_PROVENANCE"
+}

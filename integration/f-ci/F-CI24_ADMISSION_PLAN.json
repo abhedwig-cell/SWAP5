@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI24",
+  "title": "F-PM06A Restricted Reference-ET Demand Canonical Admission",
+  "branch": "qualification/f-ci24-fpm06a-reference-et-canonical-admission",
+  "canonical_pre_admission": {
+    "branch": "integration/f-ci-canonical",
+    "pinned_head": "df435824de175e3f868b680aab2cd0a395aa19ff",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "candidate": {
+    "F_PM06_readiness_closeout": "2113dd20c2f20c77c3191c65be2f994955202037",
+    "F_PM06A_closeout": "c1bbe73cd0deced17f979a601fd6169036d7076b",
+    "F_VQ35_closeout": "a978fa20fb42ce7d83b052cda9d8246111df05a5",
+    "production_source": "src/process/mod_reference_et_demand_process.f90",
+    "production_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "candidate_src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "linear_from_current_canonical": true,
+    "ahead_by_at_F_VQ35_closeout": 17,
+    "behind_by_at_F_VQ35_closeout": 0
+  },
+  "admission_scope": {
+    "new_production_source_paths": ["src/process/mod_reference_et_demand_process.f90"],
+    "existing_production_source_modified": false,
+    "runtime_binding_added": false,
+    "solver_binding_added": false,
+    "mass_ledger_binding_added": false,
+    "reference_tree_modified": false,
+    "qualified_physics": "restricted stateless potential ET demand provider only"
+  },
+  "required_replays": [
+    "exact F-CI23 canonical baseline authority on pinned pre-admission head",
+    "F-PM06A structural candidate gate on admission head",
+    "F-VQ35 independent scientific qualification gate on admission head",
+    "F-CI24 one-source forward-lineage admission gate",
+    "post-promotion canonical workflow on the promoted head"
+  ],
+  "canonical_workflow_transition": {
+    "historical_F_CI03_through_F_CI18_jobs": "preserve exact frozen refs",
+    "frozen_F_CI19_jobs": "preserve exact frozen refs",
+    "current_lineage_gate": "advance from F-CI23 exact source-tree pin to F-CI24 one-source forward-lineage authority",
+    "historical_F_CI23_gate_modified": false,
+    "historical_F_CI21_gate_modified": false
+  },
+  "promotion_policy": {
+    "qualification_branch_must_remain_strict_descendant_of_pinned_canonical": true,
+    "canonical_ref_must_be_rechecked_immediately_before_promotion": true,
+    "force_update_allowed": false,
+    "post_promotion_canonical_workflow_required": true
+  },
+  "nonclaims": [
+    "runtime ET composition",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "actual root uptake",
+    "interception",
+    "SWREDU=1 or 2",
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "mass-ledger integration of potential demands"
+  ],
+  "exit_target": "QUALIFIED_FPM06A_RESTRICTED_REFERENCE_ET_POSTIMAGE_READY_FOR_CANONICAL_FAST_FORWARD"
+}

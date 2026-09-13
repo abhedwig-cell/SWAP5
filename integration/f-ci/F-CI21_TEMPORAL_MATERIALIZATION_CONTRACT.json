@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "title": "Controlled Dependency-Closed Temporal Certificate Materialization onto WOF42 Spine",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "base": {
+    "workunit": "F-WOF42",
+    "commit": "ed0219402072f121856d82cb6068ab74c70f34d1",
+    "tree": "e9884e86e9af677de4b150afa1ca208e46b27292",
+    "relationship_to_F_CI19_canonical": "direct descendant"
+  },
+  "upstream_admission": {
+    "workunit": "F-CI20",
+    "closeout": "26cd443f8ec7764ed2ae6bbff863f810586d4aa7",
+    "decision": "QUALIFIED_ADMISSION_DAG_AND_REPLAY_POLICY_COMPOSITION_DEFERRED"
+  },
+  "authoritative_temporal_candidate": {
+    "owner": "F-KT11 remediated production policy binding",
+    "source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+    "source_tree": "d24f20559653b028d7967bf57da37da432803221",
+    "independent_qualification": "F-VQ34",
+    "qualification_closeout": "df9b1123ba33ece022ce6649e70dcb538e44837f"
+  },
+  "negative_regression_authority": {
+    "workunit": "F-VQ33",
+    "closeout": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "failed_source_commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "required_sentinel": "invalid negative/NaN/+Inf supplied H_budget must retain the native supplied diagnostic value while fail-closing certificate availability"
+  },
+  "goal": "Materialize the smallest dependency-closed production temporal subsystem onto the exact WOF42 source postimage without whole-branch merging, while preserving newer WOF42 crop/runtime/persistence work and all SWAP architecture invariants.",
+  "hard_rules": [
+    "Do not merge the F-KT11 branch wholesale.",
+    "Do not replace shared WOF42 files wholesale merely because an older temporal branch is green.",
+    "Determine the transitive production dependency closure before first src change.",
+    "For shared changed files, port only the required semantics and preserve WOF42 additions unless source equivalence is proven.",
+    "Persist the exact materialized source postimage before long replay tests.",
+    "A historical PASS does not transfer automatically to this new tree.",
+    "F-VQ33 remains negative evidence and is a mandatory regression sentinel.",
+    "Hard mass qualification remains independent and precedes the temporal certificate gate.",
+    "No default H_budget may be introduced.",
+    "B_inf is not a general nonlinear true-error bound.",
+    "No shorter-dt monotonicity assumption may be introduced.",
+    "No canonical ref update is permitted in F-CI21."
+  ],
+  "dependency_layers": {
+    "F-SI25_solver_owned_indicator": {
+      "status": "PARTIALLY_SOURCE_BOUND",
+      "required_known_surfaces": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/solver/mod_reference_richards_temporal_indicator.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90"
+      ],
+      "known_direct_indicator_dependencies": {
+        "src/solver/mod_reference_linear_solver.f90": "SOURCE_EQUIVALENT_IN_WOF42",
+        "src/solver/mod_b110_default_mvg_provider.f90": "SOURCE_EQUIVALENT_IN_WOF42",
+        "src/solver/mod_b110_source_sink_provider.f90": "SOURCE_EQUIVALENT_IN_WOF42",
+        "src/solver/mod_reference_richards_state_binding.f90": "SOURCE_EQUIVALENT_IN_WOF42",
+        "src/solver/mod_fixed_flux_top_boundary_provider.f90": "ABSENT_IN_WOF42_REQUIRES_CLOSURE"
+      }
+    },
+    "F-KT10_transaction_history": {
+      "status": "DEPENDENCY_CLOSURE_REQUIRED_BEFORE_SOURCE_CHANGE",
+      "semantic_requirement": "feature-scoped previous accepted right-derivative continuation state is transaction-owned; clone/checkpoint/trial/reject/commit semantics preserve rollback and publish only on explicit commit"
+    },
+    "F-KT11_policy_binding": {
+      "status": "DEPENDENCY_CLOSURE_REQUIRED_BEFORE_SOURCE_CHANGE",
+      "known_shared_surfaces": [
+        "src/runtime/mod_canonical_contracts.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/kernel/mod_kernel_transactions.f90"
+      ],
+      "known_new_surface": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "semantic_requirement": "explicit finite positive supplied H_budget, C_h=B_inf/H_budget, unavailable fail-closed, mass before certificate, exact rollback, raw native invalid-budget diagnostics retained"
+    }
+  },
+  "source_identity_locks": {
+    "src/solver/mod_reference_linear_solver.f90": "SOURCE_EQUIVALENT_CANDIDATE_AND_WOF42",
+    "src/solver/mod_b110_default_mvg_provider.f90": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+    "src/solver/mod_reference_richards_state_binding.f90": "e68d88382c6502c571713cc97fddd4e18434e271"
+  },
+  "required_replay_after_materialization": [
+    "compile/link and source ownership gate",
+    "F-KT12/F-KT13 preservation if transaction/persistence context changes",
+    "F-SI25 production indicator owner replay",
+    "F-VQ30 held-out operator replay",
+    "F-VQ31 transaction-history replay",
+    "F-VQ32 normalization replay",
+    "F-KT11 owner policy matrix including negative/NaN/+Inf native diagnostics",
+    "F-VQ33 failed diagnostic case as regression sentinel",
+    "F-VQ34 independent remediated policy replay",
+    "F-WOF42 and F-MR18 crop/persistence/accepted-receipt preservation"
+  ],
+  "architecture_checks": {
+    "single_kernel": "HARD",
+    "kernel_io_separation": "HARD",
+    "compact_feature_scoped_persistent_state": "HARD",
+    "scratch_per_worker": "HARD",
+    "transactional_commit_rollback": "HARD",
+    "generic_time": "HARD",
+    "mass_conservation": "HARD",
+    "alternative_solver_openness": "HARD_DEFAULT_UNAVAILABLE_TEMPORAL_SERVICE",
+    "no_HeadCalc_internal_exposure": "HARD",
+    "physics_solver_policy_separation": "HARD",
+    "bounded_indicator_cost": "HARD",
+    "diagnostic_visibility": "HARD",
+    "no_silent_dependencies": "HARD"
+  },
+  "preimplementation_state": {
+    "contract_persisted_before_src_change": true,
+    "dependency_closure_complete": false,
+    "production_src_changed": false,
+    "candidate_materialized": false,
+    "tested": false,
+    "qualified": false
+  }
+}

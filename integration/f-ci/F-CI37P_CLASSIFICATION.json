@@ -1,0 +1,21 @@
+{
+  "schema":"swap5.fci37p_governance_failure_classification.v1",
+  "work_unit":"F-CI37P",
+  "title":"Current-Canonical Postimage Governance Pointer Reconciliation after F-CI37",
+  "branch":"qualification/f-ci37p-current-canonical-postimage-governance-reconciliation",
+  "base":"f4074feea33cc8eac370dc5272f8e9d763530c53",
+  "triggering_broad_run":{"run":34531764237,"job":103054424135,"workflow":"F-CI canonical qualification","conclusion":"failure"},
+  "observed_failure":{"step":"Current F-CI36 DIVDRA active-runtime canonical source authority gate","runner":"tests/fci/run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh","message":"FCI36_GATE_FAIL src delta is not exactly the two admitted F-MR36 files","observed_src_delta":["src/runtime/mod_fmr_divdra_serialized_composition.f90","src/runtime/mod_fmr_divdra_serialized_runtime.f90","src/runtime/mod_fmr_parallel_root_uptake_pool.f90"]},
+  "classification":"STALE_FCI36_MOVING_CANONICAL_GOVERNANCE_POINTER_NOT_SCIENTIFIC_REGRESSION",
+  "basis":[
+    "The F-CI36 runner is historically correct: it qualifies exactly the two F-MR36 DIVDRA source files against its own pinned base.",
+    "The broad canonical workflow incorrectly reused that historical exact-delta runner as the moving current-postimage gate after a later legitimate source admission.",
+    "The third observed source path is exactly the F-CI37 independently qualified root-uptake candidate, not a DIVDRA mutation.",
+    "The dedicated F-CI37 post-promotion run 34531764198 job 103053921900 passed on the canonical ref.",
+    "All frozen authority jobs completed before the moving-current job, including F-CI30 and F-CI31, passed on broad run 34531764237.",
+    "F-CI36 science and its historical runner must therefore remain unchanged; only the broad moving-current pointer may be reconciled."
+  ],
+  "remediation_scope":{"governance_only":true,"allowed_changes":[".github/workflows/fci-canonical.yml","F-CI37P governance metadata","F-CI37P governance test/workflow"],"src_changes_permitted":false,"reference_changes_permitted":false,"scientific_tolerance_changes_permitted":false,"fci36_runner_changes_permitted":false,"fci37_runner_changes_permitted":false},
+  "required_reconciled_current_postimage":{"src_tree":"6aa66da28255fc31c2891ee89716c62569a8c068","reference_tree":"9d08625217d7c0a7385df9da6a04183bcd9cb9e6","root_uptake_blob":"c78c13997642617376b8d118122c86c60ca77189","divdra_composition_blob":"5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5","divdra_runtime_blob":"9a384658ec37b68d2ef911e741aa89707dcb3e77"},
+  "decision":"GOVERNANCE_RECONCILIATION_REQUIRED_BEFORE_FCI37_CLOSEOUT"
+}

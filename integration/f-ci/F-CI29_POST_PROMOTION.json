@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI29",
+  "title": "F-MR26 Reference-ET ptra Root-Input Ownership Canonical Admission",
+  "phase": "POST_PROMOTION",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_previous_authority": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "canonical_admitted_head": "6166e22b68c19bc4922750c318c57c4fe7b8dd9c",
+  "promotion_topology": {
+    "merge_base": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+    "ahead_by": 14,
+    "behind_by": 0,
+    "non_divergent_fast_forward_compatible": true
+  },
+  "canonical_drift_reconciliation": {
+    "transient_add_commit": "6d14f098ed59d26483c0d7dd350897cb829c3d47",
+    "revert_commit": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+    "reconciliation_merge": "544a1bd65ec2e2cafd323ca9edfd6e871efaed6e",
+    "net_repository_content_delta_between_FCI28_closeout_and_reconciled_base": "empty"
+  },
+  "postimage": {
+    "production_source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "production_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "src_tree": "223c54d5fd309f86ef50f9efd28e2c511e175577",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "post_promotion_canonical_workflow": {
+    "run_id": 34462180784,
+    "current_postimage_job_id": 102822549710,
+    "conclusion": "success",
+    "historical_FCI03_through_FCI18": "PASS",
+    "frozen_FCI19_candidate_preservation": "PASS",
+    "frozen_FCI19_source_lineage": "PASS",
+    "frozen_FCI24_reference_ET_authority": "PASS",
+    "frozen_FCI27_reference_ET_runtime_authority": "PASS",
+    "frozen_FCI28_restart_authority": "PASS",
+    "current_FCI29_ptra_ownership_authority": "PASS",
+    "canonical_lineage_aware_gate": "PASS"
+  },
+  "independent_oracle_replay": {
+    "F_VQ41_closeout": "e0d6c9993d46bb858d84524bb290f3bb12e82ce4",
+    "active_grid_cases": 2304,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f"
+  },
+  "decision": "QUALIFIED_FMR26_REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_CANONICALLY_ADMITTED"
+}

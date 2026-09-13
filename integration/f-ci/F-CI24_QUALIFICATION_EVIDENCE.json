@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI24",
+  "evidence_type": "restricted_reference_et_canonical_admission_qualification",
+  "branch": "qualification/f-ci24-fpm06a-reference-et-canonical-admission",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "observed_head": "df435824de175e3f868b680aab2cd0a395aa19ff",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "pre_admission_replay": "PASS",
+    "F_CI23_status_preserved": true
+  },
+  "candidate": {
+    "F_PM06A_closeout": "c1bbe73cd0deced17f979a601fd6169036d7076b",
+    "F_VQ35_closeout": "a978fa20fb42ce7d83b052cda9d8246111df05a5",
+    "production_source": "src/process/mod_reference_et_demand_process.f90",
+    "production_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "post_src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "source_delta_from_canonical": ["src/process/mod_reference_et_demand_process.f90"],
+    "existing_source_paths_modified": false,
+    "runtime_binding_added": false
+  },
+  "successful_qualification": {
+    "tested_head": "7e8d0ca82bba181fceb73297695d7b9fb7645dc5",
+    "workflow_name": "F-CI24 F-PM06A reference ET canonical admission",
+    "run_id": 34450760680,
+    "baseline_job_id": 102785727995,
+    "candidate_job_id": 102785835614,
+    "conclusion": "success",
+    "terminal_marker": "FCI24_CANONICAL_ADMISSION_GATE PASS_FPM06A_REFERENCE_ET_POSTIMAGE_READY_FOR_FAST_FORWARD_DECISION"
+  },
+  "qualification_markers": [
+    "FCI24_PRE_ADMISSION_CANONICAL_BASELINE=PASS",
+    "FCI24_G01_BASE_IS_ANCESTOR=PASS",
+    "FCI24_G04_LIVE_CANONICAL_REF_LOCK=PASS",
+    "FCI24_G05_EXACT_ONE_SOURCE_DELTA=PASS",
+    "FCI24_G06_EXACT_POST_SRC_TREE=PASS",
+    "FCI24_G07_REFERENCE_TREE_UNCHANGED=PASS",
+    "FCI24_G09_ET_SOURCE_BLOB=PASS",
+    "FCI24_G12_FCI24_NO_NEW_SRC_CHANGE=PASS",
+    "FCI24_G13_ROOT_UPTAKE_OWNER_LOCK=PASS",
+    "FCI24_G14_CROP_OWNER_LOCK=PASS",
+    "FCI24_G17_FCI23_STATUS_PRESERVED=PASS",
+    "FCI24_G19_FVQ35_ADMISSION_LOCK=PASS",
+    "FPM06A_REFERENCE_ET_DEMAND_CANDIDATE_GATE PASS",
+    "FVQ35_FPM06A_REFERENCE_ET_DEMAND_QUALIFICATION PASS"
+  ],
+  "replayed_owner_evidence": {
+    "F_PM06A_candidate_output_sha256": "c9f4557cc0999b01e6379b72ec09b743542dd447c48790e7149451da8d9da61a",
+    "F_VQ35_qualification_output_sha256": "d173d0047a04cb095946797a3d066a03099c610a7dfb6aa39ee1e2c6b19e8221",
+    "F_VQ35_independent_grid_cases": 1700,
+    "O0_O2_identity": "PASS"
+  },
+  "F_CI24_qualification_delta_from_F_VQ35": {
+    "ahead_by": 4,
+    "behind_by": 0,
+    "src_changed": false,
+    "reference_changed": false,
+    "files": [
+      ".github/workflows/fci-canonical.yml",
+      ".github/workflows/fci24-reference-et-canonical-admission.yml",
+      "integration/f-ci/F-CI24_ADMISSION_PLAN.json",
+      "tools/fci/fci24_reference_et_canonical_gate.py"
+    ]
+  },
+  "canonical_workflow_transition": {
+    "historical_F_CI03_through_F_CI18_refs_changed": false,
+    "frozen_F_CI19_refs_changed": false,
+    "historical_F_CI21_gate_changed": false,
+    "historical_F_CI23_gate_changed": false,
+    "current_lineage_authority_advanced_to_F_CI24": true,
+    "post_promotion_F_PM06A_replay_required": true,
+    "post_promotion_F_VQ35_replay_required": true
+  },
+  "hard_nonclaims": {
+    "runtime_ET_binding": false,
+    "actual_evaporation_admitted": false,
+    "root_uptake_scope_expanded": false,
+    "interception_admitted": false,
+    "SWREDU_stateful_methods_admitted": false,
+    "Penman_Monteith_admitted": false,
+    "mass_ledger_binding_added": false
+  },
+  "promotion_preconditions_remaining": [
+    "requalify the persisted evidence/status head",
+    "reverify integration/f-ci-canonical is still df435824de175e3f868b680aab2cd0a395aa19ff immediately before promotion",
+    "verify strict fast-forward relation with merge base equal to the live canonical head",
+    "advance integration/f-ci-canonical with force=false only",
+    "require the post-promotion canonical workflow to pass on the promoted head"
+  ],
+  "decision": "QUALIFIED_FPM06A_RESTRICTED_REFERENCE_ET_POSTIMAGE_FOR_CANONICAL_FAST_FORWARD_PENDING_FINAL_RECHECK"
+}

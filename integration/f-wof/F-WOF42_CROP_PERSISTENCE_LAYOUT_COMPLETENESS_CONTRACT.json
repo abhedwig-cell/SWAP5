@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF42",
+  "title": "WOFOST Crop-Owner Optional-State Persistence Completeness and Minimality Qualification",
+  "status": "IN_PROGRESS",
+  "branch": "work/f-wof42-crop-persistence-layout-completeness",
+  "base": {
+    "work_unit": "F-WOF41",
+    "closeout_head": "2be30d3d6bb85e56a0ab5f0d55dfa92fd0156526",
+    "definitive_tested_head": "d884b2c5db6f28a1277918096d18717e481218d6",
+    "workflow_run": 34372766022,
+    "status": "QUALIFIED_PRODUCTION_OWNER_PERSISTENCE_API_SCOPE_COMPLETE"
+  },
+  "goal": "Qualify that every currently supported WOFOST crop-owner optional-state layout can be exported, reconstructed and process-restarted without losing continuation semantics, while inactive options remain absent and incur no hidden persistent state.",
+  "current_owner_state_surface": {
+    "source": "src/crop/mod_wofost_crop_owner_state.f90",
+    "mandatory_scalars": [
+      "crop_emerged",
+      "development_stage"
+    ],
+    "allocatable_components": [
+      "biomass",
+      "evolution_continuation",
+      "b110_reference_compatibility"
+    ],
+    "biomass_allocatable_subcomponents": [
+      "leaf_biomass",
+      "specific_leaf_area",
+      "leaf_age"
+    ]
+  },
+  "required_valid_layouts": [
+    "INACTIVE_NO_OPTIONAL_STATE",
+    "EMERGED_BIOMASS_NO_COHORTS",
+    "EMERGED_BIOMASS_WITH_COHORTS",
+    "EMERGED_BIOMASS_WITH_EVOLUTION_CONTINUATION",
+    "EMERGED_BIOMASS_WITH_B110_REFERENCE_COMPATIBILITY",
+    "EMERGED_BIOMASS_WITH_EVOLUTION_AND_B110_REFERENCE_COMPATIBILITY"
+  ],
+  "required_edge_layout": {
+    "name": "EMERGED_BIOMASS_EXPLICIT_ZERO_LENGTH_COHORT_ARRAYS",
+    "policy_question": "The current external codec represents zero cohorts by count=0 and reconstructs them as unallocated arrays. Qualification must determine whether this is a semantically safe canonicalization or a restart-completeness defect. It may not be silently called bitwise state identity.",
+    "pass_rule": "Canonicalization is admissible only if validation, active cohort count, living leaf biomass, leaf area sum and subsequent qualified crop behavior cannot distinguish allocated-zero from unallocated-zero cohort state. Otherwise fail closed and open a production persistence fix."
+  },
+  "required_invalid_layouts": [
+    "INACTIVE_WITH_BIOMASS",
+    "INACTIVE_WITH_EVOLUTION_CONTINUATION",
+    "INACTIVE_WITH_B110_REFERENCE_COMPATIBILITY",
+    "EMERGED_WITHOUT_BIOMASS",
+    "B110_REFERENCE_COMPATIBILITY_BELOW_ITS_VALID_LAI_THRESHOLD",
+    "MISMATCHED_BIOMASS_COHORT_ALLOCATIONS"
+  ],
+  "required_checks_per_valid_layout": [
+    "owner validate succeeds",
+    "production crop persistence export succeeds",
+    "production crop persistence reconstruction succeeds",
+    "owner optional allocation presence is preserved except only an explicitly qualified zero-length cohort canonicalization",
+    "all scalar continuation values are exact",
+    "all nonempty cohort arrays are exact",
+    "inactive optional components remain unallocated",
+    "external process-restart adapter write/read succeeds without owner source generation",
+    "restored committed crop owner validates",
+    "external representation is identical under O0 and O2"
+  ],
+  "minimality_checks": [
+    "inactive crop artifact carries no biomass payload values beyond presence/count metadata required by the qualification codec",
+    "absent evolution state produces no evolution payload body",
+    "absent B110 compatibility state produces no B110 payload body",
+    "parameters, forcing, solver scratch, warm-start vectors and accepted-window cache remain absent",
+    "no optional component is allocated by reconstruction when its presence flag is false"
+  ],
+  "hard_constraints": [
+    "no crop physics change",
+    "no production persistence API broadening unless a demonstrated completeness defect requires it",
+    "no file or parser dependency in kernel or crop owner modules",
+    "no persistence of retired accepted-window cache",
+    "no mass-tolerance or numerical-policy change",
+    "no claim beyond the current owner-state type surface",
+    "invalid layouts must fail closed before a ready committed state is published"
+  ],
+  "nonclaims": [
+    "not qualification of future WOFOST optional state not present in the current owner type",
+    "not a production SWAP-wide restart format",
+    "not active unretired accepted-window persistence",
+    "not mid-transaction trial/candidate persistence",
+    "not full MultiSWAP checkpoint/restart orchestration",
+    "not canonical promotion"
+  ],
+  "architecture_invariants_checked": [2,3,4,5,7,21,27,29,30],
+  "decision_rule": "Close positively only if every current valid owner layout roundtrips with exact continuation semantics, absent options remain absent, all invalid layouts fail closed, and any zero-length cohort normalization is explicitly proven observationally equivalent rather than assumed."
+}

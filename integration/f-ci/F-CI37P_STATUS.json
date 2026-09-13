@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.fci37p_status.v2",
+  "work_unit": "F-CI37P",
+  "title": "Current-Canonical Postimage Governance Pointer Reconciliation after F-CI37",
+  "phase": "POSTPROMOTION_RECONCILED_PENDING_EXACT_FINAL_GOVERNANCE_HEAD_REQUALIFICATION",
+  "decision": "QUALIFIED_FCI37P_GOVERNANCE_RECONCILIATION_PENDING_EXACT_FINAL_GOVERNANCE_HEAD_REQUALIFICATION",
+  "base": "f4074feea33cc8eac370dc5272f8e9d763530c53",
+  "source_promoted_canonical_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
+  "triggering_failure": {
+    "run": 34531764237,
+    "job": 103054424135,
+    "classification": "STALE_FCI36_MOVING_CANONICAL_GOVERNANCE_POINTER_NOT_SCIENTIFIC_REGRESSION"
+  },
+  "prepromotion_reconciliation": {
+    "tested_head": "327f97178e9cb3bd0ac61ee6ebf26c6391eb6dc3",
+    "run": 34532304321,
+    "job": 103055697148,
+    "conclusion": "success",
+    "exact_metadata_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
+    "exact_metadata_head_run": 34532432585,
+    "conclusion_exact_metadata_head": "success"
+  },
+  "postpromotion_evidence": {
+    "canonical_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
+    "fci37p_run": 34532521552,
+    "fci37p_conclusion": "success",
+    "broad_canonical_run": 34532521391,
+    "broad_canonical_conclusion": "success",
+    "broad_current_postimage_job": 103056961433,
+    "broad_current_postimage_conclusion": "success",
+    "exact_fci37_source_gate_replayed": true,
+    "frozen_fci36_authority_replayed": true
+  },
+  "governance_change": "Freeze F-CI36 on its exact qualified head and advance only the broad moving current-postimage authority to F-CI37.",
+  "scope": {
+    "governance_only": true,
+    "src_delta": [],
+    "reference_delta": [],
+    "science_delta": false,
+    "scientific_tolerance_delta": false,
+    "fci36_runner_modified": false,
+    "fci37_runner_modified": false
+  },
+  "current_postimage": {
+    "src_tree": "6aa66da28255fc31c2891ee89716c62569a8c068",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "root_uptake_blob": "c78c13997642617376b8d118122c86c60ca77189",
+    "divdra_composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "divdra_runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+  },
+  "architecture": {
+    "invariants_reviewed": 30,
+    "result": "NO_ADVERSE_ARCHITECTURE_DELTA",
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT"
+  },
+  "state": {
+    "classification_persisted": true,
+    "governance_fix_persisted": true,
+    "tested_prepromotion": true,
+    "exact_metadata_head_requalified": true,
+    "canonical_ref_advanced": true,
+    "post_promotion_fci37p_passed": true,
+    "post_promotion_fci37_source_gate_replayed_in_broad": true,
+    "broad_canonical_passed": true,
+    "final_status_persisted": true,
+    "exact_final_governance_head_requalified": false,
+    "final_closeout_complete": false
+  },
+  "known_out_of_scope_governance_debt": {
+    "older_historical_exact_delta_workflows_may_still_fail_when_triggered_on_moving_canonical": true,
+    "examples": ["F-CI34", "F-CI34P", "F-CI36"],
+    "classification": "STALE_HISTORICAL_MOVING_TRIGGER_DEBT_OUTSIDE_FCI37P_ALLOWED_SCOPE",
+    "blocks_current_broad_authority": false
+  },
+  "final_gate": {
+    "exact_final_fci37p_branch_head_must_pass": true,
+    "canonical_must_still_equal_3ee96e9d_before_final_fast_forward": true,
+    "final_governance_fast_forward_must_be_non_forced": true,
+    "final_canonical_dedicated_fci37_must_pass": true,
+    "final_canonical_fci37p_must_pass": true,
+    "final_broad_canonical_must_pass": true,
+    "no_src_reference_science_or_tolerance_change_permitted": true,
+    "no_further_status_mutation_required_after_green_final_head": true
+  },
+  "next_gate": "Qualify the exact final governance status head on the F-CI37P branch. If green and canonical remains 3ee96e9d00be7a01d21302cc79288af64c963708, fast-forward the status head non-forced to canonical and require dedicated F-CI37, F-CI37P, and broad canonical workflows all green on that exact final head."
+}

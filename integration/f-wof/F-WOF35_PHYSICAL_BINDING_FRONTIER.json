@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF35",
+  "evidence_type": "SOURCE_BOUND_NEXT_SEAM_FRONTIER_NOT_QUALIFICATION",
+  "canonical_source_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca"
+  },
+  "observations": [
+    {
+      "path": "src/process/mod_root_water_uptake_process.f90",
+      "finding": "The qualified root-water-uptake process request carries potential_transpiration. Per rooted node it computes qpotential as a root-fraction increment times potential_transpiration, sets root_extraction_sink(node)=qpotential*drought_reduction_factor, and defines actual_uptake_total=sum(root_extraction_sink)."
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "finding": "On the explicit provider route, root_sink_term(node) is the provider root_extraction_sink(node) and is added directly to the compartment residual alongside vertical/source/sink flux terms. It is not multiplied by layer thickness at this boundary."
+    },
+    {
+      "path": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+      "finding": "The current runtime root-uptake binding is committed-state oriented: it accepts kernel_committed_state_t and builds the hydraulic view from committed state. It therefore is not by itself a rejected-trial-safe owner of process accumulation during a candidate physical trial."
+    },
+    {
+      "path": "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+      "finding": "The current process hydraulic-view builder accepts kernel_committed_state_t only. No parallel candidate/trial-state hydraulic-view builder is present on the pinned canonical source tree."
+    },
+    {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "finding": "kernel_candidate_state_t provides snapshot access to candidate physical state, so a future trial-view seam is technically possible without changing F-KT commit authority. This does not itself define the correct root-uptake temporal semantics."
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "finding": "The physical interval forcing already contains root_extraction_sink and the backend binds this sink before the Richards trial is advanced. The current serialized solver route therefore consumes a preformed root sink during the trial rather than recomputing the Feddes uptake process inside Newton iterations."
+    },
+    {
+      "path": "src/solver/mod_b110_root_sink_provider.f90",
+      "finding": "The root-sink provider returns the supplied root_extraction_sink vector unchanged; it does not own crop potential transpiration or accepted-window provenance."
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "finding": "The MultiSWAP runtime owns checkpoint/trial/commit flow and receives a fully formed forcing_registry, but its request does not carry the crop-root process request or potential_transpiration."
+    }
+  ],
+  "resolved_dimensional_mapping": {
+    "status": "SOURCE_BOUND",
+    "IQROT_equivalent_rate": "sum(root_extraction_sink) for the exact sink vector physically supplied to that trial",
+    "equals_process_result": "root_water_uptake_flux_result_t.actual_uptake_total",
+    "extra_layer_thickness_factor_required": false,
+    "reason": "The root-uptake process constructs each layer value as a fraction of potential_transpiration and sums these values to actual_uptake_total; HeadCalc consumes each provider value directly as a flux contribution in the water-balance residual."
+  },
+  "missing_owner_seam": {
+    "required_joint_ownership": [
+      "F-KT checkpoint/trial lineage and interval identity",
+      "the exact root_extraction_sink vector physically applied for that trial or its source-bound sum",
+      "the corresponding potential_transpiration quantity",
+      "trial discard/retry semantics",
+      "the final F-KT commit-derived acceptance certificate"
+    ],
+    "current_state": "No current canonical runtime object owns all of these quantities together.",
+    "architecture_boundary": "The missing seam belongs in runtime/process composition outside the crop kernel. It must not move F-KT commit authority into WOFOST and must not add persistent solver scratch to column state."
+  },
+  "unresolved_before_implementation": [
+    "decide whether the production trial accumulator consumes the already-formed physical sink input directly or a separately carried process result, without double evaluation or state inconsistency",
+    "define how potential_transpiration travels with the same trial provenance into the runtime seam",
+    "prove rejected and retried trials contribute zero while an accepted retry contributes exactly once",
+    "prove no change to mass accounting or Richards sink application",
+    "qualify MultiSWAP batching and replay semantics for the new runtime-local trial scratch"
+  ],
+  "not_claimed": [
+    "physical production binding is implemented",
+    "candidate-state root-uptake recomputation is scientifically correct or needed",
+    "historical daily WOFOST trajectory equivalence",
+    "calendar scheduling or restart ownership"
+  ],
+  "status": "FRONTIER_IDENTIFIED_QROT_MAPPING_SOURCE_BOUND_PENDING_F_WOF35_COMPOSITION_PASS"
+}

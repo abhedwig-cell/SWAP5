@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-WOF43A",
+  "title": "Restricted Crop-to-ET Canopy View Provider Candidate Qualification Evidence",
+  "branch": "work/f-wof43a-crop-et-canopy-view-provider",
+  "readiness_authority": {
+    "work_unit": "F-WOF43",
+    "commit": "4ebbbb6563132a80c26a22124d9261928fe2ffbf",
+    "decision": "QUALIFIED_CROP_ET_CANOPY_VIEW_READINESS_READY_FOR_RESTRICTED_PROVIDER_CANDIDATE"
+  },
+  "definitive_tested_candidate": {
+    "commit": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "tree": "22d9e9fb67ab477ba24c09ee5aab607417f8b082",
+    "production_source": "src/crop/mod_crop_et_canopy_view_provider.f90",
+    "production_source_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "test_source_blob": "0fda482e6d1b129accd00d56ca100971d5f763ea",
+    "gate_blob": "6624184cc18b92fdeed297d039f5dccd427d2512",
+    "candidate_contract_blob": "b1e637e59a00f50cfe6089491e11fffde0aec6ad",
+    "workflow_blob": "a67b450167b77d0ba7d6369195a559f885bc9998",
+    "protected_AFGEN_substrate_blob": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"
+  },
+  "github_actions": {
+    "workflow": "F-WOF43A crop-to-ET canopy view provider",
+    "definitive_run_id": 34454490884,
+    "definitive_job_id": 102797600114,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "8bc8d6b2fa275d987ad891aa6f8121885a3a0bc35016073091a96a0d5f99e414"
+  },
+  "verified": {
+    "single_new_production_module_delta": "PASS",
+    "F_WOF29_AFGEN_substrate_source_lock": "PASS",
+    "provider_boundary_no_IO_calendar_hydraulic_runtime_internals": "PASS",
+    "no_persistent_derived_view_state": "PASS",
+    "B1_10_vcover_equation": "PASS",
+    "B1_10_CF_AFGEN_equation": "PASS",
+    "B1_10_fco2tra_AFGEN_equation": "PASS",
+    "source_bound_parameter_and_forcing_domains": "PASS",
+    "nonemerged_nonzero_cover_semantics": "PASS",
+    "inactive_dependency_minimality": "PASS",
+    "CO2_disabled_forcing_independence": "PASS",
+    "AFGEN_endpoint_clamp": "PASS",
+    "active_invalid_input_fail_closed_under_FP_traps": "PASS",
+    "stateless_A_B_A_replay": "PASS"
+  },
+  "remediation_history": [
+    {
+      "run_id": 34453692622,
+      "conclusion": "failure",
+      "finding": "overflow trap in defensive optical-depth guard because huge()/extinction_product was evaluated for extinction_product below one",
+      "disposition": "fixed by restricting division-based overflow guard to extinction_product greater than one"
+    },
+    {
+      "run_id": 34453872573,
+      "conclusion": "failure",
+      "finding": "invalid trap in NaN LAI validation because Fortran logical OR does not guarantee short-circuit evaluation",
+      "disposition": "fixed by separating finite-value validation from the numeric comparison"
+    },
+    {
+      "run_id": 34454135355,
+      "conclusion": "success",
+      "finding": "first fully green executable provider gate after trap-safety remediation"
+    },
+    {
+      "run_id": 34454258257,
+      "conclusion": "success",
+      "finding": "green replay after qualification closeout paths were added to workflow trigger"
+    }
+  ],
+  "frozen_legacy_source_authority": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "fixed_f90_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"
+  },
+  "qualification_boundary": {
+    "source_bound_owner_candidate": true,
+    "independent_F_VQ": false,
+    "canonical_admission": false,
+    "runtime_binding": false,
+    "fixed_crop_adapter": false,
+    "WOFOST_adapter": false,
+    "authoritative_water_flux": false
+  },
+  "affected_invariants": [2, 3, 4, 5, 6, 7, 8, 9, 13, 16, 21, 22, 23, 27, 29, 30]
+}

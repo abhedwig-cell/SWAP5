@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI04",
+  "title": "Canonical Runtime and B1.10 Physical Seam Contract",
+  "oracle": {
+    "snapshot": "B1.10",
+    "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "canonical_data_categories": {
+    "persistent_state": "canonical_state_t / transaction_state_t dynamic implementation",
+    "forcing": "canonical_forcing_t",
+    "numerical_configuration": "canonical_numerical_config_t",
+    "result": "canonical_result_t",
+    "worker_scratch": "worker-owned runtime context, never persistent column state"
+  },
+  "physical_model_contract": {
+    "base_type": "canonical_physical_model_t",
+    "transaction_base": "transaction_model_t",
+    "required_prepare_method": "prepare_interval(forcing, interval, config)",
+    "advance_interval_arguments": ["state", "t0", "t1", "trial_outcome"],
+    "file_io_in_kernel_or_runtime": false,
+    "legacy_file_io_allowed_only_in_external_adapter": true,
+    "integer_day_projection_allowed_in_canonical_seam": false,
+    "midnight_start_assumption_allowed": false
+  },
+  "runtime_semantics": {
+    "requested_interval_is_generic_t0_t1": true,
+    "full_requested_interval_is_externally_atomic": true,
+    "partial_accepted_substeps_commit_only_to_private_working_state": true,
+    "failed_or_incomplete_requested_interval_changes_external_committed_state": false,
+    "transaction_retry_may_reduce_internal_step": true,
+    "runtime_continues_until_requested_t1": true,
+    "bounded_by_max_committed_substeps": true
+  },
+  "mass_contract": {
+    "hard_per_transaction_mass_gate": true,
+    "max_abs_step_residual_exposed": true,
+    "full_unrounded_interval_accounting_required_for_b2": true,
+    "full_unrounded_interval_accounting_currently_available": false,
+    "fabricated_zero_mass_totals_forbidden": true,
+    "current_result_mass_complete_flag": false
+  },
+  "a23bu_legacy_adapter": {
+    "wholesale_import_admitted": false,
+    "reason": "B1.6-bound state ownership and integer-day projection do not satisfy the canonical B1.10 seam contract"
+  },
+  "holds": [
+    "B1.10 physical adapter implementation pending",
+    "unrounded accepted physical interval flux accounting pending",
+    "generic physical sub-day execution pending",
+    "scheduled irrigation and crop continuation qualification pending"
+  ],
+  "status": "CONTRACT_MATERIALIZED_PHYSICAL_ADAPTER_BLOCKED"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI08",
+  "title": "Physical Process Continuation State",
+  "branch": "integration/f-ci-canonical",
+  "qualified_source_head": "88bb794ae10d998595f21347055a7a6caf4f066c",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "persisted_before_long_tests": true,
+  "qualification": {
+    "state_classification": "PASS",
+    "attempt_context_lifecycle": "PASS",
+    "optional_process_state_ownership": "PASS",
+    "worker_local_trial_capsule_boundary": "PASS",
+    "canonical_ci": "PASS_RUN_34088797066",
+    "source_bound_whole_day_reject_restore_rerun": "PASS_8_OF_8_ZERO_DIFF",
+    "generic_physical_subday": "NOT_QUALIFIED"
+  },
+  "admitted_persistent_process_state": [
+    "water checkpoint",
+    "thermal tsoil when active",
+    "solute cml/cmsy and age tracer when active",
+    "irrigation dayfix/nirri when configured",
+    "crop lifecycle/biomass/root state including rdpot",
+    "WOFOST state/management when active"
+  ],
+  "excluded_from_persistent_state": [
+    "forcing cursors",
+    "time and numerical timestep control",
+    "reporting/output progress",
+    "balance/accounting accumulators",
+    "irrigation event workspace and mutable schedule projection",
+    "HeadCalc/Newton scratch",
+    "WOFOST rates"
+  ],
+  "holds": [
+    "generic physical sub-day continuation",
+    "noddrz_old sub-day continuation audit",
+    "canonical B1.10 transaction-model binding",
+    "canonical unrounded interval mass-result binding"
+  ],
+  "status": "PASS_PHYSICAL_PROCESS_CONTINUATION_HUPSEL_WHOLE_DAY_SUBDAY_BLOCKED"
+}

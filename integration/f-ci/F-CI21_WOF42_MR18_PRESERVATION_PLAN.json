@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "title": "F-WOF42 and F-MR18 Postimage Preservation Replay Plan",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "starting_head": "f3efa4ccc2c4c423f1e55c9369db3e582983ef5a",
+  "base_spine": "ed0219402072f121856d82cb6068ab74c70f34d1",
+  "goal": "Prove that temporal-certificate materialization preserves the qualified crop-persistence layout and accepted-commit receipt seams on the current F-CI21 production postimage.",
+  "authorities": {
+    "F_WOF42": {
+      "decision": "QUALIFIED_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_READY_FOR_NEXT_RUNTIME/CANONICAL_COMPOSITION",
+      "qualified_runner_blob": "a20d69e9d0274c824d01102a223b97d1754d3010",
+      "qualified_source_head": "ec19be20e8ba71b94b54e8dd6c7d185aac52baa5"
+    },
+    "F_MR18": {
+      "decision": "QUALIFIED_GENERIC_ACCEPTED_COMMIT_RECEIPT_AND_SERIALIZED_MULTISWAP_SPARSE_ROUTING_F_WOF36_RESUME_ALLOWED",
+      "standalone_runner_blob": "21363a2e30e30a7e2803b0f0ead72f2890674b4f",
+      "gate_c_runner_blob": "729b5e679420f7e7e3badb3f092c029f3b5992c6",
+      "receipt_module_blob": "6798b3296b426950bf028814585c3f5de9be950b",
+      "serialized_multiswap_runtime_blob": "6559237c887e9a8476beb479546becdfe9339920"
+    }
+  },
+  "replay_policy": [
+    "Run the F-WOF42 qualified runner unchanged against the F-CI21 postimage.",
+    "For F-MR18 A/B and Gate C, alter only historical branch-delta or ancestry guards that cannot remain true after controlled materialization.",
+    "Keep all executable receipt, rollback, exact-transcript, sparse-routing, mass-identity and O0/O2 oracles unchanged.",
+    "Require the two F-MR18 production modules to remain byte-identical to their qualified blobs.",
+    "Replace Gate C's nested historical F-CI19 source-lineage replay with the current F-CI21 materialization source/compile gate; do not reinterpret historical F-CI19 as current postimage evidence.",
+    "No production source may be changed by this preservation replay."
+  ],
+  "required_results": {
+    "F_WOF42_layout_matrix": "PASS",
+    "F_WOF42_invalid_layouts_fail_closed": "PASS",
+    "F_WOF42_process_restart_and_owner_API_chain": "PASS",
+    "F_MR18_real_commit_receipt": "PASS",
+    "F_MR18_rejection_no_receipt": "PASS",
+    "F_MR18_prevalidation_nonmutating": "PASS",
+    "F_MR18_F_WOF34_exact_transcript": "PASS",
+    "F_MR18_sparse_multiswap_receipts": "PASS",
+    "F_MR18_no_receipt_route_mass_identity": "PASS",
+    "F_MR18_A_B_A_replay": "PASS",
+    "F_MR18_rejected_requested_column_no_receipt": "PASS",
+    "F_MR18_invalid_sparse_requests_nonmutating": "PASS",
+    "O0_O2_identity": "PASS",
+    "F_CI21_current_postimage_source_compile_gate": "PASS"
+  },
+  "architecture_invariants": [1,2,3,4,5,7,8,9,13,16,23,26,27,29,30],
+  "state": {
+    "persisted_before_long_replay": true,
+    "production_source_changed": false,
+    "tested": false,
+    "qualified_preservation": false
+  }
+}

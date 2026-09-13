@@ -1,0 +1,41 @@
+name: F-CI45 exact-head F-MR39 runtime qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
+    paths:
+      - .github/workflows/fci45-exact-head-qualification.yml
+      - integration/f-ci/F-CI45_STATUS.json
+      - integration/f-ci/F-CI45_EVIDENCE.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert workflow head
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI45_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run full F-CI45 gate
+        run: bash tests/fci/run_fci45_fmr39_soil_temperature_runtime_canonical_admission.sh
+      - name: Assert head and source stayed immutable
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git status --porcelain -- src)"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "07877429f94ccf07c353fa5f8ba969c341ad88dd"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_restart_state_contract.f90)" = "bb2c37efce37a73441181f14d15847c652ab45ea"
+          echo "FCI45_EXACT_HEAD_END=PASS:${GITHUB_SHA}"

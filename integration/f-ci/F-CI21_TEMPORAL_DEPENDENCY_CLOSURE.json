@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "title": "Dependency-Closed Temporal Production Surface",
+  "base_spine": {
+    "workunit": "F-WOF42",
+    "commit": "ed0219402072f121856d82cb6068ab74c70f34d1",
+    "tree": "e9884e86e9af677de4b150afa1ca208e46b27292"
+  },
+  "authoritative_temporal_source": {
+    "commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+    "tree": "d24f20559653b028d7967bf57da37da432803221",
+    "independent_qualification": "F-VQ34"
+  },
+  "source_bound_delta_layers": {
+    "F-SI25": {
+      "base": "2590820b228ca5fd3ac31c12728310a10171a144",
+      "handoff": "86c54fcdeec52a246b9cc03d4030b6f6b6d9d3f7",
+      "production_files_only": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+        "src/solver/mod_reference_richards_temporal_indicator.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90"
+      ],
+      "proof": "base-to-handoff compare contains exactly these four src changes"
+    },
+    "F-KT10": {
+      "base": "86c54fcdeec52a246b9cc03d4030b6f6b6d9d3f7",
+      "qualified_handoff": "d8e2ac874fc395d8831e995714af553cee47b08b",
+      "production_files_only": [
+        "src/runtime/mod_fmr_runtime_core.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/transaction/mod_fkt_temporal_indicator_history.f90"
+      ],
+      "proof": "base-to-handoff compare contains exactly these three src changes",
+      "architecture_correction": "numerical_continuation_layout_id is separate from physical optional_state_layout_id"
+    },
+    "F-KT11": {
+      "base": "dd34312f52ba4feb6507ca9d36a924897b64c7b8",
+      "remediated_source": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+      "production_files_only": [
+        "src/runtime/mod_canonical_contracts.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "proof": "base-to-remediated-source compare contains exactly these two src changes",
+      "negative_sentinel": "F-VQ33 invalid-budget native diagnostic contradiction retained",
+      "positive_successor": "F-VQ34"
+    }
+  },
+  "dependency_closed_production_surface": {
+    "add_exact_from_temporal_source": [
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "src/transaction/mod_fkt_temporal_indicator_history.f90"
+    ],
+    "modify_monotone_semantic_port": [
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_canonical_contracts.f90"
+    ],
+    "modify_controlled_merge": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "explicitly_not_in_delta": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/kernel/mod_kernel_committed_persistence.f90",
+      "src/transaction/mod_transaction_reference.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/solver/mod_reference_linear_solver.f90",
+      "src/solver/mod_b110_default_mvg_provider.f90",
+      "src/solver/mod_b110_source_sink_provider.f90",
+      "src/solver/mod_reference_richards_state_binding.f90"
+    ]
+  },
+  "source_equivalence_locks": {
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "src/runtime/mod_canonical_interval_runtime.f90": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+    "src/solver/mod_b110_default_mvg_provider.f90": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+    "src/solver/mod_reference_richards_state_binding.f90": "e68d88382c6502c571713cc97fddd4e18434e271"
+  },
+  "backend_merge_boundary": {
+    "WOF42_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "WOF42_last_path_touch": "ef3e3dc3ba9722a942f7296b089bccdd05d55b96",
+    "WOF35_through_WOF42_backend_touches_after_F_CI19": 0,
+    "temporal_remediated_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "rule": "Do not replace WOF42 backend until the F-CI19 governed postimage is reconciled against the KT10 and KT11 semantic hunks."
+  },
+  "architecture_result": {
+    "kernel_change_required": false,
+    "generic_transaction_core_change_required": false,
+    "persistent_temporal_history": "feature-scoped derived physical-state subtype only",
+    "inactive_column_temporal_vector": false,
+    "alternative_solver_contract": "default temporal service fail-closed unavailable",
+    "physical_optional_state_overloaded": false,
+    "mass_gate_changed": false,
+    "calendar_assumption_added": false
+  },
+  "state": {
+    "dependency_closure_complete": true,
+    "persisted_before_first_src_change": true,
+    "non_backend_materialization_authorized": true,
+    "backend_materialization_authorized": false,
+    "candidate_complete": false,
+    "tested": false,
+    "qualified": false
+  }
+}

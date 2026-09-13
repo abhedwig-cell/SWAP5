@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-CI",
+  "work_unit": "F-CI02",
+  "purpose": "Pin the exact canonical integration root before any forward-port of SWAP5 production source.",
+  "canonical_integration_branch": "integration/f-ci-canonical",
+  "repository": "abhedwig-cell/SWAP5",
+  "root": {
+    "main_commit": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+    "main_commit_message": "Revert accidental KRS placeholder on main",
+    "classification": "CANONICAL_REPOSITORY_ROOT"
+  },
+  "legacy_oracle": {
+    "snapshot": "B1.10",
+    "admission_commit": "5a25526e77a4e1ba3b8f2755cb1e59ca0700ee96",
+    "family": "SWAP-4.3.1-corrected",
+    "qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "source_member_count": 63,
+    "source_bytes": 1863575,
+    "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "snapshot_path": "reference/swap-4.3.1/snapshots/B1.10.yml",
+    "reconstruction_tool": "tools/vq/b1_10_reconstruct.py",
+    "admission_gate": "tools/vq/b1_10_admission_gate.py",
+    "classification": "CANONICAL_SOURCE"
+  },
+  "transactional_lineage": {
+    "branch": "integration/a23bk-transactional-rebase",
+    "tip_commit": "763f276a96ee1722a465bacd3a710172a5f38107",
+    "tip_work_unit": "A23BU",
+    "merge_base_with_b1_10": "2d05eeab9d766d51bc7c436ea1e45f9b49940e92",
+    "merge_base_reference": "B1.6",
+    "classification": "QUALIFIED_FORWARD_PORT_CANDIDATE",
+    "direct_merge_allowed": false,
+    "reason": "The transactional line diverged from B1.6 while the corrected legacy oracle advanced to B1.10. Production source must be forward-ported against the B1.10 canonical root."
+  },
+  "vq": {
+    "b2_candidate_path": "tools/vq/cases/b2-reference-candidate.json",
+    "b2_status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
+    "b2_gate": "tools/vq/b2_reference_gate.py",
+    "classification": "QUALIFIED_TEST_OR_CONTRACT"
+  },
+  "s13b_headcalc": {
+    "classification": "BLOCKED_BY_MISSING_PROVENANCE",
+    "production_source_import_allowed": false,
+    "reuse_mode": "contract_test_evidence_only_until_exact_postimage_is_pinned"
+  },
+  "m3": {
+    "classification": "QUALIFIED_TEST_OR_CONTRACT",
+    "production_source_import_allowed": false,
+    "reuse_mode": "reuse_contracts_tests_and_evidence; reimplement against canonical source when exact postimage is unavailable"
+  },
+  "holds": [
+    "No A23 production source may be copied or merged before F-CI03 forward-port review.",
+    "No selective step-doubling or other performance policy is admitted in F-CI consolidation.",
+    "No solver formula or physics change is admitted except already-qualified B1.10 corrected-reference changes.",
+    "Generic [t0,t1] remains a required canonical capability and must not be inferred from legacy day projection.",
+    "Mass conservation remains a hard gate.",
+    "Rejected trials must not mutate committed physical state.",
+    "Numerical scratch remains worker-owned and reporting state is not physical continuation state."
+  ]
+}

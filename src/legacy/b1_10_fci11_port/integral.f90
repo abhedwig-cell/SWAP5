@@ -1,0 +1,6 @@
+include 'integral_part01.inc'
+include 'integral_part02.inc'
+include 'integral_part03.inc'
+include 'integral_part04.inc'
+include 'integral_part05.inc'
+include 'integral_part06.inc'

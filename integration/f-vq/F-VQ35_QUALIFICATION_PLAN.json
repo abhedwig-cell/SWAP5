@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ35",
+  "title": "Independent Scientific Qualification of F-PM06A Restricted Reference-ET Demand",
+  "branch": "qualification/f-vq35-fpm06a-reference-et-demand",
+  "candidate": {
+    "closeout_commit": "c1bbe73cd0deced17f979a601fd6169036d7076b",
+    "definitive_tested_head": "23206aaf996ffb7dde355508fa2379a5efbd3d57",
+    "source_path": "src/process/mod_reference_et_demand_process.f90",
+    "source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "source_must_remain_immutable": true
+  },
+  "frozen_source_authority": {
+    "source_archive": "SWAP_4.3.1(6).zip",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "source_path": "SWAP/MOD_meteo.f90",
+    "source_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "routine": "ETpot",
+    "source_lines": "1399-1489"
+  },
+  "independent_rederivation": {
+    "restricted_configuration": {
+      "SWETR": 1,
+      "SWMETDETAIL": 0,
+      "SWDIVIDE": 0,
+      "SWINTER": 0,
+      "SWEVAP": 1,
+      "SWREDU": 0,
+      "SWCFBS": 0
+    },
+    "legacy_intermediates": {
+      "es0_mm_per_day": "etr * (1 - vcover)",
+      "ep0_mm_per_day": "etr * (1 - vcover) * cfevappond",
+      "et0_mm_per_day_emerged": "etr * vcover * cf",
+      "et0_mm_per_day_not_emerged": "0"
+    },
+    "legacy_outputs": {
+      "peva_cm_per_day": "max(es0 * 0.1, 0)",
+      "epond_cm_per_day": "max(ep0 * 0.1, 0)",
+      "ptra_dry_cm_per_day": "max(et0 * 0.1, 0)",
+      "ptra_cm_per_day_for_SWINTER0": "ptra_dry, multiplied by fco2tra when crop emerged"
+    },
+    "source_semantics_to_probe": [
+      "es0 and ep0 consume vcover irrespective of fl_cropemergence",
+      "et0 is zero when crop is not emerged",
+      "cf and fco2tra are crop-specific dependencies only on the emerged route",
+      "0.1 is the source-bound mm/day to cm/day conversion for these outputs",
+      "potential demands are rates/results and not accepted water-mass withdrawals"
+    ],
+    "owner_expected_literals_used_as_oracle": false
+  },
+  "qualification_gates": [
+    "candidate production source immutable and exact blob locked",
+    "no qualification source delta",
+    "independent grid oracle across ETref, cover, pond factor, crop factor and CO2 factor",
+    "explicit zero and unit-conversion boundaries",
+    "non-emerged nonzero-vcover source semantics",
+    "inactive crop-factor dependency-minimality",
+    "invalid active-domain fail-closed behavior",
+    "A-B-A stateless replay",
+    "O0/O2 output identity"
+  ],
+  "nonclaims": [
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "SWINTER=1,2,3",
+    "SWREDU=1,2",
+    "wet-canopy partition",
+    "actual evaporation",
+    "root uptake",
+    "runtime composition",
+    "mass-ledger composition",
+    "canonical admission"
+  ],
+  "exit_target": "QUALIFIED_INDEPENDENT_FPM06A_RESTRICTED_STATELESS_REFERENCE_ET_DEMAND_SCIENTIFIC_ADMISSION"
+}

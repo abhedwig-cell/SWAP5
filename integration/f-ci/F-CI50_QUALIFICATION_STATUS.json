@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50",
+  "title": "F-GC17 Typed Direct Groundwater Interface Canonical Admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FGC17_TYPED_GROUNDWATER_INTERFACE_FOR_CANONICAL_ADMISSION",
+  "exit_target": "QUALIFIED_FGC17_TYPED_GROUNDWATER_INTERFACE_ADMITTED_TO_CURRENT_CANONICAL",
+  "canonical_base": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+  "donor_authority": {
+    "work_unit": "F-GC17",
+    "closeout_head": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "decision": "QUALIFIED_TYPED_DIRECT_GROUNDWATER_INTERFACE_DATUM_SIGN_UNITS_CONVERGENCE_POLICY_READY_FOR_CANONICAL_ADMISSION",
+    "final_owner_run": 34678327188,
+    "final_owner_job": 103512100613
+  },
+  "source_allowlist": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+  },
+  "first_green_admission": {
+    "head": "83c233bd738bf53f1502cf2d67d88dc75c4d15fe",
+    "run": 34678494474,
+    "job": 103512551905,
+    "conclusion": "success"
+  },
+  "gate_matrix": {
+    "exact_donor_blob_identity": "PASS",
+    "source_allowlist": "PASS",
+    "independent_contract_replay": "PASS",
+    "O0_O2_identity": "PASS",
+    "generic_nonmidnight_window": "PASS",
+    "explicit_datum_H_equals_z_plus_psi": "PASS",
+    "qbot_sign_and_unit_conversion": "PASS",
+    "exact_qGW_equals_negative_qSWAP": "PASS",
+    "head_flux_residual_type_separation": "PASS",
+    "default_head_policy_fail_closed": "PASS",
+    "provenance_bound_explicit_head_tolerance": "PASS",
+    "NaN_Inf_fail_closed": "PASS",
+    "policy_separation_from_application_and_Richards_accuracy": "PASS",
+    "architecture_invariants": "PASS_WITHIN_RESTRICTED_SCOPE"
+  },
+  "promotion_requirements": {
+    "canonical_must_still_equal": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "exact_status_head_workflow_must_succeed": true,
+    "donor_blobs_must_remain_exact": true,
+    "true_two_parent_merge_required": true,
+    "first_parent": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "second_parent": "EXACT_QUALIFIED_FCI50_STATUS_HEAD",
+    "force_update_forbidden": true,
+    "broad_postpromotion_canonical_run_required": true,
+    "moving_preservation_postimage_reconciliation_required_if_current_preservation_authority_does_not_cover_new_admission": true
+  },
+  "scope_guards": {
+    "production_source_changed_from_F_GC17_donor": false,
+    "new_physics": false,
+    "solver_or_transaction_change": false,
+    "head_tolerance_default_added": false,
+    "mass_tolerance_added": false,
+    "predictor_corrector_admitted": false,
+    "MODFLOW_adapter_admitted": false,
+    "production_groundwater_coupling_admitted": false
+  },
+  "architecture_audit": "integration/f-ci/F-CI50_ARCHITECTURE_AUDIT.json",
+  "next_required_step": "Run the exact-head F-CI50 workflow on this status commit. Promote only if green and integration/f-ci-canonical remains exactly the frozen canonical base."
+}

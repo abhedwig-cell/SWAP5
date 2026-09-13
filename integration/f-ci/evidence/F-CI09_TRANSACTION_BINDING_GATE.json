@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI09",
+  "title": "Canonical B1.10 transaction binding gate evidence",
+  "qualified_source_head": "3e10ef4c0d04d937d01b4619a72117b6aaea6889",
+  "canonical_workflow_run_id": 34091724307,
+  "canonical_job_id": 101646644706,
+  "compiler": "GNU Fortran 13.3.0",
+  "qualification": {
+    "source_provenance_pins": "PASS",
+    "transaction_model_type_binding": "PASS",
+    "transaction_attempt_context_binding": "PASS",
+    "process_state_capture_restore": "PASS",
+    "legacy_attempt_context_capture_restore": "PASS",
+    "o0_binding_test": "PASS",
+    "o2_binding_test": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "blocked_advance_negative_control": "PASS",
+    "unqualified_storage_negative_control": "PASS_FAIL_CLOSED",
+    "binding_no_direct_swap_call": "PASS",
+    "binding_no_file_io": "PASS",
+    "canonical_chain_fci03_through_fci09": "PASS"
+  },
+  "capability_boundary": {
+    "generic_physical_interval_advance": "NOT_ADMITTED",
+    "unrounded_trial_mass_flux_contract": "NOT_ADMITTED",
+    "mass_storage_contract": "NOT_ADMITTED",
+    "temporal_error_contract": "NOT_ADMITTED",
+    "execute_reference_interval_for_b1_10": "NOT_ADMITTED"
+  },
+  "time_seam_blocker": "The B1.10 legacy controller remains calendar-day based while the reference transaction core requires full and two half trials over a generic interval. Mapping half trials to whole legacy days is forbidden.",
+  "production_physics_changed": false,
+  "result": "PASS_TRANSACTION_BINDING_SUBSTRATE_REFERENCE_EXECUTION_BLOCKED"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.fci40_post_promotion_reconciliation.v1",
+  "work_unit": "F-CI40",
+  "production_admission": {
+    "canonical_head": "23387826b391fe344326e798d91641191022d2e2",
+    "canonical_tree": "50df8a979c17143fcdeb127684db99923bd676ab",
+    "qualified_composition": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "qualified_runtime_blob": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+    "ancestry": "CURRENT_CANONICAL_DESCENDS_FROM_FCI40_COMPOSITION"
+  },
+  "pre_promotion_admission_gate": {
+    "run": 34546323128,
+    "job": 103099624152,
+    "head": "23387826b391fe344326e798d91641191022d2e2",
+    "conclusion": "success",
+    "gate": "FCI40_CANONICAL_ADMISSION_GATE=PASS"
+  },
+  "broad_canonical_gate": {
+    "workflow": "F-CI canonical qualification",
+    "run": 34546441988,
+    "head": "23387826b391fe344326e798d91641191022d2e2",
+    "event": "push",
+    "conclusion": "success",
+    "includes_frozen_fci40_source_authority": true,
+    "includes_moving_fci40_preservation": true
+  },
+  "status_head_failure": {
+    "run": 34546628104,
+    "head": "15f14ba2ad1501d84d91f7ab9b6a2ce1c0f1a892",
+    "conclusion": "failure",
+    "classification": "GOVERNANCE_HARNESS_ONLY_POST_PROMOTION_PHASE_MISMATCH",
+    "message": "FCI40_GATE_FAIL canonical moved after F-CI40 source lock",
+    "production_failure": false,
+    "scientific_failure": false,
+    "mass_failure": false
+  },
+  "remediation": {
+    "type": "QUALIFICATION_HARNESS_ONLY",
+    "wrapper": "tests/fci/run_fci40_fmr38_effective_forcing_executor_canonical_admission_v2.sh",
+    "rule": "accept pre-promotion exact base OR post-promotion canonical descending from F-CI40 composition with exact qualified runtime blob and frozen reference tree",
+    "production_modified": false,
+    "reference_modified": false
+  },
+  "final_closeout_rule": "NO_FURTHER_SCIENTIFIC_OR_PRODUCTION_MUTATION; FINAL GOVERNANCE HEAD MUST PASS F-CI40 EXACT-HEAD CI AND THEN BROAD CANONICAL PUSH CI"
+}

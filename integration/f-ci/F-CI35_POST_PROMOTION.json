@@ -1,0 +1,29 @@
+{
+  "schema":"swap5.fci35_post_promotion.v1",
+  "work_unit":"F-CI35",
+  "title":"Parallel Committed-Boundary Restart Composition Post-Promotion Reconciliation",
+  "pre_fci35_canonical_head":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "promoted_capability_head":"43790409c689c8ceca372794a1ff3244254c04e5",
+  "promotion_type":"FAST_FORWARD_METADATA_CAPABILITY_ADMISSION",
+  "production_source_delta":0,
+  "reference_delta":0,
+  "post_promotion_replay":{"run":34498274424,"job":102942219732,"branch":"integration/f-ci-canonical","head":"43790409c689c8ceca372794a1ff3244254c04e5","conclusion":"success"},
+  "preservation_observation":{"fci34_run":34498274356,"fci34_conclusion":"success","canonical_run_set_failure_observed":false,"canonical_run_set_in_progress_observed_at_closeout":false},
+  "reconciled_contracts":[
+    "exact current canonical source blobs preserved",
+    "exact F-MQ29 independent authority replayed on canonical ref",
+    "held-out 3,5,9,16,23,33-column routes preserved",
+    "serialized/parallel-2/parallel-4 restart origins preserved",
+    "2/4-worker and 2-to-4/4-to-2 continuation preserved",
+    "whole-registry atomic restore preserved",
+    "worker scratch reconstruction preserved",
+    "changed caller-order scientific identity and canonical publication preserved",
+    "restart negative matrix preserved",
+    "hard per-column mass <= 1e-12 cm preserved",
+    "authoritative aggregate mass completeness/identity preserved",
+    "O0/O2 exact output identity preserved"
+  ],
+  "failed_pre_admission_attempt":"integration/f-ci/F-CI35_ATTEMPT1_CLASSIFICATION.json",
+  "failed_attempt_effect_on_scientific_disposition":"NONE; classified and remediated as wrapper observability defect before promotion",
+  "decision":"POST_PROMOTION_RECONCILED_CANONICAL_CAPABILITY_ADMISSION_VALID"
+}

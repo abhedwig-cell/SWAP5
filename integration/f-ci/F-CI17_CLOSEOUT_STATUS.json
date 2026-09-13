@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI17",
+  "closeout_for_postimage": "4ec5ce2a638047a2468967944902bc7d92f37339",
+  "canonical_branch": "integration/f-ci-canonical",
+  "production_source_changed": false,
+  "qualification": {
+    "canonical_workflow": 34110319677,
+    "fci17_job": 101705702221,
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI17"
+  },
+  "gate_effect": {
+    "CI-G10": "QUALIFIED",
+    "downstream_release_allowed": false
+  },
+  "status": "QUALIFIED_CLOSEOUT_ANCHOR"
+}

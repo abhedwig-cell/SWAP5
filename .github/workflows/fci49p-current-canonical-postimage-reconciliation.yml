@@ -1,0 +1,39 @@
+name: F-CI49P current canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci49p-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FCI49P_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+      - name: Fetch pinned canonical
+        shell: bash
+        run: git fetch --no-tags origin integration/f-ci-canonical
+      - name: Reconcile current canonical postimage
+        run: python3 tests/fci/run_fci49p_current_canonical_postimage_reconciliation.py
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FCI49P_EXACT_HEAD_END=PASS:$GITHUB_SHA"

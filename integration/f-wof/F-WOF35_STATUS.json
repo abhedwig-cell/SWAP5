@@ -1,0 +1,84 @@
+{
+  "schema_version": 3,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF35",
+  "title": "Accepted-Window Runtime Lineage Canonical Composition",
+  "branch": "integration/f-wof35-accepted-window-canonical-composition",
+  "base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "qualified_F_CI19_src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "qualified_F_CI19_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "status": "QUALIFIED_RESTRICTED_CANONICAL_ACCEPTED_WINDOW_RUNTIME_LINEAGE_COMPOSITION_PHYSICAL_BINDING_HELD",
+  "decision": "QUALIFY_COMPOSITION_ONLY_DO_NOT_CLAIM_PHYSICAL_WOFOST_PRODUCTION_ADMISSION",
+  "qualification_evidence": "integration/f-wof/F-WOF35_QUALIFICATION_EVIDENCE.json",
+  "tested_candidate": {
+    "commit": "4516482af6dd93300e5bd214f079ed9498c86757",
+    "workflow": "F-WOF35 canonical composition",
+    "run_id": 34333045977,
+    "job_id": 102405879525,
+    "conclusion": "success"
+  },
+  "composition": {
+    "dependency_closure_materialized": true,
+    "materialization_commit": "16fb3a05cdabcda18c385892c89f843e7da9c45b",
+    "semantic_changes_to_donor_blobs": false,
+    "exact_donor_blob_lock": true,
+    "production_paths_added": [
+      "src/crop/mod_wofost_actual_biomass_state.f90",
+      "src/crop/mod_wofost_crop_owner_state.f90",
+      "src/crop/mod_wofost_one_day_structural_evolution.f90",
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"
+    ]
+  },
+  "verification": {
+    "canonical_F_CI19_base_tree_identity": "PASS",
+    "exact_four_file_donor_delta": "PASS",
+    "F_WOF34_O0": "PASS",
+    "F_WOF34_O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "F_WOF34_exact_transcript_identity": "PASS",
+    "F_WOF34_output_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "F_CI19_semantic_preservation": "PASS",
+    "F_CI19_hard_mass_preservation": "PASS",
+    "F_CI19_rollback_replay_preservation": "PASS",
+    "F_CI19_O0_O2_preservation": "PASS",
+    "F_WOF33_exact_closeout_regression": "PASS"
+  },
+  "superseded_failed_run": {
+    "run": 34332201622,
+    "classification": "GATE_HARNESS_PROVENANCE_ERROR_NOT_COMPOSITION_SEMANTIC_FAILURE",
+    "reason": "Historical F-CI03 source-provenance lock was incorrectly invoked directly on the later F-CI19 lineage. No historical gate was weakened; the corrected run uses the qualified F-CI19 composition-preservation route."
+  },
+  "post_test_changes": {
+    "through_commit": "0842373b3a7f87b62e5f437986f4280c0e0b01aa",
+    "source_or_test_delta": false,
+    "metadata_only": true
+  },
+  "physical_binding_frontier": "integration/f-wof/F-WOF35_PHYSICAL_BINDING_FRONTIER.json",
+  "scope_flags": {
+    "PERSISTED": true,
+    "COMPOSITION_MATERIALIZED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "CANONICAL_ADMITTED": false,
+    "ACTUAL_RICHARDS_ROOT_ET_SUBSTEP_BINDING": false,
+    "PHYSICAL_WOFOST_PRODUCTION_ADMITTED": false,
+    "CALENDAR_SCHEDULER": false,
+    "ACTIVE_WINDOW_RESTART_OWNERSHIP": false
+  },
+  "not_qualified": [
+    "actual Richards/root-uptake/ET production substep binding",
+    "physical WOFOST production admission",
+    "full restart or distributed ownership of active accepted crop windows",
+    "calendar scheduler",
+    "historical multi-day B1.10 crop equivalence",
+    "oxygen IALPWET aggregate",
+    "nutrients",
+    "soybean",
+    "grass",
+    "potential crop"
+  ],
+  "next": "A separate physical-binding workunit may now qualify runtime-owned same-trial PTRA and applied root-extraction/QROT accumulation under F-KT checkpoint/retry/commit provenance. Canonical promotion of this dormant composition, if desired, must still be reconciled against the live canonical ref and its governance before moving that ref."
+}

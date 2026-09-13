@@ -1,0 +1,36 @@
+name: F-CI54 F-GC19R-R1 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci54-fgc19r-r1-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI54 current-canonical admission qualification
+        run: bash tests/fci/run_fci54_fgc19r_r1_current_canonical_admission.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"

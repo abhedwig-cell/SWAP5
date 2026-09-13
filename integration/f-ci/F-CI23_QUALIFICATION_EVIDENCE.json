@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI23",
+  "title": "Canonical Provenance Gate Reconciliation",
+  "qualification_head": "e8cc3557c68b04c07e833c7260aa3a722e381eef",
+  "workflow": {
+    "name": "F-CI23 canonical provenance gate reconciliation",
+    "run_id": 34407498965,
+    "conclusion": "success",
+    "historical_fci03_through_fci18_job": 102653883334,
+    "frozen_fci19_candidate_preservation_job": 102653883488,
+    "frozen_fci19_source_lineage_job": 102653883597,
+    "current_postimage_lineage_job": 102654029149
+  },
+  "reconciled_gate_model": {
+    "historical_gates_run_on_frozen_qualified_heads": true,
+    "historical_gate_readers_modified": false,
+    "current_source_accepted_by_historical_literal_pins": false,
+    "forward_evolution_requires_explicit_pinned_authority": true,
+    "production_src_modified_by_F_CI23": false,
+    "reference_modified_by_F_CI23": false
+  },
+  "historical_authority": {
+    "F_CI18_gate_promotion_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "F_CI18_original_success_run": 34114164800,
+    "fresh_F_CI23_replay": "PASS_FCI03_THROUGH_FCI18",
+    "F_CI19_candidate_preservation_head": "5d5ece58b2b8e053a270992ded52377dd524f9c4",
+    "F_CI19_candidate_preservation_original_run": 34319928251,
+    "fresh_F_CI23_candidate_preservation_replay": "PASS",
+    "F_CI19_source_lineage_head": "e06e3af07efd72a893e860b5d90ccd85efc3c643",
+    "F_CI19_source_lineage_original_run": 34320967298,
+    "fresh_F_CI23_source_lineage_replay": "PASS"
+  },
+  "current_postimage": {
+    "base_canonical_head": "e5662a513846296585a1a7005729896c165091ac",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "current_lineage_authority_gate": "PASS",
+    "F_CI21_closeout_readiness_reexecution": "PASS",
+    "post_test_authority_recheck": "PASS"
+  },
+  "explicit_forward_provenance": {
+    "transaction": {
+      "current_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+      "authority": "F-KT09 plus F-CI19 Candidate A",
+      "decision_record": "integration/f-ci/F-CI23_TRANSACTION_FORWARD_PROVENANCE.json",
+      "hard_mass_gate_preserved": true,
+      "rollback_preserved": true,
+      "richards_specific_logic_added": false,
+      "calendar_specific_logic_added": false
+    },
+    "mass_accounting": {
+      "F_KT08_final_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+      "F_MR04_qualified_source": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+      "current_runtime_blob": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+      "decision_record": "integration/f-ci/F-CI23_FCI04_MASS_PROVENANCE.json",
+      "accepted_only": true,
+      "completeness_fail_closed": true,
+      "retry_double_counting": false,
+      "mass_conservation_disable_switch": false,
+      "mass_core_preserved_from_F_KT08": true
+    }
+  },
+  "F_CI21_F_CI22_scope": {
+    "exact_F_CI21_postimage": true,
+    "F_VQ33_negative_evidence_retained": true,
+    "F_VQ34_remediated_policy_retained": true,
+    "WOF42_crop_persistence_preserved": true,
+    "MR18_accepted_commit_receipt_preserved": true,
+    "MR18_sparse_multiswap_receipt_preserved": true,
+    "mass_gate_precedes_certificate_gate": true,
+    "application_H_budget_selected": false,
+    "universal_temporal_tolerance_selected": false,
+    "groundwater_coupling_released": false
+  },
+  "canonical_workflow_reconciliation": {
+    "path": ".github/workflows/fci-canonical.yml",
+    "old_model": "run every historical gate directly against newest source",
+    "old_model_rejected_reason": "later independently qualified forward evolutions intentionally supersede historical exact-postimage pins",
+    "new_model": "frozen historical replay plus frozen F-CI19 preservation/reachability plus current explicit forward-lineage authority and F-CI21 semantic replay",
+    "production_or_reference_effect": "NONE"
+  },
+  "decision": "QUALIFIED_LINEAGE_AWARE_CANONICAL_GATE_RECONCILIATION_READY_FOR_EVIDENCE_HEAD_REPLAY_AND_SEPARATE_FAST_FORWARD_DECISION",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_on_pre_evidence_head": true,
+    "evidence_head_replay_pending": true,
+    "canonical_ref_modified_by_F_CI23": false,
+    "closed": false
+  }
+}

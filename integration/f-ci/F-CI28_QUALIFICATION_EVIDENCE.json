@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI28",
+  "candidate": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "tested_head": "c77617c710b0684d964b5e0e8eeae009e3a7aacd",
+  "workflow": {
+    "run": 34458668057,
+    "job": 102811014372,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "source_authority": {
+    "candidate_exact_two_source_delta": "PASS",
+    "qualification_production_immutable": "PASS",
+    "source_and_attack_blob_locks": "PASS",
+    "F_CI27_ET_runtime_blob_preservation": "PASS"
+  },
+  "restart_qualification": {
+    "explicit_state_family_discriminator": "PASS",
+    "atomic_publication_seam": "PASS",
+    "compact_restart_no_solver_scratch": "PASS",
+    "kernel_IO_separation_static": "PASS",
+    "ET_restart_scope_separation_static": "PASS",
+    "matrix_columns": [1,2,7,8,17,31,32],
+    "matrix": "PASS",
+    "generic_time_window": [6200.0625,6200.3125,6200.6875],
+    "parameter_set_identity_fail_closed": "PASS",
+    "template_layout_identity_fail_closed": "PASS",
+    "per_column_parameter_reference_fail_closed": "PASS",
+    "duplicate_column_fail_closed": "PASS",
+    "reverse_record_order": "PASS",
+    "reverse_runtime_order": "PASS",
+    "exact_lineage_revision_time_continuation": "PASS",
+    "exact_interval_mass_continuation": "PASS",
+    "continuous_vs_restarted_endpoint_identity": "PASS",
+    "deterministic_replay": "PASS",
+    "malformed_concrete_state_rejected": "PASS",
+    "registered_wrong_family_rejected": "PASS",
+    "late_record_atomicity": "PASS",
+    "late_provenance_atomicity": "PASS",
+    "valid_production_restore": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "current_canonical_preservation": {
+    "F_MR23_ET_owner_behavior": "PASS",
+    "F_VQ36_independent_ET_runtime_oracle": "PASS",
+    "F_VQ36_grid_cases": 13824,
+    "F_VQ36_generic_signed_time_origins": "PASS",
+    "F_VQ36_variable_forcing_spans": "PASS",
+    "F_VQ36_rate_invariant_to_interval_duration": "PASS",
+    "F_VQ36_forcing_boundary_and_fail_closed_checks": "PASS",
+    "F_VQ36_stateless_replay": "PASS"
+  },
+  "warnings": {
+    "restart_dependency_warnings": "PREEXISTING_NON_FATAL",
+    "ET_preservation_compiled_with_Werror": true,
+    "qualification_effect": "NONE"
+  },
+  "decision": "QUALIFIED_INDEPENDENT_FMR25_RESTRICTED_RESTART_ON_FCI27_POSTIMAGE",
+  "canonical_admission": "PENDING_FCI28_CANONICAL_READINESS_AND_LIVE_REF_RECHECK",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No root-uptake or actual-ET ownership reconciliation.",
+    "No general SWAP5 release qualification."
+  ]
+}

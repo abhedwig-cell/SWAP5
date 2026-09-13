@@ -1,0 +1,25 @@
+{
+  "schema":"swap5.fci35_source_lock.v1",
+  "work_unit":"F-CI35",
+  "title":"Parallel Committed-Boundary Restart Composition Current-Canonical Admission",
+  "branch":"qualification/f-ci35-parallel-committed-restart-current-canonical-admission",
+  "canonical_base":{"branch":"integration/f-ci-canonical","head":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36"},
+  "independent_qualification":{"work_unit":"F-MQ29","branch":"qualification/f-mq29-parallel-committed-restart-composition","closeout":"5ea88d81a63e6c706c87e99ac360f91f08711fc1","evidence_run":34496804763,"closeout_run":34497122833,"decision":"QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION"},
+  "owner":{"work_unit":"F-MR32","candidate":"1e27f2758d9dbed11350aec5a089662921826d21","closeout":"eef9cfa2cdb6b272ae9c0dd1f4ad0c90153953f4"},
+  "production_source_delta":0,
+  "reference_delta":0,
+  "current_blob_locks":{
+    "src/runtime/mod_fmr_committed_restart.f90":"19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90":"f1359f97d02408d8b700b0c93fe961a6ba46742c",
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90":"544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90":"0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90":"fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90":"9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_runtime_core.f90":"adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90":"6798b3296b426950bf028814585c3f5de9be950b",
+    "src/runtime/mod_canonical_contracts.f90":"c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "src/transaction/mod_transaction_reference.f90":"2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+  },
+  "admission_semantics":"This is a metadata/capability admission of an already-current canonical source composition. F-CI35 must not change production or reference source. It must replay the exact independent F-MQ29 qualification against the current canonical postimage before canonical ref advance.",
+  "fail_closed":true
+}

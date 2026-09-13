@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50",
+  "title": "F-GC17 Typed Direct Groundwater Interface Canonical Admission",
+  "branch": "qualification/f-ci50-fgc17-typed-groundwater-interface-canonical-admission",
+  "canonical_base": {
+    "sha": "ca1dbf6f51e606bdd2a89aa9057ed40b2d99b868",
+    "tree": "d3142c34b55befaae129aeb360c415ec7d56043c"
+  },
+  "donor_authority": {
+    "work_unit": "F-GC17",
+    "branch": "work/f-gc17-typed-direct-groundwater-interface-convergence-policy",
+    "closeout_head": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "decision": "QUALIFIED_TYPED_DIRECT_GROUNDWATER_INTERFACE_DATUM_SIGN_UNITS_CONVERGENCE_POLICY_READY_FOR_CANONICAL_ADMISSION",
+    "final_exact_head_run": 34678327188,
+    "final_exact_head_job": 103512100613,
+    "final_exact_head_conclusion": "success"
+  },
+  "source_allowlist": [
+    {
+      "path": "src/runtime/mod_groundwater_coupling_contract.f90",
+      "donor_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_coupling_policy.f90",
+      "donor_blob": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+    }
+  ],
+  "admission_contract": [
+    "Compose only the exact qualified F-GC17 source postimage onto current canonical.",
+    "Preserve explicit H=z+psi common-datum semantics for direct mode-5 coupling.",
+    "Preserve qbot cm/day positive-into-SWAP to q_SWAP m/s positive-out conversion and exact q_GW=-q_SWAP assignment.",
+    "Preserve explicit provenance-bound head tolerance with no numeric default.",
+    "Keep head convergence separate from application H_app, temporal H_budget, solver tolerance and mass conservation.",
+    "Do not admit predictor-corrector orchestration, groundwater service, mass ledger, tile aggregation, MODFLOW adapter or deep-vadose physics."
+  ],
+  "required_gates": [
+    "exact donor blob identity",
+    "current canonical ancestry",
+    "independent compile and contract replay at O0 and O2",
+    "generic non-midnight [t0,t1]",
+    "datum-required H=z+psi mapping",
+    "head and flux conversion round trips",
+    "exact action-reaction flux pairing",
+    "fail-closed tolerance provenance and non-finite inputs",
+    "no unrelated src delta",
+    "architecture invariant audit",
+    "exact-head workflow start/end"
+  ],
+  "defect_rule": "Any source defect or required semantic change returns to F-GC17 ownership; F-CI50 may not patch production behavior opportunistically.",
+  "promotion_rule": "Promote only by a true two-parent merge after exact-head qualification and only if integration/f-ci-canonical remains exactly the frozen canonical base.",
+  "exit_target": "QUALIFIED_FGC17_TYPED_GROUNDWATER_INTERFACE_ADMITTED_TO_CURRENT_CANONICAL"
+}

@@ -1,0 +1,31 @@
+name: F-CI45P F-MR39 runtime postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45p-fmr39-runtime-postimage-reconciliation
+    paths:
+      - integration/f-ci/F-CI45P_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert exact reconciliation head
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI45P_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Reconcile promoted postimage
+        run: bash tests/fci/run_fci45p_fmr39_runtime_postimage_reconciliation.sh
+      - name: Assert support-only reconciliation
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git diff --name-only 14db7be4827e73650da18d494af5cf190e687490..HEAD -- src)"
+          echo "FCI45P_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
