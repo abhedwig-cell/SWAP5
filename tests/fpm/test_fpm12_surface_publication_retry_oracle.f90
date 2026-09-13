@@ -25,14 +25,18 @@ program test_fpm12_surface_publication_retry_oracle
   type(kernel_checkpoint_t) :: checkpoint
   type(kernel_candidate_state_t) :: candidate
   type(kernel_diagnostics_t) :: diag
-  type(fmr_surface_evaporation_publication_t) :: pub, seed
+  type(fmr_surface_evaporation_publication_t) :: pub, seed, multi_pub
   integer(int64) :: rev0
   integer :: ps, rs, cs, i
   logical :: did_commit
 
+  config = canonical_numerical_config_t()
   config%max_committed_substeps=8
+  config%progress_tolerance=0.0_real64
+  et = reference_et_demand_result_t()
   et%potential_soil_evaporation_cm_per_day=0.40_real64
   et%potential_pond_evaporation_cm_per_day=0.60_real64
+  et_diag = fmr_reference_et_binding_diagnostics_t()
   et_diag%status=FMR_REFERENCE_ET_BINDING_OK
   et_diag%result_produced=.true.
   good%capacity=0.11_real64
@@ -41,42 +45,52 @@ program test_fpm12_surface_publication_retry_oracle
   call trial_kernel%bind_model(trial_model)
   call commit_kernel%bind_model(commit_model)
 
+  ! Same executor: standalone-style candidate production and accepted commit.
   call setup(12001_int64, committed, checkpoint, candidate, diag)
-  call publish(committed,checkpoint,candidate,diag,good,seed,did_commit,ps,rs,cs)
-  call require(did_commit .and. seed%ready(),'seed acceptance')
+  call publish_with(trial_kernel,committed,checkpoint,candidate,diag,good,seed,did_commit,ps,rs,cs)
+  call require(did_commit .and. seed%ready(),'standalone acceptance')
   write(*,'(A)') 'FPM12_ACCEPTED_ONCE=PASS'
 
+  ! Separate trial and commit executors: serialized MultiSWAP-style composition.
   call setup(12002_int64, committed, checkpoint, candidate, diag)
+  call publish_with(commit_kernel,committed,checkpoint,candidate,diag,good,multi_pub,did_commit,ps,rs,cs)
+  call require(did_commit .and. multi_pub%ready(),'cross executor acceptance')
+  call require_close(multi_pub%bare_soil_evaporation_rate(),seed%bare_soil_evaporation_rate(),'cross executor bare rate')
+  call require_close(multi_pub%ponded_water_evaporation_rate(),seed%ponded_water_evaporation_rate(),'cross executor pond rate')
+  call require(trim(multi_pub%route())==trim(seed%route()),'cross executor route')
+  write(*,'(A)') 'FPM12_STANDALONE_SERIALIZED_MULTISWAP_EQUIVALENCE=PASS'
+
+  call setup(12003_int64, committed, checkpoint, candidate, diag)
   rev0=committed%current_revision()
   pub=seed
-  call publish(committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
+  call publish_with(commit_kernel,committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
   call require(.not.did_commit .and. .not.pub%ready(),'reject no publication')
   call require(committed%current_revision()==rev0 .and. candidate%ready(),'reject immutable')
   write(*,'(A)') 'FPM12_REJECT_ZERO_PUBLICATION=PASS'
   write(*,'(A)') 'FPM12_STALE_OUTPUT_CLEARED=PASS'
-  call publish(committed,checkpoint,candidate,diag,good,pub,did_commit,ps,rs,cs)
+  call publish_with(commit_kernel,committed,checkpoint,candidate,diag,good,pub,did_commit,ps,rs,cs)
   call require(did_commit .and. pub%ready(),'reject accept')
   call require(committed%current_revision()==rev0+1_int64,'reject accept one commit')
   write(*,'(A)') 'FPM12_REJECT_THEN_ACCEPT=PASS'
 
-  call setup(12003_int64, committed, checkpoint, candidate, diag)
+  call setup(12004_int64, committed, checkpoint, candidate, diag)
   rev0=committed%current_revision()
   do i=1,2
     pub=seed
-    call publish(committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
+    call publish_with(commit_kernel,committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
     call require(.not.did_commit .and. .not.pub%ready(),'double reject no publication')
     call require(committed%current_revision()==rev0 .and. candidate%ready(),'double reject immutable')
   end do
-  call publish(committed,checkpoint,candidate,diag,good,pub,did_commit,ps,rs,cs)
+  call publish_with(commit_kernel,committed,checkpoint,candidate,diag,good,pub,did_commit,ps,rs,cs)
   call require(did_commit .and. pub%ready(),'double reject accept')
   call require(committed%current_revision()==rev0+1_int64,'double reject one commit')
   write(*,'(A)') 'FPM12_REJECT_REJECT_ACCEPT_NO_ACCUMULATION=PASS'
 
-  call setup(12004_int64, committed, checkpoint, candidate, diag)
+  call setup(12005_int64, committed, checkpoint, candidate, diag)
   rev0=committed%current_revision()
   do i=1,3
     pub=seed
-    call publish(committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
+    call publish_with(commit_kernel,committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
     call require(.not.did_commit .and. .not.pub%ready(),'exhaustion no publication')
     call require(committed%current_revision()==rev0 .and. candidate%ready(),'exhaustion immutable')
   end do
@@ -104,7 +118,8 @@ contains
     call trial_kernel%advance_interval(parameters,state,forcing,config,t0,t1,r,cand,d,cp)
     call require(r%completed .and. r%mass%complete .and. cand%ready(),'candidate')
   end subroutine setup
-  subroutine publish(state,cp,cand,d,provider,outpub,ok,ps,rs,cs)
+  subroutine publish_with(kernel,state,cp,cand,d,provider,outpub,ok,ps,rs,cs)
+    type(kernel_executor_t),intent(inout)::kernel
     type(kernel_committed_state_t),intent(inout)::state
     type(kernel_checkpoint_t),intent(in)::cp
     type(kernel_candidate_state_t),intent(inout)::cand
@@ -114,10 +129,14 @@ contains
     logical,intent(out)::ok
     integer,intent(out)::ps,rs,cs
     type(fmr_surface_evaporation_runtime_diagnostics_t)::sd
-    call fmr_commit_candidate_with_surface_evaporation_publication(commit_kernel,cp,state,cand,d,et,et_diag,provider,ok,outpub,sd,ps,rs,cs)
-  end subroutine publish
+    call fmr_commit_candidate_with_surface_evaporation_publication(kernel,cp,state,cand,d,et,et_diag,provider,ok,outpub,sd,ps,rs,cs)
+  end subroutine publish_with
   subroutine require(condition,label)
     logical,intent(in)::condition; character(len=*),intent(in)::label
     if(.not.condition)then; write(*,'(A,1X,A)')'FPM12_REQUIRE_FAIL',trim(label); error stop 12; end if
   end subroutine require
+  subroutine require_close(actual,expected,label)
+    real(real64),intent(in)::actual,expected; character(len=*),intent(in)::label
+    call require(abs(actual-expected)<=1.0e-12_real64,label)
+  end subroutine require_close
 end program test_fpm12_surface_publication_retry_oracle
