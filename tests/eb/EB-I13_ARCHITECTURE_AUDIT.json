@@ -1,0 +1,63 @@
+{
+  "workunit": "EB-I13",
+  "title": "Accepted Bottom Water-Thermal Substep Carrier Implementation",
+  "design_authority": "tests/eb/EB-I12_CONTRACT.md",
+  "implementation_branch": "work/eb-i13-bottom-thermal-carrier-implementation",
+  "decision_scope": "PRODUCTION_CARRIER_IMPLEMENTATION_QUALIFICATION_ONLY",
+  "production_files": [
+    "src/runtime/mod_fmr_bottom_thermal_carrier.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "invariants": [
+    {"id": 1, "status": "pass", "assessment": "The implementation reuses the existing F-KT/canonical runtime and serialized reference backend. It introduces no second SWAP kernel."},
+    {"id": 2, "status": "pass", "assessment": "No file, path, parser, format or unit handling is introduced into the kernel or carrier path."},
+    {"id": 3, "status": "pass", "assessment": "Physical continuation state remains separate from worker-local carrier scratch and candidate-scoped result/provenance metadata."},
+    {"id": 4, "status": "pass", "assessment": "The carrier is absent from kernel committed state and is not persisted per logical column. Immutable thermal parameters remain in parameter objects."},
+    {"id": 5, "status": "pass", "assessment": "Carrier samples and route provenance live in the worker/backend model and transaction attempt context, with copy/restore semantics for trial rollback."},
+    {"id": 6, "status": "pass", "assessment": "Carrier storage is bounded by 2*max_committed_substeps and is allocated only when requested on an admitted thermal route."},
+    {"id": 7, "status": "pass", "assessment": "Full, half and retry attempts use transaction attempt-context capture/restore. Rejected route samples are removed and a candidate is materialized only after the full outer interval completes."},
+    {"id": 8, "status": "pass", "assessment": "Enabled-versus-disabled qualification proves identical physical solve counts and candidate state. No extra Richards or thermal solve reconstructs discarded history."},
+    {"id": 9, "status": "pass", "assessment": "Every carrier sample stores generic t0,t1 values. No day, month, year or midnight assumption is introduced."},
+    {"id": 10, "status": "pass", "assessment": "The carrier covers the requested generic outer interval and is independent of the duration or calendar placement of a coupling window."},
+    {"id": 11, "status": "pass", "assessment": "The implementation preserves transaction rollback and accepted interface-transfer provenance needed by coupling without embedding coupler composition into SWAP."},
+    {"id": 12, "status": "preserved", "assessment": "No SWAP-MODFLOW head or flux equality rule is modified. The carrier consumes the existing accepted signed SWAP bottom-water exchange only."},
+    {"id": 13, "status": "pass", "assessment": "The carrier does not create a second water ledger. Qualification checks that summed carrier exchange equals accepted bottom exchange and that hydrologic mass results are bit-identical with the feature disabled."},
+    {"id": 14, "status": "preserved", "assessment": "Interface-sensitivity production, semantics and publication are untouched."},
+    {"id": 15, "status": "pass", "assessment": "Qualification checks exact physical solve-count parity between carrier-enabled and carrier-disabled execution."},
+    {"id": 16, "status": "pass", "assessment": "Carrier memory belongs to a worker/backend execution object, not every logical column, and activation is explicit and optional."},
+    {"id": 17, "status": "pass", "assessment": "The implementation has no MODFLOW-cell, tile-fraction or area-weighting knowledge."},
+    {"id": 18, "status": "preserved", "assessment": "Bottom exchange is not reinterpreted as deep groundwater recharge. Any deep-vadose transfer component remains outside SWAP."},
+    {"id": 19, "status": "preserved", "assessment": "No component-transition storage or transfer rule is changed; thermal provenance accompanies but does not alter accepted water transfer."},
+    {"id": 20, "status": "pass", "assessment": "The carrier contract exposes accepted-route transfer samples rather than Richards or HeadCalc arrays. The current production binding is the serialized reference backend only."},
+    {"id": 21, "status": "pass", "assessment": "The implementation reuses current hydraulic solve results and restricted soil-temperature state instead of duplicating process physics or importing legacy global state."},
+    {"id": 22, "status": "pass", "assessment": "Bottom thermal data are obtained through typed state/soil-temperature interfaces. No other module is coupled to HeadCalc internal arrays for this feature."},
+    {"id": 23, "status": "pass", "assessment": "Thermal-carrier activation is an explicit feature/result request. Full/half/retry selection remains numerical policy and does not silently modify physics."},
+    {"id": 24, "status": "pass", "assessment": "Carrier cost is bounded by configured committed-substep capacity. Missing or invalid provenance invalidates carrier publication instead of causing unbounded extra solving."},
+    {"id": 25, "status": "pass", "assessment": "Qualification is performed on the full reference execution path, including O0/O2 identity and preservation gates."},
+    {"id": 26, "status": "preserved", "assessment": "Existing runtime solver/retry/mass diagnostics are unchanged. Carrier readiness and thermal completeness are explicit result/provenance properties rather than hidden state."},
+    {"id": 27, "status": "pass", "assessment": "Carrier allocation and result production occur only when bottom-thermal provenance is requested and restricted soil temperature is active."},
+    {"id": 28, "status": "pass", "assessment": "The carrier does not know system composition, tile fractions, MODFLOW mapping or transfer-zone routing."},
+    {"id": 29, "status": "pass", "assessment": "No file format, .swp input, midnight boundary, fixed-duration window or direct-MODFLOW assumption is added."},
+    {"id": 30, "status": "pass", "assessment": "This implementation-level audit assesses EB-I13 explicitly against all thirty SWAP architecture invariants."}
+  ],
+  "required_attacks": [
+    "selected two-half route retains no rejected full-route sample",
+    "rejected attempt and retry restore the exact carrier checkpoint prefix",
+    "accepted multi-transaction outer interval retains one exact ordered sample sequence",
+    "failed outer interval after accepted internal progress cannot materialize a full requested-interval candidate",
+    "zero transfer needs no donor temperature",
+    "local outward transfer retains same-advance start/end bottom temperatures",
+    "external inward transfer without external donor temperature remains explicitly incomplete",
+    "carrier enablement does not alter physical solve count, hydrologic ledger or candidate physical state",
+    "carrier remains absent from F-KT persistent kernel state"
+  ],
+  "hard_nonclaims": [
+    "bottom advective-energy Joule calculation",
+    "temporal donor-temperature quadrature",
+    "external groundwater or deep-vadose donor temperature model",
+    "closed soil or land-column energy balance",
+    "canonical admission",
+    "parallel-backend qualification",
+    "GPU or SIMD throughput qualification"
+  ]
+}
