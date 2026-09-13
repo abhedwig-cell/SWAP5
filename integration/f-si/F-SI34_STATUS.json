@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fsi34.status.v1",
+  "work_unit": "F-SI34",
+  "branch": "work/f-si34-solver-interface-headcalc-isolation-v1-completion-audit",
+  "status": "CLOSED_GAPS_IDENTIFIED",
+  "decision": "SOLVER_INTERFACE_HEADCALC_ISOLATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "target_not_claimed": "QUALIFIED_SOLVER_INTERFACE_HEADCALC_ISOLATION_HYDRAULIC_PROCESS_BOUNDARY_V1_100_PERCENT_COMPLETE",
+  "qualified_100_percent": false,
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "production_source_changed": false,
+  "current_canonical": {
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81"
+  },
+  "definitive_full_richards_authority": {
+    "work_unit": "F-SI33",
+    "branch_head": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+    "authority_blob": "9053a7adf8b2682652f51f29b7ae010c5e72a98a",
+    "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE"
+  },
+  "gate_matrix": {
+    "solver_interface": "PASS",
+    "full_richards_binding": "FAIL",
+    "headcalc_isolation": "FAIL",
+    "process_hydraulic_view": "PASS",
+    "constitutive_providers": "PASS",
+    "scratch_ownership": "PASS",
+    "state_history_ownership": "PASS_TYPED_AND_RESTART_AUTHORITY",
+    "transactions": "FAIL_NOT_UNIVERSAL_ACROSS_PRODUCTION_PATHS",
+    "generic_time": "PASS",
+    "boundary_contracts": "PASS",
+    "numerical_policy_separation": "PASS",
+    "diagnostics": "FAIL_NOT_UNIVERSAL_ACROSS_PRODUCTION_PATHS",
+    "sensitivity_seam": "PASS",
+    "alternative_solver_seam": "FAIL_OPERATIONAL_PRODUCTION_SEAM",
+    "runtime_isolation": "FAIL_EFFECTIVE_PRODUCTION_ORCHESTRATION",
+    "multiswap_preservation": "FAIL_COMMON_STANDALONE_MULTISWAP_SEAM",
+    "coupling_preservation": "PASS",
+    "current_canonical_preservation": "PASS"
+  },
+  "hard_blockers": [
+    "direct HeadCalc production call in MOD_SoilWater when worker absent",
+    "direct HeadCalc fallback in MOD_SoilWater when typed Task2 route is not admitted",
+    "common solver seam therefore not mandatory for standalone and all production Task2 routes"
+  ],
+  "root_closure_gap": {
+    "classification": "HEADCALC_ISOLATION_GAP + SOLVER_INTERFACE_GAP",
+    "source": "src/legacy/b1_10_port/soilwater.f90",
+    "supporting_source": "src/adapter/mod_b110_production_soil_water_task2.f90",
+    "minimal_remediation": "Make the typed soil-water solver service mandatory for every frozen-v1 production Task2 path; remove direct HeadCalc calls from MOD_SoilWater; retain HeadCalc only behind the Reference Richards adapter/solver implementation."
+  },
+  "derived_gap_classes": ["TRANSACTION_GAP", "ALTERNATIVE_SOLVER_SEAM_GAP", "RUNTIME_ISOLATION_GAP"],
+  "audit_artifact": "integration/f-si/F-SI34_COMPLETENESS_AUDIT.json",
+  "next_step": "bounded production-seam remediation, independent/source-bound requalification, canonical admission, then rerun final F-SI completion audit"
+}
