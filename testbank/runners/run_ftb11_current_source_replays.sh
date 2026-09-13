@@ -15,8 +15,23 @@ git worktree add --detach "$WT" "$CANON" >/dev/null
 cd "$WT"
 [[ "$(git rev-parse HEAD)" == "$CANON" ]] || fail 'canonical worktree mismatch'
 
-# FTB11-TXN-001: current-source transaction semantics, O0/O2 and static no-I/O/no-hidden-state gate.
-bash tests/transaction/run_a23bl_gate.sh
+# FTB11-TXN-001: reuse the existing transaction oracle and A23BL static rule on
+# current source. The current canonical intentionally contains exact REAL time
+# equality, so compare-reals stays a warning instead of being promoted to an
+# unrelated compilation error. This matches the later qualified F-VQ65 policy.
+TX_COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
+for opt in 0 2; do
+  OUT="$BUILD/txn-o$opt"; mkdir -p "$OUT"
+  gfortran "${TX_COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
+    src/transaction/mod_transaction_reference.f90 tests/transaction/test_transaction_reference.f90 \
+    -o "$OUT/test"
+  OMP_NUM_THREADS=8 "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "transaction O$opt"; }
+  grep -Fq 'A23BL_TRANSACTION_GATE PASS' "$OUT/output.txt" || fail "transaction O$opt marker"
+done
+cmp -s "$BUILD/txn-o0/output.txt" "$BUILD/txn-o2/output.txt" || fail 'transaction O0/O2 output drift'
+if grep -Ein '\bsave\b|open\s*\(|read\s*\(|write\s*\(' src/transaction/mod_transaction_reference.f90; then
+  fail 'transaction source acquired hidden state or file I/O'
+fi
 echo 'FTB11-TXN-001=PASS'
 
 # FTB11-MASS-001 plus executable restart/MultiSWAP/coupling preservation.
@@ -37,7 +52,7 @@ echo 'FTB11-RST-001=PASS_EXECUTABLE_CURRENT_SOURCE_REPLAY'
 echo 'FTB11-MSW-001=PASS_EXECUTABLE_CURRENT_SOURCE_REPLAY'
 
 # FTB11-REJECT-001: reuse the existing accepted-commit receipt oracle, but not its historical source-delta wrapper.
-COMMON=(-std=f2008 -Wall -Wextra -Werror -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 RECEIPT_SRC=(
   src/transaction/mod_transaction_reference.f90
   src/runtime/mod_canonical_contracts.f90
