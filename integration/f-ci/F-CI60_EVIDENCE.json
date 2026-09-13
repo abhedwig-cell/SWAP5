@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.fci60.evidence.v1",
+  "work_unit": "F-CI60",
+  "case": "A_SOURCE_ALREADY_EXACTLY_PRESENT",
+  "restart_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "owner_authority": {
+    "branch": "work/f-pm12-surface-evaporation-accepted-publication-closure-remediation",
+    "sha": "82189c148a38b90b6a5a326d03f282ccbee52960",
+    "tree": "4ecd975f239b911c0e5779685c1a8ef6961fd61f",
+    "decision": "OWNER_QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE"
+  },
+  "independent_authority": {
+    "branch": "qualification/f-vq72-fpm12-surface-publication-provenance-requalification",
+    "final_sha": "a3c7bf5a60d80b430758f85489b316b5bcbc2fdc",
+    "final_tree": "e96f2d968e167631eaef73318a3c3241caeb2649",
+    "tested_sha": "30ad6104f91e4a10bb7f9863c6c8fff0dacddfa6",
+    "tested_tree": "8ab7e90760362d1367481b4252725f5d468498f3",
+    "decision": "QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE",
+    "workflow_run": 34784624580,
+    "workflow_job": 103797728292,
+    "conclusion": "success"
+  },
+  "tested_F_CI60_head": {
+    "sha": "0494f32ba4453cc63204442c53a2bb3808f797f0",
+    "tree": "0adf263ed854733a1424152a365b167a8b2671b2",
+    "workflow_run": 34784823236,
+    "workflow_job": 103798257111,
+    "conclusion": "success"
+  },
+  "production_source_already_present": true,
+  "production_delta": [],
+  "reference_delta": [],
+  "qualified_production_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "historical_admission": {
+    "F_MR43": "c8ff545cf720db467389c67ac2f9a595e57277ed",
+    "F_VQ71": "f2f410bb74ef40c23fcc16048bb54f9301b989db",
+    "F_CI59_merge": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+    "F_CI59P": "595c06a8a9600fa6b130db4a31e6b8e5cb735f8b",
+    "permanent_regression_coverage": "PASS_EXISTING_F_CI59_F_CI59P_SUFFICIENT_NO_DUPLICATE_GATE"
+  },
+  "reconciliation_results": {
+    "authority_binding": "PASS",
+    "source_identity": "PASS_EXACT",
+    "F_VQ57_attack": "PASS_PRESERVED_CLOSED",
+    "reject_publication": "PASS_IMPOSSIBLE_FAIL_CLOSED",
+    "retry_provenance": "PASS",
+    "mass": "PASS_NO_SECOND_BOOKING_OR_AUTHORITY",
+    "restart": "PASS",
+    "standalone_serialized_MultiSWAP": "PASS_EQUIVALENT",
+    "parallel_frozen_v1": "PASS",
+    "O0_O2": "PASS_EXACT_SEMANTIC_IDENTITY",
+    "broad_current_canonical": "PASS_ALL_JOBS_GREEN_RUN_34781202197",
+    "postimage": "PASS_CURRENT_CANONICAL_ALREADY_QUALIFIED_POSTIMAGE",
+    "F_KT20": "PASS_EXCLUDED_NON_ADMISSIBLE_ROUTE",
+    "F_PM11_completion": "PASS_100_PERCENT_PRESERVED",
+    "F_PM09_denominator": "PASS_UNCHANGED_NO_SCOPE_REDUCTION"
+  },
+  "F_PM09_closure": {
+    "G01": "CLOSED",
+    "G02": "CLOSED",
+    "G03": "CLOSED_ALREADY_ADMITTED_AND_REQUALIFIED"
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_CI60": false,
+    "reference_source_changed_by_F_CI60": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "persistent_state_changed": false,
+    "duplicate_source_admission": false,
+    "scope_reduced": false
+  },
+  "invariant_audit": {
+    "3": "PASS",
+    "4": "PASS_NO_NEW_STATE",
+    "7": "PASS_TRANSACTION_BOUND_PUBLICATION_PRESERVED",
+    "8": "PASS_COMMITTED_PHYSICAL_ORIGIN_PRESERVED",
+    "9": "PASS_GENERIC_TIME_UNCHANGED",
+    "13": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "16": "PASS_MULTISWAP_AND_PARALLEL_PRESERVED",
+    "21": "PASS_NO_PHYSICS_FORK",
+    "22": "PASS_SOLVER_INTERNALS_ISOLATED",
+    "23": "PASS_NO_PHYSICS_POLICY_CHANGE",
+    "26": "PASS_PROVENANCE_DIAGNOSTICS_AUDITABLE",
+    "29": "PASS_NO_SILENT_DEPENDENCIES",
+    "30": "PASS_EXPLICIT_RECONCILIATION_AUDIT"
+  },
+  "target_decision": "QUALIFIED_F_PM12_F_VQ72_SURFACE_PUBLICATION_CURRENT_CANONICAL_PRESERVATION"
+}
