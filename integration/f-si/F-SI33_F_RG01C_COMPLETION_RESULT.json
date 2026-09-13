@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.fsi33.frg01c_completion_result.v1",
+  "work_unit": "F-SI33",
+  "completion_model": "SWAP5_V1_COMPLETION_MODEL_V1",
+  "fixed_denominator_authority": "971e732551abad86acccfd5f01811d855e51e939",
+  "domain_id": "D03",
+  "domain_name": "Full Richards / soil-water reference solver",
+  "domain_weight": 8.0,
+  "set_completion_percent": 100.0,
+  "set_earned_weight": 8.0,
+  "set_maturity": "PRESERVED_REGRESSION_PROTECTED",
+  "set_remaining_gap": "none",
+  "capabilities": {
+    "R01": {
+      "name": "Production Full Richards reference solver",
+      "completion_fraction": 1.0,
+      "maturity": "PRESERVED_REGRESSION_PROTECTED",
+      "remaining_gap": "none"
+    },
+    "R02": {
+      "name": "Reference oracle plus temporal/numerical qualification authority",
+      "completion_fraction": 1.0,
+      "maturity": "PRESERVED_REGRESSION_PROTECTED",
+      "remaining_gap": "none"
+    }
+  },
+  "related_domain_D04_recalculation": "NO_CHANGE; F-SI33 preserves the already-frozen 100% D04 soil-water solver-interface result and does not double-count it in D03.",
+  "canonical_sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+  "canonical_tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+  "authority_artifact": "integration/f-si/F-SI33_FULL_RICHARDS_REFERENCE_SOLVER_V1_COMPLETION_AUTHORITY.json",
+  "audit_artifact": "integration/f-si/F-SI33_COMPLETENESS_AUDIT.json",
+  "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE",
+  "denominator_unchanged": true,
+  "scope_reduced": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "gap_count": 0,
+  "hard_blockers": []
+}
