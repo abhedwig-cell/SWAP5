@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.fkt20.protocol.v1",
+  "work_unit": "F-KT20",
+  "title": "Exact Candidate Attempt Provenance Contract",
+  "branch": "work/f-kt20-exact-candidate-attempt-provenance",
+  "base_candidate": "work/f-pm10-surface-evaporation-publication-provenance-remediation@c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "triggering_independent_finding": "F-VQ69 NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN",
+  "problem": "Multiple kernel_candidate_state_t objects may currently share lineage, origin revision and interval. That tuple therefore cannot prove that a downstream accepted-only result belongs to the exact candidate object committed by F-KT.",
+  "contract": {
+    "execution_identity": "A kernel executor may be explicitly bound to one positive runtime execution-provenance id allocated by the runtime/worker layer. The id is runtime metadata, not persistent physical state.",
+    "candidate_sequence": "Each successfully materialized candidate from that executor receives a strictly increasing positive int64 sequence within the bound execution identity.",
+    "exact_candidate_identity": "The pair execution_provenance_id + candidate_sequence is opaque, immutable candidate provenance in addition to existing lineage/revision/interval provenance.",
+    "receipt_transport": "Accepted commit receipt captures the exact candidate identity before F-KT clears the committed candidate and publishes it only after successful commit.",
+    "surface_transport": "Candidate-bound surface result carries the same exact identity and accepted publication requires exact match with the receipt.",
+    "fail_closed": "Surface accepted publication is unavailable when exact attempt provenance is absent or mismatched. Existing generic F-KT commit semantics remain available without this optional provenance layer."
+  },
+  "runtime_obligation": "Runtime/coupler must allocate execution_provenance_id values uniquely among simultaneously live executor provenance domains that may act on the same logical transaction lineage. No hidden global id generator is introduced in the kernel.",
+  "bounded_scope": [
+    "kernel candidate exact runtime provenance",
+    "accepted commit receipt exact provenance transport",
+    "surface candidate-bound result exact provenance transport",
+    "surface accepted-publication exact provenance check",
+    "owner tests for duplicate same-tuple candidates"
+  ],
+  "out_of_scope": [
+    "persistent column identity",
+    "restart schema changes",
+    "surface-evaporation physics",
+    "ET or root-uptake physics",
+    "mass-booking changes",
+    "soil-water solver changes",
+    "canonical admission"
+  ],
+  "invariant_mapping": {
+    "4": "attempt provenance is not persistent physical column state",
+    "5": "execution identity and sequence belong to worker/job executor scratch",
+    "7": "receipt preserves exact identity of the candidate actually committed",
+    "8": "repeated trials from one committed origin receive distinct attempt identities without changing the committed origin",
+    "13": "no mass-booking semantics change",
+    "16": "one lightweight pair of int64 values per live candidate, not heavy per-column solver state",
+    "26": "attempt identity is available for diagnostics/provenance",
+    "29": "identity has no calendar, file or MODFLOW assumption",
+    "30": "requires separate owner and independent qualification before admission"
+  },
+  "nonclaims": [
+    "execution_provenance_id is not generated globally by F-KT",
+    "uniqueness across simultaneously live executors depends on the explicit runtime allocation contract",
+    "this workunit does not itself canonically admit the contract"
+  ]
+}
