@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.fvq69.protocol.v1",
+  "work_unit": "F-VQ69",
+  "title": "Independent F-PM10 Surface-Evaporation Accepted-Publication Provenance Qualification",
+  "branch": "qualification/f-vq69-fpm10-surface-evaporation-publication-provenance-independent-qualification",
+  "candidate_branch": "work/f-pm10-surface-evaporation-publication-provenance-remediation",
+  "candidate_head_at_freeze": "c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "candidate_source_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "13d264cc905a0acf5082b9bfeba018e4ee25183e"
+  },
+  "qualification_identity": "Independent qualification. Production source changes on this branch are forbidden.",
+  "questions": [
+    "Is the historical F-VQ57 cross-candidate result-substitution attack fail-closed on the remediated source?",
+    "Can a prepared result from a later candidate on the same lineage be authorized by a stale earlier accepted receipt?",
+    "Can the old raw-result plus caller-supplied-candidate preparation API still compile?",
+    "Do matching candidate-bound result and accepted receipt combinations still publish correctly?",
+    "Is publication still attribution-only with no second mass-booking authority?"
+  ],
+  "hard_negatives": [
+    "HN1 cross-lineage result B plus receipt A",
+    "HN2 same-lineage later-origin result plus stale earlier receipt",
+    "HN3 committed/candidate origin mismatch at candidate-bound materialization",
+    "HN4 legacy raw-result plus candidate stamping API compile attempt"
+  ],
+  "positive_controls": [
+    "candidate A result plus receipt A",
+    "same-lineage next-revision candidate result plus its own receipt"
+  ],
+  "independence_rules": [
+    "Do not call the F-PM10 owner test executable or runner as qualification evidence.",
+    "Use an independently written verifier program and gate.",
+    "Freeze the candidate production blobs before execution.",
+    "Fail if any src or reference file changes on F-VQ69 relative to the frozen candidate head."
+  ],
+  "bounded_nonclaims": [
+    "This workunit does not perform canonical admission.",
+    "This workunit does not claim globally unique solver-attempt identity beyond the current F-KT lineage/origin-revision/interval contract.",
+    "This workunit does not alter ET, root uptake, surface-evaporation physics, solver behavior or mass booking."
+  ]
+}
