@@ -5,17 +5,9 @@
   "branch": "work/f-tb11-current-canonical-100-percent-capability-permanent-preservation",
   "target_decision": "QUALIFIED_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PERMANENT_TESTBANK_PRESERVATION",
   "ownership": {
-    "production_physics_changes_allowed": false,
-    "solver_algorithm_changes_allowed": false,
-    "drainage_algorithm_changes_allowed": false,
-    "coupling_algorithm_changes_allowed": false,
-    "crop_physics_changes_allowed": false,
-    "allowed_scope": [
-      "testbank metadata",
-      "qualification metadata",
-      "test workflows",
-      "test harness code"
-    ]
+    "production_source_changes_allowed": false,
+    "physics_or_algorithm_changes_allowed": false,
+    "allowed_scope": ["testbank metadata", "qualification metadata", "workflows", "test harness code"]
   },
   "current_canonical": {
     "branch": "integration/f-ci-canonical",
@@ -27,7 +19,7 @@
     "canonical_workflow_blob": "2f26be69f2a760027a880bbea6a8967336992f32",
     "qualification_run": 34781202197,
     "qualification_run_conclusion": "success",
-    "binding_policy": "Exact SHA/tree/source binding. A later canonical head is not covered by this authority until explicitly rebound and requalified."
+    "binding_policy": "Exact SHA/tree/source binding. Any later canonical requires explicit rebind and requalification."
   },
   "adopted_capabilities": [
     {
@@ -37,11 +29,11 @@
       "authority_tree": "c48234ef7e0ed4c8bcb2e968c6fce299cb321240",
       "authority_path": "integration/f-kt/F_KT19_STATUS.json",
       "decision": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
-      "source_provenance": {
-        "current_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
-        "path": "src/transaction/mod_transaction_reference.f90",
-        "independent_mass_authority": "F-VQ65@b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
-        "canonical_admission_gate_blob": "94c8024691c5b4ac97b2a105462f1e5b215b1f07"
+      "provenance": {
+        "transaction_path": "src/transaction/mod_transaction_reference.f90",
+        "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+        "independent_mass_authority_sha": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+        "canonical_mass_gate_blob": "94c8024691c5b4ac97b2a105462f1e5b215b1f07"
       }
     },
     {
@@ -51,11 +43,11 @@
       "authority_tree": "3ddacee88898872ec4541b721b74cce63117bbed",
       "authority_path": "integration/f-kt/F-KT16_STATUS.json",
       "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
-      "source_provenance": {
-        "completion_authority_commit": "448e5cad7a3bbc7af41920c3292ac93379b0f03d",
+      "provenance": {
+        "completion_authority_sha": "448e5cad7a3bbc7af41920c3292ac93379b0f03d",
         "qualified_head": "81b2492f947df063742aa5998355d97d721af699",
         "qualification_run": 34746928353,
-        "current_canonical_restart_gate_blob": "5cf6523628b6df2dcf9c98baf05de103c24222f5"
+        "canonical_restart_gate_blob": "5cf6523628b6df2dcf9c98baf05de103c24222f5"
       }
     },
     {
@@ -65,11 +57,11 @@
       "authority_tree": "c142f51d55338a7f942123534242dd89e03a34e8",
       "authority_path": "integration/f-mr/F-MR42_CLOSEOUT.json",
       "decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
-      "source_provenance": {
-        "completion_authority_commit": "a13a022302d9b4b18ba2bedad73f9372332c6a81",
+      "provenance": {
+        "completion_authority_sha": "a13a022302d9b4b18ba2bedad73f9372332c6a81",
         "qualified_head": "9e4ae6b872f3aafe51c9312979e7ed88c877ff3d",
         "qualification_run": 34746257468,
-        "accepted_commit_receipt_multiswap_gate_blob": "729b5e679420f7e7e3badb3f092c029f3b5992c6"
+        "multiswap_receipt_gate_blob": "729b5e679420f7e7e3badb3f092c029f3b5992c6"
       }
     },
     {
@@ -79,23 +71,29 @@
       "authority_tree": "df36bf7d42ffdfdd27755733f5f6a1b7c8194083",
       "authority_path": "integration/f-si/F-SI33_STATUS.json",
       "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE",
-      "source_provenance": {
-        "completion_authority_commit": "a722d1ce",
+      "provenance": {
+        "audit_sha": "f1588ba82280a032442ffa2a6848831ef0f2833a",
+        "completion_authority_sha": "a722d1ce9ade7b50b37cd2d67186f579120a7e2c",
+        "f_rg01c_result_sha": "30f8dc72715b6cda4c94170a3862fdb32e7734cc",
+        "qualification_gate_sha": "aa32eac063a8a4da7f7b2ba0d22d04c6ae4c98d7",
+        "workflow_sha": "81cfb09e4929980fcd808b497cd5de5313401390",
         "gate_path": "tests/fsi/run_fsi33_full_richards_v1_completion_gate.py",
         "reference_tree_current": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
       }
     },
     {
       "capability": "Solver Interface / HeadCalc Isolation / Hydraulic Process Boundary v1",
-      "authority_work_unit": "F-SI35 downstream of F-SI34",
+      "authority_work_unit": "F-SI35",
       "authority_sha": "6d94262ab05b73486257f444b6dfb4b6ec440edf",
       "authority_tree": "0cacc21318a58ae01c2beecc8f98141f76b0737e",
       "authority_path": "integration/f-si/F-SI35_FINAL_COMPLETION.json",
       "decision": "QUALIFIED_SOLVER_INTERFACE_HEADCALC_ISOLATION_HYDRAULIC_PROCESS_BOUNDARY_V1_100_PERCENT_COMPLETE",
-      "source_provenance": {
-        "F_SI35_owner_qualification": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
-        "F_VQ68_independent_qualification": "fd93e50da5973f3e15c8f1b7fa57d72df6c31b72",
-        "F_CI58_canonical_merge": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+      "provenance": {
+        "F_SI34_gap_sha": "b522fe150610f900f253eeea9bf78329107de362",
+        "owner_qualification_sha": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+        "independent_F_VQ68_sha": "fd93e50da5973f3e15c8f1b7fa57d72df6c31b72",
+        "F_CI58_composition_sha": "040627c77720829c297a0ba06e908efce683133c",
+        "F_CI58_canonical_merge_sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
         "adapter_path": "src/adapter/mod_b110_production_soil_water_task2.f90",
         "adapter_blob": "3090e1d3d5701a87b3624412ad88590e17369d63",
         "soilwater_path": "src/legacy/b1_10_port/soilwater.f90",
@@ -109,7 +107,7 @@
       "authority_tree": "134e01ef9092277639113d9be64eefc422e4fbb8",
       "authority_path": "integration/f-pm/F-PM11_STATUS.json",
       "decision": "QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE",
-      "source_provenance": {
+      "provenance": {
         "canonical_sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
         "canonical_tree": "556221f62b4fde616981499eba68ef5460f5d83c",
         "post_merge_canonical_run": 34781202197,
@@ -117,138 +115,55 @@
         "accepted_publication_blob": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
         "accepted_commit_receipt_blob": "6798b3296b426950bf028814585c3f5de9be950b",
         "restricted_surface_evaporation_blob": "a213af4deec2fe854d79120899827852a57237d1",
-        "independent_publication_authority": "F-VQ71@f2f410bb74ef40c23fcc16048bb54f9301b989db"
+        "independent_publication_authority_sha": "f2f410bb74ef40c23fcc16048bb54f9301b989db"
       }
     }
   ],
   "stable_tests": [
-    {
-      "id": "FTB11-REL-001",
-      "layers": ["release qualification"],
-      "oracle": "live integration/f-ci-canonical SHA and tree equal the frozen F-TB11 binding; canonical qualification run is successful; F-TB11 changes no src/reference files",
-      "tolerance": "exact",
-      "optimization_profiles": ["N/A"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_CLOSED_STALE_CANONICAL_OR_PRODUCTION_DELTA"
-    },
-    {
-      "id": "FTB11-TXN-001",
-      "layers": ["kernel/transaction", "robustness"],
-      "oracle": "existing tests/transaction/run_a23bl_gate.sh on current canonical source",
-      "tolerance": "bitwise/semantic exact as encoded by existing oracle",
-      "optimization_profiles": ["O0", "O2"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_TRANSACTIONAL_KERNEL_REGRESSION"
-    },
-    {
-      "id": "FTB11-MASS-001",
-      "layers": ["kernel/transaction", "integrated column", "robustness", "release qualification"],
-      "oracle": "materialize exact F-VQ65 independent fail-closed mass tests and current-preservation replay against current canonical source",
-      "tolerance": "mass completeness is hard fail-closed; no incomplete accounting accepted",
-      "optimization_profiles": ["as encoded by F-VQ65 independent oracle"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_HARD_MASS_GATE"
-    },
-    {
-      "id": "FTB11-REJECT-001",
-      "layers": ["kernel/transaction", "process", "robustness"],
-      "oracle": "existing F-MR18 accepted-commit receipt executable test replayed on current source without historical source-delta assertion",
-      "tolerance": "rejected/prevalidated trials leave no receipt and are non-mutating; O0/O2 output identical",
-      "optimization_profiles": ["O0", "O2"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_REJECTED_TRIAL_PUBLICATION_IMMUTABILITY"
-    },
-    {
-      "id": "FTB11-RST-001",
-      "layers": ["persistence/restart", "integrated column"],
-      "oracle": "F-KT16 100% authority plus frozen F-CI28 restart replay preserved in the successful exact current-canonical qualification run",
-      "tolerance": "authority-defined exact restart semantics",
-      "optimization_profiles": ["authority-defined O0/O2 where applicable"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_RESTART_EXACTNESS_OR_PROVENANCE"
-    },
-    {
-      "id": "FTB11-MSW-001",
-      "layers": ["MultiSWAP", "performance", "integrated column"],
-      "oracle": "F-MR42 100% Serialized MultiSWAP authority plus preserved canonical parallel/restart lineage",
-      "tolerance": "authority-defined standalone/MultiSWAP equivalence, bitwise where qualified",
-      "optimization_profiles": ["authority-defined"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_STANDALONE_MULTISWAP_EQUIVALENCE_OR_PROVENANCE"
-    },
-    {
-      "id": "FTB11-FR-001",
-      "layers": ["constitutive", "solver", "legacy/reference", "coupling"],
-      "oracle": "F-SI33 Full Richards 100% authority, including mass, restart, MultiSWAP and bottom-sensitivity qualification",
-      "tolerance": "authority-defined",
-      "optimization_profiles": ["O0", "O2"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_FULL_RICHARDS_REFERENCE_PRESERVATION"
-    },
-    {
-      "id": "FTB11-SEAM-001",
-      "layers": ["solver", "kernel/transaction", "MultiSWAP"],
-      "oracle": "exact F-SI35 admitted production blobs and zero direct MOD_SoilWater HeadCalc dependency",
-      "tolerance": "zero production interface violations",
-      "optimization_profiles": ["O0", "O2"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_MANDATORY_SOLVER_SEAM_OR_HEADCALC_BYPASS"
-    },
-    {
-      "id": "FTB11-ETPUB-001",
-      "layers": ["process", "kernel/transaction", "MultiSWAP", "robustness"],
-      "oracle": "exact F-VQ71 independent accepted-publication oracle replayed on current source",
-      "tolerance": "stale/cross-lineage publication fail-closed; no second mass authority; O0/O2 output identical",
-      "optimization_profiles": ["O0", "O2"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_PROVENANCE"
-    },
-    {
-      "id": "FTB11-ET-001",
-      "layers": ["constitutive", "process", "integrated column", "legacy/reference", "MultiSWAP", "performance"],
-      "oracle": "F-PM11 100% authority bound directly to the current canonical SHA/tree and successful canonical run",
-      "tolerance": "authority-defined",
-      "optimization_profiles": ["O0", "O2", "performance evidence where separately qualified"],
-      "expected": "PASS",
-      "failure_semantics": "FAIL_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_PRESERVATION"
-    }
+    {"id":"FTB11-REL-001","layers":["release qualification"],"oracle":"exact live canonical SHA/tree/source binding and no F-TB11 src/reference delta","tolerance":"exact","optimization_profiles":["N/A"],"expected":"PASS","failure_semantics":"FAIL_CLOSED_STALE_CANONICAL_OR_PRODUCTION_DELTA"},
+    {"id":"FTB11-TXN-001","layers":["kernel/transaction","robustness"],"oracle":"tests/transaction/run_a23bl_gate.sh on exact current canonical source","tolerance":"existing oracle exactness","optimization_profiles":["O0","O2"],"expected":"PASS","failure_semantics":"FAIL_TRANSACTIONAL_KERNEL_REGRESSION"},
+    {"id":"FTB11-MASS-001","layers":["kernel/transaction","integrated column","robustness","release qualification"],"oracle":"exact F-VQ65 independent fail-closed mass tests on exact current canonical source","tolerance":"hard fail-closed; incomplete accounting is never accepted","optimization_profiles":["F-VQ65 profiles"],"expected":"PASS","failure_semantics":"FAIL_HARD_MASS_GATE"},
+    {"id":"FTB11-REJECT-001","layers":["kernel/transaction","process","robustness"],"oracle":"existing F-MR18 accepted-commit receipt executable test on current source","tolerance":"reject leaves no receipt/mutation; O0/O2 output identical","optimization_profiles":["O0","O2"],"expected":"PASS","failure_semantics":"FAIL_REJECTED_TRIAL_PUBLICATION_IMMUTABILITY"},
+    {"id":"FTB11-RST-001","layers":["persistence/restart","integrated column"],"oracle":"F-KT16 100% authority plus frozen F-CI28 replay in successful exact current-canonical qualification","tolerance":"authority-defined exact restart semantics","optimization_profiles":["authority-defined"],"expected":"PASS","failure_semantics":"FAIL_RESTART_EXACTNESS_OR_PROVENANCE"},
+    {"id":"FTB11-MSW-001","layers":["MultiSWAP","performance","integrated column"],"oracle":"F-MR42 100% authority plus preserved canonical serialized/parallel/restart lineage","tolerance":"authority-defined standalone/MultiSWAP equivalence","optimization_profiles":["authority-defined"],"expected":"PASS","failure_semantics":"FAIL_STANDALONE_MULTISWAP_EQUIVALENCE_OR_PROVENANCE"},
+    {"id":"FTB11-FR-001","layers":["constitutive","solver","legacy/reference","coupling"],"oracle":"F-SI33 100% authority including mass/restart/MultiSWAP/bottom-sensitivity evidence","tolerance":"authority-defined","optimization_profiles":["O0","O2"],"expected":"PASS","failure_semantics":"FAIL_FULL_RICHARDS_REFERENCE_PRESERVATION"},
+    {"id":"FTB11-SEAM-001","layers":["solver","kernel/transaction","MultiSWAP"],"oracle":"exact F-SI35 admitted blobs, mandatory soil_water_solver_t seam and zero production HeadCalc bypass","tolerance":"zero production interface violations","optimization_profiles":["O0","O2"],"expected":"PASS","failure_semantics":"FAIL_MANDATORY_SOLVER_SEAM_OR_HEADCALC_BYPASS"},
+    {"id":"FTB11-ETPUB-001","layers":["process","kernel/transaction","MultiSWAP","robustness"],"oracle":"exact F-VQ71 independent accepted-publication oracle on current source","tolerance":"stale/cross-lineage fail-closed; no second mass authority; O0/O2 identical","optimization_profiles":["O0","O2"],"expected":"PASS","failure_semantics":"FAIL_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_PROVENANCE"},
+    {"id":"FTB11-ET-001","layers":["constitutive","process","integrated column","legacy/reference","MultiSWAP","performance"],"oracle":"F-PM11 100% authority directly bound to current canonical SHA/tree and green canonical run","tolerance":"authority-defined","optimization_profiles":["O0","O2","qualified performance evidence"],"expected":"PASS","failure_semantics":"FAIL_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_PRESERVATION"}
   ],
   "layer_coverage": {
-    "constitutive": ["FTB11-FR-001", "FTB11-ET-001"],
-    "process": ["FTB11-REJECT-001", "FTB11-ETPUB-001", "FTB11-ET-001"],
-    "solver": ["FTB11-FR-001", "FTB11-SEAM-001"],
-    "kernel/transaction": ["FTB11-TXN-001", "FTB11-MASS-001", "FTB11-REJECT-001", "FTB11-SEAM-001", "FTB11-ETPUB-001"],
-    "persistence/restart": ["FTB11-RST-001"],
-    "integrated column": ["FTB11-MASS-001", "FTB11-RST-001", "FTB11-MSW-001", "FTB11-ET-001"],
-    "legacy/reference": ["FTB11-FR-001", "FTB11-ET-001"],
-    "coupling": ["FTB11-FR-001"],
-    "MultiSWAP": ["FTB11-MSW-001", "FTB11-SEAM-001", "FTB11-ETPUB-001", "FTB11-ET-001"],
-    "performance": ["FTB11-MSW-001", "FTB11-ET-001"],
-    "robustness": ["FTB11-TXN-001", "FTB11-MASS-001", "FTB11-REJECT-001", "FTB11-ETPUB-001"],
-    "release qualification": ["FTB11-REL-001", "FTB11-MASS-001"]
+    "constitutive":["FTB11-FR-001","FTB11-ET-001"],
+    "process":["FTB11-REJECT-001","FTB11-ETPUB-001","FTB11-ET-001"],
+    "solver":["FTB11-FR-001","FTB11-SEAM-001"],
+    "kernel/transaction":["FTB11-TXN-001","FTB11-MASS-001","FTB11-REJECT-001","FTB11-SEAM-001","FTB11-ETPUB-001"],
+    "persistence/restart":["FTB11-RST-001"],
+    "integrated column":["FTB11-MASS-001","FTB11-RST-001","FTB11-MSW-001","FTB11-ET-001"],
+    "legacy/reference":["FTB11-FR-001","FTB11-ET-001"],
+    "coupling":["FTB11-FR-001"],
+    "MultiSWAP":["FTB11-MSW-001","FTB11-SEAM-001","FTB11-ETPUB-001","FTB11-ET-001"],
+    "performance":["FTB11-MSW-001","FTB11-ET-001"],
+    "robustness":["FTB11-TXN-001","FTB11-MASS-001","FTB11-REJECT-001","FTB11-ETPUB-001"],
+    "release qualification":["FTB11-REL-001","FTB11-MASS-001"]
   },
-  "horizontal_hard_gates": {
-    "mass_conservation": "FTB11-MASS-001",
-    "policy": "Any missing/incomplete mass contribution must make acceptance impossible. No performance, fallback or admission path may waive this gate."
-  },
+  "horizontal_hard_gate": {"mass_conservation":"FTB11-MASS-001","waivable":false},
   "duplicate_avoidance": [
-    "No copy of F-KT16, F-KT19, F-MR42, F-SI33, F-SI35 or F-PM11 qualification suites is added.",
+    "No qualification suite from F-KT16/F-KT19/F-MR42/F-SI33/F-SI35/F-PM11 is copied into F-TB11.",
     "Historical F-CI admission scripts remain frozen evidence and are not relabeled as moving-current tests.",
-    "Current-source replays reuse existing test programs or exact independent verifier sources materialized from immutable qualification commits.",
-    "F-TB10 drainage tests are not duplicated because F-TB10 is a blocked authority, not a 100% drainage qualification."
+    "Current-source replay materializes immutable independent verifier sources only at runtime.",
+    "F-TB10 drainage evidence is not duplicated."
   ],
   "drainage": {
     "adopted_as_100_percent_capability": false,
-    "reason": "F-PM13 exists but its live branch head equals the current-canonical start SHA and contains no completion result; F-TB10 remains a blocked non-qualification authority.",
     "F_PM13_live_head_at_audit": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
     "F_PM13_live_tree_at_audit": "556221f62b4fde616981499eba68ef5460f5d83c",
     "F_TB10_blocked_sha": "3f7520605452cb07b5bb463fa4fc0f437a5d4598",
     "F_TB10_blocked_tree": "0a3988225f80c890f930e21c2fc5e812b1bd2b0a",
-    "F_TB10_decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP"
+    "F_TB10_decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP",
+    "reason": "No definitive drainage-v1 100% completion authority existed at audit time."
   },
   "known_testbank_gaps": [
-    "Drainage v1 is intentionally not credited until a definitive qualified completion authority exists.",
-    "This workunit preserves the frozen 100% capability set; it does not create new physics coverage for non-100% or future capabilities."
+    "Drainage v1 is not credited until a definitive qualified completion authority exists.",
+    "Future or non-100% capabilities remain outside this frozen preservation set until separately qualified."
   ],
   "production_source_changed": false
 }
