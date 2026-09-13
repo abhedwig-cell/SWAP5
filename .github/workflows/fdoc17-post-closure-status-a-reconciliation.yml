@@ -1,0 +1,40 @@
+name: F-DOC17 Post-Closure Status-A Reconciliation
+
+on:
+  pull_request:
+    paths:
+      - 'docs/development/f-doc17-post-closure-status-a-reconciliation.md'
+      - 'integration/f-doc/F-DOC17_STATUS.json'
+      - 'tools/docs/validate_fdoc17_post_closure_status_a.py'
+      - '.github/workflows/fdoc17-post-closure-status-a-reconciliation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Validate bounded reconciliation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Validate F-DOC17 contract and exact diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          test -n "$BASE_SHA"
+          test -n "$HEAD_SHA"
+          test "$(git rev-parse HEAD)" = "$HEAD_SHA"
+          python tools/docs/validate_fdoc17_post_closure_status_a.py \
+            --base-sha "$BASE_SHA" \
+            --head-sha "$HEAD_SHA"
