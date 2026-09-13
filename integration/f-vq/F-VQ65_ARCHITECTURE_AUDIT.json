@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ65",
+  "title": "F-KT18 Fail-Closed Mass Completeness Independent Architecture Audit",
+  "date": "2026-09-13",
+  "candidate_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "canonical_reference": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "qualified_executable_head": "2ac1bd446d02fee503d5c678a5d35ec64680f972",
+  "workflow_run": 34753302130,
+  "workflow_jobs": {
+    "independent_mass_attack": 103713363728,
+    "current_canonical_preservation": 103713363623
+  },
+  "production_delta": {
+    "file_count": 1,
+    "files": ["src/transaction/mod_transaction_reference.f90"],
+    "candidate_source_identical_to_fkt18_authority": true,
+    "qualification_commits_change_production_source": false,
+    "runtime_changed": false,
+    "kernel_changed": false,
+    "solver_changed": false,
+    "process_changed": false,
+    "adapter_changed": false,
+    "legacy_changed": false,
+    "reference_changed": false
+  },
+  "directly_exercised_invariants": {
+    "7": "PASS_INDEPENDENTLY_VERIFIED_TRANSACTIONAL_REJECTION_RETRY_COMMIT",
+    "8": "PASS_INDEPENDENTLY_VERIFIED_RETRY_FROM_COMMITTED_ORIGIN_NO_REJECTED_STATE_ACCUMULATION",
+    "9": "PASS_GENERIC_NONCALENDAR_INTERVALS_USED_IN_QUALIFICATION",
+    "11": "PASS_COUPLING_TRANSACTION_SEMANTICS_PRESERVED_BY_FVQ64_SEQUENCE_REPLAY",
+    "12": "PASS_GROUNDWATER_INTERFACE_SEMANTICS_PRESERVED_BY_FVQ64_SEQUENCE_REPLAY",
+    "13": "PASS_INDEPENDENTLY_VERIFIED_FAIL_CLOSED_MASS_COMPLETENESS_ZERO_MASK_FINITE_RESIDUAL_GATE",
+    "14": "PASS_SOLVER_SERVICE_INTERFACE_SENSITIVITY_TRANSPORT_PRESERVED",
+    "16": "PASS_SERIALIZED_MULTISWAP_AND_PRODUCTION_PARALLEL_RUNTIME_PRESERVED",
+    "23": "PASS_NO_PHYSICS_OR_SOLVER_POLICY_CHANGE",
+    "25": "PASS_REFERENCE_SOLVER_SERVICE_COMPOSITION_PRESERVED",
+    "26": "PASS_MASS_REJECTION_RETRY_COMMIT_DIAGNOSTIC_PATHS_PRESERVED_AND_EXERCISED",
+    "29": "PASS_NO_NEW_CALENDAR_FILE_PATH_MODFLOW_OR_OTHER_SILENT_DEPENDENCY"
+  },
+  "remaining_invariants": {
+    "1": "NO_ADVERSE_DELTA_BY_ONE_TRANSACTION_FILE_SCOPE",
+    "2": "NO_ADVERSE_DELTA_BY_SCOPE_NO_IO_CHANGE",
+    "3": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "4": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "5": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "6": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "10": "NO_ADVERSE_DELTA_AND_GENERIC_COUPLING_WINDOW_REPLAY_PRESERVED",
+    "15": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "17": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "18": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "19": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "20": "NO_ADVERSE_DELTA_ALTERNATIVE_SOLVER_INCOMPLETE_LEDGER_FAILS_CLOSED",
+    "21": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "22": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "24": "NO_ADVERSE_DELTA_BOUNDED_RETRY_PATH_REUSED",
+    "27": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "28": "NO_ADVERSE_DELTA_BY_SCOPE",
+    "30": "PASS_THIS_AUDIT_EXPLICITLY_CHECKS_ARCHITECTURE_DELTA"
+  },
+  "summary": "30_OF_30_NO_ADVERSE_DELTA; F-KT17-G01 candidate closure is independently verified. This is not canonical admission.",
+  "canonical_state": {
+    "invariant_13": "FAIL_PENDING_FKT18_ADMISSION",
+    "reason": "integration/f-ci-canonical still points to the pre-remediation transaction source."
+  }
+}
