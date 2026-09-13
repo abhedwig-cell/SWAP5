@@ -8,6 +8,7 @@ on:
       - .github/workflows/ross01-gate-j1e-d1-local-terminal-coupling-preconditioner.yml
       - experiments/ross/run_ross01_gate_j1e_d1_head_space_trust_preconditioner.py
       - experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py
+      - experiments/ross/run_ross01_gate_j1e_d1_fail_closed_consumer_probe.py
       - integration/f-ross/F-ROSS01_GATE_J1E_D1_LOCAL_TERMINAL_COUPLING_PRECONDITIONER_CONTRACT.json
       - experiments/ross/run_ross01_gate_f_timestep_convergence.py
       - experiments/ross/run_ross01_gate_d_conservative_physical_unsaturated_column.py
@@ -49,3 +50,28 @@ jobs:
         with:
           name: f-ross01-j1e-d1-${{ matrix.material }}
           path: ross01-j1e-d1-${{ matrix.material }}/
+
+  consumer-fail-closed-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install probe dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run explicit unavailable and invalid-tangent probe
+        run: |
+          set -euo pipefail
+          out="ross01-j1e-d1-fail-closed-probe"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_j1e_d1_fail_closed_consumer_probe.py \
+            "$out/F-ROSS01_J1E_D1_FAIL_CLOSED_PROBE.json" \
+            | tee "$out/F-ROSS01_J1E_D1_FAIL_CLOSED_PROBE_STDOUT.txt"
+      - name: Upload probe evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-j1e-d1-fail-closed-probe
+          path: ross01-j1e-d1-fail-closed-probe/
