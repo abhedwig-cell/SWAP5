@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.module_contract_registry.v1",
+  "registry_version": "1.0.0",
+  "policy": "F-RG01D-MCS@1.0.0",
+  "current_canonical_snapshot": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "target_modules": [
+    "swap5.public_api",
+    "swap5.adapters",
+    "swap5.runtime_executor",
+    "swap5.coupler",
+    "swap5.kernel_interval_executor",
+    "swap5.surface_boundary",
+    "swap5.crop_et_root",
+    "swap5.drainage_irrigation_optional_processes",
+    "swap5.soil_water_solver_interface",
+    "swap5.soil_water_solver_implementation",
+    "swap5.results_diagnostics",
+    "external.deep_vadose_transfer"
+  ],
+  "initial_adoption_state": "BOUNDARY_MAPPED",
+  "uniform_manifests_established": 0,
+  "notes": [
+    "Target boundaries are defined by docs/architecture/component-map.md.",
+    "F-SI31 is a strong research-scoped contract exemplar for the soil-water solver seam but is not a production module manifest.",
+    "Existing admitted capabilities are not downgraded by retrospective manifest adoption.",
+    "Detailed technical authorities remain the source of truth.",
+    "This registry does not change the SWAP5-v1 completion denominator."
+  ]
+}
