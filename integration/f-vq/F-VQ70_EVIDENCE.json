@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.fvq70.evidence.v1",
+  "work_unit": "F-VQ70",
+  "branch": "qualification/f-vq70-fkt20-exact-candidate-attempt-provenance",
+  "candidate": "work/f-kt20-exact-candidate-attempt-provenance@c25eb87f979f4c341713de8fdc890beb0ea3e35f",
+  "source_blobs": {
+    "src/kernel/mod_kernel_transactions.f90": "9eec425476687ed383678c8afc43108faec316b5",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "76e110278435b48422236dd2aa4e1b290fa79928",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "72faabd7c74dbddecfc778dac8d24b48b423fc62",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "b08c0a7f334238228096939a5e93baafe1cd5751"
+  },
+  "independent_ci": {
+    "workflow": "F-VQ70 independent exact candidate provenance",
+    "run_id": 34779037771,
+    "job_id": 103782516634,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "o0_o2_semantic_identity": true
+  },
+  "observed": [
+    "FVQ70_FROZEN_CANDIDATE_SOURCE=PASS",
+    "FVQ70_INDEPENDENT_BRANCH_NO_PRODUCTION_CHANGE=PASS",
+    "FVQ70_SAME_OLD_TUPLE_DISTINCT_EXACT_ATTEMPTS=PASS",
+    "FVQ70_POSITIVE_EXACT_PUBLICATION=PASS",
+    "FVQ70_FVQ69_HN5=PASS_CLOSED",
+    "FVQ70_CROSS_DOMAIN_COMMIT=PASS_CLOSED",
+    "FVQ70_GENERIC_FKT_SURFACE_PUBLICATION=PASS_CLOSED",
+    "FVQ70_DUPLICATE_DOMAIN_EXACT_TOKEN_COLLISION=REPRODUCED",
+    "FVQ70_HN_DUPLICATE_EXECUTION_DOMAIN=FAIL_OPEN",
+    "FVQ70_DECISION=NOT_QUALIFIED_RUNTIME_EXECUTION_DOMAIN_UNIQUENESS_NOT_ENFORCED",
+    "FVQ70_NO_MASS_REGRESSION=PASS",
+    "FVQ70_INDEPENDENT_ORACLE=PASS",
+    "FVQ70_O0_O2_SEMANTIC_IDENTITY=PASS",
+    "FVQ70_DECISIVE_DISPOSITION=NOT_QUALIFIED_ROUTE_TO_RUNTIME_DOMAIN_UNIQUENESS_ENFORCEMENT",
+    "FVQ70_VERIFIER_EXECUTION=PASS"
+  ],
+  "finding": "F-KT20 closes exact-candidate substitution when each live executor has a distinct execution_provenance_id, but bind_execution_provenance currently accepts the same positive domain id independently on multiple live executors. Because each executor starts candidate_sequence at one, two such executors can recreate an identical exact-attempt token for candidates sharing lineage, revision and interval. Accepted surface publication then cannot distinguish the two attempts.",
+  "minimal_route_back": "Enforce non-colliding execution provenance at the runtime/coupler ownership layer by construction, source-bind that composition to F-KT20, and independently requalify the duplicate-domain hard negative. Do not add persistent per-column state, a second mass authority, or surface-evaporation physics.",
+  "production_source_modified_by_fvq70": false,
+  "reference_source_modified_by_fvq70": false
+}
