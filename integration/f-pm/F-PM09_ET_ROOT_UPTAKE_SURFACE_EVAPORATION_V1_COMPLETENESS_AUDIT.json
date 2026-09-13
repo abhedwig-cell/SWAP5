@@ -1,0 +1,189 @@
+{
+  "schema": "swap5.fpm09.et_root_surface_v1_completeness_audit.v1",
+  "work_unit": "F-PM09",
+  "title": "SWAP5 ET, Root Water Uptake & Surface Evaporation v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "outcome": "ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "current_canonical": {
+    "sha": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+    "tree": "0cacc21318a58ae01c2beecc8f98141f76b0737e",
+    "commit": "F-CI58P: persist F-SI35 postimage reconciliation and final completion closure",
+    "live_recheck_before_persistence": "PASS_EXACT"
+  },
+  "numbering": {
+    "F_PM09_free_at_creation": true,
+    "branch": "work/f-pm09-et-root-uptake-surface-evaporation-v1-completion-audit",
+    "number_changed": false
+  },
+  "frozen_scope": [
+    "reference ET demand",
+    "crop-atmosphere demand transfer",
+    "root water uptake",
+    "root-sink attribution",
+    "potential-to-actual ET reduction",
+    "surface evaporation",
+    "hydraulic limitation/materialization",
+    "accepted publication",
+    "transaction/mass/restart/MultiSWAP compatibility"
+  ],
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "production_source_changed_by_F_PM09": false,
+  "reference_source_changed_by_F_PM09": false,
+  "completion_percent_claimed": null,
+  "completion_100_percent": false,
+  "governance_authorities": {
+    "F_RG01_live_branch_head": "83279b818cc236ef216d45300a27fd0e64824c92",
+    "F_RG01C_live_branch_head": "58ca5d56e90995db89fa71d8a2e38fa526ccdace",
+    "F_KT16_status_decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
+    "F_KT16_status_blob": "952c179b06a828ec4323147b596d9019b29e77aa",
+    "F_KT19_closeout_head": "004f8f438ce1380c940a5139df83165c4d2eb68c",
+    "F_KT19_decision": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+    "F_MR42_closeout_head": "e370f95c2e50c2fef46fe99eac11522046560938",
+    "F_MR42_decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
+    "F_SI33_head": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+    "F_SI33_decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE",
+    "F_CI51P_status_blob": "c828da40c5b9874e43e8eaca5380d79b4592b2fa",
+    "F_CI51P_decision": "QUALIFIED_WOF43A_CURRENT_CANONICAL_ADMISSION_COMPLETED",
+    "F_CI58P_status_blob": "2f40d1b331a3a43ba0870e33d59030bfc70f3db1",
+    "F_CI58P_decision": "QUALIFIED_F_CI58P_FSI35_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"
+  },
+  "current_production_source_blobs": {
+    "src/process/mod_reference_et_demand_process.f90": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "src/process/mod_root_water_uptake_process.f90": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "bc40bc6b121f56071d2b811195759f86130defeb",
+    "src/crop/mod_crop_et_canopy_view_provider.f90": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "ABSENT_FROM_CURRENT_CANONICAL"
+  },
+  "criteria": {
+    "reference_ET": "PASS",
+    "crop_canopy_binding": "PASS",
+    "root_uptake": "PASS",
+    "root_attribution": "PASS",
+    "potential_to_actual_reduction": "PASS",
+    "surface_evaporation_boundary": "PASS",
+    "surface_evaporation_capacity": "PASS",
+    "accepted_publication": "FAIL",
+    "transaction_semantics": "PASS_CURRENT_ADMITTED_PATHS_FAIL_CLOSED",
+    "mass": "PASS",
+    "restart": "PASS",
+    "generic_time": "PASS",
+    "standalone_MultiSWAP": "PASS",
+    "parallel_compatibility": "PASS_WITHIN_EXISTING_QUALIFIED_SCOPE",
+    "process_state_ownership": "PASS",
+    "diagnostics": "PASS_FOR_ADMITTED_COMPUTATION_SEMANTICS",
+    "Full_Richards_compatibility": "PASS",
+    "solver_interface_isolation": "PASS",
+    "crop_lifecycle_compatibility": "PASS",
+    "boundary_event_behavior": "PASS_WITHIN_FROZEN_V1",
+    "current_canonical_preservation": "PASS_FOR_ADMITTED_CAPABILITIES"
+  },
+  "source_delta_classification": [
+    {
+      "path": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+      "previous_qualified_blob": "afd2de6893aced7b48eac33f6b3a51876b2c1d12",
+      "current_blob": "bc40bc6b121f56071d2b811195759f86130defeb",
+      "classification": "SEMANTICALLY_IRRELEVANT",
+      "reason": "detached_state_from_view changed local array transfer from allocate/copy to move_alloc and its local view dummy from intent(in) to intent(inout); demand, capacity, hydraulic route, ponding threshold, process result and mass semantics are unchanged"
+    },
+    {
+      "capability": "accepted surface-evaporation publication",
+      "classification": "REQUALIFICATION_REQUIRED_BEFORE_ADMISSION",
+      "reason": "historical F-PM06G candidate was never independently closed by F-VQ57 and is absent from current canonical"
+    }
+  ],
+  "mass_and_transaction_reasoning": {
+    "current_canonical_fail_closed": true,
+    "surface_process_result_is_not_a_second_mass_booking": true,
+    "authoritative_top_water_mass_contribution": "accepted solver external top flux",
+    "publication_gap_does_not_invalidate_existing_mass_closure": true,
+    "publication_gap_blocks_frozen_scope_completion": true
+  },
+  "accepted_publication_evidence": {
+    "owner_candidate_branch": "work/f-pm06g-surface-evaporation-accepted-publication-readiness",
+    "owner_candidate_head": "a5e31470091e2008512141934fced47983449983",
+    "owner_candidate_source_blob": "3ab9cb4be6eb211e8f6cd86f89665bb42c2332e1",
+    "owner_candidate_state": "OWNER_QUALIFIED_NOT_CANONICALLY_ADMITTED",
+    "independent_branch": "qualification/f-vq57-fpm06g-surface-evaporation-accepted-publication",
+    "independent_head": "4ccc2a21390af3872042b899ff39ead628a1a65e",
+    "independent_phase": "PROTOCOL_PERSISTED_HARD_NEGATIVE_PENDING",
+    "independent_decision": "OPEN_INDEPENDENT_PROVENANCE_QUALIFICATION",
+    "independently_qualified": false,
+    "closed": false,
+    "decisive_hard_negative": "a valid physical surface result produced under candidate B must not be publishable using candidate A identity plus candidate A accepted commit receipt",
+    "source_finding": "the F-PM06G binder validates accepted receipt against caller-supplied candidate identity but does not source-bind the supplied surface_evaporation_result_t to that same candidate; cross-candidate result substitution is therefore not proven fail-closed",
+    "current_canonical_module_presence": "ABSENT"
+  },
+  "closure_gaps": [
+    {
+      "id": "FPM09-G01",
+      "classification": "IMPLEMENTATION_GAP",
+      "requirement": "accepted surface-evaporation result provenance must be inseparably bound to the same trial/candidate identity that is validated by the accepted commit receipt; cross-candidate result substitution must fail closed",
+      "evidence": "F-PM06G source blob 3ab9cb4be6eb211e8f6cd86f89665bb42c2332e1 plus F-VQ57 HN1 protocol/test",
+      "source": "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90 on F-PM06G candidate; F-VQ57 protocol and candidate-binding hard negative",
+      "why_frozen_v1_blocker": "frozen scope item 8 requires accepted publication and hard 100% gate forbids publication not transactionally tied to the accepted candidate",
+      "owner": "successor bounded surface accepted-publication workunit",
+      "minimal_remediation": "add candidate-scoped immutable provenance to the produced surface result/publication envelope and validate exact identity against accepted commit receipt; do not change ET, root uptake, capacity, solver or mass-booking physics",
+      "production_source_change": true,
+      "qualification_dependency": "must precede independent F-VQ57 successor qualification",
+      "admission_dependency": "must be independently qualified before canonical admission"
+    },
+    {
+      "id": "FPM09-G02",
+      "classification": "QUALIFICATION_GAP",
+      "requirement": "independent accepted-publication provenance qualification must close the HN1 cross-candidate attack and positive accepted-path controls",
+      "evidence": "F-VQ57 head 4ccc2a21390af3872042b899ff39ead628a1a65e records OPEN_INDEPENDENT_PROVENANCE_QUALIFICATION with tested=false, independently_qualified=false, closed=false",
+      "source": "integration/f-vq/F-VQ57_STATUS.json and F-VQ57 protocol/test",
+      "why_frozen_v1_blocker": "owner qualification is insufficient for a hard transaction/publication gate",
+      "owner": "independent F-VQ57 successor/requalification",
+      "minimal_remediation": "after G01, run source-bound positive and negative provenance gates, including result A/receipt A success, receipt mismatch rejection and result B mislabeled as A plus receipt A rejection, and persist decisive evidence",
+      "production_source_change": false,
+      "qualification_dependency": "depends on G01",
+      "admission_dependency": "must pass before G03"
+    },
+    {
+      "id": "FPM09-G03",
+      "classification": "CANONICAL_ADMISSION_GAP",
+      "requirement": "the fixed independently qualified accepted-publication capability must be present and source-bound in current canonical",
+      "evidence": "current canonical runtime tree contains no mod_fmr_surface_evaporation_accepted_publication.f90; F-CI41/F-CI41P explicitly held accepted surface-result publication outside admitted runtime scope",
+      "source": "integration/f-ci-canonical@4fae08472c053d1b3d43d3d0b4f9b61956e7b646 and F-CI41/F-CI41P authorities",
+      "why_frozen_v1_blocker": "completion cannot rely on an unadmitted branch capability",
+      "owner": "canonical integration successor after independent qualification",
+      "minimal_remediation": "admit only the provenance-safe publication seam, bind exact production blobs and independent qualification, run postimage preservation and broad canonical gates",
+      "production_source_change": true,
+      "qualification_dependency": "depends on G02",
+      "admission_dependency": "final dependency before rerunning F-PM09 completion audit"
+    }
+  ],
+  "minimal_closure_route": [
+    "G01: minimally bind surface result provenance to candidate identity without physics or mass changes",
+    "G02: independently close F-VQ57 HN1 and positive controls source-bound",
+    "G03: canonically admit the qualified seam and prove postimage preservation",
+    "rerun F-PM09 completion audit against then-current canonical with denominator unchanged"
+  ],
+  "invariant_audit": {
+    "1": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "7": "PASS_FOR_CURRENT_ADMITTED_PATHS_G01_BLOCKS_PUBLICATION_COMPLETION",
+    "8": "PASS_FOR_CURRENT_ADMITTED_PATHS",
+    "9": "PASS",
+    "13": "PASS",
+    "16": "PASS",
+    "21": "PASS",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS",
+    "26": "PASS_FOR_ADMITTED_COMPUTATION_SEMANTICS",
+    "27": "PASS",
+    "29": "PASS",
+    "30": "PASS"
+  },
+  "hard_blockers": [
+    "FPM09-G01 accepted surface-result candidate provenance",
+    "FPM09-G02 independent provenance qualification",
+    "FPM09-G03 canonical admission"
+  ],
+  "final_decision": "ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+}
