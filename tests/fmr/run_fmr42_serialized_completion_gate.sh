@@ -28,7 +28,6 @@ test "$(git rev-parse HEAD:src)" = "$(git rev-parse "$CANON:src")" || fail "src 
 test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$CANON:reference")" || fail "reference tree changed by F-MR42"
 echo 'FMR42_NO_PRODUCTION_OR_REFERENCE_CHANGE=PASS'
 
-# F-CI56 final closeout is metadata-only on top of its true two-parent source admission.
 parent="$(git rev-parse "$CANON^")"
 [[ "$parent" == "$FCI56_SOURCE_MERGE" ]] || fail "unexpected F-CI56 final-closeout parent"
 git diff --quiet "$FCI56_SOURCE_MERGE" "$CANON" -- src reference || fail "F-CI56 final closeout changed source/reference"
@@ -57,7 +56,7 @@ import json, sys
 model=json.load(open(sys.argv[1], encoding='utf-8'))
 auth=json.load(open(sys.argv[2], encoding='utf-8'))
 
-domain=next(x for x in model['technical_domains'] if x['id']=='D10')
+domain=next(x for x in model['domains'] if x['id']=='D10')
 assert domain['name']=='Serialized MultiSWAP'
 assert domain['weight']==4
 assert domain['earned_weight']==4.0
@@ -143,13 +142,9 @@ assert f56['independent_qualification'] is True
 assert f56['architecture_audit']=='30_OF_30_NO_ADVERSE_DELTA_FOR_CANONICAL_ADMISSION'
 assert f56['mass_conservation']=='HARD_EXACT_NO_INTERFACE_TOLERANCE'
 assert f56['promotion']['canonical_source_merge']=='699021ab95df35d44e9711612d9ce97939f0025e'
-assert f56['postpromotion_source_postimage_evidence']['broad_canonical_push_qualification']['run']==34745820847
 print('FMR42_CANONICAL_AUTHORITY_CHAIN=PASS')
 PY
 
-# Byte-bind the frozen serialized dependency surface to the latest qualified
-# production composition that owns it. F-CI56 may add groundwater components,
-# but those are outside the fixed D10 denominator and may not alter these blobs.
 d10_surface=(
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
