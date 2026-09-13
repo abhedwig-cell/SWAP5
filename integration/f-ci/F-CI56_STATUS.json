@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI56",
+  "title": "F-GC21 Restricted Predictor-Corrector Coupling Window Orchestrator Current-Canonical Admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI56_READY_FOR_CANONICAL_PROMOTION",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+  "production_composition": "09895c05b5d2e11ead16bfcdf018d210da18eb77",
+  "owner_authority": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+  "independent_authority": "466119889a3f09b33ede638322e897bded2472a3",
+  "independent_final_exact_head_run": 34745309838,
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_CANONICAL_ADMISSION",
+  "mass_conservation": "HARD_EXACT_NO_INTERFACE_TOLERANCE",
+  "composition_verified": true,
+  "three_production_blobs_match_independent_source_postimage": true,
+  "qualification_green": true,
+  "qualification_evidence": {
+    "first_green_run": 34745536874,
+    "job_id": 103692709552,
+    "head_sha": "896554a2d34c7262cdb038818893f72f364d1ddb",
+    "conclusion": "success",
+    "replayed_independent_oracle_at_O0_and_O2": true,
+    "O0_O2_output_identity": true,
+    "independent_output_sha256": "79affb467d34646f19aef510653d319f53b82861678a7dc27e6cf9affcbbdf10"
+  },
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "production_groundwater_coupling_admission": false,
+  "promotion_requirements": [
+    "This final status head itself must pass the F-CI56 admission workflow before promotion.",
+    "Immediately before promotion, integration/f-ci-canonical must still equal the restart canonical or F-CI56 must be recomposed and requalified.",
+    "Promotion must be a true two-parent merge with the then-live canonical as first parent and the exact final qualified F-CI56 head as second parent.",
+    "Force, squash and rebase promotion are forbidden.",
+    "Broad postpromotion canonical qualification including current-restricted-canonical-preservation must be green before closeout."
+  ],
+  "hard_nonclaims": [
+    "No canonical admission yet.",
+    "No production direct-groundwater coupling admission by this workunit alone.",
+    "No MODFLOW adapter or aquifer-solver end-to-end qualification.",
+    "No crash-recovery or distributed transaction protocol qualification.",
+    "No F-GC20/F-GC22/F-GC23 downstream composition admission.",
+    "No large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ],
+  "closeout_policy": "Freeze this qualification branch once the workflow is green on this exact final status head. Do not add a self-referential metadata commit merely to record that later run."
+}
