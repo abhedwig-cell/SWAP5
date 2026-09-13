@@ -1,0 +1,37 @@
+{
+  "workunit": "EB-I17",
+  "title": "External Bottom Thermal Binding Implementation",
+  "base_authority": "eacf7e4a05eb8ee9c9304c4184d85427b2587ee9",
+  "decision": "IMPLEMENTED_CANDIDATE_SCOPED_EXTERNAL_BINDING",
+  "qualification_state": "QUALIFIED_WHEN_EXACT_UNCHANGED_HEAD_WORKFLOW_SUCCEEDS",
+  "implemented": {
+    "source_agnostic_binding_bundle": true,
+    "opaque_candidate_lineage": true,
+    "one_based_sample_ordinal": true,
+    "finite_external_donor_temperature": true,
+    "optional_opaque_provenance_token": true,
+    "duplicate_binding_rejection": true,
+    "lineage_mismatch_rejection": true,
+    "nonfinite_rejection": true,
+    "zero_capacity_no_record_allocation": true,
+    "external_aware_evaluator_route": true,
+    "legacy_i15_evaluator_route_preserved": true,
+    "automatic_runtime_supply": false,
+    "accepted_energy_publication": false,
+    "restart_persistence": false,
+    "governing_thermal_feedback": false
+  },
+  "mass_authority": "UNCHANGED_ACCEPTED_BOTTOM_THERMAL_CARRIER_WATER_EXCHANGE",
+  "external_temperature_owner": "RUNTIME_OR_COUPLER_PROVIDER",
+  "source_specific_dependency": false,
+  "qualification": {
+    "required_workflow": "EB-I17 external bottom thermal binding implementation",
+    "required_branch": "work/eb-i17-external-bottom-thermal-binding-implementation",
+    "required_condition": "workflow success on exact unchanged branch head",
+    "o0_o2_exact_output_identity": true,
+    "legacy_i15_regression": true,
+    "architecture_invariants_1_30": true,
+    "runtime_transaction_restart_preservation": true
+  },
+  "next_boundary": "Bind a real runtime/coupler candidate-lineage identity and optional provider-supplied external donor bundle to the accepted thermal candidate without yet publishing energy."
+}
