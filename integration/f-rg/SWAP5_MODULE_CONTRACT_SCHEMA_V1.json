@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWAP5 Module Contract Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "module_id",
+    "module_name",
+    "contract_version",
+    "adoption_state",
+    "maturity",
+    "authority",
+    "responsibility",
+    "data_categories",
+    "provided_contracts",
+    "consumed_contracts",
+    "transaction",
+    "conservation",
+    "time_semantics",
+    "restart_persistence",
+    "optionality_scaling",
+    "diagnostics",
+    "failure_semantics",
+    "replaceability",
+    "invariants",
+    "evidence",
+    "open_gaps"
+  ],
+  "properties": {
+    "schema": {
+      "const": "swap5.module_contract_manifest.v1"
+    },
+    "module_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "module_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "adoption_state": {
+      "enum": [
+        "UNMAPPED",
+        "BOUNDARY_MAPPED",
+        "MANIFEST_ESTABLISHED",
+        "QUALIFIED_MANIFEST",
+        "CANONICAL_MANIFEST"
+      ]
+    },
+    "maturity": {
+      "enum": [
+        "TARGET_ONLY",
+        "RESEARCH_ISOLATED",
+        "CONTRACT_COMPATIBLE",
+        "IMPLEMENTED",
+        "OWNER_QUALIFIED",
+        "INDEPENDENTLY_QUALIFIED",
+        "INTEGRATION_CANDIDATE",
+        "CANONICAL_ADMITTED",
+        "PRESERVED_REGRESSION_PROTECTED",
+        "RELEASE_READY"
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "definition_authority"],
+      "properties": {
+        "owner": {"type": "string", "minLength": 1},
+        "definition_authority": {"type": "string", "minLength": 1},
+        "implementation_authority": {"type": ["string", "null"]},
+        "qualification_authority": {"type": ["string", "null"]},
+        "independent_qualification_authority": {"type": ["string", "null"]},
+        "canonical_admission_authority": {"type": ["string", "null"]},
+        "preservation_authority": {"type": ["string", "null"]},
+        "current_canonical_snapshot": {"type": ["string", "null"]}
+      }
+    },
+    "responsibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owns", "must_not_own", "non_goals"],
+      "properties": {
+        "owns": {"type": "array", "items": {"type": "string"}},
+        "must_not_own": {"type": "array", "items": {"type": "string"}},
+        "non_goals": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "data_categories": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameters", "dynamic_state", "forcing", "numerical_configuration", "results", "scratch"],
+      "properties": {
+        "parameters": {"$ref": "#/$defs/dataCategory"},
+        "dynamic_state": {"$ref": "#/$defs/dataCategory"},
+        "forcing": {"$ref": "#/$defs/dataCategory"},
+        "numerical_configuration": {"$ref": "#/$defs/dataCategory"},
+        "results": {"$ref": "#/$defs/dataCategory"},
+        "scratch": {"$ref": "#/$defs/dataCategory"}
+      }
+    },
+    "provided_contracts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/semanticContract"}
+    },
+    "consumed_contracts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/semanticContract"}
+    },
+    "transaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "may_mutate_committed_state_directly",
+        "produces_trial_or_candidate",
+        "acceptance_owner",
+        "commit_owner",
+        "rollback_semantics",
+        "retry_base_semantics",
+        "warm_start_classification"
+      ],
+      "properties": {
+        "role": {"type": "string"},
+        "may_mutate_committed_state_directly": {"type": "boolean"},
+        "produces_trial_or_candidate": {"type": "boolean"},
+        "acceptance_owner": {"type": "string"},
+        "commit_owner": {"type": "string"},
+        "rollback_semantics": {"type": "string"},
+        "retry_base_semantics": {"type": "string"},
+        "warm_start_classification": {"type": "string"}
+      }
+    },
+    "conservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["water_mass_obligation", "mass_residual_role"],
+      "properties": {
+        "water_mass_obligation": {"type": "string", "minLength": 1},
+        "flux_sign_conventions": {"type": "array", "items": {"type": "string"}},
+        "storage_terms": {"type": "array", "items": {"type": "string"}},
+        "interface_action_reaction": {"type": ["string", "null"]},
+        "publication_semantics": {"type": ["string", "null"]},
+        "mass_residual_role": {"type": "string", "minLength": 1},
+        "other_conserved_quantities": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "time_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interval_contract", "fixed_day_assumption", "calendar_dependencies"],
+      "properties": {
+        "interval_contract": {"type": "string"},
+        "fixed_day_assumption": {"type": "boolean"},
+        "calendar_dependencies": {"type": "array", "items": {"type": "string"}},
+        "event_semantics": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "restart_persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["restart_claim", "persistent_physical_state", "excluded_from_persistent_state"],
+      "properties": {
+        "restart_claim": {"type": "string"},
+        "persistent_physical_state": {"type": "array", "items": {"type": "string"}},
+        "persistent_identity_references": {"type": "array", "items": {"type": "string"}},
+        "excluded_from_persistent_state": {"type": "array", "items": {"type": "string"}},
+        "restart_evidence": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "optionality_scaling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["optional", "activation", "inactive_persistent_state_cost", "inactive_compute_cost", "scratch_policy"],
+      "properties": {
+        "optional": {"type": "boolean"},
+        "activation": {"type": "string"},
+        "inactive_persistent_state_cost": {"type": "string"},
+        "inactive_parameter_cost": {"type": "string"},
+        "inactive_compute_cost": {"type": "string"},
+        "scratch_policy": {"type": "string"},
+        "batch_template_implications": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["guaranteed"],
+      "properties": {
+        "guaranteed": {"type": "array", "items": {"type": "string"}},
+        "optional": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "failure_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fail_closed", "preflight", "failure_classes", "external_side_effect_rule"],
+      "properties": {
+        "fail_closed": {"type": "boolean"},
+        "preflight": {"type": "array", "items": {"type": "string"}},
+        "failure_classes": {"type": "array", "items": {"type": "string"}},
+        "recoverable_boundary": {"type": "string"},
+        "fatal_boundary": {"type": "string"},
+        "external_side_effect_rule": {"type": "string"}
+      }
+    },
+    "replaceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["replacement_unit", "stable_semantics", "forbidden_dependencies", "adapter_policy", "replacement_qualification", "consumers_expected_unchanged"],
+      "properties": {
+        "replacement_unit": {"type": "string"},
+        "stable_semantics": {"type": "array", "items": {"type": "string"}},
+        "forbidden_dependencies": {"type": "array", "items": {"type": "string"}},
+        "adapter_policy": {"type": "string"},
+        "replacement_qualification": {"type": "array", "items": {"type": "string"}},
+        "consumers_expected_unchanged": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "effect", "evidence"],
+        "properties": {
+          "id": {"type": "integer", "minimum": 1, "maximum": 30},
+          "effect": {"enum": ["COMPLIANT", "STRENGTHENS", "NOT_APPLICABLE_WITH_RATIONALE"]},
+          "evidence": {"type": "string"}
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implemented", "owner_tested", "owner_qualified", "independently_qualified", "canonical_admitted", "preserved_regression_protected"],
+      "properties": {
+        "implemented": {"$ref": "#/$defs/evidenceGate"},
+        "owner_tested": {"$ref": "#/$defs/evidenceGate"},
+        "owner_qualified": {"$ref": "#/$defs/evidenceGate"},
+        "independently_qualified": {"$ref": "#/$defs/evidenceGate"},
+        "canonical_admitted": {"$ref": "#/$defs/evidenceGate"},
+        "preserved_regression_protected": {"$ref": "#/$defs/evidenceGate"}
+      }
+    },
+    "open_gaps": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "dataCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "ownership"],
+      "properties": {
+        "role": {
+          "enum": ["OWNS", "REFERENCES", "READS", "PROPOSES", "WRITES", "RETURNS", "BORROWS", "NOT_USED"]
+        },
+        "ownership": {"type": "string"},
+        "content": {"type": "array", "items": {"type": "string"}},
+        "authority": {"type": ["string", "null"]}
+      }
+    },
+    "semanticContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "semantic_role", "stability", "authority", "adapter_policy", "fail_closed_rule"],
+      "properties": {
+        "contract_id": {"type": "string", "minLength": 1},
+        "version": {"type": ["string", "null"]},
+        "semantic_role": {"type": "string"},
+        "stability": {"enum": ["FROZEN", "MOVING", "EXTERNAL_PINNED"]},
+        "authority": {"type": "string", "minLength": 1},
+        "adapter_policy": {"type": "string"},
+        "fail_closed_rule": {"type": "string"}
+      }
+    },
+    "evidenceGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "authorities"],
+      "properties": {
+        "status": {"type": "boolean"},
+        "authorities": {"type": "array", "items": {"type": "string"}},
+        "scope": {"type": "string"}
+      }
+    }
+  }
+}
