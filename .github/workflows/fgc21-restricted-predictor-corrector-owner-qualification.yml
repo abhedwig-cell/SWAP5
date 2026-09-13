@@ -33,7 +33,7 @@ jobs:
             work/f-gc19r-r1-prepared-ledger-provenance-remediation \
             work/f-gc21p1-r1-warning-hygiene-remediation \
             qualification/f-vq63-fgc21p1-r1-exact-bottom-interface-independent-qualification
-      - name: Reconcile preregistered final prerequisite authorities
+      - name: Reconcile final prerequisite and owner-test authorities
         shell: bash
         run: |
           set -euo pipefail
@@ -43,22 +43,36 @@ jobs:
           fvq_final='a76f338f5fdebed8346ffdbbd04dc7461d15a137'
           stale_p1='15028b926a5bbe9b82086a62168708451d165ecb'
           stale_fvq='0926552c9db8658014920fd6710fac4277bcffe0'
+          owner_test_blob='dfde833d6c5ba9a4823733a15393f0036c959d36'
 
           test "$(git rev-parse "$p1_ref")" = "$p1_final"
           test "$(git rev-parse "$fvq_ref")" = "$fvq_final"
           git cat-file -e "$p1_final^{commit}"
           git cat-file -e "$fvq_final^{commit}"
+          test "$(git rev-parse HEAD:tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90)" = "$owner_test_blob"
 
           src='tests/fgc/run_fgc21_restricted_predictor_corrector_owner_qualification.sh'
           reconciled='tests/fgc/.run_fgc21_owner_reconciled.sh'
           cp "$src" "$reconciled"
           sed -i "s/$stale_p1/$p1_final/g; s/$stale_fvq/$fvq_final/g" "$reconciled"
+          python3 - "$reconciled" "$owner_test_blob" <<'PY'
+from pathlib import Path
+import sys
+path = Path(sys.argv[1])
+blob = sys.argv[2]
+text = path.read_text()
+old = 'test "$(git rev-parse "$IMPLEMENTATION:$OWNER_TEST")" = "$(git rev-parse "HEAD:$OWNER_TEST")"'
+new = f'test "$(git rev-parse "HEAD:$OWNER_TEST")" = "{blob}"'
+assert text.count(old) == 1
+path.write_text(text.replace(old, new, 1))
+PY
           test "$(grep -Fc "$p1_final" "$reconciled")" -ge 1
           test "$(grep -Fc "$fvq_final" "$reconciled")" -ge 1
+          grep -Fq "$owner_test_blob" "$reconciled"
           ! grep -Fq "$stale_p1" "$reconciled"
           ! grep -Fq "$stale_fvq" "$reconciled"
-          test "$(git diff --no-index --numstat "$src" "$reconciled" | awk '{print $1+$2}')" = 4
-          echo 'FGC21_QUALIFICATION_AUTHORITY_PIN_RECONCILIATION=PASS'
+          test "$(git diff --no-index --numstat "$src" "$reconciled" | awk '{print $1+$2}')" = 6
+          echo 'FGC21_QUALIFICATION_AUTHORITY_RECONCILIATION=PASS'
       - name: Compiler identity
         run: gfortran --version
       - name: Diagnostic base owner compile O0
