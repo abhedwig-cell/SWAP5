@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.completion_snapshot.v1",
+  "model": "SWAP5_V1_COMPLETION_MODEL_V1",
+  "model_version": "1.0.0",
+  "denominator_change": false,
+  "snapshot_date": "2026-09-13",
+  "current_canonical": {
+    "sha": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+    "tree": "9102c9ac3c9bfceea8b7a9e94b2d1ef48c81b363",
+    "parent": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "classification": "documentation/knowledge-layer delta above F-CI55R; no new production capability credit"
+  },
+  "rb1": {
+    "completion_percent": 100.0,
+    "release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "release_tree": "9fd636cb35503d59654495186c9b4ec33287f344",
+    "qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "required_capabilities": 15,
+    "required_pass": 15,
+    "required_gap": 0
+  },
+  "technical_engine": {
+    "domain_denominator_weight": 79.0,
+    "earned_weight": 70.425,
+    "measured_completion_percent": 89.145569620253,
+    "active_hard_ceiling_percent": 89.0,
+    "reported_readiness_percent": 89.0,
+    "ceiling_reason": "required macropore production coverage and bounded-cost/fallback production policy remain below INDEPENDENTLY_QUALIFIED"
+  },
+  "overall_swap5_v1": {
+    "denominator_weight": 100.0,
+    "earned_weight": 82.404545454545,
+    "measured_completion_percent": 82.404545454545,
+    "active_hard_ceiling_percent": 89.0,
+    "reported_readiness_percent": 82.404545454545
+  },
+  "domains": [
+    {"id":"D01","name":"Kernel / transactions / generic time / mass","weight":8.0,"earned":8.0,"completion_percent":100.0},
+    {"id":"D02","name":"State / persistence / restart","weight":7.0,"earned":7.0,"completion_percent":100.0},
+    {"id":"D03","name":"Full Richards / soil-water reference solver","weight":8.0,"earned":8.0,"completion_percent":100.0},
+    {"id":"D04","name":"Soil-water solver interface","weight":5.0,"earned":5.0,"completion_percent":100.0},
+    {"id":"D05","name":"ET / root uptake / surface evaporation","weight":6.0,"earned":6.0,"completion_percent":100.0},
+    {"id":"D06","name":"Drainage / restricted surface-water completion","weight":5.0,"earned":5.0,"completion_percent":100.0},
+    {"id":"D07","name":"Crop / WOFOST","weight":5.0,"earned":5.0,"completion_percent":100.0},
+    {"id":"D08","name":"Soil temperature and snow required profile","weight":3.0,"earned":3.0,"completion_percent":100.0},
+    {"id":"D09","name":"Other required production physics","weight":5.0,"earned":2.0,"completion_percent":40.0},
+    {"id":"D10","name":"Serialized MultiSWAP","weight":4.0,"earned":4.0,"completion_percent":100.0},
+    {"id":"D11","name":"Parallel MultiSWAP","weight":4.0,"earned":3.175,"completion_percent":79.375},
+    {"id":"D12","name":"Runtime composition","weight":4.0,"earned":4.0,"completion_percent":100.0},
+    {"id":"D13","name":"Groundwater interface and coupling","weight":10.0,"earned":7.6,"completion_percent":76.0},
+    {"id":"D14","name":"Performance / bounded-cost / fallback","weight":5.0,"earned":2.65,"completion_percent":53.0},
+    {"id":"D15","name":"Permanent testbank","weight":7.0,"earned":5.875,"completion_percent":83.928571428571},
+    {"id":"D16","name":"Scientific traceability / documentation","weight":6.0,"earned":3.1,"completion_percent":51.666666666667},
+    {"id":"D17","name":"Status-A readiness","weight":5.0,"earned":0.454545454545,"completion_percent":9.090909090909},
+    {"id":"D18","name":"Governance / reproducibility / release evidence","weight":3.0,"earned":2.55,"completion_percent":85.0}
+  ],
+  "moving_evidence_recheck": {
+    "F_GC21_owner": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+    "F_GC21_owner_exact_head_run": 34744567094,
+    "F_VQ64_closeout": "466119889a3f09b33ede638322e897bded2472a3",
+    "F_VQ64_exact_head_run": 34745309838,
+    "F_VQ64_decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+    "G04_credit_fraction": 0.70,
+    "G04_remaining": "canonical admission and preservation"
+  },
+  "top_remaining_overall_percentage_points": [
+    {"domain":"D17","gap":4.545454545455,"meaning":"Status-A: 20 of 22 public-baseline requirements remain non-CLOSED and controlled WR-QA-2024 reconciliation remains open"},
+    {"domain":"D09","gap":3.0,"meaning":"complete irrigation canonical/preservation path plus required macropore production coverage"},
+    {"domain":"D16","gap":2.9,"meaning":"conceptual authority reconciliation plus parameter/theory/user guidance and validation/sensitivity/uncertainty/fitness evidence"},
+    {"domain":"D13","gap":2.4,"meaning":"F-GC21 canonical/preservation plus end-to-end direct groundwater/MODFLOW coupling qualification"},
+    {"domain":"D14","gap":2.35,"meaning":"bounded-cost/fallback qualification and production-scale throughput/failure-isolation evidence"},
+    {"domain":"D15","gap":1.125,"meaning":"TB09 current reconciliation and unblock/qualify TB10-class integrated executable physics"},
+    {"domain":"D11","gap":0.825,"meaning":"production-scale problem-column isolation/large-batch diagnostics qualification"},
+    {"domain":"D18","gap":0.45,"meaning":"final exact-current v1 release/readiness evidence pack"}
+  ],
+  "capability_impact_if_fully_closed": [
+    {"id":"A01","overall_pp":4.545454545455,"technical_pp":0.0},
+    {"id":"O02","overall_pp":2.25,"technical_pp":2.848101265823},
+    {"id":"G05","overall_pp":1.8,"technical_pp":2.278481012658},
+    {"id":"PF02","overall_pp":1.8,"technical_pp":2.278481012658},
+    {"id":"DOC03","overall_pp":1.35,"technical_pp":0.0},
+    {"id":"DOC04","overall_pp":1.35,"technical_pp":0.0},
+    {"id":"M12","overall_pp":0.825,"technical_pp":1.044303797468},
+    {"id":"T03","overall_pp":0.825,"technical_pp":0.0},
+    {"id":"O01","overall_pp":0.75,"technical_pp":0.949367088608},
+    {"id":"G04","overall_pp":0.6,"technical_pp":0.759493670886},
+    {"id":"PF03","overall_pp":0.55,"technical_pp":0.696202531646},
+    {"id":"GOV03","overall_pp":0.45,"technical_pp":0.0},
+    {"id":"T02","overall_pp":0.3,"technical_pp":0.0},
+    {"id":"DOC02","overall_pp":0.2,"technical_pp":0.0}
+  ],
+  "hard_gates_active": [
+    {"id":"HG06_PRODUCTION_CRITICAL_QUALIFICATION","technical_ceiling":89.0,"overall_ceiling":89.0,"reason":"O02 and PF02 below INDEPENDENTLY_QUALIFIED"},
+    {"id":"HG07_CRITICAL_TESTBANK","overall_ceiling":92.0,"reason":"F-TB10 blocked"},
+    {"id":"HG08_STATUS_A_READINESS","overall_ceiling":95.0,"reason":"Status-A readiness 2/22"}
+  ],
+  "hard_failures_not_observed": ["mass conservation","transaction correctness","restart correctness","Full Richards reference availability","competing production ownership"],
+  "optional_zero_weight": {
+    "RossFast":"OPTIONAL_STRETCH_CAPABILITY / RESEARCH_ISOLATED / 0% SWAP5-v1 weight",
+    "energy_balance":"NOT_FROZEN_AS_SWAP5_V1_REQUIREMENT / 0% weight; explicit model-version governance decision required before inclusion",
+    "deep_vadose":"OPTIONAL_EXTERNAL_COMPONENT / 0% SWAP-kernel-v1 weight"
+  },
+  "scope_uncertainty": [
+    "Controlled WR-QA-2024 full text is not obtained; Status-A score is reproducible against the pinned 22-row public baseline but formal compliance is not claimed.",
+    "Energy-balance research is not repository-bound as a frozen v1 authority in this audit; it cannot change V1 completion without an explicit denominator-version decision."
+  ],
+  "next_recalculation": "after 5-10 substantive closeouts, a major canonical admission (including F-GC21 if admitted), a hard-gate resolution, any explicit frozen-v1 scope change, or before release/readiness decision"
+}
