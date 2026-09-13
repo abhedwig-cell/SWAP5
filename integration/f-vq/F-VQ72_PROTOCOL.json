@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.fvq72.protocol.v1",
+  "work_unit": "F-VQ72",
+  "branch": "qualification/f-vq72-fpm12-surface-publication-provenance-requalification",
+  "candidate": "work/f-pm12-surface-evaporation-accepted-publication-closure-remediation@82189c148a38b90b6a5a326d03f282ccbee52960",
+  "candidate_tree": "4ecd975f239b911c0e5779685c1a8ef6961fd61f",
+  "current_canonical": "integration/f-ci-canonical@379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+  "current_canonical_tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+  "target_decision": "QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE",
+  "independence_rule": "F-PM12 owner conclusions are not accepted as proof; F-VQ72 executes independently authored hard-negative and positive controls against the exact candidate source.",
+  "required_hard_negatives": [
+    "cross_lineage_candidate",
+    "same_origin_alternate_candidate_after_accept",
+    "invalid_materialization_reject",
+    "reject_then_accept",
+    "reject_reject_accept",
+    "retry_exhaustion",
+    "preloaded_output_cleared",
+    "historical_split_api_compile_time_inaccessible"
+  ],
+  "required_positive_controls": [
+    "one_accepted_publication",
+    "same_executor_standalone",
+    "separate_trial_commit_executor_multiswap_style",
+    "atomic_vs_plain_commit_physical_equivalence"
+  ],
+  "scope_guards": {
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "physics_change_allowed": false,
+    "mass_booking_change_allowed": false,
+    "solver_change_allowed": false,
+    "persistent_state_change_allowed": false
+  },
+  "optimization_matrix": ["O0", "O2"],
+  "invariants": [3,4,7,8,9,13,16,21,22,23,26,29,30]
+}
