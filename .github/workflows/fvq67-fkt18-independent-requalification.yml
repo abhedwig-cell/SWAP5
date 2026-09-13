@@ -1,0 +1,40 @@
+name: F-VQ67 F-KT18 independent requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq67-fkt18-fail-closed-mass-completeness-independent-requalification
+  workflow_dispatch:
+
+jobs:
+  independent-mass-attack:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent O0 O2 fail-closed attack matrix
+        run: bash tests/fvq/run_fvq67_mass_completeness_independent.sh
+      - name: Immutable candidate and no-production-change guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANDIDATE=623e633b1f8451bd849f590f796806f11e1ecbdf
+          TX=src/transaction/mod_transaction_reference.f90
+          TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
+          git diff --exit-code "$CANDIDATE" HEAD -- src reference
+          test "$(git rev-parse "HEAD:$TX")" = "$TX_BLOB"
+          echo 'FVQ67_NO_PRODUCTION_SOURCE_CHANGE=PASS'
+
+  current-canonical-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Candidate scope, route structure and current-canonical compatibility
+        run: bash tests/fvq/run_fvq67_preservation.sh
