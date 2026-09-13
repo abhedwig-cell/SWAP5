@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.fdoc17.status.v1",
+  "work_unit": "F-DOC17",
+  "title": "SWAP5 Post-Closure Status-A Reconciliation",
+  "branch": "work/f-doc17-post-closure-status-a-reconciliation",
+  "phase": "PERSISTED_RECONCILIATION_COMPLETE",
+  "decision": "CURRENT_CANONICAL_MATERIALLY_STRONGER_STATUS_A_FORMAL_ASSESSMENT_NOT_YET_JUSTIFIED",
+  "formal_status_a_certified": false,
+  "formal_status_aa_certified": false,
+  "qualification_claimed_for_fdoc17": false,
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_commit": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "canonical_tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+    "canonical_terminal_closeout": "F-CI59P"
+  },
+  "materialized_report": {
+    "path": "docs/development/f-doc17-post-closure-status-a-reconciliation.md",
+    "first_persisted_commit": "7115e0d25eddd159173c49cbd18622292e5c96e6"
+  },
+  "branch_reconciliation": {
+    "materialized_branch": "work/f-doc17-post-closure-status-a-reconciliation",
+    "duplicate_unmaterialized_branch": "work/f-doc17-rb1-status-a-post-closure-reconciliation",
+    "both_branches_pre_materialization_head": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "duplicate_is_second_authority": false
+  },
+  "immutable_rb1": {
+    "scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "final_release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "changed_by_fdoc17": false
+  },
+  "historical_documentation_authorities": {
+    "F_DOC15_R1": {
+      "commit": "75df47fb5cf6188535a9705165785fc8744b2cb2",
+      "role": "HISTORICAL_STATUS_A_READINESS_AUTHORITY",
+      "canonical_descendant": false
+    },
+    "F_DOC18": {
+      "commit": "bddb43d821fd757a307aad88528464dd0c89a484",
+      "role": "QUALIFIED_HISTORICAL_RB1_PHYSICAL_SCIENCE_T0_T7_AUTHORITY",
+      "canonical_descendant": false,
+      "current_canonical_relationship": "DIVERGED"
+    },
+    "F_DOC19": {
+      "commit": "3161abec6a063f20e2184324248747d95a9a134c",
+      "role": "AGENT_EXECUTION_DOCUMENTATION_BRANCH",
+      "status_a_closure_credit": false
+    }
+  },
+  "current_canonical_closures_reconciled": {
+    "F_CI57_F_KT18_MASS_COMPLETENESS": {
+      "canonical": true,
+      "mass_invariant_13": "PASS",
+      "kernel_transactions_generic_time_mass_v1": "8_OF_8_100_PERCENT_WITH_FROZEN_DENOMINATOR",
+      "status_a_effect": "STRENGTHENS_IMPLEMENTATION_AND_TEST_EVIDENCE_ONLY"
+    },
+    "F_CI58_F_CI58P_SOLVER_SEAM": {
+      "canonical_source_admission": true,
+      "postimage_reconciliation": "PASS",
+      "architecture_invariants": "30_OF_30_PASS_NO_ADVERSE_DELTA",
+      "status_a_effect": "STRENGTHENS_IMPLEMENTATION_INTERFACE_AND_TEST_EVIDENCE_ONLY"
+    },
+    "F_CI59_F_CI59P_SURFACE_PUBLICATION": {
+      "canonical_source_admission": true,
+      "postimage_reconciliation": "PASS",
+      "permanent_preservation": "PASS",
+      "status_a_effect": "STRENGTHENS_TRANSACTIONAL_PUBLICATION_AND_TEST_EVIDENCE_ONLY"
+    }
+  },
+  "wur_criterion_gate": {
+    "formal_project_authority": "WR-QA-2024 Revised checklist Status A/AA, 2024",
+    "controlled_full_text_established": false,
+    "working_public_denominator": "WR-QA-PUBLIC-22",
+    "public_requirement_count": 22,
+    "public_text_assumed_identical_to_controlled_2024": false,
+    "formal_assessment_blocked": true,
+    "maximum_internal_state_before_controlled_authority_and_audit": "READY_FOR_STATUS_A_REVIEW"
+  },
+  "public_22_readiness_counts": {
+    "SATISFIED": 2,
+    "EVIDENCE_COMPLETE_DOCUMENTATION_INCOMPLETE": 0,
+    "DOCUMENTATION_COMPLETE_EVIDENCE_INCOMPLETE": 3,
+    "PARTIAL": 13,
+    "MISSING": 4,
+    "NOT_APPLICABLE_WITH_RATIONALE": 0,
+    "counts_are_compliance_percentage": false,
+    "classification_changed_from_F_DOC15_R1": false
+  },
+  "remaining_primary_blockers": [
+    "Controlled WR-QA-2024 authority and exact reconciliation against WR-QA-PUBLIC-22",
+    "Exact frozen SWAP5 assessment candidate and complete RB1-to-candidate rebaseline",
+    "Remaining RB1 HYBRID T0-T7 scientific/formal authority for RB1-CORE-MASS and RB1-ROOT-PARALLEL",
+    "Model-wide parameter, variable, calibration-or-N/A and input provenance authority",
+    "Independent T12 application validation for declared application classes",
+    "Application-class sensitivity and uncertainty evidence",
+    "Fitness-for-purpose and monitored-use evidence",
+    "Complete affected T8-T11 traceability including deviations and untested scope",
+    "Controlled metadata, model-management, dependency, external-use and support evidence",
+    "Release-bound Status-A-ready user guidance"
+  ],
+  "architecture_invariants": {
+    "count": 30,
+    "adverse_delta_from_fdoc17": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "mass_criterion_changed": false,
+    "interface_changed": false,
+    "rb1_changed": false
+  },
+  "hard_nonclaims": [
+    "F-DOC17 does not certify Status A or Status AA.",
+    "Current-canonical software qualification is not relabelled as scientific theory or application validation.",
+    "F-DOC18 historical branch qualification is not relabelled as current-canonical documentation authority.",
+    "F-DOC19 receives no Status-A closure credit without an explicit qualified mapping.",
+    "No compliance percentage is inferred from the public 22-row readiness matrix.",
+    "No documentation number is treated as evidence merely because it exists."
+  ],
+  "next_safe_step": "Obtain the controlled WR-QA-2024 authority in parallel with freezing an exact assessment candidate; then perform a candidate-bound post-RB1 evidence rebaseline before any formal Status-A assessment claim.",
+  "qualification_note": "This F-DOC17 status records a persisted evidence reconciliation. No dedicated F-DOC17 exact-head qualification gate has been run, so the workunit is not labelled QUALIFIED."
+}
