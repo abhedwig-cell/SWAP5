@@ -152,7 +152,7 @@ contains
     class(canonical_forcing_t), allocatable :: forcing
     real(real64) :: swap_time, groundwater_time
     logical :: swap_checkpoint_ok, swap_time_available, groundwater_time_available
-    logical :: converged, did_commit
+    logical :: converged, did_commit, publication_ready
     integer :: status, cleanup_status, commit_status, ledger_failure_status
 
     result = groundwater_pc_result_t()
@@ -176,7 +176,11 @@ contains
     end if
 
     call committed%capture_checkpoint(swap_checkpoint, swap_checkpoint_ok)
-    if (.not. swap_checkpoint_ok .or. .not. swap_checkpoint%ready()) then
+    if (.not. swap_checkpoint_ok) then
+      call fail_result(result, GW_PC_SWAP_CHECKPOINT_FAILED, .true., 'swap-checkpoint')
+      return
+    end if
+    if (.not. swap_checkpoint%ready()) then
       call fail_result(result, GW_PC_SWAP_CHECKPOINT_FAILED, .true., 'swap-checkpoint')
       return
     end if
@@ -371,8 +375,12 @@ contains
     result%diagnostics%ledger_prepared = .true.
 
     call make_next_origin(origin, window, committed, corrector_groundwater_result, next_origin, status)
-    if (status /= GW_PC_OK .or. .not. publication_preflight(committed, corrector_swap_candidate, window, &
-         groundwater_checkpoint, prepared_groundwater, ledger, prepared_ledger, next_origin)) then
+    publication_ready = .false.
+    if (status == GW_PC_OK) then
+      publication_ready = publication_preflight(committed, corrector_swap_candidate, window, groundwater_checkpoint, &
+           prepared_groundwater, ledger, prepared_ledger, next_origin)
+    end if
+    if (.not. publication_ready) then
       call abort_prepared_pair(groundwater, groundwater_checkpoint, prepared_groundwater, ledger, prepared_ledger, cleanup_status)
       call rollback_swap_candidate(executor, corrector_swap_candidate, result%diagnostics%corrector_swap)
       if (cleanup_status /= GW_EXCHANGE_OK) then
@@ -456,7 +464,8 @@ contains
     logical :: candidate_interval_available
 
     valid = .false.
-    if (.not. swap_result%completed .or. .not. candidate%ready()) return
+    if (.not. swap_result%completed) return
+    if (.not. candidate%ready()) return
     if (.not. swap_result%bottom_interface_exchange_available) return
     if (.not. ieee_is_finite(swap_result%bottom_outward_exchange_native)) return
     if (.not. ieee_is_finite(swap_result%terminal_bottom_outward_flux_native)) return
@@ -548,7 +557,8 @@ contains
     integer(int64) :: current_revision
 
     ready = .false.
-    if (.not. committed%ready() .or. .not. swap_candidate%ready()) return
+    if (.not. committed%ready()) return
+    if (.not. swap_candidate%ready()) return
     current_revision = committed%current_revision()
     if (current_revision < 0_int64 .or. current_revision >= huge(0_int64)) return
     if (swap_candidate%current_lineage_id() /= committed%current_lineage_id()) return
