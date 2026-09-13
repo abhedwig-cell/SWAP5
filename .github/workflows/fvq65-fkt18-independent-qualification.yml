@@ -1,0 +1,80 @@
+name: F-VQ65 F-KT18 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq65-fkt18-fail-closed-mass-completeness-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CANONICAL_BASE: c19a04721a05c6a00ba264e7477969807dcb258f
+  FKT18_AUTHORITY: 66fd08ca96d8be69cf6f996202e21ce624db526b
+
+jobs:
+  independent-mass-attack:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact identity and production scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          test "$(git merge-base "$CANONICAL_BASE" HEAD)" = "$CANONICAL_BASE"
+          git diff --quiet "$FKT18_AUTHORITY"..HEAD -- src
+          mapfile -t changed < <(git diff --name-only "$CANONICAL_BASE"..HEAD -- src)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = src/transaction/mod_transaction_reference.f90
+          test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = \
+               "$(git rev-parse "$FKT18_AUTHORITY:src/transaction/mod_transaction_reference.f90")"
+          git diff --quiet "$CANONICAL_BASE"..HEAD -- src/runtime src/kernel src/solver src/process src/adapter src/legacy reference
+          echo "FVQ65_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+          echo 'FVQ65_FKT18_SOURCE_IDENTITY=PASS'
+          echo 'FVQ65_PRODUCTION_SCOPE_ONE_TRANSACTION_FILE=PASS'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualification-owned fail-closed attack and canonical witness
+        run: bash tests/fvq/run_fvq65_mass_completeness_independent.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FVQ65_EXACT_HEAD_END=PASS:$GITHUB_SHA"
+
+  current-canonical-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact candidate identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          git diff --quiet "$FKT18_AUTHORITY"..HEAD -- src
+          echo "FVQ65_PRESERVATION_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Rebuild solver service restart MultiSWAP parallel runtime and coupling preservation
+        run: bash tests/fvq/run_fvq65_current_preservation.sh
+      - name: Exact candidate head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FVQ65_PRESERVATION_EXACT_HEAD_END=PASS:$GITHUB_SHA"
