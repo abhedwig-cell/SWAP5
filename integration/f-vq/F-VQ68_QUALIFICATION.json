@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.fvq68.fsi35_independent_qualification.v1",
+  "work_unit": "F-VQ68",
+  "title": "F-SI35 Mandatory Production Soil-Water Solver Seam Independent Qualification",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_FSI35_MANDATORY_PRODUCTION_SOLVER_SEAM_INDEPENDENTLY_READY_FOR_CANONICAL_ADMISSION",
+  "candidate": {
+    "work_unit": "F-SI35",
+    "branch": "work/f-si35-mandatory-production-soil-water-solver-seam-closure",
+    "source_sha": "5898e6616dbb6871a9f52d489038235ba1172cae",
+    "source_tree": "57bd964769748df7a047161702ec083079020109",
+    "base_canonical": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135"
+  },
+  "independent_execution": {
+    "branch_test_head": "714b15867ec1fb916b168cbfcd36cdbd56c97cbf",
+    "workflow": ".github/workflows/fvq68-fsi35-independent-qualification.yml",
+    "gate": "tests/fvq/run_fvq68_fsi35_independent.sh",
+    "run_id": 34770357810,
+    "conclusion": "success",
+    "owner_result_trusted_without_replay": false
+  },
+  "source_identity": {
+    "production_source_changed_during_independent_qualification": false,
+    "candidate_source_identity": "EXACT",
+    "production_delta": [
+      "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "src/legacy/b1_10_port/soilwater.f90"
+    ],
+    "protected_contract_and_runtime_sources_unchanged": true
+  },
+  "independent_findings": {
+    "MOD_SoilWater_HeadCalc_dependency": "ABSENT",
+    "direct_HeadCalc_call_policy": {
+      "SOLVER_INTERNAL_ALLOWED": ["src/legacy/b1_10_port/headcalc.f90"],
+      "ADAPTER_BOUNDARY_ALLOWED": [
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/adapter/mod_b110_production_soil_water_task2.f90"
+      ],
+      "PRODUCTION_INTERFACE_VIOLATION": []
+    },
+    "common_solver_contract_dispatch": "PASS",
+    "standalone_common_service_dispatch": "PASS",
+    "worker_common_service_dispatch": "PASS",
+    "standalone_worker_bitwise_dispatch_equivalence": "PASS",
+    "accepted_rejected_retry_transaction_replay": "PASS",
+    "dynamic_top_boundary_regimes": "PASS",
+    "prescribed_qbot_sensitivity": "PASS",
+    "hard_mass_qualified_profile": "PASS",
+    "worker_scratch_isolation": "PASS",
+    "O0_O2_identity": "PASS",
+    "F_SI31_research_contract_preservation": "PASS",
+    "process_hydraulic_view_preservation": "PASS",
+    "serialized_MultiSWAP_source_preservation": "PASS",
+    "groundwater_coupling_source_preservation": "PASS",
+    "transaction_source_preservation": "PASS"
+  },
+  "scope": {
+    "new_physics": false,
+    "full_richards_algorithm_changed": false,
+    "legacy_compatibility_path_newly_production_qualified": false,
+    "rossfast_required": false,
+    "denominator_changed": false,
+    "scope_reduced": false
+  },
+  "next_required_step": "F-CI58 current-canonical admission with true two-parent composition and postpromotion reconciliation"
+}
