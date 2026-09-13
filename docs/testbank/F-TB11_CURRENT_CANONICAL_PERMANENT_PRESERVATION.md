@@ -35,14 +35,14 @@ Drainage v1 is not credited. At the F-TB11 audit, `work/f-pm13-drainage-v1-compl
 | Stable ID | Principal layer(s) | Oracle and tolerance | Failure semantics |
 |---|---|---|---|
 | `FTB11-REL-001` | release qualification | exact live canonical SHA/tree/source binding; zero F-TB11 `src/` or `reference/` delta | fail closed on stale canonical or production delta |
-| `FTB11-TXN-001` | kernel/transaction, robustness | existing A23BL transaction gate on the exact current source; O0/O2 | transaction regression |
-| `FTB11-MASS-001` | kernel/transaction, integrated column, release | exact independent F-VQ65 mass attack matrix; incomplete accounting must reject | hard mass gate failure |
-| `FTB11-REJECT-001` | kernel/transaction, process | existing F-MR18 accepted-commit receipt oracle; rejected/prevalidated attempts remain non-mutating; O0/O2 identity | rejected-trial publication mutation |
+| `FTB11-TXN-001` | kernel/transaction, robustness | F-KT19 exact authority/current transaction blob plus F-VQ65 independent current-source fail-closed transaction/mass attack matrix; O0/O2 | transaction or mass-completeness regression |
+| `FTB11-MASS-001` | kernel/transaction, integrated column, release | exact F-VQ65 mass attack matrix; incomplete accounting must reject; O0/O2 | hard mass gate failure |
+| `FTB11-REJECT-001` | kernel/transaction, process, robustness | F-VQ71 independent atomic-publication oracle: stale same-origin alternate and cross-lineage candidate reject before commit/publication, committed revision is unchanged and candidate remains unconsumed; O0/O2 | rejected-trial publication mutation |
 | `FTB11-RST-001` | persistence/restart, integrated column | F-KT16 authority plus F-VQ65 current-source restart continuation replay | restart exactness/provenance failure |
-| `FTB11-MSW-001` | MultiSWAP, performance, integrated column | F-MR42 authority plus F-VQ65 current-source serialized and parallel replay | standalone/MultiSWAP equivalence/provenance failure |
+| `FTB11-MSW-001` | MultiSWAP, performance, integrated column | F-MR42 authority plus F-VQ65 current-source serialized MultiSWAP and parallel replay | standalone/MultiSWAP equivalence/provenance failure |
 | `FTB11-FR-001` | constitutive, solver, legacy/reference, coupling | F-SI33 100% authority with exact source/reference provenance | Full Richards preservation failure |
 | `FTB11-SEAM-001` | solver, kernel/transaction, MultiSWAP | exact F-SI35 blobs, mandatory `soil_water_solver_t` production seam, zero non-admitted direct HeadCalc calls | solver seam or HeadCalc bypass regression |
-| `FTB11-ETPUB-001` | process, kernel/transaction, MultiSWAP | exact independent F-VQ71 accepted-publication oracle; stale/cross-lineage paths fail closed; O0/O2 | surface-evaporation publication provenance failure |
+| `FTB11-ETPUB-001` | process, kernel/transaction, MultiSWAP, robustness | exact F-VQ71 accepted-publication oracle; stale/cross-lineage paths fail closed, split publication API inaccessible, no second mass authority; O0/O2 | surface-evaporation publication provenance failure |
 | `FTB11-ET-001` | constitutive, process, integrated column, legacy/reference, MultiSWAP, performance | F-PM11 100% authority bound directly to this current canonical and its green qualification run | ET/root-uptake/surface-evaporation preservation failure |
 
 All F-TB01 layers are represented: constitutive, process, solver, kernel/transaction, persistence/restart, integrated column, legacy/reference, coupling, MultiSWAP, performance, robustness and release qualification.
@@ -53,11 +53,13 @@ Mass conservation is non-waivable. `FTB11-MASS-001` attacks incomplete external 
 
 ## Preservation model and duplicate avoidance
 
-F-TB11 deliberately separates immutable authority preservation from moving current-source replay.
+F-TB11 separates immutable authority preservation from moving current-source replay.
 
-Existing F-KT16, F-KT19, F-MR42, F-SI33, F-SI35 and F-PM11 qualification suites are not copied. Historical F-CI admission scripts remain frozen evidence at their qualified postimages. Independent verifier source from F-VQ65 and F-VQ71 is materialized from exact immutable commits only while the F-TB11 runner executes against the exact canonical worktree.
+Existing F-KT16, F-KT19, F-MR42, F-SI33, F-SI35 and F-PM11 qualification suites are not copied. Historical F-CI admission scripts remain frozen evidence at their qualified postimages. Independent verifier source from F-VQ65 and F-VQ71 is materialized at runtime from exact immutable qualification commits and built against the exact current-canonical worktree.
 
-The executable current-source replay covers the highest recent regression risks: fail-closed mass completeness, transaction reject immutability, restart and Serialized MultiSWAP continuation, parallel preservation, coupling preservation, and accepted surface-evaporation publication provenance. Source locks separately prevent reintroduction of a HeadCalc production bypass and loss of the mandatory solver seam.
+Two older executable fixtures were deliberately not repaired or duplicated as moving-current oracles. `tests/transaction/run_a23bl_gate.sh` and `tests/fmr/run_fmr18_accepted_commit_receipt_gate.sh` predate the mandatory post-F-KT18 mass-completeness semantics. Their old trial fixtures therefore no longer express the complete acceptance contract. They remain frozen historical evidence. The moving regression role is taken by the independently qualified F-VQ65 and F-VQ71 oracles instead.
+
+The executable current-source replay protects fail-closed mass completeness, transaction acceptance semantics, restart and Serialized MultiSWAP continuation, parallel runtime, coupling preservation, rejected-publication immutability and accepted surface-evaporation publication provenance. Exact source locks separately prevent reintroduction of a HeadCalc production bypass and loss of the mandatory solver seam.
 
 ## Known gap
 
@@ -65,4 +67,4 @@ Drainage v1 is not part of this 100% preservation set until a definitive qualifi
 
 ## Exit rule
 
-F-TB11 may close as `QUALIFIED_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PERMANENT_TESTBANK_PRESERVATION` only if the dedicated workflow is green on the exact branch head containing the manifest, validator, semantic runner, documentation and workflow, while the live canonical remains the recorded SHA/tree and the F-TB11 delta contains no production or reference source changes.
+F-TB11 may close as `QUALIFIED_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PERMANENT_TESTBANK_PRESERVATION` only if the dedicated workflow is green on the exact branch head containing the final manifest, validator, semantic runner, documentation and workflow, while the live canonical remains the recorded SHA/tree and the F-TB11 delta contains no production or reference source changes.
