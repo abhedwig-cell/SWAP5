@@ -1,0 +1,83 @@
+name: F-ROSS01 D3 Current-Canonical Runtime Composition Qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d3-runtime-composition-qualification
+    paths:
+      - .github/workflows/ross01-d3-runtime-composition-qualification.yml
+      - experiments/ross/run_ross01_d3_runtime_composition_qualification.py
+      - integration/f-ross/F-ROSS01_D3_CURRENT_CANONICAL_RUNTIME_BINDING.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-composition-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+
+      - name: Install research qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Verify frozen D2 and F-SI31 authorities
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/ross/ross01_d2_fsi31_adapter.py)" = "d1eedc512bb9ca1a3ff0f2cdce067dc7826fdfe9"
+          test "$(git hash-object experiments/ross/ross01_d2_fsi31_adapter_base.py)" = "3cb579554f0931dc41ce05e92e2e7a5f06bf8888"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D2_FSI31_V1_CAPABILITY_DECLARATION.json)" = "9d6f78b71d37f2232d9a70458b88ca8060e72385"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D2_STATUS.json)" = "ea67fefaa3bce7d7b650416978bb808573e8ca9c"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D2_EVIDENCE.json)" = "cc0476c07910392c978a9b394946591efadf08af"
+          authority=4190ede0b17e81abe806430cc9a4c94a21995917
+          git fetch --no-tags origin "$authority"
+          git show "$authority:integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CAPABILITY_SCHEMA_V1.json" > "$RUNNER_TEMP/F-SI31_SCHEMA.json"
+          git show "$authority:integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md" > "$RUNNER_TEMP/F-SI31_CONTRACT.md"
+          test "$(git hash-object "$RUNNER_TEMP/F-SI31_SCHEMA.json")" = "86bfa60468d891e071c735569d944570f75fa205"
+          test "$(git hash-object "$RUNNER_TEMP/F-SI31_CONTRACT.md")" = "d5e934df4b3fbaa573e994cbe675257cf6a47304"
+
+      - name: Bind live current-canonical transaction runtime sources
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/mod_transaction_reference.f90"
+          git show "FETCH_HEAD:src/runtime/mod_canonical_interval_runtime.f90" > "$RUNNER_TEMP/mod_canonical_interval_runtime.f90"
+          git show "FETCH_HEAD:src/kernel/mod_kernel_transactions.f90" > "$RUNNER_TEMP/mod_kernel_transactions.f90"
+          test "$(git hash-object "$RUNNER_TEMP/mod_transaction_reference.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          test "$(git hash-object "$RUNNER_TEMP/mod_canonical_interval_runtime.f90")" = "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b"
+          test "$(git hash-object "$RUNNER_TEMP/mod_kernel_transactions.f90")" = "c7c5b7d3357e4e6739c8f647d6232baca45563e6"
+          echo "LIVE_CANONICAL_HEAD=$canonical_head"
+
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_d3_runtime_composition_qualification.py
+
+      - name: Execute D3 composition qualification
+        run: |
+          set -euo pipefail
+          python3 experiments/ross/run_ross01_d3_runtime_composition_qualification.py \
+            --transaction-source "$RUNNER_TEMP/mod_transaction_reference.f90" \
+            --runtime-source "$RUNNER_TEMP/mod_canonical_interval_runtime.f90" \
+            --kernel-source "$RUNNER_TEMP/mod_kernel_transactions.f90" \
+            --canonical-head "$CANONICAL_HEAD" \
+            --output F-ROSS01_D3_EVIDENCE.json \
+            | tee F-ROSS01_D3_STDOUT.txt
+
+      - name: Upload D3 qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3-runtime-composition-${{ github.run_id }}
+          path: |
+            F-ROSS01_D3_EVIDENCE.json
+            F-ROSS01_D3_STDOUT.txt
