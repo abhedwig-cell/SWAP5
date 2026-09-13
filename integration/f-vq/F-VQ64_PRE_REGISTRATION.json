@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ64",
+  "title": "F-GC21 Restricted Predictor-Corrector Independent Qualification",
+  "qualification_kind": "INDEPENDENT_VERIFICATION",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "candidate": {
+    "branch": "work/f-gc21-restricted-predictor-corrector-coupling-window-orchestrator",
+    "owner_final_head": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+    "owner_qualification_head": "7249639c89047241ba052fc5b8854989935ba622",
+    "owner_exact_head_run": 34744567094,
+    "orchestrator_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "swap_forcing_adapter_blob": "f3bf2effebc772b1e3417232d2baabe49ebb8da0",
+    "fmr_forcing_adapter_blob": "649b3587a730d2ae3b0e3b8a512fadc216e202f6"
+  },
+  "owner_restart_authority": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+  "live_canonical_at_preregistration": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+  "scope": {
+    "production_source_change": false,
+    "owner_test_output_accepted_as_independent_evidence": false,
+    "independent_dynamic_sequences": [
+      "two consecutive generic non-calendar coupling windows of unequal duration, each bounded to one predictor plus one corrector, with exact cumulative committed interface mass",
+      "non-converged full window followed by a smaller new outer window from the unchanged committed origin; rejected exchange/state must not leak into the accepted retry"
+    ],
+    "independent_static_checks": [
+      "publication order and absence of recoverable status path after first irreversible publication",
+      "typed F-GC17 datum mapping in the concrete FMR forcing adapter and no solver-private head access",
+      "whole-window exchange, exact q action-reaction and no interface mass tolerance",
+      "generic [t0,t1] time with no midnight/.swp/MODFLOW dependency",
+      "source and prerequisite blob locks",
+      "all 30 SWAP Core Architecture Invariants"
+    ]
+  },
+  "hard_requirements": {
+    "mass_conservation": "ABSOLUTE_NO_INTERFACE_TOLERANCE",
+    "transactional_failure": "ALL_RECOVERABLE_FAILURES_BEFORE_FIRST_IRREVERSIBLE_PUBLICATION",
+    "normal_cost": "TWO_SWAP_TRAJECTORIES_PER_COUPLING_WINDOW",
+    "predictor_disposition": "NEVER_COMMITTED",
+    "corrector_origin": "SAME_COMMITTED_SWAP_AND_GROUNDWATER_CHECKPOINTS_AS_PREDICTOR",
+    "flux_pair": "Q_GROUNDWATER_EXACT_NEGATIVE_ASSIGNMENT_OF_Q_SWAP",
+    "rejected_retry": "NEW_OUTER_WINDOW_STARTS_FROM_UNCHANGED_COMMITTED_PHYSICAL_ORIGIN"
+  },
+  "nonclaims": [
+    "No canonical admission by F-VQ64.",
+    "No direct MODFLOW/aquifer production admission.",
+    "No crash-consistent or distributed atomicity qualification.",
+    "No F-GC20 tile aggregation, F-GC22 application tolerance, F-GC23 tangent, F-GC24 restart, F-GC25 MultiSWAP composition or F-GC26 external-model conformance qualification.",
+    "No large-batch throughput claim.",
+    "No deep-vadose integration claim.",
+    "RB1 remains frozen."
+  ],
+  "decision_rule": "Only an independently green O0/O2 gate with exact candidate/source locks and all-30 audit may set F-VQ64 to independently qualified for canonical admission."
+}
