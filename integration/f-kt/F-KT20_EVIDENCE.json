@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fkt20.evidence.v1",
+  "work_unit": "F-KT20",
+  "branch": "work/f-kt20-exact-candidate-attempt-provenance",
+  "base_candidate": "work/f-pm10-surface-evaporation-publication-provenance-remediation@c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "triggering_independent_finding": {
+    "work_unit": "F-VQ69",
+    "decision": "NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN",
+    "hard_negative": "same lineage + origin revision + interval, distinct candidate objects, result B accepted with receipt A"
+  },
+  "source_blobs": {
+    "src/kernel/mod_kernel_transactions.f90": "9eec425476687ed383678c8afc43108faec316b5",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "76e110278435b48422236dd2aa4e1b290fa79928",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "72faabd7c74dbddecfc778dac8d24b48b423fc62",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "b08c0a7f334238228096939a5e93baafe1cd5751"
+  },
+  "owner_ci": {
+    "workflow": "F-KT20 exact candidate provenance",
+    "run_id": 34778744232,
+    "job_id": 103781729967,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "o0_o2_observation_identity": true
+  },
+  "observed_passes": [
+    "FKT20_BOUNDED_SOURCE_SCOPE=PASS",
+    "FKT20_EXACT_PROVENANCE_RUNTIME_ONLY=PASS",
+    "FKT20_NO_PERSISTENT_STATE_GROWTH=PASS",
+    "FKT20_NO_PHYSICS_OR_MASS_AUTHORITY_CHANGE=PASS",
+    "FKT20_NO_IO_CALENDAR_OR_MODFLOW_DEPENDENCY=PASS",
+    "FKT20_EXECUTION_DOMAIN_BINDING=PASS",
+    "FKT20_SAME_TUPLE_DISTINCT_EXACT_CANDIDATES=PASS",
+    "FKT20_FVQ69_HN5_CLOSED=PASS",
+    "FKT20_GENERIC_FKT_PRESERVED_SURFACE_FAILS_CLOSED=PASS",
+    "FKT20_CROSS_EXECUTOR_COMMIT_REJECTED=PASS",
+    "FKT20_NO_MASS_BOOKING_CHANGE=PASS",
+    "FKT20_OWNER_ORACLE_O0_O2_EXACT_IDENTITY=PASS",
+    "FKT20_OWNER_GATE=PASS"
+  ],
+  "bounded_claim": "The candidate/receipt/surface-publication chain can distinguish separate successful candidate attempts that share the former lineage/revision/interval provenance tuple, provided the executor has been explicitly bound to a valid runtime execution-provenance domain.",
+  "runtime_obligation_not_proven_here": "execution_provenance_id uniqueness among simultaneously live executor provenance domains acting on one logical transaction lineage remains an explicit runtime/coupler composition obligation and requires independent qualification before canonical admission.",
+  "physics_changed": false,
+  "mass_booking_changed": false,
+  "persistent_state_schema_changed": false,
+  "restart_schema_changed": false,
+  "reference_source_changed": false,
+  "canonical_changed": false
+}
