@@ -1,0 +1,37 @@
+name: F-CI59P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci59p-current-canonical-postimage-reconciliation
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90'
+      - 'src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90'
+      - 'src/runtime/mod_fmr_accepted_commit_receipt.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/process/mod_restricted_surface_evaporation.f90'
+      - 'tests/fci/run_fci59p_current_canonical_postimage_reconciliation.sh'
+      - 'integration/f-ci/F-CI59P_*.json'
+      - '.github/workflows/fci59p-current-canonical-postimage-reconciliation.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconcile F-CI59 admitted postimage
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash tests/fci/run_fci59p_current_canonical_postimage_reconciliation.sh
