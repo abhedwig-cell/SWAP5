@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC23",
+  "title": "Whole-Window Response Tangent and One-Corrector Composition",
+  "branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
+  "decision": "BLOCKED_BY_UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY",
+  "qualified": false,
+  "production_source_changed": false,
+  "production_physics_changed": false,
+  "denominator_changed": false,
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "parent_completion_audit": {
+    "work_unit": "F-GC28",
+    "sha": "4e7da5fd014c0eb799c6637a07dfd2f3e3c487c9",
+    "decision": "GROUNDWATER_COUPLING_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+  },
+  "program_authority": {
+    "work_unit": "F-RG03",
+    "sha": "aac2644149dda47282a25a39892c6dc808323dd0",
+    "tree": "922f6f6bd9acf700d9d39a2aa5007597f3891b03"
+  },
+  "governing_sensitivity_authorities": {
+    "F_SI28": {
+      "sha": "5b514e678d0d794e5837f161033b0bac58385707",
+      "decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+      "whole_coupling_window_derivative_composition_qualified": false
+    },
+    "F_SI32": {
+      "sha": "dfe1a285ae485e1e8348ee10492bb7808f85dd39",
+      "decision_context": "LOCAL_TERMINAL semantic reconciliation; temporal coverage does not upgrade derivative scope",
+      "true_whole_window_response_tangent_claimed": false,
+      "F_GC23_production_composition_claimed": false
+    },
+    "F_CI56": {
+      "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+      "predictor_corrector_canonical_admission": true,
+      "response_tangent_composition_admission": false
+    }
+  },
+  "audited_source_blobs": {
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c"
+  },
+  "evidence": {
+    "producer_scope": "F-SI28/F-SI30 production adapter explicitly calls the available response a local qbot tangent and publishes it only on the qualified smooth route.",
+    "transaction_semantics": "The only non-empty admitted transaction sensitivity semantic is TX_INTERFACE_SENSITIVITY_LOCAL_TERMINAL.",
+    "coverage_semantics": "origin_t0/origin_t1/covers_requested_interval are provenance; F-SI32 explicitly forbids using coverage to upgrade LOCAL_TERMINAL to a whole-window derivative.",
+    "two_half_route": "Accepted external full/half execution publishes only the second half local-terminal sensitivity.",
+    "canonical_runtime": "Accepted bottom exchange is accumulated over all accepted transactions, but sensitivity is only terminal_sensitivity from the final transaction and is not algebraically composed.",
+    "kernel": "Kernel copies the structured sensitivity without semantic upgrade.",
+    "coupling_consumer": "F-CI56/F-GC21 does not consume interface sensitivity and did not admit F-GC23 response-tangent composition."
+  },
+  "target_requirement": {
+    "name": "accepted whole-window bottom-interface response sensitivity",
+    "required_semantic": "distinct from LOCAL_TERMINAL",
+    "required_provenance": "same committed origin and exact accepted generic [t0,t1] coupling/canonical window",
+    "required_behavior": "trajectory-composed, retry/rollback safe, fail-closed when unavailable or nonsmooth",
+    "finite_difference": "reference_or_fallback_only_not_structural_normal_production_path"
+  },
+  "gap": {
+    "classifications": ["SENSITIVITY_GAP", "IMPLEMENTATION_GAP", "CROSS_OWNER_DEPENDENCY"],
+    "why_F_GC_cannot_close_locally": "The currently exposed scalar local-terminal derivative is insufficient to propagate perturbations through a sequence of accepted state transitions; relabelling, averaging, summing or time-scaling it would be a new unqualified numerical model.",
+    "first_owner": "F-SI",
+    "first_dependency": "accepted trajectory/transition bottom-interface sensitivity primitive",
+    "second_owner": "F-KT transaction/runtime/kernel",
+    "second_dependency": "machine-readable whole-window composition semantic and accepted-route transport",
+    "return_owner": "F-GC23",
+    "return_requirement": "consume only the separately qualified true whole-window response or fail closed to the non-tangent coupling path"
+  },
+  "coupling_cost": {
+    "structural_plus_minus_full_window_reruns_admitted": false,
+    "existing_predictor_corrector_path_changed": false,
+    "bounded_cost_architecture_preserved": true
+  },
+  "mass_conservation": {
+    "status": "HARD_UNCHANGED",
+    "sensitivity_may_relax_mass": false,
+    "accepted_exchange_path_changed": false
+  },
+  "architecture_audit": {
+    "artifact": "integration/f-gc/F-GC23_ARCHITECTURE_AUDIT.json",
+    "all_30_checked": true,
+    "adverse_delta": false,
+    "completion_relevant_partial_invariants": [11, 14, 26, 28]
+  },
+  "artifacts": {
+    "audit": "integration/f-gc/F-GC23_WHOLE_WINDOW_RESPONSE_TANGENT_AUDIT.md",
+    "architecture": "integration/f-gc/F-GC23_ARCHITECTURE_AUDIT.json",
+    "next_dependency_prompt": "integration/f-gc/F-GC23_SOLVER_DEPENDENCY_PROMPT.md"
+  },
+  "next_dependency": {
+    "suggested_work_unit": "F-SI36",
+    "number_rechecked_free_at_F_GC23_closeout": true,
+    "suggested_branch": "work/f-si36-accepted-trajectory-interface-sensitivity",
+    "scope": "solver-side accepted trajectory sensitivity prerequisite only; transaction whole-window composition remains separately F-KT-owned"
+  },
+  "effect_on_G05": "F-GC28 G05 remains blocked at the sensitivity obligation; downstream work must not claim this obligation closed.",
+  "hard_nonclaims": [
+    "No true whole-window response tangent is qualified by F-GC23.",
+    "No local-terminal sensitivity is relabelled as whole-window.",
+    "No covers_requested_interval flag is treated as a derivative-scope upgrade.",
+    "No structural finite-difference production tangent is introduced.",
+    "No Full Richards physics or common solver contract is modified.",
+    "No kernel transaction semantic is modified.",
+    "No groundwater mass or accepted-exchange path is modified.",
+    "No F-GC23 independent qualification or canonical admission is claimed.",
+    "No frozen-v1 denominator reduction is performed."
+  ],
+  "closeout_rule": "The exact branch head containing this status file is the definitive negative F-GC23 authority. Reopen F-GC23 only after the required upstream F-SI and F-KT capabilities are separately qualified and admitted."
+}
