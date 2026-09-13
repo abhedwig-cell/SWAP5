@@ -21,6 +21,7 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH = 3
   integer, parameter, public :: KERNEL_COMMIT_STATUS_STALE_REVISION = 4
   integer, parameter, public :: KERNEL_COMMIT_STATUS_TIME_MISMATCH = 5
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_EXECUTION_PROVENANCE_MISMATCH = 6
 
   integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_OK = 0
   integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_TARGET_INITIALIZED = 1
@@ -80,9 +81,11 @@ module mod_kernel_transactions
     procedure, public :: time_is_bound => kernel_checkpoint_time_is_bound
   end type kernel_checkpoint_t
 
-  ! Candidate provenance and physical state are opaque outside F-KT. Callers
-  ! may inspect cloned snapshots and origin metadata but cannot forge the
-  ! lineage/revision that authorizes publication.
+  ! Candidate provenance and physical state are opaque outside F-KT. Existing
+  ! lineage/revision/interval provenance remains the physical transaction
+  ! origin. Optional exact-attempt provenance is worker/job-local runtime
+  ! metadata: an explicit execution provenance id plus a monotonically assigned
+  ! candidate sequence from that executor. It is not persistent column state.
   type, public :: kernel_candidate_state_t
     private
     class(transaction_state_t), allocatable :: state
@@ -91,6 +94,9 @@ module mod_kernel_transactions
     real(real64) :: origin_t1 = 0.0_real64
     integer(int64) :: origin_lineage_id_value = 0_int64
     integer(int64) :: origin_revision_value = -1_int64
+    integer(int64) :: execution_provenance_id_value = 0_int64
+    integer(int64) :: candidate_sequence_value = 0_int64
+    logical :: exact_attempt_provenance_bound = .false.
     type(canonical_mass_accounting_t) :: mass
   contains
     procedure, public :: ready => kernel_candidate_ready
@@ -98,6 +104,7 @@ module mod_kernel_transactions
     procedure, public :: current_lineage_id => kernel_candidate_lineage_id
     procedure, public :: origin_revision => kernel_candidate_origin_revision
     procedure, public :: origin_interval => kernel_candidate_origin_interval
+    procedure, public :: exact_attempt_provenance => kernel_candidate_exact_attempt_provenance
   end type kernel_candidate_state_t
 
   type, public :: kernel_result_t
@@ -134,6 +141,7 @@ module mod_kernel_transactions
     integer :: lineage_mismatch_rejections = 0
     integer :: stale_revision_rejections = 0
     integer :: time_origin_rejections = 0
+    integer :: execution_provenance_rejections = 0
     integer :: checkpoint_uses = 0
     integer :: checkpoint_rejections = 0
     integer :: invalid_checkpoint_rejections = 0
@@ -164,13 +172,20 @@ module mod_kernel_transactions
   end type kernel_model_t
 
   ! One executor belongs to a worker/job. Its bound model may retain numerical
-  ! warm-start data, but every physical trial originates from the committed
-  ! physical state or an exact reusable checkpoint of that same revision.
+  ! warm-start data. Exact-attempt provenance is opt-in and explicit: runtime
+  ! assigns one positive execution provenance id that must be unique among live
+  ! executor provenance domains that can act on the same logical lineage. F-KT
+  ! then assigns strictly increasing candidate sequence numbers locally.
   type, public :: kernel_executor_t
     private
     class(kernel_model_t), pointer :: model => null()
+    integer(int64) :: execution_provenance_id_value = 0_int64
+    integer(int64) :: next_candidate_sequence = 0_int64
+    logical :: execution_provenance_bound = .false.
   contains
     procedure, public :: bind_model => kernel_bind_model
+    procedure, public :: bind_execution_provenance => kernel_bind_execution_provenance
+    procedure, public :: execution_provenance => kernel_execution_provenance
     procedure, public :: advance_interval => kernel_advance_interval
     procedure, public :: commit_candidate => kernel_commit_candidate
     procedure, public :: rollback_candidate => kernel_rollback_candidate
@@ -442,11 +457,58 @@ contains
     end if
   end subroutine kernel_candidate_origin_interval
 
+  subroutine kernel_candidate_exact_attempt_provenance(self, execution_provenance_id, candidate_sequence, available)
+    class(kernel_candidate_state_t), intent(in) :: self
+    integer(int64), intent(out) :: execution_provenance_id, candidate_sequence
+    logical, intent(out) :: available
+
+    available = self%ready() .and. self%exact_attempt_provenance_bound .and. &
+         self%execution_provenance_id_value > 0_int64 .and. self%candidate_sequence_value > 0_int64
+    if (available) then
+      execution_provenance_id = self%execution_provenance_id_value
+      candidate_sequence = self%candidate_sequence_value
+    else
+      execution_provenance_id = 0_int64
+      candidate_sequence = 0_int64
+    end if
+  end subroutine kernel_candidate_exact_attempt_provenance
+
   subroutine kernel_bind_model(self, model)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_model_t), target, intent(inout) :: model
     self%model => model
   end subroutine kernel_bind_model
+
+  subroutine kernel_bind_execution_provenance(self, execution_provenance_id, did_bind)
+    class(kernel_executor_t), intent(inout) :: self
+    integer(int64), intent(in) :: execution_provenance_id
+    logical, intent(out) :: did_bind
+
+    did_bind = .false.
+    if (execution_provenance_id <= 0_int64) return
+    if (self%execution_provenance_bound) then
+      did_bind = self%execution_provenance_id_value == execution_provenance_id
+      return
+    end if
+
+    self%execution_provenance_id_value = execution_provenance_id
+    self%next_candidate_sequence = 0_int64
+    self%execution_provenance_bound = .true.
+    did_bind = .true.
+  end subroutine kernel_bind_execution_provenance
+
+  subroutine kernel_execution_provenance(self, execution_provenance_id, available)
+    class(kernel_executor_t), intent(in) :: self
+    integer(int64), intent(out) :: execution_provenance_id
+    logical, intent(out) :: available
+
+    available = self%execution_provenance_bound .and. self%execution_provenance_id_value > 0_int64
+    if (available) then
+      execution_provenance_id = self%execution_provenance_id_value
+    else
+      execution_provenance_id = 0_int64
+    end if
+  end subroutine kernel_execution_provenance
 
   subroutine kernel_advance_interval(self, parameters, committed_state, forcing, numerical_config, t0, t1, &
                                      result, candidate_state, diagnostics, checkpoint)
@@ -541,6 +603,13 @@ contains
       candidate_state%origin_lineage_id_value = committed_state%lineage_id
       candidate_state%origin_revision_value = committed_state%revision
       candidate_state%mass = result%mass
+      if (self%execution_provenance_bound .and. self%execution_provenance_id_value > 0_int64 .and. &
+          self%next_candidate_sequence < huge(0_int64)) then
+        self%next_candidate_sequence = self%next_candidate_sequence + 1_int64
+        candidate_state%execution_provenance_id_value = self%execution_provenance_id_value
+        candidate_state%candidate_sequence_value = self%next_candidate_sequence
+        candidate_state%exact_attempt_provenance_bound = .true.
+      end if
       diagnostics%candidate_materializations = 1
     end if
   end subroutine kernel_advance_interval
@@ -636,6 +705,17 @@ contains
       return
     end if
 
+    if (candidate_state%exact_attempt_provenance_bound) then
+      if (.not. self%execution_provenance_bound .or. &
+          self%execution_provenance_id_value /= candidate_state%execution_provenance_id_value .or. &
+          candidate_state%candidate_sequence_value <= 0_int64) then
+        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+        diagnostics%execution_provenance_rejections = diagnostics%execution_provenance_rejections + 1
+        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_EXECUTION_PROVENANCE_MISMATCH
+        return
+      end if
+    end if
+
     call move_alloc(candidate_state%state, committed_state%physical_state)
     if (present(accepted_mass)) accepted_mass = candidate_state%mass
     committed_state%revision = committed_state%revision + 1_int64
@@ -667,6 +747,9 @@ contains
     candidate_state%origin_t1 = 0.0_real64
     candidate_state%origin_lineage_id_value = 0_int64
     candidate_state%origin_revision_value = -1_int64
+    candidate_state%execution_provenance_id_value = 0_int64
+    candidate_state%candidate_sequence_value = 0_int64
+    candidate_state%exact_attempt_provenance_bound = .false.
     candidate_state%mass = canonical_mass_accounting_t()
   end subroutine clear_candidate
 
