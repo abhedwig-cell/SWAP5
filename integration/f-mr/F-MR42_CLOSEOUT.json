@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.fmr42.closeout.v1",
+  "work_unit": "F-MR42",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
+  "current_canonical": {
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452",
+    "last_live_recheck": "PASS_EXACT"
+  },
+  "authority": {
+    "path": "integration/f-mr/F-MR42_SERIALIZED_MULTISWAP_V1_COMPLETION_AUTHORITY.json",
+    "authority_commit": "a13a022302d9b4b18ba2bedad73f9372332c6a81",
+    "validated_branch": "work/f-mr42-serialized-multiswap-v1-completeness-audit-r2"
+  },
+  "final_qualification": {
+    "validated_head": "9e4ae6b872f3aafe51c9312979e7ed88c877ff3d",
+    "workflow": ".github/workflows/fmr42-serialized-multiswap-v1-final-qualification.yml",
+    "run": 34746257468,
+    "job": 103694630332,
+    "conclusion": "success",
+    "terminal_marker": "FMR42_GATE QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE"
+  },
+  "current_canonical_preservation": {
+    "broad_push_run": 34745966892,
+    "broad_push_conclusion": "success",
+    "moving_preservation_job": 103694059000,
+    "moving_preservation_conclusion": "success"
+  },
+  "completion_result": {
+    "domain_id": "D10",
+    "domain": "Serialized MultiSWAP",
+    "capability_id": "M10",
+    "completion_fraction": 1.0,
+    "completion_percent": 100.0,
+    "maturity": "PRESERVED_REGRESSION_PROTECTED",
+    "remaining_gap": "none",
+    "gap_count": 0,
+    "production_source_changed_by_F_MR42": false,
+    "reference_source_changed_by_F_MR42": false,
+    "denominator_changed_by_F_MR42": false,
+    "scope_reduced_to_reach_100_percent": false
+  },
+  "superseded_attempts": [
+    {
+      "branch": "work/f-mr42-serialized-multiswap-v1-completeness-audit",
+      "run": 34745890247,
+      "job": 103693644996,
+      "classification": "FAIL_CLOSED_STALE_CANONICAL",
+      "capability_failure": false
+    },
+    {
+      "branch": "work/f-mr42-serialized-multiswap-v1-completeness-audit-r1",
+      "run": 34746049723,
+      "job": 103694083212,
+      "classification": "FAIL_CLOSED_STALE_CANONICAL",
+      "capability_failure": false
+    },
+    {
+      "branch": "work/f-mr42-serialized-multiswap-v1-completeness-audit-r2",
+      "run": 34746190300,
+      "job": 103694455712,
+      "classification": "AUDIT_TOOLING_PARSER_ERROR",
+      "capability_failure": false
+    }
+  ],
+  "F_RG01_machine_readable_result": {
+    "domain_id": "D10",
+    "capability_id": "M10",
+    "set_completion_percent": 100.0,
+    "set_maturity": "PRESERVED_REGRESSION_PROTECTED",
+    "set_remaining_gap": "none",
+    "authority": "F-MR42",
+    "denominator_unchanged": true
+  }
+}
