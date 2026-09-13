@@ -26,6 +26,7 @@ module mod_fmr_surface_evaporation_runtime_materialization
   integer, parameter, public :: FMR_SURFACE_EVAP_RUNTIME_CANDIDATE_REJECTED = 5
   integer, parameter, public :: FMR_SURFACE_EVAP_RUNTIME_PROVENANCE_MISMATCH = 6
   integer, parameter, public :: FMR_SURFACE_EVAP_RUNTIME_TIME_MISMATCH = 7
+  integer, parameter, public :: FMR_SURFACE_EVAP_RUNTIME_EXACT_PROVENANCE_UNAVAILABLE = 8
 
   type, public :: fmr_surface_evaporation_runtime_diagnostics_t
     integer :: status = FMR_SURFACE_EVAP_RUNTIME_OK
@@ -42,11 +43,12 @@ module mod_fmr_surface_evaporation_runtime_materialization
     character(len=48) :: route = 'not-run'
   end type fmr_surface_evaporation_runtime_diagnostics_t
 
-  ! Opaque worker/job-local carrier for a surface-evaporation result that was
-  ! materialized while an exact F-KT candidate provenance record was present.
-  ! Callers can inspect the immutable attribution values but cannot construct or
-  ! rewrite the provenance fields. This is not persistent column state and it
-  ! does not own any mass-ledger contribution.
+  ! Opaque worker/job-local carrier for a surface-evaporation result. Accepted
+  ! publication requires exact F-KT attempt provenance in addition to the
+  ! physical transaction origin. The pair execution provenance id + candidate
+  ! sequence is attached by F-KT and cannot be supplied or rewritten here.
+  ! This object is runtime attribution metadata, not persistent column state and
+  ! not an additional mass-ledger authority.
   type, public :: fmr_candidate_bound_surface_evaporation_t
     private
     logical :: initialized = .false.
@@ -54,12 +56,15 @@ module mod_fmr_surface_evaporation_runtime_materialization
     integer(int64) :: origin_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
     real(real64) :: t1_value = 0.0_real64
+    integer(int64) :: execution_provenance_id_value = 0_int64
+    integer(int64) :: candidate_sequence_value = 0_int64
     type(surface_evaporation_result_t) :: result_value
   contains
     procedure, public :: ready => candidate_bound_ready
     procedure, public :: current_lineage_id => candidate_bound_lineage_id
     procedure, public :: origin_revision => candidate_bound_origin_revision
     procedure, public :: origin_interval => candidate_bound_origin_interval
+    procedure, public :: exact_attempt_provenance => candidate_bound_exact_attempt_provenance
     procedure, public :: bare_soil_evaporation_rate => candidate_bound_bare_rate
     procedure, public :: ponded_water_evaporation_rate => candidate_bound_ponded_rate
     procedure, public :: route => candidate_bound_route
@@ -160,8 +165,9 @@ contains
 
     type(surface_evaporation_result_t) :: process_result
     integer(int64) :: lineage_id, origin_revision
+    integer(int64) :: execution_provenance_id, candidate_sequence
     real(real64) :: t0, t1, committed_time
-    logical :: interval_available, time_available
+    logical :: interval_available, time_available, exact_available
 
     bound_result = fmr_candidate_bound_surface_evaporation_t()
     diagnostics = fmr_surface_evaporation_runtime_diagnostics_t()
@@ -191,6 +197,13 @@ contains
       return
     end if
 
+    call candidate%exact_attempt_provenance(execution_provenance_id, candidate_sequence, exact_available)
+    if (.not. exact_available) then
+      diagnostics%status = FMR_SURFACE_EVAP_RUNTIME_EXACT_PROVENANCE_UNAVAILABLE
+      diagnostics%route = 'exact-provenance-unavailable'
+      return
+    end if
+
     if (committed%current_lineage_id() /= lineage_id .or. committed%current_revision() /= origin_revision) then
       diagnostics%status = FMR_SURFACE_EVAP_RUNTIME_PROVENANCE_MISMATCH
       diagnostics%route = 'candidate-origin-mismatch'
@@ -211,10 +224,9 @@ contains
       end if
     end if
 
-    ! Materialize the physical attribution only after provenance has been
-    ! checked. The raw process result never crosses this API boundary together
-    ! with a caller-supplied candidate identity, so a result from candidate B
-    ! cannot later be relabelled as candidate A through the publication seam.
+    ! Physical attribution is materialized only after both transaction-origin
+    ! and exact-attempt provenance have been established by F-KT. Callers cannot
+    ! later restamp the result with a different candidate identity.
     call fmr_materialize_restricted_surface_evaporation(committed, et_result, et_diagnostics, &
                                                          capacity_provider, process_result, diagnostics)
     if (diagnostics%status /= FMR_SURFACE_EVAP_RUNTIME_OK .or. .not. diagnostics%result_produced) return
@@ -223,6 +235,8 @@ contains
     bound_result%origin_revision_value = origin_revision
     bound_result%t0_value = t0
     bound_result%t1_value = t1
+    bound_result%execution_provenance_id_value = execution_provenance_id
+    bound_result%candidate_sequence_value = candidate_sequence
     bound_result%result_value = process_result
     bound_result%initialized = .true.
   end subroutine fmr_materialize_candidate_bound_surface_evaporation
@@ -257,6 +271,7 @@ contains
     ready = .false.
     if (.not. self%initialized) return
     if (self%lineage_id <= 0_int64 .or. self%origin_revision_value < 0_int64) return
+    if (self%execution_provenance_id_value <= 0_int64 .or. self%candidate_sequence_value <= 0_int64) return
     if (.not. ieee_is_finite(self%t0_value) .or. .not. ieee_is_finite(self%t1_value)) return
     if (self%t1_value <= self%t0_value) return
     if (self%result_value%status /= SURFACE_EVAP_AVAILABLE) return
@@ -300,6 +315,21 @@ contains
       t1 = 0.0_real64
     end if
   end subroutine candidate_bound_origin_interval
+
+  subroutine candidate_bound_exact_attempt_provenance(self, execution_provenance_id, candidate_sequence, available)
+    class(fmr_candidate_bound_surface_evaporation_t), intent(in) :: self
+    integer(int64), intent(out) :: execution_provenance_id, candidate_sequence
+    logical, intent(out) :: available
+
+    available = self%ready()
+    if (available) then
+      execution_provenance_id = self%execution_provenance_id_value
+      candidate_sequence = self%candidate_sequence_value
+    else
+      execution_provenance_id = 0_int64
+      candidate_sequence = 0_int64
+    end if
+  end subroutine candidate_bound_exact_attempt_provenance
 
   pure real(real64) function candidate_bound_bare_rate(self) result(value)
     class(fmr_candidate_bound_surface_evaporation_t), intent(in) :: self
