@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.fpm12.status.v1",
+  "work_unit": "F-PM12",
+  "branch": "work/f-pm12-surface-evaporation-accepted-publication-closure-remediation",
+  "phase": "OWNER_QUALIFIED_CURRENT_CANONICAL_REMEDIATION_RECONCILIATION_COMPLETE",
+  "decision": "OWNER_QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE",
+  "numbering": {
+    "requested": "F-PM10",
+    "requested_number_occupied": true,
+    "F_PM10_existing_head": "c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+    "F_PM11_existing_head": "602a461957c45623fc414ef15e40a1bfe755de43",
+    "effective": "F-PM12"
+  },
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "F_PM09": {
+    "authority": "work/f-pm09-et-root-uptake-surface-evaporation-v1-completion-audit@b49585c255d1c0d4c0cec6cdfaab6cabc49ac19a",
+    "decision": "ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+    "G01": "CLOSED_CURRENT_CANONICAL_REQUALIFIED_BY_F_PM12",
+    "G02": "ALREADY_CLOSED_BY_F_VQ71",
+    "G03": "ALREADY_CLOSED_BY_F_CI59_AND_F_CI59P"
+  },
+  "owner_qualification": {
+    "tested_head": "be649f8efb965010fa89dab4948bb2aa4d3ce46e",
+    "tested_tree": "1026c9551cac9a17b9f3f545e99d1fade8006532",
+    "workflow_run": 34782416148,
+    "workflow_job": 103791719283,
+    "conclusion": "success",
+    "O0_O2_identity": "PASS"
+  },
+  "results": {
+    "candidate_bound_publication": "PASS",
+    "reject_immutability": "PASS_EXACT_COMMITTED_PHYSICAL_STATE",
+    "retry_provenance": "PASS",
+    "retry_exhaustion": "PASS_NO_ACCEPTED_PUBLICATION",
+    "stale_scratch_attack": "PASS_CLOSED",
+    "F_VQ57_attack": "CLOSED",
+    "mass_preservation": "PASS_NO_SECOND_MASS_AUTHORITY_OR_BOOKING",
+    "restart_preservation": "PASS",
+    "standalone_serialized_MultiSWAP": "PASS_EQUIVALENT",
+    "parallel_frozen_v1_preservation": "PASS",
+    "current_canonical_preservation": "PASS"
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_PM12": false,
+    "reference_source_changed_by_F_PM12": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "new_persistent_state": false
+  },
+  "qualification_disposition": {
+    "new_independent_FVQ_required_for_G02": false,
+    "reason_FVQ": "F-VQ71 has already independently qualified the exact atomic production seam now present in current canonical and F-PM12 replays that oracle source-bound at O0/O2.",
+    "new_FCI_admission_required_for_G03": false,
+    "reason_FCI": "F-CI59 and F-CI59P have already admitted and postimage-reconciled the exact production blobs now present in current canonical.",
+    "F_PM09_final_completion": "ALREADY_RECONCILED_BY_F_PM11_AS_QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE"
+  },
+  "owner_qualified": true,
+  "closed": true,
+  "next_required_step": "NONE_FOR_FPM09_CLOSURE; optional redundant independent/canonical requalification only if governance explicitly requests a new authority chain from F-PM12."
+}
