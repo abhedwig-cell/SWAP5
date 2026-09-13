@@ -1,0 +1,75 @@
+name: EB-I08 owner qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i08-external-liquid-water-temperature-contract
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard current canonical
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+
+      - name: Check EB-I08 technical delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i08-owner-gate.yml
+          src/process/mod_external_liquid_water_temperature.f90
+          tests/test_eb_i08_external_liquid_water_temperature.f90
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          ! grep -Eiq '(open\s*\(|read\s*\(|write\s*\(|\.swp|modflow)' src/process/mod_external_liquid_water_temperature.f90
+          ! grep -Eiq '(precipitation|rain|irrigation|runon|groundwater|snow|surface_water)' src/process/mod_external_liquid_water_temperature.f90
+          ! grep -Eiq 'mod_(energy|liquid_water|oriented_water|soil_temperature)' src/process/mod_external_liquid_water_temperature.f90
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Compile and run O0
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o0
+          cd build-o0
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0 \
+            ../src/process/mod_external_liquid_water_temperature.f90 \
+            ../tests/test_eb_i08_external_liquid_water_temperature.f90 \
+            -o test-eb-i08
+          ./test-eb-i08 | tee ../eb-i08-o0.txt
+
+      - name: Compile and run O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o2
+          cd build-o2
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/process/mod_external_liquid_water_temperature.f90 \
+            ../tests/test_eb_i08_external_liquid_water_temperature.f90 \
+            -o test-eb-i08
+          ./test-eb-i08 | tee ../eb-i08-o2.txt
+
+      - name: Require optimization-invariant evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'EB-I08 external liquid water temperature: PASS' eb-i08-o0.txt
+          grep -Fx 'EB-I08 external liquid water temperature: PASS' eb-i08-o2.txt
+          cmp eb-i08-o0.txt eb-i08-o2.txt
