@@ -1,0 +1,1202 @@
+{
+  "schema": "swap5.fixed_denominator_completion_model.v1",
+  "model_id": "SWAP5_V1_COMPLETION_MODEL_V1",
+  "model_version": "1.0.0",
+  "status": "FROZEN_DENOMINATOR",
+  "governance_lineage": {
+    "F_RG01": "regie/f-rg01-post-rb1-program-rebaseline@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "regie/f-rg01a-parallel-research-isolation-contract-ownership-policy@4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01B": "regie/f-rg01b-runtime-resumption-execution-policy@5e2561d9051fba81769565291b1bf3089c7ddcd9"
+  },
+  "calculation_snapshot": {
+    "current_canonical": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+    "current_canonical_parent": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "current_canonical_classification": "documentation/knowledge-layer delta above F-CI55R; no additional production capability credit",
+    "rb1_release_authority": "release/f-rb02-restricted-production-baseline-v1-final-authority@b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "rb1_qualification_authority": "release/f-rb01-restricted-production-baseline-v1@aeb74560d801c4ac7314df7b8845fcc5daf8bba6"
+  },
+  "headline_metrics": {
+    "restricted_production_baseline_percent": 100.0,
+    "technical_engine_domain_weight_denominator": 79.0,
+    "technical_engine_earned_weight": 70.125,
+    "technical_engine_measured_percent": 88.76582278481,
+    "overall_program_weight_denominator": 100.0,
+    "overall_program_earned_weight": 82.104545454545,
+    "overall_program_measured_percent": 82.104545454545
+  },
+  "maturity_ladder": [
+    "NOT_STARTED",
+    "RESEARCH_ONLY",
+    "CONTRACT_ESTABLISHED",
+    "IMPLEMENTED",
+    "OWNER_TESTED",
+    "OWNER_QUALIFIED",
+    "INDEPENDENTLY_QUALIFIED",
+    "CANONICAL_ADMITTED",
+    "PRESERVED_REGRESSION_PROTECTED",
+    "RELEASE_READY"
+  ],
+  "credit_profiles": {
+    "PRODUCTION_FULL": {
+      "contract_scope": 10,
+      "implementation": 25,
+      "owner_tested": 10,
+      "owner_qualified": 10,
+      "independent_qualified": 15,
+      "canonical_admitted": 20,
+      "preserved_regression_protected": 10,
+      "total": 100
+    },
+    "NONPRODUCTION_EVIDENCE": {
+      "contract_scope": 10,
+      "artifact_or_case_implementation": 25,
+      "owner_verification": 10,
+      "qualified_closeout": 35,
+      "current_reconciliation_or_preservation": 20,
+      "total": 100
+    },
+    "STATUS_A_SPECIAL": {
+      "rule": "completion_fraction = CLOSED public requirements / 22 at the latest qualified F-DOC15 authority; this measures formal readiness, not certification",
+      "denominator": 22
+    }
+  },
+  "calculation_rules": {
+    "domain_earned_weight": "sum(capability_weight * capability_completion_fraction)",
+    "technical_engine_percent": "100 * sum(earned weights D01..D14) / 79",
+    "overall_program_percent": "sum(earned weights D01..D18), because frozen overall denominator is exactly 100",
+    "optional_research_credit": 0,
+    "branch_count_credit": 0,
+    "commit_count_credit": 0,
+    "workunit_count_credit": 0,
+    "no_fractional_expert_judgement": "A fractional capability score must map to explicit completed gates or an explicit special ratio in this model."
+  },
+  "hard_gates": [
+    {
+      "id": "HG01_MASS",
+      "condition": "proven mass-conservation failure on a required production path",
+      "technical_ceiling_percent": 49,
+      "overall_ceiling_percent": 49,
+      "currently_active": false
+    },
+    {
+      "id": "HG02_TRANSACTION",
+      "condition": "proven committed-state pollution or rollback/commit correctness failure on a required production path",
+      "technical_ceiling_percent": 59,
+      "overall_ceiling_percent": 59,
+      "currently_active": false
+    },
+    {
+      "id": "HG03_RESTART",
+      "condition": "required restart/persistence correctness failure",
+      "technical_ceiling_percent": 69,
+      "overall_ceiling_percent": 69,
+      "currently_active": false
+    },
+    {
+      "id": "HG04_REFERENCE_SOLVER",
+      "condition": "required Full Richards production/reference solver unavailable or unqualified",
+      "technical_ceiling_percent": 39,
+      "overall_ceiling_percent": 39,
+      "currently_active": false
+    },
+    {
+      "id": "HG05_OWNERSHIP",
+      "condition": "unresolved competing production ownership of the same moving semantic contract",
+      "technical_ceiling_percent": 79,
+      "overall_ceiling_percent": 79,
+      "currently_active": false
+    },
+    {
+      "id": "HG06_PRODUCTION_CRITICAL_QUALIFICATION",
+      "condition": "one or more required production-critical v1 capabilities are below INDEPENDENTLY_QUALIFIED",
+      "technical_ceiling_percent": 89,
+      "overall_ceiling_percent": 89,
+      "currently_active": true,
+      "current_reasons": [
+        "O02 required macropore production coverage",
+        "G04 predictor-corrector is owner-qualified but F-VQ64 is not formally closed",
+        "PF02 bounded-cost/fallback production qualification"
+      ]
+    },
+    {
+      "id": "HG07_CRITICAL_TESTBANK",
+      "condition": "required integrated conservation/regression bank cannot yet qualify a critical production interaction",
+      "technical_ceiling_percent": null,
+      "overall_ceiling_percent": 92,
+      "currently_active": true,
+      "current_reasons": [
+        "F-TB10 is blocked by nonstationary temporal acceptance-policy provenance and does not qualify TB09-003"
+      ]
+    },
+    {
+      "id": "HG08_STATUS_A_READINESS",
+      "condition": "formal Status-A readiness is below 22/22 CLOSED on the governed requirement basis",
+      "technical_ceiling_percent": null,
+      "overall_ceiling_percent": 95,
+      "currently_active": true,
+      "current_reasons": [
+        "latest qualified F-DOC15 has only requirements 5.1 and 5.2 CLOSED; formal certification is not claimed"
+      ]
+    }
+  ],
+  "headline_ceiling_application": {
+    "technical_active_ceiling_percent": 89,
+    "technical_reported_percent": 88.76582278481,
+    "overall_active_ceiling_percent": 89,
+    "overall_reported_percent": 82.104545454545,
+    "note": "Current measured values are below active ceilings, so ceilings do not numerically reduce the snapshot."
+  },
+  "domains": [
+    {
+      "id": "D01",
+      "name": "Kernel / transactions / generic time / mass",
+      "weight": 8,
+      "earned_weight": 8.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "K01",
+          "name": "Single-kernel data boundary and generic-time contract",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-RG01@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+            "integration/f-ci canonical ancestry through F-CI55R"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "K02",
+          "name": "Transactional checkpoint/trial/retry/commit/rollback lifecycle",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-KT15 Task2 production composition",
+            "F-CI49/F-CI49P",
+            "F-CI55R regression/preservation"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "K03",
+          "name": "Hard mass conservation and transaction diagnostics core",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-RG01 fixed invariants",
+            "F-CI53P transactional groundwater service",
+            "F-CI54 mass ledger",
+            "F-CI55R accepted exchange conservation"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "name": "State / persistence / restart",
+      "weight": 7,
+      "earned_weight": 7.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "S01",
+          "name": "Compact typed optional committed state",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-MR41",
+            "F-CI48/F-CI48P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "S02",
+          "name": "Restart, reconstruction and serialized state semantics",
+          "weight": 4,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 4.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-CI35",
+            "F-CI48/F-CI48P",
+            "F-CI52P restart evidence"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "name": "Full Richards / soil-water reference solver",
+      "weight": 8,
+      "earned_weight": 8.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "R01",
+          "name": "Production Full Richards reference solver",
+          "weight": 5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 5.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-SI production line through F-SI30",
+            "F-KT15 Task2",
+            "F-CI49/F-CI49P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "R02",
+          "name": "Reference oracle plus temporal/numerical qualification authority",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-RG01 pre-F-CI50 qualification chain",
+            "F-TB03 RB1 qualification bank"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "name": "Soil-water solver interface",
+      "weight": 5,
+      "earned_weight": 5.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "SI01",
+          "name": "Common soil-water interface, explicit boundaries and hydraulic views",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-SI27/F-SI29/F-SI30",
+            "F-CI49/F-CI49P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "SI02",
+          "name": "Interface sensitivity/result transport",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-SI28",
+            "F-KT14/F-KT15 production composition"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "name": "ET / root uptake / surface evaporation",
+      "weight": 6,
+      "earned_weight": 6.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "E01",
+          "name": "Reference ET demand and root uptake production path",
+          "weight": 2.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.5,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-CI24",
+            "F-CI31",
+            "F-CI37/F-CI37P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "E02",
+          "name": "Surface evaporation capacity/runtime production path",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-CI39/F-CI39P",
+            "F-CI41/F-CI41P",
+            "F-CI42/F-CI42P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "E03",
+          "name": "Crop-to-ET canopy view provider",
+          "weight": 1.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 1.5,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-VQ37@3dc40ec16620433de2001c9662ebad647909aa48",
+            "F-CI51/F-CI51P"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D06",
+      "name": "Drainage / restricted surface-water completion",
+      "weight": 5,
+      "earned_weight": 5.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "DRA01",
+          "name": "DIVDRA/drainage production core",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-CI32",
+            "F-CI33/F-CI33R",
+            "F-CI36"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "DRA02",
+          "name": "Restricted fixed-weir transactional runtime",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-VQ59@f65f170fc6ec5f1a228ade2def3732cb36942ebd",
+            "F-CI52/F-CI52P"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "name": "Crop / WOFOST",
+      "weight": 5,
+      "earned_weight": 5.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "C01",
+          "name": "Core WOFOST accepted-window/restart production path",
+          "weight": 3,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 3.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-WOF production authority chain summarized by F-RG01",
+            "current canonical preservation"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "C02",
+          "name": "Qualified/admitted WOFOST canopy-to-ET provider",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-VQ37@3dc40ec16620433de2001c9662ebad647909aa48",
+            "F-CI51P"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "name": "Soil temperature and snow required profile",
+      "weight": 3,
+      "earned_weight": 3.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "P01",
+          "name": "Restricted soil-temperature production profile",
+          "weight": 1.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 1.5,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-CI43/F-CI43P",
+            "F-CI45/F-CI45P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "P02",
+          "name": "Snow/reference required production profile",
+          "weight": 1.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 1.5,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-VQ16/F-VQ17",
+            "F-RG01 current-authority assessment"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D09",
+      "name": "Other required production physics",
+      "weight": 5,
+      "earned_weight": 2.0,
+      "completion_percent": 40.0,
+      "capabilities": [
+        {
+          "id": "O01",
+          "name": "Required irrigation production path",
+          "weight": 2.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "INDEPENDENTLY_QUALIFIED",
+          "completion_fraction": 0.7,
+          "earned_weight": 1.75,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "qualification/f-vq18-fpm03-fixed-irrigation",
+            "qualification/f-vq20-fpm04-scheduled-irrigation@1c77752a69d74b1e8247f515aa37649e8d4200d2"
+          ],
+          "remaining_gap": "canonical admission and preservation of complete required irrigation path"
+        },
+        {
+          "id": "O02",
+          "name": "Required macropore production coverage",
+          "weight": 2.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "CONTRACT_ESTABLISHED",
+          "completion_fraction": 0.1,
+          "earned_weight": 0.25,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "work/f-si15-explicit-macropore-option",
+            "F-RG01 top remaining physics gaps"
+          ],
+          "remaining_gap": "implementation, owner/independent qualification, canonical admission and preservation"
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "name": "Serialized MultiSWAP",
+      "weight": 4,
+      "earned_weight": 4.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "M10",
+          "name": "Serialized column runtime, typed optional state and restart",
+          "weight": 4,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 4.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-MR41",
+            "F-CI35",
+            "F-CI48/F-CI48P"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "name": "Parallel MultiSWAP",
+      "weight": 4,
+      "earned_weight": 3.175,
+      "completion_percent": 79.375,
+      "capabilities": [
+        {
+          "id": "M11",
+          "name": "Parallel execution with worker-local scratch/cache ownership",
+          "weight": 2.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.5,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-MQ26",
+            "F-MQ30",
+            "F-PE08/F-PE09/F-PE10",
+            "F-CI37/F-CI42"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "M12",
+          "name": "Problem-column isolation and large-batch diagnostics mechanism",
+          "weight": 1.5,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "OWNER_TESTED",
+          "completion_fraction": 0.45,
+          "earned_weight": 0.675,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "qualification/f-mq06-difficult-column-scheduling@c822e884f3921b7a03f89e7811b2520bd733d5ee",
+            "F-RG01 gap: very-large-batch diagnostics/failure isolation qualification"
+          ],
+          "remaining_gap": "owner qualification at v1 production scale, independent qualification where required, canonical/preservation evidence if production source changes"
+        }
+      ]
+    },
+    {
+      "id": "D12",
+      "name": "Runtime composition",
+      "weight": 4,
+      "earned_weight": 4.0,
+      "completion_percent": 100.0,
+      "capabilities": [
+        {
+          "id": "RT01",
+          "name": "Production solver-service/process transaction composition",
+          "weight": 4,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 4.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-KT15 Task2 definitive owner",
+            "F-CI49/F-CI49P",
+            "later canonical regression preservation"
+          ],
+          "remaining_gap": "none"
+        }
+      ]
+    },
+    {
+      "id": "D13",
+      "name": "Groundwater interface and coupling",
+      "weight": 10,
+      "earned_weight": 7.3,
+      "completion_percent": 73.0,
+      "capabilities": [
+        {
+          "id": "G01",
+          "name": "Typed direct-groundwater interface, accuracy and convergence contracts",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-GC10/F-CI44",
+            "F-GC14/F-CI46",
+            "F-GC17/F-CI50"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "G02",
+          "name": "Transactional groundwater exchange service",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-GC18R-R1@cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+            "F-VQ61@e83fe9a4955275935903730c4484c77fb0b117ff",
+            "F-CI53/F-CI53P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "G03",
+          "name": "Interface mass ledger and exact accepted bottom exchange result",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-CI54",
+            "F-GC21P1-R1 owner@dcde6360f902081c94927486455e5233b81dfc1b",
+            "F-VQ63@a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+            "F-CI55R"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "G04",
+          "name": "Restricted generic-window predictor-corrector orchestrator",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "OWNER_QUALIFIED",
+          "completion_fraction": 0.55,
+          "earned_weight": 1.1,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-GC21@1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+            "owner exact-head run 34744567094",
+            "F-VQ64 status: INDEPENDENT_QUALIFICATION_IN_PROGRESS"
+          ],
+          "remaining_gap": "formal independent qualification, canonical admission and preservation"
+        },
+        {
+          "id": "G05",
+          "name": "End-to-end direct groundwater production coupling composition",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "CONTRACT_ESTABLISHED",
+          "completion_fraction": 0.1,
+          "earned_weight": 0.2,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-GC16 production coupling plan",
+            "F-GC20 tile-mapping branch",
+            "F-GC22 temporal-accuracy binding branch",
+            "F-CI55R hard nonclaims"
+          ],
+          "remaining_gap": "qualified coupler composition, tile aggregation where required, aquifer/MODFLOW end-to-end mass/convergence qualification, canonical production profile"
+        }
+      ]
+    },
+    {
+      "id": "D14",
+      "name": "Performance / bounded-cost / fallback",
+      "weight": 5,
+      "earned_weight": 2.65,
+      "completion_percent": 53.0,
+      "capabilities": [
+        {
+          "id": "PF01",
+          "name": "Worker scratch/cache/allocation scaling evidence",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-PE08/F-PE09/F-PE10",
+            "F-PE11",
+            "F-CI42/F-CI42P"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "PF02",
+          "name": "Bounded-cost/fallback production policy qualified against reference",
+          "weight": 2,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "CONTRACT_ESTABLISHED",
+          "completion_fraction": 0.1,
+          "earned_weight": 0.2,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-RG01 bounded-cost/fallback v1 gap",
+            "architecture invariants 24/25"
+          ],
+          "remaining_gap": "implementation and qualification demonstrating hard mass conservation and bounded reference deviation"
+        },
+        {
+          "id": "PF03",
+          "name": "Production-scale large-batch throughput/failure-isolation evidence",
+          "weight": 1,
+          "credit_profile": "PRODUCTION_FULL",
+          "current_maturity": "OWNER_TESTED",
+          "completion_fraction": 0.45,
+          "earned_weight": 0.45,
+          "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+          "evidence": [
+            "F-MQ06@c822e884f3921b7a03f89e7811b2520bd733d5ee",
+            "F-RG01 large-batch qualification gap"
+          ],
+          "remaining_gap": "production-scale qualification and preservation of timing/diagnostic evidence"
+        }
+      ]
+    },
+    {
+      "id": "D15",
+      "name": "Permanent testbank",
+      "weight": 7,
+      "earned_weight": 5.875,
+      "completion_percent": 83.928571428571,
+      "capabilities": [
+        {
+          "id": "T01",
+          "name": "TB01-TB08 permanent qualification bank",
+          "weight": 4,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 4.0,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-TB01 through F-TB08 qualified authorities",
+            "F-TB03 RB1 release qualification bank"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "T02",
+          "name": "Integrated process-interaction catalog with hard-mass metadata",
+          "weight": 1.5,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "OWNER_QUALIFIED",
+          "completion_fraction": 0.8,
+          "earned_weight": 1.2,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-TB09@fe3545c4537b11cefd0186aa401048d4f4b10eb9",
+            "integration/f-tb/F-TB09_QUALIFICATION_STATUS.json"
+          ],
+          "remaining_gap": "current-canonical reconciliation/preservation; catalog qualification does not itself qualify integrated physics results"
+        },
+        {
+          "id": "T03",
+          "name": "Current-canonical integrated executable physics qualification layer",
+          "weight": 1.5,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "OWNER_TESTED",
+          "completion_fraction": 0.45,
+          "earned_weight": 0.675,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-TB10 blocked closeout",
+            "integration/f-tb/F-TB10_QUALIFICATION_STATUS.json"
+          ],
+          "remaining_gap": "owner temporal-acceptance policy/provenance, successful scientific integrated cases, qualified closeout and current reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "D16",
+      "name": "Scientific traceability / documentation",
+      "weight": 6,
+      "earned_weight": 3.1,
+      "completion_percent": 51.666666666667,
+      "capabilities": [
+        {
+          "id": "DOC01",
+          "name": "Architecture, numerical, restart, provenance and Status-A gap authority corpus",
+          "weight": 2,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 2.0,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-DOC01 through F-DOC15 qualified chain",
+            "F-RB02 release authority"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "DOC02",
+          "name": "Physical-system to 1D-column conceptual foundation",
+          "weight": 1,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "OWNER_QUALIFIED",
+          "completion_fraction": 0.8,
+          "earned_weight": 0.8,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-DOC16@b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+            "workflow run 34678704795 success"
+          ],
+          "remaining_gap": "exact-current documentation reconciliation/preservation into the program evidence set"
+        },
+        {
+          "id": "DOC03",
+          "name": "Parameter provenance plus controlled scientific/theory and user/modeler guidance",
+          "weight": 1.5,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "CONTRACT_ESTABLISHED",
+          "completion_fraction": 0.1,
+          "earned_weight": 0.15,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-DOC15 finite closure backlog",
+            "F-DOC16 remaining_open_gaps"
+          ],
+          "remaining_gap": "artifacts, qualification and current reconciliation"
+        },
+        {
+          "id": "DOC04",
+          "name": "Sensitivity, uncertainty, validation and fitness-for-purpose evidence corpus",
+          "weight": 1.5,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "CONTRACT_ESTABLISHED",
+          "completion_fraction": 0.1,
+          "earned_weight": 0.15,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-DOC15 executive NOT_READY verdict and finite backlog",
+            "F-DOC16 remaining_open_gaps"
+          ],
+          "remaining_gap": "evidence population, qualification and current reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "D17",
+      "name": "Status-A readiness",
+      "weight": 5,
+      "earned_weight": 0.454545454545,
+      "completion_percent": 9.090909090909,
+      "capabilities": [
+        {
+          "id": "A01",
+          "name": "Formal Status-A readiness against governed 22-row public baseline pending controlled WR-QA-2024 reconciliation",
+          "weight": 5,
+          "credit_profile": "STATUS_A_SPECIAL",
+          "current_maturity": "OWNER_QUALIFIED",
+          "completion_fraction": 0.090909090909,
+          "earned_weight": 0.454545454545,
+          "required_final_state": "22_OF_22_CLOSED_PLUS_CONTROLLED_AUTHORITY_RECONCILED",
+          "evidence": [
+            "F-DOC15@f096f04a8d8aeb4a05ee68f79b76c01ea8f0ea11",
+            "exact CLOSED requirements: 5.1 and 5.2 only",
+            "formal certification NOT_PERFORMED_AND_NOT_CLAIMED"
+          ],
+          "remaining_gap": "close remaining 20 public-baseline requirements and reconcile controlled WR-QA-2024 authority before any formal assessment claim"
+        }
+      ]
+    },
+    {
+      "id": "D18",
+      "name": "Governance / reproducibility / release evidence",
+      "weight": 3,
+      "earned_weight": 2.55,
+      "completion_percent": 85.0,
+      "capabilities": [
+        {
+          "id": "GOV01",
+          "name": "Canonical admission/preservation and immutable RB1 release provenance",
+          "weight": 1.5,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+          "completion_fraction": 1.0,
+          "earned_weight": 1.5,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-RB02@b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+            "F-CI51P/F-CI52P/F-CI53P/F-CI54/F-CI55R"
+          ],
+          "remaining_gap": "none"
+        },
+        {
+          "id": "GOV02",
+          "name": "Central program governance, contract-ownership isolation, runtime/resumption and fixed denominator",
+          "weight": 1,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "OWNER_QUALIFIED",
+          "completion_fraction": 1.0,
+          "earned_weight": 1.0,
+          "required_final_state": "OWNER_QUALIFIED_PLUS_CURRENT_RECONCILIATION",
+          "evidence": [
+            "F-RG01@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+            "F-RG01A@4553204468695553cf69a48d1c97598c471156d6",
+            "F-RG01B@5e2561d9051fba81769565291b1bf3089c7ddcd9",
+            "F-RG01C this model"
+          ],
+          "remaining_gap": "none after F-RG01C qualified closeout"
+        },
+        {
+          "id": "GOV03",
+          "name": "Final exact-current SWAP5-v1 release/readiness evidence pack",
+          "weight": 0.5,
+          "credit_profile": "NONPRODUCTION_EVIDENCE",
+          "current_maturity": "CONTRACT_ESTABLISHED",
+          "completion_fraction": 0.1,
+          "earned_weight": 0.05,
+          "required_final_state": "RELEASE_READY",
+          "evidence": [
+            "current canonical knowledge layer@df51575e18777856a47a5d0d1e2e1c7456be4601",
+            "F-RG01 release/readiness guidance"
+          ],
+          "remaining_gap": "frozen release candidate, exact-current evidence aggregation and release/readiness decision"
+        }
+      ]
+    }
+  ],
+  "optional_non_v1_capabilities": [
+    {
+      "id": "OPT_ROSSFAST",
+      "name": "RossFast / fast MFP soil-water solver research",
+      "classification": "OPTIONAL_STRETCH_CAPABILITY",
+      "maturity": "RESEARCH_ISOLATED",
+      "overall_weight": 0,
+      "technical_engine_weight": 0,
+      "evidence": [
+        "F-RG01A-PRICO v1.0.0",
+        "work/f-ross01-fast-mfp-feasibility@3a78d4f8199ebc15908e6e8108a2e4adb8cb5b15",
+        "work/f-si31-research-solver-contract-freeze@4190ede0b17e81abe806430cc9a4c94a21995917"
+      ],
+      "rule": "success or failure does not change SWAP5-v1 completion and cannot block v1"
+    },
+    {
+      "id": "OPT_ENERGY_BALANCE",
+      "name": "Energy balance",
+      "classification": "NOT_FROZEN_AS_SWAP5_V1_REQUIREMENT",
+      "maturity": "UNSCORED_EXTERNAL_OR_UNBOUND_RESEARCH",
+      "overall_weight": 0,
+      "technical_engine_weight": 0,
+      "repository_audit": {
+        "f_eb_branches_found": 0,
+        "energy_balance_code_search_results": 0
+      },
+      "production_implementation_established": false,
+      "qualification_established": false,
+      "canonical_admission": false,
+      "rule": "Adding energy balance to v1 requires an explicit denominator-version governance decision; it cannot be silently added to V1."
+    },
+    {
+      "id": "OPT_DEEP_VADOSE",
+      "name": "Optional deep-vadose transfer component",
+      "classification": "OPTIONAL_EXTERNAL_COMPONENT",
+      "maturity": "RESEARCH_OR_FUTURE_COMPOSITION",
+      "overall_weight": 0,
+      "technical_engine_weight": 0,
+      "rule": "Outside SWAP kernel; direct-coupling v1 completion does not silently require this optional component."
+    }
+  ],
+  "scope_uncertainty": [
+    {
+      "id": "SU01",
+      "topic": "Status-A controlled criterion authority",
+      "state": "WR-QA-2024 controlled full text not obtained",
+      "effect_on_measured_percent": "none until explicit model-version or evidence update",
+      "confidence": "MEDIUM for Status-A interpretation; HIGH for the 2/22 public-baseline count"
+    },
+    {
+      "id": "SU02",
+      "topic": "Energy balance",
+      "state": "project research exists outside repository-bound evidence reviewed here, but no frozen SWAP5-v1 requirement or canonical authority was found",
+      "effect_on_measured_percent": "none; weight remains 0 in V1",
+      "confidence": "HIGH for repository-bound classification"
+    },
+    {
+      "id": "SU03",
+      "topic": "F-VQ64 moving qualification",
+      "state": "workflow activity exists, but persisted F-VQ64 status still says INDEPENDENT_QUALIFICATION_IN_PROGRESS",
+      "effect_on_measured_percent": "G04 remains at OWNER_QUALIFIED until a formal qualified closeout authority exists",
+      "confidence": "HIGH"
+    }
+  ],
+  "denominator_change_protocol": {
+    "implicit_change_forbidden": true,
+    "required_actions": [
+      "create a new model version",
+      "record old and new denominator",
+      "record rationale",
+      "recalculate historical snapshot under both versions",
+      "report percentage effect"
+    ],
+    "next_version_example": "SWAP5_V1_COMPLETION_MODEL_V2"
+  },
+  "recalculation_protocol": {
+    "triggers": [
+      "after approximately 5-10 substantive closeouts",
+      "after a major canonical admission",
+      "after a frozen v1 scope/model-version decision",
+      "after resolution of a major serial or hard gate",
+      "before a major release/readiness decision"
+    ],
+    "normal_workunit_rule": "denominator and gate weights remain unchanged; only evidence-bound current gate states may change"
+  },
+  "remaining_work_decomposition": [
+    {
+      "domain": "D17",
+      "name": "Status-A readiness",
+      "remaining_overall_percentage_points": 4.545454545455,
+      "remaining_technical_percentage_points": 0
+    },
+    {
+      "domain": "D09",
+      "name": "Other required production physics",
+      "remaining_overall_percentage_points": 3.0,
+      "remaining_technical_percentage_points": 3.79746835443
+    },
+    {
+      "domain": "D16",
+      "name": "Scientific traceability / documentation",
+      "remaining_overall_percentage_points": 2.9,
+      "remaining_technical_percentage_points": 0
+    },
+    {
+      "domain": "D13",
+      "name": "Groundwater interface and coupling",
+      "remaining_overall_percentage_points": 2.7,
+      "remaining_technical_percentage_points": 3.417721518987
+    },
+    {
+      "domain": "D14",
+      "name": "Performance / bounded-cost / fallback",
+      "remaining_overall_percentage_points": 2.35,
+      "remaining_technical_percentage_points": 2.974683544304
+    },
+    {
+      "domain": "D15",
+      "name": "Permanent testbank",
+      "remaining_overall_percentage_points": 1.125,
+      "remaining_technical_percentage_points": 0
+    },
+    {
+      "domain": "D11",
+      "name": "Parallel MultiSWAP",
+      "remaining_overall_percentage_points": 0.825,
+      "remaining_technical_percentage_points": 1.044303797468
+    },
+    {
+      "domain": "D18",
+      "name": "Governance / reproducibility / release evidence",
+      "remaining_overall_percentage_points": 0.45,
+      "remaining_technical_percentage_points": 0
+    }
+  ],
+  "impact_matrix": [
+    {
+      "capability": "A01",
+      "name": "Formal Status-A readiness against governed 22-row public baseline pending controlled WR-QA-2024 reconciliation",
+      "if_fully_completed_overall_percentage_point_increase": 4.545454545455,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    },
+    {
+      "capability": "O02",
+      "name": "Required macropore production coverage",
+      "if_fully_completed_overall_percentage_point_increase": 2.25,
+      "if_fully_completed_technical_engine_percentage_point_increase": 2.848101265823
+    },
+    {
+      "capability": "G05",
+      "name": "End-to-end direct groundwater production coupling composition",
+      "if_fully_completed_overall_percentage_point_increase": 1.8,
+      "if_fully_completed_technical_engine_percentage_point_increase": 2.278481012658
+    },
+    {
+      "capability": "PF02",
+      "name": "Bounded-cost/fallback production policy qualified against reference",
+      "if_fully_completed_overall_percentage_point_increase": 1.8,
+      "if_fully_completed_technical_engine_percentage_point_increase": 2.278481012658
+    },
+    {
+      "capability": "DOC03",
+      "name": "Parameter provenance plus controlled scientific/theory and user/modeler guidance",
+      "if_fully_completed_overall_percentage_point_increase": 1.35,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    },
+    {
+      "capability": "DOC04",
+      "name": "Sensitivity, uncertainty, validation and fitness-for-purpose evidence corpus",
+      "if_fully_completed_overall_percentage_point_increase": 1.35,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    },
+    {
+      "capability": "G04",
+      "name": "Restricted generic-window predictor-corrector orchestrator",
+      "if_fully_completed_overall_percentage_point_increase": 0.9,
+      "if_fully_completed_technical_engine_percentage_point_increase": 1.139240506329
+    },
+    {
+      "capability": "M12",
+      "name": "Problem-column isolation and large-batch diagnostics mechanism",
+      "if_fully_completed_overall_percentage_point_increase": 0.825,
+      "if_fully_completed_technical_engine_percentage_point_increase": 1.044303797468
+    },
+    {
+      "capability": "T03",
+      "name": "Current-canonical integrated executable physics qualification layer",
+      "if_fully_completed_overall_percentage_point_increase": 0.825,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    },
+    {
+      "capability": "O01",
+      "name": "Required irrigation production path",
+      "if_fully_completed_overall_percentage_point_increase": 0.75,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0.949367088608
+    },
+    {
+      "capability": "PF03",
+      "name": "Production-scale large-batch throughput/failure-isolation evidence",
+      "if_fully_completed_overall_percentage_point_increase": 0.55,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0.696202531646
+    },
+    {
+      "capability": "GOV03",
+      "name": "Final exact-current SWAP5-v1 release/readiness evidence pack",
+      "if_fully_completed_overall_percentage_point_increase": 0.45,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    },
+    {
+      "capability": "T02",
+      "name": "Integrated process-interaction catalog with hard-mass metadata",
+      "if_fully_completed_overall_percentage_point_increase": 0.3,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    },
+    {
+      "capability": "DOC02",
+      "name": "Physical-system to 1D-column conceptual foundation",
+      "if_fully_completed_overall_percentage_point_increase": 0.2,
+      "if_fully_completed_technical_engine_percentage_point_increase": 0
+    }
+  ]
+}
