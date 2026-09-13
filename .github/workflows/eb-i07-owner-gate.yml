@@ -127,4 +127,6 @@ jobs:
           ! grep -Eiq 'rain_water_temperature|meltwater_temperature|snow_enthalpy' snow.f90
 
       - name: Confirm audit qualification
-        run: echo 'EB-I07 current-canonical provenance audit: PASS'
+        shell: bash
+        run: |
+          echo 'EB-I07 current-canonical provenance audit: PASS'
