@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.fsi35.mandatory_solver_seam_owner_qualification.v1",
+  "work_unit": "F-SI35",
+  "title": "SWAP5 Mandatory Production Soil-Water Solver Seam Closure, HeadCalc Bypass Removal & Final Qualification",
+  "status": "OWNER_QUALIFIED_AWAITING_INDEPENDENT_QUALIFICATION_AND_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_MANDATORY_PRODUCTION_SOIL_WATER_SOLVER_SEAM_READY_FOR_INDEPENDENT_QUALIFICATION_AND_CANONICAL_ADMISSION",
+  "primary_gap_authority": {
+    "branch": "work/f-si34-solver-interface-headcalc-isolation-v1-completion-audit",
+    "sha": "b522fe150610f900f253eeea9bf78329107de362",
+    "tree": "703e6eeb4a006ef4ca5a32ce6d570c3cfabba201",
+    "decision": "SOLVER_INTERFACE_HEADCALC_ISOLATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+  },
+  "restart_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "commit": "F-CI57: finalize fail-closed mass completeness canonical closeout"
+  },
+  "qualified_source_candidate": {
+    "sha": "5898e6616dbb6871a9f52d489038235ba1172cae",
+    "tree": "57bd964769748df7a047161702ec083079020109",
+    "production_source_delta": [
+      "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "src/legacy/b1_10_port/soilwater.f90"
+    ],
+    "adapter_blob": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "soilwater_blob": "c1850ea7fa82a1ed8974af57e1da95aa11a771be"
+  },
+  "architecture_result": {
+    "common_contract": "soil_water_solver_t",
+    "MOD_SoilWater_direct_HeadCalc_dependency": false,
+    "standalone_dispatch": "run_b110_production_task2() -> class(soil_water_solver_t)",
+    "worker_dispatch": "run_b110_production_task2(worker) -> class(soil_water_solver_t)",
+    "qualified_full_richards_solver": "reference_richards_legacy_solver_t",
+    "legacy_compatibility_preservation": "b110_legacy_compat_solver_t behind soil_water_solver_t adapter boundary",
+    "HeadCalc_allowed_locations": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/adapter/mod_b110_production_soil_water_task2.f90"
+    ],
+    "production_interface_violation_count": 0,
+    "scope_reduced": false,
+    "new_physics": false,
+    "full_richards_algorithm_changed": false
+  },
+  "owner_qualification": {
+    "workflow": ".github/workflows/fsi35-owner-qualification.yml",
+    "gate": "tests/fsi/run_fsi35_mandatory_solver_seam_gate.sh",
+    "run_id": 34770299238,
+    "head_sha": "5898e6616dbb6871a9f52d489038235ba1172cae",
+    "conclusion": "success",
+    "compiler_profiles": ["GNU Fortran O0", "GNU Fortran O2"],
+    "verified": [
+      "MOD_SoilWater contains no HeadCalc dependency",
+      "production-wide direct HeadCalc call classification has zero PRODUCTION_INTERFACE_VIOLATION hits",
+      "F-KT15 accepted/retry/sensitivity/worker-isolation replay",
+      "dynamic top surface-flux/atmospheric-head/ponded-head/linear-runoff replay",
+      "hard mass gate on qualified Full Richards profile",
+      "O0/O2 deterministic identity",
+      "standalone versus worker Task2 dispatcher bitwise equivalence",
+      "F-SI31 contract, process hydraulic view, FMR serialized backend, groundwater predictor-corrector and transaction source locks"
+    ]
+  },
+  "preserved_authorities": {
+    "F_SI33_full_richards": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+    "F_KT16_state_restart": "37a91f16078badaa675235f1230d225a21c9e010",
+    "F_KT19_kernel_transaction_time_mass": "004f8f438ce1380c940a5139df83165c4d2eb68c",
+    "F_MR42_serialized_multiswap": "e370f95c2e50c2fef46fe99eac11522046560938",
+    "F_SI31_research_contract": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "F_SI32_sensitivity_scope": "dfe1a285ae485e1e8348ee10492bb7808f85dd39"
+  },
+  "hard_nonclaims": [
+    "The legacy compatibility solver is not newly qualified as the F-SI33 explicit Full Richards production profile.",
+    "No RossFast or other alternative solver is promoted to production.",
+    "No macropore, frost, surface-water or other separately governed physics capability receives completion credit here.",
+    "No final 100 percent interface completion is claimed before independent qualification and current-canonical admission."
+  ],
+  "denominator_changed": false,
+  "production_source_changed": true,
+  "next_required_step": "independent F-VQ qualification followed by normal F-CI current-canonical admission and postpromotion F-SI35 recheck"
+}
