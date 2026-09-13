@@ -1,0 +1,144 @@
+{
+  "schema": "swap5.fsi33.full_richards_reference_solver_v1_completion_authority.v1",
+  "work_unit": "F-SI33",
+  "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE",
+  "authority_scope": "SWAP5_V1_COMPLETION_MODEL_V1:D03",
+  "completion_percent": 100.0,
+  "frozen_weight": 8.0,
+  "earned_weight": 8.0,
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "canonical_preservation_authority": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "broad_exact_head_run": 34757890347,
+    "broad_exact_head_conclusion": "success"
+  },
+  "governance_authority": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01C": "56b86e29e0960e396059caf47c193440d571b709",
+    "fixed_denominator_definition": "971e732551abad86acccfd5f01811d855e51e939"
+  },
+  "frozen_capabilities": {
+    "R01": {
+      "name": "Production Full Richards reference solver",
+      "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+      "qualified": true
+    },
+    "R02": {
+      "name": "Reference oracle plus temporal/numerical qualification authority",
+      "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+      "qualified": true
+    }
+  },
+  "production_binding": {
+    "solver_type": "reference_richards_legacy_solver_t",
+    "common_contract": "soil_water_solver_t",
+    "definitive_solver_service_source": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "canonical_admission": "F-CI49/F-CI49P",
+    "F_CI49P_decision": "QUALIFIED_FCI49_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FINALIZED",
+    "task2_current_blob": "ec24ad9b01f58bd2c17a296adf1158b6c4fb656f",
+    "worker_context_current_blob": "d37114e1a43df0c4592d11d701f8d1ce596e50fd",
+    "ambiguous_reference_or_research_binding": false
+  },
+  "exact_current_source": {
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+    "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "src/solver/mod_reference_richards_temporal_indicator.f90": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "src/solver/mod_reference_linear_solver.f90": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "ec24ad9b01f58bd2c17a296adf1158b6c4fb656f",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "d37114e1a43df0c4592d11d701f8d1ce596e50fd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664"
+  },
+  "qualified_reference_profile": {
+    "constitutive": "corrected default analytical B1.10 MvG provider on the frozen admitted reference profile",
+    "conductivity_implicit_mode": 0,
+    "bottom_modes": [7, -2, 5, 2],
+    "dynamic_top_regimes": ["surface flux", "atmospheric prescribed head", "ponded prescribed head", "linear runoff"],
+    "unsupported_or_unfrozen_combinations": "fail closed or remain outside the D03 denominator; F-SI33 does not newly exclude anything that F-RG01C counted in D03",
+    "reference_mode_retained": true
+  },
+  "transaction_mass_restart": {
+    "F_KT16_state_persistence_restart": "37a91f16078badaa675235f1230d225a21c9e010",
+    "F_KT16_decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
+    "F_KT19_kernel_transaction_time_mass": "004f8f438ce1380c940a5139df83165c4d2eb68c",
+    "F_KT19_decision": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+    "current_mass_admission": "F-CI57",
+    "solver_scratch_required_for_restart": false,
+    "candidate_commit_owned_outside_solver": true,
+    "rejected_trial_candidate_publication": false
+  },
+  "numerical_and_temporal_evidence": {
+    "F_SI18_reference_convergence_cliff_diagnosis": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
+    "F_SI19_reference_linear_solver_seam": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "F_VQ23_linear_solver_runtime": "a701e90bb839554a6c394c9bbc5ec6101c334183",
+    "F_VQ24_nonzero_headcalc_equivalence": "4a8c0740222da5934e1fae53000c1c19db733e27",
+    "F_VQ28_negative_raw_head_runtime_translation": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "F_VQ29_negative_fixed_horizon_error_bound": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
+    "F_VQ30_bounded_indicator": "9372d7962d4d750f7765c0cc03039111eec8ecc3",
+    "F_VQ31_transaction_history_composition": "0053d5b0a523e494a7fbfcdc55190b946230aa56",
+    "F_VQ32_head_budget_normalization": "dd34312f52ba4feb6507ca9d36a924897b64c7b8",
+    "F_VQ33_negative_initial_policy_binding": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "F_VQ34_remediated_policy_binding": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "negative_evidence_retained": true,
+    "negative_evidence_reclassified_as_positive": false
+  },
+  "boundary_and_sensitivity_evidence": {
+    "prescribed_bottom_head": "F-SI16 + F-VQ26",
+    "prescribed_qbot": "F-SI27",
+    "dynamic_top": "F-SI29 + F-SI30",
+    "process_hydraulic_view": "F-SI17",
+    "native_qbot_sensitivity": "F-SI28",
+    "sensitivity_semantic_scope": "F-SI32 LOCAL_TERMINAL only; no whole-window derivative claim"
+  },
+  "determinism_multiswap": {
+    "O0_O2_equivalence_evidence": ["F-SI09", "F-SI17", "F-SI19", "F-SI30", "F-VQ34"],
+    "scratch_poison_and_order_independence_evidence": true,
+    "serialized_MultiSWAP_authority": "F-MR42@e370f95c2e50c2fef46fe99eac11522046560938",
+    "serialized_MultiSWAP_decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
+    "standalone_and_MultiSWAP_share_reference_solver_type": true
+  },
+  "hard_gates": {
+    "production_reference_binding": "PASS",
+    "solver_interface_isolation": "PASS",
+    "HeadCalc_isolation": "PASS",
+    "worker_scratch": "PASS",
+    "transaction_state": "PASS",
+    "generic_time": "PASS",
+    "required_boundaries": "PASS",
+    "nonlinear_linear_solve": "PASS",
+    "reference_accuracy": "PASS",
+    "hard_mass": "PASS",
+    "restart": "PASS",
+    "standalone_MultiSWAP_equivalence": "PASS",
+    "required_sensitivity": "PASS",
+    "current_canonical_preservation": "PASS"
+  },
+  "architecture_invariants": {
+    "1":"PASS","3":"PASS","4":"PASS","5":"PASS","7":"PASS","8":"PASS","9":"PASS","13":"PASS","14":"PASS","16":"PASS","20":"PASS","21":"PASS","22":"PASS","23":"PASS","24":"PASS_WITH_BOUNDED_COST_POLICY_SEPARATE","25":"PASS","26":"PASS","29":"PASS","30":"PASS"
+  },
+  "hard_nonclaims": [
+    "No RossFast, LayeredMFP, FWC, coarse, reduced-order or GPU solver production qualification.",
+    "No bounded-cost/fallback or 100k-column throughput claim is created by F-SI33.",
+    "No macropore production-completion claim is created by F-SI33; that frozen capability remains governed separately from D03.",
+    "No universal nonlinear temporal true-error bound is claimed.",
+    "No universal numerical H_budget is selected or defaulted.",
+    "No whole-coupling-window sensitivity is claimed.",
+    "No arbitrary future MODFLOW application, Status AA, energy-balance or future-physics qualification is claimed.",
+    "No production or reference source is changed by F-SI33."
+  ],
+  "gap_count": 0,
+  "hard_blockers": [],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "completion_statement": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE"
+}
