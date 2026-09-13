@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ65",
+  "title": "F-KT18 Fail-Closed Mass Completeness Independent Qualification",
+  "date": "2026-09-13",
+  "phase": "INDEPENDENT_CLOSEOUT_COMPLETE",
+  "decision": "INDEPENDENTLY_QUALIFIED_FKT18_FAIL_CLOSED_MASS_COMPLETENESS_READY_FOR_CANONICAL_ADMISSION",
+  "branch": "qualification/f-vq65-fkt18-fail-closed-mass-completeness-independent-qualification",
+  "finding_authority": {
+    "work_unit": "F-KT17",
+    "sha": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+    "blocking_gap": "F-KT17-G01",
+    "primary_class": "MASS_GAP",
+    "secondary_class": "IMPLEMENTATION_GAP"
+  },
+  "owner_authority": {
+    "work_unit": "F-KT18",
+    "sha": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+    "owner_decision": "QUALIFIED_MASS_COMPLETENESS_FAIL_CLOSED_TRANSACTION_ADMISSION_READY_FOR_INDEPENDENT_QUALIFICATION",
+    "evidence_policy": "Owner evidence is prerequisite provenance only and is not counted as F-VQ65 independent proof."
+  },
+  "canonical_reference": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452",
+    "contains_remediation": false
+  },
+  "qualified_executable_head": "2ac1bd446d02fee503d5c678a5d35ec64680f972",
+  "qualification_workflow": {
+    "run": 34753302130,
+    "workflow": "F-VQ65 F-KT18 independent qualification",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "Ubuntu 24.04.5 LTS",
+    "optimization_modes": ["O0", "O2"],
+    "independent_mass_job": {
+      "job": 103713363728,
+      "conclusion": "success"
+    },
+    "preservation_job": {
+      "job": 103713363623,
+      "conclusion": "success"
+    }
+  },
+  "source_identity": {
+    "qualification_changed_production_source": false,
+    "production_file_delta_from_canonical_count": 1,
+    "production_file": "src/transaction/mod_transaction_reference.f90",
+    "transaction_source_identical_to_fkt18_authority": true
+  },
+  "independent_mass_qualification": {
+    "result": "PASS",
+    "qualification_owned_fixture": true,
+    "owner_test_reused_as_primary_oracle": false,
+    "external_rejection_matrix_cases": 14,
+    "model_certificate_rejection_matrix_cases": 9,
+    "start_storage_incomplete_rejected": true,
+    "start_storage_missing_mask_rejected": true,
+    "full_trial_storage_incomplete_rejected": true,
+    "accepted_path_storage_incomplete_rejected": true,
+    "full_outcome_incomplete_rejected": true,
+    "half1_outcome_incomplete_rejected": true,
+    "half2_outcome_incomplete_rejected": true,
+    "nonzero_masks_fail_closed": true,
+    "nonfinite_mass_fail_closed": true,
+    "complete_outside_tolerance_rejected": true,
+    "complete_inside_tolerance_accepted": true,
+    "bounded_retry_exhaustion_fail_closed": true,
+    "retry_recovery_from_original_committed_state": true,
+    "rejected_trials_do_not_accumulate_physical_state": true,
+    "alternative_solver_incomplete_ledger_rejected": true,
+    "candidate_o0_o2_oracle_identity": true
+  },
+  "canonical_gap_witness": {
+    "result": "PASS_DEFECT_REPRODUCED_ON_FROZEN_CANONICAL",
+    "qualification_owned_witness": true,
+    "canonical_external_incomplete_ledger_acceptance_reproduced": true,
+    "canonical_certificate_missing_mask_acceptance_reproduced": true,
+    "canonical_witness_o0_o2_identity": true,
+    "interpretation": "The independent witness establishes that F-KT18 closes the exact pre-existing fail-open defect class rather than only satisfying an owner-specific test."
+  },
+  "preservation": {
+    "solver_service_reference_model": "PASS",
+    "restart_serialized_multiswap": "PASS",
+    "production_parallel_runtime": "PASS",
+    "fvq64_predictor_corrector_coupling_semantics": "PASS_PRESERVATION_REPLAY",
+    "preservation_o0_o2_identity_where_specified": true
+  },
+  "architecture_audit": {
+    "file": "integration/f-vq/F-VQ65_ARCHITECTURE_AUDIT.json",
+    "result": "30_OF_30_NO_ADVERSE_DELTA",
+    "candidate_invariant_13": "PASS_INDEPENDENTLY_QUALIFIED_FOR_FKT17_G01_CLOSURE",
+    "current_canonical_invariant_13": "FAIL_PENDING_FKT18_ADMISSION"
+  },
+  "compiler_observations": {
+    "blocking_new_warning_established": false,
+    "nonblocking_existing_classes_observed": [
+      "REAL equality comparisons",
+      "unused dummy arguments",
+      "legacy HeadCalc dkmean possibly uninitialized result",
+      "legacy HeadCalc sum1 possibly uninitialized",
+      "impure function elimination warnings",
+      "historical qualification fixture uninitialized warning"
+    ],
+    "scope_policy": "Observed warnings are recorded but are not reclassified as F-VQ65 closure gaps without evidence that F-KT18 introduced or activated them."
+  },
+  "fkt17_g01": {
+    "implementation_gap": "CLOSED_ON_CANDIDATE",
+    "independent_qualification_gap": "CLOSED",
+    "canonical_admission_gap": "OPEN",
+    "program_closure": false
+  },
+  "independent_qualification": true,
+  "canonical_admission": false,
+  "stronger_100_percent_status_authorized": false,
+  "f_rg01_d01": {
+    "frozen_denominator": 8,
+    "historical_pre_audit_closed_count": 8,
+    "historical_pre_audit_percent": 100.0,
+    "qualified_100_percent_now": false,
+    "current_percentage_assigned": false,
+    "percent_policy": "DO_NOT_INVENT_99_X",
+    "remaining_restoration_condition": "Canonical admission of the independently qualified F-KT18 source followed by post-admission reconciliation with no new hard gate open."
+  },
+  "remaining_hard_gate": {
+    "id": "F-KT18-GOV02",
+    "type": "CURRENT_CANONICAL_ADMISSION_AND_POST_ADMISSION_RECONCILIATION",
+    "blocking_for_100_percent": true
+  },
+  "nonclaims": [
+    "No canonical admission is claimed by F-VQ65.",
+    "Current canonical remains vulnerable to F-KT17-G01 until the remediated transaction source is admitted.",
+    "No new physics, solver policy, API, ledger architecture, runtime architecture or denominator is qualified beyond preservation of existing contracts.",
+    "No 99.x completion percentage is assigned.",
+    "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE is not yet authorized."
+  ],
+  "closeout_policy": "This metadata closeout must be followed by one exact-head green F-VQ65 workflow run. That run is sufficient final authority and must not trigger another self-referential metadata update."
+}
