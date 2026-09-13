@@ -14,6 +14,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ross01-d3r-duration-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   duration-matrix:
     strategy:
