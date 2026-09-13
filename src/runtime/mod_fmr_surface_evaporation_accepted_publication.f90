@@ -12,11 +12,11 @@ module mod_fmr_surface_evaporation_accepted_publication
   integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_INVALID_COMMIT_RECEIPT = 2
   integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_PROVENANCE_MISMATCH = 3
   integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_TIME_MISMATCH = 4
+  integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_EXACT_PROVENANCE_UNAVAILABLE = 5
 
-  ! Worker/job-local precommit attribution. It can only be prepared from an
-  ! opaque result whose provenance was attached by the runtime materializer at
-  ! the point where the exact candidate was available. No raw process result
-  ! plus caller-supplied candidate stamping API exists.
+  ! Worker/job-local precommit attribution. Exact attempt provenance is copied
+  ! only from the opaque candidate-bound result created by the runtime
+  ! materializer. No raw result plus caller-supplied candidate stamping exists.
   type, public :: fmr_prepared_surface_evaporation_publication_t
     private
     logical :: initialized = .false.
@@ -24,6 +24,8 @@ module mod_fmr_surface_evaporation_accepted_publication
     integer(int64) :: origin_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
     real(real64) :: t1_value = 0.0_real64
+    integer(int64) :: execution_provenance_id_value = 0_int64
+    integer(int64) :: candidate_sequence_value = 0_int64
     real(real64) :: bare_soil_evaporation_rate_value = 0.0_real64
     real(real64) :: ponded_water_evaporation_rate_value = 0.0_real64
     character(len=24) :: route_value = 'not-run'
@@ -31,9 +33,8 @@ module mod_fmr_surface_evaporation_accepted_publication
     procedure, public :: ready => prepared_ready
   end type fmr_prepared_surface_evaporation_publication_t
 
-  ! Accepted-only immutable attribution metadata. The rates are a decomposition
-  ! of already-accounted process behavior. This object is not an additional
-  ! mass-ledger term and is not persistent continuation state.
+  ! Accepted-only immutable attribution metadata. The exact-attempt pair is
+  ! diagnostic provenance, not continuation state and not a second mass term.
   type, public :: fmr_surface_evaporation_publication_t
     private
     logical :: initialized = .false.
@@ -42,6 +43,8 @@ module mod_fmr_surface_evaporation_accepted_publication
     integer(int64) :: committed_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
     real(real64) :: t1_value = 0.0_real64
+    integer(int64) :: execution_provenance_id_value = 0_int64
+    integer(int64) :: candidate_sequence_value = 0_int64
     real(real64) :: bare_soil_evaporation_rate_value = 0.0_real64
     real(real64) :: ponded_water_evaporation_rate_value = 0.0_real64
     character(len=24) :: route_value = 'not-published'
@@ -51,6 +54,7 @@ module mod_fmr_surface_evaporation_accepted_publication
     procedure, public :: origin_revision => publication_origin_revision
     procedure, public :: committed_revision => publication_committed_revision
     procedure, public :: origin_interval => publication_origin_interval
+    procedure, public :: exact_attempt_provenance => publication_exact_attempt_provenance
     procedure, public :: bare_soil_evaporation_rate => publication_bare_rate
     procedure, public :: ponded_water_evaporation_rate => publication_ponded_rate
     procedure, public :: route => publication_route
@@ -66,8 +70,9 @@ contains
     type(fmr_prepared_surface_evaporation_publication_t), intent(out) :: prepared
     integer, intent(out) :: status
 
+    integer(int64) :: execution_provenance_id, candidate_sequence
     real(real64) :: t0, t1
-    logical :: interval_available
+    logical :: interval_available, exact_available
 
     prepared = fmr_prepared_surface_evaporation_publication_t()
     status = FMR_SURFACE_EVAP_PUBLICATION_INVALID_RESULT
@@ -79,10 +84,16 @@ contains
     if (bound_result%current_lineage_id() <= 0_int64) return
     if (bound_result%origin_revision() < 0_int64) return
 
+    call bound_result%exact_attempt_provenance(execution_provenance_id, candidate_sequence, exact_available)
+    status = FMR_SURFACE_EVAP_PUBLICATION_EXACT_PROVENANCE_UNAVAILABLE
+    if (.not. exact_available) return
+
     prepared%lineage_id = bound_result%current_lineage_id()
     prepared%origin_revision_value = bound_result%origin_revision()
     prepared%t0_value = t0
     prepared%t1_value = t1
+    prepared%execution_provenance_id_value = execution_provenance_id
+    prepared%candidate_sequence_value = candidate_sequence
     prepared%bare_soil_evaporation_rate_value = bound_result%bare_soil_evaporation_rate()
     prepared%ponded_water_evaporation_rate_value = bound_result%ponded_water_evaporation_rate()
     prepared%route_value = bound_result%route()
@@ -96,8 +107,9 @@ contains
     type(fmr_surface_evaporation_publication_t), intent(out) :: publication
     integer, intent(out) :: status
 
+    integer(int64) :: execution_provenance_id, candidate_sequence
     real(real64) :: t0, t1
-    logical :: interval_available
+    logical :: interval_available, exact_available
 
     publication = fmr_surface_evaporation_publication_t()
     status = FMR_SURFACE_EVAP_PUBLICATION_INVALID_RESULT
@@ -108,10 +120,16 @@ contains
     call commit_receipt%origin_interval(t0, t1, interval_available)
     if (.not. interval_available) return
 
+    call commit_receipt%exact_attempt_provenance(execution_provenance_id, candidate_sequence, exact_available)
+    status = FMR_SURFACE_EVAP_PUBLICATION_EXACT_PROVENANCE_UNAVAILABLE
+    if (.not. exact_available) return
+
     status = FMR_SURFACE_EVAP_PUBLICATION_PROVENANCE_MISMATCH
     if (commit_receipt%current_lineage_id() /= prepared%lineage_id) return
     if (commit_receipt%origin_revision() /= prepared%origin_revision_value) return
     if (commit_receipt%committed_revision() /= prepared%origin_revision_value + 1_int64) return
+    if (execution_provenance_id /= prepared%execution_provenance_id_value) return
+    if (candidate_sequence /= prepared%candidate_sequence_value) return
 
     status = FMR_SURFACE_EVAP_PUBLICATION_TIME_MISMATCH
     if (.not. same_time_value(t0, prepared%t0_value)) return
@@ -122,6 +140,8 @@ contains
     publication%committed_revision_value = commit_receipt%committed_revision()
     publication%t0_value = prepared%t0_value
     publication%t1_value = prepared%t1_value
+    publication%execution_provenance_id_value = prepared%execution_provenance_id_value
+    publication%candidate_sequence_value = prepared%candidate_sequence_value
     publication%bare_soil_evaporation_rate_value = prepared%bare_soil_evaporation_rate_value
     publication%ponded_water_evaporation_rate_value = prepared%ponded_water_evaporation_rate_value
     publication%route_value = prepared%route_value
@@ -134,6 +154,7 @@ contains
 
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. &
          self%origin_revision_value >= 0_int64 .and. &
+         self%execution_provenance_id_value > 0_int64 .and. self%candidate_sequence_value > 0_int64 .and. &
          ieee_is_finite(self%t0_value) .and. ieee_is_finite(self%t1_value) .and. &
          self%t1_value > self%t0_value .and. &
          ieee_is_finite(self%bare_soil_evaporation_rate_value) .and. &
@@ -150,6 +171,7 @@ contains
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. &
          self%origin_revision_value >= 0_int64 .and. &
          self%committed_revision_value == self%origin_revision_value + 1_int64 .and. &
+         self%execution_provenance_id_value > 0_int64 .and. self%candidate_sequence_value > 0_int64 .and. &
          ieee_is_finite(self%t0_value) .and. ieee_is_finite(self%t1_value) .and. &
          self%t1_value > self%t0_value .and. &
          ieee_is_finite(self%bare_soil_evaporation_rate_value) .and. &
@@ -203,6 +225,21 @@ contains
       t1 = 0.0_real64
     end if
   end subroutine publication_origin_interval
+
+  subroutine publication_exact_attempt_provenance(self, execution_provenance_id, candidate_sequence, available)
+    class(fmr_surface_evaporation_publication_t), intent(in) :: self
+    integer(int64), intent(out) :: execution_provenance_id, candidate_sequence
+    logical, intent(out) :: available
+
+    available = self%ready()
+    if (available) then
+      execution_provenance_id = self%execution_provenance_id_value
+      candidate_sequence = self%candidate_sequence_value
+    else
+      execution_provenance_id = 0_int64
+      candidate_sequence = 0_int64
+    end if
+  end subroutine publication_exact_attempt_provenance
 
   pure real(real64) function publication_bare_rate(self) result(value)
     class(fmr_surface_evaporation_publication_t), intent(in) :: self
