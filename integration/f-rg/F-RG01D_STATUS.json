@@ -1,0 +1,110 @@
+{
+  "workunit": "F-RG01D",
+  "title": "SWAP5 Module Contract Standard & Replaceability Governance",
+  "status": "QUALIFIED_MODULE_CONTRACT_STANDARD_AND_REPLACEABILITY_GOVERNANCE_ESTABLISHED",
+  "governance_only": true,
+  "policy": {
+    "id": "F-RG01D-MCS",
+    "version": "1.0.0",
+    "definition_authority_commit": "b1633d2d7051d6aa01252e9eda5864c93d068b66",
+    "definition_authority_tree": "0735fe3ab47677955c965e684e2e774a180806c3",
+    "policy_path": "integration/f-rg/F-RG01D_MODULE_CONTRACT_STANDARD.md",
+    "policy_blob": "f9496e9573d6982a00ee86dfc146656c34144c00",
+    "schema_path": "integration/f-rg/SWAP5_MODULE_CONTRACT_SCHEMA_V1.json",
+    "schema_blob": "3670c07626c97f2eca069840ea07dbcf1576f1e8",
+    "registry_path": "integration/f-rg/SWAP5_MODULE_CONTRACT_REGISTRY_V1.json",
+    "registry_blob": "5c2924d381c2bee06f6c1e8c18e97da014c430ff"
+  },
+  "parent_governance": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01B": "5e2561d9051fba81769565291b1bf3089c7ddcd9",
+    "F_RG01C": "56b86e29e0960e396059caf47c193440d571b709"
+  },
+  "canonical_context": {
+    "branch_start_snapshot": {
+      "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+      "tree": "5342833575484452b34606f8854ff3f5a542e452",
+      "meaning": "F-CI56 predictor-corrector canonical closeout"
+    },
+    "final_live_recheck": {
+      "sha": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+      "tree": "e63f6fc4362b3bf2a4ee90603c7c54399949ed5b",
+      "meaning": "F-CI57 fail-closed mass-completeness transaction gate admitted after branch start; moving canonical did not alter F-RG01D policy semantics"
+    }
+  },
+  "standard_effect": {
+    "module_definition": "architectural responsibility with a stable semantic boundary, not a one-to-one source-file or Fortran-module identity",
+    "manifest_role": "compact contract capsule and authority index; never a second source of detailed technical truth",
+    "required_categories": [
+      "identity and authority",
+      "owns/must_not_own/non_goals",
+      "parameters",
+      "dynamic state",
+      "forcing/process requests",
+      "numerical configuration",
+      "results/diagnostics",
+      "worker scratch",
+      "provided semantic contracts",
+      "consumed semantic contracts",
+      "transaction semantics",
+      "mass/conservation obligations",
+      "generic time semantics",
+      "restart/persistence",
+      "optionality/scaling",
+      "diagnostics",
+      "fail-closed semantics",
+      "replaceability boundary",
+      "invariant mapping",
+      "evidence and open gaps"
+    ],
+    "prospective_rule": "new modules and material module-contract changes must establish/update a schema-conforming manifest before production admission",
+    "historical_rule": "already-admitted modules are not invalidated; migrate at next material contract change or bounded consolidation workunit",
+    "parallelism_bridge": "provided/consumed contracts and frozen/moving status operationalize the F-RG01A semantic-ownership gate",
+    "recovery_bridge": "module contract version and changed contracts become part of F-RG01B recoverable checkpoints",
+    "replaceability_rule": "replacement is semantic: stable state/transaction/conservation/time/failure contracts must hold while unrelated consumers remain unchanged"
+  },
+  "initial_registry": {
+    "target_modules": 12,
+    "boundary_mapped": 12,
+    "uniform_manifests_established": 0,
+    "interpretation": "This is an adoption baseline only. Existing production maturity is not downgraded.",
+    "strong_existing_exemplar": "F-SI31 SoilWaterSolverResearchContract v1.0.0, research-scoped and not a production ABI replacement"
+  },
+  "completion_model_effect": {
+    "SWAP5_V1_COMPLETION_MODEL_V1_changed": false,
+    "denominator_changed": false,
+    "new_percentage_credit_for_manifests": false,
+    "historical_credit_removed": false,
+    "new_hard_completion_ceiling_added": false,
+    "future_weight_or_ceiling_change_requires_explicit_F_RG01C_model_version_decision": true
+  },
+  "architecture_effect": {
+    "production_source_changed": false,
+    "current_canonical_changed_by_F_RG01D": false,
+    "RB1_reopened": false,
+    "scientific_qualification_reopened": false,
+    "physics_changed": false,
+    "solver_policy_changed": false,
+    "RossFast_admitted": false,
+    "energy_balance_added_to_v1": false,
+    "adverse_invariant_delta": false
+  },
+  "recommended_initial_consolidation_order": [
+    "kernel interval executor / transaction-facing contract",
+    "runtime and execution manager",
+    "coupler",
+    "soil-water solver interface and Full Richards implementation boundary",
+    "results and diagnostics assembly",
+    "surface boundary and crop/ET/root processes",
+    "drainage/irrigation/optional processes",
+    "public API and adapters"
+  ],
+  "changed_paths": [
+    "integration/f-rg/F-RG01D_MODULE_CONTRACT_STANDARD.md",
+    "integration/f-rg/SWAP5_MODULE_CONTRACT_SCHEMA_V1.json",
+    "integration/f-rg/SWAP5_MODULE_CONTRACT_REGISTRY_V1.json",
+    "integration/f-rg/F-RG01D_STATUS.json"
+  ],
+  "exit_target": "QUALIFIED_MODULE_CONTRACT_STANDARD_AND_REPLACEABILITY_GOVERNANCE_ESTABLISHED"
+}
