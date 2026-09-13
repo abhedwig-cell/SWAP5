@@ -1,0 +1,50 @@
+name: F-KT18 fail-closed mass completeness owner gate
+
+on:
+  push:
+    branches:
+      - work/f-kt18-fail-closed-mass-completeness-transaction-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fail-closed-mass-completeness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head and frozen base
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=c19a04721a05c6a00ba264e7477969807dcb258f
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git merge-base "$BASE" HEAD)" = "$BASE"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FKT18_EXACT_HEAD_START=PASS:$GITHUB_SHA"
+      - name: Production scope guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=c19a04721a05c6a00ba264e7477969807dcb258f
+          mapfile -t changed < <(git diff --name-only "$BASE"..HEAD -- src)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = src/transaction/mod_transaction_reference.f90
+          git diff --quiet "$BASE"..HEAD -- src/runtime src/kernel src/solver src/process src/adapter src/legacy reference
+          echo 'FKT18_PRODUCTION_SCOPE_ONE_TRANSACTION_FILE=PASS'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: O0 O2 deterministic fail-closed mass gate
+        run: bash tests/fkt/run_fkt18_mass_completeness_fail_closed.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+          echo "FKT18_EXACT_HEAD_END=PASS:$GITHUB_SHA"
