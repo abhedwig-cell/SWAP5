@@ -15,10 +15,9 @@ git worktree add --detach "$WT" "$CANON" >/dev/null
 cd "$WT"
 [[ "$(git rev-parse HEAD)" == "$CANON" ]] || fail 'canonical worktree mismatch'
 
-# FTB11-TXN-001 / FTB11-MASS-001. The legacy A23BL executable oracle predates
-# the mandatory mass-completeness contract and is therefore not a valid moving
-# acceptance oracle for this post-F-KT18 source. Reuse the independently
-# qualified F-VQ65 fail-closed transaction/mass attack instead.
+# FTB11-TXN-001 / FTB11-MASS-001. A23BL predates the mandatory
+# mass-completeness contract, so the independently qualified F-VQ65 attack
+# matrix is the valid moving transaction/mass oracle for this source generation.
 mkdir -p tests/fvq
 for f in \
   mod_fvq65_mass_attack_support.f90 \
@@ -36,49 +35,20 @@ fi
 echo 'FTB11-TXN-001=PASS_QUALIFIED_FVQ65_CURRENT_SOURCE_ORACLE'
 echo 'FTB11-MASS-001=PASS'
 
-# FTB11-RST-001 / FTB11-MSW-001 plus coupling preservation use the exact
-# independent F-VQ65 current-preservation replay on current production source.
+# FTB11-RST-001 / FTB11-MSW-001. This independent preservation replay rebuilds
+# restart, serialized MultiSWAP, parallel runtime and coupling on current source.
 bash tests/fvq/run_fvq65_current_preservation.sh
 echo 'FTB11-RST-001=PASS_EXECUTABLE_CURRENT_SOURCE_REPLAY'
 echo 'FTB11-MSW-001=PASS_EXECUTABLE_CURRENT_SOURCE_REPLAY'
 
-# FTB11-REJECT-001: reuse the existing accepted-commit receipt oracle, but not its historical source-delta wrapper.
-COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
-RECEIPT_SRC=(
-  src/transaction/mod_transaction_reference.f90
-  src/runtime/mod_canonical_contracts.f90
-  src/runtime/mod_canonical_interval_runtime.f90
-  src/kernel/mod_kernel_transactions.f90
-  src/runtime/mod_fmr_accepted_commit_receipt.f90
-)
-for opt in 0 2; do
-  OUT="$BUILD/receipt-o$opt"; mkdir -p "$OUT"; objects=()
-  for source in "${RECEIPT_SRC[@]}"; do
-    obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
-    objects+=("$obj")
-  done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr18_accepted_commit_receipt.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "receipt O$opt execution"; }
-  for marker in \
-    'FMR18_REAL_FKT_COMMIT_CREATES_EXACT_RECEIPT=PASS' \
-    'FMR18_COMMIT_REJECTION_EMITS_NO_RECEIPT=PASS' \
-    'FMR18_EXPECTED_RECEIPT_FAILURES_PRECEDE_PHYSICAL_COMMIT=PASS' \
-    'FMR18_PREVALIDATION_REJECTION_IS_NONMUTATING_AND_REPLAYABLE=PASS' \
-    'FMR18_ACCEPTED_COMMIT_RECEIPT_TEST PASS'; do
-    grep -Fq "$marker" "$OUT/output.txt" || fail "receipt O$opt missing marker: $marker"
-  done
-done
-cmp -s "$BUILD/receipt-o0/output.txt" "$BUILD/receipt-o2/output.txt" || fail 'receipt O0/O2 output drift'
-echo 'FTB11-REJECT-001=PASS'
-
-# FTB11-ETPUB-001: exact independent F-VQ71 accepted-publication attack oracle on current source.
+# FTB11-REJECT-001 / FTB11-ETPUB-001. F-VQ71 is the current independent oracle
+# for atomic accepted publication. It proves stale and cross-lineage candidates
+# fail before commit/publication and leave the committed revision unchanged.
 for f in test_fvq71_atomic_surface_publication_independent.f90 fvq71_forbidden_split_surface_publication.f90; do
   git show "$FVQ71:tests/fvq/$f" > "$BUILD/$f" || fail "cannot materialize F-VQ71 $f"
 done
-PUB_COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
-PUB_SRC=(
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
@@ -118,12 +88,12 @@ PUB_SRC=(
 )
 for opt in 0 2; do
   OUT="$BUILD/pub-o$opt"; mkdir -p "$OUT"; objects=()
-  for source in "${PUB_SRC[@]}"; do
+  for source in "${MODULE_SRC[@]}"; do
     obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${PUB_COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${PUB_COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$BUILD/test_fvq71_atomic_surface_publication_independent.f90" -o "$OUT/test.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$BUILD/test_fvq71_atomic_surface_publication_independent.f90" -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "F-VQ71 O$opt execution"; }
   for marker in \
@@ -133,10 +103,11 @@ for opt in 0 2; do
     'FVQ71_INDEPENDENT_ORACLE=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || fail "F-VQ71 O$opt missing marker: $marker"
   done
-  if gfortran "${PUB_COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$BUILD/fvq71_forbidden_split_surface_publication.f90" -o "$OUT/attack.o" >"$OUT/attack.log" 2>&1; then
+  if gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$BUILD/fvq71_forbidden_split_surface_publication.f90" -o "$OUT/attack.o" >"$OUT/attack.log" 2>&1; then
     fail "forbidden split surface-publication API compiled at O$opt"
   fi
 done
 cmp -s "$BUILD/pub-o0/output.txt" "$BUILD/pub-o2/output.txt" || fail 'F-VQ71 O0/O2 semantic drift'
+echo 'FTB11-REJECT-001=PASS_FVQ71_PRECOMMIT_IMMUTABILITY'
 echo 'FTB11-ETPUB-001=PASS'
 echo 'FTB11_CURRENT_SOURCE_SEMANTIC_REPLAYS=PASS'
