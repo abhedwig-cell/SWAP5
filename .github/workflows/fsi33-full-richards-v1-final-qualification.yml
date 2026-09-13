@@ -1,0 +1,23 @@
+name: F-SI33 Full Richards v1 final qualification
+
+on:
+  push:
+    branches:
+      - work/f-si33-full-richards-reference-solver-v1-completion-audit
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch live current canonical
+        run: git fetch --force origin integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical
+      - name: Run F-SI33 completion gate
+        run: python3 tests/fsi/run_fsi33_full_richards_v1_completion_gate.py
