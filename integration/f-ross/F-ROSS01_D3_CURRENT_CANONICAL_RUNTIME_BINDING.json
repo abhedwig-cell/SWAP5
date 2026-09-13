@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3",
+  "title": "RossFast F-SI31 v1 Current-Canonical Runtime Composition, Transactional Exchange & Mass-Conservative Service Qualification",
+  "d2_authority": {
+    "branch": "work/f-ross01-d2-fsi31-v1-research-adapter-r1",
+    "sha": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "decision": "QUALIFIED_ROSSFAST_FSI31_V1_RESTRICTED_RESEARCH_ADAPTER"
+  },
+  "fsi31_authority": {
+    "branch": "work/f-si31-research-solver-contract-freeze",
+    "sha": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "contract_blob": "d5e934df4b3fbaa573e994cbe675257cf6a47304",
+    "schema_blob": "86bfa60468d891e071c735569d944570f75fa205"
+  },
+  "canonical_observation_at_start": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "tree": "a1762b02f8288a4ecfe3d98296c2aefc2e3350cc"
+  },
+  "current_canonical_source_binding": {
+    "policy": "live canonical head may advance only if all bound source blobs remain exact; any semantic source drift fails closed",
+    "files": {
+      "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331",
+      "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+      "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6"
+    }
+  },
+  "canonical_semantics_under_test": {
+    "default_transaction_route": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "external_full_half_requires_half_interval_model_invocations": true,
+    "retry_scale_default": 0.5,
+    "model_certificate_route_requires_temporal_certificate_available": true,
+    "model_certificate_route_requires_finite_nonnegative_indicator": true,
+    "model_certificate_route_accepts_indicator_at_or_below": 1.0,
+    "accepted_mass_requires_complete_accounting": true,
+    "accepted_mass_requires_zero_missing_mask": true,
+    "accepted_mass_requires_finite_terms": true,
+    "committed_state_external_mutation_before_full_interval_completion": false,
+    "kernel_candidate_requires_runtime_completion": true,
+    "kernel_commit_is_external_and_provenance_guarded": true
+  },
+  "qualification_rule": "D3 is positive only if the frozen D2 adapter can be composed with an actually qualified current-canonical transaction route, including reject/retry semantics, without changing D2 semantics or inventing a temporal certificate. Otherwise D3 closes with explicit minimal composition gaps and no production admission."
+}
