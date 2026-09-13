@@ -1,0 +1,22 @@
+name: F-PM10 surface evaporation publication provenance remediation
+
+on:
+  push:
+    branches:
+      - work/f-pm10-surface-evaporation-publication-provenance-remediation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PM10 bounded provenance owner gate
+        run: bash tests/fpm/run_fpm10_surface_evaporation_publication_provenance.sh
