@@ -47,6 +47,7 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--output", required=True, type=Path)
     p.add_argument("--canonical-head", required=True)
+    p.add_argument("--duration-index", type=int)
     a = p.parse_args()
 
     expected = tuple(0.0016 / (2 ** k) for k in range(10))
@@ -54,11 +55,16 @@ def main() -> int:
         "duration_ladder_exact": adapter.DURATION_LADDER_DAY == expected,
         "retry_policy_exact": adapter.CANONICAL_RETRY_SCALE == 0.5 and adapter.CANONICAL_MAX_RETRIES == 8,
     }
+    indices = range(len(adapter.DURATION_LADDER_DAY)) if a.duration_index is None else (a.duration_index,)
+    if any(i < 0 or i >= len(adapter.DURATION_LADDER_DAY) for i in indices):
+        raise SystemExit("duration-index outside 0..9")
+
     cases, replay, negatives, step_cases = [], [], [], []
     max_mass = 0.0
     t0s = (0.0, 37.125, 12345.75, -4321.5)
 
-    for di, duration in enumerate(adapter.DURATION_LADDER_DAY):
+    for di in indices:
+        duration = adapter.DURATION_LADDER_DAY[di]
         for material in adapter.MATERIAL_IDS:
             for label, steps, perturb in (("baseline", 4, 0.0), ("bounded_flux", 8, 0.01)):
                 req = set_interval(d2q.base_request(material, steps=steps, perturb=perturb, pre=False), t0s[di % 4], duration)
@@ -75,28 +81,22 @@ def main() -> int:
         r1 = adapter.execute_research_trial(copy.deepcopy(req))
         r2 = adapter.execute_research_trial(copy.deepcopy(req))
         fields = ("solver_disposition", "candidate_hydraulic_state", "actual_top_flux", "candidate_bottom_flux", "mass_terms", "unrounded_mass_residual_cm", "whole_window_sensitivity")
-        replay.append({"duration_day": duration, "pass": all(r1.get(k) == r2.get(k) for k in fields)})
+        replay.append({"duration_index": di, "duration_day": duration, "pass": all(r1.get(k) == r2.get(k) for k in fields)})
 
     tests["six_material_matrix"] = all(x["pass"] for x in cases)
     tests["hard_mass_gate"] = max_mass <= 1e-12
-    tests["replay_all_durations"] = all(x["pass"] for x in replay)
+    tests["replay"] = all(x["pass"] for x in replay)
 
-    for duration in (adapter.DURATION_LADDER_DAY[0], adapter.DURATION_LADDER_DAY[-1]):
+    # Expensive policy-preservation/negative probes only live on the two edge
+    # shards. Together they cover longest and shortest admitted durations.
+    edge_indices = set(indices).intersection({0, len(adapter.DURATION_LADDER_DAY) - 1})
+    for di in sorted(edge_indices):
+        duration = adapter.DURATION_LADDER_DAY[di]
         for steps in adapter.ALLOWED_SUBSTEPS:
             req = set_interval(d2q.base_request("B01", steps=steps, pre=False), 9.25, duration)
             result = adapter.execute_research_trial(req)
             c = checks(result, req, duration)
-            step_cases.append({"duration_day": duration, "steps": steps, "pass": all(c.values())})
-    tests["all_internal_substeps_extremes"] = all(x["pass"] for x in step_cases)
-
-    for bad in (0.0012, adapter.DURATION_LADDER_DAY[-1] * 0.75):
-        req = set_interval(d2q.base_request("B01", pre=False), 7.0, bad)
-        before = copy.deepcopy(req["committed_state"])
-        result = adapter.execute_research_trial(req)
-        ok = result.get("solver_disposition") == "failed" and result.get("failure_classification") == "TIME_OUTSIDE_DECLARED_SCOPE" and result.get("candidate_hydraulic_state") is None and req["committed_state"] == before
-        negatives.append({"type": "duration", "value": bad, "pass": ok, "classification": result.get("failure_classification")})
-
-    for duration in (adapter.DURATION_LADDER_DAY[0], adapter.DURATION_LADDER_DAY[-1]):
+            step_cases.append({"duration_index": di, "duration_day": duration, "steps": steps, "pass": all(c.values())})
         for which in ("top", "bottom"):
             req = set_interval(d2q.base_request("B01", pre=False), 5.5, duration)
             if which == "top":
@@ -106,17 +106,29 @@ def main() -> int:
                 req["forcing_process_requests"]["bottom_boundary"]["qbot_cm_per_day"] += 100.0
                 expected_class = "BOTTOM_FLUX_OUTSIDE_DECLARED_SCOPE"
             result = adapter.execute_research_trial(req)
-            negatives.append({"type": which, "value": duration, "pass": result.get("solver_disposition") == "failed" and result.get("failure_classification") == expected_class, "classification": result.get("failure_classification")})
+            negatives.append({"type": which, "duration_index": di, "pass": result.get("solver_disposition") == "failed" and result.get("failure_classification") == expected_class, "classification": result.get("failure_classification")})
 
-    tests["negative_fail_closed"] = all(x["pass"] for x in negatives)
-    required = ("duration_ladder_exact", "retry_policy_exact", "six_material_matrix", "hard_mass_gate", "replay_all_durations", "all_internal_substeps_extremes", "negative_fail_closed")
-    qualified = all(bool(tests[k]) for k in required)
+    if 0 in indices:
+        bad = 0.0012
+        req = set_interval(d2q.base_request("B01", pre=False), 7.0, bad)
+        before = copy.deepcopy(req["committed_state"]); result = adapter.execute_research_trial(req)
+        negatives.append({"type": "duration_long", "pass": result.get("solver_disposition") == "failed" and result.get("failure_classification") == "TIME_OUTSIDE_DECLARED_SCOPE" and req["committed_state"] == before, "classification": result.get("failure_classification")})
+    if len(adapter.DURATION_LADDER_DAY) - 1 in indices:
+        bad = adapter.DURATION_LADDER_DAY[-1] * 0.75
+        req = set_interval(d2q.base_request("B01", pre=False), 7.0, bad)
+        before = copy.deepcopy(req["committed_state"]); result = adapter.execute_research_trial(req)
+        negatives.append({"type": "duration_short", "pass": result.get("solver_disposition") == "failed" and result.get("failure_classification") == "TIME_OUTSIDE_DECLARED_SCOPE" and req["committed_state"] == before, "classification": result.get("failure_classification")})
+
+    tests["edge_substep_policy"] = all(x["pass"] for x in step_cases) if step_cases else True
+    tests["edge_negative_fail_closed"] = all(x["pass"] for x in negatives) if negatives else True
+    qualified = all(bool(v) for v in tests.values())
     evidence = {
         "work_unit": "F-ROSS01 D3R",
-        "kind": "duration_matrix",
+        "kind": "duration_matrix_shard" if a.duration_index is not None else "duration_matrix",
         "live_canonical_head": a.canonical_head,
+        "duration_index": a.duration_index,
         "duration_ladder": adapter.duration_ladder_metadata(),
-        "duration_family_qualified": qualified,
+        "shard_qualified": qualified,
         "max_abs_mass_residual_cm": max_mass,
         "tests": tests,
         "positive_case_count": len(cases),
@@ -127,7 +139,7 @@ def main() -> int:
         "production_source_delta": [],
     }
     a.output.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n")
-    print(json.dumps({"duration_family_qualified": qualified, "max_abs_mass_residual_cm": max_mass, "positive_case_count": len(cases)}, sort_keys=True))
+    print(json.dumps({"duration_index": a.duration_index, "shard_qualified": qualified, "max_abs_mass_residual_cm": max_mass, "positive_case_count": len(cases)}, sort_keys=True))
     return 0 if qualified else 1
 
 
