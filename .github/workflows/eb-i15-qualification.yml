@@ -1,0 +1,34 @@
+name: EB-I15 bottom sensible energy evaluator
+
+on:
+  push:
+    branches:
+      - work/eb-i15-bottom-sensible-energy-evaluator
+  workflow_dispatch:
+
+jobs:
+  qualify-eb-i15:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I15_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I15_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: EB-I15 bottom sensible energy gate
+        run: bash tests/eb/run_eb_i15_bottom_sensible_energy_gate.sh
+      - name: EB-I13 carrier and hydrology preservation
+        run: bash tests/eb/run_eb_i13_bottom_thermal_carrier_gate.sh
+      - name: FPM08D7 runtime compile preservation
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+      - name: FPM08D7 transactional owner preservation
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+      - name: FPM08D7 restart owner preservation
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+      - name: Scope whitespace check
+        run: git diff --check a5aa6a1c81afe35940567bd0b6af0bf5707594d3..HEAD
