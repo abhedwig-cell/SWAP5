@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.fpm12.evidence.v1",
+  "work_unit": "F-PM12",
+  "qualified_tested_head": "323006951bea568226e1ad72fc13eb7d3fcce0e7",
+  "qualified_tested_tree": "b530132bbaa0b7031b4461f6ca2f8c84d0c2e485",
+  "restart_canonical": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+  "restart_canonical_tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+  "F_PM09_authority": "work/f-pm09-et-root-uptake-surface-evaporation-v1-completion-audit@b49585c255d1c0d4c0cec6cdfaab6cabc49ac19a",
+  "workflow": {
+    "run": 34782222003,
+    "job": 103791187363,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "source_governance_gate": "PASS",
+    "runtime_gate": "PASS_O0_O2",
+    "preservation_gate": "PASS"
+  },
+  "current_canonical_production_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "historical_attack": {
+    "authority": "qualification/f-vq57-fpm06g-surface-evaporation-accepted-publication@4ccc2a21390af3872042b899ff39ead628a1a65e",
+    "attack": "candidate-B physical surface result supplied under candidate-A identity and followed by candidate-A accepted receipt",
+    "old_root_cause": "raw process result was not enforceably source-bound to the accepted candidate in the public split prepare/finalize seam",
+    "current_rule": "candidate-bound materialization, same-candidate commit with receipt, and final publication are one public atomic operation; prepared publication carrier remains private and call-local",
+    "current_result": "PASS_CLOSED",
+    "split_attack_compilation": "FAILS_AS_REQUIRED_O0_O2",
+    "same_origin_alternate_after_accept": "PASS_FAIL_CLOSED",
+    "cross_lineage_precommit": "PASS_FAIL_CLOSED"
+  },
+  "mandatory_owner_tests": {
+    "one_accepted_trial_exactly_one_publication": "PASS",
+    "reject_zero_accepted_publication_mutation": "PASS",
+    "reject_then_accept_only_accepted_published": "PASS",
+    "reject_reject_accept_no_accumulation": "PASS",
+    "retry_exhaustion_no_accepted_publication": "PASS",
+    "accepted_candidate_provenance_source_bound": "PASS",
+    "stale_scratch_or_output_attack": "PASS_CLOSED",
+    "standalone_vs_serialized_MultiSWAP": "PASS_EQUIVALENT",
+    "parallel_frozen_v1_preservation": "PASS",
+    "mass_before_after_preserved": "PASS_NO_SECOND_MASS_AUTHORITY_OR_BOOKING",
+    "restart_after_accepted_publication": "PASS_PRESERVED_NO_PUBLICATION_SCRATCH_IN_RESTART",
+    "rollback_rejection_committed_state_preserved": "PASS"
+  },
+  "optimization_identity": "PASS_EXACT_O0_O2_STDOUT",
+  "canonical_preservation_authority": {
+    "workflow_run": 34781202197,
+    "head_sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "conclusion": "success",
+    "required_jobs": [
+      "frozen-fci28-restart-authority",
+      "frozen-fci30-restricted-parallel-v1-authority",
+      "frozen-fci31-reference-et-root-uptake-authority",
+      "frozen-fci37-parallel-root-uptake-authority",
+      "current-restricted-canonical-preservation"
+    ]
+  },
+  "supersession": {
+    "historical_F_PM10": "owner-only remediation, not final independent/canonical authority",
+    "F_MR43": "final atomic owner implementation",
+    "F_VQ71": "independent qualification closed G02",
+    "F_CI59_F_CI59P": "canonical admission/postimage closed G03",
+    "F_PM12": "current-canonical owner requalification with zero new production change"
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_PM12": false,
+    "reference_source_changed_by_F_PM12": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "persistent_state_schema_changed": false,
+    "restart_schema_changed": false
+  },
+  "invariant_audit": {
+    "3": "PASS",
+    "4": "PASS_NO_NEW_PERSISTENT_STATE",
+    "7": "PASS_ATOMIC_COMMIT_THEN_PUBLICATION",
+    "8": "PASS_PHYSICAL_TRIAL_ORIGIN_UNCHANGED",
+    "9": "PASS_NO_CALENDAR_ASSUMPTION",
+    "13": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "16": "PASS_STANDALONE_SERIALIZED_AND_PARALLEL_PRESERVED",
+    "21": "PASS_NO_PHYSICS_FORK",
+    "22": "PASS_NO_HEADCALC_INTERNAL_COUPLING",
+    "23": "PASS_NO_PHYSICS_POLICY_CHANGE",
+    "26": "PASS_ACCEPT_REJECT_PROVENANCE_AUDITABLE",
+    "29": "PASS_NO_FILE_CALENDAR_OR_MODFLOW_DEPENDENCY",
+    "30": "PASS_EXPLICITLY_AUDITED"
+  }
+}
