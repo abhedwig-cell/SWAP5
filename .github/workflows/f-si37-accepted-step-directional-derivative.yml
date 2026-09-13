@@ -1,0 +1,28 @@
+name: F-SI37 accepted-step directional derivative
+
+on:
+  push:
+    branches:
+      - work/f-si37-accepted-step-directional-derivative-seam
+    paths:
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'tests/fsi/test_fsi37_accepted_step_directional_derivative.f90'
+      - 'tests/fsi/run_fsi37_qualification.sh'
+      - '.github/workflows/f-si37-accepted-step-directional-derivative.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: Run F-SI37 qualification
+        run: bash tests/fsi/run_fsi37_qualification.sh
