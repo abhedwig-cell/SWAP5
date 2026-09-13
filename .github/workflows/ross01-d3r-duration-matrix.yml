@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/ross01-d3r-duration-matrix.yml
       - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
+      - experiments/ross/ross01_d3r_duration_worker.py
       - experiments/ross/run_ross01_d3r_duration_matrix.py
       - integration/f-ross/F-ROSS01_D3R_DURATION_SCOPE.json
   workflow_dispatch:
@@ -43,7 +44,7 @@ jobs:
           grep -q "max_retries = 8" "$RUNNER_TEMP/tx.f90"
           grep -q "TX_TEMPORAL_EXTERNAL_FULL_HALF" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
-        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/run_ross01_d3r_duration_matrix.py
+        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_duration_matrix.py
       - name: Run duration shard
         run: |
           python3 experiments/ross/run_ross01_d3r_duration_matrix.py \
