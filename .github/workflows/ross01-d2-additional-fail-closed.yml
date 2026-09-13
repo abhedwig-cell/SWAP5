@@ -1,0 +1,54 @@
+name: F-ROSS01 D2 Additional Fail-Closed Qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d2-fsi31-v1-research-adapter
+    paths:
+      - .github/workflows/ross01-d2-additional-fail-closed.yml
+      - experiments/ross/run_ross01_d2_additional_fail_closed_qualification.py
+      - experiments/ross/ross01_d2_fsi31_adapter.py
+      - experiments/ross/run_ross01_d2_fsi31_qualification.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  additional-fail-closed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install research dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_d2_additional_fail_closed_qualification.py
+      - name: Run additional D2 fail-closed probes
+        id: probes
+        continue-on-error: true
+        run: python3 experiments/ross/run_ross01_d2_additional_fail_closed_qualification.py
+      - name: Upload additional evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d2-additional-fail-closed-${{ github.run_id }}
+          path: integration/f-ross/F-ROSS01_D2_ADDITIONAL_FAIL_CLOSED_EVIDENCE.json
+      - name: Persist additional evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          test -f integration/f-ross/F-ROSS01_D2_ADDITIONAL_FAIL_CLOSED_EVIDENCE.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-ross/F-ROSS01_D2_ADDITIONAL_FAIL_CLOSED_EVIDENCE.json
+          if ! git diff --cached --quiet; then
+            git commit -m "evidence(F-ROSS01 D2): persist additional fail-closed run $GITHUB_RUN_ID"
+            git push origin HEAD:work/f-ross01-d2-fsi31-v1-research-adapter
+          fi
+      - name: Enforce additional probes
+        if: always()
+        run: |
+          if [ "${{ steps.probes.outcome }}" != "success" ]; then
+            exit 1
+          fi
