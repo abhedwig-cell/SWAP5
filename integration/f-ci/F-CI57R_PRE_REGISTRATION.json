@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI57R",
+  "title": "F-CI57 Postpromotion Moving Preservation Authority Reconciliation",
+  "date": "2026-09-13",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "canonical_postimage": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+  "canonical_preimage": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "qualified_fci57_head": "7c7f8519c94499f3628ef1a08181fdd5d8418d07",
+  "fkt17_finding": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+  "fkt18_owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "fvq65_independent_authority": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+  "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+  "blocked_broad_run": 34754098099,
+  "blocking_job": 103715607375,
+  "blocking_reason": "current-restricted-canonical-preservation still pins F-CI55 authority 8a1aeed and therefore correctly detects the intentionally admitted F-CI57 transaction-source change as dependency drift",
+  "stale_moving_preservation_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "target_moving_preservation_authority": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+  "allowed_changes": [
+    ".github/workflows/fci-canonical.yml",
+    ".github/workflows/fci57r-moving-preservation-reconciliation.yml",
+    "integration/f-ci/F-CI57R_PRE_REGISTRATION.json",
+    "integration/f-ci/F-CI57R_ARCHITECTURE_AUDIT.json",
+    "integration/f-ci/F-CI57R_STATUS.json",
+    "tests/fci/run_fci57r_moving_preservation_reconciliation.sh"
+  ],
+  "forbidden_changes": [
+    "any production source",
+    "reference/swap-4.3.1",
+    "F-KT18 owner authority",
+    "F-VQ65 independent authority",
+    "mass or temporal tolerances",
+    "dependency_surface membership",
+    "frozen denominator or scope"
+  ],
+  "required_proofs": [
+    "F-CI57 canonical postimage is a true two-parent merge of c19a047 and exact qualified head 7c7f851",
+    "canonical transaction blob exactly equals independently qualified F-KT18/F-VQ65 blob d5a71a5",
+    "no production or reference source changes in F-CI57R",
+    "fci-canonical workflow changes only the moving AUTH line from 8a1aeed to 7bbc736",
+    "dependency_surface remains byte-identical",
+    "F-VQ65 independent mass attack matrix and current-preservation replay remain green",
+    "all 30 architecture invariants have no adverse delta",
+    "broad F-CI canonical workflow including current-restricted-canonical-preservation is green on the reconciliation PR",
+    "canonical postpromotion closeout is green before F-KT17-G01 and D01 8/8 are restored"
+  ],
+  "completion_policy": "No 100 percent claim until dedicated F-CI57R qualification, broad canonical PR qualification, true canonical reconciliation promotion, and post-promotion canonical qualification are all green."
+}
