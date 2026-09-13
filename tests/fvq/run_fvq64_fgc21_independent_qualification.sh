@@ -68,8 +68,13 @@ pos_swap=p.index('call executor%commit_candidate')
 pos_gw=p.index('call groundwater_commit_prepared')
 pos_ledger=p.index('call ledger%commit_prepared')
 assert pos_swap < pos_gw < pos_ledger
-assert 'call fail_result' not in p[pos_swap:]
-assert 'error stop' in p[pos_swap:]
+# commit_candidate may fail atomically before did_commit becomes true; the
+# irreversible publication tail starts only after the explicit committed marker.
+pos_irreversible=p.index('result%diagnostics%swap_committed = .true.', pos_swap)
+end_main=p.index('end subroutine run_restricted_groundwater_coupling_window', pos_irreversible)
+publication_tail=p[pos_irreversible:end_main]
+assert 'call fail_result' not in publication_tail
+assert 'error stop' in publication_tail
 assert 'interface_head_m_to_swap_pressure_head_cm' in f
 assert 'typed_forcing%bottom_head = pressure_head_cm' in f
 assert 'typed_parameters%bottom_mode == 5' in f
