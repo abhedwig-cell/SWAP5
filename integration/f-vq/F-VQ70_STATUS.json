@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.fvq70.status.v1",
+  "work_unit": "F-VQ70",
+  "branch": "qualification/f-vq70-fkt20-exact-candidate-attempt-provenance",
+  "phase": "CLOSED_NEGATIVE_QUALIFICATION",
+  "decision": "NOT_QUALIFIED_RUNTIME_EXECUTION_DOMAIN_UNIQUENESS_NOT_ENFORCED",
+  "candidate": "work/f-kt20-exact-candidate-attempt-provenance@c25eb87f979f4c341713de8fdc890beb0ea3e35f",
+  "independent_gate": {
+    "run_id": 34779037771,
+    "job_id": 103782516634,
+    "verifier_conclusion": "success",
+    "candidate_qualification": "negative"
+  },
+  "qualification_state": {
+    "f_vq69_same_executor_attack_closed": true,
+    "cross_distinct_execution_domain_rejected": true,
+    "duplicate_live_execution_domain_attack_closed": false,
+    "mass_regression_detected": false,
+    "independently_qualified": false,
+    "canonically_admissible": false
+  },
+  "route_back": "runtime/coupler must own and enforce non-colliding execution provenance domains by construction; then independently requalify exact candidate provenance and accepted surface publication",
+  "scope_guards": {
+    "production_source_changed_by_qualification": false,
+    "reference_source_changed_by_qualification": false,
+    "persistent_state_schema_changed": false,
+    "physics_changed": false,
+    "mass_booking_changed": false
+  },
+  "terminal_marker": "FVQ70_NOT_QUALIFIED_RUNTIME_EXECUTION_DOMAIN_UNIQUENESS_NOT_ENFORCED"
+}
