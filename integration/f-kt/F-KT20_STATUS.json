@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.fkt20.status.v1",
+  "work_unit": "F-KT20",
+  "branch": "work/f-kt20-exact-candidate-attempt-provenance",
+  "phase": "OWNER_QUALIFIED_INDEPENDENT_QUALIFICATION_REQUIRED",
+  "decision": "OWNER_QUALIFIED_EXACT_CANDIDATE_ATTEMPT_PROVENANCE_MECHANISM",
+  "base_candidate": "work/f-pm10-surface-evaporation-publication-provenance-remediation@c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "triggering_fvq69_decision": "NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN",
+  "owner_gate": {
+    "run_id": 34778744232,
+    "job_id": 103781729967,
+    "conclusion": "success"
+  },
+  "qualification_state": {
+    "implemented": true,
+    "owner_tested": true,
+    "owner_qualified": true,
+    "independently_qualified": false,
+    "canonically_admitted": false
+  },
+  "scope_guards": {
+    "persistent_state_schema_changed": false,
+    "restart_schema_changed": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "reference_source_changed": false,
+    "canonical_changed": false
+  },
+  "open": [
+    "independently verify exact candidate-attempt provenance including same-old-tuple distinct candidates",
+    "independently verify execution-provenance-domain collision/fail-closed behavior and explicit runtime uniqueness obligation",
+    "only after independent qualification, compose provenance-safe accepted surface publication for current-canonical admission"
+  ],
+  "terminal_marker": "FKT20_OWNER_QUALIFIED_EXACT_CANDIDATE_ATTEMPT_PROVENANCE_MECHANISM"
+}
