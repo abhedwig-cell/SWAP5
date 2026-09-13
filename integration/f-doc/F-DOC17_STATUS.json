@@ -3,11 +3,11 @@
   "work_unit": "F-DOC17",
   "title": "SWAP5 Post-Closure Status-A Reconciliation",
   "branch": "work/f-doc17-post-closure-status-a-reconciliation",
-  "phase": "PERSISTED_RECONCILIATION_COMPLETE",
-  "decision": "CURRENT_CANONICAL_MATERIALLY_STRONGER_STATUS_A_FORMAL_ASSESSMENT_NOT_YET_JUSTIFIED",
+  "phase": "QUALIFICATION_CANDIDATE",
+  "decision": "QUALIFIED_POST_CLOSURE_RECONCILIATION_STATUS_A_FORMAL_ASSESSMENT_NOT_YET_JUSTIFIED",
+  "decision_validity": "VALID_ONLY_WHEN_EXACT_HEAD_GATE_PASSES",
   "formal_status_a_certified": false,
   "formal_status_aa_certified": false,
-  "qualification_claimed_for_fdoc17": false,
   "baseline": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_commit": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
@@ -17,6 +17,15 @@
   "materialized_report": {
     "path": "docs/development/f-doc17-post-closure-status-a-reconciliation.md",
     "first_persisted_commit": "7115e0d25eddd159173c49cbd18622292e5c96e6"
+  },
+  "qualification": {
+    "gate": "F-DOC17 Post-Closure Status-A Reconciliation",
+    "workflow": ".github/workflows/fdoc17-post-closure-status-a-reconciliation.yml",
+    "validator": "tools/docs/validate_fdoc17_post_closure_status_a.py",
+    "exact_head_authority": "GITHUB_PULL_REQUEST_HEAD",
+    "valid_only_when_gate_passes_exact_head": true,
+    "scope": "INTERNAL_RECONCILIATION_CONSISTENCY_AND_BOUNDED_DOCUMENTATION_DIFF_ONLY",
+    "external_status_a_certification": false
   },
   "branch_reconciliation": {
     "materialized_branch": "work/f-doc17-post-closure-status-a-reconciliation",
@@ -112,6 +121,7 @@
   },
   "hard_nonclaims": [
     "F-DOC17 does not certify Status A or Status AA.",
+    "The F-DOC17 qualification gate qualifies only reconciliation consistency and bounded documentation scope.",
     "Current-canonical software qualification is not relabelled as scientific theory or application validation.",
     "F-DOC18 historical branch qualification is not relabelled as current-canonical documentation authority.",
     "F-DOC19 receives no Status-A closure credit without an explicit qualified mapping.",
@@ -119,5 +129,5 @@
     "No documentation number is treated as evidence merely because it exists."
   ],
   "next_safe_step": "Obtain the controlled WR-QA-2024 authority in parallel with freezing an exact assessment candidate; then perform a candidate-bound post-RB1 evidence rebaseline before any formal Status-A assessment claim.",
-  "qualification_note": "This F-DOC17 status records a persisted evidence reconciliation. No dedicated F-DOC17 exact-head qualification gate has been run, so the workunit is not labelled QUALIFIED."
+  "closeout_policy": "If the named F-DOC17 gate passes on the exact pull-request head, freeze that head as the workunit qualification authority. Do not add a self-referential status commit merely to record the later workflow run."
 }
