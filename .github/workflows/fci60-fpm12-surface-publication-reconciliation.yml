@@ -1,0 +1,31 @@
+name: F-CI60 F-PM12 F-VQ72 surface publication reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci60-fpm12-surface-publication-current-canonical-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch repository authority refs
+        run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Source identity authority and invariant reconciliation
+        run: bash tests/fci/run_fci60_source_reconciliation.sh
+      - name: Replay exact F-VQ72 qualification against current-canonical source O0/O2
+        run: bash tests/fci/run_fci60_fvq72_replay.sh
+      - name: Broad canonical restart parallel and completion preservation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash tests/fci/run_fci60_preservation.sh
