@@ -1,0 +1,26 @@
+name: F-SI35 owner qualification
+
+on:
+  push:
+    branches:
+      - tmp/f-si35-source-staging
+      - work/f-si35-mandatory-production-soil-water-solver-seam-closure
+  pull_request:
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'tests/fsi/run_fsi35_mandatory_solver_seam_gate.sh'
+      - '.github/workflows/fsi35-owner-qualification.yml'
+
+jobs:
+  mandatory-solver-seam:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-SI35 owner qualification gate
+        run: bash tests/fsi/run_fsi35_mandatory_solver_seam_gate.sh

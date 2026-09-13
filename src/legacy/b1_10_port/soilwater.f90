@@ -1,9 +1,7 @@
 module MOD_SoilWater
 
-   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
+   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
    implicit none
-   type(a23bu_worker_context_t), save :: legacy_headcalc_worker
-   type(a23bu_solver_history_t), save :: legacy_headcalc_history
 
    private
    public :: soilwater, soilwaterstatevar
@@ -30,7 +28,7 @@ module MOD_SoilWater
       use MOD_top,       only: boundtop
       use MOD_gwl,       only: calcgwl
       use MOD_swap_mp,   only: frarmtrx
-      use mod_b110_production_soil_water_task2, only: try_b110_production_task2
+      use mod_b110_production_soil_water_task2, only: run_b110_production_task2
       use variables,     only: swkmean
       use variables,     only: htb,nhead, swbotb, gwli, gwltab, t1900, dt
 !     inout
@@ -43,26 +41,11 @@ module MOD_SoilWater
       use variables,     only: volini, pondini, ivolbeg, ipondbeg
 
       implicit none
-      interface
-         subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
-            use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
-            use mod_reference_richards_workspace, only: reference_richards_workspace_t
-            use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
-            use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
-            type(a23bu_worker_context_t), intent(inout), optional :: worker
-            type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
-            type(a23bu_solver_history_t), target, intent(inout), optional :: history
-            type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
-            type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
-            type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
-         end subroutine headcalc
-      end interface
 !     global
       integer, intent(in)  :: task
       type(a23bu_worker_context_t), intent(inout), optional :: worker
 ! --- local variables
       integer              :: node, i, j, ipos
-      logical              :: typed_task2_handled
       
 !     functions
       real(8)              :: afgen, hcomean
@@ -169,15 +152,15 @@ module MOD_SoilWater
          call SoilWaterStateVar(1)
          if (swmacro == 1) call MacroStateVar(1)
      
-! ---    calculate new soil water state variables
+! ---    calculate new soil water state variables. F-SI35 requires every
+!        Full Richards Task2 invocation to cross the soil_water_solver_t service
+!        boundary. Standalone and worker/MultiSWAP dispatch differ only in the
+!        worker context supplied to that service.
          if (swsolve == 1) then
             if (present(worker)) then
-               call try_b110_production_task2(worker, typed_task2_handled)
-               if (.not. typed_task2_handled) then
-                  call headcalc(worker, history=worker%history)
-               end if
+               call run_b110_production_task2(worker)
             else
-               call headcalc(legacy_headcalc_worker, history=legacy_headcalc_history)
+               call run_b110_production_task2()
             end if
          else
 !DEC$ IF DEFINED (with_sss)
