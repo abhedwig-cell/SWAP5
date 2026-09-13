@@ -57,7 +57,7 @@ low=p.lower()
 for forbidden in ['.swp','midnight','modflow','headcalc%','open(','read(']:
     assert forbidden not in low, ('orchestrator', forbidden)
 assert p.count('checkpoint=swap_checkpoint') == 2
-assert p.count('groundwater_trial_from_checkpoint') == 2
+assert p.count('call groundwater_trial_from_checkpoint') == 2
 assert 'qbot_mean_cm_per_day = -exchange_cm / duration_day' in p
 assert 'pair_groundwater_flux_from_swap' in p
 assert 'result%corrector_swap_outward_exchange_cm * CM_TO_M' in p
