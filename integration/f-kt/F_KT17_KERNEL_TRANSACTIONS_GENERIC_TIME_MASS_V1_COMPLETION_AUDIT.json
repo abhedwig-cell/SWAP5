@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "workunit": "F-KT17",
+  "title": "SWAP5 Kernel, Transactions, Generic Time & Mass v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "decision": "KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "audit_date": "2026-09-13",
+  "audit_branch": "work/f-kt17-kernel-transactions-generic-time-mass-v1-completion-audit",
+  "baseline": {
+    "ref": "integration/f-ci-canonical",
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452",
+    "commit_subject": "F-CI56: finalize predictor-corrector canonical admission closeout"
+  },
+  "frozen_denominator_changed": false,
+  "pre_audit_governance_completion": {
+    "authority": "F-RG01C fixed-denominator completion model",
+    "dimension": "D01",
+    "earned": 8.0,
+    "total": 8.0,
+    "percent": 100.0,
+    "note": "This is the pre-audit denominator score. F-KT17 found a hard qualification gate that forbids carrying the 100% claim forward until closure. No replacement 99.x percentage is invented."
+  },
+  "qualified_completion": {
+    "qualified_100_percent_allowed": false,
+    "state": "HARD_GATE_BLOCKED",
+    "gap_count": 1,
+    "blocking_gate": "ABSOLUTE_MASS_CONSERVATION_AND_COMPLETE_MASS_ACCOUNTING"
+  },
+  "frozen_scope": {
+    "conceptual_contract": "advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1) -> result + candidate_state + diagnostics",
+    "includes": [
+      "one production kernel across standalone and production-admitted runtime compositions",
+      "kernel/I-O separation",
+      "explicit parameters/state/forcing/numerical-config/candidate/result/diagnostics/scratch separation",
+      "checkpoint-trial-retry-commit-rollback semantics",
+      "cheap replay from committed beginning state",
+      "generic [t0,t1] time",
+      "flexible coupling windows",
+      "hard water-mass conservation",
+      "trial/retry/predictor/corrector/fallback/restart mass isolation",
+      "explicit result and diagnostic ownership",
+      "soil-water solver-service composition",
+      "restart compatibility",
+      "standalone/MultiSWAP kernel consistency",
+      "current-canonical predictor-corrector transaction compatibility",
+      "typed groundwater exchange sign conservation",
+      "no hidden topology/scheduler/persistence ownership in the kernel"
+    ],
+    "excluded": [
+      "RossFast",
+      "energy balance",
+      "deep-vadose component",
+      "future alternate soil solvers beyond compatibility preservation",
+      "future physics",
+      "100k-column performance proof",
+      "Status AA",
+      "arbitrary MODFLOW application classes"
+    ]
+  },
+  "authority_reconstruction": {
+    "governance": [
+      {"authority": "F-RG01", "sha": "09ef05c60c5e45af218980001c8ad8ec30da2e9e"},
+      {"authority": "F-RG01A", "sha": "4553204468695553cf69a48d1c97598c471156d6"},
+      {"authority": "F-RG01C fixed-denominator completion model", "sha": "971e732551abad86acccfd5f01811d855e51e939"}
+    ],
+    "kernel_transaction_chain": [
+      {"scope": "F-KT01", "current_reconstructable_authority": "F-MQ12 admission", "sha": "e7248ef1813acf942fcae0f8d66c1b4409af4914"},
+      {"scope": "F-KT02-F-KT04", "current_reconstructable_authority": "F-RG01C D01 lineage plus downstream current-canonical source preservation", "note": "No live standalone work branch was inferred or invented."},
+      {"scope": "F-KT05 reusable checkpoints", "current_reconstructable_authority": "F-MQ20 admission", "sha": "06b45a139f649dbd92437d922fadfea9a00d660a"},
+      {"scope": "F-KT06 optional-state transaction composition", "current_reconstructable_authority": "F-MQ22 admission", "sha": "893c24732acabe4de4d1a0cd2835ab77cd3c253e"},
+      {"scope": "F-KT07-F-KT08", "current_reconstructable_authority": "F-RG01C D01 lineage plus downstream current-canonical source preservation", "note": "No live standalone work branch was inferred or invented."},
+      {"scope": "F-KT09 temporal certificate", "sha": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687"},
+      {"scope": "F-KT10 temporal/history commit composition", "sha": "d8e2ac874fc395d8831e995714af553cee47b08b"},
+      {"scope": "F-KT11 Richards head-budget certificate policy", "sha": "00a9924890d407758404413f99c982bb591b5367"},
+      {"scope": "F-KT12 generic committed-state restore", "sha": "a7fad31e392ab5b43d4db3eea5e18687e8d36bc6"},
+      {"scope": "F-KT13 external reconstruction", "sha": "66c2d682330c9637c6f0cbfbaca2a3ef755346ba"},
+      {"scope": "F-KT14 result/sensitivity transport owner history", "sha": "2f7995df362c65916671278a5552ed9976ed39b3", "note": "Owner closeout said exact-head CI was pending; current authority is supplied by later canonical admissions/preservation, not by owner status alone."},
+      {"scope": "F-KT15 production soil-water solver-service transaction composition", "sha": "48336cb7f14e9246b03c23e549fe7354a93f9e6b"},
+      {"scope": "F-KT15R current-canonical transaction composition", "recomposition_authority_sha": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0", "canonical_merge_sha": "9465be74c01fe6455466e5ba7f62a761986ad450"},
+      {"scope": "F-KT16 state/persistence/restart 100% authority", "sha": "37a91f16078badaa675235f1230d225a21c9e010", "tree": "3ddacee88898872ec4541b721b74cce63117bbed", "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE"}
+    ],
+    "runtime_and_coupling": [
+      {"authority": "F-MR42-R1 Serialized MultiSWAP v1 completion authority", "sha": "c70b3c7ad8267e7eb77b98cf142fa66e7e506cee", "qualification_note": "Its exact R1 run failed only fail-closed because canonical advanced from 699021ab95df35d44e9711612d9ce97939f0025e to c19a04721a05c6a00ba264e7477969807dcb258f; capability preservation is established by exact source/canonical comparison and the later current-canonical preservation gate."},
+      {"authority": "F-VQ64 independent predictor-corrector qualification", "sha": "466119889a3f09b33ede638322e897bded2472a3", "decision": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION"},
+      {"authority": "F-CI56 current canonical", "sha": "c19a04721a05c6a00ba264e7477969807dcb258f", "decision": "QUALIFIED_F_CI56_SOURCE_ADMISSION_FINALIZED"}
+    ]
+  },
+  "current_canonical_preservation": {
+    "result": "PRESERVATION_PROVEN_EXCEPT_NEWLY_SURFACED_PREEXISTING_MASS_HARD_GATE",
+    "exact_head_gate": {
+      "run_id": 34745966892,
+      "job_id": 103694059000,
+      "status": "SUCCESS",
+      "notable_pass_markers": [
+        "FCI49_MOVING_FKT15_SOLVER_SERVICE_TRANSACTION_COMPOSITION_PRESERVATION=PASS",
+        "FCI50_MOVING_FGC17_TYPED_GROUNDWATER_INTERFACE_PRESERVATION=PASS",
+        "restricted parallel v1 preservation=PASS"
+      ]
+    },
+    "classifications": [
+      {"change": "F-CI56 predictor-corrector/coupling runtime composition", "classification": "PRESERVATION_PROVEN", "basis": "Independent F-VQ64 plus current canonical source/admission evidence."},
+      {"change": "F-CI56 final metadata/status closeout from the already admitted source", "classification": "IRRELEVANT_TO_KERNEL_SCOPE", "basis": "No material production-kernel semantic change; exact-head broad preservation gate is green."},
+      {"change": "pre-existing D01 kernel transaction/runtime source carried into c19", "classification": "PRESERVATION_PROVEN", "basis": "Current canonical dependency locking/preservation passes and exact source was reviewed."},
+      {"change": "mass-accounting completeness acceptance semantics in current transaction core", "classification": "REQUALIFICATION_REQUIRED", "basis": "Current source is fail-open when accounting is explicitly marked incomplete; this is a hard frozen-v1 mass gate regardless of historical percentage."}
+    ]
+  },
+  "criteria": [
+    {"id": 1, "name": "One kernel", "status": "PASS", "evidence": "Standalone/runtime/coupling compose through the same canonical kernel executor; no second physics kernel found."},
+    {"id": 2, "name": "Kernel separate from I/O", "status": "PASS", "evidence": "Production kernel contracts reviewed at c19 contain no file/path/parser/unit-number or working-directory ownership."},
+    {"id": 3, "name": "Explicit data separation", "status": "PASS", "evidence": "Parameters, committed state, forcing, numerical config, candidate, result, diagnostics and solver workspace/scratch are distinct contracts."},
+    {"id": 4, "name": "Transaction semantics", "status": "PASS", "evidence": "Checkpoint/trial/retry/commit/rollback is explicit; retries clone checkpoint state; rejected candidates do not mutate committed physical state."},
+    {"id": 5, "name": "Cheap replay/recompute", "status": "PASS", "evidence": "Physical retries/correctors restart from committed/checkpoint origin; numerical warm-start data is non-physical."},
+    {"id": 6, "name": "Generic time", "status": "PASS", "evidence": "Canonical interval API and runtime use numeric t0/t1 and validate t1>t0; no core day/month/year or midnight execution assumption was found."},
+    {"id": 7, "name": "Flexible interval/coupling compatibility", "status": "PASS", "evidence": "F-VQ64 independently exercised unequal non-calendar windows and current predictor-corrector accepts generic [t0,t1]."},
+    {"id": 8, "name": "Mass conservation", "status": "FAIL", "evidence": "mod_transaction_reference accepts on residual tolerance without requiring mass_accounting_complete=true or missing_contribution_mask=0; mod_canonical_interval_runtime may therefore complete an interval with mass.complete=false; kernel_advance_interval materializes that completed result and kernel_commit_candidate has no mass-completeness admission check."},
+    {"id": 9, "name": "Trial mass semantics", "status": "PASS", "evidence": "Rejected trials/retries stay private; accepted-substep aggregation excludes rejected mass; predictor is rolled back and corrector restarts from checkpoint; F-KT16 covers restart continuation. Criterion 8 remains the separate completeness gate."},
+    {"id": 10, "name": "Canonical result ownership", "status": "PASS", "evidence": "Result exposes storage start/end/change, total in/out, residual, completeness and missing-contribution mask; the defect is enforcement, not hidden information."},
+    {"id": 11, "name": "Diagnostics", "status": "PASS", "evidence": "Current diagnostics expose transaction calls, attempts, retries, rollback, rejection causes, nonlinear/work counters, residual extrema, interval status and coupling failure-stage/route information."},
+    {"id": 12, "name": "Solver-service composition", "status": "PASS", "evidence": "F-KT15/F-KT15R and current exact-head preservation keep transaction ownership and solver workspace separation; no HeadCalc internals leak into the kernel contract."},
+    {"id": 13, "name": "State/restart consistency", "status": "PASS", "evidence": "F-KT16 100% state/persistence/restart authority remains compatible with checkpoint/candidate ownership."},
+    {"id": 14, "name": "MultiSWAP consistency", "status": "PASS", "evidence": "Serialized MultiSWAP completion authority plus current-canonical preservation and restricted-parallel dependency locking show the same kernel semantics."},
+    {"id": 15, "name": "Coupling transaction compatibility", "status": "PASS", "evidence": "F-VQ64/current source show predictor rollback, corrector rerun from the same checkpoint, failure rollback and one publication/commit boundary without predictor mass double counting."},
+    {"id": 16, "name": "Groundwater exchange conservation", "status": "PASS", "evidence": "Current typed exchange contract and F-VQ64 verify q_groundwater = -q_swap and exact accepted whole-window interface ledger conservation."},
+    {"id": 17, "name": "No hidden ownership", "status": "PASS", "evidence": "MODFLOW topology, tile fractions, scheduler/worker assignment and persistence composition remain outside the kernel."}
+  ],
+  "architecture_invariants": [
+    {"id": 1, "status": "PASS"},
+    {"id": 2, "status": "PASS"},
+    {"id": 3, "status": "PASS"},
+    {"id": 5, "status": "PASS"},
+    {"id": 7, "status": "PASS"},
+    {"id": 8, "status": "PASS"},
+    {"id": 9, "status": "PASS"},
+    {"id": 10, "status": "PASS"},
+    {"id": 11, "status": "PASS"},
+    {"id": 13, "status": "FAIL", "reason": "Current generic transaction admission can accept incomplete mass accounting when the residual of known terms is within tolerance."},
+    {"id": 15, "status": "PASS"},
+    {"id": 16, "status": "PASS"},
+    {"id": 23, "status": "PASS"},
+    {"id": 24, "status": "PASS"},
+    {"id": 25, "status": "PASS"},
+    {"id": 26, "status": "PASS"},
+    {"id": 28, "status": "PASS"},
+    {"id": 29, "status": "PASS"},
+    {"id": 30, "status": "PASS", "note": "The current change set and current-canonical preservation were explicitly audited; the overall architecture set is nevertheless not fully satisfied because invariant 13 fails."}
+  ],
+  "gaps": [
+    {
+      "id": "F-KT17-G01",
+      "primary_classification": "MASS_GAP",
+      "secondary_classification": "IMPLEMENTATION_GAP",
+      "requirement": "Every accepted/committed interval must have complete auditable water-mass accounting and close within the qualified numerical tolerance. Incomplete accounting must never be accepted merely because the residual of the known subset is small.",
+      "evidence": [
+        "src/transaction/mod_transaction_reference.f90@c19a047: mass_ok is derived from abs(residual)<=mass_tolerance but does not require outcome%mass_accounting_complete or a zero missing-contribution mask before TX_STATUS_ACCEPTED.",
+        "src/runtime/mod_canonical_interval_runtime.f90@c19a047: accepted trial state is moved into working state; incomplete mass only marks aggregate mass.complete=false and does not prevent result.completed=true.",
+        "src/kernel/mod_kernel_transactions.f90@c19a047: every completed runtime result can materialize a candidate; kernel_commit_candidate validates provenance/time/revision but not mass completeness."
+      ],
+      "exact_deficiency": "The generic production transaction path is fail-open for explicitly incomplete mass ledgers. A candidate can be physically accepted and explicitly committed although result.mass.complete=false, provided the residual computed from available terms lies inside tolerance.",
+      "owner": "Kernel transaction core, primarily src/transaction/mod_transaction_reference.f90",
+      "minimal_remediation": [
+        "Make transaction mass acceptance require mass_accounting_complete=true.",
+        "Require mass_missing_contribution_mask=0 for acceptance.",
+        "Retain the existing residual-tolerance test as an additional, not substitute, condition.",
+        "Treat incomplete/missing accounting as a mass rejection so retry/rollback remains on the existing bounded transaction path.",
+        "Add regression tests proving zero-residual-but-incomplete accounting cannot accept or mutate committed state, repeated retries cannot accumulate physical state, complete accounting still accepts, and fallback/coupling/restart preservation remains green."
+      ],
+      "dependencies": [
+        "F-KT15/F-KT15R solver-service preservation",
+        "F-KT16 restart preservation",
+        "Serialized MultiSWAP preservation",
+        "F-VQ64 predictor-corrector preservation",
+        "current-canonical exact-head admission gate"
+      ],
+      "production_source_change_required_for_closure": true,
+      "scope_expansion_required": false
+    }
+  ],
+  "hard_gates": {
+    "rejected_trial_mutates_committed_state": "CLOSED",
+    "accepted_result_lacks_complete_auditable_mass_terms": "OPEN_F_KT17_G01",
+    "fallback_can_lose_water": "NOT_PROVEN_AS_A_SEPARATE_GAP; blocked generically by F-KT17-G01 until complete-accounting admission is fail-closed",
+    "rollback_incomplete": "CLOSED",
+    "hidden_calendar_assumption": "CLOSED",
+    "kernel_production_file_io": "CLOSED",
+    "solver_service_bypasses_transaction_ownership": "CLOSED",
+    "current_coupling_double_counts_or_loses_interface_mass": "CLOSED",
+    "current_canonical_material_source_delta_without_preservation": "CLOSED",
+    "standalone_runtime_semantically_different_kernels": "CLOSED"
+  },
+  "f_kt17_changes": {
+    "production_source_changes": false,
+    "physics_changes": false,
+    "denominator_changes": false,
+    "purpose": "audit evidence only"
+  },
+  "shortest_dependency_ordered_closure_route": [
+    "F-KT18: fail-closed mass-completeness admission in the existing transaction core, with no API redesign unless qualification proves it unavoidable.",
+    "Run focused transaction regressions including incomplete-ledger, rollback/retry and complete-ledger acceptance tests.",
+    "Re-run F-KT15, F-KT16, Serialized MultiSWAP and current predictor-corrector preservation gates affected by the transaction source change.",
+    "Obtain independent qualification and canonical admission on the then-current integration/f-ci-canonical head.",
+    "Only then issue QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE and restore D01 as qualified 8/8 under F-RG01."
+  ],
+  "next_workunit": {
+    "recommended": "F-KT18",
+    "namespace_rechecked_free_on": "2026-09-13",
+    "scope": "Mass completeness fail-closed admission closure only"
+  }
+}
