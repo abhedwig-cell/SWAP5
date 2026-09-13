@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.fmr43.status.v1",
+  "work_unit": "F-MR43",
+  "branch": "work/f-mr43-atomic-surface-evaporation-accepted-publication",
+  "phase": "OWNER_QUALIFIED_INDEPENDENT_QUALIFICATION_REQUIRED",
+  "decision": "OWNER_QUALIFIED_ATOMIC_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION",
+  "production_blob": "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90@f0f3ce5c16a66c2058c22a529e176d6b06446649",
+  "owner_gate": {
+    "run_id": 34779812146,
+    "job_id": 103784629882,
+    "conclusion": "success"
+  },
+  "prior_routes": {
+    "F_KT20": "OWNER_QUALIFIED_BUT_NOT_INDEPENDENTLY_QUALIFIED_AND_NOT_USED_BY_FMR43",
+    "F_VQ70": "NEGATIVE_QUALIFICATION_CONFIRMED_EXECUTION_DOMAIN_COLLISION_RISK",
+    "disposition": "F-MR43 deliberately restarts from F-PM10 before F-KT20 and closes result substitution by atomic runtime composition instead of global executor identity."
+  },
+  "qualification_state": {
+    "implemented": true,
+    "owner_tested": true,
+    "owner_qualified": true,
+    "independently_qualified": false,
+    "canonically_admitted": false,
+    "f_pm09_g01_owner_remediation_candidate_available": true
+  },
+  "scope_guards": {
+    "kernel_changed": false,
+    "process_physics_changed": false,
+    "solver_changed": false,
+    "mass_booking_changed": false,
+    "persistent_state_schema_changed": false,
+    "restart_schema_changed": false,
+    "reference_source_changed": false,
+    "canonical_changed": false
+  },
+  "open": [
+    "independent qualification of the atomic accepted-publication seam",
+    "current-canonical recomposition and canonical admission after independent qualification",
+    "rerun the fixed-denominator F-PM09 completion audit after canonical admission"
+  ],
+  "terminal_marker": "FMR43_OWNER_QUALIFIED_ATOMIC_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION"
+}
