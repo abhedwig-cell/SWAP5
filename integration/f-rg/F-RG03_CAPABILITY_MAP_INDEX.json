@@ -1,1 +1,7 @@
-{"work_unit":"F-RG03","schema":"capability_map_v1","parts":["part01","part02","part03","part04","part05","part06","part07","part08","part09"]}
+{
+  "work_unit":"F-RG03",
+  "schema":"capability_map_v1",
+  "parts":["F-RG03_CAPABILITY_MAP_PART01.json","F-RG03_CAPABILITY_MAP_PART02.json","F-RG03_CAPABILITY_MAP_PART03.json","F-RG03_CAPABILITY_MAP_PART04.json"],
+  "required_fields":["id","frozen_weight","current_maturity","completion_percent","classification","definitive_authority_sha","definitive_authority_tree","canonical_admitted","independent_qualification","hard_blockers","owner","next_closure_action","production_source_ownership"],
+  "status_classes":["100_PERCENT_QUALIFIED","QUALIFIED_NOT_100_PERCENT","IMPLEMENTED_NOT_INDEPENDENTLY_QUALIFIED","CONTRACT_ONLY_NOT_IMPLEMENTED","RESEARCH_ONLY","OUTSIDE_FROZEN_V1"]
+}
