@@ -1,0 +1,67 @@
+{
+  "all_pass": true,
+  "decision": "QUALIFIED_ADDITIONAL_D2_FAIL_CLOSED_SLICE",
+  "probes": [
+    {
+      "actual_classification": "TOP_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "candidate_published": false,
+      "committed_state_unchanged": true,
+      "expected_classification": "TOP_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "failure_stage": "worker_pretrial",
+      "name": "prescribed_top_flux_outside_declared_envelope",
+      "pass": true
+    },
+    {
+      "actual_classification": "BOTTOM_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "candidate_published": false,
+      "committed_state_unchanged": true,
+      "expected_classification": "BOTTOM_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "failure_stage": "worker_pretrial",
+      "name": "prescribed_qbot_outside_declared_envelope",
+      "pass": true
+    },
+    {
+      "actual_classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "expected_classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "name": "required_terminal_tangent_unavailable_non_smooth",
+      "pass": true,
+      "whole_window_authority_after_gate": false
+    },
+    {
+      "actual_classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "expected_classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "name": "required_terminal_tangent_nonfinite_invalid",
+      "pass": true,
+      "whole_window_authority_after_gate": false
+    },
+    {
+      "actual_classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "expected_classification": "LOCAL_TERMINAL_TANGENT_UNAVAILABLE_OR_INVALID",
+      "name": "terminal_tangent_wrong_scope_cannot_be_relabelled",
+      "pass": true,
+      "whole_window_authority_after_gate": false
+    },
+    {
+      "forbidden_process_view_keys_present": [],
+      "name": "process_view_and_scratch_separation",
+      "pass": true,
+      "result_contains_factorization_payload": false,
+      "scratch_persistent": false,
+      "whole_window_authority": false
+    }
+  ],
+  "qualification_slice": "ADDITIONAL_FAIL_CLOSED_AND_PROCESS_VIEW",
+  "schema_version": 1,
+  "semantic_nonclaims_preserved": {
+    "canonical_interface_sensitivity": false,
+    "production_admission": false,
+    "production_modflow_coupling": false,
+    "true_whole_window_derivative": false
+  },
+  "work_unit": "F-ROSS01 D2",
+  "workflow": {
+    "job": "additional-fail-closed",
+    "run_id": "34787695783",
+    "trigger_sha": "dadd46acfadea69278bbe2a81e42828fd4e75af7"
+  }
+}
