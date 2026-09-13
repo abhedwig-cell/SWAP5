@@ -1,0 +1,60 @@
+{
+  "workunit": "F-VQ66",
+  "title": "SWAP5 F-KT18 Fail-Closed Mass Completeness Transaction Admission Independent Requalification",
+  "qualification_identity": "SEPARATE_INDEPENDENT_VERIFIER",
+  "numbering": {
+    "highest_existing_f_vq_at_start": 65,
+    "chosen_first_free_number": 66,
+    "existing_f_vq_reused": false,
+    "note": "F-VQ65 already exists for the same owner topic; this workunit deliberately uses the next free identity and does not consume F-VQ65 results as qualification evidence."
+  },
+  "finding_authority": {
+    "sha": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+    "tree": "fbf1fe0b6cc853de5ce375830a98251753a598b3",
+    "finding": "F-KT17-G01",
+    "primary_class": "MASS_GAP",
+    "secondary_class": "IMPLEMENTATION_GAP"
+  },
+  "immutable_owner_candidate": {
+    "owner_branch": "work/f-kt18-fail-closed-mass-completeness-transaction-admission",
+    "owner_closeout_sha": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+    "qualified_candidate_source_sha": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+    "qualified_candidate_tree": "47826cb69e04c46b8739bcf953ac26db80b5ff3e",
+    "production_remediation_sha": "29af8fa9b62f3b87fe8703f2a1726ba8daad1b44",
+    "transaction_source_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "qualification_branch": "qualification/f-vq66-fkt18-fail-closed-mass-completeness-independent-requalification",
+  "qualification_branch_base": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+  "current_canonical_observed_at_preregistration": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "transaction_source_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "compatibility_must_be_rechecked_before_closeout": true
+  },
+  "independence": {
+    "owner_test_results_are_qualification_evidence": false,
+    "prior_f_vq65_results_are_qualification_evidence": false,
+    "source_inspection_is_independent": true,
+    "new_attack_harness_required": true
+  },
+  "production_source_change_allowed": false,
+  "reference_source_change_allowed": false,
+  "hard_gates": [
+    "incomplete accounting must never accept",
+    "nonzero missing-contribution mask must never accept",
+    "nonfinite relevant mass accounting must never accept",
+    "residual tolerance is necessary but never sufficient",
+    "rejected trial must leave committed physical state bit-identical",
+    "retries must not physically accumulate",
+    "retry exhaustion must fail closed",
+    "incomplete accounting must not materialize an accepted transaction candidate",
+    "normal complete-ledger execution must remain accepted",
+    "alternative solver/service-style incomplete accounting must reject",
+    "required transaction/restart/MultiSWAP/parallel/coupling preservation must remain green"
+  ],
+  "required_build_modes": ["GNU Fortran O0", "GNU Fortran O2"],
+  "kernel_100_percent_claim_allowed_in_this_workunit": false,
+  "success_decision": "QUALIFIED_FKT18_FAIL_CLOSED_MASS_COMPLETENESS_TRANSACTION_ADMISSION",
+  "success_recommendation": "READY_FOR_CANONICAL_ADMISSION"
+}
