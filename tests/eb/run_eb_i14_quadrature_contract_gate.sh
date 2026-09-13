@@ -95,10 +95,20 @@ print('EB_I14_EXACT_ZERO_BRANCH_REQUIRED=PASS')
 print('EB_I14_RIGHT_ENDPOINT_REFINEMENT_CHARACTERIZED=PASS')
 PY
 
-allowed='^(tests/eb/EB-I14_CONTRACT\.md|tests/eb/EB-I14_ARCHITECTURE_AUDIT\.json|tests/eb/EB-I14_STATUS\.json|tests/eb/EB-I14_CLOSURE\.md|tests/eb/run_eb_i14_quadrature_contract_gate\.sh|\.github/workflows/eb-i14-contract\.yml)$'
 while IFS= read -r path; do
   [[ -z "$path" ]] && continue
-  [[ "$path" =~ $allowed ]] || fail "unexpected design-freeze delta: $path"
+  case "$path" in
+    tests/eb/EB-I14_CONTRACT.md|\
+    tests/eb/EB-I14_ARCHITECTURE_AUDIT.json|\
+    tests/eb/EB-I14_STATUS.json|\
+    tests/eb/EB-I14_CLOSURE.md|\
+    tests/eb/run_eb_i14_quadrature_contract_gate.sh|\
+    .github/workflows/eb-i14-contract.yml)
+      ;;
+    *)
+      fail "unexpected design-freeze delta: $path"
+      ;;
+  esac
 done < <(git diff --name-only "$BASE"..HEAD)
 
 echo 'EB_I14_NO_PRODUCTION_DELTA=PASS'
