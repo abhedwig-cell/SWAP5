@@ -1,0 +1,24 @@
+name: EB-I14 bottom advective energy quadrature contract
+
+on:
+  push:
+    branches:
+      - work/eb-i14-bottom-advective-energy-quadrature-contract
+  workflow_dispatch:
+
+jobs:
+  qualify-eb-i14:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I14_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I14_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: EB-I14 quadrature contract gate
+        run: bash tests/eb/run_eb_i14_quadrature_contract_gate.sh
+      - name: Scope whitespace check
+        run: git diff --check c3458c3df0428de0f2500e211391122c64c2de33..HEAD
