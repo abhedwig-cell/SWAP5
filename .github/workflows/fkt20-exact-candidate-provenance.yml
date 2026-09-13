@@ -1,0 +1,16 @@
+name: F-KT20 exact candidate provenance
+on:
+  push:
+    branches: [work/f-kt20-exact-candidate-attempt-provenance]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fkt/run_fkt20_exact_candidate_attempt_provenance.sh
