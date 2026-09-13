@@ -1,0 +1,50 @@
+name: F-CI58P F-SI35 postimage reconciliation and preservation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci58p-fsi35-current-canonical-postimage-reconciliation
+      - integration/f-ci-canonical
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fci/run_fci58p_fsi35_current_canonical_postimage_reconciliation.sh'
+      - 'integration/f-ci/F-CI58P_*.json'
+      - 'integration/f-si/F-SI35_FINAL_COMPLETION.json'
+      - '.github/workflows/fci58p-fsi35-postimage-reconciliation.yml'
+
+jobs:
+  fsi35-permanent-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Preserve mandatory typed solver seam and HeadCalc isolation
+        shell: bash
+        env:
+          FCI58P_MODE: preservation
+        run: bash tests/fci/run_fci58p_fsi35_current_canonical_postimage_reconciliation.sh
+
+  fci58p-postimage-reconciliation:
+    if: github.ref_name == 'qualification/f-ci58p-fsi35-current-canonical-postimage-reconciliation' || github.head_ref == 'qualification/f-ci58p-fsi35-current-canonical-postimage-reconciliation'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconcile admitted F-SI35 source against current canonical postimage
+        shell: bash
+        env:
+          FCI58P_MODE: reconciliation
+          GH_TOKEN: ${{ github.token }}
+        run: bash tests/fci/run_fci58p_fsi35_current_canonical_postimage_reconciliation.sh
