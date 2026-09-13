@@ -1,0 +1,37 @@
+{
+  "work_unit": "EB-I17",
+  "title": "External Bottom Thermal Donor Provider Implementation",
+  "restart_authority": "work/eb-i16-external-bottom-thermal-donor-contract@0334f473cf1324b340faa5a36033047cf0266ebe",
+  "decision": "IMPLEMENTED_PENDING_EXACT_HEAD_QUALIFICATION",
+  "implemented": true,
+  "runtime_integrated": false,
+  "accepted_energy_publication": false,
+  "canonical_admission": false,
+  "production_files": [
+    "src/runtime/mod_fmr_external_bottom_thermal_donor.f90",
+    "src/runtime/mod_fmr_bottom_sensible_energy.f90"
+  ],
+  "qualified_target": [
+    "candidate-scoped external donor request and response seam",
+    "sample t1 current-reference quadrature point",
+    "candidate water transfer remains authoritative",
+    "complete, unavailable, stale and invalid response diagnostics",
+    "backward-compatible provider-free fail-closed evaluator",
+    "provider-aware complete inward sensible-energy evaluation",
+    "no provider calls for local or exact-zero samples",
+    "no extra physical solve and no persistent thermal history"
+  ],
+  "qualification_workflow": ".github/workflows/eb-i17-qualification.yml",
+  "hard_nonclaims": [
+    "automatic runtime invocation",
+    "accepted energy publication",
+    "energy restart ledger",
+    "source-specific groundwater temperature implementation",
+    "deep-vadose thermal implementation",
+    "governing thermal feedback",
+    "higher-order temporal accuracy",
+    "closed energy balance",
+    "canonical admission"
+  ],
+  "next_boundary": "Accepted energy commit and publication lifecycle with exact rollback, after this provider implementation is exact-head qualified."
+}
