@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.fpm10.status.v1",
+  "work_unit": "F-PM10",
+  "title": "Surface-Evaporation Accepted-Publication Provenance Remediation",
+  "branch": "work/f-pm10-surface-evaporation-publication-provenance-remediation",
+  "phase": "OWNER_QUALIFIED_G01_REMEDIATION_COMPLETE",
+  "decision": "OWNER_QUALIFIED_FPM09_G01_PROVENANCE_REMEDIATION",
+  "base_canonical": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "qualified_source_head": "6c9783f78b08b0c0ca4a6cb6b4069ca432fa95e3",
+  "source_blobs": {
+    "materialization": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "accepted_publication": "13d264cc905a0acf5082b9bfeba018e4ee25183e"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "owner_qualified": true,
+    "independently_qualified": false,
+    "canonically_admitted": false,
+    "owner_workunit_closed": true
+  },
+  "gap_disposition": {
+    "FPM09-G01": "CLOSED_AT_OWNER_QUALIFICATION_LEVEL",
+    "FPM09-G02": "OPEN_REQUIRES_INDEPENDENT_REQUALIFICATION_OF_REMEDIATED_SOURCE",
+    "FPM09-G03": "OPEN_REQUIRES_CANONICAL_ADMISSION_AFTER_G02"
+  },
+  "preservation": {
+    "surface_evaporation_physics_changed": false,
+    "ET_changed": false,
+    "root_uptake_changed": false,
+    "capacity_changed": false,
+    "solver_changed": false,
+    "mass_booking_changed": false,
+    "reference_source_changed": false,
+    "existing_raw_materialization_entry_point_preserved": true
+  },
+  "owner_ci": {
+    "run_id": 34777736791,
+    "job_id": 103778827066,
+    "conclusion": "success",
+    "o0_o2_exact_identity": true,
+    "old_HN1_attack_rejected": true
+  },
+  "next_required_work": "Independent source-bound qualification on a separate F-VQ branch, followed only on PASS by canonical admission.",
+  "nonclaim": "This status is not independent qualification, not canonical admission, and not a claim that existing F-KT provenance defines a globally unique solver-attempt token.",
+  "terminal_marker": "FPM10_OWNER_QUALIFIED_FPM09_G01_PROVENANCE_REMEDIATION"
+}
