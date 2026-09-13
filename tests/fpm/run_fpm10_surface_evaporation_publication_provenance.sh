@@ -18,7 +18,7 @@ PROCESS=src/process/mod_restricted_surface_evaporation.f90
 # kernel, mass booking, solver code and reference source stay frozen.
 test "$(git merge-base "$BASE" HEAD)" = "$BASE" || fail 'branch no longer descends from F-PM09 current-canonical authority'
 mapfile -t src_delta < <(git diff --name-only "$BASE"..HEAD -- src | sort)
-expected=("$MATERIALIZER" "$PUBLICATION")
+expected=("$PUBLICATION" "$MATERIALIZER")
 [[ "${src_delta[*]}" == "${expected[*]}" ]] || fail "unexpected src delta: ${src_delta[*]:-none}"
 git diff --quiet "$BASE"..HEAD -- reference || fail 'reference source changed'
 test "$(git rev-parse HEAD:$PROCESS)" = a213af4deec2fe854d79120899827852a57237d1 || fail 'restricted surface-evaporation physics drift'
