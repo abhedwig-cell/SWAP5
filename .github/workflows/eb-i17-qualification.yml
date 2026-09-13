@@ -1,0 +1,60 @@
+name: EB-I17 external donor provider qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i17-external-bottom-thermal-donor-implementation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-eb-i17:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout tested head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested head identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "EB_I17_TESTED_HEAD=${GITHUB_SHA}"
+          echo "EB_I17_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Compiler identity
+        run: gfortran --version | head -n 1
+
+      - name: EB-I17 provider implementation gate
+        run: bash tests/eb/run_eb_i17_external_bottom_thermal_donor_gate.sh
+
+      - name: EB-I16 exact-base contract preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=0334f473cf1324b340faa5a36033047cf0266ebe
+          workdir="$(mktemp -d)"
+          rmdir "$workdir"
+          git worktree add --detach "$workdir" "$BASE"
+          (
+            cd "$workdir"
+            bash tests/eb/run_eb_i16_external_donor_contract_gate.sh
+          )
+          git worktree remove --force "$workdir"
+
+      - name: FPM08D7 runtime compile preservation
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+
+      - name: FPM08D7 transactional owner preservation
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+
+      - name: FPM08D7 restart owner preservation
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+
+      - name: Scope whitespace check
+        run: git diff --check 0334f473cf1324b340faa5a36033047cf0266ebe..HEAD
