@@ -1,0 +1,59 @@
+{
+  "work_unit":"F-RG03",
+  "policy":"parallel where ownership disjoint, serial where semantics shared",
+  "start_authority":{"canonical_sha":"379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b","canonical_tree":"556221f62b4fde616981499eba68ef5460f5d83c"},
+  "primary_lanes":[
+    {
+      "lane":"L1_MACROPORE_PRODUCTION",
+      "recommended_workunit":"F-SI36",
+      "goal":"close O02 required macropore production coverage without changing unrelated soil-water physics or frozen denominator",
+      "owner":"macropore physical option",
+      "contract_ownership":["macropore option state/parameters/process binding"],
+      "allowed_source_changes":["dedicated macropore production implementation and bindings","macropore tests and qualification evidence"],
+      "forbidden_overlap":["common soil-water solver seam","transaction lifecycle","mass authority","groundwater coupling contracts","RossFast research contract"],
+      "exit_gate":"implemented, owner-qualified, independently qualified, canonical admitted and preserved with hard mass conservation",
+      "dependencies":["current canonical","F-SI15 contract authority"]
+    },
+    {
+      "lane":"L2_BOUNDED_COST_AND_BATCH_ISOLATION",
+      "recommended_workunit":"F-PE12",
+      "goal":"close PF02 and advance M12/PF03 with bounded-cost fallback policy and production-scale problem-column isolation evidence",
+      "owner":"numerical execution policy and performance runtime",
+      "contract_ownership":["execution policy","retry/fallback cost bounds","batch scheduling diagnostics","optional explicit numerical temporal-acceptance policy"],
+      "allowed_source_changes":["execution-policy/scheduling modules","diagnostics","performance qualification harnesses"],
+      "forbidden_overlap":["physics semantics","macropore physics","groundwater interface/coupler semantics","mass conservation rules","Full Richards reference semantics"],
+      "exit_gate":"hard mass preserved, reference deviations bounded and diagnosed, costs bounded, production-scale tail isolation independently qualified; any temporal policy selected explicitly and separately from physics",
+      "dependencies":["reference mode remains available","current canonical"]
+    },
+    {
+      "lane":"L3_DIRECT_GROUNDWATER_COMPOSITION",
+      "recommended_workunit":"F-GC24",
+      "goal":"advance G05 to an end-to-end direct-groundwater production composition using already admitted G01-G04 contracts",
+      "owner":"runtime/coupler composition",
+      "contract_ownership":["tile aggregation composition","aquifer/MODFLOW adapter composition","coupling-window convergence orchestration"],
+      "allowed_source_changes":["groundwater coupler/runtime composition modules","coupling-specific tests and diagnostics"],
+      "forbidden_overlap":["G01-G04 semantic redefinition","kernel transaction semantics","mass authority","soil-water solver internals","performance-policy ownership"],
+      "exit_gate":"end-to-end exact exchange mass, bounded head residual, generic coupling window, independent qualification, canonical admission and preservation",
+      "dependencies":["G01-G04 frozen/admitted","current canonical"]
+    },
+    {
+      "lane":"L4_PROGRAM_EVIDENCE_TESTBANK_STATUS_A",
+      "recommended_workunits":["F-TB11","F-DOC20"],
+      "goal":"advance permanent integrated testbank and exact-current scientific/Status-A evidence without owning production semantics",
+      "owner":"program evidence governance",
+      "contract_ownership":["testbank evidence","documentation reconciliation","Status-A readiness evidence"],
+      "allowed_source_changes":["tests","docs","evidence registries","validation tooling","governance metadata"],
+      "forbidden_overlap":["production physics","numerical policy definition owned by L2","groundwater coupler source","macropore production source"],
+      "exit_gate":"T02 current-reconciled; T03 qualified only after consuming an owner-qualified temporal policy; DOC02 current-reconciled; Status-A backlog reduced only by evidence-backed CLOSED/SATISFIED rows",
+      "dependencies":["F-TB09","F-TB10 blocked authority","F-DOC15 R1","F-DOC16","F-DOC18","L2 if T03 temporal policy remains absent"]
+    }
+  ],
+  "parallel_allowed":[["L1","L2"],["L1","L3"],["L1","L4"],["L2","L3"],["L2","L4 evidence work not defining numerical policy"],["L3","L4"]],
+  "must_serialize":["any two workunits that need the same production contract or file ownership","L2 numerical temporal-policy definition before L4 TB10/T03 scientific qualification consumes it","any change to G01-G04 before or during L3 requires stop and rebaseline","canonical admissions from parallel lanes must be recomposed and requalified one at a time against then-current canonical"],
+  "isolated_research":[
+    {"track":"RossFast","classification":"RESEARCH_ONLY","v1_weight":0.0,"rule":"remain behind frozen F-SI31 research contract; no acceptance/commit/publication authority; no production contract ownership"},
+    {"track":"Energy balance","classification":"OUTSIDE_FROZEN_V1_RESEARCH","v1_weight":0.0,"rule":"research may continue independently; no v1 denominator credit or production integration without explicit governance decision"}
+  ],
+  "rebaseline_cycle":"rebaseline -> parallel execute -> qualify/admit -> rebaseline",
+  "return_to_regie_when":["after approximately 4-6 substantive closeouts","immediately on ownership conflict","immediately on denominator/scope conflict","after a major canonical architecture admission"]
+}
