@@ -35,6 +35,7 @@ MODULE_SRC=(
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   tests/fpm/mod_fpm08d7_optional_state_compat.f90
+  src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
