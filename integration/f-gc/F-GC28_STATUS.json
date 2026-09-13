@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC28",
+  "title": "Groundwater Coupling v1 Current-Canonical Completeness, Architecture Closure & Final Gap Audit",
+  "branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+  "decision": "GROUNDWATER_COUPLING_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "qualified_100_percent_complete": false,
+  "production_source_changed": false,
+  "production_physics_changed": false,
+  "denominator_changed": false,
+  "numbering": {
+    "highest_live_implemented_owner_workunit_seen_before_audit": "F-GC22",
+    "semantically_reserved_by_qualified_F_GC16": ["F-GC23", "F-GC24", "F-GC25", "F-GC26", "F-GC27"],
+    "selected_first_non_conflicting_number": "F-GC28",
+    "reason": "F-GC23 through F-GC27 already carry qualified semantic ownership in F-GC16, F-CI56 and/or the later F-RG03 execution plan and were not treated as truly free merely because no same-number branch existed."
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "program_authority": {
+    "branch": "regie/f-rg03-post-ci59p-program-rebaseline",
+    "sha": "aac2644149dda47282a25a39892c6dc808323dd0",
+    "tree": "922f6f6bd9acf700d9d39a2aa5007597f3891b03",
+    "fixed_denominator_sha": "56b86e29e0960e396059caf47c193440d571b709",
+    "fixed_denominator_tree": "088bfe72e42ecbad5de12a823af82743a1854c5c"
+  },
+  "frozen_domain": {
+    "id": "D13",
+    "name": "Groundwater interface and coupling",
+    "F_RG03_snapshot_percent": 82.0,
+    "score_recomputed_by_F_GC28": false,
+    "primary_capabilities": {
+      "G01": "PRESERVATION_PROVEN_100_PERCENT",
+      "G02": "PRESERVATION_PROVEN_100_PERCENT",
+      "G03": "PRESERVATION_PROVEN_100_PERCENT",
+      "G04": "PRESERVATION_PROVEN_100_PERCENT",
+      "G05": "CONTRACT_ONLY_NOT_IMPLEMENTED"
+    }
+  },
+  "definitive_evidence": {
+    "F_GC16": {
+      "sha": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+      "decision": "QUALIFIED_RESTRICTED_PRODUCTION_GROUNDWATER_COUPLING_COMPOSITION_PLAN_READY_FOR_IMPLEMENTATION"
+    },
+    "F_CI56_G04": {
+      "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+      "tree": "5342833575484452b34606f8854ff3f5a542e452",
+      "canonical_admission": true,
+      "independent_qualification": true,
+      "production_groundwater_coupling_admission": false
+    },
+    "F_GC20": {
+      "sha": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "tree": "259516aebdc7953ad04e6fb928c31a01e9556815",
+      "qualified": true,
+      "canonical_admission": false,
+      "production_source_present_on_audited_current_canonical": false
+    },
+    "F_GC22": {
+      "sha": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "tree": "3acc6bb6341df0bac3db36c082b501caca14a30e",
+      "qualified": true,
+      "canonical_admission": false,
+      "production_source_present_on_audited_current_canonical": false
+    },
+    "F_KT16": {
+      "sha": "37a91f16078badaa675235f1230d225a21c9e010",
+      "tree": "3ddacee88898872ec4541b721b74cce63117bbed",
+      "scope": "generic state persistence restart authority; not a substitute for coupling-specific restart composition"
+    }
+  },
+  "current_canonical_source_blobs": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "f3bf2effebc772b1e3417232d2baabe49ebb8da0",
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90": "649b3587a730d2ae3b0e3b8a512fadc216e202f6",
+    "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230"
+  },
+  "completion_dimensions": {
+    "typed_interface": "PASS",
+    "H_q_contract": "PASS",
+    "transactional_exchange": "PASS",
+    "two_phase_commit": "PASS_RESTRICTED_IN_PROCESS_SCOPE",
+    "accepted_exchange_provenance": "PASS",
+    "mass_ledger": "PASS_G01_G04_END_TO_END_G05_PROOF_PENDING",
+    "predictor_corrector": "PASS",
+    "generic_coupling_window": "PASS",
+    "application_accuracy": "PASS_CONTRACT_LEVEL",
+    "temporal_accuracy_binding": "FAIL_CURRENT_CANONICAL_COMPOSITION",
+    "MultiSWAP_composition": "FAIL",
+    "tile_aggregation": "FAIL_CURRENT_CANONICAL_COMPOSITION",
+    "no_forced_one_to_one_mapping": "PASS_ARCHITECTURE",
+    "deep_vadose_compatibility": "PASS_ARCHITECTURE",
+    "solver_isolation": "PASS",
+    "interface_sensitivity": "FAIL_WHOLE_WINDOW_PRODUCTION_COMPOSITION",
+    "bounded_coupling_cost_architecture": "PASS",
+    "diagnostics": "FAIL_COMPLETE_END_TO_END_CONTEXT",
+    "restart": "FAIL_COUPLING_SPECIFIC_COMPOSITION",
+    "current_canonical_preservation": "FAIL_OVERALL_G01_G04_ONLY_PROVEN"
+  },
+  "hard_blockers": [
+    {
+      "id": "G05_END_TO_END_DIRECT_GROUNDWATER_COMPOSITION",
+      "frozen_requirement": "Restricted direct-groundwater production composition spanning qualified tile aggregation, application/temporal binding, accepted whole-window response tangent, coupling restart/replay, MultiSWAP execution/diagnostics and external aquifer adapter conformance, followed by independent qualification and canonical admission.",
+      "evidence": [
+        "F-RG03 G05 = CONTRACT_ONLY_NOT_IMPLEMENTED",
+        "F-CI56 explicitly makes no full production direct-groundwater/MODFLOW end-to-end admission",
+        "F-CI56 explicitly makes no F-GC20 tile composition admission",
+        "F-CI56 explicitly makes no F-GC22 application-temporal composition admission",
+        "F-CI56 explicitly makes no F-GC23 response-tangent composition admission",
+        "F-GC20 and F-GC22 production sources are absent from audited current canonical",
+        "no current-canonical groundwater/aquifer adapter exists under src/adapter"
+      ],
+      "why_blocker": "The capability remains in the fixed frozen denominator and has neither end-to-end implementation nor independent qualification/canonical admission. Removing it would be scope reduction.",
+      "owner": "groundwater coupler/runtime composition",
+      "production_source_change": true,
+      "production_physics_change": false,
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true,
+      "dependencies": ["G01", "G02", "G03", "G04"]
+    }
+  ],
+  "technical_closure_obligations": [
+    {
+      "order": 1,
+      "gap_classes": ["SENSITIVITY_GAP", "IMPLEMENTATION_GAP"],
+      "owner": "F-GC23",
+      "requirement": "accepted whole-window response tangent and one-corrector composition",
+      "production_source_change": "YES_IF_EXISTING_QUALIFIED_SOLVER_SEMANTICS_CAN_BE_COMPOSED_WITHOUT_CROSS_OWNER_CONTRACT_CHANGE",
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true
+    },
+    {
+      "order": 2,
+      "gap_classes": ["TILE_AGGREGATION_GAP", "CANONICAL_ADMISSION_GAP", "PRESERVATION_GAP"],
+      "owner": "G05 coupler composition consuming F-GC20",
+      "requirement": "compose qualified multi-tile area-weighted exact-mass primitive into current production path",
+      "production_source_change": true,
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true
+    },
+    {
+      "order": 3,
+      "gap_classes": ["TEMPORAL_ACCURACY_GAP", "CANONICAL_ADMISSION_GAP", "PRESERVATION_GAP"],
+      "owner": "G05 coupler composition consuming F-GC22",
+      "requirement": "compose application/temporal accuracy binding without universal numeric defaults",
+      "production_source_change": true,
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true
+    },
+    {
+      "order": 4,
+      "gap_classes": ["RESTART_GAP", "IMPLEMENTATION_GAP"],
+      "owner": "G05 coupling runtime",
+      "requirement": "accepted-boundary restart/split-run/replay with no prepared/rejected transfer leakage",
+      "production_source_change": true,
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true
+    },
+    {
+      "order": 5,
+      "gap_classes": ["MULTISWAP_GAP", "DIAGNOSTICS_GAP", "IMPLEMENTATION_GAP"],
+      "owner": "G05 coupling runtime",
+      "requirement": "MultiSWAP direct-groundwater execution, deterministic aggregation, transaction isolation and full coupling-window diagnostics",
+      "production_source_change": true,
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true
+    },
+    {
+      "order": 6,
+      "gap_classes": ["INTERFACE_CONTRACT_GAP", "IMPLEMENTATION_GAP", "QUALIFICATION_GAP", "CANONICAL_ADMISSION_GAP"],
+      "owner": "G05 external aquifer adapter/end-to-end composition",
+      "requirement": "restricted external groundwater/MODFLOW adapter conformance plus end-to-end exact-mass and bounded-head production admission",
+      "production_source_change": true,
+      "independent_qualification_needed": true,
+      "canonical_admission_needed": true
+    }
+  ],
+  "gap_accounting": {
+    "primary_frozen_denominator_hard_gap_count": 1,
+    "technical_closure_obligation_count_within_primary_gap": 6,
+    "documentation_only_primary_gaps": 0,
+    "source_change_required_for_full_closure": true,
+    "independent_qualification_required_for_full_closure": true,
+    "canonical_admission_required_for_full_closure": true
+  },
+  "minimal_closure_route": [
+    "preserve G01-G04 without semantic change",
+    "close F-GC23 accepted whole-window response tangent composition or record cross-owner solver dependency",
+    "use F-RG03 G05/F-GC24 integration lane to compose F-GC20 tile and F-GC22 temporal/application capabilities with the tangent path",
+    "qualify coupling-specific restart/replay, MultiSWAP execution and complete diagnostics",
+    "qualify external aquifer/MODFLOW adapter conformance and restricted end-to-end production path",
+    "perform independent qualification",
+    "perform F-CI current-canonical admission and post-admission preservation",
+    "update next F-RG rebaseline only after evidence is complete"
+  ],
+  "architecture_audit": {
+    "artifact": "integration/f-gc/F-GC28_ARCHITECTURE_AUDIT.json",
+    "all_30_checked": true,
+    "adverse_delta_introduced_by_F_GC28": false,
+    "completion_relevant_partial_invariants": [11, 13, 14, 16, 17, 26, 28]
+  },
+  "next_bounded_closure_prompt": "integration/f-gc/F-GC28_NEXT_CLOSURE_PROMPT.md",
+  "full_audit": "integration/f-gc/F-GC28_GROUNDWATER_COUPLING_V1_COMPLETION_AUDIT.md",
+  "hard_nonclaims": [
+    "No Groundwater Coupling v1 100 percent completion claim.",
+    "No production source or physics modification by F-GC28.",
+    "No universal numeric H_app or MODFLOW head tolerance.",
+    "No distributed crash-recovery transaction qualification.",
+    "No RossFast production admission.",
+    "No deep-vadose implementation requirement.",
+    "No 100k-column performance claim.",
+    "No scope reduction."
+  ]
+}
