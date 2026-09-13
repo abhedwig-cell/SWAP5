@@ -1,0 +1,27 @@
+name: F-VQ64 F-GC21 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq64-fgc21-restricted-predictor-corrector-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-VQ64 fail-closed independent gate
+        run: bash tests/fvq/run_fvq64_fgc21_independent_qualification.sh
