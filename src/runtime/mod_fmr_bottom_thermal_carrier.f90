@@ -25,6 +25,8 @@ module mod_fmr_bottom_thermal_carrier
     real(real64) :: t1_value = 0.0_real64
     type(fmr_bottom_thermal_sample_t), allocatable :: samples(:)
   contains
+    procedure, public :: clear => candidate_clear
+    procedure, public :: copy_to => candidate_copy_to
     procedure, public :: ready => candidate_ready
     procedure, public :: sample_count => candidate_sample_count
     procedure, public :: sample_at => candidate_sample_at
@@ -171,7 +173,7 @@ contains
     logical, intent(out) :: ok
     integer :: i
 
-    candidate = fmr_bottom_thermal_candidate_t()
+    call candidate%clear()
     ok = .false.
     if (.not. self%initialized .or. self%count <= 0 .or. .not. allocated(self%samples)) return
     if (.not. ieee_is_finite(requested_t0) .or. .not. ieee_is_finite(requested_t1) .or. requested_t1 <= requested_t0) return
@@ -190,6 +192,27 @@ contains
     candidate%initialized = .true.
     ok = .true.
   end subroutine carrier_materialize_candidate
+
+  subroutine candidate_clear(self)
+    class(fmr_bottom_thermal_candidate_t), intent(inout) :: self
+    if (allocated(self%samples)) deallocate(self%samples)
+    self%initialized = .false.
+    self%t0_value = 0.0_real64
+    self%t1_value = 0.0_real64
+  end subroutine candidate_clear
+
+  subroutine candidate_copy_to(self, target)
+    class(fmr_bottom_thermal_candidate_t), intent(in) :: self
+    type(fmr_bottom_thermal_candidate_t), intent(out) :: target
+
+    call target%clear()
+    if (.not. self%ready()) return
+    allocate(target%samples(size(self%samples)))
+    target%samples = self%samples
+    target%t0_value = self%t0_value
+    target%t1_value = self%t1_value
+    target%initialized = .true.
+  end subroutine candidate_copy_to
 
   logical function candidate_ready(self) result(ready)
     class(fmr_bottom_thermal_candidate_t), intent(in) :: self
