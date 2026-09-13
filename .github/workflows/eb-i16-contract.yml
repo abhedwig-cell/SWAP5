@@ -1,0 +1,47 @@
+name: EB-I16 external bottom thermal binding contract
+
+on:
+  push:
+    branches:
+      - work/eb-i16-external-bottom-thermal-binding-contract
+  workflow_dispatch:
+
+jobs:
+  qualify-eb-i16:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I16_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I16_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: EB-I16 external binding contract gate
+        run: bash tests/eb/run_eb_i16_external_binding_contract_gate.sh
+      - name: EB-I15 evaluator compile and execution preservation
+        run: |
+          set -euo pipefail
+          build="${TMPDIR:-/tmp}/swap5-eb-i16-i15-preserve-$$"
+          mkdir -p "$build"
+          trap 'rm -rf "$build"' EXIT
+          common=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2)
+          gfortran "${common[@]}" -J "$build" -I "$build" -c src/runtime/mod_fmr_bottom_thermal_carrier.f90 -o "$build/carrier.o"
+          gfortran "${common[@]}" -J "$build" -I "$build" -c src/process/mod_liquid_water_sensible_enthalpy.f90 -o "$build/enthalpy.o"
+          gfortran "${common[@]}" -J "$build" -I "$build" -c src/runtime/mod_fmr_bottom_sensible_energy.f90 -o "$build/energy.o"
+          gfortran "${common[@]}" -J "$build" -I "$build" -c tests/eb/test_eb_i15_bottom_sensible_energy.f90 -o "$build/test.o"
+          gfortran -O2 "$build/carrier.o" "$build/enthalpy.o" "$build/energy.o" "$build/test.o" -o "$build/test"
+          "$build/test" | tee "$build/output.txt"
+          grep -Fq 'EB_I15_BOTTOM_SENSIBLE_ENERGY_GATE PASS' "$build/output.txt"
+          echo 'EB_I16_I15_EVALUATOR_PRESERVATION=PASS'
+      - name: FPM08D7 runtime compile preservation
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+      - name: FPM08D7 transactional owner preservation
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+      - name: FPM08D7 restart owner preservation
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
+      - name: Exact design-only scope whitespace check
+        run: git diff --check 0181b7b674cc89d729e361dafc1135b719e23a7d..HEAD
