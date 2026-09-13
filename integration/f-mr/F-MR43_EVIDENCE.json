@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.fmr43.evidence.v1",
+  "work_unit": "F-MR43",
+  "branch": "work/f-mr43-atomic-surface-evaporation-accepted-publication",
+  "production_blob": {
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649"
+  },
+  "frozen_dependency_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "owner_ci": {
+    "successful_run_id": 34779812146,
+    "successful_job_id": 103784629882,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "o0_o2_semantic_identity": true,
+    "preceding_nonsemantic_harness_failure": {
+      "run_id": 34779706867,
+      "classification": "test build-order defect before product oracle execution",
+      "production_blob_changed_after_failure": false
+    }
+  },
+  "observed_passes": [
+    "FMR43_SINGLE_FILE_PRODUCTION_DELTA=PASS",
+    "FMR43_NO_FKT20_KERNEL_DEPENDENCY=PASS",
+    "FMR43_ATOMIC_ORDER_BY_CONSTRUCTION=PASS",
+    "FMR43_UNSAFE_SPLIT_API_NOT_PUBLIC=PASS",
+    "FMR43_NO_SECOND_MASS_AUTHORITY=PASS",
+    "FMR43_NO_IO_CALENDAR_COUPLER_DEPENDENCY=PASS",
+    "FMR43_SPLIT_API_HARD_NEGATIVE_O0=PASS_CLOSED",
+    "FMR43_SPLIT_API_HARD_NEGATIVE_O2=PASS_CLOSED",
+    "FMR43_ATOMIC_CROSS_EXECUTOR_POSITIVE=PASS",
+    "FMR43_ATOMIC_SECOND_COLUMN_POSITIVE=PASS",
+    "FMR43_CROSS_CANDIDATE_PRECOMMIT_FAIL_CLOSED=PASS",
+    "FMR43_MATERIALIZATION_FAILURE_PRECOMMIT_FAIL_CLOSED=PASS",
+    "FMR43_NO_SECOND_MASS_BOOKING=PASS",
+    "FMR43_OWNER_O0_O2_SEMANTIC_IDENTITY=PASS",
+    "FMR43_OWNER_GATE=PASS"
+  ],
+  "architecture_audit": {
+    "invariant_1_one_kernel": "PASS",
+    "invariant_2_kernel_io_separation": "PASS",
+    "invariant_4_compact_persistent_state": "PASS_NO_PERSISTENT_STATE_ADDED",
+    "invariant_5_worker_scratch": "PASS_PRIVATE_LOCAL_PREPARED_ATTRIBUTION",
+    "invariant_7_transactional_steps": "PASS_MATERIALIZE_BEFORE_COMMIT_AND_PUBLISH_ONLY_AFTER_ACCEPTED_RECEIPT",
+    "invariant_9_generic_time": "PASS",
+    "invariant_13_mass_absolute": "PASS_NO_SECOND_MASS_AUTHORITY_OR_BOOKING",
+    "invariant_16_multiswap_primary": "PASS_OWNER_TEST_USES_DISTINCT_TRIAL_AND_COMMIT_EXECUTORS",
+    "invariant_23_physics_policy_separation": "PASS_NO_PHYSICS_OR_SOLVER_CHANGE",
+    "invariant_27_optional_scales_with_use": "PASS_LOCAL_PUBLICATION_OBJECT_ONLY_ON_ACTIVE_PATH",
+    "invariant_28_runtime_composition": "PASS_PUBLICATION_COMPOSITION_REMAINS_RUNTIME_OWNED",
+    "invariant_29_no_silent_dependencies": "PASS",
+    "invariant_30_explicit_audit": "PASS"
+  },
+  "bounded_claim": "The public accepted-surface-publication API no longer permits callers to combine a surface result from one candidate with a receipt from another candidate. The result remains private inside the atomic materialize-commit-publish call, and precommit failures leave committed state unchanged.",
+  "production_source_changed": true,
+  "reference_source_changed": false,
+  "physics_changed": false,
+  "solver_changed": false,
+  "mass_booking_changed": false,
+  "persistent_state_schema_changed": false,
+  "restart_schema_changed": false,
+  "canonical_changed": false
+}
