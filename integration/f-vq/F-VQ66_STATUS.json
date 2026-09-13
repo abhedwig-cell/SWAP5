@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ66",
+  "title": "F-KT18 Fail-Closed Mass Completeness Independent Requalification",
+  "phase": "INDEPENDENT_REQUALIFICATION_CLOSED",
+  "decision": "INDEPENDENTLY_REQUALIFIED_FKT18_FAIL_CLOSED_MASS_COMPLETENESS_CURRENT_CANONICAL_CORROBORATED",
+  "branch": "qualification/f-vq66-fkt18-fail-closed-mass-completeness-independent-qualification",
+  "finding_authority": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+  "owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "immutable_candidate": {
+    "sha": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+    "tree": "47826cb69e04c46b8739bcf953ac26db80b5ff3e",
+    "transaction_source_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "kernel_transaction_blob": "c7c5b7d3357e4e6739c8f647d6232baca45563e6"
+  },
+  "production_remediation_commit": "29af8fa9b62f3b87fe8703f2a1726ba8daad1b44",
+  "independent_evidence": {
+    "decisive_test_head": "6da84c638de66810fb53371d35be559ad4e52eb8",
+    "decisive_workflow_run": 34763464602,
+    "decisive_attack_job": 103740198164,
+    "decisive_preservation_job": 103740198088,
+    "documented_head": "2f40535fc9d154d4b0bb77c91d555a5258f50a1d",
+    "documented_head_revalidation_run": 34763694644,
+    "documented_head_attack_job": 103740810956,
+    "documented_head_preservation_job": 103740810749,
+    "compiler": "GNU Fortran 13.3.0",
+    "modes": ["O0", "O2"],
+    "result": "PASS"
+  },
+  "attack_matrix": {
+    "external_incomplete_zero_residual_rejects": true,
+    "certificate_incomplete_zero_residual_rejects": true,
+    "nonzero_missing_mask_rejects": true,
+    "complete_in_tolerance_accepts": true,
+    "complete_outside_tolerance_rejects": true,
+    "nan_mass_term_rejects": true,
+    "positive_infinity_mass_term_rejects": true,
+    "retry_exhaustion_fail_closed": true,
+    "rejected_trials_do_not_accumulate_physical_state": true,
+    "incomplete_accounting_cannot_materialize_kernel_candidate": true,
+    "invalid_candidate_commit_rejected": true,
+    "alternative_solver_incomplete_accounting_rejects": true,
+    "o0_o2_deterministic_equivalence": true
+  },
+  "preservation": {
+    "fkt15_solver_service_reference_model": "PASS",
+    "fkt15r_current_recomposed_transport_surface": "PASS",
+    "fkt16_state_persistence_restart": "PASS",
+    "serialized_multiswap": "PASS",
+    "generic_time_rollback_retry_restart_mass_transport": "PASS",
+    "production_parallel_runtime": "PASS",
+    "fvq64_predictor_corrector": "PASS"
+  },
+  "architecture_invariants": {
+    "all_30_reviewed": true,
+    "invariant_13_mass_conservation": "PASS_INDEPENDENTLY_VERIFIED",
+    "production_adverse_delta": false
+  },
+  "production_source_changed_by_fvq66": false,
+  "current_canonical": {
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "transaction_source_blob_matches_candidate": true,
+    "kernel_transaction_blob_matches_candidate": true,
+    "canonical_admission_already_closed_by": "F-CI57",
+    "canonical_admission_decision": "QUALIFIED_F_CI57_CANONICAL_ADMISSION_AND_FKT17_G01_CLOSURE_COMPLETE",
+    "new_production_admission_required_by_fvq66": false
+  },
+  "fkt17_g01": {
+    "independent_requalification": "PASS",
+    "canonical_closure_already_authoritative": true
+  },
+  "relationship_to_existing_completion_authority": {
+    "d01_completion_authority_unchanged": true,
+    "existing_authority": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+    "fvq66_role": "CORROBORATIVE_INDEPENDENT_REQUALIFICATION_ONLY"
+  },
+  "hard_nonclaims": [
+    "F-VQ66 does not create a second production admission of F-KT18.",
+    "F-VQ66 does not change the frozen D01 denominator or scope.",
+    "F-VQ66 does not newly establish whole-program SWAP5 completion.",
+    "F-VQ66 introduces no physics, solver-policy, tolerance, ledger-architecture, runtime-API or coupling-policy change.",
+    "Existing compiler warnings outside the F-KT18 defect class remain outside this requalification."
+  ],
+  "closeout_validation": "This status-only closeout commit must itself pass the F-VQ66 attack and preservation workflow on its exact head; no self-referential follow-up status commit is required after that run is green."
+}
