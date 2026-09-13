@@ -62,7 +62,7 @@ contains
     integer, intent(inout) :: counter
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: ws_direction, ws_baseline, ws_plus, ws_minus
-    type(soil_water_solve_request_t) :: request, plus_request, minus_request
+    type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: directional_solve, baseline, plus_result, minus_result
     type(soil_water_accepted_step_direction_request_t) :: drequest
     type(soil_water_accepted_step_direction_result_t) :: dresult
@@ -87,8 +87,6 @@ contains
     call require(all(ieee_is_finite(dresult%outgoing_pressure_head)), 'finite outgoing head direction')
     call require(all(ieee_is_finite(dresult%outgoing_water_content)), 'finite outgoing theta direction')
 
-    ! Sensitivity OFF must leave the physical candidate, fluxes and exact mass
-    ! diagnostic bitwise identical to sensitivity ON.
     call solver%solve(request, ws_baseline, baseline)
     call require(baseline%status == SW_SOLVE_CONVERGED, 'baseline physical solve converged')
     call require(same_bits_vector(baseline%candidate_state%pressure_head, directional_solve%candidate_state%pressure_head), &
@@ -138,16 +136,13 @@ contains
     real(real64), intent(out) :: fd_h(:), fd_theta(:), fd_bottom_flux
     type(reference_richards_legacy_solver_t) :: solver
     type(soil_water_solve_request_t) :: plus_request, minus_request
-    real(real64) :: tmp_theta(numnod), tmp_k(numnod), tmp_c(numnod), tmp_dk(numnod)
 
     plus_request = base_request
     minus_request = base_request
     plus_request%base_state%pressure_head = base_request%base_state%pressure_head + eps*incoming_h
     minus_request%base_state%pressure_head = base_request%base_state%pressure_head - eps*incoming_h
-    call constitutive%evaluate(plus_request%base_state%pressure_head, tmp_theta, tmp_k, tmp_c, tmp_dk)
-    plus_request%base_state%water_content = tmp_theta
-    call constitutive%evaluate(minus_request%base_state%pressure_head, tmp_theta, tmp_k, tmp_c, tmp_dk)
-    minus_request%base_state%water_content = tmp_theta
+    plus_request%base_state%water_content = base_request%base_state%water_content + eps*incoming_theta
+    minus_request%base_state%water_content = base_request%base_state%water_content - eps*incoming_theta
     select case (mode)
     case (SW_STEP_CONTROL_BOTTOM_FLUX)
        plus_request%boundary%bottom_flux = base_request%boundary%bottom_flux + eps*direct_control
