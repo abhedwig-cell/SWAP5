@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=8a1aeedbaeb5bd015e7e8d098d605968bbecd94e
+          AUTH=7bbc7360280ddf27419293db4160bee0b070f7f9
           git merge-base --is-ancestor "$AUTH" HEAD
           dependency_surface=(
             src/runtime/mod_a23bu_worker_execution_context.f90
