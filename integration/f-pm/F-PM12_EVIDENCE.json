@@ -1,18 +1,18 @@
 {
   "schema": "swap5.fpm12.evidence.v1",
   "work_unit": "F-PM12",
-  "qualified_tested_head": "323006951bea568226e1ad72fc13eb7d3fcce0e7",
-  "qualified_tested_tree": "b530132bbaa0b7031b4461f6ca2f8c84d0c2e485",
+  "qualified_tested_head": "be649f8efb965010fa89dab4948bb2aa4d3ce46e",
+  "qualified_tested_tree": "1026c9551cac9a17b9f3f545e99d1fade8006532",
   "restart_canonical": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
   "restart_canonical_tree": "556221f62b4fde616981499eba68ef5460f5d83c",
   "F_PM09_authority": "work/f-pm09-et-root-uptake-surface-evaporation-v1-completion-audit@b49585c255d1c0d4c0cec6cdfaab6cabc49ac19a",
   "workflow": {
-    "run": 34782222003,
-    "job": 103791187363,
+    "run": 34782416148,
+    "job": 103791719283,
     "conclusion": "success",
     "compiler": "GNU Fortran 13.3.0",
     "source_governance_gate": "PASS",
-    "runtime_gate": "PASS_O0_O2",
+    "runtime_gate": "PASS_O0_O2_EXACT_COMMITTED_STATE",
     "preservation_gate": "PASS"
   },
   "current_canonical_production_blobs": {
@@ -44,7 +44,8 @@
     "parallel_frozen_v1_preservation": "PASS",
     "mass_before_after_preserved": "PASS_NO_SECOND_MASS_AUTHORITY_OR_BOOKING",
     "restart_after_accepted_publication": "PASS_PRESERVED_NO_PUBLICATION_SCRATCH_IN_RESTART",
-    "rollback_rejection_committed_state_preserved": "PASS"
+    "rollback_rejection_committed_state_preserved": "PASS_EXACT_PHYSICAL_STATE",
+    "retry_exhaustion_committed_state_preserved": "PASS_EXACT_PHYSICAL_STATE"
   },
   "optimization_identity": "PASS_EXACT_O0_O2_STDOUT",
   "canonical_preservation_authority": {
@@ -78,7 +79,7 @@
   "invariant_audit": {
     "3": "PASS",
     "4": "PASS_NO_NEW_PERSISTENT_STATE",
-    "7": "PASS_ATOMIC_COMMIT_THEN_PUBLICATION",
+    "7": "PASS_ATOMIC_COMMIT_THEN_PUBLICATION_AND_EXACT_REJECT_IMMUTABILITY",
     "8": "PASS_PHYSICAL_TRIAL_ORIGIN_UNCHANGED",
     "9": "PASS_NO_CALENDAR_ASSUMPTION",
     "13": "PASS_NO_SECOND_MASS_AUTHORITY",
@@ -86,7 +87,7 @@
     "21": "PASS_NO_PHYSICS_FORK",
     "22": "PASS_NO_HEADCALC_INTERNAL_COUPLING",
     "23": "PASS_NO_PHYSICS_POLICY_CHANGE",
-    "26": "PASS_ACCEPT_REJECT_PROVENANCE_AUDITABLE",
+    "26": "PASS_ACCEPT_REJECT_RETRY_PROVENANCE_AUDITABLE",
     "29": "PASS_NO_FILE_CALENDAR_OR_MODFLOW_DEPENDENCY",
     "30": "PASS_EXPLICITLY_AUDITED"
   }
