@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC28",
+  "title": "Groundwater Coupling v1 all-30 architecture invariant audit",
+  "audited_canonical": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "program_authority": {
+    "sha": "aac2644149dda47282a25a39892c6dc808323dd0",
+    "tree": "922f6f6bd9acf700d9d39a2aa5007597f3891b03"
+  },
+  "audit_workunit_production_delta": "NONE",
+  "result": "NO_ADVERSE_ARCHITECTURE_DELTA_BUT_G05_COMPLETION_REMAINS_OPEN",
+  "invariants": [
+    {
+      "id": 1,
+      "name": "one_compute_kernel",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Groundwater coupling is composed through runtime/kernel contracts; no separate groundwater-specific SWAP kernel is introduced."
+    },
+    {
+      "id": 2,
+      "name": "kernel_separate_from_io",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Typed groundwater runtime contracts carry values and lineage, not files, paths, parser state or file units."
+    },
+    {
+      "id": 3,
+      "name": "explicit_data_separation",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Coupling window, datum, lineage, committed state, numerical config, exchange candidates and results are represented separately."
+    },
+    {
+      "id": 4,
+      "name": "compact_persistent_state",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Prepared exchange reservations are compact service state; rejected trial/scratch state is not defined as persistent column state. Coupling-specific restart composition is still a G05 closure obligation."
+    },
+    {
+      "id": 5,
+      "name": "scratch_per_worker",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Coupling APIs do not place Newton/Jacobian scratch in persistent coupling state; the soil-water solver contract retains workspace separation."
+    },
+    {
+      "id": 6,
+      "name": "scalable_memory_layout",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "G05_MULTISWAP_EXECUTION_STILL_REQUIRED",
+      "evidence": "The preparable exchange registry grows with concurrent reservations rather than logical SWAP columns. Full direct-groundwater MultiSWAP execution composition remains unqualified."
+    },
+    {
+      "id": 7,
+      "name": "transactional_timesteps",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "F-GC21 captures the committed checkpoint, rolls predictor/corrector candidates back on failure and publishes only after acceptance/preflight."
+    },
+    {
+      "id": 8,
+      "name": "cheap_recompute_and_warm_start",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "NONE",
+      "evidence": "Predictor and corrector physically originate from the same committed checkpoint; fail-closed smaller-window recomputation remains possible. No correctness dependency on numerical warm-start state is introduced."
+    },
+    {
+      "id": 9,
+      "name": "generic_time",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "groundwater_coupling_window_t accepts any finite increasing t0,t1. Calendar interpretation is caller-owned."
+    },
+    {
+      "id": 10,
+      "name": "flexible_coupling_windows",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "F_GC22_COMPOSITION_PENDING",
+      "evidence": "No daily/midnight coupling-window contract exists. Application/temporal binding for selecting/qualifying the window is owner-qualified on F-GC22 but not current-canonical composed."
+    },
+    {
+      "id": 11,
+      "name": "coupling_is_core_functionality",
+      "verdict": "PARTIAL",
+      "completion_effect": "BLOCKED_BY_G05",
+      "evidence": "G01-G04 are production-preserved core runtime capabilities. The frozen end-to-end direct-groundwater composition G05 remains unimplemented/unadmitted."
+    },
+    {
+      "id": 12,
+      "name": "explicit_groundwater_interface_contract",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Hydraulic head datum/units are explicit; head residual is H_SWAP-H_GW and flux residual is q_SWAP+q_GW with exact q_GW=-q_SWAP action/reaction."
+    },
+    {
+      "id": 13,
+      "name": "absolute_mass_conservation",
+      "verdict": "PASS_FOR_G01_G04_AND_PENDING_END_TO_END_G05_PROOF",
+      "completion_effect": "BLOCKED_BY_G05_END_TO_END_QUALIFICATION",
+      "evidence": "The admitted ledger uses exact opposite groundwater transfer and no mass tolerance. End-to-end tile/adapter composition must still independently prove conservation before 100% completion."
+    },
+    {
+      "id": 14,
+      "name": "interface_sensitivities_first_class",
+      "verdict": "PARTIAL",
+      "completion_effect": "F_GC23_REQUIRED",
+      "evidence": "The soil-water contract has request_interface_sensitivity and typed dh_bottom_dq_bottom output, but accepted whole-window groundwater response-tangent composition is explicitly not admitted by F-CI56."
+    },
+    {
+      "id": 15,
+      "name": "limit_coupling_cost",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "MUST_BE_PRESERVED_BY_G05",
+      "evidence": "Frozen restricted profile specifies predictor plus one corrector, normally two full SWAP trajectories. Finite difference is reference/fallback rather than mandatory repeated production execution."
+    },
+    {
+      "id": 16,
+      "name": "multiswap_primary_use_case",
+      "verdict": "PARTIAL",
+      "completion_effect": "G05_MULTISWAP_COMPOSITION_REQUIRED",
+      "evidence": "Core MultiSWAP is qualified elsewhere, but direct-groundwater MultiSWAP execution, deterministic aggregation and coupling transaction isolation are still downstream frozen coupling work."
+    },
+    {
+      "id": 17,
+      "name": "no_mandatory_one_to_one_modflow_mapping",
+      "verdict": "PARTIAL_CURRENT_CANONICAL",
+      "completion_effect": "F_GC20_CURRENT_CANONICAL_COMPOSITION_REQUIRED",
+      "evidence": "F-GC20 qualifies multi-tile mixed-component cells, area fractions and no forced 1:1 mapping, but its production source is not present on the audited current canonical."
+    },
+    {
+      "id": 18,
+      "name": "deep_vadose_optional_separate_component",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "NONE",
+      "evidence": "F-GC16 places deep-vadose transfer outside SWAP. Its implementation is not a frozen-v1 blocker."
+    },
+    {
+      "id": 19,
+      "name": "mass_conserving_component_transition",
+      "verdict": "PASS_ARCHITECTURE_COMPATIBILITY",
+      "completion_effect": "NO_FROZEN_IMPLEMENTATION_REQUIREMENT",
+      "evidence": "The typed interface exposes exact transfer semantics that an external transfer zone can consume. No claim is made that a deep-vadose transition implementation is already qualified."
+    },
+    {
+      "id": 20,
+      "name": "alternative_soil_water_solvers_open",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Coupling is above the common soil-water/kernel contract. Alternative solvers may report interface sensitivity unavailable and fail closed. RossFast production admission is not required."
+    },
+    {
+      "id": 21,
+      "name": "reuse_swap_physics",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Groundwater coupling composes existing kernel/process execution and does not duplicate ET, crop, drainage or surface physics."
+    },
+    {
+      "id": 22,
+      "name": "no_headcalc_internal_dependency",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Predictor-corrector depends on kernel executor and typed forcing/interface contracts. Repository search and inspected coupling sources show no direct HeadCalc coupling dependency."
+    },
+    {
+      "id": 23,
+      "name": "physics_and_solver_policy_separated",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Groundwater head convergence policy and application accuracy policy are explicit runtime/numerical contracts and do not silently change SWAP physical options."
+    },
+    {
+      "id": 24,
+      "name": "predictable_runtime_bounded_cost",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "NO_SEPARATE_100K_BENCHMARK_BLOCKER",
+      "evidence": "Restricted coupling has fixed predictor plus one corrector and fails closed to a smaller outer window. Full production-scale performance policy is owned by another lane."
+    },
+    {
+      "id": 25,
+      "name": "reference_mode_available",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Full Richards/reference authority remains the production/reference basis and is not modified by F-GC28."
+    },
+    {
+      "id": 26,
+      "name": "diagnostics_are_runtime_functionality",
+      "verdict": "PARTIAL",
+      "completion_effect": "G05_DIAGNOSTICS_COMPOSITION_REQUIRED",
+      "evidence": "Current PC/ledger diagnostics expose route, failure stage, predictor/corrector status, convergence and publication stages. End-to-end application-accuracy, aggregation, external-adapter and coupling-restart context is not yet one admitted production diagnostic record."
+    },
+    {
+      "id": 27,
+      "name": "optional_functionality_scales_with_use",
+      "verdict": "PASS_ARCHITECTURE",
+      "completion_effect": "MUST_BE_PRESERVED_BY_G05",
+      "evidence": "Prepared exchange registry exists only for preparable services and scales with concurrent reservations, not all logical columns."
+    },
+    {
+      "id": 28,
+      "name": "runtime_coupler_owns_system_composition",
+      "verdict": "PARTIAL",
+      "completion_effect": "BLOCKED_BY_G05",
+      "evidence": "Existing ownership is correctly outside the kernel, but tile/temporal/tangent/aquifer-adapter composition has not yet been admitted end to end."
+    },
+    {
+      "id": 29,
+      "name": "no_silent_day_file_modflow_assumptions",
+      "verdict": "PASS",
+      "completion_effect": "NONE",
+      "evidence": "Coupling contracts use generic windows and values, not .swp files, paths, midnight starts or embedded MODFLOW globals. DAY_TO_S in the interface contract is only a cm/day to m/s unit conversion."
+    },
+    {
+      "id": 30,
+      "name": "architecture_change_explicitly_tested",
+      "verdict": "PASS_FOR_F_GC28",
+      "completion_effect": "NONE",
+      "evidence": "F-GC28 changes no production source and records this explicit all-30 reconciliation. Future G05 source changes require owner qualification, independent qualification, canonical admission and preservation."
+    }
+  ],
+  "completion_relevant_partial_invariants": [11, 13, 14, 16, 17, 26, 28],
+  "adverse_delta_introduced_by_F_GC28": []
+}
