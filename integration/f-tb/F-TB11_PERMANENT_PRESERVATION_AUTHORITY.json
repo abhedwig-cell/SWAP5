@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.ftb11.permanent_preservation_authority.v1",
+  "work_unit": "F-TB11",
+  "phase": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PERMANENT_TESTBANK_PRESERVATION",
+  "branch": "work/f-tb11-current-canonical-100-percent-capability-permanent-preservation",
+  "scope": "permanent qualification/testbank preservation only",
+  "canonical_binding": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+    "src_tree": "73490c41aee380cda01b88da6ceeb9f6637d2ecf",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "tests_tree": "bfdbe47c1c76b4109e9daa4f4aff11182bbbbd6f",
+    "canonical_qualification_run": 34781202197,
+    "live_exit_recheck": "PASS_EXACT_SHA_TREE"
+  },
+  "qualified_implementation_head": {
+    "sha": "0652782c0e66a3ec6caf5c8ae9c114e362d2a00c",
+    "tree": "c1240e0b0361e7569f3f7b9ecfcfe37ba6789a7b",
+    "workflow_run": 34788482579,
+    "workflow_job": 103808222625,
+    "workflow_conclusion": "success",
+    "structural_provenance_gate": "PASS",
+    "current_source_semantic_replays": "PASS",
+    "exit_recheck": "PASS"
+  },
+  "adopted_capabilities": [
+    {
+      "capability": "Kernel / Transactions / Generic Time / Mass v1",
+      "authority": "F-KT19",
+      "sha": "004f8f438ce1380c940a5139df83165c4d2eb68c",
+      "tree": "c48234ef7e0ed4c8bcb2e968c6fce299cb321240",
+      "status_path": "integration/f-kt/F_KT19_STATUS.json",
+      "decision": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE"
+    },
+    {
+      "capability": "State / Persistence / Restart v1",
+      "authority": "F-KT16",
+      "sha": "37a91f16078badaa675235f1230d225a21c9e010",
+      "tree": "3ddacee88898872ec4541b721b74cce63117bbed",
+      "status_path": "integration/f-kt/F-KT16_STATUS.json",
+      "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE"
+    },
+    {
+      "capability": "Serialized MultiSWAP v1",
+      "authority": "F-MR42",
+      "sha": "e370f95c2e50c2fef46fe99eac11522046560938",
+      "tree": "c142f51d55338a7f942123534242dd89e03a34e8",
+      "status_path": "integration/f-mr/F-MR42_CLOSEOUT.json",
+      "decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE"
+    },
+    {
+      "capability": "Full Richards reference solver v1",
+      "authority": "F-SI33",
+      "sha": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+      "tree": "df36bf7d42ffdfdd27755733f5f6a1b7c8194083",
+      "status_path": "integration/f-si/F-SI33_STATUS.json",
+      "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE"
+    },
+    {
+      "capability": "Solver Interface / HeadCalc Isolation / Hydraulic Process Boundary v1",
+      "authority": "F-SI35",
+      "sha": "6d94262ab05b73486257f444b6dfb4b6ec440edf",
+      "tree": "0cacc21318a58ae01c2beecc8f98141f76b0737e",
+      "status_path": "integration/f-si/F-SI35_FINAL_COMPLETION.json",
+      "decision": "QUALIFIED_SOLVER_INTERFACE_HEADCALC_ISOLATION_HYDRAULIC_PROCESS_BOUNDARY_V1_100_PERCENT_COMPLETE"
+    },
+    {
+      "capability": "ET / Root Uptake / Surface Evaporation v1",
+      "authority": "F-PM11",
+      "sha": "602a461957c45623fc414ef15e40a1bfe755de43",
+      "tree": "134e01ef9092277639113d9be64eefc422e4fbb8",
+      "status_path": "integration/f-pm/F-PM11_STATUS.json",
+      "decision": "QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE"
+    }
+  ],
+  "stable_test_ids": [
+    "FTB11-REL-001",
+    "FTB11-TXN-001",
+    "FTB11-MASS-001",
+    "FTB11-REJECT-001",
+    "FTB11-RST-001",
+    "FTB11-MSW-001",
+    "FTB11-FR-001",
+    "FTB11-SEAM-001",
+    "FTB11-ETPUB-001",
+    "FTB11-ET-001"
+  ],
+  "permanent_gates": {
+    "exact_current_canonical_binding": "PASS",
+    "mass_accounting_fail_closed": "PASS_FVQ65_CURRENT_SOURCE_O0_O2",
+    "transaction_acceptance_fail_closed": "PASS_FVQ65_CURRENT_SOURCE_O0_O2",
+    "mandatory_soil_water_solver_seam": "PASS",
+    "no_nonadmitted_headcalc_production_bypass": "PASS",
+    "rejected_publication_immutability": "PASS_FVQ71_CURRENT_SOURCE_O0_O2",
+    "surface_evaporation_accepted_publication_provenance": "PASS_FVQ71_CURRENT_SOURCE_O0_O2",
+    "restart_exactness_and_continuation": "PASS_FVQ65_CURRENT_SOURCE_O0_O2",
+    "serialized_multiswap_and_parallel_preservation": "PASS_FVQ65_CURRENT_SOURCE_O0_O2",
+    "full_richards_authority_and_source_preservation": "PASS",
+    "et_root_uptake_surface_evaporation_authority_and_source_preservation": "PASS",
+    "mass_conservation_horizontal_gate": "PASS_NON_WAIVABLE"
+  },
+  "duplicate_tests_removed_or_avoided": [
+    "No owner qualification suite was copied into F-TB11.",
+    "F-VQ65 and F-VQ71 independent verifier sources are materialized from immutable qualified commits at runtime and built against exact current-canonical source.",
+    "Historical F-CI admission scripts remain frozen evidence and are not relabeled as moving-current tests.",
+    "Legacy A23BL and F-MR18 fixtures remain frozen historical evidence and are not repaired or duplicated as moving-current acceptance oracles because mandatory post-F-KT18 mass-completeness semantics superseded their fixture assumptions.",
+    "F-TB10 drainage evidence is not duplicated."
+  ],
+  "drainage": {
+    "adopted": false,
+    "reason": "No definitive drainage-v1 100% completion authority existed at F-TB11 exit. F-PM13 remained at canonical start SHA 379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b; F-TB10 remained blocked.",
+    "F_TB10_decision": "NOT_QUALIFIED_TB09_003_NONSTATIONARY_TEMPORAL_POLICY_GAP"
+  },
+  "testbank_coverage_gaps": [
+    "Drainage v1 awaits its own definitive 100% qualified completion authority before permanent 100% adoption.",
+    "Future or non-100% capabilities require separate qualification before addition to this frozen preservation set."
+  ],
+  "ownership": {
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "solver_algorithms_changed": false,
+    "drainage_algorithms_changed": false,
+    "coupling_algorithms_changed": false,
+    "crop_physics_changed": false
+  },
+  "qualification_coverage": "PASS",
+  "closeout_note": "This authority commit is metadata-only and is downstream of the fully tested qualified_implementation_head. No workflow rerun is required for the authority file itself.",
+  "terminal_marker": "QUALIFIED_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PERMANENT_TESTBANK_PRESERVATION"
+}
