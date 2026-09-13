@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.fpm09.status.v1",
+  "work_unit": "F-PM09",
+  "title": "SWAP5 ET, Root Water Uptake & Surface Evaporation v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "branch": "work/f-pm09-et-root-uptake-surface-evaporation-v1-completion-audit",
+  "phase": "FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "decision": "ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "closed_as_completion_audit": true,
+  "completion_100_percent": false,
+  "completion_percent": null,
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "current_canonical_sha": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "current_canonical_tree": "0cacc21318a58ae01c2beecc8f98141f76b0737e",
+  "current_canonical_live_recheck": "PASS_EXACT_BEFORE_PERSISTENCE",
+  "audit": {
+    "path": "integration/f-pm/F-PM09_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_COMPLETENESS_AUDIT.json",
+    "creation_commit": "ad11547d79290a8ed09c96cea1eb76ca0b8859aa"
+  },
+  "exit_report": {
+    "reference_ET": "PASS",
+    "crop_canopy_binding": "PASS",
+    "root_uptake": "PASS",
+    "root_attribution": "PASS",
+    "potential_to_actual_reduction": "PASS",
+    "surface_evaporation_boundary": "PASS",
+    "capacity": "PASS",
+    "accepted_publication": "FAIL",
+    "transaction_semantics": "PASS_CURRENT_ADMITTED_PATHS_FAIL_CLOSED",
+    "mass": "PASS",
+    "restart": "PASS",
+    "generic_time": "PASS",
+    "standalone_MultiSWAP": "PASS",
+    "solver_interface_isolation": "PASS",
+    "diagnostics": "PASS_FOR_ADMITTED_COMPUTATION_SEMANTICS",
+    "current_canonical_preservation": "PASS_FOR_ADMITTED_CAPABILITIES",
+    "hard_blockers": ["FPM09-G01", "FPM09-G02", "FPM09-G03"],
+    "production_source_changed": false,
+    "denominator_changed": false,
+    "100_percent": false,
+    "definitive_completion_authority": null
+  },
+  "bounded_closure_chain": {
+    "single_capability_gap": "accepted surface-evaporation publication provenance and admission",
+    "dependencies": [
+      "FPM09-G01 IMPLEMENTATION_GAP: candidate-bind physical surface result",
+      "FPM09-G02 QUALIFICATION_GAP: independently close F-VQ57 provenance attack",
+      "FPM09-G03 CANONICAL_ADMISSION_GAP: admit fixed source-bound seam and preserve"
+    ],
+    "physics_change_required": false,
+    "solver_change_required": false,
+    "mass_booking_change_allowed": false
+  },
+  "terminal_marker": "FPM09_AUDIT ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+}
