@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.fvq69.status.v1",
+  "work_unit": "F-VQ69",
+  "title": "Independent F-PM10 Surface-Evaporation Accepted-Publication Provenance Qualification",
+  "branch": "qualification/f-vq69-fpm10-surface-evaporation-publication-provenance-independent-qualification",
+  "phase": "NEGATIVE_QUALIFICATION_CLOSED",
+  "decision": "NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN",
+  "candidate": "work/f-pm10-surface-evaporation-publication-provenance-remediation@c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "state": {
+    "persisted": true,
+    "tested": true,
+    "independent": true,
+    "independently_qualified": false,
+    "negative_qualification_closed": true,
+    "production_source_modified": false,
+    "canonical_admission_allowed": false
+  },
+  "decisive_evidence": {
+    "run_id": 34778064971,
+    "job_id": 103779711502,
+    "verifier_execution": "PASS",
+    "qualification_outcome": "FAIL",
+    "hard_negative": "HN5 same-public-provenance distinct-candidate result substitution",
+    "observed": "FAIL_OPEN",
+    "o0_o2_reproduced": true
+  },
+  "disposition": {
+    "FPM09-G01": "REOPENED_EXACT_CANDIDATE_PROVENANCE_GAP",
+    "FPM09-G02": "BLOCKED_BY_NEGATIVE_INDEPENDENT_QUALIFICATION",
+    "FPM09-G03": "BLOCKED_DO_NOT_ADMIT",
+    "route_back": "Owner remediation must establish exact candidate or attempt provenance across candidate, bound result, accepted receipt and publication."
+  },
+  "preserved_findings": {
+    "historical_raw_result_candidate_stamping_API_removed": true,
+    "cross_lineage_owner_attack_closed": true,
+    "same_tuple_candidate_attack_open": true,
+    "existing_admitted_mass_closure_invalidated": false
+  },
+  "terminal_marker": "FVQ69_NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN"
+}
