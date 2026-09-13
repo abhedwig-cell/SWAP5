@@ -1,0 +1,326 @@
+{
+  "schema": "swap5.fsi34.solver_interface_headcalc_isolation_v1_completeness_audit.v1",
+  "work_unit": "F-SI34",
+  "title": "SWAP5 Solver Interface, HeadCalc Isolation & Hydraulic Process Boundary v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "branch": "work/f-si34-solver-interface-headcalc-isolation-v1-completion-audit",
+  "audit_outcome": "SOLVER_INTERFACE_HEADCALC_ISOLATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+  "qualified_100_percent": false,
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "production_source_changed": false,
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "commit": "F-CI57: finalize fail-closed mass completeness canonical closeout"
+  },
+  "frozen_scope": "SWAP5-v1 architectural boundary between kernel/runtime/process physics, the common soil-water solver abstraction, the production Full Richards implementation, and process-facing hydraulic information. No RossFast production-readiness requirement is added.",
+  "governance_authorities": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01C": "56b86e29e0960e396059caf47c193440d571b709",
+    "fixed_denominator_definition": "971e732551abad86acccfd5f01811d855e51e939",
+    "F_KT16_state_persistence_restart": "37a91f16078badaa675235f1230d225a21c9e010",
+    "F_KT19_kernel_transactions_generic_time_mass": "004f8f438ce1380c940a5139df83165c4d2eb68c",
+    "F_MR42_serialized_multiswap": "e370f95c2e50c2fef46fe99eac11522046560938"
+  },
+  "fsi_authority_reconstruction": {
+    "F_SI01": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "F_SI02": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "F_SI03": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
+    "F_SI04": "c76f794b93522bea3a80a6880bc95ef5671cb914",
+    "F_SI05": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "F_SI06": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "F_SI07": "762b939876ce56f155a944f4cd21febdd763f6a9",
+    "F_SI08": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+    "F_SI09": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "F_SI10": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+    "F_SI11": "28962ed8ba78bcdd9caee444c251ac9cafe51764",
+    "F_SI12": "3dacdb03503a5ac5f6ce3fe86a55612e9b08a46d",
+    "F_SI13": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
+    "F_SI14": "d1b1553805ce11f235ac2565381c1ac31739b1f4",
+    "F_SI15": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+    "F_SI16": "6591b2f481e1760f844514e63ef873e8deda301f",
+    "F_SI17": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "F_SI18": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
+    "F_SI19": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "F_SI20": "631d80abf04915cc964b24144f3fde8ef937093f",
+    "F_SI21": "15a8e2f92b323e7b397eeb4589eed5e9aa8d025b",
+    "F_SI22": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+    "F_SI23": "81185df08c5231d3990c9a941591d444e880a077",
+    "F_SI24": "52e53c956d575fc6fb16423a8ab0a566118b83df",
+    "F_SI25": "86c54fcdeec52a246b9cc03d4030b6f6b6d9d3f7",
+    "F_SI26": "e6c103ebb69bb9fa6eb631f8c1d41fb2708372b2",
+    "F_SI27": "777015b8daffbd859e737f894cb585bd9ce96612",
+    "F_SI28": "5b514e678d0d794e5837f161033b0bac58385707",
+    "F_SI29": "a58f300277775ae7f5ac33563d20cad2ae22738f",
+    "F_SI30": "27b10ac0bca17a68e2746431b4c6a986e3910175",
+    "F_SI31_research_contract": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "F_SI32": "dfe1a285ae485e1e8348ee10492bb7808f85dd39",
+    "F_SI33_full_richards_completion_branch_head": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+    "F_SI33_definitive_authority_blob": "9053a7adf8b2682652f51f29b7ae010c5e72a98a",
+    "F_SI33_decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE"
+  },
+  "relevant_independent_and_boundary_authorities": {
+    "F_TB02": "549531e2e233cccab1416dba04edb266653a5da5",
+    "F_TB03": "65d5e5202446212390dbdd84b06e6b2a80e7121",
+    "F_VQ23": "a701e90bb839554a6c394c9bbc5ec6101c334183",
+    "F_VQ24": "4a8c0740222da5934e1fae53000c1c19db733e27",
+    "F_VQ26": "a1d5ad9147e18301f68183822577b1ba8fca3de2",
+    "F_VQ27": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "F_VQ28_negative": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "F_VQ29_negative": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
+    "F_VQ30": "9372d7962d4d750f7765c0cc03039111eec8ecc3",
+    "F_VQ31": "0053d5b0a523e494a7fbfcdc55190b946230aa56",
+    "F_VQ32": "dd34312f52ba4feb6507ca9d36a924897b64c7b8",
+    "F_VQ33_negative": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "F_VQ34": "df9b1123ba33ece022ce6649e70dcb538e44837f"
+  },
+  "current_source_bindings": {
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+    "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "src/solver/mod_reference_linear_solver.f90": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "ec24ad9b01f58bd2c17a296adf1158b6c4fb656f",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "src/legacy/b1_10_port/soilwater.f90": "18597985aab16f44fc1c42b5f1cc8fb78bd59c09",
+    "src/legacy/b1_10_port/swap_main.f90": "b6609df617c6b5875c62324570fb8c7d8c0bfe21",
+    "src/legacy/b1_10_port/swap_part01.inc": "11c8afb585411856f8bbffa3d3e3b82c55a0a043",
+    "src/legacy/b1_10_port/swap_part02.inc": "a1bc342949362ccc00e4d1112147b9d69e12e7c4",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "d37114e1a43df0c4592d11d701f8d1ce596e50fd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/process/mod_root_water_uptake_process.f90": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "production_dependency_inspection": {
+    "method": "Exact-current source-bound semantic inspection plus authority reconstruction. Default-branch code search was not accepted as authoritative negative evidence for a non-default canonical ref.",
+    "positive_hits": [
+      {
+        "source": "src/legacy/b1_10_port/headcalc.f90",
+        "classification": "SOLVER_INTERNAL_ALLOWED",
+        "finding": "Newton, Jacobian, linear-solver and legacy hydraulic internals are inside the Full Richards implementation."
+      },
+      {
+        "source": "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "classification": "ADAPTER_BOUNDARY_ALLOWED",
+        "finding": "reference_richards_legacy_solver_t extends soil_water_solver_t and calls HeadCalc behind the adapter using explicit request, workspace, state binding, providers, boundary, numerical and physical configuration."
+      },
+      {
+        "source": "src/legacy/b1_10_port/soilwater.f90",
+        "classification": "PRODUCTION_INTERFACE_VIOLATION",
+        "finding": "Task 2 directly calls HeadCalc when no worker is present and also falls back to direct HeadCalc when try_b110_production_task2 returns handled=.false.; this is outside soil_water_solver_t."
+      }
+    ],
+    "end_to_end_standalone_reachability": {
+      "result": "PROVEN",
+      "path": "swap_main -> SWAP without worker -> SoilWater(2, worker absent) -> direct HeadCalc",
+      "sources": [
+        "src/legacy/b1_10_port/swap_main.f90",
+        "src/legacy/b1_10_port/swap_part01.inc",
+        "src/legacy/b1_10_port/swap_part02.inc",
+        "src/legacy/b1_10_port/soilwater.f90"
+      ]
+    },
+    "worker_fallback_reachability": {
+      "result": "PROVEN",
+      "finding": "try_b110_production_task2 starts with handled=.false. and returns before the typed solve when production_route_admitted() is false; MOD_SoilWater then directly calls HeadCalc.",
+      "examples_of_rejected_typed_route_conditions": [
+        "swmacro != 0",
+        "swfrost != 0",
+        "swdra == 2",
+        "swpondmx != 0",
+        "swrunon != 0",
+        "swkimpl != 0",
+        "fldtmin",
+        "root extraction sink qrot nonzero",
+        "bottom mode outside 7,-2,5,2"
+      ]
+    },
+    "clean_inspected_boundaries": [
+      {
+        "source": "src/solver/mod_soil_water_solver_contract.f90",
+        "finding": "Explicit abstract solver, request/result/workspace, providers, boundary, physical/numerical separation, diagnostics and first-class sensitivity; no Newton/Jacobian storage exposed."
+      },
+      {
+        "source": "src/solver/mod_process_hydraulic_view.f90",
+        "finding": "Process-facing pressure head, water content, ponding and groundwater view built from physical state without HeadCalc workspace exposure."
+      },
+      {
+        "source": "src/process/mod_root_water_uptake_process.f90",
+        "finding": "Consumes process_hydraulic_view_t rather than HeadCalc internals."
+      },
+      {
+        "source": "src/process/mod_restricted_soil_temperature.f90",
+        "finding": "Consumes process_hydraulic_view_t for hydraulic start/end state rather than solver arrays."
+      },
+      {
+        "source": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "finding": "Uses the typed solver contract, Reference Richards adapter/workspace, process hydraulic view and kernel transaction types."
+      },
+      {
+        "source": "src/runtime/mod_groundwater_predictor_corrector_window.f90",
+        "finding": "Coupling path uses kernel candidates/results and groundwater interface/exchange contracts; no HeadCalc/Newton/Jacobian layout dependency found in inspected source."
+      }
+    ],
+    "conclusion": "A universal no-hit proof is unnecessary for the completion decision because a reachable production-interface violation is positively proven. The positive violation alone triggers the frozen hard gate."
+  },
+  "preservation_assessment": {
+    "F_SI33": "PRESERVATION_PROVEN: F-SI33 is bound to the exact current canonical SHA/tree used here and its solver source blobs match current canonical.",
+    "F_SI31": "PRESERVATION_PROVEN_FOR_CONTRACT: current canonical is 20 commits ahead of the F-SI31 base; the delta adds coupling/runtime and transaction-mass work but does not modify the production solver-contract/process-view/Reference-Richards source files. New coupling source was inspected and remains contract-isolated.",
+    "qualification_scope_conflict": "F-SI33 treated legacy compatibility fallbacks outside its frozen D03 profile as non-authoritative. F-SI34 has a stricter frozen D04 architecture gate supplied by its workunit: production direct HeadCalc dependencies may not be ignored as legacy detail. F-SI33 remains authoritative for Full Richards itself but cannot establish F-SI34 interface completion.",
+    "current_canonical_material_unqualified_interface_change": false
+  },
+  "gate_matrix": {
+    "solver_interface": "PASS",
+    "full_richards_binding": "FAIL",
+    "headcalc_isolation": "FAIL",
+    "process_hydraulic_view": "PASS",
+    "constitutive_providers": "PASS",
+    "scratch_ownership": "PASS",
+    "state_history_ownership": "PASS_TYPED_AND_RESTART_AUTHORITY",
+    "transactions": "FAIL_NOT_UNIVERSAL_ACROSS_PRODUCTION_PATHS",
+    "generic_time": "PASS",
+    "boundary_contracts": "PASS",
+    "numerical_policy_separation": "PASS",
+    "linear_nonlinear_solver_seam": "PASS",
+    "diagnostics": "FAIL_NOT_UNIVERSAL_ACROSS_PRODUCTION_PATHS",
+    "sensitivity_seam": "PASS",
+    "alternative_solver_seam": "FAIL_OPERATIONAL_PRODUCTION_SEAM",
+    "research_isolation": "PASS",
+    "runtime_isolation": "FAIL_EFFECTIVE_PRODUCTION_ORCHESTRATION",
+    "multiswap_preservation": "FAIL_COMMON_STANDALONE_MULTISWAP_SEAM",
+    "coupling_preservation": "PASS",
+    "current_canonical_preservation": "PASS"
+  },
+  "hard_blockers": [
+    "Reachable direct HeadCalc production calls remain outside soil_water_solver_t.",
+    "Standalone SWAP bypasses the common solver boundary because no worker is supplied.",
+    "The worker production Task2 adapter is conditional and falls back to direct HeadCalc for non-admitted configurations.",
+    "Therefore production transaction/diagnostic/alternative-solver semantics are not universal across all soil-water execution routes.",
+    "Standalone and serialized MultiSWAP do not yet share one mandatory solver-service seam."
+  ],
+  "closure_gaps": [
+    {
+      "id": "F-SI34-G1",
+      "classification": "HEADCALC_ISOLATION_GAP",
+      "requirement": "All production HeadCalc execution must be solver-internal or adapter-boundary-only; no production physics/runtime dispatcher may call HeadCalc directly.",
+      "evidence": "src/legacy/b1_10_port/soilwater.f90 directly calls HeadCalc both for absent worker and after typed-task2 non-admission.",
+      "affected_source": ["src/legacy/b1_10_port/soilwater.f90", "src/legacy/b1_10_port/swap_main.f90", "src/legacy/b1_10_port/swap_part01.inc", "src/legacy/b1_10_port/swap_part02.inc"],
+      "why_frozen_v1_blocker": "The F-SI34 hard gate explicitly forbids production modules from requiring HeadCalc internals or a direct legacy production path outside the common interface.",
+      "owner": "solver-interface / production soil-water service composition",
+      "minimal_remediation": "Route every production SoilWater task-2 execution, including standalone and all frozen-v1 configurations, through one typed soil-water solver service. Remove direct HeadCalc calls from MOD_SoilWater; HeadCalc may remain callable only behind mod_reference_richards_legacy_binding or an equivalent solver-internal adapter.",
+      "production_source_change": true,
+      "qualification_admission_dependency": "Requalify standalone reference behavior, worker route, rollback/retry, mass, boundaries, sensitivity and diagnostics; then canonical-admit before rerunning F-SI34 closure."
+    },
+    {
+      "id": "F-SI34-G2",
+      "classification": "SOLVER_INTERFACE_GAP",
+      "requirement": "The common soil-water solver abstraction must be the mandatory production seam, not an optional fast/typed route with legacy bypass.",
+      "evidence": "try_b110_production_task2 can return handled=.false.; MOD_SoilWater then invokes direct HeadCalc. Standalone never enters the typed service because worker is absent.",
+      "affected_source": ["src/adapter/mod_b110_production_soil_water_task2.f90", "src/legacy/b1_10_port/soilwater.f90"],
+      "why_frozen_v1_blocker": "An alternative solver cannot substitute behind one production seam while a second Full-Richards-specific entry path remains architecturally authoritative.",
+      "owner": "solver-interface / production binding",
+      "minimal_remediation": "Make the typed solver service total for the frozen-v1 production denominator. Unsupported future/out-of-scope capabilities may fail closed explicitly, but frozen-v1 production behavior may not escape to direct HeadCalc.",
+      "production_source_change": true,
+      "qualification_admission_dependency": "Source-bound qualification plus current-canonical admission required."
+    },
+    {
+      "id": "F-SI34-G3",
+      "classification": "TRANSACTION_GAP",
+      "requirement": "All production soil-water trials must expose committed base -> candidate result -> external commit/rollback semantics without a separate direct-global mutation path.",
+      "evidence": "The typed solver returns candidate_state, but the direct HeadCalc fallback executes through the legacy SoilWater state-save/restore trajectory rather than the common solver candidate contract.",
+      "affected_source": ["src/legacy/b1_10_port/soilwater.f90", "src/adapter/mod_b110_production_soil_water_task2.f90"],
+      "why_frozen_v1_blocker": "F-KT19 qualifies the canonical transaction model, but F-SI34 requires the solver boundary itself to participate in that model for every production route.",
+      "owner": "solver-interface / transaction composition",
+      "minimal_remediation": "Eliminating the direct bypass via G1/G2 closes this derived transaction gap if all accepted/rejected outcomes remain candidate-owned and externally committed/rolled back.",
+      "production_source_change": true,
+      "qualification_admission_dependency": "Depends on G1/G2 remediation and transaction regression qualification."
+    },
+    {
+      "id": "F-SI34-G4",
+      "classification": "ALTERNATIVE_SOLVER_SEAM_GAP",
+      "requirement": "Production architecture must permit an alternative solver behind the same seam without requiring HeadCalc-specific dispatch knowledge.",
+      "evidence": "F-SI31 freezes a valid research compatibility contract, but current production MOD_SoilWater still contains direct HeadCalc dispatch outside the common solver type.",
+      "affected_source": ["src/legacy/b1_10_port/soilwater.f90", "src/adapter/mod_b110_production_soil_water_task2.f90"],
+      "why_frozen_v1_blocker": "Invariant 20 requires the architecture, not RossFast production readiness, to support alternative soil-water solvers.",
+      "owner": "solver-interface architecture",
+      "minimal_remediation": "G1/G2 remediation is sufficient; no RossFast implementation is required.",
+      "production_source_change": true,
+      "qualification_admission_dependency": "Depends on the same common-seam closure; F-SI31 remains research authority."
+    },
+    {
+      "id": "F-SI34-G5",
+      "classification": "RUNTIME_ISOLATION_GAP",
+      "requirement": "Production orchestration may bind/select a solver but may not invoke HeadCalc as a special-case implementation path.",
+      "evidence": "The legacy production SoilWater dispatcher directly chooses HeadCalc when worker/service conditions are not met, while the newer FMR runtime is cleanly contract-based.",
+      "affected_source": ["src/legacy/b1_10_port/soilwater.f90"],
+      "why_frozen_v1_blocker": "A clean new runtime does not remove the still-reachable standalone production orchestration bypass.",
+      "owner": "runtime / solver-service composition",
+      "minimal_remediation": "G1/G2 remediation removes the implementation-specific dispatch; runtime continues to own worker/workspace and transaction composition only.",
+      "production_source_change": true,
+      "qualification_admission_dependency": "Depends on G1/G2 remediation and standalone/MultiSWAP preservation qualification."
+    }
+  ],
+  "dependency_order": ["F-SI34-G1", "F-SI34-G2", "F-SI34-G3", "F-SI34-G4", "F-SI34-G5"],
+  "minimal_closure_route": {
+    "root_remediation_count": 1,
+    "root_remediation": "Make the common typed soil-water solver service mandatory for every frozen-v1 production Task2 path and remove direct HeadCalc calls from MOD_SoilWater.",
+    "derived_gaps_closed_by_same_change": ["F-SI34-G3", "F-SI34-G4", "F-SI34-G5"],
+    "must_not_do": ["rewrite Full Richards", "implement RossFast", "change physics", "reduce frozen scope", "add unrelated performance work"],
+    "required_requalification": [
+      "production-wide HeadCalc dependency inspection with only solver-internal/adapter-boundary hits",
+      "standalone reference regression",
+      "serialized MultiSWAP same-seam preservation",
+      "transaction reject/rollback and retry semantics",
+      "mass-conservation regression",
+      "top/bottom boundary regressions",
+      "interface sensitivity transport",
+      "diagnostics transport",
+      "groundwater-coupling preservation",
+      "current-canonical admission and postimage preservation"
+    ]
+  },
+  "invariant_audit": {
+    "1_one_kernel": "PASS_WITH_INTERFACE_CLOSURE_BLOCKER",
+    "2_explicit_data_separation": "PASS",
+    "3_compact_persistent_state": "PASS_BY_F_KT16",
+    "4_scratch_per_worker": "PASS",
+    "5_scalable_memory_layout": "PASS_ARCHITECTURALLY",
+    "6_transactional_timesteps": "FAIL_NOT_UNIVERSAL_AT_SOLVER_BOUNDARY",
+    "7_recompute_warm_start": "PASS",
+    "8_generic_time": "PASS",
+    "9_coupling_core": "PASS_PRESERVED",
+    "10_absolute_mass_conservation": "PASS_BY_F_KT19_CURRENT_CANONICAL",
+    "11_first_class_sensitivities": "PASS",
+    "12_multiswap_primary": "FAIL_COMMON_SEAM_ONLY; F_MR42_CAPABILITY_PRESERVED",
+    "13_alternative_soil_water_solvers": "FAIL_OPERATIONAL_PRODUCTION_SEAM",
+    "14_maximum_physics_reuse": "PASS_ARCHITECTURAL_INTENT",
+    "15_no_headcalc_internals_downstream": "FAIL",
+    "16_physics_vs_solver_policy": "PASS",
+    "17_reference_mode": "PASS_BY_F_SI33",
+    "18_diagnostics": "FAIL_NOT_UNIVERSAL_AT_PRODUCTION_BOUNDARY",
+    "19_optional_functionality_scales_with_use": "PASS_ARCHITECTURALLY",
+    "20_runtime_coupler_composition": "FAIL_LEGACY_DISPATCH_ONLY; NEW_FMR_AND_COUPLER_PASS",
+    "21_no_hidden_dependencies": "FAIL_DIRECT_HEADCALC_BYPASS",
+    "22_explicit_invariant_audit": "PASS"
+  },
+  "non_blockers_confirmed": [
+    "RossFast not production-ready",
+    "LayeredMFP not production-ready",
+    "FWC research",
+    "no second production solver",
+    "GPU support",
+    "future reduced-order solvers",
+    "future deep-vadose",
+    "future physics",
+    "100k-column throughput proof",
+    "Status AA",
+    "energy-balance expansion"
+  ],
+  "completion_statement": "SOLVER_INTERFACE_HEADCALC_ISOLATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+}
