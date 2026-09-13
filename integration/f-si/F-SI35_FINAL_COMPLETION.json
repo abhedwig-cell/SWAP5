@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.fsi35.final_completion.v1",
+  "work_unit": "F-SI35",
+  "title": "SWAP5 Mandatory Production Soil-Water Solver Seam Closure, HeadCalc Bypass Removal & Final Qualification",
+  "decision": "QUALIFIED_SOLVER_INTERFACE_HEADCALC_ISOLATION_HYDRAULIC_PROCESS_BOUNDARY_V1_100_PERCENT_COMPLETE",
+  "qualified_100_percent": true,
+  "frozen_scope_unchanged": true,
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "rossfast_production_requirement": false,
+  "new_physics": false,
+  "full_richards_algorithm_changed": false,
+  "production_source_changed_by_F_SI35": true,
+  "production_source_canonically_admitted": true,
+  "current_canonical_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "tree": "8710a9f8b9657c5efc613f17a994f0a6e6ce1f1d",
+    "admission_work_unit": "F-CI58",
+    "admission_pull_request": 107,
+    "preimage": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "admission_head": "daaa41509a55be43c00cd6b92cf2ddf9590e35db",
+    "true_two_parent_merge": true
+  },
+  "source_bound_authorities": {
+    "F_SI34_gap_authority": "b522fe150610f900f253eeea9bf78329107de362",
+    "F_SI35_owner_source": "5898e6616dbb6871a9f52d489038235ba1172cae",
+    "F_SI35_owner_qualification": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+    "F_VQ68_independent_qualification": "fd93e50da5973f3e15c8f1b7fa57d72df6c31b72",
+    "F_CI58_composition": "040627c77720829c297a0ba06e908efce683133c",
+    "F_CI58_admission_head": "daaa41509a55be43c00cd6b92cf2ddf9590e35db",
+    "F_CI58_canonical_merge": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "F_CI58P_reconciliation_run": 34774491995
+  },
+  "production_blob_identity": {
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "src/legacy/b1_10_port/soilwater.f90": "c1850ea7fa82a1ed8974af57e1da95aa11a771be",
+    "identity": "EXACT_ACROSS_OWNER_INDEPENDENT_QUALIFICATION_ADMISSION_AND_CURRENT_CANONICAL"
+  },
+  "final_gate_matrix": {
+    "solver_interface": "PASS_MANDATORY_FOR_ALL_FROZEN_V1_PRODUCTION_TASK2_PATHS",
+    "full_richards_binding": "PASS_PHYSICS_PRESERVED_BEHIND_TYPED_SERVICE",
+    "headcalc_isolation": "PASS_ZERO_PRODUCTION_INTERFACE_VIOLATIONS",
+    "process_hydraulic_view": "PASS",
+    "constitutive_providers": "PASS",
+    "scratch_ownership": "PASS_WORKER_AND_STANDALONE_RUNTIME_SCRATCH",
+    "state_history_ownership": "PASS_TYPED_AND_RESTART_AUTHORITY",
+    "transactions": "PASS_UNIVERSAL_PRODUCTION_SEAM_ACCEPT_REJECT_RETRY",
+    "generic_time": "PASS",
+    "boundary_contracts": "PASS_TOP_AND_BOTTOM_REQUALIFIED",
+    "numerical_policy_separation": "PASS",
+    "diagnostics": "PASS_UNIVERSAL_TYPED_RESULT_BOUNDARY",
+    "sensitivity_seam": "PASS_PRESCRIBED_QBOT_AND_STALE_CLEAR",
+    "alternative_solver_seam": "PASS_OPERATIONAL_ARCHITECTURAL_SEAM_FSI31_PRESERVED",
+    "runtime_isolation": "PASS_MOD_SOILWATER_HEADCALC_BYPASS_REMOVED",
+    "multiswap_preservation": "PASS_COMMON_STANDALONE_WORKER_SEAM_BITWISE_EQUIVALENT",
+    "coupling_preservation": "PASS_GROUNDWATER_SOURCES_AND_CONTRACTS_PRESERVED",
+    "current_canonical_preservation": "PASS_FCI58_ADMISSION_AND_POSTPROMOTION_REPLAY"
+  },
+  "fsi34_hard_blocker_closure": {
+    "direct_HeadCalc_production_call_when_worker_absent": "CLOSED",
+    "direct_HeadCalc_fallback_when_typed_route_not_admitted": "CLOSED",
+    "common_solver_seam_not_mandatory": "CLOSED"
+  },
+  "fsi34_gap_classes": {
+    "G1_headcalc_isolation": "CLOSED",
+    "G2_solver_interface": "CLOSED",
+    "G3_transaction": "CLOSED_BY_COMMON_SERVICE_AND_TRANSACTION_REPLAY",
+    "G4_alternative_solver_seam": "CLOSED_ARCHITECTURAL_SEAM_FSI31_PRESERVED_NO_ROSSFAST_PRODUCTION_REQUIRED",
+    "G5_runtime_isolation": "CLOSED_MOD_SOILWATER_RUNTIME_BYPASS_REMOVED"
+  },
+  "headcalc_dependency_policy": {
+    "SOLVER_INTERNAL_ALLOWED": ["src/legacy/b1_10_port/headcalc.f90"],
+    "ADAPTER_BOUNDARY_ALLOWED": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/adapter/mod_b110_production_soil_water_task2.f90"
+    ],
+    "PRODUCTION_INTERFACE_VIOLATION": []
+  },
+  "qualification_evidence": {
+    "owner_workflow_run": 34770299238,
+    "independent_F_VQ68_workflow_run": 34770357810,
+    "F_CI58_exact_head_workflow_run": 34771167815,
+    "F_CI58_pull_request_broad_preservation_run": 34771209360,
+    "F_CI58_postpromotion_canonical_run": 34774219679,
+    "F_CI58P_postimage_reconciliation_run": 34774491995,
+    "all_conclusions": "success"
+  },
+  "architecture_invariants": {
+    "audit": "integration/f-ci/F-CI58P_ARCHITECTURE_AUDIT.json",
+    "result": "PASS_30_OF_30_NO_ADVERSE_DELTA"
+  },
+  "explicit_nonclaims": [
+    "No RossFast production readiness is required or claimed.",
+    "The compatibility solver is not newly credited as the separately governed F-SI33 explicit Full Richards profile.",
+    "No frozen-v1 physics option was removed to obtain closure.",
+    "No performance-policy relaxation was used to obtain the result."
+  ],
+  "persistence_condition": "This qualification is technically source-complete on the already admitted canonical source postimage. F-CI58P persists the reconciliation and permanent preservation gate in canonical metadata; user-facing final closure is issued only after that metadata merge and its post-merge canonical workflows are green."
+}
