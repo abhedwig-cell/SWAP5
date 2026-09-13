@@ -37,7 +37,19 @@ jobs:
         run: python3 testbank/runners/validate_ftb11_current_canonical_preservation.py
 
       - name: Replay current-source permanent regression oracles
-        run: bash testbank/runners/run_ftb11_current_source_replays.sh
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p build/f-tb11
+          bash -x testbank/runners/run_ftb11_current_source_replays.sh 2>&1 | tee build/f-tb11/replay.log
+
+      - name: Persist replay diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ftb11-replay-diagnostics-${{ github.run_id }}
+          path: build/f-tb11/replay.log
+          if-no-files-found: warn
 
       - name: Recheck live canonical and F-TB ownership at exit
         shell: bash
