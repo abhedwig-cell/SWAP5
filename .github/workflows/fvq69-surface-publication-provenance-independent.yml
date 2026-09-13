@@ -1,0 +1,22 @@
+name: F-VQ69 independent surface publication provenance qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq69-fpm10-surface-evaporation-publication-provenance-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-verification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ69 independent provenance verifier
+        run: bash tests/fvq/run_fvq69_surface_publication_provenance_independent.sh
