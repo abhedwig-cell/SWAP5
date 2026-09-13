@@ -49,7 +49,7 @@ samples = [
 tref = 5.0
 energy = sum(k*q*(tend-tref) for q, tstart, tend in samples)
 expected = k*(0.30*(12.0-5.0) + 0.20*(20.0-5.0))
-if energy != expected:
+if not math.isclose(energy, expected, rel_tol=0.0, abs_tol=1.0e-9):
     raise SystemExit('EB_I14_GATE_FAIL sample-wise terminal algebra')
 
 aggregate_final = k*sum(q for q, _, _ in samples)*(samples[-1][2]-tref)
