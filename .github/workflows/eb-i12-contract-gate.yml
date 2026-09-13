@@ -1,0 +1,19 @@
+name: EB-I12 bottom thermal carrier contract freeze
+
+on:
+  push:
+    branches:
+      - work/eb-i12-bottom-thermal-quadrature-contract-freeze
+  workflow_dispatch:
+
+jobs:
+  qualify-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run EB-I12 contract gate
+        shell: bash
+        run: bash tests/eb/run_eb_i12_contract_gate.sh
