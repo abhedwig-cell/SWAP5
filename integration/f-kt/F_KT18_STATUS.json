@@ -1,0 +1,164 @@
+{
+  "workunit": "F-KT18",
+  "title": "SWAP5 Fail-Closed Mass Completeness Transaction Admission Closure, Independent Qualification Readiness & Current-Canonical Preservation",
+  "date": "2026-09-13",
+  "decision": "QUALIFIED_MASS_COMPLETENESS_FAIL_CLOSED_TRANSACTION_ADMISSION_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "finding_authority": {
+    "workunit": "F-KT17",
+    "commit": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+    "tree": "fbf1fe0b6cc853de5ce375830a98251753a598b3",
+    "blocking_gap": "F-KT17-G01",
+    "primary_class": "MASS_GAP",
+    "secondary_class": "IMPLEMENTATION_GAP"
+  },
+  "branch": "work/f-kt18-fail-closed-mass-completeness-transaction-admission",
+  "canonical_start": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452"
+  },
+  "canonical_at_owner_closeout": {
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452"
+  },
+  "qualified_candidate_source": {
+    "sha": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+    "tree": "47826cb69e04c46b8739bcf953ac26db80b5ff3e",
+    "production_remediation_commit": "29af8fa9b62f3b87fe8703f2a1726ba8daad1b44"
+  },
+  "source_change": {
+    "production_source_changed": true,
+    "production_files": [
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "production_file_count": 1,
+    "additions": 65,
+    "deletions": 23,
+    "changed_lines": 88,
+    "api_changed": false,
+    "kernel_changed": false,
+    "runtime_changed": false,
+    "solver_changed": false,
+    "physics_changed": false,
+    "ledger_architecture_changed": false,
+    "denominator_changed": false
+  },
+  "defect": {
+    "summary": "Both generic transaction admission routes could accept from residual tolerance before completeness, zero missing-contribution mask, and numerical finiteness were mandatory.",
+    "affected_routes": [
+      "external_full_vs_two_half",
+      "model_certificate_interval"
+    ],
+    "half1_diagnostic_was_missing_in_canonical": false
+  },
+  "remediation": {
+    "mass_acceptance_requires_complete_accounting": true,
+    "mass_acceptance_requires_zero_missing_mask": true,
+    "mass_acceptance_requires_finite_relevant_terms": true,
+    "mass_acceptance_requires_residual_within_tolerance": true,
+    "incomplete_accounting_uses_existing_mass_rejection": true,
+    "bounded_retry_reused": true,
+    "checkpoint_rollback_reused": true,
+    "reverse_physics_rollback_added": false,
+    "kernel_commit_defense_added": false,
+    "kernel_commit_defense_reason": "Transaction-level admission now blocks incomplete ledgers before accepted candidate materialization; no evidence required a broader commit-contract change."
+  },
+  "owner_qualification": {
+    "independent": false,
+    "actions_run_id": 34752638317,
+    "mass_job_id": 103711635575,
+    "preservation_job_id": 103711635462,
+    "exact_head": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+    "mass_job_conclusion": "SUCCESS",
+    "preservation_job_conclusion": "SUCCESS",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "deterministic_o0_o2_identity": true,
+    "mass_regressions": {
+      "incomplete_zero_residual_rejected": true,
+      "nonzero_missing_mask_rejected": true,
+      "committed_state_exactly_unchanged_after_rejection": true,
+      "repeated_retries_no_physical_accumulation": true,
+      "complete_ledger_in_tolerance_accepted": true,
+      "complete_ledger_outside_tolerance_rejected": true,
+      "bounded_retry_exhaustion_fail_closed": true,
+      "incomplete_rejection_cannot_become_accepted_candidate": true,
+      "alternative_solver_incomplete_ledger_rejected": true,
+      "nonfinite_mass_terms_rejected": true
+    }
+  },
+  "preservation": {
+    "fkt15_solver_service": {
+      "authority": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+      "result": "PASS"
+    },
+    "fkt15r_recomposition": {
+      "authority": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+      "canonical_merge": "9465be74c01fe6455466e5ba7f62a761986ad450",
+      "result": "PRESERVED"
+    },
+    "fkt16_state_persistence_restart": {
+      "authority": "37a91f16078badaa675235f1230d225a21c9e010",
+      "result": "PASS"
+    },
+    "serialized_multiswap": {
+      "authority": "c70b3c7ad8267e7eb77b98cf142fa66e7e506cee",
+      "result": "PASS_ON_CURRENT_CANDIDATE_REPLAY"
+    },
+    "production_parallel_runtime": {
+      "result": "PASS_ON_CURRENT_CANDIDATE_REPLAY",
+      "matrix_blob": "26cc6e0ace986dc40db7635de7192958a1c0b868",
+      "publication_order_blob": "f2584b0236e85d4f6e8b687cee97981eaaa909c9"
+    },
+    "fvq64_predictor_corrector": {
+      "historical_independent_authority": "466119889a3f09b33ede638322e897bded2472a3",
+      "o0_result": "PASS",
+      "o2_result": "PASS",
+      "semantics_preserved": true,
+      "counts_as_new_independent_fkt18_qualification": false
+    }
+  },
+  "mass_gate": {
+    "candidate": "PASS_OWNER_QUALIFIED",
+    "current_canonical": "FAIL_FKT17_G01_PENDING_INDEPENDENT_QUALIFICATION_AND_ADMISSION"
+  },
+  "architecture_invariant_13": {
+    "candidate": "PASS_OWNER_QUALIFIED_FOR_FKT17_G01_CLOSURE",
+    "current_canonical": "FAIL_PENDING_FKT18_ADMISSION"
+  },
+  "fkt17_g01": {
+    "implementation_gap": "CLOSED_ON_CANDIDATE",
+    "program_closure": false
+  },
+  "independent_qualification": {
+    "performed_for_fkt18": false,
+    "status": "REQUIRED"
+  },
+  "canonical_admission": {
+    "performed": false,
+    "status": "REQUIRED"
+  },
+  "f_rg01_d01": {
+    "frozen_denominator": 8,
+    "historical_pre_audit_closed_count": 8,
+    "historical_pre_audit_percent": 100.0,
+    "qualified_100_percent_now": false,
+    "current_percentage_assigned": false,
+    "percent_policy": "DO_NOT_INVENT_99_X",
+    "restoration_condition": "Independent F-KT18 qualification against then-current canonical, canonical admission, and no new hard gate open."
+  },
+  "remaining_gaps": [
+    {
+      "id": "F-KT18-GOV01",
+      "type": "INDEPENDENT_QUALIFICATION",
+      "blocking_for_100_percent": true
+    },
+    {
+      "id": "F-KT18-GOV02",
+      "type": "CURRENT_CANONICAL_ADMISSION_AND_POST_ADMISSION_RECONCILIATION",
+      "blocking_for_100_percent": true
+    }
+  ],
+  "known_remaining_production_implementation_gaps_within_fkt17_g01_scope": [],
+  "stronger_100_percent_status_authorized": false
+}
