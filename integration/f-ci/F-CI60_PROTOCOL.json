@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.fci60.protocol.v1",
+  "work_unit": "F-CI60",
+  "branch": "qualification/f-ci60-fpm12-surface-publication-current-canonical-reconciliation",
+  "case": "A_SOURCE_ALREADY_EXACTLY_PRESENT",
+  "restart_canonical": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "owner_authority": {
+    "sha": "82189c148a38b90b6a5a326d03f282ccbee52960",
+    "tree": "4ecd975f239b911c0e5779685c1a8ef6961fd61f"
+  },
+  "independent_authority": {
+    "branch": "qualification/f-vq72-fpm12-surface-publication-provenance-requalification",
+    "final_sha": "a3c7bf5a60d80b430758f85489b316b5bcbc2fdc",
+    "final_tree": "e96f2d968e167631eaef73318a3c3241caeb2649",
+    "tested_sha": "30ad6104f91e4a10bb7f9863c6c8fff0dacddfa6",
+    "tested_tree": "8ab7e90760362d1367481b4252725f5d468498f3",
+    "decision": "QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE"
+  },
+  "historical_admission": {
+    "F_MR43": "c8ff545cf720db467389c67ac2f9a595e57277ed",
+    "F_VQ71": "f2f410bb74ef40c23fcc16048bb54f9301b989db",
+    "F_CI59_merge": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+    "F_CI59P": "595c06a8a9600fa6b130db4a31e6b8e5cb735f8b",
+    "F_PM11": "602a461957c45623fc414ef15e40a1bfe755de43"
+  },
+  "action": "QUALIFICATION_PRESERVATION_AND_POSTIMAGE_GOVERNANCE_RECONCILIATION_ONLY",
+  "duplicate_production_admission_allowed": false,
+  "production_source_change_allowed": false,
+  "reference_source_change_allowed": false,
+  "physics_change_allowed": false,
+  "mass_booking_change_allowed": false,
+  "permanent_regression_gate_policy": "DO_NOT_DUPLICATE_EXISTING_F_CI59_F_CI59P_PRESERVATION_WITHOUT_COVERAGE_GAP",
+  "target_decision": "QUALIFIED_F_PM12_F_VQ72_SURFACE_PUBLICATION_CURRENT_CANONICAL_PRESERVATION",
+  "invariants": [3,4,7,8,9,13,16,21,22,23,26,29,30]
+}
