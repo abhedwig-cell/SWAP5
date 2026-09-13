@@ -49,18 +49,20 @@ MODEL="$(mktemp)"
 MR42="$(mktemp)"
 MQ27="$(mktemp)"
 MQ29="$(mktemp)"
+MQ29E="$(mktemp)"
 WOF42="$(mktemp)"
-trap 'rm -f "$MODEL" "$MR42" "$MQ27" "$MQ29" "$WOF42"' EXIT
+trap 'rm -f "$MODEL" "$MR42" "$MQ27" "$MQ29" "$MQ29E" "$WOF42"' EXIT
 
 git show "$RG01C_DEF:integration/f-rg/SWAP5_V1_COMPLETION_MODEL_V1.json" > "$MODEL"
 git show "$FMR42_CLOSEOUT:integration/f-mr/F-MR42_SERIALIZED_MULTISWAP_V1_COMPLETION_AUTHORITY.json" > "$MR42"
 git show "$FMQ27_CLOSEOUT:integration/f-mq/F-MQ27_STATUS.json" > "$MQ27"
 git show "$FMQ29_CLOSEOUT:integration/f-mq/F-MQ29_STATUS.json" > "$MQ29"
+git show "$FMQ29_CLOSEOUT:integration/f-mq/F-MQ29_EVIDENCE.json" > "$MQ29E"
 git show "$FWOF42_CLOSEOUT:integration/f-wof/F-WOF42_CLOSEOUT.json" > "$WOF42"
 
-python3 - "$MODEL" "$MR42" "$MQ27" "$MQ29" "$WOF42" "$AUTH" <<'PY'
+python3 - "$MODEL" "$MR42" "$MQ27" "$MQ29" "$MQ29E" "$WOF42" "$AUTH" <<'PY'
 import json, sys
-model, mr42, mq27, mq29, wof42, auth = [json.load(open(p, encoding='utf-8')) for p in sys.argv[1:]]
+model, mr42, mq27, mq29, mq29e, wof42, auth = [json.load(open(p, encoding='utf-8')) for p in sys.argv[1:]]
 
 d02=next(x for x in model['domains'] if x['id']=='D02')
 assert d02['name']=='State / persistence / restart'
@@ -90,19 +92,33 @@ assert all(not v for v in mr42['gap_audit'].values())
 
 assert mq27['QUALIFIED'] is True
 assert mq27['closed'] is True
-assert mq27['observations']['exact_lineage_revision_time_continuation']=='PASS'
-assert mq27['observations']['exact_interval_mass_continuation']=='PASS'
-assert mq27['observations']['continuous_vs_restarted_endpoint_identity']=='PASS'
-assert mq27['observations']['deterministic_replay']=='PASS'
-assert mq27['observations']['late_record_whole_registry_atomicity']=='PASS'
+qe=mq27['qualified_evidence']
+for key in ['continuous_vs_restarted_endpoint_identity','exact_lineage_revision_time_continuation','exact_interval_mass_continuation','deterministic_replay','late_record_atomicity','late_provenance_atomicity','full_negative_matrix','valid_production_restore']:
+    assert qe[key]=='PASS', key
+assert qe['compact_record_no_solver_scratch']=='PASS'
 
 assert mq29['decision']=='QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION'
-assert mq29['qualified'] is True
-assert mq29['closed'] is True
-q=mq29['qualification']
-for key in ['committed_state_only_restart','whole_registry_atomic_restore_before_parallel_dispatch','worker_scratch_rebuilt_not_persisted','fresh_reconstructed_target_identity','endpoint_result_and_committed_state_identity','lineage_revision_committed_time_identity','aggregate_mass_and_ledger_identity','o0_o2_exact_output_identity']:
-    assert q[key] is True, key
-assert q['per_column_mass_residual_max_cm'] <= 1e-12
+assert mq29['independently_qualified'] is True
+assert mq29['production_change_required'] is False
+assert mq29['production_source_modified_by_fmq29'] is False
+assert mq29e['decision']=='QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION'
+assert mq29e['production_defect_observed'] is False
+assert mq29e['production_change_required'] is False
+assert mq29e['production_source_modified'] is False
+passed=set(mq29e['passed_gates'])
+required_mq29={
+  'committed-state-only restart structure',
+  'whole-registry atomic restore before parallel dispatch',
+  'worker scratch rebuilt and not persisted',
+  'full F-MQ27 restart negative matrix',
+  'fresh reconstructed target identity',
+  'endpoint committed-state identity',
+  'lineage revision and committed-time identity through committed-state comparator',
+  'per-column hard mass residual <= 1e-12 cm',
+  'aggregate residual and mass-ledger identity',
+  'O0/O2 exact output identity'
+}
+assert required_mq29.issubset(passed)
 
 assert wof42['qualified'] is True and wof42['production_persisted'] is True and wof42['tested'] is True
 assert wof42['decision']=='QUALIFIED_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_READY_FOR_NEXT_RUNTIME/CANONICAL_COMPOSITION'
@@ -177,7 +193,6 @@ assert f56['mass_conservation']=='HARD_EXACT_NO_INTERFACE_TOLERANCE'
 print('FKT16_CURRENT_CANONICAL_ADMISSION_PRESERVATION_CHAIN=PASS')
 PY
 
-# Structural source checks for the audited separation boundaries.
 PERSIST="$(git show "$CANON:src/kernel/mod_kernel_committed_persistence.f90")"
 grep -Fq 'KERNEL_PERSISTENCE_SCHEMA_VERSION = 1' <<<"$PERSIST" || fail 'missing persistence schema version'
 grep -Fq 'There is deliberately no file, path, byte-format or solver-scratch state.' <<<"$PERSIST" || fail 'kernel persistence boundary changed'
