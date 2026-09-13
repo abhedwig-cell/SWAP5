@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/ross01-d3r-two-half.yml
       - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
+      - experiments/ross/ross01_d3r_duration_worker.py
       - experiments/ross/run_ross01_d3r_two_half_probe.py
   workflow_dispatch:
 
@@ -38,7 +39,7 @@ jobs:
           grep -q "call model%advance(half_state, midpoint, attempt_t1, half2_outcome)" "$RUNNER_TEMP/tx.f90"
           grep -q "terr = model%temporal_error(full_state, half_state)" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
-        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/run_ross01_d3r_two_half_probe.py
+        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_two_half_probe.py
       - name: Run two-half shard
         run: |
           python3 experiments/ross/run_ross01_d3r_two_half_probe.py \
