@@ -1,0 +1,17 @@
+name: F-KT19 final D01 completion
+
+on:
+  push:
+    branches:
+      - work/f-kt19-kernel-transactions-generic-time-mass-v1-final-completion
+  workflow_dispatch:
+
+jobs:
+  final-completion:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Final completion and preservation gate
+        run: bash tests/fkt/run_fkt19_final_completion_gate.sh
