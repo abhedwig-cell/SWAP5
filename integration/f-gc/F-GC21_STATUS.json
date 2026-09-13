@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC21",
+  "title": "Restricted Transactional Predictor-Corrector Coupling Window Orchestrator",
+  "phase": "OWNER_QUALIFICATION_PENDING",
+  "decision": "IMPLEMENTATION_COMPLETE_OWNER_QUALIFICATION_NOT_YET_GREEN",
+  "branch": "work/f-gc21-restricted-predictor-corrector-coupling-window-orchestrator",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "meaning": "F-CI55R closed current-canonical authority at workunit start"
+  },
+  "governance_authority": "regie/f-rg01-post-rb1-program-rebaseline@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "implementation_head_before_qualification_artifacts": "26c3c5cf4139970f68ca9a81f9b890b911747a06",
+  "qualified_prerequisites": {
+    "F_GC17_typed_interface_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "F_GC18R_R1_transactional_exchange_owner": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+    "F_GC18R_R1_source_blob": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "F_GC19R_R1_ledger_owner": "3bf3fec344ee67dd56f5f54b293b3a0a47214efb",
+    "F_GC19R_R1_source_blob": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+    "F_GC21P1_R1_owner": "15028b926a5bbe9b82086a62168708451d165ecb",
+    "F_VQ63_independent": "0926552c9db8658014920fd6710fac4277bcffe0"
+  },
+  "implementation_scope": [
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90",
+    "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+    "tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90"
+  ],
+  "qualification_artifacts": [
+    "tests/fgc/run_fgc21_restricted_predictor_corrector_owner_qualification.sh",
+    ".github/workflows/fgc21-restricted-predictor-corrector-owner-qualification.yml",
+    "integration/f-gc/F-GC21_ARCHITECTURE_AUDIT.json",
+    "integration/f-gc/F-GC21_STATUS.json"
+  ],
+  "owner_gate_intent": [
+    "exact restart/prerequisite/blob locks and source allowlist",
+    "base owner harness O0/O2 identity",
+    "derived invalid-window, predictor-SWAP, corrector-SWAP, corrector-groundwater and groundwater-prepare fail-closed variants",
+    "F-GC21P1 exact accepted whole-window exchange regression",
+    "F-GC18R-R1 stale/copied/replay/revision-exhaustion prepared-handle regression against current source",
+    "F-GC19R-R1 ledger identity/replay/abort/action-reaction regression against current source",
+    "ledger/exchange exhaustion guard inspection before prepared publication",
+    "transaction publication order and no recoverable fail_result after first irreversible publication",
+    "typed F-GC17 datum mapping and no solver-private head coupling",
+    "all 30 architecture invariants"
+  ],
+  "mass_conservation": "HARD_NOT_RELAXED_OWNER_GATE_PENDING",
+  "canonical_admission": false,
+  "independent_qualification": false,
+  "production_direct_groundwater_coupling_admitted": false,
+  "nonclaims": [
+    "No owner-qualified claim until the dedicated GitHub owner workflow succeeds on the exact status-bearing head.",
+    "No independent F-VQ qualification.",
+    "No canonical admission.",
+    "No production direct-MODFLOW/aquifer admission.",
+    "No crash-consistent or distributed atomicity claim.",
+    "No large-batch throughput claim.",
+    "No F-GC20 tile aggregation or F-GC22 application-accuracy composition claim.",
+    "No deep-vadose integration claim.",
+    "RB1 remains frozen."
+  ]
+}
