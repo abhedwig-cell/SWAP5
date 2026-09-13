@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.fvq72.evidence.v1",
+  "work_unit": "F-VQ72",
+  "candidate_authority": {
+    "branch": "work/f-pm12-surface-evaporation-accepted-publication-closure-remediation",
+    "sha": "82189c148a38b90b6a5a326d03f282ccbee52960",
+    "tree": "4ecd975f239b911c0e5779685c1a8ef6961fd61f"
+  },
+  "tested_qualification_head": {
+    "sha": "30ad6104f91e4a10bb7f9863c6c8fff0dacddfa6",
+    "tree": "8ab7e90760362d1367481b4252725f5d468498f3"
+  },
+  "current_canonical": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+    "qualification_run": 34781202197,
+    "qualification_conclusion": "success"
+  },
+  "workflow": {
+    "run": 34784624580,
+    "job": 103797728292,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "source_governance": "PASS",
+    "independent_runtime": "PASS_O0_O2",
+    "preservation": "PASS"
+  },
+  "production_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "independent_findings": {
+    "exact_F_VQ57_attack": "CLOSED_COMPILE_TIME_AGAINST_CURRENT_PUBLIC_API",
+    "historical_split_api": "INACCESSIBLE",
+    "candidate_bound_atomic_order": "PASS",
+    "one_accepted_publication": "PASS",
+    "reject_publication_impossible": "PASS",
+    "reject_committed_state": "PASS_EXACT_PHYSICAL_STATE",
+    "reject_then_accept": "PASS_ONLY_ACCEPTED_PUBLISHED",
+    "reject_reject_accept": "PASS_NO_ACCUMULATION",
+    "retry_exhaustion": "PASS_NO_ACCEPTED_PUBLICATION",
+    "preloaded_output": "PASS_CLEARED",
+    "cross_lineage": "PASS_FAIL_CLOSED",
+    "same_origin_alternate_after_accept": "PASS_FAIL_CLOSED",
+    "standalone_same_executor": "PASS",
+    "serialized_MultiSWAP_style_cross_executor": "PASS_EQUIVALENT",
+    "atomic_vs_plain_commit_physical_state": "PASS_EQUIVALENT",
+    "mass": "PASS_NO_SECOND_MASS_BOOKING",
+    "restart": "PASS",
+    "parallel_frozen_v1": "PASS",
+    "O0_O2": "PASS_EXACT_SEMANTIC_IDENTITY",
+    "F_PM11_completion": "PASS_PRESERVED"
+  },
+  "non_admissible_routes": {
+    "F_KT20": "EXCLUDED_NOT_ANCESTOR_OF_CANONICAL_OR_F_VQ72"
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_VQ72": false,
+    "reference_source_changed_by_F_VQ72": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "persistent_state_changed": false
+  },
+  "invariants": {
+    "3": "PASS",
+    "4": "PASS_NO_NEW_STATE",
+    "7": "PASS_ATOMIC_TRANSACTION_BOUND_PUBLICATION",
+    "8": "PASS_COMMITTED_PHYSICAL_ORIGIN_PRESERVED",
+    "9": "PASS_GENERIC_TIME_UNCHANGED",
+    "13": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "16": "PASS_MULTISWAP_AND_PARALLEL_PRESERVED",
+    "21": "PASS_NO_PHYSICS_FORK",
+    "22": "PASS_SOLVER_INTERNALS_ISOLATED",
+    "23": "PASS_NO_PHYSICS_POLICY_CHANGE",
+    "26": "PASS_PROVENANCE_AUDITABLE",
+    "29": "PASS_NO_SILENT_FILE_CALENDAR_MODFLOW_DEPENDENCY",
+    "30": "PASS_EXPLICIT_QUALIFICATION_AUDIT"
+  },
+  "final_decision": "QUALIFIED_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION_CANDIDATE_BOUND_PROVENANCE"
+}
