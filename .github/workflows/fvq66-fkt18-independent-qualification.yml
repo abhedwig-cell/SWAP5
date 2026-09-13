@@ -23,7 +23,7 @@ jobs:
           gfortran --version
           git rev-parse HEAD
       - name: Run independent F-KT18 attack oracle O0/O2
-        run: bash tests/fvq/run_fvq66_fkt18_independent.sh
+        run: bash tests/fvq/run_fvq66_fkt18_independent_v2.sh
 
   current-preservation:
     name: Independent current preservation replay
