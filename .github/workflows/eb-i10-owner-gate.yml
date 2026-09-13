@@ -27,7 +27,7 @@ jobs:
           test "$(git rev-parse "$CANONICAL:src/kernel/mod_kernel_transactions.f90")" = c7c5b7d3357e4e6739c8f647d6232baca45563e6
           test "$(git rev-parse "$CANONICAL:src/runtime/mod_fmr_accepted_commit_receipt.f90")" = 6798b3296b426950bf028814585c3f5de9be950b
 
-      - name: Check EB-I10 technical delta
+      - name: Check EB-I10 production and evidence delta
         shell: bash
         run: |
           set -euo pipefail
@@ -36,6 +36,8 @@ jobs:
           cat > allowed.txt <<'EOF'
           .github/workflows/eb-i10-owner-gate.yml
           src/runtime/mod_accepted_water_thermal_provenance.f90
+          tests/eb/EB-I10_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I10_CONTRACT.md
           tests/test_eb_i10_accepted_water_thermal_provenance.f90
           EOF
           sort -o allowed.txt allowed.txt
@@ -44,6 +46,20 @@ jobs:
           ! grep -Eiq '(rain|precipitation|irrigation|runon|runoff|drain|root|snow|macropore|groundwater)' src/runtime/mod_accepted_water_thermal_provenance.f90
           ! grep -Eiq '^[[:space:]]*use[[:space:]].*(soil_temperature|hydraulic|energy|enthalpy)' src/runtime/mod_accepted_water_thermal_provenance.f90
           ! grep -Eiq '^[[:space:]]*allocate[[:space:]]*\(' src/runtime/mod_accepted_water_thermal_provenance.f90
+
+      - name: Validate contract and architecture evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool tests/eb/EB-I10_ARCHITECTURE_AUDIT.json >/dev/null
+          test "$(jq '.invariants | length' tests/eb/EB-I10_ARCHITECTURE_AUDIT.json)" = "30"
+          jq -e '[.invariants[].id] == [range(1;31)]' tests/eb/EB-I10_ARCHITECTURE_AUDIT.json >/dev/null
+          jq -e '[.invariants[].status] | all(. == "pass" or . == "preserved" or . == "partial")' \
+            tests/eb/EB-I10_ARCHITECTURE_AUDIT.json >/dev/null
+          grep -Fq 'A ready trial binding is not accepted provenance.' tests/eb/EB-I10_CONTRACT.md
+          grep -Fq 'EB-I10 does not call commit' tests/eb/EB-I10_CONTRACT.md
+          grep -Fq 'production water-transfer callsite provenance publication' tests/eb/EB-I10_ARCHITECTURE_AUDIT.json
+          grep -Fq 'closed energy balance' tests/eb/EB-I10_ARCHITECTURE_AUDIT.json
 
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
