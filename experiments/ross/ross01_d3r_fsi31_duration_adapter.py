@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import math
 import threading
+from pathlib import Path
 
 import ross01_d2_fsi31_adapter_base as base
 
@@ -31,6 +32,7 @@ RequestError = base.RequestError
 
 _BASE_VALIDATION_LOCK = threading.Lock()
 _FROZEN_D2_HORIZON = float(base.HORIZON_DAY)
+_D3R_WORKER = Path(__file__).resolve().with_name("ross01_d3r_duration_worker.py")
 
 
 def _finite_time(value, name: str) -> float:
@@ -87,9 +89,6 @@ def _normalise_for_base(request: dict) -> tuple[dict, float, float, float, int, 
 
 def validate_request(request: dict) -> dict:
     normalised, _, _, semantic_duration, _, _ = _normalise_for_base(request)
-    # Only time admission is extended. All non-time obligations are checked by
-    # the frozen D2 validator on an exact local [0,dt] coordinate, avoiding
-    # absolute-time subtraction cancellation.
     with _BASE_VALIDATION_LOCK:
         previous = base.HORIZON_DAY
         base.HORIZON_DAY = semantic_duration
@@ -104,14 +103,21 @@ def execute_research_trial(request: dict) -> dict:
     before = copy.deepcopy(request)
     try:
         normalised, t0, t1, semantic_duration, ladder_index, endpoint_tolerance = _normalise_for_base(request)
+        # Reuse the frozen D2 fresh-process launcher. The only D3R execution
+        # extension is a duration-aware child entry point that repeats the D2
+        # preflight with the already-admitted ladder duration before calling the
+        # unchanged RossFast worker computation.
         with _BASE_VALIDATION_LOCK:
-            previous = base.HORIZON_DAY
+            previous_horizon = base.HORIZON_DAY
+            previous_file = base.__file__
             base.HORIZON_DAY = semantic_duration
+            base.__file__ = str(_D3R_WORKER)
             try:
                 base.validate_request(normalised)
                 result = base.execute_research_trial(normalised)
             finally:
-                base.HORIZON_DAY = previous
+                base.HORIZON_DAY = previous_horizon
+                base.__file__ = previous_file
     except (RequestError, TypeError, ValueError) as exc:
         if isinstance(exc, RequestError):
             result = base._fail(exc.classification, exc.detail)
@@ -139,6 +145,7 @@ def execute_research_trial(request: dict) -> dict:
         diagnostics["canonical_retry_scale"] = CANONICAL_RETRY_SCALE
         diagnostics["canonical_max_retries"] = CANONICAL_MAX_RETRIES
         diagnostics["d2_fresh_process_launcher_reused"] = True
+        diagnostics["d3r_duration_worker_preflight"] = True
         diagnostics["generic_time_coordinate_translation"] = True
     return result
 
