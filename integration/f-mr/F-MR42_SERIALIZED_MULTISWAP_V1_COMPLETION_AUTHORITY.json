@@ -1,0 +1,176 @@
+{
+  "schema": "swap5.serialized_multiswap_v1_completion_authority.v1",
+  "work_unit": "F-MR42",
+  "title": "SWAP5 Serialized MultiSWAP v1 100% Completeness, Current-Canonical Closure & Final Qualification Readiness Audit",
+  "branch": "work/f-mr42-serialized-multiswap-v1-completeness-audit",
+  "decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
+  "completion_percent": 100.0,
+  "production_source_changed": false,
+  "scope_reduced_to_reach_100_percent": false,
+  "governance": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01C_closeout": "56b86e29e0960e396059caf47c193440d571b709",
+    "F_RG01C_definition_authority": "971e732551abad86acccfd5f01811d855e51e939",
+    "fixed_denominator_model": "SWAP5_V1_COMPLETION_MODEL_V1",
+    "fixed_denominator_domain": "D10",
+    "fixed_denominator_capability": "M10",
+    "denominator_changed_by_F_MR42": false
+  },
+  "current_canonical_binding": {
+    "ref": "integration/f-ci-canonical",
+    "sha": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+    "tree": "9102c9ac3c9bfceea8b7a9e94b2d1ef48c81b363",
+    "last_production_admission_closeout": "F-CI55R@2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "last_production_source_merge": "4023a16c32f4437f23fa1806a3ee0573f81fa1f3",
+    "qualified_production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+    "current_canonical_broad_run": 34743371526,
+    "current_restricted_canonical_preservation_job": 103686907826,
+    "current_restricted_canonical_preservation_conclusion": "success",
+    "post_admission_head_delta_classification": "DOCUMENTATION_ONLY"
+  },
+  "frozen_scope": {
+    "included": [
+      "serialized real-physics execution of multiple logical columns through one runtime without a persistent heavy solver instance per column",
+      "per-column mutable-state isolation and non-persistent solver scratch",
+      "checkpoint -> trial/retry -> commit/rollback transaction semantics",
+      "deterministic serialized execution for equal inputs and execution order",
+      "standalone/reference-kernel equivalence under the qualified tolerance/identity policies",
+      "hard water-mass accounting and fail-closed mass gates",
+      "committed-boundary serialization/restart with lineage, revision and generic-time continuation",
+      "typed optional-state layout identity with allocation only for active optional physics",
+      "canonical result publication and accepted-commit semantics",
+      "effective forcing, root uptake, drainage and surface evaporation composition where those processes are admitted in the frozen SWAP5-v1 production profile",
+      "restricted soil-temperature and snow optional-state compatibility where selected by an admitted runtime profile",
+      "generic [t0,t1] interval execution without a fundamental day or midnight assumption",
+      "per-column/interval diagnostics for execution status, retries/solver cost where applicable, failure classification and mass balance",
+      "current-canonical preservation of the admitted serialized dependency surface"
+    ],
+    "excluded_without_scope_reduction": [
+      "PARALLEL_MULTISWAP_V1 completion",
+      "worker scaling, SIMD/GPU and 100k-column throughput qualification",
+      "RossFast or other research-solver production admission",
+      "full groundwater predictor-corrector or MODFLOW coupling",
+      "general filesystem/byte-format restart interchange",
+      "cross-version restart migration",
+      "mid-transaction or trial-state restart",
+      "persistence of solver scratch",
+      "new physics or performance refactors"
+    ]
+  },
+  "fixed_denominator_recheck": {
+    "D10_name": "Serialized MultiSWAP",
+    "D10_weight": 4.0,
+    "D10_earned_weight": 4.0,
+    "D10_completion_percent": 100.0,
+    "M10_name": "Serialized column runtime, typed optional state and restart",
+    "M10_credit_profile": "PRODUCTION_FULL",
+    "M10_current_maturity": "PRESERVED_REGRESSION_PROTECTED",
+    "M10_completion_fraction": 1.0,
+    "M10_required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+    "M10_frozen_evidence": ["F-MR41", "F-CI35", "F-CI48/F-CI48P"],
+    "M10_remaining_gap": "none"
+  },
+  "current_production_blob_binding": {
+    "src/runtime/mod_fmr_runtime_core.f90": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "872c28bbc345f40073396cce57e4eb43c71de850",
+    "moving_preservation_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+    "note": "The original F-MR41 three-blob postimage is not reused as current evidence. Later source evolution is accepted only through downstream canonical admission and moving-current preservation."
+  },
+  "authority_chain": {
+    "serialized_runtime_foundation": [
+      "F-MR05 serialized real-physics MultiSWAP owner qualification",
+      "qualification/f-vq15-fmr05-serialized-multiswap independent qualification lineage",
+      "later accepted-commit/canonical-publication preservation in the admitted runtime chain"
+    ],
+    "restart": [
+      "F-MR19@110440d28ff2b585763ad8fd4eedb88e7d112eeb",
+      "F-MQ25 negative finding followed by F-MQ25R remediation qualification",
+      "F-MR32 parallel/serialized-origin committed-boundary restart composition",
+      "F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1 independent qualification",
+      "F-CI35 closed canonical admission"
+    ],
+    "typed_optional_state": [
+      "F-MR41@e7165e598b035282a2cb7527b2fb2f466f1dbbff",
+      "F-CI48 qualification/canonical admission",
+      "F-CI48P final postimage and moving-preservation reconciliation"
+    ],
+    "transactions_and_composition": [
+      "F-KT transaction contract lineage",
+      "F-KT15 Task2 solver-service transaction composition",
+      "F-CI49/F-CI49P final canonical admission and moving preservation"
+    ],
+    "process_composition": [
+      "F-CI31/F-CI37 root-uptake authorities",
+      "F-CI36 DIVDRA active runtime authority",
+      "F-CI39/F-CI41/F-CI42 surface-evaporation authorities",
+      "F-CI40 effective-forcing executor authority",
+      "F-CI43/F-CI45 restricted soil-temperature authorities",
+      "F-CI52/F-CI52P restricted fixed-weir transaction admission where applicable"
+    ],
+    "latest_source_preservation": [
+      "F-CI52P final closeout for later runtime-core/restart-contract source evolution",
+      "F-CI55R final source admission for serialized-reference-backend evolution",
+      "integration/f-ci-canonical current-restricted-canonical-preservation on df51575e18777856a47a5d0d1e2e1c7456be4601"
+    ]
+  },
+  "completeness_criteria": [
+    {"criterion":"Execution","result":"PASS","basis":"Serialized real-physics multi-column runtime is admitted and preserved; the frozen D10/M10 authority gives full production credit."},
+    {"criterion":"Isolation","result":"PASS","basis":"Qualified runtime/state contracts separate per-column committed state from shared immutable parameter references and worker/local scratch."},
+    {"criterion":"Transactions","result":"PASS","basis":"F-KT/F-KT15 transaction composition plus F-CI49/F-CI49P preservation; rejected trials do not publish committed mutation."},
+    {"criterion":"Determinism","result":"PASS","basis":"Serialized runtime and committed-boundary restart qualification include deterministic replay and O0/O2 identity evidence where required."},
+    {"criterion":"Standalone equivalence","result":"PASS","basis":"F-MR05/F-VQ15 serialized physical qualification and subsequent preserved composition retain reference/standalone equivalence within the qualified policy."},
+    {"criterion":"Mass conservation","result":"PASS","basis":"Hard mass gates remain unrelaxed; F-CI35 restart evidence includes <=1e-12 cm per-column residual and exact aggregate continuation; current preservation reports no mass regression."},
+    {"criterion":"Restart","result":"PASS","basis":"F-MR19 owner evidence, F-MQ29 independent qualification and F-CI35 canonical admission cover committed-boundary deterministic continuation, lineage/revision/time semantics, mass continuity and scratch exclusion."},
+    {"criterion":"Process composition","result":"PASS","basis":"Frozen-v1 admitted effective forcing, root uptake, drainage, surface evaporation and relevant optional thermal profiles are in the current moving preservation surface; no future physics is added to D10."},
+    {"criterion":"Optional state","result":"PASS","basis":"F-MR41 + F-CI48/F-CI48P qualify typed BASE/SNOW/RESTRICTED_SOIL_TEMPERATURE layout identity, fail-closed unknown IDs and no forced inactive allocation."},
+    {"criterion":"Generic time","result":"PASS","basis":"Kernel/runtime contracts operate over generic intervals and restart evidence preserves exact committed time; no D10 day/midnight assumption is introduced."},
+    {"criterion":"Diagnostics","result":"PASS","basis":"F-MR runtime diagnostics and transaction/restart qualification expose per-column execution/failure/mass evidence; D10 has no unresolved diagnostic denominator gap."},
+    {"criterion":"Current-canonical preservation","result":"PASS","basis":"Exact current canonical is green and its moving-current gate byte-compares the full relevant dependency surface to qualified authority 8a1aeedbaeb5bd015e7e8d098d605968bbecd94e."}
+  ],
+  "gap_audit": {
+    "EVIDENCE_ONLY_GAP": [],
+    "PRESERVATION_GAP": [],
+    "QUALIFICATION_GAP": [],
+    "CANONICAL_ADMISSION_GAP": [],
+    "DOCUMENTATION_GAP": [],
+    "TESTBANK_GAP": [],
+    "IMPLEMENTATION_GAP": [],
+    "SCIENTIFIC_GAP": [],
+    "ARCHITECTURE_GAP": []
+  },
+  "architecture_invariants": {
+    "1":"PASS: one production kernel/service composition is reused; no serialized-only physics fork",
+    "3":"PASS: parameters, dynamic committed state, forcing, numerical configuration and results remain explicit categories",
+    "4":"PASS: persistent state is compact and optional state is typed/conditional",
+    "5":"PASS: solver scratch is not restart-persisted and is not permanent per-column state",
+    "6":"PASS: logical columns are separated from internal runtime/backend storage and batching concerns",
+    "7":"PASS: checkpoint/trial/retry/commit/rollback semantics are preserved",
+    "8":"PASS: restart/replay and accepted-boundary recomputation are supported from committed state",
+    "9":"PASS: generic interval time and exact committed-time restart semantics are preserved",
+    "13":"PASS: mass conservation remains a hard gate with no tolerance relaxation",
+    "16":"PASS: Serialized MultiSWAP is a primary admitted runtime capability; parallel scaling remains a separate D11 concern",
+    "23":"PASS: physical options and numerical policy remain separate contracts",
+    "24":"PASS_WITH_SCOPE_BOUNDARY: bounded-cost parallel/performance qualification is not part of frozen D10 and is not silently claimed",
+    "25":"PASS: reference Full Richards path remains available and is not replaced by F-MR42",
+    "26":"PASS: runtime exposes column/interval diagnostics and failure/mass information",
+    "27":"PASS: optional physical state is allocated only for active typed layouts",
+    "29":"PASS: no implicit file, midnight, one-day or MODFLOW dependency is introduced",
+    "30":"PASS: this audit explicitly rechecks the applicable architecture invariants against exact current-canonical evidence"
+  },
+  "independent_qualification_interpretation": {
+    "statement": "No owner-only evidence is promoted to independent evidence. F-MQ29 is the independent restart authority used by F-CI35. Other admitted process/runtime capabilities retain their own F-VQ/F-CI qualification chains. The frozen F-RG01C M10 denominator does not require a new standalone F-VQ solely for F-MR41; F-CI48/F-CI48P is its specified admission/preservation evidence."
+  },
+  "F_RG01_ingestion_result": {
+    "domain_id": "D10",
+    "capability_id": "M10",
+    "completion_fraction": 1.0,
+    "completion_percent": 100.0,
+    "maturity": "PRESERVED_REGRESSION_PROTECTED",
+    "remaining_gap": "none",
+    "authority": "F-MR42",
+    "do_not_change_denominator": true
+  },
+  "exit_target": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE"
+}
