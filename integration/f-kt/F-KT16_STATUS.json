@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.fkt16_status.v1",
+  "work_unit": "F-KT16",
+  "title": "SWAP5 State, Persistence & Restart v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "branch": "work/f-kt16-state-persistence-restart-v1-completion-audit",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
+  "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
+  "closed": true,
+  "completion_percent": 100.0,
+  "frozen_domain": "SWAP5_V1_COMPLETION_MODEL_V1:D02",
+  "frozen_weight": 7.0,
+  "earned_weight": 7.0,
+  "current_canonical": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "current_canonical_tree": "5342833575484452b34606f8854ff3f5a542e452",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "fixed_denominator_definition": "971e732551abad86acccfd5f01811d855e51e939",
+  "completion_authority": {
+    "path": "integration/f-kt/F-KT16_STATE_PERSISTENCE_RESTART_V1_COMPLETION_AUTHORITY.json",
+    "creation_commit": "448e5cad7a3bbc7af41920c3292ac93379b0f03d"
+  },
+  "F_RG01_completion_result": {
+    "path": "integration/f-kt/F-KT16_F_RG01_COMPLETION_RESULT.json",
+    "commit": "ab2680e786e4779d2856bbf0a49875168f32b0cb"
+  },
+  "qualification": {
+    "qualified_head": "81b2492f947df063742aa5998355d97d721af699",
+    "workflow": ".github/workflows/fkt16-state-persistence-restart-v1-final-qualification.yml",
+    "gate": "tests/fkt/run_fkt16_state_persistence_restart_completion_gate.sh",
+    "run": 34746928353,
+    "job": 103696445028,
+    "conclusion": "success",
+    "exact_current_canonical_gate": "PASS",
+    "no_production_or_reference_delta_gate": "PASS",
+    "fixed_denominator_D02_gate": "PASS",
+    "independent_restart_chain_gate": "PASS",
+    "process_state_completeness_gate": "PASS",
+    "current_canonical_admission_preservation_gate": "PASS",
+    "state_ownership_and_schema_structure_gate": "PASS"
+  },
+  "outcome": {
+    "all_14_completeness_criteria": "PASS",
+    "all_requested_architecture_invariants": "PASS",
+    "all_hard_100_percent_gates": "PASS",
+    "gap_count": 0,
+    "production_source_changes": [],
+    "reference_source_changes": [],
+    "denominator_change": false,
+    "scope_reduction": false,
+    "100_percent": true
+  },
+  "historical_integrity": {
+    "F_MQ25_negative_evidence_retained": true,
+    "F_MR21_remediation_independently_requalified_by_F_MQ27": true,
+    "F_MQ29_used_as_independent_parallel_restart_evidence": true,
+    "owner_evidence_presented_as_independent": false
+  },
+  "hard_nonclaims": [
+    "No new production functionality.",
+    "No RossFast or future alternative-solver qualification.",
+    "No deep-vadose or broad MODFLOW restart qualification.",
+    "No distributed crash-recovery protocol qualification.",
+    "No future-major-schema migration qualification.",
+    "No mid-transaction trial-state or disposable worker-scratch persistence qualification.",
+    "No filesystem or byte-format standardization claim."
+  ],
+  "closeout_policy": "This metadata-only closeout is downstream of the successful exact-head qualification run and changes no audited production/reference source or completion authority. No additional F-KT16 source action is required. Any future canonical change touching the bound state/restart dependency surface must preserve or requalify this authority rather than silently carrying the 100-percent claim forward."
+}
