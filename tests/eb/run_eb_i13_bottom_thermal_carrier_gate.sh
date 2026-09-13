@@ -87,6 +87,7 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     tests/eb/test_eb_i13_bottom_thermal_carrier.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
@@ -100,6 +101,24 @@ for opt in 0 2; do
     'EB_I13_BOTTOM_THERMAL_CARRIER_GATE PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker: $marker"; }
   done
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/eb/test_eb_i13_outer_candidate_semantics.f90 -o "$OUT/outer-test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/outer-test.o" -o "$OUT/outer-test"
+  "$OUT/outer-test" > "$OUT/outer-output.txt" 2>&1 || {
+    cat "$OUT/outer-output.txt" >&2
+    fail "outer lifecycle O$opt execution"
+  }
+  for marker in \
+    'EB_I13_MULTI_SUBSTEP_ORDERED_SEQUENCE=PASS' \
+    'EB_I13_PARTIAL_OUTER_FAILURE_NONPUBLIC=PASS' \
+    'EB_I13_OUTER_CANDIDATE_SEMANTICS_GATE PASS'; do
+    grep -Fq "$marker" "$OUT/outer-output.txt" || {
+      cat "$OUT/outer-output.txt" >&2
+      fail "missing outer O$opt marker: $marker"
+    }
+  done
+
   echo "EB_I13_O${opt}=PASS"
 done
 
@@ -107,10 +126,18 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
   diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
   fail 'O0/O2 output identity'
 }
+cmp -s "$BUILD/o0/outer-output.txt" "$BUILD/o2/outer-output.txt" || {
+  diff -u "$BUILD/o0/outer-output.txt" "$BUILD/o2/outer-output.txt" >&2 || true
+  fail 'outer O0/O2 output identity'
+}
 HASH="$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
+OUTER_HASH="$(sha256sum "$BUILD/o0/outer-output.txt" | awk '{print $1}')"
 echo "EB_I13_OUTPUT_SHA256=$HASH"
+echo "EB_I13_OUTER_OUTPUT_SHA256=$OUTER_HASH"
 echo 'EB_I13_O0_O2_EXACT_IDENTITY=PASS'
+echo 'EB_I13_OUTER_O0_O2_EXACT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
+cat "$BUILD/o0/outer-output.txt"
 
 git diff --check HEAD~1..HEAD || fail 'latest commit whitespace check'
 
@@ -118,7 +145,10 @@ if [[ -n "$EVIDENCE_DIR" ]]; then
   mkdir -p "$EVIDENCE_DIR"
   cp "$BUILD/o0/output.txt" "$EVIDENCE_DIR/o0-output.txt"
   cp "$BUILD/o2/output.txt" "$EVIDENCE_DIR/o2-output.txt"
+  cp "$BUILD/o0/outer-output.txt" "$EVIDENCE_DIR/outer-o0-output.txt"
+  cp "$BUILD/o2/outer-output.txt" "$EVIDENCE_DIR/outer-o2-output.txt"
   printf '%s\n' "$HASH" > "$EVIDENCE_DIR/output-sha256.txt"
+  printf '%s\n' "$OUTER_HASH" > "$EVIDENCE_DIR/outer-output-sha256.txt"
   git rev-parse HEAD > "$EVIDENCE_DIR/tested-head.txt"
   git rev-parse HEAD:src/runtime/mod_fmr_bottom_thermal_carrier.f90 > "$EVIDENCE_DIR/carrier-blob.txt"
   git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90 > "$EVIDENCE_DIR/backend-blob.txt"
