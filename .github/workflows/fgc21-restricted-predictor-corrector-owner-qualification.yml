@@ -75,7 +75,7 @@ jobs:
           echo 'FGC21_QUALIFICATION_AUTHORITY_RECONCILIATION=PASS'
       - name: Compiler identity
         run: gfortran --version
-      - name: Diagnostic base owner compile O0
+      - name: Diagnostic base owner compile and run O0
         shell: bash
         run: |
           set -euo pipefail
@@ -95,6 +95,7 @@ jobs:
             src/runtime/mod_groundwater_predictor_corrector_window.f90 \
             tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90 \
             -o "$dir/test"
+          "$dir/test"
       - name: F-GC21 owner qualification
         shell: bash
         run: |
