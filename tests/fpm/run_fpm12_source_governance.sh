@@ -39,7 +39,7 @@ import json, subprocess, sys
 pub,pm09,pm10,fmr43,fvq71=sys.argv[1:]
 def show(ref,path): return json.loads(subprocess.check_output(['git','show',f'{ref}:{path}'],text=True))
 a=show(pm09,'integration/f-pm/F-PM09_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_COMPLETENESS_AUDIT.json')
-assert a['decision']=='ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED'
+assert a['final_decision']=='ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED'
 assert a['criteria']['accepted_publication']=='FAIL'
 assert {g['id'] for g in a['closure_gaps']}=={'FPM09-G01','FPM09-G02','FPM09-G03'}
 o=show(pm10,'integration/f-pm/F-PM10_STATUS.json')
