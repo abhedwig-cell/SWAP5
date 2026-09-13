@@ -1,8 +1,10 @@
 module mod_fmr_bottom_sensible_energy
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_candidate_t, fmr_bottom_thermal_sample_t, &
        FMR_BOTTOM_THERMAL_DONOR_NONE, FMR_BOTTOM_THERMAL_DONOR_LOCAL_SWAP, FMR_BOTTOM_THERMAL_DONOR_EXTERNAL
+  use mod_fmr_bottom_external_thermal_binding, only: fmr_bottom_external_thermal_binding_bundle_t, &
+       FMR_EXT_THERMAL_BINDING_OK, FMR_EXT_THERMAL_BINDING_UNAVAILABLE
   use mod_liquid_water_sensible_enthalpy, only: liquid_water_sensible_enthalpy_parameters_t, &
        evaluate_liquid_water_sensible_transport, LWSE_OK
   implicit none
@@ -15,6 +17,7 @@ module mod_fmr_bottom_sensible_energy
   integer, parameter, public :: FMR_BOTTOM_ENERGY_INVALID_PROPERTIES = 4
   integer, parameter, public :: FMR_BOTTOM_ENERGY_INVALID_SAMPLE = 5
   integer, parameter, public :: FMR_BOTTOM_ENERGY_NUMERIC_FAILURE = 6
+  integer, parameter, public :: FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING = 7
 
   type, public :: fmr_bottom_sensible_energy_result_t
     private
@@ -35,6 +38,7 @@ module mod_fmr_bottom_sensible_energy
   end type fmr_bottom_sensible_energy_result_t
 
   public :: evaluate_fmr_bottom_sensible_energy
+  public :: evaluate_fmr_bottom_sensible_energy_with_external
 
 contains
 
@@ -128,6 +132,128 @@ contains
     result%complete_value = .true.
     result%status_value = FMR_BOTTOM_ENERGY_COMPLETE
   end subroutine evaluate_fmr_bottom_sensible_energy
+
+  subroutine evaluate_fmr_bottom_sensible_energy_with_external(candidate, candidate_lineage_id, bindings, parameters, result)
+    type(fmr_bottom_thermal_candidate_t), intent(in) :: candidate
+    integer(int64), intent(in) :: candidate_lineage_id
+    type(fmr_bottom_external_thermal_binding_bundle_t), intent(in) :: bindings
+    type(liquid_water_sensible_enthalpy_parameters_t), intent(in) :: parameters
+    type(fmr_bottom_sensible_energy_result_t), intent(out) :: result
+
+    type(fmr_bottom_sensible_energy_result_t) :: base_result
+    type(fmr_bottom_thermal_sample_t) :: sample
+    real(real64) :: donor_temperature_c, sample_energy, candidate_total
+    integer(int64) :: provenance_token
+    integer :: i, n, binding_status, enthalpy_status, resolved_external_count
+    logical :: sample_available, binding_available
+
+    call evaluate_fmr_bottom_sensible_energy(candidate, parameters, base_result)
+    result = base_result
+
+    if (.not. candidate%ready() .or. .not. parameters%ready()) return
+    if (candidate_lineage_id <= 0_int64 .or. .not. bindings%ready()) then
+      call mark_invalid_external_binding(result)
+      return
+    end if
+    if (bindings%candidate_lineage_id() /= candidate_lineage_id) then
+      call mark_invalid_external_binding(result)
+      return
+    end if
+
+    if (base_result%status_value == FMR_BOTTOM_ENERGY_COMPLETE) then
+      if (bindings%binding_count() /= 0) call mark_invalid_external_binding(result)
+      return
+    end if
+    if (base_result%status_value /= FMR_BOTTOM_ENERGY_INCOMPLETE_EXTERNAL_DONOR) return
+
+    n = candidate%sample_count()
+    candidate_total = base_result%local_outward_subtotal_j_m2_value
+    resolved_external_count = 0
+
+    do i = 1, n
+      call candidate%sample_at(i, sample, sample_available)
+      if (.not. sample_available) then
+        result = base_result
+        result%status_value = FMR_BOTTOM_ENERGY_INVALID_SAMPLE
+        return
+      end if
+
+      call bindings%resolve(candidate_lineage_id, i, donor_temperature_c, provenance_token, binding_available, binding_status)
+
+      select case (sample%donor_class)
+      case (FMR_BOTTOM_THERMAL_DONOR_EXTERNAL)
+        if (binding_status == FMR_EXT_THERMAL_BINDING_UNAVAILABLE .and. .not. binding_available) then
+          result = base_result
+          return
+        end if
+        if (binding_status /= FMR_EXT_THERMAL_BINDING_OK .or. .not. binding_available) then
+          result = base_result
+          call mark_invalid_external_binding(result)
+          return
+        end if
+        if (provenance_token < 0_int64 .or. .not. ieee_is_finite(donor_temperature_c)) then
+          result = base_result
+          call mark_invalid_external_binding(result)
+          return
+        end if
+        call evaluate_liquid_water_sensible_transport(sample%bottom_outward_exchange_native, donor_temperature_c, &
+             parameters, sample_energy, enthalpy_status)
+        if (enthalpy_status /= LWSE_OK .or. .not. ieee_is_finite(sample_energy)) then
+          result = base_result
+          result%status_value = FMR_BOTTOM_ENERGY_NUMERIC_FAILURE
+          result%complete_value = .false.
+          result%outward_positive_energy_j_m2_value = 0.0_real64
+          return
+        end if
+        candidate_total = candidate_total + sample_energy
+        if (.not. ieee_is_finite(candidate_total)) then
+          result = base_result
+          result%status_value = FMR_BOTTOM_ENERGY_NUMERIC_FAILURE
+          result%complete_value = .false.
+          result%outward_positive_energy_j_m2_value = 0.0_real64
+          return
+        end if
+        resolved_external_count = resolved_external_count + 1
+
+      case (FMR_BOTTOM_THERMAL_DONOR_LOCAL_SWAP, FMR_BOTTOM_THERMAL_DONOR_NONE)
+        if (binding_status == FMR_EXT_THERMAL_BINDING_OK .and. binding_available) then
+          result = base_result
+          call mark_invalid_external_binding(result)
+          return
+        end if
+        if (binding_status /= FMR_EXT_THERMAL_BINDING_UNAVAILABLE .or. binding_available) then
+          result = base_result
+          call mark_invalid_external_binding(result)
+          return
+        end if
+
+      case default
+        result = base_result
+        result%status_value = FMR_BOTTOM_ENERGY_INVALID_SAMPLE
+        return
+      end select
+    end do
+
+    if (bindings%binding_count() /= resolved_external_count) then
+      result = base_result
+      call mark_invalid_external_binding(result)
+      return
+    end if
+
+    result = base_result
+    result%outward_positive_energy_j_m2_value = candidate_total
+    result%incomplete_external_sample_count_value = 0
+    result%complete_value = .true.
+    result%status_value = FMR_BOTTOM_ENERGY_COMPLETE
+  end subroutine evaluate_fmr_bottom_sensible_energy_with_external
+
+  subroutine mark_invalid_external_binding(result)
+    type(fmr_bottom_sensible_energy_result_t), intent(inout) :: result
+
+    result%status_value = FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING
+    result%complete_value = .false.
+    result%outward_positive_energy_j_m2_value = 0.0_real64
+  end subroutine mark_invalid_external_binding
 
   integer function bottom_energy_result_status(self) result(status)
     class(fmr_bottom_sensible_energy_result_t), intent(in) :: self
