@@ -1,0 +1,32 @@
+{
+  "workunit": "EB-I16",
+  "title": "External Bottom Thermal Binding Contract",
+  "base_authority": "0181b7b674cc89d729e361dafc1135b719e23a7d",
+  "decision": "DESIGN_FROZEN_PENDING_EXACT_HEAD_QUALIFICATION",
+  "production_source_changed": false,
+  "mass_authority_changed": false,
+  "groundwater_contract_changed": false,
+  "thermal_carrier_changed": false,
+  "frozen": {
+    "binding_owner": "runtime_or_coupler",
+    "binding_identity": "opaque_accepted_candidate_lineage_plus_one_based_sample_ordinal",
+    "binding_payload": "finite_external_donor_temperature_c_with_optional_opaque_provenance",
+    "owns_water_quantity": false,
+    "source_specific": false,
+    "interval_only_key_allowed": false,
+    "implicit_temperature_fallback_allowed": false,
+    "exact_zero_requires_binding": false,
+    "missing_or_invalid_binding": "ENERGY_TOTAL_UNAVAILABLE_FAIL_CLOSED",
+    "thermal_failure_rejects_accepted_hydrology": false,
+    "external_temporal_discretization_owner": "provider_or_coupler"
+  },
+  "qualification": {
+    "required_workflow": "EB-I16 external bottom thermal binding contract",
+    "required_branch": "work/eb-i16-external-bottom-thermal-binding-contract",
+    "required_condition": "workflow success on exact unchanged branch head",
+    "production_authority_blob_preservation": true,
+    "architecture_invariants_1_30": true,
+    "adversarial_binding_cases": true
+  },
+  "next_boundary": "Implement a compact source-agnostic candidate binding bundle and extend EB-I15 evaluation without publication or governing-physics integration."
+}
