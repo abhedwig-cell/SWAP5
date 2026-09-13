@@ -1,0 +1,22 @@
+name: F-KT16 state persistence restart v1 final qualification
+
+on:
+  push:
+    branches:
+      - work/f-kt16-state-persistence-restart-v1-completion-audit
+    paths:
+      - 'integration/f-kt/F-KT16_STATE_PERSISTENCE_RESTART_V1_COMPLETION_AUTHORITY.json'
+      - 'tests/fkt/run_fkt16_state_persistence_restart_completion_gate.sh'
+      - '.github/workflows/fkt16-state-persistence-restart-v1-final-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  final-completion-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run exact-current State Persistence Restart v1 completion gate
+        shell: bash
+        run: bash tests/fkt/run_fkt16_state_persistence_restart_completion_gate.sh
