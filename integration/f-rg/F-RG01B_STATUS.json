@@ -1,0 +1,69 @@
+{
+  "workunit": "F-RG01B",
+  "title": "Workunit Runtime & Resumption Execution Policy",
+  "status": "QUALIFIED_RUNTIME_AND_RESUMPTION_EXECUTION_POLICY_ESTABLISHED",
+  "policy_id": "F-RG01B-RREP",
+  "policy_version": "1.0.0",
+  "policy_path": "integration/f-rg/F-RG01B_RUNTIME_AND_RESUMPTION_EXECUTION_POLICY.md",
+  "policy_definition_authority": {
+    "commit": "251e2d8b669540b724ebf2668515016513ffe323",
+    "tree": "da8a79c5d6a92650249616d6f880a40e7374c3fc",
+    "policy_blob": "6dfbf2c5c015a79d385b037651b9a1759d17b941"
+  },
+  "parent_f_rg01a_authority": {
+    "branch": "regie/f-rg01a-parallel-research-isolation-contract-ownership-policy",
+    "commit": "4553204468695553cf69a48d1c97598c471156d6",
+    "tree": "87c65fe9f094461376e073db88349952c1ecee60"
+  },
+  "original_f_rg01_authority": {
+    "branch": "regie/f-rg01-post-rb1-program-rebaseline",
+    "commit": "09ef05c60c5e45af218980001c8ad8ec30da2e9e"
+  },
+  "current_canonical_snapshot_at_establishment": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a",
+    "tree": "8d48f92612eb4a72469b99877ec5805ff2cd113a",
+    "meaning": "F-CI55R: finalize accepted bottom exchange canonical admission closeout"
+  },
+  "governance_effect": {
+    "workunit_scope_defined_by_scientific_architectural_cohesion_not_runtime": true,
+    "multiple_execution_chunks_allowed": true,
+    "durable_resumable_checkpoint_required_for_incomplete_substantial_work": true,
+    "moving_authorities_rechecked_selectively_on_resume": true,
+    "frozen_authorities_reconstructed_by_default": false,
+    "runtime_interruption_invalidates_prior_work_by_default": false,
+    "paused_workunit_retains_semantic_contract_ownership": true,
+    "production_source_changed": false,
+    "current_canonical_changed_by_this_workunit": false,
+    "rb1_reopened": false,
+    "scientific_qualification_reopened": false,
+    "f_rg01a_policy_weakened": false
+  },
+  "recommended_execution_phases": [
+    "authority_reconnaissance",
+    "contract_or_design_specification",
+    "implementation_or_composition",
+    "verification_and_qualification",
+    "closeout_and_authority_publication"
+  ],
+  "minimum_resume_record": [
+    "workunit_identity_and_scope",
+    "current_phase",
+    "governing_authorities_and_exact_shas",
+    "relevant_current_canonical_sha",
+    "consumed_and_owned_semantic_contracts",
+    "frozen_or_moving_contract_status",
+    "design_decisions",
+    "changed_files_and_commits",
+    "completed_tests_and_results",
+    "open_findings_or_blockers",
+    "next_safe_action",
+    "authorities_requiring_live_recheck"
+  ],
+  "changed_paths": [
+    "integration/f-rg/F-RG01B_RUNTIME_AND_RESUMPTION_EXECUTION_POLICY.md",
+    "integration/f-rg/F-RG01B_STATUS.json"
+  ],
+  "production_paths_changed": [],
+  "exit_target": "QUALIFIED_RUNTIME_AND_RESUMPTION_EXECUTION_POLICY_ESTABLISHED"
+}
