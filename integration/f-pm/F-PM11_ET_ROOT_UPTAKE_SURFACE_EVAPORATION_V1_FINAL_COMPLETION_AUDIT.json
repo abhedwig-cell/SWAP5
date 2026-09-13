@@ -1,0 +1,146 @@
+{
+  "schema": "swap5.fpm11.et_root_surface_v1_final_completion_audit.v1",
+  "work_unit": "F-PM11",
+  "title": "SWAP5 ET, Root Water Uptake & Surface Evaporation v1 Final 100% Completion Audit",
+  "outcome": "QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE",
+  "current_canonical": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+    "commit": "F-CI59P: persist atomic surface publication postimage reconciliation",
+    "live_recheck_before_branch_creation": "PASS_EXACT",
+    "post_merge_canonical_workflow_run": 34781202197,
+    "post_merge_canonical_workflow_conclusion": "success"
+  },
+  "numbering": {
+    "F_PM11_free_at_creation": true,
+    "branch": "work/f-pm11-et-root-uptake-surface-evaporation-v1-final-completion",
+    "number_changed": false
+  },
+  "denominator_authority": {
+    "work_unit": "F-PM09",
+    "branch": "work/f-pm09-et-root-uptake-surface-evaporation-v1-completion-audit",
+    "audit_blob": "3a352676c481563b5b230255800707e1813e50a5",
+    "denominator_changed": false,
+    "scope_reduced": false
+  },
+  "frozen_scope": [
+    "reference ET demand",
+    "crop-atmosphere demand transfer",
+    "root water uptake",
+    "root-sink attribution",
+    "potential-to-actual ET reduction",
+    "surface evaporation",
+    "hydraulic limitation/materialization",
+    "accepted publication",
+    "transaction/mass/restart/MultiSWAP compatibility"
+  ],
+  "completion_percent": 100,
+  "completion_100_percent": true,
+  "production_source_changed_by_F_PM11": false,
+  "reference_source_changed_by_F_PM11": false,
+  "delta_since_F_PM09_canonical": {
+    "base": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+    "head": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "source_changes": [
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+      "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90"
+    ],
+    "other_changes": "qualification, workflow, test and governance metadata only",
+    "previously_passing_ET_root_crop_surface_physics_sources_changed": false
+  },
+  "current_production_source_blobs": {
+    "src/process/mod_reference_et_demand_process.f90": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "src/process/mod_root_water_uptake_process.f90": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/crop/mod_crop_et_canopy_view_provider.f90": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649"
+  },
+  "closure_authorities": {
+    "G01": {
+      "status": "CLOSED",
+      "authority": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+      "decision": "OWNER_QUALIFIED_ATOMIC_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION",
+      "mechanism": "atomic runtime composition prevents cross-candidate result substitution without adding a second mass authority"
+    },
+    "G02": {
+      "status": "CLOSED",
+      "authority": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+      "decision": "QUALIFIED_ATOMIC_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION",
+      "workflow_run": 34780009887,
+      "workflow_job": 103785176480,
+      "hard_negative": "PASS_SAME_ORIGIN_ALTERNATE_STALE_AND_SPLIT_API_EXTERNALLY_INACCESSIBLE",
+      "optimization_identity": "PASS_O0_O2",
+      "mass": "PASS_NO_SECOND_MASS_AUTHORITY_OR_REGRESSION"
+    },
+    "G03": {
+      "status": "CLOSED",
+      "source_admission": "F-CI59@648c3a2a90655ae053c2fd020563b3c4adce458b",
+      "postimage_reconciliation": "F-CI59P@379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+      "F_CI59_true_two_parent_merge": true,
+      "F_CI59P_true_two_parent_merge": true,
+      "postpromotion_source_admission_run": 34780675957,
+      "postpromotion_final_canonical_run": 34781202197,
+      "permanent_preservation": "PASS"
+    }
+  },
+  "criteria": {
+    "reference_ET": "PASS",
+    "crop_canopy_binding": "PASS",
+    "root_uptake": "PASS",
+    "root_attribution": "PASS",
+    "potential_to_actual_reduction": "PASS",
+    "surface_evaporation_boundary": "PASS",
+    "surface_evaporation_capacity": "PASS",
+    "accepted_publication": "PASS",
+    "transaction_semantics": "PASS_FAIL_CLOSED_ACCEPTED_PUBLICATION_INCLUDED",
+    "mass": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "restart": "PASS",
+    "generic_time": "PASS",
+    "standalone_MultiSWAP": "PASS",
+    "parallel_compatibility": "PASS_WITHIN_FROZEN_V1",
+    "process_state_ownership": "PASS",
+    "diagnostics": "PASS",
+    "Full_Richards_compatibility": "PASS",
+    "solver_interface_isolation": "PASS",
+    "crop_lifecycle_compatibility": "PASS",
+    "boundary_event_behavior": "PASS_WITHIN_FROZEN_V1",
+    "current_canonical_preservation": "PASS"
+  },
+  "mass_and_transaction_reasoning": {
+    "accepted_surface_publication_is_transactionally_bound": true,
+    "same_origin_stale_alternate_rejected": true,
+    "cross_lineage_rejected": true,
+    "historical_split_prepare_finalize_external_API_unreachable": true,
+    "surface_process_result_is_not_a_second_mass_booking": true,
+    "authoritative_top_water_mass_contribution": "accepted solver external top flux",
+    "mass_conservation_preserved": true
+  },
+  "qualification_preservation_reasoning": {
+    "all_F_PM09_previously_passing_criteria_preserved": true,
+    "reason": "the only production-source changes after the F-PM09 canonical authority are the provenance-safe materializer and accepted-publication seam; the broad current-canonical qualification workflow on 379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b completed successfully, including F-CI31 ET/root-uptake replay and moving-current preservation"
+  },
+  "invariant_audit": {
+    "1": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "7": "PASS",
+    "8": "PASS",
+    "9": "PASS",
+    "13": "PASS",
+    "16": "PASS",
+    "21": "PASS",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS",
+    "26": "PASS",
+    "27": "PASS",
+    "29": "PASS",
+    "30": "PASS"
+  },
+  "hard_blockers": [],
+  "remaining_closure_gaps": [],
+  "final_decision": "QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE",
+  "terminal_marker": "FPM11_QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE"
+}
