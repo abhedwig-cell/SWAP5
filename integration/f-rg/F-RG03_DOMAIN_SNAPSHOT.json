@@ -1,0 +1,28 @@
+{
+  "work_unit":"F-RG03",
+  "current_canonical":{"sha":"379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b","tree":"556221f62b4fde616981499eba68ef5460f5d83c"},
+  "fixed_denominator_authority":{"sha":"56b86e29e0960e396059caf47c193440d571b709","tree":"088bfe72e42ecbad5de12a823af82743a1854c5c","unchanged":true},
+  "domains":[
+    {"id":"D01","name":"Kernel / transactions / generic time / mass","completion_percent":100.0},
+    {"id":"D02","name":"State / persistence / restart","completion_percent":100.0},
+    {"id":"D03","name":"Full Richards / soil-water reference solver","completion_percent":100.0},
+    {"id":"D04","name":"Soil-water solver interface","completion_percent":100.0},
+    {"id":"D05","name":"ET / root uptake / surface evaporation","completion_percent":100.0},
+    {"id":"D06","name":"Drainage / restricted surface-water completion","completion_percent":100.0},
+    {"id":"D07","name":"Crop / WOFOST","completion_percent":100.0},
+    {"id":"D08","name":"Soil temperature and snow required profile","completion_percent":100.0},
+    {"id":"D09","name":"Other required production physics","completion_percent":40.0},
+    {"id":"D10","name":"Serialized MultiSWAP","completion_percent":100.0},
+    {"id":"D11","name":"Parallel MultiSWAP","completion_percent":79.375},
+    {"id":"D12","name":"Runtime composition","completion_percent":100.0},
+    {"id":"D13","name":"Groundwater interface and coupling","completion_percent":82.0},
+    {"id":"D14","name":"Performance / bounded-cost / fallback","completion_percent":53.0},
+    {"id":"D15","name":"Permanent testbank","completion_percent":83.928571428571},
+    {"id":"D16","name":"Scientific traceability / documentation","completion_percent":51.666666666667},
+    {"id":"D17","name":"Status-A readiness","completion_percent":9.090909090909},
+    {"id":"D18","name":"Governance / reproducibility / release evidence","completion_percent":85.0}
+  ],
+  "formally_100_percent_domains":["D01","D02","D03","D04","D05","D06","D07","D08","D10","D12"],
+  "recent_live_closure_authorities":{"F_KT16":{"sha":"37a91f16078badaa675235f1230d225a21c9e010","tree":"3ddacee88898872ec4541b721b74cce63117bbed"},"F_KT19":{"sha":"004f8f438ce1380c940a5139df83165c4d2eb68c","tree":"c48234ef7e0ed4c8bcb2e968c6fce299cb321240"},"F_MR42_R2":{"sha":"e370f95c2e50c2fef46fe99eac11522046560938","tree":"c142f51d55338a7f942123534242dd89e03a34e8"},"F_PM11":{"sha":"602a461957c45623fc414ef15e40a1bfe755de43","tree":"134e01ef9092277639113d9be64eefc422e4fbb8"}},
+  "score_change_since_latest_F_RG01C_snapshot":"G04 restricted generic-window predictor-corrector advanced from independently-qualified 70 percent credit to preserved 100 percent credit after F-CI56; D13 becomes 82 percent; other frozen domain scores remain unchanged."
+}
