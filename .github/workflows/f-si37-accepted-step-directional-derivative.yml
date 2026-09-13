@@ -75,11 +75,39 @@ jobs:
           set -euo pipefail
           C=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 -J "$BUILD/o0" -I "$BUILD/o0")
           gfortran "${C[@]}" -c tests/fsi/test_fsi37_accepted_step_directional_derivative.f90 -o "$BUILD/o0/test_fsi37.o"
-      - name: Run O0 oracle
-        run: |
-          set -euo pipefail
           gfortran -O0 "$BUILD/o0"/*.o -o "$BUILD/o0/test_fsi37"
-          timeout 120s "$BUILD/o0/test_fsi37" | tee "$BUILD/o0/output.txt"
+      - name: Capture O0 oracle result
+        run: |
+          set +e
+          timeout 120s "$BUILD/o0/test_fsi37" > "$BUILD/o0/output.txt" 2>&1
+          code=$?
+          cat "$BUILD/o0/output.txt"
+          echo "FSI37_ORACLE_CODE=$code" >> "$GITHUB_ENV"
+          exit 0
+      - name: Diagnose physical solve or direction availability
+        run: |
+          if grep -Eq 'FSI37_FAIL (directional physical solve converged|direction available|centered FD solves converged)' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose same-factor cost contract
+        run: |
+          if grep -Eq 'FSI37_FAIL (exactly one added backsolve|no added Jacobian build|no added nonlinear trajectory)' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose finite directional state
+        run: |
+          if grep -Eq 'FSI37_FAIL (finite outgoing head direction|finite outgoing theta direction)' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose physical ON OFF identity
+        run: |
+          if grep -Eq 'FSI37_FAIL ON/OFF' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose FD state derivative
+        run: |
+          if grep -Eq 'FSI37_FAIL (FD state derivative convergence|FD state derivative absolute/relative gate)' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose FD bottom flux derivative
+        run: |
+          if grep -Eq 'FSI37_FAIL (FD bottom-flux derivative convergence|FD bottom-flux derivative absolute/relative gate)' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose fail closed routes
+        run: |
+          if grep -Eq 'FSI37_FAIL (unqualified provider physical solve remains valid|unqualified provider derivative fails closed|forced nonacceptance advises retry|retry produces no accepted directional result)' "$BUILD/o0/output.txt"; then exit 1; fi
+      - name: Diagnose uncategorized O0 failure
+        run: |
+          if [[ "$FSI37_ORACLE_CODE" != "0" ]]; then exit 1; fi
           grep -Fq 'FSI37_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS' "$BUILD/o0/output.txt"
       - name: Run complete O0 O2 gate
         run: bash tests/fsi/run_fsi37_qualification.sh
