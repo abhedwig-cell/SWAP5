@@ -1,0 +1,48 @@
+{
+  "all_pass": true,
+  "decision": "QUALIFIED_D2_GENERIC_TIME_COORDINATE_REPRESENTATION",
+  "endpoint_ulp_multiplier": 2.0,
+  "probes": [
+    {
+      "failure_classification": null,
+      "name": "generic_t0_0.0",
+      "pass": true
+    },
+    {
+      "failure_classification": null,
+      "name": "generic_t0_37.125",
+      "pass": true
+    },
+    {
+      "failure_classification": null,
+      "name": "generic_t0_12345.75",
+      "pass": true
+    },
+    {
+      "failure_classification": null,
+      "name": "generic_t0_-4321.5",
+      "pass": true
+    },
+    {
+      "failure_classification": "TIME_OUTSIDE_DECLARED_SCOPE",
+      "name": "duration_outside_declared_scope",
+      "pass": true
+    },
+    {
+      "failure_classification": "INVALID_TIME_INTERVAL",
+      "name": "t1_not_greater_than_t0",
+      "pass": true
+    }
+  ],
+  "qualification_slice": "GENERIC_TIME_COORDINATE_REPRESENTATION",
+  "qualified_semantic_duration_day": 0.0016,
+  "schema_version": 1,
+  "scope_expansion": false,
+  "work_unit": "F-ROSS01 D2",
+  "workflow": {
+    "run_id": "34788385745",
+    "job": "generic-time-representation",
+    "trigger_sha": "d0f3bdfca0c4341be92607331e931f67a4c50ec0"
+  },
+  "worker_time_origin_policy": "translate generic absolute coordinate to local zero only after endpoint validation"
+}
