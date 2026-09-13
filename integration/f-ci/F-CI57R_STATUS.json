@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI57R",
+  "title": "F-CI57 Postpromotion Moving Preservation Authority Reconciliation",
+  "phase": "QUALIFICATION_CANDIDATE",
+  "decision": "PENDING_F_CI57R_DEDICATED_AND_BROAD_CANONICAL_QUALIFICATION",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "canonical_postimage": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+  "fkt17_finding": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+  "fkt18_owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "fvq65_independent_authority": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+  "failed_postpromotion_broad_run": 34754098099,
+  "failed_postpromotion_job": 103715607375,
+  "failure_classification": "MOVING_PRESERVATION_AUTHORITY_STALE_AFTER_INTENTIONAL_QUALIFIED_CANONICAL_SOURCE_CHANGE",
+  "production_or_reference_change_in_reconciliation": false,
+  "moving_preservation_authority_from": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "moving_preservation_authority_to": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+  "dependency_surface_changed": false,
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_MOVING_PRESERVATION_RECONCILIATION",
+  "mass_conservation": "HARD_PRESERVED_FAIL_CLOSED_NO_TOLERANCE_RELAXATION",
+  "dedicated_reconciliation_green": false,
+  "broad_fci_canonical_green": false,
+  "canonical_reconciliation_admitted": false,
+  "fkt17_g01_closed": false,
+  "kernel_transactions_generic_time_mass_v1_qualified_100_percent": false,
+  "d01_frozen_denominator": 8,
+  "d01_qualified_count": 7,
+  "required_before_100_percent": [
+    "dedicated F-CI57R exact-head gate green",
+    "broad F-CI canonical PR gate green including current-restricted-canonical-preservation",
+    "true two-parent reconciliation merge onto unchanged canonical postimage",
+    "post-reconciliation canonical broad qualification green",
+    "explicit closure reconciliation of F-KT17-G01 and frozen D01 denominator"
+  ],
+  "hard_nonclaims": [
+    "No production remediation is performed by F-CI57R.",
+    "No tolerance or physics change is authorized.",
+    "No denominator change or scope reduction is authorized.",
+    "No 100 percent claim is authorized by this candidate status."
+  ]
+}
