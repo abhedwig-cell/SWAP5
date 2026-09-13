@@ -73,12 +73,16 @@ def main() -> None:
         "status baseline does not equal PR base SHA",
     )
     require(
-        data["qualification"]["required_exact_head"] == args.head_sha,
-        "status exact-head pin does not equal tested head SHA",
+        data["qualification"]["exact_head_authority"] == "GITHUB_PULL_REQUEST_HEAD",
+        "exact-head authority must be supplied by the workflow event, not self-pinned in the status file",
     )
     require(
         data["qualification"]["gate"] == "F-DOC17 Post-Closure Status-A Reconciliation",
         "unexpected qualification gate name",
+    )
+    require(
+        data["qualification"]["valid_only_when_gate_passes_exact_head"] is True,
+        "qualification must remain conditional on the exact-head gate",
     )
     require(
         data["wur_criterion_gate"]["controlled_full_text_established"] is False,
