@@ -36,13 +36,40 @@ module mod_b110_production_soil_water_task2
   ! It is not promoted to the qualified explicit Full Richards production
   ! profile merely by existing; the F-SI33 profile remains authoritative.
   type, extends(soil_water_solver_workspace_base_t) :: b110_legacy_compat_workspace_t
-    type(a23bu_worker_execution_context_t_dummy), pointer :: unused_dummy => null()
+    type(a23bu_worker_context_t), pointer :: worker => null()
   end type b110_legacy_compat_workspace_t
+
+  type, extends(soil_water_solver_t) :: b110_legacy_compat_solver_t
+    integer :: reserved = 0
+  contains
+    procedure :: solve => b110_legacy_compat_solve
+  end type b110_legacy_compat_solver_t
 
   type(a23bu_worker_context_t), target, save :: standalone_worker
 
   public :: try_b110_production_task2
   public :: run_b110_production_task2
+
+  interface
+    subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
+                        numerical_config, physical_config, explicit_step_duration, parameter_set)
+      use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
+      use mod_reference_richards_workspace, only: reference_richards_workspace_t
+      use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
+      use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
+           soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
+      type(a23bu_worker_context_t), intent(inout), optional :: worker
+      type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
+      type(a23bu_solver_history_t), target, intent(inout), optional :: history
+      type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
+      type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
+      type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
+      type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
+      type(soil_water_physical_config_t), intent(in), optional :: physical_config
+      real(8), intent(in), optional :: explicit_step_duration
+      type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
+    end subroutine headcalc
+  end interface
 
 contains
 
@@ -86,8 +113,9 @@ contains
     call a23bu_reset_soil_water_trial_result(worker)
     if (.not. production_route_admitted()) return
 
-    ! From this point the typed route is the sole hydraulic authority for this trial.
-    ! A started typed solve never falls through to a second direct HeadCalc trajectory.
+    ! From this point the explicit production route is the sole hydraulic
+    ! authority for this trial. A started solve never falls through to the
+    ! compatibility solver.
     handled = .true.
     worker%soil_water_trial%typed_attempted = .true.
     worker%soil_water_trial%route = 'typed-task2-started'
@@ -348,6 +376,95 @@ contains
 
     call solver%solve(request, workspace, result)
   end subroutine invoke_soil_water_solver
+
+  subroutine b110_legacy_compat_solve(self, request, workspace, result)
+    class(b110_legacy_compat_solver_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+    type(soil_water_solve_result_t), intent(out) :: result
+    integer :: n
+    integer :: iter0, jac0, linear0, back0, alt0, retry0
+
+    result = soil_water_solve_result_t()
+    result%unrounded_mass_balance_residual = ieee_value(0.0_real64, ieee_quiet_nan)
+    result%diagnostics%route = 'legacy-compat-invalid'
+
+    if (self%reserved /= 0) then
+      result%status = SW_SOLVE_FAILED
+      return
+    end if
+    if (.not. associated(request%parameters)) then
+      result%status = SW_SOLVE_FAILED
+      return
+    end if
+    n = request%parameters%active_nodes
+    if (n <= 0 .or. n /= numnod) then
+      result%status = SW_SOLVE_FAILED
+      return
+    end if
+    if (request%base_state%active_nodes /= n) then
+      result%status = SW_SOLVE_FAILED
+      return
+    end if
+    if (.not. allocated(request%base_state%pressure_head) .or. &
+        .not. allocated(request%base_state%water_content)) then
+      result%status = SW_SOLVE_FAILED
+      return
+    end if
+    if (size(request%base_state%pressure_head) /= n .or. &
+        size(request%base_state%water_content) /= n) then
+      result%status = SW_SOLVE_FAILED
+      return
+    end if
+
+    select type (ws => workspace)
+    type is (b110_legacy_compat_workspace_t)
+      if (.not. associated(ws%worker)) then
+        result%status = SW_SOLVE_FAILED
+        return
+      end if
+
+      iter0 = ws%worker%diagnostics%nonlinear_iterations
+      jac0 = ws%worker%diagnostics%jacobian_builds
+      linear0 = ws%worker%diagnostics%linear_solves
+      back0 = ws%worker%diagnostics%backtracking_attempts
+      alt0 = ws%worker%diagnostics%alternative_solver_calls
+      retry0 = ws%worker%diagnostics%internal_retries
+
+      ! This is the only legacy HeadCalc compatibility invocation left outside
+      ! the Full Richards binding itself. It is an adapter-boundary call, never
+      ! a process/runtime API. Physics and global continuation behavior are
+      ! intentionally identical to the pre-F-SI35 fallback.
+      call headcalc(ws%worker, history=ws%worker%history)
+
+      result%candidate_state%active_nodes = n
+      allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
+      result%candidate_state%pressure_head = h(1:n)
+      result%candidate_state%water_content = theta(1:n)
+      result%candidate_state%ponding_depth = pond
+      result%candidate_state%groundwater_level = gwl
+      result%top_flux = qtop
+      result%bottom_flux = qbot
+      result%diagnostics%nonlinear_iterations = max(0, ws%worker%diagnostics%nonlinear_iterations - iter0)
+      result%diagnostics%jacobian_builds = max(0, ws%worker%diagnostics%jacobian_builds - jac0)
+      result%diagnostics%linear_solves = max(0, ws%worker%diagnostics%linear_solves - linear0)
+      result%diagnostics%backtracking_attempts = max(0, ws%worker%diagnostics%backtracking_attempts - back0)
+      result%diagnostics%alternative_solver_calls = max(0, ws%worker%diagnostics%alternative_solver_calls - alt0)
+      result%diagnostics%internal_retries = max(0, ws%worker%diagnostics%internal_retries - retry0)
+      result%diagnostics%route = 'legacy-compat-interface'
+
+      if (fldecdt .or. ws%worker%control%request_dt_reduction) then
+        result%status = SW_SOLVE_RETRY_ADVISED
+        result%retry_advised = .true.
+      else
+        result%status = SW_SOLVE_CONVERGED
+      end if
+
+    class default
+      result%status = SW_SOLVE_FAILED
+      result%diagnostics%route = 'legacy-compat-workspace'
+    end select
+  end subroutine b110_legacy_compat_solve
 
   subroutine accumulate_solver_diagnostics(worker, result)
     type(a23bu_worker_context_t), intent(inout) :: worker
