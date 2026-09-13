@@ -1,9 +1,16 @@
 module mod_fmr_surface_evaporation_accepted_publication
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_kernel_transactions, only: kernel_checkpoint_t, kernel_candidate_state_t, kernel_committed_state_t, &
+       kernel_executor_t, kernel_diagnostics_t
+  use mod_reference_et_demand_process, only: reference_et_demand_result_t
+  use mod_fmr_reference_et_demand_binding, only: fmr_reference_et_binding_diagnostics_t
+  use mod_surface_evaporation_capacity_contract, only: surface_evaporation_capacity_provider_t
   use mod_fmr_surface_evaporation_runtime_materialization, only: &
-       fmr_candidate_bound_surface_evaporation_t
-  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t
+       fmr_candidate_bound_surface_evaporation_t, fmr_surface_evaporation_runtime_diagnostics_t, &
+       fmr_materialize_candidate_bound_surface_evaporation, FMR_SURFACE_EVAP_RUNTIME_OK
+  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, &
+       fmr_commit_candidate_with_receipt, FMR_COMMIT_RECEIPT_OK
   implicit none
   private
 
@@ -12,13 +19,13 @@ module mod_fmr_surface_evaporation_accepted_publication
   integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_INVALID_COMMIT_RECEIPT = 2
   integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_PROVENANCE_MISMATCH = 3
   integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_TIME_MISMATCH = 4
+  integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_MATERIALIZATION_REJECTED = 5
+  integer, parameter, public :: FMR_SURFACE_EVAP_PUBLICATION_COMMIT_REJECTED = 6
 
-  ! Worker/job-local precommit attribution. It can only be prepared from an
-  ! opaque result whose provenance was attached by the runtime materializer at
-  ! the point where the exact candidate was available. No raw process result
-  ! plus caller-supplied candidate stamping API exists.
-  type, public :: fmr_prepared_surface_evaporation_publication_t
-    private
+  ! Private worker/job-local precommit carrier. It never crosses the public API.
+  ! Keeping this carrier private is the critical F-MR43 boundary: callers cannot
+  ! retain a result from trial B and later combine it with a receipt from trial A.
+  type :: fmr_prepared_surface_evaporation_publication_t
     logical :: initialized = .false.
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: origin_revision_value = -1_int64
@@ -28,11 +35,11 @@ module mod_fmr_surface_evaporation_accepted_publication
     real(real64) :: ponded_water_evaporation_rate_value = 0.0_real64
     character(len=24) :: route_value = 'not-run'
   contains
-    procedure, public :: ready => prepared_ready
+    procedure :: ready => prepared_ready
   end type fmr_prepared_surface_evaporation_publication_t
 
   ! Accepted-only immutable attribution metadata. The rates are a decomposition
-  ! of already-accounted process behavior. This object is not an additional
+  ! of already-accounted process behaviour. This object is not an additional
   ! mass-ledger term and is not persistent continuation state.
   type, public :: fmr_surface_evaporation_publication_t
     private
@@ -56,12 +63,85 @@ module mod_fmr_surface_evaporation_accepted_publication
     procedure, public :: route => publication_route
   end type fmr_surface_evaporation_publication_t
 
-  public :: fmr_prepare_surface_evaporation_publication
-  public :: fmr_finalize_surface_evaporation_publication
+  ! Production publication seam. Surface attribution is materialized while the
+  ! exact candidate and its origin committed state are both present, retained in
+  ! a private local carrier, and the same candidate object is then committed.
+  ! Only after that commit yields a ready accepted receipt is the local carrier
+  ! converted to public accepted attribution. No public API accepts a prepared
+  ! result or commit receipt, so cross-candidate result substitution is not a
+  ! constructible production path.
+  public :: fmr_commit_candidate_with_surface_evaporation_publication
 
 contains
 
-  subroutine fmr_prepare_surface_evaporation_publication(bound_result, prepared, status)
+  subroutine fmr_commit_candidate_with_surface_evaporation_publication(kernel, checkpoint, committed_state, &
+       candidate_state, kernel_diagnostics, et_result, et_diagnostics, capacity_provider, did_commit, &
+       publication, surface_diagnostics, publication_status, receipt_status, commit_status)
+    type(kernel_executor_t), intent(inout) :: kernel
+    type(kernel_checkpoint_t), intent(in) :: checkpoint
+    type(kernel_committed_state_t), intent(inout) :: committed_state
+    type(kernel_candidate_state_t), intent(inout) :: candidate_state
+    type(kernel_diagnostics_t), intent(inout) :: kernel_diagnostics
+    type(reference_et_demand_result_t), intent(in) :: et_result
+    type(fmr_reference_et_binding_diagnostics_t), intent(in) :: et_diagnostics
+    class(surface_evaporation_capacity_provider_t), intent(in) :: capacity_provider
+    logical, intent(out) :: did_commit
+    type(fmr_surface_evaporation_publication_t), intent(out) :: publication
+    type(fmr_surface_evaporation_runtime_diagnostics_t), intent(out) :: surface_diagnostics
+    integer, intent(out) :: publication_status
+    integer, intent(out) :: receipt_status
+    integer, intent(out) :: commit_status
+
+    type(fmr_candidate_bound_surface_evaporation_t) :: bound_result
+    type(fmr_prepared_surface_evaporation_publication_t) :: prepared
+    type(fmr_accepted_commit_receipt_t) :: receipt
+    integer :: local_status
+
+    did_commit = .false.
+    publication = fmr_surface_evaporation_publication_t()
+    surface_diagnostics = fmr_surface_evaporation_runtime_diagnostics_t()
+    publication_status = FMR_SURFACE_EVAP_PUBLICATION_MATERIALIZATION_REJECTED
+    receipt_status = -1
+    commit_status = -1
+
+    ! Precommit phase. Any failure here leaves committed state and candidate
+    ! ownership unchanged. The produced process result remains local to this
+    ! call and therefore cannot be relabelled by a caller.
+    call fmr_materialize_candidate_bound_surface_evaporation(committed_state, candidate_state, et_result, &
+         et_diagnostics, capacity_provider, bound_result, surface_diagnostics)
+    if (surface_diagnostics%status /= FMR_SURFACE_EVAP_RUNTIME_OK .or. .not. bound_result%ready()) return
+
+    call prepare_bound_result(bound_result, prepared, local_status)
+    if (local_status /= FMR_SURFACE_EVAP_PUBLICATION_OK .or. .not. prepared%ready()) then
+      publication_status = local_status
+      return
+    end if
+
+    ! The same candidate object that was present during materialization is now
+    ! consumed by F-KT commit. A successful commit produces the only receipt
+    ! used below; neither a caller-supplied receipt nor a caller-supplied surface
+    ! result crosses this seam.
+    call fmr_commit_candidate_with_receipt(kernel, checkpoint, committed_state, candidate_state, kernel_diagnostics, &
+         did_commit, receipt, receipt_status, commit_status)
+    if (.not. did_commit) then
+      publication_status = FMR_SURFACE_EVAP_PUBLICATION_COMMIT_REJECTED
+      return
+    end if
+
+    ! A successful physical commit without a ready receipt would violate the
+    ! pre-existing accepted-receipt contract. Fail loudly rather than returning
+    ! a committed state with silently missing accepted attribution.
+    if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. receipt%ready()) &
+         error stop 'F-MR43: successful candidate commit without ready accepted receipt'
+
+    call finalize_local_prepared(prepared, receipt, publication, local_status)
+    if (local_status /= FMR_SURFACE_EVAP_PUBLICATION_OK .or. .not. publication%ready()) &
+         error stop 'F-MR43: accepted candidate could not publish its local surface attribution'
+
+    publication_status = FMR_SURFACE_EVAP_PUBLICATION_OK
+  end subroutine fmr_commit_candidate_with_surface_evaporation_publication
+
+  subroutine prepare_bound_result(bound_result, prepared, status)
     type(fmr_candidate_bound_surface_evaporation_t), intent(in) :: bound_result
     type(fmr_prepared_surface_evaporation_publication_t), intent(out) :: prepared
     integer, intent(out) :: status
@@ -88,9 +168,9 @@ contains
     prepared%route_value = bound_result%route()
     prepared%initialized = .true.
     status = FMR_SURFACE_EVAP_PUBLICATION_OK
-  end subroutine fmr_prepare_surface_evaporation_publication
+  end subroutine prepare_bound_result
 
-  subroutine fmr_finalize_surface_evaporation_publication(prepared, commit_receipt, publication, status)
+  subroutine finalize_local_prepared(prepared, commit_receipt, publication, status)
     type(fmr_prepared_surface_evaporation_publication_t), intent(in) :: prepared
     type(fmr_accepted_commit_receipt_t), intent(in) :: commit_receipt
     type(fmr_surface_evaporation_publication_t), intent(out) :: publication
@@ -127,7 +207,7 @@ contains
     publication%route_value = prepared%route_value
     publication%initialized = .true.
     status = FMR_SURFACE_EVAP_PUBLICATION_OK
-  end subroutine fmr_finalize_surface_evaporation_publication
+  end subroutine finalize_local_prepared
 
   pure logical function prepared_ready(self) result(ready)
     class(fmr_prepared_surface_evaporation_publication_t), intent(in) :: self
