@@ -1,0 +1,286 @@
+{
+  "schema": "swap5.fkt16_state_persistence_restart_v1_completion_authority.v1",
+  "work_unit": "F-KT16",
+  "title": "SWAP5 State, Persistence & Restart v1 100% Completeness, Current-Canonical Closure & Final Qualification Audit",
+  "branch": "work/f-kt16-state-persistence-restart-v1-completion-audit",
+  "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
+  "completion_percent": 100.0,
+  "production_source_changed_by_F_KT16": false,
+  "reference_source_changed_by_F_KT16": false,
+  "scope_reduced_to_reach_100_percent": false,
+  "numbering": {
+    "requested": "F-KT16",
+    "live_namespace_recheck": "F-KT16_FREE_AT_BRANCH_CREATION",
+    "renumbered": false
+  },
+  "governance": {
+    "F_RG01": "regie/f-rg01-post-rb1-program-rebaseline@09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "fixed_denominator_branch": "regie/f-rg01c-fixed-denominator-completion-model",
+    "fixed_denominator_definition": "971e732551abad86acccfd5f01811d855e51e939",
+    "fixed_denominator_closeout": "56b86e29e0960e396059caf47c193440d571b709",
+    "denominator_changed_by_F_KT16": false
+  },
+  "frozen_scope": {
+    "authority": "SWAP5_V1_COMPLETION_MODEL_V1:D02",
+    "domain": "D02 State / persistence / restart",
+    "weight": 7.0,
+    "earned_weight_before_F_KT16": 7.0,
+    "completion_percent_before_F_KT16": 100.0,
+    "capabilities": [
+      {
+        "id": "S01",
+        "name": "Compact typed optional committed state",
+        "weight": 3.0,
+        "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+        "audited_result": "PASS"
+      },
+      {
+        "id": "S02",
+        "name": "Restart, reconstruction and serialized state semantics",
+        "weight": 4.0,
+        "required_final_state": "PRESERVED_REGRESSION_PROTECTED",
+        "audited_result": "PASS"
+      }
+    ],
+    "supporting_dependencies_not_added_to_denominator": [
+      "D01/K02 transactional checkpoint/trial/retry/commit/rollback lifecycle",
+      "D01/K03 hard mass conservation and transaction diagnostics core",
+      "D07/C01 core WOFOST accepted-window/restart production path where process restart is relevant",
+      "D10/M10 Serialized MultiSWAP typed optional state and restart"
+    ],
+    "included_semantics": [
+      "committed state",
+      "candidate/trial state",
+      "checkpoint",
+      "restore",
+      "rollback",
+      "retry",
+      "commit",
+      "persistence representation",
+      "restart reconstruction",
+      "deterministic continuation",
+      "state schema/versioning",
+      "optional state",
+      "required process state",
+      "solver continuation history versus disposable scratch",
+      "standalone and Serialized MultiSWAP logical-state consistency where frozen v1 requires it",
+      "generic committed-boundary time continuity",
+      "provenance lineage and revision semantics",
+      "mass continuity across restart"
+    ],
+    "excluded_without_scope_reduction": [
+      "RossFast and future alternative solvers",
+      "deep-vadose",
+      "broad MODFLOW coupling and distributed crash recovery",
+      "arbitrary future physics",
+      "cross-version migration between future major schema versions",
+      "checkpointing disposable numerical scratch",
+      "GPU and parallel-worker implementation details",
+      "mid-transaction trial-state persistence",
+      "filesystem or byte-format standardization"
+    ]
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452",
+    "F_CI56_source_merge": "699021ab95df35d44e9711612d9ce97939f0025e",
+    "exact_current_serialized_completion_authority": "work/f-mr42-serialized-multiswap-v1-completeness-audit-r2@e370f95c2e50c2fef46fe99eac11522046560938",
+    "broad_current_canonical_qualification_run": 34745966892,
+    "current_restricted_canonical_preservation_job": 103694059000,
+    "preservation_result": "PASS"
+  },
+  "current_source_bindings": {
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/kernel/mod_kernel_committed_persistence.f90": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+    "src/runtime/mod_fmr_runtime_core.f90": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "872c28bbc345f40073396cce57e4eb43c71de850",
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": "61ffdf21a00c23924184c9117d91d84a88544d1a",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90": "dad15717e5794b7489c9fecf6dbc17e12435c61e"
+  },
+  "evidence_authorities": {
+    "kernel_restore": [
+      "F-KT12 qualified typed committed-state restore head eb7de82da18864cc4ed4d2e9a253499613fbe3b9",
+      "F-KT13 qualified trusted external reconstruction head 8b0cbad625501961842aaed2a444ec7145b43038"
+    ],
+    "runtime_restart": [
+      "F-MR19 closeout 110440d28ff2b585763ad8fd4eedb88e7d112eeb",
+      "F-MR21 closeout d0164621dfb07f931227cd9f60f6f70b01c79aa6",
+      "F-MR24 closeout 52f281b162077ccc9dfa42c8ed133dd1d26c6a21",
+      "F-MR25 closeout 510ccd90af6386e3239e71ff6585ed56d6ef5fdb",
+      "F-MR41 typed optional-state layout closeout e7165e598b035282a2cb7527b2fb2f466f1dbbff",
+      "F-MR42 current-canonical Serialized MultiSWAP completion closeout e370f95c2e50c2fef46fe99eac11522046560938"
+    ],
+    "independent_restart_qualification": [
+      "F-MQ25 historical negative qualification retained as rejection evidence for pre-remediation F-MR19",
+      "F-MQ27 restart-schema requalification closeout 33beccd7b38f5a3c29131025e1b06166026851e3",
+      "F-MQ29 independent parallel committed restart qualification 5ea88d81a63e6c706c87e99ac360f91f08711fc1"
+    ],
+    "canonical_admission_and_preservation": [
+      "F-CI26 restart canonical requalification/readiness chain",
+      "F-CI28 F-MR25 restart canonical admission chain",
+      "F-CI35 CLOSED_CANONICAL_ADMITTED parallel committed-boundary restart",
+      "F-CI48/F-CI48P typed optional-state layout admission and moving preservation",
+      "F-CI49/F-CI49P definitive transaction composition admission and preservation",
+      "F-CI52/F-CI52P fixed-weir optional-state admission with restart evidence and F-MR41 ownership preserved",
+      "F-CI55R moving preservation reconciliation",
+      "F-CI56 current-canonical source admission finalized"
+    ],
+    "process_restart": [
+      "F-WOF40 true process-boundary restart qualification e8cbe0b9a86d78492d34f0873cafe424895b4a99",
+      "F-WOF41 production owner persistence API qualification 2be30d3d6bb85e56a0ab5f0d55dfa92fd0156526",
+      "F-WOF42 crop persistence layout completeness ed0219402072f121856d82cb6068ab74c70f34d1",
+      "SWAP5_V1_COMPLETION_MODEL_V1:D07/C01 preserved-regression-protected current WOFOST accepted-window/restart path"
+    ]
+  },
+  "historical_negative_evidence": {
+    "F_MQ25": "RETAINED_AND_NOT_OVERRIDDEN",
+    "meaning": "The pre-remediation F-MR19 state-schema weakness was real. F-MR21 remediated it and F-MQ27 independently requalified the remediated source before later recomposition/admission. F-KT16 does not rewrite that history."
+  },
+  "criteria": [
+    {
+      "id": 1,
+      "name": "Explicit state ownership",
+      "result": "PASS",
+      "evidence": "Current kernel types separate parameters, immutable committed physical state, checkpoint, candidate, forcing, numerical configuration, result and worker-local model/workspace; F-MR41 and current runtime keep optional physical state typed."
+    },
+    {
+      "id": 2,
+      "name": "Compact persistent state",
+      "result": "PASS",
+      "evidence": "F-KT12/F-KT13 carriers persist committed continuation plus provenance only; current WOFOST persistence excludes parameters, forcing and retired caches; F-MR41 allocates optional state only on admitted typed layouts."
+    },
+    {
+      "id": 3,
+      "name": "Transactional correctness",
+      "result": "PASS",
+      "evidence": "kernel_advance_interval takes committed_state INTENT(IN), trials clone committed/checkpoint state, commit is the sole committed physical-state move, rollback only clears candidate; F-CI49P preserves definitive F-KT15 transaction composition."
+    },
+    {
+      "id": 4,
+      "name": "Checkpoint / restore",
+      "result": "PASS",
+      "evidence": "Checkpoint is an immutable clone bound to lineage/revision/time and cannot publish. F-KT12 restore rejects initialized targets and mismatched schema/layout/provenance; F-MQ29 qualifies whole-registry atomic restore and rejected negative matrices."
+    },
+    {
+      "id": 5,
+      "name": "Restart continuation",
+      "result": "PASS",
+      "evidence": "F-MQ27 qualifies real producer/consumer restart with continuous-versus-restarted endpoint identity; F-MQ29 extends exact midpoint/fresh reconstruction/endpoint identity through serialized and parallel continuation origins."
+    },
+    {
+      "id": 6,
+      "name": "Generic time",
+      "result": "PASS",
+      "evidence": "Kernel/restart provenance stores generic real t0/t1 and committed time with exact origin validation; no file/calendar/day field exists in kernel persistence. WOFOST day-scale behavior is process-specific, not a kernel restart assumption."
+    },
+    {
+      "id": 7,
+      "name": "Mass continuity",
+      "result": "PASS",
+      "evidence": "F-MQ27 qualifies exact interval mass continuation; F-MQ29 qualifies per-column residual <=1e-12 cm and aggregate mass/ledger identity. F-CI52P, F-CI55R and F-CI56 explicitly preserve hard mass policy."
+    },
+    {
+      "id": 8,
+      "name": "Process-state completeness",
+      "result": "PASS",
+      "evidence": "Current serialized physical state includes hydraulic state, snow event/process continuation, restricted soil-temperature state, Richards temporal history when admitted, and fixed-weir state on its dedicated layout. Current WOFOST production source persists crop-owner continuation plus last-consumed event receipt. Drainage/root uptake are forcing and restricted surface evaporation is stateless on the frozen path."
+    },
+    {
+      "id": 9,
+      "name": "Optional state",
+      "result": "PASS",
+      "evidence": "F-MR41/F-CI48P establish BASE, SNOW and restricted-soil-temperature typed layouts with unknown identities fail-closed and no inactive allocation requirement; F-CI52P adds fixed-weir layout while preserving F-MR41 ownership and restart evidence."
+    },
+    {
+      "id": 10,
+      "name": "Solver state versus numerical history",
+      "result": "PASS",
+      "evidence": "Current runtime distinguishes physical committed state, admitted Richards temporal continuation history, worker model/workspace scratch and non-persisted warm-start state. F-KT12/F-KT13 explicitly prohibit Newton/Jacobian/worker scratch persistence."
+    },
+    {
+      "id": 11,
+      "name": "Standalone / MultiSWAP consistency",
+      "result": "PASS",
+      "evidence": "The same F-KT committed-state/persistence seam owns logical column state; F-MR42 independently closes the frozen Serialized MultiSWAP v1 capability at 100% against the exact current canonical. No separate MultiSWAP physical-state semantics are introduced."
+    },
+    {
+      "id": 12,
+      "name": "Deterministic replay",
+      "result": "PASS",
+      "evidence": "F-MQ27 and F-MQ29 qualify fresh reconstruction, worker-scratch rebuild and O0/O2 identity; no accepted contract depends on allocation order, stale workspace or rejected-trial history."
+    },
+    {
+      "id": 13,
+      "name": "Schema/versioning",
+      "result": "PASS",
+      "evidence": "KERNEL_PERSISTENCE_SCHEMA_VERSION=1 with explicit schema mismatch rejection; runtime restart state families/layout identities are registered and fail closed; lineage/revision/time are reconstructed atomically without public independent setters."
+    },
+    {
+      "id": 14,
+      "name": "Current-canonical preservation",
+      "result": "PASS",
+      "evidence": "F-MR42 is bound to exact current canonical c19a047/tree 534283 and records broad current-canonical run 34745966892 plus preservation job 103694059000 PASS. F-CI56 modifies no audited state/restart dependency surface."
+    }
+  ],
+  "hard_100_percent_gates": {
+    "committed_state_mutation_after_rejection": "PASS_NOT_PRESENT",
+    "restart_state_loss": "PASS_NOT_PRESENT",
+    "mass_discontinuity": "PASS_NOT_PRESENT",
+    "nondeterministic_reconstruction_outside_policy": "PASS_NOT_PRESENT",
+    "current_canonical_source_mismatch": "PASS_NOT_PRESENT",
+    "required_process_state_missing": "PASS_NOT_PRESENT",
+    "scratch_required_as_persisted_state": "PASS_NOT_PRESENT",
+    "hidden_calendar_day_restart_assumption": "PASS_NOT_PRESENT",
+    "incompatible_schema_silently_accepted": "PASS_NOT_PRESENT"
+  },
+  "gap_audit": {
+    "EVIDENCE_ONLY_GAP": [],
+    "PRESERVATION_GAP": [],
+    "QUALIFICATION_GAP": [],
+    "CANONICAL_ADMISSION_GAP": [],
+    "STATE_SCHEMA_GAP": [],
+    "PROCESS_STATE_GAP": [],
+    "IMPLEMENTATION_GAP": [],
+    "TRANSACTION_GAP": [],
+    "MASS_GAP": [],
+    "DOCUMENTATION_GAP": []
+  },
+  "architecture_invariants": {
+    "3": "PASS explicit data categories remain separated",
+    "4": "PASS persistent state is compact and continuation-only",
+    "5": "PASS worker scratch is not persistent column state",
+    "7": "PASS transactional checkpoint trial retry commit rollback semantics",
+    "8": "PASS committed-origin recomputation and disposable warm-start remain distinct",
+    "9": "PASS generic time with process-specific calendar behavior only where explicit",
+    "13": "PASS mass conservation is a hard restart gate",
+    "16": "PASS logical per-column state works in Serialized MultiSWAP without per-column heavy solver ownership",
+    "19": "PASS no component transition or restart evidence introduces/double-counts stored water; deep-vadose itself is outside frozen scope",
+    "23": "PASS physical option state/layout is separate from numerical continuation policy/history",
+    "25": "PASS full reference mode remains available and is not replaced by persistence logic",
+    "26": "PASS transaction/restart diagnostics and negative classifications remain explicit",
+    "27": "PASS optional state scales with active typed layouts",
+    "29": "PASS no hidden files, paths, midnight/day or MODFLOW dependency in kernel persistence",
+    "30": "PASS F-KT16 performs explicit invariant and current-source reconciliation"
+  },
+  "F_RG01_ingestion_result": {
+    "domain": "D02",
+    "weight": 7.0,
+    "earned_weight": 7.0,
+    "completion_fraction": 1.0,
+    "completion_percent": 100.0,
+    "maturity": "PRESERVED_REGRESSION_PROTECTED",
+    "remaining_gap": "none",
+    "hard_gate_HG03_RESTART_active": false,
+    "do_not_change_denominator": true,
+    "authority_target": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE"
+  },
+  "final_nonclaims": [
+    "No new production functionality is implemented by F-KT16.",
+    "No production or reference source is modified by F-KT16.",
+    "No future solver, deep-vadose, broad MODFLOW, distributed crash recovery or cross-major-schema migration capability is claimed.",
+    "No mid-transaction trial-state or disposable scratch persistence is claimed or required.",
+    "No denominator or frozen scope is changed to obtain 100 percent."
+  ]
+}
