@@ -26,27 +26,11 @@
     "restrictions"
   ],
   "properties": {
-    "solver_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "solver_version_or_authority": {
-      "type": "string",
-      "minLength": 1
-    },
-    "contract_id": {
-      "const": "SoilWaterSolverResearchContract"
-    },
-    "contract_version": {
-      "type": "string",
-      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
-    },
-    "research_status": {
-      "enum": [
-        "RESEARCH_ISOLATED",
-        "RESEARCH_CANDIDATE"
-      ]
-    },
+    "solver_id": { "type": "string", "minLength": 1 },
+    "solver_version_or_authority": { "type": "string", "minLength": 1 },
+    "contract_id": { "const": "SoilWaterSolverResearchContract" },
+    "contract_version": { "type": "string", "pattern": "^1\\.[0-9]+\\.[0-9]+$" },
+    "research_status": { "enum": ["RESEARCH_ISOLATED", "RESEARCH_CANDIDATE"] },
     "boundaries": {
       "type": "object",
       "additionalProperties": false,
@@ -74,16 +58,8 @@
       "additionalProperties": false,
       "required": ["assumptions", "excluded_physics"],
       "properties": {
-        "assumptions": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        },
-        "excluded_physics": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        }
+        "assumptions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "excluded_physics": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
       }
     },
     "grid_geometry": {
@@ -92,10 +68,7 @@
       "required": ["status", "restrictions"],
       "properties": {
         "status": { "$ref": "#/$defs/capabilityStatus" },
-        "restrictions": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "restrictions": { "type": "array", "items": { "type": "string" } }
       }
     },
     "constitutive_models": {
@@ -104,15 +77,8 @@
       "required": ["status", "supported_ids_or_families", "restrictions"],
       "properties": {
         "status": { "$ref": "#/$defs/capabilityStatus" },
-        "supported_ids_or_families": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        },
-        "restrictions": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "supported_ids_or_families": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "restrictions": { "type": "array", "items": { "type": "string" } }
       }
     },
     "sources_sinks": {
@@ -127,23 +93,13 @@
     "process_hydraulic_view": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "pressure_head",
-        "water_content",
-        "ponding_depth",
-        "groundwater_level",
-        "additional_quantities"
-      ],
+      "required": ["pressure_head", "water_content", "ponding_depth", "groundwater_level", "additional_quantities"],
       "properties": {
         "pressure_head": { "$ref": "#/$defs/capability" },
         "water_content": { "$ref": "#/$defs/capability" },
         "ponding_depth": { "$ref": "#/$defs/capability" },
         "groundwater_level": { "$ref": "#/$defs/capability" },
-        "additional_quantities": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        }
+        "additional_quantities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
       }
     },
     "sensitivities": {
@@ -151,31 +107,13 @@
       "additionalProperties": false,
       "required": ["dh_bottom_dq_bottom"],
       "properties": {
-        "dh_bottom_dq_bottom": {
-          "allOf": [
-            { "$ref": "#/$defs/capability" },
-            {
-              "type": "object",
-              "properties": {
-                "scope": { "type": "string" },
-                "method": { "type": "string" },
-                "quality_rule": { "type": "string" }
-              }
-            }
-          ]
-        }
+        "dh_bottom_dq_bottom": { "$ref": "#/$defs/sensitivityCapability" }
       }
     },
     "transactions": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "read_only_committed_base",
-        "distinct_candidate_state",
-        "solver_never_commits",
-        "rollback_without_inverse_mutation",
-        "retry_from_committed_state"
-      ],
+      "required": ["read_only_committed_base", "distinct_candidate_state", "solver_never_commits", "rollback_without_inverse_mutation", "retry_from_committed_state"],
       "properties": {
         "read_only_committed_base": { "type": "boolean" },
         "distinct_candidate_state": { "type": "boolean" },
@@ -190,20 +128,9 @@
       "required": ["status", "persistent_state", "excluded_scratch", "restrictions"],
       "properties": {
         "status": { "$ref": "#/$defs/capabilityStatus" },
-        "persistent_state": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        },
-        "excluded_scratch": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        },
-        "restrictions": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "persistent_state": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "excluded_scratch": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "restrictions": { "type": "array", "items": { "type": "string" } }
       }
     },
     "time": {
@@ -213,27 +140,14 @@
       "properties": {
         "interval_model": { "const": "[t0,t1]" },
         "status": { "$ref": "#/$defs/capabilityStatus" },
-        "limitations": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "deterministic_replay": {
-          "enum": ["bitwise", "contract_equivalent", "unsupported"]
-        }
+        "limitations": { "type": "array", "items": { "type": "string" } },
+        "deterministic_replay": { "enum": ["bitwise", "contract_equivalent", "unsupported"] }
       }
     },
     "diagnostics": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "convergence_status",
-        "work_units",
-        "retry_failure_classification",
-        "fallback_or_restricted_indicator",
-        "mass_residual",
-        "quality_indicator",
-        "execution_route"
-      ],
+      "required": ["convergence_status", "work_units", "retry_failure_classification", "fallback_or_restricted_indicator", "mass_residual", "quality_indicator", "execution_route"],
       "properties": {
         "convergence_status": { "type": "boolean" },
         "work_units": { "type": "boolean" },
@@ -256,35 +170,35 @@
         "relaxation_allowed": { "const": false }
       }
     },
-    "restrictions": {
-      "type": "array",
-      "items": { "type": "string", "minLength": 1 }
-    }
+    "restrictions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
   },
   "$defs": {
-    "capabilityStatus": {
-      "enum": ["supported", "restricted", "unsupported"]
-    },
+    "capabilityStatus": { "enum": ["supported", "restricted", "unsupported"] },
     "capability": {
       "type": "object",
       "additionalProperties": false,
       "required": ["status", "restrictions"],
       "properties": {
         "status": { "$ref": "#/$defs/capabilityStatus" },
-        "restrictions": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "restrictions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "sensitivityCapability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "restrictions", "scope", "method", "quality_rule"],
+      "properties": {
+        "status": { "$ref": "#/$defs/capabilityStatus" },
+        "restrictions": { "type": "array", "items": { "type": "string" } },
+        "scope": { "type": "string" },
+        "method": { "type": "string" },
+        "quality_rule": { "type": "string" }
       }
     }
   },
   "allOf": [
     {
-      "if": {
-        "properties": {
-          "research_status": { "const": "RESEARCH_ISOLATED" }
-        }
-      },
+      "if": { "properties": { "research_status": { "const": "RESEARCH_ISOLATED" } }, "required": ["research_status"] },
       "then": {
         "properties": {
           "transactions": {
