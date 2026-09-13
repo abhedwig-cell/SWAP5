@@ -1,0 +1,22 @@
+name: F-MR42 serialized MultiSWAP v1 final qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr42-serialized-multiswap-v1-completeness-audit
+    paths:
+      - 'integration/f-mr/F-MR42_SERIALIZED_MULTISWAP_V1_COMPLETION_AUTHORITY.json'
+      - 'tests/fmr/run_fmr42_serialized_completion_gate.sh'
+      - '.github/workflows/fmr42-serialized-multiswap-v1-final-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-current-canonical-completion-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-MR42 exact-current Serialized MultiSWAP v1 completion gate
+        shell: bash
+        run: bash tests/fmr/run_fmr42_serialized_completion_gate.sh
