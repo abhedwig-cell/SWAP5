@@ -1,0 +1,16 @@
+name: F-VQ70 independent exact candidate provenance
+on:
+  push:
+    branches: [qualification/f-vq70-fkt20-exact-candidate-attempt-provenance]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-verification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fvq/run_fvq70_exact_candidate_provenance_independent.sh
