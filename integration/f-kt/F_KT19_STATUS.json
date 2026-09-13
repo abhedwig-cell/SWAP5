@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT19",
+  "phase": "FINAL_COMPLETION_CLOSED",
+  "decision": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+  "current_canonical_sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+  "current_canonical_tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+  "fkt17_g01": "CLOSED",
+  "independent_qualification": "PASS_FVQ67_028a55609187bbc83b4c0000fe18161dbef14409_RUN_34762943035",
+  "canonical_admission": "PASS_FCI57",
+  "post_admission_preservation": "PASS",
+  "invariant_13": "PASS",
+  "other_frozen_criteria": "PASS",
+  "new_hard_blockers": [],
+  "production_source_changed_by_fkt19": false,
+  "denominator_changed": false,
+  "frozen_denominator": 8,
+  "qualified_count": 8,
+  "completion_percent": 100.0,
+  "first_exact_branch_validation": {
+    "head": "73ea5c68019bbec8f49a20f36cc2f7cbb7352758",
+    "tree": "d5b4010b0cee31750fa47d274b22de48092214fa",
+    "run": 34765868311,
+    "conclusion": "SUCCESS"
+  },
+  "completion_artifact": "integration/f-kt/F_KT19_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_FINAL_COMPLETION.json",
+  "completion_authority_statement": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+  "note": "This closeout adds evidence/status/workflow only. Exact current-canonical production source remains unchanged and transaction blob remains d5a71a526efaebd82054580c3186f8e3545db331."
+}
