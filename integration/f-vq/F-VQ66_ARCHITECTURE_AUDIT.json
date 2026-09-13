@@ -1,0 +1,60 @@
+{
+  "workunit": "F-VQ66",
+  "title": "SWAP5 F-KT18 Fail-Closed Mass Completeness Transaction Admission Independent Qualification",
+  "scope": "independent qualification only; no production source changes",
+  "immutable_candidate": {
+    "sha": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+    "tree": "47826cb69e04c46b8739bcf953ac26db80b5ff3e",
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "kernel_transaction_blob": "c7c5b7d3357e4e6739c8f647d6232baca45563e6"
+  },
+  "finding": {
+    "authority": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+    "tree": "fbf1fe0b6cc853de5ce375830a98251753a598b3",
+    "id": "F-KT17-G01",
+    "primary_class": "MASS_GAP",
+    "secondary_class": "IMPLEMENTATION_GAP"
+  },
+  "independent_evidence": {
+    "head": "6da84c638de66810fb53371d35be559ad4e52eb8",
+    "workflow_run": 34763464602,
+    "attack_job": 103740198164,
+    "preservation_job": 103740198088,
+    "compiler": "GNU Fortran 13.3.0",
+    "modes": ["O0", "O2"],
+    "result": "PASS"
+  },
+  "architecture_invariants": {
+    "1": {"status": "NO_ADVERSE_DELTA", "reason": "Qualification-only workunit; one-kernel architecture unchanged."},
+    "2": {"status": "NO_ADVERSE_DELTA", "reason": "No kernel I/O or adapter boundary production changes."},
+    "3": {"status": "NO_ADVERSE_DELTA", "reason": "No parameter/state/forcing/numerics/result ownership changes."},
+    "4": {"status": "NO_ADVERSE_DELTA", "reason": "No persistent-state layout changes."},
+    "5": {"status": "NO_ADVERSE_DELTA", "reason": "No scratch ownership changes."},
+    "6": {"status": "NO_ADVERSE_DELTA", "reason": "No storage-layout or batching changes."},
+    "7": {"status": "PASS_PRESERVED_AND_TESTED", "reason": "Rejected trials leave committed state exact, retries do not physically accumulate, exhaustion fails closed, and invalid candidate commit is rejected."},
+    "8": {"status": "PASS_PRESERVED", "reason": "Retry origin and committed-state reuse semantics preserved; no warm-start policy change."},
+    "9": {"status": "PASS_PRESERVED_AND_TESTED", "reason": "Generic [t0,t1] transaction/restart paths replayed without day/calendar assumptions."},
+    "10": {"status": "NO_ADVERSE_DELTA", "reason": "No coupling-window restriction introduced."},
+    "11": {"status": "PASS_PRESERVED", "reason": "F-VQ64 predictor/corrector transaction semantics replayed green."},
+    "12": {"status": "PASS_PRESERVED", "reason": "Groundwater coupling interface semantics unchanged; F-VQ64 preservation green."},
+    "13": {"status": "PASS_INDEPENDENTLY_VERIFIED", "reason": "Both transaction admission routes require complete accounting, zero missing mask, finite relevant terms and residual within tolerance before acceptance; incomplete accounting cannot materialize a kernel candidate."},
+    "14": {"status": "PASS_PRESERVED", "reason": "F-KT15 solver-service/reference-model transport including accepted sensitivity transport replayed green."},
+    "15": {"status": "NO_ADVERSE_DELTA", "reason": "No coupling cost model or production run-count change."},
+    "16": {"status": "PASS_PRESERVED", "reason": "Serialized MultiSWAP and production parallel runtime preservation replayed green."},
+    "17": {"status": "NO_ADVERSE_DELTA", "reason": "No MODFLOW tile-composition change."},
+    "18": {"status": "NO_ADVERSE_DELTA", "reason": "No deep-vadose component change."},
+    "19": {"status": "NO_ADVERSE_DELTA", "reason": "No component-transition storage or transfer semantics changed."},
+    "20": {"status": "PASS_PRESERVED_AND_TESTED", "reason": "Alternative solver/service-style incomplete ledger is independently attacked and rejected fail-closed."},
+    "21": {"status": "NO_ADVERSE_DELTA", "reason": "No process physics implementation change."},
+    "22": {"status": "NO_ADVERSE_DELTA", "reason": "No HeadCalc-internal dependency introduced."},
+    "23": {"status": "PASS_PRESERVED", "reason": "Mass completeness is an admission invariant, not a solver-policy relaxation; no physics option changed."},
+    "24": {"status": "PASS_PRESERVED", "reason": "Existing bounded retry/exhaustion path retained and independently exercised without relaxing mass conservation."},
+    "25": {"status": "NO_ADVERSE_DELTA", "reason": "Reference mode and reference solver path unchanged; normal complete-ledger execution preserved."},
+    "26": {"status": "PASS_PRESERVED_AND_TESTED", "reason": "Mass rejection, retry, rollback, candidate-materialization and invalid-candidate diagnostics are observed and checked."},
+    "27": {"status": "NO_ADVERSE_DELTA", "reason": "No optional-state or optional-process allocation changes."},
+    "28": {"status": "NO_ADVERSE_DELTA", "reason": "No runtime/coupler composition responsibility moved into SWAP kernel."},
+    "29": {"status": "PASS_PRESERVED", "reason": "Independent tests use generic intervals and direct canonical contracts; no file, midnight, daily-run or MODFLOW assumption introduced."},
+    "30": {"status": "PASS", "reason": "All 30 architecture invariants explicitly reviewed; only selected transaction/runtime/coupling invariants were dynamically requalified, while the remainder have no adverse production delta because this VQ changes tests/evidence only."}
+  },
+  "qualification_scope_statement": "This audit independently qualifies the F-KT18 fail-closed mass-completeness transaction-admission remediation. It is not a whole-program SWAP5 qualification and does not by itself authorize a 100-percent completion claim."
+}
