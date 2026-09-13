@@ -43,7 +43,7 @@ jobs:
           fvq_final='a76f338f5fdebed8346ffdbbd04dc7461d15a137'
           stale_p1='15028b926a5bbe9b82086a62168708451d165ecb'
           stale_fvq='0926552c9db8658014920fd6710fac4277bcffe0'
-          owner_test_blob='dfde833d6c5ba9a4823733a15393f0036c959d36'
+          owner_test_blob='d3cd07965f6fc0d0628557b18d65f3bbc9396888'
 
           test "$(git rev-parse "$p1_ref")" = "$p1_final"
           test "$(git rev-parse "$fvq_ref")" = "$fvq_final"
