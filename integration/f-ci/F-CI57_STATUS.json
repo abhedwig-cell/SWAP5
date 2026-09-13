@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI57",
+  "title": "F-KT18 Fail-Closed Mass Completeness Current-Canonical Admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI57_READY_FOR_CANONICAL_PROMOTION",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "finding_authority": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+  "restart_canonical": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "production_composition": "3e294113dfcfdf93744f314bca6f7e38de1783ee",
+  "owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "independent_authority": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+  "independent_final_exact_head_run": 34753461815,
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_CANONICAL_ADMISSION",
+  "mass_conservation": "FAIL_CLOSED_COMPLETE_ZERO_MASK_FINITE_RESIDUAL_WITHIN_TOLERANCE",
+  "composition_verified": true,
+  "single_production_blob_matches_owner_and_independent_authority": true,
+  "qualification_green": true,
+  "qualification_evidence": {
+    "first_green_run": 34753718532,
+    "pre_status_final_head_run": 34753781316,
+    "pre_status_head_sha": "dc5663880891000fae6578c604feccde1690f901",
+    "conclusion": "success",
+    "replayed_fvq65_independent_mass_oracle": true,
+    "replayed_historical_canonical_defect_witness": true,
+    "solver_service_reference_model_preserved": true,
+    "restart_serialized_multiswap_preserved": true,
+    "production_parallel_runtime_preserved": true,
+    "predictor_corrector_coupling_preserved": true
+  },
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "fkt17_g01_implementation_gap": "CLOSED_AND_INDEPENDENTLY_QUALIFIED_PENDING_PROMOTION",
+  "kernel_transactions_generic_time_mass_v1_qualified_100_percent": false,
+  "d01_frozen_denominator": 8,
+  "d01_qualified_count_before_promotion": 7,
+  "promotion_requirements": [
+    "This final status head itself must pass the F-CI57 admission workflow before promotion.",
+    "Immediately before promotion, integration/f-ci-canonical must still equal the restart canonical or F-CI57 must be recomposed and requalified.",
+    "Promotion must be a true two-parent merge with the then-live canonical as first parent and the exact final qualified F-CI57 head as second parent.",
+    "Force, squash and rebase promotion are forbidden.",
+    "Postpromotion reconciliation must prove the promoted transaction source blob and broad preservation gates before F-KT17-G01 and D01 100 percent can be closed."
+  ],
+  "hard_nonclaims": [
+    "No canonical admission yet.",
+    "No 100 percent claim before postpromotion reconciliation.",
+    "No denominator change or scope reduction.",
+    "No new physics, solver policy, ledger architecture, runtime API or coupling policy admission beyond the fail-closed mass-completeness transaction gate.",
+    "Existing compiler warnings outside the F-KT18 defect class are not silently closed by this workunit."
+  ],
+  "closeout_policy": "Freeze this qualification branch once the workflow is green on this exact final status head. Do not add a self-referential metadata commit merely to record that later run."
+}
