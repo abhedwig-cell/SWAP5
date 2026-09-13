@@ -4,6 +4,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"; cd "$ROOT"
 fail(){ echo "FVQ72_PRESERVATION_FAIL $*" >&2; exit 372; }
 CANONICAL=379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b
 RUN=34781202197
+FPM11=602a461957c45623fc414ef15e40a1bfe755de43
 
 [[ -z "$(git diff --name-only 82189c148a38b90b6a5a326d03f282ccbee52960..HEAD -- src reference)" ]] || fail 'qualification changed production/reference'
 TMP="${RUNNER_TEMP:-/tmp}/fvq72-pres-${GITHUB_RUN_ID:-local}-$$"; rm -rf "$TMP"; mkdir -p "$TMP"; trap 'rm -rf "$TMP"' EXIT
@@ -34,9 +35,10 @@ print('FVQ72_ET_ROOT_PRESERVATION=PASS')
 print('FVQ72_BROAD_CANONICAL_PRESERVATION=PASS')
 PY
 
-python3 - <<'PY'
-import json
-p=json.load(open('integration/f-pm/F-PM11_STATUS.json',encoding='utf-8'))
+git show "$FPM11:integration/f-pm/F-PM11_STATUS.json" > "$TMP/fpm11-status.json" || fail 'cannot materialize immutable F-PM11 status authority'
+python3 - "$TMP/fpm11-status.json" "$FPM11" <<'PY'
+import json,sys
+p=json.load(open(sys.argv[1],encoding='utf-8'))
 assert p['decision']=='QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE'
 assert p['completion_100_percent'] is True
 print('FVQ72_FPM11_100_PERCENT_COMPLETION_PRESERVED=PASS')
