@@ -15,26 +15,10 @@ git worktree add --detach "$WT" "$CANON" >/dev/null
 cd "$WT"
 [[ "$(git rev-parse HEAD)" == "$CANON" ]] || fail 'canonical worktree mismatch'
 
-# FTB11-TXN-001: reuse the existing transaction oracle and A23BL static rule on
-# current source. The current canonical intentionally contains exact REAL time
-# equality, so compare-reals stays a warning instead of being promoted to an
-# unrelated compilation error. This matches the later qualified F-VQ65 policy.
-TX_COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
-for opt in 0 2; do
-  OUT="$BUILD/txn-o$opt"; mkdir -p "$OUT"
-  gfortran "${TX_COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    src/transaction/mod_transaction_reference.f90 tests/transaction/test_transaction_reference.f90 \
-    -o "$OUT/test"
-  OMP_NUM_THREADS=8 "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "transaction O$opt"; }
-  grep -Fq 'A23BL_TRANSACTION_GATE PASS' "$OUT/output.txt" || fail "transaction O$opt marker"
-done
-cmp -s "$BUILD/txn-o0/output.txt" "$BUILD/txn-o2/output.txt" || fail 'transaction O0/O2 output drift'
-if grep -Ein '\bsave\b|open\s*\(|read\s*\(|write\s*\(' src/transaction/mod_transaction_reference.f90; then
-  fail 'transaction source acquired hidden state or file I/O'
-fi
-echo 'FTB11-TXN-001=PASS'
-
-# FTB11-MASS-001 plus executable restart/MultiSWAP/coupling preservation.
+# FTB11-TXN-001 / FTB11-MASS-001. The legacy A23BL executable oracle predates
+# the mandatory mass-completeness contract and is therefore not a valid moving
+# acceptance oracle for this post-F-KT18 source. Reuse the independently
+# qualified F-VQ65 fail-closed transaction/mass attack instead.
 mkdir -p tests/fvq
 for f in \
   mod_fvq65_mass_attack_support.f90 \
@@ -46,8 +30,15 @@ for f in \
 done
 chmod +x tests/fvq/run_fvq65_mass_completeness_independent.sh tests/fvq/run_fvq65_current_preservation.sh
 bash tests/fvq/run_fvq65_mass_completeness_independent.sh
-bash tests/fvq/run_fvq65_current_preservation.sh
+if grep -Ein '\bsave\b|open\s*\(|read\s*\(|write\s*\(' src/transaction/mod_transaction_reference.f90; then
+  fail 'transaction source acquired hidden state or file I/O'
+fi
+echo 'FTB11-TXN-001=PASS_QUALIFIED_FVQ65_CURRENT_SOURCE_ORACLE'
 echo 'FTB11-MASS-001=PASS'
+
+# FTB11-RST-001 / FTB11-MSW-001 plus coupling preservation use the exact
+# independent F-VQ65 current-preservation replay on current production source.
+bash tests/fvq/run_fvq65_current_preservation.sh
 echo 'FTB11-RST-001=PASS_EXECUTABLE_CURRENT_SOURCE_REPLAY'
 echo 'FTB11-MSW-001=PASS_EXECUTABLE_CURRENT_SOURCE_REPLAY'
 
