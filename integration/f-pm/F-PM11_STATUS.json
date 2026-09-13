@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.fpm11.status.v1",
+  "work_unit": "F-PM11",
+  "branch": "work/f-pm11-et-root-uptake-surface-evaporation-v1-final-completion",
+  "phase": "CLOSED_FINAL_COMPLETION_AUDIT",
+  "decision": "QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE",
+  "canonical_authority": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+    "post_merge_canonical_workflow_run": 34781202197,
+    "post_merge_canonical_workflow_conclusion": "success"
+  },
+  "denominator": {
+    "authority": "F-PM09",
+    "changed": false,
+    "scope_reduced": false,
+    "completion_percent": 100
+  },
+  "closure": {
+    "FPM09_G01": "CLOSED_BY_F_MR43",
+    "FPM09_G02": "CLOSED_BY_F_VQ71",
+    "FPM09_G03": "CLOSED_BY_F_CI59_AND_F_CI59P",
+    "remaining_gaps": 0,
+    "hard_blockers": 0
+  },
+  "qualification": {
+    "accepted_publication": "PASS",
+    "transaction_fail_closed": "PASS",
+    "mass": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "restart": "PASS",
+    "generic_time": "PASS",
+    "standalone_MultiSWAP": "PASS",
+    "parallel_compatibility": "PASS_WITHIN_FROZEN_V1",
+    "Full_Richards_compatibility": "PASS",
+    "solver_interface_isolation": "PASS",
+    "current_canonical_preservation": "PASS"
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_PM11": false,
+    "reference_source_changed_by_F_PM11": false,
+    "new_ET_physics": false,
+    "new_root_uptake_physics": false,
+    "new_surface_evaporation_physics": false,
+    "mass_authority_changed": false,
+    "denominator_changed": false,
+    "scope_reduced": false
+  },
+  "closed": true,
+  "completion_100_percent": true,
+  "terminal_marker": "FPM11_QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE"
+}
