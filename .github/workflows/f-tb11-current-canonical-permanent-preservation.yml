@@ -1,0 +1,53 @@
+name: F-TB11 current-canonical permanent preservation
+
+on:
+  push:
+    branches:
+      - work/f-tb11-current-canonical-100-percent-capability-permanent-preservation
+    paths:
+      - 'testbank/**'
+      - 'docs/testbank/F-TB11_*'
+      - '.github/workflows/f-tb11-current-canonical-permanent-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch complete authority namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Validate exact authority and current-canonical provenance
+        run: python3 testbank/runners/validate_ftb11_current_canonical_preservation.py
+
+      - name: Replay current-source permanent regression oracles
+        run: bash testbank/runners/run_ftb11_current_source_replays.sh
+
+      - name: Recheck live canonical and F-TB ownership at exit
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANON=379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b
+          TREE=556221f62b4fde616981499eba68ef5460f5d83c
+          LIVE="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
+          [[ "$LIVE" == "$CANON" ]]
+          [[ "$(git rev-parse "$CANON^{tree}")" == "$TREE" ]]
+          [[ -z "$(git diff --name-only "$CANON..HEAD" -- src reference)" ]]
+          echo 'FTB11-REL-001=PASS_EXIT_RECHECK'
+          echo 'F-TB11 QUALIFIED_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PERMANENT_TESTBANK_PRESERVATION'
