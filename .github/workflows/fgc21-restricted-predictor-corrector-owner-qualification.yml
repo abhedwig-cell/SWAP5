@@ -56,16 +56,16 @@ jobs:
           cp "$src" "$reconciled"
           sed -i "s/$stale_p1/$p1_final/g; s/$stale_fvq/$fvq_final/g" "$reconciled"
           python3 - "$reconciled" "$owner_test_blob" <<'PY'
-from pathlib import Path
-import sys
-path = Path(sys.argv[1])
-blob = sys.argv[2]
-text = path.read_text()
-old = 'test "$(git rev-parse "$IMPLEMENTATION:$OWNER_TEST")" = "$(git rev-parse "HEAD:$OWNER_TEST")"'
-new = f'test "$(git rev-parse "HEAD:$OWNER_TEST")" = "{blob}"'
-assert text.count(old) == 1
-path.write_text(text.replace(old, new, 1))
-PY
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          blob = sys.argv[2]
+          text = path.read_text()
+          old = 'test "$(git rev-parse "$IMPLEMENTATION:$OWNER_TEST")" = "$(git rev-parse "HEAD:$OWNER_TEST")"'
+          new = f'test "$(git rev-parse "HEAD:$OWNER_TEST")" = "{blob}"'
+          assert text.count(old) == 1
+          path.write_text(text.replace(old, new, 1))
+          PY
           test "$(grep -Fc "$p1_final" "$reconciled")" -ge 1
           test "$(grep -Fc "$fvq_final" "$reconciled")" -ge 1
           grep -Fq "$owner_test_blob" "$reconciled"
