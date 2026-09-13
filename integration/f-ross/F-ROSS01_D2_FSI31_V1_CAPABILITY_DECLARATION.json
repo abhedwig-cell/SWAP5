@@ -1,0 +1,223 @@
+{
+  "solver_id": "RossFast",
+  "solver_version_or_authority": "F-ROSS01 D1 closeout 9deddef0294ea14ea1ed418ce6688bfc7b136c53; D2 executable adapter qualification",
+  "contract_id": "SoilWaterSolverResearchContract",
+  "contract_version": "1.0.0",
+  "research_status": "RESEARCH_ISOLATED",
+  "boundaries": {
+    "top.prescribed_flux": {
+      "status": "restricted",
+      "restrictions": [
+        "constant prescribed top flux over the complete [t0,t1] trial interval",
+        "positive top flux is downward into the soil column",
+        "request must remain within the D2 state-local boundary-flux qualification envelope enforced by the adapter",
+        "qualified D2 executable evidence is limited to the declared six-material unsaturated RossFast profile; no dynamic regime switching or ponding transition is implied"
+      ]
+    },
+    "top.dynamic_provider": {
+      "status": "unsupported",
+      "restrictions": [
+        "no dynamic top provider evaluation or top-boundary regime switching is qualified in D2"
+      ]
+    },
+    "bottom.prescribed_head": {
+      "status": "unsupported",
+      "restrictions": [
+        "RossFast D2 does not qualify a prescribed-head bottom boundary"
+      ]
+    },
+    "bottom.prescribed_flux": {
+      "status": "restricted",
+      "restrictions": [
+        "qbot is constant over the complete [t0,t1] trial interval",
+        "qbot uses native SWAP sign convention: positive upward into the soil column",
+        "request must remain within the D2 state-local boundary-flux qualification envelope enforced by the adapter",
+        "scope is restricted to the six declared unimodal unsaturated materials, uniform 16-cell grid, qualified interval duration and zero source/sink profile"
+      ]
+    },
+    "bottom.legacy_mode_7": {
+      "status": "unsupported",
+      "restrictions": [
+        "legacy bottom mode 7 is not implemented by the D2 adapter"
+      ]
+    },
+    "bottom.legacy_mode_minus2": {
+      "status": "unsupported",
+      "restrictions": [
+        "legacy bottom mode -2 is not implemented by the D2 adapter"
+      ]
+    },
+    "bottom_exchange.candidate_flux": {
+      "status": "restricted",
+      "restrictions": [
+        "reported exchange is candidate-only and is never accepted or published by RossFast",
+        "accepted exchange exists only after an external runtime commit",
+        "for the prescribed-qbot profile the candidate exchange equals the requested qbot with positive-upward SWAP sign"
+      ]
+    }
+  },
+  "physics": {
+    "assumptions": [
+      "one-dimensional vertical unsaturated soil-water research solve",
+      "unimodal Mualem-van Genuchten constitutive family using the frozen F-ROSS01 material rows and KSATFIT with KSATEXM disabled",
+      "zero general source/sink and zero root sink in the D2 executable profile",
+      "no ponding or groundwater-level continuation state is active",
+      "RossFast trial is candidate-only and does not own runtime acceptance"
+    ],
+    "excluded_physics": [
+      "dynamic top-boundary regime switching",
+      "ponding and saturated-surface switching",
+      "prescribed-head and legacy bottom modes",
+      "general source/sink process coupling",
+      "root-water-uptake coupling",
+      "macropore flow",
+      "drainage coupling",
+      "crop process closure",
+      "heterogeneous multi-material column coupling",
+      "production Full Richards equivalence",
+      "production MODFLOW coupling"
+    ]
+  },
+  "grid_geometry": {
+    "status": "restricted",
+    "restrictions": [
+      "vertical one-dimensional uniform grid only",
+      "exactly 16 cells",
+      "cell thickness exactly 10.0 cm",
+      "no geometry adaptation or heterogeneous cell geometry"
+    ]
+  },
+  "constitutive_models": {
+    "status": "restricted",
+    "supported_ids_or_families": [
+      "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED",
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "restrictions": [
+      "only the exact frozen F-ROSS01 C1 material rows for B01, B12, O01, O05, O14 and O18 are accepted",
+      "committed state must remain strictly within the qualified unsaturated RossFast/table envelope"
+    ]
+  },
+  "sources_sinks": {
+    "general_sources_sinks": {
+      "status": "unsupported",
+      "restrictions": [
+        "D2 executable profile requires zero general sources and sinks"
+      ]
+    },
+    "root_sink": {
+      "status": "unsupported",
+      "restrictions": [
+        "D2 executable profile requires zero root sink"
+      ]
+    }
+  },
+  "process_hydraulic_view": {
+    "pressure_head": {
+      "status": "supported",
+      "restrictions": [
+        "candidate pressure head is exposed as a process-facing vector and not through RossFast table or factorization internals"
+      ]
+    },
+    "water_content": {
+      "status": "supported",
+      "restrictions": [
+        "candidate volumetric water content is exposed as a process-facing vector"
+      ]
+    },
+    "ponding_depth": {
+      "status": "unsupported",
+      "restrictions": [
+        "ponding is outside the D2 unsaturated profile"
+      ]
+    },
+    "groundwater_level": {
+      "status": "unsupported",
+      "restrictions": [
+        "groundwater level is not a represented continuation-state quantity in the D2 profile"
+      ]
+    },
+    "additional_quantities": []
+  },
+  "sensitivities": {
+    "dh_bottom_dq_bottom": {
+      "status": "unsupported",
+      "restrictions": [
+        "no authoritative whole-window dh_bottom_dq_bottom is qualified",
+        "the D1 RossFast response is LOCAL_TERMINAL_SUBSTEP_ONLY and is exposed only as separate bounded proposal/preconditioner metadata when requested",
+        "n times the local-terminal tangent is not declared a derivative and is not generalized to adaptive or nonuniform substeps, time-varying qbot, branch switching or non-smooth trajectories"
+      ],
+      "scope": "WHOLE_WINDOW_AUTHORITY_UNQUALIFIED; D1 local-terminal response is explicitly outside this named capability",
+      "method": "none for authoritative whole-window sensitivity; optional D1 metadata uses same-factorization terminal backsolve",
+      "quality_rule": "whole-window authority remains false; local-terminal metadata is proposal-only and unavailable/non-smooth routes fail closed when required"
+    }
+  },
+  "transactions": {
+    "read_only_committed_base": true,
+    "distinct_candidate_state": true,
+    "solver_never_commits": true,
+    "rollback_without_inverse_mutation": true,
+    "retry_from_committed_state": true
+  },
+  "restart": {
+    "status": "unsupported",
+    "persistent_state": [],
+    "excluded_scratch": [
+      "RossFast lookup table",
+      "tridiagonal factors",
+      "linear-solve vectors",
+      "constitutive intermediates",
+      "local-terminal response vector",
+      "rejected candidate",
+      "warm-start cache"
+    ],
+    "restrictions": [
+      "D2 does not qualify restart serialization, deserialization or production restart compatibility"
+    ]
+  },
+  "time": {
+    "interval_model": "[t0,t1]",
+    "status": "restricted",
+    "limitations": [
+      "t1 must be strictly greater than t0",
+      "absolute t0 is generic and has no calendar meaning",
+      "D2 qualification is limited to interval duration 0.0016 day with 2, 4, 8 or 16 equal internal substeps",
+      "qbot and prescribed top flux are constant over the interval",
+      "adaptive and nonuniform internal substeps are not qualified"
+    ],
+    "deterministic_replay": "contract_equivalent"
+  },
+  "diagnostics": {
+    "convergence_status": true,
+    "work_units": true,
+    "retry_failure_classification": true,
+    "fallback_or_restricted_indicator": true,
+    "mass_residual": true,
+    "quality_indicator": true,
+    "execution_route": true
+  },
+  "mass_conservation": {
+    "storage_change_reported": true,
+    "boundary_terms_reported": true,
+    "source_sink_terms_reported": true,
+    "unrounded_residual_reported": true,
+    "relaxation_allowed": false
+  },
+  "restrictions": [
+    "research-only F-SI31 v1 adapter; no production admission follows",
+    "six exact frozen RossFast materials only: B01, B12, O01, O05, O14 and O18",
+    "uniform 16 x 10 cm unsaturated column",
+    "constant prescribed top flux and constant prescribed qbot within the adapter-enforced state-local qualification envelope",
+    "zero sources/sinks and root sink",
+    "equal internal substeps only",
+    "worker-isolated execution is required so mutable RossFast research module configuration cannot become shared per-column state",
+    "mass conservation is a hard gate at 1e-12 cm or tighter and is never relaxed",
+    "candidate-only result: RossFast has no acceptance, commit or accepted-publication authority",
+    "no restart, production MultiSWAP, production MODFLOW coupling or Full Richards equivalence claim"
+  ]
+}
