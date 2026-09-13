@@ -6,12 +6,13 @@
   "qualification_state": "QUALIFIED_WHEN_EXACT_UNCHANGED_HEAD_WORKFLOW_SUCCEEDS",
   "implemented": {
     "source_agnostic_binding_bundle": true,
-    "opaque_candidate_lineage": true,
+    "caller_supplied_binding_lineage_token": true,
+    "authoritative_candidate_token_association": false,
     "one_based_sample_ordinal": true,
     "finite_external_donor_temperature": true,
     "optional_opaque_provenance_token": true,
     "duplicate_binding_rejection": true,
-    "lineage_mismatch_rejection": true,
+    "caller_token_mismatch_rejection": true,
     "nonfinite_rejection": true,
     "zero_capacity_no_record_allocation": true,
     "external_aware_evaluator_route": true,
@@ -33,5 +34,5 @@
     "architecture_invariants_1_30": true,
     "runtime_transaction_restart_preservation": true
   },
-  "next_boundary": "Bind a real runtime/coupler candidate-lineage identity and optional provider-supplied external donor bundle to the accepted thermal candidate without yet publishing energy."
+  "next_boundary": "Authoritatively associate one runtime/coupler candidate token with the matching completed thermal candidate, then supply the optional provider bundle through that association without yet publishing energy."
 }
