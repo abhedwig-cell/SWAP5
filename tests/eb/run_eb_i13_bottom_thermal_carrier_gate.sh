@@ -103,16 +103,16 @@ for opt in 0 2; do
   done
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
-    tests/eb/test_eb_i13_outer_candidate_semantics.f90 -o "$OUT/outer-test.o"
+    tests/eb/test_eb_i13_canonical_outer_routes.f90 -o "$OUT/outer-test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/outer-test.o" -o "$OUT/outer-test"
   "$OUT/outer-test" > "$OUT/outer-output.txt" 2>&1 || {
     cat "$OUT/outer-output.txt" >&2
     fail "outer lifecycle O$opt execution"
   }
   for marker in \
-    'EB_I13_MULTI_SUBSTEP_ORDERED_SEQUENCE=PASS' \
-    'EB_I13_PARTIAL_OUTER_FAILURE_NONPUBLIC=PASS' \
-    'EB_I13_OUTER_CANDIDATE_SEMANTICS_GATE PASS'; do
+    'EB_I13_MULTI_SUBSTEP_ACCEPTED_ROUTE_SEQUENCE=PASS' \
+    'EB_I13_PARTIAL_OUTER_FAILURE_NO_CANDIDATE=PASS' \
+    'EB_I13_CANONICAL_OUTER_ROUTES_GATE PASS'; do
     grep -Fq "$marker" "$OUT/outer-output.txt" || {
       cat "$OUT/outer-output.txt" >&2
       fail "missing outer O$opt marker: $marker"
