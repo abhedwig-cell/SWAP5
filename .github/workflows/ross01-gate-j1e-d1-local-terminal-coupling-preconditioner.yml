@@ -1,0 +1,50 @@
+name: F-ROSS01 Gate J1E-D1 Local Terminal Coupling Preconditioner
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d1-chat-pilot
+    paths:
+      - .github/workflows/ross01-gate-j1e-d1-local-terminal-coupling-preconditioner.yml
+      - experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py
+      - integration/f-ross/F-ROSS01_GATE_J1E_D1_LOCAL_TERMINAL_COUPLING_PRECONDITIONER_CONTRACT.json
+      - experiments/ross/run_ross01_gate_f_timestep_convergence.py
+      - experiments/ross/run_ross01_gate_d_conservative_physical_unsaturated_column.py
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+      - experiments/ross/run_ross01_gate_j1a_r1_head_coordinate_oracle_repair.py
+      - experiments/ross/run_ross01_tangent_algebra.py
+      - experiments/ross/run_ross01_gate_c1r_characterization_v4.py
+      - experiments/ross/run_ross01_gate_c1r_characterization.py
+      - experiments/ross/run_ross01_gate_c1.py
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  route-b-qualification:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run J1E-D1 route-B multi-substep qualification
+        run: |
+          set -euo pipefail
+          out="ross01-j1e-d1-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py \
+            "${{ matrix.material }}" "$out/F-ROSS01_J1E_D1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_J1E_D1_${{ matrix.material }}_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-j1e-d1-${{ matrix.material }}
+          path: ross01-j1e-d1-${{ matrix.material }}/
