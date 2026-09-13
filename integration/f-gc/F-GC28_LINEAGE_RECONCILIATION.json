@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC28",
+  "purpose": "Explicit F-GC01 through F-GC22 lineage reconciliation against current canonical; historical owner heads are not treated as completion authority when a stronger canonical/program authority exists.",
+  "audited_current_canonical": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "stronger_program_authority": {
+    "sha": "aac2644149dda47282a25a39892c6dc808323dd0",
+    "tree": "922f6f6bd9acf700d9d39a2aa5007597f3891b03",
+    "role": "F-RG03 current preservation/completion authority for G01-G05"
+  },
+  "lineage": [
+    {
+      "work_unit": "F-GC01",
+      "title": "Groundwater Coupling",
+      "owner_head": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
+      "scope_class": "FROZEN_V1_REQUIRED_FOUNDATION",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-RG03 G01 plus audited current canonical",
+      "current_status": "PRESERVED_WITHIN_G01"
+    },
+    {
+      "work_unit": "F-GC02",
+      "title": "Physical Coupling Seam",
+      "owner_head": "5c8275cc9443d33fd3bc41c333464f333df20275",
+      "scope_class": "FROZEN_V1_REQUIRED_FOUNDATION",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-RG03 G01 plus audited current canonical",
+      "current_status": "PRESERVED_WITHIN_G01"
+    },
+    {
+      "work_unit": "F-GC03",
+      "title": "Coupling Head-Accuracy Budget Provenance",
+      "owner_head": "ac123c51b1fb545ad19755bce04e79a80489cd74",
+      "scope_class": "FROZEN_V1_REQUIRED_ACCURACY_PROVENANCE",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "current application-accuracy contracts plus F-RG03 G01",
+      "current_status": "PRESERVED_SEMANTICS"
+    },
+    {
+      "work_unit": "F-GC04",
+      "title": "Independent Head-Budget Scale Characterization",
+      "owner_head": "9574c5659b9f5bd78e2067db45032a6ed9fa4ef2",
+      "scope_class": "EVIDENCE_FOUNDATION",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-GC05 through F-GC10 accuracy contract evolution and F-RG03 G01",
+      "current_status": "HISTORICAL_EVIDENCE_RETAINED"
+    },
+    {
+      "work_unit": "F-GC05",
+      "title": "Coupling Head-Accuracy Policy",
+      "owner_head": "12d829474870216b7b14fc452cdef54836255bd4",
+      "scope_class": "FROZEN_V1_REQUIRED_POLICY",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "current typed coupling policy/application accuracy contract plus F-RG03 G01",
+      "current_status": "PRESERVED_NO_UNIVERSAL_H_APP"
+    },
+    {
+      "work_unit": "F-GC06",
+      "title": "Narrow Application Head Accuracy",
+      "owner_head": "cc28f2ceabd583484c00a3fd36373dc7ab1f202e",
+      "scope_class": "APPLICATION_ACCURACY_EVOLUTION",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-GC09/F-GC10 application accuracy contract lineage plus F-RG03 G01",
+      "current_status": "NO_UNIVERSAL_NUMERIC_DEFAULT"
+    },
+    {
+      "work_unit": "F-GC07",
+      "title": "Coupling Temporal Error Budget",
+      "owner_head": "277dda9b7d808ca4e3233488e087e4e2179ddc2a",
+      "scope_class": "FROZEN_V1_REQUIRED_TEMPORAL_POLICY_FOUNDATION",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-GC22 owner qualification for concrete binding plus current application contract",
+      "current_status": "FOUNDATION_PRESERVED_BINDING_NOT_CURRENT_CANONICAL_COMPOSED"
+    },
+    {
+      "work_unit": "F-GC08",
+      "title": "External Head Requirement Binding",
+      "owner_head": "96e39932c925c862f41d01a2a0f5c44c88cbaca7",
+      "scope_class": "FROZEN_V1_REQUIRED_ACCURACY_PROVENANCE",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-GC09/F-GC10 application contract plus current canonical adapter/contract",
+      "current_status": "PRESERVED_SEMANTICS"
+    },
+    {
+      "work_unit": "F-GC09",
+      "title": "External Application Accuracy Contract",
+      "owner_head": "7cbb4c564eb519da9c33555a0500f031cd470c31",
+      "scope_class": "FROZEN_V1_REQUIRED_APPLICATION_CONTRACT",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-GC10/current canonical application-accuracy contract and F-RG03 G01",
+      "current_status": "PRESERVED"
+    },
+    {
+      "work_unit": "F-GC10",
+      "title": "Application Accuracy Contract Canonical Admission",
+      "owner_head": "a1201dc870e4f5088f50b8d00e92e83457743174",
+      "scope_class": "FROZEN_V1_REQUIRED_APPLICATION_CONTRACT",
+      "preservation_class": "PRESERVATION_PROVEN",
+      "definitive_current_authority": "audited current canonical application-accuracy source blobs plus F-RG03 G01",
+      "current_status": "CANONICAL_SEMANTICS_PRESERVED"
+    },
+    {
+      "work_unit": "F-GC11",
+      "title": "NSW Application-Class Accuracy Instantiation",
+      "owner_head": "d14b995f135a6c719d39f370c36797b4de4678b8",
+      "scope_class": "APPLICATION_SPECIFIC",
+      "preservation_class": "SEMANTICALLY_IRRELEVANT_DELTA",
+      "definitive_current_authority": "application-specific evidence only; generic frozen v1 does not require NSW numeric instantiation",
+      "current_status": "NOT_A_GENERIC_COMPLETION_BLOCKER"
+    },
+    {
+      "work_unit": "F-GC12",
+      "title": "WHT Project-Specific Accuracy Contract",
+      "owner_head": "0904c55b65b3dcfa22ff32f693ee9fabfa8c66a1",
+      "scope_class": "APPLICATION_SPECIFIC",
+      "preservation_class": "SEMANTICALLY_IRRELEVANT_DELTA",
+      "definitive_current_authority": "project-specific evidence only; generic frozen v1 does not require WHT numeric instantiation",
+      "current_status": "NOT_A_GENERIC_COMPLETION_BLOCKER"
+    },
+    {
+      "work_unit": "F-GC13",
+      "title": "Project Accuracy Evidence Governance Template",
+      "owner_head": "0c776f7c3d910c6727ec5659ae6437ca993fb20d",
+      "scope_class": "APPLICATION_SPECIFIC_GOVERNANCE",
+      "preservation_class": "SEMANTICALLY_IRRELEVANT_DELTA",
+      "definitive_current_authority": "template/governance evidence; not production coupling semantics",
+      "current_status": "NOT_A_GENERIC_COMPLETION_BLOCKER"
+    },
+    {
+      "work_unit": "F-GC14",
+      "title": "External Accuracy Runtime Contract Adapter Boundary",
+      "owner_head": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+      "scope_class": "FROZEN_V1_REQUIRED_BOUNDARY",
+      "preservation_class": "PRESERVATION_PROVEN",
+      "definitive_current_authority": "current canonical mod_coupling_application_accuracy_adapter and contract plus F-RG03 G01",
+      "current_status": "CANONICAL_SEMANTICS_PRESERVED"
+    },
+    {
+      "work_unit": "F-GC15",
+      "title": "Production Groundwater Coupling Runtime Gap Decomposition",
+      "owner_head": "95ab51e6a9d4d9288af2e8ac371b4aec37268954",
+      "scope_class": "GOVERNANCE_GAP_DECOMPOSITION",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-GC16 restricted composition plan then F-RG03 G05 rebaseline",
+      "current_status": "SUPERSEDED_CURRENT_GAP_MAP"
+    },
+    {
+      "work_unit": "F-GC16",
+      "title": "Production Groundwater Coupling Minimal Viable Composition/Admission Plan",
+      "owner_head": "5e2e77ca4802ec54b7d0c20220b7af1f7f894e54",
+      "scope_class": "FROZEN_V1_PROFILE_AUTHORITY",
+      "preservation_class": "SUPERSEDED_BY_STRONGER_AUTHORITY",
+      "definitive_current_authority": "F-RG03 for current completion state; F-GC16 retained as frozen restricted-profile semantic authority",
+      "current_status": "PROFILE_RETAINED_EXECUTION_PLAN_UPDATED_BY_F_RG03"
+    },
+    {
+      "work_unit": "F-GC17",
+      "title": "Typed Direct Groundwater Interface / Convergence Policy",
+      "owner_head": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+      "scope_class": "FROZEN_V1_REQUIRED",
+      "preservation_class": "PRESERVATION_PROVEN",
+      "independent_or_canonical_successors": [
+        "qualification/f-ci50-fgc17-typed-groundwater-interface-canonical-admission@bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b"
+      ],
+      "definitive_current_authority": "F-RG03 G01 at audited current canonical SHA/tree",
+      "current_status": "G01_100_PERCENT_PRESERVED"
+    },
+    {
+      "work_unit": "F-GC18/F-GC18A/F-GC18R/F-GC18R-R1",
+      "title": "Transactional Groundwater Exchange / Two-Phase Readiness and Remediation",
+      "owner_heads": {
+        "F-GC18": "774c01d69c619f463e0d471eb797f8f0418fee07",
+        "F-GC18A": "ac25e009b795f231a522d2f048795ccc1d64417c",
+        "F-GC18R": "7c1c5251a2dff94291db381cf0b66631b81e9f05",
+        "F-GC18R-R1": "cfa4e9dcd9a283d85ade316651d34cac93958a4a"
+      },
+      "scope_class": "FROZEN_V1_REQUIRED",
+      "preservation_class": "PRESERVATION_PROVEN",
+      "independent_qualifications": [
+        "F-VQ60@773b1dec23957f2d86648b82ab76f8daede2cbbc",
+        "F-VQ61 independent requalification@e83fe9a4955275935903730c4484c77fb0b117ff",
+        "F-VQ61 remediation requalification@dc845ea1f0bc739208b31019dadc1e1f7b5d11bd"
+      ],
+      "canonical_admission": "F-CI53@da401b186a3b7f8a1f93881fa61ad45137561f99",
+      "definitive_current_authority": "F-RG03 G02 at audited current canonical SHA/tree",
+      "current_status": "G02_100_PERCENT_PRESERVED"
+    },
+    {
+      "work_unit": "F-GC19/F-GC19R/F-GC19R-R1",
+      "title": "Interface Mass Ledger / Prepared-Ledger Publication",
+      "owner_heads": {
+        "F-GC19": "215313675c074c18dff251b74581269085f7658e",
+        "F-GC19R": "d92b84c815f9e6c5509d280953b4d659c5cb14ac",
+        "F-GC19R-R1": "3bf3fec344ee67dd56f5f54b293b3a0a47214efb"
+      },
+      "scope_class": "FROZEN_V1_REQUIRED",
+      "preservation_class": "PRESERVATION_PROVEN",
+      "independent_qualification": "F-VQ62@9017c8350c5f05deab235a6e59cc53ffdcf6f8dd",
+      "canonical_admission": "F-CI54@80019afb3184b490678bdcd1b4c68081ea7feb1b",
+      "definitive_current_authority": "F-RG03 G03 at audited current canonical SHA/tree",
+      "current_status": "G03_100_PERCENT_PRESERVED"
+    },
+    {
+      "work_unit": "F-GC20",
+      "title": "Groundwater Cell/Tile Mapping and Aggregation Primitive",
+      "owner_head": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "owner_tree": "259516aebdc7953ad04e6fb928c31a01e9556815",
+      "scope_class": "FROZEN_V1_REQUIRED_G05_DEPENDENCY",
+      "preservation_class": "REQUALIFICATION_REQUIRED",
+      "definitive_owner_decision": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION",
+      "canonical_admission": false,
+      "current_canonical_source_present": false,
+      "current_status": "OWNER_QUALIFIED_NOT_CURRENT_CANONICAL_COMPOSED"
+    },
+    {
+      "work_unit": "F-GC21/F-GC21P1/F-GC21P1-R1",
+      "title": "Restricted Predictor-Corrector / Exact Accepted Bottom Exchange",
+      "owner_heads": {
+        "F-GC21": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+        "F-GC21P1": "95e05490d3f60325361a9036dc720c7954093307",
+        "F-GC21P1-R1": "dcde6360f902081c94927486455e5233b81dfc1b"
+      },
+      "scope_class": "FROZEN_V1_REQUIRED",
+      "preservation_class": "PRESERVATION_PROVEN",
+      "independent_qualifications": [
+        "F-VQ63@a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+        "F-VQ64@466119889a3f09b33ede638322e897bded2472a3"
+      ],
+      "canonical_admissions": [
+        "F-CI55@860f697cd785f3de01a36c9f0f06043e6dcb689a",
+        "F-CI56 qualified head@bbaa4f2b826b6da7bdca0dfb670b49813616a950",
+        "F-CI56 definitive canonical closeout@c19a04721a05c6a00ba264e7477969807dcb258f"
+      ],
+      "definitive_current_authority": "F-CI56 plus F-RG03 G04",
+      "current_status": "G04_100_PERCENT_PRESERVED"
+    },
+    {
+      "work_unit": "F-GC22",
+      "title": "Application Temporal Accuracy Binding",
+      "owner_head": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "owner_tree": "3acc6bb6341df0bac3db36c082b501caca14a30e",
+      "scope_class": "FROZEN_V1_REQUIRED_G05_DEPENDENCY",
+      "preservation_class": "REQUALIFICATION_REQUIRED",
+      "definitive_owner_decision": "QUALIFIED_BRANCH_CAPABILITY_READY_FOR_RESTRICTED_COUPLING_COMPOSITION",
+      "canonical_admission": false,
+      "current_canonical_source_present": false,
+      "current_status": "OWNER_QUALIFIED_NOT_CURRENT_CANONICAL_COMPOSED"
+    }
+  ],
+  "summary": {
+    "PRESERVATION_PROVEN": ["F-GC10", "F-GC14", "F-GC17", "F-GC18 lineage", "F-GC19 lineage", "F-GC21 lineage"],
+    "SUPERSEDED_BY_STRONGER_AUTHORITY": ["F-GC01", "F-GC02", "F-GC03", "F-GC04", "F-GC05", "F-GC06", "F-GC07", "F-GC08", "F-GC09", "F-GC15", "F-GC16"],
+    "SEMANTICALLY_IRRELEVANT_DELTA": ["F-GC11", "F-GC12", "F-GC13"],
+    "REQUALIFICATION_REQUIRED": ["F-GC20", "F-GC22"],
+    "missing_reserved_successor": "F-GC23 accepted whole-window response tangent composition"
+  }
+}
