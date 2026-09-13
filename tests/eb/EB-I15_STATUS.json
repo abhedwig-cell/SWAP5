@@ -1,0 +1,46 @@
+{
+  "work_unit": "EB-I15",
+  "title": "Candidate-Scoped Bottom Liquid Sensible-Energy Evaluator",
+  "restart_authority": "work/eb-i14-bottom-advective-energy-quadrature-contract@a5aa6a1c81afe35940567bd0b6af0bf5707594d3",
+  "decision": "IMPLEMENTED_PENDING_EXACT_HEAD_QUALIFICATION",
+  "implemented": true,
+  "runtime_integrated": false,
+  "accepted_energy_publication": false,
+  "canonical_admission": false,
+  "production_files": [
+    "src/process/mod_liquid_water_sensible_enthalpy.f90",
+    "src/runtime/mod_fmr_bottom_sensible_energy.f90"
+  ],
+  "dependency_reconciliation": {
+    "eb_i04_liquid_sensible_enthalpy_blob": "2247370ee34fac73a0e2d0b9fa15e171467aded3",
+    "reuse_semantics": "exact source blob reused and requalified against the EB-I15 base",
+    "eb_i13_carrier": "consumed only through the public candidate/sample contract",
+    "eb_i14_quadrature": "terminal local donor temperature per accepted model advance"
+  },
+  "qualified_behavior": [
+    "sample-wise outward-positive J/m2 evaluation for thermally complete local outflow",
+    "terminal local donor temperature from each accepted sample",
+    "exact-zero transfer contributes exactly zero without donor temperature",
+    "nonzero inward transfer without explicit external donor temperature makes the total unavailable/incomplete",
+    "diagnostic local-outflow subtotal may remain available while the complete total is unavailable",
+    "invalid candidate or invalid thermodynamic properties fail closed",
+    "reference-temperature gauge identity",
+    "no dependency on kernel transaction internals, Richards internals, HeadCalc or MODFLOW",
+    "no additional physical solve",
+    "no water rebooking or hydrologic acceptance change"
+  ],
+  "qualification_workflow": ".github/workflows/eb-i15-qualification.yml",
+  "qualification_condition": "The EB-I15 bottom sensible energy evaluator workflow must succeed on the exact branch HEAD containing EB-I15_STATUS.json and EB-I15_CLOSURE.md. Older green runs are supporting evidence only.",
+  "hard_nonclaims": [
+    "automatic invocation by serialized runtime",
+    "accepted energy commit/publication",
+    "external groundwater or deep-vadose donor-temperature binding",
+    "complete inward-water energy evaluation",
+    "energy-ledger persistence or restart",
+    "advective-energy feedback into the governing soil-temperature solve",
+    "higher-order temporal advective-energy accuracy",
+    "closed soil or land-column energy balance",
+    "canonical admission"
+  ],
+  "next_boundary": "Bind external inward donor temperature generically at runtime/coupler level, without teaching the SWAP kernel about MODFLOW, deep-vadose routing or tile composition; accepted energy publication remains a separate transactional integration boundary unless independently qualified."
+}
