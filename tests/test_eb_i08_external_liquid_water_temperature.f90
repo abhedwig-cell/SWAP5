@@ -80,7 +80,10 @@ contains
   subroutine require(condition, code)
     logical, intent(in) :: condition
     integer, intent(in) :: code
-    if (.not. condition) error stop code
+    if (.not. condition) then
+      print '(a,i0)', 'EB-I08 failed check: ', code
+      error stop 1
+    end if
   end subroutine require
 
 end program test_eb_i08_external_liquid_water_temperature
