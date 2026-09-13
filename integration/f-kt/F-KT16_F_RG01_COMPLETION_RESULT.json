@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.fkt16_f_rg01_completion_result.v1",
+  "work_unit": "F-KT16",
+  "target_consumer": "F-RG01",
+  "domain": "D02",
+  "domain_name": "State / persistence / restart",
+  "frozen_denominator_authority": "regie/f-rg01c-fixed-denominator-completion-model@971e732551abad86acccfd5f01811d855e51e939:integration/f-rg/SWAP5_V1_COMPLETION_MODEL_V1.json",
+  "weight": 7.0,
+  "earned_weight": 7.0,
+  "completion_fraction": 1.0,
+  "completion_percent": 100.0,
+  "maturity": "PRESERVED_REGRESSION_PROTECTED",
+  "hard_gate_HG03_RESTART_active": false,
+  "remaining_gap": "none",
+  "gap_count": 0,
+  "production_source_change_required": false,
+  "production_source_changed_by_F_KT16": false,
+  "scope_or_denominator_changed": false,
+  "current_canonical": {
+    "sha": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "tree": "5342833575484452b34606f8854ff3f5a542e452"
+  },
+  "completion_authority": {
+    "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
+    "path": "integration/f-kt/F-KT16_STATE_PERSISTENCE_RESTART_V1_COMPLETION_AUTHORITY.json",
+    "authority_creation_commit": "448e5cad7a3bbc7af41920c3292ac93379b0f03d",
+    "qualified_head": "81b2492f947df063742aa5998355d97d721af699",
+    "qualification_run": 34746928353,
+    "qualification_job": 103696445028,
+    "qualification_conclusion": "success"
+  },
+  "instruction": "F-RG01 may retain and explicitly record D02 State / persistence / restart at exactly 7/7 and 100.0 percent under the frozen SWAP5-v1 denominator. Do not alter the denominator. Future dependency-changing canonical admissions must preserve or requalify this authority."
+}
