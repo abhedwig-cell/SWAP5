@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.fmr43.protocol.v1",
+  "work_unit": "F-MR43",
+  "title": "Atomic surface-evaporation accepted publication",
+  "branch": "work/f-mr43-atomic-surface-evaporation-accepted-publication",
+  "base_authority": "work/f-pm10-surface-evaporation-publication-provenance-remediation@c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "triggering_authorities": [
+    "F-PM09 G01 accepted-publication provenance closure gap",
+    "F-VQ69 NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN",
+    "F-VQ70 NOT_QUALIFIED_RUNTIME_EXECUTION_DOMAIN_UNIQUENESS_NOT_ENFORCED"
+  ],
+  "design_disposition": "Close cross-candidate result substitution by construction at the runtime publication seam: materialize attribution with the exact candidate, commit that same candidate, and publish only the private local attribution using the receipt produced by that same call. Do not rely on globally unique executor identifiers.",
+  "production_scope": [
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90"
+  ],
+  "frozen_dependencies": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "forbidden": [
+    "ET physics changes",
+    "root-uptake physics changes",
+    "surface-evaporation physics changes",
+    "solver changes",
+    "mass-booking changes",
+    "persistent or restart state changes",
+    "global execution-id registry",
+    "calendar, file-I/O or MODFLOW assumptions"
+  ],
+  "qualification_requirement": "Owner evidence is not independent qualification. F-VQ successor must independently verify atomic publication, fail-closed negative cases, MultiSWAP-compatible split trial/commit executors, source binding, and no second mass authority before canonical admission."
+}
