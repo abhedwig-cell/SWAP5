@@ -1,0 +1,31 @@
+name: F-VQ72 F-PM12 surface publication independent requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq72-fpm12-surface-publication-provenance-requalification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch repository authority refs
+        run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Source-bound governance and invariant gate
+        run: bash tests/fvq/run_fvq72_source_governance.sh
+      - name: Independent provenance, reject, retry and mass gate O0/O2
+        run: bash tests/fvq/run_fvq72_independent_runtime.sh
+      - name: Restart, MultiSWAP, parallel and completion preservation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash tests/fvq/run_fvq72_preservation.sh
