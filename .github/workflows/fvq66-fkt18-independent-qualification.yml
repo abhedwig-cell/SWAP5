@@ -1,0 +1,41 @@
+name: F-VQ66 F-KT18 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq66-fkt18-fail-closed-mass-completeness-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-mass-admission:
+    name: Independent fail-closed mass admission attack matrix
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          git rev-parse HEAD
+      - name: Run independent F-KT18 attack oracle O0/O2
+        run: bash tests/fvq/run_fvq66_fkt18_independent.sh
+
+  current-preservation:
+    name: Independent current preservation replay
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          git rev-parse HEAD
+      - name: Run F-KT15 F-KT16 MultiSWAP parallel coupling preservation O0/O2
+        run: bash tests/fvq/run_fvq66_current_preservation.sh
