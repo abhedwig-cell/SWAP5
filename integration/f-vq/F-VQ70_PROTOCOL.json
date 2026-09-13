@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.fvq70.protocol.v1",
+  "work_unit": "F-VQ70",
+  "title": "F-KT20 exact candidate-attempt provenance independent qualification",
+  "branch": "qualification/f-vq70-fkt20-exact-candidate-attempt-provenance",
+  "candidate_authority": {
+    "branch": "work/f-kt20-exact-candidate-attempt-provenance",
+    "head": "c25eb87f979f4c341713de8fdc890beb0ea3e35f",
+    "product_blobs": {
+      "src/kernel/mod_kernel_transactions.f90": "9eec425476687ed383678c8afc43108faec316b5",
+      "src/runtime/mod_fmr_accepted_commit_receipt.f90": "76e110278435b48422236dd2aa4e1b290fa79928",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "72faabd7c74dbddecfc778dac8d24b48b423fc62",
+      "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "b08c0a7f334238228096939a5e93baafe1cd5751"
+    }
+  },
+  "triggering_authority": {
+    "work_unit": "F-VQ69",
+    "decision": "NOT_QUALIFIED_EXACT_CANDIDATE_PROVENANCE_NOT_PROVEN",
+    "hard_negative": "distinct candidates sharing lineage/revision/interval admitted result substitution"
+  },
+  "independence": {
+    "owner_test_reused_as_oracle": false,
+    "production_source_changes_allowed": false,
+    "qualification_branch_may_only_add_protocol_test_runner_workflow_evidence_status": true
+  },
+  "required_checks": [
+    "source-bound frozen candidate verification",
+    "same executor and same old provenance tuple yields distinct exact attempt sequence",
+    "positive exact result/receipt publication",
+    "F-VQ69 HN5 result-B plus receipt-A rejected",
+    "cross-executor different execution-provenance domain rejected",
+    "duplicate live execution-provenance domain collision attack",
+    "generic unbound F-KT path remains fail-closed for accepted surface publication",
+    "no persistent/restart-state or mass-booking authority change",
+    "O0/O2 semantic identity"
+  ],
+  "collision_disposition": {
+    "if_duplicate_domain_attack_is_fail_open": "NOT_QUALIFIED_RUNTIME_EXECUTION_DOMAIN_UNIQUENESS_NOT_ENFORCED",
+    "if_all_hard_negatives_fail_closed": "QUALIFIED_EXACT_CANDIDATE_ATTEMPT_PROVENANCE"
+  },
+  "governance": "Do not accept execution_provenance_id uniqueness as an unstated caller assumption. If uniqueness is required, it must be explicit and enforced or qualified at runtime composition before canonical admission."
+}
