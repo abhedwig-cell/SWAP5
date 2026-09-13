@@ -1,0 +1,14 @@
+{
+  "work_unit": "EB-I13",
+  "title": "Bottom Thermal Accepted-Route Carrier Implementation",
+  "baseline": "work/eb-i12-bottom-thermal-quadrature-contract-freeze@42e2a71fdc44448a39e087f12ae967b39283b481",
+  "canonical_source_authority": "integration/f-ci-canonical@df51575e18777856a47a5d0d1e2e1c7456be4601",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Implement only worker-local accepted-route bottom water-thermal sample retention and candidate-scoped snapshot semantics frozen by EB-I12. No Joule calculation or accepted commit publication.",
+  "next_action": "Implement the carrier in the serialized reference backend and add adversarial transaction tests.",
+  "recovery_point": "work/eb-i13-bottom-thermal-carrier-implementation",
+  "blockers": []
+}
