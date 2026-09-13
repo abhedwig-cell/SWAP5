@@ -15,6 +15,8 @@ module mod_reference_richards_accepted_step_directional_service
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
+  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction
   implicit none
   private
 
@@ -136,6 +138,17 @@ contains
        route = 'conductivity-mean-direction-unavailable'
        return
     end if
+    if (.not. associated(request%evaluation%constitutive)) then
+       route = 'constitutive-provider-missing'
+       return
+    end if
+    select type (hyd => request%evaluation%constitutive)
+    type is (b110_default_mvg_provider_t)
+       continue
+    class default
+       route = 'constitutive-direction-unavailable'
+       return
+    end select
     if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) then
        route = 'dynamic-or-head-top-direction-unavailable'
        return
@@ -212,29 +225,43 @@ contains
     type(soil_water_accepted_step_direction_result_t), intent(inout) :: direction_result
 
     integer :: n, i, tangent_ierror
-    logical :: mean_ok
+    logical :: mean_ok, constitutive_direction_ok
+    character(len=64) :: constitutive_direction_route
     real(real64) :: bottom_distance, bdir, grad_bottom
 
     n = request%parameters%active_nodes
     direction_result%control_coordinate = direction_request%control_coordinate
 
-    ! Re-evaluate the immutable constitutive provider at the step base state to
-    ! obtain dK/dh for B_k*s_k. This is numerical scratch evaluation only; it
-    ! does not change the accepted candidate or the physical mass ledger.
+    ! Re-evaluate the immutable constitutive value provider at the step base
+    ! state for the exact frozen K values used by swkimpl=0. Its historical
+    ! dconductivity_dhead result is deliberately reserved/zero, so derivative
+    ! semantics come only from the explicit sibling capability below.
     call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, &
          ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
          ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
-    if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n))) .or. &
-        any(.not. ieee_is_finite(ref_ws%richards%provider_dkdh(1:n)))) then
+    if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-       direction_result%route = 'base-constitutive-direction-nonfinite'
+       direction_result%route = 'base-constitutive-value-nonfinite'
        return
     end if
 
-    ! band_aux(:,1) is worker scratch for dK at nodes; vertical_flux is reused
-    ! after the accepted physical solve as scratch for dKmean at faces.
-    ref_ws%richards%band_aux(1:n,1) = ref_ws%richards%provider_dkdh(1:n) * &
-         direction_request%incoming_pressure_head(1:n)
+    select type (hyd => request%evaluation%constitutive)
+    type is (b110_default_mvg_provider_t)
+       call evaluate_b110_default_mvg_state_direction(hyd, request%base_state%pressure_head, &
+            direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
+            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
+    class default
+       constitutive_direction_ok = .false.
+       constitutive_direction_route = 'constitutive-direction-unavailable'
+    end select
+    if (.not. constitutive_direction_ok) then
+       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
+       direction_result%route = constitutive_direction_route
+       return
+    end if
+
+    ! band_aux(:,1) now contains exact dK at nodes. vertical_flux is reused after
+    ! the accepted physical solve as worker scratch for dKmean at faces.
     ref_ws%richards%vertical_flux(1:n+1) = 0.0_real64
     do i = 2, n
        call hydraulic_mean_directional(request%numerical%conductivity_mean_method, &
@@ -251,8 +278,8 @@ contains
     ! B1.10 reset semantics for the lower face in modes 2/5: Kmean(N+1)=K(N).
     ref_ws%richards%vertical_flux(n+1) = ref_ws%richards%band_aux(n,1)
 
-    ! Accepted-state hydraulic gradients. The top route is prescribed flux, so
-    ! it contributes no state/control directional term to F_1.
+    ! Accepted-state hydraulic gradients. The qualified top route is prescribed
+    ! flux, so it contributes no state/control directional term to F_1.
     ref_ws%richards%head_gradient(1:n+1) = 0.0_real64
     do i = 2, n
        ref_ws%richards%head_gradient(i) = &
@@ -260,10 +287,10 @@ contains
              solve_result%candidate_state%pressure_head(i)) / request%parameters%node_distance(i) + 1.0_real64
     end do
 
-    ! Assemble B_k*s_k + r_p at fixed accepted h. Storage uses the incoming
-    ! water-content direction explicitly; frozen swkimpl=0 conductivities use
-    ! the incoming pressure-head direction through dK/dh and exact hcomean
-    ! derivatives for methods 1..6.
+    ! Assemble B_k*s_k + r_p at fixed accepted h. Storage uses the explicit
+    ! incoming water-content direction. Frozen swkimpl=0 conductivities use the
+    ! incoming pressure-head direction through the exact B1.10 sibling dK and
+    ! exact hcomean derivatives for methods 1..6.
     ref_ws%richards%band_rhs(1:n) = 0.0_real64
     bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
            ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2)
@@ -314,20 +341,24 @@ contains
     allocate(direction_result%outgoing_pressure_head(n), direction_result%outgoing_water_content(n))
     direction_result%outgoing_pressure_head = ref_ws%richards%delta_head(1:n)
 
-    ! At the accepted state, provider capacity is dtheta/dh on the same smooth
-    ! constitutive branch. This second provider evaluation is diagnostic scratch
-    ! only and occurs after the physical candidate and exact qbot are fixed.
-    call request%evaluation%constitutive%evaluate(solve_result%candidate_state%pressure_head, &
-         ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
-         ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
-    if (any(.not. ieee_is_finite(ref_ws%richards%provider_capacity(1:n)))) then
+    ! Derive accepted water-content direction from the exact B1.10 watcon branch,
+    ! not from the value-provider numerical capacity floor.
+    select type (hyd => request%evaluation%constitutive)
+    type is (b110_default_mvg_provider_t)
+       call evaluate_b110_default_mvg_state_direction(hyd, solve_result%candidate_state%pressure_head, &
+            direction_result%outgoing_pressure_head, direction_result%outgoing_water_content, &
+            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
+    class default
+       constitutive_direction_ok = .false.
+       constitutive_direction_route = 'accepted-constitutive-direction-unavailable'
+    end select
+    if (.not. constitutive_direction_ok) then
        deallocate(direction_result%outgoing_pressure_head, direction_result%outgoing_water_content)
        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-       direction_result%route = 'accepted-capacity-direction-nonfinite'
+       direction_result%route = constitutive_direction_route
        return
     end if
-    direction_result%outgoing_water_content = ref_ws%richards%provider_capacity(1:n) * &
-         direction_result%outgoing_pressure_head
+
     direction_result%outgoing_ponding_depth = direction_request%incoming_ponding_depth
     direction_result%top_flux_derivative = 0.0_real64
 
