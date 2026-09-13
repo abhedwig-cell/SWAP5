@@ -21,12 +21,16 @@ module mod_fmr_accepted_commit_receipt
     integer(int64) :: committed_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
     real(real64) :: t1_value = 0.0_real64
+    integer(int64) :: execution_provenance_id_value = 0_int64
+    integer(int64) :: candidate_sequence_value = 0_int64
+    logical :: exact_attempt_provenance_bound = .false.
   contains
     procedure, public :: ready => receipt_ready
     procedure, public :: current_lineage_id => receipt_lineage_id
     procedure, public :: origin_revision => receipt_origin_revision
     procedure, public :: committed_revision => receipt_committed_revision
     procedure, public :: origin_interval => receipt_origin_interval
+    procedure, public :: exact_attempt_provenance => receipt_exact_attempt_provenance
   end type fmr_accepted_commit_receipt_t
 
   public :: fmr_commit_candidate_with_receipt
@@ -46,8 +50,9 @@ contains
     integer, intent(out), optional :: commit_status
 
     integer(int64) :: lineage_id, origin_revision
+    integer(int64) :: execution_provenance_id, candidate_sequence
     real(real64) :: t0, t1, checkpoint_time
-    logical :: interval_available, checkpoint_time_available
+    logical :: interval_available, checkpoint_time_available, exact_available
     integer :: local_commit_status
 
     receipt = fmr_accepted_commit_receipt_t()
@@ -66,6 +71,7 @@ contains
 
     lineage_id = candidate_state%current_lineage_id()
     origin_revision = candidate_state%origin_revision()
+    call candidate_state%exact_attempt_provenance(execution_provenance_id, candidate_sequence, exact_available)
     receipt_status = FMR_COMMIT_RECEIPT_PROVENANCE_MISMATCH
     if (lineage_id <= 0_int64 .or. origin_revision < 0_int64) return
     if (checkpoint%current_lineage_id() /= lineage_id) return
@@ -78,10 +84,9 @@ contains
       if (.not. same_fkt_time(checkpoint_time, t0)) return
     end if
 
-    ! Every expected receipt failure has now occurred before physical publication.
-    ! From this point F-KT remains the sole commit authority. A failed F-KT commit
-    ! yields no receipt. A successful F-KT commit is followed only by scalar
-    ! assignments from the already captured, validated candidate provenance.
+    ! Capture every candidate provenance scalar before F-KT clears the candidate
+    ! on commit. Exact-attempt provenance remains optional for generic receipt
+    ! consumers; accepted-only surfaces can require it independently.
     call kernel%commit_candidate(committed_state, candidate_state, diagnostics, did_commit, local_commit_status)
     if (present(commit_status)) commit_status = local_commit_status
     if (.not. did_commit) then
@@ -94,6 +99,11 @@ contains
     receipt%committed_revision_value = origin_revision + 1_int64
     receipt%t0_value = t0
     receipt%t1_value = t1
+    if (exact_available) then
+      receipt%execution_provenance_id_value = execution_provenance_id
+      receipt%candidate_sequence_value = candidate_sequence
+      receipt%exact_attempt_provenance_bound = .true.
+    end if
     receipt%initialized = .true.
     receipt_status = FMR_COMMIT_RECEIPT_OK
   end subroutine fmr_commit_candidate_with_receipt
@@ -136,6 +146,22 @@ contains
       t1 = 0.0_real64
     end if
   end subroutine receipt_origin_interval
+
+  subroutine receipt_exact_attempt_provenance(self, execution_provenance_id, candidate_sequence, available)
+    class(fmr_accepted_commit_receipt_t), intent(in) :: self
+    integer(int64), intent(out) :: execution_provenance_id, candidate_sequence
+    logical, intent(out) :: available
+
+    available = self%ready() .and. self%exact_attempt_provenance_bound .and. &
+         self%execution_provenance_id_value > 0_int64 .and. self%candidate_sequence_value > 0_int64
+    if (available) then
+      execution_provenance_id = self%execution_provenance_id_value
+      candidate_sequence = self%candidate_sequence_value
+    else
+      execution_provenance_id = 0_int64
+      candidate_sequence = 0_int64
+    end if
+  end subroutine receipt_exact_attempt_provenance
 
   pure logical function same_fkt_time(a, b) result(matches)
     real(real64), intent(in) :: a, b
