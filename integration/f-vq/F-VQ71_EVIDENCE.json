@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.fvq71.evidence.v1",
+  "work_unit": "F-VQ71",
+  "candidate": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+  "workflow_run": 34780009887,
+  "workflow_job": 103785176480,
+  "workflow_head": "8a94f2b817174573bf4bb473cc416cfe94f0c906",
+  "frozen_product_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6"
+  },
+  "observations": {
+    "frozen_source_binding": "PASS",
+    "qualification_production_reference_delta": "NONE",
+    "old_ambiguous_provenance_pair_reproduced": "PASS",
+    "atomic_cross_executor_positive": "PASS",
+    "same_origin_stale_alternate": "PASS_CLOSED",
+    "cross_lineage_precommit": "PASS_CLOSED",
+    "historical_split_api_compile_attack_O0": "PASS_CLOSED",
+    "historical_split_api_compile_attack_O2": "PASS_CLOSED",
+    "mass_regression": "NONE",
+    "second_mass_authority": "ABSENT",
+    "O0_O2_semantic_identity": "PASS"
+  },
+  "decision": "QUALIFIED_ATOMIC_SURFACE_EVAPORATION_ACCEPTED_PUBLICATION",
+  "canonical_admission_authorized": false
+}
