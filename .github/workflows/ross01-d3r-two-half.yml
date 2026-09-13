@@ -1,0 +1,47 @@
+name: F-ROSS01 D3R Two-Half Probe
+
+on:
+  push:
+    branches: [work/f-ross01-d3r-bounded-duration-retry-ladder-qualification]
+    paths:
+      - .github/workflows/ross01-d3r-two-half.yml
+      - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
+      - experiments/ross/run_ross01_d3r_two_half_probe.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  two-half-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Bind live canonical transaction semantics
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          grep -q "call model%advance(half_state, t0, midpoint, half1_outcome)" "$RUNNER_TEMP/tx.f90"
+          grep -q "call model%advance(half_state, midpoint, attempt_t1, half2_outcome)" "$RUNNER_TEMP/tx.f90"
+          grep -q "terr = model%temporal_error(full_state, half_state)" "$RUNNER_TEMP/tx.f90"
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/run_ross01_d3r_two_half_probe.py
+      - name: Run two-half probe
+        run: python3 experiments/ross/run_ross01_d3r_two_half_probe.py --canonical-head "$CANONICAL_HEAD" --output F-ROSS01_D3R_TWO_HALF.json | tee F-ROSS01_D3R_TWO_HALF_STDOUT.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3r-two-half-${{ github.run_id }}
+          path: |
+            F-ROSS01_D3R_TWO_HALF.json
+            F-ROSS01_D3R_TWO_HALF_STDOUT.txt
