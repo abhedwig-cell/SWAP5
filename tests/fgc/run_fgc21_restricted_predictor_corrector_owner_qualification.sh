@@ -226,7 +226,7 @@ for opt in 0 2; do
   "$dir/test" > "$BUILD/p1-o$opt.txt"
 done
 diff -u "$BUILD/p1-o0.txt" "$BUILD/p1-o2.txt"
-grep -q '^FGC21P1_EXACT_BOTTOM_INTERFACE_RESULT_TEST PASS$' "$BUILD/p1-o0.txt"
+grep -Eq '^[[:space:]]*FGC21P1_EXACT_BOTTOM_INTERFACE_RESULT_TEST PASS$' "$BUILD/p1-o0.txt"
 echo 'FGC21_P1_EXACT_EXCHANGE_REGRESSION=PASS'
 
 # Re-run admitted prepared-handle ownership/replay/exhaustion components against current production blobs.
