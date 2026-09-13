@@ -10,7 +10,6 @@ fail(){ echo "FSI35_GATE_FAIL $*" >&2; exit 35; }
 SOILWATER=src/legacy/b1_10_port/soilwater.f90
 TASK2=src/adapter/mod_b110_production_soil_water_task2.f90
 CONTRACT=src/solver/mod_soil_water_solver_contract.f90
-REFERENCE_BINDING=src/adapter/mod_reference_richards_legacy_binding.f90
 HEADCALC=src/legacy/b1_10_port/headcalc.f90
 
 # Architecture gate: MOD_SoilWater may not know or invoke HeadCalc.
@@ -26,7 +25,6 @@ grep -Fq 'type, abstract, public :: soil_water_solver_t' "$CONTRACT" || fail 'co
 grep -Fq 'class(soil_water_solver_t), intent(inout) :: solver' "$TASK2" || fail 'common dynamic invocation seam missing'
 grep -Fq 'type, extends(soil_water_solver_t) :: b110_legacy_compat_solver_t' "$TASK2" || fail 'legacy compatibility path is not behind soil_water_solver_t'
 grep -Fq 'call invoke_soil_water_solver(solver, request, workspace, result)' "$TASK2" || fail 'solver service invocation missing'
-
 echo 'FSI35_COMMON_SOLVER_SERVICE_STATIC_GATE=PASS'
 
 # Production-wide direct HeadCalc call classification. Only adapter-boundary
@@ -124,10 +122,17 @@ for opt in 0 2; do
     FKT15_PRODUCTION_SURFACE_REGIMES_GATE=PASS; do
     grep -Fq "$mark" "$OUT/surface.txt" || { cat "$OUT/surface.txt" >&2; fail "surface O$opt missing $mark"; }
   done
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c tests/fsi/test_fsi35_task2_dispatch_equivalence.f90 -o "$OUT/dispatch-test.o"
+  gfortran "${FLAGS[@]}" -O"$opt" "${objs[@]}" "$OUT/soilwater.o" "$OUT/dispatch-test.o" -o "$OUT/dispatch-test"
+  timeout 90s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$OUT/dispatch-test" > "$OUT/dispatch.txt"
+  grep -Fq 'FSI35_STANDALONE_WORKER_TASK2_EQUIVALENCE=PASS' "$OUT/dispatch.txt" || { cat "$OUT/dispatch.txt" >&2; fail "dispatcher O$opt equivalence"; }
+  grep -Fq 'FSI35_STANDALONE_USES_COMMON_SOLVER_SERVICE=PASS' "$OUT/dispatch.txt" || { cat "$OUT/dispatch.txt" >&2; fail "dispatcher O$opt service"; }
   echo "FSI35_FULL_RICHARDS_SERVICE_O${opt}=PASS"
 done
 cmp "$BUILD/o0/task2.txt" "$BUILD/o2/task2.txt" || fail 'Task2 O0/O2 output differs'
 cmp "$BUILD/o0/surface.txt" "$BUILD/o2/surface.txt" || fail 'surface O0/O2 output differs'
+cmp "$BUILD/o0/dispatch.txt" "$BUILD/o2/dispatch.txt" || fail 'dispatcher O0/O2 output differs'
 echo 'FSI35_FULL_RICHARDS_O0_O2_IDENTITY=PASS'
-
+echo 'FSI35_STANDALONE_MULTISWAP_SEAM_EQUIVALENCE=PASS'
 echo 'FSI35_MANDATORY_SOLVER_SEAM_GATE=PASS'
