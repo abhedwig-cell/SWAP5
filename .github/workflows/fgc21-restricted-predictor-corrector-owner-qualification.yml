@@ -96,6 +96,27 @@ jobs:
             tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90 \
             -o "$dir/test"
           "$dir/test"
+      - name: Diagnostic base owner compile and run O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="${RUNNER_TEMP}/fgc21-base-o2"
+          mkdir -p "$dir"
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals \
+            -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 -J "$dir" -I "$dir" \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/kernel/mod_kernel_transactions.f90 \
+            src/runtime/mod_groundwater_coupling_contract.f90 \
+            src/runtime/mod_groundwater_coupling_policy.f90 \
+            src/runtime/mod_groundwater_exchange_service_contract.f90 \
+            src/runtime/mod_groundwater_interface_mass_ledger.f90 \
+            src/runtime/mod_groundwater_swap_forcing_adapter.f90 \
+            src/runtime/mod_groundwater_predictor_corrector_window.f90 \
+            tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90 \
+            -o "$dir/test"
+          "$dir/test"
       - name: F-GC21 owner qualification
         shell: bash
         run: |
