@@ -1,0 +1,63 @@
+{
+  "workunit": "EB-I14",
+  "title": "Bottom Liquid-Water Sensible-Energy Quadrature Contract Freeze",
+  "restart_authority": "work/eb-i13-bottom-thermal-carrier-implementation@c3458c3df0428de0f2500e211391122c64c2de33",
+  "decision": "DESIGN_FROZEN_NO_PRODUCTION_IMPLEMENTATION",
+  "production_delta": [],
+  "invariants": [
+    {"id": 1, "status": "pass", "assessment": "The contract consumes the existing accepted-route carrier and defines no second kernel or SWAP variant."},
+    {"id": 2, "status": "pass", "assessment": "The proposed evaluator is pure computational composition and has no file, format, parser, unit-number or path semantics."},
+    {"id": 3, "status": "pass", "assessment": "Immutable energy configuration, worker-local carrier scratch, physical state and candidate energy results remain separate categories."},
+    {"id": 4, "status": "pass", "assessment": "No energy sample history or ledger field is added to persistent column continuation state."},
+    {"id": 5, "status": "pass", "assessment": "Accepted-route sample history remains worker/job-local scratch owned by the EB-I13 runtime carrier."},
+    {"id": 6, "status": "pass", "assessment": "Evaluation is O(accepted samples), optional and compatible with pooled or batched logical-column storage."},
+    {"id": 7, "status": "pass", "assessment": "Only selected accepted-route samples may contribute; rejected trial energy is discarded with the existing transaction lifecycle."},
+    {"id": 8, "status": "pass", "assessment": "The contract forbids reconstruction solves and derives energy cheaply from preserved accepted-route provenance."},
+    {"id": 9, "status": "pass", "assessment": "All semantics use arbitrary sample and outer intervals [t0,t1]; no calendar or day boundary is introduced."},
+    {"id": 10, "status": "pass", "assessment": "The rule applies to arbitrary coupling-window placement and duration through the accepted sample sequence."},
+    {"id": 11, "status": "pass", "assessment": "The design preserves rollback and accepted-candidate provenance needed by coupling and leaves accepted publication to runtime/coupler composition."},
+    {"id": 12, "status": "preserved", "assessment": "No head or water-flux coupling contract is changed. Energy consumes the same authoritative signed bottom-water transfer."},
+    {"id": 13, "status": "pass", "assessment": "The evaluator never rebooks water mass. Missing thermal provenance makes energy incomplete rather than changing the water ledger."},
+    {"id": 14, "status": "preserved", "assessment": "Groundwater-interface response sensitivities are unaffected."},
+    {"id": 15, "status": "pass", "assessment": "No extra Richards or thermal solve is permitted; evaluation cost is linear in retained accepted samples."},
+    {"id": 16, "status": "pass", "assessment": "No heavy solver instance or persistent energy history is introduced per MultiSWAP column; evaluation is sparse and optional."},
+    {"id": 17, "status": "pass", "assessment": "The energy rule has no knowledge of MODFLOW-cell fractions or surface tiles."},
+    {"id": 18, "status": "pass", "assessment": "External inward donor temperature ownership remains outside SWAP and may belong to a deep-vadose or groundwater component."},
+    {"id": 19, "status": "pass", "assessment": "The design requires the same accepted mass transfer to carry any associated energy and forbids mass rebooking or silent loss."},
+    {"id": 20, "status": "pass", "assessment": "The public rule consumes solver-independent accepted-route samples, not Richards or HeadCalc internals; alternative solvers may supply equivalent samples."},
+    {"id": 21, "status": "pass", "assessment": "The design reuses existing water and thermal physics and adds only an accounting composition, not duplicate process implementations."},
+    {"id": 22, "status": "pass", "assessment": "The quadrature contract depends on public carrier semantics and terminal local donor temperature provenance, not HeadCalc arrays."},
+    {"id": 23, "status": "pass", "assessment": "The terminal-temperature rule is explicitly numerical accounting policy tied to current water discretization; it does not silently change physical options."},
+    {"id": 24, "status": "pass", "assessment": "Cost is bounded by the already-bounded accepted sample count; missing provenance fails closed without retry amplification."},
+    {"id": 25, "status": "pass", "assessment": "The current terminal-flux/right-endpoint rule is defined as the reference accounting mode and higher-order alternatives require separate qualification."},
+    {"id": 26, "status": "pass", "assessment": "Completeness and missing external donor provenance are explicit diagnostics; no silent fallback to local temperature or zero enthalpy is allowed."},
+    {"id": 27, "status": "pass", "assessment": "Energy configuration and evaluation cost occur only for requested energy-enabled columns/routes."},
+    {"id": 28, "status": "pass", "assessment": "Physical source mapping for external donor water remains a runtime/coupler responsibility outside the SWAP kernel."},
+    {"id": 29, "status": "pass", "assessment": "No assumptions about midnight, daily runs, legacy input files or direct MODFLOW attachment are introduced."},
+    {"id": 30, "status": "pass", "assessment": "EB-I14 explicitly audits the quadrature design against all thirty project architecture invariants before production implementation."}
+  ],
+  "scientific_decisions": [
+    "Use terminal local bottom donor temperature per accepted model advance because the authoritative water amount is terminal bottom flux times step duration.",
+    "Treat this as a first-order discrete-consistency rule, not an exact continuous-time integral.",
+    "Require explicit same-sample external donor temperature for nonzero inward transfer; otherwise total bottom energy is incomplete.",
+    "Keep rho_w, c_p_w and T_ref explicit immutable energy configuration.",
+    "Keep hydrologic acceptance independent from optional energy completeness until advective energy becomes governing thermal physics."
+  ],
+  "forbidden_shortcuts": [
+    "aggregate accepted bottom water times final outer bottom temperature",
+    "arithmetic endpoint temperature mean combined with the current terminal-flux water amount without joint quadrature qualification",
+    "local bottom temperature substituted for external inward donor water",
+    "zero enthalpy substituted for missing external donor provenance",
+    "extra physical solves to reconstruct discarded route history",
+    "persistent per-column carrier or energy-ledger history"
+  ],
+  "hard_nonclaims": [
+    "production Joule calculation",
+    "external groundwater or deep-vadose temperature physics",
+    "accepted energy commit publication",
+    "complete energy ledger",
+    "closed soil or land-column energy balance",
+    "higher-order temporal energy accuracy",
+    "canonical admission"
+  ]
+}
