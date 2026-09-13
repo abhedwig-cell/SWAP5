@@ -1,0 +1,53 @@
+{
+  "work_unit": "EB-I17",
+  "scope": "GENERIC_EXTERNAL_DONOR_PROVIDER_AND_CANDIDATE_EVALUATOR_BINDING_ONLY",
+  "restart_authority": "work/eb-i16-external-bottom-thermal-donor-contract@0334f473cf1324b340faa5a36033047cf0266ebe",
+  "production_files": [
+    "src/runtime/mod_fmr_external_bottom_thermal_donor.f90",
+    "src/runtime/mod_fmr_bottom_sensible_energy.f90"
+  ],
+  "invariants": [
+    {"id": 1, "status": "preserved", "evidence": "No second SWAP kernel or soil-water solver path is introduced."},
+    {"id": 2, "status": "pass", "evidence": "Provider and evaluator modules contain no file, path, parsing or legacy I/O semantics."},
+    {"id": 3, "status": "pass", "evidence": "Accepted water candidate, external thermal request/response, immutable enthalpy parameters and energy result are separate types."},
+    {"id": 4, "status": "pass", "evidence": "External request/response metadata is evaluation-scoped and not added to persistent continuation state."},
+    {"id": 5, "status": "pass", "evidence": "Requests, responses and energy accumulation are call-local and suitable for worker-local execution."},
+    {"id": 6, "status": "pass", "evidence": "The seam is a narrow logical API and does not prescribe per-column object-heavy storage; later batching remains possible."},
+    {"id": 7, "status": "pass", "evidence": "The evaluator consumes an already materialized candidate; provider responses cannot authorize acceptance or commit."},
+    {"id": 8, "status": "pass", "evidence": "External binding requires no repeat Richards or soil-temperature solve and can be re-evaluated from the same candidate."},
+    {"id": 9, "status": "pass", "evidence": "Request time coordinates are generic t0/t1 and current-reference quadrature uses sample t1 without calendar assumptions."},
+    {"id": 10, "status": "pass", "evidence": "No fixed day or midnight coupling-window assumption is introduced."},
+    {"id": 11, "status": "pass", "evidence": "The provider seam is explicitly runtime/coupler-facing and candidate-scoped; publication remains a separate transaction step."},
+    {"id": 12, "status": "preserved", "evidence": "Direct groundwater H/q interface convention and residual authority remain untouched."},
+    {"id": 13, "status": "pass", "evidence": "Only candidate Q enters energy algebra; provider response contains no replacement water transfer."},
+    {"id": 14, "status": "preserved", "evidence": "No interface-sensitivity contract is changed."},
+    {"id": 15, "status": "pass", "evidence": "Provider binding is O(external accepted samples) and adds zero SWAP physical solves."},
+    {"id": 16, "status": "pass", "evidence": "Procedure seam can be backed by batch-aware runtime composition without one heavy solver instance per column."},
+    {"id": 17, "status": "pass", "evidence": "No MODFLOW cell identity or tile fraction appears in either production module."},
+    {"id": 18, "status": "pass", "evidence": "Deep-vadose may supply an external temperature through an adapter but remains outside SWAP state and routing."},
+    {"id": 19, "status": "pass", "evidence": "Thermal metadata cannot create, destroy or duplicate water; transition mass remains external authority."},
+    {"id": 20, "status": "pass", "evidence": "Any soil-water solver producing the public accepted bottom carrier can use the same evaluator/provider seam."},
+    {"id": 21, "status": "pass", "evidence": "Existing EB-I04 enthalpy law, EB-I13 carrier and EB-I15 evaluator behavior are reused."},
+    {"id": 22, "status": "pass", "evidence": "No HeadCalc or Richards-internal array dependency exists."},
+    {"id": 23, "status": "pass", "evidence": "External donor temperature is physical metadata; provider batching/caching remains execution policy and cannot change the physics contract."},
+    {"id": 24, "status": "pass", "evidence": "No unbounded retry or reconstruction path is added; invalid/unavailable provider states fail immediately and diagnostically."},
+    {"id": 25, "status": "preserved", "evidence": "Legacy EB-I15 fail-closed entrypoint remains available as the reference behavior without external capability."},
+    {"id": 26, "status": "pass", "evidence": "Result counters distinguish complete, unavailable, stale, invalid and identity-mismatched external responses."},
+    {"id": 27, "status": "pass", "evidence": "Provider is never called for local-outflow or exact-zero samples; unused functionality incurs no per-column state cost."},
+    {"id": 28, "status": "pass", "evidence": "External source mapping remains outside SWAP; production modules contain no source-system-specific type."},
+    {"id": 29, "status": "pass", "evidence": "No implicit .swp, daily start, MODFLOW presence or source identity assumption exists."},
+    {"id": 30, "status": "pass", "evidence": "This audit and the qualification gate explicitly test all thirty architecture invariants for the workunit."}
+  ],
+  "hard_nonclaims": [
+    "automatic runtime invocation",
+    "accepted energy commit/publication",
+    "energy ledger persistence/restart",
+    "MODFLOW temperature implementation",
+    "deep-vadose thermal implementation",
+    "source-side temporal interpolation qualification",
+    "advective-energy feedback into governing soil temperature",
+    "higher-order temporal energy accuracy",
+    "closed soil or land-column energy balance",
+    "canonical admission"
+  ]
+}
