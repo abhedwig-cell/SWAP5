@@ -26,9 +26,10 @@ program test_fpm12_surface_publication_retry_oracle
   type(kernel_candidate_state_t) :: candidate
   type(kernel_diagnostics_t) :: diag
   type(fmr_surface_evaporation_publication_t) :: pub, seed, multi_pub
+  class(transaction_state_t), allocatable :: before_state, after_state
   integer(int64) :: rev0
   integer :: ps, rs, cs, i
-  logical :: did_commit
+  logical :: did_commit, snap_ok
 
   config = canonical_numerical_config_t()
   config%max_committed_substeps=8
@@ -45,13 +46,11 @@ program test_fpm12_surface_publication_retry_oracle
   call trial_kernel%bind_model(trial_model)
   call commit_kernel%bind_model(commit_model)
 
-  ! Same executor: standalone-style candidate production and accepted commit.
   call setup(12001_int64, committed, checkpoint, candidate, diag)
   call publish_with(trial_kernel,committed,checkpoint,candidate,diag,good,seed,did_commit,ps,rs,cs)
   call require(did_commit .and. seed%ready(),'standalone acceptance')
   write(*,'(A)') 'FPM12_ACCEPTED_ONCE=PASS'
 
-  ! Separate trial and commit executors: serialized MultiSWAP-style composition.
   call setup(12002_int64, committed, checkpoint, candidate, diag)
   call publish_with(commit_kernel,committed,checkpoint,candidate,diag,good,multi_pub,did_commit,ps,rs,cs)
   call require(did_commit .and. multi_pub%ready(),'cross executor acceptance')
@@ -62,12 +61,16 @@ program test_fpm12_surface_publication_retry_oracle
 
   call setup(12003_int64, committed, checkpoint, candidate, diag)
   rev0=committed%current_revision()
+  call committed%snapshot(before_state,snap_ok); call require(snap_ok,'snapshot before reject')
   pub=seed
   call publish_with(commit_kernel,committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
   call require(.not.did_commit .and. .not.pub%ready(),'reject no publication')
   call require(committed%current_revision()==rev0 .and. candidate%ready(),'reject immutable')
+  call committed%snapshot(after_state,snap_ok); call require(snap_ok,'snapshot after reject')
+  call require_same_physical_state(before_state,after_state,'single reject')
   write(*,'(A)') 'FPM12_REJECT_ZERO_PUBLICATION=PASS'
   write(*,'(A)') 'FPM12_STALE_OUTPUT_CLEARED=PASS'
+  write(*,'(A)') 'FPM12_REJECT_COMMITTED_STATE_EXACT=PASS'
   call publish_with(commit_kernel,committed,checkpoint,candidate,diag,good,pub,did_commit,ps,rs,cs)
   call require(did_commit .and. pub%ready(),'reject accept')
   call require(committed%current_revision()==rev0+1_int64,'reject accept one commit')
@@ -75,12 +78,15 @@ program test_fpm12_surface_publication_retry_oracle
 
   call setup(12004_int64, committed, checkpoint, candidate, diag)
   rev0=committed%current_revision()
+  call committed%snapshot(before_state,snap_ok); call require(snap_ok,'snapshot before double reject')
   do i=1,2
     pub=seed
     call publish_with(commit_kernel,committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
     call require(.not.did_commit .and. .not.pub%ready(),'double reject no publication')
     call require(committed%current_revision()==rev0 .and. candidate%ready(),'double reject immutable')
   end do
+  call committed%snapshot(after_state,snap_ok); call require(snap_ok,'snapshot after double reject')
+  call require_same_physical_state(before_state,after_state,'double reject')
   call publish_with(commit_kernel,committed,checkpoint,candidate,diag,good,pub,did_commit,ps,rs,cs)
   call require(did_commit .and. pub%ready(),'double reject accept')
   call require(committed%current_revision()==rev0+1_int64,'double reject one commit')
@@ -88,13 +94,17 @@ program test_fpm12_surface_publication_retry_oracle
 
   call setup(12005_int64, committed, checkpoint, candidate, diag)
   rev0=committed%current_revision()
+  call committed%snapshot(before_state,snap_ok); call require(snap_ok,'snapshot before exhaustion')
   do i=1,3
     pub=seed
     call publish_with(commit_kernel,committed,checkpoint,candidate,diag,bad,pub,did_commit,ps,rs,cs)
     call require(.not.did_commit .and. .not.pub%ready(),'exhaustion no publication')
     call require(committed%current_revision()==rev0 .and. candidate%ready(),'exhaustion immutable')
   end do
+  call committed%snapshot(after_state,snap_ok); call require(snap_ok,'snapshot after exhaustion')
+  call require_same_physical_state(before_state,after_state,'retry exhaustion')
   write(*,'(A)') 'FPM12_RETRY_EXHAUSTION_NO_PUBLICATION=PASS'
+  write(*,'(A)') 'FPM12_RETRY_EXHAUSTION_COMMITTED_STATE_EXACT=PASS'
   write(*,'(A)') 'FPM12_RETRY_ORACLE=PASS'
 contains
   subroutine setup(lineage,state,cp,cand,d)
@@ -131,6 +141,28 @@ contains
     type(fmr_surface_evaporation_runtime_diagnostics_t)::sd
     call fmr_commit_candidate_with_surface_evaporation_publication(kernel,cp,state,cand,d,et,et_diag,provider,ok,outpub,sd,ps,rs,cs)
   end subroutine publish_with
+  subroutine require_same_physical_state(lhs,rhs,label)
+    class(transaction_state_t),allocatable,intent(in)::lhs,rhs
+    character(len=*),intent(in)::label
+    call require(allocated(lhs) .and. allocated(rhs),label//' allocated')
+    select type(a=>lhs); type is(fmr_b110_physical_state_t)
+      select type(b=>rhs); type is(fmr_b110_physical_state_t)
+        call require(a%active_nodes==b%active_nodes,label//' nodes')
+        call require(allocated(a%pressure_head) .eqv. allocated(b%pressure_head),label//' head allocation')
+        call require(allocated(a%water_content) .eqv. allocated(b%water_content),label//' water allocation')
+        call require(all(a%pressure_head==b%pressure_head),label//' head exact')
+        call require(all(a%water_content==b%water_content),label//' water exact')
+        call require(a%ponding_depth==b%ponding_depth,label//' ponding exact')
+        call require(a%groundwater_level==b%groundwater_level,label//' groundwater exact')
+        call require(allocated(a%snow) .eqv. allocated(b%snow),label//' snow allocation')
+        call require(allocated(a%soil_temperature) .eqv. allocated(b%soil_temperature),label//' temperature allocation')
+      class default
+        call require(.false.,label//' rhs type')
+      end select
+    class default
+      call require(.false.,label//' lhs type')
+    end select
+  end subroutine require_same_physical_state
   subroutine require(condition,label)
     logical,intent(in)::condition; character(len=*),intent(in)::label
     if(.not.condition)then; write(*,'(A,1X,A)')'FPM12_REQUIRE_FAIL',trim(label); error stop 12; end if
