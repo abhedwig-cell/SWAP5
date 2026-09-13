@@ -141,8 +141,8 @@ contains
     call require(binding == EB_I10R_BINDING_THERMAL_TOPOLOGY_REQUIRED, 'nonthermal topology rejected')
     call require(dispatch == FMR_SERIAL_DISPATCH_INVALID_REQUEST, 'nonthermal dispatch precommit rejection')
     call require(size(accepted) == 0, 'nonthermal produces no records')
-    call require(states(1)%current_revision() == 0_int64 .and. committed_fingerprint(states(1)) == before_fp, &
-         'nonthermal request leaves state untouched')
+    call require(states(1)%current_revision() == 0_int64, 'nonthermal revision unchanged')
+    call require(committed_fingerprint(states(1)) == before_fp, 'nonthermal request leaves state untouched')
     write(*,'(A)') 'EB_I10R_NONTHERMAL_REQUEST_FAILS_PRECOMMIT=PASS'
   end subroutine test_nonthermal_request_rejected_precommit
 
@@ -173,8 +173,8 @@ contains
     call require(states(1)%current_revision() == 1_int64 .and. states(2)%current_revision() == 1_int64, 'mixed revisions')
     call require(size(accepted) == 1 .and. accepted(1)%column_id == thermal_id .and. &
          accepted(1)%transaction%ready(), 'mixed sparse thermal-only binding')
-    call require(committed_has_thermal_state(states(1)) .and. .not. committed_has_thermal_state(states(2)), &
-         'mixed optional thermal state isolation')
+    call require(committed_has_thermal_state(states(1)), 'mixed thermal state retained')
+    call require(.not. committed_has_thermal_state(states(2)), 'mixed inactive thermal state absent')
     write(*,'(A)') 'EB_I10R_SPARSE_MULTISWAP_THERMAL_BINDING=PASS'
   end subroutine test_sparse_mixed_multiswap_binding
 
