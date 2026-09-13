@@ -23,20 +23,6 @@ program test_fgc21_restricted_predictor_corrector_window
 
   integer :: failures
 
-  failures = 0
-  call test_converged_commit(failures)
-  call test_nonconverged_rolls_back_everything(failures)
-  call test_stale_origin_fails_before_trials(failures)
-  call test_predictor_groundwater_rejection_is_fail_closed(failures)
-
-  if (failures /= 0) then
-    write(*,'(A,I0)') 'F-GC21 OWNER HARNESS FAILURES=', failures
-    error stop 1
-  end if
-  write(*,'(A)') 'F-GC21 OWNER HARNESS PASS'
-
-contains
-
   type, extends(canonical_state_t) :: dummy_state_t
     real(real64) :: storage = 0.0_real64
   contains
@@ -98,6 +84,20 @@ contains
     procedure :: commit_prepared_backend => dummy_gw_commit_prepared
     procedure :: abort_prepared_backend => dummy_gw_abort_prepared
   end type dummy_groundwater_service_t
+
+  failures = 0
+  call test_converged_commit(failures)
+  call test_nonconverged_rolls_back_everything(failures)
+  call test_stale_origin_fails_before_trials(failures)
+  call test_predictor_groundwater_rejection_is_fail_closed(failures)
+
+  if (failures /= 0) then
+    write(*,'(A,I0)') 'F-GC21 OWNER HARNESS FAILURES=', failures
+    error stop 1
+  end if
+  write(*,'(A)') 'F-GC21 OWNER HARNESS PASS'
+
+contains
 
   subroutine test_converged_commit(failures)
     integer, intent(inout) :: failures
