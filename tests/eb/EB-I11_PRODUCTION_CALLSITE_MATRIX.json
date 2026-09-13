@@ -1,0 +1,78 @@
+{
+  "workunit": "EB-I11",
+  "title": "Production Water-Thermal Provenance Readiness",
+  "restart_authority": "integration/f-ci-canonical@2a0db2524fba6e258316ce82630c60ea1c9c673a",
+  "scope": "audit-only current-canonical callsite and quadrature readiness",
+  "source_authorities": {
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "findings": [
+    {
+      "id": "EB-I11-F01",
+      "status": "qualified_source_fact",
+      "finding": "Restricted soil temperature is advanced inside the same model trial state as the Richards candidate before the outer F-KT candidate is materialized."
+    },
+    {
+      "id": "EB-I11-F02",
+      "status": "qualified_source_fact",
+      "finding": "Opaque F-KT candidate lineage, origin revision and requested interval are assigned only after run_canonical_interval completes successfully."
+    },
+    {
+      "id": "EB-I11-F03",
+      "status": "qualified_source_fact",
+      "finding": "A ready kernel_candidate_state_t can expose a cloned physical snapshot without exposing or allowing mutation of its private provenance."
+    },
+    {
+      "id": "EB-I11-F04",
+      "status": "qualified_source_fact",
+      "finding": "The candidate physical snapshot can contain the optional soil_temperature_state_t, and the existing soil-temperature contract can materialize a typed soil_temperature_field_view_t from that state."
+    },
+    {
+      "id": "EB-I11-F05",
+      "status": "qualified_source_fact",
+      "finding": "The serialized backend provides bottom outward exchange for each successful model trial as minus bottom_flux times accepted step duration, with positive sign outward from SWAP."
+    },
+    {
+      "id": "EB-I11-F06",
+      "status": "qualified_source_fact",
+      "finding": "run_canonical_interval accumulates bottom exchange only from transaction_result_t values whose status is TX_STATUS_ACCEPTED and publishes the aggregate only when the complete requested interval finishes."
+    },
+    {
+      "id": "EB-I11-F07",
+      "status": "qualified_source_fact",
+      "finding": "canonical_mass_accounting_t retains accepted_transaction_count, so a caller can distinguish a single accepted transaction from a multi-substep accepted interval."
+    },
+    {
+      "id": "EB-I11-F08",
+      "status": "qualified_source_fact",
+      "finding": "The F-MR18 accepted commit receipt exists only after a successful outer F-KT commit and carries lineage, origin revision, committed revision and [t0,t1]."
+    },
+    {
+      "id": "EB-I11-F09",
+      "status": "blocking_gap",
+      "finding": "Current canonical does not retain a per-accepted-substep bottom donor-temperature history or a per-substep accepted bottom advective-energy integral."
+    },
+    {
+      "id": "EB-I11-F10",
+      "status": "blocking_gap",
+      "finding": "The terminal soil-temperature field view plus aggregate bottom water exchange is insufficient to reconstruct physically correct interval advective energy when accepted_transaction_count exceeds one."
+    }
+  ],
+  "production_hook": {
+    "trial_payload_stage": "inside the accepted transaction/substep path where bottom exchange is still paired with that substep physical trial state",
+    "outer_candidate_stage": "after kernel candidate materialization for opaque lineage/revision/[t0,t1] provenance and candidate snapshot access",
+    "publication_stage": "only after the existing accepted F-MR18 commit receipt authorizes the exact outer candidate identity",
+    "forbidden_shortcut": "aggregate bottom exchange multiplied by terminal candidate bottom-node temperature for a multi-substep interval"
+  },
+  "required_next_capability": {
+    "name": "accepted bottom advective-energy quadrature carrier",
+    "semantics": "accumulate a donor-correct thermal contribution for each accepted bottom-water transfer before aggregation destroys substep temperature history, while publishing nothing from rejected trials",
+    "dependency_rule": "reuse admitted liquid-water enthalpy and provenance contracts; do not duplicate them while EB-I04/EB-I08/EB-I09/EB-I10 remain owner-only"
+  }
+}
