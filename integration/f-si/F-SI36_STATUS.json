@@ -1,0 +1,65 @@
+{
+  "workunit": "F-SI36",
+  "title": "Accepted Trajectory Bottom-Interface Sensitivity Capability",
+  "branch": "work/f-si36-accepted-trajectory-interface-sensitivity",
+  "decision": "NEGATIVE_ACCEPTED_TRAJECTORY_SENSITIVITY_PRIMITIVE_BLOCKED_BY_MISSING_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE_SEAM",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "governing_authorities": {
+    "F-SI28": "5b514e678d0d794e5837f161033b0bac58385707",
+    "F-SI32": "dfe1a285ae485e1e8348ee10492bb7808f85dd39",
+    "F-SI33": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+    "F-SI34": "b522fe150610f900f253eeea9bf78329107de362",
+    "F-SI35": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+    "F-GC23": "cf83a9a2c9399882b42bf5f5206b509e4167858a"
+  },
+  "source_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+    "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "src/solver/mod_reference_linear_solver.f90": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "src/legacy/b1_10_port/soilwater.f90": "c1850ea7fa82a1ed8974af57e1da95aa11a771be"
+  },
+  "assessment": {
+    "derivative_definition": "DEFINED_MODE_SPECIFIC",
+    "mathematical_recurrence": "PASS_MATHEMATICALLY_FAIL_CURRENT_OPERATOR",
+    "accepted_jacobian_factorization_available": true,
+    "complete_B_times_s_available": false,
+    "provider_directional_derivatives_available": false,
+    "mode2_local_terminal_tangent_available": true,
+    "mode2_to_mode5_semantic_upgrade_allowed": false,
+    "bounded_backsolve_feasibility": "PARTIAL",
+    "production_implementation_performed": false,
+    "physical_source_changed": false,
+    "physical_result_unchanged": "PASS_NO_PRODUCTION_CHANGE",
+    "mass_result_unchanged": "PASS_NO_PRODUCTION_CHANGE",
+    "retry_rollback_contract_defined": true,
+    "retry_rollback_sensitivity_implemented": false,
+    "alternative_solver_fail_closed_preserved": true,
+    "whole_window_fd_oracle": "NOT_RUN_NO_CANDIDATE_PRIMITIVE",
+    "persistent_state_added": false,
+    "production_full_nonlinear_reruns_required": 0,
+    "whole_window_semantic_claimed": false,
+    "groundwater_coupling_tangent_claimed": false
+  },
+  "hard_blockers": [
+    "previous accepted state enters the discrete residual through storage and time-level conductivities, so B_k*s_k is not represented by the existing local scalar tangent",
+    "dynamic top-boundary/provider contract exposes no qualified directional derivative and can depend on current head and previous ponding even on surface-flux selection",
+    "SWBOTB=2 prescribed-flux and SWBOTB=5 prescribed-head paths have different control/output algebra and cannot be inverted or relabelled",
+    "mode-5 accepted qbot publication is materialized from the exact water-balance arithmetic and its derivative is not exposed"
+  ],
+  "next_dependency": {
+    "workunit": "F-SI37",
+    "semantic_name": "Accepted-Step Directional Derivative Seam and Smooth-Route Linearization Qualification",
+    "then": "F-KT accepted-route trajectory composition, followed by F-GC23 retry"
+  },
+  "denominator_changed": false,
+  "production_physics_changed": false
+}
