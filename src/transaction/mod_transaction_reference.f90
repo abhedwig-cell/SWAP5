@@ -220,8 +220,9 @@ contains
     real(real64) :: storage0, storage_full, storage_half
     real(real64) :: full_mass_residual, half_mass_residual, terr
     logical :: solver_ok, mass_ok, temporal_ok
-    logical :: storage_start_complete, storage_end_complete
+    logical :: storage_start_complete, storage_end_complete, full_storage_end_complete
     integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
+    integer(int64) :: full_end_missing_mask, full_missing_mask
     integer :: retry_index
 
     result = transaction_result_t()
@@ -272,7 +273,22 @@ contains
       end if
 
       storage_full = model%storage(full_state)
+      call model%storage_accounting_status(full_state, full_storage_end_complete, full_end_missing_mask)
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
+      full_missing_mask = ior(start_missing_mask, full_end_missing_mask)
+      full_missing_mask = ior(full_missing_mask, full_outcome%missing_mass_contribution_mask)
+      if (.not. storage_start_complete) full_missing_mask = &
+           ior(full_missing_mask, TX_MASS_MISSING_STORAGE_START)
+      if (.not. full_storage_end_complete) full_missing_mask = &
+           ior(full_missing_mask, TX_MASS_MISSING_STORAGE_END)
+      if (.not. full_outcome%mass_accounting_complete) full_missing_mask = &
+           ior(full_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+      if (.not. ieee_is_finite(storage0) .or. .not. ieee_is_finite(storage_full) .or. &
+          .not. ieee_is_finite(storage_full - storage0) .or. &
+          .not. ieee_is_finite(full_outcome%mass_in) .or. .not. ieee_is_finite(full_outcome%mass_out) .or. &
+          .not. ieee_is_finite(full_mass_residual)) then
+        full_missing_mask = ior(full_missing_mask, TX_MASS_MISSING_NONFINITE)
+      end if
 
       call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(half_state)
@@ -323,8 +339,34 @@ contains
       result%half_mass_residual = half_mass_residual
       result%temporal_error = terr
 
-      mass_ok = abs(full_mass_residual) <= policy%mass_tolerance .and. &
-                abs(half_mass_residual) <= policy%mass_tolerance
+      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, half1_outcome%missing_mass_contribution_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, half2_outcome%missing_mass_contribution_mask)
+      if (.not. storage_start_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
+      if (.not. storage_end_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
+      if (.not. half1_outcome%mass_accounting_complete .or. &
+          .not. half2_outcome%mass_accounting_complete) then
+        accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+      end if
+      if (.not. ieee_is_finite(storage0) .or. .not. ieee_is_finite(storage_half) .or. &
+          .not. ieee_is_finite(storage_half - storage0) .or. &
+          .not. ieee_is_finite(half1_outcome%mass_in) .or. .not. ieee_is_finite(half1_outcome%mass_out) .or. &
+          .not. ieee_is_finite(half2_outcome%mass_in) .or. .not. ieee_is_finite(half2_outcome%mass_out) .or. &
+          .not. ieee_is_finite(half_mass_residual)) then
+        accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_NONFINITE)
+      end if
+
+      mass_ok = full_missing_mask == TX_MASS_MISSING_NONE .and. &
+                accepted_missing_mask == TX_MASS_MISSING_NONE .and. &
+                storage_start_complete .and. full_storage_end_complete .and. &
+                full_outcome%mass_accounting_complete .and. storage_end_complete .and. &
+                half1_outcome%mass_accounting_complete .and. half2_outcome%mass_accounting_complete
+      if (mass_ok) then
+        mass_ok = abs(full_mass_residual) <= policy%mass_tolerance .and. &
+                  abs(half_mass_residual) <= policy%mass_tolerance
+      end if
       temporal_ok = terr <= policy%temporal_tolerance
 
       if (.not. mass_ok) then
@@ -343,17 +385,6 @@ contains
         cycle
       end if
 
-      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
-      accepted_missing_mask = ior(accepted_missing_mask, half1_outcome%missing_mass_contribution_mask)
-      accepted_missing_mask = ior(accepted_missing_mask, half2_outcome%missing_mass_contribution_mask)
-      if (.not. storage_start_complete) accepted_missing_mask = &
-           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
-      if (.not. storage_end_complete) accepted_missing_mask = &
-           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
-      if (.not. half1_outcome%mass_accounting_complete .or. &
-          .not. half2_outcome%mass_accounting_complete) then
-        accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
-      end if
       result%accepted_storage_start = storage0
       result%accepted_storage_end = storage_half
       result%accepted_storage_change = storage_half - storage0
@@ -463,7 +494,26 @@ contains
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
       result%temporal_indicator = outcome%temporal_indicator
-      mass_ok = abs(mass_residual) <= policy%mass_tolerance
+
+      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, outcome%missing_mass_contribution_mask)
+      if (.not. storage_start_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
+      if (.not. storage_end_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
+      if (.not. outcome%mass_accounting_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+      if (.not. ieee_is_finite(storage0) .or. .not. ieee_is_finite(storage_candidate) .or. &
+          .not. ieee_is_finite(storage_candidate - storage0) .or. &
+          .not. ieee_is_finite(outcome%mass_in) .or. .not. ieee_is_finite(outcome%mass_out) .or. &
+          .not. ieee_is_finite(mass_residual)) then
+        accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_NONFINITE)
+      end if
+
+      mass_ok = storage_start_complete .and. storage_end_complete .and. &
+                outcome%mass_accounting_complete .and. &
+                accepted_missing_mask == TX_MASS_MISSING_NONE
+      if (mass_ok) mass_ok = abs(mass_residual) <= policy%mass_tolerance
 
       if (.not. mass_ok) then
         result%mass_rejections = result%mass_rejections + 1
@@ -488,14 +538,6 @@ contains
         cycle
       end if
 
-      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
-      accepted_missing_mask = ior(accepted_missing_mask, outcome%missing_mass_contribution_mask)
-      if (.not. storage_start_complete) accepted_missing_mask = &
-           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
-      if (.not. storage_end_complete) accepted_missing_mask = &
-           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
-      if (.not. outcome%mass_accounting_complete) accepted_missing_mask = &
-           ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
       result%accepted_storage_start = storage0
       result%accepted_storage_end = storage_candidate
       result%accepted_storage_change = storage_candidate - storage0
