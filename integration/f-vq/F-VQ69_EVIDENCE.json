@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.fvq69.evidence.v1",
+  "work_unit": "F-VQ69",
+  "candidate_head": "c6ebf7bec2cbe39c984d266e01142d11cf0b1540",
+  "candidate_source_blobs": {
+    "materializer": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "accepted_publication": "13d264cc905a0acf5082b9bfeba018e4ee25183e"
+  },
+  "independent_run": {
+    "run_id": 34778064971,
+    "job_id": 103779711502,
+    "workflow_conclusion": "success",
+    "meaning": "Verifier executed successfully and reached a negative qualification decision.",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_matrix": ["O0", "O2"]
+  },
+  "decisive_hard_negative": {
+    "id": "HN5",
+    "setup": "Create two distinct kernel_candidate_state_t objects from the same committed state over the same interval, giving both the same public F-KT lineage, origin revision and interval. Materialize physically distinct surface-evaporation results by using different admitted capacity-provider values. Commit candidate A, then finalize prepared result B using accepted receipt A.",
+    "expected_for_exact_candidate_provenance": "Reject B with receipt A.",
+    "observed": "Accepted publication returned OK and ready for B with receipt A.",
+    "marker": "FVQ69_HN5_SAME_PROVENANCE_DISTINCT_CANDIDATE_SUBSTITUTION=FAIL_OPEN",
+    "o0_reproduced": true,
+    "o2_reproduced": true,
+    "o0_o2_semantic_marker_identity": true
+  },
+  "positive_control": {
+    "candidate_A_result_with_receipt_A": "PASS"
+  },
+  "secondary_findings": {
+    "historical_FVQ57_raw_result_plus_candidate_stamping_API_removed": true,
+    "independent_branch_changed_production_source": false,
+    "candidate_blobs_matched_freeze": true
+  },
+  "root_cause": "F-PM10 binds publication provenance only to the current public F-KT tuple lineage_id + origin_revision + interval. That tuple is not an exact trial/candidate identity: multiple candidate objects can share it. The accepted commit receipt therefore cannot distinguish distinct same-tuple candidate/result instances.",
+  "scope_implication": "FPM09-G01 is not closed under the strict exact-candidate requirement. FPM09-G02 therefore cannot pass and FPM09-G03 canonical admission must not start.",
+  "required_remediation_property": "Introduce or expose an immutable exact candidate/attempt provenance identity that is created with the candidate, survives into the accepted commit receipt, is carried by the candidate-bound surface result, and is checked at publication. The mechanism must remain transaction-local/runtime metadata, not physical persistent column state, and must not alter mass booking or surface-evaporation physics.",
+  "nonclaims": [
+    "This evidence does not prescribe a particular token-generation implementation.",
+    "This evidence does not authorize canonical admission.",
+    "This evidence does not invalidate existing admitted surface-evaporation calculation or mass closure; it blocks accepted-publication completion."
+  ]
+}
