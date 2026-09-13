@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "work_unit": "EB-I11",
+  "title": "Production Water-Thermal Provenance Publication Readiness Audit",
+  "scope": "audit-only; no production capability and no energy calculation",
+  "restart_authority": "integration/f-ci-canonical@2a0db2524fba6e258316ce82630c60ea1c9c673a",
+  "canonical_sources": {
+    "kernel_transactions": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "serialized_reference_backend": "d565b893a08d92c46077995fdec544584aa04664",
+    "serialized_multiswap_runtime": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+    "checkpoint_orchestrator": "232875e7192f995930c102609cee08dc8938c86a",
+    "accepted_commit_receipt": "6798b3296b426950bf028814585c3f5de9be950b",
+    "soil_temperature_contract": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "restricted_soil_temperature": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "findings": [
+    {
+      "id": "P01",
+      "subject": "trial return seam",
+      "status": "READY_SEAM",
+      "finding": "kernel_advance_interval returns kernel_result_t and one opaque kernel_candidate_state_t from the same completed trial invocation"
+    },
+    {
+      "id": "P02",
+      "subject": "candidate transaction identity",
+      "status": "READY",
+      "finding": "candidate carries private lineage, origin revision and t0/t1 and exposes read-only provenance accessors"
+    },
+    {
+      "id": "P03",
+      "subject": "water result identity",
+      "status": "PARTIAL",
+      "finding": "kernel_result_t carries requested t0/t1 and mass origin lineage/revision, but these public result fields are not themselves a non-forgeable provenance token"
+    },
+    {
+      "id": "P04",
+      "subject": "bottom exchange payload",
+      "status": "READY_FOR_PRECOMMIT_CAPTURE",
+      "finding": "bottom outward exchange amount and terminal flux are materialized in kernel_result_t before candidate publication and can be paired with candidate provenance at the runtime return seam"
+    },
+    {
+      "id": "P05",
+      "subject": "soil temperature trial ownership",
+      "status": "SAME_PHYSICAL_TRIAL",
+      "finding": "restricted soil temperature is solved and copied into the same trial physical state before the serialized backend reports solver success"
+    },
+    {
+      "id": "P06",
+      "subject": "soil temperature field publication",
+      "status": "MISSING_RUNTIME_PUBLICATION",
+      "finding": "current canonical exposes build_soil_temperature_field_view from a soil_temperature_state_t, but serialized runtime does not publish a candidate-scoped full temperature field at the trial return seam"
+    },
+    {
+      "id": "P07",
+      "subject": "commit ordering",
+      "status": "CRITICAL_ORDERING_RULE",
+      "finding": "serialized runtime receives result and candidate before optional accepted-receipt commit; provenance needed downstream must be captured before commit consumes and clears the candidate"
+    },
+    {
+      "id": "P08",
+      "subject": "accepted authorization",
+      "status": "AUTHORITY_EXISTS",
+      "finding": "fmr_accepted_commit_receipt_t is the existing post-commit acceptance authority; EB-I11 must not create another commit protocol"
+    },
+    {
+      "id": "P09",
+      "subject": "drainage and root uptake payloads",
+      "status": "BLOCKED_PUBLIC_PAYLOAD",
+      "finding": "node-resolved drainage and root-uptake transfers remain backend/process data and are not yet published as accepted transaction-scoped water-transfer payloads"
+    },
+    {
+      "id": "P10",
+      "subject": "top-boundary route attribution",
+      "status": "BLOCKED_ROUTE_ATTRIBUTION",
+      "finding": "aggregate trial mass accounting does not by itself preserve a unique thermal donor identity for precipitation, runon, irrigation, snowmelt or soil-to-surface liquid"
+    }
+  ],
+  "required_next_production_seam": {
+    "location": "runtime between successful trial return and candidate commit",
+    "requirements": [
+      "capture non-forgeable candidate provenance before commit",
+      "bind only authoritative route payloads materialized by that same trial",
+      "publish or expose the thermal field from that same candidate without creating a second committed state",
+      "authorize accepted publication only with the existing accepted commit receipt",
+      "discard all trial publications on rollback or rejected commit"
+    ]
+  },
+  "hard_nonclaims": [
+    "No EB-I10 owner candidate is treated as canonical authority.",
+    "No water-transfer payload contract is added.",
+    "No soil-temperature runtime view is added.",
+    "No sensible enthalpy or Joule calculation is performed.",
+    "No accepted energy ledger is published.",
+    "No independent qualification or canonical admission is claimed."
+  ]
+}
