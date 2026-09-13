@@ -1,0 +1,22 @@
+name: EB-I10R atomic water-thermal owner qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i10r-accepted-water-thermal-atomic-binding
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Run EB-I10R owner gate
+        shell: bash
+        run: bash tests/eb/run_eb_i10r_atomic_binding_gate.sh
