@@ -1,0 +1,31 @@
+name: F-PM12 surface evaporation accepted publication closure
+
+on:
+  push:
+    branches:
+      - work/f-pm12-surface-evaporation-accepted-publication-closure-remediation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch repository authority refs
+        run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Source and governance gate
+        run: bash tests/fpm/run_fpm12_source_governance.sh
+      - name: Runtime provenance retry and attack gate
+        run: bash tests/fpm/run_fpm12_runtime_gate.sh
+      - name: Restart parallel and canonical preservation gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash tests/fpm/run_fpm12_preservation_gate.sh
