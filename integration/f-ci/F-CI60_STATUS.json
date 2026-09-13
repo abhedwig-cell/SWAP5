@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.fci60.status.v1",
+  "work_unit": "F-CI60",
+  "branch": "qualification/f-ci60-fpm12-surface-publication-current-canonical-reconciliation",
+  "phase": "CLOSED_CURRENT_CANONICAL_PRESERVATION_RECONCILIATION",
+  "decision": "QUALIFIED_F_PM12_F_VQ72_SURFACE_PUBLICATION_CURRENT_CANONICAL_PRESERVATION",
+  "case": "A_SOURCE_ALREADY_EXACTLY_PRESENT",
+  "restart_canonical": {
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "owner_authority": "work/f-pm12-surface-evaporation-accepted-publication-closure-remediation@82189c148a38b90b6a5a326d03f282ccbee52960",
+  "independent_authority": "qualification/f-vq72-fpm12-surface-publication-provenance-requalification@a3c7bf5a60d80b430758f85489b316b5bcbc2fdc",
+  "independent_tested_head": "30ad6104f91e4a10bb7f9863c6c8fff0dacddfa6",
+  "tested_reconciliation_head": {
+    "sha": "0494f32ba4453cc63204442c53a2bb3808f797f0",
+    "tree": "0adf263ed854733a1424152a365b167a8b2671b2",
+    "workflow_run": 34784823236,
+    "workflow_job": 103798257111,
+    "conclusion": "success"
+  },
+  "source_admission": {
+    "source_already_present": true,
+    "new_production_admission_required": false,
+    "duplicate_source_admission_performed": false,
+    "production_delta_files": 0,
+    "reference_delta_files": 0,
+    "postimage": "CURRENT_CANONICAL_ALREADY_QUALIFIED_POSTIMAGE_NO_NEW_PROMOTION"
+  },
+  "results": {
+    "F_VQ57_attack": "PRESERVED_CLOSED",
+    "reject_publication": "IMPOSSIBLE_FAIL_CLOSED",
+    "retry_provenance": "PASS",
+    "mass": "PASS_NO_SECOND_MASS_BOOKING_OR_AUTHORITY",
+    "restart": "PASS",
+    "standalone_serialized_MultiSWAP": "PASS_EQUIVALENT",
+    "parallel_frozen_v1": "PASS",
+    "O0_O2": "PASS_EXACT_SEMANTIC_IDENTITY",
+    "broad_current_canonical": "PASS_ALL_JOBS_GREEN",
+    "F_KT20_non_admissible_route": "EXCLUDED",
+    "permanent_regression": "EXISTING_F_CI59_F_CI59P_COVERAGE_SUFFICIENT_NO_DUPLICATE_GATE",
+    "F_PM11_completion": "QUALIFIED_ET_ROOT_UPTAKE_SURFACE_EVAPORATION_V1_100_PERCENT_COMPLETE_PRESERVED"
+  },
+  "F_PM09": {
+    "G01": "CLOSED",
+    "G02": "CLOSED",
+    "G03": "CLOSED_ALREADY_ADMITTED_AND_REQUALIFIED",
+    "denominator_changed": false,
+    "scope_reduced": false
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_CI60": false,
+    "reference_source_changed_by_F_CI60": false,
+    "physics_changed": false,
+    "mass_booking_changed": false,
+    "solver_changed": false,
+    "persistent_state_changed": false
+  },
+  "canonical_promotion_required": false,
+  "closed": true,
+  "next_required_step": "NONE_FOR_F_PM09_OR_SURFACE_PUBLICATION_CLOSURE"
+}
