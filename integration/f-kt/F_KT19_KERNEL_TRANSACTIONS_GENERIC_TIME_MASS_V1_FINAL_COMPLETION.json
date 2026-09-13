@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT19",
+  "title": "SWAP5 Kernel, Transactions, Generic Time & Mass v1 Final 100% Closure, Current-Canonical Preservation & Completion Authority",
+  "phase": "FINAL_COMPLETION_CLOSED",
+  "decision": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+  "branch": "work/f-kt19-kernel-transactions-generic-time-mass-v1-final-completion",
+  "scope": "D01_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_ONLY",
+  "frozen_denominator": {
+    "authority": "regie/f-rg01c-fixed-denominator-completion-model@56b86e29e0960e396059caf47c193440d571b709",
+    "dimension": "D01",
+    "name": "Kernel / transactions / generic time / mass",
+    "denominator": 8,
+    "qualified": 8,
+    "completion_percent": 100.0,
+    "denominator_changed": false,
+    "scope_redefined": false
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "tree": "a3f9f82e62337569edb3615c3a47c2df9101ee81",
+    "classification_since_fci57_closeout": "NO_LATER_CANONICAL_COMMIT_AT_FKT19_AUDIT",
+    "transaction_source": "src/transaction/mod_transaction_reference.f90",
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "authorities": {
+    "fkt17_finding": {
+      "sha": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+      "tree": "fbf1fe0b6cc853de5ce375830a98251753a598b3",
+      "decision": "KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+      "hard_blocker": "F-KT17-G01"
+    },
+    "fkt18_remediation": {
+      "owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+      "qualified_candidate": "623e633b1f8451bd849f590f796806f11e1ecbdf",
+      "candidate_tree": "47826cb69e04c46b8739bcf953ac26db80b5ff3e",
+      "production_remediation_commit": "29af8fa9b62f3b87fe8703f2a1726ba8daad1b44",
+      "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+    },
+    "definitive_independent_requalification": {
+      "work_unit": "F-VQ67",
+      "sha": "028a55609187bbc83b4c0000fe18161dbef14409",
+      "tree": "a1c57d4b59d3d0987707e8984c7729b525e8a4da",
+      "workflow_run": 34762943035,
+      "workflow_conclusion": "SUCCESS",
+      "independent_mass_attack_job": 103738830119,
+      "current_canonical_preservation_job": 103738829958,
+      "later_closeout_commit_present": false,
+      "source_bound_to_candidate_and_transaction_blob": true
+    },
+    "canonical_admission": {
+      "production_composition": "3e294113dfcfdf93744f314bca6f7e38de1783ee",
+      "qualified_admission_head": "7c7f8519c94499f3628ef1a08181fdd5d8418d07",
+      "true_merge": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+      "fci57p_postimage_reconciliation": "7e4b0c83659a0c205efae6594b401fcfe59c3a89",
+      "fci57r_moving_preservation_reconciliation": "b2afc5bbedba2ce11acfaf53be5f22e1ea6555b8",
+      "final_canonical_closeout": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+      "canonical_status_decision": "QUALIFIED_F_CI57_CANONICAL_ADMISSION_AND_FKT17_G01_CLOSURE_COMPLETE"
+    },
+    "preserved_dependencies": {
+      "state_persistence_restart_fkt16": "37a91f16078badaa675235f1230d225a21c9e010",
+      "serialized_multiswap": "c70b3c7ad8267e7eb77b98cf142fa66e7e506cee",
+      "predictor_corrector_independent_fvq64": "466119889a3f09b33ede638322e897bded2472a3"
+    }
+  },
+  "fkt17_g01": {
+    "status": "CLOSED",
+    "primary_classification": "MASS_GAP",
+    "secondary_classification": "IMPLEMENTATION_GAP",
+    "implementation_closure": "PASS",
+    "independent_qualification": "PASS",
+    "canonical_admission": "PASS",
+    "post_admission_preservation": "PASS"
+  },
+  "mass_admission_contract": {
+    "complete_mass_accounting_required": true,
+    "zero_missing_contribution_mask_required": true,
+    "finite_relevant_mass_terms_required": true,
+    "residual_within_tolerance_required": true,
+    "residual_tolerance_is_additional_not_substitute_gate": true,
+    "incomplete_accounting_can_be_accepted": false,
+    "invariant_13": "PASS"
+  },
+  "independent_attack_evidence": {
+    "zero_residual_incomplete_reject": "PASS",
+    "nonzero_missing_mask_reject": "PASS",
+    "nonfinite_mass_terms_reject": "PASS",
+    "rejected_committed_state_unchanged": "PASS",
+    "repeated_retry_no_physical_accumulation": "PASS",
+    "normal_complete_ledger_accept": "PASS",
+    "retry_exhaustion_fail_closed": "PASS",
+    "incomplete_cannot_materialize_accepted_candidate": "PASS",
+    "alternative_solver_incomplete_fail_closed": "PASS",
+    "generic_time_transaction": "PASS",
+    "mass_result_transport": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "frozen_criteria": {
+    "one_kernel": "PASS",
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "transaction_integrity": "PASS",
+    "cheap_replay_from_committed_origin": "PASS",
+    "generic_t0_t1_time": "PASS",
+    "flexible_interval_coupling_compatibility": "PASS",
+    "mass_conservation": "PASS",
+    "trial_mass_isolation": "PASS",
+    "result_mass_observability": "PASS",
+    "diagnostics": "PASS",
+    "solver_service_composition": "PASS",
+    "restart_preservation": "PASS",
+    "serialized_multiswap_preservation": "PASS",
+    "coupling_transaction_preservation": "PASS",
+    "groundwater_exchange_sign_and_ledger_conservation": "PASS",
+    "no_hidden_ownership": "PASS"
+  },
+  "result_mass_observability": {
+    "completeness": true,
+    "missing_mask": true,
+    "storage_start_end_change": true,
+    "flux_totals": true,
+    "residual": true
+  },
+  "regression_audit_since_fkt17": {
+    "new_hard_blockers": [],
+    "preservation": "PASS",
+    "later_current_canonical_changes_requiring_requalification": [],
+    "scope_of_reaudit": "FROZEN_FKT17_CRITERIA_REGRESSION_CHECK_ONLY"
+  },
+  "production_source_changed_by_fkt19": false,
+  "completion_authority_statement": "QUALIFIED_KERNEL_TRANSACTIONS_GENERIC_TIME_MASS_V1_100_PERCENT_COMPLETE",
+  "f_rg01c_machine_readable_result": {
+    "domain": "D01",
+    "qualified_completion_percent": 100.0,
+    "qualified_state": "QUALIFIED",
+    "hard_blockers": [],
+    "interpretation_required": false
+  },
+  "nonclaims": [
+    "F-KT19 does not claim whole-program SWAP5 completion.",
+    "F-KT19 does not change physics, solver policy, transaction design, coupling policy, tolerance, denominator or frozen scope.",
+    "F-KT19 does not requalify F-KT16 or Serialized MultiSWAP; it verifies preservation only.",
+    "F-KT19 does not authorize RossFast, energy-balance, performance or new groundwater scope work."
+  ]
+}
