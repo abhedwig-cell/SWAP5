@@ -49,6 +49,7 @@ RESTART_SRC=(
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
+  src/solver/mod_process_hydraulic_view.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
@@ -100,6 +101,7 @@ PAR_SRC=(
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
+  src/solver/mod_process_hydraulic_view.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
