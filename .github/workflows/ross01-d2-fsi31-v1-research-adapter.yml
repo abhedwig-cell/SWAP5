@@ -76,6 +76,7 @@ jobs:
         if: always()
         run: |
           set -euo pipefail
+          branch=work/f-ross01-d2-fsi31-v1-research-adapter
           test -f integration/f-ross/F-ROSS01_D2_EVIDENCE.json
           test -f integration/f-ross/F-ROSS01_D2_STATUS.json
           git config user.name "github-actions[bot]"
@@ -83,7 +84,9 @@ jobs:
           git add integration/f-ross/F-ROSS01_D2_EVIDENCE.json integration/f-ross/F-ROSS01_D2_STATUS.json
           if ! git diff --cached --quiet; then
             git commit -m "evidence(F-ROSS01 D2): persist executable F-SI31 adapter qualification run $GITHUB_RUN_ID"
-            git push origin HEAD:work/f-ross01-d2-fsi31-v1-research-adapter
+            git fetch origin "$branch"
+            git rebase "origin/$branch"
+            git push origin HEAD:"$branch"
           fi
 
       - name: Enforce qualification result
