@@ -80,12 +80,12 @@ contains
     owned_receipt%initialized = .true.
   end subroutine fmr_commit_candidate_with_owned_receipt
 
-  logical function owned_receipt_ready(self) result(ready)
+  pure logical function owned_receipt_ready(self) result(ready)
     class(fmr_owned_commit_receipt_t), intent(in) :: self
     ready = self%initialized .and. self%owner_instance_id_value > 0_int64 .and. self%accepted_receipt%ready()
   end function owned_receipt_ready
 
-  integer(int64) function owned_receipt_owner_instance_id(self) result(value)
+  pure integer(int64) function owned_receipt_owner_instance_id(self) result(value)
     class(fmr_owned_commit_receipt_t), intent(in) :: self
     if (self%ready()) then
       value = self%owner_instance_id_value
@@ -94,7 +94,7 @@ contains
     end if
   end function owned_receipt_owner_instance_id
 
-  integer(int64) function owned_receipt_lineage_id(self) result(value)
+  pure integer(int64) function owned_receipt_lineage_id(self) result(value)
     class(fmr_owned_commit_receipt_t), intent(in) :: self
     if (self%ready()) then
       value = self%accepted_receipt%current_lineage_id()
@@ -103,7 +103,7 @@ contains
     end if
   end function owned_receipt_lineage_id
 
-  integer(int64) function owned_receipt_origin_revision(self) result(value)
+  pure integer(int64) function owned_receipt_origin_revision(self) result(value)
     class(fmr_owned_commit_receipt_t), intent(in) :: self
     if (self%ready()) then
       value = self%accepted_receipt%origin_revision()
@@ -112,7 +112,7 @@ contains
     end if
   end function owned_receipt_origin_revision
 
-  integer(int64) function owned_receipt_committed_revision(self) result(value)
+  pure integer(int64) function owned_receipt_committed_revision(self) result(value)
     class(fmr_owned_commit_receipt_t), intent(in) :: self
     if (self%ready()) then
       value = self%accepted_receipt%committed_revision()
