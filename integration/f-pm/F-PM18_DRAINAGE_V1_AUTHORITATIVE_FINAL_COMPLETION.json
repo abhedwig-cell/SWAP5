@@ -1,0 +1,118 @@
+{
+  "schema": "swap5.fpm18.drainage_v1_authoritative_final_completion.v1",
+  "work_unit": "F-PM18",
+  "title": "Drainage-v1 authoritative final completion reconciliation",
+  "branch": "work/f-pm18-drainage-v1-authoritative-final-completion",
+  "audit_kind": "frozen-scope completion audit only; no production or reference mutation",
+  "live_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "tree": "55d62577f305bd6522726338818579520a52d29c"
+  },
+  "frozen_denominator": {
+    "authority": "F-PM13@e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "variants": [
+      "restricted single-level linear-resistance drainage response",
+      "restricted spatial distribution / positive single-level DIVDRA",
+      "DRAMET=1 tabulated drainage response",
+      "DRAMET=2 Hooghoudt response family",
+      "DRAMET=2 Ernst response family",
+      "empirical interflow drainage-side response",
+      "multi-level drainage exchange aggregation",
+      "restricted fixed-weir transactional surface-water runtime"
+    ],
+    "original_blockers": [
+      "G1_RUNTIME_COMPOSITION",
+      "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "G3_CANONICAL_ADMISSION_PRESERVATION"
+    ]
+  },
+  "scope_authority_reconciliation": {
+    "F_PM17_status_blob": "ff7e444ad99271ea6daf7bde5be6c84896d1aeab",
+    "decision": "F_PM15_G1R_NOT_A_FROZEN_DRAINAGE_V1_EXIT_REQUIREMENT",
+    "fully_implicit_drainage_solver_coupling_is_v1_exit_requirement": false,
+    "production_change_authorized_by_F_PM18": false
+  },
+  "original_blocker_reconciliation": [
+    {
+      "id": "G1_RUNTIME_COMPOSITION",
+      "last_exact_qualified_postimage": "CLOSED_AT_e79b0272",
+      "authorities": ["F-PM14", "F-VQ73", "F-CI61", "F-CI61P"],
+      "current_canonical": "PRESERVATION_REQUALIFICATION_REQUIRED",
+      "reason": "The six response variants were composed and independently qualified, but F-CI62 later changed the shared serialized reference backend that was part of the exact F-VQ73/F-CI61 production authority."
+    },
+    {
+      "id": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "last_exact_qualified_postimage": "CLOSED_AT_e79b0272",
+      "authorities": ["F-VQ73", "F-VQ74"],
+      "current_canonical": "PRESERVATION_REQUALIFICATION_REQUIRED",
+      "reason": "Transaction, mass, restart, MultiSWAP and diagnostics evidence is green on the F-CI61P postimage, but current canonical contains a different shared backend blob and no independent drainage replay after that drift."
+    },
+    {
+      "id": "G3_CANONICAL_ADMISSION_PRESERVATION",
+      "last_exact_qualified_postimage": "CLOSED_AT_e79b0272",
+      "authorities": ["F-CI61", "F-CI61P"],
+      "current_canonical": "OPEN_CURRENT_CANONICAL_POSTIMAGE_PRESERVATION",
+      "reason": "F-CI62 canonical admission changed moving-current dependency-surface files and explicitly records postimage_reconciled=false. The broad canonical preservation workflow is red on 46ed64ab."
+    }
+  ],
+  "current_canonical_drift": {
+    "source_admission_parent": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "new_canonical": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "shared_drainage_backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "qualified_F_VQ73_blob": "0f09c0df1559ece894356b146b64d872470c0a32",
+      "live_canonical_blob": "21e0e4229f202f1a3a74c4da004aa32a2c855f03",
+      "exact_blob_preserved": false
+    },
+    "temporal_indicator": {
+      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "live_canonical_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+    },
+    "F_CI62_status": {
+      "decision": "QUALIFIED_F_CI62_READY_FOR_CANONICAL_PROMOTION",
+      "canonical_admission_snapshot": false,
+      "postimage_reconciled": false
+    },
+    "canonical_workflow": {
+      "run": 34818396655,
+      "job": 103894543617,
+      "conclusion": "failure",
+      "failed_step": "Moving-current preservation without historical admission assumptions",
+      "first_reported_drift": "src/solver/mod_reference_richards_temporal_indicator.f90"
+    }
+  },
+  "architecture_result": {
+    "production_source_changed_by_F_PM18": false,
+    "reference_source_changed_by_F_PM18": false,
+    "mass_conservation_concession": false,
+    "denominator_changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "all_30_invariants_no_adverse_F_PM18_delta": true
+  },
+  "minimum_remaining_closure": {
+    "class": "CURRENT_CANONICAL_POSTIMAGE_PRESERVATION_AND_REQUALIFICATION_ONLY",
+    "required_authority": "F-CI62P or an equivalent non-overlapping current-canonical postimage reconciliation",
+    "requirements": [
+      "independently replay F-VQ73 drainage response runtime evidence against the exact F-CI62 current-canonical postimage because the shared backend blob changed",
+      "replay F-VQ74 cross-cutting transaction, mass, restart, MultiSWAP and diagnostics evidence against that same postimage",
+      "preserve the eight-variant F-PM13 denominator and F-PM17 scope correction",
+      "advance moving-current preservation authority only after all affected dependency-surface replays pass",
+      "obtain a green broad F-CI canonical preservation gate on the promoted postimage",
+      "then rerun an F-PM18-class completion audit from that exact canonical head"
+    ],
+    "new_drainage_physics_required": false,
+    "fully_implicit_solver_coupling_required": false
+  },
+  "hundred_percent_complete": false,
+  "final_decision": "DRAINAGE_V1_FINAL_CLOSURE_GAPS_REMAIN_CURRENT_CANONICAL_PRESERVATION_ONLY",
+  "nonclaims": [
+    "F-PM18 does not reopen drainage science or introduce a new fully implicit requirement.",
+    "F-PM18 does not interpret the F-CI62 drift as a demonstrated drainage physics or mass defect.",
+    "No QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE claim is authorized while the exact current canonical postimage remains unpreserved."
+  ]
+}
