@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02",
+  "title": "RossFast F-SI31 v1 temporal-certificate semantics qualification",
+  "status": "QUALIFICATION_CONTRACT_FROZEN_TESTS_PENDING",
+  "scope": "RESEARCH_REFERENCE_TEMPORAL_CERTIFICATE_ONLY",
+  "base_authorities": {
+    "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "d3": "21bf6ec4a0a847b60b8713dba832f0b94d07f049",
+    "d3r": "c8dc52dc92d32d075fa3fc57916e8bffb33c14e3",
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "canonical_observed_at_branch_start": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+  },
+  "source_bindings": {
+    "gate_f_temporal_reference_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "d3r_duration_adapter_blob": "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a",
+    "d3r_two_half_case_blob": "991a1f6024e76fd0d4260e55904c3b3505ab3f91",
+    "canonical_transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "scientific_reference": {
+    "method": "DOP853_INDEPENDENT_REFERENCE",
+    "rtol": 1e-11,
+    "atol": 1e-13,
+    "role": "OFFLINE_QUALIFICATION_REFERENCE_ONLY",
+    "runtime_dependency": false,
+    "non_circularity": "Temporal accuracy is assessed against an independently integrated ODE reference. Mass residual, nonlinear/linear convergence, and local-terminal sensitivity are explicitly excluded as temporal-accuracy evidence."
+  },
+  "runtime_certificate_candidate": {
+    "method": "INTERNAL_FULL_VS_TWO_HALF_STEP_DOUBLING",
+    "coarse_full_substeps": 8,
+    "refined_half_substeps_each": 8,
+    "effective_refined_substeps": 16,
+    "candidate_return_policy": "RETURN_REFINED_TWO_HALF_CANDIDATE_ONLY_IF_ALL_COMPONENT_TRIALS_AND_AGGREGATE_GATES_PASS",
+    "error_quantity": "TERMINAL_WATER_CONTENT",
+    "error_norm": "SPAN_NORMALIZED_L_INFINITY",
+    "state_span": "theta_sat_minus_theta_res",
+    "raw_estimator": "max_i(abs(theta_refined_i-theta_coarse_i))/(theta_sat-theta_res)",
+    "safety_factor": null,
+    "accuracy_tolerance": null,
+    "temporal_indicator": "safety_factor * raw_estimator / accuracy_tolerance",
+    "canonical_acceptance_semantics": "available AND finite AND indicator >= 0 AND indicator <= 1",
+    "qualification_rule": "No numeric safety factor or tolerance is authority until the exact qualified D3R matrix demonstrates a conservative relation to the independent DOP853 refined-state error."
+  },
+  "mandatory_fail_closed_conditions": [
+    "ANY_COARSE_OR_HALF_TRIAL_NOT_CANDIDATE_READY",
+    "ANY_COMPONENT_MASS_RESIDUAL_ABOVE_1E-12_CM",
+    "AGGREGATE_MASS_LEDGER_INCOMPLETE_OR_NONFINITE",
+    "NONFINITE_STATE_OR_ESTIMATOR",
+    "REQUEST_OUTSIDE_D3R_DURATION_OR_MATERIAL_SCOPE",
+    "NO_QUALIFIED_CONSERVATIVE_SAFETY_FACTOR",
+    "NO_QUALIFIED_ACCURACY_TOLERANCE"
+  ],
+  "hard_mass_tolerance_cm": 1e-12,
+  "exact_qualification_domain": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "cell_count": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_state_family": "FROZEN_D2_MATERIAL_THETA_MID_UNIFORM_PROFILE",
+    "boundary_forcing": "FROZEN_D2_NOMINAL_QTOP_QBOT_WITHIN_2_PERCENT_REFERENCE_ENVELOPE",
+    "duration_family": "D3R_INITIAL_0.0016_DAY_HALVED_THROUGH_FULL_ATTEMPTS_0_TO_8_AND_HALF_ATTEMPTS_1_TO_9",
+    "absolute_time_coordinate": "GENERIC_NONCALENDAR_T0"
+  },
+  "hard_nonclaims": [
+    "PRODUCTION_ADMISSION",
+    "CHEAP_PRODUCTION_TEMPORAL_ESTIMATOR",
+    "PRODUCTION_RUNTIME_COST_ACCEPTABILITY",
+    "RESTART",
+    "PRODUCTION_MULTISWAP_RUNTIME",
+    "WHOLE_WINDOW_INTERFACE_SENSITIVITY",
+    "TEMPORAL_ACCURACY_OUTSIDE_EXACT_QUALIFIED_DOMAIN"
+  ],
+  "architecture_constraints": {
+    "committed_state_read_only": true,
+    "candidate_only": true,
+    "runtime_owns_accept_commit": true,
+    "mass_gate_independent_of_temporal_gate": true,
+    "no_production_source_change": true,
+    "d2_d3_d3r_authorities_immutable": true
+  },
+  "closure_target": "F-ROSS01-D3-G02",
+  "closure_condition": "Close G02 only if executable qualification establishes a finite conservative safety factor and fixed accuracy tolerance on the exact D3R domain, verifies fail-closed behavior, and demonstrates compatibility with the current-canonical MODEL_CERTIFICATE <=1 contract. Otherwise persist a negative qualification and leave G02 open."
+}
