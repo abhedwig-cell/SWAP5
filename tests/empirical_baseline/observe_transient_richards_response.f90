@@ -58,7 +58,7 @@ program observe_transient_richards_response
   call require(max_niter_a >= 1, 'nonlinear solver executed')
 
   write(*,'(A)') 'case_id,nsteps,total_dt,h0,hbot,storage_start,storage_end,storage_change,total_in,total_out,residual,max_step_mass,max_solver_res,max_niter,max_nback,max_abs_head_change,endpoint_fingerprint'
-  write(*,'(A,",",I0,",",4(ES25.17E3,","),9(ES25.17E3,","),I0,",",I0,",",ES25.17E3,",",I0)') &
+  write(*,'(A,",",I0,",",4(ES25.17E3,","),7(ES25.17E3,","),I0,",",I0,",",ES25.17E3,",",I0)') &
        'fvq28_h0_m110_jump_p0p05', nsteps, total_dt, h0, h0+head_jump, storage0, &
        final_storage(endpoint_a,parameters), final_storage(endpoint_a,parameters)-storage0, &
        in_a, out_a, residual_a, max_step_mass_a, max_solver_a, max_niter_a, max_nback_a, &
