@@ -14,18 +14,18 @@ permissions:
   contents: read
 
 concurrency:
-  group: ross01-d3r-two-half-${{ github.ref }}
+  group: ross01-d3r-two-half-final-v1-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  two-half-probe:
+  two-half-attempt:
     strategy:
       fail-fast: false
       max-parallel: 9
       matrix:
         attempt_index: [0,1,2,3,4,5,6,7,8]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,6 +38,7 @@ jobs:
           git fetch --no-tags origin integration/f-ci-canonical
           canonical_head=$(git rev-parse FETCH_HEAD)
           echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          test "$canonical_head" = "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
           git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
           test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
           grep -q "call model%advance(half_state, t0, midpoint, half1_outcome)" "$RUNNER_TEMP/tx.f90"
@@ -45,39 +46,41 @@ jobs:
           grep -q "terr = model%temporal_error(full_state, half_state)" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
         run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_two_half_case.py
-      - name: Run all six material chains for this retry attempt
+      - name: Run six isolated material chains for this attempt
         shell: bash
         run: |
-          set -u
+          set -euo pipefail
           pids=()
           for material in B01 B12 O01 O05 O14 O18; do
-            python3 experiments/ross/run_ross01_d3r_two_half_case.py \
-              --canonical-head "$CANONICAL_HEAD" \
-              --attempt-index "${{ matrix.attempt_index }}" \
-              --material "$material" \
-              --output "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${material}.json" &
+            (
+              python3 experiments/ross/run_ross01_d3r_two_half_case.py \
+                --canonical-head "$CANONICAL_HEAD" \
+                --attempt-index "${{ matrix.attempt_index }}" \
+                --material "$material" \
+                --output "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${material}.json"
+            ) &
             pids+=("$!")
           done
-          failed=0
+          rc=0
           for pid in "${pids[@]}"; do
-            wait "$pid" || failed=1
+            wait "$pid" || rc=1
           done
-          exit "$failed"
+          exit "$rc"
       - name: Upload chain evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-d3r-two-half-${{ matrix.attempt_index }}-${{ github.run_id }}
+          name: f-ross01-d3r-two-half-attempt-${{ matrix.attempt_index }}-${{ github.run_id }}
           path: F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_*.json
 
   aggregate-two-half:
-    needs: two-half-probe
+    needs: two-half-attempt
     if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: f-ross01-d3r-two-half-*-${{ github.run_id }}
+          pattern: f-ross01-d3r-two-half-attempt-*-${{ github.run_id }}
           path: shards
           merge-multiple: true
       - name: Aggregate exact two-half chain evidence
@@ -105,7 +108,7 @@ jobs:
               'max_abs_mass_residual_cm': max(masses, default=0.0),
               'max_abs_full_vs_two_half_head_delta_cm': max(heads, default=0.0),
               'max_abs_full_vs_two_half_theta_delta': max(thetas, default=0.0),
-              'external_temporal_error_semantics_qualified': False,
+              'external_temporal_error_semantics_qualified': false,
               'temporal_error_disposition': 'DIAGNOSTIC_STATE_DELTAS_ONLY_NO_ACCEPTANCE_METRIC_OR_TOLERANCE_CLAIM',
               'production_source_delta': [],
           }
