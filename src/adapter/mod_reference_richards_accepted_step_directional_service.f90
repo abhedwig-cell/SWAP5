@@ -12,11 +12,13 @@ module mod_reference_richards_accepted_step_directional_service
   use mod_reference_richards_workspace, only: initialize_reference_workspace, &
        prepare_reference_tridag_factorization_capture, release_reference_tridag_factorization_capture
   use mod_reference_linear_solver, only: reference_tridag_backsolve
-  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction
+  use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
+  use mod_b110_dynamic_top_boundary_directional_adapter, only: evaluate_b110_dynamic_surface_flux_direction
   implicit none
   private
 
@@ -59,10 +61,8 @@ contains
              return
           end if
 
-          ! Expand only worker-owned TRIDAG scratch. reference_richards_legacy_solve
-          ! reinitializes/reset the workspace but deliberately preserves this
-          ! allocation shape, so its final accepted factorization remains available
-          ! here. No physical state, parameter data or per-column persistence is added.
+          ! Expanded factorization storage is worker scratch only. The physical
+          ! solve is still executed exactly once and remains the sole candidate.
           call initialize_reference_workspace(ref_ws%richards, n)
           call prepare_reference_tridag_factorization_capture(ref_ws%richards)
           call ref_solver%solve(request, ref_ws, solve_result)
@@ -99,8 +99,8 @@ contains
           direction_result%control_coordinate = direction_request%control_coordinate
        end select
     class default
-       ! Alternative solvers keep the same physical solve semantics and fail the
-       ! optional derivative closed. They need not emulate Richards internals.
+       ! Alternative soil-water solvers keep a valid physical solve and fail the
+       ! optional Reference-specific directional capability closed.
        call solver%solve(request, workspace, solve_result)
        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
        direction_result%route = 'solver-step-direction-unavailable'
@@ -114,6 +114,10 @@ contains
     integer, intent(in) :: n
     logical, intent(out) :: eligible
     character(len=*), intent(out) :: route
+
+    logical :: top_ok
+    real(real64) :: top_direction, pond_direction
+    character(len=64) :: top_route
 
     eligible = .false.
     route = 'step-direction-unqualified'
@@ -149,21 +153,47 @@ contains
        route = 'constitutive-direction-unavailable'
        return
     end select
-    if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) then
-       route = 'dynamic-or-head-top-direction-unavailable'
-       return
-    end if
-    if (.not. associated(request%evaluation%top_boundary)) then
-       route = 'top-provider-missing'
-       return
-    end if
-    select type (top => request%evaluation%top_boundary)
-    type is (fixed_flux_top_boundary_provider_t)
-       continue
-    class default
-       route = 'top-provider-direction-unavailable'
+
+    select case (request%boundary%top_mode)
+    case (FSI_TOP_MODE_EXPLICIT_FLUX)
+       if (.not. associated(request%evaluation%top_boundary)) then
+          route = 'top-provider-missing'
+          return
+       end if
+       select type (top => request%evaluation%top_boundary)
+       type is (fixed_flux_top_boundary_provider_t)
+          continue
+       class default
+          route = 'top-provider-direction-unavailable'
+          return
+       end select
+       route = 'reference-swkimpl0-fixed-flux-b110'
+
+    case (FSI_TOP_MODE_DYNAMIC_PROVIDER)
+       if (.not. associated(request%evaluation%dynamic_top_boundary)) then
+          route = 'dynamic-top-provider-missing'
+          return
+       end if
+       select type (top => request%evaluation%dynamic_top_boundary)
+       type is (b110_dynamic_top_boundary_solver_provider_t)
+          call evaluate_b110_dynamic_surface_flux_direction(top, request%base_state%pressure_head(1), &
+               request%base_state%water_content(1), request%base_state%ponding_depth, request%boundary, &
+               direction_request%incoming_ponding_depth, top_ok, top_direction, pond_direction, top_route)
+          if (.not. top_ok) then
+             route = top_route
+             return
+          end if
+       class default
+          route = 'dynamic-top-direction-unavailable'
+          return
+       end select
+       route = 'reference-swkimpl0-dynamic-surface-flux'
+
+    case default
+       route = 'top-mode-direction-unavailable'
        return
     end select
+
     if (.not. associated(request%evaluation%source_sink)) then
        route = 'source-sink-provider-missing'
        return
@@ -214,7 +244,6 @@ contains
     end select
 
     eligible = .true.
-    route = 'reference-swkimpl0-fixed-flux-b110'
   end subroutine direction_route_eligible
 
   subroutine evaluate_reference_accepted_step_direction(request, solve_result, direction_request, ref_ws, direction_result)
@@ -225,17 +254,18 @@ contains
     type(soil_water_accepted_step_direction_result_t), intent(inout) :: direction_result
 
     integer :: n, i, tangent_ierror
-    logical :: mean_ok, constitutive_direction_ok
-    character(len=64) :: constitutive_direction_route
+    logical :: mean_ok, constitutive_direction_ok, top_direction_ok
+    character(len=64) :: constitutive_direction_route, top_direction_route, result_route
     real(real64) :: bottom_distance, bdir, grad_bottom
+    real(real64) :: top_flux_direction, outgoing_ponding_direction
 
     n = request%parameters%active_nodes
     direction_result%control_coordinate = direction_request%control_coordinate
 
     ! Re-evaluate the immutable constitutive value provider at the step base
     ! state for the exact frozen K values used by swkimpl=0. Its historical
-    ! dconductivity_dhead result is deliberately reserved/zero, so derivative
-    ! semantics come only from the explicit sibling capability below.
+    ! dconductivity_dhead output is deliberately reserved/zero, therefore the
+    ! derivative comes only from the explicit B1.10 sibling capability.
     call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, &
          ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
          ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
@@ -260,8 +290,45 @@ contains
        return
     end if
 
-    ! band_aux(:,1) now contains exact dK at nodes. vertical_flux is reused after
-    ! the accepted physical solve as worker scratch for dKmean at faces.
+    ! Resolve the accepted top route before the tangent backsolve. If a dynamic
+    ! trial crossed into capacity-limited evaporation or any regime boundary,
+    ! the physical candidate stays valid but its optional derivative is withheld.
+    select case (request%boundary%top_mode)
+    case (FSI_TOP_MODE_EXPLICIT_FLUX)
+       top_direction_ok = .true.
+       top_flux_direction = 0.0_real64
+       outgoing_ponding_direction = direction_request%incoming_ponding_depth
+       top_direction_route = 'fixed-flux-direction'
+       result_route = 'reference-swkimpl0-fixed-flux-b110'
+    case (FSI_TOP_MODE_DYNAMIC_PROVIDER)
+       top_direction_ok = .false.
+       top_flux_direction = 0.0_real64
+       outgoing_ponding_direction = 0.0_real64
+       top_direction_route = 'dynamic-top-direction-unavailable'
+       select type (top => request%evaluation%dynamic_top_boundary)
+       type is (b110_dynamic_top_boundary_solver_provider_t)
+          call evaluate_b110_dynamic_surface_flux_direction(top, &
+               solve_result%candidate_state%pressure_head(1), solve_result%candidate_state%water_content(1), &
+               solve_result%candidate_state%ponding_depth, request%boundary, &
+               direction_request%incoming_ponding_depth, top_direction_ok, top_flux_direction, &
+               outgoing_ponding_direction, top_direction_route)
+       class default
+          continue
+       end select
+       if (.not. top_direction_ok) then
+          direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
+          direction_result%route = top_direction_route
+          return
+       end if
+       result_route = 'reference-swkimpl0-dynamic-surface-flux'
+    case default
+       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
+       direction_result%route = 'top-mode-direction-unavailable'
+       return
+    end select
+
+    ! band_aux(:,1) contains exact base-state dK at nodes. vertical_flux is
+    ! reused after the physical solve as worker scratch for dKmean at faces.
     ref_ws%richards%vertical_flux(1:n+1) = 0.0_real64
     do i = 2, n
        call hydraulic_mean_directional(request%numerical%conductivity_mean_method, &
@@ -275,11 +342,8 @@ contains
           return
        end if
     end do
-    ! B1.10 reset semantics for the lower face in modes 2/5: Kmean(N+1)=K(N).
     ref_ws%richards%vertical_flux(n+1) = ref_ws%richards%band_aux(n,1)
 
-    ! Accepted-state hydraulic gradients. The qualified top route is prescribed
-    ! flux, so it contributes no state/control directional term to F_1.
     ref_ws%richards%head_gradient(1:n+1) = 0.0_real64
     do i = 2, n
        ref_ws%richards%head_gradient(i) = &
@@ -287,13 +351,12 @@ contains
              solve_result%candidate_state%pressure_head(i)) / request%parameters%node_distance(i) + 1.0_real64
     end do
 
-    ! Assemble B_k*s_k + r_p at fixed accepted h. Storage uses the explicit
-    ! incoming water-content direction. Frozen swkimpl=0 conductivities use the
-    ! incoming pressure-head direction through the exact B1.10 sibling dK and
-    ! exact hcomean derivatives for methods 1..6.
+    ! Assemble B_k*s_k + r_p at fixed accepted h. For the admitted dynamic
+    ! surface-flux subset dqtop is a direct previous-ponding contribution; the
+    ! capacity-limited branch is intentionally rejected before reaching here.
     ref_ws%richards%band_rhs(1:n) = 0.0_real64
     bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
-           ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2)
+           ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2) + top_flux_direction
     ref_ws%richards%band_rhs(1) = -bdir
     do i = 2, n-1
        bdir = -direction_request%incoming_water_content(i) * request%parameters%dz(i) / request%step_duration - &
@@ -306,7 +369,6 @@ contains
 
     select case (request%boundary%bottom_mode)
     case (SW_STEP_CONTROL_BOTTOM_FLUX)
-       ! F_N contains -qbot.
        bdir = bdir - direction_request%direct_control_derivative
     case (SW_STEP_CONTROL_BOTTOM_HEAD)
        bottom_distance = 0.5_real64 * request%parameters%dz(n)
@@ -341,8 +403,6 @@ contains
     allocate(direction_result%outgoing_pressure_head(n), direction_result%outgoing_water_content(n))
     direction_result%outgoing_pressure_head = ref_ws%richards%delta_head(1:n)
 
-    ! Derive accepted water-content direction from the exact B1.10 watcon branch,
-    ! not from the value-provider numerical capacity floor.
     select type (hyd => request%evaluation%constitutive)
     type is (b110_default_mvg_provider_t)
        call evaluate_b110_default_mvg_state_direction(hyd, solve_result%candidate_state%pressure_head, &
@@ -359,22 +419,24 @@ contains
        return
     end if
 
-    direction_result%outgoing_ponding_depth = direction_request%incoming_ponding_depth
-    direction_result%top_flux_derivative = 0.0_real64
+    direction_result%outgoing_ponding_depth = outgoing_ponding_direction
+    direction_result%top_flux_derivative = top_flux_direction
 
     select case (request%boundary%bottom_mode)
     case (SW_STEP_CONTROL_BOTTOM_FLUX)
        direction_result%bottom_flux_derivative = direction_request%direct_control_derivative
     case (SW_STEP_CONTROL_BOTTOM_HEAD)
-       ! Exact derivative of materialize_prescribed_head_bottom_flux(): fixed
-       ! top/source/sink terms have zero directional derivative on this qualified
-       ! route, leaving only accepted-minus-base storage divided by dt.
-       direction_result%bottom_flux_derivative = &
+       ! Exact derivative of materialize_prescribed_head_bottom_flux(): qtop plus
+       ! accepted-minus-base storage; source/sink/root terms are state-independent
+       ! or absent on this qualified route.
+       direction_result%bottom_flux_derivative = top_flux_direction + &
             (sum(direction_result%outgoing_water_content * request%parameters%dz) - &
              sum(direction_request%incoming_water_content * request%parameters%dz)) / request%step_duration
     end select
 
-    if (.not. ieee_is_finite(direction_result%bottom_flux_derivative) .or. &
+    if (.not. ieee_is_finite(direction_result%top_flux_derivative) .or. &
+        .not. ieee_is_finite(direction_result%bottom_flux_derivative) .or. &
+        .not. ieee_is_finite(direction_result%outgoing_ponding_depth) .or. &
         any(.not. ieee_is_finite(direction_result%outgoing_water_content))) then
        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
        direction_result%available = .false.
@@ -386,7 +448,7 @@ contains
     direction_result%available = .true.
     direction_result%fixed_smooth_route = .true.
     direction_result%method = 'same-accepted-tridag-factor'
-    direction_result%route = 'reference-swkimpl0-fixed-flux-b110'
+    direction_result%route = result_route
     direction_result%additional_jacobian_builds = 0
     direction_result%additional_full_nonlinear_solves = 0
   end subroutine evaluate_reference_accepted_step_direction
