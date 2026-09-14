@@ -18,6 +18,11 @@ module mod_groundwater_interface_mass_ledger
   integer, parameter, public :: GW_MASS_LEDGER_IDENTITY_REQUIRED = 10
   integer, parameter, public :: GW_MASS_LEDGER_INVALID_IDENTITY = 11
   integer, parameter, public :: GW_MASS_LEDGER_IDENTITY_ALREADY_BOUND = 12
+  integer, parameter, public :: GW_MASS_LEDGER_RESTART_ACTIVE_TRANSACTION = 13
+  integer, parameter, public :: GW_MASS_LEDGER_RESTART_INVALID_RECORD = 14
+  integer, parameter, public :: GW_MASS_LEDGER_RESTART_TARGET_NOT_EMPTY = 15
+  integer, parameter, public :: GW_MASS_LEDGER_RESTART_SCHEMA_MISMATCH = 16
+  integer, parameter, public :: GW_MASS_LEDGER_RESTART_SCHEMA_VERSION = 1
 
   type, public :: groundwater_interface_mass_snapshot_t
     logical :: available = .false.
@@ -32,6 +37,20 @@ module mod_groundwater_interface_mass_ledger
     real(real64) :: committed_groundwater_outward_exchange_m = 0.0_real64
     real(real64) :: conservation_residual_m = 0.0_real64
   end type groundwater_interface_mass_snapshot_t
+
+  ! Serialization-neutral committed ledger continuation. Trial exchange,
+  ! prepared publication credentials and preparation generations are process
+  ! local and deliberately absent. Diagnostic counters are retained so a split
+  ! run is observationally continuous as well as mass conservative.
+  type, public :: groundwater_interface_mass_restart_record_t
+    integer :: schema_version = 0
+    logical :: available = .false.
+    integer(int64) :: ledger_id = 0_int64
+    real(real64) :: committed_swap_outward_exchange_m = 0.0_real64
+    integer :: committed_exchange_count = 0
+    integer :: discarded_trial_count = 0
+    logical :: discarded_trial_count_saturated = .false.
+  end type groundwater_interface_mass_restart_record_t
 
   type, public :: groundwater_interface_mass_prepared_t
     private
@@ -73,6 +92,8 @@ module mod_groundwater_interface_mass_ledger
     procedure, public :: snapshot => groundwater_mass_snapshot
     procedure, public :: has_active_trial => groundwater_mass_has_active_trial
     procedure, public :: has_prepared_trial => groundwater_mass_has_prepared_trial
+    procedure, public :: export_committed_restart => groundwater_mass_export_committed_restart
+    procedure, public :: restore_committed_restart => groundwater_mass_restore_committed_restart
   end type groundwater_interface_mass_ledger_t
 
 contains
@@ -290,6 +311,63 @@ contains
     snapshot%conservation_residual_m = snapshot%committed_swap_outward_exchange_m + &
          snapshot%committed_groundwater_outward_exchange_m
   end subroutine groundwater_mass_snapshot
+
+  subroutine groundwater_mass_export_committed_restart(self, record, status)
+    class(groundwater_interface_mass_ledger_t), intent(in) :: self
+    type(groundwater_interface_mass_restart_record_t), intent(out) :: record
+    integer, intent(out) :: status
+
+    record = groundwater_interface_mass_restart_record_t()
+    status = GW_MASS_LEDGER_RESTART_ACTIVE_TRANSACTION
+    if (self%trial_active .or. self%prepared_active) return
+
+    status = GW_MASS_LEDGER_RESTART_INVALID_RECORD
+    if (self%ledger_id <= 0_int64) return
+    if (.not. ieee_is_finite(self%committed_swap_outward_exchange_m)) return
+    if (self%committed_exchange_count < 0 .or. self%discarded_trial_count < 0) return
+
+    record%schema_version = GW_MASS_LEDGER_RESTART_SCHEMA_VERSION
+    record%available = .true.
+    record%ledger_id = self%ledger_id
+    record%committed_swap_outward_exchange_m = self%committed_swap_outward_exchange_m
+    record%committed_exchange_count = self%committed_exchange_count
+    record%discarded_trial_count = self%discarded_trial_count
+    record%discarded_trial_count_saturated = self%discarded_trial_count_saturated
+    status = GW_MASS_LEDGER_OK
+  end subroutine groundwater_mass_export_committed_restart
+
+  subroutine groundwater_mass_restore_committed_restart(self, record, status)
+    class(groundwater_interface_mass_ledger_t), intent(inout) :: self
+    type(groundwater_interface_mass_restart_record_t), intent(in) :: record
+    integer, intent(out) :: status
+
+    status = GW_MASS_LEDGER_RESTART_TARGET_NOT_EMPTY
+    if (self%ledger_id /= 0_int64) return
+    if (self%committed_swap_outward_exchange_m /= 0.0_real64) return
+    if (self%committed_exchange_count /= 0 .or. self%discarded_trial_count /= 0) return
+    if (self%discarded_trial_count_saturated) return
+    if (self%trial_active .or. self%prepared_active) return
+    if (self%preparation_generation /= 0_int64 .or. self%prepared_generation /= 0_int64) return
+
+    status = GW_MASS_LEDGER_RESTART_SCHEMA_MISMATCH
+    if (record%schema_version /= GW_MASS_LEDGER_RESTART_SCHEMA_VERSION) return
+
+    status = GW_MASS_LEDGER_RESTART_INVALID_RECORD
+    if (.not. record%available) return
+    if (record%ledger_id <= 0_int64) return
+    if (.not. ieee_is_finite(record%committed_swap_outward_exchange_m)) return
+    if (record%committed_exchange_count < 0 .or. record%discarded_trial_count < 0) return
+
+    self%ledger_id = record%ledger_id
+    self%committed_swap_outward_exchange_m = record%committed_swap_outward_exchange_m
+    self%committed_exchange_count = record%committed_exchange_count
+    self%discarded_trial_count = record%discarded_trial_count
+    self%discarded_trial_count_saturated = record%discarded_trial_count_saturated
+    call clear_trial(self)
+    call clear_prepared(self)
+    self%preparation_generation = 0_int64
+    status = GW_MASS_LEDGER_OK
+  end subroutine groundwater_mass_restore_committed_restart
 
   pure logical function groundwater_mass_has_active_trial(self) result(active)
     class(groundwater_interface_mass_ledger_t), intent(in) :: self
