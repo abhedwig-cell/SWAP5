@@ -42,8 +42,11 @@ module mod_groundwater_coupled_restart
   ! Adapter is deliberately separate from the exchange service. Runtime/coupler
   ! composition binds both to the same backend instance. This keeps persistence
   ! capability opt-in and does not burden non-coupled or non-restartable services.
-  ! Restore callbacks must be atomic with respect to their fresh backend target:
-  ! on nonzero status they may not publish a partially restored committed state.
+  ! A restore callback is an irreversible fresh-target publication boundary. A
+  ! nonzero status must leave the fresh backend unmodified. Status zero means the
+  ! exact requested committed continuation and provenance have been published.
+  ! Any runtime-observed mismatch after status zero is therefore a programming or
+  ! adapter-contract violation and is fail-hard, never a recoverable partial state.
   type, abstract, public :: groundwater_restart_adapter_t
   contains
     procedure(gw_restart_adapter_export_ifc), deferred, public :: export_committed
@@ -207,6 +210,12 @@ contains
     status = GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
     if (.not. service%restart_quiescent()) return
 
+    ! All recoverable validation and adapter rejection must happen before this
+    ! successful publication boundary. The adapter contract requires nonzero
+    ! status to leave the fresh target unchanged, and zero to publish exactly the
+    ! requested committed state. After status zero, only fail-hard postcondition
+    ! checks are legal because returning a recoverable status would expose a
+    ! potentially mutated external backend beside unpublished local carriers.
     call adapter%restore_committed(record%service_id, record%lineage_id, record%revision, &
          record%committed_time, record%backend_state, adapter_status)
     if (adapter_status /= 0) then
@@ -214,21 +223,30 @@ contains
       return
     end if
 
+    if (.not. service%restart_quiescent()) then
+      error stop 'groundwater restart adapter success violated quiescent postcondition'
+    end if
+
     call groundwater_capture_checkpoint(service, checkpoint, exchange_status)
     if (exchange_status /= GW_EXCHANGE_OK .or. .not. checkpoint%ready()) then
-      status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
-      return
+      error stop 'groundwater restart adapter success failed checkpoint postcondition'
     end if
     call checkpoint%origin_time(checkpoint_time, checkpoint_time_available)
     if (.not. checkpoint_time_available) then
-      status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
-      return
+      error stop 'groundwater restart adapter success failed time postcondition'
     end if
-    status = GW_COUPLED_RESTART_PROVENANCE_MISMATCH
-    if (checkpoint%service_id() /= record%service_id) return
-    if (checkpoint%lineage_id() /= record%lineage_id) return
-    if (checkpoint%origin_revision() /= record%revision) return
-    if (.not. same_time(checkpoint_time, record%committed_time)) return
+    if (checkpoint%service_id() /= record%service_id) then
+      error stop 'groundwater restart adapter success violated service provenance postcondition'
+    end if
+    if (checkpoint%lineage_id() /= record%lineage_id) then
+      error stop 'groundwater restart adapter success violated lineage provenance postcondition'
+    end if
+    if (checkpoint%origin_revision() /= record%revision) then
+      error stop 'groundwater restart adapter success violated revision provenance postcondition'
+    end if
+    if (.not. same_time(checkpoint_time, record%committed_time)) then
+      error stop 'groundwater restart adapter success violated time provenance postcondition'
+    end if
 
     restored = .true.
     status = GW_COUPLED_RESTART_OK
