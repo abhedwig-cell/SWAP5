@@ -45,10 +45,11 @@ contains
     type(fmr04_fixed_flux_top_provider_t), target :: top
     type(canonical_numerical_config_t) :: config
     type(fmr_b110_physical_state_t) :: initial_state
-    real(real64) :: conductivity0
+    real(real64) :: conductivity0, background_amount
     integer :: i, status_forward, status_reverse
 
     call configure_base(initial_state, conductivity0, config)
+    background_amount = conductivity0 * (t1 - t0)
     call configure_templates(templates)
     do i = 1, ncol
       call configure_parameters(parameters(i), i, rates(i), i /= 2)
@@ -86,10 +87,14 @@ contains
            results_reverse(i)%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, 'column missing-mass mask')
       call require(abs(results_forward(i)%mass%residual) <= mass_gate .and. &
            abs(results_reverse(i)%mass%residual) <= mass_gate, 'column hard mass closure')
-      call require(abs((results_forward(i)%mass%total_out-results_forward(i)%mass%total_in) - rates(i)*(t1-t0)) <= mass_gate, &
-           'forward order exact drainage ledger')
-      call require(abs((results_reverse(i)%mass%total_out-results_reverse(i)%mass%total_in) - rates(i)*(t1-t0)) <= mass_gate, &
-           'reverse order exact drainage ledger')
+      call require(abs((results_forward(i)%mass%total_out-background_amount) - rates(i)*(t1-t0)) <= mass_gate, &
+           'forward order exact drainage external-out ledger')
+      call require(abs((results_forward(i)%mass%total_in-background_amount) - rates(i)*(t1-t0)) <= mass_gate, &
+           'forward order balancing qssdi external-in ledger')
+      call require(abs((results_reverse(i)%mass%total_out-background_amount) - rates(i)*(t1-t0)) <= mass_gate, &
+           'reverse order exact drainage external-out ledger')
+      call require(abs((results_reverse(i)%mass%total_in-background_amount) - rates(i)*(t1-t0)) <= mass_gate, &
+           'reverse order balancing qssdi external-in ledger')
       call require(same_bits(results_forward(i)%mass%total_in, results_reverse(i)%mass%total_in) .and. &
            same_bits(results_forward(i)%mass%total_out, results_reverse(i)%mass%total_out) .and. &
            same_bits(results_forward(i)%mass%residual, results_reverse(i)%mass%residual), &
@@ -252,6 +257,7 @@ contains
     forcing%bottom_head = -321.0_real64
     allocate(forcing%subsurface_irrigation_source(numnod), forcing%root_extraction_sink(numnod))
     forcing%subsurface_irrigation_source = 0.0_real64
+    forcing%subsurface_irrigation_source(numnod) = rate
     forcing%root_extraction_sink = 0.0_real64
     if (active_response) then
       allocate(forcing%drainage_response_controls(1))
@@ -324,6 +330,7 @@ contains
   logical function states_identical(left, right) result(same)
     type(kernel_committed_state_t), intent(in) :: left, right
     type(fmr_b110_physical_state_t) :: a, b
+    integer :: i
     call snapshot_physical_state(left, a)
     call snapshot_physical_state(right, b)
     same = a%active_nodes == b%active_nodes .and. same_bits(a%ponding_depth,b%ponding_depth) .and. &
@@ -336,10 +343,16 @@ contains
     if (size(a%pressure_head) /= size(b%pressure_head) .or. size(a%water_content) /= size(b%water_content)) then
       same = .false.; return
     end if
-    same = all(transfer(a%pressure_head,[0_int64],size(a%pressure_head)) == &
-               transfer(b%pressure_head,[0_int64],size(b%pressure_head))) .and. &
-           all(transfer(a%water_content,[0_int64],size(a%water_content)) == &
-               transfer(b%water_content,[0_int64],size(b%water_content)))
+    do i = 1, size(a%pressure_head)
+      if (.not. same_bits(a%pressure_head(i),b%pressure_head(i))) then
+        same = .false.; return
+      end if
+    end do
+    do i = 1, size(a%water_content)
+      if (.not. same_bits(a%water_content(i),b%water_content(i))) then
+        same = .false.; return
+      end if
+    end do
   end function states_identical
 
   pure logical function same_bits(a,b) result(equal)
