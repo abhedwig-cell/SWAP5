@@ -40,17 +40,22 @@ contains
     integer :: i
 
     ready = .false.
-    if (size(committed) /= size(candidates) .or. size(committed) /= size(ledgers) .or. &
-        size(committed) /= size(prepared_ledgers) .or. size(committed) /= size(next_origins)) return
+    if (size(committed) /= size(candidates)) return
+    if (size(committed) /= size(ledgers)) return
+    if (size(committed) /= size(prepared_ledgers)) return
+    if (size(committed) /= size(next_origins)) return
 
     do i = 1, size(committed)
-      if (.not. committed(i)%ready() .or. .not. candidates(i)%ready()) return
+      if (.not. committed(i)%ready()) return
+      if (.not. candidates(i)%ready()) return
       current_revision = committed(i)%current_revision()
-      if (current_revision < 0_int64 .or. current_revision >= huge(0_int64)) return
+      if (current_revision < 0_int64) return
+      if (current_revision >= huge(0_int64)) return
       if (candidates(i)%current_lineage_id() /= committed(i)%current_lineage_id()) return
       if (candidates(i)%origin_revision() /= current_revision) return
       call committed(i)%current_time(committed_time, committed_time_available)
-      if (.not. committed_time_available .or. .not. same_multiswap_time(committed_time, window%t0)) return
+      if (.not. committed_time_available) return
+      if (.not. same_multiswap_time(committed_time, window%t0)) return
       call candidates(i)%origin_interval(candidate_t0, candidate_t1, interval_available)
       if (.not. interval_available) return
       if (.not. same_multiswap_time(candidate_t0, window%t0)) return
@@ -61,7 +66,8 @@ contains
       if (next_origins(i)%swap_revision /= current_revision + 1_int64) return
     end do
 
-    if (.not. groundwater_checkpoint%ready() .or. .not. groundwater_checkpoint%is_prepared()) return
+    if (.not. groundwater_checkpoint%ready()) return
+    if (.not. groundwater_checkpoint%is_prepared()) return
     if (.not. prepared_groundwater%ready()) return
     if (prepared_groundwater%service_id() /= groundwater_checkpoint%service_id()) return
     if (prepared_groundwater%lineage_id() /= groundwater_checkpoint%lineage_id()) return
@@ -123,10 +129,14 @@ contains
     integer :: i, status
 
     do i = 1, size(ledgers)
-      if (prepared(i)%ready() .and. ledgers(i)%has_prepared_trial()) then
-        call ledgers(i)%abort_prepared(prepared(i))
-        ledger_status(i) = GW_MASS_LEDGER_OK
-      else if (ledgers(i)%has_active_trial()) then
+      if (prepared(i)%ready()) then
+        if (ledgers(i)%has_prepared_trial()) then
+          call ledgers(i)%abort_prepared(prepared(i))
+          ledger_status(i) = GW_MASS_LEDGER_OK
+          cycle
+        end if
+      end if
+      if (ledgers(i)%has_active_trial()) then
         call ledgers(i)%discard_trial(status)
         ledger_status(i) = status
       end if
@@ -140,9 +150,9 @@ contains
     integer, intent(out) :: status
 
     status = GW_EXCHANGE_OK
-    if (prepared%ready() .and. checkpoint%is_prepared()) then
-      call groundwater_abort_prepared(groundwater, checkpoint, prepared, status)
-    end if
+    if (.not. prepared%ready()) return
+    if (.not. checkpoint%is_prepared()) return
+    call groundwater_abort_prepared(groundwater, checkpoint, prepared, status)
   end subroutine abort_multiswap_prepared_groundwater
 
 end module mod_groundwater_multiswap_transaction
