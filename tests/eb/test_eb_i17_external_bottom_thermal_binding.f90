@@ -15,6 +15,7 @@ program test_eb_i17_external_bottom_thermal_binding
 
   call verify_external_binding_completes_total()
   call verify_missing_binding_remains_fail_closed()
+  call verify_wrong_ordinal_rejected_before_missing()
   call verify_lineage_mismatch_rejected()
   call verify_duplicate_and_nonfinite_rejected_without_mutation()
   call verify_binding_on_local_sample_rejected()
@@ -116,6 +117,27 @@ contains
     write(*,'(A)') 'EB_I17_MISSING_BINDING_FAIL_CLOSED=PASS'
   end subroutine verify_missing_binding_remains_fail_closed
 
+  subroutine verify_wrong_ordinal_rejected_before_missing()
+    type(fmr_bottom_thermal_candidate_t) :: candidate
+    type(fmr_bottom_external_thermal_binding_bundle_t) :: bindings
+    type(liquid_water_sensible_enthalpy_parameters_t) :: parameters
+    type(fmr_bottom_sensible_energy_result_t) :: result
+    integer(int64), parameter :: lineage = 9003_int64
+    logical :: ok
+    integer :: status
+
+    call make_parameters(parameters)
+    call make_mixed_candidate(candidate)
+    call bindings%initialize(lineage, 1, ok)
+    call require(ok, 'wrong-ordinal bundle initialize')
+    call bindings%append(4, 7.0_real64, status=status)
+    call require(status == FMR_EXT_THERMAL_BINDING_OK, 'wrong-ordinal structurally appendable before candidate validation')
+    call evaluate_fmr_bottom_sensible_energy_with_external(candidate, lineage, bindings, parameters, result)
+    call require(result%status() == FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING .and. .not. result%complete(), &
+         'out-of-range ordinal rejected instead of hidden as missing donor')
+    write(*,'(A)') 'EB_I17_WRONG_ORDINAL_REJECTED=PASS'
+  end subroutine verify_wrong_ordinal_rejected_before_missing
+
   subroutine verify_lineage_mismatch_rejected()
     type(fmr_bottom_thermal_candidate_t) :: candidate
     type(fmr_bottom_external_thermal_binding_bundle_t) :: bindings
@@ -133,9 +155,9 @@ contains
     call require(status == FMR_EXT_THERMAL_BINDING_OK, 'lineage binding append')
     call evaluate_fmr_bottom_sensible_energy_with_external(candidate, 9102_int64, bindings, parameters, result)
     call require(result%status() == FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING .and. .not. result%complete(), &
-         'foreign candidate lineage rejected')
+         'caller token and bundle token mismatch rejected')
     call result%total_energy(total, available)
-    call require(.not. available, 'lineage mismatch exposes no total')
+    call require(.not. available, 'caller token mismatch exposes no total')
     write(*,'(A)') 'EB_I17_LINEAGE_MISMATCH_REJECTED=PASS'
   end subroutine verify_lineage_mismatch_rejected
 
