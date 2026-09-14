@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_unit": "F-ROSS01 D3G02",
   "title": "RossFast F-SI31 v1 temporal-certificate semantics qualification",
-  "status": "QUALIFICATION_CONTRACT_FROZEN_TESTS_PENDING",
+  "status": "CLOSED_NEGATIVE",
   "scope": "RESEARCH_REFERENCE_TEMPORAL_CERTIFICATE_ONLY",
   "base_authorities": {
     "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
@@ -39,7 +39,8 @@
     "accuracy_tolerance": null,
     "temporal_indicator": "safety_factor * raw_estimator / accuracy_tolerance",
     "canonical_acceptance_semantics": "available AND finite AND indicator >= 0 AND indicator <= 1",
-    "qualification_rule": "No numeric safety factor or tolerance is authority until the exact qualified D3R matrix demonstrates a conservative relation to the independent DOP853 refined-state error."
+    "qualification_rule": "No numeric safety factor or tolerance is authority until the exact qualified D3R matrix demonstrates a conservative relation to the independent DOP853 refined-state error.",
+    "qualification_outcome": "NOT_QUALIFIED"
   },
   "mandatory_fail_closed_conditions": [
     "ANY_COARSE_OR_HALF_TRIAL_NOT_CANDIDATE_READY",
@@ -60,8 +61,38 @@
     "duration_family": "D3R_INITIAL_0.0016_DAY_HALVED_THROUGH_FULL_ATTEMPTS_0_TO_8_AND_HALF_ATTEMPTS_1_TO_9",
     "absolute_time_coordinate": "GENERIC_NONCALENDAR_T0"
   },
+  "qualification_result": {
+    "authority_run_id": 34796278942,
+    "tested_commit": "2d6997ca2ae92665ab3856ea6dc96071de3a0106",
+    "aggregate_artifact_id": 10329814786,
+    "aggregate_artifact_digest": "sha256:5b74490cc6595f6c53ecde56e9080cb10d8eb8d0e82fb5f3e9585e083da00f0f",
+    "calibration_base_pass": true,
+    "precommitted_decision_rule_pass": false,
+    "case_count": 54,
+    "expected_case_count": 54,
+    "max_refined_error_to_raw_ratio": 1.6,
+    "worst_ratio_case": {
+      "attempt_index": 1,
+      "material": "O01"
+    },
+    "max_refined_reference_error": 6.13027754398947e-11,
+    "max_reference_self_delta": 6.813835683978775e-16,
+    "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+    "candidate_safety_factor_1_0_admitted": false,
+    "candidate_accuracy_tolerance_1e_5_admitted": false,
+    "factor_1_6_posthoc_adoption_forbidden": true,
+    "certificate_available": false,
+    "disposition": "NEGATIVE_CALIBRATION_LEAVE_D3_G02_OPEN"
+  },
+  "closeout_canonical": {
+    "tested_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "current_canonical_head": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "canonical_transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "relevant_model_certificate_semantics_unchanged": true
+  },
   "hard_nonclaims": [
     "PRODUCTION_ADMISSION",
+    "PRODUCTION_MODEL_CERTIFICATE_AUTHORITY",
     "CHEAP_PRODUCTION_TEMPORAL_ESTIMATOR",
     "PRODUCTION_RUNTIME_COST_ACCEPTABILITY",
     "RESTART",
@@ -78,5 +109,8 @@
     "d2_d3_d3r_authorities_immutable": true
   },
   "closure_target": "F-ROSS01-D3-G02",
-  "closure_condition": "Close G02 only if executable qualification establishes a finite conservative safety factor and fixed accuracy tolerance on the exact D3R domain, verifies fail-closed behavior, and demonstrates compatibility with the current-canonical MODEL_CERTIFICATE <=1 contract. Otherwise persist a negative qualification and leave G02 open."
+  "closure_outcome": "REMAINS_OPEN",
+  "closure_condition": "Close G02 only if executable qualification establishes a finite conservative safety factor and fixed accuracy tolerance on the exact D3R domain, verifies fail-closed behavior, and demonstrates compatibility with the current-canonical MODEL_CERTIFICATE <=1 contract. The executed qualification did not satisfy the frozen conservativity requirement, therefore no constants are authority and G02 remains open.",
+  "production_admission": false,
+  "production_source_delta": []
 }
