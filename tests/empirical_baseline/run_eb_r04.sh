@@ -99,7 +99,7 @@ main = r'''  call configure_fixture(column, template, parameters, forcing, initi
   call require(same_real(replay_result%mass%residual,result%mass%residual), 'replay residual identity')
 
   write(*,'(A)') 'case_id,t0,t1,storage_start,storage_end,storage_change,total_in,total_out,residual,top_flux,bottom_flux,iterations,accepted_transactions,candidate_fingerprint'
-  write(*,'(A,",",2(F0.12,","),7(ES25.17E3,","),I0,",",I0,",",I0)') &
+  write(*,'(A,",",2(F0.12,","),8(ES25.17E3,","),I0,",",I0,",",I0)') &
        'b110_uniform_head_balanced_forcing', t0, t1, result%mass%storage_start, result%mass%storage_end, &
        result%mass%storage_change, result%mass%total_in, result%mass%total_out, result%mass%residual, &
        observation%top_flux, observation%bottom_flux, observation%solver_diagnostics%nonlinear_iterations, &
