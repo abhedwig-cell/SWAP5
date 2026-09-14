@@ -174,7 +174,6 @@ contains
     type(kernel_committed_state_t) :: committed, fresh_committed
     type(dummy_model_t), target :: model
     type(dummy_parameters_t) :: parameters
-    type(dummy_materializer_t) :: materializer
     type(dummy_groundwater_service_t), target :: groundwater, fresh_groundwater
     type(dummy_groundwater_restart_adapter_t) :: restart_adapter, fresh_restart_adapter
     type(groundwater_interface_mass_ledger_t) :: ledger, fresh_ledger
