@@ -7,7 +7,8 @@ on:
       - .github/workflows/ross01-d3r-duration-matrix.yml
       - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
       - experiments/ross/ross01_d3r_duration_worker.py
-      - experiments/ross/run_ross01_d3r_duration_matrix.py
+      - experiments/ross/run_ross01_d3r_duration_case.py
+      - experiments/ross/run_ross01_d3r_duration_bounded_case.py
       - integration/f-ross/F-ROSS01_D3R_DURATION_SCOPE.json
   workflow_dispatch:
 
@@ -19,13 +20,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  duration-matrix:
+  duration-material:
     strategy:
       fail-fast: false
+      max-parallel: 20
       matrix:
         duration_index: [0,1,2,3,4,5,6,7,8,9]
+        material: [B01,B12,O01,O05,O14,O18]
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,25 +51,32 @@ jobs:
           grep -q "max_retries = 8" "$RUNNER_TEMP/tx.f90"
           grep -q "TX_TEMPORAL_EXTERNAL_FULL_HALF" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
-        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_duration_matrix.py
-      - name: Run duration shard
+        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_duration_case.py experiments/ross/run_ross01_d3r_duration_bounded_case.py
+      - name: Run baseline duration-material case
         run: |
-          python3 experiments/ross/run_ross01_d3r_duration_matrix.py \
+          python3 experiments/ross/run_ross01_d3r_duration_case.py \
             --canonical-head "$CANONICAL_HEAD" \
             --duration-index "${{ matrix.duration_index }}" \
-            --output "F-ROSS01_D3R_DURATION_MATRIX_${{ matrix.duration_index }}.json" \
-            | tee "F-ROSS01_D3R_DURATION_MATRIX_${{ matrix.duration_index }}_STDOUT.txt"
-      - name: Upload shard evidence
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3R_BASELINE_${{ matrix.duration_index }}_${{ matrix.material }}.json"
+      - name: Run bounded-flux duration-material case
+        run: |
+          python3 experiments/ross/run_ross01_d3r_duration_bounded_case.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --duration-index "${{ matrix.duration_index }}" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3R_BOUNDED_${{ matrix.duration_index }}_${{ matrix.material }}.json"
+      - name: Upload case evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-d3r-duration-${{ matrix.duration_index }}-${{ github.run_id }}
+          name: f-ross01-d3r-duration-${{ matrix.duration_index }}-${{ matrix.material }}-${{ github.run_id }}
           path: |
-            F-ROSS01_D3R_DURATION_MATRIX_${{ matrix.duration_index }}.json
-            F-ROSS01_D3R_DURATION_MATRIX_${{ matrix.duration_index }}_STDOUT.txt
+            F-ROSS01_D3R_BASELINE_${{ matrix.duration_index }}_${{ matrix.material }}.json
+            F-ROSS01_D3R_BOUNDED_${{ matrix.duration_index }}_${{ matrix.material }}.json
 
   aggregate-duration:
-    needs: duration-matrix
+    needs: duration-material
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -80,20 +90,36 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          files = sorted(Path('shards').glob('F-ROSS01_D3R_DURATION_MATRIX_[0-9].json'))
-          rows = [json.loads(p.read_text()) for p in files]
-          indices = sorted(r.get('duration_index') for r in rows)
-          qualified = len(rows) == 10 and indices == list(range(10)) and all(r.get('shard_qualified') is True for r in rows)
+          baseline = sorted(Path('shards').glob('F-ROSS01_D3R_BASELINE_*_*.json'))
+          bounded = sorted(Path('shards').glob('F-ROSS01_D3R_BOUNDED_*_*.json'))
+          rows = [json.loads(p.read_text()) for p in baseline + bounded]
+          pairs = {(r.get('duration_index'), r.get('material')) for r in rows}
+          expected_pairs = {(d, m) for d in range(10) for m in ('B01','B12','O01','O05','O14','O18')}
+          canonical_heads = sorted(set(r.get('live_canonical_head') for r in rows))
+          qualified = (
+              len(baseline) == 60 and len(bounded) == 60 and
+              pairs == expected_pairs and
+              all(r.get('pass') is True for r in rows) and
+              len(canonical_heads) == 1
+          )
+          residuals = []
+          for r in rows:
+              value = r.get('mass_residual_cm')
+              if isinstance(value, (int, float)):
+                  residuals.append(abs(float(value)))
           out = {
               'work_unit': 'F-ROSS01 D3R',
               'kind': 'duration_family_aggregate',
               'duration_family_qualified': qualified,
-              'shard_count': len(rows),
-              'duration_indices': indices,
-              'live_canonical_heads': sorted(set(r.get('live_canonical_head') for r in rows)),
-              'positive_case_count': sum(r.get('positive_case_count', 0) for r in rows),
-              'max_abs_mass_residual_cm': max((r.get('max_abs_mass_residual_cm', 0.0) for r in rows), default=0.0),
-              'all_shards_qualified': [r.get('shard_qualified') for r in rows],
+              'duration_count': 10,
+              'material_count': 6,
+              'duration_material_pairs': len(expected_pairs),
+              'baseline_case_count': len(baseline),
+              'bounded_flux_case_count': len(bounded),
+              'positive_case_count': len(rows),
+              'live_canonical_heads': canonical_heads,
+              'max_abs_mass_residual_cm': max(residuals, default=0.0),
+              'hard_mass_tolerance_cm': 1e-12,
               'production_source_delta': [],
           }
           Path('F-ROSS01_D3R_DURATION_AGGREGATE.json').write_text(json.dumps(out, indent=2, sort_keys=True) + '\n')
