@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI37",
+  "semantic": "ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE_FIXED_SMOOTH_ROUTE",
+  "request_type": "soil_water_accepted_step_direction_request_t",
+  "result_type": "soil_water_accepted_step_direction_result_t",
+  "status_values": {
+    "NOT_RUN": 0,
+    "AVAILABLE": 1,
+    "UNAVAILABLE": 2,
+    "FAILED": 3
+  },
+  "control_coordinates": {
+    "NONE": 0,
+    "BOTTOM_FLUX": 2,
+    "BOTTOM_HEAD": 5
+  },
+  "request_fields": [
+    "requested",
+    "control_coordinate",
+    "incoming_pressure_head",
+    "incoming_water_content",
+    "incoming_ponding_depth",
+    "direct_control_derivative"
+  ],
+  "result_fields": [
+    "status",
+    "available",
+    "fixed_smooth_route",
+    "control_coordinate",
+    "method",
+    "route",
+    "outgoing_pressure_head",
+    "outgoing_water_content",
+    "outgoing_ponding_depth",
+    "top_flux_derivative",
+    "bottom_flux_derivative",
+    "additional_tridiagonal_backsolves",
+    "additional_jacobian_builds",
+    "additional_full_nonlinear_solves"
+  ],
+  "cost": {
+    "accepted_reference_route": {
+      "additional_tridiagonal_backsolves": 1,
+      "additional_jacobian_builds": 0,
+      "additional_full_nonlinear_solves": 0
+    },
+    "unavailable_route": {
+      "accepted_direction_published": false,
+      "extra_full_nonlinear_solves_for_sensitivity": 0
+    },
+    "finite_difference_production_algorithm": false,
+    "persistent_per_column_sensitivity_state": false,
+    "factorization_and_vectors_owner": "worker/job scratch"
+  },
+  "physical_noninterference": {
+    "common_soil_water_solver_contract_changed": false,
+    "HeadCalc_changed": false,
+    "reference_physical_solver_changed": false,
+    "dynamic_top_value_provider_changed": false,
+    "physical_acceptance_changed": false,
+    "mass_acceptance_changed": false,
+    "required_test": "sensitivity ON/OFF physical candidate state, top flux, bottom flux and unrounded mass result unchanged; bit identity where fixture supports it"
+  },
+  "smooth_route_rules": {
+    "fixed_flux_top": "AVAILABLE when all remaining Full Richards route requirements pass",
+    "dynamic_surface_flux_head_independent_evaporation": "AVAILABLE",
+    "dynamic_capacity_limited_evaporation": "UNAVAILABLE",
+    "dynamic_regime_switch": "UNAVAILABLE",
+    "constitutive_switch": "UNAVAILABLE",
+    "alternative_linear_solver": "UNAVAILABLE",
+    "alternative_soil_water_solver": "UNAVAILABLE",
+    "physical_step_not_accepted": "UNAVAILABLE"
+  },
+  "semantic_guards": {
+    "soil_water_interface_sensitivity_local_terminal_preserved": true,
+    "whole_window_claim": false,
+    "trajectory_composition_claim": false,
+    "groundwater_coupling_tangent_claim": false,
+    "sensitivity_controls_physical_acceptance": false,
+    "sensitivity_controls_mass_acceptance": false
+  },
+  "qualification_candidate": {
+    "source_head": "05e513f227c7735888525e4f8fa940704a6b71c7",
+    "workflow_run_id": 34792491346,
+    "status_at_creation": "queued"
+  }
+}
