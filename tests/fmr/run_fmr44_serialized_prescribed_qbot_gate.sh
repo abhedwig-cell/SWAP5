@@ -64,6 +64,23 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
+
+  # Diagnostic separation oracle: exercise the same real-MVG prescribed-qbot
+  # cases directly through reference_richards_legacy_solver_t before any
+  # serialized runtime/transaction composition. This diagnostic intentionally
+  # does not require positive-qbot convergence; it records the bounded envelope
+  # and lets the subsequent qualification gate remain the fail-closed authority.
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
+    -c tests/fmr/test_fmr44_direct_qbot_envelope.f90 -o "$OUT/direct.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/direct.o" -o "$OUT/direct"
+  "$OUT/direct" > "$OUT/direct.txt" 2>&1 || { cat "$OUT/direct.txt" >&2; fail "direct qbot envelope O$opt"; }
+  grep -Fq 'FMR44_DIRECT_REAL_MVG_QBOT_ENVELOPE_COMPLETE=PASS' "$OUT/direct.txt" || {
+    cat "$OUT/direct.txt" >&2
+    fail "direct qbot envelope marker O$opt"
+  }
+  cat "$OUT/direct.txt"
+  echo "FMR44_DIRECT_ENVELOPE_O${opt}=PASS"
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
     -c tests/fmr/test_fmr44_serialized_prescribed_qbot_runtime.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
@@ -79,6 +96,12 @@ for opt in 0 2; do
   echo "FMR44_RUNTIME_O${opt}=PASS"
 done
 
+cmp -s "$BUILD/o0/direct.txt" "$BUILD/o2/direct.txt" || {
+  diff -u "$BUILD/o0/direct.txt" "$BUILD/o2/direct.txt" >&2 || true
+  fail 'direct O0/O2 semantic drift'
+}
+echo 'FMR44_DIRECT_O0_O2_SEMANTIC_IDENTITY=PASS'
+
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
   diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
   fail 'O0/O2 semantic drift'
@@ -86,6 +109,8 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
 echo 'FMR44_O0_O2_SEMANTIC_IDENTITY=PASS'
 
 git diff --check -- src/adapter/mod_b110_serialized_context_binding.f90 \
-  src/runtime/mod_fmr_serialized_reference_backend.f90 tests/fmr/test_fmr44_serialized_prescribed_qbot_runtime.f90
+  src/runtime/mod_fmr_serialized_reference_backend.f90 \
+  tests/fmr/test_fmr44_serialized_prescribed_qbot_runtime.f90 \
+  tests/fmr/test_fmr44_direct_qbot_envelope.f90
 
 echo 'FMR44_QUALIFICATION_GATE=PASS'
