@@ -33,7 +33,7 @@ program fgc24_export_probe
   type(groundwater_committed_restart_record_t) :: groundwater_record
   type(groundwater_coupled_restart_record_t) :: record
   class(transaction_state_t), allocatable :: initial_state
-  class(groundwater_restart_state_t), allocatable :: adapter_state
+  class(groundwater_restart_state_t), allocatable :: adapter_state, cloned_state
   integer(int64) :: service_id, lineage_id, revision
   real(real64) :: checkpoint_time, adapter_time
   logical :: initialized, exported, checkpoint_time_available
@@ -61,7 +61,12 @@ program fgc24_export_probe
   write(*,'(A,I0,A,L1,A,I0,A,I0,A,I0,A,ES24.15)') 'FGC24_ADAPTER status=', adapter_status, &
        ' allocated=', allocated(adapter_state), ' service=', service_id, ' lineage=', lineage_id, &
        ' revision=', revision, ' time=', adapter_time
-  if (allocated(adapter_state)) write(*,'(A,L1)') 'FGC24_ADAPTER_STATE_VALID=', adapter_state%valid()
+  if (allocated(adapter_state)) then
+    write(*,'(A,L1)') 'FGC24_ADAPTER_STATE_VALID=', adapter_state%valid()
+    call adapter_state%clone(cloned_state)
+    write(*,'(A,L1)') 'FGC24_CLONE_ALLOCATED=', allocated(cloned_state)
+    if (allocated(cloned_state)) write(*,'(A,L1)') 'FGC24_CLONE_VALID=', cloned_state%valid()
+  end if
 
   call groundwater_export_committed_restart(groundwater, adapter, groundwater_record, exported, status)
   write(*,'(A,I0,A,L1,A,L1)') 'FGC24_GW_EXPORT status=', status, ' exported=', exported, &
