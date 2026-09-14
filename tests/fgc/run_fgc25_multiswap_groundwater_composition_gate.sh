@@ -66,10 +66,18 @@ SOURCES=(
   tests/fgc/mod_fgc25_multiswap_fixture.f90
 )
 
+TESTS=(
+  test_fgc25_multiswap_commit
+  test_fgc25_single_tile_equivalence
+  test_fgc25_multiswap_qualification
+  test_fgc25_corrector_tile_fail_closed
+  test_fgc25_permutation_determinism
+)
+
 for opt in 0 2; do
   dir="$BUILD/o$opt"
   mkdir -p "$dir"
-  for test in test_fgc25_multiswap_commit test_fgc25_single_tile_equivalence test_fgc25_multiswap_qualification; do
+  for test in "${TESTS[@]}"; do
     : > "$dir/${test}.compiler.txt"
     if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" \
         "${SOURCES[@]}" "tests/fgc/${test}.f90" -o "$dir/${test}" 2>"$dir/${test}.compiler.txt"; then
