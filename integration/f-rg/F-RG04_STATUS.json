@@ -1,0 +1,170 @@
+{
+  "schema": "swap5.frg04.status.v1",
+  "workunit": "F-RG04",
+  "title": "Scientific Evidence, Qualification, Admission, Composition & Assurance Governance Consolidation",
+  "phase": "CLOSED_QUALIFIED_PENDING_EXACT_HEAD_WORKFLOW_AS_EFFECTIVE_CONDITION",
+  "decision": "QUALIFIED_SWAP5_SCIENTIFIC_EVIDENCE_QUALIFICATION_ADMISSION_COMPOSITION_AND_ASSURANCE_GOVERNANCE",
+  "branch": "regie/f-rg04-scientific-evidence-assurance-governance",
+  "scope": "governance-only consolidation of scientific evidence, qualification, assurance, composition, admission and preservation semantics",
+  "authority_effective_condition": "The decision is effective only when the F-RG04 exact-head workflow succeeds on the commit containing this status artifact.",
+  "authoring_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d",
+    "meaning": "F-CI61P moving-current drainage-response preservation reconciliation",
+    "src_tree": "2dc4c8b6eba013621f1fa56b1e868efac7330fcc",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "parent_governance": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01B": "5e2561d9051fba81769565291b1bf3089c7ddcd9",
+    "F_RG01C": "56b86e29e0960e396059caf47c193440d571b709",
+    "F_RG01D": "0877971d1117cb0067aa363d0868d682f62a6844",
+    "F_RG03": "aac2644149dda47282a25a39892c6dc808323dd0"
+  },
+  "completion_model": {
+    "authority": "F-RG01C@56b86e29e0960e396059caf47c193440d571b709",
+    "model": "SWAP5_V1_COMPLETION_MODEL_V1",
+    "denominator_changed": false,
+    "completion_weights_changed": false,
+    "completion_credit_changed": false,
+    "hard_ceiling_changed": false,
+    "negative_qualification_automatic_credit": false
+  },
+  "epistemic_chain": [
+    "EVIDENCE",
+    "BOUNDED_CLAIM",
+    "QUALIFICATION",
+    "ASSURANCE",
+    "COMPOSITION",
+    "ADMISSION",
+    "PRESERVATION"
+  ],
+  "core_rules": {
+    "evidence_is_authority": false,
+    "qualification_is_admission": false,
+    "child_qualification_implies_parent": false,
+    "all_children_qualified_implies_composition": false,
+    "composition_completeness_implies_production_authority": false,
+    "negative_qualification_first_class": true,
+    "negative_qualification_implies_production_credit": false,
+    "same_agent_review_is_independent": false,
+    "risk_tiering_can_lower_existing_hard_gates": false,
+    "reconstructed_replay_can_claim_historical_truth_without_historical_source": false,
+    "stale_qualification_can_auto_admit": false,
+    "research_evidence_can_auto_promote_to_production": false,
+    "F_CI_admissions_serialized": true
+  },
+  "evidence_classes": [
+    "FROZEN_SOURCE_EVIDENCE",
+    "HISTORICAL_REFERENCE_BEHAVIOR_EVIDENCE",
+    "RECONSTRUCTED_EVIDENCE",
+    "SYNTHETIC_ORACLE_EVIDENCE",
+    "NUMERICAL_EVIDENCE",
+    "SCIENTIFIC_PHYSICAL_EVIDENCE",
+    "TRANSACTION_CONSERVATION_EVIDENCE",
+    "RUNTIME_INTEGRATION_EVIDENCE",
+    "TESTBANK_PRESERVATION_EVIDENCE",
+    "DOCUMENTATION_PROVENANCE_EVIDENCE",
+    "RESEARCH_EVIDENCE",
+    "PRODUCTION_ADMISSION_EVIDENCE"
+  ],
+  "assurance_levels": [
+    "OWNER_VERIFIED",
+    "PROCESS_SELF_REVIEWED_NOT_INDEPENDENT",
+    "ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT",
+    "INDEPENDENTLY_QUALIFIED"
+  ],
+  "provenance_replay_classes": [
+    "SOURCE_PROVENANCE",
+    "BEHAVIORAL_REPLAY",
+    "RECONSTRUCTED_REPLAY",
+    "SYNTHETIC_ORACLE",
+    "PRODUCTION_REGRESSION"
+  ],
+  "research_maturity_preserved_from_F_RG01A": [
+    "RESEARCH_ISOLATED",
+    "CONTRACT_COMPATIBLE",
+    "INTEGRATION_CANDIDATE",
+    "PRODUCTION_ADMITTED"
+  ],
+  "animo_lesson_disposition_counts": {
+    "ADOPTED": 6,
+    "ALREADY_PRESENT": 5,
+    "ADAPTED": 4,
+    "REJECTED_AS_ANIMO_SPECIFIC": 4
+  },
+  "animo_GOV06_authority_used": false,
+  "immutable_review": {
+    "first_review_head": "91220ac71563776d9805a87ea6c7a49834a53d3f",
+    "first_review_ci_run": 34814131171,
+    "substantive_finding": "FRG04-AR-001 evidence-to-authority promotion leak",
+    "remediation_commits": [
+      "8dab84e626efe1d86f3b3f2fcc2421057bc1281f",
+      "013efd87ef673c62aa2fdcf35a4210f390f694f5"
+    ],
+    "reviewed_remediated_head": "013efd87ef673c62aa2fdcf35a4210f390f694f5",
+    "reviewed_remediated_tree": "1ad8522c3dd958213fc47dea39ae3f3e1e0a1f6a",
+    "reviewed_remediated_head_ci_run": 34814216323,
+    "reviewed_remediated_head_ci_job": 103881404952,
+    "reviewed_remediated_head_ci_conclusion": "success",
+    "review_artifact": "integration/f-rg/F-RG04_ADVERSARIAL_SELF_REVIEW.json",
+    "review_assurance": "PROCESS_SELF_REVIEWED_NOT_INDEPENDENT",
+    "unresolved_substantive_findings": 0
+  },
+  "review_assurance": "PROCESS_SELF_REVIEWED_NOT_INDEPENDENT",
+  "independent_qualification_claimed_for_F_RG04": false,
+  "existing_F_VQ_requirements_weakened": false,
+  "module_contract_bridge": {
+    "F_RG01D_preserved": true,
+    "manifest_role": "index/capsule only",
+    "second_source_of_truth_created": false,
+    "existing_F_RG01D_schema_mutated": false
+  },
+  "runtime_resumption_bridge": {
+    "F_RG01B_preserved": true,
+    "new_parallel_workunit_lifecycle_created": false,
+    "review_and_evidence_metadata_are_resumable_checkpoint_inputs": true
+  },
+  "hard_boundaries": {
+    "denominator_changed": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "physics_changed": false,
+    "solver_semantics_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_semantics_changed": false,
+    "restart_semantics_changed": false,
+    "groundwater_semantics_changed": false,
+    "numerical_acceptance_policy_changed": false,
+    "canonical_changed_by_F_RG04": false,
+    "F_CI_admission_performed": false,
+    "F_VQ_qualification_performed_for_other_workunit": false,
+    "Status_A_claim_changed": false,
+    "RB1_reopened": false,
+    "RossFast_production_admitted": false,
+    "energy_balance_production_admitted": false,
+    "ANIMO_repository_changed": false
+  },
+  "denominator_changed": false,
+  "production_source_changed": false,
+  "physics_changed": false,
+  "canonical_changed_by_F_RG04": false,
+  "deliverables": [
+    "docs/governance/F-RG04_SCIENTIFIC_EVIDENCE_ASSURANCE_GOVERNANCE.md",
+    "integration/f-rg/F-RG04_EVIDENCE_CLASSIFICATION.json",
+    "integration/f-rg/F-RG04_BOUNDED_QUALIFICATION_OBJECT_SCHEMA.json",
+    "integration/f-rg/F-RG04_ASSURANCE_LEVELS.json",
+    "integration/f-rg/F-RG04_COMPOSITION_AUTHORITY_PROMOTION_RULES.json",
+    "integration/f-rg/F-RG04_PROVENANCE_REPLAY_RULES.json",
+    "integration/f-rg/F-RG04_ANIMO_LESSON_MAPPING.json",
+    "integration/f-rg/F-RG04_SWAP_AUTHORITY_RECONCILIATION.json",
+    "integration/f-rg/F-RG04_ADVERSARIAL_SELF_REVIEW.json",
+    "integration/f-rg/F-RG04_STATUS.json",
+    "tools/governance/validate_frg04_scientific_governance.py",
+    ".github/workflows/frg04-scientific-evidence-assurance-governance.yml"
+  ],
+  "next_regie_action": "Use F-RG04 prospectively as the epistemic/assurance metadata layer in new qualification, composition and admission workunits while retaining F-RG03 as the program rebaseline loop. After the next material set of capability/admission closeouts, perform a new F-RG rebaseline rather than changing F-RG01C implicitly.",
+  "terminal_marker": "QUALIFIED_SWAP5_SCIENTIFIC_EVIDENCE_QUALIFICATION_ADMISSION_COMPOSITION_AND_ASSURANCE_GOVERNANCE"
+}
