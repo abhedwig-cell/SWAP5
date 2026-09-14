@@ -10,7 +10,7 @@
     "policy_owner": "src/runtime/mod_rossfast_d3r_execution_policy.f90",
     "adapter_duplicates_policy": false,
     "production_entrypoint": "run_rossfast_d3r_interval",
-    "direct_generic_runtime_entrypoint": "FAIL_CLOSED",
+    "direct_generic_runtime_entrypoint": "OUTSIDE_ADMITTED_ADAPTER_CONTRACT",
     "segment_retry_cap_preserved": true,
     "half_only_index_9_not_selectable": true,
     "off_grid_and_oversized_fail_closed": true
@@ -22,12 +22,12 @@
       "FCI67_POLICY_REEXPORT",
       "FULL_OUTER_BINDING",
       "RETRY_CAP_BINDING",
-      "OFF_GRID_FAIL_CLOSED_BEFORE_TRANSACTION",
-      "DIRECT_GENERIC_ENTRYPOINT_FAIL_CLOSED"
+      "OFF_GRID_FAIL_CLOSED_BEFORE_TRANSACTION"
     ]
   },
   "scope": "RESTRICTED_D3R_EXECUTION_POLICY_BINDING_ONLY",
   "hard_nonclaims": [
+    "DIRECT_RUN_CANONICAL_INTERVAL_IS_NOT_A_ROSSFAST_POLICY_BOUND_ENTRYPOINT",
     "NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION",
     "NO_FULL_ROSSFAST_PRODUCTION_ADMISSION",
     "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
