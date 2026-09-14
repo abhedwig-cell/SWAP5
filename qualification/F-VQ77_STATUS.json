@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.fvq77.status.v1",
+  "work_unit": "F-VQ77",
+  "title": "Bottom-energy candidate-bound publication independent qualification",
+  "branch": "qualification/f-vq77-bottom-energy-publication-independent-qualification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "owner_authorities": {
+    "EB-I18R_historical_head": "1a34a79bbecdb06c1a8f74a981e341adb4fc12f1",
+    "EB-I18R2_current_canonical_candidate": "15184dd06c1d0f8accc0d306a12d25a3568f1f2e",
+    "EB-I18R2_candidate_tree": "eb3b7fa3f848ac40d5c60e1d060bd1e2f14e3e2f"
+  },
+  "canonical_base": "5e5e498dc56d1df1dd7ebebbf9901c946445a1ab",
+  "tested_head": "c2d8383423b55d5a415d9cee5b0d7258d39e60d5",
+  "tested_tree": "eab5af81135776323b186dddabb103e93d0c6eaf",
+  "workflow_run": 34829205103,
+  "workflow_job": 103928278842,
+  "runner": "ubuntu-24.04",
+  "compiler": "GNU Fortran 13.3.0",
+  "conclusion": "success",
+  "independent_evidence": {
+    "candidate_production_delta_exactly_five_EB_files": true,
+    "reference_source_changed": false,
+    "verifier_introduced_production_or_reference_source": false,
+    "missing_external_donor_fail_closed": true,
+    "missing_external_donor_not_serialized_as_available_zero": true,
+    "resolved_external_donor_total_energy_J_m2": 39710.0,
+    "candidate_lineage_mismatch_fail_closed": true,
+    "unavailable_external_binding_no_zero_fallback": true,
+    "cross_class_binding_fail_closed": true,
+    "provider_request_identity_and_unavailable_semantics": true,
+    "carrier_checkpoint_rollback": true,
+    "independent_O0_O2_semantic_identity": true,
+    "owner_transactional_replay": "PASS",
+    "owner_mass_rows_independently_parsed": 2,
+    "owner_hard_mass_oracle_tolerance_cm": 1.0e-12,
+    "accepted_only_publication_replay": "PASS",
+    "rejected_trial_no_publication_replay": "PASS",
+    "backend_reuse_no_stale_publication_replay": "PASS"
+  },
+  "warning_debt": {
+    "verifier_owned_compiler_warnings": 0,
+    "candidate_source_warning_real_inequality_comparison": true,
+    "candidate_source_warning_impure_function_elimination_at_O2": true,
+    "classification": "NON_BLOCKING_FOR_F_VQ77_SEMANTIC_RESULT_BUT_MUST_BE_REVIEWED_DURING_PRODUCTION_MATERIALIZATION"
+  },
+  "hard_nonclaims": [
+    "F-VQ77 does not canonically admit the bottom-energy capability.",
+    "F-VQ77 does not prove that the staged EB-I18R2 backend/runtime patch is already present in production source.",
+    "The EB-I18R2 owner gate materializes backend/runtime integration under test; production materialization remains a separate step.",
+    "F-VQ77 does not claim a new full-repository regression result beyond the scope-specific evidence recorded here.",
+    "No new production or reference source is introduced by F-VQ77."
+  ],
+  "decision": "QUALIFIED_FOR_PRODUCTION_MATERIALIZATION_REVIEW",
+  "next_owner": "EB-I19 production backend/runtime materialization against current canonical, followed by independent qualification before any F-CI admission"
+}
