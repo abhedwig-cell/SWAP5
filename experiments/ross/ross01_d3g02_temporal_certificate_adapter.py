@@ -130,9 +130,9 @@ def execute_research_trial(request: dict) -> dict:
     coarse_theta = tuple(float(v) for v in full["candidate_hydraulic_state"]["water_content"])
     refined_theta = tuple(float(v) for v in half2["candidate_hydraulic_state"]["water_content"])
     row = request["physical_parameters"]["hydraulic_parameters"]
-    span = float(row["theta_sat"] - row["theta_res"])
+    span = float(row["theta_s"] - row["theta_r"])
     if not math.isfinite(span) or span <= 0.0:
-        out = _fail("TEMPORAL_CERTIFICATE_NORMALIZATION_INVALID", "theta_sat-theta_res must be finite and positive", "d3g02_indicator")
+        out = _fail("TEMPORAL_CERTIFICATE_NORMALIZATION_INVALID", "theta_s-theta_r must be finite and positive", "d3g02_indicator")
         out["request_object_unchanged"] = request == before
         return out
     raw = max(abs(a - b) for a, b in zip(refined_theta, coarse_theta)) / span
