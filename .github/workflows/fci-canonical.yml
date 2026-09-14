@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=46ed64aba280bf721bce6f99446d0dd4ed00e38f
+          AUTH=e16262d0d9af3c83f40234ab669f0faa66e12519
           TX=src/transaction/mod_transaction_reference.f90
           TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
@@ -343,6 +343,11 @@ jobs:
             src/process/mod_snow_process.f90
             src/runtime/mod_fmr_serialized_reference_backend.f90
             src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+            src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+            src/runtime/mod_fmr_bottom_sensible_energy.f90
             src/runtime/mod_fmr_parallel_physical_scheduler.f90
             src/runtime/mod_fmr_parallel_worker_pool.f90
             src/runtime/mod_fmr_parallel_root_uptake_pool.f90
@@ -402,5 +407,6 @@ jobs:
           echo 'FCI59_MOVING_ATOMIC_SURFACE_PUBLICATION_PRESERVATION=PASS'
           echo 'FCI61_MOVING_DRAINAGE_RESPONSE_RUNTIME_PRESERVATION=PASS'
           echo 'FCI62_MOVING_PRESCRIBED_QBOT_TEMPORAL_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
