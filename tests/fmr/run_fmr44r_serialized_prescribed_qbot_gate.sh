@@ -35,6 +35,16 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_drainage_process.f90
+  src/process/mod_drainage_tabulated_response.f90
+  src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+  src/process/mod_drainage_hooghoudt_ipos1_response.f90
+  src/process/mod_drainage_hooghoudt_ipos23_response.f90
+  src/process/mod_drainage_ernst_ipos45_preparation.f90
+  src/process/mod_drainage_ernst_ipos45_response.f90
+  src/process/mod_drainage_empirical_interflow_response.f90
+  src/process/mod_drainage_multilevel_aggregation.f90
+  src/runtime/mod_fmr_drainage_response_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
@@ -46,10 +56,10 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
+  src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
-  src/adapter/mod_b110_serialized_context_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
