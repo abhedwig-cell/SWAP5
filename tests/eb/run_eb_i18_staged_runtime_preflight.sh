@@ -72,6 +72,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bottom_external_thermal_binding.f90
   src/runtime/mod_fmr_bottom_external_thermal_provider.f90
   src/runtime/mod_fmr_bottom_sensible_energy.f90
+  src/adapter/mod_b110_serialized_context_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
