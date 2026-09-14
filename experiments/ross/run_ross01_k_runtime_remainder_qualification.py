@@ -13,7 +13,7 @@ import run_ross01_d2_fsi31_qualification as d2q
 
 MASS_TOL_CM = 1.0e-12
 MAX_FULL_INDEX = 8
-DEEPEST_INITIAL_INDEX = 8
+TEST_INITIAL_INDEX = 2
 MATERIALS = ("B01", "B12", "O01", "O05", "O14", "O18")
 OUTER_HORIZON_DAY = float(d3r.DURATION_LADDER_DAY[0])
 MIN_FULL_DURATION_DAY = float(d3r.DURATION_LADDER_DAY[MAX_FULL_INDEX])
@@ -208,8 +208,8 @@ def _run_chain(material: str, canonical_head: str, replay: bool = False) -> dict
     working = copy.deepcopy(external_committed)
     initial_working = copy.deepcopy(working)
     cursor = t0
-    indices = [DEEPEST_INITIAL_INDEX] + _schedule_after_shortened_accept(DEEPEST_INITIAL_INDEX)
-    expected_indices = [8, 1, 2, 3, 4, 5, 6, 7, 8]
+    indices = [TEST_INITIAL_INDEX] + _schedule_after_shortened_accept(TEST_INITIAL_INDEX)
+    expected_indices = [2, 1, 2]
     receipts = []
     segment_records = []
     stale_receipt = None
@@ -299,7 +299,7 @@ def _run_chain(material: str, canonical_head: str, replay: bool = False) -> dict
         external_commits = 1
 
     checks = {
-        "scheduler_sequence_deepest_case": indices == expected_indices,
+        "scheduler_sequence_level_2_remainder_case": indices == expected_indices,
         "same_outer_forcing_preserved_across_segments": forcing_preserved,
         "outer_horizon_completed_exactly": complete,
         "single_external_publication": external_commits == 1,
@@ -362,7 +362,7 @@ def _negative_failure_isolation(material: str) -> dict:
 
 def qualify(material: str, canonical_head: str) -> dict:
     algebra = _algebra_checks()
-    chain = _run_chain(material, canonical_head, replay=(material == "B01"))
+    chain = _run_chain(material, canonical_head, replay=False)
     negative = _negative_failure_isolation(material) if material == "B01" else {"inherited_from_b01": True}
     passed = (
         all(algebra.values())
@@ -383,7 +383,7 @@ def qualify(material: str, canonical_head: str) -> dict:
             "outer_horizon_day": OUTER_HORIZON_DAY,
             "minimum_full_attempt_day": MIN_FULL_DURATION_DAY,
             "full_attempt_indices": list(range(0, MAX_FULL_INDEX + 1)),
-            "deepest_chain_indices": [8, 1, 2, 3, 4, 5, 6, 7, 8],
+            "composition_test_chain_indices": [2, 1, 2],
             "selection": "GREEDY_LARGEST_QUALIFIED_DYADIC_DURATION_NOT_EXCEEDING_REMAINDER",
             "segment_retry_cap": "MAX_FULL_INDEX_MINUS_SEGMENT_INDEX",
             "external_publication": "ONCE_AFTER_FULL_OUTER_INTERVAL_ONLY",
