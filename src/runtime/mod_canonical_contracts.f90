@@ -36,6 +36,32 @@ module mod_canonical_contracts
     real(real64) :: model_temporal_indicator_budget = 0.0_real64
   end type canonical_numerical_config_t
 
+  ! Optional generic request for one directional response over the complete
+  ! canonical [t0,t1] interval.  The control coordinate is model-owned; F-KT
+  ! only preserves request/provenance and never assigns physical meaning to it.
+  type, public :: canonical_directional_response_request_t
+    logical :: requested = .false.
+    integer :: control_coordinate = 0
+  end type canonical_directional_response_request_t
+
+  ! Generic whole-window publication carrier.  It intentionally exposes only
+  ! the interface quantity needed by coupling owners.  Model-internal state
+  ! direction vectors remain private to the numerical implementation.
+  type, public :: canonical_directional_response_t
+    logical :: requested = .false.
+    logical :: available = .false.
+    integer :: control_coordinate = 0
+    integer :: accepted_steps = 0
+    real(real64) :: origin_t0 = 0.0_real64
+    real(real64) :: accepted_t1 = 0.0_real64
+    real(real64) :: accepted_bottom_exchange_derivative = 0.0_real64
+    character(len=48) :: method = 'not-requested'
+    character(len=64) :: route = 'not-requested'
+    integer :: additional_tridiagonal_backsolves = 0
+    integer :: additional_jacobian_builds = 0
+    integer :: additional_full_nonlinear_solves = 0
+  end type canonical_directional_response_t
+
   type, public :: canonical_mass_accounting_t
     logical :: complete = .false.
     real(real64) :: interval_t0 = 0.0_real64
@@ -86,6 +112,7 @@ module mod_canonical_contracts
     type(canonical_mass_accounting_t) :: mass
     type(canonical_run_diagnostics_t) :: diagnostics
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
+    type(canonical_directional_response_t) :: directional_response
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -94,6 +121,8 @@ module mod_canonical_contracts
   type, abstract, extends(transaction_model_t), public :: canonical_physical_model_t
   contains
     procedure(prepare_interval_iface), deferred :: prepare_interval
+    procedure :: begin_directional_response => canonical_begin_directional_response_default
+    procedure :: finish_directional_response => canonical_finish_directional_response_default
   end type canonical_physical_model_t
 
   abstract interface
@@ -106,5 +135,35 @@ module mod_canonical_contracts
       type(canonical_numerical_config_t), intent(in) :: config
     end subroutine prepare_interval_iface
   end interface
+
+contains
+
+  subroutine canonical_begin_directional_response_default(self, request, interval, active)
+    class(canonical_physical_model_t), intent(inout) :: self
+    type(canonical_directional_response_request_t), intent(in) :: request
+    type(canonical_interval_t), intent(in) :: interval
+    logical, intent(out) :: active
+
+    active = .false.
+    if (.not. request%requested) return
+    if (interval%t1 <= interval%t0) return
+    if (.not. same_type_as(self, self)) return
+  end subroutine canonical_begin_directional_response_default
+
+  subroutine canonical_finish_directional_response_default(self, interval, completed, response)
+    class(canonical_physical_model_t), intent(inout) :: self
+    type(canonical_interval_t), intent(in) :: interval
+    logical, intent(in) :: completed
+    type(canonical_directional_response_t), intent(out) :: response
+
+    response = canonical_directional_response_t()
+    response%requested = .true.
+    response%origin_t0 = interval%t0
+    response%accepted_t1 = interval%t0
+    response%method = 'unavailable'
+    response%route = 'model-directional-response-unavailable'
+    if (completed) response%accepted_t1 = interval%t1
+    if (.not. same_type_as(self, self)) return
+  end subroutine canonical_finish_directional_response_default
 
 end module mod_canonical_contracts

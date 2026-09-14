@@ -6,9 +6,9 @@ module mod_canonical_interval_runtime
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
        TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
-       canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
-       CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
-       CANONICAL_STATUS_NO_PROGRESS, CANONICAL_STATUS_SUBSTEP_LIMIT
+       canonical_numerical_config_t, canonical_result_t, canonical_directional_response_request_t, &
+       canonical_directional_response_t, CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_INVALID_REQUEST, &
+       CANONICAL_STATUS_TRANSACTION_FAILED, CANONICAL_STATUS_NO_PROGRESS, CANONICAL_STATUS_SUBSTEP_LIMIT
   implicit none
   private
 
@@ -26,7 +26,7 @@ module mod_canonical_interval_runtime
 
 contains
 
-  subroutine run_canonical_interval(model, committed, forcing, interval, config, result, target_selector)
+  subroutine run_canonical_interval(model, committed, forcing, interval, config, result, target_selector, directional_request)
     class(canonical_physical_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
     class(canonical_forcing_t), intent(in) :: forcing
@@ -34,6 +34,7 @@ contains
     type(canonical_numerical_config_t), intent(in) :: config
     type(canonical_result_t), intent(out) :: result
     procedure(canonical_subinterval_target_selector), optional :: target_selector
+    type(canonical_directional_response_request_t), intent(in), optional :: directional_request
 
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
@@ -41,16 +42,27 @@ contains
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
     real(real64) :: cursor, next_cursor, tol, transaction_t1
     real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux
-    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid
+    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid, directional_active
     integer :: isub, max_retries_cap
 
     result = canonical_result_t()
     terminal_sensitivity = transaction_interface_sensitivity_t()
+    directional_active = .false.
     result%requested_t0 = interval%t0
     result%requested_t1 = interval%t1
     result%completed_t = interval%t0
     result%mass%interval_t0 = interval%t0
     result%mass%interval_t1 = interval%t1
+    if (present(directional_request)) then
+      result%directional_response%requested = directional_request%requested
+      result%directional_response%control_coordinate = directional_request%control_coordinate
+      result%directional_response%origin_t0 = interval%t0
+      result%directional_response%accepted_t1 = interval%t0
+      if (directional_request%requested) then
+        result%directional_response%method = 'unavailable'
+        result%directional_response%route = 'model-directional-response-unavailable'
+      end if
+    end if
 
     if (.not. allocated(committed) .or. interval%t1 <= interval%t0 .or. &
         config%max_committed_substeps <= 0 .or. config%progress_tolerance < 0.0_real64) then
@@ -60,10 +72,15 @@ contains
 
     ! The externally committed physical state remains untouched until the full
     ! requested [t0,t1] interval has completed. Accepted internal substeps are
-    ! committed only into this private working state. Sensitivity follows the
-    ! same publication rule: only a fully completed canonical interval exposes
-    ! its final accepted local-terminal tangent.
+    ! committed only into this private working state.  F-KT22 extends that same
+    ! publication boundary to an optional model-owned directional response.
     call committed%clone(working)
+    if (present(directional_request)) then
+      if (directional_request%requested) then
+        call model%begin_directional_response(directional_request, interval, directional_active)
+        if (directional_active) result%directional_response%route = 'active-pending-publication'
+      end if
+    end if
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
     aggregate_mass_complete = .true.
@@ -86,6 +103,7 @@ contains
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
+        call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
         return
       end if
 
@@ -101,6 +119,7 @@ contains
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
+        call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
         return
       end if
 
@@ -114,6 +133,7 @@ contains
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
+        call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
         return
       end if
 
@@ -122,6 +142,7 @@ contains
       result%completed_t = cursor
 
       if (abs(cursor - interval%t1) <= tol) then
+        call finish_directional_response(model, interval, .true., directional_active, result%directional_response)
         call move_alloc(working, committed)
         result%status = CANONICAL_STATUS_COMPLETED
         result%completed = .true.
@@ -148,7 +169,24 @@ contains
     result%completed_t = cursor
     result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
          TX_MASS_MISSING_UNSPECIFIED)
+    call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
   end subroutine run_canonical_interval
+
+  subroutine finish_directional_response(model, interval, completed, active, response)
+    class(canonical_physical_model_t), intent(inout) :: model
+    type(canonical_interval_t), intent(in) :: interval
+    logical, intent(in) :: completed, active
+    type(canonical_directional_response_t), intent(inout) :: response
+    logical :: was_requested
+    integer :: control_coordinate
+
+    was_requested = response%requested
+    control_coordinate = response%control_coordinate
+    if (.not. active) return
+    call model%finish_directional_response(interval, completed, response)
+    response%requested = was_requested
+    response%control_coordinate = control_coordinate
+  end subroutine finish_directional_response
 
   subroutine accumulate_accepted_mass(result, tx, aggregate_complete)
     type(canonical_result_t), intent(inout) :: result
