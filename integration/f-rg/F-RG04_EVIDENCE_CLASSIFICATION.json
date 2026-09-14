@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.frg04.evidence_classification.v1",
+  "workunit": "F-RG04",
+  "principle": "EVIDENCE_IS_NOT_AUTHORITY",
+  "rules": {
+    "evidence_requires_bounded_claim": true,
+    "evidence_strength_cannot_be_promoted_by_reuse": true,
+    "historical_fidelity_requires_historical_or_reference_provenance": true,
+    "research_evidence_is_not_production_evidence": true,
+    "green_validator_is_not_scientific_proof": true
+  },
+  "classes": [
+    {
+      "id": "FROZEN_SOURCE_EVIDENCE",
+      "can_demonstrate": ["exact source text/structure/behavioral seam at pinned identity", "historical implementation fact when provenance is authentic and pinned"],
+      "cannot_demonstrate": ["scientific correctness by itself", "current production admission by itself", "whole-capability completeness"],
+      "consumers": ["scientific qualification", "numerical qualification", "provenance reconciliation", "admission reconciliation"],
+      "historical_fidelity_claim_supported": true,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "HISTORICAL_REFERENCE_BEHAVIOR_EVIDENCE",
+      "can_demonstrate": ["observed reference behavior for pinned executable/input/environment scope"],
+      "cannot_demonstrate": ["scientific correctness outside observed scope", "source-level causality without additional evidence"],
+      "consumers": ["scientific qualification", "numerical qualification", "regression qualification"],
+      "historical_fidelity_claim_supported": true,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "RECONSTRUCTED_EVIDENCE",
+      "can_demonstrate": ["internally consistent reconstruction", "bounded mechanism plausibility", "useful replay where historical artifact is absent"],
+      "cannot_demonstrate": ["historical truth without independent historical provenance", "production authority by itself"],
+      "consumers": ["research qualification", "scientific qualification with explicit uncertainty", "remediation planning"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "SYNTHETIC_ORACLE_EVIDENCE",
+      "can_demonstrate": ["declared invariant", "causal activation", "failure behavior", "bounded analytic property"],
+      "cannot_demonstrate": ["historical behavior", "real-world representativeness unless separately established"],
+      "consumers": ["numerical qualification", "transaction/conservation qualification", "scientific qualification where synthetic activation is justified"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "NUMERICAL_EVIDENCE",
+      "can_demonstrate": ["convergence/error/stability/tolerance behavior for declared numerical object", "reference deviation bounds"],
+      "cannot_demonstrate": ["physical validity of a process law by itself", "production admission"],
+      "consumers": ["numerical qualification", "solver qualification", "execution-policy qualification"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "SCIENTIFIC_PHYSICAL_EVIDENCE",
+      "can_demonstrate": ["physical/process-law support within declared domain", "consistency with theory/reference literature/qualified physical oracle"],
+      "cannot_demonstrate": ["numerical correctness by itself", "transaction/restart correctness by itself", "production admission"],
+      "consumers": ["scientific qualification", "composition qualification"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "TRANSACTION_CONSERVATION_EVIDENCE",
+      "can_demonstrate": ["checkpoint/trial/retry/commit/rollback property", "mass/water conservation ledger property", "fail-closed acceptance property"],
+      "cannot_demonstrate": ["unrelated scientific process validity", "whole-program completeness"],
+      "consumers": ["transaction qualification", "mass/conservation qualification", "composition qualification", "F-CI admission"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "RUNTIME_INTEGRATION_EVIDENCE",
+      "can_demonstrate": ["runtime composition", "MultiSWAP equivalence/scaling behavior", "coupler integration", "failure isolation"],
+      "cannot_demonstrate": ["local process-law validity unless separately proved", "historical fidelity"],
+      "consumers": ["runtime qualification", "composition qualification", "F-CI admission"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "TESTBANK_PRESERVATION_EVIDENCE",
+      "can_demonstrate": ["qualified capability remains protected against declared regressions", "current-source replay against pinned oracle"],
+      "cannot_demonstrate": ["new scientific authority", "new production capability without separate qualification/admission"],
+      "consumers": ["preservation authority", "release/readiness governance", "rebaseline"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "DOCUMENTATION_PROVENANCE_EVIDENCE",
+      "can_demonstrate": ["traceability between theory, contract, implementation and evidence", "document/source provenance", "known discrepancy classification"],
+      "cannot_demonstrate": ["unproved physics", "production authority", "retroactive scientific correctness"],
+      "consumers": ["documentation qualification", "Status-A evidence assessment", "scientific qualification as provenance input"],
+      "historical_fidelity_claim_supported": true,
+      "production_admission_support": false,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "RESEARCH_EVIDENCE",
+      "can_demonstrate": ["bounded research hypothesis/result", "contract compatibility in research scope", "research solver behavior"],
+      "cannot_demonstrate": ["production suitability", "canonical admission", "completion credit unless completion model explicitly says so"],
+      "consumers": ["research qualification", "future integration-candidate assessment"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": false,
+      "production_admission_sufficient_alone": false
+    },
+    {
+      "id": "PRODUCTION_ADMISSION_EVIDENCE",
+      "can_demonstrate": ["candidate was reconciled/admitted at exact F-CI/canonical scope", "admission ancestry and postimage identity"],
+      "cannot_demonstrate": ["scientific validity not already established upstream", "future-current preservation without preservation evidence"],
+      "consumers": ["F-CI/canonical authority", "preservation authority", "release/readiness governance", "rebaseline"],
+      "historical_fidelity_claim_supported": false,
+      "production_admission_support": true,
+      "production_admission_sufficient_alone": true
+    }
+  ]
+}
