@@ -1,0 +1,57 @@
+name: EB-I20R2 explicit ledger owner identity remediation
+
+on:
+  push:
+    branches:
+      - work/eb-i20r2-explicit-ledger-owner-identity-remediation
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    if: contains(github.event.head_commit.message, '[eb-i20r2-materialized]')
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I20R2_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I20R2_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Read-only owner qualification
+        run: bash tests/eb/run_eb_i20r2_explicit_owner_identity_gate.sh
+
+  materialize:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[eb-i20r2-materialized]')
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact preimage
+        run: |
+          test "$(git rev-parse HEAD:src/runtime/mod_energy_conservation_ledger.f90)" = "84355db95e0b47f2d231422a4bc050d89b712e5b"
+          test "$(git merge-base 8bb56b95b401dad52dc5410b60e9d392be92e286 HEAD)" = "8bb56b95b401dad52dc5410b60e9d392be92e286"
+      - name: Materialize explicit owner identity
+        run: |
+          python3 tests/eb/_apply_eb_i20r2_explicit_owner_identity_patch.py
+          test "$(git diff --name-only -- src)" = "src/runtime/mod_energy_conservation_ledger.f90"
+          git diff --check
+      - name: Commit local candidate
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/runtime/mod_energy_conservation_ledger.f90
+          git commit -m "fix(EB-I20R2): bind prepared energy handles to explicit ledger owner [eb-i20r2-materialized]"
+          echo "EB_I20R2_LOCAL_CANDIDATE=$(git rev-parse HEAD)"
+          echo "EB_I20R2_LOCAL_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Qualify before push
+        run: bash tests/eb/run_eb_i20r2_explicit_owner_identity_gate.sh
+      - name: Push qualified source candidate
+        run: git push origin HEAD:work/eb-i20r2-explicit-ledger-owner-identity-remediation
