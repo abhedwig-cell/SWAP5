@@ -26,14 +26,19 @@ if grep -Eiq 'ROSSFAST|D3R|0\.0016' "$RUNTIME"; then
 fi
 
 grep -Fq 'procedure(canonical_subinterval_target_selector), optional :: target_selector' "$RUNTIME"
-grep -Fq 'call target_selector(cursor, interval%t1, transaction_t1, selector_valid)' "$RUNTIME"
-grep -Fq 'call execute_reference_interval(model, working, cursor, transaction_t1' "$RUNTIME"
+grep -Fq 'call target_selector(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)' "$RUNTIME"
+grep -Fq 'transaction_policy%max_retries = min(config%transaction%max_retries, max_retries_cap)' "$RUNTIME"
+grep -Fq 'call execute_reference_interval(model, working, cursor, transaction_t1, transaction_policy, tx)' "$RUNTIME"
 grep -Fq 'next_cursor > transaction_t1 + tol' "$RUNTIME"
 
 for OPT in o0 o2; do
   FLAG="-O0"
   if [[ "$OPT" == "o2" ]]; then FLAG="-O2"; fi
 
+  # Existing FCI04 executable semantics are replayed on the modified current
+  # source to prove that omitting the optional selector preserves legacy API
+  # and interval behavior. The old text-oriented FCI04 contract checker is
+  # intentionally not promoted to current authority.
   gfortran "${COMMON[@]}" "$FLAG" -J "$BUILD/legacy_$OPT" \
     "$TX" "$CONTRACTS" "$RUNTIME" "$LEGACY_TEST" -o "$BUILD/legacy_$OPT/test"
   "$BUILD/legacy_$OPT/test"
