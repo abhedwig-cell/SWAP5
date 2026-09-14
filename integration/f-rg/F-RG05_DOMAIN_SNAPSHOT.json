@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.frg05.domain_snapshot.v1",
+  "work_unit": "F-RG05",
+  "canonical": {
+    "sha": "24b02660a7924323d1587b4adf77a160c9ef7d04",
+    "tree": "fd14037490b62750e133eacb3d429de2b06f7f9a"
+  },
+  "fixed_denominator_authority": {
+    "sha": "56b86e29e0960e396059caf47c193440d571b709",
+    "tree": "088bfe72e42ecbad5de12a823af82743a1854c5c",
+    "unchanged": true
+  },
+  "domains": [
+    {"id":"D01","name":"Kernel / transactions / generic time / mass","weight":8,"completion_percent":100.0,"earned_weight":8.0},
+    {"id":"D02","name":"State / persistence / restart","weight":7,"completion_percent":100.0,"earned_weight":7.0},
+    {"id":"D03","name":"Full Richards / soil-water reference solver","weight":8,"completion_percent":100.0,"earned_weight":8.0},
+    {"id":"D04","name":"Soil-water solver interface","weight":5,"completion_percent":100.0,"earned_weight":5.0},
+    {"id":"D05","name":"ET / root uptake / surface evaporation","weight":6,"completion_percent":100.0,"earned_weight":6.0},
+    {"id":"D06","name":"Drainage / restricted surface-water completion","weight":5,"completion_percent":100.0,"earned_weight":5.0},
+    {"id":"D07","name":"Crop / WOFOST","weight":5,"completion_percent":100.0,"earned_weight":5.0},
+    {"id":"D08","name":"Soil temperature and snow required profile","weight":3,"completion_percent":100.0,"earned_weight":3.0},
+    {"id":"D09","name":"Other required production physics","weight":5,"completion_percent":40.0,"earned_weight":2.0},
+    {"id":"D10","name":"Serialized MultiSWAP","weight":4,"completion_percent":100.0,"earned_weight":4.0},
+    {"id":"D11","name":"Parallel MultiSWAP","weight":4,"completion_percent":79.375,"earned_weight":3.175},
+    {"id":"D12","name":"Runtime composition","weight":4,"completion_percent":100.0,"earned_weight":4.0},
+    {"id":"D13","name":"Groundwater interface and coupling","weight":10,"completion_percent":82.0,"earned_weight":8.2},
+    {"id":"D14","name":"Performance / bounded-cost / fallback","weight":5,"completion_percent":53.0,"earned_weight":2.65},
+    {"id":"D15","name":"Permanent testbank","weight":7,"completion_percent":83.928571428571,"earned_weight":5.875},
+    {"id":"D16","name":"Scientific traceability / documentation","weight":6,"completion_percent":51.666666666667,"earned_weight":3.1},
+    {"id":"D17","name":"Status-A readiness","weight":5,"completion_percent":9.090909090909,"earned_weight":0.454545454545},
+    {"id":"D18","name":"Governance / reproducibility / release evidence","weight":3,"completion_percent":85.0,"earned_weight":2.55}
+  ],
+  "technical_engine": {
+    "domain_ids": ["D01","D02","D03","D04","D05","D06","D07","D08","D09","D10","D11","D12","D13","D14"],
+    "weight_denominator": 79.0,
+    "earned_weight": 71.025,
+    "measured_percent": 89.905063291139,
+    "active_ceiling_percent": 89.0,
+    "reported_percent": 89.0
+  },
+  "overall": {
+    "weight_denominator": 100.0,
+    "earned_weight": 83.004545454545,
+    "measured_percent": 83.004545454545,
+    "active_ceiling_percent": 89.0,
+    "reported_percent": 83.004545454545
+  },
+  "score_delta_from_F_RG03": {
+    "technical_earned_weight": 0.0,
+    "technical_measured_percentage_points": 0.0,
+    "overall_percentage_points": 0.0
+  },
+  "note": "Domain percentages are unchanged from the formally qualified F-RG03 governed snapshot because later evidence does not close a previously unearned parent gate under F-RG01C/F-RG04."
+}

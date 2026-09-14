@@ -1,0 +1,51 @@
+name: F-RG05 Current-Canonical Program Rebaseline
+
+on:
+  push:
+    branches:
+      - regie/f-rg05-current-canonical-program-rebaseline
+    paths:
+      - 'integration/f-rg/F-RG05_*.json'
+      - 'docs/governance/F-RG05_CURRENT_CANONICAL_PROGRAM_REBASELINE.md'
+      - 'tools/governance/validate_frg05_program_rebaseline.py'
+      - '.github/workflows/frg05-current-canonical-program-rebaseline.yml'
+  pull_request:
+    paths:
+      - 'integration/f-rg/F-RG05_*.json'
+      - 'docs/governance/F-RG05_CURRENT_CANONICAL_PROGRAM_REBASELINE.md'
+      - 'tools/governance/validate_frg05_program_rebaseline.py'
+      - '.github/workflows/frg05-current-canonical-program-rebaseline.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate frozen-denominator rebaseline
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact workflow head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bind validation to exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+
+      - name: Validate F-RG05 package
+        run: python3 tools/governance/validate_frg05_program_rebaseline.py
+
+      - name: Guard governance-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=24b02660a7924323d1587b4adf77a160c9ef7d04
+          git merge-base --is-ancestor "$base" HEAD
+          if git diff --name-only "$base" HEAD | grep -Eq '^(src|reference)/'; then
+            echo "F-RG05 must not change production/reference source"
+            exit 1
+          fi

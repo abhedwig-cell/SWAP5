@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.frg05.score_reconciliation.v1",
+  "work_unit": "F-RG05",
+  "rules": [
+    "F-RG01C fixed denominator and explicit gate fractions are authoritative.",
+    "F-RG04 evidence is not authority; qualification is not admission; child qualification does not imply parent completion; all children passing does not automatically imply composition.",
+    "No fractional expert judgement is introduced.",
+    "Weight-0 research may be recorded but cannot change SWAP5-v1 completion."
+  ],
+  "changes": [
+    {"item":"F-PM19 plus F-TB12/F-TB12P drainage closure/preservation","frozen_target":"D06","previous_percent":100.0,"new_percent":100.0,"score_delta":0.0,"classification":"STRONGER_EVIDENCE_NO_NEW_GATE_CREDIT"},
+    {"item":"F-RG04 evidence/assurance governance","frozen_target":"D18/GOV02-GOV03","previous_percent":85.0,"new_percent":85.0,"score_delta":0.0,"classification":"GOVERNANCE_STRENGTHENED_NO_RELEASE_GATE_CLOSURE"},
+    {"item":"F-DOC17 post-closure Status-A reconciliation","frozen_target":"D16/D17","previous_percent":{"D16":51.666666666667,"D17":9.090909090909},"new_percent":{"D16":51.666666666667,"D17":9.090909090909},"score_delta":0.0,"classification":"READINESS_RECONCILED_COUNTS_UNCHANGED"},
+    {"item":"F-TB11/F-TB11P preservation","frozen_target":"D15","previous_percent":83.928571428571,"new_percent":83.928571428571,"score_delta":0.0,"classification":"PRESERVES_EXISTING_AUTHORITIES_WITHOUT_CLOSING_T02_OR_T03"},
+    {"item":"F-TB12/F-TB12P drainage-specific permanent preservation","frozen_target":"D15/D06","previous_percent":{"D15":83.928571428571,"D06":100.0},"new_percent":{"D15":83.928571428571,"D06":100.0},"score_delta":0.0,"classification":"DRAINAGE_SPECIFIC_PRESERVATION_NO_GENERIC_TESTBANK_PARENT_PROMOTION"},
+    {"item":"F-SI38 prescribed-qbot temporal certificate","frozen_target":"D13/G05 candidate dependency","score_delta":0.0,"classification":"QUALIFIED_SOURCE_NOT_CANONICAL_ADMITTED_AND_NOT_WHOLE_WINDOW_PARENT_CAPABILITY"},
+    {"item":"F-CI64/F-CI64P Energy Balance","frozen_target":"OPT_ENERGY_BALANCE","weight":0.0,"score_delta":0.0,"classification":"OUTSIDE_FROZEN_V1_DENOMINATOR"},
+    {"item":"F-GC24 plus F-CI65 coupled restart/split-run/replay","frozen_target":"D13/G05","previous_percent":82.0,"new_percent":82.0,"score_delta":0.0,"classification":"REAL_CHILD_CAPABILITY_ADVANCE_NO_PARENT_AUTOPROMOTION","reason":"G05 still lacks end-to-end composition including remaining tile/temporal/tangent/MultiSWAP-diagnostics/external-aquifer obligations and parent-level qualification/preservation."},
+    {"item":"RossFast D2 R1","frozen_target":"OPT_ROSSFAST","weight":0.0,"score_delta":0.0,"classification":"RESEARCH_ONLY"}
+  ],
+  "result": {
+    "technical_measured_percent": 89.905063291139,
+    "technical_reported_percent": 89.0,
+    "overall_percent": 83.004545454545,
+    "changed_since_F_RG03": false
+  }
+}
