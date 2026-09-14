@@ -1,0 +1,115 @@
+name: F-CI66 canonical subinterval execution-policy admission
+
+on:
+  push:
+    branches:
+      - work/f-ross01-k-runtime-canonical-window-hook
+    paths:
+      - src/runtime/mod_canonical_interval_runtime.f90
+      - tests/fci/test_fci66_window_target_selector.f90
+      - tests/fci/run_fci66_window_target_selector_current_canonical_admission.sh
+      - integration/f-ci/F-CI66_EVIDENCE.json
+      - integration/f-ci/F-CI66_STATUS.json
+      - .github/workflows/fci66-canonical-window-target-selector-admission.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fci66-canonical-subinterval-policy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bind current-canonical preimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90")" = \
+            d5a71a526efaebd82054580c3186f8e3545db331
+          test "$(git rev-parse "$BASE:src/runtime/mod_canonical_contracts.f90")" = \
+            3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse "$BASE:src/runtime/mod_canonical_interval_runtime.f90")" = \
+            f41f725df4be883d277a8fd5afe5a6f1bc14ad1b
+          test "$(git hash-object src/runtime/mod_canonical_contracts.f90)" = \
+            3cbb81b25626e6574ae83416f088dc52882f91fc
+
+      - name: Bind qualified RossFast K_RUNTIME remainder evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          git show FETCH_HEAD:integration/f-ross/F-ROSS01_K_RUNTIME_REMAINDER_CLOSEOUT.json > "$RUNNER_TEMP/ross-closeout.json"
+          test "$(git hash-object "$RUNNER_TEMP/ross-closeout.json")" = \
+            bf5ae8a8eb732ff363f0a462a2141b2991670a9f
+          python3 - "$RUNNER_TEMP/ross-closeout.json" <<'PY'
+          import json, sys
+          p=json.load(open(sys.argv[1]))
+          assert p["status"] == "CLOSED_POSITIVE_RESTRICTED_RESEARCH"
+          assert p["workflow_run_id"] == 34876346798
+          assert p["qualified"]["dyadic_remainder_scheduler_algebra_levels_1_to_8"] is True
+          assert p["qualified"]["hard_mass_accounting_complete"] is True
+          assert p["production_admission"] is False
+          PY
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI66 canonical subinterval execution-policy gate
+        run: bash tests/fci/run_fci66_window_target_selector_current_canonical_admission.sh
+
+      - name: Persist workflow evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              "workunit": "F-CI66",
+              "status": "PASS",
+              "qualification": "CANONICAL_SUBINTERVAL_EXECUTION_POLICY_ADMISSION_CANDIDATE",
+              "tested_head": sh("git", "rev-parse", "HEAD"),
+              "tested_tree": sh("git", "rev-parse", "HEAD^{tree}"),
+              "canonical_preimage": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+              "source_blobs": {
+                  "transaction": sh("git", "hash-object", "src/transaction/mod_transaction_reference.f90"),
+                  "contracts": sh("git", "hash-object", "src/runtime/mod_canonical_contracts.f90"),
+                  "interval_runtime": sh("git", "hash-object", "src/runtime/mod_canonical_interval_runtime.f90"),
+              },
+              "ross_k_runtime_remainder_closeout_blob": "bf5ae8a8eb732ff363f0a462a2141b2991670a9f",
+              "qualified": {
+                  "default_no_selector_behavior_preserved": True,
+                  "bounded_subinterval_completion": True,
+                  "outer_interval_external_atomicity": True,
+                  "retry_cap_can_only_tighten": True,
+                  "invalid_selector_fails_before_transaction": True,
+                  "model_specific_policy_absent_from_generic_runtime": True,
+              },
+              "nonclaims": [
+                  "NO_ROSSFAST_PRODUCTION_MODEL_ADAPTER",
+                  "NO_ROSSFAST_PRODUCTION_ADMISSION",
+                  "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+                  "NO_ARBITRARY_DURATION_GENERALIZATION",
+              ],
+          }
+          open("F-CI66_CANONICAL_SUBINTERVAL_POLICY_EVIDENCE.json", "w").write(json.dumps(payload, indent=2, sort_keys=True)+"\n")
+          PY
+
+      - name: Upload F-CI66 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci66-canonical-subinterval-policy-${{ github.run_id }}
+          path: F-CI66_CANONICAL_SUBINTERVAL_POLICY_EVIDENCE.json
