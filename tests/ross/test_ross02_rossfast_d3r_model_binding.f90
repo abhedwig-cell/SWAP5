@@ -1,9 +1,8 @@
 module mod_ross02_test_kernel
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
   use mod_rossfast_d3r_execution_policy, only: rossfast_d3r_full_duration_for_index
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_trial_kernel_t, &
-       rossfast_d3r_kernel_request_t, rossfast_d3r_kernel_result_t, &
+       rossfast_d3r_kernel_request_t, rossfast_d3r_kernel_result_t, rossfast_d3r_material_t, &
        ROSSFAST_D3R_N_CELLS, ROSSFAST_D3R_DZ_CM, ROSSFAST_D3R_SIGMA, &
        ROSSFAST_D3R_HARD_MASS_TOL_CM, ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION, &
        ROSSFAST_D3R_STATE_CONSISTENCY_TOL, ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR, &
@@ -13,8 +12,9 @@ module mod_ross02_test_kernel
 
   integer, parameter, public :: MOCK_GOOD = 0
   integer, parameter, public :: MOCK_MALFORMED_CANDIDATE = 1
-  integer, parameter, public :: MOCK_INCOMPLETE_MASS = 2
+  integer, parameter, public :: MOCK_BAD_MASS_STATE = 2
   integer, parameter, public :: MOCK_NO_CERTIFICATE = 3
+  integer, parameter, public :: MOCK_INCONSISTENT_STATE = 4
 
   type, extends(rossfast_d3r_trial_kernel_t), public :: mock_rossfast_kernel_t
     integer :: mode = MOCK_GOOD
@@ -24,13 +24,59 @@ module mod_ross02_test_kernel
     procedure :: solve => mock_solve
   end type mock_rossfast_kernel_t
 
+  public :: test_theta_from_head, test_head_from_theta, test_conductivity_from_head
+
 contains
+
+  pure real(real64) function test_theta_from_head(head_cm, material) result(theta)
+    real(real64), intent(in) :: head_cm
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: m, s
+
+    m = 1.0_real64 - 1.0_real64 / material%n
+    if (head_cm >= 0.0_real64) then
+      s = 1.0_real64
+    else
+      s = (1.0_real64 + abs(material%alpha_per_cm * head_cm)**material%n)**(-m)
+    end if
+    theta = material%theta_r + (material%theta_s - material%theta_r) * s
+  end function test_theta_from_head
+
+  pure real(real64) function test_head_from_theta(theta, material) result(head_cm)
+    real(real64), intent(in) :: theta
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: m, s
+
+    m = 1.0_real64 - 1.0_real64 / material%n
+    s = (theta - material%theta_r) / (material%theta_s - material%theta_r)
+    head_cm = -((s**(-1.0_real64 / m) - 1.0_real64)**(1.0_real64 / material%n)) / material%alpha_per_cm
+  end function test_head_from_theta
+
+  pure real(real64) function test_conductivity_from_head(head_cm, material) result(conductivity)
+    real(real64), intent(in) :: head_cm
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: m, s, term
+
+    m = 1.0_real64 - 1.0_real64 / material%n
+    if (head_cm >= 0.0_real64) then
+      s = 1.0_real64
+    else
+      s = (1.0_real64 + abs(material%alpha_per_cm * head_cm)**material%n)**(-m)
+    end if
+    if (s >= 1.0_real64) then
+      conductivity = material%ksatfit_cm_per_day
+    else
+      term = (1.0_real64 - s**(1.0_real64 / m))**m
+      conductivity = material%ksatfit_cm_per_day * s**material%lambda * (1.0_real64 - term)**2
+    end if
+  end function test_conductivity_from_head
 
   subroutine mock_solve(self, request, result)
     class(mock_rossfast_kernel_t), intent(in) :: self
     type(rossfast_d3r_kernel_request_t), intent(in) :: request
     type(rossfast_d3r_kernel_result_t), intent(out) :: result
     real(real64) :: dt, storage_increment, theta_increment, level2, origin_tol
+    integer :: i
 
     result = rossfast_d3r_kernel_result_t()
     if (request%base_state%active_nodes /= ROSSFAST_D3R_N_CELLS) return
@@ -45,50 +91,42 @@ contains
 
     dt = request%t1_day - request%t0_day
     if (dt <= 0.0_real64) return
-    level2 = rossfast_d3r_full_duration_for_index(2)
-    origin_tol = 4.0_real64 * max(spacing(request%t0_day), spacing(self%outer_t0))
-    if (self%reject_initial_above_level2 .and. &
-        abs(request%t0_day - self%outer_t0) <= origin_tol .and. dt > level2 + 1.0e-15_real64) then
-      result%request_admitted = .true.
-      result%solver_ok = .true.
-      result%candidate_state = request%base_state
-      result%mass_accounting_complete = .true.
-      result%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
-      result%temporal_certificate_available = .true.
-      result%temporal_indicator = 2.0_real64
-      return
-    end if
 
     result%request_admitted = .true.
     result%solver_ok = .true.
     if (self%mode == MOCK_MALFORMED_CANDIDATE) return
 
     result%candidate_state = request%base_state
-    storage_increment = dt
+    storage_increment = dt * (request%forcing%top_flux_cm_per_day + &
+         request%forcing%bottom_flux_upward_cm_per_day)
     theta_increment = storage_increment / &
          (real(ROSSFAST_D3R_N_CELLS, real64) * ROSSFAST_D3R_DZ_CM)
-    result%candidate_state%water_content = result%candidate_state%water_content + theta_increment
-    result%candidate_state%pressure_head_cm = result%candidate_state%pressure_head_cm - dt
-    result%mass_in_cm = storage_increment
-    result%mass_out_cm = 0.0_real64
-    result%mass_accounting_complete = .true.
-    result%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
+
+    if (self%mode /= MOCK_BAD_MASS_STATE) then
+      result%candidate_state%water_content = result%candidate_state%water_content + theta_increment
+      do i = 1, ROSSFAST_D3R_N_CELLS
+        result%candidate_state%pressure_head_cm(i) = &
+             test_head_from_theta(result%candidate_state%water_content(i), request%material)
+      end do
+    end if
+    if (self%mode == MOCK_INCONSISTENT_STATE) then
+      result%candidate_state%pressure_head_cm = request%base_state%pressure_head_cm
+    end if
+
     result%temporal_certificate_available = .true.
     result%temporal_indicator = 0.25_real64
-    result%bottom_interface_exchange_available = .true.
-    result%bottom_outward_exchange_cm = 0.0_real64
-    result%terminal_bottom_outward_flux_cm_per_day = 0.0_real64
+    level2 = rossfast_d3r_full_duration_for_index(2)
+    origin_tol = 4.0_real64 * max(spacing(request%t0_day), spacing(self%outer_t0))
+    if (self%reject_initial_above_level2 .and. &
+        abs(request%t0_day - self%outer_t0) <= origin_tol .and. dt > level2 + 1.0e-15_real64) then
+      result%temporal_indicator = 2.0_real64
+    end if
+    if (self%mode == MOCK_NO_CERTIFICATE) result%temporal_certificate_available = .false.
+
     result%local_terminal_sensitivity_available = .true.
     result%dh_bottom_dq_bottom_day = 0.125_real64
     result%linear_solves = 3
     result%alternative_solver_calls = 1
-
-    if (self%mode == MOCK_INCOMPLETE_MASS) then
-      result%mass_accounting_complete = .false.
-      result%missing_mass_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
-    else if (self%mode == MOCK_NO_CERTIFICATE) then
-      result%temporal_certificate_available = .false.
-    end if
   end subroutine mock_solve
 
 end module mod_ross02_test_kernel
@@ -106,15 +144,18 @@ program test_ross02_rossfast_d3r_model_binding
        rossfast_d3r_forcing_t, rossfast_d3r_material_t, bind_rossfast_d3r_model, &
        rossfast_d3r_material_from_id, ROSSFAST_D3R_N_CELLS, ROSSFAST_D3R_DZ_CM
   use mod_ross02_test_kernel, only: mock_rossfast_kernel_t, MOCK_GOOD, &
-       MOCK_MALFORMED_CANDIDATE, MOCK_INCOMPLETE_MASS, MOCK_NO_CERTIFICATE
+       MOCK_MALFORMED_CANDIDATE, MOCK_BAD_MASS_STATE, MOCK_NO_CERTIFICATE, &
+       MOCK_INCONSISTENT_STATE, test_theta_from_head, test_conductivity_from_head
   implicit none
 
   call test_binding_contract_rejects_drift()
   call test_full_interval_commits_once()
   call test_certificate_retry_composes_remainder()
   call test_malformed_candidate_fails_closed()
-  call test_incomplete_mass_fails_closed()
+  call test_binding_owned_mass_gate_fails_closed()
+  call test_inconsistent_candidate_fails_closed()
   call test_missing_certificate_fails_closed()
+  call test_forcing_envelope_fails_closed()
 
   write(*,'(a)') 'ROSS02_ROSSFAST_D3R_MODEL_BINDING_GATE PASS'
 
@@ -132,7 +173,11 @@ contains
 
   subroutine init_state(committed)
     class(transaction_state_t), allocatable, intent(out) :: committed
+    type(rossfast_d3r_material_t) :: material
+    logical :: found
 
+    call rossfast_d3r_material_from_id('O14', material, found)
+    if (.not. found) error stop 101
     allocate(rossfast_d3r_state_t :: committed)
     select type(state => committed)
     type is(rossfast_d3r_state_t)
@@ -140,11 +185,24 @@ contains
       allocate(state%pressure_head_cm(ROSSFAST_D3R_N_CELLS))
       allocate(state%water_content(ROSSFAST_D3R_N_CELLS))
       state%pressure_head_cm = -100.0_real64
-      state%water_content = 0.2_real64
+      state%water_content = test_theta_from_head(-100.0_real64, material)
     class default
-      error stop 101
+      error stop 102
     end select
   end subroutine init_state
+
+  subroutine init_forcing(forcing)
+    type(rossfast_d3r_forcing_t), intent(out) :: forcing
+    type(rossfast_d3r_material_t) :: material
+    real(real64) :: conductivity
+    logical :: found
+
+    call rossfast_d3r_material_from_id('O14', material, found)
+    if (.not. found) error stop 103
+    conductivity = test_conductivity_from_head(-100.0_real64, material)
+    forcing%top_flux_cm_per_day = 0.01_real64 * conductivity
+    forcing%bottom_flux_upward_cm_per_day = -0.004_real64 * conductivity
+  end subroutine init_forcing
 
   subroutine init_model(model, kernel)
     type(rossfast_d3r_model_t), intent(out) :: model
@@ -154,10 +212,10 @@ contains
     logical :: found, valid
 
     call rossfast_d3r_material_from_id('O14', material, found)
-    if (.not. found) error stop 102
+    if (.not. found) error stop 104
     dz = ROSSFAST_D3R_DZ_CM
     call bind_rossfast_d3r_model(model, kernel, material, dz, 8, valid)
-    if (.not. valid) error stop 103
+    if (.not. valid) error stop 105
   end subroutine init_model
 
   function committed_storage(committed) result(value)
@@ -168,7 +226,7 @@ contains
     type is(rossfast_d3r_state_t)
       value = ROSSFAST_D3R_DZ_CM * sum(state%water_content)
     class default
-      error stop 104
+      error stop 106
     end select
   end function committed_storage
 
@@ -212,11 +270,12 @@ contains
     type(canonical_numerical_config_t) :: config
     type(canonical_result_t) :: result
     class(transaction_state_t), allocatable :: committed
-    real(real64) :: storage0
+    real(real64) :: storage0, expected_change, expected_bottom_outward
 
     kernel%mode = MOCK_GOOD
     call init_model(model, kernel)
     call init_state(committed)
+    call init_forcing(forcing)
     call init_config(config)
     storage0 = committed_storage(committed)
     interval = canonical_interval_t(5.0_real64, 5.0_real64 + ROSSFAST_D3R_OUTER_HORIZON_DAY)
@@ -224,18 +283,24 @@ contains
     call run_canonical_interval(model, committed, forcing, interval, config, result, &
          rossfast_d3r_select_transaction_window)
 
+    expected_change = ROSSFAST_D3R_OUTER_HORIZON_DAY * &
+         (forcing%top_flux_cm_per_day + forcing%bottom_flux_upward_cm_per_day)
+    expected_bottom_outward = -ROSSFAST_D3R_OUTER_HORIZON_DAY * forcing%bottom_flux_upward_cm_per_day
     if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) error stop 121
     if (result%diagnostics%transaction_calls /= 1) error stop 122
     if (result%diagnostics%external_commits /= 1) error stop 123
     if (result%mass%accepted_transaction_count /= 1 .or. .not. result%mass%complete) error stop 124
-    call assert_close(committed_storage(committed) - storage0, &
-         ROSSFAST_D3R_OUTER_HORIZON_DAY, 2.0e-13_real64, 125)
-    call assert_close(result%mass%residual, 0.0_real64, 2.0e-13_real64, 126)
-    if (result%diagnostics%linear_solves /= 3) error stop 127
-    if (result%diagnostics%alternative_solver_calls /= 1) error stop 128
-    if (.not. result%interface_sensitivity%available) error stop 129
-    if (.not. result%interface_sensitivity%covers_requested_interval) error stop 130
-    if (.not. result%bottom_interface_exchange_available) error stop 131
+    call assert_close(committed_storage(committed) - storage0, expected_change, 2.0e-13_real64, 125)
+    call assert_close(result%mass%storage_change, expected_change, 2.0e-13_real64, 126)
+    call assert_close(result%mass%residual, 0.0_real64, 2.0e-13_real64, 127)
+    if (result%diagnostics%linear_solves /= 3) error stop 128
+    if (result%diagnostics%alternative_solver_calls /= 1) error stop 129
+    if (.not. result%interface_sensitivity%available) error stop 130
+    if (.not. result%interface_sensitivity%covers_requested_interval) error stop 131
+    if (.not. result%bottom_interface_exchange_available) error stop 132
+    call assert_close(result%bottom_outward_exchange_native, expected_bottom_outward, 2.0e-15_real64, 133)
+    call assert_close(result%terminal_bottom_outward_flux_native, &
+         -forcing%bottom_flux_upward_cm_per_day, 2.0e-15_real64, 134)
   end subroutine test_full_interval_commits_once
 
   subroutine test_certificate_retry_composes_remainder()
@@ -246,13 +311,14 @@ contains
     type(canonical_numerical_config_t) :: config
     type(canonical_result_t) :: result
     class(transaction_state_t), allocatable :: committed
-    real(real64) :: storage0
+    real(real64) :: storage0, expected_change
 
     kernel%mode = MOCK_GOOD
     kernel%reject_initial_above_level2 = .true.
     kernel%outer_t0 = 7.0_real64
     call init_model(model, kernel)
     call init_state(committed)
+    call init_forcing(forcing)
     call init_config(config)
     storage0 = committed_storage(committed)
     interval = canonical_interval_t(7.0_real64, 7.0_real64 + ROSSFAST_D3R_OUTER_HORIZON_DAY)
@@ -260,6 +326,8 @@ contains
     call run_canonical_interval(model, committed, forcing, interval, config, result, &
          rossfast_d3r_select_transaction_window)
 
+    expected_change = ROSSFAST_D3R_OUTER_HORIZON_DAY * &
+         (forcing%top_flux_cm_per_day + forcing%bottom_flux_upward_cm_per_day)
     if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) error stop 141
     if (result%diagnostics%transaction_calls /= 3) error stop 142
     if (result%diagnostics%retries /= 2 .or. result%diagnostics%rollbacks /= 2) error stop 143
@@ -270,8 +338,7 @@ contains
          rossfast_d3r_full_duration_for_index(2), 2.0e-13_real64, 147)
     call assert_close(result%diagnostics%max_accepted_substep_duration, &
          rossfast_d3r_full_duration_for_index(1), 2.0e-13_real64, 148)
-    call assert_close(committed_storage(committed) - storage0, &
-         ROSSFAST_D3R_OUTER_HORIZON_DAY, 2.0e-13_real64, 149)
+    call assert_close(committed_storage(committed) - storage0, expected_change, 2.0e-13_real64, 149)
     if (.not. result%interface_sensitivity%available) error stop 150
     if (result%interface_sensitivity%covers_requested_interval) error stop 151
   end subroutine test_certificate_retry_composes_remainder
@@ -289,6 +356,7 @@ contains
     kernel%mode = MOCK_MALFORMED_CANDIDATE
     call init_model(model, kernel)
     call init_state(committed)
+    call init_forcing(forcing)
     call init_config(config)
     storage0 = committed_storage(committed)
     interval = canonical_interval_t(11.0_real64, 11.0_real64 + ROSSFAST_D3R_MIN_FULL_DURATION_DAY)
@@ -302,7 +370,7 @@ contains
     call assert_close(committed_storage(committed), storage0, 0.0_real64, 164)
   end subroutine test_malformed_candidate_fails_closed
 
-  subroutine test_incomplete_mass_fails_closed()
+  subroutine test_binding_owned_mass_gate_fails_closed()
     type(rossfast_d3r_model_t) :: model
     type(mock_rossfast_kernel_t), target :: kernel
     type(rossfast_d3r_forcing_t) :: forcing
@@ -312,9 +380,10 @@ contains
     class(transaction_state_t), allocatable :: committed
     real(real64) :: storage0
 
-    kernel%mode = MOCK_INCOMPLETE_MASS
+    kernel%mode = MOCK_BAD_MASS_STATE
     call init_model(model, kernel)
     call init_state(committed)
+    call init_forcing(forcing)
     call init_config(config)
     storage0 = committed_storage(committed)
     interval = canonical_interval_t(13.0_real64, 13.0_real64 + ROSSFAST_D3R_MIN_FULL_DURATION_DAY)
@@ -326,7 +395,34 @@ contains
     if (result%diagnostics%mass_rejections /= 1) error stop 172
     if (result%diagnostics%external_commits /= 0) error stop 173
     call assert_close(committed_storage(committed), storage0, 0.0_real64, 174)
-  end subroutine test_incomplete_mass_fails_closed
+  end subroutine test_binding_owned_mass_gate_fails_closed
+
+  subroutine test_inconsistent_candidate_fails_closed()
+    type(rossfast_d3r_model_t) :: model
+    type(mock_rossfast_kernel_t), target :: kernel
+    type(rossfast_d3r_forcing_t) :: forcing
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: config
+    type(canonical_result_t) :: result
+    class(transaction_state_t), allocatable :: committed
+    real(real64) :: storage0
+
+    kernel%mode = MOCK_INCONSISTENT_STATE
+    call init_model(model, kernel)
+    call init_state(committed)
+    call init_forcing(forcing)
+    call init_config(config)
+    storage0 = committed_storage(committed)
+    interval = canonical_interval_t(15.0_real64, 15.0_real64 + ROSSFAST_D3R_MIN_FULL_DURATION_DAY)
+
+    call run_canonical_interval(model, committed, forcing, interval, config, result, &
+         rossfast_d3r_select_transaction_window)
+
+    if (result%status /= CANONICAL_STATUS_TRANSACTION_FAILED) error stop 181
+    if (result%diagnostics%solver_rejections /= 1) error stop 182
+    if (result%diagnostics%external_commits /= 0) error stop 183
+    call assert_close(committed_storage(committed), storage0, 0.0_real64, 184)
+  end subroutine test_inconsistent_candidate_fails_closed
 
   subroutine test_missing_certificate_fails_closed()
     type(rossfast_d3r_model_t) :: model
@@ -341,6 +437,7 @@ contains
     kernel%mode = MOCK_NO_CERTIFICATE
     call init_model(model, kernel)
     call init_state(committed)
+    call init_forcing(forcing)
     call init_config(config)
     storage0 = committed_storage(committed)
     interval = canonical_interval_t(17.0_real64, 17.0_real64 + ROSSFAST_D3R_MIN_FULL_DURATION_DAY)
@@ -348,11 +445,39 @@ contains
     call run_canonical_interval(model, committed, forcing, interval, config, result, &
          rossfast_d3r_select_transaction_window)
 
-    if (result%status /= CANONICAL_STATUS_TRANSACTION_FAILED) error stop 181
-    if (result%diagnostics%temporal_rejections /= 1) error stop 182
-    if (result%diagnostics%temporal_certificate_unavailable_rejections /= 1) error stop 183
-    if (result%diagnostics%external_commits /= 0) error stop 184
-    call assert_close(committed_storage(committed), storage0, 0.0_real64, 185)
+    if (result%status /= CANONICAL_STATUS_TRANSACTION_FAILED) error stop 191
+    if (result%diagnostics%temporal_rejections /= 1) error stop 192
+    if (result%diagnostics%temporal_certificate_unavailable_rejections /= 1) error stop 193
+    if (result%diagnostics%external_commits /= 0) error stop 194
+    call assert_close(committed_storage(committed), storage0, 0.0_real64, 195)
   end subroutine test_missing_certificate_fails_closed
+
+  subroutine test_forcing_envelope_fails_closed()
+    type(rossfast_d3r_model_t) :: model
+    type(mock_rossfast_kernel_t), target :: kernel
+    type(rossfast_d3r_forcing_t) :: forcing
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: config
+    type(canonical_result_t) :: result
+    class(transaction_state_t), allocatable :: committed
+    real(real64) :: storage0
+
+    kernel%mode = MOCK_GOOD
+    call init_model(model, kernel)
+    call init_state(committed)
+    call init_forcing(forcing)
+    forcing%top_flux_cm_per_day = 100.0_real64 * forcing%top_flux_cm_per_day
+    call init_config(config)
+    storage0 = committed_storage(committed)
+    interval = canonical_interval_t(19.0_real64, 19.0_real64 + ROSSFAST_D3R_MIN_FULL_DURATION_DAY)
+
+    call run_canonical_interval(model, committed, forcing, interval, config, result, &
+         rossfast_d3r_select_transaction_window)
+
+    if (result%status /= CANONICAL_STATUS_TRANSACTION_FAILED) error stop 201
+    if (result%diagnostics%solver_rejections /= 1) error stop 202
+    if (result%diagnostics%external_commits /= 0) error stop 203
+    call assert_close(committed_storage(committed), storage0, 0.0_real64, 204)
+  end subroutine test_forcing_envelope_fails_closed
 
 end program test_ross02_rossfast_d3r_model_binding
