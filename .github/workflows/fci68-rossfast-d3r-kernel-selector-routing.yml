@@ -74,7 +74,18 @@ jobs:
         run: gfortran --version
 
       - name: Run F-CI68 kernel selector routing gate
-        run: bash tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh 2>&1 | tee F-CI68_GATE.log
+
+      - name: Upload F-CI68 gate diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci68-gate-diagnostics-${{ github.run_id }}
+          path: F-CI68_GATE.log
+          if-no-files-found: warn
 
       - name: Persist F-CI68 evidence payload
         shell: bash
