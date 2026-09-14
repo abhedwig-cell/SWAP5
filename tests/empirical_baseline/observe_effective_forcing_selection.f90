@@ -1,10 +1,40 @@
+module mod_eb_r03_top_provider
+  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_soil_water_solver_contract, only: top_boundary_provider_t, soil_water_boundary_conditions_t
+  implicit none
+  private
+
+  type, extends(top_boundary_provider_t), public :: probe_top_provider_t
+    integer :: identity = 31003
+  contains
+    procedure :: evaluate => probe_top_evaluate
+  end type probe_top_provider_t
+
+contains
+
+  subroutine probe_top_evaluate(self, pressure_head_top, water_content_top, requested, actual_top_flux, surface_head, runoff_flux)
+    class(probe_top_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head_top, water_content_top
+    type(soil_water_boundary_conditions_t), intent(in) :: requested
+    real(real64), intent(out) :: actual_top_flux, surface_head, runoff_flux
+
+    if (self%identity /= 31003) error stop 'EB-R03 invalid top provider identity'
+    if (.not. ieee_is_finite(pressure_head_top) .or. .not. ieee_is_finite(water_content_top)) &
+         error stop 'EB-R03 nonfinite top boundary input'
+    actual_top_flux = requested%top_flux
+    surface_head = 0.0_real64
+    runoff_flux = 0.0_real64
+  end subroutine probe_top_evaluate
+
+end module mod_eb_r03_top_provider
+
 program observe_effective_forcing_selection
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t, soil_water_boundary_conditions_t
+  use mod_eb_r03_top_provider, only: probe_top_provider_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        FMR_BACKEND_SERIALIZED_REFERENCE
   use mod_fmr_serialized_reference_backend, only: eb_r03_probe_state_t, fmr_b110_physical_parameters_t, &
@@ -16,11 +46,6 @@ program observe_effective_forcing_selection
 
   real(real64), parameter :: t0 = 3100.0_real64
   real(real64), parameter :: t1 = 3100.5_real64
-
-  type, extends(top_boundary_provider_t) :: probe_top_provider_t
-  contains
-    procedure :: evaluate => probe_top_evaluate
-  end type probe_top_provider_t
 
   write(*,'(A)') 'case_id,route,forcing_handle,effective_scale,committed,admission_status,total_in,storage_change,final_revision,active_calls'
   call run_registry_case('registry_a', 1_int64, 1.0_real64)
@@ -155,19 +180,5 @@ contains
       trim(case_id), trim(route), forcing_handle, effective_scale, output%committed, trim(output%admission_status), &
       output%mass%total_in, output%mass%storage_change, output%final_revision, active_calls
   end subroutine print_row
-
-  subroutine probe_top_evaluate(self, pressure_head_top, water_content_top, requested, actual_top_flux, surface_head, runoff_flux)
-    class(probe_top_provider_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head_top, water_content_top
-    type(soil_water_boundary_conditions_t), intent(in) :: requested
-    real(real64), intent(out) :: actual_top_flux, surface_head, runoff_flux
-
-    if (.not. same_type_as(self, self)) error stop 'EB-R03 unreachable top provider type'
-    if (.not. ieee_is_finite(pressure_head_top) .or. .not. ieee_is_finite(water_content_top)) &
-         error stop 'EB-R03 nonfinite top boundary input'
-    actual_top_flux = requested%top_flux
-    surface_head = 0.0_real64
-    runoff_flux = 0.0_real64
-  end subroutine probe_top_evaluate
 
 end program observe_effective_forcing_selection
