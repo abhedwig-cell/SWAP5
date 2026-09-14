@@ -108,7 +108,7 @@ jobs:
               'max_abs_mass_residual_cm': max(masses, default=0.0),
               'max_abs_full_vs_two_half_head_delta_cm': max(heads, default=0.0),
               'max_abs_full_vs_two_half_theta_delta': max(thetas, default=0.0),
-              'external_temporal_error_semantics_qualified': false,
+              'external_temporal_error_semantics_qualified': False,
               'temporal_error_disposition': 'DIAGNOSTIC_STATE_DELTAS_ONLY_NO_ACCEPTANCE_METRIC_OR_TOLERANCE_CLAIM',
               'production_source_delta': [],
           }
