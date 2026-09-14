@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.fci66.evidence.v1",
+  "work_unit": "F-CI66",
+  "status": "PASS",
+  "qualification": "CANONICAL_SUBINTERVAL_EXECUTION_POLICY_ADMISSION_CANDIDATE",
+  "canonical_preimage": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+  "tested_head": "2eae224449a6d13b66068bfc46700821e7d11670",
+  "tested_tree": "a90d3a0fdc1307803a7f34167a69ef7a0f86ea06",
+  "workflow_run": 34882491196,
+  "workflow_job": 104104931296,
+  "artifact_id": 10363755176,
+  "artifact_name": "fci66-canonical-subinterval-policy-34882491196",
+  "artifact_digest": "sha256:e6c5d9699904b61997c72d52417a9955904496ab7cf46b3439995c6df35c028b",
+  "runner": "ubuntu-24.04",
+  "compiler": "GNU Fortran 13.3.0",
+  "ross_k_runtime_remainder_closeout_blob": "bf5ae8a8eb732ff363f0a462a2141b2991670a9f",
+  "source_blobs": {
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/runtime/mod_canonical_interval_runtime.f90": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237"
+  },
+  "qualified": {
+    "default_no_selector_behavior_preserved": true,
+    "bounded_subinterval_completion": true,
+    "invalid_selector_fails_before_transaction": true,
+    "retry_cap_can_only_tighten": true,
+    "outer_interval_external_atomicity": true,
+    "model_specific_policy_absent_from_generic_runtime": true,
+    "current_canonical_hard_mass_accounting_fixture": true,
+    "O0_O2_gate_pass": true
+  },
+  "fixture_reconciliation": {
+    "historical_fci04_used_as_current_oracle": false,
+    "reason": "FCI04 predates mandatory hard mass-accounting completeness; its mock leaves storage accounting and trial contribution completeness unavailable, so the current transaction core correctly fails it closed even on the canonical preimage runtime.",
+    "replacement": "F-CI66 carries a current-canonical complete-mass fixture and pins the no-selector endpoint, transaction count, retry history, mass completeness and single external publication."
+  },
+  "nonclaims": [
+    "NO_ROSSFAST_PRODUCTION_MODEL_ADAPTER",
+    "NO_ROSSFAST_PRODUCTION_ADMISSION",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_GENERALIZATION",
+    "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION"
+  ]
+}
