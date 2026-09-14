@@ -8,6 +8,8 @@ on:
       - src/runtime/mod_canonical_interval_runtime.f90
       - tests/fci/test_fci66_window_target_selector.f90
       - tests/fci/run_fci66_window_target_selector_current_canonical_admission.sh
+      - integration/f-ci/F-CI66_EVIDENCE.json
+      - integration/f-ci/F-CI66_STATUS.json
       - .github/workflows/fci66-canonical-window-target-selector-admission.yml
   workflow_dispatch:
 
