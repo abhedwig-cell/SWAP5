@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.frg04.adversarial_self_review.v1",
+  "workunit": "F-RG04",
+  "review_type": "SINGLE_AGENT_ADVERSARIAL_SELF_REVIEW_AFTER_IMMUTABLE_AUTHORING_BOUNDARY",
+  "assurance_label": "PROCESS_SELF_REVIEWED_NOT_INDEPENDENT",
+  "same_agent": true,
+  "independence_claimed": false,
+  "independent_F_VQ_substitution_claimed": false,
+  "first_review_cycle": {
+    "reviewed_authoring_head": "91220ac71563776d9805a87ea6c7a49834a53d3f",
+    "reviewed_authoring_tree": "a268ad0ff92f610d274258fa86c1a2af504d37c2",
+    "exact_head_ci_run": 34814131171,
+    "finding": {
+      "class": "AUTHORITY_PROMOTION_FAILURE",
+      "id": "FRG04-AR-001",
+      "description": "PRODUCTION_ADMISSION_EVIDENCE was initially marked production_admission_sufficient_alone=true. That allowed an evidence class to be read as self-sufficient authority and contradicted the governing principle EVIDENCE_IS_NOT_AUTHORITY.",
+      "disposition": "SUBSTANTIVE_FINDING_FAIL_CLOSED"
+    },
+    "remediation": {
+      "evidence_registry_commit": "8dab84e626efe1d86f3b3f2fcc2421057bc1281f",
+      "validator_guard_commit": "013efd87ef673c62aa2fdcf35a4210f390f694f5",
+      "changes": [
+        "Set production_admission_sufficient_alone=false for PRODUCTION_ADMISSION_EVIDENCE.",
+        "Added no_evidence_class_is_authority_sufficient_by_itself=true.",
+        "Clarified that PRODUCTION_ADMISSION_EVIDENCE can evidence an existing pinned F-CI/canonical authority but cannot create or substitute for that authority.",
+        "Added validator guard requiring production_admission_sufficient_alone=false for every evidence class."
+      ],
+      "old_review_invalidated": true,
+      "new_immutable_head_required": true
+    }
+  },
+  "reviewed_authoring_head": "013efd87ef673c62aa2fdcf35a4210f390f694f5",
+  "reviewed_authoring_tree": "1ad8522c3dd958213fc47dea39ae3f3e1e0a1f6a",
+  "reviewed_head_ci_run": 34814216323,
+  "reviewed_head_ci_job": 103881404952,
+  "reviewed_head_ci_conclusion": "success",
+  "counter_hypotheses": [
+    {
+      "id": "H01",
+      "hypothesis": "F-RG04 creates only more bureaucracy without extra error detection.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "The first immutable-head adversarial review detected a real evidence-to-authority promotion leak that the initial machine validation did not prevent. The remediation added a permanent validator guard. F-RG04 therefore demonstrated additional fault-detection value within this workunit."
+    },
+    {
+      "id": "H02",
+      "hypothesis": "ANIMO terms were mechanically copied into SWAP5.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "B0-B4 lifecycle, TCD numbering/taxonomy, ANIMO central-RG batching cadence and a named historical B2 stage are explicitly rejected as ANIMO-specific. SWAP5 retains F-RG/F-VQ/F-CI/F-TB/F-DOC and its own maturity terminology."
+    },
+    {
+      "id": "H03",
+      "hypothesis": "Evidence classes duplicate existing SWAP authorities or can themselves become authority.",
+      "result": "ACCEPTED_FINDING_REMEDIATED",
+      "basis": "The first review found one self-promotion leak in PRODUCTION_ADMISSION_EVIDENCE. The remediated head makes every evidence class authority-insufficient by itself and treats evidence classes only as metadata consumed by existing qualification/admission authorities. Existing F-VQ/F-CI/F-TB/F-DOC authorities remain normative."
+    },
+    {
+      "id": "H04",
+      "hypothesis": "Negative qualification is incorrectly counted as production progress.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "The policy and composition rules state that negative qualification is epistemic closure only. production_capability_credit_automatic=false and completion_percentage_effect_automatic=false. F-RG01C remains the sole scoring authority."
+    },
+    {
+      "id": "H05",
+      "hypothesis": "Local qualification can still silently become parent authority.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "CHILD_QUALIFIED_TO_PARENT_QUALIFIED is explicitly forbidden. The bounded qualification object requires parent/child declaration with inheritance_forbidden=true."
+    },
+    {
+      "id": "H06",
+      "hypothesis": "All children passing is incorrectly equivalent to composition passing.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "ALL_CHILDREN_QUALIFIED_TO_PARENT_OR_COMPOSITION_QUALIFIED is explicitly forbidden and all_children_pass_is_sufficient=false. Composition independently checks coverage, overlap, gaps, contradictory semantics, state, conservation, time, retry, restart and runtime interactions."
+    },
+    {
+      "id": "H07",
+      "hypothesis": "Reconstructed evidence can still be read as historical truth.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "RECONSTRUCTED_REPLAY has historical_truth_possible=false and mandatory label RECONSTRUCTED_NOT_HISTORICAL. HISTORICAL_BEHAVIOR_UNKNOWN is retained as a valid state and may not be filled by a synthetic or reconstructed story."
+    },
+    {
+      "id": "H08",
+      "hypothesis": "Same-agent review is semantically treated as independent qualification.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "Both PROCESS_SELF_REVIEWED_NOT_INDEPENDENT and ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT are explicitly non-independent. same_agent_may_be_called_independent=false and existing independent F-VQ gates cannot be satisfied by them. This review itself is labeled non-independent."
+    },
+    {
+      "id": "H09",
+      "hypothesis": "Risk tiering lowers existing independent or hard gates.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "existing_hard_gates_may_be_downgraded=false and strictest_trigger_wins=true. R2-R4 preserve applicable independent qualification and serialized F-CI admission. Mass, transaction, restart, solver and other existing hard gates remain outside F-RG04's authority to waive."
+    },
+    {
+      "id": "H10",
+      "hypothesis": "Module manifests become a second source of technical truth.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "F-RG01D is explicitly preserved. The F-RG04 bridge only permits optional references to evidence/qualification/assurance/provenance/composition authorities and restates that the manifest is an index, never a technical truth source."
+    },
+    {
+      "id": "H11",
+      "hypothesis": "Research evidence can leak into production authority.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "RESEARCH_EVIDENCE has production_admission_support=false; RESEARCH_AUTHORITY_TO_PRODUCTION_AUTHORITY is forbidden. RossFast and energy-balance examples remain research-only with zero frozen-v1 completion weight and no production admission through F-RG04."
+    },
+    {
+      "id": "H12",
+      "hypothesis": "F-RG04 implicitly changes the F-RG01C denominator or completion weights.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "F-RG01C@56b86e29e0960e396059caf47c193440d571b709 is pinned as unchanged by the workflow. The policy states that F-RG04 changes no denominator, weight, completion fraction or hard ceiling and grants no automatic negative-qualification credit."
+    },
+    {
+      "id": "H13",
+      "hypothesis": "Stale qualification can be admitted without current-canonical reconciliation.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "stale_qualification_auto_admission_forbidden=true, F-CI admissions are serialized, and candidates must reconcile against then-current canonical before admission. A stale qualification remains evidence only at its pinned scope."
+    },
+    {
+      "id": "H14",
+      "hypothesis": "The new governance makes runtime resumption from F-RG01B harder instead of easier.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "F-RG04 does not introduce a second workunit lifecycle. Evidence pins, bounded-object identity, review head and findings are additive resumable checkpoint metadata under F-RG01B. Workunit scientific/architectural cohesion and selective moving-authority recheck remain unchanged."
+    },
+    {
+      "id": "H15",
+      "hypothesis": "F-RG04 conflicts with semantic-contract ownership policy F-RG01A.",
+      "result": "REJECTED_BY_EVIDENCE",
+      "basis": "F-RG01A remains the authority for parallelism. Bounded objects explicitly declare owned/consumed semantic contracts; parallel authoring is allowed only where F-RG01A ownership is disjoint, while shared canonical authority remains serialized."
+    }
+  ],
+  "unresolved_substantive_findings": [],
+  "final_review_result": "SELF_REVIEW_PASS_AFTER_REMEDIATION",
+  "review_scope_note": "This is process/adversarial self-review only. It establishes no genuinely independent qualification and does not substitute for any F-VQ required by another SWAP5 workunit."
+}
