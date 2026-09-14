@@ -75,6 +75,22 @@ if old_flow_assert in text:
 elif new_flow_assert not in text:
     raise SystemExit('FMR44_POSITIVE_MASS_ASSERT_ANCHOR_MISMATCH')
 
+# F-SI27 formally qualified prescribed-qbot semantics with a bounded numerical
+# policy of 16 Newton iterations and 8 backtracking attempts while retaining the
+# same hard 1e-12 head and mass tolerances.  Reuse that qualified solver-work
+# budget here instead of changing physics or relaxing acceptance tolerances.
+old_solver_budget = """    parameters%max_iterations = 8
+    parameters%max_backtracking = 4
+"""
+new_solver_budget = """    parameters%max_iterations = 16
+    parameters%max_backtracking = 8
+"""
+if old_solver_budget in text:
+    text = text.replace(old_solver_budget, new_solver_budget, 1)
+    print('FMR44_FSI27_SOLVER_BUDGET_16_8=STAGED')
+elif new_solver_budget not in text:
+    raise SystemExit('FMR44_SOLVER_BUDGET_ANCHOR_MISMATCH')
+
 anchor = """    call require(output%completed .and. output%committed, 'mode2 equilibrium committed')
 """
 if anchor in text and 'FMR44_EQUILIBRIUM_DEBUG' not in text:
