@@ -1,0 +1,57 @@
+name: EB-I21R guarded owned-receipt materialization
+
+on:
+  push:
+    branches:
+      - work/eb-i21r-runtime-bound-accepted-receipt-remediation
+    paths:
+      - .github/workflows/eb-i21r-materialize-owned-receipt.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Guard exact preimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=b162e98cc4ad6f85b741a21bd41f3db3d213559b
+          AUDIT=aa4b536a2dcf0df7a17eda64701856ca4a7cb45c
+          [[ "$(git rev-parse origin/integration/f-ci-canonical)" == "$CANONICAL" ]]
+          git merge-base --is-ancestor "$AUDIT" HEAD
+          [[ "$(git hash-object src/runtime/mod_energy_conservation_ledger.f90)" == "e71820784780e4a45a7024dbc437c71f0fb7d0c4" ]]
+          [[ "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" == "07d3699e3e3972921fdb36352d75c47cb12d03b7" ]]
+          [[ "$(git hash-object src/runtime/mod_fmr_owned_commit_receipt.f90)" == "99ba86e88c7aac87e9cf155d1c9a8be83b4738a8" ]]
+          git diff --quiet "$AUDIT" HEAD -- reference
+      - name: Materialize bounded production patch
+        run: python3 tests/eb/_apply_eb_i21r_owned_receipt_patch.py
+      - name: Verify exact working-tree materialization scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only | LC_ALL=C sort)"
+          expected=$'src/runtime/mod_energy_conservation_ledger.f90\nsrc/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+          if [[ "$changed" != "$expected" ]]; then
+            printf '%s\n' "$changed" >&2
+            exit 213
+          fi
+          git diff --check
+      - name: Qualify materialized working tree before commit
+        run: bash tests/eb/run_eb_i21r_owned_receipt_gate.sh
+      - name: Commit and push exact qualified postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/runtime/mod_energy_conservation_ledger.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git commit -m "feat(EB-I21R): bind accepted energy receipts to runtime column owner [eb-i21r-materialized]"
+          git push origin HEAD:work/eb-i21r-runtime-bound-accepted-receipt-remediation
