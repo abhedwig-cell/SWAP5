@@ -65,9 +65,13 @@ for opt in 0 2; do
   dir="$BUILD/o$opt"
   mkdir -p "$dir"
   : > "$dir/compiler.txt"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" \
-    "${SOURCES[@]}" "$BUILD/fgc21_fixture.f90" tests/fgc/test_fgc24_coupled_restart_split_process.f90 \
-    -o "$dir/test" 2>"$dir/compiler.txt"
+  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" \
+      "${SOURCES[@]}" "$BUILD/fgc21_fixture.f90" tests/fgc/test_fgc24_coupled_restart_split_process.f90 \
+      -o "$dir/test" 2>"$dir/compiler.txt"; then
+    echo "FGC24_COMPILE_O${opt}=FAIL" >&2
+    cat "$dir/compiler.txt" >&2
+    exit 30
+  fi
   if grep -E 'Warning:' "$dir/compiler.txt" | grep -v -F '[-Wcompare-reals]'; then
     echo "FGC24_UNEXPECTED_NON_COMPARE_REAL_WARNING_O${opt}" >&2
     cat "$dir/compiler.txt" >&2
