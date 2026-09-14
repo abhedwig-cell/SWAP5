@@ -1,0 +1,31 @@
+{
+  "schema": "swap5-eb-workunit-status-v1",
+  "work_unit": "EB-I20R1",
+  "title": "Cross-ledger prepared-handle provenance remediation",
+  "branch": "work/eb-i20r1-cross-ledger-prepared-provenance-remediation",
+  "status": "OWNER_PREPUSH_QUALIFIED_PENDING_POSTIMAGE_READ_ONLY",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "parent_owner_authority": "34c4545cc3dea96c9d13988c491b387c8c2a19fd",
+  "independent_blocker_authority": "d56bcb227cc24b12ab6fa8ecfe6a2782b5fe2817",
+  "materialized_source_head": "4dd14d74220545f58bfdc95a3e88ca29d75b6f12",
+  "materialized_source_tree": "691dbf263610eb93453bfa8438d089be1835ef07",
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "84355db95e0b47f2d231422a4bc050d89b712e5b"
+  },
+  "prepush_owner_qualification": {
+    "workflow_run": 34837968032,
+    "result": "SUCCESS_BEFORE_PUSH"
+  },
+  "remediation_scope": [
+    "retain prepared lineage, origin revision and interval provenance in the ledger until commit or abort",
+    "validate foreign prepared handles against ledger-owned prepared provenance in addition to generation",
+    "leave energy physics, conservation algebra, receipt semantics and mass accounting unchanged"
+  ],
+  "hard_nonclaims": [
+    "not canonical admission",
+    "not independent qualification",
+    "no full SWAP energy balance completion claim"
+  ],
+  "next_owner": "read-only owner postimage qualification, then fresh independent F-VQ requalification"
+}
