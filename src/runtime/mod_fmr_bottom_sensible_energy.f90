@@ -144,7 +144,7 @@ contains
     type(fmr_bottom_thermal_sample_t) :: sample
     real(real64) :: donor_temperature_c, sample_energy, candidate_total
     integer(int64) :: provenance_token
-    integer :: i, n, binding_status, enthalpy_status, resolved_external_count
+    integer :: i, n, binding_status, enthalpy_status, resolved_external_count, missing_external_count
     logical :: sample_available, binding_available
 
     call evaluate_fmr_bottom_sensible_energy(candidate, parameters, base_result)
@@ -169,6 +169,7 @@ contains
     n = candidate%sample_count()
     candidate_total = base_result%local_outward_subtotal_j_m2_value
     resolved_external_count = 0
+    missing_external_count = 0
 
     do i = 1, n
       call candidate%sample_at(i, sample, sample_available)
@@ -183,37 +184,37 @@ contains
       select case (sample%donor_class)
       case (FMR_BOTTOM_THERMAL_DONOR_EXTERNAL)
         if (binding_status == FMR_EXT_THERMAL_BINDING_UNAVAILABLE .and. .not. binding_available) then
-          result = base_result
-          return
+          missing_external_count = missing_external_count + 1
+        else
+          if (binding_status /= FMR_EXT_THERMAL_BINDING_OK .or. .not. binding_available) then
+            result = base_result
+            call mark_invalid_external_binding(result)
+            return
+          end if
+          if (provenance_token < 0_int64 .or. .not. ieee_is_finite(donor_temperature_c)) then
+            result = base_result
+            call mark_invalid_external_binding(result)
+            return
+          end if
+          call evaluate_liquid_water_sensible_transport(sample%bottom_outward_exchange_native, donor_temperature_c, &
+               parameters, sample_energy, enthalpy_status)
+          if (enthalpy_status /= LWSE_OK .or. .not. ieee_is_finite(sample_energy)) then
+            result = base_result
+            result%status_value = FMR_BOTTOM_ENERGY_NUMERIC_FAILURE
+            result%complete_value = .false.
+            result%outward_positive_energy_j_m2_value = 0.0_real64
+            return
+          end if
+          candidate_total = candidate_total + sample_energy
+          if (.not. ieee_is_finite(candidate_total)) then
+            result = base_result
+            result%status_value = FMR_BOTTOM_ENERGY_NUMERIC_FAILURE
+            result%complete_value = .false.
+            result%outward_positive_energy_j_m2_value = 0.0_real64
+            return
+          end if
+          resolved_external_count = resolved_external_count + 1
         end if
-        if (binding_status /= FMR_EXT_THERMAL_BINDING_OK .or. .not. binding_available) then
-          result = base_result
-          call mark_invalid_external_binding(result)
-          return
-        end if
-        if (provenance_token < 0_int64 .or. .not. ieee_is_finite(donor_temperature_c)) then
-          result = base_result
-          call mark_invalid_external_binding(result)
-          return
-        end if
-        call evaluate_liquid_water_sensible_transport(sample%bottom_outward_exchange_native, donor_temperature_c, &
-             parameters, sample_energy, enthalpy_status)
-        if (enthalpy_status /= LWSE_OK .or. .not. ieee_is_finite(sample_energy)) then
-          result = base_result
-          result%status_value = FMR_BOTTOM_ENERGY_NUMERIC_FAILURE
-          result%complete_value = .false.
-          result%outward_positive_energy_j_m2_value = 0.0_real64
-          return
-        end if
-        candidate_total = candidate_total + sample_energy
-        if (.not. ieee_is_finite(candidate_total)) then
-          result = base_result
-          result%status_value = FMR_BOTTOM_ENERGY_NUMERIC_FAILURE
-          result%complete_value = .false.
-          result%outward_positive_energy_j_m2_value = 0.0_real64
-          return
-        end if
-        resolved_external_count = resolved_external_count + 1
 
       case (FMR_BOTTOM_THERMAL_DONOR_LOCAL_SWAP, FMR_BOTTOM_THERMAL_DONOR_NONE)
         if (binding_status == FMR_EXT_THERMAL_BINDING_OK .and. binding_available) then
@@ -234,9 +235,17 @@ contains
       end select
     end do
 
+    ! Scan all candidate ordinals before classifying missing provenance. This
+    ! ensures extra or out-of-range bundle entries fail invalid rather than
+    ! being hidden behind an earlier missing external donor.
     if (bindings%binding_count() /= resolved_external_count) then
       result = base_result
       call mark_invalid_external_binding(result)
+      return
+    end if
+
+    if (missing_external_count > 0) then
+      result = base_result
       return
     end if
 
