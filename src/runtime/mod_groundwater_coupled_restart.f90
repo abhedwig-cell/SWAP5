@@ -122,7 +122,8 @@ contains
     type(groundwater_exchange_checkpoint_t) :: checkpoint
     class(groundwater_restart_state_t), allocatable :: state
     integer(int64) :: service_id, lineage_id, revision
-    real(real64) :: committed_time
+    real(real64) :: committed_time, checkpoint_time
+    logical :: checkpoint_time_available
     integer :: exchange_status, adapter_status
 
     record = groundwater_committed_restart_record_t()
@@ -131,6 +132,8 @@ contains
 
     call groundwater_capture_checkpoint(service, checkpoint, exchange_status)
     if (exchange_status /= GW_EXCHANGE_OK .or. .not. checkpoint%ready()) return
+    call checkpoint%origin_time(checkpoint_time, checkpoint_time_available)
+    if (.not. checkpoint_time_available) return
 
     service_id = 0_int64
     lineage_id = 0_int64
@@ -150,7 +153,7 @@ contains
     if (service_id /= checkpoint%service_id()) return
     if (lineage_id /= checkpoint%lineage_id()) return
     if (revision /= checkpoint%origin_revision()) return
-    if (.not. same_time(committed_time, checkpoint%origin_time())) return
+    if (.not. same_time(committed_time, checkpoint_time)) return
 
     record%schema_version = GW_COUPLED_RESTART_SCHEMA_VERSION
     record%service_id = service_id
@@ -181,6 +184,8 @@ contains
     integer, intent(out) :: status
 
     type(groundwater_exchange_checkpoint_t) :: checkpoint
+    real(real64) :: checkpoint_time
+    logical :: checkpoint_time_available
     integer :: adapter_status, exchange_status
 
     restored = .false.
@@ -205,11 +210,16 @@ contains
       status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
       return
     end if
+    call checkpoint%origin_time(checkpoint_time, checkpoint_time_available)
+    if (.not. checkpoint_time_available) then
+      status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
+      return
+    end if
     status = GW_COUPLED_RESTART_PROVENANCE_MISMATCH
     if (checkpoint%service_id() /= record%service_id) return
     if (checkpoint%lineage_id() /= record%lineage_id) return
     if (checkpoint%origin_revision() /= record%revision) return
-    if (.not. same_time(checkpoint%origin_time(), record%committed_time)) return
+    if (.not. same_time(checkpoint_time, record%committed_time)) return
 
     restored = .true.
     status = GW_COUPLED_RESTART_OK
