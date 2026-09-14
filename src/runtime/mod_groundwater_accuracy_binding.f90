@@ -121,11 +121,11 @@ contains
     if (.not. self%initialized) return
     if (self%contract_id_value <= 0_int64) return
     if (self%application_provenance_id_value <= 0_int64) return
-    if (self%temporal_allocation_provenance_id_value <= 0_int64) return
+    if (self%temporal_provenance_id_value <= 0_int64) return
     if (self%binding_provenance_id_value <= 0_int64) return
-    if (self%application_provenance_id_value == self%temporal_allocation_provenance_id_value) return
+    if (self%application_provenance_id_value == self%temporal_provenance_id_value) return
     if (self%binding_provenance_id_value == self%application_provenance_id_value) return
-    if (self%binding_provenance_id_value == self%temporal_allocation_provenance_id_value) return
+    if (self%binding_provenance_id_value == self%temporal_provenance_id_value) return
     if (.not. ieee_is_finite(self%h_app_m_value) .or. self%h_app_m_value <= 0.0_real64) return
     if (.not. ieee_is_finite(self%temporal_budget_m_value) .or. self%temporal_budget_m_value <= 0.0_real64) return
     if (.not. ieee_is_finite(self%interface_tolerance_m_value) .or. self%interface_tolerance_m_value <= 0.0_real64) return
@@ -146,7 +146,7 @@ contains
     if (available) then
       contract_id = self%contract_id_value
       application_id = self%application_provenance_id_value
-      temporal_id = self%temporal_allocation_provenance_id_value
+      temporal_id = self%temporal_provenance_id_value
       binding_id = self%binding_provenance_id_value
     else
       contract_id = 0_int64
@@ -159,7 +159,8 @@ contains
   subroutine groundwater_accuracy_receipt_budgets(self, h_app_m, temporal_budget_m, interface_tolerance_m, &
                                                    temporal_fraction, interface_fraction, available)
     class(groundwater_accuracy_binding_receipt_t), intent(in) :: self
-    real(real64), intent(out) :: h_app_m, temporal_budget_m, interface_tolerance_m, temporal_fraction, interface_fraction
+    real(real64), intent(out) :: h_app_m, temporal_budget_m, interface_tolerance_m, &
+                                temporal_fraction, interface_fraction
     logical, intent(out) :: available
 
     available = self%ready()
