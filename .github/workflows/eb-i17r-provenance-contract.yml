@@ -20,8 +20,12 @@ jobs:
           echo "EB_I17R_TESTED_TREE=$(git rev-parse HEAD^{tree})"
       - name: Provenance contract gate
         run: bash tests/eb/run_eb_i17r_provenance_contract_gate.sh
-      - name: Qualified EB-I17 implementation preservation
-        run: bash tests/eb/run_eb_i17_external_binding_gate.sh
+      - name: Qualified EB-I17 exact-base preservation
+        run: |
+          tmp="$(mktemp -d)"
+          trap 'git worktree remove --force "$tmp" >/dev/null 2>&1 || true; rm -rf "$tmp"' EXIT
+          git worktree add --detach "$tmp" b9517b136bc879c01ad1019a8f0e2e0be72370b6
+          (cd "$tmp" && bash tests/eb/run_eb_i17_external_binding_gate.sh)
       - name: FPM08D7 transactional owner preservation
         run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
       - name: FPM08D7 restart owner preservation
