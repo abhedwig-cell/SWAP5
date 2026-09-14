@@ -245,10 +245,24 @@ once(
 'advance thermal declarations')
 
 once(
-"""    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
+"""    outcome = trial_outcome_t()
+    self%last_observation = fmr_serialized_physical_observation_t()
+    self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
+    self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+    self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
+    self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
+    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
     if (.not. self%temporal_indicator_history_enabled) then
 """,
-"""    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
+"""    outcome = trial_outcome_t()
+    self%last_observation = fmr_serialized_physical_observation_t()
+    self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
+    self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+    self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
+    self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
+    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
     bottom_temperature_start_c = 0.0_real64
     bottom_temperature_start_available = .false.
     if (.not. self%temporal_indicator_history_enabled) then
