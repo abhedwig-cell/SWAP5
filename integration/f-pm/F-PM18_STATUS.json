@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.fpm18.status.v1",
+  "work_unit": "F-PM18",
+  "title": "Drainage-v1 authoritative final completion reconciliation",
+  "branch": "work/f-pm18-drainage-v1-authoritative-final-completion",
+  "phase": "CLOSED_FAIL_CLOSED_CURRENT_CANONICAL_COMPLETION_AUDIT",
+  "decision": "DRAINAGE_V1_FINAL_CLOSURE_GAPS_REMAIN_CURRENT_CANONICAL_PRESERVATION_ONLY",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "tree": "55d62577f305bd6522726338818579520a52d29c"
+  },
+  "tested_head_before_status": {
+    "sha": "5ad0cb9bade81b30f71dbe6155b3fe835aa5ee16",
+    "workflow_run": 34820045861,
+    "workflow_job": 103899312561,
+    "conclusion": "success"
+  },
+  "frozen_scope": {
+    "authority": "F-PM13@e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "variants": 8,
+    "denominator_changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "original_blockers_only": [
+      "G1_RUNTIME_COMPOSITION",
+      "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "G3_CANONICAL_ADMISSION_PRESERVATION"
+    ]
+  },
+  "scope_correction": {
+    "authority": "F-PM17@45455f54c0c3554150e273aff07bfccd06d69c14",
+    "decision": "F_PM15_G1R_NOT_A_FROZEN_DRAINAGE_V1_EXIT_REQUIREMENT",
+    "fully_implicit_solver_coupling_required_for_drainage_v1": false
+  },
+  "blocker_state": {
+    "G1_RUNTIME_COMPOSITION": "CLOSED_ON_LAST_EXACT_QUALIFIED_POSTIMAGE_CURRENT_REQUALIFICATION_REQUIRED",
+    "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS": "CLOSED_ON_LAST_EXACT_QUALIFIED_POSTIMAGE_CURRENT_REQUALIFICATION_REQUIRED",
+    "G3_CANONICAL_ADMISSION_PRESERVATION": "OPEN_CURRENT_CANONICAL_POSTIMAGE_PRESERVATION"
+  },
+  "qualified_chain_before_drift": {
+    "F_PM14_owner": "PASS",
+    "F_VQ73_independent_runtime": "PASS",
+    "F_VQ74_cross_cutting": "PASS",
+    "F_CI61_source_admission": "PASS",
+    "F_CI61P_postimage_preservation": "PASS",
+    "qualified_postimage": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5"
+  },
+  "current_canonical_drift": {
+    "F_CI62_merge": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "shared_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "qualified_drainage_blob": "0f09c0df1559ece894356b146b64d872470c0a32",
+    "current_blob": "21e0e4229f202f1a3a74c4da004aa32a2c855f03",
+    "F_CI62_postimage_reconciled": false,
+    "broad_canonical_run": 34818396655,
+    "broad_canonical_job": 103894543617,
+    "broad_canonical_conclusion": "failure",
+    "failed_step": "Moving-current preservation without historical admission assumptions",
+    "first_reported_dependency_drift": "src/solver/mod_reference_richards_temporal_indicator.f90"
+  },
+  "minimum_remaining_closure": {
+    "type": "CURRENT_CANONICAL_POSTIMAGE_PRESERVATION_AND_REQUALIFICATION_ONLY",
+    "expected_owner": "F-CI62P or equivalent non-overlapping current-canonical postimage reconciliation",
+    "must_replay": [
+      "F-VQ73 drainage response runtime evidence against the exact F-CI62 postimage",
+      "F-VQ74 transaction/mass/restart/MultiSWAP/diagnostics evidence against the exact F-CI62 postimage",
+      "broad moving-current canonical preservation"
+    ],
+    "new_drainage_physics_required": false,
+    "new_solver_coupling_required": false
+  },
+  "architecture_invariants_1_30": "PASS_NO_ADVERSE_F_PM18_DELTA_WITH_FAIL_CLOSED_COMPLETION",
+  "production_source_changed_by_F_PM18": false,
+  "reference_source_changed_by_F_PM18": false,
+  "mass_conservation_concession": false,
+  "drainage_v1_100_percent_complete": false,
+  "closed": true,
+  "next_required_step": "Complete current-canonical postimage reconciliation for F-CI62 with explicit drainage preservation replays, promote that preservation authority, obtain a green broad canonical gate, then rerun this exact frozen-scope completion audit from the new canonical head.",
+  "nonclaims": [
+    "The current blocker is not a demonstrated drainage physics defect.",
+    "F-PM18 does not add fully implicit drainage coupling to the frozen v1 denominator.",
+    "No QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE claim is authorized on canonical 46ed64ab."
+  ]
+}
