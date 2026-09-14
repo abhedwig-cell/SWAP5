@@ -159,8 +159,8 @@ contains
   subroutine groundwater_accuracy_receipt_budgets(self, h_app_m, temporal_budget_m, interface_tolerance_m, &
                                                    temporal_fraction, interface_fraction, available)
     class(groundwater_accuracy_binding_receipt_t), intent(in) :: self
-    real(real64), intent(out) :: h_app_m, temporal_budget_m, interface_tolerance_m, &
-                                temporal_fraction, interface_fraction
+    real(real64), intent(out) :: h_app_m, temporal_budget_m, interface_tolerance_m
+    real(real64), intent(out) :: temporal_fraction, interface_fraction
     logical, intent(out) :: available
 
     available = self%ready()
