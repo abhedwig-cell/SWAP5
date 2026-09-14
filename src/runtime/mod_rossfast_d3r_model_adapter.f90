@@ -1,5 +1,4 @@
 module mod_rossfast_d3r_model_adapter
-  use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t
@@ -11,9 +10,11 @@ module mod_rossfast_d3r_model_adapter
   implicit none
   private
 
+  ! Production-facing model marker for the restricted F-ROSS01 D3R binding.
+  ! F-CI67 policy is applied only by run_rossfast_d3r_interval through the
+  ! F-CI66 optional target-selector callback. Direct run_canonical_interval
+  ! use is therefore outside this adapter contract and is not production-admitted.
   type, abstract, extends(canonical_physical_model_t), public :: rossfast_d3r_model_adapter_t
-  contains
-    procedure :: select_transaction_window => rossfast_d3r_direct_selector_forbidden
   end type rossfast_d3r_model_adapter_t
 
   public :: apply_rossfast_d3r_retry_policy
@@ -38,19 +39,5 @@ contains
     call run_canonical_interval(model, committed, forcing, interval, config, result, &
          rossfast_d3r_select_transaction_window)
   end subroutine run_rossfast_d3r_interval
-
-  subroutine rossfast_d3r_direct_selector_forbidden(self, cursor, outer_t1, selected_t1)
-    class(rossfast_d3r_model_adapter_t), intent(inout) :: self
-    real(real64), intent(in) :: cursor, outer_t1
-    real(real64), intent(out) :: selected_t1
-
-    ! F-CI67 owns both target selection and the segment-specific retry cap.
-    ! The three-argument model selector cannot carry that cap, so direct generic
-    ! execution is deliberately fail-closed. Production RossFast execution must
-    ! enter through run_rossfast_d3r_interval, which supplies the admitted
-    ! F-CI67 callback to the canonical runtime.
-    selected_t1 = cursor
-    if (.not. same_type_as(self, self) .or. outer_t1 < cursor) error stop 901
-  end subroutine rossfast_d3r_direct_selector_forbidden
 
 end module mod_rossfast_d3r_model_adapter
