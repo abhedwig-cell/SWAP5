@@ -5,16 +5,21 @@ cd "$ROOT"
 
 fail(){ echo "FCI61P_POSTIMAGE_GATE_FAIL $*" >&2; exit 161; }
 PRE=e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557
+COMPOSITION=c7444233b0f23d4f0a845ef5639287e77099291b
 ADMISSION=0ac2f09642f71269ee43301cfedde4f2dd95ade6
 POSTIMAGE=eb2b2b17b2d54eeab22c4cba922426d8168e56a9
 OWNER=52c1a9aebddc435ef3792378f958305a96308ed0
 VQ73=ea40e2d850aa9b4b23b25ba6b4a63ffd39811001
 STATUS=integration/f-ci/F-CI61P_STATUS.json
+CANONICAL_WORKFLOW=.github/workflows/fci-canonical.yml
+OLD_WORKFLOW_BLOB=2f26be69f2a760027a880bbea6a8967336992f32
+RECONCILED_WORKFLOW_BLOB=22b151d2ff2dd0d31924ccf2e989ec19e8f3ee0e
 
-for object in "$PRE" "$ADMISSION" "$POSTIMAGE" "$OWNER" "$VQ73"; do git cat-file -e "$object^{commit}"; done
+for object in "$PRE" "$COMPOSITION" "$ADMISSION" "$POSTIMAGE" "$OWNER" "$VQ73"; do git cat-file -e "$object^{commit}"; done
 [[ "$(git rev-parse "$POSTIMAGE^1")" == "$PRE" ]] || fail 'postimage first parent is not frozen pre-admission canonical'
 [[ "$(git rev-parse "$POSTIMAGE^2")" == "$ADMISSION" ]] || fail 'postimage second parent is not exact green F-CI61 admission head'
 [[ "$(git rev-list --parents -n1 "$POSTIMAGE" | awk '{print NF-1}')" -eq 2 ]] || fail 'canonical admission is not a true two-parent merge'
+git merge-base --is-ancestor "$COMPOSITION" "$POSTIMAGE" || fail 'qualified PM14 composition is not reachable from canonical postimage'
 git merge-base --is-ancestor "$POSTIMAGE" HEAD || fail 'postimage qualification is not descended from admitted canonical postimage'
 LIVE_CANONICAL="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
 [[ "$LIVE_CANONICAL" == "$POSTIMAGE" ]] || fail "live canonical drift expected=$POSTIMAGE actual=$LIVE_CANONICAL"
@@ -35,6 +40,7 @@ declare -A PROD_BLOBS=(
 )
 for p in "${!PROD_BLOBS[@]}"; do
   want="${PROD_BLOBS[$p]}"
+  [[ "$(git rev-parse "$COMPOSITION:$p")" == "$want" ]] || fail "composition blob drift $p"
   [[ "$(git rev-parse "$POSTIMAGE:$p")" == "$want" ]] || fail "canonical postimage blob drift $p"
   [[ "$(git rev-parse "HEAD:$p")" == "$want" ]] || fail "postimage qualification blob drift $p"
   [[ "$(git rev-parse "$OWNER:$p")" == "$want" ]] || fail "owner authority mismatch $p"
@@ -47,6 +53,7 @@ allowed=(
   integration/f-ci/F-CI61P_STATUS.json
   tests/fci/run_fci61p_current_canonical_postimage_reconciliation.sh
   .github/workflows/fci61p-current-canonical-postimage-reconciliation.yml
+  .github/workflows/fci-canonical.yml
 )
 mapfile -t changed < <(git diff --name-only "$POSTIMAGE..HEAD")
 for path in "${changed[@]}"; do
@@ -54,7 +61,19 @@ for path in "${changed[@]}"; do
   for candidate in "${allowed[@]}"; do [[ "$path" == "$candidate" ]] && ok=1 && break; done
   [[ "$ok" -eq 1 ]] || fail "postimage qualification scope unexpected path: $path"
 done
-echo 'FCI61P_METADATA_TEST_ONLY_SCOPE=PASS'
+echo 'FCI61P_RECONCILIATION_SCOPE_ALLOWLIST=PASS'
+
+[[ "$(git rev-parse "$POSTIMAGE:$CANONICAL_WORKFLOW")" == "$OLD_WORKFLOW_BLOB" ]] || fail 'unexpected pre-reconciliation canonical workflow blob'
+[[ "$(git rev-parse "HEAD:$CANONICAL_WORKFLOW")" == "$RECONCILED_WORKFLOW_BLOB" ]] || fail 'unexpected reconciled canonical workflow blob'
+grep -Fq "AUTH=$COMPOSITION" "$CANONICAL_WORKFLOW" || fail 'moving-current authority does not point at exact PM14 composition'
+if grep -Fq 'AUTH=2d8b08c06b67132f57b2c757f493d1b31a954a92' "$CANONICAL_WORKFLOW"; then
+  fail 'stale F-CI59 moving-current authority remains active'
+fi
+for p in "${!PROD_BLOBS[@]}"; do
+  grep -Fq "$p" "$CANONICAL_WORKFLOW" || fail "newly admitted PM14 source not protected by moving-current gate: $p"
+done
+grep -Fq 'FCI61_MOVING_DRAINAGE_RESPONSE_RUNTIME_PRESERVATION=PASS' "$CANONICAL_WORKFLOW" || fail 'F-CI61 moving preservation marker absent'
+echo 'FCI61P_MOVING_CURRENT_AUTHORITY_RECONCILIATION=PASS'
 
 python3 - "$ADMISSION" "$VQ73" "$STATUS" <<'PY'
 import json, pathlib, subprocess, sys
@@ -78,6 +97,7 @@ if pathlib.Path(status_path).exists():
     assert s['decision']=='QUALIFIED_F_CI61P_DRAINAGE_RESPONSE_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION'
     assert s['production_canonical_admitted'] is True
     assert s['postimage_reconciled'] is True
+    assert s['moving_current_preservation_reconciled'] is True
     assert s['drainage_v1_100_percent_complete'] is False
 print('FCI61P_FCI61_AND_VQ73_AUTHORITY_RECONCILIATION=PASS')
 PY
