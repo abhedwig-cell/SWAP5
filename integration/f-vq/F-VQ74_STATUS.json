@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.fvq74.status.v1",
+  "work_unit": "F-VQ74",
+  "title": "Drainage-v1 cross-cutting runtime completion independent qualification",
+  "branch": "qualification/f-vq74-drainage-v1-crosscutting-runtime-completion",
+  "phase": "QUALIFICATION_CLOSEOUT_REQUIRES_EXACT_STATUS_HEAD_CI",
+  "decision": "QUALIFIED_PM13_G2_CROSSCUTTING_RUNTIME_EVIDENCE",
+  "base_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "frozen_scope_authority": {
+    "work_unit": "F-PM13",
+    "branch": "work/f-pm13-drainage-v1-completion-audit",
+    "head_at_reconciliation": "82038459ad81c3ef0b2e050ef02794ab013564d6",
+    "denominator_changed": false,
+    "scope_reduced": false,
+    "target_blocker": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS"
+  },
+  "tested_candidate": {
+    "sha": "534dbbab784766be0c3920e091b9e87e37539b79",
+    "tree": "61971cd3195be2c921211a63adeb5eae683f5a9a",
+    "parent": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "production_or_reference_delta": false
+  },
+  "qualification_evidence": {
+    "workflow_run": 34814869937,
+    "workflow_job": 103883339886,
+    "conclusion": "success",
+    "artifact_id": 10335338570,
+    "artifact_name": "fvq74-crosscutting-log-34814869937",
+    "artifact_zip_sha256": "beb5ad325a5cdf7ef42c98e7a5297e22a5516c3610189f05fe842717f59207d2",
+    "runtime_output_sha256": "665954b5e62216f8990be91b3fd1977de3e4961ecbb485cc80897bbd8f19a58c",
+    "live_canonical_lock": "PASS",
+    "no_production_or_reference_delta": "PASS",
+    "F_CI61P_canonical_lineage": "PASS",
+    "exact_11_admitted_PM14_blobs": "PASS",
+    "production_composition_identity": "PASS",
+    "qualification_path_allowlist": "PASS",
+    "no_drainage_persistent_state_static": "PASS",
+    "HeadCalc_IO_calendar_isolation_static": "PASS",
+    "moving_canonical_preservation_binding": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_exact_identity": "PASS",
+    "multiswap_active_inactive_isolation": "PASS",
+    "multiswap_execution_order_independence": "PASS",
+    "accepted_runtime_diagnostics": "PASS",
+    "restart_no_additional_drainage_state": "PASS",
+    "restart_continuation_equivalence": "PASS",
+    "reject_diagnostics_fail_closed": "PASS"
+  },
+  "namespace_collision_disposition": {
+    "collision_detected": true,
+    "authoritative_reservation": {
+      "branch": "qualification/f-vq74-drainage-v1-crosscutting-runtime-completion",
+      "first_commit": "534dbbab784766be0c3920e091b9e87e37539b79",
+      "timestamp_utc": "2026-09-14T06:46:21Z"
+    },
+    "later_conflicting_branch": {
+      "branch": "qualification/f-vq74-drainage-v1-cross-cutting-independent-closure",
+      "first_behavioral_commit": "213056c57df77c711ae25f15fa592aa33ea07e67",
+      "timestamp_utc": "2026-09-14T06:48:22Z",
+      "excluded_from_this_authority": true
+    },
+    "rule_applied": "Retain the earlier exact canonical descendant reservation as F-VQ74; do not combine, cherry-pick or silently merge the later same-number branch into this authority.",
+    "renumbering_required_for_this_authority": false
+  },
+  "architecture": {
+    "invariants_1_30": "NO_ADVERSE_QUALIFICATION_DELTA",
+    "compact_persistent_state": "PASS",
+    "worker_scratch_bound": "PASS",
+    "transactionality": "PASS",
+    "generic_time": "PASS",
+    "mass_conservation": "HARD_PASS",
+    "multiswap": "PASS",
+    "HeadCalc_isolation": "PASS",
+    "physics_vs_solver_policy": "PRESERVED",
+    "runtime_diagnostics": "PASS",
+    "no_silent_calendar_or_IO_dependency": "PASS"
+  },
+  "scope_guards": {
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "new_physics": false,
+    "new_mass_booking": false,
+    "new_persistent_state": false,
+    "new_solver_policy": false,
+    "scope_reduced": false
+  },
+  "pm13_G2_crosscutting_independent_evidence": "COMPLETE_WHEN_THIS_EXACT_STATUS_HEAD_PASSES",
+  "drainage_v1_100_percent_complete": false,
+  "hard_nonclaims": [
+    "F-VQ74 alone does not establish drainage-v1 100-percent completion.",
+    "This qualification does not replace the scientific authorities for the frozen drainage variants.",
+    "This qualification does not replace F-VQ73 transaction/mass/response-runtime qualification.",
+    "The later same-number branch is not evidence for this authority and is not silently merged into it."
+  ],
+  "next_required_step": "Require this exact F-VQ74 status head to pass the F-VQ74 workflow, then execute the PM15 frozen-denominator drainage-v1 final completion reconciliation against current canonical."
+}
