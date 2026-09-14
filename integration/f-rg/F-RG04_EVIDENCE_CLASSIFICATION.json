@@ -7,7 +7,8 @@
     "evidence_strength_cannot_be_promoted_by_reuse": true,
     "historical_fidelity_requires_historical_or_reference_provenance": true,
     "research_evidence_is_not_production_evidence": true,
-    "green_validator_is_not_scientific_proof": true
+    "green_validator_is_not_scientific_proof": true,
+    "no_evidence_class_is_authority_sufficient_by_itself": true
   },
   "classes": [
     {
@@ -111,12 +112,12 @@
     },
     {
       "id": "PRODUCTION_ADMISSION_EVIDENCE",
-      "can_demonstrate": ["candidate was reconciled/admitted at exact F-CI/canonical scope", "admission ancestry and postimage identity"],
-      "cannot_demonstrate": ["scientific validity not already established upstream", "future-current preservation without preservation evidence"],
-      "consumers": ["F-CI/canonical authority", "preservation authority", "release/readiness governance", "rebaseline"],
+      "can_demonstrate": ["that an existing pinned F-CI/canonical authority records candidate reconciliation/admission", "admission ancestry and postimage identity"],
+      "cannot_demonstrate": ["scientific validity not already established upstream", "future-current preservation without preservation evidence", "create or substitute for the admission authority it evidences"],
+      "consumers": ["canonical authority reconciliation", "preservation authority", "release/readiness governance", "rebaseline"],
       "historical_fidelity_claim_supported": false,
       "production_admission_support": true,
-      "production_admission_sufficient_alone": true
+      "production_admission_sufficient_alone": false
     }
   ]
 }
