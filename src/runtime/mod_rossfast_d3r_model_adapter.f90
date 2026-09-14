@@ -1,6 +1,9 @@
 module mod_rossfast_d3r_model_adapter
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_canonical_contracts, only: canonical_physical_model_t, canonical_numerical_config_t
+  use mod_transaction_reference, only: transaction_state_t
+  use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
+       canonical_numerical_config_t, canonical_result_t
+  use mod_canonical_interval_runtime, only: run_canonical_interval
   implicit none
   private
 
@@ -11,10 +14,10 @@ module mod_rossfast_d3r_model_adapter
   real(real64), parameter, public :: ROSSFAST_D3R_ENDPOINT_ULP_MULTIPLIER = 2.0_real64
 
   ! Production-facing adapter for the restricted F-ROSS01 D3R duration
-  ! semantics.  It deliberately owns only RossFast-specific transaction-window
-  ! selection.  Physical advance/storage semantics remain deferred to a
-  ! concrete RossFast model, while the canonical runtime retains validation,
-  ! private working-state ownership and publication.
+  ! semantics. It owns only RossFast-specific transaction-window selection.
+  ! Physical advance/storage semantics remain deferred to a concrete RossFast
+  ! model, while the canonical runtime retains validation, private working-state
+  ! ownership, accepted-only commit and single external publication.
   type, abstract, extends(canonical_physical_model_t), public :: rossfast_d3r_model_adapter_t
   contains
     procedure :: select_transaction_window => rossfast_d3r_select_transaction_window
@@ -22,6 +25,7 @@ module mod_rossfast_d3r_model_adapter
 
   public :: apply_rossfast_d3r_retry_policy
   public :: rossfast_d3r_duration_for_index
+  public :: run_rossfast_d3r_interval
 
 contains
 
@@ -43,6 +47,31 @@ contains
     config%transaction%max_retries = ROSSFAST_D3R_MAX_RETRIES
   end subroutine apply_rossfast_d3r_retry_policy
 
+  subroutine run_rossfast_d3r_interval(model, committed, forcing, interval, config, result)
+    class(rossfast_d3r_model_adapter_t), intent(inout) :: model
+    class(transaction_state_t), allocatable, intent(inout) :: committed
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(canonical_interval_t), intent(in) :: interval
+    type(canonical_numerical_config_t), intent(in) :: config
+    type(canonical_result_t), intent(out) :: result
+
+    call run_canonical_interval(model, committed, forcing, interval, config, result, select_window)
+
+  contains
+
+    subroutine select_window(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+
+      call model%select_transaction_window(cursor, requested_t1, target_t1)
+      max_retries_cap = min(config%transaction%max_retries, ROSSFAST_D3R_MAX_RETRIES)
+      valid = target_t1 > cursor .and. target_t1 <= requested_t1
+    end subroutine select_window
+
+  end subroutine run_rossfast_d3r_interval
+
   subroutine rossfast_d3r_select_transaction_window(self, cursor, outer_t1, selected_t1)
     class(rossfast_d3r_model_adapter_t), intent(inout) :: self
     real(real64), intent(in) :: cursor, outer_t1
@@ -50,10 +79,10 @@ contains
     real(real64) :: duration, expected_t1, tolerance
     integer :: index
 
-    ! The adapter selects only durations admitted by D3R.  An outer remainder
-    ! that is smaller than the minimum admitted duration and is not equal to a
-    ! ladder endpoint is represented as no progress; the canonical runtime then
-    ! rejects it fail-closed before any physical trial is executed.
+    ! Select only durations admitted by D3R. An outer remainder smaller than
+    ! the minimum admitted duration and not equal to a ladder endpoint is
+    ! represented as no selection. The canonical selector contract then fails
+    ! closed as INVALID_REQUEST before any physical transaction is executed.
     selected_t1 = cursor
     if (outer_t1 <= cursor) return
 
