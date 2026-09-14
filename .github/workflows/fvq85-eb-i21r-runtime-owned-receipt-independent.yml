@@ -1,0 +1,31 @@
+name: F-VQ85 EB-I21R runtime-owned receipt independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq85-eb-i21r-runtime-owned-receipt-independent-qualification
+    paths:
+      - tests/fvq/test_fvq85_runtime_owned_receipt_independent.f90
+      - tests/fvq/run_fvq85_eb_i21r_runtime_owned_receipt_independent.sh
+      - .github/workflows/fvq85-eb-i21r-runtime-owned-receipt-independent.yml
+      - qualification/F-VQ85_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FVQ85_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ85_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent EB-I21R qualification
+        run: bash tests/fvq/run_fvq85_eb_i21r_runtime_owned_receipt_independent.sh
