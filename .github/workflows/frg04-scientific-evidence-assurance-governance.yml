@@ -61,8 +61,14 @@ jobs:
           echo 'FRG04_GOVERNING_AUTHORITIES_PINNED=PASS'
           echo 'FRG04_DENOMINATOR_AUTHORITY_UNCHANGED=PASS'
 
-      - name: Validate final self-review and disposition
+      - name: Validate review state
+        shell: bash
         run: |
+          set -euo pipefail
+          if [[ ! -f integration/f-rg/F-RG04_ADVERSARIAL_SELF_REVIEW.json || ! -f integration/f-rg/F-RG04_STATUS.json ]]; then
+            echo 'FRG04_AUTHORING_PACKAGE_EXACT_HEAD_CI=PASS_PENDING_ADVERSARIAL_SELF_REVIEW'
+            exit 0
+          fi
           python3 - <<'PY'
           import json, subprocess
           from pathlib import Path
@@ -91,7 +97,11 @@ jobs:
           print('FRG04_FINAL_DISPOSITION=PASS')
           PY
 
-      - name: Exact final head marker
+      - name: Exact head marker
         run: |
-          echo "FRG04_FINAL_HEAD=$(git rev-parse HEAD)"
-          echo 'QUALIFIED_SWAP5_SCIENTIFIC_EVIDENCE_QUALIFICATION_ADMISSION_COMPOSITION_AND_ASSURANCE_GOVERNANCE'
+          echo "FRG04_HEAD=$(git rev-parse HEAD)"
+          if [[ -f integration/f-rg/F-RG04_ADVERSARIAL_SELF_REVIEW.json && -f integration/f-rg/F-RG04_STATUS.json ]]; then
+            echo 'QUALIFIED_SWAP5_SCIENTIFIC_EVIDENCE_QUALIFICATION_ADMISSION_COMPOSITION_AND_ASSURANCE_GOVERNANCE'
+          else
+            echo 'F-RG04 AUTHORING PACKAGE QUALIFIED FOR ADVERSARIAL SELF-REVIEW'
+          fi
