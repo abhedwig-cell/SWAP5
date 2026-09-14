@@ -41,11 +41,10 @@ jobs:
           git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
           test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
           grep -q "outcome%temporal_certificate_available" "$RUNNER_TEMP/tx.f90"
-          grep -q "outcome%temporal_indicator <= 1.0_wp" "$RUNNER_TEMP/tx.f90"
+          grep -q "outcome%temporal_indicator <= 1.0_real64" "$RUNNER_TEMP/tx.f90"
       - name: Bind frozen research authorities
         run: |
           set -euo pipefail
-          test "$(git rev-parse work/f-ross01-d3g02-temporal-certificate-qualification~2)" = "c8dc52dc92d32d075fa3fc57916e8bffb33c14e3" || true
           test "$(git hash-object experiments/ross/ross01_d3r_fsi31_duration_adapter.py)" = "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
           test "$(git hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = "bafda0fb4ed6da606c3a1837208200dbcdb05c65"
       - name: Syntax check
@@ -90,7 +89,7 @@ jobs:
       - name: Aggregate calibration evidence
         run: |
           python3 - <<'PY'
-          import json, math
+          import json
           from pathlib import Path
           files = sorted(Path('shards').glob('F-ROSS01_D3G02_CAL_*_*.json'))
           rows = [json.loads(p.read_text()) for p in files]
@@ -98,7 +97,8 @@ jobs:
           expected = {(i,m) for i in range(9) for m in materials}
           observed = {(r.get('attempt_index'), r.get('material')) for r in rows}
           canonical_heads = sorted(set(r.get('live_canonical_head') for r in rows))
-          ratios = [float(r['temporal_metrics']['refined_error_to_raw_ratio']) for r in rows if isinstance((r.get('temporal_metrics') or {}).get('refined_error_to_raw_ratio'), (int,float))]
+          ratio_rows = [r for r in rows if isinstance((r.get('temporal_metrics') or {}).get('refined_error_to_raw_ratio'), (int,float))]
+          ratios = [float(r['temporal_metrics']['refined_error_to_raw_ratio']) for r in ratio_rows]
           raws = [float(r['temporal_metrics']['raw_full_vs_two_half_estimator']) for r in rows if isinstance((r.get('temporal_metrics') or {}).get('raw_full_vs_two_half_estimator'), (int,float))]
           refined = [float(r['temporal_metrics']['refined_reference_error']) for r in rows if isinstance((r.get('temporal_metrics') or {}).get('refined_reference_error'), (int,float))]
           coarse = [float(r['temporal_metrics']['coarse_reference_error']) for r in rows if isinstance((r.get('temporal_metrics') or {}).get('coarse_reference_error'), (int,float))]
@@ -108,8 +108,8 @@ jobs:
           passed = complete and all(r.get('pass') is True for r in rows) and len(canonical_heads) == 1 and len(ratios) == 54
           max_ratio = max(ratios, default=None)
           worst_ratio = None
-          if ratios:
-              rr = max(rows, key=lambda r: float(r['temporal_metrics']['refined_error_to_raw_ratio']))
+          if ratio_rows:
+              rr = max(ratio_rows, key=lambda r: float(r['temporal_metrics']['refined_error_to_raw_ratio']))
               worst_ratio = {'attempt_index': rr['attempt_index'], 'material': rr['material'], 'ratio': rr['temporal_metrics']['refined_error_to_raw_ratio']}
           out = {
               'work_unit': 'F-ROSS01 D3G02',
