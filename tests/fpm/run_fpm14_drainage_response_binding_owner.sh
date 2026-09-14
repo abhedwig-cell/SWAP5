@@ -33,7 +33,11 @@ for opt in 0 2; do
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_fpm14_drainage_response_binding.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt" 2>&1
+  if ! "$OUT/test" > "$OUT/output.txt" 2>&1; then
+    echo "FPM14_DRAINAGE_RESPONSE_BINDING_O${opt}=FAIL" >&2
+    cat "$OUT/output.txt" >&2
+    exit 1
+  fi
   grep -Fq 'FPM14_ALL_RESPONSE_FAMILIES_BOTTOM_LUMPED=PASS' "$OUT/output.txt"
   grep -Fq 'FPM14_MULTILEVEL_DERIVED_TOTAL_SINGLE_BOOKING=PASS' "$OUT/output.txt"
   grep -Fq 'FPM14_UNSUPPORTED_VARIANT_FAIL_CLOSED=PASS' "$OUT/output.txt"
