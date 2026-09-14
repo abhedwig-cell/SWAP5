@@ -89,25 +89,54 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
-    tests/fpm/test_fpm14_drainage_response_transactional_runtime.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "owner test O$opt execution"; }
+    tests/fpm/test_fpm14_drainage_response_transactional_runtime.f90 -o "$OUT/transactional-test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/transactional-test.o" -o "$OUT/transactional-test"
+  "$OUT/transactional-test" > "$OUT/transactional-output.txt" 2>&1 || {
+    cat "$OUT/transactional-output.txt" >&2; fail "transactional owner test O$opt execution";
+  }
   for marker in \
     'FPM14_ACTIVE_RESPONSE_SINGLE_ACCEPTED_BOOKING=PASS' \
     'FPM14_ACTIVE_RESPONSE_HARD_MASS_CLOSURE=PASS' \
     'FPM14_UNSUPPORTED_RESPONSE_TRANSACTION_ROLLBACK=PASS' \
     'FPM14_DRAINAGE_RESPONSE_TRANSACTIONAL_RUNTIME_OWNER_TEST PASS'; do
-      grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker: $marker"; }
+      grep -Fq "$marker" "$OUT/transactional-output.txt" || {
+        cat "$OUT/transactional-output.txt" >&2; fail "missing transactional O$opt marker: $marker";
+      }
   done
-  echo "FPM14_TRANSACTIONAL_RUNTIME_O${opt}=PASS"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_fpm14_multiswap_restart_isolation.f90 -o "$OUT/isolation-test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/isolation-test.o" -o "$OUT/isolation-test"
+  "$OUT/isolation-test" > "$OUT/isolation-output.txt" 2>&1 || {
+    cat "$OUT/isolation-output.txt" >&2; fail "MultiSWAP/restart owner test O$opt execution";
+  }
+  for marker in \
+    'FPM14_MULTISWAP_ACTIVE_INACTIVE_ACTIVE_ISOLATION=PASS' \
+    'FPM14_MULTISWAP_EXECUTION_ORDER_INDEPENDENCE=PASS' \
+    'FPM14_RESTART_NO_ADDITIONAL_DRAINAGE_STATE=PASS' \
+    'FPM14_RESTART_CONTINUATION_EQUIVALENCE=PASS' \
+    'FPM14_MULTISWAP_RESTART_ISOLATION_OWNER_TEST PASS'; do
+      grep -Fq "$marker" "$OUT/isolation-output.txt" || {
+        cat "$OUT/isolation-output.txt" >&2; fail "missing isolation O$opt marker: $marker";
+      }
+  done
+  echo "FPM14_TRANSACTIONAL_AND_ISOLATION_O${opt}=PASS"
 done
 
-cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
-  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
-  fail 'O0/O2 output identity'
+cmp -s "$BUILD/o0/transactional-output.txt" "$BUILD/o2/transactional-output.txt" || {
+  diff -u "$BUILD/o0/transactional-output.txt" "$BUILD/o2/transactional-output.txt" >&2 || true
+  fail 'transactional O0/O2 output identity'
+}
+cmp -s "$BUILD/o0/isolation-output.txt" "$BUILD/o2/isolation-output.txt" || {
+  diff -u "$BUILD/o0/isolation-output.txt" "$BUILD/o2/isolation-output.txt" >&2 || true
+  fail 'MultiSWAP/restart O0/O2 output identity'
 }
 echo 'FPM14_TRANSACTIONAL_RUNTIME_O0_O2_EXACT_IDENTITY=PASS'
-cat "$BUILD/o0/output.txt"
-echo "FPM14_TRANSACTIONAL_RUNTIME_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
+echo 'FPM14_MULTISWAP_RESTART_O0_O2_EXACT_IDENTITY=PASS'
+cat "$BUILD/o0/transactional-output.txt"
+cat "$BUILD/o0/isolation-output.txt"
+echo "FPM14_TRANSACTIONAL_RUNTIME_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/transactional-output.txt" | awk '{print $1}')"
+echo "FPM14_MULTISWAP_RESTART_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/isolation-output.txt" | awk '{print $1}')"
 echo 'FPM14_DRAINAGE_RESPONSE_TRANSACTIONAL_RUNTIME_OWNER_GATE=PASS'
