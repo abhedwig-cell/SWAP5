@@ -41,6 +41,7 @@ module mod_rossfast_d3r_model_binding
   end type rossfast_d3r_state_t
 
   type, extends(canonical_forcing_t), public :: rossfast_d3r_forcing_t
+    ! Restricted F-ROSS02 sign convention. Positive values enter the column.
     real(real64) :: top_flux_cm_per_day = 0.0_real64
     real(real64) :: bottom_flux_upward_cm_per_day = 0.0_real64
   end type rossfast_d3r_forcing_t
@@ -60,19 +61,15 @@ module mod_rossfast_d3r_model_binding
     real(real64) :: temporal_accuracy_tolerance = ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE
   end type rossfast_d3r_kernel_request_t
 
+  ! The kernel owns candidate hydraulics and the already-qualified temporal
+  ! certificate. It deliberately does not own the external mass ledger or the
+  ! accepted bottom exchange for this prescribed-flux production binding.
   type, public :: rossfast_d3r_kernel_result_t
     logical :: request_admitted = .false.
     logical :: solver_ok = .false.
     type(rossfast_d3r_state_t) :: candidate_state
-    real(real64) :: mass_in_cm = 0.0_real64
-    real(real64) :: mass_out_cm = 0.0_real64
-    logical :: mass_accounting_complete = .false.
-    integer(int64) :: missing_mass_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     logical :: temporal_certificate_available = .false.
     real(real64) :: temporal_indicator = huge(0.0_real64)
-    logical :: bottom_interface_exchange_available = .false.
-    real(real64) :: bottom_outward_exchange_cm = 0.0_real64
-    real(real64) :: terminal_bottom_outward_flux_cm_per_day = 0.0_real64
     logical :: local_terminal_sensitivity_available = .false.
     real(real64) :: dh_bottom_dq_bottom_day = 0.0_real64
     integer :: internal_retries = 0
@@ -179,7 +176,7 @@ contains
     if (config%transaction%temporal_mode /= TX_TEMPORAL_MODEL_CERTIFICATE) return
     if (config%transaction%retry_scale /= ROSSFAST_D3R_RETRY_SCALE) return
     if (config%transaction%max_retries /= ROSSFAST_D3R_MAX_FULL_INDEX) return
-    if (config%transaction%mass_tolerance < 0.0_real64 .or. &
+    if (config%transaction%mass_tolerance <= 0.0_real64 .or. &
         config%transaction%mass_tolerance > ROSSFAST_D3R_HARD_MASS_TOL_CM) return
     if (config%max_committed_substeps <= 0) return
 
@@ -201,6 +198,7 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(rossfast_d3r_kernel_request_t) :: request
     type(rossfast_d3r_kernel_result_t) :: result
+    real(real64) :: dt, top_transfer, bottom_transfer
 
     outcome = trial_outcome_t()
     if (.not. self%prepared .or. .not. associated(self%kernel)) return
@@ -219,32 +217,36 @@ contains
 
       if (.not. result%request_admitted .or. .not. result%solver_ok) return
       if (.not. valid_candidate(result%candidate_state, self%material)) return
-      if (.not. ieee_is_finite(result%mass_in_cm) .or. result%mass_in_cm < 0.0_real64) return
-      if (.not. ieee_is_finite(result%mass_out_cm) .or. result%mass_out_cm < 0.0_real64) return
+
+      ! In F-ROSS02 there are no distributed source/sink terms and both
+      ! boundaries are prescribed fluxes. Therefore the binding, not the
+      ! numerical kernel, owns the complete external water-transfer ledger.
+      dt = t1 - t0
+      top_transfer = dt * self%forcing%top_flux_cm_per_day
+      bottom_transfer = dt * self%forcing%bottom_flux_upward_cm_per_day
+      if (.not. ieee_is_finite(top_transfer) .or. .not. ieee_is_finite(bottom_transfer)) return
 
       state = result%candidate_state
       outcome%solver_ok = .true.
-      outcome%mass_in = result%mass_in_cm
-      outcome%mass_out = result%mass_out_cm
-      outcome%mass_accounting_complete = result%mass_accounting_complete
-      outcome%missing_mass_contribution_mask = result%missing_mass_contribution_mask
+      outcome%mass_in = max(top_transfer, 0.0_real64) + max(bottom_transfer, 0.0_real64)
+      outcome%mass_out = max(-top_transfer, 0.0_real64) + max(-bottom_transfer, 0.0_real64)
+      outcome%mass_accounting_complete = .true.
+      outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
       outcome%temporal_certificate_available = result%temporal_certificate_available
       outcome%temporal_indicator = result%temporal_indicator
-      outcome%bottom_interface_exchange_available = result%bottom_interface_exchange_available
-      if (result%bottom_interface_exchange_available) then
-        if (.not. ieee_is_finite(result%bottom_outward_exchange_cm) .or. &
-            .not. ieee_is_finite(result%terminal_bottom_outward_flux_cm_per_day)) then
-          outcome%bottom_interface_exchange_available = .false.
-        else
-          outcome%bottom_outward_exchange_native = result%bottom_outward_exchange_cm
-          outcome%terminal_bottom_outward_flux_native = result%terminal_bottom_outward_flux_cm_per_day
-        end if
-      end if
+
+      ! Canonical outward is positive out of the column. RossFast forcing uses
+      ! positive upward into the column, hence the sign inversion here.
+      outcome%bottom_interface_exchange_available = .true.
+      outcome%bottom_outward_exchange_native = -bottom_transfer
+      outcome%terminal_bottom_outward_flux_native = -self%forcing%bottom_flux_upward_cm_per_day
+
       outcome%internal_retries = max(0, result%internal_retries)
       outcome%linear_solves = max(0, result%linear_solves)
       outcome%alternative_solver_calls = max(0, result%alternative_solver_calls)
       if (result%local_terminal_sensitivity_available .and. &
-          ieee_is_finite(result%dh_bottom_dq_bottom_day)) then
+          ieee_is_finite(result%dh_bottom_dq_bottom_day) .and. &
+          result%dh_bottom_dq_bottom_day > 0.0_real64) then
         outcome%interface_sensitivity%available = .true.
         outcome%interface_sensitivity%dh_bottom_dq_bottom = result%dh_bottom_dq_bottom_day
         outcome%interface_sensitivity%method = 'rossfast-local-terminal'
