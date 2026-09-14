@@ -1,0 +1,134 @@
+{
+  "schema": "swap5.frg04.animo_lesson_mapping.v1",
+  "workunit": "F-RG04",
+  "cross_project_repository": "abhedwig-cell/ANIMO5",
+  "gov06": {
+    "available_at_reconnaissance": false,
+    "authority_used": false
+  },
+  "inspected_authorities": [
+    "ANIMO-GOV03@cbd262bdabe92923113b7326f2f42822ce9a971c",
+    "ANIMO-GOV04@1bbe4c211197590f346803106e45dca5faae79fc",
+    "ANIMO-GOV05@f65a47724e4a4fca7f2d8b8d6de9eeee51867904",
+    "ANIMO-RG05O@bc9e6ed997a078336645210ebb4d99ae976893fe",
+    "ANIMO-B3Q06@11e9bcdc6654e63f84875bf1f28dc54abe725700",
+    "ANIMO-B3Q02@1db63b17cb5f48cbd8ae28116a2e716b4bdaadf3",
+    "ANIMO-SQ06@2dbabfd5f57120c583645415e87f7eb792a8c0d7",
+    "ANIMO-SQ07@2076c0def17c504a3ba29db02d964d4a6238d2cf",
+    "ANIMO-MASSQ04@3e0f8254d9cd7966a4491b3068d0239b8ccda5f9",
+    "ANIMO-STATEQ04@ef9a5998cafae433deeba701a8e9a8a08eacc92f",
+    "ANIMO-B3B10E1@8522752f9941e6fd5b421cf5ac4ef839384d7ce7"
+  ],
+  "lessons": [
+    {
+      "lesson": "qualification_is_not_admission",
+      "disposition": "ALREADY_PRESENT",
+      "swap_basis": ["F-VQ independent qualification conventions", "F-CI serialized admission conventions", "F-RG01C maturity ladder"],
+      "frg04_effect": "Makes the distinction program-explicit without creating a new admission mechanism."
+    },
+    {
+      "lesson": "local_admission_not_aggregate_authority_and_aggregate_not_composition_completeness",
+      "disposition": "ADAPTED",
+      "source_basis": ["ANIMO GOV04", "ANIMO RG05O", "ANIMO B3Q06"],
+      "swap_translation": "Use F-RG03 rebaseline/aggregate snapshot versus atomic F-CI admission; require separate composition proof."
+    },
+    {
+      "lesson": "child_evidence_does_not_silently_become_parent_authority",
+      "disposition": "ADAPTED",
+      "source_basis": ["ANIMO B3Q02 parent/child carrier"],
+      "swap_translation": "Generic bounded-object and composition rule across physics, solver, transaction, coupling and runtime objects."
+    },
+    {
+      "lesson": "negative_scientific_qualification_is_first_class_closed_knowledge",
+      "disposition": "ADOPTED",
+      "source_basis": ["ANIMO SQ06 negative dry-hold decision", "ANIMO SQ07 negative rewetting decision", "ANIMO B3Q06 negative closure gate"],
+      "swap_translation": "Qualified negative outcomes may close hypotheses or block/reroute work but create no implicit production/completion credit."
+    },
+    {
+      "lesson": "risk_tiered_review_without_gate_reduction",
+      "disposition": "ADAPTED",
+      "source_basis": ["ANIMO GOV04"],
+      "swap_translation": "R0-R4 SWAP-specific tiers based on physics, numerical, conservation, state/restart, transaction, coupling and composition blast radius; existing F-VQ gates remain hard."
+    },
+    {
+      "lesson": "same_agent_adversarial_review_is_not_independent",
+      "disposition": "ADOPTED",
+      "source_basis": ["ANIMO GOV05"],
+      "swap_translation": "Use explicit PROCESS/ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT labels; never satisfy an existing independent F-VQ gate."
+    },
+    {
+      "lesson": "immutable_adversarial_review_boundary_and_remediation_reset",
+      "disposition": "ADOPTED",
+      "source_basis": ["ANIMO GOV05 first-head finding and remediated immutable-head re-review"],
+      "swap_translation": "Freeze reviewed authoring head; substantive post-review change requires a new head and affected/full re-review."
+    },
+    {
+      "lesson": "verify_and_reuse_immutable_evidence_without_strength_promotion",
+      "disposition": "ADOPTED",
+      "source_basis": ["ANIMO GOV04"],
+      "swap_translation": "Reused evidence must match source/test/scope pins and retains its original provenance and assurance strength."
+    },
+    {
+      "lesson": "historical_unknown_is_valid_and_reconstruction_is_not_historical_truth",
+      "disposition": "ADOPTED",
+      "source_basis": ["ANIMO GOV03", "ANIMO GOV04", "TCD-031 provenance/remediation line"],
+      "swap_translation": "Use HISTORICAL_BEHAVIOR_UNKNOWN and RECONSTRUCTED_NOT_HISTORICAL; reconstructed replay cannot claim historical fidelity."
+    },
+    {
+      "lesson": "separate_scientific_numerical_mass_state_runtime_qualification_surfaces",
+      "disposition": "ADAPTED",
+      "source_basis": ["ANIMO SQ/NQ/MASSQ/STATEQ/RUNTIMEQ families"],
+      "swap_translation": "Do not copy ANIMO workunit families; bounded SWAP objects declare which surfaces are in scope and which authority proves each."
+    },
+    {
+      "lesson": "evidence_is_not_authority",
+      "disposition": "ADOPTED",
+      "source_basis": ["ANIMO evidence baseline/provenance practice", "GOV04", "TCD-031 remediation"],
+      "swap_translation": "Compact SWAP evidence classes with explicit proof limits and consuming authorities."
+    },
+    {
+      "lesson": "semantic_contract_ownership_controls_parallelism",
+      "disposition": "ALREADY_PRESENT",
+      "swap_basis": ["F-RG01A@4553204468695553cf69a48d1c97598c471156d6"],
+      "frg04_effect": "Preserved and reused for admission serialization and composition ownership."
+    },
+    {
+      "lesson": "runtime_resumable_workunit_governance",
+      "disposition": "ALREADY_PRESENT",
+      "swap_basis": ["F-RG01B@5e2561d9051fba81769565291b1bf3089c7ddcd9"],
+      "frg04_effect": "Review/evidence checkpoints are additive resume metadata, not a new lifecycle."
+    },
+    {
+      "lesson": "fixed_denominator_completion_governance",
+      "disposition": "ALREADY_PRESENT",
+      "swap_basis": ["F-RG01C@56b86e29e0960e396059caf47c193440d571b709"],
+      "frg04_effect": "Epistemic labels remain orthogonal to completion scoring."
+    },
+    {
+      "lesson": "module_contract_manifest_as_authority_index_not_second_truth",
+      "disposition": "ALREADY_PRESENT",
+      "swap_basis": ["F-RG01D@0877971d1117cb0067aa363d0868d682f62a6844"],
+      "frg04_effect": "Optional evidence/assurance/provenance/composition references are added conceptually, without mutating the existing schema or historical manifests."
+    },
+    {
+      "lesson": "animo_B0_B1_B2_B3_B4_lifecycle",
+      "disposition": "REJECTED_AS_ANIMO_SPECIFIC",
+      "reason": "SWAP5 already has F-RG/F-VQ/F-CI/F-TB/F-DOC and canonical maturity conventions; importing B-levels would duplicate authority."
+    },
+    {
+      "lesson": "TCD_numbering_and_ANIMO_discrepancy_class_taxonomy",
+      "disposition": "REJECTED_AS_ANIMO_SPECIFIC",
+      "reason": "SWAP5 bounded objects are capability/contract based and need no TCD namespace."
+    },
+    {
+      "lesson": "ANIMO_exact_central_RG_batched_admission_cadence",
+      "disposition": "REJECTED_AS_ANIMO_SPECIFIC",
+      "reason": "SWAP5 retains F-RG03 approximately 4-6 substantive-closeout rebaseline cadence plus immediate rebaseline on material conflicts/gates."
+    },
+    {
+      "lesson": "ANIMO_historical_B2_acquisition_gate_as_named_stage",
+      "disposition": "REJECTED_AS_ANIMO_SPECIFIC",
+      "reason": "Historical uncertainty/provenance principle is adopted, but SWAP does not need a B2 stage."
+    }
+  ]
+}
