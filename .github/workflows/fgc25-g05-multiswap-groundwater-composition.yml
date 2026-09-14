@@ -1,0 +1,21 @@
+name: F-GC25 G05 MultiSWAP groundwater composition
+
+on:
+  push:
+    branches:
+      - work/f-gc-g05-direct-groundwater-composition
+  workflow_dispatch:
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-GC25 owner gate
+        run: bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh
