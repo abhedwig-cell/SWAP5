@@ -1,0 +1,23 @@
+name: F-KT22P Production Directional Exposure
+
+on:
+  push:
+    branches:
+      - work/f-kt22-production-canonical-trajectory-sensitivity-exposure
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-KT22P qualification
+        run: bash tests/fkt22p/run_fkt22p_qualification.sh
