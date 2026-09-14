@@ -5,6 +5,12 @@ src = Path(sys.argv[1])
 dst = Path(sys.argv[2])
 s = src.read_text(encoding='utf-8')
 
+old = 'use, intrinsic :: iso_fortran_env, only: real64'
+new = 'use, intrinsic :: iso_fortran_env, only: int64, real64'
+if s.count(old) != 1:
+    raise SystemExit(f'iso_fortran_env anchor count={s.count(old)}')
+s = s.replace(old, new, 1)
+
 old = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t'
 new = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE'
 if s.count(old) != 1:
