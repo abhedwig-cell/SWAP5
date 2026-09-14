@@ -65,12 +65,23 @@ contains
     result = groundwater_multiswap_result_t()
     result%diagnostics%route = 'restricted-multiswap-pc1'
     n = size(bindings)
-    if (n <= 0 .or. size(parameters) /= n .or. size(committed) /= n .or. size(ledgers) /= n .or. &
-        size(origins) /= n) then
+    if (n <= 0) then
       call fail_main(result, GW_MULTI_INVALID_REQUEST, .false., 'shape-contract')
       return
     end if
-    if (.not. window%valid() .or. .not. datum%valid() .or. .not. head_policy%valid()) then
+    if (size(parameters) /= n .or. size(committed) /= n .or. size(ledgers) /= n .or. size(origins) /= n) then
+      call fail_main(result, GW_MULTI_INVALID_REQUEST, .false., 'shape-contract')
+      return
+    end if
+    if (.not. window%valid()) then
+      call fail_main(result, GW_MULTI_INVALID_REQUEST, .false., 'request-contract')
+      return
+    end if
+    if (.not. datum%valid()) then
+      call fail_main(result, GW_MULTI_INVALID_REQUEST, .false., 'request-contract')
+      return
+    end if
+    if (.not. head_policy%valid()) then
       call fail_main(result, GW_MULTI_INVALID_REQUEST, .false., 'request-contract')
       return
     end if
@@ -104,7 +115,17 @@ contains
         call fail_main(result, GW_MULTI_INVALID_REQUEST, .false., 'restricted-profile')
         return
       end if
-      if (.not. ledgers(i)%has_identity() .or. ledgers(i)%has_active_trial() .or. ledgers(i)%has_prepared_trial()) then
+      if (.not. ledgers(i)%has_identity()) then
+        result%diagnostics%failing_tile_index = i
+        call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'ledger-origin')
+        return
+      end if
+      if (ledgers(i)%has_active_trial()) then
+        result%diagnostics%failing_tile_index = i
+        call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'ledger-origin')
+        return
+      end if
+      if (ledgers(i)%has_prepared_trial()) then
         result%diagnostics%failing_tile_index = i
         call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'ledger-origin')
         return
@@ -118,19 +139,33 @@ contains
     do k = 1, n
       idx = order(k)
       call committed(idx)%capture_checkpoint(checkpoints(idx), checkpoint_ok)
-      if (.not. checkpoint_ok .or. .not. checkpoints(idx)%ready()) then
+      if (.not. checkpoint_ok) then
+        result%diagnostics%failing_tile_index = idx
+        call fail_main(result, GW_MULTI_SWAP_CHECKPOINT_FAILED, .true., 'swap-checkpoint')
+        return
+      end if
+      if (.not. checkpoints(idx)%ready()) then
         result%diagnostics%failing_tile_index = idx
         call fail_main(result, GW_MULTI_SWAP_CHECKPOINT_FAILED, .true., 'swap-checkpoint')
         return
       end if
       call checkpoints(idx)%current_time(swap_time, swap_time_available)
-      if (.not. swap_time_available .or. .not. same_multiswap_time(swap_time, window%t0)) then
+      if (.not. swap_time_available) then
         result%diagnostics%failing_tile_index = idx
         call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'swap-origin-time')
         return
       end if
-      if (checkpoints(idx)%current_lineage_id() /= origins(idx)%swap_lineage_id .or. &
-          checkpoints(idx)%origin_revision() /= origins(idx)%swap_revision) then
+      if (.not. same_multiswap_time(swap_time, window%t0)) then
+        result%diagnostics%failing_tile_index = idx
+        call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'swap-origin-time')
+        return
+      end if
+      if (checkpoints(idx)%current_lineage_id() /= origins(idx)%swap_lineage_id) then
+        result%diagnostics%failing_tile_index = idx
+        call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'swap-origin-provenance')
+        return
+      end if
+      if (checkpoints(idx)%origin_revision() /= origins(idx)%swap_revision) then
         result%diagnostics%failing_tile_index = idx
         call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'swap-origin-provenance')
         return
@@ -139,19 +174,35 @@ contains
 
     call groundwater_capture_checkpoint(groundwater, groundwater_checkpoint, status)
     result%diagnostics%groundwater_status = status
-    if (status /= GW_EXCHANGE_OK .or. .not. groundwater_checkpoint%ready()) then
+    if (status /= GW_EXCHANGE_OK) then
+      call fail_main(result, GW_MULTI_GROUNDWATER_CHECKPOINT_FAILED, .true., 'groundwater-checkpoint')
+      return
+    end if
+    if (.not. groundwater_checkpoint%ready()) then
       call fail_main(result, GW_MULTI_GROUNDWATER_CHECKPOINT_FAILED, .true., 'groundwater-checkpoint')
       return
     end if
     call groundwater_checkpoint%origin_time(groundwater_time, groundwater_time_available)
-    if (.not. groundwater_time_available .or. .not. same_multiswap_time(groundwater_time, window%t0)) then
+    if (.not. groundwater_time_available) then
+      call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'groundwater-origin-time')
+      return
+    end if
+    if (.not. same_multiswap_time(groundwater_time, window%t0)) then
       call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'groundwater-origin-time')
       return
     end if
     do i = 1, n
-      if (groundwater_checkpoint%service_id() /= origins(i)%groundwater_service_id .or. &
-          groundwater_checkpoint%lineage_id() /= origins(i)%groundwater_lineage_id .or. &
-          groundwater_checkpoint%origin_revision() /= origins(i)%groundwater_revision) then
+      if (groundwater_checkpoint%service_id() /= origins(i)%groundwater_service_id) then
+        result%diagnostics%failing_tile_index = i
+        call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'groundwater-origin-provenance')
+        return
+      end if
+      if (groundwater_checkpoint%lineage_id() /= origins(i)%groundwater_lineage_id) then
+        result%diagnostics%failing_tile_index = i
+        call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'groundwater-origin-provenance')
+        return
+      end if
+      if (groundwater_checkpoint%origin_revision() /= origins(i)%groundwater_revision) then
         result%diagnostics%failing_tile_index = i
         call fail_main(result, GW_MULTI_INVALID_ORIGIN, .false., 'groundwater-origin-provenance')
         return
@@ -187,7 +238,12 @@ contains
          result%predictor_aggregate%q_groundwater_area_weighted_m_per_s, predictor_groundwater_candidate, &
          predictor_groundwater_result, status)
     result%diagnostics%groundwater_status = status
-    if (status /= GW_EXCHANGE_OK .or. .not. predictor_groundwater_candidate%ready()) then
+    if (status /= GW_EXCHANGE_OK) then
+      call rollback_multiswap_candidates(executor, predictor_candidates, result%diagnostics%predictor_swap)
+      call fail_main(result, GW_MULTI_PREDICTOR_GROUNDWATER_FAILED, .true., 'predictor-groundwater')
+      return
+    end if
+    if (.not. predictor_groundwater_candidate%ready()) then
       call rollback_multiswap_candidates(executor, predictor_candidates, result%diagnostics%predictor_swap)
       call fail_main(result, GW_MULTI_PREDICTOR_GROUNDWATER_FAILED, .true., 'predictor-groundwater')
       return
@@ -224,7 +280,12 @@ contains
          result%corrector_aggregate%q_groundwater_area_weighted_m_per_s, corrector_groundwater_candidate, &
          corrector_groundwater_result, status)
     result%diagnostics%groundwater_status = status
-    if (status /= GW_EXCHANGE_OK .or. .not. corrector_groundwater_candidate%ready()) then
+    if (status /= GW_EXCHANGE_OK) then
+      call rollback_multiswap_candidates(executor, corrector_candidates, result%diagnostics%corrector_swap)
+      call fail_main(result, GW_MULTI_CORRECTOR_GROUNDWATER_FAILED, .true., 'corrector-groundwater')
+      return
+    end if
+    if (.not. corrector_groundwater_candidate%ready()) then
       call rollback_multiswap_candidates(executor, corrector_candidates, result%diagnostics%corrector_swap)
       call fail_main(result, GW_MULTI_CORRECTOR_GROUNDWATER_FAILED, .true., 'corrector-groundwater')
       return
@@ -239,7 +300,17 @@ contains
     result%accepted_interface%q_groundwater_m_per_s = result%corrector_aggregate%q_groundwater_area_weighted_m_per_s
     call evaluate_groundwater_interface_residual(result%accepted_interface, result%residual, status)
     result%diagnostics%interface_status = status
-    if (status /= GW_INTERFACE_OK .or. abs(result%residual%flux_residual_m_per_s) > 0.0_real64) then
+    if (status /= GW_INTERFACE_OK) then
+      call discard_multiswap_groundwater_and_swap(groundwater, corrector_groundwater_candidate, cleanup_status, &
+           executor, corrector_candidates, result%diagnostics%corrector_swap)
+      if (cleanup_status /= GW_EXCHANGE_OK) then
+        call fail_main(result, GW_MULTI_PREPUBLICATION_ABORT_FAILED, .true., 'interface-discard')
+      else
+        call fail_main(result, GW_MULTI_INTERFACE_FAILED, .true., 'interface-residual')
+      end if
+      return
+    end if
+    if (abs(result%residual%flux_residual_m_per_s) > 0.0_real64) then
       call discard_multiswap_groundwater_and_swap(groundwater, corrector_groundwater_candidate, cleanup_status, &
            executor, corrector_candidates, result%diagnostics%corrector_swap)
       if (cleanup_status /= GW_EXCHANGE_OK) then
