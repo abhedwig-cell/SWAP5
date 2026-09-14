@@ -8,6 +8,8 @@ on:
     paths:
       - 'src/process/mod_drainage*.f90'
       - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tools/fpm14/*'
       - 'tests/fpm/*fpm14*'
       - '.github/workflows/f-pm14-drainage-response-owner.yml'
 
@@ -20,3 +22,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Run F-PM14 owner response gate
         run: bash tests/fpm/run_fpm14_drainage_response_binding_owner.sh
+
+  transactional-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-PM14 transactional runtime gate
+        run: bash tests/fpm/run_fpm14_drainage_response_transactional_runtime_owner.sh
