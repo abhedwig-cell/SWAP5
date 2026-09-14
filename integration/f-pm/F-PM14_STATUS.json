@@ -1,0 +1,48 @@
+{
+  "schema": "SWAP5_FPM14_STATUS_V1",
+  "workunit": "F-PM14",
+  "title": "Drainage response transactional runtime owner closeout",
+  "canonical_base": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+  "tested_candidate_head": "232bfebd375c45f912a84cced24318f2a06a0991",
+  "backend_postimage_commit": "4094cd80393781ec06482a302b173b3fc2c73cdf",
+  "decision": "QUALIFIED_FPM14_DRAINAGE_RESPONSE_RUNTIME_OWNER_READY_FOR_INDEPENDENT_VQ",
+  "owner_qualified": true,
+  "owner_gate": {
+    "workflow": "F-PM14 drainage response owner",
+    "run_id": 34794541881,
+    "head_sha": "232bfebd375c45f912a84cced24318f2a06a0991",
+    "conclusion": "success"
+  },
+  "preservation_qualified": true,
+  "preservation_gate": {
+    "workflow": "F-PM14 admitted drainage route preservation",
+    "run_id": 34794541851,
+    "head_sha": "232bfebd375c45f912a84cced24318f2a06a0991",
+    "conclusion": "success",
+    "routes": ["F-CI33 precomputed DIVDRA", "F-PM08D7 fixed-weir"]
+  },
+  "backend_postimage_materialized": true,
+  "backend_postimage_blob": "0f09c0df1559ece894356b146b64d872470c0a32",
+  "independently_qualified": false,
+  "canonical_admitted": false,
+  "drainage_v1_100_percent_complete": false,
+  "production_claims": {
+    "transactional_acceptance_and_rollback": "OWNER_QUALIFIED",
+    "hard_mass_closure_and_single_booking": "OWNER_QUALIFIED",
+    "generic_time_interval": "OWNER_QUALIFIED",
+    "multiswap_isolation_and_order_independence": "OWNER_QUALIFIED",
+    "restart_no_additional_drainage_state_and_continuation": "OWNER_QUALIFIED",
+    "precomputed_divdra_preservation": "PASS",
+    "fixed_weir_preservation": "PASS",
+    "independent_fvq": "OPEN",
+    "fci_admission": "OPEN",
+    "postimage_canonical_preservation": "OPEN"
+  },
+  "architecture_audit": "integration/f-pm/F-PM14_ARCHITECTURE_AUDIT.json",
+  "next_required_step": "Create an independent F-VQ workunit from this owner-closeout lineage, with fresh behavioral tests and exact candidate production locks. Do not perform F-CI admission before independent VQ is green.",
+  "nonclaims": [
+    "This status is not independent verification.",
+    "This status is not canonical admission.",
+    "This status is not a drainage-v1 100-percent completion claim."
+  ]
+}

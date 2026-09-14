@@ -1,0 +1,61 @@
+{
+  "schema": "SWAP5_FPM14_ARCHITECTURE_AUDIT_V1",
+  "workunit": "F-PM14",
+  "title": "Drainage response transactional runtime owner closeout - architecture invariants 1-30",
+  "canonical_base": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+  "tested_candidate_head": "232bfebd375c45f912a84cced24318f2a06a0991",
+  "backend_postimage_commit": "4094cd80393781ec06482a302b173b3fc2c73cdf",
+  "owner_run": {
+    "id": 34794541881,
+    "conclusion": "success",
+    "head_sha": "232bfebd375c45f912a84cced24318f2a06a0991"
+  },
+  "preservation_run": {
+    "id": 34794541851,
+    "conclusion": "success",
+    "head_sha": "232bfebd375c45f912a84cced24318f2a06a0991"
+  },
+  "scope": "Owner qualification of the F-PM14 drainage-response runtime composition and regression preservation of already admitted precomputed-DIVDRA and fixed-weir routes. This audit does not constitute independent F-VQ qualification or canonical admission.",
+  "invariants": [
+    {"id": 1, "status": "PRESERVED", "evidence": "F-PM14 extends the existing process/runtime composition and does not introduce a second SWAP kernel or use-case-specific executable."},
+    {"id": 2, "status": "QUALIFIED", "evidence": "mod_fmr_drainage_response_binding contains no file, path, parser, OPEN/READ/WRITE, .swp or calendar I/O assumptions; owner static guard passed."},
+    {"id": 3, "status": "QUALIFIED", "evidence": "Immutable drainage response parameters, interval control/forcing, committed physical state and diagnostics remain distinct types/roles."},
+    {"id": 4, "status": "QUALIFIED", "evidence": "Drainage response adds no persistent process state; restart owner test reports FPM14_RESTART_NO_ADDITIONAL_DRAINAGE_STATE=PASS."},
+    {"id": 5, "status": "QUALIFIED", "evidence": "Level exchanges and evaluation diagnostics are call-local/worker-side temporaries and are not stored as permanent column solver scratch."},
+    {"id": 6, "status": "QUALIFIED", "evidence": "MultiSWAP active/inactive/active isolation and execution-order independence passed at O0 and O2."},
+    {"id": 7, "status": "QUALIFIED", "evidence": "Active accepted trial commits once; unsupported response path rolls back with committed revision/state unchanged."},
+    {"id": 8, "status": "QUALIFIED", "evidence": "Restart continuation equivalence passed and no drainage-response hidden persistent state is required; retries remain based on committed transactional state."},
+    {"id": 9, "status": "QUALIFIED", "evidence": "Owner test uses non-calendar interval t0=9123.125, t1=9123.375; binding static guard rejects midnight/calendar assumptions."},
+    {"id": 10, "status": "PRESERVED", "evidence": "F-PM14 does not specialize or constrain coupling-window duration or alignment."},
+    {"id": 11, "status": "PRESERVED", "evidence": "Drainage response is composed through existing transactional runtime contracts; groundwater coupling machinery is neither bypassed nor forked."},
+    {"id": 12, "status": "PRESERVED", "evidence": "The explicit SWAP-MODFLOW bottom-interface contract is outside the changed production set and is not altered by F-PM14."},
+    {"id": 13, "status": "QUALIFIED", "evidence": "Owner gate proves hard accepted mass closure, authoritative ledger ownership and exactly-once accepted drainage transfer; response binding itself does not double-book mass."},
+    {"id": 14, "status": "QUALIFIED", "evidence": "Drainage response diagnostics expose derivative_defined and dq_dgroundwater_level per level, while the separate bottom-interface sensitivity contract remains untouched."},
+    {"id": 15, "status": "PRESERVED", "evidence": "F-PM14 introduces direct response evaluations inside the normal trial path and no structural extra full-SWAP coupling runs."},
+    {"id": 16, "status": "QUALIFIED", "evidence": "MultiSWAP isolation/order tests pass; no separate heavyweight solver instance or persistent response state is added per column."},
+    {"id": 17, "status": "PRESERVED", "evidence": "MODFLOW cell/tile fraction composition is unchanged and remains outside the SWAP kernel."},
+    {"id": 18, "status": "PRESERVED", "evidence": "Deep-vadose transfer-zone contracts and ownership are untouched."},
+    {"id": 19, "status": "PRESERVED", "evidence": "No deep-vadose/direct-coupling transition storage or transfer accounting is modified."},
+    {"id": 20, "status": "QUALIFIED", "evidence": "Drainage response consumes process_hydraulic_view_t rather than a concrete Richards/HeadCalc internal representation."},
+    {"id": 21, "status": "QUALIFIED", "evidence": "Drainage physics is implemented as shared process modules and is composed through the common runtime rather than copied into a solver-specific path."},
+    {"id": 22, "status": "QUALIFIED", "evidence": "Owner static guard confirms the drainage-response binding has no HeadCalc-internal dependency."},
+    {"id": 23, "status": "QUALIFIED", "evidence": "Drainage response variants/configuration are physical configuration; no solver-performance policy silently changes those variants."},
+    {"id": 24, "status": "PRESERVED", "evidence": "F-PM14 adds bounded direct process evaluations and no unbounded retry/fallback loop. No throughput-performance claim is made by this workunit."},
+    {"id": 25, "status": "PRESERVED", "evidence": "Reference mode/reference solver authority is outside the changed production set and remains available."},
+    {"id": 26, "status": "QUALIFIED", "evidence": "Runtime exposes explicit active/rejected response diagnostics, per-level response data, evaluation counts and accepted mass-accounting evidence."},
+    {"id": 27, "status": "QUALIFIED", "evidence": "Inactive columns need no drainage-response persistent state; active/inactive/active MultiSWAP isolation passed."},
+    {"id": 28, "status": "PRESERVED", "evidence": "System composition, tile relations and coupling ownership remain in runtime/coupler layers; F-PM14 does not move them into SWAP physics."},
+    {"id": 29, "status": "QUALIFIED", "evidence": "Static guards and generic-interval test exclude implicit .swp, path, midnight, day-length and direct-MODFLOW assumptions in the new binding."},
+    {"id": 30, "status": "QUALIFIED", "evidence": "This file records explicit invariant 1-30 disposition plus green owner and preservation gates on the exact tested candidate head."}
+  ],
+  "preservation": {
+    "precomputed_divdra": "PASS - F-CI33 admitted oracle/source locks, valid publication, scalar mass preservation, B1.10 consumer seam, zero path, rejection, overwrite guard and O0/O2 exact output identity replayed on current postimage.",
+    "fixed_weir": "PASS - F-PM08D7 admitted test sources are byte-locked; unchanged fixed-weir production authorities, process behavior, O0/O2 compilation, transaction/rollback, restart and temporal semantics were replayed on current postimage. Historical compile runners were augmented ephemerally only with the new backend module dependencies; assertions and test programs remained unchanged."
+  },
+  "disposition": "QUALIFIED_FPM14_DRAINAGE_RESPONSE_RUNTIME_OWNER_READY_FOR_INDEPENDENT_VQ",
+  "explicit_nonclaims": [
+    "NOT_INDEPENDENTLY_FVQ_QUALIFIED",
+    "NOT_CANONICAL_ADMITTED",
+    "NOT_DRAINAGE_V1_100_PERCENT_COMPLETE"
+  ]
+}
