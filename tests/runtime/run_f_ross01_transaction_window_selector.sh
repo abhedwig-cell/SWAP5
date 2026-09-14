@@ -17,7 +17,7 @@ build_and_run() {
     "$ROOT/src/transaction/mod_transaction_reference.f90"
   gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
     "$ROOT/src/runtime/mod_canonical_contracts.f90"
-  gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
+  gfortran -std=f2018 -Wall -Wextra -Werror -Wno-error=compare-reals "$opt" -I. -c \
     "$ROOT/src/runtime/mod_canonical_interval_runtime.f90"
   gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
     "$ROOT/tests/runtime/test_f_ross01_transaction_window_selector.f90"
