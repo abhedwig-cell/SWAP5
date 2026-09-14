@@ -3,7 +3,7 @@
   "work_unit": "F-VQ74",
   "title": "Drainage-v1 cross-cutting runtime completion independent qualification",
   "branch": "qualification/f-vq74-drainage-v1-crosscutting-runtime-completion",
-  "phase": "QUALIFICATION_CLOSEOUT_REQUIRES_EXACT_STATUS_HEAD_CI",
+  "phase": "CLOSED_INDEPENDENT_CROSSCUTTING_QUALIFICATION",
   "decision": "QUALIFIED_PM13_G2_CROSSCUTTING_RUNTIME_EVIDENCE",
   "base_canonical": {
     "branch": "integration/f-ci-canonical",
@@ -13,7 +13,8 @@
   "frozen_scope_authority": {
     "work_unit": "F-PM13",
     "branch": "work/f-pm13-drainage-v1-completion-audit",
-    "head_at_reconciliation": "82038459ad81c3ef0b2e050ef02794ab013564d6",
+    "sha": "e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "tree": "82038459ad81c3ef0b2e050ef02794ab013564d6",
     "denominator_changed": false,
     "scope_reduced": false,
     "target_blocker": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS"
@@ -32,6 +33,10 @@
     "artifact_name": "fvq74-crosscutting-log-34814869937",
     "artifact_zip_sha256": "beb5ad325a5cdf7ef42c98e7a5297e22a5516c3610189f05fe842717f59207d2",
     "runtime_output_sha256": "665954b5e62216f8990be91b3fd1977de3e4961ecbb485cc80897bbd8f19a58c",
+    "first_closeout_status_head": "b474f85820442eb0f2e4af7f235f26c146cc6422",
+    "first_closeout_status_self_ci_run": 34815262275,
+    "first_closeout_status_self_ci_job": 103884507806,
+    "first_closeout_status_self_ci_conclusion": "success",
     "live_canonical_lock": "PASS",
     "no_production_or_reference_delta": "PASS",
     "F_CI61P_canonical_lineage": "PASS",
@@ -50,6 +55,10 @@
     "restart_no_additional_drainage_state": "PASS",
     "restart_continuation_equivalence": "PASS",
     "reject_diagnostics_fail_closed": "PASS"
+  },
+  "metadata_reconciliation": {
+    "corrected_in_this_status_head": true,
+    "correction": "The earlier status used PM13 tree 82038459ad81c3ef0b2e050ef02794ab013564d6 in a field named head_at_reconciliation. This status records the actual PM13 commit e5cd87eafb95356ca0d5ef8399fcb64feae78fd2 and its tree separately. No runtime, production, reference, scientific, mass or transaction evidence changed."
   },
   "namespace_collision_disposition": {
     "collision_detected": true,
@@ -89,7 +98,7 @@
     "new_solver_policy": false,
     "scope_reduced": false
   },
-  "pm13_G2_crosscutting_independent_evidence": "COMPLETE_WHEN_THIS_EXACT_STATUS_HEAD_PASSES",
+  "pm13_G2_crosscutting_independent_evidence": "COMPLETE",
   "drainage_v1_100_percent_complete": false,
   "hard_nonclaims": [
     "F-VQ74 alone does not establish drainage-v1 100-percent completion.",
@@ -97,5 +106,5 @@
     "This qualification does not replace F-VQ73 transaction/mass/response-runtime qualification.",
     "The later same-number branch is not evidence for this authority and is not silently merged into it."
   ],
-  "next_required_step": "Require this exact F-VQ74 status head to pass the F-VQ74 workflow, then execute the PM15 frozen-denominator drainage-v1 final completion reconciliation against current canonical."
+  "next_required_step": "Require this corrected exact F-VQ74 status head to pass the F-VQ74 workflow, then execute the first free F-PM frozen-denominator drainage-v1 final completion reconciliation against current canonical."
 }
