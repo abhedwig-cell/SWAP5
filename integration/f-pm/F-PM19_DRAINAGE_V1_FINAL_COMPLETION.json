@@ -1,0 +1,181 @@
+{
+  "schema": "swap5.fpm19.drainage_v1_final_completion.v1",
+  "work_unit": "F-PM19",
+  "title": "Drainage-v1 authoritative fixed-denominator 100 percent completion assessment",
+  "branch": "work/f-pm19-drainage-v1-authoritative-100-percent-completion",
+  "audit_kind": "evidence-only final completion audit; no production or reference mutation",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "broad_qualification_run": 34820406309,
+    "broad_qualification_conclusion": "success",
+    "moving_current_preservation_job": 103900935554,
+    "moving_current_preservation_conclusion": "success"
+  },
+  "frozen_denominator": {
+    "authority": "F-PM13@e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "variant_count": 8,
+    "variants": [
+      "restricted single-level linear-resistance drainage response",
+      "restricted spatial distribution / positive single-level DIVDRA",
+      "DRAMET=1 tabulated drainage response",
+      "DRAMET=2 Hooghoudt response family",
+      "DRAMET=2 Ernst response family",
+      "empirical interflow drainage-side response",
+      "multi-level drainage exchange aggregation",
+      "restricted fixed-weir transactional surface-water runtime"
+    ],
+    "original_blockers": [
+      "G1_RUNTIME_COMPOSITION",
+      "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "G3_CANONICAL_ADMISSION_PRESERVATION"
+    ]
+  },
+  "scope_authority": {
+    "F_PM17": "45455f54c0c3554150e273aff07bfccd06d69c14",
+    "decision": "F_PM15_G1R_NOT_A_FROZEN_DRAINAGE_V1_EXIT_REQUIREMENT",
+    "fully_implicit_drainage_solver_coupling_is_v1_exit_requirement": false,
+    "new_drainage_physics_required": false
+  },
+  "authority_chain": {
+    "response_owner": "F-PM14@52c1a9aebddc435ef3792378f958305a96308ed0",
+    "response_independent_runtime": "F-VQ73@ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "cross_cutting_independent": "F-VQ74@60c121a0993993bd79fb30ddfd54e2a9d14f042e",
+    "response_source_admission_merge": "F-CI61@eb2b2b17b2d54eeab22c4cba922426d8168e56a9",
+    "response_postimage_preservation_merge": "F-CI61P@e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "post_FCI61_shared_backend_change": "F-CI62@46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "moving_current_reconciliation": "F-CI62P@6425fb3290da637357e47618b459f4caf65a78d8",
+    "post_drift_independent_drainage_requalification": "F-VQ76@5ee4920ffe680c920b64996159060fc1f509fcd8"
+  },
+  "variant_completion": [
+    {
+      "variant": "linear",
+      "scientific_authority": "F-VQ44",
+      "runtime_authority": "F-PM14/F-VQ73",
+      "current_postimage_preservation": "F-VQ76",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ73/F-VQ74/F-VQ76",
+      "canonical_admission_preservation": "F-CI61/F-CI61P/F-CI62P plus F-VQ76 behavioral requalification",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "spatial_distribution_DIVDRA",
+      "scientific_runtime_authority": "F-CI32/F-CI33/F-CI36",
+      "current_postimage_preservation": "F-VQ76 PM14 preservation replay",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "tabulated_DRAMET1",
+      "scientific_authority": "F-VQ40",
+      "runtime_authority": "F-PM14/F-VQ73",
+      "current_postimage_preservation": "F-VQ76",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ73/F-VQ74/F-VQ76",
+      "canonical_admission_preservation": "F-CI61/F-CI61P/F-CI62P plus F-VQ76 behavioral requalification",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "Hooghoudt_DRAMET2",
+      "scientific_authority": "F-VQ38",
+      "runtime_authority": "F-PM14/F-VQ73",
+      "current_postimage_preservation": "F-VQ76",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ73/F-VQ74/F-VQ76",
+      "canonical_admission_preservation": "F-CI61/F-CI61P/F-CI62P plus F-VQ76 behavioral requalification",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "Ernst_DRAMET2",
+      "scientific_authority": "F-VQ38",
+      "runtime_authority": "F-PM14/F-VQ73",
+      "current_postimage_preservation": "F-VQ76",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ73/F-VQ74/F-VQ76",
+      "canonical_admission_preservation": "F-CI61/F-CI61P/F-CI62P plus F-VQ76 behavioral requalification",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "empirical_interflow",
+      "scientific_authority": "F-VQ42",
+      "runtime_authority": "F-PM14/F-VQ73",
+      "current_postimage_preservation": "F-VQ76",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ73/F-VQ74/F-VQ76",
+      "canonical_admission_preservation": "F-CI61/F-CI61P/F-CI62P plus F-VQ76 behavioral requalification",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "multilevel_aggregation",
+      "scientific_authority": "F-VQ43",
+      "runtime_authority": "F-PM14/F-VQ73",
+      "current_postimage_preservation": "F-VQ76",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ73/F-VQ74/F-VQ76",
+      "canonical_admission_preservation": "F-CI61/F-CI61P/F-CI62P plus F-VQ76 behavioral requalification",
+      "disposition": "PASS_COMPLETE"
+    },
+    {
+      "variant": "restricted_fixed_weir_transactional_runtime",
+      "scientific_runtime_authority": "F-VQ59/F-CI52/F-CI52P",
+      "current_postimage_preservation": "F-VQ76 PM14 preservation replay",
+      "transaction_mass_restart_multiswap_diagnostics": "F-VQ59 plus F-VQ76 current-postimage replay",
+      "disposition": "PASS_COMPLETE"
+    }
+  ],
+  "blocker_reconciliation": [
+    {
+      "id": "G1_RUNTIME_COMPOSITION",
+      "status": "CLOSED",
+      "basis": "F-PM14 composed the six missing response variants; F-VQ73 independently qualified runtime behavior; F-CI61 admitted exact source/runtime; F-VQ76 requalified behavior after the later shared-backend change."
+    },
+    {
+      "id": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "status": "CLOSED",
+      "basis": "F-VQ73 and F-VQ74 qualified hard mass, single booking, rollback, restart/no-state, MultiSWAP isolation/order independence and diagnostics; F-VQ76 replayed those immutable executable oracles on the current production postimage."
+    },
+    {
+      "id": "G3_CANONICAL_ADMISSION_PRESERVATION",
+      "status": "CLOSED",
+      "basis": "F-CI61/F-CI61P admitted and preserved drainage runtime; F-CI62P restored moving-current preservation after the shared-backend change; the broad current-canonical gate is green; F-VQ76 independently confirmed drainage behavior on that exact source/reference postimage."
+    }
+  ],
+  "current_postimage_evidence": {
+    "shared_backend_blob": "21e0e4229f202f1a3a74c4da004aa32a2c855f03",
+    "F_VQ76_decision": "QUALIFIED_DRAINAGE_RUNTIME_PRESERVED_ON_F_CI62_POSTIMAGE_INDEPENDENTLY",
+    "F_VQ76_run": 34821111681,
+    "F_VQ76_job": 103902665282,
+    "F_VQ76_conclusion": "success",
+    "VQ73_O0_O2_exact_identity": true,
+    "VQ74_O0_O2_exact_identity": true,
+    "DIVDRA_fixed_weir_behavioral_preservation": "PASS",
+    "hard_mass": "PASS",
+    "rollback": "PASS",
+    "restart": "PASS",
+    "MultiSWAP": "PASS",
+    "diagnostics": "PASS",
+    "generic_time": "PASS",
+    "HeadCalc_isolation": "PASS"
+  },
+  "completion_contract": {
+    "all_8_variants_scientifically_qualified": true,
+    "all_8_variants_runtime_qualified_or_preserved": true,
+    "transaction_safe": true,
+    "hard_mass_safe": true,
+    "restart_safe": true,
+    "MultiSWAP_safe": true,
+    "HeadCalc_isolated": true,
+    "diagnostically_explicit": true,
+    "current_canonical_admitted_and_preserved": true,
+    "reference_mode_preserved": true,
+    "all_30_architecture_invariants_nonadverse": true
+  },
+  "production_source_changed_by_F_PM19": false,
+  "reference_source_changed_by_F_PM19": false,
+  "mass_conservation_concession": false,
+  "drainage_v1_100_percent_complete": true,
+  "final_decision": "QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE",
+  "hard_bounds": [
+    "This 100 percent claim applies only to the unchanged eight-variant frozen Drainage-v1 denominator established by F-PM13.",
+    "Fully implicit drainage-response solver coupling is not added to or implied by the Drainage-v1 denominator.",
+    "No broader reverse-exchange, new drainage equation, new option, or unstated legacy drainage behavior is claimed.",
+    "Future production-source changes on the protected drainage dependency surface require fresh preservation evidence before this current-canonical completion claim can be carried forward."
+  ]
+}
