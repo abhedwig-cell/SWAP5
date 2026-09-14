@@ -138,7 +138,7 @@ contains
     logical, intent(out) :: ok
     integer(int64) :: token
 
-    self = fmr_external_bottom_thermal_response_t()
+    call reset_response(self)
     ok = .false.
     if (.not. request%ready() .or. .not. ieee_is_finite(donor_temperature_c)) return
     token = 0_int64
@@ -171,14 +171,14 @@ contains
   end subroutine response_set_stale
 
   subroutine set_noncomplete_response(self, request, disposition, source_provenance_token, ok)
-    type(fmr_external_bottom_thermal_response_t), intent(out) :: self
+    class(fmr_external_bottom_thermal_response_t), intent(out) :: self
     type(fmr_external_bottom_thermal_request_t), intent(in) :: request
     integer, intent(in) :: disposition
     integer(int64), intent(in), optional :: source_provenance_token
     logical, intent(out) :: ok
     integer(int64) :: token
 
-    self = fmr_external_bottom_thermal_response_t()
+    call reset_response(self)
     ok = .false.
     if (.not. request%ready()) return
     if (disposition /= FMR_EXT_THERMAL_RESPONSE_UNAVAILABLE .and. &
@@ -192,8 +192,23 @@ contains
     ok = self%ready()
   end subroutine set_noncomplete_response
 
+  subroutine reset_response(self)
+    class(fmr_external_bottom_thermal_response_t), intent(out) :: self
+
+    self%initialized = .false.
+    self%disposition_value = FMR_EXT_THERMAL_RESPONSE_NOT_SET
+    self%column_id_value = 0_int64
+    self%sample_ordinal_value = 0
+    self%t0_value = 0.0_real64
+    self%t1_value = 0.0_real64
+    self%bottom_outward_exchange_native_value = 0.0_real64
+    self%donor_temperature_available = .false.
+    self%donor_temperature_c_value = 0.0_real64
+    self%source_provenance_token_value = 0_int64
+  end subroutine reset_response
+
   subroutine bind_response_identity(self, request, disposition)
-    type(fmr_external_bottom_thermal_response_t), intent(inout) :: self
+    class(fmr_external_bottom_thermal_response_t), intent(inout) :: self
     type(fmr_external_bottom_thermal_request_t), intent(in) :: request
     integer, intent(in) :: disposition
 
