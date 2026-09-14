@@ -1,0 +1,67 @@
+{
+  "work_unit": "F-MR44R",
+  "title": "Serialized Prescribed-qbot Runtime Recomposition",
+  "status": "QUALIFIED_SOURCE_CAPABILITY_NOT_CANONICAL_ADMITTED",
+  "qualified_dependency": {
+    "work_unit": "F-SI38",
+    "status_commit": "4658b9f45c9a92f93a6a4b59c5c8aee33820ad94",
+    "semantics": "prescribed-qbot mode 2 temporal certificate uses Neumann bottom operator with zero bottom-head stiffness"
+  },
+  "production_runtime_commit": "6e7687e37daeb996de22b9f5ac7592461ab4675a",
+  "qualified_exact_head": "acb63559b5246db33b1958bb0c5bc8c1ba2055c0",
+  "qualified_tree": "389e75a1c50501cad5dd515dd5a7bc34585a6d1b",
+  "workflow_run": 34816109173,
+  "workflow_job": 103887016002,
+  "production_scope": [
+    "src/adapter/mod_b110_serialized_context_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "qualified_runtime_semantics": [
+    "serialized B1.10 context admission accepts bottom_mode=2 in addition to the previously admitted bottom modes",
+    "serialized reference backend execution admission accepts bottom_mode=2",
+    "serialized exact-identity temporal path recognizes stationary bottom_mode=2 trajectories",
+    "nonstationary positive prescribed-qbot may use the already-qualified model-owned Richards temporal certificate when explicit temporal history and an explicit positive head budget are supplied",
+    "unsupported nearby bottom modes remain fail-closed"
+  ],
+  "qualification_evidence": {
+    "equilibrium_mode2_transaction": "PASS",
+    "equilibrium_mass_residual_cm": 0.0,
+    "positive_qbot_per_day": 1.0e-10,
+    "positive_qbot_step_duration_day": 1.0e-4,
+    "positive_qbot_transaction": "PASS",
+    "positive_qbot_mass_residual_cm": -2.22044604925031308e-16,
+    "positive_qbot_total_in_cm": 1.00000000000000016e-14,
+    "positive_qbot_total_out_cm": 1.00000000000000016e-14,
+    "temporal_head_inf_bound_cm": 1.23628846478342984e-11,
+    "qualification_only_head_budget_cm": 2.5e-11,
+    "normalized_temporal_indicator": 0.494515385913371908,
+    "accepted_substeps": 1,
+    "external_commits": 1,
+    "principal_headcalc_trajectories": 1,
+    "temporal_extra_full_nonlinear_trajectories": 0,
+    "temporal_extra_tridiagonal_solves": 1,
+    "nearby_unsupported_bottom_mode_fail_closed": true,
+    "optimization_levels": ["O0", "O2"],
+    "o0_o2_semantic_identity": true,
+    "committed_postimage_patch_count_on_replay": 0,
+    "exact_head_production_qualification": true
+  },
+  "hard_nonclaims": [
+    "The qualification-only 2.5e-11 cm head budget is not a production, coupling, or application default.",
+    "No universal H_budget is introduced.",
+    "No canonical admission is claimed.",
+    "No new Richards physics or bottom-flux sign convention is introduced.",
+    "No mass tolerance, Newton tolerance, retry policy, or temporal tolerance was relaxed to obtain acceptance.",
+    "F-MR44R does not by itself qualify EB-I18 energy publication."
+  ],
+  "architecture_invariants": {
+    "transactional_commit_only_after_acceptance": true,
+    "mass_conservation_absolute": true,
+    "generic_time": true,
+    "physics_solver_policy_separated": true,
+    "bounded_cost_positive_case": true,
+    "no_silent_application_accuracy_default": true,
+    "fail_closed_unsupported_modes": true
+  },
+  "next_owner_handoff": "Recompose EB-I18 against this qualified runtime source and replace its historical mode-7 pseudo-inflow fixture with a true bottom_mode=2 positive prescribed-qbot transaction before any energy-publication qualification claim."
+}
