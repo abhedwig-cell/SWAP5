@@ -1,0 +1,57 @@
+name: F-CI68P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci68p-current-canonical-postimage-reconciliation
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci68p-current-canonical-postimage-reconciliation.yml'
+      - 'tests/fci/run_fci68p_current_canonical_postimage_reconciliation.sh'
+      - 'integration/f-ci/F-CI68P_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fci68p-current-canonical-postimage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enforce governance-only F-CI68P surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=b4e637885eafa6c193257cd11fa5b6fb45c18fa3
+          allowed=(
+            .github/workflows/fci-canonical.yml
+            .github/workflows/fci68p-current-canonical-postimage-reconciliation.yml
+            tests/fci/run_fci68p_current_canonical_postimage_reconciliation.sh
+            integration/f-ci/F-CI68P_STATUS.json
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "FCI68P_UNEXPECTED_PATH $path" >&2; exit 68; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- src reference)"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI68P reconciliation gate
+        shell: bash
+        run: bash tests/fci/run_fci68p_current_canonical_postimage_reconciliation.sh
