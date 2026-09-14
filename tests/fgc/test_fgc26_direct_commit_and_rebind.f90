@@ -155,13 +155,15 @@ program test_fgc26_direct_commit_and_rebind
        groundwater_capture_checkpoint, groundwater_trial_from_checkpoint, groundwater_commit_candidate, &
        groundwater_prepare_candidate, groundwater_abort_prepared, GW_EXCHANGE_OK, GW_EXCHANGE_BACKEND_REJECTED
   use mod_groundwater_external_gateway, only: groundwater_external_gateway_t, groundwater_external_gateway_config_t, &
-       GW_EXTERNAL_GATEWAY_OK, GW_EXTERNAL_GATEWAY_NOT_QUIESCENT
+       bind_groundwater_external_gateway_batch, GW_EXTERNAL_GATEWAY_OK, GW_EXTERNAL_GATEWAY_NOT_QUIESCENT
   use fgc26_direct_commit_backend, only: direct_backend_t
   implicit none
 
   type(direct_backend_t), target :: backend
   type(groundwater_external_gateway_t) :: gateway
+  type(groundwater_external_gateway_t) :: batch(2)
   type(groundwater_external_gateway_config_t) :: config
+  type(groundwater_external_gateway_config_t) :: batch_initial(2), batch_rebind(2)
   type(groundwater_exchange_checkpoint_t) :: checkpoint
   type(groundwater_exchange_candidate_t) :: candidate
   type(groundwater_exchange_prepared_t) :: prepared
@@ -210,6 +212,37 @@ program test_fgc26_direct_commit_and_rebind
   call gateway%bind(backend, config, status)
   call require(status == GW_EXTERNAL_GATEWAY_OK .and. gateway%ready(), 'quiescent rebind')
   print '(A)', 'FGC26_ACTIVE_PREPARED_REBIND_REJECTED=PASS'
+
+  batch_initial(1) = groundwater_external_gateway_config_t(service_id=801_int64, cell_id=8_int64, &
+       head_native_to_m_scale=0.1_real64, head_native_zero_m=3.0_real64, &
+       flux_native_to_m_per_s_scale=CM_DAY_TO_M_S, native_flux_sign_relative_to_groundwater=1)
+  batch_initial(2) = groundwater_external_gateway_config_t(service_id=807_int64, cell_id=7_int64, &
+       head_native_to_m_scale=0.1_real64, head_native_zero_m=3.0_real64, &
+       flux_native_to_m_per_s_scale=CM_DAY_TO_M_S, native_flux_sign_relative_to_groundwater=1)
+  call bind_groundwater_external_gateway_batch(batch, backend, batch_initial, status)
+  call require(status == GW_EXTERNAL_GATEWAY_OK, 'initial batch bind')
+
+  call groundwater_capture_checkpoint(batch(2), checkpoint, status)
+  call require(status == GW_EXCHANGE_OK, 'batch atomicity capture')
+  window = groundwater_coupling_window_t(t0=0.25_real64, t1=0.5_real64)
+  call groundwater_trial_from_checkpoint(batch(2), checkpoint, window, CM_DAY_TO_M_S, candidate, trial_result, status)
+  call require(status == GW_EXCHANGE_OK, 'batch atomicity trial')
+  call groundwater_prepare_candidate(batch(2), checkpoint, candidate, prepared, status)
+  call require(status == GW_EXCHANGE_OK .and. .not. batch(2)%restart_quiescent(), 'batch member prepare')
+
+  batch_rebind(1) = groundwater_external_gateway_config_t(service_id=901_int64, cell_id=9_int64, &
+       head_native_to_m_scale=0.1_real64, head_native_zero_m=3.0_real64, &
+       flux_native_to_m_per_s_scale=CM_DAY_TO_M_S, native_flux_sign_relative_to_groundwater=1)
+  batch_rebind(2) = groundwater_external_gateway_config_t(service_id=910_int64, cell_id=10_int64, &
+       head_native_to_m_scale=0.1_real64, head_native_zero_m=3.0_real64, &
+       flux_native_to_m_per_s_scale=CM_DAY_TO_M_S, native_flux_sign_relative_to_groundwater=1)
+  call bind_groundwater_external_gateway_batch(batch, backend, batch_rebind, status)
+  call require(status == GW_EXTERNAL_GATEWAY_NOT_QUIESCENT, 'batch rebind did not reject non-quiescent member')
+  call require(batch(1)%configured_cell_id() == 8_int64, 'failed batch rebind mutated earlier member')
+  call require(batch(2)%configured_cell_id() == 7_int64, 'failed batch rebind mutated rejecting member')
+  call groundwater_abort_prepared(batch(2), checkpoint, prepared, status)
+  call require(status == GW_EXCHANGE_OK .and. batch(2)%restart_quiescent(), 'batch atomicity cleanup')
+  print '(A)', 'FGC26_BATCH_REBIND_PREFLIGHT_ATOMIC=PASS'
   print '(A)', 'F-GC26 DIRECT COMMIT AND REBIND GATE PASS'
 
 contains

@@ -178,6 +178,15 @@ contains
         end if
       end do
     end do
+    ! Batch binding is a recoverable configuration operation. Preflight every
+    ! member before mutating any gateway so a later non-quiescent member cannot
+    ! leave earlier members rebound after the batch itself reports failure.
+    do i = 1, size(gateways)
+      if (.not. gateways(i)%restart_quiescent()) then
+        status = GW_EXTERNAL_GATEWAY_NOT_QUIESCENT
+        return
+      end if
+    end do
     do i = 1, size(gateways)
       call gateways(i)%bind(backend, configs(i), local_status)
       if (local_status /= GW_EXTERNAL_GATEWAY_OK) then
