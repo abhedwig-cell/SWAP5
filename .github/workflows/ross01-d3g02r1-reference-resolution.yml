@@ -1,0 +1,136 @@
+name: F-ROSS01 D3G02R1 reference-resolution qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d3g02r1-numerical-resolution-floor
+    paths:
+      - .github/workflows/ross01-d3g02r1-reference-resolution.yml
+      - experiments/ross/run_ross01_d3g02r1_reference_resolution_material.py
+      - integration/f-ross/F-ROSS01_D3G02R1_REFERENCE_RESOLUTION_CONTRACT.json
+  workflow_dispatch:
+
+concurrency:
+  group: ross01-d3g02r1-reference-resolution-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+      - name: Bind frozen D3G02 ancestry and moving-current transaction semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor a836de38173de813dff261bd644dadffd8df116a HEAD
+          git fetch origin integration/f-ci-canonical --depth=1
+          CANONICAL_HEAD="$(git rev-parse FETCH_HEAD)"
+          TX_BLOB="$(git show "$CANONICAL_HEAD:src/transaction/mod_transaction_reference.f90" | git hash-object --stdin)"
+          test "$TX_BLOB" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          echo "CANONICAL_HEAD=$CANONICAL_HEAD" >> "$GITHUB_ENV"
+          echo "TX_BLOB=$TX_BLOB" >> "$GITHUB_ENV"
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_d3g02r1_reference_resolution_material.py
+      - name: Run nine retry levels with independent reference ensemble
+        run: |
+          python3 experiments/ross/run_ross01_d3g02r1_reference_resolution_material.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3G02R1_${{ matrix.material }}.json"
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r1-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02R1_${{ matrix.material }}.json
+
+  aggregate:
+    needs: qualify-material
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-d3g02r1-*-${{ github.run_id }}
+          path: shards
+          merge-multiple: true
+      - name: Aggregate exact 54-case qualification
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files = sorted(Path('shards').glob('F-ROSS01_D3G02R1_*.json'))
+          payloads = [json.loads(p.read_text()) for p in files]
+          rows = [c | {'live_canonical_head': p.get('live_canonical_head')} for p in payloads for c in p.get('cases', [])]
+          materials = ('B01','B12','O01','O05','O14','O18')
+          expected = {(i,m) for i in range(9) for m in materials}
+          observed = {(r.get('attempt_index'), r.get('material')) for r in rows}
+          heads = sorted(set(r.get('live_canonical_head') for r in rows))
+          spreads = [float(r['reference']['spread_span_normalized_linf']) for r in rows]
+          refined = [float(r['temporal_metrics']['refined_reference_error']) for r in rows]
+          raw = [float(r['temporal_metrics']['raw_full_vs_two_half_estimator']) for r in rows]
+          resolved = [float(r['temporal_metrics']['resolved_refined_error_lower_bound']) for r in rows]
+          masses = [abs(float(r['max_abs_mass_residual_cm'])) for r in rows]
+          apparent = [r for r in rows if r['temporal_metrics']['apparent_underestimate'] is True]
+          complete = len(payloads) == 6 and len(rows) == 54 and observed == expected and len(heads) == 1
+          all_case_pass = complete and all(p.get('pass') is True for p in payloads) and all(r.get('pass') is True for r in rows)
+          qualification_pass = bool(
+              all_case_pass
+              and max(spreads, default=float('inf')) <= 1.0e-9
+              and max(refined, default=float('inf')) <= 1.0e-5
+              and max(masses, default=float('inf')) <= 1.0e-12
+              and all(float(r['temporal_metrics']['resolved_refined_error_lower_bound']) <= float(r['temporal_metrics']['raw_full_vs_two_half_estimator']) for r in rows)
+              and all(r['temporal_metrics']['apparent_underestimate_inside_reference_spread'] is True for r in apparent)
+          )
+          worst_resolved_margin = None
+          if rows:
+              rr = max(rows, key=lambda r: float(r['temporal_metrics']['resolved_refined_error_lower_bound']) - float(r['temporal_metrics']['raw_full_vs_two_half_estimator']))
+              worst_resolved_margin = {
+                  'material': rr['material'],
+                  'attempt_index': rr['attempt_index'],
+                  'resolved_minus_raw': float(rr['temporal_metrics']['resolved_refined_error_lower_bound']) - float(rr['temporal_metrics']['raw_full_vs_two_half_estimator']),
+              }
+          out = {
+              'work_unit': 'F-ROSS01 D3G02R1',
+              'kind': 'reference_resolution_aggregate',
+              'qualification_pass': qualification_pass,
+              'case_count': len(rows),
+              'expected_case_count': 54,
+              'material_count': len(payloads),
+              'live_canonical_heads': heads,
+              'max_reference_ensemble_spread': max(spreads, default=None),
+              'max_refined_reference_error': max(refined, default=None),
+              'max_raw_estimator': max(raw, default=None),
+              'max_resolved_refined_error': max(resolved, default=None),
+              'max_abs_mass_residual_cm': max(masses, default=None),
+              'apparent_underestimate_count': len(apparent),
+              'apparent_underestimates_all_inside_reference_spread': all(r['temporal_metrics']['apparent_underestimate_inside_reference_spread'] is True for r in apparent),
+              'worst_resolved_margin_case': worst_resolved_margin,
+              'candidate_safety_factor': 1.0,
+              'candidate_accuracy_tolerance': 1.0e-5,
+              'runtime_indicator_semantics_changed': False,
+              'certificate_available': False,
+              'disposition': 'SUPPORTS_ORIGINAL_FACTOR_1_TOL_1E5_PENDING_EXECUTABLE_BINDING' if qualification_pass else 'NEGATIVE_REMEDIATION_D3_G02_REMAINS_OPEN',
+              'production_source_delta': [],
+          }
+          Path('F-ROSS01_D3G02R1_AGGREGATE.json').write_text(json.dumps(out, indent=2, sort_keys=True, allow_nan=False) + '\n')
+          print(json.dumps(out, sort_keys=True, allow_nan=False))
+          raise SystemExit(0 if qualification_pass else 1)
+          PY
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r1-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02R1_AGGREGATE.json
