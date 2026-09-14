@@ -21,6 +21,7 @@ run_one(){
   mkdir -p "$out"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/solver/mod_soil_water_accepted_step_direction_contract.f90 -o "$out/contract.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 -o "$out/trajectory.o"
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/transaction/mod_accepted_trajectory_directional_publication.f90 -o "$out/publication.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c tests/fkt/test_fkt21_accepted_trajectory_direction.f90 -o "$out/test.o"
   gfortran "$opt" "$out/contract.o" "$out/trajectory.o" "$out/test.o" -o "$out/test_fkt21"
   "$out/test_fkt21" | tee "$out/output.txt"
@@ -42,6 +43,16 @@ run_one(){
   grep -Fq 'FKT21_CROSS_CANDIDATE_GENERATION=PASS' "$out/provenance_output.txt" || fail "cross-candidate marker missing $tag"
   grep -Fq 'FKT21_STEP_ENDPOINT_TOKEN_BINDING=PASS' "$out/provenance_output.txt" || fail "endpoint binding marker missing $tag"
   grep -Fq 'FKT21_NONMONOTONE_GENERATION_REJECTED=PASS' "$out/provenance_output.txt" || fail "generation marker missing $tag"
+
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c tests/fkt/test_fkt21_publication_identity.f90 -o "$out/publication_test.o"
+  gfortran "$opt" "$out/contract.o" "$out/trajectory.o" "$out/publication.o" "$out/publication_test.o" -o "$out/test_fkt21_publication"
+  "$out/test_fkt21_publication" | tee "$out/publication_output.txt"
+  grep -Fq 'FKT21_PUBLICATION_IDENTITY PASS' "$out/publication_output.txt" || fail "publication PASS marker missing $tag"
+  grep -Fq 'FKT21_ON_OFF_PHYSICAL_IDENTITY=PASS' "$out/publication_output.txt" || fail "ON/OFF identity marker missing $tag"
+  grep -Fq 'FKT21_TYPED_RESULT_PROVENANCE=PASS' "$out/publication_output.txt" || fail "typed result marker missing $tag"
+  grep -Fq 'FKT21_UNAVAILABLE_PHYSICAL_VALID=PASS' "$out/publication_output.txt" || fail "unavailable physical-valid marker missing $tag"
+  grep -Fq 'FKT21_REJECTED_DERIVATIVE_ZERO=PASS' "$out/publication_output.txt" || fail "rejected derivative marker missing $tag"
+  grep -Fq 'FKT21_MASS_NEUTRALITY=PASS' "$out/publication_output.txt" || fail "mass-neutrality marker missing $tag"
   echo "FKT21_OPT_PASS=$tag"
 }
 run_one -O0 o0
@@ -50,16 +61,18 @@ run_one -O2 o2
 {
   grep '^FKT21_' "$BUILD/o0/output.txt"
   grep '^FKT21_' "$BUILD/o0/provenance_output.txt"
+  grep '^FKT21_' "$BUILD/o0/publication_output.txt"
 } > "$BUILD/o0/stable.txt"
 {
   grep '^FKT21_' "$BUILD/o2/output.txt"
   grep '^FKT21_' "$BUILD/o2/provenance_output.txt"
+  grep '^FKT21_' "$BUILD/o2/publication_output.txt"
 } > "$BUILD/o2/stable.txt"
 cmp "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt" || fail 'O0/O2 marker drift'
 
 # Composition code may not introduce production finite-difference solves or persistent SAVE state.
-if grep -Eiq 'finite.?difference|perturb.*solve' src/transaction/mod_accepted_trajectory_directional_sensitivity.f90; then fail 'FD production construction detected'; fi
-if grep -Eiq 'save[[:space:]]*::|save[[:space:]]+[a-zA-Z_]' src/transaction/mod_accepted_trajectory_directional_sensitivity.f90; then fail 'persistent SAVE state detected'; fi
+if grep -Eiq 'finite.?difference|perturb.*solve' src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 src/transaction/mod_accepted_trajectory_directional_publication.f90; then fail 'FD production construction detected'; fi
+if grep -Eiq 'save[[:space:]]*::|save[[:space:]]+[a-zA-Z_]' src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 src/transaction/mod_accepted_trajectory_directional_publication.f90; then fail 'persistent SAVE state detected'; fi
 
 echo 'FKT21_O0_O2_GATE=PASS'
 echo 'FKT21_QUALIFICATION PASS'
