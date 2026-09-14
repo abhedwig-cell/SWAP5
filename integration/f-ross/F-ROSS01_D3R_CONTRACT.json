@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3R",
+  "title": "RossFast bounded transaction-attempt duration and retry-ladder qualification",
+  "branch": "work/f-ross01-d3r-bounded-duration-retry-ladder-qualification",
+  "authorities": {
+    "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "d3": "21bf6ec4a0a847b60b8713dba832f0b94d07f049",
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "live_canonical_observed_at_contract": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+  },
+  "targeted_d3_gaps": [
+    "F-ROSS01-D3-G01",
+    "F-ROSS01-D3-G03"
+  ],
+  "explicitly_not_closed_by_d3r": [
+    "F-ROSS01-D3-G02"
+  ],
+  "canonical_transaction_policy": {
+    "initial_requested_duration_day": 0.0016,
+    "retry_scale": 0.5,
+    "max_retries": 8,
+    "external_full_half": true,
+    "admitted_solver_duration_formula": "0.0016 / 2^k",
+    "admitted_exponents": [0,1,2,3,4,5,6,7,8,9],
+    "reason_for_k9": "attempt k=8 still requires two half calls at k=9"
+  },
+  "qualification_scope": {
+    "transaction_attempt_full_and_half_calls": true,
+    "retry_attempt_calls": true,
+    "all_frozen_d2_materials": ["B01","B12","O01","O05","O14","O18"],
+    "baseline_and_bounded_flux_profiles": true,
+    "two_half_state_dependent_chain": true,
+    "hard_mass_tolerance_cm": 1e-12,
+    "candidate_only_ownership_preserved": true,
+    "fresh_worker_isolation_preserved": true
+  },
+  "required_evidence": {
+    "duration_material_positive_cases": 120,
+    "duration_material_pairs": 60,
+    "canonical_full_half_chains": 54,
+    "edge_internal_substeps": [2,4,8,16],
+    "edge_replay": true,
+    "boundary_fail_closed": true,
+    "non_ladder_duration_fail_closed": true,
+    "production_source_delta_must_be_empty": true
+  },
+  "hard_nonclaims": {
+    "rossfast_temporal_error_or_certificate_qualified": false,
+    "current_canonical_acceptance_tolerance_selected": false,
+    "end_to_end_run_canonical_interval_after_shortened_commit_qualified": false,
+    "remainder_duration_family_qualified": false,
+    "example_unqualified_remainder_day": 0.0012,
+    "restart_qualified": false,
+    "production_multiswap_runtime_qualified": false,
+    "whole_window_interface_sensitivity_qualified": false,
+    "production_admission": false
+  },
+  "decision_rule": {
+    "pass": "Close D3 duration-scope gaps G01 and G03 only if the complete bounded duration family, two-half candidate chains, hard mass, ownership, replay and fail-closed preservation gates pass against one live canonical transaction policy.",
+    "fail": "Keep the relevant D3 gap open if any duration/material/chain fails, mass exceeds the hard gate, ownership mutates, or canonical retry/full-half policy no longer matches the locked semantics."
+  }
+}
