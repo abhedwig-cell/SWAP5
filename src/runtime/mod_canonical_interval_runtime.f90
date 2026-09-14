@@ -1,9 +1,10 @@
 module mod_canonical_interval_runtime
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_interface_sensitivity_t, &
-       execute_reference_interval, TX_STATUS_ACCEPTED, TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, &
-       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_policy_t, &
+       transaction_interface_sensitivity_t, execute_reference_interval, TX_STATUS_ACCEPTED, &
+       TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
+       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
        CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
@@ -14,10 +15,11 @@ module mod_canonical_interval_runtime
   public :: run_canonical_interval, canonical_subinterval_target_selector
 
   abstract interface
-    subroutine canonical_subinterval_target_selector(cursor, requested_t1, target_t1, valid)
+    subroutine canonical_subinterval_target_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
       import :: real64
       real(real64), intent(in) :: cursor, requested_t1
       real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
       logical, intent(out) :: valid
     end subroutine canonical_subinterval_target_selector
   end interface
@@ -35,11 +37,12 @@ contains
 
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
+    type(transaction_policy_t) :: transaction_policy
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
     real(real64) :: cursor, next_cursor, tol, transaction_t1
     real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux
     logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid
-    integer :: isub
+    integer :: isub, max_retries_cap
 
     result = canonical_result_t()
     terminal_sensitivity = transaction_interface_sensitivity_t()
@@ -71,13 +74,14 @@ contains
 
     do isub = 1, config%max_committed_substeps
       transaction_t1 = interval%t1
+      max_retries_cap = config%transaction%max_retries
       selector_valid = .true.
       if (present(target_selector)) then
-        call target_selector(cursor, interval%t1, transaction_t1, selector_valid)
+        call target_selector(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)
       end if
       tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
       if (.not. selector_valid .or. .not. ieee_is_finite(transaction_t1) .or. &
-          transaction_t1 <= cursor .or. transaction_t1 > interval%t1 + tol) then
+          transaction_t1 <= cursor .or. transaction_t1 > interval%t1 .or. max_retries_cap < 0) then
         result%status = CANONICAL_STATUS_INVALID_REQUEST
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
@@ -85,7 +89,11 @@ contains
         return
       end if
 
-      call execute_reference_interval(model, working, cursor, transaction_t1, config%transaction, tx)
+      ! The optional execution-policy selector may tighten, but can never
+      ! relax, the caller-owned transaction retry budget.
+      transaction_policy = config%transaction
+      transaction_policy%max_retries = min(config%transaction%max_retries, max_retries_cap)
+      call execute_reference_interval(model, working, cursor, transaction_t1, transaction_policy, tx)
       call accumulate_transaction(result, tx)
 
       if (tx%status /= TX_STATUS_ACCEPTED) then
