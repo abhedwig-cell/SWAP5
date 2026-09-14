@@ -11,23 +11,34 @@ module mod_canonical_interval_runtime
   implicit none
   private
 
-  public :: run_canonical_interval
+  public :: run_canonical_interval, canonical_subinterval_target_selector
+
+  abstract interface
+    subroutine canonical_subinterval_target_selector(cursor, requested_t1, target_t1, valid)
+      import :: real64
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      logical, intent(out) :: valid
+    end subroutine canonical_subinterval_target_selector
+  end interface
 
 contains
 
-  subroutine run_canonical_interval(model, committed, forcing, interval, config, result)
+  subroutine run_canonical_interval(model, committed, forcing, interval, config, result, target_selector)
     class(canonical_physical_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
     class(canonical_forcing_t), intent(in) :: forcing
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     type(canonical_result_t), intent(out) :: result
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
-    real(real64) :: cursor, next_cursor, tol, aggregate_bottom_exchange, terminal_bottom_flux
-    logical :: aggregate_mass_complete, aggregate_bottom_available
+    real(real64) :: cursor, next_cursor, tol, transaction_t1
+    real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux
+    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid
     integer :: isub
 
     result = canonical_result_t()
@@ -59,7 +70,22 @@ contains
     cursor = interval%t0
 
     do isub = 1, config%max_committed_substeps
-      call execute_reference_interval(model, working, cursor, interval%t1, config%transaction, tx)
+      transaction_t1 = interval%t1
+      selector_valid = .true.
+      if (present(target_selector)) then
+        call target_selector(cursor, interval%t1, transaction_t1, selector_valid)
+      end if
+      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
+      if (.not. selector_valid .or. .not. ieee_is_finite(transaction_t1) .or. &
+          transaction_t1 <= cursor .or. transaction_t1 > interval%t1 + tol) then
+        result%status = CANONICAL_STATUS_INVALID_REQUEST
+        result%completed_t = cursor
+        result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
+             TX_MASS_MISSING_UNSPECIFIED)
+        return
+      end if
+
+      call execute_reference_interval(model, working, cursor, transaction_t1, config%transaction, tx)
       call accumulate_transaction(result, tx)
 
       if (tx%status /= TX_STATUS_ACCEPTED) then
@@ -75,8 +101,7 @@ contains
            terminal_bottom_flux)
       terminal_sensitivity = tx%interface_sensitivity
       next_cursor = tx%accepted_t1
-      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
-      if (next_cursor <= cursor .or. next_cursor > interval%t1 + tol) then
+      if (next_cursor <= cursor .or. next_cursor > transaction_t1 + tol) then
         result%status = CANONICAL_STATUS_NO_PROGRESS
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
