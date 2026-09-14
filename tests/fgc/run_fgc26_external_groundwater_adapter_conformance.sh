@@ -32,28 +32,45 @@ PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals \
   -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
-SOURCES=(
+BASE_SOURCES=(
   src/runtime/mod_groundwater_coupling_contract.f90
   src/runtime/mod_groundwater_exchange_service_contract.f90
   src/adapter/mod_groundwater_external_gateway.f90
-  tests/fgc/test_fgc26_external_groundwater_adapter_conformance.f90
 )
 
 for opt in 0 2; do
   dir="$BUILD/o$opt"
   mkdir -p "$dir"
-  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" "${SOURCES[@]}" -o "$dir/test" \
-      2>"$dir/compiler.txt"; then
-    echo "FGC26_COMPILE_O${opt}=FAIL" >&2
-    cat "$dir/compiler.txt" >&2
+  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" "${BASE_SOURCES[@]}" \
+      tests/fgc/test_fgc26_external_groundwater_adapter_conformance.f90 -o "$dir/test-main" \
+      2>"$dir/compiler-main.txt"; then
+    echo "FGC26_COMPILE_MAIN_O${opt}=FAIL" >&2
+    cat "$dir/compiler-main.txt" >&2
     exit 30
   fi
-  if grep -E 'Warning:' "$dir/compiler.txt" | grep -v -F '[-Wcompare-reals]'; then
-    echo "FGC26_UNEXPECTED_NON_COMPARE_REAL_WARNING_O${opt}=FAIL" >&2
-    cat "$dir/compiler.txt" >&2
+  if grep -E 'Warning:' "$dir/compiler-main.txt" | grep -v -F '[-Wcompare-reals]'; then
+    echo "FGC26_UNEXPECTED_NON_COMPARE_REAL_WARNING_MAIN_O${opt}=FAIL" >&2
+    cat "$dir/compiler-main.txt" >&2
     exit 31
   fi
-  "$dir/test" >"$dir/output.txt"
+
+  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" "${BASE_SOURCES[@]}" \
+      tests/fgc/test_fgc26_direct_commit_and_rebind.f90 -o "$dir/test-direct" \
+      2>"$dir/compiler-direct.txt"; then
+    echo "FGC26_COMPILE_DIRECT_O${opt}=FAIL" >&2
+    cat "$dir/compiler-direct.txt" >&2
+    exit 32
+  fi
+  if grep -E 'Warning:' "$dir/compiler-direct.txt" | grep -v -F '[-Wcompare-reals]'; then
+    echo "FGC26_UNEXPECTED_NON_COMPARE_REAL_WARNING_DIRECT_O${opt}=FAIL" >&2
+    cat "$dir/compiler-direct.txt" >&2
+    exit 33
+  fi
+
+  "$dir/test-main" >"$dir/output-main.txt"
+  "$dir/test-direct" >"$dir/output-direct.txt"
+  cat "$dir/output-main.txt" "$dir/output-direct.txt" >"$dir/output.txt"
+
   for marker in \
       FGC26_DATUM_UNIT_SIGN_ROUND_TRIP=PASS \
       FGC26_ROLLBACK_RESTART_HANDSHAKE=PASS \
@@ -62,10 +79,13 @@ for opt in 0 2; do
       FGC26_PARTIAL_RESPONSE_FAIL_CLOSED=PASS \
       FGC26_ADAPTER_FAILURE_FAIL_CLOSED=PASS \
       FGC26_MULTI_CELL_BATCH_ISOLATION=PASS \
-      FGC26_TYPED_SERVICE_CONFORMANCE=PASS; do
+      FGC26_TYPED_SERVICE_CONFORMANCE=PASS \
+      FGC26_DIRECT_CANDIDATE_COMMIT_AND_FAILURE=PASS \
+      FGC26_ACTIVE_PREPARED_REBIND_REJECTED=PASS; do
     grep -Fq "$marker" "$dir/output.txt"
   done
   grep -Fq 'F-GC26 EXTERNAL GROUNDWATER ADAPTER CONFORMANCE GATE PASS' "$dir/output.txt"
+  grep -Fq 'F-GC26 DIRECT COMMIT AND REBIND GATE PASS' "$dir/output.txt"
   cat "$dir/output.txt"
   echo "FGC26_O${opt}=PASS"
 done
