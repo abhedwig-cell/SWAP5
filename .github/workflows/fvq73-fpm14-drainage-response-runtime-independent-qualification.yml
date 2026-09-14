@@ -29,6 +29,15 @@ jobs:
       - name: Independent source and provenance governance
         run: bash tests/fvq/run_fvq73_source_governance.sh
       - name: Fresh independent two-level transactional runtime qualification
-        run: bash tests/fvq/run_fvq73_independent_runtime.sh
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq73_independent_runtime.sh 2>&1 | tee "$RUNNER_TEMP/fvq73-runtime.log"
+      - name: Retain runtime diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq73-runtime-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/fvq73-runtime.log
+          if-no-files-found: ignore
       - name: Supplemental admitted-route preservation replay
         run: bash tests/fpm/run_fpm14_precomputed_divdra_fixed_weir_preservation.sh
