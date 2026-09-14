@@ -78,9 +78,9 @@ def main() -> int:
         "max_candidate_error_bound": max_bound,
         "max_temporal_indicator": max_indicator,
         "max_refined_error_over_candidate_bound": max_refined_over_bound,
-        "certificate_runtime_authority": false,
-        "d3_g02_closed": false,
-        "production_admission": false,
+        "certificate_runtime_authority": False,
+        "d3_g02_closed": False,
+        "production_admission": False,
         "production_source_delta": [],
     }
     a.output.write_text(json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n")
