@@ -10,20 +10,32 @@ cd "$ROOT"
 fail() { echo "EB_I18_PREFLIGHT_FAIL $*" >&2; exit 181; }
 
 BASE_RUNTIME_BLOB="f06a2eef7b47880e449cf9b201342d7bd1e197e1"
-[[ "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" == "$BASE_RUNTIME_BLOB" ]] || fail 'runtime base blob drift'
+RUNTIME="src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+TEST="tests/eb/test_eb_i18_transaction_publication.f90"
+ACTUAL_RUNTIME_BLOB="$(git hash-object "$RUNTIME")"
 
-python3 tests/eb/_apply_eb_i18_runtime_patch.py
-python3 tests/eb/_normalize_eb_i18_runtime_api.py
+if [[ "$ACTUAL_RUNTIME_BLOB" == "$BASE_RUNTIME_BLOB" ]]; then
+  echo 'EB_I18_RUNTIME_MODE=STAGED_MIGRATION'
+  python3 tests/eb/_apply_eb_i18_runtime_patch.py
+  python3 tests/eb/_normalize_eb_i18_runtime_api.py
+else
+  echo 'EB_I18_RUNTIME_MODE=COMMITTED_PRODUCTION'
+  grep -Fq 'fmr_execute_serialized_column_with_bottom_energy' "$RUNTIME" || fail 'production runtime entrypoint missing'
+  ! grep -Fq 'fmr_execute_serialized_resolved_physical_column_with_bottom_energy' "$RUNTIME" || fail 'obsolete resolved energy entrypoint remains'
+  grep -Fq 'call thermal_candidate%clear()' "$RUNTIME" || fail 'production thermal candidate clear missing'
+  ! grep -Fq 'thermal_candidate = fmr_bottom_thermal_candidate_t()' "$RUNTIME" || fail 'private thermal constructor remains'
+  ! grep -Fq 'response = fmr_external_bottom_thermal_response_t()' "$TEST" || fail 'private response constructor remains in qualification oracle'
+fi
 
-grep -Fq 'fmr_execute_serialized_column_with_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-! grep -Fq 'fmr_execute_serialized_resolved_physical_column_with_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-grep -Fq 'call backend%run_trial' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-grep -Fq 'thermal_candidate = backend%bottom_thermal_snapshot()' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-grep -Fq 'call prepare_candidate_bound_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-grep -Fq 'call fmr_commit_candidate_with_receipt' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-grep -Fq 'call finalize_bottom_energy_publication' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-! grep -Fq 'execution_provenance' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-! grep -Fq 'exact_attempt_provenance' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+grep -Fq 'fmr_execute_serialized_column_with_bottom_energy' "$RUNTIME"
+! grep -Fq 'fmr_execute_serialized_resolved_physical_column_with_bottom_energy' "$RUNTIME"
+grep -Fq 'call backend%run_trial' "$RUNTIME"
+grep -Fq 'thermal_candidate = backend%bottom_thermal_snapshot()' "$RUNTIME"
+grep -Fq 'call prepare_candidate_bound_bottom_energy' "$RUNTIME"
+grep -Fq 'call fmr_commit_candidate_with_receipt' "$RUNTIME"
+grep -Fq 'call finalize_bottom_energy_publication' "$RUNTIME"
+! grep -Fq 'execution_provenance' "$RUNTIME"
+! grep -Fq 'exact_attempt_provenance' "$RUNTIME"
 
 echo 'EB_I18_PROCEDURAL_PROVENANCE_STATIC_PREFLIGHT=PASS'
 
@@ -109,7 +121,7 @@ for opt in 0 2; do
 
   echo "EB_I18_PROVIDER_ORACLE_O${opt}=PASS"
   echo "EB_I18_TRANSACTION_PUBLICATION_O${opt}=PASS"
-  echo "EB_I18_STAGED_RUNTIME_COMPILE_O${opt}=PASS"
+  echo "EB_I18_RUNTIME_COMPILE_O${opt}=PASS"
 done
 
 cmp -s "$BUILD/o0/provider_output.txt" "$BUILD/o2/provider_output.txt" || {
@@ -123,5 +135,5 @@ cmp -s "$BUILD/o0/transaction_output.txt" "$BUILD/o2/transaction_output.txt" || 
 echo 'EB_I18_PROVIDER_O0_O2_SEMANTIC_IDENTITY=PASS'
 echo 'EB_I18_TRANSACTION_O0_O2_SEMANTIC_IDENTITY=PASS'
 
-git diff --check -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90 tests/eb/test_eb_i18_transaction_publication.f90
-echo 'EB_I18_STAGED_RUNTIME_PREFLIGHT=PASS'
+git diff --check -- "$RUNTIME" "$TEST"
+echo 'EB_I18_RUNTIME_QUALIFICATION=PASS'

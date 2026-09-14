@@ -1,4 +1,4 @@
-name: EB-I18 staged runtime preflight
+name: EB-I18 candidate-bound bottom energy qualification
 
 on:
   push:
@@ -6,12 +6,15 @@ on:
       - work/eb-i18-candidate-bound-bottom-energy-publication
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
-  group: eb-i18-staged-runtime-preflight-${{ github.ref }}
+  group: eb-i18-candidate-bound-bottom-energy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  preflight:
+  qualify:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -20,13 +23,22 @@ jobs:
           fetch-depth: 0
       - name: Tested head identity
         run: |
-          echo "EB_I18_PREFLIGHT_HEAD=$(git rev-parse HEAD)"
-          echo "EB_I18_PREFLIGHT_TREE=$(git rev-parse HEAD^{tree})"
+          echo "EB_I18_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I18_TESTED_TREE=$(git rev-parse HEAD^{tree})"
       - name: Compiler identity
         run: gfortran --version
-      - name: Apply staged runtime patch and compile O0/O2
+      - name: Qualify staged migration or committed production runtime
         run: bash tests/eb/run_eb_i18_staged_runtime_preflight.sh
-      - name: Verify production source remains uncommitted staging delta
+      - name: Persist production runtime after qualified staged migration
         run: |
-          test "$(git status --short src/runtime/mod_fmr_serialized_multiswap_runtime.f90 | awk '{print $1}')" = M
-          echo 'EB_I18_PREFLIGHT_NO_RUNTIME_COMMIT=PASS'
+          if git diff --quiet -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90 tests/eb/test_eb_i18_transaction_publication.f90; then
+            echo 'EB_I18_EXACT_HEAD_PRODUCTION_QUALIFICATION=PASS'
+            exit 0
+          fi
+          git diff --check -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90 tests/eb/test_eb_i18_transaction_publication.f90
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/runtime/mod_fmr_serialized_multiswap_runtime.f90 tests/eb/test_eb_i18_transaction_publication.f90
+          git commit -m 'feat(EB-I18): commit candidate-bound bottom energy publication'
+          git push origin HEAD:work/eb-i18-candidate-bound-bottom-energy-publication
+          echo 'EB_I18_PRODUCTION_RUNTIME_COMMITTED_AFTER_QUALIFIED_MIGRATION=PASS'
