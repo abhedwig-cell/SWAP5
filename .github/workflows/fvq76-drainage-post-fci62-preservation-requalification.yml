@@ -29,4 +29,4 @@ jobs:
             integration/f-ci-canonical
       - name: Run independent drainage current-postimage requalification
         shell: bash
-        run: bash tests/fvq/run_fvq76_drainage_post_fci62_preservation_requalification.sh
+        run: bash tests/fvq/run_fvq76_current_canonical_reconciled.sh
