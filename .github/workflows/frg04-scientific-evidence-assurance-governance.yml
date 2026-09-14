@@ -1,0 +1,97 @@
+name: F-RG04 scientific evidence assurance governance
+
+on:
+  push:
+    branches:
+      - regie/f-rg04-scientific-evidence-assurance-governance
+    paths:
+      - 'docs/governance/F-RG04_*'
+      - 'integration/f-rg/F-RG04_*'
+      - 'tools/governance/validate_frg04_scientific_governance.py'
+      - '.github/workflows/frg04-scientific-evidence-assurance-governance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate governance package
+        run: python3 tools/governance/validate_frg04_scientific_governance.py
+
+      - name: Verify exact base and governance-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=e79b0272edb544ec4c8000a4d6869274f1ab3ae5
+          BASE_TREE=44e904cd2c57a76ee6c7453a6782049b230a8f8d
+          BASE_SRC=2dc4c8b6eba013621f1fa56b1e868efac7330fcc
+          BASE_REFERENCE=9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          test "$(git rev-parse "$BASE^{tree}")" = "$BASE_TREE"
+          test "$(git merge-base "$BASE" HEAD)" = "$BASE"
+          test "$(git rev-parse HEAD:src)" = "$BASE_SRC"
+          test "$(git rev-parse HEAD:reference)" = "$BASE_REFERENCE"
+          test -z "$(git diff --name-only "$BASE..HEAD" -- src reference)"
+          bad="$(git diff --name-only "$BASE..HEAD" | grep -Ev '^(docs/governance/F-RG04_|integration/f-rg/F-RG04_|tools/governance/validate_frg04_scientific_governance.py|\.github/workflows/frg04-scientific-evidence-assurance-governance.yml)' || true)"
+          test -z "$bad"
+          echo 'FRG04_GOVERNANCE_ONLY_DELTA=PASS'
+          echo 'FRG04_PRODUCTION_SOURCE_UNCHANGED=PASS'
+          echo 'FRG04_REFERENCE_SOURCE_UNCHANGED=PASS'
+
+      - name: Verify governing authority heads
+        shell: bash
+        run: |
+          set -euo pipefail
+          check_ref() {
+            ref="$1"; expected="$2"
+            actual="$(git ls-remote origin "refs/heads/$ref" | awk '{print $1}')"
+            test "$actual" = "$expected"
+          }
+          check_ref regie/f-rg01a-parallel-research-isolation-contract-ownership-policy 4553204468695553cf69a48d1c97598c471156d6
+          check_ref regie/f-rg01b-runtime-resumption-execution-policy 5e2561d9051fba81769565291b1bf3089c7ddcd9
+          check_ref regie/f-rg01c-fixed-denominator-completion-model 56b86e29e0960e396059caf47c193440d571b709
+          check_ref regie/f-rg01d-module-contract-standard 0877971d1117cb0067aa363d0868d682f62a6844
+          check_ref regie/f-rg03-post-ci59p-program-rebaseline aac2644149dda47282a25a39892c6dc808323dd0
+          echo 'FRG04_GOVERNING_AUTHORITIES_PINNED=PASS'
+          echo 'FRG04_DENOMINATOR_AUTHORITY_UNCHANGED=PASS'
+
+      - name: Validate final self-review and disposition
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          rg=Path('integration/f-rg')
+          review=json.loads((rg/'F-RG04_ADVERSARIAL_SELF_REVIEW.json').read_text())
+          status=json.loads((rg/'F-RG04_STATUS.json').read_text())
+          assert review['assurance_label']=='PROCESS_SELF_REVIEWED_NOT_INDEPENDENT'
+          assert review['same_agent'] is True
+          assert review['independence_claimed'] is False
+          assert len(review['counter_hypotheses'])==15
+          assert all(x['result'] in {'REJECTED_BY_EVIDENCE','ACCEPTED_FINDING_REMEDIATED','NOT_APPLICABLE_WITH_REASON'} for x in review['counter_hypotheses'])
+          assert review['unresolved_substantive_findings']==[]
+          reviewed=review['reviewed_authoring_head']
+          subprocess.run(['git','merge-base','--is-ancestor',reviewed,'HEAD'],check=True)
+          allowed={'integration/f-rg/F-RG04_ADVERSARIAL_SELF_REVIEW.json','integration/f-rg/F-RG04_STATUS.json'}
+          changed=set(subprocess.check_output(['git','diff','--name-only',f'{reviewed}..HEAD'],text=True).splitlines())
+          assert changed <= allowed, f'substantive files changed after reviewed head: {changed-allowed}'
+          assert status['decision']=='QUALIFIED_SWAP5_SCIENTIFIC_EVIDENCE_QUALIFICATION_ADMISSION_COMPOSITION_AND_ASSURANCE_GOVERNANCE'
+          assert status['denominator_changed'] is False
+          assert status['production_source_changed'] is False
+          assert status['physics_changed'] is False
+          assert status['canonical_changed_by_F_RG04'] is False
+          assert status['review_assurance']=='PROCESS_SELF_REVIEWED_NOT_INDEPENDENT'
+          print('FRG04_ADVERSARIAL_SELF_REVIEW=PASS')
+          print('FRG04_NO_SUBSTANTIVE_POST_REVIEW_DRIFT=PASS')
+          print('FRG04_FINAL_DISPOSITION=PASS')
+          PY
+
+      - name: Exact final head marker
+        run: |
+          echo "FRG04_FINAL_HEAD=$(git rev-parse HEAD)"
+          echo 'QUALIFIED_SWAP5_SCIENTIFIC_EVIDENCE_QUALIFICATION_ADMISSION_COMPOSITION_AND_ASSURANCE_GOVERNANCE'
