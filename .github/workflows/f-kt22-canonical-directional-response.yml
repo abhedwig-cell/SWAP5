@@ -1,0 +1,23 @@
+name: F-KT22 Canonical Directional Response
+
+on:
+  push:
+    branches:
+      - work/f-kt22-canonical-directional-response-exposure
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-KT22 qualification
+        run: bash tests/fkt/run_fkt22_qualification.sh
