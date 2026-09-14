@@ -1,9 +1,10 @@
-name: EB-I20 energy-ledger current-canonical requalification
+name: EB-I20 energy-ledger qualification
 
 on:
   push:
     branches:
       - work/eb-i20-energy-conservation-ledger-current-canonical-requalification
+      - work/eb-i20r-batch-safe-energy-ledger-invariant-handling
   workflow_dispatch:
 
 permissions:
@@ -18,9 +19,14 @@ jobs:
           fetch-depth: 0
       - name: Tested head identity
         run: |
-          echo "EB_I20_TESTED_HEAD=$(git rev-parse HEAD)"
-          echo "EB_I20_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+          echo "EB_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_TESTED_TREE=$(git rev-parse HEAD^{tree})"
       - name: Compiler identity
         run: gfortran --version
-      - name: Requalify immutable EB-I01 ledger on current canonical
-        run: bash tests/eb/run_eb_i20_energy_ledger_current_canonical_requalification.sh
+      - name: Run branch-specific EB gate
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "work/eb-i20r-batch-safe-energy-ledger-invariant-handling" ]]; then
+            bash tests/eb/run_eb_i20r_batch_safe_energy_ledger_gate.sh
+          else
+            bash tests/eb/run_eb_i20_energy_ledger_current_canonical_requalification.sh
+          fi
