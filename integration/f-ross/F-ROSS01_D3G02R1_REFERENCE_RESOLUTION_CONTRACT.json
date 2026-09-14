@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R1",
+  "title": "RossFast temporal-certificate reference-resolution qualification",
+  "status": "IN_PROGRESS",
+  "scope": "RESEARCH_QUALIFICATION_ONLY",
+  "base_authority": {
+    "d3g02_closed_negative_head": "a836de38173de813dff261bd644dadffd8df116a",
+    "d3g02_authority_run": 34796278942,
+    "d3g02_negative_reason": "raw full-vs-two-half ratio exceeded 1 only at reference-scale errors; no constants were admitted",
+    "d3_g02_remains_open_at_start": true
+  },
+  "failure_analysis_hypothesis": {
+    "statement": "The D3G02 ratio failures may be non-identifiable at double-precision independent-reference resolution rather than evidence of a materially non-conservative temporal estimator.",
+    "no_posthoc_factor_adoption": true,
+    "forbidden_shortcut": "Do not adopt factor 1.6, relax 1e-5, remove O01/B12, or shrink the 54-case domain."
+  },
+  "runtime_candidate_semantics_unchanged": {
+    "raw_estimator": "max_i(abs(theta_refined_i-theta_coarse_i))/(theta_s-theta_r)",
+    "safety_factor_candidate": 1.0,
+    "accuracy_tolerance_candidate": 1e-5,
+    "temporal_indicator_candidate": "raw_estimator/1e-5",
+    "new_runtime_resolution_floor": false,
+    "new_runtime_reference_dependency": false
+  },
+  "offline_reference_ensemble": {
+    "members": [
+      "DOP853_RTOL_1E-11_ATOL_1E-13_MAXSTEP_HORIZON_OVER_64",
+      "DOP853_RTOL_1E-11_ATOL_1E-13_MAXSTEP_HORIZON_OVER_128",
+      "RADAU_RTOL_1E-11_ATOL_1E-13_MAXSTEP_HORIZON_OVER_128"
+    ],
+    "center_reference": "DOP853_HORIZON_OVER_128",
+    "reference_spread": "maximum pairwise span-normalized L-infinity difference among the three reference states at the same endpoint",
+    "reference_spread_hard_limit": 1e-9,
+    "runtime_dependency": false
+  },
+  "precommitted_case_rule": {
+    "resolved_refined_error_lower_bound": "max(0, refined_error_to_center_reference-reference_spread)",
+    "required_conservativity": "resolved_refined_error_lower_bound <= raw_estimator",
+    "apparent_underestimate_rule": "if refined_error_to_center_reference > raw_estimator then refined_error_to_center_reference must be <= reference_spread",
+    "absolute_accuracy_requirement": "refined_error_to_center_reference <= 1e-5",
+    "mass_requirement_cm": 1e-12,
+    "candidate_ownership": "candidate-only; committed origin immutable; runtime retains accept/commit authority"
+  },
+  "exact_domain": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "case_count": 54,
+    "duration_and_state_semantics": "exact frozen D3R/D2 research domain"
+  },
+  "positive_outcome_requires_all": [
+    "54_OF_54_CASES_EXECUTE_AND_PASS_NON_TEMPORAL_D2_D3R_GATES",
+    "ALL_REFERENCE_ENSEMBLE_SPREADS_LE_1E-9",
+    "ALL_RESOLVED_REFINED_ERROR_LOWER_BOUNDS_LE_RAW_ESTIMATOR",
+    "ALL_APPARENT_RAW_UNDERESTIMATES_FULLY_INSIDE_REFERENCE_SPREAD",
+    "ALL_REFINED_ERRORS_LE_1E-5",
+    "ALL_COMPONENT_MASS_RESIDUALS_ABS_LE_1E-12_CM"
+  ],
+  "decision": {
+    "if_all_pass": "SUPPORT_ORIGINAL_FACTOR_1_AND_TOLERANCE_1E-5_ON_EXACT_DOMAIN_PENDING_SEPARATE_EXECUTABLE_MODEL_CERTIFICATE_BINDING",
+    "otherwise": "NEGATIVE_REMEDIATION_D3_G02_REMAINS_OPEN"
+  },
+  "production_admission": false,
+  "production_source_delta": []
+}
