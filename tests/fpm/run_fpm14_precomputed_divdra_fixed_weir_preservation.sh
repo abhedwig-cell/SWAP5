@@ -108,6 +108,10 @@ from pathlib import Path
 import sys
 src,dst=map(Path,sys.argv[1:])
 s=src.read_text()
+root_line='ROOT="$(cd "$(dirname "$0")/../.." && pwd)"'
+if s.count(root_line) != 1:
+    raise SystemExit('FPM14_PRESERVATION_GATE_FAIL fixed-weir runner root anchor drift')
+s=s.replace(root_line, 'ROOT="${FPM14_PRESERVATION_ROOT:?}"')
 needle='  src/process/mod_restricted_fixed_weir_surface_water.f90\n'
 if s.count(needle) != 1:
     raise SystemExit('FPM14_PRESERVATION_GATE_FAIL fixed-weir runner compile-list anchor drift')
@@ -135,14 +139,14 @@ augment_weir_runner tests/fpm/run_fpm08d7_transactional_runtime_owner.sh "$AUG_T
 augment_weir_runner tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh "$AUG_RESTART"
 echo 'FPM14_FIXED_WEIR_BUILD_HYGIENE_AUGMENTATION_ONLY=PASS'
 
-bash "$AUG_COMPILE" > "$BUILD/weir-compile.log" 2>&1 || {
+FPM14_PRESERVATION_ROOT="$ROOT" bash "$AUG_COMPILE" > "$BUILD/weir-compile.log" 2>&1 || {
   cat "$BUILD/weir-compile.log" >&2; fail 'fixed-weir runtime compile replay';
 }
 grep -Fq 'FPM08D7_RUNTIME_COMPILE_O0=PASS' "$BUILD/weir-compile.log" || fail 'fixed-weir O0 compile marker'
 grep -Fq 'FPM08D7_RUNTIME_COMPILE_O2=PASS' "$BUILD/weir-compile.log" || fail 'fixed-weir O2 compile marker'
 echo 'FPM14_FIXED_WEIR_RUNTIME_COMPILE_CURRENT_POSTIMAGE_REPLAY=PASS'
 
-FPM08D7_TX_EVIDENCE_DIR="$BUILD/weir-tx" bash "$AUG_TX" > "$BUILD/weir-tx.log" 2>&1 || {
+FPM14_PRESERVATION_ROOT="$ROOT" FPM08D7_TX_EVIDENCE_DIR="$BUILD/weir-tx" bash "$AUG_TX" > "$BUILD/weir-tx.log" 2>&1 || {
   cat "$BUILD/weir-tx.log" >&2; fail 'fixed-weir transactional replay';
 }
 for m in \
@@ -154,7 +158,7 @@ for m in \
 done
 echo 'FPM14_FIXED_WEIR_TRANSACTIONAL_CURRENT_POSTIMAGE_REPLAY=PASS'
 
-FPM08D7_RESTART_EVIDENCE_DIR="$BUILD/weir-restart" bash "$AUG_RESTART" > "$BUILD/weir-restart.log" 2>&1 || {
+FPM14_PRESERVATION_ROOT="$ROOT" FPM08D7_RESTART_EVIDENCE_DIR="$BUILD/weir-restart" bash "$AUG_RESTART" > "$BUILD/weir-restart.log" 2>&1 || {
   cat "$BUILD/weir-restart.log" >&2; fail 'fixed-weir restart replay';
 }
 for m in \
