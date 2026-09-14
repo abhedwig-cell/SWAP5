@@ -4,7 +4,7 @@ module mod_energy_conservation_ledger
   use mod_energy_conservation_types, only: energy_transfer_t, energy_storage_snapshot_t, energy_balance_t, &
        make_energy_transfer, make_energy_storage_snapshot, project_energy_balance, ENERGY_CONSERVATION_OK, &
        ENERGY_EXTERNAL_COMPONENT
-  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t
+  use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t
   implicit none
   private
 
@@ -270,13 +270,14 @@ contains
   logical function energy_ledger_prepared_ready_for_receipt(self, prepared, receipt) result(ready)
     class(energy_trial_ledger_t), intent(in) :: self
     type(prepared_energy_trial_t), intent(in) :: prepared
-    type(fmr_accepted_commit_receipt_t), intent(in) :: receipt
+    type(fmr_owned_commit_receipt_t), intent(in) :: receipt
     real(real64) :: receipt_t0, receipt_t1
     logical :: interval_available
 
     ready = .false.
     if (.not. receipt%ready()) return
     if (.not. prepared_matches_ledger(self, prepared)) return
+    if (receipt%owner_instance_id() /= prepared%owner_instance_id) return
     if (receipt%current_lineage_id() /= prepared%lineage_id) return
     if (receipt%origin_revision() /= prepared%origin_revision_value) return
     if (receipt%committed_revision() /= prepared%origin_revision_value + 1_int64) return
@@ -290,7 +291,7 @@ contains
   subroutine energy_ledger_commit_prepared(self, prepared, receipt, record, status)
     class(energy_trial_ledger_t), intent(inout) :: self
     type(prepared_energy_trial_t), intent(inout) :: prepared
-    type(fmr_accepted_commit_receipt_t), intent(in) :: receipt
+    type(fmr_owned_commit_receipt_t), intent(in) :: receipt
     type(energy_commit_record_t), intent(out) :: record
     integer, intent(out) :: status
     real(real64) :: receipt_t0, receipt_t1
