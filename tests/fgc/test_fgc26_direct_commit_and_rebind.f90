@@ -23,33 +23,33 @@ module fgc26_direct_commit_backend
 
 contains
 
-  integer(int64) function checkpoint_token(self) result(token)
+  integer(int64) function current_checkpoint_token(self) result(value)
     class(direct_backend_t), intent(in) :: self
-    token = 9000_int64 + self%revision
-  end function checkpoint_token
+    value = 9000_int64 + self%revision
+  end function current_checkpoint_token
 
-  subroutine backend_capture(self, cell_id, lineage_id, origin_revision, origin_time, token, status)
+  subroutine backend_capture(self, cell_id, lineage_id, origin_revision, origin_time, checkpoint_token, status)
     class(direct_backend_t), intent(inout) :: self
     integer(int64), intent(in) :: cell_id
-    integer(int64), intent(out) :: lineage_id, origin_revision, token
+    integer(int64), intent(out) :: lineage_id, origin_revision, checkpoint_token
     real(real64), intent(out) :: origin_time
     integer, intent(out) :: status
 
     if (cell_id /= 7_int64) then
-      lineage_id = 0_int64; origin_revision = -1_int64; origin_time = 0.0_real64; token = 0_int64
+      lineage_id = 0_int64; origin_revision = -1_int64; origin_time = 0.0_real64; checkpoint_token = 0_int64
       status = 799
       return
     end if
     lineage_id = 7007_int64
     origin_revision = self%revision
     origin_time = self%origin_time
-    token = checkpoint_token(self)
+    checkpoint_token = current_checkpoint_token(self)
     status = GW_EXTERNAL_BACKEND_OK
   end subroutine backend_capture
 
-  subroutine backend_trial(self, cell_id, token, t0, t1, flux_native, candidate_token, head_native, status)
+  subroutine backend_trial(self, cell_id, checkpoint_token, t0, t1, flux_native, candidate_token, head_native, status)
     class(direct_backend_t), intent(inout) :: self
-    integer(int64), intent(in) :: cell_id, token
+    integer(int64), intent(in) :: cell_id, checkpoint_token
     real(real64), intent(in) :: t0, t1, flux_native
     integer(int64), intent(out) :: candidate_token
     real(real64), intent(out) :: head_native
@@ -57,7 +57,7 @@ contains
 
     candidate_token = 0_int64
     head_native = 0.0_real64
-    if (cell_id /= 7_int64 .or. token /= checkpoint_token(self) .or. &
+    if (cell_id /= 7_int64 .or. checkpoint_token /= current_checkpoint_token(self) .or. &
         abs(t0-self%origin_time) > 1.0e-12_real64 .or. t1 <= t0) then
       status = 798
       return
@@ -73,16 +73,16 @@ contains
     status = GW_EXTERNAL_BACKEND_OK
   end subroutine backend_trial
 
-  subroutine backend_commit_candidate(self, cell_id, token, candidate_token, status)
+  subroutine backend_commit_candidate(self, cell_id, checkpoint_token, candidate_token, status)
     class(direct_backend_t), intent(inout) :: self
-    integer(int64), intent(in) :: cell_id, token, candidate_token
+    integer(int64), intent(in) :: cell_id, checkpoint_token, candidate_token
     integer, intent(out) :: status
 
     if (self%fail_commit) then
       status = 703
       return
     end if
-    if (cell_id /= 7_int64 .or. token /= checkpoint_token(self) .or. &
+    if (cell_id /= 7_int64 .or. checkpoint_token /= current_checkpoint_token(self) .or. &
         candidate_token /= self%candidate_token .or. candidate_token <= 0_int64) then
       status = 704
       return
@@ -108,14 +108,14 @@ contains
     status = GW_EXTERNAL_BACKEND_OK
   end subroutine backend_discard_candidate
 
-  subroutine backend_prepare(self, cell_id, token, candidate_token, prepare_token, status)
+  subroutine backend_prepare(self, cell_id, checkpoint_token, candidate_token, prepare_token, status)
     class(direct_backend_t), intent(inout) :: self
-    integer(int64), intent(in) :: cell_id, token, candidate_token
+    integer(int64), intent(in) :: cell_id, checkpoint_token, candidate_token
     integer(int64), intent(out) :: prepare_token
     integer, intent(out) :: status
 
     prepare_token = 0_int64
-    if (cell_id /= 7_int64 .or. token /= checkpoint_token(self) .or. &
+    if (cell_id /= 7_int64 .or. checkpoint_token /= current_checkpoint_token(self) .or. &
         candidate_token /= self%candidate_token .or. candidate_token <= 0_int64) then
       status = 704
       return
