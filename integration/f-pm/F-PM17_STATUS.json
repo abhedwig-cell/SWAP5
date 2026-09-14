@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.fpm17.status.v1",
+  "work_unit": "F-PM17",
+  "title": "Drainage-v1 frozen-scope authority correction",
+  "branch": "work/f-pm17-drainage-response-fully-implicit-coupling",
+  "phase": "CLOSED_SCOPE_AUTHORITY_RECONCILIATION",
+  "decision": "F_PM15_G1R_NOT_A_FROZEN_DRAINAGE_V1_EXIT_REQUIREMENT",
+  "canonical_base": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+  "tested_head": "bcb92d387c6082197c347cedc3462a1852fc1a8e",
+  "workflow_run": 34817757898,
+  "workflow_job": 103892066165,
+  "conclusion": "success",
+  "authority_results": {
+    "pm13_denominator_exact": "PASS_8_VARIANTS",
+    "pm13_original_blockers_exact": "PASS_G1_G2_G3",
+    "process_jacobian_ownership_guard": "PASS",
+    "fully_implicit_not_pm13_exit_requirement": "PASS",
+    "fpm15_scope_expansion_classified": "PASS"
+  },
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "frozen_denominator_changed": false,
+  "scope_reduced": false,
+  "scope_expanded_for_completion": false,
+  "fully_implicit_implementation_authorized": false,
+  "drainage_v1_100_percent_complete": false,
+  "next_required_step": "Fresh F-PM13-class completion audit from exact live canonical against original G1/G2/G3 only."
+}
