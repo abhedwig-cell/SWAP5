@@ -47,38 +47,81 @@ for path, old, new in changes:
     print(f'FMR44_PATCHED {path}')
 
 # Qualification-only fixture shaping and diagnostics. These edits do not touch
-# production source. The positive qbot experiment starts from the independently
-# proven uniform prescribed-qbot equilibrium and changes only the lower forcing:
-# qtop remains qeq=-K(h0), while qbot switches to a small positive inflow. This
-# isolates the runtime capability needed by EB and avoids simultaneously reversing
-# both boundaries.
+# production source. Keep the exact uniform free-drainage equilibrium case as an
+# independent mode-2 routing/mass oracle. For the genuinely upward case, however,
+# start the certificate state from a hydrostatic predecessor rather than abruptly
+# reversing a free-drainage profile. In this four-node fixture disnod=1 cm, so
+# h=[-75,-74,-73,-72] cm gives an exactly zero hydraulic gradient at every
+# internal face. With qtop=qbot=0 and no sources/sinks that predecessor has zero
+# right derivative. The tested positive qtop=qbot is then a local upward
+# throughflow perturbation; positive qbot is lower-boundary inflow and positive
+# qtop is upper-boundary outflow under the canonical mass convention.
 test = Path('tests/fmr/test_fmr44_serialized_prescribed_qbot_runtime.f90')
 text = test.read_text()
-old_case = """    call execute_case(2, q, q, 777777.0_real64, upward_dt, .true., output, observation)
-"""
-new_case = """    call execute_case(2, qeq, q, 777777.0_real64, upward_dt, .true., output, observation)
-"""
-if old_case in text:
-    text = text.replace(old_case, new_case, 1)
-    print('FMR44_POSITIVE_FIXTURE_BOTTOM_ONLY_FORCING_CHANGE=STAGED')
-elif new_case not in text:
-    raise SystemExit('FMR44_POSITIVE_FIXTURE_ANCHOR_MISMATCH')
 
-old_flow_assert = """    call require(output%mass%total_in > 0.0_real64 .and. output%mass%total_out > 0.0_real64, &
-         'positive qbot throughflow has explicit in and out')
+old_temporal_init = """    call initialize_physical_state(parameters, state)
+    ! The same uniform state is independently exercised above as the exact
+    ! prescribed-qbot equilibrium. Its accepted predecessor right derivative is
+    ! therefore exactly zero. The forcing changes only at this interval boundary.
+    accepted_predecessor_right_derivative = 0.0_real64
 """
-new_flow_assert = """    call require(output%mass%total_in >= q*upward_dt, &
-         'positive qbot lower-boundary inflow appears in accepted mass ledger')
+new_temporal_init = """    call initialize_hydrostatic_physical_state(parameters, state)
+    ! The qualification fixture uses an exact hydrostatic predecessor:
+    ! (h(i-1)-h(i))/disnod(i)+1 = 0 at every internal face, with no sources
+    ! or sinks and qtop=qbot=0. Its accepted predecessor right derivative is
+    ! therefore exactly zero. The tested interval applies only a small positive
+    ! upward throughflow at the two external faces.
+    accepted_predecessor_right_derivative = 0.0_real64
 """
-if old_flow_assert in text:
-    text = text.replace(old_flow_assert, new_flow_assert, 1)
-elif new_flow_assert not in text:
-    raise SystemExit('FMR44_POSITIVE_MASS_ASSERT_ANCHOR_MISMATCH')
+if old_temporal_init in text:
+    text = text.replace(old_temporal_init, new_temporal_init, 1)
+    print('FMR44_HYDROSTATIC_TEMPORAL_PREDECESSOR=STAGED')
+elif new_temporal_init not in text:
+    raise SystemExit('FMR44_HYDROSTATIC_TEMPORAL_PREDECESSOR_ANCHOR_MISMATCH')
+
+insert_anchor = """  subroutine initialize_forcing(forcing, top_flux, bottom_flux, bottom_head)
+"""
+if 'subroutine initialize_hydrostatic_physical_state' not in text:
+    hydrostatic_helper = """  subroutine initialize_hydrostatic_physical_state(parameters, state)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_state_t), intent(out) :: state
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t) :: provider
+    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+    real(real64) :: gradient
+    integer :: i
+
+    call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
+    call bind_b110_default_mvg_provider(provider, hp, equilibrium_dt)
+    heads(1) = h0
+    do i = 2, numnod
+      heads(i) = heads(i-1) + parameters%node_distance(i)
+      gradient = (heads(i-1)-heads(i))/parameters%node_distance(i) + 1.0_real64
+      call require(abs(gradient) <= 16.0_real64*epsilon(1.0_real64), &
+           'hydrostatic predecessor zero internal hydraulic gradient')
+    end do
+    call provider%evaluate(heads, water, conductivity, capacity, dkdh)
+    call require(all(ieee_is_finite(conductivity)) .and. all(conductivity > 0.0_real64), &
+         'hydrostatic predecessor finite positive conductivity')
+    state%active_nodes = numnod
+    allocate(state%pressure_head(numnod), state%water_content(numnod))
+    state%pressure_head = heads
+    state%water_content = water
+    state%ponding_depth = 0.0_real64
+    state%groundwater_level = -2.0_real64
+    write(*,'(A,4(1X,ES16.8E3))') 'FMR44_HYDROSTATIC_HEADS=', heads
+    write(*,'(A)') 'FMR44_HYDROSTATIC_ZERO_DERIVATIVE_PREDECESSOR=PASS'
+  end subroutine initialize_hydrostatic_physical_state
+
+"""
+    if text.count(insert_anchor) != 1:
+        raise SystemExit(f'FMR44_HYDROSTATIC_HELPER_ANCHOR_MISMATCH count={text.count(insert_anchor)}')
+    text = text.replace(insert_anchor, hydrostatic_helper + insert_anchor, 1)
 
 # F-SI27 formally qualified prescribed-qbot semantics with a bounded numerical
 # policy of 16 Newton iterations and 8 backtracking attempts while retaining the
-# same hard 1e-12 head and mass tolerances.  Reuse that qualified solver-work
-# budget here instead of changing physics or relaxing acceptance tolerances.
+# same hard 1e-12 head and mass tolerances. Reuse that bounded work budget here;
+# do not loosen any acceptance tolerance.
 old_solver_budget = """    parameters%max_iterations = 8
     parameters%max_backtracking = 4
 """
