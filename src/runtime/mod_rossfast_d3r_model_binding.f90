@@ -19,6 +19,8 @@ module mod_rossfast_d3r_model_binding
   real(real64), parameter, public :: ROSSFAST_D3R_STATE_CONSISTENCY_TOL = 2.0e-12_real64
   real(real64), parameter, public :: ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR = 1.0e-10_real64
   real(real64), parameter, public :: ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE = 1.0e-5_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_H_MIN_CM = -10000.0_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_H_MAX_CM = -1.0_real64
 
   type, public :: rossfast_d3r_material_t
     character(len=3) :: material_id = '---'
@@ -206,7 +208,8 @@ contains
 
     select type(state)
     type is(rossfast_d3r_state_t)
-      if (.not. valid_state_shape_and_values(state)) return
+      if (.not. state_is_admitted(state, self%material)) return
+      if (.not. forcing_is_admitted(state, self%material, self%forcing)) return
       request%material = self%material
       request%base_state = state
       request%forcing = self%forcing
@@ -216,7 +219,7 @@ contains
       call self%kernel%solve(request, result)
 
       if (.not. result%request_admitted .or. .not. result%solver_ok) return
-      if (.not. valid_candidate(result%candidate_state, self%material)) return
+      if (.not. state_is_admitted(result%candidate_state, self%material)) return
 
       ! In F-ROSS02 there are no distributed source/sink terms and both
       ! boundaries are prescribed fluxes. Therefore the binding, not the
@@ -265,7 +268,7 @@ contains
     if (.not. self%bound .or. .not. allocated(self%cell_thickness_cm)) return
     select type(state)
     type is(rossfast_d3r_state_t)
-      if (.not. valid_state_shape_and_values(state)) return
+      if (.not. state_is_admitted(state, self%material)) return
       value = sum(self%cell_thickness_cm * state%water_content)
     class default
       return
@@ -293,7 +296,7 @@ contains
     if (.not. self%bound .or. .not. allocated(self%cell_thickness_cm)) return
     select type(state)
     type is(rossfast_d3r_state_t)
-      if (.not. valid_state_shape_and_values(state)) return
+      if (.not. state_is_admitted(state, self%material)) return
       complete = .true.
       missing_mask = TX_MASS_MISSING_NONE
     class default
@@ -306,31 +309,98 @@ contains
     admitted_internal_substeps = value == 2 .or. value == 4 .or. value == 8 .or. value == 16
   end function admitted_internal_substeps
 
-  logical function valid_state_shape_and_values(state)
+  logical function state_is_admitted(state, material)
     type(rossfast_d3r_state_t), intent(in) :: state
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: expected_theta, tol
+    integer :: i
 
-    valid_state_shape_and_values = .false.
+    state_is_admitted = .false.
     if (state%active_nodes /= ROSSFAST_D3R_N_CELLS) return
     if (.not. allocated(state%pressure_head_cm) .or. .not. allocated(state%water_content)) return
     if (size(state%pressure_head_cm) /= ROSSFAST_D3R_N_CELLS) return
     if (size(state%water_content) /= ROSSFAST_D3R_N_CELLS) return
     if (.not. all(ieee_is_finite(state%pressure_head_cm))) return
     if (.not. all(ieee_is_finite(state%water_content))) return
-    valid_state_shape_and_values = .true.
-  end function valid_state_shape_and_values
+    if (any(state%pressure_head_cm <= ROSSFAST_D3R_H_MIN_CM)) return
+    if (any(state%pressure_head_cm >= ROSSFAST_D3R_H_MAX_CM)) return
+    if (any(state%water_content <= material%theta_r)) return
+    if (any(state%water_content >= material%theta_s)) return
 
-  logical function valid_candidate(state, material)
+    tol = ROSSFAST_D3R_STATE_CONSISTENCY_TOL
+    do i = 1, ROSSFAST_D3R_N_CELLS
+      expected_theta = water_content_from_head(state%pressure_head_cm(i), material)
+      if (.not. ieee_is_finite(expected_theta)) return
+      if (abs(state%water_content(i) - expected_theta) > tol) return
+    end do
+    state_is_admitted = .true.
+  end function state_is_admitted
+
+  logical function forcing_is_admitted(state, material, forcing)
     type(rossfast_d3r_state_t), intent(in) :: state
     type(rossfast_d3r_material_t), intent(in) :: material
-    real(real64) :: tol
+    type(rossfast_d3r_forcing_t), intent(in) :: forcing
+    real(real64) :: k_top, k_bottom, q_top_ref, q_bottom_up_ref
+    real(real64) :: top_scale, bottom_scale, top_limit, bottom_limit
 
-    valid_candidate = .false.
-    if (.not. valid_state_shape_and_values(state)) return
-    tol = 64.0_real64 * epsilon(1.0_real64) * max(1.0_real64, abs(material%theta_s))
-    if (any(state%water_content < material%theta_r - tol)) return
-    if (any(state%water_content > material%theta_s + tol)) return
-    valid_candidate = .true.
-  end function valid_candidate
+    forcing_is_admitted = .false.
+    if (.not. ieee_is_finite(forcing%top_flux_cm_per_day) .or. &
+        .not. ieee_is_finite(forcing%bottom_flux_upward_cm_per_day)) return
+    k_top = conductivity_from_head(state%pressure_head_cm(1), material)
+    k_bottom = conductivity_from_head(state%pressure_head_cm(ROSSFAST_D3R_N_CELLS), material)
+    if (.not. ieee_is_finite(k_top) .or. .not. ieee_is_finite(k_bottom)) return
+    if (k_top <= 0.0_real64 .or. k_bottom <= 0.0_real64) return
+
+    ! Exact D2/D3R state-local boundary envelope inherited from the qualified
+    ! research adapter. The historical worker uses downward-positive q_bottom;
+    ! this binding exposes bottom upward-positive, hence the minus sign.
+    q_top_ref = 0.01_real64 * k_top
+    q_bottom_up_ref = -0.004_real64 * k_bottom
+    top_scale = max(abs(q_top_ref), abs(k_top), 1.0e-12_real64)
+    bottom_scale = max(abs(q_bottom_up_ref), abs(k_bottom), 1.0e-12_real64)
+    top_limit = ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION * top_scale
+    bottom_limit = ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION * bottom_scale
+    if (abs(forcing%top_flux_cm_per_day - q_top_ref) > top_limit + 1.0e-15_real64) return
+    if (abs(forcing%bottom_flux_upward_cm_per_day - q_bottom_up_ref) > bottom_limit + 1.0e-15_real64) return
+    forcing_is_admitted = .true.
+  end function forcing_is_admitted
+
+  pure real(real64) function effective_saturation_from_head(head_cm, material) result(s)
+    real(real64), intent(in) :: head_cm
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: m
+
+    if (head_cm >= 0.0_real64) then
+      s = 1.0_real64
+      return
+    end if
+    m = 1.0_real64 - 1.0_real64 / material%n
+    s = (1.0_real64 + abs(material%alpha_per_cm * head_cm)**material%n)**(-m)
+  end function effective_saturation_from_head
+
+  pure real(real64) function water_content_from_head(head_cm, material) result(theta)
+    real(real64), intent(in) :: head_cm
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: s
+
+    s = effective_saturation_from_head(head_cm, material)
+    theta = material%theta_r + (material%theta_s - material%theta_r) * s
+  end function water_content_from_head
+
+  pure real(real64) function conductivity_from_head(head_cm, material) result(conductivity)
+    real(real64), intent(in) :: head_cm
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: s, m, term
+
+    s = effective_saturation_from_head(head_cm, material)
+    if (s >= 1.0_real64) then
+      conductivity = material%ksatfit_cm_per_day
+      return
+    end if
+    m = 1.0_real64 - 1.0_real64 / material%n
+    term = (1.0_real64 - s**(1.0_real64 / m))**m
+    conductivity = material%ksatfit_cm_per_day * s**material%lambda * (1.0_real64 - term)**2
+  end function conductivity_from_head
 
   logical function full_attempt_interval_admitted(t0, t1)
     real(real64), intent(in) :: t0, t1
