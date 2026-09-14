@@ -1,0 +1,32 @@
+name: F-VQ83 EB-I20R2 explicit owner identity independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq83-eb-i20r2-explicit-ledger-owner-identity-independent-qualification
+    paths:
+      - 'tests/fvq/mod_fvq83_receipt_model.f90'
+      - 'tests/fvq/test_fvq83_explicit_owner_identity_attack.f90'
+      - 'tests/fvq/run_fvq83_eb_i20r2_owner_identity_independent.sh'
+      - '.github/workflows/fvq83-eb-i20r2-owner-identity-independent.yml'
+      - 'qualification/F-VQ83_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FVQ83_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ83_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent qualification
+        run: bash tests/fvq/run_fvq83_eb_i20r2_owner_identity_independent.sh
