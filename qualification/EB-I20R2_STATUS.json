@@ -1,0 +1,43 @@
+{
+  "schema": "swap5-eb-workunit-status-v1",
+  "work_unit": "EB-I20R2",
+  "title": "Explicit ledger-owner identity remediation",
+  "branch": "work/eb-i20r2-explicit-ledger-owner-identity-remediation",
+  "status": "OWNER_PREPUSH_QUALIFIED_PENDING_POSTIMAGE_READ_ONLY",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "parent_owner_authority": "8bb56b95b401dad52dc5410b60e9d392be92e286",
+  "independent_blocker_authority": "30551be4dd9ef9d4a698ff0cd5a701e17503fe9e",
+  "materialized_source_head": "e0837bdb9ce8ae2ab92bd32c975b08997d44e93b",
+  "materialized_source_tree": "9468abb67a70ac90eb1fec7746554038667d6488",
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "e71820784780e4a45a7024dbc437c71f0fb7d0c4"
+  },
+  "prepush_owner_qualification": {
+    "workflow_run": 34840072392,
+    "workflow_job": 103962722677,
+    "result": "SUCCESS_BEFORE_PUSH"
+  },
+  "remediation_scope": [
+    "add an explicit positive owner_instance_id to energy-ledger trial preparation",
+    "bind prepared handles and ledger-owned prepared scratch to owner_instance_id in addition to generation, lineage, revision and interval",
+    "reject cross-owner prepared handles fail-closed without consuming either ledger",
+    "preserve accepted-receipt, rollback, energy-conservation and F-KT18 mass semantics",
+    "avoid hidden module-global counters, pointer identity, random identity or clock-derived identity"
+  ],
+  "owner_identity_contract": {
+    "semantics": "caller/runtime-owned scratch provenance token",
+    "required_property": "positive and unique among simultaneously live logical ledger owners",
+    "persistent_state": false,
+    "energy_physics_parameter": false,
+    "ledger_locally_enforces_global_uniqueness": false,
+    "runtime_binding_qualified_here": false
+  },
+  "hard_nonclaims": [
+    "not independent qualification",
+    "not canonical admission",
+    "not proof that a future production MultiSWAP runtime assigns owner_instance_id values uniquely",
+    "not full SWAP energy-balance completion"
+  ],
+  "next_owner": "read-only owner postimage qualification, then fresh independent qualification including explicit owner-id contract limitation"
+}
