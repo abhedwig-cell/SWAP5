@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "artifact": "CAPABILITY_FLOW_RECONCILIATION",
+  "status": "RECONCILED",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "integration_head_before_reconciliation": "70a3a1e96785961ae56fb8460f96c757d2296468",
+  "integration_pr": 121,
+  "purpose": "Reconcile the legacy top-level F-ROSS01 frontier with the later J1E D1-D3G02R3 capability chain without broadening any scientific or production claim.",
+  "historical_authority": {
+    "legacy_status_blob": "eba2f8ce640fc93011a8bd40a54ed33cfeac9e06",
+    "legacy_status_snapshot": "integration/f-ross/F-ROSS01_STATUS_SCHEMA13_LEGACY_SNAPSHOT.json",
+    "legacy_current_frontier": "E3H_A10_SURFACE_CAP_GENERALIZATION_RESEARCH",
+    "legacy_overall_qualified": false
+  },
+  "integrated_capability_chain": [
+    {
+      "phase": "J1E-D1",
+      "authority": "integration/f-ross/F-ROSS01_GATE_J1E_D1_ROUTE_B_CLOSEOUT.json",
+      "authority_blob": "656f3fb17387b97c46b9850893cab183b8b3e6c4",
+      "status": "CLOSED_RESEARCH_ROUTE_B_QUALIFIED",
+      "effect": "The local-terminal qbot tangent is qualified only as bounded coupling-preconditioner information. The whole coupling window is rerun from the same committed checkpoint and only the actual corrector plus hard mass gates can publish a candidate.",
+      "whole_window_derivative_claim": false,
+      "production_admission": false
+    },
+    {
+      "phase": "D2",
+      "authority": "integration/f-ross/F-ROSS01_D2_STATUS.json",
+      "authority_blob": "ea67fefaa3bce7d7b650416978bb808573e8ca9c",
+      "status": "CLOSED",
+      "decision": "QUALIFIED_ROSSFAST_FSI31_V1_RESTRICTED_RESEARCH_ADAPTER",
+      "production_admission": false
+    },
+    {
+      "phase": "D3",
+      "authority": "integration/f-ross/F-ROSS01_D3_STATUS.json",
+      "authority_blob": "1373a14f4923563da97805063ff8f9171d1b4350",
+      "status": "CLOSED_WITH_COMPOSITION_GAPS_IDENTIFIED",
+      "identified_gaps": ["F-ROSS01-D3-G01", "F-ROSS01-D3-G02", "F-ROSS01-D3-G03"]
+    },
+    {
+      "phase": "D3R",
+      "authority": "integration/f-ross/F-ROSS01_D3R_STATUS.json",
+      "authority_blob": "faf1894cb9f67440b394a6d2977e215b5ae2761c",
+      "status": "CLOSED",
+      "effect": "Qualified the bounded transaction-call duration profile and refined two-half candidate chain on the restricted D2 domain; closed D3-G01 and D3-G03.",
+      "remaining_gap_at_closeout": "F-ROSS01-D3-G02"
+    },
+    {
+      "phase": "D3G02R3",
+      "authority": "integration/f-ross/F-ROSS01_D3G02R3_STATUS.json",
+      "authority_blob": "87b091b991706853dcac1ac08b5401a4f9d3c151",
+      "status": "CLOSED_POSITIVE_RESTRICTED_RESEARCH",
+      "decision": "QUALIFIED_ROSSFAST_D3G02R_FAIL_CLOSED_MODEL_CERTIFICATE_ON_EXACT_D3R_DOMAIN",
+      "effect": "Closed D3-G02 with a fail-closed model temporal certificate while preserving canonical runtime as sole acceptance and commit authority.",
+      "remaining_D3_gaps": [],
+      "production_admission": false
+    }
+  ],
+  "reconciled_scientific_position": {
+    "J1E_D1_design_blocker": "CLOSED_BY_ROUTE_B_PRECONDITIONER_CONTRACT",
+    "D3_G01_G02_G03": "CLOSED_ON_EXACT_RESTRICTED_RESEARCH_SCOPE",
+    "restricted_FSI31_research_composition": "QUALIFIED",
+    "overall_RossFast_scientific_qualification": false,
+    "production_RossFast_admission": false,
+    "canonical_production_admission": false,
+    "restart_qualification": false,
+    "production_runtime_qualification": false,
+    "MultiSWAP_production_qualification": false,
+    "whole_window_derivative_qualification": false
+  },
+  "relationship_to_legacy_frontier": {
+    "E3H_A10_surface_cap_generalization": "OPEN_DEFERRED_NOT_SUPERSEDED",
+    "E3H_A9R_event_detector_robustness_if_needed": "OPEN_CONDITIONAL_NOT_SUPERSEDED",
+    "E4_endpoint_and_surface_branch_response_tangent_policy_if_required": "OPEN_CONDITIONAL_NOT_SUPERSEDED",
+    "G_heterogeneous_profiles": "OPEN_NOT_SUPERSEDED",
+    "H_bottom_boundary": "OPEN_NOT_SUPERSEDED",
+    "I_groundwater": "OPEN_NOT_SUPERSEDED",
+    "K_runtime": "OPEN_AND_SELECTED_AS_NEXT_ACTIVE_CAPABILITY_FRONTIER",
+    "L_MultiSWAP": "OPEN_NOT_SUPERSEDED",
+    "M_FullRichards_qualification": "OPEN_NOT_SUPERSEDED",
+    "interpretation": "The J1E/D1-D3G02R3 chain advances a restricted integration capability. It does not retroactively qualify the broader surface, profile, boundary or equivalence questions recorded by schema-13 status."
+  },
+  "next_active_frontier": {
+    "existing_gate": "K_RUNTIME",
+    "scope": "EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
+    "priority": "Qualify restart and production-runtime semantics before any production admission attempt.",
+    "required_properties": [
+      "current-canonical source binding fails closed on semantic drift",
+      "restart preserves committed state, candidate-only semantics and certificate provenance",
+      "reject/retry never leaks candidate state",
+      "shortened accepted intervals have explicit end-to-end remainder scheduling",
+      "accepted-only commit authority remains canonical runtime owned",
+      "hard mass accounting remains complete, finite and unchanged",
+      "no performance claim is inferred without dedicated measurement evidence"
+    ],
+    "explicitly_out_of_scope": [
+      "surface-cap generalization",
+      "heterogeneous-profile generalization",
+      "bottom-boundary generalization",
+      "groundwater admission",
+      "MultiSWAP admission",
+      "whole-window derivative claims",
+      "FullRichards equivalence"
+    ]
+  },
+  "capability_flow_policy": {
+    "new_branch_required_now": false,
+    "reason": "This reconciliation changes governance state only and introduces no solver, scientific or production contract. A new branch becomes justified when K_RUNTIME changes a real runtime/restart contract or requires isolated executable qualification.",
+    "immutable_evidence_reuse": "Allowed while the evidence-relevant source, contract and authority dependencies remain exact.",
+    "requalification_rule": "Rerun only evidence whose dependency set changed; do not repeat large matrices for unrelated governance edits."
+  },
+  "hard_nonclaims": [
+    "NO_OVERALL_ROSSFAST_QUALIFICATION",
+    "NO_PRODUCTION_ADMISSION",
+    "NO_RESTART_QUALIFICATION",
+    "NO_PRODUCTION_RUNTIME_OR_PERFORMANCE_CLAIM",
+    "NO_MULTISWAP_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_WHOLE_WINDOW_DERIVATIVE_CLAIM",
+    "NO_SUPERSESSION_OF_LEGACY_OPEN_SCIENTIFIC_GATES"
+  ]
+}
