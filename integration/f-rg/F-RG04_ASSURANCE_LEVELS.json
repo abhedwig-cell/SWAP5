@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.frg04.assurance_levels.v1",
+  "workunit": "F-RG04",
+  "principle": "ASSURANCE_MUST_NOT_OVERSTATE_INDEPENDENCE",
+  "levels": [
+    {
+      "id": "OWNER_VERIFIED",
+      "independent": false,
+      "meaning": "The owning workunit verified its bounded claim against declared evidence and gates.",
+      "may_satisfy_existing_independent_F_VQ_gate": false
+    },
+    {
+      "id": "PROCESS_SELF_REVIEWED_NOT_INDEPENDENT",
+      "independent": false,
+      "meaning": "The same agent/context performed a structured review after an immutable boundary; this is process assurance only.",
+      "may_satisfy_existing_independent_F_VQ_gate": false
+    },
+    {
+      "id": "ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT",
+      "independent": false,
+      "meaning": "The same agent/context challenged explicit counter-hypotheses against a frozen head and recorded findings/remediation.",
+      "may_satisfy_existing_independent_F_VQ_gate": false
+    },
+    {
+      "id": "INDEPENDENTLY_QUALIFIED",
+      "independent": true,
+      "meaning": "A genuinely separate SWAP5 qualification authority, normally an applicable F-VQ path, qualified the exact bounded object/candidate.",
+      "may_satisfy_existing_independent_F_VQ_gate": true
+    }
+  ],
+  "risk_tiers": [
+    {
+      "id": "R0_GOVERNANCE_DOCUMENTATION",
+      "triggers": ["governance/documentation metadata only", "no production semantics", "no denominator/Status-A/admission mutation"],
+      "minimum_assurance": ["OWNER_VERIFIED", "ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT", "EXACT_HEAD_CI"],
+      "independent_review_waiver_changes_existing_hard_gate": false
+    },
+    {
+      "id": "R1_BOUNDED_NONPRODUCTION",
+      "triggers": ["research-only capability", "nonproduction contract/evidence", "no production semantic mutation"],
+      "minimum_assurance": ["OWNER_VERIFIED", "ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT"],
+      "note": "Existing research-contract-specific independent requirements still apply."
+    },
+    {
+      "id": "R2_PRODUCTION_LOCAL",
+      "triggers": ["bounded production physics", "local solver/numerical behavior", "production boundary/process behavior"],
+      "minimum_assurance": ["OWNER_VERIFIED", "INDEPENDENTLY_QUALIFIED", "SERIALIZED_F_CI_ADMISSION"]
+    },
+    {
+      "id": "R3_STATE_CONSERVATION_TRANSACTION",
+      "triggers": ["state/restart", "mass/conservation", "transaction lifecycle", "solver acceptance/failure policy", "numerical acceptance policy"],
+      "minimum_assurance": ["OWNER_VERIFIED", "INDEPENDENTLY_QUALIFIED", "FAIL_CLOSED_REMEDIATION", "SERIALIZED_F_CI_ADMISSION", "PRESERVATION_WHERE_REQUIRED"]
+    },
+    {
+      "id": "R4_COMPOSITION_COUPLING_PRODUCTION",
+      "triggers": ["cross-module composition", "groundwater/coupler composition", "production-scale runtime composition", "multi-capability/whole-domain production claim"],
+      "minimum_assurance": ["OWNER_VERIFIED", "COMPOSITION_QUALIFIED", "INDEPENDENTLY_QUALIFIED_WHERE_APPLICABLE", "SERIALIZED_F_CI_ADMISSION", "POSTIMAGE_PRESERVATION"]
+    }
+  ],
+  "strictest_trigger_wins": true,
+  "existing_hard_gates_may_be_downgraded": false,
+  "same_agent_may_be_called_independent": false,
+  "review_failure_classes": [
+    "SCIENTIFIC_FALSIFICATION",
+    "EVIDENCE_INSUFFICIENCY",
+    "PROVENANCE_INSUFFICIENCY",
+    "TOOLING_VALIDATOR_FAILURE",
+    "SCOPE_AMBIGUITY",
+    "COMPOSITION_FAILURE",
+    "AUTHORITY_PROMOTION_FAILURE"
+  ],
+  "immutable_review_rule": {
+    "sequence": [
+      "AUTHORING_COMPLETE",
+      "PERSIST",
+      "FREEZE_IMMUTABLE_REVIEW_HEAD",
+      "EXACT_HEAD_CI",
+      "ADVERSARIAL_INSPECTION",
+      "FINDINGS",
+      "REMEDIATE_IF_REQUIRED",
+      "FREEZE_NEW_HEAD_AFTER_SUBSTANTIVE_CHANGE",
+      "REREVIEW_AFFECTED_GATES",
+      "FINAL_EXACT_HEAD_CI"
+    ],
+    "substantive_change_invalidates_old_review": true
+  }
+}
