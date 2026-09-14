@@ -41,6 +41,10 @@ module mod_accepted_trajectory_directional_sensitivity
     integer :: additional_tridiagonal_backsolves = 0
     integer :: additional_jacobian_builds = 0
     integer :: additional_full_nonlinear_solves = 0
+    logical :: issued = .false.
+    integer :: issued_sequence = 0
+    real(real64) :: issued_t0 = 0.0_real64
+    real(real64) :: issued_t1 = 0.0_real64
     logical :: pending = .false.
     logical :: pending_available = .false.
     integer :: pending_sequence = 0
@@ -82,11 +86,12 @@ contains
     end if
   end subroutine configure_trajectory_direction
 
-  subroutine begin_or_continue_trajectory(state, worker_id, t0, t1, control_coordinate, active_nodes, ok)
+  subroutine begin_or_continue_trajectory(state, worker_id, t0, t1, control_coordinate, active_nodes, ok, generation_seed)
     type(accepted_trajectory_direction_t), intent(inout) :: state
     integer, intent(in) :: worker_id, control_coordinate, active_nodes
     real(real64), intent(in) :: t0, t1
     logical, intent(out) :: ok
+    integer(int64), intent(in), optional :: generation_seed
     real(real64), parameter :: time_guard = 64.0_real64*epsilon(1.0_real64)
 
     ok = .false.
@@ -97,7 +102,15 @@ contains
     end if
 
     if (.not. allocated(state%pressure_head_direction)) then
-      state%generation = state%generation + 1_int64
+      if (present(generation_seed)) then
+        if (generation_seed <= state%generation) then
+          call fail_closed(state, 'nonmonotone-trajectory-generation')
+          return
+        end if
+        state%generation = generation_seed
+      else
+        state%generation = state%generation + 1_int64
+      end if
       state%worker_id = worker_id
       state%control_coordinate = control_coordinate
       state%origin_t0 = t0
@@ -117,6 +130,12 @@ contains
       return
     end if
 
+    if (present(generation_seed)) then
+      if (generation_seed /= state%generation) then
+        call fail_closed(state, 'cross-candidate-generation-mismatch')
+        return
+      end if
+    end if
     if (state%worker_id /= worker_id .or. state%control_coordinate /= control_coordinate .or. &
         size(state%pressure_head_direction) /= active_nodes) then
       call fail_closed(state, 'cross-candidate-trajectory-mismatch')
@@ -126,7 +145,7 @@ contains
       call fail_closed(state, 'trajectory-time-origin-mismatch')
       return
     end if
-    if (state%pending) then
+    if (state%pending .or. state%issued) then
       call fail_closed(state, 'pending-step-not-resolved')
       return
     end if
@@ -145,7 +164,7 @@ contains
     token = trajectory_step_token_t()
     ok = .false.
     if (.not. state%requested .or. .not. allocated(state%pressure_head_direction)) return
-    if (state%pending .or. step_t1 <= step_t0) then
+    if (state%pending .or. state%issued .or. step_t1 <= step_t0) then
       call fail_closed(state, 'invalid-step-stage-state')
       return
     end if
@@ -159,6 +178,10 @@ contains
     token%step_sequence = state%next_step_sequence
     token%step_t0 = step_t0
     token%step_t1 = step_t1
+    state%issued = .true.
+    state%issued_sequence = token%step_sequence
+    state%issued_t0 = token%step_t0
+    state%issued_t1 = token%step_t1
 
     request%requested = (state%status /= TRAJECTORY_DIRECTION_UNAVAILABLE .and. &
                          state%status /= TRAJECTORY_DIRECTION_FAILED)
@@ -190,6 +213,10 @@ contains
       return
     end if
 
+    state%issued = .false.
+    state%issued_sequence = 0
+    state%issued_t0 = 0.0_real64
+    state%issued_t1 = 0.0_real64
     state%pending = .true.
     state%pending_sequence = token%step_sequence
     state%pending_t0 = token%step_t0
@@ -273,7 +300,7 @@ contains
     real(real64), parameter :: time_guard = 64.0_real64*epsilon(1.0_real64)
 
     ok = .false.
-    if (.not. state%requested .or. state%pending .or. state%accepted_steps <= 0) return
+    if (.not. state%requested .or. state%pending .or. state%issued .or. state%accepted_steps <= 0) return
     if (abs(state%origin_t0-requested_t0) > time_guard*max(1.0_real64,abs(requested_t0)) .or. &
         abs(state%current_t1-requested_t1) > time_guard*max(1.0_real64,abs(requested_t1))) then
       call fail_closed(state, 'trajectory-finalization-origin-mismatch')
@@ -289,12 +316,18 @@ contains
   logical function token_matches(state, token) result(matches)
     type(accepted_trajectory_direction_t), intent(in) :: state
     type(trajectory_step_token_t), intent(in) :: token
-    matches = token%worker_id == state%worker_id .and. token%generation == state%generation .and. &
-              token%step_sequence == state%next_step_sequence .and. token%step_t0 == state%current_t1
+    matches = state%issued .and. token%worker_id == state%worker_id .and. &
+              token%generation == state%generation .and. &
+              token%step_sequence == state%issued_sequence .and. &
+              token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
   end function token_matches
 
   subroutine clear_pending(state)
     type(accepted_trajectory_direction_t), intent(inout) :: state
+    state%issued = .false.
+    state%issued_sequence = 0
+    state%issued_t0 = 0.0_real64
+    state%issued_t1 = 0.0_real64
     state%pending = .false.
     state%pending_available = .false.
     state%pending_sequence = 0
