@@ -27,12 +27,33 @@ grep -Fq 'class(rossfast_d3r_trial_kernel_t), intent(in) :: self' "$BINDING"
 grep -Fq 'TX_TEMPORAL_MODEL_CERTIFICATE' "$BINDING"
 grep -Fq 'ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR = 1.0e-10_real64' "$BINDING"
 grep -Fq 'ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE = 1.0e-5_real64' "$BINDING"
+grep -Fq 'ROSSFAST_D3R_H_MIN_CM = -10000.0_real64' "$BINDING"
+grep -Fq 'ROSSFAST_D3R_H_MAX_CM = -1.0_real64' "$BINDING"
+grep -Fq 'if (.not. state_is_admitted(state, self%material)) return' "$BINDING"
+grep -Fq 'if (.not. forcing_is_admitted(state, self%material, self%forcing)) return' "$BINDING"
+grep -Fq 'outcome%mass_in = max(top_transfer, 0.0_real64) + max(bottom_transfer, 0.0_real64)' "$BINDING"
+grep -Fq 'outcome%bottom_outward_exchange_native = -bottom_transfer' "$BINDING"
 grep -Fq "case('B01')" "$BINDING"
 grep -Fq "case('B12')" "$BINDING"
 grep -Fq "case('O01')" "$BINDING"
 grep -Fq "case('O05')" "$BINDING"
 grep -Fq "case('O14')" "$BINDING"
 grep -Fq "case('O18')" "$BINDING"
+
+# These terms belong to the binding-owned prescribed-flux ledger and may not
+# reappear as authority-bearing fields on the numerical kernel result.
+if grep -Fq 'mass_in_cm' "$BINDING"; then
+  echo 'ROSS02_KERNEL_MASS_IN_AUTHORITY_FORBIDDEN' >&2
+  exit 68
+fi
+if grep -Fq 'mass_out_cm' "$BINDING"; then
+  echo 'ROSS02_KERNEL_MASS_OUT_AUTHORITY_FORBIDDEN' >&2
+  exit 69
+fi
+if grep -Fq 'bottom_outward_exchange_cm' "$BINDING"; then
+  echo 'ROSS02_KERNEL_BOTTOM_EXCHANGE_AUTHORITY_FORBIDDEN' >&2
+  exit 70
+fi
 
 WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
 for opt in o0 o2; do
