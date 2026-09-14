@@ -5,7 +5,7 @@
   "branch": "work/f-gc26-external-groundwater-adapter-conformance",
   "decision": "OWNER_QUALIFIED_GENERIC_EXTERNAL_GROUNDWATER_GATEWAY_CONFORMANCE",
   "qualification_class": "OWNER_CAPABILITY_QUALIFICATION_NOT_INDEPENDENT",
-  "qualified_executable_head": "2a450f9ce68e942f07d8c34b3292134bc1c34d26",
+  "qualified_executable_head": "a096458965bad7bd1ff97c7c52d107044c1da103",
   "base_canonical": {
     "branch": "integration/f-ci-canonical",
     "sha": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0"
@@ -17,16 +17,16 @@
     "F_GC21_independent_and_canonical_status": "SATISFIED_BY_F_VQ64_AND_F_CI56"
   },
   "qualified_artifacts": {
-    "src/adapter/mod_groundwater_external_gateway.f90": "e7b92031dc4ec7247c29a27615dde9a0f6f84369",
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849",
     "tests/fgc/test_fgc26_external_groundwater_adapter_conformance.f90": "6753ae2191df2770fc677fba12a1fe78a61e62bb",
-    "tests/fgc/test_fgc26_direct_commit_and_rebind.f90": "3d455c31b7c4c33ed95410c4afb5e7f71e40456b",
+    "tests/fgc/test_fgc26_direct_commit_and_rebind.f90": "040bae86f42bb66e993aa1b39fd43c464922825d",
     "tests/fgc/run_fgc26_external_groundwater_adapter_conformance.sh": "153b315d453bb60d4d4ab8b3cf8f62f6596f38f7",
     ".github/workflows/fgc26-external-groundwater-adapter-conformance.yml": "f245872a0396556f8237265dfb060b8dc785cb12"
   },
   "owner_qualification": {
     "workflow": "F-GC26 external groundwater adapter conformance",
-    "run_id": 34875736783,
-    "job_id": 104082335661,
+    "run_id": 34880402835,
+    "job_id": 104097993549,
     "conclusion": "success",
     "compiler_modes": ["O0", "O2"],
     "runtime_checks": ["-fcheck=all", "-ffpe-trap=invalid,zero,overflow"],
@@ -41,16 +41,22 @@
     "multi_cell_gateway_isolation": true,
     "direct_candidate_commit_success_and_failure": true,
     "active_prepared_rebind_rejected": true,
+    "batch_rebind_preflight_atomicity": true,
     "external_model_types_absent_from_swap_gateway": true,
     "gateway_file_io_absent": true
   },
   "adversarial_review": {
     "classification": "INTERNAL_SAME_AGENT_NOT_INDEPENDENT",
     "finding": "Initial green gate did not exercise the public direct candidate commit route or rebind while a prepared reservation was live.",
-    "closure": "Added direct commit failure/success coverage and active-prepared rebind rejection on the same capability branch; final exact executable head is green.",
+    "closure": "Added direct commit failure/success coverage and active-prepared rebind rejection on the same capability branch.",
     "intermediate_failed_run": 34875552720,
     "intermediate_failure_class": "TEST_ONLY_FORTRAN_OVERRIDE_DUMMY_NAME_MISMATCH",
-    "production_source_changed_by_closure": false
+    "production_source_changed_by_closure": false,
+    "additional_finding": "Batch rebind validated gateway quiescence only while mutating members sequentially, so a later non-quiescent member could reject after an earlier member had already been rebound.",
+    "additional_closure": "Preflight all gateway quiescence before the first batch mutation and add a regression that keeps both original cell bindings unchanged when a later member is prepared/non-quiescent.",
+    "remediation_qualification_run": 34880402835,
+    "remediation_qualification_job": 104097993549,
+    "production_source_changed_by_latest_closure": true
   },
   "scope": {
     "generic_swap_side_gateway": true,
@@ -58,6 +64,7 @@
     "explicit_head_datum_unit_sign_conversion": true,
     "checkpoint_trial_commit_discard_prepare_abort_handshake": true,
     "multiple_uniquely_configured_gateways_can_share_one_backend": true,
+    "batch_rebind_is_preflight_atomic_for_recoverable_quiescence_rejection": true,
     "failure_prone_external_work_must_complete_before_irreversible_prepared_publication": true
   },
   "workflow_efficiency": {
