@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.fci63.status.v1",
+  "work_unit": "F-CI63",
+  "title": "Candidate-bound bottom sensible-energy publication current-canonical admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI63_READY_FOR_CANONICAL_PROMOTION",
+  "canonical_base": "5e5e498dc56d1df1dd7ebebbf9901c946445a1ab",
+  "authorities": {
+    "EB-I18R2_owner_candidate": "15184dd06c1d0f8accc0d306a12d25a3568f1f2e",
+    "EB-I19_production_candidate": "b2ba462cfade41eb68643db75ca28e234a123a02",
+    "EB-I19R_warning_hygiene_candidate": "788ff3c9af90143960a5aa3831f0171160aa8c47",
+    "F-VQ77_status": "728cf5face45be5b46c91701d7ed1102c9950091",
+    "F-VQ78_status": "6a8258e6e5e2365b51b086212f926f6f1bab5a15",
+    "F-VQ79_status": "77496e5eb0fe8712613ca2959552d612f3c2a29d"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "b5f7a6671cf92d61492aa8fe3a837d40d8ef6bd7",
+    "green_tree_before_status": "d17b885233cf6d76a2b493e7ad150fc4f2899245",
+    "workflow_run": 34831466457,
+    "workflow_job": 103935540603,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "live_canonical_lock": "PASS",
+    "exact_seven_production_blobs": "PASS",
+    "owner_independent_and_30_invariants": "PASS",
+    "F_VQ79_independent_replay": "PASS",
+    "remediation_byte_reconstruction": "PASS",
+    "no_physics_tolerance_or_solver_policy_change": "PASS",
+    "pre_post_numeric_semantic_identity": "PASS",
+    "hard_mass_oracle": "PASS",
+    "matched_mass_rows": 2,
+    "max_abs_mass_residual_cm": 2.22044604925031308e-16,
+    "O0_O2_semantic_identity": "PASS"
+  },
+  "scope_guards": {
+    "new_physics_in_F_CI63": false,
+    "new_mass_booking_in_F_CI63": false,
+    "second_water_ledger": false,
+    "new_persistent_column_state": false,
+    "new_solver_policy": false,
+    "new_application_accuracy_default": false,
+    "reference_source_changed": false,
+    "new_IO_contract": false,
+    "full_energy_balance_completion_claim": false
+  },
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "hard_nonclaims": [
+    "F-CI63 status alone is not canonical admission.",
+    "F-CI63 admits only the qualified bottom sensible-energy publication scope and does not claim that the complete SWAP energy balance is finished.",
+    "The qualification-only 2.5e-11 cm temporal head budget is not a production, coupling or application default.",
+    "The exact zero comparison used by the bottom donor-class contract remains intentional and is not a numerical tolerance policy."
+  ],
+  "promotion_requirements": [
+    "This exact status head must pass the F-CI63 workflow.",
+    "Live integration/f-ci-canonical must still equal the frozen canonical base immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI63 head as second parent.",
+    "The promoted tree must be exactly the final green F-CI63 tree.",
+    "Postimage reconciliation is required before F-CI63 closeout or any broader Energy Balance completion claim."
+  ]
+}
