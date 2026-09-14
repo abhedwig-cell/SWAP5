@@ -27,6 +27,7 @@ module mod_groundwater_coupled_restart
   integer, parameter, public :: GW_COUPLED_RESTART_INVALID_RECORD = 8
   integer, parameter, public :: GW_COUPLED_RESTART_TARGET_NOT_FRESH = 9
   integer, parameter, public :: GW_COUPLED_RESTART_ADAPTER_REJECTED = 10
+  integer, parameter, public :: GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT = 11
 
   ! Backend-specific committed continuation state. The runtime never parses this
   ! object and defines no file, byte or path semantics. A concrete groundwater
@@ -128,8 +129,10 @@ contains
 
     record = groundwater_committed_restart_record_t()
     exported = .false.
-    status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
+    status = GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
+    if (.not. service%restart_quiescent()) return
 
+    status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
     call groundwater_capture_checkpoint(service, checkpoint, exchange_status)
     if (exchange_status /= GW_EXCHANGE_OK .or. .not. checkpoint%ready()) return
     call checkpoint%origin_time(checkpoint_time, checkpoint_time_available)
@@ -200,6 +203,9 @@ contains
     if (.not. ieee_is_finite(record%committed_time)) return
     if (.not. allocated(record%backend_state)) return
     if (.not. record%backend_state%valid()) return
+
+    status = GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
+    if (.not. service%restart_quiescent()) return
 
     call adapter%restore_committed(record%service_id, record%lineage_id, record%revision, &
          record%committed_time, record%backend_state, adapter_status)
@@ -353,6 +359,7 @@ contains
     if (target_ledger_snapshot%trial_active .or. target_ledger_snapshot%prepared_active) return
     if (target_ledger_snapshot%committed_exchange_count /= 0 .or. target_ledger_snapshot%discarded_trial_count /= 0) return
     if (target_ledger_snapshot%committed_swap_outward_exchange_m /= 0.0_real64) return
+    if (.not. groundwater%restart_quiescent()) return
 
     status = GW_COUPLED_RESTART_SCHEMA_MISMATCH
     if (record%schema_version /= GW_COUPLED_RESTART_SCHEMA_VERSION) return
