@@ -18,4 +18,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
       - name: Run F-GC25 owner gate
-        run: bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh
+        run: |
+          set -o pipefail
+          bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh 2>&1 | tee fgc25-gate.log
+      - name: Upload F-GC25 owner gate log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fgc25-gate-log
+          path: fgc25-gate.log
+          if-no-files-found: error
