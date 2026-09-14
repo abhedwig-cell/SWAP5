@@ -78,30 +78,54 @@ done
 cmp "$BUILD/types-o0/out.txt" "$BUILD/types-o2/out.txt" || fail 'energy types O0/O2 mismatch'
 echo 'EB_I20_ENERGY_TYPES_O0_O2_IDENTITY=PASS'
 
-# EB-I01 predates the current fail-closed mass-completeness fields. Preserve the
-# historical fixture byte-for-byte in Git and normalize only this temporary
-# build copy. No physical mass or energy quantity is changed.
+# EB-I01 predates the current fail-closed mass-completeness and model-level
+# storage-accounting provenance. Preserve the historical fixture byte-for-byte
+# in Git and normalize only this temporary build copy. No physical mass,
+# storage or energy quantity is changed.
 cp "$HIST_RECEIPT_TEST" "$NORMALIZED_RECEIPT_TEST"
 python3 - "$NORMALIZED_RECEIPT_TEST" <<'PY'
 from pathlib import Path
 import sys
 p = Path(sys.argv[1])
 s = p.read_text(encoding='utf-8')
+
+old_iso = 'use, intrinsic :: iso_fortran_env, only: real64'
+new_iso = 'use, intrinsic :: iso_fortran_env, only: real64, int64'
+if s.count(old_iso) != 1:
+    raise SystemExit(f'EB-I20 iso_fortran_env anchor count={s.count(old_iso)}')
+s = s.replace(old_iso, new_iso, 1)
+
 old_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t'
 new_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE'
 if s.count(old_use) != 1:
     raise SystemExit(f'EB-I20 current-TX use anchor count={s.count(old_use)}')
 s = s.replace(old_use, new_use, 1)
-anchor = '    outcome%mass_in = transfer_mass\n'
-insert = anchor + '    outcome%mass_accounting_complete = .true.\n    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE\n'
-if s.count(anchor) != 1:
-    raise SystemExit(f'EB-I20 current-TX mass anchor count={s.count(anchor)}')
-s = s.replace(anchor, insert, 1)
+
+binding_anchor = '    procedure :: storage => ebi01_storage\n    procedure :: temporal_error => ebi01_temporal_error\n'
+binding_insert = '    procedure :: storage => ebi01_storage\n    procedure :: storage_accounting_status => ebi01_storage_accounting_status\n    procedure :: temporal_error => ebi01_temporal_error\n'
+if s.count(binding_anchor) != 1:
+    raise SystemExit(f'EB-I20 storage binding anchor count={s.count(binding_anchor)}')
+s = s.replace(binding_anchor, binding_insert, 1)
+
+mass_anchor = '    outcome%mass_in = transfer_mass\n'
+mass_insert = mass_anchor + '    outcome%mass_accounting_complete = .true.\n    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE\n'
+if s.count(mass_anchor) != 1:
+    raise SystemExit(f'EB-I20 current-TX mass anchor count={s.count(mass_anchor)}')
+s = s.replace(mass_anchor, mass_insert, 1)
+
+storage_end = '  end function ebi01_storage\n\n'
+storage_status = '''  end function ebi01_storage\n\n  subroutine ebi01_storage_accounting_status(self, state, complete, missing_mask)\n    class(ebi01_model_t), intent(in) :: self\n    class(transaction_state_t), intent(in) :: state\n    logical, intent(out) :: complete\n    integer(int64), intent(out) :: missing_mask\n\n    complete = .false.\n    missing_mask = TX_MASS_MISSING_NONE\n    if (self%scale < 0.0_real64) return\n    select type (state)\n    type is (ebi01_state_t)\n      complete = .true.\n    class default\n      complete = .false.\n    end select\n  end subroutine ebi01_storage_accounting_status\n\n'''
+if s.count(storage_end) != 1:
+    raise SystemExit(f'EB-I20 storage function end anchor count={s.count(storage_end)}')
+s = s.replace(storage_end, storage_status, 1)
+
 p.write_text(s, encoding='utf-8')
 PY
 grep -Fq 'outcome%mass_accounting_complete = .true.' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized completeness marker missing'
 grep -Fq 'outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized missing-contribution marker missing'
-echo 'EB_I20_FIXTURE_CURRENT_MASS_COMPLETENESS_NORMALIZATION=PASS'
+grep -Fq 'procedure :: storage_accounting_status => ebi01_storage_accounting_status' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized storage-accounting binding missing'
+grep -Fq 'complete = .true.' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized storage-accounting completeness missing'
+echo 'EB_I20_FIXTURE_CURRENT_MASS_AND_STORAGE_COMPLETENESS_NORMALIZATION=PASS'
 
 for opt in 0 2; do
   OUT="$BUILD/receipt-o$opt"; mkdir -p "$OUT"; objects=()
