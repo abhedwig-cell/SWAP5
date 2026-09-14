@@ -1,0 +1,30 @@
+name: F-PM14 admitted drainage route preservation
+
+on:
+  push:
+    branches:
+      - work/f-pm14-drainage-response-runtime-closure
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-pm14-preservation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Fetch pinned canonical authority
+        run: git fetch --no-tags origin integration/f-ci-canonical
+      - name: Replay admitted precomputed DIVDRA and fixed-weir routes
+        run: bash tests/fpm/run_fpm14_precomputed_divdra_fixed_weir_preservation.sh
