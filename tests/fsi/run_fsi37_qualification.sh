@@ -78,7 +78,15 @@ build_and_run() {
   grep -Fq 'FSI37_DYNAMIC_FD_CASES=12' "$out/dynamic_output.txt" || fail "dynamic FD case count missing opt=$tag"
   grep -Fq 'FSI37_DYNAMIC_SWKMEAN_METHODS_1_6=PASS' "$out/dynamic_output.txt" || fail "dynamic mean-method marker missing opt=$tag"
   grep -Fq 'FSI37_DYNAMIC_TOP_FLUX_AND_MODE5_MASS_DERIVATIVE=PASS' "$out/dynamic_output.txt" || fail "dynamic flux/mass marker missing opt=$tag"
-  grep -Fq 'FSI37_DYNAMIC_CAPACITY_LIMITED_FAIL_CLOSED=PASS' "$out/dynamic_output.txt" || fail "dynamic fail-closed marker missing opt=$tag"
+  grep -Fq 'FSI37_DYNAMIC_CAPACITY_LIMITED_FAIL_CLOSED=PASS' "$out/dynamic_output.txt" || fail "dynamic capacity fail-closed marker missing opt=$tag"
+
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c tests/fsi/test_fsi37_dynamic_head_fail_closed.f90 -o "$out/head_fail_test.o"
+  gfortran "$opt" "${objects[@]}" "$out/head_fail_test.o" -o "$out/test_head_fail"
+  timeout 120s "$out/test_head_fail" | tee "$out/head_fail_output.txt"
+  grep -Fq 'FSI37_DYNAMIC_HEAD_FAIL_CLOSED PASS' "$out/head_fail_output.txt" || fail "dynamic-head PASS marker missing opt=$tag"
+  grep -Fq 'FSI37_DYNAMIC_HEAD_PHYSICAL_VALID=PASS' "$out/head_fail_output.txt" || fail "dynamic-head physical-valid marker missing opt=$tag"
+  grep -Fq 'FSI37_DYNAMIC_HEAD_SENSITIVITY_FAIL_CLOSED=PASS' "$out/head_fail_output.txt" || fail "dynamic-head sensitivity fail-closed marker missing opt=$tag"
+  grep -Fq 'FSI37_DYNAMIC_HEAD_ON_OFF_IDENTITY=PASS' "$out/head_fail_output.txt" || fail "dynamic-head identity marker missing opt=$tag"
   echo "FSI37_OPT_PASS=$tag"
 }
 
@@ -90,10 +98,12 @@ build_and_run -O2 o2
 {
   grep -E '^FSI37_(FD_CASES=30|SWKMEAN_METHODS_1_6=PASS|NONUNIFORM_BASE_PROFILE=PASS|ALTERNATIVE_SOLVER_FAIL_CLOSED=PASS|ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS)$' "$BUILD/o0/fixed_output.txt"
   grep -E '^FSI37_DYNAMIC_(FD_CASES=12|SWKMEAN_METHODS_1_6=PASS|TOP_FLUX_AND_MODE5_MASS_DERIVATIVE=PASS|CAPACITY_LIMITED_FAIL_CLOSED=PASS|SURFACE_FLUX_DIRECTION PASS)$' "$BUILD/o0/dynamic_output.txt"
+  grep -E '^FSI37_DYNAMIC_HEAD_(PHYSICAL_VALID=PASS|SENSITIVITY_FAIL_CLOSED=PASS|ON_OFF_IDENTITY=PASS|FAIL_CLOSED PASS)$' "$BUILD/o0/head_fail_output.txt"
 } > "$BUILD/o0/stable.txt"
 {
   grep -E '^FSI37_(FD_CASES=30|SWKMEAN_METHODS_1_6=PASS|NONUNIFORM_BASE_PROFILE=PASS|ALTERNATIVE_SOLVER_FAIL_CLOSED=PASS|ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS)$' "$BUILD/o2/fixed_output.txt"
   grep -E '^FSI37_DYNAMIC_(FD_CASES=12|SWKMEAN_METHODS_1_6=PASS|TOP_FLUX_AND_MODE5_MASS_DERIVATIVE=PASS|CAPACITY_LIMITED_FAIL_CLOSED=PASS|SURFACE_FLUX_DIRECTION PASS)$' "$BUILD/o2/dynamic_output.txt"
+  grep -E '^FSI37_DYNAMIC_HEAD_(PHYSICAL_VALID=PASS|SENSITIVITY_FAIL_CLOSED=PASS|ON_OFF_IDENTITY=PASS|FAIL_CLOSED PASS)$' "$BUILD/o2/head_fail_output.txt"
 } > "$BUILD/o2/stable.txt"
 cmp "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt" || fail 'O0/O2 qualification-marker drift'
 echo 'FSI37_O0_O2_FULL_GATE=PASS'
