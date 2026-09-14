@@ -31,7 +31,7 @@ def _close(a: float, b: float) -> bool:
 def _no_component_execution(out: dict) -> bool:
     diagnostics = out.get("solver_work_diagnostics") or {}
     return (
-        "candidate_hydraulic_state" not in out
+        out.get("candidate_hydraulic_state") is None
         and diagnostics.get("certificate_component_trial_count") in (None, 0)
         and out.get("temporal_certificate_available") is False
     )
