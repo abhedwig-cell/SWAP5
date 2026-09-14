@@ -84,7 +84,7 @@ program test_fpm14_drainage_response_binding
   ernst5_geometry%shape_factor = 1.0_real64
   ernst5_geometry%drain_bottom_level = 0.0_real64
   ernst5_geometry%impermeable_base_level = -25.0_real64
-  ernst5_geometry%interface_level = 5.0_real64
+  ernst5_geometry%interface_level = -5.0_real64
   ernst5_geometry%horizontal_conductivity_top = 10.0_real64
   ernst5_geometry%horizontal_conductivity_bottom = 5.0_real64
   ernst5_geometry%vertical_conductivity_top = 5.0_real64
