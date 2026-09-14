@@ -2,14 +2,15 @@ program test_fmr44_serialized_prescribed_qbot_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_executor_t, kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state
+       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_execute_serialized_resolved_physical_column
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -21,6 +22,11 @@ program test_fmr44_serialized_prescribed_qbot_runtime
   real(real64), parameter :: equilibrium_dt = 0.25_real64
   real(real64), parameter :: upward_dt = 1.0e-4_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-10_real64
+  ! Qualification-only explicit head-error budget. This is deliberately local to
+  ! the executable oracle and is not a production/application default. F-VQ34
+  ! requires an explicit finite positive budget and accepts C_h = B_inf/H_budget
+  ! only after the hard mass gate. 0.1 cm is a bounded 1 mm head budget.
+  real(real64), parameter :: qualification_head_budget = 0.1_real64
   integer(int64), parameter :: column_id = 440044_int64
   real(real64) :: k0, qeq, qup
 
@@ -36,6 +42,7 @@ program test_fmr44_serialized_prescribed_qbot_runtime
 
   write(*,'(A,ES26.17E3)') 'FMR44_QEQ=', qeq
   write(*,'(A,ES26.17E3)') 'FMR44_POSITIVE_QBOT=', qup
+  write(*,'(A,ES26.17E3)') 'FMR44_QUALIFICATION_HEAD_BUDGET_CM=', qualification_head_budget
   write(*,'(A)') 'FMR44_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE PASS'
 
 contains
@@ -44,7 +51,7 @@ contains
     real(real64), intent(in) :: q
     type(fmr_serialized_column_result_t) :: output
     type(fmr_serialized_physical_observation_t) :: observation
-    call execute_case(2, q, q, -999999.0_real64, equilibrium_dt, output, observation)
+    call execute_case(2, q, q, -999999.0_real64, equilibrium_dt, .false., output, observation)
     call require(output%completed .and. output%committed, 'mode2 equilibrium committed')
     call require(output%mass%complete, 'mode2 equilibrium mass complete')
     call require(abs(output%mass%residual) <= hard_mass_gate, 'mode2 equilibrium hard mass gate')
@@ -59,11 +66,16 @@ contains
     real(real64), intent(in) :: q
     type(fmr_serialized_column_result_t) :: output
     type(fmr_serialized_physical_observation_t) :: observation
-    call execute_case(2, q, q, 777777.0_real64, upward_dt, output, observation)
+    call execute_case(2, q, q, 777777.0_real64, upward_dt, .true., output, observation)
     if (.not. output%committed) then
       write(*,'(A,L1,A,L1,A,I0,A,I0,A,A)') 'FMR44_UPWARD_DEBUG completed=',output%completed, &
            ' committed=',output%committed,' kernel_status=',output%kernel_status,' accepted_substeps=', &
            output%accepted_substeps,' failure=',trim(output%admission_status)
+      write(*,'(A,L1,A,L1,A,L1,A,ES26.17E3,A,ES26.17E3,A,A)') 'FMR44_CERT_DEBUG enabled=', &
+           observation%temporal_indicator_enabled, ' budget_valid=', observation%temporal_head_budget_valid, &
+           ' available=', observation%temporal_certificate_available, ' Binf=', observation%temporal_head_inf_bound, &
+           ' Ch=', observation%temporal_normalized_indicator, ' reason=', &
+           trim(observation%temporal_certificate_unavailable_reason)
     end if
     call require(output%completed .and. output%committed, 'positive qbot transaction committed')
     call require(output%mass%complete, 'positive qbot mass complete')
@@ -73,9 +85,35 @@ contains
     call require(observation%bottom_flux > 0.0_real64, 'positive qbot is lower-boundary inflow')
     call require(output%mass%total_in > 0.0_real64 .and. output%mass%total_out > 0.0_real64, &
          'positive qbot throughflow has explicit in and out')
-    call require(output%final_revision == 1_int64, 'positive qbot exactly one external commit')
+    call require(output%final_revision > 0_int64 .and. output%final_revision == int(output%accepted_substeps,int64), &
+         'positive qbot revisions match accepted substeps')
+
+    call require(observation%temporal_indicator_enabled, 'positive qbot temporal history service enabled')
+    call require(observation%temporal_previous_derivative_available, 'positive qbot accepted predecessor history available')
+    call require(observation%temporal_current_derivative_available, 'positive qbot current derivative materialized')
+    call require(observation%temporal_head_budget_supplied .and. observation%temporal_head_budget_valid, &
+         'positive qbot explicit head budget supplied and valid')
+    call require(same_bits(observation%temporal_head_budget, qualification_head_budget), &
+         'positive qbot qualification head budget exact')
+    call require(observation%temporal_certificate_available, 'positive qbot temporal certificate available')
+    call require(trim(observation%temporal_certificate_unavailable_reason) == 'available', &
+         'positive qbot certificate reason available')
+    call require(ieee_is_finite(observation%temporal_head_inf_bound) .and. &
+         observation%temporal_head_inf_bound >= 0.0_real64 .and. &
+         observation%temporal_head_inf_bound <= qualification_head_budget, &
+         'positive qbot Binf within explicit qualification budget')
+    call require(ieee_is_finite(observation%temporal_normalized_indicator) .and. &
+         observation%temporal_normalized_indicator >= 0.0_real64 .and. &
+         observation%temporal_normalized_indicator <= 1.0_real64, 'positive qbot normalized certificate accepted')
+    call require(observation%temporal_additional_tridiagonal_solves == 1, &
+         'positive qbot certificate uses one defect tridiagonal solve')
+    call require(observation%temporal_additional_full_nonlinear_solves == 0, &
+         'positive qbot certificate uses no extra full nonlinear trajectory')
+
     write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') 'FMR44_POSITIVE_QBOT_MASS residual=', &
          output%mass%residual, ' total_in=', output%mass%total_in, ' total_out=', output%mass%total_out
+    write(*,'(A,ES26.17E3,A,ES26.17E3)') 'FMR44_POSITIVE_QBOT_CERTIFICATE Binf=', &
+         observation%temporal_head_inf_bound, ' Ch=', observation%temporal_normalized_indicator
     write(*,'(A)') 'FMR44_POSITIVE_QBOT_ACCEPTED_INFLOW=PASS'
   end subroutine verify_positive_bottom_inflow
 
@@ -83,16 +121,17 @@ contains
     real(real64), intent(in) :: q
     type(fmr_serialized_column_result_t) :: output
     type(fmr_serialized_physical_observation_t) :: observation
-    call execute_case(6, q, q, 0.0_real64, equilibrium_dt, output, observation)
+    call execute_case(6, q, q, 0.0_real64, equilibrium_dt, .false., output, observation)
     call require(.not. output%committed, 'unowned mode no commit')
     call require(output%final_revision == 0_int64, 'unowned mode revision unchanged')
     call require(.not. observation%solver_executed, 'unowned mode solver not executed')
     write(*,'(A)') 'FMR44_NEARBY_BOTTOM_MODE_FAIL_CLOSED=PASS'
   end subroutine verify_unowned_mode_rejected
 
-  subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, output, observation)
+  subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, output, observation)
     integer, intent(in) :: bottom_mode
     real(real64), intent(in) :: top_flux, bottom_flux, bottom_head, duration
+    logical, intent(in) :: use_certificate
     type(fmr_serialized_column_result_t), intent(out) :: output
     type(fmr_serialized_physical_observation_t), intent(out) :: observation
     type(fmr_serialized_reference_backend_t) :: backend
@@ -110,7 +149,11 @@ contains
     logical :: ok
 
     call initialize_parameters(parameters, bottom_mode)
-    call initialize_committed(committed, parameters, ok)
+    if (use_certificate) then
+      call initialize_temporal_committed(committed, parameters, ok)
+    else
+      call initialize_committed(committed, parameters, ok)
+    end if
     call require(ok, 'committed state initialization')
     call initialize_forcing(forcing, top_flux, bottom_flux, bottom_head)
 
@@ -120,7 +163,11 @@ contains
     template%state_layout_id = 440004_int64
     template%solver_interface_id = 440005_int64
     template%optional_state_layout_id = 0_int64
-    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
+    if (use_certificate) then
+      template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    else
+      template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
+    end if
     template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
 
     column%column_id = column_id
@@ -130,11 +177,21 @@ contains
     column%forcing_handle = 1_int64
     column%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
 
-    config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-    config%transaction%temporal_tolerance = 1.0e-6_real64
+    if (use_certificate) then
+      config%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+      config%transaction%temporal_tolerance = 0.0_real64
+      config%transaction%max_retries = 8
+      config%model_temporal_indicator_budget_available = .true.
+      config%model_temporal_indicator_budget = qualification_head_budget
+    else
+      config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+      config%transaction%temporal_tolerance = 1.0e-6_real64
+      config%transaction%max_retries = 8
+      config%model_temporal_indicator_budget_available = .false.
+      config%model_temporal_indicator_budget = 0.0_real64
+    end if
     config%transaction%mass_tolerance = hard_mass_gate
     config%transaction%retry_scale = 0.5_real64
-    config%transaction%max_retries = 8
     config%max_committed_substeps = 32
     config%progress_tolerance = 0.0_real64
 
@@ -199,6 +256,28 @@ contains
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
     logical, intent(out) :: ok
     type(fmr_b110_physical_state_t) :: state
+    call initialize_physical_state(parameters, state)
+    call fmr_new_b110_committed_state(committed, column_id, state, 0.0_real64, ok)
+  end subroutine initialize_committed
+
+  subroutine initialize_temporal_committed(committed, parameters, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    logical, intent(out) :: ok
+    type(fmr_b110_physical_state_t) :: state
+    real(real64) :: accepted_predecessor_right_derivative(numnod)
+    call initialize_physical_state(parameters, state)
+    ! The same uniform state is independently exercised above as the exact
+    ! prescribed-qbot equilibrium. Its accepted predecessor right derivative is
+    ! therefore exactly zero. The forcing changes only at this interval boundary.
+    accepted_predecessor_right_derivative = 0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(committed, column_id, state, 0.0_real64, ok, &
+         accepted_predecessor_right_derivative)
+  end subroutine initialize_temporal_committed
+
+  subroutine initialize_physical_state(parameters, state)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_state_t), intent(out) :: state
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
@@ -213,8 +292,7 @@ contains
     state%water_content = water
     state%ponding_depth = 0.0_real64
     state%groundwater_level = -2.0_real64
-    call fmr_new_b110_committed_state(committed, column_id, state, 0.0_real64, ok)
-  end subroutine initialize_committed
+  end subroutine initialize_physical_state
 
   subroutine initialize_forcing(forcing, top_flux, bottom_flux, bottom_head)
     type(fmr_b110_physical_forcing_t), intent(out) :: forcing
