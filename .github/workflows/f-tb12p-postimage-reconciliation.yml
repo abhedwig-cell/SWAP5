@@ -1,0 +1,33 @@
+name: F-TB12P Drainage v1 permanent preservation postimage reconciliation
+
+on:
+  push:
+    branches:
+      - work/f-tb12p-postimage-reconciliation
+    paths:
+      - 'integration/f-tb/F-TB12P_*'
+      - 'testbank/runners/run_ftb12p_*'
+      - '.github/workflows/f-tb12p-postimage-reconciliation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch immutable authority namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+
+      - name: Reconcile exact F-TB12 canonical postimage
+        shell: bash
+        run: bash testbank/runners/run_ftb12p_postimage_reconciliation.sh
