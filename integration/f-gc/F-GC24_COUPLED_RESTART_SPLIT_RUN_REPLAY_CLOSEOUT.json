@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC24",
+  "title": "Coupled Restart / Split-Run / Replay Composition",
+  "branch": "work/f-gc24-coupled-restart-split-run-replay-composition",
+  "base_current_canonical": {
+    "sha": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+    "tree": "e230ae58b38f2fdf774f7fa8f25472c517b20799"
+  },
+  "qualified_source_head": {
+    "sha": "ed919a7039fb446d2248d4faeedbfc3d6735b962",
+    "tree": "1197e2386babf725ef089b17035c1bf87cb8114b"
+  },
+  "scope": {
+    "primary": "Committed-only coupled SWAP-groundwater restart, true process split-run continuation and replay-safe restoration at an accepted coupling boundary.",
+    "production_physics_changed": false,
+    "kernel_io_added": false,
+    "file_format_added_to_runtime": false,
+    "calendar_assumption_added": false,
+    "modflow_specific_dependency_added": false,
+    "independent_vq_in_scope": false,
+    "canonical_admission_in_scope": false
+  },
+  "implemented_contract": {
+    "swap_committed_state": "Reuses the existing kernel committed persistence contract and reconstructs/restores only committed physical continuation.",
+    "groundwater_backend_state": "Uses a separate opt-in serialization-neutral restart adapter bound by runtime/coupler composition to the same groundwater backend.",
+    "mass_ledger": "Persists committed interface exchange totals and diagnostic discard count only; active trial/prepared state is rejected and never persisted.",
+    "coupling_origin": "Persists accepted coupling provenance and requires exact SWAP, groundwater and accepted-time consistency.",
+    "service_quiescence": "Export and restore require zero live wrapper-level prepared reservations through groundwater_preparable_exchange_service_t%restart_quiescent().",
+    "transient_state_excluded": [
+      "groundwater checkpoint backend tokens",
+      "groundwater candidate tokens",
+      "groundwater prepared handles/reservations",
+      "trial exchange values",
+      "Newton state",
+      "Jacobian/factorization scratch",
+      "worker scratch",
+      "file paths or serialization format"
+    ],
+    "restore_publication_rule": "All recoverable validation precedes backend restore publication. After adapter success, any violated checkpoint/provenance/quiescence postcondition is fail-hard rather than exposing a recoverable partially restored composition."
+  },
+  "changed_files_relative_to_base": [
+    ".github/workflows/fgc24-coupled-restart-split-process.yml",
+    "src/runtime/mod_groundwater_coupled_restart.f90",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+    "tests/fgc/run_fgc24_coupled_restart_split_process_gate.sh",
+    "tests/fgc/test_fgc24_coupled_restart_split_process.f90"
+  ],
+  "qualification_evidence": {
+    "github_actions_run": 34844818330,
+    "job": 103978095086,
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.3.0",
+    "head_sha": "ed919a7039fb446d2248d4faeedbfc3d6735b962",
+    "result": "SUCCESS",
+    "gates": {
+      "FGC24_FGC21_OWNER_FIXTURE": "PASS",
+      "FGC24_NO_KERNEL_IO_CALENDAR_OR_MODFLOW_DEPENDENCY": "PASS",
+      "FGC24_NO_TRANSIENT_PUBLICATION_TOKEN_PERSISTENCE": "PASS",
+      "FGC24_LEDGER_COMMITTED_ONLY_RESTART_RECORD": "PASS",
+      "FGC24_SELFTEST_O0": "PASS",
+      "FGC24_RESTORE_SUCCESS_POSTCONDITION_FAIL_HARD_O0": "PASS",
+      "FGC24_TRUE_PROCESS_SPLIT_EQUIVALENCE_O0": "PASS",
+      "FGC24_SELFTEST_O2": "PASS",
+      "FGC24_RESTORE_SUCCESS_POSTCONDITION_FAIL_HARD_O2": "PASS",
+      "FGC24_TRUE_PROCESS_SPLIT_EQUIVALENCE_O2": "PASS",
+      "FGC24_O0_O2_SIGNATURE_IDENTITY": "PASS"
+    },
+    "signature_sha256_o0": "09dc47b31a1da67e0596f0a48d218abade183141126e089f99aa0456b904b432",
+    "signature_sha256_o2": "09dc47b31a1da67e0596f0a48d218abade183141126e089f99aa0456b904b432"
+  },
+  "negative_and_failure_coverage": [
+    "active ledger transaction rejects restart export",
+    "live prepared groundwater reservation rejects restart export/restore",
+    "tampered coupled provenance is rejected before external restore publication",
+    "adapter restore rejection leaves local SWAP/ledger/origin unpublished",
+    "stale candidate/pending trial state is absent after true-process restore",
+    "successful adapter restore with violated quiescence/checkpoint/provenance postcondition terminates fail-hard"
+  ],
+  "architecture_invariants": {
+    "1_single_kernel": "PASS: reuses canonical kernel persistence rather than creating a coupled SWAP kernel.",
+    "2_kernel_separate_from_io": "PASS: runtime record is typed and serialization-neutral; external process serialization exists only in the qualification test adapter.",
+    "3_explicit_data_separation": "PASS: SWAP committed state, groundwater continuation, ledger and coupling provenance remain distinct typed carriers.",
+    "4_compact_persistent_state": "PASS: committed continuation only; transient tokens and scratch are excluded.",
+    "5_scratch_per_worker": "PASS: no solver scratch is persisted.",
+    "6_scalable_memory_layout": "PASS: restart capability is opt-in and no per-column heavy solver object is introduced.",
+    "7_transactional_timesteps": "PASS: restart is permitted only at quiescent accepted boundaries; active trial/prepared state fails closed.",
+    "8_cheap_recalculation_warm_start": "PASS: physical continuation is restored without treating stale trial data as committed state.",
+    "9_generic_time": "PASS: accepted_time is generic real time; no day/month/year semantics are introduced.",
+    "10_flexible_coupling_windows": "PASS: continuation is bound to accepted coupling origin/time, not midnight windows.",
+    "11_coupling_core_functionality": "PASS: restart composes SWAP state, groundwater state, interface ledger and coupling provenance transactionally.",
+    "12_explicit_groundwater_interface_contract": "PASS_WITH_EXISTING_AUTHORITY: F-GC24 does not alter head/flux interface semantics and preserves the accepted coupling lineage.",
+    "13_mass_conservation_absolute": "PASS: committed interface ledger is persisted/restored; active transactions are rejected; continuous and split signatures are identical.",
+    "14_interface_sensitivities_first_class": "UNAFFECTED: no tangent semantics are changed or persisted as physical state.",
+    "15_limit_coupling_cost": "UNAFFECTED: restart adds no required predictor/corrector reruns.",
+    "16_multiswap_primary": "PASS_BY_ARCHITECTURE: persistence remains compact and opt-in; no one-solver-per-column requirement is added. Dedicated F-GC25 scaling qualification remains separate.",
+    "17_no_mandatory_1_to_1_modflow": "UNAFFECTED: no MODFLOW cell/tile mapping assumption is introduced.",
+    "18_deep_vadose_optional_external": "UNAFFECTED: no deep-vadose semantics are introduced into SWAP.",
+    "19_mass_conserving_component_transition": "UNAFFECTED: this workunit does not define deep-vadose/direct-coupling transition policy.",
+    "20_alternative_soil_water_solvers": "PASS: restart depends on kernel transaction_state_t/persistence boundary, not HeadCalc internals.",
+    "21_reuse_swap_physics": "PASS: no duplicate groundwater-specific SWAP physics path is created.",
+    "22_no_headcalc_internal_coupling": "PASS: no HeadCalc arrays or internals are referenced.",
+    "23_physics_options_vs_solver_policy": "PASS: no physical option is silently changed by restart policy.",
+    "24_predictable_compute_time": "UNAFFECTED: no fallback or solver-cost policy is changed.",
+    "25_reference_mode_available": "UNAFFECTED: reference solver availability is unchanged.",
+    "26_runtime_diagnostics": "PASS_WITH_SCOPE: ledger diagnostics and provenance survive restart; broader runtime diagnostics remain owned elsewhere.",
+    "27_optional_functionality_scales_with_use": "PASS: restart adapter/state exists only for coupled restart-capable compositions.",
+    "28_runtime_coupler_system_composition": "PASS: exchange service and persistence adapter are separately composed outside the kernel.",
+    "29_no_silent_dependencies": "PASS: no .swp, path, calendar, midnight or direct-MODFLOW dependency is added.",
+    "30_every_architecture_change_checked": "PASS: this authority records explicit invariant disposition for all 30 invariants."
+  },
+  "owner_decision": {
+    "status": "QUALIFIED_COUPLED_RESTART_SPLIT_RUN_REPLAY_COMPOSITION_READY_FOR_INDEPENDENT_QUALIFICATION",
+    "claim": "F-GC24 owner scope is complete and green on its exact source head.",
+    "not_claimed": [
+      "independent F-VQ qualification",
+      "canonical admission",
+      "postimage preservation",
+      "groundwater coupling v1 100 percent completion"
+    ]
+  },
+  "next_dependencies": {
+    "independent_vq": "Required before treating F-GC24 as independently qualified.",
+    "canonical_admission": "Required after independent qualification before current-canonical composition can be claimed.",
+    "program_completion": "F-GC20, F-GC22, F-GC23, F-GC25 and F-GC26/F-GC27 remain separate GC closure concerns per F-GC28/F-GC16 lineage."
+  }
+}
