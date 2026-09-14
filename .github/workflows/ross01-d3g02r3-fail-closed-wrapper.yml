@@ -1,0 +1,107 @@
+name: F-ROSS01 D3G02R3 Fail-Closed Runtime Certificate Wrapper
+
+on:
+  push:
+    branches: [work/f-ross01-d3g02r3-fail-closed-runtime-certificate-wrapper]
+    paths:
+      - .github/workflows/ross01-d3g02r3-fail-closed-wrapper.yml
+      - experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py
+      - experiments/ross/run_ross01_d3g02r3_wrapper_material.py
+      - experiments/ross/run_ross01_d3g02r3_wrapper_aggregate.py
+      - integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json
+      - integration/f-ross/F-ROSS01_D3G02R_WRAPPER_DECISION_RULE.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-d3g02r3-wrapper-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Bind current-canonical MODEL_CERTIFICATE semantics by immutable transaction blob
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          grep -q "outcome%temporal_certificate_available" "$RUNNER_TEMP/tx.f90"
+          grep -q "outcome%temporal_indicator <= 1.0_real64" "$RUNNER_TEMP/tx.f90"
+      - name: Bind frozen R2 authority and wrapper decision rule
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py)" = "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02R_WRAPPER_DECISION_RULE.json)" = "d25ce7c87e976c8baac1fad0a58f3380962ee0c0"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02R2_STATUS.json)" = "9ee70cf5a7ccc66009d054128af7fd1d7702a45f"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json)" = "ff32bce4597e245eef0028556fce476074ab1cb8"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json').read_text())
+          assert a['status']=='QUALIFIED_BOUND'
+          assert a['qualification_pass'] is True
+          assert a['resolution_floor']==1e-10
+          assert a['accuracy_tolerance']==1e-5
+          assert a['runtime_certificate_wrapper_qualified'] is False
+          PY
+      - name: Syntax check
+        run: |
+          python3 -m py_compile experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py
+          python3 -m py_compile experiments/ross/run_ross01_d3g02r3_wrapper_material.py
+          python3 -m py_compile experiments/ross/run_ross01_d3g02r3_wrapper_aggregate.py
+      - name: Execute nine-level material wrapper qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          extra=()
+          if [ "${{ matrix.material }}" = "B01" ]; then extra+=(--include-negative-tests); fi
+          python3 experiments/ross/run_ross01_d3g02r3_wrapper_material.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3G02R3_MATERIAL_${{ matrix.material }}.json" \
+            "${extra[@]}"
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r3-material-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02R3_MATERIAL_${{ matrix.material }}.json
+
+  aggregate-qualification:
+    needs: qualify-material
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-d3g02r3-material-*-${{ github.run_id }}
+          path: shards
+      - name: Apply frozen wrapper qualification rule
+        run: |
+          python3 experiments/ross/run_ross01_d3g02r3_wrapper_aggregate.py \
+            --artifacts shards \
+            --output F-ROSS01_D3G02R3_AGGREGATE.json
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r3-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02R3_AGGREGATE.json
