@@ -7,13 +7,22 @@
   "base_closed_negative_d3g02": "3e1df24f1a56145236d835fb8a089e01adb04b05",
   "contract_commit": "18213f5b684bb903ed6142e7fefde51b0261ac6c",
   "material_probe_commit": "e62999a2a30e3ca9d61707b7c7f6c048fce13939",
+  "execution_sharding_commits": [
+    "51d18d564284de00a1f63d51a1c75151770758cb",
+    "a4f6b82e1a1afda83c43b1c17692426ff7d1a27e"
+  ],
   "authority_run": {
+    "run_id": 34823564419,
+    "run_number": 2,
+    "tested_head": "a4f6b82e1a1afda83c43b1c17692426ff7d1a27e",
+    "status_at_receipt": "pending",
+    "execution_layout": "108_INDEPENDENT_MATERIAL_FORCING_ATTEMPT_CASES",
+    "case_semantics_unchanged_from_frozen_material_probe": true
+  },
+  "superseded_execution_run": {
     "run_id": 34821572344,
-    "run_number": 1,
     "tested_head": "0a832f9de127408672464863974bb606f417b167",
-    "status_at_receipt": "in_progress",
-    "material_jobs": 6,
-    "all_material_jobs_passed_authority_binding_and_syntax_before_solver_execution": true
+    "reason": "Execution layout was too coarse: each material job serialized all 18 holdout cases. No completed scientific artifacts existed when the frozen case matrix was resharded; the science contract and per-case calculations were unchanged."
   },
   "frozen_case_matrix": {
     "materials": 6,
@@ -37,5 +46,5 @@
     "production_admission": false,
     "production_source_delta": []
   },
-  "resume_rule": "Do not modify the frozen D3G02R contract or case matrix based on partial results. Resume by reading run 34821572344 and its immutable artifacts. If the run fails for infrastructure or harness reasons before scientific evidence is produced, repair only that defect and preserve the frozen research matrix."
+  "resume_rule": "Do not modify the frozen D3G02R contract, case matrix, thresholds or diagnostics based on partial results. Resume by reading run 34823564419 and its immutable artifacts. If the run fails for infrastructure or harness reasons before scientific evidence is produced, repair only that defect and preserve all 108 frozen cases."
 }
