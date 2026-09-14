@@ -128,6 +128,7 @@ module mod_groundwater_exchange_service_contract
     procedure(gw_prepare_backend_ifc), deferred, public :: prepare_backend
     procedure(gw_commit_prepared_backend_ifc), deferred, public :: commit_prepared_backend
     procedure(gw_abort_prepared_backend_ifc), deferred, public :: abort_prepared_backend
+    procedure, public :: restart_quiescent => preparable_restart_quiescent
   end type groundwater_preparable_exchange_service_t
 
   public :: groundwater_capture_checkpoint
@@ -471,6 +472,14 @@ contains
     checkpoint%prepared = .false.
     status = GW_EXCHANGE_OK
   end subroutine groundwater_abort_prepared
+
+  pure logical function preparable_restart_quiescent(self) result(quiescent)
+    class(groundwater_preparable_exchange_service_t), intent(in) :: self
+
+    quiescent = .true.
+    if (.not. allocated(self%reservation_slots)) return
+    quiescent = .not. any(self%reservation_slots%active)
+  end function preparable_restart_quiescent
 
   subroutine reserve_prepared_slot(service, slot, generation, status)
     class(groundwater_preparable_exchange_service_t), intent(inout) :: service
