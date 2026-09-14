@@ -1,6 +1,7 @@
 module mod_fmr_checkpoint_orchestrator
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t, &
+       canonical_directional_response_request_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_committed_state_t, kernel_checkpoint_t, &
        kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t
   implicit none
@@ -22,7 +23,7 @@ contains
   end subroutine fmr_capture_checkpoint
 
   subroutine fmr_trial_from_checkpoint(kernel, parameters, committed_state, forcing, numerical_config, &
-                                       t0, t1, checkpoint, result, candidate_state, diagnostics)
+                                       t0, t1, checkpoint, result, candidate_state, diagnostics, directional_request)
     type(kernel_executor_t), intent(inout) :: kernel
     class(kernel_parameters_t), intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed_state
@@ -33,9 +34,15 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate_state
     type(kernel_diagnostics_t), intent(out) :: diagnostics
+    type(canonical_directional_response_request_t), intent(in), optional :: directional_request
 
-    call kernel%advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1, &
-         result, candidate_state, diagnostics, checkpoint)
+    if (present(directional_request)) then
+      call kernel%advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1, &
+           result, candidate_state, diagnostics, checkpoint, directional_request)
+    else
+      call kernel%advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1, &
+           result, candidate_state, diagnostics, checkpoint)
+    end if
   end subroutine fmr_trial_from_checkpoint
 
   subroutine fmr_commit_candidate(kernel, committed_state, candidate_state, diagnostics, did_commit, commit_status)
