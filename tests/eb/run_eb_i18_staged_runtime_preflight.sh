@@ -74,8 +74,20 @@ for opt in 0 2; do
     obj="$OUT/$(basename "${source%.*}").o"
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
   done
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
+    -c tests/eb/test_eb_i18_external_bottom_thermal_provider.f90 -o "$OUT/provider_test.o"
+  gfortran -O"$opt" "$OUT/mod_fmr_bottom_external_thermal_provider.o" "$OUT/provider_test.o" \
+    -o "$OUT/provider_test"
+  "$OUT/provider_test" > "$OUT/provider_output.txt"
+  grep -Fq 'EB_I18_EXTERNAL_BOTTOM_THERMAL_PROVIDER_GATE PASS' "$OUT/provider_output.txt"
+
+  echo "EB_I18_PROVIDER_ORACLE_O${opt}=PASS"
   echo "EB_I18_STAGED_RUNTIME_COMPILE_O${opt}=PASS"
 done
+
+cmp -s "$BUILD/o0/provider_output.txt" "$BUILD/o2/provider_output.txt"
+echo 'EB_I18_PROVIDER_O0_O2_SEMANTIC_IDENTITY=PASS'
 
 git diff --check -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 echo 'EB_I18_STAGED_RUNTIME_PREFLIGHT=PASS'
