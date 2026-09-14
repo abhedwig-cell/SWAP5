@@ -1,5 +1,5 @@
 module mod_groundwater_multiswap_swap_phase
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_committed_state_t, kernel_checkpoint_t, &
@@ -30,7 +30,7 @@ contains
     type(groundwater_direct_tile_binding_t), intent(in) :: bindings(:)
     type(groundwater_coupling_origin_t), intent(in) :: origins(:)
     integer, intent(in) :: order(:)
-    integer(kind=8), intent(in) :: groundwater_cell_id
+    integer(int64), intent(in) :: groundwater_cell_id
     type(groundwater_cell_exchange_t), intent(out) :: aggregate
     integer, intent(out) :: status
     type(groundwater_tile_exchange_t), allocatable :: tiles(:)
