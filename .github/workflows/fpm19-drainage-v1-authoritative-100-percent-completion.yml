@@ -1,0 +1,40 @@
+name: F-PM19 Drainage v1 authoritative 100 percent completion
+
+on:
+  push:
+    branches:
+      - work/f-pm19-drainage-v1-authoritative-100-percent-completion
+  workflow_dispatch:
+
+jobs:
+  authoritative-final-completion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Fetch immutable drainage authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin \
+            integration/f-ci-canonical \
+            work/f-pm13-drainage-v1-completion-audit \
+            work/f-pm14-drainage-response-runtime-closure \
+            work/f-pm17-drainage-response-fully-implicit-coupling \
+            qualification/f-vq38-fpm08c2-hooghoudt-ernst \
+            qualification/f-vq40-fpm08c1r-tabulated-drainage \
+            qualification/f-vq42-fpm08c3-empirical-interflow \
+            qualification/f-vq43-fpm08c4-multilevel-aggregation \
+            qualification/f-vq44-fpm08a-linear-drainage \
+            qualification/f-vq47-fpm08br-spatial-distribution-requalification \
+            qualification/f-vq59-fpm08d7-fixed-weir-current-canonical \
+            qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification \
+            qualification/f-vq74-drainage-v1-cross-cutting-independent-closure \
+            qualification/f-vq76-drainage-post-fci62-preservation-requalification
+      - name: Run authoritative fixed-denominator Drainage-v1 completion gate
+        shell: bash
+        run: bash tests/fpm/run_fpm19_drainage_v1_authoritative_100_percent_completion.sh
