@@ -1,0 +1,37 @@
+name: F-VQ77 bottom-energy publication independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq77-bottom-energy-publication-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested head identity
+        run: |
+          echo "FVQ77_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ77_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Independent bottom-energy qualification
+        run: bash tests/fvq/run_fvq77_bottom_energy_publication_independent.sh
+
+      - name: Qualification-only source guard
+        run: |
+          candidate=15184dd06c1d0f8accc0d306a12d25a3568f1f2e
+          changed="$(git diff --name-only "$candidate"...HEAD -- src reference | sort)"
+          test -z "$changed"
+          echo 'FVQ77_NO_NEW_SOURCE_DELTA=PASS'
