@@ -24,10 +24,12 @@ program test_fvq77_bottom_energy_independent
   real(real64) :: energy, local_energy, expected_local, expected_total, donor_temperature
   integer(int64) :: token
   integer :: status, n, nlocal, nzero, nexternal
-  logical :: ok, available
+  logical :: ok, available, predicate
 
   call initialize_liquid_water_sensible_enthalpy_parameters(1000.0_real64, 4180.0_real64, 5.0_real64, properties, status)
-  call require(status == LWSE_OK .and. properties%ready(), 'enthalpy properties')
+  call require(status == LWSE_OK, 'enthalpy property status')
+  predicate = properties%ready()
+  call require(predicate, 'enthalpy properties ready')
 
   call carrier%initialize(4, ok)
   call require(ok, 'carrier initialize')
@@ -38,16 +40,22 @@ program test_fvq77_bottom_energy_independent
   call carrier%append_zero(30.0_real64, 40.0_real64, ok)
   call require(ok, 'zero sample')
   call carrier%materialize_candidate(10.0_real64, 40.0_real64, candidate, ok)
-  call require(ok .and. candidate%ready() .and. candidate%sample_count() == 3, 'candidate materialization')
+  call require(ok, 'candidate materialization status')
+  predicate = candidate%ready()
+  call require(predicate, 'candidate ready')
+  call require(candidate%sample_count() == 3, 'candidate sample count')
 
   call evaluate_fmr_bottom_sensible_energy(candidate, properties, result)
   call require(result%status() == FMR_BOTTOM_ENERGY_INCOMPLETE_EXTERNAL_DONOR, 'missing external donor status')
-  call require(.not. result%complete(), 'missing external donor incomplete')
+  predicate = result%complete()
+  call require(.not. predicate, 'missing external donor incomplete')
   call result%total_energy(energy, available)
-  call require(.not. available .and. energy == 0.0_real64, 'missing donor not encoded as available zero')
+  call require(.not. available, 'missing donor total unavailable')
+  call require(close_value(energy, 0.0_real64), 'missing donor not encoded as nonzero total')
   call result%local_outward_subtotal(local_energy, available)
   expected_local = 0.01_real64 * 1000.0_real64 * 4180.0_real64 * 0.2_real64 * (11.0_real64 - 5.0_real64)
-  call require(available .and. close_value(local_energy, expected_local), 'local donor energy identity')
+  call require(available, 'local donor subtotal available')
+  call require(close_value(local_energy, expected_local), 'local donor energy identity')
   call result%counts(n, nlocal, nzero, nexternal)
   call require(n == 3 .and. nlocal == 1 .and. nzero == 1 .and. nexternal == 1, 'candidate donor counts')
   write(*,'(A)') 'FVQ77_MISSING_EXTERNAL_DONOR_FAIL_CLOSED=PASS'
@@ -57,27 +65,34 @@ program test_fvq77_bottom_energy_independent
   call bindings%append(2, 7.5_real64, 9001_int64, status)
   call require(status == FMR_EXT_THERMAL_BINDING_OK, 'external binding append')
   call evaluate_fmr_bottom_sensible_energy_with_external(candidate, 7001_int64, bindings, properties, result)
-  call require(result%status() == FMR_BOTTOM_ENERGY_COMPLETE .and. result%complete(), 'resolved energy complete')
+  call require(result%status() == FMR_BOTTOM_ENERGY_COMPLETE, 'resolved energy status')
+  predicate = result%complete()
+  call require(predicate, 'resolved energy complete')
   call result%total_energy(energy, available)
   expected_total = expected_local + 0.01_real64 * 1000.0_real64 * 4180.0_real64 * (-0.1_real64) * &
        (7.5_real64 - 5.0_real64)
-  call require(available .and. close_value(energy, expected_total), 'resolved energy identity')
+  call require(available, 'resolved total available')
+  call require(close_value(energy, expected_total), 'resolved energy identity')
   call require(close_value(expected_total, 39710.0_real64), 'independent expected energy')
   write(*,'(A,ES24.16)') 'FVQ77_RESOLVED_TOTAL_ENERGY_J_M2=', energy
   write(*,'(A)') 'FVQ77_RESOLVED_EXTERNAL_DONOR=PASS'
 
   call evaluate_fmr_bottom_sensible_energy_with_external(candidate, 7002_int64, bindings, properties, result)
-  call require(result%status() == FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING .and. .not. result%complete(), &
-       'lineage mismatch fails closed')
+  call require(result%status() == FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING, 'lineage mismatch status')
+  predicate = result%complete()
+  call require(.not. predicate, 'lineage mismatch fails closed')
   call result%total_energy(energy, available)
   call require(.not. available, 'lineage mismatch no total')
   write(*,'(A)') 'FVQ77_LINEAGE_MISMATCH_FAIL_CLOSED=PASS'
 
   call empty_bindings%initialize(7001_int64, 0, ok)
-  call require(ok .and. empty_bindings%ready(), 'empty bundle initialize')
+  call require(ok, 'empty bundle initialize status')
+  predicate = empty_bindings%ready()
+  call require(predicate, 'empty bundle ready')
   call evaluate_fmr_bottom_sensible_energy_with_external(candidate, 7001_int64, empty_bindings, properties, result)
-  call require(result%status() == FMR_BOTTOM_ENERGY_INCOMPLETE_EXTERNAL_DONOR .and. .not. result%complete(), &
-       'unavailable binding remains incomplete')
+  call require(result%status() == FMR_BOTTOM_ENERGY_INCOMPLETE_EXTERNAL_DONOR, 'unavailable binding status')
+  predicate = result%complete()
+  call require(.not. predicate, 'unavailable binding remains incomplete')
   call result%total_energy(energy, available)
   call require(.not. available, 'unavailable binding no total')
   write(*,'(A)') 'FVQ77_UNAVAILABLE_BINDING_NO_ZERO_FALLBACK=PASS'
@@ -87,25 +102,36 @@ program test_fvq77_bottom_energy_independent
   call extra_bindings%append(1, 6.0_real64, 9002_int64, status)
   call require(status == FMR_EXT_THERMAL_BINDING_OK, 'extra local binding append')
   call evaluate_fmr_bottom_sensible_energy_with_external(candidate, 7001_int64, extra_bindings, properties, result)
-  call require(result%status() == FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING .and. .not. result%complete(), &
-       'cross-class binding fails closed')
+  call require(result%status() == FMR_BOTTOM_ENERGY_INVALID_EXTERNAL_BINDING, 'cross-class binding status')
+  predicate = result%complete()
+  call require(.not. predicate, 'cross-class binding fails closed')
   write(*,'(A)') 'FVQ77_CROSS_CLASS_BINDING_FAIL_CLOSED=PASS'
 
   call initialize_fmr_external_bottom_thermal_request(42_int64, 2, 20.0_real64, 30.0_real64, -0.1_real64, request, ok)
-  call require(ok .and. request%ready(), 'provider request')
+  call require(ok, 'provider request initialize')
+  predicate = request%ready()
+  call require(predicate, 'provider request ready')
   call response%set_complete(request, 7.5_real64, 12345_int64, ok)
-  call require(ok .and. response%ready(), 'provider complete response')
-  call require(response%identity_matches(request), 'provider exact request identity')
+  call require(ok, 'provider complete response set')
+  predicate = response%ready()
+  call require(predicate, 'provider complete response ready')
+  predicate = response%identity_matches(request)
+  call require(predicate, 'provider exact request identity')
   call require(response%disposition() == FMR_EXT_THERMAL_RESPONSE_COMPLETE, 'provider complete disposition')
   call response%donor_temperature(donor_temperature, available)
-  call require(available .and. donor_temperature == 7.5_real64, 'provider donor temperature')
+  call require(available, 'provider donor temperature available')
+  call require(close_value(donor_temperature, 7.5_real64), 'provider donor temperature')
   token = response%source_provenance_token()
   call require(token == 12345_int64, 'provider provenance token')
 
   call initialize_fmr_external_bottom_thermal_request(42_int64, 2, 20.0_real64, 30.0_real64, -0.11_real64, changed_request, ok)
-  call require(ok .and. .not. response%identity_matches(changed_request), 'provider exchange identity mismatch')
+  call require(ok, 'changed provider request initialize')
+  predicate = response%identity_matches(changed_request)
+  call require(.not. predicate, 'provider exchange identity mismatch')
   call response%set_unavailable(request, 12346_int64, ok)
-  call require(ok .and. response%ready(), 'provider unavailable response')
+  call require(ok, 'provider unavailable response set')
+  predicate = response%ready()
+  call require(predicate, 'provider unavailable response ready')
   call require(response%disposition() == FMR_EXT_THERMAL_RESPONSE_UNAVAILABLE, 'provider unavailable disposition')
   call response%donor_temperature(donor_temperature, available)
   call require(.not. available, 'unavailable response has no donor temperature')
@@ -118,11 +144,13 @@ program test_fvq77_bottom_energy_independent
   call require(ok, 'rollback committed sample')
   call carrier%copy_to(checkpoint)
   call carrier%append_zero(1.0_real64, 2.0_real64, ok)
-  call require(ok .and. carrier%sample_count() == 2, 'trial carrier mutation')
+  call require(ok, 'trial carrier mutation status')
+  call require(carrier%sample_count() == 2, 'trial carrier mutation count')
   call carrier%restore_from(checkpoint)
   call require(carrier%sample_count() == 1, 'carrier rollback count')
   call carrier%materialize_candidate(0.0_real64, 1.0_real64, candidate, ok)
-  call require(ok .and. candidate%sample_count() == 1, 'carrier rollback materialization')
+  call require(ok, 'carrier rollback materialization status')
+  call require(candidate%sample_count() == 1, 'carrier rollback materialization count')
   write(*,'(A)') 'FVQ77_CARRIER_CHECKPOINT_ROLLBACK=PASS'
 
   write(*,'(A)') 'FVQ77_BOTTOM_ENERGY_INDEPENDENT_ORACLE=PASS'
