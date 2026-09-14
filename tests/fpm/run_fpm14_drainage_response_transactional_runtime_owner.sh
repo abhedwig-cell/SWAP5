@@ -10,11 +10,14 @@ cd "$ROOT"
 fail() { echo "FPM14_TRANSACTIONAL_RUNTIME_GATE_FAIL $*" >&2; exit 87; }
 
 python3 tools/fpm14/apply_backend_drainage_response_patch.py
+python3 tools/fpm14/refine_backend_drainage_response_patch.py
 
 grep -Fq 'F-PM14 drainage response runtime composition' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
   fail 'checked backend transform marker missing'
 grep -Fq 'evaluate_fmr_drainage_response_bottom_lumped' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
   fail 'backend response evaluation missing'
+grep -Fq 'fmr_drainage_response_configuration_status' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
+  fail 'explicit response preflight status missing'
 grep -Fq 'call account_external_fluxes' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
   fail 'existing authoritative mass ledger route missing'
 if grep -Fiq 'headcalc' src/runtime/mod_fmr_drainage_response_binding.f90; then
@@ -23,6 +26,14 @@ fi
 if grep -Eiq 'open\s*\(|read\s*\(|write\s*\(|\.swp|midnight|calendar' src/runtime/mod_fmr_drainage_response_binding.f90; then
   fail 'response binding contains forbidden I/O or calendar assumptions'
 fi
+python3 - <<'PY'
+from pathlib import Path
+s=Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
+a=s[s.index('logical function fmr_serialized_execution_admitted'):s.index('end function fmr_serialized_execution_admitted')]
+assert 'self%drainage_response_levels' not in a
+assert 'self%drainage_response_active' not in a
+print('FPM14_ADMISSION_INDEPENDENT_OF_WORKER_SCRATCH=PASS')
+PY
 echo 'FPM14_BACKEND_CHECKED_TRANSFORM_STATIC_GUARDS=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
