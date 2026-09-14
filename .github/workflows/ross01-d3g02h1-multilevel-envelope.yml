@@ -1,0 +1,169 @@
+name: F-ROSS01 D3G02H1 multilevel refinement envelope holdout
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d3g02h1-multilevel-refinement-envelope
+    paths:
+      - .github/workflows/ross01-d3g02h1-multilevel-envelope.yml
+      - experiments/ross/run_ross01_d3g02h1_multilevel_envelope_variant.py
+      - integration/f-ross/F-ROSS01_D3G02H1_MULTILEVEL_REFINEMENT_ENVELOPE_CONTRACT.json
+  workflow_dispatch:
+
+concurrency:
+  group: ross01-d3g02h1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-variant:
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+        boundary_variant:
+          - TOP_PLUS2_BOTTOM_PLUS2
+          - TOP_PLUS2_BOTTOM_MINUS2
+          - TOP_MINUS2_BOTTOM_PLUS2
+          - TOP_MINUS2_BOTTOM_MINUS2
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy jsonschema
+      - name: Bind frozen H1 ancestry and moving-current transaction semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 6c33d5b1da43353eb39a85b217854c74f78ed821 HEAD
+          git fetch origin integration/f-ci-canonical --depth=1
+          CANONICAL_HEAD="$(git rev-parse FETCH_HEAD)"
+          TX_BLOB="$(git show "$CANONICAL_HEAD:src/transaction/mod_transaction_reference.f90" | git hash-object --stdin)"
+          test "$TX_BLOB" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          echo "CANONICAL_HEAD=$CANONICAL_HEAD" >> "$GITHUB_ENV"
+          echo "TX_BLOB=$TX_BLOB" >> "$GITHUB_ENV"
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_d3g02h1_multilevel_envelope_variant.py
+      - name: Execute nine retry durations for frozen material-boundary variant
+        run: |
+          python3 experiments/ross/run_ross01_d3g02h1_multilevel_envelope_variant.py \
+            --material "${{ matrix.material }}" \
+            --boundary-variant "${{ matrix.boundary_variant }}" \
+            --canonical-head "$CANONICAL_HEAD" \
+            --output "F-ROSS01_D3G02H1_${{ matrix.material }}_${{ matrix.boundary_variant }}.json"
+      - name: Upload immutable holdout shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02h1-${{ matrix.material }}-${{ matrix.boundary_variant }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02H1_${{ matrix.material }}_${{ matrix.boundary_variant }}.json
+
+  aggregate:
+    needs: qualify-variant
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-d3g02h1-*-${{ github.run_id }}
+          path: shards
+          merge-multiple: true
+      - name: Aggregate exact frozen 216-case holdout
+        run: |
+          python3 - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          materials = ('B01','B12','O01','O05','O14','O18')
+          variants = (
+              'TOP_PLUS2_BOTTOM_PLUS2',
+              'TOP_PLUS2_BOTTOM_MINUS2',
+              'TOP_MINUS2_BOTTOM_PLUS2',
+              'TOP_MINUS2_BOTTOM_MINUS2',
+          )
+          files = sorted(Path('shards').glob('F-ROSS01_D3G02H1_*.json'))
+          payloads = [json.loads(p.read_text()) for p in files]
+          rows = [r for p in payloads for r in p.get('cases', [])]
+          expected = {(m,v,a) for m in materials for v in variants for a in range(9)}
+          observed = {(r.get('material'), r.get('boundary_variant'), r.get('attempt_index')) for r in rows}
+          heads = sorted(set(p.get('live_canonical_head') for p in payloads))
+
+          ref_self = [float(r['reference_self_delta']) for r in rows]
+          masses = [abs(float(r['max_abs_mass_residual_cm'])) for r in rows]
+          errors = [float(r['temporal_metrics']['theta16_reference_error']) for r in rows if r.get('temporal_metrics')]
+          envelopes = [float(r['temporal_metrics']['multilevel_refinement_envelope']) for r in rows if r.get('temporal_metrics')]
+          ratios = [float(r['temporal_metrics']['reference_error_to_envelope_ratio']) for r in rows if r.get('temporal_metrics') and r['temporal_metrics'].get('reference_error_to_envelope_ratio') is not None]
+          margins = [float(r['temporal_metrics']['conservativity_margin']) for r in rows if r.get('temporal_metrics')]
+
+          complete = len(payloads) == 24 and len(rows) == 216 and observed == expected and len(heads) == 1
+          all_numeric = complete and all(r.get('numerical_pass') is True for r in rows)
+          all_pass = complete and all(p.get('pass') is True for p in payloads) and all(r.get('pass') is True for r in rows)
+          qualification_pass = bool(
+              all_pass
+              and all_numeric
+              and max(ref_self, default=float('inf')) <= 1.0e-9
+              and max(masses, default=float('inf')) <= 1.0e-12
+              and max(errors, default=float('inf')) <= 1.0e-5
+              and min(margins, default=float('-inf')) >= 0.0
+          )
+
+          worst = None
+          if rows:
+              candidates = [r for r in rows if r.get('temporal_metrics')]
+              if candidates:
+                  rr = min(candidates, key=lambda r: float(r['temporal_metrics']['conservativity_margin']))
+                  worst = {
+                      'material': rr['material'],
+                      'boundary_variant': rr['boundary_variant'],
+                      'attempt_index': rr['attempt_index'],
+                      'duration_day': rr['full_duration_day'],
+                      'envelope': rr['temporal_metrics']['multilevel_refinement_envelope'],
+                      'reference_error': rr['temporal_metrics']['theta16_reference_error'],
+                      'margin': rr['temporal_metrics']['conservativity_margin'],
+                      'ratio': rr['temporal_metrics']['reference_error_to_envelope_ratio'],
+                  }
+
+          out = {
+              'schema_version': 1,
+              'work_unit': 'F-ROSS01 D3G02H1',
+              'kind': 'multilevel_refinement_envelope_holdout_aggregate',
+              'qualification_pass': qualification_pass,
+              'shard_count': len(payloads),
+              'expected_shard_count': 24,
+              'case_count': len(rows),
+              'expected_case_count': 216,
+              'live_canonical_heads': heads,
+              'transaction_reference_blob': 'd5a71a526efaebd82054580c3186f8e3545db331',
+              'max_reference_self_delta': max(ref_self, default=None),
+              'max_abs_mass_residual_cm': max(masses, default=None),
+              'max_theta16_reference_error': max(errors, default=None),
+              'max_multilevel_refinement_envelope': max(envelopes, default=None),
+              'max_reference_error_to_envelope_ratio': max(ratios, default=None),
+              'min_conservativity_margin': min(margins, default=None),
+              'worst_conservativity_case': worst,
+              'safety_multiplier': 1.0,
+              'accuracy_tolerance_span_normalized': 1.0e-5,
+              'certificate_available': False,
+              'd3_g02': 'OPEN',
+              'production_admission': False,
+              'production_source_delta': [],
+              'disposition': (
+                  'POSITIVE_HYPOTHESIS_SIGNAL_READY_FOR_SEPARATE_WRAPPER_AND_CONTINUOUS_SCOPE_QUALIFICATION'
+                  if qualification_pass else
+                  'NEGATIVE_MULTILEVEL_ENVELOPE_HYPOTHESIS_D3_G02_REMAINS_OPEN'
+              ),
+          }
+          Path('F-ROSS01_D3G02H1_AGGREGATE.json').write_text(json.dumps(out, indent=2, sort_keys=True, allow_nan=False) + '\n')
+          print(json.dumps(out, sort_keys=True, allow_nan=False))
+          raise SystemExit(0 if qualification_pass else 1)
+          PY
+      - name: Upload aggregate authority candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02h1-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02H1_AGGREGATE.json
