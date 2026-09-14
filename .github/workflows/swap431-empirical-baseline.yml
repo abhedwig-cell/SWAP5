@@ -16,6 +16,8 @@ on:
       - 'src/kernel/mod_kernel_transactions.f90'
       - 'src/runtime/mod_canonical_contracts.f90'
       - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
   workflow_dispatch:
 
 permissions:
@@ -73,3 +75,16 @@ jobs:
       - name: Run EB-R04 gate
         shell: bash
         run: bash tests/empirical_baseline/run_eb_r04.sh
+
+  eb-r05-transient-richards-response:
+    name: EB-R05 current-canonical transient Richards response
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out empirical-baseline capability
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run EB-R05 gate
+        shell: bash
+        run: bash tests/empirical_baseline/run_eb_r05.sh
