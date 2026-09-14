@@ -13,8 +13,10 @@ BASE_RUNTIME_BLOB="f06a2eef7b47880e449cf9b201342d7bd1e197e1"
 [[ "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" == "$BASE_RUNTIME_BLOB" ]] || fail 'runtime base blob drift'
 
 python3 tests/eb/_apply_eb_i18_runtime_patch.py
+python3 tests/eb/_normalize_eb_i18_runtime_api.py
 
-grep -Fq 'fmr_execute_serialized_resolved_physical_column_with_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+grep -Fq 'fmr_execute_serialized_column_with_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+! grep -Fq 'fmr_execute_serialized_resolved_physical_column_with_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 grep -Fq 'call backend%run_trial' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 grep -Fq 'thermal_candidate = backend%bottom_thermal_snapshot()' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 grep -Fq 'call prepare_candidate_bound_bottom_energy' src/runtime/mod_fmr_serialized_multiswap_runtime.f90
@@ -49,7 +51,6 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
-  src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
@@ -122,5 +123,5 @@ cmp -s "$BUILD/o0/transaction_output.txt" "$BUILD/o2/transaction_output.txt" || 
 echo 'EB_I18_PROVIDER_O0_O2_SEMANTIC_IDENTITY=PASS'
 echo 'EB_I18_TRANSACTION_O0_O2_SEMANTIC_IDENTITY=PASS'
 
-git diff --check -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+git diff --check -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90 tests/eb/test_eb_i18_transaction_publication.f90
 echo 'EB_I18_STAGED_RUNTIME_PREFLIGHT=PASS'
