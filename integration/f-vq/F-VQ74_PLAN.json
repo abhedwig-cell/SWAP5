@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.fvq74.plan.v1",
+  "work_unit": "F-VQ74",
+  "title": "Drainage-v1 cross-cutting independent closure qualification",
+  "branch": "qualification/f-vq74-drainage-v1-cross-cutting-independent-closure",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "historical_completion_authority": {
+    "work_unit": "F-PM13",
+    "sha": "e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "final_completion_blob": "ce4dc39da4a97f070539896e9929f00c475d7ffa",
+    "frozen_denominator_variants": 8,
+    "target_blocker": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS"
+  },
+  "already_qualified_not_reopened": {
+    "owner_runtime": "F-PM14",
+    "independent_transaction_mass_runtime": "F-VQ73",
+    "canonical_admission": "F-CI61",
+    "canonical_postimage_preservation": "F-CI61P"
+  },
+  "independent_questions": [
+    "Do mixed active-response and precomputed-drainage columns remain isolated under different deterministic batch/order schedules?",
+    "Is the committed state and authoritative mass transcript order-independent per logical column?",
+    "Can an active drainage-response column restart from only committed physical state without additional drainage process state and continue bit-identically in physical state and interval mass transcript?",
+    "Are accepted runtime diagnostics explicit and internally consistent for attempts, checkpoint provenance, acceptance, revision, committed time and worker assignment?",
+    "Does an unsupported drainage response fail closed with explicit rejected diagnostics and no committed-state mutation?",
+    "Are O0 and O2 behavioral transcripts exactly identical?"
+  ],
+  "hard_guards": {
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "physics_change_allowed": false,
+    "mass_booking_change_allowed": false,
+    "solver_change_allowed": false,
+    "persistent_state_change_allowed": false,
+    "pm13_denominator_change_allowed": false,
+    "scope_reduction_allowed": false
+  },
+  "architecture_invariants_targeted": [3,4,5,6,7,8,9,13,16,22,25,26,27,29,30],
+  "success_does_not_yet_claim": [
+    "drainage-v1 100-percent completion without a final PM13-class current-canonical reconciliation",
+    "new drainage physics",
+    "broader variants than the frozen PM13 denominator"
+  ]
+}
