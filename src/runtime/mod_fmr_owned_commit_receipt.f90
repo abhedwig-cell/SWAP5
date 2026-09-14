@@ -65,11 +65,12 @@ contains
          did_commit, accepted, receipt_status, local_commit_status)
     if (present(commit_status)) commit_status = local_commit_status
     if (.not. did_commit) return
+
+    ! A successful physical commit must remain reported as committed even if a
+    ! future generic receipt producer were ever to violate its postcondition.
+    ! In that impossible case the owned receipt stays unavailable and callers
+    ! can fail closed on energy publication without falsifying committed state.
     if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. accepted%ready()) then
-      ! This postcondition is unreachable for a conforming generic receipt
-      ! producer. Keep the owned result unavailable rather than fabricating an
-      ! association if a future producer violates that contract.
-      did_commit = .false.
       receipt_status = FMR_COMMIT_RECEIPT_PROVENANCE_MISMATCH
       return
     end if
