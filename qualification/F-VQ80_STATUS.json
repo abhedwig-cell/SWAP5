@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.fvq80.status.v1",
+  "work_unit": "F-VQ80",
+  "title": "EB-I20R batch-safe energy-ledger independent qualification",
+  "branch": "qualification/f-vq80-eb-i20r-batch-safe-energy-ledger-independent-qualification",
+  "status": "NOT_QUALIFIED_CROSS_LEDGER_PREPARED_HANDLE_PROVENANCE",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "owner_authorities": {
+    "EB-I20R_postimage": "fa11c2ecac01bb2634b43304588b91aec2d8d341",
+    "EB-I20R_materialized_source": "772e85afb67c4a0abab3e1c1deeef4fd48548597",
+    "energy_types_blob": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "energy_ledger_blob": "a6aea349308e8b6b0aedaaa22a64e41f9101b48d"
+  },
+  "tested_head": "0978aa0cdcb79074f457a9eaf09890c672c08023",
+  "tested_tree": "0517032dc201f3fb5f3725d48b840b1fbf823855",
+  "workflow_run": 34837597332,
+  "workflow_job": 103954889327,
+  "runner": "ubuntu-24.04",
+  "compiler": "GNU Fortran 13.3.0",
+  "workflow_conclusion": "success_verifier_executed_and_blocker_classified",
+  "independent_evidence": {
+    "owner_source_delta_exactly_two_energy_modules": true,
+    "reference_source_changed": false,
+    "verifier_introduced_production_or_reference_source": false,
+    "batch_fatal_error_stop_absent": true,
+    "O0_O2_attack_observation_identical": true,
+    "foreign_abort_status": 0,
+    "foreign_abort_wrongly_accepted": true,
+    "ledger_A_prepared_after_foreign_abort": false,
+    "original_A_handle_ready_after_foreign_abort": true,
+    "ledger_B_prepared_after_foreign_abort": true,
+    "cross_ledger_prepared_handle_provenance": "BLOCKER_REPRODUCED"
+  },
+  "technical_finding": "Prepared-handle generation is ledger-local but not ledger-unique. After prepare_trial clears trial lineage from the ledger, abort_prepared validates only prepared_active, handle readiness and generation equality. Two ledger instances can therefore both own generation 1 and a foreign prepared handle can consume the wrong ledger's prepared state.",
+  "invariant_impact": [
+    "Invariant 7 transactional time steps: foreign candidate metadata can mutate another transaction's prepared state.",
+    "Invariant 16 MultiSWAP primary use case: per-column/worker isolation is not guaranteed for prepared energy handles.",
+    "Invariant 29 no silent dependencies: correctness currently depends on callers never mixing handles across ledger instances."
+  ],
+  "decision": "REMEDIATION_REQUIRED_BEFORE_ANY_ADMISSION",
+  "hard_nonclaims": [
+    "F-VQ80 does not canonically admit EB-I20R.",
+    "A successful verifier workflow means the attack and classification executed successfully; it is not a positive qualification result.",
+    "No energy physics or conservation algebra is disproven by this finding; the blocker is transactional provenance/isolation.",
+    "No production or reference source is modified by F-VQ80."
+  ],
+  "next_owner": "minimal owner remediation adding ledger-instance-bound prepared-handle provenance, followed by fresh independent qualification"
+}
