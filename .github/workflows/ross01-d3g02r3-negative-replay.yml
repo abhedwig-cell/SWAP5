@@ -1,0 +1,88 @@
+name: F-ROSS01 D3G02R3 Negative-Path Replay
+
+on:
+  push:
+    branches: [work/f-ross01-d3g02r3-fail-closed-runtime-certificate-wrapper]
+    paths:
+      - .github/workflows/ross01-d3g02r3-negative-replay.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay-negative-paths:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Bind inherited positive evidence dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+
+          test "$(git hash-object experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py)" = "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd"
+          test "$(git hash-object experiments/ross/run_ross01_d3g02r3_wrapper_material.py)" = "a5cf158060f7893e9a8cd6a7a8a6bc644715cbbb"
+          test "$(git hash-object experiments/ross/ross01_d2_fsi31_adapter_base.py)" = "3cb579554f0931dc41ce05e92e2e7a5f06bf8888"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json)" = "ff32bce4597e245eef0028556fce476074ab1cb8"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02R_WRAPPER_DECISION_RULE.json)" = "d25ce7c87e976c8baac1fad0a58f3380962ee0c0"
+
+      - name: Replay only changed fail-closed assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=experiments/ross python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import run_ross01_d3g02r3_wrapper_material as q
+
+          negative = q.negative_tests()
+          evidence = {
+              "schema_version": 1,
+              "work_unit": "F-ROSS01 D3G02R3",
+              "kind": "NEGATIVE_PATH_REPLAY_WITH_INHERITED_POSITIVE_MATRIX",
+              "pass": bool(negative["pass"]),
+              "negative_tests": negative,
+              "live_canonical_head": os.environ["CANONICAL_HEAD"],
+              "current_canonical_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+              "inherited_positive_evidence": {
+                  "workflow_run_id": 34844849956,
+                  "aggregate_artifact_id": 10349275869,
+                  "aggregate_artifact_digest": "sha256:cf806d7a2f7aeaf5e68ecf0cd6fccb958a4b39a826f79eca6cd770c561cdc2dc",
+                  "positive_case_count": 54,
+                  "all_positive_cases_pass": True,
+                  "all_indicators_finite_nonnegative_le_one": True,
+                  "all_mass_residuals_within_hard_gate": True,
+                  "source_canonical_head": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+                  "source_wrapper_blob": "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd",
+                  "dependency_delta_since_source": "QUALIFICATION_HARNESS_NEGATIVE_NO_EXECUTION_ASSERTION_ONLY",
+              },
+              "production_admission": False,
+              "production_source_delta": [],
+          }
+          Path("F-ROSS01_D3G02R3_NEGATIVE_REPLAY.json").write_text(
+              json.dumps(evidence, indent=2, sort_keys=True, allow_nan=False) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps({"pass": evidence["pass"], "checks": negative["checks"]}, sort_keys=True))
+          raise SystemExit(0 if evidence["pass"] else 1)
+          PY
+
+      - name: Upload replay evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r3-negative-replay-${{ github.run_id }}
+          path: F-ROSS01_D3G02R3_NEGATIVE_REPLAY.json
