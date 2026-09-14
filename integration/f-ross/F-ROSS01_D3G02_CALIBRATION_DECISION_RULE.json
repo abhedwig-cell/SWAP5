@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02",
+  "purpose": "PRECOMMITTED_CALIBRATION_DECISION_RULE_BEFORE_AGGREGATE_RESULT",
+  "created_before_calibration_aggregate_observed": true,
+  "candidate_constants": {
+    "safety_factor": 1.0,
+    "accuracy_tolerance": 1e-5,
+    "error_quantity": "TERMINAL_WATER_CONTENT",
+    "error_norm": "SPAN_NORMALIZED_L_INFINITY",
+    "interpretation": "The unscaled full-vs-two-half estimator must itself conservatively upper-bound the independently referenced error of the refined two-half candidate."
+  },
+  "tolerance_provenance": {
+    "authority": "F-ROSS01_GATE_F_TIMESTEP_CONVERGENCE_CONTRACT",
+    "gate_f_reference_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "existing_gate_f_finest_span_error_tolerance": 1e-5,
+    "no_new_accuracy_threshold_invented": true
+  },
+  "positive_admission_requires_all": [
+    "54_OF_54_EXACT_D3R_DOMAIN_CASES_PASS",
+    "ONE_BOUND_CANONICAL_HEAD_AND_TRANSACTION_SEMANTICS",
+    "ALL_COMPONENT_TRIALS_CANDIDATE_READY",
+    "ALL_COMPONENT_MASS_RESIDUALS_ABS_LE_1E-12_CM",
+    "ALL_DOP853_32_VS_64_REFERENCE_SELF_DELTAS_LE_1E-9_SPAN",
+    "ALL_RAW_ESTIMATORS_FINITE_NONNEGATIVE",
+    "ALL_REFINED_REFERENCE_ERRORS_FINITE_NONNEGATIVE",
+    "MAX_REFINED_ERROR_TO_RAW_RATIO_LE_1_0",
+    "MAX_REFINED_REFERENCE_ERROR_LE_1E-5_SPAN"
+  ],
+  "decision": {
+    "if_all_requirements_pass": "FREEZE_SAFETY_FACTOR_1_0_AND_ACCURACY_TOLERANCE_1E-5_FOR_EXACT_D3R_DOMAIN_ONLY",
+    "otherwise": "NEGATIVE_QUALIFICATION_LEAVE_F_ROSS01_D3_G02_OPEN"
+  },
+  "anti_overfit_rule": "Do not enlarge the factor, relax the tolerance, remove a material, remove a retry level, or otherwise reduce scope after observing calibration data in order to obtain a positive result.",
+  "production_admission": false,
+  "production_source_delta": []
+}
