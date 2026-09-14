@@ -3,7 +3,8 @@ program test_fsi37_accepted_step_directional_derivative
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED
+       soil_water_solve_request_t, soil_water_solve_result_t, soil_water_solver_t, &
+       soil_water_solver_workspace_base_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED
   use mod_soil_water_accepted_step_direction_contract, only: &
        soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
        SW_STEP_DIRECTION_AVAILABLE, SW_STEP_DIRECTION_UNAVAILABLE, &
@@ -18,6 +19,14 @@ program test_fsi37_accepted_step_directional_derivative
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   implicit none
+
+  type, extends(soil_water_solver_workspace_base_t) :: dummy_alternative_workspace_t
+  end type dummy_alternative_workspace_t
+
+  type, extends(soil_water_solver_t) :: dummy_alternative_solver_t
+   contains
+     procedure :: solve => dummy_alternative_solve
+  end type dummy_alternative_solver_t
 
   real(real64), parameter :: total_dt = 0.25_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
@@ -50,12 +59,14 @@ program test_fsi37_accepted_step_directional_derivative
   end do
 
   call check_provider_fail_closed()
+  call check_alternative_solver_fail_closed()
   call check_retry_fail_closed()
 
   call require(cases == 30, 'thirty smooth FD cases executed')
   write(*,'(A,I0)') 'FSI37_FD_CASES=', cases
   write(*,'(A)') 'FSI37_SWKMEAN_METHODS_1_6=PASS'
   write(*,'(A)') 'FSI37_NONUNIFORM_BASE_PROFILE=PASS'
+  write(*,'(A)') 'FSI37_ALTERNATIVE_SOLVER_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FSI37_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS'
 
 contains
@@ -183,6 +194,27 @@ contains
          'unqualified provider derivative fails closed')
   end subroutine check_provider_fail_closed
 
+  subroutine check_alternative_solver_fail_closed()
+    type(dummy_alternative_solver_t) :: solver
+    type(dummy_alternative_workspace_t) :: workspace
+    type(soil_water_solve_request_t) :: request
+    type(soil_water_solve_result_t) :: result
+    type(soil_water_accepted_step_direction_request_t) :: drequest
+    type(soil_water_accepted_step_direction_result_t) :: dresult
+
+    call make_request(SW_STEP_CONTROL_BOTTOM_FLUX,0.0_real64,1,fixed_top,request)
+    drequest%requested=.true.; drequest%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
+    allocate(drequest%incoming_pressure_head(numnod),drequest%incoming_water_content(numnod))
+    drequest%incoming_pressure_head=0.0_real64; drequest%incoming_water_content=0.0_real64
+    drequest%direct_control_derivative=1.0_real64
+    call solve_with_accepted_step_direction(solver,request,workspace,drequest,result,dresult)
+    call require(result%status==SW_SOLVE_CONVERGED,'alternative solver physical solve remains valid')
+    call require(dresult%status==SW_STEP_DIRECTION_UNAVAILABLE .and. .not.dresult%available, &
+         'alternative solver derivative fails closed')
+    call require(same_bits_vector(result%candidate_state%pressure_head,request%base_state%pressure_head), &
+         'alternative solver physical state preserved')
+  end subroutine check_alternative_solver_fail_closed
+
   subroutine check_retry_fail_closed()
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
@@ -295,6 +327,21 @@ contains
     qdra=0.0_real64; qssdi=0.0_real64; qrot=0.0_real64
     call bind_b110_source_sink_provider(sp,qdra,qssdi,qrot)
   end subroutine configure_problem
+
+  subroutine dummy_alternative_solve(self,request,workspace,result)
+    class(dummy_alternative_solver_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+    type(soil_water_solve_result_t), intent(out) :: result
+
+    result=soil_water_solve_result_t()
+    result%status=SW_SOLVE_CONVERGED
+    result%candidate_state=request%base_state
+    result%top_flux=request%boundary%top_flux
+    result%bottom_flux=request%boundary%bottom_flux
+    result%unrounded_mass_balance_residual=0.0_real64
+    result%diagnostics%route='dummy-alternative'
+  end subroutine dummy_alternative_solve
 
   logical function same_bits_scalar(a,b)
     real(real64), intent(in) :: a,b
