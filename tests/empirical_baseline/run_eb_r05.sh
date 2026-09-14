@@ -82,3 +82,5 @@ cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'EB_R05_O0_O2_OBSERVATION_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
 echo "EB_R05_OBSERVATION_SHA256=$(sha256sum "$BUILD/o0/output.txt" | cut -d' ' -f1)"
+
+bash tests/empirical_baseline/run_eb_r06.sh
