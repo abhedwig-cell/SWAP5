@@ -113,10 +113,10 @@ program test_f_ross01_d3r_model_adapter
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_interval_t, canonical_numerical_config_t, canonical_result_t, &
-       CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_NO_PROGRESS
-  use mod_canonical_interval_runtime, only: run_canonical_interval
+       CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_INVALID_REQUEST
   use mod_rossfast_d3r_model_adapter, only: apply_rossfast_d3r_retry_policy, &
-       rossfast_d3r_duration_for_index, ROSSFAST_D3R_RETRY_SCALE, ROSSFAST_D3R_MAX_RETRIES
+       rossfast_d3r_duration_for_index, run_rossfast_d3r_interval, &
+       ROSSFAST_D3R_RETRY_SCALE, ROSSFAST_D3R_MAX_RETRIES
   use mod_f_ross01_d3r_adapter_test_types, only: test_state_t, test_forcing_t, test_model_t
   implicit none
 
@@ -181,7 +181,7 @@ contains
     call init_state(committed)
     call init_config(config)
     interval = canonical_interval_t(0.0_real64, 0.004_real64)
-    call run_canonical_interval(model, committed, forcing, interval, config, result)
+    call run_rossfast_d3r_interval(model, committed, forcing, interval, config, result)
     if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) error stop 221
     if (result%diagnostics%transaction_calls /= 3 .or. result%mass%accepted_transaction_count /= 3) error stop 222
     if (result%diagnostics%external_commits /= 1) error stop 223
@@ -201,7 +201,7 @@ contains
     call init_state(committed)
     call init_config(config)
     interval = canonical_interval_t(0.0_real64, 0.0032_real64)
-    call run_canonical_interval(model, committed, forcing, interval, config, result)
+    call run_rossfast_d3r_interval(model, committed, forcing, interval, config, result)
     if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) error stop 231
     if (result%diagnostics%transaction_calls /= 4 .or. result%mass%accepted_transaction_count /= 4) error stop 232
     if (result%diagnostics%retries /= 3 .or. result%diagnostics%solver_rejections /= 3) error stop 233
@@ -221,8 +221,8 @@ contains
     call init_state(committed)
     call init_config(config)
     interval = canonical_interval_t(0.0_real64, 1.0e-6_real64)
-    call run_canonical_interval(model, committed, forcing, interval, config, result)
-    if (result%status /= CANONICAL_STATUS_NO_PROGRESS) error stop 241
+    call run_rossfast_d3r_interval(model, committed, forcing, interval, config, result)
+    if (result%status /= CANONICAL_STATUS_INVALID_REQUEST) error stop 241
     if (result%diagnostics%transaction_calls /= 0 .or. result%diagnostics%external_commits /= 0) error stop 242
     call assert_close(committed_storage(committed), 0.0_real64, 243)
   end subroutine test_unrepresentable_remainder_fails_closed
