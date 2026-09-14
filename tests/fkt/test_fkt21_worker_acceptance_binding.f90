@@ -59,9 +59,25 @@ program test_fkt21_worker_acceptance_binding
 
 contains
 
-  subroutine make_available_result(value)
+  subroutine make_available_result(value, vector_value, bottom_flux_direction)
     type(soil_water_accepted_step_direction_result_t), intent(out) :: value
-    real(real64), intent(in), optional :: dummy
+    real(real64), intent(in) :: vector_value, bottom_flux_direction
+
+    value = soil_water_accepted_step_direction_result_t()
+    value%status = SW_STEP_DIRECTION_AVAILABLE
+    value%available = .true.
+    value%fixed_smooth_route = .true.
+    value%control_coordinate = SW_STEP_CONTROL_BOTTOM_FLUX
+    value%method = 'test-accepted-step'
+    value%route = 'test-smooth-route'
+    allocate(value%outgoing_pressure_head(3), value%outgoing_water_content(3))
+    value%outgoing_pressure_head = vector_value
+    value%outgoing_water_content = 0.1_real64*vector_value
+    value%outgoing_ponding_depth = 0.01_real64*vector_value
+    value%bottom_flux_derivative = bottom_flux_direction
+    value%additional_tridiagonal_backsolves = 1
+    value%additional_jacobian_builds = 0
+    value%additional_full_nonlinear_solves = 0
   end subroutine make_available_result
 
   subroutine require(condition, message)
