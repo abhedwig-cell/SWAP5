@@ -1,0 +1,33 @@
+name: F-CI66P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci66p-current-canonical-postimage-reconciliation
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci66p-current-canonical-postimage-reconciliation.yml'
+      - 'tests/fci/run_fci66p_current_canonical_postimage_reconciliation.sh'
+      - 'integration/f-ci/F-CI66P_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact postimage qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FCI66P_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FCI66P_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI66P postimage gate
+        run: bash tests/fci/run_fci66p_current_canonical_postimage_reconciliation.sh
