@@ -1,0 +1,143 @@
+{
+  "schema": "swap5.frg04.authority_reconciliation.v1",
+  "workunit": "F-RG04",
+  "authoring_canonical": {
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d",
+    "meaning": "F-CI61P drainage-response moving-current postimage reconciliation"
+  },
+  "governance_authorities": {
+    "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
+    "F_RG01B": "5e2561d9051fba81769565291b1bf3089c7ddcd9",
+    "F_RG01C": "56b86e29e0960e396059caf47c193440d571b709",
+    "F_RG01D": "0877971d1117cb0067aa363d0868d682f62a6844",
+    "F_RG03": "aac2644149dda47282a25a39892c6dc808323dd0"
+  },
+  "examples": [
+    {
+      "area": "production_physics",
+      "example": "F-PM14 drainage-response runtime closure",
+      "authority": "52c1a9aebddc435ef3792378f958305a96308ed0",
+      "bounded_object": "production module capability/runtime composition",
+      "evidence_classes": ["SCIENTIFIC_PHYSICAL_EVIDENCE", "RUNTIME_INTEGRATION_EVIDENCE", "TRANSACTION_CONSERVATION_EVIDENCE"],
+      "assurance": ["OWNER_VERIFIED", "INDEPENDENTLY_QUALIFIED"],
+      "independent_authority": "F-VQ73@ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+      "admission": "F-CI61/F-CI61P canonical chain ending at e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+      "governance_note": "Owner closure, independent qualification and canonical admission are distinct authorities."
+    },
+    {
+      "area": "full_richards_reference",
+      "example": "Full Richards reference solver v1",
+      "authority": "F-SI33@8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+      "bounded_object": "solver behavior / production reference capability",
+      "evidence_classes": ["NUMERICAL_EVIDENCE", "HISTORICAL_REFERENCE_BEHAVIOR_EVIDENCE", "TESTBANK_PRESERVATION_EVIDENCE"],
+      "assurance": ["INDEPENDENTLY_QUALIFIED"],
+      "preservation": "F-TB11/F-TB11P",
+      "governance_note": "Reference-solver qualification does not automatically qualify alternative research solvers."
+    },
+    {
+      "area": "rossfast_research",
+      "example": "restricted executable F-SI31 research adapter",
+      "authority": "F-ROSS01-D2-R1@4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+      "bounded_object": "research solver adapter/capability",
+      "evidence_classes": ["RESEARCH_EVIDENCE", "NUMERICAL_EVIDENCE"],
+      "uncertainty_labels": ["RESEARCH_ONLY"],
+      "assurance": ["OWNER_VERIFIED"],
+      "production_admitted": false,
+      "completion_weight": 0,
+      "governance_note": "Research evidence cannot be imported as production authority by reference."
+    },
+    {
+      "area": "energy_balance_research",
+      "example": "EB-I18 candidate-bound bottom energy publication line",
+      "observed_head": "7b0744fd7374d1fc0a5f14761f5272ace54b336f",
+      "bounded_object": "isolated energy-balance research capability",
+      "evidence_classes": ["RESEARCH_EVIDENCE", "TRANSACTION_CONSERVATION_EVIDENCE"],
+      "uncertainty_labels": ["RESEARCH_ONLY"],
+      "production_admitted": false,
+      "completion_weight": 0,
+      "governance_note": "F-RG04 does not add energy balance to frozen v1 or authorize production integration."
+    },
+    {
+      "area": "groundwater_coupling",
+      "example": "restricted generic-window predictor-corrector/coupling chain",
+      "authority": "F-CI56@c19a04721a05c6a00ba264e7477969807dcb258f",
+      "bounded_object": "coupling/composed capability",
+      "evidence_classes": ["TRANSACTION_CONSERVATION_EVIDENCE", "RUNTIME_INTEGRATION_EVIDENCE", "NUMERICAL_EVIDENCE"],
+      "assurance": ["INDEPENDENTLY_QUALIFIED"],
+      "governance_note": "Coupling composition requires explicit interface, mass, temporal, retry and runtime composition evidence."
+    },
+    {
+      "area": "transactions_and_mass",
+      "example": "Kernel / Transactions / Generic Time / Mass v1",
+      "authority": "F-KT19@004f8f438ce1380c940a5139df83165c4d2eb68c",
+      "bounded_object": "transaction and conservation domain capability",
+      "evidence_classes": ["TRANSACTION_CONSERVATION_EVIDENCE", "SYNTHETIC_ORACLE_EVIDENCE", "TESTBANK_PRESERVATION_EVIDENCE"],
+      "assurance": ["INDEPENDENTLY_QUALIFIED"],
+      "governance_note": "Mass conservation remains non-waivable; risk tiering cannot lower its hard gate."
+    },
+    {
+      "area": "restart",
+      "example": "State / Persistence / Restart v1",
+      "authority": "F-KT16@37a91f16078badaa675235f1230d225a21c9e010",
+      "bounded_object": "state/restart domain capability",
+      "evidence_classes": ["RUNTIME_INTEGRATION_EVIDENCE", "TRANSACTION_CONSERVATION_EVIDENCE", "TESTBANK_PRESERVATION_EVIDENCE"],
+      "assurance": ["INDEPENDENTLY_QUALIFIED"],
+      "risk_floor": "R3_STATE_CONSERVATION_TRANSACTION"
+    },
+    {
+      "area": "numerical_execution_policy",
+      "example": "F-PE05 temporal acceptance owner blocker",
+      "authority": "1aa0cea4eec77a61ba782a2f55a9ef2ae724e24c",
+      "bounded_object": "numerical acceptance/execution policy",
+      "evidence_classes": ["NUMERICAL_EVIDENCE", "RUNTIME_INTEGRATION_EVIDENCE"],
+      "assurance": ["OWNER_VERIFIED"],
+      "governance_note": "A blocker/negative or incomplete owner result remains useful knowledge and is not promoted to production policy."
+    },
+    {
+      "area": "multiswap",
+      "example": "Serialized MultiSWAP v1",
+      "authority": "F-MR42@e370f95c2e50c2fef46fe99eac11522046560938",
+      "bounded_object": "runtime/MultiSWAP capability",
+      "evidence_classes": ["RUNTIME_INTEGRATION_EVIDENCE", "TESTBANK_PRESERVATION_EVIDENCE"],
+      "assurance": ["INDEPENDENTLY_QUALIFIED"],
+      "preservation": "F-TB11/F-TB11P"
+    },
+    {
+      "area": "testbank",
+      "example": "current-canonical permanent preservation authority",
+      "authority": "F-TB11@74bef08dedb060417d549c8d8cf0fedb8b73e997",
+      "postimage": "F-TB11P admitted in canonical ancestry",
+      "bounded_object": "preservation evidence set",
+      "evidence_classes": ["TESTBANK_PRESERVATION_EVIDENCE", "PRODUCTION_REGRESSION"],
+      "governance_note": "Preservation protects existing authority; it does not create new science or capability."
+    },
+    {
+      "area": "documentation_status_a",
+      "example": "F-DOC15 current-canonical Status-A gap assessment and F-DOC16 conceptual authority",
+      "authorities": ["F-DOC15R1@75df47fb5cf6188535a9705165785fc8744b2cb2", "F-DOC16@b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b"],
+      "bounded_object": "documentation/provenance/readiness evidence",
+      "evidence_classes": ["DOCUMENTATION_PROVENANCE_EVIDENCE"],
+      "production_admission_support": false,
+      "governance_note": "Documentation may reconcile theory/code/evidence but cannot retroactively create physics authority or alter Status-A closure without its own governed evidence."
+    },
+    {
+      "area": "independent_qualification",
+      "example": "F-VQ73 drainage runtime independent qualification",
+      "authority": "ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+      "bounded_object": "independent qualification of exact candidate/runtime claim",
+      "assurance": ["INDEPENDENTLY_QUALIFIED"],
+      "governance_note": "Same-agent F-RG04 review cannot substitute for this class of authority."
+    },
+    {
+      "area": "canonical_admission",
+      "example": "F-CI61/F-CI61P drainage-response admission and moving-current preservation reconciliation",
+      "authority": "integration/f-ci-canonical@e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+      "bounded_object": "production admission/postimage preservation",
+      "evidence_classes": ["PRODUCTION_ADMISSION_EVIDENCE", "PRODUCTION_REGRESSION"],
+      "governance_note": "Qualification was upstream; admission was serialized and postimage reconciliation advanced moving-current authority."
+    }
+  ],
+  "legacy_rule": "Existing qualified authorities keep their original scope and strength; this mapping is descriptive and prospective, not a downgrade or rewrite."
+}
