@@ -94,7 +94,7 @@ def main() -> int:
         "max_abs_mass_residual_cm": max(residuals, default=0.0),
         "full_vs_two_half_head_delta_cm": head_delta,
         "full_vs_two_half_theta_delta": theta_delta,
-        "external_temporal_error_semantics_qualified": false,
+        "external_temporal_error_semantics_qualified": False,
         "temporal_error_disposition": "DIAGNOSTIC_STATE_DELTAS_ONLY_NO_ACCEPTANCE_METRIC_OR_TOLERANCE_CLAIM",
         "production_source_delta": []
     }
