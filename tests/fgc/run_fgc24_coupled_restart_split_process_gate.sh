@@ -83,6 +83,19 @@ for opt in 0 2; do
   "$dir/test" restore "$dir/restart.bin" "$dir/split.bin"
   "$dir/test" selftest
 
+  if "$dir/test" postcondition-violation >"$dir/postcondition-violation.log" 2>&1; then
+    echo "FGC24_RESTORE_SUCCESS_POSTCONDITION_FAIL_HARD_O${opt}=FAIL" >&2
+    cat "$dir/postcondition-violation.log" >&2
+    exit 32
+  fi
+  if ! grep -Fq 'groundwater restart adapter success violated time provenance postcondition' \
+      "$dir/postcondition-violation.log"; then
+    echo "FGC24_RESTORE_SUCCESS_POSTCONDITION_WRONG_FAILURE_O${opt}" >&2
+    cat "$dir/postcondition-violation.log" >&2
+    exit 33
+  fi
+  echo "FGC24_RESTORE_SUCCESS_POSTCONDITION_FAIL_HARD_O${opt}=PASS"
+
   cmp "$dir/continuous.bin" "$dir/split.bin"
   echo "FGC24_TRUE_PROCESS_SPLIT_EQUIVALENCE_O${opt}=PASS"
   echo "FGC24_SIGNATURE_SHA256_O${opt}=$(sha256sum "$dir/continuous.bin" | cut -d' ' -f1)"
