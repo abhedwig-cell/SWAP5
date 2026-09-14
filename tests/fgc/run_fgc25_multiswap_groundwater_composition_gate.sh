@@ -72,6 +72,7 @@ TESTS=(
   test_fgc25_multiswap_qualification
   test_fgc25_corrector_tile_fail_closed
   test_fgc25_permutation_determinism
+  test_fgc25_multicell_isolation
 )
 
 for opt in 0 2; do
