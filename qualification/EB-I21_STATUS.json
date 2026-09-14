@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.workunit.status.v1",
+  "work_unit": "EB-I21",
+  "title": "Runtime Energy Ledger Owner Binding and Cross-Column Accepted-Receipt Association Audit",
+  "branch": "work/eb-i21-runtime-energy-ledger-owner-binding",
+  "status": "QUALIFIED_NEGATIVE_EVIDENCE_RECEIPT_ASSOCIATION_BLOCKER",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "b162e98cc4ad6f85b741a21bd41f3db3d213559b"
+  },
+  "upstream_authorities": {
+    "eb_i20r2_owner": "7750b496499b3b9b3ce7e5a82695d9367182477c",
+    "fvq84_independent_status": "25e18edc016606fe78b742c4f252e330975ed409"
+  },
+  "tested_head": "5e576b5ade0b05fa2824b1f23800ae9c73a44822",
+  "tested_tree": "b6b63d0097dae7b37b8eff720853190d10f5a448",
+  "workflow": {
+    "name": "EB-I21 cross-column receipt binding audit",
+    "run_id": 34841716779,
+    "job_id": 103968010125,
+    "conclusion": "success"
+  },
+  "qualified_negative_evidence": [
+    "Two distinct physical committed columns can legitimately produce accepted commit receipts with identical lineage, origin revision, committed revision, and [t0,t1] tuple.",
+    "fmr_accepted_commit_receipt_t carries no logical column or runtime owner identity.",
+    "An energy ledger using its own valid prepared handle accepts the real accepted receipt produced by the other physical column when the scalar receipt tuple aliases.",
+    "Explicit prepared-handle owner_instance_id therefore prevents foreign prepared-handle use but does not by itself bind accepted physical commit authority to the same logical runtime owner.",
+    "The attack is deterministic and O0/O2 identical.",
+    "F-KT18 mass-completeness preservation remains PASS; this blocker is a provenance/association defect, not a water-mass defect."
+  ],
+  "evidence_markers": [
+    "EBI21_DISTINCT_PHYSICAL_COLUMNS_SCALAR_RECEIPT_ALIAS=CONFIRMED",
+    "EBI21_OWN_HANDLE_FOREIGN_COLUMN_RECEIPT_ACCEPTED=BLOCKER_CONFIRMED",
+    "EBI21_RUNTIME_OWNER_ID_ALONE_INSUFFICIENT=CONFIRMED",
+    "EBI21_CROSS_COLUMN_RECEIPT_ATTACK_ORACLE=PASS_NEGATIVE_EVIDENCE",
+    "EB_I21_ATTACK_O0_O2_IDENTITY=PASS",
+    "EB_I21_FKT18_MASS_PRESERVATION=PASS",
+    "EB_I21_AUDIT_DECISION=RUNTIME_OWNER_BINDING_ALONE_INSUFFICIENT_RECEIPT_ASSOCIATION_REQUIRED"
+  ],
+  "architecture_disposition": {
+    "generic_kernel_receipt": "KEEP_COLUMN_AGNOSTIC_UNLESS_LATER_EVIDENCE_REQUIRES_CONTRACT_CHANGE",
+    "preferred_remediation_boundary": "RUNTIME_PRIVATE_BOUND_ACCEPTED_RECEIPT_ASSOCIATION",
+    "reason": "Logical column/tile ownership belongs to runtime/coupler composition, while F-KT commit authority remains generic. A private runtime wrapper can bind logical owner identity to the accepted receipt without adding per-column persistent energy state or hidden global identity."
+  },
+  "hard_nonclaims": [
+    "EB-I21 does not remediate the blocker.",
+    "EB-I21 does not qualify runtime owner binding.",
+    "EB-I21 does not authorize canonical admission.",
+    "EB-I21 does not change production or reference source."
+  ],
+  "decision": "BLOCKED_PENDING_RUNTIME_RECEIPT_OWNER_ASSOCIATION_REMEDIATION",
+  "next_owner": "EB-I21R bounded runtime receipt-owner association remediation plus independent requalification before any F-CI admission"
+}
