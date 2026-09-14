@@ -10,8 +10,6 @@ cd "$ROOT"
 fail() { echo "EB_I18R_GATE_FAIL $*" >&2; exit 188; }
 
 CANONICAL="6425fb3290da637357e47618b459f4caf65a78d8"
-I13_PARENT="81e3357c06f1fa5b68ce758af583d07b36f5f688"
-I13_BACKEND_COMMIT="a21c52ced2e7ce76fbb7be595df7c8b467a3f075"
 
 # This workunit is explicitly current-canonical bound. Do not silently qualify
 # against a stale integration spine if another admission has moved canonical.
@@ -35,15 +33,11 @@ for path in "${!EB_BLOBS[@]}"; do
 done
 echo 'EB_I18R_ISOLATED_EB_AUTHORITY_BLOBS=PASS'
 
-# Project ONLY the qualified I13 backend integration delta onto the current
-# backend. A whole historical backend is forbidden because canonical has since
-# gained drainage, temporal-certificate and prescribed-qbot functionality.
-BACKEND_PATCH="$BUILD/i13-backend.patch"
-git diff --binary "$I13_PARENT" "$I13_BACKEND_COMMIT" -- \
-  src/runtime/mod_fmr_serialized_reference_backend.f90 > "$BACKEND_PATCH"
-[[ -s "$BACKEND_PATCH" ]] || fail 'I13 backend authority patch is empty'
-git apply --3way --index "$BACKEND_PATCH" || fail 'I13 backend delta conflicts with current canonical'
-echo 'EB_I18R_I13_BACKEND_THREE_WAY_PROJECTION=PASS'
+# The historical I13 backend delta overlaps later drainage/runtime work at the
+# text level. Project only its thermal ownership semantics through unique
+# current-canonical anchors; the patch script is itself guarded by the exact
+# canonical backend blob and fails closed if that source moves.
+python3 tests/eb/_apply_eb_i18r_current_backend_patch.py
 
 # Materialize the I18 transaction-owner seam and normalize only the obsolete
 # qualification fixture/API details to current-canonical semantics.
