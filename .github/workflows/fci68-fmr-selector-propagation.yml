@@ -20,6 +20,24 @@ jobs:
         with:
           ref: work/f-ci68-fmr-selector-propagation
           fetch-depth: 0
+      - name: Repair temporary patcher quoting
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('tools/fci68_apply_selector_propagation.py')
+          t = p.read_text()
+          a = "runner = r'''#!/usr/bin/env bash"
+          b = 'runner = r"""#!/usr/bin/env bash'
+          if t.count(a) != 1:
+              raise SystemExit('FCI68_RUNNER_OPEN_DELIMITER_MISMATCH')
+          t = t.replace(a, b, 1)
+          a = "echo 'FCI68_GENERIC_SELECTOR_PROPAGATION_QUALIFICATION=PASS'\n'''\nPath('tests/fci/run_fci68_fmr_selector_propagation.sh').write_text(runner)"
+          b = "echo 'FCI68_GENERIC_SELECTOR_PROPAGATION_QUALIFICATION=PASS'\n\"\"\"\nPath('tests/fci/run_fci68_fmr_selector_propagation.sh').write_text(runner)"
+          if t.count(a) != 1:
+              raise SystemExit('FCI68_RUNNER_CLOSE_DELIMITER_MISMATCH')
+          p.write_text(t.replace(a, b, 1))
+          PY
       - name: Apply bounded propagation patchset
         shell: bash
         run: |
