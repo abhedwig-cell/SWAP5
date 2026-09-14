@@ -21,7 +21,7 @@ module mod_fmr_drainage_response_binding
        empirical_interflow_control_t, empirical_interflow_response_t, empirical_interflow_diagnostics_t, &
        evaluate_empirical_interflow_response, INTERFLOW_OK
   use mod_drainage_multilevel_aggregation, only: drainage_level_exchange_t, drainage_multilevel_aggregate_t, &
-       drainage_multilevel_aggregation_diagnostics_t, aggregate_drainage_levels, DRAIN_AGG_OK
+       drainage_multilevel_diagnostics_t, aggregate_drainage_levels, DRAINAGE_AGGREGATION_OK
   implicit none
   private
 
@@ -87,7 +87,7 @@ module mod_fmr_drainage_response_binding
     logical :: aggregate_is_derived_view_only = .true.
     type(fmr_drainage_response_level_diagnostics_t), allocatable :: level(:)
     type(drainage_multilevel_aggregate_t) :: aggregate
-    type(drainage_multilevel_aggregation_diagnostics_t) :: aggregate_diagnostics
+    type(drainage_multilevel_diagnostics_t) :: aggregate_diagnostics
   end type fmr_drainage_response_diagnostics_t
 
   public :: evaluate_fmr_drainage_response_bottom_lumped
@@ -157,7 +157,7 @@ contains
     end do
 
     call aggregate_drainage_levels(exchanges, diagnostics%aggregate, diagnostics%aggregate_diagnostics)
-    if (diagnostics%aggregate_diagnostics%status /= DRAIN_AGG_OK) then
+    if (diagnostics%aggregate_diagnostics%status /= DRAINAGE_AGGREGATION_OK) then
       diagnostics%status = FMR_DRAIN_BIND_AGGREGATION_REJECTED
       qdra = 0.0_real64
       return
