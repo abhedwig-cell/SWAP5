@@ -12,8 +12,14 @@ fail(){ echo "EB_I20_GATE_FAIL $*" >&2; exit 220; }
 CANONICAL="b162e98cc4ad6f85b741a21bd41f3db3d213559b"
 I01_TYPES_BLOB="15a6a9c5c5da6ad0d535c27772e57a23e618658d"
 I01_LEDGER_BLOB="aba5a63a10d7f37cb89e31882851d0f4e9b99ffa"
+I01_RECEIPT_FIXTURE_BLOB="3b641de50247b17c8f6f62f3e1c8019a62bf8593"
+TRANSACTION_BLOB="d5a71a526efaebd82054580c3186f8e3545db331"
+FVQ67_RUN_BLOB="e8a02be90ee30f8f8d48ea023c1ceecc7981b6e3"
+FVQ67_TEST_BLOB="1210bb4f80de32abd3e24ed0c73a78cdddea36b5"
 TYPES="src/kernel/mod_energy_conservation_types.f90"
 LEDGER="src/runtime/mod_energy_conservation_ledger.f90"
+HIST_RECEIPT_TEST="tests/eb/test_ebi01_energy_ledger_receipt_integration.f90"
+NORMALIZED_RECEIPT_TEST="$BUILD/test_ebi01_energy_ledger_receipt_integration_current_fkt18.f90"
 
 git fetch -q origin integration/f-ci-canonical
 LIVE="$(git rev-parse origin/integration/f-ci-canonical)"
@@ -27,7 +33,12 @@ expected_src=$'src/kernel/mod_energy_conservation_types.f90\nsrc/runtime/mod_ene
 [[ -z "$(git diff --name-only "$CANONICAL..HEAD" -- reference)" ]] || fail 'reference source changed'
 [[ "$(git rev-parse "HEAD:$TYPES")" == "$I01_TYPES_BLOB" ]] || fail 'EB-I01 energy types blob drift'
 [[ "$(git rev-parse "HEAD:$LEDGER")" == "$I01_LEDGER_BLOB" ]] || fail 'EB-I01 ledger blob drift'
+[[ "$(git rev-parse "HEAD:$HIST_RECEIPT_TEST")" == "$I01_RECEIPT_FIXTURE_BLOB" ]] || fail 'historical EB-I01 receipt fixture drift'
+[[ "$(git rev-parse "HEAD:src/transaction/mod_transaction_reference.f90")" == "$TRANSACTION_BLOB" ]] || fail 'current F-KT18 transaction authority drift'
+[[ "$(git rev-parse "HEAD:tests/fvq/run_fvq67_mass_completeness_independent.sh")" == "$FVQ67_RUN_BLOB" ]] || fail 'pinned F-VQ67 runner drift'
+[[ "$(git rev-parse "HEAD:tests/fvq/test_fvq67_mass_completeness_attack.f90")" == "$FVQ67_TEST_BLOB" ]] || fail 'pinned F-VQ67 attack oracle drift'
 echo 'EB_I20_EXACT_IMMUTABLE_I01_SOURCE_RECOMPOSITION=PASS'
+echo 'EB_I20_FKT18_FVQ67_MASS_AUTHORITY_LOCK=PASS'
 
 for src in "$TYPES" "$LEDGER"; do
   if grep -Eiq '^[[:space:]]*use[[:space:]].*(groundwater_interface_mass_ledger|groundwater_coupling)' "$src"; then
@@ -67,6 +78,31 @@ done
 cmp "$BUILD/types-o0/out.txt" "$BUILD/types-o2/out.txt" || fail 'energy types O0/O2 mismatch'
 echo 'EB_I20_ENERGY_TYPES_O0_O2_IDENTITY=PASS'
 
+# EB-I01 predates F-KT18 fail-closed mass completeness. Preserve the historical
+# fixture byte-for-byte in Git and normalize only this temporary build copy to
+# the current transaction contract. No energy or mass value is changed.
+cp "$HIST_RECEIPT_TEST" "$NORMALIZED_RECEIPT_TEST"
+python3 - "$NORMALIZED_RECEIPT_TEST" <<'PY'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+s = p.read_text(encoding='utf-8')
+old_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t'
+new_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, FKT_MASS_MISSING_NONE'
+if s.count(old_use) != 1:
+    raise SystemExit(f'EB-I20 F-KT18 use anchor count={s.count(old_use)}')
+s = s.replace(old_use, new_use, 1)
+anchor = '    outcome%mass_in = transfer_mass\n'
+insert = anchor + '    outcome%mass_accounting_complete = .true.\n    outcome%mass_missing_mask = FKT_MASS_MISSING_NONE\n'
+if s.count(anchor) != 1:
+    raise SystemExit(f'EB-I20 F-KT18 mass anchor count={s.count(anchor)}')
+s = s.replace(anchor, insert, 1)
+p.write_text(s, encoding='utf-8')
+PY
+grep -Fq 'outcome%mass_accounting_complete = .true.' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized completeness marker missing'
+grep -Fq 'outcome%mass_missing_mask = FKT_MASS_MISSING_NONE' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized missing-mask marker missing'
+echo 'EB_I20_FIXTURE_CURRENT_MASS_COMPLETENESS_NORMALIZATION=PASS'
+
 for opt in 0 2; do
   OUT="$BUILD/receipt-o$opt"; mkdir -p "$OUT"; objects=()
   for src in "${BASE_MODULES[@]}"; do
@@ -79,7 +115,7 @@ for opt in 0 2; do
     gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/eb/test_ebi01_energy_ledger_receipt_integration.f90 -o "$OUT/test.o"
+  gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$NORMALIZED_RECEIPT_TEST" -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/out.txt" 2>&1 || { cat "$OUT/out.txt" >&2; fail "receipt integration O$opt"; }
   for marker in \
@@ -95,22 +131,26 @@ done
 cmp "$BUILD/receipt-o0/out.txt" "$BUILD/receipt-o2/out.txt" || fail 'receipt integration O0/O2 mismatch'
 echo 'EB_I20_TRANSACTIONAL_RECEIPT_O0_O2_IDENTITY=PASS'
 
-# Preserve the current accepted-commit receipt semantics without linking the
-# recomposed energy ledger itself.
-for opt in 0 2; do
-  OUT="$BUILD/fmr18-o$opt"; mkdir -p "$OUT"; objects=()
-  for src in "${BASE_MODULES[@]}"; do
-    obj="$OUT/$(basename "${src%.*}").o"
-    gfortran "${BASELINE[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
-    objects+=("$obj")
-  done
-  gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr18_accepted_commit_receipt.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/out.txt" 2>&1 || { cat "$OUT/out.txt" >&2; fail "FMR18 preservation O$opt"; }
-  grep -Fq 'FMR18_ACCEPTED_COMMIT_RECEIPT_TEST PASS' "$OUT/out.txt" || fail "FMR18 marker O$opt"
+# Independent preservation of the current F-KT18 contract. This exact F-VQ67
+# attack oracle is pinned byte-for-byte and runs against the exact current
+# canonical transaction source.
+FVQ67_TRANSACTION_SOURCE="$ROOT/src/transaction/mod_transaction_reference.f90" \
+FVQ67_TAG=ebi20 bash tests/fvq/run_fvq67_mass_completeness_independent.sh > "$BUILD/fvq67.txt" 2>&1 || {
+  cat "$BUILD/fvq67.txt" >&2
+  fail 'F-VQ67 current mass-completeness preservation'
+}
+for marker in \
+  'FVQ67_EBI20_O0=PASS' \
+  'FVQ67_EBI20_O2=PASS' \
+  'FVQ67_EBI20_O0_O2_IDENTITY=PASS' \
+  'FVQ67_ZERO_RESIDUAL_INCOMPLETE_FAIL_CLOSED=PASS' \
+  'FVQ67_COMPLETE_IN_TOLERANCE_ACCEPTS=PASS' \
+  'FVQ67_REJECTED_COMMITTED_STATE_BITWISE_IMMUTABLE=PASS' \
+  'FVQ67_RETRY_NO_PHYSICAL_ACCUMULATION=PASS' \
+  'FVQ67_GENERIC_TIME_TRANSACTION=PASS'; do
+  grep -Fq "$marker" "$BUILD/fvq67.txt" || fail "missing F-VQ67 marker: $marker"
 done
-cmp "$BUILD/fmr18-o0/out.txt" "$BUILD/fmr18-o2/out.txt" || fail 'FMR18 preservation O0/O2 mismatch'
-echo 'EB_I20_CURRENT_TRANSACTION_RECEIPT_PRESERVATION=PASS'
+echo 'EB_I20_CURRENT_FKT18_MASS_COMPLETENESS_PRESERVATION=PASS'
 
 # Characterize, do not silently alter, current architectural debt in the old
 # ledger. Error-stop call sites are reported for the follow-up admission review.
