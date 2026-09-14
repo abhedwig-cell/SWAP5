@@ -10,6 +10,7 @@ on:
       - '.github/workflows/swap431-empirical-baseline.yml'
       - 'src/process/mod_reference_et_demand_process.f90'
       - 'src/runtime/mod_fmr_reference_et_demand_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
       - 'src/runtime/mod_fmr_runtime_core.f90'
       - 'src/kernel/mod_kernel_transactions.f90'
@@ -59,3 +60,16 @@ jobs:
       - name: Run EB-R03 gate
         shell: bash
         run: bash tests/empirical_baseline/run_eb_r03.sh
+
+  eb-r04-b110-water-balance:
+    name: EB-R04 current-canonical B1.10 water balance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out empirical-baseline capability
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run EB-R04 gate
+        shell: bash
+        run: bash tests/empirical_baseline/run_eb_r04.sh
