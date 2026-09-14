@@ -24,14 +24,23 @@ grep -Fq 'max_retries_cap = ROSSFAST_D3R_MAX_FULL_INDEX - index' "$POLICY"
 grep -Fq 'grid_units = nint(units_real)' "$POLICY"
 grep -Fq 'do index = 0, ROSSFAST_D3R_MAX_FULL_INDEX' "$POLICY"
 
-COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
+WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
 for opt in o0 o2; do
   flag=-O0
   [[ "$opt" == o2 ]] && flag=-O2
-  gfortran "${COMMON[@]}" "$flag" -J "$BUILD/$opt" \
-    "$TX" "$CONTRACTS" "$RUNTIME" "$POLICY" "$TEST" -o "$BUILD/$opt/test"
-  "$BUILD/$opt/test" > "$BUILD/$opt/output.txt"
-  grep -Fq 'FCI67_ROSSFAST_D3R_EXECUTION_POLICY_GATE PASS' "$BUILD/$opt/output.txt"
+  moddir="$BUILD/$opt"
+
+  # Production sources must remain valid Fortran 2008. The test program is
+  # compiled as Fortran 2018 because it uses a variable ERROR STOP code only
+  # for assertion diagnostics; this does not relax the production source gate.
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$TX" -o "$moddir/tx.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$CONTRACTS" -o "$moddir/contracts.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$RUNTIME" -o "$moddir/runtime.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$POLICY" -o "$moddir/policy.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2018 -J "$moddir" -I "$moddir" -c "$TEST" -o "$moddir/test.o"
+  gfortran -fopenmp "$moddir/tx.o" "$moddir/contracts.o" "$moddir/runtime.o" "$moddir/policy.o" "$moddir/test.o" -o "$moddir/test"
+  "$moddir/test" > "$moddir/output.txt"
+  grep -Fq 'FCI67_ROSSFAST_D3R_EXECUTION_POLICY_GATE PASS' "$moddir/output.txt"
 done
 
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
