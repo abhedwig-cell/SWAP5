@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.f-ross01.production-d3r-model-adapter.v2",
+  "work_unit": "F-ROSS01",
+  "capability": "PRODUCTION_D3R_MODEL_ADAPTER_COMPOSITION",
+  "decision": "REQUALIFICATION_REQUIRED_ON_FCI67_POLICY_AUTHORITY",
+  "branch": "work/f-ross01-production-d3r-model-adapter",
+  "canonical_base": "67b702e983f5104c80c8c16fb5e2570d969cce9e",
+  "fci67_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+  "architecture": {
+    "policy_owner": "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+    "adapter_duplicates_policy": false,
+    "production_entrypoint": "run_rossfast_d3r_interval",
+    "direct_generic_runtime_entrypoint": "FAIL_CLOSED",
+    "segment_retry_cap_preserved": true,
+    "half_only_index_9_not_selectable": true,
+    "off_grid_and_oversized_fail_closed": true
+  },
+  "qualification": {
+    "status": "PENDING_CURRENT_HEAD_CI",
+    "required": [
+      "O0_O2_IDENTICAL",
+      "FCI67_POLICY_REEXPORT",
+      "FULL_OUTER_BINDING",
+      "RETRY_CAP_BINDING",
+      "OFF_GRID_FAIL_CLOSED_BEFORE_TRANSACTION",
+      "DIRECT_GENERIC_ENTRYPOINT_FAIL_CLOSED"
+    ]
+  },
+  "scope": "RESTRICTED_D3R_EXECUTION_POLICY_BINDING_ONLY",
+  "hard_nonclaims": [
+    "NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION",
+    "NO_FULL_ROSSFAST_PRODUCTION_ADMISSION",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_A10_HETEROGENEOUS_BOTTOM_GROUNDWATER_MULTISWAP_FULLRICHARDS_GENERALIZATION"
+  ],
+  "next_gate_after_green": "CONCRETE_ROSSFAST_PHYSICAL_MODEL_BINDING"
+}
