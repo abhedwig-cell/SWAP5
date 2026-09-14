@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.workunit.status.v1",
+  "work_unit": "EB-I21R",
+  "title": "Runtime-Bound Accepted Receipt Owner Association Remediation",
+  "branch": "work/eb-i21r-runtime-bound-accepted-receipt-remediation",
+  "status": "OWNER_QUALIFIED_RUNTIME_RECEIPT_ASSOCIATION_NOT_CANONICAL_ADMISSION",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "b162e98cc4ad6f85b741a21bd41f3db3d213559b"
+  },
+  "upstream_authorities": {
+    "eb_i21_negative_audit": "aa4b536a2dcf0df7a17eda64701856ca4a7cb45c",
+    "fvq84_independent_owner_contract": "25e18edc016606fe78b742c4f252e330975ed409"
+  },
+  "guarded_materialization": {
+    "production_commit": "1b585f7d672d77fc81a3b7064e95e7c9af73215a",
+    "tree": "b45b28448e3b3673b15ed488db4d7b84ecfbdece",
+    "workflow_run": 34843130156,
+    "workflow_job": 103972538347,
+    "conclusion": "success"
+  },
+  "final_tested_postimage": {
+    "commit": "78c8f4144bee02f325bf1aa4aa89b11053699be3",
+    "tree": "6e2e0981b070c0bb4d53d2a21c43e08b61654734",
+    "workflow_run": 34843501255,
+    "workflow_job": 103973743217,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0 on Ubuntu 24.04"
+  },
+  "canonical_production_source_delta": [
+    {
+      "path": "src/kernel/mod_energy_conservation_types.f90",
+      "blob": "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+    },
+    {
+      "path": "src/runtime/mod_energy_conservation_ledger.f90",
+      "blob": "cc166e82e51d8e0738fee51b4517626d0a2e890f"
+    },
+    {
+      "path": "src/runtime/mod_fmr_owned_commit_receipt.f90",
+      "blob": "2ab067d160715ff7358dd31efaa12694ef95852c"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+    }
+  ],
+  "eb_i21_incremental_source_delta": [
+    "src/runtime/mod_energy_conservation_ledger.f90",
+    "src/runtime/mod_fmr_owned_commit_receipt.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "reference_delta": [],
+  "qualified_evidence": [
+    "Runtime-owned accepted receipt is bound at the physical commit callsite; there is no public after-the-fact binder for an already-existing generic receipt.",
+    "Serialized runtime derives the receipt owner from the validated executing logical column_id, not from a reusable worker slot or hidden global counter.",
+    "Own prepared handle plus a real same-scalar-tuple foreign-column owned receipt fails closed and leaves the rightful prepared state intact.",
+    "The rightful owner receipt subsequently commits exactly once.",
+    "Generic accepted-receipt export compatibility is preserved for callers that need the column-agnostic F-MR receipt.",
+    "Existing bottom-energy accepted-only publication semantics replay PASS at O0 and O2.",
+    "F-KT18 mass completeness and rejected committed-state immutability remain preserved.",
+    "Scalar owned-receipt accessors were made pure; the EB-I21R-introduced function-elimination warnings are absent from the final green run."
+  ],
+  "evidence_markers": [
+    "EB_I21R_EXACT_THREE_FILE_SOURCE_SCOPE=PASS",
+    "EB_I21R_RUNTIME_OWNER_BINDING_STATIC=PASS",
+    "EBI21R_DISTINCT_COLUMNS_SAME_SCALAR_RECEIPT_TUPLE=CONFIRMED",
+    "EBI21R_GENERIC_RECEIPT_EXPORT_PRESERVED=PASS",
+    "EBI21R_OWN_HANDLE_FOREIGN_COLUMN_RECEIPT_FAIL_CLOSED=PASS",
+    "EBI21R_RIGHTFUL_OWNER_COMMIT_EXACTLY_ONCE=PASS",
+    "EBI21R_CROSS_COLUMN_RECEIPT_ASSOCIATION_REMEDIATION=PASS",
+    "EB_I21R_OWNED_RECEIPT_ORACLE_O0_O2=PASS",
+    "EB_I21R_BOTTOM_ENERGY_RUNTIME_O0_O2=PASS",
+    "EB_I21R_FKT18_MASS_PRESERVATION=PASS",
+    "EB_I21R_OWNER_QUALIFICATION=PASS"
+  ],
+  "warning_debt": {
+    "new_eb_i21r_owned_accessor_warning_debt": "NONE_IN_FINAL_GREEN_RUN",
+    "remaining_observed_warnings": "Pre-existing warnings remain in transaction reference, canonical interval runtime, solver stubs/contracts, legacy HeadCalc, bottom sensible-energy comparison, serialized reference backend, and EB-I18 verifier/test code; EB-I21R does not claim to remediate them."
+  },
+  "invariant_assessment": {
+    "supports": [1, 3, 4, 5, 7, 13, 16, 26, 27, 28, 29],
+    "notes": "Owner association is runtime scratch/provenance, not persistent column state. Logical column identity stays outside the generic kernel receipt. No second water ledger or hidden global identity is introduced."
+  },
+  "hard_nonclaims": [
+    "This is owner-side qualification, not independent F-VQ qualification.",
+    "This does not authorize canonical admission.",
+    "This does not claim the full SWAP5 Energy Balance is complete.",
+    "This does not remove warning debt outside the EB-I21R-owned source change."
+  ],
+  "decision": "QUALIFIED_FOR_INDEPENDENT_POSTIMAGE_VERIFICATION",
+  "next_owner": "F-VQ85 independent exact-postimage qualification before any F-CI admission"
+}
