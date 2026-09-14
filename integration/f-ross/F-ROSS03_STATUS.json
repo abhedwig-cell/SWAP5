@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS03",
+  "title": "RossFast D3R table-driven Fortran trial kernel",
+  "status": "CLOSED_POSITIVE_RESTRICTED_FORTRAN_KERNEL",
+  "decision": "QUALIFIED_FORTRAN_KERNEL_EQUIVALENT_TO_PINNED_F_ROSS01_RESEARCH_ORACLE_ON_THE_EXACT_TESTED_D3R_DOMAIN_PENDING_PRODUCTION_TABLE_PROVISIONING_AND_RUNTIME_ROUTING",
+  "parent": {
+    "branch": "work/f-ross02-production-binding",
+    "head": "8e84c783fd7e0236d990b2e9c9d94a45f9139e6d",
+    "binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b"
+  },
+  "research_authority": {
+    "branch": "work/f-ross01-fast-mfp-feasibility",
+    "head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "d3g02r_bound_authority_blob": "ff32bce4597e245eef0028556fce476074ab1cb8",
+    "gate_f_timestep_convergence_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "j1a_face_derivative_blob": "94520eb13a86cf224f90dd1649a4f9ad3afecfce",
+    "oracle_definition": "The qualification workflow checks out this exact research head, regenerates the exact 241x241 float32 log-mobility table for each material, and derives the nine-level Gate-F plus D3G02R refined-two-half oracle from that pinned code."
+  },
+  "candidate": {
+    "qualified_head": "cca4e6fee72f5e6477a547bf2c8546552fb448bd",
+    "kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "oracle_fixture_generator_blob": "1ba1b38ab6b57ef421237d17904d3ceae360fdb6",
+    "test_blob": "9e311fc238dc6046ab97fcc9707aff767e654b8f",
+    "runner_blob": "25a1d0da5643c8e0ce0c751c3aac490bea7b1652",
+    "workflow_blob": "12b162bdbf440e4c48c391b8b17d278ed22e002a"
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "initial_profile": "D2_MID_GRADIENT_PROFILE_BUILT_FROM_-180_CM_TO_-650_CM_ON_16_CELLS",
+    "grid": "1D_VERTICAL_UNIFORM_16_CELLS_DZ_10_CM",
+    "forcing": "D2_NOMINAL_STATE_LOCAL_PRESCRIBED_TOP_AND_BOTTOM_FLUX_WITH_ZERO_DISTRIBUTED_SOURCE_AND_SINK",
+    "duration_attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "duration_case_count_per_material": 9,
+    "total_material_duration_cases": 54,
+    "equal_internal_substeps_per_component_trial": 8,
+    "component_trials_per_certificate": 3,
+    "sigma": 0.5,
+    "table_representation": "241x241_FLOAT32_LOG_MOBILITY_UNIFORM_LOG10_NEGATIVE_HEAD_AXIS",
+    "table_source": "REGENERATED_FROM_PINNED_F_ROSS01_RESEARCH_AUTHORITY_DURING_QUALIFICATION",
+    "candidate_route": "REFINED_TWO_HALF",
+    "temporal_estimator": "MAX_ABS_REFINED_MINUS_COARSE_WATER_CONTENT_DIVIDED_BY_THETA_SPAN",
+    "temporal_resolution_floor": 1e-10,
+    "temporal_accuracy_tolerance": 1e-5,
+    "semantic_duration": "EXACT_D3R_LADDER_DURATION_RECONSTRUCTED_FROM_T0_T1_ADMISSION",
+    "nonzero_time_origin_qualification": true
+  },
+  "kernel_semantics": {
+    "face_model": "J1A_BILINEAR_LOG_MOBILITY_WITH_ANALYTIC_FACE_DERIVATIVES",
+    "state_coordinate": "WATER_CONTENT_INCREMENT_WITH_MVG_HEAD_RECONSTRUCTION",
+    "linear_system": "TRIDIAGONAL",
+    "factorization": "THOMAS_LU_EQUIVALENT",
+    "global_nonlinear_iterations": 0,
+    "linear_solves_per_certificate": 24,
+    "kernel_mass_ledger_authority": false,
+    "kernel_commit_authority": false,
+    "kernel_temporal_certificate_authority": true
+  },
+  "qualification": {
+    "workflow_run_id": 34896786770,
+    "qualified_head": "cca4e6fee72f5e6477a547bf2c8546552fb448bd",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_profiles": ["O0", "O2"],
+    "all_six_material_jobs_success": true,
+    "all_54_material_duration_cases_within_oracle_tolerances": true,
+    "o0_o2_output_identity_per_material": true,
+    "comparison_tolerances": {
+      "max_abs_water_content_difference": 2e-12,
+      "max_abs_pressure_head_difference_cm": 2e-7,
+      "max_abs_temporal_indicator_difference": 2e-8
+    },
+    "negative_checks": {
+      "wrong_table_shape_fails_closed": true,
+      "wrong_material_for_table_fails_closed": true,
+      "nonqualified_internal_substep_count_fails_closed": true,
+      "off_ladder_duration_fails_closed": true,
+      "large_nonzero_time_origin_uses_semantic_ladder_duration": true
+    },
+    "artifacts": {
+      "B01": {"id": 10368968351, "digest": "sha256:788a33f4468fd035ebc026398f9eb005bd10716c6c4f34983c3a4dc063e7cf94"},
+      "B12": {"id": 10368697364, "digest": "sha256:9b8e00b02e6891da5956cbb462eafd1824b673c3a51190824a0641a4f308c6b1"},
+      "O01": {"id": 10368382922, "digest": "sha256:c7b72e3d9cbe219df1f9ac71504cd5af238984dd84781bbd4b8f4f0bb037f0f9"},
+      "O05": {"id": 10368639203, "digest": "sha256:f9a9a24b4dd3c9c851bc97d7436463437aaca3013541acc2306c4c711005caee"},
+      "O14": {"id": 10368763647, "digest": "sha256:6a2919fe754bc9ec1f177bbd0480bbe02027aae47ee4af5b5794b620323a9b9d"},
+      "O18": {"id": 10369307939, "digest": "sha256:988e4f8eec9df17b34a4fd8d853f06a6fee1f9e750eb9b2e51a9c89c6b7dbbd6"}
+    }
+  },
+  "qualified_net_surface_before_status": [
+    ".github/workflows/ross03-d3r-fortran-kernel.yml",
+    "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "tests/ross/generate_ross03_oracle_fixture.py",
+    "tests/ross/run_ross03_d3r_table_kernel.sh",
+    "tests/ross/test_ross03_d3r_table_kernel.f90"
+  ],
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_PRODUCTION_TABLE_PROVIDER_OR_IMMUTABLE_RUNTIME_TABLE_REGISTRY",
+    "NO_PRODUCTION_RUNTIME_TABLE_GENERATION_ADMISSION",
+    "NO_MOD_SOILWATER_ROUTE",
+    "NO_SOLVER_SELECTOR_ADMISSION",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_LOCAL_OR_WHOLE_WINDOW_SENSITIVITY_PARITY_CLAIM",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_ADMISSION"
+  ],
+  "next_gap": "QUALIFY_PRODUCTION_PROVISIONING_AND_IMMUTABLE_OWNERSHIP_OF_THE_EXACT_241X241_FLOAT32_LOG_MOBILITY_TABLES_THEN_COMPOSE_THE_QUALIFIED_KERNEL_WITH_THE_F_ROSS02_BINDING_AND_SOLVER_ROUTING"
+}
