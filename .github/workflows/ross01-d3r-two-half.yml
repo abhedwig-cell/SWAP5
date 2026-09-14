@@ -7,7 +7,7 @@ on:
       - .github/workflows/ross01-d3r-two-half.yml
       - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
       - experiments/ross/ross01_d3r_duration_worker.py
-      - experiments/ross/run_ross01_d3r_two_half_probe.py
+      - experiments/ross/run_ross01_d3r_two_half_case.py
   workflow_dispatch:
 
 permissions:
@@ -18,13 +18,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  two-half-probe:
+  two-half-chain:
     strategy:
       fail-fast: false
+      max-parallel: 18
       matrix:
         attempt_index: [0,1,2,3,4,5,6,7,8]
+        material: [B01,B12,O01,O05,O14,O18]
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,25 +45,23 @@ jobs:
           grep -q "call model%advance(half_state, midpoint, attempt_t1, half2_outcome)" "$RUNNER_TEMP/tx.f90"
           grep -q "terr = model%temporal_error(full_state, half_state)" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
-        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_two_half_probe.py
-      - name: Run two-half shard
+        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_two_half_case.py
+      - name: Run canonical two-half chain
         run: |
-          python3 experiments/ross/run_ross01_d3r_two_half_probe.py \
+          python3 experiments/ross/run_ross01_d3r_two_half_case.py \
             --canonical-head "$CANONICAL_HEAD" \
             --attempt-index "${{ matrix.attempt_index }}" \
-            --output "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}.json" \
-            | tee "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_STDOUT.txt"
-      - name: Upload shard evidence
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${{ matrix.material }}.json"
+      - name: Upload chain evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-d3r-two-half-${{ matrix.attempt_index }}-${{ github.run_id }}
-          path: |
-            F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}.json
-            F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_STDOUT.txt
+          name: f-ross01-d3r-two-half-${{ matrix.attempt_index }}-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${{ matrix.material }}.json
 
   aggregate-two-half:
-    needs: two-half-probe
+    needs: two-half-chain
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -75,29 +75,36 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          files = sorted(Path('shards').glob('F-ROSS01_D3R_TWO_HALF_[0-8].json'))
+          files = sorted(Path('shards').glob('F-ROSS01_D3R_TWO_HALF_*_*.json'))
           rows = [json.loads(p.read_text()) for p in files]
-          indices = sorted(r.get('attempt_index') for r in rows)
-          supported = len(rows) == 9 and indices == list(range(9)) and all(r.get('canonical_two_half_candidate_chain_supported') is True for r in rows)
+          expected = {(i,m) for i in range(9) for m in ('B01','B12','O01','O05','O14','O18')}
+          observed = {(r.get('attempt_index'), r.get('material')) for r in rows}
+          canonical_heads = sorted(set(r.get('live_canonical_head') for r in rows))
+          supported = len(rows) == 54 and observed == expected and all(r.get('pass') is True for r in rows) and len(canonical_heads) == 1
+          masses = [abs(float(r.get('max_abs_mass_residual_cm', 0.0))) for r in rows]
+          heads = [float(r['full_vs_two_half_head_delta_cm']) for r in rows if isinstance(r.get('full_vs_two_half_head_delta_cm'), (int,float))]
+          thetas = [float(r['full_vs_two_half_theta_delta']) for r in rows if isinstance(r.get('full_vs_two_half_theta_delta'), (int,float))]
           out = {
               'work_unit': 'F-ROSS01 D3R',
               'kind': 'two_half_aggregate',
               'canonical_two_half_candidate_chain_supported': supported,
-              'shard_count': len(rows),
-              'attempt_indices': indices,
-              'chain_count': sum(r.get('chain_count', 0) for r in rows),
-              'live_canonical_heads': sorted(set(r.get('live_canonical_head') for r in rows)),
-              'max_abs_mass_residual_cm': max((r.get('max_abs_mass_residual_cm', 0.0) for r in rows), default=0.0),
-              'max_abs_full_vs_two_half_head_delta_cm': max((r.get('max_abs_full_vs_two_half_head_delta_cm', 0.0) for r in rows), default=0.0),
-              'max_abs_full_vs_two_half_theta_delta': max((r.get('max_abs_full_vs_two_half_theta_delta', 0.0) for r in rows), default=0.0),
+              'chain_count': len(rows),
+              'attempt_count': 9,
+              'material_count': 6,
+              'live_canonical_heads': canonical_heads,
+              'max_abs_mass_residual_cm': max(masses, default=0.0),
+              'max_abs_full_vs_two_half_head_delta_cm': max(heads, default=0.0),
+              'max_abs_full_vs_two_half_theta_delta': max(thetas, default=0.0),
               'external_temporal_error_semantics_qualified': False,
               'temporal_error_disposition': 'DIAGNOSTIC_STATE_DELTAS_ONLY_NO_ACCEPTANCE_METRIC_OR_TOLERANCE_CLAIM',
               'production_source_delta': [],
           }
           Path('F-ROSS01_D3R_TWO_HALF_AGGREGATE.json').write_text(json.dumps(out, indent=2, sort_keys=True) + '\n')
           print(json.dumps(out, sort_keys=True))
+          raise SystemExit(0 if supported else 1)
           PY
       - name: Upload aggregate evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: f-ross01-d3r-two-half-aggregate-${{ github.run_id }}
