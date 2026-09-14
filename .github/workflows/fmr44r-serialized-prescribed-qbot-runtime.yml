@@ -1,0 +1,55 @@
+name: F-MR44R serialized prescribed-qbot runtime qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr44r-serialized-prescribed-qbot-runtime-recomposition
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fmr44r-serialized-prescribed-qbot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FMR44R_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FMR44R_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Qualified dependency and scope guard
+        run: |
+          git merge-base --is-ancestor 4658b9f45c9a92f93a6a4b59c5c8aee33820ad94 HEAD
+          changed_src="$(git diff --name-only 4658b9f45c9a92f93a6a4b59c5c8aee33820ad94...HEAD -- src | sort)"
+          printf 'FMR44R_CHANGED_SOURCE_BEFORE_GATE=%s\n' "$changed_src"
+          if [ -n "$changed_src" ]; then
+            expected=$'src/adapter/mod_b110_serialized_context_binding.f90\nsrc/runtime/mod_fmr_serialized_reference_backend.f90'
+            test "$changed_src" = "$expected"
+          fi
+          echo 'FMR44R_FSI38_DEPENDENCY_AND_SCOPE=PASS'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify serialized prescribed-qbot runtime
+        run: bash tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh
+      - name: Persist production runtime admission after qualification
+        run: |
+          paths=(src/adapter/mod_b110_serialized_context_binding.f90 src/runtime/mod_fmr_serialized_reference_backend.f90)
+          if git diff --quiet -- "${paths[@]}"; then
+            echo 'FMR44R_EXACT_HEAD_PRODUCTION_QUALIFICATION=PASS'
+            exit 0
+          fi
+          git diff --check -- "${paths[@]}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "${paths[@]}"
+          git commit -m 'feat(F-MR44R): admit prescribed qbot in serialized runtime'
+          git push origin HEAD:work/f-mr44r-serialized-prescribed-qbot-runtime-recomposition
+          echo 'FMR44R_PRODUCTION_SOURCE_COMMITTED_AFTER_QUALIFICATION=PASS'
