@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "title": "RossFast temporal-estimator structure, cancellation and independent holdout qualification",
+  "status": "IN_PROGRESS",
+  "branch": "work/f-ross01-d3g02r-estimator-structure-holdout",
+  "base_closed_negative_d3g02": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+  "contract_commit": "18213f5b684bb903ed6142e7fefde51b0261ac6c",
+  "material_probe_commit": "e62999a2a30e3ca9d61707b7c7f6c048fce13939",
+  "authority_run": {
+    "run_id": 34821572344,
+    "run_number": 1,
+    "tested_head": "0a832f9de127408672464863974bb606f417b167",
+    "status_at_receipt": "in_progress",
+    "material_jobs": 6,
+    "all_material_jobs_passed_authority_binding_and_syntax_before_solver_execution": true
+  },
+  "frozen_case_matrix": {
+    "materials": 6,
+    "forcing_holdouts_per_material": 2,
+    "attempt_indices_per_holdout": 9,
+    "expected_cases": 108,
+    "internal_substep_levels": [2, 4, 8, 16],
+    "canonical_full_two_half_probe": true
+  },
+  "live_canonical_binding_policy": {
+    "full_canonical_head_is_not_pinned": true,
+    "transaction_reference_blob_must_equal": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "reason": "Moving-current canonical commits that do not change the relevant transaction semantics must not invalidate a research run; semantic source drift still fails closed."
+  },
+  "governance": {
+    "d3g02_remains_closed_negative": true,
+    "d3_g02_remains_open": true,
+    "certificate_available": false,
+    "safety_factor_authority": false,
+    "accuracy_tolerance_authority": false,
+    "production_admission": false,
+    "production_source_delta": []
+  },
+  "resume_rule": "Do not modify the frozen D3G02R contract or case matrix based on partial results. Resume by reading run 34821572344 and its immutable artifacts. If the run fails for infrastructure or harness reasons before scientific evidence is produced, repair only that defect and preserve the frozen research matrix."
+}
