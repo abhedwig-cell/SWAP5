@@ -6,75 +6,38 @@ program fgc24_export_probe
   use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t, groundwater_head_datum_t
   use mod_groundwater_coupling_policy, only: groundwater_head_convergence_policy_t
   use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t
-  use mod_groundwater_predictor_corrector_window, only: groundwater_coupling_origin_t, groundwater_pc_result_t, run_restricted_groundwater_coupling_window
-  use mod_groundwater_coupled_restart, only: groundwater_restart_state_t, groundwater_restart_adapter_t, groundwater_coupled_restart_record_t, export_groundwater_coupled_restart
-  use mod_fgc21_restricted_predictor_corrector_owner_test, only: dummy_parameters_t, dummy_model_t, dummy_materializer_t, dummy_groundwater_service_t, setup_common
+  use mod_groundwater_predictor_corrector_window, only: groundwater_coupling_origin_t
+  use mod_groundwater_coupled_restart, only: groundwater_coupled_restart_record_t, export_groundwater_coupled_restart
+  use mod_fgc21_restricted_predictor_corrector_owner_test, only: dummy_parameters_t, dummy_model_t, &
+       dummy_materializer_t, dummy_groundwater_service_t, setup_common
+  use mod_fgc24_coupled_restart_test, only: dummy_groundwater_restart_adapter_t, run_one_window, SWAP_LAYOUT_ID
   implicit none
-  type, extends(groundwater_restart_state_t) :: s_t
-    integer(int64) :: sid=1_int64, lid=1_int64, rev=0_int64
-    real(real64) :: t=0.0_real64
-  contains
-    procedure :: clone => s_clone
-    procedure :: valid => s_valid
-  end type
-  type, extends(groundwater_restart_adapter_t) :: a_t
-    type(dummy_groundwater_service_t), pointer :: p=>null()
-  contains
-    procedure :: export_committed => a_export
-    procedure :: restore_committed => a_restore
-  end type
-  type(kernel_executor_t) :: ex
-  type(kernel_committed_state_t) :: cs
+
+  type(kernel_executor_t) :: executor
+  type(kernel_committed_state_t) :: committed
   type(dummy_model_t), target :: model
-  type(dummy_parameters_t) :: par
-  type(dummy_materializer_t) :: mat
-  type(dummy_groundwater_service_t), target :: gw
-  type(a_t) :: a
-  type(groundwater_interface_mass_ledger_t) :: led
-  type(groundwater_head_datum_t) :: dat
-  type(groundwater_head_convergence_policy_t) :: pol
-  type(groundwater_coupling_window_t) :: win
-  type(groundwater_coupling_origin_t) :: org
-  type(canonical_numerical_config_t) :: num
-  type(groundwater_pc_result_t) :: res
-  type(groundwater_coupled_restart_record_t) :: rec
-  class(transaction_state_t), allocatable :: init
-  logical :: ok, exported
-  integer :: st
-  call setup_common(ex,model,par,gw,led,dat,pol,win,org,num,cs,init,ok,st)
-  call run_restricted_groundwater_coupling_window(ex,par,cs,mat,num,gw,led,dat,pol,win,org,res)
-  a%p=>gw
-  call export_groundwater_coupled_restart(cs,2401_int64,gw,a,led,org,rec,exported,st)
-  write(*,'(A,I0,A,L1)') 'FGC24_PROBE_STATUS=',st,' EXPORTED=',exported
-contains
-  subroutine s_clone(self,copy)
-    class(s_t), intent(in) :: self
-    class(groundwater_restart_state_t), allocatable, intent(out) :: copy
-    allocate(s_t::copy)
-    select type(x=>copy); type is(s_t); x=self; end select
-  end subroutine
-  logical function s_valid(self)
-    class(s_t), intent(in) :: self
-    s_valid=self%sid>0_int64 .and. self%lid>0_int64 .and. self%rev>=0_int64
-  end function
-  subroutine a_export(self,sid,lid,rev,t,state,status)
-    class(a_t),intent(inout)::self
-    integer(int64),intent(out)::sid,lid,rev
-    real(real64),intent(out)::t
-    class(groundwater_restart_state_t),allocatable,intent(out)::state
-    integer,intent(out)::status
-    allocate(s_t::state)
-    select type(x=>state); type is(s_t)
-      sid=self%p%service_id_value; lid=self%p%lineage_id_value; rev=self%p%revision; t=self%p%current_time
-      x%sid=sid; x%lid=lid; x%rev=rev; x%t=t; status=0
-    end select
-  end subroutine
-  subroutine a_restore(self,sid,lid,rev,t,state,status)
-    class(a_t),intent(inout)::self
-    integer(int64),intent(in)::sid,lid,rev
-    real(real64),intent(in)::t
-    class(groundwater_restart_state_t),intent(in)::state
-    integer,intent(out)::status
-    status=1
-  end subroutine
-end program
+  type(dummy_parameters_t) :: parameters
+  type(dummy_materializer_t) :: materializer
+  type(dummy_groundwater_service_t), target :: groundwater
+  type(dummy_groundwater_restart_adapter_t) :: adapter
+  type(groundwater_interface_mass_ledger_t) :: ledger
+  type(groundwater_head_datum_t) :: datum
+  type(groundwater_head_convergence_policy_t) :: policy
+  type(groundwater_coupling_window_t) :: window
+  type(groundwater_coupling_origin_t) :: origin
+  type(canonical_numerical_config_t) :: numerical
+  type(groundwater_coupled_restart_record_t) :: record
+  class(transaction_state_t), allocatable :: initial_state
+  logical :: initialized, exported
+  integer :: status
+
+  call setup_common(executor, model, parameters, groundwater, ledger, datum, policy, window, origin, numerical, &
+       committed, initial_state, initialized, status)
+  if (.not. initialized) error stop 'F-GC24 probe setup failed'
+  call run_one_window(executor, parameters, committed, materializer, numerical, groundwater, ledger, datum, policy, &
+       window, origin)
+  adapter%target => groundwater
+  call export_groundwater_coupled_restart(committed, SWAP_LAYOUT_ID, groundwater, adapter, ledger, origin, record, &
+       exported, status)
+  write(*,'(A,I0,A,L1)') 'FGC24_PROBE_STATUS=', status, ' EXPORTED=', exported
+end program fgc24_export_probe
