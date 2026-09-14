@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ86",
+  "title": "F-GC24 Coupled Restart / Split-Run / Replay Independent Qualification",
+  "branch": "qualification/f-vq86-fgc24-coupled-restart-independent-qualification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+    "tree": "e230ae58b38f2fdf774f7fa8f25472c517b20799"
+  },
+  "owner_authority": {
+    "work_unit": "F-GC24",
+    "branch": "work/f-gc24-coupled-restart-split-run-replay-composition",
+    "owner_closeout_head": "194487ec18374ef6097e3dd687038e326f818be8",
+    "owner_closeout_tree": "128693b6b3d5280d528141bd7f306ce95561e1b3",
+    "qualified_source_head": "ed919a7039fb446d2248d4faeedbfc3d6735b962",
+    "qualified_source_tree": "1197e2386babf725ef089b17035c1bf87cb8114b"
+  },
+  "tested_head": {
+    "commit": "14002067b68439423f3c2f60ff1fb6fa9f267a07",
+    "tree": "bc30fcfc91ae80737e1295071b920bbed2b4f031"
+  },
+  "workflow": {
+    "name": "F-VQ86 F-GC24 coupled restart independent qualification",
+    "run_id": 34846917509,
+    "job_id": 103985004720,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "qualified_source_blobs": {
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90": "a867e04b088f61f686f693d07e470c3e9c33bdec"
+  },
+  "independence_boundary": {
+    "owner_gate_replay_role": "Prerequisite/postimage-preservation evidence only; not counted as independent oracle evidence.",
+    "independent_harness": "tests/qualification/fvq86/test_fvq86_fgc24_independent.f90",
+    "independent_runner": "tests/qualification/fvq86/run_fvq86_fgc24_independent_gate.sh",
+    "production_delta_from_owner": false,
+    "fixture_policy": "Pinned F-GC21/F-GC24 dummy backend types may be reused; the adversarial sequence and assertions are independently supplied by F-VQ86."
+  },
+  "independent_evidence": [
+    "wrapper-level live prepared reservation blocks restart export fail-closed",
+    "wrong SWAP persistence layout is rejected before groundwater backend restore publication",
+    "cross-carrier accepted-time provenance tampering is rejected before groundwater backend restore publication",
+    "groundwater restart-adapter rejection leaves local SWAP committed state, ledger and coupling origin unpublished",
+    "successful committed restore invokes backend publication exactly once",
+    "transient groundwater candidate token and pending trial time are not resurrected",
+    "restored groundwater interface mass ledger has exact zero conservation residual and exact committed exchange total/count",
+    "second restore into an already-published target is rejected before backend republish",
+    "successful adapter publication followed by violated quiescence/provenance postcondition fails hard rather than returning recoverably",
+    "independent oracle output is identical under O0 and O2"
+  ],
+  "evidence_markers": {
+    "FVQ86_SCOPE_ALLOWLIST": "PASS",
+    "FVQ86_OWNER_PRODUCTION_BLOBS_LOCKED": "PASS",
+    "FVQ86_COMMITTED_ONLY_AND_QUIESCENCE_STATIC_AUDIT": "PASS",
+    "FVQ86_NO_IO_CALENDAR_MODFLOW_DEPENDENCY": "PASS",
+    "FVQ86_OWNER_POSTIMAGE_REPLAY": "PASS",
+    "FVQ86_PINNED_OWNER_FIXTURES": "PASS",
+    "FVQ86_INDEPENDENT_ORACLE_O0": "PASS",
+    "FVQ86_FAIL_HARD_POSTCONDITION_O0": "PASS",
+    "FVQ86_INDEPENDENT_ORACLE_O2": "PASS",
+    "FVQ86_FAIL_HARD_POSTCONDITION_O2": "PASS",
+    "FVQ86_INDEPENDENT_ORACLE_O0_O2_IDENTITY": "PASS",
+    "F_VQ86_FINAL_GATE": "PASS"
+  },
+  "independent_oracle_sha256": "c6a4fa3855924125a966356a737703bee65df5bd66c84af4c0df6de8ffc6c144",
+  "failed_run_reconciliation": [
+    {
+      "run_id": 34846751832,
+      "job_id": 103984450234,
+      "conclusion": "failure",
+      "classification": "QUALIFICATION_HARNESS_STATIC_ASSERTION_MISMATCH",
+      "finding": "The verifier expected a nonexistent prepared_slot_for_service(self) expression instead of the actual reservation_slots active-state implementation.",
+      "production_defect_established": false,
+      "production_delta_applied": false
+    },
+    {
+      "run_id": 34846804934,
+      "job_id": 103984626222,
+      "conclusion": "failure",
+      "classification": "SAME_QUALIFICATION_HARNESS_STATIC_ASSERTION_MISMATCH",
+      "finding": "README-only metadata push replayed the unchanged too-literal static assertion and failed before compilation/physical execution.",
+      "production_defect_established": false,
+      "production_delta_applied": false
+    }
+  ],
+  "hard_nonclaims": [
+    "This is not F-CI current-canonical admission.",
+    "This does not prove post-admission canonical preservation.",
+    "This does not close F-GC20 current-canonical requalification.",
+    "This does not close F-GC22 current-canonical requalification.",
+    "This does not close F-GC23 whole-window response tangent composition.",
+    "This does not close F-GC25 MultiSWAP scaling qualification.",
+    "This does not close F-GC26 bounded-cost response-aware integration.",
+    "This is not a groundwater-coupling-v1 100 percent completion claim."
+  ],
+  "decision": "QUALIFIED_FOR_F_CI_ADMISSION_REVIEW",
+  "next_owner": "Separate F-CI current-canonical admission/composition of F-GC24, followed by postimage preservation."
+}
