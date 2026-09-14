@@ -9,7 +9,7 @@ cd "$ROOT"
 
 fail() { echo "EB_I18R_GATE_FAIL $*" >&2; exit 188; }
 
-CANONICAL="6425fb3290da637357e47618b459f4caf65a78d8"
+CANONICAL="1211bd5f4a4f9b1aee110e8e38cadad7ee52ae4f"
 
 # This workunit is explicitly current-canonical bound. Do not silently qualify
 # against a stale integration spine if another admission has moved canonical.
