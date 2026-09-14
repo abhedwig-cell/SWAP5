@@ -1,0 +1,147 @@
+name: F-ROSS01 D3G02R Estimator Structure Holdout
+
+on:
+  push:
+    branches: [work/f-ross01-d3g02r-estimator-structure-holdout]
+    paths:
+      - .github/workflows/ross01-d3g02r-estimator-structure-holdout.yml
+      - experiments/ross/run_ross01_d3g02r_estimator_structure_material.py
+      - integration/f-ross/F-ROSS01_D3G02R_ESTIMATOR_STRUCTURE_CONTRACT.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-d3g02r-estimator-structure-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material-holdout:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Bind live canonical transaction semantics
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          grep -q "outcome%temporal_certificate_available" "$RUNNER_TEMP/tx.f90"
+          grep -q "outcome%temporal_indicator <= 1.0_real64" "$RUNNER_TEMP/tx.f90"
+      - name: Bind frozen research authorities
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/ross/ross01_d3r_fsi31_duration_adapter.py)" = "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02_STATUS.json)" = "0e74b36e878e5e2951c0747bbf37d729cb2d06b3"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-ross/F-ROSS01_D3G02_STATUS.json'))
+          assert p['status']=='CLOSED_NEGATIVE'
+          assert p['closure_result']=='OPEN'
+          assert p['certificate']['available'] is False
+          PY
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_d3g02r_estimator_structure_material.py
+      - name: Run material holdouts
+        run: |
+          python3 experiments/ross/run_ross01_d3g02r_estimator_structure_material.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3G02R_${{ matrix.material }}.json"
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02R_${{ matrix.material }}.json
+
+  aggregate:
+    needs: material-holdout
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-d3g02r-*-${{ github.run_id }}
+          path: shards
+          merge-multiple: true
+      - name: Aggregate precommitted structural diagnostics
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          files=sorted(Path('shards').glob('F-ROSS01_D3G02R_*.json'))
+          payloads=[json.loads(p.read_text()) for p in files]
+          rows=[c for p in payloads for c in p.get('cases',[])]
+          materials=('B01','B12','O01','O05','O14','O18')
+          variants=('NEGATIVE_ONE_PERCENT','POSITIVE_ONE_PERCENT')
+          expected={(m,v,a) for m in materials for v in variants for a in range(9)}
+          observed={(r.get('material'),r.get('forcing_variant'),r.get('attempt_index')) for r in rows}
+          complete=len(payloads)==6 and len(rows)==108 and observed==expected
+          numerical=complete and all(p.get('numerical_pass') is True for p in payloads) and all(r.get('numerical_pass') is True for r in rows)
+          structural=numerical and all(r.get('structural_signal') is True for r in rows)
+          ratios=[]; eq=[]; orders=[]; masses=[]; selfd=[]
+          error_nonmono=[]; delta_nonmono=[]
+          for r in rows:
+              masses.append(abs(float(r.get('max_abs_mass_residual_cm',0.0))))
+              selfd.append(float(r.get('reference_self_delta',float('inf'))))
+              tm=r.get('temporal_metrics') or {}
+              q=tm.get('two_half8_error_to_raw_ratio')
+              if isinstance(q,(int,float)) and math.isfinite(float(q)): ratios.append(float(q))
+              q=tm.get('full16_vs_two_half8_equivalence_delta')
+              if isinstance(q,(int,float)) and math.isfinite(float(q)): eq.append(float(q))
+              for q in (tm.get('observed_orders') or {}).values():
+                  if isinstance(q,(int,float)) and math.isfinite(float(q)): orders.append(float(q))
+              if tm and tm.get('reference_error_monotone_2_4_8_16') is not True:
+                  error_nonmono.append({'material':r['material'],'forcing_variant':r['forcing_variant'],'attempt_index':r['attempt_index']})
+              if tm and tm.get('adjacent_delta_monotone_2_4_8_16') is not True:
+                  delta_nonmono.append({'material':r['material'],'forcing_variant':r['forcing_variant'],'attempt_index':r['attempt_index']})
+          heads=sorted({p.get('live_canonical_head') for p in payloads})
+          out={
+              'work_unit':'F-ROSS01 D3G02R',
+              'kind':'estimator_structure_holdout_aggregate',
+              'complete':complete,
+              'numerical_pass':numerical,
+              'positive_structural_signal':structural,
+              'case_count':len(rows),
+              'expected_case_count':108,
+              'live_canonical_heads':heads,
+              'max_two_half8_error_to_raw_ratio':max(ratios,default=None),
+              'min_two_half8_error_to_raw_ratio':min(ratios,default=None),
+              'max_full16_vs_two_half8_equivalence_delta':max(eq,default=None),
+              'observed_order_min':min(orders,default=None),
+              'observed_order_max':max(orders,default=None),
+              'reference_error_nonmonotone_cases':error_nonmono,
+              'adjacent_delta_nonmonotone_cases':delta_nonmono,
+              'max_reference_self_delta':max(selfd,default=None),
+              'max_abs_mass_residual_cm':max(masses,default=0.0),
+              'certificate_available':False,
+              'd3_g02_closed':False,
+              'safety_factor_authority':False,
+              'accuracy_tolerance_authority':False,
+              'interpretation':'STRUCTURAL_RESEARCH_SIGNAL_ONLY_NO_CERTIFICATE_AUTHORITY' if structural else 'STRUCTURAL_ROUTE_NOT_SUPPORTED_BY_FROZEN_HOLDOUT_RULE',
+              'production_source_delta':[],
+          }
+          Path('F-ROSS01_D3G02R_AGGREGATE.json').write_text(json.dumps(out,indent=2,sort_keys=True,allow_nan=False)+'\n')
+          print(json.dumps(out,sort_keys=True,allow_nan=False))
+          raise SystemExit(0 if structural else 1)
+          PY
+      - name: Upload aggregate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02R_AGGREGATE.json
