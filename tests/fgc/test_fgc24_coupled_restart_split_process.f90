@@ -283,11 +283,7 @@ contains
     class(dummy_groundwater_restart_state_t), intent(in) :: self
     class(groundwater_restart_state_t), allocatable, intent(out) :: copy
 
-    allocate(dummy_groundwater_restart_state_t :: copy)
-    select type (typed_copy => copy)
-    type is (dummy_groundwater_restart_state_t)
-      typed_copy = self
-    end select
+    allocate(copy, source=self)
   end subroutine dummy_restart_state_clone
 
   logical function dummy_restart_state_valid(self) result(valid)
