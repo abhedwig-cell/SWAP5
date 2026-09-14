@@ -1,0 +1,88 @@
+name: F-PM15 drainage v1 final completion reconciliation
+
+on:
+  push:
+    branches:
+      - work/f-pm15-drainage-v1-final-completion-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-pm15-drainage-final-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact drainage authorities
+        run: |
+          git fetch --no-tags origin \
+            +refs/heads/integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical \
+            +refs/heads/work/f-pm13-drainage-v1-completion-audit:refs/remotes/origin/work/f-pm13-drainage-v1-completion-audit \
+            +refs/heads/work/f-pm14-drainage-response-runtime-closure:refs/remotes/origin/work/f-pm14-drainage-response-runtime-closure \
+            +refs/heads/qualification/f-vq38-fpm08c2-hooghoudt-ernst:refs/remotes/origin/qualification/f-vq38-fpm08c2-hooghoudt-ernst \
+            +refs/heads/qualification/f-vq40-fpm08c1r-tabulated-drainage:refs/remotes/origin/qualification/f-vq40-fpm08c1r-tabulated-drainage \
+            +refs/heads/qualification/f-vq42-fpm08c3-empirical-interflow:refs/remotes/origin/qualification/f-vq42-fpm08c3-empirical-interflow \
+            +refs/heads/qualification/f-vq43-fpm08c4-multilevel-aggregation:refs/remotes/origin/qualification/f-vq43-fpm08c4-multilevel-aggregation \
+            +refs/heads/qualification/f-vq44-fpm08a-linear-drainage:refs/remotes/origin/qualification/f-vq44-fpm08a-linear-drainage \
+            +refs/heads/qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification:refs/remotes/origin/qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification \
+            +refs/heads/qualification/f-vq74-drainage-v1-cross-cutting-independent-closure:refs/remotes/origin/qualification/f-vq74-drainage-v1-cross-cutting-independent-closure
+          test "$(git rev-parse refs/remotes/origin/integration/f-ci-canonical)" = e79b0272edb544ec4c8000a4d6869274f1ab3ae5
+          echo 'FPM15_LIVE_CANONICAL_EXACT=PASS'
+
+      - name: Verify decisive GitHub Actions evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          expected = [
+              (34794541881,'232bfebd375c45f912a84cced24318f2a06a0991','F-PM14 owner'),
+              (34794541851,'232bfebd375c45f912a84cced24318f2a06a0991','F-PM14 preservation'),
+              (34795488243,'3dd8b92b9601f4e3e41cd9ff79a37dd293b35641','F-VQ73 tested'),
+              (34795634799,'ea40e2d850aa9b4b23b25ba6b4a63ffd39811001','F-VQ73 status-head'),
+              (34815074499,'3bd675a6058c21be8b205dcbccc1667c17303f7c','F-VQ74 tested'),
+              (34815180940,'60c121a0993993bd79fb30ddfd54e2a9d14f042e','F-VQ74 status-head'),
+              (34812112212,'0ac2f09642f71269ee43301cfedde4f2dd95ade6','F-CI61 final qualification'),
+              (34813003457,'537695a6194d22b19e28d2d9abfb0d80da42dd93','F-CI61P final qualification'),
+              (34813209395,'e79b0272edb544ec4c8000a4d6869274f1ab3ae5','canonical push'),
+              (34813213464,'e79b0272edb544ec4c8000a4d6869274f1ab3ae5','canonical pull-request'),
+          ]
+          token=os.environ['GH_TOKEN']
+          for run_id,sha,label in expected:
+              req=urllib.request.Request(
+                  f'https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/{run_id}',
+                  headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+              with urllib.request.urlopen(req) as r:
+                  d=json.load(r)
+              assert d['status']=='completed', (label,d['status'])
+              assert d['conclusion']=='success', (label,d['conclusion'])
+              assert d['head_sha']==sha, (label,d['head_sha'],sha)
+              print(f'FPM15_ACTION_EVIDENCE_{label.replace(" ","_").replace("-","_").upper()}=PASS')
+          PY
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Run fail-closed drainage completion reconciliation
+        run: |
+          set -o pipefail
+          bash tests/fpm/run_fpm15_drainage_v1_final_completion_reconciliation.sh 2>&1 | tee "$RUNNER_TEMP/fpm15.log"
+
+      - name: Retain F-PM15 evidence log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpm15-drainage-final-completion-${{ github.run_id }}
+          path: ${{ runner.temp }}/fpm15.log
+          if-no-files-found: ignore
