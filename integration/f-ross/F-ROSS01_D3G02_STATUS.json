@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02",
+  "title": "RossFast temporal-certificate semantics qualification",
+  "status": "CLOSED_NEGATIVE",
+  "decision": "ROSSFAST_D3G02_TEMPORAL_CERTIFICATE_NOT_QUALIFIED",
+  "branch": "work/f-ross01-d3g02-temporal-certificate-qualification",
+  "base_d3r_authority": "c8dc52dc92d32d075fa3fc57916e8bffb33c14e3",
+  "qualification_tested_commit": "2d6997ca2ae92665ab3856ea6dc96071de3a0106",
+  "negative_evidence_commit": "fea13a78b0ad8c52fbbb344c515107907a39bb83",
+  "authority_run": {
+    "run_id": 34796278942,
+    "run_number": 4,
+    "conclusion": "failure",
+    "failure_class": "PRECOMMITTED_SCIENTIFIC_CONSERVATIVITY_GATE",
+    "aggregate_artifact_id": 10329814786,
+    "aggregate_artifact_digest": "sha256:5b74490cc6595f6c53ecde56e9080cb10d8eb8d0e82fb5f3e9585e083da00f0f"
+  },
+  "closure_target": "F-ROSS01-D3-G02",
+  "closure_result": "OPEN",
+  "reason": "The exact 54-case D3R-domain calibration was complete and numerically valid, but the precommitted conservativity requirement failed: max refined-reference-error/raw-estimator ratio was 1.6 at O01 attempt 1, exceeding the frozen <=1.0 requirement. No posthoc factor inflation is permitted.",
+  "key_metrics": {
+    "case_count": 54,
+    "expected_case_count": 54,
+    "calibration_base_pass": true,
+    "precommitted_decision_rule_pass": false,
+    "max_refined_error_to_raw_ratio": 1.6,
+    "worst_ratio_material": "O01",
+    "worst_ratio_attempt_index": 1,
+    "max_refined_reference_error": 6.13027754398947e-11,
+    "max_reference_self_delta": 6.813835683978775e-16,
+    "max_abs_mass_residual_cm": 1.6378602554051384e-14
+  },
+  "certificate": {
+    "available": false,
+    "safety_factor_authority": false,
+    "accuracy_tolerance_authority": false,
+    "safety_factor": null,
+    "accuracy_tolerance": null,
+    "posthoc_factor_1_6_adopted": false
+  },
+  "canonical_reconciliation": {
+    "tested_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "closeout_current_canonical_head": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "relevant_model_certificate_semantics_unchanged": true
+  },
+  "hard_nonclaims": [
+    "PRODUCTION_ADMISSION",
+    "PRODUCTION_MODEL_CERTIFICATE_AUTHORITY",
+    "CHEAP_PRODUCTION_TEMPORAL_ESTIMATOR",
+    "PRODUCTION_RUNTIME_COST_ACCEPTABILITY",
+    "RESTART",
+    "PRODUCTION_MULTISWAP_RUNTIME",
+    "WHOLE_WINDOW_INTERFACE_SENSITIVITY",
+    "TEMPORAL_ACCURACY_OUTSIDE_EXACT_D3R_DOMAIN"
+  ],
+  "production_admission": false,
+  "production_source_delta": [],
+  "d2_d3_d3r_authorities_unchanged": true
+}
