@@ -94,6 +94,11 @@ module mod_canonical_contracts
   type, abstract, extends(transaction_model_t), public :: canonical_physical_model_t
   contains
     procedure(prepare_interval_iface), deferred :: prepare_interval
+    ! Model-owned transaction-window selection.  The default preserves the
+    ! historical behavior exactly: offer the complete remaining outer window
+    ! and do not tighten the configured transaction retry budget.  Overrides
+    ! may only tighten max_retries; the runtime applies min(config, cap).
+    procedure :: select_transaction_window => default_select_transaction_window
   end type canonical_physical_model_t
 
   abstract interface
@@ -106,5 +111,23 @@ module mod_canonical_contracts
       type(canonical_numerical_config_t), intent(in) :: config
     end subroutine prepare_interval_iface
   end interface
+
+contains
+
+  subroutine default_select_transaction_window(self, cursor, outer_t1, selected_t1, max_retries_cap)
+    class(canonical_physical_model_t), intent(in) :: self
+    real(real64), intent(in) :: cursor, outer_t1
+    real(real64), intent(out) :: selected_t1
+    integer, intent(out) :: max_retries_cap
+
+    ! Keep the default behavior backward compatible.  The condition exists
+    ! only to make both generic contract inputs semantically observed; runtime
+    ! validation remains the sole authority for interval admissibility.
+    if (cursor > outer_t1 .and. .not. same_type_as(self, self)) then
+      error stop 'unreachable canonical physical model type'
+    end if
+    selected_t1 = outer_t1
+    max_retries_cap = huge(0)
+  end subroutine default_select_transaction_window
 
 end module mod_canonical_contracts
