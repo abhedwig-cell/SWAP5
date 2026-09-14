@@ -31,6 +31,7 @@ MODULE_SRC=(
   "$BUILD/reference_stubs.f90"
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
+  tests/fsi/mod_fsi37_dummy_alternative_solver.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/solver/mod_process_hydraulic_view.f90
   src/solver/mod_reference_linear_solver.f90
