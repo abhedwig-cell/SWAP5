@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.fvq74.status.v1",
+  "work_unit": "F-VQ74",
+  "title": "Drainage-v1 cross-cutting independent closure qualification",
+  "branch": "qualification/f-vq74-drainage-v1-cross-cutting-independent-closure",
+  "phase": "CLOSED_INDEPENDENT_QUALIFICATION",
+  "decision": "QUALIFIED_DRAINAGE_V1_CROSS_CUTTING_G2_INDEPENDENTLY",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "pm13_authority": {
+    "sha": "e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "final_completion_blob": "ce4dc39da4a97f070539896e9929f00c475d7ffa",
+    "target_blocker": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+    "denominator_changed": false,
+    "scope_reduced": false,
+    "frozen_variants": 8
+  },
+  "tested_head": {
+    "sha": "3bd675a6058c21be8b205dcbccc1667c17303f7c",
+    "workflow_run": 34815074499,
+    "workflow_job": 103884007687,
+    "conclusion": "success",
+    "artifact": {
+      "id": 10335963748,
+      "name": "fvq74-cross-cutting-log-34815074499",
+      "digest": "sha256:3c5ff6dbb0eb6c11cf26524de34c2b1a2f239148f3c2c493135c6fdc42075f8e"
+    }
+  },
+  "results": {
+    "no_production_or_reference_change": "PASS",
+    "pm13_frozen_denominator_exact": "PASS",
+    "pm13_g2_exit_requirement_exact": "PASS",
+    "current_canonical_pm14_blobs_exact": "PASS_11_FILES",
+    "no_persistent_drainage_process_state_static": "PASS",
+    "headcalc_io_calendar_isolation_static": "PASS",
+    "multiswap_active_precomputed_isolation": "PASS",
+    "multiswap_order_independence": "PASS",
+    "accepted_runtime_diagnostics": "PASS",
+    "restart_no_additional_drainage_state": "PASS",
+    "restart_continuation_equivalence": "PASS",
+    "rejected_runtime_diagnostics": "PASS",
+    "rejected_runtime_atomicity": "PASS",
+    "hard_mass_closure_in_cross_cutting_cases": "PASS_TOLERANCE_1E-10",
+    "O0_O2": "PASS_EXACT_OUTPUT_IDENTITY"
+  },
+  "relation_to_existing_authorities": {
+    "F_PM14_owner_transaction_mass_restart_multiswap": "PRESERVED_NOT_SUBSTITUTED",
+    "F_VQ73_independent_transaction_mass_runtime": "PRESERVED_NOT_REOPENED",
+    "F_CI61_source_admission": "PRESERVED",
+    "F_CI61P_postimage_preservation": "PRESERVED",
+    "F_VQ74_role": "fresh independent closure evidence for PM13 G2 restart, MultiSWAP and diagnostics requirements"
+  },
+  "architecture_invariants": {
+    "3": "PASS_PRESERVED",
+    "4": "PASS_QUALIFIED_NO_DRAINAGE_PERSISTENT_STATE",
+    "5": "PASS_PRESERVED",
+    "6": "PASS_QUALIFIED_MULTICOLUMN_BATCH_EXECUTION",
+    "7": "PASS_QUALIFIED_ACCEPT_REJECT_ATOMICITY",
+    "8": "PASS_QUALIFIED_RESTART_CONTINUATION",
+    "9": "PASS_PRESERVED_GENERIC_NONCALENDAR_RUNTIME",
+    "13": "PASS_QUALIFIED_HARD_MASS_CLOSURE",
+    "16": "PASS_QUALIFIED_MULTISWAP_ISOLATION_ORDER_INDEPENDENCE",
+    "22": "PASS_PRESERVED_NO_HEADCALC_INTERNAL_BINDING",
+    "25": "PASS_PRESERVED_REFERENCE_MODE",
+    "26": "PASS_QUALIFIED_ACCEPTED_AND_REJECTED_DIAGNOSTICS",
+    "27": "PASS_QUALIFIED_NO_UNUSED_DRAINAGE_STATE",
+    "29": "PASS_QUALIFIED_NO_IO_CALENDAR_OR_HIDDEN_BINDING_IN_RESPONSE_SEAM",
+    "30": "PASS_EXPLICIT_AUDIT"
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_VQ74": false,
+    "reference_source_changed_by_F_VQ74": false,
+    "physics_changed_by_F_VQ74": false,
+    "mass_booking_changed_by_F_VQ74": false,
+    "solver_changed_by_F_VQ74": false,
+    "persistent_state_changed_by_F_VQ74": false,
+    "pm13_denominator_changed_by_F_VQ74": false
+  },
+  "independently_qualified": true,
+  "closed": true,
+  "drainage_v1_100_percent_complete": false,
+  "next_required_step": "Run a final PM13-class frozen-scope current-canonical completion reconciliation. Only that separate owner/governance audit may emit QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE if G1, G2 and G3 are all now closed by exact evidence.",
+  "nonclaims": [
+    "F-VQ74 is not a new production admission; it tests already admitted current-canonical code.",
+    "F-VQ74 does not change the PM13 denominator or add drainage physics.",
+    "F-VQ74 alone does not establish drainage-v1 100-percent completion."
+  ]
+}
