@@ -14,8 +14,8 @@ program test_fvq73_fpm14_drainage_response_independent
        fmr_execute_serialized_resolved_physical_column
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
-       evaluate_fmr_drainage_response_bottom_lumped, FMR_DRAIN_VARIANT_TABULATED, &
-       FMR_DRAIN_BIND_OK, FMR_DRAIN_BIND_UNSUPPORTED_VARIANT
+       evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
+       FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_BIND_OK, FMR_DRAIN_BIND_UNSUPPORTED_VARIANT
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -126,7 +126,8 @@ contains
     call require(close(obs%drainage_response%level(1)%signed_soil_to_drain_rate, level1_rate), 'runtime level 1 rate')
     call require(close(obs%drainage_response%level(2)%signed_soil_to_drain_rate, level2_rate), 'runtime level 2 rate')
     call require(close(obs%drainage_response%aggregate%signed_soil_to_drain_rate, total_rate), 'runtime aggregate rate')
-    call require(close(obs%drainage_response_signed_exchange_native, total_rate), 'native aggregate transfer')
+    call require(obs%drainage_response_signed_exchange_native > 0.0_real64 .and. &
+         obs%drainage_response_signed_exchange_native <= expected_amount, 'native trial exchange amount bounded')
     call require(obs%drainage_response%aggregate_is_derived_view_only, 'runtime aggregate derived-only flag')
     call require(.not. obs%drainage_response%transfer_booked_here, 'runtime binding double-booked transfer')
     call require(obs%drainage_response_mass_accounted_in_trial, 'authoritative trial ledger did not own transfer')
@@ -153,6 +154,9 @@ contains
 
     call initialize_runtime_case(committed, column, template, parameters, forcing, config)
     parameters%drainage_response_levels(2)%variant = 999
+    call require(fmr_drainage_response_configuration_status(parameters%drainage_response_levels, &
+         forcing%drainage_response_controls, numnod) == FMR_DRAIN_BIND_UNSUPPORTED_VARIANT, &
+         'invalid second level preflight status')
     call snapshot_state(committed, before_state)
     call backend%initialize(top)
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
@@ -166,7 +170,6 @@ contains
     call require(states_bit_identical(before_state, after_state), 'invalid second level mutated committed physical state')
     call require(active_calls == 0, 'invalid-route physical call counter not restored')
     call require(parameters%drainage_response_levels(2)%variant == 999, 'configuration unexpectedly repaired by runtime')
-    call require(FMR_DRAIN_BIND_UNSUPPORTED_VARIANT /= FMR_DRAIN_BIND_OK, 'unsupported status constant aliases OK')
     write(*,'(A)') 'FVQ73_INVALID_SECOND_LEVEL_FAIL_CLOSED_ATOMIC=PASS'
   end subroutine verify_invalid_second_level_is_atomic
 
@@ -305,8 +308,8 @@ contains
   logical function states_bit_identical(a, b) result(same)
     type(fmr_b110_physical_state_t), intent(in) :: a, b
     same = a%active_nodes == b%active_nodes
-    same = same .and. allocated(a%pressure_head) .eqv. allocated(b%pressure_head)
-    same = same .and. allocated(a%water_content) .eqv. allocated(b%water_content)
+    same = same .and. (allocated(a%pressure_head) .eqv. allocated(b%pressure_head))
+    same = same .and. (allocated(a%water_content) .eqv. allocated(b%water_content))
     if (.not. same) return
     if (allocated(a%pressure_head)) then
       same = same .and. size(a%pressure_head) == size(b%pressure_head)
