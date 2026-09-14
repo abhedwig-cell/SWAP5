@@ -46,10 +46,35 @@ for path, old, new in changes:
     changed += 1
     print(f'FMR44_PATCHED {path}')
 
-# Diagnostic instrumentation belongs only to the qualification working tree.
-# It is not added to the production-source commit and does not change any gate.
+# Qualification-only fixture shaping and diagnostics. These edits do not touch
+# production source. The positive qbot experiment starts from the independently
+# proven uniform prescribed-qbot equilibrium and changes only the lower forcing:
+# qtop remains qeq=-K(h0), while qbot switches to a small positive inflow. This
+# isolates the runtime capability needed by EB and avoids simultaneously reversing
+# both boundaries.
 test = Path('tests/fmr/test_fmr44_serialized_prescribed_qbot_runtime.f90')
 text = test.read_text()
+old_case = """    call execute_case(2, q, q, 777777.0_real64, upward_dt, .true., output, observation)
+"""
+new_case = """    call execute_case(2, qeq, q, 777777.0_real64, upward_dt, .true., output, observation)
+"""
+if old_case in text:
+    text = text.replace(old_case, new_case, 1)
+    print('FMR44_POSITIVE_FIXTURE_BOTTOM_ONLY_FORCING_CHANGE=STAGED')
+elif new_case not in text:
+    raise SystemExit('FMR44_POSITIVE_FIXTURE_ANCHOR_MISMATCH')
+
+old_flow_assert = """    call require(output%mass%total_in > 0.0_real64 .and. output%mass%total_out > 0.0_real64, &
+         'positive qbot throughflow has explicit in and out')
+"""
+new_flow_assert = """    call require(output%mass%total_in >= q*upward_dt, &
+         'positive qbot lower-boundary inflow appears in accepted mass ledger')
+"""
+if old_flow_assert in text:
+    text = text.replace(old_flow_assert, new_flow_assert, 1)
+elif new_flow_assert not in text:
+    raise SystemExit('FMR44_POSITIVE_MASS_ASSERT_ANCHOR_MISMATCH')
+
 anchor = """    call require(output%completed .and. output%committed, 'mode2 equilibrium committed')
 """
 if anchor in text and 'FMR44_EQUILIBRIUM_DEBUG' not in text:
@@ -70,9 +95,11 @@ if anchor in text and 'FMR44_EQUILIBRIUM_DEBUG' not in text:
 anchor = """      write(*,'(A,L1,A,L1,A,L1,A,ES26.17E3,A,ES26.17E3,A,A)') 'FMR44_CERT_DEBUG enabled=', &
 """
 if anchor in text and 'FMR44_ADVANCE_DEBUG' not in text:
-    diagnostic = """      write(*,'(A,L1,A,I0,A,I0,A,I0)') 'FMR44_ADVANCE_DEBUG solver_executed=', observation%solver_executed, &
-           ' solver_status=', observation%solver_status, ' headcalc_calls=', output%solver_headcalc_calls, &
-           ' final_revision=', output%final_revision
+    diagnostic = """      write(*,'(A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0)') 'FMR44_ADVANCE_DEBUG solver_executed=', &
+           observation%solver_executed, ' solver_status=', observation%solver_status, ' headcalc_calls=', &
+           output%solver_headcalc_calls, ' final_revision=', output%final_revision, ' nonlinear=', &
+           output%solver_nonlinear_iterations, ' internal_retries=', output%solver_internal_retries, &
+           ' backtracking=', output%solver_backtracking_attempts
 """ + anchor
     text = text.replace(anchor, diagnostic, 1)
 
