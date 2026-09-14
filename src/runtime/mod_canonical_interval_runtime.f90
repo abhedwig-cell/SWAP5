@@ -26,7 +26,7 @@ contains
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
-    real(real64) :: cursor, next_cursor, tol, aggregate_bottom_exchange, terminal_bottom_flux
+    real(real64) :: cursor, selected_t1, next_cursor, tol, aggregate_bottom_exchange, terminal_bottom_flux
     logical :: aggregate_mass_complete, aggregate_bottom_available
     integer :: isub
 
@@ -59,7 +59,24 @@ contains
     cursor = interval%t0
 
     do isub = 1, config%max_committed_substeps
-      call execute_reference_interval(model, working, cursor, interval%t1, config%transaction, tx)
+      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
+      call model%select_transaction_window(cursor, interval%t1, selected_t1)
+      if (.not. ieee_is_finite(selected_t1) .or. selected_t1 > interval%t1 + tol) then
+        result%status = CANONICAL_STATUS_INVALID_REQUEST
+        result%completed_t = cursor
+        result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
+             TX_MASS_MISSING_UNSPECIFIED)
+        return
+      end if
+      if (selected_t1 <= cursor) then
+        result%status = CANONICAL_STATUS_NO_PROGRESS
+        result%completed_t = cursor
+        result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
+             TX_MASS_MISSING_UNSPECIFIED)
+        return
+      end if
+
+      call execute_reference_interval(model, working, cursor, selected_t1, config%transaction, tx)
       call accumulate_transaction(result, tx)
 
       if (tx%status /= TX_STATUS_ACCEPTED) then
@@ -75,8 +92,8 @@ contains
            terminal_bottom_flux)
       terminal_sensitivity = tx%interface_sensitivity
       next_cursor = tx%accepted_t1
-      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
-      if (next_cursor <= cursor .or. next_cursor > interval%t1 + tol) then
+      tol = progress_tolerance(config%progress_tolerance, cursor, selected_t1)
+      if (next_cursor <= cursor .or. next_cursor > selected_t1 + tol) then
         result%status = CANONICAL_STATUS_NO_PROGRESS
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
@@ -88,6 +105,7 @@ contains
       result%diagnostics%committed_substeps = result%diagnostics%committed_substeps + 1
       result%completed_t = cursor
 
+      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
       if (abs(cursor - interval%t1) <= tol) then
         call move_alloc(working, committed)
         result%status = CANONICAL_STATUS_COMPLETED
