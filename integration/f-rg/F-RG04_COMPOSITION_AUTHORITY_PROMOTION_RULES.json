@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.frg04.composition_authority_promotion.v1",
+  "workunit": "F-RG04",
+  "fail_closed": true,
+  "forbidden_implicit_promotions": [
+    "EVIDENCE_TO_AUTHORITY",
+    "OWNER_PASS_TO_INDEPENDENT_PASS",
+    "SCIENTIFIC_PASS_TO_NUMERICAL_PASS",
+    "NUMERICAL_PASS_TO_SCIENTIFIC_PASS",
+    "QUALIFICATION_TO_ADMISSION",
+    "CHILD_QUALIFIED_TO_PARENT_QUALIFIED",
+    "ALL_CHILDREN_QUALIFIED_TO_PARENT_OR_COMPOSITION_QUALIFIED",
+    "PARENT_QUALIFIED_TO_DOMAIN_COMPLETE",
+    "DOMAIN_COMPLETE_TO_PROGRAM_COMPLETE",
+    "LOCAL_ADMISSION_TO_AGGREGATE_COMPLETENESS",
+    "AGGREGATE_AUTHORITY_TO_COMPOSITION_COMPLETENESS",
+    "COMPOSITION_COMPLETENESS_TO_PRODUCTION_AUTHORITY",
+    "PRODUCTION_ADMISSION_TO_PRESERVATION",
+    "RESEARCH_AUTHORITY_TO_PRODUCTION_AUTHORITY"
+  ],
+  "composition_gate": {
+    "required_checks": [
+      "coverage",
+      "overlap_and_double_counting",
+      "gaps",
+      "contradictory_child_semantics",
+      "shared_state_interactions",
+      "conservation_interactions",
+      "temporal_interactions",
+      "failure_retry_rollback_commit_interactions",
+      "restart_persistence_interactions",
+      "runtime_composition",
+      "numerical_policy_interactions_where_applicable",
+      "unresolved_uncertainty",
+      "production_blast_radius"
+    ],
+    "all_children_pass_is_sufficient": false,
+    "missing_or_unknown_check_result": "FAIL_CLOSED_OR_REMAIN_UNQUALIFIED"
+  },
+  "admission_serialization": {
+    "parallel_authoring_allowed_when_F_RG01A_contract_ownership_disjoint": true,
+    "F_CI_admissions_serialized": true,
+    "postimage_preservation_serialized_where_required": true,
+    "reconcile_candidate_against_then_current_canonical_before_admission": true,
+    "stale_qualification_auto_admission_forbidden": true,
+    "parallel_workstream_can_reserve_future_canonical_authority": false
+  },
+  "aggregate_rule": {
+    "atomic_admission_may_precede_program_rebaseline": true,
+    "aggregate_snapshot_is_reporting_and_program_authority_at_its_snapshot_only": true,
+    "aggregate_snapshot_does_not_create_missing_composition_authority": true,
+    "rebaseline_cycle": "rebaseline -> parallel execute -> qualify/admit -> rebaseline"
+  },
+  "negative_qualification_rule": {
+    "first_class_closed_knowledge": true,
+    "production_capability_credit_automatic": false,
+    "completion_percentage_effect_automatic": false,
+    "may_block_or_reroute_downstream_work": true
+  }
+}
