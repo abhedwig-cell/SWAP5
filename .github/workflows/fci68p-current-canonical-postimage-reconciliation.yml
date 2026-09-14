@@ -36,7 +36,7 @@ jobs:
           allowed=(
             .github/workflows/fci-canonical.yml
             .github/workflows/fci68p-current-canonical-postimage-reconciliation.yml
-            tests/fci/run_fci68p_current_canonical-postimage-reconciliation.sh
+            tests/fci/run_fci68p_current_canonical_postimage_reconciliation.sh
             integration/f-ci/F-CI68P_STATUS.json
           )
           mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
