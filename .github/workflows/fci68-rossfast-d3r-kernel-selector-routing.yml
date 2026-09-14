@@ -11,6 +11,7 @@ on:
       - 'src/runtime/mod_rossfast_d3r_execution_policy.f90'
       - 'tests/fci/test_fci68_rossfast_d3r_kernel_selector_routing.f90'
       - 'tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh'
+      - 'integration/f-ci/F-CI68_STATUS.json'
       - '.github/workflows/fci68-rossfast-d3r-kernel-selector-routing.yml'
   workflow_dispatch:
 
@@ -55,6 +56,7 @@ jobs:
             src/runtime/mod_fmr_checkpoint_orchestrator.f90
             tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh
             tests/fci/test_fci68_rossfast_d3r_kernel_selector_routing.f90
+            integration/f-ci/F-CI68_STATUS.json
           )
           mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
           for path in "${changed[@]}"; do
