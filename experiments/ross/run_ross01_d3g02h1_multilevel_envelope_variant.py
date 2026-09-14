@@ -76,13 +76,11 @@ def run_case(material: str, variant_id: str, top_fraction: float, bottom_fractio
     full_dt = adapter.DURATION_LADDER_DAY[attempt]
     t0 = 219.375 + float(attempt)
     results: dict[int, dict] = {}
-    request_snapshots: dict[int, dict] = {}
     requested_fluxes: dict[int, dict] = {}
 
     for level in LEVELS:
         req = independent_boundary_request(material, t0, level, top_fraction, bottom_fraction)
         req = cal.set_dt(req, t0, full_dt)
-        request_snapshots[level] = copy.deepcopy(req)
         requested_fluxes[level] = {
             "q_top_cm_per_day": float(req["forcing_process_requests"]["top_boundary"]["q_top_cm_per_day"]),
             "qbot_cm_per_day": float(req["forcing_process_requests"]["bottom_boundary"]["qbot_cm_per_day"]),
@@ -90,7 +88,7 @@ def run_case(material: str, variant_id: str, top_fraction: float, bottom_fractio
         results[level] = adapter.execute_research_trial(req)
 
     numerical_pass = all(trial_ok(results[level]) for level in LEVELS)
-    request_immutable = all(request_snapshots[level] == request_snapshots[level] for level in LEVELS)
+    request_immutable = all(results[level].get("request_object_unchanged") is True for level in LEVELS)
     same_forcing_all_levels = len({(v["q_top_cm_per_day"], v["qbot_cm_per_day"]) for v in requested_fluxes.values()}) == 1
 
     reference32 = prior_probe.ref_state(refs[0], full_dt)
