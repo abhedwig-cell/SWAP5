@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "capability": "G05_DIRECT_GROUNDWATER_COMPOSITION",
+  "work_unit_alias": "F-GC25",
+  "title": "MultiSWAP Direct Groundwater Coupling Execution Composition",
+  "decision": "QUALIFIED_CAPABILITY_READY_FOR_CANONICAL_ADMISSION",
+  "qualified": true,
+  "canonical_admission": false,
+  "groundwater_coupling_v1_complete": false,
+  "canonical_base": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+  "qualified_implementation_head": "43c9f09110dea83928ef7d58990c37575d8ca223",
+  "qualified_workflow_run": 34869005146,
+  "qualified_workflow_job": 104059959530,
+  "inherited_evidence": {
+    "F-GC20": {
+      "final_qualified_authority": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "production_source": "src/runtime/mod_groundwater_tile_aggregation.f90",
+      "source_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+      "inheritance_check": "BYTE_IDENTICAL"
+    },
+    "F-GC22": {
+      "final_qualified_authority": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "production_source": "src/runtime/mod_groundwater_accuracy_binding.f90",
+      "source_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+      "inheritance_check": "BYTE_IDENTICAL",
+      "composition_role": "upstream governed application/temporal accuracy to groundwater_head_convergence_policy binding; F-GC25 consumes the resulting validated policy rather than reimplementing the binding"
+    },
+    "F-GC21": {
+      "owner_fixture_commit": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+      "composition_role": "single-column predictor/corrector authority and equivalence reference"
+    }
+  },
+  "production_sources": [
+    "src/runtime/mod_groundwater_tile_aggregation.f90",
+    "src/runtime/mod_groundwater_accuracy_binding.f90",
+    "src/runtime/mod_groundwater_multiswap_types.f90",
+    "src/runtime/mod_groundwater_multiswap_topology.f90",
+    "src/runtime/mod_groundwater_multiswap_swap_phase.f90",
+    "src/runtime/mod_groundwater_multiswap_transaction.f90",
+    "src/runtime/mod_groundwater_multiswap_publication.f90",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90"
+  ],
+  "runtime_contract": {
+    "cell_window_atomicity": true,
+    "one_groundwater_predictor_and_one_corrector_trial_per_cell_window": true,
+    "all_tile_candidates_preflight_before_first_publication": true,
+    "deterministic_canonical_tile_order": true,
+    "area_weighted_cell_exchange": true,
+    "per_tile_mass_ledgers_preserve_real_tile_lineage": true,
+    "exact_action_reaction_at_groundwater_interface": true,
+    "shared_worker_executor_reuse_supported": true,
+    "failed_cell_does_not_mutate_previously_accepted_independent_cell": true,
+    "no_modflow_or_external_groundwater_type_dependency": true,
+    "serialized_multiswap_runtime_hook_required": false
+  },
+  "qualification": {
+    "optimization_levels": ["O0", "O2"],
+    "single_tile_equivalence_to_F-GC21": true,
+    "two_tile_cell_commit": true,
+    "surface_fraction_mass_aggregation": true,
+    "full_cell_input_permutation_determinism": true,
+    "adversarial_canonical_sum_determinism": true,
+    "predictor_groundwater_failure_fail_closed": true,
+    "corrector_groundwater_failure_cell_atomic": true,
+    "partial_corrector_tile_failure_fail_closed": true,
+    "multiple_independent_cells_with_one_failing_cell": true,
+    "worker_isolation_no_state_bleed": true,
+    "bounded_trial_count": "two SWAP trajectories per participating tile plus one predictor and one corrector groundwater trial on the normal restricted path",
+    "fortran_warning_gate": "clean under -Wall -Wextra -Werror except explicitly allowed compare-real diagnostics",
+    "structural_scaling_claim": "qualified for bounded work and shared worker reuse; no wall-clock throughput or parallel speedup claim"
+  },
+  "tests": [
+    "tests/fgc/test_fgc25_multiswap_commit.f90",
+    "tests/fgc/test_fgc25_single_tile_equivalence.f90",
+    "tests/fgc/test_fgc25_multiswap_qualification.f90",
+    "tests/fgc/test_fgc25_corrector_tile_fail_closed.f90",
+    "tests/fgc/test_fgc25_permutation_determinism.f90",
+    "tests/fgc/test_fgc25_multicell_isolation.f90"
+  ],
+  "gate": "tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh",
+  "hard_nonclaims": [
+    "no F-GC23 whole-window response tangent qualification or admission",
+    "no finite-difference derivative substitution for unavailable F-GC23 tangent authority",
+    "no F-GC26 concrete external groundwater or MODFLOW adapter qualification",
+    "no F-GC27 restricted end-to-end groundwater coupling admission",
+    "no deep-vadose transfer-zone claim",
+    "no wall-clock throughput or parallel speedup qualification",
+    "no groundwater-coupling-v1 completion claim"
+  ],
+  "remaining_external_dependencies": [
+    "F-GC23 whole-window coupling response tangent and one-corrector response composition",
+    "F-GC26 external groundwater adapter conformance and integration qualification",
+    "F-GC27 final restricted production groundwater coupling end-to-end admission"
+  ],
+  "exact_head_requirement": "The commit introducing this status file must itself pass the F-GC25 G05 MultiSWAP groundwater composition workflow. That exact green status head becomes the capability authority; no extra final/review/staging branch is required."
+}
