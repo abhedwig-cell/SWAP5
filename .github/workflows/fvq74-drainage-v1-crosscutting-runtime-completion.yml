@@ -1,0 +1,41 @@
+name: F-VQ74 drainage-v1 cross-cutting independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq74-drainage-v1-crosscutting-runtime-completion
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fvq74-drainage-crosscutting-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Fetch live canonical authority
+        run: git fetch --no-tags origin integration/f-ci-canonical
+      - name: Independent source, lineage and scope governance
+        run: bash tests/fvq/run_fvq74_source_governance.sh
+      - name: Fresh MultiSWAP restart and diagnostics qualification
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq74_drainage_crosscutting_independent.sh 2>&1 | tee "$RUNNER_TEMP/fvq74-crosscutting.log"
+      - name: Retain cross-cutting runtime log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq74-crosscutting-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/fvq74-crosscutting.log
+          if-no-files-found: ignore

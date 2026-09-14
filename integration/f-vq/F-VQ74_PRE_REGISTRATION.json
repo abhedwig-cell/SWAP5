@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.fvq74.pre_registration.v1",
+  "work_unit": "F-VQ74",
+  "title": "Drainage-v1 cross-cutting runtime completion independent qualification",
+  "branch": "qualification/f-vq74-drainage-v1-crosscutting-runtime-completion",
+  "base_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "frozen_scope_authority": {
+    "work_unit": "F-PM13",
+    "branch": "work/f-pm13-drainage-v1-completion-audit",
+    "sha": "82038459ad81c3ef0b2e050ef02794ab013564d6",
+    "denominator_changed": false,
+    "scope_reduction_allowed": false
+  },
+  "admitted_response_authorities": {
+    "owner": "work/f-pm14-drainage-response-runtime-closure@52c1a9aebddc435ef3792378f958305a96308ed0",
+    "independent_runtime": "qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification@ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "production_composition": "c7444233b0f23d4f0a845ef5639287e77099291b",
+    "source_admission_merge": "eb2b2b17b2d54eeab22c4cba922426d8168e56a9",
+    "postimage_preservation_merge": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5"
+  },
+  "qualification_gap": {
+    "pm13_blocker": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+    "already_independently_covered": [
+      "transaction acceptance and rollback",
+      "hard mass closure and single booking",
+      "generic non-calendar interval",
+      "unsupported response fail-closed atomicity",
+      "O0/O2 exact identity",
+      "HeadCalc isolation and no I/O/calendar assumptions"
+    ],
+    "fresh_independent_evidence_required": [
+      "MultiSWAP active/inactive column isolation",
+      "execution-order independence",
+      "restart without additional drainage persistent state",
+      "restart continuation equivalence",
+      "accepted and rejected runtime diagnostics"
+    ]
+  },
+  "test_design": {
+    "fresh_fixture": true,
+    "owner_test_replay_as_primary_evidence": false,
+    "four_column_permutation": true,
+    "different_times_ids_rates_from_owner": true,
+    "O0_O2_exact_identity_required": true,
+    "hard_mass_tolerance": 1e-10,
+    "source_blob_locks_required": true,
+    "live_canonical_drift_is_fail_closed": true
+  },
+  "scope_guards": {
+    "production_source_changes_allowed": false,
+    "reference_source_changes_allowed": false,
+    "new_physics_allowed": false,
+    "new_option_allowed": false,
+    "mass_booking_changes_allowed": false,
+    "restart_layout_changes_allowed": false,
+    "multiswap_runtime_changes_allowed": false,
+    "solver_policy_changes_allowed": false
+  },
+  "architecture_invariants": {
+    "invariants_1_30_must_not_regress": true,
+    "targeted_invariants": [4,5,6,7,9,13,16,22,23,26,27,29,30]
+  },
+  "hard_nonclaims": [
+    "F-VQ74 does not itself establish drainage-v1 100-percent completion.",
+    "F-VQ74 does not authorize production changes.",
+    "F-VQ74 does not replace F-VQ73 or the scientific authorities for the six response variants.",
+    "A later PM15 frozen-scope audit must still reconcile all PM13 blockers before any 100-percent claim."
+  ]
+}
