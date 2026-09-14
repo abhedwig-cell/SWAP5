@@ -1,0 +1,48 @@
+{
+  "bounded_duration_family_qualified": true,
+  "canonical_observed_by_qualification": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+  "d2_authority": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+  "d3_authority": "21bf6ec4a0a847b60b8713dba832f0b94d07f049",
+  "decision": "QUALIFIED_ROSSFAST_BOUNDED_TRANSACTION_CALL_DURATION_PROFILE",
+  "duration_positive_cases": 120,
+  "duration_workflow_run_id": 34791081328,
+  "end_to_end_remainder_scheduling_qualified": false,
+  "evidence_authority_commit": "18ef7799e09562c6efaf8d23963bee907a695e52",
+  "evidence_path": "integration/f-ross/F-ROSS01_D3R_EVIDENCE.json",
+  "exact_next_research_step": "F-ROSS01-D3-G02 temporal-certificate qualification remains separate; outer remainder scheduling after shortened commit also remains unqualified. No production admission follows from D3R.",
+  "external_temporal_error_semantics_qualified": false,
+  "fsi31_authority": "4190ede0b17e81abe806430cc9a4c94a21995917",
+  "hard_mass_tolerance_cm": 1e-12,
+  "hard_nonclaims": [
+    "ROSSFAST_TEMPORAL_ERROR_OR_CERTIFICATE",
+    "CURRENT_CANONICAL_TEMPORAL_ACCEPTANCE_TOLERANCE",
+    "END_TO_END_REMAINDER_SCHEDULING_AFTER_SHORTENED_ACCEPT",
+    "PRODUCTION_RUNTIME_ROUTE",
+    "PRODUCTION_ADMISSION",
+    "RESTART",
+    "PRODUCTION_MULTISWAP_RUNTIME",
+    "WHOLE_WINDOW_INTERFACE_SENSITIVITY"
+  ],
+  "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+  "multiswap_runtime_qualified": false,
+  "open_gaps": [
+    "F-ROSS01-D3-G02"
+  ],
+  "production_admission": false,
+  "production_runtime_route_qualified": false,
+  "production_source_delta": [],
+  "qualification_execution_pass": true,
+  "restart_qualified": false,
+  "schema_version": 1,
+  "scope_disposition": "CLOSES_ONLY_D3_G01_AND_G03_TRANSACTION_CALL_DURATION_BLOCKERS",
+  "status": "CLOSED",
+  "targeted_gaps_closed": [
+    "F-ROSS01-D3-G01",
+    "F-ROSS01-D3-G03"
+  ],
+  "two_half_candidate_chain_qualified": true,
+  "two_half_chain_count": 54,
+  "two_half_workflow_run_id": 34791081303,
+  "whole_window_derivative_qualified": false,
+  "work_unit": "F-ROSS01 D3R"
+}
