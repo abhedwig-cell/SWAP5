@@ -1,0 +1,28 @@
+name: EB-I18 staged runtime preflight
+
+on:
+  push:
+    branches:
+      - work/eb-i18-candidate-bound-bottom-energy-publication
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I18_PREFLIGHT_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I18_PREFLIGHT_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Apply staged runtime patch and compile O0/O2
+        run: bash tests/eb/run_eb_i18_staged_runtime_preflight.sh
+      - name: Verify production source remains uncommitted staging delta
+        run: |
+          test "$(git status --short src/runtime/mod_fmr_serialized_multiswap_runtime.f90 | awk '{print $1}')" = M
+          echo 'EB_I18_PREFLIGHT_NO_RUNTIME_COMMIT=PASS'
