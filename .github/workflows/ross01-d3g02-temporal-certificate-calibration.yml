@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/ross01-d3g02-temporal-certificate-calibration.yml
       - experiments/ross/run_ross01_d3g02_temporal_certificate_calibration.py
+      - experiments/ross/run_ross01_d3g02_temporal_certificate_calibration_material.py
       - integration/f-ross/F-ROSS01_D3G02_TEMPORAL_CERTIFICATE_CONTRACT.json
   workflow_dispatch:
 
@@ -17,12 +18,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  calibration-attempt:
+  calibration-material:
     strategy:
       fail-fast: false
-      max-parallel: 9
+      max-parallel: 6
       matrix:
-        attempt_index: [0,1,2,3,4,5,6,7,8]
+        material: [B01, B12, O01, O05, O14, O18]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -48,51 +49,40 @@ jobs:
           test "$(git hash-object experiments/ross/ross01_d3r_fsi31_duration_adapter.py)" = "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
           test "$(git hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = "bafda0fb4ed6da606c3a1837208200dbcdb05c65"
       - name: Syntax check
-        run: python3 -m py_compile experiments/ross/run_ross01_d3g02_temporal_certificate_calibration.py
-      - name: Run six material calibrations for this attempt
-        shell: bash
         run: |
-          set -euo pipefail
-          pids=()
-          for material in B01 B12 O01 O05 O14 O18; do
-            (
-              python3 experiments/ross/run_ross01_d3g02_temporal_certificate_calibration.py \
-                --canonical-head "$CANONICAL_HEAD" \
-                --attempt-index "${{ matrix.attempt_index }}" \
-                --material "$material" \
-                --output "F-ROSS01_D3G02_CAL_${{ matrix.attempt_index }}_${material}.json"
-            ) &
-            pids+=("$!")
-          done
-          rc=0
-          for pid in "${pids[@]}"; do
-            wait "$pid" || rc=1
-          done
-          exit "$rc"
+          python3 -m py_compile experiments/ross/run_ross01_d3g02_temporal_certificate_calibration.py
+          python3 -m py_compile experiments/ross/run_ross01_d3g02_temporal_certificate_calibration_material.py
+      - name: Run nine retry levels using two shared DOP853 reference trajectories
+        run: |
+          python3 experiments/ross/run_ross01_d3g02_temporal_certificate_calibration_material.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3G02_CAL_MATERIAL_${{ matrix.material }}.json"
       - name: Upload calibration evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-d3g02-cal-attempt-${{ matrix.attempt_index }}-${{ github.run_id }}
-          path: F-ROSS01_D3G02_CAL_${{ matrix.attempt_index }}_*.json
+          name: f-ross01-d3g02-cal-material-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02_CAL_MATERIAL_${{ matrix.material }}.json
 
   aggregate-calibration:
-    needs: calibration-attempt
+    needs: calibration-material
     if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: f-ross01-d3g02-cal-attempt-*-${{ github.run_id }}
+          pattern: f-ross01-d3g02-cal-material-*-${{ github.run_id }}
           path: shards
           merge-multiple: true
-      - name: Aggregate calibration evidence
+      - name: Aggregate calibration evidence and apply precommitted rule
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
-          files = sorted(Path('shards').glob('F-ROSS01_D3G02_CAL_*_*.json'))
-          rows = [json.loads(p.read_text()) for p in files]
+          files = sorted(Path('shards').glob('F-ROSS01_D3G02_CAL_MATERIAL_*.json'))
+          payloads = [json.loads(p.read_text()) for p in files]
+          rows = [case | {'live_canonical_head': p.get('live_canonical_head')} for p in payloads for case in p.get('cases', [])]
           materials = ('B01','B12','O01','O05','O14','O18')
           expected = {(i,m) for i in range(9) for m in materials}
           observed = {(r.get('attempt_index'), r.get('material')) for r in rows}
@@ -104,9 +94,11 @@ jobs:
           coarse = [float(r['temporal_metrics']['coarse_reference_error']) for r in rows if isinstance((r.get('temporal_metrics') or {}).get('coarse_reference_error'), (int,float))]
           selfd = [float(r['reference']['self_delta_span_normalized_linf']) for r in rows if isinstance((r.get('reference') or {}).get('self_delta_span_normalized_linf'), (int,float))]
           masses = [abs(float(r.get('max_abs_mass_residual_cm', 0.0))) for r in rows]
-          complete = len(rows) == 54 and observed == expected
-          passed = complete and all(r.get('pass') is True for r in rows) and len(canonical_heads) == 1 and len(ratios) == 54
+          complete = len(payloads) == 6 and len(rows) == 54 and observed == expected
+          base_pass = complete and all(p.get('pass') is True for p in payloads) and all(r.get('pass') is True for r in rows) and len(canonical_heads) == 1 and len(ratios) == 54
           max_ratio = max(ratios, default=None)
+          max_refined = max(refined, default=None)
+          precommitted_rule_pass = bool(base_pass and max_ratio is not None and max_ratio <= 1.0 and max_refined is not None and max_refined <= 1.0e-5 and max(selfd, default=float('inf')) <= 1.0e-9 and max(masses, default=float('inf')) <= 1.0e-12)
           worst_ratio = None
           if ratio_rows:
               rr = max(ratio_rows, key=lambda r: float(r['temporal_metrics']['refined_error_to_raw_ratio']))
@@ -114,7 +106,8 @@ jobs:
           out = {
               'work_unit': 'F-ROSS01 D3G02',
               'kind': 'temporal_certificate_calibration_aggregate',
-              'calibration_pass': passed,
+              'calibration_pass': base_pass,
+              'precommitted_decision_rule_pass': precommitted_rule_pass,
               'case_count': len(rows),
               'expected_case_count': 54,
               'attempt_count': 9,
@@ -124,20 +117,21 @@ jobs:
               'worst_ratio_case': worst_ratio,
               'max_raw_estimator': max(raws, default=None),
               'max_coarse_reference_error': max(coarse, default=None),
-              'max_refined_reference_error': max(refined, default=None),
+              'max_refined_reference_error': max_refined,
               'max_reference_self_delta': max(selfd, default=None),
               'max_abs_mass_residual_cm': max(masses, default=0.0),
-              'all_refined_reference_errors_le_1e_5': bool(refined) and all(v <= 1.0e-5 for v in refined),
-              'observed_minimum_conservative_safety_factor': max_ratio,
+              'candidate_safety_factor_1_0_admitted': precommitted_rule_pass,
+              'candidate_accuracy_tolerance_1e_5_admitted': precommitted_rule_pass,
               'safety_factor_authority': False,
               'accuracy_tolerance_authority': False,
               'certificate_available': False,
-              'disposition': 'CALIBRATION_EVIDENCE_ONLY_FREEZE_CONSTANTS_IN_SEPARATE_STEP',
+              'decision_rule': 'factor=1.0 and tolerance=1e-5 iff exact 54-case matrix satisfies precommitted bounds; no posthoc inflation/relaxation',
+              'disposition': 'CALIBRATION_EVIDENCE_ONLY_FREEZE_PRECOMMITTED_CONSTANTS_IN_SEPARATE_STEP' if precommitted_rule_pass else 'NEGATIVE_CALIBRATION_LEAVE_D3_G02_OPEN',
               'production_source_delta': [],
           }
           Path('F-ROSS01_D3G02_CALIBRATION_AGGREGATE.json').write_text(json.dumps(out, indent=2, sort_keys=True, allow_nan=False) + '\n')
           print(json.dumps(out, sort_keys=True, allow_nan=False))
-          raise SystemExit(0 if passed else 1)
+          raise SystemExit(0 if precommitted_rule_pass else 1)
           PY
       - name: Upload aggregate evidence
         if: always()
