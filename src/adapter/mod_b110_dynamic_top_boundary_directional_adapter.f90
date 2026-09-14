@@ -28,7 +28,7 @@ contains
     type(soil_water_top_boundary_result_t) :: top
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q1, h0, distance, top_dz, demand, previous_ponding
-    real(real64) :: scale, guard
+    real(real64) :: pond_guard, evaporation_guard, atmospheric_guard, surface_head_guard
     logical :: ok
 
     available = .false.
@@ -105,19 +105,32 @@ contains
 
     previous_ponding = provider%previous_ponding_depth
     demand = provider%potential_bare_soil_evaporation
-    scale = max(1.0_real64, abs(previous_ponding), abs(emax), abs(q1), abs(h0), abs(demand))
-    guard = 4096.0_real64*epsilon(1.0_real64)*scale
+
+    ! Every nonsmooth switch gets a guard scaled only with quantities in the
+    ! same physical coordinate. A shared cross-unit scale would let, for
+    ! example, a large evaporation demand inflate the centimetre-scale ponding
+    ! guard and hide a distinct capacity-limited branch. Guards remain purely
+    ! sensitivity-admission logic; the qualified value provider above remains
+    ! the physical route authority.
+    pond_guard = 4096.0_real64*epsilon(1.0_real64) * &
+         max(1.0_real64, abs(previous_ponding), abs(B110_DYN_TOP_PONDING_CLASSIFICATION_CM))
+    evaporation_guard = 4096.0_real64*epsilon(1.0_real64) * &
+         max(1.0_real64, abs(emax), abs(demand))
+    atmospheric_guard = 4096.0_real64*epsilon(1.0_real64) * &
+         max(1.0_real64, abs(q1), abs(emax))
+    surface_head_guard = 4096.0_real64*epsilon(1.0_real64) * &
+         max(1.0_real64, abs(h0), abs(B110_DYN_TOP_HEAD_SWITCH_CM))
 
     ! Ponded-vs-dry evaporation is a physical switch. Away from that switch the
     ! ponded branch is head-independent. On the dry branch only zero-clamped or
     ! demand-limited evaporation is admitted here; the capacity-limited branch
     ! has dqtop/dh_top != 0 and would require a modified accepted Jacobian.
-    if (abs(previous_ponding-B110_DYN_TOP_PONDING_CLASSIFICATION_CM) <= guard) then
+    if (abs(previous_ponding-B110_DYN_TOP_PONDING_CLASSIFICATION_CM) <= pond_guard) then
        route = 'dynamic-ponding-classification-switch'
        return
     end if
     if (previous_ponding <= B110_DYN_TOP_PONDING_CLASSIFICATION_CM) then
-       if (abs(emax) <= guard .or. abs(emax-demand) <= guard) then
+       if (abs(emax) <= evaporation_guard .or. abs(emax-demand) <= evaporation_guard) then
           route = 'dynamic-evaporation-switch'
           return
        end if
@@ -130,11 +143,11 @@ contains
     ! Fail closed exactly at the atmospheric-head and surface-head regime
     ! boundaries. Strictly inside surface-flux these guards do not contribute to
     ! the derivative of q1.
-    if (q1 >= 0.0_real64 .and. abs(q1-emax) <= guard) then
+    if (q1 >= 0.0_real64 .and. abs(q1-emax) <= atmospheric_guard) then
        route = 'dynamic-atmospheric-head-switch'
        return
     end if
-    if (abs(h0-B110_DYN_TOP_HEAD_SWITCH_CM) <= guard) then
+    if (abs(h0-B110_DYN_TOP_HEAD_SWITCH_CM) <= surface_head_guard) then
        route = 'dynamic-surface-head-switch'
        return
     end if
