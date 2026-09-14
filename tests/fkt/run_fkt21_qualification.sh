@@ -34,13 +34,27 @@ run_one(){
   grep -Fq 'FKT21_NON_DAY_ALIGNED_INTERVAL=PASS' "$out/output.txt" || fail "generic time marker missing $tag"
   grep -Fq 'FKT21_EXCHANGE_DERIVATIVE_ACCUMULATION=PASS' "$out/output.txt" || fail "exchange accumulation marker missing $tag"
   grep -Fq 'FKT21_BOUNDED_COST=PASS' "$out/output.txt" || fail "cost marker missing $tag"
+
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c tests/fkt/test_fkt21_provenance.f90 -o "$out/provenance.o"
+  gfortran "$opt" "$out/contract.o" "$out/trajectory.o" "$out/provenance.o" -o "$out/test_fkt21_provenance"
+  "$out/test_fkt21_provenance" | tee "$out/provenance_output.txt"
+  grep -Fq 'FKT21_PROVENANCE_HARDENING PASS' "$out/provenance_output.txt" || fail "provenance PASS marker missing $tag"
+  grep -Fq 'FKT21_CROSS_CANDIDATE_GENERATION=PASS' "$out/provenance_output.txt" || fail "cross-candidate marker missing $tag"
+  grep -Fq 'FKT21_STEP_ENDPOINT_TOKEN_BINDING=PASS' "$out/provenance_output.txt" || fail "endpoint binding marker missing $tag"
+  grep -Fq 'FKT21_NONMONOTONE_GENERATION_REJECTED=PASS' "$out/provenance_output.txt" || fail "generation marker missing $tag"
   echo "FKT21_OPT_PASS=$tag"
 }
 run_one -O0 o0
 run_one -O2 o2
 
-grep '^FKT21_' "$BUILD/o0/output.txt" > "$BUILD/o0/stable.txt"
-grep '^FKT21_' "$BUILD/o2/output.txt" > "$BUILD/o2/stable.txt"
+{
+  grep '^FKT21_' "$BUILD/o0/output.txt"
+  grep '^FKT21_' "$BUILD/o0/provenance_output.txt"
+} > "$BUILD/o0/stable.txt"
+{
+  grep '^FKT21_' "$BUILD/o2/output.txt"
+  grep '^FKT21_' "$BUILD/o2/provenance_output.txt"
+} > "$BUILD/o2/stable.txt"
 cmp "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt" || fail 'O0/O2 marker drift'
 
 # Composition code may not introduce production finite-difference solves or persistent SAVE state.
