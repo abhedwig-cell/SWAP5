@@ -7,6 +7,28 @@ if 'F-PM14 drainage response runtime composition' not in s:
     raise SystemExit('F-PM14 refine transform requires the base checked transform')
 
 
+def admission_block(text: str) -> str:
+    start = text.index('logical function fmr_serialized_execution_admitted')
+    end = text.index('end function fmr_serialized_execution_admitted')
+    return text[start:end]
+
+
+def already_refined(text: str) -> bool:
+    admission = admission_block(text)
+    return (
+        'self%drainage_response_levels' not in admission
+        and 'self%drainage_response_active' not in admission
+        and 'fmr_drainage_response_configuration_status' in text
+        and 'drainage_preflight_status = fmr_drainage_response_configuration_status' in text
+        and 'self%last_observation%drainage_response = self%drainage_response_diagnostics' in text
+    )
+
+
+if already_refined(s):
+    print('FPM14_BACKEND_REFINE_ALREADY_APPLIED=PASS')
+    raise SystemExit(0)
+
+
 def replace_once(old: str, new: str) -> None:
     global s
     count = s.count(old)
@@ -82,12 +104,13 @@ replace_once(
 
 # Static guard: execution admission may not consult the previous worker-local
 # response configuration. That scratch is configured only after admission.
-admission_start = s.index('logical function fmr_serialized_execution_admitted')
-admission_end = s.index('end function fmr_serialized_execution_admitted')
-admission = s[admission_start:admission_end]
+admission = admission_block(s)
 if 'self%drainage_response_levels' in admission or 'self%drainage_response_active' in admission:
     raise SystemExit('F-PM14 refine transform failed: admission still depends on drainage worker scratch')
 if 'fmr_drainage_response_configuration_status' not in s:
     raise SystemExit('F-PM14 refine transform failed: explicit preflight status missing')
+if not already_refined(s):
+    raise SystemExit('F-PM14 refine transform failed: postcondition not satisfied')
 
 p.write_text(s)
+print('FPM14_BACKEND_REFINE_APPLIED=PASS')
