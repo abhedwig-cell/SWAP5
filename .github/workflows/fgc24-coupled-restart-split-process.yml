@@ -1,0 +1,26 @@
+name: F-GC24 coupled restart split-process qualification
+
+on:
+  push:
+    branches:
+      - work/f-gc24-coupled-restart-split-run-replay-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact workunit head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-GC24 coupled restart gate
+        run: bash tests/fgc/run_fgc24_coupled_restart_split_process_gate.sh
