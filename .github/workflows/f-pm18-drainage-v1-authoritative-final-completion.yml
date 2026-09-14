@@ -1,0 +1,29 @@
+name: F-PM18 drainage-v1 authoritative final completion
+
+on:
+  push:
+    branches:
+      - work/f-pm18-drainage-v1-authoritative-final-completion
+  workflow_dispatch:
+
+jobs:
+  authoritative-final-completion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch exact authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin \
+            work/f-pm13-drainage-v1-completion-audit \
+            work/f-pm14-drainage-response-runtime-closure \
+            work/f-pm17-drainage-response-fully-implicit-coupling \
+            qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification \
+            qualification/f-vq74-drainage-v1-cross-cutting-independent-closure \
+            integration/f-ci-canonical
+      - name: Run authoritative Drainage-v1 completion gate
+        shell: bash
+        run: bash tests/fpm/run_fpm18_drainage_v1_authoritative_final_completion.sh
