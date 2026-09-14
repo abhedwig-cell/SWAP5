@@ -65,6 +65,46 @@ for path in "${changed[@]}"; do
 done
 echo 'FCI65P_RECONCILIATION_SCOPE_ALLOWLIST=PASS'
 
+python3 - "$POSTIMAGE" "$CANONICAL_WORKFLOW" <<'PY'
+from pathlib import Path
+import subprocess, sys
+postimage, path = sys.argv[1:]
+base = subprocess.check_output(['git','show',f'{postimage}:{path}'], text=True)
+actual = Path(path).read_text()
+old_auth = '          AUTH=52d66ba612096184327f58a076ef22bd0119e237\n'
+new_auth = '          AUTH=24b02660a7924323d1587b4adf77a160c9ef7d04\n'
+assert base.count(old_auth) == 1
+expected = base.replace(old_auth, new_auth, 1)
+anchor = (
+    '            src/runtime/mod_groundwater_coupling_contract.f90\n'
+    '            src/runtime/mod_groundwater_coupling_policy.f90\n'
+    '          )\n'
+)
+replacement = (
+    '            src/runtime/mod_groundwater_coupling_contract.f90\n'
+    '            src/runtime/mod_groundwater_coupling_policy.f90\n'
+    '            src/runtime/mod_groundwater_exchange_service_contract.f90\n'
+    '            src/runtime/mod_groundwater_interface_mass_ledger.f90\n'
+    '            src/runtime/mod_groundwater_coupled_restart.f90\n'
+    '          )\n'
+)
+assert expected.count(anchor) == 1
+expected = expected.replace(anchor, replacement, 1)
+marker = (
+    "          echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'\n"
+    "          echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'\n"
+)
+marker_replacement = (
+    "          echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'\n"
+    "          echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'\n"
+    "          echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'\n"
+)
+assert expected.count(marker) == 1
+expected = expected.replace(marker, marker_replacement, 1)
+assert actual == expected, 'canonical workflow contains changes outside the exact F-CI65P transformation'
+print('FCI65P_EXACT_CANONICAL_WORKFLOW_TRANSFORMATION=PASS')
+PY
+
 grep -Fq "AUTH=$POSTIMAGE" "$CANONICAL_WORKFLOW" || fail 'moving-current authority not advanced to F-CI65 postimage'
 ! grep -Fq 'AUTH=52d66ba612096184327f58a076ef22bd0119e237' "$CANONICAL_WORKFLOW" || fail 'stale F-CI64 moving-current authority remains active'
 for path in "${!BLOBS[@]}"; do
