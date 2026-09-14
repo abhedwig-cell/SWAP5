@@ -10,6 +10,7 @@ on:
       - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
       - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
       - 'tests/fsi/fsi37_make_reference_stubs.py'
+      - 'tests/fsi/mod_fsi37_dummy_alternative_solver.f90'
       - 'tests/fsi/test_fsi37_accepted_step_directional_derivative.f90'
       - 'tests/fsi/test_fsi37_dynamic_surface_flux_direction.f90'
       - 'tests/fsi/run_fsi37_qualification.sh'
