@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS01",
+  "gate": "K_RUNTIME_PRODUCTION_RUNTIME_HOOK",
+  "title": "Backward-compatible model-owned canonical transaction-window selector",
+  "status": "CLOSED_POSITIVE_RESTRICTED_PRODUCTION_CONTRACT",
+  "decision": "CANONICAL_MODEL_OWNED_TRANSACTION_WINDOW_SELECTOR_QUALIFIED",
+  "canonical_base": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+  "ross_frontier_authority": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+  "branch": "work/f-ross01-k-runtime-production-window-selector",
+  "tested_head": "ba5ff4ffb3e0b047b81c009bdc2a0a6bdba7debc",
+  "production_blobs": {
+    "src/runtime/mod_canonical_contracts.f90": "77c4b5ce6020dcc7a9adeb37695fe4a7acdc4693",
+    "src/runtime/mod_canonical_interval_runtime.f90": "1a77afe491361fe38184dee1d225f078ee32942a",
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "contract": {
+    "ownership": "MODEL_OWNED_SELECTION_CANONICAL_RUNTIME_VALIDATION",
+    "default": "selected_t1 = outer_t1",
+    "generic_runtime_policy": "NO_ROSSFAST_SPECIFIC_DURATION_POLICY",
+    "validation": [
+      "SELECTED_ENDPOINT_MUST_BE_FINITE",
+      "SELECTED_ENDPOINT_MUST_NOT_EXCEED_OUTER_T1_WITH_PROGRESS_TOLERANCE",
+      "SELECTED_ENDPOINT_MUST_STRICTLY_ADVANCE_CURSOR"
+    ],
+    "invalid_nonfinite_or_overshoot_status": "CANONICAL_STATUS_INVALID_REQUEST",
+    "no_progress_status": "CANONICAL_STATUS_NO_PROGRESS",
+    "external_publication": "ONCE_ONLY_AFTER_FULL_OUTER_INTERVAL_COMPLETION"
+  },
+  "qualification": {
+    "workflow_run_id": 34883149522,
+    "job_id": 104107113647,
+    "conclusion": "success",
+    "optimization_modes": ["O0", "O2"],
+    "optimization_outputs_byte_identical": true,
+    "output_sha256": "4ea0ce640c1f19403272905c406a27f13677bed2f1e942d5678b97961b70bafb",
+    "cases": [
+      "DEFAULT_OUTER_ENDPOINT_ONE_TRANSACTION_ONE_EXTERNAL_COMMIT",
+      "BOUNDED_QUARTER_WINDOWS_FOUR_TRANSACTIONS_ONE_EXTERNAL_COMMIT",
+      "NO_PROGRESS_FAILS_BEFORE_TRANSACTION_AND_EXTERNAL_MUTATION",
+      "OVERSHOOT_FAILS_BEFORE_TRANSACTION_AND_EXTERNAL_MUTATION",
+      "SUBSTEP_LIMIT_AFTER_THREE_ACCEPTED_INTERNAL_WINDOWS_PRESERVES_EXTERNAL_STATE"
+    ],
+    "mass_accounting": "COMPLETE_ZERO_RESIDUAL_IN_POSITIVE_CASES"
+  },
+  "inherited_evidence": {
+    "restart_composition": "QUALIFIED_RESTRICTED_RESEARCH",
+    "reject_retry_state_isolation": "QUALIFIED_RESTRICTED_RESEARCH",
+    "accepted_only_commit_ownership": "QUALIFIED_RESTRICTED_RESEARCH",
+    "hard_mass_accounting": "QUALIFIED_RESTRICTED_RESEARCH",
+    "bounded_remainder_scheduling": "QUALIFIED_RESTRICTED_RESEARCH"
+  },
+  "nonclaims": [
+    "NO_ROSSFAST_PRODUCTION_MODEL_ADAPTER",
+    "NO_ROSSFAST_PRODUCTION_ADMISSION",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_FULLRICHARDS_EQUIVALENCE",
+    "NO_MULTISWAP_QUALIFICATION",
+    "NO_SURFACE_CAP_GENERALIZATION"
+  ],
+  "next_action": "Materialize a production RossFast physical-model adapter that overrides the qualified selector without adding RossFast-specific duration policy to the generic canonical runtime, then qualify that adapter on the exact restricted D3R domain before any production admission."
+}
