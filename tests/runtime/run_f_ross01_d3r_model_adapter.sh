@@ -17,15 +17,15 @@ build_and_run() {
     "$ROOT/src/transaction/mod_transaction_reference.f90"
   gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
     "$ROOT/src/runtime/mod_canonical_contracts.f90"
-  gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
-    "$ROOT/src/runtime/mod_rossfast_d3r_model_adapter.f90"
   gfortran -std=f2018 -Wall -Wextra -Werror -Wno-error=compare-reals "$opt" -I. -c \
     "$ROOT/src/runtime/mod_canonical_interval_runtime.f90"
   gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
+    "$ROOT/src/runtime/mod_rossfast_d3r_model_adapter.f90"
+  gfortran -std=f2018 -Wall -Wextra -Werror "$opt" -I. -c \
     "$ROOT/tests/runtime/test_f_ross01_d3r_model_adapter.f90"
   gfortran "$opt" -o test_d3r_model_adapter \
-    mod_transaction_reference.o mod_canonical_contracts.o mod_rossfast_d3r_model_adapter.o \
-    mod_canonical_interval_runtime.o test_f_ross01_d3r_model_adapter.o
+    mod_transaction_reference.o mod_canonical_contracts.o mod_canonical_interval_runtime.o \
+    mod_rossfast_d3r_model_adapter.o test_f_ross01_d3r_model_adapter.o
   ./test_d3r_model_adapter > "$WORK/$tag.out"
 }
 
