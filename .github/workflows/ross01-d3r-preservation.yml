@@ -1,0 +1,58 @@
+name: F-ROSS01 D3R Preservation
+
+on:
+  push:
+    branches: [work/f-ross01-d3r-bounded-duration-retry-ladder-qualification]
+    paths:
+      - .github/workflows/ross01-d3r-preservation.yml
+      - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
+      - experiments/ross/ross01_d3r_duration_worker.py
+      - experiments/ross/run_ross01_d3r_preservation_probe.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-d3r-preservation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preservation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Bind frozen D2 and live canonical policy
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          test "$(git hash-object experiments/ross/ross01_d2_fsi31_adapter_base.py)" = "3cb579554f0931dc41ce05e92e2e7a5f06bf8888"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D2_STATUS.json)" = "ea67fefaa3bce7d7b650416978bb808573e8ca9c"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D2_EVIDENCE.json)" = "cc0476c07910392c978a9b394946591efadf08af"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          grep -q "retry_scale = 0.5_real64" "$RUNNER_TEMP/tx.f90"
+          grep -q "max_retries = 8" "$RUNNER_TEMP/tx.f90"
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_duration_matrix.py experiments/ross/run_ross01_d3r_preservation_probe.py
+      - name: Run preservation probe
+        run: |
+          python3 experiments/ross/run_ross01_d3r_preservation_probe.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --output F-ROSS01_D3R_PRESERVATION.json \
+            | tee F-ROSS01_D3R_PRESERVATION_STDOUT.txt
+      - name: Upload preservation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3r-preservation-${{ github.run_id }}
+          path: |
+            F-ROSS01_D3R_PRESERVATION.json
+            F-ROSS01_D3R_PRESERVATION_STDOUT.txt
