@@ -7,13 +7,18 @@ module mod_fgc24_coupled_restart_test
   use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t, groundwater_head_datum_t, &
        groundwater_interface_lineage_t
   use mod_groundwater_coupling_policy, only: groundwater_head_convergence_policy_t
+  use mod_groundwater_exchange_service_contract, only: groundwater_exchange_checkpoint_t, &
+       groundwater_exchange_candidate_t, groundwater_exchange_prepared_t, groundwater_exchange_trial_result_t, &
+       groundwater_capture_checkpoint, groundwater_trial_from_checkpoint, groundwater_prepare_candidate, &
+       groundwater_abort_prepared, GW_EXCHANGE_OK
   use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, &
        groundwater_interface_mass_snapshot_t, GW_MASS_LEDGER_OK
   use mod_groundwater_predictor_corrector_window, only: groundwater_coupling_origin_t, groundwater_pc_result_t, &
        run_restricted_groundwater_coupling_window, GW_PC_OK
   use mod_groundwater_coupled_restart, only: groundwater_restart_state_t, groundwater_restart_adapter_t, &
        groundwater_coupled_restart_record_t, export_groundwater_coupled_restart, restore_groundwater_coupled_restart, &
-       GW_COUPLED_RESTART_OK, GW_COUPLED_RESTART_LEDGER_REJECTED, GW_COUPLED_RESTART_PROVENANCE_MISMATCH
+       GW_COUPLED_RESTART_OK, GW_COUPLED_RESTART_LEDGER_REJECTED, GW_COUPLED_RESTART_PROVENANCE_MISMATCH, &
+       GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
   use mod_fgc21_restricted_predictor_corrector_owner_test, only: dummy_state_t, dummy_parameters_t, dummy_model_t, &
        dummy_materializer_t, dummy_groundwater_service_t, setup_common
   implicit none
@@ -184,6 +189,10 @@ contains
     type(canonical_numerical_config_t) :: numerical
     type(groundwater_coupled_restart_record_t) :: record, bad_record
     type(groundwater_interface_lineage_t) :: lineage
+    type(groundwater_exchange_checkpoint_t) :: transient_checkpoint
+    type(groundwater_exchange_candidate_t) :: transient_candidate
+    type(groundwater_exchange_prepared_t) :: transient_prepared
+    type(groundwater_exchange_trial_result_t) :: transient_result
     class(transaction_state_t), allocatable :: initial_state
     type(groundwater_interface_mass_snapshot_t) :: snap
     logical :: initialized, exported, restored
@@ -193,6 +202,23 @@ contains
          committed, initial_state, initialized, status)
     call require(initialized .and. status == GW_MASS_LEDGER_OK, 'selftest setup')
     restart_adapter%target => groundwater
+
+    call require(groundwater%restart_quiescent(), 'fresh preparable service quiescent')
+    call groundwater_capture_checkpoint(groundwater, transient_checkpoint, status)
+    call require(status == GW_EXCHANGE_OK .and. transient_checkpoint%ready(), 'quiescence capture')
+    call groundwater_trial_from_checkpoint(groundwater, transient_checkpoint, window, 0.0_real64, &
+         transient_candidate, transient_result, status)
+    call require(status == GW_EXCHANGE_OK .and. transient_candidate%ready(), 'quiescence trial')
+    call groundwater_prepare_candidate(groundwater, transient_checkpoint, transient_candidate, transient_prepared, status)
+    call require(status == GW_EXCHANGE_OK .and. transient_prepared%ready(), 'quiescence prepare')
+    call require(.not. groundwater%restart_quiescent(), 'live prepared reservation is non-quiescent')
+    call export_groundwater_coupled_restart(committed, SWAP_LAYOUT_ID, groundwater, restart_adapter, ledger, origin, &
+         record, exported, status)
+    call require(.not. exported .and. status == GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT, &
+         'live prepared reservation rejects restart export')
+    call groundwater_abort_prepared(groundwater, transient_checkpoint, transient_prepared, status)
+    call require(status == GW_EXCHANGE_OK, 'quiescence abort')
+    call require(groundwater%restart_quiescent(), 'aborted prepared reservation restores quiescence')
 
     lineage%coupling_id = origin%coupling_id
     lineage%swap_lineage_id = origin%swap_lineage_id
