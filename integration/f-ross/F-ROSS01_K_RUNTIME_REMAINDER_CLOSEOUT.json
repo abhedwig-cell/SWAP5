@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workunit": "F-ROSS01 K_RUNTIME remainder scheduler",
+  "status": "CLOSED_POSITIVE_RESTRICTED_RESEARCH",
+  "scope": "EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
+  "tested_head": "7b3c13f5fb754799593e199ab5288cb49b32d6dd",
+  "workflow_run_id": 34876346798,
+  "workflow_run_conclusion": "success",
+  "aggregate_job": {
+    "job_id": 104088495218,
+    "conclusion": "success"
+  },
+  "aggregate_artifact": {
+    "artifact_id": 10360214770,
+    "name": "f-ross01-k-runtime-remainder-aggregate-34876346798",
+    "digest": "sha256:bb17a7eb0ad3d87a0130c3bcf95210e6e20839c88a0f2d1beedfc99f97ad6dd6"
+  },
+  "material_artifacts": {
+    "B01": {"artifact_id": 10361412793, "digest": "sha256:7d7c0023e1e765b6cce098232a0d3020722d57192ebf9524ab0b7d00d8ab532e"},
+    "B12": {"artifact_id": 10361810760, "digest": "sha256:ed9138fd68d12f93b2f55291a00fa66a9d110e2237c1c3d2ce5198b1b59cdccc"},
+    "O01": {"artifact_id": 10360294672, "digest": "sha256:36514758371bd8059f60f1521ba61e027e2203fd09c627258067bbd49a75a819"},
+    "O05": {"artifact_id": 10361895353, "digest": "sha256:0db1a931e603ceacdde8471b16afeb8ab57fe8b50d2c5cb8a0cb7bad8250c29a"},
+    "O14": {"artifact_id": 10360778662, "digest": "sha256:24c533b423d18286b8336fa331d4ee759401b2f5b3e21a208a6a5cab3c18e1d5"},
+    "O18": {"artifact_id": 10360433661, "digest": "sha256:dcd0a2de7ce54829b39dffad323b77ed3df56b15e28114a888238f43cfaf3c0f"}
+  },
+  "canonical": {
+    "head": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "interval_runtime_blob": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "coupled_restart_blob": "0596933ff3ae89c61ab7a0913189a4fa3179e50b"
+  },
+  "dependencies": {
+    "restart_composition_status_blob": "50a26bb863f723b96176b84133212da29aa68906",
+    "d3g02r3_wrapper_blob": "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd",
+    "d3r_duration_adapter_blob": "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
+  },
+  "qualified": {
+    "dyadic_remainder_scheduler_algebra_levels_1_to_8": true,
+    "level_2_nontrivial_remainder_chain_2_1_2_all_six_materials": true,
+    "same_outer_forcing_preserved_across_segments": true,
+    "private_committed_state_chaining": true,
+    "fresh_certificate_after_each_private_state_transition": true,
+    "single_external_publication_after_full_outer_completion": true,
+    "stale_candidate_receipt_rejected": true,
+    "smallest_segment_failure_fails_closed": true,
+    "hard_mass_accounting_complete": true
+  },
+  "aggregate_metrics": {
+    "material_count": 6,
+    "max_abs_segment_mass_residual_cm": 9.58e-15,
+    "max_abs_aggregate_mass_residual_cm": 6.75e-15,
+    "hard_mass_tolerance_cm": 1e-12,
+    "max_temporal_indicator": 1e-05
+  },
+  "production_source_delta": [],
+  "production_admission": false,
+  "remaining_k_runtime_gap": "CANONICAL_PRODUCTION_RUNTIME_WINDOW_SELECTION_HOOK_AND_ROSSFAST_PRODUCTION_MODEL_INTEGRATION",
+  "decision": "QUALIFIED_BOUNDED_DYADIC_REMAINDER_SCHEDULER_COMPOSITION_ON_EXACT_D3R_RESTRICTED_DOMAIN",
+  "hard_nonclaims": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_PRODUCTION_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_QUALIFICATION",
+    "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION",
+    "NO_A10_SURFACE_CAP_GENERALIZATION"
+  ]
+}
