@@ -4,7 +4,7 @@ module mod_kernel_transactions
   use mod_transaction_reference, only: transaction_state_t, transaction_interface_sensitivity_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
-       CANONICAL_STATUS_INVALID_REQUEST
+       canonical_directional_response_request_t, canonical_directional_response_t, CANONICAL_STATUS_INVALID_REQUEST
   use mod_canonical_interval_runtime, only: run_canonical_interval
   implicit none
   private
@@ -108,6 +108,7 @@ module mod_kernel_transactions
     real(real64) :: completed_t = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
+    type(canonical_directional_response_t) :: directional_response
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -449,7 +450,7 @@ contains
   end subroutine kernel_bind_model
 
   subroutine kernel_advance_interval(self, parameters, committed_state, forcing, numerical_config, t0, t1, &
-                                     result, candidate_state, diagnostics, checkpoint)
+                                     result, candidate_state, diagnostics, checkpoint, directional_request)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed_state
@@ -460,6 +461,7 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate_state
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     type(kernel_checkpoint_t), intent(in), optional :: checkpoint
+    type(canonical_directional_response_request_t), intent(in), optional :: directional_request
 
     class(transaction_state_t), allocatable :: working
     type(canonical_interval_t) :: interval
@@ -525,7 +527,12 @@ contains
 
     interval%t0 = t0
     interval%t1 = t1
-    call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result)
+    if (present(directional_request)) then
+      call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result, &
+           directional_request=directional_request)
+    else
+      call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result)
+    end if
 
     call map_runtime_result(runtime_result, result)
     call map_transaction_diagnostics(runtime_result%diagnostics, diagnostics)
@@ -693,6 +700,7 @@ contains
     result%completed_t = runtime_result%completed_t
     result%mass = runtime_result%mass
     result%interface_sensitivity = runtime_result%interface_sensitivity
+    result%directional_response = runtime_result%directional_response
     result%bottom_interface_exchange_available = runtime_result%bottom_interface_exchange_available
     result%bottom_outward_exchange_native = runtime_result%bottom_outward_exchange_native
     result%terminal_bottom_outward_flux_native = runtime_result%terminal_bottom_outward_flux_native
