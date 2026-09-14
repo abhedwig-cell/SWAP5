@@ -213,11 +213,10 @@ contains
     real(real64), parameter :: target_qtop=-0.05_real64
     real(real64) :: capacity, scale
 
-    ! First ask the unchanged value provider to materialize its own Emax at the
-    ! exact base hydraulic state.  A very large demand makes bare evaporation
-    ! capacity-limited without hard-coding a soil-specific Emax value.
+    ! Materialize Emax from the unchanged value provider itself.  This avoids a
+    ! soil-specific hard-coded capacity while proving the intended physical branch.
     call bind_dynamic_top(probe_top,1,0.0_real64,large_demand,0.0_real64,0.0_real64)
-    call make_request(SW_STEP_CONTROL_BOTTOM_HEAD,h0+20.0_real64,1,probe_top,probe_request)
+    call make_request(SW_STEP_CONTROL_BOTTOM_FLUX,0.0_real64,1,probe_top,probe_request)
     probe_request%base_state%ponding_depth=0.0_real64
     call probe_top%evaluate(probe_request%base_state%pressure_head(1),probe_request%base_state%water_content(1), &
          probe_request%base_state%ponding_depth,probe_request%boundary,probe_result)
@@ -226,12 +225,11 @@ contains
     call require(ieee_is_finite(capacity) .and. capacity>0.0_real64 .and. capacity<large_demand, &
          'capacity probe materializes finite limited evaporation')
 
-    ! Rebind the same provider physics with supply chosen from that measured
-    ! capacity so q1=capacity-supply is a modest fixed surface flux.  This keeps
-    ! the physical solve well conditioned while remaining strictly on the dry
-    ! capacity-limited branch that F-SI37 must fail closed for sensitivity.
+    ! Choose supply so q1=capacity-supply equals a modest target surface flux.
+    ! The top physics remains capacity-limited, but the physical solve is tested
+    ! on the already stable prescribed-qbot route rather than a stiff mode-5 fixture.
     call bind_dynamic_top(top,1,0.0_real64,large_demand,0.0_real64,capacity-target_qtop)
-    call make_request(SW_STEP_CONTROL_BOTTOM_HEAD,h0+20.0_real64,1,top,request)
+    call make_request(SW_STEP_CONTROL_BOTTOM_FLUX,0.0_real64,1,top,request)
     request%base_state%ponding_depth=0.0_real64
     call top%evaluate(request%base_state%pressure_head(1),request%base_state%water_content(1), &
          request%base_state%ponding_depth,request%boundary,top_result)
@@ -244,7 +242,7 @@ contains
     call require(abs(top_result%actual_top_flux-target_qtop)<=1.0e-12_real64*scale, &
          'capacity-limited fixture has bounded physical top flux')
 
-    drequest%requested=.true.; drequest%control_coordinate=SW_STEP_CONTROL_BOTTOM_HEAD
+    drequest%requested=.true.; drequest%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
     allocate(drequest%incoming_pressure_head(numnod),drequest%incoming_water_content(numnod))
     drequest%incoming_pressure_head=incoming_h; drequest%incoming_water_content=incoming_theta
     drequest%incoming_ponding_depth=0.0_real64; drequest%direct_control_derivative=1.0_real64
