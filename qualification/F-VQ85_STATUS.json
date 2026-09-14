@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.workunit.status.v1",
+  "work_unit": "F-VQ85",
+  "title": "EB-I21R Runtime-Owned Accepted Receipt Independent Qualification",
+  "branch": "qualification/f-vq85-eb-i21r-runtime-owned-receipt-independent-qualification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "b162e98cc4ad6f85b741a21bd41f3db3d213559b"
+  },
+  "owner_authority": {
+    "work_unit": "EB-I21R",
+    "commit": "5d6cea2e6de577fb0267008b2a391770b5bd7a10"
+  },
+  "negative_predecessor": {
+    "work_unit": "EB-I21",
+    "commit": "aa4b536a2dcf0df7a17eda64701856ca4a7cb45c"
+  },
+  "tested_head": "9e95626d431db54f8f5a25dee87e74c5e3b378ab",
+  "tested_tree": "dda31e98d622a68762ffde8e2117bd230d33b628",
+  "workflow": {
+    "name": "F-VQ85 EB-I21R runtime-owned receipt independent qualification",
+    "run_id": 34844149593,
+    "job_id": 103975901780,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0 on Ubuntu 24.04"
+  },
+  "qualified_source_blobs": [
+    {
+      "path": "src/kernel/mod_energy_conservation_types.f90",
+      "blob": "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+    },
+    {
+      "path": "src/runtime/mod_energy_conservation_ledger.f90",
+      "blob": "cc166e82e51d8e0738fee51b4517626d0a2e890f"
+    },
+    {
+      "path": "src/runtime/mod_fmr_owned_commit_receipt.f90",
+      "blob": "2ab067d160715ff7358dd31efaa12694ef95852c"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+    }
+  ],
+  "unchanged_generic_contracts": {
+    "generic_accepted_receipt_blob": "6798b3296b426950bf028814585c3f5de9be950b",
+    "generic_receipt_owner_identity_added": false,
+    "kernel_transaction_source_changed_from_canonical": false
+  },
+  "independent_evidence": [
+    "Invalid runtime owner identity fails closed before physical commit; committed revision remains unchanged and the candidate remains unconsumed.",
+    "Two real physical columns reproduce the original scalar accepted-receipt alias while retaining distinct runtime owner identities.",
+    "A foreign-column owned receipt cannot authorize commit of the rightful prepared energy state and leaves that state intact.",
+    "The rightful owned receipt then commits the prepared energy state exactly once.",
+    "Generic accepted-receipt export preserves existing column-agnostic scalar receipt semantics.",
+    "Runtime ownership remains outside the generic kernel/F-MR accepted receipt and no hidden global identity source is introduced.",
+    "Independent O0/O2 oracle output is identical.",
+    "Owner postimage replay, bottom-energy transaction publication preservation and F-KT18 mass preservation remain PASS.",
+    "The verifier adds no production or reference source delta."
+  ],
+  "evidence_markers": [
+    "FVQ85_SCOPE_PROVENANCE_AND_BLOBS=PASS",
+    "FVQ85_RUNTIME_KERNEL_OWNERSHIP_SEPARATION=PASS",
+    "FVQ85_INVALID_OWNER_PRECOMMIT_FAIL_CLOSED=PASS",
+    "FVQ85_REAL_COLUMNS_SCALAR_RECEIPT_ALIAS_REPRODUCED=PASS",
+    "FVQ85_GENERIC_RECEIPT_EXPORT_COMPATIBILITY=PASS",
+    "FVQ85_FOREIGN_COLUMN_RECEIPT_FAIL_CLOSED=PASS",
+    "FVQ85_RIGHTFUL_OWNER_COMMIT_EXACTLY_ONCE=PASS",
+    "FVQ85_RUNTIME_OWNED_RECEIPT_INDEPENDENT_ORACLE=PASS",
+    "FVQ85_INDEPENDENT_ORACLE_O0_O2=PASS",
+    "FVQ85_OWNER_POSTIMAGE_REPLAY=PASS",
+    "FVQ85_NO_NEW_SOURCE_OR_REFERENCE_DELTA=PASS",
+    "FVQ85_INDEPENDENT_QUALIFICATION=PASS"
+  ],
+  "hard_nonclaims": [
+    "F-VQ85 does not authorize or perform canonical admission.",
+    "F-VQ85 does not claim the full SWAP5 Energy Balance is complete.",
+    "F-VQ85 does not alter production or reference source.",
+    "F-VQ85 does not claim to remediate unrelated pre-existing compiler warning debt."
+  ],
+  "decision": "QUALIFIED_FOR_F_CI_ADMISSION_REVIEW",
+  "next_owner": "Recheck live F-CI namespace and, if free, perform a separate current-canonical admission workunit composing only the exact qualified four-file production postimage, followed by postimage preservation reconciliation."
+}
