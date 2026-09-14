@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.fvq82.status.v1",
+  "work_unit": "F-VQ82",
+  "title": "EB-I20R1 cross-ledger provenance independent qualification",
+  "branch": "qualification/f-vq82-eb-i20r1-cross-ledger-provenance-independent-qualification",
+  "status": "NOT_QUALIFIED_SAME_PROVENANCE_CROSS_LEDGER_ALIAS",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "owner_authority": "8bb56b95b401dad52dc5410b60e9d392be92e286",
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "84355db95e0b47f2d231422a4bc050d89b712e5b"
+  },
+  "tested_head": "bb520b3b07f75865f59460f12094c8c994a626f2",
+  "tested_tree": "66468638601fe7459b3fde91734b7b3beedcbc09",
+  "workflow_run": 34838958481,
+  "workflow_job": 103959193553,
+  "runner": "ubuntu-24.04",
+  "compiler": "GNU Fortran 13.3.0",
+  "workflow_conclusion": "success_verifier_executed_and_blocker_classified",
+  "independent_evidence": {
+    "scope_and_exact_source_blobs_locked": true,
+    "verifier_modified_production_or_reference_source": false,
+    "different_provenance_foreign_abort_fail_closed": true,
+    "different_provenance_foreign_commit_fail_closed": true,
+    "own_handle_semantics_after_rejection_preserved": true,
+    "O0_O2_attack_observation_identical": true,
+    "F_KT18_mass_preservation": true,
+    "same_provenance_foreign_abort_status": 0,
+    "same_provenance_foreign_abort_wrongly_accepted": true,
+    "same_provenance_foreign_commit_status": 0,
+    "same_provenance_foreign_commit_record_ready": true,
+    "same_provenance_target_ledger_consumed": true,
+    "same_provenance_source_ledger_preserved": true
+  },
+  "technical_finding": "EB-I20R1 binds a prepared handle to generation, lineage, origin revision and interval, but not to a unique ledger instance. Two independent energy_trial_ledger_t instances can legitimately carry the same transaction provenance and local generation. A prepared handle copied from one such ledger is therefore accepted by the other for abort_prepared and commit_prepared, allowing one worker/ledger instance to consume or publish another instance's prepared energy state.",
+  "invariant_impact": [
+    "Invariant 5 scratch per worker: worker-local transactional scratch is not cryptographically or structurally bound to its owning ledger instance.",
+    "Invariant 7 transactional time steps: a foreign prepared handle can mutate another ledger when provenance tuples alias.",
+    "Invariant 16 MultiSWAP primary use case: distinct columns/workers cannot rely on tuple uniqueness for isolation.",
+    "Invariant 29 no silent dependencies: correctness would otherwise depend on an undocumented global uniqueness assumption for lineage/revision/interval tuples."
+  ],
+  "decision": "EXPLICIT_LEDGER_INSTANCE_IDENTITY_REQUIRED_BEFORE_ADMISSION",
+  "hard_nonclaims": [
+    "F-VQ82 does not canonically admit EB-I20R1.",
+    "The successful workflow means the independent attack executed successfully; it is a negative qualification result.",
+    "F-VQ82 does not invalidate the energy conservation algebra itself.",
+    "F-VQ82 does not modify production or reference source."
+  ],
+  "next_owner": "EB-I20R2 minimal remediation with explicit ledger-instance-bound prepared-handle identity, followed by fresh independent qualification"
+}
