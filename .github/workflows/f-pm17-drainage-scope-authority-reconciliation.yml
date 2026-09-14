@@ -1,0 +1,28 @@
+name: F-PM17 drainage frozen-scope authority reconciliation
+
+on:
+  push:
+    branches:
+      - work/f-pm17-drainage-response-fully-implicit-coupling
+  workflow_dispatch:
+
+concurrency:
+  group: f-pm17-drainage-scope-authority-reconciliation
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch exact prior authorities
+        run: |
+          git fetch --no-tags origin \
+            work/f-pm13-drainage-v1-completion-audit \
+            work/f-pm15-drainage-v1-final-completion-reconciliation
+          git cat-file -e e5cd87eafb95356ca0d5ef8399fcb64feae78fd2^{commit}
+          git cat-file -e 50c933a54e9920735b65e708839b5a8b8aa57ede^{commit}
+      - name: Run frozen-scope authority reconciliation
+        run: bash tests/fpm/run_fpm17_scope_authority_reconciliation.sh
