@@ -145,10 +145,8 @@ jobs:
           for opt in 0 2; do
             OUT="$BUILD/o$opt"
             mkdir -p "$OUT"
-            # mod_transaction_reference is a support dependency for canonical_interval_t.
-            # Its current source contains an intentional exact REAL comparison that is
-            # unrelated to EB-R02. Keep all warnings enabled, but do not promote only
-            # compare-reals to an error for this support compilation.
+            # Support dependency only. Preserve warnings but do not turn its
+            # pre-existing exact REAL comparison into an EB-R02 build failure.
             gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c \
               src/transaction/mod_transaction_reference.f90 -o "$OUT/mod_transaction_reference.o"
             gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
@@ -206,6 +204,12 @@ jobs:
           if set(rows) != set(expected):
               raise SystemExit(f'case set mismatch: {sorted(rows)}')
 
+          # The interval duration is formed by subtracting coordinates near day
+          # 2700, so its cancellation error is bounded relative to that time
+          # coordinate, not relative to the small duration itself.
+          duration_tolerance = 2.0 * math.ulp(2701.0)
+          output_tolerance = 2.0e-13
+
           for case_id, anchor in expected.items():
               row = rows[case_id]
               status, process_status, duration, called, produced, ptra, peva, epond = anchor
@@ -213,10 +217,13 @@ jobs:
                   raise SystemExit(f'{case_id}: status mismatch {row}')
               if (row['process_called'] == 'T') != called or (row['result_produced'] == 'T') != produced:
                   raise SystemExit(f'{case_id}: call/result flags mismatch {row}')
-              values = [float(row['duration']), float(row['ptra_cm_per_day']), float(row['peva_cm_per_day']), float(row['epond_cm_per_day'])]
-              targets = [duration, ptra, peva, epond]
+              observed_duration = float(row['duration'])
+              if not math.isclose(observed_duration, duration, rel_tol=0.0, abs_tol=duration_tolerance):
+                  raise SystemExit(f'{case_id}: duration={observed_duration} target={duration} tol={duration_tolerance}')
+              values = [float(row['ptra_cm_per_day']), float(row['peva_cm_per_day']), float(row['epond_cm_per_day'])]
+              targets = [ptra, peva, epond]
               for value, target in zip(values, targets):
-                  if not math.isclose(value, target, rel_tol=0.0, abs_tol=2.0e-13):
+                  if not math.isclose(value, target, rel_tol=0.0, abs_tol=output_tolerance):
                       raise SystemExit(f'{case_id}: value={value} target={target}')
 
           print('EB_R02_FORCING_SPAN_ANCHORS=PASS')
