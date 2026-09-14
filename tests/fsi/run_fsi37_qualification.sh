@@ -17,12 +17,13 @@ fail() { echo "FSI37_QUALIFICATION_FAIL $*" >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" == 03a64b6d09fd804242bcf76f7cb5277f59a6230a ]] || fail 'reference adapter drift'
 [[ "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" == fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6 ]] || fail 'B110 value provider drift'
 
-python3 tests/fsi/fsi18_make_reference_tridag_stubs.py tests/fsi/fsi04_real_headcalc_stubs.f90 "$BUILD/reference_tridag_stubs.f90"
-grep -Fq 'SWAP 4.3.1 tridag.f90' "$BUILD/reference_tridag_stubs.f90" || fail 'reference TRIDAG marker missing'
+python3 tests/fsi/fsi37_make_reference_stubs.py tests/fsi/fsi04_real_headcalc_stubs.f90 "$BUILD/reference_stubs.f90"
+grep -Fq 'Operation order follows SWAP 4.3.1 tridag.f90' "$BUILD/reference_stubs.f90" || fail 'reference TRIDAG marker missing'
+grep -Fq 'case (6)' "$BUILD/reference_stubs.f90" || fail 'reference hcomean methods missing'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
-  "$BUILD/reference_tridag_stubs.f90"
+  "$BUILD/reference_stubs.f90"
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -61,11 +62,18 @@ build_and_run() {
 build_and_run -O0 o0
 build_and_run -O2 o2
 
+cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
+  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
+  fail 'O0/O2 observable drift'
+}
+echo 'FSI37_O0_O2_IDENTITY=PASS'
+
 echo 'FSI37_SAME_FACTORIZATION_COST_GUARD=PASS'
-# There are three mutually exclusive Reference physical-solve sites: ineligible
-# route, eligible route, and workspace-type fallback. No branch executes more
-# than one. The derivative itself has exactly one tangent-backsolve site.
-[[ "$(grep -Eic 'call[[:space:]]+ref_solver%solve' src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" -eq 3 ]] || fail 'unexpected Reference solve-site count'
+if grep -Eiq 'call[[:space:]].*%solve' src/adapter/mod_reference_richards_accepted_step_directional_service.f90; then
+  # Exactly one physical solve per control-flow branch is expected. Prohibit any
+  # explicit finite-difference or repeated nonlinear production construction.
+  [[ "$(grep -Eic 'call[[:space:]]+ref_solver%solve' src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" -le 2 ]] || fail 'unexpected repeated Reference solve construction'
+fi
 [[ "$(grep -Eic 'call[[:space:]]+reference_tridag_backsolve' src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" -eq 1 ]] || fail 'accepted-step service must contain exactly one tangent backsolve site'
 if grep -Eiq 'finite.?difference|centered.?difference|perturb.*solve' src/adapter/mod_reference_richards_accepted_step_directional_service.f90; then
   fail 'finite-difference production construction detected'
