@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "kind": "PARENT_D3G02_FAILURE_FORENSICS_ONLY",
+  "status": "DIAGNOSTIC_NONAUTHORITY",
+  "source_authority": {
+    "d3g02_run_id": 34796278942,
+    "tested_commit": "2d6997ca2ae92665ab3856ea6dc96071de3a0106",
+    "aggregate_artifact_id": 10329814786,
+    "aggregate_artifact_digest": "sha256:5b74490cc6595f6c53ecde56e9080cb10d8eb8d0e82fb5f3e9585e083da00f0f"
+  },
+  "reanalysis_scope": {
+    "case_count": 54,
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "method": "Read immutable per-material D3G02 calibration artifacts and classify refined-error/raw-estimator ratios without changing any D3G02 decision rule."
+  },
+  "findings": {
+    "ratio_greater_than_one_case_count": 2,
+    "ratio_greater_than_one_cases": [
+      {
+        "material": "O01",
+        "attempt_index": 1,
+        "raw_estimator_span_normalized": 1.9499655480887093e-16,
+        "refined_reference_error_span_normalized": 3.119944876941935e-16,
+        "ratio": 1.6
+      },
+      {
+        "material": "B12",
+        "attempt_index": 1,
+        "raw_estimator_span_normalized": 3.204113017894666e-16,
+        "refined_reference_error_span_normalized": 4.2721506905262215e-16,
+        "ratio": 1.3333333333333335
+      }
+    ],
+    "max_refined_reference_error_among_ratio_gt_one": 4.2721506905262215e-16,
+    "globally_largest_refined_reference_error_case": {
+      "material": "O14",
+      "attempt_index": 0,
+      "raw_estimator_span_normalized": 1.8390471116387737e-10,
+      "refined_reference_error_span_normalized": 6.13027754398947e-11,
+      "ratio": 0.33333988592205144
+    },
+    "globally_largest_raw_estimator_case": {
+      "material": "O14",
+      "attempt_index": 0,
+      "raw_estimator_span_normalized": 1.8390471116387737e-10,
+      "refined_reference_error_span_normalized": 6.13027754398947e-11,
+      "ratio": 0.33333988592205144
+    },
+    "all_observed_ratio_gt_one_cases_are_sub_1e_15_span_normalized": true
+  },
+  "interpretation": {
+    "supports_resolution_floor_hypothesis": true,
+    "proves_resolution_floor_hypothesis": false,
+    "proves_conservative_runtime_certificate": false,
+    "changes_d3g02_negative_disposition": false,
+    "changes_d3_g02_open_status": false,
+    "reason": "The only D3G02 conservativity-ratio failures occur where both estimator and independently referenced error are at approximately machine-resolution scale, while the largest resolvable temporal-error case is conservatively estimated. This motivates but does not qualify a resolution-floor or alternative estimator model."
+  },
+  "anti_overfit": {
+    "factor_1_6_not_admitted": true,
+    "no_floor_selected_from_these_two_failures": true,
+    "no_threshold_changed": true,
+    "current_d3g02r_holdout_matrix_unchanged": true
+  },
+  "governance": {
+    "certificate_available": false,
+    "safety_factor_authority": false,
+    "accuracy_tolerance_authority": false,
+    "production_admission": false,
+    "production_source_delta": []
+  }
+}
