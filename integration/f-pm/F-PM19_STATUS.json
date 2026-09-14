@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.fpm19.status.v1",
+  "work_unit": "F-PM19",
+  "title": "Drainage-v1 authoritative fixed-denominator 100 percent completion closeout",
+  "branch": "work/f-pm19-drainage-v1-authoritative-100-percent-completion",
+  "phase": "AUTHORITATIVE_FIXED_DENOMINATOR_COMPLETION_CLOSED",
+  "decision": "QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "live_rechecked_before_status": true
+  },
+  "frozen_denominator": {
+    "authority": "F-PM13@e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "variant_count": 8,
+    "changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "all_variants_complete": true
+  },
+  "original_blockers": {
+    "G1_RUNTIME_COMPOSITION": "CLOSED",
+    "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS": "CLOSED",
+    "G3_CANONICAL_ADMISSION_PRESERVATION": "CLOSED"
+  },
+  "scope_boundary": {
+    "F_PM17_authority": "45455f54c0c3554150e273aff07bfccd06d69c14",
+    "fully_implicit_drainage_solver_coupling_is_frozen_v1_exit_requirement": false,
+    "fully_implicit_drainage_solver_coupling_added": false,
+    "new_drainage_physics_added": false
+  },
+  "completion_evidence": {
+    "completion_certificate_path": "integration/f-pm/F-PM19_DRAINAGE_V1_FINAL_COMPLETION.json",
+    "completion_certificate_blob": "f4ddf0b9ed945ccb6f8a66c4611de624d10dc4a8",
+    "architecture_audit_path": "integration/f-pm/F-PM19_ARCHITECTURE_AUDIT.json",
+    "architecture_audit_blob": "dd49912365425f6d3cc9ce8b070a671eb010d751",
+    "architecture_invariants_1_30": "PASS_ALL_QUALIFIED_OR_PRESERVED",
+    "adverse_invariants": [],
+    "production_source_changed_by_F_PM19": false,
+    "reference_source_changed_by_F_PM19": false,
+    "mass_conservation_concession": false
+  },
+  "decisive_pre_status_gate": {
+    "head": "b3a2ead68a23af3fc42a3174aa107b5c886e1678",
+    "tree": "d40829aa5ee46de714df92360212562a9fde9d8d",
+    "workflow_run": 34823345733,
+    "workflow_job": 103909707213,
+    "conclusion": "success",
+    "all_frozen_variant_scientific_authorities_exact": "PASS",
+    "fixed_denominator_scope_and_runtime_authorities": "PASS",
+    "canonical_admission_and_moving_preservation": "PASS",
+    "current_drainage_dependency_surface_exact": "PASS",
+    "machine_readable_eight_variant_G1_G2_G3_and_invariants": "PASS",
+    "independent_current_postimage_executable_replay": "PASS",
+    "VQ73_O0": "PASS",
+    "VQ73_O2": "PASS",
+    "VQ74_O0": "PASS",
+    "VQ74_O2": "PASS",
+    "VQ73_O0_O2_exact_identity": true,
+    "VQ74_O0_O2_exact_identity": true,
+    "DIVDRA_fixed_weir_behavioral_preservation": "PASS",
+    "no_persistent_drainage_response_state": "PASS",
+    "HeadCalc_IO_calendar_isolation": "PASS",
+    "architecture_scope_guards": "PASS"
+  },
+  "independent_post_FCI62_preservation": {
+    "authority": "F-VQ76@5ee4920ffe680c920b64996159060fc1f509fcd8",
+    "status_decision": "QUALIFIED_DRAINAGE_RUNTIME_PRESERVED_ON_F_CI62_POSTIMAGE_INDEPENDENTLY",
+    "status_head_workflow_run": 34821454970,
+    "status_head_conclusion": "success"
+  },
+  "retained_non_decisive_failure": {
+    "workflow_run": 34822901814,
+    "workflow_job": 103908299432,
+    "head": "b6d5a95e9b4146751a46a3c544391f5b158ff82e",
+    "classification": "TEST_MATERIALIZATION_ONLY_MISSING_IMMUTABLE_VQ76_METADATA_AFTER_ALL_PHYSICS_REPLAYS_PASSED",
+    "production_defect_found": false,
+    "scientific_oracle_changed": false,
+    "tolerance_changed": false,
+    "production_source_changed_to_resolve": false,
+    "resolution": "Materialize the exact immutable F-VQ76 preregistration and architecture-audit blobs required by the unchanged F-VQ76 replay gate; rerun succeeded."
+  },
+  "authority_chain": {
+    "F_PM14": "52c1a9aebddc435ef3792378f958305a96308ed0",
+    "F_VQ73": "ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "F_VQ74": "60c121a0993993bd79fb30ddfd54e2a9d14f042e",
+    "F_CI61": "eb2b2b17b2d54eeab22c4cba922426d8168e56a9",
+    "F_CI61P": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "F_CI62": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "F_CI62P_current_canonical": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "F_VQ76": "5ee4920ffe680c920b64996159060fc1f509fcd8"
+  },
+  "drainage_v1_100_percent_complete": true,
+  "closed": true,
+  "final_status_head_requires_same_full_gate": true,
+  "hard_bounds": [
+    "The 100 percent claim applies only to the unchanged eight-variant frozen Drainage-v1 denominator established by F-PM13.",
+    "Fully implicit drainage-response solver coupling is neither added nor implied by this completion claim.",
+    "No broader reverse-exchange behavior, new drainage equation, new option, or unstated legacy drainage behavior is claimed.",
+    "Any future change to the protected drainage dependency surface requires fresh current-postimage preservation evidence before this current-canonical completion claim can be carried forward."
+  ]
+}
