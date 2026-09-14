@@ -1,0 +1,31 @@
+name: F-CI64P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci64p-current-canonical-postimage-reconciliation
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - 'integration/f-ci/F-CI64P_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact postimage qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FCI64P_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FCI64P_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI64P postimage gate
+        run: bash tests/fci/run_fci64p_current_canonical_postimage_reconciliation.sh
