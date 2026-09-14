@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "work_unit": "F-ROSS01 D3G02",
   "kind": "POSTCLOSEOUT_METADATA_TRIGGER_CI_RECEIPT",
   "authoritative_scientific_run": 34796278942,
@@ -23,8 +23,10 @@
     "reason_replay_not_required": "D3G02 is already CLOSED_NEGATIVE; no certificate constants are admitted and no production capability depends on a positive result. The later run is only a fail-closed stale-head guard firing before science execution."
   },
   "moving_current_reconciliation": {
-    "observed_current_canonical_head": "6425fb3290da637357e47618b459f4caf65a78d8",
-    "observed_current_canonical_commit_subject": "Merge F-CI62P: reconcile prescribed-qbot moving-current preservation",
+    "previous_observed_current_canonical_head": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "previous_observed_current_canonical_commit_subject": "Merge F-CI62P: reconcile prescribed-qbot moving-current preservation",
+    "observed_current_canonical_head": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+    "observed_current_canonical_commit_subject": "Merge F-CI63P: reconcile bottom-energy moving-current preservation",
     "canonical_transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
     "transaction_reference_byte_identical_to_qualification_binding": true,
     "relevant_model_certificate_semantics_unchanged_by_blob_identity": true,
