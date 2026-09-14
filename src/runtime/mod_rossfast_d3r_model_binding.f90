@@ -1,0 +1,426 @@
+module mod_rossfast_d3r_model_binding
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_quiet_nan, ieee_value
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, &
+       TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, &
+       canonical_interval_t, canonical_numerical_config_t, canonical_physical_model_t
+  use mod_rossfast_d3r_execution_policy, only: ROSSFAST_D3R_OUTER_HORIZON_DAY, &
+       ROSSFAST_D3R_RETRY_SCALE, ROSSFAST_D3R_MAX_FULL_INDEX, &
+       ROSSFAST_D3R_MIN_FULL_DURATION_DAY, rossfast_d3r_full_duration_for_index
+  implicit none
+  private
+
+  integer, parameter, public :: ROSSFAST_D3R_N_CELLS = 16
+  real(real64), parameter, public :: ROSSFAST_D3R_DZ_CM = 10.0_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_SIGMA = 0.5_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_HARD_MASS_TOL_CM = 1.0e-12_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION = 0.02_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_STATE_CONSISTENCY_TOL = 2.0e-12_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR = 1.0e-10_real64
+  real(real64), parameter, public :: ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE = 1.0e-5_real64
+
+  type, public :: rossfast_d3r_material_t
+    character(len=3) :: material_id = '---'
+    real(real64) :: theta_r = 0.0_real64
+    real(real64) :: theta_s = 0.0_real64
+    real(real64) :: alpha_per_cm = 0.0_real64
+    real(real64) :: n = 0.0_real64
+    real(real64) :: ksatfit_cm_per_day = 0.0_real64
+    real(real64) :: ksatexm_cm_per_day = 0.0_real64
+    real(real64) :: lambda = 0.0_real64
+    real(real64) :: h_enpr_cm = 0.0_real64
+  end type rossfast_d3r_material_t
+
+  type, extends(canonical_state_t), public :: rossfast_d3r_state_t
+    integer :: active_nodes = 0
+    real(real64), allocatable :: pressure_head_cm(:)
+    real(real64), allocatable :: water_content(:)
+  contains
+    procedure :: clone => rossfast_d3r_clone_state
+  end type rossfast_d3r_state_t
+
+  type, extends(canonical_forcing_t), public :: rossfast_d3r_forcing_t
+    real(real64) :: top_flux_cm_per_day = 0.0_real64
+    real(real64) :: bottom_flux_upward_cm_per_day = 0.0_real64
+  end type rossfast_d3r_forcing_t
+
+  type, public :: rossfast_d3r_kernel_request_t
+    type(rossfast_d3r_material_t) :: material
+    type(rossfast_d3r_state_t) :: base_state
+    type(rossfast_d3r_forcing_t) :: forcing
+    real(real64) :: t0_day = 0.0_real64
+    real(real64) :: t1_day = 0.0_real64
+    integer :: equal_internal_substeps = 0
+    real(real64) :: sigma = ROSSFAST_D3R_SIGMA
+    real(real64) :: hard_mass_tolerance_cm = ROSSFAST_D3R_HARD_MASS_TOL_CM
+    real(real64) :: boundary_envelope_fraction = ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION
+    real(real64) :: state_consistency_tolerance = ROSSFAST_D3R_STATE_CONSISTENCY_TOL
+    real(real64) :: temporal_resolution_floor = ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR
+    real(real64) :: temporal_accuracy_tolerance = ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE
+  end type rossfast_d3r_kernel_request_t
+
+  type, public :: rossfast_d3r_kernel_result_t
+    logical :: request_admitted = .false.
+    logical :: solver_ok = .false.
+    type(rossfast_d3r_state_t) :: candidate_state
+    real(real64) :: mass_in_cm = 0.0_real64
+    real(real64) :: mass_out_cm = 0.0_real64
+    logical :: mass_accounting_complete = .false.
+    integer(int64) :: missing_mass_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+    logical :: temporal_certificate_available = .false.
+    real(real64) :: temporal_indicator = huge(0.0_real64)
+    logical :: bottom_interface_exchange_available = .false.
+    real(real64) :: bottom_outward_exchange_cm = 0.0_real64
+    real(real64) :: terminal_bottom_outward_flux_cm_per_day = 0.0_real64
+    logical :: local_terminal_sensitivity_available = .false.
+    real(real64) :: dh_bottom_dq_bottom_day = 0.0_real64
+    integer :: internal_retries = 0
+    integer :: linear_solves = 0
+    integer :: alternative_solver_calls = 0
+  end type rossfast_d3r_kernel_result_t
+
+  type, abstract, public :: rossfast_d3r_trial_kernel_t
+  contains
+    procedure(rossfast_d3r_kernel_solve_iface), deferred :: solve
+  end type rossfast_d3r_trial_kernel_t
+
+  type, extends(canonical_physical_model_t), public :: rossfast_d3r_model_t
+    private
+    class(rossfast_d3r_trial_kernel_t), pointer :: kernel => null()
+    type(rossfast_d3r_material_t) :: material
+    real(real64), allocatable :: cell_thickness_cm(:)
+    type(rossfast_d3r_forcing_t) :: forcing
+    integer :: equal_internal_substeps = 0
+    logical :: bound = .false.
+    logical :: prepared = .false.
+  contains
+    procedure :: prepare_interval => rossfast_d3r_prepare_interval
+    procedure :: advance => rossfast_d3r_advance
+    procedure :: storage => rossfast_d3r_storage
+    procedure :: temporal_error => rossfast_d3r_temporal_error
+    procedure :: storage_accounting_status => rossfast_d3r_storage_accounting_status
+  end type rossfast_d3r_model_t
+
+  public :: bind_rossfast_d3r_model
+  public :: rossfast_d3r_material_from_id
+  public :: rossfast_d3r_material_is_admitted
+
+  abstract interface
+    subroutine rossfast_d3r_kernel_solve_iface(self, request, result)
+      import :: rossfast_d3r_trial_kernel_t, rossfast_d3r_kernel_request_t, &
+           rossfast_d3r_kernel_result_t
+      class(rossfast_d3r_trial_kernel_t), intent(in) :: self
+      type(rossfast_d3r_kernel_request_t), intent(in) :: request
+      type(rossfast_d3r_kernel_result_t), intent(out) :: result
+    end subroutine rossfast_d3r_kernel_solve_iface
+  end interface
+
+contains
+
+  subroutine rossfast_d3r_clone_state(self, copy)
+    class(rossfast_d3r_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+
+    allocate(rossfast_d3r_state_t :: copy)
+    select type(copy)
+    type is(rossfast_d3r_state_t)
+      copy%active_nodes = self%active_nodes
+      if (allocated(self%pressure_head_cm)) then
+        allocate(copy%pressure_head_cm(size(self%pressure_head_cm)))
+        copy%pressure_head_cm = self%pressure_head_cm
+      end if
+      if (allocated(self%water_content)) then
+        allocate(copy%water_content(size(self%water_content)))
+        copy%water_content = self%water_content
+      end if
+    end select
+  end subroutine rossfast_d3r_clone_state
+
+  subroutine bind_rossfast_d3r_model(model, kernel, material, cell_thickness_cm, &
+                                     equal_internal_substeps, valid)
+    type(rossfast_d3r_model_t), intent(inout) :: model
+    class(rossfast_d3r_trial_kernel_t), target, intent(in) :: kernel
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64), intent(in) :: cell_thickness_cm(:)
+    integer, intent(in) :: equal_internal_substeps
+    logical, intent(out) :: valid
+
+    valid = .false.
+    model%bound = .false.
+    model%prepared = .false.
+    nullify(model%kernel)
+    if (allocated(model%cell_thickness_cm)) deallocate(model%cell_thickness_cm)
+
+    if (.not. rossfast_d3r_material_is_admitted(material)) return
+    if (size(cell_thickness_cm) /= ROSSFAST_D3R_N_CELLS) return
+    if (.not. all(ieee_is_finite(cell_thickness_cm))) return
+    if (any(cell_thickness_cm /= ROSSFAST_D3R_DZ_CM)) return
+    if (.not. admitted_internal_substeps(equal_internal_substeps)) return
+
+    model%kernel => kernel
+    model%material = material
+    allocate(model%cell_thickness_cm(ROSSFAST_D3R_N_CELLS))
+    model%cell_thickness_cm = cell_thickness_cm
+    model%equal_internal_substeps = equal_internal_substeps
+    model%bound = .true.
+    valid = .true.
+  end subroutine bind_rossfast_d3r_model
+
+  subroutine rossfast_d3r_prepare_interval(self, forcing, interval, config)
+    class(rossfast_d3r_model_t), intent(inout) :: self
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(canonical_interval_t), intent(in) :: interval
+    type(canonical_numerical_config_t), intent(in) :: config
+
+    self%prepared = .false.
+    if (.not. self%bound .or. .not. associated(self%kernel)) return
+    if (.not. outer_interval_admitted(interval%t0, interval%t1)) return
+    if (config%transaction%temporal_mode /= TX_TEMPORAL_MODEL_CERTIFICATE) return
+    if (config%transaction%retry_scale /= ROSSFAST_D3R_RETRY_SCALE) return
+    if (config%transaction%max_retries /= ROSSFAST_D3R_MAX_FULL_INDEX) return
+    if (config%transaction%mass_tolerance < 0.0_real64 .or. &
+        config%transaction%mass_tolerance > ROSSFAST_D3R_HARD_MASS_TOL_CM) return
+    if (config%max_committed_substeps <= 0) return
+
+    select type(forcing)
+    type is(rossfast_d3r_forcing_t)
+      if (.not. ieee_is_finite(forcing%top_flux_cm_per_day)) return
+      if (.not. ieee_is_finite(forcing%bottom_flux_upward_cm_per_day)) return
+      self%forcing = forcing
+    class default
+      return
+    end select
+    self%prepared = .true.
+  end subroutine rossfast_d3r_prepare_interval
+
+  subroutine rossfast_d3r_advance(self, state, t0, t1, outcome)
+    class(rossfast_d3r_model_t), intent(inout) :: self
+    class(transaction_state_t), intent(inout) :: state
+    real(real64), intent(in) :: t0, t1
+    type(trial_outcome_t), intent(out) :: outcome
+    type(rossfast_d3r_kernel_request_t) :: request
+    type(rossfast_d3r_kernel_result_t) :: result
+
+    outcome = trial_outcome_t()
+    if (.not. self%prepared .or. .not. associated(self%kernel)) return
+    if (.not. full_attempt_interval_admitted(t0, t1)) return
+
+    select type(state)
+    type is(rossfast_d3r_state_t)
+      if (.not. valid_state_shape_and_values(state)) return
+      request%material = self%material
+      request%base_state = state
+      request%forcing = self%forcing
+      request%t0_day = t0
+      request%t1_day = t1
+      request%equal_internal_substeps = self%equal_internal_substeps
+      call self%kernel%solve(request, result)
+
+      if (.not. result%request_admitted .or. .not. result%solver_ok) return
+      if (.not. valid_candidate(result%candidate_state, self%material)) return
+      if (.not. ieee_is_finite(result%mass_in_cm) .or. result%mass_in_cm < 0.0_real64) return
+      if (.not. ieee_is_finite(result%mass_out_cm) .or. result%mass_out_cm < 0.0_real64) return
+
+      state = result%candidate_state
+      outcome%solver_ok = .true.
+      outcome%mass_in = result%mass_in_cm
+      outcome%mass_out = result%mass_out_cm
+      outcome%mass_accounting_complete = result%mass_accounting_complete
+      outcome%missing_mass_contribution_mask = result%missing_mass_contribution_mask
+      outcome%temporal_certificate_available = result%temporal_certificate_available
+      outcome%temporal_indicator = result%temporal_indicator
+      outcome%bottom_interface_exchange_available = result%bottom_interface_exchange_available
+      if (result%bottom_interface_exchange_available) then
+        if (.not. ieee_is_finite(result%bottom_outward_exchange_cm) .or. &
+            .not. ieee_is_finite(result%terminal_bottom_outward_flux_cm_per_day)) then
+          outcome%bottom_interface_exchange_available = .false.
+        else
+          outcome%bottom_outward_exchange_native = result%bottom_outward_exchange_cm
+          outcome%terminal_bottom_outward_flux_native = result%terminal_bottom_outward_flux_cm_per_day
+        end if
+      end if
+      outcome%internal_retries = max(0, result%internal_retries)
+      outcome%linear_solves = max(0, result%linear_solves)
+      outcome%alternative_solver_calls = max(0, result%alternative_solver_calls)
+      if (result%local_terminal_sensitivity_available .and. &
+          ieee_is_finite(result%dh_bottom_dq_bottom_day)) then
+        outcome%interface_sensitivity%available = .true.
+        outcome%interface_sensitivity%dh_bottom_dq_bottom = result%dh_bottom_dq_bottom_day
+        outcome%interface_sensitivity%method = 'rossfast-local-terminal'
+      end if
+    class default
+      return
+    end select
+  end subroutine rossfast_d3r_advance
+
+  function rossfast_d3r_storage(self, state) result(value)
+    class(rossfast_d3r_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    real(real64) :: value
+
+    value = ieee_value(0.0_real64, ieee_quiet_nan)
+    if (.not. self%bound .or. .not. allocated(self%cell_thickness_cm)) return
+    select type(state)
+    type is(rossfast_d3r_state_t)
+      if (.not. valid_state_shape_and_values(state)) return
+      value = sum(self%cell_thickness_cm * state%water_content)
+    class default
+      return
+    end select
+  end function rossfast_d3r_storage
+
+  function rossfast_d3r_temporal_error(self, full_state, half_state) result(value)
+    class(rossfast_d3r_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    real(real64) :: value
+
+    if (.not. same_type_as(self, self) .or. .not. same_type_as(full_state, full_state) .or. &
+        .not. same_type_as(half_state, half_state)) error stop 'unreachable RossFast model types'
+    value = huge(0.0_real64)
+  end function rossfast_d3r_temporal_error
+
+  subroutine rossfast_d3r_storage_accounting_status(self, state, complete, missing_mask)
+    class(rossfast_d3r_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+    if (.not. self%bound .or. .not. allocated(self%cell_thickness_cm)) return
+    select type(state)
+    type is(rossfast_d3r_state_t)
+      if (.not. valid_state_shape_and_values(state)) return
+      complete = .true.
+      missing_mask = TX_MASS_MISSING_NONE
+    class default
+      return
+    end select
+  end subroutine rossfast_d3r_storage_accounting_status
+
+  pure logical function admitted_internal_substeps(value)
+    integer, intent(in) :: value
+    admitted_internal_substeps = value == 2 .or. value == 4 .or. value == 8 .or. value == 16
+  end function admitted_internal_substeps
+
+  logical function valid_state_shape_and_values(state)
+    type(rossfast_d3r_state_t), intent(in) :: state
+
+    valid_state_shape_and_values = .false.
+    if (state%active_nodes /= ROSSFAST_D3R_N_CELLS) return
+    if (.not. allocated(state%pressure_head_cm) .or. .not. allocated(state%water_content)) return
+    if (size(state%pressure_head_cm) /= ROSSFAST_D3R_N_CELLS) return
+    if (size(state%water_content) /= ROSSFAST_D3R_N_CELLS) return
+    if (.not. all(ieee_is_finite(state%pressure_head_cm))) return
+    if (.not. all(ieee_is_finite(state%water_content))) return
+    valid_state_shape_and_values = .true.
+  end function valid_state_shape_and_values
+
+  logical function valid_candidate(state, material)
+    type(rossfast_d3r_state_t), intent(in) :: state
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64) :: tol
+
+    valid_candidate = .false.
+    if (.not. valid_state_shape_and_values(state)) return
+    tol = 64.0_real64 * epsilon(1.0_real64) * max(1.0_real64, abs(material%theta_s))
+    if (any(state%water_content < material%theta_r - tol)) return
+    if (any(state%water_content > material%theta_s + tol)) return
+    valid_candidate = .true.
+  end function valid_candidate
+
+  logical function full_attempt_interval_admitted(t0, t1)
+    real(real64), intent(in) :: t0, t1
+    real(real64) :: duration, expected_t1, tol
+    integer :: index
+
+    full_attempt_interval_admitted = .false.
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    do index = 0, ROSSFAST_D3R_MAX_FULL_INDEX
+      duration = rossfast_d3r_full_duration_for_index(index)
+      expected_t1 = t0 + duration
+      tol = 2.0_real64 * max(spacing(t0), spacing(t1), spacing(expected_t1), spacing(duration))
+      if (abs(t1 - expected_t1) <= tol) then
+        full_attempt_interval_admitted = .true.
+        return
+      end if
+    end do
+  end function full_attempt_interval_admitted
+
+  logical function outer_interval_admitted(t0, t1)
+    real(real64), intent(in) :: t0, t1
+    real(real64) :: remainder, grid_value, units_real, tol
+    integer :: grid_units
+
+    outer_interval_admitted = .false.
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    remainder = t1 - t0
+    if (.not. ieee_is_finite(remainder)) return
+    tol = 2.0_real64 * max(spacing(t0), spacing(t1), spacing(remainder), &
+         spacing(ROSSFAST_D3R_OUTER_HORIZON_DAY))
+    if (remainder > ROSSFAST_D3R_OUTER_HORIZON_DAY + tol) return
+    units_real = remainder / ROSSFAST_D3R_MIN_FULL_DURATION_DAY
+    grid_units = nint(units_real)
+    if (grid_units < 1) return
+    grid_value = real(grid_units, real64) * ROSSFAST_D3R_MIN_FULL_DURATION_DAY
+    tol = 2.0_real64 * max(spacing(t0), spacing(t1), spacing(remainder), spacing(grid_value), &
+         spacing(ROSSFAST_D3R_MIN_FULL_DURATION_DAY))
+    outer_interval_admitted = abs(remainder - grid_value) <= tol
+  end function outer_interval_admitted
+
+  pure logical function rossfast_d3r_material_is_admitted(material)
+    type(rossfast_d3r_material_t), intent(in) :: material
+    type(rossfast_d3r_material_t) :: expected
+    logical :: found
+
+    call rossfast_d3r_material_from_id(material%material_id, expected, found)
+    rossfast_d3r_material_is_admitted = found .and. &
+         material%theta_r == expected%theta_r .and. &
+         material%theta_s == expected%theta_s .and. &
+         material%alpha_per_cm == expected%alpha_per_cm .and. &
+         material%n == expected%n .and. &
+         material%ksatfit_cm_per_day == expected%ksatfit_cm_per_day .and. &
+         material%ksatexm_cm_per_day == expected%ksatexm_cm_per_day .and. &
+         material%lambda == expected%lambda .and. &
+         material%h_enpr_cm == expected%h_enpr_cm
+  end function rossfast_d3r_material_is_admitted
+
+  pure subroutine rossfast_d3r_material_from_id(material_id, material, found)
+    character(len=*), intent(in) :: material_id
+    type(rossfast_d3r_material_t), intent(out) :: material
+    logical, intent(out) :: found
+
+    material = rossfast_d3r_material_t()
+    found = .true.
+    select case(trim(material_id))
+    case('B01')
+      material = rossfast_d3r_material_t('B01', 0.02_real64, 0.427494_real64, &
+           0.021659_real64, 1.734737_real64, 31.225016_real64, 312.25016_real64, &
+           0.98087_real64, 0.0_real64)
+    case('B12')
+      material = rossfast_d3r_material_t('B12', 0.01_real64, 0.529749_real64, &
+           0.016562_real64, 1.090671_real64, 2.245895_real64, 179.6716_real64, &
+           -4.493581_real64, 0.0_real64)
+    case('O01')
+      material = rossfast_d3r_material_t('O01', 0.01_real64, 0.365847_real64, &
+           0.015987_real64, 2.162751_real64, 22.322154_real64, 223.22154_real64, &
+           2.867967_real64, 0.0_real64)
+    case('O05')
+      material = rossfast_d3r_material_t('O05', 0.01_real64, 0.336701_real64, &
+           0.030304_real64, 2.887502_real64, 17.418504_real64, 174.18504_real64, &
+           0.0736_real64, 0.0_real64)
+    case('O14')
+      material = rossfast_d3r_material_t('O14', 0.01_real64, 0.393878_real64, &
+           0.003288_real64, 1.616573_real64, 2.495984_real64, 4.991968_real64, &
+           0.514012_real64, 0.0_real64)
+    case('O18')
+      material = rossfast_d3r_material_t('O18', 0.01_real64, 0.580278_real64, &
+           0.012657_real64, 1.316172_real64, 35.951279_real64, 107.853837_real64, &
+           -0.785534_real64, 0.0_real64)
+    case default
+      found = .false.
+    end select
+  end subroutine rossfast_d3r_material_from_id
+
+end module mod_rossfast_d3r_model_binding
