@@ -1,0 +1,169 @@
+name: F-GC24 bootstrap quiescence patch
+
+on:
+  push:
+    branches:
+      - work/f-gc24-coupled-restart-split-run-replay-composition
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message == 'F-GC24 bootstrap quiescence patch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch quiescence contract and qualification
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('src/runtime/mod_groundwater_exchange_service_contract.f90')
+          s = p.read_text()
+          old = '''    procedure(gw_abort_prepared_backend_ifc), deferred, public :: abort_prepared_backend
+  end type groundwater_preparable_exchange_service_t
+'''
+          new = '''    procedure(gw_abort_prepared_backend_ifc), deferred, public :: abort_prepared_backend
+    procedure, public :: restart_quiescent => groundwater_preparable_restart_quiescent
+  end type groundwater_preparable_exchange_service_t
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          old = '''  end subroutine release_prepared_slot
+
+  pure logical function checkpoint_ready(self) result(ready)
+'''
+          new = '''  end subroutine release_prepared_slot
+
+  pure logical function groundwater_preparable_restart_quiescent(self) result(quiescent)
+    class(groundwater_preparable_exchange_service_t), intent(in) :: self
+    integer :: i
+
+    quiescent = .true.
+    if (.not. allocated(self%reservation_slots)) return
+    do i = 1, size(self%reservation_slots)
+      if (self%reservation_slots(i)%active) then
+        quiescent = .false.
+        return
+      end if
+    end do
+  end function groundwater_preparable_restart_quiescent
+
+  pure logical function checkpoint_ready(self) result(ready)
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          p.write_text(s)
+
+          p = Path('src/runtime/mod_groundwater_coupled_restart.f90')
+          s = p.read_text()
+          old = '''  integer, parameter, public :: GW_COUPLED_RESTART_ADAPTER_REJECTED = 10
+'''
+          new = '''  integer, parameter, public :: GW_COUPLED_RESTART_ADAPTER_REJECTED = 10
+  integer, parameter, public :: GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT = 11
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          old = '''    status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
+
+    call groundwater_capture_checkpoint(service, checkpoint, exchange_status)
+'''
+          new = '''    status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
+    if (.not. service%restart_quiescent()) then
+      status = GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
+      return
+    end if
+
+    call groundwater_capture_checkpoint(service, checkpoint, exchange_status)
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          old = '''    status = GW_COUPLED_RESTART_INVALID_RECORD
+    if (record%service_id <= 0_int64 .or. record%lineage_id <= 0_int64 .or. record%revision < 0_int64) return
+'''
+          new = '''    status = GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
+    if (.not. service%restart_quiescent()) return
+
+    status = GW_COUPLED_RESTART_INVALID_RECORD
+    if (record%service_id <= 0_int64 .or. record%lineage_id <= 0_int64 .or. record%revision < 0_int64) return
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          p.write_text(s)
+
+          p = Path('tests/fgc/test_fgc24_coupled_restart_split_process.f90')
+          s = p.read_text()
+          old = '''  use mod_groundwater_coupling_policy, only: groundwater_head_convergence_policy_t
+  use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, &
+'''
+          new = '''  use mod_groundwater_coupling_policy, only: groundwater_head_convergence_policy_t
+  use mod_groundwater_exchange_service_contract, only: groundwater_exchange_checkpoint_t, &
+       groundwater_exchange_candidate_t, groundwater_exchange_prepared_t, groundwater_exchange_trial_result_t, &
+       groundwater_capture_checkpoint, groundwater_trial_from_checkpoint, groundwater_prepare_candidate, &
+       groundwater_abort_prepared, GW_EXCHANGE_OK
+  use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, &
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          old = '''       groundwater_coupled_restart_record_t, export_groundwater_coupled_restart, restore_groundwater_coupled_restart, &
+       GW_COUPLED_RESTART_OK, GW_COUPLED_RESTART_LEDGER_REJECTED, GW_COUPLED_RESTART_PROVENANCE_MISMATCH
+'''
+          new = '''       groundwater_coupled_restart_record_t, export_groundwater_coupled_restart, restore_groundwater_coupled_restart, &
+       GW_COUPLED_RESTART_OK, GW_COUPLED_RESTART_LEDGER_REJECTED, GW_COUPLED_RESTART_PROVENANCE_MISMATCH, &
+       GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          old = '''    type(groundwater_coupled_restart_record_t) :: record, bad_record
+    type(groundwater_interface_lineage_t) :: lineage
+'''
+          new = '''    type(groundwater_coupled_restart_record_t) :: record, bad_record
+    type(groundwater_interface_lineage_t) :: lineage
+    type(groundwater_exchange_checkpoint_t) :: checkpoint
+    type(groundwater_exchange_candidate_t) :: candidate
+    type(groundwater_exchange_prepared_t) :: prepared
+    type(groundwater_exchange_trial_result_t) :: gw_trial
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          old = '''    call require(initialized .and. status == GW_MASS_LEDGER_OK, 'selftest setup')
+    restart_adapter%target => groundwater
+
+    lineage%coupling_id = origin%coupling_id
+'''
+          new = '''    call require(initialized .and. status == GW_MASS_LEDGER_OK, 'selftest setup')
+    restart_adapter%target => groundwater
+
+    call require(groundwater%restart_quiescent(), 'fresh preparable service is restart-quiescent')
+    call groundwater_capture_checkpoint(groundwater, checkpoint, status)
+    call require(status == GW_EXCHANGE_OK .and. checkpoint%ready(), 'quiescence checkpoint capture')
+    call groundwater_trial_from_checkpoint(groundwater, checkpoint, window, 0.0_real64, candidate, gw_trial, status)
+    call require(status == GW_EXCHANGE_OK .and. candidate%ready(), 'quiescence candidate trial')
+    call groundwater_prepare_candidate(groundwater, checkpoint, candidate, prepared, status)
+    call require(status == GW_EXCHANGE_OK .and. prepared%ready(), 'quiescence prepared reservation')
+    call require(.not. groundwater%restart_quiescent(), 'live prepared reservation makes service non-quiescent')
+    call export_groundwater_coupled_restart(committed, SWAP_LAYOUT_ID, groundwater, restart_adapter, ledger, origin, &
+         record, exported, status)
+    call require(.not. exported .and. status == GW_COUPLED_RESTART_SERVICE_NOT_QUIESCENT, &
+         'restart export fails closed while prepared reservation is live')
+    call groundwater_abort_prepared(groundwater, checkpoint, prepared, status)
+    call require(status == GW_EXCHANGE_OK, 'quiescence reservation abort')
+    call require(groundwater%restart_quiescent(), 'aborted prepared reservation restores restart quiescence')
+
+    lineage%coupling_id = origin%coupling_id
+'''
+          assert s.count(old) == 1
+          s = s.replace(old, new)
+          p.write_text(s)
+          PY
+          git diff --check
+          git diff -- src/runtime/mod_groundwater_exchange_service_contract.f90 src/runtime/mod_groundwater_coupled_restart.f90 tests/fgc/test_fgc24_coupled_restart_split_process.f90
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/runtime/mod_groundwater_exchange_service_contract.f90 src/runtime/mod_groundwater_coupled_restart.f90 tests/fgc/test_fgc24_coupled_restart_split_process.f90
+          git commit -m 'F-GC24 require preparable-service restart quiescence'
+          git push origin HEAD:work/f-gc24-coupled-restart-split-run-replay-composition
