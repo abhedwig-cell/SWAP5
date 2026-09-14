@@ -1,0 +1,33 @@
+name: EB-I21R runtime-owned accepted receipt qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i21r-runtime-bound-accepted-receipt-remediation
+    paths:
+      - src/runtime/mod_fmr_owned_commit_receipt.f90
+      - src/runtime/mod_energy_conservation_ledger.f90
+      - src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+      - tests/eb/test_eb_i21r_owned_receipt_association.f90
+      - tests/eb/run_eb_i21r_owned_receipt_gate.sh
+      - .github/workflows/eb-i21r-owned-receipt.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EBI21R_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EBI21R_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Runtime-owned receipt owner qualification
+        run: bash tests/eb/run_eb_i21r_owned_receipt_gate.sh
