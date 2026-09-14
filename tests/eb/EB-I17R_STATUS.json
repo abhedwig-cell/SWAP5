@@ -1,0 +1,28 @@
+{
+  "workunit": "EB-I17R",
+  "title": "Candidate-Bound Bottom Energy Provenance Remediation",
+  "base_authority": "work/eb-i17-external-bottom-thermal-binding-implementation@b9517b136bc879c01ad1019a8f0e2e0be72370b6",
+  "decision": "DESIGN_FROZEN_PROCEDURAL_CANDIDATE_BINDING_REQUIRED",
+  "production_change": false,
+  "findings": {
+    "eb_i17_external_binding_storage_qualified": true,
+    "eb_i17_authoritative_candidate_token_association": false,
+    "f_kt20_owner_exact_sequence_mechanism": true,
+    "f_vq70_independent_qualification": "NEGATIVE_RUNTIME_EXECUTION_DOMAIN_UNIQUENESS_NOT_ENFORCED",
+    "f_kt20_production_authority": false,
+    "f_pm12_f_vq72_candidate_bound_procedural_pattern": "INDEPENDENTLY_QUALIFIED",
+    "selected_energy_provenance_pattern": "PRIVATE_LOCAL_PREPARE_SAME_CANDIDATE_COMMIT_RECEIPT_PUBLICATION"
+  },
+  "forbidden_production_authorities": [
+    "caller_supplied_binding_token_as_candidate_identity",
+    "lineage_revision_interval_tuple_as_exact_candidate_identity",
+    "F_KT20_execution_domain_sequence_without_independent_runtime_uniqueness_enforcement",
+    "public_prepared_energy_plus_public_receipt_finalizer"
+  ],
+  "mass_authority": "UNCHANGED_EB_I13_ACCEPTED_BOTTOM_WATER_EXCHANGE",
+  "external_temperature_owner": "RUNTIME_OR_COUPLER",
+  "persistent_state_changed": false,
+  "restart_schema_changed": false,
+  "physics_changed": false,
+  "next_boundary": "Atomic runtime transaction implementation that owns trial, local thermal/energy preparation, same-candidate commit, and accepted energy publication or explicit accepted-energy-unavailable diagnostic."
+}
