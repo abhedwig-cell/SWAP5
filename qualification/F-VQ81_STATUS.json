@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.fvq.status.v1",
+  "work_unit": "F-VQ81",
+  "title": "EB-I20R batch-safe energy-ledger independent qualification, superseded-owner record",
+  "branch": "qualification/f-vq81-eb-i20r-batch-safe-energy-ledger-independent-qualification",
+  "status": "QUALIFIED_TESTED_OWNER_BUT_SUPERSEDED_NOT_ADMISSION_AUTHORITY",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "tested_owner_authority": "34c4545cc3dea96c9d13988c491b387c8c2a19fd",
+  "tested_head": "8f1a5e0257ad4c9f08ae4de8db5bc860e6abb6eb",
+  "tested_tree": "def302d1fe2a5c9b2c183e95f3ae9b91e1b0844c",
+  "workflow_run": 34838107612,
+  "workflow_job": 103956508691,
+  "workflow_conclusion": "SUCCESS",
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "a6aea349308e8b6b0aedaaa22a64e41f9101b48d"
+  },
+  "positive_evidence": [
+    "independent source/provenance lock passed with zero verifier src/reference delta",
+    "nonterminating fail-closed API passed",
+    "independent real F-KT accepted receipt publication and rollback attacks passed",
+    "double publication and stale receipt attacks failed closed",
+    "nested and whole control-volume conservation passed",
+    "O0/O2 semantic identity passed",
+    "F-KT18 mass-completeness cross-check passed"
+  ],
+  "superseding_evidence": {
+    "F-VQ80_blocker": "d56bcb227cc24b12ab6fa8ecfe6a2782b5fe2817",
+    "blocker": "cross-ledger prepared handles could collide on ledger-local generation and consume another ledger instance prepared state",
+    "remediation_owner": "work/eb-i20r1-cross-ledger-prepared-provenance-remediation",
+    "remediated_ledger_blob": "84355db95e0b47f2d231422a4bc050d89b712e5b"
+  },
+  "decision": "EVIDENCE_RETAINED_BUT_SUPERSEDED_FRESH_INDEPENDENT_QUALIFICATION_REQUIRED",
+  "hard_nonclaims": [
+    "not canonical admission",
+    "not qualification of EB-I20R1",
+    "not evidence that the F-VQ80 cross-ledger blocker is absent from the older EB-I20R blob",
+    "no full SWAP energy balance completion claim"
+  ],
+  "next_owner": "fresh independent qualification of the final EB-I20R1 owner authority"
+}
