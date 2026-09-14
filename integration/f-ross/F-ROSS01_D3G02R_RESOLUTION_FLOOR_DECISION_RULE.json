@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "title": "Precommitted resolution-floor temporal-certificate decision rule",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "parent_negative_authority": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+  "hypothesis": {
+    "raw_estimator": "span_normalized_linf(full_candidate_theta - refined_two_half_candidate_theta)",
+    "preexisting_resolution_floor": 1e-10,
+    "resolution_floor_provenance": "F-ROSS01 Gate F informative_order_floor_theta_span_normalized, frozen before D3G02",
+    "candidate_error_bound": "max(raw_estimator, 1e-10)",
+    "accuracy_tolerance": 1e-5,
+    "temporal_indicator": "candidate_error_bound / 1e-5",
+    "canonical_pass_condition": "certificate_available AND finite(indicator) AND indicator >= 0 AND indicator <= 1"
+  },
+  "interpretation": {
+    "resolution_floor_is_not_claimed_as_theoretical_truncation_error": true,
+    "resolution_floor_is_not_fit_to_d3g02_worst_ratio": true,
+    "purpose": "Treat sub-1e-10 span-normalized temporal differences as below the pre-existing RossFast temporal qualification resolution; the max(raw,floor) expression is a new prospective conservative-bound hypothesis that must independently qualify against DOP853 before it can become certificate authority.",
+    "factor_1_6_from_d3g02_forbidden": true
+  },
+  "exact_requalification_domain": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "case_count": 54,
+    "duration_family": "D3R full attempt durations 0.0016/2^k day for k=0..8 with two half candidate chain using k+1 durations",
+    "cell_count": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_state": "frozen D2 head profile -180 to -650 cm converted per material",
+    "forcing": "frozen D2 nominal prescribed qtop/qbot, zero source/sink/root sink",
+    "candidate_substeps": 8
+  },
+  "independent_reference": {
+    "method": "DOP853",
+    "rtol": 1e-11,
+    "atol": 1e-13,
+    "two_full_window_reference_trajectories": true,
+    "max_step_divisors": [32,64],
+    "maximum_reference_self_delta_span": 1e-9
+  },
+  "hard_gates": {
+    "all_54_cases_complete": true,
+    "all_component_trials_candidate_ready": true,
+    "candidate_only_and_committed_origin_immutable": true,
+    "maximum_abs_mass_residual_cm": 1e-12,
+    "all_reference_self_deltas_span_le": 1e-9,
+    "all_refined_reference_errors_finite": true,
+    "all_raw_estimators_finite_nonnegative": true,
+    "all_candidate_bounds_finite_nonnegative": true,
+    "all_refined_reference_errors_le_candidate_bound": true,
+    "all_candidate_bounds_le_accuracy_tolerance": true,
+    "all_temporal_indicators_le_one": true
+  },
+  "failure_policy": {
+    "any_gate_failure": "CLOSE_D3G02R_NEGATIVE_AND_LEAVE_D3_G02_OPEN",
+    "posthoc_resolution_floor_change_forbidden": true,
+    "posthoc_accuracy_tolerance_change_forbidden": true,
+    "posthoc_material_or_attempt_removal_forbidden": true,
+    "posthoc_norm_or_state_quantity_change_forbidden": true,
+    "scope_reduction_for_pass_forbidden": true
+  },
+  "success_policy": {
+    "decision": "QUALIFIED_ROSSFAST_D3G02R_RESOLUTION_FLOOR_TEMPORAL_CERTIFICATE_ON_EXACT_D3R_DOMAIN",
+    "g02_effect": "G02 may close only after executable fail-closed certificate wrapper qualification against unchanged canonical MODEL_CERTIFICATE semantics",
+    "production_admission": false
+  },
+  "hard_nonclaims": [
+    "UNIVERSAL_ROSSFAST_TEMPORAL_ERROR_BOUND",
+    "THEORETICAL_ORDER_TWO_PROOF",
+    "APPLICATION_HEAD_ACCURACY_BUDGET",
+    "PRODUCTION_ADMISSION",
+    "PRODUCTION_COST_ACCEPTABILITY",
+    "TEMPORAL_ACCURACY_OUTSIDE_EXACT_D3R_DOMAIN"
+  ]
+}
