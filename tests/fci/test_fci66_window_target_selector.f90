@@ -1,6 +1,6 @@
 module mod_fci66_test_model
-  use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
+  use, intrinsic :: iso_fortran_env, only: real64, int64
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts
   implicit none
   private
@@ -22,6 +22,7 @@ module mod_fci66_test_model
     procedure :: advance => fci66_advance
     procedure :: storage => fci66_storage
     procedure :: temporal_error => fci66_temporal_error
+    procedure :: storage_accounting_status => fci66_storage_accounting_status
     procedure :: prepare_interval => fci66_prepare_interval
   end type fci66_model_t
 
@@ -70,6 +71,8 @@ contains
       state%water = end_water
       outcome%mass_out = start_water - end_water
       outcome%solver_ok = .true.
+      outcome%mass_accounting_complete = .true.
+      outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
       outcome%nonlinear_iterations = 1
     class default
       error stop 'FCI66 unexpected state type'
@@ -89,6 +92,22 @@ contains
       error stop 'FCI66 unexpected state type'
     end select
   end function fci66_storage
+
+  subroutine fci66_storage_accounting_status(self, state, complete, missing_mask)
+    class(fci66_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    if (self%k < -huge(0.0_real64)) error stop 'unreachable'
+    select type(state)
+    type is(fci66_state_t)
+      complete = .true.
+      missing_mask = TX_MASS_MISSING_NONE
+    class default
+      error stop 'FCI66 unexpected state type in mass status'
+    end select
+  end subroutine fci66_storage_accounting_status
 
   function fci66_temporal_error(self, full_state, half_state) result(value)
     class(fci66_model_t), intent(in) :: self
@@ -125,6 +144,7 @@ program test_fci66_window_target_selector
   integer :: failures
 
   failures = 0
+  call test_default_current_canonical_behavior(failures)
   call test_bounded_selector_completes_atomically(failures)
   call test_stalled_selector_fails_before_transaction(failures)
   call test_overshoot_selector_fails_before_transaction(failures)
@@ -189,15 +209,40 @@ contains
     type(canonical_numerical_config_t), intent(out) :: config
     type(fci66_forcing_t), intent(out) :: forcing
 
-    interval%t0 = 2.0_real64
-    interval%t1 = 2.5_real64
-    forcing%k = 0.5_real64
-    config%transaction%temporal_tolerance = 1.0_real64
+    interval%t0 = 5.0_real64
+    interval%t1 = 5.5_real64
+    forcing%k = 1.0_real64
+    config%transaction%temporal_tolerance = 0.02_real64
     config%transaction%mass_tolerance = 1.0e-13_real64
     config%transaction%retry_scale = 0.5_real64
     config%transaction%max_retries = 3
     config%max_committed_substeps = 16
   end subroutine standard_setup
+
+  subroutine test_default_current_canonical_behavior(failures)
+    integer, intent(inout) :: failures
+    class(transaction_state_t), allocatable :: state
+    type(fci66_model_t) :: model
+    type(fci66_forcing_t) :: forcing
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: config
+    type(canonical_result_t) :: result
+
+    call new_state(state, 1.0_real64)
+    call standard_setup(interval, config, forcing)
+    call run_canonical_interval(model, state, forcing, interval, config, result)
+
+    call expect_true(result%status == CANONICAL_STATUS_COMPLETED, 'default path completes', failures)
+    call expect_true(result%completed, 'default completed flag', failures)
+    call expect_true(result%diagnostics%transaction_calls == 2, 'default transaction count', failures)
+    call expect_true(result%diagnostics%committed_substeps == 2, 'default committed substeps', failures)
+    call expect_true(result%diagnostics%retries == 1, 'default retry history', failures)
+    call expect_true(result%diagnostics%external_commits == 1, 'default one external commit', failures)
+    call expect_true(result%mass%complete, 'default hard mass accounting complete', failures)
+    call expect_close(result%completed_t, 5.5_real64, 1.0e-14_real64, 'default requested t1 reached', failures)
+    call expect_close(water_of(state), 0.586181640625_real64, 1.0e-14_real64, 'default endpoint unchanged', failures)
+    call expect_true(model%prepare_calls == 1, 'default prepare once', failures)
+  end subroutine test_default_current_canonical_behavior
 
   subroutine test_bounded_selector_completes_atomically(failures)
     integer, intent(inout) :: failures
@@ -210,16 +255,17 @@ contains
 
     call new_state(state, 1.0_real64)
     call standard_setup(interval, config, forcing)
+    config%transaction%temporal_tolerance = 1.0_real64
     call run_canonical_interval(model, state, forcing, interval, config, result, bounded_selector)
 
     call expect_true(result%status == CANONICAL_STATUS_COMPLETED, 'bounded selector completes', failures)
     call expect_true(result%completed, 'bounded selector completed flag', failures)
-    call expect_true(result%diagnostics%transaction_calls == 4, 'four bounded transaction windows', failures)
-    call expect_true(result%diagnostics%committed_substeps == 4, 'four private commits', failures)
-    call expect_true(result%diagnostics%external_commits == 1, 'single external commit', failures)
-    call expect_close(result%completed_t, interval%t1, 1.0e-14_real64, 'global t1 reached', failures)
-    call expect_true(water_of(state) < 1.0_real64, 'completed state published', failures)
-    call expect_true(model%prepare_calls == 1, 'model prepared once', failures)
+    call expect_true(result%diagnostics%transaction_calls == 3, 'three bounded transaction windows', failures)
+    call expect_true(result%diagnostics%committed_substeps == 3, 'three private commits', failures)
+    call expect_true(result%diagnostics%external_commits == 1, 'bounded single external commit', failures)
+    call expect_true(result%mass%complete, 'bounded hard mass accounting complete', failures)
+    call expect_close(result%completed_t, interval%t1, 1.0e-14_real64, 'bounded global t1 reached', failures)
+    call expect_true(water_of(state) < 1.0_real64, 'bounded completed state published', failures)
   end subroutine test_bounded_selector_completes_atomically
 
   subroutine test_stalled_selector_fails_before_transaction(failures)
@@ -353,6 +399,7 @@ contains
 
     call new_state(state, 1.0_real64)
     call standard_setup(interval, config, forcing)
+    config%transaction%temporal_tolerance = 1.0_real64
     config%max_committed_substeps = 2
     call run_canonical_interval(model, state, forcing, interval, config, result, bounded_selector)
 
@@ -369,7 +416,7 @@ contains
     integer, intent(out) :: max_retries_cap
     logical, intent(out) :: valid
 
-    target_t1 = min(requested_t1, cursor + 0.125_real64)
+    target_t1 = min(requested_t1, cursor + 0.2_real64)
     max_retries_cap = 3
     valid = requested_t1 > cursor
   end subroutine bounded_selector
@@ -413,7 +460,7 @@ contains
     integer, intent(out) :: max_retries_cap
     logical, intent(out) :: valid
 
-    target_t1 = min(requested_t1, cursor + 0.125_real64)
+    target_t1 = min(requested_t1, cursor + 0.2_real64)
     max_retries_cap = -1
     valid = requested_t1 > cursor
   end subroutine negative_retry_cap_selector
