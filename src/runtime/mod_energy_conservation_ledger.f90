@@ -60,6 +60,10 @@ module mod_energy_conservation_ledger
     logical :: prepared_active = .false.
     integer(int64) :: preparation_generation = 0_int64
     integer(int64) :: prepared_generation = 0_int64
+    integer(int64) :: prepared_lineage_id = 0_int64
+    integer(int64) :: prepared_origin_revision_value = -1_int64
+    real(real64) :: prepared_t0_value = 0.0_real64
+    real(real64) :: prepared_t1_value = 0.0_real64
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: origin_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
@@ -234,6 +238,10 @@ contains
 
     self%prepared_generation = self%preparation_generation + 1_int64
     self%preparation_generation = self%prepared_generation
+    self%prepared_lineage_id = self%lineage_id
+    self%prepared_origin_revision_value = self%origin_revision_value
+    self%prepared_t0_value = self%t0_value
+    self%prepared_t1_value = self%t1_value
     self%prepared_active = .true.
 
     prepared%generation = self%prepared_generation
@@ -258,8 +266,8 @@ contains
     logical :: interval_available
 
     ready = .false.
-    if (.not. self%prepared_active .or. .not. prepared%ready() .or. .not. receipt%ready()) return
-    if (prepared%generation /= self%prepared_generation) return
+    if (.not. receipt%ready()) return
+    if (.not. prepared_matches_ledger(self, prepared)) return
     if (receipt%current_lineage_id() /= prepared%lineage_id) return
     if (receipt%origin_revision() /= prepared%origin_revision_value) return
     if (receipt%committed_revision() /= prepared%origin_revision_value + 1_int64) return
@@ -317,8 +325,7 @@ contains
     integer, intent(out) :: status
 
     status = ENERGY_LEDGER_INVALID_PROVENANCE
-    if (.not. self%prepared_active .or. .not. prepared%ready()) return
-    if (prepared%generation /= self%prepared_generation) return
+    if (.not. prepared_matches_ledger(self, prepared)) return
     call clear_prepared(self, prepared)
     status = ENERGY_LEDGER_OK
   end subroutine energy_ledger_abort_prepared
@@ -441,8 +448,26 @@ contains
     type(prepared_energy_trial_t), intent(inout) :: prepared
     self%prepared_active = .false.
     self%prepared_generation = 0_int64
+    self%prepared_lineage_id = 0_int64
+    self%prepared_origin_revision_value = -1_int64
+    self%prepared_t0_value = 0.0_real64
+    self%prepared_t1_value = 0.0_real64
     prepared = prepared_energy_trial_t()
   end subroutine clear_prepared
+
+  pure logical function prepared_matches_ledger(self, prepared) result(matches)
+    class(energy_trial_ledger_t), intent(in) :: self
+    type(prepared_energy_trial_t), intent(in) :: prepared
+
+    matches = .false.
+    if (.not. self%prepared_active .or. .not. prepared%ready()) return
+    if (prepared%generation /= self%prepared_generation) return
+    if (prepared%lineage_id /= self%prepared_lineage_id) return
+    if (prepared%origin_revision_value /= self%prepared_origin_revision_value) return
+    if (.not. same_fkt_time(prepared%t0_value, self%prepared_t0_value)) return
+    if (.not. same_fkt_time(prepared%t1_value, self%prepared_t1_value)) return
+    matches = .true.
+  end function prepared_matches_ledger
 
   pure logical function same_fkt_time(a, b) result(matches)
     real(real64), intent(in) :: a, b
