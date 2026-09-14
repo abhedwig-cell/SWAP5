@@ -43,8 +43,8 @@ module mod_fmr_drainage_response_binding
   integer, parameter, public :: FMR_DRAIN_BIND_AGGREGATION_REJECTED = 6
   integer, parameter, public :: FMR_DRAIN_BIND_SHAPE_MISMATCH = 7
 
-  ! Shared immutable drainage response data.  Only the member selected by
-  ! variant is physically active.  These records belong in a parameter
+  ! Shared immutable drainage response data. Only the member selected by
+  ! variant is physically active. These records belong in a parameter
   ! registry, not in persistent column state.
   type, public :: fmr_drainage_response_level_parameters_t
     integer :: variant = 0
@@ -92,30 +92,40 @@ module mod_fmr_drainage_response_binding
 
   public :: evaluate_fmr_drainage_response_bottom_lumped
   public :: fmr_drainage_response_configuration_valid
+  public :: fmr_drainage_response_configuration_status
 
 contains
 
-  logical function fmr_drainage_response_configuration_valid(parameters, controls, active_nodes) result(valid)
+  integer function fmr_drainage_response_configuration_status(parameters, controls, active_nodes) result(status)
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters(:)
     type(fmr_drainage_response_level_control_t), intent(in) :: controls(:)
     integer, intent(in) :: active_nodes
     integer :: i
 
-    valid = active_nodes > 0 .and. size(parameters) > 0 .and. size(controls) == size(parameters)
-    if (.not. valid) return
+    status = FMR_DRAIN_BIND_INVALID_CONFIGURATION
+    if (active_nodes <= 0 .or. size(parameters) <= 0 .or. size(controls) /= size(parameters)) return
+
     do i = 1, size(parameters)
       select case (parameters(i)%variant)
       case (FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)
-        valid = controls(i)%drain_head_supplied .and. ieee_is_finite(controls(i)%drain_head)
+        if (.not. controls(i)%drain_head_supplied .or. .not. ieee_is_finite(controls(i)%drain_head)) return
       case (FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, &
             FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, &
             FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5)
-        valid = .not. controls(i)%drain_head_supplied
+        if (controls(i)%drain_head_supplied) return
       case default
-        valid = .false.
+        status = FMR_DRAIN_BIND_UNSUPPORTED_VARIANT
+        return
       end select
-      if (.not. valid) return
     end do
+    status = FMR_DRAIN_BIND_OK
+  end function fmr_drainage_response_configuration_status
+
+  logical function fmr_drainage_response_configuration_valid(parameters, controls, active_nodes) result(valid)
+    type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters(:)
+    type(fmr_drainage_response_level_control_t), intent(in) :: controls(:)
+    integer, intent(in) :: active_nodes
+    valid = fmr_drainage_response_configuration_status(parameters, controls, active_nodes) == FMR_DRAIN_BIND_OK
   end function fmr_drainage_response_configuration_valid
 
   subroutine evaluate_fmr_drainage_response_bottom_lumped(parameters, controls, hydraulic_view, qdra, diagnostics)
@@ -132,8 +142,9 @@ contains
     diagnostics = fmr_drainage_response_diagnostics_t()
     qdra = 0.0_real64
     n = size(qdra,2)
-    if (.not. fmr_drainage_response_configuration_valid(parameters, controls, n)) then
-      diagnostics%status = FMR_DRAIN_BIND_INVALID_CONFIGURATION
+    status = fmr_drainage_response_configuration_status(parameters, controls, n)
+    if (status /= FMR_DRAIN_BIND_OK) then
+      diagnostics%status = status
       return
     end if
     if (size(qdra,1) /= size(parameters)) then
@@ -164,7 +175,7 @@ contains
     end if
 
     ! Frozen SWDIVD=0 B1.10 semantics: each level-integrated transfer is
-    ! represented exactly once at the bottom compartment.  The aggregate is a
+    ! represented exactly once at the bottom compartment. The aggregate is a
     ! diagnostic/derived view and is never booked as a second transfer.
     do i = 1, size(parameters)
       qdra(i,n) = exchanges(i)%signed_soil_to_drain_rate
