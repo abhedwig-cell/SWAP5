@@ -2,7 +2,7 @@ module mod_groundwater_multiswap_publication
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_candidate_state_t, kernel_executor_t, &
-       KERNEL_COMMIT_STATUS_COMMITTED
+       kernel_result_t, KERNEL_COMMIT_STATUS_COMMITTED
   use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t
   use mod_groundwater_exchange_service_contract, only: groundwater_preparable_exchange_service_t, &
        groundwater_exchange_checkpoint_t, groundwater_exchange_candidate_t, groundwater_exchange_prepared_t, &
