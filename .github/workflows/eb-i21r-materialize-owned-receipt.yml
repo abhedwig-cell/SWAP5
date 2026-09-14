@@ -6,6 +6,7 @@ on:
       - work/eb-i21r-runtime-bound-accepted-receipt-remediation
     paths:
       - .github/workflows/eb-i21r-materialize-owned-receipt.yml
+      - tests/eb/run_eb_i21r_owned_receipt_gate.sh
   workflow_dispatch:
 
 permissions:
