@@ -78,9 +78,9 @@ done
 cmp "$BUILD/types-o0/out.txt" "$BUILD/types-o2/out.txt" || fail 'energy types O0/O2 mismatch'
 echo 'EB_I20_ENERGY_TYPES_O0_O2_IDENTITY=PASS'
 
-# EB-I01 predates F-KT18 fail-closed mass completeness. Preserve the historical
-# fixture byte-for-byte in Git and normalize only this temporary build copy to
-# the current transaction contract. No energy or mass value is changed.
+# EB-I01 predates the current fail-closed mass-completeness fields. Preserve the
+# historical fixture byte-for-byte in Git and normalize only this temporary
+# build copy. No physical mass or energy quantity is changed.
 cp "$HIST_RECEIPT_TEST" "$NORMALIZED_RECEIPT_TEST"
 python3 - "$NORMALIZED_RECEIPT_TEST" <<'PY'
 from pathlib import Path
@@ -88,19 +88,19 @@ import sys
 p = Path(sys.argv[1])
 s = p.read_text(encoding='utf-8')
 old_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t'
-new_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, FKT_MASS_MISSING_NONE'
+new_use = 'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE'
 if s.count(old_use) != 1:
-    raise SystemExit(f'EB-I20 F-KT18 use anchor count={s.count(old_use)}')
+    raise SystemExit(f'EB-I20 current-TX use anchor count={s.count(old_use)}')
 s = s.replace(old_use, new_use, 1)
 anchor = '    outcome%mass_in = transfer_mass\n'
-insert = anchor + '    outcome%mass_accounting_complete = .true.\n    outcome%mass_missing_mask = FKT_MASS_MISSING_NONE\n'
+insert = anchor + '    outcome%mass_accounting_complete = .true.\n    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE\n'
 if s.count(anchor) != 1:
-    raise SystemExit(f'EB-I20 F-KT18 mass anchor count={s.count(anchor)}')
+    raise SystemExit(f'EB-I20 current-TX mass anchor count={s.count(anchor)}')
 s = s.replace(anchor, insert, 1)
 p.write_text(s, encoding='utf-8')
 PY
 grep -Fq 'outcome%mass_accounting_complete = .true.' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized completeness marker missing'
-grep -Fq 'outcome%mass_missing_mask = FKT_MASS_MISSING_NONE' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized missing-mask marker missing'
+grep -Fq 'outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE' "$NORMALIZED_RECEIPT_TEST" || fail 'normalized missing-contribution marker missing'
 echo 'EB_I20_FIXTURE_CURRENT_MASS_COMPLETENESS_NORMALIZATION=PASS'
 
 for opt in 0 2; do
@@ -131,9 +131,9 @@ done
 cmp "$BUILD/receipt-o0/out.txt" "$BUILD/receipt-o2/out.txt" || fail 'receipt integration O0/O2 mismatch'
 echo 'EB_I20_TRANSACTIONAL_RECEIPT_O0_O2_IDENTITY=PASS'
 
-# Independent preservation of the current F-KT18 contract. This exact F-VQ67
-# attack oracle is pinned byte-for-byte and runs against the exact current
-# canonical transaction source.
+# Independent preservation of the current transaction mass-completeness
+# contract. This exact F-VQ67 attack oracle is pinned byte-for-byte and runs
+# against the exact current canonical transaction source.
 FVQ67_TRANSACTION_SOURCE="$ROOT/src/transaction/mod_transaction_reference.f90" \
 FVQ67_TAG=ebi20 bash tests/fvq/run_fvq67_mass_completeness_independent.sh > "$BUILD/fvq67.txt" 2>&1 || {
   cat "$BUILD/fvq67.txt" >&2
