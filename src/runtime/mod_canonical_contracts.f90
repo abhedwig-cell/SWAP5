@@ -94,7 +94,6 @@ module mod_canonical_contracts
   type, abstract, extends(transaction_model_t), public :: canonical_physical_model_t
   contains
     procedure(prepare_interval_iface), deferred :: prepare_interval
-    procedure :: select_transaction_window => canonical_default_select_transaction_window
   end type canonical_physical_model_t
 
   abstract interface
@@ -107,20 +106,5 @@ module mod_canonical_contracts
       type(canonical_numerical_config_t), intent(in) :: config
     end subroutine prepare_interval_iface
   end interface
-
-contains
-
-  subroutine canonical_default_select_transaction_window(self, cursor, outer_t1, selected_t1)
-    class(canonical_physical_model_t), intent(inout) :: self
-    real(real64), intent(in) :: cursor, outer_t1
-    real(real64), intent(out) :: selected_t1
-
-    ! Backward-compatible default: models that do not own a shorter canonical
-    ! transaction window retain the historical outer-endpoint behavior.
-    associate(model => self)
-      selected_t1 = outer_t1
-      if (cursor > outer_t1) selected_t1 = cursor
-    end associate
-  end subroutine canonical_default_select_transaction_window
 
 end module mod_canonical_contracts
