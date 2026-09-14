@@ -57,17 +57,17 @@ contains
     end select
   end subroutine fvq81_configure
 
-  logical function fvq81_admitted(self, parameters, config)
+  logical function fvq81_admitted(self, parameters, numerical_config)
     class(fvq81_model_t), intent(in) :: self
     class(kernel_parameters_t), intent(in) :: parameters
-    type(canonical_numerical_config_t), intent(in) :: config
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: parameter_ok
     parameter_ok = .false.
     select type (parameters)
     type is (fvq81_parameters_t)
       parameter_ok = parameters%inflow_rate >= 0.0_real64
     end select
-    fvq81_admitted = parameter_ok .and. self%multiplier >= 0.0_real64 .and. config%max_committed_substeps > 0
+    fvq81_admitted = parameter_ok .and. self%multiplier >= 0.0_real64 .and. numerical_config%max_committed_substeps > 0
   end function fvq81_admitted
 
   subroutine fvq81_prepare(self, forcing, interval, config)
