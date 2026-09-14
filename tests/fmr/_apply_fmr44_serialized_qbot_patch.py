@@ -32,4 +32,24 @@ for path, old, new in changes:
     changed += 1
     print(f'FMR44_PATCHED {path}')
 
+# Diagnostic instrumentation belongs only to the qualification working tree.
+# It is not added to the production-source commit and does not change any gate.
+test = Path('tests/fmr/test_fmr44_serialized_prescribed_qbot_runtime.f90')
+text = test.read_text()
+anchor = """    call require(output%completed .and. output%committed, 'mode2 equilibrium committed')
+"""
+if anchor in text and 'FMR44_EQUILIBRIUM_DEBUG' not in text:
+    diagnostic = """    if (.not. (output%completed .and. output%committed)) then
+      write(*,'(A,L1,A,L1,A,I0,A,I0,A,L1,A,L1,A,A)') 'FMR44_EQUILIBRIUM_DEBUG completed=', output%completed, &
+           ' committed=', output%committed, ' kernel_status=', output%kernel_status, ' accepted_substeps=', &
+           output%accepted_substeps, ' admission_assessed=', output%admission_assessed, ' admitted=', output%admitted, &
+           ' admission_status=', trim(output%admission_status)
+      write(*,'(A,L1,A,ES26.17E3,A,I0,A,I0,A,I0)') 'FMR44_EQUILIBRIUM_MASS complete=', output%mass%complete, &
+           ' residual=', output%mass%residual, ' attempts=', output%solver_headcalc_calls, ' final_revision=', &
+           output%final_revision, ' solver_status=', observation%solver_status
+    end if
+""" + anchor
+    test.write_text(text.replace(anchor, diagnostic, 1))
+    print('FMR44_QUALIFICATION_DIAGNOSTICS=INSTRUMENTED')
+
 print(f'FMR44_PRODUCTION_ADMISSION_PATCH_COUNT={changed}')
