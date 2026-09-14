@@ -1,0 +1,91 @@
+name: F-ROSS03 RossFast D3R Fortran kernel
+
+on:
+  push:
+    branches:
+      - work/f-ross03-d3r-fortran-kernel
+    paths:
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'tests/ross/generate_ross03_oracle_fixture.py'
+      - 'tests/ross/test_ross03_d3r_table_kernel.f90'
+      - 'tests/ross/run_ross03_d3r_table_kernel.sh'
+      - '.github/workflows/ross03-d3r-fortran-kernel.yml'
+  pull_request:
+    paths:
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'tests/ross/generate_ross03_oracle_fixture.py'
+      - 'tests/ross/test_ross03_d3r_table_kernel.f90'
+      - 'tests/ross/run_ross03_d3r_table_kernel.sh'
+      - '.github/workflows/ross03-d3r-fortran-kernel.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross03-d3r-fortran-kernel-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout F-ROSS03 candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pin F-ROSS02 parent and F-ROSS01 research authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git merge-base --is-ancestor 8e84c783fd7e0236d990b2e9c9d94a45f9139e6d HEAD; echo $?)" = 0
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          test "$(git rev-parse FETCH_HEAD)" = 04807fdcf45453a59b7f6c99fe97f1286c172833
+          git worktree add --detach "$RUNNER_TEMP/f-ross01-research" FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json)" = ff32bce4597e245eef0028556fce476074ab1cb8
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = bafda0fb4ed6da606c3a1837208200dbcdb05c65
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py)" = 94520eb13a86cf224f90dd1649a4f9ad3afecfce
+
+      - name: Install research-oracle dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Generate exact pinned research table and nine-level oracle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ross03-fixture"
+          python3 tests/ross/generate_ross03_oracle_fixture.py \
+            --research-root "$RUNNER_TEMP/f-ross01-research" \
+            --material "${{ matrix.material }}" \
+            --table-out "$RUNNER_TEMP/ross03-fixture/table-${{ matrix.material }}.txt" \
+            --fixture-out "$RUNNER_TEMP/ross03-fixture/oracle-${{ matrix.material }}.txt" \
+            --metadata-out "$RUNNER_TEMP/ross03-fixture/oracle-${{ matrix.material }}.json"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Compare Fortran kernel with pinned research oracle under O0 and O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/ross/run_ross03_d3r_table_kernel.sh \
+            "${{ matrix.material }}" \
+            "$RUNNER_TEMP/ross03-fixture/table-${{ matrix.material }}.txt" \
+            "$RUNNER_TEMP/ross03-fixture/oracle-${{ matrix.material }}.txt" \
+            | tee "$RUNNER_TEMP/ross03-fixture/fortran-${{ matrix.material }}.txt"
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross03-${{ matrix.material }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/ross03-fixture/oracle-${{ matrix.material }}.json
+            ${{ runner.temp }}/ross03-fixture/fortran-${{ matrix.material }}.txt
