@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.fvq73.status.v1",
+  "work_unit": "F-VQ73",
+  "title": "F-PM14 drainage response runtime independent qualification",
+  "branch": "qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification",
+  "phase": "CLOSED_INDEPENDENT_QUALIFICATION",
+  "decision": "QUALIFIED_FPM14_DRAINAGE_RESPONSE_RUNTIME_INDEPENDENTLY",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+  },
+  "candidate": {
+    "branch": "work/f-pm14-drainage-response-runtime-closure",
+    "sha": "52c1a9aebddc435ef3792378f958305a96308ed0",
+    "tree": "5242a585fc21fe1266d5641a4fec2f4143fe197e",
+    "owner_decision": "QUALIFIED_FPM14_DRAINAGE_RESPONSE_RUNTIME_OWNER_READY_FOR_INDEPENDENT_VQ"
+  },
+  "tested_head": {
+    "sha": "3dd8b92b9601f4e3e41cd9ff79a37dd293b35641",
+    "tree": "11edf43902e7f35c5a645626696b6d6a4b27fe50",
+    "workflow_run": 34795488243,
+    "workflow_job": 103827635046,
+    "conclusion": "success",
+    "runtime_log_artifact": {
+      "id": 10329642675,
+      "name": "fvq73-runtime-log-34795488243",
+      "digest": "sha256:3ac190290b7c723fdad388532fd58459dfa54e2011c6d9e839f934de771a87d4"
+    }
+  },
+  "candidate_production_authority": {
+    "src/process/mod_drainage_empirical_interflow_response.f90": "eb53096b678d08b76d3fb1adb2247bc2a58ee748",
+    "src/process/mod_drainage_ernst_ipos45_preparation.f90": "fa1d5d400bb32be42e78889c0ff2a3bcab335142",
+    "src/process/mod_drainage_ernst_ipos45_response.f90": "b00ef0ae1f10182af2d0a8ea636d10b196e93379",
+    "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108",
+    "src/process/mod_drainage_hooghoudt_ipos1_response.f90": "89f26e2d2b77bef5bdd0c5fdb2ce9ca1f03206fa",
+    "src/process/mod_drainage_hooghoudt_ipos23_response.f90": "5637ddb4d33141f00b4ebf737d1c7f7fe1824164",
+    "src/process/mod_drainage_multilevel_aggregation.f90": "70d35512ef7c5958f7e4bf284cba104a7b641fdb",
+    "src/process/mod_drainage_process.f90": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa",
+    "src/process/mod_drainage_tabulated_response.f90": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "76c2a2ea569a4e85e490ebd2e7fb89c28d8b3fb5",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "0f09c0df1559ece894356b146b64d872470c0a32"
+  },
+  "results": {
+    "owner_closeout_provenance": "PASS_EXACT",
+    "candidate_production_blob_lock": "PASS_EXACT_11_FILES",
+    "vq_branch_production_or_reference_delta": "NONE",
+    "two_level_response_separation": "PASS",
+    "per_level_tabulated_interpolation": "PASS_INDEPENDENT_EXPECTED_VALUES",
+    "per_level_response_tangent": "PASS",
+    "aggregate_response_tangent": "PASS_SUM_OF_LEVEL_TANGENTS",
+    "aggregate_accounting_semantics": "PASS_DERIVED_VIEW_NOT_ADDITIONAL_TRANSFER",
+    "transactional_runtime_commit": "PASS",
+    "generic_noncalendar_interval": "PASS",
+    "hard_mass_closure": "PASS_TOLERANCE_1E-10",
+    "drainage_transfer_booking": "PASS_SINGLE_AUTHORITATIVE_TRIAL_LEDGER_BOOKING",
+    "invalid_second_level_preflight": "PASS_UNSUPPORTED_VARIANT",
+    "invalid_second_level_runtime": "PASS_FAIL_CLOSED_NO_COMMIT",
+    "invalid_second_level_committed_state": "PASS_BIT_IDENTICAL",
+    "O0_O2": "PASS_EXACT_OUTPUT_IDENTITY",
+    "precomputed_DIVDRA_preservation": "PASS",
+    "fixed_weir_preservation": "PASS",
+    "owner_invariants_1_30_disposition_integrity": "PASS_PRESERVED"
+  },
+  "test_semantics_reconciliation": {
+    "earlier_tested_head": "fd948cc9aaaff3ee40cfae4eb4d06869d3393bac",
+    "earlier_workflow_run": 34795358875,
+    "earlier_conclusion": "failure",
+    "source_governance_on_earlier_run": "success",
+    "runtime_on_earlier_run": "failure",
+    "correction": "The independent test was corrected so drainage_response_signed_exchange_native is treated as the native trial exchange amount, equal to response rate times trial step duration, rather than as an instantaneous rate. Unsupported second-level configuration is now also asserted through the public preflight status function.",
+    "production_change_required": false
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_VQ73": false,
+    "reference_source_changed_by_F_VQ73": false,
+    "physics_changed_by_F_VQ73": false,
+    "mass_booking_changed_by_F_VQ73": false,
+    "solver_changed_by_F_VQ73": false,
+    "persistent_state_changed_by_F_VQ73": false
+  },
+  "independently_qualified": true,
+  "canonical_admitted": false,
+  "drainage_v1_100_percent_complete": false,
+  "closed": true,
+  "nonclaims": [
+    "F-VQ73 is independent verification of the exact F-PM14 candidate lineage, not canonical admission.",
+    "F-VQ73 does not by itself establish drainage-v1 100-percent completion.",
+    "F-VQ73 does not add or modify production physics."
+  ],
+  "next_required_step": "Perform current-canonical F-CI reconciliation/admission for the exact qualified F-PM14 production blobs and preserve the F-VQ73 evidence; do not claim canonical admission before that gate is green."
+}
