@@ -10,6 +10,9 @@ on:
       - '.github/workflows/swap431-empirical-baseline.yml'
       - 'src/process/mod_reference_et_demand_process.f90'
       - 'src/runtime/mod_fmr_reference_et_demand_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
       - 'src/runtime/mod_canonical_contracts.f90'
       - 'src/transaction/mod_transaction_reference.f90'
   workflow_dispatch:
@@ -145,8 +148,6 @@ jobs:
           for opt in 0 2; do
             OUT="$BUILD/o$opt"
             mkdir -p "$OUT"
-            # Support dependency only. Preserve warnings but do not turn its
-            # pre-existing exact REAL comparison into an EB-R02 build failure.
             gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c \
               src/transaction/mod_transaction_reference.f90 -o "$OUT/mod_transaction_reference.o"
             gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
@@ -204,9 +205,6 @@ jobs:
           if set(rows) != set(expected):
               raise SystemExit(f'case set mismatch: {sorted(rows)}')
 
-          # The interval duration is formed by subtracting coordinates near day
-          # 2700, so its cancellation error is bounded relative to that time
-          # coordinate, not relative to the small duration itself.
           duration_tolerance = 2.0 * math.ulp(2701.0)
           output_tolerance = 2.0e-13
 
@@ -228,4 +226,135 @@ jobs:
 
           print('EB_R02_FORCING_SPAN_ANCHORS=PASS')
           print('EB_R02_CURRENT_CANONICAL_FORCING_SPAN_OBSERVATION PASS')
+          PY
+
+  eb-r03-effective-forcing-selection:
+    name: EB-R03 current-canonical effective forcing selection
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out empirical-baseline capability
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pin current dispatcher and historical oracle boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          RUNTIME=src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          CURRENT_BLOB=1aa2454048d0e480becaee34f596f20f1a7bd66e
+          HISTORICAL_FMR38=b2e31bc8993075bc346f80ad7eb9dc4d92ff7ded
+          HISTORICAL_BLOB=f06a2eef7b47880e449cf9b201342d7bd1e197e1
+          git cat-file -e "$HISTORICAL_FMR38^{commit}"
+          test "$(git hash-object "$RUNTIME")" = "$CURRENT_BLOB"
+          test "$(git rev-parse "$HISTORICAL_FMR38:$RUNTIME")" = "$HISTORICAL_BLOB"
+          test "$CURRENT_BLOB" != "$HISTORICAL_BLOB"
+          grep -Fq 'forcing_index = int(column%forcing_handle)' "$RUNTIME"
+          grep -Fq 'forcing_registry(forcing_index)' "$RUNTIME"
+          grep -Fq 'type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing' "$RUNTIME"
+          echo 'EB_R03_CURRENT_RUNTIME_BLOB_PINNED=PASS'
+          echo 'EB_R03_HISTORICAL_FMR38_USED_AS_ORACLE_NOT_INHERITED=PASS'
+          echo 'EB_R03_CURRENT_REGISTRY_AND_RESOLVED_FORCING_SEAMS_PRESENT=PASS'
+
+      - name: Compile current dispatcher with forcing probe backend
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD="${RUNNER_TEMP}/swap431-eb-r03"
+          mkdir -p "$BUILD"
+          STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          BASE=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          MODULES=(
+            src/transaction/mod_transaction_reference.f90
+            src/runtime/mod_canonical_contracts.f90
+            src/runtime/mod_canonical_interval_runtime.f90
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_runtime_core.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            src/solver/mod_soil_water_solver_contract.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+            src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+            src/runtime/mod_fmr_bottom_sensible_energy.f90
+            src/runtime/mod_fmr_accepted_commit_receipt.f90
+            src/runtime/mod_fmr_owned_commit_receipt.f90
+          )
+          for opt in 0 2; do
+            OUT="$BUILD/o$opt"
+            mkdir -p "$OUT"
+            objects=()
+            for src in "${MODULES[@]}"; do
+              obj="$OUT/$(basename "${src%.*}").o"
+              gfortran "${BASE[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
+              objects+=("$obj")
+            done
+            gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+              tests/empirical_baseline/mod_eb_r03_forcing_probe_backend.f90 -o "$OUT/mod_eb_r03_forcing_probe_backend.o"
+            objects+=("$OUT/mod_eb_r03_forcing_probe_backend.o")
+            gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+              src/runtime/mod_fmr_serialized_multiswap_runtime.f90 -o "$OUT/mod_fmr_serialized_multiswap_runtime.o"
+            objects+=("$OUT/mod_fmr_serialized_multiswap_runtime.o")
+            gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+              tests/empirical_baseline/observe_effective_forcing_selection.f90 -o "$OUT/observe_effective_forcing_selection.o"
+            gfortran -O"$opt" "${objects[@]}" "$OUT/observe_effective_forcing_selection.o" \
+              -o "$OUT/observe_effective_forcing_selection"
+            "$OUT/observe_effective_forcing_selection" > "$OUT/observations.csv"
+          done
+          cmp "$BUILD/o0/observations.csv" "$BUILD/o2/observations.csv"
+          echo 'EB_R03_O0_O2_OBSERVATION_IDENTITY=PASS'
+          cat "$BUILD/o0/observations.csv"
+          echo "EB_R03_OBSERVATION_SHA256=$(sha256sum "$BUILD/o0/observations.csv" | cut -d' ' -f1)"
+
+      - name: Falsify forcing selection and statelessness anchors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import math
+          import os
+          from pathlib import Path
+
+          path = Path(os.environ['RUNNER_TEMP']) / 'swap431-eb-r03' / 'o0' / 'observations.csv'
+          with path.open(newline='') as handle:
+              rows = {row['case_id']: row for row in csv.DictReader(handle)}
+
+          expected = {
+              'registry_a': ('registry', 1, 1.0, True, 'ADMITTED', 0.1, 0.1, 1, 0),
+              'registry_b': ('registry', 2, 2.5, True, 'ADMITTED', 0.25, 0.25, 1, 0),
+              'registry_a_replay': ('registry', 1, 1.0, True, 'ADMITTED', 0.1, 0.1, 1, 0),
+              'resolved_b_with_handle_a': ('resolved', 1, 2.5, True, 'ADMITTED', 0.25, 0.25, 1, 0),
+              'invalid_handle': ('registry', 3, -1.0, False, 'ROUTING_REJECTED', 0.0, 0.0, 0, 0),
+          }
+          if set(rows) != set(expected):
+              raise SystemExit(f'case set mismatch: {sorted(rows)}')
+
+          for case_id, anchor in expected.items():
+              row = rows[case_id]
+              route, handle, scale, committed, admission, total_in, storage_change, revision, active = anchor
+              if row['route'] != route or int(row['forcing_handle']) != handle:
+                  raise SystemExit(f'{case_id}: route/handle mismatch {row}')
+              if not math.isclose(float(row['effective_scale']), scale, rel_tol=0.0, abs_tol=1e-15):
+                  raise SystemExit(f'{case_id}: effective scale mismatch {row}')
+              if (row['committed'] == 'T') != committed or row['admission_status'].strip() != admission:
+                  raise SystemExit(f'{case_id}: commit/admission mismatch {row}')
+              if not math.isclose(float(row['total_in']), total_in, rel_tol=0.0, abs_tol=2e-13):
+                  raise SystemExit(f'{case_id}: total_in mismatch {row}')
+              if not math.isclose(float(row['storage_change']), storage_change, rel_tol=0.0, abs_tol=2e-13):
+                  raise SystemExit(f'{case_id}: storage_change mismatch {row}')
+              if int(row['final_revision']) != revision or int(row['active_calls']) != active:
+                  raise SystemExit(f'{case_id}: revision/active mismatch {row}')
+
+          if rows['registry_a']['total_in'] != rows['registry_a_replay']['total_in']:
+              raise SystemExit('A-B-A registry forcing replay is not textually identical')
+          if rows['registry_b']['total_in'] != rows['resolved_b_with_handle_a']['total_in']:
+              raise SystemExit('resolved explicit forcing B does not reproduce registry forcing B')
+
+          print('EB_R03_HANDLE_SELECTS_EFFECTIVE_FORCING=PASS')
+          print('EB_R03_A_B_A_FORCING_STATELESS_REPLAY=PASS')
+          print('EB_R03_RESOLVED_FORCING_OVERRIDES_REGISTRY_HANDLE=PASS')
+          print('EB_R03_INVALID_HANDLE_FAILS_PRETRIAL=PASS')
+          print('EB_R03_CURRENT_CANONICAL_EFFECTIVE_FORCING_OBSERVATION PASS')
           PY
