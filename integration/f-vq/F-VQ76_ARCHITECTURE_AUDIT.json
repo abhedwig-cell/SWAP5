@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.fvq76.architecture_audit.v1",
+  "work_unit": "F-VQ76",
+  "scope": "Independent drainage preservation requalification on the exact F-CI62 current-canonical postimage; no production change",
+  "invariant_count": 30,
+  "invariants": [
+    {"id":1,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":2,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":3,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":4,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":5,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":6,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":7,"assessment":"REPLAY_REQUIRED_TRANSACTION_ATOMICITY"},{"id":8,"assessment":"REPLAY_REQUIRED_RESTART_CONTINUATION"},{"id":9,"assessment":"REPLAY_REQUIRED_GENERIC_TIME"},{"id":10,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":11,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":12,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":13,"assessment":"REPLAY_REQUIRED_HARD_MASS"},{"id":14,"assessment":"REPLAY_REQUIRED_RESPONSE_SENSITIVITY_PRESERVATION"},{"id":15,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":16,"assessment":"REPLAY_REQUIRED_MULTISWAP_ISOLATION"},{"id":17,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":18,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":19,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":20,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":21,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":22,"assessment":"REPLAY_REQUIRED_HEADCALC_ISOLATION"},{"id":23,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":24,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":25,"assessment":"REPLAY_REQUIRED_REFERENCE_MODE_O0_O2"},{"id":26,"assessment":"REPLAY_REQUIRED_DIAGNOSTICS"},{"id":27,"assessment":"REPLAY_REQUIRED_NO_UNUSED_STATE"},{"id":28,"assessment":"NO_ADVERSE_QUALIFICATION_DELTA"},{"id":29,"assessment":"REPLAY_REQUIRED_NO_SILENT_DEPENDENCIES"},{"id":30,"assessment":"EXPLICIT_REQUALIFICATION_AUDIT"}
+  ],
+  "qualification_policy": "Every REPLAY_REQUIRED item must turn PASS through immutable F-VQ73/F-VQ74 executable oracles before closeout.",
+  "mass_conservation_concession": false,
+  "production_change": false,
+  "reference_change": false,
+  "scope_reduction": false,
+  "scope_expansion": false
+}
