@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.f-ross01.production-d3r-model-adapter.v1",
+  "work_unit": "F-ROSS01",
+  "capability": "PRODUCTION_D3R_MODEL_ADAPTER_COMPOSITION",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_ADAPTER_COMPOSITION",
+  "branch": "work/f-ross01-production-d3r-model-adapter",
+  "current_canonical_base": "96e810cca678449e0611ea9635ae6ac1209fb5db",
+  "qualified_head": "c8d743eab4381c4526fb4ff046d7907c92b077c6",
+  "workflow": {
+    "run": 34886511270,
+    "job": 104118390671,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "output_sha256": "afb58385cd26832076bd38c0b92bf9c39c6f4a82c3512201764e53b1edb9fdae",
+    "O0_O2_identical": true,
+    "pass_marker": "F-ROSS01 production D3R model adapter: PASS",
+    "executable_stack_warning_present": false
+  },
+  "source_blobs": {
+    "src/runtime/mod_rossfast_d3r_model_adapter.f90": "60a1b9ddd2f4f2ac9aa173d73c782d189503db80",
+    "tests/runtime/test_f_ross01_d3r_model_adapter.f90": "4d4cd764454ad74497abfee226da30907f2d1b63",
+    "tests/runtime/run_f_ross01_d3r_model_adapter.sh": "a386093e71a1273afe9547953dd75e869347e731",
+    ".github/workflows/f-ross01-production-d3r-model-adapter.yml": "18153ce96e6549d5f6da58ba752ec000859e999b",
+    "src/runtime/mod_canonical_interval_runtime.f90": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "qualified": {
+    "d3r_ladder_window_selection_is_wired_into_canonical_runtime": true,
+    "retry_policy_composes_with_canonical_retry_cap_tightening": true,
+    "outer_interval_single_external_publication": true,
+    "accepted_mass_accounting_closes_in_fixture": true,
+    "unrepresentable_remainder_fails_before_physical_transaction": true,
+    "committed_state_unchanged_on_fail_closed_selector_case": true,
+    "current_canonical_reconciled": true,
+    "generic_canonical_source_overridden_by_branch": false
+  },
+  "scope": "RESTRICTED_D3R_DURATION_AND_RUNTIME_COMPOSITION_ONLY",
+  "hard_nonclaims": [
+    "This does not admit a concrete RossFast physical advance/storage implementation.",
+    "This does not establish full RossFast production admission.",
+    "This does not qualify runtime performance.",
+    "This does not generalize beyond the qualified D3R dyadic duration policy.",
+    "This makes no A10 surface-cap, heterogeneous-profile, bottom-boundary, groundwater, MultiSWAP or FullRichards claim."
+  ],
+  "next_gate": "CONCRETE_ROSSFAST_PHYSICAL_MODEL_BINDING"
+}
