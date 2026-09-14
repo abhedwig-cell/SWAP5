@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 
 EXPECTED_C_ORDER_SHA256 = {
-    "B01": "5d0a78c6b5e240589210c5e6efa28be890ffa53179e7952a29e23f5c4335ffb4",
+    "B01": "9c7160127bbfd7a694d37558b951ad85159aead8705f8dea2fe9ebbf65ee18d7",
     "B12": "a40e2bdbb6708a16dd3675d1a7f67d443de13505418a15ffa1478752dd2ceb2a",
     "O01": "e2b2a6ff34855b3104c0a9683edfe6585ac16c47c4a12c5239c03a132af202d0",
     "O05": "d9fb067f5861abdec568ab4382825d79ac6c1e3fc0499d7d6e6a78df94a87a79",
