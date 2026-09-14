@@ -32,7 +32,7 @@ program test_fsi37_accepted_step_directional_derivative
   real(real64), allocatable :: cofgen(:,:)
   real(real64), allocatable :: incoming_h(:), incoming_theta(:)
   real(real64) :: h0, k0
-  integer :: cases
+  integer :: cases, mean_method
 
   h0 = -100.0_real64
   call configure_problem(h0, parameters, hydraulic_parameters, constitutive, source_sink, initial_state, &
@@ -41,17 +41,21 @@ program test_fsi37_accepted_step_directional_derivative
   call make_incoming_direction(incoming_h, incoming_theta)
 
   cases = 0
-  call check_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX, -0.05_real64, 1, 0.7_real64, cases)
-  call check_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX,  0.00_real64, 1, 0.7_real64, cases)
-  call check_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX,  0.05_real64, 3, 0.7_real64, cases)
-  call check_fd_case(SW_STEP_CONTROL_BOTTOM_HEAD, h0-20.0_real64, 1, 0.7_real64, cases)
-  call check_fd_case(SW_STEP_CONTROL_BOTTOM_HEAD, h0+20.0_real64, 3, 0.7_real64, cases)
+  do mean_method = 1, 6
+     call check_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX, -0.05_real64, mean_method, 0.7_real64, cases)
+     call check_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX,  0.00_real64, mean_method, 0.7_real64, cases)
+     call check_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX,  0.05_real64, mean_method, 0.7_real64, cases)
+     call check_fd_case(SW_STEP_CONTROL_BOTTOM_HEAD, h0-20.0_real64, mean_method, 0.7_real64, cases)
+     call check_fd_case(SW_STEP_CONTROL_BOTTOM_HEAD, h0+20.0_real64, mean_method, 0.7_real64, cases)
+  end do
 
   call check_provider_fail_closed()
   call check_retry_fail_closed()
 
-  call require(cases == 5, 'five smooth FD cases executed')
+  call require(cases == 30, 'thirty smooth FD cases executed')
   write(*,'(A,I0)') 'FSI37_FD_CASES=', cases
+  write(*,'(A)') 'FSI37_SWKMEAN_METHODS_1_6=PASS'
+  write(*,'(A)') 'FSI37_NONUNIFORM_BASE_PROFILE=PASS'
   write(*,'(A)') 'FSI37_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS'
 
 contains
@@ -278,7 +282,9 @@ contains
     end do
     call initialize_b110_default_mvg_parameters(hp,c)
     call bind_b110_default_mvg_provider(cp,hp,total_dt)
-    heads=initial_head
+    do k=1,numnod
+       heads(k)=initial_head + 5.0_real64*real(k-1,real64)
+    end do
     call cp%evaluate(heads,water,conductivity,capacity,dkdh)
     k_initial=conductivity(1)
     state%active_nodes=numnod
