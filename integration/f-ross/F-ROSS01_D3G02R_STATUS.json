@@ -2,7 +2,9 @@
   "schema_version": 1,
   "work_unit": "F-ROSS01 D3G02R",
   "title": "RossFast temporal-estimator structure, cancellation and independent holdout qualification",
-  "status": "IN_PROGRESS",
+  "status": "CLOSED_NEGATIVE",
+  "decision": "ROSSFAST_D3G02R_ESTIMATOR_STRUCTURE_HOLDOUT_NEGATIVE",
+  "closure_result": "STRUCTURAL_ROUTE_NOT_SUPPORTED_BY_FROZEN_HOLDOUT_RULE",
   "branch": "work/f-ross01-d3g02r-estimator-structure-holdout",
   "base_closed_negative_d3g02": "3e1df24f1a56145236d835fb8a089e01adb04b05",
   "contract_commit": "18213f5b684bb903ed6142e7fefde51b0261ac6c",
@@ -11,31 +13,61 @@
     "51d18d564284de00a1f63d51a1c75151770758cb",
     "a4f6b82e1a1afda83c43b1c17692426ff7d1a27e"
   ],
+  "authority_reconciliation_commit": "232d618ced75ea8b68233322eb44c7887e4b73fc",
+  "negative_evidence_commit": "c73f6918204b546c117b1ae7d81d7f04093a8014",
   "authority_run": {
     "run_id": 34823564419,
     "run_number": 2,
     "tested_head": "a4f6b82e1a1afda83c43b1c17692426ff7d1a27e",
-    "status_at_receipt": "pending",
     "execution_layout": "108_INDEPENDENT_MATERIAL_FORCING_ATTEMPT_CASES",
-    "case_semantics_unchanged_from_frozen_material_probe": true
+    "case_semantics_unchanged_from_frozen_material_probe": true,
+    "status_at_scientific_closure": "IN_PROGRESS_WITH_DECISIVE_VALID_NEGATIVE_CASE",
+    "binary_disposition_does_not_require_remaining_cases": true,
+    "reason": "The preregistered positive signal required every frozen case to satisfy all structural conditions; one numerically valid structural failure is sufficient to make a positive result impossible without changing the rule. Remaining cases, if they complete, are supplementary characterization only."
+  },
+  "decisive_case": {
+    "material": "B01",
+    "forcing_variant": "POSITIVE_ONE_PERCENT",
+    "attempt_index": 6,
+    "job_id": 103910497594,
+    "artifact_id": 10338429633,
+    "artifact_digest": "sha256:22f51e0c0952d76116f2d45840edd7bb52eca824b06bf88029e997bcf872a306",
+    "numerical_pass": true,
+    "structural_signal": false,
+    "reference_error_monotone_2_4_8_16": false,
+    "adjacent_delta_monotone_2_4_8_16": false,
+    "reference_self_delta": 3.405642244502853e-17,
+    "max_abs_mass_residual_cm": 3.4122958697728962e-15,
+    "two_half8_error_to_raw_ratio": 0.8333333333333334,
+    "failure_scale": "SPAN_NORMALIZED_APPROX_1E_MINUS_16"
   },
   "superseded_execution_run": {
     "run_id": 34821572344,
     "tested_head": "0a832f9de127408672464863974bb606f417b167",
-    "reason": "Execution layout was too coarse: each material job serialized all 18 holdout cases. No completed scientific artifacts existed when the frozen case matrix was resharded; the science contract and per-case calculations were unchanged."
+    "reason": "Execution layout was too coarse and produced no completed scientific artifacts before resharding."
   },
   "frozen_case_matrix": {
     "materials": 6,
     "forcing_holdouts_per_material": 2,
     "attempt_indices_per_holdout": 9,
-    "expected_cases": 108,
+    "planned_cases": 108,
     "internal_substep_levels": [2, 4, 8, 16],
-    "canonical_full_two_half_probe": true
+    "canonical_full_two_half_probe": true,
+    "positive_rule": "ALL_CASES_MUST_PASS_ALL_STRUCTURAL_CONDITIONS",
+    "negative_rule": "ANY_NUMERICALLY_VALID_FROZEN_STRUCTURAL_FAILURE_IS_DECISIVE"
   },
-  "live_canonical_binding_policy": {
-    "full_canonical_head_is_not_pinned": true,
-    "transaction_reference_blob_must_equal": "d5a71a526efaebd82054580c3186f8e3545db331",
-    "reason": "Moving-current canonical commits that do not change the relevant transaction semantics must not invalidate a research run; semantic source drift still fails closed."
+  "live_canonical_at_decisive_case": {
+    "head": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "relevant_semantics_unchanged": true
+  },
+  "scientific_interpretation": {
+    "failure_is_at_numerical_floor": true,
+    "posthoc_resolution_floor_exemption_allowed": false,
+    "threshold_relaxation_allowed": false,
+    "case_exclusion_allowed": false,
+    "observed_failure_may_motivate_new_hypothesis": true,
+    "new_hypothesis_must_be_independently_justified_and_preregistered": true
   },
   "governance": {
     "d3g02_remains_closed_negative": true,
@@ -43,8 +75,10 @@
     "certificate_available": false,
     "safety_factor_authority": false,
     "accuracy_tolerance_authority": false,
+    "resolution_floor_branch_is_authority": false,
+    "resolution_floor_branch_disposition": "PAUSED_NOT_VALIDATED_BY_D3G02R",
     "production_admission": false,
     "production_source_delta": []
   },
-  "resume_rule": "Do not modify the frozen D3G02R contract, case matrix, thresholds or diagnostics based on partial results. Resume by reading run 34823564419 and its immutable artifacts. If the run fails for infrastructure or harness reasons before scientific evidence is produced, repair only that defect and preserve all 108 frozen cases."
+  "next_step_rule": "Do not continue this estimator/certificate route by fitting a floor, factor or tolerance to the failed holdout. A successor is justified only by a genuinely new scientific hypothesis whose constants and decision rules are independently motivated and preregistered before seeing its qualification results."
 }
