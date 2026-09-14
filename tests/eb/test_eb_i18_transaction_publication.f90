@@ -66,7 +66,8 @@ contains
       call response%set_complete(wrong_request, donor_temperature_c, 81004_int64, ok)
       if (.not. ok) error stop 'EB-I18 mismatched response construction failed'
     case (PROVIDER_INVALID)
-      response = fmr_external_bottom_thermal_response_t()
+      call response%set_complete(request, donor_temperature_c, -1_int64, ok)
+      if (ok) error stop 'EB-I18R invalid response unexpectedly ready'
     case default
       error stop 'EB-I18 unknown provider mode'
     end select
@@ -81,16 +82,20 @@ program test_eb_i18_transaction_publication
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state
+       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, fmr_serialized_batch_diagnostics_t, &
-       fmr_serialized_bottom_energy_publication_t, fmr_execute_serialized_resolved_physical_column_with_bottom_energy
-  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
+       fmr_serialized_bottom_energy_publication_t, fmr_execute_serialized_column_with_bottom_energy
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_liquid_water_sensible_enthalpy, only: liquid_water_sensible_enthalpy_parameters_t, &
        initialize_liquid_water_sensible_enthalpy_parameters, LWSE_OK
+  use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, initialize_soil_temperature_parameters, &
+       initialize_soil_temperature_state
   use mod_fmr_bottom_sensible_energy, only: FMR_BOTTOM_ENERGY_COMPLETE, FMR_BOTTOM_ENERGY_INCOMPLETE_EXTERNAL_DONOR
   use mod_eb_i18_provider_fixture, only: PROVIDER_COMPLETE, PROVIDER_UNAVAILABLE, PROVIDER_STALE, &
        PROVIDER_MISMATCH, PROVIDER_INVALID, provider_calls, requested_exchange_sum, donor_temperature_c, &
@@ -98,8 +103,8 @@ program test_eb_i18_transaction_publication
   implicit none
 
   real(real64), parameter :: t0 = 9100.125_real64
-  real(real64), parameter :: t1 = 9100.135_real64
-  real(real64), parameter :: initial_head = -123.0_real64
+  real(real64), parameter :: t1 = 9100.1251_real64
+  real(real64), parameter :: initial_head = -75.0_real64
   real(real64), parameter :: reference_temperature_c = 5.0_real64
   real(real64), parameter :: rho = 1000.0_real64
   real(real64), parameter :: cp = 4180.0_real64
@@ -131,7 +136,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t) :: runtime
     type(fmr_serialized_bottom_energy_publication_t) :: publication
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls, status, requested, complete, unavailable, stale, invalid
     real(real64) :: total, expected
     logical :: available
@@ -139,11 +144,15 @@ contains
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters)
     call reset_provider(PROVIDER_COMPLETE, column_id)
-    call fmr_execute_serialized_resolved_physical_column_with_bottom_energy(backend, tx, column, template, parameters, &
+    call fmr_execute_serialized_column_with_bottom_energy(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i18_external_provider, output, diagnostic, &
          runtime, active_calls, publication)
 
     call require(output%completed .and. output%committed, 'complete provider hydrology committed')
+    call require(output%mass%complete, 'complete provider water mass accounting complete')
+    call require(abs(output%mass%residual) <= 1.0e-12_real64, 'complete provider hard water mass gate')
+    call require(output%accepted_substeps == 1, 'complete provider exactly one accepted substep')
+    call require(output%solver_headcalc_calls == 1, 'complete provider bounded one-trajectory HeadCalc cost')
     call require(committed%current_revision() == 1_int64, 'complete provider single commit')
     call require(publication%ready() .and. publication%complete(), 'complete provider publication complete')
     call require(publication%energy_status() == FMR_BOTTOM_ENERGY_COMPLETE, 'complete provider energy status')
@@ -193,7 +202,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t) :: runtime
     type(fmr_serialized_bottom_energy_publication_t) :: publication
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls, requested, complete, unavailable, stale, invalid
     real(real64) :: total
     logical :: available
@@ -201,7 +210,7 @@ contains
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters)
     call reset_provider(mode, column_id)
-    call fmr_execute_serialized_resolved_physical_column_with_bottom_energy(backend, tx, column, template, parameters, &
+    call fmr_execute_serialized_column_with_bottom_energy(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i18_external_provider, output, diagnostic, &
          runtime, active_calls, publication)
 
@@ -235,7 +244,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t) :: runtime
     type(fmr_serialized_bottom_energy_publication_t) :: publication
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls, requested, complete, unavailable, stale, invalid
     real(real64) :: total
     logical :: available
@@ -243,7 +252,7 @@ contains
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters)
     call reset_provider(mode, column_id)
-    call fmr_execute_serialized_resolved_physical_column_with_bottom_energy(backend, tx, column, template, parameters, &
+    call fmr_execute_serialized_column_with_bottom_energy(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i18_external_provider, output, diagnostic, &
          runtime, active_calls, publication)
 
@@ -273,14 +282,14 @@ contains
     type(fmr_serialized_batch_diagnostics_t) :: runtime
     type(fmr_serialized_bottom_energy_publication_t) :: publication
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls
 
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters)
-    config%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    parameters%bottom_mode = 6
     call reset_provider(PROVIDER_COMPLETE, column_id)
-    call fmr_execute_serialized_resolved_physical_column_with_bottom_energy(backend, tx, column, template, parameters, &
+    call fmr_execute_serialized_column_with_bottom_energy(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i18_external_provider, output, diagnostic, &
          runtime, active_calls, publication)
 
@@ -305,13 +314,13 @@ contains
     type(fmr_serialized_batch_diagnostics_t) :: runtime_a, runtime_b
     type(fmr_serialized_bottom_energy_publication_t) :: publication_a, publication_b
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls, requested, complete, unavailable, stale, invalid
 
     call initialize_case(backend, top, committed_a, column, template, parameters, forcing, config, output_a, diagnostic_a, &
          runtime_a, active_calls, energy_parameters)
     call reset_provider(PROVIDER_COMPLETE, column_id)
-    call fmr_execute_serialized_resolved_physical_column_with_bottom_energy(backend, tx, column, template, parameters, &
+    call fmr_execute_serialized_column_with_bottom_energy(backend, tx, column, template, parameters, &
          forcing, committed_a, config, t0, t1, energy_parameters, eb_i18_external_provider, output_a, diagnostic_a, &
          runtime_a, active_calls, publication_a)
     call require(publication_a%ready() .and. publication_a%complete(), 'reuse first publication complete')
@@ -321,7 +330,7 @@ contains
     diagnostic_b = fmr_column_diagnostics_t(); diagnostic_b%column_id = column_id
     runtime_b = fmr_serialized_batch_diagnostics_t(); active_calls = 0
     call reset_provider(PROVIDER_UNAVAILABLE, column_id)
-    call fmr_execute_serialized_resolved_physical_column_with_bottom_energy(backend, tx, column, template, parameters, &
+    call fmr_execute_serialized_column_with_bottom_energy(backend, tx, column, template, parameters, &
          forcing, committed_b, config, t0, t1, energy_parameters, eb_i18_external_provider, output_b, diagnostic_b, &
          runtime_b, active_calls, publication_b)
 
@@ -336,7 +345,7 @@ contains
   subroutine initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
        runtime, active_calls, energy_parameters)
     type(fmr_serialized_reference_backend_t), intent(out) :: backend
-    type(fmr04_fixed_flux_top_provider_t), target, intent(out) :: top
+    type(fixed_flux_top_boundary_provider_t), target, intent(out) :: top
     type(kernel_committed_state_t), intent(out) :: committed
     type(fmr_logical_column_t), intent(out) :: column
     type(fmr_template_t), intent(out) :: template
@@ -359,8 +368,8 @@ contains
     template%vertical_layout_id = 91803_int64
     template%state_layout_id = 91804_int64
     template%solver_interface_id = 91805_int64
-    template%optional_state_layout_id = 0_int64
-    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
+    template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     column%column_id = column_id
     column%template_id = template%template_id
@@ -369,12 +378,14 @@ contains
     column%forcing_handle = 1_int64
     column%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
 
-    config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-    config%transaction%temporal_tolerance = 1.0e-8_real64
-    config%transaction%mass_tolerance = 1.0e-10_real64
+    config%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    config%transaction%temporal_tolerance = 0.0_real64
+    config%transaction%mass_tolerance = 1.0e-12_real64
     config%transaction%retry_scale = 0.5_real64
-    config%transaction%max_retries = 4
-    config%max_committed_substeps = 8
+    config%transaction%max_retries = 8
+    config%model_temporal_indicator_budget_available = .true.
+    config%model_temporal_indicator_budget = 2.5e-11_real64
+    config%max_committed_substeps = 32
     config%progress_tolerance = 0.0_real64
 
     output = fmr_serialized_column_result_t()
@@ -394,7 +405,9 @@ contains
 
   subroutine initialize_parameters(parameters)
     type(fmr_b110_physical_parameters_t), intent(out) :: parameters
-    integer :: k
+    real(real64) :: dz_cm(numnod), distance_above_cm(numnod), theta_sat(numnod)
+    real(real64) :: f_quartz(numnod), f_clay(numnod), f_organic(numnod)
+    integer :: k, soil_temperature_status
 
     parameters%parameter_set_id = 91801_int64
     parameters%active_nodes = numnod
@@ -411,18 +424,36 @@ contains
       parameters%cofgen(12,k)=0.99_real64*parameters%cofgen(3,k); parameters%cofgen(22,k)=-1.0e6_real64
       parameters%cofgen(23,k)=1.0e-12_real64
     end do
-    parameters%bottom_mode = 7
+    parameters%bottom_mode = 2
     parameters%swkimpl = 0
     parameters%swkmean = 1
     parameters%swsophy = 0
-    parameters%root_extraction_active = .true.
+    parameters%root_extraction_active = .false.
     parameters%macropore_active = .false.
     parameters%snow_active = .false.
     parameters%hysteresis_active = .false.
     parameters%tabulated_hydraulics_active = .false.
     parameters%elasticity_active = .false.
     parameters%frost_active = .false.
-    parameters%soil_temperature_active = .false.
+    parameters%max_iterations = 16
+    parameters%max_backtracking = 8
+    parameters%min_step_duration = 1.0e-8_real64
+    parameters%compartment_balance_tolerance = 1.0e-12_real64
+    parameters%total_balance_tolerance = 1.0e-12_real64
+    parameters%head_abs_tolerance = 1.0e-12_real64
+    parameters%head_rel_tolerance = 1.0e-12_real64
+    parameters%ponding_tolerance = 1.0e-12_real64
+    parameters%soil_temperature_active = .true.
+    dz_cm = 100.0_real64 * abs(dz)
+    distance_above_cm = 0.5_real64 * dz_cm
+    theta_sat = 0.423_real64
+    f_quartz = 0.40_real64
+    f_clay = 0.40_real64
+    f_organic = 0.10_real64
+    allocate(parameters%soil_temperature)
+    call initialize_soil_temperature_parameters(dz_cm, distance_above_cm, theta_sat, f_quartz, f_clay, f_organic, &
+         parameters%soil_temperature, soil_temperature_status)
+    call require(soil_temperature_status == SOIL_TEMP_OK, 'soil temperature parameter initialization')
   end subroutine initialize_parameters
 
   subroutine initialize_committed_state(committed, parameters, initial_time)
@@ -433,19 +464,29 @@ contains
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+    real(real64) :: initial_temperature(numnod), predecessor_right_derivative(numnod)
+    integer :: soil_temperature_status, i
     logical :: ok
 
     call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
     call bind_b110_default_mvg_provider(provider, hp, t1-t0)
-    heads = initial_head
+    heads(1) = initial_head
+    do i = 2, numnod
+      heads(i) = heads(i-1) + parameters%node_distance(i)
+    end do
     call provider%evaluate(heads, water, conductivity, capacity, dkdh)
     state%active_nodes = numnod
-    allocate(state%pressure_head(numnod), state%water_content(numnod))
+    allocate(state%pressure_head(numnod), state%water_content(numnod), state%soil_temperature)
     state%pressure_head = heads
     state%water_content = water
     state%ponding_depth = 0.0_real64
-    state%groundwater_level = -2.25_real64
-    call fmr_new_b110_committed_state(committed, column_id, state, initial_time, ok)
+    state%groundwater_level = -2.0_real64
+    initial_temperature = 9.0_real64
+    call initialize_soil_temperature_state(initial_temperature, state%soil_temperature, soil_temperature_status)
+    call require(soil_temperature_status == SOIL_TEMP_OK, 'soil temperature state initialization')
+    predecessor_right_derivative = 0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(committed, column_id, state, initial_time, ok, &
+         predecessor_right_derivative)
     call require(ok, 'committed state initialization')
   end subroutine initialize_committed_state
 
@@ -461,20 +502,21 @@ contains
     heads = initial_head
     call provider%evaluate(heads, water, conductivity, capacity, dkdh)
     k0 = conductivity(1)
-    q = max(1.0e-8_real64, min(1.0e-4_real64, 0.01_real64*k0))
+    q = 1.0e-10_real64
 
-    ! Positive bottom flux is inflow to SWAP; EB-I13 therefore records a
-    ! negative outward-positive bottom transfer. Keep the top closed so the
-    ! physical solver must account the small inflow as storage change.
-    forcing%top_flux = 0.0_real64
+    ! Positive bottom flux is inflow to SWAP. Use the already-qualified
+    ! F-MR44R bounded throughflow fixture so temporal acceptance, mass closure
+    ! and thermal publication are tested on the same committed candidate.
+    forcing%top_flux = q
     forcing%top_head = initial_head
     forcing%bottom_flux = q
     forcing%bottom_head = -321.0_real64
     allocate(forcing%drainage_flux_by_level(1,numnod), forcing%subsurface_irrigation_source(numnod), &
-         forcing%root_extraction_sink(numnod))
+         forcing%root_extraction_sink(numnod), forcing%soil_temperature)
     forcing%drainage_flux_by_level = 0.0_real64
     forcing%subsurface_irrigation_source = 0.0_real64
     forcing%root_extraction_sink = 0.0_real64
+    forcing%soil_temperature%prescribed_surface_temperature_c = 15.0_real64
   end subroutine initialize_forcing
 
   logical function close_value(a, b, rel_tol) result(close)
