@@ -40,6 +40,7 @@ module mod_fgc24_coupled_restart_test
   type, extends(groundwater_restart_adapter_t) :: dummy_groundwater_restart_adapter_t
     type(dummy_groundwater_service_t), pointer :: target => null()
     logical :: fail_restore = .false.
+    logical :: violate_success_postcondition = .false.
     integer :: restore_calls = 0
   contains
     procedure :: export_committed => dummy_restart_export
@@ -60,6 +61,8 @@ contains
       call run_restore(path1, path2)
     case ('selftest')
       call run_selftest()
+    case ('postcondition-violation')
+      call run_postcondition_violation()
     case default
       error stop 'F-GC24 unknown test mode'
     end select
@@ -173,6 +176,49 @@ contains
          window, origin)
     call write_signature(signature_path, committed, groundwater, ledger, origin)
   end subroutine run_restore
+
+  subroutine run_postcondition_violation()
+    type(kernel_executor_t) :: executor
+    type(kernel_committed_state_t) :: committed, fresh_committed
+    type(dummy_model_t), target :: model
+    type(dummy_parameters_t) :: parameters
+    type(dummy_materializer_t) :: materializer
+    type(dummy_groundwater_service_t), target :: groundwater, fresh_groundwater
+    type(dummy_groundwater_restart_adapter_t) :: source_adapter, violating_adapter
+    type(groundwater_interface_mass_ledger_t) :: ledger, fresh_ledger
+    type(groundwater_head_datum_t) :: datum
+    type(groundwater_head_convergence_policy_t) :: policy
+    type(groundwater_coupling_window_t) :: window
+    type(groundwater_coupling_origin_t) :: origin, fresh_origin
+    type(canonical_numerical_config_t) :: numerical
+    type(groundwater_coupled_restart_record_t) :: record
+    class(transaction_state_t), allocatable :: initial_state
+    logical :: initialized, exported, restored
+    integer :: status
+
+    call setup_common(executor, model, parameters, groundwater, ledger, datum, policy, window, origin, numerical, &
+         committed, initial_state, initialized, status)
+    call require(initialized .and. status == GW_MASS_LEDGER_OK, 'postcondition setup')
+    call run_one_window(executor, parameters, committed, materializer, numerical, groundwater, ledger, datum, policy, &
+         window, origin)
+    source_adapter%target => groundwater
+    call export_groundwater_coupled_restart(committed, SWAP_LAYOUT_ID, groundwater, source_adapter, ledger, origin, &
+         record, exported, status)
+    call require(exported .and. status == GW_COUPLED_RESTART_OK, 'postcondition source export')
+
+    fresh_committed = kernel_committed_state_t()
+    fresh_groundwater = dummy_groundwater_service_t()
+    fresh_ledger = groundwater_interface_mass_ledger_t()
+    fresh_origin = groundwater_coupling_origin_t()
+    violating_adapter%target => fresh_groundwater
+    violating_adapter%violate_success_postcondition = .true.
+
+    ! This call must terminate fail-hard inside groundwater restore after the
+    ! adapter has returned success but before local SWAP/ledger/origin publication.
+    call restore_groundwater_coupled_restart(record, SWAP_LAYOUT_ID, fresh_committed, fresh_groundwater, &
+         violating_adapter, fresh_ledger, fresh_origin, restored, status)
+    error stop 'F-GC24 FAIL: successful adapter postcondition violation returned recoverably'
+  end subroutine run_postcondition_violation
 
   subroutine run_selftest()
     type(kernel_executor_t) :: executor
@@ -380,6 +426,7 @@ contains
       self%target%pending_t1 = 0.0_real64
       self%target%last_candidate_token = 0_int64
       self%target%last_q_groundwater_m_per_s = 0.0_real64
+      if (self%violate_success_postcondition) self%target%current_time = committed_time + 1.0_real64
       status = 0
     class default
       status = 2
