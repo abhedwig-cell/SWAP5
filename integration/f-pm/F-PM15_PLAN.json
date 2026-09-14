@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.fpm15.plan.v1",
+  "work_unit": "F-PM15",
+  "title": "Drainage-v1 final frozen-scope completion reconciliation",
+  "branch": "work/f-pm15-drainage-v1-final-completion-reconciliation",
+  "audit_only": true,
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "frozen_denominator_authority": {
+    "work_unit": "F-PM13",
+    "sha": "e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "final_completion_blob": "ce4dc39da4a97f070539896e9929f00c475d7ffa",
+    "variants": 8,
+    "scope_reduction_allowed": false
+  },
+  "new_closure_evidence": [
+    "F-PM14 owner drainage-response runtime composition",
+    "F-VQ73 independent transaction/mass/runtime qualification",
+    "F-VQ74 independent restart/MultiSWAP/diagnostics qualification",
+    "F-CI61 exact source admission",
+    "F-CI61P current-canonical postimage and moving-preservation reconciliation",
+    "full canonical push and pull-request gates on e79b0272edb544ec4c8000a4d6869274f1ab3ae5"
+  ],
+  "hard_question": "Does the complete frozen PM13 denominator now satisfy every previously recorded variant-level and cross-cutting requirement, including any explicit scientific hold on fully implicit solver coupling/Jacobian chain-rule?",
+  "fail_closed_rule": "A runtime composition is not sufficient to clear a previously recorded fully-implicit/Jacobian hold unless current-canonical code and independent evidence demonstrate that derivative path end-to-end.",
+  "hard_guards": {
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "physics_change_allowed": false,
+    "denominator_change_allowed": false,
+    "scope_reduction_allowed": false,
+    "reinterpret_scientific_holds_as_closed_without_evidence": false
+  },
+  "possible_decisions": [
+    "QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE",
+    "DRAINAGE_V1_FINAL_CLOSURE_GAPS_REMAIN"
+  ]
+}
