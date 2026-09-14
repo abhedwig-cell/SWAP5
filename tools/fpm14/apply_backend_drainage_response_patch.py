@@ -237,9 +237,9 @@ replace_once(
 """)
 
 replace_once(
-"""    if (self%fixed_weir_surface_water_active) then
+"""    if (self%model%fixed_weir_surface_water_active) then
       if (.not. self%model%fixed_weir_surface_water_configured .or. &
-""".replace('self%model%', 'self%model%'),
+""",
 """    if (self%model%fixed_weir_surface_water_active) then
       if (parameters%drainage_response_active) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -248,8 +248,6 @@ replace_once(
       if (.not. self%model%fixed_weir_surface_water_configured .or. &
 """)
 
-# The previous exact replacement is intentionally guarded by literal source;
-# verify the fixed-weir conflict is present after transformation.
 if 'if (parameters%drainage_response_active) then' not in s:
     raise SystemExit('F-PM14 checked transform failed: fixed-weir conflict guard not installed')
 
