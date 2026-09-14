@@ -3,12 +3,13 @@
   "work_unit": "EB-I20R2",
   "title": "Explicit ledger-owner identity remediation",
   "branch": "work/eb-i20r2-explicit-ledger-owner-identity-remediation",
-  "status": "OWNER_PREPUSH_QUALIFIED_PENDING_POSTIMAGE_READ_ONLY",
+  "status": "OWNER_POSTIMAGE_QUALIFIED_PENDING_INDEPENDENT_NOT_CANONICAL_ADMISSION",
   "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
   "parent_owner_authority": "8bb56b95b401dad52dc5410b60e9d392be92e286",
   "independent_blocker_authority": "30551be4dd9ef9d4a698ff0cd5a701e17503fe9e",
   "materialized_source_head": "e0837bdb9ce8ae2ab92bd32c975b08997d44e93b",
   "materialized_source_tree": "9468abb67a70ac90eb1fec7746554038667d6488",
+  "qualified_status_parent": "5b1c5ef0f9a1e28ef48e84fac638e63268e198d0",
   "production_source_blobs": {
     "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
     "src/runtime/mod_energy_conservation_ledger.f90": "e71820784780e4a45a7024dbc437c71f0fb7d0c4"
@@ -18,6 +19,24 @@
     "workflow_job": 103962722677,
     "result": "SUCCESS_BEFORE_PUSH"
   },
+  "postimage_owner_qualification": {
+    "tested_head": "5b1c5ef0f9a1e28ef48e84fac638e63268e198d0",
+    "tested_tree": "5b0515ad6acda9fb219b64c6bfdf74889cc0aa56",
+    "workflow_run": 34840254643,
+    "workflow_job": 103963313621,
+    "result": "SUCCESS_READ_ONLY"
+  },
+  "qualified_evidence": [
+    "exact canonical production delta remains energy types plus energy ledger only",
+    "EB-I20R batch-safe fail-closed behavior preserved",
+    "EB-I20R1 lineage/revision/interval provenance behavior preserved",
+    "accepted receipt publishes once and rollback publishes no energy",
+    "invalid owner_instance_id fails closed",
+    "same transaction provenance with distinct owner_instance_id values rejects foreign prepared abort fail-closed",
+    "O0/O2 owner-isolation observations identical",
+    "F-KT18 mass-completeness preservation passed",
+    "new energy ledger source compiled under strict warnings-as-errors"
+  ],
   "remediation_scope": [
     "add an explicit positive owner_instance_id to energy-ledger trial preparation",
     "bind prepared handles and ledger-owned prepared scratch to owner_instance_id in addition to generation, lineage, revision and interval",
@@ -33,11 +52,15 @@
     "ledger_locally_enforces_global_uniqueness": false,
     "runtime_binding_qualified_here": false
   },
+  "warning_debt_outside_R2_source": [
+    "pre-existing exact REAL comparison warnings in mod_transaction_reference.f90",
+    "pre-existing exact REAL comparison warnings in mod_canonical_interval_runtime.f90"
+  ],
   "hard_nonclaims": [
     "not independent qualification",
     "not canonical admission",
     "not proof that a future production MultiSWAP runtime assigns owner_instance_id values uniquely",
     "not full SWAP energy-balance completion"
   ],
-  "next_owner": "read-only owner postimage qualification, then fresh independent qualification including explicit owner-id contract limitation"
+  "next_owner": "fresh independent qualification of EB-I20R2, including explicit demonstration of the duplicate-owner-id caller-contract limitation before any admission review"
 }
