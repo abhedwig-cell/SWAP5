@@ -7,8 +7,7 @@ program test_fsi37_dynamic_surface_flux_direction
        SW_SOLVE_CONVERGED, SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_FLUX
   use mod_soil_water_accepted_step_direction_contract, only: &
        soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
-       SW_STEP_DIRECTION_AVAILABLE, SW_STEP_DIRECTION_UNAVAILABLE, &
-       SW_STEP_CONTROL_BOTTOM_FLUX, SW_STEP_CONTROL_BOTTOM_HEAD
+       SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_BOTTOM_FLUX, SW_STEP_CONTROL_BOTTOM_HEAD
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
@@ -18,6 +17,7 @@ program test_fsi37_dynamic_surface_flux_direction
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
+  use mod_b110_dynamic_top_boundary_directional_adapter, only: evaluate_b110_dynamic_surface_flux_direction
   implicit none
 
   real(real64), parameter :: total_dt = 0.25_real64
@@ -47,7 +47,7 @@ program test_fsi37_dynamic_surface_flux_direction
      call check_dynamic_fd_case(SW_STEP_CONTROL_BOTTOM_FLUX, 0.0_real64, mean_method, 0.7_real64, cases)
      call check_dynamic_fd_case(SW_STEP_CONTROL_BOTTOM_HEAD, h0+20.0_real64, mean_method, 0.7_real64, cases)
   end do
-  call check_capacity_limited_fail_closed()
+  call check_capacity_limited_component_fail_closed()
 
   call require(cases == 12, 'twelve dynamic smooth FD cases executed')
   write(*,'(A,I0)') 'FSI37_DYNAMIC_FD_CASES=',cases
@@ -200,21 +200,16 @@ contains
     fd_pond=(plus_result%candidate_state%ponding_depth-minus_result%candidate_state%ponding_depth)/(2.0_real64*eps)
   end subroutine centered_fd_dynamic
 
-  subroutine check_capacity_limited_fail_closed()
-    type(reference_richards_legacy_solver_t) :: solver
-    type(reference_richards_legacy_workspace_t) :: workspace
+  subroutine check_capacity_limited_component_fail_closed()
     type(b110_dynamic_top_boundary_solver_provider_t), target :: probe_top, top
     type(soil_water_solve_request_t) :: probe_request, request
-    type(soil_water_solve_result_t) :: result
-    type(soil_water_accepted_step_direction_request_t) :: drequest
-    type(soil_water_accepted_step_direction_result_t) :: dresult
     type(soil_water_top_boundary_result_t) :: probe_result, top_result
     real(real64), parameter :: large_demand=1.0e9_real64
     real(real64), parameter :: target_qtop=-0.05_real64
-    real(real64) :: capacity, scale
+    real(real64) :: capacity, scale, dqtop, dpond
+    logical :: available
+    character(len=64) :: route
 
-    ! Materialize Emax from the unchanged value provider itself.  This avoids a
-    ! soil-specific hard-coded capacity while proving the intended physical branch.
     call bind_dynamic_top(probe_top,1,0.0_real64,large_demand,0.0_real64,0.0_real64)
     call make_request(SW_STEP_CONTROL_BOTTOM_FLUX,0.0_real64,1,probe_top,probe_request)
     probe_request%base_state%ponding_depth=0.0_real64
@@ -225,9 +220,6 @@ contains
     call require(ieee_is_finite(capacity) .and. capacity>0.0_real64 .and. capacity<large_demand, &
          'capacity probe materializes finite limited evaporation')
 
-    ! Choose supply so q1=capacity-supply equals a modest target surface flux.
-    ! The top physics remains capacity-limited, but the physical solve is tested
-    ! on the already stable prescribed-qbot route rather than a stiff mode-5 fixture.
     call bind_dynamic_top(top,1,0.0_real64,large_demand,0.0_real64,capacity-target_qtop)
     call make_request(SW_STEP_CONTROL_BOTTOM_FLUX,0.0_real64,1,top,request)
     request%base_state%ponding_depth=0.0_real64
@@ -242,16 +234,15 @@ contains
     call require(abs(top_result%actual_top_flux-target_qtop)<=1.0e-12_real64*scale, &
          'capacity-limited fixture has bounded physical top flux')
 
-    drequest%requested=.true.; drequest%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
-    allocate(drequest%incoming_pressure_head(numnod),drequest%incoming_water_content(numnod))
-    drequest%incoming_pressure_head=incoming_h; drequest%incoming_water_content=incoming_theta
-    drequest%incoming_ponding_depth=0.0_real64; drequest%direct_control_derivative=1.0_real64
-    call solve_with_accepted_step_direction(solver,request,workspace,drequest,result,dresult)
-    call require(result%status==SW_SOLVE_CONVERGED,'capacity-limited physical solve remains valid')
-    call require(dresult%status==SW_STEP_DIRECTION_UNAVAILABLE .and. .not.dresult%available, &
-         'capacity-limited dynamic derivative fails closed')
-    call require(dresult%additional_tridiagonal_backsolves==0,'capacity-limited no tangent backsolve')
-  end subroutine check_capacity_limited_fail_closed
+    call evaluate_b110_dynamic_surface_flux_direction(top,request%base_state%pressure_head(1), &
+         request%base_state%water_content(1),request%base_state%ponding_depth,request%boundary,0.0_real64, &
+         available,dqtop,dpond,route)
+    call require(.not.available,'capacity-limited component derivative unavailable')
+    call require(trim(route)=='dynamic-surface-flux-capacity-limited-unavailable', &
+         'capacity-limited component fail-closed route')
+    call require(dqtop==0.0_real64 .and. dpond==0.0_real64, &
+         'capacity-limited component publishes no derivative')
+  end subroutine check_capacity_limited_component_fail_closed
 
   subroutine make_request(mode,control_value,mean_method,top,request)
     integer, intent(in) :: mode,mean_method
