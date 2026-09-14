@@ -12,6 +12,8 @@ fail() { echo "EB_I18_PREFLIGHT_FAIL $*" >&2; exit 181; }
 BASE_RUNTIME_BLOB="f06a2eef7b47880e449cf9b201342d7bd1e197e1"
 RUNTIME="src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
 TEST="tests/eb/test_eb_i18_transaction_publication.f90"
+ADAPTER="src/adapter/mod_b110_serialized_context_binding.f90"
+HEADCALC="src/legacy/b1_10_port/headcalc.f90"
 ACTUAL_RUNTIME_BLOB="$(git hash-object "$RUNTIME")"
 
 if [[ "$ACTUAL_RUNTIME_BLOB" == "$BASE_RUNTIME_BLOB" ]]; then
@@ -38,6 +40,38 @@ grep -Fq 'call finalize_bottom_energy_publication' "$RUNTIME"
 ! grep -Fq 'exact_attempt_provenance' "$RUNTIME"
 
 echo 'EB_I18_PROCEDURAL_PROVENANCE_STATIC_PREFLIGHT=PASS'
+
+# EB-I18's accepted external-donor oracle requires an actual positive lower
+# boundary water transfer through the serialized production route. The
+# original fixture used bottom mode 7 while also assigning forcing%bottom_flux
+# to a positive q. Mode 7 is free drainage in HeadCalc and overwrites qbot with
+# -K, while the current serialized context binding does not admit explicit
+# prescribed-qbot mode 2. Fail here with the real prerequisite instead of
+# misreporting the later kernel rejection as an energy-publication failure.
+python3 - <<'PY'
+from pathlib import Path
+import re
+
+fixture = Path('tests/eb/test_eb_i18_transaction_publication.f90').read_text()
+adapter = Path('src/adapter/mod_b110_serialized_context_binding.f90').read_text()
+headcalc = Path('src/legacy/b1_10_port/headcalc.f90').read_text()
+
+uses_mode7 = re.search(r'parameters%bottom_mode\s*=\s*7\b', fixture) is not None
+assigns_positive_q_fixture = re.search(r'forcing%bottom_flux\s*=\s*q\b', fixture) is not None
+free_drainage_mode7 = (
+    'swbotb == 7 .OR. swbotb == -2' in headcalc
+    and 'free drainage option' in headcalc
+    and 'state%qbot = -1.0d0 * state%kmean(numnod+1)' in headcalc
+)
+admitted_modes = {int(value) for value in re.findall(r'request%boundary%bottom_mode\s*/=\s*(-?\d+)', adapter)}
+serialized_prescribed_qbot = 2 in admitted_modes
+
+if uses_mode7 and assigns_positive_q_fixture and free_drainage_mode7 and not serialized_prescribed_qbot:
+    print('EB_I18_BLOCKER_EXTERNAL_BOTTOM_INFLOW_FIXTURE=MODE7_FREE_DRAINAGE')
+    print('EB_I18_BLOCKER_SERIALIZED_PRESCRIBED_QBOT_MODE2=NOT_ADMITTED')
+    print('EB_I18_QUALIFICATION_STATUS=BLOCKED_PREREQUISITE')
+    raise SystemExit(182)
+PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(

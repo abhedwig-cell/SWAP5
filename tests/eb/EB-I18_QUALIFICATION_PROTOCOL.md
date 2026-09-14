@@ -73,6 +73,18 @@ Final EB-I18 qualification requires, at minimum:
 14. **O0/O2 semantic identity** for the new deterministic qualification oracle;
 15. **all 30 SWAP Core Architecture Invariants** explicitly audited.
 
+## Current qualification blocker
+
+As of current canonical `integration/f-ci-canonical@e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557`, the accepted external-donor path required above cannot yet be exercised through the production serialized reference runtime.
+
+The EB-I18 transaction fixture currently sets `parameters%bottom_mode = 7` and assigns a positive `forcing%bottom_flux = q` to represent external inflow. That is not a valid prescribed-flux lower boundary. In `headcalc.f90`, `swbotb == 7` is the free-drainage route and sets `state%qbot = -state%kmean(numnod+1)`. The supplied positive `bottom_flux` therefore does not create the claimed external inflow.
+
+The lower solver line has a separately qualified explicit prescribed-qbot capability in F-SI27, but the production serialized context binding on current canonical admits only bottom modes `7`, `-2` and `5`. It does not admit prescribed-qbot mode `2`. Historical F-VQ26 evidence also shows that substituting the prescribed-head upward route is not an acceptable workaround because that upward trial was solver-rejected.
+
+Therefore EB-I18 is **BLOCKED_PREREQUISITE**, not qualified and not disproven. The blocker is outside the energy-accounting semantics: an admitted, mass-conserving serialized production route must first expose a real positive lower-boundary water transfer suitable for the external-donor case. EB-I18 SHALL NOT widen that solver/runtime boundary silently or relax its transaction tolerances to manufacture a passing oracle.
+
+Unblocking requires evidence that the production serialized runtime can execute and accept an explicit positive bottom inflow using an admitted lower-boundary contract, with transaction/retry semantics and mass conservation preserved. Only then may the external COMPLETE/UNAVAILABLE/STALE and adversarial EB-I18 publication cases be used as final production qualification evidence.
+
 ## Accounting ownership
 
 The accepted EB-I13 `bottom_outward_exchange_native` remains the sole water-transfer authority consumed by energy accounting. EB-I18 adds energy attribution only. It does not change the hydrologic water balance or define an independent mass ledger.
@@ -93,6 +105,10 @@ Even a fully qualified EB-I18 does not by itself claim:
 - higher-order temporal quadrature;
 - canonical admission.
 
+While the current blocker remains, EB-I18 additionally does not claim an accepted external-inflow production path or production qualification of candidate-bound external-donor publication.
+
 ## Admission rule
 
 Compile success or staged preflight success is necessary but insufficient. Production source must be committed, the required dynamic adversarial tests must pass, the exact unchanged head must have a successful qualification workflow, and status/closure evidence must bind that exact head before EB-I18 may be called qualified.
+
+A blocker marker is not a PASS. No workflow or status document may reinterpret `BLOCKED_PREREQUISITE` as qualification or canonical admission.

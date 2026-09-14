@@ -34,9 +34,9 @@ if text.count(invalid_constructor) != 1:
     raise SystemExit('EB-I18 test private response constructor anchor mismatch')
 text = text.replace(invalid_constructor, invalid_replacement, 1)
 
-# EB-I18 exercises the already qualified EB-I13 physical thermal profile.
-# Publication semantics must not silently introduce a different hydrologic
-# qualification problem.
+# Supply a valid restricted soil-temperature state to the staged I18 oracle.
+# This is only a thermal-state validity fixture. It does not inherit EB-I13
+# hydrologic qualification and it must not relax I18 transaction tolerances.
 old = """  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
 """
@@ -152,16 +152,6 @@ if text.count(old) != 1:
     raise SystemExit('EB-I18 forcing thermal anchor mismatch')
 text = text.replace(old, new, 1)
 
-old = """    config%transaction%temporal_tolerance = 1.0e-8_real64
-    config%transaction%mass_tolerance = 1.0e-10_real64
-"""
-new = """    config%transaction%temporal_tolerance = 1.0e6_real64
-    config%transaction%mass_tolerance = 1.0e-8_real64
-"""
-if text.count(old) != 1:
-    raise SystemExit('EB-I18 numerical profile anchor mismatch')
-text = text.replace(old, new, 1)
-
 # Keep diagnostics on failure so a remaining transaction rejection can be
 # attributed without weakening the hydrologic acceptance criteria.
 old = """    call require(output%completed .and. output%committed, 'complete provider hydrology committed')
@@ -185,5 +175,4 @@ if OLD in text:
 test.write_text(text)
 print(f'EB_I18_API_NORMALIZED file={test} replacements={count} name={NEW}')
 print('EB_I18_PRIVATE_RESPONSE_CONSTRUCTOR_REMOVED=PASS')
-print('EB_I18_QUALIFIED_THERMAL_PROFILE_FIXTURE=PASS')
-print('EB_I18_QUALIFIED_I13_NUMERICAL_PROFILE=PASS')
+print('EB_I18_THERMAL_STATE_FIXTURE=PASS')
