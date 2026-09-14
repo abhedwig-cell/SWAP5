@@ -1,0 +1,39 @@
+name: F-VQ74 drainage v1 cross-cutting independent closure
+
+on:
+  push:
+    branches:
+      - qualification/f-vq74-drainage-v1-cross-cutting-independent-closure
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fvq74-drainage-cross-cutting-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch frozen PM13 denominator authority
+        run: git fetch --no-tags origin work/f-pm13-drainage-v1-completion-audit
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Independent drainage cross-cutting qualification
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq74_drainage_cross_cutting_independent.sh 2>&1 | tee "$RUNNER_TEMP/fvq74.log"
+      - name: Retain F-VQ74 evidence log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq74-cross-cutting-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/fvq74.log
+          if-no-files-found: ignore
