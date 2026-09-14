@@ -1,0 +1,172 @@
+{
+  "schema": "swap5.fpm15.drainage_v1_final_completion.v1",
+  "work_unit": "F-PM15",
+  "title": "Drainage-v1 final frozen-scope completion reconciliation",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "denominator": {
+    "authority": "F-PM13@e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "authority_blob": "ce4dc39da4a97f070539896e9929f00c475d7ffa",
+    "changed": false,
+    "scope_reduced": false,
+    "variants": [
+      "restricted single-level linear-resistance drainage response",
+      "restricted spatial distribution / positive single-level DIVDRA",
+      "DRAMET=1 tabulated drainage response",
+      "DRAMET=2 Hooghoudt response family",
+      "DRAMET=2 Ernst response family",
+      "empirical interflow drainage-side response",
+      "multi-level drainage exchange aggregation",
+      "restricted fixed-weir transactional surface-water runtime"
+    ]
+  },
+  "post_pm13_closure_evidence": {
+    "F_PM14": {
+      "closeout": "52c1a9aebddc435ef3792378f958305a96308ed0",
+      "decision": "QUALIFIED_FPM14_DRAINAGE_RESPONSE_RUNTIME_OWNER_READY_FOR_INDEPENDENT_VQ",
+      "owner_gate_run": 34794541881,
+      "preservation_run": 34794541851
+    },
+    "F_VQ73": {
+      "closeout": "ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+      "decision": "QUALIFIED_FPM14_DRAINAGE_RESPONSE_RUNTIME_INDEPENDENTLY",
+      "tested_run": 34795488243,
+      "status_head_run": 34795634799
+    },
+    "F_VQ74": {
+      "closeout": "60c121a0993993bd79fb30ddfd54e2a9d14f042e",
+      "decision": "QUALIFIED_DRAINAGE_V1_CROSS_CUTTING_G2_INDEPENDENTLY",
+      "tested_run": 34815074499,
+      "status_head_run": 34815180940
+    },
+    "F_CI61": {
+      "production_composition": "c7444233b0f23d4f0a845ef5639287e77099291b",
+      "green_qualification_head": "0ac2f09642f71269ee43301cfedde4f2dd95ade6",
+      "source_admission_merge": "eb2b2b17b2d54eeab22c4cba922426d8168e56a9"
+    },
+    "F_CI61P": {
+      "green_status_head": "537695a6194d22b19e28d2d9abfb0d80da42dd93",
+      "canonical_preservation_merge": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+      "canonical_push_run": 34813209395,
+      "canonical_pull_request_run": 34813213464
+    }
+  },
+  "original_pm13_blocker_reconciliation": [
+    {
+      "id": "G1_RUNTIME_COMPOSITION",
+      "status": "PARTIAL_CLOSED_REMAINDER_IDENTIFIED",
+      "closed": [
+        "one current-canonical runtime composition now exists for linear, tabulated, Hooghoudt, Ernst, empirical-interflow and multilevel response routes",
+        "the exact eleven production blobs are independently qualified and canonically admitted"
+      ],
+      "remainder": "The response is evaluated from hydraulic_start before the Richards solve and the current generic source_sink_provider_t carries fluxes only. Qualified dq/dgroundwater_level response derivatives are diagnostics but are not carried into the solver residual/Jacobian. Therefore the explicit F-VQ38/F-VQ44 holds on solver Jacobian chain-rule / fully implicit drainage coupling are not yet discharged."
+    },
+    {
+      "id": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "status": "CLOSED",
+      "evidence": [
+        "F-VQ73 independently qualifies accepted transaction, hard mass closure, exactly-once booking, generic noncalendar time and rejected-trial atomicity",
+        "F-VQ74 independently qualifies restart without additional drainage state, continuation equivalence, mixed-route MultiSWAP isolation/order independence and accepted/rejected diagnostics",
+        "O0/O2 exact transcript identity is qualified in both independent tracks"
+      ]
+    },
+    {
+      "id": "G3_CANONICAL_ADMISSION_PRESERVATION",
+      "status": "CLOSED",
+      "evidence": [
+        "F-CI61 admits the exact eleven F-PM14 production blobs",
+        "F-CI61P reconciles postimage and moving-current preservation without weakening historical authorities",
+        "full canonical push and pull-request qualification are green on e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+        "precomputed DIVDRA and fixed-weir routes are replay-preserved"
+      ]
+    }
+  ],
+  "variant_reconciliation": [
+    {
+      "variant": "linear",
+      "scientific_authority": "F-VQ44",
+      "runtime_transaction_mass_admission": "CLOSED_BY_FPM14_FVQ73_FVQ74_FCI61_FCI61P",
+      "fully_implicit_solver_coupling": "OPEN",
+      "reason": "F-VQ44 explicitly records fully_implicit_solver_coupling_qualified=false and current runtime does not consume the qualified response derivative in the solver Jacobian."
+    },
+    {
+      "variant": "spatial_distribution_DIVDRA",
+      "authority": "F-CI36 plus preservation replays",
+      "status": "PASS_CURRENT_CANONICAL"
+    },
+    {
+      "variant": "tabulated_DRAMET1",
+      "scientific_authority": "F-VQ40",
+      "runtime_transaction_mass_admission": "CLOSED_BY_FPM14_FVQ73_FVQ74_FCI61_FCI61P",
+      "fully_implicit_solver_coupling": "OPEN",
+      "reason": "F-VQ40 explicitly says no solver Jacobian assembly is qualified; current response derivative is not connected to the solver Jacobian."
+    },
+    {
+      "variant": "Hooghoudt_DRAMET2",
+      "scientific_authority": "F-VQ38",
+      "runtime_transaction_mass_admission": "CLOSED_BY_FPM14_FVQ73_FVQ74_FCI61_FCI61P",
+      "fully_implicit_solver_coupling": "OPEN",
+      "reason": "F-VQ38 explicitly withholds solver Jacobian chain-rule / fully implicit drainage qualification."
+    },
+    {
+      "variant": "Ernst_DRAMET2",
+      "scientific_authority": "F-VQ38",
+      "runtime_transaction_mass_admission": "CLOSED_BY_FPM14_FVQ73_FVQ74_FCI61_FCI61P",
+      "fully_implicit_solver_coupling": "OPEN",
+      "reason": "F-VQ38 explicitly withholds solver Jacobian chain-rule / fully implicit drainage qualification."
+    },
+    {
+      "variant": "empirical_interflow",
+      "scientific_authority": "F-VQ42",
+      "runtime_transaction_mass_admission": "CLOSED_BY_FPM14_FVQ73_FVQ74_FCI61_FCI61P",
+      "fully_implicit_solver_coupling": "OPEN_BY_COMMON_RUNTIME_SEAM",
+      "reason": "The shared F-PM14 response runtime binds all response variants through the same flux-only source/sink seam, so this route also lacks an end-to-end derivative/Jacobian path."
+    },
+    {
+      "variant": "multilevel_aggregation",
+      "scientific_authority": "F-VQ43",
+      "runtime_transaction_mass_admission": "CLOSED_BY_FPM14_FVQ73_FVQ74_FCI61_FCI61P",
+      "fully_implicit_solver_coupling": "OPEN_BY_COMMON_RUNTIME_SEAM",
+      "reason": "Per-level/aggregate tangents exist as qualified response diagnostics, but the common runtime does not propagate them into solver residual/Jacobian evaluation."
+    },
+    {
+      "variant": "restricted_fixed_weir_transactional_runtime",
+      "authority": "F-CI52/F-CI52P plus preservation replays",
+      "status": "PASS_CURRENT_CANONICAL"
+    }
+  ],
+  "current_canonical_static_evidence": {
+    "response_evaluation": "mod_fmr_serialized_reference_backend evaluates evaluate_fmr_drainage_response_bottom_lumped against hydraulic_start before calling solver%solve",
+    "source_sink_binding": "the resulting qdra array is bound into b110_source_sink_provider_t before the solve",
+    "generic_source_sink_contract": "source_sink_provider_t::evaluate returns source and sink only; no source/sink derivatives or tangent result are part of the interface",
+    "b110_source_sink_provider": "b110_source_sink_evaluate sums pre-bound drainage_flux_by_level and does not recompute drainage response from the Newton pressure-head candidate",
+    "response_derivatives": "mod_fmr_drainage_response_binding publishes derivative_defined and dq_dgroundwater_level diagnostics, but current runtime has no path from those fields into the Richards Jacobian"
+  },
+  "remaining_gap": {
+    "id": "G1R_FULLY_IMPLICIT_DRAINAGE_RESPONSE_SOLVER_COUPLING",
+    "class": "REAL_SOFTWARE_AND_INDEPENDENT_QUALIFICATION_CLOSURE_GAP",
+    "scope": [
+      "linear",
+      "tabulated_DRAMET1",
+      "Hooghoudt_DRAMET2",
+      "Ernst_DRAMET2",
+      "empirical_interflow",
+      "multilevel_aggregation"
+    ],
+    "minimum_required_closure": [
+      "Add a solver-agnostic optional state-dependent source/sink capability behind the soil-water solver contract without breaking the frozen flux-only provider ABI.",
+      "Evaluate drainage response on the current nonlinear candidate hydraulic state, not only the interval/substep start state.",
+      "Propagate the qualified drainage derivative into the reference Richards residual/Jacobian with correct sign and bottom-lumped chain rule, with explicit fail-closed behavior at non-smooth or derivative-unavailable points.",
+      "Owner-qualify flux/residual/Jacobian finite-difference consistency, convergence, transaction rollback, hard mass, restart/no-state, MultiSWAP and diagnostics while preserving precomputed DIVDRA and fixed-weir routes.",
+      "Independently qualify the exact implementation against F-VQ38/F-VQ40/F-VQ42/F-VQ43/F-VQ44 response authorities, then perform F-CI source admission and postimage preservation.",
+      "Re-run this frozen PM13 denominator completion audit."
+    ]
+  },
+  "production_source_changed_by_F_PM15": false,
+  "reference_source_changed_by_F_PM15": false,
+  "hundred_percent_complete": false,
+  "final_decision": "DRAINAGE_V1_FINAL_CLOSURE_GAPS_REMAIN"
+}
