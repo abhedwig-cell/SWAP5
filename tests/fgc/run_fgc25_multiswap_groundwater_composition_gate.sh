@@ -32,7 +32,7 @@ top=Path('src/runtime/mod_groundwater_multiswap_topology.f90').read_text().lower
 for text in (coupler,pub,top):
     for forbidden in ['modflow', 'open(', 'read(', 'write(']:
         assert forbidden not in text.replace(' ', ''), forbidden
-assert 'area_fraction' in coupler
+assert 'area_fraction' in pub
 assert 'stage_multiswap_tile_ledger' in pub
 assert 'multiswap_publication_preflight' in pub
 assert 'late swap commit failed after prior tile publication' in pub
