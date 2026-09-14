@@ -1,0 +1,26 @@
+name: F-CI61P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci61p-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact postimage qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI61P postimage gate
+        run: bash tests/fci/run_fci61p_current_canonical_postimage_reconciliation.sh

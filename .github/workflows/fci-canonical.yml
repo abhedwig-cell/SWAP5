@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=2d8b08c06b67132f57b2c757f493d1b31a954a92
+          AUTH=c7444233b0f23d4f0a845ef5639287e77099291b
           TX=src/transaction/mod_transaction_reference.f90
           TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
@@ -351,6 +351,16 @@ jobs:
             src/runtime/mod_fmr_reference_et_root_uptake_composition.f90
             src/solver/mod_process_hydraulic_view.f90
             src/process/mod_drainage_spatial_distribution.f90
+            src/process/mod_drainage_empirical_interflow_response.f90
+            src/process/mod_drainage_ernst_ipos45_preparation.f90
+            src/process/mod_drainage_ernst_ipos45_response.f90
+            src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+            src/process/mod_drainage_hooghoudt_ipos1_response.f90
+            src/process/mod_drainage_hooghoudt_ipos23_response.f90
+            src/process/mod_drainage_multilevel_aggregation.f90
+            src/process/mod_drainage_process.f90
+            src/process/mod_drainage_tabulated_response.f90
+            src/runtime/mod_fmr_drainage_response_binding.f90
             src/runtime/mod_fmr_divdra_runtime_binding.f90
             src/runtime/mod_fmr_divdra_serialized_composition.f90
             src/runtime/mod_fmr_divdra_serialized_runtime.f90
@@ -390,5 +400,6 @@ jobs:
           echo 'FCI52_MOVING_PM08D7_FIXED_WEIR_TRANSACTIONAL_RUNTIME_PRESERVATION=PASS'
           echo 'FCI57_MOVING_FAIL_CLOSED_MASS_COMPLETENESS_PRESERVATION=PASS'
           echo 'FCI59_MOVING_ATOMIC_SURFACE_PUBLICATION_PRESERVATION=PASS'
+          echo 'FCI61_MOVING_DRAINAGE_RESPONSE_RUNTIME_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
