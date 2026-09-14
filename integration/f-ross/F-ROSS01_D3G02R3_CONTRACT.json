@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R3",
+  "title": "RossFast fail-closed runtime temporal-certificate wrapper qualification",
+  "status": "IN_PROGRESS_EXECUTABLE_QUALIFICATION",
+  "branch": "work/f-ross01-d3g02r3-fail-closed-runtime-certificate-wrapper",
+  "base_authority": "work/f-ross01-d3g02r2-resolution-floor-certificate-replay@42bf1e032dc6b1fd8648be027f82ba266892faf2",
+  "closure_target": "F-ROSS01-D3-G02",
+  "purpose": "Qualify only the executable fail-closed wrapper that exposes the already-qualified D3G02R2 resolution-floor bound as a research MODEL_CERTIFICATE-compatible candidate output on the exact D3R domain.",
+  "frozen_bound_authority": {
+    "path": "integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json",
+    "blob": "ff32bce4597e245eef0028556fce476074ab1cb8",
+    "resolution_floor": 1e-10,
+    "accuracy_tolerance": 1e-5,
+    "bound": "max(raw_full_vs_two_half_estimator,1e-10)",
+    "indicator": "bound/1e-5",
+    "source_run": 34824601766,
+    "source_artifact": 10339354466
+  },
+  "frozen_wrapper_decision_rule": {
+    "path": "integration/f-ross/F-ROSS01_D3G02R_WRAPPER_DECISION_RULE.json",
+    "blob": "d25ce7c87e976c8baac1fad0a58f3380962ee0c0",
+    "positive_cases": 54,
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "full_attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "mandatory_negative_paths": [
+      "BOUND_AUTHORITY_MISSING",
+      "BOUND_AUTHORITY_WRONG_RESOLUTION_FLOOR",
+      "BOUND_AUTHORITY_WRONG_ACCURACY_TOLERANCE",
+      "FULL_ATTEMPT_LADDER_LEVEL_9",
+      "DURATION_OUTSIDE_D3R_LADDER"
+    ]
+  },
+  "canonical_binding": {
+    "required_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "required_model_certificate_semantics": "available AND finite indicator AND indicator>=0 AND indicator<=1",
+    "moving_head_may_change_if_transaction_blob_remains_identical": true
+  },
+  "transaction_semantics": {
+    "committed_state_read_only": true,
+    "candidate_only": true,
+    "runtime_owns_accept_commit": true,
+    "hard_mass_gate_cm": 1e-12,
+    "component_trial_count": 3,
+    "candidate_route": "REFINED_TWO_HALF",
+    "reject_or_unqualified_path_leaves_no_commit": true
+  },
+  "success_decision": "QUALIFIED_ROSSFAST_D3G02R_FAIL_CLOSED_MODEL_CERTIFICATE_ON_EXACT_D3R_DOMAIN",
+  "success_effect": "F-ROSS01-D3-G02 may close at restricted research/current-canonical contract-composability level only; no production admission.",
+  "failure_effect": "CLOSE_D3G02R3_NEGATIVE_AND_LEAVE_D3_G02_OPEN",
+  "hard_nonclaims": [
+    "PRODUCTION_ADMISSION",
+    "UNIVERSAL_ROSSFAST_TEMPORAL_ERROR_BOUND",
+    "ACCURACY_OUTSIDE_EXACT_D3R_DOMAIN",
+    "PRODUCTION_RUNTIME_COST_ACCEPTABILITY",
+    "RESTART",
+    "PRODUCTION_MULTISWAP_RUNTIME",
+    "WHOLE_WINDOW_INTERFACE_SENSITIVITY"
+  ],
+  "production_source_change": false,
+  "production_source_delta": []
+}
