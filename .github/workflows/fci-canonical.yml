@@ -101,7 +101,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-          bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
+          bash tests/fmr/run_fmr23_reference_et_demand_runtime_binding_gate.sh
           bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
           test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
@@ -203,6 +203,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD^{tree})" = bca9d2d4dd3c8c42edf635b0887ee62b475b5abd
           test "$(git rev-parse HEAD:src)" = 02aa1516a6f452d311ea03c195cbeaf271d3db28
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
@@ -308,7 +309,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=52d66ba612096184327f58a076ef22bd0119e237
+          AUTH=24b02660a7924323d1587b4adf77a160c9ef7d04
           TX=src/transaction/mod_transaction_reference.f90
           TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
@@ -382,6 +383,9 @@ jobs:
             src/runtime/mod_coupling_application_accuracy_adapter.f90
             src/runtime/mod_groundwater_coupling_contract.f90
             src/runtime/mod_groundwater_coupling_policy.f90
+            src/runtime/mod_groundwater_exchange_service_contract.f90
+            src/runtime/mod_groundwater_interface_mass_ledger.f90
+            src/runtime/mod_groundwater_coupled_restart.f90
           )
           for path in "${dependency_surface[@]}"; do
             test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || {
@@ -412,5 +416,6 @@ jobs:
           echo 'FCI62_MOVING_PRESCRIBED_QBOT_TEMPORAL_RUNTIME_PRESERVATION=PASS'
           echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'
           echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'
+          echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
