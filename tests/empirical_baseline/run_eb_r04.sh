@@ -7,7 +7,7 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-HISTORICAL_REF=qualification/f-vq14-fmr04-physical-runtime
+HISTORICAL_REF=origin/qualification/f-vq14-fmr04-physical-runtime
 HISTORICAL_TEST_BLOB=11981391d0a504a66473c0281bf51defa6d1eac8
 HISTORICAL_BACKEND_BLOB=ade399a1df4b582c9038442093ccacce034f923d
 CURRENT_BACKEND_BLOB=3506b453ba6a00111d182f29db8cbfb288001854
