@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.fci64.status.v1",
+  "work_unit": "F-CI64",
+  "title": "Energy-conservation ledger and runtime-owned accepted-receipt current-canonical admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI64_READY_FOR_CANONICAL_PROMOTION",
+  "branch": "qualification/f-ci64-eb-energy-ledger-owned-receipt-current-canonical-admission",
+  "canonical_base": {
+    "sha": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+    "tree": "e230ae58b38f2fdf774f7fa8f25472c517b20799"
+  },
+  "authorities": {
+    "EB-I21R_owner_status": "5d6cea2e6de577fb0267008b2a391770b5bd7a10",
+    "F-VQ85_independent_status": "f0a6d6f83cda86706bec58d2d3557ade1e6b9eaa"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "ccef5fe4b536c6cc773abea43334729a387e4940",
+    "green_tree_before_status": "d569a375eb80e78595146e6a5a4ddb6474713e2b",
+    "workflow_run": 34845812504,
+    "workflow_job": 103981359392,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "live_canonical_lock": "PASS",
+    "exact_four_file_production_postimage": "PASS",
+    "runtime_kernel_ownership_separation": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+    "independent_cross_column_receipt_attack": "PASS",
+    "invalid_owner_precommit_fail_closed": "PASS",
+    "foreign_column_receipt_fail_closed": "PASS",
+    "rightful_owner_commit_exactly_once": "PASS",
+    "generic_receipt_export_compatibility": "PASS",
+    "composed_serialized_runtime_O0_O2": "PASS",
+    "accepted_only_bottom_energy_publication_preserved": "PASS",
+    "FMR44R_prescribed_qbot_and_mass_preserved": "PASS",
+    "O0_O2_semantic_identity": "PASS"
+  },
+  "production_postimage": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "cc166e82e51d8e0738fee51b4517626d0a2e890f",
+    "src/runtime/mod_fmr_owned_commit_receipt.f90": "2ab067d160715ff7358dd31efaa12694ef95852c",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "scope_guards": {
+    "new_energy_physics_in_F_CI64": false,
+    "new_water_mass_booking": false,
+    "second_water_ledger": false,
+    "kernel_column_identity_added": false,
+    "global_owner_id_generator_added": false,
+    "new_persistent_column_state": false,
+    "new_solver_policy": false,
+    "reference_source_changed": false,
+    "new_IO_contract": false,
+    "full_energy_balance_completion_claim": false
+  },
+  "warning_debt": {
+    "classification": "PRE_EXISTING_OR_UNRELATED_TO_F_CI64_PRODUCTION_DELTA",
+    "examples": [
+      "Existing REAL comparison warnings in transaction/runtime/backend code.",
+      "Existing unused-argument/test warnings in solver and EB qualification fixtures.",
+      "Existing legacy HeadCalc maybe-uninitialized warnings.",
+      "Existing bottom-sensible-energy REAL comparison warning outside the F-CI64 four-file production delta."
+    ],
+    "new_F_CI64_warning_debt_accepted": false
+  },
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "hard_nonclaims": [
+    "F-CI64 status alone is not canonical admission.",
+    "F-CI64 admits only the qualified generic energy-conservation bookkeeping, transactional ledger and runtime-owned accepted-receipt association; it does not claim that the complete SWAP Energy Balance is finished.",
+    "The generic F-KT/F-MR accepted receipt remains column agnostic; runtime column identity is not persistent kernel state.",
+    "The energy ledger is not a second water ledger and cannot relax hydrologic mass conservation.",
+    "No canonical closeout exists until postimage reconciliation succeeds against the promoted moving canonical."
+  ],
+  "promotion_requirements": [
+    "This exact final status head must pass the F-CI64 workflow.",
+    "Live integration/f-ci-canonical must still equal the frozen canonical base immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI64 status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI64 status-head tree.",
+    "Postimage reconciliation is required before F-CI64 closeout or any broader Energy Balance completion claim."
+  ]
+}

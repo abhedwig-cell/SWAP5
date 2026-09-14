@@ -9,6 +9,7 @@ module mod_fmr_serialized_multiswap_runtime
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, fmr_commit_candidate_with_receipt, &
        FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
+  use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t, fmr_commit_candidate_with_owned_receipt
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_build_execution_order, fmr_count_templates, &
        FMR_BACKEND_SERIALIZED_REFERENCE
@@ -551,9 +552,9 @@ contains
     type(fmr_serialized_physical_observation_t) :: observation
     type(fmr_bottom_thermal_candidate_t) :: thermal_candidate
     type(fmr_prepared_bottom_energy_publication_t) :: prepared_bottom_energy
-    type(fmr_accepted_commit_receipt_t) :: local_energy_receipt
+    type(fmr_owned_commit_receipt_t) :: local_energy_receipt
     integer :: commit_status, receipt_status, simultaneous_physical_calls
-    logical :: checkpoint_ok, candidate_ready, did_commit, energy_requested, receipt_path
+    logical :: checkpoint_ok, candidate_ready, did_commit, energy_requested, receipt_path, exported_receipt_available
 
     output%initial_revision = committed_state%current_revision()
     energy_requested = present(bottom_energy_parameters) .and. present(bottom_thermal_provider) .and. &
@@ -663,12 +664,12 @@ contains
     end if
 
     if (energy_requested) then
-      if (present(commit_receipt)) then
-        call fmr_commit_candidate_with_receipt(transaction_control, checkpoint, committed_state, candidate, &
-             kernel_diag, did_commit, commit_receipt, receipt_status, commit_status)
-      else
-        call fmr_commit_candidate_with_receipt(transaction_control, checkpoint, committed_state, candidate, &
-             kernel_diag, did_commit, local_energy_receipt, receipt_status, commit_status)
+      call fmr_commit_candidate_with_owned_receipt(column%column_id, transaction_control, checkpoint, &
+           committed_state, candidate, kernel_diag, did_commit, local_energy_receipt, receipt_status, commit_status)
+      if (did_commit .and. present(commit_receipt)) then
+        call local_energy_receipt%export_accepted_receipt(commit_receipt, exported_receipt_available)
+        if (.not. exported_receipt_available) &
+             error stop 'EB-I21R: accepted owned receipt could not export generic receipt'
       end if
     else if (present(commit_receipt)) then
       call fmr_commit_candidate_with_receipt(transaction_control, checkpoint, committed_state, candidate, &
@@ -690,22 +691,23 @@ contains
       call update_committed_provenance(committed_state, output, diagnostic)
       return
     end if
-    if (present(commit_receipt)) then
+    if (energy_requested) then
+      if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. local_energy_receipt%ready()) &
+           error stop 'EB-I21R: successful energy-path commit without ready owned accepted receipt'
+      if (local_energy_receipt%owner_instance_id() /= column%column_id) &
+           error stop 'EB-I21R: accepted energy receipt owner does not match executing column'
+      if (present(commit_receipt)) then
+        if (.not. commit_receipt%ready()) &
+             error stop 'F-MR18: successful physical commit without exported accepted receipt'
+      end if
+    else if (present(commit_receipt)) then
       if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. commit_receipt%ready()) &
            error stop 'F-MR18: successful physical commit without ready accepted receipt'
-    else if (energy_requested) then
-      if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. local_energy_receipt%ready()) &
-           error stop 'EB-I18: successful energy-path commit without ready accepted receipt'
     end if
 
     if (energy_requested) then
-      if (present(commit_receipt)) then
-        call finalize_bottom_energy_publication(column%column_id, prepared_bottom_energy, commit_receipt, &
-             bottom_energy_publication)
-      else
-        call finalize_bottom_energy_publication(column%column_id, prepared_bottom_energy, local_energy_receipt, &
-             bottom_energy_publication)
-      end if
+      call finalize_bottom_energy_publication(column%column_id, prepared_bottom_energy, local_energy_receipt, &
+           bottom_energy_publication)
     end if
 
     call bind_committed_actual_transpiration(parameters, effective_forcing, t0, t1, output)
@@ -843,14 +845,15 @@ contains
   subroutine finalize_bottom_energy_publication(column_id, prepared, receipt, publication)
     integer(int64), intent(in) :: column_id
     type(fmr_prepared_bottom_energy_publication_t), intent(in) :: prepared
-    type(fmr_accepted_commit_receipt_t), intent(in) :: receipt
+    type(fmr_owned_commit_receipt_t), intent(in) :: receipt
     type(fmr_serialized_bottom_energy_publication_t), intent(out) :: publication
     real(real64) :: receipt_t0, receipt_t1
     logical :: interval_available
 
     publication = fmr_serialized_bottom_energy_publication_t()
     if (.not. prepared%ready()) error stop 'EB-I18: accepted candidate has invalid local prepared energy provenance'
-    if (.not. receipt%ready()) error stop 'EB-I18: accepted candidate has no ready receipt for energy publication'
+    if (.not. receipt%ready()) error stop 'EB-I21R: accepted candidate has no ready owned receipt for energy publication'
+    if (receipt%owner_instance_id() /= column_id) error stop 'EB-I21R: energy publication owner mismatch'
     call receipt%origin_interval(receipt_t0, receipt_t1, interval_available)
     if (.not. interval_available) error stop 'EB-I18: accepted receipt interval unavailable'
     if (receipt%current_lineage_id() /= prepared%lineage_id .or. &
