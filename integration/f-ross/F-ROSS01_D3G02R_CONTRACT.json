@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "title": "RossFast resolution-floor-aware temporal certificate remediation qualification",
+  "status": "IN_PROGRESS_PRECOMMITTED",
+  "branch": "work/f-ross01-d3g02r-resolution-floor-temporal-certificate",
+  "parent_d3g02_closed_negative_head": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+  "closure_target": "F-ROSS01-D3-G02",
+  "purpose": "Test a new prospectively fixed conservative-bound hypothesis that separates the pre-existing RossFast temporal qualification resolution floor from meaningful step-doubling truncation signal, without changing D3G02 evidence or fitting to its 1.6 floor-level ratio.",
+  "frozen_inputs": {
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "d3": "21bf6ec4a0a847b60b8713dba832f0b94d07f049",
+    "d3r": "c8dc52dc92d32d075fa3fc57916e8bffb33c14e3",
+    "d3g02_negative": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+    "gate_f_contract_blob": "7837e904348298780f0c8f683a551510ded879e5",
+    "gate_f_candidate_source_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "d3r_duration_adapter_blob": "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a",
+    "canonical_transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "new_hypothesis": {
+    "resolution_floor_span_normalized": 1e-10,
+    "resolution_floor_origin": "Gate F informative observed-order floor frozen long before D3G02",
+    "bound": "max(raw_full_vs_two_half_estimator, resolution_floor_span_normalized)",
+    "accuracy_tolerance": 1e-5,
+    "indicator": "bound/accuracy_tolerance",
+    "candidate": "refined two-half terminal water-content state"
+  },
+  "canonical_binding_policy": {
+    "bind_relevant_transaction_blob_not_unrelated_moving_head": true,
+    "required_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "required_semantics": [
+      "temporal_certificate_available is required",
+      "temporal_indicator must be finite and nonnegative",
+      "temporal_indicator <= 1 is accepted"
+    ],
+    "record_live_canonical_head_for_provenance": true
+  },
+  "execution_rule_authority": "integration/f-ross/F-ROSS01_D3G02R_RESOLUTION_FLOOR_DECISION_RULE.json",
+  "transaction_semantics": {
+    "committed_state_read_only": true,
+    "candidate_only": true,
+    "runtime_owns_accept_commit": true,
+    "hard_mass_gate_independent": true,
+    "reject_or_unqualified_candidate_leaves_no_commit": true
+  },
+  "production_source_change": false,
+  "production_admission": false,
+  "d3g02_history_rewrite": false
+}
