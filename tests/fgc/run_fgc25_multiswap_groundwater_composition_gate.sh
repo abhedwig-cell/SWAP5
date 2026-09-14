@@ -36,9 +36,11 @@ assert 'area_fraction' in pub
 assert 'stage_multiswap_tile_ledger' in pub
 assert 'multiswap_publication_preflight' in pub
 assert 'late swap commit failed after prior tile publication' in pub
+assert 'build_canonical_tile_order' in top
 print('FGC25_NO_MODFLOW_OR_IO_DEPENDENCY=PASS')
 print('FGC25_TILE_LINEAGE_LEDGER_PUBLICATION=PASS')
 print('FGC25_CELL_PUBLICATION_PREFLIGHT=PASS')
+print('FGC25_CANONICAL_TILE_ORDER=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -67,7 +69,7 @@ SOURCES=(
 for opt in 0 2; do
   dir="$BUILD/o$opt"
   mkdir -p "$dir"
-  for test in test_fgc25_multiswap_commit test_fgc25_single_tile_equivalence; do
+  for test in test_fgc25_multiswap_commit test_fgc25_single_tile_equivalence test_fgc25_multiswap_qualification; do
     : > "$dir/${test}.compiler.txt"
     if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" \
         "${SOURCES[@]}" "tests/fgc/${test}.f90" -o "$dir/${test}" 2>"$dir/${test}.compiler.txt"; then
