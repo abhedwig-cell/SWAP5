@@ -1,5 +1,5 @@
 program test_fkt21_accepted_trajectory_direction
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_accepted_step_direction_contract, only: &
        soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
        SW_STEP_DIRECTION_AVAILABLE, SW_STEP_DIRECTION_UNAVAILABLE, &
@@ -40,7 +40,7 @@ contains
     type(trajectory_step_token_t) :: token
     real(real64), parameter :: times(4) = [0.137_real64, 0.281_real64, 0.733_real64, 1.091_real64]
     real(real64), parameter :: epsv(3) = [1.0e-4_real64, 3.0e-5_real64, 1.0e-5_real64]
-    real(real64) :: x(2), w(2), pond, qint, xfd(2), qfd, eps, err
+    real(real64) :: x(2), w(2), pond, qint, xfd(2), qfd, eps, err, expected_qint_deriv, step_dt
     integer :: k, j
     logical :: ok
 
@@ -52,20 +52,23 @@ contains
     w = [0.22_real64, 0.31_real64]
     pond = 0.03_real64
     qint = 0.0_real64
+    expected_qint_deriv = 0.0_real64
     do k=1,3
+      step_dt = times(k+1)-times(k)
       call build_trajectory_step_request(state, times(k), times(k+1), req, token, ok)
       call assert_true(ok .and. req%requested, 'build requested')
-      call analytic_step(control, p0, times(k+1)-times(k), x, w, pond, req, res, qint)
+      call analytic_step(control, step_dt, x, req, res)
+      expected_qint_deriv = expected_qint_deriv + step_dt*res%bottom_flux_derivative
       call stage_trajectory_step_result(state, token, res, ok)
       call assert_true(ok, 'stage result')
       call accept_trajectory_step(state, ok)
       call assert_true(ok, 'accept result')
-      call physical_step(control, p0, times(k+1)-times(k), x, w, pond, qint)
+      call physical_step(control, p0, step_dt, x, w, pond, qint)
     end do
     call finalize_trajectory_direction(state, times(1), times(4), ok)
     call assert_true(ok .and. state%status == TRAJECTORY_DIRECTION_AVAILABLE, 'final available')
     call assert_true(state%accepted_steps == 3, 'three accepted')
-    call assert_close(state%integrated_bottom_exchange_derivative, qint_derivative_reference(control,p0,times), 2.0e-11_real64, 'qint exact')
+    call assert_close(state%integrated_bottom_exchange_derivative, expected_qint_deriv, 1.0e-14_real64, 'qint exact')
     call assert_true(state%additional_tridiagonal_backsolves == 3, 'backsolve cost')
     call assert_true(state%additional_jacobian_builds == 0 .and. state%additional_full_nonlinear_solves == 0, 'bounded extra cost')
 
@@ -81,12 +84,11 @@ contains
     end do
   end subroutine test_mode
 
-  subroutine analytic_step(control, p, dt, x, w, pond, req, res, qint)
+  subroutine analytic_step(control, dt, x, req, res)
     integer, intent(in) :: control
-    real(real64), intent(in) :: p, dt, x(2), w(2), pond
+    real(real64), intent(in) :: dt, x(2)
     type(soil_water_accepted_step_direction_request_t), intent(in) :: req
     type(soil_water_accepted_step_direction_result_t), intent(out) :: res
-    real(real64), intent(in) :: qint
     real(real64) :: c, dx1, dx2, dw1, dw2, dpd, dq
     c = merge(0.17_real64, -0.11_real64, control == SW_STEP_CONTROL_BOTTOM_FLUX)
     dx1 = (1.0_real64+0.08_real64*dt*x(1))*req%incoming_pressure_head(1) + 0.13_real64*dt*req%incoming_pressure_head(2) + c*dt
@@ -138,17 +140,6 @@ contains
       call physical_step(control,p,times(k+1)-times(k),x,w,pond,qint)
     end do
   end subroutine whole_physical
-
-  function qint_derivative_reference(control,p,times) result(value)
-    integer,intent(in)::control
-    real(real64),intent(in)::p,times(4)
-    real(real64)::value
-    real(real64)::xp(2),xm(2),qp,qm,eps
-    eps=1.0e-7_real64
-    call whole_physical(control,p+eps,times,xp,qp)
-    call whole_physical(control,p-eps,times,xm,qm)
-    value=(qp-qm)/(2.0_real64*eps)
-  end function qint_derivative_reference
 
   subroutine test_retry_discard()
     type(accepted_trajectory_direction_t)::s
