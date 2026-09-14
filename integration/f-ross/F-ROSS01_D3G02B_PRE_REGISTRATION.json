@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02B",
+  "title": "RossFast head-space temporal certificate feasibility and bounded qualification",
+  "status": "PRE_REGISTERED",
+  "scope": "RESEARCH_TEMPORAL_CERTIFICATE_ONLY",
+  "base_authority": {
+    "d3g02_closed_negative_head": "233d70457672f299bb9f748720ba2da824173487",
+    "d3g02_decision": "ROSSFAST_D3G02_TEMPORAL_CERTIFICATE_NOT_QUALIFIED",
+    "d3_gap": "F-ROSS01-D3-G02",
+    "d3_gap_at_start": "OPEN"
+  },
+  "canonical_at_start": {
+    "head": "52d66ba612096184327f58a076ef22bd0119e237",
+    "transaction_reference_blob_expected": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "model_certificate_contract": "available AND finite AND indicator >= 0 AND indicator <= 1"
+  },
+  "scientific_motivation": {
+    "d3g02_failure": "theta-space raw full-vs-two-half estimator was not uniformly conservative under the precommitted factor-1 rule",
+    "d3g02_max_ratio": 1.6,
+    "diagnosis": "all observed ratio>1 cases occur at normalized theta errors below 5e-16, i.e. at floating-point/reference-resolution scale; the worst O01 attempt-1 case had raw=1.9499655480887093e-16 and refined reference error=3.119944876941935e-16",
+    "new_hypothesis": "pressure-head space may preserve temporal separation when theta-space differences collapse to numerical resolution, while using the same RossFast candidate lineage and no new solver trajectory"
+  },
+  "stage_b1_feasibility": {
+    "purpose": "test the head-space hypothesis only; B1 cannot close G02 and cannot publish a runtime certificate",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "case_count": 54,
+    "forcing": "exact D3G02 nominal forcing",
+    "coarse_path": "one RossFast candidate with 8 equal internal substeps over the full attempt duration",
+    "refined_path": "two chained RossFast candidates with 8 equal internal substeps per half duration",
+    "reference": "the same independent DOP853 theta trajectory used by D3G02, converted to pressure head through the frozen RossFast constitutive mapping",
+    "raw_head_estimator_cm": "max_i(abs(h_refined_i-h_coarse_i))",
+    "refined_reference_head_error_cm": "max_i(abs(h_refined_i-h_reference_i))",
+    "reference_self_head_delta_cm": "max_i(abs(h_reference32_i-h_reference64_i))",
+    "pass_rule": [
+      "all 54 candidate chains ready and candidate-only",
+      "all hard mass residuals <= 1e-12 cm",
+      "all head quantities finite and inside the frozen RossFast table envelope",
+      "independent reference self-delta finite",
+      "for every case with independently resolvable head error: refined_reference_head_error_cm <= raw_head_estimator_cm",
+      "no posthoc multiplicative safety factor may be introduced to turn a failing B1 into PASS"
+    ],
+    "resolution_rule": "A case is not declared a conservativity violation when the alleged violation is smaller than or equal to the independently observed reference self-head delta; such a case is classified UNRESOLVED_AT_REFERENCE_PRECISION, not PASS. B1 overall PASS requires zero resolved violations; unresolved cases must be reported separately and cannot themselves establish conservativity.",
+    "outcomes": ["PASS_HEAD_SPACE_FEASIBLE", "FAIL_RESOLVED_NONCONSERVATIVITY", "INCONCLUSIVE_REFERENCE_RESOLUTION"]
+  },
+  "stage_b2_qualification_if_b1_passes": {
+    "authorization": "conditional only; do not execute if B1 has a resolved nonconservativity failure",
+    "minimum_expansion": [
+      "nominal plus frozen D2/D3R bounded forcing perturbation coverage",
+      "generic non-calendar t0 replay",
+      "D3R duration ladder attempts 0..8 plus half-duration 1..9 coverage",
+      "hard mass gate independent from temporal gate",
+      "committed-state immutability and candidate-only ownership",
+      "fail-closed missing/nonfinite/nonpositive H_budget",
+      "fail-closed request outside qualified material/duration/forcing envelope",
+      "independent DOP853 head-space validation",
+      "current-canonical MODEL_CERTIFICATE <=1 compatibility"
+    ],
+    "budget_semantics": "H_budget_cm must be explicit caller-supplied numerical/application accuracy configuration; no universal, coupling, application or production default is selected by D3G02B.",
+    "candidate_indicator": "B_h_cm / H_budget_cm where B_h_cm is a separately qualified conservative head-space temporal bound",
+    "production_admission": false
+  },
+  "forbidden_shortcuts": [
+    "DO_NOT_ADOPT_FACTOR_1_6_FROM_D3G02",
+    "DO_NOT_ADD_EMPIRICAL_THETA_FLOOR_FITTED_TO_O01_ATTEMPT1",
+    "DO_NOT_RECLASSIFY_REFERENCE_NOISE_AS_PROOF_OF_CONSERVATIVITY",
+    "DO_NOT_USE_MASS_RESIDUAL_AS_TEMPORAL_ERROR",
+    "DO_NOT_USE_SOLVER_CONVERGENCE_AS_TEMPORAL_ERROR",
+    "DO_NOT_USE_D1_LOCAL_TERMINAL_TANGENT_AS_WHOLE_WINDOW_TEMPORAL_ERROR",
+    "DO_NOT_SELECT_A_DEFAULT_H_BUDGET",
+    "DO_NOT_CHANGE_PRODUCTION_SOURCE_OR_PHYSICS",
+    "DO_NOT_MODIFY_D2_D3_D3R_D3G02_AUTHORITIES"
+  ],
+  "architecture": {
+    "one_kernel_preserved": true,
+    "candidate_only": true,
+    "runtime_owns_accept_commit": true,
+    "generic_time": true,
+    "hard_mass_absolute": true,
+    "physics_solver_policy_separated": true,
+    "reference_mode_untouched": true,
+    "production_source_delta": []
+  }
+}
