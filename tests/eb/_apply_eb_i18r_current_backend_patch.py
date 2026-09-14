@@ -245,9 +245,7 @@ once(
 'advance thermal declarations')
 
 once(
-"""    outcome = trial_outcome_t()
-    self%last_observation = fmr_serialized_physical_observation_t()
-    self%last_observation%soil_temperature_active = self%soil_temperature_active
+"""    self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
@@ -255,9 +253,7 @@ once(
     self%last_observation%temporal_head_budget = self%temporal_indicator_budget
     if (.not. self%temporal_indicator_history_enabled) then
 """,
-"""    outcome = trial_outcome_t()
-    self%last_observation = fmr_serialized_physical_observation_t()
-    self%last_observation%soil_temperature_active = self%soil_temperature_active
+"""    self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
@@ -351,7 +347,6 @@ once(
 """,
 'record accepted-route thermal sample')
 
-# Guard against accidental deletion/rewriting of capabilities added after I13.
 required_preservation = [
     'use mod_fmr_drainage_response_binding',
     'logical :: drainage_response_active = .false.',
