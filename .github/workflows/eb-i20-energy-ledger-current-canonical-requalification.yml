@@ -8,11 +8,38 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  qualify:
+  materialize-eb-i20r:
+    if: github.ref_name == 'work/eb-i20r-batch-safe-energy-ledger-invariant-handling' && github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[eb-i20r-materialized]')
     runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply deterministic remediation
+        run: |
+          python3 tests/eb/_apply_eb_i20r_batch_safe_ledger_patch.py
+          changed="$(git diff --name-only)"
+          test "$changed" = "src/runtime/mod_energy_conservation_ledger.f90"
+          git diff --check
+      - name: Commit local candidate
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/runtime/mod_energy_conservation_ledger.f90
+          git commit -m 'fix(EB-I20R): make prepared-energy invariants batch-safe [eb-i20r-materialized]'
+      - name: Qualify local candidate before push
+        run: bash tests/eb/run_eb_i20r_batch_safe_energy_ledger_gate.sh
+      - name: Push qualified candidate
+        run: git push origin HEAD:work/eb-i20r-batch-safe-energy-ledger-invariant-handling
+
+  qualify:
+    if: github.ref_name == 'work/eb-i20-energy-conservation-ledger-current-canonical-requalification' || github.actor == 'github-actions[bot]' || contains(github.event.head_commit.message, '[eb-i20r-materialized]')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
