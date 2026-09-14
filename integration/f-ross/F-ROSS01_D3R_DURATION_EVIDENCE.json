@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3R",
+  "kind": "post_child_fix_duration_family_evidence",
+  "decision": "QUALIFIED_BOUNDED_TRANSACTION_CALL_DURATION_FAMILY",
+  "authorities": {
+    "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "d3": "21bf6ec4a0a847b60b8713dba832f0b94d07f049",
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "live_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "tested_head": "4bb885918532cf1ee3386b9dda1ac055ff5fc3e8",
+    "adapter_blob": "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a",
+    "duration_worker_blob": "abfc3527fa00ede4e792c7b37e318997bf2a09ba",
+    "frozen_d2_base_blob": "3cb579554f0931dc41ce05e92e2e7a5f06bf8888",
+    "canonical_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "workflow": {
+    "run_id": 34791081328,
+    "aggregate_job_disposition": "NOT_USED_AS_AUTHORITY_QUEUED_AT_RECONSTRUCTION_TIME",
+    "evidence_reconstruction": "All ten successful duration-shard artifacts were downloaded through the GitHub connector and their JSON evidence was reconciled directly. Each shard exits zero only when shard_qualified is true."
+  },
+  "aggregate": {
+    "duration_family_qualified": true,
+    "duration_count": 10,
+    "material_count": 6,
+    "profiles_per_material_duration": 2,
+    "positive_case_count": 120,
+    "all_positive_cases_pass": true,
+    "all_shards_qualified": true,
+    "all_replay_pass": true,
+    "edge_internal_substep_case_count": 8,
+    "edge_negative_case_count": 6,
+    "hard_mass_tolerance_cm": 1e-12,
+    "max_abs_mass_residual_cm": 1.1099143583503178e-14,
+    "production_source_delta": []
+  },
+  "durations": [
+    {"index":0,"duration_day":0.0016,"positive_cases":12,"max_abs_mass_residual_cm":6.7453709313194e-15,"job_id":103815295535,"artifact_id":10327599341,"artifact_digest":"sha256:3233a85eebe60bc259c18a8dbab4c70e864fbbb0e99fc8ffd1eaad9d20b4db77"},
+    {"index":1,"duration_day":0.0008,"positive_cases":12,"max_abs_mass_residual_cm":1.0838169249542304e-14,"job_id":103815295732,"artifact_id":10328563478,"artifact_digest":"sha256:d58b45aa4aaf73b6802b92c48df2653253a9bf63c292ef63231abc0f53c2f3b2"},
+    {"index":2,"duration_day":0.0004,"positive_cases":12,"max_abs_mass_residual_cm":8.254393775112689e-15,"job_id":103815295656,"artifact_id":10328707662,"artifact_digest":"sha256:8f2ce6ae5b5f408e60ec2c1f33d80bdab8de89d59fc7c98d509e4e86ec63a6a0"},
+    {"index":3,"duration_day":0.0002,"positive_cases":12,"max_abs_mass_residual_cm":6.262255991186077e-15,"job_id":103815295647,"artifact_id":10328347247,"artifact_digest":"sha256:78475a50abfe4b176d41ae630ba8f45f5fa4fd8a4298e59764c4004096d88141"},
+    {"index":4,"duration_day":0.0001,"positive_cases":12,"max_abs_mass_residual_cm":7.392668961978924e-15,"job_id":103815295734,"artifact_id":10328820578,"artifact_digest":"sha256:2399fbfdca907c2cecf85c3891bc5ed5175a568abeadeff1317c57d1977cc688"},
+    {"index":5,"duration_day":0.00005,"positive_cases":12,"max_abs_mass_residual_cm":1.0682834338388606e-14,"job_id":103815295661,"artifact_id":10328202418,"artifact_digest":"sha256:5257af639a4dd4773be020a3585a24270c3da94c2468eb98c2ab41b41e01c02a"},
+    {"index":6,"duration_day":0.000025,"positive_cases":12,"max_abs_mass_residual_cm":9.875359037503243e-15,"job_id":103815295650,"artifact_id":10327909829,"artifact_digest":"sha256:2543663430e198ac69cdc2029c7d0578e500e52ff4c8f01c3ff252987ba31d7c"},
+    {"index":7,"duration_day":0.0000125,"positive_cases":12,"max_abs_mass_residual_cm":7.987432451804351e-15,"job_id":103815295747,"artifact_id":10328810406,"artifact_digest":"sha256:881f591553156fee446a924ff8cce933349d605c297c726d5ee8ada2401486e2"},
+    {"index":8,"duration_day":0.00000625,"positive_cases":12,"max_abs_mass_residual_cm":1.1099143583503178e-14,"job_id":103815295670,"artifact_id":10328024480,"artifact_digest":"sha256:7e12849ab1aea51bbf846d7ca06e3849ca80ae44d4a77033dffd80fac9a6c82b"},
+    {"index":9,"duration_day":0.000003125,"positive_cases":12,"max_abs_mass_residual_cm":5.549571791751589e-15,"job_id":103815295696,"artifact_id":10328543141,"artifact_digest":"sha256:0acc9ad4f411cb22ba312ed0a3a44af4993a2c8029287a4a28fdc53a662a7b6b"}
+  ],
+  "scope": {
+    "transaction_attempt_full_and_half_calls": true,
+    "retry_attempt_calls": true,
+    "end_to_end_outer_remainder_family": false,
+    "temporal_certificate": false,
+    "production_admission": false
+  }
+}
