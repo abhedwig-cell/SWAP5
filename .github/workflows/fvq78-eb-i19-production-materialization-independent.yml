@@ -1,0 +1,40 @@
+name: F-VQ78 EB-I19 production materialization independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq78-eb-i19-production-materialization-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact verifier head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested identities
+        run: |
+          echo "FVQ78_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ78_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+          echo "FVQ78_CANDIDATE=b2ba462cfade41eb68643db75ca28e234a123a02"
+          echo "FVQ78_CANDIDATE_TREE=$(git show -s --format=%T b2ba462cfade41eb68643db75ca28e234a123a02)"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Independent production materialization qualification
+        run: bash tests/fvq/run_fvq78_eb_i19_production_materialization_independent.sh
+
+      - name: Qualification-only source guard
+        run: |
+          candidate=b2ba462cfade41eb68643db75ca28e234a123a02
+          changed="$(git diff --name-only "$candidate"...HEAD -- src reference | sort)"
+          test -z "$changed"
+          echo 'FVQ78_NO_NEW_PRODUCTION_OR_REFERENCE_SOURCE=PASS'
