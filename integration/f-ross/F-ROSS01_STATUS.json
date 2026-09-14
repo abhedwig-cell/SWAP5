@@ -1,5 +1,5 @@
 {
-  "schema_version": 14,
+  "schema_version": 15,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -10,7 +10,7 @@
   "reproduced_overall": false,
   "qualified_overall": false,
   "decision_is_final": false,
-  "decision": "RESTRICTED_J1E_D1_D2_D3R_D3G02R3_RESEARCH_CHAIN_QUALIFIED_K_RUNTIME_AND_BROADER_SCIENCE_REMAIN_OPEN",
+  "decision": "RESTRICTED_J1E_D1_D2_D3R_D3G02R3_K_RUNTIME_RESEARCH_CHAIN_QUALIFIED_PRODUCTION_RUNTIME_HOOK_OPEN",
   "capability_flow_authority": "integration/f-ross/F-ROSS01_CAPABILITY_FLOW_RECONCILIATION.json",
   "legacy_detailed_status_snapshot": {
     "path": "integration/f-ross/F-ROSS01_STATUS_SCHEMA13_LEGACY_SNAPSHOT.json",
@@ -22,9 +22,9 @@
     "binding": true
   },
   "current_frontier": {
-    "active_existing_gate": "K_RUNTIME",
+    "active_existing_gate": "K_RUNTIME_PRODUCTION_RUNTIME_HOOK",
     "scope": "EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
-    "purpose": "restart and production-runtime qualification before any production admission",
+    "purpose": "materialize and qualify backward-compatible model-owned canonical transaction-window selection before any RossFast production admission",
     "deferred_parallel_scientific_frontier": "E3H_A10_SURFACE_CAP_GENERALIZATION_RESEARCH"
   },
   "qualified_capability_chain": [
@@ -51,6 +51,16 @@
       "status": "QUALIFIED_RESTRICTED_RESEARCH",
       "closed_D3_gaps": ["F-ROSS01-D3-G02"],
       "remaining_D3_gaps": []
+    },
+    {
+      "gate": "K_RUNTIME_RESTART_COMPOSITION",
+      "authority": "F-ROSS01_K_RUNTIME_RESTART_COMPOSITION_STATUS.json",
+      "status": "QUALIFIED_RESTRICTED_RESEARCH"
+    },
+    {
+      "gate": "K_RUNTIME_BOUNDED_REMAINDER_SCHEDULER_COMPOSITION",
+      "authority": "F-ROSS01_K_RUNTIME_REMAINDER_CLOSEOUT.json",
+      "status": "QUALIFIED_RESTRICTED_RESEARCH"
     }
   ],
   "admissibility": {
@@ -62,8 +72,13 @@
     "refined_two_half_candidate_route": "QUALIFIED_RESTRICTED_RESEARCH",
     "model_temporal_certificate": "QUALIFIED_EXACT_D3R_DOMAIN_RESOLUTION_FLOOR_BOUND_CONTRACT",
     "current_canonical_transaction_contract_composability": "QUALIFIED_RESTRICTED_RESEARCH_ON_BOUND_SOURCE_CONTRACT",
-    "end_to_end_remainder_scheduling_after_shortened_accept": "NOT_YET_QUALIFIED",
-    "restart": "NOT_YET_QUALIFIED",
+    "restart": "QUALIFIED_RESTRICTED_RESEARCH_EXACT_D3R_DOMAIN",
+    "reject_retry_state_isolation": "QUALIFIED_RESTRICTED_RESEARCH_EXACT_D3R_DOMAIN",
+    "accepted_only_commit_ownership": "QUALIFIED_RESTRICTED_RESEARCH_EXACT_D3R_DOMAIN",
+    "complete_hard_mass_accounting": "QUALIFIED_RESTRICTED_RESEARCH_EXACT_D3R_DOMAIN",
+    "end_to_end_remainder_scheduling_after_shortened_accept": "QUALIFIED_RESTRICTED_RESEARCH_BOUNDED_DYADIC_D3R_DOMAIN",
+    "production_runtime_window_selection_hook": "NOT_YET_MATERIALIZED",
+    "RossFast_production_model_adapter": "NOT_YET_MATERIALIZED",
     "production_runtime": "NOT_ADMITTED",
     "runtime_performance": "NOT_YET_QUALIFIED",
     "surface_cap_generalization": "NOT_YET_QUALIFIED_DEFERRED",
@@ -74,7 +89,7 @@
     "FullRichards_equivalence": "NOT_YET_QUALIFIED"
   },
   "open_gates_for_primary_base_family": [
-    "K_RUNTIME",
+    "K_RUNTIME_PRODUCTION_RUNTIME_HOOK",
     "E3H_A10_SURFACE_CAP_GENERALIZATION_RESEARCH",
     "E3H_A9R_EVENT_DETECTOR_ROBUSTNESS_FOR_INCONCLUSIVE_CASES_IF_NEEDED",
     "E4_ENDPOINT_AND_SURFACE_BRANCH_RESPONSE_TANGENT_POLICY_IF_REQUIRED",
@@ -89,11 +104,13 @@
     "The local-terminal tangent may not be relabelled as a whole-window derivative.",
     "Canonical runtime remains sole acceptance and commit authority for the D3G02R3 certificate route.",
     "Candidate state may not leak across reject, retry or restart boundaries.",
-    "No production admission follows from D1, D2, D3R or D3G02R3 research qualification.",
+    "A model-owned transaction-window selector must preserve the current outer-endpoint behavior by default for all existing models.",
+    "No RossFast-specific duration policy may be hard-coded into the generic canonical runtime.",
+    "No production admission follows from the restricted K_RUNTIME restart or remainder qualification.",
     "No universal temporal-accuracy claim extends outside the exact D3R domain and qualified resolution-floor bound contract.",
     "The schema-13 open scientific gates remain open unless separately qualified.",
     "STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding."
   ],
-  "next_action": "Continue only K_RUNTIME on the exact D3R restricted domain: qualify current-canonical restart semantics, reject/retry state isolation, explicit remainder scheduling after shortened accepted intervals, accepted-only commit ownership, complete hard mass accounting and production-runtime behavior. Reuse immutable D1-D3G02R3 evidence while its source and contract dependencies remain exact. Do not combine A10 surface-cap generalization, heterogeneous profiles, bottom-boundary expansion, groundwater, MultiSWAP, FullRichards equivalence or performance claims into this qualification.",
-  "status": "RESTRICTED_ROSSFAST_FSI31_TRANSACTION_COMPOSITION_RESEARCH_QUALIFIED_K_RUNTIME_ACTIVE_PRODUCTION_NOT_ADMITTED"
+  "next_action": "Open a separate contract-change branch from this closeout. Add a backward-compatible model-owned canonical transaction-window selector with default selected_t1 = outer_t1, keeping all existing model behavior unchanged. Qualify generic runtime ownership, progress, retry, mass and single-publication semantics under bounded window selection. Do not hard-code RossFast policy into the generic runtime and do not claim RossFast production admission until a production RossFast physical-model adapter exists and uses the qualified selector. Reuse immutable D1-D3G02R3 and K_RUNTIME research evidence while dependencies remain exact.",
+  "status": "RESTRICTED_ROSSFAST_FSI31_K_RUNTIME_RESEARCH_COMPOSITION_QUALIFIED_PRODUCTION_RUNTIME_HOOK_ACTIVE_PRODUCTION_NOT_ADMITTED"
 }
