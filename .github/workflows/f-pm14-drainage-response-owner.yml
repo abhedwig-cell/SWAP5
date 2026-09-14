@@ -13,6 +13,10 @@ on:
       - 'tests/fpm/*fpm14*'
       - '.github/workflows/f-pm14-drainage-response-owner.yml'
 
+concurrency:
+  group: f-pm14-drainage-response-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   response-binding:
     runs-on: ubuntu-latest
