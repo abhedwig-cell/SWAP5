@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.fvq78.status.v1",
+  "work_unit": "F-VQ78",
+  "title": "EB-I19 production bottom-energy materialization independent qualification",
+  "branch": "qualification/f-vq78-eb-i19-production-materialization-independent-qualification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "owner_authorities": {
+    "EB-I18R2_owner_candidate": "15184dd06c1d0f8accc0d306a12d25a3568f1f2e",
+    "EB-I19_production_candidate": "b2ba462cfade41eb68643db75ca28e234a123a02",
+    "EB-I19_candidate_tree": "f1c590d9c75c904ecbc123077035f632dd761ad2",
+    "F-VQ77_status": "728cf5face45be5b46c91701d7ed1102c9950091"
+  },
+  "canonical_base": "5e5e498dc56d1df1dd7ebebbf9901c946445a1ab",
+  "tested_head": "040001c848e8c63a7f1f4923b19d404f21793957",
+  "tested_tree": "3b514c41b46e256b1a11703be2e5df877a31a10d",
+  "workflow_run": 34830077559,
+  "workflow_job": 103931093610,
+  "runner": "ubuntu-24.04",
+  "compiler": "GNU Fortran 13.3.0",
+  "conclusion": "success",
+  "independent_evidence": {
+    "production_delta_exactly_two_files": true,
+    "production_files": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "reference_source_changed": false,
+    "verifier_introduced_production_or_reference_source": false,
+    "backend_blob": "a4b4891f5e7223691264eff80cdfc6dbb3851a5a",
+    "runtime_blob": "345febcbb567084163928b81b6bc0303f31d05d9",
+    "staged_to_production_byte_reconstruction": "PASS",
+    "worker_local_attempt_context": true,
+    "attempt_context_rollback_restoration": true,
+    "candidate_bound_thermal_snapshot": true,
+    "accepted_receipt_provenance_binding": true,
+    "accepted_only_energy_publication": true,
+    "rejected_trial_no_publication": true,
+    "backend_reuse_no_stale_publication": true,
+    "F-MR44R_preservation": "PASS",
+    "independent_mass_rows": 2,
+    "max_abs_mass_residual_cm": 2.22044604925031308e-16,
+    "hard_mass_oracle_tolerance_cm": 1.0e-12,
+    "O0_O2_semantic_identity": true,
+    "clean_checkout_production_replay": "PASS"
+  },
+  "warning_debt": {
+    "new_EB_I19_production_warnings": [
+      "serialized backend capacity guard: integer division truncation warning for huge(0)/2",
+      "serialized backend candidate%ready(): impure-function-elimination warning in chained logical expression",
+      "serialized MultiSWAP runtime response%identity_matches(request): impure-function-elimination warning in chained logical expression"
+    ],
+    "previous_EB_component_warnings_carried_from_F-VQ77": [
+      "bottom sensible-energy exact real inequality comparison",
+      "bottom sensible-energy parameters%ready(): impure-function-elimination warning at O2"
+    ],
+    "classification": "SEMANTIC_QUALIFICATION_PASS_WARNING_HYGIENE_REMEDIATION_REQUIRED_BEFORE_CANONICAL_ADMISSION_REVIEW"
+  },
+  "hard_nonclaims": [
+    "F-VQ78 does not canonically admit EB-I19.",
+    "F-VQ78 does not remove or waive compiler-warning debt in the EB production path.",
+    "The qualification-only 2.5e-11 cm temporal head budget is not a production or application default.",
+    "No production or reference source is introduced by F-VQ78."
+  ],
+  "decision": "QUALIFIED_SEMANTICALLY_REQUIRES_WARNING_HYGIENE_BEFORE_ADMISSION_REVIEW",
+  "next_owner": "EB-I19R production bottom-energy warning-hygiene remediation followed by independent requalification"
+}
