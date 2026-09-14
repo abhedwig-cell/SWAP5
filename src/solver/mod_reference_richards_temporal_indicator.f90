@@ -120,7 +120,8 @@ contains
        indicator_result%route = 'conductivity-policy-deferred'
        return
     end if
-    if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. request%boundary%bottom_mode /= 5) then
+    if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. &
+        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2)) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'boundary-envelope-deferred'
        return
@@ -230,14 +231,23 @@ contains
        diagonal(i-1) = diagonal(i-1)+face_conductance
        diagonal(i) = diagonal(i)+face_conductance
     end do
-    bottom_distance = 0.5_real64*request%parameters%dz(n)
-    face_conductance = conductivity_base(n)/bottom_distance
-    if (.not. ieee_is_finite(face_conductance) .or. face_conductance <= 0.0_real64) then
-       indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
-       indicator_result%route = 'invalid-bottom-conductance'
-       return
+
+    ! Prescribed bottom head (mode 5) contributes a Dirichlet face stiffness
+    ! d q_b / d h_N = K_b / distance. Prescribed qbot (mode 2) is a Neumann
+    ! flux owned by the boundary request; its derivative with respect to state
+    ! is zero and therefore contributes no bottom-head stiffness to the defect
+    ! operator. The top boundary is likewise an explicit prescribed flux and
+    ! already carries no top-face stiffness here.
+    if (request%boundary%bottom_mode == 5) then
+       bottom_distance = 0.5_real64*request%parameters%dz(n)
+       face_conductance = conductivity_base(n)/bottom_distance
+       if (.not. ieee_is_finite(face_conductance) .or. face_conductance <= 0.0_real64) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+          indicator_result%route = 'invalid-bottom-conductance'
+          return
+       end if
+       diagonal(n) = diagonal(n)+face_conductance
     end if
-    diagonal(n) = diagonal(n)+face_conductance
 
     rhs = (mass_weight/dt)*e_raw
     gamma = 0.0_real64

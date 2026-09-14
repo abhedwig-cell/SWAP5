@@ -1,0 +1,43 @@
+name: F-SI38 prescribed-qbot temporal certificate qualification
+
+on:
+  push:
+    branches:
+      - work/f-si38-prescribed-qbot-temporal-certificate
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fsi38-prescribed-qbot-temporal-certificate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FSI38_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FSI38_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Scope guard
+        run: |
+          git fetch --quiet origin integration/f-ci-canonical
+          changed_src="$(git diff --name-only origin/integration/f-ci-canonical...HEAD -- src | sort)"
+          printf 'FSI38_CHANGED_PRODUCTION_SOURCE=%s\n' "$changed_src"
+          test "$changed_src" = 'src/solver/mod_reference_richards_temporal_indicator.f90'
+          echo 'FSI38_PRODUCTION_SCOPE_GUARD=PASS'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify prescribed-qbot temporal certificate
+        run: bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh
+      - name: Exact head qualification marker
+        run: |
+          git diff --exit-code
+          echo "FSI38_EXACT_HEAD=$(git rev-parse HEAD)"
+          echo 'FSI38_EXACT_HEAD_QUALIFICATION=PASS'

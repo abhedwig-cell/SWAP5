@@ -1,0 +1,42 @@
+name: F-VQ75 prescribed-qbot temporal runtime independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq75-prescribed-qbot-temporal-runtime-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested head identity
+        run: |
+          echo "FVQ75_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ75_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Canonical-base and owner-authority locks
+        run: |
+          test "$(git merge-base e79b0272edb544ec4c8000a4d6869274f1ab3ae5 HEAD)" = e79b0272edb544ec4c8000a4d6869274f1ab3ae5
+          git merge-base --is-ancestor 4658b9f45c9a92f93a6a4b59c5c8aee33820ad94 HEAD
+          git merge-base --is-ancestor acb63559b5246db33b1958bb0c5bc8c1ba2055c0 HEAD
+          echo 'FVQ75_AUTHORITY_LOCKS=PASS'
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Independent qualification
+        run: bash tests/fvq/run_fvq75_prescribed_qbot_temporal_runtime_independent.sh
+
+      - name: Qualification-only branch source guard
+        run: |
+          changed_src="$(git diff --name-only acb63559b5246db33b1958bb0c5bc8c1ba2055c0...HEAD -- src reference | sort)"
+          test -z "$changed_src"
+          echo 'FVQ75_NO_NEW_SOURCE_DELTA=PASS'
