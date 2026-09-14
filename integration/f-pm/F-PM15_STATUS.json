@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.fpm15.status.v1",
+  "work_unit": "F-PM15",
+  "title": "Drainage-v1 final frozen-scope completion reconciliation",
+  "branch": "work/f-pm15-drainage-v1-final-completion-reconciliation",
+  "phase": "CLOSED_FAIL_CLOSED_COMPLETION_AUDIT",
+  "decision": "DRAINAGE_V1_FINAL_CLOSURE_GAPS_REMAIN",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "tree": "44e904cd2c57a76ee6c7453a6782049b230a8f8d"
+  },
+  "tested_head": {
+    "sha": "d71e4429d633c092d83bb999ab6744abca009481",
+    "workflow_run": 34816229130,
+    "workflow_job": 103887367512,
+    "conclusion": "success",
+    "artifact": {
+      "id": 10335669446,
+      "name": "fpm15-drainage-final-completion-34816229130",
+      "digest": "sha256:764cee9acd504017c4d4f4512cde7932dc70f108cfa7f29b6df3749a89c5f7a0"
+    }
+  },
+  "denominator": {
+    "authority": "F-PM13@e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "variants": 8,
+    "changed": false,
+    "scope_reduced": false
+  },
+  "blocker_reconciliation": {
+    "G1_RUNTIME_COMPOSITION": "PARTIAL_CLOSED_REMAINDER_IDENTIFIED",
+    "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS": "CLOSED",
+    "G3_CANONICAL_ADMISSION_PRESERVATION": "CLOSED"
+  },
+  "closed_evidence": {
+    "F_PM14_owner_runtime": "PASS",
+    "F_VQ73_independent_transaction_mass_runtime": "PASS",
+    "F_VQ74_independent_restart_multiswap_diagnostics": "PASS",
+    "F_CI61_exact_source_admission": "PASS",
+    "F_CI61P_postimage_moving_preservation": "PASS",
+    "canonical_push_run_34813209395": "PASS",
+    "canonical_pull_request_run_34813213464": "PASS",
+    "DIVDRA_preservation_replay": "PASS",
+    "fixed_weir_preservation_replay": "PASS",
+    "architecture_invariants_1_30_reconciled": "PASS_NO_ADVERSE_DELTA"
+  },
+  "remaining_gap": {
+    "id": "G1R_FULLY_IMPLICIT_DRAINAGE_RESPONSE_SOLVER_COUPLING",
+    "class": "REAL_SOFTWARE_AND_INDEPENDENT_QUALIFICATION_CLOSURE_GAP",
+    "finding": "The six drainage response routes now have an admitted transactionally safe runtime, but current-canonical evaluates the response from hydraulic_start before the Richards solve and binds a fixed qdra through a flux-only source_sink_provider_t. The already-qualified response tangents are not propagated into the nonlinear residual/Jacobian, so the explicit F-VQ38/F-VQ40/F-VQ43/F-VQ44 solver-Jacobian/fully-implicit holds remain open.",
+    "affected_frozen_variants": [
+      "linear",
+      "tabulated_DRAMET1",
+      "Hooghoudt_DRAMET2",
+      "Ernst_DRAMET2",
+      "empirical_interflow",
+      "multilevel_aggregation"
+    ],
+    "production_defect_class": "MISSING_QUALIFIED_FULLY_IMPLICIT_CAPABILITY_NOT_MASS_OR_TRANSACTION_REGRESSION"
+  },
+  "minimum_next_closure": {
+    "suggested_owner_work_unit": "F-PM16",
+    "scope": "solver-agnostic derivative-capable state-dependent source/sink seam plus fully implicit drainage-response binding",
+    "must_preserve": [
+      "frozen source_sink_provider_t flux-only ABI for existing providers",
+      "single common soil-water solver contract",
+      "no HeadCalc-internal dependency in drainage process/runtime",
+      "transaction rollback and exactly-once mass booking",
+      "generic time",
+      "no additional persistent drainage state",
+      "MultiSWAP isolation/order independence",
+      "precomputed DIVDRA and fixed-weir admitted routes",
+      "reference mode and all 30 architecture invariants"
+    ],
+    "must_qualify": [
+      "candidate-state response reevaluation inside nonlinear solve",
+      "correct drainage residual sign",
+      "correct Jacobian chain-rule sign and magnitude",
+      "finite-difference residual/Jacobian consistency away from non-smooth points",
+      "fail-closed behavior when derivative is unavailable or non-smooth",
+      "scientific equivalence to F-VQ38/F-VQ40/F-VQ42/F-VQ43/F-VQ44",
+      "transaction/mass/restart/MultiSWAP/diagnostics preservation",
+      "independent F-VQ and subsequent F-CI admission/postimage preservation"
+    ]
+  },
+  "production_source_changed_by_F_PM15": false,
+  "reference_source_changed_by_F_PM15": false,
+  "mass_conservation_concession": false,
+  "drainage_v1_100_percent_complete": false,
+  "closed": true,
+  "nonclaims": [
+    "F-PM15 does not reduce the frozen drainage-v1 denominator to obtain completion.",
+    "F-PM15 does not classify the open fully-implicit/Jacobian gap as a water-balance or transaction failure.",
+    "No QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE claim is authorized by this closeout."
+  ]
+}
