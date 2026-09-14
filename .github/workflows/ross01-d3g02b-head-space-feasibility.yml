@@ -1,0 +1,153 @@
+name: F-ROSS01 D3G02B Head-Space Temporal Certificate Feasibility
+
+on:
+  push:
+    branches: [work/f-ross01-d3g02b-head-space-temporal-certificate]
+    paths:
+      - .github/workflows/ross01-d3g02b-head-space-feasibility.yml
+      - experiments/ross/run_ross01_d3g02b_head_space_feasibility_material.py
+      - integration/f-ross/F-ROSS01_D3G02B_PRE_REGISTRATION.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-d3g02b-head-feasibility-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Bind live canonical MODEL_CERTIFICATE semantics by source identity
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          grep -q "outcome%temporal_certificate_available" "$RUNNER_TEMP/tx.f90"
+          grep -q "outcome%temporal_indicator <= 1.0_real64" "$RUNNER_TEMP/tx.f90"
+      - name: Bind frozen RossFast authorities
+        run: |
+          set -euo pipefail
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02_STATUS.json)" = "0e74b36e878e5e2951c0747bbf37d729cb2d06b3"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02_EVIDENCE.json)" = "ee3fe239942211b385d61068061965538389d705"
+          test "$(git hash-object experiments/ross/ross01_d3r_fsi31_duration_adapter.py)" = "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
+          test "$(git hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = "bafda0fb4ed6da606c3a1837208200dbcdb05c65"
+          test "$(git hash-object experiments/ross/run_ross01_d3g02_temporal_certificate_calibration.py)" = "6f380aa859884472308c88959296ff2ecb55563f"
+          test "$(git hash-object experiments/ross/run_ross01_d3g02_temporal_certificate_calibration_material.py)" = "104b5c863ddc3065482e7223166369e202e8accf"
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_d3g02b_head_space_feasibility_material.py
+      - name: Run nine retry levels with shared independent reference
+        run: |
+          python3 experiments/ross/run_ross01_d3g02b_head_space_feasibility_material.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3G02B_HEAD_MATERIAL_${{ matrix.material }}.json"
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02b-head-material-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02B_HEAD_MATERIAL_${{ matrix.material }}.json
+
+  aggregate:
+    needs: material
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-d3g02b-head-material-*-${{ github.run_id }}
+          path: shards
+          merge-multiple: true
+      - name: Aggregate preregistered B1 outcome
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          materials = ('B01','B12','O01','O05','O14','O18')
+          files = sorted(Path('shards').glob('F-ROSS01_D3G02B_HEAD_MATERIAL_*.json'))
+          payloads = [json.loads(p.read_text()) for p in files]
+          rows = [r for p in payloads for r in p.get('cases', [])]
+          expected = {(i,m) for i in range(9) for m in materials}
+          observed = {(r.get('attempt_index'), r.get('material')) for r in rows}
+          heads = sorted(set(p.get('live_canonical_head') for p in payloads))
+          complete = len(payloads) == 6 and len(rows) == 54 and observed == expected and len(heads) == 1
+          mechanical = complete and all(p.get('mechanical_pass') is True for p in payloads) and all(r.get('mechanical_pass') is True for r in rows)
+          resolved_rows = [r for r in rows if r.get('scientific_classification') == 'RESOLVED_NONCONSERVATIVITY']
+          unresolved_rows = [r for r in rows if r.get('scientific_classification') == 'UNRESOLVED_AT_REFERENCE_PRECISION']
+          conservative_rows = [r for r in rows if r.get('scientific_classification') == 'CONSERVATIVE_RESOLVED']
+          metrics = [r.get('temporal_metrics') or {} for r in rows]
+          def vmax(key):
+              vals = [float(m[key]) for m in metrics if isinstance(m.get(key),(int,float))]
+              return max(vals, default=None)
+          masses = [abs(float(r.get('max_abs_mass_residual_cm',0.0))) for r in rows]
+          if not mechanical:
+              outcome = 'EXECUTION_INVALID'
+          elif resolved_rows:
+              outcome = 'FAIL_RESOLVED_NONCONSERVATIVITY'
+          elif unresolved_rows:
+              outcome = 'INCONCLUSIVE_REFERENCE_RESOLUTION'
+          else:
+              outcome = 'PASS_HEAD_SPACE_FEASIBLE'
+          worst_violation = None
+          candidates = [r for r in rows if isinstance((r.get('temporal_metrics') or {}).get('violation_margin_cm'),(int,float))]
+          if candidates:
+              rr = max(candidates, key=lambda r: float(r['temporal_metrics']['violation_margin_cm']))
+              worst_violation = {
+                  'material': rr['material'],
+                  'attempt_index': rr['attempt_index'],
+                  'classification': rr['scientific_classification'],
+                  'violation_margin_cm': rr['temporal_metrics']['violation_margin_cm'],
+                  'raw_head_estimator_cm': rr['temporal_metrics']['raw_full_vs_two_half_head_estimator_cm'],
+                  'refined_reference_head_error_cm': rr['temporal_metrics']['refined_reference_head_error_cm'],
+                  'reference_self_head_delta_cm': rr['temporal_metrics']['reference_self_head_delta_cm'],
+              }
+          out = {
+              'work_unit': 'F-ROSS01 D3G02B',
+              'stage': 'B1_HEAD_SPACE_FEASIBILITY',
+              'outcome': outcome,
+              'case_count': len(rows),
+              'expected_case_count': 54,
+              'material_count': len(payloads),
+              'live_canonical_heads': heads,
+              'mechanical_pass': mechanical,
+              'conservative_resolved_case_count': len(conservative_rows),
+              'unresolved_reference_precision_case_count': len(unresolved_rows),
+              'resolved_nonconservative_case_count': len(resolved_rows),
+              'max_raw_head_estimator_cm': vmax('raw_full_vs_two_half_head_estimator_cm'),
+              'max_refined_reference_head_error_cm': vmax('refined_reference_head_error_cm'),
+              'max_reference_self_head_delta_cm': vmax('reference_self_head_delta_cm'),
+              'max_violation_margin_cm': vmax('violation_margin_cm'),
+              'max_abs_mass_residual_cm': max(masses, default=0.0),
+              'worst_violation_case': worst_violation,
+              'certificate_available': False,
+              'd3_g02_closed': False,
+              'production_admission': False,
+              'production_source_delta': [],
+          }
+          Path('F-ROSS01_D3G02B_B1_AGGREGATE.json').write_text(json.dumps(out, indent=2, sort_keys=True, allow_nan=False) + '\n')
+          print(json.dumps(out, sort_keys=True, allow_nan=False))
+          raise SystemExit(0 if outcome == 'PASS_HEAD_SPACE_FEASIBLE' else 1)
+          PY
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02b-head-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02B_B1_AGGREGATE.json
