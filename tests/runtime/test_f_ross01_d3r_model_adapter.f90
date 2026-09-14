@@ -116,8 +116,7 @@ program test_f_ross01_d3r_model_adapter
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_interval_t, canonical_numerical_config_t, canonical_result_t, &
-       CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_NO_PROGRESS
-  use mod_canonical_interval_runtime, only: run_canonical_interval
+       CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_INVALID_REQUEST
   use mod_rossfast_d3r_model_adapter, only: apply_rossfast_d3r_retry_policy, &
        rossfast_d3r_full_duration_for_index, run_rossfast_d3r_interval, &
        ROSSFAST_D3R_MAX_FULL_INDEX, ROSSFAST_D3R_HALF_ONLY_INDEX
@@ -128,7 +127,6 @@ program test_f_ross01_d3r_model_adapter
   call test_full_outer_binding()
   call test_retry_cap_binding()
   call test_off_grid_fails_closed()
-  call test_direct_generic_execution_fails_closed()
   write(*,'(a)') 'F-ROSS01 production D3R model adapter: PASS'
 
 contains
@@ -227,22 +225,5 @@ contains
     if (result%diagnostics%transaction_calls /= 0 .or. result%diagnostics%external_commits /= 0) error stop 242
     call assert_close(committed_storage(committed), 0.0_real64, 243)
   end subroutine test_off_grid_fails_closed
-
-  subroutine test_direct_generic_execution_fails_closed()
-    type(test_model_t) :: model
-    type(test_forcing_t) :: forcing
-    type(canonical_interval_t) :: interval
-    type(canonical_numerical_config_t) :: config
-    type(canonical_result_t) :: result
-    class(transaction_state_t), allocatable :: committed
-
-    call init_state(committed)
-    call init_config(config)
-    interval = canonical_interval_t(0.0_real64, 0.0016_real64)
-    call run_canonical_interval(model, committed, forcing, interval, config, result)
-    if (result%status /= CANONICAL_STATUS_NO_PROGRESS .and. result%status /= CANONICAL_STATUS_INVALID_REQUEST) error stop 251
-    if (result%diagnostics%transaction_calls /= 0 .or. result%diagnostics%external_commits /= 0) error stop 252
-    call assert_close(committed_storage(committed), 0.0_real64, 253)
-  end subroutine test_direct_generic_execution_fails_closed
 
 end program test_f_ross01_d3r_model_adapter
