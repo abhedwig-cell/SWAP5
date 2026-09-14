@@ -1,0 +1,53 @@
+{
+  "schema": "swap5-independent-qualification-status-v1",
+  "work_unit": "F-VQ84",
+  "title": "EB-I20R2 explicit ledger-owner identity independent qualification",
+  "branch": "qualification/f-vq84-eb-i20r2-explicit-owner-identity-independent-qualification",
+  "status": "QUALIFIED_LEDGER_CONTRACT_PENDING_RUNTIME_OWNER_BINDING_NOT_CANONICAL_ADMISSION",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "owner_authority": "7750b496499b3b9b3ce7e5a82695d9367182477c",
+  "owner_materialized_source_head": "e0837bdb9ce8ae2ab92bd32c975b08997d44e93b",
+  "negative_predecessor_authority": "30551be4dd9ef9d4a698ff0cd5a701e17503fe9e",
+  "tested_head": "63b99e20cb347713f55abbfb7bbac7a95fbbbee1",
+  "tested_tree": "e7cd465d71fa8815baecac712effb7ca54f08336",
+  "workflow_run": 34840641148,
+  "workflow_job": 103964555823,
+  "workflow_result": "SUCCESS",
+  "compiler": "GNU Fortran 13.3.0 on Ubuntu 24.04",
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "e71820784780e4a45a7024dbc437c71f0fb7d0c4"
+  },
+  "independent_evidence": [
+    "owner production delta from current canonical is exactly the energy-conservation types module plus the energy-conservation ledger module",
+    "verifier adds no production or reference source delta",
+    "non-positive owner_instance_id fails closed without opening an active trial",
+    "two ledgers with identical transaction provenance and local generation but distinct owner_instance_id values reject foreign abort fail-closed without consuming either prepared state",
+    "the same distinct-owner attack rejects foreign commit fail-closed while using a real accepted F-KT commit receipt",
+    "after rejected foreign operations each rightful owner can still commit or abort exactly its own ledger",
+    "a deliberate duplicate live owner_instance_id with otherwise identical provenance aliases as expected, demonstrating that uniqueness is an explicit runtime/caller obligation rather than locally enforced object identity",
+    "O0 and O2 independent oracle observations are identical",
+    "F-KT18 mass-completeness preservation and rejected committed-state immutability pass"
+  ],
+  "qualified_contract": {
+    "owner_instance_id_semantics": "explicit runtime-owned scratch provenance token",
+    "required_property": "positive and unique among simultaneously live logical energy-ledger owners",
+    "ledger_module_isolation_with_distinct_owner_ids": "QUALIFIED",
+    "global_or_runtime_uniqueness_enforcement": "NOT_QUALIFIED_HERE",
+    "persistent_state_required": false,
+    "hidden_global_allocator_allowed": false
+  },
+  "known_boundary": "If two simultaneously live logical energy-ledger owners are assigned the same owner_instance_id and the remaining prepared provenance also matches, the module cannot distinguish them. Production use therefore requires a separately qualified runtime binding that guarantees owner_instance_id uniqueness for the lifetime of simultaneously live owners and safe reuse after retirement.",
+  "warning_debt_outside_qualified_energy_source": [
+    "pre-existing exact REAL comparison warnings in mod_transaction_reference.f90",
+    "pre-existing exact REAL comparison warnings in mod_canonical_interval_runtime.f90"
+  ],
+  "hard_nonclaims": [
+    "not canonical admission",
+    "not proof that the production MultiSWAP/runtime currently assigns unique owner_instance_id values",
+    "not proof that worker-pool slot reuse is safe until runtime binding and stale-handle behavior are qualified",
+    "not full SWAP energy-balance completion"
+  ],
+  "decision": "QUALIFIED_LEDGER_CONTRACT_RUNTIME_OWNER_BINDING_REQUIRED_BEFORE_CANONICAL_ADMISSION",
+  "next_owner": "a separate EB runtime-binding workunit that assigns and qualifies unique owner_instance_id values for simultaneously live logical ledgers without hidden globals or persistent physics state, including worker-pool reuse and stale-handle attacks"
+}
