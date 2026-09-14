@@ -1,0 +1,31 @@
+name: EB-I21 cross-column receipt binding audit
+
+on:
+  push:
+    branches:
+      - work/eb-i21-runtime-energy-ledger-owner-binding
+    paths:
+      - 'tests/eb/test_eb_i21_cross_column_receipt_attack.f90'
+      - 'tests/eb/run_eb_i21_cross_column_receipt_attack.sh'
+      - '.github/workflows/eb-i21-cross-column-receipt-audit.yml'
+      - 'qualification/EB-I21_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EBI21_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EBI21_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Cross-column accepted-receipt attack audit
+        run: bash tests/eb/run_eb_i21_cross_column_receipt_attack.sh
