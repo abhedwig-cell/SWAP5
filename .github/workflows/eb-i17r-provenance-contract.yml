@@ -1,0 +1,28 @@
+name: EB-I17R candidate-bound energy provenance contract
+
+on:
+  push:
+    branches:
+      - work/eb-i17r-candidate-bound-energy-provenance-remediation
+  workflow_dispatch:
+
+jobs:
+  qualify-eb-i17r:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I17R_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I17R_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Provenance contract gate
+        run: bash tests/eb/run_eb_i17r_provenance_contract_gate.sh
+      - name: Qualified EB-I17 implementation preservation
+        run: bash tests/eb/run_eb_i17_external_binding_gate.sh
+      - name: FPM08D7 transactional owner preservation
+        run: bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh
+      - name: FPM08D7 restart owner preservation
+        run: bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh
