@@ -1,0 +1,31 @@
+name: F-VQ80 EB-I20R batch-safe energy-ledger independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq80-eb-i20r-batch-safe-energy-ledger-independent-qualification
+    paths:
+      - 'tests/fvq/test_fvq80_cross_ledger_prepared_handle_attack.f90'
+      - 'tests/fvq/run_fvq80_eb_i20r_batch_safe_energy_ledger_independent.sh'
+      - '.github/workflows/fvq80-eb-i20r-batch-safe-energy-ledger-independent.yml'
+      - 'qualification/F-VQ80_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FVQ80_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ80_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent provenance attack and scope qualification
+        run: bash tests/fvq/run_fvq80_eb_i20r_batch_safe_energy_ledger_independent.sh
