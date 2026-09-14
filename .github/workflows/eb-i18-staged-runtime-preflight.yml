@@ -6,6 +6,10 @@ on:
       - work/eb-i18-candidate-bound-bottom-energy-publication
   workflow_dispatch:
 
+concurrency:
+  group: eb-i18-staged-runtime-preflight-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   preflight:
     runs-on: ubuntu-24.04
