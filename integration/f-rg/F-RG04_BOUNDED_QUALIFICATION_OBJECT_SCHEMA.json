@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swap5://governance/frg04/bounded-qualification-object/v1",
+  "title": "SWAP5 F-RG04 bounded qualification object",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_id", "object_kind", "claim", "non_claims", "scope", "source_identity",
+    "evidence", "uncertainty_labels", "assurance_required", "qualification_outcome",
+    "parent_child", "composition_required", "admission_required"
+  ],
+  "properties": {
+    "object_id": {"type": "string", "minLength": 1},
+    "object_kind": {
+      "enum": [
+        "EQUATION_OR_PROCESS_LAW", "PROCESS_CONTRACT", "SOLVER_BEHAVIOR",
+        "BOUNDARY_CONDITION", "STATE_VARIABLE", "TRANSACTION_PROPERTY",
+        "CONSERVATION_PROPERTY", "COUPLING_PROPERTY", "MODULE_CAPABILITY",
+        "SUB_CAPABILITY", "COMPOSED_CAPABILITY", "COMPLETE_V1_DOMAIN"
+      ]
+    },
+    "claim": {"type": "string", "minLength": 1},
+    "non_claims": {"type": "array", "items": {"type": "string"}},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_contracts_owned", "semantic_contracts_consumed", "surfaces"],
+      "properties": {
+        "semantic_contracts_owned": {"type": "array", "items": {"type": "string"}},
+        "semantic_contracts_consumed": {"type": "array", "items": {"type": "string"}},
+        "surfaces": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scientific", "numerical", "conservation", "state_restart", "transaction", "coupling", "runtime"],
+          "properties": {
+            "scientific": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]},
+            "numerical": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]},
+            "conservation": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]},
+            "state_restart": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]},
+            "transaction": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]},
+            "coupling": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]},
+            "runtime": {"enum": ["IN_SCOPE", "OUT_OF_SCOPE", "NOT_APPLICABLE"]}
+          }
+        }
+      }
+    },
+    "source_identity": {
+      "type": "object",
+      "required": ["authority_or_candidate", "immutable"],
+      "properties": {
+        "authority_or_candidate": {"type": "string", "minLength": 1},
+        "commit": {"type": ["string", "null"]},
+        "tree": {"type": ["string", "null"]},
+        "blob_or_hashes": {"type": "array", "items": {"type": "string"}},
+        "immutable": {"type": "boolean"}
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_class", "reference", "supports"],
+        "properties": {
+          "evidence_class": {"type": "string"},
+          "reference": {"type": "string"},
+          "supports": {"type": "string"},
+          "limitations": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "uncertainty_labels": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "KNOWN_FROM_FROZEN_SOURCE", "CONFIRMED_BY_REFERENCE_BEHAVIOR",
+          "RECONSTRUCTED_NOT_HISTORICAL", "SCIENTIFICALLY_QUALIFIED",
+          "NUMERICALLY_QUALIFIED", "HISTORICAL_BEHAVIOR_UNKNOWN",
+          "PROCESS_SEMANTICS_UNRESOLVED", "RESEARCH_ONLY", "PRODUCTION_ADMITTED"
+        ]
+      }
+    },
+    "assurance_required": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "OWNER_VERIFIED", "PROCESS_SELF_REVIEWED_NOT_INDEPENDENT",
+          "ADVERSARIALLY_SELF_REVIEWED_NOT_INDEPENDENT", "INDEPENDENTLY_QUALIFIED"
+        ]
+      }
+    },
+    "qualification_outcome": {
+      "enum": [
+        "PENDING", "QUALIFIED_POSITIVE", "QUALIFIED_NEGATIVE", "BLOCKED_BY_EVIDENCE",
+        "NOT_SCIENTIFICALLY_DEFENSIBLE", "HISTORICAL_BEHAVIOR_UNKNOWN", "OUTSIDE_CURRENT_SCOPE"
+      ]
+    },
+    "parent_child": {
+      "type": "object",
+      "required": ["parent_object", "child_objects", "inheritance_forbidden"],
+      "properties": {
+        "parent_object": {"type": ["string", "null"]},
+        "child_objects": {"type": "array", "items": {"type": "string"}},
+        "inheritance_forbidden": {"const": true}
+      }
+    },
+    "composition_required": {"type": "boolean"},
+    "composition_authority": {"type": ["string", "null"]},
+    "admission_required": {"type": "boolean"},
+    "admission_authority": {"type": ["string", "null"]},
+    "preservation_authority": {"type": ["string", "null"]}
+  },
+  "governance_invariants": [
+    "A narrower object cannot promote its evidence or qualification to a wider object without a new bounded qualification.",
+    "Child qualification never implies parent qualification.",
+    "All children qualified never implies composition qualified.",
+    "Qualification never implies production admission.",
+    "Negative qualification is epistemic closure and does not create production capability credit."
+  ]
+}
