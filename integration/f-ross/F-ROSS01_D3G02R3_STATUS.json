@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01",
+  "subphase": "J1E-D3G02R3",
+  "closure_target": "F-ROSS01-D3-G02",
+  "status": "CLOSED_POSITIVE_RESTRICTED_RESEARCH",
+  "decision": "QUALIFIED_ROSSFAST_D3G02R_FAIL_CLOSED_MODEL_CERTIFICATE_ON_EXACT_D3R_DOMAIN",
+  "scope": {
+    "domain": "EXACT_D3R_QUALIFIED_DOMAIN_ONLY",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "duration_ladder_attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "positive_case_count": 54,
+    "forcing": "D2_NOMINAL_FORCING_ONLY",
+    "candidate_route": "REFINED_TWO_HALF",
+    "component_trial_count": 3
+  },
+  "certificate_semantics": {
+    "resolution_floor": 1e-10,
+    "accuracy_tolerance": 1e-5,
+    "candidate_error_bound": "max(raw_full_vs_two_half_estimator, resolution_floor)",
+    "temporal_indicator": "candidate_error_bound / accuracy_tolerance",
+    "qualified_positive_contract": "finite_nonnegative_indicator_le_one",
+    "acceptance_authority": "CANONICAL_RUNTIME_ONLY",
+    "wrapper_authority": "CANDIDATE_MODEL_CERTIFICATE_ONLY"
+  },
+  "authority_blobs": {
+    "runtime_certificate_wrapper": "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd",
+    "bound_authority": "ff32bce4597e245eef0028556fce476074ab1cb8",
+    "decision_rule": "d25ce7c87e976c8baac1fad0a58f3380962ee0c0",
+    "base_failure_schema": "3cb579554f0931dc41ce05e92e2e7a5f06bf8888",
+    "corrected_qualification_harness": "a5cf158060f7893e9a8cd6a7a8a6bc644715cbbb"
+  },
+  "positive_evidence_inherited": {
+    "source_workflow_run_id": 34844849956,
+    "source_head": "aad54878d79cbe55a7851c2ecea27e016fcc9357",
+    "aggregate_artifact_id": 10349275869,
+    "aggregate_artifact_digest": "sha256:cf806d7a2f7aeaf5e68ecf0cd6fccb958a4b39a826f79eca6cd770c561cdc2dc",
+    "case_count": 54,
+    "all_positive_cases_pass": true,
+    "all_indicators_finite_nonnegative_le_one": true,
+    "all_mass_residuals_within_hard_gate": true,
+    "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+    "max_temporal_indicator": 1.83721840829632e-5,
+    "candidate_only_semantics_pass": true,
+    "committed_state_unchanged_pass": true,
+    "canonical_accept_commit_owner_only_pass": true,
+    "source_run_overall_failure_reason": "QUALIFICATION_HARNESS_NEGATIVE_NO_EXECUTION_ASSERTION_MISMATCH_ONLY",
+    "source_run_overall_failure_does_not_invalidate_positive_matrix": true
+  },
+  "harness_correction": {
+    "commit": "a456d4eec437d7851220354222202798adcf4f7b",
+    "change": "Treat explicit candidate_hydraulic_state:null from the established base failure schema as no candidate state, rather than requiring the key to be absent.",
+    "solver_or_scientific_semantics_changed": false,
+    "production_source_delta": []
+  },
+  "negative_path_replay": {
+    "workflow_run_id": 34867875567,
+    "workflow_head": "6e2a077925b7f6376fb18ce5e76a6c8c7841025b",
+    "artifact_id": 10357708347,
+    "artifact_digest": "sha256:95511732e3c164c3348bc0f8da1d6b3101642350561ad6de8ff0a8892f645053",
+    "pass": true,
+    "checks": {
+      "bound_authority_missing_fails_closed_before_solver": true,
+      "wrong_resolution_floor_fails_closed_before_solver": true,
+      "wrong_accuracy_tolerance_fails_closed_before_solver": true,
+      "full_attempt_level9_fails_closed_before_solver": true,
+      "off_ladder_fails_closed": true
+    }
+  },
+  "canonical_binding": {
+    "live_canonical_head_at_replay": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+    "qualified_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "live_transaction_blob_matches_qualified_contract": true
+  },
+  "d3_gap_reconciliation": {
+    "G01": "CLOSED_BY_D3R",
+    "G02": "CLOSED_BY_D3G02R3_RESTRICTED_RESEARCH_CURRENT_CANONICAL_CONTRACT_COMPOSABILITY",
+    "G03": "CLOSED_BY_D3R_POST_CLOSEOUT_RECONCILIATION",
+    "remaining_G01_G02_G03": []
+  },
+  "evidence_policy": {
+    "mode": "CAPABILITY_FLOW_DEPENDENCY_REUSE",
+    "reason": "The corrected dependency is the negative no-execution assertion only. The wrapper, bound authority, decision rule, D3R numerical domain, and qualified transaction blob are unchanged, so immutable positive evidence is inherited and only affected fail-closed paths are replayed.",
+    "redundant_full_matrix_rerun_required_for_closure": false
+  },
+  "hard_nonclaims": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_UNIVERSAL_TEMPORAL_ERROR_BOUND_OUTSIDE_EXACT_D3R_DOMAIN",
+    "NO_ACCURACY_CLAIM_OUTSIDE_THE_QUALIFIED_RESOLUTION_FLOOR_BOUND_CONTRACT",
+    "NO_PRODUCTION_RUNTIME_COST_OR_PERFORMANCE_CLAIM",
+    "NO_RESTART_OR_MULTISWAP_PRODUCTION_CLAIM",
+    "NO_NEW_SOLVER_OR_PHYSICAL_MODEL_SEMANTICS"
+  ],
+  "production_admission": false,
+  "production_source_delta": []
+}

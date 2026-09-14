@@ -1,0 +1,72 @@
+name: F-ROSS01 D2 R1 Final Qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d2-fsi31-v1-research-adapter-r1
+    paths:
+      - .github/workflows/ross01-d2-r1-final-qualification.yml
+      - experiments/ross/ross01_d2_fsi31_adapter.py
+      - experiments/ross/ross01_d2_fsi31_adapter_base.py
+      - experiments/ross/run_ross01_d2_fsi31_qualification.py
+      - integration/f-ross/F-ROSS01_D2_FSI31_V1_CAPABILITY_DECLARATION.json
+      - integration/f-ross/F-ROSS01_D2_ADAPTER_CONTRACT.json
+      - experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py
+      - experiments/ross/run_ross01_gate_f_timestep_convergence.py
+      - experiments/ross/run_ross01_gate_d_conservative_physical_unsaturated_column.py
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+
+      - name: Install research qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Verify exact frozen F-SI31 authority
+        run: |
+          set -euo pipefail
+          authority=4190ede0b17e81abe806430cc9a4c94a21995917
+          git fetch --no-tags origin "$authority"
+          git show "$authority:integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CAPABILITY_SCHEMA_V1.json" > "$RUNNER_TEMP/F-SI31_SCHEMA.json"
+          git show "$authority:integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md" > "$RUNNER_TEMP/F-SI31_CONTRACT.md"
+          test "$(git hash-object "$RUNNER_TEMP/F-SI31_SCHEMA.json")" = "86bfa60468d891e071c735569d944570f75fa205"
+          test "$(git hash-object "$RUNNER_TEMP/F-SI31_CONTRACT.md")" = "d5e934df4b3fbaa573e994cbe675257cf6a47304"
+
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/ross01_d2_fsi31_adapter.py experiments/ross/ross01_d2_fsi31_adapter_base.py experiments/ross/run_ross01_d2_fsi31_qualification.py
+
+      - name: Run full executable D2 qualification
+        run: |
+          set -euo pipefail
+          python3 experiments/ross/run_ross01_d2_fsi31_qualification.py \
+            --schema "$RUNNER_TEMP/F-SI31_SCHEMA.json" \
+            --fsi31-contract "$RUNNER_TEMP/F-SI31_CONTRACT.md" \
+            --evidence F-ROSS01_D2_EVIDENCE.json \
+            --status F-ROSS01_D2_STATUS.json \
+            | tee F-ROSS01_D2_STDOUT.txt
+
+      - name: Upload final qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d2-r1-final-${{ github.run_id }}
+          path: |
+            F-ROSS01_D2_EVIDENCE.json
+            F-ROSS01_D2_STATUS.json
+            F-ROSS01_D2_STDOUT.txt

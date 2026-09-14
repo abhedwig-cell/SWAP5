@@ -1,0 +1,91 @@
+name: F-ROSS01 D3G02R Resolution-Floor Temporal Certificate
+
+on:
+  push:
+    branches: [work/f-ross01-d3g02r-resolution-floor-temporal-certificate]
+    paths:
+      - .github/workflows/ross01-d3g02r-resolution-floor-temporal-certificate.yml
+      - experiments/ross/run_ross01_d3g02r_resolution_floor_material.py
+      - experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py
+      - integration/f-ross/F-ROSS01_D3G02R_CONTRACT.json
+      - integration/f-ross/F-ROSS01_D3G02R_RESOLUTION_FLOOR_DECISION_RULE.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-d3g02r-resolution-floor-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+      - name: Bind live canonical MODEL_CERTIFICATE semantics by immutable source blob
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          grep -q "outcome%temporal_certificate_available" "$RUNNER_TEMP/tx.f90"
+          grep -q "outcome%temporal_indicator <= 1.0_real64" "$RUNNER_TEMP/tx.f90"
+      - name: Bind frozen research and precommit authorities
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/ross/ross01_d3r_fsi31_duration_adapter.py)" = "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
+          test "$(git hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = "bafda0fb4ed6da606c3a1837208200dbcdb05c65"
+          test "$(git hash-object experiments/ross/run_ross01_d3g02_temporal_certificate_calibration_material.py)" = "104b5c863ddc3065482e7223166369e202e8accf"
+          test "$(git hash-object integration/f-ross/F-ROSS01_GATE_F_TIMESTEP_CONVERGENCE_CONTRACT.json)" = "7837e904348298780f0c8f683a551510ded879e5"
+          test "$(git hash-object integration/f-ross/F-ROSS01_D3G02R_RESOLUTION_FLOOR_DECISION_RULE.json)" = "82d512a66b1416e9a26710af0ca8ec051ec64539"
+      - name: Syntax check
+        run: |
+          python3 -m py_compile experiments/ross/run_ross01_d3g02r_resolution_floor_material.py
+          python3 -m py_compile experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py
+      - name: Fresh nine-level RossFast and DOP853 qualification
+        run: |
+          python3 experiments/ross/run_ross01_d3g02r_resolution_floor_material.py \
+            --canonical-head "$CANONICAL_HEAD" \
+            --material "${{ matrix.material }}" \
+            --output "F-ROSS01_D3G02R_MATERIAL_${{ matrix.material }}.json"
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r-material-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_D3G02R_MATERIAL_${{ matrix.material }}.json
+
+  aggregate-qualification:
+    needs: qualify-material
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-d3g02r-material-*-${{ github.run_id }}
+          path: shards
+      - name: Apply frozen resolution-floor qualification rule
+        run: |
+          python3 experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py \
+            --artifacts shards \
+            --output F-ROSS01_D3G02R_AGGREGATE.json
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02R_AGGREGATE.json

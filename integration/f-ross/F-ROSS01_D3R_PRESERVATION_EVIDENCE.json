@@ -1,0 +1,78 @@
+{
+  "hard_mass_tolerance_cm": 1e-12,
+  "kind": "preservation_probe",
+  "live_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+  "max_abs_mass_residual_cm": 2.8345860638031395e-15,
+  "negatives": [
+    {
+      "classification": "TOP_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "duration_index": 0,
+      "pass": true,
+      "pre_perturbation_snapshot_distinct": true,
+      "type": "top"
+    },
+    {
+      "classification": "BOTTOM_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "duration_index": 0,
+      "pass": true,
+      "pre_perturbation_snapshot_distinct": true,
+      "type": "bottom"
+    },
+    {
+      "classification": "TOP_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "duration_index": 9,
+      "pass": true,
+      "pre_perturbation_snapshot_distinct": true,
+      "type": "top"
+    },
+    {
+      "classification": "BOTTOM_FLUX_OUTSIDE_DECLARED_SCOPE",
+      "duration_index": 9,
+      "pass": true,
+      "pre_perturbation_snapshot_distinct": true,
+      "type": "bottom"
+    },
+    {
+      "classification": "TIME_OUTSIDE_DECLARED_SCOPE",
+      "pass": true,
+      "type": "non_ladder_remainder"
+    },
+    {
+      "classification": "TIME_OUTSIDE_DECLARED_SCOPE",
+      "pass": true,
+      "type": "below_minimum"
+    }
+  ],
+  "production_source_delta": [],
+  "qualified": true,
+  "replay": [
+    {
+      "duration_index": 0,
+      "pass": true
+    },
+    {
+      "duration_index": 9,
+      "pass": true
+    }
+  ],
+  "substep_cases": [
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":0,"mass_residual_cm":-1.800883716603065e-15,"pass":true,"steps":2},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":0,"mass_residual_cm":-1.800883716603065e-15,"pass":true,"steps":4},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":0,"mass_residual_cm":1.7518299621974359e-15,"pass":true,"steps":8},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":0,"mass_residual_cm":-1.800883716603065e-15,"pass":true,"steps":16},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":9,"mass_residual_cm":-2.8345860638031395e-15,"pass":true,"steps":2},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":9,"mass_residual_cm":-2.8345860638031395e-15,"pass":true,"steps":4},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":9,"mass_residual_cm":-2.8345860638031395e-15,"pass":true,"steps":8},
+    {"checks":{"candidate_only":true,"child_preflight":true,"duration":true,"exchange_candidate":true,"immutable":true,"launcher_reused":true,"ledger":true,"mass":true,"no_whole_window":true,"ready":true,"request_exact":true,"view":true,"worker_isolated":true},"duration_index":9,"mass_residual_cm":-2.8345860638031395e-15,"pass":true,"steps":16}
+  ],
+  "tests": {
+    "allowed_substeps_unchanged": true,
+    "duration_ladder_exact": true,
+    "edge_replay": true,
+    "edge_substep_preservation": true,
+    "fail_closed_preservation": true,
+    "hard_mass_tolerance_unchanged": true,
+    "retry_policy_exact": true
+  },
+  "work_unit": "F-ROSS01 D3R"
+}

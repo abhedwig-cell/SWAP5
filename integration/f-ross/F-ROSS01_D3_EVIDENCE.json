@@ -1,0 +1,117 @@
+{
+  "authorities": {
+    "canonical_source_blobs": {
+      "kernel": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+      "runtime": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+      "transaction": "d5a71a526efaebd82054580c3186f8e3545db331"
+    },
+    "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "live_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+  },
+  "composition_assessment": {
+    "candidate_bottom_exchange_semantics": "PASS",
+    "committed_state_read_only": "PASS",
+    "current_canonical_external_full_half_route": "NOT_COMPOSABLE_WITH_FROZEN_D2_DURATION_SCOPE",
+    "current_canonical_mass_completeness_admission": "PASS_SOURCE_BOUND",
+    "current_canonical_model_certificate_route": "NOT_COMPOSABLE_WITHOUT_NEW_TEMPORAL_CERTIFICATE_QUALIFICATION",
+    "current_canonical_retry_recovery": "NOT_COMPOSABLE_WITH_FROZEN_D2_DURATION_SCOPE",
+    "fsi31_candidate_ownership": "PASS",
+    "generic_absolute_time_coordinate": "PASS",
+    "hard_mass_candidate_gate": "PASS",
+    "multiswap": "OUT_OF_D3_SCOPE_AND_NOT_PRODUCTION_QUALIFIED",
+    "production_admission": false,
+    "restart": "OUT_OF_D3_SCOPE_AND_D2_UNSUPPORTED",
+    "runtime_commit_ownership": "REPRESENTABLE_BUT_NOT_END_TO_END_QUALIFIED_BECAUSE_TEMPORAL_ADMISSION_BLOCKS_BEFORE_COMMIT"
+  },
+  "d2_evidence_decision": "QUALIFIED_ROSSFAST_FSI31_V1_RESTRICTED_RESEARCH_ADAPTER",
+  "d2_full_window": {
+    "candidate_digest": null,
+    "committed_digest": "ad1ae3e58f4ffbd319f8c2140b7589f0d8adfca68f0e13e8cd16aed9764bb85a",
+    "duration_day": 0.0016,
+    "mass_residual_cm": 1.7518299621974359e-15,
+    "material": "B01",
+    "solver_disposition": "candidate_ready",
+    "t0_day": 37.125,
+    "t1_day": 37.1266
+  },
+  "decision": "ROSSFAST_CURRENT_CANONICAL_RUNTIME_COMPOSITION_GAPS_IDENTIFIED",
+  "exact_next_research_step": "F-ROSS01 D3R: bounded interval-duration and retry-ladder qualification for the frozen F-SI31 RossFast adapter, followed by re-execution of this current-canonical composition gate; temporal-certificate research remains separate unless explicitly selected.",
+  "gaps": [
+    {
+      "classification": "TEMPORAL_COMPOSITION_GAP",
+      "evidence": {
+        "adapter_failure_classification": "TIME_OUTSIDE_DECLARED_SCOPE",
+        "canonical_half_duration_day": 0.0008,
+        "requested_full_duration_day": 0.0016
+      },
+      "id": "F-ROSS01-D3-G01",
+      "summary": "The current-canonical external full-vs-two-half transaction route requires half-interval model calls, while frozen D2 qualifies only duration 0.0016 day."
+    },
+    {
+      "classification": "TEMPORAL_CERTIFICATE_GAP",
+      "id": "F-ROSS01-D3-G02",
+      "summary": "The alternative current-canonical model-certificate transaction route requires an explicit qualified temporal certificate; frozen D2 exposes no such certificate and D3 does not invent one."
+    },
+    {
+      "classification": "RETRY_COMPOSITION_GAP",
+      "evidence": {
+        "adapter_failure_classification": "TIME_OUTSIDE_DECLARED_SCOPE",
+        "first_retry_duration_day": 0.0008,
+        "retry_scale": 0.5
+      },
+      "id": "F-ROSS01-D3-G03",
+      "summary": "Current-canonical transaction retry shrinks attempt duration; the first 0.5 retry already leaves frozen D2's qualified duration scope, so retry recovery is fail-closed rather than qualified."
+    }
+  ],
+  "invariant_audit": {
+    "1": "PASS_NO_PRODUCTION_KERNEL_FORK",
+    "11": "PARTIAL_TRANSACTIONAL_EXCHANGE_REPRESENTABLE_TEMPORAL_ADMISSION_BLOCKS_END_TO_END_COMPOSITION",
+    "13": "PASS_D2_HARD_MASS_AND_CURRENT_CANONICAL_FAIL_CLOSED_COMPLETENESS",
+    "14": "PASS_NO_WHOLE_WINDOW_SENSITIVITY_INFLATION",
+    "20": "PARTIAL_RESEARCH_SEAM_EXISTS_CURRENT_RUNTIME_COMPOSITION_NOT_YET_QUALIFIED",
+    "22": "PASS_PROCESS_VIEW_NO_SOLVER_INTERNALS",
+    "23": "PASS_PHYSICS_NUMERICAL_POLICY_SEPARATION",
+    "29": "PASS_NO_CALENDAR_OR_FILE_SEMANTICS_IN_SOLVER_REQUEST",
+    "3": "PASS_D2_DATA_SEPARATION_PRESERVED",
+    "30": "PASS_EXPLICIT_NEGATIVE_QUALIFICATION_AND_GAP_RECORD",
+    "5": "PASS_D2_WORKER_LOCAL_SCRATCH_PRESERVED",
+    "7": "PARTIAL_CANDIDATE_ROLLBACK_REPRESENTABLE_RETRY_DURATION_NOT_QUALIFIED",
+    "8": "FAIL_RETRY_RECOVERY_NOT_QUALIFIED_FOR_CANONICAL_DURATION_LADDER",
+    "9": "PASS_GENERIC_T0_T1_BUT_DURATION_SCOPE_RESTRICTED"
+  },
+  "minimal_closure_requirement": {
+    "alternative_or_additional": "If TX_TEMPORAL_MODEL_CERTIFICATE is intended, independently define and qualify a RossFast temporal certificate with explicit accuracy semantics; it may not be inferred from solver convergence, mass residual, or the D1 local-terminal hydraulic response.",
+    "no_scope_reduction": true,
+    "primary": "Qualify a RossFast research-adapter interval-duration family matching the exact current-canonical transaction/retry policy to be exercised, including every half/retry duration that can reach the solver, while preserving the D2 hard mass gate and candidate-only ownership."
+  },
+  "production_source_delta": [],
+  "qualification_execution_pass": true,
+  "schema_version": 1,
+  "tests": {
+    "canonical_external_full_half_semantics": {"missing": [], "pass": true},
+    "canonical_kernel_candidate_commit_provenance": {"missing": [], "pass": true},
+    "canonical_mass_fail_closed_semantics": {"missing": [], "pass": true},
+    "canonical_model_certificate_semantics": {"missing": [], "pass": true},
+    "canonical_retry_duration_rejected_fail_closed": true,
+    "canonical_retry_shrink_semantics": {"missing": [], "pass": true},
+    "canonical_runtime_external_commit_boundary": {"missing": [], "pass": true},
+    "current_canonical_source_blobs_exact": true,
+    "d2_authority_closed_positive": true,
+    "d2_bottom_exchange_candidate_only": true,
+    "d2_full_window_candidate_ready": true,
+    "d2_full_window_committed_read_only": true,
+    "d2_full_window_hard_mass": true,
+    "d2_model_temporal_certificate_absent": true,
+    "external_half_interval_rejected_fail_closed": true
+  },
+  "title": "RossFast F-SI31 v1 Current-Canonical Runtime Composition, Transactional Exchange & Mass-Conservative Service Qualification",
+  "work_unit": "F-ROSS01 D3",
+  "workflow": {
+    "run_id": "34789928638",
+    "job_id": "103812143469",
+    "trigger_sha": "13f36bd91279f763cc8e2692a787d89927d90240",
+    "artifact_id": "10327394871",
+    "artifact_digest": "sha256:93c55bc5a2bbf520237b9f8e14f03450deb2fbd8fcfc241d874962cfb67a3781"
+  }
+}

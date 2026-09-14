@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R2",
+  "decision": "QUALIFIED_RESOLUTION_FLOOR_BOUND_READY_FOR_FAIL_CLOSED_WRAPPER_QUALIFICATION",
+  "scope": "EXACT_FROZEN_D3R_DOMAIN_ONLY",
+  "replay_run": {
+    "run_id": 34824601766,
+    "tested_head": "e7b8091b7c4a5650bea2d6004c965ccb30d45aa6",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10339354466,
+    "aggregate_artifact_digest": "sha256:415a39ca5facea6cc156877360ff3b3be5d5ec9f13de4032d33ff6faab7b77d9"
+  },
+  "immutable_scientific_source": {
+    "run_id": 34816560882,
+    "tested_head": "3a418312e0bbdc328035aa4abc06f965c042ad38",
+    "material_jobs": 6,
+    "material_jobs_success": 6,
+    "case_count": 54,
+    "scientific_cases_recomputed_in_replay": 0
+  },
+  "frozen_hypothesis": {
+    "resolution_floor_span_normalized": 1e-10,
+    "resolution_floor_provenance": "F-ROSS01 Gate F informative_order_floor_theta_span_normalized, frozen before D3G02",
+    "candidate_error_bound": "max(raw_full_vs_two_half_estimator,1e-10)",
+    "accuracy_tolerance": 1e-5,
+    "temporal_indicator": "candidate_error_bound/1e-5",
+    "posthoc_factor": null
+  },
+  "aggregate": {
+    "qualification_pass": true,
+    "material_count": 6,
+    "case_count": 54,
+    "floor_bound_case_count": 53,
+    "raw_bound_case_count": 1,
+    "source_live_canonical_head": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+    "hard_mass_tolerance_cm": 1e-12,
+    "max_reference_self_delta_span": 6.813835683978775e-16,
+    "reference_self_tolerance_span": 1e-9,
+    "max_raw_estimator": 1.8390471116387737e-10,
+    "max_refined_reference_error": 6.13027754398947e-11,
+    "max_candidate_error_bound": 1.8390471116387737e-10,
+    "max_refined_error_over_candidate_bound": 0.33333988592205144,
+    "max_temporal_indicator": 1.8390471116387735e-05,
+    "all_refined_errors_bounded": true,
+    "all_bounds_within_accuracy_tolerance": true,
+    "all_indicators_le_one": true
+  },
+  "current_canonical_reconciliation": {
+    "head_at_closeout": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "relevant_model_certificate_semantics_unchanged": true
+  },
+  "closure_effect": {
+    "resolution_floor_bound_qualified": true,
+    "certificate_runtime_authority": false,
+    "fail_closed_wrapper_qualified": false,
+    "d3_g02_closed": false,
+    "d3_g02": "OPEN",
+    "production_admission": false,
+    "next_required_work": "SEPARATE_EXECUTABLE_FAIL_CLOSED_CERTIFICATE_WRAPPER_QUALIFICATION_AGAINST_CURRENT_CANONICAL_MODEL_CERTIFICATE_SEMANTICS"
+  },
+  "production_source_delta": []
+}

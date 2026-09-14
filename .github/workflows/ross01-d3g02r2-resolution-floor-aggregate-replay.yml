@@ -1,0 +1,78 @@
+name: F-ROSS01 D3G02R2 Resolution-Floor Aggregate Replay
+
+on:
+  push:
+    branches: [work/f-ross01-d3g02r2-resolution-floor-certificate-replay]
+    paths:
+      - .github/workflows/ross01-d3g02r2-resolution-floor-aggregate-replay.yml
+      - experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py
+      - integration/f-ross/F-ROSS01_D3G02R2_REPLAY_AUTHORITY.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ross01-d3g02r2-resolution-floor-aggregate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  replay-aggregate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax check corrected aggregate only
+        run: python3 -m py_compile experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py
+
+      - name: Verify immutable source artifact provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          expected = {
+              10338055183: 'sha256:032d050e8861a97cc0c8db419d66a03c5132969617fbdfef9e23064d23491cd4',
+              10337423467: 'sha256:3abc43d196ad0f7f6f6c54928cb57b558119a563c5ef824cbf6db53241cf2953',
+              10337277318: 'sha256:de7656d6118d91732628050981bb1e7df35719e07a54f8c72950838e8306cf83',
+              10337233934: 'sha256:965134addc044be21ac538590f89533196e6d422b8810cccfffa2217e267c81d',
+              10337098855: 'sha256:98c599e967ee720a0f27d36956b0ca52e25561abf0b5441cf5dcd395e6200a56',
+              10336937598: 'sha256:a416a96478ada4bf3faa352885c9a20858a41aed270dba061f7ada9cd1e25a2c',
+          }
+          token = os.environ['GH_TOKEN']
+          for artifact_id, digest in expected.items():
+              req = urllib.request.Request(
+                  f'https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/{artifact_id}',
+                  headers={'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github+json'},
+              )
+              with urllib.request.urlopen(req) as r:
+                  doc = json.load(r)
+              assert doc['expired'] is False
+              assert doc['workflow_run']['id'] == 34816560882
+              assert doc['digest'] == digest, (artifact_id, doc.get('digest'), digest)
+          print('verified immutable artifact metadata:', len(expected))
+          PY
+
+      - name: Download six frozen material artifacts from source run
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 34816560882
+          pattern: f-ross01-d3g02r-material-*-34816560882
+          path: shards
+          merge-multiple: false
+
+      - name: Replay frozen aggregate decision rule
+        run: |
+          python3 experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py \
+            --artifacts shards \
+            --output F-ROSS01_D3G02R2_AGGREGATE.json
+
+      - name: Upload replay aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d3g02r2-aggregate-${{ github.run_id }}
+          path: F-ROSS01_D3G02R2_AGGREGATE.json

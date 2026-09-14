@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "status": "ADDITIONAL_CLOSURE_REQUIREMENT_DISCOVERED_DURING_AUTHORITY_RECONCILIATION",
+  "discovery_timing": "after nominal-forcing decision rule freeze and after nominal-forcing run start; this file only tightens closure requirements and does not alter any running gate or make PASS easier",
+  "authorities": {
+    "d2_capability_blob": "9d6f78b71d37f2232d9a70458b88ca8060e72385",
+    "d2_adapter_contract_blob": "d763faa0da5837fa3933a14b685dfd761030f96e",
+    "d2_boundary_envelope": "abs(requested_flux - state_local_reference_flux) <= 0.02 * max(abs(reference_flux), local_K, 1e-12) independently at top and bottom"
+  },
+  "finding": "The running D3G02R 54-case matrix uses frozen nominal D2 qtop/qbot. D2's declared restricted research adapter accepts a wider state-local boundary-flux envelope. Therefore nominal-forcing certificate qualification is necessary but not sufficient to close D3 G02 for the complete D2/D3R adapter capability.",
+  "current_run_semantics": {
+    "tier": "TIER_A_NOMINAL_FORCING",
+    "case_count": 54,
+    "can_qualify_nominal_bound": true,
+    "can_close_full_d3_g02_by_itself": false
+  },
+  "additional_required_tier": {
+    "tier": "TIER_B_BOUNDARY_ENVELOPE",
+    "purpose": "Qualify the same precommitted certificate bound across a scientifically sufficient set of boundary-envelope cases before any full D3 G02 closure claim.",
+    "rule_must_be_frozen_before_tier_b_execution": true,
+    "no_reduction_of_d2_boundary_capability_for_closure": true
+  },
+  "governance": {
+    "running_nominal_rule_unchanged": true,
+    "running_nominal_workflow_unchanged": true,
+    "posthoc_pass_facilitation": false,
+    "g02_remains_open_until_tier_b_and_wrapper_gates_pass": true,
+    "production_admission": false
+  }
+}

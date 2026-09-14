@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1E_D1",
+  "title": "RossFast local-terminal coupling preconditioner research qualification closeout",
+  "status": "CLOSED_RESEARCH_ROUTE_B_QUALIFIED",
+  "decision": "Resolve Gate J1E-D1 through route B: consume the explicitly scoped local-terminal RossFast qbot tangent only as bounded coupling-preconditioner information, rerun the complete coupling window from the same committed checkpoint, and let only the actual corrector result plus hard mass gates authorize publication.",
+  "authorities": {
+    "d1_owner_before_work": "3a78d4f8199ebc15908e6e8108a2e4adb8cb5b15",
+    "d1_qualification_head": "85e23b1477fb031f77eeb7450db9e9dafddd80e5",
+    "f_si31_research_contract_freeze": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "f_si31_normative_contract": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md",
+    "current_canonical_observed_at_closeout": "c19a04721a05c6a00ba264e7477969807dcb258f",
+    "route_b_contract": "integration/f-ross/F-ROSS01_GATE_J1E_D1_LOCAL_TERMINAL_COUPLING_PRECONDITIONER_CONTRACT.json",
+    "head_space_harness": "experiments/ross/run_ross01_gate_j1e_d1_head_space_trust_preconditioner.py",
+    "first_execution_harness_retained_as_negative_provenance": "experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py",
+    "explicit_fail_closed_consumer_probe": "experiments/ross/run_ross01_gate_j1e_d1_fail_closed_consumer_probe.py",
+    "workflow": ".github/workflows/ross01-gate-j1e-d1-local-terminal-coupling-preconditioner.yml"
+  },
+  "branch_reconciliation": {
+    "compare_base": "3a78d4f8199ebc15908e6e8108a2e4adb8cb5b15",
+    "compare_head_before_closeout_file": "85e23b1477fb031f77eeb7450db9e9dafddd80e5",
+    "ahead_by": 8,
+    "behind_by": 0,
+    "production_source_changed": false,
+    "src_tree_changed": false,
+    "production_full_richards_changed": false,
+    "f_si31_frozen_v1_changed": false,
+    "canonical_branch_changed_by_d1": false
+  },
+  "qualified_contract": {
+    "boundary_unknown": "qbot in native SWAP sign convention, positive upward into the soil column",
+    "coupling_time": "generic [t0,t1]",
+    "minimum_internal_substeps_in_qualified_matrix": 2,
+    "accepted_internal_substep_counts": [2, 4, 8, 16],
+    "internal_substep_structure": "equal-duration substeps in this D1 research qualification",
+    "qbot_structure": "constant qbot over each qualified coupling window",
+    "predictor_corrector_origin": "same immutable committed checkpoint",
+    "local_tangent_quantity": "d h_bottom of the terminal accepted internal substep / d qbot at fixed terminal-substep start state",
+    "local_tangent_scope": "LOCAL_TERMINAL_SUBSTEP_ONLY",
+    "local_tangent_method": "same-factorization direct qbot backsolve",
+    "local_tangent_cost": "one additional terminal backsolve and zero additional terminal factorization",
+    "preconditioner": "B_pre = n_accepted_substeps * local_terminal_tangent",
+    "preconditioner_semantics": "algorithmic coupling proposal scaling only; explicitly not a whole-window derivative",
+    "proposal_policy": "bound the requested correction in interface-head residual space and convert that bounded head correction to dq through B_pre",
+    "qualified_head_trust_radius_cm": 0.05,
+    "corrector": "rerun the complete RossFast window from the same committed checkpoint at the proposed qbot",
+    "acceptance_authority": "actual whole-window corrector interface-head residual, finite-state validity and unchanged hard mass-balance gates",
+    "fallback_policy": "unavailable or invalid tangent, invalid corrector trial, worsening residual, unconverged residual or mass failure publishes no candidate and requires fallback or a smaller coupling window"
+  },
+  "final_qualification_run": {
+    "workflow_run_id": 34747136859,
+    "head": "85e23b1477fb031f77eeb7450db9e9dafddd80e5",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs_total": 7,
+    "jobs_success": 7,
+    "material_jobs": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "explicit_consumer_fail_closed_probe": "success",
+    "artifacts": {
+      "B01": {"id": 10314213470, "sha256": "372a2a2d602869c8c1d405286872ca5e30a90576f483897d99ebc0f4c26009ca"},
+      "B12": {"id": 10314083892, "sha256": "a6354ed3433fae875d8d0c2d696326e873df834cd49fff24d453add449e39856"},
+      "O01": {"id": 10314551777, "sha256": "bbe49ba5766c16e0160105b9b33251a2e7d63524aaf68e989953aeca18612c9e"},
+      "O05": {"id": 10314298454, "sha256": "f6c07d686c039294e746ef3dfc7bb00c9feda614cae995fa5277e75ae08d900d"},
+      "O14": {"id": 10314238564, "sha256": "bd0dbca15a0ed6f0209029b9817b3c82a920c53c687cd53dce8b6ffd09df8d85"},
+      "O18": {"id": 10314616470, "sha256": "e5b8a897db2f6579944d105fd1d28c4d445e417272b3acb10d7bda795d2d0223"},
+      "fail_closed_probe": {"id": 10314123618, "sha256": "47e7331e33f79c8d81a3e2c1c207d5c4c34f87ef0a8b2a8d1284869846cd6d73"}
+    }
+  },
+  "final_matrix_evidence": {
+    "materials": 6,
+    "predictor_cases": 144,
+    "correction_cases": 288,
+    "actual_corrector_runs": 288,
+    "published_corrector_candidates": 288,
+    "fallback_required": 0,
+    "actual_corrector_residual_improved": 288,
+    "actual_corrector_residual_within_0_01_cm_tolerance": 288,
+    "proposal_head_trust_clipped": 0,
+    "corrector_route_changes_from_predictor": 0,
+    "max_abs_corrector_head_residual_cm": 0.00023244271692135499,
+    "median_abs_corrector_head_residual_cm": 0.0000008822767654237396,
+    "max_corrector_step_mass_residual_cm": 8.131516293641283e-19,
+    "max_corrector_horizon_mass_residual_cm": 2.4754341371863164e-14,
+    "preconditioner_to_whole_window_fd_ratio_min": 0.9724789929219684,
+    "preconditioner_to_whole_window_fd_ratio_max": 1.0296836323670837,
+    "local_terminal_to_whole_window_fd_ratio_by_substeps": {
+      "2": {"min": 0.49882528273131355, "max": 0.5148418161835419},
+      "4": {"min": 0.24654396946211826, "max": 0.2523394910869685},
+      "8": {"min": 0.12155987411524605, "max": 0.12636814774617647},
+      "16": {"min": 0.06244506890281957, "max": 0.06396147701979756}
+    },
+    "interpretation": "The local-terminal response scales approximately as 1/n of the smooth whole-window finite-difference response in these fixtures. This is direct evidence that the local-terminal tangent must not be relabelled as the whole-window derivative. Multiplication by n produces useful restricted preconditioner scaling here, but remains a preconditioner rather than a derivative claim."
+  },
+  "explicit_fail_closed_evidence": {
+    "probe_job": "consumer-fail-closed-probe",
+    "unavailable_tangent": {
+      "corrector_attempted": false,
+      "candidate_published": false,
+      "fallback_required": true,
+      "scope_preserved": "LOCAL_TERMINAL_SUBSTEP_ONLY"
+    },
+    "negative_tangent_or_nonpositive_preconditioner": {
+      "corrector_attempted": false,
+      "candidate_published": false,
+      "fallback_required": true,
+      "scope_preserved": "LOCAL_TERMINAL_SUBSTEP_ONLY"
+    },
+    "important_limit": "This D1 probe directly exercises the route-B consumer fail-closed branches. It does not by itself requalify the upstream RossFast non-smooth tangent detector; that detector remains governed by the earlier J1C/J1D piecewise-boundary characterization and the D1 contract does not broaden those claims."
+  },
+  "negative_provenance": {
+    "first_policy_workflow_run": 34746660189,
+    "finding": "An experimental 0.05*K flux trust cap passed the semantic, transaction, mass and scope gates but prevented useful correction on five materials because the numerical correction radius collapsed with low K. B12 improved all 48 correctors only marginally and did not reach the head tolerance; O14 accepted 16 of 48.",
+    "disposition": "rejected",
+    "replacement": "head-space trust bound",
+    "reason": "A physical hydraulic property must not silently serve as an unintended numerical-policy throttle when the coupling residual being controlled is interface head."
+  },
+  "architecture_invariant_assessment": {
+    "transactional_timesteps": "PASS: predictor and corrector use the same immutable committed checkpoint; rejected candidates are never published.",
+    "cheap_recomputation_and_warm_start": "PASS WITH SCOPE: the physical corrector origin is the committed checkpoint; D1 does not require extra full-window runs for the tangent itself.",
+    "generic_time": "PASS: semantics are [t0,t1], not calendar-day based.",
+    "flexible_coupling_windows": "PASS AT CONTRACT LEVEL: no midnight/day assumption; D1 matrix uses one research horizon and multiple internal substep counts.",
+    "coupling_core_functionality": "PASS RESEARCH-ONLY: transactional predictor/corrector semantics are explicit without admitting production RossFast coupling.",
+    "mass_conservation_absolute": "PASS: mass gates remain hard and final evidence stays near machine precision.",
+    "interface_sensitivities_first_class": "PASS FOR D1 PURPOSE: tangent scope and method are explicit and the local response is not mislabeled whole-window.",
+    "limit_coupling_cost": "PASS FOR QUALIFIED ROUTE: production-shaped algorithmic path is predictor plus corrector; tangent costs one terminal backsolve. Whole-window +/-dq runs are qualification-only oracles.",
+    "alternative_soil_water_solvers": "PASS: no Full Richards modification and no production solver replacement.",
+    "physics_vs_solver_policy": "PASS: K-scaled trust was rejected; bounded correction policy is expressed in numerical interface-head residual space.",
+    "diagnostics": "PASS FOR HARNESS: tangent scope, method, route, residual improvement, trust clipping, route change, fallback reason and mass residual are emitted.",
+    "no_silent_dependencies": "PASS: no file, midnight, daily or MODFLOW-presence assumption introduced."
+  },
+  "preserved_nonclaims_and_future_work": {
+    "true_whole_window_dh_bottom_dqbot_qualified": false,
+    "B_pre_is_true_whole_window_derivative": false,
+    "B_pre_n_times_local_generalizes_to_nonuniform_or_adaptive_substeps": false,
+    "B_pre_n_times_local_generalizes_to_time_varying_qbot_within_window": false,
+    "head_trust_radius_0_05_cm_is_canonical_or_production_policy": false,
+    "rossfast_production_admitted": false,
+    "production_full_richards_modified": false,
+    "f_si31_frozen_v1_modified": false,
+    "canonical_response_tangent_composition_admitted": false,
+    "modflow_end_to_end_coupling_qualified": false,
+    "non_smooth_whole_window_response_qualified": false,
+    "next_integration_requirement": "Any later SWAP5 integration must expose tangent scope explicitly, or use a separate coupling-preconditioner capability, and must independently qualify current-canonical transaction/restart/runtime composition before production admission."
+  },
+  "closeout_statement": "Gate J1E-D1 is closed for its stated research purpose through route B. RossFast may use its local-terminal qbot tangent as explicitly scoped bounded proposal information in the qualified research coupling algorithm. No true whole-window derivative is claimed, no frozen F-SI31-v1 meaning is stretched, and no production or canonical admission follows from this closeout."
+}

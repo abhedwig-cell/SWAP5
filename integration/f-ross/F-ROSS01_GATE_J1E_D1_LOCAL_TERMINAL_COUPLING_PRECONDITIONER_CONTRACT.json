@@ -1,0 +1,112 @@
+{
+  "schema_version": 2,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1E_D1_LOCAL_TERMINAL_COUPLING_PRECONDITIONER",
+  "route": "B_EXPLICIT_LOCAL_TERMINAL_TANGENT_CONSUMER",
+  "status": "RESEARCH_CONTRACT_PENDING_REQUALIFICATION_AFTER_HEAD_SPACE_TRUST_REFINEMENT",
+  "authorities": {
+    "d1_owner_head": "3a78d4f8199ebc15908e6e8108a2e4adb8cb5b15",
+    "f_si31_research_contract_freeze": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "f_si31_normative_contract": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md",
+    "current_canonical_observed_when_contract_frozen": "c19a04721a05c6a00ba264e7477969807dcb258f"
+  },
+  "problem": "The accepted RossFast qbot response available before D1 is a local-terminal response. A coupling window with multiple accepted internal soil-water substeps cannot label that quantity as d(final interface head)/d(window boundary flux).",
+  "decision": {
+    "selected_resolution": "J1E-D1 route b",
+    "whole_window_derivative_claimed": false,
+    "local_terminal_tangent_relabelled": false,
+    "f_si31_v1_modified": false,
+    "production_full_richards_modified": false,
+    "production_coupling_admission_requested": false
+  },
+  "restricted_algorithm": {
+    "unknown": "qbot in native SWAP sign convention, positive upward into the soil column",
+    "window": "generic [t0,t1] containing two or more accepted RossFast internal substeps",
+    "checkpoint_rule": "predictor and corrector both start from the same immutable committed checkpoint",
+    "predictor": "run the complete RossFast window at qbot_predictor",
+    "tangent_input": {
+      "quantity": "d h_bottom_terminal_step / d qbot at fixed start state of the terminal accepted internal substep",
+      "scope": "LOCAL_TERMINAL_SUBSTEP_ONLY",
+      "method": "same-factorization extra backsolve",
+      "whole_window_semantics": false,
+      "allowed_use": "quasi-Newton scaling/preconditioner for a bounded correction proposal only"
+    },
+    "preconditioner": "B_pre = n_accepted_substeps * local_terminal_tangent for the restricted constant-qbot, equal-substep research harness. B_pre is an algorithmic scaling, not a derivative claim.",
+    "proposal": "delta_h_request = -R_predictor; delta_h_bounded = clip(delta_h_request, -head_trust_radius, +head_trust_radius); dq = delta_h_bounded / B_pre",
+    "proposal_bound_coordinate": "interface head residual, not hydraulic conductivity or another physical material property",
+    "corrector": "rerun the complete RossFast window from the same committed checkpoint at qbot_predictor + dq",
+    "acceptance": "accept/publish a corrector candidate only from the actual corrector result, actual interface residual and unchanged hard mass gates; the local tangent and B_pre never satisfy an acceptance gate by themselves",
+    "fallback": "if tangent is unavailable, non-finite, non-positive where the restricted route requires positive response, originates in a non-smooth terminal regime, produces an invalid corrector trial, or the actual corrector residual does not improve and satisfy the head tolerance, do not publish the candidate and request fallback or a smaller coupling window",
+    "mass_rule": "all predictor and corrector windows remain subject to the unchanged hard mass-balance gates"
+  },
+  "first_execution_evidence": {
+    "workflow_run": 34746660189,
+    "head": "115e9d57616fba5fdedf261c3df7cb958bacfc6d",
+    "result": "INFORMATIVE_NEGATIVE_FOR_K_SCALED_FLUX_TRUST_POLICY",
+    "finding": "All six materials passed transaction, mass, scope, non-relabel, same-factorization and fail-closed gates. Five materials failed only the per-material actual-corrector-acceptance gate because all correction proposals were clipped by the experimental 0.05*K flux trust radius. B12, for example, improved all 48 actual corrector residuals but only from 0.0200 cm to approximately 0.0199 cm. O14 accepted 16 of 48 correctors. The K-scaled flux cap is therefore not retained.",
+    "local_terminal_vs_whole_window_evidence": "Across smooth fixtures the local-terminal/whole-window-FD response ratio followed approximately 1/n_substeps, including about 0.5 for two substeps and about 0.0625 for sixteen substeps. This independently confirms that the local-terminal tangent must not be relabelled as a whole-window derivative."
+  },
+  "non_smooth_policy": {
+    "terminal_table_cell_transition": "LOCAL_TANGENT_UNAVAILABLE_FAIL_CLOSED",
+    "exact_internal_table_node_endpoint": "LOCAL_TANGENT_UNAVAILABLE_FAIL_CLOSED",
+    "head_envelope_endpoint": "LOCAL_TANGENT_UNAVAILABLE_FAIL_CLOSED",
+    "derivative_smoothing_or_cross_regime_averaging": false
+  },
+  "qualification_harness": {
+    "implementation": "experiments/ross/run_ross01_gate_j1e_d1_head_space_trust_preconditioner.py",
+    "first_execution_implementation_retained_as_provenance": "experiments/ross/run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner.py",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "column_cells": 16,
+    "profile_families": ["wet_gradient", "mid_gradient", "dry_gradient"],
+    "source_sink_patterns": ["zero", "mixed_local_source_and_sink"],
+    "accepted_internal_substep_counts": [2, 4, 8, 16],
+    "target_head_offsets_cm": [-0.02, 0.02],
+    "head_trust_radius_cm": 0.05,
+    "qualification_only_whole_window_fd_oracle": true,
+    "whole_window_fd_oracle_used_by_algorithm": false,
+    "qualification_preconditioner_to_fd_ratio_band": [0.90, 1.10],
+    "preconditioner_to_fd_ratio_is_derivative_claim": false
+  },
+  "hard_gates": {
+    "multi_substep_only": true,
+    "predictor_corrector_same_checkpoint": true,
+    "checkpoint_bitwise_unchanged": true,
+    "hard_step_and_window_mass_balance_preserved": true,
+    "local_terminal_scope_explicit": true,
+    "no_whole_window_relabelling": true,
+    "one_extra_terminal_tangent_backsolve": true,
+    "zero_extra_factorizations_for_terminal_tangent": true,
+    "zero_extra_full_window_runs_for_terminal_tangent": true,
+    "bounded_correction_proposal": true,
+    "correction_bound_is_numerical_head_space_policy_not_physical_K": true,
+    "actual_corrector_residual_is_acceptance_authority": true,
+    "worsening_corrector_never_published": true,
+    "unconverged_corrector_never_published": true,
+    "mass_bad_corrector_never_published": true,
+    "invalid_corrector_trial_fails_closed": true,
+    "non_smooth_terminal_tangent_fails_closed": true,
+    "finite_difference_whole_window_runs_are_qualification_only": true
+  },
+  "architecture_invariants": {
+    "transactional_timesteps": "preserved by same-checkpoint predictor/corrector and no publication of rejected candidates",
+    "cheap_recomputation_and_warm_start": "compatible; physical corrector origin remains the committed checkpoint",
+    "generic_time": "window is [t0,t1], not a day boundary",
+    "coupling_core_functionality": "researches the coupling-response seam without admitting MODFLOW production coupling",
+    "mass_conservation_absolute": "hard gate, never relaxed",
+    "interface_sensitivity_first_class": "scope is explicit; local-terminal is not mislabeled whole-window",
+    "coupling_cost": "normal path is predictor plus corrector; tangent itself costs one terminal backsolve",
+    "alternative_soil_water_solvers": "research-only RossFast route leaves Full Richards untouched",
+    "physics_vs_solver_policy": "the trust region is expressed in interface-head residual space and does not use K or another physical property as hidden numerical policy",
+    "diagnostics": "route, tangent scope, head-space trust clipping, residual change, route change, fallback reason and mass residual are emitted"
+  },
+  "preserved_nonclaims": {
+    "true_whole_window_dh_bottom_dqbot_qualified": false,
+    "b_pre_is_true_whole_window_derivative": false,
+    "rossfast_production_admitted": false,
+    "f_si31_frozen_v1_changed": false,
+    "full_richards_changed": false,
+    "modflow_end_to_end_coupling_qualified": false,
+    "response_tangent_composition_canonically_admitted": false
+  }
+}

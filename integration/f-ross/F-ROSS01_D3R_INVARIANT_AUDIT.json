@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "workunit": "F-ROSS01 D3R",
+  "title": "SWAP core architecture invariant 1-30 audit",
+  "status": "PASS_WITH_EXPLICIT_NONCLAIMS",
+  "authority": {
+    "d3r_status_path": "integration/f-ross/F-ROSS01_D3R_STATUS.json",
+    "d3r_evidence_path": "integration/f-ross/F-ROSS01_D3R_EVIDENCE.json",
+    "two_half_evidence_path": "integration/f-ross/F-ROSS01_D3R_TWO_HALF_EVIDENCE.json",
+    "current_canonical": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "frozen_d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587"
+  },
+  "audit": {
+    "1": {
+      "result": "PASS",
+      "basis": "Research-only RossFast compatibility path; no second production SWAP kernel and no production solver replacement introduced."
+    },
+    "2": {
+      "result": "PASS_NOT_WORSENED",
+      "basis": "No kernel I/O or legacy-format dependency was added; all new execution/evidence logic is outside production kernel source."
+    },
+    "3": {
+      "result": "PASS",
+      "basis": "Frozen F-SI31 request/result separation remains intact; duration policy does not merge parameters, committed state, forcing, numerical configuration or results."
+    },
+    "4": {
+      "result": "PASS_NOT_WORSENED",
+      "basis": "D3R adds no persistent per-column solver state; frozen D2 persistent-state restrictions remain unchanged."
+    },
+    "5": {
+      "result": "PASS",
+      "basis": "RossFast D2 fresh-worker/job-local scratch isolation is preserved for every D3R candidate call."
+    },
+    "6": {
+      "result": "NOT_QUALIFIED_NO_LAYOUT_CHANGE",
+      "basis": "No production memory layout or batching implementation is changed or claimed by D3R."
+    },
+    "7": {
+      "result": "PASS",
+      "basis": "All D3R full/half/retry calls are candidate-only; rejected/trial chains do not mutate committed state and commit ownership remains external runtime responsibility."
+    },
+    "8": {
+      "result": "PASS",
+      "basis": "Full and half1 start from the same committed base; half2 alone chains from the half1 candidate as required by step doubling; replay starts again from the committed base."
+    },
+    "9": {
+      "result": "PASS",
+      "basis": "The qualified duration ladder is expressed through generic t0/t1 intervals and exact 2^-k duration scaling, with no day-boundary or calendar semantics."
+    },
+    "10": {
+      "result": "NOT_APPLICABLE_NO_COUPLING_WINDOW_CHANGE",
+      "basis": "D3R does not implement or constrain MODFLOW coupling-window policy."
+    },
+    "11": {
+      "result": "PASS_RESEARCH_ONLY",
+      "basis": "Transactional candidate composition is exercised explicitly, but no production groundwater-coupling admission is claimed."
+    },
+    "12": {
+      "result": "NOT_APPLICABLE_NO_GROUNDWATER_INTERFACE_CHANGE",
+      "basis": "No H_SWAP/H_MF or q_SWAP/q_MF interface semantics are changed by D3R."
+    },
+    "13": {
+      "result": "PASS",
+      "basis": "Hard mass tolerance is 1e-12 cm without relaxation; all 54 two-half chains pass, worst absolute residual 1.6378602554051384e-14 cm."
+    },
+    "14": {
+      "result": "PASS_NO_SCOPE_INFLATION",
+      "basis": "D3R does not upgrade the frozen D2 local terminal-substep tangent into a whole-window sensitivity; whole-window sensitivity remains explicitly unqualified."
+    },
+    "15": {
+      "result": "NOT_APPLICABLE_NO_PRODUCTION_COUPLING_COST_CLAIM",
+      "basis": "No production predictor/corrector cost path is modified or qualified."
+    },
+    "16": {
+      "result": "NOT_QUALIFIED_NO_PRODUCTION_MULTISWAP_CLAIM",
+      "basis": "D3R demonstrates isolated research calls only; it makes no hundred-thousand-column throughput or heavy-instance claim."
+    },
+    "17": {
+      "result": "NOT_APPLICABLE_NO_TILE_MAPPING_CHANGE",
+      "basis": "No MODFLOW cell/tile composition semantics are introduced."
+    },
+    "18": {
+      "result": "NOT_APPLICABLE_NO_DEEP_VADOSE_CHANGE",
+      "basis": "No deep-vadose component is added or modified."
+    },
+    "19": {
+      "result": "NOT_APPLICABLE_NO_COMPONENT_TRANSITION_CHANGE",
+      "basis": "No transition between direct groundwater coupling and deep-vadose components is touched."
+    },
+    "20": {
+      "result": "PASS",
+      "basis": "RossFast remains an alternate research soil-water solver behind the frozen F-SI31 compatibility contract; Full Richards is not displaced."
+    },
+    "21": {
+      "result": "PASS",
+      "basis": "No crop, ET, drainage, irrigation, surface or other process physics is reimplemented or changed by D3R."
+    },
+    "22": {
+      "result": "PASS",
+      "basis": "No module is coupled to HeadCalc internals; the research adapter exposes only contract-level state/result views."
+    },
+    "23": {
+      "result": "PASS",
+      "basis": "Retry-duration ladder and substep policy are numerical scope controls; physical material definitions and forcing semantics remain frozen."
+    },
+    "24": {
+      "result": "NOT_QUALIFIED_NO_PRODUCTION_BOUNDED_COST_CLAIM",
+      "basis": "D3R qualifies bounded call durations, not production wall-clock bounded-cost solving or fallback policy."
+    },
+    "25": {
+      "result": "PASS_NOT_WORSENED",
+      "basis": "Production Full Richards/reference authority is untouched, and frozen D2 preservation replay remains green."
+    },
+    "26": {
+      "result": "PASS_RESEARCH_SCOPE",
+      "basis": "Per-level chain support, mass residuals, immutable artifact digests and qualification provenance are explicit; this is not a claim of production runtime diagnostics completeness."
+    },
+    "27": {
+      "result": "PASS_RESEARCH_SCOPE",
+      "basis": "D3R functionality exists only in the research adapter/harness path and imposes no persistent production-column state or cost."
+    },
+    "28": {
+      "result": "PASS",
+      "basis": "Full/half/retry orchestration is owned by the external runtime/harness; the RossFast adapter does not encode MODFLOW/tile/system composition."
+    },
+    "29": {
+      "result": "PASS",
+      "basis": "Solver-call semantics contain no midnight, one-day, .swp, path or direct-MODFLOW assumption; t0/t1 are generic."
+    },
+    "30": {
+      "result": "PASS",
+      "basis": "This file records the explicit invariant 1-30 audit and preserves all nonclaims rather than treating out-of-scope items as silently passed."
+    }
+  },
+  "closure_guardrails": {
+    "G01": "CLOSED",
+    "G03": "CLOSED",
+    "G02": "OPEN_NOT_TARGETED",
+    "external_temporal_error_acceptance": "NOT_QUALIFIED",
+    "remainder_scheduling": "NOT_QUALIFIED",
+    "production_admission": false,
+    "production_source_delta": [],
+    "canonical_modified": false
+  },
+  "decision": "INVARIANTS_1_30_RECONCILED_FOR_D3R_RESEARCH_SCOPE"
+}

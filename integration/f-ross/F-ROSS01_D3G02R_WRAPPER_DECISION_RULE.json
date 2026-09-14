@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "stage": "EXECUTABLE_FAIL_CLOSED_WRAPPER_QUALIFICATION",
+  "status": "FROZEN_BEFORE_WRAPPER_EXECUTION",
+  "execution_prerequisite": "F-ROSS01_D3G02R_BOUND_AUTHORITY.json exists with status QUALIFIED_BOUND and qualification_pass=true",
+  "positive_matrix": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "case_count": 54,
+    "required": [
+      "solver_disposition=candidate_ready",
+      "temporal_certificate_available=true",
+      "temporal_indicator finite and >=0 and <=1",
+      "temporal_indicator equals max(raw_estimator,1e-10)/1e-5",
+      "candidate route is REFINED_TWO_HALF",
+      "aggregate mass residual <=1e-12 cm",
+      "committed state unchanged",
+      "accepted=false",
+      "commit_authorized=false",
+      "accepted_publication_authorized=false",
+      "request object unchanged",
+      "time interval projected back to requested full interval",
+      "three component trials represented in diagnostics"
+    ]
+  },
+  "mandatory_negative_paths": [
+    {
+      "case": "BOUND_AUTHORITY_MISSING",
+      "required": "certificate unavailable and fail-closed before component solver execution"
+    },
+    {
+      "case": "BOUND_AUTHORITY_WRONG_RESOLUTION_FLOOR",
+      "required": "certificate unavailable; no substituted constant accepted"
+    },
+    {
+      "case": "BOUND_AUTHORITY_WRONG_ACCURACY_TOLERANCE",
+      "required": "certificate unavailable; no substituted constant accepted"
+    },
+    {
+      "case": "FULL_ATTEMPT_LADDER_LEVEL_9",
+      "required": "certificate unavailable because level 9 is internal-half-only"
+    },
+    {
+      "case": "DURATION_OUTSIDE_D3R_LADDER",
+      "required": "fail-closed through frozen D3R request validation"
+    }
+  ],
+  "canonical_contract_gate": {
+    "required_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "acceptance_semantics": "available AND finite indicator AND indicator>=0 AND indicator<=1",
+    "adapter_accepts_or_commits": false,
+    "canonical_runtime_remains_only_accept_commit_authority": true
+  },
+  "success_decision": "QUALIFIED_ROSSFAST_D3G02R_FAIL_CLOSED_MODEL_CERTIFICATE_ON_EXACT_D3R_DOMAIN",
+  "success_effect": "F-ROSS01-D3-G02 may close at restricted research/current-canonical contract-composability level only; no production admission",
+  "failure_effect": "CLOSE_D3G02R_NEGATIVE_AND_LEAVE_D3_G02_OPEN",
+  "posthoc_weakening_forbidden": true,
+  "production_source_change": false,
+  "production_admission": false
+}

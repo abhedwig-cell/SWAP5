@@ -1,0 +1,207 @@
+{
+  "authorities": {
+    "canonical_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "contract_blob": "2ebfb6dad3159587ac6b234cc0ed98df90bd1ba2",
+    "d2": "4cdeeec8b3ab5267196ab9c15942b4ee6d23c587",
+    "d3": "21bf6ec4a0a847b60b8713dba832f0b94d07f049",
+    "duration_evidence_blob": "6ec093aba323555ac97f303c443c33423ac5b940",
+    "fsi31": "4190ede0b17e81abe806430cc9a4c94a21995917",
+    "live_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "preservation_evidence_blob": "2645c66bd0de45b80778dc78156a0c00e77e03d3"
+  },
+  "decision": "QUALIFIED_ROSSFAST_BOUNDED_TRANSACTION_CALL_DURATION_PROFILE",
+  "duration_family": {
+    "all_positive_cases_pass": true,
+    "all_replay_pass": true,
+    "duration_count": 10,
+    "evidence_path": "integration/f-ross/F-ROSS01_D3R_DURATION_EVIDENCE.json",
+    "hard_mass_tolerance_cm": 1e-12,
+    "material_count": 6,
+    "max_abs_mass_residual_cm": 1.1099143583503178e-14,
+    "positive_case_count": 120,
+    "production_source_delta": [],
+    "profiles_per_material_duration": 2,
+    "tested_head": "4bb885918532cf1ee3386b9dda1ac055ff5fc3e8",
+    "workflow_run_id": 34791081328
+  },
+  "exact_next_research_step": "Select a separate temporal-certificate qualification for F-ROSS01-D3-G02 and, independently, qualify outer remainder scheduling if end-to-end current-canonical runtime composition is desired. No production admission follows from D3R.",
+  "exact_remaining_research_gap": "F-ROSS01-D3-G02 temporal-certificate/acceptance semantics remains open. End-to-end remainder scheduling after a shortened accepted commit is separately unqualified and must not be inferred from D3R.",
+  "gap_resolution": [
+    {
+      "basis": "The complete canonical full/half transaction-call duration family is admitted and all 54 state-dependent full/half candidate chains pass. No temporal-error acceptance metric or tolerance is qualified.",
+      "id": "F-ROSS01-D3-G01",
+      "scope": "HALF_INTERVAL_MODEL_CALL_AVAILABILITY_ONLY",
+      "status": "CLOSED"
+    },
+    {
+      "basis": "Every solver-call duration reachable from canonical retry shrink plus the required half-call level is admitted, from 0.0016 through 0.000003125 day, while preserving hard mass, candidate-only ownership, replay and fail-closed behavior.",
+      "id": "F-ROSS01-D3-G03",
+      "scope": "SHORTENED_RETRY_DURATION_MODEL_CALL_AVAILABILITY_ONLY",
+      "status": "CLOSED"
+    },
+    {
+      "basis": "D3R does not define or qualify a RossFast temporal certificate, temporal-error acceptance metric, or acceptance tolerance.",
+      "id": "F-ROSS01-D3-G02",
+      "scope": "TEMPORAL_CERTIFICATE_SEMANTICS",
+      "status": "OPEN_NOT_TARGETED"
+    }
+  ],
+  "hard_nonclaims": {
+    "current_canonical_acceptance_tolerance_selected": false,
+    "end_to_end_run_canonical_interval_after_shortened_commit_qualified": false,
+    "example_unqualified_remainder_day": 0.0012,
+    "production_admission": false,
+    "production_multiswap_runtime_qualified": false,
+    "production_runtime_route_qualified": false,
+    "remainder_duration_family_qualified": false,
+    "restart_qualified": false,
+    "rossfast_temporal_error_or_certificate_qualified": false,
+    "whole_window_interface_sensitivity_qualified": false
+  },
+  "invariant_audit": {
+    "1": "PASS_RESEARCH_ONLY_NO_PRODUCTION_KERNEL_FORK",
+    "11": "PASS_RESEARCH_CANDIDATE_EXCHANGE_ONLY_NO_PRODUCTION_COUPLING_CLAIM",
+    "13": "PASS_HARD_MASS_GATE",
+    "14": "PASS_NO_WHOLE_WINDOW_SENSITIVITY_INFLATION",
+    "20": "PASS_RESEARCH_ALTERNATIVE_SOLVER_SEAM_FOR_BOUNDED_TRANSACTION_CALLS",
+    "22": "PASS_PROCESS_VIEW_NO_SOLVER_INTERNALS",
+    "23": "PASS_RETRY_DURATION_NUMERICAL_POLICY_SEPARATE_FROM_PHYSICS",
+    "25": "PASS_FROZEN_D2_REFERENCE_PROFILE_PRESERVED",
+    "26": "PASS_DIAGNOSTICS_EXPOSE_DURATION_AND_CHAIN_EVIDENCE",
+    "29": "PASS_NO_FILE_OR_CALENDAR_INTERFACE_SEMANTICS",
+    "30": "PASS_EXPLICIT_SCOPE_AND_NONCLAIM_AUDIT",
+    "5": "PASS_FRESH_WORKER_LOCAL_SCRATCH_PRESERVED",
+    "7": "PASS_CANDIDATE_ONLY_TRANSACTION_SEMANTICS_PRESERVED",
+    "8": "PASS_BOUNDED_RETRY_CALL_DURATIONS_REUSE_THE_CORRECT_COMMITTED_ORIGIN; HALF2_STATE_CHAINING_IS_FULL_HALF_COMPOSITION_NOT_RETRY_ORIGIN",
+    "9": "PASS_GENERIC_T0_T1_WITH_EXPLICIT_BOUNDED_DURATION_LADDER"
+  },
+  "preservation": {
+    "allowed_substeps_preserved": [
+      2,
+      4,
+      8,
+      16
+    ],
+    "below_minimum_duration_fail_closed": true,
+    "boundary_fail_closed": true,
+    "edge_replay": true,
+    "evidence_path": "integration/f-ross/F-ROSS01_D3R_PRESERVATION_EVIDENCE.json",
+    "hard_mass_tolerance_cm": 1e-12,
+    "max_abs_mass_residual_cm": 2.8345860638031395e-15,
+    "non_ladder_duration_fail_closed": true,
+    "production_source_delta": [],
+    "qualified": true
+  },
+  "production_source_delta": [],
+  "qualification": {
+    "bounded_duration_family_qualified": true,
+    "candidate_only_ownership_preserved": true,
+    "fail_closed_preserved": true,
+    "fresh_worker_isolation_preserved": true,
+    "hard_mass_preserved": true,
+    "replay_preserved": true,
+    "two_half_candidate_chain_qualified": true
+  },
+  "schema_version": 1,
+  "title": "RossFast bounded transaction-attempt duration and retry-ladder qualification closeout",
+  "two_half": {
+    "aggregate": {
+      "attempt_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "canonical_two_half_candidate_chain_supported": true,
+      "chain_count": 54,
+      "external_temporal_error_semantics_qualified": false,
+      "hard_mass_tolerance_cm": 1e-12,
+      "live_canonical_heads": [
+        "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+      ],
+      "max_abs_full_vs_two_half_head_delta_cm": 2.0662986344177625e-07,
+      "max_abs_full_vs_two_half_theta_delta": 7.059697271216692e-11,
+      "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+      "production_source_delta": [],
+      "shard_count": 9,
+      "temporal_error_disposition": "DIAGNOSTIC_STATE_DELTAS_ONLY_NO_ACCEPTANCE_METRIC_OR_TOLERANCE_CLAIM"
+    },
+    "aggregate_job_disposition": "NOT_USED_AS_AUTHORITY_QUEUED_AT_RECONSTRUCTION_TIME",
+    "aggregate_job_id": 103824192840,
+    "evidence_reconstruction": "All nine successful shard artifacts from the exact tested workflow/head were downloaded through the GitHub connector and the tested workflow aggregate rule was reproduced directly. The later branch workflow revision was not mixed into this authority.",
+    "shards": [
+      {
+        "artifact_digest": "sha256:a0c4772a71abf3c02a4bbdae604e793b3ee86cbbcaf194a09ac1ac69fe8d96c8",
+        "artifact_id": 10327839405,
+        "attempt_index": 0,
+        "job_id": 103815295422,
+        "max_abs_mass_residual_cm": 8.823845621396731e-15
+      },
+      {
+        "artifact_digest": "sha256:6a34f5ce3a2a7dcf29fe81623075a446749bb4139bde5ee798edae782604ebe2",
+        "artifact_id": 10328951089,
+        "attempt_index": 1,
+        "job_id": 103815295427,
+        "max_abs_mass_residual_cm": 1.2524511982372154e-14
+      },
+      {
+        "artifact_digest": "sha256:c692a0123ef8bab1ae8f109c642135cf321725bd794e90ca4e5d9f45dd57acc7",
+        "artifact_id": 10328244120,
+        "attempt_index": 2,
+        "job_id": 103815295432,
+        "max_abs_mass_residual_cm": 1.2524511982372154e-14
+      },
+      {
+        "artifact_digest": "sha256:183ff17aa4d852d8615d7f04638fd85ac344ef7f851ec591a768faa15bbc4531",
+        "artifact_id": 10328935960,
+        "attempt_index": 3,
+        "job_id": 103815295358,
+        "max_abs_mass_residual_cm": 6.351918910498449e-15
+      },
+      {
+        "artifact_digest": "sha256:0aff7e5b9cf67fc5827ee6381b6cddbc305858099251aa22a956443fa68d6094",
+        "artifact_id": 10329201463,
+        "attempt_index": 4,
+        "job_id": 103815295488,
+        "max_abs_mass_residual_cm": 6.7286731340497255e-15
+      },
+      {
+        "artifact_digest": "sha256:af31ce4a620030208e180b4e11e149e88d2acfa8314917fb60e619826e93edca",
+        "artifact_id": 10329675106,
+        "attempt_index": 5,
+        "job_id": 103815295456,
+        "max_abs_mass_residual_cm": 9.875359037503243e-15
+      },
+      {
+        "artifact_digest": "sha256:421f859c271e843ae4d0ec956f95e34bc5f3f1662523f5dddd97f4ea8ff06dc9",
+        "artifact_id": 10329166827,
+        "attempt_index": 6,
+        "job_id": 103815295523,
+        "max_abs_mass_residual_cm": 1.6378602554051384e-14
+      },
+      {
+        "artifact_digest": "sha256:c50a8a79b876a32cd210a18f5483606d66e39ce4c877a128ca4bb0d8cfc45dba",
+        "artifact_id": 10328942199,
+        "attempt_index": 7,
+        "job_id": 103815295522,
+        "max_abs_mass_residual_cm": 1.2043106876352623e-14
+      },
+      {
+        "artifact_digest": "sha256:264db82bf08ddec98b7f70af736c3d66c20b5e83d5222164ee6bb59c916587d2",
+        "artifact_id": 10328852145,
+        "attempt_index": 8,
+        "job_id": 103815295426,
+        "max_abs_mass_residual_cm": 1.1200077996113848e-14
+      }
+    ],
+    "tested_head": "4bb885918532cf1ee3386b9dda1ac055ff5fc3e8",
+    "tested_workflow_blob": "ec489cea46383b5e4ad52a52ce0cb7d1845dab5b",
+    "workflow_run_id": 34791081303
+  },
+  "work_unit": "F-ROSS01 D3R"
+}

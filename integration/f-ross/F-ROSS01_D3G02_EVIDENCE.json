@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02",
+  "kind": "NEGATIVE_TEMPORAL_CERTIFICATE_QUALIFICATION_EVIDENCE",
+  "tested_branch": "work/f-ross01-d3g02-temporal-certificate-qualification",
+  "tested_commit": "2d6997ca2ae92665ab3856ea6dc96071de3a0106",
+  "base_d3r_authority": "c8dc52dc92d32d075fa3fc57916e8bffb33c14e3",
+  "workflow": {
+    "run_id": 34796278942,
+    "run_number": 4,
+    "conclusion": "failure",
+    "failure_class": "PRECOMMITTED_SCIENTIFIC_CONSERVATIVITY_GATE",
+    "aggregate_job_id": 103836465089,
+    "aggregate_artifact_id": 10329814786,
+    "aggregate_artifact_digest": "sha256:5b74490cc6595f6c53ecde56e9080cb10d8eb8d0e82fb5f3e9585e083da00f0f",
+    "material_jobs_success": 6,
+    "material_jobs_expected": 6
+  },
+  "canonical_binding": {
+    "tested_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "closeout_current_canonical_head": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "transaction_semantics_unchanged_at_closeout": true,
+    "model_certificate_acceptance_contract": "available AND finite AND indicator >= 0 AND indicator <= 1"
+  },
+  "precommitted_rule": {
+    "safety_factor": 1.0,
+    "accuracy_tolerance": 1e-5,
+    "require_max_refined_error_to_raw_ratio_le": 1.0,
+    "require_max_refined_reference_error_le": 1e-5,
+    "require_max_reference_self_delta_le": 1e-9,
+    "require_max_abs_mass_residual_cm_le": 1e-12,
+    "posthoc_factor_inflation_forbidden": true,
+    "posthoc_tolerance_relaxation_forbidden": true,
+    "scope_reduction_for_pass_forbidden": true
+  },
+  "aggregate_result": {
+    "calibration_pass": true,
+    "precommitted_decision_rule_pass": false,
+    "case_count": 54,
+    "expected_case_count": 54,
+    "attempt_count": 9,
+    "material_count": 6,
+    "max_refined_error_to_raw_ratio": 1.6,
+    "worst_ratio_case": {
+      "attempt_index": 1,
+      "material": "O01",
+      "ratio": 1.6
+    },
+    "max_raw_estimator": 1.8390471116387737e-10,
+    "max_coarse_reference_error": 2.452074866037721e-10,
+    "max_refined_reference_error": 6.13027754398947e-11,
+    "max_reference_self_delta": 6.813835683978775e-16,
+    "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+    "candidate_safety_factor_1_0_admitted": false,
+    "candidate_accuracy_tolerance_1e_5_admitted": false,
+    "certificate_available": false,
+    "disposition": "NEGATIVE_CALIBRATION_LEAVE_D3_G02_OPEN"
+  },
+  "artifact_digests": {
+    "B01": "sha256:330081df917b1d28dfb234643ccacd29a796668db78dea1c81e3d98a881995b3",
+    "B12": "sha256:a43e991c041914776722623843fb240ce884cca0039e355b538a853478d16d3b",
+    "O01": "sha256:4c34b5a12733728508f00614100f45635ef06ebe67abe3e553b26e6702bf6f23",
+    "O05": "sha256:b396e20a0d95cc0fabf47bb3192929c4a25f8329d214c3a66d0145421e2626a8",
+    "O14": "sha256:6a32dcd0bf417cc5ecbc5befc8375eca796493e447770afcf174230ad6d362d8",
+    "O18": "sha256:2de1d382f8a33e7cb24f536ef866da6c47147d524a70896de3a47178aded4dc2"
+  },
+  "scientific_interpretation": {
+    "absolute_refined_accuracy_within_candidate_tolerance": true,
+    "raw_step_doubling_estimator_conservative_on_exact_domain": false,
+    "reason_negative": "The raw full-vs-two-half estimator underestimates the independently referenced refined-candidate error in at least one qualified case; the maximum observed refined/raw ratio is 1.6, violating the precommitted <= 1.0 requirement.",
+    "factor_1_6_not_admitted_posthoc": true
+  },
+  "governance": {
+    "d3_g02_closed": false,
+    "d3_g02_remains_open": true,
+    "production_admission": false,
+    "runtime_certificate_authority": false,
+    "certificate_constants_published": false,
+    "production_source_delta": [],
+    "d2_d3_d3r_authorities_unchanged": true
+  }
+}

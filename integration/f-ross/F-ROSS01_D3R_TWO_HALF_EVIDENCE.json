@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "workunit": "F-ROSS01 D3R",
+  "title": "RossFast two-half candidate-chain executable evidence",
+  "status": "GREEN",
+  "qualification_scope": {
+    "closes": [
+      "G01_EXECUTABLE_HALF_INTERVAL_MODELCALL_EVIDENCE",
+      "G03_EXECUTABLE_SHORTENED_RETRY_DURATION_EVIDENCE"
+    ],
+    "does_not_qualify": [
+      "G02_SEPARATE_CERTIFICATE_ROUTE",
+      "EXTERNAL_RUNTIME_TEMPORAL_ERROR_ACCEPTANCE_OR_REJECTION",
+      "REMAINDER_SCHEDULING",
+      "PRODUCTION_ADMISSION",
+      "PRODUCTION_MULTISWAP_PERFORMANCE",
+      "RESTART"
+    ]
+  },
+  "branch": "work/f-ross01-d3r-bounded-duration-retry-ladder-qualification",
+  "pre_closeout_branch_head": "c29aa4c3cc683977c418c086c3687eb9ad969567",
+  "execution": {
+    "workflow_run_id": 34791081303,
+    "workflow_run_head": "4bb885918532cf1ee3386b9dda1ac055ff5fc3e8",
+    "canonical_head_bound_at_runtime": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "canonical_transaction_source": "src/transaction/mod_transaction_reference.f90",
+    "canonical_transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "probe_path": "experiments/ross/run_ross01_d3r_two_half_probe.py",
+    "probe_blob": "ae308a8f3f5a7713991b55a85ee73b0ad65f1077",
+    "duration_adapter_path": "experiments/ross/ross01_d3r_fsi31_duration_adapter.py",
+    "duration_adapter_blob": "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a",
+    "core_probe_and_adapter_byte_identical_on_pre_closeout_head": true,
+    "shard_jobs_green": 9,
+    "shard_jobs_expected": 9,
+    "material_chains_per_shard": 6,
+    "total_material_chains": 54,
+    "aggregate_job_state_at_closeout": "QUEUED_INFRASTRUCTURE_ONLY",
+    "aggregation_method": "MANUAL_RECONCILIATION_OF_NINE_IMMUTABLE_SUCCESSFUL_SHARD_ARTIFACTS"
+  },
+  "hard_gates": {
+    "all_54_material_chains_supported": true,
+    "committed_state_immutable_during_candidate_chain": true,
+    "half1_origin_is_committed_base": true,
+    "half2_origin_is_half1_candidate": true,
+    "full_replay_origin_is_same_committed_base": true,
+    "forcing_consistent_across_full_half1_half2": true,
+    "candidate_only_no_adapter_commit": true,
+    "mass_tolerance_cm": 1e-12,
+    "mass_tolerance_relaxed": false,
+    "maximum_absolute_mass_residual_cm": 1.6378602554051384e-14,
+    "maximum_mass_residual_attempt_index": 6,
+    "mass_gate_pass": true,
+    "canonical_transaction_half1_callsite_present": true,
+    "canonical_transaction_half2_callsite_present": true,
+    "canonical_transaction_temporal_error_callsite_present": true
+  },
+  "attempt_shards": [
+    {
+      "attempt_index": 0,
+      "job_id": 103815295422,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 8.823845621396731e-15,
+      "artifact_id": 10327839405,
+      "artifact_digest": "sha256:a0c4772a71abf3c02a4bbdae604e793b3ee86cbbcaf194a09ac1ac69fe8d96c8"
+    },
+    {
+      "attempt_index": 1,
+      "job_id": 103815295427,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 1.2524511982372154e-14,
+      "artifact_id": 10328951089,
+      "artifact_digest": "sha256:6a34f5ce3a2a7dcf29fe81623075a446749bb4139bde5ee798edae782604ebe2"
+    },
+    {
+      "attempt_index": 2,
+      "job_id": 103815295432,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 1.2524511982372154e-14,
+      "artifact_id": 10328244120,
+      "artifact_digest": "sha256:c692a0123ef8bab1ae8f109c642135cf321725bd794e90ca4e5d9f45dd57acc7"
+    },
+    {
+      "attempt_index": 3,
+      "job_id": 103815295358,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 6.351918910498449e-15,
+      "artifact_id": 10328935960,
+      "artifact_digest": "sha256:183ff17aa4d852d8615d7f04638fd85ac344ef7f851ec591a768faa15bbc4531"
+    },
+    {
+      "attempt_index": 4,
+      "job_id": 103815295488,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 6.7286731340497255e-15,
+      "artifact_id": 10329201463,
+      "artifact_digest": "sha256:0aff7e5b9cf67fc5827ee6381b6cddbc305858099251aa22a956443fa68d6094"
+    },
+    {
+      "attempt_index": 5,
+      "job_id": 103815295456,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 9.875359037503243e-15,
+      "artifact_id": 10329675106,
+      "artifact_digest": "sha256:af31ce4a620030208e180b4e11e149e88d2acfa8314917fb60e619826e93edca"
+    },
+    {
+      "attempt_index": 6,
+      "job_id": 103815295523,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 1.6378602554051384e-14,
+      "artifact_id": 10329166827,
+      "artifact_digest": "sha256:421f859c271e843ae4d0ec956f95e34bc5f3f1662523f5dddd97f4ea8ff06dc9"
+    },
+    {
+      "attempt_index": 7,
+      "job_id": 103815295522,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 1.2043106876352623e-14,
+      "artifact_id": 10328942199,
+      "artifact_digest": "sha256:c50a8a79b876a32cd210a18f5483606d66e39ce4c877a128ca4bb0d8cfc45dba"
+    },
+    {
+      "attempt_index": 8,
+      "job_id": 103815295426,
+      "chain_count": 6,
+      "chain_supported": true,
+      "max_mass_cm": 1.1200077996113848e-14,
+      "artifact_id": 10328852145,
+      "artifact_digest": "sha256:264db82bf08ddec98b7f70af736c3d66c20b5e83d5222164ee6bb59c916587d2"
+    }
+  ],
+  "provenance_notes": [
+    "The nine successful shard jobs executed the six frozen D2 materials at retry levels 0 through 8, yielding 54 executable full/two-half chains.",
+    "Every shard dynamically fetched integration/f-ci-canonical and bound to e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557; the workflow hard-asserted canonical transaction blob d5a71a526efaebd82054580c3186f8e3545db331 and the full/half callsites.",
+    "The current-head strengthened 54-isolated-case workflow is prepared but had no execution on c29aa4c3cc683977c418c086c3687eb9ad969567 at closeout and is therefore not used as executable evidence.",
+    "The underlying probe and duration adapter used by run 34791081303 are byte-identical between its run head and the pre-closeout D3R branch head.",
+    "Temporal-error diagnostics are observations only; this evidence does not qualify any runtime acceptance/rejection policy."
+  ],
+  "decision": "QUALIFIED_TWO_HALF_CANDIDATE_CHAIN_G01_G03"
+}

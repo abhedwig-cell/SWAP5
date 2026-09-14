@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01 D2",
+  "title": "RossFast executable F-SI31 v1 restricted research adapter contract",
+  "status": "RESEARCH_ADAPTER_CONTRACT",
+  "authorities": {
+    "start_authority": "work/f-ross01-d1-chat-pilot@9deddef0294ea14ea1ed418ce6688bfc7b136c53",
+    "d1_qualification_head": "85e23b1477fb031f77eeb7450db9e9dafddd80e5",
+    "d1_closeout": "integration/f-ross/F-ROSS01_GATE_J1E_D1_ROUTE_B_CLOSEOUT.json",
+    "fsi31_authority": "work/f-si31-research-solver-contract-freeze@4190ede0b17e81abe806430cc9a4c94a21995917",
+    "fsi31_contract": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CONTRACT_V1.md",
+    "fsi31_contract_blob": "d5e934df4b3fbaa573e994cbe675257cf6a47304",
+    "fsi31_capability_schema": "integration/f-si/F-SI31_SOIL_WATER_SOLVER_RESEARCH_CAPABILITY_SCHEMA_V1.json",
+    "fsi31_capability_schema_blob": "86bfa60468d891e071c735569d944570f75fa205"
+  },
+  "composition": "F-SI31 request -> RossFast D2 adapter validation -> isolated RossFast research worker -> candidate-only F-SI31 result",
+  "ownership": {
+    "physical_parameters": "immutable request category; exact six frozen material rows and exact grid restrictions",
+    "committed_state": "runtime-owned read-only request category; worker receives a copy and never writes runtime state",
+    "forcing_process_requests": "runtime/process-owned request category; constant prescribed top flux and qbot only in D2 profile",
+    "numerical_configuration": "runtime-owned numerical policy category; may not substitute physics",
+    "worker_job_scratch": "ephemeral isolated worker data only; lookup table, factorization and vectors are destroyed with the worker",
+    "candidate_state": "distinct trial output; never accepted, committed or published by RossFast"
+  },
+  "worker_isolation": {
+    "required": true,
+    "reason": "legacy RossFast research material configuration uses mutable Python module state; D2 prevents that state from becoming shared persistent column state by executing each trial in a fresh isolated worker process",
+    "lifetime": "one request to one candidate/failure result",
+    "persistent_across_trials": false,
+    "shared_across_columns": false,
+    "restart_state": false
+  },
+  "request": {
+    "required_categories": [
+      "physical_parameters",
+      "committed_state",
+      "forcing_process_requests",
+      "numerical_configuration",
+      "worker_job_scratch"
+    ],
+    "contract_identity": {
+      "contract_id": "SoilWaterSolverResearchContract",
+      "contract_version": "1.0.0"
+    },
+    "requested_capabilities_required": [
+      "top.prescribed_flux",
+      "bottom.prescribed_flux",
+      "bottom_exchange.candidate_flux"
+    ],
+    "physical_profile": {
+      "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+      "constitutive_family": "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED",
+      "grid": {
+        "dimension": "1D_VERTICAL",
+        "n_cells": 16,
+        "uniform_dz_cm": 10.0
+      },
+      "sources_sinks": "zero only",
+      "root_sink": "zero only",
+      "ponding": "unsupported",
+      "groundwater_level_state": "unsupported"
+    },
+    "time_profile": {
+      "model": "[t0,t1]",
+      "calendar_semantics": false,
+      "required_duration_day": 0.0016,
+      "allowed_equal_substeps": [2, 4, 8, 16]
+    },
+    "boundary_profile": {
+      "top_mode": "top.prescribed_flux",
+      "top_sign": "positive downward into column",
+      "bottom_mode": "bottom.prescribed_flux",
+      "qbot_sign": "positive upward into column",
+      "flux_envelope": "abs(requested_flux - state_local_reference_flux) <= 0.02 * max(abs(reference_flux), local_K, 1e-12) for each boundary",
+      "time_variation": "none within [t0,t1]"
+    },
+    "numerical_profile": {
+      "sigma": 0.5,
+      "hard_mass_tolerance_cm": 1e-12,
+      "mass_tolerance_relaxation": false,
+      "internal_substeps": "equal duration",
+      "deterministic_replay_claim": "contract_equivalent"
+    }
+  },
+  "candidate_result": {
+    "dispositions": ["candidate_ready", "retry_advised", "failed"],
+    "candidate_ready_is_accepted": false,
+    "minimum_fields": [
+      "candidate_hydraulic_state",
+      "solver_disposition",
+      "actual_top_flux",
+      "candidate_bottom_flux",
+      "process_hydraulic_view",
+      "storage_change",
+      "mass_terms",
+      "unrounded_mass_residual",
+      "solver_work_diagnostics",
+      "capability_route",
+      "ownership",
+      "optional_local_terminal_preconditioner_metadata"
+    ],
+    "accepted_exchange_owner": "external runtime after commit only"
+  },
+  "mass_ledger": {
+    "sign_convention": "all reported transfer terms are positive into the soil column",
+    "storage_change_cm": "final_storage - initial_storage",
+    "top_boundary_transfer_cm": "duration * q_top where positive q_top is downward into the column",
+    "bottom_boundary_transfer_cm": "duration * qbot where positive qbot is upward into the column",
+    "source_transfer_cm": "zero in D2 profile",
+    "sink_transfer_cm": "zero in D2 profile",
+    "residual_cm": "storage_change - top_boundary_transfer - bottom_boundary_transfer - source_transfer + sink_transfer",
+    "hard_tolerance_cm": 1e-12,
+    "rounded_values_for_gate": false
+  },
+  "d1_local_terminal_response": {
+    "exposed_as_fsi31_whole_window_dh_bottom_dq_bottom": false,
+    "scope": "LOCAL_TERMINAL_SUBSTEP_ONLY",
+    "method": "SAME_FACTORIZATION_DIRECT_QBOT_BACKSOLVE",
+    "whole_window_authority": false,
+    "use": "bounded proposal/preconditioner only",
+    "acceptance_authority": "actual RossFast corrector result plus hard mass gates in any later coupling consumer",
+    "n_times_local_is_derivative": false,
+    "adaptive_or_nonuniform_generalisation": false,
+    "time_varying_qbot_generalisation": false,
+    "non_smooth_whole_window_generalisation": false,
+    "required_but_unavailable": "fail closed with no candidate result from that request route"
+  },
+  "fail_closed": {
+    "before_trial_required_for": [
+      "unsupported top mode",
+      "unsupported bottom mode",
+      "material outside declared set",
+      "material parameters not equal to frozen declared row",
+      "grid outside declared geometry",
+      "missing required capability request",
+      "invalid numerical configuration",
+      "t1 <= t0",
+      "duration outside qualified interval duration",
+      "boundary flux outside state-local qualification envelope",
+      "nonzero source/sink or root sink",
+      "persistent scratch request"
+    ],
+    "no_implicit_physics_substitution": true,
+    "no_implicit_full_richards_fallback": true,
+    "no_self_commit": true,
+    "no_accepted_publication": true
+  },
+  "nonclaims": [
+    "production RossFast admission",
+    "Full Richards equivalence",
+    "true whole-window dh_bottom_dq_bottom",
+    "production interface sensitivity",
+    "production MODFLOW coupling",
+    "production MultiSWAP runtime qualification",
+    "restart compatibility",
+    "dynamic top support",
+    "prescribed-head bottom support",
+    "legacy bottom-mode support",
+    "adaptive/nonuniform substep support",
+    "time-varying qbot support"
+  ]
+}

@@ -1,0 +1,32 @@
+name: F-ROSS01 D2 R1 Generic Time Probe
+
+on:
+  push:
+    branches:
+      - work/f-ross01-d2-fsi31-v1-research-adapter-r1
+    paths:
+      - .github/workflows/ross01-d2-r1-time-coordinate-probe.yml
+      - experiments/ross/ross01_d2_fsi31_adapter.py
+      - experiments/ross/ross01_d2_fsi31_adapter_base.py
+      - experiments/ross/run_ross01_d2_time_coordinate_probe.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generic-time-representation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/ross01_d2_fsi31_adapter.py experiments/ross/ross01_d2_fsi31_adapter_base.py experiments/ross/run_ross01_d2_time_coordinate_probe.py
+      - name: Run generic-time representation probe
+        run: python3 experiments/ross/run_ross01_d2_time_coordinate_probe.py
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-d2-r1-time-${{ github.run_id }}
+          path: F-ROSS01_D2_TIME_COORDINATE_EVIDENCE.json

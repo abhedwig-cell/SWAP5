@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R2",
+  "title": "Resolution-floor temporal-certificate aggregate replay from immutable D3G02R material evidence",
+  "status": "IN_PROGRESS_PRECOMMITTED_REPLAY",
+  "branch": "work/f-ross01-d3g02r2-resolution-floor-certificate-replay",
+  "scientific_parentage": {
+    "closed_negative_estimator_holdout": "work/f-ross01-d3g02r-estimator-structure-holdout@6c33d5b1da43353eb39a85b217854c74f78ed821",
+    "resolution_floor_precommit_branch": "work/f-ross01-d3g02r-resolution-floor-temporal-certificate",
+    "resolution_floor_precommit_head": "eea3c2c9cc3bf67c169ce312d15075de43d77ebc",
+    "decision_rule_blob": "82d512a66b1416e9a26710af0ca8ec051ec64539",
+    "gate_f_contract_blob": "7837e904348298780f0c8f683a551510ded879e5",
+    "gate_f_resolution_floor_span_normalized": 1e-10,
+    "floor_was_frozen_before_d3g02": true,
+    "floor_was_not_fit_to_d3g02_or_d3g02r": true
+  },
+  "source_execution": {
+    "run_id": 34816560882,
+    "tested_head": "3a418312e0bbdc328035aa4abc06f965c042ad38",
+    "scientific_material_jobs": "6_OF_6_SUCCESS",
+    "aggregate_failure_class": "HARNESS_ONLY_PYTHON_NAMEERROR_FALSE_LITERAL",
+    "aggregate_science_was_not_evaluated": true,
+    "rerun_solver_cases": false
+  },
+  "immutable_material_artifacts": [
+    {"material":"O01","artifact_id":10338055183,"digest":"sha256:032d050e8861a97cc0c8db419d66a03c5132969617fbdfef9e23064d23491cd4"},
+    {"material":"O05","artifact_id":10337423467,"digest":"sha256:3abc43d196ad0f7f6f6c54928cb57b558119a563c5ef824cbf6db53241cf2953"},
+    {"material":"O18","artifact_id":10337277318,"digest":"sha256:de7656d6118d91732628050981bb1e7df35719e07a54f8c72950838e8306cf83"},
+    {"material":"B01","artifact_id":10337233934,"digest":"sha256:965134addc044be21ac538590f89533196e6d422b8810cccfffa2217e267c81d"},
+    {"material":"O14","artifact_id":10337098855,"digest":"sha256:98c599e967ee720a0f27d36956b0ca52e25561abf0b5441cf5dcd395e6200a56"},
+    {"material":"B12","artifact_id":10336937598,"digest":"sha256:a416a96478ada4bf3faa352885c9a20858a41aed270dba061f7ada9cd1e25a2c"}
+  ],
+  "remediation_delta": {
+    "file": "experiments/ross/run_ross01_d3g02r_resolution_floor_aggregate.py",
+    "commit": "d7d9591128fb7296c29ade13c10253081bca4dcb",
+    "semantic_change": false,
+    "change": "Replace three invalid Python literals false with False.",
+    "decision_rule_changed": false,
+    "resolution_floor_changed": false,
+    "accuracy_tolerance_changed": false,
+    "case_domain_changed": false,
+    "material_artifacts_changed": false
+  },
+  "replay_rule": {
+    "input": "ONLY_THE_SIX_IMMUTABLE_MATERIAL_ARTIFACTS_FROM_RUN_34816560882",
+    "expected_materials": ["B01","B12","O01","O05","O14","O18"],
+    "expected_cases": 54,
+    "resolution_floor": 1e-10,
+    "accuracy_tolerance": 1e-5,
+    "mass_tolerance_cm": 1e-12,
+    "reference_self_tolerance": 1e-9,
+    "posthoc_tuning_forbidden": true
+  },
+  "possible_outcomes": {
+    "pass": "QUALIFIED_RESOLUTION_FLOOR_BOUND_READY_FOR_FAIL_CLOSED_WRAPPER_QUALIFICATION_ONLY",
+    "fail": "NEGATIVE_RESOLUTION_FLOOR_BOUND_LEAVE_D3_G02_OPEN"
+  },
+  "hard_nonclaims": [
+    "D3_G02_CLOSED_BY_AGGREGATE_ALONE",
+    "RUNTIME_CERTIFICATE_AUTHORITY",
+    "PRODUCTION_ADMISSION",
+    "UNIVERSAL_ROSSFAST_TEMPORAL_ERROR_BOUND"
+  ],
+  "production_source_delta": []
+}
