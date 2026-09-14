@@ -49,7 +49,7 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$ORCH" -o "$moddir/orchestrator.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$POLICY" -o "$moddir/policy.o"
   gfortran "${WARN[@]}" "$flag" -std=f2018 -J "$moddir" -I "$moddir" -c "$TEST" -o "$moddir/test.o"
-  gfortran -fopenmp "$moddir/tx.o" "$moddir/contracts.o" "$moddir/runtime.o" "$moddir/kernel.o" &
+  gfortran -fopenmp "$moddir/tx.o" "$moddir/contracts.o" "$moddir/runtime.o" "$moddir/kernel.o" \
     "$moddir/orchestrator.o" "$moddir/policy.o" "$moddir/test.o" -o "$moddir/test"
   "$moddir/test" > "$moddir/output.txt"
   grep -Fq 'FCI68_ROSSFAST_D3R_KERNEL_SELECTOR_ROUTING PASS' "$moddir/output.txt"
