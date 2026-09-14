@@ -5,7 +5,7 @@ module mod_kernel_transactions
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
        CANONICAL_STATUS_INVALID_REQUEST
-  use mod_canonical_interval_runtime, only: run_canonical_interval
+  use mod_canonical_interval_runtime, only: run_canonical_interval, canonical_subinterval_target_selector
   implicit none
   private
 
@@ -272,24 +272,28 @@ contains
       if (transfer(committed_time, 0_int64) /= transfer(0.0_real64, 0_int64)) return
     end if
 
-    call physical_state%clone(copy)
-    if (.not. allocated(copy)) return
+    call initial_state_clone_placeholder()
+  contains
+    subroutine initial_state_clone_placeholder()
+      call physical_state%clone(copy)
+      if (.not. allocated(copy)) return
 
-    call move_alloc(copy, target%physical_state)
-    target%lineage_id = lineage_id
-    target%revision = revision
-    target%committed_time_value = committed_time
-    target%time_bound = time_bound
-    target%initialized = .true.
+      call move_alloc(copy, target%physical_state)
+      target%lineage_id = lineage_id
+      target%revision = revision
+      target%committed_time_value = committed_time
+      target%time_bound = time_bound
+      target%initialized = .true.
 
-    status = KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED
-    if (.not. target%ready()) then
-      target = kernel_committed_state_t()
-      return
-    end if
+      status = KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED
+      if (.not. target%ready()) then
+        target = kernel_committed_state_t()
+        return
+      end if
 
-    reconstructed = .true.
-    status = KERNEL_TRUSTED_RECONSTRUCTION_OK
+      reconstructed = .true.
+      status = KERNEL_TRUSTED_RECONSTRUCTION_OK
+    end subroutine initial_state_clone_placeholder
   end subroutine kernel_reconstruct_committed_state_trusted
 
   subroutine kernel_snapshot_committed(self, copy, available)
@@ -449,7 +453,7 @@ contains
   end subroutine kernel_bind_model
 
   subroutine kernel_advance_interval(self, parameters, committed_state, forcing, numerical_config, t0, t1, &
-                                     result, candidate_state, diagnostics, checkpoint)
+                                     result, candidate_state, diagnostics, checkpoint, target_selector)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed_state
@@ -460,6 +464,7 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate_state
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     type(kernel_checkpoint_t), intent(in), optional :: checkpoint
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
     class(transaction_state_t), allocatable :: working
     type(canonical_interval_t) :: interval
@@ -525,7 +530,11 @@ contains
 
     interval%t0 = t0
     interval%t1 = t1
-    call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result)
+    if (present(target_selector)) then
+      call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result, target_selector)
+    else
+      call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result)
+    end if
 
     call map_runtime_result(runtime_result, result)
     call map_transaction_diagnostics(runtime_result%diagnostics, diagnostics)
