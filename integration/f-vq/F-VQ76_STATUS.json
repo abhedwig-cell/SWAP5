@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.fvq76.status.v1",
+  "work_unit": "F-VQ76",
+  "title": "Drainage runtime preservation requalification after F-CI62 shared-backend drift",
+  "branch": "qualification/f-vq76-drainage-post-fci62-preservation-requalification",
+  "phase": "INDEPENDENT_QUALIFICATION_CLOSED",
+  "decision": "QUALIFIED_DRAINAGE_RUNTIME_PRESERVED_ON_F_CI62_POSTIMAGE_INDEPENDENTLY",
+  "preregistered_source_postimage": {
+    "sha": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "tree": "55d62577f305bd6522726338818579520a52d29c"
+  },
+  "current_canonical": {
+    "sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "source_reference_bit_equivalent_to_preregistered_postimage": true,
+    "broad_canonical_workflow_run": 34820406309,
+    "broad_canonical_workflow_conclusion": "success",
+    "moving_current_preservation_job": 103900935554,
+    "moving_current_preservation_conclusion": "success"
+  },
+  "tested_head": {
+    "sha": "6f3326f7403a566358d7f5986a0cfcf9448e7c74",
+    "workflow_run": 34821111681,
+    "workflow_job": 103902665282,
+    "conclusion": "success"
+  },
+  "retained_fail_closed_event": {
+    "workflow_run": 34820904439,
+    "workflow_job": 103902022493,
+    "classification": "EXPECTED_FAIL_CLOSED_LIVE_CANONICAL_DRIFT_BEFORE_TEST_EXECUTION",
+    "production_test_execution_reached": false,
+    "resolution": "F-CI62P advanced canonical metadata/workflow only; src and reference remained bit-identical, then the full independent replay was rerun successfully."
+  },
+  "immutable_oracles": {
+    "F_VQ73_closeout": "ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "F_VQ73_test_program_blob": "e7008eda5f29ee2e401cb3eb8a1b1523da3bc25a",
+    "F_VQ74_closeout": "60c121a0993993bd79fb30ddfd54e2a9d14f042e",
+    "F_VQ74_test_program_blob": "dabe53d0714abee8e87b2e90f89c2eed169506e0",
+    "F_PM14_preservation_runner_blob": "0045e64f5174180e1e00265b775add3be1bf949f"
+  },
+  "shared_backend_requalification": {
+    "historical_qualified_blob": "0f09c0df1559ece894356b146b64d872470c0a32",
+    "current_blob": "21e0e4229f202f1a3a74c4da004aa32a2c855f03",
+    "behaviorally_requalified": true
+  },
+  "evidence": {
+    "VQ73_replay_O0": "PASS",
+    "VQ73_replay_O2": "PASS",
+    "VQ74_replay_O0": "PASS",
+    "VQ74_replay_O2": "PASS",
+    "VQ73_O0_O2_exact_identity": true,
+    "VQ74_O0_O2_exact_identity": true,
+    "VQ73_output_sha256": "92ada55527aa941138e2aed516ebbb5433659c3b9d95662a0b4921abe92ad4ed",
+    "VQ74_output_sha256": "b93d614f64bd987cb289fe362c38c94b0138ff8951bd8027cadee3980068091a",
+    "DIVDRA_fixed_weir_behavioral_preservation": "PASS",
+    "DIVDRA_fixed_weir_preservation_output_sha256": "87d7e4928f86929987be8f8a11e5e5338d4c4f122c0d21680d101f318f24dc07",
+    "hard_mass_and_single_booking": "PASS",
+    "reject_atomicity": "PASS",
+    "restart_no_additional_state": "PASS",
+    "restart_continuation": "PASS",
+    "MultiSWAP_isolation": "PASS",
+    "MultiSWAP_order_independence": "PASS",
+    "accepted_rejected_diagnostics": "PASS",
+    "generic_noncalendar_time": "PASS",
+    "HeadCalc_IO_calendar_isolation": "PASS"
+  },
+  "architecture_invariants_1_30": "PASS_ALL_QUALIFIED_OR_PRESERVED",
+  "independently_qualified": true,
+  "production_change_required": false,
+  "mass_or_transaction_defect_found": false,
+  "production_source_changed_by_F_VQ76": false,
+  "reference_source_changed_by_F_VQ76": false,
+  "scope_reduced": false,
+  "scope_expanded": false,
+  "fully_implicit_solver_coupling_added": false,
+  "mass_conservation_concession": false,
+  "drainage_v1_100_percent_complete": false,
+  "closed": true,
+  "nonclaims": [
+    "F-VQ76 is an independent preservation requalification and does not itself emit the whole-scope Drainage-v1 completion claim.",
+    "F-VQ76 does not add fully implicit drainage solver coupling to the frozen v1 denominator.",
+    "No production or reference source was changed by F-VQ76."
+  ]
+}
