@@ -26,6 +26,7 @@ module mod_energy_conservation_ledger
     private
     logical :: initialized = .false.
     integer(int64) :: generation = 0_int64
+    integer(int64) :: owner_instance_id = 0_int64
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: origin_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
@@ -60,10 +61,12 @@ module mod_energy_conservation_ledger
     logical :: prepared_active = .false.
     integer(int64) :: preparation_generation = 0_int64
     integer(int64) :: prepared_generation = 0_int64
+    integer(int64) :: prepared_owner_instance_id = 0_int64
     integer(int64) :: prepared_lineage_id = 0_int64
     integer(int64) :: prepared_origin_revision_value = -1_int64
     real(real64) :: prepared_t0_value = 0.0_real64
     real(real64) :: prepared_t1_value = 0.0_real64
+    integer(int64) :: owner_instance_id_value = 0_int64
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: origin_revision_value = -1_int64
     real(real64) :: t0_value = 0.0_real64
@@ -89,10 +92,10 @@ module mod_energy_conservation_ledger
 
 contains
 
-  subroutine energy_ledger_begin_trial(self, lineage_id, origin_revision, t0, t1, component_ids, initial_energy_j_m2, &
-                                       status, transfer_capacity)
+  subroutine energy_ledger_begin_trial(self, owner_instance_id, lineage_id, origin_revision, t0, t1, component_ids, &
+                                       initial_energy_j_m2, status, transfer_capacity)
     class(energy_trial_ledger_t), intent(inout) :: self
-    integer(int64), intent(in) :: lineage_id, origin_revision
+    integer(int64), intent(in) :: owner_instance_id, lineage_id, origin_revision
     real(real64), intent(in) :: t0, t1
     integer(int64), intent(in) :: component_ids(:)
     real(real64), intent(in) :: initial_energy_j_m2(:)
@@ -107,7 +110,10 @@ contains
     if (self%trial_active) return
 
     status = ENERGY_LEDGER_INVALID_PROVENANCE
-    if (lineage_id <= 0_int64 .or. origin_revision < 0_int64) return
+    ! owner_instance_id is an explicit runtime/worker ownership token.  It must
+    ! be positive and unique among simultaneously live logical ledger owners.
+    ! The ledger deliberately does not allocate it through hidden global state.
+    if (owner_instance_id <= 0_int64 .or. lineage_id <= 0_int64 .or. origin_revision < 0_int64) return
     status = ENERGY_LEDGER_INVALID_INTERVAL
     if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
 
@@ -126,6 +132,7 @@ contains
     allocate(self%component_ids(size(component_ids)), self%transfers(capacity))
     self%component_ids = component_ids
     self%initial_snapshot = snapshot
+    self%owner_instance_id_value = owner_instance_id
     self%lineage_id = lineage_id
     self%origin_revision_value = origin_revision
     self%t0_value = t0
@@ -238,6 +245,7 @@ contains
 
     self%prepared_generation = self%preparation_generation + 1_int64
     self%preparation_generation = self%prepared_generation
+    self%prepared_owner_instance_id = self%owner_instance_id_value
     self%prepared_lineage_id = self%lineage_id
     self%prepared_origin_revision_value = self%origin_revision_value
     self%prepared_t0_value = self%t0_value
@@ -245,6 +253,7 @@ contains
     self%prepared_active = .true.
 
     prepared%generation = self%prepared_generation
+    prepared%owner_instance_id = self%owner_instance_id_value
     prepared%lineage_id = self%lineage_id
     prepared%origin_revision_value = self%origin_revision_value
     prepared%t0_value = self%t0_value
@@ -342,7 +351,8 @@ contains
 
   pure logical function prepared_energy_ready(self) result(ready)
     class(prepared_energy_trial_t), intent(in) :: self
-    ready = self%initialized .and. self%generation > 0_int64 .and. self%lineage_id > 0_int64 .and. &
+    ready = self%initialized .and. self%generation > 0_int64 .and. self%owner_instance_id > 0_int64 .and. &
+         self%lineage_id > 0_int64 .and. &
          self%origin_revision_value >= 0_int64 .and. ieee_is_finite(self%t0_value) .and. &
          ieee_is_finite(self%t1_value) .and. self%t1_value > self%t0_value .and. self%balance%available
   end function prepared_energy_ready
@@ -437,6 +447,7 @@ contains
     self%initial_snapshot = energy_storage_snapshot_t()
     self%final_snapshot = energy_storage_snapshot_t()
     self%transfer_count = 0
+    self%owner_instance_id_value = 0_int64
     self%lineage_id = 0_int64
     self%origin_revision_value = -1_int64
     self%t0_value = 0.0_real64
@@ -448,6 +459,7 @@ contains
     type(prepared_energy_trial_t), intent(inout) :: prepared
     self%prepared_active = .false.
     self%prepared_generation = 0_int64
+    self%prepared_owner_instance_id = 0_int64
     self%prepared_lineage_id = 0_int64
     self%prepared_origin_revision_value = -1_int64
     self%prepared_t0_value = 0.0_real64
@@ -462,6 +474,7 @@ contains
     matches = .false.
     if (.not. self%prepared_active .or. .not. prepared%ready()) return
     if (prepared%generation /= self%prepared_generation) return
+    if (prepared%owner_instance_id /= self%prepared_owner_instance_id) return
     if (prepared%lineage_id /= self%prepared_lineage_id) return
     if (prepared%origin_revision_value /= self%prepared_origin_revision_value) return
     if (.not. same_fkt_time(prepared%t0_value, self%prepared_t0_value)) return
