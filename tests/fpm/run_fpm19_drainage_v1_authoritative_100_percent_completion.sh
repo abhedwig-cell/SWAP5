@@ -18,6 +18,8 @@ FCI62P_SECOND_PARENT='9bec0cf6068046b42b9818913470e28bd4fbcb45'
 VQ76_STATUS_BLOB='c61081dbede3518d5625714926246cf438106222'
 VQ76_WRAPPER_BLOB='751ae59d081be80c926e451505e22c77a39a77dc'
 VQ76_INNER_BLOB='b5269247a8d5939a2c639239d8512451f9eca8b2'
+VQ76_PREREG_BLOB='9ec4f4388c58b677bc1a40ebe58ae2579150fd2b'
+VQ76_AUDIT_BLOB='f8c2cefd1e15938e9b0f84eceaa9913efa3134e0'
 
 LIVE="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
 [[ "$LIVE" == "$CANONICAL" ]] || fail "live canonical drift expected=$CANONICAL actual=$LIVE"
@@ -34,6 +36,8 @@ echo 'FPM19_EXACT_LIVE_CANONICAL_AND_AUDIT_ONLY_DELTA=PASS'
 [[ "$(git rev-parse "$VQ76:integration/f-vq/F-VQ76_STATUS.json")" == "$VQ76_STATUS_BLOB" ]] || fail 'F-VQ76 status drift'
 [[ "$(git rev-parse "$VQ76:tests/fvq/run_fvq76_current_canonical_reconciled.sh")" == "$VQ76_WRAPPER_BLOB" ]] || fail 'F-VQ76 wrapper drift'
 [[ "$(git rev-parse "$VQ76:tests/fvq/run_fvq76_drainage_post_fci62_preservation_requalification.sh")" == "$VQ76_INNER_BLOB" ]] || fail 'F-VQ76 executable gate drift'
+[[ "$(git rev-parse "$VQ76:integration/f-vq/F-VQ76_PRE_REGISTRATION.json")" == "$VQ76_PREREG_BLOB" ]] || fail 'F-VQ76 preregistration drift'
+[[ "$(git rev-parse "$VQ76:integration/f-vq/F-VQ76_ARCHITECTURE_AUDIT.json")" == "$VQ76_AUDIT_BLOB" ]] || fail 'F-VQ76 architecture audit drift'
 echo 'FPM19_CORE_AUTHORITIES_EXACT=PASS'
 
 # Scientific qualification authorities for every member of the eight-variant denominator.
@@ -153,12 +157,18 @@ PY
 # Re-execute the exact independent F-VQ76 preservation gate from the PM19 head.
 TMP_WRAPPER='tests/fvq/run_fvq76_current_canonical_reconciled.sh'
 TMP_INNER='tests/fvq/run_fvq76_drainage_post_fci62_preservation_requalification.sh'
-[[ ! -e "$TMP_WRAPPER" && ! -e "$TMP_INNER" ]] || fail 'temporary VQ76 materialization paths unexpectedly exist in canonical'
-trap 'rm -f "$TMP_WRAPPER" "$TMP_INNER" tests/fvq/.fvq76_reconciled_inner.sh tests/fpm/.fvq76_pm14_preservation.sh' EXIT
+TMP_PREREG='integration/f-vq/F-VQ76_PRE_REGISTRATION.json'
+TMP_AUDIT='integration/f-vq/F-VQ76_ARCHITECTURE_AUDIT.json'
+[[ ! -e "$TMP_WRAPPER" && ! -e "$TMP_INNER" && ! -e "$TMP_PREREG" && ! -e "$TMP_AUDIT" ]] || fail 'temporary VQ76 materialization paths unexpectedly exist in canonical'
+trap 'rm -f "$TMP_WRAPPER" "$TMP_INNER" "$TMP_PREREG" "$TMP_AUDIT" tests/fvq/.fvq76_reconciled_inner.sh tests/fpm/.fvq76_pm14_preservation.sh' EXIT
 git show "$VQ76:$TMP_WRAPPER" > "$TMP_WRAPPER"
 git show "$VQ76:$TMP_INNER" > "$TMP_INNER"
+git show "$VQ76:$TMP_PREREG" > "$TMP_PREREG"
+git show "$VQ76:$TMP_AUDIT" > "$TMP_AUDIT"
 [[ "$(git hash-object "$TMP_WRAPPER")" == "$VQ76_WRAPPER_BLOB" ]] || fail 'materialized VQ76 wrapper differs'
 [[ "$(git hash-object "$TMP_INNER")" == "$VQ76_INNER_BLOB" ]] || fail 'materialized VQ76 inner gate differs'
+[[ "$(git hash-object "$TMP_PREREG")" == "$VQ76_PREREG_BLOB" ]] || fail 'materialized VQ76 preregistration differs'
+[[ "$(git hash-object "$TMP_AUDIT")" == "$VQ76_AUDIT_BLOB" ]] || fail 'materialized VQ76 architecture audit differs'
 chmod +x "$TMP_WRAPPER" "$TMP_INNER"
 bash "$TMP_WRAPPER"
 echo 'FPM19_INDEPENDENT_CURRENT_POSTIMAGE_EXECUTABLE_REPLAY=PASS'
