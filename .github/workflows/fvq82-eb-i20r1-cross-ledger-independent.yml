@@ -1,0 +1,32 @@
+name: F-VQ82 EB-I20R1 cross-ledger independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq82-eb-i20r1-cross-ledger-provenance-independent-qualification
+    paths:
+      - 'tests/fvq/mod_fvq82_receipt_model.f90'
+      - 'tests/fvq/test_fvq82_cross_ledger_instance_attack.f90'
+      - 'tests/fvq/run_fvq82_eb_i20r1_cross_ledger_independent.sh'
+      - '.github/workflows/fvq82-eb-i20r1-cross-ledger-independent.yml'
+      - 'qualification/F-VQ82_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FVQ82_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ82_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent cross-ledger provenance qualification
+        run: bash tests/fvq/run_fvq82_eb_i20r1_cross_ledger_independent.sh
