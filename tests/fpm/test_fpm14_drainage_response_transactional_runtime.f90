@@ -46,10 +46,11 @@ contains
     type(fmr_serialized_physical_observation_t) :: observation
     type(fmr04_fixed_flux_top_provider_t), target :: top
     integer :: active_calls
-    real(real64) :: expected_amount, net_external
+    real(real64) :: expected_amount, background_amount
 
     call initialize_case(committed, column, template, parameters, forcing, config)
     expected_amount = constant_drainage_rate * (t1 - t0)
+    background_amount = max(0.0_real64, -forcing%top_flux) * (t1 - t0)
 
     call backend%initialize(top)
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
@@ -63,9 +64,10 @@ contains
          'active response mass complete')
     call require(abs(output%mass%residual) <= mass_gate, 'active response hard mass closure')
     call require(output%accepted_substeps == 1, 'one canonical accepted transaction')
-    net_external = output%mass%total_out - output%mass%total_in
-    call require(abs(net_external - expected_amount) <= mass_gate, &
-         'only accepted two-half drainage entered authoritative ledger')
+    call require(abs((output%mass%total_out-background_amount) - expected_amount) <= mass_gate, &
+         'only accepted drainage entered authoritative external-out ledger')
+    call require(abs((output%mass%total_in-background_amount) - expected_amount) <= mass_gate, &
+         'balancing qssdi entered authoritative external-in ledger once')
     call require(observation%drainage_response_active, 'drainage response observation active')
     call require(observation%drainage_response_evaluations == 3, &
          'full reference plus two half-step responses evaluated exactly once each')
@@ -194,6 +196,7 @@ contains
     allocate(forcing%drainage_response_controls(1), forcing%subsurface_irrigation_source(numnod), &
          forcing%root_extraction_sink(numnod))
     forcing%subsurface_irrigation_source = 0.0_real64
+    forcing%subsurface_irrigation_source(numnod) = constant_drainage_rate
     forcing%root_extraction_sink = 0.0_real64
 
     config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
