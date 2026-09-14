@@ -18,6 +18,20 @@ changes = [
            parameters%bottom_mode == 2) .and. &
 """,
     ),
+    (
+        Path('src/runtime/mod_fmr_serialized_reference_backend.f90'),
+        """    if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5) then
+      value = huge(0.0_real64)
+      return
+    end if
+""",
+        """    if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
+        self%bottom_mode /= 2) then
+      value = huge(0.0_real64)
+      return
+    end if
+""",
+    ),
 ]
 
 changed = 0
