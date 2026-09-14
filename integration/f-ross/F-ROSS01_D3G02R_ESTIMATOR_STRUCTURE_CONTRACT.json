@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "title": "RossFast temporal-estimator structure, cancellation and independent holdout qualification",
+  "status": "IN_PROGRESS",
+  "scope": "RESEARCH_ESTIMATOR_STRUCTURE_ONLY",
+  "base_authority": {
+    "d3g02_closed_negative_head": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+    "d3g02_scientific_authority_run": 34796278942,
+    "d3g02_decision": "ROSSFAST_D3G02_TEMPORAL_CERTIFICATE_NOT_QUALIFIED",
+    "d3_g02": "OPEN"
+  },
+  "live_canonical_at_start": {
+    "head": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "relevant_model_certificate_semantics": "available AND finite AND indicator >= 0 AND indicator <= 1"
+  },
+  "research_question": "Determine whether the D3G02 factor-1 conservativity failure is consistent with a reproducible multi-level discretization/cancellation pattern across new forcing holdouts, or whether the finest full-vs-two-half estimator lacks a stable relation to independently referenced error on the bounded RossFast research domain.",
+  "frozen_non_goals": [
+    "DO_NOT_CLOSE_F_ROSS01_D3_G02",
+    "DO_NOT_ADMIT_ANY_TEMPORAL_CERTIFICATE",
+    "DO_NOT_CHOOSE_OR_FIT_A_SAFETY_FACTOR",
+    "DO_NOT_RELAX_THE_D3G02_1E_5_ACCURACY_TOLERANCE",
+    "DO_NOT_TREAT_THE_OBSERVED_1_6_RATIO_AS_A_NEW_CONSTANT",
+    "DO_NOT_CHANGE_PRODUCTION_SOURCE",
+    "DO_NOT_CHANGE_ROSSFAST_PHYSICS",
+    "DO_NOT_CHANGE_D2_D3_D3R_OR_D3G02_AUTHORITIES"
+  ],
+  "frozen_method": {
+    "independent_reference": "DOP853_OFFLINE_REFERENCE_ONLY",
+    "reference_rtol": 1e-11,
+    "reference_atol": 1e-13,
+    "reference_self_check_max_step_divisors": [32, 64],
+    "reference_self_delta_limit_span": 1e-9,
+    "state_quantity": "TERMINAL_WATER_CONTENT",
+    "norm": "SPAN_NORMALIZED_L_INFINITY",
+    "internal_substep_levels": [2, 4, 8, 16],
+    "canonical_structure_probe": "FULL_8_SUBSTEPS_VS_TWO_HALF_INTERVALS_EACH_8_SUBSTEPS",
+    "hard_mass_tolerance_cm": 1e-12,
+    "candidate_only": true,
+    "committed_state_read_only": true
+  },
+  "new_holdout_domain": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "initial_state": "FROZEN_D2_INITIAL_STATE",
+    "forcing_variants": [
+      {"id": "NEGATIVE_ONE_PERCENT", "bounded_flux_perturbation": -0.01},
+      {"id": "POSITIVE_ONE_PERCENT", "bounded_flux_perturbation": 0.01}
+    ],
+    "rationale": "D3G02 scientific calibration used nominal forcing only. The two predeclared +/-1 percent variants are new temporal-estimator holdouts while remaining inside the frozen D2 bounded 2 percent forcing envelope."
+  },
+  "required_case_diagnostics": [
+    "DOP853_REFERENCE_SELF_DELTA",
+    "E2_E4_E8_E16_REFERENCE_ERRORS",
+    "DELTA_2_4_DELTA_4_8_DELTA_8_16",
+    "OBSERVED_ORDER_FROM_ADJACENT_DELTAS_WHEN_DEFINED",
+    "FULL8_VS_TWO_HALF8_RAW_ESTIMATOR",
+    "REFINED_TWO_HALF_REFERENCE_ERROR",
+    "REFINED_ERROR_TO_RAW_RATIO_WHEN_DEFINED",
+    "FULL16_VS_TWO_HALF8_EQUIVALENCE_DELTA",
+    "MASS_RESIDUALS",
+    "CANDIDATE_OWNERSHIP_AND_COMMITTED_IMMUTABILITY"
+  ],
+  "precommitted_interpretation": {
+    "positive_research_signal_requires": [
+      "ALL_HOLDOUT_CASES_NUMERICALLY_VALID",
+      "ALL_REFERENCE_SELF_DELTAS_LE_1E_9_SPAN",
+      "ALL_COMPONENT_MASS_RESIDUALS_ABS_LE_1E_12_CM",
+      "NO_COMMITTED_STATE_MUTATION",
+      "NO_ACCEPT_OR_COMMIT_AUTHORITY_IN_RESEARCH_SOLVER",
+      "NO_NONMONOTONE_REFERENCE_ERROR_FROM_2_TO_4_TO_8_TO_16_SUBSTEPS",
+      "NO_NONMONOTONE_ADJACENT_REFINEMENT_DELTA_FROM_2_4_TO_4_8_TO_8_16"
+    ],
+    "meaning_of_positive_signal": "Supports only a later separately preregistered estimator-model study. It does not qualify a safety factor, tolerance, certificate, production path or G02 closure.",
+    "negative_signal": "If any frozen structural condition fails, record the failing material/attempt/forcing cases and stop certificate-model evolution on this route unless a new scientific hypothesis is independently justified."
+  },
+  "anti_overfit_rules": [
+    "No thresholds may be chosen after viewing D3G02R holdout results to turn failure into pass.",
+    "The known D3G02 ratio 1.6 may motivate this structural study but may not be used as a fitted factor or acceptance threshold.",
+    "Holdout variants may not be dropped after execution.",
+    "Mass, ownership, reference-consistency and scope failures may not be traded against temporal accuracy."
+  ],
+  "production_admission": false,
+  "production_source_delta": []
+}
