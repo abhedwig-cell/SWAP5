@@ -29,6 +29,7 @@ program test_eb_i21_cross_column_receipt_attack
   integer :: status
   logical :: foreign_receipt_accepted
 
+  call require(COLUMN_A > 0_int64 .and. COLUMN_B > 0_int64 .and. COLUMN_A /= COLUMN_B, 'distinct positive column ids')
   call setup_config(config)
   parameters_a%inflow_rate = 0.125_real64
   parameters_b%inflow_rate = 0.375_real64
