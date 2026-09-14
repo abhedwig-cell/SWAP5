@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.fvq76.canonical_reconciliation.v1",
+  "work_unit": "F-VQ76",
+  "initial_source_postimage": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+  "initial_run": {
+    "workflow_run": 34820904439,
+    "workflow_job": 103902022493,
+    "conclusion": "failure",
+    "classification": "EXPECTED_FAIL_CLOSED_LIVE_CANONICAL_DRIFT_BEFORE_TEST_EXECUTION",
+    "observed_live_canonical": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "production_test_execution_reached": false
+  },
+  "new_live_canonical": {
+    "sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "message": "Merge F-CI62P: reconcile prescribed-qbot moving-current preservation",
+    "first_parent": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "second_parent": "9bec0cf6068046b42b9818913470e28bd4fbcb45",
+    "broad_canonical_workflow_run": 34820406309,
+    "broad_canonical_workflow_conclusion": "success"
+  },
+  "source_equivalence": {
+    "src_changed_between_46ed_and_6425": false,
+    "reference_changed_between_46ed_and_6425": false,
+    "changed_paths_are_governance_test_only": [
+      ".github/workflows/fci-canonical.yml",
+      ".github/workflows/fci62p-current-canonical-postimage-reconciliation.yml",
+      "integration/f-ci/F-CI62P_STATUS.json",
+      "tests/fci/run_fci62p_current_canonical_postimage_reconciliation.sh"
+    ],
+    "qualification_disposition": "REPLAY_MAY_CONTINUE_ON_THE_PRE_REGISTERED_46ED_PRODUCTION_POSTIMAGE_ONLY_IF_THE_LIVE_CANONICAL_SRC_AND_REFERENCE_REMAIN_BIT_IDENTICAL"
+  },
+  "scope_change": false,
+  "production_change_by_reconciliation": false,
+  "reference_change_by_reconciliation": false
+}
