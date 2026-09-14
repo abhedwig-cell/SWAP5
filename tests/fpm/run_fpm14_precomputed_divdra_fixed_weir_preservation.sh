@@ -3,8 +3,9 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-fpm14-preservation-$$"
-mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+AUG_DIR="$ROOT/tests/fpm/.fpm14-preservation-$$"
+mkdir -p "$BUILD" "$AUG_DIR"
+trap 'rm -rf "$BUILD" "$AUG_DIR"' EXIT
 cd "$ROOT"
 
 fail(){ echo "FPM14_PRESERVATION_GATE_FAIL $*" >&2; exit 94; }
@@ -94,17 +95,54 @@ bash tests/fpm/run_fpm08d7_fixed_weir_process_checkpoint.sh > "$BUILD/weir-proce
   cat "$BUILD/weir-process.log" >&2; fail 'fixed-weir process replay';
 }
 grep -Fq 'PASS_FPM08D7_FIXED_WEIR_O0_O2_IDENTITY' "$BUILD/weir-process.log" || fail 'fixed-weir process identity marker'
-
 echo 'FPM14_FIXED_WEIR_PROCESS_CURRENT_POSTIMAGE_REPLAY=PASS'
 
-bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh > "$BUILD/weir-compile.log" 2>&1 || {
+# The historical runtime/restart runners intentionally remain byte-identical.
+# Their compile lists predate F-PM14, so create ephemeral copies that add only
+# the new backend compile dependencies. Test programs, assertions and runtime
+# semantics are untouched and remain locked above.
+augment_weir_runner(){
+  local src="$1" dst="$2"
+  python3 - "$src" "$dst" <<'PY'
+from pathlib import Path
+import sys
+src,dst=map(Path,sys.argv[1:])
+s=src.read_text()
+needle='  src/process/mod_restricted_fixed_weir_surface_water.f90\n'
+if s.count(needle) != 1:
+    raise SystemExit('FPM14_PRESERVATION_GATE_FAIL fixed-weir runner compile-list anchor drift')
+extra='''  src/process/mod_drainage_process.f90
+  src/process/mod_drainage_tabulated_response.f90
+  src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+  src/process/mod_drainage_hooghoudt_ipos1_response.f90
+  src/process/mod_drainage_hooghoudt_ipos23_response.f90
+  src/process/mod_drainage_ernst_ipos45_preparation.f90
+  src/process/mod_drainage_ernst_ipos45_response.f90
+  src/process/mod_drainage_empirical_interflow_response.f90
+  src/process/mod_drainage_multilevel_aggregation.f90
+  src/runtime/mod_fmr_drainage_response_binding.f90
+'''
+dst.write_text(s.replace(needle, needle+extra))
+PY
+  chmod +x "$dst"
+}
+
+AUG_COMPILE="$AUG_DIR/run_fpm08d7_runtime_compile_checkpoint.sh"
+AUG_TX="$AUG_DIR/run_fpm08d7_transactional_runtime_owner.sh"
+AUG_RESTART="$AUG_DIR/run_fpm08d7_restart_lifecycle_owner.sh"
+augment_weir_runner tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh "$AUG_COMPILE"
+augment_weir_runner tests/fpm/run_fpm08d7_transactional_runtime_owner.sh "$AUG_TX"
+augment_weir_runner tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh "$AUG_RESTART"
+echo 'FPM14_FIXED_WEIR_BUILD_HYGIENE_AUGMENTATION_ONLY=PASS'
+
+bash "$AUG_COMPILE" > "$BUILD/weir-compile.log" 2>&1 || {
   cat "$BUILD/weir-compile.log" >&2; fail 'fixed-weir runtime compile replay';
 }
 grep -Fq 'FPM08D7_RUNTIME_COMPILE_O0=PASS' "$BUILD/weir-compile.log" || fail 'fixed-weir O0 compile marker'
 grep -Fq 'FPM08D7_RUNTIME_COMPILE_O2=PASS' "$BUILD/weir-compile.log" || fail 'fixed-weir O2 compile marker'
 echo 'FPM14_FIXED_WEIR_RUNTIME_COMPILE_CURRENT_POSTIMAGE_REPLAY=PASS'
 
-FPM08D7_TX_EVIDENCE_DIR="$BUILD/weir-tx" bash tests/fpm/run_fpm08d7_transactional_runtime_owner.sh > "$BUILD/weir-tx.log" 2>&1 || {
+FPM08D7_TX_EVIDENCE_DIR="$BUILD/weir-tx" bash "$AUG_TX" > "$BUILD/weir-tx.log" 2>&1 || {
   cat "$BUILD/weir-tx.log" >&2; fail 'fixed-weir transactional replay';
 }
 for m in \
@@ -116,7 +154,7 @@ for m in \
 done
 echo 'FPM14_FIXED_WEIR_TRANSACTIONAL_CURRENT_POSTIMAGE_REPLAY=PASS'
 
-FPM08D7_RESTART_EVIDENCE_DIR="$BUILD/weir-restart" bash tests/fpm/run_fpm08d7_restart_lifecycle_owner.sh > "$BUILD/weir-restart.log" 2>&1 || {
+FPM08D7_RESTART_EVIDENCE_DIR="$BUILD/weir-restart" bash "$AUG_RESTART" > "$BUILD/weir-restart.log" 2>&1 || {
   cat "$BUILD/weir-restart.log" >&2; fail 'fixed-weir restart replay';
 }
 for m in \
