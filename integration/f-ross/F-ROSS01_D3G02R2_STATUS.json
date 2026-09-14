@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R2",
+  "status": "CLOSED_POSITIVE_INTERMEDIATE",
+  "decision": "QUALIFIED_RESOLUTION_FLOOR_BOUND_READY_FOR_FAIL_CLOSED_WRAPPER_QUALIFICATION",
+  "branch": "work/f-ross01-d3g02r2-resolution-floor-certificate-replay",
+  "authority_run": 34824601766,
+  "authority_artifact": 10339354466,
+  "authority_artifact_digest": "sha256:415a39ca5facea6cc156877360ff3b3be5d5ec9f13de4032d33ff6faab7b77d9",
+  "scientific_source_run": 34816560882,
+  "qualification_domain": "EXACT_D3R_54_CASE_NOMINAL_FORCING_DOMAIN",
+  "resolution_floor_span_normalized": 1e-10,
+  "accuracy_tolerance": 1e-5,
+  "certificate_bound_qualified": true,
+  "runtime_certificate_wrapper_qualified": false,
+  "d3_g02": "OPEN",
+  "production_admission": false,
+  "production_source_delta": [],
+  "next_required_work": "F-ROSS01_D3G02R3_FAIL_CLOSED_RUNTIME_CERTIFICATE_WRAPPER_QUALIFICATION",
+  "hard_nonclaims": [
+    "D3_G02_CLOSED",
+    "PRODUCTION_ADMISSION",
+    "UNIVERSAL_ROSSFAST_TEMPORAL_ERROR_BOUND",
+    "ACCURACY_OUTSIDE_EXACT_D3R_DOMAIN"
+  ]
+}
