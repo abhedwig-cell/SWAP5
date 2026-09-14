@@ -25,6 +25,10 @@ The normative rules for this design are the [core architecture invariants](archi
 
 Accepted design choices are recorded as [Architecture Decision Records](decisions/index.md). This keeps the reason for important decisions visible next to the code instead of forcing future developers to reconstruct intent from implementation details.
 
+## Development flow
+
+New work follows the [capability-flow development policy](development/capability-flow.md): keep commits atomic, group related steps into capabilities, reuse still-valid evidence, limit production-relevant work in progress to three capabilities, and avoid branches that exist only for review/checkpoint process phases.
+
 ## Documentation status
 
 This documentation is intentionally version controlled with the source. Every important change to solver structure, state ownership, runtime, MultiSWAP, coupling or module boundaries should update the relevant documentation and be checked against the architecture invariants.
