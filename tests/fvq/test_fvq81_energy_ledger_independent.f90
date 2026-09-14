@@ -180,7 +180,8 @@ program test_fvq81_energy_ledger_independent
   call committed%capture_checkpoint(checkpoint, ok)
   call require(ok, 'initial checkpoint')
   call kernel%advance_interval(parameters, committed, forcing, config, 0.0_real64, 1.0_real64, result, candidate, diagnostics, checkpoint)
-  call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed .and. candidate%ready(), 'real F-KT candidate')
+  call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'real F-KT completion')
+  call require(candidate%ready(), 'real F-KT candidate')
   call require(result%mass%complete .and. abs(result%mass%residual) <= 1.0e-12_real64, 'real F-KT mass complete')
 
   ids1 = [STORE]; e0_1 = [50.0_real64]; e1_1 = [58.0_real64]
@@ -191,18 +192,23 @@ program test_fvq81_energy_ledger_independent
   call ledger%set_end_storage(e1_1, status)
   call require(status == ENERGY_LEDGER_OK, 'set accepted energy storage')
   call ledger%prepare_trial(prepared, status)
-  call require(status == ENERGY_LEDGER_OK .and. prepared%ready(), 'prepare accepted energy')
+  call require(status == ENERGY_LEDGER_OK, 'prepare accepted energy status')
+  call require(prepared%ready(), 'prepare accepted energy ready')
 
   call ledger%commit_prepared(prepared, invalid_receipt, record, status)
-  call require(status == ENERGY_LEDGER_INVALID_PROVENANCE .and. .not. record%ready(), 'invalid receipt rejected')
-  call require(prepared%ready() .and. ledger%has_prepared_trial(), 'invalid receipt preserves current prepared state')
+  call require(status == ENERGY_LEDGER_INVALID_PROVENANCE, 'invalid receipt provenance status')
+  call require(.not. record%ready(), 'invalid receipt publishes no record')
+  call require(prepared%ready(), 'invalid receipt preserves prepared handle')
+  call require(ledger%has_prepared_trial(), 'invalid receipt preserves ledger prepared state')
   print '(a)', 'FVQ81_INVALID_RECEIPT_NO_PUBLICATION=PASS'
 
   call fmr_commit_candidate_with_receipt(kernel, checkpoint, committed, candidate, diagnostics, did_commit, receipt, receipt_status, commit_status)
-  call require(did_commit .and. receipt_status == FMR_COMMIT_RECEIPT_OK .and. receipt%ready(), 'real accepted receipt')
+  call require(did_commit .and. receipt_status == FMR_COMMIT_RECEIPT_OK, 'real accepted receipt status')
+  call require(receipt%ready(), 'real accepted receipt ready')
   call require(ledger%prepared_ready_for_receipt(prepared, receipt), 'accepted receipt matches prepared energy')
   call ledger%commit_prepared(prepared, receipt, record, status)
-  call require(status == ENERGY_LEDGER_OK .and. record%ready(), 'accepted energy published')
+  call require(status == ENERGY_LEDGER_OK, 'accepted energy publication status')
+  call require(record%ready(), 'accepted energy publication ready')
   call require(record%current_lineage_id() == LINEAGE .and. record%origin_revision() == 0_int64 .and. &
        record%committed_revision() == 1_int64, 'accepted publication revision provenance')
   call record%origin_interval(rt0, rt1, available)
@@ -214,14 +220,16 @@ program test_fvq81_energy_ledger_independent
   print '(a)', 'FVQ81_ACCEPTED_RECEIPT_PUBLISHES_EXACT_PROVENANCE=PASS'
 
   call ledger%commit_prepared(prepared, receipt, record, status)
-  call require(status == ENERGY_LEDGER_INVALID_PROVENANCE .and. .not. record%ready(), 'double publication rejected')
+  call require(status == ENERGY_LEDGER_INVALID_PROVENANCE, 'double publication provenance status')
+  call require(.not. record%ready(), 'double publication publishes no record')
   call require(.not. ledger%has_prepared_trial(), 'consumed prepared state remains consumed')
   print '(a)', 'FVQ81_DOUBLE_PUBLICATION_FAIL_CLOSED=PASS'
 
   call committed%capture_checkpoint(checkpoint, ok)
   call require(ok, 'revision-one checkpoint')
   call kernel%advance_interval(parameters, committed, forcing, config, 1.0_real64, 2.0_real64, result, candidate, diagnostics, checkpoint)
-  call require(result%completed .and. candidate%ready(), 'replay candidate')
+  call require(result%completed, 'replay completion')
+  call require(candidate%ready(), 'replay candidate')
   call ledger%begin_trial(LINEAGE, 1_int64, 1.0_real64, 2.0_real64, ids1, e0_1, status, 2)
   call require(status == ENERGY_LEDGER_OK, 'begin revision-one energy')
   call ledger%record_transfer(ENERGY_EXTERNAL_COMPONENT, STORE, 8.0_real64, status)
@@ -231,11 +239,14 @@ program test_fvq81_energy_ledger_independent
   call ledger%prepare_trial(prepared, status)
   call require(status == ENERGY_LEDGER_OK, 'prepare revision-one energy')
   call ledger%commit_prepared(prepared, old_receipt, record, status)
-  call require(status == ENERGY_LEDGER_INVALID_PROVENANCE .and. .not. record%ready(), 'stale receipt rejected')
-  call require(prepared%ready() .and. ledger%has_prepared_trial(), 'stale receipt preserves current prepared')
+  call require(status == ENERGY_LEDGER_INVALID_PROVENANCE, 'stale receipt provenance status')
+  call require(.not. record%ready(), 'stale receipt publishes no record')
+  call require(prepared%ready(), 'stale receipt preserves prepared handle')
+  call require(ledger%has_prepared_trial(), 'stale receipt preserves ledger prepared state')
   call kernel%rollback_candidate(candidate, diagnostics)
   call ledger%abort_prepared(prepared, status)
-  call require(status == ENERGY_LEDGER_OK .and. .not. ledger%has_prepared_trial(), 'rollback aborts prepared energy')
+  call require(status == ENERGY_LEDGER_OK, 'rollback abort status')
+  call require(.not. ledger%has_prepared_trial(), 'rollback aborts prepared energy')
   call require(committed%current_revision() == 1_int64, 'rollback leaves committed revision unchanged')
   print '(a)', 'FVQ81_STALE_RECEIPT_AND_ROLLBACK_NO_LEAK=PASS'
 
@@ -245,7 +256,8 @@ program test_fvq81_energy_ledger_independent
   call stage_small_prepared(ledger, current_prepared, 3.0_real64, 4.0_real64)
   call ledger%abort_prepared(stale_prepared, status)
   call require(status == ENERGY_LEDGER_INVALID_PROVENANCE, 'stale generation abort rejected')
-  call require(current_prepared%ready() .and. ledger%has_prepared_trial(), 'stale generation preserves current state')
+  call require(current_prepared%ready(), 'stale generation preserves current handle')
+  call require(ledger%has_prepared_trial(), 'stale generation preserves current ledger state')
   call ledger%abort_prepared(current_prepared, status)
   call require(status == ENERGY_LEDGER_OK, 'current generation abort succeeds')
   print '(a)', 'FVQ81_STALE_GENERATION_NONTERMINATING=PASS'
@@ -319,7 +331,8 @@ contains
     call e%set_end_storage(final_energy, s)
     call require(s == ENERGY_LEDGER_OK, 'small prepared storage')
     call e%prepare_trial(p, s)
-    call require(s == ENERGY_LEDGER_OK .and. p%ready(), 'small prepared ready')
+    call require(s == ENERGY_LEDGER_OK, 'small prepared status')
+    call require(p%ready(), 'small prepared ready')
   end subroutine stage_small_prepared
 
   subroutine require(condition, label)
