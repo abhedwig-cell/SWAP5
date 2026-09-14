@@ -25,7 +25,7 @@ echo 'EB_I21R_EXACT_THREE_FILE_SOURCE_SCOPE=PASS'
 # Architecture/static obligations.
 grep -Fq 'public :: fmr_commit_candidate_with_owned_receipt' "$OWNED" || fail 'owned commit producer missing'
 grep -Fq 'owner_instance_id_value' "$OWNED" || fail 'owned receipt owner storage missing'
-grep -Fq 'There is deliberately no public routine that can bind an already-existing generic' "$OWNED" || fail 'no-after-the-fact-binding contract missing'
+grep -Fq 'deliberately no public routine that can bind an already-existing generic' "$OWNED" || fail 'no-after-the-fact-binding contract missing'
 ! grep -Eiq '^[[:space:]]*save\b|random_number|system_clock|atomic_' "$OWNED" || fail 'hidden/global owner identity mechanism detected'
 grep -Fq 'use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t' "$LEDGER" || fail 'ledger does not consume owned receipt'
 grep -Fq 'receipt%owner_instance_id() /= prepared%owner_instance_id' "$LEDGER" || fail 'ledger owner association guard missing'
