@@ -1,0 +1,35 @@
+{
+  "schema": "swap5-eb-workunit-status-v1",
+  "work_unit": "EB-I20",
+  "title": "Energy Conservation Ledger current-canonical requalification and admission gap audit",
+  "branch": "work/eb-i20-energy-conservation-ledger-current-canonical-requalification",
+  "status": "REQUALIFIED_CURRENT_CANONICAL_NOT_ADMISSION_READY",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "tested_head": "67438d05fd07115a8377bbdcd32d3d53f9f2d2d8",
+  "tested_tree": "9cd2a88cfd2a66147b0097ece16146280151a46d",
+  "workflow_run": 34835574606,
+  "workflow_job": 103948494535,
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "aba5a63a10d7f37cb89e31882851d0f4e9b99ffa"
+  },
+  "evidence": [
+    "exact immutable EB-I01 source recomposition passed",
+    "kernel/runtime I/O and groundwater-coupling separation passed",
+    "energy conservation types O0/O2 identity passed",
+    "transactional accepted-commit receipt integration passed after test-only normalization to current F-KT18 mass and storage completeness semantics",
+    "current F-KT18 fail-closed mass-completeness preservation passed through pinned F-VQ67 oracle",
+    "historical production ledger contains three error-stop statements"
+  ],
+  "admission_blockers": [
+    "mod_energy_conservation_ledger contains batch-fatal invariant handling in commit_prepared/abort_prepared; a recoverable stale or mismatched per-column handle must not terminate a MultiSWAP worker or batch"
+  ],
+  "hard_nonclaims": [
+    "not canonical admission",
+    "not independent qualification",
+    "no claim that full SWAP energy balance is complete",
+    "no claim that the old ledger error handling is MultiSWAP-safe"
+  ],
+  "decision": "REQUALIFIED_WITH_MINIMAL_BATCH_SAFETY_REMEDIATION_REQUIRED",
+  "next_owner": "EB-I20R fail-closed non-terminating prepared-energy ledger invariant handling, followed by independent qualification before any canonical admission"
+}
