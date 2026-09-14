@@ -52,7 +52,9 @@ require(ids == expected_evidence, f"evidence classes mismatch: {ids ^ expected_e
 for item in E["classes"]:
     for field in ["can_demonstrate", "cannot_demonstrate", "consumers", "historical_fidelity_claim_supported", "production_admission_support", "production_admission_sufficient_alone"]:
         require(field in item, f"evidence class {item['id']} missing {field}")
+    require(item["production_admission_sufficient_alone"] is False, f"evidence class {item['id']} incorrectly self-promotes to admission authority")
 require(E["principle"] == "EVIDENCE_IS_NOT_AUTHORITY", "evidence principle changed")
+require(E["rules"]["no_evidence_class_is_authority_sufficient_by_itself"] is True, "evidence-to-authority remediation missing")
 
 required_object_fields = set(O["required"])
 for field in ["object_id", "object_kind", "claim", "non_claims", "scope", "source_identity", "evidence", "uncertainty_labels", "assurance_required", "qualification_outcome", "parent_child", "composition_required", "admission_required"]:
@@ -114,6 +116,7 @@ for forbidden in ["B0 -> B1 -> B2 -> B3 -> B4", "TCD lifecycle is adopted by SWA
     require(forbidden not in text, f"mechanical ANIMO lifecycle leak: {forbidden}")
 
 print("FRG04_EVIDENCE_NOT_AUTHORITY=PASS")
+print("FRG04_NO_EVIDENCE_SELF_PROMOTION=PASS")
 print("FRG04_BOUNDED_OBJECTS=PASS")
 print("FRG04_NEGATIVE_QUALIFICATION_NONCREDIT=PASS")
 print("FRG04_ASSURANCE_INDEPENDENCE_HONEST=PASS")
