@@ -18,15 +18,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  two-half-chain:
+  two-half-probe:
     strategy:
       fail-fast: false
-      max-parallel: 18
+      max-parallel: 9
       matrix:
         attempt_index: [0,1,2,3,4,5,6,7,8]
-        material: [B01,B12,O01,O05,O14,O18]
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,22 +45,33 @@ jobs:
           grep -q "terr = model%temporal_error(full_state, half_state)" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
         run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_two_half_case.py
-      - name: Run canonical two-half chain
+      - name: Run all six material chains for this retry attempt
+        shell: bash
         run: |
-          python3 experiments/ross/run_ross01_d3r_two_half_case.py \
-            --canonical-head "$CANONICAL_HEAD" \
-            --attempt-index "${{ matrix.attempt_index }}" \
-            --material "${{ matrix.material }}" \
-            --output "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${{ matrix.material }}.json"
+          set -u
+          pids=()
+          for material in B01 B12 O01 O05 O14 O18; do
+            python3 experiments/ross/run_ross01_d3r_two_half_case.py \
+              --canonical-head "$CANONICAL_HEAD" \
+              --attempt-index "${{ matrix.attempt_index }}" \
+              --material "$material" \
+              --output "F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${material}.json" &
+            pids+=("$!")
+          done
+          failed=0
+          for pid in "${pids[@]}"; do
+            wait "$pid" || failed=1
+          done
+          exit "$failed"
       - name: Upload chain evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-d3r-two-half-${{ matrix.attempt_index }}-${{ matrix.material }}-${{ github.run_id }}
-          path: F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_${{ matrix.material }}.json
+          name: f-ross01-d3r-two-half-${{ matrix.attempt_index }}-${{ github.run_id }}
+          path: F-ROSS01_D3R_TWO_HALF_${{ matrix.attempt_index }}_*.json
 
   aggregate-two-half:
-    needs: two-half-chain
+    needs: two-half-probe
     if: always()
     runs-on: ubuntu-latest
     steps:
