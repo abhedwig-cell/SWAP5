@@ -1,0 +1,28 @@
+name: F-CI66 canonical window-target selector admission
+
+on:
+  push:
+    branches:
+      - work/f-ross01-k-runtime-canonical-window-hook
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FCI66_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FCI66_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI66 current-canonical admission gate
+        run: bash tests/fci/run_fci66_window_target_selector_current_canonical_admission.sh
