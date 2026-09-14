@@ -1,6 +1,8 @@
 {
   "schema_version": 1,
   "work_unit": "F-SI37",
+  "decision": "QUALIFIED_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE_PRIMITIVE_READY_FOR_TRANSACTION_TRAJECTORY_COMPOSITION",
+  "qualification_scope": "OWNER_QUALIFICATION_ONLY",
   "semantic": "ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE_FIXED_SMOOTH_ROUTE",
   "request_type": "soil_water_accepted_step_direction_request_t",
   "result_type": "soil_water_accepted_step_direction_result_t",
@@ -51,7 +53,8 @@
     },
     "finite_difference_production_algorithm": false,
     "persistent_per_column_sensitivity_state": false,
-    "factorization_and_vectors_owner": "worker/job scratch"
+    "factorization_and_vectors_owner": "worker/job scratch",
+    "qualification_marker": "FSI37_BOUNDED_COST_GUARD=PASS"
   },
   "physical_noninterference": {
     "common_soil_water_solver_contract_changed": false,
@@ -60,7 +63,7 @@
     "dynamic_top_value_provider_changed": false,
     "physical_acceptance_changed": false,
     "mass_acceptance_changed": false,
-    "required_test": "sensitivity ON/OFF physical candidate state, top flux, bottom flux and unrounded mass result unchanged; bit identity where fixture supports it"
+    "sensitivity_on_off_physical_identity": "PASS"
   },
   "smooth_route_rules": {
     "fixed_flux_top": "AVAILABLE when all remaining Full Richards route requirements pass",
@@ -72,6 +75,15 @@
     "alternative_soil_water_solver": "UNAVAILABLE",
     "physical_step_not_accepted": "UNAVAILABLE"
   },
+  "switch_guard_policy": {
+    "principle": "Each sensitivity-admission switch guard is scaled only by quantities in the same physical coordinate; cross-unit guard scaling is forbidden.",
+    "ponding_classification": "centimetre-scale previous ponding versus ponding classification threshold",
+    "evaporation_switch": "cm/day evaporation capacity versus cm/day demand",
+    "atmospheric_switch": "cm/day q1 versus cm/day evaporation capacity",
+    "surface_head_switch": "centimetre h0 versus centimetre head threshold",
+    "value_provider_remains_route_authority": true,
+    "physical_value_provider_changed": false
+  },
   "semantic_guards": {
     "soil_water_interface_sensitivity_local_terminal_preserved": true,
     "whole_window_claim": false,
@@ -80,9 +92,39 @@
     "sensitivity_controls_physical_acceptance": false,
     "sensitivity_controls_mass_acceptance": false
   },
-  "qualification_candidate": {
-    "source_head": "05e513f227c7735888525e4f8fa940704a6b71c7",
-    "workflow_run_id": 34792491346,
-    "status_at_creation": "queued"
-  }
+  "executable_qualification": {
+    "qualified_source_head": "992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd",
+    "qualified_source_tree": "9eed7d750a6570d66c4a37171390ee6ca8407ecc",
+    "workflow_run_id": 34794491732,
+    "workflow_job_id": 103824854786,
+    "workflow_run_number": 24,
+    "conclusion": "success",
+    "optimization_modes": ["O0", "O2"],
+    "fixed_fd_cases_per_optimization": 30,
+    "dynamic_fd_cases_per_optimization": 12,
+    "markers": [
+      "FSI37_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS",
+      "FSI37_DYNAMIC_SURFACE_FLUX_DIRECTION PASS",
+      "FSI37_DYNAMIC_CAPACITY_LIMITED_FAIL_CLOSED=PASS",
+      "FSI37_DYNAMIC_HEAD_PHYSICAL_VALID=PASS",
+      "FSI37_DYNAMIC_HEAD_SENSITIVITY_FAIL_CLOSED=PASS",
+      "FSI37_DYNAMIC_HEAD_ON_OFF_IDENTITY=PASS",
+      "FSI37_O0_O2_FULL_GATE=PASS",
+      "FSI37_BOUNDED_COST_GUARD=PASS",
+      "FSI37_QUALIFICATION PASS"
+    ],
+    "metadata_closeout_commits_are_not_relabelled_as_executed_source": true
+  },
+  "qualification_files": {
+    "tests/fsi/test_fsi37_accepted_step_directional_derivative.f90": "81c277c0ba1e3ca683a2d331461ac24fc34767bf",
+    "tests/fsi/test_fsi37_dynamic_surface_flux_direction.f90": "005e40491abda4f694a27ef22ae73f1e064cd0a6",
+    "tests/fsi/test_fsi37_dynamic_head_fail_closed.f90": "5925622b3293edf9e803bd7266b5094ebd18a212",
+    "tests/fsi/run_fsi37_qualification.sh": "d780795b628e56fd4ec419bedced23bc53ba9b87"
+  },
+  "hard_nonclaims": [
+    "No accepted multi-step trajectory derivative is qualified here.",
+    "No WHOLE_WINDOW groundwater response tangent is qualified here.",
+    "No derivative through retry/fallback/controller branch changes or nonsmooth physical switches is claimed.",
+    "No independent F-VQ qualification or canonical F-CI admission is claimed."
+  ]
 }
