@@ -1,0 +1,23 @@
+name: F-VQ86 F-GC24 coupled restart independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq86-fgc24-coupled-restart-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: gfortran --version
+      - name: Run F-VQ86 independent qualification gate
+        run: bash tests/qualification/fvq86/run_fvq86_fgc24_independent_gate.sh
