@@ -1,0 +1,34 @@
+name: F-VQ73 F-PM14 drainage response independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fvq73-fpm14-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Fetch pinned canonical authority
+        run: git fetch --no-tags origin integration/f-ci-canonical
+      - name: Independent source and provenance governance
+        run: bash tests/fvq/run_fvq73_source_governance.sh
+      - name: Fresh independent two-level transactional runtime qualification
+        run: bash tests/fvq/run_fvq73_independent_runtime.sh
+      - name: Supplemental admitted-route preservation replay
+        run: bash tests/fpm/run_fpm14_precomputed_divdra_fixed_weir_preservation.sh
