@@ -1,12 +1,16 @@
 module mod_b1_10_reference_model
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t
+  use mod_canonical_contracts, only: canonical_interval_t, canonical_directional_response_request_t, &
+       canonical_directional_response_t
   use mod_soil_water_solver_contract, only: soil_water_solve_result_t, SW_SOLVE_CONVERGED
   use mod_soil_water_accepted_step_direction_contract, only: &
        SW_STEP_CONTROL_BOTTOM_FLUX, SW_STEP_CONTROL_BOTTOM_HEAD
   use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, &
        fkt21_configure_trajectory_direction => configure_trajectory_direction, &
        begin_or_continue_trajectory, finalize_trajectory_direction
+  use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t, &
+       publish_accepted_trajectory_direction
   use mod_soil_water_transaction_result_bridge, only: map_soil_water_interface_sensitivity_to_trial
   use mod_b1_10_transaction_binding, only: b1_10_transaction_model_t
   use mod_b1_10_process_checkpoint, only: b1_10_process_state_t, capture_b1_10_process_state, restore_b1_10_process_state
@@ -42,6 +46,8 @@ module mod_b1_10_reference_model
   contains
     procedure :: bind_worker => b1_10_bind_reference_worker
     procedure :: configure_trajectory_direction => b1_10_configure_trajectory_direction
+    procedure :: begin_directional_response => b1_10_begin_canonical_directional_response
+    procedure :: finish_directional_response => b1_10_finish_canonical_directional_response
     procedure :: prepare_trajectory_segment => b1_10_prepare_trajectory_segment
     procedure :: finalize_trajectory_segment => b1_10_finalize_trajectory_segment
     procedure :: capture_attempt_context => b1_10_reference_capture_attempt_context
@@ -84,6 +90,71 @@ contains
       if (associated(self%worker)) call fkt21_configure_trajectory_direction(self%worker%trajectory_direction, .false.)
     end if
   end subroutine b1_10_configure_trajectory_direction
+
+  subroutine b1_10_begin_canonical_directional_response(self, request, interval, active)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    type(canonical_directional_response_request_t), intent(in) :: request
+    type(canonical_interval_t), intent(in) :: interval
+    logical, intent(out) :: active
+
+    active = .false.
+    if (.not. request%requested) return
+    if (interval%t1 <= interval%t0) return
+    if (.not. associated(self%worker)) return
+    if (request%control_coordinate /= SW_STEP_CONTROL_BOTTOM_FLUX .and. &
+        request%control_coordinate /= SW_STEP_CONTROL_BOTTOM_HEAD) return
+
+    call self%configure_trajectory_direction(.true., request%control_coordinate)
+    active = .true.
+  end subroutine b1_10_begin_canonical_directional_response
+
+  subroutine b1_10_finish_canonical_directional_response(self, interval, completed, response)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    type(canonical_interval_t), intent(in) :: interval
+    logical, intent(in) :: completed
+    type(canonical_directional_response_t), intent(out) :: response
+    type(accepted_trajectory_direction_result_t) :: published
+    integer :: control_coordinate
+    real(real64) :: guard
+
+    control_coordinate = self%trajectory_control_coordinate
+    response = canonical_directional_response_t()
+    response%requested = .true.
+    response%control_coordinate = control_coordinate
+    response%origin_t0 = interval%t0
+    response%accepted_t1 = interval%t0
+    response%method = 'unavailable'
+    response%route = 'canonical-window-not-completed'
+
+    if (associated(self%worker) .and. completed) then
+      call publish_accepted_trajectory_direction(self%worker%trajectory_direction, published)
+      response%accepted_steps = published%accepted_steps
+      response%origin_t0 = published%origin_t0
+      response%accepted_t1 = published%accepted_t1
+      response%method = published%method
+      response%route = published%route
+      response%additional_tridiagonal_backsolves = published%additional_tridiagonal_backsolves
+      response%additional_jacobian_builds = published%additional_jacobian_builds
+      response%additional_full_nonlinear_solves = published%additional_full_nonlinear_solves
+      if (published%available) then
+        guard = 64.0_real64*epsilon(1.0_real64)*max(1.0_real64, abs(interval%t0), abs(interval%t1), &
+             abs(published%origin_t0), abs(published%accepted_t1))
+        if (abs(published%origin_t0-interval%t0) <= guard .and. &
+            abs(published%accepted_t1-interval%t1) <= guard) then
+          response%accepted_bottom_exchange_derivative = published%accepted_bottom_exchange_derivative
+          response%available = .true.
+        else
+          response%available = .false.
+          response%method = 'unavailable'
+          response%route = 'canonical-window-provenance-mismatch'
+        end if
+      end if
+    end if
+
+    ! The mutable trajectory state is worker-local scratch.  It must never
+    ! survive the outer canonical publication boundary, whether success or fail.
+    call self%configure_trajectory_direction(.false., control_coordinate)
+  end subroutine b1_10_finish_canonical_directional_response
 
   subroutine b1_10_prepare_trajectory_segment(self, t0, t1)
     class(b1_10_reference_model_t), intent(inout) :: self
