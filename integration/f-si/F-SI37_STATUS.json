@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI37",
+  "title": "Accepted-Step Directional Derivative Seam, Smooth-Route Full Richards Linearization & Fail-Closed Qualification",
+  "branch": "work/f-si37-accepted-step-directional-derivative-seam",
+  "phase": "IMPLEMENTED_EXECUTABLE_QUALIFICATION_PENDING",
+  "decision": "CANDIDATE_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE_PRIMITIVE_AWAITING_EXECUTABLE_GATE",
+  "qualified": false,
+  "canonical_at_closeout_preparation": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+  },
+  "qualification_candidate": {
+    "sha": "05e513f227c7735888525e4f8fa940704a6b71c7",
+    "tree": "7f7a0839d53074c937644ebbdba8408fe22e6c6c",
+    "workflow_run_id": 34792491346,
+    "workflow_job_id": 103819208160,
+    "workflow_state_at_artifact_creation": "queued"
+  },
+  "governing_authorities": {
+    "F-SI28": "5b514e678d0d794e5837f161033b0bac58385707",
+    "F-SI32": "dfe1a285ae485e1e8348ee10492bb7808f85dd39",
+    "F-SI33": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+    "F-SI34": "b522fe150610f900f253eeea9bf78329107de362",
+    "F-SI35": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+    "F-SI36": "226b97f3b7268b1e81e479df020f525234095653",
+    "F-GC23": "cf83a9a2c9399882b42bf5f5206b509e4167858a"
+  },
+  "implementation_source_blobs": {
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "4cd7cf88dc4f48c5651284480f47fc37c0a68ff4",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+  },
+  "governing_unchanged_source_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+    "src/solver/mod_reference_linear_solver.f90": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+    "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "03a64b6d09fd804242bcf76f7cb5277f59a6230a",
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "contract": {
+    "semantic": "ONE_ACCEPTED_DISCRETE_STEP_FIXED_SMOOTH_ROUTE_DIRECTIONAL_DERIVATIVE",
+    "control_coordinates": ["SWBOTB=2_NATIVE_QBOT", "SWBOTB=5_BOTTOM_PRESSURE_HEAD"],
+    "incoming": ["base_pressure_head_direction", "base_water_content_direction", "previous_ponding_direction", "direct_bottom_control_direction"],
+    "outgoing": ["accepted_pressure_head_direction", "accepted_water_content_direction", "accepted_ponding_direction", "accepted_top_flux_direction", "accepted_bottom_flux_direction"],
+    "conductivity_mean_methods": [1,2,3,4,5,6],
+    "local_terminal_interface_sensitivity_relabelled": false,
+    "whole_window_semantic_claimed": false
+  },
+  "qualified_candidate_routes": {
+    "fixed_flux_top": "FSI_TOP_MODE_EXPLICIT_FLUX with fixed_flux_top_boundary_provider_t",
+    "dynamic_top": "FSI_TOP_MODE_DYNAMIC_PROVIDER only on strict smooth surface-flux branch with head-independent evaporation result",
+    "dynamic_capacity_limited_surface_flux": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE",
+    "atmospheric_head": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE",
+    "ponded_head": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE",
+    "runoff": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE",
+    "constitutive_or_regime_switch_boundary": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE",
+    "alternative_soil_water_solver": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE",
+    "alternative_linear_solver": "FAIL_CLOSED_SENSITIVITY_UNAVAILABLE"
+  },
+  "cost_contract": {
+    "additional_full_nonlinear_solves_per_direction": 0,
+    "additional_jacobian_builds_per_direction": 0,
+    "additional_tridiagonal_backsolves_per_available_direction": 1,
+    "persistent_per_column_sensitivity_state": false,
+    "finite_difference_in_production": false
+  },
+  "qualification_matrix": {
+    "fixed_flux_centered_fd_cases": 30,
+    "dynamic_surface_flux_centered_fd_cases": 12,
+    "optimization_modes": ["O0", "O2"],
+    "physical_on_off_bit_identity_required": true,
+    "retry_reject_no_accepted_direction_required": true,
+    "capacity_limited_dynamic_fail_closed_required": true,
+    "alternative_solver_fail_closed_required": true,
+    "tests": {
+      "tests/fsi/test_fsi37_accepted_step_directional_derivative.f90": "e990d179d2873fbee1f3389269c8881ed0003645",
+      "tests/fsi/test_fsi37_dynamic_surface_flux_direction.f90": "68878278b0d4079259360a64500243b1d57d3d30"
+    }
+  },
+  "mass_conservation": {
+    "physical_mass_acceptance_changed": false,
+    "mode5_bottom_exchange_derivative": "d_qbot = d_qtop + d(sum(theta*dz))/dt - d(sum(theta_base*dz))/dt",
+    "sensitivity_may_relax_mass": false
+  },
+  "transaction_boundary": {
+    "multi_step_composition_performed": false,
+    "retry_or_reject_publishes_accepted_direction": false,
+    "persistent_sensitivity_state_added": false,
+    "next_owner": "F-KT"
+  },
+  "next_work_if_gate_passes": {
+    "suggested_work_unit": "F-KT21",
+    "branch_number_rechecked_free_at_artifact_creation": true,
+    "scope": "accepted-route trajectory sensitivity composition with rollback/provenance and generic [t0,t1] semantics; no whole-window claim before executable qualification"
+  },
+  "hard_nonclaims": [
+    "No WHOLE_WINDOW derivative is qualified by this status.",
+    "No groundwater predictor-corrector tangent is qualified by this status.",
+    "No local-terminal dh_bottom_dq_bottom value is relabelled.",
+    "No derivative through timestep-controller, retry, fallback or regime-switch boundaries is claimed.",
+    "No capacity-limited dynamic-top derivative is claimed.",
+    "No production physics, HeadCalc source, mass acceptance logic or common soil_water_solver_t ABI is changed.",
+    "No canonical admission or independent qualification is claimed while the executable owner gate is pending."
+  ],
+  "success_decision_after_green_gate_only": "QUALIFIED_ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE_PRIMITIVE_READY_FOR_TRANSACTION_TRAJECTORY_COMPOSITION"
+}
