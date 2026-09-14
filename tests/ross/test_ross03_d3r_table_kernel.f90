@@ -14,7 +14,7 @@ program test_ross03_d3r_table_kernel
   type(rossfast_d3r_kernel_request_t) :: request
   type(rossfast_d3r_kernel_result_t) :: result
   real(real32), allocatable :: table(:,:)
-  real(real64) :: duration, q_top, q_bottom_up, expected_raw, expected_indicator
+  real(real64) :: duration, q_top, q_bottom_up, expected_raw, expected_indicator, semantic_t0
   real(real64) :: initial_heads(ROSSFAST_D3R_N_CELLS)
   real(real64) :: initial_theta(ROSSFAST_D3R_N_CELLS)
   real(real64) :: coarse_heads(ROSSFAST_D3R_N_CELLS)
@@ -46,7 +46,6 @@ program test_ross03_d3r_table_kernel
   call initialize_rossfast_d3r_table_kernel(kernel, material, table, valid)
   if (.not. valid) error stop 104
 
-  ! Initialization must fail closed for a table with the wrong shape.
   block
     type(rossfast_d3r_table_kernel_t) :: bad_kernel
     real(real32), allocatable :: bad_table(:,:)
@@ -90,8 +89,9 @@ program test_ross03_d3r_table_kernel
     request%base_state%water_content = initial_theta
     request%forcing%top_flux_cm_per_day = q_top
     request%forcing%bottom_flux_upward_cm_per_day = q_bottom_up
-    request%t0_day = 0.0_real64
-    request%t1_day = duration
+    semantic_t0 = 317.125_real64 + 0.75_real64 * real(attempt, real64)
+    request%t0_day = semantic_t0
+    request%t1_day = semantic_t0 + duration
     request%equal_internal_substeps = 8
 
     call kernel%solve(request, result)
@@ -117,8 +117,6 @@ program test_ross03_d3r_table_kernel
   end do
   close(unit_fixture)
 
-  ! Kernel scope is narrower than the structural F-ROSS02 binding: D3G02R3
-  ! production-certificate execution is qualified only for eight substeps.
   request = rossfast_d3r_kernel_request_t()
   request%material = material
   request%base_state%active_nodes = ROSSFAST_D3R_N_CELLS
@@ -128,24 +126,27 @@ program test_ross03_d3r_table_kernel
   request%base_state%water_content = initial_theta
   request%forcing%top_flux_cm_per_day = q_top
   request%forcing%bottom_flux_upward_cm_per_day = q_bottom_up
-  request%t0_day = 0.0_real64
-  request%t1_day = duration
+  request%t0_day = 509.25_real64
+  request%t1_day = request%t0_day + duration
   request%equal_internal_substeps = 4
   call kernel%solve(request, result)
   if (result%request_admitted .or. result%solver_ok) error stop 131
 
-  ! A table initialized for one frozen material must reject a request for any
-  ! other material rather than silently reusing the wrong mobility surface.
+  request%equal_internal_substeps = 8
+  request%t1_day = request%t0_day + 0.9_real64 * duration
+  call kernel%solve(request, result)
+  if (result%request_admitted .or. result%solver_ok) error stop 132
+
   if (trim(material_id) == 'B01') then
     call rossfast_d3r_material_from_id('O14', wrong_material, found)
   else
     call rossfast_d3r_material_from_id('B01', wrong_material, found)
   end if
-  if (.not. found) error stop 132
+  if (.not. found) error stop 133
   request%material = wrong_material
-  request%equal_internal_substeps = 8
+  request%t1_day = request%t0_day + duration
   call kernel%solve(request, result)
-  if (result%request_admitted .or. result%solver_ok) error stop 133
+  if (result%request_admitted .or. result%solver_ok) error stop 134
 
   write(*,'(a,1x,a)') 'ROSS03_MATERIAL', trim(material_id)
   write(*,'(a,1x,es24.16)') 'ROSS03_MAX_THETA_ERROR', max_theta_error
