@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "decision": "ROSSFAST_D3G02R_ESTIMATOR_STRUCTURE_HOLDOUT_NEGATIVE",
+  "scientific_disposition": "STRUCTURAL_ROUTE_NOT_SUPPORTED_BY_FROZEN_HOLDOUT_RULE",
+  "basis": "The preregistered positive signal required every frozen holdout case to satisfy both monotone reference-error refinement and monotone adjacent refinement deltas. One independently executed, numerically valid holdout case already violates both conditions; therefore a positive D3G02R outcome is impossible without changing the preregistered rule.",
+  "parent_d3g02": {
+    "head": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+    "decision": "ROSSFAST_D3G02_TEMPORAL_CERTIFICATE_NOT_QUALIFIED",
+    "d3_g02": "OPEN"
+  },
+  "authority_run": {
+    "run_id": 34823564419,
+    "tested_head": "a4f6b82e1a1afda83c43b1c17692426ff7d1a27e",
+    "live_canonical_head": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "decisive_case": {
+    "material": "B01",
+    "forcing_variant": "POSITIVE_ONE_PERCENT",
+    "bounded_flux_perturbation": 0.01,
+    "attempt_index": 6,
+    "full_duration_day": 2.5e-05,
+    "half_duration_day": 1.25e-05,
+    "job_id": 103910497594,
+    "artifact_id": 10338429633,
+    "artifact_digest": "sha256:22f51e0c0952d76116f2d45840edd7bb52eca824b06bf88029e997bcf872a306",
+    "numerical_pass": true,
+    "reference_self_delta": 3.405642244502853e-17,
+    "max_abs_mass_residual_cm": 3.4122958697728962e-15,
+    "hard_mass_tolerance_cm": 1e-12,
+    "structural_signal": false,
+    "reference_error_monotone_2_4_8_16": false,
+    "adjacent_delta_monotone_2_4_8_16": false,
+    "reference_errors": {
+      "2": 0.0,
+      "4": 6.811284489005706e-17,
+      "8": 6.811284489005706e-17,
+      "16": 1.7028211222514268e-16
+    },
+    "adjacent_deltas": {
+      "2_to_4": 6.811284489005706e-17,
+      "4_to_8": 6.811284489005706e-17,
+      "8_to_16": 2.0433853467017122e-16
+    },
+    "full8_vs_two_half8_raw_estimator": 2.0433853467017122e-16,
+    "two_half8_reference_error": 1.7028211222514268e-16,
+    "two_half8_error_to_raw_ratio": 0.8333333333333334,
+    "full16_vs_two_half8_equivalence_delta": 0.0
+  },
+  "interpretation": {
+    "numerical_validity": "PASS",
+    "mass_conservation": "PASS",
+    "independent_reference_self_consistency": "PASS",
+    "precommitted_structural_monotonicity": "FAIL",
+    "scale_of_failure": "SPAN_NORMALIZED_NUMERICAL_FLOOR_APPROX_1E_MINUS_16",
+    "scientific_meaning": "The observed failure is consistent with cancellation/roundoff-floor behavior rather than material accuracy failure, but the preregistered rule deliberately did not permit a post-hoc resolution-floor exemption. It therefore remains a valid negative result for this estimator-structure route.",
+    "anti_overfit_action": "NO_THRESHOLD_RELAXATION_NO_CASE_EXCLUSION_NO_POSTHOC_FLOOR"
+  },
+  "closure_effect": {
+    "positive_structural_signal": false,
+    "certificate_available": false,
+    "safety_factor_authority": false,
+    "accuracy_tolerance_authority": false,
+    "d3_g02_closed": false,
+    "d3_g02": "OPEN",
+    "resolution_floor_branch_disposition": "NOT_VALIDATED_BY_D3G02R_AND_MUST_NOT_BE_TREATED_AS_AUTHORITY",
+    "next_route": "STOP_THIS_ESTIMATOR_CERTIFICATE_ROUTE_UNLESS_A_GENUINELY_NEW_INDEPENDENTLY_JUSTIFIED_SCIENTIFIC_HYPOTHESIS_IS_PREREGISTERED"
+  },
+  "production_source_delta": [],
+  "production_admission": false
+}
