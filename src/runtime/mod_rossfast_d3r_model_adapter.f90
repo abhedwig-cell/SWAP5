@@ -55,25 +55,33 @@ contains
     type(canonical_numerical_config_t), intent(in) :: config
     type(canonical_result_t), intent(out) :: result
 
-    call run_canonical_interval(model, committed, forcing, interval, config, result, select_window)
-
-  contains
-
-    subroutine select_window(cursor, requested_t1, target_t1, max_retries_cap, valid)
-      real(real64), intent(in) :: cursor, requested_t1
-      real(real64), intent(out) :: target_t1
-      integer, intent(out) :: max_retries_cap
-      logical, intent(out) :: valid
-
-      call model%select_transaction_window(cursor, requested_t1, target_t1)
-      max_retries_cap = min(config%transaction%max_retries, ROSSFAST_D3R_MAX_RETRIES)
-      valid = target_t1 > cursor .and. target_t1 <= requested_t1
-    end subroutine select_window
-
+    call run_canonical_interval(model, committed, forcing, interval, config, result, rossfast_d3r_target_selector)
   end subroutine run_rossfast_d3r_interval
+
+  subroutine rossfast_d3r_target_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
+    real(real64), intent(in) :: cursor, requested_t1
+    real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
+    logical, intent(out) :: valid
+
+    call select_d3r_window(cursor, requested_t1, target_t1)
+    max_retries_cap = ROSSFAST_D3R_MAX_RETRIES
+    valid = target_t1 > cursor .and. target_t1 <= requested_t1
+  end subroutine rossfast_d3r_target_selector
 
   subroutine rossfast_d3r_select_transaction_window(self, cursor, outer_t1, selected_t1)
     class(rossfast_d3r_model_adapter_t), intent(inout) :: self
+    real(real64), intent(in) :: cursor, outer_t1
+    real(real64), intent(out) :: selected_t1
+
+    call select_d3r_window(cursor, outer_t1, selected_t1)
+
+    associate(model => self)
+      if (.not. same_type_as(model, model)) error stop 901
+    end associate
+  end subroutine rossfast_d3r_select_transaction_window
+
+  subroutine select_d3r_window(cursor, outer_t1, selected_t1)
     real(real64), intent(in) :: cursor, outer_t1
     real(real64), intent(out) :: selected_t1
     real(real64) :: duration, expected_t1, tolerance
@@ -102,10 +110,6 @@ contains
         return
       end if
     end do
-
-    associate(model => self)
-      if (.not. same_type_as(model, model)) error stop 901
-    end associate
-  end subroutine rossfast_d3r_select_transaction_window
+  end subroutine select_d3r_window
 
 end module mod_rossfast_d3r_model_adapter
