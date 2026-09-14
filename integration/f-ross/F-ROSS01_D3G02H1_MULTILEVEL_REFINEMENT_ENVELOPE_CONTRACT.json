@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02H1",
+  "title": "RossFast Multi-Level Refinement Envelope Independent Holdout Qualification",
+  "status": "IN_PROGRESS_HYPOTHESIS_FROZEN_BEFORE_EXECUTION",
+  "scope": "RESEARCH_TEMPORAL_ESTIMATOR_HYPOTHESIS_ONLY",
+  "branch": "work/f-ross01-d3g02h1-multilevel-refinement-envelope",
+  "base_authority": {
+    "branch": "work/f-ross01-d3g02r-estimator-structure-holdout",
+    "head": "6c33d5b1da43353eb39a85b217854c74f78ed821",
+    "decision": "ROSSFAST_D3G02R_ESTIMATOR_STRUCTURE_HOLDOUT_NEGATIVE",
+    "d3_g02": "OPEN",
+    "governance_effect": "THE_PREVIOUS_FINEST_FULL_VS_TWO_HALF_ESTIMATOR_ROUTE_IS_STOPPED; THIS_WORKUNIT_TESTS_A_GENUINELY_NEW_PREDECLARED_ESTIMATOR_MODEL"
+  },
+  "current_canonical_at_freeze": {
+    "head": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "model_certificate_semantics": "AVAILABLE_AND_FINITE_AND_INDICATOR_GE_0_AND_INDICATOR_LE_1"
+  },
+  "scientific_hypothesis": {
+    "state_quantity": "TERMINAL_WATER_CONTENT",
+    "norm": "SPAN_NORMALIZED_L_INFINITY",
+    "levels": [2, 4, 8, 16],
+    "adjacent_deltas": ["DELTA_2_TO_4", "DELTA_4_TO_8", "DELTA_8_TO_16"],
+    "estimator": "MAX_OF_ADJACENT_REFINEMENT_DELTAS",
+    "formula": "E_env = max(||theta_2-theta_4||_inf_span, ||theta_4-theta_8||_inf_span, ||theta_8-theta_16||_inf_span)",
+    "refined_state": "THETA_16",
+    "hypothesis": "Across the frozen RossFast D2/D3R research domain, the predeclared multi-level envelope E_env conservatively bounds the independently referenced terminal error of theta_16 even when adjacent refinement deltas are non-monotone.",
+    "no_monotonicity_assumption": true,
+    "safety_multiplier": 1.0,
+    "posthoc_floor": false,
+    "posthoc_ratio_fit": false
+  },
+  "independent_reference": {
+    "method": "DOP853_OFFLINE_REFERENCE_ONLY",
+    "rtol": 1e-11,
+    "atol": 1e-13,
+    "dense_reference_max_step_divisors": [32, 64],
+    "self_consistency_limit_span_normalized": 1e-9,
+    "reference_used_for_runtime": false
+  },
+  "holdout_domain": {
+    "independence_statement": "D3G02 calibration used nominal forcing and D3G02R used +/-1 percent coupled forcing. D3G02H1 reserves previously unused independent +/-2 percent top/bottom envelope corners before execution.",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "initial_state": "FROZEN_D2_INITIAL_STATE",
+    "boundary_variants": [
+      {"id": "TOP_PLUS2_BOTTOM_PLUS2", "top_fraction": 0.02, "bottom_fraction": 0.02},
+      {"id": "TOP_PLUS2_BOTTOM_MINUS2", "top_fraction": 0.02, "bottom_fraction": -0.02},
+      {"id": "TOP_MINUS2_BOTTOM_PLUS2", "top_fraction": -0.02, "bottom_fraction": 0.02},
+      {"id": "TOP_MINUS2_BOTTOM_MINUS2", "top_fraction": -0.02, "bottom_fraction": -0.02}
+    ],
+    "case_count": 216,
+    "boundary_coordinate_semantics": "q_top = q_top_ref + top_fraction*top_scale; qbot = qbot_ref - bottom_fraction*bottom_scale, matching the frozen D2 scalar perturbation convention independently on each boundary",
+    "no_holdout_case_may_be_dropped_after_execution": true
+  },
+  "precommitted_case_gates": {
+    "candidate_ready_all_levels": true,
+    "candidate_only_no_accept_commit_publication": true,
+    "committed_state_immutable": true,
+    "d3r_duration_child_preflight": true,
+    "hard_mass_tolerance_cm": 1e-12,
+    "reference_self_consistency_max_span": 1e-9,
+    "accuracy_tolerance_span_normalized": 1e-5,
+    "required_conservativity": "REFERENCE_ERROR_THETA16_LE_E_ENV",
+    "no_monotone_error_or_delta_requirement": true
+  },
+  "precommitted_decision_rule": {
+    "positive_hypothesis_signal_requires": [
+      "EXACTLY_216_HOLDOUT_CASES_PRESENT",
+      "ALL_CASES_NUMERICALLY_VALID",
+      "ALL_REFERENCE_SELF_DELTAS_LE_1E_9_SPAN",
+      "ALL_MASS_RESIDUALS_ABS_LE_1E_12_CM",
+      "ALL_COMMITTED_STATES_UNMUTATED",
+      "NO_SOLVER_ACCEPT_COMMIT_OR_PUBLICATION_AUTHORITY",
+      "ALL_THETA16_REFERENCE_ERRORS_LE_1E_5",
+      "ALL_THETA16_REFERENCE_ERRORS_LE_E_ENV_WITH_SAFETY_MULTIPLIER_1"
+    ],
+    "positive_meaning": "Supports only a later separately preregistered runtime-certificate/wrapper and continuous-envelope scope qualification. It does not itself close D3 G02 or admit production use.",
+    "negative_meaning": "Stop this multi-level envelope route unless another genuinely new independently justified estimator hypothesis is preregistered.",
+    "no_threshold_or_multiplier_changes_after_results": true
+  },
+  "hard_nonclaims": [
+    "D3_G02_CLOSED",
+    "RUNTIME_CERTIFICATE_WRAPPER_QUALIFIED",
+    "CONTINUOUS_D2_BOUNDARY_ENVELOPE_PROVED",
+    "PRODUCTION_ADMISSION",
+    "PRODUCTION_COST_ACCEPTABLE",
+    "UNIVERSAL_ROSSFAST_TEMPORAL_ERROR_BOUND",
+    "MULTISWAP_QUALIFIED",
+    "RESTART_QUALIFIED"
+  ],
+  "production_source_delta": [],
+  "production_admission": false
+}
