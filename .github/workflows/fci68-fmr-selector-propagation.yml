@@ -21,7 +21,17 @@ jobs:
           ref: work/f-ci68-fmr-selector-propagation
           fetch-depth: 0
       - name: Apply bounded propagation patchset
-        run: python3 tools/fci68_apply_selector_propagation.py
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 tools/fci68_apply_selector_propagation.py 2>&1 | tee fci68-bootstrap.log
+      - name: Persist bootstrap diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci68-bootstrap-diagnostic-${{ github.run_id }}
+          path: fci68-bootstrap.log
+          if-no-files-found: error
       - name: Qualify candidate before persistence
         run: bash tests/fci/run_fci68_fmr_selector_propagation.sh
       - name: Enforce bounded delta
