@@ -145,7 +145,11 @@ jobs:
           for opt in 0 2; do
             OUT="$BUILD/o$opt"
             mkdir -p "$OUT"
-            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+            # mod_transaction_reference is a support dependency for canonical_interval_t.
+            # Its current source contains an intentional exact REAL comparison that is
+            # unrelated to EB-R02. Keep all warnings enabled, but do not promote only
+            # compare-reals to an error for this support compilation.
+            gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c \
               src/transaction/mod_transaction_reference.f90 -o "$OUT/mod_transaction_reference.o"
             gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
               src/runtime/mod_canonical_contracts.f90 -o "$OUT/mod_canonical_contracts.o"
