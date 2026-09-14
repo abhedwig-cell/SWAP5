@@ -1,0 +1,53 @@
+name: EB-I20R1 cross-ledger prepared provenance remediation
+
+on:
+  push:
+    branches:
+      - work/eb-i20r1-cross-ledger-prepared-provenance-remediation
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[eb-i20r1-materialized]')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply deterministic provenance remediation
+        run: |
+          python3 tests/eb/_apply_eb_i20r1_cross_ledger_provenance_patch.py
+          changed="$(git diff --name-only)"
+          test "$changed" = "src/runtime/mod_energy_conservation_ledger.f90"
+          git diff --check
+      - name: Commit local candidate
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/runtime/mod_energy_conservation_ledger.f90
+          git commit -m 'fix(EB-I20R1): bind prepared handles to ledger provenance [eb-i20r1-materialized]'
+      - name: Qualify local candidate before push
+        run: bash tests/eb/run_eb_i20r1_cross_ledger_provenance_gate.sh
+      - name: Push qualified candidate
+        run: git push origin HEAD:work/eb-i20r1-cross-ledger-prepared-provenance-remediation
+
+  qualify:
+    if: contains(github.event.head_commit.message, '[eb-i20r1-materialized]')
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "EB_I20R1_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I20R1_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Read-only owner postimage qualification
+        run: bash tests/eb/run_eb_i20r1_cross_ledger_provenance_gate.sh
