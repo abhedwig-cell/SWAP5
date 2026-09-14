@@ -160,7 +160,10 @@ contains
     record%lineage_id = lineage_id
     record%revision = revision
     record%committed_time = committed_time
-    call state%clone(record%backend_state)
+    ! export_committed returns a fresh allocatable continuation object owned by
+    ! this call. Transfer that ownership into the restart record instead of
+    ! requiring a second backend clone with duplicate copy semantics.
+    call move_alloc(state, record%backend_state)
     if (.not. allocated(record%backend_state)) then
       record = groundwater_committed_restart_record_t()
       status = GW_COUPLED_RESTART_GROUNDWATER_REJECTED
