@@ -25,6 +25,8 @@ jobs:
           fetch-depth: 0
       - name: Tested head identity
         run: |
+          # A metadata-only push after guarded materialization retriggers this
+          # read-only qualification against the immutable production postimage.
           echo "EBI21R_TESTED_HEAD=$(git rev-parse HEAD)"
           echo "EBI21R_TESTED_TREE=$(git rev-parse HEAD^{tree})"
       - name: Compiler identity
