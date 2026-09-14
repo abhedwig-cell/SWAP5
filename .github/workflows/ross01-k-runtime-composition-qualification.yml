@@ -1,0 +1,149 @@
+name: F-ROSS01 K_RUNTIME Composition Qualification
+
+on:
+  push:
+    branches: [work/f-ross01-k-runtime-composition-qualification]
+    paths:
+      - .github/workflows/ross01-k-runtime-composition-qualification.yml
+      - experiments/ross/run_ross01_k_runtime_composition_qualification.py
+      - experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py
+      - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
+      - integration/f-ross/F-ROSS01_D3G02R3_STATUS.json
+      - integration/f-ross/F-ROSS01_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-k-runtime-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install research harness dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Bind immutable current-canonical runtime contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          git show "FETCH_HEAD:src/runtime/mod_canonical_interval_runtime.f90" > "$RUNNER_TEMP/runtime.f90"
+          git show "FETCH_HEAD:src/runtime/mod_groundwater_coupled_restart.f90" > "$RUNNER_TEMP/restart.f90"
+
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          test "$(git hash-object "$RUNNER_TEMP/runtime.f90")" = "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b"
+          test "$(git hash-object "$RUNNER_TEMP/restart.f90")" = "0596933ff3ae89c61ab7a0913189a4fa3179e50b"
+
+          grep -q 'call checkpoint%clone(candidate_state)' "$RUNNER_TEMP/tx.f90"
+          grep -q 'outcome%temporal_certificate_available' "$RUNNER_TEMP/tx.f90"
+          grep -q 'outcome%temporal_indicator <= 1.0_real64' "$RUNNER_TEMP/tx.f90"
+          grep -q 'call move_alloc(candidate_state, committed)' "$RUNNER_TEMP/tx.f90"
+          grep -q 'call reject_and_retry' "$RUNNER_TEMP/tx.f90"
+
+          grep -q 'call committed%clone(working)' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'call execute_reference_interval(model, working, cursor, interval%t1' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'cursor = next_cursor' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'call move_alloc(working, committed)' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'result%diagnostics%external_commits = 1' "$RUNNER_TEMP/runtime.f90"
+
+          grep -q 'Only committed' "$RUNNER_TEMP/restart.f90"
+          grep -q 'class(transaction_state_t), allocatable :: swap_physical_state' "$RUNNER_TEMP/restart.f90"
+          ! grep -q 'temporal_certificate' "$RUNNER_TEMP/restart.f90"
+
+      - name: Bind qualified RossFast wrapper surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py)" = "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("integration/f-ross/F-ROSS01_D3G02R3_STATUS.json").read_text())
+          assert s["status"] == "CLOSED_POSITIVE_RESTRICTED_RESEARCH"
+          assert s["decision"] == "QUALIFIED_ROSSFAST_D3G02R_FAIL_CLOSED_MODEL_CERTIFICATE_ON_EXACT_D3R_DOMAIN"
+          PY
+
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_k_runtime_composition_qualification.py
+
+      - name: Qualify accepted restart boundary, fresh recertification and reject isolation
+        run: |
+          python3 experiments/ross/run_ross01_k_runtime_composition_qualification.py \
+            --material "${{ matrix.material }}" \
+            --canonical-head "$CANONICAL_HEAD" \
+            --output "F-ROSS01_K_RUNTIME_${{ matrix.material }}.json"
+
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-k-runtime-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_K_RUNTIME_${{ matrix.material }}.json
+
+  aggregate:
+    needs: qualify-material
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-k-runtime-*-${{ github.run_id }}
+          path: shards
+
+      - name: Aggregate qualification evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=sorted(Path("shards").rglob("F-ROSS01_K_RUNTIME_*.json"))
+          records=[json.loads(p.read_text()) for p in files]
+          expected={"B01","B12","O01","O05","O14","O18"}
+          seen={r.get("material") for r in records}
+          passed=len(records)==6 and seen==expected and all(r.get("pass") is True for r in records)
+          out={
+              "workunit":"F-ROSS01_K_RUNTIME",
+              "qualification_class":"RESTRICTED_RESEARCH_RUNTIME_COMPOSITION",
+              "pass":passed,
+              "materials":sorted(seen),
+              "records":records,
+              "nonclaims":[
+                  "NO_PRODUCTION_ADMISSION",
+                  "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+                  "NO_MULTISWAP_QUALIFICATION",
+                  "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION",
+                  "NO_A10_SURFACE_CAP_GENERALIZATION",
+              ],
+          }
+          Path("F-ROSS01_K_RUNTIME_AGGREGATE.json").write_text(
+              json.dumps(out, indent=2, sort_keys=True)+"\n"
+          )
+          if not passed:
+              raise SystemExit(1)
+          PY
+
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-k-runtime-aggregate-${{ github.run_id }}
+          path: F-ROSS01_K_RUNTIME_AGGREGATE.json
