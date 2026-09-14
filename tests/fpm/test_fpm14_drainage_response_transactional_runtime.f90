@@ -11,7 +11,7 @@ program test_fpm14_drainage_response_transactional_runtime
        fmr_new_b110_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, fmr_serialized_batch_diagnostics_t, &
        fmr_execute_serialized_resolved_physical_column
-  use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_BIND_OK
+  use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_BIND_OK
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -21,8 +21,7 @@ program test_fpm14_drainage_response_transactional_runtime
   real(real64), parameter :: t1 = 9123.375_real64
   real(real64), parameter :: initial_head = -123.0_real64
   real(real64), parameter :: initial_gwl = -2.25_real64
-  real(real64), parameter :: drain_head = -3.25_real64
-  real(real64), parameter :: resistance = 100.0_real64
+  real(real64), parameter :: constant_drainage_rate = 1.0e-2_real64
   real(real64), parameter :: mass_gate = 1.0e-10_real64
   integer(int64), parameter :: column_id = 14001_int64
 
@@ -47,11 +46,10 @@ contains
     type(fmr_serialized_physical_observation_t) :: observation
     type(fmr04_fixed_flux_top_provider_t), target :: top
     integer :: active_calls
-    real(real64) :: expected_q, expected_amount, net_external
+    real(real64) :: expected_amount, net_external
 
     call initialize_case(committed, column, template, parameters, forcing, config)
-    expected_q = (initial_gwl - drain_head) / resistance
-    expected_amount = expected_q * (t1 - t0)
+    expected_amount = constant_drainage_rate * (t1 - t0)
 
     call backend%initialize(top)
     call reset_runtime_outputs(output, diagnostic, runtime, active_calls)
@@ -60,15 +58,17 @@ contains
     observation = backend%observation()
 
     call require(output%completed .and. output%committed, 'active response committed')
-    call require(output%final_revision == 1_int64 .and. committed%current_revision() == 1_int64, 'single commit revision')
+    call require(output%final_revision == 1_int64 .and. committed%current_revision() == 1_int64, 'single external commit revision')
     call require(output%mass%complete .and. output%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, &
          'active response mass complete')
     call require(abs(output%mass%residual) <= mass_gate, 'active response hard mass closure')
-    call require(output%accepted_substeps == 1, 'large temporal tolerance accepted full candidate')
+    call require(output%accepted_substeps == 1, 'one canonical accepted transaction')
     net_external = output%mass%total_out - output%mass%total_in
-    call require(abs(net_external - expected_amount) <= mass_gate, 'drainage booked exactly once in accepted full candidate')
+    call require(abs(net_external - expected_amount) <= mass_gate, &
+         'only accepted two-half drainage entered authoritative ledger')
     call require(observation%drainage_response_active, 'drainage response observation active')
-    call require(observation%drainage_response_evaluations >= 1, 'drainage evaluated in transactional advance')
+    call require(observation%drainage_response_evaluations == 3, &
+         'full reference plus two half-step responses evaluated exactly once each')
     call require(observation%drainage_response%status == FMR_DRAIN_BIND_OK, 'drainage response diagnostics available')
     call require(.not. observation%drainage_response%transfer_booked_here, 'response binding itself does not book mass')
     call require(observation%drainage_response_mass_accounted_in_trial, 'existing trial ledger owns response transfer')
@@ -151,8 +151,11 @@ contains
     parameters%frost_active = .false.
     parameters%drainage_response_active = .true.
     allocate(parameters%drainage_response_levels(1))
-    parameters%drainage_response_levels(1)%variant = FMR_DRAIN_VARIANT_LINEAR
-    parameters%drainage_response_levels(1)%linear%drainage_resistance = resistance
+    parameters%drainage_response_levels(1)%variant = FMR_DRAIN_VARIANT_TABULATED
+    allocate(parameters%drainage_response_levels(1)%tabulated%groundwater_depth(1), &
+         parameters%drainage_response_levels(1)%tabulated%signed_exchange_rate(1))
+    parameters%drainage_response_levels(1)%tabulated%groundwater_depth(1) = 20.0_real64
+    parameters%drainage_response_levels(1)%tabulated%signed_exchange_rate(1) = constant_drainage_rate
 
     call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
     call bind_b110_default_mvg_provider(provider, hp, t1-t0)
@@ -190,8 +193,6 @@ contains
     forcing%bottom_head = -321.0_real64
     allocate(forcing%drainage_response_controls(1), forcing%subsurface_irrigation_source(numnod), &
          forcing%root_extraction_sink(numnod))
-    forcing%drainage_response_controls(1)%drain_head_supplied = .true.
-    forcing%drainage_response_controls(1)%drain_head = drain_head
     forcing%subsurface_irrigation_source = 0.0_real64
     forcing%root_extraction_sink = 0.0_real64
 
