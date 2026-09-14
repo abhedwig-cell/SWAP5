@@ -66,7 +66,9 @@ for forbidden in ('trial_exchange_m', 'prepared_generation', 'prepared_active'):
     assert forbidden not in ledger_record, forbidden
 
 assert 'procedure, public :: restart_quiescent' in service
-assert 'prepared_slot_for_service(self) == 0' in service
+quiescence=service.split('pure logical function preparable_restart_quiescent',1)[1].split('end function preparable_restart_quiescent',1)[0]
+assert 'if (.not. allocated(self%reservation_slots)) return' in quiescence
+assert 'quiescent = .not. any(self%reservation_slots%active)' in quiescence
 assert restart.count('service%restart_quiescent()') >= 2
 assert 'error stop \'groundwater restart adapter success violated quiescent postcondition\'' in restart
 assert 'error stop \'groundwater restart adapter success violated time provenance postcondition\'' in restart
