@@ -1,0 +1,165 @@
+name: F-ROSS01 K_RUNTIME Remainder Scheduler Qualification
+
+on:
+  push:
+    branches: [work/f-ross01-k-runtime-composition-qualification]
+    paths:
+      - .github/workflows/ross01-k-runtime-remainder-qualification.yml
+      - experiments/ross/run_ross01_k_runtime_remainder_qualification.py
+      - integration/f-ross/F-ROSS01_K_RUNTIME_RESTART_COMPOSITION_STATUS.json
+      - integration/f-ross/F-ROSS01_K_RUNTIME_REMAINDER_SCHEDULER_CONTRACT.json
+      - experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py
+      - experiments/ross/ross01_d3r_fsi31_duration_adapter.py
+      - integration/f-ross/F-ROSS01_D3G02R3_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross01-k-runtime-remainder-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install research harness dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Bind immutable current-canonical runtime contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin integration/f-ci-canonical
+          canonical_head=$(git rev-parse FETCH_HEAD)
+          echo "CANONICAL_HEAD=$canonical_head" >> "$GITHUB_ENV"
+
+          git show "FETCH_HEAD:src/transaction/mod_transaction_reference.f90" > "$RUNNER_TEMP/tx.f90"
+          git show "FETCH_HEAD:src/runtime/mod_canonical_interval_runtime.f90" > "$RUNNER_TEMP/runtime.f90"
+          git show "FETCH_HEAD:src/runtime/mod_groundwater_coupled_restart.f90" > "$RUNNER_TEMP/restart.f90"
+
+          test "$(git hash-object "$RUNNER_TEMP/tx.f90")" = "d5a71a526efaebd82054580c3186f8e3545db331"
+          test "$(git hash-object "$RUNNER_TEMP/runtime.f90")" = "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b"
+          test "$(git hash-object "$RUNNER_TEMP/restart.f90")" = "0596933ff3ae89c61ab7a0913189a4fa3179e50b"
+
+          grep -q 'call checkpoint%clone(candidate_state)' "$RUNNER_TEMP/tx.f90"
+          grep -q 'call move_alloc(candidate_state, committed)' "$RUNNER_TEMP/tx.f90"
+          grep -q 'result%accepted_t1 = attempt_t1' "$RUNNER_TEMP/tx.f90"
+          grep -q 'call reject_and_retry' "$RUNNER_TEMP/tx.f90"
+
+          grep -q 'call committed%clone(working)' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'call execute_reference_interval(model, working, cursor, interval%t1' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'cursor = next_cursor' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'call move_alloc(working, committed)' "$RUNNER_TEMP/runtime.f90"
+          grep -q 'result%diagnostics%external_commits = 1' "$RUNNER_TEMP/runtime.f90"
+
+      - name: Bind qualified RossFast dependency surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/ross/ross01_d3g02r_resolution_floor_certificate_adapter.py)" = "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd"
+          test "$(git hash-object experiments/ross/ross01_d3r_fsi31_duration_adapter.py)" = "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          restart=json.loads(Path("integration/f-ross/F-ROSS01_K_RUNTIME_RESTART_COMPOSITION_STATUS.json").read_text())
+          contract=json.loads(Path("integration/f-ross/F-ROSS01_K_RUNTIME_REMAINDER_SCHEDULER_CONTRACT.json").read_text())
+          d3=json.loads(Path("integration/f-ross/F-ROSS01_D3G02R3_STATUS.json").read_text())
+          assert restart["status"] == "CLOSED_POSITIVE_RESTRICTED_RESEARCH"
+          assert restart["workflow_run_id"] == 34873006274
+          assert restart["aggregate"]["pass"] is True
+          assert contract["status"] == "PRECOMMITTED_QUALIFICATION_CONTRACT"
+          assert contract["max_full_attempt_index"] == 8
+          assert contract["hard_mass_tolerance_cm"] == 1e-12
+          assert d3["status"] == "CLOSED_POSITIVE_RESTRICTED_RESEARCH"
+          PY
+
+      - name: Syntax check
+        run: python3 -m py_compile experiments/ross/run_ross01_k_runtime_remainder_qualification.py
+
+      - name: Qualify bounded dyadic remainder completion
+        run: |
+          python3 experiments/ross/run_ross01_k_runtime_remainder_qualification.py \
+            --material "${{ matrix.material }}" \
+            --canonical-head "$CANONICAL_HEAD" \
+            --output "F-ROSS01_K_RUNTIME_REMAINDER_${{ matrix.material }}.json"
+
+      - name: Upload material evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-k-runtime-remainder-${{ matrix.material }}-${{ github.run_id }}
+          path: F-ROSS01_K_RUNTIME_REMAINDER_${{ matrix.material }}.json
+
+  aggregate:
+    needs: qualify-material
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f-ross01-k-runtime-remainder-*-${{ github.run_id }}
+          path: shards
+
+      - name: Aggregate bounded remainder evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=sorted(Path("shards").rglob("F-ROSS01_K_RUNTIME_REMAINDER_*.json"))
+          records=[json.loads(p.read_text()) for p in files]
+          expected={"B01","B12","O01","O05","O14","O18"}
+          seen={r.get("material") for r in records}
+          passed=len(records)==6 and seen==expected and all(r.get("pass") is True for r in records)
+          max_mass=max((r["chain"]["max_abs_segment_mass_residual_cm"] for r in records if r.get("chain",{}).get("pass")), default=None)
+          max_indicator=max((r["chain"]["max_temporal_indicator"] for r in records if r.get("chain",{}).get("pass")), default=None)
+          max_aggregate=max((abs(r["chain"]["aggregate_mass"]["residual_cm"]) for r in records if r.get("chain",{}).get("pass")), default=None)
+          b01=next((r for r in records if r.get("material")=="B01"), {})
+          out={
+              "workunit":"F-ROSS01_K_RUNTIME_REMAINDER",
+              "qualification_class":"RESTRICTED_RESEARCH_REMAINDER_SCHEDULER_COMPOSITION",
+              "scope":"EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
+              "pass":passed,
+              "materials":sorted(seen),
+              "material_count":len(records),
+              "max_abs_segment_mass_residual_cm":max_mass,
+              "max_abs_aggregate_mass_residual_cm":max_aggregate,
+              "max_temporal_indicator":max_indicator,
+              "b01_deep_replay":b01.get("chain",{}).get("replay"),
+              "b01_failure_isolation":b01.get("failure_isolation"),
+              "records":records,
+              "nonclaims":[
+                  "NO_PRODUCTION_ADMISSION",
+                  "NO_PRODUCTION_RUNTIME_PERFORMANCE_QUALIFICATION",
+                  "NO_ARBITRARY_DURATION_GENERALIZATION",
+                  "NO_MULTISWAP_QUALIFICATION",
+                  "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION",
+                  "NO_A10_SURFACE_CAP_GENERALIZATION",
+              ],
+          }
+          Path("F-ROSS01_K_RUNTIME_REMAINDER_AGGREGATE.json").write_text(
+              json.dumps(out, indent=2, sort_keys=True)+"\n"
+          )
+          if not passed:
+              raise SystemExit(1)
+          PY
+
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-k-runtime-remainder-aggregate-${{ github.run_id }}
+          path: F-ROSS01_K_RUNTIME_REMAINDER_AGGREGATE.json

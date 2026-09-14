@@ -1,0 +1,80 @@
+{
+  "aggregate": {
+    "artifact_digest": "sha256:db9d006f2bfd4149ec433d70654252bbb6038a28ecabb74768eb71079715002a",
+    "artifact_id": 10359973043,
+    "material_count": 6,
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "max_abs_mass_residual_cm": 2.2686733232693892e-14,
+    "max_temporal_indicator": 2.59721936903394e-05,
+    "pass": true
+  },
+  "branch": "work/f-ross01-k-runtime-composition-qualification",
+  "canonical": {
+    "coupled_restart_blob": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "head": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+    "interval_runtime_blob": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "decision": "QUALIFIED_ROSSFAST_RESTART_REPLAY_AND_CANDIDATE_ISOLATION_ON_EXACT_D3R_SCOPE",
+  "dependencies": {
+    "d3g02r3_wrapper_blob": "ea680ea8c5b1e199aeec4b39b29dc7a00f752bcd",
+    "d3r_duration_adapter_blob": "9ccf97ef515ddd63430c8a5bcab6503ca2574f0a"
+  },
+  "hard_nonclaims": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_PRODUCTION_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_QUALIFICATION",
+    "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION",
+    "NO_A10_SURFACE_CAP_GENERALIZATION"
+  ],
+  "material_artifacts": {
+    "B01": {
+      "artifact_id": 10359941531,
+      "digest": "sha256:178ac9a3e1c0bbc4e968b3cccce7fe430cd438bee17c6821310d1917e30e0672"
+    },
+    "B12": {
+      "artifact_id": 10359952339,
+      "digest": "sha256:b1318bee68a391d63afb01081ed2c7ba06136c53362fd817871964644d207262"
+    },
+    "O01": {
+      "artifact_id": 10359956640,
+      "digest": "sha256:aeac97857f375ee5549eefe92dc746141175044afff9c62a7c0709d485526531"
+    },
+    "O05": {
+      "artifact_id": 10359989909,
+      "digest": "sha256:cb0e90ca2f0aefd40258517cfa5fb3ed1174cca01618b0f3aef8444b8f7da981"
+    },
+    "O14": {
+      "artifact_id": 10359919049,
+      "digest": "sha256:17463827d3ba491e6ed5aef7bf78a79b96e7dfcd44d30f3971ecde9313a2694f"
+    },
+    "O18": {
+      "artifact_id": 10359923294,
+      "digest": "sha256:2a139f7df5f23cf99b74e89263640636db7531bbff76aa38ce01105dd7142fd9"
+    }
+  },
+  "qualified": {
+    "accepted_restart_boundary_composition": true,
+    "candidate_isolation": true,
+    "committed_state_only_restart_projection": true,
+    "deterministic_restart_replay": true,
+    "fresh_certificate_after_restart": true,
+    "off_ladder_fail_closed": true
+  },
+  "remainder_scheduler_qualified": false,
+  "remaining_k_runtime_gap": "BOUNDED_END_TO_END_REMAINDER_SCHEDULING_AFTER_SHORTENED_ACCEPT",
+  "schema_version": 1,
+  "scope": "EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
+  "status": "CLOSED_POSITIVE_RESTRICTED_RESEARCH",
+  "tested_head": "a6076591ac2c705fdf16a19de89c0717774417c6",
+  "workflow_run_id": 34873006274,
+  "workunit": "F-ROSS01 K_RUNTIME restart composition"
+}

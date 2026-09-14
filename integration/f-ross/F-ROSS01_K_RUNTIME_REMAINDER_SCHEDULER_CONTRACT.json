@@ -1,0 +1,82 @@
+{
+  "certificate": {
+    "canonical_runtime_remains_accept_commit_authority": true,
+    "fresh_d3g02r3_execution_after_each_private_state_change": true
+  },
+  "duration_family": "H/2^i",
+  "evidence_reuse": {
+    "d3g02r3_certificate_matrix": "INHERIT_IF_DEPENDENCY_BLOBS_EXACT",
+    "d3r_duration_and_two_half_numerics": "INHERIT_IF_DEPENDENCY_BLOBS_EXACT",
+    "restart_composition_run": 34873006274
+  },
+  "forcing": {
+    "policy": "PRESERVE_SAME_OUTER_INTERVAL_FORCING_ACROSS_REMAINDER_SEGMENTS",
+    "state_local_rebinding_between_segments": false
+  },
+  "full_attempt_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "half_only_index": 9,
+  "hard_mass_tolerance_cm": 1e-12,
+  "hard_nonclaims": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_PRODUCTION_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_QUALIFICATION",
+    "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION",
+    "NO_A10_SURFACE_CAP_GENERALIZATION"
+  ],
+  "integer_grid": {
+    "below_minimum_or_off_grid": "FAIL_CLOSED_BEFORE_COMPONENT_EXECUTION",
+    "outer_units": 256,
+    "require_exact_grid_membership": true,
+    "unit_day": 6.25e-06
+  },
+  "mass": {
+    "absolute_residual_tolerance_cm": 1e-12,
+    "aggregate_outer_interval_mass_required": true,
+    "complete_terms_required_each_segment": true
+  },
+  "max_full_attempt_index": 8,
+  "minimum_full_attempt_day": 6.25e-06,
+  "outer_horizon_day": 0.0016,
+  "ownership": {
+    "external_committed_state_unchanged_until_outer_completion": true,
+    "external_publication_count_after_complete_outer_interval": 1,
+    "private_working_state_advances_between_accepted_segments": true,
+    "receipt_must_bind_input_state_time_and_duration": true,
+    "stale_candidate_or_certificate_receipt_reuse": "FORBIDDEN"
+  },
+  "retry_rule": {
+    "maximum_reachable_full_attempt_index": 8,
+    "segment_retry_cap": "8 - segment_index",
+    "smallest_segment_failure": "FAIL_CLOSED",
+    "smallest_segment_retry_cap": 0
+  },
+  "schema_version": 1,
+  "scope": "EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
+  "selection_rule": "GREEDY_LARGEST_QUALIFIED_DYADIC_DURATION_NOT_EXCEEDING_REMAINDER",
+  "shortened_accept_remainder_rule": {
+    "arbitrary_0_0012_solver_call": false,
+    "example_after_level_2_accept": [
+      1,
+      2
+    ],
+    "example_original_unqualified_remainder_day": 0.0012,
+    "example_replacement_segments_day": [
+      0.0008,
+      0.0004
+    ],
+    "for_initial_full_index_k_1_through_8": "schedule indices 1 through k"
+  },
+  "status": "PRECOMMITTED_QUALIFICATION_CONTRACT",
+  "workunit": "F-ROSS01 K_RUNTIME bounded remainder scheduler"
+}
