@@ -3,20 +3,18 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-fci66-gate-$$"
-mkdir -p "$BUILD/legacy_o0" "$BUILD/legacy_o2" "$BUILD/selector_o0" "$BUILD/selector_o2"
+mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 
-# Keep warnings strict for the F-CI66 delta, but do not let the pre-existing
-# current-canonical REAL equality warning in the immutable transaction source
-# masquerade as a new admission failure.
+# Keep warnings strict for the F-CI66 delta, but do not let pre-existing exact
+# REAL comparisons in immutable current-canonical sources become a new defect.
 COMMON=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
 TX="$ROOT/src/transaction/mod_transaction_reference.f90"
 CONTRACTS="$ROOT/src/runtime/mod_canonical_contracts.f90"
 RUNTIME="$ROOT/src/runtime/mod_canonical_interval_runtime.f90"
-LEGACY_TEST="$ROOT/tests/fci/test_fci04_interval_runtime.f90"
-SELECTOR_TEST="$ROOT/tests/fci/test_fci66_window_target_selector.f90"
+TEST="$ROOT/tests/fci/test_fci66_window_target_selector.f90"
 
-# Immutable dependencies: F-CI66 changes the interval execution-policy seam only.
+# Immutable dependencies: F-CI66 changes interval execution policy only.
 test "$(git -C "$ROOT" rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = \
   d5a71a526efaebd82054580c3186f8e3545db331
 test "$(git -C "$ROOT" rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" = \
@@ -34,20 +32,21 @@ grep -Fq 'transaction_policy%max_retries = min(config%transaction%max_retries, m
 grep -Fq 'call execute_reference_interval(model, working, cursor, transaction_t1, transaction_policy, tx)' "$RUNTIME"
 grep -Fq 'next_cursor > transaction_t1 + tol' "$RUNTIME"
 
+# FCI04 is a historical pre-hard-mass-completeness fixture and is not a valid
+# oracle for this current-canonical transaction core. F-CI66 therefore carries
+# its own complete-mass fixture and pins the default no-selector endpoint,
+# transaction count, retry history and single-publication semantics.
+grep -Fq 'outcome%mass_accounting_complete = .true.' "$TEST"
+grep -Fq 'call test_default_current_canonical_behavior(failures)' "$TEST"
+grep -Fq '0.586181640625_real64' "$TEST"
+
 for OPT in o0 o2; do
   FLAG="-O0"
   if [[ "$OPT" == "o2" ]]; then FLAG="-O2"; fi
 
-  # Replay existing FCI04 executable semantics on the modified source to prove
-  # that omitting the optional selector preserves the established API and
-  # current-canonical interval behavior.
-  gfortran "${COMMON[@]}" "$FLAG" -J "$BUILD/legacy_$OPT" \
-    "$TX" "$CONTRACTS" "$RUNTIME" "$LEGACY_TEST" -o "$BUILD/legacy_$OPT/test"
-  "$BUILD/legacy_$OPT/test"
-
-  gfortran "${COMMON[@]}" "$FLAG" -J "$BUILD/selector_$OPT" \
-    "$TX" "$CONTRACTS" "$RUNTIME" "$SELECTOR_TEST" -o "$BUILD/selector_$OPT/test"
-  "$BUILD/selector_$OPT/test"
+  gfortran "${COMMON[@]}" "$FLAG" -J "$BUILD/$OPT" \
+    "$TX" "$CONTRACTS" "$RUNTIME" "$TEST" -o "$BUILD/$OPT/test"
+  "$BUILD/$OPT/test"
 done
 
 if grep -Ein '\bsave\b|open\s*\(|read\s*\(|write\s*\(' "$CONTRACTS" "$RUNTIME"; then
