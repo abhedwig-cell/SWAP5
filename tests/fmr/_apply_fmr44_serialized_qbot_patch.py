@@ -63,7 +63,19 @@ if anchor in text and 'FMR44_EQUILIBRIUM_DEBUG' not in text:
            output%final_revision, ' solver_status=', observation%solver_status
     end if
 """ + anchor
-    test.write_text(text.replace(anchor, diagnostic, 1))
-    print('FMR44_QUALIFICATION_DIAGNOSTICS=INSTRUMENTED')
+    text = text.replace(anchor, diagnostic, 1)
 
+# For the positive prescribed-qbot path, distinguish a pre-solver/state-layout
+# return from a Richards solve rejection and from a post-solve certificate issue.
+anchor = """      write(*,'(A,L1,A,L1,A,L1,A,ES26.17E3,A,ES26.17E3,A,A)') 'FMR44_CERT_DEBUG enabled=', &
+"""
+if anchor in text and 'FMR44_ADVANCE_DEBUG' not in text:
+    diagnostic = """      write(*,'(A,L1,A,I0,A,I0,A,I0)') 'FMR44_ADVANCE_DEBUG solver_executed=', observation%solver_executed, &
+           ' solver_status=', observation%solver_status, ' headcalc_calls=', output%solver_headcalc_calls, &
+           ' final_revision=', output%final_revision
+""" + anchor
+    text = text.replace(anchor, diagnostic, 1)
+
+test.write_text(text)
+print('FMR44_QUALIFICATION_DIAGNOSTICS=INSTRUMENTED')
 print(f'FMR44_PRODUCTION_ADMISSION_PATCH_COUNT={changed}')
