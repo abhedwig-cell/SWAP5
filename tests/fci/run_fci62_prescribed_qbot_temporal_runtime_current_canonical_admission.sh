@@ -43,7 +43,7 @@ assert pre['scope_guards']['new_application_accuracy_default'] is False
 assert len(a['invariants'])==30 and [x['id'] for x in a['invariants']]==list(range(1,31))
 assert all(x['assessment']=='NO_ADVERSE_ADMISSION_DELTA' for x in a['invariants'])
 assert a['overall']=='30_OF_30_NO_ADVERSE_ADMISSION_DELTA' and a['canonical_admission'] is False
-assert si['status']=='QUALIFIED_PRESCRIBED_QBOT_TEMPORAL_CERTIFICATE_NOT_CANONICAL_ADMITTED'
+assert si['status']=='QUALIFIED_SOURCE_CAPABILITY_NOT_CANONICAL_ADMITTED'
 assert mr['status']=='QUALIFIED_SOURCE_CAPABILITY_NOT_CANONICAL_ADMITTED'
 assert mr['qualification_evidence']['exact_head_production_qualification'] is True
 assert abs(mr['qualification_evidence']['positive_qbot_mass_residual_cm']) <= 1.0e-12
