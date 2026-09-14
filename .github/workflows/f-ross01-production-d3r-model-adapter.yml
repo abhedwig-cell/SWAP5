@@ -10,6 +10,7 @@ on:
       - 'src/transaction/mod_transaction_reference.f90'
       - 'tests/runtime/test_f_ross01_d3r_model_adapter.f90'
       - 'tests/runtime/run_f_ross01_d3r_model_adapter.sh'
+      - 'integration/f-ci/F-CI66P_STATUS.json'
       - '.github/workflows/f-ross01-production-d3r-model-adapter.yml'
   workflow_dispatch:
 
@@ -19,6 +20,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Qualify production D3R adapter
