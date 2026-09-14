@@ -41,24 +41,25 @@ BASE=(-std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -ffree-line-leng
 BASE_MODULES=(src/transaction/mod_transaction_reference.f90 src/runtime/mod_canonical_contracts.f90 src/runtime/mod_canonical_interval_runtime.f90 src/kernel/mod_kernel_transactions.f90 src/runtime/mod_fmr_accepted_commit_receipt.f90)
 
 compile_stack(){
-  local opt="$1" out="$2"; mkdir -p "$out"; STACK_OBJECTS=()
-  for src in "${BASE_MODULES[@]}"; do
-    local obj="$out/$(basename "${src%.*}").o"
-    gfortran "${BASE[@]}" -O"$opt" -J "$out" -I "$out" -c "$src" -o "$obj"
+  local opt="$1" out="$2" module_src obj
+  mkdir -p "$out"; STACK_OBJECTS=()
+  for module_src in "${BASE_MODULES[@]}"; do
+    obj="$out/$(basename "${module_src%.*}").o"
+    gfortran "${BASE[@]}" -O"$opt" -J "$out" -I "$out" -c "$module_src" -o "$obj"
     STACK_OBJECTS+=("$obj")
   done
-  for src in "$TYPES" "$LEDGER"; do
-    local obj="$out/$(basename "${src%.*}").o"
-    gfortran "${STRICT[@]}" -O"$opt" -J "$out" -I "$out" -c "$src" -o "$obj"
+  for module_src in "$TYPES" "$LEDGER"; do
+    obj="$out/$(basename "${module_src%.*}").o"
+    gfortran "${STRICT[@]}" -O"$opt" -J "$out" -I "$out" -c "$module_src" -o "$obj"
     STACK_OBJECTS+=("$obj")
   done
 }
 
 run_test_pair(){
-  local name="$1" src="$2" marker="$3"
+  local name="$1" test_src="$2" marker="$3" opt out
   for opt in 0 2; do
-    local out="$BUILD/${name}-o${opt}"; compile_stack "$opt" "$out"
-    gfortran "${STRICT[@]}" -O"$opt" -J "$out" -I "$out" -c "$src" -o "$out/test.o"
+    out="$BUILD/${name}-o${opt}"; compile_stack "$opt" "$out"
+    gfortran "${STRICT[@]}" -O"$opt" -J "$out" -I "$out" -c "$test_src" -o "$out/test.o"
     gfortran -O"$opt" "${STACK_OBJECTS[@]}" "$out/test.o" -o "$out/test"
     "$out/test" > "$out/out.txt"
     grep -Fq "$marker" "$out/out.txt" || fail "$name marker O$opt"
