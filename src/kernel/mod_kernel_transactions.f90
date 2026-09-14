@@ -272,28 +272,24 @@ contains
       if (transfer(committed_time, 0_int64) /= transfer(0.0_real64, 0_int64)) return
     end if
 
-    call initial_state_clone_placeholder()
-  contains
-    subroutine initial_state_clone_placeholder()
-      call physical_state%clone(copy)
-      if (.not. allocated(copy)) return
+    call physical_state%clone(copy)
+    if (.not. allocated(copy)) return
 
-      call move_alloc(copy, target%physical_state)
-      target%lineage_id = lineage_id
-      target%revision = revision
-      target%committed_time_value = committed_time
-      target%time_bound = time_bound
-      target%initialized = .true.
+    call move_alloc(copy, target%physical_state)
+    target%lineage_id = lineage_id
+    target%revision = revision
+    target%committed_time_value = committed_time
+    target%time_bound = time_bound
+    target%initialized = .true.
 
-      status = KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED
-      if (.not. target%ready()) then
-        target = kernel_committed_state_t()
-        return
-      end if
+    status = KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED
+    if (.not. target%ready()) then
+      target = kernel_committed_state_t()
+      return
+    end if
 
-      reconstructed = .true.
-      status = KERNEL_TRUSTED_RECONSTRUCTION_OK
-    end subroutine initial_state_clone_placeholder
+    reconstructed = .true.
+    status = KERNEL_TRUSTED_RECONSTRUCTION_OK
   end subroutine kernel_reconstruct_committed_state_trusted
 
   subroutine kernel_snapshot_committed(self, copy, available)
