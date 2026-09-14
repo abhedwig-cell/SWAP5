@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02R",
+  "purpose": "RECONCILE_PARALLEL_SUCCESSOR_BRANCH_OWNERSHIP_WITHOUT_CHANGING_SCIENCE",
+  "parent_authority": {
+    "branch": "work/f-ross01-d3g02-temporal-certificate-qualification",
+    "head": "3e1df24f1a56145236d835fb8a089e01adb04b05",
+    "decision": "ROSSFAST_D3G02_TEMPORAL_CERTIFICATE_NOT_QUALIFIED",
+    "d3_g02": "OPEN"
+  },
+  "active_upstream_research_authority": {
+    "branch": "work/f-ross01-d3g02r-estimator-structure-holdout",
+    "role": "INDEPENDENT_ESTIMATOR_STRUCTURE_AND_HOLDOUT_QUALIFICATION",
+    "authority_run": 34823564419,
+    "frozen_case_count": 108,
+    "may_close_d3_g02": false,
+    "may_admit_certificate_constants": false
+  },
+  "paused_downstream_candidate": {
+    "branch": "work/f-ross01-d3g02r-resolution-floor-temporal-certificate",
+    "head_observed": "eea3c2c9cc3bf67c169ce312d15075de43d77ebc",
+    "hypothesis": "max(raw_full_vs_two_half_estimator,1e-10)/1e-5",
+    "disposition": "PAUSED_PENDING_ESTIMATOR_STRUCTURE_HOLDOUT",
+    "reason": "This branch proposes a certificate-bound evolution and therefore must not run as a parallel scientific authority before the upstream independent holdout establishes whether the underlying estimator structure is stable on predeclared +/-1 percent forcing holdouts.",
+    "not_superseding": true,
+    "not_admitted": true
+  },
+  "ordering_rule": "First close D3G02R estimator-structure holdout. Only a positive research signal may justify a later separately preregistered certificate-model hypothesis. A negative structural signal stops this estimator/certificate route unless a genuinely new independently justified scientific hypothesis is established.",
+  "anti_parallel_authority_rule": "No result from the paused resolution-floor branch may be combined with, substituted for, or used to relax the frozen D3G02R holdout gates.",
+  "production_admission": false,
+  "production_source_delta": []
+}
