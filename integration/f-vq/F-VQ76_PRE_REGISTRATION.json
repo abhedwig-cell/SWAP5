@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fvq76.preregistration.v1",
+  "work_unit": "F-VQ76",
+  "title": "Drainage runtime preservation requalification after F-CI62 shared-backend drift",
+  "branch": "qualification/f-vq76-drainage-post-fci62-preservation-requalification",
+  "canonical_base": {
+    "sha": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "tree": "55d62577f305bd6522726338818579520a52d29c"
+  },
+  "trigger": {
+    "F_PM18": "a92197f46780c9c19fc4c2ebe79449c0cd6974c7",
+    "finding": "F-CI62 changed src/runtime/mod_fmr_serialized_reference_backend.f90 after F-VQ73/F-VQ74 drainage qualification, so exact-current-postimage preservation must be requalified before Drainage-v1 completion credit."
+  },
+  "immutable_oracles": {
+    "F_VQ73_closeout": "ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "F_VQ73_test_program_blob": "e7008eda5f29ee2e401cb3eb8a1b1523da3bc25a",
+    "F_VQ74_closeout": "60c121a0993993bd79fb30ddfd54e2a9d14f042e",
+    "F_VQ74_test_program_blob": "dabe53d0714abee8e87b2e90f89c2eed169506e0",
+    "F_PM13_denominator": "e5cd87eafb95356ca0d5ef8399fcb64feae78fd2",
+    "F_PM17_scope_correction": "45455f54c0c3554150e273aff07bfccd06d69c14"
+  },
+  "production_postimage": {
+    "stable_drainage_files": 10,
+    "shared_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "old_qualified_blob": "0f09c0df1559ece894356b146b64d872470c0a32",
+    "current_blob": "21e0e4229f202f1a3a74c4da004aa32a2c855f03"
+  },
+  "required_evidence": [
+    "unchanged immutable F-VQ73 runtime test program replayed against exact current canonical sources at O0 and O2",
+    "unchanged immutable F-VQ74 cross-cutting test program replayed against exact current canonical sources at O0 and O2",
+    "hard mass and exactly-once booking retained",
+    "reject atomicity retained",
+    "restart/no-additional-state retained",
+    "MultiSWAP isolation and order independence retained",
+    "accepted/rejected diagnostics retained",
+    "generic non-calendar interval retained",
+    "precomputed DIVDRA and fixed-weir routes remain source-preserved",
+    "all 30 architecture invariants no adverse qualification delta"
+  ],
+  "scope_guards": {
+    "production_change": false,
+    "reference_change": false,
+    "new_drainage_physics": false,
+    "scope_reduction": false,
+    "scope_expansion": false,
+    "fully_implicit_solver_coupling_added": false,
+    "canonical_admission": false
+  }
+}
