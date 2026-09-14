@@ -16,6 +16,8 @@ fail() { echo "FSI37_QUALIFICATION_FAIL $*" >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == 3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55 ]] || fail 'HeadCalc drift'
 [[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" == 03a64b6d09fd804242bcf76f7cb5277f59a6230a ]] || fail 'reference adapter drift'
 [[ "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" == fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6 ]] || fail 'B110 value provider drift'
+[[ "$(git rev-parse HEAD:src/solver/mod_b110_source_sink_provider.f90)" == d6c57add72387e5c0022a44319fff08046194aac ]] || fail 'B110 source/sink provider drift'
+[[ "$(git rev-parse HEAD:src/solver/mod_fixed_flux_top_boundary_provider.f90)" == fb226f133bd48d8ab945f111c76897aeff49facf ]] || fail 'fixed-flux provider drift'
 
 python3 tests/fsi/fsi37_make_reference_stubs.py tests/fsi/fsi04_real_headcalc_stubs.f90 "$BUILD/reference_stubs.f90"
 grep -Fq 'Operation order follows SWAP 4.3.1 tridag.f90' "$BUILD/reference_stubs.f90" || fail 'reference TRIDAG marker missing'
@@ -58,6 +60,7 @@ build_and_run() {
   grep -Fq 'FSI37_FD_CASES=30' "$out/output.txt" || fail "FD case count missing opt=$tag"
   grep -Fq 'FSI37_SWKMEAN_METHODS_1_6=PASS' "$out/output.txt" || fail "mean-method marker missing opt=$tag"
   grep -Fq 'FSI37_NONUNIFORM_BASE_PROFILE=PASS' "$out/output.txt" || fail "nonuniform-profile marker missing opt=$tag"
+  grep -Fq 'FSI37_ALTERNATIVE_SOLVER_FAIL_CLOSED=PASS' "$out/output.txt" || fail "alternative-solver fail-closed marker missing opt=$tag"
   echo "FSI37_OPT_PASS=$tag"
 }
 
@@ -67,8 +70,8 @@ build_and_run -O2 o2
 # Compiler optimization is qualified by running the full numeric gates in both
 # modes. Raw floating diagnostic rows may differ in last-bit formatting, so only
 # stable qualification semantics are required to be identical.
-grep -E '^FSI37_(FD_CASES=30|SWKMEAN_METHODS_1_6=PASS|NONUNIFORM_BASE_PROFILE=PASS|ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS)$' "$BUILD/o0/output.txt" > "$BUILD/o0/stable.txt"
-grep -E '^FSI37_(FD_CASES=30|SWKMEAN_METHODS_1_6=PASS|NONUNIFORM_BASE_PROFILE=PASS|ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS)$' "$BUILD/o2/output.txt" > "$BUILD/o2/stable.txt"
+grep -E '^FSI37_(FD_CASES=30|SWKMEAN_METHODS_1_6=PASS|NONUNIFORM_BASE_PROFILE=PASS|ALTERNATIVE_SOLVER_FAIL_CLOSED=PASS|ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS)$' "$BUILD/o0/output.txt" > "$BUILD/o0/stable.txt"
+grep -E '^FSI37_(FD_CASES=30|SWKMEAN_METHODS_1_6=PASS|NONUNIFORM_BASE_PROFILE=PASS|ALTERNATIVE_SOLVER_FAIL_CLOSED=PASS|ACCEPTED_STEP_DIRECTIONAL_DERIVATIVE PASS)$' "$BUILD/o2/output.txt" > "$BUILD/o2/stable.txt"
 cmp "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt" || fail 'O0/O2 qualification-marker drift'
 echo 'FSI37_O0_O2_FULL_GATE=PASS'
 
