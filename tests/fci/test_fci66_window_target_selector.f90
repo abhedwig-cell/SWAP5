@@ -129,6 +129,9 @@ program test_fci66_window_target_selector
   call test_stalled_selector_fails_before_transaction(failures)
   call test_overshoot_selector_fails_before_transaction(failures)
   call test_nonfinite_selector_fails_before_transaction(failures)
+  call test_negative_retry_cap_fails_before_transaction(failures)
+  call test_retry_cap_tightens_transaction_budget(failures)
+  call test_retry_cap_cannot_relax_caller_budget(failures)
   call test_selector_substep_limit_keeps_external_state(failures)
 
   if (failures /= 0) then
@@ -276,6 +279,69 @@ contains
     call expect_close(water_of(state), 1.0_real64, 0.0_real64, 'nonfinite keeps state', failures)
   end subroutine test_nonfinite_selector_fails_before_transaction
 
+  subroutine test_negative_retry_cap_fails_before_transaction(failures)
+    integer, intent(inout) :: failures
+    class(transaction_state_t), allocatable :: state
+    type(fci66_model_t) :: model
+    type(fci66_forcing_t) :: forcing
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: config
+    type(canonical_result_t) :: result
+
+    call new_state(state, 1.0_real64)
+    call standard_setup(interval, config, forcing)
+    call run_canonical_interval(model, state, forcing, interval, config, result, negative_retry_cap_selector)
+
+    call expect_true(result%status == CANONICAL_STATUS_INVALID_REQUEST, 'negative retry cap rejected', failures)
+    call expect_true(result%diagnostics%transaction_calls == 0, 'negative cap executes no transaction', failures)
+    call expect_true(result%diagnostics%external_commits == 0, 'negative cap has no external commit', failures)
+    call expect_close(water_of(state), 1.0_real64, 0.0_real64, 'negative cap keeps state', failures)
+  end subroutine test_negative_retry_cap_fails_before_transaction
+
+  subroutine test_retry_cap_tightens_transaction_budget(failures)
+    integer, intent(inout) :: failures
+    class(transaction_state_t), allocatable :: state
+    type(fci66_model_t) :: model
+    type(fci66_forcing_t) :: forcing
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: config
+    type(canonical_result_t) :: result
+
+    call new_state(state, 1.0_real64)
+    call standard_setup(interval, config, forcing)
+    config%transaction%temporal_tolerance = 1.0e-12_real64
+    config%transaction%max_retries = 3
+    call run_canonical_interval(model, state, forcing, interval, config, result, zero_retry_cap_selector)
+
+    call expect_true(result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'tight retry cap terminates transaction', failures)
+    call expect_true(result%diagnostics%transaction_calls == 1, 'tight cap makes one transaction call', failures)
+    call expect_true(result%diagnostics%attempts == 1, 'zero retry cap allows one attempt only', failures)
+    call expect_true(result%diagnostics%external_commits == 0, 'tight cap has no external commit', failures)
+    call expect_close(water_of(state), 1.0_real64, 0.0_real64, 'tight cap keeps external state', failures)
+  end subroutine test_retry_cap_tightens_transaction_budget
+
+  subroutine test_retry_cap_cannot_relax_caller_budget(failures)
+    integer, intent(inout) :: failures
+    class(transaction_state_t), allocatable :: state
+    type(fci66_model_t) :: model
+    type(fci66_forcing_t) :: forcing
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: config
+    type(canonical_result_t) :: result
+
+    call new_state(state, 1.0_real64)
+    call standard_setup(interval, config, forcing)
+    config%transaction%temporal_tolerance = 1.0e-12_real64
+    config%transaction%max_retries = 0
+    call run_canonical_interval(model, state, forcing, interval, config, result, relax_retry_cap_selector)
+
+    call expect_true(result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'selector cannot relax retry budget', failures)
+    call expect_true(result%diagnostics%transaction_calls == 1, 'relax request makes one transaction call', failures)
+    call expect_true(result%diagnostics%attempts == 1, 'caller zero-retry budget remains authoritative', failures)
+    call expect_true(result%diagnostics%external_commits == 0, 'relax request has no external commit', failures)
+    call expect_close(water_of(state), 1.0_real64, 0.0_real64, 'relax request keeps external state', failures)
+  end subroutine test_retry_cap_cannot_relax_caller_budget
+
   subroutine test_selector_substep_limit_keeps_external_state(failures)
     integer, intent(inout) :: failures
     class(transaction_state_t), allocatable :: state
@@ -297,40 +363,81 @@ contains
     call expect_close(water_of(state), 1.0_real64, 0.0_real64, 'substep limit keeps external state', failures)
   end subroutine test_selector_substep_limit_keeps_external_state
 
-  subroutine bounded_selector(cursor, requested_t1, target_t1, valid)
+  subroutine bounded_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
     real(real64), intent(in) :: cursor, requested_t1
     real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
     logical, intent(out) :: valid
 
     target_t1 = min(requested_t1, cursor + 0.125_real64)
+    max_retries_cap = 3
     valid = requested_t1 > cursor
   end subroutine bounded_selector
 
-  subroutine stalled_selector(cursor, requested_t1, target_t1, valid)
+  subroutine stalled_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
     real(real64), intent(in) :: cursor, requested_t1
     real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
     logical, intent(out) :: valid
 
     target_t1 = cursor
+    max_retries_cap = 3
     valid = requested_t1 > cursor
   end subroutine stalled_selector
 
-  subroutine overshoot_selector(cursor, requested_t1, target_t1, valid)
+  subroutine overshoot_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
     real(real64), intent(in) :: cursor, requested_t1
     real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
     logical, intent(out) :: valid
 
     target_t1 = requested_t1 + max(1.0_real64, requested_t1 - cursor)
+    max_retries_cap = 3
     valid = requested_t1 > cursor
   end subroutine overshoot_selector
 
-  subroutine nonfinite_selector(cursor, requested_t1, target_t1, valid)
+  subroutine nonfinite_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
     real(real64), intent(in) :: cursor, requested_t1
     real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
     logical, intent(out) :: valid
 
     target_t1 = ieee_value(0.0_real64, ieee_quiet_nan)
+    max_retries_cap = 3
     valid = requested_t1 > cursor
   end subroutine nonfinite_selector
+
+  subroutine negative_retry_cap_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
+    real(real64), intent(in) :: cursor, requested_t1
+    real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
+    logical, intent(out) :: valid
+
+    target_t1 = min(requested_t1, cursor + 0.125_real64)
+    max_retries_cap = -1
+    valid = requested_t1 > cursor
+  end subroutine negative_retry_cap_selector
+
+  subroutine zero_retry_cap_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
+    real(real64), intent(in) :: cursor, requested_t1
+    real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
+    logical, intent(out) :: valid
+
+    target_t1 = requested_t1
+    max_retries_cap = 0
+    valid = requested_t1 > cursor
+  end subroutine zero_retry_cap_selector
+
+  subroutine relax_retry_cap_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
+    real(real64), intent(in) :: cursor, requested_t1
+    real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
+    logical, intent(out) :: valid
+
+    target_t1 = requested_t1
+    max_retries_cap = 99
+    valid = requested_t1 > cursor
+  end subroutine relax_retry_cap_selector
 
 end program test_fci66_window_target_selector
