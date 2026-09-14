@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: fmr44r-serialized-prescribed-qbot-${{ github.ref }}
+  group: fmr44r-prescribed-qbot-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -28,13 +28,13 @@ jobs:
       - name: Qualified dependency and scope guard
         run: |
           git merge-base --is-ancestor 4658b9f45c9a92f93a6a4b59c5c8aee33820ad94 HEAD
+          git merge-base --is-ancestor 6e7687e3 HEAD
           changed_src="$(git diff --name-only 4658b9f45c9a92f93a6a4b59c5c8aee33820ad94...HEAD -- src | sort)"
           printf 'FMR44R_CHANGED_SOURCE_BEFORE_GATE=%s\n' "$changed_src"
-          if [ -n "$changed_src" ]; then
-            expected=$'src/adapter/mod_b110_serialized_context_binding.f90\nsrc/runtime/mod_fmr_serialized_reference_backend.f90'
-            test "$changed_src" = "$expected"
-          fi
+          expected=$'src/adapter/mod_b110_serialized_context_binding.f90\nsrc/runtime/mod_fmr_serialized_reference_backend.f90'
+          test "$changed_src" = "$expected"
           echo 'FMR44R_FSI38_DEPENDENCY_AND_SCOPE=PASS'
+          echo 'FMR44R_COMMITTED_POSTIMAGE_ANCESTRY=PASS'
       - name: Compiler identity
         run: gfortran --version
       - name: Qualify serialized prescribed-qbot runtime
