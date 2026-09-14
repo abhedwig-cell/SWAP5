@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "workunit": "F-ROSS01 D3R",
+  "kind": "POST_CLOSEOUT_AGGREGATE_RECEIPT",
+  "status": "PASS",
+  "historical_authority_unchanged": true,
+  "historical_closeout_basis": "The D3R scientific decision was made from the nine complete immutable shard artifacts while the aggregate job was still queued. This later receipt records that the workflow-native aggregate subsequently completed successfully; it does not retroactively replace or rewrite the closeout basis.",
+  "workflow_run_id": 34791081303,
+  "workflow_run_head": "4bb885918532cf1ee3386b9dda1ac055ff5fc3e8",
+  "aggregate_job_id": 103824192840,
+  "aggregate_job_conclusion": "success",
+  "aggregate_artifact": {
+    "artifact_id": 10329791092,
+    "name": "f-ross01-d3r-two-half-aggregate-34791081303",
+    "digest": "sha256:758d6316b0b2c4a7ef6b712ace8e07f09875a62381cf10fe260343466a565d20",
+    "size_in_bytes": 618
+  },
+  "aggregate_result": {
+    "attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "shard_count": 9,
+    "chain_count": 54,
+    "canonical_two_half_candidate_chain_supported": true,
+    "live_canonical_heads": [
+      "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557"
+    ],
+    "max_abs_mass_residual_cm": 1.6378602554051384e-14,
+    "hard_mass_tolerance_cm": 1e-12,
+    "max_abs_full_vs_two_half_head_delta_cm": 2.0662986344177625e-07,
+    "max_abs_full_vs_two_half_theta_delta": 7.059697271216692e-11,
+    "external_temporal_error_semantics_qualified": false,
+    "temporal_error_disposition": "DIAGNOSTIC_STATE_DELTAS_ONLY_NO_ACCEPTANCE_METRIC_OR_TOLERANCE_CLAIM",
+    "production_source_delta": []
+  },
+  "reconciliation": {
+    "matches_manual_shard_reconstruction": true,
+    "changes_D3R_decision": false,
+    "changes_gap_disposition": false,
+    "G01": "CLOSED",
+    "G03": "CLOSED",
+    "G02": "OPEN_NOT_TARGETED",
+    "production_admission": false
+  },
+  "decision": "POST_CLOSEOUT_AGGREGATE_CONFIRMS_D3R_AUTHORITY"
+}
