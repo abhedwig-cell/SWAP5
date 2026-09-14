@@ -9,8 +9,12 @@ cd "$ROOT"
 
 fail() { echo "FPM14_TRANSACTIONAL_RUNTIME_GATE_FAIL $*" >&2; exit 87; }
 
+backend_before="$(sha256sum src/runtime/mod_fmr_serialized_reference_backend.f90 | awk '{print $1}')"
 python3 tools/fpm14/apply_backend_drainage_response_patch.py
 python3 tools/fpm14/refine_backend_drainage_response_patch.py
+backend_after="$(sha256sum src/runtime/mod_fmr_serialized_reference_backend.f90 | awk '{print $1}')"
+[[ "$backend_before" == "$backend_after" ]] || fail 'committed backend is not the exact F-PM14 postimage'
+echo 'FPM14_BACKEND_POSTIMAGE_COMMITTED_EXACT=PASS'
 
 grep -Fq 'F-PM14 drainage response runtime composition' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
   fail 'checked backend transform marker missing'
