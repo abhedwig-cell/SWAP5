@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.frg04.provenance_replay.v1",
+  "workunit": "F-RG04",
+  "principle": "REPLAY_STRENGTH_MUST_MATCH_PROVENANCE_STRENGTH",
+  "classes": [
+    {
+      "id": "SOURCE_PROVENANCE",
+      "meaning": "Identity/provenance of source, candidate, document, archive or evidence is pinned.",
+      "required_pins": ["immutable source/candidate identity", "blob/hash when claim depends on exact content"],
+      "historical_truth_possible": true,
+      "limitations": ["provenance does not itself prove scientific correctness"]
+    },
+    {
+      "id": "BEHAVIORAL_REPLAY",
+      "meaning": "A qualified or historically pinned executable/reference behavior is replayed under pinned inputs/environment.",
+      "required_pins": ["executable/source identity", "input identity", "replay environment or material numerical environment", "result identity"],
+      "historical_truth_possible": true,
+      "limitations": ["only the replayed behavioral scope is established"]
+    },
+    {
+      "id": "RECONSTRUCTED_REPLAY",
+      "meaning": "Behavior/evidence is reconstructed because the original historical artifact is absent or unusable.",
+      "required_pins": ["reconstruction method", "inputs", "source fragments used", "result identity"],
+      "historical_truth_possible": false,
+      "mandatory_uncertainty_label": "RECONSTRUCTED_NOT_HISTORICAL",
+      "limitations": ["cannot be promoted to historical fidelity without independent historical provenance"]
+    },
+    {
+      "id": "SYNTHETIC_ORACLE",
+      "meaning": "Purpose-built analytic/synthetic fixture demonstrates an invariant, activation, causality or failure contract.",
+      "required_pins": ["oracle definition", "fixture identity", "expected outcome/tolerance"],
+      "historical_truth_possible": false,
+      "limitations": ["does not imply field representativeness or historical behavior"]
+    },
+    {
+      "id": "PRODUCTION_REGRESSION",
+      "meaning": "Current/admitted production source is replayed against a pinned preservation oracle/baseline.",
+      "required_pins": ["production source/canonical identity", "oracle/baseline identity", "test identity", "result/run identity"],
+      "historical_truth_possible": false,
+      "limitations": ["proves declared preservation/regression property, not new science"]
+    }
+  ],
+  "reuse_policy": {
+    "mode": "VERIFY_AND_REUSE",
+    "reuse_allowed_only_if": [
+      "same relevant source/testcase identity",
+      "claim scope not widened or changed",
+      "artifact/evidence immutable or hash-pinned",
+      "provenance fully pinned",
+      "no superseding or contradictory evidence"
+    ],
+    "strength_promotion_by_reuse_forbidden": true,
+    "examples_forbidden": [
+      "RECONSTRUCTED_REPLAY -> historical truth",
+      "SYNTHETIC_ORACLE -> historical behavior",
+      "OWNER_VERIFIED -> INDEPENDENTLY_QUALIFIED",
+      "RESEARCH_EVIDENCE -> production authority",
+      "local PASS -> composition PASS"
+    ]
+  },
+  "historical_uncertainty": {
+    "unknown_is_valid_state": true,
+    "label": "HISTORICAL_BEHAVIOR_UNKNOWN",
+    "must_not_be_filled_by_synthetic_or_reconstructed_story": true
+  },
+  "license_safe_provenance": {
+    "principle": "Record identity, hashes, citations and permitted evidence artifacts without importing source whose license or access conditions do not permit repository persistence.",
+    "missing_redistribution_rights_do_not_justify_fabricated_provenance": true
+  }
+}
