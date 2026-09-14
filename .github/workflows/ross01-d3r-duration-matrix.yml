@@ -20,13 +20,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  duration-material:
+  duration-matrix:
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: 10
       matrix:
         duration_index: [0,1,2,3,4,5,6,7,8,9]
-        material: [B01,B12,O01,O05,O14,O18]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -52,31 +51,41 @@ jobs:
           grep -q "TX_TEMPORAL_EXTERNAL_FULL_HALF" "$RUNNER_TEMP/tx.f90"
       - name: Syntax check
         run: python3 -m py_compile experiments/ross/ross01_d3r_fsi31_duration_adapter.py experiments/ross/ross01_d3r_duration_worker.py experiments/ross/run_ross01_d3r_duration_case.py experiments/ross/run_ross01_d3r_duration_bounded_case.py
-      - name: Run baseline duration-material case
+      - name: Run all six materials for this duration
+        shell: bash
         run: |
-          python3 experiments/ross/run_ross01_d3r_duration_case.py \
-            --canonical-head "$CANONICAL_HEAD" \
-            --duration-index "${{ matrix.duration_index }}" \
-            --material "${{ matrix.material }}" \
-            --output "F-ROSS01_D3R_BASELINE_${{ matrix.duration_index }}_${{ matrix.material }}.json"
-      - name: Run bounded-flux duration-material case
-        run: |
-          python3 experiments/ross/run_ross01_d3r_duration_bounded_case.py \
-            --canonical-head "$CANONICAL_HEAD" \
-            --duration-index "${{ matrix.duration_index }}" \
-            --material "${{ matrix.material }}" \
-            --output "F-ROSS01_D3R_BOUNDED_${{ matrix.duration_index }}_${{ matrix.material }}.json"
-      - name: Upload case evidence
+          set -u
+          pids=()
+          for material in B01 B12 O01 O05 O14 O18; do
+            python3 experiments/ross/run_ross01_d3r_duration_case.py \
+              --canonical-head "$CANONICAL_HEAD" \
+              --duration-index "${{ matrix.duration_index }}" \
+              --material "$material" \
+              --output "F-ROSS01_D3R_BASELINE_${{ matrix.duration_index }}_${material}.json" &
+            pids+=("$!")
+            python3 experiments/ross/run_ross01_d3r_duration_bounded_case.py \
+              --canonical-head "$CANONICAL_HEAD" \
+              --duration-index "${{ matrix.duration_index }}" \
+              --material "$material" \
+              --output "F-ROSS01_D3R_BOUNDED_${{ matrix.duration_index }}_${material}.json" &
+            pids+=("$!")
+          done
+          failed=0
+          for pid in "${pids[@]}"; do
+            wait "$pid" || failed=1
+          done
+          exit "$failed"
+      - name: Upload duration evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-d3r-duration-${{ matrix.duration_index }}-${{ matrix.material }}-${{ github.run_id }}
+          name: f-ross01-d3r-duration-${{ matrix.duration_index }}-${{ github.run_id }}
           path: |
-            F-ROSS01_D3R_BASELINE_${{ matrix.duration_index }}_${{ matrix.material }}.json
-            F-ROSS01_D3R_BOUNDED_${{ matrix.duration_index }}_${{ matrix.material }}.json
+            F-ROSS01_D3R_BASELINE_${{ matrix.duration_index }}_*.json
+            F-ROSS01_D3R_BOUNDED_${{ matrix.duration_index }}_*.json
 
   aggregate-duration:
-    needs: duration-material
+    needs: duration-matrix
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -93,27 +102,19 @@ jobs:
           baseline = sorted(Path('shards').glob('F-ROSS01_D3R_BASELINE_*_*.json'))
           bounded = sorted(Path('shards').glob('F-ROSS01_D3R_BOUNDED_*_*.json'))
           rows = [json.loads(p.read_text()) for p in baseline + bounded]
-          pairs = {(r.get('duration_index'), r.get('material')) for r in rows}
-          expected_pairs = {(d, m) for d in range(10) for m in ('B01','B12','O01','O05','O14','O18')}
+          expected = {(d,m) for d in range(10) for m in ('B01','B12','O01','O05','O14','O18')}
+          base_pairs = {(r.get('duration_index'), r.get('material')) for r in (json.loads(p.read_text()) for p in baseline)}
+          bounded_pairs = {(r.get('duration_index'), r.get('material')) for r in (json.loads(p.read_text()) for p in bounded)}
           canonical_heads = sorted(set(r.get('live_canonical_head') for r in rows))
-          qualified = (
-              len(baseline) == 60 and len(bounded) == 60 and
-              pairs == expected_pairs and
-              all(r.get('pass') is True for r in rows) and
-              len(canonical_heads) == 1
-          )
-          residuals = []
-          for r in rows:
-              value = r.get('mass_residual_cm')
-              if isinstance(value, (int, float)):
-                  residuals.append(abs(float(value)))
+          qualified = len(baseline) == 60 and len(bounded) == 60 and base_pairs == expected and bounded_pairs == expected and all(r.get('pass') is True for r in rows) and len(canonical_heads) == 1
+          residuals = [abs(float(r['mass_residual_cm'])) for r in rows if isinstance(r.get('mass_residual_cm'), (int,float))]
           out = {
               'work_unit': 'F-ROSS01 D3R',
               'kind': 'duration_family_aggregate',
               'duration_family_qualified': qualified,
               'duration_count': 10,
               'material_count': 6,
-              'duration_material_pairs': len(expected_pairs),
+              'duration_material_pairs': 60,
               'baseline_case_count': len(baseline),
               'bounded_flux_case_count': len(bounded),
               'positive_case_count': len(rows),
