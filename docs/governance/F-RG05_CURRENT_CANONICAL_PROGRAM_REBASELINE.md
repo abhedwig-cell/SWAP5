@@ -4,12 +4,12 @@
 
 F-RG05 rebaselines the governed SWAP5-v1 program against the exact current canonical observed at authoring:
 
-- canonical: `integration/f-ci-canonical@24b02660a7924323d1587b4adf77a160c9ef7d04`
-- tree: `fd14037490b62750e133eacb3d429de2b06f7f9a`
+- canonical: `integration/f-ci-canonical@d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0`
+- tree: `a17a25a5259f26f3ff841e03f994e1a37c3691ed`
 - source tree: `22b94efb12543cce9945ba0ccefdf9a9a612de51`
 - reference tree: `9d08625217d7c0a7385df9da6a04183bcd9cb9e6`
 
-The current canonical is the F-CI65 admission of the independently qualified F-GC24 coupled restart/split-run/replay postimage. F-CI65P postimage reconciliation was still active when this snapshot was authored. F-RG05 does not turn that admitted child capability into G05 parent completion.
+The current canonical is F-CI65P: postimage reconciliation and moving-current preservation of the independently qualified and F-CI65-admitted F-GC24 coupled restart/split-run/replay capability. F-RG05 does not turn that preserved child capability into G05 parent completion.
 
 The qualified program measurements remain:
 
@@ -35,7 +35,7 @@ The main later advances do not meet that condition:
 - F-TB11/F-TB11P permanently protect already-qualified 100%-capabilities but do not themselves close T02 or T03.
 - F-SI38 is a qualified prescribed-qbot temporal-certificate source capability, not a canonical-admitted true whole-window groundwater response tangent.
 - F-CI64/F-CI64P Energy Balance work has frozen SWAP5-v1 weight 0.
-- F-GC24/F-CI65 is a genuine G05 restart/replay sub-capability advance, but the G05 end-to-end composition remains incomplete.
+- F-GC24/F-CI65/F-CI65P is a genuine G05 restart/replay sub-capability advance, canonically admitted and postimage-preserved, but the G05 end-to-end composition remains incomplete.
 - RossFast remains research-only with frozen SWAP5-v1 weight 0.
 
 This is not a claim that the repository made no progress. It is a statement that governed program completion is not allowed to increase without a matching frozen parent gate.
@@ -79,7 +79,7 @@ Four ownership-disjoint lanes can proceed in parallel, subject to serialized F-C
 
 1. **Macropore/O02** — the next F-SI number observed free is F-SI39. F-SI36–F-SI38 now belong to other sensitivity/temporal work and must not be reused.
 2. **Performance** — F-PE12 was observed free and should own PF02 plus M12/PF03 bounded-cost and production-scale isolation evidence, without changing physics.
-3. **Groundwater/G05** — F-GC24 restart/replay is admitted by F-CI65. F-GC25, F-GC26 and F-GC27 were observed branch-free and remain suitable for the remaining MultiSWAP/diagnostics, external aquifer composition and final parent closure sequence. F-GC20, F-GC22 and the unresolved F-GC23 tangent dependency remain explicit prerequisites.
+3. **Groundwater/G05** — F-GC24 restart/replay is admitted by F-CI65 and postimage-reconciled/preserved by F-CI65P. F-GC25, F-GC26 and F-GC27 were observed branch-free and remain suitable for the remaining MultiSWAP/diagnostics, external aquifer composition and final parent closure sequence. F-GC20, F-GC22 and the unresolved F-GC23 tangent dependency remain explicit prerequisites.
 4. **Documentation/Status-A** — F-DOC20 was observed free and may advance DOC03/DOC04/A01 evidence without owning production semantics.
 
 RossFast and Energy Balance remain isolated zero-weight tracks under SWAP5-v1. Their success or failure cannot silently change this denominator.

@@ -2,57 +2,17 @@
   "schema": "swap5.frg05.execution_wave.v1",
   "work_unit": "F-RG05",
   "policy": "parallel where ownership is disjoint; serialize shared semantics and every F-CI admission",
-  "canonical_start": {"sha":"24b02660a7924323d1587b4adf77a160c9ef7d04","tree":"fd14037490b62750e133eacb3d429de2b06f7f9a"},
+  "canonical_start": {"sha":"d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0","tree":"a17a25a5259f26f3ff841e03f994e1a37c3691ed"},
   "lanes": [
-    {
-      "lane": "L1_MACROPORE_PARENT_CLOSURE",
-      "recommended_namespace": "F-SI",
-      "next_number_observed_free": "F-SI39",
-      "goal": "Close frozen O02 required macropore production coverage end-to-end without altering unrelated soil-water physics.",
-      "ownership": ["macropore physical option parameters/state/process binding"],
-      "must_not_touch": ["groundwater coupler contracts","transaction/mass authority","RossFast research contract","performance policy"],
-      "exit_gate": "implementation + owner qualification + required independent qualification + canonical admission + preservation + hard mass conservation"
-    },
-    {
-      "lane": "L2_BOUNDED_COST_AND_BATCH_ISOLATION",
-      "recommended_workunit": "F-PE12",
-      "observed_free_at_rebaseline": true,
-      "goal": "Close PF02 and advance M12/PF03 with bounded-cost execution/fallback and production-scale problem-column isolation evidence.",
-      "ownership": ["solver execution policy","retry/fallback cost bounds","batch scheduling diagnostics"],
-      "must_not_touch": ["physics semantics","groundwater contract semantics","Full Richards reference semantics","mass acceptance"],
-      "exit_gate": "bounded cost, explicit diagnostics, hard mass conservation, bounded deviation versus reference and required independent qualification"
-    },
-    {
-      "lane": "L3_GROUNDWATER_G05_COMPOSITION",
-      "status": "F-GC24 restart child admitted by F-CI65; parent remains incomplete",
-      "next_reserved_workunits": [
-        {"workunit":"F-GC25","observed_branch_free":true,"goal":"MultiSWAP coupled execution and diagnostics composition"},
-        {"workunit":"F-GC26","observed_branch_free":true,"goal":"external aquifer/MODFLOW adapter conformance and end-to-end mass/head composition"},
-        {"workunit":"F-GC27","observed_branch_free":true,"goal":"final G05 composition qualification/closure only after prerequisites"}
-      ],
-      "dependencies": ["F-GC20 tile aggregation composition","F-GC22 temporal/application accuracy composition","F-GC23 whole-window tangent dependency resolution","F-GC24 restart/replay current admission and postimage reconciliation"],
-      "rule": "Do not convert admitted child capabilities into G05 parent score before explicit parent composition qualification."
-    },
-    {
-      "lane": "L4_TESTBANK_DOCUMENTATION_STATUS_A",
-      "recommended_workunit": "F-DOC20",
-      "observed_free_at_rebaseline": true,
-      "goal": "Advance DOC03/DOC04/A01 and exact-current evidence without owning production semantics; keep T02/T03 separate and fail-closed.",
-      "ownership": ["documentation provenance","Status-A evidence","nonproduction evidence registries"],
-      "must_not_touch": ["production physics","numerical acceptance policy","groundwater production source"],
-      "exit_gate": "evidence-backed parent requirement closures only; no compliance inference from document existence"
-    }
+    {"lane":"L1_MACROPORE_PARENT_CLOSURE","recommended_namespace":"F-SI","next_number_observed_free":"F-SI39","goal":"Close frozen O02 required macropore production coverage end-to-end without altering unrelated soil-water physics.","ownership":["macropore physical option parameters/state/process binding"],"must_not_touch":["groundwater coupler contracts","transaction/mass authority","RossFast research contract","performance policy"],"exit_gate":"implementation + owner qualification + required independent qualification + canonical admission + preservation + hard mass conservation"},
+    {"lane":"L2_BOUNDED_COST_AND_BATCH_ISOLATION","recommended_workunit":"F-PE12","observed_free_at_rebaseline":true,"goal":"Close PF02 and advance M12/PF03 with bounded-cost execution/fallback and production-scale problem-column isolation evidence.","ownership":["solver execution policy","retry/fallback cost bounds","batch scheduling diagnostics"],"must_not_touch":["physics semantics","groundwater contract semantics","Full Richards reference semantics","mass acceptance"],"exit_gate":"bounded cost, explicit diagnostics, hard mass conservation, bounded deviation versus reference and required independent qualification"},
+    {"lane":"L3_GROUNDWATER_G05_COMPOSITION","status":"F-GC24 restart child admitted by F-CI65 and postimage-reconciled by F-CI65P; parent remains incomplete","next_reserved_workunits":[{"workunit":"F-GC25","observed_branch_free":true,"goal":"MultiSWAP coupled execution and diagnostics composition"},{"workunit":"F-GC26","observed_branch_free":true,"goal":"external aquifer/MODFLOW adapter conformance and end-to-end mass/head composition"},{"workunit":"F-GC27","observed_branch_free":true,"goal":"final G05 composition qualification/closure only after prerequisites"}],"dependencies":["F-GC20 tile aggregation composition","F-GC22 temporal/application accuracy composition","F-GC23 whole-window tangent dependency resolution","F-GC24/F-CI65/F-CI65P restart/replay child preserved"],"rule":"Do not convert admitted child capabilities into G05 parent score before explicit parent composition qualification."},
+    {"lane":"L4_TESTBANK_DOCUMENTATION_STATUS_A","recommended_workunit":"F-DOC20","observed_free_at_rebaseline":true,"goal":"Advance DOC03/DOC04/A01 and exact-current evidence without owning production semantics; keep T02/T03 separate and fail-closed.","ownership":["documentation provenance","Status-A evidence","nonproduction evidence registries"],"must_not_touch":["production physics","numerical acceptance policy","groundwater production source"],"exit_gate":"evidence-backed parent requirement closures only; no compliance inference from document existence"}
   ],
   "isolated_zero_weight_tracks": [
     {"track":"RossFast","rule":"Remain research-only behind F-SI31; no production acceptance/commit/publication authority; v1 weight 0."},
     {"track":"Energy Balance","rule":"May progress independently; frozen v1 weight remains 0 until an explicit denominator-version governance decision."}
   ],
-  "serialization_rules": [
-    "Every F-CI admission is serialized against then-current canonical.",
-    "If two lanes need the same production file or semantic contract, stop parallelism and reassign ownership before coding.",
-    "A child/sub-capability admission never reserves future parent authority.",
-    "Mass conservation cannot be relaxed by any lane.",
-    "Reference mode remains available while performance policy evolves."
-  ],
+  "serialization_rules": ["Every F-CI admission is serialized against then-current canonical.","If two lanes need the same production file or semantic contract, stop parallelism and reassign ownership before coding.","A child/sub-capability admission never reserves future parent authority.","Mass conservation cannot be relaxed by any lane.","Reference mode remains available while performance policy evolves."],
   "return_to_regie": ["after about 4-6 substantive parent-gate closeouts","immediately on ownership conflict","immediately on denominator/scope conflict","after a major parent-level canonical admission"]
 }

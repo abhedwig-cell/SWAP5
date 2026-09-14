@@ -8,143 +8,43 @@
   "authority_effective_condition": "Effective only when the dedicated F-RG05 workflow succeeds on the exact commit containing this status artifact.",
   "current_canonical": {
     "branch": "integration/f-ci-canonical",
-    "sha": "24b02660a7924323d1587b4adf77a160c9ef7d04",
-    "tree": "fd14037490b62750e133eacb3d429de2b06f7f9a",
+    "sha": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+    "tree": "a17a25a5259f26f3ff841e03f994e1a37c3691ed",
     "src_tree": "22b94efb12543cce9945ba0ccefdf9a9a612de51",
     "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
-    "terminal_context": "F-CI65 admission of the independently qualified F-GC24 coupled restart/split-run/replay production postimage; F-CI65P postimage reconciliation was still in progress at authoring."
+    "terminal_context": "F-CI65P postimage reconciliation and moving-current preservation for the already admitted independently qualified F-GC24 coupled restart/split-run/replay capability."
   },
   "governance_authorities": {
     "F_RG01": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
     "F_RG01A": "4553204468695553cf69a48d1c97598c471156d6",
     "F_RG01B": "5e2561d9051fba81769565291b1bf3089c7ddcd9",
-    "F_RG01C": {
-      "sha": "56b86e29e0960e396059caf47c193440d571b709",
-      "tree": "088bfe72e42ecbad5de12a823af82743a1854c5c",
-      "model": "SWAP5_V1_COMPLETION_MODEL_V1"
-    },
+    "F_RG01C": {"sha":"56b86e29e0960e396059caf47c193440d571b709","tree":"088bfe72e42ecbad5de12a823af82743a1854c5c","model":"SWAP5_V1_COMPLETION_MODEL_V1"},
     "F_RG01D": "0877971d1117cb0067aa363d0868d682f62a6844",
     "F_RG03": "aac2644149dda47282a25a39892c6dc808323dd0",
     "F_RG04": "6008fceacda48124ebec79af6724fa0669321ba4"
   },
-  "frozen_denominator": {
-    "unchanged": true,
-    "weights_changed": false,
-    "scope_changed": false,
-    "hard_ceiling_definition_changed": false,
-    "RossFast_weight": 0.0,
-    "energy_balance_weight": 0.0,
-    "deep_vadose_weight": 0.0
-  },
-  "program_measurements": {
-    "A_restricted_production_baseline_percent": 100.0,
-    "B_technical_engine_earned_weight": 71.025,
-    "B_technical_engine_weight_denominator": 79.0,
-    "B_technical_engine_measured_percent": 89.905063291139,
-    "B_active_hard_ceiling_percent": 89.0,
-    "B_reported_percent": 89.0,
-    "C_overall_frozen_v1_percent": 83.004545454545
-  },
-  "score_result": {
-    "changed_since_F_RG03": false,
-    "reason": "No post-F-RG03 evidence closes a previously unearned parent capability gate in the frozen F-RG01C denominator. New child/sub-capability evidence is not promoted to parent credit under F-RG04."
-  },
+  "frozen_denominator": {"unchanged":true,"weights_changed":false,"scope_changed":false,"hard_ceiling_definition_changed":false,"RossFast_weight":0.0,"energy_balance_weight":0.0,"deep_vadose_weight":0.0},
+  "program_measurements": {"A_restricted_production_baseline_percent":100.0,"B_technical_engine_earned_weight":71.025,"B_technical_engine_weight_denominator":79.0,"B_technical_engine_measured_percent":89.905063291139,"B_active_hard_ceiling_percent":89.0,"B_reported_percent":89.0,"C_overall_frozen_v1_percent":83.004545454545},
+  "score_result": {"changed_since_F_RG03":false,"reason":"No post-F-RG03 evidence closes a previously unearned parent capability gate in the frozen F-RG01C denominator. New child/sub-capability evidence is not promoted to parent credit under F-RG04."},
   "reconciled_post_F_RG03_developments": [
-    {
-      "authority": "F-PM19 / F-TB12 / F-TB12P",
-      "effect": "Drainage v1 is now explicitly re-proven 100 percent complete and permanently preserved, but D06 was already 100 percent in F-RG03; score delta 0."
-    },
-    {
-      "authority": "F-RG04",
-      "effect": "Adds evidence/qualification/admission/composition assurance governance. GOV02 was already fully credited and GOV03 is not release-ready; score delta 0."
-    },
-    {
-      "authority": "F-DOC17",
-      "effect": "Strengthens exact-current Status-A reconciliation but public 22-row readiness remains 2 SATISFIED; D16/D17 gate credit unchanged."
-    },
-    {
-      "authority": "F-TB11 / F-TB11P",
-      "effect": "Permanently preserves existing 100-percent capability authorities. It does not adopt F-TB09/T02 as a newly closed catalog gate and does not close T03; D15 credit unchanged."
-    },
-    {
-      "authority": "F-SI38",
-      "effect": "Qualified prescribed-qbot temporal certificate source capability is not canonical-admitted and is not a true whole-window groundwater response tangent; no frozen parent gate credit."
-    },
-    {
-      "authority": "F-CI64 / F-CI64P",
-      "effect": "Energy Balance postimage work is outside the frozen v1 denominator and carries weight 0; score delta 0."
-    },
-    {
-      "authority": "F-GC24 / F-CI65",
-      "effect": "Coupled restart/split-run/replay is a real G05 sub-capability advance and current-canonical admission, but G05 end-to-end composition is not qualified complete. F-RG04 forbids child-to-parent auto-promotion; D13 remains 82 percent."
-    },
-    {
-      "authority": "RossFast D2 R1",
-      "effect": "Research-only F-SI31 adapter remains weight 0 and has no production acceptance/commit/publication authority; score delta 0."
-    }
+    {"authority":"F-PM19 / F-TB12 / F-TB12P","effect":"Drainage v1 is now explicitly re-proven 100 percent complete and permanently preserved, but D06 was already 100 percent in F-RG03; score delta 0."},
+    {"authority":"F-RG04","effect":"Adds evidence/qualification/admission/composition assurance governance. GOV02 was already fully credited and GOV03 is not release-ready; score delta 0."},
+    {"authority":"F-DOC17","effect":"Strengthens exact-current Status-A reconciliation but public 22-row readiness remains 2 SATISFIED; D16/D17 gate credit unchanged."},
+    {"authority":"F-TB11 / F-TB11P","effect":"Permanently preserves existing 100-percent capability authorities. It does not adopt F-TB09/T02 as a newly closed catalog gate and does not close T03; D15 credit unchanged."},
+    {"authority":"F-SI38","effect":"Qualified prescribed-qbot temporal certificate source capability is not canonical-admitted and is not a true whole-window groundwater response tangent; no frozen parent gate credit."},
+    {"authority":"F-CI64 / F-CI64P","effect":"Energy Balance postimage work is outside the frozen v1 denominator and carries weight 0; score delta 0."},
+    {"authority":"F-GC24 / F-CI65 / F-CI65P","effect":"Coupled restart/split-run/replay is a real G05 sub-capability advance, canonically admitted and postimage-preserved, but G05 end-to-end composition is not qualified complete. F-RG04 forbids child-to-parent auto-promotion; D13 remains 82 percent."},
+    {"authority":"RossFast D2 R1","effect":"Research-only F-SI31 adapter remains weight 0 and has no production acceptance/commit/publication authority; score delta 0."}
   ],
   "active_hard_gates": {
-    "HG06_PRODUCTION_CRITICAL_QUALIFICATION": {
-      "active": true,
-      "technical_ceiling_percent": 89,
-      "overall_ceiling_percent": 89,
-      "minimum_sufficient_reasons": [
-        "O02 required macropore production coverage",
-        "PF02 bounded-cost/fallback production qualification"
-      ]
-    },
-    "HG07_CRITICAL_TESTBANK": {
-      "active": true,
-      "overall_ceiling_percent": 92,
-      "reason": "T03 integrated executable physics qualification is not closed by F-TB11/F-TB12 preservation work."
-    },
-    "HG08_STATUS_A_READINESS": {
-      "active": true,
-      "overall_ceiling_percent": 95,
-      "reason": "Status-A public working baseline remains 2 of 22 SATISFIED/CLOSED and controlled WR-QA-2024 is unreconciled."
-    }
+    "HG06_PRODUCTION_CRITICAL_QUALIFICATION": {"active":true,"technical_ceiling_percent":89,"overall_ceiling_percent":89,"minimum_sufficient_reasons":["O02 required macropore production coverage","PF02 bounded-cost/fallback production qualification"]},
+    "HG07_CRITICAL_TESTBANK": {"active":true,"overall_ceiling_percent":92,"reason":"T03 integrated executable physics qualification is not closed by F-TB11/F-TB12 preservation work."},
+    "HG08_STATUS_A_READINESS": {"active":true,"overall_ceiling_percent":95,"reason":"Status-A public working baseline remains 2 of 22 SATISFIED/CLOSED and controlled WR-QA-2024 is unreconciled."}
   },
-  "formally_100_percent_domains": [
-    "D01",
-    "D02",
-    "D03",
-    "D04",
-    "D05",
-    "D06",
-    "D07",
-    "D08",
-    "D10",
-    "D12"
-  ],
-  "remaining_parent_gaps": [
-    "O02 macropore production coverage",
-    "M12 large-batch problem-column isolation",
-    "G05 end-to-end direct-groundwater production composition",
-    "PF02 bounded-cost/fallback policy",
-    "PF03 production-scale throughput/failure-isolation evidence",
-    "T02/T03 permanent testbank current integration",
-    "DOC03/DOC04 scientific provenance, guidance, validation, sensitivity, uncertainty and fitness-for-purpose evidence",
-    "A01 Status-A readiness",
-    "GOV03 final exact-current release/readiness evidence pack"
-  ],
-  "hard_nonclaims": [
-    "No completion percentage increase is inferred from branch count, commit count, workunit count, child capability progress or research maturity.",
-    "No F-GC24 child qualification/admission is relabelled as G05 parent completion.",
-    "No Energy Balance or RossFast work is added to the frozen v1 denominator.",
-    "No Status-A or Status-AA certification is claimed.",
-    "No production physics, solver semantics, mass semantics, transaction semantics, restart semantics, groundwater semantics or numerical acceptance policy is changed by F-RG05.",
-    "No F-CI admission or F-VQ qualification is performed by F-RG05."
-  ],
-  "deliverables": [
-    "integration/f-rg/F-RG05_STATUS.json",
-    "integration/f-rg/F-RG05_DOMAIN_SNAPSHOT.json",
-    "integration/f-rg/F-RG05_SCORE_RECONCILIATION.json",
-    "integration/f-rg/F-RG05_EXECUTION_WAVE.json",
-    "integration/f-rg/F-RG05_ARCHITECTURE_INVARIANT_REVIEW.json",
-    "docs/governance/F-RG05_CURRENT_CANONICAL_PROGRAM_REBASELINE.md",
-    "tools/governance/validate_frg05_program_rebaseline.py",
-    ".github/workflows/frg05-current-canonical-program-rebaseline.yml"
-  ],
+  "formally_100_percent_domains": ["D01","D02","D03","D04","D05","D06","D07","D08","D10","D12"],
+  "remaining_parent_gaps": ["O02 macropore production coverage","M12 large-batch problem-column isolation","G05 end-to-end direct-groundwater production composition","PF02 bounded-cost/fallback policy","PF03 production-scale throughput/failure-isolation evidence","T02/T03 permanent testbank current integration","DOC03/DOC04 scientific provenance, guidance, validation, sensitivity, uncertainty and fitness-for-purpose evidence","A01 Status-A readiness","GOV03 final exact-current release/readiness evidence pack"],
+  "hard_nonclaims": ["No completion percentage increase is inferred from branch count, commit count, workunit count, child capability progress or research maturity.","No F-GC24 child qualification/admission is relabelled as G05 parent completion.","No Energy Balance or RossFast work is added to the frozen v1 denominator.","No Status-A or Status-AA certification is claimed.","No production physics, solver semantics, mass semantics, transaction semantics, restart semantics, groundwater semantics or numerical acceptance policy is changed by F-RG05.","No F-CI admission or F-VQ qualification is performed by F-RG05."],
+  "deliverables": ["integration/f-rg/F-RG05_STATUS.json","integration/f-rg/F-RG05_DOMAIN_SNAPSHOT.json","integration/f-rg/F-RG05_SCORE_RECONCILIATION.json","integration/f-rg/F-RG05_EXECUTION_WAVE.json","integration/f-rg/F-RG05_ARCHITECTURE_INVARIANT_REVIEW.json","docs/governance/F-RG05_CURRENT_CANONICAL_PROGRAM_REBASELINE.md","tools/governance/validate_frg05_program_rebaseline.py",".github/workflows/frg05-current-canonical-program-rebaseline.yml"],
   "rebaseline_trigger": "Return to F-RG after approximately 4-6 substantive parent-gate closeouts, immediately on ownership/scope/denominator conflict, or after a major parent-level canonical architecture admission.",
   "production_source_changed_by_F_RG05": false,
   "reference_source_changed_by_F_RG05": false,

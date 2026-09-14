@@ -15,13 +15,8 @@
     {"item":"F-TB12/F-TB12P drainage-specific permanent preservation","frozen_target":"D15/D06","previous_percent":{"D15":83.928571428571,"D06":100.0},"new_percent":{"D15":83.928571428571,"D06":100.0},"score_delta":0.0,"classification":"DRAINAGE_SPECIFIC_PRESERVATION_NO_GENERIC_TESTBANK_PARENT_PROMOTION"},
     {"item":"F-SI38 prescribed-qbot temporal certificate","frozen_target":"D13/G05 candidate dependency","score_delta":0.0,"classification":"QUALIFIED_SOURCE_NOT_CANONICAL_ADMITTED_AND_NOT_WHOLE_WINDOW_PARENT_CAPABILITY"},
     {"item":"F-CI64/F-CI64P Energy Balance","frozen_target":"OPT_ENERGY_BALANCE","weight":0.0,"score_delta":0.0,"classification":"OUTSIDE_FROZEN_V1_DENOMINATOR"},
-    {"item":"F-GC24 plus F-CI65 coupled restart/split-run/replay","frozen_target":"D13/G05","previous_percent":82.0,"new_percent":82.0,"score_delta":0.0,"classification":"REAL_CHILD_CAPABILITY_ADVANCE_NO_PARENT_AUTOPROMOTION","reason":"G05 still lacks end-to-end composition including remaining tile/temporal/tangent/MultiSWAP-diagnostics/external-aquifer obligations and parent-level qualification/preservation."},
+    {"item":"F-GC24 plus F-CI65/F-CI65P coupled restart/split-run/replay","frozen_target":"D13/G05","previous_percent":82.0,"new_percent":82.0,"score_delta":0.0,"classification":"REAL_CHILD_CAPABILITY_ADVANCE_NO_PARENT_AUTOPROMOTION","reason":"G05 still lacks end-to-end composition including remaining tile/temporal/tangent/MultiSWAP-diagnostics/external-aquifer obligations and parent-level qualification. Postimage preservation of the restart child does not promote the parent."},
     {"item":"RossFast D2 R1","frozen_target":"OPT_ROSSFAST","weight":0.0,"score_delta":0.0,"classification":"RESEARCH_ONLY"}
   ],
-  "result": {
-    "technical_measured_percent": 89.905063291139,
-    "technical_reported_percent": 89.0,
-    "overall_percent": 83.004545454545,
-    "changed_since_F_RG03": false
-  }
+  "result": {"technical_measured_percent":89.905063291139,"technical_reported_percent":89.0,"overall_percent":83.004545454545,"changed_since_F_RG03":false}
 }

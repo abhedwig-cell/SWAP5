@@ -43,7 +43,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base=24b02660a7924323d1587b4adf77a160c9ef7d04
+          base=d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0
           git merge-base --is-ancestor "$base" HEAD
           if git diff --name-only "$base" HEAD | grep -Eq '^(src|reference)/'; then
             echo "F-RG05 must not change production/reference source"
