@@ -1,0 +1,25 @@
+name: F-ROSS01 production D3R model adapter
+
+on:
+  push:
+    branches: ['work/f-ross01-production-d3r-model-adapter']
+    paths:
+      - 'src/runtime/mod_rossfast_d3r_model_adapter.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/runtime/test_f_ross01_d3r_model_adapter.f90'
+      - 'tests/runtime/run_f_ross01_d3r_model_adapter.sh'
+      - '.github/workflows/f-ross01-production-d3r-model-adapter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify production D3R adapter
+        run: bash tests/runtime/run_f_ross01_d3r_model_adapter.sh
