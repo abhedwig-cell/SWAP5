@@ -114,7 +114,7 @@ program test_fpm14_drainage_response_binding
   do i = 1, size(qdra,1)
     ordered_total = ordered_total + qdra(i,3)
   end do
-  call require(same_bits(ordered_total, diagnostics%aggregate%total_signed_soil_to_drain_rate), &
+  call require(same_bits(ordered_total, diagnostics%aggregate%signed_soil_to_drain_rate), &
        'legacy-order derived total equals per-level bottom-node transfers')
   print '(a)', 'FPM14_ALL_RESPONSE_FAMILIES_BOTTOM_LUMPED=PASS'
   print '(a)', 'FPM14_MULTILEVEL_DERIVED_TOTAL_SINGLE_BOOKING=PASS'
