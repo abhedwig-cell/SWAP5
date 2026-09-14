@@ -788,7 +788,11 @@ contains
       end if
 
       call external_temperature_provider(request, response)
-      if (.not. response%ready() .or. .not. response%identity_matches(request)) then
+      if (.not. response%ready()) then
+        prepared%provider_invalid_count_value = prepared%provider_invalid_count_value + 1
+        cycle
+      end if
+      if (.not. response%identity_matches(request)) then
         prepared%provider_invalid_count_value = prepared%provider_invalid_count_value + 1
         cycle
       end if

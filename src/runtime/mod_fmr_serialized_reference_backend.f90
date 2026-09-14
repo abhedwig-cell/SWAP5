@@ -669,7 +669,7 @@ contains
     end if
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
     if (self%bottom_thermal_requested .and. parameters%soil_temperature_active .and. &
-        self%model%state_profile_admitted .and. config%max_committed_substeps <= huge(0)/2) then
+        self%model%state_profile_admitted .and. config%max_committed_substeps <= ishft(huge(0), -1)) then
       call self%model%bottom_thermal_carrier%initialize(2 * config%max_committed_substeps, bottom_thermal_ok)
       self%model%bottom_thermal_carrier_active = bottom_thermal_ok
       self%model%bottom_thermal_carrier_valid = bottom_thermal_ok
@@ -677,10 +677,12 @@ contains
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
-        result%completed .and. candidate%ready()) then
-      call self%model%bottom_thermal_carrier%materialize_candidate(t0, t1, self%bottom_thermal_candidate, &
-           bottom_thermal_ok)
-      if (.not. bottom_thermal_ok) call self%bottom_thermal_candidate%clear()
+        result%completed) then
+      if (candidate%ready()) then
+        call self%model%bottom_thermal_carrier%materialize_candidate(t0, t1, self%bottom_thermal_candidate, &
+             bottom_thermal_ok)
+        if (.not. bottom_thermal_ok) call self%bottom_thermal_candidate%clear()
+      end if
     end if
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.

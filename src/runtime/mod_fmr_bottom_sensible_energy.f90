@@ -150,7 +150,8 @@ contains
     call evaluate_fmr_bottom_sensible_energy(candidate, parameters, base_result)
     result = base_result
 
-    if (.not. candidate%ready() .or. .not. parameters%ready()) return
+    if (.not. candidate%ready()) return
+    if (.not. parameters%ready()) return
     if (candidate_lineage_id <= 0_int64 .or. .not. bindings%ready()) then
       call mark_invalid_external_binding(result)
       return
