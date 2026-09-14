@@ -1,42 +1,68 @@
 module mod_canonical_interval_runtime
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_interface_sensitivity_t, &
-       execute_reference_interval, TX_STATUS_ACCEPTED, TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, &
-       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_policy_t, &
+       transaction_interface_sensitivity_t, execute_reference_interval, TX_STATUS_ACCEPTED, &
+       TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
+       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
-       canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
-       CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
-       CANONICAL_STATUS_NO_PROGRESS, CANONICAL_STATUS_SUBSTEP_LIMIT
+       canonical_numerical_config_t, canonical_result_t, canonical_directional_response_request_t, &
+       canonical_directional_response_t, CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_INVALID_REQUEST, &
+       CANONICAL_STATUS_TRANSACTION_FAILED, CANONICAL_STATUS_NO_PROGRESS, CANONICAL_STATUS_SUBSTEP_LIMIT
   implicit none
   private
 
-  public :: run_canonical_interval
+  public :: run_canonical_interval, canonical_subinterval_target_selector
+
+  abstract interface
+    subroutine canonical_subinterval_target_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      import :: real64
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+    end subroutine canonical_subinterval_target_selector
+  end interface
 
 contains
 
-  subroutine run_canonical_interval(model, committed, forcing, interval, config, result)
+  subroutine run_canonical_interval(model, committed, forcing, interval, config, result, target_selector, directional_request)
     class(canonical_physical_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
     class(canonical_forcing_t), intent(in) :: forcing
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     type(canonical_result_t), intent(out) :: result
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
+    type(canonical_directional_response_request_t), intent(in), optional :: directional_request
 
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
+    type(transaction_policy_t) :: transaction_policy
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
-    real(real64) :: cursor, next_cursor, tol, aggregate_bottom_exchange, terminal_bottom_flux
-    logical :: aggregate_mass_complete, aggregate_bottom_available
-    integer :: isub
+    real(real64) :: cursor, next_cursor, tol, transaction_t1
+    real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux
+    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid, directional_active
+    integer :: isub, max_retries_cap
 
     result = canonical_result_t()
     terminal_sensitivity = transaction_interface_sensitivity_t()
+    directional_active = .false.
     result%requested_t0 = interval%t0
     result%requested_t1 = interval%t1
     result%completed_t = interval%t0
     result%mass%interval_t0 = interval%t0
     result%mass%interval_t1 = interval%t1
+    if (present(directional_request)) then
+      result%directional_response%requested = directional_request%requested
+      result%directional_response%control_coordinate = directional_request%control_coordinate
+      result%directional_response%origin_t0 = interval%t0
+      result%directional_response%accepted_t1 = interval%t0
+      if (directional_request%requested) then
+        result%directional_response%method = 'unavailable'
+        result%directional_response%route = 'model-directional-response-unavailable'
+      end if
+    end if
 
     if (.not. allocated(committed) .or. interval%t1 <= interval%t0 .or. &
         config%max_committed_substeps <= 0 .or. config%progress_tolerance < 0.0_real64) then
@@ -46,10 +72,15 @@ contains
 
     ! The externally committed physical state remains untouched until the full
     ! requested [t0,t1] interval has completed. Accepted internal substeps are
-    ! committed only into this private working state. Sensitivity follows the
-    ! same publication rule: only a fully completed canonical interval exposes
-    ! its final accepted local-terminal tangent.
+    ! committed only into this private working state.  F-KT22 extends that same
+    ! publication boundary to an optional model-owned directional response.
     call committed%clone(working)
+    if (present(directional_request)) then
+      if (directional_request%requested) then
+        call model%begin_directional_response(directional_request, interval, directional_active)
+        if (directional_active) result%directional_response%route = 'active-pending-publication'
+      end if
+    end if
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
     aggregate_mass_complete = .true.
@@ -59,7 +90,28 @@ contains
     cursor = interval%t0
 
     do isub = 1, config%max_committed_substeps
-      call execute_reference_interval(model, working, cursor, interval%t1, config%transaction, tx)
+      transaction_t1 = interval%t1
+      max_retries_cap = config%transaction%max_retries
+      selector_valid = .true.
+      if (present(target_selector)) then
+        call target_selector(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)
+      end if
+      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
+      if (.not. selector_valid .or. .not. ieee_is_finite(transaction_t1) .or. &
+          transaction_t1 <= cursor .or. transaction_t1 > interval%t1 .or. max_retries_cap < 0) then
+        result%status = CANONICAL_STATUS_INVALID_REQUEST
+        result%completed_t = cursor
+        result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
+             TX_MASS_MISSING_UNSPECIFIED)
+        call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
+        return
+      end if
+
+      ! The optional execution-policy selector may tighten, but can never
+      ! relax, the caller-owned transaction retry budget.
+      transaction_policy = config%transaction
+      transaction_policy%max_retries = min(config%transaction%max_retries, max_retries_cap)
+      call execute_reference_interval(model, working, cursor, transaction_t1, transaction_policy, tx)
       call accumulate_transaction(result, tx)
 
       if (tx%status /= TX_STATUS_ACCEPTED) then
@@ -67,6 +119,7 @@ contains
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
+        call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
         return
       end if
 
@@ -75,12 +128,12 @@ contains
            terminal_bottom_flux)
       terminal_sensitivity = tx%interface_sensitivity
       next_cursor = tx%accepted_t1
-      tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
-      if (next_cursor <= cursor .or. next_cursor > interval%t1 + tol) then
+      if (next_cursor <= cursor .or. next_cursor > transaction_t1 + tol) then
         result%status = CANONICAL_STATUS_NO_PROGRESS
         result%completed_t = cursor
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
+        call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
         return
       end if
 
@@ -89,6 +142,7 @@ contains
       result%completed_t = cursor
 
       if (abs(cursor - interval%t1) <= tol) then
+        call finish_directional_response(model, interval, .true., directional_active, result%directional_response)
         call move_alloc(working, committed)
         result%status = CANONICAL_STATUS_COMPLETED
         result%completed = .true.
@@ -115,7 +169,24 @@ contains
     result%completed_t = cursor
     result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
          TX_MASS_MISSING_UNSPECIFIED)
+    call finish_directional_response(model, interval, .false., directional_active, result%directional_response)
   end subroutine run_canonical_interval
+
+  subroutine finish_directional_response(model, interval, completed, active, response)
+    class(canonical_physical_model_t), intent(inout) :: model
+    type(canonical_interval_t), intent(in) :: interval
+    logical, intent(in) :: completed, active
+    type(canonical_directional_response_t), intent(inout) :: response
+    logical :: was_requested
+    integer :: control_coordinate
+
+    was_requested = response%requested
+    control_coordinate = response%control_coordinate
+    if (.not. active) return
+    call model%finish_directional_response(interval, completed, response)
+    response%requested = was_requested
+    response%control_coordinate = control_coordinate
+  end subroutine finish_directional_response
 
   subroutine accumulate_accepted_mass(result, tx, aggregate_complete)
     type(canonical_result_t), intent(inout) :: result
