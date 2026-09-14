@@ -1,0 +1,26 @@
+{
+  "schema": "swap5-eb-workunit-status-v1",
+  "work_unit": "EB-I20R",
+  "title": "Batch-safe Energy Conservation Ledger invariant handling",
+  "branch": "work/eb-i20r-batch-safe-energy-ledger-invariant-handling",
+  "status": "PENDING_POSTIMAGE_READ_ONLY_QUALIFICATION",
+  "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "eb_i20_audit_authority": "d1485274f7cccb6971a1576267c839e7484d9af1",
+  "materialized_source_head": "772e85afb67c4a0abab3e1c1deeef4fd48548597",
+  "materialized_source_tree": "c3ab52fee89fd2a99d69b7edf04c196e90e89749",
+  "production_source_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "a6aea349308e8b6b0aedaaa22a64e41f9101b48d"
+  },
+  "prepush_owner_qualification": {
+    "workflow_run": 34836947677,
+    "result": "SUCCESS_BEFORE_PUSH"
+  },
+  "postimage_read_only_qualification": null,
+  "decision": "PENDING",
+  "hard_nonclaims": [
+    "not canonical admission",
+    "not independent qualification",
+    "no full SWAP energy balance completion claim"
+  ]
+}
