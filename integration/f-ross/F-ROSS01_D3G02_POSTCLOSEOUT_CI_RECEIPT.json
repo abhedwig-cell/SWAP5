@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS01 D3G02",
+  "kind": "POSTCLOSEOUT_METADATA_TRIGGER_CI_RECEIPT",
+  "authoritative_scientific_run": 34796278942,
+  "postcloseout_run": {
+    "run_id": 34815629462,
+    "run_number": 5,
+    "head_sha": "7ece59daa381b6a2b2ae1e6eb57b85a7f1b3487e",
+    "conclusion": "failure",
+    "scientific_evidence": false,
+    "solver_trials_executed": false,
+    "failure_stage": "BIND_LIVE_CANONICAL_MODEL_CERTIFICATE_SEMANTICS",
+    "failure_reason": "The frozen qualification workflow requires canonical head e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557 exactly; live canonical had advanced to e79b0272edb544ec4c8000a4d6869274f1ab3ae5 before the metadata-only closed-negative contract update triggered the workflow.",
+    "tested_live_canonical_head": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5"
+  },
+  "semantic_reconciliation": {
+    "qualification_canonical_head": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "postcloseout_live_canonical_head": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+    "canonical_transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "relevant_transaction_semantics_unchanged": true,
+    "scientific_qualification_replay_required_for_closeout": false,
+    "reason_replay_not_required": "D3G02 is already CLOSED_NEGATIVE; no certificate constants are admitted and no production capability depends on a positive result. The later run is only a fail-closed stale-head guard firing before science execution."
+  },
+  "governance": {
+    "does_not_supersede_authority_run_34796278942": true,
+    "does_not_change_negative_disposition": true,
+    "d3_g02_remains_open": true,
+    "certificate_available": false,
+    "production_admission": false,
+    "production_source_delta": []
+  }
+}
