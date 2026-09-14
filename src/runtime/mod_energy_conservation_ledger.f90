@@ -270,20 +270,20 @@ contains
     ready = .true.
   end function energy_ledger_prepared_ready_for_receipt
 
-  subroutine energy_ledger_commit_prepared(self, prepared, receipt, record)
+  subroutine energy_ledger_commit_prepared(self, prepared, receipt, record, status)
     class(energy_trial_ledger_t), intent(inout) :: self
     type(prepared_energy_trial_t), intent(inout) :: prepared
     type(fmr_accepted_commit_receipt_t), intent(in) :: receipt
     type(energy_commit_record_t), intent(out) :: record
+    integer, intent(out) :: status
     real(real64) :: receipt_t0, receipt_t1
     logical :: interval_available
 
     record = energy_commit_record_t()
-    if (.not. self%prepared_ready_for_receipt(prepared, receipt)) then
-      error stop 'energy conservation ledger prepared commit invariant violation'
-    end if
+    status = ENERGY_LEDGER_INVALID_PROVENANCE
+    if (.not. self%prepared_ready_for_receipt(prepared, receipt)) return
     call receipt%origin_interval(receipt_t0, receipt_t1, interval_available)
-    if (.not. interval_available) error stop 'energy conservation ledger receipt interval invariant violation'
+    if (.not. interval_available) return
 
     record%lineage_id = receipt%current_lineage_id()
     record%origin_revision_value = receipt%origin_revision()
@@ -294,6 +294,7 @@ contains
     record%initialized = .true.
 
     call clear_prepared(self, prepared)
+    status = ENERGY_LEDGER_OK
   end subroutine energy_ledger_commit_prepared
 
   subroutine energy_ledger_discard_trial(self, status)
@@ -310,17 +311,16 @@ contains
     status = ENERGY_LEDGER_OK
   end subroutine energy_ledger_discard_trial
 
-  subroutine energy_ledger_abort_prepared(self, prepared)
+  subroutine energy_ledger_abort_prepared(self, prepared, status)
     class(energy_trial_ledger_t), intent(inout) :: self
     type(prepared_energy_trial_t), intent(inout) :: prepared
+    integer, intent(out) :: status
 
-    if (.not. self%prepared_active .or. .not. prepared%ready()) then
-      error stop 'energy conservation ledger prepared abort invariant violation'
-    end if
-    if (prepared%generation /= self%prepared_generation) then
-      error stop 'energy conservation ledger prepared abort generation mismatch'
-    end if
+    status = ENERGY_LEDGER_INVALID_PROVENANCE
+    if (.not. self%prepared_active .or. .not. prepared%ready()) return
+    if (prepared%generation /= self%prepared_generation) return
     call clear_prepared(self, prepared)
+    status = ENERGY_LEDGER_OK
   end subroutine energy_ledger_abort_prepared
 
   pure logical function energy_ledger_has_active_trial(self) result(active)
