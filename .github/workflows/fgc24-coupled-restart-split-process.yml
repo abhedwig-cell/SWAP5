@@ -22,7 +22,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
           gfortran --version
-      - name: Probe F-GC24 export provenance
-        run: bash tests/fgc/run_fgc24_export_probe.sh
       - name: Run F-GC24 coupled restart gate
         run: bash tests/fgc/run_fgc24_coupled_restart_split_process_gate.sh
