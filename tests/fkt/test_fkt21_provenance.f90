@@ -12,10 +12,12 @@ program test_fkt21_provenance
   call test_cross_candidate_generation()
   call test_endpoint_bound_token()
   call test_nonmonotone_generation_rejected()
+  call test_retry_aba_token_rejected()
   print '(A)', 'FKT21_PROVENANCE_HARDENING PASS'
   print '(A)', 'FKT21_CROSS_CANDIDATE_GENERATION=PASS'
   print '(A)', 'FKT21_STEP_ENDPOINT_TOKEN_BINDING=PASS'
   print '(A)', 'FKT21_NONMONOTONE_GENERATION_REJECTED=PASS'
+  print '(A)', 'FKT21_RETRY_ABA_TOKEN_REJECTED=PASS'
 
 contains
 
@@ -84,6 +86,36 @@ contains
     call assert_true(.not. ok .and. s%status == TRAJECTORY_DIRECTION_FAILED, &
          'reused generation rejected')
   end subroutine test_nonmonotone_generation_rejected
+
+  subroutine test_retry_aba_token_rejected()
+    type(accepted_trajectory_direction_t) :: s
+    type(soil_water_accepted_step_direction_request_t) :: req
+    type(soil_water_accepted_step_direction_result_t) :: res
+    type(trajectory_step_token_t) :: stale, current
+    logical :: ok
+
+    call configure_trajectory_direction(s, .true.)
+    call begin_or_continue_trajectory(s, 12, 0.30_real64, 0.90_real64, &
+         SW_STEP_CONTROL_BOTTOM_FLUX, 2, ok, 401_int64)
+    call assert_true(ok, 'retry ABA initial begin')
+    call build_trajectory_step_request(s, 0.30_real64, 0.50_real64, req, stale, ok)
+    call assert_true(ok, 'retry ABA first token')
+
+    ! Reject the attempt before it can become an accepted step, then retry the
+    ! exact same [t0,t1] inside the same outer candidate. The new issue must have
+    ! distinct token identity; otherwise a delayed result from the rejected
+    ! attempt could be mistaken for the retry (ABA replay).
+    call discard_trajectory_step(s)
+    call build_trajectory_step_request(s, 0.30_real64, 0.50_real64, req, current, ok)
+    call assert_true(ok, 'retry ABA second token')
+    call assert_true(current%step_sequence /= stale%step_sequence, &
+         'retry ABA issue sequence advanced')
+
+    call available_result(res)
+    call stage_trajectory_step_result(s, stale, res, ok)
+    call assert_true(.not. ok .and. s%status == TRAJECTORY_DIRECTION_FAILED, &
+         'stale rejected-retry token rejected')
+  end subroutine test_retry_aba_token_rejected
 
   subroutine available_result(res)
     type(soil_water_accepted_step_direction_result_t), intent(out) :: res

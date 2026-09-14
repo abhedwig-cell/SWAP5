@@ -172,12 +172,17 @@ contains
       call fail_closed(state, 'stale-step-origin')
       return
     end if
+    if (state%next_step_sequence >= huge(state%next_step_sequence)) then
+      call fail_closed(state, 'step-sequence-exhausted')
+      return
+    end if
 
     token%worker_id = state%worker_id
     token%generation = state%generation
     token%step_sequence = state%next_step_sequence
     token%step_t0 = step_t0
     token%step_t1 = step_t1
+    state%next_step_sequence = state%next_step_sequence + 1
     state%issued = .true.
     state%issued_sequence = token%step_sequence
     state%issued_t0 = token%step_t0
@@ -264,7 +269,6 @@ contains
     end if
     state%accepted_steps = state%accepted_steps + 1
     state%current_t1 = state%pending_t1
-    state%next_step_sequence = state%next_step_sequence + 1
     state%additional_tridiagonal_backsolves = state%additional_tridiagonal_backsolves + state%pending_backsolves
     state%additional_jacobian_builds = state%additional_jacobian_builds + state%pending_jacobians
     state%additional_full_nonlinear_solves = state%additional_full_nonlinear_solves + state%pending_full_solves
