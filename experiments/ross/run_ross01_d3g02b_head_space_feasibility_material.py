@@ -1,0 +1,198 @@
+from __future__ import annotations
+
+import argparse
+import copy
+import json
+import math
+from pathlib import Path
+
+import ross01_d3r_fsi31_duration_adapter as adapter
+import run_ross01_d2_fsi31_qualification as d2q
+import run_ross01_d3g02_temporal_certificate_calibration as cal
+import run_ross01_d3g02_temporal_certificate_calibration_material as oldmat
+import run_ross01_gate_j1e_d1_local_terminal_coupling_preconditioner as d1
+
+WORK_UNIT = "F-ROSS01 D3G02B"
+MASS_TOL_CM = 1.0e-12
+
+
+def finite_vector(values) -> bool:
+    return bool(values) and all(math.isfinite(float(v)) for v in values)
+
+
+def head_linf_cm(a, b) -> float:
+    return max(abs(float(x) - float(y)) for x, y in zip(a, b))
+
+
+def heads_in_frozen_table(values) -> bool:
+    lo = float(d1.j1a.c1r.base.H_MIN)
+    hi = float(d1.j1a.c1r.base.H_MAX)
+    return finite_vector(values) and all(lo < float(v) < hi for v in values)
+
+
+def reference_heads(theta) -> tuple[float, ...]:
+    values = tuple(float(v) for v in d1.gate_f.heads_from_theta(tuple(float(x) for x in theta)))
+    if not heads_in_frozen_table(values):
+        raise RuntimeError("reference head conversion outside frozen RossFast table envelope")
+    return values
+
+
+def run_case(material: str, attempt: int, base: dict, reference32, reference64) -> dict:
+    full_dt = adapter.DURATION_LADDER_DAY[attempt]
+    half_dt = adapter.DURATION_LADDER_DAY[attempt + 1]
+    t0 = 37.125 + attempt
+    committed_before = copy.deepcopy(base["committed_state"])
+
+    full_req = cal.set_dt(base, t0, full_dt)
+    half1_req = cal.set_dt(base, t0, half_dt)
+    full = adapter.execute_research_trial(copy.deepcopy(full_req))
+    half1 = adapter.execute_research_trial(copy.deepcopy(half1_req))
+    half2_req = cal.set_dt(base, t0 + half_dt, half_dt)
+    if half1.get("solver_disposition") == "candidate_ready":
+        half2_req["committed_state"] = copy.deepcopy(half1["candidate_hydraulic_state"])
+    half2 = adapter.execute_research_trial(copy.deepcopy(half2_req))
+    trials = (full, half1, half2)
+
+    ready = all(r.get("solver_disposition") == "candidate_ready" for r in trials)
+    mass = all(cal.mass_ok(r) for r in trials)
+    immutable = (
+        base["committed_state"] == committed_before
+        and all(r.get("committed_state_mutated") is False for r in trials)
+    )
+    candidate_only = all(
+        r.get("accepted") is False
+        and r.get("commit_authorized") is False
+        and r.get("accepted_publication_authorized") is False
+        for r in trials
+    )
+    duration_preflight = all(
+        (r.get("solver_work_diagnostics") or {}).get("d3r_duration_worker_preflight") is True
+        for r in trials
+    )
+
+    raw_head = None
+    refined_reference_head_error = None
+    coarse_reference_head_error = None
+    reference_self_head_delta = None
+    violation_margin = None
+    scientific_classification = "EXECUTION_INVALID"
+    head_vectors_finite_and_bounded = False
+
+    if ready:
+        coarse_head = tuple(float(v) for v in full["candidate_hydraulic_state"]["pressure_head_cm"])
+        refined_head = tuple(float(v) for v in half2["candidate_hydraulic_state"]["pressure_head_cm"])
+        ref32_theta = oldmat.ref_state(reference32, full_dt)
+        ref64_theta = oldmat.ref_state(reference64, full_dt)
+        ref32_head = reference_heads(ref32_theta)
+        ref64_head = reference_heads(ref64_theta)
+        head_vectors_finite_and_bounded = all(
+            heads_in_frozen_table(v)
+            for v in (coarse_head, refined_head, ref32_head, ref64_head)
+        )
+        if head_vectors_finite_and_bounded:
+            raw_head = head_linf_cm(refined_head, coarse_head)
+            coarse_reference_head_error = head_linf_cm(coarse_head, ref64_head)
+            refined_reference_head_error = head_linf_cm(refined_head, ref64_head)
+            reference_self_head_delta = head_linf_cm(ref32_head, ref64_head)
+            violation_margin = refined_reference_head_error - raw_head
+            if violation_margin <= 0.0:
+                scientific_classification = "CONSERVATIVE_RESOLVED"
+            elif violation_margin <= reference_self_head_delta:
+                scientific_classification = "UNRESOLVED_AT_REFERENCE_PRECISION"
+            else:
+                scientific_classification = "RESOLVED_NONCONSERVATIVITY"
+
+    mechanical_checks = {
+        "all_candidates_ready": ready,
+        "hard_mass_all_three": mass,
+        "committed_origin_unchanged": immutable,
+        "candidate_only_all_three": candidate_only,
+        "duration_child_preflight_all_three": duration_preflight,
+        "head_vectors_finite_and_inside_frozen_table": head_vectors_finite_and_bounded,
+    }
+    residuals = [
+        abs(float(r["unrounded_mass_residual_cm"]))
+        for r in trials
+        if isinstance(r.get("unrounded_mass_residual_cm"), (int, float))
+    ]
+    return {
+        "attempt_index": attempt,
+        "material": material,
+        "full_duration_day": full_dt,
+        "half_duration_day": half_dt,
+        "mechanical_pass": all(mechanical_checks.values()),
+        "mechanical_checks": mechanical_checks,
+        "scientific_classification": scientific_classification,
+        "temporal_metrics": {
+            "state_quantity": "terminal_pressure_head_cm",
+            "norm": "absolute_linf_cm",
+            "raw_full_vs_two_half_head_estimator_cm": raw_head,
+            "coarse_reference_head_error_cm": coarse_reference_head_error,
+            "refined_reference_head_error_cm": refined_reference_head_error,
+            "reference_self_head_delta_cm": reference_self_head_delta,
+            "violation_margin_cm": violation_margin,
+        },
+        "max_abs_mass_residual_cm": max(residuals, default=0.0),
+        "certificate_available": False,
+        "certificate_disposition": "B1_FEASIBILITY_ONLY_NO_RUNTIME_AUTHORITY",
+    }
+
+
+def main() -> int:
+    p = argparse.ArgumentParser()
+    p.add_argument("--material", required=True)
+    p.add_argument("--canonical-head", required=True)
+    p.add_argument("--output", type=Path, required=True)
+    a = p.parse_args()
+    if a.material not in adapter.MATERIAL_IDS:
+        raise SystemExit("material outside frozen D2 set")
+
+    base = d2q.base_request(a.material, t0=37.125, steps=8, perturb=0.0, pre=False)
+    table = cal.configure_reference(a.material)
+    theta0 = tuple(float(v) for v in base["committed_state"]["water_content"])
+    ext = cal.reference_external(base)
+    ref32 = oldmat.reference_trajectory(theta0, table, ext, 32)
+    ref64 = oldmat.reference_trajectory(theta0, table, ext, 64)
+    cases = [run_case(a.material, i, base, ref32, ref64) for i in range(adapter.CANONICAL_MAX_RETRIES + 1)]
+
+    mechanical_pass = len(cases) == 9 and all(c["mechanical_pass"] for c in cases)
+    resolved = sum(c["scientific_classification"] == "RESOLVED_NONCONSERVATIVITY" for c in cases)
+    unresolved = sum(c["scientific_classification"] == "UNRESOLVED_AT_REFERENCE_PRECISION" for c in cases)
+    if not mechanical_pass:
+        outcome = "EXECUTION_INVALID"
+    elif resolved:
+        outcome = "FAIL_RESOLVED_NONCONSERVATIVITY"
+    elif unresolved:
+        outcome = "INCONCLUSIVE_REFERENCE_RESOLUTION"
+    else:
+        outcome = "PASS_HEAD_SPACE_FEASIBLE"
+
+    payload = {
+        "work_unit": WORK_UNIT,
+        "stage": "B1_HEAD_SPACE_FEASIBILITY",
+        "live_canonical_head": a.canonical_head,
+        "material": a.material,
+        "case_count": len(cases),
+        "mechanical_pass": mechanical_pass,
+        "resolved_nonconservative_case_count": resolved,
+        "unresolved_reference_precision_case_count": unresolved,
+        "outcome": outcome,
+        "cases": cases,
+        "production_source_delta": [],
+    }
+    a.output.write_text(json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n")
+    print(json.dumps({
+        "material": a.material,
+        "outcome": outcome,
+        "case_count": len(cases),
+        "resolved": resolved,
+        "unresolved": unresolved,
+        "max_mass": max(float(c["max_abs_mass_residual_cm"]) for c in cases),
+    }, sort_keys=True, allow_nan=False))
+    # Scientific FAIL/INCONCLUSIVE is evidence, not a harness crash.  Aggregate
+    # owns the work-unit conclusion after all six material artifacts exist.
+    return 0 if mechanical_pass else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
