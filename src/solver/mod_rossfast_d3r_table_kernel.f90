@@ -1,6 +1,8 @@
 module mod_rossfast_d3r_table_kernel
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real32, real64
+  use mod_rossfast_d3r_execution_policy, only: ROSSFAST_D3R_MAX_FULL_INDEX, &
+       rossfast_d3r_full_duration_for_index
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_trial_kernel_t, &
        rossfast_d3r_kernel_request_t, rossfast_d3r_kernel_result_t, &
        rossfast_d3r_material_t, rossfast_d3r_state_t, rossfast_d3r_forcing_t, &
@@ -72,9 +74,9 @@ contains
     if (.not. request_contract_is_admitted(request)) return
     if (.not. valid_state(request%base_state)) return
 
+    call semantic_full_duration(request%t0_day, request%t1_day, duration, ok)
+    if (.not. ok) return
     result%request_admitted = .true.
-    duration = request%t1_day - request%t0_day
-    if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64) return
     half_duration = 0.5_real64 * duration
 
     call run_window(self, request%material, request%forcing, request%base_state, duration, &
@@ -107,6 +109,8 @@ contains
 
   logical function request_contract_is_admitted(request)
     type(rossfast_d3r_kernel_request_t), intent(in) :: request
+    real(real64) :: duration
+    logical :: duration_ok
 
     request_contract_is_admitted = .false.
     if (request%base_state%active_nodes /= ROSSFAST_D3R_N_CELLS) return
@@ -120,12 +124,34 @@ contains
     if (request%state_consistency_tolerance /= ROSSFAST_D3R_STATE_CONSISTENCY_TOL) return
     if (request%temporal_resolution_floor /= ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR) return
     if (request%temporal_accuracy_tolerance /= ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE) return
-    if (.not. ieee_is_finite(request%t0_day) .or. .not. ieee_is_finite(request%t1_day)) return
-    if (request%t1_day <= request%t0_day) return
     if (.not. ieee_is_finite(request%forcing%top_flux_cm_per_day)) return
     if (.not. ieee_is_finite(request%forcing%bottom_flux_upward_cm_per_day)) return
+    call semantic_full_duration(request%t0_day, request%t1_day, duration, duration_ok)
+    if (.not. duration_ok .or. duration <= 0.0_real64) return
     request_contract_is_admitted = .true.
   end function request_contract_is_admitted
+
+  subroutine semantic_full_duration(t0, t1, duration, ok)
+    real(real64), intent(in) :: t0, t1
+    real(real64), intent(out) :: duration
+    logical, intent(out) :: ok
+    real(real64) :: candidate, expected_t1, tol
+    integer :: index
+
+    duration = 0.0_real64
+    ok = .false.
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    do index = 0, ROSSFAST_D3R_MAX_FULL_INDEX
+      candidate = rossfast_d3r_full_duration_for_index(index)
+      expected_t1 = t0 + candidate
+      tol = 2.0_real64 * max(spacing(t0), spacing(t1), spacing(expected_t1), spacing(candidate))
+      if (abs(t1 - expected_t1) <= tol) then
+        duration = candidate
+        ok = .true.
+        return
+      end if
+    end do
+  end subroutine semantic_full_duration
 
   subroutine run_window(self, material, forcing, initial_state, duration, terminal_state, linear_solves, ok)
     class(rossfast_d3r_table_kernel_t), intent(in) :: self
@@ -161,6 +187,7 @@ contains
     type(rossfast_d3r_forcing_t), intent(in) :: forcing
     type(rossfast_d3r_state_t), intent(inout) :: state
     real(real64), intent(in) :: dt
+    logical, intent(out) :: ok
     type(face_linearization_t) :: faces(ROSSFAST_D3R_N_CELLS - 1)
     real(real64) :: lower(ROSSFAST_D3R_N_CELLS - 1)
     real(real64) :: diag(ROSSFAST_D3R_N_CELLS)
@@ -168,7 +195,7 @@ contains
     real(real64) :: rhs(ROSSFAST_D3R_N_CELLS)
     real(real64) :: delta(ROSSFAST_D3R_N_CELLS)
     real(real64) :: inv_capacity(ROSSFAST_D3R_N_CELLS)
-    real(real64) :: q_top, q_bottom_down, fac, linfac, q_in0, q_out0
+    real(real64) :: q_top, q_bottom_down, fac, linfac
     integer :: i
     logical :: face_ok, solve_ok
 
@@ -195,27 +222,20 @@ contains
     fac = dt / ROSSFAST_D3R_DZ_CM
     linfac = fac * ROSSFAST_D3R_SIGMA
 
-    do i = 1, ROSSFAST_D3R_N_CELLS
-      if (i == 1) then
-        q_in0 = q_top
-      else
-        q_in0 = faces(i - 1)%q0
-      end if
-      if (i == ROSSFAST_D3R_N_CELLS) then
-        q_out0 = q_bottom_down
-      else
-        q_out0 = faces(i)%q0
-      end if
-      rhs(i) = fac * (q_in0 - q_out0)
+    rhs(1) = fac * (q_top - faces(1)%q0)
+    do i = 2, ROSSFAST_D3R_N_CELLS - 1
+      rhs(i) = fac * (faces(i - 1)%q0 - faces(i)%q0)
+    end do
+    rhs(ROSSFAST_D3R_N_CELLS) = fac * &
+         (faces(ROSSFAST_D3R_N_CELLS - 1)%q0 - q_bottom_down)
 
-      if (i > 1) then
-        lower(i - 1) = lower(i - 1) - linfac * faces(i - 1)%dq_dtheta_upper
-        diag(i) = diag(i) - linfac * faces(i - 1)%dq_dtheta_lower
-      end if
-      if (i < ROSSFAST_D3R_N_CELLS) then
-        diag(i) = diag(i) + linfac * faces(i)%dq_dtheta_upper
-        upper(i) = upper(i) + linfac * faces(i)%dq_dtheta_lower
-      end if
+    ! Each internal face contributes to exactly its two adjacent rows. This is
+    ! algebraically identical to Gate D but avoids endpoint indexing ambiguity.
+    do i = 1, ROSSFAST_D3R_N_CELLS - 1
+      diag(i) = diag(i) + linfac * faces(i)%dq_dtheta_upper
+      upper(i) = upper(i) + linfac * faces(i)%dq_dtheta_lower
+      lower(i) = lower(i) - linfac * faces(i)%dq_dtheta_upper
+      diag(i + 1) = diag(i + 1) - linfac * faces(i)%dq_dtheta_lower
     end do
 
     call factor_and_solve(lower, diag, upper, rhs, delta, solve_ok)
@@ -288,7 +308,7 @@ contains
     ok = .true.
   end subroutine table_face_linearization
 
-  pure real(real64) function inverse_capacity(head_cm, material, ok) result(value)
+  real(real64) function inverse_capacity(head_cm, material, ok) result(value)
     real(real64), intent(in) :: head_cm
     type(rossfast_d3r_material_t), intent(in) :: material
     logical, intent(out) :: ok
@@ -307,7 +327,7 @@ contains
     ok = ieee_is_finite(value) .and. value > 0.0_real64
   end function inverse_capacity
 
-  pure real(real64) function head_from_water_content(theta, material, ok) result(head_cm)
+  real(real64) function head_from_water_content(theta, material, ok) result(head_cm)
     real(real64), intent(in) :: theta
     type(rossfast_d3r_material_t), intent(in) :: material
     logical, intent(out) :: ok
