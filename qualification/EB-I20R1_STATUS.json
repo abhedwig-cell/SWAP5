@@ -3,12 +3,14 @@
   "work_unit": "EB-I20R1",
   "title": "Cross-ledger prepared-handle provenance remediation",
   "branch": "work/eb-i20r1-cross-ledger-prepared-provenance-remediation",
-  "status": "OWNER_PREPUSH_QUALIFIED_PENDING_POSTIMAGE_READ_ONLY",
+  "status": "QUALIFIED_OWNER_REMEDIATION_NOT_INDEPENDENT_NOT_CANONICAL_ADMISSION",
   "canonical_base": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
   "parent_owner_authority": "34c4545cc3dea96c9d13988c491b387c8c2a19fd",
   "independent_blocker_authority": "d56bcb227cc24b12ab6fa8ecfe6a2782b5fe2817",
   "materialized_source_head": "4dd14d74220545f58bfdc95a3e88ca29d75b6f12",
   "materialized_source_tree": "691dbf263610eb93453bfa8438d089be1835ef07",
+  "qualified_postimage_head": "fc89e96beb7017a2fa3c1546833745ff805d6142",
+  "qualified_postimage_tree": "249367230b89933fa3516131d329d269554d656b",
   "production_source_blobs": {
     "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
     "src/runtime/mod_energy_conservation_ledger.f90": "84355db95e0b47f2d231422a4bc050d89b712e5b"
@@ -17,15 +19,26 @@
     "workflow_run": 34837968032,
     "result": "SUCCESS_BEFORE_PUSH"
   },
-  "remediation_scope": [
-    "retain prepared lineage, origin revision and interval provenance in the ledger until commit or abort",
-    "validate foreign prepared handles against ledger-owned prepared provenance in addition to generation",
-    "leave energy physics, conservation algebra, receipt semantics and mass accounting unchanged"
+  "postimage_read_only_qualification": {
+    "workflow_run": 34838047379,
+    "workflow_job": 103956327265,
+    "result": "SUCCESS"
+  },
+  "qualified_evidence": [
+    "F-VQ80 cross-ledger foreign prepared-handle blocker is explicitly targeted",
+    "prepared lineage, origin revision and interval provenance remain ledger-owned through prepare until commit or abort",
+    "foreign prepared handle cannot consume another ledger instance prepared state",
+    "cross-ledger abort fails closed without process termination",
+    "O0/O2 cross-ledger behavior is identical",
+    "EB-I20R nonterminating fail-closed, accepted receipt, rollback and F-KT18 mass-preservation gates remain green",
+    "energy physics, conservation algebra, receipt semantics and water mass accounting are unchanged"
   ],
+  "decision": "QUALIFIED_FOR_FRESH_INDEPENDENT_VERIFICATION",
   "hard_nonclaims": [
     "not canonical admission",
     "not independent qualification",
-    "no full SWAP energy balance completion claim"
+    "no full SWAP energy balance completion claim",
+    "no claim that all physical energy terms are connected to this generic ledger"
   ],
-  "next_owner": "read-only owner postimage qualification, then fresh independent F-VQ requalification"
+  "next_owner": "fresh independent F-VQ qualification of exact EB-I20R1 postimage before any canonical admission"
 }
