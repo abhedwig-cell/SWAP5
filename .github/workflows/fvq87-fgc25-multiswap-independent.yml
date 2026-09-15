@@ -1,0 +1,32 @@
+name: F-VQ87 F-GC25 MultiSWAP independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq87-fgc25-multiswap-independent-qualification
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_*.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'tests/fgc/**'
+      - 'tests/qualification/fvq87/**'
+      - 'qualification/F-VQ87_STATUS.json'
+      - '.github/workflows/fvq87-fgc25-multiswap-independent.yml'
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          gfortran --version
+          python3 --version
+          git --version
+
+      - name: Run F-VQ87 independent gate
+        run: bash tests/qualification/fvq87/run_fvq87_fgc25_multiswap_independent_gate.sh
