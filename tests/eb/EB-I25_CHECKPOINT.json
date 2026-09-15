@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "EB-I25",
+  "title": "Accepted multi-substep sensible-boundary runtime materialization",
+  "phase": "RECONCILE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
+  "canonical_tree": "47af5e88e0e7bb640c83ffb5f45d0eb6073694e5",
+  "source_branch": "work/eb-i25-accepted-multisubstep-sensible-boundary",
+  "source_head_before_checkpoint": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
+  "relevant_dependencies": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "3506b453ba6a00111d182f29db8cbfb288001854",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "src/runtime/mod_fmr_bottom_thermal_carrier.f90": "c371be3e22eaa6da70ca8cbb060bc42d1e0e0bfb",
+    "src/runtime/mod_eb_i23_sensible_boundary_runtime.f90": "35dda86ca51bd91040af0672a43e2961c8db64fd",
+    "src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90": "5f27ff7a4fa67a3991c622d960a7133857dab1c2",
+    "src/process/mod_liquid_water_sensible_enthalpy.f90": "2247370ee34fac73a0e2d0b9fa15e171467aded3",
+    "src/process/mod_external_liquid_water_temperature.f90": "64b85363e764d2c6e2777f5f1258abb3ac9e5abf"
+  },
+  "reused_evidence": {
+    "EB_I23": "admitted and postimage-preserved on current canonical",
+    "EB_I24": "admitted and postimage-preserved through F-CI74P on current canonical",
+    "bottom_thermal_carrier": "existing rollback-safe attempt-context pattern; immutable reference design only"
+  },
+  "new_evidence": [],
+  "tests": [],
+  "verdict": "RECONCILED_READY_FOR_BOUNDED_QUALIFICATION",
+  "mutations": [
+    "created one capability branch because EB-I25 requires a real transaction/backend production change",
+    "no production source changed during RECONCILE"
+  ],
+  "candidate_scope": {
+    "rollback_safe_top_boundary_carrier": true,
+    "accepted_multisubstep_top_conductive_energy": true,
+    "accepted_multisubstep_snow_inactive_top_liquid_inflow": true,
+    "top_liquid_outflow": false,
+    "snow_or_melt_thermal_provenance": false,
+    "new_thermodynamic_law": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance": false
+  },
+  "next_permitted_action": "QUALIFY: implement the smallest rollback-safe top-boundary carrier by reusing transaction attempt-context checkpoint/restore semantics; independently test accepted two-half-step aggregation, rejected/retried leakage resistance, single-substep equivalence, missing donor fail-closed behavior and O0/O2 determinism.",
+  "exclusions": [
+    "No Ross or RossFast changes.",
+    "No EB completion claim.",
+    "No top liquid outflow donor-temperature semantics.",
+    "No snow/melt thermal provenance.",
+    "No production semantic changes merely to force a passing test."
+  ]
+}
