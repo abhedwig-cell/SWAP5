@@ -23,3 +23,12 @@ jobs:
         run: bash tests/fwof/pp02/run_wofost81_case001_fullseason_gate.sh
       - name: WOFOST81 case002 full-season preservation gate
         run: bash tests/fwof/pp02/run_wofost81_case002_fullseason_gate.sh
+      - name: Build reusable qualified replay binaries
+        run: bash tests/fwof/pp02/build_wofost81_fullseason_replay_binaries.sh
+      - name: Upload qualified replay binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-wof-pp02-replay-binaries
+          path: .pp02-artifacts/
+          if-no-files-found: error
+          retention-days: 7
