@@ -21,3 +21,5 @@ jobs:
         run: bash tests/fwof/pp02/run_wofost81_one_day_candidate_integration.sh
       - name: WOFOST81 case001 full-season preservation gate
         run: bash tests/fwof/pp02/run_wofost81_case001_fullseason_gate.sh
+      - name: WOFOST81 case002 full-season preservation gate
+        run: bash tests/fwof/pp02/run_wofost81_case002_fullseason_gate.sh
