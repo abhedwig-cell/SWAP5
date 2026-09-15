@@ -140,7 +140,7 @@ for opt in 0 2; do
   "$OUT/test" > "$OUT/output.txt" 2>&1
   grep -Fx 'EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS' "$OUT/output.txt"
   grep -Fx 'EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS' "$OUT/output.txt"
-  grep -Fx 'EB_I25_TOP_OUTFLOW_FAIL_CLOSED=PASS' "$OUT/output.txt"
+  grep -Fx 'EB_I25_OUTFLOW_FIXTURE_REJECTED_NO_PUBLICATION=PASS' "$OUT/output.txt"
   grep -Fx 'EB_I25_SINGLE_SUBSTEP_I24_EQUIVALENCE=PASS' "$OUT/output.txt"
   grep -Fx 'EB_I25_REJECTED_TRIAL_NO_PUBLICATION=PASS' "$OUT/output.txt"
   grep -Fx 'EB_I25_MULTISUBSTEP_SENSIBLE_BOUNDARY_GATE=PASS' "$OUT/output.txt"

@@ -1,7 +1,7 @@
 {
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "capability": "EB-I25",
-  "title": "Accepted multi-substep sensible-boundary runtime materialization",
+  "title": "Accepted external full/half two-half sensible-boundary runtime materialization",
   "phase": "QUALIFY",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_head": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
@@ -32,7 +32,8 @@
   },
   "new_evidence": [
     "Diagnostic run 34983346428/job 104429045525 proved the original I25 no-history/CONTINUATION_NONE fixture never reached an accepted transaction (9 attempts, 8 retries, KERNEL_REJECTED).",
-    "Code reconciliation established that output%accepted_substeps counts canonical commits, whereas external full/half accepted trajectory authority is represented by two rollback-owned carrier samples."
+    "Code reconciliation established that output%accepted_substeps counts canonical commits, whereas external full/half accepted trajectory authority is represented by two rollback-owned carrier samples.",
+    "Diagnostic run 34986149921/job 104438632067 showed the positive-flux external-full/half outflow fixture is rejected before commit (completed=false, committed=false, accepted_substeps=0, no publication). It cannot qualify accepted two-half outflow semantics."
   ],
   "tests": [
     {
@@ -45,14 +46,21 @@
       "source": "EB-I23R/I24R owner evidence",
       "head": "a7a6e8564318f29d84197ba870aa6fddb7f09cf9",
       "result": "REUSED_QUALIFIED_FIXTURE"
+    },
+    {
+      "run": 34986149921,
+      "job": 104438632067,
+      "result": "EXPECTED_SCOPE_DIAGNOSTIC",
+      "finding": "inflow and missing-donor cases passed; outflow fixture rejected before transaction acceptance, so accepted two-half outflow remains a hard nonclaim"
     }
   ],
-  "verdict": "QUALIFICATION_REPAIR_READY_FOR_OWNER_GATE",
+  "verdict": "OWNER_GATE_READY_WITH_OUTFLOW_SCOPE_NARROWED",
   "mutations": [
     "reconciled existing EB-I25 branch with current canonical 1f33328e",
     "corrected route discrimination from accepted_substeps cardinality to transaction temporal mode plus carrier provenance",
     "reused qualified temporal-history external full/half physical fixture; no solver or physics tolerances were relaxed except the already qualified external temporal comparison tolerance",
-    "narrowed scope to one canonical external full/half transaction with exactly two accepted carrier samples"
+    "narrowed scope to one canonical external full/half transaction with exactly two accepted carrier samples",
+    "narrowed owner outflow evidence to rejected-fixture/no-publication; retained defensive production direction guard without claiming accepted two-half outflow qualification"
   ],
   "candidate_scope": {
     "rollback_safe_top_boundary_carrier": true,
@@ -64,7 +72,7 @@
     "whole_column_sensible_residual_publication": false,
     "full_energy_balance": false
   },
-  "next_permitted_action": "Run the corrected EB-I25 owner gate at O0/O2. If and only if green, persist exact repaired production/test blobs and begin a fresh independent qualification under an unused F-VQ identifier.",
+  "next_permitted_action": "Run clean EB-I25 owner gate at O0/O2. If green, persist exact owner head/blobs and start independent qualification under an unused F-VQ identifier; independent qualification must preserve the accepted-outflow nonclaim.",
   "exclusions": [
     "No Ross or RossFast changes.",
     "No EB completion claim.",

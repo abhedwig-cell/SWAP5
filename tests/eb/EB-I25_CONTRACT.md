@@ -52,13 +52,13 @@ The owner gate must demonstrate at O0 and O2:
 - receipt-owned bottom advective evidence remains available;
 - qualified two-half top inflow closes the EB-I22 boundary when all donor evidence is present;
 - missing top donor remains unavailable;
-- top outflow cannot reuse external donor temperature;
+- the available positive-flux external-full/half outflow fixture is rejected before commit and produces no I25 publication;
 - model-certificate output is equivalent to EB-I24;
 - rejected transaction publishes nothing;
 - O0/O2 semantic output identity.
 
 ## Hard nonclaims
 
-EB-I25 does not aggregate multiple outer committed runtime substeps. It does not add or alter Richards, soil-temperature, sensible-enthalpy, donor-temperature, timestep or transaction physics. It does not qualify top liquid outflow sensible transport, mixed inflow/outflow top transport, or snow/melt thermal provenance. It does not publish a whole-column sensible-energy residual. It does not add radiation, latent heat, vapor energy, freeze/thaw enthalpy, snow phase-change closure, pressure/chemical/salinity enthalpy, or a complete SWAP5 Energy Balance.
+EB-I25 does not aggregate multiple outer committed runtime substeps. It does not add or alter Richards, soil-temperature, sensible-enthalpy, donor-temperature, timestep or transaction physics. It does not qualify accepted external-full/half top liquid outflow sensible transport, mixed inflow/outflow top transport, or snow/melt thermal provenance. The defensive outflow branch remains fail-closed code, not owner evidence that an accepted two-half outflow trajectory exists. It does not publish a whole-column sensible-energy residual. It does not add radiation, latent heat, vapor energy, freeze/thaw enthalpy, snow phase-change closure, pressure/chemical/salinity enthalpy, or a complete SWAP5 Energy Balance.
 
 Owner qualification is not independent qualification and is not canonical admission.

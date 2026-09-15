@@ -52,7 +52,7 @@ program test_eb_i25_multisubstep_sensible_boundary_runtime
        fmr_execute_column_with_top_sensible_inflow
   use mod_eb_i25_multisubstep_sensible_boundary_runtime, only: eb_i25_sensible_boundary_publication_t, &
        fmr_execute_multisubstep_sensible_boundary, EB_I25_TOP_MULTISUBSTEP_INFLOW, &
-       EB_I25_TOP_DONOR_UNAVAILABLE, EB_I25_TOP_OUTFLOW_UNQUALIFIED, EB_I25_TOP_SINGLE_SUBSTEP_INHERITED
+       EB_I25_TOP_DONOR_UNAVAILABLE, EB_I25_TOP_SINGLE_SUBSTEP_INHERITED
   use mod_eb_i25_provider_fixture, only: reset_provider, eb_i25_bottom_provider
   implicit none
 
@@ -67,7 +67,7 @@ program test_eb_i25_multisubstep_sensible_boundary_runtime
 
   call verify_two_half_inflow_materializes_complete_boundary()
   call verify_two_half_missing_donor_fails_closed()
-  call verify_two_half_outflow_does_not_reuse_external_donor()
+  call verify_two_half_outflow_fixture_rejects_without_publication()
   call verify_single_substep_matches_i24()
   call verify_rejected_transaction_has_no_i25_publication()
   write(*,'(A)') 'EB_I25_MULTISUBSTEP_SENSIBLE_BOUNDARY_GATE=PASS'
@@ -170,7 +170,7 @@ contains
     write(*,'(A)') 'EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS'
   end subroutine verify_two_half_missing_donor_fails_closed
 
-  subroutine verify_two_half_outflow_does_not_reuse_external_donor()
+  subroutine verify_two_half_outflow_fixture_rejects_without_publication()
     type(fmr_serialized_reference_backend_t) :: backend
     type(kernel_executor_t) :: tx
     type(kernel_committed_state_t) :: committed
@@ -185,10 +185,8 @@ contains
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
     type(external_liquid_water_temperature_t) :: top_temperature
     type(eb_i25_sensible_boundary_publication_t) :: publication
-    type(whole_column_sensible_boundary_t) :: boundary
     type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls
-    logical :: available
 
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters, 1.0e-10_real64, .true.)
@@ -199,14 +197,12 @@ contains
          config, t0, t1, energy_parameters, eb_i25_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, publication)
 
-    call require(output%accepted_substeps == 1 .and. publication%ready(), 'outflow external full-half publication')
-    call require(publication%top_status() == EB_I25_TOP_OUTFLOW_UNQUALIFIED, 'outflow donor direction guarded')
-    call publication%boundary_snapshot(boundary, available)
-    call require(available .and. boundary%top_conductive_available, 'outflow conductive aggregate remains available')
-    call require(.not. boundary%top_advective_available, 'external donor not reused for top outflow')
-    call require(.not. boundary%complete(), 'top outflow remains fail closed')
-    write(*,'(A)') 'EB_I25_TOP_OUTFLOW_FAIL_CLOSED=PASS'
-  end subroutine verify_two_half_outflow_does_not_reuse_external_donor
+    call require(.not. output%completed .and. .not. output%committed .and. output%accepted_substeps == 0, &
+         'external full-half outflow fixture rejected before commit')
+    call require(committed%current_revision() == 0_int64, 'outflow rejection leaves committed revision unchanged')
+    call require(.not. publication%ready(), 'rejected outflow fixture has no I25 publication')
+    write(*,'(A)') 'EB_I25_OUTFLOW_FIXTURE_REJECTED_NO_PUBLICATION=PASS'
+  end subroutine verify_two_half_outflow_fixture_rejects_without_publication
 
   subroutine verify_single_substep_matches_i24()
     type(fmr_serialized_reference_backend_t) :: backend24, backend25
