@@ -1,0 +1,67 @@
+{
+  "workunit": "EB-I05",
+  "title": "De Vries Sensible Storage State Law",
+  "status": "owner_qualified_not_independently_verified_not_canonical_admitted",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/eb-i05-devries-sensible-storage-state-law",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a"
+  },
+  "owner_qualification": {
+    "qualified_content_head": "945e97fd409c1e8e1e665bca70b52e3b91176b83",
+    "successful_run": 34722716224,
+    "successful_job": 103631381048,
+    "production_delta": [
+      "src/process/mod_linear_mixture_sensible_storage.f90"
+    ],
+    "preserved_blobs": {
+      "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+      "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+    }
+  },
+  "invariants": [
+    {"id":1,"status":"PASS","evidence":"Adds one generic sensible-storage primitive to the single SWAP5 kernel/process architecture; no use-case-specific SWAP variant is introduced."},
+    {"id":2,"status":"PASS","evidence":"Production code contains no files, paths, parsing, format or unit-number dependencies."},
+    {"id":3,"status":"PASS","evidence":"Mixture heat-capacity properties are explicit immutable configuration by intended use and calculated storage quantities are results; no forcing, numerical policy or committed state is mixed into the parameter object."},
+    {"id":4,"status":"PASS","evidence":"No persistent per-column dynamic or restart state is added."},
+    {"id":5,"status":"PASS","evidence":"No Newton, Jacobian or other heavy solver scratch is introduced."},
+    {"id":6,"status":"PARTIAL","evidence":"The scalar law is layout-agnostic and suitable for batched implementation, but SoA/SIMD/cache behavior is not benchmarked here."},
+    {"id":7,"status":"PARTIAL","evidence":"The algebra mutates no committed state and can be trial-local, but transaction-aware publication into an accepted energy ledger is deferred."},
+    {"id":8,"status":"PASS","evidence":"The state law is deterministic and cheaply recomputable from explicit endpoint data, with no hidden history."},
+    {"id":9,"status":"PASS","evidence":"The formulation is over arbitrary endpoint states and contains no day, month, year, midnight or fixed timestep assumption."},
+    {"id":10,"status":"PASS","evidence":"No coupling-window duration or calendar boundary is encoded."},
+    {"id":11,"status":"PARTIAL","evidence":"The state law is conservation/coupling-ready accounting infrastructure, but coupling runtime composition is outside EB-I05."},
+    {"id":12,"status":"NOT_APPLICABLE","evidence":"No groundwater head/flux interface behavior is changed."},
+    {"id":13,"status":"PASS","evidence":"Water state and fluxes are only consumed as inputs; EB-I05 cannot alter, repair or relax the water balance."},
+    {"id":14,"status":"NOT_APPLICABLE","evidence":"No groundwater response sensitivity/tangent is changed or added."},
+    {"id":15,"status":"PASS","evidence":"Evaluation requires no additional full SWAP solve or predictor/corrector execution."},
+    {"id":16,"status":"PARTIAL","evidence":"No heavy per-column solver object or persistent storage is introduced, but hundred-thousand-column throughput is not qualified."},
+    {"id":17,"status":"PASS","evidence":"The primitive is column/control-volume local; tile fractions and MODFLOW-cell aggregation remain external runtime/coupler concerns."},
+    {"id":18,"status":"NOT_APPLICABLE","evidence":"No deep-vadose component behavior is changed."},
+    {"id":19,"status":"NOT_APPLICABLE","evidence":"No deep-vadose/direct-groundwater transition behavior is changed."},
+    {"id":20,"status":"PASS","evidence":"The linear-mixture storage law is independent of a specific Richards solver and consumes only water content and thermal parameters."},
+    {"id":21,"status":"PASS","evidence":"The current SWAP heat-capacity physics is represented without importing legacy globals; source-bound constants are test inputs rather than duplicated production constants."},
+    {"id":22,"status":"PASS","evidence":"No HeadCalc or soil-water-solver internal arrays are referenced."},
+    {"id":23,"status":"PASS","evidence":"Physical mixture properties are explicit and no numerical policy changes them; latent/vapor/phase physics is explicitly outside scope rather than silently approximated."},
+    {"id":24,"status":"NOT_QUALIFIED","evidence":"The primitive is constant-cost scalar algebra, but bounded-cost behavior within complete difficult-column runtime composition is not measured here."},
+    {"id":25,"status":"PASS","evidence":"The admitted restricted/reference thermal implementation remains byte-identical and available; EB-I05 does not replace it."},
+    {"id":26,"status":"PARTIAL","evidence":"The result exposes exact, temperature and composition components plus a decomposition residual; runtime-wide diagnostics/publication are deferred."},
+    {"id":27,"status":"PASS","evidence":"Unused columns incur no added persistent state or workspace cost from EB-I05."},
+    {"id":28,"status":"PASS","evidence":"System composition, ledger publication, boundary transport and tile/coupler aggregation remain outside this local storage primitive."},
+    {"id":29,"status":"PASS","evidence":"No .swp, filesystem, midnight, one-day or mandatory-MODFLOW dependency is present."},
+    {"id":30,"status":"PASS","evidence":"EB-I05 is explicitly assessed against all 30 SWAP core architecture invariants in this audit."}
+  ],
+  "hard_nonclaims": [
+    "No full SWAP5 energy balance is qualified.",
+    "No latent heat, freeze/thaw enthalpy or vapor transport is represented.",
+    "No temperature-dependent thermophysical-property law is qualified.",
+    "No pressure, chemical or salinity enthalpy is represented.",
+    "The exact affine-state claim is restricted to 0 <= theta <= theta_sat and does not cover the admitted solver's tiny over-saturation tolerance/clipping region.",
+    "EB-I05 does not replace or modify the admitted soil-temperature solver.",
+    "A future governing-equation change that includes composition storage is not claimed to preserve the current temperature trajectory without separate qualification.",
+    "No liquid advective-energy transport or donor-temperature rule is qualified.",
+    "Runtime commit/rollback publication, MultiSWAP throughput and bounded-cost behavior are not qualified.",
+    "Independent verification and canonical admission are not claimed."
+  ]
+}
