@@ -20,19 +20,34 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Compose qualified F-KT22 onto EB-I25 canonical postimage
+      - name: Compose qualified F-KT22 onto current canonical postimage
         shell: bash
         run: |
           set -euo pipefail
-          CANONICAL=64937452be6b073a21b1b87acf21ce4edcbfda14
+          PREVIOUS_CANONICAL=64937452be6b073a21b1b87acf21ce4edcbfda14
+          CANONICAL=7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a
           BASE=1f33328e2ddc0d28450d35647c1c97f293b1e622
           SOURCE=c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
           FMR=src/runtime/mod_fmr_serialized_reference_backend.f90
 
           git fetch origin integration/f-ci-canonical work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
-          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
-          test "$(git merge-base "$CANONICAL" "$SOURCE")" = "$BASE"
+          LIVE_CANONICAL="$(git rev-parse origin/integration/f-ci-canonical)"
+          SOURCE_BASE="$(git merge-base "$CANONICAL" "$SOURCE")"
+          echo "FKT22_LIVE_CANONICAL=$LIVE_CANONICAL"
+          echo "FKT22_EXPECTED_CANONICAL=$CANONICAL"
+          echo "FKT22_SOURCE_MERGE_BASE=$SOURCE_BASE"
+          test "$LIVE_CANONICAL" = "$CANONICAL"
+          test "$SOURCE_BASE" = "$BASE"
+
+          # This recomposition branch was created at PREVIOUS_CANONICAL. Before
+          # inheriting the later canonical postimage it may contain only
+          # qualification support outside src; no production overlay may exist.
+          test -z "$(git diff --name-only "$PREVIOUS_CANONICAL" HEAD -- src)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git merge --no-edit "$CANONICAL"
           test -z "$(git diff --name-only "$CANONICAL" HEAD -- src)"
+          echo 'FKT22_CURRENT_CANONICAL_INHERITED=PASS'
 
           git checkout "$SOURCE" -- \
             .github/workflows/f-kt22-canonical-exposure.yml \
@@ -161,8 +176,6 @@ jobs:
           grep -Fq 'F-MR39 deliberately does not introduce a new combined water/thermal' "$FMR"
           git diff --check
 
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add \
             .github/workflows/f-kt22-canonical-exposure.yml \
             src/kernel/mod_kernel_transactions.f90 \
