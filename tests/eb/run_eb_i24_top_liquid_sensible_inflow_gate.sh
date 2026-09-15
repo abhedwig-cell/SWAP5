@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CANONICAL=1ef995e682cbc0fbbce8b68281646b0de1bbbcd3
+CANONICAL=c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1
 I08_HEAD=8362ea518e42238fe7094c3623a33de90e2de4ae
 I08_BLOB=64b85363e764d2c6e2777f5f1258abb3ac9e5abf
 

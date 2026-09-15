@@ -4,7 +4,7 @@
 
 EB-I24 binds one previously missing EB-I22 boundary category on a deliberately bounded accepted runtime route: top liquid-water sensible energy entering the soil column.
 
-Canonical base: `1ef995e682cbc0fbbce8b68281646b0de1bbbcd3`.
+Current canonical base after disjoint F-CI73 reconciliation: `c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1`. The capability was initially composed on `1ef995e682cbc0fbbce8b68281646b0de1bbbcd3`; F-CI73 added only groundwater-composition and qualification files and changed none of the EB-I24 dependency authorities.
 
 EB-I24 replays the source-neutral explicit external-liquid-water donor-temperature rule previously exercised by EB-I08 and composes it with the already admitted EB-I23 same-call accepted sensible-boundary publication. Historical I08/I10R2 branches are evidence only; they are not treated as canonical authority.
 
