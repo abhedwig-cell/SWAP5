@@ -1,0 +1,165 @@
+name: F-ROSS06 serialized backend model injection
+
+on:
+  push:
+    branches:
+      - work/f-ross06-serialized-backend-model-injection
+    paths:
+      - 'src/runtime/mod_fmr_serialized_kernel_backend.f90'
+      - 'tests/ross/test_ross06_serialized_backend_model_injection.f90'
+      - 'tests/ross/run_ross06_serialized_backend_model_injection.sh'
+      - 'integration/f-ross/F-ROSS06_STATUS.json'
+      - '.github/workflows/ross06-serialized-backend-model-injection.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross06-serialized-backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  serialized-backend-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock parent and inherited qualified authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=34bbffb58819e02853af64ad49b26898b57ab541
+          LIVE="$(git ls-remote origin refs/heads/work/f-ross05-d3r-transactional-selector-composition | awk '{print $1}')"
+          test "$LIVE" = "$BASE"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = d5a71a526efaebd82054580c3186f8e3545db331
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" = 3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_interval_runtime.f90)" = b12327aa6e77bdbf4586fe0bed82cf0e7704f237
+          test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = d3a53385e3707f05e5396bbd6f218633b9803f65
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_checkpoint_orchestrator.f90)" = 0dceaa2d108d5c7e1263e0f424a056a8df585908
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_execution_policy.f90)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = 9f29ba7a08844692ba2628c7869d23713409f92b
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_kernel.f90)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90)" = dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e
+          test "$(git rev-parse HEAD:assets/rossfast/d3r/manifest.json)" = 1266d15149af5feb8d7fb0a5ef90d41b5881fd55
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS05_STATUS.json)" = 1fe9d85d65090cf0893620dc2d5d9ea7cb271a50
+
+      - name: Enforce bounded F-ROSS06 surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=34bbffb58819e02853af64ad49b26898b57ab541
+          allowed=(
+            src/runtime/mod_fmr_serialized_kernel_backend.f90
+            tests/ross/test_ross06_serialized_backend_model_injection.f90
+            tests/ross/run_ross06_serialized_backend_model_injection.sh
+            .github/workflows/ross06-serialized-backend-model-injection.yml
+            integration/f-ross/F-ROSS06_STATUS.json
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "ROSS06_UNEXPECTED_PATH $path" >&2; exit 106; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/kernel/mod_kernel_transactions.f90 \
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90 \
+            src/runtime/mod_rossfast_d3r_execution_policy.f90 \
+            src/runtime/mod_rossfast_d3r_model_binding.f90 \
+            src/solver/mod_rossfast_d3r_table_kernel.f90 \
+            src/solver/mod_rossfast_d3r_table_provider.f90 \
+            src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90 \
+            assets/rossfast/d3r)"
+          if grep -Eqi 'rossfast' src/runtime/mod_fmr_serialized_kernel_backend.f90; then
+            echo 'ROSS06_GENERIC_SERIALIZED_BACKEND_CONTAINS_ROSSFAST_POLICY' >&2
+            exit 106
+          fi
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-ROSS06 real-kernel serialized backend gate
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/ross/run_ross06_serialized_backend_model_injection.sh \
+            2>&1 | tee F-ROSS06_GATE.log
+
+      - name: Persist F-ROSS06 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              'work_unit': 'F-ROSS06',
+              'status': 'PASS',
+              'tested_head': sh('git', 'rev-parse', 'HEAD'),
+              'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
+              'parent_f_ross05_head': '34bbffb58819e02853af64ad49b26898b57ab541',
+              'inherited_qualified_blobs': {
+                  'kernel_transactions': 'd3a53385e3707f05e5396bbd6f218633b9803f65',
+                  'checkpoint_orchestrator': '0dceaa2d108d5c7e1263e0f424a056a8df585908',
+                  'rossfast_binding': '9f29ba7a08844692ba2628c7869d23713409f92b',
+                  'rossfast_table_kernel': '034136c193b287bcf9a953a9b89df2a8fb0c97cc',
+                  'rossfast_table_provider': 'afc05eb3001d91f66ca542978c3c6795283a7ac0',
+                  'rossfast_kernel_model_adapter': 'dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e',
+                  'asset_manifest': '1266d15149af5feb8d7fb0a5ef90d41b5881fd55',
+              },
+              'candidate_blobs': {
+                  'serialized_kernel_backend': sh('git', 'hash-object', 'src/runtime/mod_fmr_serialized_kernel_backend.f90'),
+                  'test': sh('git', 'hash-object', 'tests/ross/test_ross06_serialized_backend_model_injection.f90'),
+                  'runner': sh('git', 'hash-object', 'tests/ross/run_ross06_serialized_backend_model_injection.sh'),
+                  'workflow': sh('git', 'hash-object', '.github/workflows/ross06-serialized-backend-model-injection.yml'),
+              },
+              'qualified': {
+                  'resolved_serialized_backend_accepts_explicitly_bound_kernel_model': True,
+                  'column_and_template_backend_identity_must_match': True,
+                  'checkpoint_precedes_physical_trial': True,
+                  'optional_subinterval_selector_reaches_generic_kernel_transaction': True,
+                  'incomplete_or_rejected_trial_cannot_publish_candidate': True,
+                  'complete_mass_and_ready_candidate_required_before_commit': True,
+                  'successful_execution_publishes_exactly_one_revision': True,
+                  'all_six_exact_rossfast_d3r_material_assets_execute_through_seam': True,
+                  'wrong_substep_and_off_grid_requests_fail_closed': True,
+                  'o0_o2_output_identity': True,
+              },
+              'nonclaims': [
+                  'NO_REGISTRY_BACKED_OR_MIXED_MULTISWAP_ROSSFAST_DISPATCH',
+                  'NO_AUTOMATIC_BACKEND_SELECTION_FROM_LEGACY_MOD_SOILWATER_INPUT',
+                  'NO_SCIENTIFIC_ADMISSION_OF_ARBITRARY_KERNEL_MODEL_IMPLEMENTATIONS',
+                  'NO_NEW_ROSSFAST_PHYSICS_TABLE_OR_SELECTOR_SEMANTICS',
+                  'NO_DYNAMIC_TOP_PRESCRIBED_HEAD_BOTTOM_OR_GROUNDWATER_ADMISSION',
+                  'NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION',
+              ],
+          }
+          open('F-ROSS06_EVIDENCE.json', 'w').write(json.dumps(payload, indent=2, sort_keys=True) + '\n')
+          PY
+
+      - name: Upload F-ROSS06 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross06-gate-diagnostics-${{ github.run_id }}
+          path: F-ROSS06_GATE.log
+          if-no-files-found: warn
+
+      - name: Upload F-ROSS06 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross06-serialized-backend-model-injection-${{ github.run_id }}
+          path: F-ROSS06_EVIDENCE.json
