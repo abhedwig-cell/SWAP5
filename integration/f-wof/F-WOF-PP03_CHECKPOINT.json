@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.fwof.pp03.checkpoint.v1",
+  "capability": "F-WOF-PP03",
+  "title": "WOFOST81 runtime activation",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "RECONCILED_IMPLEMENTATION_REQUIRED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "tree": "1ab2485fe70a996970e65c349fb7332c77886587",
+    "message": "close(F-GC26): record canonical external gateway admission"
+  },
+  "owner": {
+    "branch": "work/f-wof-pp03-wofost81-runtime-activation",
+    "base_head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d"
+  },
+  "inherited_evidence": {
+    "F_WOF_PP02": {
+      "canonical_admission_status": "CLOSED_CANONICAL_ADMITTED",
+      "governance_checkpoint": "0be6bd755e51914d21e967afbe25401c14b39b81",
+      "qualified_execution_head": "a1f08076a2c0470118463ed6215d53bebfb555ca",
+      "ten_case_verdict": "QUALIFIED_TEN_CASE_WOFOST81_MIGRATION_PRESERVATION",
+      "cases": 10,
+      "states": 1045,
+      "accepted_transitions": 1035,
+      "qualified_outputs": [
+        "DVS", "LAI", "NamountLV", "NamountRT", "NamountSO", "NamountST",
+        "NuptakeTotal", "TAGP", "TWLV", "TWRT", "TWSO", "TWST"
+      ],
+      "outside_surface": ["RD", "TRA"],
+      "first_divergences": 0,
+      "maximum_observed_absolute_deviation": 7.275957614183426e-12,
+      "tolerances_changed": false
+    }
+  },
+  "dependency_delta_since_pp02": {
+    "base": "0be6bd755e51914d21e967afbe25401c14b39b81",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "ahead_by": 3,
+    "changed_files": [
+      "integration/f-ci/F-CI84_STATUS.json",
+      "integration/f-gc/F-GC26_CANONICAL_ADMISSION.json",
+      "integration/f-gc/F-GC26_CLOSEOUT.json",
+      "src/adapter/mod_groundwater_external_gateway.f90"
+    ],
+    "relevant_crop_or_runtime_dependency_delta": false
+  },
+  "reconciled_runtime_surface": {
+    "legacy_transaction": "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "legacy_event_lifecycle": "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90",
+    "accepted_window_lineage": "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "physical_trial_binding": "src/runtime/mod_fmr_wofost_physical_trial_binding.f90",
+    "wofost81_one_day_candidate": "src/crop/mod_wofost81_one_day_candidate.f90",
+    "wofost81_owner": "src/crop/mod_wofost81_crop_owner_state.f90",
+    "wofost81_parameters": "src/crop/mod_wofost81_daily_parameter_contract.f90",
+    "existing_wofost81_runtime_transaction": false,
+    "existing_wofost81_runtime_lifecycle": false,
+    "legacy_lifecycle_is_concrete_type_bound": true
+  },
+  "implementation_contract": {
+    "strategy": "ADDITIVE_PARALLEL_WOFOST81_TRANSACTION_AND_LIFECYCLE",
+    "legacy_wofost_transaction_must_remain_semantically_unchanged": true,
+    "reuse_accepted_event_identity_and_lineage": true,
+    "reuse_kernel_transaction_policy": {
+      "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+      "max_retries": 0,
+      "max_committed_substeps": 1
+    },
+    "atomic_publication": "WOFOST81 owner and consumed-event receipt become authoritative only after one-day candidate preparation and nitrogen-supply application both succeed",
+    "potential_production_activation": {
+      "nitrogen_mode": "N_UNLIMITED",
+      "donor_equivalent_switch": "SWCROPSNM=0",
+      "soil_n_coupling_not_introduced": true
+    },
+    "textual_legacy_input_selector": "OUTSIDE_THIS_CAPABILITY_UNLESS_AN_EXISTING_SWAP5_CONFIG_SURFACE_IS_FOUND_DURING_IMPLEMENTATION",
+    "activation_meaning": "typed SWAP5 runtime transaction route for WOFOST81, not replacement of the legacy WOFOST transaction"
+  },
+  "qualification_plan": [
+    "Compile the additive WOFOST81 transaction and lifecycle against current canonical interfaces.",
+    "Prove invalid parameters/owner/event/policy fail closed without owner or receipt mutation.",
+    "Prove accepted event is consumed exactly once and duplicate consumption is rejected.",
+    "Prove failed candidate or invalid nitrogen supply cannot publish partial WOFOST81 state.",
+    "Prove lifecycle retirement requires a matching committed WOFOST81 receipt and is idempotent after retirement.",
+    "Replay at least one PP02 full-season potential-production fixture through the runtime transaction route and compare qualified PP02-owned outputs without changing tolerances.",
+    "Preserve the existing F-WOF38/F-WOF39 legacy gates unchanged."
+  ],
+  "hard_exclusions": [
+    "No EB work",
+    "No ROSS or RossFast work",
+    "No groundwater work",
+    "No RD migration",
+    "No TRA migration",
+    "No maize blocker work",
+    "No new crop physics",
+    "No tolerance changes",
+    "No replacement or semantic modification of the legacy WOFOST transaction",
+    "No new Soil-N coupling policy",
+    "No production semantic workaround to force qualification"
+  ],
+  "verdict": "PASS/RECONCILE: PP02 evidence remains valid because the only canonical delta is F-GC26/governance and no crop/runtime dependency changed. Current canonical contains the qualified WOFOST81 numerical substrate but no WOFOST81 runtime transaction or lifecycle path. PP03 therefore requires an additive typed WOFOST81 transaction plus matching lifecycle reconciliation, preserving F-WOF38/F-WOF39 semantics and keeping RD/TRA outside scope.",
+  "next_permitted_action": "Implement the additive WOFOST81 transaction/lifecycle on this owner branch and qualify it against atomic-event semantics plus inherited PP02 numerical evidence."
+}
