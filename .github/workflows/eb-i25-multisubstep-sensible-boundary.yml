@@ -15,7 +15,39 @@ jobs:
           fetch-depth: 0
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
-      - name: Run EB-I25 owner qualification
+      - name: Inject bounded diagnostic worktree only
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          gate = Path('tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh')
+          text = gate.read_text()
+          old = 'CANONICAL=687ee32ca98a42368a2b6380ea78d33eb254dad9'
+          new = 'CANONICAL=993673abae05570026dcc55a305679b09472e1d8'
+          if text.count(old) != 1:
+              raise SystemExit(f'expected one stale canonical pin, found {text.count(old)}')
+          gate.write_text(text.replace(old, new, 1))
+
+          test = Path('tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90')
+          text = test.read_text()
+          needle = "    call require(output%completed .and. output%committed, 'two-half inflow committed')"
+          diagnostic = """    write(*,'(A,L1)') 'EB_I25_DEBUG_COMPLETED=', output%completed
+    write(*,'(A,L1)') 'EB_I25_DEBUG_COMMITTED=', output%committed
+    write(*,'(A,I0)') 'EB_I25_DEBUG_KERNEL_STATUS=', output%kernel_status
+    write(*,'(A,I0)') 'EB_I25_DEBUG_ACCEPTED_SUBSTEPS=', output%accepted_substeps
+    write(*,'(A,A)') 'EB_I25_DEBUG_ADMISSION_STATUS=', trim(output%admission_status)
+    write(*,'(A,A)') 'EB_I25_DEBUG_FAILURE_CLASS=', trim(diagnostic%failure_classification)
+    write(*,'(A,I0)') 'EB_I25_DEBUG_ATTEMPTS=', diagnostic%attempts
+    write(*,'(A,I0)') 'EB_I25_DEBUG_RETRIES=', diagnostic%retries
+    write(*,'(A,L1)') 'EB_I25_DEBUG_SOLVER_EXECUTED=', output%solver_executed
+    write(*,'(A,A)') 'EB_I25_DEBUG_SOLVER_ROUTE=', trim(output%solver_route)
+"""
+          if text.count(needle) != 1:
+              raise SystemExit(f'expected one first commit assertion, found {text.count(needle)}')
+          test.write_text(text.replace(needle, diagnostic + needle, 1))
+          PY
+      - name: Run EB-I25 owner diagnostic gate
         shell: bash
         run: |
           set +e
