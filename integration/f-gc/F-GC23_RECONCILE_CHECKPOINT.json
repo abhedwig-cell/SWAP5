@@ -1,0 +1,84 @@
+{
+  "capability": "F-GC23",
+  "phase": "RECONCILE",
+  "timestamp_basis": "live repository evidence on 2026-09-15",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "tree": "9b2d60dbe6de57242946aa8c1e0fbab990edaa6e"
+  },
+  "owner": {
+    "branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
+    "historical_head": "be088aaf3cd48af135a78dfd48b88cc61e47864d",
+    "canonical_reconcile_merge": "c51b0694e4a3eb2461b7048344f5e08558195de7"
+  },
+  "historical_verdict": "BLOCKED_BY_UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY",
+  "historical_verdict_superseded": true,
+  "reconcile_verdict": "UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY_SATISFIED",
+  "immutable_evidence": {
+    "F-SI37": {
+      "scientific_admission": "a1a535ec7db9ca5ccd77395835fb71e8667f6ad7",
+      "qualified_source": "992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd",
+      "independent_qualification": "f8c43db9cf2dc4f3c330f8cb4d2ba0910f0b68f9",
+      "preservation": "3ff0f42299767d5ad5f07d031698dfcf7969ed0d",
+      "verdict": "QUALIFIED_AND_CANONICALLY_ADMITTED"
+    },
+    "F-KT21": {
+      "owner_qualified_head": "eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+      "independent_qualification": "f4f98637e963e07e2bedf7ef6acbcaab36e07e5a",
+      "admission_qualification": "fe1929a2f8db443bb32526dc5dedcde6c3961add",
+      "canonical_admission": "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+      "canonical_close": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+      "verdict": "QUALIFIED_AND_CANONICALLY_ADMITTED"
+    },
+    "F-KT22": {
+      "qualified_source": "c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01",
+      "canonical_admission": "e92d15955e921e19cd7a5c38f83ee9b9aaf694b6",
+      "canonical_close_checkpoint": "tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json",
+      "verdict": "ADMITTED_CANONICAL_CLOSED"
+    },
+    "F-GC20": {
+      "canonical_admission": "1e8ef002a64aba5a5041a2752f4335b440af9a3c",
+      "qualification_checkpoint": "8779ddbad7374c26dd5bc7c4a563cf8e45345888",
+      "verdict": "QUALIFIED_AND_CANONICALLY_ADMITTED"
+    },
+    "F-GC22": {
+      "canonical_admission": "08ca7a06c4a47e9e0efe635185b0078748bd95c2",
+      "canonical_close": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+      "verdict": "QUALIFIED_AND_CANONICALLY_ADMITTED"
+    }
+  },
+  "semantic_findings": {
+    "accepted_whole_window_bottom_interface_response_tangent": true,
+    "same_committed_origin_and_exact_generic_window_provenance": true,
+    "all_accepted_transitions_composed": true,
+    "rejected_or_discarded_steps_excluded": true,
+    "retry_and_rollback_safe": true,
+    "deterministic_O0_O2_evidence": true,
+    "unavailable_or_nonsmooth_fail_closed": true,
+    "local_terminal_semantics_kept_distinct": true,
+    "covers_requested_interval_not_used_as_scope_upgrade": true,
+    "finite_difference_is_reference_only_not_structural_production": true
+  },
+  "dependency_delta": {
+    "relevant_change_since_historical_block": "F-SI37 plus F-KT21 plus F-KT22 were independently qualified and canonically admitted; F-GC20 and F-GC22 are also admitted and preserved on current canonical",
+    "production_dependency_blobs_reused_where_unchanged": true
+  },
+  "mutations": [
+    "merged the unchanged current canonical tree into the existing F-GC23 owner history",
+    "persisted this RECONCILE checkpoint"
+  ],
+  "production_semantics_changed": false,
+  "next_permitted_action": "Implement only the minimal F-GC23 groundwater response composition consuming the admitted F-KT22 accepted-trajectory tangent, then owner-qualify it.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "structural finite difference as normal production tangent path",
+    "broad MODFLOW work",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}
