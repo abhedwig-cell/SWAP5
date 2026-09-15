@@ -4,18 +4,19 @@
   "capability": "F-WOF-PP02",
   "title": "WOFOST81 migration-preservation current-canonical admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "state": "QUALIFIED_FOR_NON_FORCE_CANONICAL_PROMOTION",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "36ebfcfe39fb9a70b522508933bfcf331545d7e0",
     "pre_admission_tree": "c2e169b4e63eb4e6c5c3a5174d4302b8397f2d3a",
+    "admitted_checkpoint": "0be6bd755e51914d21e967afbe25401c14b39b81",
+    "promotion_method": "NON_FORCE_FAST_FORWARD",
+    "canonical_was_rechecked_immediately_before_promotion": true,
     "prior_checked_head": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
     "delta_commits_since_prior_check": 26,
     "relevant_pp02_dependency_delta": false,
-    "delta_summary": "F-GC23/F-CI85 groundwater runtime and governance only; no src/crop, PP02 testbank, or transaction-source changes",
-    "promotion_method": "NON_FORCE_FAST_FORWARD_ONLY",
-    "canonical_was_rechecked_after_recomposed_green_run": true
+    "delta_summary": "F-GC23/F-CI85 groundwater runtime and governance only; no src/crop, PP02 testbank, or transaction-source changes"
   },
   "owner": {
     "branch": "work/f-wof-pp02-wofost81-migration-preservation",
@@ -30,6 +31,9 @@
     "accepted_transitions": 1035,
     "qualified_outputs": ["DVS","LAI","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal","TAGP","TWLV","TWRT","TWSO","TWST"],
     "outside_surface": ["RD","TRA"],
+    "first_divergences": 0,
+    "maximum_observed_absolute_deviation": 7.275957614183426e-12,
+    "maximum_deviation_variable": "TAGP",
     "tolerances_changed": false,
     "runtime_activation_in_scope": false
   },
@@ -41,15 +45,18 @@
     "first_green_postimage_head": "055f6c01c557a540cf3c23613d90141490882322",
     "first_green_run": 35021495439,
     "first_green_job": 104557993536,
-    "first_green_decision": "QUALIFIED_FOR_CANONICAL_ADMISSION",
     "recomposed_green_postimage_head": "e67f598c40090c3080f49ac74d28ace93cc737e2",
     "recomposed_green_run": 35028199853,
     "recomposed_green_job": 104580194478,
+    "governance_checkpoint_head": "0be6bd755e51914d21e967afbe25401c14b39b81",
+    "governance_checkpoint_run": 35028288048,
+    "governance_checkpoint_job": 104580487547,
+    "governance_checkpoint_conclusion": "success",
     "recomposition_required_because_canonical_advanced": true,
-    "owner_one_day_gate_required": true,
-    "owner_case001_fullseason_gate_required": true,
-    "owner_case002_fullseason_gate_required": true,
-    "ten_case_immutable_evidence_required": true
+    "owner_one_day_gate_replayed_on_postimage": true,
+    "owner_case001_fullseason_gate_replayed_on_postimage": true,
+    "owner_case002_fullseason_gate_replayed_on_postimage": true,
+    "ten_case_immutable_evidence_preserved": true
   },
   "failed_harness_history": [
     {
@@ -80,6 +87,6 @@
     "No replacement of the legacy WOFOST path",
     "No WOFOST81 runtime activation in F-CI84"
   ],
-  "verdict": "PASS: recomposed F-CI84 postimage is qualified on current canonical and is eligible for non-force canonical promotion after this governance checkpoint itself passes the same gate and canonical is rechecked unchanged.",
-  "next_permitted_action": "Require this governance checkpoint commit to pass F-CI84. Then recheck live integration/f-ci-canonical; if it remains exactly 36ebfcfe39fb9a70b522508933bfcf331545d7e0, promote this checkpoint commit by non-force fast-forward and publish a canonical CLOSED_CANONICAL_ADMITTED status-only closeout commit."
+  "verdict": "PASS/CLOSED: F-WOF-PP02 is canonically admitted. The admitted production delta is eleven additive WOFOST81 modules, with the existing legacy WOFOST path unchanged and no runtime activation. The independent ten-case preservation evidence covers 1045 states and 1035 accepted transitions for 12 WOFOST-owned outputs with zero tolerance divergences; RD and TRA remain explicitly outside the qualified surface.",
+  "next_permitted_action": "Any later WOFOST81 runtime activation or RD/TRA migration must be a separate capability with its own contract, current-canonical reconciliation, qualification and admission."
 }
