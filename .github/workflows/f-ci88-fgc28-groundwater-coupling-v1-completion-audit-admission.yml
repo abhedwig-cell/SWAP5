@@ -1,0 +1,36 @@
+name: F-CI88 F-GC28 groundwater coupling v1 completion audit admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci88-fgc28-groundwater-coupling-v1-completion-audit-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Toolchain
+        run: |
+          python3 --version
+          git --version
+      - name: F-GC28 metadata-only admission gate
+        run: bash tests/integration/run_fci88_fgc28_groundwater_coupling_v1_completion_audit_admission.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
