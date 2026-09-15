@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.fpe11.bounded_execution.reconcile.v2",
+  "work_unit": "F-PE11",
+  "phase": "RECONCILE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832"
+  },
+  "owner": {
+    "branch": "performance/f-pe11-surface-evaporation-allocation-scaling",
+    "qualified_postimage": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+    "original_closeout": "b436f8e70664cdb851f20f148463459358568579",
+    "checkpoint_head": "ac967e3f0f5144f905aac65f2ea9c4c996f2e9a7"
+  },
+  "qualified_production_postimage": {
+    "binding_blob": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "materialization_blob": "bc40bc6b121f56071d2b811195759f86130defeb"
+  },
+  "live_canonical_production": {
+    "binding_blob": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "materialization_blob": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "kernel_transactions_blob": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
+    "restricted_surface_evaporation_blob": "a213af4deec2fe854d79120899827852a57237d1",
+    "surface_capacity_contract_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982"
+  },
+  "reconciliation": {
+    "binding_is_exact_qualified_FPE11_blob": true,
+    "materializer_retains_FPE11_call_local_move_ownership_semantics": true,
+    "materializer_later_extension": "F-CI59 candidate provenance and accepted publication support",
+    "F_CI42_already_admitted_FPE11": true,
+    "F_CI42P_already_closed_postpromotion_governance": true,
+    "duplicate_production_admission_needed": false,
+    "direct_dependency_delta_since_F_CI59P": "kernel transactions changed for later accepted-trajectory and canonical selector capabilities",
+    "fresh_verification_required": true
+  },
+  "immutable_evidence_reused": [
+    "owner O0/O2 scientific identity",
+    "owner committed-state immutability",
+    "owner A/B/A determinism",
+    "owner dry and ponded B110 identity",
+    "owner no-mass-booking result",
+    "F-CI42 canonical performance admission",
+    "F-CI42P post-promotion governance closure",
+    "F-CI59P surface materialization postimage qualification",
+    "historical timing only as runner-bound local characterization"
+  ],
+  "owner_branch_sync_attempt": {
+    "pull_request": 148,
+    "merged": false,
+    "disposition": "CLOSED_WITHOUT_MERGE_HISTORICAL_OWNER_LINE_TOO_DIVERGENT_FOR_SAFE_SYNC",
+    "replacement_action": "separate qualification decision surface rooted exactly at live canonical"
+  },
+  "qualification_branch": "qualification/f-pe11-current-canonical-performance-admission",
+  "qualification_base": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+  "verdict": "RECONCILED_FPE11_ALREADY_CANONICALLY_ADMITTED_FRESH_NARROW_CURRENT_HEAD_REPLAY_REQUIRED",
+  "next_permitted_action": "QUALIFY on current canonical with zero production/reference delta",
+  "exclusions": [
+    "no EB",
+    "no ROSS or RossFast",
+    "no new scientific equations",
+    "no transaction or mass-policy changes",
+    "no new persistent per-column state",
+    "no direct alias into private committed state",
+    "no whole-model speedup claim",
+    "no MultiSWAP speedup claim",
+    "no automatic rebatching, class switching or GPU work",
+    "no production change merely to make a benchmark pass",
+    "no optimization redesign"
+  ]
+}
