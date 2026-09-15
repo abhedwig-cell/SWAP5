@@ -39,11 +39,8 @@ jobs:
           echo "FKT22_SOURCE_MERGE_BASE=$SOURCE_BASE"
           test "$LIVE_CANONICAL_TREE" = "$EXPECTED_CANONICAL_TREE"
           test "$SOURCE_BASE" = "$BASE"
-
-          # Metadata-only canonical commits do not invalidate immutable KT22
-          # evidence.  The relevant dependency is the canonical source tree.
-          # Before overlay, this branch may differ only outside src.
           test -z "$(git diff --name-only "$LIVE_CANONICAL" HEAD -- src)"
+
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git merge --no-edit "$LIVE_CANONICAL"
@@ -51,7 +48,6 @@ jobs:
           echo 'FKT22_CURRENT_CANONICAL_INHERITED=PASS'
 
           git checkout "$SOURCE" -- \
-            .github/workflows/f-kt22-canonical-exposure.yml \
             src/kernel/mod_kernel_transactions.f90 \
             src/runtime/mod_canonical_contracts.f90 \
             src/runtime/mod_canonical_interval_runtime.f90 \
@@ -86,9 +82,6 @@ jobs:
 
           fmr = Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
           text = fmr.read_text()
-
-          # Preserve canonical documentation that the qualified donor had only
-          # deleted incidentally; recomposition is semantic overlay, not cleanup.
           restorations = [
               (
                   '  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_fixed_weir_surface_water_state_t\n',
@@ -127,43 +120,16 @@ jobs:
               s = p.read_text()
               old = '  src/runtime/mod_fmr_bottom_thermal_carrier.f90\n  src/runtime/mod_fmr_checkpoint_orchestrator.f90\n'
               new = '  src/runtime/mod_fmr_bottom_thermal_carrier.f90\n  src/runtime/mod_fmr_top_sensible_boundary_carrier.f90\n  src/runtime/mod_fmr_checkpoint_orchestrator.f90\n'
-              if old not in s:
+              if s.count(old) != 1:
                   raise SystemExit(f'missing carrier insertion anchor in {runner_name}')
               p.write_text(s.replace(old, new, 1))
 
           gate = Path('tests/fkt/run_fkt22_canonical_exposure.sh')
           s = gate.read_text()
-          s = s.replace(
-              "echo 'FKT22_PRODUCTION_FMR_TRANSPORT=NOT_YET_QUALIFIED'",
-              "echo 'FKT22_PRODUCTION_FMR_TRANSPORT=QUALIFIED_BY_SERIALIZED_RUNTIME_GATE'"
-          )
-          gate.write_text(s)
-
-          workflow = Path('.github/workflows/f-kt22-canonical-exposure.yml')
-          s = workflow.read_text()
-          old_branch = '    branches:\n      - work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure\n'
-          new_branch = (
-              '    branches:\n'
-              '      - work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure\n'
-              '      - work/f-kt22-current-canonical-recomposition\n'
-          )
-          if old_branch not in s:
-              raise SystemExit('missing workflow branch anchor')
-          s = s.replace(old_branch, new_branch, 1)
-          fmr_path = "      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'\n"
-          s = s.replace(
-              fmr_path,
-              fmr_path + "      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'\n"
-          )
-          runtime_path = "      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'\n"
-          s = s.replace(
-              runtime_path,
-              runtime_path +
-              "      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'\n" +
-              "      - 'tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json'\n"
-          )
-          s += '''\n  eb-i25-preservation:\n    runs-on: ubuntu-latest\n    timeout-minutes: 20\n    steps:\n      - uses: actions/checkout@v4\n      - name: Preserve EB-I25 semantics under F-KT22 recomposition\n        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh\n'''
-          workflow.write_text(s)
+          old = "echo 'FKT22_PRODUCTION_FMR_TRANSPORT=NOT_YET_QUALIFIED'"
+          if s.count(old) != 1:
+              raise SystemExit(f'canonical gate status anchor count={s.count(old)}')
+          gate.write_text(s.replace(old, "echo 'FKT22_PRODUCTION_FMR_TRANSPORT=QUALIFIED_BY_SERIALIZED_RUNTIME_GATE'", 1))
           PY
 
           test "$(grep -Fc 'use mod_fmr_top_sensible_boundary_carrier' "$FMR")" -eq 1
@@ -178,7 +144,6 @@ jobs:
           git diff --check
 
           git add \
-            .github/workflows/f-kt22-canonical-exposure.yml \
             src/kernel/mod_kernel_transactions.f90 \
             src/runtime/mod_canonical_contracts.f90 \
             src/runtime/mod_canonical_interval_runtime.f90 \
