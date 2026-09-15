@@ -87,7 +87,7 @@ for path in "${owner_shell[@]}"; do
   [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$OWNER:$path")" ]] || fail "owner shell blob mismatch: $path"
 done
 [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'canonical transaction-reference dependency drift'
-[[ "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90")" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'base transaction-reference dependency drift'
+[[ "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'base transaction-reference dependency drift'
 echo 'FCI75_OWNER_POSTIMAGE_EXACT=PASS'
 echo 'FCI75_OWNER_COMPOSITION_SHELL_EXACT=PASS'
 echo 'FCI75_OWNER_SHELL_BASE_UNCHANGED=PASS'
@@ -131,7 +131,9 @@ echo 'FCI75_FKT21_OWNER_GATE_REPLAY=PASS'
 git show "$VQ92:tests/qualification/fvq92/test_fvq92_fkt21_independent.f90" > "$BUILD/fvq92.f90"
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 run_vq92(){
-  local opt="$1" tag="$2" out="$BUILD/vq92-$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/vq92-$tag"
   mkdir -p "$out"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/solver/mod_soil_water_accepted_step_direction_contract.f90 -o "$out/contract.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 -o "$out/trajectory.o"
@@ -214,7 +216,9 @@ MODULES=(
   src/adapter/mod_b110_production_soil_water_task2.f90
 )
 run_fsi35_replay(){
-  local opt="$1" tag="$2" out="$BUILD/fsi35-$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/fsi35-$tag"
   mkdir -p "$out"; objs=()
   for src in "${MODULES[@]}"; do
     obj="$out/$(basename "${src%.*}").o"
