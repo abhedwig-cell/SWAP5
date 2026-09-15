@@ -6,6 +6,8 @@ on:
       - qualification/f-ci69-fmr-serialized-selector-forwarding
     paths:
       - 'tools/fci69_apply_serialized_selector_forwarding.py'
+      - 'tests/fci/test_fci69_fmr_serialized_selector_forwarding.f90'
+      - 'tests/fci/run_fci69_fmr_serialized_selector_forwarding.sh'
       - '.github/workflows/fci69-bootstrap-serialized-selector-forwarding.yml'
 
 permissions:
@@ -24,54 +26,8 @@ jobs:
       - name: Apply bounded backend forwarding patch
         run: python3 tools/fci69_apply_serialized_selector_forwarding.py
 
-      - name: Enforce generic forwarding only
-        shell: bash
-        run: |
-          set -euo pipefail
-          B=src/runtime/mod_fmr_serialized_reference_backend.f90
-          grep -Fq 'use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector' "$B"
-          grep -Fq 'procedure(canonical_subinterval_target_selector), optional :: target_selector' "$B"
-          grep -Fq 'diagnostics, target_selector)' "$B"
-          if grep -Eqi 'ROSSFAST|ROSS01' "$B"; then
-            echo 'FCI69_BACKEND_CONTAINS_ROSSFAST_SPECIFIC_POLICY' >&2
-            exit 69
-          fi
-          git diff --check -- "$B"
-
-      - name: Replay current-canonical absent-selector serialized FMR regression
-        id: fmr44r
-        shell: bash
-        run: |
-          set +e
-          PATCHER=tests/fmr/_apply_fmr44r_serialized_qbot_runtime_patch.py
-          RUNNER=tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh
-          cp "$PATCHER" "$RUNNER_TEMP/fmr44r-patcher.py"
-          cp "$RUNNER" "$RUNNER_TEMP/fmr44r-runner.sh"
-          printf '%s\n' "print('FCI69_CURRENT_CANONICAL_FMR44R_PATCH_STEP_SKIPPED=PASS')" > "$PATCHER"
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh')
-          t=p.read_text()
-          old='  src/runtime/mod_fmr_runtime_core.f90\n'
-          new='  src/runtime/mod_fmr_runtime_core.f90\n  src/runtime/mod_fmr_bottom_thermal_carrier.f90\n'
-          if t.count(old) != 1:
-              raise SystemExit('FCI69_FMR44R_RUNNER_ANCHOR_MISMATCH')
-          p.write_text(t.replace(old,new,1))
-          PY
-          bash "$RUNNER" > fci69-fmr44r.log 2>&1
-          rc=$?
-          cp "$RUNNER_TEMP/fmr44r-patcher.py" "$PATCHER"
-          cp "$RUNNER_TEMP/fmr44r-runner.sh" "$RUNNER"
-          cat fci69-fmr44r.log
-          exit "$rc"
-
-      - name: Upload FMR44R diagnostic
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fci69-fmr44r-diagnostic-${{ github.run_id }}
-          path: fci69-fmr44r.log
-          if-no-files-found: error
+      - name: Qualify exact serialized backend composition
+        run: bash tests/fci/run_fci69_fmr_serialized_selector_forwarding.sh
 
       - name: Enforce bounded source delta
         shell: bash
