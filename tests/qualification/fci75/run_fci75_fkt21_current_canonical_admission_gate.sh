@@ -5,6 +5,7 @@ cd "$ROOT"
 
 BASE=70fae8bb570b56ff0f1002e14c6c67e6adb6be53
 OWNER=19a67f7c398fcadbcbc9729509680a1c0c5424f3
+OWNER_MERGE_BASE=b162e98cc4ad6f85b741a21bd41f3db3d213559b
 OWNER_RECEIPT=eee5f15a742d11b268d2a872a4c376e1f2c475c0
 VQ92=f4f98637e963e07e2bedf7ef6acbcaab36e07e5a
 FSI35_SOURCE=5898e6616dbb6871a9f52d489038235ba1172cae
@@ -14,7 +15,7 @@ rm -rf "$BUILD"; mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "FCI75_FAIL $*" >&2; exit 75; }
 
-for object in "$BASE" "$OWNER" "$OWNER_RECEIPT" "$VQ92" "$FSI35_SOURCE" "$FKT15_DONOR"; do
+for object in "$BASE" "$OWNER" "$OWNER_MERGE_BASE" "$OWNER_RECEIPT" "$VQ92" "$FSI35_SOURCE" "$FKT15_DONOR"; do
   git cat-file -e "$object^{commit}" 2>/dev/null || git fetch --no-tags origin "$object" >/dev/null 2>&1 || fail "missing authority $object"
 done
 
@@ -27,6 +28,9 @@ allowed=(
   integration/f-ci/F-CI75_STATUS.json
   src/adapter/mod_b110_production_soil_water_task2.f90
   src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90
+  src/adapter/mod_b1_10_recoverable_reference_model.f90
+  src/adapter/mod_b1_10_reference_model.f90
+  src/legacy/b1_10_port/soilwater.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
@@ -48,9 +52,12 @@ for path in "${changed[@]}"; do
 done
 echo 'FCI75_SCOPE_LOCK=PASS'
 
-# F-VQ92 is the immutable independent authority for the exact F-KT21 payload.
-# Six payload paths are materialized by F-CI75; mod_transaction_reference is
-# already canonical and is therefore dependency-locked rather than rewritten.
+# F-VQ92 is immutable independent authority for the seven-path primitive payload.
+# Six of those paths are materialized here; mod_transaction_reference is already
+# canonical. Three additional owner-qualified shell paths are required to bind
+# the qualified primitive to the real task-3 acceptance and outer transaction
+# lifecycle. They are admitted only because live canonical is byte-identical to
+# the F-KT21 merge base at those paths: no later canonical semantics are replaced.
 materialized_payload=(
   src/adapter/mod_b110_production_soil_water_task2.f90
   src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90
@@ -58,6 +65,11 @@ materialized_payload=(
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/transaction/mod_accepted_trajectory_transaction_binding.f90
+)
+owner_shell=(
+  src/adapter/mod_b1_10_recoverable_reference_model.f90
+  src/adapter/mod_b1_10_reference_model.f90
+  src/legacy/b1_10_port/soilwater.f90
 )
 owner_tests=(
   tests/fkt/run_fkt21_qualification.sh
@@ -70,9 +82,15 @@ owner_tests=(
 for path in "${materialized_payload[@]}" "${owner_tests[@]}"; do
   [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$OWNER:$path")" ]] || fail "owner-qualified blob mismatch: $path"
 done
+for path in "${owner_shell[@]}"; do
+  [[ "$(git rev-parse "$BASE:$path")" == "$(git rev-parse "$OWNER_MERGE_BASE:$path")" ]] || fail "owner shell overlaps later canonical change: $path"
+  [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$OWNER:$path")" ]] || fail "owner shell blob mismatch: $path"
+done
 [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'canonical transaction-reference dependency drift'
 [[ "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90")" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'base transaction-reference dependency drift'
 echo 'FCI75_OWNER_POSTIMAGE_EXACT=PASS'
+echo 'FCI75_OWNER_COMPOSITION_SHELL_EXACT=PASS'
+echo 'FCI75_OWNER_SHELL_BASE_UNCHANGED=PASS'
 echo 'FCI75_TRANSACTION_REFERENCE_INHERITED_EXACT=PASS'
 
 check_si37(){
