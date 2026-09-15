@@ -1,0 +1,137 @@
+name: F-CI74 EB-I24 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci74-eb-i24-top-liquid-sensible-inflow-current-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock live canonical and qualified authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=19e68aa3d27e1e439e4d55bcb53dd571a7f6257c
+          OWNER=479fafcbbb02d1e9f9f6cba48384fb4280051a38
+          INDEPENDENT=1b524842f646c72a653022fa3e78ae563aa9beaf
+          git fetch origin integration/f-ci-canonical work/eb-i24-accepted-top-liquid-sensible-inflow qualification/f-vq91-eb-i24-top-liquid-sensible-inflow-independent-qualification
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          git merge-base --is-ancestor "$CANONICAL" HEAD
+          git merge-base --is-ancestor c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1 "$CANONICAL"
+          test "$(git rev-parse "$OWNER:src/process/mod_external_liquid_water_temperature.f90")" = 64b85363e764d2c6e2777f5f1258abb3ac9e5abf
+          test "$(git rev-parse "$OWNER:src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90")" = 5f27ff7a4fa67a3991c622d960a7133857dab1c2
+          test "$(git rev-parse "$INDEPENDENT:qualification/F-VQ91_STATUS.json")" = d81c331b6623df66e060f043255e8a3c9a9dc8b0
+          echo 'FCI74_LIVE_CANONICAL_LOCK=PASS'
+          echo 'FCI74_QUALIFIED_AUTHORITY_LOCK=PASS'
+
+      - name: Lock exact admitted postimage and inherited dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          declare -A ADMITTED=(
+            [src/process/mod_external_liquid_water_temperature.f90]=64b85363e764d2c6e2777f5f1258abb3ac9e5abf
+            [src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90]=5f27ff7a4fa67a3991c622d960a7133857dab1c2
+            [tests/eb/EB-I24_CONTRACT.md]=b7a504860ed027e87dad04731af63c933f668984
+            [tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh]=0a06a96cc7295d9e509083bfb712ea429df9d519
+            [tests/eb/test_eb_i24_top_liquid_sensible_inflow_runtime.f90]=acd53e6e38598264d172e17d2596bebfb024e7fe
+            [.github/workflows/eb-i24-top-liquid-sensible-inflow.yml]=8bdc1b585ef68ed326498931c303bea61b2e1e0d
+            [.github/workflows/f-vq91-eb-i24-independent.yml]=9425c8139f5ce0dc42b8ae1365d11a3f35be1e8d
+            [tests/eb/run_f_vq91_eb_i24_independent_gate.sh]=5dc217432f42fbd0c103e59500d002241946992c
+            [qualification/F-VQ91_STATUS.json]=d81c331b6623df66e060f043255e8a3c9a9dc8b0
+          )
+          for path in "${!ADMITTED[@]}"; do
+            test "$(git rev-parse "HEAD:$path")" = "${ADMITTED[$path]}"
+          done
+          declare -A DEPS=(
+            [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=3506b453ba6a00111d182f29db8cbfb288001854
+            [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
+            [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
+            [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
+            [src/process/mod_restricted_soil_temperature.f90]=fa4e1d7b48d3515e6569c9080d497178c25c4e85
+            [src/process/mod_soil_temperature_contract.f90]=baa13df3975de2c699b0ec910477bcfa9b47f15e
+          )
+          CANONICAL=19e68aa3d27e1e439e4d55bcb53dd571a7f6257c
+          for path in "${!DEPS[@]}"; do
+            test "$(git rev-parse "$CANONICAL:$path")" = "${DEPS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${DEPS[$path]}"
+          done
+          echo 'FCI74_EXACT_QUALIFIED_POSTIMAGE=PASS'
+          echo 'FCI74_INHERITED_DEPENDENCY_LOCK=PASS'
+
+      - name: Require exact bounded admission delta and nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=19e68aa3d27e1e439e4d55bcb53dd571a7f6257c
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i24-top-liquid-sensible-inflow.yml
+          .github/workflows/f-ci74-eb-i24-current-canonical-admission.yml
+          .github/workflows/f-vq91-eb-i24-independent.yml
+          qualification/F-VQ91_STATUS.json
+          src/process/mod_external_liquid_water_temperature.f90
+          src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          tests/eb/EB-I24_CONTRACT.md
+          tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh
+          tests/eb/run_f_vq91_eb_i24_independent_gate.sh
+          tests/eb/test_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          EOF
+          if test -f integration/f-ci/F-CI74_STATUS.json; then
+            echo 'integration/f-ci/F-CI74_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool qualification/F-VQ91_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I24_INDEPENDENT"' qualification/F-VQ91_STATUS.json
+          grep -Fq '"qualified_owner_head": "479fafcbbb02d1e9f9f6cba48384fb4280051a38"' qualification/F-VQ91_STATUS.json
+          grep -Fq '"canonical_head_at_qualification": "19e68aa3d27e1e439e4d55bcb53dd571a7f6257c"' qualification/F-VQ91_STATUS.json
+          grep -Fq '"top_liquid_outflow_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"snow_or_melt_top_sensible_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"multi_substep_top_sensible_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"whole_column_sensible_residual_publication": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' qualification/F-VQ91_STATUS.json
+          grep -Fq 'if (output%accepted_substeps /= 1) then' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          grep -Fq 'if (parameters%snow_active) then' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          grep -Fq 'if (observation%top_flux > 0.0_real64) then' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          grep -Fq 'resolve_external_liquid_water_temperature' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          grep -Fq 'evaluate_liquid_water_sensible_transport' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          if test -f integration/f-ci/F-CI74_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI74_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI74_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI74_STATUS.json
+            grep -Fq '"canonical_admission": false' integration/f-ci/F-CI74_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI74_STATUS.json
+          fi
+          echo 'FCI74_EXACT_BOUNDED_DELTA=PASS'
+          echo 'FCI74_HARD_NONCLAIMS_PRESERVED=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay exact independent qualification and owner evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          INDEPENDENT=1b524842f646c72a653022fa3e78ae563aa9beaf
+          WT="${RUNNER_TEMP}/swap5-fci74-fvq91"
+          cleanup() { git worktree remove --force "$WT" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          git worktree add --detach "$WT" "$INDEPENDENT" >/dev/null
+          (cd "$WT" && bash tests/eb/run_f_vq91_eb_i24_independent_gate.sh) | tee fci74-fvq91.txt
+          grep -Fq 'F_VQ91_INDEPENDENT_QUALIFICATION=PASS' fci74-fvq91.txt
+          grep -Fq 'F_VQ91_EXACT_OWNER_RUNTIME_REPLAY=PASS' fci74-fvq91.txt
+          grep -Fq 'F_VQ91_ORIENTATION_MUTANT_REJECTED=PASS' fci74-fvq91.txt
+          grep -Fq 'F_VQ91_MISSING_DONOR_AS_ZERO_MUTANT_REJECTED=PASS' fci74-fvq91.txt
+          grep -Fq 'F_VQ91_OUTFLOW_DONOR_REUSE_MUTANT_REJECTED=PASS' fci74-fvq91.txt
+          grep -Fq 'F_VQ91_MULTISUBSTEP_BROADENING_MUTANT_REJECTED=PASS' fci74-fvq91.txt
+          echo 'FCI74_OWNER_REPLAY=PASS'
+          echo 'FCI74_INDEPENDENT_REPLAY=PASS'
+          echo 'FCI74_ADVERSARIAL_GUARDS=PASS'
+          echo 'FCI74_NO_SCOPE_BROADENING=PASS'
