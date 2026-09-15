@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1e1",
+  "qualification_scope": "VERIFIER_HARNESS_ONLY",
+  "harness_status": "PASS",
+  "b2_physics_status": "NOT_EVALUATED",
+  "production_physics_executed": false,
+  "production_mass_tolerance_qualified": false,
+  "case_count": 11,
+  "case_status": {
+    "TX-ROLLBACK-01": "PASS",
+    "TX-COMMIT-01": "PASS",
+    "TX-ACCOUNT-01": "PASS",
+    "TX-RERUN-01": "PASS",
+    "TX-BC-REPLAY-01": "PASS",
+    "TX-WARM-01": "PASS",
+    "TIME-00": "PASS",
+    "TIME-06": "PASS",
+    "TIME-18": "PASS",
+    "TIME-36": "PASS",
+    "TIME-SPLIT": "PASS"
+  }
+}
