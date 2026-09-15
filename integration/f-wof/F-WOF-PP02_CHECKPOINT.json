@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP02",
   "title": "SWAP5 WOFOST81 Migration Preservation",
@@ -8,7 +8,7 @@
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "reconciled_head": "aa25126ee19e25c60bd266951b7494ba635efeca",
-    "last_checked_live_head": "8a49b32339981037041466eda5e434ea53a97086",
+    "last_checked_live_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
     "relevant_crop_or_wofost_delta": false
   },
   "branch": "work/f-wof-pp02-wofost81-migration-preservation",
@@ -23,12 +23,15 @@
     "component_testbank": "fc99f2be6a91e080770e2f1db84ec33b394a44e8",
     "kernel_qualification": "942a45d20298040f189be163697d17f927e1965f",
     "parameter_and_n_owner_contract": "f15d5d57966b193999d7f5a795da654a3616c496",
-    "parameter_and_n_owner_qualification": "9f6245f8f7b179b9180ab4f554121e5ab0d56e4b"
+    "parameter_and_n_owner_qualification": "9f6245f8f7b179b9180ab4f554121e5ab0d56e4b",
+    "composite_owner_lifecycle": "f2d1a99005668213faf3a17cc5c4581bf02b8105",
+    "daily_assimilation_binding": "09b9c9050f412fe947dafa83f99d184c172fcba8"
   },
   "qualification_evidence": [
     "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
     "tests/fwof/pp02/F-WOF-PP02_CONTRACT_QUALIFICATION.json",
-    "tests/fwof/pp02/F-WOF-PP02_WRAPPER_QUALIFICATION.json"
+    "tests/fwof/pp02/F-WOF-PP02_WRAPPER_QUALIFICATION.json",
+    "tests/fwof/pp02/test_wofost81_daily_assimilation.f90"
   ],
   "migration_progress": {
     "source_faithful_assimilation_kernel": "QUALIFIED",
@@ -37,15 +40,30 @@
     "versioned_wofost81_parameter_contract": "QUALIFIED",
     "standalone_transactional_n_owner": "QUALIFIED",
     "versioned_composite_crop_plus_n_owner": "QUALIFIED",
+    "daily_parameter_tables": "QUALIFIED_COMPONENT_LEVEL",
+    "leaf_n_assimilation_binding": "QUALIFIED_COMPONENT_LEVEL",
     "legacy_crop_owner_modified": false,
     "daily_owner_composition": false,
     "ten_case_preservation_gate_executable": false
   },
-  "architecture_decision": "Use a separate wofost81_crop_owner_state_t containing the unchanged legacy wofost_crop_owner_state_t plus the qualified WOFOST81 N owner. This supersedes the earlier tentative plan to add optional WOFOST81 fields directly to the legacy owner and reduces legacy compile/runtime risk.",
-  "scientific_interpretation": "The WOFOST81 versioned state boundary now exists without modifying legacy owner semantics. The next risk boundary is process composition: assimilation must consume the version-81 leaf-N state and the N request/apply path must mutate only a candidate composite owner until an accepted crop-day commit.",
-  "verdict": "QUALIFIED_VERSIONED_WOFOST81_KERNEL_STATE_AND_OWNER_SUBSTRATE_PENDING_DAILY_CANDIDATE_COMPOSITION",
+  "daily_assimilation_qualification": {
+    "result": "F_WOF_PP02_DAILY_ASSIMILATION_PASS",
+    "compiler": "gfortran",
+    "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
+    "validated_semantics": [
+      "EFFTB evaluated at daytime average temperature",
+      "KDIFTB evaluated at DVS",
+      "TMPFTB remains evaluated at average temperature as in the donor",
+      "leaf-N amount is passed to source-faithful TOTASS81",
+      "zero-LAI path yields zero assimilation"
+    ],
+    "scope_note": "component qualification used interface-equivalent stubs for existing SWAP5 common parameter/state-view types; full repository integration compile remains a required gate before runtime reachability"
+  },
+  "architecture_decision": "Keep WOFOST81 as an explicit versioned composite path around the unchanged legacy crop owner. Reuse qualified SWAP5 weather/state seams where semantics agree, and add version-81 process layers only where donor semantics differ.",
+  "scientific_interpretation": "The WOFOST81 assimilation path now has explicit version-81 table binding and consumes transaction-owned leaf-N state, while remaining unreachable from active runtime. The next scientific gap is WOFOST81 leaf ageing/N-stress rate composition: donor DRLV=max(DSLV,DALV), with DALV driven by NSLLV and early-LAI growth reduced by RFRGRL under N stress.",
+  "verdict": "QUALIFIED_VERSIONED_WOFOST81_ASSIMILATION_SUBSTRATE_PENDING_N_STRESS_LEAF_RATE_COMPOSITION",
   "mutations": {
-    "new_production_source_files": 6,
+    "new_production_source_files": 8,
     "existing_production_source_modified": false,
     "legacy_wofost_path_changed": false,
     "runtime_behavior_changed": false,
@@ -53,6 +71,6 @@
     "RD_changed": false,
     "TRA_changed": false
   },
-  "next_permitted_action": "Create a testable WOFOST81 accepted-day candidate composition around wofost81_crop_owner_state_t. Use explicit external water/N supply inputs, source-faithful assimilation and N kernels, and candidate-only mutation. Qualify rollback/rejected-candidate isolation before wiring any runtime route or running the ten-case full-season gate.",
+  "next_permitted_action": "Implement a WOFOST81-only rate-correction layer that derives the donor N stress index, evaluates NSLLV, computes DALV, combines leaf death as max(DSLV,DALV), and applies donor early-LAI RFRGRL semantics. Keep it candidate-only and do not alter the legacy finalize/structural modules unless a separate preservation proof requires it.",
   "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path"]
 }
