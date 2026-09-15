@@ -6,6 +6,7 @@ on:
       - 'reference/swap-4.3.1/**'
       - 'tools/vq/**'
       - 'docs/verification/**'
+      - 'integration/f-vq/**'
       - '.github/workflows/vq-reference.yml'
   push:
     branches:
@@ -14,6 +15,7 @@ on:
       - 'reference/swap-4.3.1/**'
       - 'tools/vq/**'
       - 'docs/verification/**'
+      - 'integration/f-vq/**'
       - '.github/workflows/vq-reference.yml'
   workflow_dispatch:
 
@@ -25,8 +27,11 @@ jobs:
     name: Verify current corrected reference
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out exact qualification head
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -50,7 +55,7 @@ jobs:
           gfortran --version
           python reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py
 
-      - name: Check VQ gate unit tests
+      - name: Check existing B1/B2 admission unit tests
         run: |
           python -m unittest \
             tools.vq.test_b1_snapshot_identity \
@@ -58,3 +63,47 @@ jobs:
 
       - name: Check deterministic B1.10 reconstructor syntax
         run: python -m py_compile tools/vq/b1_10_reconstruct.py
+
+  fvq02-verifier-contracts:
+    name: F-VQ02 verifier contracts on F-CI12
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install gate dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: F-VQ02 provenance, readiness and synthetic harness gate
+        run: python -m tools.vq.fvq02_contract_gate
+
+      - name: F-VQ02 scope-guard unit tests
+        run: python -m unittest tools.vq.test_fvq02_contract_gate
+
+      - name: Re-run imported semantic validators and fault-injection tests
+        run: |
+          python -m unittest \
+            tools.vq.test_b2_seam_contract \
+            tools.vq.test_b2_result_contract \
+            tools.vq.test_b2_result_record \
+            tools.vq.test_tx_time_harness
+
+      - name: Re-run stored 11-case transaction/time verifier projection
+        run: |
+          python tools/vq/tx_time_harness.py \
+            --fixture-suite \
+            --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+
+      - name: Re-run exact F-CI12 production-binding qualification gate
+        run: bash tests/fci/run_fci12_gate.sh
