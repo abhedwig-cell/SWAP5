@@ -1,0 +1,114 @@
+name: EB-I09 owner qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i09-local-soil-water-donor-temperature-binding
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard current canonical
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          test "$(git rev-parse "$CANONICAL:src/transaction/mod_transaction_reference.f90")" = 834487df4e7a38c7c8ffd83805d98933714c6977
+          test "$(git rev-parse "$CANONICAL:src/process/mod_soil_temperature_contract.f90")" = baa13df3975de2c699b0ec910477bcfa9b47f15e
+
+      - name: Check EB-I09 production and evidence delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i09-owner-gate.yml
+          src/process/mod_local_soil_water_temperature_binding.f90
+          tests/eb/EB-I09_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I09_CONTRACT.md
+          tests/test_eb_i09_local_soil_water_temperature_binding.f90
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          ! grep -Eiq '(open\s*\(|read\s*\(|write\s*\(|\.swp|modflow)' src/process/mod_local_soil_water_temperature_binding.f90
+          ! grep -Eiq '(drain|root|groundwater|runoff|irrigation|precipitation|snow)' src/process/mod_local_soil_water_temperature_binding.f90
+          ! grep -Eiq 'mod_(energy|liquid_water|oriented_water|external_liquid)' src/process/mod_local_soil_water_temperature_binding.f90
+
+      - name: Validate contract and architecture evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          audit=json.loads(Path('tests/eb/EB-I09_ARCHITECTURE_AUDIT.json').read_text())
+          assert audit['canonical']=='2a0db2524fba6e258316ce82630c60ea1c9c673a'
+          assert [x['id'] for x in audit['audit']]==list(range(1,31))
+          assert all(x['status'] in {'PASS','PARTIAL','PRESERVED','NOT_QUALIFIED'} for x in audit['audit'])
+          for p in ['tests/eb/EB-I09_ARCHITECTURE_AUDIT.json','tests/eb/EB-I09_CONTRACT.md']:
+              text=Path(p).read_text()
+              assert '\u2013' not in text and '\u2014' not in text
+          contract=Path('tests/eb/EB-I09_CONTRACT.md').read_text()
+          for phrase in [
+              'Exact zero outflow requires no thermal field and no meaningful donor node.',
+              'There is no small-transfer tolerance or cutoff.',
+              'The caller that owns the water-transfer semantics must provide the donor node explicitly.',
+              'does not prove by itself that `outflow_amount` and `temperature_view` originate from the same physical trial or accepted interval.',
+              'does not add temperature to `process_hydraulic_view_t`.'
+          ]:
+              assert phrase in contract
+          PY
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Compile and run O0
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o0
+          cd build-o0
+          DEP='-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -O0'
+          NEW='-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0'
+          gfortran $DEP -c ../src/transaction/mod_transaction_reference.f90
+          gfortran $DEP -c ../src/process/mod_soil_temperature_contract.f90
+          gfortran $NEW -c ../src/process/mod_local_soil_water_temperature_binding.f90
+          gfortran $NEW -c ../tests/test_eb_i09_local_soil_water_temperature_binding.f90
+          gfortran mod_transaction_reference.o mod_soil_temperature_contract.o \
+            mod_local_soil_water_temperature_binding.o test_eb_i09_local_soil_water_temperature_binding.o \
+            -o test-eb-i09
+          ./test-eb-i09 | tee ../eb-i09-o0.txt
+
+      - name: Compile and run O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o2
+          cd build-o2
+          DEP='-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -O2'
+          NEW='-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2'
+          gfortran $DEP -c ../src/transaction/mod_transaction_reference.f90
+          gfortran $DEP -c ../src/process/mod_soil_temperature_contract.f90
+          gfortran $NEW -c ../src/process/mod_local_soil_water_temperature_binding.f90
+          gfortran $NEW -c ../tests/test_eb_i09_local_soil_water_temperature_binding.f90
+          gfortran mod_transaction_reference.o mod_soil_temperature_contract.o \
+            mod_local_soil_water_temperature_binding.o test_eb_i09_local_soil_water_temperature_binding.o \
+            -o test-eb-i09
+          ./test-eb-i09 | tee ../eb-i09-o2.txt
+
+      - name: Require optimization-invariant evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'EB-I09 local soil water donor temperature: PASS' eb-i09-o0.txt
+          grep -Fx 'EB-I09 local soil water donor temperature: PASS' eb-i09-o2.txt
+          cmp eb-i09-o0.txt eb-i09-o2.txt
