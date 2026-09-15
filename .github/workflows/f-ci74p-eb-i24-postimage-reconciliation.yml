@@ -1,0 +1,195 @@
+name: F-CI74P EB-I24 current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci74p-eb-i24-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify two-parent promotion and exact tree identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREIMAGE=19e68aa3d27e1e439e4d55bcb53dd571a7f6257c
+          PROMOTED=fb8e3a18b833ed362aa42794268e4fd86afe03a2
+          POSTIMAGE=e189b141b6efa695197de1e59a41b4800ef3d5a2
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$POSTIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^1")" = "$PREIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^2")" = "$PROMOTED"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "$(git rev-parse "$PROMOTED^{tree}")"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = 510accae1f9af4fad10ee0959449551e743bcde6
+          echo 'FCI74P_TRUE_TWO_PARENT_PROMOTION=PASS'
+          echo 'FCI74P_PROMOTED_TREE_IDENTITY=PASS'
+
+      - name: Verify exact admitted EB-I24 postimage and inherited authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=e189b141b6efa695197de1e59a41b4800ef3d5a2
+          declare -A BLOBS=(
+            [src/process/mod_external_liquid_water_temperature.f90]=64b85363e764d2c6e2777f5f1258abb3ac9e5abf
+            [src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90]=5f27ff7a4fa67a3991c622d960a7133857dab1c2
+            [tests/eb/EB-I24_CONTRACT.md]=b7a504860ed027e87dad04731af63c933f668984
+            [tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh]=0a06a96cc7295d9e509083bfb712ea429df9d519
+            [tests/eb/test_eb_i24_top_liquid_sensible_inflow_runtime.f90]=acd53e6e38598264d172e17d2596bebfb024e7fe
+            [.github/workflows/eb-i24-top-liquid-sensible-inflow.yml]=8bdc1b585ef68ed326498931c303bea61b2e1e0d
+            [.github/workflows/f-vq91-eb-i24-independent.yml]=9425c8139f5ce0dc42b8ae1365d11a3f35be1e8d
+            [qualification/F-VQ91_STATUS.json]=d81c331b6623df66e060f043255e8a3c9a9dc8b0
+            [tests/eb/run_f_vq91_eb_i24_independent_gate.sh]=5dc217432f42fbd0c103e59500d002241946992c
+            [integration/f-ci/F-CI74_STATUS.json]=79159120ef292477c171c0dff2b78ce8df2135c8
+            [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=3506b453ba6a00111d182f29db8cbfb288001854
+            [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
+            [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
+            [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
+            [src/process/mod_restricted_soil_temperature.f90]=fa4e1d7b48d3515e6569c9080d497178c25c4e85
+            [src/process/mod_soil_temperature_contract.f90]=baa13df3975de2c699b0ec910477bcfa9b47f15e
+          )
+          for path in "${!BLOBS[@]}"; do
+            test "$(git rev-parse "$POSTIMAGE:$path")" = "${BLOBS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"
+          done
+          test "$(git rev-parse HEAD:src)" = "$(git rev-parse "$POSTIMAGE:src")"
+          test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$POSTIMAGE:reference")"
+          echo 'FCI74P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI74P_REFERENCE_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI74P_IMMUTABLE_F_VQ91_EVIDENCE=PASS'
+
+      - name: Require governance-only reconciliation delta and preserve nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=e189b141b6efa695197de1e59a41b4800ef3d5a2
+          git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci74p-eb-i24-postimage-reconciliation.yml
+          .github/workflows/fci74-eb-i24-moving-preservation.yml
+          EOF
+          if test -f integration/f-ci/F-CI74P_STATUS.json; then
+            echo 'integration/f-ci/F-CI74P_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool integration/f-ci/F-CI74_STATUS.json >/dev/null
+          python3 -m json.tool qualification/F-VQ91_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_F_CI74_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI74_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_EB_I24_INDEPENDENT"' qualification/F-VQ91_STATUS.json
+          grep -Fq '"top_liquid_outflow_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"snow_or_melt_top_sensible_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"multi_substep_top_sensible_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"whole_column_sensible_residual_publication": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI74_STATUS.json
+          if test -f integration/f-ci/F-CI74P_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI74P_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI74P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI74P_STATUS.json
+            grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI74P_STATUS.json
+            grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI74P_STATUS.json
+            grep -Fq '"moving_preservation_installed": true' integration/f-ci/F-CI74P_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI74P_STATUS.json
+          fi
+          MODULE=src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          grep -Fq 'if (output%accepted_substeps /= 1) then' "$MODULE"
+          grep -Fq 'if (parameters%snow_active) then' "$MODULE"
+          grep -Fq 'if (observation%top_flux > 0.0_real64) then' "$MODULE"
+          grep -Fq 'resolve_external_liquid_water_temperature' "$MODULE"
+          grep -Fq 'evaluate_liquid_water_sensible_transport' "$MODULE"
+          echo 'FCI74P_GOVERNANCE_ONLY_DELTA=PASS'
+          echo 'FCI74P_HARD_NONCLAIMS_PRESERVED=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay EB-I24 postimage runtime O0 and O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          MODULE_SRC=(
+            tests/fsi/fsi04_real_headcalc_stubs.f90
+            src/runtime/mod_a23bu_worker_execution_context.f90
+            src/transaction/mod_transaction_reference.f90
+            src/transaction/mod_fkt_temporal_indicator_history.f90
+            src/runtime/mod_canonical_contracts.f90
+            src/runtime/mod_canonical_interval_runtime.f90
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_runtime_core.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            src/solver/mod_soil_water_solver_contract.f90
+            src/solver/mod_process_hydraulic_view.f90
+            src/process/mod_drainage_process.f90
+            src/process/mod_drainage_tabulated_response.f90
+            src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+            src/process/mod_drainage_hooghoudt_ipos1_response.f90
+            src/process/mod_drainage_hooghoudt_ipos23_response.f90
+            src/process/mod_drainage_ernst_ipos45_preparation.f90
+            src/process/mod_drainage_ernst_ipos45_response.f90
+            src/process/mod_drainage_empirical_interflow_response.f90
+            src/process/mod_drainage_multilevel_aggregation.f90
+            src/runtime/mod_fmr_drainage_response_binding.f90
+            src/process/mod_soil_temperature_contract.f90
+            src/process/mod_restricted_soil_temperature.f90
+            src/solver/mod_reference_richards_workspace.f90
+            src/solver/mod_reference_richards_state_binding.f90
+            src/solver/mod_reference_linear_solver.f90
+            src/solver/mod_b110_default_mvg_provider.f90
+            src/solver/mod_b110_source_sink_provider.f90
+            src/solver/mod_fixed_flux_top_boundary_provider.f90
+            src/solver/mod_reference_richards_temporal_indicator.f90
+            src/legacy/b1_10_port/headcalc.f90
+            src/adapter/mod_reference_richards_legacy_binding.f90
+            src/adapter/mod_b110_serialized_context_binding.f90
+            src/process/mod_snow_process.f90
+            src/solver/mod_b110_root_sink_provider.f90
+            src/process/mod_restricted_fixed_weir_surface_water.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+            src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+            src/runtime/mod_fmr_bottom_sensible_energy.f90
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+            src/runtime/mod_fmr_accepted_commit_receipt.f90
+            src/runtime/mod_fmr_owned_commit_receipt.f90
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/process/mod_linear_mixture_sensible_storage.f90
+            src/kernel/mod_energy_conservation_types.f90
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+            src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+            src/process/mod_external_liquid_water_temperature.f90
+            src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+          )
+          for opt in 0 2; do
+            OUT="$RUNNER_TEMP/fci74p-o${opt}"
+            mkdir -p "$OUT"
+            objects=()
+            for source in "${MODULE_SRC[@]}"; do
+              obj="$OUT/$(basename "${source%.*}").o"
+              gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
+              objects+=("$obj")
+            done
+            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/eb/test_eb_i24_top_liquid_sensible_inflow_runtime.f90 -o "$OUT/test.o"
+            gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+            "$OUT/test" > "$OUT/output.txt" 2>&1
+            grep -Fx 'EB_I24_ACCEPTED_INFLOW_COMPLETE_I22_BOUNDARY=PASS' "$OUT/output.txt"
+            grep -Fx 'EB_I24_MISSING_TOP_DONOR_FAIL_CLOSED=PASS' "$OUT/output.txt"
+            grep -Fx 'EB_I24_TOP_OUTFLOW_DONOR_DIRECTION_FAIL_CLOSED=PASS' "$OUT/output.txt"
+            grep -Fx 'EB_I24_REJECTED_TRIAL_NO_PUBLICATION=PASS' "$OUT/output.txt"
+            grep -Fx 'EB_I24_TOP_LIQUID_SENSIBLE_INFLOW_GATE=PASS' "$OUT/output.txt"
+            cat "$OUT/output.txt"
+          done
+          cmp -s "$RUNNER_TEMP/fci74p-o0/output.txt" "$RUNNER_TEMP/fci74p-o2/output.txt"
+          echo 'FCI74P_RUNTIME_REPLAY=PASS'
+          echo 'FCI74P_O0_O2_IDENTITY=PASS'
+          echo 'FCI74P_FULL_ENERGY_BALANCE_NONCLAIM=PASS'
