@@ -3,13 +3,18 @@
   "work_unit": "F-CI77",
   "capability": "F-GC20",
   "title": "F-GC20 groundwater tile aggregation current-canonical admission",
-  "branch": "qualification/f-ci77-fgc20-current-canonical-admission",
-  "phase": "ADMIT",
-  "status": "QUALIFIED_READY_FOR_CANONICAL_PROMOTION",
-  "canonical_base": {
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "status": "CLOSED_CANONICAL_ADMITTED",
+  "canonical": {
     "branch": "integration/f-ci-canonical",
-    "sha": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
-    "tree": "95da922e5290ac9757ae83dda4d10a52e6c1c8fb"
+    "reconciled_base": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+    "scientific_admission_head": "1e8ef002a64aba5a5041a2752f4335b440af9a3c",
+    "admitted_checkpoint_parent": "8779ddbad7374c26dd5bc7c4a563cf8e45345888",
+    "admission_tree": "46b44983f2f2abe9eb4286efc25a911e5566ba4d",
+    "merge_pr": 144,
+    "merge_parent_base": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+    "merge_parent_admission": "8779ddbad7374c26dd5bc7c4a563cf8e45345888"
   },
   "owner_authority": {
     "branch": "work/f-gc20-groundwater-cell-tile-mapping-aggregation-primitive",
@@ -30,28 +35,25 @@
     "O0_O2_identity": "PASS"
   },
   "current_canonical_gate": {
-    "qualified_source_head": "f851e55c8fd3672b226c1ead3a13d38f4f4cd6b1",
-    "workflow_run": 34981688310,
-    "workflow_job": 104423324389,
-    "conclusion": "success",
-    "markers": [
-      "FGC20_TILE_AGGREGATION=PASS",
-      "FGC20_NO_SILENT_NORMALIZATION=PASS",
-      "FGC20_MULTI_TILE_CELL=PASS",
-      "FGC20_MIXED_COMPONENT_TILES=PASS",
-      "FGC20_EXACT_QGW_NEGATIVE_QSWAP=PASS",
-      "FCI77_OWNER_AUTHORITY_EXACT=PASS",
-      "FCI77_OWNER_TEST_BLOB_EXACT=PASS",
-      "FCI77_FVQ87_INDEPENDENT_EVIDENCE_REUSED=PASS",
-      "FCI77_CURRENT_CANONICAL_PRODUCTION_BLOB_EXACT=PASS",
-      "FCI77_GC20_CONTRACT_PRESERVATION_REPLAY=PASS",
-      "F_CI77_FINAL_GATE=PASS"
-    ]
+    "qualified_checkpoint_head": "8779ddbad7374c26dd5bc7c4a563cf8e45345888",
+    "qualification_evidence_head": "f851e55c8fd3672b226c1ead3a13d38f4f4cd6b1",
+    "evidence_run": 34981688310,
+    "evidence_job": 104423324389,
+    "checkpoint_run": 34981943198,
+    "checkpoint_conclusion": "success",
+    "owner_authority_exact": "PASS",
+    "owner_test_blob_exact": "PASS",
+    "FVQ87_independent_evidence_reused": "PASS",
+    "current_canonical_production_blob_exact": "PASS",
+    "contract_preservation_replay": "PASS",
+    "O0_O2_identity": "PASS",
+    "final_gate": "PASS"
   },
   "reconciliation": {
-    "production_source_exact_on_current_canonical": true,
+    "production_source_exact_on_admitted_canonical": true,
+    "admitted_production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
     "relevant_dependency_change_requires_requalification": false,
-    "equivalent_current_canonical_materialization": "F-CI73 / F-GC25 inherited dependency",
+    "equivalent_pre_admission_current_canonical_materialization": "F-CI73 / F-GC25 inherited dependency",
     "fresh_independent_lifecycle_required": false
   },
   "contract_preserved": [
@@ -61,9 +63,14 @@
     "multiple tiles per groundwater cell and mixed component tiles supported",
     "no forced one-column/one-groundwater-cell mapping"
   ],
-  "mutation_scope": "governance and preservation-test only; no production source changes",
+  "mutations": [
+    "F-GC20 governance/test admission gate admitted through PR #144",
+    "No F-GC20 production source change; admitted production blob remains d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "This CLOSE record is governance/status only"
+  ],
   "hard_exclusions": ["EB", "ROSS", "RossFast", "F-GC23", "new groundwater semantics"],
-  "promotion_precondition": "integration/f-ci-canonical must still equal 687ee32ca98a42368a2b6380ea78d33eb254dad9 immediately before merge",
-  "canonical_admission": false,
-  "decision": "QUALIFIED_READY_FOR_CANONICAL_PROMOTION"
+  "canonical_admission": true,
+  "verdict": "CLOSED",
+  "decision": "CLOSED_CANONICAL_ADMITTED",
+  "next_permitted_action": "F-GC20 is closed. Any downstream groundwater composition must reconcile independently against live canonical."
 }
