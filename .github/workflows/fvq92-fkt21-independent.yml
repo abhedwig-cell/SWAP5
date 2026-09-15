@@ -1,0 +1,40 @@
+name: F-VQ92 F-KT21 accepted trajectory independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq92-fkt21-accepted-trajectory-independent
+  pull_request:
+    paths:
+      - 'src/transaction/mod_accepted_trajectory_directional_*.f90'
+      - 'src/transaction/mod_accepted_trajectory_transaction_binding.f90'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90'
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'tests/fkt/**'
+      - 'tests/qualification/fvq92/**'
+      - 'integration/f-kt/F-KT21_CAPABILITY_QUALIFICATION.json'
+      - 'qualification/F-VQ92_STATUS.json'
+      - '.github/workflows/fvq92-fkt21-independent.yml'
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          gfortran --version
+          python3 --version
+          git --version
+
+      - name: Run F-VQ92 independent gate
+        run: bash tests/qualification/fvq92/run_fvq92_fkt21_independent_gate.sh
