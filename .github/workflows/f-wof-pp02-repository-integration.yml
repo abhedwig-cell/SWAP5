@@ -19,3 +19,5 @@ jobs:
         run: gfortran --version
       - name: WOFOST81 repository integration gate
         run: bash tests/fwof/pp02/run_wofost81_one_day_candidate_integration.sh
+      - name: WOFOST81 case001 full-season preservation gate
+        run: bash tests/fwof/pp02/run_wofost81_case001_fullseason_gate.sh
