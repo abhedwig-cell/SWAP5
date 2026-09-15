@@ -20,19 +20,19 @@ jobs:
           ref: work/eb-i25-accepted-multisubstep-sensible-boundary
       - name: Apply bounded route and fixture repair
         run: python3 tools/eb_i25_repair_route.py
-      - name: Persist atomic EB-I25 repair
+      - name: Persist scientific repair without workflow mutation
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git restore --source=HEAD -- .github/workflows/eb-i25-multisubstep-sensible-boundary.yml
           git rm tools/eb_i25_repair_route.py
           git add src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90 \
                   tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90 \
                   tests/eb/EB-I25_CONTRACT.md \
                   tests/eb/EB-I25_CHECKPOINT.json \
-                  tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh \
-                  .github/workflows/eb-i25-multisubstep-sensible-boundary.yml
+                  tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
           git diff --cached --check
           git commit -m 'EB-I25 correct accepted two-half route authority'
           git push origin HEAD:work/eb-i25-accepted-multisubstep-sensible-boundary
