@@ -17,4 +17,13 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Run EB-I25 owner qualification
         shell: bash
-        run: bash tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
+        run: |
+          set +e
+          bash tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
+          status=$?
+          if test "$status" -ne 0; then
+            for output in "${RUNNER_TEMP}"/eb-i25-o*/output.txt; do
+              test -f "$output" && { echo "--- $output ---"; cat "$output"; }
+            done
+          fi
+          exit "$status"
