@@ -30,8 +30,10 @@ COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace
 STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 
 BASE_SOURCES=(
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+  src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/transaction/mod_transaction_reference.f90
-  src/adapter/mod_accepted_trajectory_directional_publication.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
