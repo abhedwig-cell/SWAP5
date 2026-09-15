@@ -75,11 +75,19 @@ make_runtime_replay() {
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
-old='  src/runtime/mod_fmr_serialized_reference_backend.f90\n'
-new='  src/runtime/mod_fmr_top_sensible_boundary_carrier.f90\n'+old
-if s.count(old)!=1:
+worker='  src/runtime/mod_a23bu_worker_execution_context.f90\n'
+worker_deps=(
+    '  src/solver/mod_soil_water_accepted_step_direction_contract.f90\n'
+    '  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\n'
+)
+if s.count(worker)!=1:
+    raise SystemExit('worker compile-order anchor mismatch')
+s=s.replace(worker, worker_deps+worker)
+backend='  src/runtime/mod_fmr_serialized_reference_backend.f90\n'
+if s.count(backend)!=1:
     raise SystemExit('backend compile-order anchor mismatch')
-p.write_text(s.replace(old,new))
+s=s.replace(backend, '  src/runtime/mod_fmr_top_sensible_boundary_carrier.f90\n'+backend)
+p.write_text(s)
 PY
 }
 
