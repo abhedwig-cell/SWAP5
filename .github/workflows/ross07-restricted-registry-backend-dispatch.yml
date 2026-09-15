@@ -1,0 +1,173 @@
+name: F-ROSS07 restricted registry backend dispatch
+
+on:
+  push:
+    branches:
+      - work/f-ross07-restricted-registry-backend-dispatch
+    paths:
+      - 'src/runtime/mod_fmr_rossfast_registry_dispatch.f90'
+      - 'tests/ross/test_ross07_restricted_registry_backend_dispatch.f90'
+      - 'tests/ross/run_ross07_restricted_registry_backend_dispatch.sh'
+      - 'integration/f-ross/F-ROSS07_STATUS.json'
+      - '.github/workflows/ross07-restricted-registry-backend-dispatch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross07-registry-dispatch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  restricted-registry-dispatch-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock F-ROSS06 parent and inherited authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=94719eaff474337c3cb14f616e28e62749d9f2f5
+          LIVE="$(git ls-remote origin refs/heads/work/f-ross06-serialized-backend-model-injection | awk '{print $1}')"
+          test "$LIVE" = "$BASE"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = d5a71a526efaebd82054580c3186f8e3545db331
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" = 3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_interval_runtime.f90)" = b12327aa6e77bdbf4586fe0bed82cf0e7704f237
+          test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = d3a53385e3707f05e5396bbd6f218633b9803f65
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_checkpoint_orchestrator.f90)" = 0dceaa2d108d5c7e1263e0f424a056a8df585908
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_runtime_core.f90)" = 43eef1979e0202f8ecc92f73eb7d8025dab515a4
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_execution_policy.f90)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = 9f29ba7a08844692ba2628c7869d23713409f92b
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_kernel.f90)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90)" = dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_kernel_backend.f90)" = 29093b517bc6fdd40f32325018729c4c3dee6e85
+          test "$(git rev-parse HEAD:assets/rossfast/d3r/manifest.json)" = 1266d15149af5feb8d7fb0a5ef90d41b5881fd55
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS06_STATUS.json)" = 4a7c855bb026e2a5be1c64288c53f4b1829e751c
+
+      - name: Enforce bounded F-ROSS07 surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=94719eaff474337c3cb14f616e28e62749d9f2f5
+          allowed=(
+            src/runtime/mod_fmr_rossfast_registry_dispatch.f90
+            tests/ross/test_ross07_restricted_registry_backend_dispatch.f90
+            tests/ross/run_ross07_restricted_registry_backend_dispatch.sh
+            .github/workflows/ross07-restricted-registry-backend-dispatch.yml
+            integration/f-ross/F-ROSS07_STATUS.json
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "ROSS07_UNEXPECTED_PATH $path" >&2; exit 107; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- \
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            src/runtime/mod_fmr_serialized_kernel_backend.f90 \
+            src/runtime/mod_fmr_runtime_core.f90 \
+            src/runtime/mod_rossfast_d3r_execution_policy.f90 \
+            src/runtime/mod_rossfast_d3r_model_binding.f90 \
+            src/solver/mod_rossfast_d3r_table_kernel.f90 \
+            src/solver/mod_rossfast_d3r_table_provider.f90 \
+            src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90 \
+            assets/rossfast/d3r)"
+          if grep -Eq 'mod_fmr_serialized_reference_backend|mod_fmr_serialized_multiswap_runtime' \
+               src/runtime/mod_fmr_rossfast_registry_dispatch.f90; then
+            echo 'ROSS07_DISPATCH_IMPORTS_REFERENCE_BACKEND_RUNTIME' >&2
+            exit 107
+          fi
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-ROSS07 restricted registry dispatch gate
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/ross/run_ross07_restricted_registry_backend_dispatch.sh \
+            2>&1 | tee F-ROSS07_GATE.log
+
+      - name: Persist F-ROSS07 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              'work_unit': 'F-ROSS07',
+              'status': 'PASS',
+              'tested_head': sh('git', 'rev-parse', 'HEAD'),
+              'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
+              'parent_f_ross06_head': '94719eaff474337c3cb14f616e28e62749d9f2f5',
+              'inherited_qualified_blobs': {
+                  'fmr_runtime_core': '43eef1979e0202f8ecc92f73eb7d8025dab515a4',
+                  'serialized_kernel_backend': '29093b517bc6fdd40f32325018729c4c3dee6e85',
+                  'kernel_transactions': 'd3a53385e3707f05e5396bbd6f218633b9803f65',
+                  'checkpoint_orchestrator': '0dceaa2d108d5c7e1263e0f424a056a8df585908',
+                  'rossfast_policy': 'a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9',
+                  'rossfast_binding': '9f29ba7a08844692ba2628c7869d23713409f92b',
+                  'rossfast_table_kernel': '034136c193b287bcf9a953a9b89df2a8fb0c97cc',
+                  'rossfast_table_provider': 'afc05eb3001d91f66ca542978c3c6795283a7ac0',
+                  'rossfast_kernel_model_adapter': 'dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e',
+                  'asset_manifest': '1266d15149af5feb8d7fb0a5ef90d41b5881fd55',
+                  'f_ross06_status': '4a7c855bb026e2a5be1c64288c53f4b1829e751c',
+              },
+              'candidate_blobs': {
+                  'registry_dispatch': sh('git', 'hash-object', 'src/runtime/mod_fmr_rossfast_registry_dispatch.f90'),
+                  'test': sh('git', 'hash-object', 'tests/ross/test_ross07_restricted_registry_backend_dispatch.f90'),
+                  'runner': sh('git', 'hash-object', 'tests/ross/run_ross07_restricted_registry_backend_dispatch.sh'),
+                  'workflow': sh('git', 'hash-object', '.github/workflows/ross07-restricted-registry-backend-dispatch.yml'),
+              },
+              'qualified': {
+                  'restricted_registry_handles_resolve_to_exact_rossfast_parameters_forcing_and_state': True,
+                  'column_and_template_backend_identity_four_required': True,
+                  'registry_structure_is_preflighted_before_physical_execution': True,
+                  'all_selected_immutable_table_assets_are_preflighted_before_first_transaction': True,
+                  'deterministic_column_order_is_reused_from_fmr_runtime_core': True,
+                  'all_six_exact_rossfast_d3r_materials_execute_through_f_ross06': True,
+                  'each_successful_column_publishes_exactly_one_revision': True,
+                  'mixed_backend_and_duplicate_state_claims_fail_before_any_commit': True,
+                  'missing_asset_root_fails_before_any_partial_batch_commit': True,
+                  'o0_o2_output_identity': True,
+              },
+              'nonclaims': [
+                  'NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH',
+                  'NO_AUTOMATIC_BACKEND_SELECTION_FROM_LEGACY_MOD_SOILWATER_INPUT',
+                  'NO_REPLACEMENT_OR_MODIFICATION_OF_EXISTING_REFERENCE_MULTISWAP_RUNTIME',
+                  'NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_OR_SELECTOR_SEMANTICS',
+                  'NO_DYNAMIC_TOP_PRESCRIBED_HEAD_BOTTOM_GROUNDWATER_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION',
+                  'NO_HETEROGENEOUS_GRID_ARBITRARY_PROFILE_FORCING_OR_DURATION_GENERALIZATION',
+                  'NO_MULTISWAP_PERFORMANCE_QUALIFICATION',
+                  'NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION',
+              ],
+          }
+          open('F-ROSS07_EVIDENCE.json', 'w').write(json.dumps(payload, indent=2, sort_keys=True) + '\n')
+          PY
+
+      - name: Upload F-ROSS07 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross07-gate-diagnostics-${{ github.run_id }}
+          path: F-ROSS07_GATE.log
+          if-no-files-found: warn
+
+      - name: Upload F-ROSS07 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross07-restricted-registry-dispatch-${{ github.run_id }}
+          path: F-ROSS07_EVIDENCE.json
