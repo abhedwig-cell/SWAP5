@@ -3,8 +3,23 @@
   "capability": "F-CI89",
   "title": "Current-canonical admission of F-WOF-PP03 WOFOST81 runtime activation",
   "phase": "ADMIT",
-  "state": "ADMISSION_CANDIDATE_AWAITING_CURRENT_CANONICAL_GATE",
+  "state": "QUALIFIED_CURRENT_CANONICAL_POSTIMAGE_READY_FOR_PROMOTION",
   "canonical_base": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+  "canonical_race_check_head": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+  "candidate_commit": "eb6cd00f377b11e93372af29f237965363b9fc5d",
+  "admission_qualification": {
+    "run_id": 35036010133,
+    "job_id": 104605164314,
+    "verdict": "PASS",
+    "runtime_o0_o2_sha256": "7182c28172fc58dd6f5cf31505d2ba70c7936c89731c25e52dabc7de6c5c002b",
+    "markers": [
+      "F_CI89_QUALIFIED_OWNER_BLOBS=PASS",
+      "F_CI89_EXACT_TWO_FILE_PRODUCTION_DELTA=PASS",
+      "F_WOF_PP03_RUNTIME_ACTIVATION_GATE PASS",
+      "F_WOF_PP03_FWO38_FWO39_CURRENT_CONTRACT_PRESERVATION_GATE PASS",
+      "F_CI89_CURRENT_CANONICAL_WOFOST81_RUNTIME_ADMISSION=PASS"
+    ]
+  },
   "owner": {
     "capability": "F-WOF-PP03",
     "qualified_execution_head": "97b7b6c712d003daa67b696faa1e9f207dff4e14",
@@ -23,14 +38,19 @@
       "blob": "5742147b8b3ace2ec40b5295c4df915e9787ea3f"
     }
   ],
-  "admission_requirements": [
-    "exact qualified owner production blobs",
-    "exactly two additive production files relative to current canonical",
-    "PP03 runtime activation O0/O2 replay PASS",
-    "PP02 executable numerical preservation replay PASS",
-    "F-WOF38 and F-WOF39 current-contract preservation PASS",
-    "legacy WOFOST runtime semantics unchanged",
-    "no RD or TRA admission"
+  "admitted_scope": [
+    "WOFOST81 runtime transaction over one accepted daily crop event",
+    "atomic WOFOST81 crop owner plus consumed-event receipt publication",
+    "rollback and failed-evolution zero leakage",
+    "duplicate accepted-event fail-closed protection",
+    "committed-receipt-gated source event retirement",
+    "PP02 donor-equivalent N-unlimited request-equals-supply route"
+  ],
+  "preserved_contracts": [
+    "legacy WOFOST runtime source and semantics unchanged",
+    "F-WOF38 atomic crop transaction contract preserved",
+    "F-WOF39 crop-event lifecycle contract preserved",
+    "PP02 numerical preservation remains executable and passing"
   ],
   "hard_exclusions": [
     "no EB",
@@ -42,5 +62,5 @@
     "no Soil-N coupling policy",
     "no tolerance changes"
   ],
-  "next_permitted_action": "Run F-CI89 on this exact current-canonical postimage. On PASS, recheck live canonical head and relevant state delta before any non-force promotion."
+  "next_permitted_action": "Re-run F-CI89 on this governance checkpoint. On PASS, recheck live canonical head. If still exactly canonical_base, non-force fast-forward integration/f-ci-canonical to the checkpoint commit, then persist status-only CLOSE."
 }
