@@ -19,6 +19,24 @@ jobs:
           fetch-depth: 0
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Inject nonpersistent outflow diagnostics
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90')
+          s = p.read_text()
+          old = "    call require(output%accepted_substeps == 1 .and. publication%ready(), 'outflow external full-half publication')\n"
+          new = ("    write(*,'(A,L1,A,L1,A,I0,A,I0,A,L1,A,I0,A,I0)') 'EB_I25_OUTFLOW_DIAG completed=', output%completed, &\n"
+                 "         ' committed=', output%committed, ' accepted_substeps=', output%accepted_substeps, &\n"
+                 "         ' kernel_status=', output%kernel_status, ' publication_ready=', publication%ready(), &\n"
+                 "         ' publication_status=', publication%status(), ' top_status=', publication%top_status()\n"
+                 "    write(*,'(A,I0)') 'EB_I25_OUTFLOW_DIAG carrier_samples=', publication%carrier_sample_count()\n"
+                 "    call require(output%accepted_substeps == 1 .and. publication%ready(), 'outflow external full-half publication')\n")
+          if s.count(old) != 1:
+              raise SystemExit('outflow diagnostic anchor mismatch')
+          p.write_text(s.replace(old, new, 1))
+          PY
       - name: Run EB-I25 owner qualification
         id: gate
         continue-on-error: true
