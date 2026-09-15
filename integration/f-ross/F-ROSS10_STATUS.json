@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_unit": "F-ROSS10",
   "title": "RossFast D3R external application model configuration file adapter",
-  "status": "IMPLEMENTED_PENDING_INDEPENDENT_QUALIFICATION",
+  "status": "PERSISTED_PENDING_INDEPENDENT_QUALIFICATION",
   "decision": "NOT_YET_QUALIFIED_OR_ADMITTED",
   "workstream": "RT_HY_EXTERNAL_ADAPTER_BOUNDARY",
   "baseline": {
@@ -11,6 +11,17 @@
     "f_ross09_config_blob": "5892d5b2573c678ab8d121ae80353870b66886d2",
     "f_ross09_status_blob": "231b22bc321e679bfe1af59434f8701b6e3cf02e",
     "f_ross08_selection_blob": "5b652f04f172a8faa468d38faa23883ce6f35294"
+  },
+  "checkpoint": {
+    "commit": "e5377427a6ab44f166f31bcc321a809b121a00bd",
+    "tree": "ce31f7e6c040a5fccf1afa471f86bd674764cc85",
+    "files_persisted": [
+      "src/adapter/mod_rossfast_application_config_file_adapter.f90",
+      "tests/ross/test_ross10_external_model_config_file_adapter.f90",
+      "tests/ross/run_ross10_external_model_config_file_adapter.sh",
+      ".github/workflows/ross10-external-model-config-file-adapter.yml",
+      "integration/f-ross/F-ROSS10_STATUS.json"
+    ]
   },
   "candidate": {
     "file_adapter_blob": "55dc1632eb4d72d52cc2e038765710801bee5dd2",
@@ -57,7 +68,7 @@
     ]
   },
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "production_admission": false,
@@ -73,7 +84,7 @@
     "NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_F_ROSS08",
     "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
   ],
-  "next_expensive_action": "RUN_F_ROSS10_GITHUB_QUALIFICATION_GATE_AFTER_REMOTE_CHECKPOINT",
-  "recovery_point": "PENDING_CANDIDATE_COMMIT",
+  "next_expensive_action": "RUN_F_ROSS10_GITHUB_QUALIFICATION_GATE",
+  "recovery_point": "e5377427a6ab44f166f31bcc321a809b121a00bd",
   "blockers": []
 }
