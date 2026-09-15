@@ -1,29 +1,29 @@
-module mod_eb_i26_provider_fixture
+module mod_eb_i27_provider_fixture
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_fmr_bottom_external_thermal_provider, only: fmr_external_bottom_thermal_request_t, &
        fmr_external_bottom_thermal_response_t
   implicit none
   private
   integer(int64), public :: expected_column_id = 0_int64
-  public :: reset_provider, eb_i26_bottom_provider
+  public :: reset_provider, eb_i27_bottom_provider
 contains
   subroutine reset_provider(column_id)
     integer(int64), intent(in) :: column_id
     expected_column_id = column_id
   end subroutine reset_provider
 
-  subroutine eb_i26_bottom_provider(request, response)
+  subroutine eb_i27_bottom_provider(request, response)
     type(fmr_external_bottom_thermal_request_t), intent(in) :: request
     type(fmr_external_bottom_thermal_response_t), intent(out) :: response
     logical :: ok
-    if (.not. request%ready()) error stop 'EB-I26 provider invalid request'
-    if (request%column_id() /= expected_column_id) error stop 'EB-I26 provider column mismatch'
+    if (.not. request%ready()) error stop 'EB-I27 provider invalid request'
+    if (request%column_id() /= expected_column_id) error stop 'EB-I27 provider column mismatch'
     call response%set_complete(request, 12.5_real64, 826001_int64, ok)
-    if (.not. ok) error stop 'EB-I26 provider response failed'
-  end subroutine eb_i26_bottom_provider
-end module mod_eb_i26_provider_fixture
+    if (.not. ok) error stop 'EB-I27 provider response failed'
+  end subroutine eb_i27_bottom_provider
+end module mod_eb_i27_provider_fixture
 
-program test_eb_i26_outer_substep_sensible_boundary_aggregation
+program test_eb_i27_outer_substep_sensible_boundary_aggregation
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -46,15 +46,15 @@ program test_eb_i26_outer_substep_sensible_boundary_aggregation
   use mod_whole_column_sensible_energy_accounting, only: whole_column_sensible_boundary_t
   use mod_eb_i25_multisubstep_sensible_boundary_runtime, only: eb_i25_sensible_boundary_publication_t, &
        fmr_execute_multisubstep_sensible_boundary
-  use mod_eb_i26_outer_substep_sensible_boundary_aggregation, only: &
-       eb_i26_outer_substep_sensible_boundary_publication_t, &
-       aggregate_accepted_outer_substep_sensible_boundaries, EB_I26_ACCEPTED_COMPLETE, &
-       EB_I26_INSUFFICIENT_OUTER_SUBSTEPS, EB_I26_INVALID_SEQUENCE, EB_I26_INCOMPLETE_INPUT
-  use mod_eb_i26_provider_fixture, only: reset_provider, eb_i26_bottom_provider
+  use mod_eb_i27_outer_substep_sensible_boundary_aggregation, only: &
+       eb_i27_outer_substep_sensible_boundary_publication_t, &
+       aggregate_accepted_outer_substep_sensible_boundaries, EB_I27_ACCEPTED_COMPLETE, &
+       EB_I27_INSUFFICIENT_OUTER_SUBSTEPS, EB_I27_INVALID_SEQUENCE, EB_I27_INCOMPLETE_INPUT
+  use mod_eb_i27_provider_fixture, only: reset_provider, eb_i27_bottom_provider
   implicit none
 
   real(real64), parameter :: t_start = 9250.125_real64
-  real(real64), parameter :: dt_outer = 1.0e-4_real64
+  real(real64), parameter :: dt_outer = 0.25_real64
   real(real64), parameter :: t_mid = t_start + dt_outer
   real(real64), parameter :: t_end = t_start + 2.0_real64*dt_outer
   real(real64), parameter :: initial_head = -75.0_real64
@@ -66,7 +66,7 @@ program test_eb_i26_outer_substep_sensible_boundary_aggregation
 
   call verify_two_outer_commits_aggregate()
   call verify_incomplete_input_fails_closed()
-  write(*,'(A)') 'EB_I26_OUTER_SUBSTEP_SENSIBLE_BOUNDARY_GATE=PASS'
+  write(*,'(A)') 'EB_I27_OUTER_SUBSTEP_SENSIBLE_BOUNDARY_GATE=PASS'
 
 contains
 
@@ -86,7 +86,7 @@ contains
     type(external_liquid_water_temperature_t) :: top_temperature
     type(eb_i25_sensible_boundary_publication_t) :: p1, p2
     type(eb_i25_sensible_boundary_publication_t) :: sequence(2), one(1), reversed(2), duplicate(2)
-    type(eb_i26_outer_substep_sensible_boundary_publication_t) :: aggregate, rejected
+    type(eb_i27_outer_substep_sensible_boundary_publication_t) :: aggregate, rejected
     type(whole_column_sensible_boundary_t) :: b1, b2, ba
     type(fixed_flux_top_boundary_provider_t), target :: top
     real(real64) :: q, inflow1, inflow2, inflow_total, agg_t0, agg_t1
@@ -101,7 +101,7 @@ contains
     call initialize_step_outputs(output, diagnostic, runtime, active_calls, t_start, t_mid)
     call reset_provider(column_id)
     call fmr_execute_multisubstep_sensible_boundary(backend, tx, column, template, parameters, forcing, committed, &
-         config, t_start, t_mid, energy_parameters, eb_i26_bottom_provider, top_temperature, output, diagnostic, runtime, &
+         config, t_start, t_mid, energy_parameters, eb_i27_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, p1)
     call require(output%completed .and. output%committed, 'first outer transaction committed')
     call require(committed%current_revision() == 1_int64, 'first outer revision')
@@ -111,7 +111,7 @@ contains
     call initialize_step_outputs(output, diagnostic, runtime, active_calls, t_mid, t_end)
     call reset_provider(column_id)
     call fmr_execute_multisubstep_sensible_boundary(backend, tx, column, template, parameters, forcing, committed, &
-         config, t_mid, t_end, energy_parameters, eb_i26_bottom_provider, top_temperature, output, diagnostic, runtime, &
+         config, t_mid, t_end, energy_parameters, eb_i27_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, p2)
     call require(output%completed .and. output%committed, 'second outer transaction committed')
     call require(committed%current_revision() == 2_int64, 'second outer revision')
@@ -122,8 +122,8 @@ contains
     sequence(1) = p1
     sequence(2) = p2
     call aggregate_accepted_outer_substep_sensible_boundaries(sequence, aggregate)
-    call require(aggregate%ready(), 'I26 aggregate ready')
-    call require(aggregate%status() == EB_I26_ACCEPTED_COMPLETE, 'I26 complete status')
+    call require(aggregate%ready(), 'I27 aggregate ready')
+    call require(aggregate%status() == EB_I27_ACCEPTED_COMPLETE, 'I27 complete status')
     call require(aggregate%accepted_outer_substeps() == 2, 'two accepted outer commits')
     call require(aggregate%accepted_internal_half_samples() == 4, 'four accepted internal half samples')
     call require(aggregate%origin_revision() == 0_int64 .and. aggregate%committed_revision() == 2_int64, &
@@ -155,28 +155,28 @@ contains
     call aggregate%top_liquid_inflow(inflow_total, availablea)
     call require(available1 .and. available2 .and. availablea, 'top inflow values available')
     call require(close_value(inflow_total, inflow1 + inflow2, 1.0e-12_real64), 'top inflow sum')
-    call require(aggregate%runtime_materialization_complete(), 'I26 runtime materialization complete')
-    write(*,'(A)') 'EB_I26_TWO_OUTER_FOUR_HALF_AGGREGATION=PASS'
+    call require(aggregate%runtime_materialization_complete(), 'I27 runtime materialization complete')
+    write(*,'(A)') 'EB_I27_TWO_OUTER_FOUR_HALF_AGGREGATION=PASS'
 
     one(1) = p1
     call aggregate_accepted_outer_substep_sensible_boundaries(one, rejected)
-    call require(.not. rejected%ready() .and. rejected%status() == EB_I26_INSUFFICIENT_OUTER_SUBSTEPS, &
+    call require(.not. rejected%ready() .and. rejected%status() == EB_I27_INSUFFICIENT_OUTER_SUBSTEPS, &
          'single outer input rejected')
-    write(*,'(A)') 'EB_I26_SINGLE_OUTER_REJECTED=PASS'
+    write(*,'(A)') 'EB_I27_SINGLE_OUTER_REJECTED=PASS'
 
     reversed(1) = p2
     reversed(2) = p1
     call aggregate_accepted_outer_substep_sensible_boundaries(reversed, rejected)
-    call require(.not. rejected%ready() .and. rejected%status() == EB_I26_INVALID_SEQUENCE, &
+    call require(.not. rejected%ready() .and. rejected%status() == EB_I27_INVALID_SEQUENCE, &
          'reversed revision/time sequence rejected')
-    write(*,'(A)') 'EB_I26_REVERSED_SEQUENCE_REJECTED=PASS'
+    write(*,'(A)') 'EB_I27_REVERSED_SEQUENCE_REJECTED=PASS'
 
     duplicate(1) = p1
     duplicate(2) = p1
     call aggregate_accepted_outer_substep_sensible_boundaries(duplicate, rejected)
-    call require(.not. rejected%ready() .and. rejected%status() == EB_I26_INVALID_SEQUENCE, &
+    call require(.not. rejected%ready() .and. rejected%status() == EB_I27_INVALID_SEQUENCE, &
          'duplicate accepted publication rejected')
-    write(*,'(A)') 'EB_I26_DUPLICATE_SEQUENCE_REJECTED=PASS'
+    write(*,'(A)') 'EB_I27_DUPLICATE_SEQUENCE_REJECTED=PASS'
   end subroutine verify_two_outer_commits_aggregate
 
   subroutine verify_incomplete_input_fails_closed()
@@ -194,7 +194,7 @@ contains
     type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
     type(external_liquid_water_temperature_t) :: top_temperature
     type(eb_i25_sensible_boundary_publication_t) :: p1, p2, sequence(2)
-    type(eb_i26_outer_substep_sensible_boundary_publication_t) :: aggregate
+    type(eb_i27_outer_substep_sensible_boundary_publication_t) :: aggregate
     type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: active_calls
 
@@ -206,7 +206,7 @@ contains
     call initialize_step_outputs(output, diagnostic, runtime, active_calls, t_start, t_mid)
     call reset_provider(column_id)
     call fmr_execute_multisubstep_sensible_boundary(backend, tx, column, template, parameters, forcing, committed, &
-         config, t_start, t_mid, energy_parameters, eb_i26_bottom_provider, top_temperature, output, diagnostic, runtime, &
+         config, t_start, t_mid, energy_parameters, eb_i27_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, p1)
     call require(p1%ready() .and. p1%runtime_materialization_complete(), 'complete first input fixture')
 
@@ -214,16 +214,16 @@ contains
     call initialize_step_outputs(output, diagnostic, runtime, active_calls, t_mid, t_end)
     call reset_provider(column_id)
     call fmr_execute_multisubstep_sensible_boundary(backend, tx, column, template, parameters, forcing, committed, &
-         config, t_mid, t_end, energy_parameters, eb_i26_bottom_provider, top_temperature, output, diagnostic, runtime, &
+         config, t_mid, t_end, energy_parameters, eb_i27_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, p2)
     call require(p2%ready() .and. .not. p2%runtime_materialization_complete(), 'incomplete second I25 publication')
 
     sequence(1) = p1
     sequence(2) = p2
     call aggregate_accepted_outer_substep_sensible_boundaries(sequence, aggregate)
-    call require(.not. aggregate%ready() .and. aggregate%status() == EB_I26_INCOMPLETE_INPUT, &
+    call require(.not. aggregate%ready() .and. aggregate%status() == EB_I27_INCOMPLETE_INPUT, &
          'incomplete accepted input fails closed')
-    write(*,'(A)') 'EB_I26_INCOMPLETE_INPUT_FAIL_CLOSED=PASS'
+    write(*,'(A)') 'EB_I27_INCOMPLETE_INPUT_FAIL_CLOSED=PASS'
   end subroutine verify_incomplete_input_fails_closed
 
   subroutine initialize_case(backend, top, committed, column, template, parameters, forcing, config, energy_parameters, q)
@@ -238,10 +238,17 @@ contains
     type(liquid_water_sensible_enthalpy_parameters_t), intent(out) :: energy_parameters
     real(real64), intent(in) :: q
     integer :: enthalpy_status
+    type(b110_default_mvg_parameters_t), target :: fixture_hydraulics
+    type(b110_default_mvg_provider_t) :: fixture_constitutive
+    real(real64) :: fixture_heads(numnod), fixture_water(numnod), fixture_k(numnod), fixture_c(numnod), fixture_dkdh(numnod)
 
     call initialize_parameters(parameters)
+    call initialize_b110_default_mvg_parameters(fixture_hydraulics, parameters%cofgen)
+    call bind_b110_default_mvg_provider(fixture_constitutive, fixture_hydraulics, dt_outer)
+    fixture_heads = initial_head
+    call fixture_constitutive%evaluate(fixture_heads, fixture_water, fixture_k, fixture_c, fixture_dkdh)
     call initialize_committed_state(committed, parameters, t_start, dt_outer)
-    call initialize_forcing(parameters, forcing, q)
+    call initialize_forcing(parameters, forcing, -fixture_k(1))
     template%template_id = 92601_int64
     template%physics_topology_id = 92602_int64
     template%vertical_layout_id = 92603_int64
@@ -262,8 +269,8 @@ contains
     config%model_temporal_indicator_budget = 0.0_real64
     config%transaction%mass_tolerance = 1.0e-12_real64
     config%transaction%retry_scale = 0.5_real64
-    config%transaction%max_retries = 8
-    config%max_committed_substeps = 32
+    config%transaction%max_retries = 0
+    config%max_committed_substeps = 4
     config%progress_tolerance = 0.0_real64
     call initialize_liquid_water_sensible_enthalpy_parameters(rho, cp, reference_temperature_c, energy_parameters, &
          enthalpy_status)
@@ -308,13 +315,13 @@ contains
       parameters%cofgen(12,k)=0.99_real64*parameters%cofgen(3,k); parameters%cofgen(22,k)=-1.0e6_real64
       parameters%cofgen(23,k)=1.0e-12_real64
     end do
-    parameters%bottom_mode = 2
+    parameters%bottom_mode = 5
     parameters%swkimpl = 0; parameters%swkmean = 1; parameters%swsophy = 0
     parameters%root_extraction_active = .false.; parameters%macropore_active = .false.
     parameters%snow_active = .false.; parameters%hysteresis_active = .false.
     parameters%tabulated_hydraulics_active = .false.; parameters%elasticity_active = .false.
-    parameters%frost_active = .false.; parameters%max_iterations = 16; parameters%max_backtracking = 8
-    parameters%min_step_duration = 1.0e-8_real64
+    parameters%frost_active = .false.; parameters%max_iterations = 8; parameters%max_backtracking = 4
+    parameters%min_step_duration = 1.0e-6_real64
     parameters%compartment_balance_tolerance = 1.0e-12_real64
     parameters%total_balance_tolerance = 1.0e-12_real64
     parameters%head_abs_tolerance = 1.0e-12_real64; parameters%head_rel_tolerance = 1.0e-12_real64
@@ -345,10 +352,7 @@ contains
 
     call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
     call bind_b110_default_mvg_provider(provider, hp, provider_step)
-    heads(1) = initial_head
-    do i = 2, numnod
-      heads(i) = heads(i-1) + parameters%node_distance(i)
-    end do
+    heads = initial_head
     call provider%evaluate(heads, water, conductivity, capacity, dkdh)
     state%active_nodes = numnod
     allocate(state%pressure_head(numnod), state%water_content(numnod), state%soil_temperature)
@@ -371,15 +375,15 @@ contains
     real(real64), intent(in) :: q
     forcing%top_flux = q
     forcing%top_head = initial_head
-    forcing%bottom_flux = q
-    forcing%bottom_head = -321.0_real64
+    forcing%bottom_flux = 12345.678_real64
+    forcing%bottom_head = initial_head + 0.01_real64
     allocate(forcing%drainage_flux_by_level(1,numnod), forcing%subsurface_irrigation_source(numnod), &
          forcing%root_extraction_sink(numnod), forcing%soil_temperature)
     forcing%drainage_flux_by_level = 0.0_real64
     forcing%subsurface_irrigation_source = 0.0_real64
     forcing%root_extraction_sink = 0.0_real64
     forcing%soil_temperature%prescribed_surface_temperature_c = 15.0_real64
-    if (parameters%active_nodes /= numnod) error stop 'EB-I26 forcing parameter mismatch'
+    if (parameters%active_nodes /= numnod) error stop 'EB-I27 forcing parameter mismatch'
   end subroutine initialize_forcing
 
   logical function close_value(a, b, rel_tol) result(close)
@@ -393,8 +397,8 @@ contains
     logical, intent(in) :: condition
     character(len=*), intent(in) :: label
     if (.not. condition) then
-      write(*,'(A,1X,A)') 'EB_I26_TEST_FAIL', trim(label)
+      write(*,'(A,1X,A)') 'EB_I27_TEST_FAIL', trim(label)
       error stop 1
     end if
   end subroutine require
-end program test_eb_i26_outer_substep_sensible_boundary_aggregation
+end program test_eb_i27_outer_substep_sensible_boundary_aggregation
