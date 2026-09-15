@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fpe11.bounded_execution.qualify.v1",
+  "work_unit": "F-PE11",
+  "phase": "QUALIFY",
+  "canonical_tested": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+  "qualification_branch": "qualification/f-pe11-current-canonical-performance-admission",
+  "tested_head": "fd35b41e85104ab49547ce20dd2fae92d7af975d",
+  "tested_tree": "a65ab98fc3c99684e2483f96c1c91115c1ec7c60",
+  "workflow": {
+    "run": 35036816274,
+    "job": 104607657727,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "production_reference_delta_from_canonical": 0,
+  "source_guards": {
+    "qualified_binding_blob": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "current_materializer_blob": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "current_kernel_blob": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
+    "restricted_surface_blob": "a213af4deec2fe854d79120899827852a57237d1",
+    "capacity_contract_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+    "qualified_binding_exact_identity": true,
+    "current_materializer_move_ownership_pattern": true,
+    "historical_preimage_extra_allocation_copy_pattern": true
+  },
+  "functional_verification": {
+    "O0_O2_identity": "PASS",
+    "current_kernel_committed_state_immutability": "PASS",
+    "A_B_A_determinism": "PASS",
+    "dry_ponded_scientific_identity": "PASS",
+    "no_persistent_state_or_mass_side_effect": "PASS",
+    "current_functional_preservation": "PASS"
+  },
+  "local_performance_measurement": {
+    "method": "paired same-runner balanced-order O2; current kernel and current surface materializer; qualification-only counterfactual reproduces the pre-F-PE11 extra allocate/copy pattern",
+    "profiles": [
+      {"nodes":20,"baseline_median_s":0.030838130,"candidate_median_s":0.027027351,"candidate_delta_pct":12.357,"paired_faster":"4/4","checksum_identity":"PASS"},
+      {"nodes":200,"baseline_median_s":0.041537989,"candidate_median_s":0.036249112,"candidate_delta_pct":12.733,"paired_faster":"4/4","checksum_identity":"PASS"},
+      {"nodes":1000,"baseline_median_s":0.132542622,"candidate_median_s":0.127080568,"candidate_delta_pct":4.121,"paired_faster":"3/4","checksum_identity":"PASS"}
+    ],
+    "paired_faster_total": "11/12",
+    "candidate_median_faster_all_profiles": true,
+    "checksum_identity_all_profiles": true,
+    "interpretation": "LOCAL_NONREGRESSION_CHARACTERIZATION_ONLY",
+    "whole_SWAP_speedup_claim": false,
+    "MultiSWAP_speedup_claim": false,
+    "portable_speed_guarantee": false
+  },
+  "evidence_reuse": {
+    "owner_qualification": "reused where production/dependencies unchanged",
+    "F_CI42_and_F_CI42P": "reused as existing canonical admission and governance closure",
+    "F_CI59P": "reused for post-F-CI59 surface materialization/publication preservation",
+    "fresh_replay": "limited to changed current-kernel dependency seam plus local paired timing"
+  },
+  "verdict": "QUALIFIED_CURRENT_CANONICAL_FPE11_REMAINS_SCIENTIFICALLY_ARCHITECTURALLY_VALID_AND_LOCALLY_NONREGRESSIVE",
+  "next_permitted_action": "ADMIT as explicit no-op because equivalent production semantics are already canonically admitted by F-CI42/F-CI42P; then CLOSE after live-canonical recheck",
+  "exclusions": [
+    "no EB",
+    "no ROSS or RossFast",
+    "no new scientific equations",
+    "no transaction or mass-policy changes",
+    "no new persistent per-column state",
+    "no direct alias into private committed state",
+    "no whole-model speedup claim",
+    "no MultiSWAP speedup claim",
+    "no automatic rebatching, class switching or GPU work",
+    "no production change merely to make a benchmark pass",
+    "no optimization extension"
+  ]
+}
