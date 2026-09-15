@@ -2,6 +2,7 @@ module mod_canonical_contracts
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t, transaction_model_t, transaction_policy_t, &
        transaction_interface_sensitivity_t, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE
+  use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t
   implicit none
   private
 
@@ -22,6 +23,16 @@ module mod_canonical_contracts
     real(real64) :: t1 = 0.0_real64
   end type canonical_interval_t
 
+  ! Optional F-KT-owned request carrier for a model-provided accepted-trajectory
+  ! directional result.  Absence is the default and must leave existing
+  ! physical, mass and temporal acceptance semantics unchanged.  The integer
+  ! control coordinate is interpreted only by a model that explicitly admits
+  ! this capability; the canonical runtime attaches no solver semantics to it.
+  type, public :: canonical_accepted_trajectory_direction_request_t
+    logical :: requested = .false.
+    integer :: control_coordinate = 0
+  end type canonical_accepted_trajectory_direction_request_t
+
   type, public :: canonical_numerical_config_t
     type(transaction_policy_t) :: transaction
     integer :: max_committed_substeps = 10000
@@ -34,6 +45,7 @@ module mod_canonical_contracts
     ! default; zero is never an implicit budget.
     logical :: model_temporal_indicator_budget_available = .false.
     real(real64) :: model_temporal_indicator_budget = 0.0_real64
+    type(canonical_accepted_trajectory_direction_request_t) :: accepted_trajectory_direction
   end type canonical_numerical_config_t
 
   type, public :: canonical_mass_accounting_t
@@ -85,7 +97,10 @@ module mod_canonical_contracts
     real(real64) :: completed_t = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
     type(canonical_run_diagnostics_t) :: diagnostics
+    ! Legacy/local-terminal transaction sensitivity remains unchanged and is
+    ! intentionally distinct from the accepted-trajectory whole-window result.
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
+    type(accepted_trajectory_direction_result_t) :: accepted_trajectory_direction
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -94,6 +109,10 @@ module mod_canonical_contracts
   type, abstract, extends(transaction_model_t), public :: canonical_physical_model_t
   contains
     procedure(prepare_interval_iface), deferred :: prepare_interval
+    ! Default is fail-closed/not-requested. Models that own a qualified
+    ! trajectory composer may override this publication hook. The canonical
+    ! runtime invokes it only after the complete requested interval is accepted.
+    procedure :: accepted_trajectory_direction_snapshot => canonical_default_trajectory_direction_snapshot
   end type canonical_physical_model_t
 
   abstract interface
@@ -106,5 +125,20 @@ module mod_canonical_contracts
       type(canonical_numerical_config_t), intent(in) :: config
     end subroutine prepare_interval_iface
   end interface
+
+contains
+
+  subroutine canonical_default_trajectory_direction_snapshot(self, interval, result)
+    class(canonical_physical_model_t), intent(inout) :: self
+    type(canonical_interval_t), intent(in) :: interval
+    type(accepted_trajectory_direction_result_t), intent(out) :: result
+
+    result = accepted_trajectory_direction_result_t()
+    ! Keep dummy arguments semantically live without inventing default model
+    ! behavior. Unsupported models simply publish no trajectory sensitivity.
+    if (interval%t1 < interval%t0 .and. same_type_as(self, self)) then
+      result%route = 'invalid-canonical-interval'
+    end if
+  end subroutine canonical_default_trajectory_direction_snapshot
 
 end module mod_canonical_contracts
