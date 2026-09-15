@@ -1,0 +1,145 @@
+name: F-CI79P EB-I25 current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci79p-eb-i25-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify true two-parent promotion and exact tree identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREIMAGE=1f33328e2ddc0d28450d35647c1c97f293b1e622
+          ADMISSION=cc6bd28c8630b589adcd5742d8242ba8b1102a4b
+          POSTIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$POSTIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^1")" = "$PREIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^2")" = "$ADMISSION"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "$(git rev-parse "$ADMISSION^{tree}")"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = f70a3aa43fe5e82dd2098fa0960eab6a7209c8f0
+          echo 'FCI79P_TRUE_TWO_PARENT_PROMOTION=PASS'
+          echo 'FCI79P_PROMOTED_TREE_IDENTITY=PASS'
+
+      - name: Verify admitted EB-I25 postimage and immutable authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a
+          OWNER=08be50f248f3e169a3f1aeebd263cfe95b0dccd0
+          CRITICAL=(
+            src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+            src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+            src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/process/mod_external_liquid_water_temperature.f90
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+            src/process/mod_restricted_soil_temperature.f90
+            src/process/mod_soil_temperature_contract.f90
+            tests/eb/EB-I25_CHECKPOINT.json
+            tests/eb/EB-I25_CONTRACT.md
+            tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
+            tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90
+            tests/eb/run_f_vq93_eb_i25_independent_gate.sh
+            qualification/F-VQ93_STATUS.json
+            integration/f-ci/F-CI79_STATUS.json
+          )
+          for path in "${CRITICAL[@]}"; do test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$POSTIMAGE:$path")"; done
+          for path in \
+            src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            src/runtime/mod_fmr_top_sensible_boundary_carrier.f90 \
+            tests/eb/EB-I25_CHECKPOINT.json \
+            tests/eb/EB-I25_CONTRACT.md \
+            tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh \
+            tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90; do
+            test "$(git rev-parse "$POSTIMAGE:$path")" = "$(git rev-parse "$OWNER:$path")"
+          done
+          test "$(git rev-parse HEAD:src)" = "$(git rev-parse "$POSTIMAGE:src")"
+          test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$POSTIMAGE:reference")"
+          echo 'FCI79P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI79P_REFERENCE_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI79P_IMMUTABLE_AUTHORITIES=PASS'
+
+      - name: Require governance-only reconciliation delta and hard nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a
+          git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci79p-eb-i25-postimage-reconciliation.yml
+          .github/workflows/fci72-eb-i23-moving-preservation.yml
+          .github/workflows/fci74-eb-i24-moving-preservation.yml
+          .github/workflows/fci79-eb-i25-moving-preservation.yml
+          tests/eb/run_fci79p_legacy_eb_successor_composition.sh
+          EOF
+          if test -f integration/f-ci/F-CI79P_STATUS.json; then echo 'integration/f-ci/F-CI79P_STATUS.json' >> allowed.txt; fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          git diff --check "$POSTIMAGE" HEAD
+          python3 -m json.tool qualification/F-VQ93_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI79_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I25_INDEPENDENT"' qualification/F-VQ93_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI79_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI79_STATUS.json
+          grep -Fq '"accepted_external_full_half_top_liquid_outflow": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"multiple_outer_committed_runtime_substeps": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"snow_or_melt_thermal_provenance": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"whole_column_sensible_residual_publication": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79_STATUS.json
+          if test -f integration/f-ci/F-CI79P_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI79P_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI79P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"moving_preservation_installed": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"legacy_eb_i23_successor_composed": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"legacy_eb_i24_successor_composed": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79P_STATUS.json
+          fi
+          echo 'FCI79P_GOVERNANCE_ONLY_DELTA=PASS'
+          echo 'FCI79P_HARD_NONCLAIMS_PRESERVED=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Qualify I23 and I24 runtime semantics on the admitted I25 backend successor
+        run: bash tests/eb/run_fci79p_legacy_eb_successor_composition.sh
+
+      - name: Replay exact independent EB-I25 qualification on admitted dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          INDEPENDENT=8c76942f73bf1278f5b02bc50435439c1099505f
+          WT="${RUNNER_TEMP}/swap5-fci79p-fvq93"
+          cleanup() { git worktree remove --force "$WT" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          git worktree add --detach "$WT" "$INDEPENDENT" >/dev/null
+          (cd "$WT" && bash tests/eb/run_f_vq93_eb_i25_independent_gate.sh) | tee fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_INDEPENDENT_QUALIFICATION=PASS' fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_EXACT_OWNER_RUNTIME_REPLAY=PASS' fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_INDEPENDENT_CARRIER_ROLLBACK_ORACLE=PASS' fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_CARRIER_ORACLE_O0_O2_IDENTITY=PASS' fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_SAMPLE_COUNT_BROADENING_MUTANT_REJECTED=PASS' fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_OUTFLOW_BROADENING_MUTANT_REJECTED=PASS' fci79p-fvq93.txt
+          grep -Fq 'F_VQ93_ROLLBACK_REMOVAL_MUTANT_REJECTED=PASS' fci79p-fvq93.txt
+          echo 'FCI79P_RUNTIME_REPLAY=PASS'
+          echo 'FCI79P_O0_O2_IDENTITY=PASS'
+          echo 'FCI79P_FULL_ENERGY_BALANCE_NONCLAIM=PASS'

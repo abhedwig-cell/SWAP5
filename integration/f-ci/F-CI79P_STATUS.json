@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.fci79p.status.v1",
+  "work_unit": "F-CI79P",
+  "title": "EB-I25 current-canonical postimage reconciliation and successor-aware moving preservation",
+  "phase": "POSTIMAGE_RECONCILIATION_CLOSEOUT",
+  "decision": "QUALIFIED_F_CI79P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "branch": "qualification/f-ci79p-eb-i25-current-canonical-postimage-reconciliation",
+  "promotion": {
+    "preimage": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+    "promoted_F_CI79_head": "cc6bd28c8630b589adcd5742d8242ba8b1102a4b",
+    "production_admission": "b7c2e510c68e5799a138e881793d27037c482b8a",
+    "promoted_tree": "f70a3aa43fe5e82dd2098fa0960eab6a7209c8f0",
+    "true_two_parent_promotion": true,
+    "promoted_tree_identity": true
+  },
+  "authorities": {
+    "EB_I25_owner_checkpoint_head": "08be50f248f3e169a3f1aeebd263cfe95b0dccd0",
+    "F_VQ93_independent_head": "8c76942f73bf1278f5b02bc50435439c1099505f",
+    "F_CI79_final_head": "cc6bd28c8630b589adcd5742d8242ba8b1102a4b"
+  },
+  "initial_postimage_evidence": {
+    "tested_head": "755c0fd4817a9137d2569df380d437adb9e44e8c",
+    "workflow_run": 34991812695,
+    "workflow_job": 104458087605,
+    "promotion_parentage": "PASS",
+    "production_postimage_identity": "PASS",
+    "reference_postimage_identity": "PASS",
+    "governance_only_delta": "PASS",
+    "hard_nonclaims_preserved": "PASS",
+    "legacy_EB_I23_runtime_on_I25_backend_O0_O2": "PASS",
+    "legacy_EB_I24_runtime_on_I25_backend_O0_O2": "PASS",
+    "legacy_EB_I23_I24_successor_composition": "PASS",
+    "F_VQ93_exact_independent_replay": "PASS",
+    "F_VQ93_adversarial_guards": "PASS"
+  },
+  "scope": {
+    "production_canonical_admitted": true,
+    "postimage_reconciled": true,
+    "moving_preservation_installed": true,
+    "legacy_eb_i23_successor_composed": true,
+    "legacy_eb_i24_successor_composed": true,
+    "src_changed_by_F_CI79P": false,
+    "reference_changed_by_F_CI79P": false,
+    "new_scientific_semantics": false,
+    "rollback_safe_top_boundary_carrier": true,
+    "accepted_external_full_half_top_conductive_aggregation": true,
+    "accepted_external_full_half_snow_inactive_top_liquid_inflow": true,
+    "one_canonical_commit_two_internal_half_samples": true,
+    "accepted_external_full_half_top_liquid_outflow": false,
+    "multiple_outer_committed_runtime_substeps": false,
+    "snow_or_melt_thermal_provenance": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance_complete": false
+  },
+  "successor_reconciliation": {
+    "reason": "EB-I25 legitimately extends the serialized reference backend with a transaction-owned rollback-safe top sensible-boundary carrier. Older EB-I23 and EB-I24 moving-preservation workflows pinned the pre-I25 backend blob byte-exact and therefore failed after the admitted successor even though their owned authorities were unchanged.",
+    "production_change_for_reconciliation": false,
+    "I23_owned_authorities_unchanged": true,
+    "I24_owned_authorities_unchanged": true,
+    "I23_original_runtime_oracle_replayed_on_I25_backend": true,
+    "I24_original_runtime_oracle_replayed_on_I25_backend": true,
+    "O0_O2_identity_preserved": true,
+    "preservation_workflows_made_successor_aware": true
+  },
+  "hard_nonclaims": [
+    "F-CI79P adds no new scientific semantics and changes no production or reference source.",
+    "Accepted external full/half top liquid outflow is not qualified.",
+    "Multiple outer committed runtime-substep aggregation is not qualified.",
+    "Snow or melt mixture thermal provenance is not qualified.",
+    "No whole-column sensible-energy residual is published.",
+    "No complete SWAP5 Energy Balance is claimed."
+  ],
+  "closeout_requirements": [
+    "This exact final F-CI79P status head must pass the F-CI79P workflow.",
+    "integration/f-ci-canonical must still descend from production admission b7c2e510c68e5799a138e881793d27037c482b8a before governance promotion.",
+    "The F-CI79P governance merge must not modify src or reference trees relative to the production admission.",
+    "The successor-aware F-CI72, F-CI74 and F-CI79 moving-preservation workflows must pass on the resulting canonical postimage."
+  ]
+}
