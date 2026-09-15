@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "WOFOST81_PURE_KERNEL_SUBSTRATE",
+  "phase": "QUALIFY",
+  "execution_date": "2026-09-15",
+  "source_commit": "d32ff68cf73105dd313465a6aecadaee96bbf5a5",
+  "testbank_commit": "fc99f2be6a91e080770e2f1db84ec33b394a44e8",
+  "byte_identity": {
+    "method": "local git hash-object compared to committed Git blob SHA",
+    "all_committed_sources_and_oracles_exact": true,
+    "sources": {
+      "src/crop/mod_wofost81_assimilation.f90": {
+        "git_blob": "be5865fbce5e128fbb9ecf62d10a59443878d821",
+        "sha256": "0bddcf05a967005125c579d6a7889e623c23aeb9cb8cfc31ba01e9a2f336af3b"
+      },
+      "src/crop/mod_wofost81_nitrogen.f90": {
+        "git_blob": "49d75092fd06920468eb8665a3e1138022d19751",
+        "sha256": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce"
+      },
+      "src/crop/mod_wofost81_n_stress.f90": {
+        "git_blob": "2c437012196db6a0886f6cd01101b5552013a952",
+        "sha256": "e0e2ecb2c787a935dd44989cca6bfa3efa0cd678f283546ee22127c5b466a972"
+      }
+    }
+  },
+  "tests": {
+    "assimilation": {
+      "result": "PASS",
+      "cases": 1206,
+      "max_abs": 0.0,
+      "max_rel": 0.0,
+      "optimization_parity": "O0_O2_EXACT",
+      "result_sha256": "6766a6602367c5e900bf92e0c6e0e49463858ffb955fa592fcb60775593f8e89"
+    },
+    "nitrogen_request_apply": {
+      "result": "PASS",
+      "cases": 1806,
+      "pcse_parity_cases": 1805,
+      "donor_safe_clipped_cases": 1,
+      "max_abs": 5.684e-14,
+      "max_rel": 5.684e-14,
+      "result_sha256": "ad887d7457f4a6d03a88510be3ec0caf2b03cb06fb44b93d9f3f66060e290dd2"
+    },
+    "nitrogen_edges": {
+      "result": "PASS",
+      "checks": [
+        "initialization",
+        "zero soil supply",
+        "full requested soil supply",
+        "same-step senescence/translocation clipping",
+        "N mass balance",
+        "rejected negative candidate restores committed state"
+      ],
+      "result_sha256": "0c8351ff3af7f271532e9c2e7d5dd1c10a72a554f053ea0a193d8426c7dc3fe3"
+    },
+    "nitrogen_stress": {
+      "result": "PASS",
+      "cases": 2003,
+      "max_abs": 0.0,
+      "max_rel": 0.0,
+      "result_sha256": "357d1cf3bd1e98c0f15e658bfb20cc3e15b20da3442f58607bbe2c15f38c3049"
+    }
+  },
+  "canonical_delta": {
+    "reconciled_head": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "live_head_at_qualification": "8a49b32339981037041466eda5e434ea53a97086",
+    "commits": 6,
+    "changed_files": [
+      ".github/workflows/f-ci81-rossfast-application-composition-admission.yml",
+      "integration/f-ci/F-CI81_STATUS.json",
+      "integration/f-ross/F-ROSS11_STATUS.json",
+      "src/runtime/mod_fmr_rossfast_application_runtime.f90",
+      "tests/integration/run_fci81_rossfast_application_composition_admission.sh",
+      "tests/integration/test_fci81_rossfast_application_composition.f90"
+    ],
+    "relevant_crop_or_wofost_delta": false
+  },
+  "scope": {
+    "production_behavior_reachable": false,
+    "reason": "new kernels are not yet referenced by the current SWAP5 WOFOST owner/composition path",
+    "legacy_wofost_path_changed": false,
+    "RD_or_TRA_changed": false
+  },
+  "verdict": "QUALIFIED_SOURCE_FAITHFUL_WOFOST81_PURE_KERNEL_SUBSTRATE",
+  "next_permitted_action": "Introduce versioned WOFOST81 parameter/state contracts and transaction-owned N state, then qualify those contracts before composing the new kernels into the accepted daily crop window."
+}
