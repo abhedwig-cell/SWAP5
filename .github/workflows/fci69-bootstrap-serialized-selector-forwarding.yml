@@ -39,16 +39,26 @@ jobs:
           git diff --check -- "$B"
 
       - name: Replay current-canonical absent-selector serialized FMR regression
+        id: fmr44r
         shell: bash
         run: |
-          set -euo pipefail
+          set +e
           PATCHER=tests/fmr/_apply_fmr44r_serialized_qbot_runtime_patch.py
           cp "$PATCHER" "$RUNNER_TEMP/fmr44r-patcher.py"
           printf '%s\n' "print('FCI69_CURRENT_CANONICAL_FMR44R_PATCH_STEP_SKIPPED=PASS')" > "$PATCHER"
-          trap 'cp "$RUNNER_TEMP/fmr44r-patcher.py" "$PATCHER"' EXIT
-          bash tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh
+          bash tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh > fci69-fmr44r.log 2>&1
+          rc=$?
           cp "$RUNNER_TEMP/fmr44r-patcher.py" "$PATCHER"
-          trap - EXIT
+          cat fci69-fmr44r.log
+          exit "$rc"
+
+      - name: Upload FMR44R diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci69-fmr44r-diagnostic-${{ github.run_id }}
+          path: fci69-fmr44r.log
+          if-no-files-found: error
 
       - name: Enforce bounded source delta
         shell: bash
