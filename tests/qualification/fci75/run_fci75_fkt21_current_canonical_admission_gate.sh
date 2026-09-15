@@ -26,10 +26,7 @@ echo "FCI75_CANONICAL_BASE_LOCK=PASS head=$LIVE_CANONICAL"
 allowed=(
   integration/f-ci/F-CI75_STATUS.json
   src/adapter/mod_b110_production_soil_water_task2.f90
-  src/adapter/mod_b1_10_recoverable_reference_model.f90
-  src/adapter/mod_b1_10_reference_model.f90
   src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90
-  src/legacy/b1_10_port/soilwater.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
@@ -51,12 +48,12 @@ for path in "${changed[@]}"; do
 done
 echo 'FCI75_SCOPE_LOCK=PASS'
 
-production=(
+# F-VQ92 is the immutable independent authority for the exact F-KT21 payload.
+# Six payload paths are materialized by F-CI75; mod_transaction_reference is
+# already canonical and is therefore dependency-locked rather than rewritten.
+materialized_payload=(
   src/adapter/mod_b110_production_soil_water_task2.f90
-  src/adapter/mod_b1_10_recoverable_reference_model.f90
-  src/adapter/mod_b1_10_reference_model.f90
   src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90
-  src/legacy/b1_10_port/soilwater.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
@@ -70,10 +67,13 @@ owner_tests=(
   tests/fkt/test_fkt21_transaction_binding.f90
   tests/fkt/test_fkt21_worker_acceptance_binding.f90
 )
-for path in "${production[@]}" "${owner_tests[@]}"; do
+for path in "${materialized_payload[@]}" "${owner_tests[@]}"; do
   [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$OWNER:$path")" ]] || fail "owner-qualified blob mismatch: $path"
 done
+[[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'canonical transaction-reference dependency drift'
+[[ "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90")" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'base transaction-reference dependency drift'
 echo 'FCI75_OWNER_POSTIMAGE_EXACT=PASS'
+echo 'FCI75_TRANSACTION_REFERENCE_INHERITED_EXACT=PASS'
 
 check_si37(){
   local ref="$1"
@@ -97,7 +97,12 @@ assert s['source_authority']['qualified_source_sha'] == owner
 assert s['qualification']['workflow_conclusion'] == 'success'
 assert s['qualification']['O0_O2_output_identity'] is True
 assert all(v == 'PASS' for v in s['independent_claim_checks'].values())
+expected = s['exact_F_KT21_payload']
+for path, blob in expected.items():
+    got = subprocess.check_output(['git','rev-parse',f'HEAD:{path}'], text=True).strip()
+    assert got == blob, (path, got, blob)
 print('FCI75_VQ92_IMMUTABLE_AUTHORITY=PASS')
+print('FCI75_VQ92_EXACT_PAYLOAD_REPLAY=PASS')
 PY
 [[ "$(git rev-parse "$VQ92:tests/qualification/fvq92/test_fvq92_fkt21_independent.f90")" == 560b6148c042413e6190f116aad761f1764ec57f ]] || fail 'F-VQ92 oracle blob drift'
 
