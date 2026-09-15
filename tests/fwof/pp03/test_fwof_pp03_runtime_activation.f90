@@ -38,7 +38,7 @@ program test_fwof_pp03_runtime_activation
   type(fwof34_parameters_t) :: physical_parameters
   type(fwof34_forcing_t) :: physical_forcing
   type(canonical_numerical_config_t) :: physical_config
-  type(fmr_wofost_accepted_window_t) :: accepted_window
+  type(fmr_wofost_accepted_window_t) :: accepted_window, failure_window
   type(fmr_wofost_trial_contribution_t) :: accepted_trial
   type(fmr_wofost_accepted_interval_certificate_t) :: accepted_certificate
   type(fmr_wofost_crop_event_token_t) :: event_token
@@ -212,6 +212,8 @@ program test_fwof_pp03_runtime_activation
   end select
   print '(a)', 'FWOF_PP03_OWNER_AND_RECEIPT_ONE_ATOMIC_REVISION=PASS'
 
+  ! Preserve an unretired copy for the independent failure-path assertion.
+  failure_window = accepted_window
   call reconcile_committed_wofost81_crop_event_receipt(accepted_window, crop_committed, retired, lifecycle_status)
   call require(retired .and. lifecycle_status == FMR_WOF81_LIFECYCLE_OK, 'lifecycle retirement')
   call require(accepted_window%delivery_committed(), 'delivery retired after matching receipt')
@@ -238,8 +240,7 @@ program test_fwof_pp03_runtime_activation
   nanv = ieee_value(0.0_real64, ieee_quiet_nan)
   bad_forcing = forcing
   bad_forcing%minimum_temperature = nanv
-  call prepare_fmr_wofost81_crop_event_forcing(accepted_window_from_token_source(event_token, accepted_window), &
-       bad_forcing, bad_crop_event_forcing, status)
+  call prepare_fmr_wofost81_crop_event_forcing(failure_window, bad_forcing, bad_crop_event_forcing, status)
   call require(status == FMR_WOF81_OK .and. bad_crop_event_forcing%ready(), 'bad forcing provenance still valid')
   call setup_crop_committed(crop_initial_state, bad_committed, 93004_int64, 0.0_real64)
   call bad_kernel%bind_model(bad_model)
@@ -276,18 +277,6 @@ program test_fwof_pp03_runtime_activation
   print '(a)', 'F_WOF_PP03_RUNTIME_ACTIVATION_TEST PASS'
 
 contains
-
-  function accepted_window_from_token_source(token, source_window) result(window)
-    type(fmr_wofost_crop_event_token_t), intent(in) :: token
-    type(fmr_wofost_accepted_window_t), intent(in) :: source_window
-    type(fmr_wofost_accepted_window_t) :: window
-    ! The bad-forcing path needs the same unretired accepted provenance. The
-    ! source window was retired by the successful lifecycle above, so rebuild
-    ! is intentionally not attempted here. This helper is replaced below by a
-    ! fresh accepted-window construction before the failure path is executed.
-    if (.not. token%ready()) error stop 'invalid PP03 token'
-    window = source_window
-  end function accepted_window_from_token_source
 
   subroutine configure_common(bundle)
     type(wofost_rate_parameter_bundle_t), intent(out) :: bundle
