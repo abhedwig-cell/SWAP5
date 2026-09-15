@@ -1,0 +1,171 @@
+name: F-ROSS05 D3R transactional selector composition
+
+on:
+  push:
+    branches:
+      - work/f-ross05-d3r-transactional-selector-composition
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_checkpoint_orchestrator.f90'
+      - 'src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90'
+      - 'tests/ross/test_ross05_d3r_transactional_selector_composition.f90'
+      - 'tests/ross/run_ross05_d3r_transactional_selector_composition.sh'
+      - 'integration/f-ci/F-CI68_STATUS.json'
+      - 'integration/f-ross/F-ROSS05_STATUS.json'
+      - '.github/workflows/ross05-d3r-transactional-selector-composition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross05-d3r-transactional-selector-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  composition-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock parent and immutable qualified authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=8466ae15b37dc2654e038c646e9b92c2907f77ef
+          LIVE="$(git ls-remote origin refs/heads/work/f-ross04-d3r-table-provider | awk '{print $1}')"
+          test "$LIVE" = "$BASE"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = d5a71a526efaebd82054580c3186f8e3545db331
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" = 3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_interval_runtime.f90)" = b12327aa6e77bdbf4586fe0bed82cf0e7704f237
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_execution_policy.f90)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = 9f29ba7a08844692ba2628c7869d23713409f92b
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_kernel.f90)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
+          test "$(git rev-parse HEAD:assets/rossfast/d3r/manifest.json)" = 1266d15149af5feb8d7fb0a5ef90d41b5881fd55
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS04_STATUS.json)" = e4ae23777d3f329822bf74051f4b139c04a59877
+          test "$(git rev-parse HEAD:integration/f-ci/F-CI68_STATUS.json)" = 4661b9c53101c04718a18709a4652b36e45c7f18
+          test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = d3a53385e3707f05e5396bbd6f218633b9803f65
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_checkpoint_orchestrator.f90)" = 0dceaa2d108d5c7e1263e0f424a056a8df585908
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90)" = dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e
+
+      - name: Enforce bounded F-ROSS05 surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=8466ae15b37dc2654e038c646e9b92c2907f77ef
+          allowed=(
+            integration/f-ci/F-CI68_STATUS.json
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90
+            tests/ross/test_ross05_d3r_transactional_selector_composition.f90
+            tests/ross/run_ross05_d3r_transactional_selector_composition.sh
+            .github/workflows/ross05-d3r-transactional-selector-composition.yml
+            integration/f-ross/F-ROSS05_STATUS.json
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "ROSS05_UNEXPECTED_PATH $path" >&2; exit 105; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/runtime/mod_rossfast_d3r_execution_policy.f90 \
+            src/runtime/mod_rossfast_d3r_model_binding.f90 \
+            src/solver/mod_rossfast_d3r_table_kernel.f90 \
+            src/solver/mod_rossfast_d3r_table_provider.f90 \
+            assets/rossfast/d3r)"
+          if grep -Eqi 'rossfast' src/kernel/mod_kernel_transactions.f90 \
+               src/runtime/mod_fmr_checkpoint_orchestrator.f90; then
+            echo 'ROSS05_GENERIC_LAYER_CONTAINS_ROSSFAST_POLICY' >&2
+            exit 105
+          fi
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-ROSS05 real-kernel composition gate
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/ross/run_ross05_d3r_transactional_selector_composition.sh \
+            2>&1 | tee F-ROSS05_GATE.log
+
+      - name: Persist F-ROSS05 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              'work_unit': 'F-ROSS05',
+              'status': 'PASS',
+              'tested_head': sh('git', 'rev-parse', 'HEAD'),
+              'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
+              'parent_f_ross04_head': '8466ae15b37dc2654e038c646e9b92c2907f77ef',
+              'inherited_qualified_blobs': {
+                  'fci68_kernel_transport': 'd3a53385e3707f05e5396bbd6f218633b9803f65',
+                  'fci68_checkpoint_orchestrator': '0dceaa2d108d5c7e1263e0f424a056a8df585908',
+                  'rossfast_binding': '9f29ba7a08844692ba2628c7869d23713409f92b',
+                  'rossfast_table_kernel': '034136c193b287bcf9a953a9b89df2a8fb0c97cc',
+                  'rossfast_table_provider': 'afc05eb3001d91f66ca542978c3c6795283a7ac0',
+                  'asset_manifest': '1266d15149af5feb8d7fb0a5ef90d41b5881fd55',
+              },
+              'candidate_blobs': {
+                  'adapter': sh('git', 'hash-object', 'src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90'),
+                  'test': sh('git', 'hash-object', 'tests/ross/test_ross05_d3r_transactional_selector_composition.f90'),
+                  'runner': sh('git', 'hash-object', 'tests/ross/run_ross05_d3r_transactional_selector_composition.sh'),
+                  'workflow': sh('git', 'hash-object', '.github/workflows/ross05-d3r-transactional-selector-composition.yml'),
+              },
+              'qualified': {
+                  'all_six_exact_material_assets_execute_through_real_table_kernel': True,
+                  'production_d3r_selector_reaches_real_kernel_through_fci68_transport': True,
+                  'qualification_only_two_window_selector_chains_real_kernel_transactions': True,
+                  'transaction_retries_remain_private_to_candidate_execution': True,
+                  'committed_state_unchanged_until_explicit_fkt_commit': True,
+                  'exactly_one_external_revision_increment_after_publish': True,
+                  'wrong_table_kernel_substep_count_fails_before_transaction': True,
+                  'off_grid_outer_request_fails_before_transaction': True,
+                  'o0_o2_output_identity': True,
+              },
+              'nonclaims': [
+                  'NO_MOD_SOILWATER_OR_SERIALIZED_FMR_BACKEND_ROUTE',
+                  'NO_NEW_ROSSFAST_PHYSICS_OR_TABLE_SEMANTICS',
+                  'NO_CLAIM_THAT_PRODUCTION_POLICY_FORCES_TWO_HALF_WINDOWS',
+                  'NO_DYNAMIC_TOP_PRESCRIBED_HEAD_BOTTOM_OR_GROUNDWATER_ADMISSION',
+                  'NO_ARBITRARY_GRID_PROFILE_FORCING_OR_DURATION_GENERALIZATION',
+                  'NO_MULTISWAP_PERFORMANCE_OR_FULLRICHARDS_GENERAL_EQUIVALENCE',
+                  'NO_OVERALL_ROSSFAST_PRODUCTION_ADMISSION',
+              ],
+          }
+          open('F-ROSS05_EVIDENCE.json', 'w').write(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n'
+          )
+          PY
+
+      - name: Upload F-ROSS05 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross05-gate-diagnostics-${{ github.run_id }}
+          path: F-ROSS05_GATE.log
+          if-no-files-found: warn
+
+      - name: Upload F-ROSS05 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross05-transactional-selector-composition-${{ github.run_id }}
+          path: F-ROSS05_EVIDENCE.json
