@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ04",
+  "fixture_id": "B1.10-HUPSEL-MIN-DT-TERMINAL-FAILURE",
+  "oracle": "B1.10",
+  "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+  "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+  "source": {
+    "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "canonical_b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "exact_source_tree_available_in_canonical_git": false,
+    "verified_external_source_tree_supplied": false
+  },
+  "ttutil": {
+    "available_in_canonical_git": false,
+    "verified_external_root_supplied": false,
+    "provenance_manifest_sha256": null
+  },
+  "case": {
+    "name": "Hupsel 2002-2004",
+    "available_in_canonical_git": false,
+    "verified_external_case_supplied": false,
+    "case_manifest_sha256": null,
+    "physical_case_modified_to_force_failure": false
+  },
+  "execution": {
+    "real_b1_10_physics_executed_for_terminal_failure": false,
+    "terminal_minimum_dt_marker_observed": false,
+    "returned_trial_status": null,
+    "failed_trial_state_restored": false,
+    "trial_mass_valid": null,
+    "rejected_trial_committed": null,
+    "repeat_count": 0,
+    "execution_evidence_path": null,
+    "execution_evidence_sha256": null
+  },
+  "policy_integrity": {
+    "production_source_modified_for_fixture": false,
+    "solver_tolerances_modified_for_fixture": false,
+    "retry_policy_modified_for_fixture": false,
+    "fatal_configuration_reclassified_as_retryable": false
+  },
+  "qualification_requested": false,
+  "real_terminal_failure_physics_qualified": false,
+  "status": "BLOCKED_MISSING_EXTERNAL_EXECUTION_INPUTS",
+  "blockers": [
+    "Exact executable B1.10 source tree is not present in canonical Git or supplied as verified external input.",
+    "TTUTIL source root with immutable provenance is not present in canonical Git or supplied as verified external input.",
+    "Hupsel 2002-2004 case files with a complete immutable manifest are not present in canonical Git or supplied as verified external input.",
+    "No real F-CI13 minimum-dt terminal-failure execution record exists."
+  ]
+}

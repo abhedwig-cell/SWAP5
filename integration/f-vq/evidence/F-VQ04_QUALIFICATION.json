@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ04",
+  "decision": "QUALIFIED_REAL_FAILURE_FIXTURE_ADMISSION_ONLY",
+  "qualification_scope": "REAL_FAILURE_FIXTURE_ADMISSION_AND_READINESS_ONLY",
+  "tested_postimage": "09299401ccde56e12eb956fd4898110e4c17c197",
+  "oracle": "B1.10",
+  "production_source_changed_since_overlay": false,
+  "real_terminal_failure_physics_qualified": false,
+  "real_failure_fixture_admission": "BLOCKED_FAIL_CLOSED",
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "basis": {
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_canonical_workflow_run": 34104845258,
+    "fci13_canonical_job": 101687946143,
+    "fvq03_final_head": "0956a2f4b4a3a9b2318a1254b2e972f7138c5182"
+  },
+  "canonical_overlay": {
+    "commit": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "work_unit": "F-CI14",
+    "consumed_as_fvq04_qualification_basis": false,
+    "reason": "Carried only to prevent rollback of the moving canonical production line."
+  },
+  "qualification_run": {
+    "workflow_run": 34108517448,
+    "job_id": 101699040150,
+    "job_name": "F-VQ04 real B1.10 terminal-failure fixture readiness",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "executed_checks": {
+    "fvq04_gate": "PASS",
+    "fvq04_promotion_and_scope_guard_tests": {"passed": 6, "failed": 0},
+    "corrected_b1_10_reference_job": "PASS",
+    "fci13_gate_rerun": "FCI13_GATE_PASS",
+    "imported_semantic_validator_and_fault_injection_tests": {"passed": 32, "failed": 0},
+    "tx_time_fixture_cases": {"passed": 11, "failed": 0},
+    "stored_tx_time_evidence_consistent": true,
+    "overlay_base_is_ancestor": true,
+    "no_src_changes_since_overlay": true,
+    "qualification_paths_only_since_overlay": true
+  },
+  "qualified_assets": [
+    "machine-readable real terminal-failure fixture requirements",
+    "fail-closed real-failure candidate record",
+    "promotion guard rejecting metadata-only qualification",
+    "guard against substituting a deterministic testdouble for real hydrological execution",
+    "guard against changing solver tolerances, retry policy or physical case merely to induce failure",
+    "evidence path and SHA-256 requirement for any future real-physics promotion"
+  ],
+  "explicit_non_claims": [
+    "No real B1.10 minimum-dt terminal Richards failure was executed in F-VQ04.",
+    "The F-CI13 deterministic failure testdouble is not a real hydrological failure fixture.",
+    "No external B1.10/TTUTIL/Hupsel package was substituted or fabricated.",
+    "No production temporal-error tolerance is qualified by F-VQ04.",
+    "F-CI14 temporal-contract materialization is carried but not consumed as a numerical qualification basis.",
+    "No execute_reference_interval or end-to-end canonical B1.10 reference route is qualified.",
+    "Snow/macropore completeness and parallel legacy-backend execution remain unqualified."
+  ],
+  "remaining_blockers": [
+    "verified exact executable B1.10 source tree",
+    "TTUTIL source root with immutable provenance",
+    "immutable Hupsel 2002-2004 case manifest and files",
+    "repeatable real F-CI13 minimum-dt terminal-failure execution record",
+    "qualified numerical temporal profile/tolerances",
+    "real canonical execute_reference_interval and production result route",
+    "complete snow/macropore storage accounting",
+    "reentrant parallel legacy-backend qualification"
+  ]
+}
