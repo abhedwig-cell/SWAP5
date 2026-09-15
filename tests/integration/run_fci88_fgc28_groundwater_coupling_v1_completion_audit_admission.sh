@@ -3,8 +3,10 @@ set -euo pipefail
 
 BASE=dffc021507460ab1a613dfd2e916def7f3db1ea7
 FVQ98_BRANCH=qualification/f-vq98-fgc28-groundwater-coupling-v1-completion-audit
-FVQ98_AUTHORITY=f4b3fa43ff453df9b15191fef6f0657b0b8e4e37
+FVQ98_AUTHORITY=22c2c107256de4351541a7dcdf91635d67681ec3
+FVQ98_GREEN_STATUS=f4b3fa43ff453df9b15191fef6f0657b0b8e4e37
 FVQ98_TESTED=bfd2a988e852afcf63da24a6f501924ccd83919c
+FVQ98_CHECKPOINT_BLOB=43e29af4c8eb8cd5c1dbaab3bd978d213a4ef7a0
 OWNER_BRANCH=work/f-gc28-groundwater-coupling-v1-completion-audit
 OWNER_RECONCILE=fc5f9cc6bb4cc98f55dbe4ff0160dacdf1d4ee13
 
@@ -33,9 +35,9 @@ echo "FCI88_LIVE_CANONICAL_LOCK=PASS"
 echo "FCI88_FVQ98_AUTHORITY_LOCK=PASS"
 echo "FCI88_OWNER_RECONCILE_LOCK=PASS"
 
-python3 - "$BASE" "$FVQ98_AUTHORITY" "$FVQ98_TESTED" "$OWNER_RECONCILE" <<'PY'
+python3 - "$BASE" "$FVQ98_AUTHORITY" "$FVQ98_GREEN_STATUS" "$FVQ98_TESTED" "$FVQ98_CHECKPOINT_BLOB" "$OWNER_RECONCILE" <<'PY'
 import json, subprocess, sys
-base, authority, tested, owner = sys.argv[1:]
+base, authority, green_status, tested, checkpoint_blob, owner = sys.argv[1:]
 
 def obj(ref, path):
     return json.loads(subprocess.check_output(['git','show',f'{ref}:{path}'], text=True))
@@ -57,6 +59,12 @@ require(q['qualified_findings']['six_obligation_denominator_exact'] == 'PASS', '
 require(q['qualified_findings']['all_G05_production_blobs_locked'] == 'PASS', 'FCI88_G05_BLOB_LOCKS')
 require(q['qualified_findings']['F_GC27_F_VQ97_F_CI87_end_to_end_close'] == 'PASS', 'FCI88_END_TO_END_CLOSE')
 require(q['qualified_findings']['production_mutation'] is False and q['production_mutations'] == [] and q['reference_mutations'] == [], 'FCI88_FVQ98_NO_PRODUCTION_MUTATION')
+
+cp = obj(authority, 'qualification/F-VQ98_QUALIFY_CHECKPOINT.json')
+require(blob(authority, 'qualification/F-VQ98_QUALIFY_CHECKPOINT.json') == checkpoint_blob, 'FCI88_FVQ98_CHECKPOINT_BLOB')
+require(cp['state'] == 'INDEPENDENTLY_QUALIFIED' and cp['qualification_authority']['green_status_head'] == green_status, 'FCI88_FVQ98_CHECKPOINT_VERDICT')
+require(cp['qualification_authority']['workflow_run'] == 35034372726 and cp['qualification_authority']['workflow_job'] == 104599969590 and cp['qualification_authority']['conclusion'] == 'success', 'FCI88_FVQ98_GREEN_STATUS_RUN')
+require(cp['production_mutations'] == [] and cp['reference_mutations'] == [], 'FCI88_FVQ98_CHECKPOINT_NO_MUTATION')
 
 rec = obj(owner, 'integration/f-gc/F-GC28_RECONCILE_CHECKPOINT.json')
 require(rec['current_canonical']['head'] == base, 'FCI88_OWNER_CANONICAL_PIN')
