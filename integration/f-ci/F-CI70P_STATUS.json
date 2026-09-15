@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fci70p.status.v1",
+  "work_unit": "F-CI70P",
+  "title": "EB-I22 whole-column sensible-energy current-canonical postimage reconciliation",
+  "decision": "QUALIFIED_F_CI70P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "branch": "qualification/f-ci70p-current-canonical-postimage-reconciliation",
+  "canonical_preimage": "366a4d9b4afddb9e1f878a6d371fdff836babaac",
+  "f_ci70_final_green_head": "ed7d4a0f3a02a5cf40af8f45dedcfa2ace435062",
+  "canonical_promotion_merge": "9344470f3d0a754f3c53028d0b9fb4cc07b34466",
+  "canonical_postimage_tree": "a9ba514a62295b6ef70fa429f02ed10df181da19",
+  "reconciliation_green_head_before_status": "5224b6bcab623c81abb730fc7f485d56a50c4fe3",
+  "reconciliation_green_tree_before_status": "3e243f038dd386eb9b2e8ebbdc6b2424a617b60c",
+  "workflow": {
+    "run": 34942193002,
+    "job": 104293205705,
+    "runner": "ubuntu-24.04",
+    "result": "PASS"
+  },
+  "evidence": {
+    "true_two_parent_merge": "PASS",
+    "promoted_tree_identity": "PASS",
+    "production_postimage_identity": "PASS",
+    "reference_postimage_identity": "PASS",
+    "governance_only_reconciliation": "PASS",
+    "postimage_owner_replay": "PASS",
+    "postimage_independent_replay": "PASS",
+    "O0_O2_semantic_identity": "PASS",
+    "moving_preservation_installed": "PASS",
+    "full_energy_balance_nonclaim": "PASS"
+  },
+  "admitted_production_authorities": {
+    "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+  },
+  "inherited_dependency_authorities": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "production_reference_delta_in_reconciliation": false,
+  "runtime_materialization_complete": false,
+  "accepted_transaction_publication_complete": false,
+  "full_energy_balance_complete": false,
+  "hard_nonclaims": [
+    "F-CI70P reconciles the F-CI70 canonical postimage and installs dependency-scoped moving-current preservation only.",
+    "F-CI70P introduces no production or reference source change.",
+    "F-CI70P does not materialize all four sensible-energy boundary categories in the production runtime.",
+    "F-CI70P does not publish a whole-column sensible-energy residual from an accepted transaction.",
+    "F-CI70P does not claim net radiation, latent heat, vapor energy, freeze-thaw enthalpy, snow phase-change closure or a complete SWAP5 Energy Balance.",
+    "A runtime whole-column sensible-energy residual must remain fail-closed until coherent accepted-transaction boundary authorities are bound under one reference-temperature convention."
+  ],
+  "next_capability": "Bind admitted soil-temperature conductive boundary energy and accepted bottom sensible energy with a separately qualified top mass-carried sensible-energy source into EB-I22 using explicit J/cm2-to-J/m2 conversion, one reference-temperature convention and accepted-transaction provenance."
+}
