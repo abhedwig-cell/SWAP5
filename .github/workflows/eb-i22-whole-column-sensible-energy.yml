@@ -47,6 +47,8 @@ jobs:
             src/process/mod_whole_column_sensible_energy_accounting.f90
           grep -Fq 'WCSA_INCOMPLETE_BOUNDARY' \
             src/process/mod_whole_column_sensible_energy_accounting.f90
+          grep -Fq 'WCSA_REFERENCE_MISMATCH' \
+            src/process/mod_whole_column_sensible_energy_accounting.f90
 
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
@@ -89,4 +91,5 @@ jobs:
           echo 'EB_I22_STORAGE_REPLAY=PASS'
           echo 'EB_I22_BOUNDARY_ORIENTATION=PASS'
           echo 'EB_I22_INCOMPLETE_BOUNDARY_FAIL_CLOSED=PASS'
+          echo 'EB_I22_REFERENCE_GAUGE_COHERENCE=PASS'
           echo 'EB_I22_FULL_ENERGY_BALANCE_NONCLAIM=PASS'
