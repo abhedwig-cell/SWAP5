@@ -102,8 +102,15 @@ for opt in 0 2; do
 
   exe="$BUILD/test_o$opt"
   gfortran "${COMMON[@]}" -O"$opt" "${objects[@]}" -o "$exe"
+  set +e
   "$exe" > "$BUILD/out_o$opt.txt" 2>&1
+  rc=$?
+  set -e
   cat "$BUILD/out_o$opt.txt"
+  if (( rc != 0 )); then
+    echo "F_WOF_PP03_RUNTIME_ACTIVATION_O${opt}=FAIL RC=$rc" >&2
+    exit "$rc"
+  fi
 
   for marker in \
     'FWOF_PP03_ACCEPTED_EVENT_PROVENANCE=PASS' \
