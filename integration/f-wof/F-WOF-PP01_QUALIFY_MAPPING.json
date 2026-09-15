@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-WOF-PP01",
+  "phase": "QUALIFY",
+  "status": "BOUNDED_SCOPE_RESOLVED_FULL_ORACLE_NOT_YET_EXPRESSIBLE",
+  "reference": {"model":"WOFOST 8.1 via PCSE 6.0.13","cases":10,"immutable_zip_sha256":"99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145"},
+  "findings": {
+    "nitrogen_search": "No NamountLV, NamountRT, NamountSO, NamountST or NuptakeTotal symbol/equivalent found in current repository code search; current restricted crop owner contains carbon/phenology state only.",
+    "root_depth": "Current restricted crop owner and biomass owner do not carry root depth, so PCSE RD is not an observable of this owner contract.",
+    "transpiration": "Current daily WOFOST seam consumes accepted actual_root_uptake and potential_transpiration and derives relative transpiration; it does not own PCSE TRA.",
+    "potential_production_binding": "Test-only actual_root_uptake equal to potential_transpiration yields RELTR=1 through the existing qualified calculation; this adds no production semantic.",
+    "weather": "The daily forcing expects preprocessed DAYL, SINLD, COSLD, DIFPP, DSINBE, TAVD and running minimum temperature. Raw PCSE WeatherVariables require an independently proven preprocessing translation.",
+    "parameters": "Current rate bundle owns B1.10-style compact AMAXTB/KDIF/EFF and related tables/scalars, while the PCSE fixture contains WOFOST 8.1 forms including AMAX_REF/AMAX_LNB/AMAX_SLP, EFFTB, KDIFTB and CO2 response tables. Translation must be proven, not guessed.",
+    "directly_observable_carbon_outputs": ["DVS","LAI","TWLV","TWRT","TWST","TWSO","TAGP"],
+    "not_directly_observable_in_current_crop_owner": ["RD","TRA","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal"]
+  },
+  "scientific_decision": {
+    "full_14_variable_pcse_conformance": "BLOCKED_BY_NON_EQUIVALENT_OR_UNOWNED_OUTPUT_CONTRACTS",
+    "bounded_carbon_phenology_conformance": "ADMISSIBLE_IN_PRINCIPLE_AFTER_PARAMETER_AND_WEATHER_TRANSLATION_PROOF",
+    "silent_scope_reduction": false,
+    "production_change_authorized": false,
+    "recommended_gate_name": "F-WOF-PP01A carbon/phenology potential-production equivalence",
+    "future_extension": "PP01B may bind RD/TRA and nutrient outputs only after independent owner, unit and semantic qualification; missing outputs never count as pass."
+  },
+  "next_permitted_action": "Establish immutable test-only WOFOST-8.1 parameter and weather translation into existing B1.10 contracts, then execute all ten cases for DVS, LAI, TWLV, TWRT, TWST, TWSO and TAGP with reference Precision values. Do not add nutrient or root-depth production state under PP01.",
+  "exclusions": ["no EB","no ROSS/RossFast","no groundwater","no new crop physics","no production state expansion","no invented tolerance"]
+}
