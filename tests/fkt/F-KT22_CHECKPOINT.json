@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "capability": "F-KT22 canonical accepted-trajectory sensitivity exposure",
+  "phase": "QUALIFY",
+  "recorded_date": "2026-09-15",
+  "source": {
+    "branch": "work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure",
+    "qualified_head": "c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01",
+    "merge_base_with_current_canonical": "1f33328e2ddc0d28450d35647c1c97f293b1e622"
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "64937452be6b073a21b1b87acf21ce4edcbfda14",
+    "relation_to_source": "DIVERGED",
+    "canonical_commits_since_merge_base": 9,
+    "source_commits_since_merge_base": 50
+  },
+  "qualification": {
+    "workflow": "F-KT22 canonical accepted-trajectory exposure",
+    "run_id": 34992362560,
+    "run_conclusion": "success",
+    "jobs": {
+      "canonical-boundary": "PASS",
+      "fmr-production-compile": "PASS",
+      "fmr-production-runtime": "PASS"
+    },
+    "production_runtime_oracle": {
+      "backend": "serialized FMR reference backend",
+      "fixture": "stable prescribed bottom-flux equilibrium route inherited from FMR44R",
+      "request_default_off": "PASS",
+      "request_on_available": "PASS",
+      "accepted_route_steps": 2,
+      "accepted_route_tangent_backsolves": 2,
+      "discarded_full_trial_provenance_leak": "ABSENT",
+      "request_on_off_candidate_physical_identity": "PASS_BIT_IDENTICAL",
+      "request_on_off_mass_accounting_identity": "PASS_BIT_IDENTICAL",
+      "optimization_levels": [0, 2],
+      "optimization_output_identity": "PASS"
+    }
+  },
+  "changes_since_previous_checkpoint": [
+    "added explicit serialized FMR production compile gate",
+    "repaired compile-gate-only dependency omission for mod_fmr_bottom_thermal_carrier",
+    "added serialized FMR production runtime oracle for bottom-flux trajectory exposure",
+    "added O0/O2 runtime identity and accepted-only provenance checks",
+    "wired production runtime oracle into the F-KT22 workflow"
+  ],
+  "relevant_dependency_delta_after_qualification_basis": {
+    "changed": true,
+    "paths": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "cause": "current canonical advanced through EB-I25 admission/preservation while F-KT22 qualification was running",
+    "classification": "SAME_FILE_OWNERSHIP_OVERLAP_REQUIRES_CURRENT_CANONICAL_RECOMPOSITION",
+    "evidence_reuse_rule": "The successful source-head evidence remains immutable evidence for the qualified source image, but it is not sufficient for canonical admission until the FMR overlap is recomposed onto current canonical and the affected gates are rerun."
+  },
+  "verdict": "SOURCE_HEAD_QUALIFIED_CURRENT_CANONICAL_RECONCILIATION_REQUIRED",
+  "mutations": {
+    "production_semantics_changed_by_runtime-gate_followup": false,
+    "test_or_ci_only_commits": [
+      "2558b02d34386ce3030e2822da531fff0dd0704d",
+      "84090b6e96bd73e5c2cf4a54e0f6b3e58f8ac548",
+      "ac0017cffe37df60fc32b8857690b2afc00850d5",
+      "c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01"
+    ]
+  },
+  "next_permitted_action": "Create one current-canonical recomposition branch because the canonical advance touched the same FMR production file. Start from integration/f-ci-canonical@64937452be6b073a21b1b87acf21ce4edcbfda14, preserve EB-I25 canonical semantics, overlay the already qualified F-KT22 changes, resolve only the FMR same-file overlap, and rerun affected F-KT22 gates before any admission decision.",
+  "exclusions": [
+    "no GC23 work before F-KT22 current-canonical qualification is green",
+    "no EB semantic changes; current canonical EB-I25 behavior must be preserved",
+    "no ROSS or RossFast work",
+    "no production-semantic workaround to force qualification"
+  ]
+}
