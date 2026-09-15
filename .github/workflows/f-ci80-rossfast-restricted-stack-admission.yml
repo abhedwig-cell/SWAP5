@@ -44,21 +44,42 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
 
-      - name: Run bounded F-CI80 successor admission gate
+      - name: Run bounded F-CI80 admission or postimage gate
         shell: bash
         run: |
           set -euo pipefail
-          # The scientific gate is unchanged from the green F-CI80 replay.
-          # F-CI79P advanced canonical by governance/test/workflow files only,
-          # so bind an ephemeral copy to the exact successor preimage while
-          # retaining every production/source/asset assertion byte-for-byte.
-          sed 's/^PREIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a$/PREIMAGE=64937452be6b073a21b1b87acf21ce4edcbfda14/' \
-            tests/integration/run_fci80_rossfast_restricted_stack_admission.sh \
-            > tests/integration/.run_fci80_successor.sh
-          chmod +x tests/integration/.run_fci80_successor.sh
+          ADMITTED="$(python3 - <<'PY'
+          import json
+          with open('integration/f-ci/F-CI80_STATUS.json') as f:
+              print('true' if json.load(f).get('canonical_admission') is True else 'false')
+          PY
+          )"
+
+          if [[ "$ADMITTED" == "true" ]]; then
+            # F-CI80 is already canonically admitted. Re-run the same complete
+            # scientific gate against the immutable admitted postimage while
+            # requiring live canonical to descend from that postimage. This
+            # makes governance-only closeout/status/workflow commits testable
+            # without pretending canonical is still the pre-admission head.
+            sed \
+              -e 's/^PREIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a$/PREIMAGE=c9dafa34875ae2fb4e7257b77c0017103d770405/' \
+              -e 's/^test "$LIVE_CANON" = "$PREIMAGE"$/git merge-base --is-ancestor "$PREIMAGE" "$LIVE_CANON"/' \
+              tests/integration/run_fci80_rossfast_restricted_stack_admission.sh \
+              > tests/integration/.run_fci80_bound.sh
+            echo 'FCI80_GATE_MODE=POSTIMAGE_PRESERVATION' | tee F-CI80_GATE.log
+          else
+            # Pre-admission successor qualification remains fail-closed on the
+            # exact F-CI79P canonical preimage.
+            sed 's/^PREIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a$/PREIMAGE=64937452be6b073a21b1b87acf21ce4edcbfda14/' \
+              tests/integration/run_fci80_rossfast_restricted_stack_admission.sh \
+              > tests/integration/.run_fci80_bound.sh
+            echo 'FCI80_GATE_MODE=PREIMAGE_ADMISSION' | tee F-CI80_GATE.log
+          fi
+
+          chmod +x tests/integration/.run_fci80_bound.sh
           set -o pipefail
-          bash tests/integration/.run_fci80_successor.sh 2>&1 | tee F-CI80_GATE.log
-          rm -f tests/integration/.run_fci80_successor.sh
+          bash tests/integration/.run_fci80_bound.sh 2>&1 | tee -a F-CI80_GATE.log
+          rm -f tests/integration/.run_fci80_bound.sh
 
       - name: Persist F-CI80 evidence payload
         shell: bash
@@ -68,12 +89,17 @@ jobs:
           import json, subprocess
           def sh(*args):
               return subprocess.check_output(args, text=True).strip()
+          with open('integration/f-ci/F-CI80_STATUS.json') as f:
+              status = json.load(f)
+          postimage = status.get('canonical_admission') is True
           payload = {
               'work_unit': 'F-CI80',
               'status': 'PASS',
+              'mode': 'POSTIMAGE_PRESERVATION' if postimage else 'PREIMAGE_ADMISSION',
               'tested_head': sh('git', 'rev-parse', 'HEAD'),
               'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
               'canonical_preimage': '64937452be6b073a21b1b87acf21ce4edcbfda14',
+              'canonical_admission_commit': 'c9dafa34875ae2fb4e7257b77c0017103d770405' if postimage else None,
               'canonical_preimage_classification': 'F-CI79P_GOVERNANCE_ONLY_SUCCESSOR',
               'qualified_source_authority': 'a483452f04a85f3bb64eaad6a383a4800abaed16',
               'admitted_owner_capabilities': [f'F-ROSS{i:02d}' for i in range(2, 11)],
