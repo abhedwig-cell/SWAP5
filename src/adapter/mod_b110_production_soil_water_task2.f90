@@ -1,11 +1,18 @@
 module mod_b110_production_soil_water_task2
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_quiet_nan, ieee_value
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_reset_soil_water_trial_result
+  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_reset_soil_water_trial_result, &
+       a23bu_discard_unaccepted_trajectory_step
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_top_boundary_result_t, soil_water_solver_t, &
        soil_water_solver_workspace_base_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
        SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
+  use mod_soil_water_accepted_step_direction_contract, only: &
+       soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
+       SW_STEP_DIRECTION_UNAVAILABLE
+  use mod_accepted_trajectory_directional_sensitivity, only: trajectory_step_token_t, &
+       build_trajectory_step_request, stage_trajectory_step_result
+  use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
@@ -87,6 +94,10 @@ contains
     type(a23bu_worker_context_t), target, intent(inout) :: worker
     logical :: handled
 
+    ! A second task-2 invocation without an intervening SoilWater(3) can only
+    ! be a retry of the previous physical substep. Drop that unaccepted
+    ! directional candidate before solving the replacement step.
+    call a23bu_discard_unaccepted_trajectory_step(worker)
     call try_b110_production_task2(worker, handled)
     if (.not. handled) call run_b110_legacy_compatibility_task2(worker)
   end subroutine execute_b110_production_task2
@@ -104,9 +115,12 @@ contains
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: result
     type(soil_water_top_boundary_result_t) :: initial_surface, accepted_surface
+    type(soil_water_accepted_step_direction_request_t) :: direction_request
+    type(soil_water_accepted_step_direction_result_t) :: direction_result
+    type(trajectory_step_token_t) :: direction_token
     real(real64), allocatable, target :: drainage_copy(:,:), subsurface_copy(:), root_copy(:)
-    real(real64) :: potential_bare_evaporation
-    logical :: sensitivity_route_admitted
+    real(real64) :: potential_bare_evaporation, direction_t0, direction_t1
+    logical :: sensitivity_route_admitted, trajectory_requested, trajectory_step_built, trajectory_stage_ok
     integer :: n, stat_index
 
     handled = .false.
@@ -184,9 +198,27 @@ contains
     sensitivity_route_admitted = swbotb == 2 .and. &
          initial_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX .and. &
          trim(initial_surface%route) == 'surface-flux'
-    request%request_interface_sensitivity = sensitivity_route_admitted
 
-    call invoke_soil_water_solver(solver, request, workspace, result)
+    ! F-KT21 whole-trajectory composition and the older local-terminal tangent
+    ! are distinct semantics. Never request both from the same accepted solve.
+    trajectory_requested = worker%trajectory_direction%requested
+    request%request_interface_sensitivity = sensitivity_route_admitted .and. .not. trajectory_requested
+    direction_request = soil_water_accepted_step_direction_request_t()
+    direction_result = soil_water_accepted_step_direction_result_t()
+    direction_token = trajectory_step_token_t()
+    trajectory_step_built = .false.
+    if (trajectory_requested) then
+      direction_t0 = worker%trajectory_direction%current_t1
+      direction_t1 = direction_t0 + request%step_duration
+      call build_trajectory_step_request(worker%trajectory_direction, direction_t0, direction_t1, &
+           direction_request, direction_token, trajectory_step_built)
+    end if
+
+    if (trajectory_step_built) then
+      call solve_with_accepted_step_direction(solver, request, workspace, direction_request, result, direction_result)
+    else
+      call invoke_soil_water_solver(solver, request, workspace, result)
+    end if
     call accumulate_solver_diagnostics(worker, result)
     worker%soil_water_trial%route = result%diagnostics%route
     worker%soil_water_trial%interface_sensitivity_backsolves = &
@@ -194,6 +226,12 @@ contains
 
     select case (result%status)
     case (SW_SOLVE_CONVERGED)
+      if (trajectory_step_built) then
+        call stage_trajectory_step_result(worker%trajectory_direction, direction_token, direction_result, trajectory_stage_ok)
+        ! A malformed optional derivative fails closed in trajectory scratch;
+        ! it never invalidates the already-converged physical candidate.
+      end if
+
       call dynamic_top%evaluate(result%candidate_state%pressure_head(1), &
            result%candidate_state%water_content(1), result%candidate_state%ponding_depth, &
            request%boundary, accepted_surface)
@@ -229,7 +267,7 @@ contains
       end if
 
       worker%soil_water_trial%typed_accepted = .true.
-      if (sensitivity_route_admitted .and. &
+      if (.not. trajectory_requested .and. sensitivity_route_admitted .and. &
           accepted_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX .and. &
           trim(accepted_surface%route) == 'surface-flux' .and. &
           result%interface_sensitivity%available) then
@@ -241,7 +279,8 @@ contains
 
     case (SW_SOLVE_RETRY_ADVISED)
       ! Existing SoilWaterStateVar(2) + TimeControl retry path owns restoration.
-      ! Do not publish sensitivity or accepted result metadata from this rejected trial.
+      ! The next task-2 invocation drops the issued directional token before
+      ! solving the reduced replacement step.
       worker%soil_water_trial%retry_advised = .true.
       worker%soil_water_trial%sensitivity_available = .false.
       fldecdt = .true.
@@ -305,6 +344,11 @@ contains
     type(soil_water_solve_result_t) :: result
     type(b110_legacy_compat_solver_t) :: solver
     type(b110_legacy_compat_workspace_t) :: workspace
+    type(soil_water_accepted_step_direction_request_t) :: direction_request
+    type(soil_water_accepted_step_direction_result_t) :: direction_result
+    type(trajectory_step_token_t) :: direction_token
+    real(real64) :: direction_t0, direction_t1
+    logical :: trajectory_step_built, trajectory_stage_ok
     integer :: n
 
     n = numnod
@@ -342,6 +386,17 @@ contains
     request%numerical%head_rel_tolerance = critdevh1cp
     request%numerical%ponding_tolerance = critdevponddt
 
+    direction_request = soil_water_accepted_step_direction_request_t()
+    direction_result = soil_water_accepted_step_direction_result_t()
+    direction_token = trajectory_step_token_t()
+    trajectory_step_built = .false.
+    if (worker%trajectory_direction%requested) then
+      direction_t0 = worker%trajectory_direction%current_t1
+      direction_t1 = direction_t0 + request%step_duration
+      call build_trajectory_step_request(worker%trajectory_direction, direction_t0, direction_t1, &
+           direction_request, direction_token, trajectory_step_built)
+    end if
+
     workspace%worker => worker
     worker%soil_water_trial%typed_attempted = .true.
     worker%soil_water_trial%route = 'legacy-compat-started'
@@ -351,6 +406,15 @@ contains
 
     select case (result%status)
     case (SW_SOLVE_CONVERGED)
+      if (trajectory_step_built) then
+        direction_result = soil_water_accepted_step_direction_result_t()
+        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
+        direction_result%available = .false.
+        direction_result%control_coordinate = direction_request%control_coordinate
+        direction_result%method = 'unavailable'
+        direction_result%route = 'legacy-compat-direction-unavailable'
+        call stage_trajectory_step_result(worker%trajectory_direction, direction_token, direction_result, trajectory_stage_ok)
+      end if
       h(1:n) = result%candidate_state%pressure_head
       theta(1:n) = result%candidate_state%water_content
       pond = result%candidate_state%ponding_depth

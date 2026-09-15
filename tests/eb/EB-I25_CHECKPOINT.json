@@ -4,10 +4,11 @@
   "title": "Accepted multi-substep sensible-boundary runtime materialization",
   "phase": "RECONCILE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
-  "canonical_tree": "47af5e88e0e7bb640c83ffb5f45d0eb6073694e5",
+  "canonical_head": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+  "canonical_tree": "95da922e5290ac9757ae83dda4d10a52e6c1c8fb",
   "source_branch": "work/eb-i25-accepted-multisubstep-sensible-boundary",
-  "source_head_before_checkpoint": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
+  "source_head_before_checkpoint": "f08f268a2d774ce4b6ba2d37fe42856c4f5ff13e",
+  "previous_checkpoint_canonical": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
   "relevant_dependencies": {
     "src/runtime/mod_fmr_serialized_reference_backend.f90": "3506b453ba6a00111d182f29db8cbfb288001854",
     "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
@@ -17,16 +18,22 @@
     "src/process/mod_liquid_water_sensible_enthalpy.f90": "2247370ee34fac73a0e2d0b9fa15e171467aded3",
     "src/process/mod_external_liquid_water_temperature.f90": "64b85363e764d2c6e2777f5f1258abb3ac9e5abf"
   },
+  "state_delta": {
+    "canonical_advanced": true,
+    "dependency_change_detected": false,
+    "evidence_invalidated": false,
+    "reason": "Live canonical advanced after the initial EB-I25 checkpoint, but every dependency explicitly relevant to EB-I25 remains byte-identical. Existing EB-I23 and EB-I24 qualification/admission evidence is therefore reusable."
+  },
   "reused_evidence": {
-    "EB_I23": "admitted and postimage-preserved on current canonical",
-    "EB_I24": "admitted and postimage-preserved through F-CI74P on current canonical",
+    "EB_I23": "admitted and postimage-preserved on current canonical through F-CI72P",
+    "EB_I24": "admitted and postimage-preserved on current canonical through F-CI74P",
     "bottom_thermal_carrier": "existing rollback-safe attempt-context pattern; immutable reference design only"
   },
   "new_evidence": [],
   "tests": [],
   "verdict": "RECONCILED_READY_FOR_BOUNDED_QUALIFICATION",
   "mutations": [
-    "created one capability branch because EB-I25 requires a real transaction/backend production change",
+    "reconciled the existing EB-I25 branch with live canonical; no new branch created",
     "no production source changed during RECONCILE"
   ],
   "candidate_scope": {

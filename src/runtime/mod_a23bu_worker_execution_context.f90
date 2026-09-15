@@ -1,5 +1,8 @@
 module mod_a23bu_worker_execution_context
   use, intrinsic :: iso_fortran_env, only: real64
+  use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, &
+       fkt21_accept_trajectory_step => accept_trajectory_step, &
+       fkt21_discard_trajectory_step => discard_trajectory_step
   implicit none
   private
 
@@ -81,6 +84,10 @@ module mod_a23bu_worker_execution_context
     type(a23bu_numerical_control_t) :: control
     type(a23bu_execution_time_t) :: time
     type(a23bu_reporting_progress_t) :: reporting
+    ! F-KT21 trajectory directions are optional worker/job-local numerical
+    ! scratch. They are checkpointed only in transaction attempt contexts and
+    ! are never persistent physical column state.
+    type(accepted_trajectory_direction_t) :: trajectory_direction
   end type a23bu_worker_context_t
 
   public :: a23bu_initialize_worker, a23bu_release_worker
@@ -90,6 +97,7 @@ module mod_a23bu_worker_execution_context
   public :: a23bu_seed_timestep_control, a23bu_request_dt_reduction
   public :: a23bu_seed_execution_window, a23bu_reset_calendar_events
   public :: a23bu_seed_reporting_progress
+  public :: a23bu_discard_unaccepted_trajectory_step, a23bu_accept_pending_trajectory_step
   public :: a23bu_scratch_payload_bytes, a23bu_reporting_shim_payload_bytes
 
 contains
@@ -130,6 +138,7 @@ contains
     worker%control = a23bu_numerical_control_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
+    worker%trajectory_direction = accepted_trajectory_direction_t()
   end subroutine a23bu_initialize_worker
 
   subroutine a23bu_release_worker(worker)
@@ -154,6 +163,7 @@ contains
     worker%control = a23bu_numerical_control_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
+    worker%trajectory_direction = accepted_trajectory_direction_t()
   end subroutine a23bu_release_worker
 
   subroutine a23bu_reset_attempt_diagnostics(worker)
@@ -216,6 +226,24 @@ contains
     worker%diagnostics%internal_retries = worker%diagnostics%internal_retries + 1
   end subroutine a23bu_record_internal_retry
 
+  subroutine a23bu_discard_unaccepted_trajectory_step(worker)
+    type(a23bu_worker_context_t), intent(inout) :: worker
+    if (.not. worker%trajectory_direction%requested) return
+    if (.not. worker%trajectory_direction%pending .and. .not. worker%trajectory_direction%issued) return
+    call fkt21_discard_trajectory_step(worker%trajectory_direction)
+  end subroutine a23bu_discard_unaccepted_trajectory_step
+
+  subroutine a23bu_accept_pending_trajectory_step(worker)
+    type(a23bu_worker_context_t), intent(inout) :: worker
+    logical :: accepted
+    if (.not. worker%trajectory_direction%requested) return
+    if (.not. worker%trajectory_direction%pending) return
+    call fkt21_accept_trajectory_step(worker%trajectory_direction, accepted)
+    ! Optional directional sensitivity can fail closed without invalidating the
+    ! already-accepted physical substep. The trajectory state itself records
+    ! FAILED/UNAVAILABLE provenance for publication.
+  end subroutine a23bu_accept_pending_trajectory_step
+
   integer function a23bu_reporting_shim_payload_bytes() result(bytes)
     integer :: rb, ib, lb
     rb = storage_size(0.0_real64)/8
@@ -230,15 +258,24 @@ contains
     rb = storage_size(0.0_real64)/8
     lb = storage_size(.false.)/8
     bytes = 0
-    if (.not. allocated(worker%headcalc%dfdhl)) return
-    bytes = rb * (size(worker%headcalc%dfdhl) + size(worker%headcalc%dfdhm) + &
-                  size(worker%headcalc%dfdhu) + size(worker%headcalc%difh) + &
-                  size(worker%headcalc%residual) + size(worker%headcalc%sink) + &
-                  size(worker%headcalc%source) + size(worker%headcalc%dkdh) + &
-                  size(worker%headcalc%hold) + size(worker%headcalc%qv) + &
-                  size(worker%headcalc%hgrad))
-    bytes = bytes + lb * (size(worker%headcalc%flnonconv1) + size(worker%headcalc%flnonconv2) + &
-                          size(worker%headcalc%flunsatok))
+    if (allocated(worker%headcalc%dfdhl)) then
+      bytes = rb * (size(worker%headcalc%dfdhl) + size(worker%headcalc%dfdhm) + &
+                    size(worker%headcalc%dfdhu) + size(worker%headcalc%difh) + &
+                    size(worker%headcalc%residual) + size(worker%headcalc%sink) + &
+                    size(worker%headcalc%source) + size(worker%headcalc%dkdh) + &
+                    size(worker%headcalc%hold) + size(worker%headcalc%qv) + &
+                    size(worker%headcalc%hgrad))
+      bytes = bytes + lb * (size(worker%headcalc%flnonconv1) + size(worker%headcalc%flnonconv2) + &
+                            size(worker%headcalc%flunsatok))
+    end if
+    if (allocated(worker%trajectory_direction%pressure_head_direction)) &
+      bytes = bytes + rb*size(worker%trajectory_direction%pressure_head_direction)
+    if (allocated(worker%trajectory_direction%water_content_direction)) &
+      bytes = bytes + rb*size(worker%trajectory_direction%water_content_direction)
+    if (allocated(worker%trajectory_direction%pending_pressure_head_direction)) &
+      bytes = bytes + rb*size(worker%trajectory_direction%pending_pressure_head_direction)
+    if (allocated(worker%trajectory_direction%pending_water_content_direction)) &
+      bytes = bytes + rb*size(worker%trajectory_direction%pending_water_content_direction)
   end function a23bu_scratch_payload_bytes
 
 end module mod_a23bu_worker_execution_context
