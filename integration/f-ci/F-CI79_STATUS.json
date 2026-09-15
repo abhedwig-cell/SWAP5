@@ -13,6 +13,9 @@
   "initial_green_admission_head": "89ba42798421e8f8f46408a2329dfe3c53069c07",
   "initial_green_run_id": 34989651185,
   "initial_green_job_id": 104450675210,
+  "green_status_replay_head": "8dd4491c0fb065c4850a37d40d52a340fd332d89",
+  "green_status_replay_run_id": 34989794914,
+  "green_status_replay_job_id": 104451174433,
   "evidence": {
     "live_canonical_exact_preimage": true,
     "qualified_authority_lock": true,
@@ -43,10 +46,17 @@
   },
   "canonical_admission": false,
   "full_energy_balance_complete": false,
+  "promotion_contract": {
+    "true_two_parent_commit_required": true,
+    "first_parent_must_equal_canonical_preimage": true,
+    "second_parent_must_equal_final_green_admission_head": true,
+    "promoted_tree_must_equal_final_green_admission_tree": true
+  },
   "mutations": [
     "Composed the exact qualified EB-I25 production/test postimage onto current canonical.",
     "Added only F-VQ93 immutable qualification evidence and F-CI79 admission governance alongside that postimage.",
-    "No production semantics were changed during independent qualification or admission."
+    "No production semantics were changed during independent qualification or admission.",
+    "Aligned the promotion checkpoint with the established canonical true-two-parent promotion policy; no EB postimage changed."
   ],
   "nonclaims": [
     "Accepted external full/half top liquid outflow is not admitted.",
@@ -55,7 +65,7 @@
     "No whole-column sensible-energy residual is admitted.",
     "No complete SWAP5 Energy Balance is claimed."
   ],
-  "next_permitted_action": "Replay this status-only admission head green, recheck that live canonical is still the exact preimage, then fast-forward integration/f-ci-canonical to this exact head. After promotion perform bounded postimage reconciliation before closing F-CI79.",
+  "next_permitted_action": "Replay this final status head green, recheck that live canonical is still the exact preimage, then create a true two-parent promotion commit whose first parent is the canonical preimage, whose second parent is this final green admission head, and whose tree is exactly this admission tree. Move integration/f-ci-canonical only to that promotion commit. After promotion perform bounded postimage reconciliation before closing F-CI79.",
   "exclusions": [
     "No Ross or RossFast work.",
     "No production semantic changes to force admission.",
