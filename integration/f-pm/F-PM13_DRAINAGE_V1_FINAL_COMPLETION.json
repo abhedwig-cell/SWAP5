@@ -1,0 +1,241 @@
+{
+  "schema": "swap5.fpm13.drainage_v1_final_completion.v1",
+  "work_unit": "F-PM13",
+  "title": "Drainage-v1 100% Completion & Current-Canonical Preservation Audit",
+  "branch": "work/f-pm13-drainage-v1-completion-audit",
+  "audit_kind": "frozen-scope completion audit only; no new physics and no production-source mutation",
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "governance_authority": {
+    "work_unit": "F-RG01",
+    "branch": "regie/f-rg01-post-rb1-program-rebaseline",
+    "sha": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+    "rule": "production authority requires source owner -> independent qualification -> F-CI admission -> postimage preservation; file presence alone is not admission"
+  },
+  "denominator": {
+    "changed": false,
+    "scope_reduced": false,
+    "new_option_added": false,
+    "frozen_variants": [
+      "restricted single-level linear-resistance drainage response",
+      "restricted spatial distribution / positive single-level DIVDRA",
+      "DRAMET=1 tabulated drainage response",
+      "DRAMET=2 Hooghoudt response family",
+      "DRAMET=2 Ernst response family",
+      "empirical interflow drainage-side response",
+      "multi-level drainage exchange aggregation",
+      "restricted fixed-weir transactional surface-water runtime"
+    ]
+  },
+  "historical_scope_authority": {
+    "F_PM08_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "F_PM08_decision": "QUALIFIED_DRAINAGE_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
+    "F_PM08_production_migration_performed": false,
+    "boundary_contract": "integration/f-pm/F-PM08_READINESS_CONTRACT.json",
+    "boundary_rules": {
+      "legacy_drainage_is_one_migration_object": false,
+      "exchange_law_is_process_physics": true,
+      "spatial_distribution_is_separately_qualifiable": true,
+      "surface_water_storage_control_is_separate_stateful_component": true,
+      "runtime_coupler_owns_system_composition": true,
+      "headcalc_internal_access_allowed": false,
+      "process_jacobian_mutation_allowed": false
+    },
+    "mass_rules": {
+      "positive_exchange_means_out_of_soil": true,
+      "single_transfer_object_for_state_and_ledger": true,
+      "rejected_trial_committed_booking_allowed": false,
+      "double_booking_allowed": false,
+      "configurable_mass_tolerance_allowed": false
+    }
+  },
+  "variant_audit": [
+    {
+      "variant": "linear",
+      "frozen_scope": "SWDRA=1; DRAMET=3; NRLEVS=1; drainage-only; linear resistance; no interflow; no DIVDRA; no surface-water storage; no reverse exchange",
+      "scientific_authority": "F-VQ44",
+      "scientific_decision": "QUALIFIED_RESTRICTED_SINGLE_LEVEL_LINEAR_DRAINAGE_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION",
+      "scientific_candidate_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa",
+      "scientific_evidence": "1200 exact flux-equivalence cases; 0.0 max flux and derivative absolute error; O0/O2 identity; stateless A-B-A",
+      "runtime_qualified": false,
+      "canonical_admission_qualified": false,
+      "mass_booking_qualified": false,
+      "fully_implicit_solver_coupling_qualified": false,
+      "disposition": "FAIL",
+      "reason": "independent science is qualified, but F-VQ44 explicitly withholds runtime and canonical admission"
+    },
+    {
+      "variant": "spatial_distribution_DIVDRA",
+      "frozen_scope": "restricted serialized single-level positive DIVDRA with explicit hydraulic views and external scalar transfer",
+      "source_authority": "F-CI32",
+      "runtime_binding_authority": "F-CI33/F-CI33R",
+      "active_runtime_authority": "F-CI36",
+      "production_process_path": "src/process/mod_drainage_spatial_distribution.f90",
+      "production_process_blob_current_canonical": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+      "production_runtime_path": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+      "production_runtime_blob_current_canonical": "9a384658ec37b68d2ef911e741aa89707dcb3e77",
+      "transaction_mass_restart_multiswap_scope": "qualified only for the restricted F-CI36 active-runtime scope; no broader exchange-law, negative/infiltration, multilevel or surface-water claim",
+      "disposition": "PASS_CURRENT_CANONICAL"
+    },
+    {
+      "variant": "tabulated_DRAMET1",
+      "frozen_scope": "remediated DRAMET=1 tabulated response over normalized valid domain with explicit fail-closed legacy-degenerate handling",
+      "scientific_authority": "F-VQ40",
+      "scientific_decision": "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE",
+      "scientific_candidate_path": "src/process/mod_drainage_tabulated_response.f90",
+      "scientific_candidate_blob": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a",
+      "runtime_qualified": false,
+      "canonical_admission_qualified": false,
+      "solver_jacobian_qualified": false,
+      "disposition": "FAIL",
+      "reason": "F-VQ40 explicitly says no runtime composition or canonical admission is qualified"
+    },
+    {
+      "variant": "Hooghoudt_DRAMET2",
+      "frozen_scope": "DRAMET=2 Hooghoudt branches within F-VQ38 normalized mathematically valid domain",
+      "scientific_authority": "F-VQ38",
+      "scientific_decision": "QUALIFIED_DRAMET2_IPOS1_TO_5_RESPONSE_FAMILY_SCIENTIFIC_EQUIVALENCE_WITHIN_NORMALIZED_VALID_DOMAIN",
+      "runtime_source_sink_binding_qualified": false,
+      "fully_implicit_jacobian_chain_rule_qualified": false,
+      "canonical_admission_qualified": false,
+      "disposition": "FAIL",
+      "reason": "scientific response is qualified but F-VQ38 explicitly holds runtime/source-sink binding and canonical admission"
+    },
+    {
+      "variant": "Ernst_DRAMET2",
+      "frozen_scope": "DRAMET=2 Ernst branches within F-VQ38 normalized mathematically valid domain",
+      "scientific_authority": "F-VQ38",
+      "scientific_decision": "QUALIFIED_DRAMET2_IPOS1_TO_5_RESPONSE_FAMILY_SCIENTIFIC_EQUIVALENCE_WITHIN_NORMALIZED_VALID_DOMAIN",
+      "runtime_source_sink_binding_qualified": false,
+      "fully_implicit_jacobian_chain_rule_qualified": false,
+      "canonical_admission_qualified": false,
+      "disposition": "FAIL",
+      "reason": "scientific response is qualified but F-VQ38 explicitly holds runtime/source-sink binding and canonical admission"
+    },
+    {
+      "variant": "empirical_interflow",
+      "frozen_scope": "empirical interflow drainage-side contribution; active power law and analytic sensitivity; inactive contribution below activation; explicit activation singularity metadata",
+      "scientific_authority": "F-VQ42",
+      "scientific_decision": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY",
+      "scientific_candidate_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748",
+      "runtime_qualified": false,
+      "canonical_admission_qualified": false,
+      "disposition": "FAIL",
+      "reason": "F-VQ42 explicitly records runtime_qualified=false and canonical_admission_qualified=false"
+    },
+    {
+      "variant": "multilevel_aggregation",
+      "frozen_scope": "legacy-order multi-level exchange aggregation with conservative sensitivity-unavailability composition",
+      "scientific_authority": "F-VQ43",
+      "scientific_decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION",
+      "scientific_candidate_blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb",
+      "runtime_qualified": false,
+      "canonical_admission_qualified": false,
+      "runtime_ledger_qualified": false,
+      "disposition": "FAIL",
+      "reason": "F-VQ43 phase is independently tested and qualified, not runtime or canonical admission"
+    },
+    {
+      "variant": "restricted_fixed_weir_transactional_runtime",
+      "frozen_scope": "F-PM08D7 restricted fixed-weir surface-water process and serialized transactional runtime",
+      "independent_qualification": "F-VQ59@f65f170fc6ec5f1a228ade2def3732cb36942ebd",
+      "canonical_admission_preservation": "F-CI52/F-CI52P",
+      "process_path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+      "process_blob_current_canonical": "16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa",
+      "runtime_path": "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+      "runtime_blob_current_canonical": "f81229c2f4ad766fb8606111ca965963ebba46fe",
+      "qualified_properties": [
+        "transaction mass rollback",
+        "internal drainage mass and single commit",
+        "external supply/discharge accounting",
+        "mismatch and infeasible-trial rollback",
+        "restart roundtrip and rejection atomicity",
+        "per-column optional state",
+        "MultiSWAP column isolation",
+        "no hidden I/O or persistent scratch",
+        "bounded numerical failure route"
+      ],
+      "disposition": "PASS_CURRENT_CANONICAL"
+    }
+  ],
+  "cross_cutting_exit_audit": {
+    "scope_frozen": "PASS_PRESERVED",
+    "variant_scientific_qualification": "PASS_BY_INDEPENDENT_QUALIFICATION",
+    "all_variants_runtime_qualified": "FAIL",
+    "all_variants_current_canonical_admitted": "FAIL",
+    "transactional_accept_reject_semantics_all_variants": "FAIL",
+    "hard_mass_booking_and_no_double_booking_all_variants": "FAIL",
+    "restart_state_semantics_all_variants": "FAIL",
+    "multiswap_execution_equivalence_all_variants": "FAIL",
+    "headcalc_isolation_end_to_end_all_variants": "FAIL",
+    "diagnostics_all_variants": "FAIL",
+    "current_canonical_preservation": "PASS_PRESERVED_FOR_ADMITTED_SPATIAL_AND_FIXED_WEIR_SCOPE_ONLY",
+    "production_source_changed_by_F_PM13": false,
+    "reference_source_changed_by_F_PM13": false,
+    "denominator_unchanged": true,
+    "hundred_percent_complete": false
+  },
+  "architecture_invariant_audit": {
+    "1": "PASS_PRESERVED",
+    "2": "PASS_PRESERVED",
+    "3": "PASS_PRESERVED",
+    "4": "PASS_PRESERVED",
+    "5": "PASS_PRESERVED",
+    "6": "PASS_PRESERVED",
+    "7": "FAIL: transaction semantics are not runtime-qualified for linear/tabulated/Hooghoudt/Ernst/interflow/multilevel frozen variants",
+    "8": "FAIL: cheap rerun/retry behavior is not demonstrated on an admitted runtime for all frozen variants",
+    "9": "PASS_PRESERVED",
+    "10": "PASS_PRESERVED",
+    "11": "PASS_PRESERVED",
+    "12": "PASS_PRESERVED",
+    "13": "FAIL: hard mass booking/rollback evidence is absent at production runtime level for all unadmitted response variants",
+    "14": "PASS_BY_INDEPENDENT_QUALIFICATION for response sensitivities where defined; no full-runtime completion claim",
+    "15": "PASS_PRESERVED",
+    "16": "FAIL: MultiSWAP runtime qualification is absent for all unadmitted response variants",
+    "17": "PASS_PRESERVED",
+    "18": "PASS_PRESERVED",
+    "19": "PASS_PRESERVED",
+    "20": "PASS_PRESERVED",
+    "21": "PASS_PRESERVED",
+    "22": "FAIL: end-to-end production isolation from HeadCalc internals cannot be claimed for variants without an admitted runtime path",
+    "23": "PASS_PRESERVED",
+    "24": "PASS_PRESERVED",
+    "25": "PASS_BY_INDEPENDENT_QUALIFICATION for scientific equivalence; reference source unchanged",
+    "26": "FAIL: per-variant accepted/rejected runtime diagnostics are not qualified for unadmitted response variants",
+    "27": "PASS_PRESERVED for stateless response candidates and qualified optional fixed-weir state; no new allocation introduced",
+    "28": "PASS_PRESERVED",
+    "29": "FAIL: no complete admitted runtime proof exists for all frozen response variants, so silent runtime dependencies cannot be closed out globally",
+    "30": "PASS: F-PM13 performs explicit invariant reconciliation and fails closed where evidence is missing"
+  },
+  "hard_blockers": [
+    {
+      "id": "G1_RUNTIME_COMPOSITION",
+      "class": "REAL_SOFTWARE_CLOSURE_GAP",
+      "scope": ["linear", "tabulated_DRAMET1", "Hooghoudt_DRAMET2", "Ernst_DRAMET2", "empirical_interflow", "multilevel_aggregation"],
+      "finding": "scientifically qualified response implementations do not have one admitted current-canonical production runtime composition"
+    },
+    {
+      "id": "G2_TRANSACTION_MASS_RESTART_MULTISWAP_DIAGNOSTICS",
+      "class": "REAL_QUALIFICATION_CLOSURE_GAP",
+      "scope": ["linear", "tabulated_DRAMET1", "Hooghoudt_DRAMET2", "Ernst_DRAMET2", "empirical_interflow", "multilevel_aggregation"],
+      "finding": "without the runtime composition, hard mass transfer booking, reject/rollback, restart/no-state semantics, MultiSWAP isolation and diagnostics are not independently qualified end-to-end"
+    },
+    {
+      "id": "G3_CANONICAL_ADMISSION_PRESERVATION",
+      "class": "REAL_GOVERNANCE_CLOSURE_GAP",
+      "scope": ["linear", "tabulated_DRAMET1", "Hooghoudt_DRAMET2", "Ernst_DRAMET2", "empirical_interflow", "multilevel_aggregation"],
+      "finding": "the independent scientific authorities explicitly withhold canonical admission; current canonical cannot be credited by inference"
+    }
+  ],
+  "minimal_dependency_ordered_closure_route": [
+    "1. One drainage response-family production-owner workunit: recompose only the already independently qualified frozen response candidates onto live canonical behind the existing process hydraulic view/source-sink and solver-service contracts. Add no new drainage physics, no reverse exchange, no new option, no HeadCalc-internal access, and no process Jacobian mutation.",
+    "2. Bind each frozen response route to the same transaction transfer/ledger semantics used by canonical runtime: candidate-local trial values only, no committed booking on reject, exactly-once booking on accept, hard water-balance closure, explicit failure/singularity diagnostics, and generic [t0,t1] time.",
+    "3. Qualify the recomposed runtime independently on a separate F-VQ authority against the immutable F-VQ44/F-VQ40/F-VQ38/F-VQ42/F-VQ43 scientific oracles. Cover transaction rollback, mass, restart/no-additional-state declaration, MultiSWAP column isolation/order independence, diagnostics, O0/O2, HeadCalc isolation and unsupported-combination fail-closed behavior.",
+    "4. Admit only the independently qualified source/runtime postimage through a separate serial F-CI workunit, followed by current-canonical postimage preservation. Do not combine unrelated production changes.",
+    "5. Re-run F-PM13-class frozen-scope completion audit from the resulting exact canonical head. Only then may QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE be emitted."
+  ],
+  "final_decision": "DRAINAGE_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+}

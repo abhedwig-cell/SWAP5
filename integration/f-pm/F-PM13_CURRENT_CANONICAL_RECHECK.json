@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.fpm13.current_canonical_recheck.v1",
+  "work_unit": "F-PM13",
+  "branch": "work/f-pm13-drainage-v1-completion-audit",
+  "purpose": "Reconcile the completed frozen-scope drainage-v1 audit against canonical advances after the original audit base.",
+  "original_audit_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "tree": "556221f62b4fde616981499eba68ef5460f5d83c"
+  },
+  "recheck_sequence": [
+    {
+      "sha": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+      "tree": "f75d63eae4fd8464130f57fef20bb0643a7497c6",
+      "merge_subject": "Merge PR #111: F-TB11 permanent testbank preservation",
+      "compare_from_previous_head": {
+        "base": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+        "ahead_by": 14,
+        "behind_by": 0,
+        "changed_file_count": 6,
+        "src_changed": false,
+        "reference_changed": false
+      }
+    },
+    {
+      "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+      "tree": "a1762b02f8288a4ecfe3d98296c2aefc2e3350cc",
+      "merge_subject": "Merge PR #113: F-TB11P postimage reconciliation",
+      "compare_from_previous_head": {
+        "base": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+        "ahead_by": 2,
+        "behind_by": 0,
+        "changed_file_count": 1,
+        "changed_files": [
+          "integration/f-tb/F-TB11P_POSTIMAGE_RECONCILIATION.json"
+        ],
+        "src_changed": false,
+        "reference_changed": false
+      }
+    }
+  ],
+  "latest_rechecked_current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "tree": "a1762b02f8288a4ecfe3d98296c2aefc2e3350cc",
+    "drainage_production_source_changed_since_original_audit": false
+  },
+  "admitted_drainage_blob_recheck": {
+    "checked_at": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+    "preserved_through_latest_head_by_no_src_change": true,
+    "src/process/mod_drainage_spatial_distribution.f90": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90": "9a384658ec37b68d2ef911e741aa89707dcb3e77",
+    "src/process/mod_restricted_fixed_weir_surface_water.f90": "16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa",
+    "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90": "f81229c2f4ad766fb8606111ca965963ebba46fe",
+    "all_match_F_PM13_original_audit": true
+  },
+  "namespace_recheck": {
+    "F_PM14_free_at_recheck": true,
+    "rule": "The follow-up execution must still recheck the live F-PM namespace before creating a branch."
+  },
+  "impact_on_F_PM13": {
+    "frozen_denominator_changed": false,
+    "scientific_authority_changed": false,
+    "runtime_admission_gap_closed_by_new_canonical": false,
+    "hard_blockers_G1_G2_G3_unchanged": true,
+    "hundred_percent_complete": false,
+    "final_decision_unchanged": "DRAINAGE_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+  },
+  "note": "F-TB11 and F-TB11P strengthen preservation evidence but do not create missing drainage production runtime composition or canonical admission. No completion credit is inferred from testbank preservation or metadata-only postimage reconciliation."
+}
