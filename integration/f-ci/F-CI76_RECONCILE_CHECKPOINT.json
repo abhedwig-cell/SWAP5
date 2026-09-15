@@ -1,0 +1,57 @@
+{
+  "workunit": "F-CI76",
+  "capability": "F-KT22 canonical directional-response exposure",
+  "phase": "RECONCILE",
+  "state": "COMPLETE",
+  "branch": "integration/f-ci76-fkt22-canonical-directional-response-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+  "owner_authority": {
+    "base": "eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+    "head": "052e8a58ef15888be9a3eacabd1f3b403dc1f1a2",
+    "workflow_run": 34889961297,
+    "workflow_conclusion": "success",
+    "production_seams": [
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/adapter/mod_b1_10_reference_model.f90",
+      "src/kernel/mod_kernel_transactions.f90"
+    ],
+    "qualification_gate": "tests/fkt/run_fkt22_qualification.sh",
+    "tests": [
+      "tests/fkt/test_fkt22_canonical_directional_response.f90",
+      "tests/fkt/test_fkt22_kernel_directional_response.f90"
+    ]
+  },
+  "reconciliation": {
+    "existing_admission_equivalent_found": false,
+    "independent_qualification_equivalent_found": false,
+    "owner_evidence_reusable_as_owner_evidence": true,
+    "owner_evidence_sufficient_for_current_canonical_admission": false,
+    "reason_current_requalification_required": "Current canonical has materially evolved runtime/kernel composition since the owner base; the qualified F-KT22 semantics must be recomposed and replayed on the current canonical postimage rather than merged wholesale.",
+    "fkt21_dependency": {
+      "status": "canonical-admitted",
+      "admission_workunit": "F-CI75",
+      "canonical_close_head": "687ee32ca98a42368a2b6380ea78d33eb254dad9"
+    }
+  },
+  "separate_downstream_capability": {
+    "name": "F-KT22P production/FMR directional forwarding",
+    "head": "7199f259a56dd4fbf567334fc4ef7a715f054d4a",
+    "workflow_run": 34898171418,
+    "workflow_conclusion": "success",
+    "included_in_fci76": false
+  },
+  "mutations": [
+    "created integration/f-ci76-fkt22-canonical-directional-response-admission from canonical head 687ee32ca98a42368a2b6380ea78d33eb254dad9",
+    "persisted this RECONCILE checkpoint"
+  ],
+  "next_permitted_action": "QUALIFY: materialize the minimal F-KT22 semantic delta on current canonical, adapt preservation/hash assumptions only where dependencies changed, and run current-canonical owner plus independent qualification evidence before any admission PR.",
+  "exclusions": [
+    "no EB changes",
+    "no ROSS or RossFast changes",
+    "no groundwater-coupling composition changes",
+    "no F-KT22P/FMR forwarding admission",
+    "no production-semantic alteration merely to make qualification pass"
+  ]
+}
