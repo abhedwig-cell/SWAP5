@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ02",
+  "decision": "QUALIFIED_VERIFIER_CONTRACTS_ONLY",
+  "qualification_scope": "VERIFIER_CONTRACTS_AND_HARNESS_ONLY",
+  "qualified_postimage": "390bb2595c4cc33b8bb1198f6ff091fbf473068e",
+  "oracle": "B1.10",
+  "production_source_changed": false,
+  "production_physics_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "basis": {
+    "fci12_source_head": "7098aeaa4ca38dc375a965340a35c9870a33de28",
+    "fci12_evidence_commit": "729574de00fbb1540affe2af74a7202b38d29754",
+    "fci12_canonical_workflow_run": 34102787767,
+    "historical_verifier_head": "29e05be97493926ba451dfd53d5ed3170db47ad5"
+  },
+  "qualification_run": {
+    "workflow_run": 34105250843,
+    "job_id": 101688663253,
+    "job_name": "F-VQ02 verifier contracts on F-CI12",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "executed_checks": {
+    "fvq02_gate": "PASS",
+    "fvq02_scope_guard_tests": {"passed": 7, "failed": 0},
+    "imported_semantic_validator_and_fault_injection_tests": {"passed": 32, "failed": 0},
+    "tx_time_fixture_cases": {"passed": 11, "failed": 0},
+    "stored_tx_time_evidence_consistent": true,
+    "corrected_b1_10_reference_job": "PASS",
+    "fci12_gate_rerun": "FCI12_GATE_PASS"
+  },
+  "qualified_verifier_assets": [
+    "reference seam semantic validator",
+    "canonical result semantic validator",
+    "normalized result-record validator including independent unrounded mass residual recomputation",
+    "transaction/time verifier harness and its fault-injection logic"
+  ],
+  "explicit_non_claims": [
+    "The 11-case synthetic harness does not qualify SWAP5 production physics.",
+    "No production mass tolerance is qualified by the synthetic fixture.",
+    "F-CI12 testdouble evidence is limited to binding and transaction semantics.",
+    "No real B1.10 execute_reference_interval route is admitted.",
+    "No production warm-start equivalence is admitted.",
+    "No physical temporal-equivalence tolerance is admitted.",
+    "Snow/macropore complete storage accounting is not admitted.",
+    "Reentrant parallel legacy-backend execution is not admitted."
+  ],
+  "remaining_blockers": [
+    "recoverable production solver-failure/status propagation on a qualification basis newer than F-CI12",
+    "complete optional-process temporal characterization",
+    "qualified scalar temporal-error metric and tolerance policy or an explicitly accepted replacement contract",
+    "real B1.10 canonical reference interval entrypoint",
+    "production canonical result and diagnostics route",
+    "source-bound end-to-end B1.10 canonical reference qualification",
+    "complete snow/macropore storage accounting",
+    "reentrant parallel legacy-backend qualification"
+  ],
+  "moving_canonical_observation": {
+    "observed_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "work_unit": "F-CI13",
+    "canonical_workflow_run": 34104845258,
+    "workflow_conclusion": "success",
+    "consumed_by_fvq02": false,
+    "reason": "F-VQ02 remains exactly qualified on F-CI12; no separate persisted F-CI13 qualification evidence commit was observed before closing this unit."
+  }
+}

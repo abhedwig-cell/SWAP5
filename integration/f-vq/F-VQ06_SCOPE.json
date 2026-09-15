@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ06",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI18 Exit Scope/Ownership Handoff Qualification",
+  "oracle": "B1.10",
+  "previous_fvq_head": "f14cbc4c1a1ba0dc16a46bddc658cd4731733945",
+  "fci18_handoff": {
+    "qualified_source_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "qualification_evidence_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+    "canonical_push_workflow": 34112588499,
+    "fci18_job": 101712814659,
+    "scope_ownership_qualified": true,
+    "gate_promotion": "PENDING_SEPARATE_COMMIT",
+    "consumed_as_final_exit_release": false
+  },
+  "qualification_targets": [
+    "exact F-CI18 source and qualification provenance",
+    "independent admission of the qualified F-CI18 scope/ownership boundary",
+    "preservation of non-delegable provenance, transaction and hard-mass constraints",
+    "preservation of downstream F-VQ ownership for numerical temporal limits and release-level physics/reference qualification",
+    "independent diagnosis of the non-authoritative PR synthetic-merge failure without overriding the successful canonical push run",
+    "continued fail-closed final exit/release state until F-CI persists the separate gate-promotion commit"
+  ],
+  "explicit_non_targets": [
+    "changing or repairing F-CI production/governance source",
+    "promoting F-CI exit gates on behalf of F-CI",
+    "admitting downstream release before the separate F-CI gate-status commit",
+    "admitting real B1.10 execute_reference_interval",
+    "qualifying numerical temporal limits",
+    "qualifying full legacy-backend reentrancy, optional-process completeness, MultiSWAP or coupling"
+  ],
+  "status": "UPDATED_FOR_QUALIFIED_SCOPE_PRE_TEST"
+}
