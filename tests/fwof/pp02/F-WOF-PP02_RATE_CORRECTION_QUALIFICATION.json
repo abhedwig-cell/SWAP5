@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "WOFOST81 N-stress leaf-rate correction",
+  "production_commit": "2d074bd90fb6f1dae5d7768b168f645443461c8e",
+  "source": {
+    "path": "src/crop/mod_wofost81_rate_correction.f90",
+    "sha256": "90af313a21bc2bc6aeed06f36bd43d36cbcf3eac8c235d8288620d3acefc0fb8",
+    "git_blob": "b30939392ef5c20a6cebdec2db381a047b64bf6c"
+  },
+  "test": {
+    "path": "tests/fwof/pp02/test_wofost81_rate_correction.f90",
+    "sha256": "096f65adeb4f2a2b622c39abeeed0ccc042ee3da5ac9f4c4fe08739ee8005b0e",
+    "git_blob": "f41dccab001ab747aa1c7c90357e6aeb2262decb",
+    "compiler": "gfortran",
+    "flags": ["-std=f2008", "-Wall", "-Wextra", "-Werror", "-O0"],
+    "result": "F_WOF_PP02_RATE_CORRECTION_PASS"
+  },
+  "qualified_semantics": [
+    "maximum leaf N is evaluated from NMAXLV_TB at DVS",
+    "WOFOST81 N stress kernel determines the leaf-ageing stress index and RFRGRL",
+    "NSLLV_TB is evaluated at that stress index",
+    "DALV = min(aged_leaf_mass * NSLLV, WLV) / day_length",
+    "combined WOFOST81 leaf death is max(DSLV, DALV), not a sum",
+    "juvenile LAI correction applies RFRGRL only for DVS < 0.2 and LAI < 0.75",
+    "youngest SLA is recomputed consistently when corrected GLAIEX becomes sink-limiting",
+    "outside the juvenile window GLAIEX is unchanged",
+    "when N stress is inactive, NSLLV and RFRGRL default to 1 while WOFOST81 ageing remains active",
+    "invalid leaf cohort shape is rejected"
+  ],
+  "scope": {
+    "candidate_only": true,
+    "legacy_finalize_modified": false,
+    "legacy_structural_evolution_modified": false,
+    "runtime_reachable": false,
+    "RD_in_scope": false,
+    "TRA_in_scope": false
+  },
+  "verdict": "QUALIFIED_COMPONENT_LEVEL",
+  "next_required_gate": "Provide WOFOST81-specific leaf cohort structural evolution that consumes combined DRLV without the legacy second over-age removal, then qualify integration with the existing transactional crop owner."
+}
