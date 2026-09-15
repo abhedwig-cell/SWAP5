@@ -1,0 +1,29 @@
+name: F-ROSS02 RossFast D3R production binding
+
+on:
+  push:
+    branches:
+      - work/f-ross02-production-binding
+  pull_request:
+    paths:
+      - 'src/runtime/mod_rossfast_d3r_model_binding.f90'
+      - 'src/runtime/mod_rossfast_d3r_execution_policy.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/ross/test_ross02_rossfast_d3r_model_binding.f90'
+      - 'tests/ross/run_ross02_rossfast_d3r_model_binding.sh'
+      - '.github/workflows/ross02-production-binding.yml'
+  workflow_dispatch:
+
+jobs:
+  ross02-production-binding:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify bounded RossFast D3R production binding
+        run: bash tests/ross/run_ross02_rossfast_d3r_model_binding.sh
