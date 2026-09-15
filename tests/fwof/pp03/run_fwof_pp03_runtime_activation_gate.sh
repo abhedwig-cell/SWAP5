@@ -31,6 +31,7 @@ STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fb
 
 BASE_SOURCES=(
   src/transaction/mod_transaction_reference.f90
+  src/adapter/mod_accepted_trajectory_directional_publication.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
