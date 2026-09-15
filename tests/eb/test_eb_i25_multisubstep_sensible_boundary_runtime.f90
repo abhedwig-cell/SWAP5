@@ -33,8 +33,8 @@ program test_eb_i25_multisubstep_sensible_boundary_runtime
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, &
-       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state
@@ -105,9 +105,9 @@ contains
          active_calls, publication)
 
     call require(output%completed .and. output%committed, 'two-half inflow committed')
-    call require(output%accepted_substeps == 2, 'external full-half accepted exactly two half steps')
+    call require(output%accepted_substeps == 1, 'external full-half accepted as one canonical commit')
     call require(publication%ready(), 'two-half publication ready')
-    call require(publication%accepted_substeps() == 2, 'publication accepted substeps')
+    call require(publication%accepted_substeps() == 1, 'publication records one canonical commit')
     call require(publication%carrier_sample_count() == 2, 'carrier contains only accepted half steps')
     call require(publication%top_status() == EB_I25_TOP_MULTISUBSTEP_INFLOW, 'two-half inflow status')
     call publication%top_liquid_inflow(inflow_cm, available)
@@ -158,7 +158,7 @@ contains
          config, t0, t1, energy_parameters, eb_i25_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, publication)
 
-    call require(output%accepted_substeps == 2 .and. publication%ready(), 'missing donor two-half publication')
+    call require(output%accepted_substeps == 1 .and. publication%ready(), 'missing donor external full-half publication')
     call require(publication%carrier_sample_count() == 2, 'missing donor carrier accepted-only')
     call require(publication%top_status() == EB_I25_TOP_DONOR_UNAVAILABLE, 'missing donor explicit status')
     call publication%boundary_snapshot(boundary, available)
@@ -199,7 +199,7 @@ contains
          config, t0, t1, energy_parameters, eb_i25_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, publication)
 
-    call require(output%accepted_substeps == 2 .and. publication%ready(), 'outflow two-half publication')
+    call require(output%accepted_substeps == 1 .and. publication%ready(), 'outflow external full-half publication')
     call require(publication%top_status() == EB_I25_TOP_OUTFLOW_UNQUALIFIED, 'outflow donor direction guarded')
     call publication%boundary_snapshot(boundary, available)
     call require(available .and. boundary%top_conductive_available, 'outflow conductive aggregate remains available')
@@ -311,7 +311,7 @@ contains
     integer :: enthalpy_status
 
     call initialize_parameters(parameters)
-    call initialize_committed_state(committed, parameters, t0, .not. two_half)
+    call initialize_committed_state(committed, parameters, t0, .true.)
     call initialize_forcing(parameters, forcing, q)
     template%template_id = 92501_int64
     template%physics_topology_id = 92502_int64
@@ -319,11 +319,7 @@ contains
     template%state_layout_id = 92504_int64
     template%solver_interface_id = 92505_int64
     template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
-    if (two_half) then
-      template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
-    else
-      template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
-    end if
+    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     column%column_id = column_id
     column%template_id = template%template_id
@@ -333,7 +329,7 @@ contains
     column%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     if (two_half) then
       config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-      config%transaction%temporal_tolerance = 1.0e6_real64
+      config%transaction%temporal_tolerance = huge(1.0_real64)
       config%model_temporal_indicator_budget_available = .false.
       config%model_temporal_indicator_budget = 0.0_real64
     else

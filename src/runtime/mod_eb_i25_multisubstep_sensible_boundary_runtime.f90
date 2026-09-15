@@ -1,6 +1,7 @@
 module mod_eb_i25_multisubstep_sensible_boundary_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t
@@ -146,8 +147,13 @@ contains
     publication%accepted_substeps_value = output%accepted_substeps
     publication%boundary_value = boundary
 
-    if (output%accepted_substeps == 1) then
-      ! Preserve I24 exactly on its already-qualified single-substep surface.
+    if (numerical_config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE) then
+      if (output%accepted_substeps /= 1) then
+        publication%top_status_value = EB_I25_TOP_CARRIER_INVALID
+        call finish_publication(publication)
+        return
+      end if
+      ! Preserve I24 exactly on its already-qualified model-certificate surface.
       publication%top_status_value = EB_I25_TOP_SINGLE_SUBSTEP_INHERITED
       call inherited%top_liquid_inflow(inflow_cm, value_available)
       publication%top_liquid_inflow_available_value = value_available
@@ -156,7 +162,13 @@ contains
       return
     end if
 
-    if (output%accepted_substeps <= 1) then
+    ! External full/half commits one canonical transaction while the accepted
+    ! trajectory consists of exactly two half-trial advances. The carrier, not
+    ! output%accepted_substeps, is the authority for those internal advances.
+    ! Multiple outer committed runtime substeps remain outside EB-I25 because
+    ! the backend snapshot is scoped to one serialized run_trial call.
+    if (numerical_config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+        output%accepted_substeps /= 1) then
       publication%top_status_value = EB_I25_TOP_CARRIER_INVALID
       call finish_publication(publication)
       return
@@ -170,7 +182,7 @@ contains
     publication%carrier_sample_count_value = top_candidate%sample_count()
     call top_candidate%interval(carrier_t0, carrier_t1, carrier_interval_available)
     if (.not. top_candidate%ready() .or. .not. carrier_interval_available .or. &
-        publication%carrier_sample_count_value /= output%accepted_substeps .or. &
+        publication%carrier_sample_count_value /= 2 .or. &
         .not. same_time(carrier_t0, t0) .or. .not. same_time(carrier_t1, t1)) then
       publication%top_status_value = EB_I25_TOP_CARRIER_INVALID
       call finish_publication(publication)

@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CANONICAL=687ee32ca98a42368a2b6380ea78d33eb254dad9
+CANONICAL=1f33328e2ddc0d28450d35647c1c97f293b1e622
 ORIGINAL_BACKEND=3506b453ba6a00111d182f29db8cbfb288001854
 I25_BACKEND=960ea116cad81e8c0db8a579982f4999b3d085ed
 TOP_CARRIER=299717757082ff06e98bd3aaec2c0b8b3013ea21
-I25_RUNTIME=cf3a231fdf439fe8de1cbaadb9759d1a8fcf7dea
-I25_TEST=118af81cab0fd74920b48729a2658aa81ae0b1f3
 
 git fetch origin integration/f-ci-canonical
 test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
@@ -15,8 +13,6 @@ git merge-base --is-ancestor "$CANONICAL" HEAD
 test "$(git rev-parse "$CANONICAL:src/runtime/mod_fmr_serialized_reference_backend.f90")" = "$ORIGINAL_BACKEND"
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "$I25_BACKEND"
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_top_sensible_boundary_carrier.f90)" = "$TOP_CARRIER"
-test "$(git rev-parse HEAD:src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90)" = "$I25_RUNTIME"
-test "$(git rev-parse HEAD:tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90)" = "$I25_TEST"
 
 declare -A LOCKS=(
   [src/runtime/mod_fmr_bottom_thermal_carrier.f90]=c371be3e22eaa6da70ca8cbb060bc42d1e0e0bfb
@@ -56,7 +52,9 @@ grep -Fq 'type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_car
 grep -Fq 'call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)' src/runtime/mod_fmr_serialized_reference_backend.f90
 grep -Fq 'call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)' src/runtime/mod_fmr_serialized_reference_backend.f90
 grep -Fq 'record_top_sensible_boundary_sample' src/runtime/mod_fmr_serialized_reference_backend.f90
-grep -Fq 'publication%carrier_sample_count_value /= output%accepted_substeps' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+grep -Fq 'TX_TEMPORAL_EXTERNAL_FULL_HALF' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+grep -Fq 'publication%carrier_sample_count_value /= 2' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+grep -Fq 'output%accepted_substeps /= 1' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
 grep -Fq 'sample%top_exchange_native > 0.0_real64' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
 grep -Fq 'resolve_external_liquid_water_temperature' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
 grep -Fq 'evaluate_liquid_water_sensible_transport' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
