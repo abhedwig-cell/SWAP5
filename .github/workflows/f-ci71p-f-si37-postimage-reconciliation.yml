@@ -1,0 +1,89 @@
+name: F-CI71P F-SI37 current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci71p-f-si37-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify two-parent promotion and exact tree identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREIMAGE=5ad1192dc3a120c5be0f36b023ebcac8d862e904
+          PROMOTED=fe8f91d214e9e14b7a42f1d9cebe72ee411f5067
+          POSTIMAGE=a1a535ec7db9ca5ccd77395835fb71e8667f6ad7
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$POSTIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^1")" = "$PREIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^2")" = "$PROMOTED"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "$(git rev-parse "$PROMOTED^{tree}")"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "1207116eceef5ba11fbfe7da8099d6ea238d52e4"
+          echo 'FCI71P_TRUE_TWO_PARENT_PROMOTION=PASS'
+          echo 'FCI71P_PROMOTED_TREE_IDENTITY=PASS'
+
+      - name: Verify exact admitted SI37 postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=a1a535ec7db9ca5ccd77395835fb71e8667f6ad7
+          test "$(git rev-parse "$POSTIMAGE:src/solver/mod_soil_water_accepted_step_direction_contract.f90")" = "52698b1ad2350bf787862a053a49c7c73c3358f0"
+          test "$(git rev-parse "$POSTIMAGE:src/solver/mod_b110_default_mvg_directional_provider.f90")" = "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
+          test "$(git rev-parse "$POSTIMAGE:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90")" = "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+          test "$(git rev-parse "$POSTIMAGE:src/adapter/mod_reference_richards_accepted_step_directional_service.f90")" = "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+          test "$(git rev-parse "$POSTIMAGE:src/adapter/mod_reference_richards_temporal_indicator.f90")" = "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+          test "$(git rev-parse "HEAD:src")" = "$(git rev-parse "$POSTIMAGE:src")"
+          echo 'FCI71P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI71P_REQUALIFIED_DEPENDENCY_POSTIMAGE_IDENTITY=PASS'
+
+      - name: Require governance-only reconciliation delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=a1a535ec7db9ca5ccd77395835fb71e8667f6ad7
+          git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci71p-f-si37-postimage-reconciliation.yml
+          .github/workflows/fci71-f-si37-moving-preservation.yml
+          integration/f-ci/F-CI71P_STATUS.json
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool integration/f-ci/F-CI71P_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_F_CI71P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI71P_STATUS.json
+          grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI71P_STATUS.json
+          grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI71P_STATUS.json
+          grep -Fq '"moving_preservation_installed": true' integration/f-ci/F-CI71P_STATUS.json
+          echo 'FCI71P_GOVERNANCE_ONLY_DELTA=PASS'
+
+      - name: Replay independent F-VQ89 evidence on canonical postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/qualification/fvq89/run_fvq89_fsi37_independent.sh
+          echo 'FCI71P_POSTIMAGE_INDEPENDENT_REPLAY=PASS'
+
+      - name: Verify no excluded scientific scope entered reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          d=json.load(open('integration/f-ci/F-CI71P_STATUS.json', encoding='utf-8'))
+          assert d['scope']['src_changed'] is False
+          assert d['scope']['EB_touched'] is False
+          assert d['scope']['ROSS_touched'] is False
+          assert d['scope']['RossFast_touched'] is False
+          assert d['scope']['groundwater_coupling_composition_broadened'] is False
+          assert d['scope']['new_scientific_capability_opened'] is False
+          print('FCI71P_SCOPE_GUARD=PASS')
+          PY

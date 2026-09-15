@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.fci71p.status.v1",
+  "work_unit": "F-CI71P",
+  "title": "F-SI37 current-canonical postimage reconciliation and moving preservation",
+  "decision": "QUALIFIED_F_CI71P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "canonical_preimage": "5ad1192dc3a120c5be0f36b023ebcac8d862e904",
+  "promoted_admission_head": "fe8f91d214e9e14b7a42f1d9cebe72ee411f5067",
+  "canonical_admission_sha": "a1a535ec7db9ca5ccd77395835fb71e8667f6ad7",
+  "canonical_admission_tree": "1207116eceef5ba11fbfe7da8099d6ea238d52e4",
+  "source_authority": "992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd",
+  "independent_qualification_tested_head": "53c3e7e1a8b805b6ad1c408b7a408fe159da9588",
+  "independent_qualification_evidence_head": "f8c43db9cf2dc4f3c330f8cb4d2ba0910f0b68f9",
+  "admission_workflow_runs": {
+    "pre_pr_push": 34943684635,
+    "independent_pr_replay": 34943757420,
+    "f_ci71_pr": 34943757316,
+    "canonical_regression_pr": 34943757311
+  },
+  "exact_production_payload": {
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+  },
+  "requalified_dependency_surface": {
+    "src/adapter/mod_reference_richards_temporal_indicator.f90": "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+  },
+  "promotion_verification": {
+    "true_two_parent_merge": true,
+    "first_parent_is_frozen_canonical_preimage": true,
+    "second_parent_is_exact_final_green_f_ci71_head": true,
+    "canonical_tree_equals_promoted_head_tree": true,
+    "exact_production_blobs_preserved": true,
+    "independent_evidence_replayed_on_postimage": true
+  },
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_preservation_installed": true,
+  "scope": {
+    "src_changed": false,
+    "EB_touched": false,
+    "ROSS_touched": false,
+    "RossFast_touched": false,
+    "groundwater_coupling_composition_broadened": false,
+    "new_scientific_capability_opened": false
+  },
+  "changed_files_relative_to_canonical_admission": [
+    ".github/workflows/f-ci71p-f-si37-postimage-reconciliation.yml",
+    ".github/workflows/fci71-f-si37-moving-preservation.yml",
+    "integration/f-ci/F-CI71P_STATUS.json"
+  ],
+  "canonical_admission": true,
+  "hard_nonclaims": [
+    "F-CI71P is governance-only and changes no production source.",
+    "F-SI37 admission remains one accepted-step directional derivative capability only.",
+    "No multi-step trajectory sensitivity or groundwater-coupling composition is admitted here.",
+    "No EB, ROSS or RossFast capability is touched or qualified here."
+  ]
+}
