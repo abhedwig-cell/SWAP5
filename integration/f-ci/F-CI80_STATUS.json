@@ -2,66 +2,56 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI80",
   "title": "RossFast restricted stack current-canonical admission",
-  "phase": "QUALIFY_SUCCESSOR_REPLAY_REQUIRED",
-  "decision": "RECOMPOSE_UNCHANGED_ROSSFAST_PROJECTION_ON_GOVERNANCE_ONLY_F_CI79P_SUCCESSOR",
+  "phase": "QUALIFIED_SUCCESSOR_PREIMAGE",
+  "decision": "QUALIFIED_EXACT_F_ROSS02_TO_F_ROSS10_PROJECTION_ON_F_CI79P_SUCCESSOR_PENDING_EXACT_PREIMAGE_ADMISSION",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_preimage": "64937452be6b073a21b1b87acf21ce4edcbfda14",
   "canonical_preimage_tree": "187651cb2b5bce636f675b876b36f62af94f16f6",
-  "previous_canonical_preimage": "b7c2e510c68e5799a138e881793d27037c482b8a",
   "admission_branch": "integration/f-ci80-rossfast-restricted-stack-admission",
+  "qualified_candidate_head": "aa94d68e5aeb7cf1412aa74c1841a5f0b9b4b834",
+  "qualified_candidate_tree": "bb41c59c92ea297dc3effc59b2b938a670043131",
   "qualified_source_head": "a483452f04a85f3bb64eaad6a383a4800abaed16",
   "qualified_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"],
   "successor_reconciliation": {
     "successor": "F-CI79P",
-    "successor_head": "64937452be6b073a21b1b87acf21ce4edcbfda14",
-    "commits_since_previous_preimage": 5,
-    "changed_paths": [
-      ".github/workflows/f-ci79p-eb-i25-postimage-reconciliation.yml",
-      ".github/workflows/fci72-eb-i23-moving-preservation.yml",
-      ".github/workflows/fci74-eb-i24-moving-preservation.yml",
-      ".github/workflows/fci79-eb-i25-moving-preservation.yml",
-      "integration/f-ci/F-CI79P_STATUS.json",
-      "tests/eb/run_fci79p_legacy_eb_successor_composition.sh"
-    ],
     "production_src_changed": false,
     "rossfast_dependency_changed": false,
     "classification": "GOVERNANCE_ONLY_SUCCESSOR"
   },
-  "prior_green_qualification": {
-    "head": "75aadefda75bf28666c863b66cf6f1346cd145f4",
-    "tree": "17d22c35f64f43bd723dd492f7d25f7121cca635",
-    "run_id": 34992109910,
-    "job_id": 104459108857,
+  "qualification": {
+    "run_id": 34992520370,
+    "job_id": 104460471486,
     "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "exact_qualified_blob_projection": true,
+    "six_material_real_table_kernel_registry_application_route_replayed": true,
+    "typed_config_and_external_file_adapter_replayed": true,
+    "invalid_mixed_and_missing_configuration_cases_fail_closed": true,
+    "o0_o2_output_identity": true,
+    "current_reference_backend_preserved_byte_identical": true,
+    "legacy_soilwater_swap_main_and_full_richards_task2_preserved": true,
+    "no_eb_groundwater_root_or_source_sink_scope_broadening": true,
     "ross08_output_sha256": "d77c21bc6a4c02fc3ba3bd62b73a7f8011946ce843e66c2c9a5d9097da791832",
-    "ross10_output_sha256": "345faf5ee92ffd6eca4e6feb332acee5f470e1b4858ca343464fce75d44652e5",
-    "evidence_reusable_as_scientific_provenance": true,
-    "sufficient_for_successor_promotion_without_replay": false
+    "ross10_output_sha256": "345faf5ee92ffd6eca4e6feb332acee5f470e1b4858ca343464fce75d44652e5"
   },
-  "stale_preimage_replay": {
-    "head": "7d882af93952db5644ac77306a846490e18c9f62",
-    "run_id": 34992243011,
-    "job_id": 104459544235,
-    "conclusion": "failure",
-    "classification": "EXPECTED_FAIL_CLOSED_CANONICAL_PREIMAGE_MOVED",
-    "production_failure": false
+  "artifacts": {
+    "diagnostics_id": 10406053158,
+    "diagnostics_zip_sha256": "ab31896cbdf549ecfc161bb62089b895e5b3d0b57f7f7e659a826644303673eb",
+    "evidence_id": 10405878745,
+    "evidence_zip_sha256": "40d56f9e71039b027c996826d978914df327b039bb29833c86876bbfdfb20998"
   },
   "canonical_admission": false,
   "mutations": [
-    "Accepted F-CI79P governance-only successor as the new exact admission preimage.",
-    "No RossFast production, assets, scientific domain, or reference/full-Richards semantics changed.",
-    "Prior green evidence retained as immutable scientific provenance; exact successor replay remains required."
+    "Persisted exact successor qualification evidence only.",
+    "No RossFast production source, assets, scientific domain, reference backend, Full-Richards path, EB, groundwater, root, or distributed source/sink semantics changed."
   ],
-  "next_permitted_action": "Replay the unchanged exact RossFast projection on canonical preimage 64937452be6b073a21b1b87acf21ce4edcbfda14. If green, persist final successor-qualified evidence, re-read live canonical, and promote only if it remains this exact preimage.",
+  "next_permitted_action": "Re-read live canonical. Promote the qualified F-CI80 candidate only if canonical remains exactly 64937452be6b073a21b1b87acf21ce4edcbfda14; otherwise reconcile the new successor before admission.",
   "exclusions": [
-    "No EB production changes.",
-    "No groundwater work.",
-    "No root or distributed source/sink broadening.",
-    "No legacy .swp grammar change.",
+    "No legacy .swp grammar or parser change.",
     "No SW_SOLVE reinterpretation.",
     "No automatic configuration discovery.",
-    "No direct swap_main production wiring.",
+    "No direct swap_main or new Public API production wiring.",
     "No mixed reference/RossFast MultiSWAP admission.",
-    "No new RossFast scientific domain."
+    "No dynamic-top, prescribed-head-bottom, groundwater, root, distributed source/sink, ponding, EB, heterogeneous-grid, arbitrary-profile-forcing, or duration-generalization admission."
   ]
 }
