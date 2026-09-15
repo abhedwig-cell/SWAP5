@@ -1,5 +1,5 @@
 {
-  "schema_version": 11,
+  "schema_version": 12,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP02",
   "title": "SWAP5 WOFOST81 Migration Preservation",
@@ -9,27 +9,16 @@
     "branch": "integration/f-ci-canonical",
     "reconciled_head": "aa25126ee19e25c60bd266951b7494ba635efeca",
     "last_checked_live_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
-    "relevant_crop_or_wofost_delta": false
+    "relevant_crop_or_wofost_delta_at_last_check": false,
+    "admission_reconcile_required": true
   },
   "branch": "work/f-wof-pp02-wofost81-migration-preservation",
+  "qualified_execution_head": "a1f08076a2c0470118463ed6215d53bebfb555ca",
+  "qualification_evidence_commit": "de49d199ad45ad424706900d6736bd57a80097b8",
   "admitted_reference": {
     "capability": "F-WOF-PP01",
     "qualified_outputs": ["DVS","LAI","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal","TAGP","TWLV","TWRT","TWSO","TWST"],
     "outside_surface": ["RD","TRA"]
-  },
-  "commits": {
-    "reconcile": "be5bbc178e8f21d9dfb20c30938aed8bb36f72df",
-    "kernel_qualification": "942a45d20298040f189be163697d17f927e1965f",
-    "parameter_and_n_owner_qualification": "9f6245f8f7b179b9180ab4f554121e5ab0d56e4b",
-    "composite_owner_lifecycle": "f2d1a99005668213faf3a17cc5c4581bf02b8105",
-    "rate_correction_evidence": "d3f5669afbec5eaf8c8b60a820aab3e5bf8cbea5",
-    "leaf_structural_close_checkpoint": "618dc8c34faca4c26488e61a503068cb8cb841af",
-    "one_day_candidate_production_and_test": "3c167e2e8c7bb2210f0ba73ec76e4bfb081e42c3",
-    "one_day_candidate_evidence": "eb7badde2e087af2e58f45cdec8058b05b69f7d5",
-    "repository_integration_gate": "7a1e8e8e52e321384fe3a7c7d86ccb7c151a2c96",
-    "repository_integration_runner_fix": "e29ec4e4796936d61cf74a9780c27cb949b29d97",
-    "repository_integration_test_fix": "df40199f55ab309ba39f2a0459a5d77e76352614",
-    "repository_integration_evidence": "995570c2ef1acae06d6f85c13844e9f38d5866cb"
   },
   "qualification_evidence": [
     "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
@@ -38,7 +27,8 @@
     "tests/fwof/pp02/F-WOF-PP02_RATE_CORRECTION_QUALIFICATION.json",
     "tests/fwof/pp02/F-WOF-PP02_LEAF_STRUCTURE_QUALIFICATION.json",
     "tests/fwof/pp02/F-WOF-PP02_ONE_DAY_CANDIDATE_QUALIFICATION.json",
-    "tests/fwof/pp02/F-WOF-PP02_REPOSITORY_INTEGRATION_QUALIFICATION.json"
+    "tests/fwof/pp02/F-WOF-PP02_REPOSITORY_INTEGRATION_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_TEN_CASE_PRESERVATION_QUALIFICATION.json"
   ],
   "migration_progress": {
     "source_faithful_process_kernels": "QUALIFIED",
@@ -48,32 +38,46 @@
     "wofost81_leaf_structure": "QUALIFIED",
     "two_phase_daily_owner_composition": "QUALIFIED",
     "full_repository_integration_compile_and_run": "QUALIFIED",
-    "ten_case_preservation_gate_executable": false
+    "ten_case_preservation_gate": "QUALIFIED"
+  },
+  "ten_case_preservation": {
+    "status": "PASS",
+    "cases": 10,
+    "states": 1045,
+    "accepted_transitions": 1035,
+    "first_divergences": 0,
+    "workflow_run_id": 35020067169,
+    "compiler": "GNU Fortran 13.3.0",
+    "artifact_id": 10417351690,
+    "artifact_zip_sha256": "a211ac6e04076f95532a0a16a0e96f2014173d7bc2ea61fe665477de46ebd055",
+    "o0_binary_sha256": "5913cb2d8de83bd73dfbfb8dc831c780fa97c2ac18f06cea72bc41caaeb33d53",
+    "o2_binary_sha256": "9565e8e715e86e3efe14d03e1d714a40d4d2b5a7612f8d1e7336ec6df2ad81a1",
+    "o0_o2_byte_identity": true,
+    "combined_replay_sha256": "99d52842fbe057f68254ad3c46336e479aca9dd228ddcf0a5b7ae1d6ca998ed1",
+    "combined_summary_sha256": "7b798cf131e3e04eeacf13e7320d264bd2d4ec0c9f560d6ae3d5e8074b291b46",
+    "maximum_observed_absolute_deviation": 7.275957614183426e-12,
+    "maximum_deviation_variable": "TAGP",
+    "minimum_oracle_margin_note": "all observed deviations are floating-point roundoff and remain orders of magnitude below the unchanged PP01 tolerances",
+    "RD_included": false,
+    "TRA_included": false
   },
   "repository_integration": {
-    "workflow_run_id": 35006619148,
-    "workflow_job_id": 104507860846,
-    "head": "df40199f55ab309ba39f2a0459a5d77e76352614",
-    "runner": "ubuntu-24.04",
-    "compiler": "GNU Fortran 13.3.0",
-    "o0": "PASS",
-    "o2": "PASS",
-    "o0_o2_transcript_identity": true,
-    "transcript_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
-    "marker": "F_WOF_PP02_REPOSITORY_INTEGRATION_GATE PASS",
-    "pp02_targets_warnings_as_errors": true,
-    "qualification_stubs_used": false
+    "one_day_workflow_run_id": 35006619148,
+    "one_day_transcript_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
+    "qualification_stubs_used": false,
+    "pp02_targets_warnings_as_errors": true
   },
-  "scientific_interpretation": "The exact PP02 WOFOST81 modules now compile and execute against the actual SWAP5 transaction and crop modules at O0 and O2 with identical observable output. The migration substrate is therefore ready for the independent ten-case PP01 full-season preservation replay; runtime activation remains out of scope until that replay passes.",
-  "verdict": "QUALIFIED_FULL_REPOSITORY_WOFOST81_ONE_DAY_INTEGRATION_READY_FOR_TEN_CASE_PRESERVATION_REPLAY",
+  "scientific_interpretation": "The SWAP5 WOFOST81 migration candidate preserves all 12 admitted WOFOST-owned trajectories across all ten independent Allard/PCSE potential-production cases. The complete 1045-state replay passes the original PP01 precisions with only floating-point roundoff. RD and TRA remain deliberately outside the equivalence surface. Runtime activation has not been introduced by this qualification campaign.",
+  "verdict": "QUALIFIED_TEN_CASE_WOFOST81_MIGRATION_PRESERVATION_READY_FOR_ADMISSION_RECONCILE",
   "mutations": {
     "existing_legacy_production_source_modified": false,
     "legacy_wofost_path_changed": false,
     "runtime_behavior_changed": false,
     "canonical_changed_by_pp02": false,
     "RD_changed": false,
-    "TRA_changed": false
+    "TRA_changed": false,
+    "tolerances_changed": false
   },
-  "next_permitted_action": "Construct the ten-case PP01 preservation replay using the admitted Allard/PCSE oracle and only the 12 admitted crop-owned outputs. Reuse the exact Spring_barley_301 parameter mapping and establish a source-faithful test-only weather/astronomy forcing binding before claiming full-season equivalence. Do not activate the WOFOST81 runtime path and do not include RD or TRA.",
-  "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path","no runtime activation before ten-case preservation PASS"]
+  "next_permitted_action": "RECONCILE current integration/f-ci-canonical against the last checked canonical head. If no dependency affecting PP02 production semantics or qualification evidence changed, admit the qualified PP02 modules and immutable evidence without runtime activation; otherwise fail fast and requalify only the affected surface.",
+  "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path","no runtime activation in PP02 admission"]
 }
