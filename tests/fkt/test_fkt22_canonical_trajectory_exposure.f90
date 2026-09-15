@@ -49,15 +49,15 @@ contains
     end select
   end subroutine clone_test_state
 
-  subroutine prepare_test_interval(self, forcing_in, interval_in, config_in)
+  subroutine prepare_test_interval(self, forcing, interval, config)
     class(test_model_t), intent(inout) :: self
-    class(canonical_forcing_t), intent(in) :: forcing_in
-    type(canonical_interval_t), intent(in) :: interval_in
-    type(canonical_numerical_config_t), intent(in) :: config_in
-    self%trajectory_requested = config_in%accepted_trajectory_direction%requested
-    self%requested_t0 = interval_in%t0
-    self%requested_t1 = interval_in%t1
-    if (.not. same_type_as(forcing_in, forcing_in)) error stop 'unreachable forcing type'
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(canonical_interval_t), intent(in) :: interval
+    type(canonical_numerical_config_t), intent(in) :: config
+    self%trajectory_requested = config%accepted_trajectory_direction%requested
+    self%requested_t0 = interval%t0
+    self%requested_t1 = interval%t1
+    if (.not. same_type_as(forcing, forcing)) error stop 'unreachable forcing type'
   end subroutine prepare_test_interval
 
   subroutine advance_test_model(self, state, t0, t1, outcome)
@@ -103,25 +103,25 @@ contains
         .not. same_type_as(half_state, half_state)) error stop 'unreachable temporal types'
   end function temporal_error_test_model
 
-  subroutine snapshot_test_trajectory(self, interval_in, trajectory)
+  subroutine snapshot_test_trajectory(self, interval, result)
     class(test_model_t), intent(inout) :: self
-    type(canonical_interval_t), intent(in) :: interval_in
-    type(accepted_trajectory_direction_result_t), intent(out) :: trajectory
-    trajectory = accepted_trajectory_direction_result_t()
+    type(canonical_interval_t), intent(in) :: interval
+    type(accepted_trajectory_direction_result_t), intent(out) :: result
+    result = accepted_trajectory_direction_result_t()
     if (.not. self%trajectory_requested) return
-    trajectory%requested = .true.
-    trajectory%available = .true.
-    trajectory%worker_id = 1
-    trajectory%generation = 1
-    trajectory%control_coordinate = 5
-    trajectory%accepted_steps = 3
-    trajectory%origin_t0 = self%requested_t0
-    trajectory%accepted_t1 = self%requested_t1
-    trajectory%accepted_bottom_exchange_derivative = 7.5_real64
-    trajectory%method = 'test-whole-window'
-    trajectory%route = 'accepted-trajectory'
-    if (interval_in%t0 /= self%requested_t0 .or. interval_in%t1 /= self%requested_t1) then
-      trajectory = accepted_trajectory_direction_result_t()
+    result%requested = .true.
+    result%available = .true.
+    result%worker_id = 1
+    result%generation = 1
+    result%control_coordinate = 5
+    result%accepted_steps = 3
+    result%origin_t0 = self%requested_t0
+    result%accepted_t1 = self%requested_t1
+    result%accepted_bottom_exchange_derivative = 7.5_real64
+    result%method = 'test-whole-window'
+    result%route = 'accepted-trajectory'
+    if (interval%t0 /= self%requested_t0 .or. interval%t1 /= self%requested_t1) then
+      result = accepted_trajectory_direction_result_t()
     end if
   end subroutine snapshot_test_trajectory
 
