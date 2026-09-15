@@ -1,0 +1,55 @@
+name: F-KT22 recomposer lock refresh v2
+
+on:
+  push:
+    branches:
+      - work/f-kt22-current-canonical-recomposition
+    paths:
+      - '.github/workflows/f-kt22-recomposer-lock-refresh-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-kt22-current-canonical-recomposition
+          fetch-depth: 0
+      - name: Bind recomposer to persisted live-canonical checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH=work/f-kt22-current-canonical-recomposition
+          TARGET=.github/workflows/f-kt22-current-canonical-recompose.yml
+          SELF=.github/workflows/f-kt22-recomposer-lock-refresh-v2.yml
+          OLD_PREVIOUS=64937452be6b073a21b1b87acf21ce4edcbfda14
+          OLD_CANONICAL=7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a
+          NEW=6acba7e7371347a17cc277ab8cec063d94646006
+          git fetch origin "$BRANCH" integration/f-ci-canonical
+          git reset --hard "origin/$BRANCH"
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$NEW"
+          python3 - "$TARGET" "$OLD_PREVIOUS" "$OLD_CANONICAL" "$NEW" <<'PY'
+          from pathlib import Path
+          import sys
+          p=Path(sys.argv[1]); old_previous=sys.argv[2]; old_canonical=sys.argv[3]; new=sys.argv[4]
+          s=p.read_text()
+          a=f'PREVIOUS_CANONICAL={old_previous}'
+          b=f'CANONICAL={old_canonical}'
+          if s.count(a) != 1 or s.count(b) != 1:
+              raise SystemExit('recomposer lock anchors not unique')
+          s=s.replace(a, f'PREVIOUS_CANONICAL={new}', 1)
+          s=s.replace(b, f'CANONICAL={new}', 1)
+          p.write_text(s)
+          PY
+          grep -Fq "PREVIOUS_CANONICAL=$NEW" "$TARGET"
+          grep -Fq "CANONICAL=$NEW" "$TARGET"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$TARGET"
+          git rm "$SELF"
+          git commit -m 'ci(F-KT22): bind recomposer to live-canonical checkpoint'
+          git push origin HEAD:"$BRANCH"
