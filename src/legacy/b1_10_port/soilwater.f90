@@ -1,6 +1,6 @@
 module MOD_SoilWater
 
-   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
+   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_accept_pending_trajectory_step
    implicit none
 
    private
@@ -202,6 +202,12 @@ module MOD_SoilWater
 
 ! ---    update parameters for soil water hystereses
          if (swhyst /= 0) call hysteresis ()
+
+! F-KT21: this is the existing physical substep acceptance boundary. A
+! directional result staged by task 2 is promoted only here, after the retry
+! loop has accepted the physical state. Rejected task-2 attempts never reach
+! task 3 and therefore cannot contribute to the accepted trajectory.
+         if (present(worker)) call a23bu_accept_pending_trajectory_step(worker)
 
       case default
          call swap_error ('soilwater', 'Illegal value for TASK')

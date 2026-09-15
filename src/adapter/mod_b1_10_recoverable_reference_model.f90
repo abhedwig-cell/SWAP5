@@ -44,6 +44,11 @@ contains
         .not. self%capabilities%trial_mass_flux_contract) &
       error stop 'B1.10 recoverable reference model: physical interval capabilities disabled'
 
+    ! F-KT21 trajectory scratch is prepared before the physical trial. A
+    ! retryable return is rolled back by the existing transaction attempt
+    ! context and is never finalized or published.
+    call self%prepare_trajectory_segment(t0, t1)
+
     select type (physical => state)
     type is (b1_10_process_state_t)
       if (.not. allocated(physical%h)) error stop 'B1.10 recoverable reference model: incomplete physical state'
@@ -69,6 +74,10 @@ contains
     class default
       error stop 'B1.10 recoverable reference model: unexpected state passed to advance'
     end select
+
+    ! Only a successfully completed physical interval can be finalized. Each
+    ! internal accepted substep was already promoted at SoilWater task 3.
+    call self%finalize_trajectory_segment(t1)
 
     outcome%solver_ok = .true.
     outcome%mass_in = trial_mass%total_in
