@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI79",
+  "title": "EB-I25 current-canonical admission",
+  "phase": "ADMIT_QUALIFIED",
+  "decision": "QUALIFIED_F_CI79_READY_FOR_CANONICAL_PROMOTION",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+  "admission_branch": "qualification/f-ci79-eb-i25-multisubstep-sensible-boundary-current-canonical-admission",
+  "qualified_eb_i25_checkpoint_head": "08be50f248f3e169a3f1aeebd263cfe95b0dccd0",
+  "owner_qualified_head_before_checkpoint": "7aa467dca8c691bf72a0276c0757a568ae574845",
+  "independent_qualification_head": "8c76942f73bf1278f5b02bc50435439c1099505f",
+  "initial_green_admission_head": "89ba42798421e8f8f46408a2329dfe3c53069c07",
+  "initial_green_run_id": 34989651185,
+  "initial_green_job_id": 104450675210,
+  "evidence": {
+    "live_canonical_exact_preimage": true,
+    "qualified_authority_lock": true,
+    "exact_qualified_postimage": true,
+    "inherited_dependency_lock": true,
+    "bounded_admission_delta": true,
+    "hard_nonclaims_preserved": true,
+    "independent_qualification_replayed": true,
+    "owner_evidence_replayed": true,
+    "independent_carrier_rollback_oracle_replayed": true,
+    "sample_count_broadening_mutant_rejected": true,
+    "outflow_broadening_mutant_rejected": true,
+    "rollback_restore_removal_mutant_rejected": true,
+    "no_scope_broadening": true
+  },
+  "admitted_scope": {
+    "rollback_safe_top_boundary_carrier": true,
+    "accepted_external_full_half_top_conductive_aggregation": true,
+    "accepted_external_full_half_snow_inactive_top_liquid_inflow": true,
+    "one_canonical_commit_two_internal_half_samples": true,
+    "single_substep_I24_semantics_preserved": true,
+    "missing_top_donor_fails_closed": true,
+    "accepted_external_full_half_top_liquid_outflow": false,
+    "multiple_outer_committed_runtime_substeps": false,
+    "snow_or_melt_thermal_provenance": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance_complete": false
+  },
+  "canonical_admission": false,
+  "full_energy_balance_complete": false,
+  "mutations": [
+    "Composed the exact qualified EB-I25 production/test postimage onto current canonical.",
+    "Added only F-VQ93 immutable qualification evidence and F-CI79 admission governance alongside that postimage.",
+    "No production semantics were changed during independent qualification or admission."
+  ],
+  "nonclaims": [
+    "Accepted external full/half top liquid outflow is not admitted.",
+    "Multiple outer committed runtime-substep aggregation is not admitted.",
+    "Snow or melt thermal provenance is not admitted.",
+    "No whole-column sensible-energy residual is admitted.",
+    "No complete SWAP5 Energy Balance is claimed."
+  ],
+  "next_permitted_action": "Replay this status-only admission head green, recheck that live canonical is still the exact preimage, then fast-forward integration/f-ci-canonical to this exact head. After promotion perform bounded postimage reconciliation before closing F-CI79.",
+  "exclusions": [
+    "No Ross or RossFast work.",
+    "No production semantic changes to force admission.",
+    "No claim broadening beyond independently qualified EB-I25."
+  ]
+}
