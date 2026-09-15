@@ -22,6 +22,7 @@ git merge-base --is-ancestor "$ADMITTED" HEAD
 echo 'FCI73P_ADMISSION_PARENTAGE_TREE=PASS'
 
 allowed=(
+  ".github/workflows/fci73-fgc25-moving-preservation.yml"
   ".github/workflows/fci73p-fgc25-postimage-reconciliation.yml"
   "integration/f-ci/F-CI73P_STATUS.json"
   "tests/qualification/fci73p/run_fci73p_fgc25_postimage_reconciliation_gate.sh"
