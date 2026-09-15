@@ -18,14 +18,14 @@ jobs:
         with:
           fetch-depth: 0
       - name: Apply bounded EB-I26 patch
-        run: python tools/eb_i26_top_outflow_bootstrap.py
+        run: python tools/eb_i26_bootstrap_fix.py
       - name: Persist implementation and remove bootstrap
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git rm tools/eb_i26_top_outflow_bootstrap.py .github/workflows/eb-i26-top-outflow-bootstrap.yml
+          git rm tools/eb_i26_top_outflow_bootstrap.py tools/eb_i26_bootstrap_fix.py .github/workflows/eb-i26-top-outflow-bootstrap.yml
           git add src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
           git add src/runtime/mod_fmr_serialized_reference_backend.f90
           git add src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
