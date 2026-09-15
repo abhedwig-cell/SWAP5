@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "FULL_REPOSITORY_WOFOST81_ONE_DAY_INTEGRATION",
+  "phase": "QUALIFY",
+  "qualified_head": "df40199f55ab309ba39f2a0459a5d77e76352614",
+  "workflow": {
+    "name": "F-WOF-PP02 repository integration",
+    "run_id": 35006619148,
+    "job_id": 104507860846,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "compile_policy": {
+    "canonical_dependencies": ["-std=f2008","-ffree-line-length-none","-Wall","-Wextra","-fcheck=all","-fbacktrace","-ffpe-trap=invalid,zero,overflow"],
+    "pp02_targets_and_test": ["-std=f2008","-ffree-line-length-none","-Wall","-Wextra","-Werror","-fcheck=all","-fbacktrace","-ffpe-trap=invalid,zero,overflow"],
+    "optimizations": ["-O0","-O2"]
+  },
+  "result": {
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
+    "marker": "F_WOF_PP02_REPOSITORY_INTEGRATION_GATE PASS"
+  },
+  "validated_semantics": [
+    "all PP02 production modules compile against the actual SWAP5 transaction and crop modules without qualification stubs",
+    "PP02 target modules compile warnings-as-errors at both O0 and O2",
+    "two-phase WOFOST81 candidate preparation executes using the public current SWAP5 parameter constructors",
+    "zero-carbon case reconstructs donor root/stem gross growth from negative net growth plus same-step death",
+    "N-deficient committed state prepares positive external N demand",
+    "negative external N supply fails closed",
+    "successful external N supply produces a valid N-balanced composite candidate",
+    "committed crop and N state remain bitwise unchanged through prepare, rejected apply and successful candidate construction",
+    "O0 and O2 observable transcripts are byte-identical"
+  ],
+  "known_preexisting_warning": "mod_transaction_reference.f90 contains an existing real-equality warning; as in existing F-WOF gates, canonical dependencies are not requalified under Werror while PP02 target modules are",
+  "production_reachability": false,
+  "legacy_path_modified": false,
+  "RD_changed": false,
+  "TRA_changed": false,
+  "verdict": "QUALIFIED_FULL_REPOSITORY_ONE_DAY_INTEGRATION_READY_FOR_TEN_CASE_PRESERVATION_REPLAY"
+}

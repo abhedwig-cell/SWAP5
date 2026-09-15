@@ -1,0 +1,19 @@
+name: F-CI84 F-WOF-PP02 current-canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci84-fwof-pp02-wofost81-migration-preservation-admission
+  workflow_dispatch:
+
+jobs:
+  admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler version
+        run: gfortran --version
+      - name: F-CI84 current-canonical admission gate
+        run: bash tests/fci/run_fci84_fwof_pp02_current_canonical_admission.sh

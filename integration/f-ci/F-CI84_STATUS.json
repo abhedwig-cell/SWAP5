@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.fci84.status.v1",
+  "work_unit": "F-CI84",
+  "capability": "F-WOF-PP02",
+  "title": "WOFOST81 migration-preservation current-canonical admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "state": "RECOMPOSED_ON_CURRENT_CANONICAL_PENDING_GREEN",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "36ebfcfe39fb9a70b522508933bfcf331545d7e0",
+    "pre_admission_tree": "c2e169b4e63eb4e6c5c3a5174d4302b8397f2d3a",
+    "prior_checked_head": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
+    "delta_commits_since_prior_check": 26,
+    "relevant_pp02_dependency_delta": false,
+    "delta_summary": "F-GC23/F-CI85 groundwater runtime and governance only; no src/crop, PP02 testbank, or transaction-source changes",
+    "promotion_method": "NON_FORCE_FAST_FORWARD_ONLY"
+  },
+  "owner": {
+    "branch": "work/f-wof-pp02-wofost81-migration-preservation",
+    "qualified_checkpoint_head": "8ec8958cb0cc7e68f4342e8c6f5568db8a78ebd1",
+    "qualification_evidence_commit": "de49d199ad45ad424706900d6736bd57a80097b8",
+    "qualified_execution_head": "a1f08076a2c0470118463ed6215d53bebfb555ca",
+    "ten_case_verdict": "QUALIFIED_TEN_CASE_WOFOST81_MIGRATION_PRESERVATION"
+  },
+  "qualified_surface": {
+    "cases": 10,
+    "states": 1045,
+    "accepted_transitions": 1035,
+    "qualified_outputs": ["DVS","LAI","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal","TAGP","TWLV","TWRT","TWSO","TWST"],
+    "outside_surface": ["RD","TRA"],
+    "tolerances_changed": false,
+    "runtime_activation_in_scope": false
+  },
+  "admission": {
+    "branch": "integration/f-ci84-fwof-pp02-wofost81-migration-preservation-admission",
+    "production_delta": "ELEVEN_ADDITIVE_WOFOST81_MODULES",
+    "existing_legacy_wofost_source_modified": false,
+    "runtime_activation_added": false,
+    "first_green_postimage_head": "055f6c01c557a540cf3c23613d90141490882322",
+    "first_green_run": 35021495439,
+    "first_green_job": 104557993536,
+    "first_green_decision": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+    "recomposition_required_because_canonical_advanced": true,
+    "owner_one_day_gate_required": true,
+    "owner_case001_fullseason_gate_required": true,
+    "owner_case002_fullseason_gate_required": true,
+    "ten_case_immutable_evidence_required": true
+  },
+  "failed_harness_history": [
+    {
+      "run": 35021361741,
+      "head": "cd9ea61c18d34d81fc0ff075019852bb2d8f1247",
+      "classification": "SHALLOW_CHECKOUT_OWNER_PROVENANCE_OBJECT_UNAVAILABLE",
+      "production_or_scientific_defect": false
+    },
+    {
+      "run": 35021432826,
+      "head": "85388bed9fe5834d15f538785bd27ad07b696c2a",
+      "classification": "SHALLOW_CHECKOUT_PRE_CANONICAL_OBJECT_UNAVAILABLE",
+      "production_or_scientific_defect": false
+    }
+  ],
+  "excluded_transport_artifacts": [
+    "tests/fwof/pp02/case001_fixture.tar.gz.b64",
+    "tests/fwof/pp02/case001_fixture.b64.part04"
+  ],
+  "hard_exclusions": [
+    "No EB changes",
+    "No ROSS or RossFast changes",
+    "No groundwater changes introduced by F-CI84",
+    "No RD migration",
+    "No TRA migration",
+    "No maize blocker work",
+    "No tolerance changes",
+    "No replacement of the legacy WOFOST path",
+    "No WOFOST81 runtime activation in F-CI84"
+  ],
+  "next_permitted_action": "Run the recomposed F-CI84 current-canonical postimage gate. If green, recheck live canonical immediately; if unchanged, persist CLOSED_CANONICAL_ADMITTED governance checkpoint on the admission branch, require that checkpoint to pass the same gate, then promote only by non-force fast-forward."
+}
