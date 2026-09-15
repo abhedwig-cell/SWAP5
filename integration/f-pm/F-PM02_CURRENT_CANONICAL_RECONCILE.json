@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "capability": "SWAP5_SNOW_RESTRICTED_ONE_CALL_DAILY",
+  "owner_work_unit": "F-PM02",
+  "phase": "RECONCILE",
+  "status": "CHECKPOINT_RECONCILED_RUNTIME_REQUALIFICATION_REQUIRED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+    "tree": "2dec98b39abb5001040fdb7e5b531aeb1e03f748"
+  },
+  "authorities": {
+    "f_pm02_branch": "work/f-pm02-snow-admission",
+    "f_pm02_close_head": "89a834f56317b516acca33b73ab94238ae30204d",
+    "qualified_snow_source_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "qualified_snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "f_vq16_closeout": "98712959d811c788c77842eede4c6f558cca1c11",
+    "f_vq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "f_mq24_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+    "f_mr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605"
+  },
+  "qualified_candidate_blobs": {
+    "snow_process": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_reference_backend": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "serialized_multiswap_runtime": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
+  },
+  "current_canonical_blobs": {
+    "snow_process": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_reference_backend": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "serialized_multiswap_runtime": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "reconciliation": {
+    "f_vq16_scientific_qualification_reusable": true,
+    "reason_f_vq16": "Exact qualified Snow production blob is unchanged on current canonical.",
+    "f_vq17_historical_qualification_still_valid_for_exact_old_candidate": true,
+    "f_vq17_sufficient_for_current_canonical_runtime": false,
+    "f_mq24_historical_qualification_still_valid_for_exact_old_candidate": true,
+    "f_mq24_sufficient_for_current_canonical_runtime": false,
+    "equivalent_snow_process_semantics_present_on_canonical": true,
+    "runtime_dependency_changed": true,
+    "missing_gate": "CURRENT_CANONICAL_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_RUNTIME_COMPOSITION_PRESERVATION"
+  },
+  "preserved_scope": {
+    "snow_semantics": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "scientific_identity": "BITWISE_WHERE_PREVIOUSLY_QUALIFIED",
+    "unsupported_durations": "FAIL_CLOSED",
+    "transaction_semantics": "CHECKPOINT_TRIAL_RETRY_COMMIT_ONLY",
+    "mass_semantics": "SNOW_STORAGE_PLUS_EXTERNAL_TERMS_WITH_MELT_INTERNAL_TRANSFER_NOT_DOUBLE_COUNTED",
+    "multiswap": "SERIALIZED_REAL_PHYSICS_ONLY_MAX_SIMULTANEOUS_SOLVES_1",
+    "general_swap5_release": false
+  },
+  "affected_evidence_only": [
+    "F-VQ17 runtime/composition evidence",
+    "F-MQ24 restricted serialized MultiSWAP runtime evidence"
+  ],
+  "unaffected_evidence_reused": [
+    "F-PM02 structural migration evidence",
+    "F-VQ16 independent scientific Snow qualification"
+  ],
+  "production_source_modified": false,
+  "next_permitted_action": "QUALIFY current canonical only for the affected runtime/composition preservation gate. Do not reopen Snow science. If a missing runtime seam is found, stop and identify its owner rather than modifying Snow semantics.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new Snow physics",
+    "subdaily Snow",
+    "multiday Snow",
+    "arbitrary-duration Snow",
+    "new Richards physics",
+    "parallel real-physics admission",
+    "performance claims"
+  ]
+}
