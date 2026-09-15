@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI14 Temporal Acceptance Contract Admission",
+  "qualification_basis": {
+    "oracle": "B1.10",
+    "fci14_qualified_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "fci14_canonical_workflow_run": 34107845964,
+    "fci14_canonical_job": 101697462464,
+    "fvq04_final_head": "b406382a49f264e8f05441442a6e22eab4f0f6ac"
+  },
+  "moving_canonical_overlay": {
+    "commit": "927b7fb831ac91f77da11eb375e71b1975e1749f",
+    "work_unit": "F-CI17",
+    "role": "FORMAL_CLOSEOUT_ONLY",
+    "consumed_as_fvq05_qualification_basis": false
+  },
+  "qualification_targets": [
+    "exact F-CI14 provenance and canonical CI result",
+    "endpoint-vs-lagged-state temporal acceptance semantics",
+    "unit-aware max-of-ratios normalization contract",
+    "zero-limit exact-equality semantics",
+    "optional-process fail-closed behavior",
+    "separation of temporal accuracy policy from solver and mass policy",
+    "continued fail-closed state when no independently qualified eight-metric numeric profile exists"
+  ],
+  "explicit_non_targets": [
+    "inventing or calibrating B1.10 temporal limits",
+    "qualifying the example limits used by the deterministic F-CI14 test backend",
+    "admitting execute_reference_interval for production B1.10",
+    "changing production source or numerical policy",
+    "qualifying optional thermal, solute, irrigation, crop or WOFOST temporal behavior",
+    "promoting any F-CI exit gate other than recording the carried F-CI17 closeout state"
+  ],
+  "status": "PERSISTED_SCOPE_PRE_QUALIFICATION_RERUN"
+}

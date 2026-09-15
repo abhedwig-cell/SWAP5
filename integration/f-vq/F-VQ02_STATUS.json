@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ02",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "Verifier Contract Rebase on Qualified F-CI12",
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "fci12_source_head": "7098aeaa4ca38dc375a965340a35c9870a33de28",
+    "fci12_evidence_commit": "729574de00fbb1540affe2af74a7202b38d29754",
+    "fci12_workflow_run": 34102787767,
+    "oracle": "B1.10",
+    "fvq01_final_head": "7ef604c9d1135e03e1d2985e78f989b2f2e895ba",
+    "historical_verifier_head": "29e05be97493926ba451dfd53d5ed3170db47ad5"
+  },
+  "pre_test_checkpoint_commit": "01fa02ff7312c26fd84971067b35e2563146e7c9",
+  "tested_postimage": "390bb2595c4cc33b8bb1198f6ff091fbf473068e",
+  "qualification_workflow_run": 34105250843,
+  "qualification_job_id": 101688663253,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed": false,
+  "production_physics_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "status": "QUALIFIED_VERIFIER_CONTRACTS_ONLY",
+  "qualification_evidence": "integration/f-vq/evidence/F-VQ02_QUALIFICATION.json",
+  "next_action": "Start F-VQ03 only from an exact qualified successor production baseline. F-CI13 is the first candidate dependency because it addresses recoverable trial status, but it must be consumed through exact persisted qualification evidence rather than inferred from a green source-head workflow alone.",
+  "recovery_point": "qualification/f-vq02-verifier-contracts; tested verifier postimage 390bb2595c4cc33b8bb1198f6ff091fbf473068e; evidence/status finalization follows without production changes",
+  "blockers": [
+    "Complete optional-process temporal characterization is not admitted.",
+    "Scalar temporal-error metric and tolerance policy are not admitted.",
+    "execute_reference_interval for B1.10 is not admitted.",
+    "Real B1.10 reference-model end-to-end execution is not qualified.",
+    "Production canonical result contract is not admitted through a real reference route.",
+    "Complete snow and macropore storage accounting is absent.",
+    "Reentrant parallel legacy-backend qualification is absent."
+  ],
+  "holds": [
+    "Verifier self-tests qualify verifier logic only.",
+    "The synthetic TX/TIME harness remains production_physics_executed=false.",
+    "F-CI12 deterministic-testdouble evidence qualifies binding and transaction semantics only, not hydrological regression.",
+    "No READY or PASS reference-execution status may be created until a real canonical reference route is admitted.",
+    "No production source changes are permitted in F-VQ."
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ10",
+  "title": "Temporal Profile Qualification and Promotion Contract",
+  "oracle": "B1.10",
+  "basis": {
+    "fvq09_final_head": "7af5b30ec1707ac064a93f3af84bff403a203a6d",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "fci14_profile_path": "integration/f-ci/F-CI14_TEMPORAL_POLICY_PROFILE.json",
+    "fvq09_observation_schema_path": "integration/f-vq/F-VQ09_OBSERVATION_SCHEMA.json"
+  },
+  "source_observation_record_type": "REAL_B1_10_FULL_VS_TWO_HALF_RAW_OBSERVATION",
+  "acceptance_metrics": {
+    "h_cm": "cm",
+    "theta": "1",
+    "pond_cm": "cm",
+    "gwl_cm": "cm",
+    "volact_cm": "cm",
+    "ldwet_cm": "cm",
+    "spev_cm": "cm",
+    "saev_cm": "cm"
+  },
+  "diagnostic_only_lagged_metrics": ["hm1_cm", "thetm1", "pondm1_cm", "gwlm1_cm"],
+  "candidate_profile_requirements": {
+    "all_eight_metric_limits_required": true,
+    "limits_nonnegative": true,
+    "units_must_match_metric_contract": true,
+    "zero_limit_semantics": "EXACT_EQUALITY_REQUIRED",
+    "per_metric_rationale_required": true,
+    "per_metric_evidence_references_required": true,
+    "profile_scope_required": true,
+    "execution_environment_scope_required": true,
+    "optional_process_scope_required": true,
+    "candidate_profile_hash_required_before_validation": true
+  },
+  "evidence_partition": {
+    "calibration_set_required": true,
+    "validation_set_required": true,
+    "sets_must_be_nonempty": true,
+    "observation_ids_must_be_unique": true,
+    "calibration_validation_overlap_allowed": false,
+    "limits_must_be_frozen_before_validation": true,
+    "validation_may_not_change_limits": true,
+    "any_limit_or_scope_change_invalidates_prior_validation": true
+  },
+  "observation_admission": {
+    "exact_fvq09_record_schema_required": true,
+    "exact_source_and_asset_provenance_required": true,
+    "both_full_and_split_hard_mass_gates_must_pass": true,
+    "water_scope_compatible_required": true,
+    "raw_observation_may_not_contain_production_temporal_limits": true
+  },
+  "limit_origin_policy": {
+    "solver_convergence_tolerance_may_be_reused": false,
+    "hard_mass_tolerance_may_be_reused": false,
+    "single_observed_maximum_is_sufficient_justification": false,
+    "validation_results_may_be_used_to_tune_limits": false,
+    "independent_scientific_or_accuracy_rationale_required": true
+  },
+  "validation_semantics": {
+    "normalization": "max(delta_i / limit_i)",
+    "acceptance": "normalized_error <= 1",
+    "zero_limit_semantics": "exact_equality_required",
+    "every_validation_observation_must_pass": true,
+    "hard_mass_gate_relation": "SEPARATE_ABSOLUTE_GATE_NEVER_NORMALIZED_OR_RELAXED",
+    "passing_validation_is_necessary_but_not_by_itself_production_promotion": true
+  },
+  "optional_process_policy": {
+    "water_only_profile_may_not_claim_complete_optional_process_scope": true,
+    "active_optional_processes_require_explicit_temporal_state_coverage_before_complete_scope_promotion": true,
+    "uncovered_configurations_remain_fail_closed": true
+  },
+  "promotion_requirements": {
+    "independent_qualification_decision_required": true,
+    "immutable_candidate_profile_hash_required": true,
+    "immutable_calibration_observation_ids_required": true,
+    "immutable_validation_observation_ids_required": true,
+    "validation_evidence_required": true,
+    "separate_hard_mass_pass_evidence_required": true,
+    "declared_scope_required": true,
+    "production_profile_file_must_not_be_modified_by_fvq10": true
+  },
+  "fvq10_produces_numeric_limits": false,
+  "fvq10_promotes_production_profile": false,
+  "canonical_reference_admission_after_fvq10": "BLOCKED_FAIL_CLOSED"
+}

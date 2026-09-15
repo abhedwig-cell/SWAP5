@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ04",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "Real B1.10 Terminal-Failure Fixture Readiness",
+  "baseline": {
+    "oracle": "B1.10",
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_canonical_workflow_run": 34104845258,
+    "fci13_canonical_job": 101687946143,
+    "fvq03_final_head": "0956a2f4b4a3a9b2318a1254b2e972f7138c5182"
+  },
+  "integration_overlay": {
+    "canonical_commit": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "work_unit": "F-CI14",
+    "consumed_as_fvq04_qualification_basis": false,
+    "reason": "F-CI14 is carried to prevent a qualification PR from reverting the moving canonical production line. F-VQ04 real-failure semantics remain pinned to qualified F-CI13."
+  },
+  "scope_checkpoint_commit": "8abefd0114ef017e22e343112ab8e8e3f223240d",
+  "substantive_pre_overlay_checkpoint_commit": "53ddbda4a764f8c23db0e4c1229cdc6a5061d7ae",
+  "overlay_assembled_commit": "07919de5a62264ed2eb29949f18d0ea55ea0cafb",
+  "pre_test_checkpoint_commit": "bb96a5dc3dae9946c3797e2610711e8ebf4b4cf7",
+  "tested_postimage": "09299401ccde56e12eb956fd4898110e4c17c197",
+  "qualification_workflow_run": 34108517448,
+  "qualification_job_id": 101699040150,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed_since_overlay": false,
+  "real_terminal_failure_physics_qualified": false,
+  "real_failure_fixture_admission": "BLOCKED_FAIL_CLOSED",
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "status": "QUALIFIED_REAL_FAILURE_FIXTURE_ADMISSION_ONLY",
+  "qualification_decision": "QUALIFIED_REAL_FAILURE_FIXTURE_ADMISSION_ONLY",
+  "qualification_evidence": "integration/f-vq/evidence/F-VQ04_QUALIFICATION.json",
+  "next_action": "Start the next F-VQ unit from an exact qualified successor canonical dependency. F-CI14 is a candidate for temporal-contract admission, but no numerical temporal profile/tolerance may be inferred from its presence. Keep the real failure fixture blocker open until exact external B1.10, TTUTIL and Hupsel inputs plus a repeatable real failure record are available.",
+  "blockers": [
+    "Exact complete B1.10 source tree is not present in canonical Git or supplied as verified external qualification input.",
+    "TTUTIL source root with immutable provenance is not present in canonical Git or supplied as verified external qualification input.",
+    "Hupsel 2002-2004 case files with an immutable complete manifest are not present in canonical Git or supplied as verified external qualification input.",
+    "No real F-CI13 canonical-worker minimum-dt terminal-failure execution record exists.",
+    "F-CI14 provides a temporal-acceptance contract but no qualified numerical temporal profile/tolerances have been consumed by F-VQ04.",
+    "execute_reference_interval and real end-to-end B1.10 reference execution remain not admitted.",
+    "Complete snow/macropore storage and parallel legacy-backend qualification remain open."
+  ],
+  "holds": [
+    "Do not substitute the deterministic F-CI13 failure testdouble for a real hydrological failure fixture.",
+    "Do not change production source, physical configuration, convergence tolerances or retry policy to induce failure.",
+    "Do not use an unverified source archive or Hupsel case as qualification input.",
+    "A metadata-only PASS/QUALIFIED record must be rejected by the executable admission gate.",
+    "Reference execution remains fail-closed independently of this work unit.",
+    "Do not infer F-CI14 numerical qualification merely because its contract is present in the carried canonical overlay."
+  ]
+}

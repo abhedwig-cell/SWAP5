@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ01",
+  "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+  "qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+  "classification_values": [
+    "DIRECTLY_REUSABLE",
+    "REBASE_REQUIRED",
+    "BLOCKED_BY_FCI12",
+    "BLOCKED_BY_TEMPORAL_ERROR",
+    "BLOCKED_BY_RESULT_CONTRACT",
+    "SUPERSEDED",
+    "HISTORICAL_ONLY"
+  ],
+  "assets": [
+    {
+      "asset_id": "FVQ-A01",
+      "path": "reference/swap-4.3.1/snapshots/B1.10.yml",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Exact B1.10 snapshot pin; source manifest and patch chain are explicit."
+    },
+    {
+      "asset_id": "FVQ-A02",
+      "path": "tools/vq/b1_10_reconstruct.py",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Deterministic B1.10 reconstructor; requires exact external B0 archive and fails closed on identity mismatch."
+    },
+    {
+      "asset_id": "FVQ-A03",
+      "path": "tools/vq/b1_10_admission_gate.py",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": "4578b6c52f129196562a761997f14cfcfcd49e4d",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Static exact-oracle admission gate for B1.10."
+    },
+    {
+      "asset_id": "FVQ-A04",
+      "path": "tools/vq/cases/b1-10-reference-pin.json",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": null,
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Current B1.10 reference pin consumed by the admission gate."
+    },
+    {
+      "asset_id": "FVQ-A05",
+      "path": "tools/vq/b2_reference_gate.py",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": "fe9289f432f7b6c83fdf9943f5160529d8329f60",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Fail-closed admission logic remains valid as a negative gate; it does not execute physics."
+    },
+    {
+      "asset_id": "FVQ-A06",
+      "path": "tools/vq/cases/b2-reference-candidate.json",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": "c1cc81c938e14563a48139db96897b4f4fbec90c",
+      "classification": "REBASE_REQUIRED",
+      "reason": "Oracle is B1.10 but production observation baseline 0e5c581... predates F-CI11 and cannot represent the current canonical source."
+    },
+    {
+      "asset_id": "FVQ-A07",
+      "path": "docs/verification/vq-1d-b2-entrypoint-gate.md",
+      "origin": "canonical F-CI11 evidence tree",
+      "blob_sha": "cdf3cb919d76626934a989672f03e97191a61fb5",
+      "classification": "REBASE_REQUIRED",
+      "reason": "Fail-closed principle is reusable, but the stated production observation baseline predates F-CI11."
+    },
+    {
+      "asset_id": "FVQ-A08",
+      "path": "tests/transaction/run_a23bl_gate.sh and transaction tests",
+      "origin": "F-CI11 dependency chain",
+      "blob_sha": null,
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Qualifies transaction substrate/contracts only; no physics implication."
+    },
+    {
+      "asset_id": "FVQ-A09",
+      "path": "tests/fci/test_fci07_b1_10_physical_rerun.f90; tests/fci/run_fci07_full_b1_10_gate.sh",
+      "origin": "F-CI07 carried through F-CI11 chain",
+      "blob_sha": null,
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Exact-source focused same-state restore/rerun evidence for admitted whole-day Hupsel cases."
+    },
+    {
+      "asset_id": "FVQ-A10",
+      "path": "tests/fci/run_fci08_gate.sh; integration/f-ci/F-CI08_QUALIFICATION.md",
+      "origin": "F-CI08 carried through F-CI11 chain",
+      "blob_sha": "76e3bd6b2e54057e67722ed6132caa05f921f5cd",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Process checkpoint/restore ownership and fail-closed configuration checks are in the green dependency chain."
+    },
+    {
+      "asset_id": "FVQ-A11",
+      "path": "tests/fci/run_fci09_gate.sh",
+      "origin": "F-CI09 carried through F-CI11 chain",
+      "blob_sha": null,
+      "classification": "BLOCKED_BY_FCI12",
+      "reason": "Reusable only to prove the production generic advance/reference execution remains locked; F-CI12 owns the missing binding."
+    },
+    {
+      "asset_id": "FVQ-A12",
+      "path": "tests/fci/run_fci10_gate.sh; docs/verification/mass-accounting-contract.md",
+      "origin": "F-CI10/F-CI11 evidence tree",
+      "blob_sha": "7fe4b4fbb65f22add47b5b0c1e4a99844902fcfe",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Unrounded mass identity and fail-closed optional storage rules are reusable for admitted scope."
+    },
+    {
+      "asset_id": "FVQ-A13",
+      "path": "tests/fci/run_fci11_gate.sh; integration/f-ci/evidence/F-CI11_LOCAL_GENERIC_INTERVAL_GATE.json",
+      "origin": "F-CI11",
+      "blob_sha": "e75ec40baa689ea0a2ee3d64dfdfa8dfeb646ab6",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Exact-source non-midnight/cross-day, hard-mass and O0/O2 evidence for the admitted physical profile."
+    },
+    {
+      "asset_id": "FVQ-A14",
+      "path": "integration/f-ci/evidence/F-CI11_CANONICAL_GATE.json",
+      "origin": "F-CI11 qualification evidence commit",
+      "blob_sha": "7b56a7850aa31822fd5b2240084eb2dee367a431",
+      "classification": "DIRECTLY_REUSABLE",
+      "reason": "Pins source head, workflow run, job and complete green F-CI03..F-CI11 dependency chain."
+    },
+    {
+      "asset_id": "FVQ-A15",
+      "path": "tools/vq/tx_time_harness.py",
+      "origin": "historical branch vq/vq-1e1-transaction-time-harness",
+      "blob_sha": "7b82912499bafcfe510a5e4219b50bbea7837f8c",
+      "classification": "REBASE_REQUIRED",
+      "reason": "Verifier design is useful but depends on historical VQ result-contract files absent from the F-CI11 canonical tree and uses only a synthetic adapter."
+    },
+    {
+      "asset_id": "FVQ-A16",
+      "path": "tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json",
+      "origin": "historical branch vq/vq-1e1-transaction-time-harness",
+      "blob_sha": "ab4b0b3a09cce58f482a5484a9eee88f721aca6e",
+      "classification": "HISTORICAL_ONLY",
+      "reason": "Explicitly records b2_physics_status NOT_EVALUATED and production_physics_executed false."
+    },
+    {
+      "asset_id": "FVQ-A17",
+      "path": "docs/verification/vq-1d2-b2-reference-seam-contract.md",
+      "origin": "historical branch vq/vq-1e1-transaction-time-harness",
+      "blob_sha": "50bcf356102fe588d16e6d89da41f311224698f6",
+      "classification": "REBASE_REQUIRED",
+      "reason": "Semantics remain relevant but document is bound to stale B1.7-era admission context."
+    },
+    {
+      "asset_id": "FVQ-A18",
+      "path": "docs/verification/vq-1d3-b2-canonical-result-contract.md",
+      "origin": "historical branch vq/vq-1e1-transaction-time-harness",
+      "blob_sha": "b7e69d889aca1603dea52235f3ba227cb79ddb4a",
+      "classification": "REBASE_REQUIRED",
+      "reason": "Result semantics are potentially reusable, but the artifact is B1.7-era and not bound to the F-CI11 source or production implementation."
+    },
+    {
+      "asset_id": "FVQ-A19",
+      "path": "older VQ-1b/VQ-1c B1.5p1 and pre-B1.10 evidence",
+      "origin": "historical VQ branches/docs",
+      "blob_sha": null,
+      "classification": "SUPERSEDED",
+      "reason": "Corrected legacy oracle has advanced to B1.10; earlier oracle admission cannot be used as current qualification evidence."
+    },
+    {
+      "asset_id": "FVQ-A20",
+      "path": "earlier F-CI06 header-only standalone comparison",
+      "origin": "F-CI06 historical evidence",
+      "blob_sha": null,
+      "classification": "HISTORICAL_ONLY",
+      "reason": "F-CI11 explicitly excludes it from qualification evidence because the baseline was incomplete."
+    }
+  ],
+  "rules": [
+    "An asset may be reusable as a verifier/contract without qualifying production physics.",
+    "Stale-oracle evidence is superseded even when internally green.",
+    "Historical testdouble evidence remains historical until rebased and connected to an admitted production adapter.",
+    "Missing production capability is recorded as a blocker; F-VQ does not implement it."
+  ]
+}

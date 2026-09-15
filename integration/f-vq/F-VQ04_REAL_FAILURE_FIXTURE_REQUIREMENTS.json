@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ04",
+  "oracle": "B1.10",
+  "basis": {
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_canonical_workflow_run": 34104845258,
+    "fci13_canonical_job": 101687946143,
+    "b1_10_source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "canonical_b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "known_real_physics_route": {
+    "gate": "tests/fci/run_fci07_full_b1_10_gate.sh",
+    "required_environment": [
+      "FCI07_B1_10_SOURCE",
+      "FCI07_TTUTIL_ROOT",
+      "FCI07_CASE"
+    ],
+    "known_case_identity": "Hupsel 2002-2004",
+    "case_adjustment_previously_admitted": "SWCSV=0 only to suppress CSV observer output",
+    "qualification_note": "Previous Hupsel physical replay proves that an exact B1.10 full build route existed, not that the terminal minimum-dt failure was observed."
+  },
+  "external_inputs_required_for_real_failure_qualification": [
+    {
+      "id": "B1_10_SOURCE_TREE",
+      "requirement": "Exact 63-member B1.10 source tree verified against the canonical source manifest, or deterministic reconstruction from the canonical B0 archive followed by the same manifest verification."
+    },
+    {
+      "id": "TTUTIL_SOURCE_ROOT",
+      "requirement": "Exact TTUTIL source root with immutable provenance sufficient to reproduce the full legacy build."
+    },
+    {
+      "id": "HUPSEL_CASE",
+      "requirement": "Immutable Hupsel 2002-2004 qualification case with a complete file manifest and hashes. No physical forcing, initial-state or solver-policy mutation may be introduced merely to force failure."
+    },
+    {
+      "id": "REAL_FAILURE_EXECUTION_RECORD",
+      "requirement": "Source-bound execution record showing a naturally occurring persistent Richards nonconvergence at minimum dt through the F-CI13 canonical worker path."
+    }
+  ],
+  "required_observations": {
+    "terminal_minimum_dt_marker_observed": true,
+    "returned_trial_status": "B1_10_TRIAL_STATUS_RETRYABLE_NUMERICAL",
+    "failed_trial_state_restored": true,
+    "trial_mass_valid": false,
+    "rejected_trial_committed": false,
+    "fatal_configuration_reclassified_as_retryable": false,
+    "production_source_modified_for_fixture": false,
+    "solver_tolerances_modified_for_fixture": false,
+    "retry_policy_modified_for_fixture": false,
+    "physical_case_modified_to_force_failure": false,
+    "repeatability_required": true,
+    "minimum_repeat_count": 2
+  },
+  "non_requirements": {
+    "o0_o2_terminal_time_identity": "NOT_REQUIRED_OR_QUALIFIED",
+    "accepted_trial_mass_residual": "NOT_APPLICABLE_TO_REJECTED_FAILURE_TRIAL",
+    "temporal_error_policy": "SEPARATE_BLOCKER"
+  },
+  "current_readiness": {
+    "repository_contains_complete_b1_10_source_tree": false,
+    "repository_contains_ttutil_source_root": false,
+    "repository_contains_hupsel_case_files": false,
+    "fci13_canonical_workflow_artifacts_present": false,
+    "fci11_canonical_workflow_artifacts_present": false,
+    "real_terminal_failure_execution_record_present": false,
+    "real_terminal_failure_physics_qualified": false,
+    "status": "BLOCKED_MISSING_EXTERNAL_EXECUTION_INPUTS"
+  },
+  "fail_closed_rule": "No field named PASS, READY or QUALIFIED may be used for real terminal-failure physics until every external identity and every required observation is independently evidenced and executable."
+}
