@@ -1,0 +1,43 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC27 — Restricted Direct-Groundwater V1 End-to-End Qualification",
+  "qualification": "F-VQ97",
+  "phase": "RECONCILE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "tree": "1ab2485fe70a996970e65c349fb7332c77886587"
+  },
+  "existing_fgc27_authority": null,
+  "reconciliation": [
+    "No existing F-GC27 or F-VQ97 branch/workunit/evidence authority was found.",
+    "F-GC28 lineage evidence was read only as historical boundary evidence and identified F-GC20, F-GC22 and reserved F-GC23 as the former generic-v1 gaps; all three are now independently qualified and canonically admitted.",
+    "F-GC16 defines the target as restricted end-to-end production composition, not new groundwater physics or a new coupling algorithm.",
+    "The current canonical contains the executable F-GC21 predictor/one-corrector route, F-GC20 aggregation, F-GC22 accuracy ownership, F-GC23 response composition, F-GC24 coupled restart, F-GC25 MultiSWAP composition and F-GC26 external gateway.",
+    "F-GC23 remains a separate accepted-trajectory response-composition capability; F-GC27 must verify compatibility without rewriting F-GC21 to consume it internally."
+  ],
+  "pinned_core_blobs": {
+    "F-GC21_predictor_corrector": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "F-GC20_tile_aggregation": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F-GC22_accuracy_binding": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F-GC23_response_composition": "645141676536ae8289b9d52433798a965c7baa04",
+    "F-GC24_coupled_restart": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "F-GC25_multiswap_coupler": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+    "F-GC26_external_gateway": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "qualification_design": [
+    "exercise real canonical F-GC21/F-GC20/F-GC25/F-GC26 production modules through one execution chain",
+    "place a new independent state-machine backend only beyond the admitted external gateway boundary",
+    "use pinned F-GC21 SWAP fixture types only to make the kernel boundary executable; assertions and groundwater backend semantics are independently defined by F-VQ97",
+    "verify predictor plus exactly one corrector from one committed origin, exact action/reaction mass, all-or-nothing publication, no same-window retry and fail-closed shrink request",
+    "verify MultiSWAP area weighting/mapping through production code and multiple gateway instances sharing one backend without cross-talk",
+    "verify F-GC22 ownership by dependency/source guards without introducing a new tolerance",
+    "verify F-GC23 accepted-trajectory/provenance compatibility as a separate composition step, not by modifying F-GC21",
+    "verify F-GC24 restart compatibility without adding backend serialization or file IO",
+    "verify deterministic O0/O2 output and unchanged committed state after negative probes"
+  ],
+  "production_mutations": [],
+  "verdict": "RECONCILED_READY_FOR_INDEPENDENT_E2E_QUALIFICATION",
+  "next_permitted_action": "QUALIFY on this branch; if real canonical modules cannot compose without production glue, persist BLOCKED and stop.",
+  "hard_exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "production modifications merely to obtain PASS", "F-GC28 work"]
+}
