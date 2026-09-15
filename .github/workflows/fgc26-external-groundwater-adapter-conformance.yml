@@ -1,0 +1,23 @@
+name: F-GC26 external groundwater adapter conformance
+
+on:
+  push:
+    branches:
+      - work/f-gc26-external-groundwater-adapter-conformance
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact capability head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-GC26 conformance gate
+        run: bash tests/fgc/run_fgc26_external_groundwater_adapter_conformance.sh

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC26",
+  "title": "External Groundwater Adapter Conformance Capability Qualification",
+  "branch": "work/f-gc26-external-groundwater-adapter-conformance",
+  "decision": "OWNER_QUALIFIED_GENERIC_EXTERNAL_GROUNDWATER_GATEWAY_CONFORMANCE",
+  "qualification_class": "OWNER_CAPABILITY_QUALIFICATION_NOT_INDEPENDENT",
+  "qualified_executable_head": "a096458965bad7bd1ff97c7c52d107044c1da103",
+  "base_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0"
+  },
+  "dependencies": {
+    "F_GC17_typed_groundwater_contract_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "F_GC18_transactional_exchange_contract_blob": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "F_GC18_independent_and_canonical_status": "SATISFIED_BY_F_VQ61_AND_F_CI53_POSTIMAGE",
+    "F_GC21_independent_and_canonical_status": "SATISFIED_BY_F_VQ64_AND_F_CI56"
+  },
+  "qualified_artifacts": {
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849",
+    "tests/fgc/test_fgc26_external_groundwater_adapter_conformance.f90": "6753ae2191df2770fc677fba12a1fe78a61e62bb",
+    "tests/fgc/test_fgc26_direct_commit_and_rebind.f90": "040bae86f42bb66e993aa1b39fd43c464922825d",
+    "tests/fgc/run_fgc26_external_groundwater_adapter_conformance.sh": "153b315d453bb60d4d4ab8b3cf8f62f6596f38f7",
+    ".github/workflows/fgc26-external-groundwater-adapter-conformance.yml": "f245872a0396556f8237265dfb060b8dc785cb12"
+  },
+  "owner_qualification": {
+    "workflow": "F-GC26 external groundwater adapter conformance",
+    "run_id": 34880402835,
+    "job_id": 104097993549,
+    "conclusion": "success",
+    "compiler_modes": ["O0", "O2"],
+    "runtime_checks": ["-fcheck=all", "-ffpe-trap=invalid,zero,overflow"],
+    "o0_o2_output_identity": true,
+    "contract_hash_pins_passed": true,
+    "datum_unit_sign_round_trip": true,
+    "rollback_restart_handshake": true,
+    "prepared_publication_quiescence": true,
+    "stale_revision_fail_closed": true,
+    "partial_response_fail_closed": true,
+    "adapter_failure_fail_closed": true,
+    "multi_cell_gateway_isolation": true,
+    "direct_candidate_commit_success_and_failure": true,
+    "active_prepared_rebind_rejected": true,
+    "batch_rebind_preflight_atomicity": true,
+    "external_model_types_absent_from_swap_gateway": true,
+    "gateway_file_io_absent": true
+  },
+  "adversarial_review": {
+    "classification": "INTERNAL_SAME_AGENT_NOT_INDEPENDENT",
+    "finding": "Initial green gate did not exercise the public direct candidate commit route or rebind while a prepared reservation was live.",
+    "closure": "Added direct commit failure/success coverage and active-prepared rebind rejection on the same capability branch.",
+    "intermediate_failed_run": 34875552720,
+    "intermediate_failure_class": "TEST_ONLY_FORTRAN_OVERRIDE_DUMMY_NAME_MISMATCH",
+    "production_source_changed_by_closure": false,
+    "additional_finding": "Batch rebind validated gateway quiescence only while mutating members sequentially, so a later non-quiescent member could reject after an earlier member had already been rebound.",
+    "additional_closure": "Preflight all gateway quiescence before the first batch mutation and add a regression that keeps both original cell bindings unchanged when a later member is prepared/non-quiescent.",
+    "remediation_qualification_run": 34880402835,
+    "remediation_qualification_job": 104097993549,
+    "production_source_changed_by_latest_closure": true
+  },
+  "scope": {
+    "generic_swap_side_gateway": true,
+    "typed_exchange_service_conformance": true,
+    "explicit_head_datum_unit_sign_conversion": true,
+    "checkpoint_trial_commit_discard_prepare_abort_handshake": true,
+    "multiple_uniquely_configured_gateways_can_share_one_backend": true,
+    "batch_rebind_is_preflight_atomic_for_recoverable_quiescence_rejection": true,
+    "failure_prone_external_work_must_complete_before_irreversible_prepared_publication": true
+  },
+  "workflow_efficiency": {
+    "checkout_fetch_depth": 1,
+    "reason": "GC26 qualification hashes current files and does not require historical refs; full-history checkout was unnecessary overhead."
+  },
+  "hard_nonclaims": [
+    "No independent qualification claim.",
+    "No canonical admission claim.",
+    "No concrete MODFLOW or other external groundwater model integration/release claim.",
+    "No groundwater-coupling-v1 end-to-end production completion claim.",
+    "No distributed crash-recovery guarantee after prepared publication begins.",
+    "Batch support here means multiple uniquely configured gateway instances sharing one backend; it does not claim one vectorized remote backend call.",
+    "No groundwater physics, Richards solver policy, mass tolerance or convergence tolerance was changed."
+  ],
+  "required_next_step": "Independent adapter-conformance review/qualification and current-canonical admission review are required before promotion. Concrete external groundwater-model integration, if any, follows its own controlled fixture and release authority."
+}
