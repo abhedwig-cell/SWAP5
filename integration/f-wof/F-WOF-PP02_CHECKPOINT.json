@@ -1,5 +1,5 @@
 {
-  "schema_version": 9,
+  "schema_version": 10,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP02",
   "title": "SWAP5 WOFOST81 Migration Preservation",
@@ -29,7 +29,10 @@
     "rate_correction_production": "2d074bd90fb6f1dae5d7768b168f645443461c8e",
     "rate_correction_evidence": "d3f5669afbec5eaf8c8b60a820aab3e5bf8cbea5",
     "leaf_structural_production": "f2d805ccc66e09cc43b97dcbabc26c9af1761991",
-    "leaf_structural_test": "294e60e40bcbd639e23e604504e0ed64a000721f"
+    "leaf_structural_test": "294e60e40bcbd639e23e604504e0ed64a000721f",
+    "leaf_structural_close_checkpoint": "618dc8c34faca4c26488e61a503068cb8cb841af",
+    "one_day_candidate_production_and_test": "3c167e2e8c7bb2210f0ba73ec76e4bfb081e42c3",
+    "one_day_candidate_evidence": "eb7badde2e087af2e58f45cdec8058b05b69f7d5"
   },
   "qualification_evidence": [
     "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
@@ -37,7 +40,8 @@
     "tests/fwof/pp02/F-WOF-PP02_WRAPPER_QUALIFICATION.json",
     "tests/fwof/pp02/test_wofost81_daily_assimilation.f90",
     "tests/fwof/pp02/F-WOF-PP02_RATE_CORRECTION_QUALIFICATION.json",
-    "tests/fwof/pp02/F-WOF-PP02_LEAF_STRUCTURE_QUALIFICATION.json"
+    "tests/fwof/pp02/F-WOF-PP02_LEAF_STRUCTURE_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_ONE_DAY_CANDIDATE_QUALIFICATION.json"
   ],
   "migration_progress": {
     "source_faithful_assimilation_kernel": "QUALIFIED",
@@ -50,33 +54,31 @@
     "leaf_n_assimilation_binding": "QUALIFIED_COMPONENT_LEVEL",
     "n_stress_leaf_rate_correction": "QUALIFIED_COMPONENT_LEVEL",
     "wofost81_structural_leaf_update": "QUALIFIED_COMPONENT_LEVEL",
-    "daily_owner_composition": false,
+    "daily_owner_composition": "QUALIFIED_COMPONENT_LEVEL",
+    "full_repository_integration_compile": false,
     "ten_case_preservation_gate_executable": false
   },
-  "leaf_structure_qualification": {
-    "result": "F_WOF_PP02_LEAF_STRUCTURE_PASS",
-    "source_sha256": "801b79bd44fa8c80241fc57d5dc9d5c3a54a2b24e8565d0986da4a9deef56285",
-    "source_git_blob": "c2338813d2d5d64454e17222afb6f7abff8c9c69",
-    "test_sha256": "8a6d92ae0ae55e34572a19954e7a607e2265c03ab66a7a12119a82636a89e8fc",
-    "test_git_blob": "886e3e976ff64f7e14e181be338270b558b2c44e",
+  "one_day_candidate_qualification": {
+    "result": "F_WOF_PP02_ONE_DAY_CANDIDATE_PASS",
+    "source_git_blob": "74055565400c501f8a9f0bbe12d5d235c3990b61",
+    "source_sha256": "f6dc0fd69eca96ba51382ceb58e4571a107d9fb6fe57ec726ef1b63bfd25cf34",
+    "test_git_blob": "a369f4d7c726a41200a9d4b7dadab37bc00e98bc",
+    "test_sha256": "aafd7a069a2bcc77133dbe195c28de4667bde9e61503f9bfa5e85536871c90f1",
     "compiler": "gfortran",
     "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
     "validated_semantics": [
-      "combined corrected DRLV consumed exactly once from oldest cohorts",
-      "no second legacy SPAN/over-age sweep",
-      "surviving cohorts shifted and aged once",
-      "new youngest leaf cohort inserted with corrected SLA",
-      "LAIEXP carryover captured and reused across threshold 6"
-    ]
+      "prepare phase cannot mutate committed crop or N state",
+      "root/stem gross growth is reconstructed from net growth plus same-step death",
+      "N request consumes committed pre-step crop and N state",
+      "external N supply is a separate second phase",
+      "invalid supply cannot leak crop or N mutation into committed state",
+      "successful supply produces a valid N-balanced composite candidate while committed state remains bitwise unchanged"
+    ],
+    "scope": "canonical-shaped composition qualification; actual repository integration compile still required"
   },
-  "donor_n_ordering": {
-    "request": "prepared during WOFOST81 daily update after organ growth rates and DRLV are known; it consumes committed pre-step biomass/N state plus gross organ growth rates",
-    "supply_apply": "applied later when external Soil-N supply is available, using the saved pre-step biomass and organ death rates",
-    "transactional_implication": "SWAP5 must expose a candidate-only prepare request phase and a later apply supply/finalize phase; rejected candidates must not mutate committed N state"
-  },
-  "architecture_decision": "Keep legacy WOFOST modules unchanged. Compose a versioned WOFOST81 daily candidate from the existing common carbon/DVS calculation, the qualified WOFOST81 assimilation and rate-correction layers, the qualified WOFOST81 leaf structural application, and the source-faithful N request/apply kernel.",
-  "scientific_interpretation": "Carbon/N leaf semantics required by the donor are now separately qualified. The next gate is atomic daily composition over the composite crop+N owner, with N request prepared from the committed pre-step state and N supply applied only to the candidate before acceptance.",
-  "verdict": "QUALIFIED_WOFOST81_CARBON_LEAF_SEMANTICS_PENDING_COMPOSITE_DAILY_N_REQUEST_APPLY",
+  "architecture_decision": "Retain the unchanged legacy WOFOST path. WOFOST81 uses a versioned composite crop+N owner and an explicit two-phase one-day candidate: prepare computes carbon/rates/structure plus an N request from committed pre-step state; apply accepts external Soil-N supply into the candidate only.",
+  "scientific_interpretation": "All WOFOST81 component semantics required to construct an atomic one-day crop+N candidate are now qualified in isolation. The next gate is not new physics: it is compiling and exercising these exact committed modules against the actual SWAP5 repository interfaces before any runtime reachability or ten-case full-season preservation campaign.",
+  "verdict": "QUALIFIED_TWO_PHASE_WOFOST81_ONE_DAY_CANDIDATE_PENDING_FULL_REPOSITORY_INTEGRATION_COMPILE",
   "mutations": {
     "existing_production_source_modified": false,
     "legacy_wofost_path_changed": false,
@@ -85,6 +87,11 @@
     "RD_changed": false,
     "TRA_changed": false
   },
-  "next_permitted_action": "Implement and qualify a candidate-only two-phase WOFOST81 daily composition: prepare common/carbon rates and corrected WOFOST81 leaf rates plus N request without mutating committed state; then apply supplied N to candidate N state and finalize crop structural state. Prove rejected/discarded candidates cannot leak N or crop mutation. Do not activate runtime yet.",
+  "non_branch_git_objects": [
+    "b790f99acd6ffa7a03ec9e0c21597b3e599e58fc",
+    "e27de9cecf6056639ccb33802d062480c9351c82"
+  ],
+  "non_branch_git_objects_note": "Unreferenced blob writes created during connector transport; they are not reachable from the PP02 branch or canonical and are not evidence.",
+  "next_permitted_action": "Add a full-repository PP02 integration compile/run gate using the actual SWAP5 crop/transaction modules and the committed WOFOST81 files. Construct a valid common WOFOST rate bundle with the public constructors, compile with warnings-as-errors, verify two-phase candidate behavior without qualification stubs, and only then start the ten-case PP01 preservation replay. Do not activate production runtime yet.",
   "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path"]
 }
