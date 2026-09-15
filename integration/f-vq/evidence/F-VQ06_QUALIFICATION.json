@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ06",
+  "decision": "QUALIFIED_FCI18_SCOPE_OWNERSHIP_HANDOFF_ONLY",
+  "qualification_scope": "FCI18_SCOPE_OWNERSHIP_HANDOFF_ONLY",
+  "tested_postimage": "c10dfb629183408dfcde424054a0b83c7f5c9eab",
+  "oracle": "B1.10",
+  "production_source_changed_by_fvq06": false,
+  "basis": {
+    "fci18_source_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "fci18_qualification_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+    "fci18_canonical_push_workflow": 34112588499,
+    "fci18_job": 101712814659,
+    "fci18_full_dependency_chain": "PASS_FCI03_THROUGH_FCI18",
+    "fvq05_final_head": "f14cbc4c1a1ba0dc16a46bddc658cd4731733945"
+  },
+  "qualification_run": {
+    "workflow_run": 34114097056,
+    "fvq06_job": 101716771277,
+    "corrected_b1_10_job": 101716771369,
+    "immutable_fvq04_job": 101716771288,
+    "immutable_fvq05_job": 101716771072,
+    "documentation_workflow": 34114097052,
+    "conclusion": "success"
+  },
+  "executed_checks": {
+    "fvq06_gate": "PASS",
+    "fvq06_promotion_and_scope_guards": {"passed":8,"failed":0},
+    "fci17_gate_rerun": "FCI17_GATE_PASS",
+    "fci18_exact_source_diagnostic": "FCI18_GATE_PASS",
+    "corrected_b1_10_reference_job": "PASS",
+    "fvq04_immutable_replay": "PASS",
+    "fvq05_immutable_replay": "PASS",
+    "documentation": "PASS",
+    "no_src_changes_since_fci18_qualification": true,
+    "qualification_paths_only_since_fci18_qualification": true
+  },
+  "qualified_claims": [
+    "exact F-CI18 source/qualification provenance",
+    "no F-CI18 production or corrected-reference source mutation",
+    "F-CI18 scope/ownership boundary as admissible governance evidence",
+    "PR synthetic-merge failure diagnosis without overriding valid push qualification",
+    "non-delegable provenance, transaction correctness and hard mass conservation plus downstream F-VQ ownership"
+  ],
+  "explicit_non_claims": [
+    "The separate F-CI18 gate-status promotion has not been persisted.",
+    "F-VQ06 does not promote F-CI exit gates or admit downstream release.",
+    "Production B1.10 execute_reference_interval remains unadmitted.",
+    "The eight-metric production temporal-limit profile remains unqualified.",
+    "Real B1.10 full-vs-two-half production temporal acceptance remains unqualified.",
+    "Optional-process completeness and full legacy-backend reentrancy remain unqualified."
+  ],
+  "remaining_blockers": [
+    "separate persisted F-CI18 exit-gate promotion commit",
+    "independent F-VQ numerical temporal-limit profile",
+    "real production B1.10 reference execution and result route",
+    "complete optional-process storage/result accounting",
+    "full reentrant/parallel legacy-backend qualification"
+  ]
+}

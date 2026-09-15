@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "oracle": "B1.10",
+  "profile_source": "integration/f-ci/F-CI14_TEMPORAL_POLICY_PROFILE.json",
+  "comparison": "full_vs_two_half_endpoint",
+  "normalized_acceptance_threshold": 1.0,
+  "threshold_semantics": "dimensionless normalized boundary only; not a physical tolerance",
+  "required_metrics": [
+    "h_cm",
+    "theta",
+    "pond_cm",
+    "gwl_cm",
+    "volact_cm",
+    "ldwet_cm",
+    "spev_cm",
+    "saev_cm"
+  ],
+  "diagnostic_only_lagged_metrics": [
+    "hm1_cm",
+    "thetm1",
+    "pondm1_cm",
+    "gwlm1_cm"
+  ],
+  "current_numeric_limits": {
+    "h_cm": null,
+    "theta": null,
+    "pond_cm": null,
+    "gwl_cm": null,
+    "volact_cm": null,
+    "ldwet_cm": null,
+    "spev_cm": null,
+    "saev_cm": null
+  },
+  "production_temporal_profile_qualified": false,
+  "real_b1_10_temporal_acceptance_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "optional_process_scope": "BLOCKED_UNTIL_CHARACTERIZED",
+  "test_fixture_numeric_limits_are_production_evidence": false,
+  "mass_gate_relation": "SEPARATE_HARD_GATE_NEVER_NORMALIZED_INTO_TEMPORAL_SCORE",
+  "solver_convergence_relation": "SEPARATE_POLICY_NEVER_REUSED_AS_TEMPORAL_LIMIT",
+  "promotion_requirements": [
+    "source-bound real B1.10 full-step and two-half-step execution evidence",
+    "explicit workload and active-process scope",
+    "independently justified per-metric numeric limits with units",
+    "evidence that all eight required endpoint metrics are observable and comparable at the same t1",
+    "separate hard mass-conservation PASS for every admitted case",
+    "explicit qualification of each active optional process class before inclusion",
+    "immutable evidence provenance and exact source/qualification commits",
+    "no reuse of deterministic contract-test fixture values as production limits"
+  ],
+  "status": "BLOCKED_PENDING_INDEPENDENT_NUMERIC_PROFILE"
+}

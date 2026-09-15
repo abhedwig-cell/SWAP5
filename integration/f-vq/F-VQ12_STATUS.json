@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ12",
+  "oracle": "B1.10",
+  "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT05_FSI05_ADMISSION_WITH_CONTRACTUAL_NONCONFLICT_ONLY",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "decision": "QUALIFIED_FKT05_FSI05_SOURCE_BOUND_NONCONFLICT_ONLY",
+  "tested_postimage": "373fafaa08ab30cc38fcedabd3f67ae9d61e7b8f",
+  "qualification_run": {
+    "workflow": "F-VQ12 F-KT05 F-SI05 admission",
+    "run_id": 34127787286,
+    "job_id": 101760436814,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "fvq11_replay": {
+    "run_id": 34127787144,
+    "job_id": 101760437029,
+    "conclusion": "success",
+    "mode": "IMMUTABLE_EXACT_FVQ11_FINAL_HEAD"
+  },
+  "vq_reference_run": {
+    "run_id": 34127787049,
+    "conclusion": "success",
+    "replay_mode": "IMMUTABLE_EXACT_QUALIFIED_POSTIMAGES_FVQ04_THROUGH_FVQ10"
+  },
+  "documentation_run": {
+    "run_id": 34127787186,
+    "conclusion": "success"
+  },
+  "fkt05_source_bound_admitted": true,
+  "fsi05_source_bound_admitted": true,
+  "fkt05_fsi05_contractual_nonconflict_qualified": true,
+  "fkt05_fsi05_composed_runtime_qualified": false,
+  "full_reference_solver_reentrancy_qualified": false,
+  "parallel_real_headcalc_workers_qualified": false,
+  "full_unrounded_swap_mass_identity_qualified": false,
+  "production_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "production_multiswap_admission": false,
+  "optional_workspace_paths_complete": false,
+  "production_source_changed_by_fvq12": false,
+  "reference_source_changed_by_fvq12": false,
+  "basis": {
+    "fvq11_final_head": "efdc11f35e2251eebbab888e05d74085892e05fd",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt05_tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "fkt05_qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "fkt05_status_promotion_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "fsi05_tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "fsi05_documented_postimage_head": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+    "fsi05_final_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11"
+  },
+  "qualification_corrections": [
+    {
+      "run_id": 34127471484,
+      "job_id": 101759430804,
+      "result": "FAIL_HISTORICAL_FVQ11_REPLAY_CONTEXT_ONLY",
+      "finding": "The historical F-VQ11 workflow replayed its gate on the later F-VQ12 head, so its own qualification-path guard correctly rejected F-VQ12 files.",
+      "correction_commit": "373fafaa08ab30cc38fcedabd3f67ae9d61e7b8f",
+      "correction": "Replay F-VQ11 on its immutable exact qualified final head; the F-VQ11 gate itself was not modified.",
+      "claim_scope_changed": false
+    }
+  ],
+  "holds": [
+    "No one composed F-KT05 plus F-SI05 executable production postimage is qualified by F-VQ12.",
+    "Full reference Richards reentrancy and parallel real HeadCalc workers remain unqualified.",
+    "F-SI05 focused equation-residual identity is not full SWAP water-balance qualification.",
+    "Production B1.10 reference execution remains BLOCKED_FAIL_CLOSED.",
+    "Production MultiSWAP runtime admission remains false.",
+    "Macropore, implicit-conductivity, minimum-timestep and non-free-drainage bottom workspace paths remain incomplete."
+  ]
+}

@@ -1,0 +1,68 @@
+name: F-VQ11 downstream source-bound admission
+
+on:
+  pull_request:
+    paths:
+      - 'integration/f-vq/F-VQ11_*'
+      - 'integration/f-vq/evidence/F-VQ11_*'
+      - 'tools/vq/fvq11_*'
+      - 'tools/vq/test_fvq11_*'
+      - 'docs/verification/f-vq11-*'
+      - '.github/workflows/fvq11-downstream.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fvq11-source-bound-admission:
+    name: F-VQ11 F-KT04 and F-SI04 source-bound admission
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact qualified F-VQ11 final head
+        uses: actions/checkout@v4
+        with:
+          ref: efdc11f35e2251eebbab888e05d74085892e05fd
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ11 source-bound admission gate
+        run: python -m tools.vq.fvq11_downstream_source_bound_gate
+      - name: F-VQ11 negative-promotion guards
+        run: python -m unittest tools.vq.test_fvq11_downstream_source_bound_gate
+      - name: Re-run exact qualified F-KT04 focused gate and F-CI regressions
+        run: |
+          git checkout --detach dfe9ac831428a65703e63e9f66673c6288ecc6fc
+          bash tests/fkt/run_fkt04_gate.sh
+          bash tests/fci/run_fci03_gate.sh
+          bash tests/fci/run_fci04_gate.sh
+          bash tests/fci/run_fci08_gate.sh
+          bash tests/fci/run_fci09_gate.sh
+          bash tests/fci/run_fci10_gate.sh
+          bash tests/fci/run_fci11_gate.sh
+          bash tests/fci/run_fci13_gate.sh
+          bash tests/fci/run_fci14_gate.sh
+      - name: Re-run exact qualified F-SI04 focused real HeadCalc workspace gate
+        run: |
+          git checkout --detach 0cfbefc271447b4b53eeee50c1dfbb2acaf020df
+          bash tests/fsi/run_fsi04_gate.sh
+      - name: Confirm historical F-KT05 negative admission barrier on F-VQ11 fixture
+        run: |
+          git checkout --detach ed0764126a9febdd8a14ff3f32fdba68e9be9e81
+          set +e
+          bash tests/fkt/run_fkt05_gate.sh > /tmp/fkt05-negative.log 2>&1
+          rc=$?
+          set -e
+          cat /tmp/fkt05-negative.log
+          if [ "$rc" -eq 0 ]; then
+            echo 'Historical F-KT05 fixture unexpectedly passed; F-VQ11 negative admission evidence is stale.' >&2
+            exit 1
+          fi
+          grep -q 'compare-reals' /tmp/fkt05-negative.log
+          grep -q 'all warnings being treated as errors' /tmp/fkt05-negative.log
+          echo 'FVQ11_FKT05_HISTORICAL_NEGATIVE_ADMISSION_PASS'

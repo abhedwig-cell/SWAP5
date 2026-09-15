@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ10",
+  "claims": [
+    {"claim_id":"FVQ10-C01","claim":"The eight-metric temporal profile candidate schema preserves exact metric names, units and F-CI14 normalization/zero-limit semantics without introducing numeric defaults.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ10-C02","claim":"Calibration and validation raw-observation sets are nonempty, unique and disjoint, and candidate limits/scope are frozen before validation.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ10-C03","claim":"Every admitted observation requires separate PASS hard-mass gates for full and split paths; mass and solver tolerances cannot be reused as temporal limits.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ10-C04","claim":"Held-out validation uses the qualified F-CI14 max-of-ratios and zero-limit semantics, and every validation observation must pass without retuning the frozen profile.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ10-C05","claim":"Optional-process scope remains fail-closed: a water-only profile cannot claim complete crop, irrigation, heat, solute or WOFOST temporal coverage.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ10-C06","claim":"Real B1.10 calibration and held-out validation observation datasets exist and are independently admitted.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-VQ09 qualified only the harness contract; no real admitted F-VQ09 temporal observations exist yet."},
+    {"claim_id":"FVQ10-C07","claim":"Physical per-metric temporal limits are independently justified and qualified.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-CI14 numeric limits remain null; F-VQ10 introduces no numeric values."},
+    {"claim_id":"FVQ10-C08","claim":"A production temporal profile is promoted into the canonical reference policy.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"No real qualified calibration/validation evidence or independently justified limits exist."},
+    {"claim_id":"FVQ10-C09","claim":"Production reference execution is admitted.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Production reference execution remains fail-closed until a profile is independently qualified and integrated by the owning production workstream."},
+    {"claim_id":"FVQ10-C10","claim":"Complete temporal scope is qualified for active optional processes.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Current temporal comparison covers water/lagged-water metrics only and does not compare all optional-process state."}
+  ]
+}
