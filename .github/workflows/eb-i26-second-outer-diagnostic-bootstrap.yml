@@ -1,0 +1,32 @@
+name: EB-I26 second outer diagnostic bootstrap
+
+on:
+  push:
+    branches:
+      - work/eb-i26-accepted-outer-substep-sensible-boundary-aggregation
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply diagnostic patch
+        run: python tools/eb_i26_second_outer_diag_patch.py
+      - name: Persist diagnostic and remove bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm tools/eb_i26_second_outer_diag_patch.py .github/workflows/eb-i26-second-outer-diagnostic-bootstrap.yml
+          git add tests/eb/test_eb_i26_outer_substep_sensible_boundary_aggregation.f90
+          git diff --cached --check
+          git commit -m 'test(EB-I26): expose second outer rejection diagnostics'
+          git push origin HEAD:work/eb-i26-accepted-outer-substep-sensible-boundary-aggregation
