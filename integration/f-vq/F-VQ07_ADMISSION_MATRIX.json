@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ07",
+  "claims": [
+    {"claim_id":"FVQ07-C01","claim":"The final F-CI18 exit lineage is exact and has green source-bound promotion and closeout push replays.","classification":"QUALIFICATION_TARGET","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ07-C02","claim":"All ten required F-CI exit gates are QUALIFIED and allow downstream release of the canonical development baseline.","classification":"QUALIFICATION_TARGET","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ07-C03","claim":"F-CI18 promotion and closeout introduce no production src/ or corrected-reference source mutation.","classification":"QUALIFICATION_TARGET","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ07-C04","claim":"The final F-CI canonical-development-baseline exit handoff is admissible for downstream qualification work.","classification":"QUALIFICATION_TARGET","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ07-C05","claim":"Admitting the baseline handoff does not release downstream capabilities and preserves non-delegable provenance, transactions and hard mass conservation.","classification":"QUALIFICATION_TARGET","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ07-C06","claim":"Production B1.10 execute_reference_interval is qualified and admitted.","classification":"BLOCKED_CAPABILITY","claim_qualified":false,"blocker":"Production reference execution remains explicitly fail-closed pending independent source-bound VQ."},
+    {"claim_id":"FVQ07-C07","claim":"The numeric B1.10 temporal-profile limits are qualified.","classification":"BLOCKED_CAPABILITY","claim_qualified":false,"blocker":"Independent per-metric temporal limits remain unqualified; solver or mass tolerances may not substitute."},
+    {"claim_id":"FVQ07-C08","claim":"Optional-process snow/macropore temporal and storage completeness is qualified.","classification":"BLOCKED_CAPABILITY","claim_qualified":false,"blocker":"Optional-process production integration and complete storage/result accounting remain unqualified."},
+    {"claim_id":"FVQ07-C09","claim":"The legacy backend is fully reentrant and qualified for parallel execution.","classification":"BLOCKED_CAPABILITY","claim_qualified":false,"blocker":"Full backend reentrancy and parallel execution remain downstream qualification work."},
+    {"claim_id":"FVQ07-C10","claim":"SWAP5 as a whole is production-release qualified.","classification":"OUT_OF_SCOPE_RELEASE","claim_qualified":false,"blocker":"F-VQ07 qualifies only the final F-CI development-baseline handoff, not overall SWAP5 release."}
+  ]
+}

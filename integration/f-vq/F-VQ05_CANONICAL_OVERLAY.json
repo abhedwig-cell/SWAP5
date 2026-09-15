@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "integration_overlay_base": "927b7fb831ac91f77da11eb375e71b1975e1749f",
+  "overlay_work_unit": "F-CI17",
+  "overlay_role": "FORMAL_CLOSEOUT_ONLY",
+  "consumed_as_fvq05_qualification_basis": false,
+  "qualification_basis_remains": {
+    "fci14_qualified_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "canonical_workflow_run": 34107845964,
+    "canonical_job": 101697462464
+  },
+  "fci17_closeout": {
+    "qualified_registry_postimage": "4ec5ce2a638047a2468967944902bc7d92f37339",
+    "canonical_workflow_run": 34110319677,
+    "fci17_job": 101705702221,
+    "ci_g10": "QUALIFIED",
+    "downstream_release_allowed": false,
+    "production_source_changed": false
+  },
+  "reason": "Carry the current F-CI17 formal closeout so F-VQ05 cannot drift behind the canonical governance line. Temporal-contract qualification remains source-bound to F-CI14 and does not consume F-CI17 closeout evidence as numerical or physical qualification."
+}

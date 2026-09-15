@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ07",
+  "decision": "QUALIFIED_FINAL_FCI_DEVELOPMENT_BASELINE_HANDOFF_ONLY",
+  "qualification_scope": "FINAL_FCI_DEVELOPMENT_BASELINE_HANDOFF_ONLY",
+  "tested_postimage": "75bf3ba1d6a94e9ead91209b3ec6adae92562dd7",
+  "oracle": "B1.10",
+  "production_source_changed_by_fvq07": false,
+  "basis": {
+    "fvq06_final_head": "f7d68248a22d0912fe91e2277ac51f64293e449c",
+    "fci18_scope_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "fci18_scope_evidence_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+    "fci18_gate_promotion_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "fci18_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "promotion_push_run": 34114164800,
+    "promotion_fci18_job": 101717589931,
+    "closeout_push_run": 34114481363,
+    "closeout_fci18_job": 101718655619,
+    "closeout_full_dependency_chain": "PASS_FCI03_THROUGH_FCI18"
+  },
+  "qualification_run": {
+    "workflow_run": 34115460378,
+    "fvq07_job": 101721091445,
+    "corrected_b1_10_job": 101721091572,
+    "immutable_fvq04_job": 101721091503,
+    "immutable_fvq05_job": 101721091688,
+    "immutable_fvq06_job": 101721091286,
+    "documentation_workflow": 34115460312,
+    "conclusion": "success"
+  },
+  "executed_checks": {
+    "fvq07_gate": "PASS",
+    "fvq07_promotion_and_negative_capability_guards": {"passed":8,"failed":0},
+    "exact_closeout_fci15": "FCI15_GATE_PASS",
+    "exact_closeout_fci16": "FCI16_GATE_PASS",
+    "exact_closeout_fci17": "FCI17_GATE_PASS",
+    "exact_closeout_fci18": "FCI18_GATE_PASS",
+    "corrected_b1_10_reference_job": "PASS",
+    "fvq04_immutable_replay": "PASS",
+    "fvq05_immutable_replay": "PASS",
+    "fvq06_immutable_replay": "PASS",
+    "documentation": "PASS",
+    "no_fci18_src_or_reference_delta": true,
+    "no_fvq07_src_or_reference_delta": true,
+    "canonical_closeout_overlay_identity": true
+  },
+  "qualified_claims": [
+    "exact final F-CI18 exit lineage and green source-bound promotion/closeout replays",
+    "all ten required F-CI exit gates QUALIFIED with downstream_release_allowed=true",
+    "no F-CI18 production or corrected-reference source mutation",
+    "final canonical-development-baseline exit handoff admissible for downstream qualification",
+    "downstream capability governance remains separate with provenance, transactions and hard mass conservation non-delegable"
+  ],
+  "canonical_development_baseline_admitted_for_downstream_qualification": true,
+  "fci_final_exit_handoff_qualified": true,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "production_temporal_profile_qualified": false,
+  "optional_process_scope_qualified": false,
+  "parallel_backend_qualified": false,
+  "overall_swap5_release_qualified": false,
+  "explicit_non_claims": [
+    "Production B1.10 execute_reference_interval is not admitted by F-VQ07.",
+    "Numeric B1.10 temporal-profile limits are not qualified by F-VQ07.",
+    "Real B1.10 full-vs-split temporal acceptance is not qualified by F-VQ07.",
+    "Optional-process snow/macropore completeness is not qualified by F-VQ07.",
+    "Full legacy-backend reentrancy and parallel execution are not qualified by F-VQ07.",
+    "Overall SWAP5 production release is not qualified by F-VQ07."
+  ],
+  "remaining_blockers": [
+    "independent F-VQ numerical temporal-limit profile",
+    "real production B1.10 reference execution and canonical result route",
+    "complete optional-process storage/result accounting and temporal characterization",
+    "full reentrant/parallel legacy-backend qualification",
+    "subsequent workstream-specific release gates"
+  ]
+}
