@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP02",
   "title": "SWAP5 WOFOST81 Migration Preservation",
@@ -27,16 +27,17 @@
     "composite_owner_lifecycle": "f2d1a99005668213faf3a17cc5c4581bf02b8105",
     "daily_assimilation_persisted_content": "f6e05e22f2bfeccc5f72733a9c8277a0cff79ebb",
     "rate_correction_production": "2d074bd90fb6f1dae5d7768b168f645443461c8e",
-    "rate_correction_evidence": "d3f5669afbec5eaf8c8b60a820aab3e5bf8cbea5"
+    "rate_correction_evidence": "d3f5669afbec5eaf8c8b60a820aab3e5bf8cbea5",
+    "leaf_structural_production": "f2d805ccc66e09cc43b97dcbabc26c9af1761991",
+    "leaf_structural_test": "294e60e40bcbd639e23e604504e0ed64a000721f"
   },
-  "non_branch_git_objects": ["09b9c9050f412fe947dafa83f99d184c172fcba8","c232f620cdc4e90db9a012ac45bf5dde556d7b08"],
-  "non_branch_git_objects_note": "Harmless equivalent intermediate commits created during contents/tree ordering; neither is referenced by the PP02 branch or canonical and no force update was used.",
   "qualification_evidence": [
     "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
     "tests/fwof/pp02/F-WOF-PP02_CONTRACT_QUALIFICATION.json",
     "tests/fwof/pp02/F-WOF-PP02_WRAPPER_QUALIFICATION.json",
     "tests/fwof/pp02/test_wofost81_daily_assimilation.f90",
-    "tests/fwof/pp02/F-WOF-PP02_RATE_CORRECTION_QUALIFICATION.json"
+    "tests/fwof/pp02/F-WOF-PP02_RATE_CORRECTION_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_LEAF_STRUCTURE_QUALIFICATION.json"
   ],
   "migration_progress": {
     "source_faithful_assimilation_kernel": "QUALIFIED",
@@ -48,31 +49,34 @@
     "daily_parameter_tables": "QUALIFIED_COMPONENT_LEVEL",
     "leaf_n_assimilation_binding": "QUALIFIED_COMPONENT_LEVEL",
     "n_stress_leaf_rate_correction": "QUALIFIED_COMPONENT_LEVEL",
-    "wofost81_structural_leaf_update": "NOT_YET_IMPLEMENTED",
+    "wofost81_structural_leaf_update": "QUALIFIED_COMPONENT_LEVEL",
     "daily_owner_composition": false,
     "ten_case_preservation_gate_executable": false
   },
-  "rate_correction_qualification": {
-    "result": "F_WOF_PP02_RATE_CORRECTION_PASS",
-    "source_sha256": "90af313a21bc2bc6aeed06f36bd43d36cbcf3eac8c235d8288620d3acefc0fb8",
-    "test_sha256": "096f65adeb4f2a2b622c39abeeed0ccc042ee3da5ac9f4c4fe08739ee8005b0e",
+  "leaf_structure_qualification": {
+    "result": "F_WOF_PP02_LEAF_STRUCTURE_PASS",
+    "source_sha256": "801b79bd44fa8c80241fc57d5dc9d5c3a54a2b24e8565d0986da4a9deef56285",
+    "source_git_blob": "c2338813d2d5d64454e17222afb6f7abff8c9c69",
+    "test_sha256": "8a6d92ae0ae55e34572a19954e7a607e2265c03ab66a7a12119a82636a89e8fc",
+    "test_git_blob": "886e3e976ff64f7e14e181be338270b558b2c44e",
     "compiler": "gfortran",
     "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
     "validated_semantics": [
-      "NMAXLV_TB evaluated at DVS",
-      "source-faithful WOFOST81 N stress provides stress index and RFRGRL",
-      "NSLLV_TB evaluated at stress index",
-      "DALV=min(aged_leaf_mass*NSLLV,WLV)/day_length",
-      "DRLV=max(DSLV,DALV)",
-      "RFRGRL applies only for DVS<0.2 and LAI<0.75",
-      "post-juvenile GLAI is unchanged",
-      "N-inactive defaults preserve WOFOST81 ageing with NSLLV=1 and RFRGRL=1",
-      "invalid cohort shapes fail closed"
+      "combined corrected DRLV consumed exactly once from oldest cohorts",
+      "no second legacy SPAN/over-age sweep",
+      "surviving cohorts shifted and aged once",
+      "new youngest leaf cohort inserted with corrected SLA",
+      "LAIEXP carryover captured and reused across threshold 6"
     ]
   },
-  "architecture_decision": "Keep WOFOST81 as an explicit versioned composite path around the unchanged legacy crop owner. The legacy finalizer may supply common carbon/DVS rates, followed by a WOFOST81-only correction layer. The structural leaf update must be versioned because legacy structural evolution performs a second over-age removal that WOFOST81 must not execute after DALV is already included in DRLV.",
-  "scientific_interpretation": "The WOFOST81 rate surface now reproduces the donor N-stress leaf-death competition and juvenile LAI response without changing the legacy route. The remaining immediate semantic gap is leaf cohort structural application: consume combined DRLV once, age/shift cohorts, add new growth, and omit the legacy second over-age removal.",
-  "verdict": "QUALIFIED_WOFOST81_RATE_CORRECTION_PENDING_VERSIONED_STRUCTURAL_LEAF_APPLICATION",
+  "donor_n_ordering": {
+    "request": "prepared during WOFOST81 daily update after organ growth rates and DRLV are known; it consumes committed pre-step biomass/N state plus gross organ growth rates",
+    "supply_apply": "applied later when external Soil-N supply is available, using the saved pre-step biomass and organ death rates",
+    "transactional_implication": "SWAP5 must expose a candidate-only prepare request phase and a later apply supply/finalize phase; rejected candidates must not mutate committed N state"
+  },
+  "architecture_decision": "Keep legacy WOFOST modules unchanged. Compose a versioned WOFOST81 daily candidate from the existing common carbon/DVS calculation, the qualified WOFOST81 assimilation and rate-correction layers, the qualified WOFOST81 leaf structural application, and the source-faithful N request/apply kernel.",
+  "scientific_interpretation": "Carbon/N leaf semantics required by the donor are now separately qualified. The next gate is atomic daily composition over the composite crop+N owner, with N request prepared from the committed pre-step state and N supply applied only to the candidate before acceptance.",
+  "verdict": "QUALIFIED_WOFOST81_CARBON_LEAF_SEMANTICS_PENDING_COMPOSITE_DAILY_N_REQUEST_APPLY",
   "mutations": {
     "existing_production_source_modified": false,
     "legacy_wofost_path_changed": false,
@@ -81,6 +85,6 @@
     "RD_changed": false,
     "TRA_changed": false
   },
-  "next_permitted_action": "Implement and qualify a WOFOST81-specific leaf cohort structural application that removes corrected combined DRLV exactly once, does not execute legacy second over-age removal, advances surviving cohort age, adds the new leaf cohort with corrected SLA, and remains candidate-only. Then bind this to the versioned composite owner before N request/apply composition.",
+  "next_permitted_action": "Implement and qualify a candidate-only two-phase WOFOST81 daily composition: prepare common/carbon rates and corrected WOFOST81 leaf rates plus N request without mutating committed state; then apply supplied N to candidate N state and finalize crop structural state. Prove rejected/discarded candidates cannot leak N or crop mutation. Do not activate runtime yet.",
   "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path"]
 }
