@@ -1,10 +1,17 @@
 module mod_b1_10_reference_model
-  use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t
   use mod_soil_water_solver_contract, only: soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_soil_water_accepted_step_direction_contract, only: &
+       SW_STEP_CONTROL_BOTTOM_FLUX, SW_STEP_CONTROL_BOTTOM_HEAD
+  use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, &
+       fkt21_configure_trajectory_direction => configure_trajectory_direction, &
+       begin_or_continue_trajectory, finalize_trajectory_direction
   use mod_soil_water_transaction_result_bridge, only: map_soil_water_interface_sensitivity_to_trial
   use mod_b1_10_transaction_binding, only: b1_10_transaction_model_t
   use mod_b1_10_process_checkpoint, only: b1_10_process_state_t, capture_b1_10_process_state, restore_b1_10_process_state
+  use mod_b1_10_legacy_trial_capsule, only: b1_10_legacy_trial_capsule_t, &
+       capture_b1_10_legacy_trial_capsule, restore_b1_10_legacy_trial_capsule
   use mod_b1_10_mass_seam, only: b1_10_qualified_profile_storage
   use mod_b1_10_trial_mass, only: b1_10_trial_mass_t
   use mod_b1_10_physical_interval_executor, only: run_b1_10_physical_interval
@@ -12,6 +19,11 @@ module mod_b1_10_reference_model
   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
   implicit none
   private
+
+  type, extends(transaction_attempt_context_t) :: b1_10_reference_attempt_context_t
+    type(b1_10_legacy_trial_capsule_t) :: legacy
+    type(accepted_trajectory_direction_t) :: trajectory_direction
+  end type b1_10_reference_attempt_context_t
 
   type, public :: b1_10_reference_capabilities_t
     logical :: physical_interval_binding = .true.
@@ -24,8 +36,16 @@ module mod_b1_10_reference_model
   type, extends(b1_10_transaction_model_t), public :: b1_10_reference_model_t
     type(b1_10_reference_capabilities_t) :: reference_capabilities
     type(a23bu_worker_context_t), pointer :: worker => null()
+    logical :: trajectory_direction_requested = .false.
+    integer :: trajectory_control_coordinate = 0
+    integer(int64) :: trajectory_generation_counter = 0_int64
   contains
     procedure :: bind_worker => b1_10_bind_reference_worker
+    procedure :: configure_trajectory_direction => b1_10_configure_trajectory_direction
+    procedure :: prepare_trajectory_segment => b1_10_prepare_trajectory_segment
+    procedure :: finalize_trajectory_segment => b1_10_finalize_trajectory_segment
+    procedure :: capture_attempt_context => b1_10_reference_capture_attempt_context
+    procedure :: restore_attempt_context => b1_10_reference_restore_attempt_context
     procedure :: advance => b1_10_advance_qualified_interval
     procedure :: storage => b1_10_storage_qualified_profile
     procedure :: temporal_error => b1_10_temporal_error_policy_not_admitted
@@ -44,6 +64,96 @@ contains
     self%capabilities%temporal_error_contract = .false.
   end subroutine b1_10_bind_reference_worker
 
+  subroutine b1_10_configure_trajectory_direction(self, requested, control_coordinate)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    logical, intent(in) :: requested
+    integer, intent(in) :: control_coordinate
+
+    if (requested) then
+      if (control_coordinate /= SW_STEP_CONTROL_BOTTOM_FLUX .and. &
+          control_coordinate /= SW_STEP_CONTROL_BOTTOM_HEAD) then
+        error stop 'F-KT21 B1.10 trajectory: unsupported control coordinate'
+      end if
+      if (.not. associated(self%worker)) error stop 'F-KT21 B1.10 trajectory: worker not bound'
+      self%trajectory_direction_requested = .true.
+      self%trajectory_control_coordinate = control_coordinate
+      call fkt21_configure_trajectory_direction(self%worker%trajectory_direction, .true.)
+    else
+      self%trajectory_direction_requested = .false.
+      self%trajectory_control_coordinate = 0
+      if (associated(self%worker)) call fkt21_configure_trajectory_direction(self%worker%trajectory_direction, .false.)
+    end if
+  end subroutine b1_10_configure_trajectory_direction
+
+  subroutine b1_10_prepare_trajectory_segment(self, t0, t1)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    real(real64), intent(in) :: t0, t1
+    logical :: ok
+
+    if (.not. self%trajectory_direction_requested) return
+    if (.not. associated(self%worker)) error stop 'F-KT21 B1.10 trajectory: worker not bound'
+    if (.not. self%worker%trajectory_direction%requested) then
+      call fkt21_configure_trajectory_direction(self%worker%trajectory_direction, .true.)
+    end if
+
+    if (.not. allocated(self%worker%trajectory_direction%pressure_head_direction)) then
+      self%trajectory_generation_counter = self%trajectory_generation_counter + 1_int64
+      call begin_or_continue_trajectory(self%worker%trajectory_direction, self%worker%worker_id, t0, t1, &
+           self%trajectory_control_coordinate, self%worker%active_nodes, ok, &
+           generation_seed=self%trajectory_generation_counter)
+    else
+      call begin_or_continue_trajectory(self%worker%trajectory_direction, self%worker%worker_id, t0, t1, &
+           self%trajectory_control_coordinate, self%worker%active_nodes, ok)
+    end if
+    ! A failed optional sensitivity preparation remains fail-closed in the
+    ! trajectory state. Physical interval execution is deliberately unaffected.
+  end subroutine b1_10_prepare_trajectory_segment
+
+  subroutine b1_10_finalize_trajectory_segment(self, t1)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    real(real64), intent(in) :: t1
+    logical :: ok
+
+    if (.not. self%trajectory_direction_requested) return
+    if (.not. associated(self%worker)) return
+    if (.not. self%worker%trajectory_direction%requested) return
+    call finalize_trajectory_direction(self%worker%trajectory_direction, &
+         self%worker%trajectory_direction%origin_t0, t1, ok)
+    ! Unavailable or mismatched sensitivity is not a physical rejection. The
+    ! immutable publication layer will expose availability and provenance.
+  end subroutine b1_10_finalize_trajectory_segment
+
+  subroutine b1_10_reference_capture_attempt_context(self, context)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), allocatable, intent(out) :: context
+
+    if (.not. self%capabilities%attempt_context_binding) &
+      error stop 'B1.10 reference model: attempt-context binding disabled'
+    allocate(b1_10_reference_attempt_context_t :: context)
+    select type (target => context)
+    type is (b1_10_reference_attempt_context_t)
+      call capture_b1_10_legacy_trial_capsule(target%legacy)
+      if (associated(self%worker)) target%trajectory_direction = self%worker%trajectory_direction
+    class default
+      error stop 'B1.10 reference model: attempt-context allocation failure'
+    end select
+  end subroutine b1_10_reference_capture_attempt_context
+
+  subroutine b1_10_reference_restore_attempt_context(self, context)
+    class(b1_10_reference_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), intent(in) :: context
+
+    if (.not. self%capabilities%attempt_context_binding) &
+      error stop 'B1.10 reference model: attempt-context binding disabled'
+    select type (source => context)
+    type is (b1_10_reference_attempt_context_t)
+      call restore_b1_10_legacy_trial_capsule(source%legacy)
+      if (associated(self%worker)) self%worker%trajectory_direction = source%trajectory_direction
+    class default
+      error stop 'B1.10 reference model: unexpected attempt context type'
+    end select
+  end subroutine b1_10_reference_restore_attempt_context
+
   subroutine b1_10_advance_qualified_interval(self, state, t0, t1, outcome)
     class(b1_10_reference_model_t), intent(inout) :: self
     class(transaction_state_t), intent(inout) :: state
@@ -59,6 +169,8 @@ contains
         .not. self%capabilities%trial_mass_flux_contract) return
     if (t1 <= t0) return
 
+    call self%prepare_trajectory_segment(t0, t1)
+
     select type (physical => state)
     type is (b1_10_process_state_t)
       if (.not. allocated(physical%h)) return
@@ -73,6 +185,8 @@ contains
     class default
       error stop 'B1.10 reference model: unexpected state passed to advance'
     end select
+
+    call self%finalize_trajectory_segment(t1)
 
     outcome%solver_ok = .true.
     outcome%mass_in = trial_mass%total_in
