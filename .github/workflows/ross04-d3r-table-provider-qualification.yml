@@ -1,0 +1,103 @@
+name: F-ROSS04 qualify production-owned D3R table provider
+
+on:
+  push:
+    branches:
+      - work/f-ross04-d3r-table-provider
+    paths:
+      - 'src/solver/mod_rossfast_d3r_table_provider.f90'
+      - 'tests/ross/test_ross04_d3r_table_provider.f90'
+      - 'tests/ross/run_ross04_d3r_table_provider.sh'
+      - 'assets/rossfast/d3r/**'
+      - '.github/workflows/ross04-d3r-table-provider-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross04-table-provider-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-material:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout F-ROSS04 candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pin F-ROSS03 parent and F-ROSS01 oracle authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor cadf06751b7c2f24845c4700d7ef7b68963b2975 HEAD
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          test "$(git rev-parse FETCH_HEAD)" = 04807fdcf45453a59b7f6c99fe97f1286c172833
+          git worktree add --detach "$RUNNER_TEMP/f-ross01-research" FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json)" = ff32bce4597e245eef0028556fce476074ab1cb8
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = bafda0fb4ed6da606c3a1837208200dbcdb05c65
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py)" = 94520eb13a86cf224f90dd1649a4f9ad3afecfce
+
+      - name: Verify committed asset registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          material = '${{ matrix.material }}'
+          manifest = json.loads(pathlib.Path('assets/rossfast/d3r/manifest.json').read_text())
+          assert manifest['kind'] == 'QUALIFIED_ROSSFAST_D3R_TABLE_ASSET_REGISTRY'
+          assert manifest['research_head'] == '04807fdcf45453a59b7f6c99fe97f1286c172833'
+          assert manifest['runtime_generation'] is False
+          assert manifest['materials'] == ['B01','B12','O01','O05','O14','O18']
+          entry = manifest['entries'][material]
+          path = pathlib.Path(entry['path'])
+          assert path.is_file()
+          assert hashlib.sha256(path.read_bytes()).hexdigest() == entry['asset_sha256']
+          assert entry['table_n'] == 241
+          assert entry['word_count'] == 58081
+          print('ROSS04_COMMITTED_ASSET_REGISTRY', material, entry['asset_sha256'])
+          PY
+
+      - name: Install pinned-oracle dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy jsonschema
+
+      - name: Generate nine-level pinned oracle fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ross04-fixture"
+          python3 tests/ross/generate_ross03_oracle_fixture.py \
+            --research-root "$RUNNER_TEMP/f-ross01-research" \
+            --material "${{ matrix.material }}" \
+            --table-out "$RUNNER_TEMP/ross04-fixture/transient-table-${{ matrix.material }}.txt" \
+            --fixture-out "$RUNNER_TEMP/ross04-fixture/oracle-${{ matrix.material }}.txt" \
+            --metadata-out "$RUNNER_TEMP/ross04-fixture/oracle-${{ matrix.material }}.json"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Qualify committed-asset provider under O0 and O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/ross/run_ross04_d3r_table_provider.sh \
+            "${{ matrix.material }}" \
+            "$RUNNER_TEMP/ross04-fixture/oracle-${{ matrix.material }}.txt" \
+            | tee "$RUNNER_TEMP/ross04-fixture/provider-${{ matrix.material }}.txt"
+
+      - name: Upload qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross04-${{ matrix.material }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/ross04-fixture/oracle-${{ matrix.material }}.json
+            ${{ runner.temp }}/ross04-fixture/provider-${{ matrix.material }}.txt
