@@ -2,6 +2,7 @@ module mod_kernel_transactions
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t, transaction_interface_sensitivity_t
+  use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
        CANONICAL_STATUS_INVALID_REQUEST
@@ -108,6 +109,7 @@ module mod_kernel_transactions
     real(real64) :: completed_t = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
+    type(accepted_trajectory_direction_result_t) :: accepted_trajectory_direction
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -698,6 +700,7 @@ contains
     result%completed_t = runtime_result%completed_t
     result%mass = runtime_result%mass
     result%interface_sensitivity = runtime_result%interface_sensitivity
+    result%accepted_trajectory_direction = runtime_result%accepted_trajectory_direction
     result%bottom_interface_exchange_available = runtime_result%bottom_interface_exchange_available
     result%bottom_outward_exchange_native = runtime_result%bottom_outward_exchange_native
     result%terminal_bottom_outward_flux_native = runtime_result%terminal_bottom_outward_flux_native

@@ -16,10 +16,20 @@ module mod_fmr_serialized_reference_backend
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
+  use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
+       fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
+  use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
+       soil_water_accepted_step_direction_result_t
+  use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, trajectory_step_token_t, &
+       configure_trajectory_direction, begin_or_continue_trajectory, build_trajectory_step_request, &
+       stage_trajectory_step_result, accept_trajectory_step, finalize_trajectory_direction
+  use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t, &
+       publish_accepted_trajectory_direction
+  use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
@@ -191,6 +201,10 @@ module mod_fmr_serialized_reference_backend
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
+    logical :: top_sensible_boundary_active = .false.
+    logical :: top_sensible_boundary_valid = .true.
+    type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier
+    type(accepted_trajectory_direction_t) :: trajectory_direction
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
@@ -233,6 +247,14 @@ module mod_fmr_serialized_reference_backend
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
     real(real64) :: temporal_indicator_budget = 0.0_real64
+    logical :: trajectory_direction_requested = .false.
+    logical :: trajectory_provenance_valid = .false.
+    integer :: trajectory_worker_id = -1
+    integer :: trajectory_control_coordinate = 0
+    integer(int64) :: trajectory_generation_counter = 0_int64
+    real(real64) :: trajectory_requested_t0 = 0.0_real64
+    real(real64) :: trajectory_requested_t1 = 0.0_real64
+    type(accepted_trajectory_direction_t) :: trajectory_direction
     logical :: snow_active = .false.
     logical :: snow_event_prepared = .false.
     real(real64) :: snow_outer_t0 = 0.0_real64
@@ -255,6 +277,9 @@ module mod_fmr_serialized_reference_backend
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
     logical :: bottom_thermal_carrier_active = .false.
     logical :: bottom_thermal_carrier_valid = .true.
+    type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier
+    logical :: top_sensible_boundary_carrier_active = .false.
+    logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
@@ -266,6 +291,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: temporal_error => fmr_serialized_temporal_identity
     procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
     procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
+    procedure :: accepted_trajectory_direction_snapshot => fmr_serialized_accepted_trajectory_direction_snapshot
   end type fmr_serialized_reference_model_t
 
   type, public :: fmr_serialized_reference_backend_t
@@ -275,12 +301,16 @@ module mod_fmr_serialized_reference_backend
     logical :: initialized = .false.
     logical :: bottom_thermal_requested = .false.
     type(fmr_bottom_thermal_candidate_t) :: bottom_thermal_candidate
+    logical :: top_sensible_boundary_requested = .false.
+    type(fmr_top_sensible_boundary_candidate_t) :: top_sensible_boundary_candidate
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: observation => fmr_serialized_backend_observation
     procedure, public :: set_bottom_thermal_carrier_enabled => fmr_serialized_backend_set_bottom_thermal_carrier_enabled
     procedure, public :: bottom_thermal_snapshot => fmr_serialized_backend_bottom_thermal_snapshot
+    procedure, public :: set_top_sensible_boundary_enabled => fmr_serialized_backend_set_top_sensible_boundary_enabled
+    procedure, public :: top_sensible_boundary_snapshot => fmr_serialized_backend_top_sensible_boundary_snapshot
     procedure, public :: configure_fixed_weir_surface_water => fmr_serialized_backend_configure_fixed_weir_surface_water
     procedure, public :: clear_fixed_weir_surface_water => fmr_serialized_backend_clear_fixed_weir_surface_water
   end type fmr_serialized_reference_backend_t
@@ -520,8 +550,14 @@ contains
     self%model%bottom_thermal_carrier_active = .false.
     self%model%bottom_thermal_carrier_valid = .true.
     self%bottom_thermal_requested = .false.
+    call configure_trajectory_direction(self%model%trajectory_direction, .false.)
     call self%model%bottom_thermal_carrier%clear()
     call self%bottom_thermal_candidate%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
+    self%top_sensible_boundary_requested = .false.
+    call self%model%top_sensible_boundary_carrier%clear()
+    call self%top_sensible_boundary_candidate%clear()
     call self%clear_fixed_weir_surface_water()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
@@ -542,6 +578,22 @@ contains
     type(fmr_bottom_thermal_candidate_t) :: candidate
     call self%bottom_thermal_candidate%copy_to(candidate)
   end function fmr_serialized_backend_bottom_thermal_snapshot
+
+  subroutine fmr_serialized_backend_set_top_sensible_boundary_enabled(self, enabled)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    logical, intent(in) :: enabled
+    self%top_sensible_boundary_requested = enabled
+    call self%top_sensible_boundary_candidate%clear()
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
+  end subroutine fmr_serialized_backend_set_top_sensible_boundary_enabled
+
+  function fmr_serialized_backend_top_sensible_boundary_snapshot(self) result(candidate)
+    class(fmr_serialized_reference_backend_t), intent(in) :: self
+    type(fmr_top_sensible_boundary_candidate_t) :: candidate
+    call self%top_sensible_boundary_candidate%copy_to(candidate)
+  end function fmr_serialized_backend_top_sensible_boundary_snapshot
 
   subroutine fmr_serialized_backend_configure_fixed_weir_surface_water(self, parameters, forcing, numerical, ok)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -598,16 +650,26 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
-    logical :: bottom_thermal_ok
+    logical :: bottom_thermal_ok, top_sensible_ok
 
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
     self%model%bottom_thermal_carrier_valid = .true.
+    call self%top_sensible_boundary_candidate%clear()
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
     self%model%temporal_indicator_history_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
+    self%model%trajectory_worker_id = -1
+    self%model%trajectory_provenance_valid = .false.
+    if (column%column_id > 0_int64 .and. column%column_id <= int(huge(0), int64)) then
+      self%model%trajectory_worker_id = int(column%column_id)
+      self%model%trajectory_provenance_valid = self%model%trajectory_worker_id > 0
+    end if
     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
@@ -674,6 +736,12 @@ contains
       self%model%bottom_thermal_carrier_active = bottom_thermal_ok
       self%model%bottom_thermal_carrier_valid = bottom_thermal_ok
     end if
+    if (self%top_sensible_boundary_requested .and. parameters%soil_temperature_active .and. &
+        self%model%state_profile_admitted .and. config%max_committed_substeps <= ishft(huge(0), -1)) then
+      call self%model%top_sensible_boundary_carrier%initialize(2 * config%max_committed_substeps, top_sensible_ok)
+      self%model%top_sensible_boundary_carrier_active = top_sensible_ok
+      self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
+    end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
@@ -684,9 +752,20 @@ contains
         if (.not. bottom_thermal_ok) call self%bottom_thermal_candidate%clear()
       end if
     end if
+    if (self%model%top_sensible_boundary_carrier_active .and. self%model%top_sensible_boundary_carrier_valid .and. &
+        result%completed) then
+      if (candidate%ready()) then
+        call self%model%top_sensible_boundary_carrier%materialize_candidate(t0, t1, &
+             self%top_sensible_boundary_candidate, top_sensible_ok)
+        if (.not. top_sensible_ok) call self%top_sensible_boundary_candidate%clear()
+      end if
+    end if
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
     self%model%bottom_thermal_carrier_valid = .true.
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -716,6 +795,10 @@ contains
       typed%bottom_thermal_active = self%bottom_thermal_carrier_active
       typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
       call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
+      typed%top_sensible_boundary_active = self%top_sensible_boundary_carrier_active
+      typed%top_sensible_boundary_valid = self%top_sensible_boundary_carrier_valid
+      call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)
+      typed%trajectory_direction = self%trajectory_direction
     end select
   end subroutine fmr_serialized_capture_attempt_context
 
@@ -728,10 +811,18 @@ contains
       self%bottom_thermal_carrier_active = typed%bottom_thermal_active
       self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
       call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
+      self%top_sensible_boundary_carrier_active = typed%top_sensible_boundary_active
+      self%top_sensible_boundary_carrier_valid = typed%top_sensible_boundary_valid
+      call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)
+      self%trajectory_direction = typed%trajectory_direction
     class default
       self%bottom_thermal_carrier_active = .false.
       self%bottom_thermal_carrier_valid = .false.
       call self%bottom_thermal_carrier%clear()
+      self%top_sensible_boundary_carrier_active = .false.
+      self%top_sensible_boundary_carrier_valid = .false.
+      call self%top_sensible_boundary_carrier%clear()
+      call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
 
@@ -851,6 +942,12 @@ contains
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
+    self%trajectory_direction_requested = config%accepted_trajectory_direction%requested
+    self%trajectory_control_coordinate = config%accepted_trajectory_direction%control_coordinate
+    self%trajectory_requested_t0 = interval%t0
+    self%trajectory_requested_t1 = interval%t1
+    call configure_trajectory_direction(self%trajectory_direction, &
+         self%trajectory_direction_requested .and. self%trajectory_provenance_valid)
     self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available
     self%temporal_indicator_budget_valid = .false.
     if (self%temporal_indicator_budget_supplied) then
@@ -938,6 +1035,37 @@ contains
       return
     end select
   end subroutine fmr_serialized_prepare_interval
+
+  subroutine fmr_serialized_accepted_trajectory_direction_snapshot(self, interval, result)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(canonical_interval_t), intent(in) :: interval
+    type(accepted_trajectory_direction_result_t), intent(out) :: result
+    logical :: finalized
+
+    result = accepted_trajectory_direction_result_t()
+    if (.not. self%trajectory_direction_requested) return
+    if (.not. self%trajectory_provenance_valid) then
+      result%requested = .true.
+      result%worker_id = self%trajectory_worker_id
+      result%control_coordinate = self%trajectory_control_coordinate
+      result%origin_t0 = self%trajectory_requested_t0
+      result%accepted_t1 = self%trajectory_requested_t0
+      result%route = 'worker-provenance-unavailable'
+      return
+    end if
+    if (.not. same_real_bits(interval%t0, self%trajectory_requested_t0) .or. &
+        .not. same_real_bits(interval%t1, self%trajectory_requested_t1)) then
+      result%requested = .true.
+      result%worker_id = self%trajectory_worker_id
+      result%control_coordinate = self%trajectory_control_coordinate
+      result%origin_t0 = self%trajectory_requested_t0
+      result%accepted_t1 = self%trajectory_direction%current_t1
+      result%route = 'canonical-window-mismatch'
+      return
+    end if
+    call finalize_trajectory_direction(self%trajectory_direction, interval%t0, interval%t1, finalized)
+    call publish_accepted_trajectory_direction(self%trajectory_direction, result)
+  end subroutine fmr_serialized_accepted_trajectory_direction_snapshot
 
   subroutine populate_snow_observation(self)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
@@ -1055,6 +1183,9 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    type(soil_water_accepted_step_direction_request_t) :: direction_request
+    type(soil_water_accepted_step_direction_result_t) :: direction_result
+    type(trajectory_step_token_t) :: direction_token
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
@@ -1063,6 +1194,8 @@ contains
     real(real64) :: step_duration, bottom_temperature_start_c
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
     logical :: bottom_temperature_start_available
+    logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
+    logical :: trajectory_solver_used
     integer :: soil_temperature_status, bottom_temperature_status
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
@@ -1074,6 +1207,11 @@ contains
     self%last_observation%temporal_head_budget = self%temporal_indicator_budget
     bottom_temperature_start_c = 0.0_real64
     bottom_temperature_start_available = .false.
+    trajectory_begin_ok = .false.
+    trajectory_request_ok = .false.
+    trajectory_stage_ok = .false.
+    trajectory_accept_ok = .false.
+    trajectory_solver_used = .false.
     if (.not. self%temporal_indicator_history_enabled) then
       self%last_observation%temporal_certificate_unavailable_reason = 'history-service-disabled'
     else if (.not. self%temporal_indicator_budget_supplied) then
@@ -1178,7 +1316,36 @@ contains
 
     call bind_b110_serialized_legacy_context(request, context_ok)
     if (.not. context_ok) return
-    call self%solver%solve(request, self%workspace, solve_result)
+
+    if (self%trajectory_direction_requested .and. self%trajectory_provenance_valid) then
+      if (.not. allocated(self%trajectory_direction%pressure_head_direction)) then
+        if (self%trajectory_generation_counter >= huge(self%trajectory_generation_counter)) then
+          self%trajectory_provenance_valid = .false.
+        else
+          self%trajectory_generation_counter = self%trajectory_generation_counter + 1_int64
+          call begin_or_continue_trajectory(self%trajectory_direction, self%trajectory_worker_id, t0, t1, &
+               self%trajectory_control_coordinate, self%soil_parameters%active_nodes, trajectory_begin_ok, &
+               generation_seed=self%trajectory_generation_counter)
+        end if
+      else
+        call begin_or_continue_trajectory(self%trajectory_direction, self%trajectory_worker_id, t0, t1, &
+             self%trajectory_control_coordinate, self%soil_parameters%active_nodes, trajectory_begin_ok)
+      end if
+      if (trajectory_begin_ok) then
+        call build_trajectory_step_request(self%trajectory_direction, t0, t1, direction_request, direction_token, &
+             trajectory_request_ok)
+      end if
+    end if
+
+    if (trajectory_request_ok) then
+      call solve_with_accepted_step_direction(self%solver, request, self%workspace, direction_request, &
+           solve_result, direction_result)
+      trajectory_solver_used = .true.
+      call stage_trajectory_step_result(self%trajectory_direction, direction_token, direction_result, trajectory_stage_ok)
+    else
+      call self%solver%solve(request, self%workspace, solve_result)
+    end if
+
     self%last_observation%solver_executed = .true.
     self%last_observation%solver_status = solve_result%status
     self%last_observation%top_flux = solve_result%top_flux
@@ -1193,6 +1360,11 @@ contains
     outcome%linear_solves = solve_result%diagnostics%linear_solves
     outcome%backtracking_attempts = solve_result%diagnostics%backtracking_attempts
     outcome%alternative_solver_calls = solve_result%diagnostics%alternative_solver_calls
+    if (trajectory_solver_used) then
+      outcome%linear_solves = outcome%linear_solves + direction_result%additional_tridiagonal_backsolves
+      outcome%jacobian_builds = outcome%jacobian_builds + direction_result%additional_jacobian_builds
+      outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
+    end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
     if (self%temporal_indicator_history_enabled) then
       call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
@@ -1273,6 +1445,12 @@ contains
       call record_bottom_thermal_sample(self, state, t0, t1, outcome%bottom_outward_exchange_native, &
            bottom_temperature_start_c, bottom_temperature_start_available)
     end if
+    if (self%top_sensible_boundary_carrier_active .and. self%top_sensible_boundary_carrier_valid) then
+      call record_top_sensible_boundary_sample(self, t0, t1, solve_result%top_flux * step_duration)
+    end if
+    if (trajectory_stage_ok) then
+      call accept_trajectory_step(self%trajectory_direction, trajectory_accept_ok)
+    end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
 
@@ -1316,6 +1494,21 @@ contains
     end if
     if (.not. appended) self%bottom_thermal_carrier_valid = .false.
   end subroutine record_bottom_thermal_sample
+
+  subroutine record_top_sensible_boundary_sample(self, t0, t1, top_exchange_native)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    real(real64), intent(in) :: t0, t1, top_exchange_native
+    logical :: appended
+
+    if (.not. self%top_sensible_boundary_carrier_active .or. &
+        .not. self%top_sensible_boundary_carrier_valid) return
+    call self%top_sensible_boundary_carrier%append(t0, t1, top_exchange_native, &
+         self%last_observation%soil_temperature_energy_accounting_complete, &
+         self%last_observation%soil_temperature_boundary_energy_j_cm2, &
+         self%last_observation%soil_temperature_storage_change_j_cm2, &
+         self%last_observation%soil_temperature_energy_residual_j_cm2, appended)
+    if (.not. appended) self%top_sensible_boundary_carrier_valid = .false.
+  end subroutine record_top_sensible_boundary_sample
 
   subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
                                      total_in, total_out)

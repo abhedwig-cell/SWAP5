@@ -1,0 +1,55 @@
+{
+  "capability": "F-KT22",
+  "phase": "CLOSE",
+  "repository": "abhedwig-cell/SWAP5",
+  "canonical_branch": "integration/f-ci-canonical",
+  "pre_admission_canonical_head": "9d202705d1d7063ae129166b1049f7555a7ad802",
+  "pre_admission_canonical_tree": "ca2d9030bbaf76eab196da81dcd9419a24f8ecfc",
+  "canonical_admission_head": "e92d15955e921e19cd7a5c38f83ee9b9aaf694b6",
+  "qualified_source_head": "c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01",
+  "qualified_source_base": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+  "recomposition_branch": "work/f-kt22-current-canonical-recomposition",
+  "admission_branch": "integration/f-ci82-fkt22-current-canonical-admission",
+  "qualified_recomposition_tested_head": "f32a55aa3a34809b1ab506647886e73049a63e5d",
+  "qualified_recomposition_checkpoint_head": "8ff0ac765b5349733adbbfe6ddf3ee0b7b960292",
+  "recomposed_head_before_merge_fix": "87f78e65fef7295c72b1a93019768b962948d0e7",
+  "merge_artifact_fix_head": "1fd81aa38cd85dcc83a70320f2a35a068df6b646",
+  "relevant_dependency_state": {
+    "accepted_trajectory_result_type": "accepted_trajectory_direction_result_t",
+    "eb_i25_top_sensible_boundary_semantics_preserved": true,
+    "admitted_production_identical_to_qualified_checkpoint": true,
+    "old_f_ci76_generic_directional_response_branch_is_authority": false
+  },
+  "evidence": {
+    "source_qualification_run": 34992362560,
+    "recomposition_debug_run": 34994735229,
+    "recomposition_persist_run": 34994871132,
+    "first_current_canonical_qualification_run": 34995028908,
+    "first_current_canonical_qualification_verdict": "FAILED_MECHANICAL_MERGE_ARTIFACT",
+    "failure_scope": "one missing end-if at adjacent EB-I25 carrier / F-KT22 accepted-step promotion boundary",
+    "merge_artifact_repaired": true,
+    "current_canonical_qualification_run": 34995418529,
+    "self_describing_checkpoint_qualification_run": 34996603036,
+    "qualification_jobs": {
+      "current-canonical-tree": "PASS",
+      "canonical-boundary": "PASS",
+      "fmr-production-compile": "PASS",
+      "fmr-production-runtime": "PASS",
+      "eb-i25-preservation": "PASS"
+    },
+    "admission_delta": "only four F-KT22 production files plus persistent F-KT22 qualification/test evidence relative to the pre-admission canonical",
+    "post_admission_pull_request_run": 34996889215,
+    "post_admission_pull_request_run_classification": "EXPECTED_STALE_PRE_ADMISSION_TREE_GUARD_FAILURE",
+    "close_ci_hygiene": "qualification workflow changed so pull requests target integration/f-ci-canonical and post-admission lineage is verified from the immutable qualified checkpoint",
+    "production_semantics_changed_to_force_pass": false
+  },
+  "verdict": "ADMITTED_CANONICAL_CLOSED",
+  "next_permitted_action": "F-GC23 may treat F-KT22 as a canonically admitted prerequisite, subject to its own bounded prerequisite and live-canonical reconciliation. No F-GC23 work is part of this close.",
+  "exclusions": [
+    "no GC23 implementation in this workunit",
+    "no new EB semantics",
+    "no ROSS",
+    "no RossFast",
+    "no finite-difference production construction"
+  ]
+}

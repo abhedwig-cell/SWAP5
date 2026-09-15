@@ -1,0 +1,25 @@
+name: F-VQ93 EB-I25 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq93-eb-i25-accepted-multisubstep-sensible-boundary-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independently-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: F-VQ93 independent EB-I25 qualification
+        run: bash tests/eb/run_f_vq93_eb_i25_independent_gate.sh

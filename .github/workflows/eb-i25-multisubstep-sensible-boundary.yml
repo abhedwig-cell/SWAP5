@@ -1,0 +1,24 @@
+name: EB-I25 accepted two-half sensible boundary
+
+on:
+  push:
+    branches:
+      - work/eb-i25-accepted-multisubstep-sensible-boundary
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-owner:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run EB-I25 owner qualification
+        shell: bash
+        run: bash tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
