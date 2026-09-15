@@ -58,7 +58,9 @@ grep -q 'q_groundwater_area_weighted_m_per_s = -weighted_flux' "$prod"
 
 work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
 compile_and_run() {
-  local opt="$1" out="$2" dir="$work/$opt"
+  local opt="$1"
+  local out="$2"
+  local dir="$work/$opt"
   mkdir -p "$dir"
   gfortran "-$opt" -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -J"$dir" -I"$dir" \
