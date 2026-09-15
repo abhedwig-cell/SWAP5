@@ -48,7 +48,7 @@ grep -Fq 'inflow_cm = -observation%top_flux * (t1-t0)' src/runtime/mod_eb_i24_to
 grep -Fq 'resolve_external_liquid_water_temperature' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
 grep -Fq 'evaluate_liquid_water_sensible_transport' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
 grep -Fq 'publication%boundary_value%top_advective_available = .true.' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
-grep -Fq 'full SWAP5 Energy Balance' tests/eb/EB-I24_CONTRACT.md
+grep -Fq 'complete SWAP5 Energy Balance' tests/eb/EB-I24_CONTRACT.md
 ! grep -Eiq 'air.*temperature.*substitut|soil.*temperature.*substitut|prescribed.*surface.*temperature.*substitut' src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
 echo 'EB_I24_BOUNDED_DELTA=PASS'
 echo 'EB_I24_STATIC_CONTRACT=PASS'
