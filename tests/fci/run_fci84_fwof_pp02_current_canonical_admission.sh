@@ -54,6 +54,7 @@ echo 'FCI84_PRODUCTION_DELTA=PASS ELEVEN_ADDITIVE_WOFOST81_MODULES'
 [[ -e tests/fwof/pp02/case001_fixture.b64.part04a ]]
 [[ -e tests/fwof/pp02/case001_fixture.b64.part04b ]]
 
+git fetch --no-tags --depth=1 origin work/f-wof-pp02-wofost81-migration-preservation
 git cat-file -e "$OWNER_CHECKPOINT^{commit}"
 python3 - "$STATUS" "$CHECKPOINT" "$TEN_CASE" <<'PY'
 import json, pathlib, sys
