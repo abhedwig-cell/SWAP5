@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC29",
+  "title": "Optional Groundwater Response Sensitivity Service Extension",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED",
+  "owner": {
+    "branch": "work/f-gc29-groundwater-response-sensitivity-service-extension",
+    "qualified_source_head": "bf0bc93e359fba42237fd102ced7da9a5a84efad",
+    "qualify_checkpoint_head": "fc3a7a93b374fce885b12a9a447249bf745353f6",
+    "production_path": "src/runtime/mod_groundwater_response_sensitivity_contract.f90",
+    "production_blob": "fb8fd6a5447edd4fa4f664cd754c93d7db331969"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ94",
+    "qualified_verifier_head": "43a8f8bdf0582674be39e95fe23dccb8e83fadd2",
+    "status_head": "4727a346da7d3e3fc124c13697e00946acd83ec6",
+    "verdict": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION"
+  },
+  "canonical_admission": {
+    "work_unit": "F-CI83",
+    "pre_admission_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "admitted_checkpoint": "9f5b5a53123a313608f1c691b6400f3c6f4a8b55",
+    "canonical_close_head": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
+    "promotion_method": "NON_FORCE_FAST_FORWARD",
+    "governance_checkpoint_run": 35019364024,
+    "governance_checkpoint_job": 104550898070,
+    "governance_checkpoint_conclusion": "success"
+  },
+  "closed_contract": [
+    "groundwater response sensitivity is optional and additive",
+    "trial, candidate and response sensitivity are atomically bound",
+    "response provenance is exact for service, lineage, origin revision, successor revision and generic [t0,t1] window",
+    "retry and rejection cannot leak stale response",
+    "unavailable, unsupported, nonsmooth, provider-error and nonfinite derivative paths fail closed",
+    "finite difference remains qualification-only and absent from production response construction",
+    "response evaluation does not commit or mutate groundwater state",
+    "existing F-GC18/F-GC18R service source remains byte-identical"
+  ],
+  "verdict": "PASS/CLOSED: F-GC29 is owner-qualified, independently qualified and canonically admitted through F-CI83.",
+  "next_permitted_action": "Resume F-GC23 from checkpoint 5f0b81451433242d9e6395272d6f6491fcf3be2a and reconcile only the newly admitted F-GC29/current-canonical delta before any implementation.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "concrete MODFLOW adapter implementation",
+    "structural finite difference as production response construction",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}
