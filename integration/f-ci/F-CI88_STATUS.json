@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI88",
+  "capability": "F-GC28",
+  "title": "Groundwater Coupling v1 Completion Audit — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "status": "ADMISSION_GATE_PENDING",
+  "branch": "integration/f-ci88-fgc28-groundwater-coupling-v1-completion-audit-admission",
+  "canonical_base": {
+    "head": "dffc021507460ab1a613dfd2e916def7f3db1ea7",
+    "tree": "763645d4d3d797675f527f2b156c75cf9ccb5eb2"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ98",
+    "branch": "qualification/f-vq98-fgc28-groundwater-coupling-v1-completion-audit",
+    "authority_head": "f4b3fa43ff453df9b15191fef6f0657b0b8e4e37",
+    "tested_head": "bfd2a988e852afcf63da24a6f501924ccd83919c",
+    "workflow_run": 35034320670,
+    "workflow_job": 104599799898,
+    "verdict": "INDEPENDENTLY_QUALIFIED"
+  },
+  "owner_reconcile_authority": "fc5f9cc6bb4cc98f55dbe4ff0160dacdf1d4ee13",
+  "admission_class": "METADATA_ONLY_COMPLETION_AUDIT_ADMISSION",
+  "production_mutations": [],
+  "required_gate": [
+    "live canonical remains exact qualified base",
+    "F-VQ98 immutable authority remains exact and green",
+    "owner F-GC28 reconcile authority remains exact",
+    "six frozen G05 obligations remain closed",
+    "qualified production blob set remains exact",
+    "F-GC27 end-to-end close remains bound",
+    "F-CI88 delta contains no production or reference source"
+  ],
+  "decision": "RUN_ADMISSION_GATE",
+  "hard_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "production change solely to obtain PASS",
+    "F-GC29 execution"
+  ]
+}
