@@ -1,0 +1,21 @@
+name: F-WOF-PP02 repository integration
+
+on:
+  push:
+    branches:
+      - work/f-wof-pp02-wofost81-migration-preservation
+    paths:
+      - 'src/crop/mod_wofost81_*.f90'
+      - 'tests/fwof/pp02/**'
+      - '.github/workflows/f-wof-pp02-repository-integration.yml'
+  workflow_dispatch:
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler version
+        run: gfortran --version
+      - name: WOFOST81 repository integration gate
+        run: bash tests/fwof/pp02/run_wofost81_one_day_candidate_integration.sh
