@@ -176,7 +176,9 @@ contains
 
   logical function fmr_wofost81_crop_transaction_state_ready(self) result(ready)
     class(fmr_wofost81_crop_transaction_state_t), intent(in) :: self
-    ready = self%initialized .and. self%owner%validate() == WOFOST81_CROP_OWNER_OK
+    ready = .false.
+    if (.not. self%initialized) return
+    ready = self%owner%validate() == WOFOST81_CROP_OWNER_OK
   end function fmr_wofost81_crop_transaction_state_ready
 
   subroutine fmr_wofost81_crop_transaction_snapshot_owner(self, owner, available)
@@ -343,7 +345,11 @@ contains
 
       call apply_wofost81_one_day_n_supply(prepared, self%parameters81, prepared%nitrogen_request%soil_request, &
            candidate_owner, n_flux, crop_status)
-      if (crop_status /= WOFOST81_DAY_OK .or. candidate_owner%validate() /= WOFOST81_CROP_OWNER_OK) then
+      if (crop_status /= WOFOST81_DAY_OK) then
+        self%last_status = FMR_WOF81_N_SUPPLY_APPLY_ERROR
+        return
+      end if
+      if (candidate_owner%validate() /= WOFOST81_CROP_OWNER_OK) then
         self%last_status = FMR_WOF81_N_SUPPLY_APPLY_ERROR
         return
       end if
