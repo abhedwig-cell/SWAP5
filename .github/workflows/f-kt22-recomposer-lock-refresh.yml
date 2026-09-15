@@ -1,0 +1,47 @@
+name: F-KT22 recomposer canonical-lock refresh
+
+on:
+  push:
+    branches:
+      - work/f-kt22-current-canonical-recomposition
+    paths:
+      - '.github/workflows/f-kt22-recomposer-lock-refresh.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Refresh recomposer canonical lock and self-remove
+        shell: bash
+        run: |
+          set -euo pipefail
+          OLD=64937452be6b073a21b1b87acf21ce4edcbfda14
+          NEW=c9dafa34875ae2fb4e7257b77c0017103d770405
+          TARGET=.github/workflows/f-kt22-current-canonical-recompose.yml
+          SELF=.github/workflows/f-kt22-recomposer-lock-refresh.yml
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$NEW"
+          python3 - "$TARGET" "$OLD" "$NEW" <<'PY'
+          from pathlib import Path
+          import sys
+          p=Path(sys.argv[1]); old=sys.argv[2]; new=sys.argv[3]
+          s=p.read_text()
+          if s.count(old) != 1:
+              raise SystemExit(f'expected exactly one stale canonical lock, found {s.count(old)}')
+          p.write_text(s.replace(old,new,1))
+          PY
+          grep -Fq "CANONICAL=$NEW" "$TARGET"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$TARGET"
+          git rm "$SELF"
+          git commit -m 'ci(F-KT22): refresh current-canonical recomposition lock'
+          git push origin HEAD:work/f-kt22-current-canonical-recomposition
