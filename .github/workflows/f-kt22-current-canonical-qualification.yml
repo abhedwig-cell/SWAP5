@@ -27,6 +27,8 @@ on:
       - '.github/workflows/f-kt22-current-canonical-qualification.yml'
       - 'tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json'
   pull_request:
+    branches:
+      - integration/f-ci-canonical
     paths:
       - 'src/kernel/mod_kernel_transactions.f90'
       - 'src/runtime/mod_canonical_contracts.f90'
@@ -55,9 +57,10 @@ permissions:
   contents: read
 
 env:
-  FKT22_EXPECTED_CANONICAL_TREE: ca2d9030bbaf76eab196da81dcd9419a24f8ecfc
+  FKT22_PRE_ADMISSION_CANONICAL_TREE: ca2d9030bbaf76eab196da81dcd9419a24f8ecfc
   FKT22_QUALIFIED_SOURCE: c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
   FKT22_SOURCE_BASE: 1f33328e2ddc0d28450d35647c1c97f293b1e622
+  FKT22_QUALIFIED_CHECKPOINT: 8ff0ac765b5349733adbbfe6ddf3ee0b7b960292
 
 jobs:
   current-canonical-tree:
@@ -67,21 +70,27 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Verify current-canonical dependency tree
+      - name: Verify F-KT22 canonical lineage
         shell: bash
         run: |
           set -euo pipefail
           git fetch origin integration/f-ci-canonical work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
           CANONICAL="$(git rev-parse origin/integration/f-ci-canonical)"
           TREE="$(git rev-parse "$CANONICAL^{tree}")"
-          SOURCE_BASE="$(git merge-base "$CANONICAL" "$FKT22_QUALIFIED_SOURCE")"
           echo "FKT22_CURRENT_CANONICAL_HEAD=$CANONICAL"
           echo "FKT22_CURRENT_CANONICAL_TREE=$TREE"
-          echo "FKT22_SOURCE_MERGE_BASE=$SOURCE_BASE"
-          test "$TREE" = "$FKT22_EXPECTED_CANONICAL_TREE"
-          test "$SOURCE_BASE" = "$FKT22_SOURCE_BASE"
-          git merge-base --is-ancestor "$CANONICAL" HEAD
-          echo 'FKT22_CURRENT_CANONICAL_TREE_GATE=PASS'
+
+          if git merge-base --is-ancestor "$FKT22_QUALIFIED_CHECKPOINT" "$CANONICAL"; then
+            git merge-base --is-ancestor "$FKT22_QUALIFIED_CHECKPOINT" HEAD
+            echo 'FKT22_POST_ADMISSION_LINEAGE_GATE=PASS'
+          else
+            SOURCE_BASE="$(git merge-base "$CANONICAL" "$FKT22_QUALIFIED_SOURCE")"
+            echo "FKT22_SOURCE_MERGE_BASE=$SOURCE_BASE"
+            test "$TREE" = "$FKT22_PRE_ADMISSION_CANONICAL_TREE"
+            test "$SOURCE_BASE" = "$FKT22_SOURCE_BASE"
+            git merge-base --is-ancestor "$CANONICAL" HEAD
+            echo 'FKT22_PRE_ADMISSION_TREE_GATE=PASS'
+          fi
 
   canonical-boundary:
     needs: current-canonical-tree
