@@ -1,37 +1,37 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP01",
   "title": "WOFOST 8.1 Independent Potential Production Equivalence",
-  "phase": "ADMIT",
+  "phase": "CLOSE",
   "repository": "abhedwig-cell/SWAP5",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "original_reconciled_head": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
-    "admission_base_head": "4a01641ffed8a2260260909825c3887db2dff1ac",
-    "delta_from_original_commits": 43,
-    "relevant_crop_or_fwof_production_delta": false,
-    "admission_kind": "EVIDENCE_ONLY_RECOMPOSITION"
+    "pre_admission_head": "4a01641ffed8a2260260909825c3887db2dff1ac",
+    "canonical_admission_head": "ff5c4831f620166cfc763e9a6f3f4e7fbefde2b3",
+    "admission_kind": "EVIDENCE_ONLY_RECOMPOSITION",
+    "admission_delta_verified": true,
+    "admission_delta_file_count": 7,
+    "production_files_admitted": 0
   },
-  "work_branch": "work/f-wof-pp01-independent-potential-production-equivalence",
   "qualified_source_head": "e289e76c1d0e1084c0fcce9cec443aa9c846aec5",
+  "work_branch_admit_checkpoint": "ed26d74d5615c9cb9a60ffd48d9f1273425b4c10",
   "qualification": {
     "oracle_sha256": "99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145",
     "donor_sha256": "4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
-    "case_count": 10,
-    "deterministic_repeat_all_cases_byte_identical": true,
+    "ten_cases_normal_completion": true,
+    "ten_cases_deterministic_repeat_byte_identical": true,
     "crop_owned_output_count": 12,
     "crop_owned_all_cases_pass": true,
     "largest_crop_owned_abs_deviation": 7.275957614183426e-12,
     "largest_crop_owned_variable": "TAGP",
     "largest_crop_owned_tolerance": 0.1,
-    "full_14_field_yaml_conformance": false,
-    "RD_classification": "SWAP_SPECIFIC_ROOTING_INTERFACE_NOT_WOFOST81_DONOR_CROP_STATE",
-    "TRA_classification": "SWAP_HYDROLOGY_INTERFACE_NOT_WOFOST81_DONOR_CROP_STATE",
-    "verdict": "QUALIFIED_WOFOST81_DONOR_POTENTIAL_PRODUCTION_CROP_STATE_PASS_FULL_14_FIELD_YAML_NOT_EQUIVALENT"
+    "RD": "EXPLICIT_NON_EQUIVALENT_SWAP_ROOTING_INTERFACE",
+    "TRA": "EXPLICIT_NON_EQUIVALENT_SWAP_HYDROLOGY_INTERFACE"
   },
-  "admission_evidence": [
-    "integration/f-wof/F-WOF-PP01_CHECKPOINT.json",
+  "verdict": "ADMITTED_CANONICAL_CLOSED_WOFOST81_DONOR_POTENTIAL_PRODUCTION_CROP_STATE_QUALIFIED",
+  "scientific_conclusion": "For all ten independent PCSE 6.0.13 Spring Barley potential-production cases, the verified SWAP 4.3.1 WOFOST81 Fortran donor reproduces WOFOST-owned phenology, LAI, organ dry matter, total above-ground production, organ-N state and cumulative N uptake to floating-point roundoff and within the immutable YAML precision contract. The complete 14-field YAML is not a single conformance PASS because RD and TRA belong to distinct retained SWAP rooting/hydrology interfaces.",
+  "evidence": [
     "tests/fwof/pp01/REFERENCE_MANIFEST.json",
     "tests/fwof/pp01/README.md",
     "tests/fwof/pp01/MAPPING_CONTRACT.md",
@@ -39,19 +39,6 @@
     "tests/fwof/pp01/F-WOF-PP01_DONOR_QUALIFICATION.json",
     "tests/fwof/pp01/F-WOF-PP01_QUALIFICATION_ADAPTER.patch"
   ],
-  "adapter_patch": {
-    "path": "tests/fwof/pp01/F-WOF-PP01_QUALIFICATION_ADAPTER.patch",
-    "content_sha256": "4b3de0519bd84054bb8b3b7cf843d9c7dcfeac46ae437d8ce04f4fa2a12ec8e1",
-    "production_code": false
-  },
-  "admission_rules": {
-    "production_files_to_admit": 0,
-    "oracle_values_changed": false,
-    "tolerances_changed": false,
-    "donor_bytes_changed": false,
-    "stale_pre_donor_mapping_evidence_to_admit": false,
-    "whole_work_branch_merge_forbidden": true
-  },
   "repository_hygiene_note": {
     "accidental_ref": "noop-unused",
     "points_to": "b4c564aa756ae445029dbdbc97d1a9f16c3a14ff",
@@ -59,14 +46,14 @@
     "canonical_impact": false,
     "cleanup_status": "PENDING_CONNECTOR_DELETE_REF_CAPABILITY"
   },
-  "next_permitted_action": "Recompose exactly the seven listed evidence files onto canonical head 4a01641ffed8a2260260909825c3887db2dff1ac as one evidence-only canonical commit. Re-read canonical immediately before ref update and abort/reconcile if it moved. Then persist a CLOSE checkpoint recording the canonical admission SHA.",
+  "next_permitted_action": "Start a separate bounded SWAP5 WOFOST81 migration-preservation campaign using the admitted 12-output donor/oracle surface as immutable scientific reference. First reconcile the current SWAP5 WOFOST migration state and do not import historical SWAP4.3.1 interface semantics blindly. RD and TRA remain outside that crop-state preservation contract unless separately specified.",
   "exclusions": [
     "no EB",
     "no ROSS/RossFast",
     "no groundwater work",
     "no maize blocker work",
     "no new crop physics",
-    "no production semantic changes",
+    "no production semantic changes to force PASS",
     "no tolerance changes",
     "no silent oracle-field omission"
   ]
