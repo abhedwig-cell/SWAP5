@@ -1,6 +1,7 @@
 module test_fkt22_canonical_trajectory_fixture
-  use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, &
+       TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
   use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_physical_model_t
@@ -23,6 +24,7 @@ module test_fkt22_canonical_trajectory_fixture
     procedure :: prepare_interval => prepare_test_interval
     procedure :: advance => advance_test_model
     procedure :: storage => storage_test_model
+    procedure :: storage_accounting_status => storage_status_test_model
     procedure :: temporal_error => temporal_error_test_model
     procedure :: accepted_trajectory_direction_snapshot => snapshot_test_trajectory
   end type test_model_t
@@ -93,6 +95,22 @@ contains
     end select
     if (.not. same_type_as(self, self)) error stop 'unreachable model type'
   end function storage_test_model
+
+  subroutine storage_status_test_model(self, state, complete, missing_mask)
+    class(test_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+    select type (typed => state)
+    type is (test_state_t)
+      complete = .true.
+      missing_mask = TX_MASS_MISSING_NONE
+    end select
+    if (.not. same_type_as(self, self)) error stop 'unreachable model type'
+  end subroutine storage_status_test_model
 
   function temporal_error_test_model(self, full_state, half_state) result(value)
     class(test_model_t), intent(in) :: self
