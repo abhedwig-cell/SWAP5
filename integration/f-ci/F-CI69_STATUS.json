@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI69",
+  "title": "FMR serialized backend canonical selector forwarding",
+  "status": "CLOSED_POSITIVE_SERIALIZED_SELECTOR_FORWARDING",
+  "decision": "QUALIFIED_GENERIC_OPTIONAL_CANONICAL_SELECTOR_FORWARDING_THROUGH_THE_SERIALIZED_FMR_REFERENCE_BACKEND_WITH_ABSENT_SELECTOR_BEHAVIOR_PRESERVED",
+  "qualified_source": {
+    "branch": "qualification/f-ci69-fmr-serialized-selector-forwarding",
+    "production_head": "2d358d6464007ce51ffdf18b9bc5cca1fa562fb9",
+    "serialized_backend_blob": "24192a9571c2910d5f917af3c30de2ebbe7db524",
+    "checkpoint_orchestrator_blob": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+    "kernel_transport_blob": "d3a53385e3707f05e5396bbd6f218633b9803f65",
+    "canonical_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "rossfast_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "qualification": {
+    "workflow_run_id": 34934872455,
+    "job_id": 104270523985,
+    "tested_precommit_head": "b24976ad6e10d9544371f015fef6c7c686b9c580",
+    "tested_worktree_promoted_as_head": "2d358d6464007ce51ffdf18b9bc5cca1fa562fb9",
+    "conclusion": "success",
+    "bounded_source_delta": "src/runtime/mod_fmr_serialized_reference_backend.f90 only",
+    "o0_o2_output_identity": true,
+    "o0_o2_output_sha256": "337429e31606c9e64c0795a2e2faba4498be30d458e28ffd4e4884521ca101f0",
+    "selector_reached_serialized_backend": true,
+    "first_selector_target_exact_d3r_outer_horizon": true,
+    "first_retry_cap_exact_d3r_full_index_cap": true,
+    "absent_present_selector_status_identity": true,
+    "absent_present_selector_completed_time_identity": true,
+    "absent_present_selector_mass_residual_identity": true,
+    "absent_present_selector_attempt_retry_identity": true,
+    "hard_mass_gate_cm": 1e-12,
+    "trial_does_not_publish_committed_state": true,
+    "promotion_evidence": "The green job applied the bounded backend patch, ran the full O0/O2 gate, verified that the backend was the only worktree delta, then committed and pushed exactly that backend delta as 2d358d6464007ce51ffdf18b9bc5cca1fa562fb9."
+  },
+  "qualified_contract": {
+    "selector_argument_optional": true,
+    "selector_forwarded_only_when_present": true,
+    "absent_selector_path_preserved": true,
+    "generic_backend_contains_no_rossfast_specific_policy": true,
+    "production_semantics_changed_beyond_selector_transport": false
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "nonclaims": [
+    "NO_ROSSFAST_PHYSICAL_MODEL_BINDING_TO_SERIALIZED_BACKEND",
+    "NO_MOD_SOILWATER_ROSSFAST_SELECTION_POLICY",
+    "NO_NEW_ROSSFAST_PHYSICS",
+    "NO_CANONICAL_ADMISSION_BY_THIS_STATUS_ALONE"
+  ],
+  "next_gap": "COMPOSE_THE_QUALIFIED_F_ROSS05_REAL_D3R_MODEL_ADAPTER_WITH_THIS_SERIALIZED_BACKEND_SELECTOR_TRANSPORT_AND_THE_PRODUCTION_SOIL_WATER_BACKEND_SELECTION_BOUNDARY"
+}
