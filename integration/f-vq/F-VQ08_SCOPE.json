@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ08",
+  "title": "Real B1.10 Temporal Characterization Readiness",
+  "branch": "qualification/f-vq08-temporal-characterization-readiness",
+  "exact_fvq07_basis": "4ae2fc87970d46ff2103553930e583dd05a59f0b",
+  "final_fci_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+  "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+  "oracle": "B1.10",
+  "qualification_only": true,
+  "production_source_changes_allowed": false,
+  "target": "Qualify the prerequisites and fail-closed boundary for reproducible source-bound B1.10 full-step versus two-half-step temporal characterization from one committed physical state.",
+  "non_goals": [
+    "invent or tune per-metric temporal tolerances",
+    "qualify production execute_reference_interval",
+    "qualify a complete optional-process temporal profile",
+    "change SWAP physics, solver policy, timestep policy or mass tolerances",
+    "reinterpret deterministic contract-test values as production evidence"
+  ],
+  "hard_constraints": [
+    "hard mass conservation remains a separate non-delegable gate",
+    "solver convergence tolerances cannot substitute for temporal-accuracy limits",
+    "all compared endpoints must refer to the same physical t1 and the same committed starting state",
+    "optional process state must be explicitly covered before complete-process temporal qualification",
+    "unavailable real execution assets remain fail-closed rather than being replaced by synthetic physics"
+  ],
+  "architecture_invariants_checked": [3,5,7,8,9,13,23,25,26,29,30]
+}

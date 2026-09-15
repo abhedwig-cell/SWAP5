@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ08",
+  "oracle": "B1.10",
+  "comparison": "full_vs_two_half_endpoint",
+  "source_contract": "integration/f-vq/F-VQ05_TEMPORAL_PROFILE_READINESS.json",
+  "required_endpoint_metrics": ["h_cm", "theta", "pond_cm", "gwl_cm", "volact_cm", "ldwet_cm", "spev_cm", "saev_cm"],
+  "required_lagged_diagnostics": ["hm1_cm", "thetm1", "pondm1_cm", "gwlm1_cm"],
+  "production_numeric_limits": null,
+  "normalized_acceptance_threshold_is_physical_tolerance": false,
+  "existing_source_bound_evidence": {
+    "fci10_hupsel_mass": "integration/f-ci/evidence/F-CI10_LOCAL_HUPSEL_MASS_CANDIDATE.json",
+    "fci11_generic_interval": "integration/f-ci/evidence/F-CI11_LOCAL_GENERIC_INTERVAL_GATE.json",
+    "fci11_temporal_error_metric_qualified": false,
+    "fci11_raw_local_matrix_in_canonical_git": false
+  },
+  "qualified_hupsel_profile": {
+    "SWCROP": 1,
+    "SWIRFIX": 1,
+    "SWMACRO": 0,
+    "SWSNOW": 0,
+    "SWDRA": 1,
+    "SWHEA": 1,
+    "SWSOLU": 1
+  },
+  "optional_process_scope_complete": false,
+  "optional_process_scope_reason": "The qualified Hupsel profile has crop, fixed irrigation, heat and solute processes active. The current temporal-characterization checkpoint intentionally does not claim complete rollback/endpoint coverage for those active process states.",
+  "real_full_runner": {
+    "path": "tests/fci/run_fci07_full_b1_10_gate.sh",
+    "requires_external_source_path": true,
+    "requires_ttutil_root": true,
+    "requires_case_directory": true,
+    "required_environment": ["FCI07_B1_10_SOURCE", "FCI07_TTUTIL_ROOT", "FCI07_CASE"],
+    "all_required_real_run_assets_self_contained_in_repository": false,
+    "runner_is_temporal_full_vs_two_half_probe": false
+  },
+  "current_admission": {
+    "real_b1_10_temporal_characterization_qualified": false,
+    "complete_process_scope_qualified": false,
+    "production_temporal_profile_qualified": false,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
+  },
+  "promotion_requirements": [
+    "reconstructible exact B1.10 source/case/toolchain assets for the real runner",
+    "source-bound full-step and two-half-step runs from one committed starting state",
+    "all required endpoint metrics measured at the same t1",
+    "separate hard mass PASS for full-step and split paths",
+    "explicit active-process coverage or an explicitly limited profile scope",
+    "immutable raw evidence and exact source/toolchain provenance",
+    "independently justified per-metric physical limits before any production temporal profile can be admitted"
+  ],
+  "status": "BLOCKED_REAL_RUN_ROUTE_NOT_SELF_CONTAINED_AND_PROCESS_SCOPE_INCOMPLETE"
+}
