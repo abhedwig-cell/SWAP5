@@ -1,0 +1,32 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC26 — External Groundwater Adapter Conformance",
+  "admission": "F-CI86 current-canonical admission",
+  "phase": "ADMIT_RECOMPOSED_PENDING_GATE",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "head": "e4419b41d15a4acebf0fe55e5b810b92bbcd5f35",
+    "tree": "b68699a97d57a5cf77f13186e43ce20f831d7e95"
+  },
+  "owner_authority": "a096458965bad7bd1ff97c7c52d107044c1da103",
+  "independent_qualification_authority": "ae97f0d47c183a64e470be5badca220d95a65cb0",
+  "independent_workflow_run": 35029303648,
+  "exact_production_payload": {
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "dependency_delta_since_qualify": "NONE",
+  "reused_immutable_evidence": [
+    "owner-qualified executable and workflow evidence",
+    "unchanged F-GC17/F-GC18 direct dependency blobs",
+    "current-canonical F-GC20/F-GC22/F-GC23/F-GC24/F-GC25 owner blobs",
+    "successful F-VQ96 independent qualification run"
+  ],
+  "replay_required": [
+    "exact production-delta preservation check on recomposed current canonical",
+    "F-VQ96 independent runner against recomposed current-canonical tree",
+    "O0/O2 identity on recomposed tree"
+  ],
+  "verdict": "READY_FOR_ADMISSION_GATE",
+  "next_permitted_action": "Run F-CI86 admission gate. Promote only if PASS and live canonical remains e4419b41d15a4acebf0fe55e5b810b92bbcd5f35.",
+  "hard_exclusions": ["EB", "ROSS/RossFast", "F-GC27", "F-GC28", "new groundwater physics", "broad MODFLOW", "new solver policy", "new tolerances", "kernel file IO", "calendar assumptions"]
+}

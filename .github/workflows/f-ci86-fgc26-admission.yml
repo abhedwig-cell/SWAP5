@@ -1,0 +1,22 @@
+name: F-CI86 F-GC26 current-canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci86-fgc26-current-canonical-admission
+
+permissions:
+  contents: read
+
+jobs:
+  admission-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Verify exact recomposition and independent qualification
+        run: bash tests/fci/run_fci86_fgc26_admission.sh

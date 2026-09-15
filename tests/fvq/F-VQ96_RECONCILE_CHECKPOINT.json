@@ -1,0 +1,76 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC26 — External Groundwater Adapter Conformance",
+  "qualification": "F-VQ96 independent qualification",
+  "phase": "RECONCILE",
+  "recorded_utc": "2026-09-15T22:04:00Z",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "e4419b41d15a4acebf0fe55e5b810b92bbcd5f35",
+    "tree": "b68699a97d57a5cf77f13186e43ce20f831d7e95"
+  },
+  "owner_authority": {
+    "branch": "work/f-gc26-external-groundwater-adapter-conformance",
+    "owner_record_head": "7f8b3241d628181ecec4e9c2d9bb7a47e53c8fe0",
+    "qualified_executable_head": "a096458965bad7bd1ff97c7c52d107044c1da103",
+    "qualification_class": "OWNER_CAPABILITY_QUALIFICATION_NOT_INDEPENDENT",
+    "base_canonical": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0"
+  },
+  "qualified_production_payload": {
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "direct_contract_dependencies": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2"
+  },
+  "current_canonical_dependency_ownership": {
+    "F-GC20_tile_aggregation": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F-GC22_accuracy_binding": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F-GC23_whole_window_response": "645141676536ae8289b9d52433798a965c7baa04",
+    "F-GC24_coupled_restart": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "F-GC25_multiswap_coupler": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+  },
+  "relevant_state_delta": [
+    "The two direct F-GC26 contract blobs are byte-identical to the owner-qualified dependency authorities.",
+    "F-GC20, F-GC22, F-GC23, F-GC24, F-GC25 and F-KT22 are additive owner layers and do not replace or reinterpret the F-GC26 gateway contract.",
+    "F-GC20 owns tile aggregation and equal-and-opposite interface mass pairing outside the gateway.",
+    "F-GC22 owns application/temporal accuracy binding outside the gateway.",
+    "F-GC23 owns accepted whole-window response-tangent composition outside the gateway.",
+    "F-GC24 owns opt-in backend committed restart adaptation outside the generic exchange service.",
+    "F-GC25 consumes groundwater_preparable_exchange_service_t and owns MultiSWAP topology/mapping/transaction orchestration outside the gateway.",
+    "F-KT22 carries accepted-trajectory sensitivity state and does not modify the F-GC17/F-GC18 gateway interfaces.",
+    "The canonical delta from 36ebfcfe39fb9a70b522508933bfcf331545d7e0 to e4419b41d15a4acebf0fe55e5b810b92bbcd5f35 is WOFOST81 admission/closeout only and is irrelevant to F-GC26.",
+    "No equivalent or superseding mod_groundwater_external_gateway production payload is present on live canonical."
+  ],
+  "immutable_owner_evidence_reused": [
+    "exact qualified production blob f307f17e2fd20983432f91e91ac90aaae8311849",
+    "owner workflow success at qualified executable head a096458965bad7bd1ff97c7c52d107044c1da103",
+    "owner deterministic O0/O2 and gateway conformance evidence where dependencies remain unchanged",
+    "owner batch-rebind preflight remediation and regression evidence"
+  ],
+  "evidence_requiring_new_independent_replay": [
+    "all independent behavioural qualification claims required by F-GC26",
+    "independent model/state-machine oracle for transaction, failure, provenance, rebind and shared-backend isolation semantics",
+    "current-canonical architectural ownership guards for F-GC20/F-GC22/F-GC23/F-GC24/F-GC25/F-KT22 interactions",
+    "independent O0/O2 determinism and committed-state preservation probes"
+  ],
+  "mutations": [
+    "created qualification/f-vq96-fgc26-external-groundwater-adapter-independent from exact live canonical head",
+    "persisted this checkpoint only"
+  ],
+  "verdict": "RECONCILED_VALID_FOR_INDEPENDENT_QUALIFICATION",
+  "next_permitted_action": "QUALIFY using the exact owner-qualified F-GC26 production blob with a genuinely independent oracle/test design; no production semantic changes.",
+  "hard_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "production changes merely to obtain PASS",
+    "F-GC27",
+    "F-GC28"
+  ]
+}
