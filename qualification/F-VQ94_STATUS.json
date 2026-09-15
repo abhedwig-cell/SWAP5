@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ94",
+  "title": "Independent qualification of F-GC29 groundwater response sensitivity",
+  "verifier_branch": "qualification/f-vq94-fgc29-groundwater-response-sensitivity-independent-qualification",
+  "canonical_baseline": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+  "owner": {
+    "work_unit": "F-GC29",
+    "qualified_source_head": "bf0bc93e359fba42237fd102ced7da9a5a84efad",
+    "production_module": "src/runtime/mod_groundwater_response_sensitivity_contract.f90",
+    "production_module_blob": "fb8fd6a5447edd4fa4f664cd754c93d7db331969",
+    "preserved_F_GC18_service_blob": "e99ae052fccd9992b76c12a91422a987dce059e2"
+  },
+  "verifier_history": {
+    "initial_run_id": 35017555106,
+    "initial_result": "VERIFIER_HARNESS_COMPILE_FAILURE",
+    "initial_failure_class": "independent fixture overriding dummy name mismatch; no owner production failure",
+    "superseded_repair_commit": "d4fd72a087c1d0317258ced3d4bffaa7365c9d52",
+    "qualified_verifier_head": "43a8f8bdf0582674be39e95fe23dccb8e83fadd2",
+    "qualified_verifier_tree": "45dcd97a4cb4619bb888f967dfea01c2880009cd",
+    "qualified_run_id": 35017791160,
+    "qualified_job_id": 104545515710,
+    "qualified_conclusion": "success"
+  },
+  "independence": {
+    "verifier_production_delta": "NONE",
+    "owner_module_loaded_as_pinned_git_donor": true,
+    "owner_test_reused": false,
+    "independent_fixture": true,
+    "independent_finite_difference_oracle": "five-point centered reference",
+    "finite_difference_in_production": false
+  },
+  "verified_claims": [
+    "native response path adds exactly one groundwater trial and no structural derivative trial",
+    "response carries exact service, lineage, origin revision, candidate revision and generic-window provenance",
+    "analytic provider tangent agrees with an independent five-point finite-difference reference on a separate smooth fixture",
+    "discard and retry replace prior response with zero stale contribution",
+    "rejected groundwater trial publishes no response and does not call the response provider",
+    "unsupported provider fails closed as unavailable",
+    "nonsmooth provider fails closed as unavailable",
+    "non-finite derivative fails closed",
+    "response qualification does not mutate or commit groundwater state",
+    "O0 and O2 verifier outputs are identical",
+    "F-GC18 service source is byte-preserved"
+  ],
+  "markers": [
+    "FVQ94_OWNER_STATIC_CONTRACT=PASS",
+    "FVQ94_FGC18_SERVICE_BYTE_PRESERVATION=PASS",
+    "FVQ94_ATOMIC_NATIVE_SINGLE_TRIAL=PASS",
+    "FVQ94_EXACT_PROVENANCE=PASS",
+    "FVQ94_INDEPENDENT_FIVE_POINT_FD=PASS",
+    "FVQ94_RETRY_ZERO_STALE_CONTRIBUTION=PASS",
+    "FVQ94_REJECTED_TRIAL_ZERO_RESPONSE=PASS",
+    "FVQ94_UNSUPPORTED_PROVIDER_FAIL_CLOSED=PASS",
+    "FVQ94_NONSMOOTH_FAIL_CLOSED=PASS",
+    "FVQ94_NONFINITE_FAIL_CLOSED=PASS",
+    "FVQ94_COMMITTED_STATE_UNCHANGED=PASS",
+    "FVQ94_INDEPENDENT_ORACLE=PASS",
+    "FVQ94_VERIFIER_PRODUCTION_DELTA=PASS:NONE",
+    "FVQ94_O0_O2_IDENTITY=PASS"
+  ],
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "canonical_admission": false,
+  "next_permitted_action": "Reconcile live current canonical and, if relevant dependencies are unchanged, perform a separate history-preserving F-CI admission of the exact F-GC29 owner production source."
+}
