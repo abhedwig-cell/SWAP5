@@ -1,0 +1,136 @@
+name: F-CI70 EB-I22 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci70-eb-i22-whole-column-sensible-energy-current-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock live canonical and qualified authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=366a4d9b4afddb9e1f878a6d371fdff836babaac
+          OWNER=b5f6809293ca311944297a95ec935bce45ec0375
+          INDEPENDENT=cc8cc78707f9c2f29708146225cd83946f6977a9
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          git merge-base --is-ancestor "$CANONICAL" HEAD
+          git merge-base --is-ancestor "$OWNER" HEAD
+          git merge-base --is-ancestor "$INDEPENDENT" HEAD
+          test "$(git rev-parse "$OWNER:src/process/mod_linear_mixture_sensible_storage.f90")" = "0403c23454a879356ce8d2345006df130484067d"
+          test "$(git rev-parse "$OWNER:src/process/mod_whole_column_sensible_energy_accounting.f90")" = "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+          test "$(git rev-parse "HEAD:src/process/mod_linear_mixture_sensible_storage.f90")" = "0403c23454a879356ce8d2345006df130484067d"
+          test "$(git rev-parse "HEAD:src/process/mod_whole_column_sensible_energy_accounting.f90")" = "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+          test "$(git rev-parse "$CANONICAL:src/kernel/mod_energy_conservation_types.f90")" = "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+          test "$(git rev-parse "HEAD:src/kernel/mod_energy_conservation_types.f90")" = "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+          test "$(git rev-parse "$CANONICAL:src/process/mod_soil_temperature_contract.f90")" = "baa13df3975de2c699b0ec910477bcfa9b47f15e"
+          test "$(git rev-parse "$CANONICAL:src/process/mod_restricted_soil_temperature.f90")" = "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+          echo 'FCI70_LIVE_CANONICAL_LOCK=PASS'
+          echo 'FCI70_QUALIFIED_AUTHORITY_LOCK=PASS'
+
+      - name: Require exact bounded admission delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=366a4d9b4afddb9e1f878a6d371fdff836babaac
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i22-whole-column-sensible-energy.yml
+          .github/workflows/f-ci70-eb-i22-current-canonical-admission.yml
+          .github/workflows/f-vq88-eb-i22-independent.yml
+          src/process/mod_linear_mixture_sensible_storage.f90
+          src/process/mod_whole_column_sensible_energy_accounting.f90
+          tests/eb/EB-I22_CONTRACT.md
+          tests/eb/F-VQ88_STATUS.json
+          tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90
+          tests/eb/test_f_vq88_eb_i22_independent.f90
+          EOF
+          if test -f integration/f-ci/F-CI70_STATUS.json; then
+            echo 'integration/f-ci/F-CI70_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool tests/eb/F-VQ88_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I22_INDEPENDENT"' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"owner_head": "b5f6809293ca311944297a95ec935bce45ec0375"' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"canonical_base": "366a4d9b4afddb9e1f878a6d371fdff836babaac"' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' tests/eb/F-VQ88_STATUS.json
+          grep -Fq 'full_energy_balance_complete = .false.' src/process/mod_whole_column_sensible_energy_accounting.f90
+          grep -Fq 'WCSA_INCOMPLETE_BOUNDARY' src/process/mod_whole_column_sensible_energy_accounting.f90
+          grep -Fq 'WCSA_REFERENCE_MISMATCH' src/process/mod_whole_column_sensible_energy_accounting.f90
+          if test -f integration/f-ci/F-CI70_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI70_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI70_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI70_STATUS.json
+            grep -Fq '"canonical_admission": false' integration/f-ci/F-CI70_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI70_STATUS.json
+          fi
+          echo 'FCI70_EXACT_BOUNDED_DELTA=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay owner and independent evidence O0
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o0
+          cd build-o0
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o owner
+          ./owner | tee ../owner-o0.txt
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_f_vq88_eb_i22_independent.f90 \
+            -o independent
+          ./independent | tee ../independent-o0.txt
+
+      - name: Replay owner and independent evidence O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o2
+          cd build-o2
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o owner
+          ./owner | tee ../owner-o2.txt
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_f_vq88_eb_i22_independent.f90 \
+            -o independent
+          ./independent | tee ../independent-o2.txt
+
+      - name: Require optimization-invariant admission evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'EB-I22 whole-column sensible-energy accounting: PASS' owner-o0.txt
+          grep -Fx 'F-VQ88 EB-I22 independent qualification: PASS' independent-o0.txt
+          cmp owner-o0.txt owner-o2.txt
+          cmp independent-o0.txt independent-o2.txt
+          echo 'FCI70_OWNER_REPLAY=PASS'
+          echo 'FCI70_INDEPENDENT_REPLAY=PASS'
+          echo 'FCI70_O0_O2_IDENTITY=PASS'
+          echo 'FCI70_FAIL_CLOSED_COMPLETENESS_PRESERVED=PASS'
+          echo 'FCI70_REFERENCE_GAUGE_COHERENCE_PRESERVED=PASS'
+          echo 'FCI70_NO_FULL_ENERGY_BALANCE_BROADENING=PASS'
