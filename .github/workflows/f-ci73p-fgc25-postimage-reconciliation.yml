@@ -1,0 +1,194 @@
+name: F-CI73P F-GC25 current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci73p-fgc25-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          gfortran --version
+          python3 --version
+          git --version
+
+      - name: Verify exact F-CI73 promotion and tree identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREIMAGE=1ef995e682cbc0fbbce8b68281646b0de1bbbcd3
+          PROMOTED=b2f5d7773dd426294a837e4de861472e1a8ee866
+          POSTIMAGE=c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1
+          EXPECTED_TREE=55cb32c19015aed358cc4239d83c80082f1bd89e
+          git fetch origin integration/f-ci-canonical
+          CURRENT="$(git rev-parse origin/integration/f-ci-canonical)"
+          git merge-base --is-ancestor "$POSTIMAGE" "$CURRENT"
+          test "$(git rev-parse "$POSTIMAGE^1")" = "$PREIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^2")" = "$PROMOTED"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "$EXPECTED_TREE"
+          test "$(git rev-parse "$PROMOTED^{tree}")" = "$EXPECTED_TREE"
+          echo "FCI73P_CURRENT_CANONICAL=$CURRENT"
+          echo 'FCI73P_TRUE_TWO_PARENT_PROMOTION=PASS'
+          echo 'FCI73P_PROMOTED_TREE_IDENTITY=PASS'
+
+      - name: Verify exact admitted production and immutable independent authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1
+          FVQ87=37c02ac3747bfaacdb8b3408b8228f3deb2b9824
+          OWNER=43c9f09110dea83928ef7d58990c37575d8ca223
+          declare -A BLOBS=(
+            [src/runtime/mod_groundwater_tile_aggregation.f90]=d62ecba039d9bef178acde6900b81e9d5b0931eb
+            [src/runtime/mod_groundwater_accuracy_binding.f90]=b8ac03e810c73519b433f7851c6fd143ba26676a
+            [src/runtime/mod_groundwater_multiswap_types.f90]=35f475228886bf04d64efb13bbd84a42bc2678ad
+            [src/runtime/mod_groundwater_multiswap_topology.f90]=2ce4e9f7083c46e7040493d3029abfc233f59f16
+            [src/runtime/mod_groundwater_multiswap_swap_phase.f90]=9a69effc9433363e52fcf8d5b40fa2c5d01347a9
+            [src/runtime/mod_groundwater_multiswap_transaction.f90]=d7d9fa81d9d3d5e619e51625f202a8e425807eda
+            [src/runtime/mod_groundwater_multiswap_publication.f90]=02bc938fac28231c2c1234dd4ac3c3f8ba617983
+            [src/runtime/mod_groundwater_multiswap_coupler.f90]=f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f
+            [src/runtime/mod_coupling_application_accuracy_contract.f90]=c07d573d21e7d013ab962c0a9d28102ab7b5cdfc
+            [src/runtime/mod_coupling_application_accuracy_adapter.f90]=9212d600e89c85287e9280832c7e0a94befb642e
+            [src/runtime/mod_groundwater_coupling_policy.f90]=5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976
+          )
+          for path in "${!BLOBS[@]}"; do
+            test "$(git rev-parse "$POSTIMAGE:$path")" = "${BLOBS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"
+          done
+          owner_paths=(
+            tests/fgc/mod_fgc25_multiswap_fixture.f90
+            tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh
+            tests/fgc/test_fgc25_corrector_tile_fail_closed.f90
+            tests/fgc/test_fgc25_multicell_isolation.f90
+            tests/fgc/test_fgc25_multiswap_commit.f90
+            tests/fgc/test_fgc25_multiswap_qualification.f90
+            tests/fgc/test_fgc25_permutation_determinism.f90
+            tests/fgc/test_fgc25_single_tile_equivalence.f90
+          )
+          for path in "${owner_paths[@]}"; do
+            test "$(git rev-parse "$POSTIMAGE:$path")" = "$(git rev-parse "$OWNER:$path")"
+            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$OWNER:$path")"
+          done
+          fvq_paths=(
+            .github/workflows/fvq87-fgc25-multiswap-independent.yml
+            qualification/F-VQ87_STATUS.json
+            tests/qualification/fvq87/run_fvq87_fgc25_multiswap_independent_gate.sh
+            tests/qualification/fvq87/test_fvq87_fgc25_multiswap_independent.f90
+          )
+          for path in "${fvq_paths[@]}"; do
+            test "$(git rev-parse "$POSTIMAGE:$path")" = "$(git rev-parse "$FVQ87:$path")"
+            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$FVQ87:$path")"
+          done
+          test "$(git rev-parse HEAD:src)" = "$(git rev-parse "$POSTIMAGE:src")"
+          test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$POSTIMAGE:reference")"
+          echo 'FCI73P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI73P_REFERENCE_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI73P_IMMUTABLE_FVQ87_EVIDENCE=PASS'
+
+      - name: Require governance-only F-CI73P delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1
+          git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci73p-fgc25-postimage-reconciliation.yml
+          .github/workflows/fci73-fgc25-moving-preservation.yml
+          EOF
+          if test -f integration/f-ci/F-CI73P_STATUS.json; then
+            echo 'integration/f-ci/F-CI73P_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool integration/f-ci/F-CI73_STATUS.json >/dev/null
+          python3 -m json.tool qualification/F-VQ87_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_F_CI73_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI73_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW"' qualification/F-VQ87_STATUS.json
+          if test -f integration/f-ci/F-CI73P_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI73P_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI73P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI73P_STATUS.json
+            grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI73P_STATUS.json
+            grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI73P_STATUS.json
+            grep -Fq '"moving_preservation_installed": true' integration/f-ci/F-CI73P_STATUS.json
+          fi
+          echo 'FCI73P_GOVERNANCE_ONLY_DELTA=PASS'
+
+      - name: Replay F-GC25 owner gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh | tee "$RUNNER_TEMP/fgc25-owner.log"
+          grep -Fq 'F-GC25 MULTISWAP GROUNDWATER COMPOSITION GATE PASS' "$RUNNER_TEMP/fgc25-owner.log"
+          echo 'FCI73P_OWNER_GATE_REPLAY=PASS'
+
+      - name: Replay independent F-VQ87 oracle at O0 and O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          FGC21=1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f
+          EXPECTED=de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8
+          WORK="$RUNNER_TEMP/fci73p-oracle"
+          mkdir -p "$WORK"
+          python3 - "$FGC21" "$WORK/fgc21_fixture.f90" <<'PY'
+          from pathlib import Path
+          import subprocess, sys
+          owner=sys.argv[1]
+          out=Path(sys.argv[2])
+          text=subprocess.check_output(['git','show',f'{owner}:tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90'], text=True)
+          marker='\nprogram test_fgc21_restricted_predictor_corrector_window\n'
+          assert text.count(marker)==1
+          out.write_text(text.split(marker,1)[0]+'\n')
+          PY
+          COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          SOURCES=(
+            src/transaction/mod_transaction_reference.f90
+            src/runtime/mod_canonical_contracts.f90
+            src/runtime/mod_canonical_interval_runtime.f90
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_groundwater_coupling_contract.f90
+            src/runtime/mod_groundwater_coupling_policy.f90
+            src/runtime/mod_groundwater_exchange_service_contract.f90
+            src/runtime/mod_groundwater_interface_mass_ledger.f90
+            src/runtime/mod_groundwater_swap_forcing_adapter.f90
+            src/runtime/mod_groundwater_predictor_corrector_window.f90
+            src/runtime/mod_groundwater_tile_aggregation.f90
+            src/runtime/mod_groundwater_multiswap_types.f90
+            src/runtime/mod_groundwater_multiswap_topology.f90
+            src/runtime/mod_groundwater_multiswap_swap_phase.f90
+            src/runtime/mod_groundwater_multiswap_transaction.f90
+            src/runtime/mod_groundwater_multiswap_publication.f90
+            src/runtime/mod_groundwater_multiswap_coupler.f90
+            "$WORK/fgc21_fixture.f90"
+            tests/fgc/mod_fgc25_multiswap_fixture.f90
+            tests/qualification/fvq87/test_fvq87_fgc25_multiswap_independent.f90
+          )
+          for opt in 0 2; do
+            DIR="$WORK/o$opt"
+            mkdir -p "$DIR"
+            gfortran "${COMMON[@]}" -O"$opt" -J "$DIR" -I "$DIR" "${SOURCES[@]}" -o "$DIR/oracle" 2>"$DIR/compiler.txt"
+            if grep -E 'Warning:' "$DIR/compiler.txt" | grep -v -F '[-Wcompare-reals]'; then
+              cat "$DIR/compiler.txt" >&2
+              exit 31
+            fi
+            "$DIR/oracle" > "$DIR/output.txt"
+          done
+          diff -u "$WORK/o0/output.txt" "$WORK/o2/output.txt"
+          SHA="$(sha256sum "$WORK/o0/output.txt" | awk '{print $1}')"
+          test "$SHA" = "$EXPECTED"
+          grep -Fq 'FVQ87_INDEPENDENT_ORACLE=PASS' "$WORK/o0/output.txt"
+          cat "$WORK/o0/output.txt"
+          echo "FCI73P_INDEPENDENT_ORACLE_SHA256=$SHA"
+          echo 'FCI73P_INDEPENDENT_ORACLE_O0_O2_IDENTITY=PASS'
+          echo 'F_CI73P_FINAL_GATE=PASS'
