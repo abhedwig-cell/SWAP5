@@ -19,158 +19,18 @@ jobs:
           fetch-depth: 0
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
-      - name: Atomically materialize EB-I27 owner assets and qualify
-        shell: bash
+      - name: Materialize committed EB-I27 owner assets
+        run: python3 tests/eb/materialize_eb_i27_owner_assets.py
+      - name: Qualify materialized owner assets
         run: |
-          set -euo pipefail
-          OLD_PROD=src/runtime/mod_eb_i26_outer_substep_sensible_boundary_aggregation.f90
-          NEW_PROD=src/runtime/mod_eb_i27_outer_substep_sensible_boundary_aggregation.f90
-          NEW_TEST=tests/eb/test_eb_i27_outer_substep_sensible_boundary_aggregation.f90
-          NEW_GATE=tests/eb/run_eb_i27_outer_substep_sensible_boundary_gate.sh
-          NEW_CONTRACT=tests/eb/EB-I27_CONTRACT.md
-          NEW_WORKFLOW=.github/workflows/eb-i27-outer-substep-sensible-boundary.yml
-
-          if [[ -f "$OLD_PROD" ]]; then
-            git mv "$OLD_PROD" "$NEW_PROD"
-            git mv tests/eb/test_eb_i26_outer_substep_sensible_boundary_aggregation.f90 "$NEW_TEST"
-            git mv tests/eb/run_eb_i26_outer_substep_sensible_boundary_gate.sh "$NEW_GATE"
-            git mv tests/eb/EB-I26_CONTRACT.md "$NEW_CONTRACT"
-            git mv .github/workflows/eb-i26-outer-substep-sensible-boundary.yml "$NEW_WORKFLOW"
-
-            python3 - <<'PY'
-          from pathlib import Path
-
-          prod = Path('src/runtime/mod_eb_i27_outer_substep_sensible_boundary_aggregation.f90')
-          test = Path('tests/eb/test_eb_i27_outer_substep_sensible_boundary_aggregation.f90')
-          gate = Path('tests/eb/run_eb_i27_outer_substep_sensible_boundary_gate.sh')
-          contract = Path('tests/eb/EB-I27_CONTRACT.md')
-          workflow = Path('.github/workflows/eb-i27-outer-substep-sensible-boundary.yml')
-
-          for p in (prod, test, gate, contract):
-              s = p.read_text()
-              s = s.replace('I26', 'I27').replace('i26', 'i27')
-              p.write_text(s)
-
-          def once(s, old, new, label):
-              if s.count(old) != 1:
-                  raise SystemExit(f'{label}: expected one anchor, found {s.count(old)}')
-              return s.replace(old, new, 1)
-
-          # Silence a conservative compiler data-flow warning without changing
-          # semantics: the first valid publication still overwrites this value
-          # before any comparison can occur.
-          s = prod.read_text()
-          s = once(s,
-              '    aggregate = eb_i27_outer_substep_sensible_boundary_publication_t()\n\n    if (size(publications) < 2) then',
-              '    aggregate = eb_i27_outer_substep_sensible_boundary_publication_t()\n    reference_temperature_c = 0.0_real64\n\n    if (size(publications) < 2) then',
-              'reference-temperature initialization')
-          prod.write_text(s)
-
-          # Materialize the already-green F-KT10 consecutive-Richards fixture
-          # directly in the owner test. No runner-local mutation remains.
-          s = test.read_text()
-          replacements = [
-              ('real(real64), parameter :: dt_outer = 1.0e-4_real64',
-               'real(real64), parameter :: dt_outer = 0.25_real64', 'dt'),
-              ('    parameters%bottom_mode = 2',
-               '    parameters%bottom_mode = 5', 'bottom mode'),
-              ('parameters%max_iterations = 16; parameters%max_backtracking = 8',
-               'parameters%max_iterations = 8; parameters%max_backtracking = 4', 'solver controls'),
-              ('    parameters%min_step_duration = 1.0e-8_real64',
-               '    parameters%min_step_duration = 1.0e-6_real64', 'minimum step'),
-              ('    config%transaction%max_retries = 8',
-               '    config%transaction%max_retries = 0', 'retry budget'),
-              ('    config%max_committed_substeps = 32',
-               '    config%max_committed_substeps = 4', 'committed substeps'),
-              ("    heads(1) = initial_head\n    do i = 2, numnod\n      heads(i) = heads(i-1) + parameters%node_distance(i)\n    end do",
-               '    heads = initial_head', 'uniform initial head'),
-              ('    forcing%bottom_flux = q\n    forcing%bottom_head = -321.0_real64',
-               '    forcing%bottom_flux = 12345.678_real64\n    forcing%bottom_head = initial_head + 0.01_real64', 'bottom fixture')
-          ]
-          for old, new, label in replacements:
-              s = once(s, old, new, label)
-
-          # Keep the existing q argument as a harmless call-site value, but use
-          # the F-KT10 constitutive top flux derived from the initialized soil.
-          old = '''    integer :: enthalpy_status
-
-    call initialize_parameters(parameters)
-    call initialize_committed_state(committed, parameters, t_start, dt_outer)
-    call initialize_forcing(parameters, forcing, q)'''
-          new = '''    integer :: enthalpy_status
-    type(b110_default_mvg_parameters_t), target :: fixture_hydraulics
-    type(b110_default_mvg_provider_t) :: fixture_constitutive
-    real(real64) :: fixture_heads(numnod), fixture_water(numnod), fixture_k(numnod), fixture_c(numnod), fixture_dkdh(numnod)
-
-    call initialize_parameters(parameters)
-    call initialize_b110_default_mvg_parameters(fixture_hydraulics, parameters%cofgen)
-    call bind_b110_default_mvg_provider(fixture_constitutive, fixture_hydraulics, dt_outer)
-    fixture_heads = initial_head
-    call fixture_constitutive%evaluate(fixture_heads, fixture_water, fixture_k, fixture_c, fixture_dkdh)
-    call initialize_committed_state(committed, parameters, t_start, dt_outer)
-    call initialize_forcing(parameters, forcing, -fixture_k(1))'''
-          s = once(s, old, new, 'constitutive top-flux fixture')
-          # q is retained in the API during this bounded owner step so the
-          # incomplete-input fixture needs no unrelated call-shape rewrite.
-          test.write_text(s)
-
-          # Remove all runner-only fixture/diagnostic mutation. The clean gate
-          # starts compiling directly at COMMON=.
-          s = gate.read_text()
-          start = s.find('# Runner-only substitution')
-          common = s.find('COMMON=(', start)
-          if start < 0 or common < 0:
-              raise SystemExit('runner-local block anchors missing')
-          s = s[:start] + '# F-KT10-derived hydrologic fixture is committed in the I27 owner test.\n' + s[common:]
-          s = s.replace("echo 'EB_I27_FIXTURE_PROBE=PASS'", "echo 'EB_I27_OWNER_QUALIFICATION=PASS'")
-          gate.write_text(s)
-
-          # Record the identifier collision explicitly; EB-I26 belongs to the
-          # independently active top-liquid-outflow capability.
-          s = contract.read_text()
-          note = '''\n## Identifier provenance\n\nThis capability was initially bootstrapped under the working label `EB-I26`. During reconciliation, an independently active workunit `work/eb-i26-top-liquid-outflow-sensible-transport` was found to own `EB-I26`. The outer committed-substep aggregation capability was therefore renumbered to `EB-I27` before owner qualification. The renumbering changes no scientific or runtime semantics and does not absorb any top-liquid-outflow semantics.\n\nThe consecutive accepted-Richards owner fixture is inherited from the already owner-verified F-KT10 transaction-history composition surface. EB-I27 adds restricted soil-temperature state only as required by the sensible-energy runtime; it does not change the F-KT10 hydraulic controls.\n'''
-          if '## Identifier provenance' not in s:
-              s += note
-          contract.write_text(s)
-
-          # Replace the one-time materialization workflow with the permanent,
-          # read-only owner qualification workflow in the same atomic commit.
-          workflow.write_text('''name: EB-I27 accepted outer-substep sensible-boundary owner qualification
-
-          on:
-            push:
-              branches:
-                - work/eb-i27-accepted-outer-substep-sensible-boundary-aggregation
-            workflow_dispatch:
-
-          permissions:
-            contents: read
-
-          jobs:
-            qualify-owner:
-              runs-on: ubuntu-24.04
-              timeout-minutes: 40
-              steps:
-                - uses: actions/checkout@v4
-                  with:
-                    fetch-depth: 0
-                - name: Install GNU Fortran
-                  run: sudo apt-get update && sudo apt-get install -y gfortran
-                - name: Run EB-I27 owner qualification
-                  shell: bash
-                  run: bash tests/eb/run_eb_i27_outer_substep_sensible_boundary_gate.sh
-          '''.replace('          ', ''))
-          PY
-
-            chmod +x "$NEW_GATE"
-            git diff --check
-            bash "$NEW_GATE"
-
-            git config user.name github-actions[bot]
-            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-            git add -A
-            git commit -m "EB-I27 materialize accepted outer-substep aggregation owner assets"
-            git push origin HEAD:work/eb-i27-accepted-outer-substep-sensible-boundary-aggregation
-          else
-            bash "$NEW_GATE"
-          fi
+          chmod +x tests/eb/run_eb_i27_outer_substep_sensible_boundary_gate.sh
+          git diff --check
+          bash tests/eb/run_eb_i27_outer_substep_sensible_boundary_gate.sh
+      - name: Persist atomic EB-I27 owner assets
+        run: |
+          git rm tests/eb/materialize_eb_i27_owner_assets.py
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "EB-I27 materialize accepted outer-substep aggregation owner assets"
+          git push origin HEAD:work/eb-i27-accepted-outer-substep-sensible-boundary-aggregation
