@@ -1,0 +1,94 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC26 — External Groundwater Adapter Conformance",
+  "qualification": "F-VQ96 independent qualification",
+  "phase": "QUALIFY",
+  "qualification_class": "INDEPENDENT_CURRENT_CANONICAL_QUALIFICATION",
+  "reconciled_canonical_head": "e4419b41d15a4acebf0fe55e5b810b92bbcd5f35",
+  "owner_authority": {
+    "owner_record_head": "7f8b3241d628181ecec4e9c2d9bb7a47e53c8fe0",
+    "qualified_executable_head": "a096458965bad7bd1ff97c7c52d107044c1da103"
+  },
+  "independent_authority": {
+    "successful_head": "ae97f0d47c183a64e470be5badca220d95a65cb0",
+    "workflow_run_id": 35029303648,
+    "workflow_job_id": 104583769280,
+    "workflow_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "initial_harness_only_failed_run": 35029189799,
+    "initial_failure_disposition": "qualification runner local-variable initialization defect fixed without production or oracle semantic change"
+  },
+  "exact_qualified_production_payload": {
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "independent_surface": {
+    "tests/fvq/test_fvq96_fgc26_external_gateway_independent.f90": "ed44b66418753cb36897e755522378698d20f460",
+    "tests/fvq/run_fvq96_fgc26_external_gateway_independent.sh": "090d5669e7dfe6eefa68fdcf4e02fbac2d982d90",
+    ".github/workflows/f-vq96-fgc26-independent.yml": "2df27e656aef935c80fa89951f5566634ad30b13"
+  },
+  "pinned_dependency_blobs": {
+    "F-GC17_typed_groundwater_contract": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "F-GC18_transactional_exchange_contract": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "F-GC20_tile_aggregation": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F-GC22_accuracy_binding": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F-GC23_whole_window_response": "645141676536ae8289b9d52433798a965c7baa04",
+    "F-GC24_coupled_restart": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "F-GC25_multiswap_coupler": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+  },
+  "independent_oracle_design": [
+    "state-machine external backend with independent revision/checkpoint/candidate/prepared token model",
+    "four backend cells and independently bound gateways sharing one backend",
+    "non-trivial native head zero/scale and flux scale/sign conversions",
+    "foreign-checkpoint and stale-revision negative probes",
+    "copied candidate and copied prepared-handle replay probes",
+    "explicit committed backend state and SWAP physical sentinel preservation checks",
+    "source/blob ownership guards for later admitted groundwater composition layers"
+  ],
+  "requirements": {
+    "1_head_datum_units_sign_roundtrip": "PASS",
+    "2_equal_and_opposite_interface_mass": "PASS",
+    "3_checkpoint_trial_commit_discard_prepare_abort": "PASS",
+    "4_rejected_or_failed_work_no_committed_state_mutation": "PASS",
+    "5_backend_failure_fails_closed": "PASS",
+    "6_partial_response_fails_closed": "PASS",
+    "7_stale_revision_or_provenance_mismatch_fails_closed": "PASS",
+    "8_prepared_publication_quiescence": "PASS",
+    "9_direct_candidate_commit_exactly_once_and_failure_atomic": "PASS",
+    "10_rebind_during_prepared_reservation_rejected": "PASS",
+    "11_batch_rebind_preflight_atomic": "PASS",
+    "12_shared_backend_multiple_gateways_no_crosstalk": "PASS",
+    "13_F-GC20_F-GC25_mapping_ownership_preserved": "PASS_BY_PINNED_OWNER_BLOBS_AND_NO_REIMPLEMENTATION_GUARD",
+    "14_F-GC22_accuracy_ownership_preserved": "PASS_BY_PINNED_OWNER_BLOB_AND_NO_REINTERPRETATION_GUARD",
+    "15_F-GC23_response_tangent_ownership_preserved": "PASS_BY_PINNED_OWNER_BLOB_AND_NO_LOCAL_SENSITIVITY_REINTERPRETATION_GUARD",
+    "16_F-GC24_restart_compatibility": "PASS_BY_PINNED_OWNER_BLOB_AND_GENERIC_PREPARABLE_SERVICE_BOUNDARY",
+    "17_no_backend_specific_type_leak": "PASS",
+    "18_no_gateway_file_io": "PASS",
+    "19_deterministic_O0_O2": "PASS_OUTPUT_IDENTITY",
+    "20_committed_physical_state_unchanged_by_probes": "PASS"
+  },
+  "workflow_output_markers": [
+    "FVQ96_OWNER_BOUNDARY_GUARDS=PASS",
+    "FVQ96_NO_BACKEND_TYPE_LEAK=PASS",
+    "FVQ96_NO_GATEWAY_FILE_IO=PASS",
+    "FVQ96_DATUM_UNITS_SIGN_ROUNDTRIP=PASS",
+    "FVQ96_EQUAL_OPPOSITE_INTERFACE_MASS=PASS",
+    "FVQ96_TRANSACTION_DISCARD_PREPARE_ABORT=PASS",
+    "FVQ96_BACKEND_PARTIAL_STALE_FAILURES_FAIL_CLOSED=PASS",
+    "FVQ96_PREPARED_QUIESCENCE_REBIND=PASS",
+    "FVQ96_DIRECT_COMMIT_EXACTLY_ONCE=PASS",
+    "FVQ96_BATCH_REBIND_PREFLIGHT_ATOMIC=PASS",
+    "FVQ96_SHARED_BACKEND_NO_CROSSTALK=PASS",
+    "FVQ96_COMMITTED_PHYSICAL_STATE_PROBE=PASS",
+    "FVQ96_O0_O2_OUTPUT_IDENTITY=PASS",
+    "F-VQ96 F-GC26 INDEPENDENT QUALIFICATION GATE PASS"
+  ],
+  "production_mutations": [],
+  "qualification_mutations": [
+    "added exact owner-qualified gateway blob to the independent qualification branch",
+    "added independent oracle, runner and workflow",
+    "fixed one shell-local initialization defect in the runner after the first harness-only failure"
+  ],
+  "verdict": "INDEPENDENTLY_QUALIFIED",
+  "next_permitted_action": "ADMIT only after re-reading live integration/f-ci-canonical and proving no relevant dependency changed since successful_head ae97f0d47c183a64e470be5badca220d95a65cb0.",
+  "hard_exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards policy", "new tolerances", "kernel file IO", "calendar assumptions", "F-GC27", "F-GC28"]
+}
