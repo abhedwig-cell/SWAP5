@@ -17,7 +17,5 @@ jobs:
         run: gfortran --version
       - name: F-WOF-PP03 runtime activation gate
         run: bash tests/fwof/pp03/run_fwof_pp03_runtime_activation_gate.sh
-      - name: F-WOF38 atomic crop transaction preservation
-        run: bash tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
-      - name: F-WOF39 crop event lifecycle preservation
-        run: bash tests/fwof/run_fwof39_crop_event_lifecycle_gate.sh
+      - name: F-WOF38 and F-WOF39 current-contract preservation
+        run: bash tests/fwof/pp03/run_fwof38_fwof39_current_contract_preservation.sh
