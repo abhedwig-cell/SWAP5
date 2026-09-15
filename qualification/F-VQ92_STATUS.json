@@ -1,0 +1,125 @@
+{
+  "schema": "swap5.fvq92.status.v1",
+  "work_unit": "F-VQ92",
+  "title": "F-KT21 Accepted-Trajectory Directional Sensitivity Composition independent qualification",
+  "decision": "PASS",
+  "phase": "INDEPENDENT_QUALIFICATION_COMPLETE",
+  "branch": "qualification/f-vq92-fkt21-accepted-trajectory-independent",
+  "canonical_observed": {
+    "sha": "19e68aa3d27e1e439e4d55bcb53dd571a7f6257c"
+  },
+  "source_authority": {
+    "work_unit": "F-KT21",
+    "owner_branch": "work/f-kt21-accepted-trajectory-directional-sensitivity-composition",
+    "qualified_source_sha": "19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+    "green_owner_receipt_head": "eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+    "owner_receipt_path": "integration/f-kt/F-KT21_CAPABILITY_QUALIFICATION.json",
+    "owner_receipt_blob": "5f5357bd23430997b386a4041349a68d8efb0dcc",
+    "owner_workflow_run": 34872605941,
+    "owner_workflow_job": 104071951944
+  },
+  "qualification": {
+    "tested_verifier_head": "fa7929c8be9488fda9c90f25d6a2dac9ea00794d",
+    "tested_verifier_tree": "65a197b7fcdb1ea850e25d10659aa2c9182ee824",
+    "workflow_run": 34957642695,
+    "workflow_job": 104343430708,
+    "workflow_conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "os": "Ubuntu 24.04.5 LTS",
+    "gfortran": "GNU Fortran 13.3.0",
+    "python": "3.12.3",
+    "git": "2.55.0",
+    "optimization_levels": ["-O0", "-O2"],
+    "O0_O2_output_identity": true
+  },
+  "exact_F_SI37_dependency_authority": {
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "ef395ac3fb0cf6f347031bf2081a74b74b5167ae",
+    "verified_at_verifier_head": true,
+    "verified_at_observed_canonical": true
+  },
+  "exact_F_KT21_payload": {
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "95381d3124b185aa0fbafd1ea3da6179a841deda",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "31bc721f333a77c52f6530b357af44c627f44629",
+    "src/transaction/mod_accepted_trajectory_transaction_binding.f90": "3cd25cfecb75f0e6ba7cb537859d6d738097abe8",
+    "src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90": "b293e5e130f79868cad66ac03baebbf3cc1aa35b",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "f96a66c0185d96ba48258f8560db275fa7fed58c",
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "5f51a34b03b63cf7cdf254f6115c2bb2db4ea693",
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "independent_oracle": {
+    "path": "tests/qualification/fvq92/test_fvq92_fkt21_independent.f90",
+    "sha256": "a53b1c7107629243ef4a591426d18f20eef7805e5eaf55a227e0b18f2493ee47",
+    "construction": "Independent smooth three-step synthetic trajectory with analytic tangent and centered finite-difference whole-window reference, plus separate provenance and rejection adversarial cases.",
+    "owner_fixture_reused_for_independent_claims": false
+  },
+  "independent_claim_checks": {
+    "whole_window_centered_finite_difference_agreement": "PASS",
+    "rejected_staged_step_cannot_leak_into_accepted_trajectory": "PASS",
+    "retry_ABA_stale_token_rejected": "PASS",
+    "rejected_transaction_cannot_publish": "PASS",
+    "accepted_transaction_requires_exactly_one_commit": "PASS",
+    "accepted_transaction_provenance_mismatch_rejected": "PASS",
+    "shortened_accepted_interval_preserves_actual_endpoint": "PASS",
+    "O0_O2_independent_output_identity": "PASS",
+    "F_SI37_dependency_blobs_match_current_canonical": "PASS"
+  },
+  "inherited_owner_replay": {
+    "used": true,
+    "counts_as_independent_oracle": false,
+    "result": "PASS",
+    "markers": [
+      "FKT21_WHOLE_TRAJECTORY_CENTERED_FD=PASS",
+      "FKT21_RETRY_ABA_TOKEN_REJECTED=PASS",
+      "FKT21_ACCEPTED_TRANSACTION_BINDING=PASS",
+      "FKT21_SHORTENED_INTERVAL_NOT_RELABELLED=PASS",
+      "FKT21_REAL_ACCEPTANCE_BINDING=PASS",
+      "FKT21_O0_O2_GATE=PASS",
+      "FKT21_QUALIFICATION PASS"
+    ]
+  },
+  "independent_gate_markers": [
+    "FVQ92_SCOPE_LOCK=PASS",
+    "FVQ92_OWNER_POSTIMAGE_LOCK=PASS",
+    "FVQ92_FSI37_CANONICAL_DEPENDENCY_LOCK=PASS",
+    "FVQ92_OWNER_GATE_REPLAY=PASS",
+    "FVQ92_WHOLE_WINDOW_CENTERED_FD=PASS",
+    "FVQ92_REJECTED_STEP_NO_LEAK=PASS",
+    "FVQ92_RETRY_ABA_REJECTED=PASS",
+    "FVQ92_TRANSACTION_PUBLICATION_GUARDS=PASS",
+    "FVQ92_SHORTENED_INTERVAL_PROVENANCE=PASS",
+    "F_VQ92_INDEPENDENT_ORACLE=PASS",
+    "FVQ92_INDEPENDENT_O0_O2_IDENTITY=PASS",
+    "F_VQ92_FINAL_GATE=PASS"
+  ],
+  "scope_guards": {
+    "production_semantics_modified_for_qualification": false,
+    "owner_tests_modified_for_qualification": false,
+    "owner_receipt_modified_for_qualification": false,
+    "production_finite_difference_added": false,
+    "persistent_sensitivity_state_added": false,
+    "EB_touched_by_this_workunit": false,
+    "ROSS_touched_by_this_workunit": false,
+    "RossFast_touched_by_this_workunit": false,
+    "groundwater_coupling_composition_modified": false
+  },
+  "evidence_invalidation_conditions": [
+    "Any change to the exact F-KT21 production payload invalidates this qualification until re-evaluated.",
+    "Any change to the four exact F-SI37 dependency blobs invalidates inherited dependency authority until re-evaluated.",
+    "Any change to transaction acceptance or commit-count semantics used by mod_accepted_trajectory_transaction_binding invalidates this qualification until re-evaluated.",
+    "Any change to task-2 retry discard or task-3 accepted-step promotion ownership invalidates the owner acceptance-binding evidence until re-evaluated."
+  ],
+  "verdict": "PASS",
+  "canonical_admission": false,
+  "ready_for_current_canonical_admission_review": true,
+  "hard_nonclaims": [
+    "F-VQ92 is independent qualification evidence and is not canonical admission of F-KT21.",
+    "The owner-gate replay is inherited evidence and is not the independent oracle.",
+    "F-VQ92 does not claim a derivative through nonsmooth route changes or unavailable F-SI37 routes.",
+    "F-VQ92 does not relabel a shortened accepted interval as a derivative of the whole originally requested window.",
+    "F-VQ92 does not reopen or admit F-GC23; F-GC23 remains blocked until F-KT21 is separately admitted to current canonical and postimage-preserved.",
+    "F-VQ92 does not alter or qualify EB, ROSS or RossFast capabilities."
+  ]
+}
