@@ -27,7 +27,7 @@ if git diff --name-only "$CANONICAL..HEAD" -- 'src/**' | grep -q .; then
 fi
 while IFS= read -r path; do
   case "$path" in
-    tests/fvq/test_fvq94_fgc29_independent.f90|tests/fvq/run_fvq94_fgc29_independent_gate.sh|.github/workflows/f-vq94-fgc29-independent.yml|qualification/F-VQ94_*) ;;
+    tests/fvq/test_fvq94_fgc29_independent.f90|tests/fvq/test_fvq94_fgc29_independent_r1.f90|tests/fvq/run_fvq94_fgc29_independent_gate.sh|.github/workflows/f-vq94-fgc29-independent.yml|qualification/F-VQ94_*) ;;
     *) echo "FVQ94_SCOPE_FAIL unexpected verifier path: $path" >&2; exit 21 ;;
   esac
 done < <(git diff --name-only "$CANONICAL..HEAD")
@@ -69,7 +69,7 @@ compile_and_run() {
     src/runtime/mod_groundwater_coupling_contract.f90 \
     src/runtime/mod_groundwater_exchange_service_contract.f90 \
     "$work/mod_groundwater_response_sensitivity_contract.f90" \
-    tests/fvq/test_fvq94_fgc29_independent.f90 \
+    tests/fvq/test_fvq94_fgc29_independent_r1.f90 \
     -o "$dir/test_fvq94"
   "$dir/test_fvq94" > "$out"
 }
