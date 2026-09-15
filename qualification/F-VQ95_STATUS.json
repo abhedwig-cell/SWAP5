@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ95",
+  "subject_capability": "F-GC23",
+  "phase": "INDEPENDENT_QUALIFICATION",
+  "canonical_dependency": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
+  "owner_branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
+  "owner_qualified_source_head": "20edbe2bfcecca24541fa2885fe9ff4e8c1fb172",
+  "owner_qualify_checkpoint": "a5660705ab8564026a344c37d09e386acdee0df2",
+  "qualification_branch": "qualification/f-vq95-fgc23-whole-window-response-tangent-independent-qualification",
+  "qualification_tested_head": "7e1adc4a01929e6cf25027cac9a9018695c57a9a",
+  "production_source_blob": "645141676536ae8289b9d52433798a965c7baa04",
+  "workflow": ".github/workflows/f-vq95-fgc23-whole-window-response-tangent.yml",
+  "workflow_run_id": 35024429812,
+  "workflow_job_id": 104567896452,
+  "conclusion": "success",
+  "evidence": {
+    "immutable_source_audit": true,
+    "accepted_whole_window_only": true,
+    "rejected_retry_zero_contribution": true,
+    "generic_window_provenance": true,
+    "bottom_head_control_scope": true,
+    "nonlinear_five_point_fd_reference": true,
+    "one_corrector_nonlinear_contraction": true,
+    "unavailable_or_nonsmooth_fail_closed": true,
+    "stale_response_fail_closed": true,
+    "no_structural_full_solve": true,
+    "inputs_not_mutated": true,
+    "deterministic": true,
+    "o0_o2_identity": true,
+    "no_scope_upgrade_or_local_terminal_relabel": true,
+    "zero_production_delta_after_owner_qualification": true
+  },
+  "preservation_locks": {
+    "F_GC20_source_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F_GC22_source_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F_GC21_mass_commit_rollback_source_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c"
+  },
+  "verdict": "INDEPENDENTLY_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "next_permitted_action": "Perform bounded current-canonical admission if and only if integration/f-ci-canonical still has the qualified dependency state or a reconciled delta proves all relevant dependencies unchanged.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "production-semantic changes solely to obtain PASS",
+    "structural finite difference normal path",
+    "broad MODFLOW adapter work",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}
