@@ -7,6 +7,8 @@ base="687ee32ca98a42368a2b6380ea78d33eb254dad9"
 owner="54dc9cc930468d9f376f596fe2c1b6f45938b59b"
 prod="src/runtime/mod_groundwater_tile_aggregation.f90"
 prod_blob="d62ecba039d9bef178acde6900b81e9d5b0931eb"
+owner_test="tests/fgc/test_fgc20_groundwater_tile_aggregation.f90"
+owner_test_blob="3d9ecfb570a23feb8a89f0db88481e478cfabf74"
 
 # Admission branch is governance/test-only over the frozen current canonical base.
 git merge-base --is-ancestor "$base" HEAD
@@ -24,6 +26,7 @@ done
 
 test "$(git rev-parse HEAD:$prod)" = "$prod_blob"
 test "$(git rev-parse $owner:$prod)" = "$prod_blob"
+test "$(git rev-parse $owner:$owner_test)" = "$owner_test_blob"
 
 python3 - <<'PY'
 import json, subprocess
@@ -57,6 +60,7 @@ grep -q 'q_groundwater_area_weighted_m_per_s = -weighted_flux' "$prod"
 ! grep -Eiq 'normalize|renormal' "$prod"
 
 work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
+git show "$owner:$owner_test" > "$work/test_fgc20_groundwater_tile_aggregation.f90"
 compile_and_run() {
   local opt="$1"
   local out="$2"
@@ -65,7 +69,7 @@ compile_and_run() {
   gfortran "-$opt" -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -J"$dir" -I"$dir" \
     src/runtime/mod_groundwater_tile_aggregation.f90 \
-    tests/fgc/test_fgc20_groundwater_tile_aggregation.f90 \
+    "$work/test_fgc20_groundwater_tile_aggregation.f90" \
     -o "$dir/test_fgc20"
   "$dir/test_fgc20" > "$out"
 }
@@ -82,6 +86,7 @@ for marker in \
 done
 cat "$work/o0.txt"
 echo 'FCI77_OWNER_AUTHORITY_EXACT=PASS'
+echo 'FCI77_OWNER_TEST_BLOB_EXACT=PASS'
 echo 'FCI77_FVQ87_INDEPENDENT_EVIDENCE_REUSED=PASS'
 echo 'FCI77_CURRENT_CANONICAL_PRODUCTION_BLOB_EXACT=PASS'
 echo 'FCI77_GC20_CONTRACT_PRESERVATION_REPLAY=PASS'
