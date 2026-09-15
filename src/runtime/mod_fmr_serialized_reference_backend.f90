@@ -6,6 +6,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
        KERNEL_STATUS_NOT_ADMITTED
@@ -585,7 +586,7 @@ contains
   end subroutine fmr_serialized_backend_clear_fixed_weir_surface_water
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
-                                               t0, t1, checkpoint, result, candidate, diagnostics)
+                                               t0, t1, checkpoint, result, candidate, diagnostics, target_selector)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -598,6 +599,7 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
     logical :: bottom_thermal_ok
 
     call self%bottom_thermal_candidate%clear()
@@ -674,8 +676,13 @@ contains
       self%model%bottom_thermal_carrier_active = bottom_thermal_ok
       self%model%bottom_thermal_carrier_valid = bottom_thermal_ok
     end if
-    call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
-         result, candidate, diagnostics)
+    if (present(target_selector)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector)
+    else
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics)
+    end if
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
