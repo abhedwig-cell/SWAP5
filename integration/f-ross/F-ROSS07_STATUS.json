@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS07",
+  "title": "RossFast D3R restricted registry backend dispatch",
+  "status": "CLOSED_POSITIVE_RESTRICTED_REGISTRY_BACKEND_DISPATCH",
+  "decision": "QUALIFIED_RESTRICTED_REGISTRY_BACKED_ROSSFAST_D3R_DISPATCH_THROUGH_F_ROSS06_PENDING_APPLICATION_INPUT_SELECTION_AND_CANONICAL_ADMISSION",
+  "parent": {
+    "branch": "work/f-ross06-serialized-backend-model-injection",
+    "head": "94719eaff474337c3cb14f616e28e62749d9f2f5",
+    "status_blob": "4a7c855bb026e2a5be1c64288c53f4b1829e751c"
+  },
+  "inherited_authorities": {
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_blob": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "canonical_interval_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "kernel_transactions_blob": "d3a53385e3707f05e5396bbd6f218633b9803f65",
+    "checkpoint_orchestrator_blob": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+    "fmr_runtime_core_blob": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "rossfast_d3r_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "f_ross02_model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "f_ross03_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "f_ross04_table_provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "f_ross05_kernel_model_adapter_blob": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e",
+    "f_ross06_serialized_kernel_backend_blob": "29093b517bc6fdd40f32325018729c4c3dee6e85",
+    "asset_manifest_blob": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55"
+  },
+  "candidate": {
+    "precloseout_qualified_head": "5847bc9604821ba32c0076171e660b2c9b13807b",
+    "registry_dispatch_blob": "7f900e75f4bea1c9b999464b7a8d4f7be4b35064",
+    "test_blob": "ff96eca5554bf9abc30390117cafb37ee577db5f",
+    "runner_blob": "38c4df220dd2280da14c13d7b6b3481837d9a170",
+    "workflow_blob": "f4ca893d4494bd172fafe5452ce0e809902fd4c5"
+  },
+  "registry_dispatch_contract": {
+    "backend_identity": 4,
+    "restricted_rossfast_registry_is_separate_from_reference_multiswap_registry": true,
+    "exact_typed_parameter_forcing_and_state_handles_required": true,
+    "registry_structure_preflight_precedes_physical_execution": true,
+    "all_selected_immutable_tables_preflight_before_first_transaction": true,
+    "deterministic_fmr_execution_order_reused": true,
+    "f_ross06_backend_executes_each_admitted_column": true,
+    "rossfast_production_selector_is_forwarded": true,
+    "successful_column_publication_is_one_revision": true,
+    "duplicate_state_claims_fail_before_physical_execution": true,
+    "mixed_backend_identity_fails_before_physical_execution": true,
+    "missing_or_mismatched_asset_fails_before_partial_batch_publication": true,
+    "existing_reference_multiswap_runtime_modified": false
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "grid": "1D_VERTICAL_UNIFORM_16_CELLS_DZ_10_CM",
+    "outer_horizon_day": 0.0016,
+    "table_kernel_equal_internal_substeps": 8,
+    "optimization_profiles": ["O0", "O2"]
+  },
+  "qualification": {
+    "workflow_run_id": 34962614605,
+    "job_id": 104359526637,
+    "tested_head": "5847bc9604821ba32c0076171e660b2c9b13807b",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "all_six_materials_pass": true,
+    "linear_solves_per_material_route": 24,
+    "o0_o2_output_identity": true,
+    "o0_o2_output_sha256": "6bc670b4169ee72884bce903e8887db8d0728e3448b60dca7c75ea82c1cbb468",
+    "registry_structure_preflight_pass": true,
+    "mixed_backend_fail_closed": true,
+    "duplicate_state_claim_fail_closed": true,
+    "missing_asset_root_fail_closed_before_partial_commit": true,
+    "artifacts": {
+      "diagnostics": {
+        "id": 10393283496,
+        "digest": "sha256:b18f1a6e1ea90b4881555fe71e012d25a4c276993aab78578ffb7a23348e461d",
+        "size_bytes": 1525
+      },
+      "evidence": {
+        "id": 10393104248,
+        "digest": "sha256:b954aa9ca2c23dd4ea1f55c70ae7e5cabc97bd2e34b89d30273580dd5639f7f8",
+        "size_bytes": 1638
+      }
+    }
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_APPLICATION_OR_LEGACY_INPUT_TO_BACKEND_ID_MAPPING",
+    "NO_AUTOMATIC_BACKEND_SELECTION_FROM_LEGACY_MOD_SOILWATER_INPUT",
+    "NO_REPLACEMENT_OR_MODIFICATION_OF_EXISTING_REFERENCE_MULTISWAP_RUNTIME",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_OR_SELECTOR_SEMANTICS",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
+  ],
+  "next_gap": "QUALIFY_EXPLICIT_APPLICATION_OR_INPUT_MODEL_SELECTION_MAPPING_TO_THE_RESTRICTED_F_ROSS07_BACKEND_WITHOUT_BROADENING_THE_SCIENTIFIC_DOMAIN"
+}
