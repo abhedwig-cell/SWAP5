@@ -1,0 +1,117 @@
+name: F-CI80 RossFast restricted stack current-canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci80-rossfast-restricted-stack-admission
+    paths:
+      - 'src/runtime/mod_rossfast_d3r_model_binding.f90'
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'src/solver/mod_rossfast_d3r_table_provider.f90'
+      - 'src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90'
+      - 'src/runtime/mod_fmr_serialized_kernel_backend.f90'
+      - 'src/runtime/mod_fmr_rossfast_registry_dispatch.f90'
+      - 'src/runtime/mod_fmr_rossfast_application_selection.f90'
+      - 'src/runtime/mod_fmr_rossfast_application_config.f90'
+      - 'src/adapter/mod_rossfast_application_config_file_adapter.f90'
+      - 'assets/rossfast/d3r/**'
+      - 'integration/f-ross/F-ROSS*_STATUS.json'
+      - 'integration/f-ci/F-CI80_STATUS.json'
+      - 'tests/ross/test_ross08_explicit_application_model_selection.f90'
+      - 'tests/ross/run_ross08_explicit_application_model_selection.sh'
+      - 'tests/ross/test_ross10_external_model_config_file_adapter.f90'
+      - 'tests/integration/run_fci80_rossfast_restricted_stack_admission.sh'
+      - '.github/workflows/f-ci80-rossfast-restricted-stack-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-ci80-rossfast-admission-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  current-canonical-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run bounded F-CI80 successor admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The scientific gate is unchanged from the green F-CI80 replay.
+          # F-CI79P advanced canonical by governance/test/workflow files only,
+          # so bind an ephemeral copy to the exact successor preimage while
+          # retaining every production/source/asset assertion byte-for-byte.
+          sed 's/^PREIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a$/PREIMAGE=64937452be6b073a21b1b87acf21ce4edcbfda14/' \
+            tests/integration/run_fci80_rossfast_restricted_stack_admission.sh \
+            > tests/integration/.run_fci80_successor.sh
+          chmod +x tests/integration/.run_fci80_successor.sh
+          set -o pipefail
+          bash tests/integration/.run_fci80_successor.sh 2>&1 | tee F-CI80_GATE.log
+          rm -f tests/integration/.run_fci80_successor.sh
+
+      - name: Persist F-CI80 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              'work_unit': 'F-CI80',
+              'status': 'PASS',
+              'tested_head': sh('git', 'rev-parse', 'HEAD'),
+              'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
+              'canonical_preimage': '64937452be6b073a21b1b87acf21ce4edcbfda14',
+              'canonical_preimage_classification': 'F-CI79P_GOVERNANCE_ONLY_SUCCESSOR',
+              'qualified_source_authority': 'a483452f04a85f3bb64eaad6a383a4800abaed16',
+              'admitted_owner_capabilities': [f'F-ROSS{i:02d}' for i in range(2, 11)],
+              'qualification': {
+                  'exact_qualified_blob_projection': True,
+                  'six_material_real_table_kernel_registry_application_route_replayed': True,
+                  'typed_config_and_external_file_adapter_replayed': True,
+                  'invalid_mixed_and_missing_configuration_cases_fail_closed': True,
+                  'o0_o2_output_identity': True,
+                  'current_reference_backend_preserved_byte_identical': True,
+                  'legacy_soilwater_swap_main_and_full_richards_task2_preserved': True,
+                  'no_eb_groundwater_root_or_source_sink_scope_broadening': True,
+                  'f_ci79p_src_delta': False,
+              },
+              'nonclaims': [
+                  'NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE',
+                  'NO_SW_SOLVE_REINTERPRETATION',
+                  'NO_AUTOMATIC_CONFIGURATION_DISCOVERY',
+                  'NO_DIRECT_SWAP_MAIN_PRODUCTION_WIRING',
+                  'NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_ADMISSION',
+                  'NO_DYNAMIC_TOP_PRESCRIBED_HEAD_BOTTOM_GROUNDWATER_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION',
+                  'NO_HETEROGENEOUS_GRID_ARBITRARY_PROFILE_FORCING_OR_DURATION_GENERALIZATION',
+                  'NO_EB_PRODUCTION_CHANGE',
+              ],
+          }
+          open('F-CI80_EVIDENCE.json', 'w').write(json.dumps(payload, indent=2, sort_keys=True) + '\n')
+          PY
+
+      - name: Upload F-CI80 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci80-gate-diagnostics-${{ github.run_id }}
+          path: F-CI80_GATE.log
+          if-no-files-found: warn
+
+      - name: Upload F-CI80 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci80-rossfast-admission-${{ github.run_id }}
+          path: F-CI80_EVIDENCE.json

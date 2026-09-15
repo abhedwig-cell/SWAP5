@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS04",
+  "title": "RossFast D3R production-owned immutable table asset provider",
+  "status": "CLOSED_POSITIVE_RESTRICTED_TABLE_PROVISIONING",
+  "decision": "QUALIFIED_PRODUCTION_OWNERSHIP_AND_IMMUTABLE_PROVISIONING_OF_THE_EXACT_SIX_F_ROSS03_D3R_TABLES_ON_THE_TESTED_DOMAIN_PENDING_RUNTIME_SELECTOR_AND_MOD_SOILWATER_COMPOSITION",
+  "parent": {
+    "branch": "work/f-ross03-d3r-fortran-kernel",
+    "qualified_status_head": "cadf06751b7c2f24845c4700d7ef7b68963b2975",
+    "f_ross03_kernel_qualified_head": "cca4e6fee72f5e6477a547bf2c8546552fb448bd",
+    "f_ross03_status_blob": "6733b7a5ddd4b9761c9bdad26a5c7e21c8e92c7c"
+  },
+  "research_authority": {
+    "branch": "work/f-ross01-fast-mfp-feasibility",
+    "head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "d3g02r_bound_authority_blob": "ff32bce4597e245eef0028556fce476074ab1cb8",
+    "gate_f_timestep_convergence_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "j1a_face_derivative_blob": "94520eb13a86cf224f90dd1649a4f9ad3afecfce",
+    "oracle_definition": "Qualification checks out this exact research head and regenerates the nine-level F-ROSS03 oracle independently. Production execution does not use this generator."
+  },
+  "candidate": {
+    "qualified_head": "410d83a5037e33603f2c39840757fbc91b38d2ec",
+    "provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "provider_test_blob": "938db5ddb68b731b84dc287e8d8e3135f73f6b81",
+    "provider_runner_blob": "6d498c6514a2091dc5848ea231e517911d4cf357",
+    "provider_workflow_blob": "8525a0147143c18c3c71753afa4d1218bdfd3e7d",
+    "asset_manifest_blob": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55"
+  },
+  "asset_registry": {
+    "kind": "QUALIFIED_ROSSFAST_D3R_TABLE_ASSET_REGISTRY",
+    "representation": "PORTABLE_TEXT_HEX_OF_IEEE_BINARY32_WORDS",
+    "table_shape": [241, 241],
+    "word_count_per_table": 58081,
+    "runtime_generation": false,
+    "material_to_asset_mapping_is_fixed": true,
+    "materials": {
+      "B01": {
+        "research_raw_c_order_sha256": "9c7160127bbfd7a694d37558b951ad85159aead8705f8dea2fe9ebbf65ee18d7",
+        "asset_sha256": "acb2b9118bdde0b0b839ffd5903e5df4e5dc280931bd2cfe1ef404a82613cca6",
+        "git_blob": "c4cced37b0a6ba284f43dbf8c78cd5ac7ebe8d4e"
+      },
+      "B12": {
+        "research_raw_c_order_sha256": "a40e2bdbb6708a16dd3675d1a7f67d443de13505418a15ffa1478752dd2ceb2a",
+        "asset_sha256": "43bb4da69825b61c9cd859cefaf1f263b39333c49e9a02f5b893a9e083214543",
+        "git_blob": "bda7bb0339289fc21671964676cb7d2bd8eccc89"
+      },
+      "O01": {
+        "research_raw_c_order_sha256": "e2b2a6ff34855b3104c0a9683edfe6585ac16c47c4a12c5239c03a132af202d0",
+        "asset_sha256": "c1a250ebccfb9cd9a4c79e619335c55db770711e3dd4fe021374e4517a3fa0db",
+        "git_blob": "831b29f7c1d04546906c928a15becc20c7328f30"
+      },
+      "O05": {
+        "research_raw_c_order_sha256": "d9fb067f5861abdec568ab4382825d79ac6c1e3fc0499d7d6e6a78df94a87a79",
+        "asset_sha256": "eeab02fc71f7e63f2671c662cfb8c0961875076bc98b702d4a9ca525fb852fa9",
+        "git_blob": "39ddd5f390857d722cc80c4878f90b4f2a4e5908"
+      },
+      "O14": {
+        "research_raw_c_order_sha256": "f56deba9b912103e465a96e264f9ba984780720e6bd2ef7fa5a8f46e5f4236d6",
+        "asset_sha256": "44b91f85209ed838f9b222caeb6ae706460ea1ac0c8a49fc66a6043803948c40",
+        "git_blob": "9746cb348093b735bc10a7cb8f3d5a67a57018bf"
+      },
+      "O18": {
+        "research_raw_c_order_sha256": "2e76bcd89820099a222983cc3b788f274c9f5f12155dcb7c3698c00a7eec71b5",
+        "asset_sha256": "a0d1aaf55aed4497c59105eb2494f5ce7df26e147e09126badebd2a70690d9ad",
+        "git_blob": "68855f4d34d63b7d14743305d2519038d946ed67"
+      }
+    }
+  },
+  "provider_contract": {
+    "caller_selects_material_not_asset_file": true,
+    "provider_owns_material_to_asset_resolution": true,
+    "header_material_dimensions_and_word_count_checked": true,
+    "wrong_material_header_fails_closed": true,
+    "unbound_registry_fails_closed": true,
+    "missing_asset_fails_closed": true,
+    "trailing_asset_content_fails_closed": true,
+    "loaded_table_is_copied_into_private_kernel_context": true,
+    "asset_removed_after_initialization_before_nine_case_solve": true,
+    "solve_after_asset_removal_succeeds": true,
+    "runtime_table_regeneration": false
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "duration_attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "duration_case_count_per_material": 9,
+    "total_material_duration_cases": 54,
+    "optimization_profiles": ["O0", "O2"],
+    "scientific_semantics": "INHERITED_UNCHANGED_FROM_F_ROSS03",
+    "production_table_source": "VERSION_CONTROLLED_FIXED_ASSETS",
+    "oracle_table_source": "INDEPENDENT_REGENERATION_FROM_PINNED_F_ROSS01_RESEARCH_AUTHORITY_FOR_QUALIFICATION_ONLY"
+  },
+  "materialization": {
+    "workflow_run_id": 34898376503,
+    "all_six_material_jobs_success": true,
+    "persist_job_success": true,
+    "all_assets_regenerated_from_pinned_research_authority_before_persistence": true
+  },
+  "qualification": {
+    "workflow_run_id": 34933489290,
+    "qualified_head": "410d83a5037e33603f2c39840757fbc91b38d2ec",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "all_six_material_jobs_success": true,
+    "all_54_material_duration_cases_within_oracle_tolerances": true,
+    "o0_o2_output_identity_per_material": true,
+    "B01_zero_observed_state_head_indicator_error": true,
+    "O18_zero_observed_state_head_indicator_error": true,
+    "artifacts": {
+      "B01": {"id": 10381949994, "digest": "sha256:ad41e5e1ebead087a76edcf84d3baf428faa160769c11396a99c060f8bd29c03"},
+      "B12": {"id": 10382129484, "digest": "sha256:61ce56750383e125737e4f3acd37245bc448b2f3b56da04f0bb06d6f93ebff37"},
+      "O01": {"id": 10382114395, "digest": "sha256:e6c9ad508c7837c61496d4c748af699b7bd75f3a6b91c4c01ba4aac6fcfbc606"},
+      "O05": {"id": 10381514721, "digest": "sha256:8d0b8f290d13dac567a252bddf7ad8d53bbc50bc3b02bda21eff8fa789184b50"},
+      "O14": {"id": 10381944980, "digest": "sha256:2ea39e13551e4c55d95a26e89d726bd2d76cbbfe618c119ca16cd46356a537a5"},
+      "O18": {"id": 10381964643, "digest": "sha256:b047968bd0e6337708db8e468afd87c43f9c4832f8ede9e78a9cd771bed9d929"}
+    }
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_MOD_SOILWATER_ROUTE",
+    "NO_SOLVER_SELECTOR_ADMISSION",
+    "NO_CANONICAL_RUNTIME_COMPOSITION",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_ADMISSION"
+  ],
+  "next_gap": "COMPOSE_THE_QUALIFIED_F_ROSS04_PROVIDER_AND_F_ROSS03_KERNEL_WITH_THE_EXISTING_ROSSFAST_D3R_SOLVER_SELECTOR_ROUTE_WITHOUT_BROADENING_THE_F_ROSS02_ADMISSION_DOMAIN"
+}

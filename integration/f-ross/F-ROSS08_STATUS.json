@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS08",
+  "title": "RossFast D3R explicit typed application model selection",
+  "status": "CLOSED_POSITIVE_RESTRICTED_EXPLICIT_APPLICATION_MODEL_SELECTION",
+  "decision": "QUALIFIED_EXPLICIT_TYPED_ROSSFAST_D3R_APPLICATION_SELECTION_AND_REGISTRY_MATERIALIZATION_TO_F_ROSS07_PENDING_USER_FACING_INPUT_CONFIGURATION_AND_CANONICAL_ADMISSION",
+  "parent": {
+    "branch": "work/f-ross07-restricted-registry-backend-dispatch",
+    "head": "67a7f4912c0b18fb84e7bae1f22167f4c4996912",
+    "status_blob": "1d930f4e1b1e75324cea77bf4e42f6fd3f7e7840"
+  },
+  "inherited_authorities": {
+    "fmr_runtime_core_blob": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "f_ross06_serialized_kernel_backend_blob": "29093b517bc6fdd40f32325018729c4c3dee6e85",
+    "f_ross07_registry_dispatch_blob": "7f900e75f4bea1c9b999464b7a8d4f7be4b35064",
+    "rossfast_d3r_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "f_ross02_model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "f_ross03_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "f_ross04_table_provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "f_ross05_kernel_model_adapter_blob": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e",
+    "asset_manifest_blob": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55",
+    "legacy_soilwater_blob": "c1850ea7fa82a1ed8974af57e1da95aa11a771be",
+    "production_task2_blob": "3090e1d3d5701a87b3624412ad88590e17369d63"
+  },
+  "candidate": {
+    "precloseout_qualified_head": "3538cd149071a66e8ef519b06fc634722b131633",
+    "application_selection_blob": "5b652f04f172a8faa468d38faa23883ce6f35294",
+    "test_blob": "8e1f8dbd03003f7160e3ce168c7695a57463a455",
+    "runner_blob": "b795d07ea2c6fb4bc27138383334945a531dd345",
+    "workflow_blob": "d5f15abc13afe4e1159745228641b99c1da44155"
+  },
+  "application_selection_contract": {
+    "explicit_model_key": "ROSSFAST_D3R",
+    "model_key_is_exact_and_case_sensitive": true,
+    "complete_batch_validated_before_runtime_registry_materialization": true,
+    "application_templates_must_be_unbound": true,
+    "runtime_template_backend_identity": 4,
+    "runtime_column_backend_identity": 4,
+    "template_topology_layout_and_solver_interface_metadata_preserved": true,
+    "column_parameter_forcing_state_handles_preserved": true,
+    "unknown_or_reference_model_key_not_captured": true,
+    "mixed_model_batch_fails_atomically": true,
+    "prebound_template_fails_atomically": true,
+    "invalid_handle_fails_atomically": true,
+    "legacy_swsolve_semantics_unchanged": true,
+    "full_richards_task2_adapter_unchanged": true
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "grid": "1D_VERTICAL_UNIFORM_16_CELLS_DZ_10_CM",
+    "outer_horizon_day": 0.0016,
+    "table_kernel_equal_internal_substeps": 8,
+    "optimization_profiles": ["O0", "O2"]
+  },
+  "qualification": {
+    "workflow_run_id": 34965507445,
+    "job_id": 104368879687,
+    "tested_head": "3538cd149071a66e8ef519b06fc634722b131633",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "all_six_materials_pass": true,
+    "linear_solves_per_material_route": 24,
+    "o0_o2_output_identity": true,
+    "o0_o2_output_sha256": "d77c21bc6a4c02fc3ba3bd62b73a7f8011946ce843e66c2c9a5d9097da791832",
+    "explicit_application_selection_to_real_f_ross07_dispatch_pass": true,
+    "unknown_model_fail_closed": true,
+    "mixed_model_batch_fail_closed": true,
+    "prebound_template_fail_closed": true,
+    "invalid_handle_fail_closed": true,
+    "artifacts": {
+      "diagnostics": {
+        "id": 10394753597,
+        "digest": "sha256:72a601603622afd668ce95bb08d77cfdf536226a7645616211d078b43c810e95",
+        "size_bytes": 1523
+      },
+      "evidence": {
+        "id": 10395027883,
+        "digest": "sha256:52ce44981d935455ec04e0e0d50c2171529e3f83adf14062e6a6fde556611ef4",
+        "size_bytes": 1633
+      }
+    }
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_LEGACY_INPUT_FILE_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_AUTOMATIC_SELECTION_WITHOUT_EXPLICIT_ROSSFAST_D3R_APPLICATION_KEY",
+    "NO_REFERENCE_RICHARDS_CAPTURE_BY_THE_ROSSFAST_SELECTION_BINDING",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_SELECTOR_OR_RETRY_SEMANTICS",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
+  ],
+  "next_gap": "RECONCILE_AND_QUALIFY_A_USER_FACING_EXPLICIT_INPUT_OR_CONFIGURATION_BINDING_TO_ROSSFAST_D3R_WITHOUT_REINTERPRETING_SW_SOLVE_OR_BROADENING_THE_SCIENTIFIC_DOMAIN"
+}

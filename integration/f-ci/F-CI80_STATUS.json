@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI80",
+  "title": "RossFast restricted stack current-canonical admission",
+  "phase": "QUALIFIED_SUCCESSOR_PREIMAGE",
+  "decision": "QUALIFIED_EXACT_F_ROSS02_TO_F_ROSS10_PROJECTION_ON_F_CI79P_SUCCESSOR_PENDING_EXACT_PREIMAGE_ADMISSION",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "64937452be6b073a21b1b87acf21ce4edcbfda14",
+  "canonical_preimage_tree": "187651cb2b5bce636f675b876b36f62af94f16f6",
+  "admission_branch": "integration/f-ci80-rossfast-restricted-stack-admission",
+  "qualified_candidate_head": "aa94d68e5aeb7cf1412aa74c1841a5f0b9b4b834",
+  "qualified_candidate_tree": "bb41c59c92ea297dc3effc59b2b938a670043131",
+  "qualified_source_head": "a483452f04a85f3bb64eaad6a383a4800abaed16",
+  "qualified_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"],
+  "successor_reconciliation": {
+    "successor": "F-CI79P",
+    "production_src_changed": false,
+    "rossfast_dependency_changed": false,
+    "classification": "GOVERNANCE_ONLY_SUCCESSOR"
+  },
+  "qualification": {
+    "run_id": 34992520370,
+    "job_id": 104460471486,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "exact_qualified_blob_projection": true,
+    "six_material_real_table_kernel_registry_application_route_replayed": true,
+    "typed_config_and_external_file_adapter_replayed": true,
+    "invalid_mixed_and_missing_configuration_cases_fail_closed": true,
+    "o0_o2_output_identity": true,
+    "current_reference_backend_preserved_byte_identical": true,
+    "legacy_soilwater_swap_main_and_full_richards_task2_preserved": true,
+    "no_eb_groundwater_root_or_source_sink_scope_broadening": true,
+    "ross08_output_sha256": "d77c21bc6a4c02fc3ba3bd62b73a7f8011946ce843e66c2c9a5d9097da791832",
+    "ross10_output_sha256": "345faf5ee92ffd6eca4e6feb332acee5f470e1b4858ca343464fce75d44652e5"
+  },
+  "artifacts": {
+    "diagnostics_id": 10406053158,
+    "diagnostics_zip_sha256": "ab31896cbdf549ecfc161bb62089b895e5b3d0b57f7f7e659a826644303673eb",
+    "evidence_id": 10405878745,
+    "evidence_zip_sha256": "40d56f9e71039b027c996826d978914df327b039bb29833c86876bbfdfb20998"
+  },
+  "canonical_admission": false,
+  "mutations": [
+    "Persisted exact successor qualification evidence only.",
+    "No RossFast production source, assets, scientific domain, reference backend, Full-Richards path, EB, groundwater, root, or distributed source/sink semantics changed."
+  ],
+  "next_permitted_action": "Re-read live canonical. Promote the qualified F-CI80 candidate only if canonical remains exactly 64937452be6b073a21b1b87acf21ce4edcbfda14; otherwise reconcile the new successor before admission.",
+  "exclusions": [
+    "No legacy .swp grammar or parser change.",
+    "No SW_SOLVE reinterpretation.",
+    "No automatic configuration discovery.",
+    "No direct swap_main or new Public API production wiring.",
+    "No mixed reference/RossFast MultiSWAP admission.",
+    "No dynamic-top, prescribed-head-bottom, groundwater, root, distributed source/sink, ponding, EB, heterogeneous-grid, arbitrary-profile-forcing, or duration-generalization admission."
+  ]
+}
