@@ -5,13 +5,16 @@
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
-    "tree": "9b2d60dbe6de57242946aa8c1e0fbab990edaa6e"
+    "tree": "9b2d60dbe6de57242946aa8c1e0fbab990edaa6e",
+    "rechecked_after_resume": true,
+    "changed_since_block_checkpoint": false
   },
   "owner": {
     "branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
     "historical_head": "be088aaf3cd48af135a78dfd48b88cc61e47864d",
     "canonical_reconcile_merge": "c51b0694e4a3eb2461b7048344f5e08558195de7",
-    "superseded_reconcile_checkpoint_head": "086881c2d077c843d0bd9ce5654cdca28561c855"
+    "superseded_reconcile_checkpoint_head": "086881c2d077c843d0bd9ce5654cdca28561c855",
+    "blocked_checkpoint_head": "8fb13f090a6ef42163c8e43acab20b61e6c9f5e2"
   },
   "historical_verdict": "BLOCKED_BY_UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY",
   "historical_verdict_superseded": true,
@@ -50,15 +53,31 @@
       "verdict": "QUALIFIED_AND_CANONICALLY_ADMITTED"
     },
     "F-GC16_dependency_plan": {
+      "branch": "work/f-gc16-production-groundwater-coupling-minimal-viable-composition-admission-plan",
       "path": "integration/f-gc/F-GC16_DEPENDENCY_ORDERED_IMPLEMENTATION_PLAN.json",
       "blob": "d8b02dcf1c4915634c0a7659f3202604c4d91b88",
       "relevant_contract": "F-GC18 owns checkpoint/predictor-head request/trial response/optional response sensitivity/commit/rollback; F-GC23 composes accepted provenance-matching SWAP sensitivity with groundwater-side response information and derives one safeguarded corrector candidate"
     },
     "F-GC18_canonical_service_contract": {
       "path": "src/runtime/mod_groundwater_exchange_service_contract.f90",
-      "blob": "e99ae052fccd9992b76c12a91422a987dce059e2",
-      "canonical_admission": "F-CI53 plus F-CI53P postimage reconciliation",
+      "canonical_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
       "finding": "groundwater_exchange_trial_result_t exposes head, flux, window and lineage/revision provenance only; gw_trial_backend_ifc returns candidate token, groundwater head and status only; no groundwater response sensitivity or equivalent derivative is transported"
+    },
+    "F-GC18_original_owner_contract": {
+      "branch": "work/f-gc18-transactional-groundwater-exchange-service-abstraction",
+      "source_blob": "d5fc0d9f0ec10a2a7b640a15be08cb046469c23e",
+      "finding": "original owner service contract also has no response-sensitivity field or callback"
+    },
+    "F-GC18R_remediation_contract": {
+      "branch": "work/f-gc18r-r1-prepared-transaction-remediation",
+      "source_blob": "f0fc25592624360802713a9487813d119e7dc4e9",
+      "finding": "prepared-transaction remediation strengthens atomic publication but still exposes no groundwater response sensitivity"
+    },
+    "F-GC28_architecture_audit": {
+      "branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+      "status_blob": "1689faf14570c8278d5932ca93514cd6835e5699",
+      "architecture_blob": "7eee1ee7da975071d69a82cb30885a3309a03f06",
+      "finding": "F-GC23 remains the sensitivity/composition closure owner; F-GC28 did not introduce a successor groundwater response-sensitivity capability"
     }
   },
   "whole_window_swap_semantic_findings": {
@@ -73,12 +92,21 @@
     "covers_requested_interval_not_used_as_scope_upgrade": true,
     "finite_difference_is_reference_only_not_structural_production": true
   },
+  "successor_capability_search": {
+    "current_canonical_rechecked": true,
+    "groundwater_named_branches_rechecked": true,
+    "sensitivity_named_branches_rechecked": true,
+    "response_named_branches_rechecked": true,
+    "existing_F_GC18_and_F_GC18R_contracts_rechecked": true,
+    "admitted_or_qualified_equivalent_found": false,
+    "conclusion": "No existing provenance-bound groundwater-side response-sensitivity capability or semantically equivalent admitted successor was found."
+  },
   "blocking_gap": {
     "missing_capability": "provenance-bound groundwater-side response sensitivity for the same committed groundwater origin and exact generic [t0,t1] coupling window",
     "required_owner": "F-GC18 external-groundwater service boundary or an explicitly designated successor capability owning that service contract",
     "why_F_GC23_cannot_work_around_it": [
       "The admitted SWAP whole-window tangent supplies only the SWAP side of the coupled response chain.",
-      "A generic one-corrector coupling response requires groundwater-side response information as required by the governing F-GC16 plan.",
+      "A generic safeguarded one-corrector response update needs the groundwater-side response information required by the governing F-GC16 contract.",
       "The admitted groundwater trial contract does not expose that information.",
       "Inferring a derivative from predictor/corrector trial differences or a frozen denominator would introduce unqualified groundwater semantics and would violate the no-new-groundwater-physics and no-workaround constraints.",
       "Structural finite difference cannot be promoted to the normal production construction."
@@ -90,10 +118,12 @@
   },
   "mutations": [
     "preserved the existing current-canonical reconciliation history",
-    "updated this bounded RECONCILE checkpoint after discovering the missing admitted groundwater-side response capability"
+    "rechecked only the relevant dependency delta after the blocked checkpoint",
+    "confirmed the missing capability is not present in the original F-GC18 owner, F-GC18R remediation, current canonical, or a discovered successor branch",
+    "updated this bounded RECONCILE checkpoint; no production source changed"
   ],
   "production_semantics_changed": false,
-  "next_permitted_action": "Establish, independently qualify and canonically admit the missing provenance-bound groundwater-side response sensitivity at the F-GC18 service boundary (or an explicitly designated successor owner). Then resume F-GC23 from this checkpoint, recheck only the relevant dependency delta, and only if that capability is admitted proceed to F-GC23 implementation and QUALIFY.",
+  "next_permitted_action": "Outside F-GC23 scope: establish, independently qualify and canonically admit the missing provenance-bound groundwater-side response sensitivity at the F-GC18 service boundary or an explicitly designated successor owner. Then resume F-GC23 from this checkpoint and recheck only that dependency delta before implementation.",
   "exclusions": [
     "EB",
     "ROSS",
