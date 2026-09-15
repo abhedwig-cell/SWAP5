@@ -10,13 +10,19 @@ module mod_rossfast_d3r_kernel_model_adapter
   implicit none
   private
 
+  ! F-ROSS03 qualified the production table kernel only for eight equal
+  ! internal substeps per coarse/half component solve. F-ROSS02 deliberately
+  ! admits a wider 2/4/8/16 research-binding set, so this composition seam must
+  ! narrow that inherited contract before generic F-KT admission.
+  integer, parameter :: ROSSFAST_D3R_COMPOSED_INTERNAL_SUBSTEPS = 8
+
   ! F-ROSS05 transport parameters. Scientific/material admission remains owned
   ! by F-ROSS02 bind_rossfast_d3r_model; this carrier only makes that already
   ! qualified contract consumable by the generic F-KT kernel_model_t seam.
   type, extends(kernel_parameters_t), public :: rossfast_d3r_kernel_parameters_t
     type(rossfast_d3r_material_t) :: material
     real(real64) :: cell_thickness_cm(ROSSFAST_D3R_N_CELLS) = ROSSFAST_D3R_DZ_CM
-    integer :: equal_internal_substeps = 8
+    integer :: equal_internal_substeps = ROSSFAST_D3R_COMPOSED_INTERNAL_SUBSTEPS
   end type rossfast_d3r_kernel_parameters_t
 
   type, extends(kernel_model_t), public :: rossfast_d3r_kernel_model_adapter_t
@@ -60,6 +66,7 @@ contains
 
     select type (parameters)
     type is (rossfast_d3r_kernel_parameters_t)
+      if (parameters%equal_internal_substeps /= ROSSFAST_D3R_COMPOSED_INTERNAL_SUBSTEPS) return
       call bind_rossfast_d3r_model(probe, self%trial_kernel, parameters%material, &
            parameters%cell_thickness_cm, parameters%equal_internal_substeps, binding_valid)
       if (.not. binding_valid) return
@@ -91,6 +98,7 @@ contains
 
     select type (parameters)
     type is (rossfast_d3r_kernel_parameters_t)
+      if (parameters%equal_internal_substeps /= ROSSFAST_D3R_COMPOSED_INTERNAL_SUBSTEPS) return
       call bind_rossfast_d3r_model(self%delegate, self%trial_kernel, parameters%material, &
            parameters%cell_thickness_cm, parameters%equal_internal_substeps, valid)
       self%configured = valid
