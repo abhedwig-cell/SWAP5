@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP01",
   "title": "WOFOST 8.1 Independent Potential Production Equivalence",
@@ -16,57 +16,64 @@
     "generator": "PCSE 6.0.13",
     "model": "WOFOST 8.1",
     "case_count": 10,
-    "manifest": "tests/fwof/pp01/REFERENCE_MANIFEST.json",
-    "mapping_contract": "tests/fwof/pp01/MAPPING_CONTRACT.md"
+    "manifest": "tests/fwof/pp01/REFERENCE_MANIFEST.json"
   },
-  "reconciliation_correction": {
-    "previous_assumption": "qualify the partially migrated current SWAP5 crop seam directly against the complete PCSE oracle",
-    "corrected_route": "first qualify the already completed SWAP 4.3.1 WOFOST 8.1 Fortran donor against the independent PCSE oracle; only after donor qualification qualify SWAP5 preservation against that donor/oracle",
-    "reason": "the WOFOST 8.1 Python-to-Fortran translation and runtime integration were completed previously in the SWAP 4.3.1 line, so reconstructing that mapping from the partial SWAP5 seam would duplicate prior work and conflate donor equivalence with migration preservation"
+  "donor_documentation_recovered": {
+    "current_input_guide_found_in_file_library": true,
+    "guide_title": "SWAP 4.3.1 WOFOST 7.3/8.1 — Current Input Guide",
+    "guide_claims_current_qualified_working_implementation": true,
+    "activation": {
+      "ordinary_dynamic_route": "SWWOFOST=1",
+      "wofost81": "WOFOSTVER=81",
+      "potential_production_n_unlimited": "SWCROPSNM=0"
+    },
+    "n_unlimited_semantics": "WOFOST81 leaf-N assimilation uses maximum leaf-N concentration implied by the crop parameter set; old wofostnut NNI/NLUE equations are not executed",
+    "modern_input_contract_confirmed": [
+      "TSUM1","TSUM2","DVSI","SSATB","KDIFTB","EFFTB","REFCO2L","AMAX_REF","AMAX_SLP","AMAX_LNB","KN",
+      "REALLOC_DVS","REALLOC_STEM_FRACTION","REALLOC_LEAF_FRACTION","REALLOC_STEM_RATE","REALLOC_LEAF_RATE","REALLOC_EFFICIENCY",
+      "NMAXLV_TB","NMAXRT_FR","NMAXST_FR","NMAXSO","NCRIT_FR","NRESIDLV","NRESIDST","NRESIDRT","TCNT","NFIX_FR","RNUPTAKEMAX","DVS_N_TRANSL","NSLLV_TB","RGRLAI_MIN"
+    ],
+    "spring_barley_mapping": "barley_wofost81.crp -> springbarley / Spring_barley_301",
+    "official_parameter_source_commit": "472c260930371ab7b87b194ca97eebfbc46ba251",
+    "qualification_evidence_location_declared_by_guide": "qualification/wofost81/ in the working distribution",
+    "implementation_addendum_declared_by_guide": "WOFOST_8.1_IMPLEMENTATION_ADDENDUM.md",
+    "season_test_evidence": "WOF81-10 found and fixed TTUTIL real-literal generation and source gate checks it",
+    "restart_claim": "WOFOST81 crop-N and dynamic SWAP Soil-N continuation are included in formatted restart; qualified within observed formatted-restart precision, not bitwise full-model identity"
   },
-  "historical_donor_evidence_to_recover": {
+  "historical_donor_identity": {
     "known_working_distribution": "SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip",
     "known_distribution_sha256": "4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
     "reported_source_closeout_commit": "839c34a657c2cee202b55d9ee85253d867a3d47a",
-    "reported_official_parameter_commit": "472c260930371ab7b87b194ca97eebfbc46ba251",
-    "reported_runtime_routes": ["WOFOSTVER=73", "WOFOSTVER=81"],
-    "reported_capabilities": [
-      "WOFOST 8.1 runtime integration",
-      "leaf-N assimilation",
-      "crop-N demand uptake fixation and translocation",
-      "Soil-N request supply apply",
-      "mass-conserving arbitration",
-      "biomass reallocation",
-      "residues",
-      "restart"
-    ],
-    "current_live_SWAPS_repo_resolution": "not found in abhedwig-cell/SWAP5 branch/commit namespace; reported closeout SHA does not resolve in this repository",
-    "interpretation": "the donor evidence belongs to the separate/local SWAP-4.3.1 reference lineage or a retained distribution, not to be fabricated as current SWAP5 history"
+    "current_SWAP5_git_resolution": false,
+    "file_library_binary_distribution_resolved": false,
+    "documentation_and_crop_mapping_resolved": true,
+    "separate_known_blocker": "SWAP431-WOF81-13 maize C4 AMAX parameter contract; irrelevant to the Spring_barley_301 PP oracle"
   },
-  "qualification_plan": {
-    "stage_1": "recover or materialize the exact immutable SWAP 4.3.1 WOFOST81 donor source/distribution and verify its hash/provenance",
-    "stage_2": "build a test-only runner that feeds each of the ten Allard/PCSE potential-production cases to that donor without changing donor physics",
-    "stage_3": "compare the full daily ModelResults surface using each YAML Precision value and deterministic replay; report maximum absolute deviation and first divergence date",
-    "stage_4": "only if donor qualification passes, bind SWAP5 migration-preservation qualification to the qualified donor/oracle surface"
+  "qualification_route": {
+    "stage_1": "obtain exact working distribution/source bytes and verify SHA-256",
+    "stage_2": "use SWWOFOST=1, WOFOSTVER=81, SWCROPSNM=0 and the source-bound Spring_barley_301 mapping for the independent PP campaign",
+    "stage_3": "adapt only I/O/test harness necessary to feed the ten PCSE cases; do not alter donor crop equations",
+    "stage_4": "compare daily oracle outputs with YAML Precision values, deterministic replay, maximum absolute deviation and first divergence date",
+    "stage_5": "after donor PASS, qualify SWAP5 migration preservation separately"
   },
-  "verdict": "BLOCKED_DONOR_ARTIFACT_NOT_YET_LIVE_RESOLVED",
+  "verdict": "DONOR_SEMANTICS_AND_ACTIVATION_RECOVERED_BINARY_SOURCE_BYTES_STILL_REQUIRED",
   "mutations": {
     "production_source_changed": false,
     "physics_changed": false,
     "canonical_changed": false,
-    "reference_values_changed": false,
-    "reference_tolerances_changed": false,
-    "checkpoint_corrected": true
+    "reference_changed": false,
+    "checkpoint_updated": true
   },
-  "next_permitted_action": "Locate the retained SWAP 4.3.1 WOFOST81 donor artifact/source from the historical reference lineage or make that exact immutable artifact available to the qualification environment. Verify SHA-256 before compiling or testing. Do not substitute the current partial SWAP5 seam for the donor and do not recreate the donor mapping from memory.",
+  "next_permitted_action": "Recover the exact SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip or equivalent source tree from the working distribution, verify SHA-256 4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc, then inspect qualification/wofost81 and WOFOST_8.1_IMPLEMENTATION_ADDENDUM.md before compiling the Spring_barley_301 potential-production oracle runner. The documentation is sufficient to stop reconstructing semantics, but not sufficient to substitute for source bytes.",
   "exclusions": [
     "no EB",
     "no ROSS/RossFast",
     "no groundwater work",
+    "no maize blocker work",
     "no new crop physics",
     "no production semantic changes to force PASS",
     "no invented tolerance",
     "no silent omission of oracle fields",
-    "no fabricated donor commit or source provenance"
+    "no fabricated donor source provenance"
   ]
 }
