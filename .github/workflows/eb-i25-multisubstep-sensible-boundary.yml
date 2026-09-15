@@ -1,4 +1,4 @@
-name: EB-I25 accepted multi-substep sensible boundary
+name: EB-I25 bounded route repair bootstrap
 
 on:
   push:
@@ -6,57 +6,33 @@ on:
       - work/eb-i25-accepted-multisubstep-sensible-boundary
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  qualify-owner:
+  repair:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install GNU Fortran
-        run: sudo apt-get update && sudo apt-get install -y gfortran
-      - name: Inject bounded diagnostic worktree only
+          ref: work/eb-i25-accepted-multisubstep-sensible-boundary
+      - name: Apply bounded route and fixture repair
+        run: python3 tools/eb_i25_repair_route.py
+      - name: Persist atomic EB-I25 repair
         shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          gate = Path('tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh')
-          text = gate.read_text()
-          old = 'CANONICAL=687ee32ca98a42368a2b6380ea78d33eb254dad9'
-          new = 'CANONICAL=993673abae05570026dcc55a305679b09472e1d8'
-          if text.count(old) != 1:
-              raise SystemExit(f'expected one stale canonical pin, found {text.count(old)}')
-          gate.write_text(text.replace(old, new, 1))
-
-          test = Path('tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90')
-          text = test.read_text()
-          needle = "    call require(output%completed .and. output%committed, 'two-half inflow committed')"
-          diagnostic = '\n'.join([
-              "    write(*,'(A,L1)') 'EB_I25_DEBUG_COMPLETED=', output%completed",
-              "    write(*,'(A,L1)') 'EB_I25_DEBUG_COMMITTED=', output%committed",
-              "    write(*,'(A,I0)') 'EB_I25_DEBUG_KERNEL_STATUS=', output%kernel_status",
-              "    write(*,'(A,I0)') 'EB_I25_DEBUG_ACCEPTED_SUBSTEPS=', output%accepted_substeps",
-              "    write(*,'(A,A)') 'EB_I25_DEBUG_ADMISSION_STATUS=', trim(output%admission_status)",
-              "    write(*,'(A,A)') 'EB_I25_DEBUG_FAILURE_CLASS=', trim(diagnostic%failure_classification)",
-              "    write(*,'(A,I0)') 'EB_I25_DEBUG_ATTEMPTS=', diagnostic%attempts",
-              "    write(*,'(A,I0)') 'EB_I25_DEBUG_RETRIES=', diagnostic%retries",
-              "    write(*,'(A,L1)') 'EB_I25_DEBUG_SOLVER_EXECUTED=', output%solver_executed",
-              "    write(*,'(A,A)') 'EB_I25_DEBUG_SOLVER_ROUTE=', trim(output%solver_route)",
-          ]) + '\n'
-          if text.count(needle) != 1:
-              raise SystemExit(f'expected one first commit assertion, found {text.count(needle)}')
-          test.write_text(text.replace(needle, diagnostic + needle, 1))
-          PY
-      - name: Run EB-I25 owner diagnostic gate
-        shell: bash
-        run: |
-          set +e
-          bash tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
-          status=$?
-          if test "$status" -ne 0; then
-            for output in "${RUNNER_TEMP}"/eb-i25-o*/output.txt; do
-              test -f "$output" && { echo "--- $output ---"; cat "$output"; }
-            done
-          fi
-          exit "$status"
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm tools/eb_i25_repair_route.py
+          git add src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90 \
+                  tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90 \
+                  tests/eb/EB-I25_CONTRACT.md \
+                  tests/eb/EB-I25_CHECKPOINT.json \
+                  tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh \
+                  .github/workflows/eb-i25-multisubstep-sensible-boundary.yml
+          git diff --cached --check
+          git commit -m 'EB-I25 correct accepted two-half route authority'
+          git push origin HEAD:work/eb-i25-accepted-multisubstep-sensible-boundary
