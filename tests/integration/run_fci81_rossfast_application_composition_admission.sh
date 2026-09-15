@@ -14,6 +14,9 @@ LIVE_CANON="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '
 test "$LIVE_CANON" = "$PREIMAGE"
 git merge-base --is-ancestor "$PREIMAGE" HEAD
 
+STEP_DIRECTION=src/solver/mod_soil_water_accepted_step_direction_contract.f90
+TRAJECTORY_DIRECTION=src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+TRAJECTORY_PUBLICATION=src/transaction/mod_accepted_trajectory_directional_publication.f90
 TX=src/transaction/mod_transaction_reference.f90
 CONTRACTS=src/runtime/mod_canonical_contracts.f90
 RUNTIME=src/runtime/mod_canonical_interval_runtime.f90
@@ -41,6 +44,9 @@ LEGACY_MAIN=src/legacy/b1_10_port/swap_main.f90
 FULL_RICHARDS=src/adapter/mod_b110_production_soil_water_task2.f90
 
 # Current-canonical inherited authorities must remain exact after F-KT22.
+test "$(git rev-parse HEAD:$STEP_DIRECTION)" = 52698b1ad2350bf787862a053a49c7c73c3358f0
+test "$(git rev-parse HEAD:$TRAJECTORY_DIRECTION)" = 95381d3124b185aa0fbafd1ea3da6179a841deda
+test "$(git rev-parse HEAD:$TRAJECTORY_PUBLICATION)" = 31bc721f333a77c52f6530b357af44c627f44629
 test "$(git rev-parse HEAD:$TX)" = d5a71a526efaebd82054580c3186f8e3545db331
 test "$(git rev-parse HEAD:$CONTRACTS)" = 3962c270a7579b7403764674302445fe15ef5f72
 test "$(git rev-parse HEAD:$RUNTIME)" = 0b50dda5caf3b73a82561d7b0ba1e92386a08fee
@@ -103,6 +109,12 @@ for opt in o0 o2; do
   [[ "$opt" == o2 ]] && flag=-O2
   moddir="$BUILD/$opt"
 
+  # F-KT22 introduced a publication type into canonical contracts. Compile the
+  # exact admitted dependency chain first; this changes qualification build
+  # order only and does not alter any production source or semantics.
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$STEP_DIRECTION" -o "$moddir/step_direction.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$TRAJECTORY_DIRECTION" -o "$moddir/trajectory_direction.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$TRAJECTORY_PUBLICATION" -o "$moddir/trajectory_publication.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$TX" -o "$moddir/tx.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$CONTRACTS" -o "$moddir/contracts.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$RUNTIME" -o "$moddir/runtime.o"
@@ -121,11 +133,11 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$APP_RUNTIME" -o "$moddir/app_runtime.o"
   gfortran "${WARN[@]}" "$flag" -std=f2018 -J "$moddir" -I "$moddir" -c "$TEST" -o "$moddir/test.o"
 
-  gfortran -fopenmp "$moddir/tx.o" "$moddir/contracts.o" "$moddir/runtime.o" \
-    "$moddir/kernel_tx.o" "$moddir/orch.o" "$moddir/fmr_core.o" "$moddir/policy.o" \
-    "$moddir/binding.o" "$moddir/table_kernel.o" "$moddir/provider.o" "$moddir/kernel_adapter.o" \
-    "$moddir/serial_backend.o" "$moddir/dispatch.o" "$moddir/selection.o" "$moddir/config.o" \
-    "$moddir/app_runtime.o" "$moddir/test.o" -o "$moddir/test"
+  gfortran -fopenmp "$moddir/step_direction.o" "$moddir/trajectory_direction.o" "$moddir/trajectory_publication.o" \
+    "$moddir/tx.o" "$moddir/contracts.o" "$moddir/runtime.o" "$moddir/kernel_tx.o" "$moddir/orch.o" \
+    "$moddir/fmr_core.o" "$moddir/policy.o" "$moddir/binding.o" "$moddir/table_kernel.o" \
+    "$moddir/provider.o" "$moddir/kernel_adapter.o" "$moddir/serial_backend.o" "$moddir/dispatch.o" \
+    "$moddir/selection.o" "$moddir/config.o" "$moddir/app_runtime.o" "$moddir/test.o" -o "$moddir/test"
 
   "$moddir/test" "$ASSET_ROOT" > "$moddir/output.txt"
   grep -Fq 'FCI81_INDEPENDENT_ROSSFAST_APPLICATION_COMPOSITION PASS' "$moddir/output.txt"

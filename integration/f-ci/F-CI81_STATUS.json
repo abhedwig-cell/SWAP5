@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI81",
   "title": "RossFast restricted typed in-memory application composition current-canonical admission",
-  "phase": "RECOMPOSED_CURRENT_CANONICAL_PENDING_REQUALIFICATION",
-  "decision": "REQUALIFY_F_ROSS11_AFTER_RELEVANT_F_KT22_CANONICAL_DEPENDENCY_CHANGE",
+  "phase": "QUALIFY_RETRY_AFTER_BUILD_ORDER_REPAIR",
+  "decision": "RETRY_INDEPENDENT_REQUALIFICATION_WITH_F_KT22_PUBLICATION_DEPENDENCIES_COMPILED_FIRST",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_preimage": "4a01641ffed8a2260260909825c3887db2dff1ac",
   "canonical_preimage_tree": "164b5da92918315be54d6227fb4d9937d357a276",
@@ -33,10 +33,43 @@
     "classification": "RELEVANT_DEPENDENCY_CHANGE_REQUIRING_REQUALIFICATION"
   },
   "current_dependency_blobs": {
+    "soil_water_accepted_step_direction_contract": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "accepted_trajectory_directional_sensitivity": "95381d3124b185aa0fbafd1ea3da6179a841deda",
+    "accepted_trajectory_directional_publication": "31bc721f333a77c52f6530b357af44c627f44629",
     "canonical_contracts": "3962c270a7579b7403764674302445fe15ef5f72",
     "canonical_interval_runtime": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
     "kernel_transactions": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
     "reference_backend": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13"
+  },
+  "failed_successor_requalification": {
+    "tested_head": "645cc586ce19d935a7d1b8b5a7cb0761132fece6",
+    "run_id": 34998187257,
+    "job_id": 104479678994,
+    "conclusion": "failure",
+    "classification": "QUALIFICATION_BUILD_ORDER_ONLY",
+    "exact_failure": "mod_canonical_contracts could not find mod_accepted_trajectory_directional_publication.mod",
+    "ross11_production_compilation_reached": false,
+    "scientific_verdict_reached": false,
+    "production_source_changed_to_repair": false,
+    "application_runtime_remains_byte_identical": true,
+    "evidence_artifact": {
+      "id": 10408802682,
+      "digest": "sha256:5fae02ce0aaf46697e286c93edfedcaf6b231bf37d6e4adcc088d211ee00cdd"
+    },
+    "diagnostics_artifact": {
+      "id": 10408826103,
+      "digest": "sha256:44f31f4de01632c772b906d23e7a0a75486fe46d7a69c3a49180a41a09dbaef9"
+    }
+  },
+  "build_order_repair": {
+    "scope": "QUALIFICATION_INFRASTRUCTURE_ONLY",
+    "compile_before_canonical_contracts": [
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90"
+    ],
+    "dependency_chain": "accepted-step-direction-contract -> accepted-trajectory-directional-sensitivity -> accepted-trajectory-directional-publication -> canonical-contracts",
+    "production_semantics_changed": false
   },
   "independent_test_strategy": {
     "does_not_call_owner_test_or_owner_runner": true,
@@ -52,7 +85,7 @@
     "application_runtime": "a1af0d6eb0041565602711251748666f7b959d8e",
     "owner_status": "9a532b643faaef71e43c0eee58e4be7f9c661328",
     "independent_test": "09e1eaf90c804d333dd45b0806e1924c30416499",
-    "runner": "9e25f81ac747211c11cd51187cfcddb7b69c25f9",
+    "runner": "b499a4d6ef4d52b90dafd8b94d21860bef08c787",
     "workflow": "6ee84fb6f9b493bf8065f7e9421a059dfeebbdfc"
   },
   "preservation": {
@@ -75,5 +108,5 @@
     "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
     "NO_SCIENTIFIC_DOMAIN_BROADENING"
   ],
-  "next_permitted_action": "Persist this recomposed current-canonical candidate, run the independent gate at this exact preimage, and admit only if the live canonical remains this exact preimage and the gate is green."
+  "next_permitted_action": "Run the repaired independent gate at this exact canonical preimage. Admit only if it is green and live canonical remains exactly 4a01641ffed8a2260260909825c3887db2dff1ac."
 }
