@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF-PP02",
+  "title": "SWAP5 WOFOST81 Migration Preservation",
+  "phase": "RECONCILE",
+  "repository": "abhedwig-cell/SWAP5",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "reconciled_head": "aa25126ee19e25c60bd266951b7494ba635efeca"
+  },
+  "branch": "work/f-wof-pp02-wofost81-migration-preservation",
+  "duplicate_check": {
+    "existing_pp02_branch_found": false,
+    "existing_wofost81_migration_branch_found": false
+  },
+  "admitted_reference": {
+    "capability": "F-WOF-PP01",
+    "canonical_close_head": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "oracle_sha256": "99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145",
+    "donor_sha256": "4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
+    "qualified_outputs": ["DVS","LAI","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal","TAGP","TWLV","TWRT","TWSO","TWST"],
+    "explicitly_outside_reference_surface": ["RD","TRA"]
+  },
+  "current_swap5_surface": {
+    "present_owner_state": ["DVS","TWLV","TWRT","TWST","TWSO"],
+    "present_derived_state": ["LAI","TAGP"],
+    "missing_owner_state": ["NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal"],
+    "owner_state_evidence": ["src/crop/mod_wofost_crop_owner_state.f90","src/crop/mod_wofost_actual_biomass_state.f90"],
+    "current_rate_parameterization": "compact pre-WOFOST81/B1.10-style bundle with AMAXTB/KDIF/EFF and no explicit AMAX_REF, AMAX_SLP, AMAX_LNB or KN fields",
+    "current_parameter_evidence": "src/crop/mod_wofost_rate_parameters.f90",
+    "weather_forcing_readiness": "current one-day forcing already carries daylength, SINLD, COSLD, DIFPP and DSINBE-equivalent preprocessed astronomy/weather values, so raw-weather preprocessing need not be imported into the crop owner"
+  },
+  "qualified_donor_algorithms_required_for_preservation": {
+    "assimilation": {
+      "source": "SWAP4.3.1 donor MOD_wofost81_assimilation",
+      "required_inputs": ["AMAX_LNB","AMAX_REF","AMAX_SLP","CO2AMAX","TMPF","EFF","KN","LAI","NLV","KDIF","AVRAD","DIFPP","DSINBE","SINLD","COSLD"],
+      "key_semantics": "leaf-N profile directly constrains AMAX; this is not equivalent to the current AMAXTB-only SWAP5 path"
+    },
+    "nitrogen": {
+      "source": "SWAP4.3.1 donor MOD_wofost81_nitrogen and MOD_wofost81_n_stress",
+      "required_state": ["NamountLV","NamountST","NamountRT","NamountSO","NuptakeTotal","NfixTotal","NlossesTotal","initialTotal"],
+      "required_contracts": ["initialize","prepare request","external soil-N supply boundary","apply supply","same-step senescence/translocation balance","N stress for leaf death and RGRLAI"]
+    }
+  },
+  "migration_constraints": [
+    "do not replace existing WOFOST semantics globally; WOFOST81 must be an explicit versioned/qualified path",
+    "preserve transaction/rollback ownership and clone/validate semantics",
+    "do not import SWAP4.3.1 RD or TRA interface behavior into the PP02 crop-state contract",
+    "do not couple Soil-N implementation into the crop algorithm; expose a request/supply seam so non-limiting PP qualification and future production Soil-N coupling remain separable",
+    "reuse the admitted PP01 oracle precision unchanged",
+    "no production change may be called qualified until the ten-case preservation gate passes"
+  ],
+  "reconcile_verdict": "PRODUCTION_MIGRATION_REQUIRED_BEFORE_NUMERICAL_PRESERVATION_GATE_IS_EXECUTABLE",
+  "minimum_implementation_sequence": [
+    "add versioned WOFOST81 parameter and leaf-N assimilation substrate without changing legacy path",
+    "add transaction-owned WOFOST81 N state and pure request/apply/N-stress kernels",
+    "compose WOFOST81 daily evolution through the existing accepted crop-window transaction seam",
+    "add observation mapping for the admitted 12-output reference surface",
+    "run all ten PP01 trajectories with the same non-limiting external water/N boundary and exact YAML precision"
+  ],
+  "mutations": {
+    "production_source_changed": false,
+    "physics_changed": false,
+    "canonical_changed": false,
+    "checkpoint_added": true
+  },
+  "next_permitted_action": "QUALIFY the first minimal migration slice: source-faithful WOFOST81 assimilation and N-state kernels behind new versioned contracts, with donor-component oracle tests before composing them into the daily crop owner.",
+  "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path"]
+}
