@@ -8,6 +8,8 @@ Canonical base:
 
 `integration/f-ci-canonical@3ff0f42299767d5ad5f07d031698dfcf7969ed0d`
 
+The initial owner head `36a9b11ccf92c616805ca30094e6743765793e26` correctly failed its moving-canonical guard because F-CI71P advanced canonical during the run. EB-I23 was reconciled without production-semantic changes in two-parent commit `4c4c146faa0af6df23370d5f2267739eb910fa87`; the inherited EB authority blobs remained byte-identical.
+
 EB-I23 is deliberately a **partial** runtime materialization. It does not make the EB-I22 whole-column boundary complete because current canonical production/reference evidence does not establish a qualified top mass-carried sensible-energy donor-temperature authority.
 
 ## Inherited authorities
