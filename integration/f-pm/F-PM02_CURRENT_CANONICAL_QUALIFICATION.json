@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "capability": "SWAP5_SNOW_RESTRICTED_ONE_CALL_DAILY",
+  "owner_work_unit": "F-PM02",
+  "phase": "QUALIFY",
+  "status": "QUALIFIED_CURRENT_CANONICAL_RUNTIME_COMPOSITION_PRESERVATION",
+  "qualification_branch": "integration/f-pm02-snow-current-canonical-closure",
+  "qualified_head": "25d83778dcade34225b4630059fd43142f95193d",
+  "qualified_tree": "f7a29e8fac3f87994f608300c3e07fd59dd84660",
+  "qualification_base_canonical": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+  "post_qualification_live_canonical": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+  "live_canonical_drift_assessment": {
+    "status": "UNAFFECTED_RELEVANT_DEPENDENCIES",
+    "commits_ahead": 3,
+    "changed_scope": "F-CI89 WOFOST81 runtime activation only",
+    "snow_process_blob_unchanged": true,
+    "serialized_reference_backend_blob_unchanged": true,
+    "serialized_multiswap_runtime_blob_unchanged": true,
+    "qualification_evidence_rebind_to_live_canonical_permitted": true
+  },
+  "source_lock": {
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "serialized_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "immutable_evidence_reuse": {
+    "f_vq16_closeout": "98712959d811c788c77842eede4c6f558cca1c11",
+    "f_vq16_reopened": false,
+    "reason": "Exact independently qualified Snow production blob remains unchanged.",
+    "f_vq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "f_mq24_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f"
+  },
+  "initial_current_canonical_probe": {
+    "workflow_run": 35036465486,
+    "job": 104606576669,
+    "conclusion": "failure",
+    "classification": "QUALIFICATION_FIXTURE_METADATA_DRIFT_NOT_PRODUCTION_CAPABILITY_FAILURE",
+    "cause": "Historical F-VQ17 verifier used free optional_state_layout_id 71705; current canonical typed optional-state registry requires FMR_OPTIONAL_STATE_LAYOUT_SNOW for Snow-capable templates.",
+    "production_change_required": false
+  },
+  "qualification_fixture_adaptation": {
+    "scope": "DISPOSABLE_QUALIFICATION_FIXTURE_ONLY",
+    "changes": [
+      "Import FMR_OPTIONAL_STATE_LAYOUT_SNOW in rehydrated F-VQ17 verifier fixture.",
+      "Replace fixture optional_state_layout_id 71705 with FMR_OPTIONAL_STATE_LAYOUT_SNOW."
+    ],
+    "snow_assertions_changed": false,
+    "snow_parameters_changed": false,
+    "snow_forcing_changed": false,
+    "snow_state_changed": false,
+    "timing_expectations_changed": false,
+    "mass_expectations_changed": false,
+    "transaction_expectations_changed": false,
+    "reverse_transform_reconstructs_immutable_verifier": true
+  },
+  "decisive_qualification": {
+    "workflow_name": "F-PM02 current-canonical Snow preservation",
+    "workflow_run": 35036685895,
+    "job": 104607256514,
+    "conclusion": "success",
+    "runner": "Ubuntu 24.04.5",
+    "compiler": "GNU Fortran 13.3.0",
+    "artifact_id": 10424015478,
+    "artifact_name": "fpm02-current-canonical-snow-preservation",
+    "artifact_digest": "sha256:87f105b46c8d7bbba67278583376eeb061f0e91d5adb3e7fc497524abb69930e",
+    "qualification_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f",
+    "historical_f_vq17_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f",
+    "output_identity_with_historical_f_vq17": true
+  },
+  "gates": {
+    "production_reference_source_unchanged": "PASS",
+    "current_source_lock": "PASS",
+    "f_vq16_immutable_scientific_authority": "PASS_REUSED",
+    "f_vq17_historical_authority": "PASS_REUSED",
+    "f_mq24_historical_authority": "PASS_REUSED",
+    "typed_layout_fixture_adaptation_only": "PASS",
+    "scientific_assertions_unchanged": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "one_call_daily_b110": "PASS",
+    "checkpoint_trial_retry_commit": "PASS",
+    "mass_storage_external_terms_melt_internal": "PASS",
+    "subdaily_fail_closed": "PASS",
+    "multiday_fail_closed": "PASS",
+    "serialized_real_physics_max_simultaneous_solves": 1,
+    "parallel_real_physics_admission": false,
+    "performance_claim": false,
+    "general_swap5_release": false,
+    "missing_reconcile_gate": "PASS_CURRENT_CANONICAL_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_RUNTIME_COMPOSITION"
+  },
+  "qualified_scope": "EXACT_FMR06_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_WITH_FVQ16_ONE_CALL_DAILY_SNOW_AND_RESTRICTED_EQUILIBRIUM_RICHARDS",
+  "production_source_modified": false,
+  "reference_source_modified": false,
+  "blockers": [],
+  "next_permitted_action": "ADMIT minimally on a clean branch from the then-live integration/f-ci-canonical, only if the pinned Snow/runtime blobs and relevant dependency delta remain unchanged.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new Snow physics",
+    "subdaily Snow",
+    "multiday Snow",
+    "arbitrary-duration Snow",
+    "new Richards physics",
+    "parallel real-physics admission",
+    "performance claims",
+    "general SWAP5 production release"
+  ]
+}
