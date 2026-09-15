@@ -1,0 +1,62 @@
+{
+  "workunit": "F-VQ91",
+  "title": "EB-I24 accepted top liquid sensible inflow independent qualification",
+  "decision": "QUALIFIED_EB_I24_INDEPENDENT",
+  "owner_branch": "work/eb-i24-accepted-top-liquid-sensible-inflow",
+  "qualified_owner_head": "479fafcbbb02d1e9f9f6cba48384fb4280051a38",
+  "owner_base": "c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head_at_qualification": "19e68aa3d27e1e439e4d55bcb53dd571a7f6257c",
+  "qualification_branch": "qualification/f-vq91-eb-i24-top-liquid-sensible-inflow-independent-qualification",
+  "initial_green_qualification_head": "3c214433593f093dd906d9ec9377d5ca84a5acba",
+  "initial_green_run_id": 34959594647,
+  "initial_green_job_id": 104349754416,
+  "historical_replayed_authority": {
+    "EB_I08_head": "8362ea518e42238fe7094c3623a33de90e2de4ae",
+    "src/process/mod_external_liquid_water_temperature.f90": "64b85363e764d2c6e2777f5f1258abb3ac9e5abf"
+  },
+  "evidence": {
+    "owner_head_guard": true,
+    "exact_I08_donor_rule_replay": true,
+    "dependency_surface_unchanged": true,
+    "qualification_only_delta": true,
+    "structural_fail_closed_guards": true,
+    "independent_donor_enthalpy_oracle": true,
+    "oracle_O0_O2_semantic_identity": true,
+    "exact_owner_runtime_replay": true,
+    "orientation_mutant_rejected": true,
+    "missing_donor_as_zero_mutant_rejected": true,
+    "outflow_donor_reuse_mutant_rejected": true,
+    "multi_substep_broadening_mutant_rejected": true
+  },
+  "qualified_scope": {
+    "accepted_single_substep_top_liquid_sensible_inflow": true,
+    "snow_inactive_route_only": true,
+    "explicit_external_donor_temperature_required_for_positive_inflow": true,
+    "liquid_sensible_enthalpy_reference_coherent": true,
+    "accepted_transaction_provenance_bound": true,
+    "bounded_route_can_complete_EB_I22_four_category_boundary": true,
+    "missing_top_donor_fail_closed": true,
+    "top_liquid_outflow_materialized": false,
+    "snow_or_melt_top_sensible_materialized": false,
+    "multi_substep_top_sensible_materialized": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance_complete": false,
+    "canonical_admission": false
+  },
+  "nonclaims": [
+    "F-VQ91 qualifies only the bounded EB-I24 accepted single-substep, snow-inactive top liquid sensible inflow route.",
+    "No soil-side or upwind donor-temperature authority for top liquid outflow is qualified.",
+    "No accepted multi-substep top-water sensible-energy aggregation is qualified.",
+    "No snow or melt mixture thermal provenance is qualified.",
+    "No radiation, latent heat, vapor energy, freeze-thaw enthalpy or snow phase-change closure is introduced.",
+    "No whole-column sensible-energy residual is published by this qualification.",
+    "No complete SWAP5 Energy Balance is claimed.",
+    "F-VQ91 does not itself perform canonical admission."
+  ],
+  "next_capability_dependencies": [
+    "Canonical admission of the exact qualified EB-I24 owner and F-VQ91 evidence if live dependencies remain unchanged.",
+    "Separate qualified soil-side/upwind donor-temperature authority for top liquid outflow.",
+    "Rollback-safe accepted top-water thermal carrier for multi-substep trajectories."
+  ]
+}
