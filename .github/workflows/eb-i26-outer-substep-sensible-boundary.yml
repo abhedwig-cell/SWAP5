@@ -1,9 +1,9 @@
-name: EB-I26 accepted outer-substep sensible boundary aggregation
+name: EB-I27 outer-substep aggregation diagnostic continuation
 
 on:
   push:
     branches:
-      - work/eb-i26-accepted-outer-substep-sensible-boundary-aggregation
+      - work/eb-i27-accepted-outer-substep-sensible-boundary-aggregation
   workflow_dispatch:
 
 permissions:
@@ -19,6 +19,6 @@ jobs:
           fetch-depth: 0
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
-      - name: Run EB-I26 owner qualification
+      - name: Run bounded outer-substep aggregation diagnostic qualification
         shell: bash
         run: bash tests/eb/run_eb_i26_outer_substep_sensible_boundary_gate.sh
