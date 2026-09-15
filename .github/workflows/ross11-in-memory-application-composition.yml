@@ -1,0 +1,55 @@
+name: F-ROSS11 in-memory application composition
+
+on:
+  push:
+    branches:
+      - work/f-ross11-in-memory-application-composition
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-ROSS11 qualification
+        run: |
+          set -o pipefail
+          mkdir -p qualification/f-ross11
+          bash tests/ross/run_ross11_in_memory_application_composition.sh \
+            2>&1 | tee qualification/f-ross11/qualification.log
+      - name: Record evidence
+        if: always()
+        run: |
+          {
+            echo "work_unit=F-ROSS11"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "canonical_parent=$(git rev-parse HEAD^)"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            echo "source_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_application_runtime.f90 || true)"
+            echo "test_blob=$(git rev-parse HEAD:tests/ross/test_ross11_in_memory_application_composition.f90 || true)"
+            echo "runner_blob=$(git rev-parse HEAD:tests/ross/run_ross11_in_memory_application_composition.sh || true)"
+            grep -E 'ROSS11_(MATERIAL|FILE_ADAPTER|O0_O2_SHA256|IN_MEMORY_APPLICATION_COMPOSITION)' \
+              qualification/f-ross11/qualification.log || true
+          } > qualification/f-ross11/evidence.txt
+      - name: Upload F-ROSS11 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross11-evidence
+          path: qualification/f-ross11/evidence.txt
+          if-no-files-found: error
+      - name: Upload F-ROSS11 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross11-diagnostics
+          path: qualification/f-ross11/qualification.log
+          if-no-files-found: warn
