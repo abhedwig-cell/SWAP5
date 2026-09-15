@@ -7,9 +7,29 @@ mkdir -p "$BUILD/data" "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-FIXTURE_B64=tests/fwof/pp02/case001_fixture.tar.gz.b64
-[[ "$(sha256sum "$FIXTURE_B64" | awk '{print $1}')" == "f20f07cfc70ab4eab27a285ad6609b322c83b475c0dc297645742669aabb9c82" ]]
-base64 -d "$FIXTURE_B64" > "$BUILD/case001_fixture.tar.gz"
+PARTS=(
+  tests/fwof/pp02/case001_fixture.b64.part00
+  tests/fwof/pp02/case001_fixture.b64.part01
+  tests/fwof/pp02/case001_fixture.b64.part02
+  tests/fwof/pp02/case001_fixture.b64.part03
+  tests/fwof/pp02/case001_fixture.b64.part04
+  tests/fwof/pp02/case001_fixture.b64.part05
+)
+EXPECTED_PART_SHA=(
+  5d62aebf9db34e6b2a0eceb6c66878a5e571113c13288fccdc8e24cdd28e4c7e
+  a7955880c199085eca61792466efa84a7f4d9df6ed20e7be69dfbf3fd235e425
+  645a4a9550c6dd99d98d02428eba40beb4e8d65cf456ab1b1460f36413ac98ee
+  1595eb562d4dcb3506d1b96f86990a667ebddaf56419270515bb610d17f97e0f
+  40060700d6f444f930251cab331865747dce821a54d83c5f8966fbaea0ff1c6c
+  6c5412e05c0ae39b975778a05eaca0e4b2fff96b0c3239e4745fcb7ba4e8ed5e
+)
+for i in "${!PARTS[@]}"; do
+  got=$(sha256sum "${PARTS[$i]}" | awk '{print $1}')
+  [[ "$got" == "${EXPECTED_PART_SHA[$i]}" ]]
+done
+cat "${PARTS[@]}" > "$BUILD/case001_fixture.tar.gz.b64"
+[[ "$(sha256sum "$BUILD/case001_fixture.tar.gz.b64" | awk '{print $1}')" == "f20f07cfc70ab4eab27a285ad6609b322c83b475c0dc297645742669aabb9c82" ]]
+base64 -d "$BUILD/case001_fixture.tar.gz.b64" > "$BUILD/case001_fixture.tar.gz"
 [[ "$(sha256sum "$BUILD/case001_fixture.tar.gz" | awk '{print $1}')" == "d9ac276be4ecea1c7fca0d6ba720ae9e1532549c33a592962634867e0fd0dafd" ]]
 tar -xzf "$BUILD/case001_fixture.tar.gz" -C "$BUILD/data"
 [[ "$(sha256sum "$BUILD/data/forcing.dat" | awk '{print $1}')" == "ae6c330055134df713aef3e9d7bc27b5220c0d39fcaa2e022fd954d38c149e45" ]]
