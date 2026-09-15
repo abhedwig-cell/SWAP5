@@ -31,7 +31,7 @@ jobs:
             echo "work_unit=F-CI81"
             echo "head=$(git rev-parse HEAD)"
             echo "tree=$(git rev-parse HEAD^{tree})"
-            echo "preimage=9d202705d1d7063ae129166b1049f7555a7ad802"
+            echo "preimage=aa25126ee19e25c60bd266951b7494ba635efeca"
             echo "compiler=$(gfortran --version | head -n1 || true)"
             echo "application_runtime_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_application_runtime.f90 || true)"
             echo "owner_status_blob=$(git rev-parse HEAD:integration/f-ross/F-ROSS11_STATUS.json || true)"
