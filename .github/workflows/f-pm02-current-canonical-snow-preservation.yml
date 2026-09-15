@@ -1,0 +1,35 @@
+name: F-PM02 current-canonical Snow preservation
+
+on:
+  push:
+    branches:
+      - integration/f-pm02-snow-current-canonical-closure
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-current-canonical-snow:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify run head and compiler
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          gfortran --version
+      - name: Run bounded Snow preservation gate
+        run: |
+          set -o pipefail
+          bash qualification/run_fpm02_current_canonical_snow_preservation.sh 2>&1 | tee snow-current-canonical.log
+      - name: Upload Snow qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpm02-current-canonical-snow-preservation
+          path: |
+            snow-current-canonical.log
+            .snow-current-canonical-artifacts/
+          if-no-files-found: warn
