@@ -1,0 +1,36 @@
+name: F-KT22 canonical accepted-trajectory exposure
+
+on:
+  push:
+    branches:
+      - work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
+    paths:
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
+      - 'tests/fkt/run_fkt22_canonical_exposure.sh'
+      - '.github/workflows/f-kt22-canonical-exposure.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
+      - 'tests/fkt/run_fkt22_canonical_exposure.sh'
+      - '.github/workflows/f-kt22-canonical-exposure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-KT22 bounded gate
+        run: bash tests/fkt/run_fkt22_canonical_exposure.sh
