@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fci80-${GITHUB_RUN_ID:-local}-$$"
 FIXTURES="$BUILD/fixtures"
-mkdir -p "$BUILD/ross10/o0" "$BUILD/ross10/o2" "$FIXTURES"
+mkdir -p "$BUILD/ross08/o0" "$BUILD/ross08/o2" "$BUILD/ross10/o0" "$BUILD/ross10/o2" "$FIXTURES"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
@@ -54,43 +54,95 @@ test "$(git rev-parse HEAD:integration/f-ross/F-ROSS08_STATUS.json)" = 7cf4028b7
 test "$(git rev-parse HEAD:integration/f-ross/F-ROSS09_STATUS.json)" = 231b22bc321e679bfe1af59434f8701b6e3cf02e
 test "$(git rev-parse HEAD:integration/f-ross/F-ROSS10_STATUS.json)" = ec398adbaae6948fdf6323c55e476f5f080f20d1
 
-# Preserve current canonical reference/legacy routes exactly. The reference
-# backend legitimately changed after F-CI75 for EB-I25 and must not be reverted.
+# Preserve the *current* canonical reference/legacy routes exactly. These
+# legitimately advanced after F-CI75 and must neither be reverted nor captured.
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = 960ea116cad81e8c0db8a579982f4999b3d085ed
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = 1aa2454048d0e480becaee34f596f20f1a7bd66e
-test "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" = c1850ea7fa82a1ed8974af57e1da95aa11a771be
+test "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" = 2ab6ea917525cd6f2560860bd55aec1da16be014
 test "$(git rev-parse HEAD:src/legacy/b1_10_port/swap_main.f90)" = b6609df617c6b5875c62324570fb8c7d8c0bfe21
-test "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" = 3090e1d3d5701a87b3624412ad88590e17369d63
+test "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" = 5f51a34b03b63cf7cdf254f6115c2bb2db4ea693
 
-# No projected RossFast adapter/selector may capture the reference or legacy
-# route, SW_SOLVE, or MultiSWAP automatically.
-for path in \
-  src/runtime/mod_fmr_rossfast_registry_dispatch.f90 \
-  src/runtime/mod_fmr_rossfast_application_selection.f90 \
-  src/runtime/mod_fmr_rossfast_application_config.f90 \
-  src/adapter/mod_rossfast_application_config_file_adapter.f90; do
-  if grep -Eiq 'MOD_SoilWater|sw_solve|swsolve|mod_b110_production_soil_water_task2|mod_fmr_serialized_reference_backend|mod_fmr_serialized_multiswap_runtime' "$path"; then
-    echo "FCI80_OWNERSHIP_BOUNDARY_CROSSED $path" >&2
-    exit 180
-  fi
-done
+# Reapply the owner-qualified ownership-boundary checks without requiring old
+# owner ancestry or old canonical preservation SHAs.
+DISPATCH=src/runtime/mod_fmr_rossfast_registry_dispatch.f90
+SELECTION=src/runtime/mod_fmr_rossfast_application_selection.f90
+CONFIG=src/runtime/mod_fmr_rossfast_application_config.f90
+FILE_ADAPTER=src/adapter/mod_rossfast_application_config_file_adapter.f90
+if grep -Eq 'mod_fmr_serialized_reference_backend|mod_fmr_serialized_multiswap_runtime' "$DISPATCH"; then
+  echo 'FCI80_DISPATCH_IMPORTS_REFERENCE_BACKEND_RUNTIME' >&2
+  exit 180
+fi
+if grep -Eiq 'MOD_SoilWater|swsolve|mod_b110_production_soil_water_task2|mod_fmr_serialized_reference_backend|mod_fmr_serialized_multiswap_runtime' "$SELECTION"; then
+  echo 'FCI80_SELECTION_CROSSES_EXCLUDED_ROUTING_BOUNDARY' >&2
+  exit 181
+fi
+if grep -Eiq 'sw_solve|swsolve|MOD_SoilWater|mod_b110_production_soil_water_task2|serialized_reference_backend|serialized_multiswap_runtime' "$CONFIG"; then
+  echo 'FCI80_CONFIG_CROSSES_EXCLUDED_ROUTING_BOUNDARY' >&2
+  exit 182
+fi
+if grep -Eiq 'mod_fmr_rossfast_application_selection|sw_solve|swsolve|MOD_SoilWater|mod_b110_production_soil_water_task2|serialized_reference_backend|serialized_multiswap_runtime' "$FILE_ADAPTER"; then
+  echo 'FCI80_FILE_ADAPTER_CROSSES_OWNERSHIP_BOUNDARY' >&2
+  exit 183
+fi
 
 # Bounded candidate surface relative to the exact current-canonical preimage.
 allowed_re='^(src/runtime/mod_rossfast_d3r_model_binding\.f90|src/solver/mod_rossfast_d3r_table_kernel\.f90|src/solver/mod_rossfast_d3r_table_provider\.f90|src/runtime/mod_rossfast_d3r_kernel_model_adapter\.f90|src/runtime/mod_fmr_serialized_kernel_backend\.f90|src/runtime/mod_fmr_rossfast_registry_dispatch\.f90|src/runtime/mod_fmr_rossfast_application_selection\.f90|src/runtime/mod_fmr_rossfast_application_config\.f90|src/adapter/mod_rossfast_application_config_file_adapter\.f90|assets/rossfast/d3r/[^/]+|integration/f-ross/F-ROSS(02|03|04|05|06|07|08|09|10)_STATUS\.json|integration/f-ci/F-CI80_STATUS\.json|tests/ross/test_ross08_explicit_application_model_selection\.f90|tests/ross/run_ross08_explicit_application_model_selection\.sh|tests/ross/test_ross10_external_model_config_file_adapter\.f90|tests/integration/run_fci80_rossfast_restricted_stack_admission\.sh|\.github/workflows/f-ci80-rossfast-restricted-stack-admission\.yml)$'
 while IFS= read -r path; do
-  [[ "$path" =~ $allowed_re ]] || { echo "FCI80_UNEXPECTED_PATH $path" >&2; exit 181; }
+  [[ "$path" =~ $allowed_re ]] || { echo "FCI80_UNEXPECTED_PATH $path" >&2; exit 184; }
 done < <(git diff --name-only "$PREIMAGE..HEAD")
 
-# F-ROSS08 is the full real six-material table-kernel -> transaction ->
-# registry -> explicit application route, recompiled and replayed at O0/O2.
-bash tests/ross/run_ross08_explicit_application_model_selection.sh \
-  > "$BUILD/ross08.log" 2>&1
-cat "$BUILD/ross08.log"
-grep -Fq 'ROSS08_EXPLICIT_APPLICATION_MODEL_SELECTION=PASS' "$BUILD/ross08.log"
+TX=src/transaction/mod_transaction_reference.f90
+CONTRACTS=src/runtime/mod_canonical_contracts.f90
+RUNTIME=src/runtime/mod_canonical_interval_runtime.f90
+KERNEL_TX=src/kernel/mod_kernel_transactions.f90
+ORCH=src/runtime/mod_fmr_checkpoint_orchestrator.f90
+FMR_CORE=src/runtime/mod_fmr_runtime_core.f90
+POLICY=src/runtime/mod_rossfast_d3r_execution_policy.f90
+BINDING=src/runtime/mod_rossfast_d3r_model_binding.f90
+TABLE_KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
+PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
+ADAPTER=src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90
+SERIAL_BACKEND=src/runtime/mod_fmr_serialized_kernel_backend.f90
+ASSET_ROOT=assets/rossfast/d3r
+WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp -ffree-line-length-none)
 
-# Re-run the F-ROSS10 typed config/file-adapter contract directly on this
-# projected ancestry. The old owner runner intentionally locks owner ancestry,
-# which is not part of a blob-projection canonical admission.
+# Current-canonical replay of the complete F-ROSS08 real six-material route.
+TEST08=tests/ross/test_ross08_explicit_application_model_selection.f90
+for opt in o0 o2; do
+  flag=-O0
+  [[ "$opt" == o2 ]] && flag=-O2
+  moddir="$BUILD/ross08/$opt"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$TX" -o "$moddir/tx.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$CONTRACTS" -o "$moddir/contracts.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$RUNTIME" -o "$moddir/runtime.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$KERNEL_TX" -o "$moddir/kernel_tx.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$ORCH" -o "$moddir/orch.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$FMR_CORE" -o "$moddir/fmr_core.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$POLICY" -o "$moddir/policy.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$BINDING" -o "$moddir/binding.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$TABLE_KERNEL" -o "$moddir/table_kernel.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$PROVIDER" -o "$moddir/provider.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$ADAPTER" -o "$moddir/adapter.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$SERIAL_BACKEND" -o "$moddir/serial_backend.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$DISPATCH" -o "$moddir/dispatch.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$SELECTION" -o "$moddir/selection.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2018 -J "$moddir" -I "$moddir" -c "$TEST08" -o "$moddir/test.o"
+  gfortran -fopenmp "$moddir/tx.o" "$moddir/contracts.o" "$moddir/runtime.o" \
+    "$moddir/kernel_tx.o" "$moddir/orch.o" "$moddir/fmr_core.o" "$moddir/policy.o" \
+    "$moddir/binding.o" "$moddir/table_kernel.o" "$moddir/provider.o" "$moddir/adapter.o" \
+    "$moddir/serial_backend.o" "$moddir/dispatch.o" "$moddir/selection.o" "$moddir/test.o" \
+    -o "$moddir/test"
+  "$moddir/test" "$ASSET_ROOT" > "$moddir/output.txt"
+  grep -Fq 'ROSS08_EXPLICIT_APPLICATION_MODEL_SELECTION PASS' "$moddir/output.txt"
+  for material in B01 B12 O01 O05 O14 O18; do
+    grep -Fq "ROSS08_MATERIAL $material" "$moddir/output.txt"
+  done
+done
+cmp "$BUILD/ross08/o0/output.txt" "$BUILD/ross08/o2/output.txt"
+cat "$BUILD/ross08/o0/output.txt"
+
+# Current-canonical replay of F-ROSS10 typed config/file adapter. The original
+# owner runner's owner-ancestry lock is intentionally not part of admission.
 printf 'SOIL_WATER_MODEL=ROSSFAST_D3R\n' > "$FIXTURES/valid.cfg"
 printf '\n  SOIL_WATER_MODEL = ROSSFAST_D3R  \n\n' > "$FIXTURES/spaced.cfg"
 printf 'SOIL_WATER_MODEL=rossfast_d3r\n' > "$FIXTURES/lowercase.cfg"
@@ -103,19 +155,7 @@ from pathlib import Path
 import sys
 Path(sys.argv[1]).write_text('A' * 4097, encoding='ascii')
 PY
-
-TX=src/transaction/mod_transaction_reference.f90
-CONTRACTS=src/runtime/mod_canonical_contracts.f90
-RUNTIME=src/runtime/mod_canonical_interval_runtime.f90
-KERNEL_TX=src/kernel/mod_kernel_transactions.f90
-ORCH=src/runtime/mod_fmr_checkpoint_orchestrator.f90
-FMR_CORE=src/runtime/mod_fmr_runtime_core.f90
-SERIAL_BACKEND=src/runtime/mod_fmr_serialized_kernel_backend.f90
-SELECTION=src/runtime/mod_fmr_rossfast_application_selection.f90
-CONFIG=src/runtime/mod_fmr_rossfast_application_config.f90
-FILE_ADAPTER=src/adapter/mod_rossfast_application_config_file_adapter.f90
-TEST=tests/ross/test_ross10_external_model_config_file_adapter.f90
-WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp -ffree-line-length-none)
+TEST10=tests/ross/test_ross10_external_model_config_file_adapter.f90
 for opt in o0 o2; do
   flag=-O0
   [[ "$opt" == o2 ]] && flag=-O2
@@ -130,7 +170,7 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$SELECTION" -o "$moddir/selection.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$CONFIG" -o "$moddir/config.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$moddir" -I "$moddir" -c "$FILE_ADAPTER" -o "$moddir/file_adapter.o"
-  gfortran "${WARN[@]}" "$flag" -std=f2018 -J "$moddir" -I "$moddir" -c "$TEST" -o "$moddir/test.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2018 -J "$moddir" -I "$moddir" -c "$TEST10" -o "$moddir/test.o"
   gfortran -fopenmp "$moddir/fmr_core.o" "$moddir/selection.o" "$moddir/config.o" \
     "$moddir/file_adapter.o" "$moddir/test.o" -o "$moddir/test"
   "$moddir/test" "$FIXTURES" > "$moddir/output.txt"
@@ -140,6 +180,6 @@ cmp "$BUILD/ross10/o0/output.txt" "$BUILD/ross10/o2/output.txt"
 cat "$BUILD/ross10/o0/output.txt"
 
 echo "FCI80_SOURCE_AUTHORITY=$SOURCE"
-echo "FCI80_ROSS08_SHA256=$(sha256sum "$BUILD/ross08.log" | awk '{print $1}')"
+echo "FCI80_ROSS08_SHA256=$(sha256sum "$BUILD/ross08/o0/output.txt" | awk '{print $1}')"
 echo "FCI80_ROSS10_SHA256=$(sha256sum "$BUILD/ross10/o0/output.txt" | awk '{print $1}')"
 echo 'FCI80_ROSSFAST_RESTRICTED_STACK_ADMISSION=PASS'
