@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC28",
+  "title": "Groundwater Coupling v1 Completion Audit — Current-Canonical Reconciliation",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "RECONCILED_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "owner_branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+  "historical_owner_head_before_reconciliation": "4e7da5fd014c0eb799c6637a07dfd2f3e3c487c9",
+  "historical_audit_authorities": {
+    "lineage_reconciliation_blob": "897a5f1ee4b732518a2798cdbdfc4212049716fe",
+    "status_blob": "1689faf14570c8278d5932ca93514cd6835e5699",
+    "historical_decision": "GROUNDWATER_COUPLING_V1_FINAL_CLOSURE_GAPS_IDENTIFIED",
+    "frozen_primary_gap": "G05_END_TO_END_DIRECT_GROUNDWATER_COMPOSITION",
+    "technical_closure_obligation_count": 6
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "dffc021507460ab1a613dfd2e916def7f3db1ea7",
+    "tree": "763645d4d3d797675f527f2b156c75cf9ccb5eb2",
+    "relevant_delta_since_historical_audit": "Groundwater closure capabilities F-GC20/F-GC22/F-GC23/F-GC24/F-GC25/F-GC26/F-GC27 were qualified/admitted without changing the frozen F-GC28 denominator."
+  },
+  "frozen_G05_requirement": "Restricted direct-groundwater production composition spanning qualified tile aggregation, application/temporal binding, accepted whole-window response tangent, coupling restart/replay, MultiSWAP execution/diagnostics and external aquifer adapter conformance, followed by independent qualification and canonical admission.",
+  "technical_closure_obligations": [
+    {
+      "order": 1,
+      "requirement": "accepted whole-window response tangent and one-corrector composition",
+      "current_authority": "F-GC23",
+      "evidence": {
+        "status": "CANONICALLY_ADMITTED_CLOSED",
+        "canonical_admission": "F-CI85@b95f66161ddaa7294661ab19e0f11cb7929879d5",
+        "independent_qualification": "F-VQ95@da64ffb1f4cd5105e2809a02ddae02f50a9c853b",
+        "production_blob": "645141676536ae8289b9d52433798a965c7baa04"
+      },
+      "reconciled_status": "CLOSED_PENDING_F_VQ98_AUDIT"
+    },
+    {
+      "order": 2,
+      "requirement": "compose qualified multi-tile area-weighted exact-mass primitive into current production path",
+      "current_authority": "F-GC20 / F-CI77 plus F-GC25 composition",
+      "evidence": {
+        "owner_head": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+        "standalone_current_canonical_close": "F-CI77 CLOSED_CANONICAL_ADMITTED",
+        "scientific_admission_head": "1e8ef002a64aba5a5041a2752f4335b440af9a3c",
+        "independent_evidence": "F-VQ87 reused with weighted-mass/action-reaction and O0/O2 identity PASS",
+        "production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb"
+      },
+      "reconciled_status": "CLOSED_PENDING_F_VQ98_AUDIT"
+    },
+    {
+      "order": 3,
+      "requirement": "compose application/temporal accuracy binding without universal numeric defaults",
+      "current_authority": "F-GC22 / F-CI78",
+      "evidence": {
+        "owner_head": "c50f3770ae8e4bee7c276a080be00156218944f1",
+        "current_canonical_close": "F-CI78 CLOSED_CANONICAL_ADMITTED",
+        "scientific_admission_head": "08ca7a06c4a47e9e0efe635185b0078748bd95c2",
+        "independent_temporal_evidence": "F-VQ75 via F-SI38/F-CI62P",
+        "production_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a"
+      },
+      "reconciled_status": "CLOSED_PENDING_F_VQ98_AUDIT"
+    },
+    {
+      "order": 4,
+      "requirement": "accepted-boundary restart/split-run/replay with no prepared/rejected transfer leakage",
+      "current_authority": "F-GC24 / F-CI65 / F-CI65P",
+      "evidence": {
+        "owner_qualified_source": "ed919a7039fb446d2248d4faeedbfc3d6735b962",
+        "independent_qualification": "F-VQ86@0fea1f7a17ccff9f41b4d2dee71feab526313a01",
+        "production_admission_postimage": "24b02660a7924323d1587b4adf77a160c9ef7d04",
+        "postimage_reconciled": true,
+        "production_blob": "0596933ff3ae89c61ab7a0913189a4fa3179e50b"
+      },
+      "reconciled_status": "CLOSED_PENDING_F_VQ98_AUDIT"
+    },
+    {
+      "order": 5,
+      "requirement": "MultiSWAP direct-groundwater execution, deterministic aggregation, transaction isolation and full coupling-window diagnostics",
+      "current_authority": "F-GC25 / F-VQ87 / F-CI73 / F-CI73P",
+      "evidence": {
+        "owner_qualified_source": "43c9f09110dea83928ef7d58990c37575d8ca223",
+        "independent_qualification": "F-VQ87@37c02ac3747bfaacdb8b3408b8228f3deb2b9824",
+        "production_admission": "c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1",
+        "postimage_reconciled": true,
+        "production_blob": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+      },
+      "reconciled_status": "CLOSED_PENDING_F_VQ98_AUDIT"
+    },
+    {
+      "order": 6,
+      "requirement": "restricted external groundwater/MODFLOW adapter conformance plus end-to-end exact-mass and bounded-head production admission",
+      "current_authority": "F-GC26 plus F-GC27",
+      "evidence": {
+        "gateway_independent_qualification": "F-VQ96@ae97f0d47c183a64e470be5badca220d95a65cb0",
+        "gateway_admission": "F-CI86 / F-GC26 scientific admission c25db908ba533dd0dfa80745f30e8e1815636170",
+        "gateway_blob": "f307f17e2fd20983432f91e91ac90aaae8311849",
+        "end_to_end_independent_qualification": "F-VQ97@d45abdfb7fbd3f1ce5f68866586c5e9e67252f54",
+        "end_to_end_tested_head": "5566d4888ae2395fc8d38e9e6ab07d4ff83f9b07",
+        "end_to_end_workflow_run": 35031745967,
+        "end_to_end_workflow_job": 104591583793,
+        "end_to_end_admission": "F-CI87 / F-GC27 scientific admission 8ee638cc2a2fa9fe1f8930e9f2983b0bc47cdbc5",
+        "end_to_end_close": "dffc021507460ab1a613dfd2e916def7f3db1ea7"
+      },
+      "reconciled_status": "CLOSED_PENDING_F_VQ98_AUDIT"
+    }
+  ],
+  "preserved_foundation": {
+    "G01": "preservation authority retained; no F-GC28 semantic change",
+    "G02": "transactional exchange/two-phase readiness retained",
+    "G03": "interface mass ledger retained",
+    "G04": "restricted predictor-corrector and exact accepted bottom exchange retained"
+  },
+  "production_mutations_in_reconcile": [],
+  "preliminary_verdict": "ALL_SIX_HISTORICAL_G05_TECHNICAL_OBLIGATIONS_HAVE_CURRENT_CANONICAL_CLOSURE_AUTHORITIES; INDEPENDENT COMPLETION AUDIT STILL_REQUIRED",
+  "next_permitted_action": "Create a separate F-VQ98 independent qualification surface from exact current canonical dffc021507460ab1a613dfd2e916def7f3db1ea7. Verify exact authority records, production blobs, frozen six-obligation denominator, G01-G04 preservation, F-GC27 end-to-end qualification and absence of production mutation. Do not start F-GC29.",
+  "hard_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "production modification solely to make audit pass",
+    "F-GC29 execution"
+  ]
+}
