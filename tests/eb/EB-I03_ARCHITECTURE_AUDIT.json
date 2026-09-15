@@ -1,0 +1,67 @@
+{
+  "workunit": "EB-I03",
+  "title": "Phase-Resolved Hydraulic Flux Seam",
+  "status": "owner_qualified_not_independently_verified_not_canonical_admitted",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/eb-i03-phase-resolved-hydraulic-flux-seam",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a"
+  },
+  "owner_qualification": {
+    "qualified_content_head": "4b461ee13363a1c4b45dc2de9f30865a1a6423b7",
+    "successful_run": 34720796585,
+    "successful_job": 103626149517,
+    "production_delta": [
+      "src/solver/mod_soil_water_phase_flux_view.f90",
+      "src/adapter/mod_reference_richards_phase_flux_binding.f90"
+    ],
+    "preserved_blobs": {
+      "src/solver/mod_soil_water_solver_contract.f90": "276941d76ba951a89c43899e61fd0532418d8230",
+      "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+      "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6"
+    }
+  },
+  "invariants": [
+    {"id":1,"status":"PASS","evidence":"Adds one generic result/view seam to the single SWAP5 kernel architecture; no use-case-specific SWAP implementation."},
+    {"id":2,"status":"PASS","evidence":"Production modules contain no file, path, parsing or format dependency."},
+    {"id":3,"status":"PASS","evidence":"Face transport is explicit result/view data and is not mixed into immutable parameters, forcing, numerical policy or committed physical state."},
+    {"id":4,"status":"PASS","evidence":"No persistent per-column state is added; allocatable face arrays exist only in the derived candidate result view."},
+    {"id":5,"status":"PASS","evidence":"Reference numerical residual/source/sink data remain in the existing worker-owned workspace; no scratch is moved into column state."},
+    {"id":6,"status":"PARTIAL","evidence":"The contract permits alternative internal storage/layouts, but EB-I03 does not benchmark batched/SoA/SIMD materialization or cache behavior."},
+    {"id":7,"status":"PARTIAL","evidence":"The view is explicitly candidate/trial scoped and retry results fail closed, but end-to-end runtime commit/rollback publication is intentionally deferred and is not qualified here."},
+    {"id":8,"status":"PASS","evidence":"The derived view mutates no committed state and can be recomputed from the same candidate solve data; existing warm-start behavior is untouched."},
+    {"id":9,"status":"PASS","evidence":"Transport is tied to generic solver step_duration; no calendar day/month/year boundary is assumed. cm/day is the existing rate unit, not a scheduling assumption."},
+    {"id":10,"status":"PASS","evidence":"No coupling-window size, midnight boundary or fixed reporting interval is encoded."},
+    {"id":11,"status":"PARTIAL","evidence":"The seam provides conservation-relevant candidate transport for future coupling/runtime use, but runtime/coupler publication is not part of EB-I03."},
+    {"id":12,"status":"PASS","evidence":"Existing top/bottom groundwater exchange fluxes are not altered; the reconstructed bottom face is compared against the existing published bottom flux and inconsistency remains diagnostic."},
+    {"id":13,"status":"PASS","evidence":"EB-I03 preserves the final continuity residual explicitly and never forces it to zero. It does not modify hydraulic state, accepted fluxes or the existing mass-balance authority."},
+    {"id":14,"status":"NOT_APPLICABLE","evidence":"No groundwater response tangent or sensitivity contract is changed or added."},
+    {"id":15,"status":"PASS","evidence":"The view requires no extra full SWAP solve or predictor/corrector run; it is derived from an already converged candidate solve."},
+    {"id":16,"status":"PARTIAL","evidence":"No persistent heavy solver instance is added, but hundred-thousand-column allocation/throughput behavior is not qualified in this workunit."},
+    {"id":17,"status":"PASS","evidence":"The view is per logical SWAP column. Tile fractions and MODFLOW-cell aggregation remain outside the hydraulic process contract."},
+    {"id":18,"status":"NOT_APPLICABLE","evidence":"No deep-vadose component behavior is changed."},
+    {"id":19,"status":"NOT_APPLICABLE","evidence":"No transition between deep-vadose and direct groundwater coupling is changed."},
+    {"id":20,"status":"PASS","evidence":"The consumer-facing phase-flux view is solver-independent; the reference-Richards reconstruction is isolated in an adapter and other soil-water solvers may implement the same logical result independently."},
+    {"id":21,"status":"PASS","evidence":"Existing Richards physics and discrete residual algebra are reused without duplication or alteration; the new adapter only materializes conservation-relevant result data."},
+    {"id":22,"status":"PASS","evidence":"Consumers depend on mod_soil_water_phase_flux_view rather than HeadCalc internals. Reference-specific workspace access is confined to the adapter producer."},
+    {"id":23,"status":"PASS","evidence":"No physical option is changed by numerical policy. Vapor/macropore absence is represented as unavailable coverage rather than silently changing physics."},
+    {"id":24,"status":"NOT_QUALIFIED","evidence":"The derived replay is O(n), but bounded-cost behavior for difficult columns and full MultiSWAP throughput are not benchmarked or qualified here."},
+    {"id":25,"status":"PASS","evidence":"The admitted reference Richards route remains byte-identical and available; EB-I03 does not replace or alter reference-mode physics."},
+    {"id":26,"status":"PARTIAL","evidence":"The view publishes phase-coverage flags, continuity residuals and bottom consistency diagnostics, but runtime-wide diagnostic aggregation/reporting is deferred."},
+    {"id":27,"status":"PASS","evidence":"No face arrays are added to persistent state. Allocation occurs only when the optional producer is invoked for a requested candidate result."},
+    {"id":28,"status":"PASS","evidence":"System composition, energy-ledger transfer and tile/coupler aggregation remain runtime/coupler responsibilities; EB-I03 is a column-local process-result seam."},
+    {"id":29,"status":"PASS","evidence":"No .swp input, filesystem, midnight, one-day or mandatory-MODFLOW assumption is present."},
+    {"id":30,"status":"PASS","evidence":"EB-I03 is explicitly assessed against all 30 SWAP core architecture invariants in this audit."}
+  ],
+  "hard_nonclaims": [
+    "No full SWAP5 energy balance is qualified.",
+    "No vapor flux is invented or treated as covered zero transport.",
+    "No freeze/thaw phase transport is qualified.",
+    "No macropore path-resolved transport is qualified.",
+    "q*dt is only the backward-Euler interval-equivalent amount represented by the admitted discrete solve, not a higher-order continuous-time flux integral.",
+    "Candidate phase-flux results are not yet transactionally transferred into a committed runtime or energy ledger.",
+    "Large-batch MultiSWAP throughput and bounded-cost behavior are not qualified.",
+    "Independent verification and canonical admission are not claimed."
+  ]
+}
