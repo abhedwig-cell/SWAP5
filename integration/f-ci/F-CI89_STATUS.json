@@ -2,14 +2,20 @@
   "schema": "swap5.fci89.status.v1",
   "capability": "F-CI89",
   "title": "Current-canonical admission of F-WOF-PP03 WOFOST81 runtime activation",
-  "phase": "ADMIT",
-  "state": "QUALIFIED_CURRENT_CANONICAL_POSTIMAGE_READY_FOR_PROMOTION",
+  "phase": "CLOSE",
+  "state": "CANONICALLY_CLOSED",
   "canonical_base": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
-  "canonical_race_check_head": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
-  "candidate_commit": "eb6cd00f377b11e93372af29f237965363b9fc5d",
+  "promoted_checkpoint": "0438a60f8e715f8365fd47d41e2ff729a3f1b1c3",
+  "canonical_promotion_mode": "NON_FORCE_FAST_FORWARD",
+  "race_checks": [
+    "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+    "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1"
+  ],
   "admission_qualification": {
-    "run_id": 35036010133,
-    "job_id": 104605164314,
+    "candidate_run_id": 35036010133,
+    "candidate_job_id": 104605164314,
+    "checkpoint_run_id": 35036202248,
+    "checkpoint_job_id": 104605757343,
     "verdict": "PASS",
     "runtime_o0_o2_sha256": "7182c28172fc58dd6f5cf31505d2ba70c7936c89731c25e52dabc7de6c5c002b",
     "markers": [
@@ -62,5 +68,5 @@
     "no Soil-N coupling policy",
     "no tolerance changes"
   ],
-  "next_permitted_action": "Re-run F-CI89 on this governance checkpoint. On PASS, recheck live canonical head. If still exactly canonical_base, non-force fast-forward integration/f-ci-canonical to the checkpoint commit, then persist status-only CLOSE."
+  "next_permitted_action": "None for F-CI89. Any RD, TRA, Soil-N coupling, alternative duration, or broader WOFOST81 runtime capability requires a separate bounded capability."
 }
