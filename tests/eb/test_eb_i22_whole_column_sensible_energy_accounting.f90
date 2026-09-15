@@ -1,7 +1,7 @@
 program test_eb_i22_whole_column_sensible_energy_accounting
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_whole_column_sensible_energy_accounting, only: &
-       WCSA_OK, WCSA_STORAGE_FAILURE, WCSA_INCOMPLETE_BOUNDARY, &
+       WCSA_OK, WCSA_STORAGE_FAILURE, WCSA_INCOMPLETE_BOUNDARY, WCSA_REFERENCE_MISMATCH, &
        whole_column_sensible_boundary_t, whole_column_sensible_energy_result_t, &
        evaluate_whole_column_sensible_energy
   implicit none
@@ -34,6 +34,8 @@ program test_eb_i22_whole_column_sensible_energy_accounting
   boundary%bottom_conductive_outward_j_m2 = 25000.0_real64
   boundary%bottom_advective_available = .true.
   boundary%bottom_advective_outward_j_m2 = 110532.128_real64
+  boundary%mass_carried_reference_available = .true.
+  boundary%mass_carried_reference_temperature_c = 0.0_real64
 
   call evaluate_whole_column_sensible_energy(COLUMN_ID, dz, theta_sat, solid, theta0, theta1, t0, t1, &
        4.18_real64, 0.001212_real64, 0.0_real64, boundary, result, status)
@@ -73,8 +75,17 @@ program test_eb_i22_whole_column_sensible_energy_accounting
   if (result%sensible_scope_complete) error stop 'EB-I22 incomplete boundary marked complete'
   if (result%projected_balance%available) error stop 'EB-I22 residual published with missing boundary term'
 
-  ! Storage must also fail closed outside the qualified physical theta domain.
+  ! A numerically valid residual is invalid if storage and mass-carried energy use different gauges.
   boundary%top_advective_available = .true.
+  boundary%mass_carried_reference_temperature_c = 5.0_real64
+  call evaluate_whole_column_sensible_energy(COLUMN_ID, dz, theta_sat, solid, theta0, theta1, t0, t1, &
+       4.18_real64, 0.001212_real64, 0.0_real64, boundary, result, status)
+  if (status /= WCSA_REFERENCE_MISMATCH) error stop 'EB-I22 reference mismatch accepted'
+  if (result%sensible_scope_complete) error stop 'EB-I22 gauge mismatch marked complete'
+  if (result%projected_balance%available) error stop 'EB-I22 residual published across gauge mismatch'
+
+  ! Storage must also fail closed outside the qualified physical theta domain.
+  boundary%mass_carried_reference_temperature_c = 0.0_real64
   theta1(1) = 0.46_real64
   call evaluate_whole_column_sensible_energy(COLUMN_ID, dz, theta_sat, solid, theta0, theta1, t0, t1, &
        4.18_real64, 0.001212_real64, 0.0_real64, boundary, result, status)
