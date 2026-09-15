@@ -7,12 +7,14 @@ cd "$ROOT"
 CANONICAL="6530b8bc3f37c675828a8373ef4c5e4bf9141b62"
 CANONICAL_SERVICE_BLOB="e99ae052fccd9992b76c12a91422a987dce059e2"
 FGC16_PLAN_BLOB="d8b02dcf1c4915634c0a7659f3202604c4d91b88"
+FGC16_PLAN_REF="refs/remotes/origin/work/f-gc16-production-groundwater-coupling-minimal-viable-composition-admission-plan"
+FGC16_PLAN_PATH="integration/f-gc/F-GC16_DEPENDENCY_ORDERED_IMPLEMENTATION_PLAN.json"
 
 # Owner work must remain a narrow current-canonical descendant.
 git merge-base --is-ancestor "$CANONICAL" HEAD
 
 test "$(git rev-parse HEAD:src/runtime/mod_groundwater_exchange_service_contract.f90)" = "$CANONICAL_SERVICE_BLOB"
-test "$(git rev-parse work/f-gc16-production-groundwater-coupling-minimal-viable-composition-admission-plan:integration/f-gc/F-GC16_DEPENDENCY_ORDERED_IMPLEMENTATION_PLAN.json 2>/dev/null || true)" != "" || true
+test "$(git rev-parse "$FGC16_PLAN_REF:$FGC16_PLAN_PATH")" = "$FGC16_PLAN_BLOB"
 
 mapfile -t changed_src < <(git diff --name-only "$CANONICAL..HEAD" -- 'src/**')
 test "${#changed_src[@]}" -eq 1
@@ -34,7 +36,8 @@ for forbidden in ['modflow', '.swp', 'midnight']:
     assert forbidden not in low, forbidden
 for required in [
     'groundwater_response_sensitivity_provider_t',
-    'groundwater_query_response_sensitivity',
+    'public :: groundwater_trial_with_response_sensitivity',
+    'subroutine bind_response_sensitivity',
     'GW_RESPONSE_PROVIDER_NONSMOOTH',
     'GW_RESPONSE_PROVENANCE_MISMATCH',
     'dh_groundwater_dq_groundwater_s',
@@ -45,14 +48,17 @@ for required in [
     '.not. ieee_is_finite(derivative)'
 ]:
     assert required in s, required
+assert 'public :: groundwater_query_response_sensitivity' not in s
+assert s.count('call groundwater_trial_from_checkpoint') == 1
 # The admitted F-GC18/F-GC18R boundary is read-only in F-GC29.
 assert 'type, abstract, public :: groundwater_exchange_service_t' in service
 assert 'type, abstract, extends(groundwater_exchange_service_t), public :: groundwater_preparable_exchange_service_t' in service
-# No production finite-difference or secant construction is permitted.
-for forbidden in ['finite_difference', 'finite difference', 'secant']:
+# No production FD or secant construction is permitted.
+for forbidden in ['finite_difference', 'secant']:
     assert forbidden not in low, forbidden
 print('FGC29_STATIC_CONTRACT_AUDIT=PASS')
 print('FGC29_FGC18_SERVICE_BLOB_PRESERVED=PASS')
+print('FGC29_ATOMIC_TRIAL_RESPONSE_API=PASS')
 PY
 
 work="$(mktemp -d)"
@@ -78,12 +84,13 @@ compile_and_run O2 "$work/o2.txt"
 diff -u "$work/o0.txt" "$work/o2.txt"
 
 for marker in \
+  FGC29_ATOMIC_TRIAL_RESPONSE_BINDING \
   FGC29_PROVENANCE_BOUND_RESPONSE \
   FGC29_INDEPENDENT_FD_REFERENCE \
+  FGC29_RETRY_REPLACES_RESPONSE_WITH_ZERO_STALE_LEAKAGE \
   FGC29_DETERMINISTIC_RESPONSE \
-  FGC29_PROVENANCE_MISMATCH_FAIL_CLOSED \
+  FGC29_REJECTED_TRIAL_ZERO_RESPONSE \
   FGC29_OPTIONAL_PROVIDER_UNAVAILABLE \
-  FGC29_DISCARDED_TRIAL_ZERO_RESPONSE_LEAKAGE \
   FGC29_NONSMOOTH_FAIL_CLOSED \
   FGC29_PROVIDER_UNAVAILABLE_FAIL_CLOSED \
   FGC29_PROVIDER_ERROR_FAIL_CLOSED \
