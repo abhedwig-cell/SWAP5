@@ -1,0 +1,26 @@
+name: F-VQ97 F-GC27 restricted direct-groundwater E2E
+
+on:
+  push:
+    branches:
+      - qualification/f-vq97-fgc27-restricted-direct-groundwater-e2e
+    paths:
+      - 'tests/qualification/fvq97/**'
+      - '.github/workflows/f-vq97-fgc27-restricted-direct-groundwater-e2e.yml'
+      - 'qualification/F-VQ97_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-e2e-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run F-VQ97 restricted direct-groundwater E2E gate
+        run: bash tests/qualification/fvq97/run_fvq97_fgc27_restricted_direct_groundwater_e2e.sh
