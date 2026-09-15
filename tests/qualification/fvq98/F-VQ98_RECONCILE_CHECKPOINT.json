@@ -1,0 +1,92 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC28 — Groundwater-Coupling V1 Completion Audit",
+  "qualification": "F-VQ98",
+  "phase": "RECONCILE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "dffc021507460ab1a613dfd2e916def7f3db1ea7",
+    "tree": "763645d4d3d797675f527f2b156c75cf9ccb5eb2"
+  },
+  "historical_audit_authority": {
+    "branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+    "head": "4e7da5fd014c0eb799c6637a07dfd2f3e3c487c9",
+    "tree": "653ef861c420789395b376eb641ff9ae3e017809",
+    "denominator_rule": "preserve the historical frozen denominator; do not invent new completion items"
+  },
+  "frozen_hard_gap": {
+    "id": "G05",
+    "obligations": [
+      "F-GC20 — groundwater-cell tile mapping and area-weighted aggregation",
+      "F-GC21 — restricted predictor/corrector coupling-window route",
+      "F-GC22 — application/temporal accuracy binding",
+      "F-GC23 — accepted whole-window groundwater response tangent composition",
+      "F-GC24 — coupled restart split-run/replay compatibility",
+      "F-GC25 — MultiSWAP coupling topology, transaction and publication composition"
+    ]
+  },
+  "current_canonical_closure_evidence": {
+    "F-GC20": {
+      "production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+      "canonical_status": "integration/f-ci/F-CI77_STATUS.json",
+      "canonical_status_blob": "8432a21d1881f312f4566dab1658ef055605d8b8",
+      "scientific_admission_head": "1e8ef002a64aba5a5041a2752f4335b440af9a3c",
+      "independent_evidence": "F-VQ87",
+      "independent_closeout_head": "37c02ac3747bfaacdb8b3408b8228f3deb2b9824"
+    },
+    "F-GC21": {
+      "production_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+      "independent_evidence": "F-VQ64",
+      "canonical_admission": "F-CI56",
+      "also_exercised_by": "F-VQ97 end-to-end qualification"
+    },
+    "F-GC22": {
+      "production_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+      "canonical_status": "integration/f-ci/F-CI78_STATUS.json",
+      "canonical_status_blob": "46da4d53c338284e7218075a8a34d032a868b503",
+      "scientific_admission_head": "08ca7a06c4a47e9e0efe635185b0078748bd95c2",
+      "temporal_independent_evidence": "F-VQ75 / F-CI62P"
+    },
+    "F-GC23": {
+      "production_blob": "645141676536ae8289b9d52433798a965c7baa04",
+      "independent_evidence": "F-VQ95",
+      "canonical_admission": "F-CI85"
+    },
+    "F-GC24": {
+      "production_blob": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+      "independent_evidence": "F-VQ86",
+      "canonical_admission": "F-CI65"
+    },
+    "F-GC25": {
+      "production_blob": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+      "independent_evidence": "F-VQ87",
+      "canonical_admission": "F-CI73"
+    }
+  },
+  "supporting_post_denominator_evidence": {
+    "F-GC26": {
+      "role": "external groundwater adapter conformance; supports but does not enlarge G05",
+      "production_blob": "f307f17e2fd20983432f91e91ac90aaae8311849",
+      "independent_evidence": "F-VQ96",
+      "canonical_closeout_head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d"
+    },
+    "F-GC27": {
+      "role": "restricted direct-groundwater v1 end-to-end qualification; supports integrated closure but does not enlarge G05",
+      "independent_evidence": "F-VQ97",
+      "qualification_authority": "d45abdfb7fbd3f1ce5f68866586c5e9e67252f54",
+      "canonical_closeout_head": "dffc021507460ab1a613dfd2e916def7f3db1ea7"
+    }
+  },
+  "reconciliation_conclusion": [
+    "Historical F-GC28 defined exactly one hard gap, G05, with six obligations.",
+    "No new denominator item is introduced by this campaign.",
+    "F-GC20 and F-GC22 are now canonically closed with preservation/reused independent evidence and exact current production blobs.",
+    "F-GC21, F-GC23, F-GC24 and F-GC25 have admitted production capabilities and independent qualification authorities.",
+    "F-GC26 and F-GC27 add adapter conformance and integrated end-to-end evidence after the historical audit and therefore strengthen, but do not redefine, completion evidence.",
+    "No current evidence indicates a remaining production implementation gap inside the historical G05 denominator."
+  ],
+  "production_mutations": [],
+  "verdict": "RECONCILED_READY_FOR_CURRENT_CANONICAL_COMPLETION_AUDIT",
+  "next_permitted_action": "QUALIFY by independently verifying the frozen G05 denominator, exact current production blobs and immutable admission/qualification authorities. If any obligation cannot be proven closed, persist BLOCKED and stop without production changes.",
+  "hard_exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "denominator expansion", "production modifications merely to obtain PASS"]
+}
