@@ -70,7 +70,7 @@ program test_eb_i23_sensible_boundary_runtime_materialization
        initialize_soil_temperature_state
   use mod_whole_column_sensible_energy_accounting, only: whole_column_sensible_boundary_t
   use mod_eb_i23_sensible_boundary_runtime, only: EB_I23_ACCEPTED_PARTIAL, &
-       eb_i23_sensible_boundary_publication_t, fmr_execute_serialized_column_with_sensible_boundary_materialization
+       eb_i23_sensible_boundary_publication_t, fmr_execute_column_with_sensible_boundary
   use mod_eb_i23_provider_fixture, only: PROVIDER_COMPLETE, PROVIDER_UNAVAILABLE, provider_calls, &
        reset_provider, eb_i23_external_provider
   implicit none
@@ -115,7 +115,7 @@ contains
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters)
     call reset_provider(PROVIDER_COMPLETE, column_id)
-    call fmr_execute_serialized_column_with_sensible_boundary_materialization(backend, tx, column, template, parameters, &
+    call fmr_execute_column_with_sensible_boundary(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i23_external_provider, output, diagnostic, runtime, &
          active_calls, publication)
 
@@ -174,7 +174,7 @@ contains
     call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
          runtime, active_calls, energy_parameters)
     call reset_provider(PROVIDER_UNAVAILABLE, column_id)
-    call fmr_execute_serialized_column_with_sensible_boundary_materialization(backend, tx, column, template, parameters, &
+    call fmr_execute_column_with_sensible_boundary(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i23_external_provider, output, diagnostic, runtime, &
          active_calls, publication)
 
@@ -213,7 +213,7 @@ contains
          runtime, active_calls, energy_parameters)
     parameters%bottom_mode = 6
     call reset_provider(PROVIDER_COMPLETE, column_id)
-    call fmr_execute_serialized_column_with_sensible_boundary_materialization(backend, tx, column, template, parameters, &
+    call fmr_execute_column_with_sensible_boundary(backend, tx, column, template, parameters, &
          forcing, committed, config, t0, t1, energy_parameters, eb_i23_external_provider, output, diagnostic, runtime, &
          active_calls, publication)
 

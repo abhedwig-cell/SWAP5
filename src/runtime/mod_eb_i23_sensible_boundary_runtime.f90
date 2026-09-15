@@ -58,12 +58,12 @@ module mod_eb_i23_sensible_boundary_runtime
     procedure, public :: runtime_materialization_complete => eb_i23_runtime_materialization_complete
   end type eb_i23_sensible_boundary_publication_t
 
-  public :: fmr_execute_serialized_column_with_sensible_boundary_materialization
+  public :: fmr_execute_column_with_sensible_boundary
 
 contains
 
-  subroutine fmr_execute_serialized_column_with_sensible_boundary_materialization(backend, transaction_control, &
-       column, template, parameters, effective_forcing, committed_state, numerical_config, t0, t1, energy_parameters, &
+  subroutine fmr_execute_column_with_sensible_boundary(backend, transaction_control, column, template, parameters, &
+       effective_forcing, committed_state, numerical_config, t0, t1, energy_parameters, &
        external_temperature_provider, output, diagnostic, runtime, active_physical_calls, publication)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
@@ -169,7 +169,7 @@ contains
     ! EB-I23.  top_advective_available therefore remains false by construction.
     publication%status_value = EB_I23_ACCEPTED_PARTIAL
     publication%initialized = .true.
-  end subroutine fmr_execute_serialized_column_with_sensible_boundary_materialization
+  end subroutine fmr_execute_column_with_sensible_boundary
 
   logical function eb_i23_publication_ready(self) result(ready)
     class(eb_i23_sensible_boundary_publication_t), intent(in) :: self
