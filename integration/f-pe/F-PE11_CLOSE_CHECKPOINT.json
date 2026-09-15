@@ -6,7 +6,20 @@
     "branch": "integration/f-ci-canonical",
     "head_at_qualification": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
     "head_at_close_recheck": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
-    "changed_during_qualify_to_close": false
+    "changed_during_qualify_to_close": false,
+    "post_close_live_head": "50346642bd565f79134ea17d5462e544b354998c",
+    "post_close_delta_from_qualified_head": {
+      "commits": 2,
+      "changed_files": [
+        "integration/f-ci/F-CI90_FPM02_SNOW_CURRENT_CANONICAL_ADMISSION.json",
+        "integration/f-pm/F-PM02_CURRENT_CANONICAL_CLOSE.json"
+      ],
+      "production_source_changed": false,
+      "reference_source_changed": false,
+      "FPE11_relevant_dependency_changed": false,
+      "requalification_required": false,
+      "disposition": "METADATA_ONLY_SNOW_CLOSURE_DELTA_INHERITS_FPE11_QUALIFICATION"
+    }
   },
   "qualification": {
     "tested_head": "fd35b41e85104ab49547ce20dd2fae92d7af975d",
