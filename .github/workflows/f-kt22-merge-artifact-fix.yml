@@ -1,0 +1,51 @@
+name: F-KT22 merge artifact fix
+
+on:
+  push:
+    branches:
+      - work/f-kt22-current-canonical-recomposition
+    paths:
+      - '.github/workflows/f-kt22-merge-artifact-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-kt22-current-canonical-recomposition
+          fetch-depth: 0
+      - name: Restore EB-I25 block closure before KT22 promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=src/runtime/mod_fmr_serialized_reference_backend.f90
+          python3 - "$FILE" <<'PY'
+          from pathlib import Path
+          import sys
+          p=Path(sys.argv[1])
+          s=p.read_text()
+          old="""    if (self%top_sensible_boundary_carrier_active .and. self%top_sensible_boundary_carrier_valid) then
+      call record_top_sensible_boundary_sample(self, t0, t1, solve_result%top_flux * step_duration)
+    if (trajectory_stage_ok) then
+"""
+          new="""    if (self%top_sensible_boundary_carrier_active .and. self%top_sensible_boundary_carrier_valid) then
+      call record_top_sensible_boundary_sample(self, t0, t1, solve_result%top_flux * step_duration)
+    end if
+    if (trajectory_stage_ok) then
+"""
+          if s.count(old) != 1:
+              raise SystemExit(f'F-KT22 merge-artifact anchor count={s.count(old)}')
+          p.write_text(s.replace(old,new,1))
+          PY
+          git diff --check -- "$FILE"
+          grep -A4 -F 'if (self%top_sensible_boundary_carrier_active .and. self%top_sensible_boundary_carrier_valid) then' "$FILE" | grep -Fq '    end if'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$FILE"
+          git commit -m 'fix(F-KT22): restore EB-I25 carrier block closure'
+          git push origin HEAD:work/f-kt22-current-canonical-recomposition
