@@ -4,8 +4,8 @@
   "capability": "F-GC20",
   "title": "F-GC20 groundwater tile aggregation current-canonical admission",
   "branch": "qualification/f-ci77-fgc20-current-canonical-admission",
-  "phase": "QUALIFY",
-  "status": "RECONCILED_READY_FOR_CURRENT_CANONICAL_ADMISSION_GATE",
+  "phase": "ADMIT",
+  "status": "QUALIFIED_READY_FOR_CANONICAL_PROMOTION",
   "canonical_base": {
     "branch": "integration/f-ci-canonical",
     "sha": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
@@ -29,21 +29,41 @@
     "independent_oracle": "PASS",
     "O0_O2_identity": "PASS"
   },
+  "current_canonical_gate": {
+    "qualified_source_head": "f851e55c8fd3672b226c1ead3a13d38f4f4cd6b1",
+    "workflow_run": 34981688310,
+    "workflow_job": 104423324389,
+    "conclusion": "success",
+    "markers": [
+      "FGC20_TILE_AGGREGATION=PASS",
+      "FGC20_NO_SILENT_NORMALIZATION=PASS",
+      "FGC20_MULTI_TILE_CELL=PASS",
+      "FGC20_MIXED_COMPONENT_TILES=PASS",
+      "FGC20_EXACT_QGW_NEGATIVE_QSWAP=PASS",
+      "FCI77_OWNER_AUTHORITY_EXACT=PASS",
+      "FCI77_OWNER_TEST_BLOB_EXACT=PASS",
+      "FCI77_FVQ87_INDEPENDENT_EVIDENCE_REUSED=PASS",
+      "FCI77_CURRENT_CANONICAL_PRODUCTION_BLOB_EXACT=PASS",
+      "FCI77_GC20_CONTRACT_PRESERVATION_REPLAY=PASS",
+      "F_CI77_FINAL_GATE=PASS"
+    ]
+  },
   "reconciliation": {
     "production_source_exact_on_current_canonical": true,
     "relevant_dependency_change_requires_requalification": false,
     "equivalent_current_canonical_materialization": "F-CI73 / F-GC25 inherited dependency",
     "fresh_independent_lifecycle_required": false
   },
-  "contract_to_preserve": [
-    "area-weighted groundwater-cell aggregation",
+  "contract_preserved": [
+    "documented area-weighted groundwater-cell aggregation",
     "exact equal-and-opposite interface mass accounting",
-    "invalid area fractions are rejected rather than silently repaired or normalized",
-    "multiple tiles per groundwater cell and mixed component tiles remain supported",
+    "invalid area fractions rejected rather than silently repaired or normalized",
+    "multiple tiles per groundwater cell and mixed component tiles supported",
     "no forced one-column/one-groundwater-cell mapping"
   ],
   "mutation_scope": "governance and preservation-test only; no production source changes",
   "hard_exclusions": ["EB", "ROSS", "RossFast", "F-GC23", "new groundwater semantics"],
+  "promotion_precondition": "integration/f-ci-canonical must still equal 687ee32ca98a42368a2b6380ea78d33eb254dad9 immediately before merge",
   "canonical_admission": false,
-  "decision": "RUN_CURRENT_CANONICAL_ADMISSION_GATE"
+  "decision": "QUALIFIED_READY_FOR_CANONICAL_PROMOTION"
 }
