@@ -16,6 +16,8 @@ module mod_fmr_serialized_reference_backend
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
+  use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
+       fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
@@ -191,6 +193,9 @@ module mod_fmr_serialized_reference_backend
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
+    logical :: top_sensible_boundary_active = .false.
+    logical :: top_sensible_boundary_valid = .true.
+    type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
@@ -255,6 +260,9 @@ module mod_fmr_serialized_reference_backend
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
     logical :: bottom_thermal_carrier_active = .false.
     logical :: bottom_thermal_carrier_valid = .true.
+    type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier
+    logical :: top_sensible_boundary_carrier_active = .false.
+    logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
@@ -275,12 +283,16 @@ module mod_fmr_serialized_reference_backend
     logical :: initialized = .false.
     logical :: bottom_thermal_requested = .false.
     type(fmr_bottom_thermal_candidate_t) :: bottom_thermal_candidate
+    logical :: top_sensible_boundary_requested = .false.
+    type(fmr_top_sensible_boundary_candidate_t) :: top_sensible_boundary_candidate
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: observation => fmr_serialized_backend_observation
     procedure, public :: set_bottom_thermal_carrier_enabled => fmr_serialized_backend_set_bottom_thermal_carrier_enabled
     procedure, public :: bottom_thermal_snapshot => fmr_serialized_backend_bottom_thermal_snapshot
+    procedure, public :: set_top_sensible_boundary_enabled => fmr_serialized_backend_set_top_sensible_boundary_enabled
+    procedure, public :: top_sensible_boundary_snapshot => fmr_serialized_backend_top_sensible_boundary_snapshot
     procedure, public :: configure_fixed_weir_surface_water => fmr_serialized_backend_configure_fixed_weir_surface_water
     procedure, public :: clear_fixed_weir_surface_water => fmr_serialized_backend_clear_fixed_weir_surface_water
   end type fmr_serialized_reference_backend_t
@@ -522,6 +534,11 @@ contains
     self%bottom_thermal_requested = .false.
     call self%model%bottom_thermal_carrier%clear()
     call self%bottom_thermal_candidate%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
+    self%top_sensible_boundary_requested = .false.
+    call self%model%top_sensible_boundary_carrier%clear()
+    call self%top_sensible_boundary_candidate%clear()
     call self%clear_fixed_weir_surface_water()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
@@ -542,6 +559,22 @@ contains
     type(fmr_bottom_thermal_candidate_t) :: candidate
     call self%bottom_thermal_candidate%copy_to(candidate)
   end function fmr_serialized_backend_bottom_thermal_snapshot
+
+  subroutine fmr_serialized_backend_set_top_sensible_boundary_enabled(self, enabled)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    logical, intent(in) :: enabled
+    self%top_sensible_boundary_requested = enabled
+    call self%top_sensible_boundary_candidate%clear()
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
+  end subroutine fmr_serialized_backend_set_top_sensible_boundary_enabled
+
+  function fmr_serialized_backend_top_sensible_boundary_snapshot(self) result(candidate)
+    class(fmr_serialized_reference_backend_t), intent(in) :: self
+    type(fmr_top_sensible_boundary_candidate_t) :: candidate
+    call self%top_sensible_boundary_candidate%copy_to(candidate)
+  end function fmr_serialized_backend_top_sensible_boundary_snapshot
 
   subroutine fmr_serialized_backend_configure_fixed_weir_surface_water(self, parameters, forcing, numerical, ok)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -598,12 +631,16 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
-    logical :: bottom_thermal_ok
+    logical :: bottom_thermal_ok, top_sensible_ok
 
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
     self%model%bottom_thermal_carrier_valid = .true.
+    call self%top_sensible_boundary_candidate%clear()
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
     self%model%temporal_indicator_history_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
@@ -674,6 +711,12 @@ contains
       self%model%bottom_thermal_carrier_active = bottom_thermal_ok
       self%model%bottom_thermal_carrier_valid = bottom_thermal_ok
     end if
+    if (self%top_sensible_boundary_requested .and. parameters%soil_temperature_active .and. &
+        self%model%state_profile_admitted .and. config%max_committed_substeps <= ishft(huge(0), -1)) then
+      call self%model%top_sensible_boundary_carrier%initialize(2 * config%max_committed_substeps, top_sensible_ok)
+      self%model%top_sensible_boundary_carrier_active = top_sensible_ok
+      self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
+    end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
@@ -684,9 +727,20 @@ contains
         if (.not. bottom_thermal_ok) call self%bottom_thermal_candidate%clear()
       end if
     end if
+    if (self%model%top_sensible_boundary_carrier_active .and. self%model%top_sensible_boundary_carrier_valid .and. &
+        result%completed) then
+      if (candidate%ready()) then
+        call self%model%top_sensible_boundary_carrier%materialize_candidate(t0, t1, &
+             self%top_sensible_boundary_candidate, top_sensible_ok)
+        if (.not. top_sensible_ok) call self%top_sensible_boundary_candidate%clear()
+      end if
+    end if
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
     self%model%bottom_thermal_carrier_valid = .true.
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -716,6 +770,9 @@ contains
       typed%bottom_thermal_active = self%bottom_thermal_carrier_active
       typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
       call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
+      typed%top_sensible_boundary_active = self%top_sensible_boundary_carrier_active
+      typed%top_sensible_boundary_valid = self%top_sensible_boundary_carrier_valid
+      call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)
     end select
   end subroutine fmr_serialized_capture_attempt_context
 
@@ -728,10 +785,16 @@ contains
       self%bottom_thermal_carrier_active = typed%bottom_thermal_active
       self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
       call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
+      self%top_sensible_boundary_carrier_active = typed%top_sensible_boundary_active
+      self%top_sensible_boundary_carrier_valid = typed%top_sensible_boundary_valid
+      call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)
     class default
       self%bottom_thermal_carrier_active = .false.
       self%bottom_thermal_carrier_valid = .false.
       call self%bottom_thermal_carrier%clear()
+      self%top_sensible_boundary_carrier_active = .false.
+      self%top_sensible_boundary_carrier_valid = .false.
+      call self%top_sensible_boundary_carrier%clear()
     end select
   end subroutine fmr_serialized_restore_attempt_context
 
@@ -1273,6 +1336,9 @@ contains
       call record_bottom_thermal_sample(self, state, t0, t1, outcome%bottom_outward_exchange_native, &
            bottom_temperature_start_c, bottom_temperature_start_available)
     end if
+    if (self%top_sensible_boundary_carrier_active .and. self%top_sensible_boundary_carrier_valid) then
+      call record_top_sensible_boundary_sample(self, t0, t1, solve_result%top_flux * step_duration)
+    end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
 
@@ -1316,6 +1382,21 @@ contains
     end if
     if (.not. appended) self%bottom_thermal_carrier_valid = .false.
   end subroutine record_bottom_thermal_sample
+
+  subroutine record_top_sensible_boundary_sample(self, t0, t1, top_exchange_native)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    real(real64), intent(in) :: t0, t1, top_exchange_native
+    logical :: appended
+
+    if (.not. self%top_sensible_boundary_carrier_active .or. &
+        .not. self%top_sensible_boundary_carrier_valid) return
+    call self%top_sensible_boundary_carrier%append(t0, t1, top_exchange_native, &
+         self%last_observation%soil_temperature_energy_accounting_complete, &
+         self%last_observation%soil_temperature_boundary_energy_j_cm2, &
+         self%last_observation%soil_temperature_storage_change_j_cm2, &
+         self%last_observation%soil_temperature_energy_residual_j_cm2, appended)
+    if (.not. appended) self%top_sensible_boundary_carrier_valid = .false.
+  end subroutine record_top_sensible_boundary_sample
 
   subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
                                      total_in, total_out)
