@@ -1,0 +1,154 @@
+name: F-ROSS10 external model config file adapter
+
+on:
+  push:
+    branches:
+      - work/f-ross10-external-model-config-file-adapter
+    paths:
+      - 'src/adapter/mod_rossfast_application_config_file_adapter.f90'
+      - 'tests/ross/test_ross10_external_model_config_file_adapter.f90'
+      - 'tests/ross/run_ross10_external_model_config_file_adapter.sh'
+      - 'integration/f-ross/F-ROSS10_STATUS.json'
+      - '.github/workflows/ross10-external-model-config-file-adapter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross10-file-adapter-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  external-model-config-file-adapter-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock qualified F-ROSS09 parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=b98e7d40e76fd919198766d318b83c1c3c15661e
+          LIVE="$(git ls-remote origin refs/heads/work/f-ross09-explicit-application-model-config-binding | awk '{print $1}')"
+          test "$LIVE" = "$BASE"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_application_selection.f90)" = 5b652f04f172a8faa468d38faa23883ce6f35294
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_application_config.f90)" = 5892d5b2573c678ab8d121ae80353870b66886d2
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS09_STATUS.json)" = 231b22bc321e679bfe1af59434f8701b6e3cf02e
+          test "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" = c1850ea7fa82a1ed8974af57e1da95aa11a771be
+          test "$(git rev-parse HEAD:src/legacy/b1_10_port/swap_main.f90)" = b6609df617c6b5875c62324570fb8c7d8c0bfe21
+          test "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" = 3090e1d3d5701a87b3624412ad88590e17369d63
+
+      - name: Enforce bounded F-ROSS10 adapter surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=b98e7d40e76fd919198766d318b83c1c3c15661e
+          allowed=(
+            src/adapter/mod_rossfast_application_config_file_adapter.f90
+            tests/ross/test_ross10_external_model_config_file_adapter.f90
+            tests/ross/run_ross10_external_model_config_file_adapter.sh
+            integration/f-ross/F-ROSS10_STATUS.json
+            .github/workflows/ross10-external-model-config-file-adapter.yml
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "ROSS10_UNEXPECTED_PATH $path" >&2; exit 110; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- \
+            src/legacy \
+            src/runtime/mod_fmr_rossfast_application_selection.f90 \
+            src/runtime/mod_fmr_rossfast_application_config.f90 \
+            src/runtime/mod_fmr_rossfast_registry_dispatch.f90 \
+            src/runtime/mod_rossfast_d3r_execution_policy.f90 \
+            src/runtime/mod_rossfast_d3r_model_binding.f90 \
+            src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90 \
+            src/solver/mod_rossfast_d3r_table_kernel.f90 \
+            src/solver/mod_rossfast_d3r_table_provider.f90 \
+            src/adapter/mod_b110_production_soil_water_task2.f90)"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-ROSS10 external file-adapter gate
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/ross/run_ross10_external_model_config_file_adapter.sh \
+            2>&1 | tee F-ROSS10_GATE.log
+
+      - name: Persist F-ROSS10 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              'work_unit': 'F-ROSS10',
+              'status': 'PASS',
+              'tested_head': sh('git', 'rev-parse', 'HEAD'),
+              'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
+              'parent_f_ross09_head': 'b98e7d40e76fd919198766d318b83c1c3c15661e',
+              'inherited_qualified_blobs': {
+                  'rossfast_application_selection': '5b652f04f172a8faa468d38faa23883ce6f35294',
+                  'rossfast_application_config': '5892d5b2573c678ab8d121ae80353870b66886d2',
+                  'f_ross09_status': '231b22bc321e679bfe1af59434f8701b6e3cf02e',
+                  'legacy_soilwater': 'c1850ea7fa82a1ed8974af57e1da95aa11a771be',
+                  'legacy_swap_main': 'b6609df617c6b5875c62324570fb8c7d8c0bfe21',
+                  'production_task2': '3090e1d3d5701a87b3624412ad88590e17369d63',
+              },
+              'candidate_blobs': {
+                  'file_adapter': sh('git', 'hash-object', 'src/adapter/mod_rossfast_application_config_file_adapter.f90'),
+                  'test': sh('git', 'hash-object', 'tests/ross/test_ross10_external_model_config_file_adapter.f90'),
+                  'runner': sh('git', 'hash-object', 'tests/ross/run_ross10_external_model_config_file_adapter.sh'),
+                  'workflow': sh('git', 'hash-object', '.github/workflows/ross10-external-model-config-file-adapter.yml'),
+              },
+              'qualified': {
+                  'real_file_ingestion_to_typed_config': True,
+                  'single_assignment_grammar_only': True,
+                  'bounded_file_size': True,
+                  'blank_lines_and_surrounding_assignment_whitespace_only': True,
+                  'duplicate_or_malformed_input_fails_closed': True,
+                  'missing_path_or_file_fails_closed': True,
+                  'unknown_key_and_model_semantics_remain_owned_by_f_ross09': True,
+                  'valid_file_materializes_only_restricted_rossfast_backend': True,
+                  'legacy_input_and_full_richards_blobs_unchanged': True,
+                  'o0_o2_output_identity': True,
+              },
+              'nonclaims': [
+                  'NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE',
+                  'NO_SW_SOLVE_REINTERPRETATION',
+                  'NO_AUTOMATIC_DISCOVERY_OF_A_CONFIG_FILE',
+                  'NO_PRODUCTION_EXECUTABLE_WIRING_YET',
+                  'NO_REFERENCE_RICHARDS_CAPTURE',
+                  'NO_NEW_ROSSFAST_SCIENTIFIC_OR_NUMERICAL_SCOPE',
+                  'NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION',
+              ],
+          }
+          open('F-ROSS10_EVIDENCE.json', 'w').write(json.dumps(payload, indent=2, sort_keys=True) + '\n')
+          PY
+
+      - name: Upload F-ROSS10 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross10-gate-diagnostics-${{ github.run_id }}
+          path: F-ROSS10_GATE.log
+          if-no-files-found: warn
+
+      - name: Upload F-ROSS10 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross10-file-adapter-${{ github.run_id }}
+          path: F-ROSS10_EVIDENCE.json

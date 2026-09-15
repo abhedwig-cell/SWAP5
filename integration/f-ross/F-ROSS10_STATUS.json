@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS10",
+  "title": "RossFast D3R external application model configuration file adapter",
+  "status": "IMPLEMENTED_PENDING_INDEPENDENT_QUALIFICATION",
+  "decision": "NOT_YET_QUALIFIED_OR_ADMITTED",
+  "workstream": "RT_HY_EXTERNAL_ADAPTER_BOUNDARY",
+  "baseline": {
+    "branch": "work/f-ross09-explicit-application-model-config-binding",
+    "head": "b98e7d40e76fd919198766d318b83c1c3c15661e",
+    "f_ross09_config_blob": "5892d5b2573c678ab8d121ae80353870b66886d2",
+    "f_ross09_status_blob": "231b22bc321e679bfe1af59434f8701b6e3cf02e",
+    "f_ross08_selection_blob": "5b652f04f172a8faa468d38faa23883ce6f35294"
+  },
+  "candidate": {
+    "file_adapter_blob": "55dc1632eb4d72d52cc2e038765710801bee5dd2",
+    "test_blob": "8d2d0e3dbc2c4330c841dc08e88fa63e3f38a0ab",
+    "runner_blob": "11b0d4df246525e2ec08830a1a697564d76d40bf",
+    "workflow_blob": "8e8561be16becf8bff1a584c3e4e7b3fb3275dff"
+  },
+  "affected_invariants": {
+    "2_kernel_independent_of_io": "strengthens_by_placing_file_io_in_external_adapter",
+    "20_alternative_soil_water_solvers_open": "preserves_explicit_qualified_alternative_solver_selection",
+    "23_physical_options_separate_from_solver_policy": "preserves_model_selection_as_explicit_numerical_configuration",
+    "25_reference_mode_available": "preserves_reference_path_and_does_not_capture_reference_selection",
+    "29_no_silent_dependencies": "strengthens_by_requiring_explicit_file_path_and_explicit_assignment"
+  },
+  "file_contract": {
+    "external_file_path_is_explicit": true,
+    "maximum_file_bytes": 4096,
+    "grammar": "ONE_NONBLANK_KEY_EQUALS_VALUE_ASSIGNMENT",
+    "blank_lines_allowed": true,
+    "surrounding_assignment_whitespace_normalized": true,
+    "comments_not_admitted": true,
+    "multiple_assignments_fail_closed": true,
+    "malformed_or_oversized_input_fails_closed": true,
+    "missing_path_or_file_fails_closed": true,
+    "semantic_key_and_value_validation_delegated_to_f_ross09": true,
+    "legacy_swp_input_grammar_unchanged": true,
+    "legacy_swsolve_semantics_unchanged": true,
+    "production_full_richards_adapter_unchanged": true
+  },
+  "qualification_plan": {
+    "reuse_f_ross09_and_f_ross08_immutable_evidence": true,
+    "new_tests": [
+      "read exact valid file into typed F-ROSS09 config",
+      "accept surrounding assignment whitespace and blank lines without changing key/value",
+      "end-to-end valid file materializes restricted RossFast backend through F-ROSS09",
+      "lowercase model remains rejected by F-ROSS09",
+      "unknown key remains rejected by F-ROSS09",
+      "malformed file fails closed",
+      "multiple assignments fail atomically without partial config",
+      "empty file fails closed",
+      "oversized file fails closed",
+      "missing path and missing file fail closed",
+      "O0 and O2 output identity"
+    ]
+  },
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_AUTOMATIC_DISCOVERY_OF_A_CONFIG_FILE",
+    "NO_PRODUCTION_EXECUTABLE_WIRING_YET",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_SELECTOR_OR_RETRY_SEMANTICS",
+    "NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_F_ROSS08",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
+  ],
+  "next_expensive_action": "RUN_F_ROSS10_GITHUB_QUALIFICATION_GATE_AFTER_REMOTE_CHECKPOINT",
+  "recovery_point": "PENDING_CANDIDATE_COMMIT",
+  "blockers": []
+}
