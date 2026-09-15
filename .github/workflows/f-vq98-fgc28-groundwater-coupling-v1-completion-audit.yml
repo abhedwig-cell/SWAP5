@@ -1,0 +1,22 @@
+name: F-VQ98 F-GC28 groundwater coupling v1 completion audit
+
+on:
+  push:
+    branches:
+      - qualification/f-vq98-fgc28-groundwater-coupling-v1-completion-audit
+  workflow_dispatch:
+
+jobs:
+  independent-completion-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          python3 --version
+          git --version
+      - name: Run F-VQ98 independent completion audit
+        run: bash tests/qualification/fvq98/run_fvq98_fgc28_completion_audit_gate.sh
