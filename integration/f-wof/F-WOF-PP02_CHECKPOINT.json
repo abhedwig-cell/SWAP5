@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP02",
   "title": "SWAP5 WOFOST81 Migration Preservation",
@@ -8,8 +8,7 @@
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "reconciled_head": "aa25126ee19e25c60bd266951b7494ba635efeca",
-    "live_head": "8a49b32339981037041466eda5e434ea53a97086",
-    "delta_commits": 6,
+    "last_checked_live_head": "8a49b32339981037041466eda5e434ea53a97086",
     "relevant_crop_or_wofost_delta": false
   },
   "branch": "work/f-wof-pp02-wofost81-migration-preservation",
@@ -18,34 +17,31 @@
     "qualified_outputs": ["DVS","LAI","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal","TAGP","TWLV","TWRT","TWSO","TWST"],
     "outside_surface": ["RD","TRA"]
   },
-  "migration_progress": {
-    "source_faithful_assimilation_kernel_added": true,
-    "source_faithful_nitrogen_request_apply_kernel_added": true,
-    "source_faithful_n_stress_kernel_added": true,
-    "component_oracles_persisted": true,
-    "component_oracles_green": true,
-    "versioned_wofost81_parameter_contract": false,
-    "transaction_owned_wofost81_n_state_composed": false,
-    "daily_owner_composition": false,
-    "ten_case_preservation_gate_executable": false
-  },
   "commits": {
     "reconcile": "be5bbc178e8f21d9dfb20c30938aed8bb36f72df",
     "pure_kernels": "d32ff68cf73105dd313465a6aecadaee96bbf5a5",
-    "component_testbank": "fc99f2be6a91e080770e2f1db84ec33b394a44e8"
+    "component_testbank": "fc99f2be6a91e080770e2f1db84ec33b394a44e8",
+    "kernel_qualification": "942a45d20298040f189be163697d17f927e1965f",
+    "parameter_and_n_owner_contract": "f15d5d57966b193999d7f5a795da654a3616c496"
   },
-  "qualification_evidence": "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
-  "kernel_qualification": {
-    "assimilation": "PASS_1206_MAX_ABS_0",
-    "nitrogen": "PASS_1806_1805_PCSE_PARITY_1_DONOR_SAFE_CLIP_MAX_ABS_5.684E-14",
-    "nitrogen_edges": "PASS",
-    "nitrogen_stress": "PASS_2003_MAX_ABS_0",
-    "committed_bytes_match_qualified_donor_test_bytes": true
+  "qualification_evidence": [
+    "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_CONTRACT_QUALIFICATION.json"
+  ],
+  "migration_progress": {
+    "source_faithful_assimilation_kernel": "QUALIFIED",
+    "source_faithful_nitrogen_request_apply_kernel": "QUALIFIED",
+    "source_faithful_n_stress_kernel": "QUALIFIED",
+    "versioned_wofost81_parameter_contract": "QUALIFIED",
+    "standalone_transactional_n_owner": "QUALIFIED",
+    "n_owner_attached_to_crop_owner": false,
+    "daily_owner_composition": false,
+    "ten_case_preservation_gate_executable": false
   },
-  "scientific_interpretation": "The source-faithful WOFOST81 canopy assimilation, nitrogen request/apply and nitrogen-stress kernels have been migrated as an inert version-81 substrate and independently requalified against their donor/PCSE component oracles. They are not yet reachable from the SWAP5 crop owner, so legacy production behavior is unchanged. The next scientific boundary is explicit WOFOST81 parameter/state ownership, not daily composition.",
-  "verdict": "QUALIFIED_PURE_KERNEL_SUBSTRATE_NOT_YET_COMPOSED",
+  "scientific_interpretation": "WOFOST81 process kernels and the explicit parameter/N-state ownership substrate are now independently qualified while remaining unreachable from the active SWAP5 crop path. The next bounded risk is lifecycle integration into the existing crop owner: optional version-81 state must clone, validate and rollback atomically without changing legacy owner semantics when absent.",
+  "verdict": "QUALIFIED_KERNEL_AND_STATE_SUBSTRATE_PENDING_CROP_OWNER_LIFECYCLE_INTEGRATION",
   "mutations": {
-    "new_production_source_files": 3,
+    "new_production_source_files": 5,
     "existing_production_source_modified": false,
     "legacy_wofost_path_changed": false,
     "runtime_behavior_changed": false,
@@ -53,6 +49,6 @@
     "RD_changed": false,
     "TRA_changed": false
   },
-  "next_permitted_action": "Add explicit versioned WOFOST81 parameter types for AMAX_REF/AMAX_SLP/AMAX_LNB/KN and N parameters, plus transaction-owned WOFOST81 N state with clone/validate semantics. Qualify initialization, copy/rollback and parameter validation before any accepted-day composition.",
+  "next_permitted_action": "Attach wofost81_n_owner_state_t as optional version-81 state in wofost_crop_owner_state_t. Update clone/validate only, require absence to preserve the legacy path, and qualify copy/rollback/inactive-state behavior before adding any daily WOFOST81 process calls.",
   "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path"]
 }

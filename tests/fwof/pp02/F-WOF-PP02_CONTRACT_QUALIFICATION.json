@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "WOFOST81_PARAMETER_AND_N_OWNER_CONTRACT",
+  "phase": "QUALIFY",
+  "source_commit": "f15d5d57966b193999d7f5a795da654a3616c496",
+  "qualified_files": {
+    "src/crop/mod_wofost81_parameter_contract.f90": {
+      "git_blob": "cb62f049db15ad116d91037f1b2aae817e528483",
+      "sha256": "26e3496c65d72319dca59e1f45f4392071aff1bc91c02acda6005001293f73de"
+    },
+    "src/crop/mod_wofost81_n_owner_state.f90": {
+      "git_blob": "10019345b281cb00cffa4a74f8fa6cf4a1ae46ae",
+      "sha256": "570a49e8a35448b4cf57366e5150d76e312bf2e7e20162ba8c6175e8df541f3d"
+    },
+    "tests/fwof/pp02/test_wofost81_contracts.f90": {
+      "git_blob": "9b15acfcc6e6ab1f07c8257ae18f045835554661",
+      "sha256": "d30c1b7408c00623801e3451c5fd25fa2b3f230325e4940cd7f3e1bc8b2ba6d8"
+    }
+  },
+  "compile": {
+    "compiler": "gfortran",
+    "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
+    "transaction_dependency": "minimal qualification stub reproducing canonical transaction_state_t deferred clone interface",
+    "full_repository_integration_build": "PENDING_LATER_COMPOSITION_GATE"
+  },
+  "tests": {
+    "result": "F_WOF_PP02_CONTRACT_STATE_PASS",
+    "result_sha256": "536fc74011eaae6cd93a4907d6f68db30d2f50c83ef45a5f846e45fa34f7d395",
+    "checks": [
+      "valid WOFOST81 parameter contract accepted",
+      "invalid KN rejected",
+      "invalid N fixation fraction rejected",
+      "zero translocation time rejected",
+      "N parameter donor-view mapping preserved",
+      "N owner initialization reproduces donor initial organ-N state",
+      "transaction clone copies all N state",
+      "clone mutation does not mutate committed owner",
+      "corrupted N mass balance rejected"
+    ]
+  },
+  "contract_boundary": {
+    "nmaxlv": "remains a daily evaluated input; NMAXLV_TB parser/table migration is intentionally not part of this slice",
+    "production_reachability": false,
+    "legacy_wofost_behavior_changed": false,
+    "RD_or_TRA_changed": false
+  },
+  "verdict": "QUALIFIED_PARAMETER_AND_TRANSACTIONAL_N_OWNER_CONTRACT",
+  "next_permitted_action": "Attach the qualified WOFOST81 N owner as an optional version-81 state to the existing WOFOST crop owner with clone/validate lifecycle coverage, while leaving it absent for the legacy path. Then qualify owner rollback/persistence before daily process composition."
+}
