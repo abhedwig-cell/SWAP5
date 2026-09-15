@@ -1,0 +1,78 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CLOSEOUT_V1",
+  "capability": "F-GC26 — External Groundwater Adapter Conformance",
+  "phase": "CLOSE",
+  "canonical_scientific_admission": {
+    "branch": "integration/f-ci-canonical",
+    "head": "c25db908ba533dd0dfa80745f30e8e1815636170",
+    "tree": "c62346ce48b702a75b7414adc0dbdeeb0777606f",
+    "parent": "e4419b41d15a4acebf0fe55e5b810b92bbcd5f35"
+  },
+  "owner_authority": {
+    "branch": "work/f-gc26-external-groundwater-adapter-conformance",
+    "owner_record_head": "7f8b3241d628181ecec4e9c2d9bb7a47e53c8fe0",
+    "qualified_executable_head": "a096458965bad7bd1ff97c7c52d107044c1da103"
+  },
+  "independent_qualification_authority": {
+    "branch": "qualification/f-vq96-fgc26-external-groundwater-adapter-independent",
+    "successful_head": "ae97f0d47c183a64e470be5badca220d95a65cb0",
+    "checkpoint_head": "f2a6cec29d50f886f14f564e84f284b5cd6f30a6",
+    "workflow_run_id": 35029303648,
+    "workflow_job_id": 104583769280,
+    "conclusion": "success"
+  },
+  "admission_authority": {
+    "branch": "integration/f-ci86-fgc26-current-canonical-admission",
+    "recomposition_head": "41df518d8fe88ae6edca1d4cba73e0b2947a4ad1",
+    "workflow_run_id": 35029570469,
+    "workflow_job_id": 104584633415,
+    "conclusion": "success"
+  },
+  "exact_admitted_production_blobs": {
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "tests_and_workflow_evidence": [
+    "F-VQ96 independent state-machine oracle passed datum/units/sign roundtrip",
+    "F-VQ96 exact equal-and-opposite interface mass passed",
+    "F-VQ96 checkpoint/trial/commit/discard/prepare/abort transaction probes passed",
+    "backend failure, partial response, stale revision and foreign provenance all failed closed",
+    "prepared-publication quiescence and prepared rebind rejection passed",
+    "direct candidate commit failure atomicity and exactly-once publication passed",
+    "batch rebind preflight atomicity passed",
+    "multiple independently configured gateways sharing one backend passed without cross-talk",
+    "F-GC20/F-GC25 mapping ownership, F-GC22 accuracy ownership, F-GC23 tangent ownership and F-GC24 restart boundary were pinned and not recreated",
+    "no backend-specific type leak and no gateway file IO guards passed",
+    "GNU Fortran 13.3.0 O0/O2 output identity passed",
+    "committed physical-state sentinel remained unchanged",
+    "F-CI86 production delta was exactly the qualified gateway payload and admission gate passed"
+  ],
+  "reused_immutable_evidence": [
+    "owner qualification at exact executable head a096458965bad7bd1ff97c7c52d107044c1da103",
+    "exact owner-qualified gateway blob f307f17e2fd20983432f91e91ac90aaae8311849",
+    "unchanged direct F-GC17/F-GC18 contract blobs fc598d14eabafcb025bb55621f7b00d6d1816f10 and e99ae052fccd9992b76c12a91422a987dce059e2",
+    "admitted F-GC20, F-GC22, F-GC23, F-GC24 and F-GC25 owner contracts where dependencies remained unchanged"
+  ],
+  "mutations": [
+    "created qualification/f-vq96-fgc26-external-groundwater-adapter-independent from the then-live canonical head",
+    "added independent qualification-only oracle, runner, workflow and checkpoints",
+    "fixed one shell runner initialization defect after an initial harness-only failed run; no production or oracle semantic change",
+    "created integration/f-ci86-fgc26-current-canonical-admission for bounded recomposition and admission gating",
+    "promoted only the exact qualified production gateway blob plus canonical admission metadata to integration/f-ci-canonical",
+    "no F-GC26 production semantics were changed during RECONCILE, QUALIFY or ADMIT"
+  ],
+  "hard_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "production modification merely to obtain PASS",
+    "F-GC27 work",
+    "F-GC28 work"
+  ],
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "next_permitted_action": "F-GC27 — restricted direct-groundwater v1 end-to-end qualification"
+}
