@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF-PP01",
+  "title": "WOFOST 8.1 Independent Potential Production Equivalence",
+  "phase": "RECONCILE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+    "tree": "934877112b44e5648fd659d64531ed8facc35d23"
+  },
+  "branch": "work/f-wof-pp01-independent-potential-production-equivalence",
+  "external_reference": {
+    "artifact": "tests_Wofost81_PP.zip",
+    "sha256": "99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145",
+    "generator": "PCSE 6.0.13",
+    "model": "WOFOST 8.1",
+    "declared_purpose": "potential production",
+    "case_count": 10,
+    "case_names": [
+      "test_Wofost81_PP_001.yaml",
+      "test_Wofost81_PP_002.yaml",
+      "test_Wofost81_PP_003.yaml",
+      "test_Wofost81_PP_004.yaml",
+      "test_Wofost81_PP_005.yaml",
+      "test_Wofost81_PP_006.yaml",
+      "test_Wofost81_PP_007.yaml",
+      "test_Wofost81_PP_008.yaml",
+      "test_Wofost81_PP_009.yaml",
+      "test_Wofost81_PP_010.yaml"
+    ],
+    "reference_sections": [
+      "AgroManagement",
+      "ExternalStates",
+      "ModelParameters",
+      "ModelResults",
+      "Precision",
+      "WeatherVariables"
+    ],
+    "precision_contract": {
+      "DVS": 0.0001,
+      "LAI": 0.01,
+      "NamountLV": 0.01,
+      "NamountRT": 0.01,
+      "NamountSO": 0.01,
+      "NamountST": 0.01,
+      "NuptakeTotal": 0.01,
+      "RD": 0.01,
+      "TAGP": 0.1,
+      "TRA": 0.001,
+      "TWLV": 0.1,
+      "TWRT": 0.1,
+      "TWSO": 0.1,
+      "TWST": 0.1
+    }
+  },
+  "reconciliation": {
+    "existing_equivalent_found": false,
+    "current_fwof_testbank_present": true,
+    "current_testbank_focus": "architecture, physical binding, accepted-window lineage, transaction atomicity, restart/persistence and canonical composition",
+    "independent_pcse_daily_numerical_oracle_present": false,
+    "current_canonical_daily_crop_seam": "src/crop/mod_wofost_two_phase_crop_window.f90",
+    "daily_seam_semantics": "begin from committed crop owner, prepare assimilation, complete only with frozen accepted aggregates, return candidate without mutating committed input",
+    "current_owner_state": "src/crop/mod_wofost_crop_owner_state.f90",
+    "current_biomass_state": "src/crop/mod_wofost_actual_biomass_state.f90",
+    "current_owner_exposes": [
+      "DVS",
+      "root biomass",
+      "stem biomass",
+      "storage biomass",
+      "living leaf biomass",
+      "derived LAI"
+    ],
+    "not_yet_established_for_reference_oracle": [
+      "complete YAML ModelParameters to current Fortran parameter-bundle mapping",
+      "complete WeatherVariables to one-day forcing mapping including astronomical preprocessing",
+      "AgroManagement emergence/start/termination mapping",
+      "potential-production accepted aggregate construction without importing soil-water limitation semantics",
+      "RD trajectory observation seam",
+      "TRA trajectory observation seam",
+      "NamountLV/NamountRT/NamountSO/NamountST/NuptakeTotal observation and process availability in current restricted standard WOFOST path",
+      "exact unit conventions for every compared field"
+    ]
+  },
+  "reused_evidence": {
+    "F_WOF33": "qualified restricted two-phase standard WOFOST crop-window composition",
+    "F_WOF38": "qualified in-memory atomic crop-owner and accepted-event receipt publication",
+    "F_WOF42": "qualified crop persistence layout completeness; subsequently preserved in F-CI21/F-CI22 lineage",
+    "canonical_source_presence": true
+  },
+  "decision": "PROCEED_WITH_TEST_ONLY_INDEPENDENT_ORACLE_HARNESS_AFTER_EXPLICIT_INPUT_OUTPUT_MAPPING;_DO_NOT_CHANGE_PRODUCTION_PHYSICS_TO_MATCH_REFERENCE",
+  "qualification_contract": {
+    "reference_is_immutable": true,
+    "reference_must_not_be_regenerated_from_current_SWAP5": true,
+    "compare_daily_trajectory": true,
+    "compare_final_outputs": true,
+    "use_reference_precision_values": true,
+    "require_deterministic_replay": true,
+    "report_max_absolute_deviation": true,
+    "report_first_divergence_date": true,
+    "bitwise_equality_required": false,
+    "fail_closed_on_unmapped_or_ambiguous_semantics": true
+  },
+  "mutations": {
+    "production_source_changed": false,
+    "physics_changed": false,
+    "tolerances_changed": false,
+    "canonical_changed": false,
+    "branch_created": true,
+    "reason_for_branch": "new independent scientific qualification decision surface and external immutable oracle"
+  },
+  "next_permitted_action": "QUALIFY preparation: materialize the immutable ten YAML reference fixtures in-repository with provenance, then implement a test-only parser/mapping/driver only for fields whose semantics and units can be demonstrated equivalent. Fail closed and persist a mapping-gap checkpoint before any production change if the current seam cannot express the PCSE potential-production contract.",
+  "exclusions": [
+    "no EB",
+    "no ROSS/RossFast",
+    "no groundwater work",
+    "no new crop physics",
+    "no production semantic changes merely to make equivalence pass",
+    "no invented tolerance",
+    "no claim of full WOFOST 8.1 equivalence until all ten independent cases pass the declared daily precision contract"
+  ]
+}
