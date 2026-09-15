@@ -1,0 +1,181 @@
+name: F-KT22 current-canonical recomposition
+
+on:
+  push:
+    branches:
+      - work/f-kt22-current-canonical-recomposition
+    paths:
+      - '.github/workflows/f-kt22-current-canonical-recompose.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  recompose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compose qualified F-KT22 onto EB-I25 canonical postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=64937452be6b073a21b1b87acf21ce4edcbfda14
+          BASE=1f33328e2ddc0d28450d35647c1c97f293b1e622
+          SOURCE=c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
+          FMR=src/runtime/mod_fmr_serialized_reference_backend.f90
+
+          git fetch origin integration/f-ci-canonical work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          test "$(git merge-base "$CANONICAL" "$SOURCE")" = "$BASE"
+          test -z "$(git diff --name-only "$CANONICAL" HEAD -- src)"
+
+          git checkout "$SOURCE" -- \
+            .github/workflows/f-kt22-canonical-exposure.yml \
+            src/kernel/mod_kernel_transactions.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            tests/fkt/run_fkt22_canonical_exposure.sh \
+            tests/fkt/run_fkt22_fmr_compile_gate.sh \
+            tests/fkt/run_fkt22_fmr_runtime_gate.sh \
+            tests/fkt/test_fkt22_canonical_trajectory_exposure.f90 \
+            tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90 \
+            tests/fkt/test_fkt22_kernel_trajectory_transport.f90
+
+          TMP="${RUNNER_TEMP}/fkt22-recompose"
+          mkdir -p "$TMP"
+          git show "$CANONICAL:$FMR" > "$TMP/ours.f90"
+          git show "$BASE:$FMR" > "$TMP/base.f90"
+          git show "$SOURCE:$FMR" > "$TMP/theirs.f90"
+          set +e
+          git merge-file --union -p "$TMP/ours.f90" "$TMP/base.f90" "$TMP/theirs.f90" > "$TMP/merged.f90"
+          MERGE_STATUS=$?
+          set -e
+          if test "$MERGE_STATUS" -ge 128; then
+            echo "F-KT22 merge-file failed with status $MERGE_STATUS" >&2
+            exit 1
+          fi
+          if grep -Eq '^(<<<<<<<|=======|>>>>>>>)' "$TMP/merged.f90"; then
+            echo 'F-KT22 unresolved merge marker' >&2
+            exit 1
+          fi
+          cp "$TMP/merged.f90" "$FMR"
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          fmr = Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
+          text = fmr.read_text()
+
+          # Preserve canonical documentation that the qualified donor had only
+          # deleted incidentally; recomposition is semantic overlay, not cleanup.
+          restorations = [
+              (
+                  '  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_fixed_weir_surface_water_state_t\n',
+                  '  ! D7 physical optional-state family.  SWST exists only on feature-active\n'
+                  '  ! columns; inactive B1.10 states retain their previous layout and footprint.\n'
+              ),
+              (
+                  '    logical :: drainage_response_active = .false.\n',
+                  '    ! F-PM14 drainage response runtime composition. Immutable response and\n'
+                  '    ! prepared geometry data belong to parameters, never to persistent state.\n'
+              ),
+              (
+                  '  type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t\n',
+                  '  ! Worker-local transactional scratch for thermal transfer provenance. This is\n'
+                  '  ! attempt context, never compact committed column state.\n'
+              ),
+              (
+                  '          if (same .and. allocated(full%snow)) then\n',
+                  '          ! F-MR39 deliberately does not introduce a new combined water/thermal\n'
+                  '          ! timestep tolerance. Thermal temporal refinement remains qualified by\n'
+                  '          ! F-VQ58; the existing Richards temporal acceptance route is preserved.\n'
+              ),
+          ]
+          for anchor, comment in restorations:
+              if comment.strip() not in text:
+                  if anchor not in text:
+                      raise SystemExit(f'missing restoration anchor: {anchor!r}')
+                  text = text.replace(anchor, comment + anchor, 1)
+          fmr.write_text(text)
+
+          for runner_name in (
+              'tests/fkt/run_fkt22_fmr_compile_gate.sh',
+              'tests/fkt/run_fkt22_fmr_runtime_gate.sh',
+          ):
+              p = Path(runner_name)
+              s = p.read_text()
+              old = '  src/runtime/mod_fmr_bottom_thermal_carrier.f90\n  src/runtime/mod_fmr_checkpoint_orchestrator.f90\n'
+              new = '  src/runtime/mod_fmr_bottom_thermal_carrier.f90\n  src/runtime/mod_fmr_top_sensible_boundary_carrier.f90\n  src/runtime/mod_fmr_checkpoint_orchestrator.f90\n'
+              if old not in s:
+                  raise SystemExit(f'missing carrier insertion anchor in {runner_name}')
+              p.write_text(s.replace(old, new, 1))
+
+          gate = Path('tests/fkt/run_fkt22_canonical_exposure.sh')
+          s = gate.read_text()
+          s = s.replace(
+              "echo 'FKT22_PRODUCTION_FMR_TRANSPORT=NOT_YET_QUALIFIED'",
+              "echo 'FKT22_PRODUCTION_FMR_TRANSPORT=QUALIFIED_BY_SERIALIZED_RUNTIME_GATE'"
+          )
+          gate.write_text(s)
+
+          workflow = Path('.github/workflows/f-kt22-canonical-exposure.yml')
+          s = workflow.read_text()
+          old_branch = '    branches:\n      - work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure\n'
+          new_branch = (
+              '    branches:\n'
+              '      - work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure\n'
+              '      - work/f-kt22-current-canonical-recomposition\n'
+          )
+          if old_branch not in s:
+              raise SystemExit('missing workflow branch anchor')
+          s = s.replace(old_branch, new_branch, 1)
+          fmr_path = "      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'\n"
+          s = s.replace(
+              fmr_path,
+              fmr_path + "      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'\n"
+          )
+          runtime_path = "      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'\n"
+          s = s.replace(
+              runtime_path,
+              runtime_path +
+              "      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'\n" +
+              "      - 'tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json'\n"
+          )
+          s += '''\n  eb-i25-preservation:\n    runs-on: ubuntu-latest\n    timeout-minutes: 20\n    steps:\n      - uses: actions/checkout@v4\n      - name: Preserve EB-I25 semantics under F-KT22 recomposition\n        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh\n'''
+          workflow.write_text(s)
+          PY
+
+          test "$(grep -Fc 'use mod_fmr_top_sensible_boundary_carrier' "$FMR")" -eq 1
+          test "$(grep -Fc 'use mod_soil_water_accepted_step_direction_contract' "$FMR")" -eq 1
+          test "$(grep -Fc 'call solve_with_accepted_step_direction' "$FMR")" -eq 1
+          test "$(grep -Fc 'call accept_trajectory_step' "$FMR")" -eq 1
+          test "$(grep -Fc 'call record_top_sensible_boundary_sample' "$FMR")" -eq 1
+          test "$(grep -Fc 'call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)' "$FMR")" -eq 1
+          grep -Fq 'procedure :: accepted_trajectory_direction_snapshot => fmr_serialized_accepted_trajectory_direction_snapshot' "$FMR"
+          grep -Fq 'type(accepted_trajectory_direction_t) :: trajectory_direction' "$FMR"
+          grep -Fq 'F-MR39 deliberately does not introduce a new combined water/thermal' "$FMR"
+          git diff --check
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            .github/workflows/f-kt22-canonical-exposure.yml \
+            src/kernel/mod_kernel_transactions.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            tests/fkt/run_fkt22_canonical_exposure.sh \
+            tests/fkt/run_fkt22_fmr_compile_gate.sh \
+            tests/fkt/run_fkt22_fmr_runtime_gate.sh \
+            tests/fkt/test_fkt22_canonical_trajectory_exposure.f90 \
+            tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90 \
+            tests/fkt/test_fkt22_kernel_trajectory_transport.f90
+          git commit -m 'F-KT22 recompose qualified trajectory exposure on current canonical'
+          COMPOSED=$(git rev-parse HEAD)
+          echo "FKT22_RECOMPOSED_HEAD=$COMPOSED"
+          git push origin HEAD:work/f-kt22-current-canonical-recomposition
