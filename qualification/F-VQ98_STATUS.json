@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ98",
+  "capability": "F-GC28",
+  "title": "Groundwater Coupling v1 Completion Audit — Independent Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "status": "QUALIFICATION_GATE_PENDING",
+  "branch": "qualification/f-vq98-fgc28-groundwater-coupling-v1-completion-audit",
+  "canonical_base": {
+    "head": "dffc021507460ab1a613dfd2e916def7f3db1ea7",
+    "tree": "763645d4d3d797675f527f2b156c75cf9ccb5eb2"
+  },
+  "owner_reconcile_authority": {
+    "branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+    "head": "fc5f9cc6bb4cc98f55dbe4ff0160dacdf1d4ee13",
+    "historical_frozen_audit_head": "4e7da5fd014c0eb799c6637a07dfd2f3e3c487c9"
+  },
+  "qualification_class": "INDEPENDENT_EVIDENCE_ONLY_COMPLETION_AUDIT",
+  "production_mutations": [],
+  "reference_mutations": [],
+  "required_gates": [
+    "frozen G05 requirement and six-obligation denominator exact",
+    "owner reconciliation pinned to current canonical",
+    "current canonical production blobs exact for GC20/21/22/23/24/25/26 and direct contracts",
+    "GC20 F-CI77 canonical close and independent evidence reuse",
+    "GC22 F-CI78 canonical close and independent temporal evidence reuse",
+    "GC23 F-VQ95/F-CI85 close",
+    "GC24 F-VQ86/F-CI65P postimage close",
+    "GC25 F-VQ87/F-CI73P postimage close",
+    "GC26 F-VQ96/F-CI86 gateway admission",
+    "GC27 F-VQ97/F-CI87 restricted end-to-end admission and closeout",
+    "no F-GC28 production delta"
+  ],
+  "hard_exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW implementation", "new Richards solver policy", "new mass or convergence tolerance", "kernel file IO", "calendar assumptions", "production change solely to make qualification pass", "F-GC29 execution"],
+  "decision": "RUN_INDEPENDENT_COMPLETION_AUDIT_GATE"
+}
