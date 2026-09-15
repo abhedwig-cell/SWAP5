@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "work_unit": "F-VQ11",
+  "claims": [
+    {"claim_id":"FVQ11-C01","claim":"F-KT04 committed temporal provenance and contiguous continuation are admitted on exact tested postimage dfe9ac831428a65703e63e9f66673c6288ecc6fc, qualification evidence commit acd55ecee8802a0a9fb5d854380622f2d20a7503 and status-promotion commit 65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ11-C02","claim":"F-SI04 exact canonical HeadCalc main-workspace redirect is admitted only as the qualified source-bound generated focused replay on tested postimage 0cfbefc271447b4b53eeee50c1dfbb2acaf020df.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ11-C03","claim":"Both admitted downstream claims descend from F-CI18 canonical closeout 7f906fcc53a4133b0e410eac7cf79fbb4eb672ab and retain B1.10 as the corrected oracle.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ11-C04","claim":"The admitted authority boundaries are non-conflicting: F-KT owns committed state revision and temporal provenance; F-SI owns solver workspace/scratch and does not gain commit or rollback authority.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ11-C05","claim":"Observed F-KT05 postimage ed0764126a9febdd8a14ff3f32fdba68e9be9e81 is explicitly rejected from downstream admission; its focused gate is preserved as an expected negative replay barrier under this qualification.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ11-C06","claim":"F-KT04 and F-SI04 have been qualified as one composed runtime execution path.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"The two source-bound work units were qualified and admitted independently; no composed execution qualification exists."},
+    {"claim_id":"FVQ11-C07","claim":"A production workspace-aware HeadCalc seam is qualified and routed in production.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-SI04 explicitly uses a generated candidate and states the production seam is not yet committed."},
+    {"claim_id":"FVQ11-C08","claim":"Full real reference solver reentrancy, parallel real HeadCalc worker execution and alternative solver workspace ownership are qualified.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-SI04 explicitly defers these paths."},
+    {"claim_id":"FVQ11-C09","claim":"F-SI04 qualifies the full unrounded SWAP water-balance identity.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-SI04 qualifies only a focused unrounded equation residual; full SWAP accounting is not executed."},
+    {"claim_id":"FVQ11-C10","claim":"Production reference execution or production MultiSWAP admission follows from F-KT04/F-SI04.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Both capabilities remain explicitly outside the admitted downstream scopes and production reference execution remains fail-closed."}
+  ]
+}

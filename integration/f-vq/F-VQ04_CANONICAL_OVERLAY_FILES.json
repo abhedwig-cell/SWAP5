@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "overlay_base": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+  "files": [
+    ".github/workflows/fci-canonical.yml",
+    "docs/integration/F-CI14_REFERENCE_TEMPORAL_ACCEPTANCE.md",
+    "integration/f-ci/F-CI14_QUALIFICATION.md",
+    "integration/f-ci/F-CI14_STATUS.json",
+    "integration/f-ci/F-CI14_TEMPORAL_POLICY_PROFILE.json",
+    "src/adapter/mod_b1_10_reference_policy_candidate_model.f90",
+    "src/adapter/mod_b1_10_reference_temporal_policy.f90",
+    "tests/fci/fci14_reference_policy_stubs.f90",
+    "tests/fci/run_fci14_gate.sh",
+    "tests/fci/test_fci14_reference_temporal_policy.f90",
+    "tools/fci/fci14_reference_temporal_policy_gate.py"
+  ],
+  "note": "These are integration-overlay files only. Their presence prevents F-VQ04 from reverting the moving canonical line and does not make F-CI14 a qualification basis for the real terminal-failure claim."
+}

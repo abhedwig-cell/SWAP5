@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ03",
+  "oracle": "B1.10",
+  "source_commit": "538d51df4be3780a5bb092767304749dfc800899",
+  "qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+  "status": "BLOCKED_REFERENCE_ROUTE_NOT_ADMITTED",
+  "capabilities": {
+    "generic_physical_interval_executor_binding": true,
+    "recoverable_solver_failure_status_contract": true,
+    "retryable_failed_trial_state_isolation": true,
+    "real_b1_10_terminal_failure_fixture_qualified": false,
+    "scalar_temporal_error_policy": false,
+    "execute_reference_interval_for_b1_10": false,
+    "real_b1_10_reference_end_to_end": false,
+    "production_canonical_result_route": false,
+    "complete_snow_macropore_storage": false,
+    "reentrant_parallel_legacy_backend": false
+  },
+  "admission": {
+    "source_bound_status_contract_may_be_declared_qualified": true,
+    "real_terminal_failure_physics_may_be_declared_qualified": false,
+    "production_reference_adapter_may_be_declared_ready": false,
+    "b1_10_to_canonical_reference_numerical_qualification_may_start": false,
+    "production_warm_start_claim_may_be_qualified": false,
+    "production_temporal_equivalence_claim_may_be_qualified": false
+  }
+}

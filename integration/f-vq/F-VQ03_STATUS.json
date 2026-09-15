@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ03",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI13 Recoverable Status Admission",
+  "baseline": {
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_workflow_run": 34104845258,
+    "fci13_job_id": 101687946143,
+    "oracle": "B1.10",
+    "fvq02_final_head": "0a042426a83fc8bfbc31f36b67c0d8e49447724c"
+  },
+  "pre_test_checkpoint_commit": "e5e608b6e6a47e7c12d277f32604adcef01b9ff6",
+  "tested_postimage": "32f015c29f75e7d6cc4171b8c49d4ea0e1208a72",
+  "qualification_workflow_run": 34106539643,
+  "qualification_job_id": 101692747939,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed": false,
+  "production_physics_qualified": false,
+  "recoverable_status_contract_qualified": true,
+  "real_terminal_failure_physics_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "status": "QUALIFIED_FCI13_SOURCE_BOUND_STATUS_CONTRACT_ONLY",
+  "qualification_evidence": "integration/f-vq/evidence/F-VQ03_QUALIFICATION.json",
+  "next_action": "F-VQ04 may target the next exact qualified canonical dependency. A real B1.10 terminal-failure fixture can be added independently if a stable case exists; reference execution remains blocked until temporal policy and execute_reference_interval are admitted.",
+  "blockers": [
+    "No real B1.10 terminal minimum-dt nonconvergence qualification fixture has been executed.",
+    "Scalar temporal-error metric and tolerance policy are not admitted.",
+    "execute_reference_interval for B1.10 is not admitted.",
+    "Real B1.10 reference-model end-to-end execution is not qualified.",
+    "Production canonical result route is not admitted through real reference execution.",
+    "Complete snow/macropore storage accounting is absent.",
+    "Reentrant parallel legacy-backend qualification is absent."
+  ],
+  "holds": [
+    "F-CI13 deterministic failure forcing qualifies status and transaction semantics, not a naturally occurring hydrological failure trajectory.",
+    "Verifier self-tests remain verifier-only.",
+    "No READY reference-execution state may be created while execute_reference_interval remains false.",
+    "No production source changes are permitted in F-VQ03."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ06",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI18 Exit Scope/Ownership Handoff Qualification",
+  "decision": "QUALIFIED_FCI18_SCOPE_OWNERSHIP_HANDOFF_ONLY",
+  "tested_postimage": "c10dfb629183408dfcde424054a0b83c7f5c9eab",
+  "fci18_source_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+  "fci18_qualification_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed_by_fvq06": false,
+  "fci18_scope_ownership_qualified_by_fci": true,
+  "fci18_scope_ownership_admitted_by_fvq06": true,
+  "fci18_final_exit_handoff_qualified": false,
+  "final_exit_handoff_admission": "BLOCKED_FCI18_GATE_PROMOTION_PENDING",
+  "downstream_release_admitted": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "production_temporal_profile_qualified": false,
+  "status": "QUALIFIED_FCI18_SCOPE_OWNERSHIP_HANDOFF_ONLY",
+  "blockers": [
+    "F-CI18 gate promotion is PENDING_SEPARATE_COMMIT.",
+    "F-CI_EXIT_GATES.json remains the F-CI17 assessment with downstream_release_allowed=false.",
+    "Real production reference execution and numerical temporal-profile qualification remain separately blocked.",
+    "Optional-process completeness and full legacy-backend reentrancy remain downstream qualification work."
+  ],
+  "holds": [
+    "Do not equate qualified F-CI18 scope/ownership evidence with final gate promotion.",
+    "Do not let F-VQ promote F-CI exit gates on behalf of F-CI.",
+    "Do not let the non-authoritative PR synthetic-merge failure override the valid exact-source push qualification.",
+    "Hard mass conservation, transaction correctness and provenance remain non-delegable."
+  ]
+}

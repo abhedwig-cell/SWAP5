@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ12",
+  "decision": "QUALIFIED_FKT05_FSI05_SOURCE_BOUND_NONCONFLICT_ONLY",
+  "tested_postimage": "373fafaa08ab30cc38fcedabd3f67ae9d61e7b8f",
+  "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT05_FSI05_ADMISSION_WITH_CONTRACTUAL_NONCONFLICT_ONLY",
+  "qualification_run": {
+    "workflow": "F-VQ12 F-KT05 F-SI05 admission",
+    "run_id": 34127787286,
+    "job_id": 101760436814,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "checks": {
+      "fvq12_gate": "PASS",
+      "fvq12_negative_promotion_guards": "PASS",
+      "fkt05_exact_replay_and_selected_fci_regressions": "PASS",
+      "fsi05_tested_implementation_replay": "PASS",
+      "fsi05_documented_postimage_replay": "PASS",
+      "fvq11_exact_final_replay": "PASS"
+    }
+  },
+  "supporting_runs": {
+    "fvq11_immutable_replay": {"run_id":34127787144,"job_id":101760437029,"conclusion":"success"},
+    "vq_reference": {"run_id":34127787049,"conclusion":"success"},
+    "documentation": {"run_id":34127787186,"conclusion":"success"}
+  },
+  "source_bound_admissions": {
+    "fkt05": {
+      "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+      "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+      "status_promotion_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+      "admitted": true
+    },
+    "fsi05": {
+      "tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+      "documented_postimage_head": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+      "final_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "admitted": true,
+      "focused_routes_only": true
+    }
+  },
+  "contractual_nonconflict_qualified": true,
+  "fkt05_fsi05_composed_runtime_qualified": false,
+  "full_reference_solver_reentrancy_qualified": false,
+  "parallel_real_headcalc_workers_qualified": false,
+  "full_unrounded_swap_mass_identity_qualified": false,
+  "production_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "production_multiswap_admission": false,
+  "optional_workspace_paths_complete": false,
+  "production_source_changed_by_fvq12": false,
+  "reference_source_changed_by_fvq12": false,
+  "mass_conservation": {
+    "hard_requirement_preserved": true,
+    "fkt05_existing_unrounded_trial_mass_gate_preserved": true,
+    "fsi05_focused_unrounded_equation_residual_identity_admitted": true,
+    "full_swap_water_balance_identity_not_promoted": true
+  }
+}
