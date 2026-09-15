@@ -1,0 +1,116 @@
+{
+  "workunit": "EB-I27",
+  "title": "Accepted outer committed-substep sensible-boundary aggregation",
+  "state": "OWNER_QUALIFICATION_COMPLETE",
+  "verdict": "QUALIFIED_EB_I27_OWNER",
+  "validated_head": "4f271e89d1be7f02f8f5c5aeece1527b94fb2825",
+  "owner_branch": "work/eb-i27-accepted-outer-substep-sensible-boundary-aggregation",
+  "reconciled_base": "9d202705d1d7063ae129166b1049f7555a7ad802",
+  "owner_run": {
+    "run_id": 34998801158,
+    "job_id": 104481730398,
+    "conclusion": "success",
+    "optimization_identity": "PASS",
+    "markers": {
+      "fkt22_backend_reconciliation": "PASS",
+      "inherited_authority_lock": "PASS",
+      "bounded_delta": "PASS",
+      "static_contract": "PASS",
+      "two_outer_four_half_aggregation": "PASS",
+      "single_outer_rejected": "PASS",
+      "reversed_sequence_rejected": "PASS",
+      "duplicate_sequence_rejected": "PASS",
+      "incomplete_input_fail_closed": "PASS",
+      "outer_substep_sensible_boundary_gate": "PASS",
+      "o0_o2_identity": "PASS",
+      "owner_qualification": "PASS"
+    }
+  },
+  "supporting_evidence": {
+    "fkt10_consecutive_accepted_richards_fixture": {
+      "owner_tested_head": "ad3407bea9230e20772235696d4f79919bc9f077",
+      "closeout_head": "e621c43c619dd0bc2bb2ac52abcb318b512314ba",
+      "use": "Reused hydrologic controls for two consecutive accepted outer Richards commits; EB-I27 adds only the restricted soil-temperature state required by sensible-energy calculation."
+    },
+    "runner_probe": {
+      "run_id": 34996716111,
+      "job_id": 104474682571,
+      "conclusion": "success",
+      "role": "Pre-materialization proof that the F-KT10-derived fixture yields two accepted EB-I25 transactions and deterministic I27 aggregation."
+    },
+    "materialization_pre_persistence_run": {
+      "run_id": 34998479967,
+      "job_id": 104480663213,
+      "scientific_qualification": "PASS",
+      "persistence_push": "FAILED_WORKFLOW_PERMISSION_ONLY",
+      "qualified_dangling_commit": "56cdd90ff1e67e5beac00f9dcfbe953be7ab6151",
+      "qualified_tree": "2142de24cee196c83903c4b0668af399c206abb7",
+      "clean_persisted_tree": "d866b403506027846c474c6d477ef8ee2aca82a3",
+      "note": "The clean persisted tree differs from the qualified runner tree only by removal of root temporary gate files allowed.txt, changed.txt and unexpected.txt."
+    }
+  },
+  "canonical_reconciliation": {
+    "canonical_head": "4a01641ffed8a2260260909825c3887db2dff1ac",
+    "fkt22_close_head": "4a01641ffed8a2260260909825c3887db2dff1ac",
+    "old_serialized_backend_blob": "960ea116cad81e8c0db8a579982f4999b3d085ed",
+    "admitted_fkt22_serialized_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "fkt22_checkpoint_path": "tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json",
+    "fkt22_checkpoint_blob": "a9205fbe5d359e8d8f710476e5fbd2084eaff9e8",
+    "fkt22_checkpoint_qualification_run": 34996603036,
+    "eb_i25_preservation": "PASS",
+    "admitted_production_identical_to_qualified_checkpoint": true
+  },
+  "ownership_collision_reconciliation": {
+    "reserved_parallel_identifier": "EB-I26",
+    "parallel_branch": "work/eb-i26-top-liquid-outflow-sensible-transport",
+    "last_reconciled_parallel_head": "1ba5c64b80fdb3e21ad46e4ffcd7301416ee344a",
+    "disposition": "Outer committed-substep aggregation was renumbered from its temporary EB-I26 working label to EB-I27 before owner qualification. No top-liquid-outflow semantics were absorbed."
+  },
+  "owner_asset_blobs": {
+    "src/runtime/mod_eb_i27_outer_substep_sensible_boundary_aggregation.f90": "1f5b836b0e7efea5b1b0f146e392c10441c43f2a",
+    "tests/eb/test_eb_i27_outer_substep_sensible_boundary_aggregation.f90": "7bad310d528e16e7fd6abaf2d11a2b00a07e28c5",
+    "tests/eb/run_eb_i27_outer_substep_sensible_boundary_gate.sh": "cad0604fd5a06dd52eb381afdf9be51ac32eeaa1",
+    "tests/eb/EB-I27_CONTRACT.md": "0e5ae329c9d76951677853b9b60ff9fb75b5c791",
+    ".github/workflows/eb-i27-outer-substep-sensible-boundary.yml": "17540d5a361a619f72bf4af40710f6e7657a766c"
+  },
+  "inherited_authority_locks": {
+    "src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90": "fc88731c12c8af5136aad13bda2a7da3d768dc4c",
+    "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90": "299717757082ff06e98bd3aaec2c0b8b3013ea21",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+    "src/process/mod_liquid_water_sensible_enthalpy.f90": "2247370ee34fac73a0e2d0b9fa15e171467aded3",
+    "src/process/mod_external_liquid_water_temperature.f90": "64b85363e764d2c6e2777f5f1258abb3ac9e5abf",
+    "src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90": "5f27ff7a4fa67a3991c622d960a7133857dab1c2",
+    "src/runtime/mod_eb_i23_sensible_boundary_runtime.f90": "35dda86ca51bd91040af0672a43e2961c8db64fd"
+  },
+  "qualified_contract": {
+    "aggregation_is_read_only_post_commit": true,
+    "requires_multiple_ready_eb_i25_publications": true,
+    "requires_one_accepted_outer_substep_per_input": true,
+    "requires_two_carrier_samples_per_input": true,
+    "requires_same_column_and_lineage": true,
+    "requires_revision_and_time_continuity": true,
+    "requires_common_mass_carried_reference_temperature": true,
+    "sums_top_and_bottom_conductive_and_advective_sensible_energy": true,
+    "sums_accepted_top_liquid_inflow": true,
+    "incomplete_or_mixed_provenance_fails_closed": true,
+    "deterministic_o0_o2": true
+  },
+  "nonclaims": [
+    "No accepted external top-liquid-outflow sensible transport is claimed.",
+    "No solver or process physics is re-executed by the aggregator.",
+    "No atomic rollback across multiple already committed outer transactions is claimed.",
+    "No whole-column sensible-energy storage residual is published.",
+    "No latent, radiation, snow or melt thermal provenance is added.",
+    "No complete SWAP5 Energy Balance is claimed."
+  ],
+  "adjacent_nonblocking_observations": [
+    "Owner qualification reports test-only unused-variable and unused-dummy-argument warnings after materialization of the uniform F-KT10-derived fixture; these do not affect production semantics or qualification."
+  ],
+  "next_permitted_action": [
+    "Replay the owner qualification on this persisted checkpoint commit.",
+    "Reconcile live canonical and the parallel EB-I26 outflow branch after the replay.",
+    "If relevant dependencies are unchanged or explicitly preserved, create a bounded independent qualification surface for EB-I27.",
+    "Do not canonically admit EB-I27 before independent qualification is green."
+  ]
+}
