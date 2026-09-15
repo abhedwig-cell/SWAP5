@@ -13,6 +13,11 @@ bash tests/fwof/pp02/run_wofost81_case001_fullseason_gate.sh
 
 # Reuse only the tiny already-qualified F-WOF34 synthetic kernel model as a
 # physical accepted-window source. No crop physics is taken from this fixture.
+# F-WOF34 predates the current fail-closed F-KT18 mass-completeness contract.
+# Materialize a qualification-only copy and add ONLY the now-required explicit
+# mass-completeness metadata/storage-status for its already-qualified exact
+# storage law. The immutable historical F-WOF34 source and production code are
+# not modified.
 FWO34=85c0f7838d56c63d49f16af8242bdf4cbe4219d9
 git show "$FWO34:tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90" > "$BUILD/fwof34.f90"
 python3 - "$BUILD/fwof34.f90" "$BUILD/fwof34_module.f90" <<'PY'
@@ -22,8 +27,61 @@ src = Path(sys.argv[1]).read_text(encoding='utf-8')
 marker = '\nprogram test_fwof34_accepted_window_runtime_lineage\n'
 if marker not in src:
     raise SystemExit('F-WOF-PP03 cannot isolate immutable F-WOF34 test model')
-Path(sys.argv[2]).write_text(src.split(marker, 1)[0].rstrip() + '\n', encoding='utf-8')
+mod = src.split(marker, 1)[0].rstrip() + '\n'
+repls = [
+    (
+        'use, intrinsic :: iso_fortran_env, only: real64',
+        'use, intrinsic :: iso_fortran_env, only: real64, int64',
+    ),
+    (
+        'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t',
+        'use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, &\n'
+        '       TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED',
+    ),
+    (
+        '    procedure :: temporal_error => fwof34_temporal_error\n  end type fwof34_model_t',
+        '    procedure :: temporal_error => fwof34_temporal_error\n'
+        '    procedure :: storage_accounting_status => fwof34_storage_accounting_status\n'
+        '  end type fwof34_model_t',
+    ),
+    (
+        '    outcome%solver_ok = .true.\n    outcome%mass_in = transfer_mass',
+        '    outcome%solver_ok = .true.\n'
+        '    outcome%mass_accounting_complete = .true.\n'
+        '    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE\n'
+        '    outcome%mass_in = transfer_mass',
+    ),
+]
+for old, new in repls:
+    if mod.count(old) != 1:
+        raise SystemExit(f'F-WOF-PP03 fixture adaptation anchor mismatch: {old!r}')
+    mod = mod.replace(old, new, 1)
+insert = '''
+  subroutine fwof34_storage_accounting_status(self, state, complete, missing_mask)
+    class(fwof34_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+    if (self%scale < 0.0_real64) return
+    select type (state)
+    type is (fwof34_state_t)
+      complete = .true.
+      missing_mask = TX_MASS_MISSING_NONE
+    class default
+      return
+    end select
+  end subroutine fwof34_storage_accounting_status
+'''
+end_marker = '\nend module mod_fwof34_test_model\n'
+if mod.count(end_marker) != 1:
+    raise SystemExit('F-WOF-PP03 fixture module end anchor mismatch')
+mod = mod.replace(end_marker, insert + end_marker, 1)
+Path(sys.argv[2]).write_text(mod, encoding='utf-8')
 print('FWOF_PP03_FWO34_PHYSICAL_FIXTURE_MATERIALIZED=PASS')
+print('FWOF_PP03_FWO34_CURRENT_MASS_CONTRACT_ADAPTED=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
