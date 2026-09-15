@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS11",
   "title": "RossFast restricted typed in-memory application composition",
-  "phase": "CLOSED_OWNER_QUALIFIED",
-  "decision": "QUALIFIED_THIN_TYPED_IN_MEMORY_APPLICATION_COMPOSITION_PENDING_INDEPENDENT_CURRENT_CANONICAL_ADMISSION",
+  "phase": "CLOSED_CANONICAL_ADMISSION",
+  "decision": "CANONICALLY_ADMITTED_THIN_TYPED_IN_MEMORY_APPLICATION_COMPOSITION_VIA_F_CI81",
   "branch": "work/f-ross11-in-memory-application-composition",
   "canonical_base": "7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a",
   "canonical_base_tree": "b33082976b6739a6ff637ccd38dc92067ba800c4",
@@ -11,7 +11,6 @@
   "qualified_tree": "961ccd3c69582e1f7fdc4c8229e01ab84a4ecaa5",
   "prerequisite_admission": {
     "workunit": "F-CI80",
-    "status_blob": "87660f85b51eb10345ce54f9c033505986aad1b2",
     "admitted_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"]
   },
   "qualified_blobs": {
@@ -19,20 +18,6 @@
     "test": "3fd4e85e6a9dd7a30161abd814bca3ff37b83caf",
     "runner": "5f80183d3cbf5c122275f4d92dcdeecb360246c4",
     "workflow": "d7bc968398413851198c9b8c1cebfd831718deb2"
-  },
-  "reused_immutable_dependencies": {
-    "runtime_core": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
-    "rossfast_execution_policy": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
-    "rossfast_model_binding": "9f29ba7a08844692ba2628c7869d23713409f92b",
-    "rossfast_table_kernel": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
-    "rossfast_table_provider": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
-    "rossfast_kernel_model_adapter": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e",
-    "serialized_kernel_backend": "29093b517bc6fdd40f32325018729c4c3dee6e85",
-    "rossfast_registry_dispatch": "7f900e75f4bea1c9b999464b7a8d4f7be4b35064",
-    "rossfast_application_selection": "5b652f04f172a8faa468d38faa23883ce6f35294",
-    "rossfast_application_config": "5892d5b2573c678ab8d121ae80353870b66886d2",
-    "rossfast_config_file_adapter": "55dc1632eb4d72d52cc2e038765710801bee5dd2",
-    "rossfast_asset_manifest": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55"
   },
   "qualified_contract": {
     "typed_in_memory_config_is_input": true,
@@ -45,42 +30,55 @@
     "complete_asset_preflight_remains_owned_by_f_ross07_before_first_physical_transaction": true,
     "file_adapter_can_feed_the_typed_config_but_is_not_imported_by_production_runtime": true
   },
-  "qualification": {
+  "owner_qualification": {
     "workflow_run_id": 34994419792,
     "job_id": 104466949526,
     "tested_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
     "conclusion": "success",
-    "compiler": "GNU Fortran on ubuntu-24.04",
-    "exact_dependency_blob_locks_pass": true,
-    "legacy_soilwater_swap_main_and_full_richards_blob_locks_pass": true,
-    "six_material_real_table_kernel_route_pass": true,
-    "exactly_one_commit_per_successful_column_pass": true,
-    "missing_config_fails_before_registry_or_dispatch": true,
-    "unsupported_reference_model_not_captured": true,
-    "prebound_model_conflict_fails_before_registry_or_dispatch": true,
-    "empty_asset_root_fails_before_dispatch": true,
-    "missing_assets_fail_in_f_ross07_batch_preflight_without_state_mutation": true,
-    "f_ross10_file_adapter_to_typed_runtime_composition_pass": true,
     "o0_o2_output_identity": true,
     "artifacts": {
       "evidence": {
         "id": 10406389699,
-        "digest": "sha256:9717ede593c9c90756468a14aada0c3e5dc815c5af3f9f7e6448cb518d4b270e",
-        "size_bytes": 575
+        "digest": "sha256:9717ede593c9c90756468a14aada0c3e5dc815c5af3f9f7e6448cb518d4b270e"
       },
       "diagnostics": {
         "id": 10406682446,
-        "digest": "sha256:019e7a254c977554e1c4095ca8ec076d8cbed77575bb33af16256e4729ef6f12",
-        "size_bytes": 1539
+        "digest": "sha256:019e7a254c977554e1c4095ca8ec076d8cbed77575bb33af16256e4729ef6f12"
       }
     }
+  },
+  "independent_canonical_qualification": {
+    "workunit": "F-CI81",
+    "canonical_preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "scientific_candidate_head": "7a9fda16868fb10599b76423b2e3ea3acfcb66cb",
+    "scientific_run_id": 34999320240,
+    "scientific_job_id": 104483474552,
+    "scientific_conclusion": "success",
+    "governance_head": "842aedf6174dc71bbd19d83686d02bc52ccc8476",
+    "governance_replay_run_id": 34999628992,
+    "governance_replay_job_id": 104484512869,
+    "governance_replay_conclusion": "success",
+    "o0_o2_sha256": "357e01c5db8aad112964aa2fb7d870068388f4c8772527ce12a8ae5d7ffde4c7",
+    "six_material_direct_authority_equivalence": true,
+    "exact_final_committed_physical_state_equivalence": true,
+    "reference_model_not_captured": true,
+    "missing_assets_fail_closed_before_state_mutation": true
+  },
+  "canonical_admission_record": {
+    "workunit": "F-CI81",
+    "preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "admission_commit": "8a49b32339981037041466eda5e434ea53a97086",
+    "admission_tree": "e263597b221eae82c43ad526043a28b7a7e2142c",
+    "first_parent_is_exact_preimage": true,
+    "second_parent_is_qualified_governance_head": true,
+    "production_runtime_blob_admitted": "a1af0d6eb0041565602711251748666f7b959d8e"
   },
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "production_admission": false,
-  "canonical_admission": false,
+  "production_admission": true,
+  "canonical_admission": true,
   "hard_nonclaims": [
     "NO_PUBLIC_API_OR_M1_EXIT_CLAIM",
     "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
@@ -90,8 +88,8 @@
     "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
     "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
     "NO_NEW_ROSSFAST_PHYSICS_TABLE_RETRY_OR_ROUTING_SEMANTICS",
-    "NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_THE_CANONICAL_RESTRICTED_STACK",
-    "NO_CANONICAL_ADMISSION_FROM_OWNER_QUALIFICATION_ALONE"
+    "NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_THE_CANONICAL_RESTRICTED_STACK"
   ],
-  "next_permitted_action": "Reconcile the live canonical delta from 7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a, independently replay this exact qualified F-ROSS11 production blob on the current canonical preimage, and admit only if relevant dependencies remain unchanged and the independent gate passes."
+  "next_gap": "NO_FURTHER_ROSS_SPECIFIC_RUNTIME_GAP_WITHIN_THE_RESTRICTED_TYPED_IN_MEMORY_SCOPE. A real external application host or Public API is a project-wide M1 concern; mixed reference/RossFast dispatch or scientific-domain broadening requires a separate explicit capability and qualification campaign.",
+  "next_permitted_action": "Do not extend F-ROSS11. Continue only through a separately owned project-wide M1 host/Public-API capability or a separately scoped RossFast capability with new requirements."
 }

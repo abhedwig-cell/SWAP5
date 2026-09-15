@@ -2,17 +2,19 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI81",
   "title": "RossFast restricted typed in-memory application composition current-canonical admission",
-  "phase": "QUALIFIED_ADMISSION_READY_PENDING_GOVERNANCE_HEAD_REPLAY",
-  "decision": "INDEPENDENT_CURRENT_CANONICAL_QUALIFICATION_PASS_ADMIT_ONLY_AFTER_GOVERNANCE_HEAD_REPLAY_AND_LIVE_PREIMAGE_GUARD",
+  "phase": "CLOSED_CANONICAL_ADMISSION",
+  "decision": "ADMITTED_F_ROSS11_TYPED_IN_MEMORY_APPLICATION_COMPOSITION_TO_CANONICAL",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
   "canonical_preimage_tree": "c5ca9f45ce1f0348f24421f0efe0f0f78913f66e",
+  "canonical_admission_commit": "8a49b32339981037041466eda5e434ea53a97086",
+  "canonical_admission_tree": "e263597b221eae82c43ad526043a28b7a7e2142c",
   "admission_branch": "integration/f-ci81-rossfast-application-composition-admission",
   "owner_branch": "work/f-ross11-in-memory-application-composition",
   "owner_closeout_head": "acd0e6ddfb144f553dc396a909c24f8785099b56",
   "owner_qualified_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
-  "owner_status_blob": "9a532b643faaef71e43c0eee58e4be7f9c661328",
   "qualified_application_runtime_blob": "a1af0d6eb0041565602711251748666f7b959d8e",
+  "owner_closeout_status_blob": "e297e461c41bf04d43b0fb4211ccdbe4bf965bc4",
   "qualified_candidate": {
     "head": "7a9fda16868fb10599b76423b2e3ea3acfcb66cb",
     "tree": "c52ae592131c6f39c91fd654504ab3f2a1c4e40e",
@@ -45,6 +47,27 @@
       }
     }
   },
+  "qualified_governance_head": {
+    "head": "842aedf6174dc71bbd19d83686d02bc52ccc8476",
+    "tree": "e263597b221eae82c43ad526043a28b7a7e2142c",
+    "run_id": 34999628992,
+    "job_id": 104484512869,
+    "conclusion": "success",
+    "production_source_changed_from_scientific_candidate": false,
+    "workflow_metadata_correction_only": true,
+    "artifacts": {
+      "evidence": {
+        "id": 10408687725,
+        "digest": "sha256:7e04dea2ca14caa7ca51d64f842921aaa1f4992f22e6f1b39b2e6e769e72b837",
+        "size_bytes": 581
+      },
+      "diagnostics": {
+        "id": 10409475720,
+        "digest": "sha256:bfa880affb460e74d55cfe4aa67641ad26be11727b90edacc77b979e55e887e3",
+        "size_bytes": 1907
+      }
+    }
+  },
   "prior_attempts": [
     {
       "head": "243ac7613d5e8cfb684f0e2ad8b1aea38ba486ea",
@@ -68,44 +91,36 @@
       "scientific_verdict_reached": false
     }
   ],
-  "current_dependency_blobs": {
-    "soil_water_accepted_step_direction_contract": "52698b1ad2350bf787862a053a49c7c73c3358f0",
-    "accepted_trajectory_directional_sensitivity": "95381d3124b185aa0fbafd1ea3da6179a841deda",
-    "accepted_trajectory_directional_publication": "31bc721f333a77c52f6530b357af44c627f44629",
-    "canonical_contracts": "3962c270a7579b7403764674302445fe15ef5f72",
-    "canonical_interval_runtime": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
-    "kernel_transactions": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
-    "reference_backend": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13"
-  },
-  "independent_test_strategy": {
-    "does_not_call_owner_test_or_owner_runner": true,
-    "constructs_independent_typed_six_material_fixture": true,
-    "compares_f_ross11_composed_route_against_direct_f_ross09_f_ross08_f_ross07_authority_route": true,
-    "compares_final_committed_physical_state_exactly": true,
-    "checks_dispatch_ordinals_attempts_and_linear_solves": true,
-    "checks_reference_model_not_captured": true,
-    "checks_missing_asset_batch_preflight_without_state_mutation": true,
-    "checks_o0_o2_output_identity": true
-  },
-  "candidate_blobs": {
-    "application_runtime": "a1af0d6eb0041565602711251748666f7b959d8e",
-    "owner_status": "9a532b643faaef71e43c0eee58e4be7f9c661328",
-    "independent_test": "09e1eaf90c804d333dd45b0806e1924c30416499",
-    "runner": "70242fa55e8f134f9028c6e985255dae865a5bde",
-    "workflow_before_metadata_fix": "6ee84fb6f9b493bf8065f7e9421a059dfeebbdfc",
-    "workflow_after_metadata_fix": "f9d83d904c5457137146e1756626373e39d02a09"
+  "admission_proof": {
+    "live_preimage_rechecked_immediately_before_admission": true,
+    "live_preimage_at_admission": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "first_parent_is_exact_preimage": true,
+    "second_parent_is_qualified_governance_head": true,
+    "admission_tree_equals_qualified_governance_tree": true,
+    "canonical_fast_forward_update_succeeded": true,
+    "production_runtime_blob_on_postimage": "a1af0d6eb0041565602711251748666f7b959d8e"
   },
   "preservation": {
+    "f_kt22_dependency_chain_preserved": true,
+    "f_wof_pp01_canonical_evidence_preserved": true,
     "reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
     "reference_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
     "legacy_soilwater_blob": "2ab6ea917525cd6f2560860bd55aec1da16be014",
     "legacy_swap_main_blob": "b6609df617c6b5875c62324570fb8c7d8c0bfe21",
     "full_richards_task2_blob": "5f51a34b03b63cf7cdf254f6115c2bb2db4ea693"
   },
-  "production_source_changed_since_qualified_candidate": false,
+  "mutations": {
+    "production_added": ["src/runtime/mod_fmr_rossfast_application_runtime.f90"],
+    "production_modified": [],
+    "legacy_modified": false,
+    "reference_backend_modified": false,
+    "f_kt22_modified": false,
+    "f_wof_pp01_modified": false,
+    "closeout_is_governance_only": true
+  },
   "tested": true,
   "qualified": true,
-  "canonical_admission": false,
+  "canonical_admission": true,
   "hard_nonclaims": [
     "NO_PUBLIC_API_OR_M1_EXIT_CLAIM",
     "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
@@ -116,5 +131,6 @@
     "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
     "NO_SCIENTIFIC_DOMAIN_BROADENING"
   ],
-  "next_permitted_action": "Persist this governance-only qualification record and workflow evidence-metadata correction on the admission branch, require that exact governance head to replay green, then recheck live canonical equals aa25126ee19e25c60bd266951b7494ba635efeca before canonical admission."
+  "next_gap": "The restricted RossFast typed in-memory application path is now canonical. A real external application host/Public API remains a project-wide M1 concern, not an F-ROSS11 extension. Mixed-backend dispatch or broader RossFast science remains separately scoped.",
+  "next_permitted_action": "No further mutation under F-CI81. Reconcile project-wide M1 host/Public-API work if a generic host capability is to be advanced, or open a distinct RossFast capability only for explicitly new requirements."
 }
