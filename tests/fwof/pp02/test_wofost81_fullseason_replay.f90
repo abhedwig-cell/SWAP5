@@ -23,7 +23,7 @@ program test_wofost81_fullseason_replay
   type(wofost_accepted_window_aggregates_t) :: aggregates
   type(wofost_one_day_update_parameters_t) :: updatep
   type(WOFOST81_n_flux) :: flux
-  real(real64) :: dead_leaf, dead_root, dead_stem
+  real(real64) :: dead_leaf=0._real64, dead_root=0._real64, dead_stem=0._real64
 
   call get_command_argument(1,data_path)
   call get_command_argument(2,output_path)
