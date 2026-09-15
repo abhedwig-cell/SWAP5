@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ97",
+  "subject_capability": "F-GC27",
+  "title": "Restricted Direct-Groundwater V1 End-to-End Independent Qualification",
+  "phase": "INDEPENDENT_QUALIFICATION",
+  "canonical_dependency": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+  "qualification_branch": "qualification/f-vq97-fgc27-restricted-direct-groundwater-e2e",
+  "qualification_tested_head": "5566d4888ae2395fc8d38e9e6ab07d4ff83f9b07",
+  "workflow_run_id": 35031745967,
+  "workflow_job_id": 104591583793,
+  "compiler": "GNU Fortran 13.3.0",
+  "conclusion": "success",
+  "production_delta": false,
+  "pinned_production_blobs": {
+    "F_GC21_predictor_corrector": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "F_GC20_tile_aggregation": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F_GC22_accuracy_binding": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F_GC23_coupling_response": "645141676536ae8289b9d52433798a965c7baa04",
+    "F_GC24_coupled_restart": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "F_GC25_multiswap_coupler": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+    "F_GC26_external_gateway": "f307f17e2fd20983432f91e91ac90aaae8311849",
+    "F_GC17_coupling_contract": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "F_GC18_exchange_service": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "application_accuracy_contract": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "inherited_independent_authorities": {
+    "F_GC23_F_VQ95": "da64ffb1f4cd5105e2809a02ddae02f50a9c853b",
+    "F_GC24_F_VQ86": "0fea1f7a17ccff9f41b4d2dee71feab526313a01",
+    "F_GC26_F_VQ96": "ae97f0d47c183a64e470be5badca220d95a65cb0"
+  },
+  "evidence_markers": {
+    "FVQ97_ZERO_PRODUCTION_DELTA": "PASS",
+    "FVQ97_CURRENT_CANONICAL_STACK_PINNED": "PASS",
+    "FVQ97_FGC23_FGC24_IMMUTABLE_INDEPENDENT_EVIDENCE_REUSED": "PASS",
+    "FVQ97_FGC26_INDEPENDENT_AUTHORITY_LOCKED": "PASS",
+    "FVQ97_ARCHITECTURE_BOUNDARIES": "PASS",
+    "FVQ97_PINNED_SWAP_FIXTURE_TYPES": "PASS",
+    "FVQ97_FGC22_POLICY_BINDING_IN_EXECUTION": "PASS",
+    "FVQ97_DIRECT_GC21_GC26_E2E": "PASS",
+    "FVQ97_EXTERNAL_FAILURE_FAILS_CLOSED": "PASS",
+    "FVQ97_NO_SAME_WINDOW_RETRY": "PASS",
+    "FVQ97_MULTISWAP_GC20_GC25_GC26_E2E": "PASS",
+    "FVQ97_SHARED_BACKEND_NO_CROSSTALK_E2E": "PASS",
+    "FVQ97_INDEPENDENT_E2E_ORACLE": "PASS",
+    "FVQ97_O0_O2_OUTPUT_IDENTITY": "PASS",
+    "F_VQ97_FINAL_GATE": "PASS"
+  },
+  "independent_oracle_sha256": "b05c239a74873d0ae0df29905cabef0ab3fe8c6b3859e00fc22eeb61b444d3dd",
+  "failed_run_reconciliation": {
+    "run_id": 35031229456,
+    "job_id": 104589956412,
+    "classification": "QUALIFICATION_HARNESS_BUILD_DEPENDENCY_OMISSION",
+    "production_defect_established": false,
+    "production_delta_applied": false
+  },
+  "verdict": "INDEPENDENTLY_QUALIFIED",
+  "next_permitted_action": "Bounded current-canonical metadata-only admission of F-GC27 after rechecking relevant dependency blobs and canonical head.",
+  "exclusions": ["EB", "ROSS", "RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "production-semantic changes solely to obtain PASS", "F-GC28 work"]
+}

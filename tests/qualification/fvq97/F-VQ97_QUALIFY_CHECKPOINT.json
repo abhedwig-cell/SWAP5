@@ -1,0 +1,57 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC27 — Restricted Direct-Groundwater V1 End-to-End Qualification",
+  "qualification": "F-VQ97",
+  "phase": "QUALIFY",
+  "canonical_dependency": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "tree": "1ab2485fe70a996970e65c349fb7332c77886587"
+  },
+  "qualification_branch": "qualification/f-vq97-fgc27-restricted-direct-groundwater-e2e",
+  "tested_head": "5566d4888ae2395fc8d38e9e6ab07d4ff83f9b07",
+  "tested_tree": "8ae537fea47b6ae1af9eaed328bddef422941004",
+  "workflow": {
+    "path": ".github/workflows/f-vq97-fgc27-restricted-direct-groundwater-e2e.yml",
+    "blob": "a77ed0690364c0976e895613535c7e34b346bd4f",
+    "run_id": 35031745967,
+    "job_id": 104591583793,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "qualification_surface": {
+    "test_blob": "c722afedd795f17ddc0b82c0d3ec524b60897321",
+    "runner_blob": "5d027bfafc7c3fe1274215047400d79809287495",
+    "reconcile_checkpoint_blob": "b88d2b6a4ea2153c5d66c31a2871a3dd5591eff9"
+  },
+  "evidence": {
+    "zero_production_delta": true,
+    "current_canonical_stack_pinned": true,
+    "fgc23_fgc24_immutable_independent_evidence_reused": true,
+    "fgc26_independent_authority_locked": true,
+    "architecture_boundaries_preserved": true,
+    "fgc22_policy_binding_in_execution": true,
+    "direct_fgc21_fgc26_end_to_end": true,
+    "external_failure_fails_closed": true,
+    "no_same_window_retry": true,
+    "multiswap_fgc20_fgc25_fgc26_end_to_end": true,
+    "shared_backend_no_crosstalk": true,
+    "deterministic_o0_o2_identity": true
+  },
+  "independent_oracle_sha256": "b05c239a74873d0ae0df29905cabef0ab3fe8c6b3859e00fc22eeb61b444d3dd",
+  "failed_run_reconciliation": [
+    {
+      "run_id": 35031229456,
+      "job_id": 104589956412,
+      "classification": "QUALIFICATION_HARNESS_BUILD_DEPENDENCY_OMISSION",
+      "finding": "The runner omitted the canonical accepted-trajectory directional publication compile chain required by mod_canonical_contracts. The run failed before the independent oracle.",
+      "production_defect_established": false,
+      "production_delta_applied": false
+    }
+  ],
+  "production_mutations": [],
+  "verdict": "INDEPENDENTLY_QUALIFIED",
+  "next_permitted_action": "ADMIT by bounded current-canonical metadata-only admission if relevant production blobs and inherited immutable evidence remain unchanged.",
+  "hard_exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "production modifications merely to obtain PASS", "F-GC28 work"]
+}
