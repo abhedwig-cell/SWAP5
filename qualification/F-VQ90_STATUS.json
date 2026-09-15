@@ -1,0 +1,50 @@
+{
+  "workunit": "F-VQ90",
+  "title": "EB-I23 sensible-boundary runtime independent qualification",
+  "decision": "QUALIFIED_EB_I23_INDEPENDENT",
+  "owner_branch": "work/eb-i23-sensible-boundary-runtime-materialization",
+  "qualified_owner_head": "94832bb80534c2edb324c1c9e0cbb54df3678246",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "3ff0f42299767d5ad5f07d031698dfcf7969ed0d",
+  "qualification_branch": "qualification/f-vq90-eb-i23-sensible-boundary-runtime-independent-qualification",
+  "initial_green_qualification_head": "296960d2910bbcfea0c1aa0cacc1f2aa021ad608",
+  "initial_green_run_id": 34947899636,
+  "initial_green_job_id": 104311570640,
+  "evidence": {
+    "exact_owner_replay": true,
+    "owner_o0_o2_semantic_identity": true,
+    "dependency_surface_unchanged": true,
+    "qualification_only_delta": true,
+    "residual_sign_mutant_rejected": true,
+    "missing_bottom_donor_as_zero_mutant_rejected": true,
+    "multi_substep_conductive_broadening_mutant_rejected": true,
+    "top_advective_broadening_mutant_rejected": true
+  },
+  "qualified_scope": {
+    "accepted_single_substep_conductive_materialization": true,
+    "explicit_bottom_conductive_restricted_boundary_condition": true,
+    "receipt_owned_bottom_advective_materialization": true,
+    "missing_bottom_donor_fail_closed": true,
+    "restricted_temperature_residual_sign_coherent": true,
+    "accepted_transaction_provenance_bound": true,
+    "mass_carried_reference_temperature_provenance": true,
+    "top_advective_materialized": false,
+    "multi_substep_conductive_materialization": false,
+    "runtime_materialization_complete": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance_complete": false,
+    "canonical_admission": false
+  },
+  "nonclaims": [
+    "No qualified top mass-carried sensible-energy donor-temperature authority is introduced.",
+    "No conductive aggregation over accepted multi-substep trajectories is introduced.",
+    "No complete four-category EB-I22 runtime boundary materialization is claimed.",
+    "No whole-column sensible residual is published in production.",
+    "No complete SWAP5 Energy Balance is claimed.",
+    "No canonical admission is performed by F-VQ90."
+  ],
+  "next_capability_dependencies": [
+    "Qualified top-water thermal provenance / donor-temperature authority for top mass-carried sensible energy.",
+    "Rollback-safe thermal boundary-energy carrier for accepted multi-substep whole-interval conductive materialization."
+  ]
+}
