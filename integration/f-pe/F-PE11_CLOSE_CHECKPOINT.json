@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.fpe11.bounded_execution.close.v1",
+  "work_unit": "F-PE11",
+  "phase": "CLOSE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head_at_qualification": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+    "head_at_close_recheck": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+    "changed_during_qualify_to_close": false
+  },
+  "qualification": {
+    "tested_head": "fd35b41e85104ab49547ce20dd2fae92d7af975d",
+    "workflow_run": 35036816274,
+    "workflow_job": 104607657727,
+    "conclusion": "success",
+    "functional_preservation": "PASS",
+    "O0_O2_identity": "PASS",
+    "committed_state_immutability": "PASS",
+    "A_B_A_determinism": "PASS",
+    "dry_ponded_scientific_identity": "PASS",
+    "local_performance_nonregression": "PASS",
+    "paired_faster": "11/12",
+    "median_faster_all_measured_profile_sizes": true,
+    "checksum_identity": "PASS"
+  },
+  "admit": {
+    "action": "NO_OP",
+    "reason": "F-PE11 equivalent production semantics were already canonically admitted by F-CI42 and closed by F-CI42P; current-canonical replay confirms the later composition remains valid",
+    "production_files_changed": 0,
+    "reference_files_changed": 0,
+    "canonical_mutation_performed": false,
+    "duplicate_admission_avoided": true
+  },
+  "canonical_semantics": {
+    "qualified_binding_blob_retained": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "current_materializer_blob": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "call_local_ownership_transfer_retained": true,
+    "committed_snapshot_semantics_retained": true,
+    "public_runtime_surface_retained": true,
+    "mass_policy_changed": false,
+    "transaction_policy_changed": false,
+    "persistent_per_column_state_added": false,
+    "private_committed_state_alias_added": false
+  },
+  "performance_interpretation": {
+    "historical_owner_timing": "retained as immutable runner-bound characterization only",
+    "fresh_current_head_timing": "paired same-runner local materialization non-regression characterization",
+    "whole_model_speedup_claim": false,
+    "MultiSWAP_speedup_claim": false,
+    "portable_speed_guarantee": false
+  },
+  "final_verdict": "FPE11_CURRENT_CANONICAL_PERFORMANCE_ADMISSION_VALID_ALREADY_REALIZED_AND_CLOSED",
+  "closure_class": "CANONICALLY_CLOSED",
+  "next_action_for_FPE11": "NONE_UNLESS_A_RELEVANT_DEPENDENCY_OR_PRODUCTION_SEMANTIC_CHANGES",
+  "exclusions": [
+    "no EB",
+    "no ROSS or RossFast",
+    "no new scientific equations",
+    "no transaction or mass-policy changes",
+    "no new persistent per-column state",
+    "no direct alias into private committed state",
+    "no whole-model speedup claim",
+    "no MultiSWAP speedup claim",
+    "no automatic rebatching, class switching or GPU work",
+    "no production change merely to make a benchmark pass",
+    "no optimization extension"
+  ]
+}
