@@ -21,6 +21,7 @@ MODULE_SRC=(
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
   src/runtime/mod_fmr_runtime_core.f90
+  src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
