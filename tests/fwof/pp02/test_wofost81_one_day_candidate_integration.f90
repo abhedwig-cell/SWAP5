@@ -29,7 +29,6 @@ program test_wofost81_one_day_candidate_integration
   call configure_owner(committed,p81,status)
   call require(status == WOFOST81_N_OWNER_OK, 'N owner initialization')
 
-  ! Create a valid N-deficient committed state so zero-carbon growth still requests soil N.
   committed%nitrogen%value%namountlv = committed%nitrogen%value%namountlv - 1.0_real64
   committed%nitrogen%value%initial_total = committed%nitrogen%value%initial_total - 1.0_real64
   call require(committed%validate() == WOFOST81_CROP_OWNER_OK, 'deficient committed owner valid')
@@ -66,7 +65,6 @@ program test_wofost81_one_day_candidate_integration
   call require(same_bits(committed%nitrogen%value%namountlv,nlv0), 'prepare no N leak')
   call require(same_bits(committed%nitrogen%value%initial_total,initial0), 'prepare no N ledger leak')
 
-  ! With zero radiation, gross growth is zero. Common net root/stem growth is therefore exactly death loss.
   call require(abs(prepared%drrt - 2.0_real64) < 1.0e-13_real64, 'actual root death')
   call require(abs(prepared%drst - 2.0_real64) < 1.0e-13_real64, 'actual stem death')
   call require(abs(prepared%grrt) < 1.0e-13_real64, 'gross root reconstruction zero')
@@ -136,7 +134,8 @@ contains
     call make_table([0.0_real64,2.0_real64],[0.01_real64,0.01_real64],t%relative_stem_death_rate)
     call make_table([0.0_real64,2.0_real64],[0.02_real64,0.02_real64],t%specific_leaf_area)
     call construct_wofost_rate_parameter_bundle(s,t,bundle,rc)
-    call require(rc == WOFOST_RATE_PARAMETER_OK .and. bundle%ready(), 'common parameter bundle')
+    call require(rc == WOFOST_RATE_PARAMETER_OK, 'common parameter constructor')
+    call require(bundle%ready(), 'common parameter bundle ready')
   end subroutine
 
   subroutine make_table(x,y,table)
