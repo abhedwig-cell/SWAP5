@@ -1,0 +1,39 @@
+name: EB-I26 top outflow bootstrap
+
+on:
+  push:
+    branches:
+      - work/eb-i26-top-liquid-outflow-sensible-transport
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply bounded EB-I26 patch
+        run: python tools/eb_i26_top_outflow_bootstrap.py
+      - name: Persist implementation and remove bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm tools/eb_i26_top_outflow_bootstrap.py .github/workflows/eb-i26-top-outflow-bootstrap.yml
+          git add src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
+          git add src/runtime/mod_fmr_serialized_reference_backend.f90
+          git add src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+          git add src/runtime/mod_eb_i26_top_liquid_sensible_outflow_runtime.f90
+          git add tests/eb/test_eb_i26_top_liquid_sensible_outflow_runtime.f90
+          git add tests/eb/run_eb_i26_top_liquid_sensible_outflow_gate.sh
+          git add tests/eb/EB-I26_CONTRACT.md tests/eb/EB-I26_CHECKPOINT.json
+          git add .github/workflows/eb-i26-top-liquid-sensible-outflow.yml
+          git diff --cached --check
+          git commit -m 'EB-I26 materialize accepted top-liquid sensible outflow'
+          git push origin HEAD:work/eb-i26-top-liquid-outflow-sensible-transport
