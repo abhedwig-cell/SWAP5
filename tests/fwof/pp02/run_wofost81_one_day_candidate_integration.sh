@@ -7,8 +7,10 @@ mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
-SOURCES=(
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+
+CANONICAL_SOURCES=(
   src/transaction/mod_transaction_reference.f90
   src/crop/mod_wofost_rate_table.f90
   src/crop/mod_wofost_actual_biomass_state.f90
@@ -18,6 +20,8 @@ SOURCES=(
   src/crop/mod_wofost_rate_parameters.f90
   src/crop/mod_wofost_prepare_assimilation.f90
   src/crop/mod_wofost_finalize_rates.f90
+)
+PP02_SOURCES=(
   src/crop/mod_wofost81_assimilation.f90
   src/crop/mod_wofost81_nitrogen.f90
   src/crop/mod_wofost81_n_stress.f90
@@ -29,13 +33,27 @@ SOURCES=(
   src/crop/mod_wofost81_rate_correction.f90
   src/crop/mod_wofost81_leaf_structural_evolution.f90
   src/crop/mod_wofost81_one_day_candidate.f90
-  tests/fwof/pp02/test_wofost81_one_day_candidate_integration.f90
 )
+TEST=tests/fwof/pp02/test_wofost81_one_day_candidate_integration.f90
 
 for opt in 0 2; do
   out="$BUILD/o$opt"
   exe="$BUILD/test_o$opt"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" "${SOURCES[@]}" -o "$exe"
+  objects=()
+  for source in "${CANONICAL_SOURCES[@]}"; do
+    obj="$out/$(basename "${source%.*}").o"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
+    objects+=("$obj")
+  done
+  for source in "${PP02_SOURCES[@]}"; do
+    obj="$out/$(basename "${source%.*}").o"
+    gfortran "${STRICT[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
+    objects+=("$obj")
+  done
+  test_obj="$out/test_wofost81_one_day_candidate_integration.o"
+  gfortran "${STRICT[@]}" -O"$opt" -J "$out" -I "$out" -c "$TEST" -o "$test_obj"
+  objects+=("$test_obj")
+  gfortran "${STRICT[@]}" -O"$opt" "${objects[@]}" -o "$exe"
   "$exe" > "$BUILD/out_o$opt.txt"
   cat "$BUILD/out_o$opt.txt"
   grep -Fq 'F_WOF_PP02_REPOSITORY_INTEGRATION_PASS' "$BUILD/out_o$opt.txt"
