@@ -1,0 +1,19 @@
+name: F-WOF-PP03 WOFOST81 runtime activation qualification
+
+on:
+  push:
+    branches:
+      - work/f-wof-pp03-wofost81-runtime-activation
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler version
+        run: gfortran --version
+      - name: F-WOF-PP03 runtime activation gate
+        run: bash tests/fwof/pp03/run_fwof_pp03_runtime_activation_gate.sh
