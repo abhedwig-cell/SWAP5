@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI81",
+  "title": "RossFast restricted typed in-memory application composition current-canonical admission",
+  "phase": "QUALIFICATION_CANDIDATE_PERSISTED",
+  "decision": "INDEPENDENT_REPLAY_OF_F_ROSS11_ON_CURRENT_CANONICAL_PENDING_GATE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "9d202705d1d7063ae129166b1049f7555a7ad802",
+  "canonical_preimage_tree": "ca2d9030bbaf76eab196da81dcd9419a24f8ecfc",
+  "admission_branch": "integration/f-ci81-rossfast-application-composition-admission",
+  "owner_branch": "work/f-ross11-in-memory-application-composition",
+  "owner_closeout_head": "acd0e6ddfb144f553dc396a909c24f8785099b56",
+  "owner_qualified_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
+  "owner_status_blob": "9a532b643faaef71e43c0eee58e4be7f9c661328",
+  "qualified_application_runtime_blob": "a1af0d6eb0041565602711251748666f7b959d8e",
+  "canonical_delta_since_owner_base": {
+    "owner_base": "7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a",
+    "only_relevant_file_change": "integration/f-ci/F-CI80_STATUS.json",
+    "rossfast_production_dependency_changed": false,
+    "reference_or_legacy_dependency_changed": false,
+    "classification": "GOVERNANCE_ONLY"
+  },
+  "independent_test_strategy": {
+    "does_not_call_owner_test_or_owner_runner": true,
+    "constructs_independent_typed_six_material_fixture": true,
+    "compares_f_ross11_composed_route_against_direct_f_ross09_f_ross08_f_ross07_authority_route": true,
+    "compares_final_committed_physical_state_exactly": true,
+    "checks_dispatch_ordinals_attempts_and_linear_solves": true,
+    "checks_reference_model_not_captured": true,
+    "checks_missing_asset_batch_preflight_without_state_mutation": true,
+    "checks_o0_o2_output_identity": true
+  },
+  "candidate_blobs": {
+    "independent_test": "09e1eaf90c804d333dd45b0806e1924c30416499",
+    "runner": "2d097076ed2190a23c1d9ed69772c0f1b5bbcb24",
+    "workflow": "6ee84fb6f9b493bf8065f7e9421a059dfeebbdfc"
+  },
+  "preservation": {
+    "reference_backend_blob": "960ea116cad81e8c0db8a579982f4999b3d085ed",
+    "reference_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "legacy_soilwater_blob": "2ab6ea917525cd6f2560860bd55aec1da16be014",
+    "legacy_swap_main_blob": "b6609df617c6b5875c62324570fb8c7d8c0bfe21",
+    "full_richards_task2_blob": "5f51a34b03b63cf7cdf254f6115c2bb2db4ea693"
+  },
+  "tested": false,
+  "qualified": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_PUBLIC_API_OR_M1_EXIT_CLAIM",
+    "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SWAP_MAIN_WIRING",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
+    "NO_SCIENTIFIC_DOMAIN_BROADENING"
+  ],
+  "next_permitted_action": "Persist this exact current-canonical candidate, run the independent gate, and only if the live canonical remains the exact preimage and the gate is green promote the candidate tree to canonical."
+}
