@@ -2,8 +2,9 @@ module mod_groundwater_response_sensitivity_contract
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t
-  use mod_groundwater_exchange_service_contract, only: groundwater_exchange_checkpoint_t, &
-       groundwater_exchange_candidate_t, groundwater_exchange_trial_result_t, GW_EXCHANGE_OK
+  use mod_groundwater_exchange_service_contract, only: groundwater_exchange_service_t, &
+       groundwater_exchange_checkpoint_t, groundwater_exchange_candidate_t, &
+       groundwater_exchange_trial_result_t, groundwater_trial_from_checkpoint, GW_EXCHANGE_OK
   implicit none
   private
 
@@ -36,15 +37,20 @@ module mod_groundwater_response_sensitivity_contract
   end type groundwater_response_sensitivity_t
 
   ! Optional companion capability for F-GC18-style groundwater services.
-  ! Implementations provide a tangent belonging to an already evaluated trial
-  ! response. They do not create a new groundwater trial and do not own commit,
-  ! rollback, mass accounting or coupling iteration policy.
+  ! The public path creates the groundwater trial and its response in one call.
+  ! This makes the response belong by construction to the exact candidate/trial
+  ! pair returned by that invocation; callers cannot relabel an older response
+  ! as belonging to another live retry candidate.
+  !
+  ! Implementations provide only a tangent at the already evaluated trial point.
+  ! They do not create an additional groundwater trial and do not own commit,
+  ! rollback, mass accounting, finite differences or coupling iteration policy.
   type, abstract, public :: groundwater_response_sensitivity_provider_t
   contains
     procedure(gw_response_sensitivity_provider_ifc), deferred, public :: evaluate_response_sensitivity
   end type groundwater_response_sensitivity_provider_t
 
-  public :: groundwater_query_response_sensitivity
+  public :: groundwater_trial_with_response_sensitivity
 
   abstract interface
     subroutine gw_response_sensitivity_provider_ifc(self, service_id, lineage_id, origin_revision, &
@@ -62,7 +68,36 @@ module mod_groundwater_response_sensitivity_contract
 
 contains
 
-  subroutine groundwater_query_response_sensitivity(provider, checkpoint, candidate, trial_result, response, status)
+  subroutine groundwater_trial_with_response_sensitivity(service, checkpoint, window, q_groundwater_m_per_s, &
+       candidate, trial_result, response, exchange_status, response_status, provider)
+    class(groundwater_exchange_service_t), intent(inout) :: service
+    type(groundwater_exchange_checkpoint_t), intent(in) :: checkpoint
+    type(groundwater_coupling_window_t), intent(in) :: window
+    real(real64), intent(in) :: q_groundwater_m_per_s
+    type(groundwater_exchange_candidate_t), intent(out) :: candidate
+    type(groundwater_exchange_trial_result_t), intent(out) :: trial_result
+    type(groundwater_response_sensitivity_t), intent(out) :: response
+    integer, intent(out) :: exchange_status, response_status
+    class(groundwater_response_sensitivity_provider_t), intent(inout), optional :: provider
+
+    response = groundwater_response_sensitivity_t()
+    call groundwater_trial_from_checkpoint(service, checkpoint, window, q_groundwater_m_per_s, &
+         candidate, trial_result, exchange_status)
+    if (exchange_status /= GW_EXCHANGE_OK) then
+      response%status = GW_RESPONSE_INVALID_TRIAL
+      response_status = GW_RESPONSE_INVALID_TRIAL
+      return
+    end if
+
+    if (present(provider)) then
+      call bind_response_sensitivity(provider, checkpoint, candidate, trial_result, response, response_status)
+    else
+      call bind_response_sensitivity(checkpoint=checkpoint, candidate=candidate, trial_result=trial_result, &
+           response=response, status=response_status)
+    end if
+  end subroutine groundwater_trial_with_response_sensitivity
+
+  subroutine bind_response_sensitivity(provider, checkpoint, candidate, trial_result, response, status)
     class(groundwater_response_sensitivity_provider_t), intent(inout), optional :: provider
     type(groundwater_exchange_checkpoint_t), intent(in) :: checkpoint
     type(groundwater_exchange_candidate_t), intent(in) :: candidate
@@ -172,7 +207,7 @@ contains
       response%status = GW_RESPONSE_PROVIDER_REJECTED
       status = GW_RESPONSE_PROVIDER_REJECTED
     end select
-  end subroutine groundwater_query_response_sensitivity
+  end subroutine bind_response_sensitivity
 
   pure logical function same_response_time(a, b) result(matches)
     real(real64), intent(in) :: a, b
