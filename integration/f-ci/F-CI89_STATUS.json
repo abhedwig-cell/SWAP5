@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.fci89.status.v1",
+  "capability": "F-CI89",
+  "title": "Current-canonical admission of F-WOF-PP03 WOFOST81 runtime activation",
+  "phase": "ADMIT",
+  "state": "ADMISSION_CANDIDATE_AWAITING_CURRENT_CANONICAL_GATE",
+  "canonical_base": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+  "owner": {
+    "capability": "F-WOF-PP03",
+    "qualified_execution_head": "97b7b6c712d003daa67b696faa1e9f207dff4e14",
+    "evidence_head": "83efd2f8fe674dffc9c0524c433009d75246eb1e",
+    "qualification_run_id": 35034651590,
+    "qualification_job_id": 104600883520,
+    "verdict": "PASS"
+  },
+  "production_postimage": [
+    {
+      "path": "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
+      "blob": "fb8744fb00439b6eb35a679f1a77b4547a9978d2"
+    },
+    {
+      "path": "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90",
+      "blob": "5742147b8b3ace2ec40b5295c4df915e9787ea3f"
+    }
+  ],
+  "admission_requirements": [
+    "exact qualified owner production blobs",
+    "exactly two additive production files relative to current canonical",
+    "PP03 runtime activation O0/O2 replay PASS",
+    "PP02 executable numerical preservation replay PASS",
+    "F-WOF38 and F-WOF39 current-contract preservation PASS",
+    "legacy WOFOST runtime semantics unchanged",
+    "no RD or TRA admission"
+  ],
+  "hard_exclusions": [
+    "no EB",
+    "no ROSS or RossFast",
+    "no groundwater changes",
+    "no new crop physics",
+    "no RD migration",
+    "no TRA migration",
+    "no Soil-N coupling policy",
+    "no tolerance changes"
+  ],
+  "next_permitted_action": "Run F-CI89 on this exact current-canonical postimage. On PASS, recheck live canonical head and relevant state delta before any non-force promotion."
+}

@@ -1,0 +1,18 @@
+name: F-CI89 WOFOST81 runtime activation admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci89-fwof-pp03-runtime-activation-admission
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler version
+        run: gfortran --version
+      - name: F-CI89 current-canonical admission gate
+        run: bash integration/f-ci/run_fci89_fwof_pp03_admission_gate.sh
