@@ -29,7 +29,7 @@ end module mod_eb_i24_provider_fixture
 program test_eb_i24_top_liquid_sensible_inflow_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
@@ -49,7 +49,7 @@ program test_eb_i24_top_liquid_sensible_inflow_runtime
   use mod_whole_column_sensible_energy_accounting, only: whole_column_sensible_boundary_t
   use mod_eb_i24_top_liquid_sensible_inflow_runtime, only: eb_i24_sensible_boundary_publication_t, &
        fmr_execute_column_with_top_sensible_inflow, EB_I24_TOP_INFLOW_MATERIALIZED, &
-       EB_I24_TOP_DONOR_UNAVAILABLE, EB_I24_TOP_OUTFLOW_UNQUALIFIED
+       EB_I24_TOP_DONOR_UNAVAILABLE, EB_I24_TOP_OUTFLOW_UNQUALIFIED, EB_I24_TOP_MULTI_SUBSTEP_UNQUALIFIED
   use mod_eb_i24_provider_fixture, only: reset_provider, eb_i24_bottom_provider
   implicit none
 
@@ -63,6 +63,7 @@ program test_eb_i24_top_liquid_sensible_inflow_runtime
   integer(int64), parameter :: column_id = 924001_int64
 
   call verify_explicit_inflow_materializes_complete_i22_boundary()
+  call verify_external_full_half_route_fails_closed()
   call verify_missing_top_donor_stays_unavailable()
   call verify_top_outflow_does_not_reuse_external_donor()
   call verify_rejected_transaction_has_no_i24_publication()
@@ -120,6 +121,53 @@ contains
     call require(publication%runtime_materialization_complete(), 'bounded runtime materialization complete')
     write(*,'(A)') 'EB_I24_ACCEPTED_INFLOW_COMPLETE_I22_BOUNDARY=PASS'
   end subroutine verify_explicit_inflow_materializes_complete_i22_boundary
+
+  subroutine verify_external_full_half_route_fails_closed()
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: tx
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(liquid_water_sensible_enthalpy_parameters_t) :: energy_parameters
+    type(external_liquid_water_temperature_t) :: top_temperature
+    type(eb_i24_sensible_boundary_publication_t) :: publication
+    type(whole_column_sensible_boundary_t) :: boundary
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    integer :: active_calls
+    logical :: available
+
+    call initialize_case(backend, top, committed, column, template, parameters, forcing, config, output, diagnostic, &
+         runtime, active_calls, energy_parameters, -1.0e-10_real64)
+    config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+    config%transaction%temporal_tolerance = huge(1.0_real64)
+    top_temperature%available = .true.
+    top_temperature%temperature_c = top_donor_temperature_c
+    call reset_provider(column_id)
+    call fmr_execute_column_with_top_sensible_inflow(backend, tx, column, template, parameters, forcing, committed, &
+         config, t0, t1, energy_parameters, eb_i24_bottom_provider, top_temperature, output, diagnostic, runtime, &
+         active_calls, publication)
+
+    call require(output%completed .and. output%committed, 'external full-half transaction committed')
+    call require(output%accepted_substeps == 1, 'external full-half exposes one canonical commit')
+    call require(publication%ready(), 'external full-half accepted publication ready')
+    call require(publication%top_status() == EB_I24_TOP_MULTI_SUBSTEP_UNQUALIFIED, &
+         'external full-half route explicitly fail-closed')
+    call publication%boundary_snapshot(boundary, available)
+    call require(available, 'external full-half boundary snapshot available')
+    call require(.not. boundary%top_conductive_available, 'final-half observation not promoted as top conductive')
+    call require(.not. boundary%bottom_conductive_available, 'final-half observation not promoted as bottom conductive')
+    call require(.not. boundary%top_advective_available, 'final-half top flux not promoted as whole-interval advection')
+    call require(.not. boundary%complete(), 'external full-half cannot close I22 without carrier')
+    call require(.not. publication%runtime_materialization_complete(), &
+         'external full-half cannot claim runtime complete without carrier')
+    write(*,'(A)') 'EB_I23R_I24R_EXTERNAL_FULL_HALF_FAIL_CLOSED=PASS'
+  end subroutine verify_external_full_half_route_fails_closed
 
   subroutine verify_missing_top_donor_stays_unavailable()
     type(fmr_serialized_reference_backend_t) :: backend

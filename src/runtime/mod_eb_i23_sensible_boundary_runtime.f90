@@ -1,6 +1,7 @@
 module mod_eb_i23_sensible_boundary_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t
@@ -21,13 +22,6 @@ module mod_eb_i23_sensible_boundary_runtime
   integer, parameter, public :: EB_I23_INVALID_ACCEPTED_PROVENANCE = 2
   real(real64), parameter :: J_CM2_TO_J_M2 = 1.0e4_real64
 
-  ! Accepted-only, bounded sensible-boundary publication.
-  !
-  ! The current canonical authority surface has no qualified top mass-carried
-  ! sensible-energy donor-temperature source. A ready publication is therefore
-  ! intentionally partial: it can materialize the accepted restricted-thermal
-  ! conductive terms and the already receipt-owned bottom advective term, but
-  ! it can never claim complete I22 boundary closure in this capability.
   type, public :: eb_i23_sensible_boundary_publication_t
     private
     logical :: initialized = .false.
@@ -89,9 +83,6 @@ contains
 
     publication = eb_i23_sensible_boundary_publication_t()
 
-    ! Keep the accepted receipt and the thermal observation inside one runtime
-    ! call boundary. This prevents a caller from pairing an observation from
-    ! one transaction with the accepted bottom-energy receipt from another.
     call fmr_execute_serialized_column_with_bottom_energy(backend, transaction_control, column, template, parameters, &
          effective_forcing, committed_state, numerical_config, t0, t1, energy_parameters, &
          external_temperature_provider, output, diagnostic, runtime, active_physical_calls, bottom_publication)
@@ -131,13 +122,14 @@ contains
       publication%bottom_advective_outward_j_m2_value = bottom_energy
     end if
 
-    ! last_observation is the complete accepted thermal interval only when the
-    ! accepted transaction used exactly one committed substep. For an accepted
-    ! two-half trajectory it represents only the final half and MUST NOT be
-    ! promoted as whole-interval conductive energy. I23 therefore fails closed
-    ! on that route until a rollback-safe thermal boundary carrier exists.
+    ! last_observation is whole-interval thermal authority only for the
+    ! model-certificate route with exactly one committed canonical transaction.
+    ! In external full/half mode accepted_substeps still counts the canonical
+    ! transaction as one although the accepted route contains two half trials;
+    ! the backend observation is then only the final half. Fail closed here.
     observation = backend%observation()
-    thermal_safe = output%accepted_substeps == 1 .and. observation%soil_temperature_active .and. &
+    thermal_safe = numerical_config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE .and. &
+         output%accepted_substeps == 1 .and. observation%soil_temperature_active .and. &
          observation%soil_temperature_executed .and. observation%soil_temperature_status == SOIL_TEMP_OK .and. &
          observation%soil_temperature_energy_accounting_complete .and. &
          ieee_is_finite(observation%soil_temperature_boundary_energy_j_cm2) .and. &
@@ -145,8 +137,6 @@ contains
          ieee_is_finite(observation%soil_temperature_energy_residual_j_cm2)
 
     if (thermal_safe) then
-      ! Qualified F-PM07B/FMR39 definition:
-      ! energy_residual = sensible_storage_change - boundary_energy_into_soil.
       accounting_identity = observation%soil_temperature_storage_change_j_cm2 - &
            observation%soil_temperature_boundary_energy_j_cm2 - observation%soil_temperature_energy_residual_j_cm2
       thermal_safe = close_roundoff(accounting_identity, observation%soil_temperature_boundary_energy_j_cm2, &
@@ -158,17 +148,11 @@ contains
       if (ieee_is_finite(converted_top)) then
         publication%top_conductive_available_value = .true.
         publication%top_conductive_into_j_m2_value = converted_top
-
-        ! The qualified restricted-soil-temperature authority explicitly uses
-        ! zero bottom conductive heat flux. This is a known modeled zero, not
-        ! a missing term repaired to zero.
         publication%bottom_conductive_available_value = .true.
         publication%bottom_conductive_outward_j_m2_value = 0.0_real64
       end if
     end if
 
-    ! No qualified canonical top-water donor-temperature authority exists in
-    ! EB-I23. top_advective_available therefore remains false by construction.
     publication%status_value = EB_I23_ACCEPTED_PARTIAL
     publication%initialized = .true.
   end subroutine fmr_execute_column_with_sensible_boundary

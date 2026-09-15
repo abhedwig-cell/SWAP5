@@ -1,6 +1,7 @@
 module mod_eb_i24_top_liquid_sensible_inflow_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t
@@ -97,9 +98,6 @@ contains
 
     publication = eb_i24_sensible_boundary_publication_t()
 
-    ! Observation and accepted I23 receipt stay inside one call boundary.  A
-    ! caller cannot pair a top flux from one trial with another transaction's
-    ! accepted sensible-boundary publication.
     call fmr_execute_column_with_sensible_boundary(backend, transaction_control, column, template, parameters, &
          effective_forcing, committed_state, numerical_config, t0, t1, energy_parameters, &
          external_bottom_temperature_provider, output, diagnostic, runtime, active_physical_calls, inherited)
@@ -132,18 +130,17 @@ contains
 
     observation = backend%observation()
 
-    ! I23 already proved that last_observation is safe only for one accepted
-    ! substep.  I24 applies the same accepted-state restriction to the top
-    ! liquid-water flux rather than pretending the last solve is an aggregate.
-    if (output%accepted_substeps /= 1) then
+    ! last_observation is safe for top-liquid whole-interval materialization
+    ! only on the model-certificate route with one committed canonical
+    ! transaction. External full/half can still report accepted_substeps == 1
+    ! while its accepted transaction consists of two half trials; fail closed.
+    if (output%accepted_substeps /= 1 .or. &
+        numerical_config%transaction%temporal_mode /= TX_TEMPORAL_MODEL_CERTIFICATE) then
       publication%top_status_value = EB_I24_TOP_MULTI_SUBSTEP_UNQUALIFIED
       call finish_publication(publication)
       return
     end if
     if (parameters%snow_active) then
-      ! With snow active the solver top flux contains base_top_flux - melt_rate.
-      ! That mixes external liquid input and snow-to-soil transfer and therefore
-      ! has no single qualified donor temperature in this capability.
       publication%top_status_value = EB_I24_TOP_SNOW_UNQUALIFIED
       call finish_publication(publication)
       return
@@ -156,9 +153,6 @@ contains
     end if
 
     if (observation%top_flux > 0.0_real64) then
-      ! Positive canonical top flux is water leaving the soil.  Its donor is on
-      ! the soil side and no accepted local-liquid donor-temperature authority
-      ! is qualified here.  Never reuse the external inflow temperature.
       publication%top_status_value = EB_I24_TOP_OUTFLOW_UNQUALIFIED
       call finish_publication(publication)
       return
@@ -194,8 +188,6 @@ contains
       publication%boundary_value%top_advective_into_j_m2 = energy_j_m2
       publication%top_status_value = EB_I24_TOP_INFLOW_MATERIALIZED
     case (EXT_LIQ_TEMP_NOT_REQUIRED)
-      ! Exact zero accepted transport is a known zero, not a missing value
-      ! repaired to zero.  No donor temperature is required by the I08 law.
       if (inflow_cm /= 0.0_real64) then
         publication%top_status_value = EB_I24_TOP_INVALID
         call finish_publication(publication)

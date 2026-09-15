@@ -1,0 +1,24 @@
+name: EB-I23R I24R internal two-half fail-closed
+
+on:
+  push:
+    branches:
+      - work/eb-i23r-i24r-internal-two-half-fail-closed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run EB-I23R I24R owner qualification
+        shell: bash
+        run: bash tests/eb/run_eb_i23r_i24r_internal_two_half_fail_closed_gate.sh
