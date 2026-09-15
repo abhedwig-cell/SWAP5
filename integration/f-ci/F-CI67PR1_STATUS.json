@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI67PR1",
+  "title": "RossFast D3R preservation scope reconciliation",
+  "status": "CLOSED_POSITIVE_GOVERNANCE_RECONCILIATION",
+  "decision": "QUALIFIED_DEPENDENCY_SCOPED_FCI67_PRESERVATION",
+  "branch": "qualification/f-ci67pr1-preservation-scope-reconciliation",
+  "canonical_preimage": "e650668991d4e690ff98720afa002af8138e7910",
+  "precloseout_qualified_head": "937b00a3d4d52dc6c7acf0398e19d99e19138122",
+  "qualification_run": 34933663829,
+  "authority": "ea9a33fd856d862a5e1ae327cb1e781ef9ecf9ea",
+  "preserved_blobs": {
+    "rossfast_d3r_policy": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "fci67_status": "3644f5edabf51ac4a598bb014e03d4eb38f3e4c2",
+    "transaction": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "contracts": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "interval_runtime": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237"
+  },
+  "qualified": {
+    "policy_blob_preserved": true,
+    "relevant_dependency_blobs_preserved": true,
+    "fci67_composition_replayed": true,
+    "later_unrelated_admitted_source_does_not_invalidate_fci67_evidence": true,
+    "zero_production_source_delta": true
+  },
+  "rationale": "The previous preservation predicate rejected any later src delta, so admitted F-CI68 kernel/checkpoint routing made the dedicated F-CI67P workflow red even though every dependency of the F-CI67 policy composition remained byte-identical. Preservation is now scoped to the exact immutable dependencies that can invalidate F-CI67 evidence, followed by the existing composition replay.",
+  "hard_nonclaims": [
+    "NO_FCI67_POLICY_CHANGE",
+    "NO_PRODUCTION_SOURCE_CHANGE",
+    "NO_NEW_ROSSFAST_PHYSICS",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION"
+  ]
+}
