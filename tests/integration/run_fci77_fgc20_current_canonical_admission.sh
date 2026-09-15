@@ -53,7 +53,7 @@ PY
 
 grep -q 'area_fraction' "$prod"
 grep -q 'weighted_flux' "$prod"
-grep -q 'q_groundwater_m_per_s = -weighted_flux' "$prod"
+grep -q 'q_groundwater_area_weighted_m_per_s = -weighted_flux' "$prod"
 ! grep -Eiq 'normalize|renormal' "$prod"
 
 work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
