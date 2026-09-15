@@ -17,6 +17,7 @@ module mod_whole_column_sensible_energy_accounting
   integer, parameter, public :: WCSA_INCOMPLETE_BOUNDARY = 3
   integer, parameter, public :: WCSA_BALANCE_FAILURE = 4
   integer, parameter, public :: WCSA_NUMERIC_FAILURE = 5
+  integer, parameter, public :: WCSA_REFERENCE_MISMATCH = 6
 
   type, public :: whole_column_sensible_boundary_t
     logical :: top_conductive_available = .false.
@@ -27,6 +28,8 @@ module mod_whole_column_sensible_energy_accounting
     real(real64) :: bottom_conductive_outward_j_m2 = 0.0_real64
     logical :: bottom_advective_available = .false.
     real(real64) :: bottom_advective_outward_j_m2 = 0.0_real64
+    logical :: mass_carried_reference_available = .false.
+    real(real64) :: mass_carried_reference_temperature_c = 0.0_real64
   contains
     procedure, public :: complete => whole_column_boundary_complete
   end type whole_column_sensible_boundary_t
@@ -54,7 +57,8 @@ contains
   pure logical function whole_column_boundary_complete(self) result(complete)
     class(whole_column_sensible_boundary_t), intent(in) :: self
     complete = self%top_conductive_available .and. self%top_advective_available .and. &
-         self%bottom_conductive_available .and. self%bottom_advective_available
+         self%bottom_conductive_available .and. self%bottom_advective_available .and. &
+         self%mass_carried_reference_available
   end function whole_column_boundary_complete
 
   subroutine evaluate_whole_column_sensible_energy(component_id, dz_cm, theta_sat, &
@@ -149,6 +153,11 @@ contains
       result%status = status
       return
     end if
+    if (.not. nearly_same(boundary%mass_carried_reference_temperature_c, reference_temperature_c)) then
+      status = WCSA_REFERENCE_MISMATCH
+      result%status = status
+      return
+    end if
 
     component_ids(1) = component_id
     initial_energy(1) = result%initial_storage_j_m2
@@ -230,7 +239,8 @@ contains
     valid = ieee_is_finite(boundary%top_conductive_into_j_m2) .and. &
          ieee_is_finite(boundary%top_advective_into_j_m2) .and. &
          ieee_is_finite(boundary%bottom_conductive_outward_j_m2) .and. &
-         ieee_is_finite(boundary%bottom_advective_outward_j_m2)
+         ieee_is_finite(boundary%bottom_advective_outward_j_m2) .and. &
+         ieee_is_finite(boundary%mass_carried_reference_temperature_c)
   end function boundary_values_finite
 
   pure logical function storage_result_finite(result) result(valid)
