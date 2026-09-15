@@ -113,6 +113,13 @@ contains
     call fmr_execute_multisubstep_sensible_boundary(backend, tx, column, template, parameters, forcing, committed, &
          config, t_mid, t_end, energy_parameters, eb_i26_bottom_provider, top_temperature, output, diagnostic, runtime, &
          active_calls, p2)
+    if (.not. output%completed .or. .not. output%committed) then
+      write(*,'(A,1X,L1,1X,L1,1X,I0,1X,I0,1X,A,1X,A,1X,I0,1X,I0,1X,I0,1X,I0,1X,I0,1X,L1,1X,ES24.16E3)') &
+           'EB_I26_SECOND_OUTER_DIAG', output%completed, output%committed, output%kernel_status, output%commit_status, &
+           trim(output%admission_status), trim(diagnostic%failure_classification), output%accepted_substeps, &
+           diagnostic%attempts, diagnostic%retries, int(output%initial_revision), int(output%final_revision), &
+           output%mass%complete, output%mass%residual
+    end if
     call require(output%completed .and. output%committed, 'second outer transaction committed')
     call require(committed%current_revision() == 2_int64, 'second outer revision')
     call require(p2%ready() .and. p2%accepted_substeps() == 1 .and. p2%carrier_sample_count() == 2, &
