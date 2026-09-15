@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS09",
+  "title": "RossFast D3R explicit application model configuration binding",
+  "status": "IMPLEMENTED_PENDING_INDEPENDENT_QUALIFICATION",
+  "decision": "NOT_YET_QUALIFIED_OR_ADMITTED",
+  "parent": {
+    "branch": "work/f-ross08-explicit-application-model-selection",
+    "head": "7b16da2aadcfdcda842002b1cd5ba4f9bab5a00f",
+    "qualified_selection_blob": "5b652f04f172a8faa468d38faa23883ce6f35294",
+    "status_blob": "7cf4028b72adea5c97962d2c7206c81515e12333"
+  },
+  "candidate": {
+    "config_binding_blob": "5892d5b2573c678ab8d121ae80353870b66886d2",
+    "test_blob": "94cc8ad416e8f11e18ee06b2df90c258c506849b",
+    "runner_blob": "663e825e96ae646df331d8205938e45e61df7cfd",
+    "workflow_blob": "0e6f79c102a208da3a716ade71758095732cf633"
+  },
+  "configuration_contract": {
+    "configuration_is_explicit_opt_in": true,
+    "configuration_key": "SOIL_WATER_MODEL",
+    "accepted_value": "ROSSFAST_D3R",
+    "accepted_value_is_case_sensitive": true,
+    "missing_configuration_selects_nothing": true,
+    "unknown_configuration_key_fails_closed": true,
+    "unsupported_or_reference_model_value_fails_closed": true,
+    "prebound_application_model_key_is_a_conflict": true,
+    "complete_request_validated_before_runtime_registry_materialization": true,
+    "f_ross08_application_selection_remains_the_only_materialization_authority": true,
+    "legacy_swsolve_semantics_unchanged": true,
+    "legacy_input_file_grammar_unchanged": true,
+    "full_richards_task2_adapter_unchanged": true
+  },
+  "qualification_plan": {
+    "reuse_f_ross08_immutable_scientific_evidence": true,
+    "reason": "F-ROSS08 qualified source and scientific dependencies are blob-identical after governance-only ancestry reconciliation",
+    "new_tests": [
+      "exact explicit ROSSFAST_D3R configuration succeeds",
+      "missing configuration fails closed",
+      "unknown configuration key fails closed",
+      "case-normalized RossFast value fails closed",
+      "reference-model value is not captured",
+      "prebound model-key conflict fails atomically",
+      "downstream invalid request leaks no runtime registry",
+      "O0 and O2 outputs are identical"
+    ]
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_LEGACY_INPUT_FILE_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_AUTOMATIC_ROSSFAST_SELECTION_WHEN_CONFIGURATION_IS_ABSENT",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_SELECTOR_OR_RETRY_SEMANTICS",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
+  ],
+  "next_permitted_action": "RUN_F_ROSS09_INDEPENDENT_QUALIFICATION_AND_CLOSE_ONLY_ON_EXACT_PASS"
+}

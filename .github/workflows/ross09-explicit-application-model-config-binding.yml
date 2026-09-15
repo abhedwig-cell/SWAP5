@@ -1,0 +1,156 @@
+name: F-ROSS09 explicit application model config binding
+
+on:
+  push:
+    branches:
+      - work/f-ross09-explicit-application-model-config-binding
+    paths:
+      - 'src/runtime/mod_fmr_rossfast_application_config.f90'
+      - 'tests/ross/test_ross09_explicit_application_model_config_binding.f90'
+      - 'tests/ross/run_ross09_explicit_application_model_config_binding.sh'
+      - 'integration/f-ross/F-ROSS09_STATUS.json'
+      - '.github/workflows/ross09-explicit-application-model-config-binding.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross09-config-binding-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  explicit-application-model-config-binding-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock F-ROSS08 parent and inherited qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=7b16da2aadcfdcda842002b1cd5ba4f9bab5a00f
+          LIVE="$(git ls-remote origin refs/heads/work/f-ross08-explicit-application-model-selection | awk '{print $1}')"
+          test "$LIVE" = "$BASE"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_runtime_core.f90)" = 43eef1979e0202f8ecc92f73eb7d8025dab515a4
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_kernel_backend.f90)" = 29093b517bc6fdd40f32325018729c4c3dee6e85
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_application_selection.f90)" = 5b652f04f172a8faa468d38faa23883ce6f35294
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS08_STATUS.json)" = 7cf4028b72adea5c97962d2c7206c81515e12333
+          test "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" = c1850ea7fa82a1ed8974af57e1da95aa11a771be
+          test "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" = 3090e1d3d5701a87b3624412ad88590e17369d63
+
+      - name: Enforce bounded F-ROSS09 surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=7b16da2aadcfdcda842002b1cd5ba4f9bab5a00f
+          allowed=(
+            src/runtime/mod_fmr_rossfast_application_config.f90
+            tests/ross/test_ross09_explicit_application_model_config_binding.f90
+            tests/ross/run_ross09_explicit_application_model_config_binding.sh
+            integration/f-ross/F-ROSS09_STATUS.json
+            .github/workflows/ross09-explicit-application-model-config-binding.yml
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "ROSS09_UNEXPECTED_PATH $path" >&2; exit 109; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- \
+            src/legacy/b1_10_port/soilwater.f90 \
+            src/adapter/mod_b110_production_soil_water_task2.f90 \
+            src/runtime/mod_fmr_runtime_core.f90 \
+            src/runtime/mod_fmr_serialized_kernel_backend.f90 \
+            src/runtime/mod_fmr_rossfast_application_selection.f90 \
+            src/runtime/mod_fmr_rossfast_registry_dispatch.f90 \
+            src/runtime/mod_rossfast_d3r_execution_policy.f90 \
+            src/runtime/mod_rossfast_d3r_model_binding.f90 \
+            src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90 \
+            src/solver/mod_rossfast_d3r_table_kernel.f90 \
+            src/solver/mod_rossfast_d3r_table_provider.f90 \
+            assets/rossfast/d3r)"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-ROSS09 config-binding gate
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/ross/run_ross09_explicit_application_model_config_binding.sh \
+            2>&1 | tee F-ROSS09_GATE.log
+
+      - name: Persist F-ROSS09 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args):
+              return subprocess.check_output(args, text=True).strip()
+          payload = {
+              'work_unit': 'F-ROSS09',
+              'status': 'PASS',
+              'tested_head': sh('git', 'rev-parse', 'HEAD'),
+              'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
+              'parent_f_ross08_head': '7b16da2aadcfdcda842002b1cd5ba4f9bab5a00f',
+              'inherited_qualified_blobs': {
+                  'fmr_runtime_core': '43eef1979e0202f8ecc92f73eb7d8025dab515a4',
+                  'serialized_kernel_backend': '29093b517bc6fdd40f32325018729c4c3dee6e85',
+                  'rossfast_application_selection': '5b652f04f172a8faa468d38faa23883ce6f35294',
+                  'f_ross08_status': '7cf4028b72adea5c97962d2c7206c81515e12333',
+                  'legacy_soilwater': 'c1850ea7fa82a1ed8974af57e1da95aa11a771be',
+                  'production_task2': '3090e1d3d5701a87b3624412ad88590e17369d63',
+              },
+              'candidate_blobs': {
+                  'config_binding': sh('git', 'hash-object', 'src/runtime/mod_fmr_rossfast_application_config.f90'),
+                  'test': sh('git', 'hash-object', 'tests/ross/test_ross09_explicit_application_model_config_binding.f90'),
+                  'runner': sh('git', 'hash-object', 'tests/ross/run_ross09_explicit_application_model_config_binding.sh'),
+                  'workflow': sh('git', 'hash-object', '.github/workflows/ross09-explicit-application-model-config-binding.yml'),
+              },
+              'qualified': {
+                  'config_is_explicit_opt_in_only': True,
+                  'exact_soil_water_model_key_only': True,
+                  'exact_case_sensitive_rossfast_d3r_value_only': True,
+                  'missing_unknown_reference_and_case_normalized_values_fail_closed': True,
+                  'prebound_column_conflict_fails_atomically': True,
+                  'downstream_selection_failure_leaks_no_runtime_registry': True,
+                  'f_ross08_selection_blob_is_unchanged': True,
+                  'legacy_swsolve_and_full_richards_task2_blobs_are_unchanged': True,
+                  'o0_o2_output_identity': True,
+              },
+              'nonclaims': [
+                  'NO_LEGACY_INPUT_FILE_GRAMMAR_OR_PARSER_CHANGE',
+                  'NO_SW_SOLVE_REINTERPRETATION',
+                  'NO_AUTOMATIC_ROSSFAST_SELECTION_WHEN_CONFIGURATION_IS_ABSENT',
+                  'NO_REFERENCE_RICHARDS_CAPTURE',
+                  'NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH',
+                  'NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_SELECTOR_OR_RETRY_SEMANTICS',
+                  'NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_F_ROSS08',
+                  'NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION',
+              ],
+          }
+          open('F-ROSS09_EVIDENCE.json', 'w').write(json.dumps(payload, indent=2, sort_keys=True) + '\n')
+          PY
+
+      - name: Upload F-ROSS09 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross09-gate-diagnostics-${{ github.run_id }}
+          path: F-ROSS09_GATE.log
+          if-no-files-found: warn
+
+      - name: Upload F-ROSS09 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross09-config-binding-${{ github.run_id }}
+          path: F-ROSS09_EVIDENCE.json
