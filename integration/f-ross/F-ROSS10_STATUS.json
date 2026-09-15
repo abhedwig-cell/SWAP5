@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "F-ROSS10",
   "title": "RossFast D3R external application model configuration file adapter",
-  "status": "PERSISTED_PENDING_INDEPENDENT_QUALIFICATION",
-  "decision": "NOT_YET_QUALIFIED_OR_ADMITTED",
+  "status": "CLOSED_POSITIVE_RESTRICTED_EXTERNAL_CONFIG_FILE_ADAPTER",
+  "decision": "QUALIFIED_EXTERNAL_FILE_INGESTION_TO_F_ROSS09_TYPED_CONFIG_PENDING_PRODUCTION_HOST_WIRING_AND_CANONICAL_ADMISSION",
   "workstream": "RT_HY_EXTERNAL_ADAPTER_BOUNDARY",
   "baseline": {
     "branch": "work/f-ross09-explicit-application-model-config-binding",
@@ -14,16 +14,11 @@
   },
   "checkpoint": {
     "commit": "e5377427a6ab44f166f31bcc321a809b121a00bd",
-    "tree": "ce31f7e6c040a5fccf1afa471f86bd674764cc85",
-    "files_persisted": [
-      "src/adapter/mod_rossfast_application_config_file_adapter.f90",
-      "tests/ross/test_ross10_external_model_config_file_adapter.f90",
-      "tests/ross/run_ross10_external_model_config_file_adapter.sh",
-      ".github/workflows/ross10-external-model-config-file-adapter.yml",
-      "integration/f-ross/F-ROSS10_STATUS.json"
-    ]
+    "tree": "ce31f7e6c040a5fccf1afa471f86bd674764cc85"
   },
-  "candidate": {
+  "qualified_postimage": {
+    "head": "b53edf73e020323b955cb47ba85b6d44a802a38c",
+    "tree": "57708d3aa27be238f3da73689593cce2cadb1ed5",
     "file_adapter_blob": "55dc1632eb4d72d52cc2e038765710801bee5dd2",
     "test_blob": "8d2d0e3dbc2c4330c841dc08e88fa63e3f38a0ab",
     "runner_blob": "11b0d4df246525e2ec08830a1a697564d76d40bf",
@@ -36,7 +31,7 @@
     "25_reference_mode_available": "preserves_reference_path_and_does_not_capture_reference_selection",
     "29_no_silent_dependencies": "strengthens_by_requiring_explicit_file_path_and_explicit_assignment"
   },
-  "file_contract": {
+  "qualified_file_contract": {
     "external_file_path_is_explicit": true,
     "maximum_file_bytes": 4096,
     "grammar": "ONE_NONBLANK_KEY_EQUALS_VALUE_ASSIGNMENT",
@@ -47,30 +42,46 @@
     "malformed_or_oversized_input_fails_closed": true,
     "missing_path_or_file_fails_closed": true,
     "semantic_key_and_value_validation_delegated_to_f_ross09": true,
+    "valid_file_materializes_restricted_rossfast_backend_only_through_f_ross09": true,
     "legacy_swp_input_grammar_unchanged": true,
     "legacy_swsolve_semantics_unchanged": true,
     "production_full_richards_adapter_unchanged": true
   },
-  "qualification_plan": {
-    "reuse_f_ross09_and_f_ross08_immutable_evidence": true,
-    "new_tests": [
-      "read exact valid file into typed F-ROSS09 config",
-      "accept surrounding assignment whitespace and blank lines without changing key/value",
-      "end-to-end valid file materializes restricted RossFast backend through F-ROSS09",
-      "lowercase model remains rejected by F-ROSS09",
-      "unknown key remains rejected by F-ROSS09",
-      "malformed file fails closed",
-      "multiple assignments fail atomically without partial config",
-      "empty file fails closed",
-      "oversized file fails closed",
-      "missing path and missing file fail closed",
-      "O0 and O2 output identity"
-    ]
+  "qualification": {
+    "workflow_run_id": 34973221950,
+    "job_id": 104394371392,
+    "tested_head": "b53edf73e020323b955cb47ba85b6d44a802a38c",
+    "conclusion": "success",
+    "compiler": "GNU Fortran on ubuntu-24.04",
+    "parent_lock_pass": true,
+    "bounded_surface_pass": true,
+    "valid_file_to_typed_config_pass": true,
+    "valid_file_end_to_end_rossfast_materialization_pass": true,
+    "whitespace_and_blank_line_contract_pass": true,
+    "lowercase_model_remains_rejected_by_f_ross09": true,
+    "unknown_key_remains_rejected_by_f_ross09": true,
+    "malformed_duplicate_empty_oversized_input_fail_closed": true,
+    "missing_path_and_missing_file_fail_closed": true,
+    "legacy_and_full_richards_blobs_unchanged": true,
+    "o0_o2_output_identity": true,
+    "reused_f_ross09_and_f_ross08_immutable_evidence": true,
+    "artifacts": {
+      "evidence": {
+        "id": 10398397238,
+        "digest": "sha256:74fd7dbd62950481bfd4e7dcf964e206fc62544083075a0a7ac78e76052fbf88",
+        "size_bytes": 1220
+      },
+      "diagnostics": {
+        "id": 10397908472,
+        "digest": "sha256:ee2f32ed9a7a4812fc84089dfe968b6ace214fea63caa73729ece6920b0aeb94",
+        "size_bytes": 566
+      }
+    }
   },
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_admission": false,
   "canonical_admission": false,
   "hard_nonclaims": [
@@ -84,7 +95,5 @@
     "NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_F_ROSS08",
     "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
   ],
-  "next_expensive_action": "RUN_F_ROSS10_GITHUB_QUALIFICATION_GATE",
-  "recovery_point": "e5377427a6ab44f166f31bcc321a809b121a00bd",
-  "blockers": []
+  "next_gap": "RECONCILE_THE_EXISTING_PUBLIC_API_OR_APPLICATION_HOST_AND_QUALIFY_ONE_EXPLICIT_CALLSITE_THAT_SUPPLIES_THIS_FILE_PATH_WITHOUT_AUTODISCOVERY_OR_LEGACY_SWP_GRAMMAR_CHANGES"
 }
