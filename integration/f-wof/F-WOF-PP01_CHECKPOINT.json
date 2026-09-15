@@ -1,68 +1,64 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP01",
   "title": "WOFOST 8.1 Independent Potential Production Equivalence",
-  "phase": "QUALIFY",
+  "phase": "RECONCILE",
   "canonical": {
+    "repository": "abhedwig-cell/SWAP5",
     "branch": "integration/f-ci-canonical",
     "reconciled_head": "1f33328e2ddc0d28450d35647c1c97f293b1e622"
   },
   "branch": "work/f-wof-pp01-independent-potential-production-equivalence",
-  "branch_commits": {
-    "reconcile_checkpoint": "35be3997842d342206dd9dbc2be6a00d0ec8499d",
-    "oracle_manifest": "ac0e5b017966a052f0b0d87f4314695fda9fa3b6",
-    "mapping_contract": "df5251ec6f445d3b8b39964b88f82b7d63e8d987"
-  },
   "reference": {
+    "artifact": "tests_Wofost81_PP.zip",
     "zip_sha256": "99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145",
+    "generator": "PCSE 6.0.13",
+    "model": "WOFOST 8.1",
     "case_count": 10,
     "manifest": "tests/fwof/pp01/REFERENCE_MANIFEST.json",
     "mapping_contract": "tests/fwof/pp01/MAPPING_CONTRACT.md"
   },
-  "qualification_progress": {
-    "immutable_reference_provenance_persisted": true,
-    "all_ten_case_hashes_persisted": true,
-    "reference_precision_persisted_without_change": true,
-    "direct_rate_parameter_mapping_audited": true,
-    "potential_production_reltr_binding_identified": true,
-    "daily_output_observation_mapping_partially_audited": true,
-    "complete_input_mapping_established": false,
-    "complete_output_mapping_established": false,
-    "numerical_trajectory_gate_executable": false
+  "reconciliation_correction": {
+    "previous_assumption": "qualify the partially migrated current SWAP5 crop seam directly against the complete PCSE oracle",
+    "corrected_route": "first qualify the already completed SWAP 4.3.1 WOFOST 8.1 Fortran donor against the independent PCSE oracle; only after donor qualification qualify SWAP5 preservation against that donor/oracle",
+    "reason": "the WOFOST 8.1 Python-to-Fortran translation and runtime integration were completed previously in the SWAP 4.3.1 line, so reconstructing that mapping from the partial SWAP5 seam would duplicate prior work and conflate donor equivalence with migration preservation"
   },
-  "evidence": {
-    "rate_parameter_source": "src/crop/mod_wofost_rate_parameters.f90",
-    "assimilation_source": "src/crop/mod_wofost_prepare_assimilation.f90",
-    "rate_finalization_source": "src/crop/mod_wofost_finalize_rates.f90",
-    "established_parameter_mnemonics": [
-      "IDSL","DLO","DLC","DTSMTB","TMPFTB","TMNFTB","RFSETB","FRTB","FLTB","FSTB","FOTB","RDRRTB","RDRSTB","SLATB","CVR","CVS","CVL","CVO","Q10","RMR","RML","RMS","RMO","PERDL","TBASE","RGRLAI"
+  "historical_donor_evidence_to_recover": {
+    "known_working_distribution": "SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip",
+    "known_distribution_sha256": "4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
+    "reported_source_closeout_commit": "839c34a657c2cee202b55d9ee85253d867a3d47a",
+    "reported_official_parameter_commit": "472c260930371ab7b87b194ca97eebfbc46ba251",
+    "reported_runtime_routes": ["WOFOSTVER=73", "WOFOSTVER=81"],
+    "reported_capabilities": [
+      "WOFOST 8.1 runtime integration",
+      "leaf-N assimilation",
+      "crop-N demand uptake fixation and translocation",
+      "Soil-N request supply apply",
+      "mass-conserving arbitration",
+      "biomass reallocation",
+      "residues",
+      "restart"
     ],
-    "reference_side_additional_parameterization_requiring_semantic_transform": [
-      "AMAX_REF","AMAX_LNB","AMAX_SLP","EFFTB","KDIFTB","CO2EFFTB","CO2AMAXTB","CO2"
-    ],
-    "weather_preprocessing_gap": [
-      "TAVD","DAYL","SINLD","COSLD","DIFPP","DSINBE","TMNR"
-    ],
-    "output_gap": [
-      "RD","TRA","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal"
-    ],
-    "direct_or_derived_observation_candidates": [
-      "DVS","LAI","TWRT","TWST","TWSO","TWLV","TAGP"
-    ],
-    "potential_production_rule": "test-only accepted aggregates must yield reltr=1 through the admitted production interface; no bypass of finalize_wofost_one_day_rates"
+    "current_live_SWAPS_repo_resolution": "not found in abhedwig-cell/SWAP5 branch/commit namespace; reported closeout SHA does not resolve in this repository",
+    "interpretation": "the donor evidence belongs to the separate/local SWAP-4.3.1 reference lineage or a retained distribution, not to be fabricated as current SWAP5 history"
   },
-  "verdict": "BLOCKED_MAPPING_INCOMPLETE",
-  "scientific_interpretation": "The Allard/PCSE suite is suitable independent oracle evidence, but current SWAP5 cannot yet be claimed equivalent to the complete YAML contract because several WOFOST 8.1 input transformations and output observations have not been demonstrated equivalent. Executing a partial comparison while silently dropping those fields would overstate qualification.",
+  "qualification_plan": {
+    "stage_1": "recover or materialize the exact immutable SWAP 4.3.1 WOFOST81 donor source/distribution and verify its hash/provenance",
+    "stage_2": "build a test-only runner that feeds each of the ten Allard/PCSE potential-production cases to that donor without changing donor physics",
+    "stage_3": "compare the full daily ModelResults surface using each YAML Precision value and deterministic replay; report maximum absolute deviation and first divergence date",
+    "stage_4": "only if donor qualification passes, bind SWAP5 migration-preservation qualification to the qualified donor/oracle surface"
+  },
+  "verdict": "BLOCKED_DONOR_ARTIFACT_NOT_YET_LIVE_RESOLVED",
   "mutations": {
     "production_source_changed": false,
     "physics_changed": false,
     "canonical_changed": false,
     "reference_values_changed": false,
     "reference_tolerances_changed": false,
-    "test_only_metadata_added": true
+    "checkpoint_corrected": true
   },
-  "next_permitted_action": "Resolve the independent semantic mapping for WOFOST 8.1 assimilation/weather preprocessing and determine whether RD/TRA/N-state are already available through another current canonical seam. If those mappings exist, implement the test-only driver and run all ten trajectories. If N-state is genuinely outside the current standard WOFOST capability, decide explicitly whether to create a narrower carbon/phenology PP qualification rather than weakening F-WOF-PP01.",
+  "next_permitted_action": "Locate the retained SWAP 4.3.1 WOFOST81 donor artifact/source from the historical reference lineage or make that exact immutable artifact available to the qualification environment. Verify SHA-256 before compiling or testing. Do not substitute the current partial SWAP5 seam for the donor and do not recreate the donor mapping from memory.",
   "exclusions": [
     "no EB",
     "no ROSS/RossFast",
@@ -70,6 +66,7 @@
     "no new crop physics",
     "no production semantic changes to force PASS",
     "no invented tolerance",
-    "no silent omission of oracle fields"
+    "no silent omission of oracle fields",
+    "no fabricated donor commit or source provenance"
   ]
 }
