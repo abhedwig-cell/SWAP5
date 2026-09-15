@@ -6,7 +6,6 @@ BASE=9d202705d1d7063ae129166b1049f7555a7ad802
 git fetch origin integration/f-ci-canonical
 git merge-base --is-ancestor "$BASE" origin/integration/f-ci-canonical
 
-# Reuse EB-I25 evidence only while every relevant inherited authority is unchanged.
 declare -A LOCKS=(
   [src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90]=fc88731c12c8af5136aad13bda2a7da3d768dc4c
   [src/runtime/mod_fmr_serialized_reference_backend.f90]=960ea116cad81e8c0db8a579982f4999b3d085ed
@@ -24,7 +23,6 @@ for path in "${!LOCKS[@]}"; do
 done
 echo 'EB_I26_INHERITED_AUTHORITY_LOCK=PASS'
 
-# The workunit owns only the new aggregation capability and its evidence.
 git diff --name-only "$BASE" HEAD | sort > changed.txt
 cat > allowed.txt <<'EOF'
 .github/workflows/eb-i26-outer-substep-sensible-boundary.yml
@@ -40,10 +38,8 @@ test ! -s unexpected.txt
 test -f src/runtime/mod_eb_i26_outer_substep_sensible_boundary_aggregation.f90
 test -f tests/eb/EB-I26_CONTRACT.md
 test -f tests/eb/test_eb_i26_outer_substep_sensible_boundary_aggregation.f90
-
 echo 'EB_I26_BOUNDED_DELTA=PASS'
 
-# Structural non-execution and hard-nonclaim guards.
 ! grep -Eq 'call[[:space:]]+fmr_execute|call[[:space:]]+run_trial|call[[:space:]]+execute_resolved_column' \
   src/runtime/mod_eb_i26_outer_substep_sensible_boundary_aggregation.f90
 grep -Fq 'size(publications) < 2' src/runtime/mod_eb_i26_outer_substep_sensible_boundary_aggregation.f90
@@ -130,7 +126,10 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
     -c tests/eb/test_eb_i26_outer_substep_sensible_boundary_aggregation.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt" 2>&1
+  if ! "$OUT/test" > "$OUT/output.txt" 2>&1; then
+    cat "$OUT/output.txt"
+    exit 1
+  fi
   grep -Fx 'EB_I26_TWO_OUTER_FOUR_HALF_AGGREGATION=PASS' "$OUT/output.txt"
   grep -Fx 'EB_I26_SINGLE_OUTER_REJECTED=PASS' "$OUT/output.txt"
   grep -Fx 'EB_I26_REVERSED_SEQUENCE_REJECTED=PASS' "$OUT/output.txt"
