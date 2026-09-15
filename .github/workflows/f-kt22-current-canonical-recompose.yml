@@ -24,29 +24,30 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PREVIOUS_CANONICAL=6acba7e7371347a17cc277ab8cec063d94646006
-          CANONICAL=6acba7e7371347a17cc277ab8cec063d94646006
+          EXPECTED_CANONICAL_TREE=ca2d9030bbaf76eab196da81dcd9419a24f8ecfc
           BASE=1f33328e2ddc0d28450d35647c1c97f293b1e622
           SOURCE=c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
           FMR=src/runtime/mod_fmr_serialized_reference_backend.f90
 
           git fetch origin integration/f-ci-canonical work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
           LIVE_CANONICAL="$(git rev-parse origin/integration/f-ci-canonical)"
-          SOURCE_BASE="$(git merge-base "$CANONICAL" "$SOURCE")"
+          LIVE_CANONICAL_TREE="$(git rev-parse "$LIVE_CANONICAL^{tree}")"
+          SOURCE_BASE="$(git merge-base "$LIVE_CANONICAL" "$SOURCE")"
           echo "FKT22_LIVE_CANONICAL=$LIVE_CANONICAL"
-          echo "FKT22_EXPECTED_CANONICAL=$CANONICAL"
+          echo "FKT22_LIVE_CANONICAL_TREE=$LIVE_CANONICAL_TREE"
+          echo "FKT22_EXPECTED_CANONICAL_TREE=$EXPECTED_CANONICAL_TREE"
           echo "FKT22_SOURCE_MERGE_BASE=$SOURCE_BASE"
-          test "$LIVE_CANONICAL" = "$CANONICAL"
+          test "$LIVE_CANONICAL_TREE" = "$EXPECTED_CANONICAL_TREE"
           test "$SOURCE_BASE" = "$BASE"
 
-          # This recomposition branch is anchored at the exact current-canonical
-          # checkpoint. Before overlay it may contain only qualification support
-          # outside src; no production overlay may exist.
-          test -z "$(git diff --name-only "$PREVIOUS_CANONICAL" HEAD -- src)"
+          # Metadata-only canonical commits do not invalidate immutable KT22
+          # evidence.  The relevant dependency is the canonical source tree.
+          # Before overlay, this branch may differ only outside src.
+          test -z "$(git diff --name-only "$LIVE_CANONICAL" HEAD -- src)"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git merge --no-edit "$CANONICAL"
-          test -z "$(git diff --name-only "$CANONICAL" HEAD -- src)"
+          git merge --no-edit "$LIVE_CANONICAL"
+          test -z "$(git diff --name-only "$LIVE_CANONICAL" HEAD -- src)"
           echo 'FKT22_CURRENT_CANONICAL_INHERITED=PASS'
 
           git checkout "$SOURCE" -- \
@@ -63,7 +64,7 @@ jobs:
 
           TMP="${RUNNER_TEMP}/fkt22-recompose"
           mkdir -p "$TMP"
-          git show "$CANONICAL:$FMR" > "$TMP/ours.f90"
+          git show "$LIVE_CANONICAL:$FMR" > "$TMP/ours.f90"
           git show "$BASE:$FMR" > "$TMP/base.f90"
           git show "$SOURCE:$FMR" > "$TMP/theirs.f90"
           set +e
