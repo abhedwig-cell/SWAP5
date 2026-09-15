@@ -187,11 +187,8 @@ contains
     logical, intent(in) :: accept_step
     type(soil_water_accepted_step_direction_result_t) :: step_result
     type(trajectory_step_token_t) :: token
-    type(soil_water_accepted_step_direction_request_t_local) :: unused_local
     logical :: built, staged, accepted
 
-    ! The local wrapper exists only to keep the public request object out of the
-    ! oracle calculations; build_request still exercises real token provenance.
     call build_step_request(state, step_t0, step_t1, token, built)
     call require(built, 'trajectory step request failed')
 
@@ -221,7 +218,6 @@ contains
     end if
   end subroutine stage_step
 
-  ! Fortran requires the real public request type when exercising token issue.
   subroutine build_step_request(state, step_t0, step_t1, token, ok)
     use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t
     type(accepted_trajectory_direction_t), intent(inout) :: state
@@ -263,9 +259,5 @@ contains
     character(len=*), intent(in) :: message
     call require(abs(actual-expected) <= tolerance, message)
   end subroutine require_close
-
-  type :: soil_water_accepted_step_direction_request_t_local
-    integer :: unused = 0
-  end type soil_water_accepted_step_direction_request_t_local
 
 end program test_fgc23_whole_window_response_tangent
