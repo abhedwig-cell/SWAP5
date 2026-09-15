@@ -23,20 +23,15 @@ EXPECTED_FWO39=c85424228f65799757833f34272dba570c3ea5c0
 echo 'F_WOF_PP03_FWO38_SOURCE_BLOB_UNCHANGED=PASS'
 echo 'F_WOF_PP03_FWO39_SOURCE_BLOB_UNCHANGED=PASS'
 
-# F-WOF38/F-WOF39 predate two later generic transaction changes:
-# 1) F-KT18 requires explicit fail-closed mass-completeness metadata from the
-#    historical F-WOF34 physical fixture; and
-# 2) current generic transaction sources intentionally use exact time identity,
-#    which newer gfortran reports under -Wcompare-reals. The legacy gate had
-#    -Werror globally, so that later compiler hygiene warning prevents the gate
-#    from reaching its scientific assertions even though gate semantics did not
-#    change.
-#
-# PP03 therefore materializes temporary, hash-bound copies of the legacy gates.
+# F-WOF38/F-WOF39 predate later generic transaction changes. PP03 executes
+# hash-bound temporary copies of those immutable gates and adapts only their
+# build/fixture surface to the current generic transaction contract:
+# - directional publication dependencies now precede canonical contracts;
+# - F-KT18 requires explicit mass-completeness metadata from F-WOF34; and
+# - current exact-time identity warnings must not be promoted to errors by the
+#   historical gate-wide -Werror setting.
 # Every legacy scientific assertion and O0/O2 identity check remains intact.
-# Only the historical F-WOF34 fixture generator gets the explicit mass metadata
-# now required by F-KT18, and two compiler-only warning classes are not promoted
-# to errors. No production source or immutable legacy gate is modified.
+# No production source or immutable legacy gate is modified.
 
 cat > "$BUILD/adapt_gate.py" <<'PY'
 from pathlib import Path
@@ -59,6 +54,18 @@ new_flags = 'COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -W
 if s.count(old_flags) != 1:
     raise SystemExit('PP03 preservation compiler-flags anchor mismatch')
 s = s.replace(old_flags, new_flags, 1)
+
+old_sources = 'SOURCES=(\n  src/transaction/mod_transaction_reference.f90\n'
+new_sources = (
+    'SOURCES=(\n'
+    '  src/solver/mod_soil_water_accepted_step_direction_contract.f90\n'
+    '  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\n'
+    '  src/transaction/mod_accepted_trajectory_directional_publication.f90\n'
+    '  src/transaction/mod_transaction_reference.f90\n'
+)
+if s.count(old_sources) != 1:
+    raise SystemExit('PP03 preservation compile-order anchor mismatch')
+s = s.replace(old_sources, new_sources, 1)
 
 # Adapt the immutable F-WOF34 module while it is still a Python string inside
 # the original F-WOF38 materializer. This avoids coupling to either script's
