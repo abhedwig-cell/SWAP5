@@ -1,0 +1,30 @@
+name: F-GC25 G05 MultiSWAP groundwater composition
+
+on:
+  push:
+    branches:
+      - work/f-gc-g05-direct-groundwater-composition
+  workflow_dispatch:
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-GC25 owner gate
+        run: |
+          set -o pipefail
+          bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh 2>&1 | tee fgc25-gate.log
+      - name: Upload F-GC25 owner gate log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fgc25-gate-log
+          path: fgc25-gate.log
+          if-no-files-found: error
