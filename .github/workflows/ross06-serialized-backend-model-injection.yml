@@ -48,7 +48,7 @@ jobs:
           test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
           test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90)" = dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e
           test "$(git rev-parse HEAD:assets/rossfast/d3r/manifest.json)" = 1266d15149af5feb8d7fb0a5ef90d41b5881fd55
-          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS05_STATUS.json)" = 83fe88f5163c2479413d51e081d7a265952b5e23
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS05_STATUS.json)" = 1fe9d85d65090cf0893620dc2d5d9ea7cb271a50
 
       - name: Enforce bounded F-ROSS06 surface
         shell: bash
