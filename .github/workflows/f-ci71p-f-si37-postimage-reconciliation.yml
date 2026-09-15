@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - qualification/f-ci71p-f-si37-current-canonical-postimage-reconciliation
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - '.github/workflows/f-ci71p-f-si37-postimage-reconciliation.yml'
+      - '.github/workflows/fci71-f-si37-moving-preservation.yml'
+      - 'integration/f-ci/F-CI71P_STATUS.json'
   workflow_dispatch:
 
 jobs:
@@ -40,7 +47,7 @@ jobs:
           test "$(git rev-parse "$POSTIMAGE:src/solver/mod_b110_default_mvg_directional_provider.f90")" = "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
           test "$(git rev-parse "$POSTIMAGE:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90")" = "0a957376b9a9fdea00ab6009f129803fb5341e4a"
           test "$(git rev-parse "$POSTIMAGE:src/adapter/mod_reference_richards_accepted_step_directional_service.f90")" = "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
-          test "$(git rev-parse "$POSTIMAGE:src/adapter/mod_reference_richards_temporal_indicator.f90")" = "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+          test "$(git rev-parse "$POSTIMAGE:src/solver/mod_reference_richards_temporal_indicator.f90")" = "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
           test "$(git rev-parse "HEAD:src")" = "$(git rev-parse "$POSTIMAGE:src")"
           echo 'FCI71P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
           echo 'FCI71P_REQUALIFIED_DEPENDENCY_POSTIMAGE_IDENTITY=PASS'

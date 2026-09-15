@@ -9,7 +9,7 @@ on:
       - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
       - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
       - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
-      - 'src/adapter/mod_reference_richards_temporal_indicator.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
       - 'tests/qualification/fvq89/**'
       - 'qualification/F-VQ89_STATUS.json'
       - 'integration/f-ci/F-CI71_STATUS.json'
@@ -21,7 +21,7 @@ on:
       - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
       - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
       - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
-      - 'src/adapter/mod_reference_richards_temporal_indicator.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
       - 'tests/qualification/fvq89/**'
       - 'qualification/F-VQ89_STATUS.json'
       - 'integration/f-ci/F-CI71_STATUS.json'
@@ -48,7 +48,7 @@ jobs:
           test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_directional_provider.f90)" = "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
           test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90)" = "0a957376b9a9fdea00ab6009f129803fb5341e4a"
           test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" = "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
-          test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_temporal_indicator.f90)" = "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+          test "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" = "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
           python3 -m json.tool qualification/F-VQ89_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI71_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI71P_STATUS.json >/dev/null

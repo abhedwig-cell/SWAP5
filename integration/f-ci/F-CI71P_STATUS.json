@@ -16,6 +16,14 @@
     "f_ci71_pr": 34943757316,
     "canonical_regression_pr": 34943757311
   },
+  "postimage_reconciliation_attempts": [
+    {
+      "head": "191c500342817965882c5cd0b3fea7cfae4735ce",
+      "workflow_run": 34944099880,
+      "result": "FAIL_GOVERNANCE_PATH_TYPO",
+      "cause": "The first governance-only reconciliation check referenced the qualified temporal-indicator dependency under src/adapter instead of its actual canonical path src/solver. The admission tree and production payload were unchanged; the two-parent promotion and promoted-tree identity checks passed before this typo was reached."
+    }
+  ],
   "exact_production_payload": {
     "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
     "src/solver/mod_b110_default_mvg_directional_provider.f90": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
@@ -23,7 +31,7 @@
     "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
   },
   "requalified_dependency_surface": {
-    "src/adapter/mod_reference_richards_temporal_indicator.f90": "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+    "src/solver/mod_reference_richards_temporal_indicator.f90": "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
   },
   "promotion_verification": {
     "true_two_parent_merge": true,
