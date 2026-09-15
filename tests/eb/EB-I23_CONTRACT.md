@@ -27,7 +27,7 @@ These sources are reused rather than redefined.
 
 ## Accepted-transaction binding
 
-`fmr_execute_serialized_column_with_sensible_boundary_materialization` calls the already admitted receipt-owned bottom-energy transaction seam. The bottom publication and the backend thermal observation therefore remain inside one runtime call boundary.
+`fmr_execute_column_with_sensible_boundary` calls the already admitted receipt-owned bottom-energy transaction seam. The bottom publication and the backend thermal observation therefore remain inside one runtime call boundary.
 
 A publication is emitted only after the underlying column result is both completed and committed and after the receipt-owned bottom publication agrees with the executing column, origin revision, committed revision and requested interval.
 
@@ -44,7 +44,11 @@ For an accepted transaction with exactly one committed substep and complete rest
 
 The bottom zero is not a missing term repaired to zero.
 
-The adapter also checks the reported restricted-temperature accounting identity at roundoff scale before publishing the conductive values.
+The adapter checks the exact qualified restricted-temperature accounting convention before publishing the conductive values:
+
+`energy_residual_j_cm2 = sensible_storage_change_j_cm2 - boundary_energy_into_soil_j_cm2`
+
+or equivalently `storage_change - boundary_energy - residual = 0` at roundoff scale. This sign convention is inherited from F-PM07B/FMR39 and is not redefined by EB-I23.
 
 ## Multi-substep fail-closed rule
 
@@ -82,6 +86,7 @@ The owner test exercises the real serialized runtime and covers:
 
 - one accepted restricted-temperature transaction;
 - exact `J/cm2 -> J/m2` conductive conversion against the same backend observation;
+- qualified restricted-temperature storage/boundary/residual sign convention;
 - explicit restricted-scope zero bottom conductive term;
 - receipt-owned bottom advective energy availability;
 - explicit mass-carried reference-temperature provenance;
