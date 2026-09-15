@@ -1,0 +1,132 @@
+name: EB-I07 owner audit qualification
+
+on:
+  push:
+    branches:
+      - work/eb-i07-water-transfer-temperature-provenance-readiness
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard current canonical and audit-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          CANONICAL=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i07-owner-gate.yml
+          tests/eb/EB-I07_ARCHITECTURE_AUDIT.json
+          tests/eb/EB-I07_PROVENANCE_MATRIX.json
+          tests/eb/EB-I07_REPORT.md
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          ! grep -q '^src/' changed.txt
+
+      - name: Verify pinned current-canonical source authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          C=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          check_blob() { test "$(git rev-parse "$C:$1")" = "$2"; }
+          check_blob src/solver/mod_soil_water_solver_contract.f90 276941d76ba951a89c43899e61fd0532418d8230
+          check_blob src/solver/mod_process_hydraulic_view.f90 d7d85fe71ced0d94b29c8d9395859ae1834f7dd6
+          check_blob src/process/mod_soil_temperature_contract.f90 baa13df3975de2c699b0ec910477bcfa9b47f15e
+          check_blob src/solver/mod_b110_dynamic_top_boundary_provider.f90 3eadae0f32aba49534cd58464e28c0af5bc9bf7d
+          check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 d565b893a08d92c46077995fdec544584aa04664
+          check_blob src/process/mod_irrigation_process.f90 c0755c1e0d0b7ca1a35e73cf26158c29e9940aec
+          check_blob src/process/mod_drainage_spatial_distribution.f90 1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a
+          check_blob src/process/mod_root_water_uptake_process.f90 e6134587cf3c0164bbe09f2f4c87aef6886aaeb3
+          check_blob src/process/mod_snow_process.f90 54702d71b4c84dce2842813549bd14c57301a383
+          check_blob src/process/mod_restricted_surface_evaporation.f90 a213af4deec2fe854d79120899827852a57237d1
+          check_blob src/process/mod_restricted_fixed_weir_surface_water.f90 16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa
+          check_blob src/runtime/mod_groundwater_exchange_service_contract.f90 f0fc25592624360802713a9487813d119e7dc4e9
+          check_blob src/runtime/mod_canonical_contracts.f90 3cbb81b25626e6574ae83416f088dc52882f91fc
+
+      - name: Validate machine evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('tests/eb/EB-I07_PROVENANCE_MATRIX.json').read_text())
+          a=json.loads(Path('tests/eb/EB-I07_ARCHITECTURE_AUDIT.json').read_text())
+          assert m['canonical']=='2a0db2524fba6e258316ce82630c60ea1c9c673a'
+          assert [r['id'] for r in m['routes']]==[f'R{i:02d}' for i in range(1,19)]
+          allowed={'BLOCKED_MASS_AUTHORITY','BLOCKED_EXTERNAL_TEMPERATURE','LOCAL_TEMPERATURE_BINDING_MISSING','SURFACE_THERMAL_STATE_MISSING','THERMAL_STATE_MISSING','PHASE_ENERGY_CONTRACT_REQUIRED','CAPABILITY_NOT_RUNTIME_PROVENANCE'}
+          assert all(r['status'] in allowed for r in m['routes'])
+          assert [x['id'] for x in a['audit']]==list(range(1,31))
+          assert all(x['status'] in {'PASS','PARTIAL','PRESERVED','NOT_QUALIFIED'} for x in a['audit'])
+          for p in ['tests/eb/EB-I07_PROVENANCE_MATRIX.json','tests/eb/EB-I07_ARCHITECTURE_AUDIT.json','tests/eb/EB-I07_REPORT.md']:
+              text=Path(p).read_text()
+              assert '\u2013' not in text and '\u2014' not in text
+          PY
+
+      - name: Verify key provenance claims against canonical source
+        shell: bash
+        run: |
+          set -euo pipefail
+          C=2a0db2524fba6e258316ce82630c60ea1c9c673a
+          git show "$C:src/solver/mod_soil_water_solver_contract.f90" > solver.f90
+          sed -n '/type, public :: soil_water_solve_result_t/,/end type soil_water_solve_result_t/p' solver.f90 > solve_result.txt
+          grep -F 'real(real64) :: top_flux' solve_result.txt
+          grep -F 'real(real64) :: bottom_flux' solve_result.txt
+          ! grep -Eiq 'face_flux|internal_flux' solve_result.txt
+
+          git show "$C:src/solver/mod_process_hydraulic_view.f90" > hydraulic_view.f90
+          ! grep -Eiq 'temperature' hydraulic_view.f90
+          git show "$C:src/process/mod_soil_temperature_contract.f90" > soil_temp.f90
+          grep -F 'type, public :: soil_temperature_field_view_t' soil_temp.f90
+          grep -F 'real(real64), allocatable :: temperature_c(:)' soil_temp.f90
+
+          git show "$C:src/solver/mod_b110_dynamic_top_boundary_provider.f90" > top.f90
+          grep -F 'precipitation_rate_cm_per_day' top.f90
+          grep -F 'irrigation_rate_cm_per_day' top.f90
+          grep -F 'snowmelt_rate_cm_per_day' top.f90
+          grep -F 'runon_rate_cm_per_day' top.f90
+
+          git show "$C:src/runtime/mod_fmr_serialized_reference_backend.f90" > backend.f90
+          sed -n '/type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t/,/end type fmr_b110_physical_forcing_t/p' backend.f90 > forcing.txt
+          grep -F 'real(real64) :: top_flux' forcing.txt
+          grep -F 'subsurface_irrigation_source' forcing.txt
+          ! grep -Eiq 'precipitation|runon|water_temperature|groundwater_temperature' forcing.txt
+
+          git show "$C:src/process/mod_irrigation_process.f90" > irrigation.f90
+          grep -F 'external_inflow_amount' irrigation.f90
+          grep -F 'subsurface_source(:)' irrigation.f90
+          ! grep -Eiq 'water_temperature|irrigation_temperature' irrigation.f90
+
+          git show "$C:src/process/mod_drainage_spatial_distribution.f90" > drainage.f90
+          grep -F 'soil_to_drain_rate(:)' drainage.f90
+          git show "$C:src/process/mod_root_water_uptake_process.f90" > root.f90
+          grep -F 'root_extraction_sink(:)' root.f90
+
+          git show "$C:src/runtime/mod_groundwater_exchange_service_contract.f90" > gw.f90
+          grep -F 'q_groundwater_m_per_s' gw.f90
+          grep -F 'h_groundwater_m' gw.f90
+          ! grep -Eiq 'groundwater_temperature|temperature_c|enthalpy' gw.f90
+
+          git show "$C:src/process/mod_restricted_fixed_weir_surface_water.f90" > sw.f90
+          grep -F 'real(real64) :: supply_rate' sw.f90
+          grep -F 'real(real64) :: discharge_rate' sw.f90
+          ! grep -Eiq 'water_temperature|temperature_c|enthalpy' sw.f90
+
+          git show "$C:src/process/mod_snow_process.f90" > snow.f90
+          grep -F 'rain_on_snow_input' snow.f90
+          grep -F 'mean_air_temperature' snow.f90
+          ! grep -Eiq 'rain_water_temperature|meltwater_temperature|snow_enthalpy' snow.f90
+
+      - name: Confirm audit qualification
+        shell: bash
+        run: |
+          echo 'EB-I07 current-canonical provenance audit: PASS'

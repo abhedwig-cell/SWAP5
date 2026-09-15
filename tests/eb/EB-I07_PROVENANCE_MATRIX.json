@@ -1,0 +1,48 @@
+{
+  "workunit":"EB-I07",
+  "canonical":"2a0db2524fba6e258316ce82630c60ea1c9c673a",
+  "scope":"audit-only; no production capability; EB-I03..EB-I06 are not treated as canonical authority",
+  "sources":{
+    "solver_contract":"276941d76ba951a89c43899e61fd0532418d8230",
+    "hydraulic_view":"d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "soil_temperature":"baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "dynamic_top":"3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "serialized_backend":"d565b893a08d92c46077995fdec544584aa04664",
+    "irrigation":"c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+    "drainage":"1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "root_uptake":"e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "snow":"54702d71b4c84dce2842813549bd14c57301a383",
+    "surface_evaporation":"a213af4deec2fe854d79120899827852a57237d1",
+    "surface_water":"16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa",
+    "groundwater":"f0fc25592624360802713a9487813d119e7dc4e9",
+    "canonical_contracts":"3cbb81b25626e6574ae83416f088dc52882f91fc"
+  },
+  "routes":[
+    {"id":"R01","route":"internal-soil-face","mass":"no public accepted face vector","temperature":"soil node field exists separately","status":"BLOCKED_MASS_AUTHORITY"},
+    {"id":"R02","route":"precipitation-in","mass":"dynamic-top rate exists","temperature":"none","status":"CAPABILITY_NOT_RUNTIME_PROVENANCE"},
+    {"id":"R03","route":"surface-irrigation-in","mass":"surface rate/external amount exists","temperature":"none","status":"BLOCKED_EXTERNAL_TEMPERATURE"},
+    {"id":"R04","route":"subsurface-irrigation-in","mass":"node source exists","temperature":"none","status":"BLOCKED_EXTERNAL_TEMPERATURE"},
+    {"id":"R05","route":"runon-in","mass":"dynamic-top rate exists","temperature":"none","status":"CAPABILITY_NOT_RUNTIME_PROVENANCE"},
+    {"id":"R06","route":"snowmelt-in","mass":"melt exists","temperature":"no meltwater enthalpy authority","status":"PHASE_ENERGY_CONTRACT_REQUIRED"},
+    {"id":"R07","route":"soil-to-surface-liquid","mass":"actual top flux exists","temperature":"top soil temperature separate","status":"LOCAL_TEMPERATURE_BINDING_MISSING"},
+    {"id":"R08","route":"pond-runoff","mass":"runoff depth exists","temperature":"no pond thermal state","status":"SURFACE_THERMAL_STATE_MISSING"},
+    {"id":"R09","route":"soil-bottom-outflow","mass":"bottom exchange/flux exists","temperature":"bottom soil temperature separate","status":"LOCAL_TEMPERATURE_BINDING_MISSING"},
+    {"id":"R10","route":"groundwater-inflow","mass":"groundwater exchange flux exists","temperature":"no groundwater temperature","status":"BLOCKED_EXTERNAL_TEMPERATURE"},
+    {"id":"R11","route":"soil-to-drain","mass":"node transfer exists","temperature":"soil node temperature separate","status":"LOCAL_TEMPERATURE_BINDING_MISSING"},
+    {"id":"R12","route":"root-uptake","mass":"node extraction exists","temperature":"soil node temperature separate","status":"LOCAL_TEMPERATURE_BINDING_MISSING"},
+    {"id":"R13","route":"matrix-macropore-exchange","mass":"exchange_flux capability exists","temperature":"no macropore thermal state","status":"THERMAL_STATE_MISSING"},
+    {"id":"R14","route":"surface-water-supply","mass":"supply rate exists","temperature":"none","status":"BLOCKED_EXTERNAL_TEMPERATURE"},
+    {"id":"R15","route":"surface-water-discharge","mass":"discharge rate exists","temperature":"no surface-water thermal state","status":"SURFACE_THERMAL_STATE_MISSING"},
+    {"id":"R16","route":"evaporation","mass":"actual bare/pond evaporation exists","temperature":"no phase-energy contract","status":"PHASE_ENERGY_CONTRACT_REQUIRED"},
+    {"id":"R17","route":"snow-sublimation","mass":"sublimation exists","temperature":"no snow enthalpy state","status":"PHASE_ENERGY_CONTRACT_REQUIRED"},
+    {"id":"R18","route":"rain-on-snow","mass":"rain input exists","temperature":"air temperature is not rain-water authority","status":"PHASE_ENERGY_CONTRACT_REQUIRED"}
+  ],
+  "findings":[
+    "hydraulic and soil-temperature state are cleanly separated but no transfer-temperature binding exists",
+    "no audited external inflow carries authoritative donor-water temperature or enthalpy",
+    "top source identity exists in process capability but end-to-end runtime thermal provenance is not proven",
+    "bottom energy provenance is directional: outward can use local soil temperature after qualification; upward requires external groundwater temperature",
+    "missing temperature must not mean zero energy and must not be replaced by silent heuristics",
+    "phase-change routes require enthalpy/latent-energy contracts"
+  ]
+}
