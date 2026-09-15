@@ -15,7 +15,6 @@ FVQ94_HEAD="43a8f8bdf0582674be39e95fe23dccb8e83fadd2"
 FVQ94_STATUS_HEAD="4727a346da7d3e3fc124c13697e00946acd83ec6"
 FVQ94_TEST="tests/fvq/test_fvq94_fgc29_independent_r1.f90"
 
-# History-preserving admission and exact-source locks.
 git merge-base --is-ancestor "$PRE_CANONICAL" HEAD
 git merge-base --is-ancestor "$OWNER_CHECKPOINT" HEAD
 git merge-base --is-ancestor "$OWNER_QUALIFIED_SOURCE" HEAD
@@ -24,7 +23,6 @@ test "$(git rev-parse "$OWNER_QUALIFIED_SOURCE:$OWNER_MODULE")" = "$OWNER_MODULE
 test "$(git rev-parse HEAD:$FGC18_SERVICE)" = "$FGC18_SERVICE_BLOB"
 test "$(git rev-parse "$PRE_CANONICAL:$FGC18_SERVICE")" = "$FGC18_SERVICE_BLOB"
 
-# The admission may add only the qualified F-GC29 module under production source.
 mapfile -t src_delta < <(git diff --name-only "$PRE_CANONICAL..HEAD" -- 'src/**')
 test "${#src_delta[@]}" -eq 1
 test "${src_delta[0]}" = "$OWNER_MODULE"
@@ -75,7 +73,9 @@ test "$(git rev-parse "$FVQ94_STATUS_HEAD:qualification/F-VQ94_STATUS.json")" = 
      "$(git rev-parse HEAD:qualification/F-VQ94_STATUS.json)"
 
 compile_owner() {
-  local opt="$1" out="$2" dir="$work/owner_$opt"
+  local opt="$1"
+  local out="$2"
+  local dir="$work/owner_$opt"
   mkdir -p "$dir"
   gfortran "-$opt" -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -J"$dir" -I"$dir" \
@@ -88,7 +88,9 @@ compile_owner() {
 }
 
 compile_independent() {
-  local opt="$1" out="$2" dir="$work/vq_$opt"
+  local opt="$1"
+  local out="$2"
+  local dir="$work/vq_$opt"
   mkdir -p "$dir"
   gfortran "-$opt" -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -J"$dir" -I"$dir" \
