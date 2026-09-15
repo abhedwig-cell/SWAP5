@@ -1,0 +1,35 @@
+{
+  "schema": "SWAP5_BOUNDED_EXECUTION_CHECKPOINT_V1",
+  "capability": "F-GC27 — Restricted Direct-Groundwater V1 End-to-End Qualification",
+  "integration_gate": "F-CI87",
+  "phase": "ADMIT",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "tree": "1ab2485fe70a996970e65c349fb7332c77886587",
+    "delta_since_qualification": "none"
+  },
+  "qualification_authority": {
+    "branch": "qualification/f-vq97-fgc27-restricted-direct-groundwater-e2e",
+    "head": "d45abdfb7fbd3f1ce5f68866586c5e9e67252f54",
+    "tested_head": "5566d4888ae2395fc8d38e9e6ab07d4ff83f9b07",
+    "status_blob": "b0293312470949f3483a6ac284106962ae62285e",
+    "qualify_checkpoint_blob": "d949444063bfb74a35ca47355edd8e50f75b0229",
+    "workflow_run_id": 35031745967,
+    "workflow_job_id": 104591583793,
+    "verdict": "INDEPENDENTLY_QUALIFIED"
+  },
+  "admission_branch": "integration/f-ci87-fgc27-restricted-direct-groundwater-e2e-admission",
+  "admission_kind": "METADATA_ONLY_CAPABILITY_ADMISSION",
+  "production_mutations": [],
+  "required_gate_checks": [
+    "admission branch delta contains metadata/gate files only",
+    "all relevant canonical production blobs equal independently qualified blobs",
+    "F-VQ97 authority/status/checkpoint are immutable and internally consistent",
+    "F-GC23 response composition remains separately owned outside F-GC21 loop",
+    "external backend types remain outside generic runtime coupler boundary"
+  ],
+  "verdict": "READY_FOR_ADMISSION_GATE",
+  "next_permitted_action": "Run F-CI87. On PASS, promote only F-GC27 canonical admission metadata to integration/f-ci-canonical, then CLOSE.",
+  "hard_exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "production changes", "F-GC28 work"]
+}

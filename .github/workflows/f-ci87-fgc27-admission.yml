@@ -1,0 +1,24 @@
+name: F-CI87 F-GC27 current-canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci87-fgc27-restricted-direct-groundwater-e2e-admission
+    paths:
+      - 'tests/fci/F-CI87_ADMIT_CHECKPOINT.json'
+      - 'tests/fci/run_fci87_fgc27_admission.sh'
+      - '.github/workflows/f-ci87-fgc27-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-CI87 F-GC27 admission gate
+        run: bash tests/fci/run_fci87_fgc27_admission.sh
