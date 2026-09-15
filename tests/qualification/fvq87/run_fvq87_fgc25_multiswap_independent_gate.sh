@@ -10,6 +10,7 @@ FGC20_AUTH=54dc9cc930468d9f376f596fe2c1b6f45938b59b
 FGC22_AUTH=c50f3770ae8e4bee7c276a080be00156218944f1
 FGC20_BLOB=d62ecba039d9bef178acde6900b81e9d5b0931eb
 FGC22_BLOB=b8ac03e810c73519b433f7851c6fd143ba26676a
+GC22_TEMPORAL_AUTH_BLOB=fe8f87d11257d4c6bc019f1d628ac41ba3106d4e
 
 allowed=(
   ".github/workflows/fvq87-fgc25-multiswap-independent.yml"
@@ -51,26 +52,39 @@ for path in \
 done
 echo 'FVQ87_OWNER_PRODUCTION_POSTIMAGE_LOCKED=PASS'
 
-# Lock inherited F-GC20 and F-GC22 production evidence to the exact qualified
-# blobs, rather than merely trusting branch names or later prose records.
+# Lock the inherited F-GC20 and F-GC22 production blobs exactly.
 test "$(git rev-parse "$FGC20_AUTH:src/runtime/mod_groundwater_tile_aggregation.f90")" = "$FGC20_BLOB"
 test "$(git rev-parse HEAD:src/runtime/mod_groundwater_tile_aggregation.f90)" = "$FGC20_BLOB"
 test "$(git rev-parse "$FGC22_AUTH:src/runtime/mod_groundwater_accuracy_binding.f90")" = "$FGC22_BLOB"
 test "$(git rev-parse HEAD:src/runtime/mod_groundwater_accuracy_binding.f90)" = "$FGC22_BLOB"
 
-# F-GC22's own qualified dependency boundary. These are the upstream authority
-# blobs pinned by its qualification gate and therefore part of valid inheritance.
-declare -A GC22_UPSTREAM=(
+# GC25 consumes a pre-bound groundwater_head_convergence_policy_t. It does not
+# construct that policy and it does not execute the Richards temporal indicator.
+# Therefore only the application-accuracy contract/adapter and policy blobs that
+# define the inherited binding boundary must remain identical in the GC25 image.
+declare -A GC22_RELEVANT_UPSTREAM=(
   [src/runtime/mod_coupling_application_accuracy_contract.f90]=c07d573d21e7d013ab962c0a9d28102ab7b5cdfc
   [src/runtime/mod_coupling_application_accuracy_adapter.f90]=9212d600e89c85287e9280832c7e0a94befb642e
   [src/runtime/mod_groundwater_coupling_policy.f90]=5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976
-  [src/solver/mod_reference_richards_temporal_indicator.f90]=fe8f87d11257d4c6bc019f1d628ac41ba3106d4e
 )
-for path in "${!GC22_UPSTREAM[@]}"; do
-  expected="${GC22_UPSTREAM[$path]}"
+for path in "${!GC22_RELEVANT_UPSTREAM[@]}"; do
+  expected="${GC22_RELEVANT_UPSTREAM[$path]}"
   test "$(git rev-parse "$FGC22_AUTH:$path")" = "$expected"
   test "$(git rev-parse "HEAD:$path")" = "$expected"
 done
+
+test "$(git rev-parse "$FGC22_AUTH:src/solver/mod_reference_richards_temporal_indicator.f90")" = "$GC22_TEMPORAL_AUTH_BLOB"
+current_temporal_blob="$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)"
+if [[ "$current_temporal_blob" != "$GC22_TEMPORAL_AUTH_BLOB" ]]; then
+  if grep -Eq 'use[[:space:]]+mod_reference_richards_temporal_indicator|use[[:space:]]+mod_groundwater_accuracy_binding' \
+      src/runtime/mod_groundwater_multiswap_*.f90; then
+    echo 'FVQ87_GC22_DEPENDENCY_BOUNDARY=FAIL unexpected temporal/accuracy-binding import' >&2
+    exit 21
+  fi
+  echo 'FVQ87_GC22_TEMPORAL_CHANGE_OUTSIDE_GC25_BOUNDARY=PASS'
+else
+  echo 'FVQ87_GC22_TEMPORAL_AUTHORITY_STILL_IDENTICAL=PASS'
+fi
 echo 'FVQ87_FGC20_FGC22_INHERITANCE_LOCKED=PASS'
 
 python3 - <<'PY'
