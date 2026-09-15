@@ -1,0 +1,46 @@
+{
+  "workunit": "F-CI75",
+  "capability": "F-KT21 accepted-trajectory directional sensitivity canonical admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "RECONCILED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
+    "previous_scientific_admission_head": "e189b141b6efa695197de1e59a41b4800ef3d5a2",
+    "delta_from_previous_scientific_admission": "F-CI74P governance/workflow/status only; no src or reference-tree changes"
+  },
+  "admission_branch": {
+    "branch": "integration/f-ci75-fkt21-canonical-admission",
+    "reconciled_head": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53"
+  },
+  "owner_authority": {
+    "branch": "work/f-kt21-accepted-trajectory-directional-sensitivity-composition",
+    "qualification_record_head": "eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+    "qualified_production_postimage_parent": "19a67f7c398fcadbcbc9729509680a1c0c5424f3"
+  },
+  "independent_authority": {
+    "workunit": "F-VQ92",
+    "branch": "qualification/f-vq92-fkt21-accepted-trajectory-independent",
+    "head": "f4f98637e963e07e2bedf7ef6acbcaab36e07e5a"
+  },
+  "existing_equivalent_admission": false,
+  "reused_immutable_evidence": [
+    "F-KT21 owner qualification record at eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+    "F-KT21 qualified production postimage at 19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+    "F-VQ92 independent qualification at f4f98637e963e07e2bedf7ef6acbcaab36e07e5a"
+  ],
+  "tests_run_in_this_phase": [],
+  "verdict": "RECONCILED: current canonical is compatible with continuing F-KT21 admission qualification; no relevant production dependency changed since the previously inspected EB-I24 scientific admission head.",
+  "mutations": [
+    "No production mutation",
+    "Persisted this RECONCILE checkpoint on F-CI75"
+  ],
+  "next_permitted_action": "QUALIFY: materialize only the minimal current-canonical F-KT21 delta and semantically replay the preservation surfaces invalidated by the historical byte-locks before any admission decision.",
+  "exclusions": [
+    "No EB changes",
+    "No ROSS or RossFast changes",
+    "No groundwater-coupling composition broadening",
+    "No production semantics changes merely to obtain PASS"
+  ]
+}
