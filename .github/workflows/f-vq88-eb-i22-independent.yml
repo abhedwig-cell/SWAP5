@@ -39,6 +39,7 @@ jobs:
           git diff --name-only "$OWNER" HEAD | sort > changed.txt
           cat > allowed.txt <<'EOF'
           .github/workflows/f-vq88-eb-i22-independent.yml
+          tests/eb/F-VQ88_STATUS.json
           tests/eb/test_f_vq88_eb_i22_independent.f90
           EOF
           sort -o allowed.txt allowed.txt
@@ -46,6 +47,10 @@ jobs:
           test "$(git rev-parse "HEAD:src/process/mod_linear_mixture_sensible_storage.f90")" = "$(git rev-parse "$OWNER:src/process/mod_linear_mixture_sensible_storage.f90")"
           test "$(git rev-parse "HEAD:src/process/mod_whole_column_sensible_energy_accounting.f90")" = "$(git rev-parse "$OWNER:src/process/mod_whole_column_sensible_energy_accounting.f90")"
           test "$(git rev-parse "HEAD:tests/eb/EB-I22_CONTRACT.md")" = "$(git rev-parse "$OWNER:tests/eb/EB-I22_CONTRACT.md")"
+          python3 -m json.tool tests/eb/F-VQ88_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I22_INDEPENDENT"' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"canonical_admission": false' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' tests/eb/F-VQ88_STATUS.json
 
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
