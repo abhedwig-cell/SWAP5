@@ -15,14 +15,12 @@ FGC20_AUTH=54dc9cc930468d9f376f596fe2c1b6f45938b59b
 FGC22_AUTH=c50f3770ae8e4bee7c276a080be00156218944f1
 EXPECTED_ORACLE_SHA=de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8
 
-# Reconcile the exact canonical admission merge, not an inferred equivalent.
 test "$(git rev-parse "$ADMITTED^1")" = "$ADMISSION_PARENT1"
 test "$(git rev-parse "$ADMITTED^2")" = "$ADMISSION_PARENT2"
 test "$(git rev-parse "$ADMITTED^{tree}")" = "$ADMISSION_TREE"
 git merge-base --is-ancestor "$ADMITTED" HEAD
 echo 'FCI73P_ADMISSION_PARENTAGE_TREE=PASS'
 
-# Reconciliation may add governance/test infrastructure only.
 allowed=(
   ".github/workflows/fci73p-fgc25-postimage-reconciliation.yml"
   "integration/f-ci/F-CI73P_STATUS.json"
@@ -45,7 +43,6 @@ if git diff --name-only "$ADMITTED..HEAD" | grep -Eq '^(src|reference)/'; then
 fi
 echo 'FCI73P_GOVERNANCE_ONLY_DELTA=PASS'
 
-# Exact admitted production/test blobs must remain the independently qualified owner postimage.
 owner_paths=(
   src/runtime/mod_groundwater_accuracy_binding.f90
   src/runtime/mod_groundwater_multiswap_coupler.f90
@@ -69,7 +66,6 @@ for path in "${owner_paths[@]}"; do
 done
 echo 'FCI73P_PRODUCTION_BLOBS_PRESERVED=PASS'
 
-# Independent qualification evidence itself is immutable across reconciliation.
 fvq_paths=(
   .github/workflows/fvq87-fgc25-multiswap-independent.yml
   qualification/F-VQ87_STATUS.json
@@ -81,7 +77,6 @@ for path in "${fvq_paths[@]}"; do
 done
 echo 'FCI73P_FVQ87_EVIDENCE_PRESERVED=PASS'
 
-# Re-lock inherited executable dependency authorities.
 test "$(git rev-parse "$FGC20_AUTH:src/runtime/mod_groundwater_tile_aggregation.f90")" = d62ecba039d9bef178acde6900b81e9d5b0931eb
 test "$(git rev-parse HEAD:src/runtime/mod_groundwater_tile_aggregation.f90)" = d62ecba039d9bef178acde6900b81e9d5b0931eb
 test "$(git rev-parse "$FGC22_AUTH:src/runtime/mod_groundwater_accuracy_binding.f90")" = b8ac03e810c73519b433f7851c6fd143ba26676a
@@ -100,7 +95,6 @@ if grep -Eq 'use[[:space:]]+mod_reference_richards_temporal_indicator|use[[:spac
 fi
 echo 'FCI73P_FGC20_FGC22_INHERITANCE=PASS'
 
-# Owner capability gate must still pass on the admitted current-canonical postimage.
 owner_log="$(mktemp)"
 work="$(mktemp -d)"
 cleanup() { rm -f "$owner_log"; rm -rf "$work"; }
@@ -109,7 +103,6 @@ bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh | tee "$owner
 grep -q '^F-GC25 MULTISWAP GROUNDWATER COMPOSITION GATE PASS$' "$owner_log"
 echo 'FCI73P_OWNER_GATE_CURRENT_CANONICAL=PASS'
 
-# Preserve the publication/preflight fail-hard boundary independently.
 python3 - <<'PY'
 from pathlib import Path
 pub = Path('src/runtime/mod_groundwater_multiswap_publication.f90').read_text()
@@ -142,7 +135,6 @@ assert 'self%committed_exchange_count = self%prepared_committed_exchange_count' 
 PY
 echo 'FCI73P_PUBLICATION_BOUNDARY_AUDIT=PASS'
 
-# Direct independent oracle replay, O0/O2, against the admitted postimage.
 git cat-file -e "$FGC21_OWNER^{commit}"
 python3 - "$FGC21_OWNER" "$work/fgc21_fixture.f90" <<'PY'
 from pathlib import Path
@@ -177,7 +169,9 @@ SOURCES=(
   tests/qualification/fvq87/test_fvq87_fgc25_multiswap_independent.f90
 )
 compile_and_run() {
-  local opt="$1" out="$2" dir="$work/o$opt"
+  local opt="$1"
+  local out="$2"
+  local dir="$work/o$opt"
   mkdir -p "$dir"; : > "$dir/compiler.txt"
   gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" "${SOURCES[@]}" -o "$dir/test_fvq87" 2>"$dir/compiler.txt"
   if grep -E 'Warning:' "$dir/compiler.txt" | grep -v -F '[-Wcompare-reals]'; then cat "$dir/compiler.txt" >&2; exit 31; fi
