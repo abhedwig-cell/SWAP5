@@ -12,7 +12,7 @@ permissions:
 jobs:
   reconcile-postimage:
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,9 +61,7 @@ jobs:
             qualification/F-VQ93_STATUS.json
             integration/f-ci/F-CI79_STATUS.json
           )
-          for path in "${CRITICAL[@]}"; do
-            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$POSTIMAGE:$path")"
-          done
+          for path in "${CRITICAL[@]}"; do test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$POSTIMAGE:$path")"; done
           for path in \
             src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90 \
             src/runtime/mod_fmr_serialized_reference_backend.f90 \
@@ -88,11 +86,12 @@ jobs:
           git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
           cat > allowed.txt <<'EOF'
           .github/workflows/f-ci79p-eb-i25-postimage-reconciliation.yml
+          .github/workflows/fci72-eb-i23-moving-preservation.yml
+          .github/workflows/fci74-eb-i24-moving-preservation.yml
           .github/workflows/fci79-eb-i25-moving-preservation.yml
+          tests/eb/run_fci79p_legacy_eb_successor_composition.sh
           EOF
-          if test -f integration/f-ci/F-CI79P_STATUS.json; then
-            echo 'integration/f-ci/F-CI79P_STATUS.json' >> allowed.txt
-          fi
+          if test -f integration/f-ci/F-CI79P_STATUS.json; then echo 'integration/f-ci/F-CI79P_STATUS.json' >> allowed.txt; fi
           sort -o allowed.txt allowed.txt
           diff -u allowed.txt changed.txt
           git diff --check "$POSTIMAGE" HEAD
@@ -111,6 +110,8 @@ jobs:
             grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI79P_STATUS.json
             grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI79P_STATUS.json
             grep -Fq '"moving_preservation_installed": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"legacy_eb_i23_successor_composed": true' integration/f-ci/F-CI79P_STATUS.json
+            grep -Fq '"legacy_eb_i24_successor_composed": true' integration/f-ci/F-CI79P_STATUS.json
             grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79P_STATUS.json
           fi
           echo 'FCI79P_GOVERNANCE_ONLY_DELTA=PASS'
@@ -118,6 +119,9 @@ jobs:
 
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Qualify I23 and I24 runtime semantics on the admitted I25 backend successor
+        run: bash tests/eb/run_fci79p_legacy_eb_successor_composition.sh
 
       - name: Replay exact independent EB-I25 qualification on admitted dependencies
         shell: bash
