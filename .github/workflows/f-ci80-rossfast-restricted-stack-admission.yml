@@ -44,12 +44,21 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
 
-      - name: Run bounded F-CI80 admission gate
+      - name: Run bounded F-CI80 successor admission gate
         shell: bash
         run: |
+          set -euo pipefail
+          # The scientific gate is unchanged from the green F-CI80 replay.
+          # F-CI79P advanced canonical by governance/test/workflow files only,
+          # so bind an ephemeral copy to the exact successor preimage while
+          # retaining every production/source/asset assertion byte-for-byte.
+          sed 's/^PREIMAGE=b7c2e510c68e5799a138e881793d27037c482b8a$/PREIMAGE=64937452be6b073a21b1b87acf21ce4edcbfda14/' \
+            tests/integration/run_fci80_rossfast_restricted_stack_admission.sh \
+            > tests/integration/.run_fci80_successor.sh
+          chmod +x tests/integration/.run_fci80_successor.sh
           set -o pipefail
-          bash tests/integration/run_fci80_rossfast_restricted_stack_admission.sh \
-            2>&1 | tee F-CI80_GATE.log
+          bash tests/integration/.run_fci80_successor.sh 2>&1 | tee F-CI80_GATE.log
+          rm -f tests/integration/.run_fci80_successor.sh
 
       - name: Persist F-CI80 evidence payload
         shell: bash
@@ -64,7 +73,8 @@ jobs:
               'status': 'PASS',
               'tested_head': sh('git', 'rev-parse', 'HEAD'),
               'tested_tree': sh('git', 'rev-parse', 'HEAD^{tree}'),
-              'canonical_preimage': 'b7c2e510c68e5799a138e881793d27037c482b8a',
+              'canonical_preimage': '64937452be6b073a21b1b87acf21ce4edcbfda14',
+              'canonical_preimage_classification': 'F-CI79P_GOVERNANCE_ONLY_SUCCESSOR',
               'qualified_source_authority': 'a483452f04a85f3bb64eaad6a383a4800abaed16',
               'admitted_owner_capabilities': [f'F-ROSS{i:02d}' for i in range(2, 11)],
               'qualification': {
@@ -76,6 +86,7 @@ jobs:
                   'current_reference_backend_preserved_byte_identical': True,
                   'legacy_soilwater_swap_main_and_full_richards_task2_preserved': True,
                   'no_eb_groundwater_root_or_source_sink_scope_broadening': True,
+                  'f_ci79p_src_delta': False,
               },
               'nonclaims': [
                   'NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE',

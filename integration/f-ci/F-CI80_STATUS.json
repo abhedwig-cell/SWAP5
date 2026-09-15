@@ -2,53 +2,57 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI80",
   "title": "RossFast restricted stack current-canonical admission",
-  "phase": "ADMIT_READY",
-  "decision": "QUALIFIED_EXACT_F_ROSS02_THROUGH_F_ROSS10_PROJECTION_ON_CURRENT_CANONICAL",
+  "phase": "QUALIFY_SUCCESSOR_REPLAY_REQUIRED",
+  "decision": "RECOMPOSE_UNCHANGED_ROSSFAST_PROJECTION_ON_GOVERNANCE_ONLY_F_CI79P_SUCCESSOR",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_preimage": "b7c2e510c68e5799a138e881793d27037c482b8a",
-  "canonical_preimage_tree": "f70a3aa43fe5e82dd2098fa0960eab6a7209c8f0",
+  "canonical_preimage": "64937452be6b073a21b1b87acf21ce4edcbfda14",
+  "canonical_preimage_tree": "187651cb2b5bce636f675b876b36f62af94f16f6",
+  "previous_canonical_preimage": "b7c2e510c68e5799a138e881793d27037c482b8a",
   "admission_branch": "integration/f-ci80-rossfast-restricted-stack-admission",
   "qualified_source_head": "a483452f04a85f3bb64eaad6a383a4800abaed16",
-  "qualified_candidate_head": "75aadefda75bf28666c863b66cf6f1346cd145f4",
-  "qualified_candidate_tree": "17d22c35f64f43bd723dd492f7d25f7121cca635",
   "qualified_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"],
-  "qualification": {
+  "successor_reconciliation": {
+    "successor": "F-CI79P",
+    "successor_head": "64937452be6b073a21b1b87acf21ce4edcbfda14",
+    "commits_since_previous_preimage": 5,
+    "changed_paths": [
+      ".github/workflows/f-ci79p-eb-i25-postimage-reconciliation.yml",
+      ".github/workflows/fci72-eb-i23-moving-preservation.yml",
+      ".github/workflows/fci74-eb-i24-moving-preservation.yml",
+      ".github/workflows/fci79-eb-i25-moving-preservation.yml",
+      "integration/f-ci/F-CI79P_STATUS.json",
+      "tests/eb/run_fci79p_legacy_eb_successor_composition.sh"
+    ],
+    "production_src_changed": false,
+    "rossfast_dependency_changed": false,
+    "classification": "GOVERNANCE_ONLY_SUCCESSOR"
+  },
+  "prior_green_qualification": {
+    "head": "75aadefda75bf28666c863b66cf6f1346cd145f4",
+    "tree": "17d22c35f64f43bd723dd492f7d25f7121cca635",
     "run_id": 34992109910,
     "job_id": 104459108857,
     "conclusion": "success",
     "ross08_output_sha256": "d77c21bc6a4c02fc3ba3bd62b73a7f8011946ce843e66c2c9a5d9097da791832",
     "ross10_output_sha256": "345faf5ee92ffd6eca4e6feb332acee5f470e1b4858ca343464fce75d44652e5",
-    "diagnostics_artifact_id": 10405773715,
-    "diagnostics_zip_sha256": "87476bbf3d17c3a14fa9f24c9c385e74275389859d756f600f358bec1479e687",
-    "evidence_artifact_id": 10406640167,
-    "evidence_zip_sha256": "263c5b101912b4bb081462a5ecaece5b55be591adf667edaa61e113ffca55d70",
-    "six_material_real_table_kernel_registry_application_route": "PASS",
-    "typed_config_external_file_adapter": "PASS",
-    "o0_o2_output_identity": "PASS",
-    "current_reference_and_full_richards_routes_preserved": "PASS",
-    "bounded_surface": "PASS"
+    "evidence_reusable_as_scientific_provenance": true,
+    "sufficient_for_successor_promotion_without_replay": false
   },
-  "failed_preceding_run": {
-    "run_id": 34991724037,
-    "job_id": 104457781973,
-    "classification": "HARNESS_STALE_PRESERVATION_LOCKS_ONLY",
+  "stale_preimage_replay": {
+    "head": "7d882af93952db5644ac77306a846490e18c9f62",
+    "run_id": 34992243011,
+    "job_id": 104459544235,
+    "conclusion": "failure",
+    "classification": "EXPECTED_FAIL_CLOSED_CANONICAL_PREIMAGE_MOVED",
     "production_failure": false
-  },
-  "reconciliation": {
-    "runtime_core_blob": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
-    "reference_backend_blob": "960ea116cad81e8c0db8a579982f4999b3d085ed",
-    "multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
-    "legacy_soilwater_blob": "2ab6ea917525cd6f2560860bd55aec1da16be014",
-    "legacy_swap_main_blob": "b6609df617c6b5875c62324570fb8c7d8c0bfe21",
-    "full_richards_task2_blob": "5f51a34b03b63cf7cdf254f6115c2bb2db4ea693"
   },
   "canonical_admission": false,
   "mutations": [
-    "Projected exact qualified F-ROSS02 through F-ROSS10 source and immutable assets onto the F-CI79 canonical preimage.",
-    "Replayed real six-material RossFast route and typed external configuration route on current canonical.",
-    "No RossFast production semantics were changed during admission qualification."
+    "Accepted F-CI79P governance-only successor as the new exact admission preimage.",
+    "No RossFast production, assets, scientific domain, or reference/full-Richards semantics changed.",
+    "Prior green evidence retained as immutable scientific provenance; exact successor replay remains required."
   ],
-  "next_permitted_action": "Replay this persisted ADMIT_READY head. If green, re-read live canonical and require exact preimage identity. Only then create a true two-parent canonical promotion whose tree is exactly the final green F-CI80 tree.",
+  "next_permitted_action": "Replay the unchanged exact RossFast projection on canonical preimage 64937452be6b073a21b1b87acf21ce4edcbfda14. If green, persist final successor-qualified evidence, re-read live canonical, and promote only if it remains this exact preimage.",
   "exclusions": [
     "No EB production changes.",
     "No groundwater work.",
