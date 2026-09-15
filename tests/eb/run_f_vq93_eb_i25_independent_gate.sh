@@ -5,8 +5,8 @@ cd "$ROOT"
 fail() { echo "F_VQ93_FAIL $*" >&2; exit 193; }
 
 OWNER=08be50f248f3e169a3f1aeebd263cfe95b0dccd0
+OWNER_QUALIFIED_HEAD=7aa467dca8c691bf72a0276c0757a568ae574845
 OWNER_BASE=1f33328e2ddc0d28450d35647c1c97f293b1e622
-OWNER_BRANCH=work/eb-i25-accepted-multisubstep-sensible-boundary
 MODULE=src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
 BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
 CARRIER=src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
@@ -23,7 +23,7 @@ STATUS=qualification/F-VQ93_STATUS.json
 git fetch -q origin integration/f-ci-canonical
 LIVE="$(git rev-parse origin/integration/f-ci-canonical)"
 git merge-base --is-ancestor "$OWNER_BASE" "$LIVE" || fail 'live canonical no longer descends from EB-I25 owner base'
-[[ "$(git merge-base "$OWNER" HEAD)" == "$OWNER" ]] || fail 'qualification branch is not descended from exact EB-I25 owner head'
+[[ "$(git merge-base "$OWNER" HEAD)" == "$OWNER" ]] || fail 'qualification branch is not descended from exact EB-I25 checkpoint-only head'
 
 OWNER_PATHS=(
   "$MODULE"
@@ -38,7 +38,6 @@ OWNER_PATHS=(
 for path in "${OWNER_PATHS[@]}"; do
   [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$OWNER:$path")" ]] || fail "qualification mutated owner evidence $path"
 done
-
 echo "F_VQ93_OWNER_HEAD_GUARD=PASS owner=$OWNER live_canonical=$LIVE"
 
 # These inherited dependencies were immutable across the EB-I25 owner delta.
@@ -64,15 +63,22 @@ while IFS= read -r path; do
 done < <(git diff --name-only "$OWNER" HEAD)
 echo 'F_VQ93_QUALIFICATION_ONLY_DELTA=PASS'
 
-python3 - "$OWNER_CHECKPOINT" "$OWNER" <<'PY'
+# The checkpoint was written at the green owner head and then committed as the
+# checkpoint-only head. Its own file therefore correctly names the pre-checkpoint
+# qualified head; F-VQ93 pins the enclosing immutable commit OWNER above.
+python3 - "$OWNER_CHECKPOINT" "$OWNER_QUALIFIED_HEAD" <<'PY'
 import json,sys
 p=json.load(open(sys.argv[1]))
-owner=sys.argv[2]
-assert p['workunit']=='EB-I25'
-assert p['owner_head_sha']==owner
-assert p['owner_verdict']=='qualifies'
-assert 'F-VQ93' in p['next_action']
-assert p['owner_qualification_run'].endswith('/34986684267')
+qualified=sys.argv[2]
+assert p['schema']=='swap5.bounded_execution_checkpoint.v1'
+assert p['capability']=='EB-I25'
+assert p['phase']=='QUALIFY_COMPLETE'
+assert p['canonical_head']=='1f33328e2ddc0d28450d35647c1c97f293b1e622'
+assert p['qualified_owner_head']==qualified
+assert p['owner_qualification']['run']==34986684267
+assert p['owner_qualification']['verdict']=='QUALIFIED_EB_I25_OWNER'
+assert p['verdict']=='QUALIFIED_EB_I25_OWNER'
+assert 'F-VQ93' in p['next_permitted_action']
 print('F_VQ93_OWNER_CHECKPOINT_PROVENANCE=PASS')
 PY
 
@@ -90,11 +96,15 @@ check_i25_contract() {
   grep -Fq 'J_CM2_TO_J_M2 * boundary_energy_j_cm2' "$file" || return 1
   grep -Fq 'EB_I25_TOP_SINGLE_SUBSTEP_INHERITED' "$file" || return 1
 }
+check_backend_contract() {
+  local file="$1"
+  grep -Fq 'type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier' "$file" || return 1
+  grep -Fq 'call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)' "$file" || return 1
+  grep -Fq 'call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)' "$file" || return 1
+  grep -Fq 'record_top_sensible_boundary_sample' "$file" || return 1
+}
 check_i25_contract "$MODULE" || fail 'independent I25 source contract failed'
-grep -Fq 'type(fmr_top_sensible_boundary_carrier_t) :: top_sensible_boundary_carrier' "$BACKEND" || fail 'top carrier is not attempt-owned'
-grep -Fq 'call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)' "$BACKEND" || fail 'top carrier missing checkpoint copy'
-grep -Fq 'call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)' "$BACKEND" || fail 'top carrier missing rollback restore'
-grep -Fq 'record_top_sensible_boundary_sample' "$BACKEND" || fail 'accepted trial sample recording seam missing'
+check_backend_contract "$BACKEND" || fail 'independent transactional carrier contract failed'
 grep -Fq 'does not publish a whole-column sensible-energy residual' "$OWNER_CONTRACT" || fail 'nonclaim missing from contract'
 grep -Fq 'complete SWAP5 Energy Balance' "$OWNER_CONTRACT" || fail 'full-EB nonclaim missing from contract'
 echo 'F_VQ93_STRUCTURAL_FAIL_CLOSED_GUARDS=PASS'
@@ -221,9 +231,8 @@ p=Path(sys.argv[1]); s=p.read_text(); old='call self%top_sensible_boundary_carri
 if s.count(old)!=1: raise SystemExit('rollback mutant anchor mismatch')
 p.write_text(s.replace(old,new))
 PY
-if grep -Fq 'call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)' "$MUTANT_TREE/$BACKEND"; then
-  fail 'rollback-removal mutant unexpectedly retained restore seam'
-fi
+set +e; check_backend_contract "$MUTANT_TREE/$BACKEND"; rc=$?; set -e
+[[ $rc -ne 0 ]] || fail 'rollback-removal mutant unexpectedly qualified'
 echo 'F_VQ93_ROLLBACK_REMOVAL_MUTANT_REJECTED=PASS'
 
 echo 'F_VQ93_INDEPENDENT_QUALIFICATION=PASS'
