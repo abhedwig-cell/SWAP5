@@ -1,0 +1,65 @@
+{
+  "workunit": "EB-I02-R1",
+  "title": "Soil Thermal Conservation Contract",
+  "status": "owner_qualified_not_independently_verified_not_canonical_admitted",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/eb-i02-r1-soil-thermal-conservation-contract",
+  "restart_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "2a0db2524fba6e258316ce82630c60ea1c9c673a"
+  },
+  "owner_qualification": {
+    "qualified_content_head": "19d9bd857aaf73f2bcf32d61ccea3213f5cd2070",
+    "successful_run": 34719136585,
+    "successful_job": 103621629284,
+    "production_delta": [
+      "src/process/mod_soil_thermal_energy_contract.f90"
+    ],
+    "preserved_science_authority": "F-PM07B / F-VQ58 / F-CI43",
+    "runtime_authority_preserved": "F-MR39 / F-CI45",
+    "legacy_oracle_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "invariants": [
+    {"id":1,"status":"PASS","evidence":"Adds a generic derived thermal-energy view to the existing single SWAP5 kernel/process architecture; no alternate SWAP implementation."},
+    {"id":2,"status":"PASS","evidence":"New production module contains no file, path, parser or I/O primitive dependency; gate checks this statically."},
+    {"id":3,"status":"PASS","evidence":"Energy coverage/result semantics are explicit derived data and are not mixed into parameters, forcing or physical state."},
+    {"id":4,"status":"PASS","evidence":"No persistent per-column physical state is added; the view is derived from an interval result."},
+    {"id":5,"status":"PASS","evidence":"No new scratch state is added. Existing F-PM07B worker workspace remains unchanged."},
+    {"id":6,"status":"PARTIAL","evidence":"The view is compact and allocation-free, but EB-I02-R1 does not perform a large-batch cache/SIMD throughput qualification."},
+    {"id":7,"status":"PASS","evidence":"EB-I02-R1 does not mutate committed state or introduce an alternate transaction mechanism. Existing F-MR39/F-CI45 atomic water+thermal transaction authority is preserved byte-for-byte."},
+    {"id":8,"status":"PASS","evidence":"No committed state is modified by the derived view; existing rollback/retry/warm-start behavior is unchanged."},
+    {"id":9,"status":"PASS","evidence":"The view is explicitly defined over generic finite [t0,t1]; no day/month/year assumption."},
+    {"id":10,"status":"PASS","evidence":"No coupling-window duration or midnight/calendar boundary is encoded."},
+    {"id":11,"status":"PARTIAL","evidence":"The conservation-ready view is suitable for later runtime/coupler composition, but EB-I02-R1 does not wire it into coupling publication."},
+    {"id":12,"status":"NOT_APPLICABLE","evidence":"No SWAP-MODFLOW head/flux interface behavior is changed."},
+    {"id":13,"status":"PASS","evidence":"No water state, water flux, water mass ledger or mass residual is modified."},
+    {"id":14,"status":"NOT_APPLICABLE","evidence":"No groundwater response tangent is changed or added."},
+    {"id":15,"status":"PASS","evidence":"The derived view requires no additional SWAP solve or predictor/corrector run."},
+    {"id":16,"status":"PARTIAL","evidence":"No mandatory column state or solver instance is added, but hundred-thousand-column throughput is not benchmarked here."},
+    {"id":17,"status":"PASS","evidence":"Energy units are per owning logical column/tile area. Tile fractions and MODFLOW-cell aggregation remain outside the process contract."},
+    {"id":18,"status":"NOT_APPLICABLE","evidence":"No deep-vadose component behavior is changed."},
+    {"id":19,"status":"NOT_APPLICABLE","evidence":"No transition between deep-vadose and direct groundwater coupling is changed."},
+    {"id":20,"status":"PASS","evidence":"The new view depends on the generic process hydraulic view and restricted thermal result, not on HeadCalc or one Richards internal implementation."},
+    {"id":21,"status":"PASS","evidence":"Existing independently qualified soil-temperature physics is reused byte-identically; no duplicate thermal physics is introduced."},
+    {"id":22,"status":"PASS","evidence":"No HeadCalc internals or hydraulic solver arrays are referenced."},
+    {"id":23,"status":"PASS","evidence":"No numerical policy changes physical options. Coverage flags describe accounted physics only."},
+    {"id":24,"status":"NOT_QUALIFIED","evidence":"The view itself is bounded small work, but EB-I02-R1 does not qualify pathological-column or full MultiSWAP runtime cost behavior."},
+    {"id":25,"status":"PASS","evidence":"F-VQ58 scientific oracle is replayed with the exact historical output hash; existing reference thermal behavior remains available."},
+    {"id":26,"status":"PARTIAL","evidence":"Coverage and residual diagnostics are explicit, but runtime-wide diagnostic aggregation/reporting is deferred."},
+    {"id":27,"status":"PASS","evidence":"No optional physical state or heavy allocation is introduced for columns that do not request the view."},
+    {"id":28,"status":"PASS","evidence":"Area aggregation and system composition remain runtime/coupler responsibilities; the process view is column-local."},
+    {"id":29,"status":"PASS","evidence":"No .swp, file-format, midnight, one-day or mandatory-MODFLOW assumption is present."},
+    {"id":30,"status":"PASS","evidence":"EB-I02-R1 is explicitly assessed against all 30 SWAP core architecture invariants in this audit."}
+  ],
+  "hard_nonclaims": [
+    "No full physical energy balance is qualified.",
+    "Liquid-water advective enthalpy is not accounted.",
+    "Vapor transport energy is not accounted.",
+    "Freeze/thaw and other phase-change enthalpy are not accounted.",
+    "Surface Rn-H-LE-G closure is not accounted.",
+    "Constant water content is not treated as proof of zero advective energy flux.",
+    "EB-I01 ledger composition is not part of this workunit.",
+    "Large-batch MultiSWAP throughput and bounded-cost behavior are not qualified.",
+    "Independent verification and canonical admission are not claimed."
+  ]
+}
