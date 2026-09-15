@@ -151,15 +151,16 @@ PY
 echo 'F_VQ91_EXACT_OWNER_RUNTIME_REPLAY=PASS'
 
 # Runtime-only replay is derived from the immutable owner gate after its static
-# assertions, so adversarial mutations must fail executable evidence.
+# assertions. The derived fragment does not contain the owner's top-level
+# `set -e`, so mutant rejection is judged from the executable failure marker
+# and exact failed assertion rather than from that fragment's final exit code.
 git worktree add --detach "$MUTANT_TREE" "$OWNER" >/dev/null
 awk '/^COMMON=/{emit=1} emit{print}' "$MUTANT_TREE/$OWNER_GATE" > "$MUTANT_TREE/fvq91-runtime-replay.sh"
 grep -Fq 'COMMON=' "$MUTANT_TREE/fvq91-runtime-replay.sh" || fail 'could not derive runtime replay'
 run_runtime_mutant() {
   local label="$1" expected="$2" log="$MUTANT_TREE/fvq91-${1}.log"
   set +e; (cd "$MUTANT_TREE" && bash fvq91-runtime-replay.sh) >"$log" 2>&1; local rc=$?; set -e
-  [[ $rc -ne 0 ]] || { cat "$log" >&2; fail "$label mutant unexpectedly qualified"; }
-  grep -Fq 'EB_I24_TEST_FAIL' "$log" || { cat "$log" >&2; fail "$label mutant did not fail executable owner evidence"; }
+  grep -Fq 'EB_I24_TEST_FAIL' "$log" || { cat "$log" >&2; fail "$label mutant unexpectedly qualified executable evidence (rc=$rc)"; }
   grep -Fq "$expected" "$log" || { cat "$log" >&2; fail "$label mutant failed for unexpected reason"; }
   echo "F_VQ91_${label^^}_MUTANT_REJECTED=PASS"
   git -C "$MUTANT_TREE" checkout -- "$MODULE"
@@ -172,7 +173,7 @@ p=Path(sys.argv[1]); s=p.read_text(); old='inflow_cm = -observation%top_flux * (
 if s.count(old)!=1: raise SystemExit('orientation anchor mismatch')
 p.write_text(s.replace(old,new))
 PY
-run_runtime_mutant orientation accepted
+run_runtime_mutant orientation 'top inflow materialized status'
 
 python3 - "$MUTANT_TREE/$MODULE" <<'PY'
 from pathlib import Path
