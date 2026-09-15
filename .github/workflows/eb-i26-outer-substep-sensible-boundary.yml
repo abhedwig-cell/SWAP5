@@ -19,6 +19,29 @@ jobs:
           fetch-depth: 0
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Inject runner-only kernel reject diagnostics
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('src/runtime/mod_fmr_serialized_multiswap_runtime.f90')
+          s = p.read_text()
+          needle = "    if (.not. kernel_result%completed) then\n"
+          trace = """    if (.not. kernel_result%completed) then
+              write(*,'(A,I0)') 'EB_I27_KERNEL_SOLVER_REJECTIONS=', kernel_diag%solver_rejections
+              write(*,'(A,I0)') 'EB_I27_KERNEL_TEMPORAL_REJECTIONS=', kernel_diag%temporal_rejections
+              write(*,'(A,I0)') 'EB_I27_KERNEL_TEMPORAL_CERT_UNAVAILABLE=', kernel_diag%temporal_certificate_unavailable_rejections
+              write(*,'(A,I0)') 'EB_I27_KERNEL_MASS_REJECTIONS=', kernel_diag%mass_rejections
+              write(*,'(A,I0)') 'EB_I27_KERNEL_ATTEMPTS=', kernel_diag%attempts
+              write(*,'(A,I0)') 'EB_I27_KERNEL_RETRIES=', kernel_diag%retries
+              write(*,'(A,I0)') 'EB_I27_KERNEL_NONLINEAR_ITERATIONS=', kernel_diag%nonlinear_iterations
+              write(*,'(A,I0)') 'EB_I27_KERNEL_INTERNAL_RETRIES=', kernel_diag%internal_retries
+              write(*,'(A,I0)') 'EB_I27_KERNEL_HEADCALC_CALLS=', kernel_diag%headcalc_calls
+          """
+          if needle not in s:
+              raise SystemExit('kernel diagnostic anchor missing')
+          p.write_text(s.replace(needle, trace, 1))
+          PY
       - name: Run bounded outer-substep aggregation diagnostic qualification
         shell: bash
         run: bash tests/eb/run_eb_i26_outer_substep_sensible_boundary_gate.sh
