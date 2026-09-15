@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.fpe11.bounded_execution.reconcile.v1",
+  "work_unit": "F-PE11",
+  "phase": "RECONCILE",
+  "title": "Surface-Evaporation Call-Local Allocation and Scaling Current-Canonical Reconciliation",
+  "owner_branch": "performance/f-pe11-surface-evaporation-allocation-scaling",
+  "owner_head_before_reconciliation": "b436f8e70664cdb851f20f148463459358568579",
+  "live_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1"
+  },
+  "qualified_owner_postimage": {
+    "qualified_head": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+    "binding_blob": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "materialization_blob": "bc40bc6b121f56071d2b811195759f86130defeb",
+    "closeout_head": "b436f8e70664cdb851f20f148463459358568579",
+    "exact_closeout_run": 34554150328
+  },
+  "current_canonical_postimage": {
+    "binding_blob": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "materialization_blob": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "binding_semantics": "EXACT_QUALIFIED_FPE11_BLOB",
+    "materialization_semantics": "FPE11_OWNERSHIP_TRANSFER_RETAINED_WITH_LATER_FCI59_CANDIDATE_PROVENANCE_EXTENSION"
+  },
+  "canonical_admission_reconciliation": {
+    "F_CI42": "ALREADY_ADMITTED",
+    "F_CI42P": "FINAL_CLOSEOUT_COMPLETE",
+    "duplicate_admission_required": false,
+    "admit_phase_disposition": "NO_OP_IF_CURRENT_HEAD_PRESERVATION_REQUALIFIES"
+  },
+  "immutable_evidence_reuse": {
+    "owner_O0_O2_identity": true,
+    "owner_committed_state_immutability": true,
+    "owner_A_B_A_determinism": true,
+    "owner_scientific_identity": true,
+    "owner_mass_nonchange": true,
+    "F_CI42_performance_admission": true,
+    "F_CI42P_postpromotion_governance": true,
+    "F_CI59P_materialization_postimage_O0_O2_and_permanent_preservation": true,
+    "timing_characterization_reusable_as_runner_bound_local_characterization_only": true
+  },
+  "dependency_delta": {
+    "direct_dependency_changed": true,
+    "file": "src/kernel/mod_kernel_transactions.f90",
+    "F_CI59P_blob": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "live_canonical_blob": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
+    "observed_scope": [
+      "accepted-trajectory directional publication support",
+      "canonical subinterval target selector support"
+    ],
+    "surface_evaporation_equations_changed": false,
+    "FPE11_production_binding_changed": false,
+    "FPE11_ownership_transfer_removed": false,
+    "qualification_consequence": "FRESH_NARROW_CURRENT_HEAD_PRESERVATION_REPLAY_REQUIRED"
+  },
+  "broad_canonical_status": {
+    "head": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+    "run": 35034841160,
+    "conclusion": "failure",
+    "classification": "ADJACENT_UNRELATED_CURRENT_CANONICAL_DRIFT",
+    "known_failure_surface": "mod_a23bu_worker_execution_context.f90",
+    "used_as_FPE11_failure_evidence": false
+  },
+  "verdict": "RECONCILED_CURRENT_CANONICAL_ALREADY_CONTAINS_FPE11_ADMISSION_BUT_DIRECT_KERNEL_DEPENDENCY_DELTA_REQUIRES_NARROW_REPLAY",
+  "next_permitted_action": "merge live canonical into the existing F-PE11 branch without production edits, then run the existing F-PE11 functional and paired local timing workflow on that current-canonical composition",
+  "exclusions": [
+    "no EB",
+    "no ROSS or RossFast",
+    "no new scientific equations",
+    "no transaction or mass-policy changes",
+    "no new persistent per-column state",
+    "no direct alias into private committed state",
+    "no whole-model speedup claim",
+    "no MultiSWAP speedup claim without independent measurement in that path",
+    "no automatic rebatching, class switching or GPU work",
+    "no production change merely to make a benchmark pass",
+    "no optimization redesign or extension"
+  ]
+}
