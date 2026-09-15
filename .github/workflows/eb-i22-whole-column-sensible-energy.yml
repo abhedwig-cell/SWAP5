@@ -36,6 +36,7 @@ jobs:
           .github/workflows/eb-i22-whole-column-sensible-energy.yml
           src/process/mod_linear_mixture_sensible_storage.f90
           src/process/mod_whole_column_sensible_energy_accounting.f90
+          tests/eb/EB-I22_CONTRACT.md
           tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90
           EOF
           sort -o allowed.txt allowed.txt
