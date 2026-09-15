@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      CANONICAL: 6acba7e7371347a17cc277ab8cec063d94646006
+      EXPECTED_CANONICAL_TREE: ca2d9030bbaf76eab196da81dcd9419a24f8ecfc
       BASE: 1f33328e2ddc0d28450d35647c1c97f293b1e622
       SOURCE: c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
       FMR: src/runtime/mod_fmr_serialized_reference_backend.f90
@@ -29,9 +29,16 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin integration/f-ci-canonical work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
-          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
-          test "$(git merge-base "$CANONICAL" "$SOURCE")" = "$BASE"
-          test -z "$(git diff --name-only "$CANONICAL" HEAD -- src)"
+          LIVE_CANONICAL="$(git rev-parse origin/integration/f-ci-canonical)"
+          LIVE_TREE="$(git rev-parse "$LIVE_CANONICAL^{tree}")"
+          SOURCE_BASE="$(git merge-base "$LIVE_CANONICAL" "$SOURCE")"
+          echo "LIVE_CANONICAL=$LIVE_CANONICAL" >> "$GITHUB_ENV"
+          echo "FKT22_DEBUG_LIVE_CANONICAL=$LIVE_CANONICAL"
+          echo "FKT22_DEBUG_LIVE_TREE=$LIVE_TREE"
+          echo "FKT22_DEBUG_SOURCE_BASE=$SOURCE_BASE"
+          test "$LIVE_TREE" = "$EXPECTED_CANONICAL_TREE"
+          test "$SOURCE_BASE" = "$BASE"
+          test -z "$(git diff --name-only "$LIVE_CANONICAL" HEAD -- src)"
 
       - name: Overlay nonconflicting qualified source files
         shell: bash
@@ -55,13 +62,14 @@ jobs:
           set -euo pipefail
           TMP="${RUNNER_TEMP}/fkt22-debug"
           mkdir -p "$TMP"
-          git show "$CANONICAL:$FMR" > "$TMP/ours.f90"
+          git show "$LIVE_CANONICAL:$FMR" > "$TMP/ours.f90"
           git show "$BASE:$FMR" > "$TMP/base.f90"
           git show "$SOURCE:$FMR" > "$TMP/theirs.f90"
           set +e
           git merge-file --union -p "$TMP/ours.f90" "$TMP/base.f90" "$TMP/theirs.f90" > "$TMP/merged.f90"
           STATUS=$?
           set -e
+          echo "FKT22_DEBUG_MERGE_FILE_STATUS=$STATUS"
           test "$STATUS" -lt 128
           ! grep -Eq '^(<<<<<<<|=======|>>>>>>>)' "$TMP/merged.f90"
           cp "$TMP/merged.f90" "$FMR"
@@ -120,8 +128,10 @@ jobs:
           if s.count(old) != 1: raise SystemExit(f'branch anchor count={s.count(old)}')
           s=s.replace(old,new,1)
           fmr="      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'\n"
+          if s.count(fmr) < 2: raise SystemExit(f'fmr workflow anchor count={s.count(fmr)}')
           s=s.replace(fmr,fmr+"      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'\n")
           runtime="      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'\n"
+          if s.count(runtime) < 2: raise SystemExit(f'runtime workflow anchor count={s.count(runtime)}')
           s=s.replace(runtime,runtime+"      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'\n")
           s += '''\n  eb-i25-preservation:\n    runs-on: ubuntu-latest\n    timeout-minutes: 20\n    steps:\n      - uses: actions/checkout@v4\n      - name: Preserve EB-I25 semantics under F-KT22 recomposition\n        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh\n'''
           p.write_text(s)
