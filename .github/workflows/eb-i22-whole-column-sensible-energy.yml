@@ -1,0 +1,92 @@
+name: EB-I22 whole-column sensible-energy accounting
+
+on:
+  push:
+    branches:
+      - work/eb-i22-whole-column-sensible-energy-accounting
+  workflow_dispatch:
+
+jobs:
+  qualify-owner:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard current canonical and inherited EB authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          CANONICAL=366a4d9b4afddb9e1f878a6d371fdff836babaac
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          test "$(git rev-parse "$CANONICAL:src/process/mod_soil_temperature_contract.f90")" = "baa13df3975de2c699b0ec910477bcfa9b47f15e"
+          test "$(git rev-parse "$CANONICAL:src/process/mod_restricted_soil_temperature.f90")" = "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+          test "$(git rev-parse "$CANONICAL:src/kernel/mod_energy_conservation_types.f90")" = "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+          test "$(git rev-parse "HEAD:src/process/mod_linear_mixture_sensible_storage.f90")" = "0403c23454a879356ce8d2345006df130484067d"
+
+      - name: Check bounded capability delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=366a4d9b4afddb9e1f878a6d371fdff836babaac
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i22-whole-column-sensible-energy.yml
+          src/process/mod_linear_mixture_sensible_storage.f90
+          src/process/mod_whole_column_sensible_energy_accounting.f90
+          tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          ! grep -Eiq '(open\s*\(|read\s*\(|write\s*\(|\.swp|modflow)' \
+            src/process/mod_linear_mixture_sensible_storage.f90 \
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+          grep -Fq 'full_energy_balance_complete = .false.' \
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+          grep -Fq 'WCSA_INCOMPLETE_BOUNDARY' \
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Compile and run O0
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o0
+          cd build-o0
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o test-eb-i22
+          ./test-eb-i22 | tee ../eb-i22-o0.txt
+
+      - name: Compile and run O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o2
+          cd build-o2
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o test-eb-i22
+          ./test-eb-i22 | tee ../eb-i22-o2.txt
+
+      - name: Require optimization-invariant evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'EB-I22 whole-column sensible-energy accounting: PASS' eb-i22-o0.txt
+          grep -Fx 'EB-I22 whole-column sensible-energy accounting: PASS' eb-i22-o2.txt
+          cmp eb-i22-o0.txt eb-i22-o2.txt
+          echo 'EB_I22_STORAGE_REPLAY=PASS'
+          echo 'EB_I22_BOUNDARY_ORIENTATION=PASS'
+          echo 'EB_I22_INCOMPLETE_BOUNDARY_FAIL_CLOSED=PASS'
+          echo 'EB_I22_FULL_ENERGY_BALANCE_NONCLAIM=PASS'
