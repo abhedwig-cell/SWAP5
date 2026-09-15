@@ -94,7 +94,7 @@ for old_pp03, new_pp03 in pp03_replacements:
 pp03_end = '\nend module mod_fwof34_test_model\n'
 if f34_module.count(pp03_end) != 1:
     raise SystemExit('F-WOF-PP03 cannot locate F-WOF34 module end')
-pp03_accounting = r'''
+pp03_accounting = r"""
 
   subroutine fwof34_pp03_storage_accounting_status(self, state, complete, missing_mask)
     class(fwof34_model_t), intent(in) :: self
@@ -110,7 +110,7 @@ pp03_accounting = r'''
     complete = .true.
     missing_mask = TX_MASS_MISSING_NONE
   end subroutine fwof34_pp03_storage_accounting_status
-'''
+"""
 f34_module = f34_module.replace(pp03_end, pp03_accounting + pp03_end, 1)
 print('F_WOF_PP03_FWO34_CURRENT_MASS_CONTRACT_ADAPTED=PASS')
 '''
