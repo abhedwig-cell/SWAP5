@@ -5,7 +5,7 @@
   "title": "WOFOST81 migration-preservation current-canonical admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "ADMIT",
-  "state": "RECOMPOSED_ON_CURRENT_CANONICAL_PENDING_GREEN",
+  "state": "QUALIFIED_FOR_NON_FORCE_CANONICAL_PROMOTION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "36ebfcfe39fb9a70b522508933bfcf331545d7e0",
@@ -14,7 +14,8 @@
     "delta_commits_since_prior_check": 26,
     "relevant_pp02_dependency_delta": false,
     "delta_summary": "F-GC23/F-CI85 groundwater runtime and governance only; no src/crop, PP02 testbank, or transaction-source changes",
-    "promotion_method": "NON_FORCE_FAST_FORWARD_ONLY"
+    "promotion_method": "NON_FORCE_FAST_FORWARD_ONLY",
+    "canonical_was_rechecked_after_recomposed_green_run": true
   },
   "owner": {
     "branch": "work/f-wof-pp02-wofost81-migration-preservation",
@@ -41,6 +42,9 @@
     "first_green_run": 35021495439,
     "first_green_job": 104557993536,
     "first_green_decision": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+    "recomposed_green_postimage_head": "e67f598c40090c3080f49ac74d28ace93cc737e2",
+    "recomposed_green_run": 35028199853,
+    "recomposed_green_job": 104580194478,
     "recomposition_required_because_canonical_advanced": true,
     "owner_one_day_gate_required": true,
     "owner_case001_fullseason_gate_required": true,
@@ -76,5 +80,6 @@
     "No replacement of the legacy WOFOST path",
     "No WOFOST81 runtime activation in F-CI84"
   ],
-  "next_permitted_action": "Run the recomposed F-CI84 current-canonical postimage gate. If green, recheck live canonical immediately; if unchanged, persist CLOSED_CANONICAL_ADMITTED governance checkpoint on the admission branch, require that checkpoint to pass the same gate, then promote only by non-force fast-forward."
+  "verdict": "PASS: recomposed F-CI84 postimage is qualified on current canonical and is eligible for non-force canonical promotion after this governance checkpoint itself passes the same gate and canonical is rechecked unchanged.",
+  "next_permitted_action": "Require this governance checkpoint commit to pass F-CI84. Then recheck live integration/f-ci-canonical; if it remains exactly 36ebfcfe39fb9a70b522508933bfcf331545d7e0, promote this checkpoint commit by non-force fast-forward and publish a canonical CLOSED_CANONICAL_ADMITTED status-only closeout commit."
 }
