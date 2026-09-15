@@ -1,0 +1,89 @@
+name: F-CI72 EB-I23 moving preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/runtime/mod_eb_i23_sensible_boundary_runtime.f90'
+      - 'src/process/mod_restricted_soil_temperature.f90'
+      - 'src/process/mod_soil_temperature_contract.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/process/mod_liquid_water_sensible_enthalpy.f90'
+      - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
+      - 'tests/eb/EB-I23_CONTRACT.md'
+      - 'tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90'
+      - 'tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh'
+      - 'tests/eb/run_f_vq90_eb_i23_independent_gate.sh'
+      - 'qualification/F-VQ90_STATUS.json'
+      - 'integration/f-ci/F-CI72_STATUS.json'
+      - 'integration/f-ci/F-CI72P_STATUS.json'
+      - '.github/workflows/fci72-eb-i23-moving-preservation.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_eb_i23_sensible_boundary_runtime.f90'
+      - 'src/process/mod_restricted_soil_temperature.f90'
+      - 'src/process/mod_soil_temperature_contract.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/process/mod_liquid_water_sensible_enthalpy.f90'
+      - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
+      - 'tests/eb/EB-I23_CONTRACT.md'
+      - 'tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90'
+      - 'qualification/F-VQ90_STATUS.json'
+      - 'integration/f-ci/F-CI72_STATUS.json'
+      - 'integration/f-ci/F-CI72P_STATUS.json'
+      - '.github/workflows/fci72-eb-i23-moving-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preserve-eb-i23:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preserve admitted EB-I23 authority surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ADMISSION=77acdd880bb0613f5a3ab857c4ecdc69aab27149
+          git merge-base --is-ancestor "$ADMISSION" HEAD
+          declare -A BLOBS=(
+            [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
+            [tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90]=e9fde2d51d2c8cb76ae2def4b7e4a3acaf356d4a
+            [tests/eb/EB-I23_CONTRACT.md]=56bfd4f1350e569e6f651ca4ada13550af93f986
+            [tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh]=fb14542ecccb4b731c12134e069976e968f1e3f3
+            [tests/eb/run_f_vq90_eb_i23_independent_gate.sh]=2e306978b629997e73c607ef98ae1bdb0a684207
+            [qualification/F-VQ90_STATUS.json]=c4255d910af0fa40d7a856ee8dad7d7791119cdd
+            [src/process/mod_restricted_soil_temperature.f90]=fa4e1d7b48d3515e6569c9080d497178c25c4e85
+            [src/process/mod_soil_temperature_contract.f90]=baa13df3975de2c699b0ec910477bcfa9b47f15e
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=3506b453ba6a00111d182f29db8cbfb288001854
+            [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
+            [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
+            [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
+          )
+          for path in "${!BLOBS[@]}"; do
+            test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"
+          done
+          python3 -m json.tool qualification/F-VQ90_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI72_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI72P_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I23_INDEPENDENT"' qualification/F-VQ90_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI72_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI72_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI72P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI72P_STATUS.json
+          grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI72P_STATUS.json
+          grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI72P_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI72P_STATUS.json
+          MODULE=src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+          grep -Fq 'output%accepted_substeps == 1' "$MODULE"
+          grep -Fq 'boundary%top_advective_available = .false.' "$MODULE"
+          ! grep -Fq 'boundary%top_advective_available = .true.' "$MODULE"
+          echo 'FCI72_MOVING_EB_I23_AUTHORITY_PRESERVATION=PASS'
+          echo 'FCI72_MOVING_TOP_ADVECTIVE_FAIL_CLOSED=PASS'
+          echo 'FCI72_MOVING_FULL_ENERGY_BALANCE_NONCLAIM=PASS'
