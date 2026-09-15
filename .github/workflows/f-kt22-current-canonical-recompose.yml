@@ -24,8 +24,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PREVIOUS_CANONICAL=64937452be6b073a21b1b87acf21ce4edcbfda14
-          CANONICAL=7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a
+          PREVIOUS_CANONICAL=6acba7e7371347a17cc277ab8cec063d94646006
+          CANONICAL=6acba7e7371347a17cc277ab8cec063d94646006
           BASE=1f33328e2ddc0d28450d35647c1c97f293b1e622
           SOURCE=c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
           FMR=src/runtime/mod_fmr_serialized_reference_backend.f90
@@ -39,9 +39,9 @@ jobs:
           test "$LIVE_CANONICAL" = "$CANONICAL"
           test "$SOURCE_BASE" = "$BASE"
 
-          # This recomposition branch was created at PREVIOUS_CANONICAL. Before
-          # inheriting the later canonical postimage it may contain only
-          # qualification support outside src; no production overlay may exist.
+          # This recomposition branch is anchored at the exact current-canonical
+          # checkpoint. Before overlay it may contain only qualification support
+          # outside src; no production overlay may exist.
           test -z "$(git diff --name-only "$PREVIOUS_CANONICAL" HEAD -- src)"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
