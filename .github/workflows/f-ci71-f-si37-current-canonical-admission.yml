@@ -1,0 +1,136 @@
+name: F-CI71 F-SI37 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci71-f-si37-accepted-step-directional-derivative-current-canonical-admission
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'tests/qualification/fvq89/**'
+      - 'qualification/F-VQ89_STATUS.json'
+      - '.github/workflows/fvq89-fsi37-independent.yml'
+      - '.github/workflows/f-ci71-f-si37-current-canonical-admission.yml'
+      - 'integration/f-ci/F-CI71_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock canonical and qualification authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=5ad1192dc3a120c5be0f36b023ebcac8d862e904
+          SOURCE=992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd
+          VQ_TESTED=53c3e7e1a8b805b6ad1c408b7a408fe159da9588
+          VQ_EVIDENCE=f8c43db9cf2dc4f3c330f8cb4d2ba0910f0b68f9
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          git merge-base --is-ancestor "$CANONICAL" HEAD
+          git merge-base --is-ancestor "$VQ_TESTED" HEAD
+          git merge-base --is-ancestor "$VQ_EVIDENCE" HEAD
+          test "$(git rev-parse "$SOURCE:src/solver/mod_soil_water_accepted_step_direction_contract.f90")" = "52698b1ad2350bf787862a053a49c7c73c3358f0"
+          test "$(git rev-parse "$SOURCE:src/solver/mod_b110_default_mvg_directional_provider.f90")" = "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
+          test "$(git rev-parse "$SOURCE:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90")" = "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+          test "$(git rev-parse "$SOURCE:src/adapter/mod_reference_richards_accepted_step_directional_service.f90")" = "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+          test "$(git rev-parse "HEAD:src/solver/mod_soil_water_accepted_step_direction_contract.f90")" = "52698b1ad2350bf787862a053a49c7c73c3358f0"
+          test "$(git rev-parse "HEAD:src/solver/mod_b110_default_mvg_directional_provider.f90")" = "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
+          test "$(git rev-parse "HEAD:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90")" = "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+          test "$(git rev-parse "HEAD:src/adapter/mod_reference_richards_accepted_step_directional_service.f90")" = "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+          echo 'FCI71_CANONICAL_LOCK=PASS'
+          echo 'FCI71_QUALIFICATION_AUTHORITY_LOCK=PASS'
+          echo 'FCI71_PRODUCTION_BLOB_LOCK=PASS'
+
+      - name: Require exact bounded admission delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=5ad1192dc3a120c5be0f36b023ebcac8d862e904
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci71-f-si37-current-canonical-admission.yml
+          .github/workflows/fvq89-fsi37-independent.yml
+          integration/f-ci/F-CI71_STATUS.json
+          qualification/F-VQ89_STATUS.json
+          src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+          src/adapter/mod_reference_richards_accepted_step_directional_service.f90
+          src/solver/mod_b110_default_mvg_directional_provider.f90
+          src/solver/mod_soil_water_accepted_step_direction_contract.f90
+          tests/qualification/fvq89/fvq89_make_reference_stubs.py
+          tests/qualification/fvq89/run_fvq89_fsi37_independent.sh
+          tests/qualification/fvq89/test_fvq89_fsi37_independent.f90
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool qualification/F-VQ89_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI71_STATUS.json >/dev/null
+          grep -Fq '"decision": "PASS"' qualification/F-VQ89_STATUS.json
+          grep -Fq '"canonical_admission": false' qualification/F-VQ89_STATUS.json
+          grep -Fq '"ready_for_separate_atomic_admission": true' qualification/F-VQ89_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI71_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI71_STATUS.json
+          grep -Fq '"canonical_admission": false' integration/f-ci/F-CI71_STATUS.json
+          echo 'FCI71_EXACT_BOUNDED_DELTA=PASS'
+
+      - name: Guard excluded scopes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only 5ad1192dc3a120c5be0f36b023ebcac8d862e904 HEAD | grep -Ev '^(\.github/workflows/f-ci71-f-si37-current-canonical-admission.yml|\.github/workflows/fvq89-fsi37-independent.yml|integration/f-ci/F-CI71_STATUS.json|qualification/F-VQ89_STATUS.json|src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90|src/adapter/mod_reference_richards_accepted_step_directional_service.f90|src/solver/mod_b110_default_mvg_directional_provider.f90|src/solver/mod_soil_water_accepted_step_direction_contract.f90|tests/qualification/fvq89/)' && exit 1 || true
+          ! git diff --name-only 5ad1192dc3a120c5be0f36b023ebcac8d862e904 HEAD | grep -Eiq '(^|/)(eb|ross|rossfast)(/|[-_])'
+          echo 'FCI71_EXCLUDED_SCOPE_GUARD=PASS'
+
+      - name: Replay independent numerical qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/qualification/fvq89/run_fvq89_fsi37_independent.sh
+
+      - name: Verify immutable qualification claims
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          p='qualification/F-VQ89_STATUS.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['decision']=='PASS'
+          assert d['verdict']=='PASS'
+          assert d['canonical_base']['sha']=='5ad1192dc3a120c5be0f36b023ebcac8d862e904'
+          assert d['source_authority']['tested_source_sha']=='992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd'
+          q=d['qualification']
+          assert q['tested_head']=='53c3e7e1a8b805b6ad1c408b7a408fe159da9588'
+          assert q['independent_push_conclusion']=='success'
+          assert q['independent_pr_conclusion']=='success'
+          assert q['canonical_regression_conclusion']=='success'
+          checks=d['independent_claim_checks']
+          required=[
+            'derivative_owned_by_accepted_step_endpoint',
+            'rejected_retry_trial_derivative_leakage',
+            'finite_difference_agreement_on_smooth_cases',
+            'zero_direction',
+            'selected_single_and_mixed_directions',
+            'O0_O2_derivative_bit_identity',
+            'committed_physical_state_not_mutated',
+            'unavailable_or_failed_sensitivity_fails_closed',
+            'existing_canonical_regression_gates',
+            'bounded_analytic_implementation_one_tangent_backsolve']
+          assert all(checks[k]=='PASS' for k in required)
+          assert d['scope_guards']['production_semantics_modified_for_qualification'] is False
+          assert d['scope_guards']['EB_touched_by_this_workunit'] is False
+          assert d['scope_guards']['ROSS_touched_by_this_workunit'] is False
+          assert d['scope_guards']['RossFast_touched_by_this_workunit'] is False
+          assert d['scope_guards']['groundwater_coupling_composition_broadened'] is False
+          print('FCI71_IMMUTABLE_VQ89_EVIDENCE=PASS')
+          PY

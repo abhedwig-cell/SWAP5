@@ -1,0 +1,40 @@
+name: F-CI75 F-KT21 current-canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci75-fkt21-canonical-admission
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/adapter/mod_b1_10_recoverable_reference_model.f90'
+      - 'src/adapter/mod_b1_10_reference_model.f90'
+      - 'src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/transaction/mod_accepted_trajectory_transaction_binding.f90'
+      - 'tests/fkt/**'
+      - 'tests/qualification/fci75/**'
+      - 'integration/f-ci/F-CI75_STATUS.json'
+      - '.github/workflows/fci75-fkt21-current-canonical-admission.yml'
+
+jobs:
+  qualify-current-canonical-composition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          python3 --version
+          git --version
+      - name: Replay immutable owner and independent authority plus semantic preservation
+        shell: bash
+        run: bash tests/qualification/fci75/run_fci75_fkt21_current_canonical_admission_gate.sh

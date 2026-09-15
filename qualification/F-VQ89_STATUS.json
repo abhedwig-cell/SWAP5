@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.fvq89.status.v1",
+  "work_unit": "F-VQ89",
+  "title": "F-SI37 Accepted-Step Directional Derivative Seam independent qualification",
+  "decision": "PASS",
+  "phase": "INDEPENDENT_QUALIFICATION_COMPLETE",
+  "branch": "qualification/f-vq89-fsi37-accepted-step-directional-derivative-seam-independent-qualification",
+  "canonical_base": {
+    "sha": "5ad1192dc3a120c5be0f36b023ebcac8d862e904",
+    "tree": "5eeea4153973703ffcfeba6a6af5244ea47af9b6"
+  },
+  "source_authority": {
+    "work_unit": "F-SI37",
+    "tested_source_sha": "992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd",
+    "owner_evidence_head": "e8e469e433380304acd03212e982e852906de59b",
+    "owner_branch": "work/f-si37-accepted-step-directional-derivative-seam"
+  },
+  "qualification": {
+    "tested_head": "53c3e7e1a8b805b6ad1c408b7a408fe159da9588",
+    "tested_tree": "f1f22984f9b1e03c8f84abe09e79bc61b0a35953",
+    "independent_push_workflow_run": 34942556156,
+    "independent_pr_workflow_run": 34942636609,
+    "canonical_regression_workflow_run": 34942636596,
+    "independent_push_conclusion": "success",
+    "independent_pr_conclusion": "success",
+    "canonical_regression_conclusion": "success"
+  },
+  "exact_production_payload": {
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+  },
+  "changed_files_at_tested_head_relative_to_canonical_base": [
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+    "tests/qualification/fvq89/fvq89_make_reference_stubs.py",
+    "tests/qualification/fvq89/test_fvq89_fsi37_independent.f90",
+    "tests/qualification/fvq89/run_fvq89_fsi37_independent.sh",
+    ".github/workflows/fvq89-fsi37-independent.yml"
+  ],
+  "commands": [
+    "bash tests/qualification/fvq89/run_fvq89_fsi37_independent.sh",
+    "gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 ...",
+    "gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 ...",
+    "cmp <O0 derivative bit signatures> <O2 derivative bit signatures>",
+    "GitHub Actions: F-CI canonical qualification on PR 135"
+  ],
+  "numerical_reference": {
+    "method": "independent five-point centered finite difference of the fully converged accepted endpoint",
+    "coarse_step": 0.0002,
+    "fine_step": 0.0001,
+    "relative_gate": 0.00005,
+    "head_absolute_floor": 2e-7,
+    "water_content_absolute_floor": 2e-9,
+    "flux_absolute_floor": 2e-9,
+    "two_stencil_relative_consistency_gate": 0.00002,
+    "rationale": "The five-point centered stencil is fourth-order on the fixed smooth routes admitted by F-SI37. The two perturbation steps are small relative to the state and control scales but large relative to the 1e-12 nonlinear head tolerance. The 5e-5 relative envelope allows nonlinear-solve and floating-point evaluation noise while remaining much smaller than the perturbation amplitudes and physical state scales. Exact-zero and bit-identity assertions are used where stronger statements are available."
+  },
+  "independent_claim_checks": {
+    "derivative_owned_by_accepted_step_endpoint": "PASS",
+    "rejected_retry_trial_derivative_leakage": "PASS",
+    "finite_difference_agreement_on_smooth_cases": "PASS",
+    "zero_direction": "PASS",
+    "selected_single_and_mixed_directions": "PASS",
+    "O0_O2_derivative_bit_identity": "PASS",
+    "committed_physical_state_not_mutated": "PASS",
+    "unavailable_or_failed_sensitivity_fails_closed": "PASS",
+    "existing_canonical_regression_gates": "PASS",
+    "bounded_analytic_implementation_one_tangent_backsolve": "PASS"
+  },
+  "coverage": {
+    "smooth_fd_cases": 5,
+    "directions": [
+      "zero",
+      "bottom-control-only",
+      "single incoming pressure-head component",
+      "single incoming water-content component",
+      "mixed incoming pressure-head, water-content and bottom-control"
+    ],
+    "bottom_controls": [
+      "bottom flux",
+      "bottom head"
+    ],
+    "conductivity_mean_methods_sampled": [1, 2, 3, 4, 6],
+    "retry_workspace_reuse_checked": true,
+    "physical_candidate_on_off_bit_identity_checked": true
+  },
+  "dependency_evidence_policy": {
+    "owner_executable_result_inherited_as_current_proof": false,
+    "reason": "The owner harness compiled mod_reference_richards_temporal_indicator.f90 at a different blob. Therefore its executable result was not treated as current qualification proof.",
+    "immutable_source_mapping_reused": true,
+    "test_only_reference_stub_materializer_reused": true,
+    "current_temporal_indicator_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+  },
+  "scope_guards": {
+    "production_semantics_modified_for_qualification": false,
+    "EB_touched_by_this_workunit": false,
+    "ROSS_touched_by_this_workunit": false,
+    "RossFast_touched_by_this_workunit": false,
+    "groundwater_coupling_composition_broadened": false,
+    "new_scientific_capability_opened": false
+  },
+  "verdict": "PASS",
+  "canonical_admission": false,
+  "ready_for_separate_atomic_admission": true,
+  "hard_nonclaims": [
+    "F-VQ89 is independent qualification evidence and is not canonical admission.",
+    "F-VQ89 does not qualify trajectory composition across multiple accepted steps.",
+    "F-VQ89 does not qualify groundwater-coupling composition.",
+    "F-VQ89 does not alter or qualify EB, ROSS or RossFast capabilities."
+  ]
+}

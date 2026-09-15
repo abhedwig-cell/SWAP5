@@ -1,0 +1,23 @@
+name: EB-I23 sensible-boundary runtime materialization
+
+on:
+  push:
+    branches:
+      - work/eb-i23-sensible-boundary-runtime-materialization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: EB-I23 owner qualification
+        run: bash tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh

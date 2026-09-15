@@ -1,0 +1,38 @@
+name: F-CI73P F-GC25 canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci73p-fgc25-current-canonical-postimage-reconciliation
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_*.f90'
+      - 'tests/fgc/**'
+      - 'tests/qualification/fvq87/**'
+      - 'tests/qualification/fci73p/**'
+      - 'qualification/F-VQ87_STATUS.json'
+      - 'integration/f-ci/F-CI73_STATUS.json'
+      - 'integration/f-ci/F-CI73P_STATUS.json'
+      - '.github/workflows/fci73p-fgc25-postimage-reconciliation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          gfortran --version
+          python3 --version
+          git --version
+
+      - name: Run F-CI73P reconciliation gate
+        run: bash tests/qualification/fci73p/run_fci73p_fgc25_postimage_reconciliation_gate.sh

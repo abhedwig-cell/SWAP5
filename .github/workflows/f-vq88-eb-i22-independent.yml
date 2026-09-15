@@ -1,0 +1,113 @@
+name: F-VQ88 EB-I22 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq88-eb-i22-whole-column-sensible-energy-independent-qualification
+  workflow_dispatch:
+
+jobs:
+  independently-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard owner authority and live dependency surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          OWNER=b5f6809293ca311944297a95ec935bce45ec0375
+          CANONICAL_BASE=366a4d9b4afddb9e1f878a6d371fdff836babaac
+          git fetch origin integration/f-ci-canonical
+          LIVE=$(git rev-parse origin/integration/f-ci-canonical)
+          git merge-base --is-ancestor "$CANONICAL_BASE" "$LIVE"
+          test "$(git rev-parse "$OWNER:src/process/mod_linear_mixture_sensible_storage.f90")" = "0403c23454a879356ce8d2345006df130484067d"
+          test "$(git rev-parse "$OWNER:src/process/mod_whole_column_sensible_energy_accounting.f90")" = "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+          test "$(git rev-parse "$LIVE:src/process/mod_soil_temperature_contract.f90")" = "baa13df3975de2c699b0ec910477bcfa9b47f15e"
+          test "$(git rev-parse "$LIVE:src/process/mod_restricted_soil_temperature.f90")" = "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+          test "$(git rev-parse "$LIVE:src/kernel/mod_energy_conservation_types.f90")" = "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+          echo "F_VQ88_LIVE_CANONICAL=$LIVE"
+          echo 'F_VQ88_DEPENDENCY_SCOPED_LIVE_GUARD=PASS'
+
+      - name: Require qualification-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          OWNER=b5f6809293ca311944297a95ec935bce45ec0375
+          git diff --name-only "$OWNER" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-vq88-eb-i22-independent.yml
+          tests/eb/F-VQ88_STATUS.json
+          tests/eb/test_f_vq88_eb_i22_independent.f90
+          EOF
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          test "$(git rev-parse "HEAD:src/process/mod_linear_mixture_sensible_storage.f90")" = "$(git rev-parse "$OWNER:src/process/mod_linear_mixture_sensible_storage.f90")"
+          test "$(git rev-parse "HEAD:src/process/mod_whole_column_sensible_energy_accounting.f90")" = "$(git rev-parse "$OWNER:src/process/mod_whole_column_sensible_energy_accounting.f90")"
+          test "$(git rev-parse "HEAD:tests/eb/EB-I22_CONTRACT.md")" = "$(git rev-parse "$OWNER:tests/eb/EB-I22_CONTRACT.md")"
+          python3 -m json.tool tests/eb/F-VQ88_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I22_INDEPENDENT"' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"canonical_admission": false' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' tests/eb/F-VQ88_STATUS.json
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Independent O0 replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o0
+          cd build-o0
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o owner
+          ./owner | tee ../owner-o0.txt
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O0 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_f_vq88_eb_i22_independent.f90 \
+            -o independent
+          ./independent | tee ../independent-o0.txt
+
+      - name: Independent O2 replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-o2
+          cd build-o2
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o owner
+          ./owner | tee ../owner-o2.txt
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_f_vq88_eb_i22_independent.f90 \
+            -o independent
+          ./independent | tee ../independent-o2.txt
+
+      - name: Require independent evidence identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'EB-I22 whole-column sensible-energy accounting: PASS' owner-o0.txt
+          grep -Fx 'F-VQ88 EB-I22 independent qualification: PASS' independent-o0.txt
+          cmp owner-o0.txt owner-o2.txt
+          cmp independent-o0.txt independent-o2.txt
+          echo 'F_VQ88_REVERSED_BOUNDARY_ORIENTATION_ATTACK=PASS'
+          echo 'F_VQ88_EXTERNAL_COMPONENT_ID_ATTACK=PASS'
+          echo 'F_VQ88_MISSING_REFERENCE_METADATA_ATTACK=PASS'
+          echo 'F_VQ88_REFERENCE_GAUGE_MISMATCH_ATTACK=PASS'
+          echo 'F_VQ88_MOISTURE_ONLY_COMPOSITION_CLOSURE=PASS'
+          echo 'F_VQ88_NO_FULL_ENERGY_BALANCE_BROADENING=PASS'
