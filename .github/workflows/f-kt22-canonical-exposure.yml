@@ -18,8 +18,10 @@ on:
       - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
       - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
       - 'tests/fkt/test_fkt22_kernel_trajectory_transport.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
       - 'tests/fkt/run_fkt22_canonical_exposure.sh'
       - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
       - '.github/workflows/f-kt22-canonical-exposure.yml'
   pull_request:
     paths:
@@ -36,8 +38,10 @@ on:
       - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
       - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
       - 'tests/fkt/test_fkt22_kernel_trajectory_transport.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
       - 'tests/fkt/run_fkt22_canonical_exposure.sh'
       - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
       - '.github/workflows/f-kt22-canonical-exposure.yml'
   workflow_dispatch:
 
@@ -60,3 +64,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compile F-KT22 serialized FMR production seam
         run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+
+  fmr-production-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-KT22 serialized FMR production runtime oracle
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
