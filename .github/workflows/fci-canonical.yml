@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=2d8b08c06b67132f57b2c757f493d1b31a954a92
+          AUTH=b4e637885eafa6c193257cd11fa5b6fb45c18fa3
           TX=src/transaction/mod_transaction_reference.f90
           TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
@@ -343,6 +343,14 @@ jobs:
             src/process/mod_snow_process.f90
             src/runtime/mod_fmr_serialized_reference_backend.f90
             src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+            src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+            src/runtime/mod_fmr_bottom_sensible_energy.f90
+            src/kernel/mod_energy_conservation_types.f90
+            src/runtime/mod_energy_conservation_ledger.f90
+            src/runtime/mod_fmr_owned_commit_receipt.f90
             src/runtime/mod_fmr_parallel_physical_scheduler.f90
             src/runtime/mod_fmr_parallel_worker_pool.f90
             src/runtime/mod_fmr_parallel_root_uptake_pool.f90
@@ -351,6 +359,16 @@ jobs:
             src/runtime/mod_fmr_reference_et_root_uptake_composition.f90
             src/solver/mod_process_hydraulic_view.f90
             src/process/mod_drainage_spatial_distribution.f90
+            src/process/mod_drainage_empirical_interflow_response.f90
+            src/process/mod_drainage_ernst_ipos45_preparation.f90
+            src/process/mod_drainage_ernst_ipos45_response.f90
+            src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+            src/process/mod_drainage_hooghoudt_ipos1_response.f90
+            src/process/mod_drainage_hooghoudt_ipos23_response.f90
+            src/process/mod_drainage_multilevel_aggregation.f90
+            src/process/mod_drainage_process.f90
+            src/process/mod_drainage_tabulated_response.f90
+            src/runtime/mod_fmr_drainage_response_binding.f90
             src/runtime/mod_fmr_divdra_runtime_binding.f90
             src/runtime/mod_fmr_divdra_serialized_composition.f90
             src/runtime/mod_fmr_divdra_serialized_runtime.f90
@@ -364,6 +382,9 @@ jobs:
             src/runtime/mod_coupling_application_accuracy_adapter.f90
             src/runtime/mod_groundwater_coupling_contract.f90
             src/runtime/mod_groundwater_coupling_policy.f90
+            src/runtime/mod_groundwater_exchange_service_contract.f90
+            src/runtime/mod_groundwater_interface_mass_ledger.f90
+            src/runtime/mod_groundwater_coupled_restart.f90
           )
           for path in "${dependency_surface[@]}"; do
             test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || {
@@ -390,5 +411,10 @@ jobs:
           echo 'FCI52_MOVING_PM08D7_FIXED_WEIR_TRANSACTIONAL_RUNTIME_PRESERVATION=PASS'
           echo 'FCI57_MOVING_FAIL_CLOSED_MASS_COMPLETENESS_PRESERVATION=PASS'
           echo 'FCI59_MOVING_ATOMIC_SURFACE_PUBLICATION_PRESERVATION=PASS'
+          echo 'FCI61_MOVING_DRAINAGE_RESPONSE_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI62_MOVING_PRESCRIBED_QBOT_TEMPORAL_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'
+          echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'
+          echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'

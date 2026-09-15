@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.ftb12p.postimage_reconciliation.v1",
+  "work_unit": "F-TB12P",
+  "title": "F-TB12 Drainage v1 permanent testbank preservation postimage reconciliation",
+  "scope": "metadata-only post-admission reconciliation",
+  "decision": "FTB12_POSTIMAGE_RECONCILED_AND_CANONICALLY_ADMITTED",
+  "qualification_coverage": "PASS",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "tests_source_changed": false,
+  "solver_algorithms_changed": false,
+  "physics_changed": false,
+  "scope_reduced": false,
+  "scope_expanded": false,
+  "mass_conservation_concession": false,
+  "source_requalification_required": false,
+  "pre_admission": {
+    "canonical_sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "canonical_tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "ftb12_status_head": "22992cec833ef25537bc201aac96d88bf932b299",
+    "ftb12_status_head_tree": "e4080f87678f583970f000ad14bfd6363ff64c4c",
+    "ftb12_initial_qualification_run": 34824155411,
+    "ftb12_initial_qualification_job": 103912284517,
+    "ftb12_status_head_run": 34824415907,
+    "ftb12_status_head_job": 103913098114
+  },
+  "admission": {
+    "pull_request": 116,
+    "merge_method": "merge",
+    "canonical_merge_sha": "1211bd5f4a4f9b1aee110e8e38cadad7ee52ae4f",
+    "canonical_merge_tree": "e4080f87678f583970f000ad14bfd6363ff64c4c",
+    "parent_canonical_sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "parent_ftb12_status_head_sha": "22992cec833ef25537bc201aac96d88bf932b299",
+    "true_two_parent_merge": true,
+    "github_signature_verified": true,
+    "admitted_files": [
+      ".github/workflows/f-tb12-drainage-v1-permanent-preservation-adoption.yml",
+      "integration/f-tb/F-TB12_STATUS.json",
+      "testbank/manifests/F-TB12_DRAINAGE_V1_PERMANENT_PRESERVATION_ADOPTION.json",
+      "testbank/runners/run_ftb12_drainage_v1_permanent_preservation.sh"
+    ]
+  },
+  "admitted_blobs": {
+    ".github/workflows/f-tb12-drainage-v1-permanent-preservation-adoption.yml": "e7870789793ce84d5a04e355baa2dfe53981e172",
+    "integration/f-tb/F-TB12_STATUS.json": "7270e15e33d679d70a56ec7c795911b84094b4d8",
+    "testbank/manifests/F-TB12_DRAINAGE_V1_PERMANENT_PRESERVATION_ADOPTION.json": "a304fbce213c53c5cee799fa79ce22076bb178b5",
+    "testbank/runners/run_ftb12_drainage_v1_permanent_preservation.sh": "99c7ad975b137bad5b46df48b3916881350b6bb1"
+  },
+  "postimage": {
+    "canonical_sha": "1211bd5f4a4f9b1aee110e8e38cadad7ee52ae4f",
+    "canonical_tree": "e4080f87678f583970f000ad14bfd6363ff64c4c",
+    "src_tree": "d6e7a1ea2da1067a9f56ead1e710cf8911de5474",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "tests_tree": "9e97ea6d9d1a5d4ce5f685d4cdbc116c0dcaf476",
+    "src_tree_unchanged_from_pre_admission": true,
+    "reference_tree_unchanged_from_pre_admission": true,
+    "tests_tree_unchanged_from_pre_admission": true
+  },
+  "post_admission_evidence": {
+    "canonical_push_qualification": {
+      "run": 34824757554,
+      "head_sha": "1211bd5f4a4f9b1aee110e8e38cadad7ee52ae4f",
+      "status": "completed",
+      "conclusion": "success",
+      "current_restricted_job": 103915272290,
+      "moving_current_preservation": "success"
+    },
+    "canonical_pr_qualification": {
+      "run": 34824762024,
+      "head_sha": "1211bd5f4a4f9b1aee110e8e38cadad7ee52ae4f",
+      "status": "completed",
+      "conclusion": "success",
+      "current_restricted_job": 103915355514,
+      "moving_current_preservation": "success"
+    },
+    "wof43a_moving_preservation": {"run": 34824757620, "conclusion": "success"},
+    "fsi35_postimage_preservation": {"run": 34824757601, "conclusion": "success"},
+    "vq_reference_qualification": {"run": 34824761612, "conclusion": "success"},
+    "documentation": {"run": 34824761764, "conclusion": "success"}
+  },
+  "drainage_authorities": {
+    "completion": {
+      "work_unit": "F-PM19",
+      "sha": "84edf5b728795cb62b43b0a2376d3bd8e3d5a5a3",
+      "decision": "QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE",
+      "frozen_denominator_variants": 8
+    },
+    "independent_current_postimage_runtime": {
+      "work_unit": "F-VQ76",
+      "sha": "5ee4920ffe680c920b64996159060fc1f509fcd8",
+      "decision": "QUALIFIED_DRAINAGE_RUNTIME_PRESERVED_ON_F_CI62_POSTIMAGE_INDEPENDENTLY"
+    },
+    "permanent_testbank_adoption": {
+      "work_unit": "F-TB12",
+      "status_head": "22992cec833ef25537bc201aac96d88bf932b299",
+      "decision": "QUALIFIED_DRAINAGE_V1_PERMANENT_TESTBANK_PRESERVATION_ADOPTED",
+      "canonical_admission_merge": "1211bd5f4a4f9b1aee110e8e38cadad7ee52ae4f"
+    }
+  },
+  "historical_snapshot_policy": {
+    "F_TB12_STATUS_rewritten_after_promotion": false,
+    "pre_admission_false_flags_retained_as_historical_snapshot": true,
+    "post_admission_truth_is_carried_by_git_lineage_and_F_TB12P": true
+  },
+  "drainage": {
+    "adopted": true,
+    "permanently_preserved": true,
+    "canonically_admitted": true,
+    "postimage_reconciled": true,
+    "drainage_v1_100_percent_complete": true,
+    "bounded_to_frozen_eight_variant_denominator": true,
+    "fully_implicit_drainage_solver_coupling_claimed": false,
+    "broader_reverse_exchange_claimed": false
+  },
+  "hard_bounds": [
+    "The 100 percent claim applies only to the unchanged F-PM13 eight-variant Drainage-v1 denominator qualified by F-PM19.",
+    "F-TB12/F-TB12P add no production physics, solver algorithm or reference-source change.",
+    "Hard mass conservation remains non-waivable.",
+    "Any future protected drainage dependency change requires fresh preservation evidence before carrying this current-postimage claim forward."
+  ],
+  "terminal_marker": "FTB12_POSTIMAGE_RECONCILED_AND_CANONICALLY_ADMITTED"
+}

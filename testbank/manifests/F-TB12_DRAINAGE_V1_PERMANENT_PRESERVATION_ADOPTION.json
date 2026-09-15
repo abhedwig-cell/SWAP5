@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.ftb12.drainage_v1_permanent_preservation_adoption.v1",
+  "work_unit": "F-TB12",
+  "title": "Drainage v1 100 percent permanent testbank preservation adoption",
+  "branch": "work/f-tb12-drainage-v1-permanent-preservation-adoption",
+  "target_decision": "QUALIFIED_DRAINAGE_V1_PERMANENT_TESTBANK_PRESERVATION_ADOPTED",
+  "ownership": {
+    "production_source_changes_allowed": false,
+    "reference_source_changes_allowed": false,
+    "physics_or_algorithm_changes_allowed": false,
+    "scope_reduction_allowed": false,
+    "allowed_scope": ["testbank metadata", "qualification metadata", "documentation", "workflows", "test harness code"]
+  },
+  "canonical_binding": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "binding_policy": "Exact current-canonical SHA/tree and no src/reference delta. Any later protected drainage dependency change requires explicit preservation requalification."
+  },
+  "historical_testbank_authorities": {
+    "F_TB11": {
+      "status": "CLOSED_QUALIFIED",
+      "drainage_adopted": false,
+      "reason": "No definitive drainage-v1 100 percent completion authority existed at F-TB11 exit."
+    },
+    "F_TB11P": {
+      "decision": "FTB11_POSTIMAGE_RECONCILED_AND_CANONICALLY_ADMITTED",
+      "drainage_claim_added": false,
+      "drainage_adopted": false
+    },
+    "policy": "F-TB12 is additive and does not rewrite F-TB11/F-TB11P historical authorities."
+  },
+  "adopted_capability": {
+    "capability": "Drainage v1",
+    "completion_authority_work_unit": "F-PM19",
+    "completion_authority_sha": "84edf5b728795cb62b43b0a2376d3bd8e3d5a5a3",
+    "status_path": "integration/f-pm/F-PM19_STATUS.json",
+    "status_blob": "1d237b26f31c5e83fa7b299e01f47bd9ec6d5ff4",
+    "completion_certificate_path": "integration/f-pm/F-PM19_DRAINAGE_V1_FINAL_COMPLETION.json",
+    "completion_certificate_blob": "f4ddf0b9ed945ccb6f8a66c4611de624d10dc4a8",
+    "architecture_audit_path": "integration/f-pm/F-PM19_ARCHITECTURE_AUDIT.json",
+    "architecture_audit_blob": "dd49912365425f6d3cc9ce8b070a671eb010d751",
+    "decision": "QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE",
+    "frozen_denominator_variants": 8,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "fully_implicit_drainage_solver_coupling_added": false,
+    "mass_conservation_concession": false,
+    "architecture_invariants_1_30": "PASS_ALL_QUALIFIED_OR_PRESERVED"
+  },
+  "independent_executable_oracle": {
+    "work_unit": "F-VQ76",
+    "sha": "5ee4920ffe680c920b64996159060fc1f509fcd8",
+    "decision": "QUALIFIED_DRAINAGE_RUNTIME_PRESERVED_ON_F_CI62_POSTIMAGE_INDEPENDENTLY",
+    "status_blob": "c61081dbede3518d5625714926246cf438106222",
+    "wrapper_blob": "751ae59d081be80c926e451505e22c77a39a77dc",
+    "inner_gate_blob": "b5269247a8d5939a2c639239d8512451f9eca8b2",
+    "preregistration_blob": "9ec4f4388c58b677bc1a40ebe58ae2579150fd2b",
+    "architecture_audit_blob": "f8c2cefd1e15938e9b0f84eceaa9913efa3134e0",
+    "status_head_workflow_run": 34821454970,
+    "required_replay": "Exact immutable F-VQ76 wrapper and inner gate, including VQ73/VQ74 O0/O2 executable oracles and DIVDRA/fixed-weir behavioral preservation."
+  },
+  "stable_tests": [
+    {"id":"FTB12-REL-001","layers":["release qualification"],"oracle":"exact live current canonical SHA/tree and zero F-TB12 src/reference delta","expected":"PASS","failure_semantics":"FAIL_CLOSED_STALE_CANONICAL_OR_PRODUCTION_DELTA"},
+    {"id":"FTB12-DRAIN-AUTH-001","layers":["process","qualification","release qualification"],"oracle":"exact F-PM19 status/certificate/audit, fixed eight-variant denominator, G1/G2/G3 closed and all 30 invariants qualified or preserved","expected":"PASS","failure_semantics":"FAIL_DRAINAGE_COMPLETION_AUTHORITY_DRIFT"},
+    {"id":"FTB12-DRAIN-RUNTIME-001","layers":["process","integrated column","legacy/reference"],"oracle":"immutable F-VQ76 executable replay against exact current source","optimization_profiles":["O0","O2"],"expected":"PASS","failure_semantics":"FAIL_DRAINAGE_RUNTIME_REGRESSION"},
+    {"id":"FTB12-DRAIN-MASS-001","layers":["kernel/transaction","process","robustness","release qualification"],"oracle":"F-VQ76/VQ73 hard mass and exactly-once authoritative ledger booking with no mass-conservation concession","expected":"PASS","failure_semantics":"FAIL_HARD_DRAINAGE_MASS_GATE"},
+    {"id":"FTB12-DRAIN-RST-001","layers":["persistence/restart","process"],"oracle":"F-VQ76/VQ74 restart continuation and no additional persistent drainage-response state","expected":"PASS","failure_semantics":"FAIL_DRAINAGE_RESTART_OR_STATE_REGRESSION"},
+    {"id":"FTB12-DRAIN-MSW-001","layers":["MultiSWAP","process","integrated column"],"oracle":"F-VQ76/VQ74 MultiSWAP isolation and order independence","expected":"PASS","failure_semantics":"FAIL_DRAINAGE_MULTISWAP_ISOLATION"},
+    {"id":"FTB12-DRAIN-TIME-001","layers":["generic time","process","solver isolation"],"oracle":"F-VQ76 generic non-calendar interval plus HeadCalc/I-O/calendar isolation","expected":"PASS","failure_semantics":"FAIL_DRAINAGE_GENERIC_TIME_OR_ISOLATION"},
+    {"id":"FTB12-DRAIN-PRES-001","layers":["process","surface water","robustness"],"oracle":"F-VQ76 preservation replay for precomputed DIVDRA and restricted fixed-weir routes","expected":"PASS","failure_semantics":"FAIL_DRAINAGE_ROUTE_PRESERVATION"}
+  ],
+  "horizontal_hard_gates": {
+    "mass_conservation": "FTB12-DRAIN-MASS-001",
+    "transactional_reject_atomicity": "FTB12-DRAIN-RUNTIME-001",
+    "waivable": false
+  },
+  "hard_nonclaims": [
+    "No new drainage physics.",
+    "No scope expansion beyond the unchanged F-PM13 eight-variant Drainage-v1 denominator.",
+    "No fully implicit drainage-response solver coupling claim.",
+    "No broader reverse-exchange behavior or unstated legacy drainage behavior claim.",
+    "No production or reference source mutation."
+  ]
+}

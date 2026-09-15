@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.fci70.status.v1",
+  "work_unit": "F-CI70",
+  "title": "EB-I22 whole-column sensible-energy accounting current-canonical admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI70_READY_FOR_CANONICAL_PROMOTION",
+  "branch": "qualification/f-ci70-eb-i22-whole-column-sensible-energy-current-canonical-admission",
+  "canonical_base": {
+    "sha": "366a4d9b4afddb9e1f878a6d371fdff836babaac",
+    "tree": "3477868a219ff9021eb560a9c45e18720527d75f"
+  },
+  "authorities": {
+    "EB_I22_owner_head": "b5f6809293ca311944297a95ec935bce45ec0375",
+    "F_VQ88_independent_head": "cc8cc78707f9c2f29708146225cd83946f6977a9"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "74cb2d2e5c702f7834604a043b9e940225ffc79c",
+    "green_tree_before_status": "75951f0bbb59ddb1ca184120d9a2a8672694552a",
+    "workflow_run": 34941683926,
+    "workflow_job": 104291587034,
+    "runner": "ubuntu-24.04",
+    "live_canonical_lock": "PASS",
+    "qualified_authority_lock": "PASS",
+    "exact_bounded_delta": "PASS",
+    "owner_replay": "PASS",
+    "independent_replay": "PASS",
+    "O0_O2_semantic_identity": "PASS",
+    "fail_closed_boundary_completeness_preserved": "PASS",
+    "reference_gauge_coherence_preserved": "PASS",
+    "no_full_energy_balance_broadening": "PASS"
+  },
+  "production_postimage": {
+    "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+  },
+  "inherited_dependency_authorities": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "scope": {
+    "whole_column_sensible_storage_accounting": true,
+    "explicit_top_bottom_sensible_boundary_accounting": true,
+    "fail_closed_boundary_completeness": true,
+    "reference_gauge_coherence": true,
+    "runtime_materialization_complete": false,
+    "accepted_transaction_publication_complete": false,
+    "canonical_admission": false,
+    "postimage_reconciled": false,
+    "full_energy_balance_complete": false
+  },
+  "scope_guards": {
+    "new_energy_physics_in_F_CI70": false,
+    "new_solver_policy": false,
+    "new_water_mass_booking": false,
+    "reference_source_changed": false,
+    "new_IO_contract": false,
+    "runtime_binding_added": false,
+    "surface_radiation_added": false,
+    "latent_heat_added": false,
+    "phase_change_added": false,
+    "full_energy_balance_completion_claim": false
+  },
+  "ready_for_canonical_promotion": true,
+  "hard_nonclaims": [
+    "F-CI70 status alone is not canonical admission.",
+    "F-CI70 admits only the bounded EB-I22 whole-column sensible-energy accounting algebra and exact sensible-storage state law if promoted.",
+    "F-CI70 does not materialize all four sensible-energy boundary categories in the production runtime.",
+    "F-CI70 does not publish a whole-column residual from an accepted transaction.",
+    "F-CI70 does not claim radiation, latent heat, vapor energy, freeze-thaw enthalpy, snow phase-change closure or a complete SWAP5 Energy Balance.",
+    "The runtime whole-column residual remains fail-closed until coherent accepted-transaction boundary authorities are bound."
+  ],
+  "next_capability": "Bind admitted soil-temperature conductive boundary energy and accepted bottom sensible energy with a separately qualified top mass-carried sensible-energy source into EB-I22 using explicit unit conversion, one reference-temperature convention and accepted-transaction provenance.",
+  "promotion_requirements": [
+    "This exact final status head must pass the F-CI70 workflow.",
+    "Live integration/f-ci-canonical must still equal 366a4d9b4afddb9e1f878a6d371fdff836babaac immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI70 status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI70 status-head tree.",
+    "Postimage reconciliation is required before F-CI70 closeout or any broader Energy Balance completion claim."
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.fci61p.status.v1",
+  "work_unit": "F-CI61P",
+  "title": "F-PM14 drainage-response current-canonical postimage and moving-preservation reconciliation",
+  "branch": "qualification/f-ci61p-current-canonical-postimage-reconciliation",
+  "phase": "POSTIMAGE_RECONCILIATION_READY_FOR_CANONICAL_PRESERVATION_PROMOTION",
+  "decision": "QUALIFIED_F_CI61P_DRAINAGE_RESPONSE_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "source_admission": {
+    "pre_admission_canonical": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "production_composition": "c7444233b0f23d4f0a845ef5639287e77099291b",
+    "green_F_CI61_head": "0ac2f09642f71269ee43301cfedde4f2dd95ade6",
+    "canonical_postimage": "eb2b2b17b2d54eeab22c4cba922426d8168e56a9",
+    "canonical_postimage_tree": "922cdc98bcfdb4280403d6be2556b8fe47902c93",
+    "true_two_parent_merge": true,
+    "first_parent": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "second_parent": "0ac2f09642f71269ee43301cfedde4f2dd95ade6",
+    "production_delta": "EXACT_11_INDEPENDENTLY_QUALIFIED_FPM14_BLOBS"
+  },
+  "authorities": {
+    "owner": "work/f-pm14-drainage-response-runtime-closure@52c1a9aebddc435ef3792378f958305a96308ed0",
+    "independent": "qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification@ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "F_CI61": "qualification/f-ci61-fpm14-drainage-response-runtime-current-canonical-admission@0ac2f09642f71269ee43301cfedde4f2dd95ade6"
+  },
+  "postimage_evidence": {
+    "initial_postimage_gate_head": "c409c828200c4afef227bd7cac20990d5636d508",
+    "initial_postimage_gate_run": 34812299895,
+    "initial_postimage_gate_job": 103875889062,
+    "initial_postimage_gate_conclusion": "success",
+    "moving_preservation_reconciliation_head": "26990519a689d941eeb805c4ea19e2317398ac98",
+    "moving_preservation_reconciliation_run": 34812859546,
+    "moving_preservation_reconciliation_job": 103877479788,
+    "moving_preservation_reconciliation_conclusion": "success",
+    "VQ73_runtime_postimage_replay": "PASS",
+    "hard_mass_and_single_booking_postimage_replay": "PASS",
+    "generic_noncalendar_interval_postimage_replay": "PASS",
+    "precomputed_DIVDRA_postimage_preservation": "PASS",
+    "fixed_weir_postimage_preservation": "PASS",
+    "exact_11_postimage_blob_lock": "PASS",
+    "no_production_or_reference_change_by_F_CI61P": true
+  },
+  "canonical_global_gate_observation_after_source_admission": {
+    "classification": "EXPECTED_FAIL_CLOSED_MOVING_AUTHORITY_DRIFT_NOT_PRODUCTION_DEFECT",
+    "push_run": 34812219609,
+    "pull_request_run": 34812223894,
+    "common_failing_job": "current-restricted-canonical-preservation",
+    "common_failing_step": "Moving-current preservation without historical admission assumptions",
+    "root_cause": "The moving-current dependency surface still compared src/runtime/mod_fmr_serialized_reference_backend.f90 against F-CI59 authority 2d8b08c06b67132f57b2c757f493d1b31a954a92, while F-PM14 intentionally and independently qualified the replacement blob 0f09c0df1559ece894356b146b64d872470c0a32.",
+    "historical_authorities": "ALL_14_FROZEN_JOBS_PASSED_IN_BOTH_RUNS",
+    "production_change_required": false,
+    "mass_or_transaction_defect_found": false
+  },
+  "moving_current_preservation_reconciliation": {
+    "old_authority": "2d8b08c06b67132f57b2c757f493d1b31a954a92",
+    "new_authority": "c7444233b0f23d4f0a845ef5639287e77099291b",
+    "authority_semantics": "EXACT_QUALIFIED_FPM14_PRODUCTION_COMPOSITION",
+    "old_canonical_workflow_blob": "2f26be69f2a760027a880bbea6a8967336992f32",
+    "reconciled_canonical_workflow_blob": "22b151d2ff2dd0d31924ccf2e989ec19e8f3ee0e",
+    "newly_protected_PM14_paths": 11,
+    "historical_frozen_authority_jobs_changed": false,
+    "transaction_reference_blob_lock_changed": false,
+    "preservation_weakened": false,
+    "moving_current_preservation_reconciled": true
+  },
+  "architecture": {
+    "invariants_1_30": "PRESERVED_NO_ADVERSE_POSTIMAGE_OR_CI_RECONCILIATION_DELTA",
+    "kernel_io_separation": "PRESERVED",
+    "transactionality": "PRESERVED_AND_REPLAYED",
+    "generic_time": "PRESERVED_AND_REPLAYED",
+    "mass_conservation": "HARD_PASS_REPLAYED",
+    "single_drainage_transfer_booking": "PASS_REPLAYED",
+    "multiswap": "PRESERVED",
+    "solver_interface_independence": "PRESERVED",
+    "physics_vs_solver_policy": "PRESERVED",
+    "persistent_drainage_response_state_added": false
+  },
+  "scope_guards": {
+    "production_source_changed_by_F_CI61P": false,
+    "reference_source_changed_by_F_CI61P": false,
+    "new_physics": false,
+    "new_mass_booking": false,
+    "new_solver_policy": false,
+    "new_persistent_state": false,
+    "scope_reduced": false,
+    "canonical_CI_preservation_authority_advanced_to_exact_qualified_composition": true
+  },
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "ready_for_canonical_preservation_promotion": true,
+  "canonical_preservation_update_promoted": false,
+  "drainage_v1_100_percent_complete": false,
+  "promotion_requirements": [
+    "This exact final F-CI61P status head must pass the F-CI61P workflow.",
+    "Immediately before preservation promotion, live integration/f-ci-canonical must still equal eb2b2b17b2d54eeab22c4cba922426d8168e56a9.",
+    "Preservation promotion must be a non-force true two-parent merge with then-live canonical as first parent and the exact final green F-CI61P head as second parent.",
+    "After promotion, both push and pull-request F-CI canonical qualification runs must complete without failure, including current-restricted-canonical-preservation."
+  ],
+  "hard_nonclaims": [
+    "Source admission plus F-CI61P postimage reconciliation does not establish drainage-v1 100-percent completion.",
+    "The observed canonical preservation failure is not waived; its moving authority is explicitly reconciled and must pass after canonical promotion.",
+    "No production semantics beyond the exact independently qualified F-PM14 blobs are introduced by F-CI61P."
+  ],
+  "next_required_step": "Require this exact status head green, recheck live canonical, promote the preservation reconciliation as a true two-parent merge, then require the full canonical qualification workflow green before closing F-CI61/F-CI61P."
+}

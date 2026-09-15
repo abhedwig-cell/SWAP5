@@ -1,0 +1,44 @@
+name: EB-I19 production bottom-energy materialization
+
+on:
+  push:
+    branches:
+      - work/eb-i19-production-bottom-energy-publication-materialization
+    paths:
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+      - tests/eb/test_eb_i18_transaction_publication.f90
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested head identity
+        run: |
+          echo "EB_I19_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I19_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Production materialization qualification
+        run: bash tests/eb/run_eb_i19_production_materialization_gate.sh
+
+      - name: Source-bound materialization guard
+        run: |
+          owner=15184dd06c1d0f8accc0d306a12d25a3568f1f2e
+          changed="$(git diff --name-only "$owner"...HEAD -- src | sort)"
+          expected=$'src/runtime/mod_fmr_serialized_multiswap_runtime.f90\nsrc/runtime/mod_fmr_serialized_reference_backend.f90'
+          test "$changed" = "$expected"
+          test -z "$(git diff --name-only "$owner"...HEAD -- reference)"
+          echo 'EB_I19_NO_UNEXPECTED_PRODUCTION_OR_REFERENCE_DELTA=PASS'

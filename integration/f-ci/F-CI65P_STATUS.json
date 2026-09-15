@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.fci65p.status.v1",
+  "work_unit": "F-CI65P",
+  "title": "F-GC24 coupled restart current-canonical postimage and moving-current preservation reconciliation",
+  "phase": "POSTIMAGE_RECONCILIATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI65P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "branch": "qualification/f-ci65p-current-canonical-postimage-reconciliation",
+  "admitted_postimage": {
+    "commit": "24b02660a7924323d1587b4adf77a160c9ef7d04",
+    "tree": "fd14037490b62750e133eacb3d429de2b06f7f9a",
+    "first_parent_pre_admission_canonical": "0b7ad240c005d84373b06ee5304edde779cf6e34",
+    "second_parent_fci65_final_green_status": "5f03312d38c74786c60eea50dad8a6695edca247",
+    "true_two_parent_promotion": true
+  },
+  "authorities": {
+    "F_CI65_status": "5f03312d38c74786c60eea50dad8a6695edca247",
+    "F_GC24_owner_closeout": "194487ec18374ef6097e3dd687038e326f818be8",
+    "F_VQ86_independent_status": "0fea1f7a17ccff9f41b4d2dee71feab526313a01"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "43489697a847dfa705040a3666611b82ba9ddea0",
+    "green_tree_before_status": "3b2571948687c34c2b9278068924949182556f1a",
+    "workflow_run": 34851715495,
+    "workflow_job": 104001048024,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "true_two_parent_promotion_and_live_postimage_lock": "PASS",
+    "exact_three_canonical_postimage_blobs": "PASS",
+    "reconciliation_scope_allowlist": "PASS",
+    "exact_canonical_workflow_transformation": "PASS",
+    "moving_current_authority_reconciliation": "PASS",
+    "F_CI65_and_F_VQ86_authority_reconciliation": "PASS",
+    "owner_promoted_split_process_replay": "PASS",
+    "independent_promoted_oracle_O0": "PASS",
+    "independent_promoted_oracle_O2": "PASS",
+    "independent_promoted_oracle_O0_O2_identity": "PASS",
+    "independent_oracle_sha256": "c6a4fa3855924125a966356a737703bee65df5bd66c84af4c0df6de8ffc6c144",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_POSTIMAGE_RECONCILIATION_DELTA"
+  },
+  "production_postimage": {
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90": "a867e04b088f61f686f693d07e470c3e9c33bdec"
+  },
+  "moving_current_preservation": {
+    "authority_anchor": "24b02660a7924323d1587b4adf77a160c9ef7d04",
+    "exact_workflow_transformation": "PASS",
+    "retained_marker": "FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS",
+    "added_marker": "FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS",
+    "added_dependency_surface": [
+      "src/runtime/mod_groundwater_exchange_service_contract.f90",
+      "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+      "src/runtime/mod_groundwater_coupled_restart.f90"
+    ]
+  },
+  "scope_guards": {
+    "production_reference_delta_in_reconciliation": false,
+    "new_groundwater_physics": false,
+    "new_solver_policy": false,
+    "new_mass_tolerance": false,
+    "new_kernel_io": false,
+    "new_calendar_assumption": false,
+    "new_modflow_specific_dependency": false,
+    "whole_window_response_tangent_claim": false,
+    "multiswap_scaling_claim": false,
+    "bounded_cost_coupling_claim": false
+  },
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_POSTIMAGE_RECONCILIATION_DELTA",
+  "groundwater_coupling_v1_complete": false,
+  "ready_for_postimage_reconciliation_promotion": true,
+  "canonical_contains_this_reconciliation_metadata": false,
+  "hard_nonclaims": [
+    "F-CI65P closes only the F-CI65/F-GC24 admission and postimage-preservation scope.",
+    "F-CI65P does not close F-GC20 current-canonical requalification.",
+    "F-CI65P does not close F-GC22 current-canonical requalification.",
+    "F-CI65P does not close F-GC23 whole-window response tangent composition.",
+    "F-CI65P does not close F-GC25 MultiSWAP scaling qualification.",
+    "F-CI65P does not close F-GC26 bounded-cost response-aware integration or F-GC27 final groundwater-coupling closure.",
+    "F-CI65P is not a groundwater-coupling-v1 100 percent completion claim."
+  ],
+  "promotion_requirements": [
+    "This exact final F-CI65P status head must pass the F-CI65P workflow.",
+    "Live integration/f-ci-canonical must still equal 24b02660a7924323d1587b4adf77a160c9ef7d04 immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI65P status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI65P status-head tree.",
+    "No src or reference source delta is permitted in F-CI65P.",
+    "The canonical F-CI workflow must pass after promotion before postimage closeout is considered operationally preserved."
+  ]
+}

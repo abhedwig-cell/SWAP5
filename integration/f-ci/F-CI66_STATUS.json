@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.fci66.status.v1",
+  "work_unit": "F-CI66",
+  "title": "Generic canonical subinterval execution-policy seam admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI66_READY_FOR_CANONICAL_PROMOTION",
+  "branch": "work/f-ross01-k-runtime-canonical-window-hook",
+  "canonical_base": {
+    "sha": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+    "tree": "a17a25a5259f26f3ff841e03f994e1a37c3691ed"
+  },
+  "authorities": {
+    "F_ROSS01_K_RUNTIME_REMAINDER_CLOSEOUT": "bf5ae8a8eb732ff363f0a462a2141b2991670a9f",
+    "F_CI66_EVIDENCE": "a463e5d35133853f5da62786722120cf6ba9f9bf",
+    "transaction_source": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_source": "3cbb81b25626e6574ae83416f088dc52882f91fc"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "2eae224449a6d13b66068bfc46700821e7d11670",
+    "green_tree_before_status": "a90d3a0fdc1307803a7f34167a69ef7a0f86ea06",
+    "workflow_run": 34882491196,
+    "workflow_job": 104104931296,
+    "artifact_id": 10363755176,
+    "artifact_digest": "sha256:e6c5d9699904b61997c72d52417a9955904496ab7cf46b3439995c6df35c028b",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "O0_O2_current_canonical_gate": "PASS",
+    "default_no_selector_behavior_preserved": "PASS",
+    "bounded_subinterval_completion": "PASS",
+    "invalid_selector_fail_closed_before_transaction": "PASS",
+    "retry_cap_tightening_only": "PASS",
+    "outer_interval_external_atomicity": "PASS",
+    "model_specific_policy_absent_from_generic_runtime": "PASS"
+  },
+  "production_postimage_candidate": {
+    "src/runtime/mod_canonical_interval_runtime.f90": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237"
+  },
+  "preserved_immutable_sources": {
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc"
+  },
+  "scope_guards": {
+    "new_physics": false,
+    "rossfast_specific_policy_in_canonical_runtime": false,
+    "new_mass_tolerance": false,
+    "new_temporal_tolerance": false,
+    "new_kernel_io": false,
+    "new_persistent_solver_scratch": false,
+    "retry_budget_relaxation": false,
+    "runtime_performance_claim": false,
+    "arbitrary_duration_generalization": false,
+    "multiswap_generalization": false,
+    "groundwater_scientific_generalization": false
+  },
+  "fixture_governance": {
+    "historical_F_CI04_is_current_oracle": false,
+    "classification": "STALE_PRE_HARD_MASS_COMPLETENESS_FIXTURE",
+    "replacement_oracle": "F-CI66 current-canonical complete-mass fixture"
+  },
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "moving_current_preservation_reconciled": false,
+  "hard_nonclaims": [
+    "F-CI66 status alone is not canonical admission.",
+    "F-CI66 admits only a generic optional canonical subinterval target plus retry-cap tightening seam; it does not embed RossFast scheduling science.",
+    "F-CI66 does not admit a RossFast production model adapter or RossFast production use.",
+    "F-CI66 makes no runtime-performance, arbitrary-duration, MultiSWAP, groundwater-science or A10 claim.",
+    "Postimage and moving-current preservation must be reconciled separately after canonical admission before this capability is considered operationally closed."
+  ],
+  "promotion_requirements": [
+    "This exact final F-CI66 status head must pass the F-CI66 workflow.",
+    "Live integration/f-ci-canonical must still equal d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0 immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI66 status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI66 status-head tree.",
+    "F-CI66P postimage and moving-current preservation reconciliation is required immediately after admission before broader closeout."
+  ]
+}

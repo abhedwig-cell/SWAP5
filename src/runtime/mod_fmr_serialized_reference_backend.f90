@@ -1,8 +1,8 @@
 module mod_fmr_serialized_reference_backend
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE, &
-       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
+       TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
@@ -15,6 +15,7 @@ module mod_fmr_serialized_reference_backend
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+  use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
@@ -30,6 +31,11 @@ module mod_fmr_serialized_reference_backend
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
+  use mod_soil_temperature_contract, only: soil_temperature_at_node
+  use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
+       fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
+       evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
+       FMR_DRAIN_BIND_OK
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
        soil_temperature_numerical_config_t, soil_temperature_forcing_t, soil_temperature_state_t, &
        soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t, &
@@ -104,6 +110,10 @@ module mod_fmr_serialized_reference_backend
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
     logical :: soil_temperature_active = .false.
+    ! F-PM14 drainage response runtime composition. Immutable response and
+    ! prepared geometry data belong to parameters, never to persistent state.
+    logical :: drainage_response_active = .false.
+    type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
   end type fmr_b110_physical_parameters_t
@@ -114,6 +124,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     real(real64), allocatable :: drainage_flux_by_level(:,:)
+    type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
     type(snow_forcing_t), allocatable :: snow
@@ -167,7 +178,20 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: fixed_weir_surface_water_rating_residual = 0.0_real64
     integer :: fixed_weir_surface_water_iterations = 0
     character(len=32) :: fixed_weir_surface_water_route = 'not-run'
+    logical :: drainage_response_active = .false.
+    integer :: drainage_response_evaluations = 0
+    logical :: drainage_response_mass_accounted_in_trial = .false.
+    real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
+    type(fmr_drainage_response_diagnostics_t) :: drainage_response
   end type fmr_serialized_physical_observation_t
+
+  ! Worker-local transactional scratch for thermal transfer provenance. This is
+  ! attempt context, never compact committed column state.
+  type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
+    logical :: bottom_thermal_active = .false.
+    logical :: bottom_thermal_valid = .true.
+    type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
+  end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
@@ -179,6 +203,11 @@ module mod_fmr_serialized_reference_backend
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
     real(real64), pointer :: qdra(:,:) => null()
+    logical :: drainage_response_active = .false.
+    type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
+    type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
+    type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
+    integer :: drainage_response_evaluations = 0
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     integer :: bottom_mode = 7
@@ -223,6 +252,9 @@ module mod_fmr_serialized_reference_backend
     type(fixed_weir_surface_water_forcing_t) :: fixed_weir_surface_water_forcing
     type(fixed_weir_surface_water_numerical_config_t) :: fixed_weir_surface_water_numerical
     type(fixed_weir_surface_water_result_t) :: fixed_weir_surface_water_result
+    type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
+    logical :: bottom_thermal_carrier_active = .false.
+    logical :: bottom_thermal_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
@@ -232,6 +264,8 @@ module mod_fmr_serialized_reference_backend
     procedure :: storage => fmr_serialized_storage
     procedure :: storage_accounting_status => fmr_serialized_storage_accounting_status
     procedure :: temporal_error => fmr_serialized_temporal_identity
+    procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
+    procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
   end type fmr_serialized_reference_model_t
 
   type, public :: fmr_serialized_reference_backend_t
@@ -239,10 +273,14 @@ module mod_fmr_serialized_reference_backend
     type(fmr_serialized_reference_model_t) :: model
     type(kernel_executor_t) :: kernel
     logical :: initialized = .false.
+    logical :: bottom_thermal_requested = .false.
+    type(fmr_bottom_thermal_candidate_t) :: bottom_thermal_candidate
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: observation => fmr_serialized_backend_observation
+    procedure, public :: set_bottom_thermal_carrier_enabled => fmr_serialized_backend_set_bottom_thermal_carrier_enabled
+    procedure, public :: bottom_thermal_snapshot => fmr_serialized_backend_bottom_thermal_snapshot
     procedure, public :: configure_fixed_weir_surface_water => fmr_serialized_backend_configure_fixed_weir_surface_water
     procedure, public :: clear_fixed_weir_surface_water => fmr_serialized_backend_clear_fixed_weir_surface_water
   end type fmr_serialized_reference_backend_t
@@ -479,10 +517,31 @@ contains
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
+    self%model%bottom_thermal_carrier_active = .false.
+    self%model%bottom_thermal_carrier_valid = .true.
+    self%bottom_thermal_requested = .false.
+    call self%model%bottom_thermal_carrier%clear()
+    call self%bottom_thermal_candidate%clear()
     call self%clear_fixed_weir_surface_water()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
+
+  subroutine fmr_serialized_backend_set_bottom_thermal_carrier_enabled(self, enabled)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    logical, intent(in) :: enabled
+    self%bottom_thermal_requested = enabled
+    call self%bottom_thermal_candidate%clear()
+    call self%model%bottom_thermal_carrier%clear()
+    self%model%bottom_thermal_carrier_active = .false.
+    self%model%bottom_thermal_carrier_valid = .true.
+  end subroutine fmr_serialized_backend_set_bottom_thermal_carrier_enabled
+
+  function fmr_serialized_backend_bottom_thermal_snapshot(self) result(candidate)
+    class(fmr_serialized_reference_backend_t), intent(in) :: self
+    type(fmr_bottom_thermal_candidate_t) :: candidate
+    call self%bottom_thermal_candidate%copy_to(candidate)
+  end function fmr_serialized_backend_bottom_thermal_snapshot
 
   subroutine fmr_serialized_backend_configure_fixed_weir_surface_water(self, parameters, forcing, numerical, ok)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -539,6 +598,12 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
+    logical :: bottom_thermal_ok
+
+    call self%bottom_thermal_candidate%clear()
+    call self%model%bottom_thermal_carrier%clear()
+    self%model%bottom_thermal_carrier_active = .false.
+    self%model%bottom_thermal_carrier_valid = .true.
     self%model%temporal_indicator_history_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
@@ -550,6 +615,10 @@ contains
       return
     end if
     if (self%model%fixed_weir_surface_water_active) then
+      if (parameters%drainage_response_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
       if (.not. self%model%fixed_weir_surface_water_configured .or. &
           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
@@ -599,8 +668,25 @@ contains
       end if
     end if
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
+    if (self%bottom_thermal_requested .and. parameters%soil_temperature_active .and. &
+        self%model%state_profile_admitted .and. config%max_committed_substeps <= ishft(huge(0), -1)) then
+      call self%model%bottom_thermal_carrier%initialize(2 * config%max_committed_substeps, bottom_thermal_ok)
+      self%model%bottom_thermal_carrier_active = bottom_thermal_ok
+      self%model%bottom_thermal_carrier_valid = bottom_thermal_ok
+    end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
+    if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
+        result%completed) then
+      if (candidate%ready()) then
+        call self%model%bottom_thermal_carrier%materialize_candidate(t0, t1, self%bottom_thermal_candidate, &
+             bottom_thermal_ok)
+        if (.not. bottom_thermal_ok) call self%bottom_thermal_candidate%clear()
+      end if
+    end if
+    call self%model%bottom_thermal_carrier%clear()
+    self%model%bottom_thermal_carrier_active = .false.
+    self%model%bottom_thermal_carrier_valid = .true.
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -619,6 +705,35 @@ contains
     type(fmr_serialized_physical_observation_t) :: obs
     obs = self%model%last_observation
   end function fmr_serialized_backend_observation
+
+  subroutine fmr_serialized_capture_attempt_context(self, context)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), allocatable, intent(out) :: context
+
+    allocate(fmr_serialized_attempt_context_t :: context)
+    select type (typed => context)
+    type is (fmr_serialized_attempt_context_t)
+      typed%bottom_thermal_active = self%bottom_thermal_carrier_active
+      typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
+      call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
+    end select
+  end subroutine fmr_serialized_capture_attempt_context
+
+  subroutine fmr_serialized_restore_attempt_context(self, context)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), intent(in) :: context
+
+    select type (typed => context)
+    type is (fmr_serialized_attempt_context_t)
+      self%bottom_thermal_carrier_active = typed%bottom_thermal_active
+      self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
+      call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
+    class default
+      self%bottom_thermal_carrier_active = .false.
+      self%bottom_thermal_carrier_valid = .false.
+      call self%bottom_thermal_carrier%clear()
+    end select
+  end subroutine fmr_serialized_restore_attempt_context
 
   logical function fmr_serialized_execution_admitted(self, parameters, numerical_config)
     class(fmr_serialized_reference_model_t), intent(in) :: self
@@ -640,7 +755,8 @@ contains
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
-      ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5) .and. &
+      ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
+           parameters%bottom_mode == 2) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
@@ -657,6 +773,13 @@ contains
              parameters%soil_temperature%node_count() == parameters%active_nodes
       else
         ok = ok .and. .not. allocated(parameters%soil_temperature) .and. .not. self%soil_temperature_active
+      end if
+      if (parameters%drainage_response_active) then
+        ok = ok .and. allocated(parameters%drainage_response_levels) .and. &
+             .not. self%fixed_weir_surface_water_active
+        if (ok) ok = size(parameters%drainage_response_levels) > 0
+      else
+        ok = ok .and. .not. allocated(parameters%drainage_response_levels)
       end if
     class default
       ok = .false.
@@ -698,6 +821,12 @@ contains
       self%root_extraction_active = parameters%root_extraction_active
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
+      self%drainage_response_active = parameters%drainage_response_active
+      if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
+      if (parameters%drainage_response_active .and. allocated(parameters%drainage_response_levels)) then
+        allocate(self%drainage_response_levels(size(parameters%drainage_response_levels)))
+        self%drainage_response_levels = parameters%drainage_response_levels
+      end if
       if (allocated(self%soil_temperature_parameters)) deallocate(self%soil_temperature_parameters)
       if (parameters%soil_temperature_active) then
         allocate(self%soil_temperature_parameters)
@@ -713,9 +842,13 @@ contains
     class(canonical_forcing_t), intent(in) :: forcing
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
-    integer :: n
+    integer :: n, drainage_preflight_status
     self%forcing_admitted = .false.
+    self%drainage_response_evaluations = 0
+    self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
+    if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
     self%last_observation = fmr_serialized_physical_observation_t()
+    self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available
@@ -745,10 +878,20 @@ contains
     n = self%soil_parameters%active_nodes
     select type (forcing)
     type is (fmr_b110_physical_forcing_t)
-      if (.not. allocated(forcing%drainage_flux_by_level) .or. .not. allocated(forcing%subsurface_irrigation_source) .or. &
-          .not. allocated(forcing%root_extraction_sink)) return
-      if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n .or. &
-          size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
+      if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if (self%drainage_response_active) then
+        if (allocated(forcing%drainage_flux_by_level) .or. .not. allocated(self%drainage_response_levels) .or. &
+            .not. allocated(forcing%drainage_response_controls)) return
+        drainage_preflight_status = fmr_drainage_response_configuration_status(self%drainage_response_levels, &
+             forcing%drainage_response_controls, n)
+        self%drainage_response_diagnostics%status = drainage_preflight_status
+        self%last_observation%drainage_response = self%drainage_response_diagnostics
+        if (drainage_preflight_status /= FMR_DRAIN_BIND_OK) return
+      else
+        if (.not. allocated(forcing%drainage_flux_by_level) .or. allocated(forcing%drainage_response_controls)) return
+        if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
+      end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_extraction_active) then
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
@@ -772,8 +915,16 @@ contains
       if (associated(self%qdra)) deallocate(self%qdra)
       if (associated(self%qssdi)) deallocate(self%qssdi)
       if (associated(self%qrot)) deallocate(self%qrot)
-      allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n), self%qssdi(n), self%qrot(n))
-      self%qdra = forcing%drainage_flux_by_level
+      if (self%drainage_response_active) then
+        allocate(self%qdra(size(self%drainage_response_levels),n))
+        self%qdra = 0.0_real64
+        allocate(self%drainage_response_controls(size(forcing%drainage_response_controls)))
+        self%drainage_response_controls = forcing%drainage_response_controls
+      else
+        allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
+        self%qdra = forcing%drainage_flux_by_level
+      end if
+      allocate(self%qssdi(n), self%qrot(n))
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
       self%base_top_flux = forcing%top_flux
@@ -909,9 +1060,10 @@ contains
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     real(real64), allocatable, target :: source_sink_root_zero(:)
-    real(real64) :: step_duration
+    real(real64) :: step_duration, bottom_temperature_start_c
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
-    integer :: soil_temperature_status
+    logical :: bottom_temperature_start_available
+    integer :: soil_temperature_status, bottom_temperature_status
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
@@ -920,6 +1072,8 @@ contains
     self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
     self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
     self%last_observation%temporal_head_budget = self%temporal_indicator_budget
+    bottom_temperature_start_c = 0.0_real64
+    bottom_temperature_start_available = .false.
     if (.not. self%temporal_indicator_history_enabled) then
       self%last_observation%temporal_certificate_unavailable_reason = 'history-service-disabled'
     else if (.not. self%temporal_indicator_budget_supplied) then
@@ -931,6 +1085,7 @@ contains
     end if
     call populate_snow_observation(self)
     call populate_fixed_weir_surface_water_observation(self)
+    self%last_observation%drainage_response_active = self%drainage_response_active
     snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
@@ -941,19 +1096,7 @@ contains
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
-    if (self%root_extraction_active) then
-      allocate(source_sink_root_zero(size(self%qrot)))
-      source_sink_root_zero = 0.0_real64
-      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, source_sink_root_zero)
-      call bind_b110_root_sink_provider(self%root_sink, self%qrot)
-    else
-      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
-    end if
     request%parameters => self%soil_parameters
-    request%evaluation%constitutive => self%constitutive
-    request%evaluation%source_sink => self%source_sink
-    if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
-    request%evaluation%top_boundary => self%top_boundary
     request%step_duration = step_duration
     request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
     request%boundary%bottom_mode = self%bottom_mode
@@ -995,14 +1138,44 @@ contains
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
-        call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
-        if (.not. hydraulic_view_ok) return
+        if (self%bottom_thermal_carrier_active) then
+          call soil_temperature_at_node(physical%soil_temperature, physical%active_nodes, bottom_temperature_start_c, &
+               bottom_temperature_status)
+          bottom_temperature_start_available = bottom_temperature_status == SOIL_TEMP_OK
+        end if
       else
         if (allocated(physical%soil_temperature)) return
+      end if
+      if (self%soil_temperature_active .or. self%drainage_response_active) then
+        call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
+        if (.not. hydraulic_view_ok) return
       end if
     class default
       return
     end select
+
+    if (self%drainage_response_active) then
+      call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, self%drainage_response_controls, &
+           hydraulic_start, self%qdra, self%drainage_response_diagnostics)
+      self%drainage_response_evaluations = self%drainage_response_evaluations + 1
+      self%last_observation%drainage_response_evaluations = self%drainage_response_evaluations
+      self%last_observation%drainage_response = self%drainage_response_diagnostics
+      if (self%drainage_response_diagnostics%status /= FMR_DRAIN_BIND_OK) return
+    end if
+
+    if (self%root_extraction_active) then
+      allocate(source_sink_root_zero(size(self%qrot)))
+      source_sink_root_zero = 0.0_real64
+      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, source_sink_root_zero)
+      call bind_b110_root_sink_provider(self%root_sink, self%qrot)
+    else
+      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
+    end if
+    request%evaluation%constitutive => self%constitutive
+    request%evaluation%source_sink => self%source_sink
+    if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
+    request%evaluation%top_boundary => self%top_boundary
+
     call bind_b110_serialized_legacy_context(request, context_ok)
     if (.not. context_ok) return
     call self%solver%solve(request, self%workspace, solve_result)
@@ -1080,6 +1253,11 @@ contains
     end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
+    if (self%drainage_response_active) then
+      self%last_observation%drainage_response_mass_accounted_in_trial = .true.
+      self%last_observation%drainage_response_signed_exchange_native = &
+           self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
+    end if
     outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration
     outcome%terminal_bottom_outward_flux_native = -solve_result%bottom_flux
     if (.not. ieee_is_finite(outcome%bottom_outward_exchange_native) .or. &
@@ -1091,8 +1269,53 @@ contains
     outcome%bottom_interface_exchange_available = .true.
     outcome%mass_accounting_complete = .true.
     outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
+    if (self%bottom_thermal_carrier_active .and. self%bottom_thermal_carrier_valid) then
+      call record_bottom_thermal_sample(self, state, t0, t1, outcome%bottom_outward_exchange_native, &
+           bottom_temperature_start_c, bottom_temperature_start_available)
+    end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
+
+  subroutine record_bottom_thermal_sample(self, state, t0, t1, outward_exchange, start_temperature_c, &
+                                          start_temperature_available)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    class(transaction_state_t), intent(in) :: state
+    real(real64), intent(in) :: t0, t1, outward_exchange, start_temperature_c
+    logical, intent(in) :: start_temperature_available
+    real(real64) :: end_temperature_c
+    integer :: temperature_status
+    logical :: appended
+
+    if (.not. self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid) return
+    appended = .false.
+    if (outward_exchange > 0.0_real64) then
+      if (.not. start_temperature_available) then
+        self%bottom_thermal_carrier_valid = .false.
+        return
+      end if
+      select type (physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(physical%soil_temperature)) then
+          self%bottom_thermal_carrier_valid = .false.
+          return
+        end if
+        call soil_temperature_at_node(physical%soil_temperature, physical%active_nodes, end_temperature_c, temperature_status)
+        if (temperature_status /= SOIL_TEMP_OK) then
+          self%bottom_thermal_carrier_valid = .false.
+          return
+        end if
+      class default
+        self%bottom_thermal_carrier_valid = .false.
+        return
+      end select
+      call self%bottom_thermal_carrier%append_local(t0, t1, outward_exchange, start_temperature_c, end_temperature_c, appended)
+    else if (outward_exchange < 0.0_real64) then
+      call self%bottom_thermal_carrier%append_external_incomplete(t0, t1, outward_exchange, appended)
+    else
+      call self%bottom_thermal_carrier%append_zero(t0, t1, appended)
+    end if
+    if (.not. appended) self%bottom_thermal_carrier_valid = .false.
+  end subroutine record_bottom_thermal_sample
 
   subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
                                      total_in, total_out)
@@ -1207,7 +1430,8 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
-    if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5) then
+    if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
+        self%bottom_mode /= 2) then
       value = huge(0.0_real64)
       return
     end if

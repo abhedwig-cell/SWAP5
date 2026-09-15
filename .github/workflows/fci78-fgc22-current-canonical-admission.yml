@@ -1,0 +1,36 @@
+name: F-CI78 F-GC22 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci78-fgc22-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-GC22 current-canonical preservation and admission gate
+        run: bash tests/integration/run_fci78_fgc22_current_canonical_admission.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"

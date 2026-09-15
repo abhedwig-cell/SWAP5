@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.fvq79.status.v1",
+  "work_unit": "F-VQ79",
+  "title": "EB-I19R production bottom-energy warning-hygiene independent requalification",
+  "branch": "qualification/f-vq79-eb-i19r-warning-hygiene-independent-requalification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "owner_authorities": {
+    "F-VQ78_status": "6a8258e6e5e2365b51b086212f926f6f1bab5a15",
+    "EB-I19_base": "b2ba462cfade41eb68643db75ca28e234a123a02",
+    "EB-I19R_candidate": "788ff3c9af90143960a5aa3831f0171160aa8c47",
+    "EB-I19R_candidate_tree": "f8d6ab9bbdf620c350c54ed88752e121b8eea763"
+  },
+  "canonical_base": "5e5e498dc56d1df1dd7ebebbf9901c946445a1ab",
+  "tested_head": "671a5f16c153c20c41c73c536d18a37473720690",
+  "tested_tree": "01a6df35c5e584c92f0ede13e95af5602e8d16ad",
+  "workflow_run": 34830790868,
+  "workflow_job": 103933400144,
+  "runner": "ubuntu-24.04",
+  "compiler": "GNU Fortran 13.3.0",
+  "conclusion": "success",
+  "independent_evidence": {
+    "remediation_production_delta_exactly_three_files": true,
+    "remediation_files": [
+      "src/runtime/mod_fmr_bottom_sensible_energy.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "reference_source_changed": false,
+    "qualified_EB_fixture_changed": false,
+    "verifier_introduced_production_or_reference_source": false,
+    "backend_blob": "3506b453ba6a00111d182f29db8cbfb288001854",
+    "runtime_blob": "07d3699e3e3972921fdb36352d75c47cb12d03b7",
+    "bottom_sensible_energy_blob": "6c7e9b9ed77d116104fd6299a6404037a2548960",
+    "remediation_byte_reconstruction": "PASS",
+    "no_physics_tolerance_or_solver_policy_change": true,
+    "exact_zero_donor_class_invariant_retained": true,
+    "pre_post_numeric_semantic_identity": "PASS",
+    "matched_mass_rows": 2,
+    "max_abs_mass_residual_cm": 2.22044604925031308e-16,
+    "hard_mass_oracle_tolerance_cm": 1.0e-12,
+    "O0_O2_semantic_identity": true,
+    "targeted_function_elimination_warning_hygiene_O0": "PASS",
+    "targeted_function_elimination_warning_hygiene_O2": "PASS",
+    "targeted_integer_division_warning_hygiene_O0": "PASS",
+    "targeted_integer_division_warning_hygiene_O2": "PASS",
+    "F-MR44R_preservation": "PASS",
+    "accepted_only_energy_publication_preserved": true,
+    "rejected_trial_no_publication_preserved": true,
+    "backend_reuse_no_stale_publication_preserved": true
+  },
+  "remaining_warning_scope": {
+    "exact_real_zero_comparison_in_bottom_energy": "INTENTIONAL_CONTRACT_EXACTNESS_NOT_REMEDIATED",
+    "global_repository_warning_free_claim": false
+  },
+  "hard_nonclaims": [
+    "F-VQ79 does not canonically admit EB-I19R.",
+    "F-VQ79 does not claim the whole repository is compiler-warning free.",
+    "The exact zero comparison in the donor-class contract is intentionally retained; no tolerance was introduced for warning suppression.",
+    "The qualification-only 2.5e-11 cm temporal head budget is not a production, coupling, or application default.",
+    "No production or reference source is introduced by F-VQ79."
+  ],
+  "decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW",
+  "next_owner": "F-CI63 current-canonical admission of the exact EB-I19R production postimage"
+}

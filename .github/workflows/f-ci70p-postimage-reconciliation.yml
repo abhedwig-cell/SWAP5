@@ -1,0 +1,109 @@
+name: F-CI70P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci70p-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify promotion parentage and tree identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREIMAGE=366a4d9b4afddb9e1f878a6d371fdff836babaac
+          PROMOTED=ed7d4a0f3a02a5cf40af8f45dedcfa2ace435062
+          POSTIMAGE=9344470f3d0a754f3c53028d0b9fb4cc07b34466
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$POSTIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^1")" = "$PREIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^2")" = "$PROMOTED"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "$(git rev-parse "$PROMOTED^{tree}")"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "a9ba514a62295b6ef70fa429f02ed10df181da19"
+          echo 'FCI70P_TRUE_TWO_PARENT_PROMOTION=PASS'
+          echo 'FCI70P_PROMOTED_TREE_IDENTITY=PASS'
+
+      - name: Verify exact admitted production postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=9344470f3d0a754f3c53028d0b9fb4cc07b34466
+          test "$(git rev-parse "$POSTIMAGE:src/process/mod_linear_mixture_sensible_storage.f90")" = "0403c23454a879356ce8d2345006df130484067d"
+          test "$(git rev-parse "$POSTIMAGE:src/process/mod_whole_column_sensible_energy_accounting.f90")" = "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+          test "$(git rev-parse "$POSTIMAGE:src/kernel/mod_energy_conservation_types.f90")" = "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+          test "$(git rev-parse "$POSTIMAGE:src/process/mod_soil_temperature_contract.f90")" = "baa13df3975de2c699b0ec910477bcfa9b47f15e"
+          test "$(git rev-parse "$POSTIMAGE:src/process/mod_restricted_soil_temperature.f90")" = "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+          test "$(git rev-parse "HEAD:src")" = "$(git rev-parse "$POSTIMAGE:src")"
+          test "$(git rev-parse "HEAD:reference")" = "$(git rev-parse "$POSTIMAGE:reference")"
+          echo 'FCI70P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI70P_REFERENCE_POSTIMAGE_IDENTITY=PASS'
+
+      - name: Require governance-only reconciliation delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=9344470f3d0a754f3c53028d0b9fb4cc07b34466
+          git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci70p-postimage-reconciliation.yml
+          .github/workflows/fci70-eb-i22-moving-preservation.yml
+          EOF
+          if test -f integration/f-ci/F-CI70P_STATUS.json; then
+            echo 'integration/f-ci/F-CI70P_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          grep -Fq '9344470f3d0a754f3c53028d0b9fb4cc07b34466' .github/workflows/fci70-eb-i22-moving-preservation.yml
+          grep -Fq '0403c23454a879356ce8d2345006df130484067d' .github/workflows/fci70-eb-i22-moving-preservation.yml
+          grep -Fq 'c00efd8cdb4de947de16e1d32ae4c9f4d0590850' .github/workflows/fci70-eb-i22-moving-preservation.yml
+          if test -f integration/f-ci/F-CI70P_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI70P_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI70P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI70P_STATUS.json
+            grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI70P_STATUS.json
+            grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI70P_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI70P_STATUS.json
+          fi
+          echo 'FCI70P_GOVERNANCE_ONLY_DELTA=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay postimage owner and independent evidence O0/O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          for opt in 0 2; do
+            mkdir -p "build-o${opt}"
+            cd "build-o${opt}"
+            gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror "-O${opt}" \
+              ../src/kernel/mod_energy_conservation_types.f90 \
+              ../src/process/mod_linear_mixture_sensible_storage.f90 \
+              ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+              ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+              -o owner
+            ./owner | tee "../owner-o${opt}.txt"
+            gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror "-O${opt}" \
+              ../src/kernel/mod_energy_conservation_types.f90 \
+              ../src/process/mod_linear_mixture_sensible_storage.f90 \
+              ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+              ../tests/eb/test_f_vq88_eb_i22_independent.f90 \
+              -o independent
+            ./independent | tee "../independent-o${opt}.txt"
+            cd ..
+          done
+          grep -Fx 'EB-I22 whole-column sensible-energy accounting: PASS' owner-o0.txt
+          grep -Fx 'F-VQ88 EB-I22 independent qualification: PASS' independent-o0.txt
+          cmp owner-o0.txt owner-o2.txt
+          cmp independent-o0.txt independent-o2.txt
+          echo 'FCI70P_POSTIMAGE_OWNER_REPLAY=PASS'
+          echo 'FCI70P_POSTIMAGE_INDEPENDENT_REPLAY=PASS'
+          echo 'FCI70P_O0_O2_IDENTITY=PASS'
+          echo 'FCI70P_MOVING_PRESERVATION_INSTALLED=PASS'
+          echo 'FCI70P_FULL_ENERGY_BALANCE_NONCLAIM=PASS'
