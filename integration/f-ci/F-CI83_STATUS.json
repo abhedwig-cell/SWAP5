@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.fci83.status.v1",
+  "work_unit": "F-CI83",
+  "capability": "F-GC29",
+  "title": "F-GC29 groundwater response sensitivity current-canonical admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "state": "QUALIFIED_ADMISSION_POSTIMAGE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "pre_admission_tree": "9b2d60dbe6de57242946aa8c1e0fbab990edaa6e",
+    "still_live_at_admission_checkpoint": true
+  },
+  "owner": {
+    "branch": "work/f-gc29-groundwater-response-sensitivity-service-extension",
+    "qualified_source_head": "bf0bc93e359fba42237fd102ced7da9a5a84efad",
+    "qualified_checkpoint_head": "fc3a7a93b374fce885b12a9a447249bf745353f6",
+    "production_path": "src/runtime/mod_groundwater_response_sensitivity_contract.f90",
+    "production_blob": "fb8fd6a5447edd4fa4f664cd754c93d7db331969",
+    "preserved_fgc18_service_blob": "e99ae052fccd9992b76c12a91422a987dce059e2"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ94",
+    "qualified_verifier_head": "43a8f8bdf0582674be39e95fe23dccb8e83fadd2",
+    "status_head": "4727a346da7d3e3fc124c13697e00946acd83ec6",
+    "verdict": "INDEPENDENTLY_QUALIFIED_FOR_CANONICAL_ADMISSION"
+  },
+  "admission": {
+    "branch": "integration/f-ci83-fgc29-groundwater-response-sensitivity-admission",
+    "history_preserving_merge_head": "254169d7",
+    "first_green_postimage_head": "206f9e197e22694b53e3ccf2f7913854da0cf69e",
+    "green_run": 35018372800,
+    "green_job": 104547456668,
+    "green_conclusion": "success",
+    "production_delta": "ONE_ADDITIVE_MODULE",
+    "existing_fgc18_service_preserved": true,
+    "owner_oracle_replayed_on_postimage": true,
+    "independent_fvq94_oracle_replayed_on_postimage": true,
+    "owner_O0_O2_identity": "PASS",
+    "independent_O0_O2_identity": "PASS"
+  },
+  "failed_harness_history": {
+    "run": 35018283562,
+    "head": "f25feac33bcbe12931def3a5dbb488e098f2f194",
+    "classification": "ADMISSION_HARNESS_SHELL_LOCAL_BINDING_ERROR",
+    "production_or_scientific_defect": false,
+    "repair_commit": "206f9e197e22694b53e3ccf2f7913854da0cf69e",
+    "production_changed_by_repair": false
+  },
+  "qualified_contract": [
+    "response sensitivity is optional and additive to the existing groundwater service",
+    "trial, candidate and response sensitivity are produced atomically by one wrapper call",
+    "response provenance is bound to the exact checkpoint/candidate/window/lineage/revision",
+    "retry replacement contributes zero stale response",
+    "rejected trials contribute zero response",
+    "unsupported, unavailable, nonsmooth, provider-error and nonfinite derivative routes fail closed",
+    "finite difference exists only as independent qualification oracle and not in production",
+    "committed groundwater state is not mutated by the response query"
+  ],
+  "branch_hygiene": {
+    "accidental_ref": "noop-never-create",
+    "points_to_existing_commit": "206f9e197e22694b53e3ccf2f7913854da0cf69e",
+    "unique_code_or_commit": false,
+    "disposition": "EXCLUDED_FROM_ADMITTED_LINEAGE",
+    "note": "Connector does not expose branch-ref deletion in this session; the ref is not used by admission or qualification."
+  },
+  "verdict": "PASS: F-GC29 admission postimage is qualified. Canonical promotion is permitted only if live canonical remains exactly 6530b8bc3f37c675828a8373ef4c5e4bf9141b62 and this governance-only successor replays green.",
+  "next_permitted_action": "Run F-CI83 gate on the governance-only successor, recheck live canonical, then fast-forward integration/f-ci-canonical to the green successor and persist CLOSE.",
+  "hard_exclusions": [
+    "No EB changes",
+    "No ROSS or RossFast changes",
+    "No new groundwater physics",
+    "No structural finite-difference production path",
+    "No broad MODFLOW adapter work",
+    "No F-GC24/F-GC25/F-GC26 implementation",
+    "No F-GC23 production implementation inside F-CI83"
+  ]
+}
