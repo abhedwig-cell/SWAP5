@@ -23,7 +23,7 @@ jobs:
       - name: Run bounded Snow preservation gate
         run: |
           set -o pipefail
-          bash qualification/run_fpm02_current_canonical_snow_preservation.sh 2>&1 | tee snow-current-canonical.log
+          bash qualification/run_fpm02_current_canonical_snow_preservation_v2.sh 2>&1 | tee snow-current-canonical.log
       - name: Upload Snow qualification evidence
         if: always()
         uses: actions/upload-artifact@v4
