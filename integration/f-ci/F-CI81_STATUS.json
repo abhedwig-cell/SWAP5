@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI81",
+  "title": "RossFast restricted typed in-memory application composition current-canonical admission",
+  "phase": "RECOMPOSED_AFTER_UNRELATED_F_WOF_PP01_CANONICAL_ADVANCE",
+  "decision": "REPLAY_INDEPENDENT_REQUALIFICATION_ON_LATEST_UNCHANGED_ROSS_DEPENDENCY_IMAGE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+  "canonical_preimage_tree": "c5ca9f45ce1f0348f24421f0efe0f0f78913f66e",
+  "admission_branch": "integration/f-ci81-rossfast-application-composition-admission",
+  "owner_branch": "work/f-ross11-in-memory-application-composition",
+  "owner_closeout_head": "acd0e6ddfb144f553dc396a909c24f8785099b56",
+  "owner_qualified_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
+  "owner_status_blob": "9a532b643faaef71e43c0eee58e4be7f9c661328",
+  "qualified_application_runtime_blob": "a1af0d6eb0041565602711251748666f7b959d8e",
+  "superseded_independent_qualification": {
+    "tested_head": "243ac7613d5e8cfb684f0e2ad8b1aea38ba486ea",
+    "canonical_preimage": "9d202705d1d7063ae129166b1049f7555a7ad802",
+    "run_id": 34994993401,
+    "job_id": 104468885999,
+    "conclusion": "success",
+    "reason_not_reused_for_admission": "F-KT22 subsequently changed direct F-ROSS11 dependencies on canonical"
+  },
+  "f_kt22_successor_attempts": [
+    {
+      "tested_head": "645cc586ce19d935a7d1b8b5a7cb0761132fece6",
+      "run_id": 34998187257,
+      "job_id": 104479678994,
+      "conclusion": "failure",
+      "classification": "QUALIFICATION_BUILD_ORDER_ONLY",
+      "exact_failure": "mod_canonical_contracts could not find mod_accepted_trajectory_directional_publication.mod",
+      "ross11_production_compilation_reached": false,
+      "scientific_verdict_reached": false,
+      "production_source_changed_to_repair": false,
+      "evidence_artifact_id": 10408802682,
+      "diagnostics_artifact_id": 10408826103
+    },
+    {
+      "tested_head": "2856786d81181a20f4f5285721ab0e8bda34e88c",
+      "run_id": 34999059849,
+      "job_id": 104482595780,
+      "conclusion": "failure",
+      "classification": "STALE_CANONICAL_PREIMAGE_GUARD",
+      "cause": "canonical advanced from F-KT22 head 4a01641f to F-WOF-PP01 closeout aa25126e before the gate executed",
+      "qualification_compile_started": false,
+      "scientific_verdict_reached": false,
+      "production_source_changed_to_repair": false,
+      "evidence_artifact_id": 10409260947,
+      "evidence_artifact_digest": "sha256:77efd11267c90b9cd31456305155bbb57412c991c5c95ead7bb79fc131351411",
+      "diagnostics_artifact_id": 10408708060,
+      "diagnostics_artifact_digest": "sha256:9f0054005b47768d8bd00d729c4c0ecc7dc6bc0211d388425cc8b4e1d1f00670"
+    }
+  ],
+  "latest_canonical_delta": {
+    "from": "4a01641ffed8a2260260909825c3887db2dff1ac",
+    "to": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "owner": "F-WOF-PP01",
+    "classification": "UNRELATED_EVIDENCE_ONLY_FOR_F_CI81",
+    "ross_or_f_kt_runtime_dependencies_changed": false,
+    "changed_surface": "F-WOF-PP01 checkpoint and qualification evidence only"
+  },
+  "current_dependency_blobs": {
+    "soil_water_accepted_step_direction_contract": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "accepted_trajectory_directional_sensitivity": "95381d3124b185aa0fbafd1ea3da6179a841deda",
+    "accepted_trajectory_directional_publication": "31bc721f333a77c52f6530b357af44c627f44629",
+    "canonical_contracts": "3962c270a7579b7403764674302445fe15ef5f72",
+    "canonical_interval_runtime": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+    "kernel_transactions": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
+    "reference_backend": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13"
+  },
+  "build_order_repair": {
+    "scope": "QUALIFICATION_INFRASTRUCTURE_ONLY",
+    "compile_before_canonical_contracts": [
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90"
+    ],
+    "dependency_chain": "accepted-step-direction-contract -> accepted-trajectory-directional-sensitivity -> accepted-trajectory-directional-publication -> canonical-contracts",
+    "production_semantics_changed": false
+  },
+  "independent_test_strategy": {
+    "does_not_call_owner_test_or_owner_runner": true,
+    "constructs_independent_typed_six_material_fixture": true,
+    "compares_f_ross11_composed_route_against_direct_f_ross09_f_ross08_f_ross07_authority_route": true,
+    "compares_final_committed_physical_state_exactly": true,
+    "checks_dispatch_ordinals_attempts_and_linear_solves": true,
+    "checks_reference_model_not_captured": true,
+    "checks_missing_asset_batch_preflight_without_state_mutation": true,
+    "checks_o0_o2_output_identity": true
+  },
+  "candidate_blobs": {
+    "application_runtime": "a1af0d6eb0041565602711251748666f7b959d8e",
+    "owner_status": "9a532b643faaef71e43c0eee58e4be7f9c661328",
+    "independent_test": "09e1eaf90c804d333dd45b0806e1924c30416499",
+    "runner": "70242fa55e8f134f9028c6e985255dae865a5bde",
+    "workflow": "6ee84fb6f9b493bf8065f7e9421a059dfeebbdfc"
+  },
+  "preservation": {
+    "reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "reference_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "legacy_soilwater_blob": "2ab6ea917525cd6f2560860bd55aec1da16be014",
+    "legacy_swap_main_blob": "b6609df617c6b5875c62324570fb8c7d8c0bfe21",
+    "full_richards_task2_blob": "5f51a34b03b63cf7cdf254f6115c2bb2db4ea693"
+  },
+  "tested": false,
+  "qualified": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_PUBLIC_API_OR_M1_EXIT_CLAIM",
+    "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SWAP_MAIN_WIRING",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
+    "NO_SCIENTIFIC_DOMAIN_BROADENING"
+  ],
+  "next_permitted_action": "Persist the exact F-ROSS11 candidate on canonical aa25126e, run the repaired independent gate, and admit only if it is green and live canonical remains exactly aa25126ee19e25c60bd266951b7494ba635efeca."
+}

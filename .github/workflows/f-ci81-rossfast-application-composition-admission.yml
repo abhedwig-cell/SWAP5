@@ -1,0 +1,54 @@
+name: F-CI81 RossFast application composition admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci81-rossfast-application-composition-admission
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run independent F-CI81 gate
+        run: |
+          set -o pipefail
+          mkdir -p qualification/f-ci81
+          bash tests/integration/run_fci81_rossfast_application_composition_admission.sh \
+            2>&1 | tee qualification/f-ci81/qualification.log
+      - name: Record independent evidence
+        if: always()
+        run: |
+          {
+            echo "work_unit=F-CI81"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "preimage=9d202705d1d7063ae129166b1049f7555a7ad802"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            echo "application_runtime_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_application_runtime.f90 || true)"
+            echo "owner_status_blob=$(git rev-parse HEAD:integration/f-ross/F-ROSS11_STATUS.json || true)"
+            grep -E 'FCI81_(EQUIV|REFERENCE_REJECT|MISSING_ASSET_PREFLIGHT|O0_O2_SHA256|ROSSFAST_APPLICATION_COMPOSITION_ADMISSION|INDEPENDENT_ROSSFAST_APPLICATION_COMPOSITION)' \
+              qualification/f-ci81/qualification.log || true
+          } > qualification/f-ci81/evidence.txt
+      - name: Upload F-CI81 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci81-evidence
+          path: qualification/f-ci81/evidence.txt
+          if-no-files-found: error
+      - name: Upload F-CI81 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci81-diagnostics
+          path: qualification/f-ci81/qualification.log
+          if-no-files-found: warn
