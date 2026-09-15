@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fci77.status.v1",
+  "work_unit": "F-CI77",
+  "capability": "F-GC20",
+  "title": "F-GC20 groundwater tile aggregation current-canonical admission",
+  "branch": "qualification/f-ci77-fgc20-current-canonical-admission",
+  "phase": "QUALIFY",
+  "status": "RECONCILED_READY_FOR_CURRENT_CANONICAL_ADMISSION_GATE",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+    "tree": "95da922e5290ac9757ae83dda4d10a52e6c1c8fb"
+  },
+  "owner_authority": {
+    "branch": "work/f-gc20-groundwater-cell-tile-mapping-aggregation-primitive",
+    "qualified_source_head": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+    "first_qualified_head": "bc2e28b3de42960a4689d289371c7f1deb089b75",
+    "production_path": "src/runtime/mod_groundwater_tile_aggregation.f90",
+    "production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "owner_qualification_run": 34680075299,
+    "owner_qualification_job": 103516995217
+  },
+  "reused_independent_evidence": {
+    "work_unit": "F-VQ87",
+    "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+    "closeout_head": "37c02ac3747bfaacdb8b3408b8228f3deb2b9824",
+    "production_blob_locked": true,
+    "weighted_mass_action_reaction": "PASS",
+    "independent_oracle": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "reconciliation": {
+    "production_source_exact_on_current_canonical": true,
+    "relevant_dependency_change_requires_requalification": false,
+    "equivalent_current_canonical_materialization": "F-CI73 / F-GC25 inherited dependency",
+    "fresh_independent_lifecycle_required": false
+  },
+  "contract_to_preserve": [
+    "area-weighted groundwater-cell aggregation",
+    "exact equal-and-opposite interface mass accounting",
+    "invalid area fractions are rejected rather than silently repaired or normalized",
+    "multiple tiles per groundwater cell and mixed component tiles remain supported",
+    "no forced one-column/one-groundwater-cell mapping"
+  ],
+  "mutation_scope": "governance and preservation-test only; no production source changes",
+  "hard_exclusions": ["EB", "ROSS", "RossFast", "F-GC23", "new groundwater semantics"],
+  "canonical_admission": false,
+  "decision": "RUN_CURRENT_CANONICAL_ADMISSION_GATE"
+}
