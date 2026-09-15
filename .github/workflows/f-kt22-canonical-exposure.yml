@@ -7,23 +7,37 @@ on:
     paths:
       - 'src/runtime/mod_canonical_contracts.f90'
       - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/kernel/mod_kernel_transactions.f90'
       - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
       - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
       - 'src/transaction/mod_transaction_reference.f90'
       - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
       - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
       - 'tests/fkt/test_fkt22_kernel_trajectory_transport.f90'
       - 'tests/fkt/run_fkt22_canonical_exposure.sh'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
       - '.github/workflows/f-kt22-canonical-exposure.yml'
   pull_request:
     paths:
       - 'src/runtime/mod_canonical_contracts.f90'
       - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
       - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
       - 'tests/fkt/test_fkt22_kernel_trajectory_transport.f90'
       - 'tests/fkt/run_fkt22_canonical_exposure.sh'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
       - '.github/workflows/f-kt22-canonical-exposure.yml'
   workflow_dispatch:
 
@@ -38,3 +52,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run F-KT22 bounded gate
         run: bash tests/fkt/run_fkt22_canonical_exposure.sh
+
+  fmr-production-compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile F-KT22 serialized FMR production seam
+        run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
