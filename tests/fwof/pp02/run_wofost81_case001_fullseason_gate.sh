@@ -12,7 +12,8 @@ PARTS=(
   tests/fwof/pp02/case001_fixture.b64.part01
   tests/fwof/pp02/case001_fixture.b64.part02
   tests/fwof/pp02/case001_fixture.b64.part03
-  tests/fwof/pp02/case001_fixture.b64.part04
+  tests/fwof/pp02/case001_fixture.b64.part04a
+  tests/fwof/pp02/case001_fixture.b64.part04b
   tests/fwof/pp02/case001_fixture.b64.part05
 )
 EXPECTED_PART_SHA=(
@@ -20,11 +21,13 @@ EXPECTED_PART_SHA=(
   a7955880c199085eca61792466efa84a7f4d9df6ed20e7be69dfbf3fd235e425
   645a4a9550c6dd99d98d02428eba40beb4e8d65cf456ab1b1460f36413ac98ee
   1595eb562d4dcb3506d1b96f86990a667ebddaf56419270515bb610d17f97e0f
-  40060700d6f444f930251cab331865747dce821a54d83c5f8966fbaea0ff1c6c
+  ebc8b6727627ae620c6ce676ab9d0c9084df002e2cad40e1758e65c264e71419
+  93f96606b84ba58b065c4a13ce759bb7aecbeb9bfd03b48cb6788b7a24fcbb79
   6c5412e05c0ae39b975778a05eaca0e4b2fff96b0c3239e4745fcb7ba4e8ed5e
 )
 for i in "${!PARTS[@]}"; do
   got=$(sha256sum "${PARTS[$i]}" | awk '{print $1}')
+  echo "CASE001_PART_${i}_SHA256=$got"
   [[ "$got" == "${EXPECTED_PART_SHA[$i]}" ]]
 done
 cat "${PARTS[@]}" > "$BUILD/case001_fixture.tar.gz.b64"
