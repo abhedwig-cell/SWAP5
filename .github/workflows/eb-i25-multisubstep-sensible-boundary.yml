@@ -20,5 +20,16 @@ jobs:
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Run EB-I25 owner qualification
+        id: gate
+        continue-on-error: true
         shell: bash
         run: bash tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
+      - name: Expose owner runtime diagnostic
+        if: steps.gate.outcome == 'failure'
+        shell: bash
+        run: |
+          echo '--- O0 runtime output ---'
+          cat "$RUNNER_TEMP/eb-i25-o0/output.txt" 2>/dev/null || true
+          echo '--- O2 runtime output ---'
+          cat "$RUNNER_TEMP/eb-i25-o2/output.txt" 2>/dev/null || true
+          exit 1
