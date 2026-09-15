@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ02",
+  "historical_source": {
+    "branch": "vq/vq-1e1-transaction-time-harness",
+    "head": "29e05be97493926ba451dfd53d5ed3170db47ad5",
+    "tree": "f5ac629b51ec9a649509a16af5d765b1cbd762fb",
+    "scope": "VERIFIER_HARNESS_ONLY"
+  },
+  "rebased_qualification_basis": {
+    "oracle": "B1.10",
+    "fci11_physical_source": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+    "fci11_evidence": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+    "fci12_source": "7098aeaa4ca38dc375a965340a35c9870a33de28",
+    "fci12_evidence": "729574de00fbb1540affe2af74a7202b38d29754",
+    "fci12_workflow_run": 34102787767
+  },
+  "directly_reused_verifier_assets": [
+    {"path":"tools/vq/b2_seam_contract.py","blob_sha":"210847d9eb906fb1ddbf4ba4f65ca26156cad4af"},
+    {"path":"tools/vq/b2_result_contract.py","blob_sha":"75632937fcd7f99a75a99e227821afd3c4748999"},
+    {"path":"tools/vq/b2_result_record.py","blob_sha":"6e01be04258799f0f4d42040f0b5ffe4fe2b6be8"},
+    {"path":"tools/vq/tx_time_harness.py","blob_sha":"7b82912499bafcfe510a5e4219b50bbea7837f8c"},
+    {"path":"tools/vq/test_b2_seam_contract.py","blob_sha":"614b889e1bc30de3281c68446ce341a52b0bedef"},
+    {"path":"tools/vq/test_b2_result_contract.py","blob_sha":"a2af14f4ce31c956a5a125c096aa07ffb78ec93f"},
+    {"path":"tools/vq/test_b2_result_record.py","blob_sha":"8f9872c72cb2af9e50fd90ef4b3d26734e1f007d"},
+    {"path":"tools/vq/test_tx_time_harness.py","blob_sha":"eeb738bdf16d618f70cc1085e8c93646ff9bb9a4"},
+    {"path":"tools/vq/contracts/b2-reference-seam.schema.json","blob_sha":"0769b8e167b29b3400d7a87b647c1d6d4dbc63ee"},
+    {"path":"tools/vq/contracts/b2-reference-result-contract.schema.json","blob_sha":"0498f5e3c43859f4bcb8886c7698d5834851e79e"},
+    {"path":"tools/vq/contracts/b2-reference-result-record.schema.json","blob_sha":"053dc2d05a98f7ac444fc78cdb882af6434c6df9"},
+    {"path":"tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json","blob_sha":"ab4b0b3a09cce58f482a5484a9eee88f721aca6e"}
+  ],
+  "excluded_historical_assets": [
+    {
+      "path": "docs/verification/vq-1d2-b2-reference-seam-contract.md",
+      "reason": "Contains stale B1.7 qualification-basis prose. Semantic validator is reused, historical document is not."
+    },
+    {
+      "path": "docs/verification/vq-1d3-b2-canonical-result-contract.md",
+      "reason": "Contains stale B1.7 qualification-basis prose. Semantic validator is reused, historical document is not."
+    },
+    {
+      "path": "docs/verification/vq-1e1-transaction-time-harness.md",
+      "reason": "Historical narrative and dependency chain are superseded by F-VQ02 provenance."
+    },
+    {
+      "path": "tools/vq/cases/b2-reference-candidate.json",
+      "reason": "Historical candidate observation is stale and must not be repinned to READY while production reference execution remains blocked."
+    }
+  ],
+  "qualification_rule": "Exact historical blobs may be qualified as verifier infrastructure after re-execution on the F-CI12 repository basis. Their historical PASS never becomes production-physics evidence."
+}

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/contracts/b2-reference-result-record.schema.json",
+  "title": "SWAP5 B2 canonical reference result record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "interval",
+    "endpoint_state",
+    "results",
+    "mass_accounting",
+    "transaction",
+    "diagnostics",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "SWAP5-B2-reference-result-record-v1"},
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t0", "t1"],
+      "properties": {
+        "t0": {"type": ["number", "string"]},
+        "t1": {"type": ["number", "string"]},
+        "time_basis": {"type": "string"}
+      }
+    },
+    "endpoint_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "state_id", "variables"],
+      "properties": {
+        "scope": {"const": "committed"},
+        "state_id": {"type": ["string", "integer"]},
+        "variables": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/value_entry"}
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/result_entry"}
+    },
+    "mass_accounting": {
+      "allOf": [
+        {"$ref": "mass-accounting-record.schema.json"},
+        {
+          "type": "object",
+          "properties": {
+            "accounting_scope": {"const": "committed"}
+          }
+        }
+      ]
+    },
+    "transaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accepted",
+        "accepted_trial_id",
+        "trial_count",
+        "retry_count",
+        "commit_count",
+        "rollback_count",
+        "rejected_trials_excluded_from_committed_totals"
+      ],
+      "properties": {
+        "accepted": {"const": true},
+        "accepted_trial_id": {"type": ["string", "integer"]},
+        "trial_count": {"type": "integer", "minimum": 1},
+        "retry_count": {"type": "integer", "minimum": 0},
+        "commit_count": {"const": 1},
+        "rollback_count": {"type": "integer", "minimum": 0},
+        "rejected_trials_excluded_from_committed_totals": {"const": true}
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "accepted",
+        "execution_class",
+        "retry_count",
+        "solver_iterations",
+        "solver_cost",
+        "fallback_used",
+        "balance_residual"
+      ],
+      "properties": {
+        "accepted": {"const": true},
+        "execution_class": {"type": "string", "minLength": 1},
+        "retry_count": {"type": "integer", "minimum": 0},
+        "solver_iterations": {"type": "integer", "minimum": 0},
+        "solver_cost": {"type": "number", "minimum": 0},
+        "fallback_used": {"type": "boolean"},
+        "balance_residual": {"type": "number"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation_commit", "numerical_policy", "result_contract_version", "case_id"],
+      "properties": {
+        "implementation_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "numerical_policy": {"type": "string", "minLength": 1},
+        "result_contract_version": {"const": "v1"},
+        "case_id": {"type": ["string", "integer"]}
+      }
+    }
+  },
+  "$defs": {
+    "numeric_value": {
+      "oneOf": [
+        {"type": "number"},
+        {"type": "array", "items": {"type": "number"}}
+      ]
+    },
+    "value_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variable_id", "value", "unit"],
+      "properties": {
+        "variable_id": {"type": "string", "minLength": 1},
+        "value": {"$ref": "#/$defs/numeric_value"},
+        "unit": {"type": "string", "minLength": 1},
+        "basis": {"type": ["string", "null"]}
+      }
+    },
+    "result_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result_id", "value", "unit", "basis"],
+      "properties": {
+        "result_id": {"type": "string", "minLength": 1},
+        "value": {"$ref": "#/$defs/numeric_value"},
+        "unit": {"type": "string", "minLength": 1},
+        "basis": {"type": "string", "minLength": 1},
+        "aggregation": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
