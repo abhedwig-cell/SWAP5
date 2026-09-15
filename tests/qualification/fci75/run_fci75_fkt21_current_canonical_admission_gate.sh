@@ -87,7 +87,7 @@ for path in "${owner_shell[@]}"; do
   [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$OWNER:$path")" ]] || fail "owner shell blob mismatch: $path"
 done
 [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'canonical transaction-reference dependency drift'
-[[ "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'base transaction-reference dependency drift'
+[[ "$(git rev-parse "$BASE:src/transaction/mod_transaction_reference.f90")" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'base transaction-reference dependency drift'
 echo 'FCI75_OWNER_POSTIMAGE_EXACT=PASS'
 echo 'FCI75_OWNER_COMPOSITION_SHELL_EXACT=PASS'
 echo 'FCI75_OWNER_SHELL_BASE_UNCHANGED=PASS'
