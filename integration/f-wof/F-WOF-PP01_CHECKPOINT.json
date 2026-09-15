@@ -1,74 +1,47 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-WOF",
   "work_unit": "F-WOF-PP01",
   "title": "WOFOST 8.1 Independent Potential Production Equivalence",
-  "phase": "RECONCILE",
-  "canonical": {
-    "repository": "abhedwig-cell/SWAP5",
-    "branch": "integration/f-ci-canonical",
-    "reconciled_head": "1f33328e2ddc0d28450d35647c1c97f293b1e622"
-  },
+  "phase": "QUALIFY",
+  "canonical": {"repository":"abhedwig-cell/SWAP5","branch":"integration/f-ci-canonical","reconciled_head":"1f33328e2ddc0d28450d35647c1c97f293b1e622"},
   "branch": "work/f-wof-pp01-independent-potential-production-equivalence",
-  "reference": {
-    "artifact": "tests_Wofost81_PP.zip",
-    "zip_sha256": "99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145",
-    "generator": "PCSE 6.0.13",
-    "model": "WOFOST 8.1",
-    "case_count": 10,
-    "manifest": "tests/fwof/pp01/REFERENCE_MANIFEST.json"
+  "pcse_reference": {"artifact":"tests_Wofost81_PP.zip","sha256":"99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145","generator":"PCSE 6.0.13","case_count":10},
+  "donor": {
+    "artifact":"SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip",
+    "expected_sha256":"4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
+    "observed_sha256":"4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
+    "hash_verified":true,
+    "archive_entries":230,
+    "source_closeout":"839c34a657c2cee202b55d9ee85253d867a3d47a",
+    "readme_identifies_qualified_working_implementation":true,
+    "implementation_addendum_present":true,
+    "qualification_directory_present":true,
+    "linux_validation_executable":"tools/SWAP/swap_431_wofost81_gnu_validation",
+    "linux_validation_executable_format":"ELF 64-bit x86-64",
+    "spring_barley_template":"data/crops/dynamic/barley_wofost81.crp"
   },
-  "donor_lineage_recovered": {
-    "development_date": "2026-09-08",
-    "repository_kind": "local source Git, not pushed to GitHub",
-    "working_distribution": "SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip",
-    "working_distribution_sha256": "4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
-    "historical_runtime_directory": "/mnt/data/swap431_wof81_final_13b/",
-    "source_archive": "SWAP_WOFOST81_SOURCE_FINAL_13B.zip",
-    "source_closeout_commit": "839c34a657c2cee202b55d9ee85253d867a3d47a",
-    "historical_branch_lineage": "work/swap431-wofwo81-10-crop-library-mapping",
-    "later_followup": "SWAP431-WOF81-13",
-    "github_resolution_expected": false,
-    "interpretation": "the previously reported commit failing to resolve in abhedwig-cell/SWAP5 is expected because the WOFOST81 donor was developed in a local SWAP 4.3.1 source Git and was never pushed to this GitHub repository"
+  "recovered_qualification": {
+    "WOF81_03_assimilation_oracle":"PASS_1206_CASES_MAX_ABS_0",
+    "WOF81_04_crop_n_oracle":"PASS_1805_CASES_MAX_ABS_5.684E-14",
+    "WOF81_05_n_stress_oracle":"PASS_2003_CASES_MAX_ABS_0",
+    "WOF81_06_runtime_binding":"QUALIFIED",
+    "WOF81_06_full_season_independent_pcse_regression":"OPEN_NEXT_GATE",
+    "WOF81_10_crop_library":"QUALIFIED_SOURCE_BOUND_FIVE_CROP_WOFOST81_LIBRARY_AND_SEASON_SMOKE",
+    "WOF81_10_runtime_smoke":"5/5 normal exit; 5/5 swap.ok; water-balance max abs deviation 0",
+    "spring_barley_source_binding":"Spring_barley_301 / barley_wofost81.crp"
   },
-  "file_library_evidence": {
-    "working_binary_archive_found": false,
-    "source_archive_found": false,
-    "input_guide_found": true,
-    "crop_mapping_found": true,
-    "spring_barley_mapping": "barley_wofost81.crp -> springbarley / Spring_barley_301",
-    "spring_barley_classification": "EXACT_SOURCE_BOUND_MAPPING",
-    "mapping_reason": "TSUM1/2, TDWI, RGRLAI, SLATB, KDIF/EFF, conversion, respiration and partitioning match",
-    "official_parameter_commit": "472c260930371ab7b87b194ca97eebfbc46ba251",
-    "activation": ["SWWOFOST=1", "WOFOSTVER=81", "SWCROPSNM=0"],
-    "qualification_location_in_distribution": "qualification/wofost81/",
-    "implementation_addendum_in_distribution": "WOFOST_8.1_IMPLEMENTATION_ADDENDUM.md"
+  "runtime_reproduction": {
+    "existing_case":"cases/5.wofost81_winterwheat",
+    "executable_invoked":true,
+    "process_return_code":100,
+    "stdout_terminal_message":"Swap normal completion!",
+    "interpretation":"donor Linux qualification executable is runnable in the present environment; SWAP uses its historical nonzero normal-completion process code",
+    "pcse_ten_case_campaign_executed":false
   },
-  "qualification_route": {
-    "stage_1": "recover SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip or SWAP_WOFOST81_SOURCE_FINAL_13B.zip from the historical 2026-09-08 session/export and verify the known hash before execution",
-    "stage_2": "inspect qualification/wofost81 and the implementation addendum from those exact bytes",
-    "stage_3": "run Spring_barley_301 potential production with SWWOFOST=1, WOFOSTVER=81, SWCROPSNM=0 against all ten Allard/PCSE cases",
-    "stage_4": "compare full daily ModelResults using YAML Precision values and deterministic replay, recording maximum absolute deviation and first divergence date",
-    "stage_5": "only after donor PASS, qualify SWAP5 migration preservation separately"
-  },
-  "verdict": "BLOCKED_ONLY_ON_RECOVERY_OF_LOCAL_DONOR_BYTES",
-  "mutations": {
-    "production_source_changed": false,
-    "physics_changed": false,
-    "canonical_changed": false,
-    "reference_changed": false,
-    "checkpoint_updated": true
-  },
-  "next_permitted_action": "Recover either historical artifact SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip or SWAP_WOFOST81_SOURCE_FINAL_13B.zip from the 2026-09-08 local-session outputs. The known former runtime path was /mnt/data/swap431_wof81_final_13b/. Do not rebuild or approximate the donor. Verify the working-distribution SHA-256 before qualification.",
-  "exclusions": [
-    "no EB",
-    "no ROSS/RossFast",
-    "no groundwater work",
-    "no maize blocker work",
-    "no new crop physics",
-    "no production semantic changes to force PASS",
-    "no invented tolerance",
-    "no silent omission of oracle fields",
-    "no fabricated donor source provenance"
-  ]
+  "scientific_interpretation":"The exact immutable donor has now been recovered and cryptographically verified. Its own qualification explicitly names full-season independent PCSE regression as the next gate, which is exactly F-WOF-PP01. The donor runtime is executable. No donor reconstruction is required.",
+  "verdict":"READY_FOR_TEN_CASE_PCSE_FULL_SEASON_HARNESS",
+  "mutations":{"production_source_changed":false,"physics_changed":false,"canonical_changed":false,"reference_changed":false,"donor_bytes_changed":false,"checkpoint_updated":true},
+  "next_permitted_action":"Construct the qualification-only input/output adapter for the ten uploaded PCSE WOFOST 8.1 Spring Barley potential-production cases against the verified donor. Preserve SWWOFOST=1, WOFOSTVER=81, SWCROPSNM=0 and donor crop equations. Run deterministic daily comparisons using the YAML Precision contract; report every variable, maximum absolute deviation and first divergence date. Do not admit before this execution evidence exists.",
+  "exclusions":["no EB","no ROSS/RossFast","no groundwater work","no maize blocker work","no new crop physics","no production semantic changes","no tolerance changes","no silent oracle-field omission"]
 }
