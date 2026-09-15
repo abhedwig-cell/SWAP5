@@ -53,6 +53,39 @@ grep -Fq 'does not add a multi-transaction rollback guarantee' tests/eb/EB-I26_C
 grep -Fq 'complete SWAP5 Energy Balance' tests/eb/EB-I26_CONTRACT.md
 echo 'EB_I26_STATIC_CONTRACT=PASS'
 
+# Diagnostic-only source instrumentation. This is applied after the bounded git-delta
+# check and exists only in the CI worktree. It does not change the owner test assertions.
+python3 - <<'PY'
+from pathlib import Path
+p = Path('tests/eb/test_eb_i26_outer_substep_sensible_boundary_aggregation.f90')
+s = p.read_text()
+needle = "    call require(output%completed .and. output%committed, 'second outer transaction committed')"
+insert = """    if (.not. (output%completed .and. output%committed)) then
+      write(*,'(A,L1)') 'EB_I27_DIAG_COMPLETED=', output%completed
+      write(*,'(A,L1)') 'EB_I27_DIAG_COMMITTED=', output%committed
+      write(*,'(A,L1)') 'EB_I27_DIAG_ADMISSION_ASSESSED=', output%admission_assessed
+      write(*,'(A,L1)') 'EB_I27_DIAG_ADMITTED=', output%admitted
+      write(*,'(A,A)') 'EB_I27_DIAG_ADMISSION_STATUS=', trim(output%admission_status)
+      write(*,'(A,I0)') 'EB_I27_DIAG_KERNEL_STATUS=', output%kernel_status
+      write(*,'(A,I0)') 'EB_I27_DIAG_COMMIT_STATUS=', output%commit_status
+      write(*,'(A,L1)') 'EB_I27_DIAG_SOLVER_EXECUTED=', output%solver_executed
+      write(*,'(A,A)') 'EB_I27_DIAG_SOLVER_ROUTE=', trim(output%solver_route)
+      write(*,'(A,I0)') 'EB_I27_DIAG_ACCEPTED_SUBSTEPS=', output%accepted_substeps
+      write(*,'(A,I0)') 'EB_I27_DIAG_INITIAL_REVISION=', output%initial_revision
+      write(*,'(A,I0)') 'EB_I27_DIAG_FINAL_REVISION=', output%final_revision
+      write(*,'(A,A)') 'EB_I27_DIAG_FAILURE_CLASS=', trim(diagnostic%failure_classification)
+      write(*,'(A,I0)') 'EB_I27_DIAG_ATTEMPTS=', diagnostic%attempts
+      write(*,'(A,I0)') 'EB_I27_DIAG_RETRIES=', diagnostic%retries
+      write(*,'(A,I0)') 'EB_I27_DIAG_ACCEPTED=', diagnostic%accepted
+      write(*,'(A,I0)') 'EB_I27_DIAG_REJECTED=', diagnostic%rejected
+      write(*,'(A,I0)') 'EB_I27_DIAG_COMMITTED_REVISION=', diagnostic%committed_revision
+    end if
+""" + needle
+if needle not in s:
+    raise SystemExit('diagnostic injection anchor missing')
+p.write_text(s.replace(needle, insert, 1))
+PY
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
