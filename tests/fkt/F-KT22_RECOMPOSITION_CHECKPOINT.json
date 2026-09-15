@@ -1,6 +1,6 @@
 {
   "capability": "F-KT22",
-  "phase": "QUALIFY_RETRY",
+  "phase": "QUALIFY",
   "repository": "abhedwig-cell/SWAP5",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_head": "9d202705d1d7063ae129166b1049f7555a7ad802",
@@ -10,6 +10,7 @@
   "recomposition_branch": "work/f-kt22-current-canonical-recomposition",
   "recomposed_head_before_merge_fix": "87f78e65fef7295c72b1a93019768b962948d0e7",
   "merge_artifact_fix_head": "1fd81aa38cd85dcc83a70320f2a35a068df6b646",
+  "qualified_recomposition_tested_head": "f32a55aa3a34809b1ab506647886e73049a63e5d",
   "relevant_dependency_state": {
     "canonical_source_tree_unchanged_since_recomposition": true,
     "current_canonical_is_ancestor_of_recomposition": true,
@@ -23,11 +24,19 @@
     "first_current_canonical_qualification_run": 34995028908,
     "first_current_canonical_qualification_verdict": "FAILED_MECHANICAL_MERGE_ARTIFACT",
     "failure_scope": "one missing end-if at adjacent EB-I25 carrier / F-KT22 accepted-step promotion boundary",
-    "production_semantics_changed_to_force_pass": false,
-    "merge_artifact_repaired": true
+    "merge_artifact_repaired": true,
+    "current_canonical_qualification_run": 34995418529,
+    "current_canonical_qualification_jobs": {
+      "current-canonical-tree": "PASS",
+      "canonical-boundary": "PASS",
+      "fmr-production-compile": "PASS",
+      "fmr-production-runtime": "PASS",
+      "eb-i25-preservation": "PASS"
+    },
+    "production_semantics_changed_to_force_pass": false
   },
-  "verdict": "REQUALIFICATION_REQUIRED_AFTER_MECHANICAL_REPAIR",
-  "next_permitted_action": "Run current-canonical dependency preflight, canonical boundary, FMR compile, serialized FMR runtime, and EB-I25 preservation gates. Admit only if all are green.",
+  "verdict": "QUALIFIED_CURRENT_CANONICAL",
+  "next_permitted_action": "ADMIT F-KT22 only after one bounded live-canonical delta check; do not touch GC23 yet.",
   "exclusions": [
     "no GC23",
     "no new EB semantics",
