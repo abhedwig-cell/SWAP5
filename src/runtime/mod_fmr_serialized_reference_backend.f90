@@ -1447,6 +1447,7 @@ contains
     end if
     if (self%top_sensible_boundary_carrier_active .and. self%top_sensible_boundary_carrier_valid) then
       call record_top_sensible_boundary_sample(self, t0, t1, solve_result%top_flux * step_duration)
+    end if
     if (trajectory_stage_ok) then
       call accept_trajectory_step(self%trajectory_direction, trajectory_accept_ok)
     end if
