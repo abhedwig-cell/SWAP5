@@ -1,0 +1,31 @@
+name: F-PE11 current-canonical performance admission replay
+
+on:
+  push:
+    branches:
+      - qualification/f-pe11-current-canonical-performance-admission
+    paths:
+      - 'tests/fpe/mod_fpe11_current_kernel_view_binding.f90'
+      - 'tests/fpe/test_fpe11_current_canonical_preservation.f90'
+      - 'tests/fpe/test_fpe11_current_canonical_timing.f90'
+      - 'tests/fpe/run_fpe11_current_canonical_performance_admission.sh'
+      - '.github/workflows/fpe11-current-canonical-performance-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch authority commits
+        run: git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PE11 current-canonical functional preservation and local non-regression
+        run: bash tests/fpe/run_fpe11_current_canonical_performance_admission.sh
