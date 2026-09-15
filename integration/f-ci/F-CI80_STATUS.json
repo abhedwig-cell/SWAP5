@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI80",
+  "title": "RossFast restricted stack current-canonical admission",
+  "phase": "RECONCILE_COMPLETE",
+  "decision": "PROJECT_EXACT_QUALIFIED_F_ROSS02_THROUGH_F_ROSS10_AND_REQUALIFY_ON_CURRENT_CANONICAL",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "b7c2e510c68e5799a138e881793d27037c482b8a",
+  "canonical_preimage_tree": "f70a3aa43fe5e82dd2098fa0960eab6a7209c8f0",
+  "admission_branch": "integration/f-ci80-rossfast-restricted-stack-admission",
+  "qualified_source_head": "a483452f04a85f3bb64eaad6a383a4800abaed16",
+  "qualified_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"],
+  "reconciliation": {
+    "f_ci75_preimage": "687ee32ca98a42368a2b6380ea78d33eb254dad9",
+    "canonical_advance_commits": 14,
+    "ross_runtime_core_blob_unchanged": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "ross_execution_policy_blob_expected": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "reference_backend_changed_since_f_ci75": true,
+    "current_reference_backend_blob": "960ea116cad81e8c0db8a579982f4999b3d085ed",
+    "delta_classification": "ROSS_SCIENTIFIC_DEPENDENCIES_APPEAR_UNCHANGED;_REFERENCE_PATH_PRESERVATION_REQUIRES_CURRENT_CANONICAL_REPLAY"
+  },
+  "evidence_policy": {
+    "reuse_prior_owner_qualification_as_immutable_provenance": true,
+    "prior_runs_alone_sufficient_for_admission": false,
+    "fresh_current_canonical_integration_qualification_required": true
+  },
+  "planned_projection": {
+    "production": "exact previously qualified RossFast source blobs only",
+    "assets": "exact immutable six-material D3R assets plus manifest",
+    "governance": "F-ROSS02 through F-ROSS10 status records",
+    "qualification": "real six-material ROSS08 route plus ROSS10 config/file fail-closed route under O0/O2",
+    "reference_preservation": "current canonical reference backend must remain byte-identical"
+  },
+  "canonical_admission": false,
+  "mutations": [
+    "Reserved F-CI80 from exact F-CI79 canonical preimage.",
+    "No production source or scientific semantics changed during reconciliation."
+  ],
+  "next_permitted_action": "Project exact qualified F-ROSS02 through F-ROSS10 source/assets/evidence onto this branch, add a bounded current-canonical admission gate, persist the candidate, and qualify before any canonical mutation.",
+  "exclusions": [
+    "No EB production changes.",
+    "No groundwater work.",
+    "No root or distributed source/sink broadening.",
+    "No legacy .swp grammar change.",
+    "No SW_SOLVE reinterpretation.",
+    "No automatic configuration discovery.",
+    "No direct swap_main production wiring.",
+    "No mixed reference/RossFast MultiSWAP admission.",
+    "No new RossFast scientific domain."
+  ]
+}
