@@ -62,7 +62,7 @@ contains
     ! requested [t0,t1] interval has completed. Accepted internal substeps are
     ! committed only into this private working state. Sensitivity follows the
     ! same publication rule: only a fully completed canonical interval exposes
-    ! its final accepted local-terminal tangent.
+    ! result metadata from the accepted route.
     call committed%clone(working)
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
@@ -140,6 +140,9 @@ contains
                result%interface_sensitivity%origin_t0 == interval%t0 .and. &
                result%interface_sensitivity%origin_t1 == interval%t1
         end if
+        ! Whole-window trajectory sensitivity has a separate semantic carrier.
+        ! Only the fully accepted requested canonical interval may publish it.
+        call model%accepted_trajectory_direction_snapshot(interval, result%accepted_trajectory_direction)
         return
       end if
     end do
