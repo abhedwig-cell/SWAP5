@@ -53,7 +53,10 @@ BUILD="$(mktemp -d)"
 trap 'rm -rf "$BUILD"' EXIT
 
 compile_and_run() {
-  local opt="$1" tag="$2" exe="$BUILD/fvq96_${tag}" moddir="$BUILD/mod_${tag}"
+  local opt="$1"
+  local tag="$2"
+  local exe="$BUILD/fvq96_${tag}"
+  local moddir="$BUILD/mod_${tag}"
   mkdir -p "$moddir"
   "$FC" -std=f2008 -ffree-line-length-none -Wall -Wextra -pedantic "$opt" \
     -J"$moddir" -I"$moddir" \
