@@ -9,7 +9,7 @@ cd "$ROOT"
 
 fail() { echo "EB_I23_GATE_FAIL $*" >&2; exit 223; }
 
-CANONICAL="5ad1192dc3a120c5be0f36b023ebcac8d862e904"
+CANONICAL="3ff0f42299767d5ad5f07d031698dfcf7969ed0d"
 BRANCH="work/eb-i23-sensible-boundary-runtime-materialization"
 MODULE="src/runtime/mod_eb_i23_sensible_boundary_runtime.f90"
 TEST="tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90"

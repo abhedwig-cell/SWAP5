@@ -6,7 +6,7 @@ EB-I23 binds already qualified sensible-energy authorities into one accepted run
 
 Canonical base:
 
-`integration/f-ci-canonical@5ad1192dc3a120c5be0f36b023ebcac8d862e904`
+`integration/f-ci-canonical@3ff0f42299767d5ad5f07d031698dfcf7969ed0d`
 
 EB-I23 is deliberately a **partial** runtime materialization. It does not make the EB-I22 whole-column boundary complete because current canonical production/reference evidence does not establish a qualified top mass-carried sensible-energy donor-temperature authority.
 
