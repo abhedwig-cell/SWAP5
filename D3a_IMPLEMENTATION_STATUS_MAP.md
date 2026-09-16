@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-04
 
+> **Historical/superseded for current-state claims.** This record remains valid evidence of the 2026-09-04 documentation publication and migration state. It is no longer the current SWAP5 implementation-status authority. For the 2026-09-16 Status-A boundary, use `docs/status-a/CURRENT_STATUS.md` and the hash-anchored Status-A release-readiness authority. The historical conclusions below are intentionally preserved rather than rewritten.
+
 ## Goal
 
 Create one evidence-based architecture-to-implementation register for the SWAP5 migration so that target design, active refactoring, partial prototypes and qualified implementation are not conflated.
@@ -10,7 +12,7 @@ Create one evidence-based architecture-to-implementation register for the SWAP5 
 
 Status: `PUBLISHED_VERIFIED`
 
-D3a adds `docs/architecture/implementation-status.md` as the central implementation register and links it from the architecture navigation and overview.
+D3a added `docs/architecture/implementation-status.md` as the central implementation register **for this 2026-09-04 migration snapshot** and linked it from the architecture navigation and overview.
 
 The map uses the controlled status vocabulary:
 
@@ -20,18 +22,18 @@ The map uses the controlled status vocabulary:
 - `IN_PROGRESS`
 - `QUALIFIED`
 
-The current snapshot is deliberately conservative. Active transactional and `headcalc` refactoring is recorded as `IN_PROGRESS`; architecture contracts without integrated production evidence remain `TARGET`; existing prototypes/testbanks are `PARTIAL`. Narrow qualified solver/audit work is not promoted into a broader architecture capability unless the broader capability itself has been integrated and verified.
+The snapshot was deliberately conservative. Active transactional and `headcalc` refactoring was recorded as `IN_PROGRESS`; architecture contracts without integrated production evidence remained `TARGET`; existing prototypes/testbanks were `PARTIAL`. Narrow qualified solver/audit work was not promoted into a broader architecture capability unless the broader capability itself had been integrated and verified at that time.
 
 ## Traceability
 
 Each capability row records:
 
-- present status;
-- current evidence or migration position;
-- the next proof required to advance status;
+- status at the snapshot date;
+- evidence or migration position at that date;
+- the next proof then required to advance status;
 - affected SWAP core architecture invariants.
 
-The publication verifier has also been extended so the D3a page is part of the live GitHub Pages acceptance gate.
+The publication verifier was also extended so the D3a page was part of the live GitHub Pages acceptance gate.
 
 ## Publication evidence
 
@@ -52,4 +54,4 @@ The live verifier explicitly confirmed:
 - `https://abhedwig-cell.github.io/SWAP5/architecture/invariants/`
 - `https://abhedwig-cell.github.io/SWAP5/development/publication/`
 
-D3a is therefore administratively closed as `PUBLISHED_VERIFIED`.
+D3a was therefore administratively closed as `PUBLISHED_VERIFIED` for its recorded 2026-09-04 state. Later canonical admissions and Status-A closure supersede it only for present-state claims, not as evidence that this publication occurred.
