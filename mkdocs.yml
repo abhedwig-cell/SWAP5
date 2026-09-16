@@ -1,9 +1,12 @@
-site_name: SWAP Documentation
-site_description: Technical documentation for SWAP5 Status-A, its scientific foundations and retained target/historical architecture
+site_name: SWAP5 Documentation
+site_description: Scientific, numerical, architectural and verification documentation for the SWAP5 rebuild and Status-A review baseline
 site_author: SWAP development team
 docs_dir: docs
 nav:
 - Home: index.md
+- Review SWAP5:
+  - Review guide: review/REVIEW_GUIDE.md
+  - Frozen review baseline: review/REVIEW_BASELINE.md
 - Current Status-A:
   - Current status and scope: status-a/CURRENT_STATUS.md
   - Current architecture: status-a/CURRENT_ARCHITECTURE.md

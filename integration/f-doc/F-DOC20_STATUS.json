@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC20",
+  "title": "SWAP5 Documentation & Review Baseline",
+  "phase": "RECONCILE",
+  "decision": "BUILD_A_FROZEN_REVIEW_PORTAL_FROM_STATUS_A_AUTHORITY_WITH_CURRENT_DOCUMENTATION_ASSEMBLY",
+  "protocol": ["RECONCILE", "UPDATE", "VERIFY", "PUBLISH", "CLOSE"],
+  "branch": "work/f-doc20-review-baseline-publication",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+  "canonical_start_tree": "49fb62d3a28a2a06837f56d636e5ff751b86816d",
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "reconcile_findings": {
+    "mkdocs_material_already_present": true,
+    "strict_mkdocs_build_already_defined": true,
+    "repository_documentation_checks_already_defined": true,
+    "github_pages_workflow_already_present": true,
+    "external_publication_verifier_already_present": true,
+    "existing_status_a_docs_are_substantial": true,
+    "existing_architecture_verification_legacy_and_governance_docs_are_substantial": true,
+    "reviewer_entrypoint_missing": true,
+    "explicit_frozen_review_baseline_page_missing": true,
+    "science_section_in_published_navigation_missing": true,
+    "numerical_formulation_section_in_published_navigation_missing": true,
+    "user_oriented_review_route_incomplete": true,
+    "existing_pages_deploys_main_only": true,
+    "main_is_not_current_canonical": true
+  },
+  "publication_risk": {
+    "main_head_at_reconcile": "9d5efff97172ff7337bc58273713d4dbaf1afa5b",
+    "interpretation": "Publishing main as current SWAP5 review authority would publish a stale source relative to integration/f-ci-canonical.",
+    "required_resolution": "Create an explicit frozen review publication authority and make the site identify its scientific and documentation git authorities."
+  },
+  "information_architecture_target": [
+    "Start here / review guide",
+    "Frozen review baseline",
+    "Scientific model",
+    "Numerical formulation",
+    "Current software architecture",
+    "Verification and legacy equivalence",
+    "User guide",
+    "Developer guide",
+    "Source reference",
+    "Status / future scope"
+  ],
+  "review_routes": [
+    "scientific reviewer",
+    "numerical/software reviewer",
+    "model user",
+    "full technical review"
+  ],
+  "authority_chain": "theory_or_scientific_contract -> production_code -> owner_qualification -> independent_qualification_where_required -> canonical_admission -> permanent_preservation",
+  "first_update_slice": {
+    "add_review_guide": "docs/review/REVIEW_GUIDE.md",
+    "add_frozen_baseline": "docs/review/REVIEW_BASELINE.md",
+    "add_review_navigation": true,
+    "refresh_homepage_for_reviewers": true,
+    "production_source_change": false,
+    "reference_source_change": false
+  },
+  "next_actions": [
+    "Persist reviewer entrypoint and frozen-baseline pages.",
+    "Add them to MkDocs navigation and make the homepage reviewer-first.",
+    "Inventory the scientific-model and numerical-formulation source authorities needed for complete narrative documentation.",
+    "Populate science and numerics sections without inventing claims not supported by theory/code/evidence authorities.",
+    "Reconcile publication branch/source so GitHub Pages never presents stale main as current authority.",
+    "Run repository docs check and mkdocs build --strict.",
+    "Publish only after the frozen review authority is explicit and externally verifiable."
+  ],
+  "explicit_nonclaims": [
+    "F-DOC20 does not modify scientific production code.",
+    "F-DOC20 does not broaden Status-A capability scope.",
+    "F-DOC20 does not claim whole-model SWAP4.3.1/SWAP5 equivalence beyond existing evidence.",
+    "F-DOC20 does not treat ongoing post-Status-A development as part of the frozen review denominator unless explicitly admitted before freeze."
+  ]
+}
