@@ -28,6 +28,7 @@ done
 patch_richards_runner() {
   local src="$PROD_ROOT/tests/fci/run_fci21_si25_scientific_replay.sh"
   local dst="$PROD_ROOT/tests/fci/.f_vq99_run_fci21_current_tree.sh"
+  local replay_rc=0
   cp "$src" "$dst"
   python3 - "$dst" <<'PY'
 from pathlib import Path
@@ -38,17 +39,25 @@ old="""# Lock the scientific production seam against accidental drift during rep
 new="""# F-VQ99 provenance-only adaptation: final Status-A source blobs are logged by the campaign wrapper.\n# The frozen oracle, driver, case evidence, generator, stubs, numerical tolerance, mass gate and O0/O2 criteria remain unchanged.\necho 'F_VQ99_RICHARDS_PROVENANCE_LOCK_ADAPTED_FOR_FINAL_STATUS_A_TREE=PASS'\n"""
 if s.count(old) != 1:
     raise SystemExit('expected exactly one Richards provenance lock block')
-p.write_text(s.replace(old,new))
+s=s.replace(old,new)
+compile_old="""MODULE_SRC=(\n  \"$BUILD/reference_tridag_stubs.f90\"\n  src/runtime/mod_a23bu_worker_execution_context.f90\n"""
+compile_new="""MODULE_SRC=(\n  \"$BUILD/reference_tridag_stubs.f90\"\n  src/solver/mod_soil_water_accepted_step_direction_contract.f90\n  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\n  src/runtime/mod_a23bu_worker_execution_context.f90\n"""
+if s.count(compile_old) != 1:
+    raise SystemExit('expected exactly one Richards module source prefix')
+s=s.replace(compile_old,compile_new)
+p.write_text(s)
 PY
   chmod +x "$dst"
-  echo 'F_VQ99_RICHARDS_HARNESS_ADAPTATION=PROVENANCE_ONLY'
-  (cd "$PROD_ROOT" && bash "${dst#$PROD_ROOT/}")
+  echo 'F_VQ99_RICHARDS_HARNESS_ADAPTATION=PROVENANCE_AND_CURRENT_TREE_COMPILE_CLOSURE_ONLY'
+  (cd "$PROD_ROOT" && bash "${dst#$PROD_ROOT/}") || replay_rc=$?
   rm -f "$dst"
+  return "$replay_rc"
 }
 
 patch_et_runner() {
   local src="$PROD_ROOT/tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh"
   local dst="$PROD_ROOT/tests/fpm/.f_vq99_run_fpm06a_current_tree.sh"
+  local replay_rc=0
   cp "$src" "$dst"
   python3 - "$dst" <<'PY'
 from pathlib import Path
@@ -63,8 +72,9 @@ p.write_text(s.replace(old,new))
 PY
   chmod +x "$dst"
   echo 'F_VQ99_ET_HARNESS_ADAPTATION=PROVENANCE_ONLY'
-  (cd "$PROD_ROOT" && bash "${dst#$PROD_ROOT/}")
+  (cd "$PROD_ROOT" && bash "${dst#$PROD_ROOT/}") || replay_rc=$?
   rm -f "$dst"
+  return "$replay_rc"
 }
 
 richards_rc=0
