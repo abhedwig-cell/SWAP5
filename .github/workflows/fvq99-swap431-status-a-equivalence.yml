@@ -1,0 +1,40 @@
+name: F-VQ99 SWAP431 Status-A Equivalence
+
+on:
+  push:
+    branches:
+      - qualification/f-vq99-swap431-swap5-status-a-scientific-equivalence
+    paths:
+      - 'tests/qualification/fvq99-swap431-status-a-equivalence/**'
+      - '.github/workflows/fvq99-swap431-status-a-equivalence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  process-oracles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain identity
+        run: |
+          git --version
+          python3 --version
+          gfortran --version
+
+      - name: Run frozen B1.10 to Status-A process oracles
+        run: bash tests/qualification/fvq99-swap431-status-a-equivalence/run_process_oracles.sh
+
+      - name: Upload equivalence evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq99-process-oracle-results
+          path: tests/qualification/fvq99-swap431-status-a-equivalence/results/
+          if-no-files-found: error
