@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-TYPED-EXTERNAL-BOUNDARY-RECONCILIATION",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "RECONCILE_AFTER_C4_ADMISSION",
+  "checkpoint_date": "2026-09-16",
+  "reconciliation_branch": "work/m1-typed-external-boundary-reconciliation",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "tree": "0b60ec929bfc0f8e7d7789b70bfac07168743084",
+    "previous_head": "bfbb466678249811afc6a0800fd32a367818660f"
+  },
+  "m1_exit_criteria": {
+    "criterion_1": {
+      "status": "PASS_EXISTING_EVIDENCE",
+      "claim": "A non-file in-memory invocation path reaches the computational boundary."
+    },
+    "criterion_2": {
+      "status": "PASS_EXISTING_EVIDENCE",
+      "claim": "Kernel-facing interfaces on the admitted typed route contain no path, file-unit or parser semantics."
+    },
+    "criterion_3": {
+      "status": "BLOCKED_MISSING_FIELD_LEVEL_APPLICATION_COMPOSITION_SEMANTICS",
+      "claim": "Legacy file runs still reproduce reference results through adapters.",
+      "blocking_branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+      "blocking_head": "d1a1db6c6ddf5be87a22da5242b2ea0fee21ef63",
+      "reason": "The authoritative field-level composition from raw legacy Hupsel meteorology, crop, interception, irrigation, bottom, drainage and optional-process inputs into the process-ready typed application forcing is not yet established. A restricted DLL exchange mapping is insufficient and must not be generalized."
+    },
+    "criterion_4": {
+      "status": "PASS_CURRENT_CANONICAL_ADMITTED",
+      "claim": "Output serialization does not mutate physical state.",
+      "canonical_merge": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+      "pull_request": 158,
+      "source_path": "src/adapter/mod_canonical_result_text_adapter.f90",
+      "source_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+      "owner_run_id": 35079209619,
+      "owner_job_id": 104738857165,
+      "independent_run_id": 35091439497,
+      "independent_job_id": 104778442363,
+      "independent_output_sha256": "76be23588e266eba4a1f2e8de28b01814dc4137bd5be41216835d99e5389bae3",
+      "admission_run_id": 35091664485,
+      "admission_job_id": 104779179591,
+      "postimage_verified": true
+    },
+    "criterion_5": {
+      "status": "PASS_EXISTING_EVIDENCE",
+      "claim": "Non-midnight or non-day requests are not rejected merely because a historical adapter used daily files."
+    }
+  },
+  "overall_verdict": "M1_NOT_CLOSED_SINGLE_REMAINING_BLOCKER_C3",
+  "production_mutations_in_this_reconciliation_checkpoint": [],
+  "canonical_mutation_since_prior_checkpoint": {
+    "criterion_4_only": true,
+    "production_delta_count": 1,
+    "production_delta": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "scientific_semantics_changed": false
+  },
+  "nonclaims": [
+    "M1 is not a broad or stable public API milestone.",
+    "Criterion 4 admission does not establish criterion 3.",
+    "No RossFast domain expansion is part of M1 closure.",
+    "No EB capability is part of this M1 campaign.",
+    "No legacy field-level scientific mapping may be invented merely to obtain PASS."
+  ],
+  "next_permitted_action": "Resume only M1 criterion 3 on work/m1-c3-legacy-file-to-typed-application-mapping. Recover or establish a bounded authoritative legacy Hupsel application-composition contract process-by-process from qualified legacy source and fixture evidence. Do not modify SWAP5 production merely to obtain PASS. If the required field-level semantics cannot be recovered, keep M1 open and fail closed."
+}
