@@ -2,9 +2,9 @@
 
 Date: 2026-09-16
 
-Status: `QUALIFIED_FOR_B1_ADMISSION`
+Status: `QUALIFIED_FOR_B1_ADMISSION / SUPERSEDED_BY_B1_11_ADMISSION_CLOSE`
 
-This qualification binds the exact F-PE19 current-B1 admission candidate derived during RECONCILE to fresh source-bound numerical evidence. It does not modify SWAP5 production source and does not replay or rewrite the historical E7 artifact.
+This is the historical QUALIFY checkpoint for the exact F-PE19 ordered admission transform. The current closure authority is `docs/performance/F-PE19_B1_11_ADMISSION_CLOSE.md`; exact replay evidence is `docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json`.
 
 ## Candidate authority
 
@@ -16,113 +16,36 @@ Derived admission patch:
 - bytes: `37169`
 - changed files: exactly `MOD_MvG_functions.f90`, `WC_K_models_04_11.f90`, `MOD_RIA.f90`
 
-Candidate postimages:
+The exact historical E7 patch remains separately immutable at SHA-256 `9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110`.
 
-- `MOD_MvG_functions.f90`: `6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104`
-- `WC_K_models_04_11.f90`: `d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126`
-- `MOD_RIA.f90`: `673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a`
+The early qualification checkpoint predated the full canonical-distribution replay. Candidate postimage hashes printed in earlier revisions of this file were draft metadata and are not B1.11 byte authorities. The same stored ordered transform is controlled by the patch SHA above; final byte-safe replay established the authoritative postimages:
 
-The candidate is mechanically derived from exact historical E7 bytes plus the already admitted SWAP-009, SWAP-010 and SWAP-012 semantics. The historical E7 patch remains separately immutable at SHA-256 `9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110`.
+- `MOD_MvG_functions.f90`: `6b65ce49904aa0c037d6f43f93115af7d35227b7f67d52dbdd96b614da955ab5`
+- `WC_K_models_04_11.f90`: `e963989e81622cf0554aeeb6ecae705e20b41ff03e259e1b8753df0609884874`
+- `MOD_RIA.f90`: `fe696bdf463259868ad3659072566babc8288ab1d8329bf068f8d3b5945a0d2f`
 
-## Toolchain
+## Fresh qualification evidence
 
-Fresh source-bound qualification used:
+Fresh source-bound qualification used GNU Fortran 14.2.0 and the unmodified hydraulic harness recovered from the historical testbank. Both current B1.10 and the ordered SWAP-011 candidate compiled successfully.
 
-- GNU Fortran 14.2.0;
-- compile flags: `-O2 -fPIC -ffree-line-length-none -fallow-argument-mismatch`;
-- the unmodified hydraulic Fortran harness and Python runner recovered in `SWAP_4.3.1_complete_testbank.zip`;
-- actual current-B1.10 target source and exact F-PE19 candidate source.
+The unmodified hydraulic dK/dh testbank showed the known B1.10 derivative mismatch for affected models and zero >1% derivative failures for the SWAP-011 candidate across the tested models. The already admitted SWAP-012 inverse behavior remained zero-failure in the same tested scope.
 
-Both baseline and candidate hydraulic shared libraries compiled successfully. The historical harness was not edited to force execution.
+A focused vapor-enabled finite-difference gate for models 8-11 closed the post-E7 SWAP-009 dependency interaction, including model 10. A separate model-12/RIA gate passed with vapor both disabled and enabled. A broad residual/constitutive invariance sweep covered `theta(h)`, `K(h)`, `C(h)` and inverse behavior and found the intended non-derivative observables bit-identical between B1.10 and the candidate in the tested scope.
 
-## Unmodified hydraulic testbank
-
-The recovered `hydraulic/python/run_tests.py` completed successfully for both B1.10 and the candidate.
-
-For the current B1.10 baseline, the fraction of dK/dh cases with relative error greater than 1% is:
-
-| model | B1.10 fail fraction | candidate fail fraction | candidate max relative error |
-| ---: | ---: | ---: | ---: |
-| 1 | 0 | 0 | 8.180445e-09 |
-| 2 | 0 | 0 | 1.887918e-09 |
-| 3 | 0.9801324503 | 0 | 6.991002e-09 |
-| 4 | 0 | 0 | 8.612255e-09 |
-| 5 | 0.1928934010 | 0 | 8.579920e-09 |
-| 6 | 0.9873949580 | 0 | 7.941860e-09 |
-| 7 | 0.9737991266 | 0 | 7.176805e-09 |
-| 8 | 0.4454756381 | 0 | 5.667179e-06 |
-| 9 | 0.5238095238 | 0 | 1.804897e-06 |
-| 10 | 0.9748549323 | 0 | 6.479250e-07 |
-| 11 | 0.9888888889 | 0 | 6.483029e-07 |
-| 12 | 0.9976958525 | 0 | 9.900701e-09 |
-
-The inverse/`prhead` failure fraction above 0.01 decade remains zero for all tested models for both B1.10 and the candidate. This directly confirms preservation of the already admitted SWAP-012 inverse behavior in the tested scope.
-
-## Focused vapor-enabled dependency gate
-
-Because SWAP-009 changed the signed-head vapor-conductivity dependency in the same module after historical E7, a fresh focused finite-difference gate was run for models 8-11 with vapor enabled over 100 randomized parameter sets per model.
-
-| model | B1.10 n | B1.10 fail >1% | candidate n | candidate fail >1% | candidate max relative error |
-| ---: | ---: | ---: | ---: | ---: | ---: |
-| 8 | 431 | 154 | 431 | 0 | 6.588361e-08 |
-| 9 | 421 | 212 | 421 | 0 | 9.230644e-07 |
-| 10 | 540 | 531 | 540 | 0 | 8.528939e-07 |
-| 11 | 525 | 514 | 525 | 0 | 2.734491e-06 |
-
-This specifically closes the model-10 vapor interaction identified during RECONCILE.
-
-## RIA/model-12 focused gate
-
-A separate 60-random-parameter-set model-12 derivative gate was run with vapor disabled and enabled.
-
-| vapor | B1.10 n | B1.10 fail >1% | candidate n | candidate fail >1% | candidate max relative error |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| off | 533 | 531 | 533 | 0 | 9.812848e-09 |
-| on | 543 | 543 | 543 | 0 | 1.960329e-08 |
-
-## Residual/constitutive invariance gate
-
-A fresh broad comparison was run between current B1.10 and the F-PE19 candidate for observables that SWAP-011 is not intended to change: retention `theta(h)`, conductivity `K(h)`, capacity `C(h)` and inverse/`prhead` behavior.
-
-The sweep covered all hydraulic models 1-12, both vapor states where applicable, and 10,920 evaluations per observable.
-
-| observable | evaluations | bit-identical | max abs difference | max relative difference |
-| --- | ---: | ---: | ---: | ---: |
-| theta | 10,920 | 10,920 | 0 | 0 |
-| K | 10,920 | 10,920 | 0 | 0 |
-| C | 10,920 | 10,920 | 0 | 0 |
-| inverse | 10,920 | 10,920 | 0 | 0 |
-
-For model 12 specifically, 1,920 evaluations per observable across both vapor states were also bit-identical.
-
-Therefore the candidate changes the intended Jacobian derivative behavior while preserving the tested residual/constitutive semantics, including admitted SWAP-009/SWAP-010/SWAP-012 behavior.
-
-## Relationship to historical qualification
-
-Historical E5/E6/E7 evidence remains the immutable qualification of the exact original E7 line: 36/36 E5 full runs, 150/150 E6 normal completions, 60/60 exact Newton-route comparisons, K0 30/30 byte-identical endpoints, round-off-scale K1 differences and focused E7 sanity.
-
-The fresh F-PE19 qualification does not claim that those old runs were replayed. It independently qualifies the composed current-B1 candidate where later admitted dependencies differ from historical E7.
+Historical E5/E6/E7 evidence remains immutable evidence for the original E7 line. The F-PE19 qualification independently covers the composed current-B1 candidate where later admitted dependencies differ from historical E7.
 
 ## QUALIFY verdict
 
-`SOURCE_BUILD = PASS`
+```text
+SOURCE_BUILD                         PASS
+UNMODIFIED_HYDRAULIC_TESTBANK       PASS
+SWAP012_INVERSE_PRESERVATION        PASS
+SWAP009_VAPOR_INTERACTION           PASS
+RIA_MODEL12_VAPOR_OFF_ON            PASS
+RESIDUAL_CONSTITUTIVE_INVARIANCE    PASS
+TOLERANCE_WIDENING                  NONE
+PRODUCTION_SOURCE_CHANGE            NONE
+QUALIFICATION_VERDICT               QUALIFIED_FOR_B1_ADMISSION
+```
 
-`UNMODIFIED_HYDRAULIC_TESTBANK = PASS`
-
-`SWAP012_INVERSE_PRESERVATION = PASS`
-
-`SWAP009_VAPOR_INTERACTION = PASS`
-
-`RIA_MODEL12_VAPOR_OFF_ON = PASS`
-
-`RESIDUAL_CONSTITUTIVE_INVARIANCE = PASS`
-
-`TOLERANCE_WIDENING = NONE`
-
-`PRODUCTION_SOURCE_CHANGE = NONE`
-
-`QUALIFICATION_VERDICT = QUALIFIED_FOR_B1_ADMISSION`
-
-## Next permitted action
-
-Proceed to a mechanical B1.11 admission only after the exact derived admission patch is stored under the SWAP-011 candidate dossier and B1.11 reconstruction identity is frozen. The historical E7 patch must remain separately identified and unchanged.
+The subsequent exact full B0 -> B1.11 replay also passed and reproduced the frozen source identity `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`. Therefore the earlier `Next permitted action` in this checkpoint has been completed.
