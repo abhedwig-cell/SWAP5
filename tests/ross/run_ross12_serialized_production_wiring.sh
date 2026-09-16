@@ -4,25 +4,17 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ross12-production-${GITHUB_RUN_ID:-local}-$$"
 BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
 mkdir -p "$BUILD/o0" "$BUILD/o2"
+trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
-cp "$BACKEND" "$BUILD/original_backend.f90"
-restore() {
-  cp "$BUILD/original_backend.f90" "$BACKEND" 2>/dev/null || true
-  rm -rf "$BUILD"
-}
-trap restore EXIT
 fail() { echo "F_ROSS12_PRODUCTION_GATE_FAIL $*" >&2; exit 1; }
 
-python3 tests/ross/_apply_ross12_serialized_production_candidate.py
-
 git diff --check -- "$BACKEND" tests/ross/test_ross12_serialized_production_wiring.f90 || fail 'diff check'
-changed="$(git diff --name-only -- src | sort)"
-[[ "$changed" == "$BACKEND" ]] || { printf '%s\n' "$changed" >&2; fail 'temporary patch touched unexpected production source'; }
+[[ -z "$(git diff --name-only -- src)" ]] || fail 'production source dirty before qualification'
 grep -Fq 'rossfast-model-certificate' "$BACKEND" || fail 'RossFast certificate route missing'
 grep -Fq 'fmr_serialized_rossfast_preflight' "$BACKEND" || fail 'RossFast production preflight missing'
 grep -Fq 'material%ksatfit_cm_per_day' "$BACKEND" || fail 'Ksatfit constitutive identity guard missing'
 grep -Fq 'if (self%soil_water_selection%uses_rossfast()) then' "$BACKEND" || fail 'RossFast legacy-context bypass missing'
-echo 'F_ROSS12_TEMPORARY_PRODUCTION_PATCH_STATIC=PASS'
+echo 'F_ROSS12_PERMANENT_PRODUCTION_STATIC=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
