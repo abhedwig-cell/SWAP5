@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "title": "Official WUR SWAP 4.3.1 download recovery lead",
+  "phase": "ACQUIRE_RECOVER_CLOSE",
+  "parent_checkpoint_commit": "ab632e20cfa9126b3dd2dc192b01a85309134599",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "verdict": "BLOCKED_PENDING_OFFICIAL_DOWNLOAD_MATERIALIZATION_AND_HASH_VERIFICATION",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head_reconciled": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "tree": "b1b52c8d78d3c2d908b7effde04ffe42c8b1f3a9",
+    "relevant_delta": "NONE"
+  },
+  "controlling_identity": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "required_member": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90"
+  },
+  "official_public_source_lead": {
+    "checked_date": "2026-09-16",
+    "downloads_page": "https://swap.wur.nl/downloads.html",
+    "downloads_page_observation": "The official SWAP site lists SWAP version 4.3.1, release date June 2026, as the latest available development branch.",
+    "registration_page": "https://swap.wur.nl/DownloadRecentDevelopment/swap4.3.1/form.html",
+    "registration_gate": [
+      "email address required",
+      "country selection required",
+      "explicit license acceptance required"
+    ],
+    "download_payload_obtained": false,
+    "direct_archive_url_discovered": false,
+    "reason_not_materialized_in_this_run": "The available web retrieval interface can read and follow links but cannot submit the registration form or provide the required user-supplied registration fields and license acceptance on the user's behalf.",
+    "authority_status": "PROMISING_OFFICIAL_SOURCE_LEAD_NOT_YET_IDENTITY_VERIFIED"
+  },
+  "scientific_interpretation": {
+    "scientific_difference_found": false,
+    "qualification_failure_found": false,
+    "blocker_type": "EXACT_SOURCE_BYTES_NOT_YET_MATERIALIZED",
+    "note": "The official site lead is materially stronger than a mirror or reconstructed patch, but authority is established only after the downloaded archive hashes exactly to the controlling identity."
+  },
+  "reused_evidence": {
+    "F_APP03_A12": "PASS_EXACT_HUPSEL_AUTHORITY_RESTORED_AND_A12_REDERIVED",
+    "F_APP03_A13": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+    "A13_records": 1096,
+    "A13_tolerance": 1e-12,
+    "A13_mismatches": 0,
+    "F_APP04_preregistration_commit": "391800f60871c8403aab1ef7871267425bccec30"
+  },
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "governance_evidence_only": true
+  },
+  "next_permitted_action": [
+    "Use the official WUR SWAP 4.3.1 registration/download page to obtain the development distribution under its license terms.",
+    "Before using any source content, compute SHA-256 of the downloaded outer archive and require exact equality to 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360.",
+    "If the outer hash matches, locate tools/SWAP/source/SWAP.ZIP and require its SHA-256 to equal 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151.",
+    "Extract SWAP/MOD_meteo.f90 from that verified nested archive and persist a governed source-materialization checkpoint.",
+    "Resume F-APP04 IMPLEMENT only for the preregistered restricted penmon/ETpot/ProcessMeteoDT composition surface; reuse A12/A13 evidence and do not change the 1e-12 tolerance."
+  ],
+  "fail_closed_conditions": [
+    "downloaded outer archive hash differs from controlling identity",
+    "nested SWAP.ZIP hash differs from controlling identity",
+    "required MOD_meteo.f90 member is absent",
+    "source provenance cannot be tied to the verified nested archive"
+  ],
+  "resume_boundary": "Resume at official archive acquisition and SHA verification. Do not repeat broad GitHub or File Library recovery unless a genuinely new exact-source lead appears."
+}
