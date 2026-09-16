@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "work_unit": "STATUS-A-BASELINE-20260916-DUPLICATE-LANE",
+  "protocol": "RECONCILE -> QUALIFY -> ADMIT -> CLOSE",
+  "phase": "CLOSE",
+  "status": "SUPERSEDED_BY_ALREADY_ADMITTED_CANONICAL_AUTHORITY",
+  "repository": "abhedwig-cell/SWAP5",
+  "duplicate_branch": "qualification/f-status-a-release-readiness-baseline",
+  "original_scientific_baseline": {
+    "commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "canonical_authority": {
+    "branch": "integration/f-ci-canonical",
+    "admission_head": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "qualification_parent": "3fcd81cf927c4fc678d8365e241d673f235b1cd7",
+    "scientific_parent": "50346642bd565f79134ea17d5462e544b354998c",
+    "admission_mode": "TRUE_TWO_PARENT_CANONICAL_ADMISSION",
+    "evidence_path": "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+    "release_verdict": "READY_FOR_STATUS_A_RELEASE_CANDIDATE_BOUNDARY"
+  },
+  "reconcile": {
+    "duplicate_lane_reconcile_head": "3d01966c150de79d7d457c1613795658cbdc1345",
+    "duplicate_lane_class_counts": {
+      "A": 14,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 3,
+      "F": 9
+    },
+    "canonical_admission_observed_after_duplicate_lane_started": true,
+    "state_delta_scientific_parent_to_canonical_admission": "EVIDENCE_GOVERNANCE_ONLY_NO_SRC_OR_REFERENCE_CHANGE"
+  },
+  "qualify": {
+    "duplicate_gate_head": "4bcc9e690a2b33675a1943e949797c3a6edb3a36",
+    "workflow_run": 35039239465,
+    "result": "STOPPED_BY_CANONICAL_RACE_GUARD",
+    "expected_canonical": "50346642bd565f79134ea17d5462e544b354998c",
+    "observed_canonical": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_failure": false,
+    "numerical_failure": false,
+    "production_defect": false,
+    "disposition": "DO_NOT_WEAKEN_OR_RERUN_DUPLICATE_GATE; CANONICAL_STATUS_A_AUTHORITY_ALREADY_EXISTS"
+  },
+  "admit": {
+    "duplicate_admission_attempted": false,
+    "duplicate_canonical_mutation_performed": false,
+    "reason": "Canonical already contains the authoritative Status-A release-readiness admission. A second authority would create governance ambiguity without adding scientific evidence."
+  },
+  "canonical_baseline_summary": {
+    "declared_denominator_has_B_C_or_D": false,
+    "qualification_verdict": "PASS_CURRENT_CANONICAL_BASELINE",
+    "production_repair_required": false,
+    "production_or_reference_delta_from_scientific_parent": false,
+    "future_scope_remains_non_blocking": true,
+    "inheritance_policy": "INHERIT_VALID_COMPLETED_CONCLUSIONS_UNLESS_RELEVANT_DEPENDENCY_SURFACE_CHANGES"
+  },
+  "explicit_exclusions_preserved": [
+    "EB",
+    "ROSS/RossFast",
+    "new physics",
+    "production optimization beyond already admitted semantics",
+    "broad MODFLOW backend work",
+    "API or IO implementation merely because future scope exists",
+    "concurrent real-physics MultiSWAP",
+    "arbitrary-duration or advanced-melt Snow",
+    "reopening canonically closed capabilities without dependency evidence"
+  ],
+  "duplicate_lane_mutations": {
+    "production": [],
+    "reference": [],
+    "canonical": [],
+    "workflow": "Push-triggered duplicate qualification disabled; workflow_dispatch retained only as an explicit fail-closed supersession marker."
+  },
+  "decision": "CLOSE_DUPLICATE_STATUS_A_LANE_AS_SUPERSEDED_BY_CANONICAL_ADMISSION_992A5C65",
+  "next_permitted_action": "Resume future release/status work from canonical admission 992a5c657bfe10a10100f92e0cb77c4825ae65b6 using state-delta reconciliation only. Do not continue or admit this duplicate lane."
+}
