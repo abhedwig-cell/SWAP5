@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ99",
+  "campaign": "SWAP431_SWAP5_STATUS_A_SCIENTIFIC_EQUIVALENCE",
+  "phase": "POST_CLOSE_ASSET_RECOVERY",
+  "status": "BLOCKED_EXACT_B0_AND_HUPSEL_BYTES_NOT_RECOVERABLE_FROM_ACCESSIBLE_STORES",
+  "protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "parent_closeout": "03d3dbdbdb306b7d0d948b9d0159ea1dba88122e",
+  "authorities": {
+    "swap5_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "swap5_scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "swap5_scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+    "swap431_b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "swap431_b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "swap431_b0_expanded_member_manifest_sha256": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
+    "swap431_b0_expanded_member_count": 63,
+    "swap431_b0_expanded_source_bytes": 1859823,
+    "swap431_b1_snapshot": "B1.10",
+    "swap431_b1_member_count": 63,
+    "swap431_b1_source_bytes": 1863575,
+    "swap431_b1_member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "recovery_scope": "EVIDENCE_ONLY_NO_PRODUCTION_OR_REFERENCE_PHYSICS_MUTATION",
+  "recovery_results": {
+    "github": {
+      "exact_b0_distribution_bytes": "NOT_FOUND",
+      "authoritative_hupsel_fixture_bytes": "NOT_FOUND",
+      "locations_checked": [
+        "current Status-A scientific production tree",
+        "b0-source-integrity-gate",
+        "integrated-b0-b1-reference",
+        "research/swap431-empirical-baseline for asset recovery only",
+        "repository releases",
+        "historical commits/search results",
+        "retained F-VQ99 workflow artifacts"
+      ],
+      "notes": [
+        "reference/swap-4.3.1/b0 stores identity metadata, not the outer distribution payload",
+        "reference/swap-4.3.1/b1_10_source is not a complete B1.10 source snapshot; it contains only the encoded MOD_MvG_functions authority material",
+        "src/legacy/b1_10_port is a focused solver/reference subset, not the complete 63-member B1.10 source tree"
+      ]
+    },
+    "file_library": {
+      "exact_b0_distribution_bytes": "NOT_FOUND",
+      "authoritative_hupsel_fixture_bytes": "NOT_FOUND",
+      "historical_provenance": "FOUND",
+      "historical_distribution_identity_matches_campaign_b0": true,
+      "notes": [
+        "Historical verification material identifies SWAP_4.3.1.zip with the exact campaign distribution SHA-256.",
+        "Historical verification material records full Hupsel executions and water-balance checks from the user-supplied SWAP 4.3.1 distribution.",
+        "Direct File Library navigation around the 2026-08-28/29 verification window did not expose the original ZIP, Hupsel input directory, 283.met, swap.swp, result.bal, result.blc or run_public_cases.py as recoverable payloads."
+      ]
+    },
+    "official_distribution": {
+      "release": "SWAP 4.3.1 development release, June 2026",
+      "availability": "REGISTRATION_OR_LICENSE_FLOW_REQUIRED_BEFORE_PAYLOAD",
+      "assistant_accepted_terms_or_registered_on_user_behalf": false,
+      "result": "NO_PAYLOAD_RECOVERED"
+    }
+  },
+  "critical_findings": [
+    "tools/vq/b1_reconstruct.py verifies the exact outer B0 distribution before extracting the nested SWAP source archive; loose source files are not an authority-equivalent substitute.",
+    "The B1.10 reference remains reconstructible only when the exact B0 distribution bytes are supplied to the existing verifier/reconstructor.",
+    "Historical Hupsel reports and output hashes are valuable supplementary evidence but do not substitute for a rerunnable authoritative fixture in the current qualification campaign.",
+    "No scientific or numerical Class-V difference was discovered during asset recovery. The blocker is evidence materialization, not an observed model discrepancy."
+  ],
+  "historical_hupsel_oracle_material": {
+    "case": "Hupsel 2002-2004",
+    "reported_input_identifiers": ["swap.swp", "283.met"],
+    "reported_process_switches": {
+      "SWETR": 0,
+      "SWDIVIDE": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0
+    },
+    "reported_meteo_records": 1096,
+    "reported_normalized_output_sha256": {
+      "result.bal": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result.blc": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+    },
+    "historical_balance_evidence": "Earlier SWAP 4.3.1 verification framework reports 20/20 balance periods PASS overall, including three Hupsel years; reported .blc balance deviations are 0.00 cm.",
+    "authority_level": "SUPPLEMENTARY_HISTORICAL_EVIDENCE_NOT_CURRENT_EXECUTABLE_QUALIFICATION"
+  },
+  "blockers": [
+    "Exact outer SWAP 4.3.1 distribution bytes with SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360 are unavailable to the current runner.",
+    "Authoritative Hupsel fixture bytes from that exact distribution are unavailable to the current runner."
+  ],
+  "next_permitted_action": {
+    "action": "SUPPLY_EXACT_OFFICIAL_SWAP_4_3_1_DISTRIBUTION_BYTES",
+    "required_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "on_hash_match": "Use the existing immutable verifier to extract B0, reconstruct and verify B1.10, materialize the authoritative Hupsel fixture, freeze any still-unfrozen output mapping/tolerances before observing SWAP5 differences, then execute EQ-FULL-HUPSEL-LONG against scientific production commit 50346642bd565f79134ea17d5462e544b354998c.",
+    "on_hash_mismatch": "FAIL_CLOSED_DO_NOT_USE_AS_B0_AUTHORITY",
+    "prohibited": [
+      "reconstructing an outer ZIP and treating container mismatch as equivalent authority",
+      "substituting historical output hashes for executable current qualification",
+      "changing SWAP5 production source to obtain agreement",
+      "changing SWAP 4.3.1/B1.10 merely to obtain agreement",
+      "post-hoc tolerance widening"
+    ]
+  },
+  "mutations": {
+    "swap5_production_source": "NONE",
+    "swap431_source": "NONE",
+    "reference_physics": "NONE",
+    "evidence_only": true
+  },
+  "global_verdict_unchanged": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED"
+}
