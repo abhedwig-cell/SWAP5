@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ99",
+  "campaign": "SWAP431_SWAP5_STATUS_A_SCIENTIFIC_EQUIVALENCE",
+  "phase": "POST_CLOSE_REFERENCE_MATERIALIZATION",
+  "status": "REFERENCE_SIDE_HUPSEL_MATERIALIZED_CANDIDATE_SIDE_FULL_STANDALONE_ROUTE_NOT_QUALIFIED",
+  "protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "parent_closeout": "03d3dbdbdb306b7d0d948b9d0159ea1dba88122e",
+  "parent_asset_recovery_checkpoint": "dd0bb36a664cde4e98a08aafebe32a99eb81cc1c",
+  "authorities": {
+    "swap5_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "swap5_scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "swap5_scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+    "swap431_b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "swap431_b0_distribution_size_bytes": 8959314,
+    "swap431_b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "swap431_b0_linux_executable_sha256": "e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862",
+    "swap431_b1_snapshot": "B1.10",
+    "swap431_b1_member_count": 63,
+    "swap431_b1_source_bytes": 1863575,
+    "swap431_b1_member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "external_asset_materialization": {
+    "supplied_filename": "SWAP_4.3.1.zip",
+    "outer_distribution_identity": "PASS_EXACT_SHA256_AND_SIZE",
+    "nested_source_archive_identity": "PASS_EXACT_SHA256",
+    "bundled_linux_executable_identity": "PASS_EXACT_SHA256",
+    "hupsel_case": "SWAP_4.3.1/cases/1.hupselbrook",
+    "hupsel_file_count": 9,
+    "hupsel_total_bytes": 206622,
+    "hupsel_fixture_sha256": {
+      "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+      "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+      "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+      "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+      "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+      "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+      "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+      "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+      "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+    },
+    "repository_binary_payload_mutation": "NONE"
+  },
+  "gnu_execution_route": {
+    "reason": "The authority-pinned bundled Linux executable requires Intel runtime libimf.so, which is not installed in the qualification container. The exact B0/B1.10 source was therefore compiled with GNU Fortran without modifying the scientific source authority.",
+    "compiler": "GNU Fortran 14.2.0",
+    "ttutil": "Bundled TTUTIL 4.27 rebuilt with the same GNU compiler",
+    "source_encoding_rule": "byte-preserving; Windows-1252/Latin-1 source bytes were not recoded",
+    "preprocessor_adapter": [
+      "Intel !DEC$ Linux/preprocessor conditionals translated byte-preservingly to equivalent cpp conditionals for compilation only"
+    ],
+    "legacy_output_normalization": {
+      "classic_run": "SWCSV changed from 1 to 0 only, matching the previously qualified GNU verification route because the original CSV selection includes unsupported S_CONC in this compiler path",
+      "csv_probe": "SWCSV retained at 1 and only S_CONC removed from INLIST_CSV; no hydrology, crop, drainage, meteorology or numerical input changed",
+      "timestamp_normalization": "remove only the '* Generated at:' metadata line before hashing"
+    },
+    "compiler_specific_executable_sha256": {
+      "B0": "c432ce00c7a561b536a8d1d9e0d8cea7a45ceabc12b30057768c6b27a1b59966",
+      "B1.10": "05b22999bef62a57fc72c811411b0b421d9a1ecaff6baaba8e3a2550cd4270e2"
+    },
+    "normal_completion_return_code": 100
+  },
+  "b1_10_reconstruction": {
+    "result": "PASS_EXACT_AUTHORITY",
+    "patch_order": ["SWAP-001", "SWAP-005", "SWAP-006", "SWAP-007", "SWAP-008", "SWAP-009", "SWAP-010", "SWAP-013", "SWAP-012", "SWAP-002"],
+    "all_stored_patch_sha256_pins": "PASS",
+    "all_corrected_target_sha256_pins": "PASS",
+    "member_count": 63,
+    "source_bytes": 1863575,
+    "member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "hupsel_reference_results": {
+    "simulation_period": "2002-2004 official Hupsel case",
+    "classic_balance_outputs": {
+      "B0": {
+        "result.bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+        "result.blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+      },
+      "B1.10": {
+        "result.bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+        "result.blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+      },
+      "B0_vs_B1_10": "I_IDENTICAL_FOR_OBSERVED_NORMALIZED_CLASSIC_BALANCE_ARTIFACTS",
+      "historical_oracle_reproduction": "PASS_EXACT; both hashes reproduce the pre-existing historical Hupsel oracle"
+    },
+    "monthly_csv_probe": {
+      "output_periodicity": "monthly as defined by the official Hupsel SWMONTH=1 setting",
+      "line_count_including_metadata_and_header": 44,
+      "selected_groups": ["WATBAL", "ETTERMS", "SOLBAL", "GWL"],
+      "normalized_sha256_B0": "4e7f50d12f54d8695547e9f9dbea0cad1b9001a96d55c8a36e33c9926b5cb056",
+      "normalized_sha256_B1_10": "4e7f50d12f54d8695547e9f9dbea0cad1b9001a96d55c8a36e33c9926b5cb056",
+      "B0_vs_B1_10": "I_IDENTICAL_FOR_OBSERVED_NORMALIZED_MONTHLY_CSV_FIELDS",
+      "note": "This does not prove bitwise identity of every internal physical state requested by EQ-FULL-HUPSEL-LONG."
+    }
+  },
+  "swap5_candidate_route_reconciliation": {
+    "legacy_entrypoint_present": "src/legacy/b1_10_port/swap_main.f90",
+    "legacy_entrypoint_semantics": "three-task initialization/dynamic/closure main with legacy file-oriented standalone calls",
+    "controlled_source_port_authority": "tools/fci/fci06_controlled_source_port_gate.py",
+    "controlled_source_port_admission": "CONTROLLED_SOURCE_PORT_SEAM",
+    "controlled_source_port_explicit_not_admitted": "FULL_PHYSICAL_TRANSACTION_ADAPTER",
+    "controlled_source_port_holds_relevant_here": [
+      "forcing and time ownership remain legacy-global below the seam",
+      "full B1.10 end-to-end numerical reference qualification remains pending",
+      "legacy physical backend remains serialized/module-global"
+    ],
+    "permanent_testbank": {
+      "authority": "testbank/manifests/F-TB11_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PRESERVATION.json",
+      "covers": ["transactions/mass", "restart", "serialized MultiSWAP", "full Richards reference solver", "solver seam", "ET/root uptake/surface evaporation"],
+      "hupsel_or_full_standalone_oracle_present": false
+    },
+    "status_a_scope_authority": "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+    "status_a_scope_note": "Broad public API / wholesale legacy IO modernization is FUTURE_SCOPE_NOT_A_CURRENT_BLOCKER and is not a Status-A acceptance requirement.",
+    "verdict": "NO_PREEXISTING_QUALIFIED_FULL_STANDALONE_HUPSEL_COMPOSITION_AND_OUTPUT_MAPPING_FOUND_ON_PINNED_PRODUCTION_TREE"
+  },
+  "eq_full_hupsel_long": {
+    "reference_asset_blocker": "CLEARED",
+    "reference_B0_identity": "PASS",
+    "reference_B1_10_identity": "PASS",
+    "reference_Hupsel_execution": "PASS",
+    "reference_B0_to_B1_10_observed_balance_and_monthly_csv_identity": "PASS_EXACT",
+    "swap5_candidate_full_standalone_execution": "BLOCKED_NOT_AN_EXISTING_QUALIFIED_STATUS_A_SURFACE",
+    "full_predeclared_state_flux_matrix_comparison": "NOT_EXECUTED",
+    "classification": "NOT_CLASSIFIABLE_YET_AT_FULL_MATRIX_LEVEL"
+  },
+  "decision": {
+    "global_verdict_unchanged": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED",
+    "reason": "The external B0/Hupsel asset blocker is now cleared and the B0-to-B1.10 long Hupsel reference is reproducible, but the pinned SWAP5 production authority does not expose an already-qualified full standalone Hupsel composition/output mapping covering the predeclared long-trajectory matrix. Creating such an application/IO surface inside F-VQ99 would exceed this verification-only workunit and its explicit no-API/no-IO-redesign boundary.",
+    "scientific_difference_observed": false,
+    "class_V_difference_observed": false
+  },
+  "mutations": {
+    "swap5_production_source": "NONE",
+    "swap431_source_authority": "NONE",
+    "reference_physics": "NONE",
+    "hupsel_scientific_inputs": "NONE",
+    "qualification_metadata_only": true
+  },
+  "next_permitted_action": {
+    "preferred": "Open a separately bounded application/legacy-IO qualification workunit only if full standalone SWAP5 file-driven execution is now an explicit acceptance requirement. Its first task must be to prove or fail the existing composition without changing physics, then freeze the Hupsel variable/time mapping and tolerances before observing candidate differences.",
+    "alternative_within_F_VQ99": "Retain the new exact B0/B1.10 Hupsel evidence as reference-side support and keep F-VQ99 globally fail-closed; do not infer full SWAP431-to-SWAP5 equivalence from capability-level seam evidence alone.",
+    "prohibited": [
+      "implementing wholesale legacy IO or a new public API merely to make EQ-FULL-HUPSEL-LONG runnable",
+      "modifying SWAP5 production physics to obtain agreement",
+      "modifying B0/B1.10 physics to obtain agreement",
+      "post-hoc tolerance widening",
+      "promoting balance-artifact identity to full internal-state identity"
+    ]
+  }
+}
