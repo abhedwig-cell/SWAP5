@@ -19,6 +19,7 @@ KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
 PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
 ADAPTER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
 TEST=tests/ross/test_ross12_soil_water_solver_adapter.f90
+ASSET_ROOT=assets/rossfast/d3r
 
 test "$(git rev-parse HEAD:$SW)" = 276941d76ba951a89c43899e61fd0532418d8230
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
@@ -46,7 +47,7 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TEST" -o "$m/test.o"
   gfortran -fopenmp "$m/tx.o" "$m/stepdir.o" "$m/trajsens.o" "$m/trajpub.o" "$m/contracts.o" "$m/sw.o" \
     "$m/refbind.o" "$m/policy.o" "$m/binding.o" "$m/kernel.o" "$m/provider.o" "$m/adapter.o" "$m/test.o" -o "$m/test"
-  if ! "$m/test" assets/rossfast > "$m/output.txt"; then
+  if ! "$m/test" "$ASSET_ROOT" > "$m/output.txt"; then
     cat "$m/output.txt"
     exit 1
   fi
