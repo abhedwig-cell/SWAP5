@@ -28,6 +28,7 @@ module mod_fmr_rossfast_solver_selection_binding
     logical :: rossfast_selected = .false.
     logical :: explicit_selection = .false.
     character(len=32) :: model_key = FMR_SOIL_WATER_MODEL_REFERENCE
+    character(len=3) :: material_id = '---'
   contains
     procedure, public :: configure => fmr_rossfast_binding_configure
     procedure, public :: execution_ready => fmr_rossfast_binding_execution_ready
@@ -35,6 +36,7 @@ module mod_fmr_rossfast_solver_selection_binding
     procedure, public :: uses_reference => fmr_rossfast_binding_uses_reference
     procedure, public :: selection_is_explicit => fmr_rossfast_binding_selection_is_explicit
     procedure, public :: selected_model_key => fmr_rossfast_binding_selected_model_key
+    procedure, public :: selected_material_id => fmr_rossfast_binding_selected_material_id
     procedure, public :: solve => fmr_rossfast_binding_solve
     procedure, public :: temporal_certificate_snapshot => fmr_rossfast_binding_temporal_certificate_snapshot
   end type fmr_rossfast_solver_selection_binding_t
@@ -57,6 +59,7 @@ contains
     self%rossfast_selected = .false.
     self%explicit_selection = .false.
     self%model_key = ''
+    self%material_id = '---'
 
     call fmr_resolve_soil_water_application_model(requested_model_key, REGISTERED_MODEL_KEYS, selection, host_status)
     if (host_status /= FMR_APPLICATION_HOST_OK) return
@@ -96,6 +99,7 @@ contains
         status = FMR_ROSSFAST_BIND_INITIALIZATION_FAILED
         return
       end if
+      self%material_id = trim(material_id)
       self%selection_valid = .true.
       status = FMR_ROSSFAST_BIND_OK
       ok = .true.
@@ -130,6 +134,12 @@ contains
     character(len=32) :: model_key
     model_key = self%model_key
   end function fmr_rossfast_binding_selected_model_key
+
+  function fmr_rossfast_binding_selected_material_id(self) result(material_id)
+    class(fmr_rossfast_solver_selection_binding_t), intent(in) :: self
+    character(len=3) :: material_id
+    material_id = self%material_id
+  end function fmr_rossfast_binding_selected_material_id
 
   subroutine fmr_rossfast_binding_solve(self, request, result)
     class(fmr_rossfast_solver_selection_binding_t), intent(inout) :: self
