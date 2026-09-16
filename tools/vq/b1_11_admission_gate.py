@@ -251,8 +251,8 @@ def assess() -> dict:
             and EXPECTED_B1_11_MANIFEST in provenance
         ),
         "checklist_complete": (
-            "Full reconstruction from exact canonical B0 distribution | PASS" in checklist
-            and "B1.11 snapshot published on work branch | PASS" in checklist
+            "Full reconstruction from canonical B0 distribution reproduces frozen B1.11 identity | PASS" in checklist
+            and "B1.11 published as immutable corrected-reference snapshot | PASS" in checklist
         ),
     }
     passed = all(checks.values())
