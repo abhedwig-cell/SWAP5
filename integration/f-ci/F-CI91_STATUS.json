@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI91",
+  "title": "RossFast post-Status-A current-canonical preservation and closeout",
+  "phase": "CLOSED_PRESERVATION_NO_PRODUCTION_MUTATION",
+  "decision": "REUSE_F_CI80_F_CI81_IMMUTABLE_EVIDENCE_AND_PRESERVE_EXISTING_RESTRICTED_ROSSFAST_CANONICAL_SEMANTICS",
+  "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
+  "canonical_branch": "integration/f-ci-canonical",
+  "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "live_canonical_at_reconcile": "523da7aa6032c12c3431b1180950ff0d15186be9",
+  "live_canonical_delta_from_status_a": {
+    "classification": "DOCUMENTATION_GOVERNANCE_ONLY",
+    "production_or_reference_change": false,
+    "note": "992a5c6 to 523da7a changes only Status-A documentation/governance files."
+  },
+  "status_a_scope_relationship": {
+    "rossfast_in_status_a_denominator": false,
+    "interpretation": "The pinned Status-A release-readiness denominator explicitly excludes ROSS/RossFast. This workunit is a separately scoped post-Status-A capability preservation decision and does not retroactively broaden the Status-A release claim."
+  },
+  "reconcile": {
+    "f_ci80": {
+      "authority": "integration/f-ci80-rossfast-restricted-stack-admission",
+      "canonical_admission_commit": "c9dafa34875ae2fb4e7257b77c0017103d770405",
+      "qualified_source_head": "a483452f04a85f3bb64eaad6a383a4800abaed16",
+      "status_blob_on_status_a": "78ea09f1715c20ed3266557fd4157ff19ba96eed",
+      "admitted_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"],
+      "admitted_semantics_unchanged": true,
+      "preserved_contract": [
+        "restricted six-material D3R domain",
+        "real immutable table assets",
+        "typed explicit application model selection and configuration",
+        "external config-file adapter as an explicit adapter rather than automatic discovery",
+        "transactional execution and exactly-once accepted commit",
+        "fail-closed invalid, mixed and missing configuration",
+        "Reference Richards preserved and not captured by RossFast",
+        "O0/O2 identity"
+      ]
+    },
+    "f_ross11": {
+      "owner_branch": "work/f-ross11-in-memory-application-composition",
+      "owner_qualified_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
+      "owner_closeout_head": "acd0e6ddfb144f553dc396a909c24f8785099b56",
+      "owner_status_blob_on_status_a": "e297e461c41bf04d43b0fb4211ccdbe4bf965bc4",
+      "qualified_application_runtime_blob": "a1af0d6eb0041565602711251748666f7b959d8e",
+      "application_runtime_blob_on_scientific_baseline": "a1af0d6eb0041565602711251748666f7b959d8e",
+      "application_runtime_blob_on_status_a": "a1af0d6eb0041565602711251748666f7b959d8e",
+      "application_runtime_blob_on_live_canonical": "a1af0d6eb0041565602711251748666f7b959d8e",
+      "owner_qualified_blob_remains_applicable": true
+    },
+    "f_ci81": {
+      "authority": "integration/f-ci81-rossfast-application-composition-admission",
+      "canonical_preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+      "scientific_candidate_head": "7a9fda16868fb10599b76423b2e3ea3acfcb66cb",
+      "qualified_governance_head": "842aedf6174dc71bbd19d83686d02bc52ccc8476",
+      "canonical_admission_commit": "8a49b32339981037041466eda5e434ea53a97086",
+      "status_blob_on_status_a": "604ff4d6f72564b4a601710ec5ea078f84571f50",
+      "independent_scientific_run_id": 34999320240,
+      "independent_scientific_job_id": 104483474552,
+      "governance_replay_run_id": 34999628992,
+      "governance_replay_job_id": 104484512869,
+      "o0_o2_sha256": "357e01c5db8aad112964aa2fb7d870068388f4c8772527ce12a8ae5d7ffde4c7",
+      "six_material_equivalence": true,
+      "exact_final_committed_physical_state_equivalence": true,
+      "reference_model_not_captured": true,
+      "missing_assets_fail_closed_before_state_mutation": true
+    },
+    "dependency_delta": {
+      "f_kt22_relevant_change_before_f_ci81": "F-KT22 changed direct F-ROSS11 dependencies before the final F-CI81 scientific qualification. The earlier pre-F-KT22 qualification was correctly superseded.",
+      "post_f_ci81_direct_dependency_change": false,
+      "aa25126_to_50346642": "Later WOFOST, groundwater, Snow and governance work added other surfaces, but no direct F-CI81 dependency file changed.",
+      "50346642_to_992a5c65": "Only the Status-A release-readiness record was added; no production or reference file changed.",
+      "992a5c65_to_523da7aa": "Documentation/governance-only refresh; no production or reference file changed."
+    }
+  },
+  "current_verified_blobs": {
+    "fmr_runtime_core": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "rossfast_model_binding": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "rossfast_table_kernel": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "rossfast_table_provider": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "rossfast_kernel_model_adapter": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e",
+    "serialized_kernel_backend": "29093b517bc6fdd40f32325018729c4c3dee6e85",
+    "rossfast_registry_dispatch": "7f900e75f4bea1c9b999464b7a8d4f7be4b35064",
+    "rossfast_application_selection": "5b652f04f172a8faa468d38faa23883ce6f35294",
+    "rossfast_application_config": "5892d5b2573c678ab8d121ae80353870b66886d2",
+    "rossfast_config_file_adapter": "55dc1632eb4d72d52cc2e038765710801bee5dd2",
+    "rossfast_asset_manifest": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55",
+    "rossfast_application_runtime": "a1af0d6eb0041565602711251748666f7b959d8e",
+    "soil_water_accepted_step_direction_contract": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "accepted_trajectory_directional_sensitivity": "95381d3124b185aa0fbafd1ea3da6179a841deda",
+    "accepted_trajectory_directional_publication": "31bc721f333a77c52f6530b357af44c627f44629",
+    "canonical_contracts": "3962c270a7579b7403764674302445fe15ef5f72",
+    "canonical_interval_runtime": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+    "kernel_transactions": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
+    "reference_backend": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13"
+  },
+  "qualification": {
+    "replay_required": false,
+    "reason": "The final independent F-CI81 qualification was already executed after the only relevant dependency change, and all direct dependency plus F-ROSS11 production blobs remain byte-identical on the scientific baseline, Status-A authority and live canonical host.",
+    "evidence_reused": [
+      "F-CI80 primary and successor restricted-stack qualification and postimage preservation evidence",
+      "F-ROSS11 owner qualification",
+      "F-CI81 independent six-material scientific qualification",
+      "F-CI81 governance-head replay",
+      "exact current-head blob identity checks",
+      "commit-delta checks aa25126 -> 50346642 -> 992a5c65 -> 523da7aa"
+    ],
+    "verdict": "PASS_CURRENT_CANONICAL_PRESERVATION_BY_IMMUTABLE_EVIDENCE_INHERITANCE"
+  },
+  "admit": {
+    "production_admission_required": false,
+    "reason": "F-ROSS02 through F-ROSS10 and F-ROSS11 are already present in canonical history and in the pinned scientific production tree. Re-admitting identical production would create no new semantics.",
+    "current_canonical_capability_verdict": "PRESERVED_EXISTING_RESTRICTED_ROSSFAST_CAPABILITY",
+    "new_production_host_wiring_added": false,
+    "new_scientific_scope_added": false
+  },
+  "close": {
+    "kernel_scientific_capability": "CLOSED_WITHIN_EXISTING_RESTRICTED_SIX_MATERIAL_D3R_DOMAIN",
+    "runtime_transactional_capability": "CLOSED_FOR_EXISTING_RESTRICTED_SERIALIZED_TRANSACTIONAL_ROUTE",
+    "application_composition": "CLOSED_FOR_TYPED_IN_MEMORY_F_ROSS11_COMPOSITION",
+    "production_host_user_selection": "OPEN_NOT_IMPLEMENTED_BY_THIS_CHAIN",
+    "deliberately_unsupported_scientific_domains": [
+      "energy balance",
+      "groundwater RossFast support",
+      "root or general distributed source/sink RossFast support",
+      "arbitrary heterogeneous profile or grid support",
+      "mixed Reference/RossFast MultiSWAP",
+      "automatic solver fallback",
+      "silent or automatic model selection",
+      "scientific domain broadening beyond the qualified six-material restricted D3R envelope"
+    ],
+    "minimum_next_bounded_capability": {
+      "proposed_name": "F-ROSS12 production host and explicit user selection binding",
+      "goal": "Connect the already qualified typed F-ROSS11 application composition to the normal SWAP5 application host through explicit user-selected model configuration, without changing RossFast science or transaction semantics.",
+      "minimum_contract": [
+        "Reference remains the default path unless RossFast is explicitly selected.",
+        "Translate one normal application-level model selection into the existing typed F-ROSS09/F-ROSS11 configuration without duplicating semantic authority.",
+        "Require explicit RossFast asset-root/config inputs and preflight them before state mutation.",
+        "Invoke F-ROSS11 only for the already qualified restricted domain.",
+        "Fail closed on unsupported domain, missing assets, conflicting selection or unsupported mixed-backend execution.",
+        "Do not reinterpret SW_SOLVE or silently fall back between Reference and RossFast.",
+        "Preserve exactly-once accepted commit and Reference Richards isolation.",
+        "No EB, groundwater RossFast, root/source-sink generalization, heterogeneous-profile generalization or mixed-backend MultiSWAP."
+      ],
+      "implementation_in_this_workunit": false
+    }
+  },
+  "mutations": [
+    "Governance/status record only.",
+    "No production source, table asset, reference path, scientific equation, transaction policy, API, IO grammar or host wiring changed."
+  ],
+  "final_verdict": "CLOSED_CURRENT_CANONICAL_PRESERVATION_NO_REQUALIFICATION_OR_PRODUCTION_READMISSION_REQUIRED",
+  "next_permitted_action": "Open a separate bounded F-ROSS12 host/user-selection capability only if normal SWAP5 application execution is to expose the already qualified restricted RossFast path."
+}
