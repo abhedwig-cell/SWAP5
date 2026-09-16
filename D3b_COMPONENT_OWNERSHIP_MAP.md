@@ -2,15 +2,17 @@
 
 **Date:** 2026-09-04
 
+> **Historical target-design record, not current Status-A ownership authority.** This file remains valid evidence of the 2026-09-04 target component-map publication. For actual ownership and execution boundaries admitted at the 2026-09-16 Status-A boundary, use `docs/status-a/CURRENT_ARCHITECTURE.md`. The target design below is preserved because it may still inform future migration work, but unadmitted target components or modes must not be presented as current functionality.
+
 ## Goal
 
-Define normative SWAP5 component boundaries so that responsibilities, physical state, shared parameters, worker scratch, execution policy and coupling composition cannot drift back into implicit legacy ownership.
+Define normative SWAP5 target component boundaries so that responsibilities, physical state, shared parameters, worker scratch, execution policy and coupling composition could not drift back into implicit legacy ownership during migration.
 
 ## Result
 
 Status: `PUBLISHED_VERIFIED`
 
-D3b adds `docs/architecture/component-map.md` and makes it part of the Architecture navigation and live publication acceptance gate.
+D3b added `docs/architecture/component-map.md` and made it part of the Architecture navigation and live publication acceptance gate for the target architecture.
 
 The target map distinguishes these responsibilities:
 
@@ -36,8 +38,10 @@ It also defines cross-cutting ownership domains for shared immutable parameters,
 3. Solver implementations own numerical algorithms and transient scratch, not committed column state.
 4. Other physics modules consume hydraulic information through a solver-independent contract rather than `HeadCalc` internals.
 5. The coupler owns MODFLOW relationships, coupling windows, tile fractions, interface residuals and conservative aggregation outside the kernel.
-6. Deep-vadose transfer remains an optional external component with its own explicit minimal state.
-7. Optional functionality incurs persistent state and compute only when active.
+6. Deep-vadose transfer remains an optional external target component with its own explicit minimal state.
+7. Optional functionality incurs persistent state and compute only when active in the target design.
+
+These statements describe the target design recorded by D3b. Whether a boundary is implemented/admitted now is answered by the current Status-A architecture and capability evidence, not by D3b alone.
 
 ## Verification
 
@@ -50,6 +54,8 @@ Verified successfully:
 3. GitHub Pages deployment;
 4. live verification of `architecture/component-map/` including expected ownership and transaction-boundary text.
 
-## Follow-on
+## Follow-on in historical context
 
-The next migration-oriented step should map legacy SWAP 4.3.1 modules and active refactoring units onto these target components without assuming one-to-one correspondence.
+At the time, the next migration-oriented step was to map legacy SWAP 4.3.1 modules and active refactoring units onto these target components without assuming one-to-one correspondence.
+
+Later Status-A work admitted a bounded current architecture that must be documented from its canonical evidence rather than inferred from every element of this broader target map.
