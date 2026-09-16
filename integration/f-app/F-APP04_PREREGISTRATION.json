@@ -1,0 +1,142 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "title": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "RECONCILE_PREREGISTER",
+  "decision": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "protocol": ["RECONCILE", "IMPLEMENT", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_base": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+  "canonical_base_note": "Current canonical includes the separately admitted F-ROSS12 adapter-only surface. F-APP04 has no RossFast dependency and must not wire or alter it.",
+  "reused_authorities": {
+    "f_app03_head": "21508f0d70672d92132c553a344c35f6b7b2296f",
+    "official_swap431_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "official_hupsel_case": "SWAP_4.3.1/cases/1.hupselbrook",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "a12_verdict": "PASS_EXACT_HUPSEL_AUTHORITY_RESTORED_AND_A12_REDERIVED",
+    "a13_verdict": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY"
+  },
+  "restricted_route": {
+    "SWETR": 0,
+    "SWDIVIDE": 1,
+    "SWMETDETAIL": 0,
+    "SWRAIN": 0,
+    "SWCROP": 1,
+    "SWCFBS": 0,
+    "RSOIL_s_per_m": 600.0,
+    "maize_SWCF": 1,
+    "maize_SWINTER": 1,
+    "maize_COFAB": 0.25
+  },
+  "scientific_contract": [
+    "Implement the exact restricted SWETR=0 / SWDIVIDE=1 daily PMdirect route separately from the admitted SWETR=1 reference-ET process.",
+    "Daily PMdirect consumes immutable daily measured weather plus site and canopy resistance/albedo geometry required by the exact legacy route and produces potential soil evaporation, dry-canopy transpiration, wet-canopy evaporation demand and pond evaporation demand.",
+    "ETpot semantics convert legacy mm/day PMdirect outputs to cm/day and apply the admitted crop CO2 transpiration factor only where the exact legacy route does so.",
+    "A12 supplies exact daily interception/net-rain semantics for the restricted Hupsel SWINTER=1 branch.",
+    "ProcessMeteoDT composition derives the bounded wet fraction from A12 interception and A13 wet-canopy evaporation capacity, then mixes wet- and dry-canopy potential transpiration for the interval.",
+    "No crop-factor multiplication is permitted on PMdirect ptra. The SWCF=1 canopy geometry/resistance route is not the SWETR=1 reference-ET route.",
+    "The existing admitted SWETR=1 reference-ET implementation must remain byte-identical in F-APP04."
+  ],
+  "typed_boundary_requirements": {
+    "daily_atmospheric_forcing": [
+      "radiation_j_m2_day",
+      "tmin_deg_c",
+      "tmax_deg_c",
+      "vapour_pressure_kpa",
+      "wind_m_s",
+      "gross_rain_cm_day",
+      "accepted_model_day_coordinate"
+    ],
+    "site_configuration": [
+      "latitude",
+      "altitude",
+      "wind_measurement_height",
+      "temperature_humidity_measurement_height",
+      "angstrom_a",
+      "angstrom_b",
+      "wind_factor",
+      "soil_resistance_s_m"
+    ],
+    "crop_canopy_boundary": [
+      "crop_emerged",
+      "lai",
+      "vegetation_cover_fraction",
+      "crop-specific canopy resistance/albedo/geometry scalars actually consumed by the exact PMdirect route",
+      "co2_transpiration_factor"
+    ],
+    "a12_composition_inputs": [
+      "gross_rain_cm_day",
+      "SWINTER=1 configuration",
+      "COFAB=0.25",
+      "daily/timestep partition coordinate"
+    ],
+    "process_outputs_cm_per_day": [
+      "potential_soil_evaporation",
+      "potential_pond_evaporation",
+      "potential_transpiration_dry_canopy",
+      "potential_transpiration_wet_canopy",
+      "interception_evaporation_capacity",
+      "wet_fraction",
+      "final_potential_transpiration",
+      "net_rain"
+    ],
+    "authority_rule": "No field may receive a guessed default or inferred unit. Before implementation, each consumed scalar must be traced to the exact F-APP03 rederivation / SWAP 4.3.1 MOD_meteo authority or an already admitted typed SWAP5 contract."
+  },
+  "qualification_preregistration": {
+    "comparison_tolerance_absolute": 1e-12,
+    "tolerance_may_not_be_widened_after_results": true,
+    "daily_oracle_records": 1096,
+    "maize_swinter1_daily_records": 384,
+    "emerged_crop_days": 149,
+    "maize_swinter1_timestep_records": 14062,
+    "emerged_crop_timestep_records": 3753,
+    "positive_interception_days": 65,
+    "positive_interception_timesteps": 1641,
+    "required_outputs": [
+      "es0",
+      "et0",
+      "ew0",
+      "ep0",
+      "peva",
+      "epond",
+      "ptra_dry",
+      "ptra_wet",
+      "eintc",
+      "wfrac",
+      "final_ptra",
+      "A12_aintcdt",
+      "A12_net_rain"
+    ],
+    "required_noninterference": [
+      "existing SWETR=1 reference-ET production blob unchanged",
+      "O0/O2 identity for the new typed process/composition",
+      "fail-closed invalid/nonfinite forcing or unsupported route",
+      "no mutation of committed hydrologic state by demand calculation",
+      "no solver, timestep, retry, mass-policy or tolerance change"
+    ],
+    "independent_qualification_required_before_admission": true
+  },
+  "implementation_boundary": {
+    "allowed": [
+      "new restricted typed PMdirect process",
+      "minimal explicit A12/A13 application composition",
+      "small typed binding to already admitted downstream forcing/root-uptake surfaces where units and signs are established",
+      "owner tests and deterministic oracle comparison tooling"
+    ],
+    "not_allowed": [
+      "modifying or broadening mod_reference_et_demand_process",
+      "file-driven M1-C3 adapter implementation in this workunit",
+      "broad meteorology or IO redesign",
+      "new evaporation/energy physics",
+      "Energy Balance",
+      "RossFast changes or host wiring",
+      "solver/timestep/retry changes",
+      "output fitting or post-hoc tolerance relaxation"
+    ]
+  },
+  "next_permitted_action": "Recover the exact scalar/formula authority needed for the restricted PMdirect typed fields, bind every field/unit explicitly, then implement only the preregistered process/composition. If any required scalar authority cannot be recovered exactly, fail closed and persist the missing-authority blocker instead of inventing a formula or default."
+}
