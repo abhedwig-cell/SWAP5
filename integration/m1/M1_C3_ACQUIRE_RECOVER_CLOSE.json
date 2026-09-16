@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "ACQUIRE_RECOVER_CLOSE",
+  "criterion_text": "legacy file runs still reproduce reference results through adapters;",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "supersedes_checkpoint_commit": "ebbd410b37b835a53227b882a9dcd220471414ed",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head_reconciled": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "fci95_merge": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "delta_after_fci95": "F-AR01 documentation/evidence only; no production or reference semantics changed"
+  },
+  "acquired_evidence": {
+    "f_vq99_primary_artifact": {
+      "run_id": 35073638377,
+      "artifact_id": 10437335930,
+      "github_digest": "sha256:4a605e134e23daccd157145b7f04a381e7a991681a42f92ed445a2b1e4d1017f",
+      "finding": "Contains the pinned SWAP5 production-tree export and repository-resident reconstruction tooling, but not the exact official SWAP_4.3.1 distribution or nine-file Hupsel fixture."
+    },
+    "f_vq99_secondary_artifact": {
+      "run_id": 35073638469,
+      "artifact_id": 10436879124,
+      "github_digest": "sha256:f6ea2e88e49aca0ab132b3be1202ba0ecb923e9c71fcbe28ad812ea650efbcf2",
+      "finding": "Contains seam/equivalence summaries only; no Hupsel raw input tree or process-ready snapshot payload."
+    },
+    "f_vq99_latest_checked_equivalence_artifact": {
+      "run_id": 35077212832,
+      "artifact_id": 10438279693,
+      "head": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
+      "github_digest": "sha256:f1a5e1f34a85374d2aeff360cdb4501731dbedcd4f0257e8b2b2763c1cf8cc7c",
+      "finding": "Explicitly records exact_b0_source_archive_bytes=ABSENT and authoritative_hupsel_case_directory=ABSENT for repository-only CI."
+    },
+    "f_pe19_full_replay": {
+      "evidence_path": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+      "status": "PASS_HISTORICAL_REPLAY_EVIDENCE",
+      "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "finding": "The exact B0 archive was again available transiently for the later B0 -> B1.10 -> B1.11 replay. PR #159 persists replay evidence and reconstruction machinery, not the official distribution or Hupsel fixture bytes. Its PR-head VQ/F-CI workflow runs expose no downloadable artifacts containing those bytes."
+    }
+  },
+  "current_corrected_reference": {
+    "manifest": "reference/swap-4.3.1/b1-manifest.yml",
+    "snapshot": "B1.11",
+    "status": "CORRECTED_REFERENCE",
+    "oracle_status": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "supersedes": "B1.10",
+    "numerical_change_from_superseded_snapshot": true,
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "relevance_to_f_vq100": "F-VQ100 was preregistered and closed before B1.11 admission and explicitly pins exact reconstructed B1.10 as its reference source. B1.11 therefore constitutes a changed reference dependency for any claim presented as current-reference snapshot equivalence."
+  },
+  "f_vq100": {
+    "branch": "qualification/f-vq100-hupsel-transactional-composition",
+    "preregistration_commit": "6e7ca411518ff7e6336ffa61d80752b6cdeb1e6f",
+    "closeout_commit": "7823e00c71c218ba8bade15347a56b091017932d",
+    "preregistered_reference_status": "EXACT_B0_B1_10_HUPSEL_MATERIALIZED",
+    "preregistered_goal": "Extract bounded snapshots from exact reconstructed B1.10 and replay them through already-admitted typed production contracts without implementing file IO/application composition.",
+    "old_blocker": "missing admitted Hupsel SWBOTB=6 typed bottom-boundary contract",
+    "old_blocker_now": "RESOLVED_BY_F_APP02_F_VQ102_F_CI95",
+    "historical_b1_10_replay_status": "SEMANTICALLY_UNBLOCKED_BUT_OPERATIONALLY_BLOCKED_MISSING_EXACT_ASSET_BYTES",
+    "current_b1_11_requalification_status": "REQUIRES_EXPLICIT_SUCCESSOR_OR_NEW_PREREGISTRATION_DEPENDENCY_PIN",
+    "why_successor_is_required_for_current_reference": "The original preregistration is immutable and pins B1.10. Canonical now marks B1.11 as a numerical change from B1.10. Replacing the source reference in-place would change a frozen qualification dependency after results were defined.",
+    "reuse_allowed": [
+      "same six target dates",
+      "same interval-selection rule",
+      "same frozen payload fields",
+      "same sign/unit normalization policy",
+      "same no-post-hoc-widening rule and numeric/mass tolerances"
+    ],
+    "reuse_not_allowed_without_evidence": [
+      "assuming B1.10 accepted interval selection is identical under B1.11",
+      "assuming B1.10 post-state/diagnostics are a B1.11 oracle",
+      "relabelling historical B1.10 snapshots as current-reference snapshots"
+    ]
+  },
+  "hupsel_scope_narrowing": {
+    "bottom_boundary": "RESOLVED: SWBOTB=6 -> prescribed bottom_flux=+0.0 cm d-1 via F-CI95",
+    "drainage": "ACTIVE: NRLEVS=5, SWDRA=2",
+    "snow": "INACTIVE: SWSNOW=0",
+    "soil_temperature": "INACTIVE: SWTMP=0",
+    "solute": "INACTIVE: SWSOLU=0",
+    "crack_flow": "INACTIVE: SWCRACK=0",
+    "irrigation_ssdi": "UNRESOLVED_FOR_WHOLE_TRAJECTORY: SWIRFIX=0 alone is insufficient to prove all source routes inactive"
+  },
+  "remaining_application_composition_authority_needed": [
+    "file-driven precipitation/meteo/interception state -> interval top_flux",
+    "file-driven crop/potential-transpiration state -> nodewise root_extraction_sink(:)",
+    "drainage configuration/dynamic response -> typed drainage forcing/control",
+    "irrigation/SSDI source composition only if exact whole-run authority shows it active"
+  ],
+  "qualification": {
+    "attempted_in_this_phase": false,
+    "reason": "Exact external B0/Hupsel bytes or persisted frozen snapshots are required before observation-only instrumentation/replay. The currently accessible GitHub evidence proves identity and prior replay, but does not provide the executable input payload."
+  },
+  "verdict": "C3_BLOCKED_MISSING_REPRODUCIBLE_APPLICATION_TRACE_AUTHORITY",
+  "m1_c3_pass": false,
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "tolerances": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Recover an exact byte payload for the official SWAP_4.3.1 distribution/Hupsel fixture matching SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or recover an immutable artifact containing the already-preregistered F-VQ100 snapshots.",
+    "If the distribution is recovered, resume the original F-VQ100 only for its frozen B1.10 historical process-ready snapshot claim, using observation-only instrumentation and F-CI95 for SWBOTB=6.",
+    "For a current-reference snapshot claim, create an explicit bounded F-VQ100 successor pinned to B1.11 rather than editing the B1.10 preregistration. Preserve the six dates, selection rule, payload and tolerances; first test whether B1.11 changes interval selection or snapshot values.",
+    "Only after process-ready snapshot authority is established may the remaining Hupsel application-composition mappings be reconstructed and qualified process-by-process; only after those mappings are admitted may an M1-C3 legacy file adapter be implemented and whole-file reference equivalence claimed."
+  ],
+  "exclusions": [
+    "no fake frozen-snapshot file adapter as M1-C3 closure",
+    "no reverse engineering from desired output",
+    "no raw rain/ET/crop shortcut around legacy application composition",
+    "no new groundwater/Richards physics",
+    "no solver-policy or tolerance change",
+    "no wholesale IO/API modernization",
+    "no whole-Hupsel or M1-C3 PASS claim"
+  ]
+}
