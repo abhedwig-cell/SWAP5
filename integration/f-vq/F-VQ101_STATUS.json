@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-VQ101",
+  "title": "F-APP01 minimal soil-water application host independent qualification",
+  "phase": "CLOSED_INDEPENDENT_QUALIFICATION",
+  "decision": "PASS_INDEPENDENT_MINIMAL_APPLICATION_HOST_CONTRACT",
+  "owner": {
+    "workunit": "F-APP01",
+    "branch": "work/f-app01-minimal-soil-water-application-host",
+    "qualified_head": "6b799b269871a8b3594a3d1a50ee126c57af37bb",
+    "reconciled_canonical_parent": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "host_path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+    "host_blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+    "owner_run_id": 35080790887,
+    "owner_run_conclusion": "success"
+  },
+  "qualification": {
+    "branch": "qualification/f-vq101-fapp01-minimal-application-host-independent",
+    "tested_head": "306c2862cae2c8385fabfba7bc292388c3bba068",
+    "tested_tree": "c1460e6b276caca0a1d45f6a33e12817f739b60f",
+    "run_id": 35081070415,
+    "job_id": 104744941225,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.2.0 on ubuntu-24.04",
+    "o0_o2_output_identity": true,
+    "o0_o2_sha256": "4f51c586f802468218e0e7c4f04152c77af5c6584fdb82ef2fe03b559801bdd3",
+    "owner_host_blob_lock_pass": true,
+    "generic_host_no_production_module_dependency_pass": true,
+    "default_reference_with_empty_registry_pass": true,
+    "explicit_reference_pass": true,
+    "registered_alternative_route_index_and_key_pass": true,
+    "unknown_alternative_fail_closed_pass": true,
+    "unregistered_alternative_fail_closed_pass": true,
+    "duplicate_registry_fail_closed_pass": true,
+    "reserved_reference_registry_key_fail_closed_pass": true,
+    "blank_registry_key_fail_closed_pass": true,
+    "length_guards_pass": true,
+    "owner_test_or_runner_reused": false,
+    "artifacts": {
+      "evidence": {
+        "id": 10439948770,
+        "digest": "sha256:0cc7d7ba88c6027e6bcbb75b1d5fdf48ad474779ea4aabb27cce1dbe3022d99e",
+        "size_bytes": 596
+      },
+      "diagnostics": {
+        "id": 10440655402,
+        "digest": "sha256:b1238cfc463c0112a28458a4e0e186e2435a28aa5845a3fdcb54415eae8efaa9",
+        "size_bytes": 400
+      }
+    }
+  },
+  "qualified_contract": {
+    "reference_is_default_when_no_alternative_is_explicitly_selected": true,
+    "reference_can_be_explicitly_selected": true,
+    "alternative_selection_is_explicit_and_typed_via_registry": true,
+    "host_owns_selection_only_not_solver_science": true,
+    "unsupported_selection_fails_closed": true,
+    "invalid_registry_fails_closed": true,
+    "no_automatic_solver_fallback": true,
+    "no_rossfast_specific_semantics_in_generic_host": true,
+    "no_legacy_swp_grammar_change": true,
+    "no_broad_public_api_claim": true
+  },
+  "warnings": [
+    "The independent test intentionally exercises overlength keys. GNU Fortran emits CHARACTER truncation warnings for two test-only literals; the resulting values remain longer than the 32-character production limit and the intended guards pass. No production source warning or semantic defect was observed."
+  ],
+  "mutations": [
+    "Independent qualification test, runner and workflow only.",
+    "No production or reference source was modified by F-VQ101."
+  ],
+  "explicit_exclusions": [
+    "energy balance",
+    "RossFast scientific-domain expansion",
+    "RossFast production binding",
+    "Hupsel application mapping",
+    "legacy .swp grammar redesign",
+    "broad public API implementation",
+    "automatic solver fallback or silent model selection"
+  ],
+  "final_verdict": "QUALIFIED_INDEPENDENT_READY_FOR_CURRENT_CANONICAL_ADMISSION",
+  "next_permitted_action": "Persist this qualification record, require the exact governance head to replay green, then live-check integration/f-ci-canonical and perform a bounded current-canonical admission of the exact F-APP01 host blob only if no relevant dependency or ownership conflict has appeared."
+}
