@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "QUALIFY_PROVENANCE_RECOVERY_COMPLETE",
+  "protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "branch": "work/m1-typed-external-boundary-reconciliation",
+  "predecessor_checkpoint": "f18e4f4e2f941f6252283ae0674a77e7856e9a53",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
+    "delta_from_previous_qualification_head": {
+      "base": "8f592dcc1651913b2b24356fd6379e7fafa817a4",
+      "files_changed": [
+        ".github/workflows/fci-canonical.yml",
+        "integration/f-ci/F-CI92_STATUS.json"
+      ],
+      "production_source_change": false,
+      "reference_source_change": false,
+      "scientific_semantics_change": false,
+      "status_a_baseline_to_current_src_delta": "NONE",
+      "status_a_baseline_to_current_production_delta": "NONE",
+      "assessment": "F-CI92 is a governance/workflow preservation-authority rebind only. It does not reopen M1 criteria 1, 2 or 5 and does not supply the missing generic legacy IO adapter/serializer surface for criteria 3 or 4."
+    }
+  },
+  "bounded_recovery_goal": "Perform the final exact-provenance search permitted by M1_QUALIFY_CHECKPOINT.json for any pre-existing generic legacy file-input adapter or generic output serializer that could satisfy M1 criteria 3 and 4 without new production work.",
+  "evidence_recovered": [
+    {
+      "authority": "qualification/f-mq04a-reference-adapter",
+      "commit": "256d442631a86efa2b1e36c359906e4a09e4b25f",
+      "title": "F-MQ04a Qualified reference source adapter",
+      "disposition": "NOT_M1_GENERIC_IO_ADAPTER",
+      "reason": "Qualification infrastructure only. tests/multiswap/reference_source_adapter.py adapts VQ reference identity/provenance into an F-MQ fixture identity fragment. It does not parse or execute a legacy SWAP file run through the typed runtime and changes no production source."
+    },
+    {
+      "authority": "qualification/f-mq04b-reference-extraction",
+      "commit": "16abbfb78695398b7a17a14cfccfb3c39ceb0787",
+      "title": "F-MQ04b B1.10 event-local reference extraction",
+      "disposition": "FAIL_CLOSED_REFERENCE_EXTRACTION_BLOCKER",
+      "reason": "The workunit explicitly stopped at BLOCKED_REFERENCE_RUN_CHECKPOINT_MISSING. It did not create a physical legacy-run extraction/adapter or output-serialization surface."
+    }
+  ],
+  "current_canonical_tree_search": {
+    "terms": ["readswap", "swapoutput", "serializer"],
+    "matches": 0,
+    "interpretation": "No current-canonical path with these direct generic legacy input/output surface names was found. This is supporting evidence only; the semantic verdict also relies on the qualified architecture inspection already recorded at f18e4f4."
+  },
+  "historical_commit_search": {
+    "repository": "abhedwig-cell/SWAP5",
+    "queries": [
+      "readswap",
+      "swapoutput",
+      "serializer",
+      "file adapter",
+      "legacy adapter",
+      "serialization",
+      "output adapter",
+      "parser adapter",
+      "typed input"
+    ],
+    "matching_commits": 0,
+    "interpretation": "No omitted generic legacy file-input/output adapter implementation was recovered from commit history under the direct and semantic terms searched."
+  },
+  "criterion_verdicts_after_recovery": [
+    {
+      "criterion": 1,
+      "verdict": "PASS_EXISTING_EVIDENCE_UNCHANGED"
+    },
+    {
+      "criterion": 2,
+      "verdict": "PASS_EXISTING_EVIDENCE_UNCHANGED"
+    },
+    {
+      "criterion": 3,
+      "verdict": "FAIL_SEMANTIC_GAP_CONFIRMED",
+      "reason": "No project-wide generic legacy file-run adapter was recovered that maps the legacy file-driven route into the admitted typed runtime while preserving reference results. Reference preservation or qualification-provenance adapters are not substitutes for the required topology."
+    },
+    {
+      "criterion": 4,
+      "verdict": "BLOCKED_MISSING_GENERIC_SERIALIZER_SURFACE_OR_DIRECT_READ_ONLY_EVIDENCE",
+      "reason": "No project-wide generic output serializer was identified or recovered. Adjacent transactional/publication identity evidence remains insufficient to prove the normative serialization claim."
+    },
+    {
+      "criterion": 5,
+      "verdict": "PASS_EXISTING_EVIDENCE_UNCHANGED"
+    }
+  ],
+  "qualification_verdict": "M1_NOT_CLOSABLE_FROM_EXISTING_IMMUTABLE_EVIDENCE",
+  "production_mutation": "NONE",
+  "canonical_mutation": "NONE",
+  "explicit_exclusions_preserved": [
+    "EB",
+    "RossFast scientific or domain expansion",
+    "F-ROSS12 as M1 substitute",
+    "broad stable public API design",
+    "SW_SOLVE reinterpretation",
+    "new physics",
+    "automatic backend fallback",
+    "legacy default-route change",
+    "production changes merely to obtain PASS"
+  ],
+  "next_permitted_action": "Close this reconciliation campaign as NOT_CLOSED. Any attempt to satisfy M1 criteria 3 and 4 requires a genuinely separate governed production decision surface for the minimal generic legacy-input adapter and generic read-only output-serialization boundary, followed by independent qualification before M1 can be reconsidered."
+}
