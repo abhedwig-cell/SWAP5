@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "POST_CLOSE_DELTA_RECONCILIATION",
+  "branch": "work/m1-typed-external-boundary-reconciliation",
+  "predecessor_closeout": {
+    "commit": "4a65a1c5c3200b7b8661d5d442ca8ce34e5f7bd1",
+    "path": "integration/m1/M1_CLOSEOUT.json",
+    "verdict": "NOT_CLOSED"
+  },
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
+    "status": "UNCHANGED_DURING_POST_CLOSE_RECONCILIATION"
+  },
+  "why_this_record_exists": "After the formal NOT_CLOSED closeout, the separately governed minimal M1 IO decision surface was opened and additional exact provenance was recovered. This record updates the factual detail without reopening, superseding or weakening the closeout verdict.",
+  "criterion_3_delta": {
+    "decision_branch": "work/m1-legacy-file-adapter-output-serialization",
+    "checkpoint_commit": "eecbf373562396afa32d44099cb0698a925cfb59",
+    "checkpoint_path": "integration/m1/M1_C3_PROVENANCE_CHECKPOINT.json",
+    "updated_fact": "A complete qualified legacy Hupsel reference authority does exist, but it is external evidence and no admitted generic legacy-file-to-current-typed-SWAP5 application mapping exists.",
+    "strongest_legacy_authority": {
+      "branch": "qualification/f-vq99-swap431-swap5-status-a-equivalence",
+      "head": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
+      "checkpoint": "qualification/F-VQ99_HUPSEL_ASSET_QUALIFICATION_CHECKPOINT.json",
+      "checkpoint_blob": "c68c117e0aaa3f1830e1b4d79a085ef3f29c6d50",
+      "legacy_status": "QUALIFIED",
+      "swap5_application_mapping": "NOT_ESTABLISHED"
+    },
+    "supporting_exclusions": [
+      "F-MQ03 provides fixture/comparison infrastructure but no physical fixture.",
+      "F-MQ04a adapts VQ source identity/provenance only, not legacy application inputs.",
+      "F-MQ04c keeps physical fixture admission blocked.",
+      "F-MQ04d historically identified the missing physical continuation/application seam; recent F-VQ99 remains the stronger current provenance authority.",
+      "F-APP01 is model-selection/application-host resolution without scientific execution.",
+      "F-ROSS11/F-ROSS12 and RossFast file configuration are not project-wide M1 authorities."
+    ],
+    "current_verdict": "FAIL_SEMANTIC_GAP_CONFIRMED",
+    "semantic_gap": "GENERIC_LEGACY_FILE_TO_TYPED_APPLICATION_MAPPING"
+  },
+  "criterion_4_delta": {
+    "decision_branch": "work/m1-legacy-file-adapter-output-serialization",
+    "owner_qualification_checkpoint_commit": "d10648bc6909e91e5a1e93aceeb3b0a5618e93c8",
+    "owner_qualification_checkpoint": "integration/m1/M1_C4_OWNER_QUALIFICATION.json",
+    "candidate_production_file": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "candidate_production_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "owner_run": 35079209619,
+    "owner_job": 104738857165,
+    "owner_verdict": "PASS_OWNER_QUALIFICATION",
+    "independent_qualification": "NOT_PERFORMED",
+    "canonical_admission": "NONE",
+    "current_canonical_effect": "NONE",
+    "criterion_against_current_canonical": "UNSATISFIED",
+    "note": "The candidate is preserved for future separately governed qualification. Owner PASS is not canonical M1 evidence and does not justify admission while criterion 3 remains a separate semantic gap."
+  },
+  "criteria_after_delta": [
+    {"criterion": 1, "verdict": "PASS_EXISTING_EVIDENCE"},
+    {"criterion": 2, "verdict": "PASS_EXISTING_EVIDENCE"},
+    {"criterion": 3, "verdict": "FAIL_SEMANTIC_GAP_CONFIRMED"},
+    {"criterion": 4, "verdict": "UNSATISFIED_CURRENT_CANONICAL_OWNER_QUALIFIED_CANDIDATE_EXISTS_OFF_CANONICAL"},
+    {"criterion": 5, "verdict": "PASS_EXISTING_EVIDENCE"}
+  ],
+  "m1_verdict_after_delta": "NOT_CLOSED_UNCHANGED",
+  "closeout_status": "REMAINS_AUTHORITATIVE",
+  "mutations": [
+    "Added this governance-only post-close delta record.",
+    "No production or reference source changed on the M1 reconciliation branch.",
+    "No canonical merge or admission performed.",
+    "The separate criterion-4 candidate remains isolated off canonical."
+  ],
+  "next_permitted_action": "Do not reopen M1 evidence closure. If project priority requires eventual M1 closure, first govern the missing generic legacy-file-to-typed application mapping as a real capability implementation and independently qualify its reference equivalence. Criterion 4 may be independently qualified later, but its admission alone cannot close M1."
+}
