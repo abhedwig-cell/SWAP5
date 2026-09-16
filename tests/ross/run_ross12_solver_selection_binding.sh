@@ -29,7 +29,7 @@ test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
 test "$(git rev-parse HEAD:$MODEL_BINDING)" = 9f29ba7a08844692ba2628c7869d23713409f92b
 test "$(git rev-parse HEAD:$KERNEL)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
 test "$(git rev-parse HEAD:$PROVIDER)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
-test "$(git rev-parse HEAD:$ADAPTER)" = 6fb095d4a9cdcf16e80e3640c9ad253c624417f5
+test "$(git rev-parse HEAD:$ADAPTER)" = 6d6f66273483c19c1d2318dad518c537186a0ae7
 test "$(git rev-parse HEAD:$APP_HOST)" = daca18b77673608436425e81ecd397ef3e35e4b2
 
 WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
