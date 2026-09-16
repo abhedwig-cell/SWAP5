@@ -1,0 +1,47 @@
+name: Status-A current-canonical qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-status-a-release-readiness-baseline
+    paths:
+      - 'integration/status-a/**'
+      - 'qualification/status_a_dependency_closure.py'
+      - 'qualification/run_status_a_current_canonical_qualification.sh'
+      - '.github/workflows/status-a-current-canonical-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch complete authority namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run bounded Status-A current-canonical qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          bash qualification/run_status_a_current_canonical_qualification.sh 2>&1 | tee status-a-current-canonical.log
+
+      - name: Upload qualification diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: status-a-current-canonical-${{ github.run_id }}
+          path: status-a-current-canonical.log
+          if-no-files-found: error
