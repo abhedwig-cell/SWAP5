@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.bounded_execution_closeout.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CLOSE",
+  "protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "branch": "work/m1-typed-external-boundary-reconciliation",
+  "closeout_preimage": "4c9f396717abac0c2b0f19ea2ca648ce9e8a9338",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535"
+  },
+  "verdict": "NOT_CLOSED",
+  "reason": "M1 cannot be formally closed against current canonical using existing immutable evidence. Criteria 1, 2 and 5 are satisfied. Criterion 3 has a confirmed project-wide semantic gap: no generic legacy file-run adapter was recovered that maps the preserved file-driven route into the admitted typed runtime. Criterion 4 remains unsatisfied because no generic output-serialization surface with direct read-only physical-state evidence was identified or recovered.",
+  "criteria": [
+    {
+      "criterion": 1,
+      "verdict": "PASS_EXISTING_EVIDENCE"
+    },
+    {
+      "criterion": 2,
+      "verdict": "PASS_EXISTING_EVIDENCE"
+    },
+    {
+      "criterion": 3,
+      "verdict": "FAIL_SEMANTIC_GAP_CONFIRMED"
+    },
+    {
+      "criterion": 4,
+      "verdict": "UNSATISFIED_MISSING_GENERIC_SERIALIZER_SURFACE_OR_DIRECT_READ_ONLY_EVIDENCE"
+    },
+    {
+      "criterion": 5,
+      "verdict": "PASS_EXISTING_EVIDENCE"
+    }
+  ],
+  "evidence_chain": [
+    "d6445c071b637d8ecf825c9e537ac887441aa9da - resumable M1 reconciliation checkpoint",
+    "f18e4f4e2f941f6252283ae0674a77e7856e9a53 - remaining-gate qualification checkpoint",
+    "4c9f396717abac0c2b0f19ea2ca648ce9e8a9338 - bounded legacy IO provenance recovery checkpoint",
+    "256d442631a86efa2b1e36c359906e4a09e4b25f - F-MQ04a reference identity qualification adapter, ruled out as M1 IO adapter",
+    "16abbfb78695398b7a17a14cfccfb3c39ceb0787 - F-MQ04b fail-closed reference extraction blocker, ruled out as M1 IO implementation",
+    "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1 - live canonical authority at closeout"
+  ],
+  "mutations": [
+    "Governance/evidence records only on work/m1-typed-external-boundary-reconciliation",
+    "No production source mutation",
+    "No reference source mutation",
+    "No canonical mutation"
+  ],
+  "admission": "NONE_NOT_ELIGIBLE",
+  "canonical_merge": "NONE_NOT_ELIGIBLE",
+  "do_not_claim": [
+    "Do not claim project-wide M1 closure",
+    "Do not claim a broad or stable Public API",
+    "Do not use F-APP01 as M1 authority",
+    "Do not use F-ROSS12 or RossFast-specific adapters as project-wide M1 substitutes",
+    "Do not treat reference preservation alone as proof of criterion 3",
+    "Do not treat transactional publication identity alone as proof of criterion 4"
+  ],
+  "next_work_required": {
+    "decision_surface": "SEPARATE_GOVERNED_MINIMAL_M1_LEGACY_IO_BOUNDARY",
+    "why_separate": "The remaining work would introduce a new project-wide production IO boundary rather than merely qualify existing semantics.",
+    "minimum_scope": [
+      "A generic legacy-input adapter that keeps path/file-unit/parser semantics outside the kernel and maps at least one preserved legacy file-driven run into the already-admitted typed runtime.",
+      "Reference-equivalence qualification for that adapter route.",
+      "A generic output serializer/readout adapter over committed or typed result state.",
+      "A direct before/after committed physical-state identity probe proving serialization is read-only."
+    ],
+    "constraints": [
+      "Preserve the current typed runtime contracts",
+      "Preserve the legacy default route until separately admitted",
+      "No new physics",
+      "No broad Public API design",
+      "No EB",
+      "No RossFast scientific/domain expansion",
+      "No F-ROSS12 substitution",
+      "No production change merely to force PASS"
+    ],
+    "return_condition": "Return to project-wide M1 CLOSE only after the new generic IO boundary is independently qualified and admitted on current canonical."
+  }
+}
