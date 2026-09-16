@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS12",
+  "title": "RossFast production host and explicit user selection binding",
+  "phase": "RECONCILED_BLOCKED_PREREQUISITE",
+  "decision": "DO_NOT_MATERIALIZE_ROSSFAST_ONLY_HOST_BEFORE_GENERIC_APPLICATION_HOST_AUTHORITY_EXISTS",
+  "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-ross12-production-host-explicit-selection",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "80c6faaa8a277d9596a6da7bc5d2244c0df1bb82",
+  "canonical_preimage_tree": "9b3ee78c9ff5dfde12345ef4e472e74d41ac0da3",
+  "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "prerequisite_rossfast_authority": {
+    "current_canonical_preservation": "F-CI91",
+    "f_ci91_admission_commit": "80c6faaa8a277d9596a6da7bc5d2244c0df1bb82",
+    "restricted_stack": "F-CI80 / F-ROSS02..F-ROSS10",
+    "application_composition": "F-CI81 / F-ROSS11",
+    "qualified_application_runtime_blob": "a1af0d6eb0041565602711251748666f7b959d8e",
+    "rossfast_science_or_transaction_requalification_required": false
+  },
+  "reconcile": {
+    "requested_goal": "Make the already qualified restricted RossFast path usable from normal SWAP5 application execution through explicit user selection without changing RossFast science or transaction semantics.",
+    "current_runtime_surfaces": {
+      "reference_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "rossfast_application_runtime": "src/runtime/mod_fmr_rossfast_application_runtime.f90",
+      "rossfast_application_selection": "src/runtime/mod_fmr_rossfast_application_selection.f90",
+      "rossfast_application_config": "src/runtime/mod_fmr_rossfast_application_config.f90",
+      "rossfast_file_config_adapter": "src/adapter/mod_rossfast_application_config_file_adapter.f90",
+      "deterministic_runtime": "src/runtime/mod_fmr_deterministic_runtime.f90"
+    },
+    "application_host_findings": {
+      "generic_normal_application_host_authority_present": false,
+      "generic_public_api_authority_present": false,
+      "normal_application_model_selection_owner_present": false,
+      "rossfast_specific_typed_selection_already_present": true,
+      "reference_backend_is_a_backend_not_a_top_level_application_host": true,
+      "deterministic_runtime_is_test_orchestration_infrastructure_not_a_normal_production_application_host": true
+    },
+    "current_architecture_evidence": {
+      "status_a_architecture": "docs/status-a/CURRENT_ARCHITECTURE.md",
+      "future_scope": "docs/status-a/FUTURE_SCOPE.md",
+      "interpretation": "Current Status-A architecture admits runtime/transaction, persistence, serialized MultiSWAP and bounded adapters, but does not establish a broad stable public application API or generic top-level application host."
+    },
+    "historical_rossfast_k_runtime_evidence": {
+      "frontier_commit": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+      "window_selector_closeout": "455d2905a9a450ee25ed742d930428a8eefc04bf",
+      "reused_rule": "Do not hard-code RossFast policy into the generic canonical runtime; model-owned selection may specialize only through a qualified generic seam.",
+      "classification": "HISTORICAL_DESIGN_EVIDENCE_ONLY_LATER_ROSSFAST_CHAIN_SUPERSEDES_ITS_PRODUCTION_ADMISSION_FRONTIER"
+    },
+    "historical_host_branch_check": {
+      "mp_mp_7_host_admission": "PERFORMANCE_MEASUREMENT_HOST_QUALITY_ONLY_NOT_AN_APPLICATION_HOST",
+      "work_f_wof04_crop_owner_host": "CROP_OWNER_SPECIFIC_NOT_A_GENERIC_SOIL_WATER_APPLICATION_HOST",
+      "equivalent_f_ross12_branch_found": false
+    }
+  },
+  "prerequisite_gap": {
+    "kind": "MISSING_GENERIC_APPLICATION_HOST_DECISION_SURFACE",
+    "why_material": [
+      "A RossFast-only top-level host would duplicate application ownership rather than bind to an existing authority.",
+      "It would force F-ROSS12 to invent default Reference routing, application lifecycle and user-selection ownership that currently belong to no admitted generic host contract.",
+      "That would silently turn a bounded RossFast wiring task into API/application-architecture design.",
+      "It would make later Reference/RossFast host convergence harder and could create two competing production entrypoints."
+    ],
+    "fail_closed_action": "STOP_BEFORE_PRODUCTION_MUTATION"
+  },
+  "qualification": {
+    "started": false,
+    "scientific_replay_required": false,
+    "reason_not_started": "There is no valid production candidate to qualify until the missing generic application-host prerequisite exists. Existing F-CI80/F-CI81/F-CI91 RossFast evidence remains valid and is not rerun."
+  },
+  "admit": {
+    "started": false,
+    "production_candidate_exists": false,
+    "canonical_mutation_permitted": false
+  },
+  "close": {
+    "f_ross12_status": "BLOCKED_BY_GENERIC_APPLICATION_HOST_PREREQUISITE_NOT_BY_ROSSFAST_SCIENCE",
+    "kernel_scientific_capability": "UNCHANGED_CLOSED_RESTRICTED_SIX_MATERIAL_D3R",
+    "runtime_transactional_capability": "UNCHANGED_CLOSED_RESTRICTED_SERIALIZED_ROUTE",
+    "application_composition": "UNCHANGED_CLOSED_TYPED_IN_MEMORY_F_ROSS11",
+    "production_host_user_selection": "OPEN_GENERIC_HOST_PREREQUISITE_MISSING",
+    "production_mutation": false
+  },
+  "minimum_prerequisite_capability": {
+    "working_name": "PROJECT_WIDE_M1_MINIMAL_APPLICATION_HOST_CONTRACT",
+    "scope": "Create one generic typed application-host decision surface for soil-water model selection and lifecycle ownership, preserving Reference as the default, without introducing broad public API or IO redesign.",
+    "minimum_contract": [
+      "One authoritative application-level soil-water model selection owner.",
+      "Reference is the default when no alternative is explicitly selected.",
+      "Alternative model selection is explicit and typed, never inferred silently.",
+      "Host owns routing/lifecycle only and does not own solver science or transaction acceptance semantics.",
+      "Unsupported model kinds fail closed before physical state mutation.",
+      "No automatic fallback between solvers.",
+      "No legacy .swp grammar change is required by the host contract itself.",
+      "No broad stable public API claim is made.",
+      "Existing Reference execution remains behaviorally unchanged.",
+      "The seam must permit a later F-ROSS12 binding to delegate RossFast execution to the already qualified F-ROSS11 composition rather than duplicate it."
+    ]
+  },
+  "f_ross12_resume_condition": "Resume F-ROSS12 only after the generic minimal application-host contract has an admitted production authority and exact current-canonical dependency identity is rechecked.",
+  "explicit_exclusions": [
+    "energy balance",
+    "groundwater RossFast support",
+    "root or general source-sink RossFast support",
+    "arbitrary heterogeneous-profile or grid RossFast support",
+    "mixed Reference/RossFast MultiSWAP",
+    "automatic solver fallback",
+    "silent model selection",
+    "scientific-domain broadening",
+    "SW_SOLVE reinterpretation",
+    "legacy .swp grammar redesign",
+    "broad public API implementation"
+  ],
+  "mutations": [
+    "Governance checkpoint only on F-ROSS12 owner branch.",
+    "No production source, scientific equation, table asset, Reference backend, transaction policy, API, IO grammar or canonical branch changed."
+  ],
+  "final_verdict": "BLOCKED_PREREQUISITE_FAIL_CLOSED_NO_PRODUCTION_CHANGE",
+  "next_permitted_action": "Live-check for an existing equivalent project-wide minimal application-host workunit. If none exists, open a separate bounded generic host-contract capability. Do not implement RossFast-specific production host wiring until that prerequisite is admitted."
+}
