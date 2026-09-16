@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C4-INDEPENDENT",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 4 - output serialization does not mutate physical state",
+  "phase": "QUALIFY",
+  "branch": "qualification/m1-c4-output-serialization-independent",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "qualified_preimage": "bfbb466678249811afc6a0800fd32a367818660f",
+    "live_head_after_qualification": "bfbb466678249811afc6a0800fd32a367818660f",
+    "tree": "0501b6fce7de4948c636ec0a33d1bc912a44e86f"
+  },
+  "criterion": {
+    "number": 4,
+    "normative_text": "output serialization does not mutate physical state;"
+  },
+  "owner_candidate": {
+    "postimage": "e2c924993296de9c8f2e5d8e4a8d44bac29dbc2e",
+    "source_path": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "source_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "owner_run_id": 35079209619,
+    "owner_job_id": 104738857165,
+    "owner_verdict": "PASS_OWNER_QUALIFICATION"
+  },
+  "independent_qualification": {
+    "tested_head": "114d9c6c1a74436d3e3596ef0a90e8f8324a1ea2",
+    "run_id": 35091439497,
+    "job_id": 104778442363,
+    "runner": "tests/m1/run_m1_c4_output_serialization_independent.sh",
+    "test": "tests/m1/test_m1_c4_output_serialization_independent.f90",
+    "workflow": ".github/workflows/m1-c4-output-serialization-independent.yml",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner_image": "ubuntu-24.04",
+    "result": "PASS",
+    "output_sha256": "76be23588e266eba4a1f2e8de28b01814dc4137bd5be41216835d99e5389bae3",
+    "markers": [
+      "M1_C4_INDEPENDENT_EXACT_OWNER_BLOB=PASS",
+      "M1_C4_INDEPENDENT_CANONICAL_CONTRACT_LOCK=PASS",
+      "M1_C4_INDEPENDENT_SINGLE_PRODUCTION_DELTA=PASS",
+      "M1_C4_INDEPENDENT_TYPED_RESULT_ONLY_API=PASS",
+      "M1_C4_INDEPENDENT_NO_PHYSICAL_STATE_AUTHORITY_STATIC=PASS",
+      "M1_C4_INDEPENDENT_NO_FILE_OR_PARSER_AUTHORITY=PASS",
+      "M1_C4_INDEPENDENT_RUNTIME_O0=PASS",
+      "M1_C4_INDEPENDENT_RUNTIME_O2=PASS",
+      "M1_C4_INDEPENDENT_REPEAT_DETERMINISM=PASS",
+      "M1_C4_INDEPENDENT_RESULT_IDENTITY=PASS",
+      "M1_C4_INDEPENDENT_TYPED_READONLY_BOUNDARY=PASS",
+      "M1_C4_INDEPENDENT_RUNTIME_O0_O2_IDENTITY=PASS",
+      "M1_C4_OUTPUT_SERIALIZATION_INDEPENDENT_GATE=PASS"
+    ]
+  },
+  "dependency_locks": {
+    "src/runtime/mod_canonical_contracts.f90": "3962c270a7579b7403764674302445fe15ef5f72",
+    "serializer_exact_owner_blob_preserved": true,
+    "canonical_changed_during_qualification": false
+  },
+  "qualification_claim": {
+    "verdict": "PASS_INDEPENDENT_QUALIFICATION",
+    "reason": "The exact owner-qualified serializer consumes canonical_result_t through an intent(in) typed boundary only; independent static checks find no physical-state, parser, path or file-unit authority; repeated serialization is deterministic; selected typed result fields remain bit-identical; and O0/O2 executions are byte-identical.",
+    "criterion_4_ready_for_admission": true
+  },
+  "warnings": {
+    "new_adapter_warnings": [],
+    "preexisting_dependency_warnings": [
+      "Exact REAL equality/inequality comparison warnings in admitted transaction dependencies under -Wall/-Wextra. These warnings predate and are outside the serializer candidate."
+    ]
+  },
+  "nonclaims": [
+    "This is not a stable public file format.",
+    "This does not add path or file-unit output authority.",
+    "This does not add parser authority.",
+    "This does not change physical, solver, transaction, retry, mass or temporal semantics.",
+    "This does not satisfy M1 criterion 3.",
+    "This does not close M1 as a whole."
+  ],
+  "m1_state_after_qualification": {
+    "criterion_1": "PASS_EXISTING_EVIDENCE",
+    "criterion_2": "PASS_EXISTING_EVIDENCE",
+    "criterion_3": "BLOCKED_MISSING_FIELD_LEVEL_APPLICATION_COMPOSITION_SEMANTICS",
+    "criterion_4": "PASS_INDEPENDENT_QUALIFICATION_AWAITING_CANONICAL_ADMISSION",
+    "criterion_5": "PASS_EXISTING_EVIDENCE",
+    "overall": "NOT_CLOSED"
+  },
+  "mutations": [
+    "Projected the exact owner-qualified serializer blob onto the independent qualification branch from current canonical.",
+    "Added an independent qualification test, runner and workflow.",
+    "Added this qualification authority record."
+  ],
+  "production_source_changed_on_canonical": false,
+  "scientific_semantics_changed": false,
+  "next_permitted_action": "If canonical remains dependency-compatible, admit only the exact serializer blob and its bounded C4 evidence as a separate governance decision. Do not declare M1 closed. Criterion 3 remains blocked until a bounded legacy Hupsel application-composition contract is recovered and qualified process-by-process."
+}
