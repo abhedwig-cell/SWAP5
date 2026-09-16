@@ -1,0 +1,40 @@
+name: F-TB13 legacy analytical reference preservation
+
+on:
+  pull_request:
+    paths:
+      - 'tests/legacy_reference/extended_analytical/**'
+      - 'integration/f-tb/F-TB13_STATUS.json'
+      - 'docs/verification/F-TB13_LEGACY_ANALYTICAL_REFERENCE_PRESERVATION.md'
+      - '.github/workflows/f-tb13-legacy-analytical-reference-preservation.yml'
+  push:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/legacy_reference/extended_analytical/**'
+      - 'integration/f-tb/F-TB13_STATUS.json'
+      - 'docs/verification/F-TB13_LEGACY_ANALYTICAL_REFERENCE_PRESERVATION.md'
+      - '.github/workflows/f-tb13-legacy-analytical-reference-preservation.yml'
+
+jobs:
+  preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify preserved assets and qualified expected results
+        run: python tests/legacy_reference/extended_analytical/check_preservation.py
+      - name: Reject production/reference mutation in F-TB13 PR
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          git fetch --no-tags origin "${{ github.base_ref }}"
+          base=$(git merge-base HEAD "origin/${{ github.base_ref }}")
+          bad=$(git diff --name-only "$base"...HEAD -- src reference || true)
+          if [ -n "$bad" ]; then
+            printf 'F-TB13 forbids src/reference changes:\n%s\n' "$bad"
+            exit 1
+          fi
+          echo 'F-TB13_ZERO_PRODUCTION_REFERENCE_DELTA=PASS'
