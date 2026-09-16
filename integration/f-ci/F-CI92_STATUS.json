@@ -2,8 +2,8 @@
   "schema_version": 1,
   "workunit": "F-CI92",
   "title": "Current-canonical moving-preservation authority rebind",
-  "phase": "QUALIFY_PENDING",
-  "decision": "RECONCILED_STALE_MOVING_CURRENT_BYTE_LOCK_REQUIRES_REBIND",
+  "phase": "QUALIFY_COMPLETE_ADMISSION_READY",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_PRESERVATION_AUTHORITY_REBIND",
   "canonical_preimage": "8f592dcc1651913b2b24356fd6379e7fafa817a4",
   "stale_authority": "b4e637885eafa6c193257cd11fa5b6fb45c18fa3",
   "replacement_authority": "50346642bd565f79134ea17d5462e544b354998c",
@@ -25,19 +25,25 @@
     "status_a_baseline_to_current_src_delta": "NONE",
     "status_a_baseline_to_current_production_delta": "NONE"
   },
-  "intended_mutation": [
+  "qualification": {
+    "workflow": "F-CI canonical qualification",
+    "run_id": 35076683856,
+    "run_conclusion": "success",
+    "current_restricted_job_id": 104731121013,
+    "current_restricted_job_conclusion": "success",
+    "full_dependency_surface_against_replacement_authority": "PASS",
+    "frozen_authority_jobs": "PASS",
+    "transaction_reference_guard_unchanged": true,
+    "exact_tested_head_before_status_evidence_commit": "e13cd47e9663ef797458c673eb9afb9b50e70418"
+  },
+  "mutation": [
     ".github/workflows/fci-canonical.yml",
     "integration/f-ci/F-CI92_STATUS.json"
   ],
   "production_source_change": false,
   "reference_source_change": false,
   "scientific_semantics_change": false,
-  "qualification_required": [
-    "F-CI canonical qualification passes on the exact PR head",
-    "current-restricted-canonical-preservation compares the existing dependency surface against 50346642bd565f79134ea17d5462e544b354998c",
-    "transaction-reference fixed blob guard remains unchanged",
-    "no src or reference path changes"
-  ],
+  "admission_rule": "merge only after the exact final PR head replays F-CI canonical qualification successfully",
   "nonclaims": [
     "NO_REQUALIFICATION_OF_NEW_PHYSICS",
     "NO_PRODUCTION_READMISSION",
