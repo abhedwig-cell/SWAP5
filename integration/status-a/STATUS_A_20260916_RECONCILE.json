@@ -44,169 +44,51 @@
     "F": "FUTURE_SCOPE_NOT_A_CURRENT_BLOCKER"
   },
   "capability_classification": [
-    {
-      "capability": "reference_and_legacy_scientific_preservation",
-      "class": "A",
-      "basis": "Corrected-reference B1.10 and later capability-scoped preservation authorities remain the admitted scientific reference basis. No state-delta evidence reopens them."
-    },
-    {
-      "capability": "transactional_solver_and_orchestration_architecture",
-      "class": "A",
-      "basis": "Post-F-GC28 audit found no residual orchestration implementation gap; admitted runtime, transaction and adapter layers are consumed by later closed capabilities."
-    },
-    {
-      "capability": "restart_v1",
-      "class": "A",
-      "basis": "F-KT16 completion authority closes Restart v1; later admitted restart use, including groundwater accepted-boundary replay, does not reopen the base capability."
-    },
-    {
-      "capability": "serialized_multiswap_v1",
-      "class": "A",
-      "basis": "F-MR42 completion authority closes serialized MultiSWAP v1; permanent preservation infrastructure and later restricted serialized Snow and groundwater use remain compatible."
-    },
-    {
-      "capability": "drainage_v1",
-      "class": "A",
-      "basis": "Drainage completion plus F-TB12 permanent preservation adoption remain authoritative; no dependency evidence reopens drainage."
-    },
-    {
-      "capability": "surface_evaporation_admitted_scope",
-      "class": "A",
-      "basis": "F-PM06 migration chain is admitted and preserved. F-PE11 is classified separately."
-    },
-    {
-      "capability": "wofost81_admitted_runtime_scope",
-      "class": "A",
-      "basis": "F-CI89 closeout bf0fb81daf0f0fee53566a426886eaa0d0ad2832 records CANONICALLY_CLOSED after O0/O2 runtime, PP02 numerical preservation, F-WOF38 and F-WOF39 preservation gates passed."
-    },
-    {
-      "capability": "restricted_one_call_daily_snow",
-      "class": "A",
-      "basis": "Canonical head 50346642bd565f79134ea17d5462e544b354998c closes F-PM02/F-CI90. Current-canonical runtime and restricted serialized MultiSWAP preservation passed at O0/O2 with output identity and no production mutation."
-    },
-    {
-      "capability": "groundwater_coupling_v1",
-      "class": "A",
-      "basis": "F-GC28 closeout 4c545af6f212fa4e95a27b9444ab3b01c277ff0b records independently qualified and canonically admitted frozen G05 denominator with no F-GC28 production mutation."
-    },
-    {
-      "capability": "f_pe11_admitted_current_head_preserved_performance_semantics",
-      "class": "A",
-      "basis": "F-PE11 closeout 00d735939cb4a8da8b027b20b7dd25725cd73526 proves the only post-close canonical delta consists of two Snow metadata files, with no production, reference or F-PE11 dependency change and no requalification requirement."
-    },
-    {
-      "capability": "permanent_testbank_authorities",
-      "class": "A",
-      "basis": "F-TB11 permanent protected-set preservation and additive F-TB12 drainage adoption remain immutable authorities. Their historical canonical pins are preserved as history and are not misrepresented as the new moving release head."
-    },
-    {
-      "capability": "scientific_and_numerical_qualification_authorities",
-      "class": "A",
-      "basis": "Capability-local independent authorities remain valid where dependency locks are unchanged; current Snow, WOFOST81, groundwater and F-PE11 closures explicitly record current-head or dependency-preservation evidence."
-    },
-    {
-      "capability": "release_and_regression_workflow_authorities",
-      "class": "A",
-      "basis": "Historical release and permanent regression workflows remain valid for their declared immutable scopes. A new Status-A snapshot requires a bounded current-head replay but no implementation gap is inferred from historical pinning."
-    },
-    {
-      "capability": "theory_documentation_code_evidence_reconciliation",
-      "class": "A",
-      "basis": "Capability-local authority chains are sufficient to construct the current rollup. Historical global Status-A and early architecture snapshots are retained as history, not current truth."
-    },
-    {
-      "capability": "old_snow_integration_f_mr06_as_current_admission_vehicle",
-      "class": "E",
-      "basis": "Superseded by completed F-PM02 current-canonical closure. Historical evidence may still be referenced."
-    },
-    {
-      "capability": "historical_rb1_status_a_documents_as_current_global_truth",
-      "class": "E",
-      "basis": "They predate substantial later canonical admissions and remain historical release evidence only."
-    },
-    {
-      "capability": "early_architecture_snapshots_that_mark_later_closed_capabilities_partial",
-      "class": "E",
-      "basis": "Superseded by later qualification and canonical admission evidence."
-    },
-    {
-      "capability": "eb",
-      "class": "F",
-      "basis": "Explicitly excluded from this Status-A denominator."
-    },
-    {
-      "capability": "ross_and_rossfast",
-      "class": "F",
-      "basis": "Explicitly excluded from this Status-A denominator."
-    },
-    {
-      "capability": "arbitrary_duration_or_broader_snow",
-      "class": "F",
-      "basis": "Current admitted Snow scope is intentionally restricted to exact one-call daily semantics."
-    },
-    {
-      "capability": "parallel_concurrent_real_physics_multiswap",
-      "class": "F",
-      "basis": "Current denominator requires serialized real physics only."
-    },
-    {
-      "capability": "broad_modflow_backend_support",
-      "class": "F",
-      "basis": "Groundwater Coupling v1 closes the restricted gateway/coupling contract without broad MODFLOW implementation."
-    },
-    {
-      "capability": "wholesale_legacy_io_removal",
-      "class": "F",
-      "basis": "Existing admitted adapter and IO boundaries are sufficient; complete de-legacy migration is not a current acceptance criterion."
-    },
-    {
-      "capability": "new_general_public_api",
-      "class": "F",
-      "basis": "No current Status-A acceptance requirement establishes a new public API as mandatory."
-    },
-    {
-      "capability": "speculative_or_additional_performance_optimization",
-      "class": "F",
-      "basis": "No new optimization is required for the declared boundary; F-PE11 admitted semantics are already preserved."
-    },
-    {
-      "capability": "wofost81_rd_tra_soil_n_or_broader_runtime_scope",
-      "class": "F",
-      "basis": "F-CI89 explicitly excludes these extensions from the admitted WOFOST81 runtime scope."
-    }
+    {"capability":"reference_and_legacy_scientific_preservation","class":"A","basis":"Corrected-reference B1.10 and later capability-scoped preservation authorities remain the admitted scientific reference basis. No state-delta evidence reopens them."},
+    {"capability":"transactional_solver_and_orchestration_architecture","class":"A","basis":"Post-F-GC28 audit found no residual orchestration implementation gap; admitted runtime, transaction and adapter layers are consumed by later closed capabilities."},
+    {"capability":"restart_v1","class":"A","basis":"F-KT16 completion authority closes Restart v1; later admitted restart use, including groundwater accepted-boundary replay, does not reopen the base capability."},
+    {"capability":"serialized_multiswap_v1","class":"A","basis":"F-MR42 completion authority closes serialized MultiSWAP v1; permanent preservation infrastructure and later restricted serialized Snow and groundwater use remain compatible."},
+    {"capability":"drainage_v1","class":"A","basis":"Drainage completion plus F-TB12 permanent preservation adoption remain authoritative; no dependency evidence reopens drainage."},
+    {"capability":"surface_evaporation_admitted_scope","class":"A","basis":"F-PM06 migration chain is admitted and preserved. F-PE11 is classified separately."},
+    {"capability":"wofost81_admitted_runtime_scope","class":"A","basis":"F-CI89 closeout bf0fb81daf0f0fee53566a426886eaa0d0ad2832 records CANONICALLY_CLOSED after O0/O2 runtime, PP02 numerical preservation, F-WOF38 and F-WOF39 preservation gates passed."},
+    {"capability":"restricted_one_call_daily_snow","class":"A","basis":"Canonical head 50346642bd565f79134ea17d5462e544b354998c closes F-PM02/F-CI90. Current-canonical runtime and restricted serialized MultiSWAP preservation passed at O0/O2 with output identity and no production mutation."},
+    {"capability":"groundwater_coupling_v1","class":"A","basis":"F-GC28 closeout 4c545af6f212fa4e95a27b9444ab3b01c277ff0b records independently qualified and canonically admitted frozen G05 denominator with no F-GC28 production mutation."},
+    {"capability":"f_pe11_admitted_current_head_preserved_performance_semantics","class":"A","basis":"F-PE11 closeout 00d735939cb4a8da8b027b20b7dd25725cd73526 proves the only post-close canonical delta consists of two Snow metadata files, with no production, reference or F-PE11 dependency change and no requalification requirement."},
+    {"capability":"permanent_testbank_authorities","class":"A","basis":"F-TB11 permanent protected-set preservation and additive F-TB12 drainage adoption remain immutable authorities. Their historical canonical pins are preserved as history and are not misrepresented as the new moving release head."},
+    {"capability":"scientific_and_numerical_qualification_authorities","class":"A","basis":"Capability-local independent authorities remain valid where dependency locks are unchanged; current Snow, WOFOST81, groundwater and F-PE11 closures explicitly record current-head or dependency-preservation evidence."},
+    {"capability":"release_and_regression_workflow_authorities","class":"A","basis":"Historical release and permanent regression workflows remain valid for their declared immutable scopes. A new Status-A snapshot requires a bounded current-head replay but no implementation gap is inferred from historical pinning."},
+    {"capability":"theory_documentation_code_evidence_reconciliation","class":"A","basis":"Capability-local authority chains are sufficient to construct the current rollup. Historical global Status-A and early architecture snapshots are retained as history, not current truth."},
+    {"capability":"old_snow_integration_f_mr06_as_current_admission_vehicle","class":"E","basis":"Superseded by completed F-PM02 current-canonical closure. Historical evidence may still be referenced."},
+    {"capability":"historical_rb1_status_a_documents_as_current_global_truth","class":"E","basis":"They predate substantial later canonical admissions and remain historical release evidence only."},
+    {"capability":"early_architecture_snapshots_that_mark_later_closed_capabilities_partial","class":"E","basis":"Superseded by later qualification and canonical admission evidence."},
+    {"capability":"eb","class":"F","basis":"Explicitly excluded from this Status-A denominator."},
+    {"capability":"ross_and_rossfast","class":"F","basis":"Explicitly excluded from this Status-A denominator."},
+    {"capability":"arbitrary_duration_or_broader_snow","class":"F","basis":"Current admitted Snow scope is intentionally restricted to exact one-call daily semantics."},
+    {"capability":"parallel_concurrent_real_physics_multiswap","class":"F","basis":"Current denominator requires serialized real physics only."},
+    {"capability":"broad_modflow_backend_support","class":"F","basis":"Groundwater Coupling v1 closes the restricted gateway/coupling contract without broad MODFLOW implementation."},
+    {"capability":"wholesale_legacy_io_removal","class":"F","basis":"Existing admitted adapter and IO boundaries are sufficient; complete de-legacy migration is not a current acceptance criterion."},
+    {"capability":"new_general_public_api","class":"F","basis":"No current Status-A acceptance requirement establishes a new public API as mandatory."},
+    {"capability":"speculative_or_additional_performance_optimization","class":"F","basis":"No new optimization is required for the declared boundary; F-PE11 admitted semantics are already preserved."},
+    {"capability":"wofost81_rd_tra_soil_n_or_broader_runtime_scope","class":"F","basis":"F-CI89 explicitly excludes these extensions from the admitted WOFOST81 runtime scope."}
   ],
-  "class_counts_at_reconcile": {
-    "A": 14,
-    "B": 0,
-    "C": 0,
-    "D": 0,
-    "E": 3,
-    "F": 8
-  },
+  "class_counts_at_reconcile": {"A":14,"B":0,"C":0,"D":0,"E":3,"F":9},
   "key_inherited_authorities": {
-    "post_f_gc28_residual_audit": "bd12071d2ce45e21306a38c3a57edf60bf28dd4b",
-    "f_gc28_closeout": "4c545af6f212fa4e95a27b9444ab3b01c277ff0b",
-    "f_gc28_independent_qualification_checkpoint": "22c2c107256de4351541a7dcdf91635d67681ec3",
-    "f_gc28_admission_authority": "9e90dfee2d4febd8a74378e89a8a8bd99f23ba45",
-    "f_ci89_wofost81_close": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
-    "f_pm02_snow_canonical_close": "50346642bd565f79134ea17d5462e544b354998c",
-    "f_pm02_snow_decisive_qualification": "25d83778dcade34225b4630059fd43142f95193d",
-    "f_pe11_current_head_preservation_close": "00d735939cb4a8da8b027b20b7dd25725cd73526"
+    "post_f_gc28_residual_audit":"bd12071d2ce45e21306a38c3a57edf60bf28dd4b",
+    "f_gc28_closeout":"4c545af6f212fa4e95a27b9444ab3b01c277ff0b",
+    "f_gc28_independent_qualification_checkpoint":"22c2c107256de4351541a7dcdf91635d67681ec3",
+    "f_gc28_admission_authority":"9e90dfee2d4febd8a74378e89a8a8bd99f23ba45",
+    "f_ci89_wofost81_close":"bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+    "f_pm02_snow_canonical_close":"50346642bd565f79134ea17d5462e544b354998c",
+    "f_pm02_snow_decisive_qualification":"25d83778dcade34225b4630059fd43142f95193d",
+    "f_pe11_current_head_preservation_close":"00d735939cb4a8da8b027b20b7dd25725cd73526"
   },
   "qualification_plan": {
-    "strategy": "INHERIT_UNCHANGED_IMMUTABLE_AUTHORITIES_AND_REPLAY_MOVING_CURRENT_GATES",
-    "required_current_head_replays": [
-      "transaction_and_mass_permanent_oracles",
-      "restart_current_source_preservation",
-      "serialized_multiswap_current_source_preservation",
-      "accepted_publication_and_rejected_trial_isolation_at_O0_AND_O2",
-      "drainage_independent_runtime_mass_restart_multiswap_time_preservation_on_current_head",
-      "release_head_provenance_and_zero_production_delta_from_qualification_branch"
-    ],
-    "do_not_blindly_rerun": "historical capability qualifications whose locked dependencies are unchanged"
+    "strategy":"INHERIT_UNCHANGED_IMMUTABLE_AUTHORITIES_AND_REPLAY_MOVING_CURRENT_GATES",
+    "required_current_head_replays":["transaction_and_mass_permanent_oracles","restart_current_source_preservation","serialized_multiswap_current_source_preservation","accepted_publication_and_rejected_trial_isolation_at_O0_AND_O2","drainage_independent_runtime_mass_restart_multiswap_time_preservation_on_current_head","release_head_provenance_and_zero_production_delta_from_qualification_branch"],
+    "do_not_blindly_rerun":"historical capability qualifications whose locked dependencies are unchanged"
   },
-  "reconcile_verdict": "NO_B_C_OR_D_CAPABILITY_IN_DECLARED_STATUS_A_DENOMINATOR; CURRENT_HEAD_BASELINE_REPLAY_REQUIRED_BEFORE_RELEASE_DECISION",
-  "production_mutations": [],
-  "reference_mutations": [],
-  "next_permitted_action": "QUALIFY the exact pinned canonical head using inherited immutable evidence plus bounded current-source permanent regression replays. Do not repair production semantics inside qualification."
+  "reconcile_verdict":"NO_B_C_OR_D_CAPABILITY_IN_DECLARED_STATUS_A_DENOMINATOR; CURRENT_HEAD_BASELINE_REPLAY_REQUIRED_BEFORE_RELEASE_DECISION",
+  "production_mutations":[],
+  "reference_mutations":[],
+  "next_permitted_action":"QUALIFY the exact pinned canonical head using inherited immutable evidence plus bounded current-source permanent regression replays. Do not repair production semantics inside qualification."
 }
