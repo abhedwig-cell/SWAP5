@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ100",
+  "title": "Hupsel-Derived Transactional State/Forcing Replay",
+  "phase": "CLOSE",
+  "branch": "qualification/f-vq100-hupsel-transactional-composition",
+  "preregistration_commit": "6e7ca411518ff7e6336ffa61d80752b6cdeb1e6f",
+  "base": {
+    "scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6"
+  },
+  "parent_campaign": {
+    "work_unit": "F-VQ99",
+    "reference_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+    "candidate_route_assessment_commit": "badfd82761a8efd6389f744ea5b1f5be72f98d87"
+  },
+  "reconcile": {
+    "existing_equivalent_workunit_found": false,
+    "existing_hupsel_reference_authority": "EXACT_AND_REPRODUCIBLE",
+    "existing_candidate_surface": "TYPED_TRANSACTIONAL_SERIALIZED_REFERENCE_BACKEND",
+    "candidate_surface_is_file_driven_hupsel_application": false,
+    "candidate_forcing_contract": "Prepared typed interval forcing; no legacy file IO or meteorological/crop application orchestration is implied."
+  },
+  "qualification_feasibility": {
+    "official_hupsel_bottom_boundary_mode": 6,
+    "source": "exact official Hupsel swap.swp from the authority-pinned SWAP 4.3.1 distribution",
+    "current_solver_authority": "src/adapter/mod_reference_richards_legacy_binding.f90 @ 50346642bd565f79134ea17d5462e544b354998c",
+    "current_admitted_bottom_modes": [7, -2, 5, 2],
+    "current_behavior_for_mode_6": "REJECTED_BY_VALIDATE_LEGACY_REQUEST_WITH_ROUTE_legacy-bottom-mode-deferred",
+    "mapping_to_mode_2_or_other_mode_already_admitted": false,
+    "mapping_authority_found": false,
+    "result": "BLOCKED_BY_MISSING_EXISTING_COMPOSITION_CONTRACT"
+  },
+  "preregistered_fail_closed_rule_triggered": "A snapshot field cannot be mapped to an already-admitted current-production contract without new production semantics.",
+  "why_no_snapshot_replay_was_run": "Running the six preregistered Hupsel snapshots would require inventing or implementing a SWBOTB=6-to-current-contract mapping before comparison. Doing that inside a verification-only workunit would change the decision surface after seeing the reference case and would violate the no-new-semantics/no-new-application-composition boundary.",
+  "scientific_result": {
+    "candidate_difference_observed": false,
+    "class_V_difference_observed": false,
+    "comparison_class": "NOT_CLASSIFIABLE_BECAUSE_CANDIDATE_CONTRACT_UNAVAILABLE",
+    "interpretation": "This is an application/composition contract gap, not evidence that SWAP5 hydrology differs from SWAP 4.3.1/B1.10."
+  },
+  "inherited_positive_evidence": {
+    "F_VQ99_EQ_RICHARDS_15": "PASS",
+    "F_VQ99_EQ_ET_DEMAND": "PASS",
+    "B0_to_B1_10_full_Hupsel_balance": "PASS_EXACT_AFTER_DOCUMENTED_METADATA_NORMALIZATION",
+    "B0_to_B1_10_Hupsel_monthly_csv_probe": "PASS_EXACT_FOR_OBSERVED_FIELDS",
+    "F_CI06_full_Hupsel_controlled_source_port": "PASS_REFERENCE_PRESERVATION",
+    "F_CI07_two_whole_day_Hupsel_restore_reruns": "PASS_ZERO_MAX_ABS_DIFFERENCE_FOR_RECORDED_FIELDS"
+  },
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_io": "NONE",
+    "qualification_metadata_only": true
+  },
+  "decision": "CLOSED_BLOCKED_BY_MISSING_EXISTING_HUPSEL_BOTTOM_BOUNDARY_COMPOSITION_CONTRACT",
+  "effect_on_F_VQ99": {
+    "global_verdict": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED",
+    "reason": "The reference-side asset gap is cleared, but full Hupsel current-production equivalence still cannot be executed without an admitted representation of the official Hupsel SWBOTB=6 boundary semantics in the typed transactional candidate path.",
+    "negative_scientific_finding": false
+  },
+  "next_permitted_action": {
+    "only_if_explicitly_desired": "Open a separately bounded bottom-boundary/application-composition workunit to reconcile SWAP 4.3.1 SWBOTB=6 semantics against already admitted Groundwater Coupling v1 and current bottom-boundary contracts. First determine whether an exact semantic mapping already exists. Only if it exists may a qualification adapter be built; do not introduce new groundwater physics merely to make Hupsel runnable.",
+    "otherwise": "Retain F-VQ99/F-VQ100 fail-closed and treat full file-driven Hupsel equivalence as outside the current Status-A acceptance denominator.",
+    "prohibited": [
+      "silently translating SWBOTB=6 to bottom mode 2, 5, 7 or -2",
+      "adding new groundwater physics inside qualification",
+      "using the legacy standalone swap_main result as a proxy for transactional SWAP5",
+      "post-hoc tolerance widening",
+      "claiming a Class-V discrepancy without executing a semantically valid candidate"
+    ]
+  }
+}
