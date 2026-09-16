@@ -1,0 +1,96 @@
+name: F-VQ99 SWAP431 to SWAP5 Status-A equivalence
+
+on:
+  push:
+    branches:
+      - qualification/f-vq99-swap431-swap5-status-a-equivalence
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify immutable authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          STATUS_A=992a5c657bfe10a10100f92e0cb77c4825ae65b6
+          PROD=50346642bd565f79134ea17d5462e544b354998c
+          TREE=3b085d7dea3d3f3fce42ad9d8f259a8350205846
+          git cat-file -e "$STATUS_A^{commit}"
+          git cat-file -e "$PROD^{commit}"
+          actual_tree="$(git rev-parse "$PROD^{tree}")"
+          test "$actual_tree" = "$TREE"
+          printf 'STATUS_A=%s\nPRODUCTION_COMMIT=%s\nPRODUCTION_TREE=%s\n' "$STATUS_A" "$PROD" "$actual_tree" | tee authority.txt
+
+      - name: Materialize exact scientific production baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/swap5-fvq99-prod
+          git worktree add --detach /tmp/swap5-fvq99-prod 50346642bd565f79134ea17d5462e544b354998c
+          test "$(git -C /tmp/swap5-fvq99-prod rev-parse HEAD)" = 50346642bd565f79134ea17d5462e544b354998c
+          test "$(git -C /tmp/swap5-fvq99-prod rev-parse HEAD^{tree})" = 3b085d7dea3d3f3fce42ad9d8f259a8350205846
+
+      - name: EQ-RICHARDS-15 B1.10-derived nonlinear reference replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/swap5-fvq99-prod
+          bash tests/fci/run_fci21_si25_scientific_replay.sh | tee "$GITHUB_WORKSPACE/eq-richards-15.log"
+
+      - name: EQ-ET-DEMAND B1.10 reference equations
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/swap5-fvq99-prod
+          bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh | tee "$GITHUB_WORKSPACE/eq-et-demand.log"
+
+      - name: Record exact B0/B1.10 full-run asset status
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/swap5-fvq99-prod
+          python3 - <<'PY' | tee "$GITHUB_WORKSPACE/full-run-asset-status.txt"
+          from pathlib import Path
+          required = {
+              'exact_b0_source_archive_bytes': Path('reference/swap-4.3.1/b0/SWAP_4.3.1.zip'),
+              'authoritative_hupsel_case_directory': Path('reference/swap-4.3.1/cases/Hupsel'),
+          }
+          for name, path in required.items():
+              print(f'{name}={"PRESENT" if path.exists() else "ABSENT"}:{path}')
+          reconstruct = Path('tools/vq/b1_10_reconstruct.py')
+          print(f'b1_10_reconstructor={"PRESENT" if reconstruct.exists() else "ABSENT"}:{reconstruct}')
+          PY
+
+      - name: Summarize bounded qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo 'F_VQ99_REPOSITORY_RESIDENT_QUALIFICATION=PASS'
+            echo 'EQ_RICHARDS_15=PASS'
+            echo 'EQ_ET_DEMAND=PASS'
+            echo 'EQ_FULL_HUPSEL_LONG=BLOCKED_EXACT_EXTERNAL_ASSETS_REQUIRED'
+            echo 'EQ_RESTART_CONTINUATION=BLOCKED_COMPARABLE_B1_10_PERSISTED_STATE_NOT_ESTABLISHED'
+          } | tee qualification-summary.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-vq99-equivalence-evidence
+          path: |
+            authority.txt
+            eq-richards-15.log
+            eq-et-demand.log
+            full-run-asset-status.txt
+            qualification-summary.txt
+          if-no-files-found: warn
