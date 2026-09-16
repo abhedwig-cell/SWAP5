@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI93",
+  "title": "F-SI35 semantic successor preservation",
+  "phase": "QUALIFY_PENDING",
+  "decision": "RECONCILED_FCI58P_MOVING_BLOB_LOCK_SUPERSEDED_BY_FCI75_SEMANTIC_REQUALIFICATION",
+  "canonical_preimage": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+  "triggering_failure": {
+    "workflow": "F-CI58P F-SI35 postimage reconciliation and preservation",
+    "run_id": 35077154433,
+    "job_id": 104732176502,
+    "failed_path": "src/adapter/mod_b110_production_soil_water_task2.f90",
+    "reason": "historical F-CI58P exact blob lock was still applied to current HEAD after F-CI75 intentionally changed and semantically requalified the composition surface"
+  },
+  "historical_authority": {
+    "fci58_postimage": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "task2_blob": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "soilwater_blob": "c1850ea7fa82a1ed8974af57e1da95aa11a771be",
+    "preserved_as_historical_exact_evidence": true
+  },
+  "semantic_successor": {
+    "fci75_merge": "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+    "owner_authority": "19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+    "independent_authority": "f4f98637e963e07e2bedf7ef6acbcaab36e07e5a",
+    "status_a_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "current_task2_blob_equals_fci75": true,
+    "current_soilwater_blob_equals_fci75": true,
+    "fci75_explicitly_supersedes_historical_moving_blob_lock": true
+  },
+  "repair_contract": [
+    "do not rewrite historical F-CI58P exact authority",
+    "canonical preservation recognizes F-CI75 as admitted successor",
+    "current Task2 and SoilWater composition blobs must remain equal to F-CI75 and Status-A authorities",
+    "re-run F-SI35 typed-seam, HeadCalc-isolation, Task2, surface-regime, hard-mass, worker-isolation, retry and standalone-worker equivalence semantics at O0 and O2",
+    "fail closed on post-Status-A production/reference drift"
+  ],
+  "mutation": [
+    ".github/workflows/fci58p-fsi35-postimage-reconciliation.yml",
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+    "integration/f-ci/F-CI93_STATUS.json"
+  ],
+  "production_source_change": false,
+  "reference_source_change": false,
+  "scientific_semantics_change": false,
+  "nonclaims": [
+    "NO_FSI35_HISTORY_REWRITE",
+    "NO_PRODUCTION_READMISSION",
+    "NO_NEW_PHYSICS",
+    "NO_EB_CHANGE",
+    "NO_ROSSFAST_CHANGE"
+  ]
+}
