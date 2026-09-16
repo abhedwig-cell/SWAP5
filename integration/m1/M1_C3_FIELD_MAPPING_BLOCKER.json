@@ -85,16 +85,17 @@
     "post_fci95_interpretation": "The recorded SWBOTB=6 candidate-contract blocker is resolved, so F-VQ100 may be resumed in principle for its process-ready transactional snapshot claim. That claim remains narrower than M1 criterion 3 and cannot substitute for a legacy file-run adapter proof."
   },
   "input_side_authority": {
-    "f_vq99_exact_external_asset_sha256": "2b48353d7bcfa9489aab36bee7de01830ca2db578b1f64476b0c95eb99c140dd",
+    "f_vq99_exact_external_asset_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "asset_name": "SWAP_4.3.1.zip",
     "repository_state": "NOT_COMMITTED",
+    "file_library_provenance_note": "Independent August SWAP 4.3.1 audit material in the user's File Library records the same distribution filename and SHA-256, confirming provenance continuity; the raw ZIP itself was not returned by File Library search.",
     "persisted_github_evidence": {
       "f_vq99_production_tree_artifact_id": 10437335930,
       "f_vq99_production_tree_artifact_sha256": "4a605e9914133fb3252d8c2f2d604975a56b04dd3dfa1604059abc0b1cfa2541",
       "f_vq99_equivalence_evidence_artifact_id": 10436879124,
       "finding": "Persisted GitHub artifacts do not contain the exact full Hupsel source/input tree. F-VQ99 evidence records full_hupsel_source_present=no, swap_431_archive_present=no and hupsel_case_dir_present=no for the repository-only run."
     },
-    "consequence": "The exact raw-input application semantics cannot currently be replayed field-for-field from GitHub alone. The prior external materialization proves provenance/equivalence but is not a presently reproducible raw-input fixture inside the repository."
+    "consequence": "The exact distribution provenance is confirmed consistently across F-VQ99 and earlier audit material, but the raw ZIP/case tree is not currently available as a reproducible GitHub or File Library fixture. Exact raw-input application semantics therefore still cannot be replayed field-for-field from the currently accessible artifacts alone."
   },
   "verdict": "C3_BLOCKED_MISSING_REPRODUCIBLE_APPLICATION_COMPOSITION_AUTHORITY",
   "interpretation": "F-CI95 removes one concrete application-composition gap but does not close criterion 3. A file-driven Hupsel adapter still requires exact input-side application semantics for meteo/interception, crop/root extraction, drainage, irrigation/SSDI and any active optional processes. Those semantics must be recovered from the exact SWAP 4.3.1 Hupsel authority, not inferred from desired output or from the restricted DLL exchange path.",
@@ -107,7 +108,8 @@
     "F-CI95 canonical admission"
   ],
   "mutations": [
-    "Updated this M1-C3 reconciliation checkpoint only."
+    "Updated this M1-C3 reconciliation checkpoint only.",
+    "Corrected the F-VQ99 distribution SHA-256 provenance value to the exact authority recorded by F-VQ99."
   ],
   "production_source_changed": false,
   "reference_source_changed": false,
