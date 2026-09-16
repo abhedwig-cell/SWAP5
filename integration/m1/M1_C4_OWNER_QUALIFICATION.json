@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 4 - output serialization does not mutate physical state",
+  "phase": "QUALIFY_OWNER",
+  "branch": "work/m1-legacy-file-adapter-output-serialization",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
+    "live_recheck": "UNCHANGED_AT_QUALIFICATION_PERSIST"
+  },
+  "qualified_postimage": {
+    "head": "e2c924993296de9c8f2e5d8e4a8d44bac29dbc2e",
+    "tree": "5b486e1bd1695a9825fccc7aba4460d29a5880d6",
+    "production_file": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "production_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "test_file": "tests/m1/test_m1_c4_canonical_result_text_adapter.f90",
+    "test_blob": "6e75d11df08890985c7e993c85fb09aa7b0a5050",
+    "gate_file": "tests/m1/run_m1_c4_output_serialization_gate.sh",
+    "gate_blob": "627b16943c6ab3b266ac55dd5bd7b59609300f84"
+  },
+  "owner_ci": {
+    "workflow": ".github/workflows/m1-c4-output-serialization-owner.yml",
+    "successful_run_id": 35079209619,
+    "successful_job_id": 104738857165,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "SUCCESS",
+    "output_sha256": "9e5f5387af219cac0b48e5c9cffcc4bd946b017256a27f4a2d5767dda78198e1",
+    "pass_markers": [
+      "M1_C4_SINGLE_ADAPTER_PRODUCTION_DELTA=PASS",
+      "M1_C4_TYPED_RESULT_DEPENDENCY_LOCKS=PASS",
+      "M1_C4_TYPED_RESULT_ONLY_API=PASS",
+      "M1_C4_NO_PHYSICAL_STATE_AUTHORITY_STATIC=PASS",
+      "M1_C4_NO_PATH_FILE_UNIT_OR_PARSER_AUTHORITY=PASS",
+      "M1_C4_INTERNAL_FORMATTING_ONLY=PASS",
+      "M1_C4_RUNTIME_O0=PASS",
+      "M1_C4_RUNTIME_O2=PASS",
+      "M1_C4_TYPED_RESULT_SERIALIZATION=PASS",
+      "M1_C4_RESULT_INPUT_IDENTITY=PASS",
+      "M1_C4_NO_PHYSICAL_STATE_AUTHORITY=PASS",
+      "M1_C4_OUTPUT_SERIALIZATION_GATE=PASS",
+      "M1_C4_RUNTIME_O0_O2_IDENTITY=PASS",
+      "M1_C4_OUTPUT_SERIALIZATION_OWNER_GATE=PASS"
+    ]
+  },
+  "superseded_nonverdict_run": {
+    "run_id": 35079133856,
+    "job_id": 104738606321,
+    "classification": "NON_SCIENTIFIC_HARNESS_WARNING_POLICY_MISMATCH",
+    "reason": "The first owner gate promoted inherited exact-real comparison warnings in already-admitted canonical dependencies to errors through -Werror. No serializer or M1 contract failure occurred. The harness was aligned with current canonical warning policy without weakening the M1-specific static authority checks.",
+    "scientific_or_semantic_verdict": "NONE"
+  },
+  "qualified_claims": [
+    "The serializer consumes canonical_result_t with intent(in) only.",
+    "No physical state type crosses the serialization API.",
+    "The serializer has no path, external file-unit, parser, environment or command-line authority.",
+    "Only internal character-buffer formatting writes are performed.",
+    "Representative typed result input remains bit-identical across the tested deep-copy oracle after serialization.",
+    "O0 and O2 produce identical owner-gate output.",
+    "The only production delta from the frozen canonical preimage is the bounded result adapter."
+  ],
+  "warnings": {
+    "new_serializer_warnings_observed": false,
+    "inherited_warning_note": "Existing admitted transaction modules emit exact-real comparison warnings under -Wall/-Wextra; these are pre-existing and outside this M1 change."
+  },
+  "criterion_4_verdict": "PASS_OWNER_QUALIFICATION",
+  "admission_status": "NOT_INDEPENDENTLY_QUALIFIED_NOT_ADMITTED",
+  "criterion_3_status": "OPEN_BLOCKED_PENDING_REAL_LEGACY_FILE_ROUTE_PROVENANCE",
+  "m1_overall_status": "NOT_CLOSED",
+  "next_permitted_action": "Recover a real preserved legacy file-driven SWAP 4.3.1 fixture/parser/execution authority from historical qualification/reference branches. Do not fabricate input. If recovered, persist exact provenance before implementing the smallest criterion-3 adapter bridge. Independent qualification and canonical admission of criterion 4 remain required before M1 closure."
+}
