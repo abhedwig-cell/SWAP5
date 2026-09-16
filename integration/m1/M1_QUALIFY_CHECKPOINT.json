@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 — Typed External Boundary",
+  "phase": "QUALIFY",
+  "protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "branch": "work/m1-typed-external-boundary-reconciliation",
+  "predecessor_checkpoint": "d6445c071b637d8ecf825c9e537ac887441aa9da",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "expected_head_at_resume": "80c6faaa8a277d9596a6da7bc5d2244c0df1bb82",
+    "live_head_at_qualification": "8f592dcc1651913b2b24356fd6379e7fafa817a4",
+    "tree": "199824d7bb7388718674e4898e1aa45ea6d56c31",
+    "delta_assessment": "The canonical move after 80c6faaa is documentation/provenance-only F-PE13 closure material and does not mutate the inherited M1 typed-runtime dependency surface. Criteria 1-2 therefore remain inherited and were not reopened."
+  },
+  "normative_sources": [
+    {
+      "path": "D3d_MIGRATION_SLICES_AND_GATES.md",
+      "blob": "257b51375254a09ea261e5caed36955da5c69ee0"
+    },
+    {
+      "path": "docs/architecture/migration-slices.md",
+      "role": "current exact M1 exit-gate wording"
+    }
+  ],
+  "normative_exit_criteria_exact": [
+    "a non-file in-memory invocation path reaches the computational boundary;",
+    "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+    "legacy file runs still reproduce reference results through adapters;",
+    "output serialization does not mutate physical state;",
+    "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files."
+  ],
+  "criterion_verdicts": [
+    {
+      "criterion": 1,
+      "text": "a non-file in-memory invocation path reaches the computational boundary;",
+      "verdict": "PASS_EXISTING_EVIDENCE",
+      "inheritance": "Inherited unchanged from d6445c07; no relevant dependency delta.",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee"
+      ]
+    },
+    {
+      "criterion": 2,
+      "text": "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+      "verdict": "PASS_EXISTING_EVIDENCE",
+      "inheritance": "Inherited unchanged from d6445c07; no relevant dependency delta.",
+      "scope_note": "This is the current typed runtime/kernel surface only and does not claim wholesale legacy-IO removal."
+    },
+    {
+      "criterion": 3,
+      "text": "legacy file runs still reproduce reference results through adapters;",
+      "verdict": "FAIL_SEMANTIC_GAP",
+      "evidence_checked": [
+        "docs/architecture/legacy-migration-control.md blob eed96560d991e1b595acd78d8d6b390b9d26b78a maps readswap.f90 to ADAPTER and requires conversion to typed parameter/state/forcing/configuration objects; swapoutput.f90 and swap_csv_output.f90 are likewise target output adapters.",
+        "D3c_LEGACY_TO_TARGET_MIGRATION_MAP.md blob aaf26fc8d28ccac99253c516c9a7369a84e41f91 states migration intent, not implementation admission.",
+        "Current src/adapter tree 92b94d6335e2d19ec511f482269f5e750dd9a820 contains transactional, groundwater, Richards-binding and RossFast-specific adapters, but no generic readswap/parser/file-driven SWAP adapter that constructs the M1 typed request model.",
+        "src/adapter/mod_reference_richards_legacy_binding.f90 blob 03a64b6d09fd804242bcf76f7cb5277f59a6230a is a legacy model-state-to-typed-solver binding and is not file-I/O adaptation.",
+        "src/adapter/mod_rossfast_application_config_file_adapter.f90 blob 55dc1632eb4d72d52cc2e038765710801bee5dd2 is RossFast-specific and is explicitly excluded from project-wide M1 authority.",
+        "Status-A release-readiness evidence proves legacy/reference scientific preservation and direct O0/O2 equality, but it does not claim that the normal legacy file-driven route is translated through the generic typed M1 boundary."
+      ],
+      "reason": "The normative gate requires the legacy file-driven route itself to remain reference-equivalent through adapters. Current canonical contains the target architecture and separate reference-preservation evidence, but no generic file-reader-to-typed-request adapter route was located. A preservation checksum of the reference executable is not evidence of this adapter topology.",
+      "smallest_next_permitted_action": "Before any implementation, perform one final bounded historical-branch/provenance recovery for a previously implemented generic legacy file-input adapter, if one exists. If none exists, M1 requires a separately governed minimal production capability that leaves legacy parsing/file semantics outside the kernel and maps one preserved legacy run into the already-admitted typed runtime. Do not use F-APP01, F-ROSS12 or the RossFast config adapter as substitutes."
+    },
+    {
+      "criterion": 4,
+      "text": "output serialization does not mutate physical state;",
+      "verdict": "BLOCKED_MISSING_EVIDENCE",
+      "evidence_checked": [
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee keeps externally committed state untouched in a private working clone until complete interval acceptance.",
+        "tests/fkt/test_fkt21_publication_identity.f90 blob d65a3147364f4922f8be1f7150550a7643c04ee5 proves accepted-trajectory publication can be enabled without changing the tested physical candidate path and reports FKT21_ON_OFF_PHYSICAL_IDENTITY=PASS when executed by its qualified gate.",
+        "The current generic src/adapter tree does not identify a legacy/current SWAP output serializer consuming typed results; the migration map still describes swapoutput.f90 and swap_csv_output.f90 as target adapter responsibilities."
+      ],
+      "reason": "Transactional publication and F-KT publication identity are strong adjacent evidence, but they are not proof that an actual M1 output serializer is read-only with respect to committed physical state. Absence of an obvious write is insufficient, and no direct serializer before/after state equality contract was located.",
+      "smallest_next_permitted_action": "Once the actual generic output-serialization surface is identified or implemented, add one qualification-only before/after committed-state equality/hash probe around serialization. Do not modify production merely to make that probe easy."
+    },
+    {
+      "criterion": 5,
+      "text": "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files.",
+      "verdict": "PASS_EXISTING_EVIDENCE",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72 defines canonical_interval_t with real(real64) t0/t1 rather than day/calendar file coordinates.",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee accepts a generic positive [t0,t1] interval and contains no midnight/day/calendar rejection rule; invalidity is based on interval ordering, progress and numerical-policy bounds.",
+        "D3e_M3_GATE_EVIDENCE.md blob 0d27654699fb4e4657cfb30d8675c3c16299df26 records supporting sub-day/API evidence from prior 6-hour synchronization and coupling testbanks.",
+        "tests/fkt/test_fkt21_publication_identity.f90 blob d65a3147364f4922f8be1f7150550a7643c04ee5 also exercises typed accepted-trajectory contracts on fractional, non-midnight coordinates; this is supporting rather than sole M1 authority."
+      ],
+      "scope_note": "This verdict does not create arbitrary new scientific duration semantics. It only establishes that the typed runtime boundary itself has no historical daily/midnight file restriction."
+    }
+  ],
+  "qualification_verdict": "M1_NOT_CLOSED_CURRENT_CANONICAL_CRITERIA_3_AND_4_UNSATISFIED",
+  "close_verdict": "NOT_CLOSED",
+  "production_mutation": "NONE",
+  "mutations": [
+    "Added this qualification checkpoint only on the existing M1 reconciliation branch.",
+    "No production source, reference source, physics, solver policy, legacy default route, IO grammar, EB, RossFast science/domain or canonical branch was modified."
+  ],
+  "explicit_boundaries": [
+    "M1 is a typed external-boundary migration gate, not a broad stable Public API milestone.",
+    "F-APP01 is not M1 authority.",
+    "F-ROSS12 and RossFast-specific file adapters are not substitutes for project-wide M1.",
+    "Reference O0/O2 preservation alone does not prove criterion 3 adapter topology.",
+    "Transactional publication evidence alone does not prove criterion 4 serializer read-only semantics."
+  ],
+  "explicit_exclusions": [
+    "EB",
+    "RossFast scientific or domain expansion",
+    "F-ROSS12 as M1 substitute",
+    "broad public API design",
+    "SW_SOLVE reinterpretation",
+    "new physics",
+    "automatic backend fallback",
+    "legacy default-route change",
+    "production refactoring merely to improve architecture",
+    "reopening canonically closed capabilities without dependency evidence"
+  ],
+  "next_permitted_action": "Do not close M1. First perform a bounded exact-provenance search for any pre-existing generic legacy file-input/output adapter implementation omitted from current canonical. If no such implementation exists, stop the evidence-recovery campaign and open a separately governed minimal M1 adapter/serialization implementation decision surface; preserve the current typed runtime and legacy route, then independently qualify criteria 3 and 4 before returning to CLOSE."
+}
