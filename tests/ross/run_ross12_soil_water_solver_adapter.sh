@@ -46,7 +46,10 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TEST" -o "$m/test.o"
   gfortran -fopenmp "$m/tx.o" "$m/stepdir.o" "$m/trajsens.o" "$m/trajpub.o" "$m/contracts.o" "$m/sw.o" \
     "$m/refbind.o" "$m/policy.o" "$m/binding.o" "$m/kernel.o" "$m/provider.o" "$m/adapter.o" "$m/test.o" -o "$m/test"
-  "$m/test" assets/rossfast > "$m/output.txt"
+  if ! "$m/test" assets/rossfast > "$m/output.txt"; then
+    cat "$m/output.txt"
+    exit 1
+  fi
   grep -Fq 'ROSS12_SOIL_WATER_SOLVER_ADAPTER PASS' "$m/output.txt"
 done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
