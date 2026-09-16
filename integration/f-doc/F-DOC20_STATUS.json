@@ -22,6 +22,14 @@
     "mkdocs_build_strict": "PASS",
     "deployment": "SKIPPED_ON_PR_AS_DESIGNED"
   },
+  "qualified_capability_slice": {
+    "head": "e7a8c712c5c11a332e0c3e56231693a781002c3d",
+    "workflow_run": 35107000010,
+    "job": 104830709965,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "deployment": "SKIPPED_ON_PR_AS_DESIGNED"
+  },
   "scientific_authority_reconciliation": {
     "F_DOC16": {
       "classification": "CURRENT_REUSABLE_WITH_RECONCILIATION",
@@ -78,10 +86,13 @@
       "docs/capabilities/restricted-snow.md",
       "docs/capabilities/groundwater-coupling-v1.md"
     ],
+    "practical_entry_page": "docs/getting-started.md",
+    "practical_entry_finding": "The repository has a qualified minimal application-host contract and deterministic owner runner, but no current authority for a single broad stable end-user SWAP5 CLI or replacement universal input/output grammar.",
     "documentation_completion_rule": "Missing but reconstructable documentation is written from accepted theory/code/evidence; missing unproven authority is recorded as a gap and is not invented.",
     "review_guide_refreshed": true,
     "mkdocs_navigation_refreshed": true,
     "science_index_capability_route_added": true,
+    "home_practical_route_added": true,
     "f_ar01_added_to_navigation": true,
     "production_source_change": false,
     "reference_source_change": false
@@ -93,8 +104,7 @@
     "rule": "Do not publish the colleague-review portal until the workflow deploy source is an explicit frozen review publication authority and the site itself displays both scientific and documentation git authorities."
   },
   "next_actions": [
-    "Qualify the expanded Science/Numerics/equivalence/capability slice on PR #162.",
-    "Add a concise user-oriented build/run/input/output entry layer without broadening scientific claims.",
+    "Qualify the practical getting-started slice on PR #162.",
     "Add generated Fortran source-reference integration only after the human review hierarchy is stable.",
     "Create/freeze the publication authority and update the Pages workflow away from stale-main-only publication.",
     "Run strict docs qualification and external publication verification before CLOSE."
@@ -104,6 +114,7 @@
     "Historical F-DOC branches are not silently promoted to current canonical authority.",
     "The review portal does not claim complete whole-application SWAP 4.3.1/SWAP5 equivalence before that experiment is validly executed.",
     "Post-Status-A capability development remains outside the first frozen scientific review denominator unless explicitly added before a later freeze.",
-    "Capability documentation does not broaden admitted Restart, MultiSWAP, WOFOST, Snow, drainage or groundwater semantics."
+    "Capability documentation does not broaden admitted Restart, MultiSWAP, WOFOST, Snow, drainage or groundwater semantics.",
+    "Internal qualification runners are not represented as a broad stable end-user SWAP5 application interface."
   ]
 }
