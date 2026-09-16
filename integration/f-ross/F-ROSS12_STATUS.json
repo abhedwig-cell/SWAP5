@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS12",
+  "title": "RossFast surgical Richards-solver substitution",
+  "phase": "ADAPTER_QUALIFIED_PENDING_ADMISSION",
+  "decision": "REPLACE_APPLICATION_RUNTIME_DRIFT_WITH_SOLVER_CONTRACT_ADAPTER",
+  "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-ross12-production-host-explicit-selection",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "3a3d81206711bbeb4d7ff31ba2eb95741d8f7747",
+  "resume_head": "b95708785fe34f38c5cb57f2dd01172d028191a0",
+  "reconcile": {
+    "f_app01_selection_host_blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+    "soil_water_solver_contract_blob": "276941d76ba951a89c43899e61fd0532418d8230",
+    "serialized_reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "rossfast_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "rossfast_model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "canonical_delta_since_design_checkpoint": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4..3a3d81206711bbeb4d7ff31ba2eb95741d8f7747",
+    "canonical_delta_relevance": "Documentation/publication files only; no F-ROSS12 production, solver, runtime, transaction, asset or test dependency changed.",
+    "finding": "The canonical Reference path already constructs soil_water_solve_request_t and has exactly one polymorphic soil_water_solver_t solve seam in fmr_serialized_advance. F-ROSS11 whole-model application composition is therefore too high-level for production solver substitution."
+  },
+  "bounded_scope": {
+    "goal": "Use the existing soil_water_solver_t seam so Reference and RossFast share SWAP state, forcing, transaction and commit lifecycle; only the concrete Richards solution method changes.",
+    "reference_path_unchanged": true,
+    "rossfast_kernel_science_unchanged": true,
+    "solver_contract_abi_unchanged": true,
+    "legacy_input_grammar_unchanged": true,
+    "unsupported_rossfast_envelope_fails_closed": true
+  },
+  "qualified_rossfast_envelope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "active_nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "prescribed_flux_boundaries_only": true,
+    "distributed_source_sink": false,
+    "root_sink": false,
+    "groundwater_boundary": false,
+    "energy_or_soil_temperature": false,
+    "mixed_multiswap": false
+  },
+  "adapter_qualification": {
+    "adapter_blob": "6fb095d4a9cdcf16e80e3640c9ad253c624417f5",
+    "runner_head": "b95708785fe34f38c5cb57f2dd01172d028191a0",
+    "workflow": "F-ROSS12 soil-water solver adapter",
+    "run_id": 35113102363,
+    "job_id": 104851574358,
+    "result": "PASS",
+    "optimization_modes": ["O0", "O2"],
+    "o0_o2_output_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888",
+    "evidence": [
+      "RossFast adapter initializes against immutable D3R table assets.",
+      "Real D3R table-kernel route executes through soil_water_solver_t.",
+      "Candidate state and bounded mass residual are returned.",
+      "Temporal certificate is retained.",
+      "Unsupported bottom-head, sensitivity, ponding and distributed-source cases fail closed.",
+      "Missing assets and unsupported materials fail before solve.",
+      "O0 and O2 output are byte-identical."
+    ]
+  },
+  "implementation_plan": [
+    "Add a thin RossFast adapter implementing soil_water_solver_t around the unchanged rossfast_d3r_table_kernel_t. QUALIFIED.",
+    "Translate the existing soil_water_solve_request_t state and prescribed fluxes to the qualified RossFast kernel request and translate its candidate back to soil_water_solve_result_t. QUALIFIED.",
+    "Bind model choice at the existing fmr_serialized_advance solver call, preserving Reference code path byte-for-byte where practical. NOT YET STARTED.",
+    "Fail closed before physical mutation when selected RossFast configuration lies outside the admitted envelope. ADAPTER LEVEL QUALIFIED; PRODUCTION WIRING NOT YET STARTED.",
+    "Qualify production wiring with Reference bypass, RossFast delegation, rejection/no-mutation and real table-kernel execution. PENDING."
+  ],
+  "production_mutation": false,
+  "scientific_semantics_change": false,
+  "reference_semantics_change": false,
+  "next_permitted_action": "Admit the adapter-only PR #164 after current canonical qualification remains green. Then start a separate production-wiring decision surface from the admitted canonical head; inspect and modify only the existing fmr_serialized_advance solver call and explicit application-selection binding.",
+  "explicit_exclusions": [
+    "F-ROSS11 whole-model runtime as production execution host",
+    "energy balance",
+    "groundwater RossFast support",
+    "root or general source-sink RossFast support",
+    "heterogeneous-profile generalization",
+    "mixed Reference/RossFast MultiSWAP",
+    "automatic solver fallback",
+    "silent model selection",
+    "SW_SOLVE reinterpretation",
+    "legacy .swp grammar redesign",
+    "soil_water_solver_t ABI redesign"
+  ]
+}
