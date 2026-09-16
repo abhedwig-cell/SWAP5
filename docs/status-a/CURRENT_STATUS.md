@@ -42,8 +42,24 @@ The current Status-A denominator includes the following capability families with
 | Snow | Snow is admitted only for the restricted one-call-daily path that was qualified and canonically closed. |
 | Groundwater Coupling v1 | The admitted groundwater chain includes the bounded internal coupling contract and the current external gateway boundary. Coupling publication follows the accepted-state contract. |
 | External groundwater gateway | Gateway v1 is the admitted structural external-coupling seam. Its existence does not itself admit a broad concrete MODFLOW backend or arbitrary external-backend semantics. |
-| F-PE11 performance closure | F-PE11 closes the qualified surface-evaporation allocation/scaling performance evidence at the Status-A boundary. It does not alter scientific semantics and is not a blanket whole-model or MultiSWAP speedup claim. |
-| Permanent testbank / qualification | Current-canonical preservation is protected by capability qualification plus permanent regression authority, including [`F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md`](../testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md). |
+| F-PE11 performance closure | F-PE11 preserves the already admitted call-local surface-evaporation allocation/scaling semantics. Its current-head closure was a `NO_OP`: no production/reference mutation was required. It is not a blanket whole-model, MultiSWAP or portable speed guarantee. |
+| Permanent testbank / qualification | The current Status-A release-readiness authority inherits same-tree permanent baseline, smoke, kernel, transactional, independent-oracle, mixed-smoke and numerical suites plus capability-specific moving-current evidence. Earlier [`F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md`](../testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md) remains an important permanent-testbank architecture/snapshot, but it is explicitly bound to older canonical `379afd11…` and is not itself the preservation authority for `992a5c657…`. |
+
+## Current preservation authority
+
+For the pinned scientific production tree, the release-readiness record inherits the same-tree F-GC29 replay. It reports PASS for reference O0/O2 equality and closure, scientific gates, Restart v1, serialized MultiSWAP v1, drainage, surface evaporation, restricted Snow, Groundwater Coupling v1 and these permanent suites:
+
+- `tests/run-baseline.sh`
+- `tests/run-smoke.sh`
+- `tests/run-kernel.sh`
+- `tests/run-transactional.sh`
+- `tests/run-independent-oracle.sh`
+- `tests/run-mixed-smoke.sh`
+- `tests/run-numerical.sh`
+
+Restricted Snow also has an exact-head preservation workflow on `50346642…`. F-PE11 uses dependency-aware current-head preservation: its close authority records no relevant production/reference dependency change and therefore no duplicate admission or benchmark rerun was required.
+
+This distinction matters because a permanent-testbank document can be architecturally authoritative for its recorded snapshot while not automatically covering a later canonical head.
 
 ## Deliberate bounds on current claims
 
@@ -52,7 +68,7 @@ The following statements are part of the current documentation contract:
 - restricted Snow admission does not imply subdaily, multi-day, arbitrary-duration or advanced Snow semantics;
 - serialized MultiSWAP v1 does not imply parallel or concurrent real-physics admission;
 - Groundwater Coupling v1 and the external gateway do not imply broad MODFLOW backend evolution;
-- F-PE11 does not establish a guaranteed whole-model speedup, a general MultiSWAP speedup, automatic rebatching, execution-class switching, GPU execution or a change in physics;
+- F-PE11 does not establish a guaranteed whole-model speedup, a general MultiSWAP speedup, a portable speed guarantee, automatic rebatching, execution-class switching, GPU execution or a change in physics;
 - bounded WOFOST runtime admission does not create a broad stable public API;
 - capabilities outside the Status-A denominator are not automatically defects. They are blockers only when an applicable acceptance authority classifies them that way.
 
