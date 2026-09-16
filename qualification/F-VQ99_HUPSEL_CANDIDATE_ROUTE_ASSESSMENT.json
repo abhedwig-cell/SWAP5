@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ99",
+  "phase": "POST_CLOSE_CANDIDATE_ROUTE_ASSESSMENT",
+  "parent_reference_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+  "authorities": {
+    "swap5_status_a": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "finding": "CLASSIC_SWAP_MAIN_IS_A_LEGACY_COMPATIBILITY_ENTRYPOINT_NOT_A_VALID_PROXY_FOR_CANONICAL_TRANSACTIONAL_SWAP5_CANDIDATE_EXECUTION",
+  "evidence": [
+    {
+      "path": "src/legacy/b1_10_port/swap_main.f90",
+      "fact": "The standalone main preserves the three legacy tasks initialization/dynamic/closure and calls swap(iCaller,iTask,tstart_in,tend_in) without the optional worker context."
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "fact": "canonical_trial is defined as present(worker); when worker is absent the code follows the legacy compatibility context."
+    },
+    {
+      "path": "tools/fci/fci06_controlled_source_port_gate.py",
+      "fact": "F-CI06 explicitly requires standalone_calls_unchanged, admits only CONTROLLED_SOURCE_PORT_SEAM, does not admit FULL_PHYSICAL_TRANSACTION_ADAPTER, and records full B1.10 end-to-end numerical reference qualification as pending."
+    },
+    {
+      "path": "testbank/manifests/F-TB11_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PRESERVATION.json",
+      "fact": "The permanent capability bank covers transaction/mass, restart, serialized MultiSWAP, full Richards, solver seam and ET/process surfaces, but contains no Hupsel or full file-driven standalone oracle."
+    },
+    {
+      "path": "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+      "fact": "Broad public API / wholesale legacy IO modernization is explicitly future scope, not part of the Status-A denominator."
+    }
+  ],
+  "adversarial_check": {
+    "invalid_shortcut": "Run the official Hupsel case through src/legacy/b1_10_port/swap_main.f90 and call the result SWAP5.",
+    "why_invalid": "The standalone call omits worker and therefore does not prove the canonical transactional production path. Exact agreement could merely demonstrate preserved legacy compatibility, producing a false-positive SWAP5 equivalence claim.",
+    "decision": "REJECT_SHORTCUT"
+  },
+  "eq_full_hupsel_long": {
+    "reference_side": "MATERIALIZED_AND_REPRODUCIBLE",
+    "candidate_side": "NO_PREEXISTING_QUALIFIED_FULL_HUPSEL_APPLICATION_COMPOSITION_AND_OUTPUT_MAPPING",
+    "full_matrix_comparison": "NOT_RUN",
+    "class_v_difference_observed": false
+  },
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "qualification_metadata_only": true
+  },
+  "global_verdict": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED",
+  "next_permitted_action": "If full Hupsel end-to-end comparison becomes an explicit acceptance surface, start a separately bounded qualification/application-composition workunit. First prove an existing canonical transactional composition without changing physics or implementing wholesale IO/API, then freeze variable/time mapping and tolerances before observing SWAP5 differences."
+}
