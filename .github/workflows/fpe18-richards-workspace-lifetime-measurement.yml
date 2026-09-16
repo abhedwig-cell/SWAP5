@@ -1,0 +1,41 @@
+name: F-PE18 Richards Workspace Lifetime Measurement
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE18_RICHARDS_WORKSPACE_LIFETIME_CHECKPOINT.md'
+      - 'tests/fpe/test_fpe18_richards_workspace_lifetime_timing.f90'
+      - 'tests/fpe/run_fpe18_richards_workspace_lifetime_measurement.sh'
+      - '.github/workflows/fpe18-richards-workspace-lifetime-measurement.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler metadata
+        run: |
+          gfortran --version
+          python3 --version
+          git rev-parse HEAD
+
+      - name: Run paired workspace lifetime measurement
+        run: bash tests/fpe/run_fpe18_richards_workspace_lifetime_measurement.sh
+
+      - name: Upload raw and summarized measurement evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe18-richards-workspace-lifetime
+          path: artifacts/fpe18-workspace-lifetime
+          if-no-files-found: error
