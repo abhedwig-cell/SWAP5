@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
 import csv
 import hashlib
 import io
@@ -10,17 +11,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 RECEIPT = ROOT / "F-TB13_FRESH_REPLAY_RECEIPT.json"
-ARCHIVE = ROOT / "F-TB13_RECOVERED_ANALYTICAL_ASSETS.tar.gz"
+PARTS_DIR = ROOT / "asset_parts"
 EXPECTED_ARCHIVE_SHA256 = "57a75c64e1b057223fbd32ac3051a2c56938209f19b86912d7236f4f1d5fc069"
+EXPECTED_ARCHIVE_BYTES = 17122
+EXPECTED_CARRIER_BYTES = 22832
 EXPECTED_B1_11_MANIFEST = "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
 
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    return sha256_bytes(path.read_bytes())
 
 
 def fail(message: str) -> None:
@@ -31,11 +30,27 @@ def csv_rows(data: bytes) -> list[dict[str, str]]:
     return list(csv.DictReader(io.StringIO(data.decode("utf-8"))))
 
 
+def reconstruct_archive() -> bytes:
+    parts = sorted(PARTS_DIR.glob("F-TB13_RECOVERED_ANALYTICAL_ASSETS.tar.gz.b64.part*"))
+    if len(parts) != 4:
+        fail(f"carrier part count {len(parts)} != 4")
+    encoded = b"".join(path.read_bytes() for path in parts)
+    if len(encoded) != EXPECTED_CARRIER_BYTES:
+        fail(f"carrier byte count {len(encoded)} != {EXPECTED_CARRIER_BYTES}")
+    try:
+        archive = base64.b64decode(encoded, validate=True)
+    except Exception as exc:
+        fail(f"invalid base64 carrier: {exc}")
+    if len(archive) != EXPECTED_ARCHIVE_BYTES:
+        fail(f"archive byte count {len(archive)} != {EXPECTED_ARCHIVE_BYTES}")
+    if sha256_bytes(archive) != EXPECTED_ARCHIVE_SHA256:
+        fail("archive hash")
+    return archive
+
+
 def main() -> int:
     if not RECEIPT.is_file():
         fail("missing replay receipt")
-    if not ARCHIVE.is_file():
-        fail("missing preserved analytical asset archive")
 
     receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
     if receipt.get("schema") != "swap5.ftb13.legacy_analytical_reference_replay.v1":
@@ -50,20 +65,18 @@ def main() -> int:
     archive_meta = receipt.get("asset_archive", {})
     if archive_meta.get("sha256") != EXPECTED_ARCHIVE_SHA256:
         fail("receipt archive pin")
-    if archive_meta.get("bytes") != ARCHIVE.stat().st_size:
-        fail("archive byte count")
-    if sha256_file(ARCHIVE) != EXPECTED_ARCHIVE_SHA256:
-        fail("archive hash")
-
+    if archive_meta.get("bytes") != EXPECTED_ARCHIVE_BYTES:
+        fail("receipt archive byte count")
     expected_members: dict[str, str] = archive_meta.get("members", {})
     if len(expected_members) != 9:
         fail("expected member count in receipt")
 
-    with tarfile.open(ARCHIVE, "r:gz") as tf:
+    archive = reconstruct_archive()
+    materialized: dict[str, bytes] = {}
+    with tarfile.open(fileobj=io.BytesIO(archive), mode="r:gz") as tf:
         actual_names = [member.name for member in tf.getmembers() if member.isfile()]
         if set(actual_names) != set(expected_members):
             fail(f"archive member set: {actual_names}")
-        materialized: dict[str, bytes] = {}
         for name, expected_sha in expected_members.items():
             member = tf.getmember(name)
             handle = tf.extractfile(member)
