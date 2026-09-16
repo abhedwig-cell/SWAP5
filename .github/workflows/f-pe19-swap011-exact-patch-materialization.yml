@@ -1,0 +1,43 @@
+name: F-PE19 exact SWAP-011 patch materialization
+
+on:
+  push:
+    branches:
+      - work/f-pe19-swap011-b1-admission
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[f-pe19-materialized]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize and verify exact ordered patch
+        run: |
+          set -euo pipefail
+          python3 reference/swap-4.3.1/patches/SWAP-011/materialize_exact_fix_patch.py
+          echo '1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238  reference/swap-4.3.1/patches/SWAP-011/fix.patch' | sha256sum -c -
+          test "$(wc -c < reference/swap-4.3.1/patches/SWAP-011/fix.patch)" = 37169
+
+      - name: Commit only exact patch payload
+        run: |
+          set -euo pipefail
+          changed="$(git status --short -- reference/swap-4.3.1/patches/SWAP-011/fix.patch)"
+          if test -z "$changed"; then
+            echo 'F_PE19_EXACT_PATCH_ALREADY_MATERIALIZED=PASS'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reference/swap-4.3.1/patches/SWAP-011/fix.patch
+          git commit -m 'F-PE19: materialize exact SWAP-011 ordered patch [f-pe19-materialized]'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo 'F_PE19_EXACT_PATCH_PUSHED=PASS'
