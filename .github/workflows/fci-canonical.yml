@@ -308,7 +308,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          AUTH=b4e637885eafa6c193257cd11fa5b6fb45c18fa3
+          AUTH=50346642bd565f79134ea17d5462e544b354998c
           TX=src/transaction/mod_transaction_reference.f90
           TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
