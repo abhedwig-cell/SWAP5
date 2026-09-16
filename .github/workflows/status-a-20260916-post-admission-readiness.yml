@@ -1,0 +1,46 @@
+name: Status-A 20260916 post-admission readiness
+
+on:
+  push:
+    branches:
+      - qualification/f-status-a-release-readiness-post-admission
+    paths:
+      - 'qualification/run_status_a_20260916_post_admission.sh'
+      - 'qualification/status_a_dependency_closure.py'
+      - '.github/workflows/status-a-20260916-post-admission-readiness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch complete authority namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run bounded post-admission Status-A qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          bash qualification/run_status_a_20260916_post_admission.sh 2>&1 | tee status-a-20260916-post-admission.log
+
+      - name: Persist qualification diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: status-a-20260916-post-admission-${{ github.run_id }}
+          path: status-a-20260916-post-admission.log
+          if-no-files-found: error
