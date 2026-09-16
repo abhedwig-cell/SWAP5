@@ -21,9 +21,23 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 1. [Conceptual system and boundaries](conceptual-model.md)
 2. [Vertical soil-water flow](soil-water-flow.md)
 3. [Surface evaporation](surface-evaporation.md)
-4. [Numerical formulation](../numerics/index.md)
-5. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-6. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+4. [Status-A capability review pages](../capabilities/index.md)
+5. [Numerical formulation](../numerics/index.md)
+6. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+7. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+
+## Admitted capability narratives
+
+Some Status-A capabilities need a bounded reviewer-facing explanation even though their primary authority is architectural, runtime or capability-specific rather than one historical master theory document. The [Status-A capability review pages](../capabilities/index.md) now document:
+
+- Restart v1;
+- serialized MultiSWAP v1;
+- Drainage;
+- bounded WOFOST runtime;
+- restricted one-call-daily Snow;
+- Groundwater Coupling v1.
+
+These pages reconstruct only what can be supported from accepted theory, code, qualification and Status-A evidence. Where authority is insufficient for a broader scientific statement, the boundary or gap is documented rather than filled by assumption.
 
 ## Conceptual scope is not release admission
 
