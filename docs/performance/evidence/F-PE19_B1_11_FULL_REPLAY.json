@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "capability": "F-PE19 SWAP-011 B1 admission",
+  "phase": "QUALIFY",
+  "verdict": "PASS",
+  "replay_scope": "exact B0 distribution -> qualified B1.10 -> SWAP-011 -> B1.11",
+  "inputs": {
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "e7_upstream_package_sha256": "97e31ea1216e4796ab3df5cb062f1d46c2c396f5dcbe90b4f783144b8a9162ac",
+    "historical_e7_patch_sha256": "9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110",
+    "ordered_b1_10_admission_patch_sha256": "1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238"
+  },
+  "reconstructed_snapshots": {
+    "B1.5p1": {"member_count": 63, "source_bytes": 1860109, "member_manifest_sha256": "c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30"},
+    "B1.6": {"member_count": 63, "source_bytes": 1860085, "member_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0"},
+    "B1.7": {"member_count": 63, "source_bytes": 1860091, "member_manifest_sha256": "62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba"},
+    "B1.8": {"member_count": 63, "source_bytes": 1860493, "member_manifest_sha256": "e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae"},
+    "B1.9": {"member_count": 63, "source_bytes": 1863300, "member_manifest_sha256": "5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657"},
+    "B1.10": {"member_count": 63, "source_bytes": 1863575, "member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"},
+    "B1.11": {"member_count": 63, "source_bytes": 1886519, "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"}
+  },
+  "swap011_target_postimages": {
+    "SWAP/MOD_MvG_functions.f90": "6b65ce49904aa0c037d6f43f93115af7d35227b7f67d52dbdd96b614da955ab5",
+    "SWAP/WC_K_models_04_11.f90": "e963989e81622cf0554aeeb6ecae705e20b41ff03e259e1b8753df0609884874",
+    "SWAP/MOD_RIA.f90": "fe696bdf463259868ad3659072566babc8288ab1d8329bf068f8d3b5945a0d2f"
+  },
+  "unchanged": {
+    "SWAP/headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "checks": {
+    "outer_distribution_identity": "PASS",
+    "nested_source_archive_identity": "PASS",
+    "historical_e7_patch_identity": "PASS",
+    "ordered_b1_10_predecessor_identity": "PASS",
+    "byte_safe_mod_ria_application": "PASS",
+    "b1_11_frozen_identity": "PASS"
+  },
+  "production_source_modified": false,
+  "mass_tolerance_changed": false,
+  "next_permitted_action": "ADMIT_B1_11"
+}

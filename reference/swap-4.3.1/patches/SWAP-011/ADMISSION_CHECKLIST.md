@@ -25,14 +25,15 @@ Formal B1 admission occurs only when every mandatory gate is satisfied and `SWAP
 | Byte-safe ordered applicator stored | PASS |
 | Prospective B1.11 63-member identity frozen | PASS |
 | B1.11 reconstruction gate stored and fail-closed | PASS |
-| Full reconstruction from canonical B0 distribution reproduces frozen B1.11 identity | **BLOCKED: CANONICAL B0 ARCHIVE BYTES REQUIRED** |
-| Difference ledger promoted to `ADMITTED_B1` | **PENDING** |
-| B1 manifest updated with ordered `SWAP-011` entry | **PENDING** |
-| B1.11 published as immutable corrected-reference snapshot | **PENDING** |
+| Full reconstruction from canonical B0 distribution reproduces frozen B1.11 identity | PASS |
+| Difference ledger promoted to `ADMITTED_B1` | PASS |
+| B1 manifest updated with ordered `SWAP-011` entry | PASS |
+| B1.11 published as immutable corrected-reference snapshot | PASS |
 
-Current conclusion: **qualified and mechanically ready, but formal admission remains fail-closed on the full canonical B0 archive replay**.
+Current conclusion: **all mandatory SWAP-011 B1 admission gates PASS; B1.11 is the qualified corrected-reference snapshot on this admission branch**.
 
-Canonical controlling identities for the missing replay input are:
+Canonical replay identities:
 
 - distribution `SWAP_4.3.1.zip`: `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
-- nested source archive `SWAP.ZIP`: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
+- nested source archive `SWAP.ZIP`: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`;
+- B1.11 source manifest: `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.

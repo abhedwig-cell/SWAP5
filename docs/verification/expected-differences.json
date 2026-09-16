@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.10",
+      "candidate": "B1.11",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -120,6 +120,17 @@
           "expected_direction_or_envelope": "For starts on or after later tillage events, B1.10 sets iTill to the first event on/after the start, or Ntill+1 after the final event, and loads the most recent preceding event parameters. Differences outside this initialization envelope are not admitted by SWAP-002.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-002/qualification.md",
           "known_unchanged_scope": ["tillage constitutive formulations", "SWAP-003 PCLAY domain behaviour", "SWAP-004 tillage type indexing", "solver policy", "time-step policy", "water-balance equations and tolerances"]
+        },
+        {
+          "difference_id": "SWAP-011",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-011/finding.md",
+          "first_admitted_tag_or_commit": "B1.11",
+          "affected_outputs": ["implicit Richards Newton Jacobian conductivity derivative for hydraulic models 3 and 5-12", "nonlinear iteration route and state/flux trajectory where the previously inconsistent Jacobian affected convergence"],
+          "expected_direction_or_envelope": "For SWKIMPL=1 and hydraulic models 3 and 5-12, B1.11 evaluates a conductivity derivative consistent with the actual active K(h) relation used by the residual. Differences are admitted only when attributable to that corrected Jacobian derivative and its nonlinear convergence consequences.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-011/qualification.md",
+          "known_unchanged_scope": ["hydraulic model 4 standard-MvG derivative control", "physical configuration", "mass-conservation requirement and tolerance", "time-step policy", "headcalc.f90", "alternate physics"]
         }
       ]
     },

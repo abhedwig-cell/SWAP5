@@ -1,6 +1,6 @@
 # SWAP-011 patch provenance gate
 
-Status: **HISTORICAL_E7_RECOVERED / ORDERED_ADMISSION_TRANSFORM_PERSISTED / FULL_CANONICAL_REPLAY_PENDING**
+Status: **HISTORICAL_E7_RECOVERED / ORDERED_ADMISSION_TRANSFORM_PERSISTED / FULL_CANONICAL_REPLAY_PASS / ADMITTED_B1_11**
 
 ## Historical E7 authority
 
@@ -20,7 +20,7 @@ SWAP/MOD_RIA.f90
 
 `SWAP/headcalc.f90` is unchanged.
 
-The three historical B0 preimages were independently reproduced from the recovered complete testbank and match the canonical B0 member identities:
+The three historical B0 preimages match the canonical B0 member identities:
 
 ```text
 MOD_MvG_functions.f90
@@ -33,7 +33,7 @@ MOD_RIA.f90
   a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3
 ```
 
-Historical E7 application was verified byte-safely, including the non-UTF-8 `MOD_RIA.f90`, and reproduces the recovered E7 postimages after the line-ending convention documented by E7 is accounted for.
+Historical E7 application was verified byte-safely, including the non-UTF-8 `MOD_RIA.f90`.
 
 ## Current ordered B1 admission transform
 
@@ -61,41 +61,45 @@ MOD_RIA.f90
   a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3
 ```
 
-Qualified ordered postimages:
+Authoritative ordered B1.11 postimages from the byte-safe full replay:
 
 ```text
 MOD_MvG_functions.f90
-  6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104
+  6b65ce49904aa0c037d6f43f93115af7d35227b7f67d52dbdd96b614da955ab5
 WC_K_models_04_11.f90
-  d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126
+  e963989e81622cf0554aeeb6ecae705e20b41ff03e259e1b8753df0609884874
 MOD_RIA.f90
-  673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a
+  fe696bdf463259868ad3659072566babc8288ab1d8329bf068f8d3b5945a0d2f
 ```
 
-The exact ordered patch was materialized in GitHub Actions from deterministic transport chunks; the workflow checked both SHA-256 and byte count before committing it.
+These values supersede earlier draft postimage notes created before the complete canonical-distribution replay. The executable authority is `apply_and_verify.py` together with the full replay evidence and B1.11 snapshot.
 
 ## Qualification status
 
 Historical E5/E6/E7 evidence remains immutable qualification of the exact historical E7 line.
 
-F-PE19 additionally performed fresh source-bound qualification of the composed B1.10 + SWAP-011 candidate. The current-B1 candidate passed the unmodified hydraulic testbank, focused vapor/RIA derivative gates and residual/constitutive invariance gates with no tolerance widening.
+F-PE19 additionally performed source-bound qualification of the composed B1.10 + SWAP-011 candidate. The current-B1 candidate passed the hydraulic testbank, focused vapor/RIA derivative gates and residual/constitutive invariance gates with no tolerance widening.
 
-## Remaining fail-closed gate
+## Full canonical replay
 
-Prospective B1.11 identity is frozen as:
+The previously missing canonical distribution bytes were recovered and verified:
 
-- member count: `63`
-- source bytes: `1,886,519`
-- source manifest SHA-256: `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`
+- outer SWAP 4.3.1 distribution SHA-256: `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
+- nested source archive SHA-256: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
 
-`tools/vq/b1_11_reconstruct.py` reconstructs B1.10 from canonical B0 and then applies the exact ordered SWAP-011 transform. Formal admission requires that reconstruction to be executed against the canonical full B0 archive and to reproduce the frozen identity exactly.
+A complete byte-safe replay reconstructed the qualified predecessor chain through B1.10 and then applied the ordered SWAP-011 transform. It reproduced the frozen B1.11 identity exactly:
 
-Required canonical archive identity:
+- member count: `63`;
+- source bytes: `1,886,519`;
+- source manifest SHA-256: `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.
 
-- supplied distribution `SWAP_4.3.1.zip`: `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`, or
-- nested source archive `SWAP.ZIP`: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151` where the reconstruction tooling accepts the controlling distribution input.
+`SWAP/headcalc.f90` remained byte-identical at `db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5`.
 
-Those full archive bytes are not currently available in the accessible artifact set. Therefore `b1-manifest.yml` must remain unchanged and `SWAP-011` must not yet be marked `ADMITTED_B1`.
+The former full-replay fail-closed gate is therefore resolved.
+
+## Admission handling
+
+SWAP-011 is admitted in B1.11. `reference/swap-4.3.1/b1-manifest.yml`, the B1.11 snapshot, the legacy-difference ledger and machine-readable expected-difference scope are updated together as one admission decision surface.
 
 ## Anti-reconstruction rule
 

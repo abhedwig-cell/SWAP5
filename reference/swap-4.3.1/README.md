@@ -21,7 +21,7 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     ...
-    B1.10.yml
+    B1.11.yml
 b1-manifest.yml
 ```
 
@@ -52,22 +52,23 @@ B1.7           = B1.6 + SWAP-010
 B1.8           = B1.7 + SWAP-013
 B1.9           = B1.8 + SWAP-012
 B1.10          = B1.9 + SWAP-002
+B1.11          = B1.10 + SWAP-011
 ```
 
-Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities and qualified the five predecessor corrections. B1.6-B1.9 then admitted SWAP-009, SWAP-010, SWAP-013 and the isolated SWAP-012 inverse correction.
+Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities and qualified the five predecessor corrections. B1.6-B1.10 then admitted SWAP-009, SWAP-010, SWAP-013, the isolated SWAP-012 inverse correction and SWAP-002.
 
-`B1.10` adds only SWAP-002. Legacy `set_iTill` used an impossible interval test and could initialize the next tillage event incorrectly when a run started after the first scheduled event. The correction defines `iTill` as the first event on/after the start, or `Ntill+1` after the final event, and loads the most recent previous tillage parameters when applicable. A fresh strict compiled six-case gate gives B0 3/6 and the corrected candidate 6/6. SWAP-003 and SWAP-004 are explicitly excluded.
+`B1.11` adds only SWAP-011. The legacy implicit Richards Jacobian used a conductivity derivative inconsistent with the actual `K(h)` relation for hydraulic models 3 and 5-12. The admitted correction is the historically qualified E7 production line: exact E7 provenance is pinned, the ordered B1.10 applicator is byte-safe, and a complete replay from the exact B0 distribution reproduced the frozen B1.11 identity. Model 4 remains the consistent standard-MvG control. `headcalc.f90` remains byte-identical to B0.
 
 The current corrected-reference identity is:
 
 ```text
-snapshot         B1.10
+snapshot         B1.11
 members          63
-source bytes      1,863,575
-manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+source bytes      1,886,519
+manifest SHA-256  24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2
 ```
 
-SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.10.
+The exact replay starts from B0 distribution SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`, containing source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. SWAP-011 historical E7 patch SHA-256 is `9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110`; the ordered B1.10 admission patch SHA-256 is `1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238`.
 
 ## Boundary to SWAP 5
 
