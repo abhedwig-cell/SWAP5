@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC20",
   "title": "SWAP5 Documentation & Review Baseline",
-  "phase": "UPDATE",
-  "decision": "CURATE_CURRENT_REVIEW_NARRATIVE_FROM_RECONCILED_SCIENTIFIC_AND_STATUS_A_AUTHORITIES",
+  "phase": "VERIFY",
+  "decision": "PRACTICAL_REVIEWER_ENTRY_LAYER_QUALIFIED",
   "protocol": ["RECONCILE", "UPDATE", "VERIFY", "PUBLISH", "CLOSE"],
   "branch": "work/f-doc20-review-baseline-publication",
   "canonical_branch": "integration/f-ci-canonical",
@@ -29,6 +29,15 @@
     "repository_documentation_checks": "PASS",
     "mkdocs_build_strict": "PASS",
     "deployment": "SKIPPED_ON_PR_AS_DESIGNED"
+  },
+  "qualified_practical_entry_slice": {
+    "head": "15e64ab9c1689bac504b32b48309424b7bbe4165",
+    "workflow_run": 35107454357,
+    "job": 104832283368,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "deployment": "SKIPPED_ON_PR_AS_DESIGNED",
+    "external_publication_verification": "SKIPPED_ON_PR_AS_DESIGNED"
   },
   "scientific_authority_reconciliation": {
     "F_DOC16": {
@@ -104,8 +113,7 @@
     "rule": "Do not publish the colleague-review portal until the workflow deploy source is an explicit frozen review publication authority and the site itself displays both scientific and documentation git authorities."
   },
   "next_actions": [
-    "Qualify the practical getting-started slice on PR #162.",
-    "Add generated Fortran source-reference integration only after the human review hierarchy is stable.",
+    "Design generated Fortran source-reference integration without displacing the human review hierarchy.",
     "Create/freeze the publication authority and update the Pages workflow away from stale-main-only publication.",
     "Run strict docs qualification and external publication verification before CLOSE."
   ],
