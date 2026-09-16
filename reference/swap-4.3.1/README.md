@@ -21,7 +21,7 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     ...
-    B1.10.yml
+    B1.11.yml
 b1-manifest.yml
 ```
 
@@ -52,25 +52,28 @@ B1.7           = B1.6 + SWAP-010
 B1.8           = B1.7 + SWAP-013
 B1.9           = B1.8 + SWAP-012
 B1.10          = B1.9 + SWAP-002
+B1.11          = B1.10 + SWAP-011
 ```
 
-Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities and qualified the five predecessor corrections. B1.6-B1.9 then admitted SWAP-009, SWAP-010, SWAP-013 and the isolated SWAP-012 inverse correction.
+Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities. B1.6-B1.10 then admitted SWAP-009, SWAP-010, SWAP-013, SWAP-012 and SWAP-002 in order.
 
-`B1.10` adds only SWAP-002. Legacy `set_iTill` used an impossible interval test and could initialize the next tillage event incorrectly when a run started after the first scheduled event. The correction defines `iTill` as the first event on/after the start, or `Ntill+1` after the final event, and loads the most recent previous tillage parameters when applicable. A fresh strict compiled six-case gate gives B0 3/6 and the corrected candidate 6/6. SWAP-003 and SWAP-004 are explicitly excluded.
+`B1.11` admits SWAP-011. B0 used the default Mualem-van Genuchten hydraulic-conductivity derivative in the implicit Richards Jacobian for hydraulic models whose implemented conductivity relation is different. The correction makes the Jacobian derivative consistent with the actual active `K(h)` relation for hydraulic models 3 and 5-12. Model 4 remains the standard-MvG control.
+
+The historical E7 implementation was recovered and verified byte-for-byte. Because B1.10 already contains overlapping SWAP-009, SWAP-010 and SWAP-012 corrections, B1.11 uses a separately identified mechanical ordered-admission transform derived from exact byte authorities. The complete canonical B0 archive replay reproduces the frozen B1.11 identity exactly.
 
 The current corrected-reference identity is:
 
 ```text
-snapshot         B1.10
+snapshot         B1.11
 members          63
-source bytes      1,863,575
-manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+source bytes      1,886,519
+manifest SHA-256  24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2
 ```
 
-SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.10.
+SWAP-003 and SWAP-004 remain outside the admitted B1 line.
 
 ## Boundary to SWAP 5
 
 Production kernel/runtime code must not depend on implementation structures in this subtree. Reference-build and verification tooling may use it to reproduce B0 and construct qualified B1 snapshots.
 
-Legacy B1 evidence does not replace the transaction-aware unrounded B2 mass-accounting gate. SWAP5 reference qualification remains fail-closed until the integrated B2 reference entrypoint and result contract exist.
+Legacy B1 evidence does not replace the transaction-aware unrounded B2 mass-accounting gate. SWAP5 reference qualification remains fail-closed until the relevant integrated B2 reference contracts are satisfied.

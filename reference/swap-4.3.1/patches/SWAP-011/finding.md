@@ -2,7 +2,7 @@
 
 Status of finding: **CONFIRMED BUG**
 
-B1 admission status: **CANDIDATE, NOT YET ADMITTED**
+B1 admission status: **ADMITTED_B1 (B1.11)**
 
 ## Finding
 
@@ -41,11 +41,11 @@ The final E5/E7 solution did **not** modify `headcalc.f90`; that file remained b
 - severity: high
 - confidence: very high
 - physics change: no
-- B1 eligible in principle: yes
+- B1 status: admitted in B1.11
 - SWAP5 compatibility rule: SWAP5 reference follows the corrected B1 behaviour, not the known B0 Jacobian defect
 
 ## Historical audit progression
 
 The central issue register snapshot recorded SWAP-011 as `BUG_CONFIRMED_SOLUTION_REVIEW`. Subsequent E5/E6/E7 work completed the optimized production implementation and qualification, reaching `FIX_TESTED` / `READY_PATCH_UPSTREAM`.
 
-The B1 manifest is deliberately **not** updated yet because the exact final patch payload must be recovered and stored byte-for-byte before formal admission.
+The exact E7 upstream package was later recovered and its patch identity was pinned. A byte-safe ordered B1.10 patch was derived without altering the qualified E7 semantics, and a full replay from the exact B0 distribution reproduced the frozen B1.11 source identity exactly. The former provenance gate is therefore closed and SWAP-011 is formally admitted in B1.11.
