@@ -58,7 +58,9 @@ Formal B1 admission requires an end-to-end reconstruction from the **full canoni
 - `SWAP_4.3.1.zip` SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
 - nested Fortran source archive `SWAP.ZIP` SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
 
-The accessible uploaded/testbank material provides the exact affected B0 hydraulic target files, but not the complete canonical 63-file distribution archive required by the published reconstruction contract. Searches of the currently accessible File Library material recovered documentation referring to this archive and its hashes, but not the canonical archive bytes themselves.
+The accessible uploaded/testbank material provides the exact affected B0 hydraulic target files, but not the complete canonical 63-file distribution archive required by the published reconstruction contract. Exact File Library searches by filename and both controlling SHA-256 values returned documentation and derived evidence, not the archive object itself.
+
+A useful recovery clue survives in the retained A23y qualification evidence: that work explicitly records reconstructing from a local object named `SWAP_4.3.1(6).zip` with the same controlling distribution SHA-256 `2b48353d...`. This proves that an exact-name duplicate existed in an earlier runtime/workspace, but the ZIP bytes themselves are not recoverable from the currently searchable File Library. `SWAP_4.3.1(6).zip` is therefore an additional exact external filename to search in local downloads/backups.
 
 Therefore the gate remains fail-closed:
 
@@ -72,10 +74,11 @@ Therefore the gate remains fail-closed:
 
 ## Next permitted action
 
-When an original canonical B0 distribution/archive with the controlling SHA-256 becomes available:
+When an original canonical B0 distribution/archive with the controlling SHA-256 becomes available, including a local duplicate named `SWAP_4.3.1(6).zip`:
 
-1. run `tools/vq/b1_11_reconstruct.py` against it;
-2. require exact reproduction of the frozen B1.11 manifest `24ce2768...`;
-3. only on PASS promote the difference ledger entry, add SWAP-011 to `b1-manifest.yml`, publish immutable B1.11 and close issue #12.
+1. verify its raw SHA-256 before use;
+2. run `tools/vq/b1_11_reconstruct.py` against the controlling distribution;
+3. require exact reproduction of the frozen B1.11 manifest `24ce2768...`;
+4. only on PASS promote the difference ledger entry, add SWAP-011 to `b1-manifest.yml`, publish immutable B1.11 and close issue #12.
 
 No production-source redesign, tolerance change, Energy Balance, RossFast, WFT300 or other capability expansion belongs in this remaining gate.
