@@ -1,0 +1,185 @@
+# SWAP5 Status-A documentation refresh closeout
+
+Date: 2026-09-16
+Workstream: post-Status-A current-canonical documentation reconciliation and refresh
+Protocol: `RECONCILE -> UPDATE -> VERIFY -> CLOSE`
+
+## Authority used
+
+- canonical branch: `integration/f-ci-canonical`
+- Status-A authority: `992a5c657bfe10a10100f92e0cb77c4825ae65b6`
+- scientific production baseline: `50346642bd565f79134ea17d5462e544b354998c`
+- scientific production tree: `3b085d7dea3d3f3fce42ad9d8f259a8350205846`
+- current release-readiness authority: `tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md`
+
+No production or reference source was modified by this workstream.
+
+## RECONCILE result
+
+The pre-edit documentation source-of-truth matrix was persisted first, in `docs/status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md`, before existing documentation was edited.
+
+The principal conflict was authority ambiguity rather than missing scientific evidence. The 2026-09-04 architecture/status layer still presented target and migration state as if it were the current status authority, while the later Status-A acceptance record had already closed the admitted denominator.
+
+The current Status-A release-readiness record is the umbrella authority for current scope. Capability-specific scientific contracts, qualifications, admissions and immutable evidence remain distributed and are not replaced by a fabricated master theory file.
+
+## UPDATE result
+
+Current Status-A documentation was added for:
+
+- current capability and scope boundary;
+- current transaction/state/runtime architecture;
+- theory to code to evidence to admission to preservation traceability;
+- deliberate future/non-admitted scope;
+- the documentation reconciliation matrix;
+- this verification and closeout record.
+
+The documentation landing page, repository knowledge map and MkDocs navigation now route present-state questions to the Status-A layer first. `AGENTS.md` also points current-state work toward the Status-A authority layer.
+
+Historical/target records explicitly reclassified for present-state use include:
+
+- `D3a_IMPLEMENTATION_STATUS_MAP.md` and `docs/architecture/implementation-status.md`: preserved as 2026-09-04 historical migration-status records and superseded for current-state claims;
+- `D3b_COMPONENT_OWNERSHIP_MAP.md` and `docs/architecture/component-map.md`: preserved as target component-ownership design, not current implementation authority;
+- `docs/architecture/overview.md`: preserved as target-design material, not current implementation authority.
+
+No historical scientific or architectural conclusion was rewritten to pretend that later admission had already existed at the earlier snapshot date.
+
+## Files changed
+
+The final documentation/governance change set contains only these paths:
+
+- `AGENTS.md`
+- `D3a_IMPLEMENTATION_STATUS_MAP.md`
+- `D3b_COMPONENT_OWNERSHIP_MAP.md`
+- `docs/architecture/component-map.md`
+- `docs/architecture/implementation-status.md`
+- `docs/architecture/overview.md`
+- `docs/development/knowledge-map.md`
+- `docs/index.md`
+- `docs/status-a/CLOSEOUT.md`
+- `docs/status-a/CURRENT_ARCHITECTURE.md`
+- `docs/status-a/CURRENT_STATUS.md`
+- `docs/status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md`
+- `docs/status-a/FUTURE_SCOPE.md`
+- `docs/status-a/TRACEABILITY.md`
+- `mkdocs.yml`
+
+No file under production or reference source trees is part of the workstream diff.
+
+## Current architecture map established
+
+The current layer distinguishes these responsibilities:
+
+- legacy/reference;
+- process;
+- solver;
+- runtime/transaction;
+- committed persistent state;
+- candidate/trial state;
+- scratch/workspace;
+- persistence/restart;
+- serialized MultiSWAP orchestration;
+- coupling/adapter;
+- diagnostics;
+- test/qualification infrastructure.
+
+Current ownership is documented so that solver/process calculation does not itself commit state; transaction/runtime owns trial lifecycle and commit/rollback; committed state is authoritative; candidate state remains tentative until acceptance; scratch/workspace has no independent persistence authority; process contracts own their physical flux/storage definitions; external publication is bounded by accepted coupling state; and execution policy is separate from solver calculation.
+
+## Current capability/status map established
+
+The current documentation records these admitted Status-A capability families within their bounded contracts:
+
+- reference preservation;
+- Richards/soil-water admitted core;
+- transactional execution and trial/accept/retry/rollback;
+- explicit state ownership and solver/execution-policy separation;
+- Restart v1;
+- serialized MultiSWAP v1;
+- drainage;
+- surface evaporation;
+- bounded WOFOST runtime scope;
+- restricted one-call-daily Snow;
+- Groundwater Coupling v1;
+- external groundwater gateway boundary;
+- bounded F-PE11 semantics;
+- permanent testbank/qualification architecture and current same-tree preservation evidence.
+
+F-PE11 is documented according to its close authority: admission action `NO_OP`, no production/reference mutation, preservation/non-regression evidence only, and no whole-model speedup, MultiSWAP speedup or portable speed guarantee.
+
+## Preservation authority correction
+
+During VERIFY, an over-broad draft statement was found and corrected. `docs/testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md` is explicitly bound to an older canonical head and cannot itself be cited as the preservation authority for Status-A head `992a5c657...`.
+
+The refreshed documentation now treats F-TB11 as an important permanent-testbank architecture/historical snapshot and uses the current Status-A release-readiness record for the later same-tree preservation conclusion. That record inherits the F-GC29 replay and reports PASS for the permanent baseline, smoke, kernel, transactional, independent-oracle, mixed-smoke and numerical suites, plus capability-specific moving-current/exact-head evidence where required.
+
+This also resolves the historical Drainage mismatch: F-TB11 did not yet credit Drainage at its snapshot, while the later Status-A authority records Drainage as canonically closed and preserved by F-GC29 moving-current legs.
+
+## Theory to code to evidence traceability
+
+`docs/status-a/TRACEABILITY.md` provides the current navigation chain:
+
+`scientific/reference contract -> admitted production implementation -> qualification evidence -> canonical admission/closure -> preservation/regression authority`
+
+The map covers reference preservation, Richards/soil-water admitted scope, transaction architecture, Restart v1, serialized MultiSWAP v1, drainage, surface evaporation, bounded WOFOST runtime, restricted Snow, Groundwater Coupling v1 and F-PE11.
+
+Where implementation/evidence authority is distributed, the map deliberately points to the pinned production or acceptance authority rather than inventing a single master source or theory file.
+
+## Future-scope map
+
+The current documentation explicitly keeps the following outside the Status-A denominator unless a future acceptance authority changes that boundary:
+
+- EB;
+- ROSS / RossFast;
+- arbitrary-duration, subdaily or advanced Snow beyond the restricted admitted path;
+- parallel/concurrent real-physics MultiSWAP;
+- broad MODFLOW/backend evolution;
+- wholesale legacy IO modernization;
+- a broad stable public API;
+- speculative production optimization and unqualified execution modes;
+- other extensions not admitted by current Status-A authority.
+
+Absence from Status-A is not described as a defect unless an applicable acceptance authority says so.
+
+## VERIFY result
+
+Draft pull request `#152` exercises the repository documentation workflow against `integration/f-ci-canonical` without admitting production changes.
+
+The complete semantic documentation postimage immediately before this closeout metadata refresh was `cf5bf5749c1f7dfa0c436fdbebd81d9d847da77b`. Workflow run `35041622147` completed successfully. Job `Validate and build` passed both repository gates:
+
+- `python tools/docs/check_docs.py`: PASS;
+- `mkdocs build --strict`: PASS.
+
+The source checker validates MkDocs navigation targets, repository-relative Markdown links, the exact 1..30 architecture invariant sequence and absence of a tracked generated `site/` directory. GitHub Pages publication steps were correctly skipped for the pull-request branch.
+
+An adversarial consistency pass additionally checked current authority wording around Groundwater Coupling v1, restricted Snow, F-PE11 and target/current architecture ownership. Searches found no separate current `Groundwater Coupling v1 open blocker`, `Snow blocker current canonical`, or `F-PE11 IN_PROGRESS` claim. The material current-authority conflicts were the central 2026-09-04 status/target pages and their root counterparts; these are now explicitly historical/target for present-state use.
+
+The preservation pass found one substantive draft error that automated link/build checks could not detect: F-TB11 had initially been described too strongly as current-head preservation authority. That wording was corrected as described above.
+
+Final branch-delta inspection showed only documentation/governance paths. Production source, reference source and scientific semantics remain unchanged.
+
+## Known remaining documentation gaps
+
+Historical migration, qualification and capability records remain numerous and intentionally preserve their dated local conclusions. Not every historical record has received an individual superseded banner. This is non-blocking because the current landing/status/knowledge layers establish authority precedence and the principal central conflicting pages are explicitly marked.
+
+The documentation does not attempt to replace distributed capability records with one master theory file. Exact low-level source-path traceability remains capability-specific where the owning qualification/admission record is the proper authority.
+
+The parallel SWAP 4.3.1 to SWAP5 equivalence campaign is not required for this closeout. Accepted results from that campaign can later be linked as additive validation evidence without rewriting the core Status-A denominator.
+
+## CLOSE checkpoint
+
+- workstream branch: `docs/status-a-documentation-refresh`
+- review surface: draft PR `#152`
+- pinned Status-A authority used: `992a5c657bfe10a10100f92e0cb77c4825ae65b6`
+- pinned scientific production baseline: `50346642bd565f79134ea17d5462e544b354998c`
+- production/reference mutations: none
+- current docs authority entry point: `docs/status-a/CURRENT_STATUS.md`
+- architecture map: `docs/status-a/CURRENT_ARCHITECTURE.md`
+- traceability map: `docs/status-a/TRACEABILITY.md`
+- future-scope map: `docs/status-a/FUTURE_SCOPE.md`
+- pre-edit reconciliation matrix: `docs/status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md`
+- final next permitted action: documentation-only review/merge into `integration/f-ci-canonical`; do not reinterpret this workstream as production admission or scientific requalification
+
+## Final verdict
+
+`DOCUMENTATION_CURRENT_WITH_NONBLOCKING_HISTORICAL_GAPS`
+
+Rationale: current Status-A authority, admitted scope, actual architecture, ownership boundaries, preservation model, future-scope boundary and authority precedence are explicit and internally buildable. Remaining gaps are historical-navigation granularity, not missing evidence or a known production/scientific defect inside the Status-A denominator.

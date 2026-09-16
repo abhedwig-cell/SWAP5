@@ -1,12 +1,15 @@
 # Implementation status map
 
+!!! danger "Historical status snapshot, superseded for current-state claims"
+    This document records the SWAP5 migration state as of **2026-09-04**. Its `TARGET`, `PARTIAL`, `IN_PROGRESS` and similar classifications are intentionally preserved as historical evidence. They MUST NOT be used as the current Status-A capability status. The current authority is [SWAP5 Status-A current status](../status-a/CURRENT_STATUS.md), anchored to canonical commit `992a5c657bfe10a10100f92e0cb77c4825ae65b6` and the 2026-09-16 release-readiness acceptance record. In particular, this snapshot predates later canonical closure of transactional execution, Restart v1, serialized MultiSWAP v1, Snow, Groundwater Coupling v1 and the bounded F-PE11 performance gate.
+
 **Snapshot:** 2026-09-04  
 **Scope:** transition from the SWAP 4.3.1 baseline toward the SWAP5 target architecture
 
-This page is the central status register for the SWAP5 architecture. It separates architectural intent from implementation and qualification evidence.
+At the time of this snapshot, this page served as the central migration-status register for the SWAP5 architecture. It separated architectural intent from implementation and qualification evidence. That role is now historical; present-state authority is the Status-A layer linked above.
 
 !!! warning "Status is evidence-based"
-    A target design is not treated as implemented merely because it is described in an ADR or architecture page. Likewise, active refactoring work is marked `IN_PROGRESS` until it is integrated and qualified. The current `SWAP5` repository is still documentation-led; several implementation statements below refer to active audit/refactoring work that has not yet been mirrored into this repository as production source.
+    A target design is not treated as implemented merely because it is described in an ADR or architecture page. Likewise, active refactoring work is marked `IN_PROGRESS` until it is integrated and qualified. The statements below must be interpreted at the 2026-09-04 snapshot date, not as a description of the later Status-A baseline.
 
 ## Status vocabulary
 
@@ -20,9 +23,9 @@ This page is the central status register for the SWAP5 architecture. It separate
 
 `QUALIFIED` always applies to a stated scope. It must not be read as a claim that the entire SWAP5 architecture is qualified.
 
-## Current architecture-to-implementation matrix
+## Current architecture-to-implementation matrix at the 2026-09-04 snapshot
 
-| Capability | Status | Current evidence / position | Required next proof | Invariants |
+| Capability | Status | Current evidence / position at snapshot date | Required next proof recorded at snapshot date | Invariants |
 | --- | --- | --- | --- | --- |
 | One computational kernel for standalone, MultiSWAP and coupling | `TARGET` | Accepted architectural contract. The 4.3.1 baseline is still a legacy program structure rather than the final reusable kernel. | Integrated kernel API used by at least standalone and one multi-column or coupling path without duplicate physics. | 1, 16 |
 | Kernel independent of file I/O | `TARGET` | Boundary is documented and accepted. Legacy 4.3.1 remains file-oriented and is the migration baseline. | Kernel execution from typed in-memory inputs with legacy file handling demonstrably outside the kernel. | 2, 28, 29 |
@@ -57,18 +60,18 @@ This page is the central status register for the SWAP5 architecture. It separate
 
 Some technical audit items can be fully qualified without making an entire architecture capability `QUALIFIED`. For example, a solver derivative fix may pass strict regression and performance gates while the broader soil-water interface is still being redesigned.
 
-The status map therefore tracks **architectural capability**, not the number of successful patches.
+The status map therefore tracked **architectural capability at this snapshot date**, not the number of successful patches.
 
-## Update rule
+## Historical update rule
 
-A row may move forward only when the evidence changes:
+At the time of this snapshot, a row could move forward only when the evidence changed:
 
-1. `TARGET` → `PARTIAL` when a concrete prototype/interface/testbank exists;
-2. `PARTIAL` → `IN_PROGRESS` when it becomes part of the active production migration;
+1. `TARGET` → `PARTIAL` when a concrete prototype/interface/testbank existed;
+2. `PARTIAL` → `IN_PROGRESS` when it became part of the active production migration;
 3. `IN_PROGRESS` → `QUALIFIED` only after explicit integration and reference verification for the stated scope.
 
-Regression or newly discovered hidden dependencies may move a row backward. Status is descriptive, not a project-management promise.
+Regression or newly discovered hidden dependencies could move a row backward. This historical status vocabulary remains useful for interpreting migration records, but it no longer defines current Status-A status.
 
-## Relationship to the migration work
+## Relationship to current Status-A
 
-This map is deliberately broader than one refactoring series. The current transactional solver/controller work and the `headcalc` state-extraction work should both update this register as their evidence changes. Future component and legacy-to-target maps should use the same status vocabulary so architecture, implementation and verification remain traceable.
+This snapshot is deliberately retained because it records the migration assumptions and unresolved proofs visible on 2026-09-04. Later work closed a materially different set of capabilities. Do not edit those older conclusions into modern conclusions. Instead, use [Current Status-A status](../status-a/CURRENT_STATUS.md), [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md), and [Theory, code and evidence traceability](../status-a/TRACEABILITY.md) for present-state decisions.

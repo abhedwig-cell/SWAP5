@@ -1,13 +1,20 @@
 site_name: SWAP Documentation
-site_description: Technical documentation for SWAP and the target modular SWAP architecture
+site_description: Technical documentation for SWAP5 Status-A, its scientific foundations and retained target/historical architecture
 site_author: SWAP development team
 docs_dir: docs
 nav:
 - Home: index.md
+- Current Status-A:
+  - Current status and scope: status-a/CURRENT_STATUS.md
+  - Current architecture: status-a/CURRENT_ARCHITECTURE.md
+  - Theory, code and evidence traceability: status-a/TRACEABILITY.md
+  - Deliberate future scope: status-a/FUTURE_SCOPE.md
+  - Documentation reconciliation: status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md
+  - Documentation refresh closeout: status-a/CLOSEOUT.md
 - Architecture:
-  - Overview: architecture/overview.md
-  - Implementation status: architecture/implementation-status.md
-  - Component ownership map: architecture/component-map.md
+  - Target architecture overview: architecture/overview.md
+  - Historical implementation status (2026-09-04): architecture/implementation-status.md
+  - Target component ownership map: architecture/component-map.md
   - Legacy migration:
     - Migration map: architecture/legacy-migration.md
     - Migration slices and gates: architecture/migration-slices.md
@@ -31,7 +38,6 @@ nav:
   - B0 source integrity: verification/b0-source-integrity.md
   - B1 snapshot history: verification/b1-snapshots.md
   - B1.5p1 provenance repair: verification/b1-5p1-provenance-repair.md
-  - Legacy difference ledger: verification/legacy-differences.md
   - VQ-1 integration: verification/vq-1-integration.md
   - VQ-1b B0 hardening rerun: verification/vq-1b-rerun-evidence.md
   - VQ-1c B1.5p1 identity: verification/vq-1c-b1.5p1-evidence.md

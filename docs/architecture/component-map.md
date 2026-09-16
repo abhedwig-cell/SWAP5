@@ -1,9 +1,12 @@
 # Target component ownership map
 
+!!! warning "Target-design document, not current Status-A authority"
+    This page preserves the target ownership model recorded during the migration phase. It deliberately contains design responsibilities that may extend beyond the admitted Status-A implementation. For actual current ownership and execution semantics, use [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md). The [2026-09-04 implementation status map](implementation-status.md) is itself a historical snapshot and no longer provides present-state authority.
+
 **Status:** target architecture contract  
 **Snapshot:** 2026-09-04
 
-This page defines the target component boundaries for SWAP5. It complements the [implementation status map](implementation-status.md): this page says **where responsibilities belong**, while the status map says **how far the migration has progressed**.
+This page defines the target component boundaries for SWAP5. It complements the historical [implementation status map](implementation-status.md): this page says **where responsibilities were intended to belong**, while that snapshot recorded **how far the migration had progressed on 2026-09-04**.
 
 !!! warning "Not a legacy module map"
     These components are architectural responsibilities, not proposed one-to-one replacements for SWAP 4.3.1 Fortran files. A legacy routine may be split across several target components, and several legacy routines may contribute to one target component.
@@ -140,7 +143,7 @@ Contains transient Newton, Jacobian, factorisation and constitutive work data.
 
 ## Transaction boundary
 
-The component map makes the transaction boundary explicit:
+The component map makes the target transaction boundary explicit:
 
 ```text
 committed column state
@@ -172,7 +175,7 @@ The runtime may choose retries, smaller steps or a different qualified numerical
 
 ## Coupling boundary
 
-The coupler operates outside the SWAP kernel. For a direct groundwater coupling window it may:
+The target coupler operates outside the SWAP kernel. For a direct groundwater coupling window it may:
 
 1. select one or more surface tiles and their area fractions;
 2. request predictor trials from SWAP columns;
@@ -183,7 +186,7 @@ The coupler operates outside the SWAP kernel. For a direct groundwater coupling 
 7. commit accepted component states only when the coupled window is accepted;
 8. aggregate tile fluxes conservatively.
 
-The SWAP kernel therefore never needs to know what fraction of a MODFLOW cell a column represents.
+The target SWAP kernel therefore does not need to know what fraction of a MODFLOW cell a column represents.
 
 ## Hydraulic information boundary
 
@@ -225,8 +228,8 @@ Every material architecture change should be checked with these questions:
 9. Is a new coupling responsibility accidentally being placed inside SWAP?
 10. Which core invariants and verification gates prove that the boundary remains valid?
 
-## Relationship to implementation status
+## Relationship to current implementation status
 
-This page is normative target architecture. It does **not** claim that every boundary already exists in production code. Current migration progress remains authoritative in the [implementation status map](implementation-status.md).
+This page is normative **target** architecture and does **not** claim that every boundary exists in the Status-A production code. For what is admitted now, use [Current Status-A status](../status-a/CURRENT_STATUS.md) and [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md). The old [implementation status map](implementation-status.md) remains a dated 2026-09-04 migration snapshot.
 
-The next migration-oriented mapping step should connect legacy SWAP 4.3.1 modules and active refactoring units to these target components without assuming one-to-one correspondence.
+Future migration work may still use this target decomposition where useful, but any claim that a target component is current functionality requires separate implementation, qualification and canonical admission evidence.
