@@ -13,18 +13,7 @@ restore() {
 trap restore EXIT
 fail() { echo "F_ROSS12_PRODUCTION_GATE_FAIL $*" >&2; exit 1; }
 
-python3 tests/ross/_apply_ross12_serialized_production_wiring_patch.py
-python3 - <<'PY'
-from pathlib import Path
-path = Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
-text = path.read_text()
-old = """    call bind_b110_serialized_legacy_context(request, context_ok)\n    if (.not. context_ok) return\n"""
-new = """    if (self%soil_water_selection%uses_rossfast()) then\n      context_ok = .true.\n    else\n      call bind_b110_serialized_legacy_context(request, context_ok)\n    end if\n    if (.not. context_ok) return\n"""
-if text.count(old) != 1:
-    raise SystemExit(f'ROSS12_LEGACY_CONTEXT_BYPASS_ANCHOR_COUNT={text.count(old)}')
-path.write_text(text.replace(old, new, 1))
-print('ROSS12_LEGACY_CONTEXT_BYPASS_PATCH_COUNT=1')
-PY
+python3 tests/ross/_apply_ross12_serialized_production_candidate.py
 
 git diff --check -- "$BACKEND" tests/ross/test_ross12_serialized_production_wiring.f90 || fail 'diff check'
 changed="$(git diff --name-only -- src | sort)"
