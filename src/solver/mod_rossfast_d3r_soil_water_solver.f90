@@ -140,7 +140,10 @@ contains
     allocate(state%pressure_head_cm(n), state%water_content(n))
     state%pressure_head_cm = request%base_state%pressure_head
     state%water_content = request%base_state%water_content
-    forcing%top_flux_cm_per_day = request%boundary%top_flux
+    ! The public soil-water ABI retains native SWAP/Reference signs:
+    ! qtop > 0 leaves the column, qbot > 0 enters from below. RossFast's
+    ! restricted forcing uses positive values into the column at both faces.
+    forcing%top_flux_cm_per_day = -request%boundary%top_flux
     forcing%bottom_flux_upward_cm_per_day = request%boundary%bottom_flux
 
     interval%t0 = 0.0_real64
@@ -158,7 +161,8 @@ contains
     if (.not. outcome%solver_ok) return
 
     storage_after = sum(request%parameters%dz * state%water_content)
-    external_transfer = request%step_duration * (request%boundary%top_flux + request%boundary%bottom_flux)
+    external_transfer = request%step_duration * &
+         (request%boundary%bottom_flux - request%boundary%top_flux)
 
     result%candidate_state%active_nodes = n
     allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
