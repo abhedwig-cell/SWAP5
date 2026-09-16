@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ99",
+  "campaign": "SWAP431_SWAP5_STATUS_A_SCIENTIFIC_EQUIVALENCE",
+  "phase": "POST_CLOSE_EXACT_ASSET_MATERIALIZATION_AND_HUPSEL_REFERENCE_REPLAY",
+  "status": "EXACT_B0_AND_HUPSEL_RECOVERED_B110_LONG_REFERENCE_REPLAY_PASS_STATUS_A_END_TO_END_COMPOSITION_NOT_ESTABLISHED",
+  "branch": "qualification/f-vq99-swap431-swap5-status-a-equivalence",
+  "parent_recovery_checkpoint": "dd0bb36a664cde4e98a08aafebe32a99eb81cc1c",
+  "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+  "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "exact_asset_recovery": {
+    "outer_distribution": {
+      "filename": "SWAP_4.3.1.zip",
+      "size_bytes": 8959314,
+      "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "identity_gate": "PASS_EXACT_B0_DISTRIBUTION"
+    },
+    "nested_source_archive": {
+      "member": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+      "size_bytes": 411215,
+      "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "identity_gate": "PASS_EXACT_B0_SOURCE_ARCHIVE"
+    },
+    "linux_executable": {
+      "member": "SWAP_4.3.1/tools/SWAP/swap_431",
+      "size_bytes": 2718720,
+      "sha256": "e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862",
+      "identity_gate": "PASS_EXACT_B0_EXECUTABLE"
+    },
+    "hupsel_fixture": {
+      "source_directory": "SWAP_4.3.1/cases/1.hupselbrook/",
+      "member_manifest_sha256": "9b61eb2dd1665422dc93dab5bea43f81de4f4360b3aae3b17679e1267b9b8f99",
+      "members": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "identity_gate": "PASS_AUTHORITATIVE_DISTRIBUTION_FIXTURE"
+    }
+  },
+  "b1_10_reconstruction": {
+    "tool": "tools/vq/b1_10_reconstruct.py",
+    "qualified_reconstruction": true,
+    "member_count": 63,
+    "source_bytes": 1863575,
+    "member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "admitted_final_patch": "SWAP-002",
+    "status": "PASS_EXACT_B1_10_RECONSTRUCTION"
+  },
+  "execution_environment": {
+    "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+    "reason_for_source_build": "The distribution Linux executable is Intel-linked and the current runner lacks libimf.so.",
+    "compiler_selection_only": {
+      "linux": true,
+      "multiswap": false,
+      "with_animo": false,
+      "with_sss": false
+    },
+    "hupsel_output_compatibility_normalization": "SWCSV=1_TO_0",
+    "normalization_reason": "Pre-existing GNU portability rule: the stock GNU CSV route stops on S_CONC; the same SWCSV=0 rule was previously used on both reference and comparison routes. No hydrological, crop, soil or meteorological parameter is changed.",
+    "physics_mutation": false
+  },
+  "hupsel_long_reference_replay": {
+    "period": "2002-2004",
+    "meteo_records": 1096,
+    "b0": {
+      "normal_completion": true,
+      "process_returncode": 100,
+      "result_bal_raw_sha256": "af9af9ad908b8578a96859ce1d3bcf422fcf72bc51ea69337edd4c1a022183c7",
+      "result_blc_raw_sha256": "74a12cccab2f3422474de63bd91b92538b98421c830e40853b9fe95a4a03094f",
+      "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "all_three_blc_balance_deviations_cm": 0.0,
+      "historical_oracle_identity": "PASS_EXACT_AFTER_GENERATED_TIMESTAMP_NORMALIZATION"
+    },
+    "b1_10": {
+      "normal_completion": true,
+      "process_returncode": 100,
+      "result_bal_raw_sha256": "8dac763fc508964758eae74ee4ccdb72f51e905077719b7790a1ef2834d2464c",
+      "result_blc_raw_sha256": "1e4d88548a21e3524831b6670e388e5acc57ffab904776e3537b659ded24afce",
+      "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+    },
+    "b0_to_b1_10_result_bal_identity": true,
+    "b0_to_b1_10_result_blc_identity": true,
+    "classification_scope": "I_IDENTICAL_FOR_NORMALIZED_LEGACY_BAL_AND_BLC_REPORT_OUTPUT_ONLY",
+    "not_claimed": [
+      "bitwise identity of all hidden state variables",
+      "identity of every optional-process diagnostic",
+      "Status-A end-to-end Hupsel equivalence"
+    ]
+  },
+  "status_a_production_tree_export": {
+    "workflow": ".github/workflows/f-vq99-production-tree-export.yml",
+    "workflow_run": 35068294203,
+    "artifact_id": 10435341624,
+    "artifact_digest": "sha256:5c74ff0bd57761a3efeec4afe4191d43630e8568a1efa81ecdd935dc7302ff90",
+    "production_archive_sha256": "827fc9f1cc84a67bac6ef8c50f5cad09c4cc9841f188b971d91ca1980564e96b",
+    "verified_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "verified_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+    "status": "PASS_EXACT_PRODUCTION_TREE_MATERIALIZED"
+  },
+  "current_fvq99_preservation": {
+    "workflow_run": 35068294134,
+    "head": "6effbcba075f52115ad5347f5c62ba7142309492",
+    "conclusion": "success",
+    "meaning": "Existing Richards/ET seam evidence remains green after evidence-only production-tree export infrastructure was added."
+  },
+  "historical_fci07_bridge_probe": {
+    "test": "tests/fci/run_fci07_full_b1_10_gate.sh",
+    "model_execution_started": false,
+    "failure_class": "STALE_HISTORICAL_MATERIALIZATION_HARNESS",
+    "failure_detail": "tools/fci/fci06_apply_controlled_source_port.py accepted all four exact B1.10 preimages but rejected current repository F-CI06 headcalc materialization before compilation/execution: expected historical postimage SHA-256 3471390c583df41f7bf7cbcbc5f97c5cb679da6e331b4cfd5ade798f2e23b863, observed current-port materialization SHA-256 89d9b678922388d89c4abd53ceff58cfe3aeb48d5167fec095a0551eeb95300a.",
+    "scientific_failure": false,
+    "interpretation": "The historical bridge is not a valid current-Status-A end-to-end harness and cannot be used as positive or negative scientific evidence."
+  },
+  "eq_full_hupsel_long": {
+    "previous_status": "BLOCKED_EXACT_EXTERNAL_ASSETS_REQUIRED",
+    "current_status": "BLOCKED_STATUS_A_END_TO_END_HUPSEL_COMPOSITION_NOT_ESTABLISHED",
+    "assets_blocker_cleared": true,
+    "reference_side_long_run_established": true,
+    "status_a_full_case_run_established": false,
+    "reason": [
+      "The Status-A scientific production tree is a typed kernel/runtime and focused process-migration baseline, not a standalone 63-file legacy executable.",
+      "The exact Hupsel case activates cultivated crop physics (simple plus detailed WOFOST), fixed irrigation, drainage, numerical heat transport and solute transport in addition to Richards water flow.",
+      "Status-A contains admitted process/runtime components for several of these capabilities but no authoritative end-to-end loader/composition/result contract that maps the full legacy Hupsel input set into one 2002-2004 Status-A execution.",
+      "No current production solute module exists under src/, so silently dropping SWSOLU=1 would not be an equivalent full-case execution.",
+      "Broad public API and wholesale legacy I/O modernization were explicitly outside the Status-A acceptance denominator; therefore this gap does not invalidate Status-A."
+    ],
+    "no_unexplained_scientific_difference_observed": true
+  },
+  "mutations": {
+    "swap5_production_source": "NONE",
+    "swap431_source": "NONE",
+    "b1_10_reference_physics": "NONE",
+    "qualification_infrastructure_only": [
+      ".github/workflows/f-vq99-production-tree-export.yml",
+      "qualification/F-VQ99_EXACT_ASSET_AND_HUPSEL_REPLAY_CHECKPOINT.json"
+    ]
+  },
+  "global_verdict": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED",
+  "verdict_interpretation": "Fail-closed evidence verdict, not a negative scientific finding. The former external-asset blocker is resolved and long B0/B1.10 Hupsel reference output is reproduced exactly, but a current Status-A end-to-end Hupsel execution with equivalent activated-process semantics is not yet established.",
+  "next_permitted_action": {
+    "action": "OPEN_BOUNDED_QUALIFICATION_ONLY_STATUS_A_HUPSEL_COMPOSITION_OR_TRACE_REPLAY",
+    "requirements": [
+      "No SWAP5 production-source changes merely to obtain a comparison.",
+      "Use only already-admitted Status-A process/runtime contracts or a qualification-only adapter/trace harness.",
+      "Define process inclusion/exclusion and output mapping before observing Status-A differences.",
+      "Do not silently disable legacy Hupsel physics such as crop, irrigation, drainage, heat or solute and still call the result full-case equivalence.",
+      "Keep the dedicated WOFOST81 potential-production comparison separate.",
+      "Freeze numerical tolerances before observing Status-A-versus-B1.10 differences; no post-hoc widening."
+    ],
+    "alternative": "Establish the separately declared semantically comparable B1.10 restart/persisted-state fixture and run the bounded restart comparison, but this does not by itself close the full Hupsel end-to-end gap."
+  }
+}
