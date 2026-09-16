@@ -1,0 +1,20 @@
+name: M1 criterion 4 output serialization canonical admission
+
+on:
+  push:
+    branches:
+      - integration/m1-c4-output-serialization-admission
+    paths:
+      - 'src/adapter/mod_canonical_result_text_adapter.f90'
+      - 'tests/m1/run_m1_c4_admission_gate.sh'
+      - '.github/workflows/m1-c4-output-serialization-admission.yml'
+
+jobs:
+  m1-c4-canonical-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run exact-evidence admission gate
+        run: bash tests/m1/run_m1_c4_admission_gate.sh
