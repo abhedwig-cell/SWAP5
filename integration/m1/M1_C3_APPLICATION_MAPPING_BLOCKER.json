@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "RECONCILE",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "bfbb466678249811afc6a0800fd32a367818660f",
+    "work_branch_precheckpoint_head": "bfbb466678249811afc6a0800fd32a367818660f",
+    "relation_at_reconcile": "IDENTICAL"
+  },
+  "criterion": {
+    "number": 3,
+    "normative_text": "legacy file runs still reproduce reference results through adapters;"
+  },
+  "authorities_reconciled": [
+    {
+      "workunit": "F-VQ99",
+      "branch": "qualification/f-vq99-swap431-swap5-status-a-equivalence",
+      "head": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
+      "record": "qualification/F-VQ99_HUPSEL_ASSET_QUALIFICATION_CHECKPOINT.json",
+      "finding": "The exact Hupsel legacy reference side is qualified, but the record explicitly states that canonical SWAP5 application-level mapping from legacy Hupsel meteo/crop/ET/file inputs to typed forcing/process composition is not established."
+    },
+    {
+      "workunit": "F-VQ99 precursor",
+      "branch": "qualification/f-vq99-swap431-swap5-status-a-scientific-equivalence",
+      "head": "d5f1dafad5e33d645ded202322aaaff636d4caa9",
+      "record": "tests/qualification/fvq99-swap431-status-a-equivalence/RECONCILE_CHECKPOINT.md",
+      "finding": "The broad Hupsel comparison requires an authoritative semantically equivalent Status-A path and forbids inventing a synthetic replacement mapping merely to fill the matrix."
+    },
+    {
+      "workunit": "F-APP01 / F-CI94",
+      "canonical_head": "bfbb466678249811afc6a0800fd32a367818660f",
+      "production": "src/runtime/mod_fmr_soil_water_application_host.f90",
+      "blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+      "finding": "The admitted generic host owns application-level model-selection identity only. It has no forcing, crop, ET or legacy-file parsing semantics and the canonical admission explicitly does not implement Hupsel meteo/crop/ET application composition."
+    },
+    {
+      "workunit": "Prior M1 reconciliation",
+      "branch": "work/m1-legacy-file-adapter-output-serialization",
+      "close_head": "fb5d2e759563d5f0f590d9a6b327daa0a75b345f",
+      "record": "integration/m1/M1_C3_PROVENANCE_CHECKPOINT.json",
+      "finding": "No pre-existing generic readswap-style legacy application parser/adapter into the current typed application forcing composition was found."
+    }
+  ],
+  "reconcile_result": {
+    "legacy_reference_oracle_available": true,
+    "generic_application_model_selection_host_admitted": true,
+    "legacy_file_to_typed_application_mapping_authority_available": false,
+    "hupsel_meteo_crop_et_composition_authority_available": false,
+    "existing_evidence_alone_can_satisfy_criterion_3": false
+  },
+  "verdict": "C3_BLOCKED_MISSING_APPLICATION_COMPOSITION_AUTHORITY",
+  "interpretation": "This is not a missing test of already-fixed semantics. The missing surface is the authoritative composition that maps a real legacy file-driven application case to already-admitted typed SWAP5 state, forcing and process controls. Implementing an ad hoc Hupsel translation merely to obtain PASS would introduce unqualified application semantics.",
+  "mutations": [
+    "Added this reconciliation/blocker checkpoint only."
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "explicit_exclusions": [
+    "energy balance",
+    "ROSS or RossFast as a substitute",
+    "broad public API redesign",
+    "SW_SOLVE reinterpretation",
+    "new physics",
+    "automatic backend fallback",
+    "legacy default-route change",
+    "production refactor merely to obtain PASS"
+  ],
+  "next_permitted_action": "Remain on this existing C3 decision branch and perform a bounded contract-recovery step only: trace one preserved real legacy Hupsel input path from legacy parser/consumed variables to the already-admitted typed SWAP5 state/forcing/process-control surfaces. A production adapter may be implemented only if that mapping is reproducible from existing scientific semantics without inventing new application composition. If any required mapping remains semantically unbound, persist the exact field-level blocker and do not implement a fake or synthetic adapter."
+}
