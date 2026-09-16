@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI94",
+  "title": "F-APP01 minimal generic soil-water application host current-canonical admission",
+  "phase": "CLOSED_CANONICAL_ADMISSION_POSTIMAGE_GREEN",
+  "decision": "ADMITTED_EXACT_F_APP01_GENERIC_HOST_WITHOUT_ROSSFAST_OR_HUPSEL_WIRING",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+  "canonical_admission_commit": "7da483740f05a1e98ee6491488e519510d680258",
+  "postimage_governance_repair_commit": "89ee508793f5d9952764684b0dcc77e82df54e5b",
+  "production": {
+    "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+    "blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+    "only_new_production_surface_in_fci94": true,
+    "production_callsite_wiring_present": false,
+    "reference_backend_behavior_changed": false,
+    "solver_science_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "owner_authority": {
+    "workunit": "F-APP01",
+    "qualified_scientific_head": "6b799b269871a8b3594a3d1a50ee126c57af37bb",
+    "closeout_head": "c75927a73fcf05ee45ec011f6480cc51cf600280",
+    "owner_status_blob": "53f391a9a8e2a2f977fa7834e9f763d11746298d",
+    "scientific_run_id": 35080790887,
+    "closeout_replay_run_id": 35081402172,
+    "conclusion": "success"
+  },
+  "independent_authority": {
+    "workunit": "F-VQ101",
+    "scientific_test_head": "306c2862cae2c8385fabfba7bc292388c3bba068",
+    "closeout_head": "c5d4cdda0da7a2b01d2f31bebe3fbf04d87223c8",
+    "status_blob": "ffbf7922d55266c9a1a1bcd0a78fda74f84300f6",
+    "scientific_run_id": 35081070415,
+    "closeout_replay_run_id": 35081294513,
+    "o0_o2_sha256": "4f51c586f802468218e0e7c4f04152c77af5c6584fdb82ef2fe03b559801bdd3",
+    "conclusion": "success"
+  },
+  "admission_qualification": {
+    "candidate_head": "4927f0be6e6208c9e90feaad0d527a5aec86de9e",
+    "governance_head": "745babaec45e59a1c683ece27c53270522f9362f",
+    "run_id": 35081573946,
+    "governance_replay_run_id": 35081708882,
+    "conclusion": "success",
+    "exact_host_blob_pass": true,
+    "only_production_delta_is_generic_host_pass": true,
+    "no_production_callsite_wiring_pass": true,
+    "owner_and_independent_replays_pass": true
+  },
+  "postimage_reconciliation": {
+    "initial_fsi35_preservation_run_id": 35081831762,
+    "initial_fsi35_preservation_conclusion": "failure",
+    "classification": "STALE_FCI58P_REPOSITORY_WIDE_BLOB_LOCK_EXPOSED_NOT_FAPP01_SCIENTIFIC_REGRESSION",
+    "remediation_workunit": "F-CI93",
+    "remediation_commit": "89ee508793f5d9952764684b0dcc77e82df54e5b",
+    "post_remediation_fsi35_run_id": 35082557470,
+    "post_remediation_fsi35_conclusion": "success",
+    "post_remediation_canonical_run_id": 35082557648,
+    "post_remediation_canonical_conclusion": "success",
+    "post_remediation_wof_moving_preservation_run_id": 35082557593,
+    "post_remediation_wof_moving_preservation_conclusion": "success"
+  },
+  "admitted_contract": {
+    "reference_default_for_blank_selection": true,
+    "explicit_reference_selection": true,
+    "explicit_typed_registered_alternative_selection": true,
+    "host_owns_model_selection_identity_only": true,
+    "unsupported_or_invalid_selection_fails_closed": true,
+    "no_automatic_fallback": true,
+    "no_silent_selection": true,
+    "generic_host_has_no_alternative_model_specific_dependency": true,
+    "no_broad_public_api_claim": true,
+    "no_legacy_swp_grammar_change": true
+  },
+  "explicit_nonclaims": [
+    "F-CI94 does not make RossFast selectable from normal application execution by itself.",
+    "F-CI94 does not implement Hupsel meteo/crop/ET application composition.",
+    "F-CI94 does not broaden the pinned Status-A scientific denominator.",
+    "F-CI94 does not add EB, groundwater RossFast, mixed-backend MultiSWAP or automatic solver fallback."
+  ],
+  "canonical_admission": true,
+  "final_verdict": "CLOSED_CANONICAL_ADMISSION_POSTIMAGE_GREEN",
+  "next_permitted_action": "F-ROSS12 may now resume against current canonical and bind explicit ROSSFAST_D3R selection to the already qualified F-ROSS11 application composition. Keep Reference default and preserve all existing restricted-domain exclusions. Full Hupsel application composition remains a separate capability."
+}

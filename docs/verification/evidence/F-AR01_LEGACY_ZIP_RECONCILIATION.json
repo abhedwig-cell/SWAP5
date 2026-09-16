@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "capability": "F-AR01 legacy ZIP reconciliation",
+  "phase": "RECONCILE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head_at_start": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "corrected_reference": "B1.11",
+    "b1_11_member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "packages": [
+    {
+      "name": "SWAP_4.3.1_E7_SW011_upstream_package (1).zip",
+      "sha256": "97e31ea1216e4796ab3df5cb062f1d46c2c396f5dcbe90b4f783144b8a9162ac",
+      "classification": ["AL_VERWERKT"],
+      "disposition": "SWAP-011 admitted as B1.11"
+    },
+    {
+      "name": "SWAP_4.3.1_complete_testbank.zip",
+      "sha256": "af6af725b986b084601483b4ad5bf05ea87557c7248b9ddc98bc7928204553f7",
+      "classification": ["DEELS_VERWERKT", "ALLEEN_EVIDENCE"],
+      "disposition": "B0 hydraulic preimages consumed for SWAP-011; remaining test assets not yet integrated as a coherent current testbank"
+    },
+    {
+      "name": "SWAP_4.3.1_patch_proposal.zip",
+      "sha256": "d534deb260e1844a7ce80a06e1d8dc48c59ce5319442b648a2193958ff9d8e1a",
+      "classification": ["ACHTERHAALD_ALS_BUNDEL"],
+      "embedded_patch_sha256": "37355caa74eeab8e51377eab052dc3350243acfded63fab47a17e669618000ea",
+      "disposition": "Most contents split into isolated B1 admissions; SWAP-003 and SWAP-004 remain unadmitted; never apply wholesale"
+    },
+    {
+      "name": "SWAP431_oxygenstress_WFT300_package_for_Marius.zip",
+      "sha256": "614b5796fa5de2c03ec6281c95aff170b6d5a9ca853eb0019f49d052946385cb",
+      "classification": ["NOG_OPEN", "NIET_ADMISSION_READY"],
+      "disposition": "0001/0002 are performance candidates; WFT300 is opt-in numerical optimisation; historical patched source must not replace current authority"
+    },
+    {
+      "name": "SWAP_4.3.1_ponding_jacobian_patch_for_Marius.zip",
+      "sha256": "e0403c4387742cc9a6819729d80b09ba3175579cedf3ae8ed47030cedc930d07",
+      "classification": ["NOG_OPEN", "NIET_ADMISSION_READY"],
+      "core_patch_sha256": "101cd0edd9e22f494582b5536cd82ccd849d2f881c20cda3cf224f2a63e4e1ee",
+      "internal_sha256_manifest": "30/30 PASS",
+      "disposition": "Two bounded correctness findings, but combined production qualification blocked by timestep-behaviour interaction; research-only caps excluded"
+    },
+    {
+      "name": "SWAP_4.3.1_verification_framework_extended.zip",
+      "sha256": "199f3d1d607255a813bb023c5741de17eacb173c2537a56bfa214ad2827b0fca",
+      "classification": ["DEELS_VERWERKT", "ALLEEN_EVIDENCE", "NOG_OPEN"],
+      "disposition": "Analytical test assets remain candidates for selective import; issue register partly superseded and partly requires current-authority triage"
+    }
+  ],
+  "current_b1_unadmitted_known": ["SWAP-003", "SWAP-004"],
+  "historical_register_requires_fresh_triage": [
+    "SWAP-014", "SWAP-015", "SWAP-016", "SWAP-017", "SWAP-018",
+    "TTUTIL-001", "TTUTIL-002", "TTUTIL-003",
+    "DOC-001", "DOC-002", "DOC-003", "DOC-004", "DOC-005", "DOC-006", "DOC-007", "DOC-008", "DOC-009", "DOC-010", "DOC-011", "DOC-012", "DOC-013"
+  ],
+  "mutations": {
+    "production_source_modified": false,
+    "b1_manifest_modified": false,
+    "legacy_patch_applied": false,
+    "solver_policy_changed": false,
+    "timestep_policy_changed": false,
+    "tolerance_changed": false
+  },
+  "verdict": {
+    "all_zips_processed_as_changes": false,
+    "all_zips_reconciled": true
+  },
+  "next_permitted_actions": [
+    "fresh current-authority triage of historical issue-register findings not represented in current B1 authority",
+    "selective verification-test import",
+    "SWAP-003 qualification",
+    "SWAP-004 qualification",
+    "oxygenstress performance 0001/0002 qualification",
+    "ponding/Jacobian correctness qualification with timestep policy separate",
+    "WFT300 as opt-in numerical-performance decision surface"
+  ]
+}
