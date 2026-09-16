@@ -67,6 +67,30 @@ F-PE12 therefore preserves issue #12 as the Target-A unlock. The exact final E7 
 
 For current SWAP5, the qualified typed production route rejects `swkimpl /= 0`. The legacy compatibility HeadCalc still contains SWKIMPL=1 K/dKdh work, so the historical idea is not classified as globally obsolete. It is a deferred B design candidate outside the current Status-A typed production profile. F-PE12 does not broaden solver admission to manufacture a performance target.
 
+## Final E7 provenance search
+
+At final closeout, F-PE12 performed three bounded File Library search passes using the expected exact artifact names and distinctive aliases, including:
+
+```text
+SWAP_4.3.1_E7_SW011_upstream_package.zip
+SWAP_4.3.1_SW011_overdracht_Marius.docx
+SWAP_4.3.1_SW011_overdracht_Marius_bundle.zip
+SWAP-011_fix.patch
+E7 SW011 upstream package
+SW011 overdracht Marius
+READY_PATCH_UPSTREAM SWAP-011
+```
+
+No exact E7 patch/package artifact was returned. The searches did return older/reference material such as D2 qualification and the E3 semantic prototype, which cannot substitute for the final E7 payload.
+
+This search result does not prove that the original artifact no longer exists outside the accessible File Library. It establishes only that F-PE12 did not recover it from the available sources. The authoritative provenance status therefore remains:
+
+```text
+PATCH_PAYLOAD_PENDING
+```
+
+and the anti-reconstruction rule remains binding.
+
 ## OxygenStress-adjacent conclusion
 
 Later S9 and A23ap evidence was recovered and is useful, but it does not backfill the missing evidence for the earlier duplicate-QROMBD and fast no-stress changes.
