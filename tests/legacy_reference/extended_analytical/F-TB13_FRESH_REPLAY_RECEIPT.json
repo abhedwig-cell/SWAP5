@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.ftb13.legacy_analytical_reference_replay.v1",
+  "work_unit": "F-TB13",
+  "source_package": {
+    "name": "SWAP_4.3.1_verification_framework_extended.zip",
+    "sha256": "199f3d1d607255a813bb023c5741de17eacb173c2537a56bfa214ad2827b0fca",
+    "bytes": 2490583
+  },
+  "canonical_b0_distribution": {
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "ttutil_archive_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
+  },
+  "framework_gnu_executable": {
+    "sha256": "02d639f9ac185bf923e3c022b25fdf01003a2633fbd6f79b4d8295fbc7d5b002",
+    "claim": "historical framework rebuild only; not the immutable official B0 executable"
+  },
+  "b1_11_reference": {
+    "member_count": 63,
+    "source_bytes": 1886519,
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "reconstruction": "tools/vq/b1_11_reconstruct.py"
+  },
+  "fresh_gnu_b1_11_build": {
+    "compiler": "GNU Fortran 14.2.0",
+    "executable_sha256": "5e7ab8bd3f688f00616174df28c76e499a23b45c94963161895f5aafc4569021",
+    "ttutil_static_library_sha256": "d2cfced99d32870c5d6be9659a948bd98172c90cc5c356941e8eba86d2dc1d9f",
+    "source_preimage": "exact reconstructed B1.11",
+    "build_transform": "standalone Linux shadow only: resolve known Intel !DEC$ conditionals with multiswap/with_animo/with_sss false and linux=true; no scientific source edit",
+    "flags": "-O2 -cpp -Dlinux -fallow-argument-mismatch -ffree-line-length-none -finit-local-zero"
+  },
+  "fresh_replay": {
+    "steady_state_water": {
+      "cases": 12,
+      "passes": 12,
+      "documented_comparison_failures": 0,
+      "max_rmse_cm": 3.3196843403367526,
+      "max_abs_error_cm": 22.72959133561503
+    },
+    "srivastava_yeh": {
+      "cases": 12,
+      "passes": 12,
+      "max_h_rmse_cm": 0.0032357321335206505,
+      "max_theta_rmse": 0.0003211160912639744,
+      "min_h_r2": 0.9999596884406337,
+      "coarse_to_fine_convergence": "PASS_ALL_4_TIMES"
+    },
+    "historical_framework_vs_b1_11_outputs": "BYTE_IDENTICAL_FOR_ALL_4_PRESERVED_RESULT_FILES"
+  },
+  "asset_archive": {
+    "path": "tests/legacy_reference/extended_analytical/F-TB13_RECOVERED_ANALYTICAL_ASSETS.tar.gz",
+    "sha256": "57a75c64e1b057223fbd32ac3051a2c56938209f19b86912d7236f4f1d5fc069",
+    "bytes": 17122,
+    "members": {
+      "steady_state_water/run_benchmark.py": "76b3c210f909a70077aa2b634b751bc0a07c2b142ccb46f9f19c8a3856bc23c3",
+      "steady_state_water/compare_documented.py": "51072e58f28831a97ee816a7ac5d84194163acc3f0532b838ce77d390612a4ed",
+      "srivastava_yeh_homogeneous/analytical.py": "80d89486b3ab4c389d2ef0dbc6b277edf83c97a7ed75a3bfdf1de61eacea815a",
+      "srivastava_yeh_homogeneous/run_benchmark.py": "0d345a44ec440c82966ffafe2a05f9de027f75a960025d66964f04e803bb25b8",
+      "template/base.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+      "expected/steady_state_water_summary.csv": "ebdbc7fff0495702919e9cf82e0af6782010ad2ab79f276dcb4574aeb2a9b774",
+      "expected/steady_state_water_vs_documented.csv": "7a23144ff3db4ded15ca4dccfb194295e982a76dc5a985a378cfbe1d7c389033",
+      "expected/srivastava_yeh_homogeneous_summary.csv": "05d0a78efd08f5d699d232c160572da82e502f07eb54c75137450d40ead80580",
+      "expected/srivastava_yeh_convergence.txt": "a269884e05f295e172b47922c3925058868c472fe53876c9ee3a98763645e039"
+    }
+  },
+  "qualification_boundary": {
+    "qualifies": "analytical/reference test definitions, expected result identities, and fresh B1.11 GNU replay evidence",
+    "does_not_qualify": [
+      "official B0 executable equivalence",
+      "all legacy testbank content",
+      "steady-state solute as hard release gate",
+      "Basha 1999",
+      "SWAP5 production solver equivalence"
+    ]
+  },
+  "decision": "QUALIFIED_LEGACY_ANALYTICAL_REFERENCE_PRESERVATION_CANDIDATE"
+}
