@@ -1,0 +1,40 @@
+name: F-PE18 Richards Full-Path Workspace Measurement
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/fpe/test_fpe18_richards_full_path_workspace_timing.f90'
+      - 'tests/fpe/run_fpe18_richards_full_path_workspace_measurement.sh'
+      - '.github/workflows/fpe18-richards-full-path-workspace-measurement.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure-full-path:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler and source identity
+        run: |
+          gfortran --version
+          python3 --version
+          git rev-parse HEAD
+
+      - name: Run source-bound F-SI24 full-path fresh versus reused workspace measurement
+        run: bash tests/fpe/run_fpe18_richards_full_path_workspace_measurement.sh
+
+      - name: Upload full-path evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe18-richards-full-path-workspace
+          path: artifacts/fpe18-richards-full-path
+          if-no-files-found: error
