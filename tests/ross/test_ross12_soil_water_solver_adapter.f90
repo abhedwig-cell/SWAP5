@@ -1,25 +1,58 @@
+module mod_ross12_test_providers
+  use, intrinsic :: iso_fortran_env, only: real64
+  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t, source_sink_provider_t
+  implicit none
+  private
+
+  type, extends(constitutive_hydraulics_provider_t), public :: dummy_constitutive_t
+  contains
+    procedure :: evaluate => dummy_constitutive_evaluate
+  end type dummy_constitutive_t
+
+  type, extends(source_sink_provider_t), public :: test_source_sink_t
+    logical :: nonzero = .false.
+  contains
+    procedure :: evaluate => test_source_sink_evaluate
+  end type test_source_sink_t
+
+contains
+
+  subroutine dummy_constitutive_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
+    class(dummy_constitutive_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:)
+    real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
+    if (same_type_as(self,self) .and. size(pressure_head) >= 0) then
+      water_content = 0.0_real64
+      conductivity = 0.0_real64
+      capacity = 0.0_real64
+      dconductivity_dhead = 0.0_real64
+    end if
+  end subroutine dummy_constitutive_evaluate
+
+  subroutine test_source_sink_evaluate(self, pressure_head, water_content, source, sink)
+    class(test_source_sink_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), water_content(:)
+    real(real64), intent(out) :: source(:), sink(:)
+    source = 0.0_real64
+    sink = 0.0_real64
+    if (size(pressure_head) /= size(water_content)) error stop 91
+    if (self%nonzero .and. size(source) > 0) source(1) = 1.0e-6_real64
+  end subroutine test_source_sink_evaluate
+
+end module mod_ross12_test_providers
+
 program test_ross12_soil_water_solver_adapter
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t, source_sink_provider_t, &
-       soil_water_parameter_set_t, soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
+       soil_water_solve_result_t, SW_SOLVE_CONVERGED
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_rossfast_d3r_execution_policy, only: ROSSFAST_D3R_OUTER_HORIZON_DAY
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_material_t, rossfast_d3r_material_from_id, &
        ROSSFAST_D3R_N_CELLS, ROSSFAST_D3R_DZ_CM
   use mod_rossfast_d3r_soil_water_solver, only: rossfast_d3r_soil_water_solver_t, &
        rossfast_d3r_soil_water_workspace_t
+  use mod_ross12_test_providers, only: dummy_constitutive_t, test_source_sink_t
   implicit none
-
-  type, extends(constitutive_hydraulics_provider_t) :: dummy_constitutive_t
-  contains
-    procedure :: evaluate => dummy_constitutive_evaluate
-  end type dummy_constitutive_t
-
-  type, extends(source_sink_provider_t) :: test_source_sink_t
-    logical :: nonzero = .false.
-  contains
-    procedure :: evaluate => test_source_sink_evaluate
-  end type test_source_sink_t
 
   character(len=512) :: asset_root
   integer :: failures
@@ -161,28 +194,6 @@ contains
     terms%nonzero = .false.
     request%evaluation%source_sink => terms
   end subroutine build_request
-
-  subroutine dummy_constitutive_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
-    class(dummy_constitutive_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head(:)
-    real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
-    if (same_type_as(self,self) .and. size(pressure_head) >= 0) then
-      water_content = 0.0_real64
-      conductivity = 0.0_real64
-      capacity = 0.0_real64
-      dconductivity_dhead = 0.0_real64
-    end if
-  end subroutine dummy_constitutive_evaluate
-
-  subroutine test_source_sink_evaluate(self, pressure_head, water_content, source, sink)
-    class(test_source_sink_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head(:), water_content(:)
-    real(real64), intent(out) :: source(:), sink(:)
-    source = 0.0_real64
-    sink = 0.0_real64
-    if (size(pressure_head) /= size(water_content)) error stop 91
-    if (self%nonzero .and. size(source) > 0) source(1) = 1.0e-6_real64
-  end subroutine test_source_sink_evaluate
 
   pure real(real64) function theta_from_head(head_cm, material) result(theta)
     real(real64), intent(in) :: head_cm
