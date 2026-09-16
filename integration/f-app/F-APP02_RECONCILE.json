@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "work_unit": "F-APP02",
+  "capability": "Legacy SWBOTB=6 zero-flux application binding",
+  "phase": "RECONCILE",
+  "branch": "work/f-app02-legacy-swbotb6-zero-flux-binding",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5eb93542daf297d3aa89bee9552179387a7f2c68"
+  },
+  "trigger": {
+    "authority": "F-VQ100",
+    "finding": "Official Hupsel uses SWBOTB=6; transactional replay was fail-closed because no admitted legacy-to-typed mapping existed.",
+    "closeout": "7823e00c71c218ba8bade15347a56b091017932d"
+  },
+  "legacy_semantic_authority": {
+    "finding": "SWAP 4.3.1 input documentation defines SWBOTB=6 as bottom flux equals zero and states only options 1-5 require additional bottom-boundary data.",
+    "unit": "cm d-1",
+    "prescribed_value": 0.0
+  },
+  "typed_semantic_authority": {
+    "work_unit": "F-SI27",
+    "closeout": "777015b8daffbd859e737f894cb585bd9ce96612",
+    "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_FLUX_SWBOTB2",
+    "typed_mode": 2,
+    "request_control": "soil_water_solve_request_t%boundary%bottom_flux",
+    "units": "cm d-1",
+    "mass_residual_qualified": true,
+    "b110_identity_qualified": true
+  },
+  "current_code_reconciliation": {
+    "state_binding": "src/solver/mod_reference_richards_state_binding.f90 copies request%boundary%bottom_flux directly to state%qbot.",
+    "headcalc": "For the ordinary flux-bottom route the lower residual is reduced by state%qbot. No distinct zero-flux equation is required.",
+    "current_validator": "Direct legacy mode 6 is intentionally rejected; this workunit will not widen solver validation."
+  },
+  "semantic_mapping": {
+    "legacy_swbotb": 6,
+    "typed_bottom_mode": 2,
+    "typed_bottom_flux_cm_per_day": 0.0,
+    "classification": "EXPLICIT_LEGACY_TO_ALREADY_QUALIFIED_TYPED_SEMANTIC_BINDING",
+    "new_physics": false
+  },
+  "implementation_boundary": [
+    "Implement only an application/adapter binding for legacy SWBOTB=6.",
+    "Do not add solver bottom mode 6.",
+    "Do not change HeadCalc, Richards equations, Jacobian, mass policy or groundwater physics.",
+    "Do not alter the legacy standalone default route.",
+    "Do not add file parsing, broad IO modernization or a stable public API.",
+    "Do not infer mappings for any other SWBOTB value."
+  ],
+  "qualification_requirements": [
+    "Exact mapping 6 -> mode 2 and bottom_flux bitwise +0.0_real64.",
+    "Unsupported legacy bottom modes fail closed.",
+    "Unrelated typed boundary fields remain unchanged.",
+    "A representative solver request using the mapped boundary follows the already-qualified mode-2 prescribed-qbot route.",
+    "O0/O2 identity for the binding test."
+  ],
+  "verdict": "READY_TO_IMPLEMENT_BOUNDED_BINDING",
+  "production_mutation": "NONE_AT_RECONCILE",
+  "next_permitted_action": "Implement the smallest explicit legacy SWBOTB=6 application binding and owner-qualify it."
+}
