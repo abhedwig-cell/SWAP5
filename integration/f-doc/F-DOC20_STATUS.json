@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC20",
   "title": "SWAP5 Documentation & Review Baseline",
-  "phase": "VERIFY",
-  "decision": "PRACTICAL_REVIEWER_ENTRY_LAYER_QUALIFIED",
+  "phase": "PUBLISH",
+  "decision": "FROZEN_REVIEW_PUBLICATION_CONTRACT_QUALIFIED_READY_TO_MATERIALIZE",
   "protocol": ["RECONCILE", "UPDATE", "VERIFY", "PUBLISH", "CLOSE"],
   "branch": "work/f-doc20-review-baseline-publication",
   "canonical_branch": "integration/f-ci-canonical",
@@ -39,6 +39,18 @@
     "deployment": "SKIPPED_ON_PR_AS_DESIGNED",
     "external_publication_verification": "SKIPPED_ON_PR_AS_DESIGNED"
   },
+  "qualified_publication_contract_slice": {
+    "tested_head": "c38922849b67f18e4f92f90c5b08a4e57c519eec",
+    "workflow_run": 35108150706,
+    "job": 104834610457,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "deployment": "SKIPPED_ON_PR_AS_DESIGNED",
+    "external_publication_verification": "SKIPPED_ON_PR_AS_DESIGNED",
+    "publication_branch_contract": "publication/status-a-review-20260916",
+    "main_deployment_removed": true,
+    "external_verifier_rebound_to_current_review_routes": true
+  },
   "scientific_authority_reconciliation": {
     "F_DOC16": {
       "classification": "CURRENT_REUSABLE_WITH_RECONCILIATION",
@@ -73,7 +85,8 @@
   "current_update_slice": {
     "new_review_pages": [
       "docs/review/AUTHORITY_RECONCILIATION.md",
-      "docs/review/SWAP431_EQUIVALENCE.md"
+      "docs/review/SWAP431_EQUIVALENCE.md",
+      "docs/review/PUBLICATION_AUTHORITY.md"
     ],
     "new_science_pages": [
       "docs/science/index.md",
@@ -98,24 +111,25 @@
     "practical_entry_page": "docs/getting-started.md",
     "practical_entry_finding": "The repository has a qualified minimal application-host contract and deterministic owner runner, but no current authority for a single broad stable end-user SWAP5 CLI or replacement universal input/output grammar.",
     "documentation_completion_rule": "Missing but reconstructable documentation is written from accepted theory/code/evidence; missing unproven authority is recorded as a gap and is not invented.",
-    "review_guide_refreshed": true,
-    "mkdocs_navigation_refreshed": true,
-    "science_index_capability_route_added": true,
-    "home_practical_route_added": true,
-    "f_ar01_added_to_navigation": true,
+    "publication_workflow": ".github/workflows/docs.yml",
+    "external_publication_verifier": "tools/docs/verify_publication.py",
     "production_source_change": false,
     "reference_source_change": false
   },
-  "publication_risk": {
-    "existing_pages_deploys_main_only": true,
-    "main_is_not_review_authority": true,
-    "resolution_pending": true,
-    "rule": "Do not publish the colleague-review portal until the workflow deploy source is an explicit frozen review publication authority and the site itself displays both scientific and documentation git authorities."
+  "publication_authority": {
+    "branch": "publication/status-a-review-20260916",
+    "materialized": false,
+    "exact_documentation_commit": null,
+    "deployment_workflow_run": null,
+    "external_verification": "PENDING",
+    "rule": "Only an explicitly materialized and successfully deployed revision on the dedicated publication branch can become the first live review publication authority."
   },
   "next_actions": [
-    "Design generated Fortran source-reference integration without displacing the human review hierarchy.",
-    "Create/freeze the publication authority and update the Pages workflow away from stale-main-only publication.",
-    "Run strict docs qualification and external publication verification before CLOSE."
+    "Materialize publication/status-a-review-20260916 from this qualified documentation postimage.",
+    "Run the Documentation workflow on that publication surface and require build, Pages deployment and external verification PASS.",
+    "Persist exact publication commit/workflow evidence.",
+    "Add generated Fortran source-reference integration only after the human review hierarchy and first publication authority are stable.",
+    "CLOSE F-DOC20 only after live publication verification and final repository/canonical reconciliation."
   ],
   "explicit_nonclaims": [
     "No production or reference source is modified by F-DOC20.",
@@ -123,6 +137,7 @@
     "The review portal does not claim complete whole-application SWAP 4.3.1/SWAP5 equivalence before that experiment is validly executed.",
     "Post-Status-A capability development remains outside the first frozen scientific review denominator unless explicitly added before a later freeze.",
     "Capability documentation does not broaden admitted Restart, MultiSWAP, WOFOST, Snow, drainage or groundwater semantics.",
-    "Internal qualification runners are not represented as a broad stable end-user SWAP5 application interface."
+    "Internal qualification runners are not represented as a broad stable end-user SWAP5 application interface.",
+    "A moving main branch is not used as the Status-A review publication authority."
   ]
 }
