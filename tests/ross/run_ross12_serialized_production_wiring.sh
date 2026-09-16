@@ -79,9 +79,6 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
-  src/runtime/mod_fmr_output_serialization_contract.f90
-  src/runtime/mod_fmr_output_serialization_pack.f90
-  src/runtime/mod_fmr_output_serialization.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
