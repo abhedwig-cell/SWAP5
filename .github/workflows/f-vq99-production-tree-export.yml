@@ -1,0 +1,45 @@
+name: F-VQ99 production tree export
+
+on:
+  push:
+    branches:
+      - qualification/f-vq99-swap431-swap5-status-a-equivalence
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact production authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROD=50346642bd565f79134ea17d5462e544b354998c
+          TREE=3b085d7dea3d3f3fce42ad9d8f259a8350205846
+          git cat-file -e "$PROD^{commit}"
+          test "$(git rev-parse "$PROD^{tree}")" = "$TREE"
+          printf 'production_commit=%s\nproduction_tree=%s\n' "$PROD" "$TREE" > f-vq99-production-authority.txt
+
+      - name: Export exact production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git archive --format=tar.gz --prefix=SWAP5-production-50346642/ -o SWAP5-production-50346642.tar.gz 50346642bd565f79134ea17d5462e544b354998c
+          sha256sum SWAP5-production-50346642.tar.gz | tee f-vq99-production-archive.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-vq99-production-tree-export
+          path: |
+            SWAP5-production-50346642.tar.gz
+            f-vq99-production-authority.txt
+            f-vq99-production-archive.sha256
+          if-no-files-found: error
