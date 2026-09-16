@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel SWETR=0 daily meteorological/application composition recovery",
+  "phase": "ACQUIRE_PUBLIC_FIXTURE_PROBE",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "84c2412888b5c7e7fa4484eaae9ed4b272695536",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "delta_note": "F-AR01 remains documentation/evidence only; no SWAP5 production source or B1 semantic dependency changed."
+  },
+  "purpose": "Test whether pinned public Hupsel fixture copies can rematerialize the exact raw input authority frozen by F-VQ99. This is an acquisition/provenance probe only and cannot admit scientific semantics from non-matching bytes.",
+  "f_vq99_authority": {
+    "reference_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "expected_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "expected_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+  },
+  "probe": {
+    "workflow_commit": "84c2412888b5c7e7fa4484eaae9ed4b272695536",
+    "run_id": 35106167499,
+    "conclusion": "success",
+    "artifact": {
+      "id": 10449899228,
+      "name": "f-app03-public-hupsel-fixture-recovery",
+      "digest": "sha256:02df966d20dd243bcb3598bff8c3d370a6e7743473e1d759119808f5c90c0341",
+      "expires_at": "2026-12-15T14:05:29Z"
+    },
+    "sources": {
+      "rswap_commit": "c30f40227004191ca729f25cc35f500301cb4bab",
+      "pyswap_commit": "d9b83c4c2cecfa0e7b5335935e8e36d6d437a0bc"
+    },
+    "observed": {
+      "rswap_283_met_sha256": "ec92d20437787134a0bd91e7fb0c5553c4ed57f592dc3f7c28e156c0c425a6d8",
+      "rswap_283_raw_match": "NO_MATCH",
+      "rswap_swap_swp_sha256": "f582ad79b4a76cf0e69ea4e92d5806ef76c2b7635f65e6e032d27249781fa53a",
+      "rswap_swap_swp_raw_match": "NO_MATCH",
+      "pyswap_283_csv_sha256": "e0512e36f84537449fd19f04330123abe45ea6f6510ed5c5db350b99f2bf7a95",
+      "rswap_vs_pyswap_meteo_data_table_identity": "PASS"
+    }
+  },
+  "qualification_interpretation": {
+    "exact_fixture_authority_recovered": false,
+    "supporting_provenance": "The meteorological data table shared by the pinned public rswap and pySWAP copies is byte-identical after removing rswap's generated-file comments before the table header.",
+    "authority_limit": "Neither public raw 283.met nor public raw swap.swp matches the F-VQ99 frozen raw SHA-256 authority. Table identity is supporting provenance only and does not authorize replacing or reconstructing the official fixture bytes.",
+    "effect_on_A12_A13": "NONE; exact replayable A12/A13 source/artifact authority remains absent.",
+    "effect_on_F_VQ100": "The F-CI95 bottom-boundary blocker is cleared, but F-VQ100 still cannot execute the preregistered six-snapshot extraction/replay because no exact executable B1.10/Hupsel reference fixture is durably available and no snapshots were previously persisted."
+  },
+  "verdict": "F_APP03_BLOCKED_MISSING_REPLAYABLE_A12_A13_SOURCE_AND_EXACT_HUPSEL_FIXTURE",
+  "mutations": [
+    "Added this acquisition/provenance checkpoint only."
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "evidence_reused": [
+    "F-VQ99 exact Hupsel raw-file SHA-256 authority",
+    "F-APP03 replayable-authority blocker checkpoint",
+    "F-APP02/F-VQ102/F-CI95 SWBOTB=6 zero-flux admission"
+  ],
+  "next_permitted_action": "Recover an exact authority-pinned SWAP 4.3.1 distribution/Hupsel fixture or exact historical A12/A13 artifacts and verify their provenance/hashes. Only then preregister and independently qualify the minimal Hupsel SWETR=0 application-composition chain on current canonical. Do not implement M1 file-adapter production mapping from these public copies or from summary-only historical formulas.",
+  "exclusions": [
+    "no production physics change",
+    "no solver-policy or tolerance change",
+    "no legacy default-route change",
+    "no output fitting",
+    "no reconstruction of official raw fixture from desired outputs",
+    "no promotion of public table identity to raw-file authority",
+    "no M1 criterion-3 closure claim"
+  ]
+}
