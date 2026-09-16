@@ -1,12 +1,15 @@
 # Target architecture overview
 
+!!! warning "Target-design document, not current Status-A authority"
+    This page preserves target architecture intent from the migration phase. It is not the authority for what SWAP5 currently implements or admits. For the actual 2026-09-16 Status-A architecture, see [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md) and [Current Status-A status](../status-a/CURRENT_STATUS.md). Statements below about intended APIs, generic time intervals, execution classes, alternative solvers or coupling cost paths must not be read as current functionality unless a later canonical acceptance authority admits them.
+
 ## Status
 
 This page describes the target modular SWAP architecture. It is not a description of the current SWAP 4.3.1 module graph.
 
-For the evidence-based migration state of each major capability, see the [implementation status map](implementation-status.md). That map is the authoritative place for distinguishing `TARGET`, `PARTIAL`, `IN_PROGRESS` and qualified implementation evidence.
+The historical [implementation status map](implementation-status.md) records the evidence-based migration state as it stood on 2026-09-04. It is preserved as historical evidence and is superseded for current-state claims by the Status-A pages linked above.
 
-For normative ownership boundaries between API, runtime, coupler, kernel, process physics and the soil-water solver, see the [target component ownership map](component-map.md).
+For normative target ownership boundaries between API, runtime, coupler, kernel, process physics and the soil-water solver, see the [target component ownership map](component-map.md).
 
 For the file-by-file route from the 63-file SWAP 4.3.1 source baseline into those target responsibilities, see the [legacy-to-target migration map](legacy-migration.md).
 
