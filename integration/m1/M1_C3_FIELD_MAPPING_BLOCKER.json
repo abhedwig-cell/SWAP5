@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "RECONCILE_FIELD_MAPPING",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "bfbb466678249811afc6a0800fd32a367818660f",
+    "work_branch_precheckpoint_head": "bd2020b8cfeb06c2dc6e25181f2b2b20b69714ad"
+  },
+  "criterion": {
+    "number": 3,
+    "normative_text": "legacy file runs still reproduce reference results through adapters;"
+  },
+  "recovered_legacy_external_contract": {
+    "source": [
+      "src/legacy/b1_10_port/swap_part01.inc",
+      "src/legacy/b1_10_port/swap_part03.inc",
+      "src/legacy/b1_10_port/swap_part04.inc"
+    ],
+    "status": "PARTIAL_EXACT_SEMANTICS_RECOVERED",
+    "examples": [
+      "toswap%rad [kJ m-2 d-1] -> rad = toswap%rad * 1000 [J m-2 d-1]",
+      "toswap%rain [mm d-1] -> graidt = nraidt = toswap%rain * 0.1 [cm d-1]",
+      "toswap%etref [mm d-1] -> etr = toswap%etref * 0.1 [cm d-1]",
+      "toswap%lai -> lai, toswap%ch [cm] -> ch, toswap%zroot [cm] -> rd",
+      "when ipet == 1: toswap%ptrans [mm d-1] -> ptra_dry = ptra = 0.1 * ptrans [cm d-1]",
+      "when ipet == 1: toswap%pevap [mm d-1] -> peva = empreva = epond = 0.1 * pevap [cm d-1], followed by reduceva(rain * 0.1)"
+    ],
+    "scope_limitation": "These transformations belong to the external DLL-style exchange path and do not establish equivalence with the normal file-driven Hupsel path."
+  },
+  "legacy_file_driven_composition": {
+    "source": "src/legacy/b1_10_port/swap_part02.inc",
+    "observed_chain": [
+      "swap_configuration",
+      "ReadSwap",
+      "Meteo initialization and daily/time-step processing",
+      "crop rotation and optional WOFOST assimilation",
+      "irrigation and interception_daily",
+      "potential evaporation/transpiration processing",
+      "RootExtraction",
+      "BoundBottom",
+      "drain",
+      "SoilWater"
+    ],
+    "finding": "The normal legacy file route composes raw meteo/crop/configuration inputs through multiple application processes before the soil-water computational boundary. A direct raw-file-field to soil-water-forcing mapping is therefore not semantically equivalent."
+  },
+  "current_typed_target": {
+    "canonical_contract": "src/runtime/mod_canonical_contracts.f90",
+    "canonical_forcing_base": "canonical_forcing_t is an abstract empty base type; forcing semantics are supplied by concrete model/process contracts.",
+    "physical_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "physical_forcing_type": "fmr_b110_physical_forcing_t",
+    "process_ready_fields": [
+      "top_flux",
+      "top_head",
+      "bottom_flux",
+      "bottom_head",
+      "drainage_flux_by_level and/or drainage_response_controls",
+      "subsurface_irrigation_source(:)",
+      "root_extraction_sink(:)",
+      "optional snow forcing",
+      "optional soil-temperature forcing"
+    ],
+    "finding": "The admitted physical backend consumes process-ready interval forcing. It does not own Hupsel meteo/crop/ET/file composition."
+  },
+  "field_level_break": {
+    "status": "NOT_BOUND_BY_CURRENT_AUTHORITY",
+    "missing_authoritative_mappings": [
+      "file-driven precipitation/meteo/interception state -> admitted interval top_flux",
+      "file-driven crop state and potential transpiration -> nodewise root_extraction_sink(:)",
+      "legacy bottom-boundary configuration and time-dependent evaluation -> bottom_head/bottom_flux",
+      "legacy drainage configuration and dynamic response -> typed drainage forcing/control surface",
+      "legacy irrigation/SSDI application composition -> typed source terms where applicable",
+      "activation and composition rules for optional process forcing in a real Hupsel run"
+    ],
+    "why_external_exchange_is_not_a_substitute": "The external exchange path imposes its own restricted switches and injects already selected daily weather/crop/PET data. The Hupsel reference is a normal file-driven application that executes ReadSwap, Meteo, crop/interception/root-extraction/bottom/drainage composition internally. Treating the DLL field transformations as the Hupsel file adapter would change the application semantics being qualified."
+  },
+  "repository_source_coverage": {
+    "committed_b1_10_port": "A preserved subset containing headcalc.f90, soilwater.f90, swap.f90, swap_main.f90 and swap_part01..04.inc.",
+    "full_legacy_source_authority": "Qualified by F-VQ99 from the official user-supplied SWAP 4.3.1 distribution as external immutable evidence, but not committed as a complete source tree in this repository.",
+    "consequence": "The complete file-parser/meteo/crop application composition cannot be recovered field-for-field from the committed B1.10 port subset alone."
+  },
+  "verdict": "C3_BLOCKED_MISSING_FIELD_LEVEL_COMPOSITION_SEMANTICS",
+  "interpretation": "The blocker is now localized below generic provenance. Some legacy input units and transformations are exact, but the scientifically material transformation from a real legacy file-driven Hupsel application to the current process-ready typed interval forcing is not an admitted mapping. Implementing direct rain/ET/crop-to-backend assignments would invent or bypass legacy application composition and cannot satisfy criterion 3.",
+  "mutations": [
+    "Added this field-level reconciliation/blocker checkpoint only."
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "next_permitted_action": "Do not implement an M1-C3 production adapter on the present authority. If criterion 3 must be completed, first open or explicitly admit a bounded application-composition contract that uses the qualified full legacy source/fixture as the input-side authority and the already-admitted typed process/backend seams as the target. Recover and qualify the composition process-by-process before any file adapter is admitted. The restricted external DLL exchange mapping must not be treated as equivalent to the Hupsel file-driven path. Independently closable M1 criteria, especially criterion 4, may continue on their existing branches."
+}
