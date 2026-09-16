@@ -2,41 +2,35 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS12",
   "title": "RossFast surgical Richards-solver substitution",
-  "phase": "PRODUCTION_WIRING_DESIGN_COMPLETE_READY_IMPLEMENT",
-  "decision": "BIND_EXPLICIT_MODEL_SELECTION_INSIDE_SERIALIZED_REFERENCE_HOST_AT_EXISTING_SOLVER_SEAM",
+  "phase": "PRODUCTION_POSTIMAGE_QUALIFIED_SOURCE_ADMISSION_READY",
+  "decision": "ADMIT_QUALIFIED_SOLVER_SELECTION_THEN_REBIND_MOVING_PRESERVATION_AUTHORITY",
   "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-ross12-production-solver-selection",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
-  "resume_head": "195c73465de01656e19d60006387c0ceeef3b96b",
+  "qualified_source_head": "00766295750aaa759821493a8bb2d3aef527b19f",
+  "cleanup_head_before_checkpoint": "534fb024176a64c826c30ec7fb8cf4f1c8adb37a",
   "reconcile": {
-    "f_app01_selection_host_blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
-    "soil_water_solver_contract_blob": "276941d76ba951a89c43899e61fd0532418d8230",
-    "serialized_reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
-    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
-    "rossfast_solver_adapter_blob": "6fb095d4a9cdcf16e80e3640c9ad253c624417f5",
-    "rossfast_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
-    "rossfast_model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
-    "canonical_delta_since_branch_creation": "NONE",
-    "finding": "The existing serialized Reference backend already owns the canonical state, forcing, transaction and commit lifecycle and constructs soil_water_solve_request_t immediately before one concrete Richards solver call. F-APP01 provides the admitted explicit application-selection owner. The RossFast adapter consumes the same solver request but requires its own workspace. Therefore production substitution belongs inside the existing serialized Reference host, not in backend_id routing or the old injected-kernel whole-model path."
+    "adapter_canonical_merge": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "selection_owner": "mod_fmr_soil_water_application_host",
+    "execution_host": "FMR_BACKEND_SERIALIZED_REFERENCE",
+    "solver_seam": "soil_water_solver_t request/result seam inside fmr_serialized_advance",
+    "old_whole_model_injected_kernel_route": "EXCLUDED_FROM_PRODUCTION_EXECUTION",
+    "canonical_delta_during_source_qualification": "NONE"
   },
-  "temporal_contract_resolution": {
-    "transaction_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
-    "transaction_core_change_required": false,
-    "trial_outcome_fields": ["temporal_certificate_available", "temporal_indicator"],
-    "controller_semantics": "The existing model-certificate transaction route performs one candidate trial per attempt, requires an available finite non-negative indicator, accepts only when indicator <= 1.0, and otherwise rolls back and applies the existing retry policy.",
-    "rossfast_adapter_semantics": "The admitted RossFast adapter already exposes temporal_certificate_snapshot after a successful solve.",
-    "production_binding": "RossFast selection requires config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE. After the RossFast solve, copy the adapter snapshot into trial_outcome_t. Reference temporal-history and external full-half routes remain unchanged."
-  },
-  "bounded_scope": {
-    "goal": "Keep FMR_BACKEND_SERIALIZED_REFERENCE as the application execution host and select only the concrete soil-water solver inside that host. Blank selection and explicit REFERENCE_RICHARDS retain the existing Reference solver path. Explicit registered ROSSFAST_D3R selects the admitted solver adapter.",
-    "reference_path_unchanged_by_default": true,
-    "rossfast_kernel_science_unchanged": true,
-    "solver_contract_abi_unchanged": true,
-    "transaction_contract_abi_unchanged": true,
-    "legacy_input_grammar_unchanged": true,
-    "backend_routing_unchanged": true,
-    "unsupported_rossfast_envelope_fails_closed_before_trial_advance": true
+  "production_postimage": {
+    "reference_default": true,
+    "explicit_reference_preserved": true,
+    "explicit_rossfast_selection": "ROSSFAST_D3R",
+    "automatic_fallback": false,
+    "backend_routing_changed": false,
+    "solver_contract_abi_changed": false,
+    "transaction_contract_abi_changed": false,
+    "legacy_input_grammar_changed": false,
+    "rossfast_preflight_before_trial_mutation": true,
+    "rossfast_temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "rossfast_certificate_propagated_to_trial_outcome": true,
+    "reference_directional_and_temporal_history_services_remain_reference_specific": true
   },
   "qualified_rossfast_envelope": {
     "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
@@ -49,46 +43,88 @@
     "energy_or_soil_temperature": false,
     "mixed_multiswap": false
   },
-  "admitted_adapter": {
-    "canonical_merge": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
-    "qualified_head": "60b306ff34bd820bfd1a968b9839edb274673276",
-    "workflow": "F-ROSS12 soil-water solver adapter",
-    "adapter_run_id": 35113264730,
-    "canonical_qualification_run_id": 35113264769,
-    "result": "PASS",
-    "optimization_modes": ["O0", "O2"],
-    "o0_o2_output_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888"
+  "adapter_contract": {
+    "public_top_flux_sign": "positive_out_of_column",
+    "rossfast_top_flux_sign": "positive_into_column",
+    "translation": "rossfast_top=-request_top; rossfast_bottom=request_bottom",
+    "public_mass_transfer": "dt*(qbot-qtop)",
+    "adapter_blob_after_sign_fix": "6d6f66273483c19c1d2318dad518c537186a0ae7"
   },
-  "production_wiring_design": {
-    "selection_owner": "mod_fmr_soil_water_application_host",
-    "registered_alternatives": ["ROSSFAST_D3R"],
-    "execution_host": "FMR_BACKEND_SERIALIZED_REFERENCE",
-    "reference_default": true,
-    "automatic_fallback": false,
-    "solver_fields": "Retain the concrete Reference solver/workspace fields unchanged and add a separate RossFast adapter/workspace. Do not polymorphically replace the Reference fields because accepted-step directional and temporal-history services are Reference-specific.",
-    "selection_binding": "Add one narrow backend configuration method that resolves requested model identity through F-APP01. RossFast initialization requires explicit asset_root and material_id; missing or invalid RossFast configuration fails closed and does not change the active Reference selection.",
-    "preflight": "When RossFast is selected, reject the trial before fmr_trial_from_checkpoint if the application configuration lies outside the admitted envelope. This includes non-16-node or non-10-cm geometry, non-prescribed-flux bottom boundary, root extraction, nonzero distributed source/sink or drainage exchange, snow, soil temperature, fixed-weir surface water, temporal-history continuation, accepted-trajectory direction, non-model-certificate transaction mode, macropores, or other unsupported optional physics.",
-    "solve_dispatch": "At the existing normal solve call only, dispatch to the RossFast adapter/workspace when explicitly selected. The Reference call remains the existing self%solver%solve(request,self%workspace,solve_result). Reference-only accepted-step directional and temporal-history services are preflight-rejected for RossFast.",
-    "no_mutation_before_rejection": true
+  "qualification": {
+    "rossfast_adapter": {
+      "run_id": 35149461127,
+      "result": "PASS",
+      "optimization_modes": ["O0", "O2"]
+    },
+    "solver_selection_binding": {
+      "run_id": 35149460968,
+      "result": "PASS",
+      "optimization_modes": ["O0", "O2"]
+    },
+    "serialized_production_wiring": {
+      "run_id": 35149461061,
+      "result": "PASS",
+      "optimization_modes": ["O0", "O2"],
+      "proves": [
+        "real RossFast production transaction commits",
+        "mass closure within admitted tolerance",
+        "RossFast execution without Reference HeadCalc fallback",
+        "model temporal certificate propagation",
+        "material drift fails closed without commit",
+        "unsupported root physics fails closed without commit"
+      ]
+    },
+    "f_kt22_current_canonical": {
+      "run_id": 35149461019,
+      "result": "PASS",
+      "jobs": [
+        "current-canonical-tree",
+        "canonical-boundary",
+        "fmr-production-compile",
+        "fmr-production-runtime",
+        "eb-i25-preservation"
+      ],
+      "interpretation": "Existing Reference trajectory runtime and EB-I25 semantics remain green with the RossFast production dependency graph present."
+    },
+    "f_ci_canonical": {
+      "run_id": 35149460967,
+      "historical_and_frozen_jobs": "PASS",
+      "current_restricted_canonical_preservation": "EXPECTED_STALE_AUTHORITY_FAILURE",
+      "failure_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "classification": "Intentional production successor changes the moving dependency blob. This requires post-admission authority reconciliation, not rollback of the qualified source postimage."
+    },
+    "moving_preservation": {
+      "f_ci72_eb_i23": "STALE_POSTIMAGE_AUTHORITY",
+      "f_ci74_eb_i24": "STALE_POSTIMAGE_AUTHORITY",
+      "f_ci79_eb_i25": "STALE_POSTIMAGE_AUTHORITY",
+      "f_ci75_f_kt21": "HISTORICAL_ADMISSION_RACE_GUARD_NOT_APPLICABLE_TO_CURRENT_SOURCE_ADMISSION"
+    }
   },
-  "implementation_plan": [
-    "Add narrowly scoped model-selection/configuration state to fmr_serialized_reference_backend_t and fmr_serialized_reference_model_t without changing public legacy input grammar.",
-    "Use F-APP01 to resolve blank/default Reference, explicit Reference, explicit registered ROSSFAST_D3R, and unknown model failure.",
-    "Initialize the already-admitted RossFast soil-water adapter only for an explicit RossFast request with supplied asset root and material id.",
-    "Add RossFast preflight at backend run_trial before fmr_trial_from_checkpoint so unsupported configurations cannot mutate transactional trial state.",
-    "Dispatch only the existing non-directional soil-water solve seam to RossFast; preserve the current Reference call path for Reference selection.",
-    "Publish the RossFast adapter temporal certificate through trial_outcome_t for the existing TX_TEMPORAL_MODEL_CERTIFICATE controller route.",
-    "Add bounded O0/O2 production-wiring qualification proving Reference bypass, explicit Reference identity, real RossFast delegation, certificate propagation, fail-closed/no-mutation behavior and no fallback."
-  ],
-  "production_mutation": false,
-  "scientific_semantics_change": false,
+  "cleanup": {
+    "temporary_patch_helpers_removed": [
+      "tests/ross/_apply_ross12_serialized_production_candidate.py",
+      "tests/ross/_apply_ross12_serialized_production_wiring_patch.py",
+      "tests/ross/_apply_ross12_serialized_solver_selection_patch.py"
+    ],
+    "permanent_production_runner_compiles_repository_source_directly": true,
+    "workflow_wording_no_longer_marks_wiring_temporary": true
+  },
+  "production_mutation": true,
+  "rossfast_kernel_science_change": false,
   "reference_semantics_change": false,
-  "next_permitted_action": "Implement the smallest production selection/configuration, preflight, solve dispatch and certificate propagation on work/f-ross12-production-solver-selection. Modify only the serialized Reference backend plus bounded F-ROSS12 qualification artifacts unless compilation proves an additional dependency is strictly required.",
+  "solver_route_semantics_change": true,
+  "admission_pattern": {
+    "precedent": "F-CI52/F-CI52P two-step production-source admission then governance-only postimage reconciliation",
+    "source_pr": 165,
+    "post_admission_reconciliation_must_start_from_exact_new_canonical_merge": true,
+    "governance_rebind_must_not_modify_production_source": true
+  },
+  "next_permitted_action": "Qualify the cleaned source head, verify canonical still equals 99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3, mark PR 165 ready and merge with expected head. Then create a separate governance-only postimage-reconciliation branch from the exact new canonical merge commit and rebind only moving current-canonical/preservation authority required by the intentional backend successor.",
   "explicit_exclusions": [
     "F-ROSS11 whole-model runtime as production execution host",
     "FMR_BACKEND_SERIALIZED_INJECTED_KERNEL routing for RossFast production selection",
     "transaction controller redesign",
-    "energy balance",
+    "energy balance RossFast support",
     "groundwater RossFast support",
     "root or general source-sink RossFast support",
     "heterogeneous-profile generalization",
@@ -97,6 +133,7 @@
     "silent model selection",
     "SW_SOLVE reinterpretation",
     "legacy .swp grammar redesign",
-    "soil_water_solver_t ABI redesign"
+    "soil_water_solver_t ABI redesign",
+    "moving-preservation authority loosening on the source admission PR"
   ]
 }
