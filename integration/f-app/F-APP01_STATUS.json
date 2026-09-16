@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP01",
+  "title": "Minimal generic soil-water application host contract",
+  "phase": "CLOSED_OWNER_QUALIFIED_READY_FOR_INDEPENDENT_ADMISSION",
+  "decision": "QUALIFIED_MINIMAL_GENERIC_APPLICATION_MODEL_SELECTION_OWNER",
+  "protocol": ["RECONCILE", "IMPLEMENT", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-app01-minimal-soil-water-application-host",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_reconciled_parent": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+  "reconciled_head": "6b799b269871a8b3594a3d1a50ee126c57af37bb",
+  "production": {
+    "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+    "blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+    "new_generic_host_authority": true,
+    "solver_or_process_science_changed": false,
+    "transaction_semantics_changed": false,
+    "reference_execution_changed": false
+  },
+  "reconcile": {
+    "original_base": "80c6faaa8a277d9596a6da7bc5d2244c0df1bb82",
+    "live_canonical_at_reconcile": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "canonical_delta_classification": "GOVERNANCE_WORKFLOW_PROVENANCE_ONLY",
+    "canonical_src_or_reference_delta": false,
+    "existing_equivalent_generic_application_host_found": false,
+    "reason_for_capability": "F-ROSS12 correctly failed closed because no admitted generic normal application model-selection owner existed. F-APP01 supplies only that missing generic decision surface and does not bind RossFast itself."
+  },
+  "qualified_contract": {
+    "one_authoritative_application_level_soil_water_model_selection_owner": true,
+    "reference_is_default_for_blank_selection": true,
+    "reference_can_be_explicitly_selected": true,
+    "alternative_selection_is_explicit_and_registry_bound": true,
+    "host_owns_routing_identity_not_solver_science": true,
+    "unsupported_model_fails_closed": true,
+    "invalid_registry_fails_closed": true,
+    "no_automatic_fallback": true,
+    "no_silent_model_selection": true,
+    "no_legacy_swp_grammar_change": true,
+    "no_broad_stable_public_api_claim": true,
+    "host_has_no_rossfast_specific_dependency": true
+  },
+  "owner_qualification": {
+    "run_id": 35080790887,
+    "tested_head": "6b799b269871a8b3594a3d1a50ee126c57af37bb",
+    "conclusion": "success",
+    "o0_o2_identity": true,
+    "default_reference_pass": true,
+    "explicit_reference_pass": true,
+    "registered_alternative_pass": true,
+    "unknown_model_fail_closed_pass": true,
+    "invalid_registry_fail_closed_pass": true,
+    "no_scientific_execution_in_host_pass": true
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ101",
+    "branch": "qualification/f-vq101-fapp01-minimal-application-host-independent",
+    "scientific_test_head": "306c2862cae2c8385fabfba7bc292388c3bba068",
+    "run_id": 35081070415,
+    "conclusion": "success",
+    "status_record_pending_governance_replay_at_owner_closeout_time": true
+  },
+  "mutations": [
+    "Added one standalone generic application model-selection module.",
+    "Added bounded owner test, runner and workflow.",
+    "Reconciled the branch with live canonical governance-only delta.",
+    "No Reference backend, RossFast module, solver science, process physics, transaction policy, mass policy, legacy IO grammar or EB source changed."
+  ],
+  "explicit_exclusions": [
+    "energy balance",
+    "RossFast binding or scientific expansion",
+    "Hupsel application composition",
+    "legacy input parsing",
+    "broad public API",
+    "automatic solver discovery or fallback",
+    "mixed backend MultiSWAP"
+  ],
+  "final_verdict": "OWNER_QUALIFIED_INDEPENDENT_GATE_PASS_READY_FOR_CURRENT_CANONICAL_ADMISSION",
+  "next_permitted_action": "After the F-VQ101 governance head replays green and live canonical is rechecked, perform a bounded current-canonical admission of the exact host blob. F-ROSS12 may resume only after that admission."
+}
