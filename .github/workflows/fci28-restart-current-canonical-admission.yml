@@ -1,0 +1,19 @@
+name: F-CI28 current-canonical restart admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci28-fmr25-restart-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  independent-restart-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent F-CI28 admission gate
+        run: bash tests/fci/run_fci28_restart_current_canonical_admission.sh

@@ -1,0 +1,63 @@
+{
+  "schema_version": 3,
+  "work_unit": "F-CI51P-R3",
+  "title": "WOF43A Current-Canonical Moving Preservation Evidence after F-CI52P closeout",
+  "program_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "f_ci51": {
+    "canonical_preimage": "eba90d79010b095b6556e93bd8b77a8c28d25560",
+    "recomposition_candidate": "3f8492fc4ac36e7afd6132f130836a4a45aea3f2",
+    "admission_postimage": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+    "pr": 80
+  },
+  "qualified_sources": {
+    "owner_production_candidate": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "owner_closeout": "df72af4d2dc5b3255777733f8a725dca20583785",
+    "independent_f_vq37_authority": "3dc40ec16620433de2001c9662ebad647909aa48"
+  },
+  "immutable_blobs": {
+    "src/crop/mod_crop_et_canopy_view_provider.f90": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "src/crop/mod_wofost_rate_table.f90": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"
+  },
+  "f_ci51_qualification_runs": {
+    "candidate_push": 34687737251,
+    "candidate_pr": 34687748548,
+    "broad_canonical_pr": 34687748517,
+    "postimage_canonical_push": 34687857041
+  },
+  "race_history": {
+    "r1": {
+      "candidate": "ddeea1ea16c893e642d41286461b2bc6538aa3b7",
+      "run": 34688375751,
+      "conclusion": "success",
+      "promotion_authority": false,
+      "rejected_because": "integration/f-ci-canonical advanced from 8695974b783e76b3807890be9e1c0ecb5d2f8d5f to 828ba0f0ed933fb62107f849ae0bb7cc32c47c30 before promotion."
+    },
+    "r2": {
+      "candidate": "0a40b6912596d5968f38fc42e411fc0ed9822f5b",
+      "run": 34688533827,
+      "conclusion": "success",
+      "promotion_authority": false,
+      "rejected_because": "F-CI52P reconciliation advanced current canonical beyond 828ba0f0ed933fb62107f849ae0bb7cc32c47c30 before F-CI51P promotion."
+    }
+  },
+  "current_canonical_restart_authority": {
+    "commit": "afe253164ddff55ce3a362277a43878d733057d3",
+    "reason": "F-CI52P final closeout is a current-canonical descendant of F-CI51 and F-CI52, with broad canonical qualification green and no WOF43A blob drift.",
+    "f_ci52_source_postimage": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+    "f_ci52p_promoted_reconciliation_head": "cb3e8d2047ba252ea2a30c6d80f5b0e8af68ab9b",
+    "f_ci52p_final_closeout": "afe253164ddff55ce3a362277a43878d733057d3",
+    "post_closeout_broad_canonical_run": 34689220035,
+    "post_closeout_broad_canonical_conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103541618990,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "r3_scope": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "mass_policy_changed": false,
+    "scientific_tolerances_changed": false,
+    "solver_functionality_changed": false,
+    "new_physics": false,
+    "governance_only_delta": true
+  }
+}

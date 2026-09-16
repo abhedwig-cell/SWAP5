@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.fci38_status.v1",
+  "work_unit": "F-CI38",
+  "title": "Historical Admission Gate Scope Separation & Moving-Canonical Regression Governance",
+  "branch": "qualification/f-ci38-historical-admission-gate-scope-separation",
+  "source_authority": {
+    "head": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "tree": "bca9d2d4dd3c8c42edf635b0887ee62b475b5abd",
+    "decision": "QUALIFIED_FINAL_FCI37_CANONICAL_AUTHORITY_ESTABLISHED"
+  },
+  "phase": "QUALIFICATION_CANDIDATE_PENDING_EXACT_HEAD_CI",
+  "decision": "QUALIFIED_CANONICAL_GATE_SCOPE_SEPARATION_NO_SCIENTIFIC_OR_PRODUCTION_DELTA_IF_EXACT_HEAD_CI_GREEN",
+  "deliverables": {
+    "gate_taxonomy": "integration/f-ci/F-CI38_GOVERNANCE.json",
+    "workflow_ownership_matrix": "integration/f-ci/F-CI38_GOVERNANCE.json",
+    "historical_vs_moving_classification": "integration/f-ci/F-CI38_GOVERNANCE.json",
+    "remediation_set": "integration/f-ci/F-CI38_GOVERNANCE.json",
+    "regression_replacement_map": "integration/f-ci/F-CI38_GOVERNANCE.json",
+    "architecture_audit": "integration/f-ci/F-CI38_ARCHITECTURE_AUDIT.json"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "governance_qualified": false,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "scientific_tolerances_changed": false,
+    "historical_gate_runner_code_changed": false,
+    "canonical_promoted": false
+  },
+  "final_gate": {
+    "exact_branch_head_fci38_workflow_success_required": true,
+    "frozen_fci34_replay_success_required": true,
+    "frozen_fci35_replay_success_required": true,
+    "frozen_fci36_replay_success_required": true,
+    "frozen_fci37_replay_success_required": true,
+    "governance_scope_validation_success_required": true,
+    "no_production_reference_test_or_tool_delta_required": true,
+    "canonical_must_remain_on_source_authority_during_qualification": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "canonical_promotion": "SEPARATE_SERIAL_GOVERNANCE_ACTION_NOT_PART_OF_FCI38_QUALIFICATION",
+  "exit_target": "QUALIFIED_CANONICAL_GATE_SCOPE_SEPARATION_NO_SCIENTIFIC_OR_PRODUCTION_DELTA"
+}

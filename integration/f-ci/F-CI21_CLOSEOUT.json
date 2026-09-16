@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "title": "Controlled Dependency-Closed Temporal Certificate Materialization onto WOF42 Spine",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "base_spine": {
+    "workunit": "F-WOF42",
+    "commit": "ed0219402072f121856d82cb6068ab74c70f34d1",
+    "tree": "e9884e86e9af677de4b150afa1ca208e46b27292"
+  },
+  "materialized_production_source": {
+    "commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "production_delta_count": 8,
+    "dependency_closed": true
+  },
+  "qualification_authority": {
+    "evidence_path": "integration/f-ci/F-CI21_CLOSEOUT_QUALIFICATION_EVIDENCE.json",
+    "evidence_commit": "aac82a9f5c73a7f99a73266e08bfe1fee28aa991",
+    "decision": "QUALIFIED_F_CI21_CLOSEOUT_READINESS_CANONICAL_ADMISSION_SEPARATE"
+  },
+  "status_authority": {
+    "path": "integration/f-ci/F-CI21_STATUS.json",
+    "status_commit": "c25fddc95050cb8aa402913358e7cb9a4e0bd31e",
+    "decision": "QUALIFIED_DEPENDENCY_CLOSED_TEMPORAL_CERTIFICATE_MATERIALIZATION_READY_FOR_SEPARATE_CANONICAL_ADMISSION"
+  },
+  "final_precloseout_validation": {
+    "head": "c25fddc95050cb8aa402913358e7cb9a4e0bd31e",
+    "closeout_readiness": {
+      "run_id": 34400432162,
+      "job_id": 102630692953,
+      "conclusion": "success"
+    },
+    "source_and_compile": {
+      "run_id": 34400432180,
+      "job_id": 102630692999,
+      "conclusion": "success"
+    }
+  },
+  "closed_qualified_chain": {
+    "materialization_compile": true,
+    "F_SI25_scientific_owner_replay": true,
+    "F_VQ30_held_out_operator_replay": true,
+    "F_VQ31_transaction_history_replay": true,
+    "F_VQ32_explicit_head_budget_normalization": true,
+    "F_VQ33_negative_evidence_retained": true,
+    "F_VQ34_remediated_policy_replay": true,
+    "F_WOF42_crop_persistence_preservation": true,
+    "F_MR18_accepted_commit_receipt_preservation": true,
+    "F_MR18_sparse_multiswap_receipt_preservation": true,
+    "semantic_closeout_readiness": true
+  },
+  "negative_evidence_lock": {
+    "F_VQ33_remains_failed": true,
+    "F_VQ33_reinterpreted_as_pass": false,
+    "F_VQ33_used_as_positive_evidence": false,
+    "rejected_backend_materialized": false,
+    "remediated_F_KT11_backend_materialized": true
+  },
+  "qualified_scope": {
+    "formula": "C_h=B_inf/H_budget",
+    "explicit_finite_positive_H_budget_required": true,
+    "default_H_budget": null,
+    "invalid_budget_fail_closed_with_native_diagnostic_retained": true,
+    "mass_gate_precedes_certificate_gate": true,
+    "certificate_rejection_preserves_committed_state": true,
+    "bounded_indicator_cost": true,
+    "crop_persistence_preserved": true,
+    "accepted_commit_receipt_preserved": true,
+    "sparse_multiswap_receipt_routing_preserved": true
+  },
+  "hard_nonclaims": [
+    "No application H_budget is selected or recommended.",
+    "No universal temporal tolerance is selected.",
+    "B_inf is not qualified as a general nonlinear true-error upper bound.",
+    "C_h is not qualified as a general nonlinear true-error upper bound.",
+    "No shorter-dt monotonicity assumption is introduced.",
+    "Groundwater coupling and F-GC02 are not released by F-CI21.",
+    "Canonical admission is not performed by F-CI21."
+  ],
+  "canonical_boundary": {
+    "canonical_source_manifest_modified": false,
+    "canonical_ref_modified": false,
+    "canonical_admission_completed": false,
+    "next_required_action": "separate canonical admission/governance workunit"
+  },
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,13,15,16,20,22,23,25,26,27,29,30],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "canonical_modified": false
+  },
+  "decision": "CLOSED_QUALIFIED_TEMPORAL_CERTIFICATE_MATERIALIZATION_CANONICAL_REF_UNCHANGED"
+}

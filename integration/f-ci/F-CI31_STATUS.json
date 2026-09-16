@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "title": "F-MR28 Reference-ET to Restricted Root-Uptake Execution Canonical Admission",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-current-canonical-recomposition",
+  "canonical_branch": "integration/f-ci-canonical",
+  "status": "QUALIFIED_CLOSED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_CLOSED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_CANONICAL_ADMISSION",
+  "canonical_base": "8c16ea58946092024e4b394db87acf91f3fd4abf",
+  "production_candidate": "9492d99e6291dd21ba2c5b394a79b3f877fed0e2",
+  "production_candidate_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "qualification_head": "aee653ea4809728a34485e5a0f59821c147c9fa6",
+  "authoritative_workflow": {
+    "run_id": 34471934727,
+    "job_id": 102853611567,
+    "conclusion": "success"
+  },
+  "canonical_admission": {
+    "promoted_governance_head": "c5d7344730eb73dadcc5c1dfd2d14f7132155f61",
+    "post_promotion_workflow_run": 34472406545,
+    "post_promotion_conclusion": "success",
+    "post_promotion_receipt_commit": "5b04d06555cad4b3707dcf713079587eef763311"
+  },
+  "final_governance_head_requalification": {
+    "validated_head": "9e1738c2e1dd973de9e6771f3091cee6206e3452",
+    "workflow_run": 34472702826,
+    "workflow_conclusion": "success"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "architecture_invariants_reviewed": true,
+    "canonical_readiness_passed": true,
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_workflow_passed": true,
+    "production_source_admitted": true,
+    "closed": true,
+    "final_governance_head_requalification_pending": false
+  },
+  "qualified_scope": "STATELESS_REFERENCE_ET_PTRA_TO_RESTRICTED_MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT_ROOT_WATER_UPTAKE_EXECUTION_COMPOSITION",
+  "production_delta": ["src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"],
+  "preserved_authorities": [
+    "F-CI30 restricted parallel real-physics MultiSWAP V1",
+    "hard mass conservation",
+    "deterministic canonical publication",
+    "serialized sparse accepted-commit receipt semantics",
+    "F-CI28 committed-boundary process restart",
+    "F-CI27 reference ET runtime behavior",
+    "F-CI29 reference-ET ptra/root-input ownership"
+  ],
+  "evidence": [
+    "integration/f-ci/F-CI31_CURRENT_CANONICAL_SOURCE_LOCK.json",
+    "integration/f-ci/F-CI31_CURRENT_CANONICAL_REQUALIFICATION_EVIDENCE.json",
+    "integration/f-ci/F-CI31_INVARIANT_REVIEW.json",
+    "integration/f-ci/F-CI31_POST_PROMOTION.json"
+  ],
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration",
+    "parallel root-extraction execution",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "next_action": "Treat this production source as canonical within the frozen scope only. Keep actual-transpiration accounting, accepted-window integration, mass-ledger booking and parallel root-extraction execution as separate qualification workunits."
+}

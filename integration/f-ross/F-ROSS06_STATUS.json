@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS06",
+  "title": "RossFast D3R serialized backend model injection",
+  "status": "CLOSED_POSITIVE_RESTRICTED_SERIALIZED_KERNEL_BACKEND_MODEL_INJECTION",
+  "decision": "QUALIFIED_RESTRICTED_SERIALIZED_FMR_KERNEL_MODEL_INJECTION_TO_THE_REAL_F_ROSS05_D3R_STACK_PENDING_TOP_LEVEL_REGISTRY_BACKEND_DISPATCH_AND_CANONICAL_ADMISSION",
+  "parent": {
+    "branch": "work/f-ross05-d3r-transactional-selector-composition",
+    "head": "34bbffb58819e02853af64ad49b26898b57ab541",
+    "status_blob": "1fe9d85d65090cf0893620dc2d5d9ea7cb271a50"
+  },
+  "inherited_authorities": {
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_blob": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "canonical_interval_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "f_ci68_kernel_transport_blob": "d3a53385e3707f05e5396bbd6f218633b9803f65",
+    "f_ci68_checkpoint_orchestrator_blob": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+    "rossfast_d3r_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "f_ross02_model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "f_ross03_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "f_ross04_table_provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "f_ross05_kernel_model_adapter_blob": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e",
+    "asset_manifest_blob": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55"
+  },
+  "candidate": {
+    "precloseout_qualified_head": "996a4b56d34857f306737307740edf14ec7ff80f",
+    "serialized_kernel_backend_blob": "29093b517bc6fdd40f32325018729c4c3dee6e85",
+    "test_blob": "16bf193a3810edbb4c0c7e0e1b191e3d6ad08eed",
+    "runner_blob": "7e272623300f9efcdd26037fb418cfa439cbe2cb",
+    "workflow_blob": "7b6462009e04855b8e9c26c1266c2d33d98108dc"
+  },
+  "serialized_model_injection_contract": {
+    "backend_is_generic_kernel_model_injection_seam": true,
+    "backend_contains_rossfast_specific_policy": false,
+    "kernel_model_is_explicitly_bound_before_execution": true,
+    "column_and_template_backend_identity_must_match": true,
+    "checkpoint_precedes_physical_trial": true,
+    "optional_subinterval_selector_reaches_generic_kernel_transaction": true,
+    "incomplete_or_rejected_trial_cannot_publish_candidate": true,
+    "complete_mass_and_ready_candidate_required_before_commit": true,
+    "successful_execution_publishes_exactly_one_revision": true,
+    "registry_backed_multiswap_dispatch_added": false,
+    "legacy_mod_soilwater_automatic_selection_added": false
+  },
+  "f_ci69_relationship": {
+    "f_ci69_reference_backend_source_is_a_runtime_dependency": false,
+    "f_ci69_reference_backend_blob_is_modified_or_imported": false,
+    "f_ci69_qualified_reference_backend_blob": "24192a9571c2910d5f917af3c30de2ebbe7db524",
+    "f_ci69_role": "SIBLING_SERIALIZED_SELECTOR_FORWARDING_PRECEDENT_NOT_SOURCE_AUTHORITY_FOR_F_ROSS06",
+    "selector_transport_source_authority_for_f_ross06": "F_CI68_CHECKPOINT_ORCHESTRATOR_AND_KERNEL_TRANSPORT"
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "grid": "1D_VERTICAL_UNIFORM_16_CELLS_DZ_10_CM",
+    "outer_horizon_day": 0.0016,
+    "table_kernel_equal_internal_substeps": 8,
+    "production_selector_route_tested": true,
+    "qualification_only_two_window_chain_tested": true,
+    "real_table_kernel_execution_confirmed": true,
+    "transaction_retries_private_to_candidate_execution": true,
+    "candidate_publication": "ONE_EXPLICIT_SERIALIZED_BACKEND_COMMIT_AFTER_FULL_OUTER_COMPLETION",
+    "optimization_profiles": ["O0", "O2"]
+  },
+  "qualification": {
+    "workflow_run_id": 34955325742,
+    "job_id": 104335850618,
+    "tested_head": "996a4b56d34857f306737307740edf14ec7ff80f",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "all_six_materials_production_selector_pass": true,
+    "all_six_materials_real_kernel_chain_pass": true,
+    "o0_o2_output_identity": true,
+    "o0_o2_output_sha256": "2b99afe07dd0d6465c08f72a6aee00b6c939915f0469878e0040f4ebd3f357eb",
+    "routing_mismatch_fails_before_physical_admission": true,
+    "wrong_internal_substep_count_fails_before_transaction": true,
+    "off_grid_outer_request_fails_before_transaction": true,
+    "committed_state_unchanged_on_rejected_routes": true,
+    "one_external_revision_increment_after_successful_publish": true,
+    "artifacts": {
+      "diagnostics": {
+        "id": 10389994419,
+        "digest": "sha256:af970de4bc1fbd6e690d5e4b8c3a5194e9951c2036dbb50de07f4c93d09d7e83",
+        "size_bytes": 1639
+      },
+      "evidence": {
+        "id": 10390044167,
+        "digest": "sha256:14b88465a8b993d4f8e82f673eab2c507c6f1714a6fbefb7d98195457c9a5d40",
+        "size_bytes": 1373
+      }
+    }
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_REGISTRY_BACKED_OR_MIXED_MULTISWAP_ROSSFAST_DISPATCH",
+    "NO_AUTOMATIC_BACKEND_SELECTION_FROM_LEGACY_MOD_SOILWATER_INPUT",
+    "NO_REPLACEMENT_OR_ADMISSION_OF_MOD_FMR_SERIALIZED_REFERENCE_BACKEND",
+    "NO_DIRECT_VS_SERIALIZED_NUMERICAL_EQUIVALENCE_CLAIM_BEYOND_THE_TESTED_SHARED_REAL_KERNEL_CONTRACT",
+    "NO_SCIENTIFIC_ADMISSION_OF_ARBITRARY_KERNEL_MODEL_IMPLEMENTATIONS",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_OR_SELECTOR_SEMANTICS",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
+  ],
+  "next_gap": "QUALIFY_TOP_LEVEL_REGISTRY_OR_APPLICATION_BACKEND_DISPATCH_THAT_SELECTS_THE_RESTRICTED_F_ROSS06_SERIALIZED_KERNEL_BACKEND_WITHOUT_BROADENING_THE_F_ROSS02_TO_F_ROSS05_SCIENTIFIC_DOMAIN"
+}

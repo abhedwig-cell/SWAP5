@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ35",
+  "title": "Independent Scientific Qualification of F-PM06A Restricted Reference-ET Demand",
+  "branch": "qualification/f-vq35-fpm06a-reference-et-demand",
+  "decision": "QUALIFIED_INDEPENDENT_FPM06A_RESTRICTED_STATELESS_REFERENCE_ET_DEMAND_SCIENTIFIC_ADMISSION",
+  "candidate": {
+    "fpm06a_closeout_commit": "c1bbe73cd0deced17f979a601fd6169036d7076b",
+    "fpm06a_tested_head": "23206aaf996ffb7dde355508fa2379a5efbd3d57",
+    "source_path": "src/process/mod_reference_et_demand_process.f90",
+    "source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "production_source_changed_by_fvq35": false
+  },
+  "tested_qualification": {
+    "head": "64212b3eac8a2e091f546b5328c8e31f20ecb8ab",
+    "tree": "4f70b9b0c19d5ff20182b24efda469fe05c0fcf5",
+    "workflow_run_id": 34449550379,
+    "workflow_job_id": 102781926113,
+    "workflow_conclusion": "success",
+    "independent_grid_cases": 1700,
+    "oracle_output_sha256": "d173d0047a04cb095946797a3d066a03099c610a7dfb6aa39ee1e2c6b19e8221",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "frozen_source_provenance": {
+    "source_archive": "SWAP_4.3.1(6).zip",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "source_path": "SWAP/MOD_meteo.f90",
+    "source_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "routine": "ETpot",
+    "source_lines": "1399-1489"
+  },
+  "admitted_profile": {
+    "SWETR": 1,
+    "SWMETDETAIL": 0,
+    "SWDIVIDE": 0,
+    "SWINTER": 0,
+    "SWEVAP": 1,
+    "SWREDU": 0,
+    "SWCFBS": 0,
+    "persistent_process_state": false,
+    "outputs": [
+      "potential_transpiration_cm_per_day",
+      "potential_soil_evaporation_cm_per_day",
+      "potential_pond_evaporation_cm_per_day"
+    ]
+  },
+  "independent_scientific_oracle": {
+    "owner_expected_literals_used_as_oracle": false,
+    "legacy_equations_rederived_from_frozen_source": true,
+    "expected_peva": "max(reference_et_mm_per_day * (1 - vcover) * 0.1, 0)",
+    "expected_epond": "max(reference_et_mm_per_day * (1 - vcover) * cfevappond * 0.1, 0)",
+    "expected_ptra_emerged": "max(reference_et_mm_per_day * vcover * crop_factor * 0.1, 0) * co2_transpiration_factor",
+    "expected_ptra_not_emerged": "0",
+    "unit_conversion_mm_per_day_to_cm_per_day": 0.1,
+    "nonemerged_nonzero_vcover_semantics_checked": true,
+    "inactive_crop_factors_not_consumed_when_not_emerged": true,
+    "invalid_active_domain_fail_closed": true,
+    "stateless_A_B_A_replay": true
+  },
+  "scientific_gate_results": {
+    "candidate_production_immutability": "PASS",
+    "owner_tests_immutability": "PASS",
+    "candidate_and_owner_source_locks": "PASS",
+    "frozen_source_rederivation_lock": "PASS",
+    "independent_B1_10_equation_oracle": "PASS",
+    "independent_grid_cases": "PASS_1700",
+    "mm_to_cm_unit_conversion": "PASS",
+    "nonemerged_vcover_semantics": "PASS",
+    "inactive_crop_factor_dependency": "PASS",
+    "fail_closed_active_domain": "PASS",
+    "stateless_replay": "PASS",
+    "O0_O2_qualification_output_identity": "PASS"
+  },
+  "architectural_qualification": {
+    "kernel_io_separation_preserved": true,
+    "parameters_forcing_results_separated": true,
+    "persistent_process_state": "none",
+    "transactional_semantics": "trivial_by_stateless_process_evaluation",
+    "hydraulic_solver_internals_accessed": false,
+    "root_uptake_physics_duplicated": false,
+    "crop_state_advanced": false,
+    "potential_demands_are_not_mass_ledger_withdrawals": true,
+    "generic_time_compatible": true,
+    "solver_policy_coupled_to_physics": false
+  },
+  "not_admitted": [
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "SWINTER=1,2,3",
+    "wet-canopy partition",
+    "SWREDU=1,2",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "actual root uptake",
+    "runtime crop/canopy composition",
+    "surface-hydraulic composition",
+    "authoritative mass-ledger composition",
+    "canonical admission"
+  ],
+  "conclusion": "The immutable F-PM06A source is independently scientifically equivalent to the frozen SWAP 4.3.1 B1.10 ETpot reference-ET relations for the explicitly restricted stateless profile. The qualification covers potential transpiration, bare-soil evaporation demand and ponded-water evaporation demand only. It does not qualify actual water removal, runtime composition or broader ET options."
+}

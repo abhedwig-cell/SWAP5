@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "WOFOST81_LEAF_STRUCTURAL_APPLICATION",
+  "phase": "QUALIFY",
+  "qualified_source": "src/crop/mod_wofost81_leaf_structural_evolution.f90",
+  "source_sha256": "801b79bd44fa8c80241fc57d5dc9d5c3a54a2b24e8565d0986da4a9deef56285",
+  "qualification_test": "tests/fwof/pp02/test_wofost81_leaf_structural_evolution.f90",
+  "test_sha256": "8a6d92ae0ae55e34572a19954e7a607e2265c03ab66a7a12119a82636a89e8fc",
+  "compiler": "gfortran",
+  "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
+  "result": "F_WOF_PP02_LEAF_STRUCTURE_PASS",
+  "validated_semantics": [
+    "combined corrected DRLV is consumed exactly once from oldest leaf cohorts",
+    "no second legacy SPAN/over-age sweep occurs after DALV has entered DRLV",
+    "surviving cohorts age once and are shifted behind the new youngest cohort",
+    "new leaf growth and SLA are inserted as the youngest cohort",
+    "GLAIEXP carryover is captured at the existing compatibility threshold and reused afterwards",
+    "candidate crop owner validates after update"
+  ],
+  "qualification_scope": "component-level interface qualification against canonical-shaped crop/rate interfaces; full repository composition compile remains a later gate",
+  "production_reachability": false,
+  "legacy_path_modified": false,
+  "verdict": "QUALIFIED_WOFOST81_LEAF_STRUCTURAL_APPLICATION"
+}

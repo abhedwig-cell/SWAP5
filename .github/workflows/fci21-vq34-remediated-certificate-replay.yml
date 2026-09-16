@@ -1,0 +1,25 @@
+name: F-CI21 VQ34 remediated certificate postimage replay
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+    paths:
+      - 'tests/fci/run_fci21_vq34_remediated_certificate_replay.sh'
+      - '.github/workflows/fci21-vq34-remediated-certificate-replay.yml'
+
+jobs:
+  remediated-certificate-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay frozen VQ34 qualification on F-CI21 postimage
+        run: bash tests/fci/run_fci21_vq34_remediated_certificate_replay.sh

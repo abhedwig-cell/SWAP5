@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM06",
+  "title": "Legacy ET Variable Classification",
+  "scope_rule": "Every named module-scope or cross-process variable that participates directly in the ET, interception, soil-evaporation, top-boundary or root-demand migration boundary is assigned below. Pure local algebraic temporaries inside penmon, astro, VonHHBraden, Gash, Rutter, reduceva and BoundTop are WORKER_SCRATCH by definition and are not promoted to per-column state.",
+  "frozen_legacy_source": {
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+  },
+  "allowed_categories": [
+    "IMMUTABLE_PARAMETER",
+    "FORCING",
+    "COMMITTED_PERSISTENT_STATE",
+    "ACCEPTED_PROCESS_AGGREGATE",
+    "OUTPUT_RESULT",
+    "WORKER_SCRATCH",
+    "REMOVABLE_LEGACY_BOOKKEEPING"
+  ],
+  "groups": [
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "ET physical configuration",
+      "source": "MOD_meteo.f90:12,27; variables.f90:263,271; interface_plant.f90:30,54",
+      "variables": ["swdivide", "swevap", "swcfbs", "swredu", "swcf", "sw_inter"],
+      "migration": "Physical options. They may key an execution class but are never numerical solver policy."
+    },
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "meteorology/ET parameter set",
+      "source": "MOD_meteo.f90:14,24,74-81; variables.f90:279,283,338-339",
+      "variables": ["lat", "long", "long_tz", "alt", "altw", "alth", "fwind", "angstroma", "angstromb", "cfevappond", "cfbs", "cofred", "rsigni", "rsoil"],
+      "migration": "Share immutable parameter sets by ID/reference."
+    },
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "crop/canopy parameter set",
+      "source": "interface_plant.f90:34-39",
+      "variables": ["albedo", "rsc", "rsw", "kdif", "kdir"],
+      "migration": "Crop-owned parameters exposed read-only where ET/PM needs them."
+    },
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "interception parameter set",
+      "source": "interface_plant.f90:58,61-65,68",
+      "variables": ["cofab", "pfreetb", "pstemtb", "scanopytb", "avevaptb", "avprectb", "siccaplai"],
+      "migration": "Shared method parameters/tables. Never duplicate tables per column."
+    },
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "forcing validation policy",
+      "source": "MOD_meteo.f90:63-64",
+      "variables": ["etrmax", "etrmin", "hummax", "hummin", "radmax", "radmin", "raimax", "raimin", "tmnmax", "tmnmin", "tmxmax", "tmxmin", "winmax", "winmin"],
+      "migration": "Shared validation bounds, not dynamic state."
+    },
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "irrigation physical configuration",
+      "source": "MOD_irrigation use in interception routines",
+      "variables": ["isua"],
+      "migration": "Determines whether sprinkling irrigation participates in interception."
+    },
+    {
+      "category": "IMMUTABLE_PARAMETER",
+      "owner": "soil/grid parameter set",
+      "source": "boundtop.f90:31,94-97",
+      "variables": ["dz(1)", "disnod(1)"],
+      "migration": "Used only by the hydraulic top-boundary owner, never copied into ET state."
+    },
+    {
+      "category": "FORCING",
+      "owner": "forcing provider",
+      "source": "MOD_meteo.f90:9-10,16-22; atmosphere_interface",
+      "variables": ["etr", "tmn", "tmx", "tavd", "hum", "win", "grai", "wet", "raintim"],
+      "migration": "Supply values with explicit validity span/event identity."
+    },
+    {
+      "category": "FORCING",
+      "owner": "forcing provider/adapter",
+      "source": "MOD_meteo.f90:48-57,61",
+      "variables": ["arad", "atav", "atmn", "atmx", "ahum", "awin", "aetr", "arai", "rainflx", "raintb"],
+      "migration": "External forcing series/events. No file arrays in the kernel or per column."
+    },
+    {
+      "category": "FORCING",
+      "owner": "forcing adapter DTO",
+      "source": "MOD_meteo.f90:89-99",
+      "variables": ["ext_meteo.rain", "ext_meteo.rad", "ext_meteo.tmin", "ext_meteo.tmax", "ext_meteo.hum", "ext_meteo.wind", "ext_meteo.etref", "ext_meteo.wet"],
+      "migration": "Legacy external DTO fields become explicit forcing values."
+    },
+    {
+      "category": "FORCING",
+      "owner": "forcing provider/runtime",
+      "source": "MOD_meteo.f90:36,40,42; ProcessMeteoDT:1312-1326",
+      "variables": ["graidt", "n_metdetail", "dt_meteo"],
+      "migration": "Gross precipitation and forcing-segment metadata for the active span."
+    },
+    {
+      "category": "FORCING",
+      "owner": "runtime/forcing time coordinate",
+      "source": "Gash uses variables%t for time-indexed tables",
+      "variables": ["t"],
+      "migration": "Explicit time coordinate, not process storage."
+    },
+    {
+      "category": "COMMITTED_PERSISTENT_STATE",
+      "owner": "crop owner",
+      "source": "interface_plant.f90:25; canonical src/crop/mod_wofost_crop_owner_state.f90",
+      "variables": ["fl_cropemergence"],
+      "migration": "ET receives a read-only committed crop lifecycle view. Underlying WOFOST biomass/development continuation remains crop-owned."
+    },
+    {
+      "category": "COMMITTED_PERSISTENT_STATE",
+      "owner": "interception process",
+      "source": "interface_plant.f90:70; swapoutput.f90:503-506",
+      "variables": ["sicact"],
+      "migration": "Optional only for SWINTER=3. Read from checkpoint, mutate trial-local candidate, commit exactly once."
+    },
+    {
+      "category": "COMMITTED_PERSISTENT_STATE",
+      "owner": "soil-evaporation-reduction process",
+      "source": "variables.f90:320,344,349; swapoutput.f90:423-432",
+      "variables": ["ldwet", "spev", "saev"],
+      "migration": "LDWET only for SWREDU=1; SPEV/SAEV only for SWREDU=2. Retry must restart from committed state."
+    },
+    {
+      "category": "COMMITTED_PERSISTENT_STATE",
+      "owner": "surface-water/top-boundary owner",
+      "source": "variables.f90:323,325",
+      "variables": ["pond", "pondm1"],
+      "migration": "Expose through a clean read-only surface-water view. ET may not duplicate the pond state."
+    },
+    {
+      "category": "COMMITTED_PERSISTENT_STATE",
+      "owner": "soil-water state owner",
+      "source": "boundtop.f90:38,94-97",
+      "variables": ["h(1)"],
+      "migration": "Only the hydraulic owner accesses storage arrays. ET/top-boundary clients receive a clean hydraulic view."
+    },
+    {
+      "category": "COMMITTED_PERSISTENT_STATE",
+      "owner": "snow process",
+      "source": "MOD_snow use in interception_daily",
+      "variables": ["ssnow"],
+      "migration": "Snow storage remains snow-owned and is read-only to interception."
+    },
+    {
+      "category": "ACCEPTED_PROCESS_AGGREGATE",
+      "owner": "interception process",
+      "source": "MOD_meteo.f90:72; interception_daily:2055-2092",
+      "variables": ["aintc"],
+      "migration": "SWINTER=1/2 source-window aggregate. Store/pass with explicit forcing-window provenance, not as hidden daily kernel state."
+    },
+    {
+      "category": "ACCEPTED_PROCESS_AGGREGATE",
+      "owner": "crop/interception transaction composition",
+      "source": "interface_plant.f90:73; MOD_cropdevelopment.f90:1631-1644; integral.f90:416-422",
+      "variables": ["siccaploss"],
+      "migration": "Legacy capacity-loss term is accepted exactly once with the crop/canopy transition. Reference behavior treats it as interception loss; do not silently reroute it."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "ET atmospheric-demand process",
+      "source": "MOD_meteo.f90:28-34; ETpot:1459-1485",
+      "variables": ["epond", "peva", "empreva", "ptra", "ptra_dry", "ptra_wet", "eintc"],
+      "migration": "Current trial demand/results. Potential quantities are not authoritative mass sinks."
+    },
+    {
+      "category": "WORKER_SCRATCH",
+      "owner": "ET worker",
+      "source": "MOD_meteo.f90:66-69; ETpot",
+      "variables": ["es0", "et0", "ew0", "ep0"],
+      "migration": "Algebraic intermediates, never persisted per column."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "interception/wet-canopy process",
+      "source": "MOD_meteo.f90:37-38,71; ProcessMeteoDT:1328-1392",
+      "variables": ["aintcdt", "nraidt", "wfrac"],
+      "migration": "Trial flux/result. Becomes authoritative only through accepted transaction/mass receipt."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "crop/canopy owner",
+      "source": "interface_plant.f90:20,31,40,87; MOD_cropdevelopment",
+      "variables": ["cf", "vcover", "fco2tra", "lai"],
+      "migration": "Read-only current/derived canopy snapshot. ET does not commit or reproduce crop biology."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "interception process",
+      "source": "interface_plant.f90:55,69,71-72; Rutter:2202-2304",
+      "variables": ["siccap", "crsflx_in", "crsflx_out", "dt_interc_event"],
+      "migration": "Derived capacity, trial fluxes and physical event bound. Runtime may shorten a trial at the event; process code does not mutate global dt."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "surface hydraulic/top-boundary process",
+      "source": "variables.f90:335-336; boundtop.f90:83-116",
+      "variables": ["epd", "reva"],
+      "migration": "Actual pond and soil evaporation. Hydraulic limitation stays outside ET and enters mass ledger only at acceptance."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "snow/precipitation partition",
+      "source": "ProcessMeteoDay:1217-1245; interception_daily",
+      "variables": ["fprecnosnow", "gsnow", "melt"],
+      "migration": "Current snow/process results consumed through explicit process views."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "irrigation/interception composition",
+      "source": "MOD_irrigation; ProcessMeteoDT",
+      "variables": ["gird", "nird"],
+      "migration": "Gross and net sprinkling irrigation process results. Interception must preserve their mass identity."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "root-water-uptake process",
+      "source": "integral.f90 and F-VQ22 qualified F-PM05 contract",
+      "variables": ["qrot(:)", "qrosum"],
+      "migration": "Actual root uptake is downstream root-uptake output, never ET-owned."
+    },
+    {
+      "category": "WORKER_SCRATCH",
+      "owner": "soil-water constitutive/top-boundary worker",
+      "source": "boundtop.f90:38,94",
+      "variables": ["k(1)"],
+      "migration": "Hydraulic constitutive result used only inside the hydraulic owner. ET never sees the solver array."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "frost process",
+      "source": "boundtop.f90:36,87",
+      "variables": ["rfcp(1)"],
+      "migration": "Current frost conductivity factor consumed by hydraulic boundary owner, not ET."
+    },
+    {
+      "category": "OUTPUT_RESULT",
+      "owner": "runtime result aggregation / mass diagnostics",
+      "source": "integral.f90:15-84,280-422",
+      "variables": ["iintc", "isintc", "iepd", "ipeva", "iptra", "ievap", "caintc", "cepd", "cpeva", "cptra", "cevap"],
+      "migration": "Legacy interval/cumulative reporting accumulators. Update/derive from accepted ledger receipts; never process continuation authority."
+    },
+    {
+      "category": "REMOVABLE_LEGACY_BOOKKEEPING",
+      "owner": "forcing adapter/runtime",
+      "source": "MOD_meteo.f90:41,43,46,59-60,83-86,100",
+      "variables": ["i_metdetail", "fl_update_meteo", "meteo_rec", "rain_rec", "metfil", "rainfil", "swmetfilall", "swrainfilall", "fl_loadmeteodata", "sw_meteo"],
+      "migration": "Replace file/cursor/global update state by explicit forcing provider state outside the kernel."
+    },
+    {
+      "category": "REMOVABLE_LEGACY_BOOKKEEPING",
+      "owner": "runtime interval controller",
+      "source": "variables.f90:191,203; timecontrol.f90",
+      "variables": ["dt", "daynr"],
+      "migration": "ET receives generic span duration and explicit forcing/solar metadata. It does not read a global numerical timestep or hidden calendar day."
+    }
+  ],
+  "pure_local_scratch_rule": {
+    "routines": ["penmon", "astro", "VonHHBraden", "Gash", "Rutter", "reduceva", "BoundTop"],
+    "classification": "WORKER_SCRATCH",
+    "reason": "Local algebraic intermediates are recomputable within one evaluation and are not physical continuation state."
+  },
+  "persistent_state_minimality": {
+    "SWINTER_0_1_2": [],
+    "SWINTER_3": ["sicact"],
+    "SWREDU_0": [],
+    "SWREDU_1": ["ldwet"],
+    "SWREDU_2": ["spev", "saev"],
+    "external_owner_state_never_duplicated": ["crop owner state", "surface pond state", "soil hydraulic state", "snow state"]
+  }
+}

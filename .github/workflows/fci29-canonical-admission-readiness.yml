@@ -1,0 +1,66 @@
+name: F-CI29 canonical admission readiness
+
+on:
+  push:
+    branches:
+      - qualification/f-ci29-fmr26-ptra-ownership-canonical-admission
+    paths-ignore:
+      - integration/f-ci/F-CI29_QUALIFICATION_EVIDENCE.json
+      - integration/f-ci/F-CI29_CANONICAL_READINESS.json
+      - integration/f-ci/F-CI29_STATUS.json
+      - integration/f-ci/F-CI29_POST_PROMOTION.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-fci28:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 06658d0b83206008dcaefba3b8d7e5c7f0c77538
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact F-CI28 authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci28_restart_canonical_gate.py --mode canonical
+          bash tests/fci/run_fci28_restart_current_canonical_admission.sh
+          test "$(git rev-parse HEAD:src)" = 3fe4ccff367479e54ab5db106e5faf8b480d8ec0
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI29_READINESS_FROZEN_FCI28=PASS'
+
+  current-fci29:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Validate current F-CI29 postimage
+        run: bash tests/fci/run_fci29_ptra_ownership_canonical_admission.sh
+      - name: Validate canonical workflow transition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('.github/workflows/fci-canonical.yml').read_text()
+          required = [
+              'frozen-fci28-restart-authority:',
+              'ref: 06658d0b83206008dcaefba3b8d7e5c7f0c77538',
+              'run_fci28_restart_current_canonical_admission.sh',
+              'run_fci29_ptra_ownership_canonical_admission.sh',
+              '223c54d5fd309f86ef50f9efd28e2c511e175577',
+              'FCI29_CANONICAL_PTRA_OWNERSHIP_ADMISSION=PASS',
+          ]
+          for token in required:
+              assert token in p, token
+          print('FCI29_CANONICAL_WORKFLOW_TRANSITION_STATIC=PASS')
+          PY
+          echo 'FCI29_CURRENT_POSTIMAGE_READINESS=PASS'

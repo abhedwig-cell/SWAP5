@@ -1,0 +1,94 @@
+name: F-CI21 VQ31 transaction-history postimage replay
+
+on:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+    paths:
+      - 'src/**'
+      - 'tests/fci/run_fci21_vq31_transaction_history_replay.sh'
+      - 'tests/fsi/**'
+      - 'tests/fmr/mod_fmr04_fixed_top_provider.f90'
+      - 'integration/f-ci/F-CI21_MATERIALIZED_SOURCE_POSTIMAGE.json'
+      - 'integration/f-ci/F-CI21_VQ31_TRANSACTION_HISTORY_REPLAY_PLAN.json'
+      - '.github/workflows/fci21-vq31-transaction-history-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transaction-lifecycle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay transaction lifecycle
+        run: bash tests/fci/run_fci21_vq31_transaction_history_replay.sh lifecycle
+
+  real-richards-binding:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay real Richards transaction binding
+        run: bash tests/fci/run_fci21_vq31_transaction_history_replay.sh real
+
+  frozen-fvq30-transaction-regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay frozen F-VQ30 through transaction history
+        run: bash tests/fci/run_fci21_vq31_transaction_history_replay.sh vq30
+
+  disjoint-composition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay disjoint direct versus transaction matrix
+        run: bash tests/fci/run_fci21_vq31_transaction_history_replay.sh disjoint
+
+  cross-stream-regressions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay SI25 owner matrix and snow optional-state isolation
+        run: bash tests/fci/run_fci21_vq31_transaction_history_replay.sh cross

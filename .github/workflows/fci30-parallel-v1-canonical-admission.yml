@@ -1,0 +1,26 @@
+name: F-CI30 restricted parallel V1 canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci30-fmr27-parallel-v1-canonical-admission
+    paths-ignore:
+      - integration/f-ci/F-CI30_QUALIFICATION_EVIDENCE.json
+      - integration/f-ci/F-CI30_STATUS.json
+      - integration/f-ci/F-CI30_POST_PROMOTION.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run independent F-CI30 parallel V1 canonical admission gate
+        run: bash tests/fci/run_fci30_parallel_v1_canonical_admission_v2.sh

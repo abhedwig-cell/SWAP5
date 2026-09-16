@@ -1,0 +1,30 @@
+name: F-CI59 atomic surface publication current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci59-fmr43-surface-publication-current-canonical-admission
+    paths:
+      - 'src/**'
+      - 'reference/**'
+      - 'tests/fci/run_fci59_atomic_surface_publication_admission.sh'
+      - 'integration/f-ci/F-CI59_*.json'
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci59-atomic-surface-publication-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Exact recomposition, independent replay and preservation
+        run: bash tests/fci/run_fci59_atomic_surface_publication_admission.sh

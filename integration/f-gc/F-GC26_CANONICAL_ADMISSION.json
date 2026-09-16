@@ -1,0 +1,77 @@
+{
+  "schema": "SWAP5_CANONICAL_ADMISSION_RECORD_V1",
+  "capability": "F-GC26 — External Groundwater Adapter Conformance",
+  "admission": "F-CI86",
+  "canonical_base": {
+    "head": "e4419b41d15a4acebf0fe55e5b810b92bbcd5f35",
+    "tree": "b68699a97d57a5cf77f13186e43ce20f831d7e95"
+  },
+  "owner_authority": {
+    "branch": "work/f-gc26-external-groundwater-adapter-conformance",
+    "owner_record_head": "7f8b3241d628181ecec4e9c2d9bb7a47e53c8fe0",
+    "qualified_executable_head": "a096458965bad7bd1ff97c7c52d107044c1da103",
+    "qualification_class": "OWNER_CAPABILITY_QUALIFICATION_NOT_INDEPENDENT"
+  },
+  "independent_qualification_authority": {
+    "branch": "qualification/f-vq96-fgc26-external-groundwater-adapter-independent",
+    "successful_head": "ae97f0d47c183a64e470be5badca220d95a65cb0",
+    "checkpoint_head": "f2a6cec29d50f886f14f564e84f284b5cd6f30a6",
+    "workflow_run_id": 35029303648,
+    "workflow_job_id": 104583769280,
+    "conclusion": "success"
+  },
+  "admission_gate_authority": {
+    "branch": "integration/f-ci86-fgc26-current-canonical-admission",
+    "head": "41df518d8fe88ae6edca1d4cba73e0b2947a4ad1",
+    "workflow_run_id": 35029570469,
+    "workflow_job_id": 104584633415,
+    "conclusion": "success",
+    "markers": [
+      "FCI86_PRODUCTION_DELTA_EXACT_GATEWAY_ONLY=PASS",
+      "FCI86_INDEPENDENT_EVIDENCE_BLOBS_IMMUTABLE=PASS",
+      "F-VQ96 F-GC26 INDEPENDENT QUALIFICATION GATE PASS",
+      "FVQ96_O0_O2_OUTPUT_IDENTITY=PASS",
+      "FCI86_CURRENT_CANONICAL_RECOMPOSITION=PASS",
+      "F-CI86 F-GC26 ADMISSION GATE PASS"
+    ]
+  },
+  "admitted_production_payload": {
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "unchanged_direct_dependencies": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2"
+  },
+  "current_canonical_owner_dependencies": {
+    "F-GC20_tile_aggregation": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F-GC22_accuracy_binding": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F-GC23_whole_window_response": "645141676536ae8289b9d52433798a965c7baa04",
+    "F-GC24_coupled_restart": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "F-GC25_multiswap_coupler": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+  },
+  "reconciliation": {
+    "dependency_delta_since_independent_qualification": "NONE",
+    "equivalent_or_superseding_gateway_already_canonical": false,
+    "production_semantics_modified_during_qualification": false,
+    "production_semantics_modified_during_admission": false
+  },
+  "evidence_reused": [
+    "owner-qualified exact gateway payload and unchanged owner regression evidence",
+    "unchanged F-GC17/F-GC18 direct contract authorities",
+    "admitted F-GC20/F-GC22/F-GC23/F-GC24/F-GC25 ownership contracts",
+    "F-VQ96 independent current-canonical qualification evidence"
+  ],
+  "scientific_verdict": "CANONICAL_ADMISSION_APPROVED",
+  "hard_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "F-GC27",
+    "F-GC28"
+  ]
+}

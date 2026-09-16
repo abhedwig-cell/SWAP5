@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF38",
+  "title": "Atomic WOFOST Crop-Owner Publication and Accepted-Event Consumption Transaction",
+  "branch": "work/f-wof38-atomic-crop-owner-delivery-transaction",
+  "base": {
+    "work_unit": "F-WOF37",
+    "commit": "11cdb93c12b573bbb7c29736061f51700b3e5f36",
+    "status": "QUALIFIED_RESTRICTED_PREPUBLICATION_COMPOSITION_SCOPE_COMPLETE_ATOMIC_PUBLICATION_REQUIRES_FOLLOWUP"
+  },
+  "problem": "F-WOF37 qualifies the accepted physical window through deterministic WOFOST crop-candidate construction, but the current F-WOF34 event_delivered mutation and crop-owner publication are separate ownership surfaces. A production sequence of two independent commits is not transactionally atomic.",
+  "source_bound_basis": [
+    {
+      "source": "src/crop/mod_wofost_crop_owner_state.f90",
+      "finding": "wofost_crop_owner_state_t already extends transaction_state_t and has deep clone semantics."
+    },
+    {
+      "source": "historical F-WOF24 qualification",
+      "finding": "F-KT is already qualified as the sole transaction authority for the atomic actual-WOFOST crop owner; direct F-KT initialization/checkpoint/discard/replay of the crop owner was qualified."
+    },
+    {
+      "source": "src/kernel/mod_kernel_transactions.f90",
+      "finding": "F-KT creates opaque provenance-bound candidates through kernel_advance_interval and publishes them through kernel_commit_candidate; no arbitrary external candidate adoption is required."
+    },
+    {
+      "source": "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+      "finding": "The accepted window can prepare frozen aggregates plus an opaque event token. Its existing commit_wofost_crop_event_delivery mutates only event_delivered and does not publish crop state."
+    },
+    {
+      "source": "src/transaction/mod_transaction_reference.f90",
+      "finding": "TX_TEMPORAL_MODEL_CERTIFICATE allows a model-owned single full trial without mandatory full-versus-two-half crop execution; this is required because the currently qualified WOFOST event is one explicit crop day and arbitrary half-day crop evolution is not admitted."
+    },
+    {
+      "source": "F-WOF25/F-WOF26",
+      "finding": "The qualified first crop evolution event is one explicit B1.10-equivalent crop day scheduled outside the kernel; WOFOST must not be called on each Richards substep or silently refined into half-day crop events."
+    }
+  ],
+  "selected_architecture": {
+    "name": "WOFOST_SPECIFIC_FKT_TRANSACTION_PARTICIPANT_WITH_SOURCE_EVENT_RECEIPT",
+    "kernel_change_required": false,
+    "crop_kernel_transaction_knowledge_required": false,
+    "runtime_state": "A small WOFOST-specific transaction_state_t wrapper owns the physical wofost_crop_owner_state_t plus the identity of the last accepted physical event consumed by that crop state.",
+    "event_identity": "A compact opaque source-event identity derived inside the accepted-window lineage module from its existing crop-event token. It identifies source physical lineage/final revision and event interval; aggregate/token consistency remains validated by the lineage producer path.",
+    "transaction_model": "A WOFOST-specific kernel_model_t consumes one frozen accepted-event payload and executes the already-qualified F-WOF33 two-phase one-day crop window on a cloned committed crop transaction state.",
+    "publication": "On successful trial, the candidate contains both the new crop owner and the consumed source-event identity. kernel_commit_candidate publishes them together by one F-KT state replacement.",
+    "delivery_acknowledgment": "For the F-WOF38 composed route, accepted-event consumption is derived from the committed crop transaction receipt. The existing F-WOF34 event_delivered bit is not a second publication authority and must not be independently committed in this route.",
+    "duplicate_prevention": "A replay of the same source-event identity is rejected before crop mutation; F-KT time/revision provenance provides an additional stale/replay guard."
+  },
+  "why_not_modify_wofost_crop_owner_state": "The crop owner remains physical/continuation state. Source-event consumption provenance is runtime transaction metadata and is therefore kept in a runtime wrapper rather than mixed into the crop physics owner.",
+  "why_not_generic_kernel_extension": "A generic arbitrary external kernel-candidate adoption API would weaken the opaque F-KT provenance contract. F-WOF38 instead implements the normal kernel_model_t path already provided by F-KT.",
+  "temporal_policy": {
+    "required_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "qualified_event": "exactly one currently admitted WOFOST crop day",
+    "internal_crop_retry_refinement": false,
+    "recommended_max_retries": 0,
+    "reason": "Failure of a fixed crop event must be retried from the same committed crop checkpoint with corrected/identical accepted-event input, not silently converted to a shorter crop-evolution event."
+  },
+  "mass_policy": {
+    "water_storage_in_crop_transaction": 0,
+    "water_flux_in_crop_transaction": 0,
+    "water_flux_out_crop_transaction": 0,
+    "expected_water_mass_residual": 0,
+    "note": "The crop transaction does not own Richards water storage. Accepted QROT/PTRA values are immutable input evidence already qualified on the physical-water transaction. F-WOF38 must not re-account or alter water mass."
+  },
+  "initial_qualification_scope": {
+    "atomicity": "in-memory F-KT transaction atomicity and checkpoint/retry/replay",
+    "restart_crash_durability": false,
+    "active_accepted_window_restart": false,
+    "canonical_promotion": false
+  },
+  "planned_production_delta": [
+    "one additive opaque accepted-event identity/comparison API in src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "one new runtime WOFOST crop transaction state/model module",
+    "no src/kernel changes",
+    "no crop physics source changes"
+  ],
+  "hard_non_solutions": [
+    "commit event_delivered first and crop owner second",
+    "commit crop owner first and event_delivered second",
+    "publish wofost_crop_owner_state_t outside F-KT",
+    "expose a generic arbitrary external kernel_candidate_state_t adoption helper",
+    "treat failed one-day crop evolution as permission to run half-day crop evolution",
+    "store the whole accepted physical window permanently in every crop column"
+  ],
+  "qualification_gates": [
+    "Gate A: additive event-identity API preserves the exact F-WOF34 transcript and F-WOF36 physical binding",
+    "Gate B: crop transaction state deep-clones owner plus receipt and remains compact/optional",
+    "Gate C: one F-KT advance+commit publishes crop candidate plus receipt together from one accepted event",
+    "Gate D: failed crop begin/phase-B/finalize leaves committed owner and receipt bitwise unchanged",
+    "Gate E: rejected attempt followed by accepted retry publishes exactly once from the same committed checkpoint",
+    "Gate F: duplicate source-event replay produces zero extra crop advancement and zero second receipt transition",
+    "Gate G: same checkpoint + same event replays bitwise-identical F-KT candidate before commit",
+    "Gate H: O0/O2 output identity and unchanged F-WOF37/F-WOF36/F-WOF34 regression",
+    "Gate I: no kernel source change, no calendar/file-I/O dependency, no new root/ET/Richards physics"
+  ],
+  "affected_invariants": [3,4,6,7,8,9,13,16,21,23,27,28,29,30],
+  "decision": "IMPLEMENT_AND_QUALIFY_WOFOST_SPECIFIC_FKT_TRANSACTION_PARTICIPANT_WITH_ATOMIC_SOURCE_EVENT_RECEIPT",
+  "status": "DESIGN_PERSISTED_READY_FOR_MINIMAL_IMPLEMENTATION"
+}

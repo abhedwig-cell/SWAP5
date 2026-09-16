@@ -1,0 +1,27 @@
+name: F-CI29 ptra ownership canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci29-fmr26-ptra-ownership-canonical-admission
+    paths-ignore:
+      - integration/f-ci/F-CI29_QUALIFICATION_EVIDENCE.json
+      - integration/f-ci/F-CI29_CANONICAL_READINESS.json
+      - integration/f-ci/F-CI29_STATUS.json
+      - integration/f-ci/F-CI29_POST_PROMOTION.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI29 source-bound ptra ownership admission gate
+        run: bash tests/fci/run_fci29_ptra_ownership_canonical_admission.sh

@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI21",
+  "evidence_type": "materialized_postimage_independent_remediated_policy_replay",
+  "replayed_qualification": "F-VQ34",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "tested_head": "532a63300f12d250a2bb2a9aa3b6e1a11cb0cdc6",
+  "production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+  "materialized_source_postimage": {
+    "path": "integration/f-ci/F-CI21_MATERIALIZED_SOURCE_POSTIMAGE.json",
+    "blob": "868cf8c52c02a6a9b40bd09ad9f51b7c0b635de4"
+  },
+  "current_production_identity": {
+    "serialized_reference_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "transaction_core_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "richards_temporal_indicator_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "fsi25_direct_driver_blob": "c125c6a2ab706920b7e2a5c6f1c855520b192223",
+    "matches_remediated_F_KT11_backend": true,
+    "matches_rejected_F_VQ33_backend": false
+  },
+  "historical_authority": {
+    "qualification_branch": "qualification/f-vq34-remediated-richards-head-budget-certificate",
+    "tested_qualification_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+    "plan_blob": "4f3f7c8883397ed96d3af2f6585f25698c58e7b4",
+    "runner_blob": "d72403e00ad1a1a9cb69fac89cc680e3dc847262",
+    "driver_blob": "ad5657bebd16db006fa36b2495f3c643ef6eb0bf",
+    "historical_decision": "QUALIFIED_REMEDIATED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITHIN_FROZEN_SCOPE",
+    "authority_claim_extended": false
+  },
+  "negative_evidence_lock": {
+    "F_VQ33_remains_failed": true,
+    "F_VQ33_decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "rejected_backend_blob": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+    "required_sentinel": "negative, NaN and positive-infinity supplied H_budget values remain unavailable for certificate use while preserving the native supplied diagnostic value",
+    "F_VQ33_used_as_positive_evidence": false
+  },
+  "workflow": {
+    "name": "F-CI21 VQ34 remediated certificate postimage replay",
+    "run_id": 34397623547,
+    "job_id": 102621117689,
+    "head": "532a63300f12d250a2bb2a9aa3b6e1a11cb0cdc6",
+    "conclusion": "success"
+  },
+  "fresh_matrix": {
+    "cases": 12,
+    "optimization_modes": ["O0", "O2"],
+    "executions": 24,
+    "matrix_disjointness": "PASS",
+    "B_inf_min_cm": 0.0206064337778982913,
+    "B_inf_max_cm": 0.105199733626825193,
+    "case_probes": [
+      "VALID_ACCEPT",
+      "VALID_REJECT",
+      "MISSING_BUDGET",
+      "INVALID_ZERO_BUDGET",
+      "NO_HISTORY_WITH_VALID_BUDGET",
+      "BOUNDED_RETRY_NO_MONOTONICITY_CLAIM",
+      "INVALID_NEGATIVE_BUDGET",
+      "INVALID_NAN_BUDGET",
+      "INVALID_POSITIVE_INFINITY_BUDGET",
+      "BOUNDARY_ACCEPT",
+      "VALID_ACCEPT",
+      "VALID_REJECT"
+    ],
+    "O0_O2_identity": "PASS"
+  },
+  "qualification_gates": {
+    "G01_source_handoff_prior_failure_lock": "PASS",
+    "G02_matrix_disjointness": "PASS",
+    "G03_reference_tridag_source": "PASS",
+    "G03_direct_B_inf_equivalence": "PASS",
+    "G04_accept_reject_boundary": "PASS",
+    "G05_invalid_fail_closed": "PASS",
+    "G06_native_invalid_diagnostics": "PASS",
+    "G07_no_history_no_bootstrap": "PASS",
+    "G08_bounded_retry_rollback": "PASS",
+    "G09_hard_mass_precedence_source": "PASS",
+    "G09_F_KT09_executable_mass_precedence": "PASS",
+    "G10_diagnostic_completeness": "PASS",
+    "G10_cost_shape": "PASS",
+    "G11_O0_O2_identity": "PASS",
+    "G12_F_KT10_history_regression": "PASS",
+    "G12_F_KT10_real_replay": "PASS",
+    "G12_F_VQ32_source_lock": "PASS",
+    "G13_numerical_config_ownership": "PASS",
+    "G13_no_scope_expansion": "PASS"
+  },
+  "policy_semantics_preserved": {
+    "formula": "C_h=B_inf/H_budget",
+    "explicit_budget_required": true,
+    "budget_must_be_finite_positive": true,
+    "default_H_budget": null,
+    "invalid_budget_clamp_floor_abs_or_default": false,
+    "invalid_native_value_retained_diagnostically": true,
+    "mass_gate_precedes_certificate_gate": true,
+    "certificate_rejection_preserves_committed_state": true,
+    "retry_is_bounded": true,
+    "shorter_dt_monotonicity_assumed": false,
+    "normalization_adds_full_nonlinear_trajectory": false,
+    "B_inf_general_nonlinear_true_error_bound_claim": false
+  },
+  "test_only_overlay": {
+    "exact_historical_runner_reused": true,
+    "exact_historical_driver_reused": true,
+    "historical_F_KT03_F_KT04_F_KT05_and_F_KT09_regression_metadata_restored": true,
+    "production_source_copied_from_authority": false,
+    "production_source_changed": false,
+    "qualification_formula_matrix_or_tolerance_changed": false
+  },
+  "architecture_checks": {
+    "transactional_commit_rollback": "PASS",
+    "hard_mass_conservation_precedence": "PASS",
+    "numerical_policy_separate_from_physics": "PASS",
+    "diagnostics_are_runtime_contract": "PASS",
+    "bounded_certificate_cost": "PASS",
+    "generic_time_preserved_with_non_calendar_horizons": "PASS_WITHIN_FROZEN_SCOPE",
+    "no_silent_default_budget": "PASS",
+    "io_changes": false
+  },
+  "replay_result": "PASS_MATERIALIZED_FVQ34_REMEDIATED_CERTIFICATE_BEHAVIOR_PRESERVED",
+  "hard_nonclaims": [
+    "F-VQ33 remains failed and is not reinterpreted as a pass.",
+    "No numeric H_budget is selected or recommended here.",
+    "No universal temporal tolerance or default H_budget is established.",
+    "B_inf and C_h are not qualified as general nonlinear true-error upper bounds.",
+    "No shorter-dt monotonicity claim is made.",
+    "Initial no-history bootstrap, arbitrary restart and forcing/event/topology-discontinuity continuation are not newly qualified here.",
+    "F-GC02 and groundwater coupling are not released by this replay."
+  ],
+  "next_required_F_CI21_preservation": "F-WOF42 and F-MR18 crop/persistence/accepted-receipt preservation"
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF43A",
+  "title": "Restricted Crop-to-ET Canopy View Provider Candidate",
+  "branch": "work/f-wof43a-crop-et-canopy-view-provider",
+  "status": "QUALIFIED_RESTRICTED_CROP_ET_CANOPY_VIEW_PROVIDER_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "decision": "OWNER_CANDIDATE_QUALIFIED_INDEPENDENT_SCIENTIFIC_VERIFICATION_REQUIRED_BEFORE_CANONICAL_ADMISSION",
+  "base": {
+    "commit": "4ebbbb6563132a80c26a22124d9261928fe2ffbf",
+    "authority": "F-WOF43",
+    "decision": "QUALIFIED_CROP_ET_CANOPY_VIEW_READINESS_READY_FOR_RESTRICTED_PROVIDER_CANDIDATE"
+  },
+  "qualified_candidate": {
+    "definitive_tested_commit": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "definitive_tested_tree": "22d9e9fb67ab477ba24c09ee5aab607417f8b082",
+    "production_source": "src/crop/mod_crop_et_canopy_view_provider.f90",
+    "production_source_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "candidate_contract_blob": "b1e637e59a00f50cfe6089491e11fffde0aec6ad",
+    "qualification_evidence_commit": "3e99ffc54d7c9eaa73bf817c2ff5ab4f424c4e68"
+  },
+  "workflow": {
+    "candidate_qualification_run": 34454490884,
+    "candidate_qualification_conclusion": "success",
+    "evidence_replay_run": 34454596903,
+    "evidence_replay_conclusion": "success",
+    "output_sha256": "8bc8d6b2fa275d987ad891aa6f8121885a3a0bc35016073091a96a0d5f99e414",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "floating_point_traps": ["invalid", "zero", "overflow"]
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "owner_candidate_qualified": true,
+    "independently_verified": false,
+    "canonically_admitted": false,
+    "runtime_bound": false
+  },
+  "qualified_scope": [
+    "pure read-only reconstruction of vegetation_cover_fraction from KDIR/KDIF/LAI",
+    "AFGEN crop_factor reconstruction from CFTB/DVS using F-WOF29 substrate",
+    "CO2 transpiration factor equal to one when correction disabled",
+    "AFGEN CO2 transpiration factor reconstruction when enabled",
+    "non-emerged nonzero vegetation-cover semantics",
+    "inactive DVS/CO2 dependency minimality",
+    "source-bound parameter and forcing domains",
+    "fail-closed invalid active input handling under floating-point traps",
+    "stateless A-B-A replay",
+    "no persistent derived canopy state",
+    "no I/O, calendar lookup, hydraulic internals or runtime ownership"
+  ],
+  "not_qualified": [
+    "independent rederivation or scientific admission",
+    "fixed-crop parameter adapter",
+    "WOFOST parameter adapter",
+    "crop snapshot lineage/runtime binding",
+    "F-PM06A runtime composition",
+    "root-uptake runtime composition",
+    "canonical source admission",
+    "actual evaporation or transpiration flux",
+    "interception",
+    "Penman-Monteith",
+    "SWREDU",
+    "calendar-year CO2 selection"
+  ],
+  "remediation": {
+    "failed_runs_before_qualification": [34453692622, 34453872573],
+    "findings": [
+      "division-based overflow guard was itself unsafe below unit extinction product",
+      "NaN LAI guard relied on non-guaranteed Fortran short-circuit OR"
+    ],
+    "both_fixed_before_definitive_qualification": true
+  },
+  "architecture": {
+    "persistent_state_added": false,
+    "shared_immutable_parameter_tables": true,
+    "worker_scratch_added": false,
+    "mass_ledger_contribution": false,
+    "calendar_assumption_added": false,
+    "runtime_dependency_added": false
+  },
+  "affected_invariants": [2, 3, 4, 5, 6, 7, 8, 9, 13, 16, 21, 22, 23, 27, 29, 30],
+  "next": "Run an independent F-VQ qualification from the exact F-WOF43A candidate. Re-derive the three source equations from frozen SWAP 4.3.1 independently, exercise fixed/WOFOST-compatible semantic parameter cases, active/inactive CO2, endpoint/interpolation and fail-closed cases, and verify that no runtime or canonical claim is implied."
+}

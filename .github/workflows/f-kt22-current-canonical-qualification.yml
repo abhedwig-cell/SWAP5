@@ -1,0 +1,129 @@
+name: F-KT22 current-canonical qualification
+
+on:
+  push:
+    branches:
+      - work/f-kt22-current-canonical-recomposition
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'tests/fkt/run_fkt22_canonical_exposure.sh'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'
+      - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
+      - 'tests/fkt/test_fkt22_kernel_trajectory_transport.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - '.github/workflows/f-kt22-current-canonical-qualification.yml'
+      - 'tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'tests/fkt/run_fkt22_canonical_exposure.sh'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'
+      - 'tests/fkt/test_fkt22_canonical_trajectory_exposure.f90'
+      - 'tests/fkt/test_fkt22_kernel_trajectory_transport.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - '.github/workflows/f-kt22-current-canonical-qualification.yml'
+      - 'tests/fkt/F-KT22_RECOMPOSITION_CHECKPOINT.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FKT22_PRE_ADMISSION_CANONICAL_TREE: ca2d9030bbaf76eab196da81dcd9419a24f8ecfc
+  FKT22_QUALIFIED_SOURCE: c9fd828fefb79f727ef0d9ff2c62b5c6d9dd0b01
+  FKT22_SOURCE_BASE: 1f33328e2ddc0d28450d35647c1c97f293b1e622
+  FKT22_QUALIFIED_CHECKPOINT: 8ff0ac765b5349733adbbfe6ddf3ee0b7b960292
+
+jobs:
+  current-canonical-tree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify F-KT22 canonical lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical work/f-kt22-canonical-accepted-trajectory-sensitivity-exposure
+          CANONICAL="$(git rev-parse origin/integration/f-ci-canonical)"
+          TREE="$(git rev-parse "$CANONICAL^{tree}")"
+          echo "FKT22_CURRENT_CANONICAL_HEAD=$CANONICAL"
+          echo "FKT22_CURRENT_CANONICAL_TREE=$TREE"
+
+          if git merge-base --is-ancestor "$FKT22_QUALIFIED_CHECKPOINT" "$CANONICAL"; then
+            git merge-base --is-ancestor "$FKT22_QUALIFIED_CHECKPOINT" HEAD
+            echo 'FKT22_POST_ADMISSION_LINEAGE_GATE=PASS'
+          else
+            SOURCE_BASE="$(git merge-base "$CANONICAL" "$FKT22_QUALIFIED_SOURCE")"
+            echo "FKT22_SOURCE_MERGE_BASE=$SOURCE_BASE"
+            test "$TREE" = "$FKT22_PRE_ADMISSION_CANONICAL_TREE"
+            test "$SOURCE_BASE" = "$FKT22_SOURCE_BASE"
+            git merge-base --is-ancestor "$CANONICAL" HEAD
+            echo 'FKT22_PRE_ADMISSION_TREE_GATE=PASS'
+          fi
+
+  canonical-boundary:
+    needs: current-canonical-tree
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run canonical and kernel boundary gate
+        run: bash tests/fkt/run_fkt22_canonical_exposure.sh
+
+  fmr-production-compile:
+    needs: current-canonical-tree
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile serialized FMR production seam
+        run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+
+  fmr-production-runtime:
+    needs: current-canonical-tree
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run serialized FMR production runtime oracle
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+
+  eb-i25-preservation:
+    needs: current-canonical-tree
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preserve admitted EB-I25 semantics
+        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh

@@ -1,0 +1,23 @@
+name: F-CI40 F-MR38 effective-forcing executor canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci40-fmr38-effective-forcing-executor-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI40 pre/post-promotion exact admission gate
+        run: bash tests/fci/run_fci40_fmr38_effective_forcing_executor_canonical_admission_v2.sh

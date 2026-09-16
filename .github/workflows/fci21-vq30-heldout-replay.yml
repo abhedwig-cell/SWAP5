@@ -1,0 +1,32 @@
+name: F-CI21 VQ30 held-out operator replay
+
+on:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+    paths:
+      - 'src/**'
+      - 'tests/fci/run_fci21_vq30_heldout_replay.sh'
+      - 'tests/fsi/test_fsi25_reference_indicator_production_seam.f90'
+      - 'tests/fsi/fsi18_make_reference_tridag_stubs.py'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+      - 'tests/fmr/mod_fmr04_fixed_top_provider.f90'
+      - 'integration/f-ci/F-CI21_MATERIALIZED_SOURCE_POSTIMAGE.json'
+      - 'integration/f-ci/F-CI21_VQ30_HELD_OUT_REPLAY_PLAN.json'
+      - '.github/workflows/fci21-vq30-heldout-replay.yml'
+  workflow_dispatch:
+
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: Run F-CI21 VQ30 held-out operator replay
+        run: bash tests/fci/run_fci21_vq30_heldout_replay.sh

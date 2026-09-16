@@ -1,0 +1,55 @@
+name: F-CI45 materialize exact F-MR39 runtime recomposition
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
+    paths:
+      - .github/workflows/fci45-materialize-fmr39-runtime-recomposition.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize immutable donor blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2
+          DONOR=87b553094b66980006b69f5ba8b53d70ccd0a8e0
+          BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
+          RESTART=src/runtime/mod_fmr_restart_state_contract.f90
+          BACKEND_BLOB=07877429f94ccf07c353fa5f8ba969c341ad88dd
+          RESTART_BLOB=bb2c37efce37a73441181f14d15847c652ab45ea
+
+          test "${GITHUB_REF_NAME}" = "qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission"
+          git fetch --no-tags origin work/f-mr39-restricted-soil-temperature-runtime-composition
+          git cat-file -e "${DONOR}^{commit}"
+          test "$(git rev-parse ${DONOR}:$BACKEND)" = "$BACKEND_BLOB"
+          test "$(git rev-parse ${DONOR}:$RESTART)" = "$RESTART_BLOB"
+
+          git show "${DONOR}:$BACKEND" > "$BACKEND"
+          git show "${DONOR}:$RESTART" > "$RESTART"
+          test "$(git hash-object "$BACKEND")" = "$BACKEND_BLOB"
+          test "$(git hash-object "$RESTART")" = "$RESTART_BLOB"
+
+          mapfile -t delta < <(git diff --name-only "$BASE" -- src | sort)
+          printf '%s\n' "${delta[@]}" > /tmp/fci45-delta
+          printf '%s\n' "$BACKEND" "$RESTART" | sort > /tmp/fci45-expected
+          cmp -s /tmp/fci45-delta /tmp/fci45-expected || { cat /tmp/fci45-delta >&2; exit 45; }
+
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$BACKEND" "$RESTART"
+          git diff --cached --check
+          git commit -m "compose(F-CI45): apply exact F-MR39 runtime blobs to current canonical"
+          git push origin HEAD:qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
+          echo "FCI45_MATERIALIZED_BACKEND_BLOB=$BACKEND_BLOB"
+          echo "FCI45_MATERIALIZED_RESTART_BLOB=$RESTART_BLOB"

@@ -1,0 +1,208 @@
+{
+  "schema": "swap5.fci38_canonical_gate_scope_governance.v1",
+  "work_unit": "F-CI38",
+  "title": "Historical Admission Gate Scope Separation & Moving-Canonical Regression Governance",
+  "source_authority": {
+    "work_unit": "F-CI37/F-CI37P",
+    "decision": "QUALIFIED_FINAL_FCI37_CANONICAL_AUTHORITY_ESTABLISHED",
+    "canonical_branch": "integration/f-ci-canonical",
+    "head": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "tree": "bca9d2d4dd3c8c42edf635b0887ee62b475b5abd",
+    "src_tree": "6aa66da28255fc31c2891ee89716c62569a8c068",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "final_exact_head_evidence": {
+      "f_ci37_dedicated_canonical_run": {
+        "run": 34533272982,
+        "conclusion": "success"
+      },
+      "f_ci37p_exact_branch_run": {
+        "run": 34533186246,
+        "conclusion": "success"
+      },
+      "f_ci37p_canonical_run": {
+        "run": 34533272987,
+        "conclusion": "success"
+      },
+      "broad_canonical_push_run": {
+        "run": 34533272990,
+        "conclusion": "success"
+      },
+      "broad_canonical_pull_request_run": {
+        "run": 34533278220,
+        "conclusion": "success"
+      }
+    },
+    "zero_delta_during_final_reconciliation": {
+      "production_src": true,
+      "reference": true,
+      "scientific_tolerances": true,
+      "kernel": true,
+      "solver": true,
+      "process_science": true
+    },
+    "closure_rule": "The persisted F-CI37/F-CI37P final gate explicitly requires no further status mutation after the exact final head is green; the exact-head CI evidence closes the authority without moving the authority again."
+  },
+  "same_head_red_classification": [
+    {
+      "workflow": "F-CI34 F-MR31 root-attribution canonical admission",
+      "run": 34533272998,
+      "event": "push",
+      "failing_step": "F-CI34 exact-source admission gate",
+      "classification_primary": "2_STALE_HISTORICAL_ADMISSION_GATE",
+      "classification_secondary": "3_GOVERNANCE_WORKFLOW_TRIGGER_SCOPE_DEFECT",
+      "historical_base": "545e07c65338b9fe61b963468675c41f3e931816",
+      "historical_assumption": "exactly one production source delta from the frozen F-CI34 base",
+      "production_regression": false,
+      "scientific_regression": false,
+      "infrastructure_only": false,
+      "historical_decision_rewritten": false
+    },
+    {
+      "workflow": "F-CI34P root-attribution post-promotion reconciliation",
+      "run": 34533278208,
+      "event": "pull_request",
+      "failing_step": "Fail closed on production, reference, or out-of-scope drift",
+      "classification_primary": "2_STALE_HISTORICAL_RECONCILIATION_GATE",
+      "classification_secondary": "3_GOVERNANCE_WORKFLOW_TRIGGER_SCOPE_DEFECT",
+      "historical_base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+      "historical_assumption": "zero source/reference delta and F-CI34P-only governance delta from the frozen F-CI34 postimage",
+      "production_regression": false,
+      "scientific_regression": false,
+      "infrastructure_only": false,
+      "historical_decision_rewritten": false
+    }
+  ],
+  "gate_taxonomy": {
+    "A": {
+      "name": "IMMUTABLE_HISTORICAL_ADMISSION_GATE",
+      "purpose": "Reproduce the original candidate admission/reconciliation against its exact frozen authority.",
+      "trigger_policy": "qualification/admission branch plus workflow_dispatch only",
+      "may_assert_historical_exact_delta": true,
+      "may_define_moving_current_regression": false,
+      "historical_result_is_immutable": true
+    },
+    "B": {
+      "name": "MOVING_CANONICAL_PRESERVATION_REGRESSION",
+      "purpose": "Prove admitted capability preservation on the moving canonical postimage without replaying historical admission-delta assumptions.",
+      "trigger_policy": "owned by the broad canonical workflow on integration/f-ci-canonical",
+      "may_assert_historical_exact_delta": false,
+      "preservation_method": "immutable-authority ancestry plus byte preservation of the qualified restricted capability/dependency surface, combined with frozen functional replays"
+    },
+    "C": {
+      "name": "BROAD_CANONICAL_REGRESSION",
+      "purpose": "Prove canonical system composition, preserved qualified authorities, architecture contracts and hard mass evidence.",
+      "trigger_policy": "integration/f-ci-canonical and canonical pull requests",
+      "may_assert_historical_exact_delta": false
+    }
+  },
+  "audit": {
+    "already_separated": [
+      "F-CI21 workflow family",
+      "F-CI22",
+      "F-CI23",
+      "F-CI24",
+      "F-CI27",
+      "F-CI28",
+      "F-CI29",
+      "F-CI30",
+      "F-CI30 post-promotion",
+      "F-CI31",
+      "F-CI32",
+      "F-CI33",
+      "F-CI33R"
+    ],
+    "mixed_or_stale_moving_scope_at_fci37_authority": [
+      "fci34-fmr31-root-attribution-canonical-admission.yml",
+      "fci34p-root-attribution-post-promotion-reconciliation.yml",
+      "fci35-parallel-restart-current-canonical-admission.yml",
+      "fci36-divdra-active-runtime-canonical-admission.yml",
+      "fci37-parallel-root-uptake-canonical-admission.yml",
+      "fci37p-current-canonical-governance-reconciliation.yml",
+      "fci-canonical.yml: current-restricted-canonical-postimage job"
+    ]
+  },
+  "workflow_ownership_matrix": [
+    {
+      "workflow": "fci34-fmr31-root-attribution-canonical-admission.yml",
+      "before": "A+B mixed by qualification and moving-canonical triggers",
+      "after": "A only",
+      "remediation": "remove integration/f-ci-canonical push trigger; historical runner unchanged",
+      "preservation_replacement": "C frozen F-CI34 replay plus B current dependency-surface preservation"
+    },
+    {
+      "workflow": "fci34p-root-attribution-post-promotion-reconciliation.yml",
+      "before": "historical reconciliation rerun by canonical push and generic pull_request",
+      "after": "A governance evidence only",
+      "remediation": "remove integration/f-ci-canonical push trigger and generic pull_request trigger; gate body unchanged",
+      "preservation_replacement": "no physical capability replacement required; B/C source authority is owned by fci-canonical.yml"
+    },
+    {
+      "workflow": "fci35-parallel-restart-current-canonical-admission.yml",
+      "before": "A+B mixed trigger surface",
+      "after": "A only",
+      "remediation": "remove integration/f-ci-canonical push trigger; historical runner unchanged",
+      "preservation_replacement": "B current dependency-surface preservation; immutable historical evidence remains dispatchable"
+    },
+    {
+      "workflow": "fci36-divdra-active-runtime-canonical-admission.yml",
+      "before": "A+B mixed trigger surface with exact two-source-delta admission assumptions",
+      "after": "A only",
+      "remediation": "remove integration/f-ci-canonical push trigger; historical runner unchanged",
+      "preservation_replacement": "existing C frozen F-CI36 replay plus B current dependency-surface preservation"
+    },
+    {
+      "workflow": "fci37-parallel-root-uptake-canonical-admission.yml",
+      "before": "A+B mixed trigger surface with exact one-source-delta admission assumptions",
+      "after": "A only",
+      "remediation": "remove integration/f-ci-canonical push trigger; historical runner unchanged",
+      "preservation_replacement": "C frozen final F-CI37 replay plus B current dependency-surface preservation"
+    },
+    {
+      "workflow": "fci37p-current-canonical-governance-reconciliation.yml",
+      "before": "historical final reconciliation also triggered by moving broad-governance changes",
+      "after": "A governance evidence only",
+      "remediation": "remove integration/f-ci-canonical push trigger; reconciliation runner unchanged",
+      "preservation_replacement": "B/C authority ownership moved to fci-canonical.yml"
+    },
+    {
+      "workflow": "fci-canonical.yml",
+      "before": "C broad gate containing a moving job that directly reruns the historical F-CI37 exact-delta admission gate",
+      "after": "C broad gate plus explicit B preservation",
+      "remediation": "freeze F-CI34 and final F-CI37 scientific replay on immutable heads; retain existing frozen F-CI36 replay; replace moving F-CI37 admission replay with authority-ancestry and dependency-surface preservation",
+      "preservation_replacement": "B current-restricted-canonical-preservation"
+    }
+  ],
+  "regression_replacement_map": {
+    "F-CI34": [
+      "frozen-fci34-root-attribution-authority",
+      "current-restricted-canonical-preservation"
+    ],
+    "F-CI35": [
+      "current-restricted-canonical-preservation"
+    ],
+    "F-CI36": [
+      "frozen-fci36-divdra-active-runtime-authority",
+      "current-restricted-canonical-preservation"
+    ],
+    "F-CI37": [
+      "frozen-fci37-parallel-root-uptake-authority",
+      "current-restricted-canonical-preservation"
+    ],
+    "F-CI34P": [
+      "historical evidence retained; no scientific moving role"
+    ],
+    "F-CI37P": [
+      "historical final-governance evidence retained; B/C role transferred to broad canonical"
+    ]
+  },
+  "hard_rules": {
+    "production_src_changed": false,
+    "reference_source_changed": false,
+    "scientific_tolerances_changed": false,
+    "historical_gate_runners_changed": false,
+    "historical_qualification_decisions_changed": false,
+    "safety_gate_disabled_without_replacement": false,
+    "canonical_promoted_by_fci38": false
+  },
+  "exit_target": "QUALIFIED_CANONICAL_GATE_SCOPE_SEPARATION_NO_SCIENTIFIC_OR_PRODUCTION_DELTA"
+}

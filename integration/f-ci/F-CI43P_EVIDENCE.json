@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.fci43p_evidence.v1",
+  "work_unit": "F-CI43P",
+  "title": "F-CI43 Promoted Canonical Postimage & Historical-Gate Governance Reconciliation",
+  "promoted_canonical": "13c16dc1c089e02c5f669f9596a13127bfbdb31f",
+  "promotion_parents": [
+    "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "a9f1123f2c6a5f08ffa51b491afda18fc4ab2060"
+  ],
+  "promoted_scientific_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85",
+    "tests/fci/test_fci43_restricted_soil_temperature_independent.f90": "51e76bbf839d86702a3d391585a6f0abc0e6bc38",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "canonical_push_after_fci43": {
+    "moving_canonical_workflow": {
+      "run": 34614296394,
+      "conclusion": "success",
+      "classification": "CURRENT_CANONICAL_GATE_VALID_AND_GREEN"
+    },
+    "historical_fci42_workflow": {
+      "run": 34614296331,
+      "conclusion": "failure",
+      "classification": "STALE_HISTORICAL_EXACT_ADMISSION_TRIGGER_GOVERNANCE_DEFECT",
+      "exact_failure": "FCI42_GATE_FAIL post-composition governance changed production source",
+      "scientific_fci43_defect": false
+    },
+    "push_workflow_count": 2
+  },
+  "governance_remediation": {
+    "historical_workflow": ".github/workflows/fci42-surface-evaporation-allocation-performance-admission.yml",
+    "change": "remove integration/f-ci-canonical from push.branches only",
+    "historical_qualification_trigger_preserved": true,
+    "historical_reconciliation_trigger_preserved": true,
+    "moving_canonical_workflow_unchanged": true,
+    "production_source_changed": false,
+    "reference_changed": false,
+    "scientific_oracle_changed": false
+  },
+  "first_reconciliation_run": {
+    "head": "9fa929bdfaa19240cda91c23890e025741574b1f",
+    "run": 34614658070,
+    "job": 103313453448,
+    "conclusion": "success",
+    "gates": {
+      "current_canonical_pin": "PASS",
+      "true_two_parent_promotion": "PASS",
+      "scientific_postimage_immutable": "PASS",
+      "reference_immutable": "PASS",
+      "stale_fci42_canonical_trigger_removed": "PASS",
+      "moving_canonical_gate_preserved": "PASS",
+      "bounded_governance_delta": "PASS",
+      "promoted_scientific_replay": "PASS",
+      "repeated_run_determinism_O0_O2": "PASS"
+    },
+    "oracle_output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "nonclaims": [
+    "runtime call-site composition",
+    "frost, snow or latent-heat qualification",
+    "large-batch throughput qualification",
+    "RB1 modification or reopening"
+  ]
+}

@@ -1,0 +1,40 @@
+name: F-CI33 F-MR33 DIVDRA runtime canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci33-fmr33-divdra-runtime-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  canonical-runtime-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout source lineage
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI33 source-bound admission gate
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "integration/f-ci-canonical" ]]; then
+            export FCI33_MODE=canonical
+          else
+            export FCI33_MODE=admission
+          fi
+          bash tests/fci/run_fci33_divdra_runtime_canonical_admission.sh
+
+      - name: Upload F-CI33 admission evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI33-divdra-runtime-canonical-admission-evidence
+          path: |
+            F-CI33_O0.txt
+            F-CI33_O2.txt
+            F-CI33_SUMMARY.json
+          if-no-files-found: warn

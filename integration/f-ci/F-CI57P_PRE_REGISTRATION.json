@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI57P",
+  "title": "F-CI57 Current-Canonical Postimage Moving-Preservation Reconciliation",
+  "source_postimage": "7bbc7360280ddf27419293db4160bee0b070f7f9",
+  "source_postimage_tree": "e63f6fc4362b3bf2a4ee90603c7c54399949ed5b",
+  "preimage": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "admission_head": "7c7f8519c94499f3628ef1a08181fdd5d8418d07",
+  "owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "independent_authority": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+  "old_moving_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "transaction_path": "src/transaction/mod_transaction_reference.f90",
+  "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+  "failed_broad_run": 34754100011,
+  "failed_broad_job": 103715634882,
+  "failure_class": "STALE_MOVING_PRESERVATION_AUTHORITY_AFTER_EXPLICITLY_QUALIFIED_CANONICAL_SOURCE_ADMISSION",
+  "scope": "GOVERNANCE_ONLY_MOVING_PRESERVATION_RECONCILIATION",
+  "rule": "Pin the explicitly admitted F-KT18 transaction source to its exact qualified blob while retaining the old moving authority byte locks for every other dependency-surface path.",
+  "production_source_changes_allowed": false,
+  "reference_changes_allowed": false,
+  "denominator_change_allowed": false,
+  "scope_reduction_allowed": false
+}

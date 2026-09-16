@@ -1,0 +1,25 @@
+name: F-VQ36 independent F-MR23 reference ET runtime binding
+
+on:
+  push:
+    branches:
+      - qualification/f-vq36-fmr23-reference-et-runtime-binding
+    paths-ignore:
+      - integration/f-vq/F-VQ36_QUALIFICATION.json
+      - integration/f-vq/F-VQ36_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ36 independent generic-time ET runtime qualification
+        run: bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM06",
+  "title": "Evapotranspiration Process Boundary, State & Migration Readiness",
+  "branch": "work/f-pm06-et-migration-readiness",
+  "status": "QUALIFIED_ET_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
+  "decision": "QUALIFIED_ET_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
+  "qualification_scope": "SOURCE_BOUND_ET_PROCESS_DECOMPOSITION_STATE_OWNERSHIP_GENERIC_TIME_TRANSACTION_MASS_AND_MIGRATION_READINESS_ONLY",
+  "baseline": {
+    "reserved_branch_original_head": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+    "reserved_branch_was_stale_empty_reservation": true,
+    "canonical_ref": "integration/f-ci-canonical",
+    "canonical_commit_at_activation": "df435824de175e3f868b680aab2cd0a395aa19ff",
+    "canonical_tree_at_activation": "f16791352d84853c8aa758e40662debebd6249b9",
+    "continuation_method": "NON_FORCED_FAST_FORWARD_OF_RESERVED_BRANCH_TO_LIVE_CANONICAL_REF",
+    "cross_lineage_production_merge_performed": false
+  },
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "production_tested": false,
+    "source_reconciled": true,
+    "contracts_frozen": true,
+    "qualified": true,
+    "production_admitted": false
+  },
+  "evidence_checkpoint": {
+    "commit": "b3d9599636c9b8d07125db2a48e7c5d2b8148ab7",
+    "compare_to_canonical": {
+      "ahead_by": 2,
+      "behind_by": 0,
+      "changed_files": [
+        "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+        "integration/f-pm/F-PM06_LEGACY_VARIABLE_CLASSIFICATION.json"
+      ],
+      "production_files_changed": false
+    }
+  },
+  "frozen_legacy_provenance": {
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "swap_f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a"
+  },
+  "qualified_owner_inputs": {
+    "root_water_uptake": {
+      "qualification": "F-VQ22",
+      "qualification_branch_head": "1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
+      "candidate_closeout": "591363019aa4b2324bec55354b45093b3b189819",
+      "canonical_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+      "scope": "RESTRICTED_MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+      "ownership_rule": "ET publishes potential transpiration demand only; actual root uptake remains root-uptake owned."
+    },
+    "crop_canopy": {
+      "canonical_crop_owner_blob": "31bb390a0b70bec0a3f525f1d704a2c53890f9b4",
+      "transaction_authority": "F-WOF38",
+      "persistence_layout_authority": "F-WOF42",
+      "ownership_rule": "Crop biology and continuation state remain crop-owned; ET consumes read-only canopy views."
+    },
+    "restricted_reference_et_transpiration": {
+      "authority": "F-WOF18",
+      "qualified_scope": "SWETR1_SWMETDETAIL0_SWDIVIDE0_SWINTER0_CURRENT_ET_RESULT",
+      "qualified_source_blob": "497b42f2450a003a070dbc4020573866d1ef93b0",
+      "present_on_current_canonical": false,
+      "governance_rule": "Use as evidence/provider contract only. Re-admit on current lineage in a separate implementation unit; do not blindly merge the historical branch."
+    }
+  },
+  "source_bound_persistent_state": {
+    "SWINTER_0_1_2": [],
+    "SWINTER_3": ["sicact"],
+    "SWREDU_0": [],
+    "SWREDU_1": ["ldwet"],
+    "SWREDU_2": ["spev", "saev"],
+    "external_state_read_by_view_only": ["crop owner state", "surface pond state", "soil hydraulic state", "snow state"]
+  },
+  "key_readiness_findings": [
+    "Potential ET demand, interception, soil-evaporation reduction, actual surface evaporation and actual root uptake are separate ownership boundaries.",
+    "Potential transpiration is not actual root uptake and ET must not duplicate Feddes/root-sink physics.",
+    "Potential bare-soil and pond evaporation are atmospheric demands; hydraulic limitation and actual reva/epd belong to the top-boundary/soil-water owner.",
+    "SWINTER=1/2 are explicit source-window aggregate methods; SWINTER=3 is a dynamic optional canopy-water storage process with a physical event bound.",
+    "Legacy LDWET/SPEV/SAEV are true restart continuation state and must be option-specific transactional state.",
+    "Legacy reduceva mutates state before the SoilWater retry loop; the target architecture must recompute rejected/retried trials from committed ET state rather than preserve this control-flow mutation pattern.",
+    "Legacy siccaploss is counted as interception loss when canopy capacity falls; this reference mass route is frozen and may not be silently changed in a structural migration.",
+    "Daily weather and interception semantics are forcing/event semantics, not a kernel-day timestep requirement.",
+    "Meteorological file arrays, filenames, cursors and update flags stay outside the kernel.",
+    "All actual water removals and state deltas enter the authoritative mass ledger exactly once at transaction acceptance."
+  ],
+  "deliverables": {
+    "dependency_map": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "state_parameter_forcing_result_classification": "integration/f-pm/F-PM06_LEGACY_VARIABLE_CLASSIFICATION.json",
+    "process_interface_contract": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "mass_contribution_contract": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "generic_time_contract": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "transaction_contract": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "migration_slices": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "invariant_audit": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md"
+  },
+  "recommended_first_structural_candidate": {
+    "scope": [
+      "SWETR=1",
+      "SWMETDETAIL=0",
+      "SWDIVIDE=0",
+      "SWINTER=0",
+      "SWEVAP=1",
+      "SWREDU=0"
+    ],
+    "outputs": [
+      "potential_transpiration",
+      "potential_bare_soil_evaporation",
+      "potential_pond_evaporation"
+    ],
+    "persistent_ET_state": [],
+    "required_reuse": [
+      "F-WOF18 qualified transpiration semantics as evidence",
+      "current canonical crop/canopy owner views",
+      "current qualified root-water-uptake owner downstream"
+    ],
+    "required_new_qualification": [
+      "source-bound peva formula",
+      "source-bound epond formula",
+      "current-lineage structural implementation",
+      "replay and mass-interface contract tests"
+    ]
+  },
+  "not_qualified": [
+    "production ET implementation",
+    "historical F-WOF18 branch merge",
+    "Penman-Monteith provider",
+    "SWINTER=1 production provider",
+    "SWINTER=2 production provider",
+    "SWINTER=3 production provider",
+    "SWREDU=1 production provider",
+    "SWREDU=2 production provider",
+    "broader root-water-uptake physics outside F-VQ22 scope",
+    "arbitrary crop evolution cadence",
+    "weather-file I/O inside kernel",
+    "any physics correction to legacy siccaploss semantics"
+  ],
+  "testing_note": "No production source changed in F-PM06, so no production build/regression claim is made. The readiness qualification is based on live lineage reconciliation, frozen-source equation/call-order inspection, qualified owner contracts, explicit migration boundaries and a clean two-file diff before this status record. The structural implementation unit must carry its own compilation, regression, replay and mass-balance qualification.",
+  "affected_invariants": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30],
+  "next_action": "Start a separate production implementation workunit for the restricted stateless reference-ET demand slice on the current canonical lineage. Do not extend F-PM06 with production source changes."
+}

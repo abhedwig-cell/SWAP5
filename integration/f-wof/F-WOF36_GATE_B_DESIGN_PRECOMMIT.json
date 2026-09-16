@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF36",
+  "gate": "B_PHYSICAL_TRIAL_PTRA_QROT_PAYLOAD_BINDING",
+  "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
+  "precommit": true,
+  "selected_candidate": "SPARSE_PREVALIDATED_WOFOST_WRAPPER_AROUND_F_MR18_RECEIPT_ROUTE",
+  "architecture": {
+    "generic_F_MR18_runtime_changed_again": false,
+    "F_KT_commit_authority_changed": false,
+    "WOFOST_specific_composition_owner": "new runtime/process-composition module outside crop kernel and outside generic F-MR runtime",
+    "persistent_solver_scratch": false,
+    "persistent_state_for_inactive_columns": false,
+    "postcommit_normal_recoverable_error_allowed": false,
+    "calendar_assumption": false
+  },
+  "source_bound_payload": {
+    "potential_transpiration": "canonical crop_root_uptake_input_t.potential_transpiration supplied for the same sparse WOFOST column and interval",
+    "actual_root_uptake_rate": "sum of the exact fmr_b110_physical_forcing_t.root_extraction_sink vector passed to the serialized Richards trial",
+    "extra_dz_factor": false,
+    "root_uptake_recomputed_after_trial": false,
+    "rate_integration": "constant outer-interval rates integrated over [t0,t1]; current serialized physical forcing is fixed for that outer interval"
+  },
+  "precommit_sequence": [
+    "validate sparse WOFOST column ids and state/parameter/forcing handles",
+    "validate canonical crop-root input and finite nonnegative PTRA",
+    "validate exact physical root_extraction_sink is present, finite and nonnegative and its sum is finite",
+    "capture pre-physical F-KT checkpoint provenance for each sparse WOFOST column",
+    "build complete F-WOF34 trial-local contribution scratch for [t0,t1]",
+    "prevalidate trial/window lineage, revision and interval contiguity without mutating the accepted window",
+    "only then call the existing serialized MultiSWAP runtime requesting sparse F-MR18 receipts"
+  ],
+  "postcommit_sequence": [
+    "non-ready receipt means zero WOFOST contribution and trial scratch discard",
+    "ready receipt must exactly match the prevalidated checkpoint/trial lineage, origin revision, committed revision and interval",
+    "derive the existing F-WOF34 F-KT accepted-interval certificate from the pre-captured checkpoint and committed post-state",
+    "admit the already-prevalidated trial to the accepted window exactly once",
+    "any impossible receipt/certificate/window mismatch is an invariant failure, not a normal recoverable postcommit status"
+  ],
+  "planned_source_delta": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90: add read-only prevalidation helper only",
+    "src/runtime/mod_fmr_wofost_physical_trial_binding.f90: new sparse WOFOST wrapper/composition owner"
+  ],
+  "qualification_obligations": [
+    "exact applied root sink sum identity",
+    "same-trial PTRA identity",
+    "routing/invalid-input failure before physical mutation",
+    "kernel/mass/candidate/commit rejection zero WOFOST contribution",
+    "accepted receipt contribution exactly once",
+    "A-B-A replay identity",
+    "batch-size and input-order identity",
+    "no-receipt/non-WOFOST physical path identity",
+    "mass accounting bitwise or exact semantic identity",
+    "F-WOF34 exact transcript preservation or explicitly reconciled additive API extension",
+    "F-WOF35 canonical composition preservation",
+    "O0/O2 identity"
+  ],
+  "not_in_scope": [
+    "new root uptake physics",
+    "new ET physics",
+    "candidate-state root uptake recomputation",
+    "active-window restart/distributed ownership",
+    "canonical promotion"
+  ],
+  "decision": "PRECOMMITTED_GATE_B_IMPLEMENTATION_MAY_START"
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "WOFOST81_TWO_PHASE_ONE_DAY_COMPOSITE_CANDIDATE",
+  "phase": "QUALIFY",
+  "qualified_source": {
+    "path": "src/crop/mod_wofost81_one_day_candidate.f90",
+    "git_blob": "74055565400c501f8a9f0bbe12d5d235c3990b61",
+    "sha256": "f6dc0fd69eca96ba51382ceb58e4571a107d9fb6fe57ec726ef1b63bfd25cf34"
+  },
+  "qualification_test": {
+    "path": "tests/fwof/pp02/test_wofost81_one_day_candidate.f90",
+    "git_blob": "a369f4d7c726a41200a9d4b7dadab37bc00e98bc",
+    "sha256": "aafd7a069a2bcc77133dbe195c28de4667bde9e61503f9bfa5e85536871c90f1"
+  },
+  "compiler": "gfortran",
+  "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
+  "result": "F_WOF_PP02_ONE_DAY_CANDIDATE_PASS",
+  "result_sha256": "dffd4eaff928c63e852d81aefeca804d6071a451a3163958167181feacd5ebba",
+  "validated_semantics": [
+    "prepare phase treats committed composite owner as read-only",
+    "committed crop and N state remain bitwise unchanged after prepare",
+    "root and stem gross growth are reconstructed as net growth plus same-step death",
+    "leaf and storage gross growth are bound to the qualified common rate packet",
+    "N request is prepared from committed pre-step crop and N state",
+    "external N supply is applied only in the second phase",
+    "invalid external N supply is rejected without committed-state leakage",
+    "successful external N supply creates a valid composite candidate with N balance closed",
+    "successful candidate construction still leaves committed crop and N state bitwise unchanged until an external commit"
+  ],
+  "qualification_scope": "composition-level qualification using canonical-shaped interfaces and already-qualified WOFOST81 kernels; a full repository integration compile against the actual canonical modules is still required before runtime reachability or full-season preservation",
+  "production_reachability": false,
+  "legacy_path_modified": false,
+  "RD_changed": false,
+  "TRA_changed": false,
+  "verdict": "QUALIFIED_TWO_PHASE_ONE_DAY_CANDIDATE_PENDING_FULL_REPOSITORY_INTEGRATION_COMPILE"
+}

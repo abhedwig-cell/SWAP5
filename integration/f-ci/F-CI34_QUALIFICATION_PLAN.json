@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.canonical_runtime_source_admission_plan.v2",
+  "work_unit": "F-CI34",
+  "title": "F-MR31 Exact-Forcing Root-Uptake Attribution Canonical Source Admission",
+  "branch": "qualification/f-ci34-current-canonical-root-attribution-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "clean_base": "545e07c65338b9fe61b963468675c41f3e931816",
+  "prior_stale_pre_promotion_branch": {
+    "branch": "qualification/f-ci34-fmr31-root-attribution-canonical-admission",
+    "head": "71754563308cf7bfe568b696c6c5e372dcad0d01",
+    "run": 34486999170,
+    "job": 102903717149,
+    "conclusion": "success",
+    "disposition": "VALID_PREPROMOTION_CHECKPOINT_NOT_PROMOTABLE_AFTER_CANONICAL_MOVED"
+  },
+  "canonical_movement_reconciliation": {
+    "from": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "to": "545e07c65338b9fe61b963468675c41f3e931816",
+    "classification": "GOVERNANCE_ONLY_NO_SRC_DELTA",
+    "target_runtime_path_unchanged": true,
+    "target_runtime_base_blob": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "promotion_from_old_base_forbidden": true
+  },
+  "owner_authority": {
+    "work_unit": "F-MR31",
+    "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
+    "production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "owner_decision": "EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_OWNER_VERIFIED_READY_FOR_INDEPENDENT_REQUALIFICATION"
+  },
+  "independent_qualification_authority": {
+    "work_unit": "F-VQ50",
+    "closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE",
+    "authoritative_scientific_run": {
+      "run": 34485954675,
+      "job": 102900155283,
+      "head": "b62ba2ae2153566e645e9246ee9a922b2aca5f05",
+      "conclusion": "success"
+    },
+    "exact_closeout_rerun": {
+      "run": 34486274895,
+      "job": 102901249728,
+      "head": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+      "conclusion": "success"
+    },
+    "science_reopened": false
+  },
+  "admission_scope": {
+    "replace_exactly_one_existing_production_source_blob": true,
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "expected_old_blob": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "expected_new_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "modify_kernel": false,
+    "modify_solver": false,
+    "modify_process_science": false,
+    "modify_reference_source": false,
+    "add_persistent_state": false,
+    "change_mass_ledger": false,
+    "widen_parallel_scope": false,
+    "widen_time_varying_qrot_scope": false
+  },
+  "required_gates": [
+    "exact current canonical base and previous runtime blob lock",
+    "exact F-MR31 production blob admission",
+    "F-VQ50 exact-closeout qualification decision and successful rerun provenance",
+    "exactly one production src path differs from clean current-canonical base",
+    "zero kernel, solver, reference and process-science delta",
+    "independent F-VQ50 forcing-provenance oracle replay against branch production runtime",
+    "F-VQ21 real HeadCalc root-sink oracle replay against branch production runtime",
+    "O0 and O2 pass with byte-identical scientific outputs",
+    "all 30 SWAP architecture invariants audited with no adverse delta",
+    "qualification workflow pass on exact pre-promotion branch head",
+    "exact qualification closeout-head rerun",
+    "live canonical head recheck immediately before non-forced fast-forward",
+    "post-promotion dedicated F-CI34 canonical workflow pass",
+    "broad canonical workflow pass on promoted head",
+    "final canonical closeout-head workflow requalification"
+  ],
+  "mass_governance": {
+    "mass_conservation_absolute": true,
+    "actual_transpiration_is_attribution_metadata": true,
+    "may_add_second_mass_out_booking": false,
+    "may_reconstruct_attribution_from_generic_mass_total": false
+  },
+  "promotion_policy": {
+    "fast_forward_only": true,
+    "force": false,
+    "promotion_forbidden_if_canonical_moved_after_rebind": true,
+    "post_promotion_canonical_ci_required": true,
+    "final_governance_head_ci_required": true
+  },
+  "nonclaims": [
+    "parallel root-attribution publication",
+    "time-varying qrot within accepted substeps",
+    "persistent crop accounting",
+    "cross-version persistence"
+  ]
+}

@@ -1,0 +1,50 @@
+name: F-CI53 GC18R transactional groundwater current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci53-gc18r-transactional-groundwater-exchange-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI53_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI53 canonical admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _fci53_evidence
+          git rev-parse HEAD | tee _fci53_evidence/tested-head.txt
+          printf '%s\n' 9770a659d5a93d9abe1341815b57c0fb2fea15ec | tee _fci53_evidence/canonical-base.txt
+          printf '%s\n' e0e8462c0d09034dcbdadb99ec16670667d37715 | tee _fci53_evidence/composition-commit.txt
+          printf '%s\n' e83fe9a4955275935903730c4484c77fb0b117ff | tee _fci53_evidence/fvq61-authority.txt
+          bash tests/fci/run_fci53_gc18r_current_canonical_admission.sh | tee _fci53_evidence/admission.log
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI53_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
+      - name: Upload F-CI53 admission evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI53-GC18R-current-canonical-admission-evidence
+          path: _fci53_evidence
+          if-no-files-found: warn

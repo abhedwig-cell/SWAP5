@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fci43_evidence.v1",
+  "work_unit": "F-CI43",
+  "title": "Restricted Soil-Temperature Canonical Admission Evidence",
+  "canonical_base": {
+    "head": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "composition": {
+    "head": "a8720c6c1981d763ed3397ebe93aa04c35779653",
+    "tree": "d06a64816a8f45200d1500ea7f345707e8ce01ce",
+    "direct_child_of_canonical_base": true,
+    "production_delta_exactly": [
+      "src/process/mod_restricted_soil_temperature.f90",
+      "src/process/mod_soil_temperature_contract.f90"
+    ]
+  },
+  "donor_authority": {
+    "candidate_source_head": "3f387d820adf46b1260c37d52019a2b83b2d8c74",
+    "contract_blob": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "provider_blob": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "independent_authority": {
+    "work_unit": "F-VQ58",
+    "closeout_head": "5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+    "status_blob": "bb2dc0f8b9a297ebe899846a0a5f5c0fbc3af0b5",
+    "decision": "QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_PROCESS_WITHIN_FROZEN_SENSIBLE_HEAT_SCOPE",
+    "oracle_blob": "51e76bbf839d86702a3d391585a6f0abc0e6bc38",
+    "oracle_output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "first_prepromotion_admission_run": {
+    "head": "390f36792e1cfc64389e9bc8a435598d42d67197",
+    "run": 34613916407,
+    "job": 103310972353,
+    "conclusion": "success",
+    "canonical_race_guard": "PASS",
+    "exact_two_blob_scope": "PASS",
+    "reference_immutable": "PASS",
+    "F_VQ58_authority_pinned": "PASS",
+    "F_VQ58_oracle_byte_identity": "PASS",
+    "transaction_and_state_boundaries": "PASS",
+    "mandatory_energy_accounting": "PASS",
+    "no_io_calendar_or_headcalc_internals": "PASS",
+    "minimal_restart_state": "PASS",
+    "frost_snow_latent_scope_held": "PASS",
+    "dense_oracle_cases": 6,
+    "DeVries_oracle": "PASS",
+    "sensible_energy_closure": "PASS",
+    "temporal_refinement": "PASS",
+    "transaction_immutability": "PASS",
+    "continuous_split_restart_identity": "PASS",
+    "fail_closed_invalid_inputs": "PASS",
+    "MultiSWAP_column_isolation": "PASS",
+    "repeated_run_determinism_O0_O2": "PASS",
+    "O0_O2_identity": "PASS",
+    "output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "admission_nonclaims": [
+    "runtime call-site composition",
+    "frost physics",
+    "snow thermal boundary",
+    "phase change or latent heat",
+    "analytic annual-wave provider",
+    "alternative thermal boundary modes",
+    "measured large-batch throughput",
+    "RB1 modification or reopening"
+  ],
+  "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04 GitHub Actions",
+  "dependency_warning": "Unused-dummy warnings are pre-existing in the pinned soil-water solver contract dependency; admitted candidate and independent oracle compile under strict -Werror."
+}

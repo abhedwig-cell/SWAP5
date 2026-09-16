@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI28",
+  "title": "Independent Current-Canonical Restart Admission Qualification Plan",
+  "branch": "qualification/f-ci28-fmr25-restart-canonical-admission",
+  "candidate": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "independence": {
+    "owner_runner_not_used_as_qualification_oracle": true,
+    "frozen_independent_restart_attacks_reused_by_exact_blob": true,
+    "qualification_runner_owned_by_F_CI28": true,
+    "owner_conclusions_not_assumed": true
+  },
+  "required_gates": [
+    "exact two-file production delta from F-CI27 canonical base",
+    "exact immutable candidate blob identity and no qualification production mutation",
+    "current F-CI27 ET runtime/process/time-contract blobs preserved",
+    "frozen independent F-MQ27 malformed-state and atomicity attacks",
+    "real-process restart matrix 1,2,7,8,17,31,32 with reverse record/runtime ordering",
+    "exact lineage, revision, arbitrary committed time and mass continuation",
+    "continuous versus restarted endpoint identity and deterministic replay",
+    "O0/O2 exact scientific output identity",
+    "independent F-VQ36 13,824-case ET runtime oracle on the combined postimage",
+    "F-MR23 ET owner behavior test on the combined postimage",
+    "accepted-commit-receipt API preserved",
+    "candidate restart record excludes worker/Newton/Jacobian/warm-start/forcing-handle scratch",
+    "future canonical workflow preserves F-CI24 ET authority and F-CI27 runtime admission while adding F-CI28 restart postimage gate"
+  ],
+  "hard_fail_conditions": [
+    "any production source change after candidate commit",
+    "any incompatible concrete physical state accepted",
+    "any late invalid record partially publishes target registry",
+    "any exact mass or continuation identity failure",
+    "any F-CI27 ET runtime scientific regression",
+    "any canonical-readiness failure",
+    "canonical ref drift before promotion"
+  ],
+  "hard_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No root-uptake or actual-ET ownership reconciliation.",
+    "No general SWAP5 release qualification."
+  ],
+  "exit_target": "QUALIFIED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION_READY_FOR_NONFORCED_FAST_FORWARD"
+}

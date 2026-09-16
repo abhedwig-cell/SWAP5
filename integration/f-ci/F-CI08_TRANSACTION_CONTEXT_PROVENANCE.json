@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI08",
+  "change_class": "QUALIFIED_FORWARD_EVOLUTION_CANDIDATE",
+  "source_path": "src/transaction/mod_transaction_reference.f90",
+  "a23_qualified_source_commit": "763f276a96ee1722a465bacd3a710172a5f38107",
+  "fci03_parent_git_blob": "5614ff261c9078def61959944aa57fd04c0d324a",
+  "fci08_candidate_git_blob": "4a573316b77252b56bcb429fd519aa57123e9a06",
+  "responsibility": "worker/job-local transaction attempt-context checkpoint, branch restore and accepted-context commit",
+  "physics_formula_changed": false,
+  "numerical_policy_changed": false,
+  "persistent_column_state_expanded_with_attempt_context": false,
+  "file_io_added": false,
+  "qualification_state": "MATERIALIZED_GATE_PENDING"
+}

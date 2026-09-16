@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI68P",
+  "title": "Current-canonical postimage preservation reconciliation after F-CI68",
+  "status": "CLOSED_POSITIVE_GOVERNANCE_RECONCILIATION",
+  "decision": "QUALIFIED_FCI68_POSTIMAGE_AS_MOVING_CURRENT_PRESERVATION_AUTHORITY",
+  "branch": "qualification/f-ci68p-current-canonical-postimage-reconciliation",
+  "canonical_preimage": "b4e637885eafa6c193257cd11fa5b6fb45c18fa3",
+  "precloseout_qualified_head": "c11a9d06751b3472fd9e3989d1c34bb5a21564a5",
+  "qualification_run": 34899441013,
+  "qualification_job": 104161571520,
+  "fci68_promotion": {
+    "commit": "b4e637885eafa6c193257cd11fa5b6fb45c18fa3",
+    "parent1": "67b702e983f5104c80c8c16fb5e2570d969cce9e",
+    "parent2": "26081057b9d8ba5efd3b437c3ece72dc2ad1a57b",
+    "tree": "d81f981f44d9b55d5f2136c472856e4b08e9ecbb"
+  },
+  "preservation_reconciliation": {
+    "workflow": ".github/workflows/fci-canonical.yml",
+    "old_workflow_blob": "f714bf32dec7724d7ce84e9442eff0035515a1ba",
+    "new_workflow_blob": "02726763d345ccfcbad78a4a5f91c72aeba08f46",
+    "old_authority": "87893112dd9bfb9e37f48a2f851b85e6f23b9951",
+    "new_authority": "b4e637885eafa6c193257cd11fa5b6fb45c18fa3",
+    "workflow_delta": "EXACTLY_ONE_AUTHORITY_LINE_SUBSTITUTION",
+    "dependency_surface_already_included_fci68_sources": true
+  },
+  "preserved_production_blobs": {
+    "kernel": "d3a53385e3707f05e5396bbd6f218633b9803f65",
+    "checkpoint_orchestrator": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+    "transaction": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "contracts": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "interval_runtime": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "rossfast_d3r_policy": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "qualified": {
+    "governance_only_delta": true,
+    "zero_src_delta": true,
+    "zero_reference_delta": true,
+    "exact_authority_substitution": true,
+    "fci68_two_parent_promotion_verified": true,
+    "fci68_routing_composition_replayed": true,
+    "kernel_and_checkpoint_orchestrator_in_central_dependency_surface": true
+  },
+  "remaining_gap": "SERIALIZED_FMR_BACKEND_SELECTOR_FORWARDING_AND_EXACT_BACKEND_COMPOSITION_QUALIFICATION",
+  "hard_nonclaims": [
+    "NO_NEW_PRODUCTION_SOURCE_IN_FCI68P",
+    "NO_SERIALIZED_FMR_BACKEND_ADMISSION_YET",
+    "NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION",
+    "NO_NEW_ROSSFAST_PHYSICS",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION"
+  ]
+}

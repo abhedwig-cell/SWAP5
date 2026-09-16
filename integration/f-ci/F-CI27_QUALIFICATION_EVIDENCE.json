@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI27",
+  "title": "F-MR23 Restricted Reference-ET Generic-Time Runtime Binding Canonical Admission",
+  "branch": "qualification/f-ci27-fmr23-reference-et-runtime-canonical-admission",
+  "base_canonical_head": "f49e17c6627717d5dea181808a122f2e35960739",
+  "qualified_postimage_head": "bf2f3963c9910155e4321f1a2c1ba8d8a9024527",
+  "qualified_postimage_tree": "b095bcc1b97f1894ead4886d62a4a7cf8ae26ef1",
+  "source_lineage": {
+    "pre_src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "post_src_tree": "4121255813971a360949efc3fb17ab6c8f87a799",
+    "exact_src_delta": ["src/runtime/mod_fmr_reference_et_demand_binding.f90"],
+    "runtime_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "authorities": {
+    "F_CI24_canonical": "f49e17c6627717d5dea181808a122f2e35960739",
+    "F_MR23_closeout": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
+    "F_VQ36_closeout": "9f39d3d621bc3254063af86efb4abd64525ef07f",
+    "F_VQ36_decision": "QUALIFIED_INDEPENDENT_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING"
+  },
+  "workflow": {
+    "run_id": 34455248516,
+    "conclusion": "success",
+    "pre_admission_job_id": 102800012230,
+    "postimage_job_id": 102800066137,
+    "head": "bf2f3963c9910155e4321f1a2c1ba8d8a9024527"
+  },
+  "gate_results": {
+    "F_CI24_exact_baseline_replay": "PASS",
+    "F_PM06A_replay": "PASS",
+    "F_VQ35_replay": "PASS",
+    "F_CI27_source_bound_admission_gate": "PASS",
+    "F_MR23_owner_runtime_gate": "PASS",
+    "F_VQ36_independent_runtime_qualification": "PASS",
+    "independent_grid_cases": 13824,
+    "exact_post_src_tree": "PASS",
+    "reference_tree_unchanged": "PASS"
+  },
+  "scope": {
+    "generic_time_runtime_binding": true,
+    "potential_ET_rates_only": true,
+    "persistent_state_added": false,
+    "root_uptake_binding_added": false,
+    "ptra_ownership_reconciled": false,
+    "mass_ledger_binding_added": false,
+    "accepted_interval_rate_integration_added": false,
+    "actual_evaporation_added": false
+  },
+  "decision": "QUALIFIED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION_READY_FOR_FAST_FORWARD"
+}

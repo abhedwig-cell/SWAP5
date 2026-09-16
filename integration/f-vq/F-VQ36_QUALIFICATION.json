@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ36",
+  "title": "Independent Qualification of F-MR23 Generic-Time Reference-ET Runtime Binding",
+  "branch": "qualification/f-vq36-fmr23-reference-et-runtime-binding",
+  "decision": "QUALIFIED_INDEPENDENT_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING",
+  "candidate": {
+    "fmr23_closeout_commit": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
+    "fmr23_tested_head": "3965b15ad0432b46134513eb13ec02a17f7d6b17",
+    "runtime_source_path": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "runtime_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "fmr23_status_blob": "3e2aef36f902e7525adabc133fddb3c26f31c78f",
+    "production_source_changed_by_fvq36": false,
+    "owner_tests_changed_by_fvq36": false
+  },
+  "upstream_scientific_authority": {
+    "f_vq35_decision": "QUALIFIED_INDEPENDENT_FPM06A_RESTRICTED_STATELESS_REFERENCE_ET_DEMAND_SCIENTIFIC_ADMISSION",
+    "reference_et_process_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+  },
+  "tested_qualification": {
+    "head": "11e4b98ec0beb386306fc75f0bcdc812d7e0754a",
+    "tree": "ee129c4083174bf6187b32799deb0e73f0963763",
+    "workflow_run_id": 34452333985,
+    "workflow_job_id": 102790680355,
+    "workflow_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "Ubuntu 24.04",
+    "independent_grid_cases": 13824,
+    "qualification_output_sha256": "551d7c7dbdc2610529230d42205046bfc55b930823d460a480f6c9304cde283a",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "qualification_assets": {
+    "independent_oracle_path": "tests/fvq/test_fvq36_fmr23_reference_et_runtime_oracle.f90",
+    "independent_oracle_blob": "de94b4678da5a1cefb6d04c38cd55cb4768925d4",
+    "gate_path": "tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh",
+    "gate_blob": "548c99f4e935d3d909c8c53364e7bfb81e97ac42",
+    "workflow_path": ".github/workflows/fvq36-fmr23-reference-et-runtime-binding.yml",
+    "workflow_blob": "f86b42b0964d1454ffe1c7e8ecd4666d9b106d45"
+  },
+  "independent_oracle": {
+    "owner_expected_literals_used_as_oracle": false,
+    "et_rate_equations_rederived": true,
+    "time_spans_and_subintervals_generated_independently": true,
+    "signed_time_origins_checked": true,
+    "forcing_span_lengths_checked": [0.5, 1.0, 2.75],
+    "exact_forcing_boundaries_checked": true,
+    "outside_forcing_span_rejects_before_process": true,
+    "invalid_time_geometry_fail_closed": true,
+    "rate_invariant_to_contained_interval_duration": true,
+    "nonemerged_crop_dependency_semantics_checked": true,
+    "stateless_A_B_A_replay": true
+  },
+  "gate_results": {
+    "candidate_production_immutability": "PASS",
+    "owner_tests_immutability": "PASS",
+    "candidate_and_upstream_source_locks": "PASS",
+    "generic_time_binding_static": "PASS",
+    "no_root_hydraulic_or_mass_scope": "PASS",
+    "fmr23_status_scope_lock": "PASS",
+    "independent_grid_cases": "PASS_13824",
+    "generic_signed_time_origins": "PASS",
+    "variable_forcing_span_lengths": "PASS",
+    "independent_et_rate_oracle": "PASS",
+    "rate_invariant_to_contained_interval_duration": "PASS",
+    "exact_forcing_boundaries": "PASS",
+    "outside_forcing_fail_before_process": "PASS",
+    "invalid_time_geometry_fail_closed": "PASS",
+    "nonemerged_dependency_semantics": "PASS",
+    "stateless_A_B_A_identity": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "architectural_qualification": {
+    "kernel_io_separation_preserved": true,
+    "parameters_forcing_results_separated": true,
+    "persistent_runtime_state": "none",
+    "forcing_validity_span_explicit": true,
+    "time_contract": "generic_contained_interval_t0_t1",
+    "day_or_calendar_boundary_assumption": false,
+    "potential_et_outputs_remain_rates": true,
+    "runtime_interval_duration_multiplies_rates": false,
+    "hydraulic_solver_internals_accessed": false,
+    "root_uptake_bound": false,
+    "mass_ledger_bound": false,
+    "crop_state_advanced": false,
+    "transactional_semantics": "trivial_by_stateless_evaluation"
+  },
+  "not_qualified": [
+    "root-uptake composition",
+    "ptra ownership reconciliation with crop_root_uptake_input_t",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "interception",
+    "mass-ledger binding",
+    "accepted-interval rate integration",
+    "canonical admission of F-MR23"
+  ],
+  "conclusion": "The immutable F-MR23 runtime binding is independently qualified for the restricted F-VQ35 reference-ET demand process over generic contained runtime intervals. The binding preserves potential ET outputs as rates and rejects invalid or out-of-span time geometry before process evaluation. It introduces no persistent state, hydraulic dependency, root-uptake binding or mass-ledger booking. The ptra ownership seam remains unresolved and must be reconciled before composition with root uptake."
+}

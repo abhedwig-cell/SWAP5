@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI68",
+  "title": "RossFast D3R kernel selector routing admission",
+  "status": "CLOSED_POSITIVE_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_ROSSFAST_D3R_SELECTOR_ROUTING_THROUGH_KERNEL_AND_CHECKPOINT_ORCHESTRATOR",
+  "branch": "qualification/f-ci68-rossfast-d3r-kernel-selector-routing",
+  "canonical_preimage": "67b702e983f5104c80c8c16fb5e2570d969cce9e",
+  "precloseout_qualified_head": "53d6c716188b6338243bc31f51574a45e4ce0975",
+  "qualification_run": 34897923838,
+  "artifacts": {
+    "diagnostics": {
+      "id": 10365534022,
+      "digest": "sha256:8616bdf12cf4cf647a2b40c632ca107a82b90aeab4ca76a8b8512806f23421e7"
+    },
+    "evidence": {
+      "id": 10365534499,
+      "digest": "sha256:210c5d325afc65a760073a3cc3a79f92d8a8eba854c937147ff78ca29d7824ad",
+      "size_bytes": 2167
+    }
+  },
+  "production_source_scope": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/runtime/mod_fmr_checkpoint_orchestrator.f90"
+  ],
+  "production_blobs": {
+    "kernel": "d3a53385e3707f05e5396bbd6f218633b9803f65",
+    "checkpoint_orchestrator": "0dceaa2d108d5c7e1263e0f424a056a8df585908"
+  },
+  "immutable_authorities": {
+    "transaction": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "contracts": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "interval_runtime": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "rossfast_d3r_policy": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "qualified": {
+    "default_absent_selector_path_preserved": true,
+    "selector_reaches_kernel_runtime_through_checkpoint_orchestrator": true,
+    "d3r_0p0012_composes_as_two_private_transactions": true,
+    "committed_state_unchanged_until_explicit_candidate_commit": true,
+    "single_external_kernel_commit_after_outer_completion": true,
+    "off_grid_request_fails_before_transaction": true,
+    "generic_kernel_and_orchestrator_contain_no_rossfast_policy": true
+  },
+  "reference_delta": "NONE",
+  "generic_policy_separation": true,
+  "remaining_gap": "SERIALIZED_FMR_BACKEND_SELECTOR_FORWARDING_AND_EXACT_BACKEND_COMPOSITION_QUALIFICATION",
+  "hard_nonclaims": [
+    "NO_SERIALIZED_FMR_BACKEND_ADMISSION_YET",
+    "NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION",
+    "NO_NEW_ROSSFAST_PHYSICS",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_A10_HETEROGENEOUS_BOTTOM_GROUNDWATER_MULTISWAP_FULLRICHARDS_GENERALIZATION"
+  ]
+}

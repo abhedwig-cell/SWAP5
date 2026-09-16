@@ -1,0 +1,27 @@
+name: F-PM06A restricted reference ET demand candidate
+
+on:
+  push:
+    branches:
+      - work/f-pm06a-reference-et-demand-candidate
+    paths-ignore:
+      - integration/f-pm/F-PM06A_CANDIDATE_EVIDENCE.json
+      - integration/f-pm/F-PM06A_CANDIDATE_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-PM06A restricted reference ET demand structural candidate
+        run: bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh

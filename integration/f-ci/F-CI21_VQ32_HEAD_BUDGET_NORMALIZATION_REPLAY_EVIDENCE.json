@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI21",
+  "evidence_type": "materialized_postimage_preservation_replay",
+  "replayed_qualification": "F-VQ32",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "tested_head": "c953697dff9330b9dce98e7db00c0d389012c1be",
+  "production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+  "materialized_source_postimage": {
+    "path": "integration/f-ci/F-CI21_MATERIALIZED_SOURCE_POSTIMAGE.json",
+    "blob": "868cf8c52c02a6a9b40bd09ad9f51b7c0b635de4"
+  },
+  "historical_authority": {
+    "branch": "qualification/f-vq32-richards-head-budget-normalization",
+    "plan_blob": "e47b71d25133902967294583801df720cac9cd63",
+    "independent_evidence_blob": "f27cfd22f16cea16bee8c8a27e0c34b23c5dcc53",
+    "closeout_blob": "51b075c6f72880897416bdcfd92549bd68d26b7b",
+    "owner_handoff_blob": "f7b7cce171b3b1829d7005c5ab7abae7c44ba4a9",
+    "decision": "QUALIFIED_INDEPENDENT_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING",
+    "authority_claim_extended": false
+  },
+  "candidate_lock": {
+    "formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "empirical_multiplier": null,
+    "budget_unit": "cm pressure head",
+    "budget_validity": "supplied AND finite AND >0",
+    "nonlinear_true_error_bound_claim": false
+  },
+  "workflow": {
+    "name": "F-CI21 VQ32 head-budget normalization postimage replay",
+    "run_id": 34396836414,
+    "head": "c953697dff9330b9dce98e7db00c0d389012c1be",
+    "conclusion": "success",
+    "jobs": {
+      "independent_semantic_algebra": {"job_id": 102618537588, "conclusion": "success"},
+      "fresh_nonlinear_production_normalization": {"job_id": 102618537476, "conclusion": "success"}
+    }
+  },
+  "semantic_algebra_replay": {
+    "independent_exact_linear_cases": 6,
+    "x_values": [0.015625, 0.0625, 0.25, 1.0, 4.0, 16.0],
+    "synthetic_budget_probes_cm": [0.01, 0.1, 1.0],
+    "source_and_candidate_lock": "PASS",
+    "exact_linear_reconstruction": "PASS",
+    "dimensionless_budget_algebra": "PASS",
+    "invalid_input_fail_closed": "PASS",
+    "F_KT09_interface_compatibility": "PASS",
+    "F_VQ28_F_VQ29_negative_evidence_preserved": "PASS",
+    "nonlinear_claim_boundary_preserved": "PASS"
+  },
+  "fresh_nonlinear_replay": {
+    "cases": 12,
+    "optimization_modes": ["O0", "O2"],
+    "executions": 24,
+    "exact_triplet_overlap_with_prior_matrices": 0,
+    "B_inf_min_cm": 0.0286928670785477381,
+    "B_inf_max_cm": 0.0665605333115878300,
+    "max_direct_transaction_B_inf_absolute_difference": 3.02535774210355157e-15,
+    "max_mass_residual": 2.85882428840977809e-15,
+    "hard_mass_tolerance": 1e-12,
+    "O0_O2_identity": "PASS",
+    "direct_transaction_equivalence": "PASS",
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_tridiagonal_solves": 0,
+    "indicator_extra_full_nonlinear_trajectories": 0,
+    "indicator_defect_tridiagonal_solves_with_history": 1,
+    "hard_mass_noninterference": "PASS",
+    "deep_reference_trajectories": 0,
+    "nonlinear_true_error_claim_made": false
+  },
+  "invalid_input_semantics": {
+    "invalid_budgets": ["0", "negative", "+Inf", "NaN"],
+    "invalid_indicators": ["negative", "+Inf", "NaN", "unavailable"],
+    "required_behavior": "certificate unavailable; fail closed; no clamp, floor, absolute-value rescue or default",
+    "result": "PASS"
+  },
+  "test_only_materialization_adaptations": [
+    {
+      "reason": "F-CI21 is a materialized postimage rather than a literal descendant of the historical F-VQ32 qualification branch",
+      "change": "replace historical base-to-HEAD src-diff guards with exact F-CI21 postimage and production-indicator identity checks",
+      "production_source_changed": false,
+      "qualification_semantics_changed": false
+    },
+    {
+      "reason": "F-VQ32 predates the later qualified F-KT11 production certificate binding",
+      "change": "replace obsolete blanket certificate-nonactivation static guard with explicit supplied finite-positive budget gating guard",
+      "production_source_changed": false,
+      "qualification_semantics_changed": false
+    }
+  ],
+  "invariant_checks": {
+    "explicit_data_separation": "PASS: H_budget remains numerical configuration, not physical state or forcing",
+    "transactional_steps": "PASS_WITHIN_REPLAY_SCOPE",
+    "mass_conservation_hard_gate": "PASS",
+    "generic_time": "PASS_WITHIN_REPLAY_SCOPE: non-calendar horizons used",
+    "physics_solver_policy_separation": "PASS",
+    "bounded_cost": "PASS",
+    "reference_mode_preserved": "PASS",
+    "no_silent_default_budget": "PASS",
+    "production_source_unchanged_by_replay": true,
+    "io_changes": false
+  },
+  "replay_result": "PASS_MATERIALIZED_FVQ32_HEAD_BUDGET_NORMALIZATION_BEHAVIOR_PRESERVED",
+  "hard_nonclaims": [
+    "This replay does not select, recommend or qualify any numeric H_budget for an application.",
+    "This replay does not establish a universal temporal tolerance or default H_budget.",
+    "This replay does not establish B_inf or C_h as a general nonlinear true-error upper bound.",
+    "This replay does not establish monotone improvement under shorter retry dt.",
+    "This replay does not independently qualify the production acceptance and retry binding; that evidence belongs to F-KT11/F-VQ33/F-VQ34.",
+    "This replay does not qualify initial no-history bootstrap, arbitrary restart or forcing/event/topology-discontinuity continuation.",
+    "This replay does not release F-GC02, groundwater coupling or performance policy."
+  ],
+  "next_required_evidence_chain": [
+    "preserve failed F-VQ33 source-contradiction result as negative evidence",
+    "reconcile remediated F-KT11 candidate source",
+    "replay F-VQ34 remediated production qualification on the F-CI21 postimage"
+  ]
+}

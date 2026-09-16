@@ -1,0 +1,23 @@
+name: F-CI62 prescribed-qbot temporal runtime current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci62-prescribed-qbot-temporal-runtime-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI62 fail-closed admission gate
+        run: bash tests/fci/run_fci62_prescribed_qbot_temporal_runtime_current_canonical_admission.sh

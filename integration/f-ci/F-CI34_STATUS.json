@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.canonical_runtime_source_admission_status.v1",
+  "work_unit": "F-CI34",
+  "title": "F-MR31 Exact-Forcing Root-Uptake Attribution Canonical Source Admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "source_admission_base": "545e07c65338b9fe61b963468675c41f3e931816",
+  "source_admitted_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "governance_reconciled_head": "e900e6115a6bf8b65af8460eb3e336257be4d1bf",
+  "phase": "SOURCE_ADMITTED_AND_POSTPROMOTION_GOVERNANCE_RECONCILED_FINAL_STATUS_HEAD_REQUALIFICATION_REQUIRED",
+  "decision": "QUALIFIED_FCI34_EXACT_FORCING_ROOT_ATTRIBUTION_CANONICAL_SOURCE_ADMISSION_PENDING_EXACT_FINAL_GOVERNANCE_STATUS_HEAD_REQUALIFICATION",
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
+    "production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "previous_blob": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "admitted_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ50",
+    "closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE",
+    "authoritative_scientific_run": 34485954675,
+    "authoritative_scientific_job": 102900155283,
+    "exact_closeout_rerun": 34486274895,
+    "exact_closeout_job": 102901249728,
+    "science_reopened_by_f_ci34": false
+  },
+  "admission_result": {
+    "exactly_one_production_source_path_replaced": true,
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src_tree": "02aa1516a6f452d311ea03c195cbeaf271d3db28",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "kernel_delta": false,
+    "solver_delta": false,
+    "process_science_delta": false,
+    "reference_source_delta": false,
+    "persistent_state_added": false,
+    "mass_ledger_changed": false,
+    "parallel_scope_widened": false,
+    "time_varying_qrot_scope_widened": false
+  },
+  "scientific_gates": {
+    "f_vq50_forcing_provenance_oracle": "PASS",
+    "f_vq21_real_headcalc_root_sink_oracle": "PASS",
+    "o0_o2_scientific_identity": "PASS",
+    "attribution_not_derived_from_generic_mass_total": "PASS",
+    "active_zero_attribution_available": "PASS",
+    "root_inactive_attribution_unavailable": "PASS",
+    "noncommitted_attribution_unavailable": "PASS",
+    "no_second_mass_booking": "PASS",
+    "hard_mass_balance": "PASS",
+    "exact_forcing_handle_association": "PASS"
+  },
+  "canonical_evidence": {
+    "initial_post_admission_dedicated_run": 34488927851,
+    "initial_post_admission_dedicated_conclusion": "success",
+    "initial_broad_run": 34488927973,
+    "initial_broad_run_conclusion": "failure",
+    "initial_broad_failure_classification": "STALE_FCI33_MOVING_CANONICAL_GOVERNANCE_NOT_SCIENTIFIC_REGRESSION",
+    "f_ci34p_governance_closeout_head": "e900e6115a6bf8b65af8460eb3e336257be4d1bf",
+    "post_reconciliation_f_ci34_run": 34491196078,
+    "post_reconciliation_f_ci34_conclusion": "success",
+    "post_reconciliation_f_ci34p_run": 34491196113,
+    "post_reconciliation_f_ci34p_conclusion": "success",
+    "post_reconciliation_broad_canonical_run": 34491196226,
+    "post_reconciliation_broad_canonical_conclusion": "success",
+    "post_reconciliation_current_postimage_job": 102918661579,
+    "post_reconciliation_current_postimage_job_conclusion": "success"
+  },
+  "governance_reconciliation": {
+    "work_unit": "F-CI34P",
+    "classification": "GOVERNANCE_ONLY",
+    "stale_f_ci33_broad_pointer_replaced_by_f_ci34": true,
+    "obsolete_f_ci33_f_ci33r_moving_canonical_triggers_retired": true,
+    "historical_f_ci33_f_ci33r_gate_runner_code_byte_identical": true,
+    "production_src_changes": 0,
+    "reference_changes": 0,
+    "mass_tolerance_changes": 0,
+    "broad_canonical_postimage_reconciled": true
+  },
+  "architecture": {
+    "audit": "integration/f-ci/F-CI34_ARCHITECTURE_AUDIT.json",
+    "overall": "NO_ADVERSE_ARCHITECTURE_DELTA_WITHIN_FROZEN_SCOPE",
+    "invariants_audited": 30,
+    "mass_conservation": "ABSOLUTE_UNCHANGED"
+  },
+  "scope": {
+    "qualified": "restricted serialized exact-runtime-forcing-bound root-uptake attribution publication",
+    "nonclaims": [
+      "parallel root-attribution publication",
+      "time-varying qrot within accepted substeps",
+      "persistent crop accounting",
+      "cross-version persistence"
+    ]
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "independently_qualified": true,
+    "canonical_source_admitted": true,
+    "postpromotion_governance_reconciled": true,
+    "broad_canonical_gate_green_after_reconciliation": true,
+    "final_status_persisted": true,
+    "exact_final_governance_status_head_requalified": false,
+    "final_closeout_complete": false
+  },
+  "final_gate": {
+    "exact_final_branch_head_f_ci34p_success_required": true,
+    "non_forced_fast_forward_to_canonical_required": true,
+    "final_canonical_f_ci34_success_required": true,
+    "final_canonical_f_ci34p_success_required": true,
+    "final_broad_canonical_success_required": true,
+    "no_source_or_science_change_permitted": true,
+    "no_further_status_mutation_required_after_green_final_head": true
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_C2_NONLINEAR_B110_PHYSICAL_TRANSFER_CHARACTERIZATION",
+  "plan": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_PLAN.json",
+  "plan_blob": "dc11fab1985cb523b59aaa49d33badcb0a37f3a4",
+  "plan_frozen_before_execution": true,
+  "tested_commit": "20b6e33a10150b4d81ceaab1f30e11805108ecfc",
+  "workflow": {
+    "successful_run": 34323642853,
+    "successful_job": 102375784027,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "audit_trail": {
+    "first_run": 34323472621,
+    "first_run_classification": "POSTPROCESSING_FORMAT_FAILURE_AFTER_ALL_30_CASE_RUNS_PASSED",
+    "first_run_scientific_failure": false,
+    "first_run_observation": "All 15 O0 and all 15 O2 case executions passed and O0/O2 identity passed; the aggregate parser failed because the Fortran WRITE format reverted before MAX_MASS and split the row.",
+    "fix_commit": "20b6e33a10150b4d81ceaab1f30e11805108ecfc",
+    "fix_scope": "machine-readable output formatting only",
+    "matrix_changed": false,
+    "observer_formula_changed": false,
+    "criteria_changed": false,
+    "numerical_controls_changed": false
+  },
+  "matrix": {
+    "initial_heads_cm": [-25.0,-75.0,-250.0],
+    "bottom_head_jumps_cm": [-0.1,-0.01,0.001,0.01,0.1],
+    "case_count": 15,
+    "horizon_day": 0.25,
+    "same_endpoint_levels": [1,2,4,8,16,32,64,128,256,512],
+    "finite_reference": "N512 only; explicitly not exact truth",
+    "all_case_trajectories_completed": true,
+    "all_external_mass_residuals": 0.0,
+    "production_source_unchanged_from_FVQ29_base": true
+  },
+  "rows": [
+    {"case":1,"h0_cm":-25.0,"jump_cm":-0.1,"EOBS_cm":18.241787477372895,"E1_512_cm":0.011005369666499121,"R512":1657.535187836696,"D128_256_cm":7.105427357601002e-15,"D256_512_cm":1.0658141036401503e-14,"floor_cm":7.133849067031406e-13,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":2,"h0_cm":-25.0,"jump_cm":-0.01,"EOBS_cm":1.824178738762493,"E1_512_cm":0.0010991007315581669,"R512":1659.7011414744504,"D128_256_cm":7.105427357601002e-15,"D256_512_cm":7.105427357601002e-15,"floor_cm":7.108269528544043e-13,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":3,"h0_cm":-25.0,"jump_cm":0.001,"EOBS_cm":0.18241787376617527,"E1_512_cm":0.00010989253279447553,"R512":1659.966051627356,"D128_256_cm":3.552713678800501e-15,"D256_512_cm":1.7763568394002505e-14,"floor_cm":7.105427357601002e-13,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":4,"h0_cm":-25.0,"jump_cm":0.01,"EOBS_cm":1.8241787367566913,"E1_512_cm":0.0010987818376655412,"R512":1660.1828263127463,"D128_256_cm":3.552713678800501e-15,"D256_512_cm":1.0658141036401503e-14,"floor_cm":7.105427357601002e-13,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":5,"h0_cm":-25.0,"jump_cm":0.1,"EOBS_cm":18.24178727679103,"E1_512_cm":0.010973480305345618,"R512":1662.352031370096,"D128_256_cm":7.105427357601002e-15,"D256_512_cm":7.105427357601002e-15,"floor_cm":7.105427357601002e-13,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":6,"h0_cm":-75.0,"jump_cm":-0.1,"EOBS_cm":4.183500675263514,"E1_512_cm":0.0037295030344637326,"R512":1121.7314040515487,"D128_256_cm":4.5889181876646035e-7,"D256_512_cm":2.0374254461330565e-7,"floor_cm":2.1344703782233408e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":7,"h0_cm":-75.0,"jump_cm":-0.01,"EOBS_cm":0.4183501110897432,"E1_512_cm":0.000373463966923282,"R512":1120.188687910772,"D128_256_cm":4.529563568667072e-8,"D256_512_cm":2.010099819926836e-8,"floor_cm":2.1319124243746047e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":8,"h0_cm":-75.0,"jump_cm":0.001,"EOBS_cm":0.04183501164159709,"E1_512_cm":0.000037352673331270125,"R512":1120.0004687903968,"D128_256_cm":4.522405561147025e-9,"D256_512_cm":2.0067574268978206e-9,"floor_cm":2.1316282072803006e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":9,"h0_cm":-75.0,"jump_cm":0.01,"EOBS_cm":0.41835012077062506,"E1_512_cm":0.00037357808520255276,"R512":1119.8465256434865,"D128_256_cm":4.516424212397396e-8,"D256_512_cm":2.0040289427925018e-8,"floor_cm":2.1316282072803006e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":10,"h0_cm":-75.0,"jump_cm":0.1,"EOBS_cm":4.183501643351659,"E1_512_cm":0.003740914899822201,"R512":1118.3097598799943,"D128_256_cm":4.457806284108301e-7,"D256_512_cm":1.9769714754147572e-7,"floor_cm":2.1316282072803006e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":11,"h0_cm":-250.0,"jump_cm":-0.1,"EOBS_cm":0.6176296675340247,"E1_512_cm":0.01923566171154789,"R512":32.10857400155038,"D128_256_cm":0.00012647045673475077,"D256_512_cm":0.00006342229815459177,"floor_cm":7.108269528544042e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":12,"h0_cm":-250.0,"jump_cm":-0.01,"EOBS_cm":0.0617630518563386,"E1_512_cm":0.001925843815826056,"R512":32.07064422814913,"D128_256_cm":0.000012662820751074833,"D256_512_cm":0.000006350156809276086,"floor_cm":7.105711574695306e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":13,"h0_cm":-250.0,"jump_cm":0.001,"EOBS_cm":0.006176306225940038,"E1_512_cm":0.00019261222249156162,"R512":32.06601401533915,"D128_256_cm":0.0000012664747828239342,"D256_512_cm":0.0000006351128263304417,"floor_cm":7.105427357601002e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":14,"h0_cm":-250.0,"jump_cm":0.01,"EOBS_cm":0.061763070770431999,"E1_512_cm":0.0019263500177828519,"R512":32.062226594478766,"D128_256_cm":0.000012666326966837005,"D256_512_cm":0.000006351917193114787,"floor_cm":7.105427357601002e-12,"relation":"FINITE_REFERENCE_CONSISTENT"},
+    {"case":15,"h0_cm":-250.0,"jump_cm":0.1,"EOBS_cm":0.6176315589424413,"E1_512_cm":0.019286281968049934,"R512":32.02439744299201,"D128_256_cm":0.00012682098039817902,"D256_512_cm":0.00006359842839742669,"floor_cm":7.105427357601002e-12,"relation":"FINITE_REFERENCE_CONSISTENT"}
+  ],
+  "state_summary": {
+    "h0_minus25": {"finite_reference_consistent_cases":5,"negative_transfer_cases":0,"R512_min":1657.535187836696,"R512_max":1662.352031370096,"N512_tail_class":"MACHINE_FLOOR_DOMINATED"},
+    "h0_minus75": {"finite_reference_consistent_cases":5,"negative_transfer_cases":0,"R512_min":1118.3097598799943,"R512_max":1121.7314040515487,"N512_tail_class":"RESOLVED_FINITE_TAIL"},
+    "h0_minus250": {"finite_reference_consistent_cases":5,"negative_transfer_cases":0,"R512_min":32.02439744299201,"R512_max":32.10857400155038,"N512_tail_class":"RESOLVED_FINITE_TAIL"}
+  },
+  "qualified_findings": {
+    "all_15_cases_finite_reference_consistent": true,
+    "negative_transfer_cases": 0,
+    "raw_observer_strongly_state_dependent_relative_to_finite_reference": true,
+    "raw_observer_extremely_conservative_relative_to_finite_N512_comparator_at_0p25_day": true,
+    "single_universal_multiplicative_calibration_supported": false,
+    "true_error_upper_bound_qualified": false,
+    "N512_promoted_to_exact_reference": false,
+    "production_threshold_selected": false,
+    "certificate_normalization_selected": false
+  },
+  "decision": "POSITIVE_PHYSICAL_TRANSFER_EVIDENCE_WITH_STRONG_STIFFNESS_OR_STATE_DEPENDENCE_AND_PRODUCTION_EFFICIENCY_BLOCKER",
+  "interpretation": "The raw derivative-difference observer did not undercut the finite N512 endpoint comparator in any frozen B1.10 case, but its ratio to that comparator differs by roughly two orders of magnitude across hydraulic states and is very large even within each state. This supports the observer as a fail-safe temporal signal but does not support using its raw magnitude as a practical production certificate or fitting one global scaling factor. The next owner question is whether transaction-local dt refinement causes the relation to approach the exact-eigenmode asymptotic regime in a predictable source-bound way, or whether a separately justified stiffness-aware observer is required.",
+  "next_gate": "Freeze transaction-local dt-refinement characterization of EOBS and finite same-endpoint error from one committed state across retry-sized dt values, with no threshold selection and no F-VQ30 yet."
+}

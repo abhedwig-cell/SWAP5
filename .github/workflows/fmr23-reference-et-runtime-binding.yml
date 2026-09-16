@@ -1,0 +1,25 @@
+name: F-MR23 restricted reference ET runtime binding
+
+on:
+  push:
+    branches:
+      - work/f-mr23-reference-et-demand-runtime-binding
+    paths-ignore:
+      - integration/f-mr/F-MR23_EVIDENCE.json
+      - integration/f-mr/F-MR23_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR23 generic-time reference ET runtime binding
+        run: bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh

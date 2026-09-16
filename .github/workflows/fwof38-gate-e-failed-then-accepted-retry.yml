@@ -1,0 +1,33 @@
+name: F-WOF38 Gate E failed then accepted retry
+
+on:
+  push:
+    branches:
+      - work/f-wof38-atomic-crop-owner-delivery-transaction
+    paths:
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/crop/**'
+      - 'tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh'
+      - 'tests/fwof/run_fwof38_gate_e_failed_then_accepted_retry.sh'
+      - '.github/workflows/fwof38-gate-e-failed-then-accepted-retry.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-gate-e:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run Gate E failed then accepted retry oracle
+        run: bash tests/fwof/run_fwof38_gate_e_failed_then_accepted_retry.sh

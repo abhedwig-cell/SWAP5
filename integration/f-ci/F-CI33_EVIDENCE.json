@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.canonical_runtime_source_admission_evidence.v1",
+  "work_unit": "F-CI33",
+  "tested_head": "b25055348e5e69d36510a94b8c7fb4bdf560e450",
+  "workflow": {
+    "run": 34484545373,
+    "job": 102895399258,
+    "conclusion": "success",
+    "artifact_id": 10155023754,
+    "artifact_digest": "sha256:78921e6cf8192763dbf0d0ce5233228c987d24d8b3614c2b8acda0ccd35d4038"
+  },
+  "candidate": {
+    "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "independent_qualification_closeout": "290f627c7a2b61e7de96c2e9659baa533e5526c6"
+  },
+  "output": {
+    "O0_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "O2_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "byte_identical": true
+  },
+  "gate": {
+    "base_is_ancestor": true,
+    "live_canonical_base_lock": true,
+    "exact_one_new_source_path": true,
+    "candidate_absent_on_base": true,
+    "candidate_blob_exact": true,
+    "owner_candidate_lock": true,
+    "zero_reference_delta": true,
+    "delta_allowlist": true,
+    "canonical_dependency_blobs_unchanged": true,
+    "f_vq49_decision_and_candidate_locked": true,
+    "f_vq49_independence_locked": true,
+    "f_vq49_exact_rerun_provenance_locked": true,
+    "mass_governance_locked": true,
+    "architecture_audit_30_of_30": true,
+    "no_architecture_violation": true,
+    "no_forbidden_runtime_coupling": true,
+    "single_process_invocation": true,
+    "exact_row_publication": true,
+    "authoritative_scalar_not_mutated": true,
+    "no_persistent_save_state": true
+  },
+  "smoke": {
+    "valid_publication": true,
+    "scalar_mass_preservation": true,
+    "b110_consumer_seam": true,
+    "zero_path": true,
+    "process_rejection_fail_closed": true,
+    "preallocated_target_overwrite_guard": true
+  },
+  "admission_interpretation": {
+    "scientific_requalification_performed": false,
+    "runtime_requalification_performed": false,
+    "existing_production_source_modified": false,
+    "reference_modified": false,
+    "runtime_callsite_composed": false,
+    "automatic_runtime_execution_proven": false
+  },
+  "result": "PASS_FCI33_CANONICAL_RUNTIME_SOURCE_ADMISSION_PRE_CLOSEOUT"
+}

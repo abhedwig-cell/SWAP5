@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.fci_admission_plan.v1",
+  "work_unit": "F-CI39",
+  "sequence": [
+    "freeze current canonical and independent qualification authorities",
+    "persist tree-identical three-blob production composition",
+    "persist branch-scoped admission gate and F-CI38-compatible moving-preservation update",
+    "run exact-head admission gate",
+    "if green, non-force fast-forward integration/f-ci-canonical",
+    "require moving fci-canonical regression success"
+  ],
+  "rollback": "do not advance canonical on any qualification failure; production composition remains an isolated immutable branch ancestor",
+  "promotion_policy": "force=false only",
+  "runtime_activation": "OUT_OF_SCOPE"
+}

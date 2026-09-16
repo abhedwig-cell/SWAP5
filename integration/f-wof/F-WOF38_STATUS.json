@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF38",
+  "title": "Atomic WOFOST Crop-Owner and Accepted-Event Receipt Transaction Qualification",
+  "branch": "work/f-wof38-atomic-crop-owner-delivery-transaction",
+  "base": "11cdb93c12b573bbb7c29736061f51700b3e5f36",
+  "production_implementation": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "RESTRICTED_IN_MEMORY_ONE_DAY_WOFOST_CROP_EVENT_ATOMIC_OWNER_PLUS_ACCEPTED_EVENT_RECEIPT_PUBLICATION_THROUGH_ONE_FKT_COMMIT",
+  "production_files": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "qualification": {
+    "event_identity_gate": {
+      "run": 34349159872,
+      "job": 102457874941,
+      "conclusion": "success",
+      "F_WOF34_exact_transcript_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007"
+    },
+    "main_atomic_gate": {
+      "tested_head": "d3c804c1d357cfd294a43e32ba542cdc57bcc724",
+      "run": 34351035923,
+      "job": 102464079686,
+      "conclusion": "success",
+      "O0_O2_output_identity": true
+    },
+    "failed_then_accepted_retry_gate": {
+      "tested_head": "3c4db4d63109f92c906da6d4b51c231ed6b30dc7",
+      "run": 34351639767,
+      "job": 102466086390,
+      "conclusion": "success",
+      "same_committed_checkpoint": true,
+      "same_accepted_source_event": true,
+      "exactly_one_successful_revision": true,
+      "O0_O2_output_identity": true
+    }
+  },
+  "qualified_atomicity": {
+    "crop_owner_and_event_receipt_one_candidate": true,
+    "crop_owner_and_event_receipt_one_FKT_commit": true,
+    "precommit_mutation": false,
+    "rollback_mutation": false,
+    "failed_crop_trial_mutation": false,
+    "same_checkpoint_replay": true,
+    "failed_then_accepted_same_checkpoint_retry": true,
+    "duplicate_event_extra_crop_advance": false,
+    "legacy_event_delivered_second_commit_authority": false,
+    "generic_external_candidate_adoption_api": false
+  },
+  "scope_holds": {
+    "kernel_source_changed": false,
+    "transaction_core_source_changed": false,
+    "solver_source_changed": false,
+    "crop_physics_source_changed": false,
+    "root_uptake_physics_changed": false,
+    "ET_physics_changed": false,
+    "water_mass_accounting_changed": false,
+    "mass_tolerance_relaxed": false,
+    "calendar_dependency_added": false,
+    "file_IO_dependency_added": false,
+    "fixed_crop_event_retry_dt_shrinking_admitted": false,
+    "canonical_promotion": false
+  },
+  "qualification_discovered_semantic_repair": {
+    "commit": "3eaa234ae261929ec2a28c3a2552fb5f6c10d531",
+    "topic": "explicit evaluation order for impure ready/validation calls",
+    "physics_changed": false,
+    "tolerance_changed": false
+  },
+  "definitive_tested_head": "3c4db4d63109f92c906da6d4b51c231ed6b30dc7",
+  "post_test_cleanup_head": "ee6cec8ceb9379efe81deec3834badfb2206a58e",
+  "post_test_cleanup_only": true,
+  "evidence": "integration/f-wof/F-WOF38_QUALIFICATION_EVIDENCE.json",
+  "not_qualified": [
+    "restart/crash durability of active crop-window and receipt state",
+    "receipt serialization/persistence contract",
+    "mixed legacy delivery commit plus atomic receipt route",
+    "legacy accepted-window cleanup after atomic receipt commit",
+    "arbitrary subdaily or multi-day crop evolution",
+    "calendar scheduling",
+    "full MultiSWAP storage-layout and batching qualification",
+    "canonical promotion",
+    "optional WOFOST routes outside the inherited restricted standard actual-WOFOST scope"
+  ],
+  "recommended_next": "Qualify restart/persistence and accepted-window lifecycle retirement as separate work before canonical composition; do not mix legacy delivery commit with the atomic receipt route.",
+  "affected_invariants": [3,4,6,7,8,9,13,16,21,23,25,27,28,29,30],
+  "decision": "QUALIFIED_IN_MEMORY_ATOMIC_WOFOST_CROP_OWNER_AND_ACCEPTED_EVENT_RECEIPT_FKT_PUBLICATION",
+  "status": "QUALIFIED_RESTRICTED_ATOMIC_CROP_EVENT_PUBLICATION_SCOPE_COMPLETE"
+}

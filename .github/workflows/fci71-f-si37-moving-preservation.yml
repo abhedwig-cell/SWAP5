@@ -1,0 +1,65 @@
+name: F-CI71 F-SI37 moving preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/qualification/fvq89/**'
+      - 'qualification/F-VQ89_STATUS.json'
+      - 'integration/f-ci/F-CI71_STATUS.json'
+      - 'integration/f-ci/F-CI71P_STATUS.json'
+      - '.github/workflows/fci71-f-si37-moving-preservation.yml'
+  pull_request:
+    paths:
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/qualification/fvq89/**'
+      - 'qualification/F-VQ89_STATUS.json'
+      - 'integration/f-ci/F-CI71_STATUS.json'
+      - 'integration/f-ci/F-CI71P_STATUS.json'
+      - '.github/workflows/fci71-f-si37-moving-preservation.yml'
+  workflow_dispatch:
+
+jobs:
+  preserve-f-si37:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preserve admitted F-SI37 authority surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ADMISSION=a1a535ec7db9ca5ccd77395835fb71e8667f6ad7
+          git merge-base --is-ancestor "$ADMISSION" HEAD
+          test "$(git rev-parse HEAD:src/solver/mod_soil_water_accepted_step_direction_contract.f90)" = "52698b1ad2350bf787862a053a49c7c73c3358f0"
+          test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_directional_provider.f90)" = "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
+          test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90)" = "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+          test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" = "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+          test "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" = "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+          python3 -m json.tool qualification/F-VQ89_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI71_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI71P_STATUS.json >/dev/null
+          grep -Fq '"decision": "PASS"' qualification/F-VQ89_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI71_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI71_STATUS.json
+          grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI71P_STATUS.json
+          echo 'FCI71_MOVING_AUTHORITY_PRESERVATION=PASS'
+
+      - name: Replay independent F-VQ89 evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/qualification/fvq89/run_fvq89_fsi37_independent.sh
+          echo 'FCI71_MOVING_INDEPENDENT_REPLAY=PASS'

@@ -1,0 +1,22 @@
+name: F-CI39 F-PM06E surface evaporation capacity canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci39-fpm06e-surface-evaporation-capacity-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI39 exact source-bound canonical admission gate
+        run: bash tests/fci/run_fci39_fpm06e_surface_evaporation_capacity_canonical_admission.sh

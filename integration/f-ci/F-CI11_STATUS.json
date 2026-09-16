@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI11",
+  "title": "Controlled Legacy Trial-Mass Wiring and Generic Time Controller Refactor",
+  "branch": "integration/f-ci-canonical",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "persisted_before_long_tests": true,
+  "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+  "qualification": {
+    "controlled_legacy_postimages": "PASS",
+    "legacy_trial_mass_wiring": "PASS",
+    "generic_interval_seam": "PASS",
+    "day_start_full_vs_two_half": "PASS_LOCAL_8_OF_8",
+    "non_midnight_and_cross_day_intervals": "PASS_LOCAL_8_OF_8",
+    "hard_mass_conservation": "PASS_LOCAL_MAX_ABS_1.8590012175467852E-7_CM",
+    "o0_o2_identity": "PASS_LOCAL",
+    "canonical_ci": "PASS_RUN_34100440481_JOB_101673819067",
+    "compiler": "GNU_FORTRAN_13.3.0",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI11",
+    "transaction_model_advance_binding": "NOT_YET_ADMITTED",
+    "physical_temporal_error_metric": "NOT_ADMITTED",
+    "execute_reference_interval": "FAIL_CLOSED_NOT_ADMITTED",
+    "standalone_fci10_candidate_equivalence": "PASS_LOCAL_O0_O2"
+  },
+  "holds": [
+    "bind qualified-profile generic advance and mass seam into b1_10_transaction_model_t",
+    "qualify a physical temporal-error metric and tolerances",
+    "snow/macropore complete storage accounting",
+    "reentrant/parallel legacy backend qualification"
+  ],
+  "status": "PASS_CONTROLLED_GENERIC_INTERVAL_AND_TRIAL_MASS_PORT_REFERENCE_TEMPORAL_POLICY_BLOCKED"
+}

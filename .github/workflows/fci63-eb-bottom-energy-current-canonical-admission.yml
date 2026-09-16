@@ -1,0 +1,31 @@
+name: F-CI63 EB bottom-energy current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci63-eb-bottom-energy-publication-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested head identity
+        run: |
+          echo "FCI63_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FCI63_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI63 fail-closed admission gate
+        run: bash tests/fci/run_fci63_eb_bottom_energy_current_canonical_admission.sh

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF40",
+  "title": "WOFOST Crop Transaction True Process-Boundary Restart Qualification",
+  "branch": "work/f-wof40-true-process-restart",
+  "base": {
+    "primary_crop_donor": {
+      "work_unit": "F-WOF39",
+      "head": "e42273264a8da87a38287a9497861474299e4b7d"
+    },
+    "persistence_donor": {
+      "work_unit": "F-KT13",
+      "qualified_handoff_head": "66c2d682330c9637c6f0cbfbaca2a3ef755346ba",
+      "qualified_executable_head": "8b0cbad625501961842aaed2a444ec7145b43038",
+      "workflow_run": 34362223859
+    }
+  },
+  "contract": "integration/f-wof/F-WOF40_TRUE_PROCESS_RESTART_CONTRACT.json",
+  "definitive_tested_head": "2394431312932df27e52d77b25475f72f11fa38d",
+  "implementation_boundary": {
+    "F_KT13_external_reconstruction_source_present": true,
+    "WOFOST_owner_persistence_API_production_bound": false,
+    "WOFOST_owner_persistence_API_candidate_materialized_for_qualification": true,
+    "external_codec_is_qualification_adapter_outside_src_kernel": true,
+    "kernel_file_path_parser_dependency_added": false,
+    "accepted_window_cache_promoted_to_persistent_state": false,
+    "production_SWAPS_wide_restart_format_claimed": false
+  },
+  "qualification_gate": {
+    "workflow": "F-WOF40 true process restart",
+    "run": 34371941978,
+    "job": 102535083501,
+    "tested_head": "2394431312932df27e52d77b25475f72f11fa38d",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "O0": "PASS",
+    "O2": "PASS",
+    "external_representation_O0_O2_identity": true,
+    "markers": [
+      "FWOF40_OWNER_PERSISTENCE_CANDIDATE_MATERIALIZED=PASS",
+      "FWOF40_OWNER_PERSISTENCE_CANDIDATE_O0_COMPILE=PASS",
+      "FWOF40_OWNER_PERSISTENCE_CANDIDATE_O2_COMPILE=PASS",
+      "FWOF40_FWO39_PRESERVATION_UNDER_FKT13_OVERLAY=PASS",
+      "FWOF40_TRUE_PROCESS_RESTART_O0=PASS",
+      "FWOF40_TRUE_PROCESS_RESTART_O2=PASS",
+      "FWOF40_CONTINUOUS_TWO_EVENT_REFERENCE=PASS",
+      "FWOF40_PRODUCER_COMMIT_RETIRE_WRITE_AND_EXIT=PASS",
+      "FWOF40_FRESH_PROCESS_RECONSTRUCTION=PASS",
+      "FWOF40_RESTORED_RECEIPT_REJECTS_STALE_EVENT=PASS",
+      "FWOF40_NEW_EVENT_CONTINUES_AFTER_RESTART=PASS",
+      "FWOF40_TWO_SEPARATE_OS_PROCESSES_PRODUCER_THEN_CONSUMER=PASS",
+      "FWOF40_CONTINUOUS_VERSUS_PROCESS_RESTART_ENDPOINT_EXACT=PASS",
+      "FWOF40_RETIRED_ACCEPTED_WINDOW_NOT_PERSISTED=PASS",
+      "FWOF40_EXTERNAL_NEGATIVE_CASES_FAIL_CLOSED=PASS",
+      "FWOF40_EXTERNAL_REPRESENTATION_O0_O2_IDENTITY=PASS",
+      "FWOF40_TRUE_PROCESS_RESTART_QUALIFICATION_GATE PASS"
+    ]
+  },
+  "restart_claims": {
+    "producer_and_consumer_are_separate_OS_processes": true,
+    "producer_exits_after_committed_artifact_write": true,
+    "consumer_constructs_fresh_kernel_committed_state": true,
+    "lineage_preserved": true,
+    "revision_preserved": true,
+    "committed_time_preserved": true,
+    "crop_owner_continuation_preserved": true,
+    "biomass_and_leaf_cohorts_preserved": true,
+    "evolution_continuation_preserved": true,
+    "last_consumed_event_receipt_preserved": true,
+    "stale_already_consumed_event_rejected_after_restart": true,
+    "stale_replay_zero_new_candidate": true,
+    "stale_replay_zero_revision_mutation": true,
+    "subsequent_distinct_event_commits_after_restart": true,
+    "revision_advances_monotonically_from_1_to_2": true,
+    "continuous_and_restarted_endpoint_external_artifacts_exact": true,
+    "retired_accepted_window_not_required_for_continuation": true
+  },
+  "negative_payloads": {
+    "count": 10,
+    "all_fail_closed_before_ready_committed_publication": true,
+    "classes": [
+      "unsupported schema",
+      "unsupported layout",
+      "unsupported codec",
+      "invalid receipt revision",
+      "nonfinite crop owner real",
+      "invalid leaf cohort count",
+      "missing required committed receipt",
+      "truncated artifact",
+      "extra unexpected field",
+      "duplicate field"
+    ]
+  },
+  "preservation": {
+    "F_WOF38_atomic_crop_transaction_gate": "PASS",
+    "F_WOF38_O0_O2_output_identity": true,
+    "F_WOF39_lifecycle_retirement_gate": "PASS",
+    "F_WOF39_matching_receipt_retirement_only": true,
+    "F_WOF39_owner_receipt_revision_unchanged": true,
+    "F_WOF39_replay_idempotent_zero_mutation": true,
+    "same_workflow_run": 34371941978
+  },
+  "persistent_state_policy_observed": {
+    "included": [
+      "kernel lineage/revision/time provenance",
+      "authoritative WOFOST crop owner continuation state",
+      "last-consumed-event receipt identity"
+    ],
+    "excluded": [
+      "retired accepted-window cache",
+      "delivery_committed cache flag",
+      "event_due cache state",
+      "parameters",
+      "forcing",
+      "solver scratch",
+      "derived crop views"
+    ]
+  },
+  "invariant_assessment": {
+    "1_single_kernel": "PASS_NO_CROP_SPECIFIC_KERNEL_FORK",
+    "2_kernel_IO_separation": "PASS_EXTERNAL_CODEC_REMAINS_OUTSIDE_SRC_KERNEL",
+    "3_explicit_data_separation": "PASS_PARAMETERS_FORCING_SCRATCH_NOT_PERSISTED_AS_COMMITTED_STATE",
+    "4_compact_persistent_state": "PASS_RETIRED_ACCEPTED_WINDOW_CACHE_EXCLUDED",
+    "5_scratch_per_worker": "PASS_SOLVER_SCRATCH_NOT_PERSISTED",
+    "7_transactional_timesteps": "PASS_RESTART_RECONSTRUCTS_COMMITTED_STATE_ONLY_NOT_TRIAL_OR_CANDIDATE",
+    "8_recompute_and_warm_start": "PASS_STALE_REPLAY_REJECTED_AND_LATER_EVENT_CONTINUES",
+    "9_generic_time": "PASS_COMMITTED_TIME_PROVENANCE_PERSISTED_WITHOUT_CALENDAR_ASSUMPTION",
+    "21_reuse_SWAPS_physics": "PASS_NO_CROP_PHYSICS_FORK_OR_CHANGE",
+    "23_physics_solver_policy_separation": "PASS_NO_NUMERICAL_POLICY_EMBEDDED_IN_PERSISTED_CROP_STATE",
+    "27_optional_functionality_scales_with_use": "DIRECTIONALLY_COMPATIBLE_CROP_STATE_ONLY_WHERE_CROP_TRANSACTION_EXISTS_NOT_FULL_MULTISWAP_LAYOUT_QUALIFICATION",
+    "29_no_silent_dependencies": "PASS_NO_MIDNIGHT_FILE_FORMAT_OR_DIRECT_COUPLING_ASSUMPTION_ADDED_TO_KERNEL",
+    "30_architecture_change_qualification": "PASS_SOURCE_BOUND_CONTRACT_EXECUTABLE_O0_O2_PROCESS_SPLIT_NEGATIVE_AND_PRESERVATION_GATES"
+  },
+  "not_qualified": [
+    "production binding of the owner-controlled WOFOST persistence API in src/runtime owner modules",
+    "production SWAP-wide restart file or serialization format",
+    "all WOFOST options and all optional crop-state layouts",
+    "active unretired accepted-window persistence",
+    "mid-transaction trial or candidate persistence",
+    "full MultiSWAP checkpoint/restart",
+    "canonical promotion"
+  ],
+  "decision": "QUALIFIED_TRUE_PROCESS_RESTART_BEHAVIOR_WITH_OWNER_PERSISTENCE_API_CANDIDATE_NOT_YET_PRODUCTION_BOUND",
+  "status": "QUALIFIED_RESTRICTED_TRUE_PROCESS_RESTART_CANDIDATE_PRODUCTION_OWNER_API_BINDING_OPEN"
+}

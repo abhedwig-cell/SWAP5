@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR18",
+  "branch": "work/f-mr18-generic-accepted-commit-receipt",
+  "qualified_scope": "STANDALONE_GENERIC_ACCEPTED_COMMIT_RECEIPT_SEAM",
+  "tested_head": "3d0c1008f1372c59cf716427453296a688b84bdf",
+  "workflow_run": 34335331677,
+  "workflow_job": 102413272679,
+  "conclusion": "success",
+  "production_source": "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+  "source_delta": [
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90"
+  ],
+  "evidence": {
+    "exact_additive_source_delta": "PASS",
+    "generic_no_domain_imports": "PASS",
+    "receipt_module_allocation_free": "PASS",
+    "real_F_KT_commit_creates_exact_receipt": "PASS",
+    "commit_rejection_emits_no_receipt": "PASS",
+    "expected_receipt_failures_precede_physical_commit": "PASS",
+    "prevalidation_rejection_nonmutating_and_replayable": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "F_WOF34_exact_transcript_preservation": "PASS",
+    "F_WOF34_output_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007"
+  },
+  "semantic_result": {
+    "receipt_is_nonforgeable_by_field_assignment": true,
+    "receipt_private_fields": true,
+    "receipt_creation_requires_actual_kernel_commit_call": true,
+    "normal_receipt_validation_failures_after_successful_commit": false,
+    "postcommit_allocation": false,
+    "domain_callback_in_commit_path": false,
+    "F_KT_commit_authority_changed": false,
+    "existing_runtime_path_changed": false
+  },
+  "not_qualified": [
+    "serialized MultiSWAP runtime integration",
+    "sparse optional receipt routing",
+    "WOFOST PTRA/QROT binding",
+    "accepted-window post-receipt total publication",
+    "restart or crash atomicity",
+    "canonical admission"
+  ],
+  "decision": "QUALIFIED_STANDALONE_GENERIC_ACCEPTED_COMMIT_RECEIPT_SEAM_RUNTIME_INTEGRATION_OPEN"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-CI",
+  "work_unit": "F-CI30",
+  "branch": "qualification/f-ci30-fmr27-parallel-v1-canonical-admission",
+  "canonical_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "canonical_base_authority": "F-CI29 closed canonical ptra ownership admission",
+  "owner_work_unit": "F-MR27",
+  "owner_branch": "work/f-mr27-parallel-current-canonical-recomposition",
+  "owner_production_candidate": "151ad84b9ebb3bbb133fa0bf77f67797a3d5547e",
+  "owner_production_src_tree": "6120672c3caaa640f902fdc20b43ae6ba722f38b",
+  "owner_tested_head": "c8c51f3ff0dd5bc8aff790ba8deb5c03758ceea4",
+  "owner_workflow": {
+    "run_id": 34465412007,
+    "job_id": 102832710252,
+    "conclusion": "success"
+  },
+  "current_canonical_preimage": {
+    "serialized_runtime_blob": "6559237c887e9a8476beb479546becdfe9339920",
+    "parallel_scheduler_present": false,
+    "parallel_worker_pool_present": false
+  },
+  "candidate_source_blobs": {
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7bfb4a269256f0f1d50c32a20fd42479cf033528"
+  },
+  "recomposition_finding": "CLEAN_NON_OVERLAPPING_CURRENT_CANONICAL_TRANSPORT",
+  "reason": "F-CI29 added an independent ptra/root-input binding and did not modify any F-MR27 production path; the serialized runtime preimage remains exact.",
+  "admission_scope": "RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_ONLY",
+  "must_preserve": [
+    "F-CI29 ptra/root-input ownership binding",
+    "F-CI28 committed-boundary process restart",
+    "F-MR18 sparse accepted-commit receipt semantics on serialized route",
+    "F-CI27 reference ET runtime behavior",
+    "hard mass accounting",
+    "deterministic canonical publication order"
+  ],
+  "explicit_nonclaims": [
+    "parallel receipt routing",
+    "parallel restart",
+    "parallel mid-transaction restart",
+    "root-extraction parallel physics",
+    "snow parallel physics",
+    "bottom-mode-5 parallel physics",
+    "temporal-history parallel physics",
+    "macropore parallel physics",
+    "performance speedup admission"
+  ],
+  "promotion_policy": "NO_CANONICAL_REF_UPDATE_BEFORE_FCI30_INDEPENDENT_GATE_PASS"
+}

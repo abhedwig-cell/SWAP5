@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI43",
+  "title": "F-PM07B Restricted Soil-Temperature Canonical Admission",
+  "branch": "qualification/f-ci43-fpm07b-restricted-soil-temperature-canonical-admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FPM07B_RESTRICTED_SOIL_TEMPERATURE_FOR_CURRENT_CANONICAL_ADMISSION",
+  "canonical_base": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "composition_head": "a8720c6c1981d763ed3397ebe93aa04c35779653",
+  "candidate_source_head": "3f387d820adf46b1260c37d52019a2b83b2d8c74",
+  "F_VQ58_closeout": "5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "production_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+  },
+  "first_green_admission": {
+    "head": "390f36792e1cfc64389e9bc8a435598d42d67197",
+    "run": 34613916407,
+    "job": 103310972353,
+    "conclusion": "success",
+    "oracle_output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "state": {
+    "composition_realized": true,
+    "exact_F_VQ58_oracle_replayed": true,
+    "reference_unchanged": true,
+    "water_mass_path_changed": false,
+    "runtime_callsite_composed": false,
+    "canonical_promoted": false,
+    "RB1_modified_or_reopened": false
+  },
+  "qualified_scope": {
+    "provider": "numerical one-dimensional sensible soil heat conduction",
+    "constitutive_formulation": "SWAP 4.3.1 De Vries heat capacity and conductivity",
+    "top_boundary": "prescribed soil-surface temperature",
+    "bottom_boundary": "zero heat flux",
+    "hydraulic_input": "average of interval-start and interval-end water-content views",
+    "persistent_state": "active-node soil-temperature profile only",
+    "time_contract": "generic [t0,t1]"
+  },
+  "hard_holds": [
+    "no runtime call-site composition",
+    "no frost physics admission",
+    "no snow thermal-boundary admission",
+    "no phase-change or latent-heat admission",
+    "no analytic annual-wave provider admission",
+    "no alternative thermal boundary modes",
+    "no measured large-batch throughput claim",
+    "no RB1 modification or reopening"
+  ],
+  "architecture_audit": "integration/f-ci/F-CI43_ARCHITECTURE_AUDIT.json",
+  "promotion_gate": {
+    "require_current_canonical_still_exactly_base": true,
+    "require_exact_status_head_F_CI43_success": true,
+    "require_same_two_production_blobs": true,
+    "require_reference_tree_unchanged": true,
+    "require_true_two_parent_merge_commit": true,
+    "force_update_forbidden": true,
+    "post_promotion_reconciliation_required": true
+  },
+  "closeout_metadata_policy": {
+    "this_commit_may_change_integration_fci_metadata_only": true,
+    "no_production_reference_test_or_workflow_mutation_after_first_green": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "next_required_step": "Run F-CI43 on this exact metadata closeout head. If green and canonical remains pinned to the declared base, promote by a true two-parent merge and perform separate current-canonical post-promotion reconciliation."
+}

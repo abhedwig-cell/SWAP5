@@ -1,0 +1,39 @@
+name: F-VQ79 EB-I19R warning-hygiene independent requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq79-eb-i19r-warning-hygiene-independent-requalification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact verifier head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested identities
+        run: |
+          echo "FVQ79_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FVQ79_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+          echo "FVQ79_CANDIDATE=788ff3c9af90143960a5aa3831f0171160aa8c47"
+          echo "FVQ79_CANDIDATE_TREE=$(git show -s --format=%T 788ff3c9af90143960a5aa3831f0171160aa8c47)"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Independent warning-hygiene requalification
+        run: bash tests/fvq/run_fvq79_eb_i19r_warning_hygiene_independent.sh
+
+      - name: Qualification-only source guard
+        run: |
+          candidate=788ff3c9af90143960a5aa3831f0171160aa8c47
+          test -z "$(git diff --name-only "$candidate"...HEAD -- src reference)"
+          echo 'FVQ79_NO_NEW_PRODUCTION_OR_REFERENCE_SOURCE=PASS'

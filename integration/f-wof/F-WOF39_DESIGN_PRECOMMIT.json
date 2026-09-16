@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF39",
+  "title": "Crop-Event Restart Boundary and Accepted-Window Lifecycle Retirement Qualification",
+  "branch": "work/f-wof39-crop-event-restart-lifecycle",
+  "base": {
+    "work_unit": "F-WOF38",
+    "commit": "68003aabea313eb1723329230d6f9bfd42a7c861",
+    "status": "QUALIFIED_RESTRICTED_ATOMIC_CROP_EVENT_PUBLICATION_SCOPE_COMPLETE"
+  },
+  "source_bound_restart_findings": [
+    "F-WOF38 makes crop owner plus accepted-event receipt one committed F-KT physical state, so no separate crop receipt persistence owner is required.",
+    "kernel_committed_state_t keeps physical state, lineage id, revision and committed time private.",
+    "kernel_committed_state_t exposes clone, snapshot and checkpoint capture but no restore/import API for an already-advanced committed revision.",
+    "kernel_committed_state_t initialize always creates revision zero and therefore cannot reconstruct an arbitrary persisted committed revision without changing the F-KT contract.",
+    "F-MR18 explicitly left restart/crash atomicity unqualified.",
+    "A WOFOST-specific serializer must not forge or bypass private F-KT lineage/revision/time provenance."
+  ],
+  "restart_decision": {
+    "true_process_restart_qualification_in_F_WOF39": "BLOCKED_BY_MISSING_GENERIC_FKT_COMMITTED_STATE_RESTORE_PERSISTENCE_CONTRACT",
+    "WOFOST_specific_FKT_provenance_reconstruction_allowed": false,
+    "WOFOST_specific_file_format_added": false,
+    "recommended_owner": "separate F-KT/runtime persistence workunit",
+    "minimum_generic_restore_requirement": [
+      "restore committed physical transaction_state_t",
+      "restore stable lineage id",
+      "restore committed revision",
+      "restore committed time binding",
+      "validate provenance without allowing arbitrary revision forgery",
+      "preserve checkpoint and candidate stale-revision protection after restore"
+    ]
+  },
+  "accepted_window_restart_state_if_generic_persistence_becomes_available": {
+    "needed_for_mid_window_resume": [
+      "lineage_id",
+      "start_revision",
+      "next_revision",
+      "accepted_intervals",
+      "t0",
+      "t1",
+      "covered_t",
+      "actual_root_uptake_integral",
+      "potential_transpiration_integral"
+    ],
+    "legacy_event_delivered": "not an atomic-route authority; may remain a derived lifecycle cache only",
+    "solver_scratch_required": false,
+    "calendar_state_required": false,
+    "file_IO_in_kernel_required": false
+  },
+  "lifecycle_problem": {
+    "current_atomic_route": "after successful F-WOF38 crop commit the committed crop receipt prevents duplicate crop advancement, but the source accepted window can still report event_due because the legacy event_delivered bit was deliberately not used as a second commit authority",
+    "risk": "a runtime that incorrectly treats event_due as authoritative could repeatedly attempt an already-consumed event; F-WOF38 rejects the duplicate, but the stale window should be retired cleanly",
+    "required_semantics": "retirement must be derived from an already-committed matching crop receipt, must never authorize crop publication, and must be safe to repeat or replay after interruption"
+  },
+  "selected_lifecycle_design": {
+    "new_module": "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90",
+    "operation": "reconcile a complete accepted window against an already-committed fmr_wofost_crop_transaction_state_t receipt",
+    "before_matching_receipt": "zero window mutation",
+    "after_matching_receipt": "mark only the legacy delivered/cache bit through the existing validated token path",
+    "crop_owner_mutation": false,
+    "F_KT_revision_mutation": false,
+    "receipt_mutation": false,
+    "second_commit_authority_created": false,
+    "already_retired_result": "terminal nonmutating lifecycle state; it is not independent proof that the atomic receipt route was used"
+  },
+  "qualification_gates": {
+    "A_restart_boundary": "source-bound fail-closed proof that true crash restart is blocked by generic F-KT persistence, not by missing WOFOST crop owner state",
+    "B_precommit_noninterference": "a complete window cannot retire before a matching committed crop receipt exists",
+    "C_postcommit_retirement": "matching committed receipt retires the stale accepted window without changing crop owner, receipt or F-KT revision",
+    "D_duplicate_and_replay": "after retirement event_due is false; repeated reconciliation is nonmutating",
+    "E_preservation": "F-WOF38 main atomic gate and Gate E failed-then-accepted retry remain green",
+    "F_optimization_identity": "O0 and O2 outputs identical for lifecycle gate"
+  },
+  "hard_holds": {
+    "kernel_source_change": false,
+    "transaction_core_change": false,
+    "crop_physics_change": false,
+    "water_mass_accounting_change": false,
+    "legacy_delivery_as_atomic_commit_authority": false,
+    "restart_crash_atomicity_claim_before_generic_FKT_restore": false,
+    "canonical_promotion": false
+  },
+  "affected_invariants": [3,4,7,8,9,13,16,28,29,30],
+  "decision": "QUALIFY_DERIVED_ACCEPTED_WINDOW_RETIREMENT_NOW_HOLD_TRUE_RESTART_FOR_GENERIC_FKT_PERSISTENCE",
+  "status": "DESIGN_PERSISTED_READY_FOR_LIFECYCLE_IMPLEMENTATION_RESTART_FAIL_CLOSED"
+}

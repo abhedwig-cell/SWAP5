@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.fci62.preregistration.v1",
+  "work_unit": "F-CI62",
+  "title": "Prescribed-qbot temporal certificate and serialized runtime current-canonical admission",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5"
+  },
+  "authorities": {
+    "F-SI38": "4658b9f45c9a92f93a6a4b59c5c8aee33820ad94",
+    "F-MR44R_exact_head": "acb63559b5246db33b1958bb0c5bc8c1ba2055c0",
+    "F-MR44R_production_commit": "6e7687e37daeb996de22b9f5ac7592461ab4675a",
+    "F-VQ75": "efecaeaa48661c9188bea220deb1f5b615ecfd99"
+  },
+  "production_scope": [
+    "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "src/adapter/mod_b110_serialized_context_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "admission_intent": [
+    "Admit already-qualified bottom_mode=2 prescribed-qbot temporal-certificate semantics with Neumann bottom operator and zero bottom-head stiffness.",
+    "Admit bottom_mode=2 through the existing serialized B1.10 context and serialized reference runtime allowlists.",
+    "Preserve fail-closed behavior for unsupported bottom modes, hard mass conservation, transactional acceptance, and explicit application-owned temporal head budget."
+  ],
+  "scope_guards": {
+    "new_physics": false,
+    "new_mass_booking": false,
+    "new_persistent_state": false,
+    "new_solver_policy": false,
+    "new_application_accuracy_default": false,
+    "reference_source_changed": false,
+    "EB_I18_energy_publication_in_scope": false
+  },
+  "hard_nonclaims": [
+    "Qualification-only H_budget=2.5e-11 cm is not a production, coupling, or application default.",
+    "F-CI62 does not qualify EB-I18 energy publication.",
+    "No canonical admission exists until exact F-CI62 qualification is green and a two-parent promotion plus postimage reconciliation succeeds."
+  ]
+}

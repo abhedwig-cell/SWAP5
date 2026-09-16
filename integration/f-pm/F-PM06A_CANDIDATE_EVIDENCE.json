@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM06A",
+  "title": "Restricted Stateless Reference-ET Demand Structural Candidate Evidence",
+  "candidate_base": "2113dd20c2f20c77c3191c65be2f994955202037",
+  "tested_head": "23206aaf996ffb7dde355508fa2379a5efbd3d57",
+  "tested_tree": "f45905c1751d9c6423641a389bf62a6381e70595",
+  "production_source": {
+    "path": "src/process/mod_reference_et_demand_process.f90",
+    "blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+  },
+  "test_artifacts": {
+    "direct_oracle": {
+      "path": "tests/fpm/test_fpm06a_reference_et_demand.f90",
+      "blob": "e65c3c4a500d37060a638002b7685cc6163309e9"
+    },
+    "gate": {
+      "path": "tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh",
+      "blob": "efc6df6bef136eadee72f4c10b849a95fcc74d10"
+    },
+    "workflow": {
+      "path": ".github/workflows/fpm06a-reference-et-demand-candidate.yml",
+      "blob": "ef01a6d0e378ed5418930fb520bacd1b2e847aa4"
+    }
+  },
+  "github_actions": {
+    "run_id": 34449186836,
+    "job_id": 102780712913,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.2.0",
+    "output_sha256": "c9f4557cc0999b01e6379b72ec09b743542dd447c48790e7149451da8d9da61a"
+  },
+  "gates": {
+    "single_production_module_delta": "PASS",
+    "protected_root_and_crop_owner_blobs": "PASS",
+    "process_boundary_static": "PASS",
+    "no_hydraulic_or_root_uptake_internals": "PASS",
+    "no_persistent_process_state": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "B1_10_reference_ET_equations": "PASS",
+    "surface_demand_vcover_semantics": "PASS",
+    "inactive_crop_dependency_minimality": "PASS",
+    "boundary_cases": "PASS",
+    "invalid_input_fail_closed": "PASS",
+    "stateless_A_B_A_identity": "PASS"
+  },
+  "tested_equation_scope": {
+    "SWETR": 1,
+    "SWMETDETAIL": 0,
+    "SWDIVIDE": 0,
+    "SWINTER": 0,
+    "SWEVAP": 1,
+    "SWREDU": 0,
+    "SWCFBS": 0,
+    "reference_ET_units": "mm/day",
+    "demand_output_units": "cm/day"
+  },
+  "important_semantics": {
+    "potential_demands_are_mass_sinks": false,
+    "root_uptake_physics_present": false,
+    "hydraulic_limitation_present": false,
+    "persistent_ET_state_present": false,
+    "non_emerged_crop_still_uses_vcover_for_surface_demands": true,
+    "non_emerged_crop_does_not_consume_crop_factor_or_CO2_factor": true,
+    "invalid_active_input_returns_zero_result": true
+  },
+  "diff_from_candidate_base": {
+    "ahead_by": 6,
+    "behind_by": 0,
+    "production_files_changed": [
+      "src/process/mod_reference_et_demand_process.f90"
+    ],
+    "other_files_changed": [
+      ".github/workflows/fpm06a-reference-et-demand-candidate.yml",
+      "integration/f-pm/F-PM06A_CANDIDATE_CONTRACT.json",
+      "tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh",
+      "tests/fpm/test_fpm06a_reference_et_demand.f90"
+    ]
+  },
+  "qualification_boundary": {
+    "structural_candidate_tested": true,
+    "independent_scientific_qualification": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission": false
+  }
+}

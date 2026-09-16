@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.fci_architecture_audit.v1",
+  "work_unit": "F-CI45",
+  "canonical_base": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "donor_source_authority": "87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "result": "PASS_SUBJECT_TO_EXACT_HEAD_GATE",
+  "interpretation": {
+    "QUALIFIED": "directly exercised by F-CI45/F-MR39 evidence",
+    "PRESERVED": "governing current-canonical seam is unchanged and pinned",
+    "BOUNDED_NONCLAIM": "reviewed but intentionally not admitted by this work unit"
+  },
+  "invariants": [
+    {"id":1,"status":"QUALIFIED","evidence":"Recomposition adds F-MR39 to the existing canonical kernel/runtime only; no second kernel is introduced."},
+    {"id":2,"status":"PRESERVED","evidence":"No I/O, parser, file path or file-unit dependency is introduced into kernel/process/runtime semantics."},
+    {"id":3,"status":"QUALIFIED","evidence":"Thermal parameters, forcing, persistent state, numerical configuration/workspace and diagnostics remain separate typed categories."},
+    {"id":4,"status":"QUALIFIED","evidence":"Thermal state remains optional in the committed physical state and absent for inactive columns."},
+    {"id":5,"status":"QUALIFIED","evidence":"Thermal workspace remains backend/worker-local and outside persistent per-column state."},
+    {"id":6,"status":"QUALIFIED","evidence":"Mixed active/inactive MultiSWAP qualification proves optional-state isolation; no physical-state cost is imposed on inactive columns."},
+    {"id":7,"status":"QUALIFIED","evidence":"Richards and thermal trial share one outer transaction; forced thermal failure prevents water-only publication."},
+    {"id":8,"status":"QUALIFIED","evidence":"Retry after thermal rejection is compared with a fresh run from the same committed origin and must be exact."},
+    {"id":9,"status":"QUALIFIED","evidence":"Runtime and thermal process continue to use generic numeric [t0,t1] without calendar assumptions."},
+    {"id":10,"status":"PRESERVED","evidence":"No coupling-window duration or midnight boundary is introduced."},
+    {"id":11,"status":"PRESERVED","evidence":"Existing canonical transaction/coupling seams remain unchanged; F-CI45 only admits thermal runtime composition."},
+    {"id":12,"status":"PRESERVED","evidence":"Groundwater head/flux interface contract and residual semantics are untouched."},
+    {"id":13,"status":"QUALIFIED","evidence":"Water storage and mass accounting exclude thermal energy; hard water-mass qualification is replayed."},
+    {"id":14,"status":"PRESERVED","evidence":"No interface sensitivity or response-tangent API is modified."},
+    {"id":15,"status":"PRESERVED","evidence":"No additional full SWAP coupling run is introduced by thermal composition."},
+    {"id":16,"status":"QUALIFIED","evidence":"Serialized MultiSWAP active/inactive isolation is requalified on current canonical."},
+    {"id":17,"status":"PRESERVED","evidence":"No MODFLOW-cell-to-tile mapping or one-to-one coupling assumption enters SWAP."},
+    {"id":18,"status":"PRESERVED","evidence":"Deep-vadose transfer remains outside SWAP and is unaffected."},
+    {"id":19,"status":"PRESERVED","evidence":"No deep-vadose/direct-coupling storage transition is altered."},
+    {"id":20,"status":"QUALIFIED","evidence":"Thermal composition consumes semantic process_hydraulic_view_t and leaves the common soil-water solver interface open."},
+    {"id":21,"status":"QUALIFIED","evidence":"F-VQ58 thermal physics is reused byte-identically and its exact scientific authority is replayed."},
+    {"id":22,"status":"QUALIFIED","evidence":"Thermal process has no dependency on HeadCalc internals; the hydraulic-view seam is pinned."},
+    {"id":23,"status":"QUALIFIED","evidence":"soil_temperature_active remains physical configuration while numerical policy and workspace remain separate; no tolerance is relaxed."},
+    {"id":24,"status":"BOUNDED_NONCLAIM","evidence":"No thermal-active bounded-cost fallback or throughput qualification is claimed; no new unbounded retry path is added."},
+    {"id":25,"status":"QUALIFIED","evidence":"Full restricted reference science remains available through F-VQ58 and serialized reference runtime qualification."},
+    {"id":26,"status":"QUALIFIED","evidence":"Thermal active/executed/status and energy diagnostics remain exposed by the backend observation together with existing water diagnostics."},
+    {"id":27,"status":"QUALIFIED","evidence":"Inactive columns allocate no thermal physical state; worker-local scratch scales with active execution."},
+    {"id":28,"status":"QUALIFIED","evidence":"System composition remains runtime/backend-owned; SWAP receives no tile fractions, MODFLOW topology or transfer-zone ownership."},
+    {"id":29,"status":"QUALIFIED","evidence":"No hidden midnight, one-day, .swp or direct-MODFLOW dependency is introduced."},
+    {"id":30,"status":"QUALIFIED","evidence":"F-CI45 explicitly reconciles all 30 invariants against the exact current canonical and immutable F-MR39 authority."}
+  ],
+  "hard_nonclaims": [
+    "no thermal-active parallel throughput qualification",
+    "no frost or latent heat",
+    "no snow plus thermal combined profile",
+    "no new combined thermal-water timestep acceptance tolerance",
+    "no production SWAP-MODFLOW admission",
+    "no numeric application-accuracy policy",
+    "no RB1 reopening"
+  ]
+}

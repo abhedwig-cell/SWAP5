@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "capability": "SWAP5_SNOW_RESTRICTED_ONE_CALL_DAILY",
+  "owner_work_unit": "F-PM02",
+  "admission_work_unit": "F-CI90",
+  "phase": "CLOSE",
+  "status": "CLOSED_CURRENT_CANONICAL_RESTRICTED_SNOW_CAPABILITY",
+  "canonical_admission_parent": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+  "canonical_admission_head": "bfd2c57e0b5e7f578f2635379e996419e1f7edfa",
+  "reconcile_checkpoint": "b979923a183575dbf39b5b45461541d95cccf4ba",
+  "qualification_checkpoint": "d70868dab78a5c0ea7bbc36442acda48d39b424b",
+  "qualified_authorities": {
+    "f_pm02_close_head": "89a834f56317b516acca33b73ab94238ae30204d",
+    "f_vq16_closeout": "98712959d811c788c77842eede4c6f558cca1c11",
+    "f_vq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "f_mq24_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+    "f_mr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605"
+  },
+  "current_canonical_source_lock": {
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "serialized_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "qualification": {
+    "decisive_head": "25d83778dcade34225b4630059fd43142f95193d",
+    "workflow_run": 35036685895,
+    "workflow_job": 104607256514,
+    "artifact_id": 10424015478,
+    "artifact_digest": "sha256:87f105b46c8d7bbba67278583376eeb061f0e91d5adb3e7fc497524abb69930e",
+    "qualification_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f",
+    "historical_f_vq17_output_identity": true,
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS"
+  },
+  "closure_verdict": {
+    "f_pm02_production_source_is_qualified_authority": true,
+    "f_vq16_independent_scientific_qualification_valid": true,
+    "f_vq17_historical_runtime_qualification_valid_for_old_candidate": true,
+    "f_vq17_current_canonical_runtime_preservation_reestablished": true,
+    "f_mq24_historical_restricted_multiswap_qualification_valid_for_old_candidate": true,
+    "f_mq24_current_canonical_restricted_multiswap_preservation_reestablished": true,
+    "equivalent_snow_semantics_present_on_canonical": true,
+    "missing_admission_gate_remaining": false,
+    "production_change_required_for_closure": false
+  },
+  "closed_scope": {
+    "snow_semantics": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "scientific_identity": "BITWISE_WHERE_PREVIOUSLY_QUALIFIED",
+    "unsupported_duration_policy": "FAIL_CLOSED",
+    "transaction_policy": "CORRECT_CHECKPOINT_TRIAL_RETRY_COMMIT_WITH_REJECTED_TRIAL_ISOLATION",
+    "mass_policy": "SNOW_STORAGE_AND_EXTERNAL_TERMS_WITH_MELT_AS_INTERNAL_TRANSFER_NOT_DOUBLE_COUNTED",
+    "multiswap": "RESTRICTED_SERIALIZED_REAL_PHYSICS_ONLY",
+    "max_simultaneous_real_physical_solves": 1
+  },
+  "hard_holds": [
+    "No subdaily, multiday or arbitrary-duration Snow semantics are admitted.",
+    "No new Snow physics is admitted.",
+    "No new Richards physics is admitted.",
+    "No parallel real-physics execution is admitted by this closure.",
+    "No performance claim is made.",
+    "No general SWAP5 production-release claim is made.",
+    "EB, ROSS and RossFast are outside this workunit."
+  ],
+  "production_source_modified_by_campaign": false,
+  "reference_source_modified_by_campaign": false,
+  "decision": "CLOSE_FPM02_CURRENT_CANONICAL_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_CAPABILITY",
+  "blockers": [],
+  "next_permitted_action": "None for this bounded Snow closure. Reopen only if a relevant Snow/runtime dependency changes or a separately governed scope expansion is proposed."
+}

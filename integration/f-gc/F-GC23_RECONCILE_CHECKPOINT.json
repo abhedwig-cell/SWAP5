@@ -1,0 +1,74 @@
+{
+  "capability": "F-GC23",
+  "phase": "RECONCILE",
+  "protocol": "Bounded Execution Protocol",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
+    "pre_F_GC29_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "delta_rechecked_only_from_last_block_checkpoint": true
+  },
+  "owner": {
+    "branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
+    "last_block_checkpoint": "5f0b81451433242d9e6395272d6f6491fcf3be2a",
+    "current_canonical_reconcile_merge": "1a53d95093168e22822274f866faccc34f9ce402",
+    "historical_negative_closeout": "BLOCKED_BY_UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY"
+  },
+  "reconciled_dependencies": {
+    "F-SI37": "QUALIFIED_AND_CANONICALLY_ADMITTED",
+    "F-KT21": "QUALIFIED_AND_CANONICALLY_ADMITTED",
+    "F-KT22": "ADMITTED_CANONICAL_CLOSED",
+    "F-GC20": "QUALIFIED_AND_CANONICALLY_ADMITTED",
+    "F-GC22": "QUALIFIED_AND_CANONICALLY_ADMITTED",
+    "F-GC29": {
+      "owner_qualified_source": "bf0bc93e359fba42237fd102ced7da9a5a84efad",
+      "owner_close": "fb3e27d84cee27fa4f5891b1b37c3870c41e332c",
+      "independent_qualification": "F-VQ94@43a8f8bdf0582674be39e95fe23dccb8e83fadd2",
+      "canonical_admission_checkpoint": "9f5b5a53123a313608f1c691b6400f3c6f4a8b55",
+      "canonical_close": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
+      "production_path": "src/runtime/mod_groundwater_response_sensitivity_contract.f90",
+      "production_blob": "fb8fd6a5447edd4fa4f664cd754c93d7db331969",
+      "verdict": "CLOSED_CANONICAL_ADMITTED"
+    }
+  },
+  "delta_since_last_block_checkpoint": {
+    "production_additions": [
+      "src/runtime/mod_groundwater_response_sensitivity_contract.f90"
+    ],
+    "existing_F_GC18_service_modified": false,
+    "new_groundwater_physics": false,
+    "structural_FD_production_path": false,
+    "other_relevant_dependency_drift": false
+  },
+  "required_F_GC23_semantics": {
+    "whole_window_bottom_interface_tangent": true,
+    "same_committed_origin_and_exact_generic_window": true,
+    "accepted_trajectory_only": true,
+    "rejected_or_retry_leakage_forbidden": true,
+    "rollback_safe": true,
+    "deterministic": true,
+    "unavailable_or_nonsmooth_fail_closed": true,
+    "local_terminal_not_relabelled": true,
+    "covers_requested_interval_not_used_as_scope_upgrade": true,
+    "finite_difference_reference_only": true,
+    "groundwater_response_must_use_F_GC29_atomic_trial_response_contract": true
+  },
+  "reconcile_verdict": "PREREQUISITES_SATISFIED_IMPLEMENTATION_PERMITTED",
+  "historical_blockers_superseded": [
+    "BLOCKED_BY_UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY",
+    "BLOCKED_BY_MISSING_GROUNDWATER_SIDE_RESPONSE_SENSITIVITY_CAPABILITY"
+  ],
+  "production_semantics_changed_in_reconcile": false,
+  "next_permitted_action": "Implement only the minimal F-GC23 groundwater response composition needed to consume the admitted F-KT22 whole-window SWAP tangent and F-GC29 groundwater response sensitivity, preserving F-GC21 predictor/corrector selection, exact mass accounting, rollback semantics and all stated exclusions. Then owner-qualify and persist QUALIFY.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "structural finite difference as normal production tangent path",
+    "broad MODFLOW work",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}

@@ -1,0 +1,55 @@
+name: F-CI21 WOF42 MR18 preservation replay
+
+on:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+    paths:
+      - 'tests/fci/run_fci21_wof42_mr18_preservation.sh'
+      - 'integration/f-ci/F-CI21_WOF42_MR18_PRESERVATION_PLAN.json'
+      - '.github/workflows/fci21-wof42-mr18-preservation.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+jobs:
+  wof42-crop-persistence:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay F-WOF42 crop persistence on F-CI21
+        run: bash tests/fci/run_fci21_wof42_mr18_preservation.sh wof42
+
+  mr18-accepted-commit-receipt:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay F-MR18 accepted commit receipt on F-CI21
+        run: bash tests/fci/run_fci21_wof42_mr18_preservation.sh mr18-ab
+
+  mr18-multiswap-receipt:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay F-MR18 sparse MultiSWAP receipt routing on F-CI21
+        run: bash tests/fci/run_fci21_wof42_mr18_preservation.sh mr18-c

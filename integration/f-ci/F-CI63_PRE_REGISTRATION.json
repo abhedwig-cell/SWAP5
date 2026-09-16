@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fci63.preregistration.v1",
+  "work_unit": "F-CI63",
+  "title": "Candidate-bound bottom sensible-energy publication current-canonical admission",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "5e5e498dc56d1df1dd7ebebbf9901c946445a1ab"
+  },
+  "authorities": {
+    "EB-I18R2_owner_candidate": "15184dd06c1d0f8accc0d306a12d25a3568f1f2e",
+    "EB-I19_production_candidate": "b2ba462cfade41eb68643db75ca28e234a123a02",
+    "EB-I19R_warning_hygiene_candidate": "788ff3c9af90143960a5aa3831f0171160aa8c47",
+    "F-VQ77_status": "728cf5face45be5b46c91701d7ed1102c9950091",
+    "F-VQ78_status": "6a8258e6e5e2365b51b086212f926f6f1bab5a15",
+    "F-VQ79_status": "77496e5eb0fe8712613ca2959552d612f3c2a29d"
+  },
+  "production_scope": [
+    "src/process/mod_liquid_water_sensible_enthalpy.f90",
+    "src/runtime/mod_fmr_bottom_external_thermal_binding.f90",
+    "src/runtime/mod_fmr_bottom_external_thermal_provider.f90",
+    "src/runtime/mod_fmr_bottom_sensible_energy.f90",
+    "src/runtime/mod_fmr_bottom_thermal_carrier.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "admission_intent": [
+    "Admit the already-qualified bottom liquid-water sensible-energy calculation and candidate-bound thermal carrier without introducing a second water ledger.",
+    "Admit worker-local transactional thermal provenance in the serialized backend and accepted-only energy publication in the MultiSWAP runtime.",
+    "Preserve exact candidate lineage, accepted commit receipt binding, reject/retry rollback semantics, hard water-mass conservation, prescribed-qbot behavior and current drainage/runtime semantics.",
+    "Keep external donor-temperature ownership outside the kernel behind an explicit provider contract and fail closed when donor thermal information is unavailable, stale or invalid."
+  ],
+  "scope_guards": {
+    "new_physics_in_F_CI63": false,
+    "new_mass_booking_in_F_CI63": false,
+    "second_water_ledger": false,
+    "new_persistent_column_state": false,
+    "new_solver_policy": false,
+    "new_application_accuracy_default": false,
+    "reference_source_changed": false,
+    "new_IO_contract": false,
+    "full_energy_balance_completion_claim": false
+  },
+  "hard_nonclaims": [
+    "F-CI63 admits only the qualified bottom sensible-energy publication scope; it does not claim the complete SWAP energy balance is finished.",
+    "The qualification-only 2.5e-11 cm temporal head budget is not a production, coupling or application default.",
+    "The exact zero comparison used for bottom donor classification remains an intentional exact contract, not a numerical tolerance policy.",
+    "No canonical admission exists until the exact F-CI63 qualification head is green, promoted by a true two-parent merge, and postimage-reconciled."
+  ]
+}

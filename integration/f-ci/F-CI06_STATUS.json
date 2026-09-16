@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI06",
+  "title": "Controlled B1.10 Physical Source Port",
+  "branch": "integration/f-ci-canonical",
+  "b1_oracle": "B1.10",
+  "b1_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+  "production_source_changed": true,
+  "controlled_legacy_source_port": {
+    "changed_files": 4,
+    "unchanged_b1_10_members": 59,
+    "files": [
+      "headcalc.f90",
+      "soilwater.f90",
+      "swap.f90",
+      "swap_main.f90"
+    ],
+    "stored_post_port_manifest_sha256": "3c4751ebb657a2bb622c9cddd718db451fbae861530353ab83fc3c99e78d7187",
+    "physics_formula_changed": false,
+    "solver_policy_changed": false
+  },
+  "admitted": {
+    "controlled_source_port_seam": true,
+    "worker_owned_headcalc_subset": true,
+    "trial_output_suppression_at_port_seam": true,
+    "water_checkpoint_subset_capture_restore_clone": true,
+    "focused_b1_10_standalone_preservation": true
+  },
+  "not_admitted": {
+    "complete_physical_continuation_state": false,
+    "full_physical_transaction_adapter": false,
+    "full_rejected_trial_rollback_safety": false,
+    "generic_subday_physical_execution": false,
+    "complete_unrounded_interval_mass_accounting": false,
+    "parallel_reentrant_legacy_backend": false,
+    "b2_reference_admission": false
+  },
+  "qualification": {
+    "local_exact_b1_10_reconstruction": "PASS",
+    "local_exact_stored_git_source_compile_o0": "PASS",
+    "local_exact_stored_git_source_compile_o2": "PASS",
+    "hupsel_standalone_b1_10_preservation": "PASS",
+    "canonical_ci_run": 34084732886,
+    "fci03": "PASS",
+    "fci04": "PASS",
+    "fci05": "PASS",
+    "fci06": "PASS"
+  },
+  "holds": [
+    "complete process continuation state must be qualified before full physical transaction admission",
+    "integral and other module-global process mutations can still leak across rejected full physical trials",
+    "forcing and time ownership remain legacy-global below the current seam",
+    "accepted unrounded interval mass totals are not yet exposed canonically",
+    "generic physical sub-day execution remains unqualified",
+    "legacy physical backend remains serialized/module-global",
+    "full B1.10-to-SWAP5 reference qualification remains pending"
+  ],
+  "status": "PASS_CONTROLLED_B1_10_SOURCE_PORT_WATER_CHECKPOINT_SUBSET"
+}

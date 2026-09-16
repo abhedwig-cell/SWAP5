@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI02",
+  "status": "MATERIALIZED_GATE_PENDING_EXECUTION",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_branch_root": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+  "legacy_oracle": "B1.10",
+  "legacy_oracle_admission": "5a25526e77a4e1ba3b8f2755cb1e59ca0700ee96",
+  "legacy_source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+  "production_source_changed": false,
+  "transactional_source_forward_ported": false,
+  "focused_gate": "tools/fci/fci02_reference_root_gate.py",
+  "full_gate_execution_required_before_fci03_source_write": true,
+  "note": "The F-CI02 branch, provenance manifest, gate and decision record are materialized. This status deliberately does not claim a full gate PASS until the reconstruction/admission gate has been executed in an environment containing the required legacy reference inputs."
+}

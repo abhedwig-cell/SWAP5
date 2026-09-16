@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.fci_postimage_status.v1",
+  "work_unit": "F-CI45P",
+  "title": "F-MR39 Restricted Soil-Temperature Runtime Canonical Postimage Reconciliation",
+  "status": "QUALIFIED_POSTIMAGE_RECONCILIATION_READY_FOR_FINAL_CANONICAL_FREEZE",
+  "promoted_canonical_head": "14db7be4827e73650da18d494af5cf190e687490",
+  "prepromotion_canonical_base": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "qualified_candidate_head": "2decde7d4d2ac3cee040d63b25ff7a97ca6db63e",
+  "promotion_topology": {
+    "first_parent": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+    "second_parent": "2decde7d4d2ac3cee040d63b25ff7a97ca6db63e",
+    "tree": "10e5f8fc1038a77bb0fad88249bf8d524858f6a2",
+    "true_two_parent_merge": true
+  },
+  "production_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "prepromotion_qualification": {
+    "exact_head_run": 34633690114,
+    "exact_head_job": 103376369124,
+    "status_validation_run": 34633690125,
+    "status_validation_job": 103376369188,
+    "conclusions": "success"
+  },
+  "qualification_transfer_basis": {
+    "promoted_tree_is_exact_qualified_candidate_tree": true,
+    "postpromotion_production_delta": "NONE",
+    "reference_tree_unchanged": true,
+    "F_CI45_status_blob": "8ed79e93798a8a92f8b4540c6bafa1fba5bde34b",
+    "F_CI45_evidence_blob": "b9ce85c47141fe1f95dc1b485a3d592e19f52fd8",
+    "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942",
+    "all_30_architecture_invariants_preserved": true
+  },
+  "final_freeze_gate": {
+    "require_reconciliation_workflow_success_on_exact_branch_head": true,
+    "require_canonical_still_exactly_promoted_head": true,
+    "require_support_only_reconciliation_delta": true,
+    "require_true_two_parent_final_reconciliation_merge": true,
+    "force_update_forbidden": true
+  },
+  "nonclaims_preserved": [
+    "no parallel thermal throughput qualification",
+    "no snow plus soil-temperature combined profile",
+    "no frost or latent heat",
+    "no new combined water plus thermal timestep acceptance policy",
+    "no production SWAP-MODFLOW admission",
+    "no numeric application-accuracy policy",
+    "no RB1 reopening"
+  ]
+}

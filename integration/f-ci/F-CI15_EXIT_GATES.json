@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI15",
+  "title": "Canonical F-CI Exit-Gate Contract",
+  "canonical_branch": "integration/f-ci-canonical",
+  "status_values": [
+    "NOT_ASSESSED",
+    "BLOCKED",
+    "IMPLEMENTED",
+    "PERSISTED",
+    "TESTED",
+    "QUALIFIED"
+  ],
+  "release_rule": "Downstream release is allowed only when every required gate is QUALIFIED and explicitly allows_downstream_release=true.",
+  "downstream_release_allowed": false,
+  "gate_order": [
+    "CI-G01",
+    "CI-G02",
+    "CI-G03",
+    "CI-G04",
+    "CI-G05",
+    "CI-G06",
+    "CI-G07",
+    "CI-G08",
+    "CI-G09",
+    "CI-G10"
+  ],
+  "gates": {
+    "CI-G01": {
+      "title": "Canonical source/provenance",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G02": {
+      "title": "B1.10 corrected-reference completeness",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G03": {
+      "title": "Transaction semantics",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G04": {
+      "title": "State/scratch ownership separation",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G05": {
+      "title": "Explicit reference numerical policy",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G06": {
+      "title": "Canonical generic [t0,t1] kernel/entrypoint contract",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G07": {
+      "title": "Canonical results, unrounded mass accounting and transaction diagnostics",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G08": {
+      "title": "Executable VQ/focused qualification against the canonical source",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G09": {
+      "title": "Build, regression and hard mass-conservation qualification",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    },
+    "CI-G10": {
+      "title": "Single canonical development baseline with competing production lines retired/superseded",
+      "status": "NOT_ASSESSED",
+      "required": true,
+      "evidence": [],
+      "source_commit": null,
+      "qualification_commit": null,
+      "blockers": [],
+      "holds": [],
+      "last_verified": null,
+      "allows_downstream_release": false
+    }
+  }
+}

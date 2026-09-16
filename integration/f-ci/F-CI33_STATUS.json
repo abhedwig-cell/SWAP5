@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.canonical_runtime_source_admission_status.v2",
+  "work_unit": "F-CI33",
+  "title": "F-MR33 Restricted DIVDRA Runtime Binding Canonical Source Admission",
+  "qualification_branch": "qualification/f-ci33-fmr33-divdra-runtime-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "phase": "CANONICAL_CLOSEOUT_STATUS_BOUND_TO_EXACT_HEAD_REQUALIFICATION",
+  "decision": "QUALIFIED_CANONICAL_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_SOURCE_ADMISSION_WITH_GOVERNANCE_RECONCILIATION",
+  "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "candidate": {
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "independent_qualification_closeout": "290f627c7a2b61e7de96c2e9659baa533e5526c6",
+    "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "f_ci33_qualification": {
+    "qualification_closeout": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "exact_closeout_run": 34484719955,
+    "exact_closeout_job": 102895984596,
+    "conclusion": "success",
+    "o0_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "o2_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce"
+  },
+  "initial_canonical_promotion": {
+    "promoted_head": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "promotion_non_forced": true,
+    "dedicated_canonical_run": 34484829037,
+    "dedicated_canonical_conclusion": "success"
+  },
+  "governance_incident": {
+    "broad_canonical_run": 34484827984,
+    "failed_job": 102897008639,
+    "failure": "FCI32_FAIL G05_EXACT_ONE_SOURCE_DELTA",
+    "classification": "STALE_MOVING_CANONICAL_GOVERNANCE_POINTER",
+    "scientific_failure": false,
+    "runtime_binding_failure": false,
+    "mass_conservation_failure": false,
+    "production_regression_indicated": false,
+    "cause": "The moving current canonical postimage job still replayed the frozen historical F-CI32 one-source admission gate after F-CI33 added the next qualified source."
+  },
+  "governance_reconciliation": {
+    "work_unit": "F-CI33R",
+    "closeout": "3710eac75209b08275319bd7afca6f158934bb4a",
+    "decision": "QUALIFIED_FCI33_CURRENT_CANONICAL_POSTIMAGE_GOVERNANCE_RECONCILIATION_READY_FOR_NON_FORCED_CANONICAL_PROMOTION",
+    "exact_closeout_run": 34486503206,
+    "exact_closeout_job": 102902035636,
+    "exact_closeout_conclusion": "success",
+    "canonical_promotion_non_forced": true,
+    "canonical_reconciliation_run": 34486628160,
+    "canonical_reconciliation_job": 102902457393,
+    "canonical_reconciliation_conclusion": "success",
+    "zero_src_delta": true,
+    "zero_reference_delta": true,
+    "historical_fci32_gate_unchanged": true,
+    "historical_fci32_runner_unchanged": true,
+    "o0_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "o2_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce"
+  },
+  "post_reconciliation_canonical_evidence": {
+    "tested_canonical_head": "3710eac75209b08275319bd7afca6f158934bb4a",
+    "f_ci33_run": 34486628135,
+    "f_ci33_job": 102902457479,
+    "f_ci33_conclusion": "success",
+    "f_ci33_o0_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "f_ci33_o2_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "broad_canonical_run": 34486628131,
+    "broad_canonical_conclusion": "success",
+    "broad_canonical_jobs": 10,
+    "broad_canonical_jobs_successful": 10,
+    "current_restricted_canonical_postimage_job": 102903079406,
+    "current_restricted_canonical_postimage_conclusion": "success"
+  },
+  "frozen_postimage": {
+    "src_tree": "7576837368e4244c3c2a1bbf9867df8d4e58811a",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "candidate_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "reference_delta_from_f_ci33_base": false,
+    "mass_conservation_governance_unchanged": true
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "independently_qualified_upstream": true,
+    "qualified_for_canonical_source_admission": true,
+    "canonical_source_admitted": true,
+    "governance_reconciliation_qualified": true,
+    "governance_reconciliation_canonical": true,
+    "post_reconciliation_canonical_ci_passed": true,
+    "architecture_audit_30_of_30_no_violation": true,
+    "final_status_is_governance_only": true
+  },
+  "scope_guard": {
+    "scientific_requalification_in_f_ci33": false,
+    "process_source_change": false,
+    "solver_or_kernel_change": false,
+    "reference_change": false,
+    "runtime_callsite_composition": false,
+    "automatic_execution_claimed": false,
+    "mass_tolerance_relaxation": false
+  },
+  "exact_final_status_head_contract": {
+    "this_status_commit_must_be_requalified_on_its_exact_canonical_head": true,
+    "required_f_ci33_gate_result": "success",
+    "required_f_ci33r_gate_result": "success",
+    "required_broad_canonical_result": "success",
+    "required_runtime_hash": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "required_delta_from_3710eac": "only integration/f-ci/F-CI33_STATUS.json",
+    "further_status_mutation_after_success_required": false,
+    "interpretation": "When all exact-head conditions pass, this decision is fully closed without another status commit."
+  },
+  "nonclaim": "F-CI33 admits the qualified F-MR33 DIVDRA runtime binding source to canonical availability. It does not admit or claim an active production runtime orchestrator callsite invoking that binding. Such callsite composition requires a separate qualified workunit."
+}

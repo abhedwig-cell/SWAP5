@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI23",
+  "title": "Canonical Transaction Forward-Provenance Gate Reconciliation",
+  "branch": "qualification/f-ci23-canonical-provenance-gate-reconciliation",
+  "base": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "e5662a513846296585a1a7005729896c165091ac",
+    "source_workunit": "F-CI22",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "trigger": {
+    "post_F_CI22_canonical_workflow_run": 34404588323,
+    "failed_job": 102644396840,
+    "failed_check": "qualified_provenance:src/transaction/mod_transaction_reference.f90",
+    "current_transaction_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "same_failure_preexisted_on_pre_F_CI22_canonical_head": true,
+    "pre_F_CI22_canonical_run": 34322479909,
+    "pre_F_CI22_failed_job": 102372050348,
+    "classification": "INHERITED_STALE_PROVENANCE_GATE_NOT_NEW_PRODUCTION_REGRESSION"
+  },
+  "authority_chain": {
+    "F_CI03_original_transaction_blob": "5614ff261c9078def61959944aa57fd04c0d324a",
+    "F_CI08_intermediate_transaction_blob": "4a573316b77252b56bcb429fd519aa57123e9a06",
+    "F_CI08_provenance_blob": "1133d9d2e1923633495c23213a3e0fd94f19de51",
+    "F_KT09_candidate_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "F_KT09_candidate_transaction_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "F_KT09_decision_contract_blob": "7957c07ba3a1e31469f315b437f9ac3248a860e0",
+    "F_CI19_full_source_lineage_audit_blob": "5985d659c8aa4e22c34243417111b9b013a3a12f",
+    "F_CI19_source_lineage_gate_blob": "9444001ca56e4158e211060221dd4ecd63f7d7ef",
+    "F_CI19_source_lineage_run": 34320967298,
+    "F_CI19_source_lineage_job": 102367277768,
+    "F_CI19_source_lineage_conclusion": "success",
+    "F_CI19_status_blob": "b9a02d6e2ae61aac7fbe0788aaffc4b7e2896779"
+  },
+  "authority_interpretation": {
+    "current_transaction_blob_is_exact_F_KT09_candidate_blob": true,
+    "F_CI19_admitted_exact_F_KT09_candidate_source_postimage": true,
+    "F_CI19_requalified_generic_transaction_seam_as_Richards_free": true,
+    "F_CI19_requalified_generic_transaction_seam_as_calendar_free": true,
+    "hard_mass_and_rollback_preserved_in_F_CI19": true,
+    "F_CI22_changed_transaction_source": false
+  },
+  "allowed_changes": [
+    "integration/f-ci/F-CI23_*",
+    "tools/fci/fci03_transaction_substrate_gate.py",
+    ".github/workflows/fci23-canonical-provenance-reconciliation.yml"
+  ],
+  "forbidden_changes": [
+    "src/**",
+    "reference/**",
+    "tests/transaction/**",
+    "tests/runtime/**",
+    "physics formulas",
+    "numerical policy",
+    "qualified scientific scope"
+  ],
+  "required_gates": [
+    "G01 exact canonical base and immutable src/reference trees",
+    "G02 exact F-KT09 Candidate A transaction blob identity",
+    "G03 exact F-CI19 source-lineage authority identities and successful evidence",
+    "G04 F-CI03 provenance reader accepts current transaction source only through the new explicit forward-provenance record",
+    "G05 original A23 and F-CI08 provenance paths remain supported without weakening",
+    "G06 run F-CI03 transaction substrate gate successfully",
+    "G07 run complete canonical F-CI03 through F-CI18 chain successfully on the reconciliation branch",
+    "G08 no src/reference drift after all executable gates",
+    "G09 before any canonical metadata-only fast-forward, reverify current canonical head and strict ancestry",
+    "G10 after canonical update, require full canonical workflow success"
+  ],
+  "state": {
+    "plan_persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "canonical_updated": false,
+    "closed": false
+  },
+  "decision": "PLAN_PERSISTED_FAIL_CLOSED_PROVENANCE_RECONCILIATION_REQUIRED"
+}

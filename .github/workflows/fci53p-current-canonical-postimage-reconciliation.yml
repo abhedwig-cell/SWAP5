@@ -1,0 +1,50 @@
+name: F-CI53P current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci53p-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI53P_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI53P postimage reconciliation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _fci53p_evidence
+          git rev-parse HEAD | tee _fci53p_evidence/tested-head.txt
+          printf '%s\n' ccfaed51beeff8f3bc7de9ee2feef538af724bc9 | tee _fci53p_evidence/restart-authority.txt
+          printf '%s\n' da401b186a3b7f8a1f93881fa61ad45137561f99 | tee _fci53p_evidence/fci53-qualified-admission-head.txt
+          printf '%s\n' e83fe9a4955275935903730c4484c77fb0b117ff | tee _fci53p_evidence/fvq61-authority.txt
+          python3 tests/fci/run_fci53p_current_canonical_postimage_reconciliation.py | tee _fci53p_evidence/reconciliation.log
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI53P_EXACT_HEAD_END=PASS:${GITHUB_SHA}"
+      - name: Upload F-CI53P reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI53P-current-canonical-postimage-reconciliation-evidence
+          path: _fci53p_evidence
+          if-no-files-found: warn

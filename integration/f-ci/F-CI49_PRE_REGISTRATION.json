@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI49",
+  "title": "F-KT15 Restricted Production Soil-Water Task-2 Solver-Service Canonical Admission",
+  "branch": "qualification/f-ci49-fkt15-task2-solver-service-canonical-admission",
+  "phase": "PRE_REGISTERED_BEFORE_SOURCE_COMPOSITION",
+  "canonical_base": "e537baf521e633c432a9f33de495fab9f18e918d",
+  "donor_authorities": {
+    "F_KT15_final_closeout": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "F_KT15_qualified_production_candidate": "8ca0b0fb587cdb4dfb7cc5037f571406778f38c8",
+    "F_KT15R_recomposition": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+    "F_KT15_final_exact_head_run": 34675851064,
+    "F_KT15_final_exact_head_job": 103505456771,
+    "F_KT15_final_exact_head_conclusion": "success"
+  },
+  "admission_scope": {
+    "source_composition_only_before_governance": true,
+    "exact_source_allowlist": [
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "src/adapter/mod_b1_10_reference_model.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/legacy/b1_10_port/soilwater.f90",
+      "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "src/solver/mod_reference_linear_solver.f90",
+      "src/solver/mod_reference_richards_state_binding.f90",
+      "src/solver/mod_reference_richards_workspace.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "allowlist_size": 17,
+    "reference_changes_allowed": false,
+    "new_science_allowed": false,
+    "new_physics_allowed": false,
+    "new_solver_behavior_allowed": false,
+    "new_tangent_authority_allowed": false,
+    "scientific_tolerance_relaxation_allowed": false,
+    "mass_conservation_relaxation_allowed": false,
+    "production_MODFLOW_coupler_admission": false,
+    "whole_coupling_window_response_derivative_admission": false
+  },
+  "composition_rule": "Each of the 17 source paths must be byte-identical to the final qualified F-KT15 authority. No F-KT15 support, test, workflow or integration artifact is part of the source-composition commit.",
+  "qualification_requirements": [
+    "Live canonical must remain exactly the preregistered base until promotion.",
+    "Source-composition commit must be a direct child of the preregistration lineage based on the exact canonical base.",
+    "The source delta against canonical must equal exactly the 17-path allowlist.",
+    "Every composed source blob must equal the final F-KT15 donor blob.",
+    "F-KT15 task-2 qualification and F-KT14 accepted-only transport must replay successfully at O0 and O2.",
+    "F-KT15R producer/transport/dynamic-top qualification provenance must remain pinned.",
+    "All 30 SWAP architecture invariants must be audited.",
+    "Hard water balance and fail-closed unsupported-route behavior must remain unchanged.",
+    "Promotion requires exact-head success plus an unchanged live canonical race guard."
+  ],
+  "hard_nonclaims": [
+    "No production SWAP-MODFLOW coupler is admitted by F-CI49.",
+    "No whole-coupling-window response derivative is admitted.",
+    "No interface tangent is claimed for atmospheric-head, ponded-head or runoff regimes.",
+    "No active-root, macropore, frost, SWDRA=2, time-dependent PONDMX or nonlinear-runoff typed route is admitted.",
+    "No throughput or allocation-performance claim is made.",
+    "RB1 is not modified or reopened."
+  ],
+  "decision_if_green": "QUALIFIED_FKT15_RESTRICTED_TASK2_SOLVER_SERVICE_FOR_CANONICAL_ADMISSION"
+}

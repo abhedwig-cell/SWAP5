@@ -1,0 +1,40 @@
+name: F-CI51 WOF43A current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci51-wof43a-current-canonical-admission
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/crop/mod_crop_et_canopy_view_provider.f90'
+      - 'src/crop/mod_wofost_rate_table.f90'
+      - 'tests/fwof/**'
+      - 'tests/fvq/**'
+      - 'tests/fci/run_fci51_wof43a_current_canonical_gate.sh'
+      - 'integration/f-wof/F-WOF43A_*'
+      - 'integration/f-vq/F-VQ37_*'
+      - 'integration/f-ci/F-CI51_*'
+      - '.github/workflows/fwof43a-crop-et-canopy-view-provider.yml'
+      - '.github/workflows/fvq37-fwof43a-crop-et-canopy-view-provider.yml'
+      - '.github/workflows/fci51-wof43a-current-canonical-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-current-canonical-recomposition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI51 current-canonical WOF43A gate
+        run: bash tests/fci/run_fci51_wof43a_current_canonical_gate.sh

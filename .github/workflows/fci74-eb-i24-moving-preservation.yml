@@ -1,0 +1,99 @@
+name: F-CI74 EB-I24 moving preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/process/mod_external_liquid_water_temperature.f90'
+      - 'src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90'
+      - 'src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90'
+      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'
+      - 'src/runtime/mod_eb_i23_sensible_boundary_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/process/mod_liquid_water_sensible_enthalpy.f90'
+      - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
+      - 'src/process/mod_restricted_soil_temperature.f90'
+      - 'src/process/mod_soil_temperature_contract.f90'
+      - 'tests/eb/EB-I24_CONTRACT.md'
+      - 'tests/eb/test_eb_i24_top_liquid_sensible_inflow_runtime.f90'
+      - 'tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh'
+      - 'tests/eb/run_f_vq91_eb_i24_independent_gate.sh'
+      - 'qualification/F-VQ91_STATUS.json'
+      - 'qualification/F-VQ93_STATUS.json'
+      - 'integration/f-ci/F-CI74_STATUS.json'
+      - 'integration/f-ci/F-CI74P_STATUS.json'
+      - 'integration/f-ci/F-CI79_STATUS.json'
+      - 'integration/f-ci/F-CI79P_STATUS.json'
+      - '.github/workflows/fci74-eb-i24-moving-preservation.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_external_liquid_water_temperature.f90'
+      - 'src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90'
+      - 'src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90'
+      - 'src/runtime/mod_fmr_top_sensible_boundary_carrier.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/eb/EB-I24_CONTRACT.md'
+      - 'qualification/F-VQ91_STATUS.json'
+      - 'qualification/F-VQ93_STATUS.json'
+      - 'integration/f-ci/F-CI79P_STATUS.json'
+      - '.github/workflows/fci74-eb-i24-moving-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preserve-eb-i24:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve EB-I24 under admitted EB-I25 backend successor
+        shell: bash
+        run: |
+          set -euo pipefail
+          I24_ADMISSION=e189b141b6efa695197de1e59a41b4800ef3d5a2
+          I25_ADMISSION=b7c2e510c68e5799a138e881793d27037c482b8a
+          git merge-base --is-ancestor "$I24_ADMISSION" HEAD
+          git merge-base --is-ancestor "$I25_ADMISSION" HEAD
+          declare -A BLOBS=(
+            [src/process/mod_external_liquid_water_temperature.f90]=64b85363e764d2c6e2777f5f1258abb3ac9e5abf
+            [src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90]=5f27ff7a4fa67a3991c622d960a7133857dab1c2
+            [tests/eb/EB-I24_CONTRACT.md]=b7a504860ed027e87dad04731af63c933f668984
+            [tests/eb/test_eb_i24_top_liquid_sensible_inflow_runtime.f90]=acd53e6e38598264d172e17d2596bebfb024e7fe
+            [tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh]=0a06a96cc7295d9e509083bfb712ea429df9d519
+            [tests/eb/run_f_vq91_eb_i24_independent_gate.sh]=5dc217432f42fbd0c103e59500d002241946992c
+            [qualification/F-VQ91_STATUS.json]=d81c331b6623df66e060f043255e8a3c9a9dc8b0
+            [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
+            [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
+            [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
+            [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
+            [src/process/mod_restricted_soil_temperature.f90]=fa4e1d7b48d3515e6569c9080d497178c25c4e85
+            [src/process/mod_soil_temperature_contract.f90]=baa13df3975de2c699b0ec910477bcfa9b47f15e
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=960ea116cad81e8c0db8a579982f4999b3d085ed
+            [src/runtime/mod_fmr_top_sensible_boundary_carrier.f90]=299717757082ff06e98bd3aaec2c0b8b3013ea21
+            [src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90]=fc88731c12c8af5136aad13bda2a7da3d768dc4c
+          )
+          for path in "${!BLOBS[@]}"; do test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"; done
+          python3 -m json.tool qualification/F-VQ91_STATUS.json >/dev/null
+          python3 -m json.tool qualification/F-VQ93_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI74P_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI79P_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I24_INDEPENDENT"' qualification/F-VQ91_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_EB_I25_INDEPENDENT"' qualification/F-VQ93_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI74P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI74P_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI79P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI79P_STATUS.json
+          grep -Fq '"legacy_eb_i24_successor_composed": true' integration/f-ci/F-CI79P_STATUS.json
+          grep -Fq '"top_liquid_outflow_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"snow_or_melt_top_sensible_materialized": false' qualification/F-VQ91_STATUS.json
+          grep -Fq '"one_canonical_commit_two_internal_half_samples": true' qualification/F-VQ93_STATUS.json
+          grep -Fq '"accepted_external_full_half_top_liquid_outflow": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"snow_or_melt_thermal_provenance": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79P_STATUS.json
+          echo 'FCI74_MOVING_EB_I24_SUCCESSOR_COMPOSITION=PASS'
+          echo 'FCI74_MOVING_I25_BOUNDED_MULTISUBSTEP_EXTENSION=PASS'
+          echo 'FCI74_MOVING_OUTFLOW_SNOW_FAIL_CLOSED=PASS'
+          echo 'FCI74_MOVING_FULL_ENERGY_BALANCE_NONCLAIM=PASS'

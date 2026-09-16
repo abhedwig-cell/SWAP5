@@ -1,0 +1,117 @@
+{
+  "schema_version": 2,
+  "work_unit": "F-WOF43A",
+  "title": "Restricted Crop-to-ET Canopy View Provider Candidate",
+  "branch": "work/f-wof43a-crop-et-canopy-view-provider",
+  "base": "4ebbbb6563132a80c26a22124d9261928fe2ffbf",
+  "readiness_authority": "F-WOF43",
+  "restricted_profile": {
+    "intended_consumer": "F-PM06A restricted stateless reference ET demand",
+    "SWETR": 1,
+    "SWCF": 1,
+    "SWINTER": 0,
+    "semantic_parameter_sources": ["fixed crop", "WOFOST"],
+    "fixed_crop_adapter_qualified": false,
+    "wofost_adapter_qualified": false,
+    "runtime_binding": false
+  },
+  "input_contract": {
+    "state_view": ["crop_emerged", "development_stage", "leaf_area_index"],
+    "immutable_parameters": ["KDIR", "KDIF", "CFTB"],
+    "optional_immutable_parameters": ["CO2TRATB when CO2 correction enabled"],
+    "optional_forcing": ["atmospheric_CO2_ppm when CO2 correction enabled"]
+  },
+  "output_contract": [
+    "crop_emerged",
+    "vegetation_cover_fraction",
+    "crop_factor",
+    "co2_transpiration_factor",
+    "crop_specific_factors_valid"
+  ],
+  "source_equations": {
+    "vcover": "1-exp(-KDIR*KDIF*LAI)",
+    "CF": "AFGEN(CFTB,DVS)",
+    "fco2tra_disabled": "1",
+    "fco2tra_enabled": "AFGEN(CO2TRATB,CO2)"
+  },
+  "source_bound_domains": {
+    "KDIR": [0.0, 2.0],
+    "KDIF": [0.0, 2.0],
+    "CFTB_DVS": [0.0, 2.0],
+    "CFTB_factor": [0.0, 2.0],
+    "CO2TRATB_ppm": [0.0, 3000.0],
+    "CO2TRATB_factor": [0.0, 2.0],
+    "active_atmospheric_CO2_ppm": [10.0, 3000.0]
+  },
+  "dependency_rules": {
+    "LAI_KDIR_KDIF_consumed_regardless_of_emergence": true,
+    "DVS_CFTB_consumed_only_when_emerged": true,
+    "CO2_forcing_and_CO2TRATB_consumed_only_when_emerged_and_enabled": true,
+    "nonemerged_vcover_forced_to_zero": false
+  },
+  "storage": {
+    "persistent_process_state": false,
+    "derived_view_persistent": false,
+    "parameter_tables": "shared immutable active knots via qualified F-WOF29 table substrate",
+    "per_column_table_copy_required": false
+  },
+  "transaction": {
+    "input_state_read_only": true,
+    "forcing_read_only": true,
+    "view_ephemeral": true,
+    "rejected_trial_mutation": false,
+    "snapshot_lineage_binding_deferred_to_runtime": true
+  },
+  "time": {
+    "calendar_lookup_inside_provider": false,
+    "kernel_day_assumption": false,
+    "CO2_forcing_validity_owned_by_runtime_adapter": true
+  },
+  "mass": {
+    "authoritative_water_flux": false,
+    "mass_ledger_contribution": false
+  },
+  "held_scope": [
+    "fixed-crop parser/parameter adapter",
+    "WOFOST parameter adapter",
+    "runtime crop-snapshot binding",
+    "F-PM06A runtime composition",
+    "root-uptake runtime composition",
+    "reference ET computation",
+    "actual root extraction",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "interception",
+    "Penman-Monteith",
+    "SWREDU",
+    "legacy file parsing",
+    "calendar-year CO2 lookup"
+  ],
+  "required_candidate_gate": [
+    "single new production module delta from F-WOF43 base",
+    "F-WOF29 AFGEN table source lock",
+    "source-bound vcover/CF/fco2tra equations",
+    "source-bound active input domains",
+    "AFGEN interpolation and endpoint cases",
+    "non-emerged nonzero cover",
+    "inactive DVS/CO2 dependency minimality",
+    "CO2 disabled forcing independence",
+    "active invalid input fail closed under floating-point traps",
+    "no I/O/calendar/hydraulic/runtime internals",
+    "no persistent derived view state",
+    "O0/O2 output identity",
+    "A-B-A stateless replay"
+  ],
+  "deferred_integration_locks": {
+    "crop_owner_source_lock": "required when an actual crop snapshot adapter is introduced",
+    "F_PM06A_source_lock": "required when the provider is composed into ET runtime",
+    "root_uptake_source_lock": "required when ptra is composed into the root-uptake seam",
+    "reason": "F-WOF43A imports or mutates none of these production owners; pretending to lock them here would not qualify their future binding"
+  },
+  "qualification_boundary": {
+    "owner_candidate_gate": "source-bound structural/provider qualification only",
+    "independent_scientific_verification": "required in a separate F-VQ workunit before canonical admission",
+    "canonical_admission": false,
+    "runtime_admission": false
+  }
+}

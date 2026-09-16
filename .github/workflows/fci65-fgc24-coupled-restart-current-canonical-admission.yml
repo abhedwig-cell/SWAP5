@@ -1,0 +1,28 @@
+name: F-CI65 F-GC24 coupled restart current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci65-fgc24-coupled-restart-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "FCI65_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FCI65_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI65 fail-closed admission gate
+        run: bash tests/fci/run_fci65_fgc24_coupled_restart_current_canonical_admission.sh

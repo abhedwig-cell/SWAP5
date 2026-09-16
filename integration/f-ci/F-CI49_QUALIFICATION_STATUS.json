@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.fci49_status.v1",
+  "work_unit": "F-CI49",
+  "title": "Definitive F-KT15 Solver-Service Transaction Composition Canonical Admission",
+  "branch": "qualification/f-ci49-fkt15-task2-solver-service-canonical-admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FKT15_RESTRICTED_TASK2_SOLVER_SERVICE_FOR_CANONICAL_ADMISSION",
+  "exit_target": "QUALIFIED_FKT15_SOLVER_SERVICE_TRANSACTION_COMPOSITION_ADMITTED_TO_CURRENT_CANONICAL",
+  "canonical_base": "e537baf521e633c432a9f33de495fab9f18e918d",
+  "preregistration": "9e896c8a3aab287177af8968cc4fb6ae6dfb1858",
+  "source_composition": "dce3ac71ce7844c03fb23f2fdb0940e9a9216f7b",
+  "reconciliation_authority": "a67897f18636ba9b8edcd87bcba82cd546e322a5",
+  "definitive_kt15": {
+    "owner_branch": "work/f-kt15-task2-solver-service-production-composition",
+    "source_commit": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "source_tree": "f981d8b26f340d5710021cd08682045579bcd63a",
+    "qualified_candidate": "8ca0b0fb587cdb4dfb7cc5037f571406778f38c8",
+    "current_canonical_ancestry_postimage": "9465be74c01fe6455466e5ba7f62a761986ad450"
+  },
+  "superseded_or_nonowner_branches": [
+    {"branch":"work/f-kt15-production-soil-water-solver-service-transaction-composition","classification":"HISTORICAL_SUPERSEDED"},
+    {"branch":"work/f-kt15r-current-canonical-transaction-composition","classification":"ABANDONED_DUPLICATE"},
+    {"branch":"work/f-kt15r-production-solver-service-current-canonical-recomposition","classification":"REMEDIATION_ANCESTOR"}
+  ],
+  "source_allowlist": [
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/adapter/mod_b110_production_soil_water_task2.f90",
+    "src/adapter/mod_b1_10_reference_model.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/legacy/b1_10_port/soilwater.f90",
+    "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "src/runtime/mod_canonical_contracts.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/solver/mod_reference_linear_solver.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/solver/mod_reference_richards_workspace.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/transaction/mod_transaction_reference.f90"
+  ],
+  "qualification_evidence": {
+    "definitive_donor_final_closeout_run": 34675851064,
+    "fci49_first_full_green_admission_run": 34677619807,
+    "fci49_first_full_green_head": "6e7601b5ec2d9435fcd3b78132c2a8ab62b082c9",
+    "fkt14_live_effective_authority": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "fkt14_exact_head_run": 34545458355
+  },
+  "fkt14_provenance_reconciliation": {
+    "stale_sha_recorded_in_fkt15_lineage_reconciliation": "9796f1d32d73018ed5266af80524677abc5ec906",
+    "stale_sha_fetchable": false,
+    "live_effective_qualified_head": "2f7995df362c65916671278a5552ed9976ed39b3",
+    "exact_head_run": 34545458355,
+    "exact_head_run_conclusion": "success",
+    "disposition": "STALE_RECONCILIATION_POINTER_CORRECTED_IN_FCI49_QUALIFICATION_ONLY"
+  },
+  "gate_matrix": {
+    "definitive_single_owner": "PASS",
+    "exact_definitive_donor_source_identity": "PASS",
+    "transaction_semantics": "PASS",
+    "rejected_trial_immutability": "PASS",
+    "commit_rollback": "PASS",
+    "retry_fail_closed": "PASS",
+    "mass_conservation": "PASS_HARD",
+    "restart_split_run": "PASS",
+    "deterministic_replay": "PASS",
+    "generic_t0_t1": "PASS",
+    "solver_service_ownership": "PASS",
+    "no_solver_scratch_persistence": "PASS",
+    "compact_committed_restart_state": "PASS",
+    "current_canonical_compatibility": "PASS",
+    "O0_O2_task2_surface_identity": "PASS",
+    "O0_O2_fkt14_transport_identity": "PASS",
+    "O0_O2_commit_rejection_identity": "PASS",
+    "O0_O2_restart_identity": "PASS",
+    "reference_immutability": "PASS",
+    "architecture_invariants_30_of_30": "PASS"
+  },
+  "scope_guards": {
+    "new_physics": false,
+    "new_solver_functionality": false,
+    "opportunistic_refactor": false,
+    "superseded_branch_union_or_cherrypick": false,
+    "scientific_tolerance_relaxed": false,
+    "mass_conservation_relaxed": false,
+    "reference_changed": false,
+    "RB1_reopened": false
+  },
+  "architecture_audit": "integration/f-ci/F-CI49_ARCHITECTURE_AUDIT.json",
+  "promotion_requirements": {
+    "canonical_must_still_equal": "e537baf521e633c432a9f33de495fab9f18e918d",
+    "exact_status_head_workflow_must_succeed": true,
+    "source_blobs_must_remain_definitive_donor_identical": true,
+    "true_two_parent_merge_required": true,
+    "first_parent": "e537baf521e633c432a9f33de495fab9f18e918d",
+    "second_parent": "EXACT_QUALIFIED_STATUS_HEAD",
+    "force_update_forbidden": true,
+    "postimage_reconciliation_required": true
+  },
+  "next_required_step": "Run the exact-head F-CI49 workflow on this status commit. Promote only if it succeeds and integration/f-ci-canonical remains exactly e537baf521e633c432a9f33de495fab9f18e918d."
+}

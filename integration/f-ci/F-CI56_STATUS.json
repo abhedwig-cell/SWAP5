@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI56",
+  "title": "F-GC21 Restricted Predictor-Corrector Coupling Window Orchestrator Current-Canonical Admission",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
+  "decision": "QUALIFIED_F_CI56_SOURCE_ADMISSION_FINALIZED",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+  "production_composition": "09895c05b5d2e11ead16bfcdf018d210da18eb77",
+  "owner_authority": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+  "independent_authority": "466119889a3f09b33ede638322e897bded2472a3",
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_CANONICAL_ADMISSION",
+  "mass_conservation": "HARD_EXACT_NO_INTERFACE_TOLERANCE",
+  "composition_verified": true,
+  "three_production_blobs_match_independent_source_postimage": true,
+  "independent_qualification": true,
+  "canonical_admission": true,
+  "production_groundwater_coupling_admission": false,
+  "production_blobs": {
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "f3bf2effebc772b1e3417232d2baabe49ebb8da0",
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90": "649b3587a730d2ae3b0e3b8a512fadc216e202f6"
+  },
+  "promotion": {
+    "pull_request": 104,
+    "merge_method": "merge",
+    "true_two_parent_merge": true,
+    "canonical_source_merge": "699021ab95df35d44e9711612d9ce97939f0025e",
+    "first_parent": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+    "second_parent": "bbaa4f2b826b6da7bdca0dfb670b49813616a950",
+    "source_merge_tree": "8b3afdf8c7c13a6ef198b8a41d34a36c714c5f12"
+  },
+  "prepromotion_evidence": {
+    "final_fci56_qualification": {
+      "head": "bbaa4f2b826b6da7bdca0dfb670b49813616a950",
+      "run": 34745642991,
+      "job": 103692984419,
+      "conclusion": "success"
+    },
+    "broad_pull_request_canonical_qualification": {
+      "run": 34745693229,
+      "current_restricted_canonical_preservation_job": 103693293443,
+      "conclusion": "success"
+    }
+  },
+  "postpromotion_source_postimage_evidence": {
+    "head": "699021ab95df35d44e9711612d9ce97939f0025e",
+    "broad_canonical_push_qualification": {
+      "run": 34745820847,
+      "current_restricted_canonical_preservation_job": 103693633972,
+      "conclusion": "success"
+    },
+    "supplementary_fci51p_r3_moving_preservation": {
+      "run": 34745820895,
+      "conclusion": "success"
+    }
+  },
+  "hard_nonclaims": [
+    "No full production direct-groundwater or MODFLOW/aquifer end-to-end admission.",
+    "No crash-recovery or distributed transaction protocol qualification.",
+    "No F-GC20 tile-aggregation composition admission.",
+    "No F-GC22 application temporal-accuracy composition admission.",
+    "No F-GC23 response-tangent composition admission.",
+    "No large-batch throughput qualification.",
+    "RB1 remains frozen."
+  ],
+  "final_closeout_policy": "This metadata-only closeout commit cannot cite its own later workflow run. After the canonical ref is advanced to this commit, require one external broad F-CI canonical push qualification on that exact final head with current-restricted-canonical-preservation green. Once that external evidence is green, F-CI56 is operationally closed and no further F-CI56 metadata commit is permitted merely to record that run."
+}

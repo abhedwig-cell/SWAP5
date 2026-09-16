@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fci53p_pre_registration.v1",
+  "work_unit": "F-CI53P",
+  "title": "GC18R Transactional Groundwater Exchange Current-Canonical Postimage Reconciliation",
+  "branch": "qualification/f-ci53p-current-canonical-postimage-reconciliation",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_authority": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9",
+  "fci53_source_admission": {
+    "prepromotion_canonical": "9770a659d5a93d9abe1341815b57c0fb2fea15ec",
+    "production_composition": "e0e8462c0d09034dcbdadb99ec16670667d37715",
+    "qualified_admission_head": "da401b186a3b7f8a1f93881fa61ad45137561f99",
+    "admitted_postimage": "ccfaed51beeff8f3bc7de9ee2feef538af724bc9"
+  },
+  "authorities": {
+    "owner": "cfa4e9dcd9a283d85ade316651d34cac93958a4a",
+    "independent_f_vq61": "e83fe9a4955275935903730c4484c77fb0b117ff",
+    "frozen_blocked_f_vq60": "773b1dec23957f2d86648b82ab76f8daede2cbbc"
+  },
+  "qualified_blobs": {
+    "transactional_groundwater_exchange_service": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "typed_groundwater_coupling_contract": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+  },
+  "scope": {
+    "governance_only_reconciliation": true,
+    "production_source_change_allowed": false,
+    "reference_change_allowed": false,
+    "fci_canonical_workflow_change_required": false,
+    "reason_no_moving_preservation_change": "The F-CI53 admitted postimage already passed the broad current-canonical workflow, including current-restricted-canonical-preservation, so no stale moving-preservation authority is present to remediate.",
+    "new_physics": false,
+    "new_solver_functionality": false,
+    "scientific_tolerance_change": false,
+    "mass_conservation_relaxation": false,
+    "RB1_reopened": false
+  },
+  "qualification_requirements": [
+    "live integration/f-ci-canonical remains exactly the F-CI53 admitted postimage during prepromotion qualification",
+    "the F-CI53 admission postimage is a true two-parent merge with the pinned prepromotion canonical first and exact qualified F-CI53 head second",
+    "the complete F-CI53 source-admission delta is exactly the six admitted files and contains exactly one production source file",
+    "the admitted transactional service and F-GC17 typed groundwater contract blobs remain byte-identical",
+    "owner, F-VQ61 and frozen F-VQ60 authorities remain exact and retain their qualified/blocked semantics",
+    "the recorded postpromotion broad canonical workflow and current-restricted-canonical-preservation job are green on the admitted postimage",
+    "F-CI53P changes governance/test evidence only and leaves src, reference and .github/workflows/fci-canonical.yml byte-identical to the admitted postimage",
+    "the exact admitted runtime image independently replays owner and F-VQ61 adversarial tests at O0 and O2 with runtime/FPE checks",
+    "all 30 SWAP architecture invariants remain reconciled with no adverse delta",
+    "hard mass conservation and exactly-once transaction publication are not relaxed"
+  ],
+  "promotion_rule": "Promote only after an exact-head F-CI53P qualification is green and integration/f-ci-canonical still equals the pinned restart authority. Promotion must be a true two-parent governance merge with live canonical as first parent and the exact qualified F-CI53P head as second parent. No squash, rebase or force update.",
+  "postpromotion_rule": "After promotion, the broad current-canonical workflow including current-restricted-canonical-preservation must be green before final closeout. Final closeout may update integration metadata only and must not mutate production, reference, scientific tolerances or canonical preservation logic.",
+  "hard_nonclaims": [
+    "F-CI53P adds no MODFLOW adapter, aquifer solver or physical groundwater response model.",
+    "F-CI53P does not claim end-to-end production coupling admission or full predictor-corrector convergence.",
+    "F-CI53P does not add process-crash recovery or distributed transaction semantics.",
+    "F-CI53P does not claim large-batch MultiSWAP throughput qualification.",
+    "F-CI53P does not reopen RB1."
+  ]
+}

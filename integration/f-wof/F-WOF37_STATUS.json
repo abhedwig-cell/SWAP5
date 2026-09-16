@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF37",
+  "title": "Physical Accepted-Window Crop-Event Composition and Donor Closure Qualification",
+  "branch": "work/f-wof37-physical-accepted-window-crop-event-composition",
+  "base": "cf790e559884f2c834db098fe6a010527cd504bf",
+  "definitive_tested_head": "48ca718ddb11d8c6492460c0116623750189f904",
+  "qualification_evidence_commit": "0fadfe845f78a393d8ed008ae34c33074db33f5f",
+  "production_implementation": false,
+  "production_source_closure_materialized": true,
+  "production_runtime_orchestration_added": false,
+  "production_end_to_end_crop_event_admitted": false,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "RESTRICTED_PREPUBLICATION_ACCEPTED_PHYSICAL_WINDOW_TO_DETERMINISTIC_WOFOST_CROP_CANDIDATE_COMPOSITION_WITH_ATOMIC_PUBLICATION_FAIL_CLOSED",
+  "production_source_paths_added": [
+    "src/crop/mod_wofost_finalize_rates.f90",
+    "src/crop/mod_wofost_one_day_rate_state_view.f90",
+    "src/crop/mod_wofost_prepare_assimilation.f90",
+    "src/crop/mod_wofost_rate_parameters.f90",
+    "src/crop/mod_wofost_rate_table.f90",
+    "src/crop/mod_wofost_two_phase_crop_window.f90"
+  ],
+  "gate_A": {
+    "name": "MINIMAL_F_WOF33_DONOR_CLOSURE_AND_EXACT_REGRESSION",
+    "status": "QUALIFIED",
+    "workflow_run": 34345719304,
+    "workflow_job": 102446717448,
+    "conclusion": "success",
+    "exact_six_file_delta": true,
+    "exact_F_WOF33_transcript_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f",
+    "O0_O2_identity": true,
+    "crop_kernel_runtime_transaction_IO_isolation": true
+  },
+  "gate_B": {
+    "name": "ACCEPTED_WINDOW_TO_PREPARED_CROP_CANDIDATE_COMPOSITION",
+    "status": "QUALIFIED_PREPUBLICATION_ONLY",
+    "workflow_run": 34346993766,
+    "workflow_job": 102450831633,
+    "conclusion": "success",
+    "rejected_physical_trial_zero_contribution": true,
+    "accepted_frozen_aggregate_carrier": true,
+    "deterministic_crop_candidate": true,
+    "committed_crop_owner_unchanged_before_publication": true,
+    "delivery_acknowledgment_uncommitted_before_publication": true,
+    "failed_or_discarded_completion_nonmutating": true,
+    "replay_bitwise_deterministic": true,
+    "O0_O2_identity": true,
+    "atomic_publication": "HELD_FAIL_CLOSED",
+    "atomicity_evidence": "integration/f-wof/F-WOF37_GATE_B_ATOMICITY_HOLD.json"
+  },
+  "gate_C": {
+    "name": "F_WOF36_REAL_PHYSICS_AND_F_WOF34_LINEAGE_PRESERVATION",
+    "status": "QUALIFIED",
+    "workflow_run": 34347474722,
+    "workflow_job": 102452397298,
+    "conclusion": "success",
+    "physical_and_mass_identity": true,
+    "exact_QROT_PTRA_integrals": true,
+    "true_single_column_multiswap_identity": true,
+    "batch_and_input_order_identity": true,
+    "A_B_A_replay": true,
+    "reject_then_accept_retry_exactly_once": true,
+    "duplicate_accepted_interval_zero_extra_contribution": true,
+    "invalid_or_mismatched_precommit_zero_mutation": true,
+    "F_WOF34_exact_transcript_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "O0_O2_identity": true
+  },
+  "superseded_test_failure": {
+    "workflow_run": 34347148249,
+    "classification": "QUALIFICATION_WRAPPER_ERROR",
+    "production_regression": false,
+    "fixed_by": "48ca718ddb11d8c6492460c0116623750189f904",
+    "acceptance_criteria_changed": false
+  },
+  "post_test_metadata_only": {
+    "production_source_changed_after_definitive_test": false,
+    "metadata_files_added_after_test": [
+      "integration/f-wof/F-WOF37_QUALIFICATION_EVIDENCE.json",
+      "integration/f-wof/F-WOF37_STATUS.json"
+    ]
+  },
+  "architecture_invariants": {
+    "7_transactional_timesteps": "PASS_FOR_PREPUBLICATION_RETRY_ISOLATION; END_TO_END_PUBLICATION_HELD",
+    "8_cheap_recompute_and_warm_start": "PASS_FOR_REPLAY_OF_DISCARDED_CROP_COMPLETION_FROM_SAME_COMMITTED_OWNER_AND_FROZEN_AGGREGATES",
+    "9_generic_time": "PASS_NO_NEW_CALENDAR_OR_MIDNIGHT_RUNTIME_DEPENDENCY",
+    "13_mass_conservation": "PASS_F_WOF36_HARD_MASS_BEHAVIOUR_PRESERVED",
+    "16_multiswap_primary": "PASS_EXISTING_F_WOF36_TRUE_SINGLE_COLUMN_MULTISWAP_IDENTITY_PRESERVED",
+    "23_physics_solver_policy_separation": "PASS_NO_ROOT_ET_OR_RICHARDS_PHYSICS_CHANGE",
+    "28_runtime_coupler_composition": "PASS_DIRECTIONALLY_ATOMIC_OWNER_COMPOSITION_REMAINS_OUTSIDE_CROP_KERNEL",
+    "29_no_silent_dependencies": "PASS_NO_FILE_IO_CALENDAR_OR_MODFLOW_DEPENDENCY_ADDED",
+    "30_explicit_qualification": "PASS_FAIL_CLOSED_AT_UNQUALIFIED_PUBLICATION_FRONTIER"
+  },
+  "scope_holds": {
+    "new_crop_commit_authority_added": false,
+    "F_KT_commit_authority_changed": false,
+    "generic_external_kernel_candidate_adoption_added": false,
+    "crop_event_delivery_semantics_changed": false,
+    "mass_accounting_changed": false,
+    "root_uptake_physics_changed": false,
+    "ET_physics_changed": false,
+    "calendar_scheduler_added": false,
+    "persistent_solver_scratch_added": false,
+    "canonical_promotion": false
+  },
+  "not_qualified": [
+    "atomic production publication of crop-owner candidate and exactly-once event-delivery acknowledgment as one transaction outcome",
+    "WOFOST transaction participant or composite-owner implementation",
+    "restart/crash atomicity for active accepted crop windows",
+    "calendar-derived WOFOST scheduling",
+    "historical multi-day B1.10 crop trajectory equivalence",
+    "canonical promotion of the F-WOF37 composed source tree"
+  ],
+  "next_required_work": "Qualify a transaction-owned crop publication seam in which the WOFOST crop-owner candidate and accepted-window delivery acknowledgment succeed or fail atomically from the same lineage/revision/event provenance. Do not solve this by exposing a generic arbitrary external kernel-candidate adoption API.",
+  "decision": "QUALIFIED_RESTRICTED_PREPUBLICATION_COMPOSITION_FAIL_CLOSED_AT_ATOMIC_CROP_PUBLICATION_FRONTIER",
+  "status": "QUALIFIED_RESTRICTED_PREPUBLICATION_COMPOSITION_SCOPE_COMPLETE_ATOMIC_PUBLICATION_REQUIRES_FOLLOWUP"
+}

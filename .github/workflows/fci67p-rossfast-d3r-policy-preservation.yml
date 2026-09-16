@@ -1,0 +1,76 @@
+name: F-CI67P RossFast D3R policy preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+      - qualification/f-ci67p-rossfast-d3r-policy-preservation
+      - qualification/f-ci67pr1-preservation-scope-reconciliation
+    paths:
+      - 'src/runtime/mod_rossfast_d3r_execution_policy.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fci/run_fci67_rossfast_d3r_execution_policy_admission.sh'
+      - 'tests/fci/test_fci67_rossfast_d3r_execution_policy.f90'
+      - 'integration/f-ci/F-CI67_STATUS.json'
+      - 'integration/f-ci/F-CI67P_STATUS.json'
+      - 'integration/f-ci/F-CI67PR1_STATUS.json'
+      - '.github/workflows/fci67p-rossfast-d3r-policy-preservation.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_rossfast_d3r_execution_policy.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fci/run_fci67_rossfast_d3r_execution_policy_admission.sh'
+      - 'tests/fci/test_fci67_rossfast_d3r_execution_policy.f90'
+      - 'integration/f-ci/F-CI67_STATUS.json'
+      - 'integration/f-ci/F-CI67P_STATUS.json'
+      - 'integration/f-ci/F-CI67PR1_STATUS.json'
+      - '.github/workflows/fci67p-rossfast-d3r-policy-preservation.yml'
+
+jobs:
+  preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock admitted F-CI67 authority and relevant dependency surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          AUTH=ea9a33fd856d862a5e1ae327cb1e781ef9ecf9ea
+          POLICY=src/runtime/mod_rossfast_d3r_execution_policy.f90
+          STATUS=integration/f-ci/F-CI67_STATUS.json
+
+          git merge-base --is-ancestor "$AUTH" HEAD
+          test "$(git rev-parse "HEAD:$POLICY")" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
+          test "$(git rev-parse "HEAD:$STATUS")" = 3644f5edabf51ac4a598bb014e03d4eb38f3e4c2
+          test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = d5a71a526efaebd82054580c3186f8e3545db331
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" = 3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_interval_runtime.f90)" = b12327aa6e77bdbf4586fe0bed82cf0e7704f237
+
+          # Preservation is dependency-scoped. Later admitted source outside the
+          # F-CI67 policy composition does not invalidate immutable F-CI67 evidence.
+          git diff --quiet "$AUTH"..HEAD -- \
+            "$POLICY" \
+            "$STATUS" \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90
+          echo 'FCI67P_AUTHORITY_AND_RELEVANT_DEPENDENCY_SURFACE=PASS'
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Replay admitted F-CI67 policy composition
+        run: bash tests/fci/run_fci67_rossfast_d3r_execution_policy_admission.sh
+
+      - name: Preservation decision
+        run: |
+          echo 'FCI67P_ROSSFAST_D3R_POLICY_BLOB_PRESERVED=PASS'
+          echo 'FCI67P_RELEVANT_DEPENDENCY_COMPOSITION_PRESERVED=PASS'
+          echo 'FCI67P_UNRELATED_LATER_SOURCE_ALLOWED=PASS'

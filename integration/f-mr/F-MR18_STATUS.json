@@ -1,0 +1,79 @@
+{
+  "schema_version": 4,
+  "workstream": "F-MR",
+  "work_unit": "F-MR18",
+  "branch": "work/f-mr18-generic-accepted-commit-receipt",
+  "base": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
+  "production_implementation": true,
+  "implementation_commit": "0045a5239adac2e67d59753461264d1fdc3ac6b9",
+  "production_paths": [
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "GENERIC_ACCEPTED_COMMIT_RECEIPT_SEAM_AND_SERIALIZED_MULTISWAP_OPTIONAL_SPARSE_ROUTING",
+  "qualification": {
+    "gate_A_B_tested_head": "3d0c1008f1372c59cf716427453296a688b84bdf",
+    "gate_A_B_workflow_run": 34335331677,
+    "gate_A_B_workflow_job": 102413272679,
+    "gate_A_B_conclusion": "success",
+    "gate_A_B_evidence": "integration/f-mr/F-MR18_QUALIFICATION_EVIDENCE.json",
+    "gate_C_tested_head": "5cce4cdbfc7deac0fe40a0ed32b4591f6f704889",
+    "gate_C_workflow_run": 34337899251,
+    "gate_C_workflow_job": 102421518664,
+    "gate_C_conclusion": "success",
+    "gate_C_evidence": "integration/f-mr/F-MR18_GATE_C_QUALIFICATION_EVIDENCE.json"
+  },
+  "gate_A": {
+    "name": "GENERIC_COMMIT_HANDOFF_DESIGN_SELECTION",
+    "status": "QUALIFIED_RECEIPT_CANDIDATE",
+    "selected_candidate": "GENERIC_ACCEPTED_COMMIT_RECEIPT",
+    "postcommit_domain_callback": "REJECTED_FOR_CURRENT_SCOPE",
+    "kernel_commit_authority_remains_F_KT": true,
+    "domain_specific_imports_allowed": false,
+    "postcommit_expected_error_allowed": false
+  },
+  "gate_B": {
+    "name": "REAL_FKT_RECEIPT_SEMANTICS",
+    "status": "QUALIFIED",
+    "real_commit_exact_receipt": true,
+    "commit_rejection_no_receipt": true,
+    "precommit_mismatch_nonmutating": true,
+    "O0_O2_identity": true,
+    "F_WOF34_transcript_preserved": true
+  },
+  "gate_C": {
+    "name": "SERIALIZED_MULTISWAP_OPTIONAL_RECEIPT_INTEGRATION",
+    "status": "QUALIFIED",
+    "evidence": "integration/f-mr/F-MR18_GATE_C_QUALIFICATION_EVIDENCE.json",
+    "tested_head": "5cce4cdbfc7deac0fe40a0ed32b4591f6f704889",
+    "workflow_run": 34337899251,
+    "workflow_job": 102421518664,
+    "existing_no_receipt_runtime_route_behaviorally_identical": true,
+    "uses_execute_column_checkpoint_and_candidate": true,
+    "sparse_feature_scoped_receipt_request": true,
+    "persistent_optional_column_state_added": false,
+    "rejected_columns_expose_ready_receipt": false,
+    "accepted_requested_columns_expose_exact_receipt": true,
+    "deterministic_batch_and_A_B_A_replay": true,
+    "mass_accounting_unchanged": true,
+    "required_before_F_WOF36_resume": false,
+    "F_WOF36_resume_condition_satisfied": true
+  },
+  "scope": {
+    "existing_F_KT_source_changed": false,
+    "generic_receipt_source_added": true,
+    "serialized_MultiSWAP_runtime_changed": true,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "mass_accounting_changed": false,
+    "persistent_column_state_added": false,
+    "WOFOST_PTRA_QROT_binding_implemented": false,
+    "restart_crash_atomicity_qualified": false,
+    "canonical_promotion": false
+  },
+  "decision": "QUALIFIED_GENERIC_ACCEPTED_COMMIT_RECEIPT_AND_SERIALIZED_MULTISWAP_SPARSE_ROUTING_F_WOF36_RESUME_ALLOWED",
+  "status": "QUALIFIED_GATES_A_B_C_F_WOF36_RESUME_ALLOWED"
+}

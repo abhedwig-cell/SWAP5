@@ -1,0 +1,34 @@
+name: F-CI32 DIVDRA canonical source admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci32-fpm08br-divdra-canonical-admission
+
+jobs:
+  divdra-source-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch external qualification authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-pm08br-lev2comp-boundary-seam-remediation
+          git fetch --no-tags origin qualification/f-vq47-fpm08br-spatial-distribution-requalification
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI32 exact source admission gate and smoke
+        env:
+          FCI32_MODE: admission
+        run: bash tests/fci/run_fci32_divdra_canonical_admission.sh
+      - name: Final admission scope diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:src/process/mod_drainage_spatial_distribution.f90)" = 1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a
+          test "$(git rev-parse HEAD:src)" = f18948aef9a8755903951475078f218024ad3c42
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI32_ADMISSION_POSTIMAGE=PASS'

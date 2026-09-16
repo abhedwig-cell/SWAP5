@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.fci62p.status.v1",
+  "work_unit": "F-CI62P",
+  "title": "Prescribed-qbot temporal runtime current-canonical postimage reconciliation",
+  "branch": "qualification/f-ci62p-current-canonical-postimage-reconciliation",
+  "decision": "QUALIFIED_F_CI62P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "canonical_postimage": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+  "reconciled_head_before_status": "a4d70bb9dcbdf5af029f69a9b0161b266aab27b0",
+  "workflow_run": 34820052868,
+  "workflow_job": 103899336421,
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "production_reference_delta_in_reconciliation": false,
+  "preservation_evidence": {
+    "true_two_parent_promotion_and_live_postimage_lock": "PASS",
+    "exact_three_canonical_postimage_blobs": "PASS",
+    "reconciliation_scope_allowlist": "PASS",
+    "moving_current_authority_reconciliation": "PASS",
+    "F_CI62_and_F_VQ75_authority_reconciliation": "PASS",
+    "F_VQ75_postimage_runtime_replay": "PASS",
+    "positive_qbot_mass_residual_cm": -2.22044604925031308e-16,
+    "temporal_head_inf_bound_cm": 1.23628846478342984e-11,
+    "qualification_only_head_budget_cm": 2.5e-11,
+    "normalized_temporal_indicator": 0.494515385913371908
+  },
+  "canonical_moving_preservation": {
+    "previous_authority": "c7444233b0f23d4f0a845ef5639287e77099291b",
+    "reconciled_authority": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "marker": "FCI62_MOVING_PRESCRIBED_QBOT_TEMPORAL_RUNTIME_PRESERVATION=PASS"
+  },
+  "hard_nonclaims": [
+    "The qualification-only 2.5e-11 cm head budget is not a production, coupling, or application default.",
+    "No universal H_budget is introduced.",
+    "F-CI62P does not qualify EB-I18 energy publication.",
+    "F-CI62P changes no production or reference source semantics."
+  ],
+  "EB_I18_energy_publication_qualified": false,
+  "ready_for_postimage_reconciliation_promotion": true
+}

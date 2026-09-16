@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC23",
+  "phase": "QUALIFY",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "e9bb0e0f8da05f18b440b39e1a7b5a841d54aecb",
+  "owner_branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
+  "qualified_source_head": "20edbe2bfcecca24541fa2885fe9ff4e8c1fb172",
+  "production_source": "src/runtime/mod_groundwater_coupling_response.f90",
+  "production_semantics_changed_outside_f_gc23": false,
+  "owner_qualification": {
+    "workflow": ".github/workflows/fgc23-whole-window-response-tangent.yml",
+    "run_id": 35024160986,
+    "job_id": 104567001127,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "o0_o2_identity": true,
+    "static_contract_audit": true,
+    "accepted_only_composition": true,
+    "rejected_retry_zero_contribution": true,
+    "exact_window_and_origin_provenance": true,
+    "bottom_head_control_only": true,
+    "independent_whole_window_five_point_fd_reference": true,
+    "one_corrector_residual_contraction": true,
+    "no_extra_full_nonlinear_solve": true,
+    "unavailable_or_nonsmooth_fail_closed": true,
+    "stale_groundwater_response_fail_closed": true,
+    "ill_conditioned_fail_closed": true,
+    "input_carriers_unchanged": true,
+    "deterministic_response": true,
+    "no_structural_fd_normal_path": true,
+    "no_groundwater_commit_or_ledger_ownership": true
+  },
+  "preservation_locks": {
+    "F_GC20_source_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F_GC22_source_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F_GC21_mass_commit_rollback_source_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c"
+  },
+  "semantic_contract": {
+    "tangent_scope": "accepted whole coupling window only",
+    "swap_control_coordinate": "SW_STEP_CONTROL_BOTTOM_HEAD",
+    "swap_native_quantity": "d(integral qbot dt_day)/d(hbot_cm)",
+    "coupling_jacobian": "dr_H/dH_SWAP = 1 - (dH_GW/dq_GW)*(d integral qbot / d hbot)/(Delta_t_day*86400)",
+    "corrector": "H_corrector = H_predictor - r_H/J",
+    "finite_difference_role": "independent qualification reference only",
+    "local_terminal_relabel_forbidden": true,
+    "covers_requested_interval_scope_upgrade_forbidden": true
+  },
+  "verdict": "OWNER_QUALIFIED_PENDING_INDEPENDENT_QUALIFICATION",
+  "next_permitted_action": "Perform independent F-GC23 qualification against this immutable qualified source head. Only if independently qualified, proceed to bounded canonical admission.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "production-semantic changes solely to obtain PASS",
+    "structural finite difference normal path",
+    "broad MODFLOW adapter work",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}

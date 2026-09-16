@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM06A",
+  "title": "Restricted Stateless Reference-ET Demand Structural Candidate",
+  "branch": "work/f-pm06a-reference-et-demand-candidate",
+  "owner_readiness": {
+    "work_unit": "F-PM06",
+    "closeout": "2113dd20c2f20c77c3191c65be2f994955202037",
+    "decision": "QUALIFIED_ET_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE"
+  },
+  "candidate_base": "2113dd20c2f20c77c3191c65be2f994955202037",
+  "scope": {
+    "SWETR": 1,
+    "SWMETDETAIL": 0,
+    "SWDIVIDE": 0,
+    "SWINTER": 0,
+    "SWEVAP": 1,
+    "SWREDU": 0,
+    "SWCFBS": 0,
+    "persistent_ET_state": false,
+    "runtime_binding": false,
+    "hydraulic_limitation": false,
+    "root_uptake": false
+  },
+  "source_authority": {
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "ETpot_lines": "1399-1489",
+    "qualified_transpiration_evidence": "F-WOF18"
+  },
+  "inputs": {
+    "immutable_parameters": [
+      "pond_evaporation_factor"
+    ],
+    "forcing": [
+      "reference_et_mm_per_day"
+    ],
+    "read_only_crop_canopy_view": [
+      "crop_emerged",
+      "vegetation_cover_fraction",
+      "crop_factor only when crop_emerged",
+      "co2_transpiration_factor only when crop_emerged"
+    ],
+    "hydraulic_input": []
+  },
+  "outputs": {
+    "current_process_results": [
+      "potential_transpiration_cm_per_day",
+      "potential_soil_evaporation_cm_per_day",
+      "potential_pond_evaporation_cm_per_day"
+    ],
+    "authoritative_mass_contributions": [],
+    "persistent_state_delta": []
+  },
+  "source_equations": {
+    "potential_soil_evaporation": "max(reference_et_mm_per_day * (1 - vegetation_cover_fraction) * 0.1, 0)",
+    "potential_pond_evaporation": "max(reference_et_mm_per_day * (1 - vegetation_cover_fraction) * pond_evaporation_factor * 0.1, 0)",
+    "potential_transpiration_emerged": "max(reference_et_mm_per_day * vegetation_cover_fraction * crop_factor * 0.1, 0) * co2_transpiration_factor",
+    "potential_transpiration_not_emerged": "0"
+  },
+  "dependency_semantics": {
+    "reference_ET_cover_and_pond_factor_required_for_surface_demands": true,
+    "crop_factor_and_CO2_factor_not_consumed_when_crop_not_emerged": true,
+    "bare_soil_and_pond_demands_preserve_legacy_vcover_dependence_even_when_crop_not_emerged": true,
+    "crop_state_mutated": false,
+    "root_uptake_duplicated": false,
+    "HeadCalc_or_solver_internals_accessed": false
+  },
+  "time_contract": {
+    "output_kind": "rate valid for explicit forcing span",
+    "kernel_day_required": false,
+    "midnight_boundary_required": false,
+    "integration_into_mass": "downstream accepted interval only"
+  },
+  "transaction_contract": {
+    "process_is_stateless": true,
+    "rejected_trial_persistent_mutation": false,
+    "A_B_A_replay_required": true,
+    "potential_demands_are_not_mass_ledger_entries": true
+  },
+  "protected_owners": {
+    "root_water_uptake_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "wofost_crop_owner_state_blob": "31bb390a0b70bec0a3f525f1d704a2c53890f9b4"
+  },
+  "nonclaims": [
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "SWINTER=1,2,3",
+    "SWREDU=1,2",
+    "wet-canopy demand partition",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "actual root uptake",
+    "runtime composition",
+    "canonical admission",
+    "scientific qualification beyond the exact restricted source equations"
+  ],
+  "exit_target": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ"
+}

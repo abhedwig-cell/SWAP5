@@ -1,0 +1,36 @@
+name: F-CI30 post-promotion canonical verification
+
+on:
+  push:
+    branches:
+      - qualification/f-ci30-fmr27-parallel-v1-canonical-admission
+    paths:
+      - .github/workflows/fci30-post-promotion.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify-canonical:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/f-ci-canonical
+          fetch-depth: 0
+      - name: Verify exact promoted canonical head
+        run: |
+          set -euo pipefail
+          expected=755a626712be38ca360c5217334b73b5297f76f2
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$expected"
+          test "$(git rev-parse HEAD:src)" = d6fa88b076d39fa0ffd924ce08ae4d978649dc85
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_parallel_physical_scheduler.f90)" = 544a1ca16fdeebdfce7f89d1ddf1825fa32fa654
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_parallel_worker_pool.f90)" = 0e700797cbaed4aaab7f04db0054f72faddcfc15
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = 7bfb4a269256f0f1d50c32a20fd42479cf033528
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90)" = 11ef6182414af4fbe67eebec3d6f14742df04aca
+          echo FCI30_PROMOTED_CANONICAL_HEAD_AND_SOURCE=PASS
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Re-run admission gate on canonical checkout
+        run: bash tests/fci/run_fci30_parallel_v1_canonical_admission_v2.sh

@@ -1,0 +1,17 @@
+{
+  "schema":"swap5.fci37p_governance_reconciliation_evidence.v1",
+  "work_unit":"F-CI37P",
+  "title":"Current-Canonical Postimage Governance Reconciliation Evidence",
+  "base":"f4074feea33cc8eac370dc5272f8e9d763530c53",
+  "tested_head":"327f97178e9cb3bd0ac61ee6ebf26c6391eb6dc3",
+  "triggering_failure":{"run":34531764237,"job":103054424135,"classification":"STALE_FCI36_MOVING_CANONICAL_GOVERNANCE_POINTER_NOT_SCIENTIFIC_REGRESSION"},
+  "authoritative_reconciliation":{"run":34532304321,"job":103055697148,"conclusion":"success","runner_os":"ubuntu-24.04","compiler":"GNU Fortran 13.3.0"},
+  "executed_gates":{"moving_pointer_static_binding":"PASS","zero_src_reference_delta":"PASS","fci36_historical_runner_preserved":"PASS","fci37_scientific_runner_preserved":"PASS","fci36_frozen_authority_added":"PASS","current_pointer_moved_to_fci37":"PASS","fci37_current_canonical_source_lock":"PASS","exact_single_production_overlay":"PASS","fci30_fci31_fci34_fci36_source_preservation":"PASS","exact_fmq30_closeout_gate_rehydrated":"PASS","fmq30_o0":"PASS","fmq30_o2":"PASS","fmq30_o0_o2_exact_output_identity":"PASS","fmq30_hard_mass_conservation":"PASS","fci37_current_postimage_replay":"PASS"},
+  "governance_delta":[".github/workflows/fci-canonical.yml",".github/workflows/fci37p-current-canonical-governance-reconciliation.yml","tests/fci/run_fci37p_current_canonical_governance_reconciliation.sh","integration/f-ci/F-CI37P_CLASSIFICATION.json"],
+  "src_delta":[],
+  "reference_delta":[],
+  "science_delta":false,
+  "fci36_runner_changed":false,
+  "fci37_runner_changed":false,
+  "decision":"QUALIFIED_GOVERNANCE_RECONCILIATION_PENDING_EXACT_METADATA_HEAD_REPLAY"
+}

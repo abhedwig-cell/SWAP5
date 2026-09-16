@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI28",
+  "title": "F-MR25 Restricted Restart Canonical Post-Promotion Evidence",
+  "canonical_branch": "integration/f-ci-canonical",
+  "promotion": {
+    "previous_head": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+    "promoted_head": "debf3a678ca633fea450c472664c75399e2df164",
+    "method": "NON_FORCED_FAST_FORWARD",
+    "force": false,
+    "merge_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+    "ahead_by_before_promotion": 15,
+    "behind_by_before_promotion": 0
+  },
+  "source_postimage": {
+    "src_tree": "3fe4ccff367479e54ab5db106e5faf8b480d8ec0",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "production_delta_from_F_CI27": [
+      "src/runtime/mod_fmr_committed_restart.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90"
+    ],
+    "restart_source_blob": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "restart_contract_blob": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "canonical_push_qualification": {
+    "workflow": "F-CI canonical qualification",
+    "run": 34459539045,
+    "event": "push",
+    "head": "debf3a678ca633fea450c472664c75399e2df164",
+    "conclusion": "success",
+    "jobs": {
+      "historical_fci03_through_fci18": {"job":102813808508,"conclusion":"success"},
+      "frozen_fci19_candidate_preservation": {"job":102813808560,"conclusion":"success"},
+      "frozen_fci19_source_lineage": {"job":102813808547,"conclusion":"success"},
+      "frozen_fci24_reference_et_authority": {"job":102813808318,"conclusion":"success"},
+      "frozen_fci27_reference_et_runtime_authority": {"job":102813808569,"conclusion":"success"},
+      "current_restricted_canonical_postimage": {"job":102814039326,"conclusion":"success"}
+    },
+    "current_postimage_steps": {
+      "F_CI28_forward_lineage_restart_authority_gate": "PASS",
+      "independent_F_CI28_restart_and_F_CI27_preservation_requalification": "PASS",
+      "final_exact_postimage_and_authority_recheck": "PASS"
+    }
+  },
+  "upstream_authority_preservation": {
+    "F_CI24_reference_ET_authority": "PASS",
+    "F_CI27_reference_ET_runtime_authority": "PASS",
+    "reference_tree_unchanged": true
+  },
+  "scientific_admission": {
+    "restricted_serialized_real_physics_MultiSWAP_committed_boundary_restart": "ADMITTED",
+    "exact_mass_continuation": "PASS",
+    "state_family_fail_closed": "PASS",
+    "whole_registry_atomicity": "PASS",
+    "generic_time": "PASS",
+    "O0_O2_identity": "PASS",
+    "F_CI27_ET_runtime_preserved": "PASS"
+  },
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No general backend/state-family restart admission.",
+    "No root-uptake or actual-ET ownership reconciliation.",
+    "No general SWAP5 release qualification."
+  ],
+  "canonical_admission": "PASS"
+}

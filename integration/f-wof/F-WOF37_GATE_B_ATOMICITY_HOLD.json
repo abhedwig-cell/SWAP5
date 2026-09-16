@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF37",
+  "gate": "B",
+  "title": "Crop Candidate and Event Delivery Atomicity Frontier",
+  "branch": "work/f-wof37-physical-accepted-window-crop-event-composition",
+  "inspected_head": "710aa0f64dd474dce6402e9cd19e2f7c8a53bf61",
+  "gate_A": {
+    "workflow_run": 34345719304,
+    "workflow_job": 102446717448,
+    "conclusion": "success",
+    "fwof33_exact_transcript_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f"
+  },
+  "source_bound_findings": [
+    {
+      "finding": "F-WOF33 completes the two-phase crop window into a wofost_crop_owner_state_t candidate and does not publish committed crop state itself.",
+      "source": "src/crop/mod_wofost_two_phase_crop_window.f90"
+    },
+    {
+      "finding": "F-KT candidate provenance and physical state are private. Callers can inspect snapshots and origin metadata but cannot forge lineage/revision publication authority.",
+      "source": "src/kernel/mod_kernel_transactions.f90"
+    },
+    {
+      "finding": "In the inspected current F-KT contract, kernel_advance_interval materializes kernel_candidate_state_t from a bound kernel_model_t and stamps lineage, revision and t0/t1 provenance; kernel_commit_candidate is the publication route and rejects invalid, stale, lineage-mismatched or time-mismatched candidates.",
+      "source": "src/kernel/mod_kernel_transactions.f90"
+    },
+    {
+      "finding": "F-WOF34 prepare_wofost_crop_event_delivery is read-only and returns frozen aggregates plus a provenance token; commit_wofost_crop_event_delivery only sets accepted-window event_delivered after token validation and does not publish wofost_crop_owner_state_t.",
+      "source": "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"
+    },
+    {
+      "finding": "The inspected current src/kernel directory contains only mod_kernel_transactions.f90. The inspected current src/runtime listing contains the WOFOST accepted-window lineage and physical-trial binding modules but no separately named WOFOST crop-candidate transaction adapter or WOFOST kernel model.",
+      "scope": "This is a statement about the inspected F-WOF37 tree, not a universal claim about all branches or future code."
+    },
+    {
+      "finding": "Repository code search for extends(kernel_model_t) returned no match in the searchable repository view used during this workunit. This supports but does not independently prove absence on every historical branch."
+    }
+  ],
+  "atomicity_hazard": {
+    "unsafe_sequence_A": "commit_wofost_crop_event_delivery first, then attempt crop-owner publication",
+    "failure_A": "the accepted window can become event_delivered while the crop owner remains at the old state if crop publication fails or is unavailable",
+    "unsafe_sequence_B": "publish wofost_crop_owner_state_t outside F-KT, then mark event delivered",
+    "failure_B": "this bypasses the current F-KT provenance/commit contract and still leaves a split-state failure boundary between owner publication and delivery marking",
+    "unsafe_sequence_C": "fabricate or expose a generic external kernel_candidate_state_t adoption helper solely for WOFOST",
+    "failure_C": "this would weaken the deliberately opaque provenance boundary and create a generic bypass around kernel_advance_interval rather than solving composition ownership"
+  },
+  "required_property": "Crop-owner publication and exactly-once crop-event delivery acknowledgment must have one qualified transactional outcome. A failed or discarded attempt must leave both the committed crop owner and delivery state unchanged; an accepted retry must publish both once from the same accepted-window provenance.",
+  "architecture_assessment": {
+    "invariant_7_transactional_timesteps": "BLOCKED_FOR_END_TO_END_CROP_EVENT_COMMIT until owner publication and delivery acknowledgment are composed transactionally",
+    "invariant_8_cheap_recompute": "requires rejected/failed crop-event completion to remain replayable from the same committed crop owner and frozen accepted aggregates",
+    "invariant_13_mass_conservation": "not directly changed by the crop structural candidate, but physical PTRA/QROT evidence must remain bound to the accepted physical trajectory and must not be redelivered",
+    "invariant_16_multiswap": "future commit seam must be column-local and sparse, without a heavyweight transaction owner per inactive column",
+    "invariant_28_runtime_coupler_composition": "PASS_DIRECTIONALLY: the missing composition belongs in runtime/transaction ownership, not inside the crop kernel",
+    "invariant_30_qualification": "PASS_FAIL_CLOSED: no production end-to-end admission is claimed while the atomic seam is absent"
+  },
+  "preferred_next_design_space": [
+    "A component-aware/composite transaction participant that owns crop-owner candidate publication and delivery acknowledgment under one accepted transaction outcome.",
+    "A WOFOST-specific kernel_model_t / transaction adapter is acceptable only if it genuinely preserves F-KT provenance and also resolves delivery acknowledgment atomicity; a model adapter alone is insufficient if event_delivered remains a second independently committed owner.",
+    "A design where delivery status is derived from the committed crop transaction revision/event identity may reduce the dual-owner problem, but changing F-WOF34 semantics would require a separate source-bound qualification."
+  ],
+  "explicit_non_solution": "Do not add a generic arbitrary external-candidate adoption API merely to inject wofost_crop_owner_state_t into kernel_candidate_state_t.",
+  "allowed_F_WOF37_followup": "Qualification-only composition may proceed through begin crop window -> accepted physical PTRA/QROT -> frozen delivery prepare -> complete WOFOST crop candidate. It must stop before production publication and must prove that failure/retry leaves delivery uncommitted and the original crop owner unchanged.",
+  "production_end_to_end_crop_event_admitted": false,
+  "decision": "HOLD_PRODUCTION_CROP_EVENT_COMMIT_UNTIL_TRANSACTION_ADAPTER_OR_COMPOSITE_OWNER_SEAM_IS_QUALIFIED",
+  "status": "SOURCE_BOUND_ATOMICITY_FRONTIER_FAIL_CLOSED_COMPOSITION_PREPARATION_MAY_CONTINUE"
+}

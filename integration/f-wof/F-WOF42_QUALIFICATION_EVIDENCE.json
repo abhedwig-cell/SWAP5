@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF42",
+  "title": "Crop Persistence Layout Completeness Qualification Evidence",
+  "tested_source_head": "ec19be20e8ba71b94b54e8dd6c7d185aac52baa5",
+  "tested_tree": "d1d2085a549a60a5c566f700d24e0bf7ec98d5f2",
+  "workflow": {
+    "name": "F-WOF42 crop persistence layout completeness",
+    "run": 34374672539,
+    "conclusion": "success",
+    "tested_head": "ec19be20e8ba71b94b54e8dd6c7d185aac52baa5"
+  },
+  "source_identity": {
+    "crop_owner_blob": "31bb390a0b70bec0a3f525f1d704a2c53890f9b4",
+    "crop_transaction_blob": "dad15717e5794b7489c9fecf6dbc17e12435c61e",
+    "accepted_window_lineage_blob": "61ffdf21a00c23924184c9117d91d84a88544d1a",
+    "source_hashes_enforced_by_gate": true
+  },
+  "layout_qualification": {
+    "valid_layout_count": 7,
+    "valid_layouts": [
+      "INACTIVE_NO_OPTIONAL_STATE",
+      "EMERGED_BIOMASS_NO_COHORTS",
+      "EMERGED_BIOMASS_WITH_COHORTS",
+      "EMERGED_BIOMASS_WITH_EVOLUTION_CONTINUATION",
+      "EMERGED_BIOMASS_WITH_B110_REFERENCE_COMPATIBILITY",
+      "EMERGED_BIOMASS_WITH_EVOLUTION_AND_B110_REFERENCE_COMPATIBILITY",
+      "EMERGED_BIOMASS_EXPLICIT_ZERO_LENGTH_COHORT_ARRAYS"
+    ],
+    "invalid_layout_count": 6,
+    "all_invalid_fail_closed_before_ready_state": true,
+    "direct_production_persistence_roundtrip_all_layouts": "PASS",
+    "fresh_process_artifact_roundtrip_all_layouts": "PASS",
+    "artifact_rewrite_identity_all_layouts": "PASS",
+    "O0_O2_external_representation_identity": "PASS"
+  },
+  "physical_continuation_field_classification": {
+    "common_crop_state": {
+      "present": true,
+      "fields": [
+        "crop_emerged",
+        "development_stage",
+        "biomass.root_biomass",
+        "biomass.stem_biomass",
+        "biomass.storage_biomass",
+        "biomass.exponential_leaf_area_index"
+      ],
+      "persistence": "EXACT"
+    },
+    "SWRD_specific_state": {
+      "present_as_independent_owner_field": false,
+      "classification": "NOT_IN_CURRENT_ADMITTED_WOFOST_OWNER_STATE_SURFACE",
+      "claim": "No additional SWRD-specific persistence is imposed by F-WOF42."
+    },
+    "vernalization_state": {
+      "present_as_independent_owner_component": false,
+      "classification": "CURRENT_TEMPERATURE_HISTORY_CONTINUATION_IS_COMMON_EVOLUTION_STATE",
+      "fields": [
+        "evolution_continuation.temperature_sum",
+        "evolution_continuation.anthesis_reached",
+        "evolution_continuation.minimum_temperature_history_count",
+        "evolution_continuation.minimum_temperature_history"
+      ],
+      "persistence": "BIT_EXACT_FOR_REAL_FIELDS_AND_EXACT_FOR_LOGICAL_INTEGER_FIELDS"
+    },
+    "cohort_state": {
+      "present_when_active": true,
+      "fields": [
+        "biomass.leaf_biomass",
+        "biomass.specific_leaf_area",
+        "biomass.leaf_age"
+      ],
+      "persistence": "BIT_EXACT_FOR_NONEMPTY_COHORTS",
+      "zero_length_policy": "ALLOCATED_ZERO_IS_CANONICALIZED_TO_UNALLOCATED_ZERO_ONLY_AT_EXTERNAL_CODEC_BOUNDARY; SUBSEQUENT_STRUCTURAL_EVOLUTION_OBSERVATIONALLY_EXACT"
+    },
+    "reference_compatibility_state": {
+      "present_when_active": true,
+      "fields": ["b110_reference_compatibility.lai_exponential_rate_carryover"],
+      "persistence": "BIT_EXACT"
+    },
+    "lifecycle_receipt_state": {
+      "owner_field": false,
+      "transaction_persistent_state": true,
+      "fields": ["last_consumed_event identity persistence view"],
+      "qualification_basis": "F-WOF40 and F-WOF41 true-process restart qualification"
+    },
+    "runtime_only_accepted_window_metadata": {
+      "persistent": false,
+      "classification": "RETIRED_RUNTIME_ONLY_METADATA",
+      "examples": ["accepted-window cache", "delivery_committed cache", "event_due cache"]
+    }
+  },
+  "minimality": {
+    "inactive_crop_has_no_biomass_payload_body": true,
+    "absent_evolution_has_no_payload_body": true,
+    "absent_B110_has_no_payload_body": true,
+    "parameters_absent": true,
+    "forcing_absent": true,
+    "solver_scratch_absent": true,
+    "warm_start_vectors_absent": true,
+    "accepted_window_cache_absent": true
+  },
+  "restart_proof": {
+    "method": "COMPOSITIONAL_EXECUTABLE_PROOF",
+    "layout_boundary": "F-WOF42 proves exact production persistence and fresh-process external reconstruction for every admitted layout plus qualified zero-length canonicalization.",
+    "behavioral_boundary": "F-WOF40 proves continuous two-event execution equals producer-exit-fresh-consumer-continue execution exactly, including owner continuation and receipt semantics.",
+    "production_binding_boundary": "F-WOF41 proves the production owner persistence API is byte-exact to the F-WOF40 candidate and preserves the same true-process restart behavior.",
+    "composition_claim": "Because F-WOF42 freezes and hash-checks the same production owner/persistence source and proves exact reconstruction of every admitted physical continuation field, the already-qualified F-WOF40/F-WOF41 process-restart continuation seam applies to the admitted F-WOF42 layouts without introducing hidden state. The zero-length allocation representation is the sole non-bitwise representation case and is separately behavior-qualified.",
+    "continuous_vs_process_restart_endpoint_exact_upstream": true,
+    "all_current_layout_persistent_fields_exact_at_restart_boundary": true,
+    "zero_length_canonicalization_behavior_exact": true
+  },
+  "version_and_layout_identification": {
+    "production_persistence_view_type": "fmr_wofost_crop_transaction_persistence_t",
+    "external_codec_role": "QUALIFICATION_ADAPTER_ONLY",
+    "external_artifact_schema_layout_identity_checked_by_F_WOF40_F_WOF41": true,
+    "production_SWAPS_wide_file_format_claimed": false,
+    "cross_version_schema_migration_claimed": false
+  },
+  "noninterference": {
+    "crop_physics_changed": false,
+    "mass_accounting_changed": false,
+    "solver_policy_changed": false,
+    "kernel_file_IO_added": false,
+    "owner_file_IO_added": false,
+    "forcing_promoted_to_state": false,
+    "scratch_promoted_to_state": false
+  },
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,21,23,27,29,30],
+  "not_qualified": [
+    "future crop-state fields not present in the current admitted owner type",
+    "production SWAP-wide restart serialization or file format",
+    "cross-version schema migration",
+    "mid-transaction trial/candidate persistence",
+    "full MultiSWAP checkpoint storage orchestration",
+    "canonical promotion"
+  ],
+  "decision": "QUALIFIED_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_READY_FOR_NEXT_RUNTIME/CANONICAL_COMPOSITION"
+}

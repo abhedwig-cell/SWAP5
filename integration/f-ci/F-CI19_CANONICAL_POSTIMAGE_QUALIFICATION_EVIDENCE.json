@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "title": "Governed Candidate A Canonical Postimage Qualification Evidence",
+  "decision": "QUALIFIED_RESTRICTED_GOVERNED_CANONICAL_POSTIMAGE",
+  "governed_postimage": {
+    "commit": "ef3e3dc3ba9722a942f7296b089bccdd05d55b96",
+    "parent": "2c0a627906cf718452236dab27d3a92082329b1c",
+    "candidate_a_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "materialization_delta_restricted_to_src_and_reference": true,
+    "f_ci19_governance_tree_inherited_unchanged": true
+  },
+  "decisive_qualification": {
+    "branch": "qualification/f-ci19-canonical-postimage",
+    "tested_head": "68ad047c17334b9b5aa4593a0c831111e331b376",
+    "workflow_run": 34321916045,
+    "workflow_job": 102370257397,
+    "conclusion": "success",
+    "artifact_id": 10092198457,
+    "artifact_zip_sha256": "ea42b3d8985d0fd23dc8f5a50051d1bca1f62221d1200325f337d1d2397faf07",
+    "terminal_marker": "FCI19_CANONICAL_POSTIMAGE_GATE PASS_RESTRICTED_GOVERNED_CANDIDATE"
+  },
+  "qualification_checks": {
+    "governance_parent": "PASS",
+    "only_src_reference_materialized": "PASS",
+    "candidate_a_src_tree_identity": "PASS",
+    "candidate_a_reference_tree_identity": "PASS",
+    "qualification_source_immutability": "PASS",
+    "governance_tree_identity": "PASS",
+    "exact_qualification_support_overlay": "PASS",
+    "composition_preservation_replay": "PASS",
+    "source_lineage_reachability_replay": "PASS",
+    "hard_mass_and_rollback_replay": "PASS",
+    "no_scope_broadening": "PASS"
+  },
+  "qualification_support_overlay": {
+    "source_head": "5d5ece58b2b8e053a270992ded52377dd524f9c4",
+    "purpose": "Disposable executable qualification fixtures only",
+    "overlaid_paths": [
+      "tests",
+      "tools",
+      "integration/f-kt"
+    ],
+    "production_or_reference_bytes_modified": false,
+    "committed_to_governed_postimage": false
+  },
+  "superseded_failed_attempts": [
+    {
+      "workflow_run": 34321518312,
+      "classification": "QUALIFICATION_FIXTURE_CLOSURE_ONLY",
+      "failure": "missing F-KT09 test runner in governance postimage",
+      "production_failure_detected": false
+    },
+    {
+      "workflow_run": 34321664503,
+      "classification": "QUALIFICATION_FIXTURE_METADATA_CLOSURE_ONLY",
+      "failure": "missing historical F-KT03 qualification contract metadata",
+      "production_failure_detected": false
+    }
+  ],
+  "carried_holds": [
+    "no production Richards model-owned temporal certificate",
+    "no general groundwater predictor-corrector coupling release",
+    "no WOFOST full physical production binding",
+    "no parallel real-physics reference execution",
+    "no BALANCED THROUGHPUT or FALLBACK production admission",
+    "no subdaily or multiday active-snow admission",
+    "no active macropore or swkimpl=1 scope expansion",
+    "no concrete crop-owner root-uptake runtime composition inferred",
+    "no irrigation runtime composition inferred",
+    "no LayeredMFP or VZAA production solver admission"
+  ],
+  "canonical_promotion_readiness": {
+    "current_canonical_head_before_promotion": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "governed_postimage_is_descendant_of_current_canonical": true,
+    "fast_forward_possible": true,
+    "production_source_requalification_complete": true,
+    "promotion_must_preserve_restricted_claims_only": true
+  }
+}

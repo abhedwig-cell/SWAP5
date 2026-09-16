@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI44",
+  "title": "F-GC10 Application Accuracy Contract Canonical Admission",
+  "branch": "qualification/f-ci44-fgc10-application-accuracy-contract-canonical-admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FGC10_APPLICATION_ACCURACY_CONTRACT_FOR_CURRENT_CANONICAL_ADMISSION",
+  "canonical_base": "d201904a85f3b595e028242978e52c02f5122a09",
+  "composition_head": "2c2c1f3ef00b467284e480d8b39b399523e3fc83",
+  "F_GC10_closeout": "a1201dc870e4f5088f50b8d00e92e83457743174",
+  "production_blobs": {
+    "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "first_green_admission": {
+    "head": "0cf79a500e2d850733d699f8b228f017aa18dba8",
+    "run": 34631303888,
+    "job": 103368507091,
+    "conclusion": "success"
+  },
+  "state": {
+    "composition_realized": true,
+    "exact_F_GC10_source_replayed": true,
+    "consumer_binding_pinned": true,
+    "reference_unchanged": true,
+    "transaction_core_unchanged": true,
+    "water_mass_path_changed": false,
+    "numeric_application_policy_added": false,
+    "production_coupling_admitted": false,
+    "canonical_promoted": false,
+    "RB1_modified_or_reopened": false
+  },
+  "qualified_scope": {
+    "owner": "runtime/coupler application policy layer",
+    "supported_qoi": ["GROUNDWATER_HEAD", "GROUNDWATER_DRAWDOWN"],
+    "composition": "H_temporal_budget_cm = H_app_cm * A_temporal",
+    "inputs": "externally qualified and provenance-bound only",
+    "absence": "fail closed with stale carrier clearing",
+    "consumer_binding": "current canonical selected model normalizes native head_inf_bound by native head budget before transaction certificate use"
+  },
+  "hard_holds": [
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no project H_budget",
+    "no application-class prediction-accuracy qualification",
+    "no universal accuracy claim",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation relaxation",
+    "no F-GC scientific workunit reopening",
+    "no RB1 modification or reopening"
+  ],
+  "architecture_audit": "integration/f-ci/F-CI44_ARCHITECTURE_AUDIT.json",
+  "promotion_gate": {
+    "require_current_canonical_still_exactly_base": true,
+    "require_exact_status_head_F_CI44_success": true,
+    "require_same_single_production_blob": true,
+    "require_reference_tree_unchanged": true,
+    "require_consumer_binding_blobs_unchanged": true,
+    "require_true_two_parent_merge_commit": true,
+    "force_update_forbidden": true,
+    "post_promotion_reconciliation_required": true
+  },
+  "closeout_metadata_policy": {
+    "this_commit_may_change_integration_fci_metadata_only": true,
+    "no_production_reference_test_or_workflow_mutation_after_first_green": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "next_required_step": "Run F-CI44 on this exact metadata closeout head. If green and canonical remains pinned to the declared base, promote by a true two-parent merge and perform separate current-canonical post-promotion reconciliation."
+}

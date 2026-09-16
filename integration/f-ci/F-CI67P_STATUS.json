@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI67P",
+  "title": "RossFast D3R execution-policy moving preservation",
+  "status": "CLOSED_POSITIVE_GOVERNANCE_PRESERVATION_CANDIDATE",
+  "decision": "PRESERVE_ADMITTED_FCI67_POLICY_AND_REQUALIFY_ON_RELEVANT_DEPENDENCY_CHANGE",
+  "admitted_authority": {
+    "canonical_head": "ea9a33fd856d862a5e1ae327cb1e781ef9ecf9ea",
+    "canonical_tree": "a09734ac1711ce29f6e2b88cf31bb035a2c896e8",
+    "fci67_status_blob": "3644f5edabf51ac4a598bb014e03d4eb38f3e4c2",
+    "rossfast_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "canonical_post_admission_qualification": {
+    "workflow_run_id": 34888897650,
+    "conclusion": "success",
+    "current_restricted_canonical_preservation": "success"
+  },
+  "preservation_candidate": {
+    "head": "2374d718e0e8033697dd8e12710c711e2bdcec72",
+    "tree": "8ebdc747d1a164f8fa01a6144e8b69c102e7df6c",
+    "workflow_blob": "216ae76b2e9a05b32254c1c7e295125a5faeb898"
+  },
+  "qualification": {
+    "workflow_run_id": 34889264224,
+    "job_id": 104127538598,
+    "conclusion": "success",
+    "replayed_gate": "tests/fci/run_fci67_rossfast_d3r_execution_policy_admission.sh",
+    "production_delta": [],
+    "reference_delta": [],
+    "governance_only": true
+  },
+  "preservation_strategy": {
+    "kind": "DEDICATED_DEPENDENCY_SCOPED_CANONICAL_PUSH_GATE",
+    "central_fci_canonical_workflow_rewritten": false,
+    "policy_blob_pinned": true,
+    "admission_lineage_required": true,
+    "composition_replayed": true,
+    "dependency_changes_trigger_requalification": [
+      "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/transaction/mod_transaction_reference.f90",
+      "tests/fci/run_fci67_rossfast_d3r_execution_policy_admission.sh",
+      "tests/fci/test_fci67_rossfast_d3r_execution_policy.f90",
+      "integration/f-ci/F-CI67_STATUS.json"
+    ],
+    "unrelated_canonical_changes_reuse_immutable_evidence": true
+  },
+  "dependency_postimages": {
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_blob": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "canonical_interval_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "rossfast_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "qualified": {
+    "fci67_policy_blob_preserved": true,
+    "fci67_status_authority_preserved": true,
+    "generic_runtime_composition_preserved": true,
+    "transaction_core_composition_preserved": true,
+    "governance_only_reconciliation": true,
+    "no_src_delta_from_fci67_admission": true,
+    "no_reference_delta_from_fci67_admission": true
+  },
+  "hard_nonclaims": [
+    "NO_NEW_PRODUCTION_SOURCE",
+    "NO_NEW_ROSSFAST_PHYSICS",
+    "NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_A10_HETEROGENEOUS_BOTTOM_GROUNDWATER_MULTISWAP_FULLRICHARDS_GENERALIZATION"
+  ],
+  "promotion_rule": "PROMOTE_ONLY_IF_THIS_FINAL_STATUS_HEAD_REQUALIFIES_GREEN_AND_LIVE_CANONICAL_REMAINS_EXACTLY_ea9a33fd856d862a5e1ae327cb1e781ef9ecf9ea",
+  "next_gap": "CONCRETE_PRODUCTION_ROSSFAST_HYDRAULIC_MODEL_BINDING_TO_FCI67_POLICY"
+}

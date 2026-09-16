@@ -1,0 +1,320 @@
+{
+  "schema_version": 2,
+  "workunit": "F-CI19",
+  "title": "Qualified Candidate Convergence, Compatibility & Canonical Admission Planning",
+  "generated_from_live_repository_reads_utc_date": "2026-09-09",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "immutable_f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "interpretation": "historical qualified canonical-development baseline; canonical ref has not been advanced by F-CI19"
+  },
+  "inventory_state": "PRIORITY_FRONTIER_AND_SOURCE_SPINE_PINNED_COMPOSITION_REPLAY_REQUIRED",
+  "canonical_admission_allowed": false,
+  "selected_composition_candidate": {
+    "name": "CANDIDATE_A",
+    "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "origin": "F-KT09 qualified code head",
+    "reason": "latest inspected qualified production-code postimage on the ordered F-MQ24-source -> F-MR15/F-VQ27 -> F-KT09 lineage; F-SI22 adds no production-source delta",
+    "status": "NOT_CANONICALLY_ADMITTED_COMPOSITION_PRESERVATION_REQUIRED"
+  },
+  "nodes": [
+    {
+      "id": "F-CI18",
+      "branch": "integration/f-ci-canonical",
+      "head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "role": "IMMUTABLE_CANONICAL_BASE",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "GOV-QUALITY-BACKPORT-20260908",
+      "branch": "governance/quality-backport-20260908",
+      "head": "a6b991b4702e061accd1b16f9450f99e18aba032",
+      "role": "DOCUMENTATION_GOVERNANCE_ONLY",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-MQ24",
+      "branch": "qualification/f-mq24-snow-multiswap-admission",
+      "head": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+      "source_under_test": "ffab7d705928170db3e76a5d346caafeb560e605",
+      "role": "RESTRICTED_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+      "classification": "ORDERED_COMPOSABLE",
+      "admission_candidate": true,
+      "scope": "restricted serialized one-call-daily snow MultiSWAP with restricted equilibrium Richards",
+      "holds": [
+        "subdaily snow not admitted",
+        "multiday and arbitrary-duration snow not admitted",
+        "parallel real physics not admitted",
+        "balanced throughput fallback not admitted",
+        "general Richards scope not expanded",
+        "100k-column performance not qualified"
+      ],
+      "composition_requirement": "Replay snow runtime and transaction semantics on selected later source postimage; qualification branch head itself is evidence, not source to merge."
+    },
+    {
+      "id": "F-MR15",
+      "branch": "work/f-mr15-prescribed-head-interval-diagnostics-composition",
+      "head": "6d915141d42f3db469c2da689aabd4ca4836c23c",
+      "production_postimage": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
+      "role": "PRESCRIBED_HEAD_DIAGNOSTICS_OWNER_COMPOSITION",
+      "classification": "ORDERED_COMPOSABLE",
+      "admission_candidate": true,
+      "owner_qualified": true,
+      "independent_qualification_required": "F-VQ27"
+    },
+    {
+      "id": "F-VQ27",
+      "branch": "qualification/f-vq27-fmr15-prescribed-head-interval-diagnostics",
+      "head": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+      "admitted_source": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
+      "role": "INDEPENDENT_FMR15_SCIENTIFIC_ADMISSION",
+      "classification": "ORDERED_COMPOSABLE",
+      "admission_candidate": true,
+      "scope": "restricted serialized mode-5 prescribed bottom head with decision-neutral interval diagnostics",
+      "holds": [
+        "parallel reference backend not admitted",
+        "other bottom modes not expanded",
+        "active macropores not expanded",
+        "SWKIMPL1 not expanded",
+        "nonstationary mode-5 behavior not expanded",
+        "general groundwater coupling not admitted",
+        "balanced throughput fallback not admitted"
+      ],
+      "composition_requirement": "Semantic preservation must be requalified after later transaction/runtime changes; historical exact-FMR15 source locks remain immutable."
+    },
+    {
+      "id": "F-KT09",
+      "branch": "work/f-kt09-model-owned-temporal-certificate",
+      "branch_head": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+      "qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "role": "GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+      "classification": "ORDERED_COMPOSABLE",
+      "admission_candidate": true,
+      "qualified": true,
+      "scope": "generic opt-in temporal certificate transport, transaction retry/rollback, private substep composition and diagnostics",
+      "not_admitted": [
+        "Richards temporal estimator",
+        "Richards certificate normalization",
+        "Richards temporal tolerance",
+        "production Richards certificate mode"
+      ]
+    },
+    {
+      "id": "F-SI20-TEMPORAL-ERROR-SEMANTICS",
+      "branch": "work/f-si20-richards-temporal-error-semantics",
+      "head": "631d80abf04915cc964b24144f3fde8ef937093f",
+      "role": "RICHARDS_TEMPORAL_OWNER_EVIDENCE",
+      "declared_tip_message": "status(F-SI20): record F-VQ28 fail-closed runtime-translation rejection",
+      "classification": "BLOCKED",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-SI21-TEMPORAL-RUNTIME-POLICY",
+      "branch": "work/f-si21-richards-temporal-runtime-policy",
+      "head": "15a8e2f92b323e7b397eeb4589eed5e9aa8d025b",
+      "role": "GENERIC_CERTIFICATE_SEAM_HANDOFF",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "handoff_to": "F-KT09"
+    },
+    {
+      "id": "F-SI21-HYDRAULIC-TIMESCALE-RETRY",
+      "branch": "work/f-si21-hydraulic-timescale-retry-translation",
+      "head": "1dbb2783f4ae0c05174ff325a25027421b3b3b4a",
+      "role": "RICHARDS_RETRY_TRANSLATION_EVIDENCE",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "decision": "INFORMATIVE_BUT_INSUFFICIENT"
+    },
+    {
+      "id": "F-SI21-NONSTATIONARY-ESTIMATOR",
+      "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+      "head": "96b60473edc15059b09d90fc23f5cac990c508ce",
+      "role": "NONSTATIONARY_TEMPORAL_ESTIMATOR_EVIDENCE",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "decision": "NO_BOUNDED_COST_SAME_ENDPOINT_PRODUCTION_CANDIDATE"
+    },
+    {
+      "id": "F-SI22",
+      "branch": "work/f-si22-richards-fixed-horizon-certificate",
+      "head": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+      "production_source_base": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "production_source_changed_after_base": false,
+      "role": "RICHARDS_FIXED_HORIZON_OWNER_CHARACTERIZATION",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "downstream_dependencies": ["F-VQ29"]
+    },
+    {
+      "id": "F-VQ29",
+      "branch": "qualification/f-vq29-richards-fixed-horizon-error-bound",
+      "head": "1239650ea493f505fb250788e441f5656082bea3",
+      "role": "RICHARDS_FIXED_HORIZON_NUMERIC_QUALIFICATION",
+      "classification": "BLOCKED",
+      "admission_candidate": false,
+      "declared_tip_message": "evidence(F-VQ29): record overrefined finite-reference failure before calibration"
+    },
+    {
+      "id": "F-GC02",
+      "branch": "work/f-gc02-physical-coupling-seam",
+      "head": "9f5416835ad8f836f0ddd15778320d1e76108f70",
+      "role": "GROUNDWATER_COUPLING",
+      "classification": "BLOCKED",
+      "admission_candidate": false,
+      "owner_dependencies": ["F-SI20-TEMPORAL-ERROR-SEMANTICS"]
+    },
+    {
+      "id": "F-MR16",
+      "branch": "work/f-mr16-richards-temporal-error-readiness",
+      "head": "a19bf5ab988523f9ea8b6f9b03098603ede80b49",
+      "role": "RICHARDS_TEMPORAL_READINESS",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-MR17",
+      "branch": "work/f-mr17-richards-temporal-refinement-semantics",
+      "head": "411aa3097583145de0696bc6fcdca8e90d47165e",
+      "role": "RICHARDS_TEMPORAL_REFINEMENT_SEMANTICS",
+      "classification": "SUPERSEDED",
+      "admission_candidate": false,
+      "superseded_by": ["F-KT09", "F-SI22"]
+    },
+    {
+      "id": "F-WOF34",
+      "branch": "work/f-wof34-accepted-window-runtime-lineage",
+      "head": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+      "role": "WOFOST_ACCEPTED_WINDOW_RUNTIME_LINEAGE",
+      "classification": "SHARED_OWNER_SERIALIZE",
+      "admission_candidate": false,
+      "merge_base_with_candidate_a": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+      "holds": [
+        "actual Richards/root-uptake/ET physical substep binding not qualified",
+        "full historical multi-day trajectory equivalence not qualified",
+        "additional crop modes remain outside scope"
+      ]
+    },
+    {
+      "id": "F-LMFP09",
+      "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+      "head": "bb91442ee5888a40398986c8d05df1972990955b",
+      "role": "ALTERNATIVE_SOIL_WATER_SOLVER_CHARACTERIZATION",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-VZAA02",
+      "branch": "work/f-vzaa02-donor-separability",
+      "head": "17fd6e72e2e0af16d4874afdcbe79e033b828f80",
+      "role": "VZAA_DONOR_SEPARABILITY_EVIDENCE_RESERVATION",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-TA03",
+      "branch": "work/f-ta03-fixture-fidelity-metadata",
+      "head": "14aa1a4e811abd2bb28417223b6b2be4d1a9dc04",
+      "role": "TEST_FIXTURE_FIDELITY_VERTICAL_SLICE",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-PE05",
+      "branch": "work/f-pe05-reference-temporal-acceptance",
+      "head": "1aa0cea4eec77a61ba782a2f55a9ef2ae724e24c",
+      "role": "REFERENCE_TEMPORAL_ACCEPTANCE_PERFORMANCE_EVIDENCE",
+      "classification": "BLOCKED",
+      "admission_candidate": false
+    },
+    {
+      "id": "F-PM05",
+      "branch": "work/f-pm05-root-water-uptake-readiness",
+      "head": "8149e5521485ede0b6750b3af8dbf7da40b926cd",
+      "role": "ROOT_WATER_UPTAKE_READINESS",
+      "classification": "BLOCKED",
+      "admission_candidate": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "F-MQ24",
+      "to": "F-MR15",
+      "type": "SOURCE_ANCESTRY_AND_SCOPE_PRESERVATION",
+      "compatibility": "ORDERED_COMPOSABLE"
+    },
+    {
+      "from": "F-MR15",
+      "to": "F-VQ27",
+      "type": "INDEPENDENT_SCIENTIFIC_ADMISSION",
+      "compatibility": "ORDERED_COMPOSABLE"
+    },
+    {
+      "from": "F-VQ27",
+      "to": "F-KT09",
+      "type": "LATER_TRANSACTION_RUNTIME_CHANGE_REQUIRES_PRESERVATION_REPLAY",
+      "compatibility": "ORDERED_COMPOSABLE"
+    },
+    {
+      "from": "F-SI21-TEMPORAL-RUNTIME-POLICY",
+      "to": "F-KT09",
+      "type": "OWNER_HANDOFF",
+      "compatibility": "ORDERED_COMPOSABLE"
+    },
+    {
+      "from": "F-KT09",
+      "to": "F-SI22",
+      "type": "SOURCE_IDENTICAL_OWNER_CHARACTERIZATION_DESCENDANT",
+      "compatibility": "EVIDENCE_ONLY"
+    },
+    {
+      "from": "F-SI22",
+      "to": "F-VQ29",
+      "type": "NUMERIC_PROFILE_HANDOFF",
+      "compatibility": "BLOCKED"
+    },
+    {
+      "from": "F-GC02",
+      "to": "F-SI20-TEMPORAL-ERROR-SEMANTICS",
+      "type": "OWNER_BLOCKER",
+      "compatibility": "BLOCKED"
+    },
+    {
+      "from": "F-MR17",
+      "to": "F-KT09",
+      "type": "SUPERSEDED_BY",
+      "compatibility": "SUPERSEDED"
+    },
+    {
+      "from": "F-MR17",
+      "to": "F-SI22",
+      "type": "SUPERSEDED_BY",
+      "compatibility": "SUPERSEDED"
+    },
+    {
+      "from": "F-WOF34",
+      "to": "F-KT09",
+      "type": "DIVERGED_SHARED_TRANSACTION_RUNTIME_LINEAGE",
+      "compatibility": "SHARED_OWNER_SERIALIZE"
+    }
+  ],
+  "source_identity_findings": {
+    "fmq24_source_is_ancestor_of_fmr15_lineage": true,
+    "fmr15_lineage_is_ancestor_of_fkt09_qualified_code": true,
+    "fsi22_changes_production_source_relative_to_fkt09": false,
+    "fwof34_diverges_from_candidate_a": true,
+    "duplicate_workunit_labels_require_branch_sha_identity": true
+  },
+  "unresolved_required_work": [
+    "composition-aware preservation gate for F-VQ27 claims on Candidate A",
+    "composition-aware snow/MultiSWAP preservation gate for F-MQ24 claims on Candidate A",
+    "CI-level transaction, mass and invariant replay on exact Candidate A",
+    "separate WOFOST rematerialization/composition on authoritative transaction lineage",
+    "F-VQ29 Richards temporal numerical blocker",
+    "F-GC02/F-SI20 coupling owner blocker"
+  ],
+  "fail_closed_rule": "No node or source postimage enters canonical admission merely by ancestry or local qualification. All inherited claims touched by later semantic owners must be preserved on the exact composition postimage."
+}

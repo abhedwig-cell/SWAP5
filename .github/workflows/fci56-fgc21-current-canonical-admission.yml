@@ -1,0 +1,26 @@
+name: F-CI56 F-GC21 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci56-fgc21-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI56 fail-closed admission gate
+        run: bash tests/fci/run_fci56_fgc21_current_canonical_admission.sh

@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+  "state": "FIRST_PRIORITY_SOURCE_POSTIMAGE_MATRIX_PERSISTED_FAIL_CLOSED",
+  "provenance_rule": "Workunit labels are not unique provenance. Identity is branch plus exact SHA plus declared candidate/source postimage.",
+  "source_spine": [
+    {
+      "order": 0,
+      "id": "F-CI18",
+      "sha": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "kind": "qualified canonical baseline closeout"
+    },
+    {
+      "order": 1,
+      "id": "F-MQ24_SOURCE_UNDER_TEST",
+      "sha": "ffab7d705928170db3e76a5d346caafeb560e605",
+      "kind": "qualified restricted snow MultiSWAP source postimage",
+      "qualification_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+      "scope": "restricted serialized one-call-daily snow, restricted equilibrium Richards"
+    },
+    {
+      "order": 2,
+      "id": "F-MR15_PRODUCTION_POSTIMAGE",
+      "sha": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
+      "kind": "owner-qualified prescribed-head interval-diagnostics composition",
+      "owner_closeout": "6d915141d42f3db469c2da689aabd4ca4836c23c",
+      "independent_admission": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+      "scope": "restricted serialized mode-5 prescribed bottom head with decision-neutral interval diagnostics"
+    },
+    {
+      "order": 3,
+      "id": "F-KT09_QUALIFIED_CODE_HEAD",
+      "sha": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "kind": "qualified generic model-owned temporal certificate transaction seam",
+      "qualification_closeout": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+      "scope": "generic opt-in certificate transport and transaction semantics only; production Richards certificate mode not admitted"
+    },
+    {
+      "order": 4,
+      "id": "F-SI22_EVIDENCE_HEAD",
+      "sha": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+      "kind": "characterization/evidence descendant",
+      "production_source_delta_from_F_KT09": false,
+      "scope": "fixed-horizon Richards owner characterization with numeric-profile handoff"
+    }
+  ],
+  "ancestry_findings": [
+    {
+      "base": "ffab7d705928170db3e76a5d346caafeb560e605",
+      "head": "6d915141d42f3db469c2da689aabd4ca4836c23c",
+      "relationship": "ANCESTOR",
+      "ahead_by": 169,
+      "interpretation": "The F-MQ24 source under test is already in the later F-MR15 lineage. Do not merge the F-MQ24 qualification branch head. Preserve or replay its qualified claim on a later exact postimage instead."
+    },
+    {
+      "base": "6d915141d42f3db469c2da689aabd4ca4836c23c",
+      "head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "relationship": "ANCESTOR",
+      "ahead_by": 97,
+      "interpretation": "F-KT09 qualified code descends from the F-MR15 closeout and therefore contains the admitted F-MR15 production lineage plus later changes."
+    },
+    {
+      "base": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "head": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+      "relationship": "ANCESTOR",
+      "ahead_by": 11,
+      "interpretation": "F-SI22 adds qualification/evidence/test material but no production source changes relative to the F-KT09 qualified code head."
+    }
+  ],
+  "pair_classifications": [
+    {
+      "left": "F-MQ24_SOURCE_UNDER_TEST",
+      "right": "F-MR15_PRODUCTION_POSTIMAGE",
+      "classification": "ORDERED_COMPOSABLE",
+      "reason": "The snow source postimage is an ancestor of F-MR15, but later runtime/backend changes touch the previously qualified snow composition surface.",
+      "required_before_canonical_admission": [
+        "Replay the full F-MQ24 restricted snow MultiSWAP gate on the selected later exact postimage.",
+        "Retain the exact one-call-daily, serialized, restricted-equilibrium holds unless separately expanded."
+      ]
+    },
+    {
+      "left": "F-MR15_FVQ27_ADMISSION",
+      "right": "F-KT09_QUALIFIED_CODE_HEAD",
+      "classification": "ORDERED_COMPOSABLE",
+      "reason": "F-KT09 descends from F-MR15 but changes kernel transaction and canonical runtime semantics after the F-VQ27 independent admission.",
+      "required_before_canonical_admission": [
+        "Replay F-VQ27 on the exact selected postimage containing F-KT09.",
+        "Confirm qbot mass exactly once, discard isolation, A/B/A replay, prescribed-head authority and O0/O2 identity remain unchanged."
+      ]
+    },
+    {
+      "left": "F-KT09_QUALIFIED_CODE_HEAD",
+      "right": "F-SI22_EVIDENCE_HEAD",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "F-SI22 is a source-identical characterization descendant for production code and hands numeric qualification to F-VQ29.",
+      "required_before_canonical_admission": [
+        "Do not infer production Richards certificate admission from F-SI22.",
+        "Keep model-owned Richards certificate mode fail-closed until F-VQ qualification succeeds."
+      ]
+    },
+    {
+      "left": "F-SI22",
+      "right": "F-VQ29",
+      "classification": "BLOCKED",
+      "reason": "Current F-VQ29 tip records an overrefined finite-reference failure before calibration.",
+      "required_before_canonical_admission": [
+        "No production Richards temporal certificate claim may be added."
+      ]
+    },
+    {
+      "left": "F-GC02",
+      "right": "F-SI20",
+      "classification": "BLOCKED",
+      "reason": "F-GC02 is bound to active F-SI20 owner evidence, while the current F-SI20 tip records a fail-closed F-VQ28 runtime-translation rejection.",
+      "required_before_canonical_admission": [
+        "Resolve the owner-level Richards temporal/runtime semantics before coupling admission."
+      ]
+    },
+    {
+      "left": "F-WOF34",
+      "right": "F-KT09_QUALIFIED_CODE_HEAD",
+      "classification": "SHARED_OWNER_SERIALIZE",
+      "reason": "The branches diverge from merge base e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a. F-WOF34 introduces accepted-window runtime lineage while its own contract still holds actual Richards/root-uptake/ET binding and full historical multi-day equivalence open.",
+      "required_before_canonical_admission": [
+        "Create an explicit composition postimage on the current F-KT transaction/runtime lineage rather than blind-merging branch tips.",
+        "Qualify actual physical process-substep binding and accepted-window provenance on that postimage.",
+        "Do not claim full historical multi-day WOFOST equivalence until separately evidenced."
+      ]
+    },
+    {
+      "left": "F-MQ24_QUALIFICATION_BRANCH_HEAD",
+      "right": "F-MR15_CLOSEOUT",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "The qualification branch heads diverge, but F-MQ24 explicitly qualifies candidate source ffab7d705928170db3e76a5d346caafeb560e605, which is an ancestor of F-MR15. Qualification metadata must not be confused with source ancestry.",
+      "required_before_canonical_admission": [
+        "Use candidate/source commit ancestry, not qualification branch-tip ancestry, for source composition."
+      ]
+    },
+    {
+      "left": "F-SI21_BRANCH_VARIANTS",
+      "right": "F-KT09",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "Multiple branches reuse the F-SI21 workunit label with different conclusions. One hands the generic seam to F-KT; other variants close as insufficient or without a production candidate.",
+      "required_before_canonical_admission": [
+        "Pin branch plus SHA in every dependency edge; never resolve authority by workunit number alone."
+      ]
+    }
+  ],
+  "diverged_non_admission_lines": [
+    {
+      "id": "F-WOF34",
+      "head": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+      "merge_base_with_F_KT09": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+      "classification": "SHARED_OWNER_SERIALIZE"
+    },
+    {
+      "id": "F-LMFP09",
+      "head": "bb91442ee5888a40398986c8d05df1972990955b",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "Hydraulic-envelope characterization only; not a production implementation/admission candidate."
+    },
+    {
+      "id": "F-VZAA02",
+      "head": "17fd6e72e2e0af16d4874afdcbe79e033b828f80",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "Reservation-only donor-separability evidence workunit."
+    },
+    {
+      "id": "F-TA03",
+      "head": "14aa1a4e811abd2bb28417223b6b2be4d1a9dc04",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "Test-fixture fidelity vertical slice, not production admission."
+    }
+  ],
+  "candidate_postimage_for_next_composition_qualification": {
+    "sha": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "why": "It is the latest inspected qualified production-code postimage on the ordered F-MQ24-source -> F-MR15 -> F-KT09 lineage. F-SI22 adds no production source delta.",
+    "canonical_admission_now": false,
+    "required_replays": [
+      "F-VQ27 exact F-MR15 prescribed-head diagnostics independent admission",
+      "F-MQ24 restricted snow MultiSWAP admission",
+      "F-KT09 own qualification gate on the exact selected postimage or an exact source-lock equivalent",
+      "canonical F-CI transaction/mass/invariant regressions applicable to the new postimage"
+    ],
+    "explicitly_excluded_claims": [
+      "production Richards model-owned temporal certificate",
+      "general groundwater predictor-corrector coupling",
+      "WOFOST full physical production binding",
+      "parallel real-physics MultiSWAP",
+      "balanced, throughput or fallback execution classes",
+      "LayeredMFP or VZAA production solver admission"
+    ]
+  }
+}

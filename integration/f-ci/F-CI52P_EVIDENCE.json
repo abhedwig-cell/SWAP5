@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.fci52p_evidence.v1",
+  "work_unit": "F-CI52P",
+  "title": "PM08D7 Fixed-Weir Runtime Current-Canonical Postimage Reconciliation Evidence",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "source_postimage": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "prepromotion_canonical": "8695974b783e76b3807890be9e1c0ecb5d2f8d5f",
+  "fci52_admission_head": "65ab358bd3f506c31c61e9287f4427eb2e74f2cc",
+  "f_vq59_authority": "f65f170fc6ec5f1a228ade2def3732cb36942ebd",
+  "r1_production_composition": "7a35e123d263c3783a2a0a14ea467e5e065b821c",
+  "prepromotion_broad_run": 34688109490,
+  "prepromotion_failed_job": 103538753724,
+  "postpromotion_broad_run": 34688308275,
+  "postpromotion_failed_job": 103539248733,
+  "failure_line": "FCI_CANONICAL_PRESERVATION_FAIL admitted dependency drift: src/runtime/mod_fmr_runtime_core.f90",
+  "classification": "STALE_MOVING_PRESERVATION_AUTHORITY_AFTER_QUALIFIED_SOURCE_ADMISSION",
+  "old_moving_authority": "6c04ab07b4535c119157b5c5bce674b626656f07",
+  "target_moving_authority": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "production_paths": [
+    "src/process/mod_restricted_fixed_weir_surface_water.f90",
+    "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "regression_classification": {
+    "production_regression_detected": false,
+    "scientific_regression_detected": false,
+    "transaction_regression_detected": false,
+    "mass_regression_detected": false,
+    "restart_regression_detected": false,
+    "reference_regression_detected": false
+  },
+  "routing": {
+    "pm08d7_production_remediation_required": false,
+    "moving_preservation_reconciliation_required": true,
+    "historical_frozen_authority_rewrite_required": false,
+    "source_requalification_required": false
+  },
+  "hard_facts": {
+    "source_admission_is_true_two_parent_merge": true,
+    "prepromotion_broad_failure_matches_postpromotion_failure": true,
+    "failure_occurs_before_any_mass_restart_or_science_regression_is_reported": true,
+    "fmr41_typed_optional_state_ownership_remains_in_force": true,
+    "rb1_reopened": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema":"swap5.fci37_pre_admission_evidence.v1",
+  "work_unit":"F-CI37",
+  "title":"Restricted Parallel Root-Uptake Current-Canonical Pre-Admission Evidence",
+  "canonical_base":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "tested_postimage":"7d44b47651a2689d9c7eaee03a59da9583d53b86",
+  "production_overlay":{"path":"src/runtime/mod_fmr_parallel_root_uptake_pool.f90","blob":"c78c13997642617376b8d118122c86c60ca77189","delta_count":1},
+  "authorities":{"owner":{"work_unit":"F-MR35","candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","evidence_head":"996038433690bb4c19f36774a633e485daa7f0db"},"independent":{"work_unit":"F-MQ30","closeout":"48ee2841d783ee023c29391a7ea1e5d7ee0d20e0","decision":"QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE"}},
+  "pre_admission_workflow":{"run":34531453811,"job":103052889522,"conclusion":"success","runner_os":"ubuntu-24.04","compiler":"GNU Fortran 13.3.0","artifact_id":10173651614,"artifact_sha256":"a76a475ac5259f40f12329bb0c2cd3e0acf6f564cdbf10296f8ec5275e92d4b4"},
+  "executed_gates":{"current_canonical_source_lock":"PASS","exact_single_production_overlay":"PASS","reference_delta":"NONE","fci30_fci31_fci34_fci36_source_preservation":"PASS","persisted_source_lock":"PASS","exact_fmq30_closeout_gate_rehydrated":"PASS","fmq30_current_canonical_source_lock":"PASS","fmq30_exact_fmr35_candidate_blob":"PASS","fmq30_owner_harness_not_imported":"PASS","fmq30_existing_parallel_v1_byte_preserved":"PASS","fmq30_persisted_matrix_lock":"PASS","fmq30_explicit_distinct_root_active_capability":"PASS","fmq30_nonfinite_check_precedes_sign_check":"PASS","fmq30_worker_owned_heavy_runtime":"PASS","fmq30_old_v1_still_root_inactive":"PASS","fmq30_independent_root_attack_derivation":"PASS","fmq30_o0":"PASS","fmq30_o2":"PASS","fmq30_o0_o2_exact_output_identity":"PASS","fmq30_hard_mass_conservation":"PASS","independent_fmq30_replay":"PASS","fci37_hard_mass_conservation":"PASS","fci37_pre_admission":"PASS"},
+  "compiler_warning_disposition":"Warnings are inherited/shared-code or qualification-scaffold diagnostics. They did not fail any scientific assertion and O0/O2 exact output identity passed; they are not evidence for scope expansion.",
+  "production_source_reauthored_by_fci37":false,
+  "reference_delta":[],
+  "canonical_ref_advanced":false,
+  "decision":"PRE_ADMISSION_PASS_PENDING_EXACT_METADATA_HEAD_REPLAY_AND_CANONICAL_RECHECK"
+}

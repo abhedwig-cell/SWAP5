@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI28",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "candidate": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "readiness_head": "be9aa5962de16e8a19c33784573e55475fab237f",
+  "independent_requalification_on_same_head": {
+    "run": 34459160143,
+    "job": 102812577222,
+    "conclusion": "success"
+  },
+  "canonical_readiness_workflow": {
+    "run": 34459160273,
+    "frozen_F_CI24_job": 102812577765,
+    "frozen_F_CI27_job": 102812578116,
+    "current_F_CI28_postimage_job": 102812643507,
+    "conclusion": "success"
+  },
+  "gates": {
+    "frozen_F_CI24_reference_ET_authority": "PASS",
+    "frozen_F_CI27_reference_ET_runtime_authority": "PASS",
+    "live_canonical_ref_locked_to_F_CI27": "PASS",
+    "independent_F_CI28_postimage_requalification": "PASS",
+    "future_canonical_workflow_contains_F_CI28_gate": "PASS",
+    "exact_post_src_tree_3fe4ccff367479e54ab5db106e5faf8b480d8ec0": "PASS",
+    "reference_tree_unchanged": "PASS"
+  },
+  "promotion_method_required": "NON_FORCED_FAST_FORWARD_ONLY",
+  "promotion_allowed_subject_to_live_recheck": true,
+  "note": "This readiness evidence does not itself advance the canonical ref. The live canonical head and ancestry must be rechecked immediately before promotion."
+}

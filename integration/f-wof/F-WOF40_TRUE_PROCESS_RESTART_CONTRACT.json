@@ -1,0 +1,65 @@
+{
+  "work_unit": "F-WOF40",
+  "title": "WOFOST Crop Transaction True Process-Boundary Restart Qualification",
+  "status": "IN_PROGRESS",
+  "branch": "work/f-wof40-true-process-restart",
+  "primary_crop_donor": {
+    "branch": "work/f-wof39-crop-event-restart-lifecycle",
+    "head": "e42273264a8da87a38287a9497861474299e4b7d"
+  },
+  "persistence_donor": {
+    "branch": "work/f-kt13-external-reconstruction",
+    "qualified_handoff_head": "66c2d682330c9637c6f0cbfbaca2a3ef755346ba",
+    "qualified_executable_head": "8b0cbad625501961842aaed2a444ec7145b43038",
+    "workflow_run": 34362223859
+  },
+  "goal": "Qualify restart of the authoritative WOFOST crop transaction state across a real OS-process boundary using the F-KT13 trusted external reconstruction seam, without persisting retired accepted-window cache state.",
+  "qualified_boundary_to_preserve": [
+    "F-WOF38 atomic crop publication remains the only crop-state publication route",
+    "F-WOF39 matching committed receipt retires accepted-window delivery/cache state only",
+    "F-KT13 external reconstruction creates a fresh committed runtime carrier and is not rollback",
+    "lineage, revision and committed time remain F-KT-owned provenance",
+    "kernel remains free of file/path/parser concerns"
+  ],
+  "persistent_state_policy": {
+    "include": [
+      "kernel committed lineage/revision/time provenance",
+      "fmr_wofost_crop_transaction_state_t owner continuation state",
+      "last_consumed_event receipt identity when present"
+    ],
+    "exclude": [
+      "fmr_wofost_accepted_window_t after lifecycle retirement",
+      "event-delivery cache after retirement",
+      "parameters",
+      "forcing",
+      "solver scratch or warm-start state",
+      "derived canopy or root-water views that can be recomputed"
+    ]
+  },
+  "required_design": [
+    "compose only the qualified F-KT13 reconstruction seam onto the F-WOF39 crop lineage under donor hash control",
+    "add owner-controlled persistence view/constructor APIs where private WOFOST state would otherwise require encapsulation-breaking access",
+    "keep byte/text encoding in an adapter or qualification layer outside src/kernel",
+    "use a fresh consumer process with no in-memory object transfer from producer"
+  ],
+  "required_executable_claims": [
+    "continuous crop path and process-restarted crop path are exactly identical at the qualified endpoint",
+    "producer terminates after writing the committed crop artifact",
+    "consumer reconstructs a fresh kernel_committed_state_t from the external artifact",
+    "restored crop owner and last-consumed-event receipt are exact",
+    "the same already-consumed event is rejected after restart",
+    "a subsequent distinct accepted crop event can commit after restart with monotonic revision and exact lineage/time continuation",
+    "accepted-window retired cache is not required for continuation",
+    "invalid schema/layout/codec/provenance or malformed crop-state payloads fail closed before a ready committed state is published",
+    "O0 and O2 qualification output is identical"
+  ],
+  "nonclaims": [
+    "not a production SWAP-wide restart format",
+    "not qualification of every WOFOST option or every optional crop state layout",
+    "not persistence of active unretired accepted-window delivery state",
+    "not permission for runtime code to set lineage or revision independently",
+    "not a branch-wide merge of the F-WOF and F-KT histories"
+  ],
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,21,23,27,29,30],
+  "decision_rule": "Close positively only if a real producer-process to consumer-process restart preserves authoritative crop continuation and receipt identity, stale replay is rejected, a later event continues correctly, all negative payloads fail closed, preservation gates stay green, and no retired cache is promoted to persistent state."
+}

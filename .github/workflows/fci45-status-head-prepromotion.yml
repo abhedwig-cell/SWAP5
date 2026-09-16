@@ -1,0 +1,61 @@
+name: F-CI45 status-head prepromotion qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
+    paths:
+      - integration/f-ci/F-CI45_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  status-head:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert exact status/evidence contract
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('integration/f-ci/F-CI45_STATUS.json').read_text())
+          e=json.loads(Path('integration/f-ci/F-CI45_EVIDENCE.json').read_text())
+          assert s['work_unit']=='F-CI45'
+          assert s['phase']=='QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED'
+          assert s['decision']=='QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_FOR_CURRENT_CANONICAL_ADMISSION'
+          assert s['canonical_base']=='e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2'
+          assert s['composition_head']=='97515d75c96e9766f3b8697a7b40b28ec237118f'
+          assert s['first_green_admission']['run']==34633372426
+          assert s['first_green_admission']['job']==103375339565
+          assert s['state']['canonical_promoted'] is False
+          assert s['state']['all_30_architecture_invariants_reconciled'] is True
+          assert s['promotion_gate']['require_current_canonical_still_exactly_base'] is True
+          assert s['promotion_gate']['require_exact_status_head_F_CI45_success'] is True
+          assert s['promotion_gate']['require_true_two_parent_merge_commit'] is True
+          assert s['promotion_gate']['force_update_forbidden'] is True
+          assert s['promotion_gate']['post_promotion_reconciliation_required'] is True
+          assert e['first_green_run']==34633372426 and e['first_green_job']==103375339565
+          assert e['corroborating_F_MR40R']['result']=='PASS'
+          assert e['runtime_output_sha256']=='cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942'
+          print('FCI45_STATUS_EVIDENCE_CONTRACT=PASS')
+          PY
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Requalify exact status head
+        run: bash tests/fci/run_fci45_fmr39_soil_temperature_runtime_canonical_admission.sh
+      - name: Final immutable-head assertion
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git status --porcelain -- src)"
+          echo "FCI45_STATUS_HEAD_PREPROMOTION=PASS:${GITHUB_SHA}"

@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI23",
+  "title": "Canonical Provenance Gate Reconciliation Closeout",
+  "qualified_scope": "Canonical CI governance and provenance reconciliation only. No production source or reference-data change.",
+  "first_canonical_promotion": {
+    "from_head": "e5662a513846296585a1a7005729896c165091ac",
+    "to_head": "01f82d3ba16d9905146e6c54d618515af4685907",
+    "update_mode": "NON_FORCED_FAST_FORWARD",
+    "ahead_before_update": 16,
+    "behind_before_update": 0,
+    "merge_base": "e5662a513846296585a1a7005729896c165091ac",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "post_promotion_canonical_validation": {
+    "workflow": "F-CI canonical qualification",
+    "run_id": 34408015944,
+    "head": "01f82d3ba16d9905146e6c54d618515af4685907",
+    "event": "push",
+    "conclusion": "success",
+    "jobs": {
+      "historical_F_CI03_through_F_CI18": {
+        "job_id": 102655553253,
+        "conclusion": "success"
+      },
+      "frozen_F_CI19_candidate_preservation": {
+        "job_id": 102655553237,
+        "conclusion": "success"
+      },
+      "frozen_F_CI19_source_lineage": {
+        "job_id": 102655553005,
+        "conclusion": "success"
+      },
+      "current_restricted_canonical_postimage": {
+        "job_id": 102655776361,
+        "conclusion": "success",
+        "current_lineage_authority_gate": "PASS",
+        "F_CI21_closeout_semantic_replay": "PASS",
+        "final_postimage_authority_recheck": "PASS"
+      }
+    }
+  },
+  "historical_gate_policy": {
+    "F_CI03_through_F_CI18_remain_historical_gates": true,
+    "historical_gates_execute_on_frozen_qualified_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "F_CI03_reader_modified_by_final_F_CI23": false,
+    "F_CI04_reader_modified_by_final_F_CI23": false,
+    "current_source_is_not_forced_through_obsolete_literal_postimage_pins": true,
+    "current_forward_evolution_must_have_explicit_pinned_authority": true
+  },
+  "current_lineage_authorities": {
+    "F_CI18": "QUALIFIED_EXIT",
+    "F_CI19": "QUALIFIED_RESTRICTED_CANONICAL_SOURCE_LINEAGE_ADVANCED",
+    "F_KT09_transaction_forward_evolution": "PINNED",
+    "F_KT08_F_MR04_mass_forward_evolution": "PINNED_FAIL_CLOSED",
+    "F_CI21_postimage_semantics": "REEXECUTED_PASS",
+    "F_CI22_exact_postimage_admission": "QUALIFIED"
+  },
+  "hard_nonclaims": {
+    "new_physics_qualified": false,
+    "production_source_changed": false,
+    "reference_data_changed": false,
+    "groundwater_predictor_corrector_released": false,
+    "parallel_real_physics_released": false,
+    "balanced_throughput_fallback_released": false,
+    "subdaily_or_multiday_active_snow_released": false,
+    "active_macropore_or_swkimpl1_scope_expanded": false,
+    "application_H_budget_selected": false,
+    "universal_temporal_tolerance_selected": false,
+    "F_VQ33_reinterpreted_as_pass": false
+  },
+  "decision": "QUALIFIED_LINEAGE_AWARE_CANONICAL_PROVENANCE_GATE_RECONCILIATION_POST_PROMOTION_VALIDATED",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "first_canonical_promotion_complete": true,
+    "first_post_promotion_canonical_validation_complete": true,
+    "final_governance_head_requalification_required_before_final_fast_forward": true
+  }
+}
