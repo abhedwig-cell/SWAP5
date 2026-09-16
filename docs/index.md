@@ -2,6 +2,10 @@
 
 This site documents the SWAP5 rebuild: its scientific/reference foundations, admitted Status-A baseline, current software architecture, verification evidence, and the historical material needed to understand how the model reached that state.
 
+## Start here
+
+If you want a practical repository entry point first, use [Getting started: build, run, input and output](getting-started.md). It documents the supported documentation build, the admitted minimal application-host exercise, and—equally important—where the repository does **not yet** claim a broad stable end-user CLI or replacement input/output grammar.
+
 ## Reviewing SWAP5
 
 If you are reviewing the rebuild, start with the [SWAP5 review guide](review/REVIEW_GUIDE.md). It provides separate reading routes for scientific reviewers, numerical/software reviewers, model users and a full technical review.
@@ -33,6 +37,7 @@ For present-state questions about the admitted Status-A baseline, start here:
 - [SWAP5 Status-A current status](status-a/CURRENT_STATUS.md)
 - [Current Status-A architecture](status-a/CURRENT_ARCHITECTURE.md)
 - [Theory, code and evidence traceability](status-a/TRACEABILITY.md)
+- [Status-A capability review pages](capabilities/index.md)
 - [Deliberate future scope](status-a/FUTURE_SCOPE.md)
 - [Documentation reconciliation matrix](status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md)
 
@@ -48,14 +53,16 @@ The frozen first-review scientific authority is Status-A commit `992a5c657bfe10a
 
 The review portal is being organized around the following layers:
 
-1. **Review baseline** identifies exactly what colleagues are being asked to review and gives role-specific reading routes.
-2. **Scientific model** explains the conceptual model, physical assumptions, state variables, process equations, boundaries and balances. This narrative layer is being expanded in F-DOC20 from existing theory/code/evidence authorities.
-3. **Numerical formulation** explains discretisation, nonlinear solution, timestep control, retry/rollback and numerical acceptance. This narrative layer is being expanded in F-DOC20 without changing numerical semantics.
-4. **Current Status-A** records the admitted capability boundary, actual ownership model, distributed authority map and deliberate future scope.
-5. **Architecture** contains current ownership/invariant material plus explicitly identified historical target-design material.
-6. **Verification** records correctness, conservation, numerical, restart, MultiSWAP and preservation evidence.
-7. **Legacy** describes SWAP 4.3.1, its reference role, file-oriented interfaces and migration constraints.
-8. **Development** explains repository workflow, qualification discipline and documentation publication.
+1. **Getting started** records only build/run/input/output paths that are actually supported by repository authority, and records gaps instead of inventing a public interface.
+2. **Review baseline** identifies exactly what colleagues are being asked to review and gives role-specific reading routes.
+3. **Scientific model** explains the conceptual model, physical assumptions, state variables, process equations, boundaries and balances. This narrative layer is being expanded in F-DOC20 from existing theory/code/evidence authorities.
+4. **Status-A capability pages** explain the admitted boundaries of Restart, serialized MultiSWAP, Drainage, WOFOST runtime, restricted Snow and Groundwater Coupling v1.
+5. **Numerical formulation** explains discretisation, nonlinear solution, timestep control, retry/rollback and numerical acceptance. This narrative layer is being expanded in F-DOC20 without changing numerical semantics.
+6. **Current Status-A** records the admitted capability boundary, actual ownership model, distributed authority map and deliberate future scope.
+7. **Architecture** contains current ownership/invariant material plus explicitly identified historical target-design material.
+8. **Verification** records correctness, conservation, numerical, restart, MultiSWAP and preservation evidence.
+9. **Legacy** describes SWAP 4.3.1, its reference role, file-oriented interfaces and migration constraints.
+10. **Development** explains repository workflow, qualification discipline and documentation publication.
 
 Architecture Decision Records preserve the rationale for important choices. Qualification, integration and testbank records preserve the evidence for bounded capability decisions. No single historical page should be treated as a substitute for the complete authority chain.
 
