@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ99",
+  "campaign": "SWAP431_SWAP5_STATUS_A_SCIENTIFIC_EQUIVALENCE",
+  "phase": "POST_CLOSE_HUPSEL_ASSET_QUALIFICATION",
+  "status": "LEGACY_LONG_TRAJECTORY_QUALIFIED_SWAP5_APPLICATION_MAPPING_NOT_ESTABLISHED",
+  "supersedes_asset_recovery_checkpoint": "dd0bb36a664cde4e98a08aafebe32a99eb81cc1c",
+  "pinned_comparison_target": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "live_repository_state_at_checkpoint": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "live_head": "8f592dcc1651913b2b24356fd6379e7fafa817a4",
+    "commits_ahead_of_pinned_scientific_product": 27,
+    "production_or_reference_delta_from_50346642": "NONE",
+    "basis": "GitHub compare 50346642..8f592dcc lists documentation/governance/evidence files only; no src/ or reference/ paths changed. The F-VQ99 scientific target therefore remains the pinned Status-A product image."
+  },
+  "external_b0_asset": {
+    "source": "user-supplied official SWAP_4.3.1.zip; external evidence only; not committed to public repository",
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "distribution_bytes": 8959314,
+    "identity_gate": "PASS_EXACT_PIN_MATCH",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "nested_source_archive_bytes": 411215,
+    "expanded_source_members": 63,
+    "expanded_source_bytes": 1859823,
+    "official_linux_executable_sha256": "e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862",
+    "hupsel_fixture": "SWAP_4.3.1/cases/1.hupselbrook"
+  },
+  "b1_10_reconstruction": {
+    "method": "Exact B0 plus the immutable qualified patch chain in repository order, with corrected-target SHA checked after every patch. SWAP-012 used its repository byte-safe apply_and_verify authority rather than approximate diff application.",
+    "patch_chain": ["SWAP-001", "SWAP-005", "SWAP-006", "SWAP-007", "SWAP-008", "SWAP-009", "SWAP-010", "SWAP-013", "SWAP-012", "SWAP-002"],
+    "final_member_count": 63,
+    "final_source_bytes": 1863575,
+    "final_member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "identity_gate": "PASS_EXACT_B1_10_PIN_MATCH"
+  },
+  "local_compiler_execution_adapter": {
+    "purpose": "Execute immutable legacy source in the current Linux runner after the official Intel-linked executable could not load libimf.so.",
+    "compiler": "GNU Fortran 14.2.0",
+    "scientific_source_mutated": false,
+    "adapter_rules": [
+      "Translate only Intel !DEC$ conditional compilation directives to equivalent temporary cpp guards for linux/multiswap/with_animo/with_sss.",
+      "Compile TTUTIL from the exact distribution source because the shipped TTUTIL archive contains Intel-runtime-linked objects.",
+      "Use Intel-like persistent-local semantics for ordinary legacy files; compile only MOD_RIA.f90 and temperature.f90 with automatic locals because their PURE procedures are incompatible with gfortran SAVE semantics.",
+      "Apply the identical compiler adapter to B0 and B1.10."
+    ],
+    "non_authoritative_local_binary_sha256": {
+      "b0": "c8132ea81f87f2bff40b9b03567d5f4b59de40ceec829067697510678ebaada9",
+      "b1_10": "345527e2e9ec8f8f48d19fb5d26fb30a1a5a969a56c22fac55936729307bdfa6"
+    }
+  },
+  "hupsel_execution_contract": {
+    "period": "2002-01-01 through 2004-12-31",
+    "fixture_origin": "exact official B0 distribution",
+    "normalization_before_execution": [
+      "SWCSV=1 -> SWCSV=0 for both B0 and B1.10, reusing the pre-existing historical gfortran/testbank execution normalization; this changes legacy CSV output control only and is not a scientific parameter or tolerance change.",
+      "Remove stale outputs before each run."
+    ],
+    "completion_rule": "Legacy process returns code 100 at shutdown in this ported execution path; successful completion requires generated swap.ok stating simulation successfully terminated plus newly generated result outputs.",
+    "b0_completion": "PASS",
+    "b1_10_completion": "PASS",
+    "water_balance_deviation_by_year_cm": {
+      "2002": [0.00, 0.00, 0.00, 0.00],
+      "2003": [0.00, 0.00, 0.00, 0.00],
+      "2004": [0.00, 0.00, 0.00, -0.00]
+    }
+  },
+  "hupsel_output_evidence": {
+    "raw_sha256": {
+      "b0_result_bal": "dfb55ca753ba0ccc060eb814ff27700ce9439802c04001feee760277d7c06cea",
+      "b0_result_blc": "9df5f273c59c01d5534032bb035c0dfe61f0e9101002061aa06381c465455666",
+      "b1_10_result_bal": "268361c12a61efd73328a7ae82a7704b94dedd005a4f08a14ddd70367b4f31b8",
+      "b1_10_result_blc": "a08c4526dc9646842dcbc0684267132d65ecefa0f897d561e0babf3f11a38474"
+    },
+    "representation_difference": "The B0/B1.10 raw files differ only in the '* Generated at:' timestamp line.",
+    "normalization_for_identity": "Convert CRLF to LF and remove only the complete '* Generated at:' line.",
+    "normalized_sha256_b0_and_b1_10": {
+      "result.bal": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result.blc": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+    },
+    "historical_oracle_match": "PASS_EXACT",
+    "b0_b1_10_normalized_byte_identity": "PASS_EXACT",
+    "classification": "Scientific Hupsel balance content is I_IDENTICAL after the declared representation normalization; the unnormalized raw-file difference is IV_IO_OR_REPRESENTATION_ONLY_DIFFERENCE because it is limited to generation timestamp."
+  },
+  "swap5_long_trajectory_assessment": {
+    "target_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "whole_hupsel_application_driver_found": false,
+    "evidence": [
+      "The Status-A baseline explicitly limits qualification claims to stated admitted scopes and classifies broad public API / wholesale legacy IO modernization as future scope.",
+      "src/runtime/mod_fmr_deterministic_runtime.f90 is explicitly a deterministic test model with scalar water storage and supplied inflow/outflow; it is not the SWAP physical application.",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90 is a real physical interval backend, but its canonical forcing already requires prepared top_flux, bottom conditions, drainage controls/sources and root_extraction_sink. It does not consume the Hupsel meteorology/crop/legacy input set and does not itself provide canonical crop/ET/meteo/IO application composition.",
+      "src/runtime/mod_fmr_serialized_kernel_backend.f90 is a generic injected-kernel transaction wrapper and likewise does not define Hupsel application semantics.",
+      "The current source tree contains qualified process/runtime/test surfaces but no authoritative end-to-end application entrypoint mapping the official Hupsel fixture to the full set of Status-A interval forcings and process controls."
+    ],
+    "why_not_build_an_ad_hoc_driver": "A campaign-written Hupsel-to-SWAP5 application mapping would have to choose currently unbound crop/meteo/ET/forcing composition semantics. That would introduce new decision semantics into the oracle path and would not be an independent verification of an existing canonical application. F-VQ99 is evidence-only and must not silently implement the missing application boundary merely to obtain PASS.",
+    "eq_full_hupsel_long_status": "BLOCKED_CANONICAL_SWAP5_APPLICATION_LEVEL_MAPPING_NOT_ESTABLISHED"
+  },
+  "matrix_update": {
+    "EQ-RICHARDS-15": "PASS_EXISTING_EVIDENCE",
+    "EQ-ET-DEMAND": "PASS_EXISTING_EVIDENCE",
+    "EQ-FULL-HUPSEL-LONG": "LEGACY_REFERENCE_SIDE_PASS_SWAP5_APPLICATION_SIDE_BLOCKED",
+    "EQ-RESTART-CONTINUATION": "BLOCKED_COMPARABLE_B1_10_PERSISTED_STATE_NOT_ESTABLISHED"
+  },
+  "mutations": {
+    "swap5_production_source": "NONE",
+    "swap431_source": "NONE",
+    "reference_physics": "NONE",
+    "official_distribution_committed_to_repository": false,
+    "qualification_evidence_only": true
+  },
+  "global_verdict": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED",
+  "verdict_interpretation": "The prior missing-B0/Hupsel-asset blocker has been resolved and the complete legacy Hupsel authority is now qualified. No unexplained scientific/numerical difference was found. Global equivalence remains unestablished only because a canonical current-SWAP5 application-level mapping for the declared long Hupsel trajectory, and a directly comparable B1.10 persisted-state restart fixture, are not established.",
+  "next_permitted_actions": [
+    "Treat the recovered exact B0/B1.10 Hupsel reference and normalized output hashes as immutable external evidence for future application-level qualification.",
+    "If whole-model Hupsel equivalence is required, open a separately governed application-composition qualification/implementation workunit that first defines or admits the canonical mapping from legacy Hupsel meteo/crop/ET inputs to SWAP5 typed forcing/process composition; only after that mapping is fixed may EQ-FULL-HUPSEL-LONG be executed against it.",
+    "Alternatively, pursue the existing independent restart-fixture route if a semantically equivalent B1.10 persisted-state fixture can be established without inventing a mapping.",
+    "Do not widen tolerances, change production physics, or treat seam-level PASS results as a substitute for the declared whole-trajectory comparison."
+  ]
+}
