@@ -2,18 +2,16 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI94",
   "title": "F-APP01 minimal generic soil-water application host current-canonical admission",
-  "phase": "QUALIFIED_ADMISSION_READY_PENDING_LIVE_PREIMAGE_GUARD",
-  "decision": "ADMIT_EXACT_F_APP01_HOST_ONLY_IF_CANONICAL_PREIMAGE_REMAINS_PINNED",
+  "phase": "CLOSED_CANONICAL_ADMISSION_POSTIMAGE_GREEN",
+  "decision": "ADMITTED_EXACT_F_APP01_GENERIC_HOST_WITHOUT_ROSSFAST_OR_HUPSEL_WIRING",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_preimage": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
-  "canonical_preimage_tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
-  "admission_branch": "qualification/f-ci94-fapp01-minimal-application-host-admission",
-  "candidate_head": "4927f0be6e6208c9e90feaad0d527a5aec86de9e",
-  "candidate_tree": "4df1d03e669fb4e886bf413f54cbdb6e4c1ddc35",
-  "production_candidate": {
+  "canonical_admission_commit": "7da483740f05a1e98ee6491488e519510d680258",
+  "postimage_governance_repair_commit": "89ee508793f5d9952764684b0dcc77e82df54e5b",
+  "production": {
     "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
     "blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
-    "only_src_or_reference_delta_from_preimage": true,
+    "only_new_production_surface_in_fci94": true,
     "production_callsite_wiring_present": false,
     "reference_backend_behavior_changed": false,
     "solver_science_changed": false,
@@ -21,53 +19,48 @@
   },
   "owner_authority": {
     "workunit": "F-APP01",
-    "owner_branch": "work/f-app01-minimal-soil-water-application-host",
     "qualified_scientific_head": "6b799b269871a8b3594a3d1a50ee126c57af37bb",
     "closeout_head": "c75927a73fcf05ee45ec011f6480cc51cf600280",
     "owner_status_blob": "53f391a9a8e2a2f977fa7834e9f763d11746298d",
     "scientific_run_id": 35080790887,
     "closeout_replay_run_id": 35081402172,
-    "closeout_replay_conclusion": "success"
+    "conclusion": "success"
   },
   "independent_authority": {
     "workunit": "F-VQ101",
-    "branch": "qualification/f-vq101-fapp01-minimal-application-host-independent",
     "scientific_test_head": "306c2862cae2c8385fabfba7bc292388c3bba068",
     "closeout_head": "c5d4cdda0da7a2b01d2f31bebe3fbf04d87223c8",
     "status_blob": "ffbf7922d55266c9a1a1bcd0a78fda74f84300f6",
     "scientific_run_id": 35081070415,
     "closeout_replay_run_id": 35081294513,
-    "closeout_replay_conclusion": "success",
-    "o0_o2_sha256": "4f51c586f802468218e0e7c4f04152c77af5c6584fdb82ef2fe03b559801bdd3"
+    "o0_o2_sha256": "4f51c586f802468218e0e7c4f04152c77af5c6584fdb82ef2fe03b559801bdd3",
+    "conclusion": "success"
   },
   "admission_qualification": {
+    "candidate_head": "4927f0be6e6208c9e90feaad0d527a5aec86de9e",
+    "governance_head": "745babaec45e59a1c683ece27c53270522f9362f",
     "run_id": 35081573946,
-    "job_id": 104746572163,
-    "tested_head": "4927f0be6e6208c9e90feaad0d527a5aec86de9e",
+    "governance_replay_run_id": 35081708882,
     "conclusion": "success",
-    "compiler": "GNU Fortran 13.2.0 on ubuntu-24.04",
     "exact_host_blob_pass": true,
     "only_production_delta_is_generic_host_pass": true,
     "no_production_callsite_wiring_pass": true,
-    "owner_and_independent_status_locks_pass": true,
-    "owner_replay_pass": true,
-    "independent_replay_pass": true,
-    "owner_o0_o2_sha256": "acf11684bfdeea14bb7f8802dba4e8eb09af09fc9699fcb5efbbadf30e203b22",
-    "independent_o0_o2_sha256": "4f51c586f802468218e0e7c4f04152c77af5c6584fdb82ef2fe03b559801bdd3",
-    "artifacts": {
-      "evidence": {
-        "id": 10440537079,
-        "digest": "sha256:c2b51b44f229d0db2ec9ee0d7eaa13696e44706ddeee6c03be177a2a61e8dc2e",
-        "size_bytes": 726
-      },
-      "diagnostics": {
-        "id": 10439974767,
-        "digest": "sha256:8f6087b29b4bf8e1794f85906d308b43a5fe40d145b4b061944cd60acf8a62f6",
-        "size_bytes": 774
-      }
-    }
+    "owner_and_independent_replays_pass": true
   },
-  "admitted_contract_if_promoted": {
+  "postimage_reconciliation": {
+    "initial_fsi35_preservation_run_id": 35081831762,
+    "initial_fsi35_preservation_conclusion": "failure",
+    "classification": "STALE_FCI58P_REPOSITORY_WIDE_BLOB_LOCK_EXPOSED_NOT_FAPP01_SCIENTIFIC_REGRESSION",
+    "remediation_workunit": "F-CI93",
+    "remediation_commit": "89ee508793f5d9952764684b0dcc77e82df54e5b",
+    "post_remediation_fsi35_run_id": 35082557470,
+    "post_remediation_fsi35_conclusion": "success",
+    "post_remediation_canonical_run_id": 35082557648,
+    "post_remediation_canonical_conclusion": "success",
+    "post_remediation_wof_moving_preservation_run_id": 35082557593,
+    "post_remediation_wof_moving_preservation_conclusion": "success"
+  },
+  "admitted_contract": {
     "reference_default_for_blank_selection": true,
     "explicit_reference_selection": true,
     "explicit_typed_registered_alternative_selection": true,
@@ -75,19 +68,17 @@
     "unsupported_or_invalid_selection_fails_closed": true,
     "no_automatic_fallback": true,
     "no_silent_selection": true,
-    "no_alternative_model_is_named_or_bound_by_generic_host": true,
+    "generic_host_has_no_alternative_model_specific_dependency": true,
     "no_broad_public_api_claim": true,
     "no_legacy_swp_grammar_change": true
   },
   "explicit_nonclaims": [
-    "F-CI94 does not make RossFast selectable from the normal application by itself.",
+    "F-CI94 does not make RossFast selectable from normal application execution by itself.",
     "F-CI94 does not implement Hupsel meteo/crop/ET application composition.",
-    "F-CI94 does not broaden Status-A scientific process scope.",
+    "F-CI94 does not broaden the pinned Status-A scientific denominator.",
     "F-CI94 does not add EB, groundwater RossFast, mixed-backend MultiSWAP or automatic solver fallback."
   ],
-  "warnings": [
-    "F-VQ101 intentionally exercises overlength test-only CHARACTER literals and GNU Fortran reports truncation warnings in that test. The values remain above the production 32-character limit and the intended fail-closed length guards pass; no production warning or semantic defect is implicated."
-  ],
-  "canonical_admission": false,
-  "next_permitted_action": "Require this exact governance head to replay the F-CI94 admission gate green. Immediately before promotion, verify live integration/f-ci-canonical still equals 9b6adac8fb2f915640dbe4e33c4406a835d6d6a1. If it moved, classify the delta before promotion. If it did not move, admit the exact candidate postimage without any RossFast or Hupsel wiring in the same admission."
+  "canonical_admission": true,
+  "final_verdict": "CLOSED_CANONICAL_ADMISSION_POSTIMAGE_GREEN",
+  "next_permitted_action": "F-ROSS12 may now resume against current canonical and bind explicit ROSSFAST_D3R selection to the already qualified F-ROSS11 application composition. Keep Reference default and preserve all existing restricted-domain exclusions. Full Hupsel application composition remains a separate capability."
 }

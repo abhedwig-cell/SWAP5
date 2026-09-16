@@ -2,13 +2,14 @@
   "schema_version": 1,
   "workunit": "F-CI93",
   "title": "F-SI35 dependency-aware semantic successor preservation",
-  "phase": "QUALIFIED_CURRENT_CANONICAL_SUCCESSOR_PRESERVATION",
-  "decision": "QUALIFIED_DEPENDENCY_AWARE_FSI35_SUCCESSOR_PRESERVATION_READY_TO_ADMIT",
+  "phase": "CLOSED_CANONICAL_PRESERVATION",
+  "decision": "ADMITTED_DEPENDENCY_AWARE_FSI35_SUCCESSOR_PRESERVATION",
   "canonical_preimage": "7da483740f05a1e98ee6491488e519510d680258",
+  "canonical_admission_commit": "89ee508793f5d9952764684b0dcc77e82df54e5b",
   "status_a_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "triggering_context": {
     "initial_stale_preservation_failure_run": 35081831762,
-    "interpretation": "F-CI58P still enforced a pre-F-CI75 moving exact-blob lock. F-CI75 had already semantically requalified the changed Task2 and SoilWater composition surfaces. The later F-APP01 generic host admission did not touch those F-SI35 dependencies but exposed the stale repository-wide preservation assumption."
+    "interpretation": "F-CI58P still enforced a pre-F-CI75 moving exact-blob lock. F-CI75 had already semantically requalified the changed Task2 and SoilWater composition surfaces. F-APP01 did not touch those dependencies; its admission exposed the stale repository-wide preservation assumption."
   },
   "historical_authority": {
     "fci58_postimage": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
@@ -25,43 +26,38 @@
     "transaction_reference_dependency_preserved": true
   },
   "dependency_aware_repair": {
-    "qualified_head": "161f3ceb86b1347a6e7f66e47a3b583c4fe5c15a",
+    "qualified_scientific_head": "161f3ceb86b1347a6e7f66e47a3b583c4fe5c15a",
+    "qualified_governance_head": "638701eda1d515b4cfb752404e9c35885fea3e47",
     "qualified_runner_blob": "d3f8ede538e7f136abe66994befe0f996d6b53b6",
-    "policy": "Preserve exact F-SI35-owned composition/dependency surfaces and replay F-SI35 semantics, while allowing later independently admitted unrelated production modules to exist without classifying them as F-SI35 drift.",
-    "unrelated_post_status_a_delta": [
-      "src/runtime/mod_fmr_soil_water_application_host.f90"
-    ],
+    "policy": "Preserve exact F-SI35-owned composition and dependency surfaces and replay F-SI35 semantics, while allowing later independently admitted unrelated production modules without classifying them as F-SI35 drift.",
+    "unrelated_post_status_a_delta": ["src/runtime/mod_fmr_soil_water_application_host.f90"],
     "fapp01_host_dependency_of_fsi35": false
   },
   "qualification": {
-    "fsi35_preservation_run_id": 35082114474,
-    "fsi35_preservation_job_id": 104748304928,
-    "fsi35_preservation_conclusion": "success",
-    "canonical_qualification_run_id": 35082114484,
-    "canonical_qualification_conclusion": "success",
+    "pre_admission_fsi35_run_id": 35082322670,
+    "pre_admission_fsi35_conclusion": "success",
+    "pre_admission_canonical_run_id": 35082322674,
+    "pre_admission_canonical_conclusion": "success",
+    "post_admission_fsi35_run_id": 35082557470,
+    "post_admission_fsi35_conclusion": "success",
+    "post_admission_canonical_run_id": 35082557648,
+    "post_admission_canonical_conclusion": "success",
+    "post_admission_wof_moving_preservation_run_id": 35082557593,
+    "post_admission_wof_moving_preservation_conclusion": "success",
     "historical_exact_authorities_preserved": true,
     "successor_lineage_pass": true,
     "current_successor_blob_locks_pass": true,
     "typed_seam_and_headcalc_isolation_pass": true,
-    "task2_semantic_replay_o0_o2_pass": true,
-    "surface_regime_and_hard_mass_replay_o0_o2_pass": true,
-    "worker_isolation_retry_and_dispatch_equivalence_pass": true
+    "semantic_replay_o0_o2_pass": true
   },
   "mutations": [
-    ".github/workflows/fci58p-fsi35-postimage-reconciliation.yml from the existing F-CI93 remediation lineage",
-    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh made dependency-aware",
+    ".github/workflows/fci58p-fsi35-postimage-reconciliation.yml",
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
     "integration/f-ci/F-CI93_STATUS.json"
   ],
   "production_source_change": false,
   "reference_source_change": false,
   "scientific_semantics_change": false,
-  "nonclaims": [
-    "NO_FSI35_HISTORY_REWRITE",
-    "NO_PRODUCTION_READMISSION",
-    "NO_NEW_PHYSICS",
-    "NO_EB_CHANGE",
-    "NO_ROSSFAST_CHANGE",
-    "NO_REPOSITORY_WIDE_PRODUCTION_FREEZE"
-  ],
-  "next_permitted_action": "Require this exact governance head to replay both the F-SI35 successor-preservation gate and normal canonical qualification green. Then live-check canonical still equals 7da483740f05a1e98ee6491488e519510d680258 and admit this governance-only remediation. After admission require both canonical push gates green before closing F-CI94 and resuming F-ROSS12."
+  "final_verdict": "CLOSED_CANONICAL_DEPENDENCY_AWARE_PRESERVATION_GREEN",
+  "next_permitted_action": "Use F-CI93 as the moving F-SI35 preservation authority. Reopen only when an actual F-SI35 dependency surface changes; unrelated admitted production additions must not trigger repository-wide freeze semantics."
 }
