@@ -2,89 +2,97 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC20",
   "title": "SWAP5 Documentation & Review Baseline",
-  "phase": "RECONCILE",
-  "decision": "BUILD_A_FROZEN_REVIEW_PORTAL_FROM_STATUS_A_AUTHORITY_WITH_CURRENT_DOCUMENTATION_ASSEMBLY",
+  "phase": "UPDATE",
+  "decision": "CURATE_CURRENT_REVIEW_NARRATIVE_FROM_RECONCILED_SCIENTIFIC_AND_STATUS_A_AUTHORITIES",
   "protocol": ["RECONCILE", "UPDATE", "VERIFY", "PUBLISH", "CLOSE"],
   "branch": "work/f-doc20-review-baseline-publication",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
-  "canonical_start_tree": "49fb62d3a28a2a06837f56d636e5ff751b86816d",
   "canonical_reconciled_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
-  "canonical_reconciled_tree": "33f2e0f45a07c270a39f8875fa01cec4ade39c32",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
-  "state_delta_since_start": {
-    "commit": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
-    "workunit": "F-AR01",
-    "classification": "DOCUMENTATION_AND_EVIDENCE_ONLY",
-    "production_or_reference_semantics_changed": false,
-    "review_denominator_changed": false,
-    "relevance": "Adds recovered SWAP 4.3.1 legacy ZIP reconciliation evidence that can later be linked from the legacy/equivalence review route."
+  "qualified_first_review_slice": {
+    "head": "f19eed15ca6adf015f7008ee53b90b4a437b6956",
+    "workflow_run": 35104014812,
+    "job": 104820395258,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "deployment": "SKIPPED_ON_PR_AS_DESIGNED"
   },
-  "reconcile_findings": {
-    "mkdocs_material_already_present": true,
-    "strict_mkdocs_build_already_defined": true,
-    "repository_documentation_checks_already_defined": true,
-    "github_pages_workflow_already_present": true,
-    "external_publication_verifier_already_present": true,
-    "existing_status_a_docs_are_substantial": true,
-    "existing_architecture_verification_legacy_and_governance_docs_are_substantial": true,
-    "reviewer_entrypoint_missing_at_start": true,
-    "explicit_frozen_review_baseline_page_missing_at_start": true,
-    "science_section_in_published_navigation_missing": true,
-    "numerical_formulation_section_in_published_navigation_missing": true,
-    "user_oriented_review_route_incomplete": true,
-    "existing_pages_deploys_main_only": true,
-    "main_is_not_current_canonical": true
+  "scientific_authority_reconciliation": {
+    "F_DOC16": {
+      "classification": "CURRENT_REUSABLE_WITH_RECONCILIATION",
+      "role": "Qualified historical conceptual foundation for physical-system scope and 1D-column abstraction; current admission/status claims rebound to Status-A."
+    },
+    "F_DOC18": {
+      "classification": "HISTORICAL_QUALIFIED_RB1_SOURCE",
+      "role": "Restricted physical/formal source for reference Richards, ET/root and surface-evaporation lineage; F-DOC17 explicitly says it is not current-canonical authority."
+    },
+    "F_DOC13": {
+      "classification": "HISTORICAL_RESTRICTED_NUMERICAL_SOURCE",
+      "role": "Bounded temporal/numerical lineage with explicit nonclaim of a general nonlinear true-error theorem."
+    },
+    "F_DOC17": {
+      "classification": "HISTORICAL_STATUS_ASSESSMENT_SUPERSEDED_BY_LATER_STATUS_A_ADMISSION",
+      "role": "Useful classification/reconciliation history; its pre-Status-A compliance conclusion is not current status."
+    },
+    "STATUS_A_DOCS": {
+      "classification": "CURRENT_REVIEW_AUTHORITY",
+      "role": "Controls frozen Status-A scope, architecture and distributed theory-code-evidence traceability."
+    }
   },
-  "publication_risk": {
-    "main_head_at_reconcile": "9d5efff97172ff7337bc58273713d4dbaf1afa5b",
-    "interpretation": "Publishing main as current SWAP5 review authority would publish a stale source relative to integration/f-ci-canonical.",
-    "required_resolution": "Create an explicit frozen review publication authority and make the site identify its scientific and documentation git authorities."
+  "legacy_equivalence_reconciliation": {
+    "f_vq99_legacy_long_trajectory": "QUALIFIED",
+    "hupsel_period": "2002-01-01 through 2004-12-31",
+    "b0_b1_10_normalized_result_bal_identity": "PASS_EXACT",
+    "b0_b1_10_normalized_result_blc_identity": "PASS_EXACT",
+    "unexplained_scientific_difference_found": false,
+    "whole_application_swap431_to_swap5_equivalence": "NOT_YET_ESTABLISHED",
+    "reason": "Complete canonical SWAP5 application-level mapping for the long Hupsel legacy input/crop/ET composition is not yet fixed; this is an experimental prerequisite gap, not a discovered unexplained numerical difference."
   },
-  "information_architecture_target": [
-    "Start here / review guide",
-    "Frozen review baseline",
-    "Scientific model",
-    "Numerical formulation",
-    "Current software architecture",
-    "Verification and legacy equivalence",
-    "User guide",
-    "Developer guide",
-    "Source reference",
-    "Status / future scope"
-  ],
-  "review_routes": [
-    "scientific reviewer",
-    "numerical/software reviewer",
-    "model user",
-    "full technical review"
-  ],
-  "authority_chain": "theory_or_scientific_contract -> production_code -> owner_qualification -> independent_qualification_where_required -> canonical_admission -> permanent_preservation",
-  "first_update_slice": {
-    "add_review_guide": "docs/review/REVIEW_GUIDE.md",
-    "add_frozen_baseline": "docs/review/REVIEW_BASELINE.md",
-    "add_review_navigation": true,
-    "refresh_homepage_for_reviewers": true,
+  "current_update_slice": {
+    "new_review_pages": [
+      "docs/review/AUTHORITY_RECONCILIATION.md",
+      "docs/review/SWAP431_EQUIVALENCE.md"
+    ],
+    "new_science_pages": [
+      "docs/science/index.md",
+      "docs/science/conceptual-model.md",
+      "docs/science/soil-water-flow.md",
+      "docs/science/surface-evaporation.md"
+    ],
+    "new_numerics_pages": [
+      "docs/numerics/index.md",
+      "docs/numerics/richards-solver.md",
+      "docs/numerics/transactional-time-stepping.md"
+    ],
+    "review_guide_refreshed": true,
+    "mkdocs_navigation_refreshed": true,
+    "f_ar01_added_to_navigation": true,
     "production_source_change": false,
     "reference_source_change": false
   },
+  "publication_risk": {
+    "existing_pages_deploys_main_only": true,
+    "main_is_not_review_authority": true,
+    "resolution_pending": true,
+    "rule": "Do not publish the colleague-review portal until the workflow deploy source is an explicit frozen review publication authority and the site itself displays both scientific and documentation git authorities."
+  },
   "next_actions": [
-    "Qualify the reviewer entrypoint and frozen-baseline pages with the existing documentation gates.",
-    "Inventory the scientific-model and numerical-formulation source authorities needed for complete narrative documentation.",
-    "Populate science and numerics sections without inventing claims not supported by theory/code/evidence authorities.",
-    "Integrate current legacy/equivalence evidence including F-AR01 where appropriate.",
-    "Reconcile publication branch/source so GitHub Pages never presents stale main as current authority.",
-    "Run repository docs check and mkdocs build --strict.",
-    "Publish only after the frozen review authority is explicit and externally verifiable."
+    "Persist and qualify the curated Science/Numerics/equivalence slice on PR #162.",
+    "Inspect remaining admitted Status-A process domains (drainage, Snow, WOFOST, groundwater) and add reviewer-facing scientific pages or bounded links where source authority is sufficient.",
+    "Add a concise user-oriented build/run/input/output entry layer without broadening scientific claims.",
+    "Add generated Fortran source-reference integration only after the human review hierarchy is stable.",
+    "Create/freeze the publication authority and update the Pages workflow away from stale-main-only publication.",
+    "Run strict docs qualification and external publication verification before CLOSE."
   ],
   "explicit_nonclaims": [
-    "F-DOC20 does not modify scientific production code.",
-    "F-DOC20 does not broaden Status-A capability scope.",
-    "F-DOC20 does not claim whole-model SWAP4.3.1/SWAP5 equivalence beyond existing evidence.",
-    "F-DOC20 does not treat ongoing post-Status-A development as part of the frozen review denominator unless explicitly admitted before freeze."
+    "No production or reference source is modified by F-DOC20.",
+    "Historical F-DOC branches are not silently promoted to current canonical authority.",
+    "The review portal does not claim complete whole-application SWAP 4.3.1/SWAP5 equivalence before that experiment is validly executed.",
+    "Post-Status-A capability development remains outside the first frozen scientific review denominator unless explicitly added before a later freeze."
   ]
 }

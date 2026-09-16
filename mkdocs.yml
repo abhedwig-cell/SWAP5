@@ -7,6 +7,17 @@ nav:
 - Review SWAP5:
   - Review guide: review/REVIEW_GUIDE.md
   - Frozen review baseline: review/REVIEW_BASELINE.md
+  - Authority reconciliation: review/AUTHORITY_RECONCILIATION.md
+  - SWAP 4.3.1 and SWAP5 equivalence: review/SWAP431_EQUIVALENCE.md
+- Scientific model:
+  - Overview: science/index.md
+  - Conceptual system and boundaries: science/conceptual-model.md
+  - Vertical soil-water flow: science/soil-water-flow.md
+  - Surface evaporation: science/surface-evaporation.md
+- Numerical formulation:
+  - Overview: numerics/index.md
+  - Richards discretisation and nonlinear solve: numerics/richards-solver.md
+  - Transactional time stepping and acceptance: numerics/transactional-time-stepping.md
 - Current Status-A:
   - Current status and scope: status-a/CURRENT_STATUS.md
   - Current architecture: status-a/CURRENT_ARCHITECTURE.md
@@ -48,6 +59,7 @@ nav:
   - VQ-1c3 targeted correction qualification: verification/vq-1c3-b1.5p1-targeted-qualification.md
   - VQ-1d B2 entrypoint gate: verification/vq-1d-b2-entrypoint-gate.md
   - Mass-accounting contract: verification/mass-accounting-contract.md
+  - F-AR01 recovered legacy ZIP reconciliation: verification/F-AR01_LEGACY_ZIP_RECONCILIATION.md
   - SWAP-009 B1 candidate: verification/swap-009-b1-candidate.md
   - SWAP-011 B1 candidate: verification/swap-011-b1-candidate.md
 - Performance:
