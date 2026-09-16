@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CLOSE_POST_FCI95_CURRENT_CANONICAL",
+  "branch": "work/m1-post-c4-current-canonical-close",
+  "prior_closeout_commit": "426d975e401976f877e762fd4b1d8bd5523b1275",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "tree": "49fb62d3a28a2a06837f56d636e5ff751b86816d",
+    "status": "LIVE_VERIFIED_POST_FCI95"
+  },
+  "normative_exit_criteria": [
+    "a non-file in-memory invocation path reaches the computational boundary;",
+    "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+    "legacy file runs still reproduce reference results through adapters;",
+    "output serialization does not mutate physical state;",
+    "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files."
+  ],
+  "criterion_matrix": {
+    "criterion_1": "PASS_EXISTING_EVIDENCE",
+    "criterion_2": "PASS_EXISTING_EVIDENCE",
+    "criterion_3": "BLOCKED_MISSING_REPLAYABLE_FULL_LEGACY_APPLICATION_SOURCE_OR_FIXTURE",
+    "criterion_4": "PASS_CURRENT_CANONICAL_ADMITTED",
+    "criterion_5": "PASS_EXISTING_EVIDENCE"
+  },
+  "dependency_reconciliation": {
+    "previous_closeout_canonical": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "current_canonical": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "compare_status": "CURRENT_CANONICAL_AHEAD_BY_45_WITH_PREVIOUS_CLOSEOUT_AS_ANCESTOR",
+    "m1_relevant_delta": "No change to canonical contracts, canonical interval runtime, or the admitted M1-C4 serializer. The only new M1 production authority is the bounded F-CI95 legacy SWBOTB=6 application binding; other delta is reference/performance/governance tooling and documentation.",
+    "criteria_1_2_4_5_inheritance": "VALID"
+  },
+  "criterion_4_authority": {
+    "canonical_admission_commit": "22b754cd85c79f713777c720fb4b5fef7c52dbb7",
+    "canonical_admission_is_ancestor_of_current": true,
+    "serializer_path": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "serializer_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "independent_qualification_commit": "31b5bcc9884c4ff7951af9f81fb7b08a00639832",
+    "verdict": "PASS_CURRENT_CANONICAL_ADMITTED"
+  },
+  "criterion_3_reconciliation": {
+    "latest_blocker_checkpoint": "c131c0ff7fe5e6ff93c9af560dd1a0b91d7f72ca",
+    "f_ci95": {
+      "pull_request": 160,
+      "canonical_merge": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+      "binding_path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+      "binding_blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
+      "semantic_image": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1",
+      "effect": "CLEARS_OFFICIAL_HUPSEL_BOTTOM_BOUNDARY_COMPOSITION_BLOCKER_ONLY"
+    },
+    "remaining_required_authority": [
+      "file-driven precipitation/meteo/interception state -> admitted interval top forcing",
+      "file-driven crop state and potential transpiration -> nodewise root_extraction_sink(:)",
+      "legacy drainage configuration and dynamic response -> typed drainage forcing/control surface",
+      "legacy irrigation/SSDI application composition -> typed source terms where applicable",
+      "activation and composition rules for optional process forcing in the actual Hupsel fixture"
+    ],
+    "reference_authority": {
+      "f_vq99_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+      "f_vq100_closeout_commit": "7823e00c71c218ba8bade15347a56b091017932d",
+      "swap431_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+    },
+    "source_availability": {
+      "repository_full_legacy_application_source": "ABSENT",
+      "repository_authoritative_hupsel_fixture": "ABSENT",
+      "retained_f_vq99_production_tree_artifact": "SWAP5_PRODUCTION_TREE_ONLY_NOT_EXTERNAL_SWAP431_SOURCE",
+      "accessible_prior_upload_search": "NO_EXACT_SWAP_4_3_1_ZIP_OR_COMPLETE_LEGACY_APPLICATION_SOURCE_FOUND"
+    },
+    "verdict": "BLOCKED_MISSING_REPLAYABLE_FULL_LEGACY_APPLICATION_SOURCE_OR_FIXTURE",
+    "scientific_difference_observed": false
+  },
+  "mutations": {
+    "production_source_on_this_close_branch": "NONE",
+    "reference_source": "NONE",
+    "scientific_semantics": "NONE",
+    "legacy_default_route": "UNCHANGED",
+    "public_api": "NOT_EXPANDED",
+    "closeout_metadata_only": true
+  },
+  "overall_verdict": "M1_NOT_CLOSED_ONLY_CRITERION_3_REMAINS_BLOCKED",
+  "next_permitted_action": "Do not create or implement another M1 adapter on incomplete authority. Resume criterion 3 only when the exact SWAP 4.3.1 distribution or an independently identity-verified complete legacy application source plus authoritative Hupsel fixture can be replayed. Then use the preregistered F-VQ100 process-ready forcing surface to recover and freeze meteo/interception, crop/root-uptake, drainage, irrigation/SSDI and active optional-process composition before candidate comparison; independently qualify that composition and only then implement the minimal legacy file adapter through the admitted typed boundary.",
+  "exclusions": [
+    "EB",
+    "RossFast science/domain expansion",
+    "F-ROSS12 as M1 authority",
+    "broad public API",
+    "wholesale IO modernization",
+    "new physics",
+    "automatic backend fallback",
+    "legacy default-route change",
+    "output fitting",
+    "invented application-composition semantics",
+    "production refactor merely to obtain PASS"
+  ]
+}
