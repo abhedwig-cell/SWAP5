@@ -2,6 +2,8 @@
 """Resolve the current Fortran module closure for immutable qualification tests.
 
 This is qualification harness only. It never rewrites production or test semantics.
+Explicit support/forced fixtures may intentionally shadow a production module,
+matching the immutable qualification authority that supplied that fixture.
 """
 from __future__ import annotations
 
@@ -38,6 +40,7 @@ def main() -> None:
     forced = [Path(x) for x in ns.force]
     production = sorted(Path("src").rglob("*.f90"), key=lambda p: str(p))
     candidates = production + supports + forced + tests
+    override_paths = set(supports + forced)
 
     for p in candidates:
         if not p.exists():
@@ -53,9 +56,17 @@ def main() -> None:
         for mod in MODULE_RE.findall(t):
             key = mod.lower()
             old = module_file.get(key)
-            if old is not None and old != p:
-                raise SystemExit(f"duplicate module {mod}: {old} and {p}")
-            module_file[key] = p
+            if old is None or old == p:
+                module_file[key] = p
+                continue
+            old_override = old in override_paths
+            new_override = p in override_paths
+            if new_override and not old_override:
+                module_file[key] = p
+                continue
+            if old_override and not new_override:
+                continue
+            raise SystemExit(f"duplicate module {mod}: {old} and {p}")
 
     test_set = set(tests)
 
