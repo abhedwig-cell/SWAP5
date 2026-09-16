@@ -33,7 +33,7 @@ Admission requires exact patch provenance, canonical B0 preimage verification, o
 | `B1.8` | `SWAP-013` | PDI input-domain bug | singular `HA=0` / `HA>=H0` accepted | require `0 < HA < H0` for PDI models 8-11 | 9-case source-bound guard gate |
 | `B1.9` | `SWAP-012` | hydraulic inverse algorithm bug | models 3 and 5-12 fall through to unrelated default-MvG `prhead` inverse | numerically invert the selected retention relation; retain model-4 analytical control | D2 22,240-point gate + isolated actual-source 600-point gate |
 | `B1.10` | `SWAP-002` | tillage control-flow/state-initialization bug | impossible interval test can retain the wrong next-event pointer when a run starts after the first event | choose first event on/after start and load the most recent previous tillage parameter state | historical semantic test + fresh strict compiled 3/6 -> 6/6 gate |
-| `B1.11` | `SWAP-011` | implicit Richards Jacobian algorithm bug | `dhconduc` can differentiate standard MvG while the residual uses a different active `K(h)` relation for models 3 and 5-12 | use a derivative consistent with the actual active conductivity relation, with qualified lazy constitutive state and fallback route | historical E5/E6/E7 qualification + exact E7 provenance + exact full B0 -> B1.11 replay |
+| `B1.11` | `SWAP-011` | hydraulic Jacobian derivative bug | implicit Richards Jacobian uses the default MvG `dK/dh` for hydraulic models whose implemented `K(h)` differs | differentiate the actual active conductivity relation using the qualified model-specific/lazy-state implementation with bounded fallback | historical E5/E6/E7 + F-PE19 current-B1 qualification + full canonical B0 replay |
 
 Machine-readable scopes are in `docs/verification/expected-differences.json`. An admitted correction permits only its documented difference envelope.
 
@@ -43,47 +43,49 @@ B1.5p1 repaired incorrect historical patch/preimage identity metadata discovered
 
 ## B1.5p1 -> B1.10 summary
 
-B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and explicitly pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference. B1.9 admitted only the isolated SWAP-012 `prhead` inverse repair. B1.10 admitted SWAP-002 tillage start-event initialization.
+B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and explicitly pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference. B1.9 admitted only the isolated SWAP-012 `prhead` inverse repair. B1.10 admitted SWAP-002 start-state/event-index initialization.
 
 ## B1.10 -> B1.11: SWAP-011 admission
 
-SWAP-011 corrects the implicit Richards conductivity derivative so the Newton Jacobian differentiates the same active `K(h)` relation used by the residual. The admitted scope is hydraulic models 3 and 5-12; model 4 remains the standard-MvG control.
+SWAP-011 was historically qualified in the E5/E6/E7 audit line and reached `FIX_TESTED / READY_PATCH_UPSTREAM`. F-PE19 recovered the exact E7 package and patch, verified the B0 target identities byte-safely, and then reconciled the correction with the already admitted SWAP-009, SWAP-010 and SWAP-012 changes that overlap the current ordered B1 targets.
 
-Exact provenance and ordered identity:
+The immutable historical E7 patch identity remains separate from the ordered B1.10 admission transform:
 
 ```text
-B0 distribution SHA-256
-2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360
-
-B0 source archive SHA-256
-1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151
-
 historical E7 patch SHA-256
 9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110
 
-ordered B1.10 admission patch SHA-256
+ordered B1.10 -> B1.11 patch SHA-256
 1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238
 ```
 
-The full byte-safe replay from the exact B0 distribution reproduced the qualified B1.10 predecessor and the frozen B1.11 postimage. The three changed production members and their ordered preimage -> B1.11 postimage identities are:
+The ordered transform changes exactly:
 
 ```text
 SWAP/MOD_MvG_functions.f90
-4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
--> 6b65ce49904aa0c037d6f43f93115af7d35227b7f67d52dbdd96b614da955ab5
-
 SWAP/WC_K_models_04_11.f90
-7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e
--> e963989e81622cf0554aeeb6ecae705e20b41ff03e259e1b8753df0609884874
-
 SWAP/MOD_RIA.f90
-a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3
--> fe696bdf463259868ad3659072566babc8288ab1d8329bf068f8d3b5945a0d2f
 ```
 
-`SWAP/headcalc.f90` remains byte-identical at `db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5`.
+and leaves `SWAP/headcalc.f90` unchanged.
 
-Deterministic B1.11 identity:
+Ordered B1.10 target identities and B1.11 postimages are:
+
+```text
+MOD_MvG_functions.f90
+  B1.10  4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
+  B1.11  6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104
+
+WC_K_models_04_11.f90
+  B1.10  7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e
+  B1.11  d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126
+
+MOD_RIA.f90
+  B1.10  a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3
+  B1.11  673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a
+```
+
+The complete canonical B0 distribution replay used the distribution SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360` and nested source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. It reproduced B1.10 exactly and then reproduced the frozen B1.11 identity exactly:
 
 ```text
 members          63
@@ -91,7 +93,7 @@ source bytes      1,886,519
 manifest SHA-256  24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2
 ```
 
-The correction changes no physical configuration, mass-balance tolerance, time-step policy or alternate physics. Numerical differences are admitted only where attributable to the corrected Jacobian derivative and its nonlinear convergence consequences.
+The admitted difference is limited to correcting the implicit Richards conductivity derivative/Jacobian consistency for hydraulic models 3 and 5-12. Model 4 remains the standard MvG control. Physical retention/conductivity formulations, forcing, boundary definitions, mass requirements, solver policy and time-step policy are not changed by this admission.
 
 ## Audit findings waiting for B1 admission review
 

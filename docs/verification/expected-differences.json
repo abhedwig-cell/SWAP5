@@ -108,7 +108,7 @@
           "affected_outputs": ["prhead inverse values for hydraulic models 3 and 5-12", "pressure-head reconstruction from water content on affected inverse-call paths"],
           "expected_direction_or_envelope": "For models 3 and 5-12, B1.9 numerically inverts the actual selected retention relation rather than applying the unrelated default-MvG analytical inverse. Differences are expected only on paths that call prhead for affected models and must be consistent with the selected retention curve.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-012/qualification.md",
-          "known_unchanged_scope": ["hydraulic model 4 analytical inverse", "retention functions", "conductivity functions", "Richards residual and Jacobian", "solver policy", "water-balance equations and tolerances", "SWAP-011 dhconduc behaviour"]
+          "known_unchanged_scope": ["hydraulic model 4 analytical inverse", "retention functions", "conductivity functions", "Richards residual and Jacobian", "solver policy", "water-balance equations and tolerances"]
         },
         {
           "difference_id": "SWAP-002",
@@ -127,10 +127,10 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-011/finding.md",
           "first_admitted_tag_or_commit": "B1.11",
-          "affected_outputs": ["implicit Richards Newton Jacobian conductivity derivative for hydraulic models 3 and 5-12", "nonlinear iteration route and state/flux trajectory where the previously inconsistent Jacobian affected convergence"],
-          "expected_direction_or_envelope": "For SWKIMPL=1 and hydraulic models 3 and 5-12, B1.11 evaluates a conductivity derivative consistent with the actual active K(h) relation used by the residual. Differences are admitted only when attributable to that corrected Jacobian derivative and its nonlinear convergence consequences.",
+          "affected_outputs": ["implicit Richards hydraulic-conductivity Jacobian derivative for hydraulic models 3 and 5-12", "nonlinear convergence trajectory where the legacy inconsistent derivative materially affected Newton behaviour"],
+          "expected_direction_or_envelope": "When SWKIMPL=1 and hydraulic models 3 or 5-12 are active, B1.11 differentiates the actual conductivity relation used by the residual, using the qualified model-specific/lazy-state implementation and its bounded fallback route. Differences are admitted only when attributable to replacement of the legacy default-MvG derivative mismatch by the derivative of the active K(h) relation.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-011/qualification.md",
-          "known_unchanged_scope": ["hydraulic model 4 standard-MvG derivative control", "physical configuration", "mass-conservation requirement and tolerance", "time-step policy", "headcalc.f90", "alternate physics"]
+          "known_unchanged_scope": ["hydraulic model 4 standard Mualem-van Genuchten derivative", "physical conductivity and retention formulations", "mass-conservation requirements", "forcing and boundary-condition definitions", "solver policy", "time-step policy", "previously admitted SWAP-009/SWAP-010/SWAP-012 semantics"]
         }
       ]
     },

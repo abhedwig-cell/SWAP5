@@ -4,37 +4,23 @@ Date: 2026-09-16
 
 Status: `QUALIFIED_FOR_B1_ADMISSION / SUPERSEDED_BY_B1_11_ADMISSION_CLOSE`
 
-This is the historical QUALIFY checkpoint for the exact F-PE19 ordered admission transform. The current closure authority is `docs/performance/F-PE19_B1_11_ADMISSION_CLOSE.md`; exact replay evidence is `docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json`.
-
-## Candidate authority
-
 Ordered preimage: corrected SWAP 4.3.1 `B1.10`.
 
-Derived admission patch:
+Derived ordered admission patch:
 
-- SHA-256: `1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238`
-- bytes: `37169`
-- changed files: exactly `MOD_MvG_functions.f90`, `WC_K_models_04_11.f90`, `MOD_RIA.f90`
+- SHA-256 `1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238`
+- bytes `37,169`
+- changed files exactly `MOD_MvG_functions.f90`, `WC_K_models_04_11.f90`, `MOD_RIA.f90`
 
 The exact historical E7 patch remains separately immutable at SHA-256 `9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110`.
 
-The early qualification checkpoint predated the full canonical-distribution replay. Candidate postimage hashes printed in earlier revisions of this file were draft metadata and are not B1.11 byte authorities. The same stored ordered transform is controlled by the patch SHA above; final byte-safe replay established the authoritative postimages:
+Authoritative ordered postimages from the byte-safe replay are:
 
-- `MOD_MvG_functions.f90`: `6b65ce49904aa0c037d6f43f93115af7d35227b7f67d52dbdd96b614da955ab5`
-- `WC_K_models_04_11.f90`: `e963989e81622cf0554aeeb6ecae705e20b41ff03e259e1b8753df0609884874`
-- `MOD_RIA.f90`: `fe696bdf463259868ad3659072566babc8288ab1d8329bf068f8d3b5945a0d2f`
+- `MOD_MvG_functions.f90`: `6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104`
+- `WC_K_models_04_11.f90`: `d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126`
+- `MOD_RIA.f90`: `673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a`
 
-## Fresh qualification evidence
-
-Fresh source-bound qualification used GNU Fortran 14.2.0 and the unmodified hydraulic harness recovered from the historical testbank. Both current B1.10 and the ordered SWAP-011 candidate compiled successfully.
-
-The unmodified hydraulic dK/dh testbank showed the known B1.10 derivative mismatch for affected models and zero >1% derivative failures for the SWAP-011 candidate across the tested models. The already admitted SWAP-012 inverse behavior remained zero-failure in the same tested scope.
-
-A focused vapor-enabled finite-difference gate for models 8-11 closed the post-E7 SWAP-009 dependency interaction, including model 10. A separate model-12/RIA gate passed with vapor both disabled and enabled. A broad residual/constitutive invariance sweep covered `theta(h)`, `K(h)`, `C(h)` and inverse behavior and found the intended non-derivative observables bit-identical between B1.10 and the candidate in the tested scope.
-
-Historical E5/E6/E7 evidence remains immutable evidence for the original E7 line. The F-PE19 qualification independently covers the composed current-B1 candidate where later admitted dependencies differ from historical E7.
-
-## QUALIFY verdict
+Fresh source-bound qualification used GNU Fortran 14.2.0 and the unmodified recovered hydraulic harness. The current-B1 candidate passed the hydraulic derivative testbank, preserved the admitted SWAP-012 inverse behavior, passed focused SWAP-009 vapor interaction and model-12/RIA vapor-off/on gates, and preserved non-derivative constitutive observables in the tested scope. No tolerance widening was used.
 
 ```text
 SOURCE_BUILD                         PASS
@@ -48,4 +34,4 @@ PRODUCTION_SOURCE_CHANGE            NONE
 QUALIFICATION_VERDICT               QUALIFIED_FOR_B1_ADMISSION
 ```
 
-The subsequent exact full B0 -> B1.11 replay also passed and reproduced the frozen source identity `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`. Therefore the earlier `Next permitted action` in this checkpoint has been completed.
+The subsequent exact B0 -> B1.11 replay also passed, reproducing 63 members, 1,886,519 source bytes and manifest SHA-256 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.

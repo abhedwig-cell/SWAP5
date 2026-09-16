@@ -17,7 +17,7 @@ b1:
   snapshot_definition: "reference/swap-4.3.1/snapshots/B1.11.yml"
   supersedes_snapshot: "B1.10"
   numerical_change_from_superseded_snapshot: true
-  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-011 implicit Richards conductivity-derivative correction to B1.10."
+  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-011 hydraulic-conductivity derivative/Jacobian consistency correction to B1.10."
   source_tree:
     member_count: 63
     source_bytes: 1886519
@@ -84,24 +84,9 @@ b1:
     - id: "SWAP-011"
       patch_path: "reference/swap-4.3.1/patches/SWAP-011/fix.patch"
       patch_sha256: "1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238"
-      historical_e7_patch_path: "reference/swap-4.3.1/patches/SWAP-011/historical/E7_SW011_fix.patch"
-      historical_e7_patch_sha256: "9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110"
       qualification: "reference/swap-4.3.1/patches/SWAP-011/qualification.md"
       ordered_preimage_snapshot: "B1.10"
-      canonical_b0_target_sha256:
-        SWAP/MOD_MvG_functions.f90: "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
-        SWAP/WC_K_models_04_11.f90: "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd"
-        SWAP/MOD_RIA.f90: "a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3"
-      ordered_preimage_sha256:
-        SWAP/MOD_MvG_functions.f90: "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
-        SWAP/WC_K_models_04_11.f90: "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e"
-        SWAP/MOD_RIA.f90: "a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3"
-      corrected_target_sha256:
-        SWAP/MOD_MvG_functions.f90: "6b65ce49904aa0c037d6f43f93115af7d35227b7f67d52dbdd96b614da955ab5"
-        SWAP/WC_K_models_04_11.f90: "e963989e81622cf0554aeeb6ecae705e20b41ff03e259e1b8753df0609884874"
-        SWAP/MOD_RIA.f90: "fe696bdf463259868ad3659072566babc8288ab1d8329bf068f8d3b5945a0d2f"
-      unchanged_target_sha256:
-        SWAP/headcalc.f90: "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+      historical_e7_patch_sha256: "9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110"
 
 history:
   - snapshot: "B1.0-bootstrap"

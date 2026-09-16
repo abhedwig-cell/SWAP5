@@ -55,9 +55,11 @@ B1.10          = B1.9 + SWAP-002
 B1.11          = B1.10 + SWAP-011
 ```
 
-Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities and qualified the five predecessor corrections. B1.6-B1.10 then admitted SWAP-009, SWAP-010, SWAP-013, the isolated SWAP-012 inverse correction and SWAP-002.
+Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities. B1.6-B1.10 then admitted SWAP-009, SWAP-010, SWAP-013, SWAP-012 and SWAP-002 in order.
 
-`B1.11` adds only SWAP-011. The legacy implicit Richards Jacobian used a conductivity derivative inconsistent with the actual `K(h)` relation for hydraulic models 3 and 5-12. The admitted correction is the historically qualified E7 production line: exact E7 provenance is pinned, the ordered B1.10 applicator is byte-safe, and a complete replay from the exact B0 distribution reproduced the frozen B1.11 identity. Model 4 remains the consistent standard-MvG control. `headcalc.f90` remains byte-identical to B0.
+`B1.11` admits SWAP-011. B0 used the default Mualem-van Genuchten hydraulic-conductivity derivative in the implicit Richards Jacobian for hydraulic models whose implemented conductivity relation is different. The correction makes the Jacobian derivative consistent with the actual active `K(h)` relation for hydraulic models 3 and 5-12. Model 4 remains the standard-MvG control.
+
+The historical E7 implementation was recovered and verified byte-for-byte. Because B1.10 already contains overlapping SWAP-009, SWAP-010 and SWAP-012 corrections, B1.11 uses a separately identified mechanical ordered-admission transform derived from exact byte authorities. The complete canonical B0 archive replay reproduces the frozen B1.11 identity exactly.
 
 The current corrected-reference identity is:
 
@@ -68,10 +70,10 @@ source bytes      1,886,519
 manifest SHA-256  24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2
 ```
 
-The exact replay starts from B0 distribution SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`, containing source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. SWAP-011 historical E7 patch SHA-256 is `9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110`; the ordered B1.10 admission patch SHA-256 is `1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238`.
+SWAP-003 and SWAP-004 remain outside the admitted B1 line.
 
 ## Boundary to SWAP 5
 
 Production kernel/runtime code must not depend on implementation structures in this subtree. Reference-build and verification tooling may use it to reproduce B0 and construct qualified B1 snapshots.
 
-Legacy B1 evidence does not replace the transaction-aware unrounded B2 mass-accounting gate. SWAP5 reference qualification remains fail-closed until the integrated B2 reference entrypoint and result contract exist.
+Legacy B1 evidence does not replace the transaction-aware unrounded B2 mass-accounting gate. SWAP5 reference qualification remains fail-closed until the relevant integrated B2 reference contracts are satisfied.
