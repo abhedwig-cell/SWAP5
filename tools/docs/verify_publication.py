@@ -41,7 +41,7 @@ CHECKS = (
         "getting-started/",
         (
             "Getting started: build, run, input and output",
-            "does not currently claim one broad stable public command-line application interface",
+            "broad stable public command-line application interface",
             "run_fapp01_minimal_soil_water_application_host.sh",
         ),
     ),
