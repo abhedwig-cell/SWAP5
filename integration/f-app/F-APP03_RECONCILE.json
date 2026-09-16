@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel daily meteorological application-semantics recovery",
+  "phase": "RECONCILE_RECOVERY",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404"
+  },
+  "reason": "M1 criterion 3 remains blocked on legacy file-driven application composition. F-CI95 resolved the explicit SWBOTB=6 bottom-boundary mapping; daily Hupsel meteorology is the next bounded input-side semantic surface to recover independently before any file-adapter closure claim.",
+  "authoritative_distribution": {
+    "filename": "SWAP_4.3.1.zip",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "authority": "F-VQ99 exact Hupsel reference materialization",
+    "hupsel_case": "SWAP_4.3.1/cases/1.hupselbrook",
+    "hupsel_meteo_file": "283.met",
+    "hupsel_meteo_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "recovered_historical_authority_candidate": {
+    "name": "A21 authoritative daily atmospheric forcing",
+    "status": "RECOVERED_HISTORICAL_SEMANTIC_AUTHORITY_CANDIDATE_NOT_CURRENT_CANONICAL_AUTHORITY",
+    "recovered_source_name": "mod_a21_atmospheric_forcing_profile.f90",
+    "qualified_hupsel_branch": {
+      "SWETR": 0,
+      "SWDIVIDE": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0
+    },
+    "swp_configuration_fields": [
+      "METFIL",
+      "LAT",
+      "ALT",
+      "ALTW",
+      "ALTH",
+      "ANGSTROMA",
+      "ANGSTROMB",
+      "FWIND",
+      "RSOIL",
+      "SWETR",
+      "SWDIVIDE",
+      "SWMETDETAIL",
+      "SWRAIN"
+    ],
+    "daily_record_fields": [
+      "radiation_j_m2_d",
+      "tmin_c",
+      "tmax_c",
+      "vapour_pressure_kpa",
+      "wind_m_s",
+      "gross_rain_cm_d",
+      "etref_cm_d",
+      "wet_fraction"
+    ],
+    "legacy_conversion_rules": [
+      "radiation: Rad * 1000",
+      "rain: Rain * 0.1"
+    ],
+    "time_semantics": "Resolve immutable daily forcing by model time; no mutable meteorological record pointer is advanced by a trial/retry."
+  },
+  "historical_qualification_evidence": {
+    "full_hupsel_shadow_records": 1096,
+    "shadow_mismatches_at_1e_12": 0,
+    "o0_o2_identity": "PASS_BYTE_IDENTICAL",
+    "full_run_noninterference": [
+      "result.bal",
+      "result.blc",
+      "swap.wrn",
+      "swap.ok",
+      "swap.log including Newton/backtracking statistics"
+    ],
+    "integrated_four_step_observations": {
+      "newton_routes": "IDENTICAL",
+      "backtracking_routes": "IDENTICAL",
+      "max_process_delta_ptra": 1.11e-16,
+      "max_final_h_delta_cm": 3.98e-13,
+      "max_theta_delta": 2.78e-16,
+      "qtop": "IDENTICAL"
+    }
+  },
+  "lineage_reconciliation": {
+    "A21_to_A22": "A22 explicitly consumes the A21-qualified route through a CropSnapshot boundary and reports the integrated four-step trace byte-for-byte identical to A21.",
+    "A23Y_source_provenance": "A23Y was reconstructed from the same official SWAP_4.3.1 distribution SHA-256 and retained legacy MOD_meteo.f90 and MOD_cropdevelopment.f90 unchanged relative to its reconstructed parent.",
+    "A23Y_hupsel_oracle_continuity": {
+      "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "matches_F_VQ99": true
+    }
+  },
+  "current_classification": {
+    "historical_semantics_recovered": true,
+    "same_distribution_provenance_supported": true,
+    "current_F_series_independent_requalification": false,
+    "raw_hupsel_fixture_reproducibly_available_in_repository": false,
+    "canonical_production_authority": false,
+    "M1_C3_closure": false
+  },
+  "blocker": "The exact raw Hupsel fixture bytes needed to rerun the 1096-record legacy shadow are not currently committed in GitHub and were not recovered as standalone File Library items. Historical A21 source/evidence can guide recovery, but cannot be promoted merely from matching downstream output hashes.",
+  "mutations": [
+    "Created this evidence-only recovery branch from current canonical.",
+    "Persisted this reconciliation checkpoint only."
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "exclusions": [
+    "no crop-development migration",
+    "no detailed meteorology/rainfall modes",
+    "no snow",
+    "no irrigation",
+    "no drainage",
+    "no broad ET rewrite",
+    "no new physics",
+    "no broad public API or wholesale IO redesign",
+    "no legacy default-route change",
+    "no synthetic substitute accepted as final Hupsel reference authority"
+  ],
+  "next_permitted_action": "Reconcile the current canonical typed application/ET/interception target against the recovered A21 semantics. Define the minimum typed semantic contract needed for the qualified daily Hupsel branch without adding file/parser semantics to kernel-facing interfaces. Search for retained A12/A13/A14 historical source/evidence and any exact A21 fixture/gate artifact. Do not add production mapping until its source semantics and independent qualification path are explicit."
+}
