@@ -41,6 +41,9 @@ jobs:
       - name: Check B1.10 predecessor identity
         run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-10-reference-pin.json
 
+      - name: Check pinned B1.11 corrected-reference identity
+        run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-11-reference-pin.json
+
       - name: Check B1.11 SWAP-011 admission consistency
         run: python tools/vq/b1_11_admission_gate.py
 
