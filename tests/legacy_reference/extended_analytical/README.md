@@ -2,7 +2,9 @@
 
 This directory preserves the strongest reusable analytical/reference assets recovered by F-AR01 without promoting the complete historical verification framework as current authority.
 
-The immutable asset archive is `F-TB13_RECOVERED_ANALYTICAL_ASSETS.tar.gz`. It contains:
+The exact preserved payload is a deterministic `tar.gz` archive with SHA-256 `57a75c64e1b057223fbd32ac3051a2c56938209f19b86912d7236f4f1d5fc069`. Because the repository connector writes text safely but not arbitrary binary bytes, that archive is stored losslessly as four ordered Base64 carrier parts under `asset_parts/`. `check_preservation.py` reconstructs the archive in memory, verifies the archive hash and all member hashes, and never treats the carrier representation as scientific authority.
+
+The archive contains:
 
 - the 12-case steady-state layered-water benchmark;
 - the documented-metric comparison helper;
