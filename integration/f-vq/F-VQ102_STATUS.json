@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-VQ102",
+  "title": "F-APP02 legacy SWBOTB=6 zero-flux binding independent qualification",
+  "phase": "CLOSED_INDEPENDENT_QUALIFICATION",
+  "decision": "PASS_INDEPENDENT_LEGACY_SWBOTB6_ZERO_FLUX_BINDING",
+  "owner": {
+    "workunit": "F-APP02",
+    "branch": "work/f-app02-legacy-swbotb6-zero-flux-binding",
+    "qualified_candidate_head": "cd07b19ffb521af33138d750ad224360b35b4de2",
+    "owner_qualification_record_commit": "cde5006cccaa17952a77fb732a1b3c325255b1a3",
+    "canonical_parent": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "binding_path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+    "binding_blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
+    "owner_run_id": 35096856381,
+    "owner_job_id": 104796243052,
+    "owner_run_conclusion": "success"
+  },
+  "qualification": {
+    "branch": "qualification/f-vq102-fapp02-legacy-swbotb6-independent",
+    "tested_head": "9d35d46f9967363390950dd8349cdef10c6f067d",
+    "run_id": 35097208961,
+    "job_id": 104797424040,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04",
+    "exact_owner_blob_pass": true,
+    "single_production_delta_pass": true,
+    "bounded_application_authority_pass": true,
+    "typed_contract_lock_pass": true,
+    "exact_swbotb6_semantic_image_pass": true,
+    "typed_request_application_pass": true,
+    "unrelated_boundary_preservation_pass": true,
+    "state_binding_qbot_identity_pass": true,
+    "unsupported_mode_fail_closed_pass": true,
+    "o0_o2_identity_pass": true,
+    "owner_test_reused": false,
+    "artifacts": {
+      "evidence": {
+        "id": 10446881806,
+        "digest": "sha256:8c0afaf0a9f3d13cb0c1b6f49d1f2f68fe15f0cc0ed1bc73521e6c7b79d2b2c7"
+      },
+      "diagnostics": {
+        "id": 10447070818,
+        "digest": "sha256:09885df63b58cdb1d0d79067c22f7ee8fd89af4ab4c7fe0e11ed39bd4eb4b9a3"
+      }
+    }
+  },
+  "qualified_contract": {
+    "legacy_swbotb": 6,
+    "typed_bottom_mode": 2,
+    "typed_bottom_flux_cm_per_day": 0.0,
+    "typed_bottom_flux_exact_positive_zero": true,
+    "typed_target": "soil_water_solve_request_t%boundary",
+    "materialized_solver_state_target": "reference_richards_state_binding_t%qbot",
+    "unrelated_typed_boundary_fields_preserved": true,
+    "unsupported_legacy_bottom_modes_fail_closed": true,
+    "new_physics": false,
+    "solver_changes": false,
+    "legacy_default_route_changes": false
+  },
+  "warnings": [
+    "The admitted soil-water solver contract emits pre-existing unused-dummy-argument warnings under -Wall/-Wextra; no F-APP02 production warning or semantic defect was observed."
+  ],
+  "nonclaims": [
+    "No whole-Hupsel equivalence claim.",
+    "No legacy file parser claim.",
+    "No mapping claim for SWBOTB values other than 6.",
+    "No M1 criterion-3 closure claim."
+  ],
+  "mutations": [
+    "Independent qualification test, runner, workflow and this evidence record only.",
+    "No production, solver, reference or legacy source was modified by F-VQ102."
+  ],
+  "final_verdict": "QUALIFIED_INDEPENDENT_READY_FOR_CURRENT_CANONICAL_ADMISSION",
+  "next_permitted_action": "Live-check current canonical and admit the exact F-APP02 binding blob only if its locked typed-contract dependencies remain compatible."
+}
