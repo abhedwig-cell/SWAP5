@@ -1,0 +1,52 @@
+name: F-APP02 legacy SWBOTB6 zero-flux binding
+
+on:
+  push:
+    branches:
+      - work/f-app02-legacy-swbotb6-zero-flux-binding
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run bounded F-APP02 owner gate
+        shell: bash
+        run: |
+          chmod +x tests/runtime/run_fapp02_legacy_swbotb6_zero_flux_binding.sh
+          tests/runtime/run_fapp02_legacy_swbotb6_zero_flux_binding.sh | tee F-APP02_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-APP02"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            echo "binding_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90 || true)"
+            grep -E '^FAPP02_' F-APP02_GATE.log || true
+          } > F-APP02_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-app02-owner-evidence
+          path: F-APP02_EVIDENCE.txt
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-app02-owner-diagnostics
+          path: F-APP02_GATE.log
+          if-no-files-found: warn
