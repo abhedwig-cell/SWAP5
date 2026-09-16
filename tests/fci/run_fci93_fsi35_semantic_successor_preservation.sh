@@ -127,7 +127,9 @@ MODULES=(
 )
 
 run_replay(){
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   mkdir -p "$out"; objs=()
   for src in "${MODULES[@]}"; do
     obj="$out/$(basename "${src%.*}").o"
