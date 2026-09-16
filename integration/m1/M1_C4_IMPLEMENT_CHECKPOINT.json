@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 4 - read-only output serialization",
+  "phase": "IMPLEMENT",
+  "branch": "work/m1-legacy-file-adapter-output-serialization",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535"
+  },
+  "predecessor_reconcile_checkpoint": {
+    "commit": "2bae27d933187969b8326fdd64624de9ae5fe751",
+    "path": "integration/m1/M1_IO_ADAPTER_SERIALIZATION_RECONCILE.json"
+  },
+  "implementation": {
+    "production_file": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "production_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "production_commit": "663c474294046156e29a5fa801b06e85427adb25",
+    "test_file": "tests/m1/test_m1_c4_canonical_result_text_adapter.f90",
+    "test_blob": "6e75d11df08890985c7e993c85fb09aa7b0a5050",
+    "test_commit": "91f0e11eb344e736f53c6a35fc2c526a724e109d",
+    "gate_file": "tests/m1/run_m1_c4_output_serialization_gate.sh",
+    "gate_blob": "91d2543385347e238c1f02dcc6bb1c1b3517a94d",
+    "gate_commit": "14112bf45cf12ba71fc8cbdcb4a8de11b0429af3"
+  },
+  "frozen_contract": [
+    "Serializer input is canonical_result_t with intent(in).",
+    "No canonical_state_t or transaction_state_t crosses the serialization API.",
+    "The adapter imports only intrinsic formatting support and mod_canonical_contracts.",
+    "No path, external file-unit, parser, environment or command-line authority is present.",
+    "Formatting uses internal character-buffer writes only.",
+    "The emitted snapshot is explicitly bounded/internal and is not a stable public output format.",
+    "No physics, transaction acceptance, solver or committed-state semantics are changed."
+  ],
+  "owner_qualification_gate": {
+    "path": "tests/m1/run_m1_c4_output_serialization_gate.sh",
+    "planned_checks": [
+      "single production delta limited to the new adapter",
+      "protected typed-result dependency blob locks",
+      "static typed-result-only API and no physical-state authority",
+      "static no path/file-unit/parser authority",
+      "O0 and O2 compile and runtime execution",
+      "typed-result deep-copy identity after serialization",
+      "O0/O2 output identity",
+      "git diff --check"
+    ],
+    "status": "NOT_RUN_YET"
+  },
+  "criterion_3_status": {
+    "verdict": "BLOCKED_REAL_LEGACY_FIXTURE_OR_PRESERVED_FILE_ROUTE_REQUIRED",
+    "reason": "Current canonical/reference inventory preserves SWAP 4.3.1 source identity including readswap/swapoutput manifests, but no committed generic SWAP .swp fixture and executable generic legacy parser route were found. A fabricated fixture or parser is forbidden.",
+    "next_permitted_action": "Recover or preserve a real legacy file-driven fixture and parser/execution authority before implementing criterion 3."
+  },
+  "inherited_m1_criteria": {
+    "1": "PASS_EXISTING_EVIDENCE",
+    "2": "PASS_EXISTING_EVIDENCE",
+    "5": "PASS_EXISTING_EVIDENCE"
+  },
+  "mutations": [
+    "Added one production adapter for typed canonical-result text serialization.",
+    "Added one owner identity oracle.",
+    "Added one bounded owner qualification gate.",
+    "No existing production, reference, runtime, solver, parser, physics, workflow or canonical file was modified."
+  ],
+  "verdict": "CRITERION_4_IMPLEMENTED_AWAITING_OWNER_QUALIFICATION_CRITERION_3_STILL_BLOCKED",
+  "next_permitted_action": "Execute the owner gate against this exact implementation postimage. If PASS, persist the result and seek independent qualification for criterion 4 while continuing criterion 3 fixture provenance recovery."
+}
