@@ -3,21 +3,25 @@
   "workunit": "F-CI95",
   "title": "F-APP02 legacy SWBOTB=6 zero-flux current-canonical admission",
   "phase": "ADMIT",
-  "decision": "PASS_READY_FOR_CANONICAL_PR",
+  "decision": "PASS_READY_FOR_CANONICAL_PR_AFTER_CURRENT_CANONICAL_REQUALIFICATION",
   "branch": "integration/f-ci95-fapp02-legacy-swbotb6-admission",
   "canonical_preimage": {
     "branch": "integration/f-ci-canonical",
-    "head": "5eb93542daf297d3aa89bee9552179387a7f2c68"
+    "head": "e5ce2f3a410207cb5eaf03c9b10f1a29636146b3",
+    "reconciled_from": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "delta_classification": "F-PE19 corrected-reference B1.11 admission; no SWAP5 src delta and no change to the locked solver contract or state binding"
   },
   "admission_candidate": {
-    "tested_head": "b9b79a9833b27d89ed01005c2ba58a88e30c9ec1",
+    "pre_reconciliation_tested_head": "b9b79a9833b27d89ed01005c2ba58a88e30c9ec1",
+    "pre_reconciliation_closeout_head": "cbf004b51b60f6788474a66b337dc84df023064d",
     "production_path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
     "production_blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
-    "single_production_delta": true
+    "single_production_delta_required": true
   },
   "dependency_locks": {
     "soil_water_solver_contract_blob": "276941d76ba951a89c43899e61fd0532418d8230",
-    "reference_state_binding_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
+    "reference_state_binding_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "changed_by_canonical_delta": false
   },
   "inherited_qualification": {
     "owner_workunit": "F-APP02",
@@ -29,28 +33,22 @@
     "independent_run_id": 35097208961,
     "independent_job_id": 104797424040
   },
-  "admission_ci": {
+  "previous_admission_ci": {
     "run_id": 35097484918,
     "job_id": 104798335787,
     "conclusion": "success",
-    "markers": [
-      "FCI95_CANONICAL_PREIMAGE=PASS",
-      "FCI95_EXACT_QUALIFIED_BINDING_BLOB=PASS",
-      "FCI95_SINGLE_PRODUCTION_DELTA=PASS",
-      "FCI95_DEPENDENCY_LOCKS=PASS",
-      "FCI95_INDEPENDENT_EVIDENCE_INHERITANCE=PASS",
-      "FCI95_BOUNDED_APPLICATION_AUTHORITY=PASS",
-      "FCI95_SEMANTIC_CHAIN_LOCK=PASS",
-      "FCI95_FAPP02_CANONICAL_ADMISSION_GATE=PASS"
-    ],
-    "evidence_artifact": {
-      "id": 10446826688,
-      "digest": "sha256:3e63f7ad49c3114dcaa4f05889b658acfb10b249b76bfe33598d857165ee6a49"
-    },
-    "diagnostics_artifact": {
-      "id": 10446522214,
-      "digest": "sha256:9fb9ff86a1dc67ec7bdceca0f85ecce960fdeec2fe4f7066c199c9a1cac00d03"
-    }
+    "closeout_self_verification_run_id": 35097762962,
+    "closeout_self_verification_job_id": 104799267062,
+    "closeout_self_verification_conclusion": "success"
+  },
+  "current_canonical_reconciliation": {
+    "trigger": "canonical advanced while PR was being opened",
+    "old_canonical": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "new_canonical": "e5ce2f3a410207cb5eaf03c9b10f1a29636146b3",
+    "new_canonical_change": "F-PE19: admit SWAP-011 as corrected reference B1.11",
+    "relevant_dependency_delta": "NONE",
+    "production_semantics_reopened": false,
+    "required_action": "replay the existing F-CI95 gate against the new canonical preimage before merge"
   },
   "admitted_semantics": {
     "legacy_swbotb": 6,
@@ -68,5 +66,5 @@
     "No mapping for SWBOTB values other than 6.",
     "M1 criterion 3 is not closed by F-APP02/F-CI95 alone."
   ],
-  "next_permitted_action": "After self-verification and a fresh canonical-head check, open a pull request containing this exact admission projection into integration/f-ci-canonical."
+  "next_permitted_action": "Run the F-CI95 admission gate on the recomposed branch whose second parent is current canonical e5ce2f3a410207cb5eaf03c9b10f1a29636146b3; merge PR #160 only after that run succeeds and canonical has not advanced again."
 }

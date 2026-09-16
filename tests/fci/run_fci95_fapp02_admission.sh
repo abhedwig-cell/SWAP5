@@ -4,7 +4,7 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$root"
 
-canonical_preimage="5eb93542daf297d3aa89bee9552179387a7f2c68"
+canonical_preimage="e5ce2f3a410207cb5eaf03c9b10f1a29636146b3"
 binding="src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90"
 expected_binding_blob="456c87437e83d1d362d41fbf9820e70d96353ff9"
 contract="src/solver/mod_soil_water_solver_contract.f90"
