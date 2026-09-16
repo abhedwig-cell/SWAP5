@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CLOSE",
+  "branch": "work/m1-legacy-file-adapter-output-serialization",
+  "canonical_authority": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
+    "live_recheck": "UNCHANGED_AT_CLOSE"
+  },
+  "normative_authority": {
+    "summary_record": "D3d_MIGRATION_SLICES_AND_GATES.md",
+    "summary_blob": "257b51375254a09ea261e5caed36955da5c69ee0",
+    "exit_gate_record": "docs/architecture/migration-slices.md",
+    "exit_gate_heading": "Exit gate M1",
+    "criteria_exact": [
+      "a non-file in-memory invocation path reaches the computational boundary;",
+      "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+      "legacy file runs still reproduce reference results through adapters;",
+      "output serialization does not mutate physical state;",
+      "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files."
+    ]
+  },
+  "criterion_status": [
+    {
+      "number": 1,
+      "criterion": "a non-file in-memory invocation path reaches the computational boundary;",
+      "verdict": "PASS_EXISTING_EVIDENCE",
+      "note": "Inherited typed canonical interval/runtime evidence remains valid; no relevant dependency delta was found."
+    },
+    {
+      "number": 2,
+      "criterion": "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+      "verdict": "PASS_EXISTING_EVIDENCE",
+      "note": "Inherited kernel-facing typed-boundary evidence remains valid; no relevant dependency delta was found."
+    },
+    {
+      "number": 3,
+      "criterion": "legacy file runs still reproduce reference results through adapters;",
+      "verdict": "FAIL_SEMANTIC_GAP",
+      "evidence": "integration/m1/M1_C3_PROVENANCE_CHECKPOINT.json",
+      "note": "A qualified real SWAP 4.3.1 Hupsel legacy reference oracle exists, but no generic legacy file-to-current-typed-application mapping is established. Reference preservation alone does not satisfy 'through adapters'."
+    },
+    {
+      "number": 4,
+      "criterion": "output serialization does not mutate physical state;",
+      "verdict": "PASS_OWNER_QUALIFICATION_NOT_INDEPENDENTLY_QUALIFIED_NOT_ADMITTED",
+      "evidence": "integration/m1/M1_C4_OWNER_QUALIFICATION.json",
+      "candidate_production_file": "src/adapter/mod_canonical_result_text_adapter.f90",
+      "candidate_production_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+      "owner_ci_run_id": 35079209619,
+      "note": "Owner qualification passed under O0 and O2 with typed-result identity and no physical-state authority, but independent qualification and canonical admission remain absent."
+    },
+    {
+      "number": 5,
+      "criterion": "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files.",
+      "verdict": "PASS_EXISTING_EVIDENCE",
+      "note": "Current typed runtime accepts generic real-valued interval bounds without historical midnight/day rejection semantics; this claim does not expand scientific duration semantics beyond separately qualified process scopes."
+    }
+  ],
+  "branch_delta_against_canonical": {
+    "base": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "pre_close_head": "eecbf373562396afa32d44099cb0698a925cfb59",
+    "ahead_by": 9,
+    "behind_by": 0,
+    "production_delta": [
+      "src/adapter/mod_canonical_result_text_adapter.f90"
+    ],
+    "production_delta_scope": "bounded typed canonical_result_t text serialization only",
+    "criterion_3_production_delta": "NONE"
+  },
+  "close_verdict": "M1_NOT_CLOSED_CURRENT_CANONICAL",
+  "formal_exit": false,
+  "reason": [
+    "Criterion 3 is not satisfied: the preserved real legacy file-run oracle is not executed through a generic file-to-typed application adapter.",
+    "Criterion 4 has owner-qualified candidate evidence but is not independently qualified or canonically admitted.",
+    "A later migration slice must not be declared qualified by bypassing an unmet prerequisite gate."
+  ],
+  "mutations_at_close": [
+    "Added this closure record only.",
+    "No criterion-3 production implementation was added.",
+    "No canonical branch, reference source, physics, solver semantics, EB, RossFast or broad public API was modified by this close step."
+  ],
+  "preserved_candidate": {
+    "criterion": 4,
+    "branch": "work/m1-legacy-file-adapter-output-serialization",
+    "qualified_postimage": "e2c924993296de9c8f2e5d8e4a8d44bac29dbc2e",
+    "status": "OWNER_QUALIFIED_CANDIDATE_PRESERVED_NOT_ADMITTED"
+  },
+  "next_permitted_action": "If M1 implementation is resumed, open a separately governed minimal generic legacy file-to-typed application mapping capability using an exact preserved real legacy case such as the F-VQ99 Hupsel authority. Do not use F-ROSS12 or RossFast-specific configuration as a substitute, do not broaden this into a Public API redesign, and do not change production merely to force the M1 gate. Independently qualify criterion 4 before any future M1 closure/admission decision."
+}
