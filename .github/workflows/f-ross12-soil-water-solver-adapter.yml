@@ -1,0 +1,19 @@
+name: F-ROSS12 soil-water solver adapter
+
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/test_ross12_soil_water_solver_adapter.f90'
+      - 'tests/ross/run_ross12_soil_water_solver_adapter.sh'
+      - '.github/workflows/f-ross12-soil-water-solver-adapter.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify surgical RossFast solver adapter
+        run: tests/ross/run_ross12_soil_water_solver_adapter.sh
