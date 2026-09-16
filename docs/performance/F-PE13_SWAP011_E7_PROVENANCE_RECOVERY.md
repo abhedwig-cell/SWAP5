@@ -2,7 +2,7 @@
 
 Date: 2026-09-16
 
-Status: `RECOVERY_ACTIVE / NO_RECONSTRUCTION_ALLOWED`
+Status: `CLOSED_BLOCKED_EXTERNAL_ARTIFACT_REQUIRED`
 
 ## Scope
 
@@ -28,7 +28,7 @@ Explicit exclusions:
 
 ## Authorities
 
-Current SWAP5 canonical at workunit start:
+Current SWAP5 canonical at workunit start and close:
 
 - branch: `integration/f-ci-canonical`
 - commit: `80c6faaa8a277d9596a6da7bc5d2244c0df1bb82`
@@ -110,7 +110,28 @@ The exact E7 upstream package, exact E7 `SWAP-011_fix.patch`, and named Marius S
 
 The broad `SWAP_4.3.1_proposed_fixes.patch` remains explicitly unsuitable: it is an earlier multi-fix/reference-stage patch and is not the final three-file E7 payload.
 
-## Current recovery verdict
+### Final bounded nested-package recovery route
+
+The last permitted recovery step searched for surviving complete-testbank/package material and possible nested or renamed transfer artifacts.
+
+Recovered documentation explicitly identifies a historical `SWAP_4.3.1_complete_testbank.zip` and describes a tree containing, among other material:
+
+```text
+hydraulic/
+sources/original/
+sources/patched/
+full_model_regression/
+patch/SWAP_4.3.1_proposed_fixes.patch
+modified_source/
+```
+
+However the archive itself was not returned as a searchable File Library object. The only directly recovered patch from that early testbank lineage is the already known broad `SWAP_4.3.1_proposed_fixes.patch`, which predates the final E7 three-file production candidate and cannot substitute for it.
+
+No nested object or renamed package recovered in this final route could be verified as the exact E7 upstream payload.
+
+## Verification result
+
+The recovery result is fail-closed:
 
 ```text
 EXACT_E7_PAYLOAD_RECOVERED = NO
@@ -119,7 +140,9 @@ REIMPLEMENTATION_ALLOWED = NO
 B1_ADMISSION_ALLOWED = NO
 ```
 
-This is not evidence that the artifact no longer exists. It means it is not recoverable from the currently searchable repository and File Library surfaces using the known provenance identifiers.
+This is not evidence that the artifact no longer exists. It means it is not recoverable from the currently searchable repository and File Library surfaces using the known provenance identifiers and surviving package references.
+
+No production or legacy source was modified in F-PE13.
 
 ## Verification contract if an artifact is recovered later
 
@@ -136,10 +159,25 @@ Before an object can unlock admission it must pass all of the following:
 9. reproduce or attach immutable E5/E6/E7 machine evidence against the recovered postimage;
 10. only then consider storing `fix.patch`, promoting the legacy ledger and updating the ordered B1 manifest.
 
-## Next permitted action
+## Closeout
 
-One further bounded recovery route is permitted before this workunit closes as externally blocked:
+Protocol result:
 
-- inspect whether the surviving late-August complete testbank/package material contains nested or renamed audit transfer artifacts that are not discoverable by top-level filename/content search.
+```text
+RECONCILE = COMPLETE
+RECOVER   = EXHAUSTED_WITHIN_AVAILABLE_SOURCES
+VERIFY    = EXACT_PAYLOAD_NOT_RECOVERED
+CLOSE     = BLOCKED_EXTERNAL_ARTIFACT_REQUIRED
+```
 
-This inspection must remain artifact discovery only. If it does not recover an exact E7 object, close F-PE13 as `BLOCKED_EXTERNAL_ARTIFACT_REQUIRED` and leave issue #12 open.
+Final workunit verdict:
+
+```text
+F-PE13 = CLOSED_BLOCKED_EXTERNAL_ARTIFACT_REQUIRED
+PRODUCTION_SOURCE_CHANGE = NONE
+LEGACY_SOURCE_CHANGE = NONE
+SCIENTIFIC_CHANGE = NONE
+OPEN_EXTERNAL_GATE = exact original E7 SWAP-011 artifact
+```
+
+Issue #12 remains open as the durable recovery gate. F-PE13 must not be restarted merely to repeat the same searches. Reopen only when a new artifact source, exact package, backup, handoff bundle or independently verifiable original byte payload becomes available.
