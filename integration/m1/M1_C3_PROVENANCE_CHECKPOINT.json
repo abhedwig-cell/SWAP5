@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "RECONCILE_PROVENANCE_CLOSE",
+  "branch": "work/m1-legacy-file-adapter-output-serialization",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "live_tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
+    "recheck_status": "UNCHANGED"
+  },
+  "criterion": {
+    "number": 3,
+    "normative_text": "legacy file runs still reproduce reference results through adapters;"
+  },
+  "recovered_legacy_authority": {
+    "workunit": "F-VQ99",
+    "branch": "qualification/f-vq99-swap431-swap5-status-a-equivalence",
+    "head": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
+    "tree": "1fc9fb8d2d9099b909778ead4bb888f7714d0504",
+    "checkpoint": "qualification/F-VQ99_HUPSEL_ASSET_QUALIFICATION_CHECKPOINT.json",
+    "checkpoint_blob": "c68c117e0aaa3f1830e1b4d79a085ef3f29c6d50",
+    "status": "LEGACY_LONG_TRAJECTORY_QUALIFIED_SWAP5_APPLICATION_MAPPING_NOT_ESTABLISHED",
+    "official_distribution": {
+      "origin": "user-supplied official SWAP_4.3.1.zip; external evidence only; not committed to public repository",
+      "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "hupsel_fixture": "SWAP_4.3.1/cases/1.hupselbrook",
+      "official_linux_executable_sha256": "e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862"
+    },
+    "legacy_execution": {
+      "period": "2002-01-01 through 2004-12-31",
+      "b0_completion": "PASS",
+      "b1_10_completion": "PASS",
+      "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "historical_oracle_match": "PASS_EXACT",
+      "b0_b1_10_normalized_byte_identity": "PASS_EXACT"
+    },
+    "important_boundary": "F-VQ99 qualifies the complete legacy Hupsel reference side. It explicitly does not establish a canonical SWAP5 application-level mapping from the Hupsel legacy meteo/crop/ET/file input set to current typed forcing/process composition."
+  },
+  "additional_fixture_and_adapter_reconciliation": [
+    {
+      "authority": "F-MQ03",
+      "branch": "qualification/f-mq03-fixtures",
+      "head": "0cfbe1d5904f26a274c025b1db7cf5379510dd93",
+      "document": "docs/qualification/F-MQ03_EVENT_LOCAL_FIXTURES.md",
+      "blob": "8aef23f9ade1d2d8ede8137cb49feb98261f08c8",
+      "finding": "Qualification infrastructure only. It explicitly creates no physical B1.10 or SWAP5 event fixture and requires later reference-run extraction plus canonical production interfaces."
+    },
+    {
+      "authority": "F-MQ04a",
+      "branch": "qualification/f-mq04a-reference-adapter",
+      "head": "256d442631a86efa2b1e36c359906e4a09e4b25f",
+      "document": "docs/qualification/F-MQ04A_REFERENCE_SOURCE_ADAPTER.md",
+      "blob": "988621bb1f7fd0eb20e9f00f4aed041e2974bbc8",
+      "finding": "The adapter translates qualified VQ source identity into fixture provenance only. It does not parse a legacy SWAP application input, execute a legacy file run through the SWAP5 typed boundary, or create a physical fixture."
+    },
+    {
+      "authority": "F-MQ04c",
+      "branch": "qualification/f-mq04c-fixture-admission",
+      "head": "31301fa5cb57093547161278bb1d30c0878399dd",
+      "document": "docs/qualification/F-MQ04C_FIXTURE_ADMISSION.md",
+      "blob": "b9c6d6a6c59e78bfc817f389ff7c4b07f6437b01",
+      "finding": "Admission bridge only; the physical B1.10 candidate remains blocked and no parser/application adapter semantics are supplied."
+    },
+    {
+      "authority": "F-MQ04d",
+      "branch": "qualification/f-mq04d-canonical-continuation-interface",
+      "head": "10e20997e55757319bbaae31ea5726ecd729dbe4",
+      "document": "docs/qualification/F-MQ04D_CANONICAL_CONTINUATION_INTERFACE.md",
+      "blob": "070f450c6c718fd70ee510b2192edd263eadc925",
+      "finding": "Historical assessment identified the missing canonical physical continuation/application seam. Later runtime work supersedes parts of that historical assessment, but it does not provide evidence of a legacy-file application mapping; recent F-VQ99 remains the stronger current provenance authority."
+    }
+  ],
+  "current_era_branch_audit": {
+    "application_branches_reviewed": [
+      "work/f-app01-minimal-soil-water-application-host",
+      "work/f-ross08-explicit-application-model-selection",
+      "work/f-ross09-explicit-application-model-config-binding",
+      "work/f-ross11-in-memory-application-composition",
+      "integration/f-ci81-rossfast-application-composition-admission",
+      "work/f-ross12-production-host-explicit-selection"
+    ],
+    "generic_legacy_branch_search": "No separate generic legacy application/file parser adapter branch exists besides the present M1 decision branch.",
+    "generic_adapter_branch_search": "No discovered generic adapter provides readswap-style legacy application parsing into the current canonical typed request/forcing composition.",
+    "classification": "NO_PREEXISTING_GENERIC_LEGACY_FILE_TO_TYPED_APPLICATION_MAPPING_FOUND"
+  },
+  "why_existing_evidence_is_not_enough": [
+    "A qualified legacy file-run oracle by itself does not satisfy the words 'through adapters'.",
+    "F-MQ04a adapts source identity, not application inputs or physical execution.",
+    "Current typed interval/runtime authorities accept already-prepared typed state/forcing/config; they do not define Hupsel meteo/crop/ET/file-to-forcing application semantics.",
+    "Creating an ad hoc Hupsel mapping inside this reconciliation would choose currently unbound application semantics and would no longer be evidence-only closure.",
+    "F-APP01 only resolves application/model selection and explicitly does not provide scientific execution.",
+    "RossFast-specific application composition and file configuration are excluded as substitutes for project-wide M1."
+  ],
+  "criterion_3_verdict": "FAIL_SEMANTIC_GAP_LEGACY_REFERENCE_AUTHORITY_EXISTS_BUT_GENERIC_FILE_TO_TYPED_APPLICATION_ADAPTER_NOT_ESTABLISHED",
+  "implementation_decision": {
+    "implement_in_this_evidence_closure_campaign": false,
+    "reason": "The parent M1 campaign asks whether M1 can close against current canonical using existing immutable evidence. The missing legacy-file application mapping is a real capability/semantic decision surface, not a missing test of already-existing semantics. Production must not be modified merely to obtain PASS.",
+    "future_required_surface": "A separately governed generic legacy application/input adapter mapping at least one preserved real SWAP file-driven case into already-admitted typed SWAP5 application state/forcing/config, followed by independent reference-equivalence qualification.",
+    "not_required": "Broad stable Public API"
+  },
+  "criterion_4_context": {
+    "owner_candidate_branch": "work/m1-legacy-file-adapter-output-serialization",
+    "owner_qualification_checkpoint": "integration/m1/M1_C4_OWNER_QUALIFICATION.json",
+    "owner_verdict": "PASS_OWNER_QUALIFICATION",
+    "admission_status": "NOT_INDEPENDENTLY_QUALIFIED_NOT_ADMITTED",
+    "note": "Criterion 4 candidate work does not cure criterion 3 and therefore cannot close M1."
+  },
+  "m1_effect": "M1_CANNOT_FORMALLY_CLOSE_AGAINST_CURRENT_CANONICAL",
+  "mutations": [
+    "Added this provenance/governance checkpoint only.",
+    "No additional production source, reference source, physics, parser, application semantics or canonical branch was modified for criterion 3."
+  ],
+  "next_permitted_action": "Close the bounded M1 reconciliation campaign with a NOT_CLOSED verdict against current canonical. Preserve the criterion-4 owner-qualified candidate without admission. Open future implementation of the generic legacy file-to-typed application mapping only as an explicit separately governed capability decision, not as F-ROSS12 and not as a broad Public API project."
+}
