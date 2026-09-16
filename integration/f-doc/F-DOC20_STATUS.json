@@ -69,8 +69,19 @@
       "docs/numerics/richards-solver.md",
       "docs/numerics/transactional-time-stepping.md"
     ],
+    "new_capability_pages": [
+      "docs/capabilities/index.md",
+      "docs/capabilities/restart-v1.md",
+      "docs/capabilities/serialized-multiswap-v1.md",
+      "docs/capabilities/drainage.md",
+      "docs/capabilities/wofost-runtime.md",
+      "docs/capabilities/restricted-snow.md",
+      "docs/capabilities/groundwater-coupling-v1.md"
+    ],
+    "documentation_completion_rule": "Missing but reconstructable documentation is written from accepted theory/code/evidence; missing unproven authority is recorded as a gap and is not invented.",
     "review_guide_refreshed": true,
     "mkdocs_navigation_refreshed": true,
+    "science_index_capability_route_added": true,
     "f_ar01_added_to_navigation": true,
     "production_source_change": false,
     "reference_source_change": false
@@ -82,8 +93,7 @@
     "rule": "Do not publish the colleague-review portal until the workflow deploy source is an explicit frozen review publication authority and the site itself displays both scientific and documentation git authorities."
   },
   "next_actions": [
-    "Persist and qualify the curated Science/Numerics/equivalence slice on PR #162.",
-    "Inspect remaining admitted Status-A process domains (drainage, Snow, WOFOST, groundwater) and add reviewer-facing scientific pages or bounded links where source authority is sufficient.",
+    "Qualify the expanded Science/Numerics/equivalence/capability slice on PR #162.",
     "Add a concise user-oriented build/run/input/output entry layer without broadening scientific claims.",
     "Add generated Fortran source-reference integration only after the human review hierarchy is stable.",
     "Create/freeze the publication authority and update the Pages workflow away from stale-main-only publication.",
@@ -93,6 +103,7 @@
     "No production or reference source is modified by F-DOC20.",
     "Historical F-DOC branches are not silently promoted to current canonical authority.",
     "The review portal does not claim complete whole-application SWAP 4.3.1/SWAP5 equivalence before that experiment is validly executed.",
-    "Post-Status-A capability development remains outside the first frozen scientific review denominator unless explicitly added before a later freeze."
+    "Post-Status-A capability development remains outside the first frozen scientific review denominator unless explicitly added before a later freeze.",
+    "Capability documentation does not broaden admitted Restart, MultiSWAP, WOFOST, Snow, drainage or groundwater semantics."
   ]
 }
