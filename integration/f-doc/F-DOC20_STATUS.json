@@ -9,10 +9,20 @@
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
   "canonical_start_tree": "49fb62d3a28a2a06837f56d636e5ff751b86816d",
+  "canonical_reconciled_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+  "canonical_reconciled_tree": "33f2e0f45a07c270a39f8875fa01cec4ade39c32",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "state_delta_since_start": {
+    "commit": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "workunit": "F-AR01",
+    "classification": "DOCUMENTATION_AND_EVIDENCE_ONLY",
+    "production_or_reference_semantics_changed": false,
+    "review_denominator_changed": false,
+    "relevance": "Adds recovered SWAP 4.3.1 legacy ZIP reconciliation evidence that can later be linked from the legacy/equivalence review route."
   },
   "reconcile_findings": {
     "mkdocs_material_already_present": true,
@@ -22,8 +32,8 @@
     "external_publication_verifier_already_present": true,
     "existing_status_a_docs_are_substantial": true,
     "existing_architecture_verification_legacy_and_governance_docs_are_substantial": true,
-    "reviewer_entrypoint_missing": true,
-    "explicit_frozen_review_baseline_page_missing": true,
+    "reviewer_entrypoint_missing_at_start": true,
+    "explicit_frozen_review_baseline_page_missing_at_start": true,
     "science_section_in_published_navigation_missing": true,
     "numerical_formulation_section_in_published_navigation_missing": true,
     "user_oriented_review_route_incomplete": true,
@@ -63,10 +73,10 @@
     "reference_source_change": false
   },
   "next_actions": [
-    "Persist reviewer entrypoint and frozen-baseline pages.",
-    "Add them to MkDocs navigation and make the homepage reviewer-first.",
+    "Qualify the reviewer entrypoint and frozen-baseline pages with the existing documentation gates.",
     "Inventory the scientific-model and numerical-formulation source authorities needed for complete narrative documentation.",
     "Populate science and numerics sections without inventing claims not supported by theory/code/evidence authorities.",
+    "Integrate current legacy/equivalence evidence including F-AR01 where appropriate.",
     "Reconcile publication branch/source so GitHub Pages never presents stale main as current authority.",
     "Run repository docs check and mkdocs build --strict.",
     "Publish only after the frozen review authority is explicit and externally verifiable."
