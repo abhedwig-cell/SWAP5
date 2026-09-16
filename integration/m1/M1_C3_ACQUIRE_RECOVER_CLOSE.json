@@ -3,98 +3,101 @@
   "workunit": "M1-C3",
   "capability": "M1 - Typed External Boundary",
   "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
-  "phase": "ACQUIRE_RECOVER_CLOSE",
+  "phase": "RECOVER_RECONCILE_CHECKPOINT",
   "criterion_text": "legacy file runs still reproduce reference results through adapters;",
   "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
-  "supersedes_checkpoint_commit": "ebbd410b37b835a53227b882a9dcd220471414ed",
+  "supersedes_checkpoint_commit": "485a5aa23bcb8dd558f08982391c017cc9fe96ec",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "live_head_reconciled": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
-    "fci95_merge": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
-    "delta_after_fci95": "F-AR01 documentation/evidence only; no production or reference semantics changed"
+    "live_head_reconciled": "3a3d81206711bbeb4d7ff31ba2eb95741d8f7747",
+    "previous_reconciled_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "delta_from_previous_reconcile": "F-DOC20 documentation/publication only; no src/** or reference/** change and no scientific-production semantic change",
+    "dependency_result": "M1-C3 scientific/application dependency inheritance remains valid"
   },
-  "acquired_evidence": {
-    "f_vq99_primary_artifact": {
-      "run_id": 35073638377,
-      "artifact_id": 10437335930,
-      "github_digest": "sha256:4a605e134e23daccd157145b7f04a381e7a991681a42f92ed445a2b1e4d1017f",
-      "finding": "Contains the pinned SWAP5 production-tree export and repository-resident reconstruction tooling, but not the exact official SWAP_4.3.1 distribution or nine-file Hupsel fixture."
-    },
-    "f_vq99_secondary_artifact": {
-      "run_id": 35073638469,
-      "artifact_id": 10436879124,
-      "github_digest": "sha256:f6ea2e88e49aca0ab132b3be1202ba0ecb923e9c71fcbe28ad812ea650efbcf2",
-      "finding": "Contains seam/equivalence summaries only; no Hupsel raw input tree or process-ready snapshot payload."
-    },
-    "f_vq99_latest_checked_equivalence_artifact": {
-      "run_id": 35077212832,
-      "artifact_id": 10438279693,
-      "head": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
-      "github_digest": "sha256:f1a5e1f34a85374d2aeff360cdb4501731dbedcd4f0257e8b2b2763c1cf8cc7c",
-      "finding": "Explicitly records exact_b0_source_archive_bytes=ABSENT and authoritative_hupsel_case_directory=ABSENT for repository-only CI."
-    },
-    "f_pe19_full_replay": {
-      "evidence_path": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
-      "status": "PASS_HISTORICAL_REPLAY_EVIDENCE",
-      "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-      "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
-      "finding": "The exact B0 archive was again available transiently for the later B0 -> B1.10 -> B1.11 replay. PR #159 persists replay evidence and reconstruction machinery, not the official distribution or Hupsel fixture bytes. Its PR-head VQ/F-CI workflow runs expose no downloadable artifacts containing those bytes."
-    }
+  "reference_line": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "current_corrected_reference_snapshot": "B1.11",
+    "b1_11_is_numerical_change_from_b1_10": true,
+    "historical_f_vq100_reference": "B1.10",
+    "rule": "F-VQ100 remains immutable for its historical B1.10 claim; any current-reference executable snapshot campaign must use an explicit B1.11-pinned successor."
   },
-  "current_corrected_reference": {
-    "manifest": "reference/swap-4.3.1/b1-manifest.yml",
-    "snapshot": "B1.11",
-    "status": "CORRECTED_REFERENCE",
-    "oracle_status": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
-    "supersedes": "B1.10",
-    "numerical_change_from_superseded_snapshot": true,
-    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
-    "relevance_to_f_vq100": "F-VQ100 was preregistered and closed before B1.11 admission and explicitly pins exact reconstructed B1.10 as its reference source. B1.11 therefore constitutes a changed reference dependency for any claim presented as current-reference snapshot equivalence."
+  "resolved_prerequisites": {
+    "hupsel_bottom_boundary": "RESOLVED_BY_F_APP02_F_VQ102_F_CI95: SWBOTB=6 maps to prescribed bottom_flux=+0.0 cm d-1",
+    "canonical_output_serialization": "AVAILABLE_VIA_M1_C4",
+    "typed_drainage_process_surface": "AVAILABLE: current canonical contains explicit drainage parameter/control/transfer contracts; this does not itself prove the Hupsel file-to-contract composition"
   },
-  "f_vq100": {
-    "branch": "qualification/f-vq100-hupsel-transactional-composition",
-    "preregistration_commit": "6e7ca411518ff7e6336ffa61d80752b6cdeb1e6f",
-    "closeout_commit": "7823e00c71c218ba8bade15347a56b091017932d",
-    "preregistered_reference_status": "EXACT_B0_B1_10_HUPSEL_MATERIALIZED",
-    "preregistered_goal": "Extract bounded snapshots from exact reconstructed B1.10 and replay them through already-admitted typed production contracts without implementing file IO/application composition.",
-    "old_blocker": "missing admitted Hupsel SWBOTB=6 typed bottom-boundary contract",
-    "old_blocker_now": "RESOLVED_BY_F_APP02_F_VQ102_F_CI95",
-    "historical_b1_10_replay_status": "SEMANTICALLY_UNBLOCKED_BUT_OPERATIONALLY_BLOCKED_MISSING_EXACT_ASSET_BYTES",
-    "current_b1_11_requalification_status": "REQUIRES_EXPLICIT_SUCCESSOR_OR_NEW_PREREGISTRATION_DEPENDENCY_PIN",
-    "why_successor_is_required_for_current_reference": "The original preregistration is immutable and pins B1.10. Canonical now marks B1.11 as a numerical change from B1.10. Replacing the source reference in-place would change a frozen qualification dependency after results were defined.",
-    "reuse_allowed": [
-      "same six target dates",
-      "same interval-selection rule",
-      "same frozen payload fields",
-      "same sign/unit normalization policy",
-      "same no-post-hoc-widening rule and numeric/mass tolerances"
-    ],
-    "reuse_not_allowed_without_evidence": [
-      "assuming B1.10 accepted interval selection is identical under B1.11",
-      "assuming B1.10 post-state/diagnostics are a B1.11 oracle",
-      "relabelling historical B1.10 snapshots as current-reference snapshots"
-    ]
+  "recovered_historical_file_library_evidence": {
+    "classification": "RECOVERED_HISTORICAL_EVIDENCE_NON_EXECUTABLE",
+    "authority_rule": "Useful to narrow composition semantics, but not a substitute for the exact executable B1.10/B1.11 Hupsel asset or preregistered process-ready snapshots.",
+    "A21_daily_atmospheric_forcing": {
+      "source": "README_A21.md",
+      "scope": "Hupsel swap.swp + single 283.met; SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0",
+      "whole_run_shadow": "1096 daily records over 2002-2004; 0 mismatches at 1e-12",
+      "output_noninterference": "result.bal/result.blc/swap.wrn/swap.ok/swap.log identical after documented non-scientific normalization",
+      "mapping_credit": "Strong historical authority for raw daily meteo/site configuration -> deterministic atmospheric forcing resolution and retry-safe time lookup",
+      "nonclaim": "Does not by itself establish full interval top_flux because crop/interception/net-rain composition remains downstream."
+    },
+    "A23AA_interception": {
+      "sources": ["A23AA_REPORT.md", "A23AA_INTERCEPTION_CONTRACT.md"],
+      "hupsel_shadow": "629 execution calls, 480 Rutter calls, 149 no-op calls, 38 capacity-trim events, 0 shadow failures",
+      "mapping_credit": "Strong historical authority for daily interception-capacity state/result separation and mass-preserving capacity-loss semantics",
+      "nonclaim": "Does not alone materialize complete legacy meteo/crop/interception -> interval top_flux for the current B1.11 trajectory."
+    },
+    "A23Y_crop_growth": {
+      "sources": ["A23Y_REPORT.md", "A23Y_GATE_RESULT.json", "A23Y_GROWTH_CONFIG_AND_SCRATCH_CONTRACT.md"],
+      "hupsel_shadow": "960 growth calls; 960 successes; 0 shadow failures; potato and grass configurations exercised",
+      "mapping_credit": "Strong historical authority for event-bound WOFOST growth configuration and deterministic crop-growth execution",
+      "nonclaim": "Outer cropfactor/interception/root-update sequence was explicitly outside the A23Y concurrency/complete-composition claim."
+    },
+    "A23AB_root_extension": {
+      "source": "A23AB_REPORT.md",
+      "hupsel_shadow": "629 root-extension executions; 0 config mismatches; 0 compute failures; 0 shadow failures; actual extension and rooted-node changes exercised",
+      "mapping_credit": "Strong historical authority for explicit root-extension input/config/state separation",
+      "nonclaim": "Does not establish the final whole-run legacy ptra/crop/root-distribution -> nodewise root_extraction_sink(:) mapping."
+    },
+    "A23AP_root_oxygen": {
+      "sources": ["A23AP_REPORT.md", "A23AP_ROOTEXTRACTION_OXYGEN_CONTRACT.md"],
+      "mapping_credit": "Supports explicit hydraulic/root-extraction dependency ownership and non-interference",
+      "nonclaim": "Standard Hupsel route evidence is not a complete oracle for every nodewise root-extraction sink along the whole trajectory."
+    },
+    "A10_irrigation_reference": {
+      "finding": "A21 records that surface-irrigation management was independently readable from A10 but not active in its selected June-10 gate.",
+      "whole_trajectory_status": "UNRESOLVED",
+      "reason": "No recovered immutable whole-2002-2004 authority proves every irrigation/SSDI source route inactive."
+    },
+    "exact_distribution_bytes": "NOT_RECOVERED_FROM_FILE_LIBRARY",
+    "public_download_recovery": "Official 4.3.1 download is registration-gated; no direct archive URL or bytes were guessed or fabricated."
   },
   "hupsel_scope_narrowing": {
-    "bottom_boundary": "RESOLVED: SWBOTB=6 -> prescribed bottom_flux=+0.0 cm d-1 via F-CI95",
-    "drainage": "ACTIVE: NRLEVS=5, SWDRA=2",
+    "bottom_boundary": "RESOLVED",
+    "daily_raw_meteorology": "HISTORICALLY_STRONG_A21_SHADOW_AUTHORITY_RECOVERED",
+    "interception_capacity_state": "HISTORICALLY_STRONG_A23AA_SHADOW_AUTHORITY_RECOVERED",
+    "crop_growth": "HISTORICALLY_STRONG_A23Y_SHADOW_AUTHORITY_RECOVERED",
+    "root_extension": "HISTORICALLY_STRONG_A23AB_SHADOW_AUTHORITY_RECOVERED",
+    "drainage": "ACTIVE: NRLEVS=5, SWDRA=2; current typed process contracts exist but file/config -> exact Hupsel typed control/parameter composition remains unproven",
     "snow": "INACTIVE: SWSNOW=0",
     "soil_temperature": "INACTIVE: SWTMP=0",
     "solute": "INACTIVE: SWSOLU=0",
     "crack_flow": "INACTIVE: SWCRACK=0",
-    "irrigation_ssdi": "UNRESOLVED_FOR_WHOLE_TRAJECTORY: SWIRFIX=0 alone is insufficient to prove all source routes inactive"
+    "irrigation_ssdi": "UNRESOLVED_FOR_WHOLE_TRAJECTORY"
   },
   "remaining_application_composition_authority_needed": [
-    "file-driven precipitation/meteo/interception state -> interval top_flux",
-    "file-driven crop/potential-transpiration state -> nodewise root_extraction_sink(:)",
-    "drainage configuration/dynamic response -> typed drainage forcing/control",
-    "irrigation/SSDI source composition only if exact whole-run authority shows it active"
+    "Executable current-reference trace authority: exact B1.11 Hupsel bytes or an immutable B1.11 process-ready snapshot artifact.",
+    "Complete daily meteo + crop + interception/net-rain composition -> interval top_flux on the selected whole-run intervals.",
+    "Complete crop/potential-transpiration + root distribution/stress composition -> nodewise root_extraction_sink(:) on the selected whole-run intervals.",
+    "Hupsel NRLEVS=5/SWDRA=2 file/config and dynamic hydraulic state -> exact admitted Drainage-v1 typed parameters/control/transfer composition.",
+    "Whole-run irrigation/SSDI activity determination; only if active, recover its exact source composition into the typed external-water input surface."
   ],
+  "current_contract_observation": {
+    "canonical_contract": "canonical_forcing_t remains abstract; process-ready forcing ownership is intentionally model/application specific",
+    "drainage_example": "mod_drainage_process exposes explicit drainage_linear_parameters_t, drainage_control_t and drainage_transfer_t",
+    "implication": "The missing work is application composition/provenance, not invention of a new generic physics API."
+  },
   "qualification": {
     "attempted_in_this_phase": false,
-    "reason": "Exact external B0/Hupsel bytes or persisted frozen snapshots are required before observation-only instrumentation/replay. The currently accessible GitHub evidence proves identity and prior replay, but does not provide the executable input payload."
+    "reason": "Recovered historical evidence narrows the mappings but is non-executable. A semantically valid B1.11 candidate replay still requires exact executable input/snapshot authority before comparison."
   },
-  "verdict": "C3_BLOCKED_MISSING_REPRODUCIBLE_APPLICATION_TRACE_AUTHORITY",
+  "verdict": "C3_BLOCKED_NARROWED_MISSING_EXECUTABLE_B1_11_APPLICATION_TRACE_AUTHORITY",
   "m1_c3_pass": false,
   "mutations": {
     "production_source": "NONE",
@@ -102,21 +105,24 @@
     "physics": "NONE",
     "solver_policy": "NONE",
     "tolerances": "NONE",
-    "checkpoint_only": true
+    "legacy_io": "NONE",
+    "checkpoint_metadata_only": true
   },
   "next_permitted_action": [
-    "Recover an exact byte payload for the official SWAP_4.3.1 distribution/Hupsel fixture matching SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or recover an immutable artifact containing the already-preregistered F-VQ100 snapshots.",
-    "If the distribution is recovered, resume the original F-VQ100 only for its frozen B1.10 historical process-ready snapshot claim, using observation-only instrumentation and F-CI95 for SWBOTB=6.",
-    "For a current-reference snapshot claim, create an explicit bounded F-VQ100 successor pinned to B1.11 rather than editing the B1.10 preregistration. Preserve the six dates, selection rule, payload and tolerances; first test whether B1.11 changes interval selection or snapshot values.",
-    "Only after process-ready snapshot authority is established may the remaining Hupsel application-composition mappings be reconstructed and qualified process-by-process; only after those mappings are admitted may an M1-C3 legacy file adapter be implemented and whole-file reference equivalence claimed."
+    "Continue exact-asset recovery without guessing archive URLs: recover official distribution/Hupsel bytes matching SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or an immutable process-ready snapshot artifact.",
+    "Continue evidence-only recovery for drainage and whole-run irrigation/SSDI to further narrow the executable successor surface.",
+    "When exact B1.11 executable authority is available, preregister a bounded F-VQ100 successor before observing candidate differences; reuse only the frozen dates/selection/payload/tolerance design that remains dependency-valid.",
+    "Instrument the exact legacy run observation-only and compare process-ready top_flux, root_extraction_sink(:), drainage controls/transfers, bottom_flux and accepted state/diagnostics against current typed SWAP5 contracts.",
+    "Only after process-by-process mappings are qualified and admitted may the M1-C3 legacy file adapter be implemented and whole-file equivalence claimed."
   ],
   "exclusions": [
-    "no fake frozen-snapshot file adapter as M1-C3 closure",
-    "no reverse engineering from desired output",
+    "no fake frozen-snapshot adapter",
+    "no reverse engineering from desired result.bal/result.blc output",
     "no raw rain/ET/crop shortcut around legacy application composition",
-    "no new groundwater/Richards physics",
+    "no new groundwater/Richards/drainage physics",
     "no solver-policy or tolerance change",
     "no wholesale IO/API modernization",
+    "no relabelling B1.10 snapshots as B1.11 authority",
     "no whole-Hupsel or M1-C3 PASS claim"
   ]
 }
