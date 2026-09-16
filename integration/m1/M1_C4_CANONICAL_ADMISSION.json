@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C4-CANONICAL-ADMISSION",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 4 - output serialization does not mutate physical state",
+  "phase": "ADMIT",
+  "branch": "integration/m1-c4-output-serialization-admission",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "bfbb466678249811afc6a0800fd32a367818660f",
+    "tree": "0501b6fce7de4948c636ec0a33d1bc912a44e86f"
+  },
+  "candidate": {
+    "tested_head": "99df8631957784eb9ae9473c151f09e7c7f619d8",
+    "source_path": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "source_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "production_delta_count": 1
+  },
+  "owner_qualification": {
+    "postimage": "e2c924993296de9c8f2e5d8e4a8d44bac29dbc2e",
+    "run_id": 35079209619,
+    "job_id": 104738857165,
+    "verdict": "PASS_OWNER_QUALIFICATION"
+  },
+  "independent_qualification": {
+    "authority_commit": "31b5bcc9884c4ff7951af9f81fb7b08a00639832",
+    "tested_head": "114d9c6c1a74436d3e3596ef0a90e8f8324a1ea2",
+    "run_id": 35091439497,
+    "job_id": 104778442363,
+    "output_sha256": "76be23588e266eba4a1f2e8de28b01814dc4137bd5be41216835d99e5389bae3",
+    "verdict": "PASS_INDEPENDENT_QUALIFICATION"
+  },
+  "admission_gate": {
+    "run_id": 35091664485,
+    "job_id": 104779179591,
+    "tested_head": "99df8631957784eb9ae9473c151f09e7c7f619d8",
+    "result": "PASS",
+    "evidence_inheritance": "PASS",
+    "markers": [
+      "M1_C4_ADMISSION_CANONICAL_PREIMAGE=PASS",
+      "M1_C4_ADMISSION_EXACT_QUALIFIED_BLOB=PASS",
+      "M1_C4_ADMISSION_SINGLE_PRODUCTION_DELTA=PASS",
+      "M1_C4_ADMISSION_DEPENDENCY_LOCKS=PASS",
+      "M1_C4_ADMISSION_TYPED_READONLY_SURFACE=PASS",
+      "M1_C4_ADMISSION_NO_FILE_PARSER_STATE_AUTHORITY=PASS",
+      "M1_C4_ADMISSION_EVIDENCE_INHERITANCE=PASS",
+      "M1_C4_CANONICAL_ADMISSION_GATE=PASS"
+    ]
+  },
+  "dependency_locks": {
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "95381d3124b185aa0fbafd1ea3da6179a841deda",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "31bc721f333a77c52f6530b357af44c627f44629",
+    "src/runtime/mod_canonical_contracts.f90": "3962c270a7579b7403764674302445fe15ef5f72"
+  },
+  "verdict": "READY_FOR_CANONICAL_ADMISSION_SUBJECT_TO_LIVE_PREIMAGE_RECHECK",
+  "criterion_4_claim": "The exact independently qualified serializer is admissible as a bounded typed read-only canonical-result serialization adapter.",
+  "nonclaims": [
+    "This is not a stable public file format.",
+    "This does not add parser, path or file-unit authority.",
+    "This does not change physical, solver, transaction, retry, mass or temporal semantics.",
+    "This does not satisfy M1 criterion 3.",
+    "This does not close M1 as a whole."
+  ],
+  "m1_state_if_admitted": {
+    "criterion_1": "PASS_EXISTING_EVIDENCE",
+    "criterion_2": "PASS_EXISTING_EVIDENCE",
+    "criterion_3": "BLOCKED_MISSING_FIELD_LEVEL_APPLICATION_COMPOSITION_SEMANTICS",
+    "criterion_4": "PASS_CURRENT_CANONICAL_ADMITTED",
+    "criterion_5": "PASS_EXISTING_EVIDENCE",
+    "overall": "NOT_CLOSED"
+  },
+  "next_permitted_action": "Recheck integration/f-ci-canonical live. If it remains exactly bfbb466678249811afc6a0800fd32a367818660f, verify the admission diff and promote this exact candidate. If canonical advanced, reconcile the delta before any merge."
+}
