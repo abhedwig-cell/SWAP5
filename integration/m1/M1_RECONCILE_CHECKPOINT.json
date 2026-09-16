@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 — Typed External Boundary",
+  "phase": "RECONCILE",
+  "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/m1-typed-external-boundary-reconciliation",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "80c6faaa8a277d9596a6da7bc5d2244c0df1bb82",
+    "tree": "9b3ee78c9ff5dfde12345ef4e472e74d41ac0da3"
+  },
+  "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "normative_sources": [
+    "D3d_MIGRATION_SLICES_AND_GATES.md",
+    "docs/architecture/migration-slices.md"
+  ],
+  "goal": "Determine whether current canonical already satisfies the historical M1 typed-external-boundary exit gate without inventing a broad public API or wholesale IO redesign.",
+  "exit_gate_matrix": [
+    {
+      "criterion": "A non-file-bound typed in-memory invocation reaches the computational boundary.",
+      "status": "SATISFIED_CURRENT_CANONICAL",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72 defines typed state/forcing/interval/numerical-config/result contracts.",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee exposes run_canonical_interval over typed in-memory arguments and executes the admitted transactional computational path.",
+        "F-GC26 independently qualified an additional file-IO-free external gateway boundary; this is supporting evidence rather than the owner of the generic M1 seam."
+      ]
+    },
+    {
+      "criterion": "Kernel-facing interfaces contain no path, file-unit or parser semantics.",
+      "status": "SATISFIED_FOR_CURRENT_CANONICAL_TYPED_RUNTIME_SURFACE",
+      "evidence": [
+        "mod_canonical_contracts and mod_canonical_interval_runtime contain typed computational contracts without pathname, file-unit or parser ownership.",
+        "F-GC26 qualification explicitly passed no-gateway-file-IO guards for its admitted external adapter."
+      ],
+      "scope_note": "This does not claim wholesale removal of all legacy file-oriented code from the repository."
+    },
+    {
+      "criterion": "Legacy file runs still reproduce reference results through adapters.",
+      "status": "NOT_ESTABLISHED_ON_CURRENT_CANONICAL_EVIDENCE",
+      "evidence": [],
+      "finding": "No current-canonical admission or qualification authority was located in this reconciliation that proves the normal legacy file-driven run is translated through the typed boundary and preserves reference results.",
+      "fail_closed": true
+    },
+    {
+      "criterion": "Output serialization does not mutate physical state.",
+      "status": "NOT_ESTABLISHED_AS_OUTPUT_SERIALIZATION_CONTRACT",
+      "evidence": [
+        "Transaction and F-GC26 evidence strongly establish committed-state publication/immutability boundaries, including an unchanged committed physical-state sentinel.",
+        "Those authorities do not by themselves prove that a legacy/current output serializer is read-only with respect to physical state."
+      ],
+      "fail_closed": true
+    },
+    {
+      "criterion": "Non-midnight and non-day requests are not rejected merely because an adapter historically used daily files.",
+      "status": "RUNTIME_SEMANTICS_SATISFIED_EXTERNAL_ADAPTER_EVIDENCE_NOT_ESTABLISHED",
+      "evidence": [
+        "canonical_interval_t carries real t0/t1 and run_canonical_interval accepts a generic positive interval without calendar/day checks.",
+        "F-GC26/F-GC27/F-GC28 preserve calendar assumptions as explicit exclusions from their coupling contracts."
+      ],
+      "finding": "The computational runtime is interval-generic, but current reconciliation has not yet located the legacy-file-adapter proof required to turn this into a complete external-boundary claim.",
+      "fail_closed": true
+    }
+  ],
+  "adjacent_workunits": {
+    "F_APP01": {
+      "branch": "work/f-app01-minimal-soil-water-application-host",
+      "head_at_reconcile": "cc0f0ee54b82a1ac6fbaba40fad6c9cea5ffacad",
+      "owner_ci_run": 35068245342,
+      "owner_ci_conclusion": "success",
+      "classification": "GENERIC_APPLICATION_MODEL_SELECTION_OWNER_CANDIDATE_NOT_M1_AUTHORITY",
+      "production_blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+      "scope": "Selection resolution only: Reference default, explicit registered alternative, fail-closed invalid/unknown selection.",
+      "explicit_test_statement": "FAPP01_NO_SCIENTIFIC_EXECUTION=PASS",
+      "m1_effect": "Does not establish or invalidate the M1 typed computational entry seam; do not conflate application-model selection with the M1 external-boundary gate."
+    },
+    "F_ROSS12": {
+      "branch": "work/f-ross12-production-host-explicit-selection",
+      "head_at_reconcile": "e06f08aac0c79984a1f8308935b1f00b15860d6c",
+      "classification": "BLOCKED_FAIL_CLOSED_ON_GENERIC_APPLICATION_HOST_PREREQUISITE",
+      "m1_effect": "Separate RossFast host/application concern. It must not be used to force or redefine the project-wide M1 gate."
+    }
+  },
+  "reconcile_verdict": "M1_NOT_CLOSED_CURRENT_CANONICAL_EVIDENCE_INCOMPLETE",
+  "blocking_evidence_gaps": [
+    "Legacy file-driven reference-equivalent execution through a typed adapter boundary.",
+    "Read-only output serialization with respect to physical committed state.",
+    "Adapter-level confirmation that generic non-day/non-midnight requests are not rejected solely by historical daily-file assumptions."
+  ],
+  "mutations": [
+    "Created this governance/evidence checkpoint on a dedicated M1 decision-surface branch.",
+    "No production source, reference source, scientific equation, transaction policy, IO grammar, application host, RossFast code, EB code or canonical branch was changed."
+  ],
+  "explicit_exclusions": [
+    "energy balance",
+    "RossFast production host implementation",
+    "new physics",
+    "broad stable public API design",
+    "wholesale legacy IO modernization",
+    "legacy grammar redesign",
+    "automatic solver fallback",
+    "production changes merely to obtain PASS"
+  ],
+  "next_permitted_action": "Search and reconcile existing current/historical IO-adapter and output-serialization evidence for the three blocking M1 gate items. Reuse immutable evidence if dependencies are unchanged. Only if a gate item is genuinely unimplemented may the smallest generic adapter/serialization seam or qualification probe be implemented; do not broaden into a public API or wholesale IO redesign."
+}
