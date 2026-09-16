@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "RECONCILE_POST_FCI95",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "branch_precheckpoint_head": "d1a1db6c6ddf5be87a22da5242b2ea0fee21ef63",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "new_admission": "F-CI95",
+    "new_admission_pr": 160
+  },
+  "criterion": {
+    "number": 3,
+    "normative_text": "legacy file runs still reproduce reference results through adapters;"
+  },
+  "reconciled_delta": {
+    "f_ci95_status": "ADMITTED",
+    "f_ci95_binding": {
+      "path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+      "blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
+      "semantic_image": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1"
+    },
+    "f_ci95_run": 35098096448,
+    "f_ci95_gate": "PASS",
+    "canonical_qualification_run": 35098098604,
+    "canonical_qualification": "PASS",
+    "effect": "The previously localized Hupsel SWBOTB=6 bottom-boundary application-composition blocker is cleared. This does not by itself satisfy M1 criterion 3."
+  },
+  "remaining_application_composition_surface": {
+    "status": "NOT_YET_ADMITTED_FOR_FILE_DRIVEN_HUPSEL",
+    "required_process_ready_mapping": [
+      "file-driven precipitation/meteo/interception state -> admitted interval top forcing",
+      "file-driven crop state and potential transpiration -> nodewise root_extraction_sink(:)",
+      "legacy drainage configuration and dynamic response -> typed drainage forcing/control surface",
+      "legacy irrigation/SSDI application composition -> typed source terms where applicable",
+      "activation and composition rules for optional process forcing in the actual Hupsel fixture"
+    ],
+    "bottom_boundary": "CLEARED_FOR_OFFICIAL_HUPSEL_SWBOTB6_BY_F_CI95"
+  },
+  "reused_reference_authority": {
+    "f_vq99_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+    "f_vq100_closeout_commit": "7823e00c71c218ba8bade15347a56b091017932d",
+    "swap431_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "swap431_b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "hupsel_reference": "EXACT_AND_REPRODUCIBLE_IN_F_VQ99_WHEN_EXTERNAL_DISTRIBUTION_IS_PRESENT"
+  },
+  "artifact_reconciliation": {
+    "f_vq99_production_tree_export_run": 35073638377,
+    "f_vq99_production_tree_export_artifact": 10437335930,
+    "artifact_digest": "sha256:4a605e134e23daccd157145b7f04a381e7a991681a42f92ed445a2b1e4d1017f",
+    "finding": "The retained artifact contains an exact SWAP5 production-tree export at 50346642bd565f79134ea17d5462e544b354998c, not the external SWAP 4.3.1 distribution or Hupsel source fixture.",
+    "f_vq99_equivalence_evidence_artifact": 10436879124,
+    "evidence_finding": "The retained evidence explicitly records the exact B0 source archive and authoritative Hupsel case as absent from the repository-resident production tree."
+  },
+  "source_availability": {
+    "repository_full_legacy_source": "ABSENT",
+    "repository_hupsel_fixture": "ABSENT",
+    "accessible_prior_upload_search": "No original SWAP_4.3.1.zip surfaced; documentation derived from that source remains available and confirms the same distribution SHA256.",
+    "consequence": "A field-for-field file-driven Hupsel composition cannot yet be independently reconstructed or instrumented from currently repository-resident material alone."
+  },
+  "verdict": "C3_BLOCKED_MISSING_REPLAYABLE_FULL_LEGACY_APPLICATION_SOURCE_OR_FIXTURE",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "next_permitted_action": "Locate or rematerialize the exact SWAP 4.3.1 distribution with SHA256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360. Then open or reuse a separately governed Hupsel application-composition workunit, instrument the exact legacy application at the already preregistered F-VQ100 process-ready forcing surface, freeze the mapping before candidate comparison, and qualify process-by-process. Do not implement a direct M1 file adapter until that composition authority is admitted.",
+  "exclusions": [
+    "no new physics",
+    "no legacy default-route change",
+    "no broad public API or wholesale IO redesign",
+    "no output fitting",
+    "no RossFast substitution",
+    "no EB scope",
+    "no invented meteo/crop/drainage/irrigation mapping",
+    "no M1 criterion-3 closure claim"
+  ]
+}
