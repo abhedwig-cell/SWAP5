@@ -3,12 +3,19 @@
   "workunit": "M1-C3",
   "capability": "M1 - Typed External Boundary",
   "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
-  "phase": "RECONCILE_POST_FCI95",
+  "phase": "ACQUIRE_RECOVER",
   "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "live_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
-    "previous_checkpoint_head": "d1a1db6c6ddf5be87a22da5242b2ea0fee21ef63"
+    "live_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "previous_fci95_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "delta_since_fci95": {
+      "merge": "F-AR01 legacy ZIP reconciliation evidence (#161)",
+      "classification": "DOCUMENTATION_AND_EVIDENCE_ONLY",
+      "production_semantics_changed": false,
+      "reference_semantics_changed": false,
+      "effect_on_m1_c3": "No invalidation of F-CI95 or other reused production authorities. F-AR01 adds legacy-package provenance/reconciliation evidence only."
+    }
   },
   "criterion": {
     "number": 3,
@@ -34,16 +41,7 @@
       "binding_blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
       "semantic_image": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1"
     },
-    "effect_on_m1_c3": "This removes the previously explicit SWBOTB=6 composition blocker, but does not by itself establish a legacy file-run adapter or whole-Hupsel application composition."
-  },
-  "recovered_legacy_external_contract": {
-    "source": [
-      "src/legacy/b1_10_port/swap_part01.inc",
-      "src/legacy/b1_10_port/swap_part03.inc",
-      "src/legacy/b1_10_port/swap_part04.inc"
-    ],
-    "status": "PARTIAL_EXACT_SEMANTICS_RECOVERED",
-    "scope_limitation": "The external DLL-style exchange transformations do not establish equivalence with the normal file-driven Hupsel path."
+    "effect_on_m1_c3": "The Hupsel bottom-boundary blocker is removed. This does not establish the remaining file-driven application composition or criterion 3."
   },
   "legacy_file_driven_composition": {
     "source": "src/legacy/b1_10_port/swap_part02.inc",
@@ -59,68 +57,152 @@
       "drain",
       "SoilWater"
     ],
-    "finding": "The normal legacy file route composes raw meteo/crop/configuration inputs through multiple application processes before the soil-water computational boundary. Direct raw-file-field assignments to process-ready forcing would not be semantically equivalent."
+    "finding": "The normal legacy file route composes raw meteo/crop/configuration inputs through application processes before the soil-water computational boundary. Direct raw-file assignments to process-ready forcing are not an admitted equivalent mapping."
   },
   "current_typed_target": {
-    "generic_application_host": "F-APP01 / F-CI94 is canonical",
+    "generic_application_host": "F-APP01 / F-CI94 canonical",
     "physical_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "physical_forcing_type": "fmr_b110_physical_forcing_t",
     "status": "PROCESS_READY_TYPED_BOUNDARY_EXISTS"
   },
-  "remaining_field_level_break": {
-    "status": "NOT_BOUND_BY_REPRODUCIBLE_INPUT_SIDE_AUTHORITY",
-    "missing_authoritative_mappings": [
-      "file-driven precipitation/meteo/interception state -> admitted interval top_flux",
-      "file-driven crop state and potential transpiration -> nodewise root_extraction_sink(:)",
-      "legacy drainage configuration and dynamic response -> typed drainage forcing/control surface",
-      "legacy irrigation/SSDI application composition -> typed source terms where applicable",
-      "activation and composition rules for optional process forcing actually active in the Hupsel reference run"
-    ],
-    "bottom_boundary_note": "The SWBOTB=6 -> prescribed qbot=+0.0 mapping is no longer missing; it is canonical via F-CI95. Other bottom-boundary modes remain outside this workunit unless demanded by the exact Hupsel reference fixture."
+  "f_vq99_reference_authority": {
+    "materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+    "later_asset_qualification_commit": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_10_member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "legacy_long_trajectory_status": "QUALIFIED_EXTERNAL_AUTHORITY",
+    "repository_residency": "RAW_OFFICIAL_DISTRIBUTION_AND_HUPSEL_FIXTURE_NOT_COMMITTED",
+    "scientific_result": "B0 and reconstructed B1.10 Hupsel balance content was exact after the declared generation-metadata normalization; no Class-V discrepancy was found."
+  },
+  "f_vq99_artifact_inspection": {
+    "primary": {
+      "run_id": 35073638377,
+      "artifact_id": 10437335930,
+      "name": "f-vq99-production-tree-export",
+      "github_digest": "sha256:4a605e134e23daccd157145b7f04a381e7a991681a42f92ed445a2b1e4d1017f",
+      "contents": [
+        "f-vq99-production-authority.txt",
+        "SWAP5-production-50346642.tar.gz",
+        "f-vq99-production-archive.sha256"
+      ],
+      "inner_production_archive_sha256": "97a0d15278559807221a8087b283456b2454c145583603ba290431b52a2ba4fc",
+      "finding": "Exports the pinned SWAP5 production tree and repository-resident legacy/reconstruction tooling. It does not contain the exact official SWAP_4.3.1 distribution or the nine-file Hupsel fixture. The repository b1_10_port must not be treated as a substitute for the exact 63-member reconstructed authority without the pinned B0 source asset."
+    },
+    "secondary": {
+      "run_id": 35073638469,
+      "artifact_id": 10436879124,
+      "name": "f-vq99-equivalence-evidence",
+      "github_digest": "sha256:f6ea2e88e49aca0ab132b3be1202ba0ecb923e9c71fcbe28ad812ea650efbcf2",
+      "finding": "Contains qualification summaries for repository-resident Richards/ET seams and authority metadata, not Hupsel raw inputs, runtime state traces or process-ready snapshots."
+    },
+    "latest_checked_equivalence": {
+      "run_id": 35077212832,
+      "artifact_id": 10438279693,
+      "head": "e2634e2dc54171a3e66e9a60823e8db321c68baa",
+      "github_digest": "sha256:f1a5e1f34a85374d2aeff360cdb4501731dbedcd4f0257e8b2b2763c1cf8cc7c",
+      "finding": "The artifact explicitly records exact_b0_source_archive_bytes=ABSENT and authoritative_hupsel_case_directory=ABSENT for repository-only CI. No frozen F-VQ100 process-ready snapshots are persisted in this artifact."
+    }
   },
   "f_vq100_reconciliation": {
     "branch": "qualification/f-vq100-hupsel-transactional-composition",
-    "last_known_closeout": "7823e00c71c218ba8bade15347a56b091017932d",
-    "previous_decision": "BLOCKED_MISSING_EXPLICIT_BOTTOM_BOUNDARY_MAPPING",
-    "post_fci95_interpretation": "The recorded SWBOTB=6 candidate-contract blocker is resolved, so F-VQ100 may be resumed in principle for its process-ready transactional snapshot claim. That claim remains narrower than M1 criterion 3 and cannot substitute for a legacy file-run adapter proof."
+    "live_head": "7823e00c71c218ba8bade15347a56b091017932d",
+    "preregistration": "6e7ca411518ff7e6336ffa61d80752b6cdeb1e6f",
+    "previous_closeout_status": "BLOCKED_TYPED_BOTTOM_BOUNDARY_CONTRACT",
+    "semantic_requalification_status_after_fci95": "ELIGIBLE_IN_PRINCIPLE",
+    "execution_status_now": "BLOCKED_EXACT_EXTERNAL_LEGACY_ASSET_NOT_CURRENTLY_REPRODUCIBLY_AVAILABLE",
+    "reason": "The only recorded typed-contract blocker, Hupsel SWBOTB=6, is now admitted by F-CI95. However the exact official distribution/Hupsel fixture used during F-VQ99/F-VQ100 was external and transient, and the inspected GitHub artifacts do not preserve it or the preregistered process-ready snapshots. Requalification must not reconstruct missing input semantics from desired output.",
+    "frozen_contract_unchanged": true,
+    "frozen_dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "selection_rule": "first accepted soil-water interval whose start time is on or after 12:00 local model time",
+    "normalization_and_tolerances": "UNCHANGED_FROM_PREREGISTRATION"
   },
-  "input_side_authority": {
-    "f_vq99_exact_external_asset_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "asset_name": "SWAP_4.3.1.zip",
-    "repository_state": "NOT_COMMITTED",
-    "file_library_provenance_note": "Independent August SWAP 4.3.1 audit material in the user's File Library records the same distribution filename and SHA-256, confirming provenance continuity; the raw ZIP itself was not returned by File Library search.",
-    "persisted_github_evidence": {
-      "f_vq99_production_tree_artifact_id": 10437335930,
-      "f_vq99_production_tree_artifact_sha256": "4a605e9914133fb3252d8c2f2d604975a56b04dd3dfa1604059abc0b1cfa2541",
-      "f_vq99_equivalence_evidence_artifact_id": 10436879124,
-      "finding": "Persisted GitHub artifacts do not contain the exact full Hupsel source/input tree. F-VQ99 evidence records full_hupsel_source_present=no, swap_431_archive_present=no and hupsel_case_dir_present=no for the repository-only run."
+  "hupsel_process_activation_from_exact_f_vq100_fixture": {
+    "recorded_switches": {
+      "SWVAP": 1,
+      "IPOS": 1,
+      "SWCRACK": 0,
+      "NRLEVS": 5,
+      "SWDRA": 2,
+      "SWSOF": 0,
+      "SWDTYP": 3,
+      "SWSOLU": 0,
+      "SWSNOW": 0,
+      "SWTMP": 0,
+      "SWSWB": 1,
+      "SWBOTB": 6,
+      "SWIRFIX": 0,
+      "SWVARY": 1,
+      "SWDOM": 0,
+      "SWDIVD": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0
     },
-    "consequence": "The exact distribution provenance is confirmed consistently across F-VQ99 and earlier audit material, but the raw ZIP/case tree is not currently available as a reproducible GitHub or File Library fixture. Exact raw-input application semantics therefore still cannot be replayed field-for-field from the currently accessible artifacts alone."
+    "admitted_or_directly_supported_scope_reduction": [
+      "SWBOTB=6 bottom boundary is resolved by F-CI95.",
+      "Drainage is active for Hupsel: NRLEVS=5 and SWDRA=2, so drainage composition remains required.",
+      "Snow is inactive: SWSNOW=0.",
+      "Soil temperature is inactive: SWTMP=0.",
+      "Solute is inactive: SWSOLU=0.",
+      "Crack flow is inactive: SWCRACK=0."
+    ],
+    "still_not_safe_to_infer": "SWIRFIX=0 is not sufficient by itself to prove that every irrigation/SSDI application route is inactive for the whole Hupsel trajectory. Whole-run source activation must be established from the exact fixture/execution trace."
   },
-  "verdict": "C3_BLOCKED_MISSING_REPRODUCIBLE_APPLICATION_COMPOSITION_AUTHORITY",
-  "interpretation": "F-CI95 removes one concrete application-composition gap but does not close criterion 3. A file-driven Hupsel adapter still requires exact input-side application semantics for meteo/interception, crop/root extraction, drainage, irrigation/SSDI and any active optional processes. Those semantics must be recovered from the exact SWAP 4.3.1 Hupsel authority, not inferred from desired output or from the restricted DLL exchange path.",
+  "remaining_field_level_break": {
+    "status": "NARROWED_TO_ACTIVE_OR_UNRESOLVED_HUPSEL_APPLICATION_COMPOSITION",
+    "required_mappings": [
+      "file-driven precipitation/meteo/interception state -> admitted interval top_flux",
+      "file-driven crop state and potential transpiration -> nodewise root_extraction_sink(:)",
+      "legacy drainage configuration and dynamic response -> typed drainage forcing/control surface"
+    ],
+    "activation_still_to_resolve": [
+      "irrigation/SSDI application composition and typed source terms, but only if the exact Hupsel whole-run authority shows the route is active"
+    ],
+    "removed_from_generic_blocker_list_for_this_fixture": [
+      "SWBOTB=6 bottom boundary",
+      "snow forcing",
+      "soil-temperature forcing",
+      "solute forcing",
+      "crack-flow composition"
+    ]
+  },
+  "verdict": "C3_BLOCKED_MISSING_REPRODUCIBLE_APPLICATION_TRACE_AUTHORITY",
+  "interpretation": "The architectural search is complete enough to avoid new production design. F-CI95 resolves the former bottom-boundary blocker and the exact F-VQ100 fixture state narrows the active process set. The next missing evidence is not another typed contract but a reproducible observation-only legacy Hupsel application trace at the already preregistered six intervals. Without the exact external fixture/source payload or persisted snapshots, neither F-VQ100 replay nor a file-adapter implementation may proceed without guessing.",
   "evidence_reused": [
     "F-CI94 generic application host admission",
-    "F-VQ99 exact SWAP 4.3.1/Hupsel provenance and scientific equivalence evidence",
-    "F-VQ100 preregistered process-ready Hupsel transactional snapshot contract",
+    "F-VQ99 exact SWAP 4.3.1/Hupsel external reference materialization and long-trajectory qualification",
+    "F-VQ100 preregistered transactional snapshot contract and fail-closed closeout",
     "F-APP02 owner qualification",
     "F-VQ102 independent qualification",
-    "F-CI95 canonical admission"
+    "F-CI95 canonical SWBOTB=6 admission",
+    "F-AR01 canonical documentation/evidence-only reconciliation"
   ],
   "mutations": [
-    "Updated this M1-C3 reconciliation checkpoint only.",
-    "Corrected the F-VQ99 distribution SHA-256 provenance value to the exact authority recorded by F-VQ99."
+    "Updated this M1-C3 checkpoint only.",
+    "Reconciled live canonical from F-CI95 merge 6531dae... to current 289e64e... and classified the delta as evidence/documentation only.",
+    "Corrected GitHub artifact 10437335930 digest to the live Actions metadata value sha256:4a605e134e23daccd157145b7f04a381e7a991681a42f92ed445a2b1e4d1017f.",
+    "Recorded inspected contents of the F-VQ99 primary, secondary and latest equivalence artifacts.",
+    "Narrowed Hupsel optional-process blockers using the exact F-VQ100 fixture switches without inferring irrigation/SSDI inactivity."
   ],
   "production_source_changed": false,
   "reference_source_changed": false,
   "scientific_semantics_changed": false,
   "exclusions": [
     "no new physics",
+    "no solver-policy or tolerance changes",
     "no output fitting",
     "no broad public API or wholesale IO redesign",
     "no legacy default-route change",
     "no synthetic replacement of missing Hupsel inputs",
-    "no use of the restricted external DLL exchange path as a substitute for normal file-driven Hupsel semantics"
+    "no restricted external DLL exchange path as substitute for normal file-driven Hupsel semantics",
+    "no frozen-snapshot reader claimed as an M1-C3 file adapter"
   ],
-  "next_permitted_action": "First live-check whether F-VQ100 has advanced since its recorded closeout. If exact process-ready snapshots are already persisted, resume that independent qualification without inventing inputs. For M1-C3 itself, do not implement further production mapping until the exact SWAP 4.3.1 Hupsel raw-input authority is reproducibly available and its hash matches the F-VQ99 authority; then open or resume a separately governed application-composition workunit and qualify mappings process-by-process before admitting a file adapter."
+  "next_permitted_action": "Recover the exact official SWAP_4.3.1 distribution/Hupsel fixture whose SHA-256 matches F-VQ99 authority, or an immutable artifact containing the already preregistered F-VQ100 snapshots. If the exact legacy asset is recovered, resume F-VQ100 as qualification-only: reconstruct/build the pinned B1.10 source, add observation-only instrumentation at the preregistered pre-SoilWater seam, extract exactly the six frozen snapshots, document the preregistered sign/unit mappings, and replay them through the current typed transactional backend using F-CI95 for SWBOTB=6. Do not implement M1-C3 production mapping before that evidence exists."
 }
