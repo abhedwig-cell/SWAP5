@@ -79,12 +79,16 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
-  src/runtime/mod_fmr_serialized_interaction_protocol.f90
   src/runtime/mod_fmr_output_serialization_contract.f90
   src/runtime/mod_fmr_output_serialization_pack.f90
   src/runtime/mod_fmr_output_serialization.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
+  src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 
