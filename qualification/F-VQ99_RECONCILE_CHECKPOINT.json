@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ99",
+  "campaign": "SWAP431_SWAP5_STATUS_A_SCIENTIFIC_EQUIVALENCE",
+  "phase": "RECONCILE",
+  "status": "CHECKPOINTED_WITH_EXACT_B0_B1_FULL_RUN_ASSET_GAP",
+  "protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "authorities": {
+    "swap5_canonical_branch": "integration/f-ci-canonical",
+    "swap5_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "swap5_scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "swap5_scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+    "swap431_b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "swap431_b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "swap431_b0_member_manifest_sha256": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
+    "swap431_b0_linux_executable_sha256": "e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862",
+    "swap431_b1_snapshot": "B1.10",
+    "swap431_b1_member_count": 63,
+    "swap431_b1_source_bytes": 1863575,
+    "swap431_b1_member_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "reference_chain": {
+    "policy": "B0_IMMUTABLE_SWAP431_TO_B1_QUALIFIED_CORRECTED_REFERENCE_TO_B2_SWAP5_REFERENCE",
+    "authority": "docs/decisions/ADR-0005-reference-baseline-chain.md",
+    "rule": "B0-to-B1 differences may be accepted only when the exact qualified patch authority explains them; B1-to-SWAP5 unexplained differences remain verification failures."
+  },
+  "b1_10_admitted_patch_chain": [
+    {"id":"SWAP-001","qualification":"reference/swap-4.3.1/patches/SWAP-001/qualification.md"},
+    {"id":"SWAP-005","qualification":"reference/swap-4.3.1/patches/SWAP-005/qualification.md"},
+    {"id":"SWAP-006","qualification":"reference/swap-4.3.1/patches/SWAP-006/qualification.md"},
+    {"id":"SWAP-007","qualification":"reference/swap-4.3.1/patches/SWAP-007/qualification.md"},
+    {"id":"SWAP-008","qualification":"reference/swap-4.3.1/patches/SWAP-008/qualification.md"},
+    {"id":"SWAP-009","qualification":"reference/swap-4.3.1/patches/SWAP-009/qualification.md"},
+    {"id":"SWAP-010","qualification":"reference/swap-4.3.1/patches/SWAP-010/qualification.md"},
+    {"id":"SWAP-013","qualification":"reference/swap-4.3.1/patches/SWAP-013/qualification.md"},
+    {"id":"SWAP-012","qualification":"reference/swap-4.3.1/patches/SWAP-012/qualification.md"},
+    {"id":"SWAP-002","qualification":"reference/swap-4.3.1/patches/SWAP-002/qualification.md"}
+  ],
+  "explicit_exclusions": [
+    "WOFOST_8_1_DEDICATED_COMPARISON_CAMPAIGN",
+    "EB",
+    "ROSS",
+    "ROSSFAST",
+    "NEW_PHYSICS",
+    "PRODUCTION_OPTIMIZATION",
+    "API_OR_IO_REDESIGN",
+    "POST_HOC_TOLERANCE_WIDENING",
+    "UNSUPPORTED_HARMLESS_DIFFERENCE_CLASSIFICATION"
+  ],
+  "selected_matrix": [
+    {
+      "id": "EQ-RICHARDS-15",
+      "scope": ["UNSATURATED_WATER_MOVEMENT", "WET_TO_DRY_HYDRAULIC_STATES", "BOTTOM_HEAD_RESPONSE", "MASS_BALANCE"],
+      "authority": "tests/fci/run_fci21_si25_scientific_replay.sh",
+      "reference": "B1.10-derived nonlinear oracle on frozen F-SI23 15-case matrix",
+      "matrix": {"initial_heads_cm":[-25.0,-75.0,-250.0],"bottom_head_jumps_cm":[-0.1,-0.01,0.001,0.01,0.1],"horizon_day":0.25,"cases":15},
+      "comparison": ["transported defect metrics", "mass residual", "O0/O2 output identity"],
+      "predefined_tolerance": "owner/production numeric metrics <= 65536*machine_epsilon*max(1,abs(a),abs(b)); hard case mass gate 1e-12 cm",
+      "eligible_now": true
+    },
+    {
+      "id": "EQ-ET-DEMAND",
+      "scope": ["EVAPORATION_DEMAND", "TRANSPIRATION_DEMAND", "CROP_WATER_DEMAND_INTERACTION_WITHOUT_WOFOST81_CAMPAIGN"],
+      "authority": "tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh",
+      "reference": "B1.10 reference ET equations and semantics",
+      "comparison": ["potential soil evaporation", "potential pond evaporation", "potential transpiration", "inactive crop semantics", "boundary cases", "A-B-A exact replay"],
+      "predefined_tolerance": "1e-13*max(1,abs(expected)); exact bits for A-B-A replay; exact O0/O2 stdout identity",
+      "eligible_now": true
+    },
+    {
+      "id": "EQ-FULL-HUPSEL-LONG",
+      "scope": ["LONG_TRAJECTORY", "INFILTRATION_AND_PONDING", "EVAPORATION_AND_TRANSPIRATION", "SURFACE_STORAGE_RUNOFF", "DRAINAGE", "BOTTOM_BOUNDARY_GROUNDWATER", "WATER_BALANCE", "TERMINAL_STATE"],
+      "authority": "historical official B1.10 Hupsel qualification lineage; exact current rerun required",
+      "reference": "exact reconstructed B1.10 plus authoritative Hupsel input fixture, with B0 relation interpreted through the admitted patch chain",
+      "comparison": ["pressure heads", "theta/storage", "top/bottom flux", "drainage", "evaporation", "transpiration", "runoff", "groundwater level/exchange where exposed", "cumulative water balance", "terminal state"],
+      "predefined_tolerance": "TO_BE_FROZEN_BEFORE_EXECUTION_FROM_EXISTING_REFERENCE_PRECISION_AND_NUMERICAL_EVIDENCE; no post-hoc widening",
+      "eligible_now": false,
+      "blocker": "Exact B0 source archive/distribution and the authoritative full Hupsel fixture are identity-pinned but not stored as retrievable repository bytes; current B1.10 reconstruction tool requires the exact B0 archive. Historical Actions artifacts containing those external assets are not retained."
+    },
+    {
+      "id": "EQ-RESTART-CONTINUATION",
+      "scope": ["RESTART", "CONTINUATION", "TERMINAL_STATE"],
+      "authority": "current SWAP5 restart qualification plus legacy case only if equivalent persisted-state semantics can be established",
+      "reference": "no silent mapping of non-equivalent restart formats",
+      "eligible_now": false,
+      "blocker": "A directly comparable B1.10 persisted-state fixture has not yet been established from repository-resident immutable assets."
+    }
+  ],
+  "directly_comparable_variables": [
+    "pressure_head_cm",
+    "water_content",
+    "soil_water_storage_cm",
+    "ponding_or_surface_storage_cm_when_semantically_identical",
+    "top_flux_cm_per_day",
+    "bottom_flux_cm_per_day",
+    "drainage_flux_cm_per_day",
+    "potential_and_actual_evaporation_when_same_definition",
+    "potential_and_actual_transpiration_when_same_definition",
+    "runoff_or_surface_discharge_when_same_definition",
+    "groundwater_level_or_exchange_when_same_boundary_contract",
+    "cumulative_water_balance_cm",
+    "terminal_physical_state"
+  ],
+  "normalization_rules": [
+    "normalize only documented units/sign/layout/time labels",
+    "never map missing values to zero",
+    "never compare cumulative to instantaneous quantities",
+    "align timestamps by physical interval semantics rather than textual formatting",
+    "record every normalization transform in qualification evidence"
+  ],
+  "adversarial_checks": [
+    "verify exact executable/source hashes before run",
+    "verify intended input files are opened/consumed",
+    "remove or isolate stale outputs before each run",
+    "verify units and sign conventions",
+    "verify missing-value treatment",
+    "verify semantic timestamp alignment",
+    "verify cumulative-versus-instantaneous variable identity",
+    "verify restart origin state equivalence before restart comparison"
+  ],
+  "planned_method": {
+    "layer_1": "exact identity only where legacy-preservation authority supports it",
+    "layer_2": "absolute, relative, max-over-time, max-location/time, balance and end-state differences under frozen tolerances",
+    "layer_3": "state, flux, process and cumulative balance comparison",
+    "layer_4": "earliest-divergence localization and drift/event-boundary classification",
+    "independent_parser": "campaign-owned parser/comparator; model-internal PASS markers are supporting evidence only"
+  },
+  "classification_vocabulary": [
+    "I_IDENTICAL",
+    "II_NUMERICALLY_EQUIVALENT",
+    "III_EXPLAINED_ADMITTED_MODEL_EVOLUTION",
+    "IV_IO_OR_REPRESENTATION_ONLY_DIFFERENCE",
+    "V_UNEXPLAINED_SCIENTIFIC_OR_NUMERICAL_DIFFERENCE"
+  ],
+  "mutations": {
+    "swap5_production_source": "NONE",
+    "swap431_source": "NONE",
+    "evidence_only": true
+  },
+  "next_permitted_action": "QUALIFY repository-resident executable reference seams on the exact SWAP5 scientific production commit; separately fail closed on full B0/B1.10 trajectory closure until exact immutable external assets are available to the runner."
+}
