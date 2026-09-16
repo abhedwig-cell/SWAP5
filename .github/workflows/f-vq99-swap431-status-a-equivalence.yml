@@ -40,21 +40,19 @@ jobs:
           test "$(git -C /tmp/swap5-fvq99-prod rev-parse HEAD)" = 50346642bd565f79134ea17d5462e544b354998c
           test "$(git -C /tmp/swap5-fvq99-prod rev-parse HEAD^{tree})" = 3b085d7dea3d3f3fce42ad9d8f259a8350205846
 
-      - name: EQ-RICHARDS-15 B1.10-derived nonlinear reference replay
+      - name: Replay repository-resident B1.10 reference seams on final tree
+        id: seams
         shell: bash
         run: |
-          set -euo pipefail
-          cd /tmp/swap5-fvq99-prod
-          bash tests/fci/run_fci21_si25_scientific_replay.sh | tee "$GITHUB_WORKSPACE/eq-richards-15.log"
-
-      - name: EQ-ET-DEMAND B1.10 reference equations
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd /tmp/swap5-fvq99-prod
-          bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh | tee "$GITHUB_WORKSPACE/eq-et-demand.log"
+          set -uo pipefail
+          bash qualification/f-vq99/run_current_tree_reference_seams.sh /tmp/swap5-fvq99-prod 2>&1 | tee reference-seams.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > reference-seams-rc.txt
+          echo "F_VQ99_REFERENCE_SEAMS_RC=$rc"
+          exit 0
 
       - name: Record exact B0/B1.10 full-run asset status
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -72,13 +70,18 @@ jobs:
           PY
 
       - name: Summarize bounded qualification
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
+          rc="$(cat reference-seams-rc.txt 2>/dev/null || echo 99)"
           {
-            echo 'F_VQ99_REPOSITORY_RESIDENT_QUALIFICATION=PASS'
-            echo 'EQ_RICHARDS_15=PASS'
-            echo 'EQ_ET_DEMAND=PASS'
+            echo "F_VQ99_REFERENCE_SEAMS_RC=$rc"
+            if [[ "$rc" == 0 ]]; then
+              echo 'F_VQ99_REPOSITORY_RESIDENT_REFERENCE_SEAMS=PASS'
+            else
+              echo 'F_VQ99_REPOSITORY_RESIDENT_REFERENCE_SEAMS=FAIL'
+            fi
             echo 'EQ_FULL_HUPSEL_LONG=BLOCKED_EXACT_EXTERNAL_ASSETS_REQUIRED'
             echo 'EQ_RESTART_CONTINUATION=BLOCKED_COMPARABLE_B1_10_PERSISTED_STATE_NOT_ESTABLISHED'
           } | tee qualification-summary.txt
@@ -89,8 +92,16 @@ jobs:
           name: f-vq99-equivalence-evidence
           path: |
             authority.txt
-            eq-richards-15.log
-            eq-et-demand.log
+            reference-seams.log
+            reference-seams-rc.txt
             full-run-asset-status.txt
             qualification-summary.txt
           if-no-files-found: warn
+
+      - name: Enforce scientific seam result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rc="$(cat reference-seams-rc.txt 2>/dev/null || echo 99)"
+          test "$rc" = 0
