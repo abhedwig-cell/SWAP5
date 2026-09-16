@@ -31,6 +31,12 @@ This branch is a **publication surface**, not a development workstream. Feature/
 
 The exact documentation revision for a deployment is the `GITHUB_SHA` of the successful `Documentation` workflow run on this publication branch. F-DOC20 closeout records that SHA and the successful external verification run. A later repository head does not silently become the published review authority.
 
+## Materialization record
+
+This revision was created specifically to materialize the first frozen Status-A colleague-review publication surface. The materialization commit itself is the candidate documentation publication postimage; it is accepted only after its own build, Pages deployment and external verification succeed.
+
+The page intentionally does not contain its own Git SHA. That exact SHA is taken from the immutable workflow execution context and persisted in F-DOC20 closeout evidence, avoiding a self-referential documentation commit.
+
 ## Why `main` is not the authority
 
 `main` is not the current SWAP5 scientific/review authority. Deploying Pages automatically from `main` would therefore allow a stale or unrelated branch to be presented as the current review portal.
