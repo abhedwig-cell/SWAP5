@@ -36,7 +36,7 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TRAJSENS" -o "$m/trajsens.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TRAJPUB" -o "$m/trajpub.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$CONTRACTS" -o "$m/contracts.o"
-  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$SW" -o "$m/sw.o"
+  gfortran "${WARN[@]}" -Wno-error=unused-dummy-argument "$flag" -std=f2008 -J "$m" -I "$m" -c "$SW" -o "$m/sw.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$REFBIND" -o "$m/refbind.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$POLICY" -o "$m/policy.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$BINDING" -o "$m/binding.o"
