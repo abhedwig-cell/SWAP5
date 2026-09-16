@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ100",
+  "title": "Hupsel-Derived Transactional State/Forcing Replay",
+  "phase": "RECONCILE_PREREGISTRATION",
+  "branch": "qualification/f-vq100-hupsel-transactional-composition",
+  "base": {
+    "scientific_production_commit": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6"
+  },
+  "parent_campaign": {
+    "work_unit": "F-VQ99",
+    "reference_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+    "candidate_route_assessment_commit": "badfd82761a8efd6389f744ea5b1f5be72f98d87",
+    "reference_asset_status": "EXACT_B0_B1_10_HUPSEL_MATERIALIZED",
+    "global_verdict": "SWAP431_SWAP5_STATUS_A_EQUIVALENCE_NOT_YET_ESTABLISHED"
+  },
+  "goal": "Increase current-production scientific equivalence coverage on realistic Hupsel states without creating a file-driven SWAP5 application, new IO/API surface, or production physics. Extract bounded numerical snapshots from exact reconstructed B1.10 and replay those snapshots through the already-admitted typed serialized reference backend or its exact production solver seam.",
+  "explicit_non_goal": "This workunit does not claim or implement full file-driven Hupsel end-to-end application equivalence and cannot by itself upgrade EQ-FULL-HUPSEL-LONG to full-matrix closure.",
+  "no_equivalent_existing_workunit_found": true,
+  "reconciled_existing_authorities": {
+    "F_CI06": "Full Hupsel 2002-2004 controlled source port preserves normalized result.bal/result.blc/swap.wrn at O0/O2 against exact B1.10.",
+    "F_CI07": "Whole-day Hupsel restore/rerun on 2002-01-05 and 2003-05-15 has zero max absolute difference for h, theta, tsoil, cml, cmsy and selected water-accounting totals.",
+    "current_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90 exposes typed physical state, parameters and forcing and a transactional run_trial interface; it is not a legacy file-input application.",
+    "status_a": "Same-tree immutable reference/scientific preservation evidence remains authoritative absent dependency invalidation."
+  },
+  "frozen_sampling_rule": {
+    "case": "official Hupsel 2002-2004 from exact B0 distribution",
+    "target_dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "selection_within_date": "Select the first accepted soil-water dynamic interval whose physical interval start is at or after local model-time 12:00 on the target date. If no such interval exists, mark that target MISSING; do not substitute another date or silently choose zero/default data.",
+    "selection_independent_of_candidate_result": true
+  },
+  "frozen_snapshot_payload": {
+    "pre_state": ["pressure_head_cm", "water_content", "ponding_depth_cm", "groundwater_level_cm"],
+    "parameter_and_numerical_contract": ["active_nodes", "z_cm", "dz_cm", "node_distance_cm", "cofgen", "bottom_mode", "swkimpl", "swkmean", "max_iterations", "max_backtracking", "min_step_duration_day", "compartment_balance_tolerance", "total_balance_tolerance", "head_abs_tolerance", "head_rel_tolerance", "ponding_tolerance"],
+    "effective_step_forcing": ["top_boundary_mode", "top_flux_cm_per_day", "top_head_cm_when_applicable", "bottom_flux_cm_per_day", "bottom_head_cm_when_applicable", "drainage_flux_by_level_cm_per_day", "subsurface_irrigation_source_cm_per_day_by_node", "root_extraction_sink_cm_per_day_by_node"],
+    "interval": ["t0_day", "t1_day", "dt_day"],
+    "reference_post_state": ["pressure_head_cm", "water_content", "ponding_depth_cm", "groundwater_level_cm"],
+    "reference_fluxes": ["top_flux_cm_per_day", "bottom_flux_cm_per_day"],
+    "reference_diagnostics": ["nonlinear_iterations", "mass_or_equation_residual_when_available"]
+  },
+  "comparison": {
+    "primary": ["pressure_head_cm", "water_content", "ponding_depth_cm", "groundwater_level_cm", "top_flux_cm_per_day", "bottom_flux_cm_per_day"],
+    "numeric_tolerance": "abs(a-b) <= 65536*machine_epsilon*max(1,abs(a),abs(b)) for directly comparable scalar/array fields, inherited unchanged from F-VQ99 EQ-RICHARDS-15",
+    "mass_gate_cm": 1e-12,
+    "missing_value_rule": "Missing/undefined remains missing and is never mapped to zero.",
+    "normalization": "Only documented units, sign conventions and physical interval labels may be normalized. Every transform must be recorded before comparison.",
+    "no_post_hoc_widening": true
+  },
+  "classification": [
+    "I_IDENTICAL",
+    "II_NUMERICALLY_EQUIVALENT",
+    "III_EXPLAINED_ADMITTED_MODEL_EVOLUTION",
+    "IV_IO_OR_REPRESENTATION_ONLY_DIFFERENCE",
+    "V_UNEXPLAINED_SCIENTIFIC_OR_NUMERICAL_DIFFERENCE"
+  ],
+  "fail_closed_conditions": [
+    "Exact B1.10 source identity cannot be reproduced.",
+    "A snapshot field cannot be mapped to an already-admitted current-production contract without new production semantics.",
+    "The candidate route would require legacy file IO, a new public API, or a new process orchestrator.",
+    "The candidate route changes physical equations, solver policy, tolerances, or accepted state merely to obtain agreement.",
+    "A selected target date or required payload field is unavailable."
+  ],
+  "explicit_exclusions": ["EB", "ROSS", "ROSSFAST", "WOFOST81_DEDICATED_COMPARISON", "NEW_PHYSICS", "PRODUCTION_OPTIMIZATION", "LEGACY_IO_IMPLEMENTATION", "PUBLIC_API_IMPLEMENTATION", "POST_HOC_TOLERANCE_WIDENING"],
+  "mutations": {
+    "production_source": "NONE",
+    "reference_physics": "NONE",
+    "qualification_harness_only": true
+  },
+  "next_permitted_action": "QUALIFY mapping feasibility first. If and only if every frozen payload component required for one accepted hydraulic interval maps to existing production contracts without new semantics, extract the six reference snapshots and replay them. Otherwise close F-VQ100 as BLOCKED_BY_MISSING_EXISTING_COMPOSITION_CONTRACT."
+}
