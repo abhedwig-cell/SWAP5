@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Verify a published SWAP documentation site end to end.
+"""Verify the published SWAP5 frozen-review documentation site end to end.
 
 The script intentionally uses only the Python standard library so it can be run
-from a clean workstation after GitHub Pages deployment.
+from a clean workstation or a separate GitHub Actions job after Pages deployment.
 """
 
 from __future__ import annotations
@@ -15,7 +15,10 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin, urlsplit
 from urllib.request import Request, urlopen
 
-USER_AGENT = "SWAP-docs-publication-verifier/1.0"
+USER_AGENT = "SWAP-docs-publication-verifier/2.0"
+STATUS_A_AUTHORITY = "992a5c657bfe10a10100f92e0cb77c4825ae65b6"
+PRODUCTION_BASELINE = "50346642bd565f79134ea17d5462e544b354998c"
+PUBLICATION_BRANCH = "publication/status-a-review-20260916"
 
 
 @dataclass(frozen=True)
@@ -25,19 +28,103 @@ class PageCheck:
 
 
 CHECKS = (
-    PageCheck("", ("SWAP technical documentation",)),
-    PageCheck("architecture/overview/", ("Target architecture overview", "SWAP kernel")),
-    PageCheck("architecture/implementation-status/", ("Implementation status map", "Current architecture-to-implementation matrix")),
-    PageCheck("architecture/component-map/", ("Target component ownership map", "Component ownership matrix", "Transaction boundary")),
-    PageCheck("architecture/legacy-migration/", ("Legacy-to-target migration map", "all 63 Fortran files", "Highest-risk cuts", "Per-file exit criteria")),
-    PageCheck("architecture/migration-slices/", ("Migration slices and qualification gates", "M3 - Transactional interval execution", "M4 - Soil-water solver boundary", "Gate evidence record")),
-    PageCheck("architecture/m3-gate-evidence/", ("M3 gate evidence: transactional interval execution", "M3 exit-criterion matrix", "M3-C1 - authoritative commit owner", "M3-C2 - committed accounting versus attempt accounting", "NO_EXIT_YET")),
-    PageCheck("architecture/legacy-migration-control/", ("Control, I/O and accounting", "swap.f90", "SPLIT_AND_RETIRE")),
-    PageCheck("architecture/legacy-migration-hydraulic/", ("State, solver and hydraulic core", "headcalc.f90", "DECOMPOSE_CORE_SOLVER")),
-    PageCheck("architecture/legacy-migration-processes/", ("Surface, drainage, management and optional flow physics", "macropore.f90", "DECOMPOSE_OPTIONAL_PHYSICS")),
-    PageCheck("architecture/legacy-migration-biophysics/", ("Crop, uptake, stress, solute and WOFOST-soil", "oxygenstress.f90", "wofost_soil_declarations.f90")),
-    PageCheck("architecture/invariants/", ("Core architecture invariants", "Mass conservation is absolute")),
-    PageCheck("development/publication/", ("Online publication", "mkdocs build --strict")),
+    PageCheck(
+        "",
+        (
+            "SWAP5 technical documentation",
+            "Current Status-A authority",
+            STATUS_A_AUTHORITY,
+            PRODUCTION_BASELINE,
+        ),
+    ),
+    PageCheck(
+        "getting-started/",
+        (
+            "Getting started: build, run, input and output",
+            "does not currently claim one broad stable public command-line application interface",
+            "run_fapp01_minimal_soil_water_application_host.sh",
+        ),
+    ),
+    PageCheck(
+        "review/REVIEW_GUIDE/",
+        (
+            "SWAP5 review guide",
+            "Frozen review baseline",
+            STATUS_A_AUTHORITY,
+        ),
+    ),
+    PageCheck(
+        "review/REVIEW_BASELINE/",
+        (
+            "SWAP5 frozen review baseline",
+            STATUS_A_AUTHORITY,
+            PRODUCTION_BASELINE,
+        ),
+    ),
+    PageCheck(
+        "review/PUBLICATION_AUTHORITY/",
+        (
+            "Frozen review publication authority",
+            PUBLICATION_BRANCH,
+            STATUS_A_AUTHORITY,
+            PRODUCTION_BASELINE,
+        ),
+    ),
+    PageCheck(
+        "science/",
+        (
+            "Scientific model",
+            "Conceptual scope is not release admission",
+        ),
+    ),
+    PageCheck(
+        "numerics/",
+        (
+            "Numerical formulation",
+            "Numerical method versus execution policy",
+        ),
+    ),
+    PageCheck(
+        "capabilities/",
+        (
+            "Status-A capability review pages",
+            "Restart v1",
+            "Serialized MultiSWAP v1",
+            "Groundwater Coupling v1",
+        ),
+    ),
+    PageCheck(
+        "status-a/CURRENT_STATUS/",
+        (
+            "SWAP5 Status-A current status",
+            STATUS_A_AUTHORITY,
+            "CANONICALLY ADMITTED NOW",
+        ),
+    ),
+    PageCheck(
+        "status-a/CURRENT_ARCHITECTURE/",
+        (
+            "SWAP5 Status-A current architecture",
+            "Committed state",
+            "Groundwater Coupling v1",
+        ),
+    ),
+    PageCheck(
+        "status-a/TRACEABILITY/",
+        (
+            "SWAP5 Status-A theory, code and evidence traceability",
+            STATUS_A_AUTHORITY,
+            "Current capability traceability map",
+        ),
+    ),
+    PageCheck(
+        "development/publication/",
+        (
+            "Online publication",
+            PUBLICATION_BRANCH,
+            "Frozen scientific versus documentation authority",
+        ),
+    ),
 )
 
 
@@ -74,7 +161,9 @@ def fetch_text(url: str, timeout: float) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Verify the published SWAP MkDocs site after deployment.")
+    parser = argparse.ArgumentParser(
+        description="Verify the published SWAP5 frozen-review MkDocs site after deployment."
+    )
     parser.add_argument("base_url", help="Published site URL, including repository path if used")
     parser.add_argument("--timeout", type=float, default=15.0, help="HTTP timeout in seconds")
     args = parser.parse_args()
@@ -86,7 +175,7 @@ def main() -> None:
         if missing:
             fail(f"{url} is reachable but misses expected text: {missing}")
         print(f"OK: {url}")
-    print(f"Published documentation verification passed: {base_url}")
+    print(f"Published SWAP5 frozen-review documentation verification passed: {base_url}")
 
 
 if __name__ == "__main__":
