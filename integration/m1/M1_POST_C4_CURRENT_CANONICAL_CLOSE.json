@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CLOSE_POST_C4_CURRENT_CANONICAL",
+  "branch": "work/m1-post-c4-current-canonical-close",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "tree": "0b60ec929bfc0f8e7d7789b70bfac07168743084",
+    "status": "LIVE_VERIFIED_AFTER_M1_C4_ADMISSION"
+  },
+  "normative_exit_criteria": [
+    "a non-file in-memory invocation path reaches the computational boundary;",
+    "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+    "legacy file runs still reproduce reference results through adapters;",
+    "output serialization does not mutate physical state;",
+    "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files."
+  ],
+  "criterion_matrix": {
+    "criterion_1": "PASS_EXISTING_EVIDENCE",
+    "criterion_2": "PASS_EXISTING_EVIDENCE",
+    "criterion_3": "BLOCKED_MISSING_FIELD_LEVEL_APPLICATION_COMPOSITION_SEMANTICS",
+    "criterion_4": "PASS_CURRENT_CANONICAL_ADMITTED",
+    "criterion_5": "PASS_EXISTING_EVIDENCE"
+  },
+  "criterion_4_authority": {
+    "canonical_merge": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "pull_request": 158,
+    "serializer_path": "src/adapter/mod_canonical_result_text_adapter.f90",
+    "serializer_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "owner_run_id": 35079209619,
+    "owner_job_id": 104738857165,
+    "independent_qualification_authority": "31b5bcc9884c4ff7951af9f81fb7b08a00639832",
+    "independent_run_id": 35091439497,
+    "independent_job_id": 104778442363,
+    "admission_run_id": 35091664485,
+    "admission_job_id": 104779179591,
+    "verdict": "PASS_CURRENT_CANONICAL_ADMITTED"
+  },
+  "criterion_3_reconciliation": {
+    "legacy_reference_authority": "F-VQ99 Hupsel qualification",
+    "legacy_reference_status": "PASS_EXACT_ON_LEGACY_SIDE",
+    "localized_blocker_authority_commit": "d1a1db6c6ddf5be87a22da5242b2ea0fee21ef63",
+    "current_typed_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "current_typed_forcing_type": "fmr_b110_physical_forcing_t",
+    "typed_backend_requires_prepared_fields": [
+      "top_flux",
+      "top_head",
+      "bottom_flux",
+      "bottom_head",
+      "drainage controls or drainage fluxes",
+      "subsurface_irrigation_source",
+      "root_extraction_sink"
+    ],
+    "preserved_legacy_file_application_chain": [
+      "ReadSwap",
+      "Meteo",
+      "interception_daily",
+      "crop rotation / crop development or assimilation",
+      "RootExtraction",
+      "BoundBottom",
+      "drain",
+      "SoilWater"
+    ],
+    "preserved_external_exchange_semantics": [
+      "rain mm/d -> graidt/nraidt cm/d by factor 0.1",
+      "etref mm/d -> etr cm/d by factor 0.1",
+      "ptrans mm/d -> ptra cm/d by factor 0.1 when IPET=1",
+      "pevap mm/d -> peva cm/d by factor 0.1 when IPET=1",
+      "LAI, crop height and rooting depth are transferred explicitly through swap_input"
+    ],
+    "finding": "The missing C3 surface is not merely a file parser. The file-driven Hupsel route performs application-level meteorology, interception, crop, root-uptake, bottom-boundary and drainage composition before SoilWater. Current typed SWAP5 accepts the resulting prepared interval forcings but no admitted authority defines the complete field-level mapping from a preserved legacy file-driven case to those typed forcings.",
+    "why_not_implement_here": "Filling the gap inside M1 closure would require selecting or reconstructing application-composition semantics process-by-process. That is a real production/scientific decision surface and must not be invented merely to obtain PASS.",
+    "verdict": "BLOCKED_MISSING_FIELD_LEVEL_APPLICATION_COMPOSITION_SEMANTICS"
+  },
+  "dependency_reconciliation": {
+    "pre_c4_canonical": "bfbb466678249811afc6a0800fd32a367818660f",
+    "post_c4_canonical": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+    "relevant_change": "Only bounded M1-C4 serializer/admission evidence was introduced for M1 purposes; no evidence was found that resolves or invalidates the C3 application-composition blocker.",
+    "criteria_1_2_5_inheritance": "VALID"
+  },
+  "mutations": {
+    "production_source_on_this_close_branch": "NONE",
+    "scientific_semantics": "NONE",
+    "legacy_default_route": "UNCHANGED",
+    "public_api": "NOT_EXPANDED"
+  },
+  "overall_verdict": "M1_NOT_CLOSED_ONLY_CRITERION_3_REMAINS_BLOCKED",
+  "next_permitted_action": "Stop M1 closure work here. If criterion 3 is to be completed, open a separately governed bounded application-composition capability that recovers and fixes the process-by-process mapping from one preserved real legacy file-driven case to already-admitted typed SWAP5 state/forcing/config, then independently qualify reference equivalence through that adapter. Do not use F-ROSS12 as a substitute and do not broaden this into a stable public API or wholesale IO modernization project.",
+  "exclusions": [
+    "EB",
+    "RossFast science/domain expansion",
+    "F-ROSS12 as M1 authority",
+    "broad public API",
+    "wholesale IO modernization",
+    "new physics",
+    "automatic backend fallback",
+    "legacy default-route change",
+    "production refactor merely to obtain PASS"
+  ]
+}
