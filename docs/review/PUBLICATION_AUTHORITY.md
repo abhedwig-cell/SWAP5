@@ -33,9 +33,19 @@ The exact documentation revision for a deployment is the `GITHUB_SHA` of the suc
 
 ## Materialization record
 
-This revision was created specifically to materialize the first frozen Status-A colleague-review publication surface. The materialization commit itself is the candidate documentation publication postimage; it is accepted only after its own build, Pages deployment and external verification succeed.
+A publication revision is created specifically to materialize the frozen Status-A colleague-review surface. That materialization commit is only a **candidate** documentation publication postimage until its own build, Pages deployment and external verification succeed.
 
-The page intentionally does not contain its own Git SHA. That exact SHA is taken from the immutable workflow execution context and persisted in F-DOC20 closeout evidence, avoiding a self-referential documentation commit.
+The page intentionally does not contain its own Git SHA. The exact SHA is taken from the immutable workflow execution context and persisted in F-DOC20 closeout evidence, avoiding a self-referential documentation commit.
+
+## Deployment environment
+
+The publication job uses the dedicated GitHub Actions environment:
+
+```text
+github-pages-status-a-review
+```
+
+This isolates the frozen review publication from the older `github-pages` environment that belonged to the historical `main`-based publication route. The environment does not change scientific authority; it only gates deployment of the already qualified static documentation artifact.
 
 ## Why `main` is not the authority
 
