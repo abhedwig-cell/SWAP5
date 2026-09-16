@@ -1,0 +1,23 @@
+name: M1 criterion 4 output serialization independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/m1-c4-output-serialization-independent
+    paths:
+      - 'src/adapter/mod_canonical_result_text_adapter.f90'
+      - 'tests/m1/test_m1_c4_output_serialization_independent.f90'
+      - 'tests/m1/run_m1_c4_output_serialization_independent.sh'
+      - '.github/workflows/m1-c4-output-serialization-independent.yml'
+
+jobs:
+  m1-c4-independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run bounded M1 criterion 4 independent gate
+        run: bash tests/m1/run_m1_c4_output_serialization_independent.sh
