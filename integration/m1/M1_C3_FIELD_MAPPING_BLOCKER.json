@@ -3,16 +3,38 @@
   "workunit": "M1-C3",
   "capability": "M1 - Typed External Boundary",
   "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
-  "phase": "RECONCILE_FIELD_MAPPING",
+  "phase": "RECONCILE_POST_FCI95",
   "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "live_head": "bfbb466678249811afc6a0800fd32a367818660f",
-    "work_branch_precheckpoint_head": "bd2020b8cfeb06c2dc6e25181f2b2b20b69714ad"
+    "live_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "previous_checkpoint_head": "d1a1db6c6ddf5be87a22da5242b2ea0fee21ef63"
   },
   "criterion": {
     "number": 3,
     "normative_text": "legacy file runs still reproduce reference results through adapters;"
+  },
+  "resolved_subblocker": {
+    "name": "legacy SWBOTB=6 bottom-boundary application binding",
+    "status": "RESOLVED_AND_CANONICALLY_ADMITTED",
+    "owner_workunit": "F-APP02",
+    "owner_qualified_head": "cd07b19ffb521af33138d750ad224360b35b4de2",
+    "independent_qualification": {
+      "workunit": "F-VQ102",
+      "status_commit": "22c3f54187ebbf661ac5601c181163e3f3905889",
+      "run_id": 35097208961,
+      "job_id": 104797424040,
+      "conclusion": "success"
+    },
+    "canonical_admission": {
+      "workunit": "F-CI95",
+      "pr": 160,
+      "merge_commit": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+      "binding_path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+      "binding_blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
+      "semantic_image": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1"
+    },
+    "effect_on_m1_c3": "This removes the previously explicit SWBOTB=6 composition blocker, but does not by itself establish a legacy file-run adapter or whole-Hupsel application composition."
   },
   "recovered_legacy_external_contract": {
     "source": [
@@ -21,15 +43,7 @@
       "src/legacy/b1_10_port/swap_part04.inc"
     ],
     "status": "PARTIAL_EXACT_SEMANTICS_RECOVERED",
-    "examples": [
-      "toswap%rad [kJ m-2 d-1] -> rad = toswap%rad * 1000 [J m-2 d-1]",
-      "toswap%rain [mm d-1] -> graidt = nraidt = toswap%rain * 0.1 [cm d-1]",
-      "toswap%etref [mm d-1] -> etr = toswap%etref * 0.1 [cm d-1]",
-      "toswap%lai -> lai, toswap%ch [cm] -> ch, toswap%zroot [cm] -> rd",
-      "when ipet == 1: toswap%ptrans [mm d-1] -> ptra_dry = ptra = 0.1 * ptrans [cm d-1]",
-      "when ipet == 1: toswap%pevap [mm d-1] -> peva = empreva = epond = 0.1 * pevap [cm d-1], followed by reduceva(rain * 0.1)"
-    ],
-    "scope_limitation": "These transformations belong to the external DLL-style exchange path and do not establish equivalence with the normal file-driven Hupsel path."
+    "scope_limitation": "The external DLL-style exchange transformations do not establish equivalence with the normal file-driven Hupsel path."
   },
   "legacy_file_driven_composition": {
     "source": "src/legacy/b1_10_port/swap_part02.inc",
@@ -45,50 +59,66 @@
       "drain",
       "SoilWater"
     ],
-    "finding": "The normal legacy file route composes raw meteo/crop/configuration inputs through multiple application processes before the soil-water computational boundary. A direct raw-file-field to soil-water-forcing mapping is therefore not semantically equivalent."
+    "finding": "The normal legacy file route composes raw meteo/crop/configuration inputs through multiple application processes before the soil-water computational boundary. Direct raw-file-field assignments to process-ready forcing would not be semantically equivalent."
   },
   "current_typed_target": {
-    "canonical_contract": "src/runtime/mod_canonical_contracts.f90",
-    "canonical_forcing_base": "canonical_forcing_t is an abstract empty base type; forcing semantics are supplied by concrete model/process contracts.",
+    "generic_application_host": "F-APP01 / F-CI94 is canonical",
     "physical_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "physical_forcing_type": "fmr_b110_physical_forcing_t",
-    "process_ready_fields": [
-      "top_flux",
-      "top_head",
-      "bottom_flux",
-      "bottom_head",
-      "drainage_flux_by_level and/or drainage_response_controls",
-      "subsurface_irrigation_source(:)",
-      "root_extraction_sink(:)",
-      "optional snow forcing",
-      "optional soil-temperature forcing"
-    ],
-    "finding": "The admitted physical backend consumes process-ready interval forcing. It does not own Hupsel meteo/crop/ET/file composition."
+    "status": "PROCESS_READY_TYPED_BOUNDARY_EXISTS"
   },
-  "field_level_break": {
-    "status": "NOT_BOUND_BY_CURRENT_AUTHORITY",
+  "remaining_field_level_break": {
+    "status": "NOT_BOUND_BY_REPRODUCIBLE_INPUT_SIDE_AUTHORITY",
     "missing_authoritative_mappings": [
       "file-driven precipitation/meteo/interception state -> admitted interval top_flux",
       "file-driven crop state and potential transpiration -> nodewise root_extraction_sink(:)",
-      "legacy bottom-boundary configuration and time-dependent evaluation -> bottom_head/bottom_flux",
       "legacy drainage configuration and dynamic response -> typed drainage forcing/control surface",
       "legacy irrigation/SSDI application composition -> typed source terms where applicable",
-      "activation and composition rules for optional process forcing in a real Hupsel run"
+      "activation and composition rules for optional process forcing actually active in the Hupsel reference run"
     ],
-    "why_external_exchange_is_not_a_substitute": "The external exchange path imposes its own restricted switches and injects already selected daily weather/crop/PET data. The Hupsel reference is a normal file-driven application that executes ReadSwap, Meteo, crop/interception/root-extraction/bottom/drainage composition internally. Treating the DLL field transformations as the Hupsel file adapter would change the application semantics being qualified."
+    "bottom_boundary_note": "The SWBOTB=6 -> prescribed qbot=+0.0 mapping is no longer missing; it is canonical via F-CI95. Other bottom-boundary modes remain outside this workunit unless demanded by the exact Hupsel reference fixture."
   },
-  "repository_source_coverage": {
-    "committed_b1_10_port": "A preserved subset containing headcalc.f90, soilwater.f90, swap.f90, swap_main.f90 and swap_part01..04.inc.",
-    "full_legacy_source_authority": "Qualified by F-VQ99 from the official user-supplied SWAP 4.3.1 distribution as external immutable evidence, but not committed as a complete source tree in this repository.",
-    "consequence": "The complete file-parser/meteo/crop application composition cannot be recovered field-for-field from the committed B1.10 port subset alone."
+  "f_vq100_reconciliation": {
+    "branch": "qualification/f-vq100-hupsel-transactional-composition",
+    "last_known_closeout": "7823e00c71c218ba8bade15347a56b091017932d",
+    "previous_decision": "BLOCKED_MISSING_EXPLICIT_BOTTOM_BOUNDARY_MAPPING",
+    "post_fci95_interpretation": "The recorded SWBOTB=6 candidate-contract blocker is resolved, so F-VQ100 may be resumed in principle for its process-ready transactional snapshot claim. That claim remains narrower than M1 criterion 3 and cannot substitute for a legacy file-run adapter proof."
   },
-  "verdict": "C3_BLOCKED_MISSING_FIELD_LEVEL_COMPOSITION_SEMANTICS",
-  "interpretation": "The blocker is now localized below generic provenance. Some legacy input units and transformations are exact, but the scientifically material transformation from a real legacy file-driven Hupsel application to the current process-ready typed interval forcing is not an admitted mapping. Implementing direct rain/ET/crop-to-backend assignments would invent or bypass legacy application composition and cannot satisfy criterion 3.",
+  "input_side_authority": {
+    "f_vq99_exact_external_asset_sha256": "2b48353d7bcfa9489aab36bee7de01830ca2db578b1f64476b0c95eb99c140dd",
+    "asset_name": "SWAP_4.3.1.zip",
+    "repository_state": "NOT_COMMITTED",
+    "persisted_github_evidence": {
+      "f_vq99_production_tree_artifact_id": 10437335930,
+      "f_vq99_production_tree_artifact_sha256": "4a605e9914133fb3252d8c2f2d604975a56b04dd3dfa1604059abc0b1cfa2541",
+      "f_vq99_equivalence_evidence_artifact_id": 10436879124,
+      "finding": "Persisted GitHub artifacts do not contain the exact full Hupsel source/input tree. F-VQ99 evidence records full_hupsel_source_present=no, swap_431_archive_present=no and hupsel_case_dir_present=no for the repository-only run."
+    },
+    "consequence": "The exact raw-input application semantics cannot currently be replayed field-for-field from GitHub alone. The prior external materialization proves provenance/equivalence but is not a presently reproducible raw-input fixture inside the repository."
+  },
+  "verdict": "C3_BLOCKED_MISSING_REPRODUCIBLE_APPLICATION_COMPOSITION_AUTHORITY",
+  "interpretation": "F-CI95 removes one concrete application-composition gap but does not close criterion 3. A file-driven Hupsel adapter still requires exact input-side application semantics for meteo/interception, crop/root extraction, drainage, irrigation/SSDI and any active optional processes. Those semantics must be recovered from the exact SWAP 4.3.1 Hupsel authority, not inferred from desired output or from the restricted DLL exchange path.",
+  "evidence_reused": [
+    "F-CI94 generic application host admission",
+    "F-VQ99 exact SWAP 4.3.1/Hupsel provenance and scientific equivalence evidence",
+    "F-VQ100 preregistered process-ready Hupsel transactional snapshot contract",
+    "F-APP02 owner qualification",
+    "F-VQ102 independent qualification",
+    "F-CI95 canonical admission"
+  ],
   "mutations": [
-    "Added this field-level reconciliation/blocker checkpoint only."
+    "Updated this M1-C3 reconciliation checkpoint only."
   ],
   "production_source_changed": false,
   "reference_source_changed": false,
   "scientific_semantics_changed": false,
-  "next_permitted_action": "Do not implement an M1-C3 production adapter on the present authority. If criterion 3 must be completed, first open or explicitly admit a bounded application-composition contract that uses the qualified full legacy source/fixture as the input-side authority and the already-admitted typed process/backend seams as the target. Recover and qualify the composition process-by-process before any file adapter is admitted. The restricted external DLL exchange mapping must not be treated as equivalent to the Hupsel file-driven path. Independently closable M1 criteria, especially criterion 4, may continue on their existing branches."
+  "exclusions": [
+    "no new physics",
+    "no output fitting",
+    "no broad public API or wholesale IO redesign",
+    "no legacy default-route change",
+    "no synthetic replacement of missing Hupsel inputs",
+    "no use of the restricted external DLL exchange path as a substitute for normal file-driven Hupsel semantics"
+  ],
+  "next_permitted_action": "First live-check whether F-VQ100 has advanced since its recorded closeout. If exact process-ready snapshots are already persisted, resume that independent qualification without inventing inputs. For M1-C3 itself, do not implement further production mapping until the exact SWAP 4.3.1 Hupsel raw-input authority is reproducibly available and its hash matches the F-VQ99 authority; then open or resume a separately governed application-composition workunit and qualify mappings process-by-process before admitting a file adapter."
 }
