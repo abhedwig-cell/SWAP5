@@ -1,0 +1,53 @@
+name: F-VQ102 F-APP02 legacy SWBOTB6 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq102-fapp02-legacy-swbotb6-independent
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run independent F-VQ102 gate
+        shell: bash
+        run: |
+          chmod +x tests/fvq/run_fvq102_fapp02_swbotb6_independent.sh
+          tests/fvq/run_fvq102_fapp02_swbotb6_independent.sh | tee F-VQ102_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-VQ102"
+            echo "owner_work_unit=F-APP02"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            echo "binding_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90 || true)"
+            grep -E '^FVQ102_' F-VQ102_GATE.log || true
+          } > F-VQ102_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vq102-evidence
+          path: F-VQ102_EVIDENCE.txt
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vq102-diagnostics
+          path: F-VQ102_GATE.log
+          if-no-files-found: warn
