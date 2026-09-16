@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Generic legacy file adapter and read-only output serialization",
+  "phase": "RECONCILE",
+  "parent_protocol": ["RECONCILE", "QUALIFY", "CLOSE"],
+  "subworkunit_protocol": ["RECONCILE", "IMPLEMENT", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/m1-legacy-file-adapter-output-serialization",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "preimage_head": "9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "preimage_tree": "7cd0b66dd2376d95d14fc336a4377e5640c3e535",
+    "delta_from_original_m1_resume_head": "80c6faaa8a277d9596a6da7bc5d2244c0df1bb82 -> 9b6adac8fb2f915640dbe4e33c4406a835d6d6a1",
+    "delta_assessment": "Seven canonical commits advanced the branch, but the observed file delta is governance/workflow/provenance only: .github/workflows/fci-canonical.yml, docs/performance/F-PE13_SWAP011_E7_PROVENANCE_RECOVERY.md and integration/f-ci/F-CI92_STATUS.json. No M1 production/reference dependency source changed, so inherited criteria 1, 2 and 5 remain valid."
+  },
+  "predecessor_m1_qualification": {
+    "branch": "work/m1-typed-external-boundary-reconciliation",
+    "head": "f18e4f4e2f941f6252283ae0674a77e7856e9a53",
+    "file": "integration/m1/M1_QUALIFY_CHECKPOINT.json",
+    "verdict": "M1_NOT_CLOSED_CURRENT_CANONICAL_CRITERIA_3_AND_4_UNSATISFIED"
+  },
+  "normative_open_criteria": [
+    {
+      "criterion": 3,
+      "text": "legacy file runs still reproduce reference results through adapters;",
+      "predecessor_verdict": "FAIL_SEMANTIC_GAP"
+    },
+    {
+      "criterion": 4,
+      "text": "output serialization does not mutate physical state;",
+      "predecessor_verdict": "BLOCKED_MISSING_EVIDENCE"
+    }
+  ],
+  "provenance_recovery": {
+    "status": "EXHAUSTED_NO_PREEXISTING_GENERIC_IMPLEMENTATION_FOUND",
+    "scope": "Complete live branch inventory plus inspection of the closest application-host and RossFast-host candidates.",
+    "findings": [
+      "No separate generic readswap/file-input-to-typed-request implementation branch was found.",
+      "No separate generic swapoutput/swap_csv_output read-only serializer implementation branch was found.",
+      "work/f-app01-minimal-soil-water-application-host is a model-selection/application-host resolver and does not execute or adapt a legacy file-driven scientific run.",
+      "work/f-ross12-production-host-explicit-selection correctly fails closed on a missing generic host prerequisite and is RossFast-specific; it is not project-wide M1 IO authority.",
+      "RossFast config-file adaptation is explicitly excluded as a substitute for project-wide M1.",
+      "Reference preservation/equivalence evidence does not prove the required adapter topology for criterion 3.",
+      "Transactional publication identity evidence does not prove read-only semantics of an actual generic output serializer for criterion 4."
+    ]
+  },
+  "minimal_input_adapter_contract": [
+    "Legacy file parsing, paths and file-unit semantics remain outside the typed runtime and kernel-facing interfaces.",
+    "At least one preserved legacy/reference file-driven run is converted by an adapter into the already-admitted typed computational request/boundary rather than introducing a second scientific execution path.",
+    "No new or changed legacy .swp grammar is introduced merely to close M1.",
+    "The legacy default route remains available and behaviorally preserved.",
+    "Conversion and validation failures fail closed before physical-state mutation.",
+    "The adapter owns translation only; it does not own solver science, retry policy, transaction acceptance or model-selection policy.",
+    "No physics, routing or time-integration semantics are changed."
+  ],
+  "minimal_output_serializer_contract": [
+    "The serializer consumes committed typed result/snapshot/readout state only.",
+    "The serializer has no authority to modify committed physical state.",
+    "Serialization must be independently qualified with before/after committed-state identity or an equivalent deterministic state-hash assertion.",
+    "The implementation must not require broad stable Public API design.",
+    "The implementation must not change physical output semantics merely to make the read-only proof convenient."
+  ],
+  "qualification_plan": [
+    "Criterion 3: run one preserved legacy/reference fixture through the adapter-backed typed route and compare the agreed reference observables/results using existing tolerances or exact preservation authority where applicable.",
+    "Criterion 3: assert no path, file-unit or parser object crosses the typed computational boundary.",
+    "Criterion 4: snapshot/hash committed physical state immediately before serialization and prove identity immediately after serialization.",
+    "Criterion 4: verify the serializer consumes only typed committed/readout data and does not call state-mutating runtime operations.",
+    "Re-run criteria 1, 2 or 5 only if implementation changes their relevant dependencies; otherwise inherit immutable evidence."
+  ],
+  "implementation_boundary": {
+    "production_change_permitted": true,
+    "production_change_required_only_for": ["criterion 3 generic adapter topology", "criterion 4 actual read-only serializer surface"],
+    "canonical_mutation_permitted_now": false,
+    "admission_requires_independent_qualification": true
+  },
+  "explicit_exclusions": [
+    "Energy Balance",
+    "RossFast scientific or domain expansion",
+    "F-ROSS12 as M1 substitute",
+    "broad stable Public API implementation",
+    "SW_SOLVE reinterpretation",
+    "new physics",
+    "automatic backend fallback",
+    "silent model selection",
+    "legacy default-route replacement",
+    "legacy .swp grammar redesign",
+    "production refactoring unrelated to criteria 3 and 4"
+  ],
+  "mutations": [
+    "Created this separate M1 criteria-3/4 decision branch from live canonical.",
+    "Added this governance/design checkpoint only.",
+    "No production source, reference source, physics, IO grammar, runtime policy or canonical branch was modified."
+  ],
+  "verdict": "IMPLEMENTATION_DECISION_SURFACE_OPEN_FAIL_CLOSED_BEFORE_SOURCE_MUTATION",
+  "next_permitted_action": "Inspect the exact current legacy readswap/output surfaces and current typed request/result contracts, then implement the smallest adapter and serializer seams satisfying the frozen contracts. Persist an implementation checkpoint before starting independent qualification."
+}
