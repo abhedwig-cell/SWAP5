@@ -1,0 +1,23 @@
+name: M1 criterion 4 output serialization owner qualification
+
+on:
+  push:
+    branches:
+      - work/m1-legacy-file-adapter-output-serialization
+    paths:
+      - 'src/adapter/mod_canonical_result_text_adapter.f90'
+      - 'tests/m1/test_m1_c4_canonical_result_text_adapter.f90'
+      - 'tests/m1/run_m1_c4_output_serialization_gate.sh'
+      - '.github/workflows/m1-c4-output-serialization-owner.yml'
+
+jobs:
+  m1-c4-owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run bounded M1 criterion 4 owner gate
+        run: bash tests/m1/run_m1_c4_output_serialization_gate.sh
