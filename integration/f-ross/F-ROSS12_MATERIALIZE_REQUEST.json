@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.f_ross12_materialization_request.v1",
+  "workunit": "F-ROSS12",
+  "branch": "work/f-ross12-production-solver-selection",
+  "qualified_candidate_head": "4afa123ababec2bcae400287aa9d08c770d941d9",
+  "canonical_base": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+  "candidate_patch_entrypoint": "tests/ross/_apply_ross12_serialized_production_candidate.py",
+  "qualified_production_wiring_run": 35133331586,
+  "qualified_output_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2",
+  "full_fci_run": 35133331583,
+  "verdict": "QUALIFIED_FOR_EXACT_MATERIALIZATION",
+  "allowed_production_mutation": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "forbidden": [
+    "RossFast kernel changes",
+    "Reference Richards solver changes",
+    "soil_water_solver_t ABI changes",
+    "transaction controller changes",
+    "legacy input grammar changes",
+    "automatic Reference fallback after explicit RossFast selection"
+  ]
+}
