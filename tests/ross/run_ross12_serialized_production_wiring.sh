@@ -14,6 +14,17 @@ trap restore EXIT
 fail() { echo "F_ROSS12_PRODUCTION_GATE_FAIL $*" >&2; exit 1; }
 
 python3 tests/ross/_apply_ross12_serialized_production_wiring_patch.py
+python3 - <<'PY'
+from pathlib import Path
+path = Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
+text = path.read_text()
+old = """    call bind_b110_serialized_legacy_context(request, context_ok)\n    if (.not. context_ok) return\n"""
+new = """    if (self%soil_water_selection%uses_rossfast()) then\n      context_ok = .true.\n    else\n      call bind_b110_serialized_legacy_context(request, context_ok)\n    end if\n    if (.not. context_ok) return\n"""
+if text.count(old) != 1:
+    raise SystemExit(f'ROSS12_LEGACY_CONTEXT_BYPASS_ANCHOR_COUNT={text.count(old)}')
+path.write_text(text.replace(old, new, 1))
+print('ROSS12_LEGACY_CONTEXT_BYPASS_PATCH_COUNT=1')
+PY
 
 git diff --check -- "$BACKEND" tests/ross/test_ross12_serialized_production_wiring.f90 || fail 'diff check'
 changed="$(git diff --name-only -- src | sort)"
@@ -21,6 +32,7 @@ changed="$(git diff --name-only -- src | sort)"
 grep -Fq 'rossfast-model-certificate' "$BACKEND" || fail 'RossFast certificate route missing'
 grep -Fq 'fmr_serialized_rossfast_preflight' "$BACKEND" || fail 'RossFast production preflight missing'
 grep -Fq 'material%ksatfit_cm_per_day' "$BACKEND" || fail 'Ksatfit constitutive identity guard missing'
+grep -Fq 'if (self%soil_water_selection%uses_rossfast()) then' "$BACKEND" || fail 'RossFast legacy-context bypass missing'
 echo 'F_ROSS12_TEMPORARY_PRODUCTION_PATCH_STATIC=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
