@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "RECONCILE_POST_FAPP03_AUTHORITY_RECOVERY",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "branch_precheckpoint_head": "c131c0ff7fe5e6ff93c9af560dd1a0b91d7f72ca",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "latest_relevant_delta": "F-AR01 evidence/documentation reconciliation only; no production or B1 semantic change"
+  },
+  "criterion": {
+    "number": 3,
+    "normative_text": "legacy file runs still reproduce reference results through adapters;"
+  },
+  "closed_subsurfaces": {
+    "C4_output_serialization": "SEPARATELY_CANONICAL_ADMITTED",
+    "Hupsel_SWBOTB6": {
+      "status": "CLEARED_BY_F_APP02_F_VQ102_F_CI95",
+      "binding": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1"
+    }
+  },
+  "F_APP03": {
+    "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+    "checkpoint_commit": "af5d2e5a050461e9403b1b0ccb9b9f138a2627b5",
+    "verdict": "F_APP03_BLOCKED_MISSING_REPLAYABLE_A12_A13_SOURCE_AND_EXACT_HUPSEL_FIXTURE",
+    "recovered": {
+      "A21": "raw Hupsel daily meteorological parser/units/time semantics recovered with durable File Library source and qualification evidence",
+      "A22": "crop snapshot producer/consumer boundary recovered with durable qualification record",
+      "A12_A13": "historical qualification lineage and detailed semantic leads recovered, but exact source/artifact bytes are not currently replayable",
+      "F_AR01": "proves exact official distribution SHA was recently available, but persists no archive bytes or durable locator"
+    }
+  },
+  "refined_blocker": {
+    "old_description": "missing generic field-level Hupsel application-composition semantics",
+    "current_description": "historically qualified Hupsel SWETR=0/interception composition is known at a detailed lineage level, but exact replayable A12/A13 authority and exact raw official Hupsel swap.swp/283.met fixture bytes are not currently durably materialized",
+    "why_this_matters": "M1 criterion 3 requires a real legacy file run to reach the typed computational boundary through adapters while preserving reference results. Summary-only formulas or output oracles cannot establish that topology or authorize new production mapping.",
+    "classification": "C3_BLOCKED_MISSING_REPLAYABLE_HUPSEL_APPLICATION_COMPOSITION_AUTHORITY"
+  },
+  "already_preregistered_verification_surface": {
+    "authority": "F-VQ100",
+    "payload": [
+      "pre-state",
+      "parameter/numerical contract",
+      "top forcing",
+      "bottom forcing",
+      "drainage by level",
+      "SSDI node source",
+      "nodewise root extraction sink",
+      "interval",
+      "reference post-state/fluxes/diagnostics"
+    ],
+    "note": "F-VQ100 can become useful again after exact source/fixture and application-composition authority are rematerialized. It remains verification-only and does not itself prove file-adapter topology."
+  },
+  "remaining_process_surface": [
+    "A21 raw weather -> A12 interception/net precipitation",
+    "A21 weather + A22 crop snapshot -> A13 Hupsel SWETR=0 PMdirect potential evaporation/transpiration",
+    "qualified crop/root inputs -> admitted nodewise root extraction sink",
+    "legacy drainage configuration/dynamic response -> admitted typed drainage surface",
+    "legacy irrigation/SSDI composition -> typed source terms if active in the exact Hupsel fixture",
+    "activation rules for optional processes actually active in the exact Hupsel fixture",
+    "minimal legacy file parser/adapter topology after all scientific application composition above is admitted"
+  ],
+  "verdict": "M1_C3_NOT_CLOSED_REPLAYABLE_HUPSEL_APPLICATION_COMPOSITION_AUTHORITY_REQUIRED",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "mutations": [
+    "Added this reconciliation checkpoint only."
+  ],
+  "next_permitted_action": "Continue F-APP03/source-authority recovery, not M1 adapter implementation. Rematerialize exact A12/A13 source/artifacts and exact authority-pinned Hupsel fixture; verify provenance/hashes; preregister and independently qualify minimal SWETR=0 application composition against current canonical. Only after admission may M1-C3 implement the thin legacy file adapter and prove reference equivalence through adapter topology.",
+  "exclusions": [
+    "no direct M1 file adapter before application composition admission",
+    "no implementation from assistant memory or summary-only formulas",
+    "no SWETR=1 substitution",
+    "no output fitting",
+    "no new physics",
+    "no solver/timestep/tolerance change",
+    "no legacy default-route change",
+    "no broad public API or wholesale IO redesign",
+    "no whole-Hupsel or M1 criterion-3 closure claim"
+  ]
+}
