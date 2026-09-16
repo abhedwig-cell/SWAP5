@@ -48,9 +48,15 @@
     "historical_framework_vs_b1_11_outputs": "BYTE_IDENTICAL_FOR_ALL_4_PRESERVED_RESULT_FILES"
   },
   "asset_archive": {
-    "path": "tests/legacy_reference/extended_analytical/F-TB13_RECOVERED_ANALYTICAL_ASSETS.tar.gz",
+    "logical_name": "F-TB13_RECOVERED_ANALYTICAL_ASSETS.tar.gz",
     "sha256": "57a75c64e1b057223fbd32ac3051a2c56938209f19b86912d7236f4f1d5fc069",
     "bytes": 17122,
+    "carrier": {
+      "encoding": "base64",
+      "directory": "tests/legacy_reference/extended_analytical/asset_parts",
+      "ordered_part_count": 4,
+      "encoded_bytes": 22832
+    },
     "members": {
       "steady_state_water/run_benchmark.py": "76b3c210f909a70077aa2b634b751bc0a07c2b142ccb46f9f19c8a3856bc23c3",
       "steady_state_water/compare_documented.py": "51072e58f28831a97ee816a7ac5d84194163acc3f0532b838ce77d390612a4ed",
