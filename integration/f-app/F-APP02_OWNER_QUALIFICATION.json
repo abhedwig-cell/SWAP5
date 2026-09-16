@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "work_unit": "F-APP02",
+  "capability": "Legacy SWBOTB=6 zero-flux application binding",
+  "phase": "QUALIFY_OWNER",
+  "branch": "work/f-app02-legacy-swbotb6-zero-flux-binding",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5eb93542daf297d3aa89bee9552179387a7f2c68"
+  },
+  "qualified_candidate": {
+    "tested_head": "cd07b19ffb521af33138d750ad224360b35b4de2",
+    "production_path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+    "production_blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
+    "semantic_mapping": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1"
+  },
+  "owner_ci": {
+    "run_id": 35096856381,
+    "job_id": 104796243052,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "SUCCESS",
+    "evidence_artifact_id": 10446591958,
+    "diagnostics_artifact_id": 10446342967,
+    "markers": [
+      "FAPP02_BOUNDED_AUTHORITY=PASS",
+      "FAPP02_TYPED_TARGET_SEMANTICS_LOCK=PASS",
+      "FAPP02_SWBOTB6_TO_PRESCRIBED_QBOT_ZERO=PASS",
+      "FAPP02_EXACT_POSITIVE_ZERO_BITS=PASS",
+      "FAPP02_REPEAT_DETERMINISM=PASS",
+      "FAPP02_UNSUPPORTED_MODES_FAIL_CLOSED=PASS",
+      "FAPP02_OWNER_ORACLE=PASS",
+      "FAPP02_O0_O2_IDENTITY=PASS",
+      "FAPP02_OWNER_GATE=PASS"
+    ]
+  },
+  "qualified_claims": [
+    "SWAP 4.3.1 legacy selector 6 is represented explicitly as the already-qualified prescribed-qbot typed route with exact +0.0 cm d-1.",
+    "Unsupported legacy bottom-boundary modes remain fail-closed and are not silently translated.",
+    "The binding contains no parser, path, file-unit, solver, legacy-global or groundwater-physics authority.",
+    "The current transactional backend forwards typed bottom_mode and bottom_flux unchanged to the solver request.",
+    "The current Richards lower residual for the ordinary prescribed-flux route uses -qbot, so qbot=0 adds no separate physical term.",
+    "O0 and O2 owner-oracle output are identical."
+  ],
+  "nonclaims": [
+    "This does not add solver bottom mode 6.",
+    "This does not prove full Hupsel application composition or whole-trajectory equivalence.",
+    "This does not parse legacy input files.",
+    "This does not establish mappings for any SWBOTB value other than 6.",
+    "This does not close M1 criterion 3 by itself."
+  ],
+  "mutations": {
+    "production": ["Added one bounded application-level semantic binding module."],
+    "solver": "NONE",
+    "legacy_source": "NONE",
+    "physics": "NONE",
+    "tolerances": "NONE",
+    "canonical": "NONE"
+  },
+  "verdict": "PASS_OWNER_QUALIFICATION",
+  "next_permitted_action": "Independently qualify the exact production blob with a distinct oracle before canonical admission."
+}
