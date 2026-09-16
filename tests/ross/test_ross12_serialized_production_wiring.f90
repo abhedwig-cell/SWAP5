@@ -33,6 +33,24 @@ contains
     type(fmr_serialized_column_result_t) :: output
     type(fmr_serialized_physical_observation_t) :: observation
     call execute_case(.false., .false., output, observation)
+    write(*,'(A,L1)') 'ROSS12_DIAG_ADMITTED=', output%admitted
+    write(*,'(A,A)') 'ROSS12_DIAG_ADMISSION_STATUS=', trim(output%admission_status)
+    write(*,'(A,I0)') 'ROSS12_DIAG_KERNEL_STATUS=', output%kernel_status
+    write(*,'(A,I0)') 'ROSS12_DIAG_COMMIT_STATUS=', output%commit_status
+    write(*,'(A,L1)') 'ROSS12_DIAG_COMPLETED=', output%completed
+    write(*,'(A,L1)') 'ROSS12_DIAG_COMMITTED=', output%committed
+    write(*,'(A,I0)') 'ROSS12_DIAG_ACCEPTED_SUBSTEPS=', output%accepted_substeps
+    write(*,'(A,I0)') 'ROSS12_DIAG_FINAL_REVISION=', output%final_revision
+    write(*,'(A,L1)') 'ROSS12_DIAG_MASS_COMPLETE=', output%mass%complete
+    write(*,'(A,ES26.17E3)') 'ROSS12_DIAG_MASS_RESIDUAL=', output%mass%residual
+    write(*,'(A,A)') 'ROSS12_DIAG_SOLVER_ROUTE=', trim(output%solver_route)
+    write(*,'(A,L1)') 'ROSS12_DIAG_SOLVER_EXECUTED=', observation%solver_executed
+    write(*,'(A,I0)') 'ROSS12_DIAG_SOLVER_STATUS=', observation%solver_status
+    write(*,'(A,A)') 'ROSS12_DIAG_SOLVER_DIAGNOSTIC_ROUTE=', trim(observation%solver_diagnostics%route)
+    write(*,'(A,L1)') 'ROSS12_DIAG_CERTIFICATE_AVAILABLE=', observation%temporal_certificate_available
+    write(*,'(A,ES26.17E3)') 'ROSS12_DIAG_TEMPORAL_INDICATOR=', observation%temporal_normalized_indicator
+    write(*,'(A,A)') 'ROSS12_DIAG_TEMPORAL_ROUTE=', trim(observation%temporal_indicator_route)
+    write(*,'(A,A)') 'ROSS12_DIAG_TEMPORAL_UNAVAILABLE=', trim(observation%temporal_certificate_unavailable_reason)
     call require(output%completed .and. output%committed, 'B01 production transaction commits')
     call require(output%mass%complete, 'B01 production mass accounting complete')
     call require(abs(output%mass%residual) <= ROSSFAST_D3R_HARD_MASS_TOL_CM, 'B01 production hard mass gate')
