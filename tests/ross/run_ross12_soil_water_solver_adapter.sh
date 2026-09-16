@@ -7,6 +7,9 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 TX=src/transaction/mod_transaction_reference.f90
+STEPDIR=src/solver/mod_soil_water_accepted_step_direction_contract.f90
+TRAJSENS=src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+TRAJPUB=src/transaction/mod_accepted_trajectory_directional_publication.f90
 CONTRACTS=src/runtime/mod_canonical_contracts.f90
 SW=src/solver/mod_soil_water_solver_contract.f90
 REFBIND=src/solver/mod_reference_richards_state_binding.f90
@@ -29,6 +32,9 @@ for opt in o0 o2; do
   [[ "$opt" == o2 ]] && flag=-O2
   m="$BUILD/$opt"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TX" -o "$m/tx.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$STEPDIR" -o "$m/stepdir.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TRAJSENS" -o "$m/trajsens.o"
+  gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TRAJPUB" -o "$m/trajpub.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$CONTRACTS" -o "$m/contracts.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$SW" -o "$m/sw.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$REFBIND" -o "$m/refbind.o"
@@ -38,8 +44,8 @@ for opt in o0 o2; do
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$PROVIDER" -o "$m/provider.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$ADAPTER" -o "$m/adapter.o"
   gfortran "${WARN[@]}" "$flag" -std=f2008 -J "$m" -I "$m" -c "$TEST" -o "$m/test.o"
-  gfortran -fopenmp "$m/tx.o" "$m/contracts.o" "$m/sw.o" "$m/refbind.o" "$m/policy.o" "$m/binding.o" \
-    "$m/kernel.o" "$m/provider.o" "$m/adapter.o" "$m/test.o" -o "$m/test"
+  gfortran -fopenmp "$m/tx.o" "$m/stepdir.o" "$m/trajsens.o" "$m/trajpub.o" "$m/contracts.o" "$m/sw.o" \
+    "$m/refbind.o" "$m/policy.o" "$m/binding.o" "$m/kernel.o" "$m/provider.o" "$m/adapter.o" "$m/test.o" -o "$m/test"
   "$m/test" assets/rossfast > "$m/output.txt"
   grep -Fq 'ROSS12_SOIL_WATER_SOLVER_ADAPTER PASS' "$m/output.txt"
 done
