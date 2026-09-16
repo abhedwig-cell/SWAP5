@@ -3,7 +3,7 @@ name: Documentation
 on:
   push:
     branches:
-      - main
+      - publication/status-a-review-20260916
     paths:
       - 'docs/**'
       - 'mkdocs.yml'
@@ -52,18 +52,18 @@ jobs:
         run: mkdocs build --strict --site-dir site
 
       - name: Configure GitHub Pages
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/publication/status-a-review-20260916'
         uses: actions/configure-pages@v6
 
       - name: Upload GitHub Pages artifact
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/publication/status-a-review-20260916'
         uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
   deploy:
     name: Deploy GitHub Pages
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/publication/status-a-review-20260916'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -76,18 +76,18 @@ jobs:
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy documentation
+      - name: Deploy frozen review documentation
         id: deployment
         uses: actions/deploy-pages@v5
 
   verify:
     name: Verify published site
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/publication/status-a-review-20260916'
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out publication revision
         uses: actions/checkout@v7
 
-      - name: Verify live documentation
+      - name: Verify live frozen review documentation
         run: python tools/docs/verify_publication.py "${{ needs.deploy.outputs.page_url }}"
