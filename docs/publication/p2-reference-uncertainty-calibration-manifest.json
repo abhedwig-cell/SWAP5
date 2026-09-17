@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.publication.p2-reference-uncertainty-calibration.v1",
+  "workunit": "PUB-P2E02",
+  "canonical_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
+  "purpose": "Generate a Reference-only numerical self-disagreement envelope before broad RossFast evaluation.",
+  "firewall": {
+    "rossfast_results_allowed_in_calibration": false,
+    "stage0_b01_rossfast_metrics_allowed_in_threshold_choice": false,
+    "performance_metrics_allowed_in_threshold_choice": false,
+    "posthoc_case_selection_allowed": false
+  },
+  "hard_validity_gates": [
+    "declared Reference route executes",
+    "finite physical state",
+    "hard mass requirement passes for coarse trajectory",
+    "hard mass requirement passes for refined trajectory",
+    "same physical parameters, grid, initial state, boundary type, forcing history and final time"
+  ],
+  "primary_self_disagreement_metrics": [
+    "U_h_inf",
+    "U_h_rms",
+    "U_theta_inf",
+    "U_theta_rms",
+    "U_storage"
+  ],
+  "calibration_construction": {
+    "coarse": "one Reference solver-seam trajectory over dt",
+    "refined": "two sequential Reference solver-seam trajectories over dt/2 + dt/2",
+    "comparison_time": "same final physical time T",
+    "spatial_grid_change": false,
+    "constitutive_change": false,
+    "forcing_change": false
+  },
+  "pilot": {
+    "case_id": "P2-U0-B01-HM101",
+    "role": "prove uncertainty extraction is executable; does not numerically freeze final thresholds",
+    "material": "B01",
+    "nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_head_cm": -101.0,
+    "outer_duration_day": 0.0016,
+    "coarse_schedule_day": [0.0016],
+    "refined_schedule_day": [0.0008, 0.0008],
+    "top_boundary": "prescribed flux 0.01*K(h0)",
+    "bottom_boundary": "prescribed flux -0.004*K(h0)"
+  },
+  "broad_calibration_domain": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "grid": "16 homogeneous cells x 10 cm",
+    "initial_state_axis": "predeclared effective saturation levels, exact values TO_BE_FROZEN before execution",
+    "forcing_axis": "predeclared prescribed-flux levels/sequences within E0, exact values TO_BE_FROZEN before execution"
+  },
+  "threshold_rule_status": "NOT_NUMERICALLY_FROZEN",
+  "threshold_candidate_family": "max(independent application-resolution floor, preregistered factor * robust Reference self-disagreement scale), with any stratification fixed before RossFast evaluation",
+  "forbidden_actions": [
+    "choose factor to make Stage0 RossFast B01 pass",
+    "copy GWSWEX 2 cm as a SWAP5 universal threshold",
+    "combine mass and state discrepancy into a compensating weighted score",
+    "slice material/state regimes after inspecting RossFast failures"
+  ],
+  "next_gate": "Implement and qualify the Reference-only B01 coarse-versus-two-half solver-seam pilot."
+}

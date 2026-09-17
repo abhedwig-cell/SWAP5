@@ -1,0 +1,24 @@
+name: PUB-P2E02 Reference uncertainty
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/publication/test_pub_p2e02_reference_uncertainty_pilot.f90'
+      - 'tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh'
+      - '.github/workflows/pub-p2e02-reference-uncertainty.yml'
+      - 'src/**'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+  workflow_dispatch:
+
+jobs:
+  reference-uncertainty-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run Reference-only temporal refinement pilot
+        run: bash tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh
