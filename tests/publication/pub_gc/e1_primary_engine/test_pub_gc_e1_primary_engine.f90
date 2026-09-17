@@ -293,16 +293,18 @@ contains
     type(kernel_diagnostics_t), intent(in) :: diagnostics
     class(transaction_state_t), allocatable, intent(in) :: snapshot
     logical, intent(in) :: synthetic_origin
-    integer(int64) :: head_digest, water_digest
+    integer(int64) :: head_digest, water_digest, accepted_lineage
     logical :: digest_ok
 
     call state_digests(snapshot, head_digest, water_digest, digest_ok)
     call require(digest_ok, 'state digest')
+    accepted_lineage = origin_lineage
+    if (synthetic_origin) accepted_lineage = 831000_int64 + int(sequence_id*10+candidate_index, int64)
     write(*,'(a,"|S",i0,"|",a,"|",i0,"|",a,"|",es26.17e3,"|",es26.17e3,"|",es26.17e3,"|",i0,"|",i0,"|",es26.17e3,"|",i0,"|",es26.17e3,"|",l1,"|",i0,"|",i0,"|",i0,"|",es26.17e3,"|DISCARDED")') &
          'PUB_GC_E1_ENGINE_ROW', sequence_id, trim(policy), candidate_index, candidate_label, prescribed_head, &
          result%bottom_outward_exchange_native, result%terminal_bottom_outward_flux_native, head_digest, water_digest, &
          result%mass%residual, diagnostics%retries, diagnostics%max_temporal_indicator, synthetic_origin, &
-         merge(source_index,0,synthetic_origin), origin_lineage, 0_int64, t0
+         merge(source_index,0,synthetic_origin), accepted_lineage, 0_int64, t0
     write(*,'(a,"|S",i0,"|",a,"|",i0,"|",es26.17e3,"|",es26.17e3)') &
          'PUB_GC_E1_ENGINE_GW_ROW', sequence_id, trim(policy), candidate_index, gw_head_m, gw_residual_m
   end subroutine emit_row
