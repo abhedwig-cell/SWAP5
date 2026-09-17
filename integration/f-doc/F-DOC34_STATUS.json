@@ -3,12 +3,14 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC34",
   "title": "Status-A reference preservation technical reference",
-  "phase": "VERIFY",
-  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+  "phase": "CLOSE",
+  "decision": "DOCUMENTATION_ADMITTED_AND_CLOSED",
   "branch": "work/f-doc34-reference-preservation-technical-reference",
   "canonical_start": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+  "admitted_canonical": "910fbc1c9cab2b11094e6a45606dfcea85621f4d",
   "content_postimage": "3c64d5ef035f1bd089bbf93448b0189686c9ad97",
   "verified_content_head": "573d3a6a0ff347b087b8f51adef05781fbcf215b",
+  "verified_exact_status_head": "6b9518db3967ef5e1499630b6bd0e3eeae6ad4ec",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
   "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
@@ -36,23 +38,6 @@
     "stale_literal_path_finding": "Current reviewer-facing traceability rendered historical suite labels such as tests/run-baseline.sh as literal repository paths although those files are absent from the frozen scientific and Status-A trees. F-DOC34 corrects current navigation without modifying the historical release-readiness evidence record.",
     "fgc29_name_ambiguity": "Current documentation now distinguishes the release-readiness umbrella same-tree preservation attribution from integration/f-gc/F-GC29_* response-sensitivity records."
   },
-  "claim_ceiling": {
-    "allowed": [
-      "explain immutable qualification evidence versus moving/current-source preservation replay",
-      "explain exact frozen Status-A/scientific commit and tree binding",
-      "explain F-SI33 Full Richards reference preservation and F-TB11 stable preservation roles",
-      "state that O0/O2/reference checksum and closure evidence is bounded to the qualified fixtures and denominator named by its authority",
-      "prospectively replace stale literal test-path navigation in current documentation with concrete authority paths"
-    ],
-    "forbidden": [
-      "claim universal bitwise equivalence for every possible SWAP input",
-      "claim that all historical SWAP options are covered by Status-A preservation",
-      "treat a successful regression suite as proof for future changed dependency surfaces",
-      "promote RossFast or other post-Status-A work into the frozen denominator",
-      "rewrite historical qualification evidence as if stale narrative labels never existed",
-      "change production, reference, tests, physics or numerical semantics"
-    ]
-  },
   "scope_diff": [
     "docs/capabilities/index.md",
     "docs/capabilities/reference-preservation.md",
@@ -70,15 +55,21 @@
   },
   "verification": {
     "pull_request": 201,
-    "content_head": "573d3a6a0ff347b087b8f51adef05781fbcf215b",
     "content_workflow_run": 35283720886,
     "content_workflow_job": 105411255464,
-    "repository_documentation_checks": "PASS",
-    "strict_mkdocs_build": "PASS",
-    "workflow_conclusion": "success",
-    "status_only_exact_head_rerun": "PENDING"
+    "content_repository_documentation_checks": "PASS",
+    "content_strict_mkdocs_build": "PASS",
+    "content_workflow_conclusion": "success",
+    "exact_head_workflow_run": 35283783193,
+    "exact_head_workflow_job": 105411458682,
+    "exact_head_repository_documentation_checks": "PASS",
+    "exact_head_strict_mkdocs_build": "PASS",
+    "exact_head_workflow_conclusion": "success",
+    "pr_mergeable_at_admission": true,
+    "canonical_unchanged_before_admission": true,
+    "merge_method": "squash"
   },
   "production_reference_test_delta": false,
-  "verdict": "CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE",
-  "next_permitted_action": "REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_PR_MERGEABILITY"
+  "verdict": "CLOSED_ADMITTED_DOCUMENTATION_ONLY",
+  "next_permitted_action": "NONE_FDOC34_CLOSED"
 }
