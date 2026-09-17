@@ -3,10 +3,11 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC33",
   "title": "B1.10 cofgen full internal alias and model activation provenance",
-  "phase": "ACQUIRE",
-  "decision": "SOURCE_BOUND_ALIAS_AND_ACTIVATION_CEILING_ACQUIRED",
+  "phase": "VERIFY",
+  "decision": "DOCUMENTATION_UPDATE_COMPLETE_READY_FOR_GATE",
   "branch": "work/f-doc33-cofgen-full-alias-activation-provenance",
   "canonical_start": "0d493886a53626bd32bf9247669d5a709391849e",
+  "content_postimage": "4086a3cc8374b86a51a8388178e7b80d8f0db04a",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
   "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
@@ -72,11 +73,19 @@
       "change production, reference, tests, physics or numerical semantics"
     ]
   },
+  "scope_check": {
+    "changed_file_count": 3,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "mkdocs_navigation_changed": false
+  },
   "mutations": [
+    "docs/science/soil-hydraulic-parameter-provenance.md",
     "integration/f-doc/F-DOC33_AUTHORITY_MATRIX.md",
     "integration/f-doc/F-DOC33_STATUS.json"
   ],
   "production_reference_test_delta": false,
-  "verdict": "ACQUIRE_PASS_READY_FOR_DOCUMENTATION_UPDATE",
-  "next_permitted_action": "UPDATE_DOCS_WITH_EXACT_ALIAS_AND_MODEL_ACTIVATION_REFINEMENT_ONLY"
+  "verdict": "READY_FOR_VERIFY",
+  "next_permitted_action": "OPEN_DOCUMENTATION_PR_AND_REQUIRE_REPOSITORY_DOC_CHECKS_PLUS_STRICT_MKDOCS"
 }
