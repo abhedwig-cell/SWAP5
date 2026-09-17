@@ -14,9 +14,10 @@ python3 tests/qualification/fvq89/fvq89_make_reference_stubs.py   tests/fsi/fsi0
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   "$BUILD/reference_stubs.f90"
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
-  src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/solver/mod_process_hydraulic_view.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_reference_richards_workspace.f90
