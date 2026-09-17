@@ -219,6 +219,26 @@ contains
        route = 'incoming-direction-shape-invalid'
        return
     end if
+    if (allocated(direction_request%incoming_source_direction)) then
+       if (size(direction_request%incoming_source_direction) /= n) then
+          route = 'source-direction-shape-invalid'
+          return
+       end if
+       if (any(.not. ieee_is_finite(direction_request%incoming_source_direction))) then
+          route = 'source-direction-nonfinite'
+          return
+       end if
+    end if
+    if (allocated(direction_request%incoming_sink_direction)) then
+       if (size(direction_request%incoming_sink_direction) /= n) then
+          route = 'sink-direction-shape-invalid'
+          return
+       end if
+       if (any(.not. ieee_is_finite(direction_request%incoming_sink_direction))) then
+          route = 'sink-direction-nonfinite'
+          return
+       end if
+    end if
     if (any(.not. ieee_is_finite(direction_request%incoming_pressure_head)) .or. &
         any(.not. ieee_is_finite(direction_request%incoming_water_content)) .or. &
         .not. ieee_is_finite(direction_request%incoming_ponding_depth) .or. &
@@ -258,9 +278,17 @@ contains
     character(len=64) :: constitutive_direction_route, top_direction_route, result_route
     real(real64) :: bottom_distance, bdir, grad_bottom
     real(real64) :: top_flux_direction, outgoing_ponding_direction
+    real(real64), allocatable :: source_direction(:), sink_direction(:)
 
     n = request%parameters%active_nodes
     direction_result%control_coordinate = direction_request%control_coordinate
+    allocate(source_direction(n), sink_direction(n))
+    source_direction = 0.0_real64
+    sink_direction = 0.0_real64
+    if (allocated(direction_request%incoming_source_direction)) &
+         source_direction = direction_request%incoming_source_direction
+    if (allocated(direction_request%incoming_sink_direction)) &
+         sink_direction = direction_request%incoming_sink_direction
 
     ! Re-evaluate the immutable constitutive value provider at the step base
     ! state for the exact frozen K values used by swkimpl=0. Its historical
@@ -351,20 +379,26 @@ contains
              solve_result%candidate_state%pressure_head(i)) / request%parameters%node_distance(i) + 1.0_real64
     end do
 
-    ! Assemble B_k*s_k + r_p at fixed accepted h. For the admitted dynamic
-    ! surface-flux subset dqtop is a direct previous-ponding contribution; the
-    ! capacity-limited branch is intentionally rejected before reaching here.
+    ! Assemble B_k*s_k + r_p at fixed accepted h. HeadCalc's residual owns
+    ! external source/sink signs as +sink-source, so their direct directions
+    ! enter with exactly the same signs here. Absent optional direction arrays
+    ! are materialized as exact zero above, preserving all earlier callers.
+    ! For the admitted dynamic surface-flux subset dqtop is a direct
+    ! previous-ponding contribution; the capacity-limited branch is rejected.
     ref_ws%richards%band_rhs(1:n) = 0.0_real64
     bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
+           sink_direction(1) - source_direction(1) + &
            ref_ws%richards%vertical_flux(2) * ref_ws%richards%head_gradient(2) + top_flux_direction
     ref_ws%richards%band_rhs(1) = -bdir
     do i = 2, n-1
-       bdir = -direction_request%incoming_water_content(i) * request%parameters%dz(i) / request%step_duration - &
+       bdir = -direction_request%incoming_water_content(i) * request%parameters%dz(i) / request%step_duration + &
+              sink_direction(i) - source_direction(i) - &
               ref_ws%richards%vertical_flux(i) * ref_ws%richards%head_gradient(i) + &
               ref_ws%richards%vertical_flux(i+1) * ref_ws%richards%head_gradient(i+1)
        ref_ws%richards%band_rhs(i) = -bdir
     end do
-    bdir = -direction_request%incoming_water_content(n) * request%parameters%dz(n) / request%step_duration - &
+    bdir = -direction_request%incoming_water_content(n) * request%parameters%dz(n) / request%step_duration + &
+           sink_direction(n) - source_direction(n) - &
            ref_ws%richards%vertical_flux(n) * ref_ws%richards%head_gradient(n)
 
     select case (request%boundary%bottom_mode)
@@ -426,12 +460,13 @@ contains
     case (SW_STEP_CONTROL_BOTTOM_FLUX)
        direction_result%bottom_flux_derivative = direction_request%direct_control_derivative
     case (SW_STEP_CONTROL_BOTTOM_HEAD)
-       ! Exact derivative of materialize_prescribed_head_bottom_flux(): qtop plus
-       ! accepted-minus-base storage; source/sink/root terms are state-independent
-       ! or absent on this qualified route.
+       ! Exact derivative of materialize_prescribed_head_bottom_flux():
+       ! qtop + accepted-minus-base storage + sink - source. Root terms remain
+       ! excluded by direction_route_eligible().
        direction_result%bottom_flux_derivative = top_flux_direction + &
             (sum(direction_result%outgoing_water_content * request%parameters%dz) - &
-             sum(direction_request%incoming_water_content * request%parameters%dz)) / request%step_duration
+             sum(direction_request%incoming_water_content * request%parameters%dz)) / request%step_duration + &
+            sum(sink_direction) - sum(source_direction)
     end select
 
     if (.not. ieee_is_finite(direction_result%top_flux_derivative) .or. &
