@@ -51,6 +51,8 @@ program test_pub_gc_e1_primary_engine
   type(canonical_numerical_config_t) :: config
   type(kernel_committed_state_t) :: origin
   type(kernel_checkpoint_t) :: origin_checkpoint
+  type(pub_gc_gw_a_service_t) :: gw
+  type(groundwater_exchange_checkpoint_t) :: gw_checkpoint
   class(transaction_state_t), allocatable :: origin_before, origin_after
   type(kernel_result_t) :: same_result(2,4), hist_result(2,4)
   type(kernel_diagnostics_t) :: same_diag(2,4), hist_diag(2,4)
@@ -94,6 +96,8 @@ program test_pub_gc_e1_primary_engine
   call require(available, 'origin snapshot')
   call fmr_capture_checkpoint(origin, origin_checkpoint, ok)
   call require(ok .and. origin_checkpoint%ready(), 'origin checkpoint')
+
+  call initialize_gw_a_once()
 
   do seq = 1, 2
     do idx = 1, 4
@@ -149,6 +153,8 @@ program test_pub_gc_e1_primary_engine
   write(*,'(a,es26.17e3)') 'PUB_GC_E1_ENGINE_DELTA_GW_RESIDUAL_A_AFTER_B_VS_C=', delta_gw_residual_hist_a
   write(*,'(a)') 'PUB_GC_E1_ENGINE_SAME_ORIGIN_IDENTITY=PASS'
   write(*,'(a)') 'PUB_GC_E1_ENGINE_ACCEPTED_ORIGIN_UNCHANGED=PASS'
+  call require(gw_checkpoint%ready(), 'GW-A checkpoint remains reusable')
+  call require(gw%current_revision() == 0_int64, 'GW-A shared checkpoint revision unchanged')
   write(*,'(a)') 'PUB_GC_E1_ENGINE_GW_A_SAME_CHECKPOINT_NO_COMMIT=PASS'
   write(*,'(a)') 'PUB_GC_E1_ENGINE_HISTORY_DIAG_PRODUCTION_VALID=false'
   write(*,'(a)') 'PUB_GC_E1_PRIMARY_ENGINE_ORACLE=PASS'
@@ -233,23 +239,18 @@ contains
     type(kernel_result_t), intent(in) :: swap_result
     real(real64), intent(in) :: prescribed_head_cm, base_head_cm
     real(real64), intent(out) :: gw_head_m, residual_m
-    type(pub_gc_gw_a_service_t) :: gw
-    type(groundwater_exchange_checkpoint_t) :: checkpoint
     type(groundwater_exchange_candidate_t) :: candidate
     type(groundwater_exchange_trial_result_t) :: trial
     type(groundwater_coupling_window_t) :: window
     real(real64) :: q_swap_m, q_gw_mps, prescribed_relative_m, expected_head_m
     integer :: status
 
-    call gw%initialize(gw_service_id, gw_lineage_id, 0.0_real64, t0, gw_area_m2, gw_sy, 0.0_real64, 0.0_real64, status)
-    call require(status == GW_EXCHANGE_OK .and. gw%is_configured(), 'GW-A initialize')
-    call groundwater_capture_checkpoint(gw, checkpoint, status)
-    call require(status == GW_EXCHANGE_OK .and. checkpoint%ready(), 'GW-A checkpoint')
+    call require(gw%is_configured() .and. gw_checkpoint%ready(), 'GW-A frozen accepted checkpoint')
     window%t0 = t0
     window%t1 = t1
     q_swap_m = swap_result%bottom_outward_exchange_native * 0.01_real64
     q_gw_mps = -q_swap_m / ((t1-t0)*day_to_s)
-    call groundwater_trial_from_checkpoint(gw, checkpoint, window, q_gw_mps, candidate, trial, status)
+    call groundwater_trial_from_checkpoint(gw, gw_checkpoint, window, q_gw_mps, candidate, trial, status)
     call require(status == GW_EXCHANGE_OK .and. candidate%ready(), 'GW-A trial')
     gw_head_m = trial%h_groundwater_m
     expected_head_m = q_swap_m / gw_sy
@@ -262,6 +263,16 @@ contains
     call require(close64(gw%accepted_time_day(), t0), 'GW-A accepted time unchanged')
     call require(gw%current_revision() == 0_int64, 'GW-A revision unchanged')
   end subroutine evaluate_gw_same_checkpoint
+
+  subroutine initialize_gw_a_once()
+    integer :: status
+    call gw%initialize(gw_service_id, gw_lineage_id, 0.0_real64, t0, gw_area_m2, gw_sy, &
+         0.0_real64, 0.0_real64, status)
+    call require(status == GW_EXCHANGE_OK .and. gw%is_configured(), 'GW-A initialize once')
+    call groundwater_capture_checkpoint(gw, gw_checkpoint, status)
+    call require(status == GW_EXCHANGE_OK .and. gw_checkpoint%ready(), 'GW-A capture once')
+    call require(gw_checkpoint%origin_revision() == 0_int64, 'GW-A origin revision zero')
+  end subroutine initialize_gw_a_once
 
   subroutine require_result_state_identity(ra, sa, rb, sb, label)
     type(kernel_result_t), intent(in) :: ra, rb
@@ -287,10 +298,11 @@ contains
 
     call state_digests(snapshot, head_digest, water_digest, digest_ok)
     call require(digest_ok, 'state digest')
-    write(*,'(a,"|S",i0,"|",a,"|",i0,"|",a,"|",es26.17e3,"|",es26.17e3,"|",es26.17e3,"|",i0,"|",i0,"|",es26.17e3,"|",i0,"|",i0)') &
+    write(*,'(a,"|S",i0,"|",a,"|",i0,"|",a,"|",es26.17e3,"|",es26.17e3,"|",es26.17e3,"|",i0,"|",i0,"|",es26.17e3,"|",i0,"|",es26.17e3,"|",l1,"|",i0,"|",i0,"|",i0,"|",es26.17e3,"|DISCARDED")') &
          'PUB_GC_E1_ENGINE_ROW', sequence_id, trim(policy), candidate_index, candidate_label, prescribed_head, &
          result%bottom_outward_exchange_native, result%terminal_bottom_outward_flux_native, head_digest, water_digest, &
-         result%mass%residual, diagnostics%retries, merge(source_index,0,synthetic_origin)
+         result%mass%residual, diagnostics%retries, diagnostics%max_temporal_indicator, synthetic_origin, &
+         merge(source_index,0,synthetic_origin), origin_lineage, 0_int64, t0
     write(*,'(a,"|S",i0,"|",a,"|",i0,"|",es26.17e3,"|",es26.17e3)') &
          'PUB_GC_E1_ENGINE_GW_ROW', sequence_id, trim(policy), candidate_index, gw_head_m, gw_residual_m
   end subroutine emit_row
@@ -450,14 +462,14 @@ contains
     class(transaction_state_t), allocatable, intent(in) :: a,b
     integer :: k
     equal=.false.
-    if(.not.allocated(a).or..not.allocated(b)) return
+    if(.not.allocated(a).or. .not.allocated(b)) return
     select type(pa=>a)
     class is(fmr_b110_physical_state_t)
       select type(pb=>b)
       class is(fmr_b110_physical_state_t)
         if(pa%active_nodes/=pb%active_nodes) return
-        if(.not.allocated(pa%pressure_head).or..not.allocated(pb%pressure_head)) return
-        if(.not.allocated(pa%water_content).or..not.allocated(pb%water_content)) return
+        if(.not.allocated(pa%pressure_head).or. .not.allocated(pb%pressure_head)) return
+        if(.not.allocated(pa%water_content).or. .not.allocated(pb%water_content)) return
         if(size(pa%pressure_head)/=size(pb%pressure_head).or.size(pa%water_content)/=size(pb%water_content)) return
         do k=1,pa%active_nodes
           if(.not.same_bits(pa%pressure_head(k),pb%pressure_head(k))) return
