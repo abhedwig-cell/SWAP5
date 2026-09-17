@@ -253,15 +253,7 @@ program test_pub_me_d4_speculative_restart
        accepted%current_lineage_id(),accepted%current_revision(),accepted_time,accepted%time_is_bound(), &
        candidate_physical,bad_snapshot,reconstructed,status)
 
-  if(.not.reconstructed .or. status/=KERNEL_PERSISTENCE_OK) then
-    write(*,'(A)') 'PUB_ME_D4_FAULT_ARTIFACT_RECONSTRUCTED=NO'
-    write(*,'(A)') 'PUB_ME_D4_CLASSIFICATION=STRUCTURAL_PREVENTION'
-    write(*,'(A)') 'PUB_ME_D4_SPECULATIVE_RESTART_EXPERIMENT=PASS'
-    stop
-  end if
-  write(*,'(A)') 'PUB_ME_D4_FAULT_ARTIFACT_RECONSTRUCTED=YES'
-
-  ! The originating candidate is explicitly rejected/rolled back after artifact creation.
+  ! The originating candidate is explicitly rejected/rolled back after the persistence attempt.
   call executor%rollback_candidate(speculative,speculative_diag)
   call assert_true(.not.speculative%ready(),'speculative candidate rolled back')
   call assert_true(speculative_diag%candidate_rollbacks==1,'candidate rollback recorded')
@@ -271,6 +263,14 @@ program test_pub_me_d4_speculative_restart
   call accepted%current_time(accepted_time,time_ok)
   call assert_true(time_ok .and. same_real(accepted_time,0.0_real64),'accepted time unchanged after rollback')
   write(*,'(A)') 'PUB_ME_D4_ORIGINATING_TRIAL_ROLLBACK=PASS'
+
+  if(.not.reconstructed .or. status/=KERNEL_PERSISTENCE_OK) then
+    write(*,'(A)') 'PUB_ME_D4_FAULT_ARTIFACT_RECONSTRUCTED=NO'
+    write(*,'(A)') 'PUB_ME_D4_CLASSIFICATION=STRUCTURAL_PREVENTION'
+    write(*,'(A)') 'PUB_ME_D4_SPECULATIVE_RESTART_EXPERIMENT=PASS'
+    stop
+  end if
+  write(*,'(A)') 'PUB_ME_D4_FAULT_ARTIFACT_RECONSTRUCTED=YES'
 
   ! Restore the faulty artifact. If this is refused, D4 is structurally prevented.
   call restore_kernel_committed_state(bad_snapshot,LAYOUT,bad_restored,restored,status,KERNEL_PERSISTENCE_SCHEMA_VERSION)
