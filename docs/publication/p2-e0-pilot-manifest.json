@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.publication.p2-e0-pilot.v1",
+  "workunit": "PUB-P2E01",
+  "publication_class": "PUB_P2_RESULT",
+  "canonical_base": "40752b92e50b5000ac53892421336520fc62e518",
+  "purpose": "Validate scientifically comparable paired extraction before broad E0 solver-admissibility sampling.",
+  "scientific_admissibility_claim_allowed": false,
+  "case": {
+    "case_id": "P2-E0-PILOT-B01-HM101",
+    "material_id": "B01",
+    "active_nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_state": {
+      "pressure_head_cm_uniform": -101.0,
+      "water_content_rule": "derive from the same admitted B01 hydraulic relation used by the production typed-state initializer"
+    },
+    "top_boundary": {
+      "type": "PRESCRIBED_FLUX",
+      "flux_rule": "0.01 * K(h0)",
+      "head_metadata_cm": -101.0
+    },
+    "bottom_boundary": {
+      "type": "CURRENT_ADMITTED_PRESCRIBED_FLUX_MODE",
+      "flux_rule": "-0.004 * K(h0)"
+    },
+    "inactive_processes": [
+      "root_extraction",
+      "distributed_source_sink",
+      "drainage_response",
+      "macropore",
+      "snow",
+      "frost",
+      "soil_temperature",
+      "hysteresis",
+      "tabulated_hydraulics",
+      "elasticity"
+    ],
+    "requested_horizon": "ROSSFAST_D3R_OUTER_HORIZON_DAY"
+  },
+  "paired_routes": [
+    {
+      "route_id": "REFERENCE",
+      "model_selection": "REFERENCE_RICHARDS",
+      "fallback_allowed": false
+    },
+    {
+      "route_id": "ALTERNATIVE",
+      "model_selection": "ROSSFAST_D3R",
+      "fallback_allowed": false
+    }
+  ],
+  "required_common_observations": [
+    "accepted_endpoint_pressure_head_by_node",
+    "accepted_endpoint_water_content_by_node",
+    "start_profile_storage",
+    "accepted_endpoint_profile_storage",
+    "interval_integrated_top_transfer_common_sign",
+    "interval_integrated_bottom_transfer_common_sign",
+    "independent_mass_residual",
+    "accepted_interval_duration",
+    "commit_status",
+    "final_physical_revision",
+    "solver_route",
+    "retry_or_failure_diagnostics"
+  ],
+  "metrics": {
+    "D_h_inf": "max_i(abs(h_alt[i]-h_ref[i]))",
+    "D_h_rms": "sqrt(mean_i((h_alt[i]-h_ref[i])^2))",
+    "D_theta_inf": "max_i(abs(theta_alt[i]-theta_ref[i]))",
+    "D_theta_rms": "sqrt(mean_i((theta_alt[i]-theta_ref[i])^2))",
+    "D_storage_abs": "abs(storage_alt-storage_ref)",
+    "D_qtop_abs": "abs(Qtop_alt-Qtop_ref)",
+    "D_qbot_abs": "abs(Qbot_alt-Qbot_ref)"
+  },
+  "admissibility_tolerances": {
+    "head": "TO_BE_PREDECLARED_BEFORE_STAGE1",
+    "water_content": "TO_BE_PREDECLARED_BEFORE_STAGE1",
+    "storage": "TO_BE_PREDECLARED_BEFORE_STAGE1",
+    "integrated_flux": "TO_BE_PREDECLARED_BEFORE_STAGE1",
+    "mass": "USE_EXISTING_INDEPENDENT_HARD_ROUTE_REQUIREMENT_AFTER_EXACT_AUTHORITY_PIN"
+  },
+  "allowed_stage0_verdicts": [
+    "PAIRED_EXTRACTION_READY",
+    "OBSERVATION_CONTRACT_GAP",
+    "ROUTE_EXECUTION_GAP",
+    "IMPLEMENTATION_DEFECT_CANDIDATE"
+  ],
+  "forbidden_stage0_verdicts": [
+    "SCIENTIFICALLY_EQUIVALENT",
+    "SCIENTIFICALLY_INTERCHANGEABLE",
+    "FASTER_AND_PREFERABLE"
+  ],
+  "explicit_exclusions": [
+    "root_sink",
+    "distributed_source_sink",
+    "groundwater_head_boundary",
+    "energy_or_soil_temperature",
+    "heterogeneous_profile",
+    "node_count_change",
+    "cell_thickness_change",
+    "mixed_multiswap",
+    "automatic_solver_fallback",
+    "publication_speed_claim"
+  ]
+}
