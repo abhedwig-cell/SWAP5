@@ -1,0 +1,38 @@
+screening_execution_lock:
+  lock_id: PUB-GC-E1-SCREEN-0001-LOCK
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SCREENING_EXECUTION_LOCK
+  status: FROZEN_BEFORE_EXECUTION
+
+chronology:
+  preregistration_manifest_commit: 5c5d30273437bfc5082d2c91a75d25681cc8d15d
+  preregistration_manifest_blob: 06d781bdf946960b8d08bad913e97ae414d8c726
+  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
+  qualified_origin_harness_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  screening_branch: research/pub-gc-e1-screening
+  screening_head: 2fe8e6f0b08160ad88a0a080a7cb4feb50aae14d
+  execution_started: false
+
+immutable_screening_code:
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  screen_case_path: tests/publication/pub_gc/e1_screening/pub_gc_e1_screen_case.f90
+  screen_case_blob: d992e665c98817c26511631b504616983589c2c2
+  runner_path: tests/publication/pub_gc/e1_screening/run_pub_gc_e1_screening.sh
+  runner_blob: 8389384f549ad3a67d09d6482c45a2bcbea8a03c
+  workflow_path: .github/workflows/pub-gc-e1-screening.yml
+  workflow_blob: 951c03901c439338997a512653675385163de2f1
+  workflow_trigger: workflow_dispatch_only
+
+scope_guards:
+  production_src_modified: false
+  qualified_origin_harness_modified: false
+  qualified_gw_a_modified: false
+  primary_h1_evidence: false
+  primary_case_selection_allowed_after_screening: true
+  post_result_grid_extension_allowed_under_this_id: false
+
+permitted_next_action:
+  - dispatch exactly PUB-GC-E1-SCREEN-0001 on screening_head 2fe8e6f0b08160ad88a0a080a7cb4feb50aae14d
+  - preserve all 20 grid rows including failures
+  - apply the preregistered selection and tie-break rules unchanged
+  - record the screening result before freezing any primary E1 case
