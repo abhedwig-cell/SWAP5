@@ -15,7 +15,7 @@ program test_pub_gc_e1_origin_harness
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
+       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -158,22 +158,35 @@ contains
     class(transaction_state_t), allocatable, intent(out) :: snapshot
     character(len=*), intent(in) :: label
     logical :: snapshot_ok
+    type(fmr_serialized_physical_observation_t) :: observation
 
     call poison_legacy_bottom_context()
     call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, local_candidate, diagnostics)
+    observation = backend%observation()
     if (.not. result%completed) then
       write(*,'(a)') 'PUB_GC_E1_DIAG_LABEL='//trim(label)
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_RESULT_STATUS=', result%status
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_ADMISSION_REJECTIONS=', diagnostics%admission_rejections
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_SOLVER_REJECTIONS=', diagnostics%solver_rejections
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_TEMPORAL_REJECTIONS=', diagnostics%temporal_rejections
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_CERT_UNAVAILABLE_REJECTIONS=', &
+           diagnostics%temporal_certificate_unavailable_rejections
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_MASS_REJECTIONS=', diagnostics%mass_rejections
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_RETRIES=', diagnostics%retries
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_ATTEMPTS=', diagnostics%attempts
       write(*,'(a,i0)') 'PUB_GC_E1_DIAG_INTERNAL_RETRIES=', diagnostics%internal_retries
       write(*,'(a,es24.16e3)') 'PUB_GC_E1_DIAG_MAX_STEP_MASS_RESIDUAL=', diagnostics%max_abs_step_mass_residual
       write(*,'(a,es24.16e3)') 'PUB_GC_E1_DIAG_MAX_TEMPORAL_INDICATOR=', diagnostics%max_temporal_indicator
+      write(*,'(a,l1)') 'PUB_GC_E1_DIAG_OBS_INDICATOR_ENABLED=', observation%temporal_indicator_enabled
+      write(*,'(a,l1)') 'PUB_GC_E1_DIAG_OBS_PREVIOUS_DERIVATIVE=', observation%temporal_previous_derivative_available
+      write(*,'(a,l1)') 'PUB_GC_E1_DIAG_OBS_CURRENT_DERIVATIVE=', observation%temporal_current_derivative_available
+      write(*,'(a,l1)') 'PUB_GC_E1_DIAG_OBS_BUDGET_SUPPLIED=', observation%temporal_head_budget_supplied
+      write(*,'(a,l1)') 'PUB_GC_E1_DIAG_OBS_BUDGET_VALID=', observation%temporal_head_budget_valid
+      write(*,'(a,l1)') 'PUB_GC_E1_DIAG_OBS_CERT_AVAILABLE=', observation%temporal_certificate_available
+      write(*,'(a,a)') 'PUB_GC_E1_DIAG_OBS_CERT_REASON=', trim(observation%temporal_certificate_unavailable_reason)
+      write(*,'(a,es24.16e3)') 'PUB_GC_E1_DIAG_OBS_BINF=', observation%temporal_head_inf_bound
+      write(*,'(a,es24.16e3)') 'PUB_GC_E1_DIAG_OBS_NORMALIZED=', observation%temporal_normalized_indicator
     end if
     call require(result%completed, trim(label)//' completed')
     call require(local_candidate%ready(), trim(label)//' candidate ready')
