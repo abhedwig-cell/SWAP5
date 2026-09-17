@@ -1,6 +1,12 @@
 name: PUB-GC E1 primary engine qualification
 
 on:
+  push:
+    branches:
+      - research/pub-gc-e1-primary-engine
+    paths:
+      - 'tests/publication/pub_gc/e1_primary_engine/**'
+      - '.github/workflows/pub-gc-e1-primary-engine-qualification.yml'
   workflow_dispatch:
 
 permissions:
