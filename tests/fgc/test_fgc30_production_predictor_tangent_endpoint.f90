@@ -30,7 +30,7 @@ program test_fgc30_production_predictor_tangent_endpoint
   real(real64), parameter :: h0 = -75.0_real64
   real(real64), parameter :: duration = 0.25_real64
   real(real64), parameter :: mass_tolerance = 1.0e-12_real64
-  real(real64), parameter :: fd_eps = 1.0e-4_real64
+  real(real64), parameter :: fd_eps = 1.0e-6_real64
   integer(int64), parameter :: column_id = 530030_int64
 
   type(fmr_b110_physical_parameters_t) :: parameters
@@ -52,7 +52,6 @@ program test_fgc30_production_predictor_tangent_endpoint
   type(fixed_flux_top_boundary_provider_t), target :: top
   real(real64) :: k0, qeq, fd_derivative, derivative_scale
   integer :: status
-  logical :: ok
 
   call initialize_parameters(parameters)
   call initialize_column_and_template(column, template)
@@ -97,9 +96,9 @@ program test_fgc30_production_predictor_tangent_endpoint
   write(*,'(A)') 'FGC30_PRODUCTION_ACCEPTED_TRAJECTORY_BINDING=PASS'
   write(*,'(A)') 'FGC30_PRODUCTION_TANGENT_ENDPOINT_AUTHORITATIVE=PASS'
 
-  ! Independent full-production centered finite difference. These are complete
-  ! serialized-reference trials from the same physical origin with qbot +/- eps;
-  ! they do not reuse the analytic trajectory direction.
+  ! Independent full-production centered finite difference. Perturbations must
+  ! remain on the same first-attempt transaction acceptance topology; otherwise
+  ! the adaptive controller makes this point unsuitable as a smooth FD oracle.
   call run_endpoint_value(qeq + fd_eps, plus_face)
   call run_endpoint_value(qeq - fd_eps, minus_face)
   fd_derivative = (plus_face%pressure_head_cm - minus_face%pressure_head_cm) / (2.0_real64 * fd_eps)
@@ -110,8 +109,6 @@ program test_fgc30_production_predictor_tangent_endpoint
   write(*,'(A)') 'FGC30_PRODUCTION_CENTERED_FD_ORACLE=PASS'
   write(*,'(A)') 'FGC30_PRODUCTION_TANGENT_FD_AGREEMENT=PASS'
 
-  ! Materialize the origin lower-face head independently from the committed
-  ! equilibrium state, then compose the complete typed predictor response.
   call materialize_origin_face(qeq, start_face)
   window%t0 = 0.0_real64
   window%t1 = duration
@@ -131,8 +128,6 @@ program test_fgc30_production_predictor_tangent_endpoint
        ieee_is_finite(response%q_u_m_per_s), 'typed production predictor response finite')
   write(*,'(A)') 'FGC30_PRODUCTION_TYPED_PREDICTOR_RESPONSE=PASS'
 
-  ! The same accepted trajectory must not become authoritative when an active
-  ! drainage owner is declared without a qualified derivative chain.
   call build_modflow6_swap_predictor_tangent_endpoint(predictor_state, solver_parameters, constitutive, &
        predictor_result%accepted_trajectory_direction, qeq, datum, .false., .false., .true., .false., &
        blocked_endpoint, status)
@@ -298,6 +293,11 @@ contains
     call backend%initialize(top)
     call backend%run_trial(column, template, parameters, committed, forcing, config, 0.0_real64, duration, &
          checkpoint, result, candidate, diagnostics)
+    if (.not. result%completed) then
+      write(*,'(A,I0,A,F12.8,A,I0,A,I0,A,I0)') 'FGC30_PRODUCTION_CANDIDATE_DIAG status=', result%status, &
+           ' completed_t=', result%completed_t, ' retries=', diagnostics%retries, &
+           ' temporal_rejections=', diagnostics%temporal_rejections, ' solver_rejections=', diagnostics%solver_rejections
+    end if
     call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, &
          'production candidate completed')
     call require(candidate%ready(), 'production candidate ready')
@@ -345,6 +345,7 @@ contains
     integer :: face_status
 
     call run_production_candidate(bottom_flux, .false., result, candidate, diagnostics)
+    call require(diagnostics%retries == 0, 'FD perturbation changed transaction acceptance topology')
     call materialize_solver_view(candidate, state, parameter_set)
     call constitutive%evaluate(state%pressure_head, water, conductivity, capacity, reserved)
     call materialize_modflow6_prescribed_qbot_bottom_face(state%pressure_head(numnod), conductivity(numnod), &
