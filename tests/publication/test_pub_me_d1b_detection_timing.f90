@@ -87,7 +87,7 @@ program test_pub_me_d1b_detection_timing
   call contaminated_committed%current_time(mutant_time, mutant_time_ok)
   call require(clean_time_ok .and. mutant_time_ok, 'boundary committed times available')
 
-  b1_boundary_match = reject_clean%status == reject_mutant%status .and. &
+  b1_boundary_match = reject_clean%kernel_status == reject_mutant%kernel_status .and. &
        reject_clean%completed .eqv. reject_mutant%completed .and. &
        reject_clean%committed .eqv. reject_mutant%committed .and. &
        reject_clean%mass%accepted_transaction_count == reject_mutant%mass%accepted_transaction_count .and. &
@@ -110,7 +110,7 @@ program test_pub_me_d1b_detection_timing
 
   if (.not. continue_clean%completed .or. .not. continue_clean%committed) then
     write(*,'(A)') 'PUB_ME_D1B_CLASSIFICATION=BLOCKED_CONTINUATION_CONFIGURATION'
-    write(*,'(A,I0)') 'PUB_ME_D1B_CLEAN_CONTINUATION_STATUS=', continue_clean%status
+    write(*,'(A,I0)') 'PUB_ME_D1B_CLEAN_CONTINUATION_STATUS=', continue_clean%kernel_status
     error stop 2
   end if
 
@@ -142,8 +142,8 @@ program test_pub_me_d1b_detection_timing
   write(*,'(A,L1)') 'PUB_ME_D1B_B2_BOUNDARY_DETECTED=', b2_detected
   write(*,'(A,L1)') 'PUB_ME_D1B_CLEAN_CONTINUATION_COMPLETED=', continue_clean%completed
   write(*,'(A,L1)') 'PUB_ME_D1B_MUTANT_CONTINUATION_COMPLETED=', continue_mutant%completed
-  write(*,'(A,I0)') 'PUB_ME_D1B_CLEAN_CONTINUATION_STATUS=', continue_clean%status
-  write(*,'(A,I0)') 'PUB_ME_D1B_MUTANT_CONTINUATION_STATUS=', continue_mutant%status
+  write(*,'(A,I0)') 'PUB_ME_D1B_CLEAN_CONTINUATION_STATUS=', continue_clean%kernel_status
+  write(*,'(A,I0)') 'PUB_ME_D1B_MUTANT_CONTINUATION_STATUS=', continue_mutant%kernel_status
   write(*,'(A,ES26.17E3)') 'PUB_ME_D1B_ENDPOINT_HEAD_DIFF_CM=', endpoint_head_diff
   write(*,'(A,ES26.17E3)') 'PUB_ME_D1B_ENDPOINT_THETA_DIFF=', endpoint_theta_diff
   write(*,'(A,L1)') 'PUB_ME_D1B_B1_DETECTED_LATER=', b1_detected_later
