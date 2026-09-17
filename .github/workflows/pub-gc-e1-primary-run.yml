@@ -1,0 +1,43 @@
+name: PUB-GC E1 held-out primary execution
+
+on:
+  push:
+    branches:
+      - research/pub-gc-e1-primary-run
+    paths:
+      - 'tests/publication/pub_gc/e1_primary_run/EXECUTE_ONCE'
+
+permissions:
+  contents: read
+
+jobs:
+  execute-held-out-primary:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact primary execution head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler and exact head
+        shell: bash
+        run: |
+          gfortran --version
+          echo "PUB_GC_E1_PRIMARY_WORKFLOW_HEAD=$(git rev-parse HEAD)"
+
+      - name: Execute frozen held-out primary exactly once
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-E1-PRIMARY-0001
+          bash tests/publication/pub_gc/e1_primary_run/run_pub_gc_e1_primary_once.sh \
+            | tee artifacts/PUB-GC-E1-PRIMARY-0001/execution.log
+
+      - name: Upload immutable primary evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e1-primary-${{ github.sha }}
+          path: artifacts/PUB-GC-E1-PRIMARY-0001/
+          if-no-files-found: error
+          retention-days: 90
