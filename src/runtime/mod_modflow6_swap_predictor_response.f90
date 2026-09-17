@@ -1,7 +1,7 @@
 module mod_modflow6_swap_predictor_response
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use, intrinsic :: iso_fortran_env, only: real64
-  use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t, groundwater_interface_lineage_t
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t
   implicit none
   private
 
@@ -21,6 +21,20 @@ module mod_modflow6_swap_predictor_response
   integer, parameter, public :: MODFLOW6_PREDICTOR_INCOMPLETE_DERIVATIVE_COVERAGE = 5
   integer, parameter, public :: MODFLOW6_PREDICTOR_ILL_CONDITIONED_DERIVATIVE = 6
   integer, parameter, public :: MODFLOW6_PREDICTOR_NONFINITE = 7
+
+  ! Predictor provenance exists before MODFLOW creates a trial candidate. Do not
+  ! reuse groundwater_interface_lineage_t here: that carrier requires a future
+  ! groundwater candidate_revision and would force fabricated provenance.
+  type, public :: modflow6_swap_predictor_lineage_t
+    integer(int64) :: coupling_id = 0_int64
+    integer(int64) :: swap_lineage_id = 0_int64
+    integer(int64) :: swap_origin_revision = -1_int64
+    integer(int64) :: groundwater_service_id = 0_int64
+    integer(int64) :: groundwater_lineage_id = 0_int64
+    integer(int64) :: groundwater_origin_revision = -1_int64
+  contains
+    procedure :: valid => modflow6_predictor_lineage_valid
+  end type modflow6_swap_predictor_lineage_t
 
   ! Coverage is deliberately explicit rather than inferred from `available`.
   ! Active state-dependent owners must be covered before an analytic trajectory
@@ -47,7 +61,7 @@ module mod_modflow6_swap_predictor_response
     integer :: status = MODFLOW6_PREDICTOR_INVALID_INPUT
     logical :: valid = .false.
     type(groundwater_coupling_window_t) :: window
-    type(groundwater_interface_lineage_t) :: lineage
+    type(modflow6_swap_predictor_lineage_t) :: lineage
     real(real64) :: q_bot_predictor_cm_per_day = 0.0_real64
     real(real64) :: h_bot_start_m = 0.0_real64
     real(real64) :: h_bot_end_m = 0.0_real64
@@ -69,6 +83,17 @@ module mod_modflow6_swap_predictor_response
 
 contains
 
+  pure logical function modflow6_predictor_lineage_valid(self) result(valid)
+    class(modflow6_swap_predictor_lineage_t), intent(in) :: self
+
+    valid = .false.
+    if (self%coupling_id <= 0_int64) return
+    if (self%swap_lineage_id <= 0_int64 .or. self%swap_origin_revision < 0_int64) return
+    if (self%groundwater_service_id <= 0_int64) return
+    if (self%groundwater_lineage_id <= 0_int64 .or. self%groundwater_origin_revision < 0_int64) return
+    valid = .true.
+  end function modflow6_predictor_lineage_valid
+
   pure logical function modflow6_tangent_coverage_complete(self) result(complete)
     class(modflow6_derivative_coverage_t), intent(in) :: self
 
@@ -86,7 +111,7 @@ contains
        h_bot_start_m, h_bot_end_m, dh_bot_end_cm_per_qbot_cm_per_day, derivative_kind, coverage, &
        derivative_method, derivative_route, response, status)
     type(groundwater_coupling_window_t), intent(in) :: window
-    type(groundwater_interface_lineage_t), intent(in) :: lineage
+    type(modflow6_swap_predictor_lineage_t), intent(in) :: lineage
     real(real64), intent(in) :: q_bot_predictor_cm_per_day
     real(real64), intent(in) :: h_bot_start_m, h_bot_end_m
     real(real64), intent(in) :: dh_bot_end_cm_per_qbot_cm_per_day
