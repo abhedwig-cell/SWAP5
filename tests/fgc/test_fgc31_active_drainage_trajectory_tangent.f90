@@ -49,6 +49,9 @@ program test_fgc31_active_drainage_trajectory_tangent
   call run_backend(qbot0,.true.,nominal,nominal_candidate,nominal_diag)
   call require(nominal%status == CANONICAL_STATUS_COMPLETED .and. nominal%completed, 'nominal completed')
   call require(nominal_candidate%ready(), 'nominal candidate ready')
+  write(*,'(A,I0)') 'FGC31_DEBUG_ACCEPTED_SUBSTEPS=',nominal_diag%accepted_substeps
+  write(*,'(A,I0)') 'FGC31_DEBUG_RETRIES=',nominal_diag%retries
+  write(*,'(A,1X,ES14.6)') 'FGC31_DEBUG_MAX_TEMPORAL_INDICATOR',nominal_diag%max_temporal_indicator
   call require(nominal_diag%accepted_substeps >= 2, 'oracle requires at least two accepted substeps')
   call require(nominal%accepted_trajectory_direction%requested .and. nominal%accepted_trajectory_direction%available, &
        'accepted trajectory tangent unavailable')
@@ -203,7 +206,7 @@ contains
     config%transaction%retry_scale=0.5_real64; config%transaction%max_retries=10
     config%max_committed_substeps=32; config%progress_tolerance=0.0_real64
     config%model_temporal_indicator_budget_available=.true.
-    config%model_temporal_indicator_budget=1.0e-7_real64
+    config%model_temporal_indicator_budget=1.0e-9_real64
     config%accepted_trajectory_direction%requested=request_direction
     config%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
   end subroutine initialize_config
