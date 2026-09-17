@@ -7,8 +7,7 @@ program test_pub_me_d5_workspace_authority
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_material_t, rossfast_d3r_material_from_id, &
-       ROSSFAST_D3R_N_CELLS, ROSSFAST_D3R_DZ_CM, ROSSFAST_D3R_HARD_MASS_TOL_CM
-  use mod_rossfast_d3r_execution_policy, only: ROSSFAST_D3R_OUTER_HORIZON_DAY
+       ROSSFAST_D3R_N_CELLS, ROSSFAST_D3R_DZ_CM
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
@@ -17,8 +16,9 @@ program test_pub_me_d5_workspace_authority
 
   integer, parameter :: n = ROSSFAST_D3R_N_CELLS
   real(real64), parameter :: h0 = -101.0_real64
-  real(real64), parameter :: full_dt = ROSSFAST_D3R_OUTER_HORIZON_DAY
-  real(real64), parameter :: retry_dt = 0.5_real64 * full_dt
+  real(real64), parameter :: full_dt = 0.0016_real64
+  real(real64), parameter :: retry_dt = 0.0008_real64
+  real(real64), parameter :: reference_balance_rate_tol = 1.0e-12_real64
 
   type(soil_water_parameter_set_t), target :: parameters
   type(soil_water_solve_request_t) :: full_request, half1_request, half2_request
@@ -244,8 +244,8 @@ contains
     req%numerical%conductivity_implicit_mode = 0
     req%numerical%conductivity_mean_method = 1
     req%numerical%min_step_duration = 1.0e-8_real64
-    req%numerical%compartment_balance_tolerance = ROSSFAST_D3R_HARD_MASS_TOL_CM
-    req%numerical%total_balance_tolerance = ROSSFAST_D3R_HARD_MASS_TOL_CM
+    req%numerical%compartment_balance_tolerance = reference_balance_rate_tol
+    req%numerical%total_balance_tolerance = reference_balance_rate_tol
     req%numerical%head_abs_tolerance = 1.0e-12_real64
     req%numerical%head_rel_tolerance = 1.0e-12_real64
     req%numerical%ponding_tolerance = 1.0e-12_real64
