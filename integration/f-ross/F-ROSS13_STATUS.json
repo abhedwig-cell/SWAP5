@@ -1,11 +1,11 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS13",
   "title": "RossFast D3R 36-material production envelope",
   "branch": "work/f-ross13-36-material-production-envelope",
   "phase": "IMPLEMENT",
-  "status": "SURGICAL_PRODUCTION_WIDENING_STAGED_FAIL_CLOSED",
+  "status": "IMPLEMENTATION_TRANSACTION_RETRY_AFTER_HARNESS_DEPENDENCY_FIX",
   "canonical_base": "4b945b19d0b5f984d10bc750bb403174158a886b",
   "canonical_merge_head": "76b954f304dd781d56e408aebbf805527ee28a3e",
   "qualification_head": "fbaee2199233da46a672a19ee71625632c94317e",
@@ -24,8 +24,6 @@
     "workflow_run": 35213506527,
     "material_count": 36,
     "base_case_count": 288,
-    "anchor_material_count": 6,
-    "extension_material_count": 30,
     "failed_materials": [],
     "fingerprint_failures": [],
     "anchor_semantic_failures": [],
@@ -33,7 +31,6 @@
     "decision": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING"
   },
   "canonical_reconciliation": {
-    "previous_canonical": "9164ec2218951950c25de03bb3d3bf953d48d635",
     "current_canonical": "4b945b19d0b5f984d10bc750bb403174158a886b",
     "current_canonical_change": "PUB-P2E06_REFERENCE_ONLY_DIAGNOSTIC_AND_GOVERNANCE",
     "src_tree_changed_by_p2e06": false,
@@ -45,11 +42,8 @@
     "merge_diff_outside_f_ross13_overlay": false
   },
   "implementation_preimage": {
-    "model_binding": "src/runtime/mod_rossfast_d3r_model_binding.f90",
     "model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
-    "table_provider": "src/solver/mod_rossfast_d3r_table_provider.f90",
     "table_provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
-    "historical_material_catalog": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
     "historical_material_catalog_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
     "historical_material_catalog_blob": "76596a00296318b871a9109ed6187bb86ccfae32",
     "allowed_source_mutations": [
@@ -57,6 +51,22 @@
       "src/solver/mod_rossfast_d3r_table_provider.f90"
     ]
   },
+  "implementation_attempts": [
+    {
+      "workflow_run": 35275440205,
+      "workflow_head": "a9174330843abad00ee1d9dbcc5e7c7605b0d81f",
+      "temporary_local_source_commit": "e0b70592",
+      "remote_source_commit_pushed": false,
+      "preimage_guards": "PASS",
+      "catalog_authority_guard": "PASS",
+      "exact_two_file_mutation_guard": "PASS",
+      "qualification_result": "FAIL_BEFORE_MATERIAL_RUNTIME_TEST",
+      "failure_class": "QUALIFICATION_HARNESS_DEPENDENCY_INCOMPLETE",
+      "failure_detail": "mod_canonical_contracts compile could not find mod_accepted_trajectory_directional_publication.mod because the new minimal runner omitted current canonical transitive module dependencies",
+      "scientific_or_provider_failure_observed": false,
+      "remediation": "Add the same canonical directional/publication dependency prefix already used by F-ROSS12 compile runners; do not change production source or acceptance criteria."
+    }
+  ],
   "implementation_transaction": {
     "strategy": "BLOB_GUARDED_DETERMINISTIC_CATALOG_GENERATION_LOCAL_COMMIT_QUALIFY_BEFORE_PUSH",
     "catalog_source": "PINNED_HISTORICAL_AUTHORITY_ONLY",
@@ -82,6 +92,6 @@
     "NO_RUNTIME_TABLE_GENERATION",
     "NO_CRITERION_RETUNING_TO_FORCE_PASS"
   ],
-  "verdict": "IMPLEMENTATION_TRANSACTION_READY_NO_REMOTE_PRODUCTION_MUTATION_YET",
-  "next_permitted_action": "Run the blob-guarded implementation transaction. If and only if the 36-material production/provider test and all three F-ROSS12 preservation runners pass, push the exact two-file production widening commit; otherwise remain fail-closed at this checkpoint."
+  "verdict": "HARNESS_ONLY_FAILURE_NO_REMOTE_PRODUCTION_MUTATION_RETRY_PERMITTED",
+  "next_permitted_action": "Retry the unchanged blob-guarded implementation transaction with the corrected compile dependency list. Push the exact two-file production widening only if the 36-material production/provider test and all three F-ROSS12 preservation runners pass."
 }
