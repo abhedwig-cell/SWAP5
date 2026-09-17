@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC32",
+  "title": "B1.10 cofgen legacy alias provenance refinement",
+  "phase": "ACQUIRE",
+  "decision": "TARGETED_ALIAS_PROVENANCE_REFINEMENT",
+  "branch": "work/f-doc32-cofgen-legacy-alias-provenance",
+  "canonical_start": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+  "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "prior_documentation_authority": {
+    "work_unit": "F-DOC27",
+    "pull_request": 179,
+    "admitted_canonical": "74051e113fcef19e021d69854f3ab99066eb30cb",
+    "decision": "PARTIAL_PROVENANCE_MAPPING_ONLY"
+  },
+  "source_authority": {
+    "path": "reference/swap-4.3.1/patches/SWAP-012/fix.patch",
+    "blob": "77f4b63689a6f72116280cbd019852b3b181e34a",
+    "ref": "50346642bd565f79134ea17d5462e544b354998c",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "direct_alias_bindings": {
+    "13": "alpha2",
+    "14": "npar2",
+    "15": "mpar2",
+    "16": "omega1"
+  },
+  "claim_ceiling": {
+    "allowed": [
+      "record rows 13:16 as source-bound legacy code-local aliases in the SWAP-012 imod==3 inverse-retention branch",
+      "retain unresolved original input names and units",
+      "retain F-DOC27 provider-local role statements"
+    ],
+    "forbidden": [
+      "promote local aliases to proven original input/parser keywords",
+      "infer units from equations or familiar terminology",
+      "generalize the aliases to other model families or every historical use of cofgen",
+      "assign a semantic name to row 18 from its branch use",
+      "change production, reference, test, physics or numerical semantics"
+    ]
+  },
+  "mutations": [
+    "integration/f-doc/F-DOC32_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC32_STATUS.json"
+  ],
+  "production_reference_test_delta": false,
+  "verdict": "ACQUIRE_COMPLETE_READY_FOR_DOCUMENTATION_UPDATE",
+  "next_permitted_action": "UPDATE_EXISTING_PARAMETER_PROVENANCE_PAGE_WITH_ONLY_THE_DIRECT_SOURCE_LOCAL_ALIAS_BINDINGS"
+}
