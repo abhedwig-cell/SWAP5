@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS13",
+  "title": "RossFast D3R 36-material production envelope",
+  "branch": "work/f-ross13-36-material-production-envelope",
+  "phase": "ACQUIRE",
+  "status": "CHECKPOINT_SCOPE_AND_HISTORICAL_EVIDENCE_RECONCILED",
+  "canonical_base": "95748d047325e74adf6d06eba978dea61bd51a7d",
+  "production_mutation_started": false,
+  "purpose": "Expand only the admitted RossFast D3R Staringreeks material catalog from the six F-ROSS12 materials to the full 36-material unimodal Mualem-van Genuchten KSATFIT catalog while preserving the existing solver, geometry, transaction, retry, commit and production routing contracts.",
+  "reused_scientific_evidence": {
+    "f_ross01_holdout_run": 34339656739,
+    "f_ross01_holdout_head": "ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a",
+    "f_ross01_holdout_conclusion": "success",
+    "material_count": 36,
+    "holdout_probe_count": 50436,
+    "pass_count": 36,
+    "representation": "N241_FLOAT32_LOG_MOBILITY",
+    "constitutive_scope": "Staringreeks 2018 unimodal MvG using KSATFIT with KSATEXM disabled; homogeneous unsaturated 10-cm faces; h=[-10000,-1] cm",
+    "max_abs_error_over_ksatfit": 0.00043924621324671555,
+    "max_hybrid_metric": 0.0005836322947071754
+  },
+  "current_production_authority": {
+    "asset_owner_work_unit": "F-ROSS04",
+    "asset_manifest": "assets/rossfast/d3r/manifest.json",
+    "current_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "runtime_generation": false,
+    "material_to_asset_mapping_is_fixed": true,
+    "model_binding": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "production_selection_owner": "F-ROSS12"
+  },
+  "required_before_admission": [
+    "Materialize immutable N241 production table assets for the remaining 30 catalog materials from the pinned qualified research authority.",
+    "Extend the production material catalog and provider mapping without changing constitutive equations or table representation.",
+    "Qualify every added asset against independently regenerated pinned-research oracle data.",
+    "Qualify O0/O2 identity and the existing D3R solver route for all 36 materials inside the unchanged F-ROSS12 execution envelope.",
+    "Re-run fail-closed checks for unknown material, missing/corrupt/mismatched asset and parameter drift.",
+    "Re-run relevant production selection and serialized-host regression evidence proving Reference behavior unchanged and no RossFast fallback."
+  ],
+  "hard_exclusions": [
+    "NO_GRID_OR_CELL_COUNT_GENERALIZATION",
+    "NO_CELL_THICKNESS_GENERALIZATION",
+    "NO_HETEROGENEOUS_PROFILE_GENERALIZATION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_GROUNDWATER_OR_BOTTOM_BOUNDARY_GENERALIZATION",
+    "NO_ENERGY_OR_SOIL_TEMPERATURE_COUPLING",
+    "NO_PONDING_OR_DYNAMIC_TOP_BOUNDARY_GENERALIZATION",
+    "NO_MULTISWAP_MIXED_SOLVER_ADMISSION",
+    "NO_AUTOMATIC_FALLBACK",
+    "NO_TRANSACTION_OR_SOLVER_ABI_CHANGE",
+    "NO_RUNTIME_TABLE_GENERATION"
+  ],
+  "verdict": "PROCEED_WITH_BOUNDED_ASSET_AND_MATERIAL_CATALOG_ADMISSION_ONLY",
+  "next_permitted_action": "Recover the exact current production table-provider implementation and F-ROSS04 asset-generation/qualification path, then materialize and qualify the remaining 30 assets before widening production admission."
+}
