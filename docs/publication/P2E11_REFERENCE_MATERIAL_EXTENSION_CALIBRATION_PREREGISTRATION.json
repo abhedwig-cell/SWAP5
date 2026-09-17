@@ -1,0 +1,118 @@
+{
+  "schema": "swap5.publication.p2e11-reference-material-extension-calibration.v1",
+  "workunit": "PUB-P2E11",
+  "phase": "PREREGISTERED_BEFORE_EXTENSION_REFERENCE_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "canonical_base": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "research_freeze": {
+    "source_branch": "research/phd-five-paper-manifests-20260918",
+    "source_head": "e1bd065908435689f02141881ca20436e96d0f6c",
+    "source_path": "docs/publications/manifests/PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml",
+    "source_blob": "601cfc1b2f41c335f8a74be57fa373b057c49b75",
+    "local_snapshot_path": "docs/publication/P2E11_MATERIAL_EXTENSION_FREEZE_SNAPSHOT.yaml",
+    "local_snapshot_blob": "601cfc1b2f41c335f8a74be57fa373b057c49b75"
+  },
+  "authorities": {
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "material_domain_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "reference_workspace_blob": "74f99556005ae39614f9df678467b1e19097bae2",
+    "headcalc_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "f_ross13_result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0",
+    "p2e09_result_blob": "1a82511cb13a4c39235292de83dc626478bfb6a6",
+    "p2e10_result_blob": "83864f6379279725fa97d24d57936f590d3c2174"
+  },
+  "purpose": "Construct a complete Reference-only self-disagreement calibration dataset for the thirty F-ROSS13 extension materials before any new RossFast discrepancy execution.",
+  "scope": {
+    "solver": "Reference only",
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 180,
+    "grid": "16 homogeneous cells x 10 cm",
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "temporal_construction": "one Reference solve over 0.0064 day versus two sequential Reference solves over 0.0032 + 0.0032 day",
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "distributed_sources_and_sinks": "zero",
+    "boundary_type": "prescribed flux"
+  },
+  "validity": [
+    "coarse, half1 and half2 return SW_SOLVE_CONVERGED on route legacy-reference-bound",
+    "typed integrated mass residual is available, finite and <= 1e-12 cm for all three solves",
+    "native balance-rate residual is available and finite for all three solves",
+    "all endpoint pressure-head and water-content values are finite and inside the declared E0 physical domain",
+    "coarse and refined endpoint shapes represent the same final physical time"
+  ],
+  "metrics": [
+    "U_h_inf_cm",
+    "U_h_rms_cm",
+    "U_theta_inf",
+    "U_theta_rms",
+    "U_storage_cm"
+  ],
+  "firewall": {
+    "rossfast_numerical_solver_compilation_allowed": false,
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "physical_case_removal_allowed": false,
+    "temporal_schedule_search_after_results_allowed": false,
+    "threshold_freezing_in_this_workunit_allowed": false,
+    "performance_claim_allowed": false
+  },
+  "outcome_rule": {
+    "complete": "All 180 Reference pairs valid. Emit all self-disagreement metrics. Do not yet authorize RossFast.",
+    "blocked": "Any invalid Reference pair makes the extension calibration domain incomplete. Retain every failure and stop before RossFast extension execution.",
+    "no_repair": "Do not search a different timestep, drop a material or relax a numerical tolerance inside P2E11 after observing failure."
+  },
+  "next_if_complete": "Create a separate Reference-only threshold-freeze workunit using per-Se maxima over all 60 valid cases in each Se stratum. Only after that freeze may a 180-case Reference-versus-RossFast extension matrix be preregistered.",
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_30_MATERIAL_EXTENSION_CALIBRATION"
+}
