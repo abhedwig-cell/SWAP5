@@ -17,7 +17,7 @@ program test_pub_gc_e1_origin_harness
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_temporal_indicator_committed_state
-  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
@@ -38,7 +38,7 @@ program test_pub_gc_e1_origin_harness
   type(fmr_b110_physical_state_t) :: initial_state
   type(fmr_b110_physical_forcing_t) :: forcing_a, forcing_b
   type(fmr_serialized_reference_backend_t) :: backend
-  type(fmr04_fixed_flux_top_provider_t), target :: top_provider
+  type(fixed_flux_top_boundary_provider_t), target :: top_provider
   type(canonical_numerical_config_t) :: config
   type(kernel_committed_state_t) :: origin, synthetic
   type(kernel_checkpoint_t) :: origin_checkpoint, synthetic_checkpoint
