@@ -1,0 +1,24 @@
+name: F-VQ105 F-GC31 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq105-fgc31-active-drainage-tangent-independent
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out verifier head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ105 independent qualification
+        run: bash tests/fvq/run_fvq105_fgc31_independent_gate.sh
