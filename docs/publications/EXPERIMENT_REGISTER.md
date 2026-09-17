@@ -35,8 +35,8 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
 | `PUB-GC-E1` same-origin replay | PUB-GC | primary | COMPLETE | one-shot held-out primary `PUB-GC-E1-PRIMARY-0001` completed validly; both preregistered history discriminants exceeded their numerical floors while same-origin replay remained exact; H1 supported at operator-definition level only, practical materiality/generalization remain open |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | research-only comparator qualified by `PUB-GC-E2-COMPARATOR-QUAL-0001`; separately labelled screening may begin, but primary H2 remains blocked until `GC-REF` construction is frozen |
-| `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | READY_FOR_REFERENCE_CONSTRUCTION | terminal comparator and `GC-REF-A` machinery are independently qualified; next freeze publication accuracy thresholds and construct case-specific stable L0/L1/L2 references before any primary H2 run |
+| `PUB-GC-E3` window convergence | PUB-GC | primary | READY_FOR_REFERENCE_CONSTRUCTION | `GC-REF-A` machinery is qualified; next construct case-specific L0/L1/L2 trajectories and admit only references whose L1-to-L2 refinement satisfies frozen stability thresholds |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
 | `PUB-GC-E6` bounded N:1 conservation | PUB-GC | supporting/primary table | READY_FOR_SCREENING | map existing F-GC25 cases into publication manifest without upscaling claims |
@@ -64,8 +64,8 @@ In parallel:
 
 - `PUB-SQ-REF-HIGH`: define the refinement procedure and stability criterion;
 - `PUB-GC-GW-A`: **qualified research component** at research head `8a090fc9228574525e599817771aadb8ae176047`; receipt `PUB-GC-GW-A-QUAL-0001`;
-- `PUB-GC-E1-HARNESS`: reconcile the qualified real-SWAP prescribed-head/checkpoint execution surfaces, then implement the two origin policies in research-only code without modifying production semantics;
-- `PUB-GC-GC-REF`: define and freeze the strict coupling reference procedure; E1 is complete and the E2 comparator is independently qualified, so this is now the controlling blocker for primary H2/H3 work;
+- `PUB-GC-E1-HARNESS`: complete, including held-out E1 primary execution; preserve the one-shot evidence without post-hoc rerun;
+- `PUB-GC-GC-REF-A`: **qualified reference machinery** at research head `4fc8f6e2a7569503594d0ecf91b651431c607df2`; receipt `PUB-GC-GC-REF-A-QUAL-0001`; next construct case-specific temporally refined reference trajectories;
 - shared publication telemetry serialization: define before primary matrices are frozen.
 
 No primary claim run should begin until the relevant definitions, implementation prerequisites and run manifest are frozen.
@@ -235,3 +235,17 @@ The register should describe readiness, not rewrite past chronology.
 - primary H2 inference remains **not executed**; the frozen E1-B row is qualification-only and its near-zero whole-window/terminal difference is not an H2 effect estimate;
 - next permitted action: define and freeze `GC-REF`; separately labelled E2 screening may proceed but cannot become primary evidence;
 - cross-publication effect: none; no PUB-ME, PUB-SQ, PUB-RC or PUB-SG primary claim is inherited.
+
+
+### 2026-09-17T23:49:53Z — PUB-GC GC-REF-A machinery qualified
+
+- controlling specification commit: `c95d67c70dc16126797c6613affe641537e3655e`;
+- controlling qualification manifest commit: `abb9d7b5a397abef1987ed8b6872064a13788c9b`;
+- qualification receipt commit: `4d028af031bc506b33db9513552070a297ea4409`;
+- research branch/head: `research/pub-gc-gc-ref-a@4fc8f6e2a7569503594d0ecf91b651431c607df2`;
+- execution: GitHub Actions run `35288524091`, job `105426089799`;
+- derivative-free same-origin bisection, invalid-bracket rejection, same-origin repeatability, final reconstruction, action/reaction closure, accepted-origin isolation, stable/unstable refinement adjudication and O0/O2 identity all PASS;
+- the frozen real qualification bracket `[-80,-70] cm` contained a root without post-run retuning; reconstructed relative head `2.12579965591430664e-4 m`, residual `5.64160231581573544e-9 m`, whole-window exchange `4.25148647981838605e-3 cm`, 26 bisection evaluations;
+- this qualifies the **reference machinery only**. No H2/H3 effect estimate or practical window threshold follows from the qualification fixture;
+- next permitted action: freeze publication accuracy thresholds, construct case-specific nested L0/L1/L2 trajectories, and require L1-to-L2 stability before calling the finest trajectory a numerical reference;
+- cross-publication firewall: no tangent/response acceleration inference belongs here; such efficiency claims remain `PUB-RC`.
