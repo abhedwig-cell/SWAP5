@@ -3,10 +3,11 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC27",
   "title": "B1.10 cofgen parameter provenance",
-  "phase": "ACQUIRE_COMPLETE",
+  "phase": "READY_FOR_VERIFY",
   "decision": "PARTIAL_PROVENANCE_MAPPING_ONLY",
   "branch": "work/f-doc27-cofgen-parameter-provenance",
   "canonical_start": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+  "content_postimage": "4fee60ed5873cab27729667988772def0b8ea5a6",
   "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
   "authority": {
@@ -32,8 +33,13 @@
     ]
   },
   "acquisition_verdict": "The repository proves the corrected B1.10 oracle identity and exact provider behaviour, but does not expose a separate readable original input-name/unit-to-cofgen(1:24) mapping. F-DOC27 therefore records a partial provenance map and preserves unresolved entries instead of inventing aliases.",
-  "mutations": [
-    "documentation/governance only"
+  "scope_diff": [
+    "docs/science/index.md",
+    "docs/science/soil-hydraulic-parameter-provenance.md",
+    "integration/f-doc/F-DOC27_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC27_STATUS.json",
+    "mkdocs.yml"
   ],
-  "next_permitted_action": "UPDATE_DOCUMENTATION_WITH_PARTIAL_PROVENANCE_MAP"
+  "production_reference_test_delta": false,
+  "next_permitted_action": "VERIFY_DOCUMENTATION_GATE"
 }
