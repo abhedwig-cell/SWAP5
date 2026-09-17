@@ -85,7 +85,9 @@ for forbidden in   src/solver/mod_rossfast_d3r_table_kernel.f90   src/solver/mod
 done
 
 run_one(){
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   local objects=()
   for source in "${MODULE_SRC[@]}"; do
     [[ -f "$source" ]] || fail "missing compile source $source"
