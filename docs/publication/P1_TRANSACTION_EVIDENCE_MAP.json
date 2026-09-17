@@ -1,7 +1,7 @@
 {
-  "schema": "swap5.publication.p1-transaction-evidence.v1",
-  "workunit": "PUB-P1E01",
-  "canonical_base": "40752b92e50b5000ac53892421336520fc62e518",
+  "schema": "swap5.publication.p1-transaction-evidence.v2",
+  "workunit": "PUB-P1E02",
+  "canonical_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
   "rule": "Count only evidence that exercises current production physics/runtime for production-proven claims. Harness-only and pre-solver fail-closed tests remain separate classes.",
   "claims": [
     {
@@ -27,7 +27,7 @@
         "positive bottom inflow has explicit positive total_in and total_out",
         "FVQ75 independently replays the production route and checks transfer closure"
       ],
-      "limits": "This proves accepted-route conservation in the restricted route, not rejected-trial flux exclusion by itself."
+      "limits": "Accepted-route conservation is distinct from rollback, which is covered separately by PUB-P1E02."
     },
     {
       "claim_id": "P1-TX03",
@@ -51,44 +51,46 @@
         "final_revision == 0",
         "solver_executed=false"
       ],
-      "limits": "This is pre-solver rejection. It is not evidence that a physically executed but later rejected trial rolls back correctly."
+      "limits": "Pre-solver rejection remains a separate failure class from the post-solver rollback qualified by PUB-P1E02."
     },
     {
       "claim_id": "P1-TX05",
       "claim": "a physically executed but rejected production trial leaves committed physical state unchanged",
-      "status": "TARGETED_PRODUCTION_EVIDENCE_STILL_REQUIRED",
-      "partial_authorities": [
-        "tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90",
-        "F-CI52/F-VQ59 restricted fixed-weir production qualification"
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "docs/publication/P1_POSTSOLVER_ROLLBACK_RESULT.json",
+      "evidence": [
+        "real serialized Reference route executes three HeadCalc trajectories before rejection",
+        "committed revision remains 0",
+        "committed time is unchanged",
+        "pressure head and water-content arrays are bit-identical before and after",
+        "ponding and groundwater-level state are bit-identical before and after",
+        "O0/O2 experiment output is identical"
       ],
-      "partial_evidence": [
-        "F-KT22 executes the serialized Reference backend and proves rejected full-trial tangent work is absent from accepted trajectory publication",
-        "F-CI52 qualification reports rollback and single-commit semantics for the restricted fixed-weir runtime"
-      ],
-      "why_not_closed": "The publication programme still lacks one pinned focused production experiment that snapshots committed water state before and after a post-solver rejected trial and checks exact unchanged state/revision on the selected Paper 1 route."
+      "limits": "Qualified for the focused Reference bottom-mode-2 zero-flux fixture. It demonstrates transaction semantics, not every optional-process combination."
     },
     {
       "claim_id": "P1-TX06",
-      "claim": "rejected-trial water transfers never enter committed water totals",
-      "status": "TARGETED_PRODUCTION_EVIDENCE_STILL_REQUIRED",
-      "partial_authorities": [
-        "src/transaction/mod_transaction_reference.f90",
-        "tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90"
+      "claim": "rejected-trial water transfers never enter committed/accepted water totals",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "docs/publication/P1_POSTSOLVER_ROLLBACK_RESULT.json",
+      "evidence": [
+        "three real HeadCalc trajectories execute before rejection",
+        "accepted_transaction_count remains 0",
+        "accepted total_in remains exactly 0",
+        "accepted total_out remains exactly 0",
+        "no external commit is published"
       ],
-      "partial_evidence": [
-        "transaction code publishes accepted-route accounting only",
-        "F-KT22 proves rejected full-trial derivative work is excluded from accepted publication"
-      ],
-      "why_not_closed": "A code-path argument plus rejected diagnostic-work test is weaker than a direct production mass-ledger fault-injection test. Paper 1 should add the latter."
+      "limits": "This directly qualifies accepted-ledger exclusion for the focused rejection fixture; it does not claim all diagnostic carriers have identical semantics."
     },
     {
       "claim_id": "P1-TX07",
       "claim": "rerunning the same committed physical state is deterministic within the declared build envelope",
       "status": "PARTIAL_PRODUCTION_EVIDENCE",
-      "authority": "FMR44R/FVQ75 O0-O2 semantic identity",
+      "authority": "FMR44R/FVQ75 O0-O2 semantic identity plus PUB-P1E02 O0/O2 identity",
       "evidence": [
         "FMR44R output is identical between O0 and O2",
-        "FVQ75 independently replays the same production capability"
+        "FVQ75 independently replays the same production capability",
+        "PUB-P1E02 rollback experiment is identical between O0 and O2"
       ],
       "why_not_closed": "Optimization-invariant independent runs are strong reproducibility evidence but are not an explicit same-process checkpoint -> run -> restore -> rerun identity experiment."
     },
@@ -100,5 +102,5 @@
       "why_not_closed": "Historical VQ evidence explicitly did not execute production physics. No current production warm-start perturbation qualification has been pinned for Paper 1."
     }
   ],
-  "publication_conclusion": "Current SWAP5 already provides strong restricted-route production evidence for single-commit semantics, hard mass closure and generic-duration execution. The minimum new Paper 1 transaction experiment should target post-solver rollback plus rejected-transfer exclusion; warm-start invariance remains a separate missing experiment."
+  "publication_conclusion": "PUB-P1E02 closes the focused post-solver rollback and rejected-transfer exclusion gaps. The remaining transaction-specific publication gaps are explicit checkpoint/run/restore/rerun identity and production warm-start invariance; end-to-end legacy application preservation remains a separate P1-Q06 problem."
 }
