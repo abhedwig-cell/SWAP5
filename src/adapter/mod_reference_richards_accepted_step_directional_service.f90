@@ -289,6 +289,9 @@ contains
          source_direction = direction_request%incoming_source_direction
     if (allocated(direction_request%incoming_sink_direction)) &
          sink_direction = direction_request%incoming_sink_direction
+    direction_result%source_sink_direction_covered = &
+         allocated(direction_request%incoming_source_direction) .or. &
+         allocated(direction_request%incoming_sink_direction)
 
     ! Re-evaluate the immutable constitutive value provider at the step base
     ! state for the exact frozen K values used by swkimpl=0. Its historical
