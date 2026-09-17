@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC31 active-drainage derivative closure",
+  "phase": "RECONCILE",
+  "branch": "work/f-gc31-active-drainage-derivative-closure",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "delta_since_fgc30_closeout": "NONE"
+  },
+  "parent_capability": {
+    "workunit": "F-GC30",
+    "state": "CLOSED_CANONICAL_ADMITTED_DRAINAGE_FREE_ENVELOPE",
+    "production_admission": "657cd4a595c82ae1e95a4722bb276f0087a3ab54",
+    "admission_metadata": "863f236596129d0ede3e975526553ea7f0a969ed",
+    "closeout": "878ca73649c9a2e98ca81d45c3ecec2717604ba3"
+  },
+  "reconciled_findings": {
+    "legacy_call_order": "Drainage is evaluated before SoilWater(2) inside each retry/substep; SoilWater(3) then recalculates groundwater level from the accepted hydraulic state for the next step.",
+    "current_serialized_runtime": "Drainage response is evaluated from hydraulic_start%groundwater_level before each Richards advance, but the accepted candidate currently republishes solve_result%candidate_state%groundwater_level from the incoming state; HeadCalc does not recalculate it on the relevant prescribed-flux route.",
+    "fpm14_scope": "F-PM14/F-VQ73/F-CI61 qualified drainage response physics, transactionality, mass booking, restart and per-level dq/dgroundwater_level, but did not qualify hydraulic-state-to-groundwater-level refresh semantics.",
+    "directional_service_gap": "F-KT21 currently supports incoming pressure/water/ponding direction and direct bottom-control direction only. It assumes b110_source_sink_provider_t is directionally constant and has no source/sink directional term in the tangent RHS.",
+    "scientific_consequence": "Treating dgwl/dqbot as zero would encode the current stale-state implementation rather than the original SWAP state-update semantics and is therefore forbidden for F-GC31 admission."
+  },
+  "calcgwl_recovery": {
+    "b0_manifest_member": "SWAP/calcgwl.f90",
+    "b0_sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+    "b0_size_bytes": 13602,
+    "unpacked_b0_git_source": "NOT_MATERIALIZED",
+    "library_search": "NO_MATCH",
+    "official_download": "SWAP 4.3.1 is publicly listed by swap.wur.nl but download is registration-gated",
+    "independent_semantic_lineages": [
+      "older SWAP4 calcgwl source: non-macropore interior water table uses zero-pressure linear interpolation between adjacent nodes",
+      "current official SWAP-model/SWAP source: same non-macropore interior zero-pressure interpolation, expressed with node distance"
+    ],
+    "admissible_restricted_semantics": "NON_MACROPORE_SMOOTH_INTERIOR_ZERO_PRESSURE_CROSSING_ONLY",
+    "not_claimed": "byte-exact recovery of every B0 calcgwl branch"
+  },
+  "restricted_smooth_formula": {
+    "conditions": [
+      "active_nodes >= 2",
+      "all geometry/head/direction inputs finite",
+      "bottom node is strictly saturated: h(n) > 0",
+      "unique downward search terminates at adjacent strict crossing h(j) < 0 < h(j+1)",
+      "no node used by the crossing is exactly at zero pressure head",
+      "macropore semantics are excluded"
+    ],
+    "value": "gwl = z(j+1) + h(j+1)/(h(j+1)-h(j))*node_distance(j+1)",
+    "direction": "dgwl = node_distance(j+1)*(h(j+1)*dh(j)-h(j)*dh(j+1))/(h(j+1)-h(j))^2",
+    "branch_boundaries": "FAIL_CLOSED"
+  },
+  "implementation_plan": [
+    "Add a pure restricted smooth freatic projection/value+direction service with explicit status/branch diagnostics.",
+    "Qualify value and analytic direction against centered finite differences and fail-closed branch cases without changing runtime state.",
+    "Then add an explicit source/sink-direction channel to the accepted-step directional contract and RHS, preserving zero-direction identity for all existing routes.",
+    "Only after those seams are qualified may the drainage runtime compose dq/dgroundwater_level with the accepted trajectory groundwater-level direction."
+  ],
+  "mutations_so_far": {
+    "production_source_modified": false,
+    "reference_source_modified": false,
+    "canonical_modified": false,
+    "new_branch_created": true
+  },
+  "verdict": "RECONCILED_RESTRICTED_SMOOTH_GWL_SEMANTICS_IMPLEMENTATION_PERMITTED",
+  "exclusions": [
+    "full calcgwl branch reconstruction",
+    "macropore groundwater-table semantics",
+    "fully saturated ponding-controlled groundwater level",
+    "groundwater-below-profile sentinel semantics",
+    "branch/kink regularization",
+    "runtime finite-difference fallback",
+    "MODFLOW6/XMI backend",
+    "irrigation",
+    "Ribasim",
+    "groundwater coupling v1 semantic changes"
+  ],
+  "next_permitted_action": "IMPLEMENT restricted smooth freatic projection/value+direction service and qualification tests only."
+}
