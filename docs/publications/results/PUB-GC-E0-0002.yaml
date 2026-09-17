@@ -1,0 +1,76 @@
+result:
+  experiment_id: PUB-GC-E0-0002
+  run_family_id: PUB-GC-E0
+  evidence_class: PROSPECTIVE_SUPPORTING
+  status: SUPPORTED_WITHIN_PREREGISTERED_SCOPE
+
+chronology:
+  manifest_commit: 71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  first_execution_utc: 2026-09-17T18:35:30Z
+  completed_utc: 2026-09-17T18:36:26Z
+
+scope:
+  supported_claim: Under the independently qualified F-GC25 postimage, accepted multi-column groundwater coupling preserves area-weighted action/reaction and interface conservation, while preparation failure, nonconvergence, duplicate topology, or stale origin cannot leak candidate state into committed SWAP, groundwater, coupling-origin, or interface-ledger state.
+  hypothesis_ids: [H1, H2]
+  not_supported_by_this_experiment:
+    - current-canonical generalized runtime compilation
+    - coupling-window accuracy versus GC-REF
+    - same-origin versus history-contaminated numerical comparison
+    - whole-window versus terminal-flux numerical comparison
+    - MODFLOW 6 transfer
+    - response/tangent acceleration
+    - hydrologic value of N:1 heterogeneity
+
+execution:
+  github_run_id: 35259757727
+  github_job_id: 105332222414
+  research_branch: research/pub-e0-screening
+  workflow_control_commit: b3f33f031bcf642e2cca3ecfb6d6ac1983257aab
+  code_commit: 37c02ac3747bfaacdb8b3408b8228f3deb2b9824
+  owner_postimage_commit: 43c9f09110dea83928ef7d58990c37575d8ca223
+  conclusion: SUCCESS
+  compiler: gfortran-13.2.0
+  platform: github-hosted-ubuntu-24.04
+  artifact_id: 10514930448
+  artifact_digest: sha256:605d32055e31f229a6ae98bdc95a48945f8f4d4e5beea20e17bc4b69dc0ef312
+  artifact_files:
+    - artifacts/PUB-GC-E0-0002/fvq87-independent.log
+    - artifacts/PUB-GC-E0-0002/runner-receipt.txt
+
+provenance_checks:
+  PUB_GC_E0_0002_PREREGISTERED_INPUTS: PASS
+  runner_blob_sha: 1478b3a880c1d67648182ea2e3afbf9a19c7c93c
+  independent_test_blob_sha: 338416575b1583152acc65cd606c4322a20dd94d
+  FVQ87_SCOPE_ALLOWLIST: PASS
+  FVQ87_OWNER_PRODUCTION_POSTIMAGE_LOCKED: PASS
+  FVQ87_GC22_TEMPORAL_CHANGE_OUTSIDE_GC25_BOUNDARY: PASS
+  FVQ87_FGC20_FGC22_INHERITANCE_LOCKED: PASS
+  FVQ87_PUBLICATION_BOUNDARY_STATIC_AUDIT: PASS
+  FVQ87_OWNER_POSTIMAGE_REPLAY: PASS
+  FVQ87_PINNED_OWNER_FIXTURE: PASS
+
+scientific_oracle:
+  FVQ87_PREPARE_REJECTION_ATOMICITY: PASS
+  FVQ87_DUPLICATE_TILE_PRETRIAL_REJECTION: PASS
+  FVQ87_STALE_ORIGIN_PRETRIAL_REJECTION: PASS
+  FVQ87_NONCONVERGED_CELL_ROLLBACK: PASS
+  FVQ87_WEIGHTED_MASS_ACTION_REACTION: PASS
+  FVQ87_INDEPENDENT_ORACLE: PASS
+  FVQ87_INDEPENDENT_ORACLE_SHA256: de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8
+  FVQ87_INDEPENDENT_ORACLE_O0_O2_IDENTITY: PASS
+  F_VQ87_FINAL_GATE: PASS
+
+observations:
+  historical_oracle_hash_matched: true
+  historical_hash_role: REPRODUCIBILITY_CONTEXT_NOT_ACCEPTANCE_SHORTCUT
+  infrastructure_warnings_present: true
+  warning_classification: NON_SCIENTIFIC_CONTEXT
+  note: GitHub Actions emitted Node runtime deprecation warnings for maintained actions. They did not affect the compiled scientific oracle or any preregistered acceptance criterion.
+
+conclusion:
+  decision: SUPPORTS_H1_H2_INTERFACE_SCREENING_ONLY
+  text: The preregistered independent F-VQ87 screening reached every scientific oracle and passed under O0 and O2 with byte-identical oracle output. This supplies prospective supporting evidence for bounded interface conservation, rollback and fail-closed topology/origin semantics on the exact qualified F-GC25 postimage. It does not establish coupling accuracy, general current-canonical execution, MODFLOW 6 transfer, response acceleration or hydrologic upscaling value.
+
+deviations_from_plan: none affecting scientific interpretation
