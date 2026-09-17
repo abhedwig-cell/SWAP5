@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.publication.p2e03-blocked-checkpoint.v1",
+  "workunit": "PUB-P2E03",
+  "phase": "QUALIFY",
+  "canonical_base": "aa0ac9b0639c50fcfa604201737a9db3d5525821",
+  "branch": "work/pub-p2e03-reference-calibration-matrix",
+  "verdict": "BLOCKED_REFERENCE_DOMAIN_CASE",
+  "matrix": {
+    "preregistered_case_count": 162,
+    "valid_case_count_o0": 47,
+    "invalid_case_count_o0": 115,
+    "rossfast_solver_executed": false,
+    "threshold_frozen": false,
+    "matrix_changed_after_observation": false
+  },
+  "primary_run": {
+    "workflow_run": 35266639493,
+    "job": 105355356058,
+    "result": "EXPECTED_FAIL_CLOSED_BLOCK"
+  },
+  "failure_probe": {
+    "workflow_run": 35267017537,
+    "job": 105356592597,
+    "result": "PASS",
+    "representative_findings": [
+      {
+        "case": "B01 Se=0.65 NOMINAL dt=0.0004 day coarse",
+        "status": "SW_SOLVE_RETRY_ADVISED",
+        "route": "legacy-reference-retry",
+        "residual_sum_cm": 2.681341260135639e-12,
+        "max_abs_compartment_residual_cm": 7.993605777301127e-13,
+        "nonconverged_balance_flags": 0,
+        "nonconverged_head_flags": 0,
+        "nonlinear_iterations": 16,
+        "backtracking_attempts": 29
+      },
+      {
+        "case": "B01 Se=0.65 DRYING dt=0.0016 day half1",
+        "status": "SW_SOLVE_RETRY_ADVISED",
+        "route": "legacy-reference-retry",
+        "residual_sum_cm": 1.2935611783115864e-12,
+        "max_abs_compartment_residual_cm": 8.530953721219703e-13,
+        "nonconverged_balance_flags": 0,
+        "nonconverged_head_flags": 0,
+        "nonlinear_iterations": 16
+      },
+      {
+        "case": "O18 Se=0.85 NOMINAL dt=0.0016 day half2",
+        "status": "SW_SOLVE_RETRY_ADVISED",
+        "route": "legacy-reference-retry",
+        "residual_sum_cm": 1.9180759411319137e-12,
+        "max_abs_compartment_residual_cm": 7.37854222165879e-13,
+        "nonconverged_balance_flags": 0,
+        "nonconverged_head_flags": 0,
+        "nonlinear_iterations": 16
+      },
+      {
+        "case": "B12 Se=0.65 WETTING dt=0.0004 day",
+        "status": "CONTRAST_PASS",
+        "coarse_residual_sum_cm": 5.102672786032828e-13,
+        "half1_residual_sum_cm": 5.102672786032828e-13,
+        "half2_residual_sum_cm": 5.102672786032828e-13,
+        "nonlinear_iterations_each": 2
+      }
+    ]
+  },
+  "code_path_interpretation": {
+    "reference_binding_behavior": "When HeadCalc requests timestep reduction the solver publishes SW_SOLVE_RETRY_ADVISED and legacy-reference-retry; the accepted mass residual is deliberately not published.",
+    "headcalc_behavior": "HeadCalc independently requires both per-compartment balance convergence and abs(sum(residual)) <= total_balance_tolerance. If convergence is not reached it requests timestep reduction.",
+    "production_default": "The current fmr_b110_physical_parameters_t defaults both compartment_balance_tolerance and total_balance_tolerance to 1e-12 cm.",
+    "observed_failure_class": "Representative failures are driven by the total residual sum remaining slightly above 1e-12 cm after the iteration budget, often while every compartment residual and every head-change criterion is individually converged."
+  },
+  "interpretation_limits": [
+    "The representative probe classifies selected failures, not all 115 individually.",
+    "No conclusion is yet made that the 1e-12 total-balance criterion should be relaxed.",
+    "No preregistered material, state, forcing or time level may be silently removed based on this result.",
+    "No RossFast discrepancy may be inspected to resolve this Reference-only numerical issue."
+  ],
+  "next_permitted_action": "Open a separate Reference-only numerical-adjudication workunit to determine whether the observed total-balance floor is iteration-limited, arithmetic-floor-limited, or indicates a substantive conservation defect. Only after that adjudication may a new calibration design be preregistered; PUB-P2E03 itself remains blocked and immutable as the failed first matrix attempt."
+}
