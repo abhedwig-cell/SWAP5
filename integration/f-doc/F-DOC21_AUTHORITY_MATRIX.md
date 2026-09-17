@@ -14,6 +14,12 @@ This matrix bounds the scientific and numerical claims that F-DOC21 may publish.
 
 Historical SWAP/F-DOC18 material may establish scientific meaning and a bounded historical formulation. A current SWAP5 implementation claim additionally requires support from the frozen production postimage and accepted Status-A/capability evidence. A legacy manual never proves current implementation by itself.
 
+## Live-canonical reconciliation
+
+F-DOC21 started from canonical `99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3`. During ACQUIRE, live canonical moved to `786fe5bf5742381646783379779322c84797b29a` through post-Status-A F-ROSS12 work.
+
+That drift does not change the pinned F-DOC21 scientific review denominator. In particular, post-Status-A ROSS/RossFast solver-selection work is not silently promoted into the frozen Status-A scientific claims documented here. Admission against moving canonical must reconcile that delta separately.
+
 ## Claim ceilings
 
 | Topic | Scientific/formulation authority available | Frozen implementation/evidence available | F-DOC21 claim ceiling | Explicit non-claim / treatment |
@@ -23,12 +29,12 @@ Historical SWAP/F-DOC18 material may establish scientific meaning and a bounded 
 | Root-water uptake | F-DOC18 drought branch of Feddes response | Frozen `src/process/mod_root_water_uptake_process.f90` implements rooted-compartment partition, demand-dependent `h3`, `h4` cutoff and drought reduction | Explain drought-only root extraction, root-fraction distribution and single mass booking | Do not claim wet/oxygen stress, salinity stress, compensation, process-based root hydraulics or an independent root solver |
 | Surface evaporation | F-DOC18 `RB1-SURFACE-EVAP-RESTRICTED`: stateless Darcy-capacity route | Frozen production and current narrative support the restricted `SWINTER=0`, `SWREDU=0` evaluator | Explain ponded/unponded branch, hydraulic-capacity limitation and stateless ownership | Do not admit Black/Boesten-Stroosnijder cumulative routes, interception-dependent alternatives or performance claims |
 | Water balance and sign conventions | F-DOC18 states one conservative soil-water balance; current VQ accounting contract supplies a normalization convention | Status-A transaction architecture establishes tentative versus committed accounting and exactly-once accepted-state semantics | Distinguish process-local hydraulic signs from VQ normalized accounting signs; explain storage-change = net external transfer and single-authority accounting | Do not invent a single raw-code sign convention for every legacy/process variable. Where signs differ, adapters/process contracts must translate explicitly |
-| Upper hydrological boundary | F-DOC18 establishes an admitted top interface and restricted surface evaporation, but does not by itself enumerate the full Status-A top-boundary option set | Current production/evidence is distributed | Describe only boundary-role/accounting concepts already supported; defer detailed option catalogue until exact authority is acquired | No exhaustive rainfall/irrigation/runoff/ponding/interception option table yet |
-| Lower hydrological boundary | F-DOC18 establishes an admitted bottom interface; current Status-A includes bounded groundwater gateway/coupling capability | Current production/evidence is distributed across groundwater capability and coupling authorities | Explain the bottom interface as a mass-conserving external boundary and document only explicitly admitted gateway/coupling semantics after targeted acquisition | Do not infer broad legacy bottom-boundary modes or new MODFLOW semantics |
-| Drainage | Status-A admits Drainage as a bounded capability; detailed formulation authority is capability-specific | Current capability, qualification/admission and preservation evidence are distributed | Document scientific role and balance ownership only after targeted capability authority acquisition | Do not reconstruct drainage equations from legacy manuals unless reconciled against frozen implementation and admission evidence |
+| Upper hydrological boundary | F-DOC18 establishes the scientific top interface and restricted evaporation lineage | Frozen `src/solver/mod_soil_water_solver_contract.f90` plus `src/solver/mod_b110_dynamic_top_boundary_provider.f90` expose the bounded top flux/head interface and the restricted B1.10 atmospheric/flux/ponding/linear-runoff routes | Explain the boundary interface, surface supply composition, regime switching and accepted-state accounting for the acquired restricted route | No exhaustive historical rainfall, interception, runoff or top-boundary option catalogue |
+| Lower hydrological boundary | F-DOC18 establishes the bottom-interface role; Status-A admits Groundwater Coupling v1 | Frozen solver contract exposes bottom flux/head fields; F-GC28 plus the frozen restricted predictor-corrector runtime establish the bounded admitted groundwater composition | Explain the bottom interface, mass-transfer ownership and the admitted predictor/corrector publication semantics | Do not infer broad legacy bottom-boundary modes, arbitrary coupling schedules or unrestricted MODFLOW semantics |
+| Drainage | Frozen Drainage-v1 denominator is controlled by F-PM13 and closed by F-PM19 with variant-specific F-VQ authorities | Frozen production includes the restricted single-level linear evaluator and dedicated drainage-family modules; F-PM19 records all eight denominator variants scientifically/runtime qualified or preserved | Document drainage role, exact restricted linear response, fixed eight-variant denominator, balance ownership, transaction/restart/MultiSWAP bounds | Do not infer additional legacy drainage options, reverse exchange, or fully implicit response coupling; do not restate other variant equations until their exact scientific/source authority is stitched |
 | Richards discretisation / nonlinear solve | F-DOC18 T6/T7: implicit backward compartment scheme, actual water-content storage difference, internodal Darcy flux, restricted conductivity linearisation, Newton/Jacobian/tridiagonal solve/backtracking | Frozen reference implementation plus current numerical/transaction evidence | Expand reviewer-facing numerical formulation within the frozen reference route | No RossFast promotion, no global true-error theorem, no universal iteration/tolerance claim |
 | Time stepping, retry, commit/rollback | Current numerical and Status-A architecture authorities separate solver candidate, assessment, retry and commit | Status-A transaction/preservation evidence | Explain that convergence is necessary but not by itself authority to mutate committed state; rejected trial accounting is non-authoritative | Do not define a new adaptive controller or imply that a performance mode may change physics |
-| Groundwater coupling | Status-A admits Groundwater Coupling v1 and external gateway boundary in bounded scope | Capability-specific current authorities exist, but exact scientific formulation is distributed | Publish only after targeted acquisition of the current groundwater capability authority | No broad MODFLOW/backend evolution, no unqualified head/flux convergence claim |
+| Groundwater coupling | Status-A Groundwater Coupling v1 capability, F-GC qualification/admission chain | F-GC28 admission plus frozen `src/runtime/mod_groundwater_predictor_corrector_window.f90` and coupling/ledger contracts | Explain restricted predictor/corrector ownership, discard of predictor candidates, accepted corrector publication and paired interface transfer semantics | No broad backend evolution, no arbitrary temporal policy, no claim that head convergence alone proves mass closure |
 
 ## Cross-cutting publication rules
 
@@ -40,13 +46,16 @@ Historical SWAP/F-DOC18 material may establish scientific meaning and a bounded 
 6. **No duplicate water booking.** Reporting or attribution of a physical transfer does not create a second mass term.
 7. **No universal tolerance by prose.** Any numerical or mass tolerance must retain its qualification/provenance authority.
 
-## Initial publication slice permitted by this matrix
+## Acquired publication slice
 
-The presently acquired authority is sufficient to publish, without reopening scientific qualification:
+The acquired authority is now sufficient to publish, without reopening scientific qualification:
 
-- water balance and sign/unit conventions at the reviewer-facing level;
+- water balance and sign/unit conventions at reviewer-facing level;
 - restricted reference ET and drought-only root-water uptake;
+- restricted B1.10 upper-boundary semantics and explicit lower-boundary contract framing;
+- Groundwater Coupling v1 predictor/corrector ownership and publication semantics;
+- Drainage-v1 role, exact restricted linear response and the fixed eight-variant completion denominator;
 - additional detail for the existing reference Richards numerical narrative;
-- explicit boundaries on what those pages do not claim.
+- explicit boundaries on what these pages do not claim.
 
-Detailed upper/lower boundary catalogues, drainage equations and groundwater-coupling formulation remain `ACQUIRE_REQUIRED` until their exact current authorities are reconciled.
+Still deferred are an exhaustive historical top/lower boundary catalogue, detailed equations for the seven non-linear/non-single-level drainage denominator variants, and any post-Status-A solver-selection semantics outside the frozen review denominator.
