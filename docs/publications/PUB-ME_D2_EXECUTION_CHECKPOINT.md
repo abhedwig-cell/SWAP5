@@ -134,6 +134,7 @@ Allowed classifications:
 - `NO_INCREMENTAL_VALUE`: B1 detects the defect at the same transition boundary without the B2 authority oracle;
 - `STRUCTURAL_PREVENTION`: the admitted transaction surface makes the seeded early accepted-ledger publication unrepresentable and the observing fault cannot be instantiated without production mutation;
 - `BLOCKED_REFERENCE_RETRY_AUTHORITY`: the unchanged FCI14 retry route no longer reproduces its established one-rejection/one-retry accepted behavior.
+- `BLOCKED_ZERO_EXCHANGE_CONTEXT`: the preregistered rejected two-half attempt carries exactly zero mass in and out, so this fixed context cannot instantiate a double-counted exchange defect without choosing a new case post hoc.
 
 The result may reject the paper hypothesis.
 
@@ -150,4 +151,4 @@ The result may reject the paper hypothesis.
 
 ## Next permitted action
 
-Implement the observing model and matched CLEAN/MUTANT test exactly as frozen above. Run under O0 and O2. If the FCI14 clean retry authority does not reproduce, stop with `BLOCKED_REFERENCE_RETRY_AUTHORITY` and do not tune the case.
+Implement the observing model and matched CLEAN/MUTANT test exactly as frozen above. Run under O0 and O2. If the FCI14 clean retry authority does not reproduce, stop with `BLOCKED_REFERENCE_RETRY_AUTHORITY` and do not tune the case. If the rejected first-attempt two-half exchange is exactly zero, stop with `BLOCKED_ZERO_EXCHANGE_CONTEXT`; a new physical context would require a separate preregistration.
