@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "ADMISSION_READY_CLOSE",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "qualified_subject_head": "f3c056bf236c21fd477a2ee570c4755d5249d5f3",
+  "expected_parent": "f3c056bf236c21fd477a2ee570c4755d5249d5f3",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
+    "merge_base": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+    "subject_ahead_by": 26,
+    "subject_behind_by": 94,
+    "relationship": "diverged",
+    "latest_change": "F-DOC29 documentation-only Serialized MultiSWAP v1 technical reference; commit explicitly states no production, reference or test changes.",
+    "relevant_dependency_delta": "NONE_DETECTED"
+  },
+  "current_canonical_dependency_blobs": {
+    "src/process/mod_pmdirect_swetr0_process.f90": "fcf35da81011543bac7cf0c71bcbd7ac34b09b64",
+    "src/crop/mod_crop_root_uptake_input_contract.f90": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "src/process/mod_reference_et_demand_process.f90": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "src/runtime/mod_fmr_reference_et_demand_binding.f90": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82"
+  },
+  "production_delta": {
+    "exact_new_files": [
+      "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90",
+      "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90",
+      "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90"
+    ],
+    "root_binding_blob": "89d2d42e85c51d0b174d0382dabd3ec8f7417b68",
+    "surface_binding_blob": "1a67d8a25727c2e821dd11e4853aa925e43cd95b",
+    "dynamic_top_binding_blob": "a6e1ed43bb9ee7cb13d088668c3874a11877980a",
+    "existing_production_files_modified": false,
+    "new_physics": false,
+    "solver_changed": false,
+    "transaction_or_retry_lifecycle_changed": false
+  },
+  "owner_qualification": {
+    "checkpoint": "integration/f-app/F-APP04_TYPED_APPLICATION_COMPOSITION_QUALIFICATION.json",
+    "qualified_head": "3961bb8090887fddccb5a17276ee33f2d4b8cbbe",
+    "workflow_run_id": 35275345029,
+    "verdict": "PASS_F_APP04_RESTRICTED_PMDIRECT_TYPED_APPLICATION_COMPOSITION_OWNER_QUALIFICATION",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "974a49a66be38e8a38f53c92f76ce5b4b754785d2fb1856798a4813191e65bea"
+  },
+  "independent_qualification": {
+    "branch": "qualification/f-vq103-fapp04-pmdirect-typed-composition-independent",
+    "evidence_commit": "0cdc78e8997588c904c6fde7887dd6ad8023dec3",
+    "checkpoint": "integration/f-vq/F-VQ103_FAPP04_INDEPENDENT_QUALIFICATION.json",
+    "qualified_workflow_head": "862ca17649d243c11473b2b55a40669f7d1c2a0d",
+    "workflow_run_id": 35275737534,
+    "job_id": 105385803293,
+    "verdict": "PASS_F_VQ103_FAPP04_TYPED_COMPOSITION_INDEPENDENT_QUALIFICATION",
+    "no_production_mutation": "PASS",
+    "no_pmdirect_formula_reimplementation": "PASS",
+    "root_identity_sweep_n": 8,
+    "surface_identity_sweep_n": 6,
+    "dynamic_top_identity_preservation_sweep_n": 8,
+    "all_fail_closed_gates": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "048480b041d89cc5816f53855f04f1eb8abb8a7194895e9a160b63796f81a7a0"
+  },
+  "admission_requirements": {
+    "exact_authority_restored": true,
+    "F_APP03_scientific_process_admitted": true,
+    "owner_qualification_passed": true,
+    "independent_qualification_passed": true,
+    "current_canonical_dependencies_unchanged": true,
+    "status": "READY_FOR_CURRENT_HEAD_ADMISSION_QUALIFICATION"
+  },
+  "verdict": "F_APP04_ADMISSION_READY_OWNER_AND_INDEPENDENT_QUALIFICATION_PASS",
+  "whole_hupsel_closed": false,
+  "m1_c3_closed": false,
+  "next_permitted_action": "Open a bounded admission PR from this branch to current integration/f-ci-canonical. Require mergeability and current-head canonical qualification. Merge only if relevant gates pass and live canonical has no semantic dependency drift. After admission, hand off to M1-C3 legacy-file-to-typed application composition; do not claim M1-C3 from F-APP04 itself.",
+  "exclusions": [
+    "SWINTER=3 / Rutter",
+    "SWCF=2",
+    "legacy file-driven application adapter",
+    "whole-Hupsel reference-equivalence closure",
+    "M1-C3 closure",
+    "new application runtime",
+    "solver, transaction, retry, timestep or tolerance changes"
+  ]
+}
