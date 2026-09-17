@@ -22,18 +22,19 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 2. [Water balance, signs and units](water-balance-and-conventions.md)
 3. [Vertical soil-water flow](soil-water-flow.md)
 4. [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md)
-5. [Hydrological boundary conditions](hydrological-boundary-conditions.md)
-6. [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md)
-7. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
-8. [Surface evaporation](surface-evaporation.md)
-9. [Drainage](drainage.md)
-10. [Drainage-v1 formulations](drainage-formulations.md)
-11. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md)
-12. [Restricted one-call-daily Snow formulation](restricted-snow.md)
-13. [Status-A capability review pages](../capabilities/index.md)
-14. [Numerical formulation](../numerics/index.md)
-15. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-16. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+5. [Soil-hydraulic parameter provenance](soil-hydraulic-parameter-provenance.md)
+6. [Hydrological boundary conditions](hydrological-boundary-conditions.md)
+7. [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md)
+8. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
+9. [Surface evaporation](surface-evaporation.md)
+10. [Drainage](drainage.md)
+11. [Drainage-v1 formulations](drainage-formulations.md)
+12. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md)
+13. [Restricted one-call-daily Snow formulation](restricted-snow.md)
+14. [Status-A capability review pages](../capabilities/index.md)
+15. [Numerical formulation](../numerics/index.md)
+16. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+17. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
 
 ## Technical-reference discipline
 
@@ -58,7 +59,7 @@ Some Status-A capabilities need a bounded reviewer-facing explanation even thoug
 
 For WOFOST, Snow and Groundwater Coupling v1, the scientific section now also provides dedicated bounded references. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md) separates the independently qualified crop-owned state surface from SWAP-owned hydrological interfaces and runtime event delivery. [Restricted one-call-daily Snow formulation](restricted-snow.md) records the exact admitted daily process, storage partitioning and component mass classification without generalizing to other durations. [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md) records the exact head-datum translation, flux signs and units, whole-window exchange, restricted predictor-corrector route and accepted-state interface ledger without promoting the structural gateway to broad backend admission.
 
-For the reference soil-water route, [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md) records the exact bounded default B1.10 MvG value-provider behind `theta(h)`, `C(h)` and `K(h,theta)`, including its near-saturation and modified transition branches. It also keeps the ordinary F-SI09 value-provider distinct from the separately qualified F-SI37 fixed-smooth-route directional derivative capability.
+For the reference soil-water route, [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md) records the exact bounded default B1.10 MvG value-provider behind `theta(h)`, `C(h)` and `K(h,theta)`, including its near-saturation and modified transition branches. It also keeps the ordinary F-SI09 value-provider distinct from the separately qualified F-SI37 fixed-smooth-route directional derivative capability. [Soil-hydraulic parameter provenance](soil-hydraulic-parameter-provenance.md) then records the narrower source-bound `cofgen` row provenance and explicitly preserves unresolved original field names and units rather than filling them from textbook convention.
 
 The scientific reference pages can add physical meaning and equations where theory, implementation and qualification have been reconciled. The capability pages remain the controlling source for the admitted review scope.
 

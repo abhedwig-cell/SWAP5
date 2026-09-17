@@ -1,0 +1,42 @@
+{
+  "workunit": "PUB-P2E05",
+  "phase": "PREREGISTERED_CONTRACT_CORRECTION",
+  "base_canonical": "dd394f33b8687e457c4d40e9765551b58fe11b6c",
+  "branch": "work/pub-p2e05-solver-residual-contract",
+  "trigger": "PUB-P2E04 established that the shared soil-water solve-result residual has route-dependent physical dimensions: Reference publishes a HeadCalc equation-balance rate residual while RossFast publishes an integrated water-balance residual.",
+  "contract": {
+    "legacy_field": {
+      "name": "unrounded_mass_balance_residual",
+      "policy": "retain unchanged route-specific numeric value for compatibility, but treat as deprecated/ambiguous and do not use in new cross-solver publication gates"
+    },
+    "integrated_field": {
+      "name": "integrated_mass_balance_residual_cm",
+      "availability": "integrated_mass_balance_residual_available",
+      "unit": "cm",
+      "semantics": "solver-level time-integrated water-balance/equation-balance residual; not the canonical transaction mass ledger"
+    },
+    "native_rate_field": {
+      "name": "native_balance_rate_residual_cm_per_day",
+      "availability": "native_balance_rate_residual_available",
+      "unit": "cm/day",
+      "semantics": "solver-native equation-balance rate residual; Reference exposes exact final HeadCalc residual sum, RossFast leaves unavailable unless independently defined"
+    }
+  },
+  "reference_binding_rule": "For qualified accepted Reference bottom modes 2 and 5, preserve the historical legacy-field value as the exact final HeadCalc residual sum, expose the same value as the native rate residual, and expose step_duration times that value as the integrated residual in cm.",
+  "rossfast_binding_rule": "Preserve the historical legacy-field value exactly and expose that same integrated value through the typed cm field; do not synthesize a native rate residual.",
+  "publication_requalification": "PUB-P2E01 cross-solver mass gates must require typed integrated residual availability and compare only the cm-valued integrated residuals against the existing RossFast hard mass tolerance in cm. Head/theta/storage disagreement metrics remain unchanged.",
+  "prohibited_changes": [
+    "no HeadCalc physics changes",
+    "no Reference convergence-tolerance changes",
+    "no RossFast hard-mass-tolerance changes",
+    "no new RossFast admissibility threshold",
+    "no investigation or repair of the 103 PUB-P2E04 RETRY_LOCAL_BAL cases",
+    "no rewriting of PUB-P2E03 or PUB-P2E04 immutable result history"
+  ],
+  "qualification": [
+    "focused PUB-P2E01 O0/O2 paired-pilot replay with byte-identical optimization outputs",
+    "documentation checks",
+    "full F-CI canonical qualification on the PR merge image"
+  ],
+  "verdict": "PREREGISTERED_NOT_YET_QUALIFIED"
+}

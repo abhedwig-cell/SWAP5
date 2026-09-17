@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "ACQUIRE_PASS",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "1cda8394817d1b0d0499b66b1486b0e1ea2fdd31",
+  "canonical_head": "5efb2603524145192f80b3472c288c1b6828cf69",
+  "authority": {
+    "uploaded_archive_name": "SWAP_4.3.1(4).zip",
+    "official_distribution_sha256_expected": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "official_distribution_sha256_observed": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "distribution_match": true,
+    "nested_source_archive_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_sha256_expected": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "nested_source_sha256_observed": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "nested_source_match": true,
+    "mod_meteo_path": "SWAP/MOD_meteo.f90",
+    "mod_meteo_sha256_expected": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "mod_meteo_sha256_observed": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "mod_meteo_match": true,
+    "hupsel_swap_path": "SWAP_4.3.1/cases/1.hupselbrook/swap.swp",
+    "hupsel_swap_sha256_expected": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_swap_sha256_observed": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_swap_match": true
+  },
+  "exact_fwind_authority": {
+    "reader": "if (rdinqr('fwind')) call rdsdor ('fwind',0.5d0,5.d0,fwind)",
+    "reader_location": "MOD_meteo.f90:279",
+    "default_assignment": "fwind = 1.d0",
+    "hupsel_literal": "FWIND = 1.0",
+    "hupsel_location": "swap.swp:180",
+    "active_operator": "ud = max (win * fwind, 0.0001d0)",
+    "operator_location": "MOD_meteo.f90:1804",
+    "operator_context": "convert average windspeed (24h) to average daytime windspeed (7-19h) and avoid zero windspeed, before wind-height adjustment",
+    "qualified_hupsel_effect": "For the official Hupsel configuration FWIND=1.0, ud=max(win,0.0001d0); no additional multiplicative change to nonzero daily wind occurs before the subsequent height adjustment."
+  },
+  "closed_gaps": [
+    "Exact SWAP 4.3.1 executable FWIND application operator.",
+    "Exact official Hupsel FWIND value."
+  ],
+  "still_missing_before_numeric_precheck": [
+    "Original frozen numeric four-step 2002-06-10 precheck payload.",
+    "Original normalization and comparison contract for that precheck."
+  ],
+  "qualification": {
+    "attempted": false,
+    "reason": "Persist-early rule: exact source/config authority was acquired and checkpointed before any numerical qualification."
+  },
+  "verdict": "ACQUIRE_PASS_EXACT_431_SOURCE_AND_HUPSEL_FWIND_AUTHORITY_CLOSED_PRECHECK_PAYLOAD_STILL_REQUIRED",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "new_branch": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Recover the original immutable four-step 2002-06-10 precheck payload and normalization/comparison contract from historical A21/A22 qualification artifacts or repository history.",
+    "Do not recreate expected numeric values from the newly available source or from desired outputs.",
+    "Only after recovery of that frozen comparison authority run the observation-only preregistered precheck."
+  ]
+}

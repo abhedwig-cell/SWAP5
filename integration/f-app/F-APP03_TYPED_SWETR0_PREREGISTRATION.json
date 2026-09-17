@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel SWETR=0 typed application composition",
+  "phase": "DESIGN_PREREGISTER_TYPED_SWETR0_CONTRACT",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "expected_parent": "21508f0d70672d92132c553a344c35f6b7b2296f",
+  "governing_m1_criterion": "Legacy file runs still reproduce reference results through adapters, while kernel-facing interfaces contain no path, file-unit or parser semantics.",
+  "authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_member": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90",
+    "fixture": "SWAP_4.3.1/cases/1.hupselbrook",
+    "upstream_checkpoints": [
+      "integration/f-app/F-APP03_HUPSEL_AUTHORITY_RESTORED.json",
+      "integration/f-app/F-APP03_A13_PMDIRECT_REDERIVATION.json"
+    ],
+    "qualified_counts": {
+      "hupsel_daily_records": 1096,
+      "maize_swinter1_daily_records": 384,
+      "positive_interception_days": 65,
+      "positive_interception_timesteps": 1641,
+      "emerged_maize_days": 149
+    }
+  },
+  "decision": "PREREGISTER_MINIMUM_TYPED_SWETR0_APPLICATION_SURFACE_WITH_EXPLICIT_RUTTER_BOUNDARY",
+  "typed_contract": {
+    "daily_weather_forcing": {
+      "semantics": "Immutable physical weather record resolved read-only by model time; no mutable file cursor may advance during retry.",
+      "fields": [
+        "radiation_j_m2_d",
+        "minimum_air_temperature_c",
+        "maximum_air_temperature_c",
+        "vapour_pressure_kpa",
+        "wind_speed_m_s",
+        "gross_rain_cm_d"
+      ],
+      "file_only_fields_not_kernel_authority": [
+        "station identifier",
+        "calendar row syntax",
+        "file path",
+        "file unit",
+        "parser state"
+      ]
+    },
+    "site_and_pm_parameters": {
+      "candidate_fields_recovered_from_A21": [
+        "latitude_degrees",
+        "altitude_m",
+        "wind_measurement_height_m",
+        "humidity_measurement_height_m",
+        "angstrom_a",
+        "angstrom_b",
+        "wind_function_factor",
+        "soil_surface_resistance_s_m"
+      ],
+      "rule": "The production implementation may consume only fields whose use is confirmed from exact MOD_meteo source authority. Listing a field here does not assert that it is active on every Hupsel route."
+    },
+    "canopy_view": {
+      "fields": [
+        "crop_emerged",
+        "lai",
+        "vegetation_cover_fraction",
+        "interception_method",
+        "crop_factor_mode",
+        "cofab_cm",
+        "albedo",
+        "dry_canopy_resistance_s_m",
+        "wet_canopy_resistance_s_m",
+        "co2_transpiration_factor"
+      ],
+      "rule": "Legacy crop development may remain the producer behind an adapter; the SWETR=0 process must not import plant_interface or MOD_cropdevelopment directly."
+    },
+    "daily_pm_result": {
+      "fields": [
+        "potential_soil_evaporation_cm_per_day",
+        "potential_pond_evaporation_cm_per_day",
+        "potential_transpiration_dry_cm_per_day",
+        "potential_transpiration_wet_cm_per_day",
+        "interception_evaporation_capacity_cm_per_day"
+      ],
+      "diagnostic_oracle_fields": [
+        "es0_mm_per_day",
+        "et0_mm_per_day",
+        "ew0_mm_per_day",
+        "ep0_mm_per_day"
+      ]
+    },
+    "interval_application_result": {
+      "fields": [
+        "net_rain_cm_per_day",
+        "wet_canopy_fraction",
+        "potential_transpiration_cm_per_day",
+        "interception_rate_cm_per_day"
+      ],
+      "downstream_bindings": {
+        "potential_transpiration": "Existing crop/root uptake input contract, cm/day.",
+        "potential_soil_evaporation": "Existing surface evaporation demand seam, cm/day.",
+        "potential_pond_evaporation": "Existing pond evaporation demand seam, cm/day.",
+        "net_rain": "Existing dynamic top-boundary precipitation forcing seam, cm/day."
+      }
+    }
+  },
+  "route_partition": {
+    "native_candidate_now": {
+      "selectors": [
+        "SWETR=0",
+        "SWDIVIDE=1",
+        "SWMETDETAIL=0",
+        "SWRAIN=0",
+        "SWINTER=1",
+        "SWCF=1"
+      ],
+      "scope": "Exact A12 interception/net-rain plus exact A13 PMdirect/ETpot/ProcessMeteoDT composition for the independently rederived maize route."
+    },
+    "whole_hupsel_boundary": {
+      "finding": "The complete Hupsel case also exercises SWINTER=3/SWCF=2 days. Daily Rutter capacity/state semantics have historical typed evidence, but the within-day Rutter flux route is not independently rederived by the current F-APP03 A12 checkpoint.",
+      "policy": "Do not claim whole-Hupsel M1 criterion-3 closure until SWINTER=3 within-day process-ready forcing is either independently typed and qualified from exact authority or retained behind an explicit adapter whose output is independently shown to satisfy this typed contract without leaking file/parser semantics into the kernel.",
+      "no_silent_fallback": true
+    }
+  },
+  "qualification_preregistration": {
+    "process_gate": [
+      "1096-day SWETR=0 PMdirect daily oracle comparison at <=1e-12 for A13 fields.",
+      "384-day SWINTER=1 A12 comparison with exact 65 positive-interception days and 1641 positive-interception timesteps.",
+      "No mismatch in net rain, wet fraction and mixed ptra above the preregistered tolerance."
+    ],
+    "integration_gate": [
+      "Typed process values bind to existing root-uptake and surface/top-boundary contracts without unit or sign conversion ambiguity.",
+      "Retry/rejected trial does not advance weather/crop forcing state.",
+      "Legacy file adapter remains outside process/kernel modules.",
+      "Full official Hupsel file replay reproduces normalized reference result.bal and result.blc identities before M1-C3 closure."
+    ],
+    "compiler_policy": "Strict Fortran qualification plus O0/O2 comparison where the candidate is implemented; no physics/tolerance changes permitted to obtain PASS."
+  },
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "mutations": [
+    "Add this preregistration checkpoint only."
+  ],
+  "next_permitted_action": "Recover exact executable equations for the restricted SWINTER=1 SWETR=0 PMdirect/A12-A13 path from source authority already used by F-APP03 qualification, then implement the smallest pure typed process and runtime binding. Treat SWINTER=3 separately and fail closed rather than broadening the first candidate by inference.",
+  "prohibited": [
+    "substitute SWETR=1 reference ET for PMdirect",
+    "infer or fit equations from oracle outputs",
+    "broaden to generic ET, crop or file-IO redesign",
+    "change solver, timestep, tolerances or Hupsel physics",
+    "claim full Hupsel or M1-C3 closure from SWINTER=1 qualification alone"
+  ]
+}

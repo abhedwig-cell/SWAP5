@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel daily meteorological application-semantics recovery",
+  "phase": "RECONCILE_SOURCE_AUTHORITY_RECOVERY",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404"
+  },
+  "branch_precheckpoint_head": "c6062d5e786189b96a4a637fc6abc1353973b088",
+  "recovered_external_authority": {
+    "source": "user File Library historical A21 qualification material",
+    "primary_source_name": "mod_a21_atmospheric_forcing_profile.f90",
+    "supporting_record": "README_A21.md",
+    "status": "SOURCE_SEMANTICS_RECOVERED_EXTERNAL_NOT_CANONICAL",
+    "qualified_branch": {
+      "SWETR": 0,
+      "SWDIVIDE": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0
+    },
+    "static_config_fields": [
+      "METFIL", "LAT", "ALT", "ALTW", "ALTH", "ANGSTROMA", "ANGSTROMB", "FWIND", "RSOIL",
+      "SWETR", "SWDIVIDE", "SWMETDETAIL", "SWRAIN"
+    ],
+    "daily_record_fields": [
+      "valid_from", "radiation_j_m2_d", "tmin_c", "tmax_c", "vapour_pressure_kpa", "wind_m_s",
+      "gross_rain_cm_d", "etref_cm_d", "wet_fraction"
+    ],
+    "exact_transformations": [
+      "MET radiation value -> radiation_j_m2_d by multiplication by 1000",
+      "MET rain value -> gross_rain_cm_d by multiplication by 0.1",
+      "ETref is read and converted from mm/d to cm/d by multiplication by 0.1"
+    ],
+    "time_semantics": "Daily records are immutable and strictly time ordered. Resolution is by accepted model time using a read-only search; no mutable meteorological pointer advances during trial/retry.",
+    "parser_contract": "Data rows parse station, day, month, year, radiation, Tmin, Tmax, vapour pressure, wind, rain, ETref, wet fraction. Header/comment rows are excluded. Unsupported selector combinations fail closed.",
+    "historical_qualification": {
+      "full_hupsel_daily_records": 1096,
+      "mismatches_at_1e_12": 0,
+      "O0_O2": "BYTE_IDENTICAL",
+      "integrated_four_step_newton_routes": "IDENTICAL",
+      "integrated_four_step_backtracking_routes": "IDENTICAL",
+      "max_ptra_delta": 1.1102230246251565e-16,
+      "max_final_h_delta_cm": 3.979039320256561e-13,
+      "max_theta_delta": 2.775557561562891e-16,
+      "qtop": "IDENTICAL"
+    }
+  },
+  "related_historical_crop_boundary": {
+    "authority": "README_A22.md",
+    "status": "SUPPORTING_NOT_CURRENT_CANONICAL_AUTHORITY",
+    "chain": "legacy crop development -> LegacyCropAdapter -> CropSnapshot -> A12/A13/A14",
+    "qualified_simple_maize_snapshots": 3403,
+    "invalid_snapshots": 0,
+    "integrated_A22_vs_A21": "BYTE_IDENTICAL",
+    "nonclaim": "A22 does not provide native crop development or a current F-series Hupsel application composition authority."
+  },
+  "fixture_recovery": {
+    "expected_hupsel_meteo": "283.met",
+    "expected_sha256_from_F_VQ99": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "expected_case_config": "swap.swp",
+    "raw_fixture_bytes_found_in_repository": false,
+    "raw_fixture_bytes_found_in_current_File_Library_search": false,
+    "F_VQ99_export_artifact_contains_official_431_case": false,
+    "status": "EXACT_RAW_FIXTURE_NOT_CURRENTLY_REMATERIALIZABLE_FROM_PERSISTED_REPOSITORY_OR_FILE_LIBRARY_ASSETS"
+  },
+  "downstream_process_authority_recovery": {
+    "A21_A22_records_prove_process_chain_existed": true,
+    "required_processes": [
+      "A12 interception/net precipitation",
+      "A13 crop-atmosphere ET for Hupsel SWETR=0",
+      "A14 root uptake binding after crop snapshot"
+    ],
+    "A12_source_recovered": false,
+    "A13_source_recovered": false,
+    "A14_source_recovery_required_for_this_phase": false,
+    "finding": "A21 proves raw weather was no longer an input from MOD_meteo and that legacy peva/ptra/interception/net-rain were comparison oracles only. However the A12/A13 source/formal process definitions needed to independently reconstruct SWETR=0 process-ready forcing are not present in the currently recovered assets."
+  },
+  "current_canonical_state": {
+    "F_APP02_SWBOTB6_binding": "ADMITTED_BY_F_CI95",
+    "SWBOTB6_blocker": "CLEARED",
+    "typed_SWETR0_application_derivation": "NOT_ADMITTED",
+    "M1_C3": "NOT_CLOSED"
+  },
+  "verdict": "F_APP03_RECOVERY_ADVANCED_BLOCKED_MISSING_A12_A13_AND_EXACT_RAW_FIXTURE",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "mutations": [
+    "Added this source-authority recovery checkpoint only."
+  ],
+  "next_permitted_action": "Recover the exact historical A12 interception/net-precipitation and A13 Hupsel SWETR=0 crop-atmosphere ET process sources/evidence, and recover or legitimately rematerialize the authority-pinned raw Hupsel swap.swp + 283.met fixture. If both are recovered, preregister a minimum typed SWETR=0 application contract and independently qualify it before any production admission. Do not infer formulas from output or substitute the existing SWETR=1 typed ET path.",
+  "exclusions": [
+    "no new physics",
+    "no parser or broad file-IO redesign",
+    "no public API redesign",
+    "no legacy default-route change",
+    "no output fitting",
+    "no SWETR=1 substitution for SWETR=0",
+    "no M1 criterion-3 closure claim"
+  ]
+}

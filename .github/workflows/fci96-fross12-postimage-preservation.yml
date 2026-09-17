@@ -7,10 +7,16 @@ on:
     paths:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_rossfast_solver_selection_binding.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
       - 'tests/ross/**'
       - 'tests/eb/**'
+      - 'tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90'
       - 'tests/fci/run_fci96_fross12_postimage_preservation.sh'
+      - 'tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh'
+      - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_PREREGISTRATION.json'
+      - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_RESULT.json'
       - 'integration/f-ci/F-CI96_STATUS.json'
       - 'integration/f-ross/F-ROSS12_STATUS.json'
       - '.github/workflows/fci-canonical.yml'
@@ -22,10 +28,16 @@ on:
     paths:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_rossfast_solver_selection_binding.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
       - 'tests/ross/**'
       - 'tests/eb/**'
+      - 'tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90'
       - 'tests/fci/run_fci96_fross12_postimage_preservation.sh'
+      - 'tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh'
+      - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_PREREGISTRATION.json'
+      - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_RESULT.json'
       - 'integration/f-ci/F-CI96_STATUS.json'
       - 'integration/f-ross/F-ROSS12_STATUS.json'
       - '.github/workflows/fci-canonical.yml'
@@ -48,5 +60,12 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Reconcile and replay admitted F-ROSS12 successor postimage
-        run: bash tests/fci/run_fci96_fross12_postimage_preservation.sh
+      - name: Reconcile exact postimage or qualified P2E05 semantic successor
+        run: |
+          FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
+          if [[ "$(git rev-parse HEAD:src)" == "$(git rev-parse "$FROSS12_AUTH:src")" ]] && \
+             [[ "$(git rev-parse HEAD:reference)" == "$(git rev-parse "$FROSS12_AUTH:reference")" ]]; then
+            bash tests/fci/run_fci96_fross12_postimage_preservation.sh
+          else
+            bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh
+          fi

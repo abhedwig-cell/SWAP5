@@ -24,12 +24,15 @@ TEST=tests/ross/test_ross12_solver_selection_binding.f90
 ASSET_ROOT=assets/rossfast/d3r
 
 test "$(git rev-parse HEAD:$TX)" = d5a71a526efaebd82054580c3186f8e3545db331
-test "$(git rev-parse HEAD:$SW)" = 276941d76ba951a89c43899e61fd0532418d8230
+# PUB-P2E05 deliberately extends the common result ABI and the RossFast
+# adapter publishes the new typed integrated diagnostic. Rebind only those two
+# dependencies; all numerical/model/application authorities remain frozen.
+test "$(git rev-parse HEAD:$SW)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
 test "$(git rev-parse HEAD:$MODEL_BINDING)" = 9f29ba7a08844692ba2628c7869d23713409f92b
 test "$(git rev-parse HEAD:$KERNEL)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
 test "$(git rev-parse HEAD:$PROVIDER)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
-test "$(git rev-parse HEAD:$ADAPTER)" = 6d6f66273483c19c1d2318dad518c537186a0ae7
+test "$(git rev-parse HEAD:$ADAPTER)" = dbb441f3529be179d64fb57f9c44336d3d20c540
 test "$(git rev-parse HEAD:$APP_HOST)" = daca18b77673608436425e81ecd397ef3e35e4b2
 
 WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)

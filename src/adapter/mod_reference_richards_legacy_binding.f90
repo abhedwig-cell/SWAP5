@@ -162,15 +162,26 @@ contains
            .not. ws%legacy_worker%control%request_dt_reduction) then
           call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = &
+               request%step_duration * result%unrounded_mass_balance_residual
        end if
 
        ! SWBOTB=2 prescribes qbot directly. For an accepted solve the final
        ! unrounded compartment residual vector is already the exact vector used
-       ! by HeadCalc's total-balance convergence criterion. Publish its sum as
-       ! the solver mass diagnostic without changing state, fluxes, or physics.
+       ! by HeadCalc's total-balance convergence criterion. Preserve that exact
+       ! value in the compatibility field, expose it explicitly as cm/day, and
+       ! separately publish its time-integrated equation-balance residual in cm.
        if (request%boundary%bottom_mode == 2 .and. .not. state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = &
+               request%step_duration * result%unrounded_mass_balance_residual
        end if
 
        ! Native SWAP prescribed-qbot enters the implemented bottom residual as
