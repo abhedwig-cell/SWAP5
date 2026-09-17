@@ -26,10 +26,12 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 6. [Surface evaporation](surface-evaporation.md)
 7. [Drainage](drainage.md)
 8. [Drainage-v1 formulations](drainage-formulations.md)
-9. [Status-A capability review pages](../capabilities/index.md)
-10. [Numerical formulation](../numerics/index.md)
-11. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-12. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+9. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md)
+10. [Restricted one-call-daily Snow formulation](restricted-snow.md)
+11. [Status-A capability review pages](../capabilities/index.md)
+12. [Numerical formulation](../numerics/index.md)
+13. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+14. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
 
 ## Technical-reference discipline
 
@@ -51,6 +53,8 @@ Some Status-A capabilities need a bounded reviewer-facing explanation even thoug
 - bounded WOFOST runtime;
 - restricted one-call-daily Snow;
 - Groundwater Coupling v1.
+
+For WOFOST and Snow, the scientific section now also provides dedicated bounded references. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md) separates the independently qualified crop-owned state surface from SWAP-owned hydrological interfaces and runtime event delivery. [Restricted one-call-daily Snow formulation](restricted-snow.md) records the exact admitted daily process, storage partitioning and component mass classification without generalizing to other durations.
 
 The scientific reference pages can add physical meaning and equations where theory, implementation and qualification have been reconciled. The capability pages remain the controlling source for the admitted review scope.
 
