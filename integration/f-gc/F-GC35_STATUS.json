@@ -3,8 +3,8 @@
   "capability": "F-GC35",
   "title": "MODFLOW6 XMI Package Adapter",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_XMI_PACKAGE_ADAPTER_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_XMI_PACKAGE_ADAPTER_CONTRACT",
   "source_branch": {
     "branch": "work/f-gc34-modflow6-api-binding",
     "head": "0840229ab58fbc3525de56797c87f43f22f35891",
@@ -12,31 +12,74 @@
     "checkpoint_run": 35287663672,
     "checkpoint_conclusion": "success"
   },
+  "work_branch": {
+    "branch": "work/f-gc35-modflow6-xmi-package-adapter",
+    "design_commit": "ca452615aaab7ee36819ac912593a5a306037215",
+    "implementation_commit": "16101e4cd79b8eedca9e61a64e2f079ac44b544b",
+    "qualified_head": "2a56e09f42532fbc78001f9edeed05d9d93d34b5"
+  },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
     "head": "1604b89e6bebf6436dcd2718b8e150bf909d8a01",
-    "relevant_delta": "No canonical movement since the F-GC34 reconciliation."
+    "relevant_delta": "No canonical movement during F-GC35 implementation/qualification."
   },
   "external_semantics_evidence": {
     "imod_coupler": {
       "repository": "Deltares/imod_coupler",
       "commit": "3ddeec26ba1a0f1fcb4cf681b3f3202b4a6de6b7",
-      "decision": "API package pointers are NODELIST/HCOF/RHS/MAXBOUND/NBOUND; API-package mutation occurs after mf6.prepare_time_step."
+      "files": [
+        "imod_coupler/kernelwrappers/mf6_wrapper.py",
+        "imod_coupler/drivers/ribametamod/ribametamod.py",
+        "imod_coupler/drivers/ribametamod/exchange.py"
+      ],
+      "evidence": "API package exposes NODELIST/HCOF/RHS/MAXBOUND/NBOUND; API package update follows mf6.prepare_time_step; NODELIST has a pre-prepare dummy/allocation caveat."
     },
     "xmipy": {
       "repository": "Deltares/xmipy",
       "commit": "9769f8cd4bc6153c71bcc360f602a931b102d902",
-      "decision": "get_var_address resolves kernel variable addresses and get_value_ptr returns live kernel-memory array views."
+      "file": "xmipy/xmiwrapper.py",
+      "evidence": "get_var_address resolves kernel variable addresses; get_value_ptr returns live ctypes-backed array views; prepare_time_step is a separate host lifecycle call."
     }
   },
-  "lifecycle_decision": {
-    "after_initialize": "resolve addresses and acquire initial views; publication closed",
-    "after_prepare_time_step": "reacquire all five views; validate capacity/types; open one timestep generation",
-    "publication": "invoke injected F-GC34 publisher on live XMI-backed arrays",
-    "before_prepare_solve": "require current generation successfully published, then close window",
-    "solver_ownership": "external host only"
+  "qualified_contract": [
+    "exact XMI address acquisition for NODELIST, HCOF, RHS, MAXBOUND and NBOUND",
+    "initial acquisition after MODFLOW initialize does not open publication",
+    "all five live pointer views are reacquired after each host prepare_time_step",
+    "post-prepare pointer validation requires positive MAXBOUND, scalar MAXBOUND/NBOUND, adequate array capacity and compatible exposed dtypes",
+    "pre-prepare stale/dummy NODELIST cannot be forwarded to the publisher after refresh",
+    "bindings and F-GC33 terms are forwarded to the injected F-GC34 publisher by identity without transformation",
+    "live NODELIST/HCOF/RHS/NBOUND views are forwarded by identity without copying",
+    "current timestep generation must have one successful F-GC34 publication before close_before_prepare_solve succeeds",
+    "a previous timestep publication cannot satisfy the next timestep generation",
+    "failed F-GC34 status does not satisfy the solve-boundary guard",
+    "adapter contains no calls to initialize, prepare_time_step, prepare_solve, solve, finalize_solve, finalize_time_step or finalize",
+    "adapter has no Ribasim or SWAP commit dependency"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC35 MODFLOW6 XMI package adapter",
+    "green_run": 35288102840,
+    "green_job": 105424815035,
+    "green_head": "2a56e09f42532fbc78001f9edeed05d9d93d34b5",
+    "conclusion": "success",
+    "pass_markers": [
+      "FGC35_XMI_POINTER_API_ONLY",
+      "FGC35_NO_MODFLOW_EXECUTION_OWNERSHIP",
+      "FGC35_EXACT_XMI_ADDRESS_ACQUISITION",
+      "FGC35_STALE_PRETIMESTEP_NODELIST_EXCLUDED",
+      "FGC35_FGC34_PUBLISHER_PASSTHROUGH",
+      "FGC35_PUBLICATION_WINDOW_GUARD",
+      "FGC35_PER_TIMESTEP_PUBLICATION_REQUIRED",
+      "FGC35_POINTER_VALIDATION_FAIL_CLOSED",
+      "FGC35_FAILED_PUBLISHER_NOT_ADMITTED",
+      "FGC35_XMI_PACKAGE_ADAPTER_GATE"
+    ],
+    "failed_iteration": {
+      "run": 35288076710,
+      "head": "16101e4cd79b8eedca9e61a64e2f079ac44b544b",
+      "disposition": "Standalone importlib test loader did not register the module in sys.modules before dataclass evaluation. Test infrastructure only; adapter code and lifecycle/XMI contract were unchanged."
+    }
   },
-  "planned_changes": [
+  "changes": [
     "docs/integration/F-GC35_MODFLOW6_XMI_PACKAGE_ADAPTER.md",
     "src/adapter/modflow6_xmi_package_adapter.py",
     "tests/fgc/test_fgc35_modflow6_xmi_package_adapter.py",
@@ -44,16 +87,28 @@
     ".github/workflows/f-gc35-modflow6-xmi-package-adapter.yml",
     "integration/f-gc/F-GC35_STATUS.json"
   ],
+  "mutations": [
+    "ca452615aaab7ee36819ac912593a5a306037215",
+    "16101e4cd79b8eedca9e61a64e2f079ac44b544b",
+    "2a56e09f42532fbc78001f9edeed05d9d93d34b5"
+  ],
+  "evidence_boundary": {
+    "qualified": "XMI API shape, live-view reacquisition contract, publication timing guard and injected F-GC34 publisher seam against a deterministic mock XMI kernel.",
+    "not_yet_qualified": [
+      "real libmf6 shared-library execution",
+      "actual xmipy NumPy pointer views in a live MODFLOW model",
+      "concrete cross-language bridge invoking the Fortran F-GC34 routine",
+      "end-to-end MODFLOW solve with SWAP5 tangent terms"
+    ]
+  },
   "exclusions": [
-    "F-GC34 logic duplication",
-    "MODFLOW initialize/prepare/solve/finalize ownership",
+    "MODFLOW execution ownership",
     "head exchange",
     "predictor/corrector orchestration",
     "SWAP transaction/commit changes",
     "Ribasim",
     "irrigation",
-    "live MODFLOW6 shared-library qualification",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement and qualify the host-side XMI pointer/lifecycle adapter against a deterministic mock XMI kernel that matches the pinned xmipy call shape."
+  "next_permitted_action": "A separately bounded live-kernel integration workunit: provide a concrete F-GC34 callable bridge and run a minimal MODFLOW6 API-package smoke test through xmipy, while keeping solve orchestration external."
 }
