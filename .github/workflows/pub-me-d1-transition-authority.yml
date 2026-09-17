@@ -1,0 +1,32 @@
+name: PUB-ME D1 transition authority
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_D1_EXECUTION_CHECKPOINT.md'
+      - 'tests/publication/test_pub_me_d1_clone_isolation.f90'
+      - 'tests/publication/test_pub_me_d1_illegal_write_through.f90'
+      - 'tests/publication/run_pub_me_d1_transition_authority.sh'
+      - '.github/workflows/pub-me-d1-transition-authority.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d1-transition-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered D1 gate
+        run: bash tests/publication/run_pub_me_d1_transition_authority.sh
