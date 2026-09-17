@@ -2,20 +2,23 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC25",
   "title": "Reference Richards Numerical Formulation and Solver Ownership",
-  "phase": "ACQUIRE",
-  "decision": "AUTHORITIES_ACQUIRED_READY_FOR_BOUNDED_DOCUMENTATION_UPDATE",
+  "phase": "VERIFY",
+  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc25-richards-numerical-reference",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "b861122a2661b42e30455142ceb110c51f22b595",
+  "canonical_reconciled_head": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
+  "verified_content_head": "42dfa3b2e288a8ce959a7227acafd582796a83e4",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
   "reconciliation": {
-    "live_canonical": "b861122a2661b42e30455142ceb110c51f22b595",
-    "relevant_delta_since_prior_documentation_state": "F-ROSS12 final closeout governance only; commit message explicitly records src/** and reference/** unchanged.",
+    "live_canonical_at_verify": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
+    "delta_from_start_to_verify": "Two canonical commits created and reverted an accidental F-DOC25 placeholder; compare b861122a..fc53f675 reports zero changed files and both commits resolve to the same canonical tree e612eee6a619d073e1be225df8dd2c52f12f89c2.",
+    "relevant_overlap": false,
     "frozen_scientific_denominator_changed": false
   },
   "acquired_authorities": {
@@ -47,6 +50,35 @@
       "Change production source, reference source, tests, scientific semantics or qualification thresholds."
     ]
   },
+  "published_reference": {
+    "primary_page": "docs/numerics/richards-solver.md",
+    "temporal_indicator_page": "docs/numerics/richards-temporal-indicator.md",
+    "authority_matrix": "integration/f-doc/F-DOC25_AUTHORITY_MATRIX.md",
+    "numerics_index_updated": true,
+    "mkdocs_navigation_updated": true
+  },
+  "verification": {
+    "pull_request": 175,
+    "verified_head": "42dfa3b2e288a8ce959a7227acafd582796a83e4",
+    "workflow": "Documentation",
+    "workflow_run": 35188952278,
+    "job": 105097033959,
+    "job_name": "Validate and build",
+    "conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pages_deploy": "SKIPPED_ON_PR_AS_EXPECTED",
+    "pr_changed_files": 6,
+    "pr_delta_classification": "DOCUMENTATION_NAVIGATION_AND_F_DOC_GOVERNANCE_ONLY"
+  },
+  "scope_delta": {
+    "changed_files": 6,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_changed": false,
+    "scientific_denominator_changed": false,
+    "documentation_navigation_governance_only": true
+  },
   "mutations": {
     "production_source_change": false,
     "reference_source_change": false,
@@ -54,6 +86,6 @@
     "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "Create the F-DOC25 authority matrix and update the Richards numerical reference only within the acquired claim ceiling. Then run documentation qualification before admission.",
-  "verdict": "PASS_ACQUIRE"
+  "next_permitted_action": "Recheck live integration/f-ci-canonical and PR #175. If no relevant numerical-authority or documentation overlap has appeared since fc53f6753458333fe05a7665d0d1436bc2eb7fef, admit PR #175. The VERIFY checkpoint update itself changes governance only and does not alter the already-qualified user-facing documentation.",
+  "verdict": "PASS_READY_FOR_ADMISSION"
 }
