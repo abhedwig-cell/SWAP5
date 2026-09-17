@@ -35,8 +35,8 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
 | `PUB-GC-E1` same-origin replay | PUB-GC | primary | COMPLETE | one-shot held-out primary `PUB-GC-E1-PRIMARY-0001` completed validly; both preregistered history discriminants exceeded their numerical floors while same-origin replay remained exact; H1 supported at operator-definition level only, practical materiality/generalization remain open |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | READY_FOR_REFERENCE_CONSTRUCTION | terminal comparator and `GC-REF-A` machinery are independently qualified; next freeze publication accuracy thresholds and construct case-specific stable L0/L1/L2 references before any primary H2 run |
-| `PUB-GC-E3` window convergence | PUB-GC | primary | READY_FOR_REFERENCE_CONSTRUCTION | `GC-REF-A` machinery is qualified; next construct case-specific L0/L1/L2 trajectories and admit only references whose L1-to-L2 refinement satisfies frozen stability thresholds |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | READY_FOR_SCREENING | comparator and `GC-REF-A` are qualified; first nested reference screening is stable; next freeze and execute a small transient screening matrix, then select held-out primary cases by a predeclared rule |
+| `PUB-GC-E3` window convergence | PUB-GC | primary | READY_FOR_SCREENING | multi-window `GC-REF-A` construction is demonstrated and the calm screening case is stable; next screen stronger transients, preserving full refinement ladders and excluding screening cases from held-out primary evidence |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
 | `PUB-GC-E6` bounded N:1 conservation | PUB-GC | supporting/primary table | READY_FOR_SCREENING | map existing F-GC25 cases into publication manifest without upscaling claims |
@@ -249,3 +249,18 @@ The register should describe readiness, not rewrite past chronology.
 - this qualifies the **reference machinery only**. No H2/H3 effect estimate or practical window threshold follows from the qualification fixture;
 - next permitted action: freeze publication accuracy thresholds, construct case-specific nested L0/L1/L2 trajectories, and require L1-to-L2 stability before calling the finest trajectory a numerical reference;
 - cross-publication firewall: no tangent/response acceleration inference belongs here; such efficiency claims remain `PUB-RC`.
+
+
+### 2026-09-17T23:57:13Z — first nested GC-REF-A trajectory screening stable
+
+- manifest: `PUB-GC-GC-REF-A-SCREEN-0001`, frozen at commit `a702dbd47bab84a634c49f3d3cdc4e63701317bd`;
+- result receipt commit: `9235d67ae83bfda902eb0fbb0af3712b94078d97`;
+- research branch/head: `research/pub-gc-reference-screening@c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f`;
+- execution: GitHub Actions run `35289048209`, job `105427691034`;
+- exact O0/O2 scientific-output identity: PASS;
+- accepted-state advancement used the normal SWAP commit-with-receipt route plus GW-A prepare/commit; root-search candidates remained discard-only;
+- frozen nested ladder: 0.04 d / 3 windows, 0.02 d / 6 windows, 0.01 d / 12 windows over the same 0.12 d interval;
+- L1→L2 differences: max matched GW head `1.08404898824178593e-7 m`, cumulative exchange `1.09111579993381724e-6 cm`, final max SWAP head-profile difference `7.49676515425790058e-4 cm`, max water-content difference `6.96306166836357932e-7`, storage difference `1.09111579993381724e-6 cm`;
+- all prospectively frozen stability criteria PASS;
+- this is supporting reference-construction evidence only; the calm case is permanently excluded from held-out E2/E3 primary evidence;
+- next permitted action: preregister a small transient screening matrix, build stable references for those cases, and use a frozen selection rule before held-out primary case freeze.
