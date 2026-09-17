@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.publication.p2e09-reference-only-threshold-freeze-result.v1",
+  "workunit": "PUB-P2E09",
+  "phase": "QUALIFIED_THRESHOLD_FREEZE_PENDING_FINAL_EXACT_HEAD_GATES",
+  "canonical_base": "b7e48275ebfba5ba888685f7515005c7195d5d73",
+  "branch": "work/pub-p2e09-reference-threshold-freeze",
+  "pull_request": 211,
+  "reference_authority": {
+    "p2e08_result_blob": "fbfa1309a6297568a6811583db809363da5a7e6f",
+    "calibration_case_count": 54,
+    "cases_per_Se_stratum": 18,
+    "calibration_coarse_dt_day": 0.0064,
+    "calibration_half_dt_day": 0.0032
+  },
+  "threshold_design": {
+    "stratification": "effective saturation only",
+    "Se_levels": [0.65, 0.85, 0.98],
+    "reference_statistic": "maximum Reference self-disagreement among all 18 P2E08 cases in the Se stratum",
+    "reference_factor": 1.0,
+    "application_resolution_floor": 0.0,
+    "no_forcing_stratification": true,
+    "no_material_stratification": true,
+    "no_weighted_compensation": true
+  },
+  "frozen_thresholds": {
+    "Se_0.65": {
+      "U_h_inf_cm": 0.002329984405367469,
+      "U_h_rms_cm": 0.0008461192168990192,
+      "U_theta_inf": 0.000014036839159875525,
+      "U_theta_rms": 0.000005088115857112092,
+      "U_storage_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "U_h_inf_cm": 0.024875926496918055,
+      "U_h_rms_cm": 0.008913060711649613,
+      "U_theta_inf": 0.00009940338552821837,
+      "U_theta_rms": 0.00003496499657040913,
+      "U_storage_cm": 2.1316282072803006e-14
+    },
+    "Se_0.98": {
+      "U_h_inf_cm": 1.0304935719866082,
+      "U_h_rms_cm": 0.26027530243065616,
+      "U_theta_inf": 0.0006060020680420108,
+      "U_theta_rms": 0.00017540588521301983,
+      "U_storage_cm": 2.842170943040401e-14
+    }
+  },
+  "initial_qualification": {
+    "validated_head_before_duplicate_cleanup": "331c0d96ff7522f36ef3aca398d9a027e48dfe7f",
+    "threshold_workflow_run": 35286462629,
+    "threshold_job": 105419778179,
+    "result": "PASS",
+    "threshold_output_sha256": "cd45a4cddb57821f7433db8827a4b8879b8fac85ae0cbd2e9895d3478a5728b6",
+    "all_15_thresholds_exactly_recomputed": true,
+    "reference_case_count": 54,
+    "cases_per_Se": 18,
+    "rossfast_broad_results_used": false,
+    "documentation_run": 35286462602,
+    "documentation_result": "PASS",
+    "canonical_run": 35286462713,
+    "canonical_result_at_result_persistence": "IN_PROGRESS"
+  },
+  "post_initial_qualification_cleanup": {
+    "commit": "5587b2967b68dac803b7ecc89ef2f3cc1feb05a4",
+    "message": "chore(PUB-P2E09): remove duplicate threshold validator",
+    "scientific_or_threshold_content_changed": false,
+    "used_validator_unchanged": "tests/publication/validate_pub_p2e09_reference_thresholds.py",
+    "note": "Final admission requires complete exact-head replay after this cleanup and after this result file is present."
+  },
+  "scientific_interpretation": {
+    "meaning": "Each threshold is the empirical upper envelope of admitted Reference coarse-versus-refined self-disagreement in the exact discrete E0 Se stratum.",
+    "not_true_error_bound": true,
+    "not_production_tolerance": true,
+    "not_universal_swap_accuracy_requirement": true,
+    "no_formal_temporal_order_assumed": true,
+    "large_wet_state_head_threshold_note": "The approximately 1.03 cm Se=0.98 head-infinity threshold does not assert that a 1 cm head difference is universally physically negligible. It records the maximum numerical self-disagreement of Reference in the admitted complete-domain calibration experiment and therefore defines the bounded E0 comparison envelope."
+  },
+  "future_admissibility_rule": {
+    "all_state_storage_metrics_must_pass": true,
+    "metric_comparison": "paired discrepancy <= frozen threshold for exact Se stratum",
+    "mass_separate_hard_gate": true,
+    "route_validity_separate_hard_gate": true,
+    "performance_cannot_compensate": true
+  },
+  "firewall_verification": {
+    "new_rossfast_solver_execution": false,
+    "new_rossfast_discrepancy_inspection": false,
+    "historical_stage0_b01_used_to_choose_rule": false,
+    "production_or_reference_source_changed": false,
+    "reference_tolerance_changed": false,
+    "physical_case_removed": false
+  },
+  "verdict": "QUALIFIED_REFERENCE_ONLY_E0_THRESHOLD_FREEZE_PENDING_FINAL_EXACT_HEAD_GATES",
+  "next_permitted_action": "Qualify the result-bearing exact head through P2E09, documentation and full canonical preservation. After admission, preregister the broad 54-case E0 paired RossFast-versus-Reference matrix and its common temporal protocol before generating any new broad RossFast discrepancies."
+}
