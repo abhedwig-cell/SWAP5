@@ -8,12 +8,15 @@ on:
       - 'src/runtime/mod_modflow6_swap_predictor_response.f90'
       - 'src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90'
       - 'src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90'
+      - 'src/runtime/mod_modflow6_swap_predictor_origin.f90'
       - 'tests/fgc/test_fgc30_modflow6_predictor_response_contract.f90'
       - 'tests/fgc/run_fgc30_modflow6_predictor_response_contract.sh'
       - 'tests/fgc/test_fgc30_prescribed_qbot_bottom_face.f90'
       - 'tests/fgc/run_fgc30_prescribed_qbot_bottom_face.sh'
       - 'tests/fgc/test_fgc30_predictor_tangent_adapter.f90'
       - 'tests/fgc/run_fgc30_predictor_tangent_adapter.sh'
+      - 'tests/fgc/test_fgc30_predictor_origin.f90'
+      - 'tests/fgc/run_fgc30_predictor_origin.sh'
       - '.github/workflows/f-gc30-modflow6-predictor-response.yml'
   workflow_dispatch:
 
@@ -33,3 +36,5 @@ jobs:
         run: bash tests/fgc/run_fgc30_prescribed_qbot_bottom_face.sh
       - name: Run F-GC30 accepted predictor tangent adapter gate
         run: bash tests/fgc/run_fgc30_predictor_tangent_adapter.sh
+      - name: Run F-GC30 accepted SWAP predictor-origin gate
+        run: bash tests/fgc/run_fgc30_predictor_origin.sh
