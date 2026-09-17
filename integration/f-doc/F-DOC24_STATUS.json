@@ -2,13 +2,13 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC24",
   "title": "Groundwater Coupling and Lower-Boundary Scientific Reference",
-  "phase": "UPDATE",
-  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
+  "phase": "VERIFY",
+  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc24-groundwater-lower-boundary-reference",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
-  "content_head_before_checkpoint": "fdda435e82c41c8dcc02f45aab95b4e235d13f7c",
+  "verified_content_head": "1dec2a283f05bb6484adba221940f76c952d97ef",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
@@ -55,6 +55,19 @@
     "science_index_updated": true,
     "mkdocs_navigation_updated": true
   },
+  "verification": {
+    "pull_request": 173,
+    "verified_head": "1dec2a283f05bb6484adba221940f76c952d97ef",
+    "workflow": "Documentation",
+    "workflow_run": 35186842035,
+    "job": 105090624225,
+    "job_name": "Validate and build",
+    "conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pr_changed_files": 7,
+    "pr_delta_classification": "DOCUMENTATION_NAVIGATION_AND_F_DOC_GOVERNANCE_ONLY"
+  },
   "scope_delta": {
     "changed_files": 7,
     "production_source_changed": false,
@@ -70,12 +83,6 @@
     "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "verification_required": [
-    "python tools/docs/check_docs.py",
-    "mkdocs build --strict",
-    "confirm PR/file delta remains documentation/navigation/F-DOC governance only",
-    "recheck live canonical before admission"
-  ],
-  "next_permitted_action": "Open or reuse the F-DOC24 pull request to integration/f-ci-canonical, run the repository documentation gate on the exact postimage, persist VERIFY evidence, recheck canonical for relevant drift, then admit only if all checks remain green and no groundwater/lower-boundary dependency changed.",
-  "verdict": "READY_FOR_VERIFY"
+  "next_permitted_action": "Recheck live integration/f-ci-canonical and PR #173. If no relevant groundwater/lower-boundary scientific or documentation-authority dependency changed since 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33, and the status-only checkpoint postimage remains documentation-valid, admit PR #173. A subsequent CLOSE checkpoint does not alter the qualified content.",
+  "verdict": "PASS_READY_FOR_ADMISSION"
 }
