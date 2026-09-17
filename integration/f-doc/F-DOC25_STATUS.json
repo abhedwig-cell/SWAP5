@@ -2,12 +2,15 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC25",
   "title": "Reference Richards Numerical Technical Reference",
-  "phase": "VERIFY",
-  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
+  "phase": "CLOSE",
+  "decision": "ADMITTED_TO_CANONICAL",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc25-reference-richards-numerics",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
+  "admitted_canonical_head": "5efb2603524145192f80b3472c288c1b6828cf69",
+  "admission_pull_request": 176,
+  "admitted_pr_head": "dcba7e65b5d2ff8ce94bb3c604cc0325f25cfeb5",
   "verified_content_head": "76345e9a3130d2f92abbf4024942996b42136674",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
@@ -15,12 +18,14 @@
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
   "reconcile": {
-    "latest_canonical_delta": "F-ROSS12 final close governance-only postimage plus an accidental F-DOC25 placeholder create/revert pair",
-    "content_delta_vs_b861122a": "NONE",
-    "production_source_changed": false,
-    "reference_source_changed": false,
-    "canonical_unchanged_during_verify": true,
-    "disposition": "NON_CONFLICTING_POST_STATUS_A_DELTA_NOT_ADDED_TO_FROZEN_SCIENTIFIC_DENOMINATOR"
+    "post_status_a_ross_delta": "F-ROSS12 close was governance-only for this dependency surface and was not added to the frozen scientific denominator.",
+    "accidental_placeholder_audit": {
+      "create_commit": "71732d89b74fd702e35f68ac00dac05ea3878022",
+      "revert_commit": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
+      "content_delta_after_revert": "ZERO_FILES",
+      "production_or_reference_impact": false
+    },
+    "canonical_unchanged_during_qualification": true
   },
   "acquired_authorities": {
     "primary_nonlinear_owner": {"path": "src/legacy/b1_10_port/headcalc.f90", "blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"},
@@ -38,15 +43,20 @@
     "mkdocs_navigation_change_required": false
   },
   "verification": {
-    "pull_request": 176,
-    "verified_head": "76345e9a3130d2f92abbf4024942996b42136674",
-    "workflow": "Documentation",
-    "workflow_run": 35189126238,
-    "job": 105097558506,
-    "job_name": "Validate and build",
-    "workflow_conclusion": "success",
-    "repository_documentation_checks": "PASS",
-    "mkdocs_build_strict": "PASS",
+    "qualified_content": {
+      "head": "76345e9a3130d2f92abbf4024942996b42136674",
+      "workflow_run": 35189126238,
+      "job": 105097558506,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS"
+    },
+    "qualified_status_postimage": {
+      "head": "dcba7e65b5d2ff8ce94bb3c604cc0325f25cfeb5",
+      "workflow_run": 35189199460,
+      "job": 105097786695,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS"
+    },
     "pages_deploy": "SKIPPED_AS_EXPECTED_ON_PR",
     "pr_changed_files": 4,
     "pr_delta_classification": "DOCUMENTATION_AND_F_DOC_GOVERNANCE_ONLY"
@@ -64,7 +74,6 @@
     "restricted temporal indicator as a separate auxiliary fail-closed operator"
   ],
   "scope_delta": {
-    "changed_files": 4,
     "production_source_changed": false,
     "reference_source_changed": false,
     "tests_changed": false,
@@ -85,6 +94,6 @@
     "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "Qualify the status-only checkpoint postimage, recheck live canonical and PR #176 mergeability, then guarded-merge exact head if no relevant numerical/documentation authority dependency changed.",
-  "verdict": "PASS_READY_FOR_ADMISSION"
+  "next_permitted_action": "F-DOC25 is closed. Start a separate documentation workunit only for a distinct authority surface, such as the frozen constitutive hydraulic relations, after reconciling the live canonical delta.",
+  "verdict": "PASS_ADMITTED_AND_CLOSED"
 }
