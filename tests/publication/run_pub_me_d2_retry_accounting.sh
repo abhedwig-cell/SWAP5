@@ -32,6 +32,9 @@ echo "PUB_ME_D2_PREREGISTRATION_BLOB=$actual_design_blob"
 echo 'PUB_ME_D2_PREREGISTRATION_BINDING=PASS'
 
 TX=src/transaction/mod_transaction_reference.f90
+STEPDIR=src/solver/mod_soil_water_accepted_step_direction_contract.f90
+TRAJ=src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+TRAJPUB=src/transaction/mod_accepted_trajectory_directional_publication.f90
 CONTRACTS=src/runtime/mod_canonical_contracts.f90
 WORKER=src/runtime/mod_a23bu_worker_execution_context.f90
 TRIAL=src/adapter/mod_b1_10_trial_mass.f90
@@ -54,6 +57,9 @@ for opt in 0 2; do
   TEST_FLAGS=(-O"$opt" -std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffree-line-length-none -J "$O" -I "$O")
 
   gfortran "${DEP_FLAGS[@]}" -c "$TX" -o "$O/transaction.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$STEPDIR" -o "$O/stepdir.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$TRAJ" -o "$O/trajectory.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$TRAJPUB" -o "$O/trajectory_publication.o"
   gfortran "${DEP_FLAGS[@]}" -c "$CONTRACTS" -o "$O/contracts.o"
   gfortran "${DEP_FLAGS[@]}" -c "$WORKER" -o "$O/worker.o"
   gfortran "${DEP_FLAGS[@]}" -c "$TRIAL" -o "$O/trial_mass.o"
@@ -71,7 +77,7 @@ for opt in 0 2; do
   gfortran "${DEP_FLAGS[@]}" -c "$MODEL" -o "$O/model.o"
   gfortran "${TEST_FLAGS[@]}" -c "$TEST" -o "$O/test.o"
 
-  gfortran -O"$opt" -o "$O/test_d2"     "$O/transaction.o" "$O/contracts.o" "$O/worker.o" "$O/trial_mass.o" "$O/interval.o"     "$O/stubs.o" "$O/base_binding.o" "$O/mass_seam.o" "$O/temporal.o"     "$O/fci12_executor.o" "$O/fci12_reference.o" "$O/status.o" "$O/fci13_executor.o"     "$O/fci13_reference.o" "$O/policy.o" "$O/model.o" "$O/test.o"
+  gfortran -O"$opt" -o "$O/test_d2"     "$O/transaction.o" "$O/stepdir.o" "$O/trajectory.o" "$O/trajectory_publication.o" "$O/contracts.o" "$O/worker.o" "$O/trial_mass.o" "$O/interval.o"     "$O/stubs.o" "$O/base_binding.o" "$O/mass_seam.o" "$O/temporal.o"     "$O/fci12_executor.o" "$O/fci12_reference.o" "$O/status.o" "$O/fci13_executor.o"     "$O/fci13_reference.o" "$O/policy.o" "$O/model.o" "$O/test.o"
 
   if ! "$O/test_d2" > "$O/output.txt" 2>&1; then
     cat "$O/output.txt" >&2
