@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS12",
   "title": "RossFast surgical Richards-solver substitution",
-  "phase": "PRODUCTION_ADMITTED_POSTIMAGE_RECONCILIATION_PENDING",
-  "decision": "PRESERVE_ADMITTED_PRODUCTION_AND_CLOSE_MOVING_AUTHORITY_REBIND",
+  "phase": "PRODUCTION_ADMITTED_POSTIMAGE_QUALIFIED_ADMISSION_PENDING",
+  "decision": "ADMIT_F_CI96_THEN_CLOSE_F_ROSS12",
   "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-ross12-production-solver-selection",
   "canonical_branch": "integration/f-ci-canonical",
@@ -99,6 +99,15 @@
       "current_restricted_canonical_preservation": "EXPECTED_STALE_AUTHORITY_FAILURE",
       "failure_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
       "classification": "Intentional production successor changed the moving dependency blob and therefore required the separate post-admission authority reconciliation now owned by F-CI96."
+    },
+    "postimage_reconciliation": {
+      "qualified_head": "793cbebe71e92bb101325d81029a7447233e31f4",
+      "fci96_run_id": 35186015122,
+      "fci72_run_id": 35186015058,
+      "fci74_run_id": 35186015141,
+      "fci79_run_id": 35186015034,
+      "broad_fci_run_id": 35186015031,
+      "result": "PASS"
     }
   },
   "post_admission_reconciliation": {
@@ -108,7 +117,7 @@
     "governance_only": true,
     "production_source_change": false,
     "reference_source_change": false,
-    "status": "QUALIFICATION_PENDING"
+    "status": "QUALIFIED_READY_FOR_ADMISSION"
   },
   "cleanup": {
     "temporary_patch_helpers_removed": [
@@ -130,7 +139,7 @@
     "post_admission_reconciliation_pr": 168,
     "governance_rebind_must_not_modify_production_source": true
   },
-  "next_permitted_action": "Reconcile PR 168 onto canonical 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33, run F-CI96 plus the owned moving-preservation and broad F-CI gates, and close F-ROSS12 only after that governance-only postimage qualification is green and admitted.",
+  "next_permitted_action": "Re-run the path-triggered gates after this evidence-only checkpoint. If they remain green and canonical has no src/** or reference/** delta, admit PR 168. Then persist a final CLOSED checkpoint from the exact governance admission commit.",
   "explicit_exclusions": [
     "F-ROSS11 whole-model runtime as production execution host",
     "FMR_BACKEND_SERIALIZED_INJECTED_KERNEL routing for RossFast production selection",
