@@ -1,10 +1,11 @@
 program test_fgc30_modflow6_predictor_response_contract
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t, groundwater_interface_lineage_t
-  use mod_modflow6_swap_predictor_response, only: modflow6_derivative_coverage_t, &
-       modflow6_swap_predictor_response_t, compose_modflow6_swap_predictor_response, &
-       MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, MODFLOW6_DERIVATIVE_CENTERED_FD, &
-       MODFLOW6_PREDICTOR_OK, MODFLOW6_PREDICTOR_INCOMPLETE_DERIVATIVE_COVERAGE
+  use mod_groundwater_coupling_contract, only: groundwater_coupling_window_t
+  use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, &
+       modflow6_derivative_coverage_t, modflow6_swap_predictor_response_t, &
+       compose_modflow6_swap_predictor_response, MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, &
+       MODFLOW6_DERIVATIVE_CENTERED_FD, MODFLOW6_PREDICTOR_OK, &
+       MODFLOW6_PREDICTOR_INCOMPLETE_DERIVATIVE_COVERAGE, MODFLOW6_PREDICTOR_INVALID_LINEAGE
   implicit none
 
   real(real64), parameter :: DAY_TO_S = 86400.0_real64
@@ -15,7 +16,7 @@ program test_fgc30_modflow6_predictor_response_contract
   real(real64), parameter :: EPSQ = 0.01_real64
 
   type(groundwater_coupling_window_t) :: window
-  type(groundwater_interface_lineage_t) :: lineage
+  type(modflow6_swap_predictor_lineage_t) :: lineage, invalid_lineage
   type(modflow6_derivative_coverage_t) :: coverage, incomplete
   type(modflow6_swap_predictor_response_t) :: tangent, fd, signed_response
   real(real64) :: hplus, hminus, fd_dhdq
@@ -27,9 +28,10 @@ program test_fgc30_modflow6_predictor_response_contract
   lineage%coupling_id = 3001_int64
   lineage%swap_lineage_id = 31_int64
   lineage%swap_origin_revision = 7_int64
+  lineage%groundwater_service_id = 51_int64
   lineage%groundwater_lineage_id = 41_int64
   lineage%groundwater_origin_revision = 9_int64
-  lineage%candidate_revision = 0_int64
+  call require(lineage%valid(), 'accepted-origin predictor lineage invalid')
 
   coverage = modflow6_derivative_coverage_t()
   coverage%lower_face_head_semantics_covered = .true.
@@ -42,11 +44,22 @@ program test_fgc30_modflow6_predictor_response_contract
        MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, coverage, 'f-kt21-owner-oracle', &
        'drainage-free-smooth-route', tangent, status)
   call require(status == MODFLOW6_PREDICTOR_OK .and. tangent%valid, 'complete tangent rejected')
+  call require(tangent%lineage%groundwater_service_id == lineage%groundwater_service_id, &
+       'predictor origin service provenance lost')
   call require_close(tangent%coupling_storage_coefficient_u, 0.25_real64, 1.0e-14_real64, &
        'u tangent mismatch')
   call require_close(tangent%q_u_cm_per_day, 0.4_real64, 1.0e-14_real64, 'q_u tangent mismatch')
   call require_close(tangent%q_u_m_per_s, 0.4_real64*0.01_real64/DAY_TO_S, 1.0e-18_real64, &
        'q_u SI translation mismatch')
+
+  ! Predictor lineage deliberately has no groundwater candidate revision. That
+  ! revision does not exist until the subsequent MODFLOW trial is created.
+  invalid_lineage = lineage
+  invalid_lineage%groundwater_service_id = 0_int64
+  call compose_modflow6_swap_predictor_response(window, invalid_lineage, QBOT, HSTART, HEND, DHDQ, &
+       MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, coverage, response=tangent, status=status)
+  call require(status == MODFLOW6_PREDICTOR_INVALID_LINEAGE .and. .not. tangent%valid, &
+       'incomplete accepted-origin lineage did not fail closed')
 
   ! Independent centered finite difference around the same predictor. The
   ! synthetic lower-face response is exactly linear in native qbot, so this is
@@ -65,10 +78,9 @@ program test_fgc30_modflow6_predictor_response_contract
        'full-production-trajectory-oracle', fd, status)
   call require(status == MODFLOW6_PREDICTOR_OK .and. fd%valid, &
        'centered FD fallback rejected by incomplete analytic coverage')
-  call require_close(fd%coupling_storage_coefficient_u, tangent%coupling_storage_coefficient_u, &
-       1.0e-13_real64, 'tangent/FD u disagreement')
-  call require_close(fd%q_u_cm_per_day, tangent%q_u_cm_per_day, 1.0e-13_real64, &
-       'tangent/FD q_u disagreement')
+  call require_close(fd%coupling_storage_coefficient_u, 0.25_real64, 1.0e-13_real64, &
+       'FD u disagreement')
+  call require_close(fd%q_u_cm_per_day, 0.4_real64, 1.0e-13_real64, 'FD q_u disagreement')
 
   call compose_modflow6_swap_predictor_response(window, lineage, QBOT, HSTART, HEND, DHDQ, &
        MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, incomplete, 'partial-tangent', &
@@ -85,6 +97,7 @@ program test_fgc30_modflow6_predictor_response_contract
   call require_close(signed_response%q_u_cm_per_day, -0.3_real64, 1.0e-14_real64, &
        'native/public q_u sign mismatch')
 
+  print '(a)', 'FGC30_PREDICTOR_ORIGIN_LINEAGE=PASS'
   print '(a)', 'FGC30_TYPED_PREDICTOR_RESPONSE=PASS'
   print '(a)', 'FGC30_TANGENT_U_ALGEBRA=PASS'
   print '(a)', 'FGC30_CENTERED_FD_ORACLE=PASS'
