@@ -2,28 +2,68 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC22",
   "title": "Drainage-v1 Formulation Reference Completion",
-  "phase": "RECONCILE",
-  "decision": "START_FROM_F_DOC21_CANONICAL_NO_DRIFT",
+  "phase": "UPDATE",
+  "decision": "DRAINAGE_V1_FORMULATION_REFERENCE_READY_TO_VERIFY",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc22-drainage-formulations",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
+  "observed_live_canonical_head": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
+  "canonical_drift": "NONE",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
-  "scope": [
-    "Acquire exact scientific/source authority for the seven Drainage-v1 variants not yet formulated in docs/science/drainage.md",
-    "Document only equations and parameter meanings supported by reconciled authority",
-    "Preserve the fixed eight-variant Drainage-v1 denominator and F-DOC21 nonclaims"
-  ],
-  "mutations": {
-    "production_source_change": false,
-    "reference_source_change": false,
-    "scientific_denominator_change": false,
-    "documentation_only": true
+  "completion_authority": {
+    "branch": "work/f-pm19-drainage-v1-authoritative-100-percent-completion",
+    "path": "integration/f-pm/F-PM19_DRAINAGE_V1_FINAL_COMPLETION.json",
+    "blob": "f4ddf0b9ed945ccb6f8a66c4611de624d10dc4a8",
+    "canonical_same_path_present": false,
+    "disposition": "CITE_BRANCH_PINNED_IMMUTABLE_AUTHORITY_NOT_CURRENT_CANONICAL_PATH"
   },
-  "next_permitted_action": "ACQUIRE variant-specific authority for DIVDRA spatial distribution, DRAMET=1 tabulated, DRAMET=2 Hooghoudt, DRAMET=2 Ernst, empirical interflow, multi-level aggregation, and restricted fixed-weir transactional surface-water runtime.",
+  "acquired_authorities": {
+    "DIVDRA_spatial_distribution": ["F-CI32", "F-CI33", "F-CI36", "src/process/mod_drainage_spatial_distribution.f90@50346642"],
+    "DRAMET1_tabulated": ["F-VQ40", "src/process/mod_drainage_tabulated_response.f90@50346642"],
+    "DRAMET2_Hooghoudt": ["F-VQ38", "mod_drainage_hooghoudt_ipos1_response.f90@50346642", "mod_drainage_hooghoudt_equivalent_depth.f90@50346642", "mod_drainage_hooghoudt_ipos23_response.f90@50346642"],
+    "DRAMET2_Ernst": ["F-VQ38", "mod_drainage_ernst_ipos45_preparation.f90@50346642", "mod_drainage_ernst_ipos45_response.f90@50346642"],
+    "empirical_interflow": ["F-VQ42", "src/process/mod_drainage_empirical_interflow_response.f90@50346642"],
+    "multilevel_aggregation": ["F-VQ43", "src/process/mod_drainage_multilevel_aggregation.f90@50346642"],
+    "fixed_weir": ["F-VQ59", "F-CI52", "F-CI52P", "src/process/mod_restricted_fixed_weir_surface_water.f90@50346642"]
+  },
+  "persisted_artifacts": [
+    "integration/f-doc/F-DOC22_AUTHORITY_MATRIX.md",
+    "docs/science/drainage-formulations.md",
+    "docs/science/drainage.md",
+    "docs/science/index.md",
+    "mkdocs.yml"
+  ],
+  "documented_formulations": [
+    "positive DIVDRA scalar-to-node transmissivity partition with exact closure correction",
+    "DRAMET=1 clamped piecewise-linear response and exact-knot derivative nonclaim",
+    "Hooghoudt IPOS1 resistance response",
+    "Hooghoudt IPOS2/IPOS3 equivalent-depth branches and response",
+    "Ernst IPOS4/IPOS5 fixed and vertical resistance response",
+    "empirical interflow positive-side power law and activation singularity semantics",
+    "deterministic multi-level flux aggregation with conservative derivative availability",
+    "restricted fixed-weir level-storage mapping, supply rule, rating law, mass-equation discharge and separate numerical residual"
+  ],
+  "explicit_nonclaims": [
+    "No production or reference source changed.",
+    "No scientific denominator changed.",
+    "No drainage option outside the fixed eight-variant Drainage-v1 denominator is admitted.",
+    "No unrestricted reverse exchange is inferred.",
+    "No negative-side empirical DRAMET3 infiltration is admitted.",
+    "No fully implicit drainage-response solver coupling is implied.",
+    "No fixed-weir surface-water control beyond the restricted admitted contract is inferred.",
+    "Undefined derivatives at branch boundaries remain undefined."
+  ],
+  "verification": {
+    "scope_diff": "PENDING",
+    "documentation_checker": "PENDING",
+    "mkdocs_strict": "PENDING",
+    "admission": "NOT_ATTEMPTED"
+  },
+  "next_permitted_action": "VERIFY exact F-DOC22 postimage through scope diff and pull-request Documentation workflow; admit only if checks are green and canonical remains nonconflicting.",
   "verdict": "IN_PROGRESS"
 }
