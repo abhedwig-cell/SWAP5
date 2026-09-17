@@ -3,10 +3,11 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC32",
   "title": "B1.10 cofgen legacy alias provenance refinement",
-  "phase": "ACQUIRE",
+  "phase": "UPDATE",
   "decision": "TARGETED_ALIAS_PROVENANCE_REFINEMENT",
   "branch": "work/f-doc32-cofgen-legacy-alias-provenance",
   "canonical_start": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+  "content_postimage": "7331395ed883c75a7ae5033024bafdc85dd4088d",
   "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
   "prior_documentation_authority": {
@@ -41,11 +42,19 @@
       "change production, reference, test, physics or numerical semantics"
     ]
   },
-  "mutations": [
+  "scope_diff": [
+    "docs/science/soil-hydraulic-parameter-provenance.md",
     "integration/f-doc/F-DOC32_AUTHORITY_MATRIX.md",
     "integration/f-doc/F-DOC32_STATUS.json"
   ],
+  "scope_check": {
+    "changed_file_count": 3,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "mkdocs_navigation_changed": false
+  },
   "production_reference_test_delta": false,
-  "verdict": "ACQUIRE_COMPLETE_READY_FOR_DOCUMENTATION_UPDATE",
-  "next_permitted_action": "UPDATE_EXISTING_PARAMETER_PROVENANCE_PAGE_WITH_ONLY_THE_DIRECT_SOURCE_LOCAL_ALIAS_BINDINGS"
+  "verdict": "READY_FOR_VERIFY",
+  "next_permitted_action": "OPEN_DOCUMENTATION_PR_AND_REQUIRE_REPOSITORY_DOCUMENTATION_CHECKS_PLUS_STRICT_MKDOCS_BUILD"
 }
