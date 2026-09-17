@@ -2,32 +2,47 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC21",
   "title": "SWAP5 Scientific and Numerical Technical Reference Expansion",
-  "phase": "RECONCILE",
-  "decision": "READY_TO_ACQUIRE_DOCUMENTATION_AUTHORITIES",
+  "phase": "UPDATE",
+  "decision": "FIRST_SCIENCE_SLICE_PERSISTED_TARGETED_ACQUIRE_REMAINS",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc21-technical-reference",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+  "last_semantic_head_before_checkpoint": "d132cd5d3c7c1a4b0586599c61dcd19607a1da8d",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
-  "scope": [
-    "expand reviewer-facing scientific process documentation",
-    "expand numerical formulation documentation",
-    "make units, sign conventions, states, fluxes, boundaries and balances explicit where accepted authority supports them",
-    "link scientific claims to existing theory, production, qualification and preservation authorities",
-    "record unsupported broader claims as bounded gaps rather than infer them"
+  "acquired_authorities": {
+    "historical_physical_science": "F-DOC18@bddb43d821fd757a307aad88528464dd0c89a484",
+    "fdoc18_conceptual_base": "F-DOC16@b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+    "frozen_et_source": "src/process/mod_reference_et_demand_process.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "frozen_root_source": "src/process/mod_root_water_uptake_process.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "current_status_a_traceability": "docs/status-a/TRACEABILITY.md",
+    "mass_accounting_normalization": "docs/verification/mass-accounting-contract.md"
+  },
+  "persisted_artifacts": [
+    "integration/f-doc/F-DOC21_AUTHORITY_MATRIX.md",
+    "docs/science/water-balance-and-conventions.md",
+    "docs/science/evapotranspiration-root-uptake.md",
+    "docs/science/index.md",
+    "mkdocs.yml"
   ],
-  "initial_target_topics": [
-    "ET and root water uptake",
-    "upper and lower hydrological boundary conditions",
-    "drainage scientific formulation and balance role",
-    "water balance, signs and units",
-    "groundwater boundary/coupling scientific framing within admitted v1 scope",
-    "Richards discretisation and nonlinear solve details",
-    "time stepping, retries, acceptance and rollback"
+  "qualified_claim_boundaries": [
+    "reference Richards hydraulic z/q convention may be documented as upward-positive within the bounded reference formulation",
+    "VQ normalized accounting uses positive-into-domain signed amounts and must not be conflated with process-local signs",
+    "reference ET restricted route converts mm/day forcing to nonnegative cm/day potential demands",
+    "root-water uptake is drought-only in the frozen admitted profile and uses rooted-compartment fractions plus demand-dependent h3 and h4 cutoff",
+    "actual uptake attribution and root extraction are one physical withdrawal, not duplicate water bookings",
+    "ET/root process is algebraic and does not own a separate nonlinear solver or transaction policy"
+  ],
+  "acquire_required_before_publication": [
+    "exact current/frozen authority for exhaustive upper-boundary options",
+    "exact current/frozen authority for lower-boundary option catalogue",
+    "drainage scientific equations reconciled to frozen implementation and Status-A admission",
+    "Groundwater Coupling v1 scientific formulation and interface semantics",
+    "additional exact authority needed before expanding beyond the already bounded Richards numerical narrative"
   ],
   "mutations": {
     "production_source_change": false,
@@ -35,13 +50,18 @@
     "scientific_denominator_change": false,
     "documentation_only": true
   },
+  "verification": {
+    "documentation_checker": "NOT_YET_RUN_FOR_F-DOC21",
+    "mkdocs_strict": "NOT_YET_RUN_FOR_F-DOC21",
+    "admission": "NOT_ATTEMPTED"
+  },
   "explicit_nonclaims": [
-    "No production physics or numerical semantics may change in F-DOC21.",
+    "No production physics or numerical semantics changed.",
     "The frozen Status-A review denominator remains unchanged.",
-    "Post-Status-A ROSS/RossFast work is not silently added to the frozen review denominator.",
-    "No new groundwater semantics are introduced.",
-    "Missing authority is not filled by assumption or by treating historical manuals as proof of current implementation."
+    "Post-Status-A ROSS/RossFast work is not part of the frozen review denominator.",
+    "No broad historical ET/root, boundary, drainage or groundwater option set is promoted by prose.",
+    "No universal sign, timestep, tolerance or accuracy guarantee is invented."
   ],
-  "next_permitted_action": "Acquire and reconcile only the accepted scientific/numerical authorities needed for the initial technical-reference slice.",
+  "next_permitted_action": "Targeted ACQUIRE for drainage, hydrological boundaries and Groundwater Coupling v1, or expand only already-bounded reference Richards numerics; then VERIFY the complete documentation postimage.",
   "verdict": "IN_PROGRESS"
 }
