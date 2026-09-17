@@ -117,19 +117,21 @@ which preserves the established SWAP/public exchange sign boundary. `H_bot,start
 
 ## Production finite-difference oracle topology
 
-The serialized-reference production route used by this qualification has `TX_TEMPORAL_EXTERNAL_FULL_HALF` temporal acceptance. For this B1.10 route, the model's external full-versus-two-half temporal comparator is deliberately an exact state-identity comparator: any non-trivial nearby `qbot` perturbation changes the state and therefore returns an effectively infinite temporal error. Reducing the FD epsilon does not make that comparator into a smooth numerical error norm.
+The first production-oracle attempts exposed an important transaction distinction. On the serialized-reference `TX_TEMPORAL_EXTERNAL_FULL_HALF` route, the full-versus-two-half comparator for this B1.10 surface is deliberately an exact state-identity comparator. Any non-trivial nearby `qbot` perturbation therefore fails that temporal acceptance route; shrinking the perturbation or consuming retries would not turn it into a smooth error norm.
 
-Consequently, a valid centered finite-difference oracle for the accepted production map must not weaken the transaction tolerance or increase retries until a perturbed trajectory happens to pass. Instead, the qualification replays the **accepted two-half discrete solver topology directly** from the same physical origin:
+F-GC30 does not relax that policy. The qualified production tangent/FD oracle instead uses the already-admitted prescribed-`qbot` model-certificate route:
 
-1. two B1.10 half-step nonlinear solves;
-2. identical top forcing and all source/sink inputs;
-3. only native prescribed `qbot` is perturbed by `+eps` or `-eps`;
-4. no tangent/interface-sensitivity request is made;
-5. both half-solves must converge without internal retry or alternative solver use;
-6. the terminal lower-face head is reconstructed with the same qualified fixed-face helper.
+- `TX_TEMPORAL_MODEL_CERTIFICATE`;
+- `FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY`;
+- explicit finite head-error budget;
+- accepted predecessor right-derivative history seeded at the committed origin;
+- one immutable committed/checkpoint origin for nominal and perturbed trials.
 
-This is an independent derivative oracle for the accepted discrete trajectory. It does not alter production transaction semantics and is not itself a new runtime fallback implementation.
+The nominal predictor is a non-committing production candidate with the accepted-trajectory bottom-flux direction requested. The centered-FD points are two additional non-committing production candidates from the same origin with that tangent request disabled and only native prescribed `qbot` changed by `+eps` or `-eps`.
 
+Therefore the oracle differentiates the same admitted production candidate map that supplies the nominal predictor rather than manually replaying a solver topology or weakening transaction acceptance. Each perturbed candidate must complete without transaction retry, and its terminal lower-face head is reconstructed with the same qualified fixed-face helper.
+
+This centered FD remains an **independent qualification oracle** for the analytic tangent. It is not, by itself, a runtime finite-difference fallback implementation for analytically incomplete process envelopes such as active drainage.
 ## Qualification evidence
 
 The F-GC30 predictor-response contract is qualified by a deterministic O0/O2 gate covering:
@@ -153,9 +155,9 @@ The prescribed-`qbot` lower-face materializer is separately qualified by a deter
 
 GitHub Actions run `35282629916` passed the initial contract and lower-face gates at branch head `37aeae2d5ae928e7123518b05e405bd0a48e9dc6`.
 
-The complete drainage-free production predictor slice is qualified by GitHub Actions run `35284444327` at branch head `df44b416169b58325a6bb55f826650ffdbc9bae5`. The run passed all five F-GC30 gates under both O0 and O2, including output identity where asserted. Production markers include accepted-trajectory binding, authoritative tangent endpoint, independent centered-FD oracle, tangent/FD agreement, candidate assembler, typed predictor response, provenance fail-closed and active-drainage tangent fail-closed.
+The complete drainage-free production predictor slice is qualified by GitHub Actions run `35284524659` at branch head `e1f086d6f1dc2b60c2b1fc5a2b61b52dc9fa452b`. The run passed all five F-GC30 gates under both O0 and O2, including O0/O2 output identity. Production markers include accepted-trajectory binding, authoritative tangent endpoint, independent centered-FD production-candidate oracle, tangent/FD agreement, candidate assembler, typed predictor response, provenance fail-closed and active-drainage tangent fail-closed.
 
-Two earlier oracle iterations, runs `35283965123` and `35284199733`, failed only because the perturbed trials were sent through the exact full-versus-half temporal-identity comparator. Those failures are retained as evidence for the topology decision above; they were not converted to PASS by relaxing policy.
+Earlier runs `35283965123` and `35284199733` exposed that non-trivial perturbations cannot be qualified through the exact external full-versus-half state-identity comparator. Run `35284457161` then exposed a stale manual two-half oracle after the nominal route had been moved to the model-certificate surface. None of these failures was converted to PASS by relaxing production policy; the final qualification uses one coherent model-certificate candidate route for nominal and FD trials.
 
 ## Next permitted implementation
 
@@ -165,6 +167,6 @@ The drainage-free predictor response primitives and the production candidate-bin
 2. no MODFLOW/XMI backend or groundwater execution redesign;
 3. no change to Groundwater Coupling v1 transaction/commit semantics;
 4. no `accepted_storage_change` substitution;
-5. no claim that the direct two-half FD oracle is a runtime FD fallback implementation.
+5. no claim that the qualification-only centered-FD production-candidate oracle is already a runtime FD fallback implementation.
 
-Any later runtime finite-difference fallback for analytically incomplete production routes is a separate workunit/decision surface and must preserve complete-process coverage rather than reusing the drainage-free two-half oracle as if it covered missing physics.
+Any later runtime finite-difference fallback for analytically incomplete production routes is a separate workunit/decision surface and must preserve complete-process coverage rather than reusing the drainage-free qualification oracle as if it covered missing physics.
