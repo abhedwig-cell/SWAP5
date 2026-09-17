@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "capability": "F-GC31 active-drainage derivative closure",
-  "phase": "RECONCILE",
+  "phase": "QUALIFY",
   "branch": "work/f-gc31-active-drainage-derivative-closure",
   "canonical": {
     "branch": "integration/f-ci-canonical",
@@ -56,12 +56,15 @@
     "Only after those seams are qualified may the drainage runtime compose dq/dgroundwater_level with the accepted trajectory groundwater-level direction."
   ],
   "mutations_so_far": {
-    "production_source_modified": false,
+    "production_source_modified": true,
     "reference_source_modified": false,
     "canonical_modified": false,
-    "new_branch_created": true
+    "new_branch_created": true,
+    "production_source_scope": [
+      "src/solver/mod_b110_smooth_freatic_projection.f90"
+    ]
   },
-  "verdict": "RECONCILED_RESTRICTED_SMOOTH_GWL_SEMANTICS_IMPLEMENTATION_PERMITTED",
+  "verdict": "SMOOTH_FREATIC_VALUE_AND_DIRECTION_QUALIFIED_NEXT_SEAM_PERMITTED",
   "exclusions": [
     "full calcgwl branch reconstruction",
     "macropore groundwater-table semantics",
@@ -74,5 +77,19 @@
     "Ribasim",
     "groundwater coupling v1 semantic changes"
   ],
-  "next_permitted_action": "IMPLEMENT restricted smooth freatic projection/value+direction service and qualification tests only."
+  "next_permitted_action": "IMPLEMENT explicit source/sink directional scratch in the accepted-step directional contract and reference tangent RHS; prove exact zero-direction preservation before composing drainage derivatives.",
+  "qualification": {
+    "smooth_freatic_projection": {
+      "head": "3378c487ef7c585a06ad4f68f981e631e7e366aa",
+      "workflow_run": 35286687743,
+      "workflow_job": 105420466388,
+      "conclusion": "success",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_exact_identity": "PASS",
+      "output_sha256": "958e4a6cfd8d01d11de232784b4870b150a7a1c3725f8a87f909b374facf49a5",
+      "analytic_direction_centered_fd": "PASS",
+      "branch_boundaries_fail_closed": "PASS"
+    }
+  }
 }
