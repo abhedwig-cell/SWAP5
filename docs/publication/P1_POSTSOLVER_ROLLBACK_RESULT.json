@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.publication.p1-postsolver-rollback-result.v1",
+  "workunit": "PUB-P1E02",
+  "canonical_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
+  "workflow_run": 35265448607,
+  "job": 105351359295,
+  "experiment": "real serialized Reference/HeadCalc production route, external full-vs-two-half temporal rejection after physical execution",
+  "physical_fixture": {
+    "nodes": 4,
+    "initial_pressure_head_cm_uniform": -75.0,
+    "bottom_mode": 2,
+    "top_flux_cm_per_day": 0.0,
+    "bottom_flux_cm_per_day": 0.0,
+    "requested_duration_day": 0.25,
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 0.0,
+    "max_retries": 0,
+    "mass_tolerance_cm": 1e-12
+  },
+  "observations": {
+    "headcalc_calls_before_rejection": 3,
+    "accepted_transaction_count": 0,
+    "accepted_total_in": 0.0,
+    "accepted_total_out": 0.0,
+    "committed_revision_before": 0,
+    "committed_revision_after": 0,
+    "committed_time_unchanged": true,
+    "pressure_head_bit_identical_before_after": true,
+    "water_content_bit_identical_before_after": true,
+    "ponding_bit_identical_before_after": true,
+    "groundwater_level_bit_identical_before_after": true,
+    "external_commit_published": false
+  },
+  "optimization_qualification": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "outputs_identical": true,
+    "output_sha256": "ba5d3b995d855c271bc6b8d6f7b5b2f142870fcecc17961414be6cb5d3730626"
+  },
+  "verdict": "PRODUCTION_POSTSOLVER_ROLLBACK_AND_REJECTED_TRANSFER_EXCLUSION_QUALIFIED",
+  "claim_boundary": "This closes the restricted production evidence gap for post-solver rollback and accepted-ledger exclusion. It does not establish warm-start invariance, checkpoint rerun identity across processes, or end-to-end legacy application preservation.",
+  "production_source_changed": false,
+  "reference_source_changed": false
+}
