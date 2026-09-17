@@ -51,7 +51,8 @@ run_one(){
     [[ -f "$source" ]] || fail "missing compile source $source"
     local obj="$out/$(basename "${source%.*}").o"
     local extra=()
-    if [[ "$source" == "src/transaction/mod_transaction_reference.f90" ]]; then
+    if [[ "$source" == "src/transaction/mod_transaction_reference.f90" || \
+          "$source" == "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90" ]]; then
       extra=(-Wno-error=compare-reals)
     fi
     gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
