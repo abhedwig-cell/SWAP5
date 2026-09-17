@@ -16,9 +16,9 @@ Historical SWAP/F-DOC18 material may establish scientific meaning and a bounded 
 
 ## Live-canonical reconciliation
 
-F-DOC21 started from canonical `99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3`. During ACQUIRE, live canonical moved to `786fe5bf5742381646783379779322c84797b29a` through post-Status-A F-ROSS12 work.
+F-DOC21 started from canonical `99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3`. During ACQUIRE, live canonical moved to `786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d` through post-Status-A F-ROSS12 work.
 
-That drift does not change the pinned F-DOC21 scientific review denominator. In particular, post-Status-A ROSS/RossFast solver-selection work is not silently promoted into the frozen Status-A scientific claims documented here. Admission against moving canonical must reconcile that delta separately.
+That drift does not change the pinned F-DOC21 scientific review denominator. The exact canonical delta from the F-DOC21 start head touches only F-ROSS12 runtime/solver-selection source, tests, workflows and F-ROSS12 governance. It does not overlap the F-DOC21 documentation or `mkdocs.yml` surface. In particular, post-Status-A ROSS/RossFast solver-selection work is not silently promoted into the frozen Status-A scientific claims documented here.
 
 ## Claim ceilings
 
