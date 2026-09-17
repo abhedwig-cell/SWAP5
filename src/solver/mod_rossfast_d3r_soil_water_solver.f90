@@ -173,6 +173,11 @@ contains
     result%top_flux = request%boundary%top_flux
     result%bottom_flux = request%boundary%bottom_flux
     result%unrounded_mass_balance_residual = (storage_after - storage_before) - external_transfer
+    ! RossFast's historical compatibility value is already a time-integrated
+    ! water-balance residual in cm, so publish it unchanged through the typed
+    ! solver-independent diagnostic. No native rate residual is synthesized.
+    result%integrated_mass_balance_residual_available = .true.
+    result%integrated_mass_balance_residual_cm = result%unrounded_mass_balance_residual
     result%diagnostics%linear_solves = outcome%linear_solves
     result%diagnostics%internal_retries = outcome%internal_retries
     result%diagnostics%alternative_solver_calls = outcome%alternative_solver_calls
