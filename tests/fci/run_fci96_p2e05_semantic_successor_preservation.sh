@@ -7,6 +7,7 @@ cd "$ROOT"
 STATUS_A_AUTH=50346642bd565f79134ea17d5462e544b354998c
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 P2E05_BASE=dd394f33b8687e457c4d40e9765551b58fe11b6c
+P2E05_QUALIFIED_HEAD=ff89a93bf5b49795db5cb04be0c7325c7b060f5c
 
 SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
@@ -27,6 +28,7 @@ fail() { echo "FCI96_P2E05_SEMANTIC_SUCCESSOR_FAIL $*" >&2; exit 1; }
 git merge-base --is-ancestor "$STATUS_A_AUTH" HEAD || fail 'Status-A authority not ancestor'
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
 git merge-base --is-ancestor "$P2E05_BASE" HEAD || fail 'P2E05 base canonical not ancestor'
+git merge-base --is-ancestor "$P2E05_QUALIFIED_HEAD" HEAD || fail 'qualified P2E05 successor not ancestor'
 
 test "$(git rev-parse "$FROSS12_AUTH:$BACKEND")" = "$BACKEND_FROSS12" || fail 'historical backend authority mismatch'
 test "$(git rev-parse "$FROSS12_AUTH:$SELECTION")" = "$SELECTION_FROSS12" || fail 'historical selection authority mismatch'
@@ -37,11 +39,14 @@ test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'typed 
 test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'typed RossFast adapter blob mismatch'
 test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FROSS12" || fail 'serialized backend drift outside P2E05 scope'
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'selection binding drift outside P2E05 scope'
-test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$P2E05_BASE:reference")" || fail 'reference tree changed in P2E05'
+test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$P2E05_BASE:reference")" || fail 'reference tree changed since P2E05 base'
 
-changed="$({ git diff --name-only "$P2E05_BASE"...HEAD || true; })"
+# Prove the original P2E05 change surface over its immutable qualified
+# historical interval. Do not compare P2E05_BASE to current HEAD: later
+# independent canonical successors are not P2E05 mutations.
+p2e05_changed="$({ git diff --name-only "$P2E05_BASE"..."$P2E05_QUALIFIED_HEAD" || true; })"
 for required in "$SW" "$REF_ADAPTER" "$ROSS_ADAPTER"; do
-  grep -Fxq "$required" <<<"$changed" || fail "required successor delta absent: $required"
+  grep -Fxq "$required" <<<"$p2e05_changed" || fail "required successor delta absent from qualified P2E05 interval: $required"
 done
 while IFS= read -r path; do
   [[ -z "$path" ]] && continue
@@ -59,11 +64,12 @@ while IFS= read -r path; do
     .github/workflows/fci96-fross12-postimage-preservation.yml|\
     .github/workflows/fci-canonical.yml)
       ;;
-    *) fail "out-of-scope P2E05 mutation: $path" ;;
+    *) fail "out-of-scope mutation in qualified P2E05 historical interval: $path" ;;
   esac
-done <<<"$changed"
+done <<<"$p2e05_changed"
 
-git diff --check "$P2E05_BASE"...HEAD
+git diff --check "$P2E05_BASE"..."$P2E05_QUALIFIED_HEAD"
+echo 'FCI96_P2E05_HISTORICAL_SCOPE_BOUNDED=PASS'
 
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fci96-p2e05-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"

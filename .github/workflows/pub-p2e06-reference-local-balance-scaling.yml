@@ -1,0 +1,27 @@
+name: PUB-P2E06 Reference local-balance scaling
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/P2E06_REFERENCE_LOCAL_BALANCE_SCALING_PREREGISTRATION.json'
+      - 'docs/publication/P2E06_REFERENCE_LOCAL_BALANCE_SCALING_RESULT.json'
+      - 'tests/publication/test_pub_p2e06_reference_local_balance_scaling.f90'
+      - 'tests/publication/run_pub_p2e06_reference_local_balance_scaling.sh'
+      - '.github/workflows/pub-p2e06-reference-local-balance-scaling.yml'
+      - 'src/**'
+      - 'reference/**'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+  workflow_dispatch:
+
+jobs:
+  reference-local-balance-scaling:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Diagnose exact P2E03 Reference local-balance scaling
+        run: bash tests/publication/run_pub_p2e06_reference_local_balance_scaling.sh
