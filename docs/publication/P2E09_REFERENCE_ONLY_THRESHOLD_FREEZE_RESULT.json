@@ -14,10 +14,14 @@
   },
   "threshold_design": {
     "stratification": "effective saturation only",
-    "Se_levels": [0.65, 0.85, 0.98],
+    "Se_levels": [
+      0.65,
+      0.85,
+      0.98
+    ],
     "reference_statistic": "maximum Reference self-disagreement among all 18 P2E08 cases in the Se stratum",
-    "reference_factor": 1.0,
-    "application_resolution_floor": 0.0,
+    "reference_factor": 1,
+    "application_resolution_floor": 0,
     "no_forcing_stratification": true,
     "no_material_stratification": true,
     "no_weighted_compensation": true
@@ -91,5 +95,15 @@
     "physical_case_removed": false
   },
   "verdict": "QUALIFIED_REFERENCE_ONLY_E0_THRESHOLD_FREEZE_PENDING_FINAL_EXACT_HEAD_GATES",
-  "next_permitted_action": "Qualify the result-bearing exact head through P2E09, documentation and full canonical preservation. After admission, preregister the broad 54-case E0 paired RossFast-versus-Reference matrix and its common temporal protocol before generating any new broad RossFast discrepancies."
+  "next_permitted_action": "Qualify this reconciled result-bearing exact head through P2E09, documentation and full canonical preservation. After admission, preregister the broad 54-case E0 paired RossFast-versus-Reference matrix and its common temporal protocol before generating any new broad RossFast discrepancies.",
+  "reconciled_admission_base": "6a77678b535ed468bdeeb9b67f149be706f0205f",
+  "reconciled_branch_head_before_result_update": "d6f70b4240fde93620d068c39e060dbe46dd8c97",
+  "canonical_reconciliation": {
+    "delta_since_preregistered_base": "PUB-ME_D3 publication/test evidence only",
+    "p2e08_result_blob_unchanged": true,
+    "admissibility_design_blob_unchanged": true,
+    "paper2_research_design_blob_unchanged": true,
+    "src_or_reference_dependency_change_relevant_to_p2e09": false,
+    "threshold_values_changed": false
+  }
 }
