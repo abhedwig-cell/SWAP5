@@ -84,7 +84,10 @@ contains
 
     found = .true.
     select case(trim(material_id))
-    case('B01','B12','O01','O05','O14','O18')
+    case('B01','B02','B03','B04','B05','B06','B07','B08','B09', &
+         'B10','B11','B12','B13','B14','B15','B16','B17','B18', &
+         'O01','O02','O03','O04','O05','O06','O07','O08','O09', &
+         'O10','O11','O12','O13','O14','O15','O16','O17','O18')
       path = trim(material_id) // '_log_mobility_f32.hex'
     case default
       path = ''
