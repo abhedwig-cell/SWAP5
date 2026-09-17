@@ -1,0 +1,164 @@
+schema_version: 1
+
+inventory_base:
+  branch: integration/f-ci-canonical
+  commit: 95d24660b51257119d5ee5fd25f2011e20b1dfa6
+  purpose: >-
+    Repository test-surface inventory used to establish the F-TA01 test-bank
+    authority boundary. Later catalog changes must state the repository state
+    on which their inventory was checked.
+
+authorities:
+  test_bank: docs/verification/test-bank.md
+  verification_principles: docs/verification/principles.md
+  reference_baselines: docs/verification/reference-baselines.md
+  status_a_traceability: docs/status-a/TRACEABILITY.md
+
+registration_status:
+  complete: >-
+    Claim or invariant, executable locator, fixture/input, oracle, acceptance,
+    runner, provenance where applicable, and evidence relation are centrally
+    reconstructable on the pinned state.
+  partial: >-
+    The test surface exists and is registered, but one or more required
+    traceability fields remain local, implicit, or not centrally linked.
+  unregistered: >-
+    A repository test surface exists outside the registered inventory or no
+    bounded registration record can be found.
+
+required_traceability_fields:
+  - stable_id
+  - claim_or_invariant
+  - test_locator
+  - fixture_or_input
+  - oracle
+  - acceptance
+  - runner
+  - baseline_or_provenance
+  - evidence_link
+  - registration_status
+
+registered_test_roots:
+  - id: TB-ROOT-EB
+    path: tests/eb
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FCI
+    path: tests/fci
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FGC
+    path: tests/fgc
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FKT
+    path: tests/fkt
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FMQ
+    path: tests/fmq
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FMR
+    path: tests/fmr
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FPE
+    path: tests/fpe
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FPM
+    path: tests/fpm
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FSI
+    path: tests/fsi
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FVQ
+    path: tests/fvq
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-FWOF
+    path: tests/fwof
+    kind: capability_test_family
+    registration_status: partial
+  - id: TB-ROOT-INTEGRATION
+    path: tests/integration
+    kind: cross_cutting_test_family
+    registration_status: partial
+  - id: TB-ROOT-M1
+    path: tests/m1
+    kind: milestone_test_family
+    registration_status: partial
+  - id: TB-ROOT-QUALIFICATION
+    path: tests/qualification
+    kind: qualification_test_family
+    registration_status: partial
+  - id: TB-ROOT-ROSS
+    path: tests/ross
+    kind: solver_test_family
+    registration_status: partial
+  - id: TB-ROOT-RUNTIME
+    path: tests/runtime
+    kind: runtime_test_family
+    registration_status: partial
+  - id: TB-ROOT-TRANSACTION
+    path: tests/transaction
+    kind: transaction_test_family
+    registration_status: partial
+  - id: TB-ROOT-MP
+    path: tests/test_mp_*.py
+    kind: performance_test_family
+    registration_status: partial
+
+supporting_surfaces:
+  - id: TB-SUPPORT-VQ
+    path: tools/vq
+    role: >-
+      Verification and qualification tooling, including unit tests for the
+      tooling. This surface is not production SWAP physics.
+    registration_status: partial
+  - id: TB-SUPPORT-B1-PATCH-TESTS
+    path: reference/swap-4.3.1/patches/*/tests
+    role: >-
+      Focused corrected-reference tests tied to B1 patch qualification and
+      exact legacy/reference provenance.
+    registration_status: partial
+  - id: TB-SUPPORT-VERIFICATION-EVIDENCE
+    path: docs/verification
+    role: >-
+      Versioned verification and qualification evidence. Evidence documents
+      are not executable tests and do not belong to the permanent test bank.
+  - id: TB-SUPPORT-STATUS-A
+    path: docs/status-a/TRACEABILITY.md
+    role: >-
+      Claim-level current Status-A traceability and preservation authority.
+      This remains the entry point for deciding whether a test protects an
+      admitted capability.
+  - id: TB-SUPPORT-PERFORMANCE
+    path: benchmarks
+    role: >-
+      Performance workloads and measurement material. Performance evidence is
+      not scientific qualification unless an explicit qualification contract
+      establishes that relation.
+
+rules:
+  regression_is_not_scientific_qualification: true
+  passing_test_is_not_admission: true
+  baseline_updates_require_provenance_and_expected_difference_classification: true
+  retired_tests_must_not_silently_remove_status_a_coverage: true
+  changed_claim_dependencies_require_requalification: true
+  new_or_materially_changed_admission_tests_require_complete_or_linked_traceability: true
+
+known_gap:
+  id: TB-GAP-001
+  status: open_bounded_documentation_debt
+  statement: >-
+    The current top-level test surfaces are completely inventoried at family
+    level, but complete per-test or bounded-subfamily claim-to-oracle-to-evidence
+    registration has not yet been established for every legacy family.
+  implication: >-
+    Family-level registration closes the repository navigation and authority
+    gap only. It must not be cited as proof that every existing test has
+    complete scientific traceability.
