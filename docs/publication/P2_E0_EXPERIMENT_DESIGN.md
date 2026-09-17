@@ -2,270 +2,175 @@
 
 ## Purpose
 
-PUB-P2E01 turns the admitted RossFast E0 envelope into a controlled paired-solver experiment without yet broadening solver physics.
+PUB-P2E01 turns the admitted restricted RossFast E0 envelope into a controlled Reference-versus-RossFast experiment without broadening solver physics.
 
-The immediate objective is not to prove equivalence. It is to establish a reproducible Reference-versus-RossFast comparison protocol, verify that both routes expose scientifically comparable state observations, and freeze the rules before broad E0 sampling.
+The objective is not to prove equivalence. It is to establish a reproducible comparison protocol, expose confounding before broad sampling, and freeze the scientific rules before any admissibility conclusion is allowed.
 
-## Hard experimental principle
+## Experimental principle
 
-Every scientific case is a pair:
+A scientific pair must hold the physical problem fixed. The treatment variable is solver identity.
 
 ```text
-same declared physical parameters
-same committed initial physical state
-same forcing and boundary contract
-same requested interval
-same surrounding application lifecycle
+same typed parameter set
+same grid and material
+same initial physical state
+same constitutive/source/boundary providers
+same boundary values
+same requested step duration
         |
-        +--> REFERENCE_RICHARDS
+        +--> Reference Richards solver
         |
-        +--> ROSSFAST_D3R
+        +--> RossFast D3R solver
 ```
 
-The solver identity is the treatment variable. A case is excluded from paired inference if another scientific input differs between routes.
+If another scientific or numerical acceptance mechanism differs between routes, the result is not a pure solver comparison and must be classified separately.
 
-## Stage 0: extraction pilot
+## Fixed E0 pilot condition
 
-The first pilot deliberately reproduces the already admitted F-ROSS12 B01 production route.
+The first case reproduces the admitted F-ROSS12 B01 physical envelope:
 
-### Fixed pilot condition
+- material `B01`;
+- 16 active cells;
+- 10 cm cell thickness;
+- uniform initial pressure head `-101 cm`;
+- initial water content from the common B1.10 constitutive provider;
+- prescribed top flux `0.01 * K(h0)`;
+- prescribed bottom flux `-0.004 * K(h0)`;
+- no root extraction, distributed sources/sinks, drainage response, macropores, snow, frost, soil temperature, hysteresis, tabulated hydraulics or elasticity;
+- step duration `ROSSFAST_D3R_OUTER_HORIZON_DAY`.
 
-- material: `B01`
-- active nodes: 16
-- cell thickness: 10 cm
-- initial pressure head: uniform `-101 cm`
-- initial water content: derived from the same admitted hydraulic relation used to construct the typed state
-- top boundary: prescribed flux
-- top flux: `0.01 * K(h0)` using the B01 conductivity at the declared initial head
-- bottom boundary: prescribed flux under the currently admitted bottom mode
-- bottom flux: `-0.004 * K(h0)`
-- root extraction: inactive
-- distributed sources/sinks: zero
-- drainage response: inactive
-- macropores: inactive
-- snow/frost/soil temperature: inactive
-- hysteresis and tabulated hydraulics: inactive
-- requested horizon: the admitted `ROSSFAST_D3R_OUTER_HORIZON_DAY`
-- transaction lifecycle: current canonical production transaction
+This pilot does not introduce a new RossFast physical domain.
 
-This pilot is chosen because the RossFast route is already qualified there. It does not introduce a new physical claim.
+## Stage 0a: solver-seam paired extraction
 
-### Pilot routes
+Stage 0a compares the two concrete `soil_water_solver_t` implementations using one identical `soil_water_solve_request_t`. This removes the transaction controller as a confounder.
 
-Run exactly two model selections:
+The publication test is:
 
-1. explicit `REFERENCE_RICHARDS` through the current common production host;
-2. explicit `ROSSFAST_D3R` through the same host and solver seam.
+- `tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90`
+- runner: `tests/publication/run_pub_p2e01_e0_paired_pilot.sh`
+- workflow: `.github/workflows/pub-p2e01-e0-paired-pilot.yml`
 
-No automatic fallback is allowed in either paired comparison. A route that cannot execute the declared case is recorded as an exclusion or failure, not silently replaced.
+No production source is modified by this experiment.
 
-## Existing observation path
+### Stage 0a result
 
-The current kernel already provides an observation-safe route to endpoint physical state. `kernel_committed_state_t` owns its physical continuation state privately but exposes `snapshot()`, which returns a clone of the committed physical state. The concrete serialized physical state contains pressure-head and water-content arrays.
+The paired solver-seam pilot passed under both `-O0` and `-O2`, with identical textual output between optimization levels.
 
-Therefore PUB-P2E01 should first use committed-state snapshots after the accepted transaction rather than add a new production observation ABI merely for publication.
-
-The existing `fmr_serialized_physical_observation_t` remains useful for solver route, terminal flux and temporal diagnostics, but it does not by itself expose the full accepted endpoint profile.
-
-## E0 identifiability boundary
-
-The current RossFast E0 envelope admits prescribed-flux boundaries only. This has an important scientific consequence.
-
-When top and bottom water fluxes are prescribed identically to both routes, agreement of those imposed boundary fluxes is not independent evidence that the two solvers predict the same flux response. Within E0, boundary transfer is primarily an experimental input and a conservation/accounting check.
-
-Accordingly:
-
-- endpoint pressure head, water content and profile storage are discriminating solver responses in E0;
-- independent mass closure remains a hard validity requirement for each route;
-- prescribed top/bottom transfer consistency is useful for checking that both runs received and accounted for the same experiment;
-- zero or near-zero difference in imposed boundary transfer must **not** be presented as evidence of flux-prediction equivalence.
-
-A strong Paper 2 claim about solver interchangeability for predicted boundary fluxes will require a later independently qualified expansion in which at least one scientifically relevant boundary flux is an outcome rather than fully prescribed input, for example an admitted head-controlled, groundwater-interacting or dynamic surface boundary.
-
-That later expansion is outside E0 and must not be smuggled into PUB-P2E01.
-
-## Pilot observations
-
-Before the pilot can yield scientific comparison evidence, both routes must expose a common representation sufficient to compare:
-
-- pressure head for every active node at the accepted endpoint;
-- water content for every active node at the accepted endpoint;
-- profile storage at start and accepted endpoint;
-- independent water-balance residual for each route;
-- applied interval-integrated prescribed top and bottom transfers in the common public sign convention;
-- accepted interval duration;
-- commit status and final physical revision;
-- route identity and failure/retry diagnostics.
-
-The first four items are scientific response/validity quantities. Prescribed boundary transfer is experimental-control evidence in E0, not a discriminating solver-output metric.
-
-If a scientifically required quantity cannot be obtained on the same basis from both routes, PUB-P2E01 stops at `OBSERVATION_CONTRACT_GAP`. A missing quantity must not be reconstructed from an inequivalent diagnostic solely to make the comparison complete.
-
-## Metric definitions
-
-Metric definitions are frozen before broad E0 execution.
-
-### Head
-
-For paired endpoint node heads `h_R(i)` and `h_A(i)`:
+Observed raw B01 pilot quantities:
 
 ```text
-D_h_inf = max_i |h_A(i) - h_R(i)|
-D_h_rms = sqrt(mean_i((h_A(i) - h_R(i))^2))
+Reference route                 legacy-reference-bound
+RossFast route                  rossfast-d3r
+Reference nonlinear iterations  3
+Reference linear solves         3
+RossFast linear solves          24
+Reference mass residual        -4.73913226370359375E-013 cm
+RossFast mass residual          -3.03421813024830518E-015 cm
+D_h_inf                          2.00796959859417257E-005 cm
+D_h_rms                          8.55848056071812140E-006 cm
+D_theta_inf                      2.41824979207994062E-008
+D_theta_rms                      1.03052868157011792E-008
+D_storage                        0.0 cm
 ```
 
-Report both. A single aggregate can hide depth-localized divergence.
+The O0/O2 output SHA-256 is:
 
-### Water content
+`bf854934b47e3e060f20a86f2b1c49601aae58f8be332f68d9963e13335be3c5`
+
+These are observations, not an admissibility verdict. The head, water-content and storage tolerances remain deliberately unset.
+
+## Stage 0b: transaction-level pair is currently blocked
+
+An earlier Stage 0 probe attempted to run both selections through the same production transaction configuration copied from F-ROSS12. That probe failed for the Reference route before commit.
+
+The cause is structural rather than a solver convergence failure:
+
+- F-ROSS12 uses `TX_TEMPORAL_MODEL_CERTIFICATE`;
+- that transaction mode requires every accepted trial to publish a valid model temporal certificate;
+- RossFast publishes its admitted `rossfast-model-certificate`;
+- the simple Reference selection in this E0 composition does not publish the same certificate because the Reference temporal-history service is not active in this layout;
+- RossFast E0 preflight simultaneously requires its current no-continuation layout and model-certificate policy.
+
+Therefore a transaction-level run under the current F-ROSS12 policy would vary both solver implementation and temporal-acceptance mechanism, or reject one route. It is not a clean solver experiment.
+
+Current Stage 0b status:
+
+`BLOCKED_TEMPORAL_POLICY_ASYMMETRY`
+
+This blocker must not be hidden by silently giving each solver a different transaction acceptance rule and calling the result paired.
+
+## Identifiability boundary for prescribed fluxes
+
+Both E0 boundaries are prescribed fluxes. Agreement of top and bottom flux values is therefore mostly imposed by construction, not predicted independently by the solvers.
+
+Within E0:
+
+- endpoint pressure head and water content are discriminating responses;
+- profile storage is a discriminating aggregate response;
+- each route's mass residual is an independent validity check;
+- prescribed boundary-transfer identity is an experimental-control check only.
+
+A claim about equivalence of **predicted** boundary fluxes requires a later independently qualified envelope in which at least one relevant flux is a model outcome, for example a head-controlled, groundwater-interacting or dynamic surface boundary.
+
+## Frozen Stage 0 metrics
+
+For endpoint heads and water contents:
 
 ```text
+D_h_inf     = max_i |h_A(i) - h_R(i)|
+D_h_rms     = sqrt(mean_i((h_A(i) - h_R(i))^2))
 D_theta_inf = max_i |theta_A(i) - theta_R(i)|
 D_theta_rms = sqrt(mean_i((theta_A(i) - theta_R(i))^2))
+D_storage   = |S_A - S_R|
 ```
 
-### Storage
-
-```text
-D_storage_abs = |S_A - S_R|
-```
-
-A relative storage measure may be added only with a declared denominator that remains meaningful in dry cases.
-
-### Prescribed boundary-transfer control
-
-For E0 only, record the applied integrated top and bottom transfers for both routes and verify identical experimental control after sign normalization.
-
-Do not interpret
-
-```text
-D_qtop = 0
-D_qbot = 0
-```
-
-as independent solver-equivalence evidence when those quantities were prescribed by construction.
-
-### Mass
-
-Each route is tested independently against the hard mass requirement. Pairwise similarity of mass residuals is not sufficient.
-
-Record:
-
-```text
-mass_reference
-mass_alternative
-mass_reference_pass
-mass_alternative_pass
-```
-
-A case cannot be scientifically admissible when either route violates its own conservation requirement.
+Each route's conservation residual is evaluated independently. Pairwise similarity of mass residuals is not sufficient.
 
 ## Scientific tolerances
 
-PUB-P2E01 does **not** invent numerical admissibility tolerances merely to complete the manifest.
+PUB-P2E01 does not choose admissibility limits from the observed pilot discrepancy.
 
 Current status:
 
 ```text
-head admissibility tolerance: TO_BE_PREDECLARED
-water-content admissibility tolerance: TO_BE_PREDECLARED
-storage admissibility tolerance: TO_BE_PREDECLARED
-predicted-flux admissibility tolerance: NOT_APPLICABLE_WITHIN_PRESCRIBED-FLUX E0
-mass acceptance: existing independent hard route requirement, exact authority to be pinned
+head tolerance           TO_BE_PREDECLARED_BEFORE_STAGE1
+water-content tolerance  TO_BE_PREDECLARED_BEFORE_STAGE1
+storage tolerance        TO_BE_PREDECLARED_BEFORE_STAGE1
+predicted-flux tolerance NOT_APPLICABLE_WITHIN_PRESCRIBED-FLUX E0
+mass requirement         existing independent hard route requirement
 ```
 
-Before Stage 1 broad sampling, each scientific state/storage tolerance needs a documented basis. Acceptable bases include:
+A defensible tolerance basis may come from an existing qualified SWAP tolerance with the same physical interpretation, a discretization-derived bound, a scientifically meaningful application-resolution threshold, or a preregistered sensitivity analysis. The observed B01 discrepancy itself may not be used to tune the threshold after the fact.
 
-- an existing qualified SWAP numerical tolerance with the same physical meaning;
-- a discretization-derived bound;
-- a scientifically justified application-resolution threshold;
-- a sensitivity analysis showing that the chosen threshold is below a consequential model-response scale.
+## Stage 1 E0 design
 
-Observed RossFast discrepancies may not be used to choose a tolerance after the fact.
+Stage 1 may start only after scientific state/storage tolerances are preregistered.
 
-## Stage 0 verdict semantics
+The broader E0 matrix remains restricted to:
 
-The pilot can return only one of:
+- materials `B01`, `B12`, `O01`, `O05`, `O14`, `O18`;
+- 16 cells of 10 cm;
+- homogeneous material per column;
+- qualified uniform initial hydraulic states;
+- prescribed top and bottom fluxes within the admitted envelope;
+- no roots, distributed sources, groundwater head boundary, energy coupling, heterogeneous profile or automatic solver fallback.
 
-- `PAIRED_EXTRACTION_READY`: both routes executed the same physical case and all required common state/conservation observations were obtained;
-- `OBSERVATION_CONTRACT_GAP`: one or more scientifically required observations cannot yet be compared on the same basis;
-- `ROUTE_EXECUTION_GAP`: one solver cannot execute the exact paired pilot under its declared current contract;
-- `IMPLEMENTATION_DEFECT_CANDIDATE`: evidence indicates a likely implementation or adapter error requiring separate adjudication.
+Initial states should preferably be parameterized by a material-normalized hydraulic descriptor such as effective saturation `Se0`, with pressure head derived from the exact admitted material authority. The levels must be frozen before broad execution.
 
-The pilot must **not** return `SCIENTIFICALLY_EQUIVALENT`, because scientific admissibility tolerances are intentionally not yet set and E0 does not test predicted boundary-flux equivalence.
+A stratified or space-filling design is preferred over an indiscriminate full factorial. Refinement should target regions where preregistered state/storage discrepancy thresholds are approached.
 
-## Stage 1 E0 design principle
+## Performance boundary
 
-After Stage 0 extraction is qualified and scientific state/storage tolerances are predeclared, expand within the existing E0 envelope only.
+Iteration and solve counts may be retained as diagnostics, but the Stage 0 workflow is not a controlled performance experiment. No speedup claim follows from this pilot. Any performance result requires the repository's separate controlled performance-measurement discipline.
 
-To compare hydraulic states fairly across materials, prefer a material-normalized initial-state descriptor rather than reusing the same pressure head blindly for every soil. Candidate descriptor:
+## Negative-result policy
 
-```text
-initial effective saturation Se0
-```
-
-with pressure head calculated from the exact admitted hydraulic parameter authority for each material.
-
-The actual `Se0` levels must be frozen only after the six material parameter authorities have been pinned and the inversion has been checked against the Reference constitutive implementation.
-
-Forcing should likewise be normalized where scientifically defensible, for example against material-specific conductivity or storage scales, while retaining absolute physical flux values in the evidence record.
-
-## Stage 1 factors that may vary without broadening E0 physics
-
-- material among B01, B12, O01, O05, O14, O18;
-- qualified uniform initial hydraulic state;
-- prescribed top-flux magnitude and sequence;
-- prescribed bottom-flux magnitude within the admitted boundary contract;
-- interval/forcing sequence within the admitted temporal model.
-
-## Factors explicitly frozen in E0
-
-- 16 active nodes;
-- 10 cm cell thickness;
-- homogeneous admitted material per column;
-- no root sink;
-- no distributed source/sink;
-- no groundwater head boundary;
-- no energy or soil-temperature coupling;
-- no heterogeneous profile;
-- no mixed MultiSWAP execution;
-- no silent fallback between solvers.
-
-Any change to these factors belongs to a later independently qualified expansion, not to E0.
-
-## Sampling strategy
-
-Do not use an exhaustive full factorial by default.
-
-Preferred sequence:
-
-1. stratified or space-filling sample over normalized initial state and prescribed forcing for all six materials;
-2. identify regions where **state or storage** discrepancy approaches the predeclared scientific threshold;
-3. refine sampling around those transition regions;
-4. retain clearly admissible, borderline and excluded cases in the publication dataset.
-
-This focuses compute on the scientific boundary instead of maximizing case count.
-
-## Performance measurement boundary
-
-Stage 0 and early Stage 1 may record coarse runtime diagnostics for debugging, but they do not support a publication speed claim.
-
-A performance result enters Paper 2 only under the repository's controlled performance-measurement discipline, including host qualification, repeated paired measurements and uncertainty. Shared-host single timings are not evidence of meaningful speedup.
-
-## Negative results
-
-Every excluded or divergent pair is retained. Classification must distinguish:
-
-- unsupported contract;
-- implementation or adapter defect candidate;
-- conservation failure;
-- temporal acceptance failure;
-- scientifically material state/storage discrepancy;
-- comparison-observation gap.
-
-This distinction is required before interpreting an exclusion as a limitation of the numerical method.
+All failures and exclusions remain in the evidence set. Classification must distinguish unsupported contract, implementation defect candidate, conservation failure, temporal-policy incompatibility, scientifically material discrepancy and observation gap.
 
 ## Next permitted action
 
-Implement the smallest observation-only paired runner for the exact Stage 0 B01 case by reusing the current production host and committed-state `snapshot()` API. It may add publication tooling or tests, but must not modify Reference science, RossFast science, transaction semantics or qualification tolerances.
-
-Only after the paired extraction contract passes may PUB-P2E01 freeze the broad E0 experiment manifest.
+1. persist the Stage 0a run, metrics and Stage 0b blocker as immutable publication evidence;
+2. predeclare the scientific head/water-content/storage tolerance rationale without using the observed B01 discrepancy to fit it;
+3. only then freeze and execute the broader six-material E0 matrix;
+4. treat transaction-level solver comparison as a separate later qualification problem until a common temporal acceptance policy is available.
