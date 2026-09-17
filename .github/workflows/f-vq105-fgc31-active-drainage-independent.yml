@@ -1,0 +1,31 @@
+name: F-VQ105 F-GC31 active drainage independent
+
+on:
+  push:
+    branches:
+      - qualification/f-vq105-fgc31-active-drainage-derivative-independent
+    paths:
+      - 'qualification/test_fvq105_fgc31_active_drainage_independent.f90'
+      - 'qualification/run_fvq105_fgc31_active_drainage_independent.sh'
+      - 'qualification/F-VQ105_FGC31_ACTIVE_DRAINAGE.json'
+      - '.github/workflows/f-vq105-fgc31-active-drainage-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-VQ105 independent qualification
+        run: bash qualification/run_fvq105_fgc31_active_drainage_independent.sh
