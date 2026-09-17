@@ -1,0 +1,121 @@
+name: Publication E0 prospective screening
+
+on:
+  push:
+    branches:
+      - research/pub-e0-screening
+    paths:
+      - '.github/workflows/pub-e0-screening.yml'
+      - 'docs/publications/manifests/PUB-SQ-E0-0001.yaml'
+      - 'docs/publications/manifests/PUB-GC-E0-0001.yaml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sq-e0:
+    name: PUB-SQ-E0-0001
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research control branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout pinned F-ROSS12 authority
+        uses: actions/checkout@v4
+        with:
+          ref: 93d50e349528551ff74bce3944e984e582a21b84
+          path: sq-src
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Execute pinned SQ-E0 gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/PUB-SQ-E0-0001
+          (
+            cd sq-src
+            bash tests/ross/run_ross12_solver_selection_binding.sh
+          ) 2>&1 | tee artifacts/PUB-SQ-E0-0001/ross12-selection.log
+      - name: Write SQ-E0 provenance receipt
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/PUB-SQ-E0-0001
+          {
+            echo 'experiment_id=PUB-SQ-E0-0001'
+            echo "workflow_control_commit=$(git rev-parse HEAD)"
+            echo "manifest_declaring_commit=$(git log -1 --format=%H -- docs/publications/manifests/PUB-SQ-E0-0001.yaml)"
+            echo "code_commit=$(git -C sq-src rev-parse HEAD)"
+            echo "runner_blob=$(git -C sq-src rev-parse HEAD:tests/ross/run_ross12_solver_selection_binding.sh)"
+            echo "test_blob=$(git -C sq-src rev-parse HEAD:tests/ross/test_ross12_solver_selection_binding.f90)"
+            echo "compiler=$(gfortran --version | head -n 1)"
+            echo "runner_os=${RUNNER_OS:-unknown}"
+            echo "runner_arch=${RUNNER_ARCH:-unknown}"
+            echo "github_run_id=${GITHUB_RUN_ID:-unknown}"
+            echo "github_run_attempt=${GITHUB_RUN_ATTEMPT:-unknown}"
+          } > artifacts/PUB-SQ-E0-0001/runner-receipt.txt
+      - name: Upload SQ-E0 artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PUB-SQ-E0-0001
+          path: artifacts/PUB-SQ-E0-0001
+          if-no-files-found: error
+
+  gc-e0:
+    name: PUB-GC-E0-0001
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research control branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout pinned canonical authority
+        uses: actions/checkout@v4
+        with:
+          ref: 74051e113fcef19e021d69854f3ab99066eb30cb
+          path: gc-src
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Execute pinned GC-E0 gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/PUB-GC-E0-0001
+          (
+            cd gc-src
+            bash tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh
+          ) 2>&1 | tee artifacts/PUB-GC-E0-0001/fgc25-gate.log
+      - name: Write GC-E0 provenance receipt
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/PUB-GC-E0-0001
+          {
+            echo 'experiment_id=PUB-GC-E0-0001'
+            echo "workflow_control_commit=$(git rev-parse HEAD)"
+            echo "manifest_declaring_commit=$(git log -1 --format=%H -- docs/publications/manifests/PUB-GC-E0-0001.yaml)"
+            echo "code_commit=$(git -C gc-src rev-parse HEAD)"
+            echo "runner_blob=$(git -C gc-src rev-parse HEAD:tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh)"
+            echo "focal_test_blob=$(git -C gc-src rev-parse HEAD:tests/fgc/test_fgc25_multiswap_commit.f90)"
+            echo "compiler=$(gfortran --version | head -n 1)"
+            echo "runner_os=${RUNNER_OS:-unknown}"
+            echo "runner_arch=${RUNNER_ARCH:-unknown}"
+            echo "github_run_id=${GITHUB_RUN_ID:-unknown}"
+            echo "github_run_attempt=${GITHUB_RUN_ATTEMPT:-unknown}"
+          } > artifacts/PUB-GC-E0-0001/runner-receipt.txt
+      - name: Upload GC-E0 artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PUB-GC-E0-0001
+          path: artifacts/PUB-GC-E0-0001
+          if-no-files-found: error
