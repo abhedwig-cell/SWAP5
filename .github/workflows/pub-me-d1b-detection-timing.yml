@@ -1,0 +1,32 @@
+name: PUB-ME D1-B detection timing
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_D1B_EXECUTION_CHECKPOINT.md'
+      - 'docs/publications/PUB-ME_D1B_RESULT.md'
+      - 'tests/publication/test_pub_me_d1b_detection_timing.f90'
+      - 'tests/publication/run_pub_me_d1b_detection_timing.sh'
+      - '.github/workflows/pub-me-d1b-detection-timing.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d1b-detection-timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered D1-B gate
+        run: bash tests/publication/run_pub_me_d1b_detection_timing.sh
