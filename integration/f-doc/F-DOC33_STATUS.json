@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC33",
+  "title": "B1.10 cofgen full internal alias and model activation provenance",
+  "phase": "VERIFY",
+  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+  "branch": "work/f-doc33-cofgen-full-alias-activation-provenance",
+  "canonical_start": "0d493886a53626bd32bf9247669d5a709391849e",
+  "content_postimage": "4086a3cc8374b86a51a8388178e7b80d8f0db04a",
+  "verified_content_head": "d5672c166ce920387988047b516bd86f290cd38e",
+  "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "prior_documentation": {
+    "F-DOC27": "partial provider-role provenance; original parser names/units intentionally unresolved",
+    "F-DOC32": "rows 13:16 direct SWAP-012 model-3 local aliases"
+  },
+  "primary_authority": {
+    "payload_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+    "payload_git_blob": "6cfcec4e38b02343ba48e7e6fb5d595158e19653",
+    "manifest_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json",
+    "manifest_git_blob": "c64942d2964bb67c200f973b76e05222ad73067f",
+    "decoded_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "snapshot": "B1.10"
+  },
+  "acquired_exact_aliases": {
+    "1": "wcr",
+    "2": "wcs",
+    "3": "ksatfit",
+    "4": "alfamg",
+    "5": "lambda",
+    "6": "n",
+    "7": "m",
+    "8": "alfamgwet",
+    "9": "h_enpr",
+    "10": "ksatexm",
+    "11": "relsatthr",
+    "12": "ksatthr",
+    "13": "alfa_2",
+    "14": "n_2",
+    "15": "m_2",
+    "16": "omega_1",
+    "22": "h_power",
+    "23": "k_power",
+    "24": "elas"
+  },
+  "rows_without_global_pointer_alias": [17,18,19,20,21],
+  "model_activation": {
+    "1:12": "all parameterized models",
+    "13:17": "iHWCKmodel 3,6,7,10,11",
+    "18_only": "iHWCKmodel 5,7",
+    "18:21": "iHWCKmodel 8,9,10,11",
+    "22:24": "all parameterized models"
+  },
+  "supplemental_evidence": {
+    "SWAP-010_model7_gate": "row17 = 1 - row16 in qualified model-7 material",
+    "SWAP-009_model8_harness": "rows18:21 = |h0| [cm], |ha| [cm], PDI a, omega_K for qualified model-8 material",
+    "SWAP-013_parser_patch": "legacy parser fields h0, ha, apar, omega_K are directly present",
+    "official_SWAP_parser_commit": "c22bd832ddf3e53e330a552f5e31e74f183362d1; secondary corroboration only"
+  },
+  "claim_ceiling": {
+    "allowed": [
+      "document exact internal pointer aliases from byte-verified B1.10 source",
+      "document exact model-dependent paramvg-to-cofgen activation rules",
+      "document bounded qualified evidence for rows 17:21 with scope labels",
+      "retain unresolved original input keywords and units where exact frozen binding is absent"
+    ],
+    "forbidden": [
+      "equate pointer aliases to user-facing parser keywords without direct authority",
+      "infer unresolved units from conventional MvG notation or dimensions",
+      "promote external current SWAP source to frozen B1.10 identity",
+      "claim all 24 rows are simultaneously active",
+      "change production, reference, tests, physics or numerical semantics"
+    ]
+  },
+  "scope_check": {
+    "changed_file_count": 3,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "mkdocs_navigation_changed": false
+  },
+  "verification": {
+    "pull_request": 200,
+    "content_workflow_run": 35282362847,
+    "content_workflow_job": 105406972007,
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "workflow_conclusion": "success",
+    "exact_head_rerun": "PENDING"
+  },
+  "mutations": [
+    "docs/science/soil-hydraulic-parameter-provenance.md",
+    "integration/f-doc/F-DOC33_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC33_STATUS.json"
+  ],
+  "production_reference_test_delta": false,
+  "verdict": "CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE",
+  "next_permitted_action": "REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_MERGEABILITY"
+}
