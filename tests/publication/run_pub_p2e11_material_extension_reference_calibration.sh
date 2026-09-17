@@ -35,7 +35,7 @@ test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = "$
 test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = "$REFERENCE_BINDING_BLOB" || fail 'Reference binding drift'
 test "$(git rev-parse HEAD:src/solver/mod_reference_richards_workspace.f90)" = "$WORKSPACE_BLOB" || fail 'Reference workspace drift'
 test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = "$HEADCALC_BLOB" || fail 'HeadCalc drift'
-test "$(git rev-parse HEAD:docs/publication/P2E07_REFERENCE_CANCELLATION_FLOOR_RESULT.json)" = "$P2E07_RESULT_BLOB" || fail 'P2E07 authority drift'
+test "$(git rev-parse HEAD:docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_RESULT.json)" = "$P2E10_RESULT_BLOB" || fail 'P2E10 authority drift'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
