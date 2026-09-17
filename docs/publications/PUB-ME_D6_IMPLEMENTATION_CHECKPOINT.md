@@ -76,3 +76,26 @@ No production/reference semantics were changed.
 Resume from branch/head above.
 
 Do not re-read D1-D5 or the broader literature unless a direct D6 comparator inconsistency is found.
+
+
+## Canonical reconciliation before first CI
+
+Canonical advanced from the original execution base to:
+
+`f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8`
+
+The exact delta is PUB-P2E10-only:
+
+- one P2E10 workflow;
+- P2E10 preregistration/result documents;
+- P2E10 publication test and runner.
+
+No `src/**` or `reference/**` file changed.
+
+D6 dependency surface remains unchanged.
+
+Draft PR:
+
+`#216 — PUB-ME D6: preregister and execute rejected side-effect authority experiment`
+
+This checkpoint update intentionally triggers the dedicated D6 workflow after the PR was created.
