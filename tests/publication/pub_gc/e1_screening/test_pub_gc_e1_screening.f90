@@ -29,6 +29,7 @@ program test_pub_gc_e1_screening
   real(real64), parameter :: qualification_head_budget = 100.0_real64
   integer(int64), parameter :: origin_lineage = 820001_int64
   integer(int64), parameter :: synthetic_lineage = 829901_int64
+  integer :: ios
 
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
@@ -58,14 +59,14 @@ program test_pub_gc_e1_screening
     error stop 2
   end if
   call get_command_argument(1, arg)
-  read(arg,*,iostat=ok_int) candidate_head_b
-  if (ok_int /= 0 .or. .not. ieee_is_finite(candidate_head_b)) then
+  read(arg,*,iostat=ios) candidate_head_b
+  if (ios /= 0 .or. .not. ieee_is_finite(candidate_head_b)) then
     write(*,'(a)') 'SCREEN_INFRA_FAIL=invalid B_head_cm'
     error stop 2
   end if
   call get_command_argument(2, arg)
-  read(arg,*,iostat=ok_int) duration
-  if (ok_int /= 0 .or. .not. ieee_is_finite(duration) .or. duration <= 0.0_real64) then
+  read(arg,*,iostat=ios) duration
+  if (ios /= 0 .or. .not. ieee_is_finite(duration) .or. duration <= 0.0_real64) then
     write(*,'(a)') 'SCREEN_INFRA_FAIL=invalid duration_days'
     error stop 2
   end if
@@ -175,8 +176,6 @@ program test_pub_gc_e1_screening
 
 contains
 
-  integer function ok_int()
-  end function ok_int
 
   subroutine attempt_trial(committed, checkpoint, forcing, result, local_candidate, diagnostics, snapshot, &
                            completed, why)
