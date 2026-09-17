@@ -13,39 +13,28 @@ This directory contains the prospective publication and doctoral-research layer 
 | `EVIDENCE_INVENTORY.md` | living evidence map | classifies existing and missing evidence across papers and thesis synthesis without rewriting chronology |
 | `EXPERIMENT_MANIFEST.md` | prospective evidence contract | common metadata, chronology, numerical-reference and artifact rules for publication experiments |
 | `EXPERIMENT_REGISTER.md` | living readiness register | run-family status, blockers and next permitted experiment actions |
-| `PUB-ME_SCIENTIFIC_CONTRACT.md` | initial contract | RQ1 / PRESERVE: evidence-preserving scientific model evolution |
+| `PUB-ME_SCIENTIFIC_CONTRACT.md` | initial contract | RQ1 / PRESERVE context and contribution boundary |
 | `PUB-ME_EXPERIMENT_MATRIX.md` | prospective design | migration-slice, preservation, adversarial-state, restart and evidence-successor experiment programme |
 | `PUB-SQ_SCIENTIFIC_CONTRACT.md` | initial contract | RQ2 / REPLACE: scientific qualification of alternative Richards solvers |
 | `PUB-SQ_EXPERIMENT_MATRIX.md` | prospective design | common-domain, boundary, equal-error cost and trajectory experiment programme |
 | `PUB-GC_SCIENTIFIC_CONTRACT.md` | developed initial contract | RQ3 / COUPLE: finite-window conservative groundwater-vadose coupling |
 | `PUB-GC_EXPERIMENT_MATRIX.md` | prospective design | same-origin, whole-window, convergence, MODFLOW-transfer and bounded N:1 experiment programme |
-| `PUB-RC_SCIENTIFIC_CONTRACT.md` | initial contract | RQ4 / ACCELERATE: response-assisted nonlinear coupling |
-| `PUB-SG_SCIENTIFIC_CONTRACT.md` | conditional contract | RQ5 / SCALE: hydrologic value of explicit subgrid vadose heterogeneity |
+| `PUB-RC_SCIENTIFIC_CONTRACT.md` | initial contract | RQ4 / ACCELERATE context and response-method boundary |
+| `PUB-SG_SCIENTIFIC_CONTRACT.md` | conditional contract | RQ5 / SCALE context and subgrid/upscaling boundary |
+| `manifests/FIVE_PAPER_RESEARCH_MANIFEST_INDEX.md` | draft freeze index | sharpened confirmatory questions, dependencies and freeze gates |
+| `manifests/PUB-*-RESEARCH-MANIFEST.yaml` | draft freeze candidates | paper-level hypotheses, primary endpoints, design/holdout separation, thresholds and kill/merge criteria |
 
-## Logical research arc
+## Logical research architecture
 
 ```text
-PRESERVE
-  PUB-ME
-     |
-     v
-REPLACE
-  PUB-SQ
-     |
-     v
-COUPLE
-  PUB-GC
-     |
-     v
-ACCELERATE
-  PUB-RC
-     |
-     v
-SCALE (conditional)
-  PUB-SG
+                    -> REPLACE / PUB-SQ
+PRESERVE / PUB-ME --|
+                    -> COUPLE / PUB-GC -> ACCELERATE / PUB-RC?
+                                      \
+                                       -> SCALE / PUB-SG?
 ```
 
-This sequence is conceptual rather than a mandatory publication order. `PUB-ME` and `PUB-SQ` may develop partly in parallel, and later studies may reuse already qualified capabilities as infrastructure.
+`PUB-SQ` is not a prerequisite for `PUB-GC`; the coupling study may remain on the qualified Reference Richards solver. `PUB-RC` and `PUB-SG` are evidence-dependent standalone papers rather than guaranteed manuscript slots.
 
 ## One-owner rule
 
@@ -72,9 +61,9 @@ This distinction prevents the existence of substantial engineering/qualification
 
 Already has a substantial real evidence base in the Status-A migration, explicit state/workspace ownership, transactional time stepping, reference preservation, qualification/admission chain and later semantic-successor preservation.
 
-The experiment matrix now converts this into a bounded empirical plan: freeze representative migration slices, replay a shared benchmark matrix, inject a diagnostic candidate-state leak, test restart sufficiency and analyze evidence invalidation/semantic-successor cases.
+The sharpened confirmatory question is now causal: whether explicit candidate-to-accepted scientific-state authority prevents or localizes prospectively defined contamination faults beyond a matched conventional architecture. Fault injection itself is not claimed as novel.
 
-Largest remaining gap: exact historical-build reconstruction for the selected migration slices and prospective execution of the adversarial/preservation experiments.
+Largest remaining gap: construct the paired B0/B1 authority experiment, freeze mechanistically distinct fault families and holdouts, and execute them without changing the preservation oracle after outcomes are known.
 
 ### PUB-SQ
 
@@ -94,15 +83,19 @@ Largest remaining gap: freeze fair comparator definitions, implement/qualify any
 
 ### PUB-RC
 
-Already has a canonically admitted optional groundwater-side response-sensitivity contract (`F-GC29`) that binds response to the exact trial/candidate/window provenance and fails closed on unavailable/nonsmooth/invalid response.
+Already has a canonically admitted optional groundwater-side response-sensitivity contract (`F-GC29`) and active work toward complementary whole-window response capability.
 
-Largest research gap: obtain/define the complementary SWAP-side whole-window response or a defensible approximation and demonstrate that response information improves total coupling cost relative to established accelerators.
+The standalone paper is conditional. Its comparator must include Aitken and at least one strong generic black-box quasi-Newton route. The question is not whether tangents can accelerate coupling, but how much hydrologically meaningful interface information is worth exposing after acquisition cost and safeguards are counted.
+
+Largest research gap: freeze the response ladder, strong generic baselines, matched-error cost metric and independent holdouts before confirmatory response comparisons.
 
 ### PUB-SG
 
-Has MultiSWAP/N:1 structural groundwork but remains intentionally conditional.
+Has MultiSWAP/N:1 structural groundwork but remains intentionally conditional. N:1 mapping itself is established prior art and is not a novelty claim.
 
-Largest research gap: show a material hydrologic effect of explicit dynamic subgrid heterogeneity relative to credible effective representations. If this effect is absent, do not force a paper.
+The sharpened question is cross-regime transferability: calibrate one equivalent full dynamic column under a declared regime, freeze it, and test whether it remains representative when forcing and groundwater dynamics change.
+
+Largest research gap: define a fair equivalent-column calibration, holdout regimes and hydrologic materiality thresholds above the solver/coupling numerical floor.
 
 ## Prospective evidence rule
 
@@ -122,8 +115,9 @@ The highest-value next steps are now:
 4. introduce shared publication telemetry serialization before new numerical evidence is generated;
 5. perform systematic novelty/literature review separately for each paper, with `PUB-ME`, `PUB-SQ` and `PUB-GC` first;
 6. audit selected `RETROSPECTIVE_CANDIDATE` evidence before using it in figures or manuscript claims;
-7. keep `PUB-RC` and `PUB-SG` dependent on evidence rather than predetermined paper count;
-8. mature `PHD_RESEARCH_PROGRAMME.md` into a formal proposal only after supervisor/institutional framing and literature positioning have been added.
+7. freeze the five paper-level research manifests before any new confirmatory campaign, including immutable holdout fingerprints and materiality-threshold authority;
+8. keep `PUB-RC` and `PUB-SG` dependent on evidence rather than predetermined paper count;
+9. mature `PHD_RESEARCH_PROGRAMME.md` into a formal proposal only after supervisor/institutional framing and literature positioning have been added.
 
 ## Experiment start gate
 
