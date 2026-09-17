@@ -106,51 +106,24 @@ contains
   subroutine initialize_parameters(p)
     type(fmr_b110_physical_parameters_t), intent(out) :: p
     integer :: k
-
     p%parameter_set_id = 910201_int64
     p%active_nodes = numnod
     allocate(p%z(numnod), p%dz(numnod), p%node_distance(numnod), p%cofgen(24,numnod))
-    p%z = z
-    p%dz = dz
-    p%node_distance = disnod(1:numnod)
-    p%cofgen = 0.0_real64
+    p%z = z; p%dz = dz; p%node_distance = disnod(1:numnod); p%cofgen = 0.0_real64
     do k = 1, numnod
-      p%cofgen(1,k) = 0.032_real64
-      p%cofgen(2,k) = 0.423_real64
-      p%cofgen(3,k) = 4.75_real64
-      p%cofgen(4,k) = 0.0135_real64
-      p%cofgen(5,k) = 0.365_real64
-      p%cofgen(6,k) = 1.455_real64
-      p%cofgen(7,k) = 1.0_real64 - 1.0_real64 / p%cofgen(6,k)
-      p%cofgen(8,k) = p%cofgen(4,k)
-      p%cofgen(9,k) = 0.0_real64
-      p%cofgen(10,k) = p%cofgen(3,k)
-      p%cofgen(11,k) = 0.999_real64
-      p%cofgen(12,k) = 0.99_real64 * p%cofgen(3,k)
-      p%cofgen(22,k) = -1.0e6_real64
-      p%cofgen(23,k) = 1.0e-12_real64
+      p%cofgen(1,k)=0.032_real64; p%cofgen(2,k)=0.423_real64; p%cofgen(3,k)=4.75_real64
+      p%cofgen(4,k)=0.0135_real64; p%cofgen(5,k)=0.365_real64; p%cofgen(6,k)=1.455_real64
+      p%cofgen(7,k)=1.0_real64-1.0_real64/p%cofgen(6,k); p%cofgen(8,k)=p%cofgen(4,k)
+      p%cofgen(9,k)=0.0_real64; p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64
+      p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode = 2
-    p%swkimpl = 0
-    p%swkmean = 1
-    p%swsophy = 0
-    p%max_iterations = 16
-    p%max_backtracking = 8
-    p%min_step_duration = 1.0e-8_real64
-    p%compartment_balance_tolerance = hard_mass_gate
-    p%total_balance_tolerance = hard_mass_gate
-    p%head_abs_tolerance = hard_mass_gate
-    p%head_rel_tolerance = hard_mass_gate
-    p%ponding_tolerance = hard_mass_gate
-    p%root_extraction_active = .false.
-    p%macropore_active = .false.
-    p%snow_active = .false.
-    p%hysteresis_active = .false.
-    p%tabulated_hydraulics_active = .false.
-    p%elasticity_active = .false.
-    p%frost_active = .false.
-    p%soil_temperature_active = .false.
-    p%drainage_response_active = .false.
+    p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0; p%max_iterations=16; p%max_backtracking=8
+    p%min_step_duration=1.0e-8_real64; p%compartment_balance_tolerance=hard_mass_gate
+    p%total_balance_tolerance=hard_mass_gate; p%head_abs_tolerance=hard_mass_gate
+    p%head_rel_tolerance=hard_mass_gate; p%ponding_tolerance=hard_mass_gate
+    p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.; p%hysteresis_active=.false.
+    p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
+    p%soil_temperature_active=.false.; p%drainage_response_active=.false.
   end subroutine initialize_parameters
 
   subroutine initialize_committed(state_carrier, p, initialized)
@@ -158,18 +131,14 @@ contains
     type(fmr_b110_physical_parameters_t), intent(in) :: p
     logical, intent(out) :: initialized
     type(fmr_b110_physical_state_t) :: physical
-    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-    type(b110_default_mvg_parameters_t), target :: hp
-    type(b110_default_mvg_provider_t) :: provider
-
-    heads = h0
-    call initialize_b110_default_mvg_parameters(hp, p%cofgen)
-    call bind_b110_default_mvg_provider(provider, hp, duration)
-    call provider%evaluate(heads, water, conductivity, capacity, dkdh)
+    real(real64) :: m, se, theta
+    m = p%cofgen(7,1)
+    se = (1.0_real64 + abs(p%cofgen(4,1)*h0)**p%cofgen(6,1))**(-m)
+    theta = p%cofgen(1,1) + (p%cofgen(2,1)-p%cofgen(1,1))*se
     physical%active_nodes = numnod
     allocate(physical%pressure_head(numnod), physical%water_content(numnod))
-    physical%pressure_head = heads
-    physical%water_content = water
+    physical%pressure_head = h0
+    physical%water_content = theta
     physical%ponding_depth = 0.0_real64
     physical%groundwater_level = -2.0_real64
     call fmr_new_b110_committed_state(state_carrier, column_id, physical, 0.0_real64, initialized)
@@ -177,48 +146,32 @@ contains
 
   subroutine initialize_forcing(f)
     type(fmr_b110_physical_forcing_t), intent(out) :: f
-    f%top_flux = 0.0_real64
-    f%top_head = h0
-    f%bottom_flux = 0.0_real64
-    f%bottom_head = -999999.0_real64
-    allocate(f%drainage_flux_by_level(1,numnod), f%subsurface_irrigation_source(numnod), &
-         f%root_extraction_sink(numnod))
-    f%drainage_flux_by_level = 0.0_real64
-    f%subsurface_irrigation_source = 0.0_real64
-    f%root_extraction_sink = 0.0_real64
+    f%top_flux=0.0_real64; f%top_head=h0; f%bottom_flux=0.0_real64; f%bottom_head=-999999.0_real64
+    allocate(f%drainage_flux_by_level(1,numnod), f%subsurface_irrigation_source(numnod), f%root_extraction_sink(numnod))
+    f%drainage_flux_by_level=0.0_real64; f%subsurface_irrigation_source=0.0_real64; f%root_extraction_sink=0.0_real64
   end subroutine initialize_forcing
 
   subroutine initialize_column_and_template(c, t)
     type(fmr_logical_column_t), intent(out) :: c
     type(fmr_template_t), intent(out) :: t
-
-    t%template_id = 910201_int64
-    t%physics_topology_id = 910202_int64
-    t%vertical_layout_id = 910203_int64
-    t%state_layout_id = 910204_int64
-    t%solver_interface_id = 910205_int64
-    t%optional_state_layout_id = 0_int64
-    t%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
-    t%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
-
-    c%column_id = column_id
-    c%template_id = t%template_id
-    c%parameter_ref = 1_int64
-    c%state_handle = 1_int64
-    c%forcing_handle = 1_int64
-    c%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
+    t%template_id=910201_int64; t%physics_topology_id=910202_int64; t%vertical_layout_id=910203_int64
+    t%state_layout_id=910204_int64; t%solver_interface_id=910205_int64; t%optional_state_layout_id=0_int64
+    t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    t%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    c%column_id=column_id; c%template_id=t%template_id; c%parameter_ref=1_int64; c%state_handle=1_int64
+    c%forcing_handle=1_int64; c%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   end subroutine initialize_column_and_template
 
   subroutine initialize_rejecting_config(cfg)
     type(canonical_numerical_config_t), intent(out) :: cfg
-    cfg = canonical_numerical_config_t()
-    cfg%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-    cfg%transaction%temporal_tolerance = 0.0_real64
-    cfg%transaction%mass_tolerance = hard_mass_gate
-    cfg%transaction%retry_scale = 0.5_real64
-    cfg%transaction%max_retries = 0
-    cfg%max_committed_substeps = 1
-    cfg%progress_tolerance = 0.0_real64
+    cfg=canonical_numerical_config_t()
+    cfg%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    cfg%transaction%temporal_tolerance=0.0_real64
+    cfg%transaction%mass_tolerance=hard_mass_gate
+    cfg%transaction%retry_scale=0.5_real64
+    cfg%transaction%max_retries=0
+    cfg%max_committed_substeps=1
+    cfg%progress_tolerance=0.0_real64
   end subroutine initialize_rejecting_config
 
   subroutine require_physical_identity(left_state, right_state)
@@ -227,19 +180,17 @@ contains
     type is (fmr_b110_physical_state_t)
       select type (right => right_state)
       type is (fmr_b110_physical_state_t)
-        call require(left%active_nodes == right%active_nodes, 'rollback active-node identity')
-        call require(allocated(left%pressure_head) .and. allocated(right%pressure_head), &
-             'rollback head vectors allocated')
-        call require(allocated(left%water_content) .and. allocated(right%water_content), &
-             'rollback water vectors allocated')
-        call require(size(left%pressure_head) == size(right%pressure_head) .and. &
-             size(left%water_content) == size(right%water_content), 'rollback vector-shape identity')
-        call require(all(transfer(left%pressure_head, [0_int64], size(left%pressure_head)) == &
-             transfer(right%pressure_head, [0_int64], size(right%pressure_head))), 'rollback head bit identity')
-        call require(all(transfer(left%water_content, [0_int64], size(left%water_content)) == &
-             transfer(right%water_content, [0_int64], size(right%water_content))), 'rollback water bit identity')
-        call require(same_bits(left%ponding_depth, right%ponding_depth), 'rollback ponding bit identity')
-        call require(same_bits(left%groundwater_level, right%groundwater_level), 'rollback groundwater bit identity')
+        call require(left%active_nodes==right%active_nodes, 'rollback active-node identity')
+        call require(allocated(left%pressure_head).and.allocated(right%pressure_head), 'rollback head vectors allocated')
+        call require(allocated(left%water_content).and.allocated(right%water_content), 'rollback water vectors allocated')
+        call require(size(left%pressure_head)==size(right%pressure_head).and. &
+             size(left%water_content)==size(right%water_content), 'rollback vector-shape identity')
+        call require(all(transfer(left%pressure_head,0_int64,size(left%pressure_head)) == &
+             transfer(right%pressure_head,0_int64,size(right%pressure_head))), 'rollback head bit identity')
+        call require(all(transfer(left%water_content,0_int64,size(left%water_content)) == &
+             transfer(right%water_content,0_int64,size(right%water_content))), 'rollback water bit identity')
+        call require(same_bits(left%ponding_depth,right%ponding_depth), 'rollback ponding bit identity')
+        call require(same_bits(left%groundwater_level,right%groundwater_level), 'rollback groundwater bit identity')
       class default
         call require(.false., 'post-rejection state type identity')
       end select
@@ -248,18 +199,17 @@ contains
     end select
   end subroutine require_physical_identity
 
-  pure logical function same_bits(a, b)
-    real(real64), intent(in) :: a, b
-    same_bits = transfer(a, 0_int64) == transfer(b, 0_int64)
+  pure logical function same_bits(a,b)
+    real(real64), intent(in) :: a,b
+    same_bits=transfer(a,0_int64)==transfer(b,0_int64)
   end function same_bits
 
-  subroutine require(condition, label)
-    logical, intent(in) :: condition
-    character(len=*), intent(in) :: label
-    if (.not. condition) then
-      write(*,'(A,1X,A)') 'PUB_P1E02_FAIL', trim(label)
+  subroutine require(condition,label)
+    logical,intent(in)::condition
+    character(len=*),intent(in)::label
+    if(.not.condition) then
+      write(*,'(A,1X,A)') 'PUB_P1E02_FAIL',trim(label)
       error stop 1
     end if
   end subroutine require
-
 end program test_pub_p1e02_postsolver_rollback
