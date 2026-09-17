@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.publication.p2e08-reference-valid-calibration-domain.v1",
+  "workunit": "PUB-P2E08",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_DOMAIN_EXECUTION",
+  "canonical_base": "b142669ddc8c280ef08b31f5af65c120c1cfeaf1",
+  "trigger": {
+    "blocked_predecessor": "PUB-P2E03",
+    "diagnostic_chain": ["PUB-P2E04", "PUB-P2E05", "PUB-P2E06", "PUB-P2E07"],
+    "reason": "PUB-P2E03's immutable 162-case Reference calibration matrix was blocked because 115 cases failed hard Reference validity. P2E04-P2E07 established that the dominant failures are strict local-balance retries whose rate scale worsens as dt decreases, that increasing max_iterations does not resolve them, and that for 102/103 diagnosed LOCAL_BAL states the configured 1e-12 cm/day criterion is not numerically distinguishable from the preregistered representation-floor estimate. A replacement calibration dataset must therefore be constructed as a new Reference-only domain rather than by removing or relabeling P2E03 failures."
+  },
+  "scientific_question": "Can one common temporal coarse/refined schedule be selected prospectively, using Reference-only validity across all 54 physical E0 combinations, such that the full six-material x three-Se x three-forcing domain yields a complete Reference self-disagreement dataset without changing Reference tolerances or excluding physical cases?",
+  "scope": {
+    "solver": "Reference only",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "effective_saturation": [0.65, 0.85, 0.98],
+    "forcing": ["DRYING", "NOMINAL", "WETTING"],
+    "physical_case_count_per_temporal_level": 54,
+    "grid": "16 homogeneous cells x 10 cm",
+    "top_flux_over_initial_K0": [-0.005, 0.010, 0.025],
+    "bottom_flux_over_initial_K0": [-0.019, -0.004, 0.011],
+    "distributed_sources_and_sinks": "zero",
+    "boundary_type": "prescribed flux",
+    "reference_max_iterations": 16,
+    "reference_max_backtracking": 8,
+    "reference_compartment_balance_tolerance_cm_per_day": 1e-12,
+    "reference_total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12
+  },
+  "dependency_locks": {
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "material_domain_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "reference_legacy_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "reference_workspace_blob": "74f99556005ae39614f9df678467b1e19097bae2",
+    "headcalc_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "p2e07_result_blob": "be60ba751141545e1534f190e709dc5d2b7b83e6"
+  },
+  "firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "p2e03_case_reclassification_or_repair_allowed": false,
+    "physical_case_removal_allowed": false,
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "threshold_formula_freezing_allowed": false,
+    "threshold_factor_freezing_allowed": false,
+    "performance_metrics_allowed_in_domain_selection": false
+  },
+  "stage_A_common_temporal_domain_selection": {
+    "candidate_coarse_dt_day": [0.0016, 0.0032, 0.0064, 0.0128, 0.0256],
+    "refined_rule": "For each candidate coarse dt, compare one Reference solve over dt with two sequential Reference solves over dt/2 + dt/2 from the same initial physical state and forcing.",
+    "execution_rule": "Execute every one of the 54 physical combinations at every preregistered temporal level before selecting a level. Do not stop after the first feasible level.",
+    "per_trajectory_validity": [
+      "coarse, half1 and half2 all return SW_SOLVE_CONVERGED on route legacy-reference-bound",
+      "typed integrated_mass_balance_residual_cm is available and finite for all three solves",
+      "typed native_balance_rate_residual_cm_per_day is available and finite for all three solves",
+      "absolute typed integrated mass residual is <= 1e-12 cm for each solve",
+      "all endpoint pressure-head and water-content values are finite and remain inside the declared E0 physical state domain",
+      "coarse and refined endpoint shapes are identical and represent the same final physical time"
+    ],
+    "selection_rule": "Select the smallest candidate coarse dt for which all 54 physical combinations satisfy every trajectory-validity rule. Selection is global: no material-, Se- or forcing-specific dt is permitted.",
+    "failure_rule": "If no candidate coarse dt gives 54/54 valid physical combinations, P2E08 is BLOCKED_REFERENCE_COMMON_DOMAIN and no calibration dataset or threshold rule may be derived."
+  },
+  "stage_B_reference_self_disagreement_dataset": {
+    "admission_condition": "Stage A selected exactly one common coarse dt with 54/54 validity.",
+    "dataset": "The 54 coarse-versus-two-half Reference pairs at the selected common dt; no physical case may be removed.",
+    "primary_metrics": [
+      "U_h_inf_cm",
+      "U_h_rms_cm",
+      "U_theta_inf",
+      "U_theta_rms",
+      "U_storage_cm"
+    ],
+    "diagnostics": [
+      "typed integrated mass residual for coarse, half1 and half2",
+      "typed native balance-rate residual for coarse, half1 and half2",
+      "solver iterations and retry status",
+      "material, Se, forcing, selected coarse dt and half dt"
+    ],
+    "allowed_aggregation": [
+      "minimum, maximum, median and fixed quantiles over all 54 cases",
+      "descriptive stratification by the already-preregistered material, Se and forcing axes"
+    ],
+    "forbidden_interpretation": [
+      "do not freeze a RossFast admissibility threshold in P2E08",
+      "do not choose a multiplicative safety factor in P2E08",
+      "do not inspect RossFast discrepancies before a later threshold workunit is preregistered",
+      "do not claim that the selected dt is an optimal or universal Reference timestep"
+    ]
+  },
+  "relation_to_p2e07": {
+    "use_of_p2e07": "P2E07 motivates moving to a prospectively selected common temporal domain and forbids treating the strict small-dt failure surface as a valid calibration discriminator.",
+    "nonuse_of_p2e07": "The P2E07 estimated floor is not promoted to a production convergence tolerance or a universal hard gate in P2E08."
+  },
+  "qualification": {
+    "required": [
+      "exact execution of 54 physical combinations at all five temporal candidates",
+      "deterministic global selection rule applied only after full Reference-only execution",
+      "RossFast execution firewall marker FALSE",
+      "no src/** or reference/** mutation",
+      "no Reference numerical-tolerance change",
+      "P2E03 remains immutable and blocked",
+      "O0/O2 byte-identical P2E08 output",
+      "full relevant canonical preservation gates on the resulting PR"
+    ],
+    "scientific_outcome_is_not_a_pass_condition": "A blocked common temporal domain remains valid evidence and must not be repaired by removing cases or widening tolerances."
+  },
+  "expected_followup_if_qualified": "A separate preregistered workunit may use the complete P2E08 Reference-only dataset to freeze the scientific state/storage tolerance formula, independent application-resolution floors, safety factor and any permitted predeclared stratification before new RossFast matrix results are inspected.",
+  "verdict": "PREREGISTERED_REFERENCE_VALID_CALIBRATION_DOMAIN_READY_FOR_IMPLEMENTATION",
+  "next_permitted_action": "Implement only the Reference-only P2E08 domain-selection and self-disagreement harness plus CI wrapper. Do not compile or execute the RossFast numerical solver and do not freeze any scientific admissibility threshold."
+}
