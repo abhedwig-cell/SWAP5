@@ -1,0 +1,37 @@
+name: F-VQ105 F-GC31 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq105-fgc31-active-drainage-derivative-independent
+    paths:
+      - 'src/solver/mod_b110_smooth_freatic_projection.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'src/runtime/mod_fmr_drainage_qbot_directional_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90'
+      - 'tests/qualification/fvq105/test_fvq105_fgc31_independent.f90'
+      - 'tests/qualification/fvq105/run_fvq105_fgc31_independent.sh'
+      - '.github/workflows/fvq105-fgc31-independent.yml'
+      - 'integration/f-vq/F-VQ105_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact verifier head
+        uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run independent F-GC31 qualification
+        run: bash tests/qualification/fvq105/run_fvq105_fgc31_independent.sh
