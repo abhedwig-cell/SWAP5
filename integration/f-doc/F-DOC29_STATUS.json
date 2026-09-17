@@ -3,19 +3,28 @@
   "work_unit": "F-DOC29",
   "title": "Serialized MultiSWAP v1 technical reference",
   "branch": "work/f-doc29-serialized-multiswap-technical-reference",
-  "phase": "VERIFY_READY",
-  "decision": "DOCUMENTATION_UPDATE_COMPLETE_PENDING_VERIFICATION",
+  "phase": "VERIFY",
+  "decision": "DOCUMENTATION_VERIFIED_PENDING_EXACT_HEAD_GATE",
   "canonical_start": "46f7335351393167b92f301c28ed1f235c0892ce",
-  "documentation_content_head": "e042b7d62f3d3d20d0a45e25a4f365d3985fc996",
+  "canonical_reconciled_at_verify": "46f7335351393167b92f301c28ed1f235c0892ce",
+  "documentation_content_head": "9cd353ea404c4f247c8b40e40834c571631553e7",
+  "pull_request": 191,
+  "documentation_verification": {
+    "workflow_run": 35275460791,
+    "workflow_job": 105384885775,
+    "conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS"
+  },
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
   "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
   "frozen_source_owners": [
-    {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"1aa2454048d0e480becaee34f596f20f1a7bd66e","role":"multi-column serialized orchestration, registry preflight, deterministic dispatch, per-column transaction/commit and aggregate diagnostics"},
-    {"path":"src/runtime/mod_fmr_runtime_core.f90","blob":"43eef1979e0202f8ecc92f73eb7d8025dab515a4","role":"logical column/template contracts, execution order and aggregate diagnostic types"},
-    {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13","role":"qualified per-column reference-physics backend and worker-local solver/workspace ownership"},
-    {"path":"src/runtime/mod_fmr_restart_state_contract.f90","blob":"872c28bbc345f40073396cce57e4eb43c71de850","role":"typed physical-state compatibility used by committed-boundary restart"},
-    {"path":"src/kernel/mod_kernel_committed_persistence.f90","blob":"ffd886c3401fc12739a456fe60a8741c12b9848b","role":"committed continuation-state persistence dependency"}
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90@1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "src/runtime/mod_fmr_runtime_core.f90@43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90@9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "src/runtime/mod_fmr_restart_state_contract.f90@872c28bbc345f40073396cce57e4eb43c71de850",
+    "src/kernel/mod_kernel_committed_persistence.f90@ffd886c3401fc12739a456fe60a8741c12b9848b"
   ],
   "completion_authority": {
     "work_unit": "F-MR42",
@@ -25,15 +34,6 @@
     "workflow_run": 34746257468,
     "workflow_job": 103694630332,
     "conclusion": "success"
-  },
-  "qualification_chain": {
-    "serialized_foundation_independent": "F-VQ15/F-MR05@65efc66cc76fa9005eac46e5779439c5ada574d1",
-    "restart_owner": "F-MR19@110440d28ff2b585763ad8fd4eedb88e7d112eeb",
-    "restart_independent": "F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1",
-    "restart_canonical": "F-CI35:CLOSED_CANONICAL_ADMITTED",
-    "typed_optional_state_owner": "F-MR41@e7165e598b035282a2cb7527b2fb2f466f1dbbff",
-    "typed_optional_state_postimage": "F-CI48P@c855d1a012efcd7adda2927e7efe250be5971550",
-    "transaction_composition_postimage": "F-CI49P@938388169d3bb34a3ff9f749c37ff75da05714a6"
   },
   "preservation_authority": {
     "historical_permanent_testbank": "F-TB11@74bef08dedb060417d549c8d8cf0fedb8b73e997",
@@ -47,9 +47,9 @@
   ],
   "claim_boundary_notes": [
     "Batch registry preflight is not whole-batch atomic commit.",
-    "The actual frozen multi-column orchestrator is mod_fmr_serialized_multiswap_runtime.f90; the serialized reference backend is per-column physical execution authority.",
+    "The frozen multi-column orchestrator is mod_fmr_serialized_multiswap_runtime.f90; the serialized reference backend is per-column physical execution authority.",
     "Deterministic v1 ordering is template_id then column_id.",
-    "Column commits remain individually authoritative; a later rejected column does not retroactively roll back an earlier accepted column.",
+    "Column commits are individually authoritative; a later rejected column does not retroactively roll back an earlier accepted column.",
     "Aggregate diagnostics report composed per-column authority and do not override per-column transaction or mass gates."
   ],
   "forbidden_claims": [
@@ -67,6 +67,6 @@
   "production_source_changes": [],
   "reference_source_changes": [],
   "test_changes": [],
-  "verdict": "READY_FOR_DOCUMENTATION_VERIFICATION",
-  "next_permitted_action": "Open PR and require repository documentation checks plus strict MkDocs build on the exact PR head before admission."
+  "verdict": "VERIFIED_PENDING_EXACT_HEAD_DOCUMENTATION_GATE",
+  "next_permitted_action": "Require repository documentation checks and strict MkDocs build on this status-only head; then guarded merge PR #191 if canonical and head remain unchanged/relevant-delta clean."
 }
