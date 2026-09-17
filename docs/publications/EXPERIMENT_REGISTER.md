@@ -98,21 +98,22 @@ Examples:
 - next permitted action: new manifest required before changing execution route;
 - cross-publication effect: none; no scientific GC result was admitted from the invalid attempts.
 
-### 2026-09-17T18:33Z — PUB-GC-E0 replacement preregistered
+### 2026-09-17T18:34:20Z — PUB-GC-E0 replacement preregistered
 
 - controlling manifest commit: `71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe`;
 - prerequisite satisfied: exact independent F-VQ87 authority, runner blob and oracle-test blob frozen before execution;
-- next permitted action: execute `PUB-GC-E0-0002` unchanged on the pinned F-VQ87 postimage;
+- next permitted action at that boundary: execute `PUB-GC-E0-0002` unchanged on the pinned F-VQ87 postimage;
+- chronology note: the manifest's internal `created_utc` field was inaccurate; Git commit time is the authoritative preregistration boundary and is preserved in the result receipt;
 - cross-publication effect: none; this remains PUB-GC supporting evidence and does not establish current-canonical generalized runtime qualification.
 
-### 2026-09-17T18:36Z — PUB-GC-E0 replacement screening completed
+### 2026-09-17T18:36:26Z — PUB-GC-E0 replacement screening completed
 
 - controlling manifest commit: `71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe`;
-- result receipt commit: `f5f88fa5a77fb2d4fa2dd8b63a32d6fb1b805de0`;
+- result receipt commit: `218c579d155887423343c0c5daef95a5f67a182c`;
 - execution: GitHub Actions run `35259757727`, job `105332222414`, research head `b3f33f031bcf642e2cca3ecfb6d6ac1983257aab`;
-- prerequisite satisfied: the unchanged independent F-VQ87 scientific oracle reached all preregistered assertions and passed under O0/O2 with byte-identical oracle output;
+- prerequisite satisfied: manifest-controlled independent interface-semantics screening completed on the pinned F-VQ87 postimage;
 - admitted scope: bounded F-GC25 interface conservation, rollback, action/reaction and fail-closed topology/origin screening on the exact qualified postimage;
-- next permitted action: define and freeze GW-A plus the GC-E1 history-contaminated diagnostic comparator before any primary same-origin replay run;
+- next permitted action: define and freeze GW-A plus the GC-E1 history-contaminated diagnostic comparator and GC-REF reference procedure before primary replay/convergence runs;
 - cross-publication effect: none; no ME, SQ, RC or SG primary claim is inherited, and MODFLOW/window-accuracy claims remain untested.
 
 ## Register update rule
