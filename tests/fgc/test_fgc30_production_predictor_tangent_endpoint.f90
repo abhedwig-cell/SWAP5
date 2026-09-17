@@ -17,14 +17,20 @@ program test_fgc30_production_predictor_tangent_endpoint
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t
-  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
+  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
+       groundwater_interface_state_t, swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, &
+       pair_groundwater_flux_from_swap, GW_INTERFACE_OK
   use mod_modflow6_swap_prescribed_qbot_bottom_face, only: modflow6_prescribed_qbot_bottom_face_t, &
        materialize_modflow6_prescribed_qbot_bottom_face, MODFLOW6_BOTTOM_FACE_OK
-  use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, modflow6_swap_predictor_response_t, &
-       compose_modflow6_swap_predictor_response, MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, MODFLOW6_PREDICTOR_OK
+  use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, modflow6_swap_predictor_response_t
+  use mod_modflow6_swap_predictor_origin, only: modflow6_swap_predictor_origin_t, &
+       capture_modflow6_swap_predictor_origin, MODFLOW6_PREDICTOR_ORIGIN_OK
   use mod_modflow6_swap_predictor_tangent_adapter, only: modflow6_swap_predictor_tangent_endpoint_t, &
        build_modflow6_swap_predictor_tangent_endpoint, MODFLOW6_TANGENT_ENDPOINT_OK, &
        MODFLOW6_TANGENT_ENDPOINT_INCOMPLETE_COVERAGE
+  use mod_modflow6_swap_predictor_candidate_assembler, only: assemble_modflow6_swap_predictor_response, &
+       MODFLOW6_PREDICTOR_ASSEMBLER_OK, MODFLOW6_PREDICTOR_ASSEMBLER_LINEAGE_MISMATCH, &
+       MODFLOW6_PREDICTOR_ASSEMBLER_BOTTOM_EXCHANGE_UNAVAILABLE
   implicit none
 
   real(real64), parameter :: h0 = -75.0_real64
@@ -42,16 +48,19 @@ program test_fgc30_production_predictor_tangent_endpoint
   type(soil_water_physical_state_t) :: predictor_state
   type(groundwater_head_datum_t) :: datum
   type(groundwater_coupling_window_t) :: window
+  type(groundwater_interface_state_t) :: accepted_interface
   type(modflow6_swap_predictor_lineage_t) :: lineage
+  type(modflow6_swap_predictor_origin_t) :: origin, blocked_origin
   type(modflow6_prescribed_qbot_bottom_face_t) :: start_face, plus_face, minus_face
   type(modflow6_swap_predictor_tangent_endpoint_t) :: endpoint, blocked_endpoint
-  type(modflow6_swap_predictor_response_t) :: response
-  type(kernel_result_t) :: predictor_result
+  type(modflow6_swap_predictor_response_t) :: response, blocked_response
+  type(kernel_result_t) :: predictor_result, blocked_result
   type(kernel_candidate_state_t) :: predictor_candidate
   type(kernel_diagnostics_t) :: predictor_diagnostics
   type(fixed_flux_top_boundary_provider_t), target :: top
   real(real64) :: k0, qeq, fd_derivative, derivative_scale
-  integer :: status
+  real(real64) :: q_swap_m_per_s, q_groundwater_m_per_s, comparison_scale
+  integer :: status, flux_status
 
   call initialize_parameters(parameters)
   call initialize_column_and_template(column, template)
@@ -118,15 +127,51 @@ program test_fgc30_production_predictor_tangent_endpoint
   lineage%groundwater_service_id = 630031_int64
   lineage%groundwater_lineage_id = 630030_int64
   lineage%groundwater_origin_revision = 0_int64
-  call compose_modflow6_swap_predictor_response(window, lineage, qeq, start_face%hydraulic_head_m, &
-       endpoint%bottom_face%hydraulic_head_m, endpoint%bottom_face%dpressure_head_cm_per_qbot_cm_per_day, &
-       MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, endpoint%coverage, endpoint%derivative_method, &
-       endpoint%derivative_route, response, status)
-  call require(status == MODFLOW6_PREDICTOR_OK .and. response%valid, &
-       'production tangent did not compose typed predictor response')
+
+  call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qeq, q_swap_m_per_s, flux_status)
+  call require(flux_status == GW_INTERFACE_OK, 'origin SWAP flux conversion')
+  call pair_groundwater_flux_from_swap(q_swap_m_per_s, q_groundwater_m_per_s, flux_status)
+  call require(flux_status == GW_INTERFACE_OK, 'origin groundwater flux pairing')
+  accepted_interface%h_swap_m = start_face%hydraulic_head_m
+  accepted_interface%h_groundwater_m = start_face%hydraulic_head_m - 1.0e-6_real64
+  accepted_interface%q_swap_m_per_s = q_swap_m_per_s
+  accepted_interface%q_groundwater_m_per_s = q_groundwater_m_per_s
+  call capture_modflow6_swap_predictor_origin(accepted_interface, window%t0, lineage, .true., origin, status)
+  call require(status == MODFLOW6_PREDICTOR_ORIGIN_OK .and. origin%structurally_valid(), &
+       'committed predictor origin captured')
+
+  call assemble_modflow6_swap_predictor_response(origin, window, predictor_candidate, predictor_result, &
+       endpoint, response, status)
+  call require(status == MODFLOW6_PREDICTOR_ASSEMBLER_OK .and. response%valid, &
+       'production candidate provenance did not assemble typed predictor response')
+  comparison_scale = max(1.0_real64, abs(qeq))
+  call require(abs(response%q_bot_predictor_cm_per_day - qeq) <= &
+       128.0_real64*epsilon(1.0_real64)*comparison_scale, &
+       'assembler did not recover native qbot from terminal outward flux')
+  call require(abs(response%h_bot_start_m - accepted_interface%h_swap_m) <= &
+       128.0_real64*epsilon(1.0_real64)*max(1.0_real64, abs(accepted_interface%h_swap_m)), &
+       'assembler did not retain committed SWAP H_bot,start')
+  call require(abs(response%h_bot_start_m - accepted_interface%h_groundwater_m) > 1.0e-8_real64, &
+       'assembler silently substituted groundwater head for SWAP H_bot,start')
   call require(ieee_is_finite(response%coupling_storage_coefficient_u) .and. &
        ieee_is_finite(response%q_u_m_per_s), 'typed production predictor response finite')
+  write(*,'(A)') 'FGC30_PRODUCTION_CANDIDATE_ASSEMBLER=PASS'
   write(*,'(A)') 'FGC30_PRODUCTION_TYPED_PREDICTOR_RESPONSE=PASS'
+
+  blocked_origin = origin
+  blocked_origin%lineage%swap_lineage_id = column_id + 1_int64
+  call assemble_modflow6_swap_predictor_response(blocked_origin, window, predictor_candidate, predictor_result, &
+       endpoint, blocked_response, status)
+  call require(status == MODFLOW6_PREDICTOR_ASSEMBLER_LINEAGE_MISMATCH .and. .not. blocked_response%valid, &
+       'candidate lineage mismatch did not fail closed')
+
+  blocked_result = predictor_result
+  blocked_result%bottom_interface_exchange_available = .false.
+  call assemble_modflow6_swap_predictor_response(origin, window, predictor_candidate, blocked_result, &
+       endpoint, blocked_response, status)
+  call require(status == MODFLOW6_PREDICTOR_ASSEMBLER_BOTTOM_EXCHANGE_UNAVAILABLE .and. &
+       .not. blocked_response%valid, 'missing terminal bottom exchange did not fail closed')
+  write(*,'(A)') 'FGC30_PRODUCTION_PROVENANCE_FAIL_CLOSED=PASS'
 
   call build_modflow6_swap_predictor_tangent_endpoint(predictor_state, solver_parameters, constitutive, &
        predictor_result%accepted_trajectory_direction, qeq, datum, .false., .false., .true., .false., &
