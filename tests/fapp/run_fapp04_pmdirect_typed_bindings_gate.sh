@@ -78,7 +78,7 @@ for opt in 0 2; do
     src/crop/mod_crop_root_uptake_input_contract.f90 -o "$OUT/mod_crop_root_uptake_input_contract.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     src/process/mod_restricted_surface_evaporation.f90 -o "$OUT/mod_restricted_surface_evaporation.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+  gfortran "${COMMON[@]}" -Wno-error=unused-dummy-argument -O"$opt" -J "$OUT" -I "$OUT" -c \
     src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/mod_soil_water_solver_contract.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/mod_b110_default_mvg_provider.o"
