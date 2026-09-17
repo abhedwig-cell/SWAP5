@@ -27,8 +27,9 @@ grep -Fq '"historical_stage0_b01_rossfast_metrics_allowed_in_rule_choice": false
 grep -Fq '"reference_factor": 1.0' "$PREREG" || fail 'factor-one rule missing'
 grep -Fq '"stratify_by": "effective_saturation"' "$PREREG" || fail 'Se stratification missing'
 
-git merge-base --is-ancestor "$CANONICAL_BASE" HEAD || fail 'P2E09 canonical base is not an ancestor'
-git diff --quiet "$CANONICAL_BASE" HEAD -- src reference || fail 'P2E09 mutated src or reference'
+git merge-base --is-ancestor "$PREREGISTERED_BASE" HEAD || fail 'P2E09 preregistered base is not an ancestor'
+git merge-base --is-ancestor "$RECONCILED_BASE" HEAD || fail 'P2E09 reconciled base is not an ancestor'
+git diff --quiet "$RECONCILED_BASE" HEAD -- src reference || fail 'P2E09 mutated src or reference relative to reconciled canonical'
 test "$(git rev-parse HEAD:docs/publication/P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_RESULT.json)" = "$P2E08_RESULT_BLOB" || fail 'P2E08 result authority drift'
 test "$(git rev-parse HEAD:docs/publication/P2_ADMISSIBILITY_ENVELOPE_DESIGN.md)" = "$DESIGN_BLOB" || fail 'admissibility design drift'
 test "$(git rev-parse HEAD:docs/publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md)" = "$PAPER2_BLOB" || fail 'Paper2 research design drift'
