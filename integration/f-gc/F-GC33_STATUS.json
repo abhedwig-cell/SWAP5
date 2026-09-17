@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC33",
+  "title": "MODFLOW6 Linear Response Backend",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_LINEAR_BACKEND_IMPLEMENTATION",
+  "source_branch": {
+    "branch": "work/f-gc31-multiswap-modflow6-cell-response",
+    "head": "158560dd0f7962cfdf386ce1d1a6dfde3109fa32",
+    "f_gc31_verdict": "OWNER_QUALIFIED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE"
+  },
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6a77678b535ed468bdeeb9b67f149be706f0205f",
+    "delta_from_f_gc31_origin": "17 commits, publication experiment/workflow/evidence only; no relevant F-GC30/F-GC31 dependency source changes"
+  },
+  "numbering_reconciliation": {
+    "reserved_existing_capability": "F-GC32",
+    "existing_branch": "work/f-gc32-active-drainage-tangent-closure",
+    "decision": "Use F-GC33 for the MODFLOW6 linear response backend."
+  },
+  "external_semantics_evidence": {
+    "repository": "Deltares/imod_coupler",
+    "commit": "3ddeec26ba1a0f1fcb4cf681b3f3202b4a6de6b7",
+    "file": "imod_coupler/kernelwrappers/mf6_wrapper.py",
+    "contract": "Mf6HeadBoundary.get_flux: Flux = HCOF * X - RHS; positive sign is infiltration into MODFLOW6"
+  },
+  "scientific_decision": {
+    "source_form": "q_u(H)=q_ref+s*(H-H_ref)",
+    "volume_form": "Q(H)=A*86400*q_u(H)",
+    "modflow_form": "Q(H)=HCOF*H-RHS",
+    "hcof": "A*86400*s",
+    "rhs": "HCOF*H_ref-A*86400*q_ref",
+    "sign": "positive outward from SWAP maps to positive infiltration into MODFLOW6 without inversion",
+    "identity_boundary": "groundwater_cell_id is not a MODFLOW NODELIST index"
+  },
+  "planned_changes": [
+    "docs/integration/F-GC33_MODFLOW6_LINEAR_RESPONSE_BACKEND.md",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "tests/fgc/test_fgc33_modflow6_linear_response_backend.f90",
+    "tests/fgc/run_fgc33_modflow6_linear_response_backend.sh",
+    ".github/workflows/f-gc33-modflow6-linear-response-backend.yml",
+    "integration/f-gc/F-GC33_STATUS.json"
+  ],
+  "exclusions": [
+    "MODFLOW6/XMI pointer access",
+    "API package mutation",
+    "NODELIST mapping",
+    "predictor/corrector orchestration",
+    "groundwater execution-service redesign",
+    "Ribasim",
+    "irrigation",
+    "active-drainage envelope expansion",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement and qualify the pure typed HCOF/RHS transformer."
+}
