@@ -470,22 +470,142 @@ contains
       material = rossfast_d3r_material_t('B01', 0.02_real64, 0.427494_real64, &
            0.021659_real64, 1.734737_real64, 31.225016_real64, 312.25016_real64, &
            0.98087_real64, 0.0_real64)
+    case('B02')
+      material = rossfast_d3r_material_t('B02', 0.02_real64, 0.433878_real64, &
+           0.021645_real64, 1.34877_real64, 83.241635_real64, 832.41635_real64, &
+           7.202077_real64, 0.0_real64)
+    case('B03')
+      material = rossfast_d3r_material_t('B03', 0.02_real64, 0.44279_real64, &
+           0.014993_real64, 1.50488_real64, 19.077237_real64, 190.77237_real64, &
+           0.139209_real64, 0.0_real64)
+    case('B04')
+      material = rossfast_d3r_material_t('B04', 0.02_real64, 0.461926_real64, &
+           0.01488_real64, 1.39685_real64, 34.884276_real64, 348.84276_real64, &
+           0.294536_real64, 0.0_real64)
+    case('B05')
+      material = rossfast_d3r_material_t('B05', 0.01_real64, 0.380881_real64, &
+           0.042807_real64, 1.8078_real64, 63.650403_real64, 636.50403_real64, &
+           0.024227_real64, 0.0_real64)
+    case('B06')
+      material = rossfast_d3r_material_t('B06', 0.01_real64, 0.384816_real64, &
+           0.020923_real64, 1.24225_real64, 104.103005_real64, 1041.03005_real64, &
+           -1.20013_real64, 0.0_real64)
+    case('B07')
+      material = rossfast_d3r_material_t('B07', 0.0_real64, 0.400582_real64, &
+           0.018349_real64, 1.248279_real64, 14.582327_real64, 510.381445_real64, &
+           0.952016_real64, 0.0_real64)
+    case('B08')
+      material = rossfast_d3r_material_t('B08', 0.01_real64, 0.432651_real64, &
+           0.010478_real64, 1.277992_real64, 3.002741_real64, 105.095935_real64, &
+           -1.919289_real64, 0.0_real64)
+    case('B09')
+      material = rossfast_d3r_material_t('B09', 0.0_real64, 0.429539_real64, &
+           0.006964_real64, 1.267179_real64, 1.747586_real64, 61.16551_real64, &
+           -2.387059_real64, 0.0_real64)
+    case('B10')
+      material = rossfast_d3r_material_t('B10', 0.01_real64, 0.448112_real64, &
+           0.012834_real64, 1.13525_real64, 3.832283_real64, 306.58264_real64, &
+           4.580513_real64, 0.0_real64)
+    case('B11')
+      material = rossfast_d3r_material_t('B11', 0.01_real64, 0.591286_real64, &
+           0.02162_real64, 1.106695_real64, 6.30532_real64, 504.4256_real64, &
+           -5.549216_real64, 0.0_real64)
     case('B12')
       material = rossfast_d3r_material_t('B12', 0.01_real64, 0.529749_real64, &
            0.016562_real64, 1.090671_real64, 2.245895_real64, 179.6716_real64, &
            -4.493581_real64, 0.0_real64)
+    case('B13')
+      material = rossfast_d3r_material_t('B13', 0.01_real64, 0.416084_real64, &
+           0.008362_real64, 1.437024_real64, 29.832408_real64, 59.664816_real64, &
+           -1.356913_real64, 0.0_real64)
+    case('B14')
+      material = rossfast_d3r_material_t('B14', 0.01_real64, 0.416774_real64, &
+           0.00541_real64, 1.301528_real64, 0.895023_real64, 1.790046_real64, &
+           -0.334926_real64, 0.0_real64)
+    case('B15')
+      material = rossfast_d3r_material_t('B15', 0.01_real64, 0.528458_real64, &
+           0.023731_real64, 1.282347_real64, 87.450789_real64, 262.352367_real64, &
+           -1.477564_real64, 0.0_real64)
+    case('B16')
+      material = rossfast_d3r_material_t('B16', 0.01_real64, 0.786061_real64, &
+           0.021072_real64, 1.278798_real64, 12.357246_real64, 37.071738_real64, &
+           -1.220936_real64, 0.0_real64)
+    case('B17')
+      material = rossfast_d3r_material_t('B17', 0.0_real64, 0.718626_real64, &
+           0.019062_real64, 1.136658_real64, 4.483735_real64, 13.451205_real64, &
+           0.0001_real64, 0.0_real64)
+    case('B18')
+      material = rossfast_d3r_material_t('B18', 0.0_real64, 0.765452_real64, &
+           0.020468_real64, 1.150709_real64, 13.144562_real64, 39.433686_real64, &
+           0.0001_real64, 0.0_real64)
     case('O01')
       material = rossfast_d3r_material_t('O01', 0.01_real64, 0.365847_real64, &
            0.015987_real64, 2.162751_real64, 22.322154_real64, 223.22154_real64, &
            2.867967_real64, 0.0_real64)
+    case('O02')
+      material = rossfast_d3r_material_t('O02', 0.02_real64, 0.387064_real64, &
+           0.016083_real64, 1.524418_real64, 22.761756_real64, 227.61756_real64, &
+           2.439662_real64, 0.0_real64)
+    case('O03')
+      material = rossfast_d3r_material_t('O03', 0.01_real64, 0.33981_real64, &
+           0.017243_real64, 1.703395_real64, 12.36681_real64, 123.6681_real64, &
+           0.0001_real64, 0.0_real64)
+    case('O04')
+      material = rossfast_d3r_material_t('O04', 0.01_real64, 0.364074_real64, &
+           0.013642_real64, 1.48844_real64, 25.814715_real64, 258.14715_real64, &
+           2.179397_real64, 0.0_real64)
     case('O05')
       material = rossfast_d3r_material_t('O05', 0.01_real64, 0.336701_real64, &
            0.030304_real64, 2.887502_real64, 17.418504_real64, 174.18504_real64, &
            0.0736_real64, 0.0_real64)
+    case('O06')
+      material = rossfast_d3r_material_t('O06', 0.01_real64, 0.333434_real64, &
+           0.015959_real64, 1.288705_real64, 32.833899_real64, 328.33899_real64, &
+           -1.009748_real64, 0.0_real64)
+    case('O07')
+      material = rossfast_d3r_material_t('O07', 0.01_real64, 0.513126_real64, &
+           0.011985_real64, 1.153018_real64, 37.55042_real64, 375.5042_real64, &
+           -2.013289_real64, 0.0_real64)
+    case('O08')
+      material = rossfast_d3r_material_t('O08', 0.0_real64, 0.453751_real64, &
+           0.011324_real64, 1.345968_real64, 8.64086_real64, 302.4301_real64, &
+           -0.903823_real64, 0.0_real64)
+    case('O09')
+      material = rossfast_d3r_material_t('O09', 0.0_real64, 0.458246_real64, &
+           0.009715_real64, 1.375784_real64, 3.766627_real64, 131.831945_real64, &
+           -1.013083_real64, 0.0_real64)
+    case('O10')
+      material = rossfast_d3r_material_t('O10', 0.01_real64, 0.472343_real64, &
+           0.010048_real64, 1.245691_real64, 2.300067_real64, 80.502345_real64, &
+           -0.792959_real64, 0.0_real64)
+    case('O11')
+      material = rossfast_d3r_material_t('O11', 0.0_real64, 0.443617_real64, &
+           0.014316_real64, 1.126001_real64, 2.122436_real64, 169.79488_real64, &
+           2.357139_real64, 0.0_real64)
+    case('O12')
+      material = rossfast_d3r_material_t('O12', 0.01_real64, 0.560703_real64, &
+           0.008813_real64, 1.158128_real64, 1.079729_real64, 86.37832_real64, &
+           -3.172265_real64, 0.0_real64)
+    case('O13')
+      material = rossfast_d3r_material_t('O13', 0.01_real64, 0.573268_real64, &
+           0.027854_real64, 1.079952_real64, 9.689291_real64, 775.14328_real64, &
+           -6.091311_real64, 0.0_real64)
     case('O14')
       material = rossfast_d3r_material_t('O14', 0.01_real64, 0.393878_real64, &
            0.003288_real64, 1.616573_real64, 2.495984_real64, 4.991968_real64, &
            0.514012_real64, 0.0_real64)
+    case('O15')
+      material = rossfast_d3r_material_t('O15', 0.01_real64, 0.410058_real64, &
+           0.007756_real64, 1.287343_real64, 2.791251_real64, 5.582502_real64, &
+           0.0001_real64, 0.0_real64)
+    case('O16')
+      material = rossfast_d3r_material_t('O16', 0.0_real64, 0.889246_real64, &
+           0.009711_real64, 1.363576_real64, 1.462624_real64, 4.387872_real64, &
+           -0.664647_real64, 0.0_real64)
+    case('O17')
+      material = rossfast_d3r_material_t('O17', 0.01_real64, 0.848635_real64, &
+           0.011929_real64, 1.271536_real64, 3.402009_real64, 10.206027_real64, &
+           -1.2493_real64, 0.0_real64)
     case('O18')
       material = rossfast_d3r_material_t('O18', 0.01_real64, 0.580278_real64, &
            0.012657_real64, 1.316172_real64, 35.951279_real64, 107.853837_real64, &

@@ -1,0 +1,92 @@
+name: F-ROSS13 apply qualified 36-material production envelope
+
+on:
+  push:
+    branches:
+      - work/f-ross13-36-material-production-envelope
+    paths:
+      - '.github/workflows/ross13-apply-36-material-production-envelope.yml'
+      - 'tests/ross/apply_ross13_production_widening.py'
+      - 'tests/ross/test_ross13_36_material_production_envelope.f90'
+      - 'tests/ross/run_ross13_36_material_production_envelope.sh'
+      - 'tests/ross/run_ross13_ross12_semantic_successor_preservation.sh'
+      - 'integration/f-ross/F-ROSS13_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-qualify-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard exact implementation boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = 'work/f-ross13-36-material-production-envelope'
+          git merge-base --is-ancestor 4b945b19d0b5f984d10bc750bb403174158a886b HEAD
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = 9f29ba7a08844692ba2628c7869d23713409f92b
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
+          test "$(git rev-parse HEAD:integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json)" = 4be26de45d9fe75825bb482580ce6a9b098dedf0
+          echo 'F_ROSS13_IMPLEMENTATION_BOUNDARY=PASS'
+
+      - name: Fetch immutable historical material authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 04807fdcf45453a59b7f6c99fe97f1286c172833
+          git cat-file -e 04807fdcf45453a59b7f6c99fe97f1286c172833^{commit}
+          test "$(git rev-parse 04807fdcf45453a59b7f6c99fe97f1286c172833:integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json)" = 76596a00296318b871a9109ed6187bb86ccfae32
+          echo 'F_ROSS13_HISTORICAL_MATERIAL_AUTHORITY=PASS'
+
+      - name: Apply exact two-file widening
+        run: python3 tests/ross/apply_ross13_production_widening.py
+
+      - name: Commit locally before qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only -- src | sort)
+          expected=(src/runtime/mod_rossfast_d3r_model_binding.f90 src/solver/mod_rossfast_d3r_table_provider.f90)
+          test "${#changed[@]}" -eq 2
+          test "${changed[0]}" = "${expected[0]}"
+          test "${changed[1]}" = "${expected[1]}"
+          git diff --check -- "${expected[@]}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "${expected[@]}"
+          git commit -m 'F-ROSS13: widen production material envelope to 36'
+          test -z "$(git status --porcelain)"
+          echo "F_ROSS13_LOCAL_PRODUCTION_COMMIT=$(git rev-parse HEAD)"
+          echo "F_ROSS13_MODEL_POSTIMAGE_BLOB=$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)"
+          echo "F_ROSS13_PROVIDER_POSTIMAGE_BLOB=$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)"
+
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Qualify all 36 provider assets and fail-closed admission
+        run: bash tests/ross/run_ross13_36_material_production_envelope.sh
+
+      - name: Re-run F-ROSS12 unit semantics through F-ROSS13 successor boundary
+        run: bash tests/ross/run_ross13_ross12_semantic_successor_preservation.sh
+
+      - name: Re-run F-ROSS12 serialized production preservation
+        run: bash tests/ross/run_ross12_serialized_production_wiring.sh
+
+      - name: Verify exact source delta and push only after PASS
+        shell: bash
+        run: |
+          set -euo pipefail
+          parent="$(git rev-parse HEAD^)"
+          mapfile -t changed < <(git diff --name-only "$parent" HEAD -- src | sort)
+          test "${#changed[@]}" -eq 2
+          test "${changed[0]}" = 'src/runtime/mod_rossfast_d3r_model_binding.f90'
+          test "${changed[1]}" = 'src/solver/mod_rossfast_d3r_table_provider.f90'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo 'F_ROSS13_QUALIFIED_PRODUCTION_WIDENING_PUSHED=PASS'
