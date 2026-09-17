@@ -3,38 +3,19 @@
   "work_unit": "F-DOC29",
   "title": "Serialized MultiSWAP v1 technical reference",
   "branch": "work/f-doc29-serialized-multiswap-technical-reference",
-  "phase": "ACQUIRE",
-  "decision": "AUTHORITY_ACQUIRED_READY_FOR_DOCUMENTATION_UPDATE",
+  "phase": "VERIFY_READY",
+  "decision": "DOCUMENTATION_UPDATE_COMPLETE_PENDING_VERIFICATION",
   "canonical_start": "46f7335351393167b92f301c28ed1f235c0892ce",
+  "documentation_content_head": "e042b7d62f3d3d20d0a45e25a4f365d3985fc996",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
   "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
   "frozen_source_owners": [
-    {
-      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
-      "blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
-      "role": "multi-column serialized orchestration, registry preflight, deterministic dispatch, per-column transaction/commit and aggregate diagnostics"
-    },
-    {
-      "path": "src/runtime/mod_fmr_runtime_core.f90",
-      "blob": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
-      "role": "logical column/template contracts, execution order and aggregate diagnostic types"
-    },
-    {
-      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-      "blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
-      "role": "qualified per-column reference-physics backend and worker-local solver/workspace ownership"
-    },
-    {
-      "path": "src/runtime/mod_fmr_restart_state_contract.f90",
-      "blob": "872c28bbc345f40073396cce57e4eb43c71de850",
-      "role": "typed physical-state compatibility used by committed-boundary restart"
-    },
-    {
-      "path": "src/kernel/mod_kernel_committed_persistence.f90",
-      "blob": "ffd886c3401fc12739a456fe60a8741c12b9848b",
-      "role": "committed continuation-state persistence dependency"
-    }
+    {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"1aa2454048d0e480becaee34f596f20f1a7bd66e","role":"multi-column serialized orchestration, registry preflight, deterministic dispatch, per-column transaction/commit and aggregate diagnostics"},
+    {"path":"src/runtime/mod_fmr_runtime_core.f90","blob":"43eef1979e0202f8ecc92f73eb7d8025dab515a4","role":"logical column/template contracts, execution order and aggregate diagnostic types"},
+    {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13","role":"qualified per-column reference-physics backend and worker-local solver/workspace ownership"},
+    {"path":"src/runtime/mod_fmr_restart_state_contract.f90","blob":"872c28bbc345f40073396cce57e4eb43c71de850","role":"typed physical-state compatibility used by committed-boundary restart"},
+    {"path":"src/kernel/mod_kernel_committed_persistence.f90","blob":"ffd886c3401fc12739a456fe60a8741c12b9848b","role":"committed continuation-state persistence dependency"}
   ],
   "completion_authority": {
     "work_unit": "F-MR42",
@@ -59,30 +40,33 @@
     "stable_test_id": "FTB11-MSW-001",
     "status_a_current_preservation": "same-tree F-GC29 serialized MultiSWAP observable and aggregate-mass replay plus retained mixed-smoke/permanent suites"
   },
-  "permitted_claims": [
-    "Serialized MultiSWAP v1 executes qualified real-physics logical columns serially through one runtime composition.",
-    "Logical columns carry identities and registry handles while mutable committed state remains per-column and solver/Newton/Jacobian scratch is non-persistent worker/backend state.",
-    "The frozen runtime validates the complete registry structure before physical execution, including uniqueness of state claims.",
-    "Execution order is deterministic under the v1 policy: template_id then column_id.",
-    "Each resolved column uses the existing checkpoint/trial/retry/commit or rollback transaction lifecycle; rejected work does not become committed column state.",
-    "Batch and aggregate diagnostics are composed from per-column results and include aggregate unrounded mass residual; mass conservation remains a hard qualified gate.",
-    "Committed-boundary restart persists continuation authority while excluding solver scratch.",
-    "Typed optional persistent state is conditional on the admitted physical profile rather than forced on every logical column."
+  "verified_scope_delta": [
+    "docs/capabilities/serialized-multiswap-v1.md",
+    "integration/f-doc/F-DOC29_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC29_STATUS.json"
+  ],
+  "claim_boundary_notes": [
+    "Batch registry preflight is not whole-batch atomic commit.",
+    "The actual frozen multi-column orchestrator is mod_fmr_serialized_multiswap_runtime.f90; the serialized reference backend is per-column physical execution authority.",
+    "Deterministic v1 ordering is template_id then column_id.",
+    "Column commits remain individually authoritative; a later rejected column does not retroactively roll back an earlier accepted column.",
+    "Aggregate diagnostics report composed per-column authority and do not override per-column transaction or mass gates."
   ],
   "forbidden_claims": [
-    "No parallel or concurrent real-physics MultiSWAP admission.",
-    "No thread/process safety or shared mutable-state claim for arbitrary concurrency.",
-    "No worker-scaling, SIMD/GPU, 100k-column throughput or general speedup claim.",
-    "No RossFast or mixed Reference/RossFast MultiSWAP claim inside the frozen Status-A denominator.",
-    "No broad MODFLOW or direct-groundwater MultiSWAP claim beyond separately admitted authorities.",
-    "No general filesystem/byte-format or cross-version restart claim.",
-    "No mid-transaction/trial-state restart or persistence of solver scratch.",
-    "No automatic safety inheritance for future process state or execution topologies."
+    "parallel/concurrent real-physics MultiSWAP",
+    "arbitrary thread/process safety",
+    "whole-batch atomic commit/rollback",
+    "worker scaling, SIMD/GPU, 100k-column throughput or general speedup",
+    "RossFast or mixed Reference/RossFast MultiSWAP inside frozen Status-A",
+    "broad direct-groundwater/MODFLOW MultiSWAP beyond separate authorities",
+    "automatic future-process MultiSWAP safety",
+    "filesystem/byte-format or cross-version restart",
+    "mid-transaction restart or persistent solver scratch"
   ],
   "mutation_scope": "documentation_and_governance_only",
   "production_source_changes": [],
   "reference_source_changes": [],
   "test_changes": [],
-  "verdict": "READY_FOR_DOCUMENTATION_UPDATE",
-  "next_permitted_action": "Write reviewer-facing Serialized MultiSWAP v1 technical reference without broadening the frozen authority ceiling."
+  "verdict": "READY_FOR_DOCUMENTATION_VERIFICATION",
+  "next_permitted_action": "Open PR and require repository documentation checks plus strict MkDocs build on the exact PR head before admission."
 }
