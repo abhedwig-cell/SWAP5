@@ -57,6 +57,8 @@ Older `docs/architecture/implementation-status.md`, `D3a_IMPLEMENTATION_STATUS_M
 
 For a material work unit, maintain a recoverable Git state before expensive or timeout-sensitive work. Follow `docs/development/workstream-execution-protocol.md`.
 
+A checkpoint is a recovery boundary, not a default stopping point. After persisting a meaningful checkpoint, continue automatically with the next safe and authorized phase unless a real blocker, explicit review boundary, tool failure, or runtime risk requires stopping.
+
 A useful handoff identifies at least:
 
 ```text
