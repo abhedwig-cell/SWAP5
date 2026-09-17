@@ -1,0 +1,137 @@
+result:
+  result_id: PUB-GC-E1-SCREEN-0002
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_SCREENING
+  status: COMPLETE
+  eligible_for_primary_h1_inference: false
+  controlling_stress_class_selection: true
+  supersedes_selection_authority_of: PUB-GC-E1-SCREEN-0001
+
+chronology:
+  preregistration_manifest_commit: bc8dca037912de10dbfce33d1ca7a62b34bc7761
+  preregistration_manifest_blob: 2aef35c16f1b7c87ebd7ff572adeb24e4e830ee4
+  preregistration_frozen_utc: 2026-09-17T23:06:56Z
+  trigger_deviation_decision_commit: 37e72ae755bce9920db7f157082fa13def3fea22
+  trigger_deviation_decision_frozen_utc: 2026-09-17T23:11:28Z
+  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
+  origin_harness_qualified_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  screening_branch: research/pub-gc-e1-screening
+  screening_execution_head: 13bed3b93330bf403be96e0b7886274206c954b9
+  workflow_started_utc: 2026-09-17T23:11:42Z
+  workflow_completed_utc: 2026-09-17T23:12:37Z
+  completed_before_primary_manifest: true
+  completed_before_primary_execution: true
+  screen_0001_relation: >
+    SCREEN-0001 was already a valid supporting screen, but it included numeric
+    points previously seen during harness qualification. Before SCREEN-0002
+    execution, a disjoint grid was frozen. SCREEN-0001 remains historical
+    evidence only and is not used to choose the primary stress class.
+
+immutable_execution:
+  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  screen_test_blob: 7b598d103bf23c19c4dace8e9fdfebd264cd02a5
+  runner_blob: 79654bb6901b33f291cf316db7e9cb915ef5e8c7
+  production_src_modified: false
+  qualified_origin_harness_modified: false
+  qualified_gw_a_modified: false
+  workflow_restored_dispatch_only_after_run: true
+  post_run_dispatch_only_commit: 6f60cec1442ebaa15cb47baba25ff62a9499d6e9
+
+execution:
+  github_actions_run_id: 35285701916
+  github_actions_job_id: 105417414871
+  workflow_name: PUB-GC E1 transient screening
+  event: push
+  event_reason: SINGLE_PUSH_FOR_CONNECTOR_LIMITATION
+  trigger_deviation_was_frozen_before_execution: true
+  artifact_id: 10524475781
+  artifact_name: pub-gc-e1-screening-0002-13bed3b93330bf403be96e0b7886274206c954b9
+  artifact_size_bytes: 8381
+  artifact_zip_sha256: 6ff649bbfaca0b8b78eb6a3be8b83bf05624a3a00bf012fd7628dc91c6f3ffd6
+  screening_tsv_sha256: f4d4a184e4bfd09c7f020986b7b2f97a9140651e15422d5915b990305f3549b2
+  screening_log_sha256: 8bb3883e7f02c9c2c37db7d38be1c6990dab9440a4119a0a2d6be1138f562479
+
+grid:
+  expected_rows: 21
+  completed_rows: 21
+  pass_rows: 21
+  invalid_rows: 0
+  control_rows: 3
+  selection_eligible_rows: 18
+  post_result_grid_extension: false
+  qualification_numeric_pair_reused: false
+  screening_numeric_points_primary_reuse_allowed: false
+
+controls:
+  B_head_cm: -75.0
+  durations_days: [0.0025, 0.01, 0.04]
+  all_controls:
+    delta_q_abs: 0.0
+    endpoint_head_delta_cm: 0.0
+    endpoint_water_content_delta: 0.0
+    B_endpoint_differs_from_origin: false
+  interpretation: >
+    The history diagnostic produces no artificial difference when the preceding
+    candidate does not change the physical origin.
+
+screening_rows:
+  - {row: 1,  dt: 0.0025, B: -75.0,  class: control,      eligible: false, dQ: 0.0,                    dHead: 0.0,                  dWater: 0.0}
+  - {row: 2,  dt: 0.0025, B: -77.5,  class: mild_drying,  eligible: true,  dQ: 3.94784331704700620e-04, dHead: 4.85094543999295524e-01, dWater: 4.65314153130669261e-04}
+  - {row: 3,  dt: 0.0025, B: -72.5,  class: mild_wetting, eligible: true,  dQ: 4.07025052077569836e-04, dHead: 4.75050872749406494e-01, dWater: 4.57166018345445124e-04}
+  - {row: 4,  dt: 0.0025, B: -85.0,  class: intermediate_drying, eligible: true, dQ: 1.50787382851103047e-03, dHead: 1.99987033256689983e+00, dWater: 1.90847073175337556e-03}
+  - {row: 5,  dt: 0.0025, B: -65.0,  class: intermediate_wetting, eligible: true, dQ: 1.70371310765826678e-03, dHead: 1.83920770602644268e+00, dWater: 1.77814945275756031e-03}
+  - {row: 6,  dt: 0.0025, B: -100.0, class: strong_drying, eligible: true, dQ: 3.43301245936422595e-03, dHead: 5.28985413457968434e+00, dWater: 4.99173574541367238e-03}
+  - {row: 7,  dt: 0.0025, B: -50.0,  class: strong_wetting, eligible: true, dQ: 4.65657297749610954e-03, dHead: 4.28698060009445214e+00, dWater: 4.17894281237807252e-03}
+  - {row: 8,  dt: 0.01,   B: -75.0,  class: control,      eligible: false, dQ: 0.0,                    dHead: 0.0,                  dWater: 0.0}
+  - {row: 9,  dt: 0.01,   B: -77.5,  class: mild_drying,  eligible: true,  dQ: 1.40083862332618402e-03, dHead: 5.56686903259674182e-01, dWater: 5.33857481562649561e-04}
+  - {row: 10, dt: 0.01,   B: -72.5,  class: mild_wetting, eligible: true,  dQ: 1.45465408521117112e-03, dHead: 5.40042254467138605e-01, dWater: 5.19825004129614854e-04}
+  - {row: 11, dt: 0.01,   B: -85.0,  class: intermediate_drying, eligible: true, dQ: 5.29074664065376510e-03, dHead: 2.32298413379447766e+00, dWater: 2.21437984365102647e-03}
+  - {row: 12, dt: 0.01,   B: -65.0,  class: intermediate_wetting, eligible: true, dQ: 6.15114369507363534e-03, dHead: 2.05669703853612873e+00, dWater: 1.98987885112311691e-03}
+  - {row: 13, dt: 0.01,   B: -100.0, class: strong_drying, eligible: true, dQ: 1.17618810764099635e-02, dHead: 6.25626130131608704e+00, dWater: 5.88418958809955317e-03}
+  - {row: 14, dt: 0.01,   B: -50.0,  class: strong_wetting, eligible: true, dQ: 1.71162655785279672e-02, dHead: 4.59305574056502053e+00, dWater: 4.48189984489777427e-03}
+  - {row: 15, dt: 0.04,   B: -75.0,  class: control,      eligible: false, dQ: 0.0,                    dHead: 0.0,                  dWater: 0.0}
+  - {row: 16, dt: 0.04,   B: -77.5,  class: mild_drying,  eligible: true,  dQ: 3.62839321036445518e-03, dHead: 6.16359510274264721e-01, dWater: 5.90963214550987992e-04}
+  - {row: 17, dt: 0.04,   B: -72.5,  class: mild_wetting, eligible: true,  dQ: 3.75733658569821390e-03, dHead: 5.78951153016717512e-01, dWater: 5.57350732263817150e-04}
+  - {row: 18, dt: 0.04,   B: -85.0,  class: intermediate_drying, eligible: true, dQ: 1.37470918799067476e-02, dHead: 2.68677734648231592e+00, dWater: 2.55799272129741961e-03}
+  - {row: 19, dt: 0.04,   B: -65.0,  class: intermediate_wetting, eligible: true, dQ: 1.58042329448089269e-02, dHead: 2.08976023759828422e+00, dWater: 2.02209348006687772e-03}
+  - {row: 20, dt: 0.04,   B: -100.0, class: strong_drying, eligible: true, dQ: 3.06609633956691496e-02, dHead: 7.78041462170561715e+00, dWater: 7.27958911482129434e-03}
+  - {row: 21, dt: 0.04,   B: -50.0,  class: strong_wetting, eligible: true, dQ: 4.33114116362056725e-02, dHead: 4.10134246888516429e+00, dWater: 3.99549436894597321e-03}
+
+predeclared_selection_result:
+  selection_status: CLASS_SELECTED
+  controlling_primary_metric: max_abs_endpoint_head_delta_A_history_minus_same
+  selected_duration_class: long
+  selected_perturbation_class: strong
+  selected_perturbation_sign: drying_side
+  selected_screening_row: 20
+  selected_screening_window_days: 0.04
+  selected_screening_B_head_cm: -100.0
+  selected_screening_row_primary_reuse_allowed: false
+  selected_endpoint_head_delta_cm: 7.78041462170561715
+  selected_abs_delta_q_native_cm: 3.06609633956691496e-02
+  note: >
+    Row 21 has a larger exchange difference, but the preregistered selection
+    rule uses endpoint-head difference as the primary key. Row 20 therefore
+    controls stress-class selection exactly as declared before execution.
+
+admitted_interpretation:
+  - The qualified real-SWAP origin-policy harness admitted every row in the frozen disjoint screening grid.
+  - Exact controls produced zero history-contamination signal.
+  - Within this supporting screen, history-contamination response increased materially across stronger/longer perturbations.
+  - The predeclared rule selects the broad class long + strong + drying-side for primary-case construction.
+  - Same-origin response remained exactly replayable for every admitted screening row.
+
+nonclaims:
+  - This is not H1 primary evidence.
+  - The selected screening effect magnitudes are not publication effect estimates.
+  - The exact selected row may not be reused in the primary experiment.
+  - No practical-materiality threshold has yet been frozen or tested.
+  - No primary A/B/C order-permutation experiment has yet been run.
+  - GW-A is not coupled in this operator-level screen.
+  - No MODFLOW6, whole-window-superiority, convergence, robustness, response-acceleration or N:1 hydrologic-value claim follows.
+
+next_permitted_action:
+  - advance PUB-GC-E1 to READY_FOR_PRIMARY_FREEZE using SCREEN-0002 as the controlling screen
+  - choose new exact primary window and candidate heads inside the selected long/strong/drying-side class without reusing screening numeric points
+  - choose candidate C by a predeclared rule independent of observed row magnitudes
+  - freeze S1 and S2 order permutations, GW-A composition, metrics, materiality/null thresholds and execution authority before any primary run
