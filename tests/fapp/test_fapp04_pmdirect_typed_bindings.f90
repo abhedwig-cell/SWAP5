@@ -1,5 +1,5 @@
 program test_fapp04_pmdirect_typed_bindings
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_pmdirect_swetr0_process
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
@@ -32,11 +32,13 @@ program test_fapp04_pmdirect_typed_bindings
   call require(root_diag%incoming_ptra_ignored, 'incoming ptra not ignored')
   call require(root_diag%ptra_bound .and. root_diag%result_produced, 'emerged ptra not bound')
   call require(.not. root_diag%inactive_crop_zero_applied, 'emerged crop incorrectly neutralized')
-  call require(bound_root%potential_transpiration == interval%potential_transpiration_cm_per_day, &
+  call require(same_bits(bound_root%potential_transpiration, interval%potential_transpiration_cm_per_day), &
                'emerged ptra mapping not exact')
   call require(bound_root%crop_emerged .and. bound_root%rooted_nodes == 2, 'root geometry changed')
   call require(allocated(bound_root%cumulative_root_fraction), 'root fractions lost')
-  call require(all(bound_root%cumulative_root_fraction == [0.0_real64, 0.35_real64, 1.0_real64]), &
+  call require(same_bits(bound_root%cumulative_root_fraction(1), 0.0_real64) .and. &
+               same_bits(bound_root%cumulative_root_fraction(2), 0.35_real64) .and. &
+               same_bits(bound_root%cumulative_root_fraction(3), 1.0_real64), &
                'root fractions changed')
   write(*,'(a)') 'FAPP04_PMDIRECT_ROOT_EXACT_MAPPING=PASS'
 
@@ -49,7 +51,7 @@ program test_fapp04_pmdirect_typed_bindings
                'inactive root binding rejected')
   call require(root_diag%inactive_crop_zero_applied .and. .not. root_diag%ptra_bound, &
                'inactive crop canonical zero not applied')
-  call require(.not. bound_root%crop_emerged .and. bound_root%potential_transpiration == 0.0_real64 .and. &
+  call require(.not. bound_root%crop_emerged .and. same_bits(bound_root%potential_transpiration, 0.0_real64) .and. &
                bound_root%rooted_nodes == 0 .and. .not. allocated(bound_root%cumulative_root_fraction), &
                'inactive root output not canonical')
   write(*,'(a)') 'FAPP04_PMDIRECT_INACTIVE_CROP_CANONICAL_ZERO=PASS'
@@ -91,9 +93,9 @@ program test_fapp04_pmdirect_typed_bindings
   call fmr_bind_pmdirect_surface_evaporation_demand(daily, upstream, surface_demand, surface_diag)
   call require(surface_diag%status == FMR_PMDIRECT_SURFACE_DEMAND_BINDING_OK .and. &
                surface_diag%demand_bound .and. surface_diag%result_produced, 'surface demand binding rejected')
-  call require(surface_demand%bare_soil_demand == daily%potential_soil_evaporation_cm_per_day, &
+  call require(same_bits(surface_demand%bare_soil_demand, daily%potential_soil_evaporation_cm_per_day), &
                'bare-soil demand mapping not exact')
-  call require(surface_demand%ponded_water_demand == daily%potential_pond_evaporation_cm_per_day, &
+  call require(same_bits(surface_demand%ponded_water_demand, daily%potential_pond_evaporation_cm_per_day), &
                'ponded-water demand mapping not exact')
   write(*,'(a)') 'FAPP04_PMDIRECT_SURFACE_EXACT_MAPPING=PASS'
 
@@ -103,8 +105,8 @@ program test_fapp04_pmdirect_typed_bindings
   call fmr_bind_pmdirect_surface_evaporation_demand(daily, upstream, surface_demand, surface_diag)
   call require(surface_diag%status == FMR_PMDIRECT_SURFACE_DEMAND_INVALID_DEMAND .and. &
                .not. surface_diag%result_produced, 'nonfinite surface demand did not fail closed')
-  call require(surface_demand%bare_soil_demand == 0.0_real64 .and. &
-               surface_demand%ponded_water_demand == 0.0_real64, 'rejected surface demand leaked output')
+  call require(same_bits(surface_demand%bare_soil_demand, 0.0_real64) .and. &
+               same_bits(surface_demand%ponded_water_demand, 0.0_real64), 'rejected surface demand leaked output')
   write(*,'(a)') 'FAPP04_PMDIRECT_SURFACE_NONFINITE_FAIL_CLOSED=PASS'
 
   daily = pmdirect_swetr0_daily_result_t()
@@ -128,6 +130,11 @@ contains
     allocate(input%cumulative_root_fraction(3))
     input%cumulative_root_fraction = [0.0_real64, 0.35_real64, 1.0_real64]
   end subroutine set_emerged_geometry
+
+  pure logical function same_bits(a, b) result(same)
+    real(real64), intent(in) :: a, b
+    same = transfer(a, 0_int64) == transfer(b, 0_int64)
+  end function same_bits
 
   subroutine require(ok, label)
     logical, intent(in) :: ok
