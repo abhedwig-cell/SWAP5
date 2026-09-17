@@ -30,48 +30,55 @@ The provisional thesis to be tested across the programme is:
 
 This statement is a research hypothesis, not an admitted conclusion. It may be narrowed, contradicted or reformulated by the individual studies.
 
-## 4. Research arc
+## 4. Research architecture
 
-The intended logical progression is:
+The programme is no longer treated as a strict five-step chain. The current dependency structure is:
 
 ```text
-PRESERVE -> REPLACE -> COUPLE -> ACCELERATE -> SCALE
+                    -> REPLACE
+PRESERVE -----------|
+                    -> COUPLE -> ACCELERATE
+                              \
+                               -> SCALE
 ```
 
 The steps mean:
 
-- **PRESERVE**: modernize a legacy scientific model while demonstrating preservation of relevant scientific behaviour;
-- **REPLACE**: make numerical components substitutable under explicit qualification rules;
-- **COUPLE**: treat the model as a repeatable dynamic subsystem in conservative coupling with another process model;
-- **ACCELERATE**: exploit subsystem response information to solve the coupled nonlinear problem more efficiently;
-- **SCALE**: investigate when explicit subgrid heterogeneity materially changes regional coupled behaviour.
+- **PRESERVE**: test whether explicit scientific-state authority provides measurable protection against semantic contamination during modernization;
+- **REPLACE**: test prospective scientific admission of a numerically distinct Richards solver without changing the surrounding scientific lifecycle;
+- **COUPLE**: determine the finite-window contract required to compose independently time-integrating vadose-zone and groundwater models conservatively and reproducibly;
+- **ACCELERATE**: conditionally test whether additional whole-window response information improves coupling beyond strong generic black-box acceleration;
+- **SCALE**: conditionally test when an equivalent single vadose-zone column loses transferability across hydrologic regimes.
 
-The final `SCALE` step is conditional and is not required for the minimum viable doctoral argument if the first four studies provide sufficient scientific depth and coherence.
+`REPLACE` is not a prerequisite for `COUPLE`; the coupling study may use the qualified Reference Richards solver. `ACCELERATE` depends on a stable `COUPLE` method and may collapse into that paper if no independent response-information result exists. `SCALE` depends on conservative N:1 coupling semantics but not on `ACCELERATE`.
 
 ## 5. Research questions and publication mapping
 
 | Research question | Publication owner | Role in thesis |
 | --- | --- | --- |
-| RQ1. How can a mature process-based scientific model be structurally transformed while preserving defined scientific behaviour and qualification evidence? | `PUB-ME` | establishes the trustworthy evolution framework |
-| RQ2. How can an alternative numerical solver be admitted without confusing numerical performance with scientific validity? | `PUB-SQ` | tests whether numerical substitution can be independently qualified |
-| RQ3. How can independently time-integrating vadose-zone and groundwater models be coupled conservatively and reproducibly over finite coupling windows? | `PUB-GC` | tests composability and accepted-state coupling semantics |
-| RQ4. Can whole-window response information from the vadose-zone subsystem accelerate the nonlinear coupled solve without weakening conservation or reproducibility? | `PUB-RC` | develops the coupling into a numerical-method contribution |
-| RQ5. Under what conditions must heterogeneous vadose-zone responses be retained explicitly within coarser groundwater cells? | `PUB-SG`, conditional | tests hydrologic consequences of composability at scale |
+| RQ1. Which scientifically relevant state-contamination faults can escape conventional regression and invariant testing during staged modernization, and to what extent does explicit candidate-to-accepted state authority prevent or expose them? | `PUB-ME` | tests scientific-state authority as a causal fault-containment mechanism |
+| RQ2. Under what operating conditions can a numerically distinct Richards solver be admitted as scientifically interchangeable when admission is defined prospectively by trajectory, conservation, robustness and computational criteria? | `PUB-SQ` | tests qualified numerical substitution and its domain of validity |
+| RQ3. What coupling contract is sufficient for conservative and convergent partitioned simulation of dynamically interacting vadose-zone and groundwater models when both retain independent internal time integration? | `PUB-GC` | tests composability, whole-window exchange and accepted-state coupling semantics |
+| RQ4. What is the lowest-order hydrologically meaningful whole-window response information that materially improves robust coupling convergence beyond generic black-box acceleration? | `PUB-RC`, conditional | tests the incremental value of hydrologic interface information |
+| RQ5. Under which combinations of vadose-zone heterogeneity, atmospheric forcing and groundwater dynamics does an equivalent single-column representation cease to be transferable across hydrologic regimes? | `PUB-SG`, conditional | tests spatial representativeness and aggregation limits |
 
 ## 6. Minimum viable thesis
 
-The research programme must not depend on all five papers succeeding.
+The research programme must not depend on all five proposed papers succeeding.
 
-A coherent minimum doctoral core is provisionally:
+The non-negotiable scientific spine is provisionally:
 
-1. `PUB-ME`;
-2. `PUB-SQ`;
-3. `PUB-GC`;
-4. `PUB-RC` or another sufficiently independent fourth study that emerges from the programme.
+1. `PUB-ME`, if the causal state-authority hypothesis survives;
+2. `PUB-SQ`, if a defensible solver-admission domain can be demonstrated;
+3. `PUB-GC`, as the principal composition/coupling study.
 
-`PUB-SG` is an optional fifth study and should only be promoted to a paper when the hydrologic results establish a distinct scientific question.
+At least one additional independent study or synthesis-level contribution is then required for a robust article-based doctoral body, subject to institutional rules.
 
-If `PUB-RC` fails scientifically because response information provides little benefit, that negative result should not be hidden. The doctoral architecture must allow the fourth study to be reframed around the validated numerical finding rather than preserving a predetermined paper count.
+`PUB-RC` is explicitly conditional. It becomes a standalone paper only if hydrologically meaningful response information adds reproducible value beyond strong generic black-box acceleration at matched coupled error.
+
+`PUB-SG` is also conditional, but for a different reason. It becomes a standalone paper only if cross-regime transferability of an equivalent column reveals a distinct and generalizable hydrologic result after coupling and solver error have been separated.
+
+Failure of either conditional hypothesis is evidence and must not be hidden or repaired by creating a paper around infrastructure alone.
 
 ## 7. Paper-to-thesis firewall
 
@@ -310,18 +317,20 @@ Mitigation: narrow or redirect individual paper claims without protecting a pred
 
 Mitigation: preserve pre-result hypotheses, exact source heads, configurations, qualification evidence and immutable result artifacts.
 
-### Risk: fifth paper is forced
+### Risk: a conditional paper is forced
 
-Mitigation: `PUB-SG` remains explicitly conditional.
+Mitigation: both `PUB-RC` and `PUB-SG` have prospective merge/stop criteria. A technically useful capability is not sufficient reason for a standalone paper.
 
 ## 19. Current programme state
 
-At creation of this document:
+At the 2026-09-18 research-manifest update:
 
-- the publication portfolio contains four core publication lines and one conditional line;
-- `PUB-GC` has a bounded scientific contract and experiment ladder;
-- existing SWAP5 governance already provides substantial source/evidence traceability;
-- the doctoral framing is prospective and has not yet been evaluated against a specific university's formal PhD requirements.
+- five publication hypotheses are defined, with `PUB-RC` and `PUB-SG` explicitly conditional;
+- `PUB-ME`, `PUB-SQ` and `PUB-GC` have prospectively defined confirmatory decision structures;
+- five paper-level research manifests now specify primary endpoints, design versus holdout roles, threshold-freeze rules, exclusions and kill/merge criteria;
+- `PUB-GC` already has a bounded scientific contract and experiment ladder with active research branches;
+- existing SWAP5 governance provides substantial source/evidence traceability;
+- the doctoral framing remains prospective and has not yet been evaluated against a specific university's formal PhD requirements.
 
 The immediate purpose is therefore not to claim that a PhD already exists, but to ensure that current research decisions preserve the option of forming a coherent, evidence-rich doctoral thesis.
 
