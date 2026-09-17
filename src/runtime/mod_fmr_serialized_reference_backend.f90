@@ -49,6 +49,8 @@ module mod_fmr_serialized_reference_backend
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
+  use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
+       evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
   use mod_soil_temperature_contract, only: soil_temperature_at_node
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
@@ -131,6 +133,10 @@ module mod_fmr_serialized_reference_backend
     ! F-PM14 drainage response runtime composition. Immutable response and
     ! prepared geometry data belong to parameters, never to persistent state.
     logical :: drainage_response_active = .false.
+    ! F-GC31 opt-in: for prescribed-qbot coupling only, derive the lagged
+    ! drainage hydraulic-view GWL from the current substep-start pressure
+    ! profile. Default false preserves every previously admitted PM14 route.
+    logical :: drainage_qbot_smooth_freatic_projection = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
@@ -197,6 +203,9 @@ module mod_fmr_serialized_reference_backend
     integer :: fixed_weir_surface_water_iterations = 0
     character(len=32) :: fixed_weir_surface_water_route = 'not-run'
     logical :: drainage_response_active = .false.
+    logical :: drainage_qbot_projection_active = .false.
+    logical :: drainage_qbot_projection_available = .false.
+    real(real64) :: drainage_projected_groundwater_level = 0.0_real64
     integer :: drainage_response_evaluations = 0
     logical :: drainage_response_mass_accounted_in_trial = .false.
     real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
@@ -227,6 +236,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_rossfast_solver_selection_binding_t) :: soil_water_selection
     real(real64), pointer :: qdra(:,:) => null()
     logical :: drainage_response_active = .false.
+    logical :: drainage_qbot_smooth_freatic_projection = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
@@ -1009,7 +1019,12 @@ contains
              .not. self%fixed_weir_surface_water_active
         if (ok) ok = size(parameters%drainage_response_levels) > 0
       else
-        ok = ok .and. .not. allocated(parameters%drainage_response_levels)
+        ok = ok .and. .not. allocated(parameters%drainage_response_levels) .and. &
+             .not. parameters%drainage_qbot_smooth_freatic_projection
+      end if
+      if (parameters%drainage_qbot_smooth_freatic_projection) then
+        ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
       end if
     class default
       ok = .false.
@@ -1052,6 +1067,7 @@ contains
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
       self%drainage_response_active = parameters%drainage_response_active
+      self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
       if (parameters%drainage_response_active .and. allocated(parameters%drainage_response_levels)) then
         allocate(self%drainage_response_levels(size(parameters%drainage_response_levels)))
@@ -1330,7 +1346,10 @@ contains
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     real(real64), allocatable, target :: source_sink_root_zero(:)
+    real(real64), allocatable :: projection_zero_direction(:)
+    type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
+    real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
     logical :: bottom_temperature_start_available
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
@@ -1364,6 +1383,7 @@ contains
     call populate_snow_observation(self)
     call populate_fixed_weir_surface_water_observation(self)
     self%last_observation%drainage_response_active = self%drainage_response_active
+    self%last_observation%drainage_qbot_projection_active = self%drainage_qbot_smooth_freatic_projection
     snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
@@ -1433,6 +1453,18 @@ contains
     end select
 
     if (self%drainage_response_active) then
+      if (self%drainage_qbot_smooth_freatic_projection) then
+        allocate(projection_zero_direction(hydraulic_start%active_nodes))
+        projection_zero_direction = 0.0_real64
+        call evaluate_b110_smooth_freatic_projection(self%bottom_mode, .false., self%soil_parameters%z, &
+             self%soil_parameters%node_distance, hydraulic_start%pressure_head, projection_zero_direction, &
+             projected_groundwater_level, ignored_groundwater_direction, projection_diagnostics)
+        if (projection_diagnostics%status /= B110_GWL_PROJECTION_OK .or. &
+            .not. projection_diagnostics%value_defined) return
+        hydraulic_start%groundwater_level = projected_groundwater_level
+        self%last_observation%drainage_qbot_projection_available = .true.
+        self%last_observation%drainage_projected_groundwater_level = projected_groundwater_level
+      end if
       call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, self%drainage_response_controls, &
            hydraulic_start, self%qdra, self%drainage_response_diagnostics)
       self%drainage_response_evaluations = self%drainage_response_evaluations + 1
