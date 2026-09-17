@@ -33,10 +33,10 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
-| `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | GW-A scientific contract frozen at `b6800d1...`; implement and independently qualify research-only GW-A plus the diagnostic origin-policy harness before preregistering E1 |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | define fair terminal-flux comparator after qualified GW-A exists |
-| `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A + converged replay method + `GC-REF` construction required |
+| `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | GW-A component qualified by `PUB-GC-GW-A-QUAL-0001`; implement and independently qualify the real-SWAP `GC-ORIGIN-SAME` / `GC-ORIGIN-HISTORY-DIAG` research harness, then freeze case and candidate sequence before E1 preregistration |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
+| `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
 | `PUB-GC-E6` bounded N:1 conservation | PUB-GC | supporting/primary table | READY_FOR_SCREENING | map existing F-GC25 cases into publication manifest without upscaling claims |
@@ -63,11 +63,12 @@ These are primarily screening/foundational tasks. They should not be mistaken fo
 In parallel:
 
 - `PUB-SQ-REF-HIGH`: define the refinement procedure and stability criterion;
-- `PUB-GC-GW-A`: specification frozen in `PUB-GC_GW-A_SPECIFICATION.md`; implement and independently qualify the research-only reservoir before E1 preregistration;
-- `PUB-GC-GC-REF`: define the strict coupling reference procedure after the qualified GW-A execution surface exists;
+- `PUB-GC-GW-A`: **qualified research component** at research head `8a090fc9228574525e599817771aadb8ae176047`; receipt `PUB-GC-GW-A-QUAL-0001`;
+- `PUB-GC-E1-HARNESS`: reconcile the qualified real-SWAP prescribed-head/checkpoint execution surfaces, then implement the two origin policies in research-only code without modifying production semantics;
+- `PUB-GC-GC-REF`: define the strict coupling reference procedure after the E1 harness boundary is qualified;
 - shared publication telemetry serialization: define before primary matrices are frozen.
 
-No primary claim run should begin until the relevant definitions and implementation prerequisites are frozen.
+No primary claim run should begin until the relevant definitions, implementation prerequisites and run manifest are frozen.
 
 ## Blocker policy
 
@@ -125,6 +126,18 @@ Examples:
 - prerequisite newly satisfied: GW-A scientific equation, signs/units, transactional state semantics, diagnostic history-contamination boundary and minimum component qualification are frozen before implementation or E1 execution;
 - next permitted action: implement and independently qualify the research-only GW-A component and diagnostic origin-policy harness; do not preregister or execute a primary E1 run until those prerequisites are green;
 - cross-publication effect: none; no MODFLOW, production-backend, ME, SQ, RC or SG primary claim is created.
+
+### 2026-09-17T21:06:31Z — PUB-GC GW-A research component qualified
+
+- frozen scientific specification: `b6800d1337c2101b39d1c07e45ee808a35711926`;
+- research branch/head: `research/pub-gc-gw-a@8a090fc9228574525e599817771aadb8ae176047`;
+- qualification receipt: `docs/publications/results/PUB-GC-GW-A-QUAL-0001.yaml`, introduced by commit `dae4247162ee25233e149b5f5cb9790d2e2a73ef`;
+- execution: GitHub Actions run `35274770691`, job `105382568910`, GNU Fortran 13.3.0 on Ubuntu 24.04.5;
+- immutable research blobs: module `ac725a64ffa96f4f08998e9aac7537af5ca76ba0`, oracle `58711bc7eeab069ca937fd60e6e82e739bd5f156`, runner `48dab546bd6118e021f5ad2bfb1ed43f23a2ac97`;
+- qualification result: analytic sign response, zero exchange, action/reaction assignment, same-checkpoint repeatability, nonpublishing prepare/abort, one-shot prepared commit, stale-checkpoint fail-closed behavior and O0/O2 oracle identity all PASS;
+- prerequisite newly satisfied: a transparent, checkpointable, analytically qualified research groundwater component now exists before any E1 primary execution;
+- next permitted action: implement and independently qualify the **real-SWAP** origin-policy research harness; freeze case/candidate sequence and preregister E1 only after that harness is green;
+- cross-publication effect: none; this does not establish H1 or any MODFLOW, production-backend, ME, SQ, RC or SG primary claim.
 
 ## Register update rule
 
