@@ -2,14 +2,26 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC23",
   "title": "WOFOST and Restricted Snow Scientific Reference Expansion",
-  "phase": "UPDATE",
-  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
+  "phase": "RECONCILE",
+  "decision": "CANONICAL_DRIFT_RECONCILED_READY_FOR_VERIFY",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc23-wofost-snow-reference",
-  "branch_postimage_before_checkpoint": "6e3f03995aa51f0445639077906228e645d8bc1e",
+  "reconciled_merge_commit": "b1c0e7546eb46206b0efe92ad5b4a7ca5217168d",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
-  "canonical_drift_before_verify": false,
+  "canonical_reconciled_head": "e9859b82ffa0d0776c340ef7d550ac8791e28dab",
+  "canonical_drift": {
+    "detected": true,
+    "commits_ahead": 1,
+    "classification": "F-TA01_DOCUMENTATION_AND_TESTBANK_AUTHORITY_ONLY",
+    "relevant_to_wofost_or_snow_scientific_dependencies": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_or_test_semantics_changed": false,
+    "scientific_requalification_required": false,
+    "mechanical_conflict": "mkdocs.yml navigation only",
+    "resolution": "Preserved canonical F-TA01 test-bank navigation and F-DOC23 WOFOST/Snow science navigation in one two-parent merge commit."
+  },
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
@@ -35,18 +47,6 @@
     "wofost": "Twelve PP01/PP02-qualified crop-owned trajectories, accepted-daily runtime event semantics, and explicit SWAP coupling contracts only; RD/TRA donor equivalence, full ET science, broad Soil-N policy and full WOFOST ecosystem compatibility remain excluded.",
     "snow": "Exact B1.10-compatible one-call-daily formulation, component mass terms and preserved restricted runtime composition only; subdaily, multiday, arbitrary-duration and parallel real-physics Snow remain excluded."
   },
-  "delta_check": {
-    "base": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
-    "head_before_checkpoint": "6e3f03995aa51f0445639077906228e645d8bc1e",
-    "status": "ahead",
-    "ahead_by": 8,
-    "behind_by": 0,
-    "changed_files": 8,
-    "production_source_changed": false,
-    "reference_source_changed": false,
-    "tests_changed": false,
-    "only_docs_navigation_and_f_doc_governance": true
-  },
   "mutations": {
     "production_source_change": false,
     "reference_source_change": false,
@@ -57,9 +57,9 @@
   "verification_required": [
     "python tools/docs/check_docs.py",
     "mkdocs build --strict",
-    "confirm PR/file delta remains documentation/governance only",
+    "confirm PR/file delta remains documentation/governance only after reconcile",
     "recheck live canonical before admission"
   ],
-  "next_permitted_action": "Run the repository documentation gate on this checkpoint postimage. If documentation checks and strict MkDocs build pass, persist VERIFY evidence, recheck canonical for relevant drift, then admit documentation-only F-DOC23.",
+  "next_permitted_action": "Run the repository documentation gate on the reconciled PR postimage. If documentation checks and strict MkDocs build pass, persist VERIFY evidence, recheck canonical for relevant drift, then admit documentation-only F-DOC23.",
   "verdict": "READY_FOR_VERIFY"
 }
