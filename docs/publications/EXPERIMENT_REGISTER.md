@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_PRIMARY_FREEZE | controlling disjoint screen `PUB-GC-E1-SCREEN-0002` completed 21/21 PASS, 18 selection-eligible; predeclared rule selected broad class long + strong + drying-side; freeze new held-out A/B/C values, GW-A parameters, metrics and null interpretation before any primary run |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_PRIMARY_RUN | held-out primary manifest is frozen; generic engine qualified under `PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001` without executing primary values; freeze primary execution authority against the qualified engine and execute `PUB-GC-E1-PRIMARY-0001` exactly once without tuning |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
@@ -178,6 +178,21 @@ Examples:
 - interpretation guard: SCREEN-0002 selects only a broad stress class and is not H1 confirmation/falsification or a publication effect estimate;
 - next permitted action: freeze new disjoint primary A/B/C numeric points, at least two order permutations, GW-A composition, primary metrics, thresholds and null interpretation before implementation/execution;
 - cross-publication effect: none.
+
+### 2026-09-17T23:26Z — PUB-GC E1 primary engine qualified
+
+- qualification manifest: `bf62fc34ed603bf2fd551e8ea352310a1e823066`, blob `ea5042e51c61fbd6b11be87ded6198b8bdc44e81`;
+- held-out primary manifest remained frozen at `c3114e455029ee5dee0d92dbc4814c3fc0923ef6`, blob `abf45b4a83f528eda69024e3d75a38edc4ce713f`;
+- first qualification attempt: run `35286599570`, job `105420199550`, classified `INVALID_ENGINE_QUALIFICATION` after an O2 Fortran segfault caused by a strided polymorphic derived-type array temporary; no primary values were executed and no scientific conclusion was admitted;
+- surgical research-only repair: remove the non-contiguous array-section handoff while preserving sequence semantics, fixtures, production source tree and primary holdout;
+- controlling PASS execution: research head `98858378c2fcf48acbf1c2b34094056b7fc76c18`, run `35286757049`, job `105420678756`;
+- immutable qualified blobs: engine `7214117cc64591bd4ced071561a19e37aab0de1b`, runner `1c8914b3b996ed455de91e9c8ffc5f2adf20bac8`;
+- production source tree remained `d7ef6c045263de821db7800459289efcd8a6420b`; qualified origin-harness and GW-A bytes remained unchanged;
+- Q1 and Q2 both passed O0/O2 exact scientific-output identity; their observed history-diagnostic magnitudes are qualification-only and may not be used for H1 effect estimation or primary tuning;
+- qualification receipt: `docs/publications/results/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001.yaml`, introduced by commit `0bcbcad0dece1d4eada59f847bb0eb3908b56563`;
+- prerequisite newly satisfied: a generic primary execution engine is frozen and independently qualified without executing the held-out primary tuple;
+- next permitted action: freeze the separate primary execution authority against the qualified engine blobs, then execute `PUB-GC-E1-PRIMARY-0001` exactly once; no post-result changes to A/B/C, window or numerical discrimination floors;
+- cross-publication effect: none; H1 remains untested by primary evidence at this boundary.
 
 ## Register update rule
 
