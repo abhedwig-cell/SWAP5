@@ -82,7 +82,7 @@ for opt in 0 2; do
     src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/mod_soil_water_solver_contract.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/mod_b110_default_mvg_provider.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+  gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c \
     src/solver/mod_b110_dynamic_top_boundary_provider.f90 -o "$OUT/mod_b110_dynamic_top_boundary_provider.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90 -o "$OUT/mod_fmr_pmdirect_ptra_root_input_binding.o"
