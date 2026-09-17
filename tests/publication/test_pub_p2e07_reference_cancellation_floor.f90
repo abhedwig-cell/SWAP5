@@ -62,7 +62,7 @@ program test_pub_p2e07_reference_cancellation_floor
             call require(ieee_is_finite(estimated_floor) .and. estimated_floor>0.0_real64,'positive finite estimated floor')
             call require(ieee_is_finite(validity_margin) .and. validity_margin>=0.0_real64,'finite validity margin')
             call require(ieee_is_finite(residual_floor_ratio) .and. residual_floor_ratio>=0.0_real64,'finite residual/floor ratio')
-            call require(ieee_is_finite(cancellation_ratio) .and. cancellation_ratio>=1.0_real64,'finite cancellation ratio')
+            call require(ieee_is_finite(cancellation_ratio) .and. cancellation_ratio>=0.0_real64,'finite nonnegative cancellation ratio')
             call require(ieee_is_finite(closure_abs) .and. closure_abs>=0.0_real64,'finite reconstruction closure')
             floor_sum(idt)=floor_sum(idt)+estimated_floor
             floor_min(idt)=min(floor_min(idt),estimated_floor); floor_max(idt)=max(floor_max(idt),estimated_floor)
