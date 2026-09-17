@@ -3,8 +3,8 @@
   "work_unit": "F-DOC30",
   "title": "Transactional Interval Architecture Technical Reference",
   "branch": "work/f-doc30-transactional-interval-reference",
-  "phase": "UPDATE_COMPLETE_READY_FOR_VERIFY",
-  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_EXACT_HEAD_VERIFICATION",
+  "phase": "VERIFY",
+  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
   "canonical_start": "d223b7ab4ed297194c209f85d6b51bef86b79959",
   "frozen_status_a": {
     "authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
@@ -13,7 +13,7 @@
   },
   "live_delta_reconciliation": {
     "previous_documentation_canonical": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
-    "current_canonical": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+    "canonical_at_branch_start": "d223b7ab4ed297194c209f85d6b51bef86b79959",
     "classification": "F_APP04_RESTRICTED_TYPED_APPLICATION_COMPOSITION_IRRELEVANT_TO_FDOC30_OWNER_SURFACE",
     "relevant_paths_unchanged": [
       "src/transaction/**",
@@ -80,10 +80,15 @@
     "documentation_links_checked": true
   },
   "verification": {
-    "documentation_workflow_run": null,
-    "repository_documentation_checks": "PENDING",
-    "strict_mkdocs_build": "PENDING"
+    "content_head": "c86f17131f4757d35ef33b77d1fd2d7b23050d13",
+    "pull_request": 194,
+    "documentation_workflow_run": 35277790693,
+    "documentation_job": 105392458720,
+    "workflow_conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "status_only_exact_head_rerun": "PENDING"
   },
-  "next_permitted_action": "OPEN_PR_AND_VERIFY_EXACT_HEAD",
-  "verdict": "READY_FOR_VERIFY"
+  "next_permitted_action": "VERIFY_STATUS_ONLY_HEAD_THEN_GUARDED_ADMIT_IF_CANONICAL_RELEVANT_DELTA_IS_CLEAN",
+  "verdict": "CONTENT_VERIFIED"
 }
