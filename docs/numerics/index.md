@@ -1,43 +1,50 @@
 # Numerical formulation
 
-The SWAP5 numerical documentation separates three questions that were historically more intertwined in program flow:
+The SWAP5 numerical documentation separates four questions that were historically more intertwined in program flow:
 
 1. **What discrete numerical problem is being solved?**
-2. **What constitutes a successful numerical candidate?**
-3. **When may that candidate become committed model state?**
+2. **What constitutes a successful nonlinear candidate?**
+3. **What additional numerical indicators are available, and inside which envelope?**
+4. **When may a candidate become committed model state?**
 
-The first two belong primarily to solver/numerical contracts. The third belongs to the transaction/execution layer.
+The first three belong primarily to solver/numerical contracts. The fourth belongs to the transaction/execution layer.
 
 ## Read this section
 
 1. [Richards discretisation and nonlinear solve](richards-solver.md)
-2. [Transactional time stepping and acceptance](transactional-time-stepping.md)
-3. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-4. [Mass-accounting contract](../verification/mass-accounting-contract.md)
-5. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+2. [Restricted Richards temporal indicator](richards-temporal-indicator.md)
+3. [Transactional time stepping and acceptance](transactional-time-stepping.md)
+4. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+5. [Mass-accounting contract](../verification/mass-accounting-contract.md)
+6. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
 
 ## Reference numerical lineage
 
-The restricted historical reference authority documents an implicit backward finite-difference compartment formulation for the reference Richards route. Storage is evaluated from water-content change and internodal Darcy fluxes connect neighbouring compartments. The nonlinear residual is solved through the qualified Newton/tridiagonal route.
+The restricted frozen reference authority documents an implicit backward compartment formulation for the reference Richards route. Storage is evaluated from the actual water-content endpoint change and internodal Darcy fluxes connect neighbouring compartments. The bounded `SWKIMPL=0` route keeps face conductivity frozen during the nonlinear iteration while moisture capacity follows the current pressure-head iterate.
 
-The current Status-A claim is bounded: it preserves/admit the qualified reference soil-water core and its later transaction architecture. This section does not turn every historical numerical option into a current SWAP5 capability.
+The nonlinear residual is solved through the reference Newton/tridiagonal route with bounded backtracking and an explicit band-solver fallback if the tridiagonal solve reports failure.
+
+The current Status-A claim remains bounded: the documentation explains the qualified reference soil-water core and its transaction architecture. It does not turn every historical numerical switch into a current SWAP5 capability.
 
 ## Numerical method versus execution policy
 
 A converged nonlinear solve is not sufficient by itself to mutate accepted state. SWAP5 deliberately separates:
 
 - solver status and candidate values;
+- optional numerical indicators;
 - hard scientific/numerical assessments such as applicable mass criteria;
 - execution-policy decisions such as accept or retry;
 - commit/rollback state authority.
 
 This separation is one of the central review targets of SWAP5.
 
-## Time-reference evidence
+## Temporal-indicator evidence
 
-Historical F-DOC13 documents a bounded temporal-certificate lineage derived from an exact linear backward-Euler problem and independently transferred/qualified only within its stated restricted scope. It explicitly does **not** establish a universal nonlinear Richards true-error theorem or an application-wide accuracy budget.
+The reference solver exposes a restricted temporal indicator only inside an explicit applicability envelope. It uses the change in consecutive discrete right derivatives, candidate moisture-capacity mass weights and one additional tridiagonal defect solve. It performs no additional full nonlinear solve.
 
-Where that certificate lineage is relevant to a current capability, use the exact capability-specific authority. Do not infer a global accuracy guarantee from the existence of a numerical indicator.
+That implementation is deliberately documented separately from the Richards residual/Jacobian because its existence does **not** establish a universal nonlinear true-error theorem or an application-wide accuracy budget.
+
+Historical F-DOC13 also records a bounded temporal-certificate lineage derived from an exact linear backward-Euler problem. Where that lineage is relevant to a current capability, use the exact capability-specific authority; do not infer a global guarantee merely from the existence of a numerical indicator.
 
 ## Hard boundaries
 
@@ -48,4 +55,5 @@ The numerical review baseline does not claim:
 - that shorter timesteps always improve every indicator monotonically;
 - that a model-owned temporal indicator overrides mass failure;
 - that rejected candidate state can leak into committed state;
-- that a performance policy may silently select different physics.
+- that a performance policy may silently select different physics;
+- that post-Status-A RossFast work belongs to the frozen Status-A scientific denominator.

@@ -1,114 +1,239 @@
 # Richards discretisation and nonlinear solve
 
-## Discrete reference problem
+## Scope and authority
 
-The qualified historical reference formulation uses a one-dimensional vertically compartmented grid and an implicit backward finite-difference treatment of the soil-water balance.
+This page documents the **frozen reference Richards route** in the Status-A scientific review denominator. The primary nonlinear owner is the frozen `src/legacy/b1_10_port/headcalc.f90` implementation at scientific production baseline `50346642bd565f79134ea17d5462e544b354998c`, supported by the typed solver contract, reference workspace and reference linear-solver modules.
 
-For compartment `i`, the storage contribution over an attempted step is based on the **actual water-content difference** between the candidate endpoint and the accepted start state:
+The page is deliberately narrower than the full historical option space. In particular, it does not promote `SWKIMPL=1`, macropore numerics, RossFast, or every historical lower-boundary mode into the frozen reference claim.
+
+## State and geometry
+
+The typed solver request provides:
+
+- accepted/base pressure head `h_i` and water content `theta_i`;
+- compartment elevations and thicknesses;
+- distances between adjacent nodes;
+- the attempted step duration `dt`;
+- top and bottom boundary data;
+- numerical controls and constitutive/source-sink providers.
+
+The solver produces a **candidate** endpoint. The surrounding transaction architecture remains the authority for acceptance, rollback and commit.
+
+## Discrete water-balance residual
+
+The qualified reference formulation is one-dimensional and vertically compartmented. It uses an implicit endpoint balance with the **actual nonlinear water-content difference** between candidate endpoint and accepted start state:
 
 ```text
-theta_i(t1) - theta_i(t0)
+(theta_i^1 - theta_i^0) dz_i / dt
 ```
 
-rather than replacing nonlinear storage by an independently invented linear storage law. Internodal Darcy fluxes connect adjacent compartments, while admitted boundary and distributed source/sink terms enter the same discrete conservation residual.
-
-The frozen reference `SWKIMPL=0` route uses its admitted old-time-level conductivity linearisation for the conductivity contribution. The storage relation remains nonlinear through `theta(h)`. This page documents that restricted reference route only; it does not promote other historical SWAP numerical switches.
-
-## Residual system
-
-The compartment equations form a nonlinear residual system
+For the documented non-macropore route, define the code-level face gradient between adjacent compartments as
 
 ```text
-F(h) = 0
+G_(i+1/2) = (h_i - h_(i+1)) / d_(i+1/2) + 1
 ```
 
-where `h` is the candidate vector of compartment pressure heads. Each residual combines, with the process-specific signs and units required by the admitted formulation:
+and the corresponding face term
 
-- compartment storage change;
-- upper and lower internodal/boundary water fluxes;
-- admitted distributed sources;
-- admitted distributed sinks such as root extraction or drainage where active.
+```text
+Q_(i+1/2) = K_(i+1/2) G_(i+1/2).
+```
 
-The continuous hydraulic convention and the distinction between hydraulic flux signs, process sink magnitudes and normalized mass-accounting signs are documented in [Water balance, signs and units](../science/water-balance-and-conventions.md).
+Then an interior residual has the structure
 
-## Newton-Raphson reference route
+```text
+F_i = (theta_i^1 - theta_i^0) dz_i / dt
+      + sink_i - source_i + root_sink_i
+      - Q_(i-1/2) + Q_(i+1/2).
+```
 
-The frozen reference nonlinear route solves the residual system by Newton-Raphson iteration. At an iteration, the implementation constructs the Jacobian associated with the residual system and solves the resulting tridiagonal linear update problem.
+The sign convention here is the one used inside the residual owner. It must not be confused with the normalized external-transfer sign used by the mass ledger. See [Water balance, signs and units](../science/water-balance-and-conventions.md).
 
-The qualified historical route does not blindly accept every full Newton update. It:
+### Top boundary
 
-1. forms the candidate Newton correction;
-2. attempts the full correction;
-3. evaluates the residual objective;
-4. backtracks when the full update does not improve that objective;
-5. continues until the admitted convergence criteria are met or the attempt fails.
+For a prescribed top flux, the owner adds the top flux term directly to the first-compartment residual:
 
-This is a description of the frozen reference route, not a general requirement that every future solver use Newton-Raphson.
+```text
+F_1 = storage + sinks - sources + Q_(3/2) + q_top.
+```
+
+For an admitted head-controlled top face, the boundary contribution is represented through
+
+```text
+G_(1/2) = (h_surface - h_1) / d_(1/2) + 1
+```
+
+and the residual uses the corresponding `-K_(1/2) G_(1/2)` face term.
+
+The scientific meaning and currently documented upper-boundary regimes are described separately in [Hydrological boundary conditions](../science/hydrological-boundary-conditions.md).
+
+### Bottom boundary
+
+The last compartment starts from
+
+```text
+F_N = storage + sinks - sources - Q_(N-1/2)
+```
+
+and then receives the selected lower-boundary term. For the bounded cases needed here:
+
+- prescribed bottom flux contributes `-q_bottom`;
+- prescribed bottom head contributes a bottom face term `+K_b G_b`.
+
+This page does **not** turn that statement into an exhaustive current-authority table for every historical `SWBOTB` branch.
+
+## Frozen-conductivity reference linearisation
+
+The frozen reference `SWKIMPL=0` route resets conductivity to the start-of-step state before the nonlinear loop and keeps the face conductivities fixed during that iteration sequence. Water content remains nonlinear through `theta(h)`, and the moisture capacity `C = d theta / d h` is reevaluated as the pressure-head iterate changes.
+
+For an interior compartment, the resulting tridiagonal Jacobian has the bounded structure
+
+```text
+J_(i,i-1) = -K_(i-1/2) / d_(i-1/2)
+
+J_(i,i)   = C_i dz_i / dt
+            + K_(i-1/2) / d_(i-1/2)
+            + K_(i+1/2) / d_(i+1/2)
+
+J_(i,i+1) = -K_(i+1/2) / d_(i+1/2).
+```
+
+A prescribed-head face adds its corresponding `K/d` stiffness to the boundary compartment main diagonal. Prescribed flux does not add a state derivative for that face.
+
+This is the Jacobian of the **restricted frozen-conductivity linearisation** used by the reference route. It is not a claim that conductivity derivatives are absent from all historical or future SWAP solvers.
+
+## Newton correction and linear solve
+
+At each nonlinear iteration the owner builds the residual and Jacobian and solves the tridiagonal system for `delta_h`. The update convention is
+
+```text
+h_trial = h_old - factor * delta_h.
+```
+
+The normal linear route is `reference_tridag`. If that tridiagonal solve reports failure, the reference owner explicitly switches to the more general band-matrix solver and uses that result as the correction. This fallback is part of the reference numerical implementation; it does not imply a second physical model.
+
+The reference workspace owns the residual, Jacobian diagonals, correction vector, tridiagonal factors, alternative band-solver scratch, convergence flags and diagnostics. These arrays are scratch/diagnostic state. They are not accepted physical model state.
+
+## Backtracking
+
+A full Newton correction is attempted first with
+
+```text
+factor = 1.
+```
+
+After recomputing the nonlinear residual, the implementation evaluates
+
+```text
+phi(F) = 0.5 * F^T F
+```
+
+and
+
+```text
+F_max = max_i |F_i|.
+```
+
+The trial correction is accepted for iteration progress when either:
+
+```text
+phi(F_trial) < phi(F_previous)
+```
+
+or
+
+```text
+F_max < compartment_balance_tolerance.
+```
+
+If neither condition is met, the update factor is divided by three and the trial is repeated, bounded by the configured maximum number of backtracking attempts.
+
+The historical owner also contains a narrow correction limiter for late iterations at minimum timestep. That implementation detail is not generalized here into a universal SWAP5 nonlinear-solver policy.
 
 ## Convergence criteria
 
-Historical F-DOC18 records that the restricted reference route retains compartment water-balance and pressure-head convergence criteria together with applicable total-balance criteria. F-DOC21 does not assign new numerical values to those criteria and does not turn one case-specific tolerance into a universal model tolerance.
+The reference owner keeps distinct convergence tests rather than collapsing them into one scalar criterion.
 
-A nonlinear solver can therefore fail because the iterative criteria are not satisfied even when finite candidate values exist. Conversely, iterative convergence alone does not establish that the surrounding model attempt may be committed.
+### Compartment balance
 
-## Convergence is not commit
-
-Convergence of `F(h)=0` produces a **candidate** numerical state. It does not itself make that state persistent.
-
-The transaction layer owns the attempt lifecycle:
+For every active compartment:
 
 ```text
-committed checkpoint
-        |
-        v
-candidate solve
-        |
-        v
-assessment
-   /          \
-accept        reject
-  |             |
-commit        rollback/retry
+|F_i| <= compartment_balance_tolerance.
 ```
 
-This separation prevents solver internals from silently owning global state-commit policy. A later assessment can reject a converged candidate when an applicable hard scientific or numerical criterion fails.
+### Pressure-head change
 
-## Mass criteria
+The change from the previous nonlinear iterate uses two branches:
 
-Mass/conservation criteria are hard guards where the owning capability requires them. A candidate cannot become scientifically acceptable merely because the Newton iteration converged if the applicable mass gate fails.
+```text
+if |h_old| < 1:
+    |h_new - h_old| <= head_abs_tolerance
+else:
+    |h_new - h_old| / |h_old| <= head_rel_tolerance.
+```
 
-The mass identity is evaluated on accepted physical transfers. A rejected trial may expose provisional storage and flux information for diagnostics, but those provisional amounts do not become committed accounting. See [Water balance, signs and units](../science/water-balance-and-conventions.md) and the [Mass-accounting contract](../verification/mass-accounting-contract.md).
+### Total residual
 
-## Failure and retry
+The summed compartment residual is additionally checked against the configured total-balance tolerance:
 
-A solver attempt can report failure, or a candidate can fail a later assessment. In either case, the surrounding transaction controller may request a bounded retry according to its admitted policy.
+```text
+|sum_i F_i| <= total_balance_tolerance.
+```
 
-The preservation invariant is that retry starts from accepted authority, not from a partially mutated rejected state. Solver workspace or warm-start information may be reusable only where the owning contract permits it; it cannot redefine the accepted physical start state.
+Applicable surface/ponding regimes add their own convergence check. Numerical values for these tolerances come from the owning configuration/input authority. This documentation does not invent a universal tolerance set.
+
+## Solver status versus transaction authority
+
+The typed solver contract distinguishes solver result from accepted model state. It can report a converged candidate, advise retry, or report failure; its diagnostics expose iteration, Jacobian, linear-solve, backtracking, fallback and retry counts.
+
+A converged nonlinear state remains a **candidate**. The surrounding transaction layer decides whether scientific/numerical assessment permits commit. Therefore:
+
+```text
+nonlinear convergence != transaction commit
+```
+
+and
+
+```text
+nonlinear convergence != proof of whole-model mass closure.
+```
+
+A later hard assessment may still reject a converged candidate, while a failed solve may trigger a bounded retry from accepted authority.
+
+## Temporal accuracy is a separate concern
+
+The reference implementation also exposes a restricted optional temporal indicator. It is intentionally separate from the primary nonlinear solve and has a much narrower applicability envelope. See [Restricted Richards temporal indicator](richards-temporal-indicator.md).
+
+The existence of that indicator does not change the residual solved here and does not create a universal nonlinear true-error theorem.
 
 ## What this numerical authority does not prove
 
-The reference Richards authority does not establish:
+The frozen reference authority does not establish:
 
 - RossFast or another alternative nonlinear solver as part of the frozen Status-A review denominator;
+- `SWKIMPL=1` as the reference conductivity treatment;
 - a universal iteration tolerance;
-- a universal time step;
+- a universal timestep;
 - a universal nonlinear true-error theorem;
-- monotonic improvement of every indicator as the time step is shortened;
+- monotonic improvement of every indicator as timestep decreases;
 - permission for a numerical indicator to override a hard mass failure;
-- permission for rejected candidate state to leak into committed state.
+- permission for rejected candidate state to leak into committed state;
+- canonical adoption of every historical nonconvergence continuation branch.
 
 ## What to inspect in code review
 
-Reviewers should follow the capability-specific implementation/evidence chain and check:
+Reviewers should check, against the frozen authority chain:
 
-- sign and unit consistency in residual and boundary terms;
-- Jacobian consistency with the residual actually solved;
-- storage derivative/constitutive consistency;
-- the frozen conductivity treatment where reference equivalence is claimed;
-- convergence criteria and nonfinite handling;
-- behaviour near ponding/boundary transitions;
-- full-step/backtracking behaviour;
-- separation between solver scratch, candidate state and committed state;
-- exact preservation evidence at O0/O2 where required.
+- residual sign and unit consistency;
+- correspondence between residual and the `SWKIMPL=0` Jacobian actually solved;
+- `theta(h)` and capacity consistency;
+- boundary-face contributions;
+- source/sink signs and ownership;
+- tridiagonal failure and fallback behavior;
+- backtracking and convergence branches;
+- nonfinite/failure propagation through the typed solver contract;
+- separation between solver workspace, candidate state and committed state;
+- exact preservation evidence where reference equivalence is claimed.
 
-The current authority map is [Status-A traceability](../status-a/TRACEABILITY.md). Historical F-DOC18 supplies bounded scientific/numerical lineage; current implementation and admission authority remain the frozen production postimage plus the Status-A capability chain.
+The current authority map is [Status-A traceability](../status-a/TRACEABILITY.md). F-DOC25 only makes the already-frozen numerical route more explicit; it does not alter the scientific production baseline.
