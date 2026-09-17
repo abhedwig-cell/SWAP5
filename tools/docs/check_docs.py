@@ -18,6 +18,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = ROOT / "docs"
 CONFIG = ROOT / "mkdocs.yml"
+TEST_BANK_CATALOG = DOCS / "verification" / "test-bank-catalog.yaml"
 
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 INVARIANT_RE = re.compile(r"^(\d+)\. \*\*", re.MULTILINE)
@@ -101,6 +102,69 @@ def check_markdown_links() -> None:
         fail("broken relative Markdown links:\n  " + "\n  ".join(broken))
 
 
+def _catalog_path_values(value, field: str, stable_id: str) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list) and value and all(isinstance(item, str) for item in value):
+        return value
+    fail(f"test-bank record {stable_id} field {field} must be a path string or non-empty path list")
+
+
+def _looks_like_repository_path(value: str) -> bool:
+    if any(char.isspace() for char in value):
+        return False
+    return value.startswith(("tests/", "testbank/", ".github/", "tools/", "docs/", "src/", "reference/", "integration/"))
+
+
+def check_test_bank_catalog() -> None:
+    try:
+        data = yaml.safe_load(TEST_BANK_CATALOG.read_text(encoding="utf-8"))
+    except Exception as exc:
+        fail(f"cannot parse {TEST_BANK_CATALOG.relative_to(ROOT)}: {exc}")
+    if not isinstance(data, dict):
+        fail("test-bank catalog must contain a YAML mapping")
+
+    required = data.get("required_traceability_fields")
+    if not isinstance(required, list) or not required or not all(isinstance(item, str) for item in required):
+        fail("test-bank catalog required_traceability_fields must be a non-empty string list")
+
+    records = data.get("bounded_registrations", [])
+    if not isinstance(records, list):
+        fail("test-bank catalog bounded_registrations must be a list")
+
+    seen_ids: set[str] = set()
+    missing_paths: list[str] = []
+    for record in records:
+        if not isinstance(record, dict):
+            fail("each bounded test-bank registration must be a YAML mapping")
+        stable_id = record.get("stable_id")
+        if not isinstance(stable_id, str) or not stable_id:
+            fail("each bounded test-bank registration must have a non-empty stable_id")
+        if stable_id in seen_ids:
+            fail(f"duplicate bounded test-bank stable_id: {stable_id}")
+        seen_ids.add(stable_id)
+
+        if record.get("registration_status") != "complete":
+            continue
+
+        missing_fields = [field for field in required if field not in record or record[field] in (None, "", [])]
+        if missing_fields:
+            fail(f"complete test-bank record {stable_id} misses fields: {', '.join(missing_fields)}")
+
+        for field in ("test_locator", "runner"):
+            for locator in _catalog_path_values(record[field], field, stable_id):
+                if not _looks_like_repository_path(locator):
+                    continue
+                if "*" in locator or "?" in locator or "[" in locator:
+                    fail(f"complete test-bank record {stable_id} uses non-exact {field}: {locator}")
+                candidate = ROOT / PurePosixPath(locator)
+                if not candidate.is_file():
+                    missing_paths.append(f"{stable_id} {field} -> {locator}")
+
+    if missing_paths:
+        fail("complete test-bank repository locators do not exist:\n  " + "\n  ".join(missing_paths))
+
+
 def check_invariants() -> None:
     path = DOCS / "architecture" / "invariants.md"
     numbers = [int(value) for value in INVARIANT_RE.findall(path.read_text(encoding="utf-8"))]
@@ -119,6 +183,7 @@ def main() -> None:
     config = load_config()
     check_nav(config)
     check_markdown_links()
+    check_test_bank_catalog()
     check_invariants()
     check_generated_site_not_tracked()
     print("Documentation source checks passed.")
