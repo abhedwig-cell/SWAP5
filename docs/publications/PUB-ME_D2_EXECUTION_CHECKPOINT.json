@@ -1,0 +1,47 @@
+{
+  "workunit": "PUB-ME-D2",
+  "publication_owner": "PUB-ME",
+  "doctoral_mapping": "RQ1 / PRESERVE",
+  "status": "RECONCILED__EXECUTION_NOT_STARTED",
+  "timeout_resilience": {
+    "policy": "persist_before_analysis_and_after_each_meaningful_phase",
+    "resume_rule": "On restart, read this checkpoint first and inspect only relevant canonical delta before continuing.",
+    "bounded_phases": ["RECONCILE", "DESIGN_BINDING", "IMPLEMENT_TEST_ONLY", "QUALIFY", "ADMIT", "CLOSE"]
+  },
+  "design_authority": {
+    "preregistration_branch": "work/pub-me-literature-pass2",
+    "preregistration_head": "b2ebe5825b3c54d9d4eaefe44c33f4c859fa20aa",
+    "design_path": "docs/publications/PUB-ME_D1_D6_PREREGISTERED_EXPERIMENT_MATRIX.md",
+    "design_blob": "61f7133f19cc900971aa454b7bdb16a254468eda",
+    "design_status": "PREREGISTERED_DESIGN_BEFORE_EXECUTION"
+  },
+  "execution_authority": {
+    "branch": "work/pub-me-d2-retry-accounting-authority",
+    "base_canonical": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "base_message": "F-GC30: close admitted drainage-free tangent envelope"
+  },
+  "prior_result": {
+    "D1": {
+      "current_canonical_contains_result": true,
+      "classification": "STRUCTURAL_PREVENTION",
+      "result_path": "docs/publications/PUB-ME_D1_RESULT.json",
+      "interpretation_boundary": "D1 is a materially distinct positive authority mechanism but not UNIQUE_DETECTION or EARLIER_DETECTION, and does not by itself satisfy the standalone PUB-ME threshold."
+    }
+  },
+  "defect_family": {
+    "id": "D2",
+    "name": "retry double-counts scientific exchange/accounting",
+    "frozen_semantics": "A rejected attempt contributes flux/storage-transfer quantities to accepted accounting and a later successful retry contributes them again.",
+    "primary_question": "Does explicit accepted-only accounting authority provide incremental protection beyond the strong B1 conventional scientific-software baseline?"
+  },
+  "hard_exclusions": [
+    "no production physics change",
+    "no reference physics change",
+    "no weakening of admitted transaction/state encapsulation",
+    "no D3-D6 execution in this workunit",
+    "no reinterpretation of D1",
+    "no change to preregistered B0/B1/B2 definitions",
+    "no admission of any fault mutant into production"
+  ],
+  "next_permitted_action": "Inspect only the current accepted mass/accounting publication path and existing retry/post-solver-rejection tests needed to design a qualification-only D2 mutant and matched clean control. Persist a DESIGN_BINDING checkpoint before creating or executing the mutant."
+}
