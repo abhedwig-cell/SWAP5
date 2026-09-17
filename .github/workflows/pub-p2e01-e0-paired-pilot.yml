@@ -1,0 +1,35 @@
+name: PUB-P2E01 E0 paired pilot
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/publication/P2_E0_EXPERIMENT_DESIGN.md'
+      - 'docs/publication/p2-e0-pilot-manifest.json'
+      - 'tests/publication/test_pub_p2e01_e0_paired_pilot.f90'
+      - 'tests/publication/run_pub_p2e01_e0_paired_pilot.sh'
+      - '.github/workflows/pub-p2e01-e0-paired-pilot.yml'
+      - 'src/kernel/**'
+      - 'src/runtime/**'
+      - 'src/solver/**'
+      - 'src/process/**'
+      - 'src/adapter/**'
+      - 'src/transaction/**'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'assets/rossfast/d3r/**'
+
+permissions:
+  contents: read
+
+jobs:
+  paired-e0-pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run paired extraction pilot
+        run: bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh
