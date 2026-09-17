@@ -3,17 +3,17 @@
   "capability": "F-GC30",
   "work_unit": "F-GC30",
   "title": "MODFLOW6 Tangent Coupling Contract",
-  "phase": "QUALIFY",
-  "verdict": "DRAINAGE_FREE_PREDICTOR_PRIMITIVES_QUALIFIED_CANDIDATE_PROVENANCE_SEAM_CONFIRMED_ANALYTIC_DRAINAGE_BLOCKED",
+  "phase": "ADMIT",
+  "verdict": "DRAINAGE_FREE_PRODUCTION_PREDICTOR_CANDIDATE_BINDING_QUALIFIED_READY_FOR_ADMISSION_ANALYTIC_DRAINAGE_BLOCKED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "head": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
-    "relevant_delta_since_8e0de81": "No identified F-GC30 runtime, transaction, tangent or groundwater-coupling dependency change. Subsequent canonical moves inspected were documentation/governance refinements outside this dependency surface."
+    "head": "910fbc1c9cab2b11094e6a45606dfcea85621f4d",
+    "relevant_delta_since_previous_checkpoint": "Canonical advanced from d0a41c39d7ff95db99bcf8360ac9b474fdf164d7 by F-DOC34 only. The inspected delta changes documentation, traceability and mkdocs navigation; no F-GC30 runtime, transaction, solver, test, tangent or groundwater-coupling dependency changed."
   },
   "source": {
     "branch": "work/f-gc30-modflow6-tangent-coupling-contract",
-    "qualified_implementation_head": "5f52eef5f5699670c98ed3b952e396c1a71599b1",
-    "checkpoint_parent_head": "8b2e6f0c73f86877910e0ce0a6682bc1c3e5be77",
+    "qualified_implementation_head": "df44b416169b58325a6bb55f826650ffdbc9bae5",
+    "checkpoint_parent_head": "9aa7765f6e5e1d21fef4b1e15d4fbea80546df4d",
     "historical_user_checkpoint": "e551fb4980a2e0b0f5a6b1cfffb4459ad7c0b312",
     "historical_checkpoint_resolution": "UNRESOLVED_BY_CONNECTOR_DO_NOT_CLAIM_EXACT_DIFF"
   },
@@ -29,7 +29,11 @@
     "src/runtime/mod_fmr_drainage_response_binding.f90",
     "src/legacy/b1_10_port/headcalc.f90",
     "src/legacy/b1_10_port/soilwater.f90",
-    "reference/swap-4.3.1/b0/file-manifest.sha256"
+    "reference/swap-4.3.1/b0/file-manifest.sha256",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/adapter/mod_b110_serialized_context_binding.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90"
   ],
   "changes": [
     "src/runtime/mod_modflow6_swap_predictor_response.f90",
@@ -45,7 +49,10 @@
     "tests/fgc/test_fgc30_predictor_origin.f90",
     "tests/fgc/run_fgc30_predictor_origin.sh",
     ".github/workflows/f-gc30-modflow6-predictor-response.yml",
-    "integration/f-gc/F-GC30_DERIVATIVE_COVERAGE_DECISION.md"
+    "integration/f-gc/F-GC30_DERIVATIVE_COVERAGE_DECISION.md",
+    "src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90",
+    "tests/fgc/test_fgc30_production_predictor_tangent_endpoint.f90",
+    "tests/fgc/run_fgc30_production_predictor_tangent_endpoint.sh"
   ],
   "scientific_conclusions": [
     "F-GC30 coupling head is hydraulic head at the fixed SWAP lower face, not the diagnosed freatic groundwater level.",
@@ -55,10 +62,12 @@
     "Native qbot is positive into SWAP. F-GC30 q_u is positive outward from SWAP, so zero head change gives q_u=-qbot.",
     "The historical coupling coefficient is u=dt/(dH_bot_end/dqbot) in consistent native SWAP length/time units.",
     "accepted_storage_change is not semantically interchangeable with the historical coupling-storage coefficient.",
-    "Centered finite difference remains both fallback and independent qualification oracle.",
     "Predictor provenance must not reuse groundwater_interface_lineage_t because its groundwater candidate_revision does not yet exist when the SWAP predictor response is formed.",
     "H_bot,start is the previously committed accepted SWAP interface head. It must not be substituted by accepted_h_groundwater_m when a nonzero converged head residual exists.",
-    "Existing kernel candidate/result APIs are sufficient for the next provenance binding; no new state accessor or parallel runtime is required."
+    "Existing kernel candidate/result APIs are sufficient for the next provenance binding; no new state accessor or parallel runtime is required.",
+    "Centered finite difference remains a contract-level fallback and independent qualification oracle; the qualified production oracle for this drainage-free route replays the accepted two-half B1.10 solver topology directly because the external full-versus-half comparator is an exact identity gate, not a smooth error norm.",
+    "The production candidate assembler is non-committing and non-publishing, validates accepted origin/candidate/result/window/trajectory provenance through existing public seams, and recovers native qbot only as -terminal_bottom_outward_flux_native.",
+    "The production FD qualification oracle is not itself a runtime finite-difference fallback and must not be generalized to missing active-process physics such as drainage."
   ],
   "predictor_origin": {
     "lineage_contract": "modflow6_swap_predictor_lineage_t",
@@ -83,7 +92,9 @@
       "terminal_bottom_outward_flux_native"
     ],
     "qbot_recovery": "native q_bot predictor = -terminal_bottom_outward_flux_native",
-    "decision": "next assembler can validate same lineage/revision/window and accepted trajectory without opening candidate private state"
+    "decision": "QUALIFIED: assembler validates origin time, SWAP lineage/revision, candidate and result intervals, accepted-trajectory provenance and bottom-exchange availability before composing the typed response; it opens no private candidate state and performs no commit/publication.",
+    "h_bot_start": "committed predictor origin accepted_interface.h_swap_m; accepted_h_groundwater_m may differ and is not substituted",
+    "qualification": "GitHub Actions 35284444327 at df44b416169b58325a6bb55f826650ffdbc9bae5"
   },
   "derivative_coverage": {
     "lower_face_head_semantics": "QUALIFIED",
@@ -94,7 +105,9 @@
     "drainage": "INCOMPLETE",
     "drainage_reason": "dq_dgroundwater_level exists, but the exact production calcgwl state-to-groundwater-level directional seam is not yet qualified/materialized.",
     "other_state_dependent_source_sink": "MUST_BE_EXPLICITLY_COVERED_OR_FAIL_CLOSED",
-    "authoritative_tangent_policy": "TANGENT_ONLY_WHEN_ALL_ACTIVE_OWNERS_COVERED"
+    "authoritative_tangent_policy": "TANGENT_ONLY_WHEN_ALL_ACTIVE_OWNERS_COVERED",
+    "production_fd_oracle": "QUALIFIED_ON_DRAINAGE_FREE_ACCEPTED_TWO_HALF_B110_DISCRETE_ROUTE",
+    "production_fd_oracle_reason": "TX_TEMPORAL_EXTERNAL_FULL_HALF uses exact state identity for this serialized B1.10 route, so non-trivial perturbed qbot trials cannot be admitted by shrinking epsilon. Qualification replays the accepted two-half solver topology directly without tangent requests or transaction-policy relaxation."
   },
   "tests_evidence": {
     "predictor_contract_action_run": 35281787100,
@@ -121,27 +134,51 @@
       "wrong bottom-head control cannot be relabelled as qbot predictor tangent",
       "H_bot,start uses committed accepted SWAP interface head",
       "nonzero accepted SWAP-groundwater head residual retained as provenance",
-      "uncommitted and nonconservative predictor origins fail closed"
+      "uncommitted and nonconservative predictor origins fail closed",
+      "production accepted-trajectory endpoint is authoritative on the drainage-free qbot route",
+      "independent centered finite difference of the accepted two-half B1.10 discrete route",
+      "production tangent agrees with independent centered finite difference",
+      "candidate assembler recovers native qbot from negative terminal outward flux",
+      "candidate assembler preserves committed SWAP H_bot,start when accepted groundwater head differs",
+      "candidate lineage mismatch and unavailable terminal bottom exchange fail closed",
+      "complete production F-GC30 gate passes under O0 and O2 with output identity"
+    ],
+    "production_candidate_binding_action_run": 35284444327,
+    "production_candidate_binding_head": "df44b416169b58325a6bb55f826650ffdbc9bae5",
+    "production_candidate_binding_result": "PASS",
+    "failed_oracle_iterations": [
+      {
+        "action_run": 35283965123,
+        "head": "c21443c249d0c34ce1ab3986a5cb834794b6af5e",
+        "result": "FAIL",
+        "disposition": "Expected qualification iteration: qbot perturbation was rejected by the exact external full-versus-half temporal identity gate; no scientific or assembler PASS claimed."
+      },
+      {
+        "action_run": 35284199733,
+        "head": "5c1a2b56a36bbfc14d0183644a982465126112e9",
+        "result": "FAIL",
+        "disposition": "Confirmed epsilon reduction does not change the exact temporal-identity semantics; abandoned rather than relaxing transaction policy."
+      }
     ]
   },
   "mutations_since_previous_checkpoint": [
-    "70b28a331b9f0881379f51b02014938fea9c615d",
-    "0227f379544020c9bd0c12459c7990c430601c07",
-    "f63feb2cb79fe28294cc6c8132ae5a75a06f91b9",
-    "76e67a9ff20a64bb74556454c013c07cf3ca5ea6",
-    "558d7a3dfb4f6fdc089dfb89960d3072dcaf701b",
-    "18774a59345ab3a95aa8ac4d9b7a67ccb6f657fc",
-    "d045b0da1546ca46dda2a864103e2d08bc578660",
-    "a6992a85bbbe7485ddda1033c40db6ac0ea0ea7d",
-    "656f6d49131bcb215581e50d0badd708926d62ea",
-    "5f52eef5f5699670c98ed3b952e396c1a71599b1",
-    "8b2e6f0c73f86877910e0ce0a6682bc1c3e5be77"
+    "5d00e2261ba5e9d7bf4cdc0c3d1f329d76d2bd1f",
+    "fb0c68309db7a249890308565117ce691b49114f",
+    "4c643c42e849796facb16c130380657e36013141",
+    "de3e5c32815da43d61221fdca479cbc1739b8cf0",
+    "baa62203a0cff945a99d835db60e2541997ae0b1",
+    "c21443c249d0c34ce1ab3986a5cb834794b6af5e",
+    "5c1a2b56a36bbfc14d0183644a982465126112e9",
+    "df44b416169b58325a6bb55f826650ffdbc9bae5",
+    "07021a47f14939515c28e810165210a069f00b93"
   ],
-  "next_permitted_action": "Implement the smallest runtime candidate-binding/assembler using only existing kernel candidate/result provenance. Require origin.accepted_time == window.t0; candidate lineage/revision == predictor origin SWAP lineage/revision; candidate origin interval and kernel result requested/completed interval == the coupling window; endpoint trajectory provenance == kernel_result.accepted_trajectory_direction; and bottom_interface_exchange_available. Derive native q_bot predictor as -terminal_bottom_outward_flux_native, then compose modflow6_swap_predictor_response_t. No commit or publication action belongs in that adapter.",
+  "next_permitted_action": "Perform bounded admission review of the exact drainage-free F-GC30 production predictor envelope against current integration/f-ci-canonical. If the branch/canonical delta is conflict-free and contains no scope drift, admit only the qualified predictor response, fixed-face reconstruction, accepted-trajectory tangent endpoint, committed predictor origin, candidate-binding assembler, tests/workflow and F-GC30 evidence. Keep analytic drainage coverage blocked.",
   "blocked_actions": [
     "Do not infer candidate lineage from worker/generation alone.",
     "Do not use accepted_h_groundwater_m as H_bot,start when accepted SWAP and groundwater heads differ within tolerance.",
-    "Do not mark active drainage as analytically covered until exact production groundwater-level postprocessing and d(gwl)/d(qbot) semantics are qualified."
+    "Do not mark active drainage as analytically covered until exact production groundwater-level postprocessing and d(gwl)/d(qbot) semantics are qualified.",
+    "Do not treat the direct two-half production FD oracle as a runtime fallback implementation for analytically incomplete active-process routes.",
+    "Do not relax the bit-exact external full-versus-half transaction comparator, increase retry budget, or shrink FD epsilon to force perturbed trajectories through that gate."
   ],
   "explicit_exclusions": [
     "MODFLOW6/XMI backend",
