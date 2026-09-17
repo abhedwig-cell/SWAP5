@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-VQ103",
+  "capability": "Independent qualification of F-APP04 restricted PMdirect typed application composition",
+  "phase": "PREREGISTER",
+  "branch": "qualification/f-vq103-fapp04-pmdirect-typed-composition-independent",
+  "subject_branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "subject_postimage": "f3c056bf236c21fd477a2ee570c4755d5249d5f3",
+  "independence_rule": "F-VQ103 may add qualification-only tests, scripts, workflow and evidence. It must not change production source, scientific equations, solver, transaction lifecycle, retry/timestep policy or the F-APP04 owner tests/gate.",
+  "scientific_denominator": {
+    "authority": "integration/f-app/F-APP03_A13_PMDIRECT_REDERIVATION.json",
+    "daily_records": 1096,
+    "tolerance": 1e-12,
+    "mismatches": 0,
+    "restricted_process_authority": "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+    "restricted_daily_records": 384,
+    "restricted_interval_records": 14062,
+    "positive_interception_days": 65,
+    "positive_interception_timesteps": 1641,
+    "rule": "Do not copy or independently reimplement PMdirect equations in F-VQ103. Treat the qualified F-APP03 typed postimage as input values and qualify only transport/composition behavior."
+  },
+  "subject_production_files": {
+    "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90": "89d2d42e85c51d0b174d0382dabd3ec8f7417b68",
+    "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90": "1a67d8a25727c2e821dd11e4853aa925e43cd95b",
+    "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90": "a6e1ed43bb9ee7cb13d088668c3874a11877980a"
+  },
+  "protected_dependencies": {
+    "src/process/mod_pmdirect_swetr0_process.f90": "fcf35da81011543bac7cf0c71bcbd7ac34b09b64",
+    "src/process/mod_reference_et_demand_process.f90": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "src/runtime/mod_fmr_reference_et_demand_binding.f90": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e"
+  },
+  "qualification_plan": {
+    "structural": [
+      "Production delta relative to subject postimage must be empty.",
+      "All three subject production blobs and all protected dependency blobs must match exactly.",
+      "No qualification code may supply PMdirect formulas or modify source files."
+    ],
+    "metamorphic_root_binding": [
+      "Across a deterministic set of finite nonnegative ptra values, emerged-crop output must equal input ptra bit-for-bit while root geometry remains unchanged.",
+      "Non-emerged crop must remain canonical zero regardless of roundoff-scale positive ptra.",
+      "NaN, negative and upstream-unproduced values must fail closed."
+    ],
+    "metamorphic_surface_binding": [
+      "Across deterministic finite nonnegative soil/pond demand pairs, both receiving values must equal source values bit-for-bit.",
+      "NaN, negative and upstream-unproduced values must fail closed."
+    ],
+    "metamorphic_dynamic_top_binding": [
+      "Across deterministic finite nonnegative net-rain values, precipitation_rate_cm_per_day must equal source net rain bit-for-bit.",
+      "Every non-precipitation field of the base request must be bit-identical after binding.",
+      "Incoming precipitation must be non-authoritative and replaced.",
+      "NaN, negative and upstream-unproduced values must fail closed."
+    ],
+    "compiler_matrix": ["O0", "O2"],
+    "strict_new_test_flags": "-std=f2008 -pedantic-errors -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+    "required_identity": "O0 and O2 qualification output must be byte-identical."
+  },
+  "pass_condition": "All structural, metamorphic, fail-closed and O0/O2 identity gates pass on the exact F-APP04 subject blobs without production mutation.",
+  "failure_policy": "Fail closed. Do not remediate production code from the independent qualification branch. If a subject defect is found, persist the finding and hand remediation back to F-APP04.",
+  "admission_effect": "F-VQ103 PASS satisfies the F-APP04 preregistration requirement for independent qualification but does not itself admit F-APP04 or close whole-Hupsel/M1-C3.",
+  "verdict": "PREREGISTERED_INDEPENDENT_QUALIFICATION"
+}
