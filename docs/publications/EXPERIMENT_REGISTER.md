@@ -27,13 +27,13 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-ME-E4` semantic-successor evidence | PUB-ME | primary | READY_FOR_SCREENING | ME-S5 frozen as semantic-successor Case B; freeze exact unrelated-change Case A from ME-S6 before detailed extraction |
 | `PUB-ME-E5` qualification-surface analysis | PUB-ME | supporting | DESIGNED | define repository-derived surface metrics; no person-hour claims |
 | `PUB-ME-E6` extensibility cases | PUB-ME | supporting | READY_FOR_SCREENING | extract solver-seam and groundwater-seam dependency evidence |
-| `PUB-SQ-E0` contract/fail-closed | PUB-SQ | prerequisite/supporting | READY_FOR_SCREENING | instantiate common manifest and select supported/unsupported Ross cases |
+| `PUB-SQ-E0` contract/fail-closed | PUB-SQ | prerequisite/supporting | COMPLETE | `PUB-SQ-E0-0001` completed under manifest control; continue with SQ-E1 common-domain/reference design, not additional post-hoc E0 cases |
 | `PUB-SQ-E1` common-domain equivalence | PUB-SQ | primary | DESIGNED | freeze stratified case matrix and build `REF-HIGH` procedure |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | reconcile exact RossFast envelope and choose paired inside/boundary/outside cases |
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
-| `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/primary table | READY_FOR_SCREENING | instantiate exact manifest from admitted GC v1 cases |
+| `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | READY_FOR_SCREENING | `PUB-GC-E0-0001` was invalid before its scientific oracle; replacement `PUB-GC-E0-0002` is preregistered against the exact independent F-VQ87 postimage and may now execute |
 | `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | define diagnostic history-contaminated comparator and GW-A |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | define fair terminal-flux comparator and GW-A |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | GW-A + converged replay method + `GC-REF` construction required |
@@ -52,9 +52,9 @@ The following work can begin without inventing new production science:
 
 1. `PUB-ME-E0`: recover exact authorities for the already frozen migration-slice candidate set;
 2. `PUB-ME-E4`: freeze the exact unrelated-change Case A paired with frozen semantic-successor Case B;
-3. `PUB-SQ-E0`: create manifest-backed supported/out-of-domain solver-selection cases;
-4. `PUB-GC-E0`: re-express admitted interface conservation cases under publication manifests;
-5. `PUB-GC-E6`: re-express bounded N:1 conservation cases under publication manifests.
+3. `PUB-GC-E0`: execute only the preregistered replacement `PUB-GC-E0-0002` against its pinned F-VQ87 authority;
+4. `PUB-GC-E6`: re-express bounded N:1 conservation cases under publication manifests;
+5. `PUB-SQ-E0`: no further screening cases are added post hoc; the family is complete and hands off to SQ-E1 reference/common-domain design.
 
 These are primarily screening/foundational tasks. They should not be mistaken for final primary publication evidence.
 
@@ -79,6 +79,31 @@ Examples:
 - no equal-error solver claim without a stable high-accuracy reference;
 - no response-assisted claim without a qualified/defensible interface response;
 - no subgrid-value claim without a credible effective comparator.
+
+## Readiness chronology
+
+### 2026-09-17T18:31Z — PUB-SQ-E0 screening completed
+
+- controlling manifest commit: `892a7d13631dd226850a6c5f6869e1d7567bf909`;
+- result receipt commit: `7cfe328e3fa46231837eb41cace5cab11fb05f84`;
+- prerequisite satisfied: manifest-controlled contract/fail-closed screening executed;
+- next permitted action: SQ-E1 reference/common-domain design;
+- cross-publication effect: none; no GC, ME or RC primary claim is inherited.
+
+### 2026-09-17T18:31Z — PUB-GC-E0 first execution invalidated
+
+- controlling manifest commit: `9bdd605ad2d6189f431e513e955bbb53ce01f28a`;
+- invalid-execution receipt commit: `aacbfceb2ca18145e693af952d177f3d4784fbaf`;
+- prerequisite invalidated: the old owner runner was not a valid build harness for the later moving canonical source graph;
+- next permitted action: new manifest required before changing execution route;
+- cross-publication effect: none; no scientific GC result was admitted from the invalid attempts.
+
+### 2026-09-17T18:33Z — PUB-GC-E0 replacement preregistered
+
+- controlling manifest commit: `71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe`;
+- prerequisite satisfied: exact independent F-VQ87 authority, runner blob and oracle-test blob frozen before execution;
+- next permitted action: execute `PUB-GC-E0-0002` unchanged on the pinned F-VQ87 postimage;
+- cross-publication effect: none; this remains PUB-GC supporting evidence and does not establish current-canonical generalized runtime qualification.
 
 ## Register update rule
 
