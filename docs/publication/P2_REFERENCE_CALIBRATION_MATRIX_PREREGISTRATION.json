@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.publication.p2-reference-calibration-matrix.v1",
+  "workunit": "PUB-P2E03",
+  "canonical_base": "aa0ac9b0639c50fcfa604201737a9db3d5525821",
+  "status": "PREREGISTERED_BEFORE_MATRIX_EXECUTION",
+  "purpose": "Generate the Reference-only numerical self-disagreement dataset used later to freeze a RossFast-independent scientific admissibility rule.",
+  "firewall": {
+    "rossfast_solver_execution_allowed": false,
+    "rossfast_stage0_discrepancy_inspection_allowed": false,
+    "threshold_formula_freezing_allowed_in_this_workunit": false,
+    "threshold_factor_freezing_allowed_in_this_workunit": false,
+    "posthoc_case_removal_allowed": false,
+    "performance_metrics_allowed_in_threshold_choice": false
+  },
+  "authorities": {
+    "materials": "src/runtime/mod_rossfast_d3r_model_binding.f90 admitted material registry",
+    "state_bounds_cm": [-10000.0, -1.0],
+    "boundary_envelope_fraction": 0.02,
+    "outer_horizon_day": 0.0016,
+    "retry_scale": 0.5,
+    "hard_mass_tolerance_cm": 1e-12,
+    "grid": "16 homogeneous cells x 10 cm"
+  },
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "initial_state_axis": {
+    "coordinate": "uniform effective saturation Se converted analytically to material-specific pressure head using the admitted Mualem-van Genuchten relation",
+    "levels": [0.65, 0.85, 0.98],
+    "rationale": "Three predeclared hydraulic regimes spanning dry/intermediate/near-wet states while remaining strictly inside the admitted head interval for all six materials. For the limiting B12 material Se=0.65 corresponds to approximately -6950 cm, leaving margin to the -10000 cm state boundary.",
+    "same_value_all_nodes": true
+  },
+  "boundary_axis": {
+    "normalization": "K0 is the admitted constitutive conductivity at the uniform initial state; top and bottom use the same K0 for the homogeneous initial column",
+    "regimes": [
+      {
+        "id": "DRYING",
+        "top_flux_over_K0": -0.005,
+        "bottom_flux_over_K0": -0.019,
+        "distance_from_D3R_reference_over_K0": [-0.015, -0.015]
+      },
+      {
+        "id": "NOMINAL",
+        "top_flux_over_K0": 0.010,
+        "bottom_flux_over_K0": -0.004,
+        "distance_from_D3R_reference_over_K0": [0.0, 0.0]
+      },
+      {
+        "id": "WETTING",
+        "top_flux_over_K0": 0.025,
+        "bottom_flux_over_K0": 0.011,
+        "distance_from_D3R_reference_over_K0": [0.015, 0.015]
+      }
+    ],
+    "rationale": "Symmetric interior sampling of the existing state-local D3R boundary envelope. Each perturbation is 0.015*K0 from the qualified reference forcing and therefore remains inside the 0.02*K0 envelope without sitting on its boundary."
+  },
+  "temporal_axis": {
+    "coarse_duration_day": [0.0016, 0.0004, 0.0001],
+    "refined_rule": "two sequential Reference solves of coarse_duration/2 to the same final physical time",
+    "corresponding_D3R_full_indices": [0, 2, 4],
+    "rationale": "Predeclared 16-fold temporal span on the existing halving ladder without selecting levels from observed solver disagreement."
+  },
+  "case_count": 162,
+  "per_case_experiment": {
+    "coarse": "one legacy-reference-bound solver-seam trajectory over dt",
+    "refined": "two sequential legacy-reference-bound solver-seam trajectories over dt/2 + dt/2",
+    "same_final_time": true,
+    "same_grid": true,
+    "same_constitutive_parameters": true,
+    "same_initial_physical_state": true,
+    "same_boundary_flux_history": true,
+    "distributed_sources_and_sinks": "zero"
+  },
+  "hard_case_validity_gates": [
+    "all three Reference solves converge on route legacy-reference-bound",
+    "coarse and both half-step mass residuals are finite and <= 1e-12 cm in absolute value",
+    "all endpoint pressure-head and water-content values are finite",
+    "initial and endpoint states remain within the declared physical contract",
+    "coarse and refined endpoints share the same node count and final physical time"
+  ],
+  "recorded_metrics": [
+    "U_h_inf_cm",
+    "U_h_rms_cm",
+    "U_theta_inf",
+    "U_theta_rms",
+    "U_storage_cm",
+    "coarse_mass_residual_cm",
+    "half1_mass_residual_cm",
+    "half2_mass_residual_cm"
+  ],
+  "aggregation_allowed_after_execution": [
+    "descriptive minima, maxima, medians and quantiles of Reference-only metrics",
+    "predeclared stratification by material, Se level, boundary regime and dt level"
+  ],
+  "aggregation_not_yet_allowed": [
+    "scientific pass/fail threshold for RossFast",
+    "multiplicative safety factor chosen with knowledge of RossFast discrepancy",
+    "removal of numerically inconvenient cases after seeing results"
+  ],
+  "failure_semantics": "If any preregistered case violates a hard Reference validity gate, retain the case and report the matrix as BLOCKED_REFERENCE_DOMAIN_CASE rather than silently shrinking or replacing the domain.",
+  "next_permitted_action": "Implement and execute exactly this 162-case Reference-only matrix with O0/O2 reproducibility; inspect only Reference outputs and hard validity status."
+}
