@@ -43,6 +43,9 @@ module mod_soil_water_accepted_step_direction_contract
      real(real64) :: outgoing_ponding_depth = 0.0_real64
      real(real64) :: top_flux_derivative = 0.0_real64
      real(real64) :: bottom_flux_derivative = 0.0_real64
+     ! True only when this accepted-step tangent explicitly included the
+     ! direction of the active state-dependent source/sink owner(s).
+     logical :: source_sink_direction_covered = .false.
      integer :: additional_tridiagonal_backsolves = 0
      integer :: additional_jacobian_builds = 0
      integer :: additional_full_nonlinear_solves = 0
