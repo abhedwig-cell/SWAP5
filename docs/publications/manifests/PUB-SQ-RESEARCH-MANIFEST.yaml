@@ -1,0 +1,147 @@
+manifest:
+  id: PUB-SQ-RESEARCH-MANIFEST
+  title: Prospective admission of an alternative Richards-equation solver
+  publication_owner: PUB-SQ
+  doctoral_rq: RQ2
+  role: REPLACE
+  status: DRAFT_FREEZE_CANDIDATE
+  source_branch: research/phd-five-paper-manifests-20260918
+  source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
+  experiment_matrix: docs/publications/PUB-SQ_EXPERIMENT_MATRIX.md
+  current_foundational_authorities:
+    - integration/f-ross/F-ROSS13_STATUS.json
+    - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
+    - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json
+    - docs/publication/P2E04_REFERENCE_BALANCE_ADJUDICATION_PREREGISTRATION.json
+    - docs/publication/P2E06_REFERENCE_LOCAL_BALANCE_SCALING_PREREGISTRATION.json
+
+research_question: >-
+  Under what operating conditions can a numerically distinct Richards-equation solver
+  be admitted as scientifically interchangeable within an established process-based model,
+  when admissibility is defined prospectively by trajectory, conservation, robustness and
+  computational criteria?
+
+novelty_boundary:
+  not_claimed:
+    - The Ross algorithm.
+    - A generic Ross-versus-Newton performance comparison.
+    - The existence of a typed dual-solver API.
+  candidate_contribution: >-
+    A prospective, model-level solver-admission method that defines validity independently
+    of the candidate solver, maps the admissible operating domain and compares cost only at
+    matched scientific error.
+  literature_anchors:
+    - doi: 10.2134/agronj2003.1352
+      relevance: Original fast Ross soil-water solution.
+    - doi: 10.5194/hess-21-2667-2017
+      relevance: Ross, Newton-Raphson and time-stepping comparison.
+    - doi: 10.1016/j.advwatres.2026.105327
+      relevance: Current mass-conservative Richards time-integration literature.
+    - doi: 10.5194/gmd-19-8233-2026
+      relevance: Recent dual-solver unsaturated-zone model behind a unified API.
+
+hypotheses:
+  H1: >-
+    Solver interchangeability is conditional and can be represented as a reproducible
+    admissibility domain rather than a global equivalence statement.
+  H2: >-
+    Candidate-independent criteria derived from Reference behaviour, conservation and
+    temporal requirements predict RossFast acceptance or rejection on untouched holdout regimes.
+  H3: >-
+    On a non-empty subset of the common admissible domain, RossFast achieves lower total
+    computational cost than Reference at matched scientific error.
+  H4: >-
+    Outside its admitted domain the selected RossFast route fails closed without silent
+    substitution by the Reference solver and without accepted-state contamination.
+
+design:
+  design_or_calibration_set:
+    role: threshold_and_case_design_only
+    content:
+      - Existing F-ROSS13 36-material transient qualification.
+      - Existing Reference-only boundary-condition sweeps and failure census.
+      - Existing Reference local-balance scaling and residual-contract work.
+    restriction: >-
+      These data may define strata, reference controls and candidate-independent thresholds,
+      but may not be presented as untouched confirmation of thresholds tuned with their outcomes.
+  holdout_set:
+    selection_rule: >-
+      Freeze a stratified set before candidate-result inspection. Reuse the qualified materials,
+      but hold out combinations of initial hydraulic state, forcing intensity, duration and
+      boundary regime not used to tune the publication thresholds. Include dry, intermediate,
+      wet and boundary-sensitive cases, and retain predefined failure cases.
+    prohibition: No post-result replacement of an inconvenient holdout case by a nearby easier case.
+
+numerical_reference:
+  id: REF-HIGH
+  construction: >-
+    Qualified Reference route with stricter temporal controls, followed by at least one further
+    refinement. A case is reference-stable only when the second refinement changes every primary
+    metric by less than the predeclared reference-stability fraction.
+  failure_rule: >-
+    If REF-HIGH cannot be stabilized, classify the case as reference-unresolved. Do not use a
+    production answer as truth.
+
+primary_endpoint:
+  name: holdout_admissibility
+  definition: >-
+    A method is admissible for a case only when all predeclared primary scientific metrics
+    satisfy their solver-independent tolerance relative to REF-HIGH and all hard mass,
+    temporal, domain and transaction gates pass.
+  primary_metrics:
+    - pressure_head_trajectory_or_profile_error
+    - water_content_or_storage_error
+    - integrated_top_transfer_error
+    - integrated_bottom_transfer_error
+    - total_water_balance_residual
+    - accepted_or_rejected_status
+  aggregation_rule: >-
+    Admission is conjunctive. A failure in any hard metric is a case failure and may narrow
+    the claimed domain; it may not be averaged away.
+
+secondary_endpoints:
+  - retry_and_rejection_count
+  - reference_nonlinear_work
+  - ross_internal_work
+  - solver_cpu_time
+  - total_model_cpu_and_wall_time
+  - temporal_certificate_diagnostics
+
+equal_error_cost_endpoint:
+  definition: >-
+    Compare total computational cost only between configurations whose primary scientific
+    error lies within the same predeclared error band relative to REF-HIGH.
+  timing_rule: >-
+    Use repeated balanced/randomized execution order, report median and dispersion, and retain
+    solver work counters so conclusions do not depend on runner noise.
+  speed_claim_rule: No speedup claim is permitted outside the common admissible domain.
+
+thresholds:
+  scientific_tolerances:
+    authority: >-
+      Freeze from Reference-only preregistration, reference-stability analysis and existing
+      model-level conservation/temporal authorities before viewing confirmatory RossFast outcomes.
+    rule: No RossFast-dependent widening.
+  hard_failures:
+    - out_of_domain_without_fail_closed_behavior
+    - silent_solver_fallback
+    - accepted_mass_or_temporal_gate_failure
+    - accepted_state_contamination_after_rejection
+  domain_rule: >-
+    Any valid holdout failure narrows the domain. The paper may report a conditional domain;
+    it must not preserve a broad envelope by averaging across failures.
+
+kill_or_redirect:
+  standalone_claim_fails_if:
+    - Thresholds require material post-hoc widening after confirmatory RossFast results.
+    - Holdout failures show no reproducible operating-domain structure.
+    - REF-HIGH is unstable for too much of the intended domain to support scientific comparison.
+    - Equal-error cost advantage is absent and the remaining result is only a routine solver benchmark.
+  redirect: >-
+    Publish or document a narrower SWAP-specific solver evaluation and keep the qualified
+    production capability without a general admission-framework claim.
+
+publication_firewall:
+  excludes_primary_claims_from: [PUB-ME, PUB-GC, PUB-RC, PUB-SG]
+  may_share_raw_inputs_with: [PUB-GC, PUB-RC]
