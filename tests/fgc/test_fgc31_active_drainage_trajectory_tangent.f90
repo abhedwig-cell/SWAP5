@@ -38,7 +38,6 @@ program test_fgc31_active_drainage_trajectory_tangent
   type(fmr_b110_physical_state_t) :: nominal_state, plus_state, minus_state
   real(real64) :: fd_head(n), err_head, tol_head
   real(real64) :: analytic_gwl_direction, fd_gwl_direction, ignored_gwl
-  type(b110_smooth_freatic_projection_diagnostics_t) :: projection
   logical :: projection_ok
 
   call initialize_parameters(parameters)
@@ -206,7 +205,7 @@ contains
     config%transaction%retry_scale=0.5_real64; config%transaction%max_retries=10
     config%max_committed_substeps=32; config%progress_tolerance=0.0_real64
     config%model_temporal_indicator_budget_available=.true.
-    config%model_temporal_indicator_budget=1.0e-9_real64
+    config%model_temporal_indicator_budget=1.0e-14_real64
     config%accepted_trajectory_direction%requested=request_direction
     config%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
   end subroutine initialize_config
