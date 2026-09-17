@@ -3,28 +3,34 @@
   "capability": "F-GC33",
   "title": "MODFLOW6 Linear Response Backend",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_LINEAR_BACKEND_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
   "source_branch": {
     "branch": "work/f-gc31-multiswap-modflow6-cell-response",
     "head": "158560dd0f7962cfdf386ce1d1a6dfde3109fa32",
     "f_gc31_verdict": "OWNER_QUALIFIED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE"
   },
+  "work_branch": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend",
+    "design_commit": "cc4b68339a1e2a0236d28f705f879e8d9eeadd2d",
+    "implementation_commit": "391df8ab5ebf2355dcb6b372fa38f4b05632eea0",
+    "qualified_head": "3197c6c4ea9eb08fccdc2cc5a0eab0ee19bca40a"
+  },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
-    "head": "6a77678b535ed468bdeeb9b67f149be706f0205f",
-    "delta_from_f_gc31_origin": "17 commits, publication experiment/workflow/evidence only; no relevant F-GC30/F-GC31 dependency source changes"
+    "head": "27b979fc0303de32d0d811f43a749a38e600b987",
+    "delta_since_previous_reconciliation": "2 commits. Only PUB-ME D2 publication workflow/evidence/test files changed; no F-GC30, F-GC31 or F-GC33 dependency source changed."
   },
   "numbering_reconciliation": {
     "reserved_existing_capability": "F-GC32",
     "existing_branch": "work/f-gc32-active-drainage-tangent-closure",
-    "decision": "Use F-GC33 for the MODFLOW6 linear response backend."
+    "decision": "F-GC33 is the MODFLOW6 linear response backend."
   },
   "external_semantics_evidence": {
     "repository": "Deltares/imod_coupler",
     "commit": "3ddeec26ba1a0f1fcb4cf681b3f3202b4a6de6b7",
     "file": "imod_coupler/kernelwrappers/mf6_wrapper.py",
-    "contract": "Mf6HeadBoundary.get_flux: Flux = HCOF * X - RHS; positive sign is infiltration into MODFLOW6"
+    "contract": "Mf6HeadBoundary.get_flux: Flux = HCOF * X - RHS; documented positive sign is infiltration into MODFLOW6"
   },
   "scientific_decision": {
     "source_form": "q_u(H)=q_ref+s*(H-H_ref)",
@@ -32,16 +38,58 @@
     "modflow_form": "Q(H)=HCOF*H-RHS",
     "hcof": "A*86400*s",
     "rhs": "HCOF*H_ref-A*86400*q_ref",
-    "sign": "positive outward from SWAP maps to positive infiltration into MODFLOW6 without inversion",
-    "identity_boundary": "groundwater_cell_id is not a MODFLOW NODELIST index"
+    "sign": "positive outward from SWAP maps to positive infiltration into MODFLOW6 without sign inversion",
+    "identity_boundary": "groundwater_cell_id is a coupling-domain identity and is not a MODFLOW NODELIST index"
   },
-  "planned_changes": [
+  "changes": [
     "docs/integration/F-GC33_MODFLOW6_LINEAR_RESPONSE_BACKEND.md",
     "src/runtime/mod_modflow6_linear_response_backend.f90",
     "tests/fgc/test_fgc33_modflow6_linear_response_backend.f90",
     "tests/fgc/run_fgc33_modflow6_linear_response_backend.sh",
     ".github/workflows/f-gc33-modflow6-linear-response-backend.yml",
     "integration/f-gc/F-GC33_STATUS.json"
+  ],
+  "qualified_contract": [
+    "F-GC31 areal affine response converts exactly to MODFLOW6 HCOF/RHS volume-flux coefficients",
+    "backend reproduces F-GC31 flux at the reference head and at a second head",
+    "HCOF/RHS are invariant to the chosen equivalent F-GC31 reference-head representation within machine-scale tolerance",
+    "cell-area scaling is linear",
+    "positive outward-from-SWAP flux remains positive infiltration into MODFLOW6",
+    "groundwater_cell_id is preserved as coupling identity and never interpreted as NODELIST",
+    "invalid response, invalid/nonfinite area, nonfinite source terms and nonfinite evaluation head fail closed",
+    "backend has no XMI, NODELIST, Ribasim or commit dependency"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC33 MODFLOW6 linear response backend",
+    "green_run": 35287090449,
+    "green_job": 105421735504,
+    "green_head": "3197c6c4ea9eb08fccdc2cc5a0eab0ee19bca40a",
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FGC33_PURE_LINEAR_BACKEND",
+      "FGC33_NO_XMI_NODELIST_OR_COMMIT",
+      "FGC33_EXACT_HCOF_RHS_TRANSFORM",
+      "FGC33_REFERENCE_HEAD_CLOSURE",
+      "FGC33_SECOND_HEAD_CLOSURE",
+      "FGC33_REFERENCE_REPRESENTATION_INVARIANCE",
+      "FGC33_AREA_SCALING",
+      "FGC33_SIGN_PRESERVATION",
+      "FGC33_IDENTITY_NOT_NODE_INDEX",
+      "FGC33_FAIL_CLOSED",
+      "FGC33_LINEAR_RESPONSE_BACKEND_GATE",
+      "FGC33_O0_O2_OUTPUT_IDENTITY"
+    ],
+    "failed_iteration": {
+      "run": 35287042412,
+      "head": "391df8ab5ebf2355dcb6b372fa38f4b05632eea0",
+      "disposition": "Fail-closed NaN-area test exposed non-short-circuit Fortran guard behavior under -ffpe-trap=invalid. The finite check and positive-area comparison were split into sequential guards. HCOF/RHS science and all other production logic were unchanged."
+    }
+  },
+  "mutations": [
+    "cc4b68339a1e2a0236d28f705f879e8d9eeadd2d",
+    "391df8ab5ebf2355dcb6b372fa38f4b05632eea0",
+    "3197c6c4ea9eb08fccdc2cc5a0eab0ee19bca40a"
   ],
   "exclusions": [
     "MODFLOW6/XMI pointer access",
@@ -54,5 +102,5 @@
     "active-drainage envelope expansion",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement and qualify the pure typed HCOF/RHS transformer."
+  "next_permitted_action": "Independent/admission review of the exact F-GC33 typed linear-backend envelope, or a separately bounded workunit for explicit groundwater_cell_id to MODFLOW6 API package slot/NODELIST mapping and pointer mutation. Do not fold predictor/corrector orchestration, Ribasim or irrigation into F-GC33."
 }
