@@ -179,7 +179,7 @@ contains
     if (class_id/=C_ACCEPTED) then
       failed_stage=S_COARSE
       if (class_id==C_LOCAL_BAL) call diagnose_local_failure(case_id,material_id,se,forcing_id,coarse_dt,failed_stage, &
-           request,result,workspace,k0,estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
+           request,result,workspace,estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
            internal_storage_rate,public_storage_rate,reconstruction_supported)
       return
     end if
@@ -193,7 +193,7 @@ contains
     if (class_id/=C_ACCEPTED) then
       failed_stage=S_HALF1
       if (class_id==C_LOCAL_BAL) call diagnose_local_failure(case_id,material_id,se,forcing_id,coarse_dt,failed_stage, &
-           request,result,workspace,k0,estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
+           request,result,workspace,estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
            internal_storage_rate,public_storage_rate,reconstruction_supported)
       return
     end if
@@ -205,19 +205,19 @@ contains
     if (class_id/=C_ACCEPTED) then
       failed_stage=S_HALF2
       if (class_id==C_LOCAL_BAL) call diagnose_local_failure(case_id,material_id,se,forcing_id,coarse_dt,failed_stage, &
-           request,result,workspace,k0,estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
+           request,result,workspace,estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
            internal_storage_rate,public_storage_rate,reconstruction_supported)
       return
     end if
     failed_stage=S_NONE
   end subroutine diagnose_case
 
-  subroutine diagnose_local_failure(case_id,material_id,se,forcing_id,coarse_dt,stage,request,result,workspace,k0, &
+  subroutine diagnose_local_failure(case_id,material_id,se,forcing_id,coarse_dt,stage,request,result,workspace, &
        estimated_floor,validity_margin,residual_floor_ratio,cancellation_ratio,closure_abs, &
        internal_storage_rate,public_storage_rate,reconstruction_supported)
     integer,intent(in) :: case_id,stage
     character(len=*),intent(in) :: material_id,forcing_id
-    real(real64),intent(in) :: se,coarse_dt,k0
+    real(real64),intent(in) :: se,coarse_dt
     type(soil_water_solve_request_t),intent(in) :: request
     type(soil_water_solve_result_t),intent(in) :: result
     type(reference_richards_legacy_workspace_t),intent(in) :: workspace
@@ -227,6 +227,7 @@ contains
     integer :: imax,flag_count
     real(real64) :: signed_residual,component(4),native_sum,l1_scale,storage_quant_floor
     real(real64) :: order_spread,hp_difference,theta_internal,theta_base
+    real(real64) :: base_theta(n),base_k(n),base_capacity(n),base_dkdh(n)
     real(real128) :: hp_sum
 
     flag_count=count(workspace%richards%nonconverged_balance)
@@ -237,6 +238,10 @@ contains
     theta_base=request%base_state%water_content(imax)
     call require(ieee_is_finite(theta_internal) .and. ieee_is_finite(theta_base),'finite internal/base theta')
 
+    call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, &
+         base_theta,base_k,base_capacity,base_dkdh)
+    call require(all(ieee_is_finite(base_k)) .and. all(base_k>0.0_real64),'finite positive frozen base conductivity')
+
     internal_storage_rate=(theta_internal-theta_base)*request%parameters%dz(imax)/request%step_duration
     public_storage_rate=(result%candidate_state%water_content(imax)-theta_base)* &
          request%parameters%dz(imax)/request%step_duration
@@ -244,14 +249,14 @@ contains
     component=0.0_real64
     component(1)=internal_storage_rate
     if (imax==1) then
-      component(2)=k0*workspace%richards%head_gradient(2)
+      component(2)=0.5_real64*(base_k(1)+base_k(2))*workspace%richards%head_gradient(2)
       component(3)=request%boundary%top_flux
     else if (imax==n) then
-      component(2)=-k0*workspace%richards%head_gradient(n)
+      component(2)=-0.5_real64*(base_k(n-1)+base_k(n))*workspace%richards%head_gradient(n)
       component(3)=-request%boundary%bottom_flux
     else
-      component(2)=-k0*workspace%richards%head_gradient(imax)
-      component(3)= k0*workspace%richards%head_gradient(imax+1)
+      component(2)=-0.5_real64*(base_k(imax-1)+base_k(imax))*workspace%richards%head_gradient(imax)
+      component(3)= 0.5_real64*(base_k(imax)+base_k(imax+1))*workspace%richards%head_gradient(imax+1)
     end if
     component(4)=workspace%richards%sink(imax)-workspace%richards%source(imax)+workspace%richards%provider_root_sink(imax)
 
