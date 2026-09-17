@@ -78,7 +78,7 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fgc/test_fgc31_qbot_drainage_projection_runtime.f90 -o "$OUT/test.o" || fail "compile O$opt test"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt"
   timeout 180s "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
-  for marker in     'FGC31_QBOT_DRAINAGE_PROJECTED_GWL=PASS'     'FGC31_QBOT_DRAINAGE_PROJECTED_RESPONSE=PASS'     'FGC31_QBOT_DRAINAGE_DEFAULT_OFF_PRESERVED=PASS'     'FGC31_QBOT_DRAINAGE_PROJECTION_FAIL_CLOSED=PASS'     'FGC31_QBOT_DRAINAGE_NO_PERSISTENT_GWL_MUTATION=PASS'; do
+  for marker in     'FGC31_QBOT_DRAINAGE_PROJECTED_GWL=PASS'     'FGC31_QBOT_DRAINAGE_PROJECTED_RESPONSE=PASS'     'FGC31_QBOT_DRAINAGE_DEFAULT_OFF_PRESERVED=PASS'     'FGC31_QBOT_DRAINAGE_PROJECTION_FAIL_CLOSED=PASS'     'FGC31_QBOT_DRAINAGE_CANDIDATE_GWL_REFRESH=PASS'; do
     grep -Fxq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
   done
   echo "FGC31_QBOT_PROJECTION_O${opt}=PASS"
