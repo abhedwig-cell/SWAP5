@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_PRIMARY_RUN | held-out primary manifest is frozen; generic engine qualified under `PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001` without executing primary values; freeze primary execution authority against the qualified engine and execute `PUB-GC-E1-PRIMARY-0001` exactly once without tuning |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | COMPLETE | one-shot held-out primary `PUB-GC-E1-PRIMARY-0001` completed validly; both preregistered history discriminants exceeded their numerical floors while same-origin replay remained exact; H1 supported at operator-definition level only, practical materiality/generalization remain open |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
@@ -193,6 +193,22 @@ Examples:
 - prerequisite newly satisfied: a generic primary execution engine is frozen and independently qualified without executing the held-out primary tuple;
 - next permitted action: freeze the separate primary execution authority against the qualified engine blobs, then execute `PUB-GC-E1-PRIMARY-0001` exactly once; no post-result changes to A/B/C, window or numerical discrimination floors;
 - cross-publication effect: none; H1 remains untested by primary evidence at this boundary.
+
+### 2026-09-17T23:32Z — PUB-GC E1 held-out primary completed
+
+- frozen scientific primary manifest: `c3114e455029ee5dee0d92dbc4814c3fc0923ef6`, blob `abf45b4a83f528eda69024e3d75a38edc4ce713f`;
+- frozen execution authority: `a2fab00d6076933972cee924d7d392ec6bc5024c`;
+- pre-trigger primary execution head: `13753ee92c77f1492852500f5586f7fd7ae66773`; zero workflow runs existed on that head;
+- one-time sentinel execution head: `936312659522fe4cacfd349b146d173caa07e5ab`;
+- GitHub Actions run `35287247968`, job `105422209812`, conclusion `success`;
+- primary raw output SHA-256: `514ccd628d4f4e8aff6de32022587c5018bc5d23a039e74b5fd0ca8e9d25ae4a`;
+- artifact `10524847570`, digest `sha256:0370c5a17033d789e60576a4a0253a8edf3c50dba1b4ab4244a468fa05ccfab6`;
+- same-origin repeated A/B/C response identity PASS, accepted-origin immutability PASS, GW-A same-checkpoint/no-commit PASS, and the history diagnostic remained explicitly non-production-valid;
+- frozen discriminants: `Delta Q_A(after B vs C) = 3.07959298679549853e-3 cm` > `1e-9 cm`; `Delta endpoint head = 1.31893680771767663 cm` > `1e-8 cm`;
+- preregistered interpretation: H1 is supported at the operator-definition level for this controlled held-out real-SWAP/GW-A case; E1 does not establish practical hydrologic materiality, MODFLOW6 transferability or generality beyond the tested case;
+- result receipt: `docs/publications/results/PUB-GC-E1-PRIMARY-0001.yaml`, introduced by commit `e0d7c70d855d20665699ab3d86489b04144e01a7`;
+- next permitted action: preserve E1 without rerun or retuning; proceed independently to E2 whole-window-versus-terminal-flux comparator design and E3 coupling-reference construction;
+- cross-publication effect: E1 may later support thesis synthesis, but its primary claim remains owned by PUB-GC.
 
 ## Register update rule
 
