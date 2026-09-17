@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS14",
+  "gate": "TOP_WETTING_FORCING_ENVELOPE_36_MATERIAL_QUALIFICATION",
+  "status": "CONTRACT_FROZEN_BEFORE_QUALIFICATION_TOOLING",
+  "production_implementation": false,
+  "purpose": "Qualify a one-sided extension of the RossFast D3R state-local top prescribed-flux production envelope so that the PUB-P2E10 WETTING request is admitted, without broadening the opposite top-flux edge, bottom boundary, material catalog, geometry, timestep ladder, kernel algebra, solver ABI, transaction semantics, retry semantics or fallback policy.",
+  "canonical_base": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "trigger": {
+    "authority": "PUB-P2E10",
+    "result_blob": "83864f6379279725fa97d24d57936f590d3c2174",
+    "observed_pattern": "36/54 paired-valid admissible, zero paired discrepancy failures, 18/54 RossFast-route-invalid; all and only WETTING across six materials and all three Se levels",
+    "mechanism": "Existing F-ROSS02 forcing_is_admitted top-boundary gate rejects internal top flux -0.025*K because the admitted lower edge is -0.010*K."
+  },
+  "immutable_production_dependencies": {
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "asset_manifest_blob": "5e2fc1e42fa6c62cd6e570b7d45ce7e6b9089db6",
+    "f_ross13_fingerprint_authority_blob": "01fa631a245f3011b1007b2888b0528b111ee17f",
+    "f_ross13_transient_result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0"
+  },
+  "pinned_research_authority": {
+    "head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "material_catalog_blob": "76596a00296318b871a9109ed6187bb86ccfae32",
+    "gate_f_runner_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "historical_semantics": "Gate F/R1 MvG-KSATFIT N241 float32 table algebra and DOP853 reference"
+  },
+  "current_boundary_contract": {
+    "public_top_flux_sign": "positive_out_of_column",
+    "rossfast_top_flux_sign": "positive_into_column",
+    "translation": "rossfast_top = -request_top",
+    "q_top_reference_factor": 0.01,
+    "legacy_symmetric_envelope_fraction": 0.02,
+    "current_internal_top_interval_over_K": [-0.01, 0.03],
+    "current_internal_bottom_reference_factor": -0.004,
+    "current_internal_bottom_interval_over_K": [-0.024, 0.016]
+  },
+  "target_boundary_contract": {
+    "target_public_top_flux_over_initial_K": 0.025,
+    "target_internal_top_flux_over_initial_K": -0.025,
+    "target_public_bottom_flux_over_initial_K": 0.011,
+    "target_internal_bottom_up_flux_over_initial_K": 0.011,
+    "new_internal_top_lower_edge_over_K": -0.025,
+    "preserved_internal_top_upper_edge_over_K": 0.03,
+    "preserved_internal_bottom_interval_over_K": [-0.024, 0.016],
+    "implementation_shape_if_qualified": "one-sided top-lower admission extension in model binding; do not globally increase the symmetric legacy boundary-envelope fraction",
+    "minimal_lower_side_deviation_fraction_from_q_top_reference": 0.035
+  },
+  "qualification_domain": {
+    "materials": [
+      "B01","B02","B03","B04","B05","B06","B07","B08","B09",
+      "B10","B11","B12","B13","B14","B15","B16","B17","B18",
+      "O01","O02","O03","O04","O05","O06","O07","O08","O09",
+      "O10","O11","O12","O13","O14","O15","O16","O17","O18"
+    ],
+    "material_count": 36,
+    "effective_saturation": [0.65, 0.85, 0.98],
+    "state_case_count": 108,
+    "grid": "16 homogeneous cells x 10 cm",
+    "forcing": "exact PUB-P2E10 WETTING pair only",
+    "public_top_flux_over_initial_K": 0.025,
+    "public_bottom_flux_over_initial_K": 0.011,
+    "internal_top_flux_over_initial_K": -0.025,
+    "internal_bottom_up_flux_over_initial_K": 0.011,
+    "outer_horizon_day": 0.0016,
+    "full_duration_attempt_indices": [0,1,2,3,4,5,6,7,8],
+    "expected_kernel_duration_cases": 972,
+    "candidate_step_counts_for_science_gate": [2,4,8,16],
+    "sigma": 0.5,
+    "distributed_sources_sinks": false,
+    "root_sink": false,
+    "ponding": false,
+    "groundwater": false
+  },
+  "qualification_layers": {
+    "A_research_science": {
+      "reference_solver": "pinned Gate-F DOP853",
+      "reference_rtol": 1e-11,
+      "reference_atol_theta": 1e-13,
+      "reference_max_step_coarse_day": 0.000025,
+      "reference_max_step_fine_day": 0.0000125,
+      "candidate": "pinned Gate-F/R1 table candidate under exact target forcing",
+      "required": [
+        "all 108 material x Se state cases remain finite and inside constitutive/head envelopes",
+        "all candidate step and horizon mass residuals <= 1e-12 cm",
+        "Reference coarse-vs-fine theta-span normalized disagreement <= 1e-9",
+        "finest candidate theta-span normalized error <= 1e-5",
+        "finest candidate state-change relative error <= 0.005",
+        "refinement errors nonincreasing",
+        "minimum observed order in informative cases >= 1.0",
+        "median observed order per material over informative cases >= 1.5",
+        "no criterion retuning by material or Se"
+      ]
+    },
+    "B_production_kernel_equivalence": {
+      "candidate": "current production table provider plus current unmodified table kernel called directly, bypassing only model-binding forcing_is_admitted",
+      "oracle": "pinned research candidate outputs from layer A",
+      "required": [
+        "all 972 material x Se x duration requests admitted by kernel contract",
+        "all 972 solver_ok and temporal certificate available",
+        "max abs water-content difference <= 2e-12",
+        "max abs pressure-head difference <= 2e-7 cm",
+        "max abs temporal-indicator difference <= 2e-8",
+        "all production asset fingerprints match F-ROSS13 authority",
+        "O0/O2 output identity"
+      ]
+    },
+    "C_binding_boundary_proof": {
+      "required": [
+        "current binding rejects exact target WETTING top forcing before source mutation",
+        "DRYING and NOMINAL remain inside current contract",
+        "target lower-edge arithmetic is exactly -0.025*K under admitted sign translation",
+        "proposed one-sided extension preserves top upper edge +0.030*K and bottom interval [-0.024,+0.016]*K"
+      ]
+    }
+  },
+  "production_mutation_if_and_only_if_qualified": {
+    "allowed_files": ["src/runtime/mod_rossfast_d3r_model_binding.f90"],
+    "expected_change": "replace the top forcing admission test with an explicitly asymmetric one-sided lower extension while preserving legacy upper/top and both bottom bounds",
+    "table_kernel_change_allowed": false,
+    "table_provider_change_allowed": false,
+    "execution_policy_change_allowed": false,
+    "solver_selection_change_allowed": false,
+    "solver_abi_change_allowed": false,
+    "transaction_abi_change_allowed": false,
+    "retry_change_allowed": false,
+    "automatic_fallback_allowed": false
+  },
+  "post_implementation_qualification_if_reached": {
+    "required": [
+      "all F-ROSS14 research/kernel qualification remains green",
+      "production RossFast solver accepts target WETTING for all 36 materials and all three Se states",
+      "old lower-edge-outside case below -0.025*K fails closed",
+      "old upper-edge-outside case above +0.030*K still fails closed",
+      "bottom-envelope outside cases still fail closed",
+      "DRYING and NOMINAL preservation",
+      "P2E10 six-material broad matrix rerun becomes 54 route-valid cases without changing P2E09 thresholds",
+      "Reference default and explicit Reference preservation",
+      "RossFast explicit selection remains fail-closed with no fallback",
+      "O0/O2 identity",
+      "full relevant canonical preservation gates"
+    ]
+  },
+  "hard_exclusions": [
+    "NO_GLOBAL_SYMMETRIC_ENVELOPE_FRACTION_INCREASE",
+    "NO_BOTTOM_BOUNDARY_WIDENING",
+    "NO_MATERIAL_CATALOG_CHANGE",
+    "NO_GRID_OR_CELL_THICKNESS_CHANGE",
+    "NO_HETEROGENEOUS_PROFILE_GENERALIZATION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_GROUNDWATER_OR_HEAD_BOUNDARY_ADMISSION",
+    "NO_DYNAMIC_TOP_BOUNDARY_OR_PONDING_ADMISSION",
+    "NO_ENERGY_OR_TEMPERATURE_COUPLING",
+    "NO_MULTISWAP_MIXED_SOLVER_ADMISSION",
+    "NO_AUTOMATIC_FALLBACK",
+    "NO_RUNTIME_TABLE_GENERATION",
+    "NO_KERNEL_ALGEBRA_CHANGE",
+    "NO_TRANSACTION_OR_RETRY_CHANGE",
+    "NO_SCIENTIFIC_THRESHOLD_RETUNING"
+  ],
+  "execution_order": [
+    "RECONCILE",
+    "QUALIFY_RESEARCH_SCIENCE",
+    "QUALIFY_CURRENT_PRODUCTION_KERNEL_DIRECT",
+    "ONLY_IF_BOTH_PASS_IMPLEMENT_ONE_SIDED_BINDING_EXTENSION",
+    "QUALIFY_PRODUCTION_POSTIMAGE",
+    "ADMIT",
+    "CLOSE"
+  ],
+  "verdict": "PREREGISTERED_36_MATERIAL_ONE_SIDED_TOP_WETTING_ENVELOPE_QUALIFICATION",
+  "next_permitted_action": "Implement qualification tooling only. Do not mutate production source until all preproduction F-ROSS14 qualification layers pass."
+}
