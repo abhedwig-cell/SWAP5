@@ -2,9 +2,16 @@
   "schema_version": 1,
   "workunit": "F-CI96",
   "title": "F-ROSS12 dependency-aware postimage and moving-preservation reconciliation",
-  "phase": "QUALIFICATION_PENDING",
+  "phase": "QUALIFICATION_PENDING_AFTER_CANONICAL_RECONCILE",
   "decision": "CANDIDATE_FROSS12_POSTIMAGE_SUCCESSOR_PRESERVATION",
-  "canonical_preimage": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
+  "canonical_preimage": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
+  "previous_canonical_preimage": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
+  "canonical_delta_reconcile": {
+    "new_admission": "F-DOC22",
+    "source_or_reference_delta": false,
+    "classification": "documentation_and_mkdocs_only",
+    "fross12_authority_affected": false
+  },
   "status_a_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "fross12_production_admission": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
   "triggering_failures": {
@@ -50,6 +57,7 @@
     "broad_fci_required": true
   },
   "mutations_so_far": [
+    ".github/workflows/fci-canonical.yml",
     ".github/workflows/fci72-eb-i23-moving-preservation.yml",
     ".github/workflows/fci74-eb-i24-moving-preservation.yml",
     ".github/workflows/fci79-eb-i25-moving-preservation.yml",
@@ -57,6 +65,6 @@
     "tests/fci/run_fci96_fross12_postimage_preservation.sh",
     "integration/f-ci/F-CI96_STATUS.json"
   ],
-  "next_permitted_action": "Make the broad F-CI current-preservation job successor-aware for the exact admitted F-ROSS12 backend/binding/adapter, then qualify F-CI96 and all affected moving-preservation gates on the same head before promotion.",
+  "next_permitted_action": "Qualify F-CI96, F-CI72, F-CI74, F-CI79 and broad F-CI on the same reconciled head. If all are green, record immutable run evidence and promote this governance-only successor-preservation repair.",
   "final_verdict": "PENDING"
 }
