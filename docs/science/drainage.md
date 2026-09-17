@@ -59,13 +59,21 @@ For `delta_h < 0`, this restricted response returns zero transfer. At exact equa
 
 This is a one-way restricted response. The absence of reverse flow in this evaluator must not be generalized into a claim about every historical drainage formulation.
 
-## Other admitted response families
+## Detailed formulations for the other seven families
 
-The frozen production tree also contains dedicated process modules for the other Drainage-v1 response families, including tabulated response, Hooghoudt, Ernst, empirical interflow, spatial distribution and multi-level aggregation.
+F-DOC22 reconciles the exact frozen source identities with the variant-specific independent qualification authorities and publishes the equations and branch rules in [Drainage-v1 formulations](drainage-formulations.md).
 
-F-DOC21 does not restate every equation merely because the module exists. Detailed equations should be published only when the corresponding scientific authority, implementation route and qualification identity are stitched together without ambiguity. F-PM19 provides the accepted variant denominator and points to the variant-specific F-VQ scientific authorities, including F-VQ38, F-VQ40, F-VQ42, F-VQ43 and F-VQ44.
+That page covers:
 
-This distinction matters because a correct historical drainage equation is not, by itself, proof that the same parameterization or routing is the admitted SWAP5 production path.
+- positive single-level `DIVDRA` spatial partitioning;
+- `DRAMET=1` tabulated response;
+- `DRAMET=2` Hooghoudt `IPOS=1..3`;
+- `DRAMET=2` Ernst `IPOS=4..5`;
+- empirical interflow drainage-side response;
+- deterministic multi-level exchange aggregation;
+- restricted fixed-weir surface-water storage, supply and discharge.
+
+The formulation page keeps branch kinks, singular tangents, fail-closed degenerate cases and exact mass-booking rules explicit. It does not infer equations or options merely because they occur in historical SWAP material.
 
 ## Interaction with the soil-water balance
 
@@ -114,6 +122,9 @@ The principal authorities used here are:
 
 - frozen scientific production baseline `50346642bd565f79134ea17d5462e544b354998c`;
 - `src/process/mod_drainage_process.f90` for the restricted single-level linear response;
-- `integration/f-pm/F-PM19_DRAINAGE_V1_FINAL_COMPLETION.json` for the fixed eight-variant completion denominator and authority chain;
+- branch-pinned F-PM19 completion authority `work/f-pm19-drainage-v1-authoritative-100-percent-completion`, file `integration/f-pm/F-PM19_DRAINAGE_V1_FINAL_COMPLETION.json`, blob `f4ddf0b9ed945ccb6f8a66c4611de624d10dc4a8`;
+- `integration/f-doc/F-DOC22_AUTHORITY_MATRIX.md` for the formulation-level authority reconciliation;
 - [Drainage capability review](../capabilities/drainage.md) for the bounded Status-A capability statement;
 - [Status-A traceability](../status-a/TRACEABILITY.md) for current review authority and preservation context.
+
+The F-PM19 completion artifact is not mirrored at the same path in the current canonical `integration/f-pm` directory. It is therefore cited by immutable branch and blob rather than presented as a current-canonical file.
