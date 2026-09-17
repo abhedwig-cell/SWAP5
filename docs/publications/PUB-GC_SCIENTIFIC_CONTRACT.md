@@ -6,6 +6,8 @@ Status: **research-design contract, not yet a manuscript claim**
 
 Publication owner: `PUB-GC`
 
+Doctoral mapping: `RQ3` in [PHD_RESEARCH_PROGRAMME.md](PHD_RESEARCH_PROGRAMME.md). Candidate cross-study synthesis relevance includes `TS1`, `TS2` and `TS3`, but those thesis-level hypotheses do not belong to `PUB-GC` as primary claims.
+
 This document defines the scientific question, novelty boundary, minimum evidence and explicit exclusions for the groundwater-coupling publication line. It is intentionally narrower than the full SWAP5 groundwater roadmap.
 
 ## 1. Central research question
@@ -329,6 +331,10 @@ The following belong elsewhere even if the code appears in the same experiments:
 - shared cases and forcing datasets.
 
 The paper must cite or reference those capabilities as prerequisites, not present them again as its own scientific novelty.
+
+### Thesis-synthesis boundary
+
+Cross-paper conclusions about the broader role of accepted-state separation, scientific composability or reproducible subsystem evaluation are owned by the prospective doctoral synthesis rather than by `PUB-GC`. `PUB-GC` may supply evidence for those later hypotheses, but its manuscript must remain centered on the groundwater-coupling research question.
 
 ## 12. Candidate manuscript structure
 
