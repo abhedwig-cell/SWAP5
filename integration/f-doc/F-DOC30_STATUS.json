@@ -3,8 +3,8 @@
   "work_unit": "F-DOC30",
   "title": "Transactional Interval Architecture Technical Reference",
   "branch": "work/f-doc30-transactional-interval-reference",
-  "phase": "ACQUIRE_COMPLETE",
-  "decision": "AUTHORITY_CEILING_PINNED_READY_FOR_DOCUMENTATION_UPDATE",
+  "phase": "UPDATE_COMPLETE_READY_FOR_VERIFY",
+  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_EXACT_HEAD_VERIFICATION",
   "canonical_start": "d223b7ab4ed297194c209f85d6b51bef86b79959",
   "frozen_status_a": {
     "authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
@@ -66,7 +66,24 @@
     "no groundwater-specific staged mass-ledger semantics are generalized into the generic transaction core",
     "no production, reference, test or scientific semantics mutation"
   ],
-  "mutations": [],
-  "next_permitted_action": "UPDATE_DOCUMENTATION_ONLY",
-  "verdict": "ACQUIRE_COMPLETE"
+  "mutations": [
+    "docs/numerics/transactional-time-stepping.md",
+    "integration/f-doc/F-DOC30_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC30_STATUS.json"
+  ],
+  "scope_check": {
+    "changed_file_count": 3,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "mkdocs_navigation_changed": false,
+    "documentation_links_checked": true
+  },
+  "verification": {
+    "documentation_workflow_run": null,
+    "repository_documentation_checks": "PENDING",
+    "strict_mkdocs_build": "PENDING"
+  },
+  "next_permitted_action": "OPEN_PR_AND_VERIFY_EXACT_HEAD",
+  "verdict": "READY_FOR_VERIFY"
 }
