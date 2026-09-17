@@ -169,7 +169,7 @@ Apply it as follows:
 8. Treat code-search results as **locators, not branch authority**, unless the search mechanism is explicitly scoped to the exact target ref. A path or symbol found through a default-branch index must be re-read at the pinned target SHA before it supports an implementation or qualification claim.
 9. Persist newly discovered stable retrieval paths in the next meaningful work-unit status checkpoint so a later runtime does not have to rediscover them.
 
-This strategy is an optimization of repository access, not a relaxation of scientific or architectural reconciliation. If a bounded delta cannot establish that relevant dependencies are unchanged, fail open to a wider read scope rather than assuming equivalence.
+This strategy is an optimization of repository access, not a relaxation of scientific or architectural reconciliation. If a bounded delta cannot establish that relevant dependencies are unchanged, conservatively widen the read and reconciliation scope rather than assuming equivalence.
 
 ## Recovery after interruption
 
