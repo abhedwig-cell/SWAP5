@@ -1,31 +1,27 @@
 {
-  "schema": "swap5.publication.p2-e0-pilot.v1",
+  "schema": "swap5.publication.p2-e0-pilot.v2",
   "workunit": "PUB-P2E01",
   "publication_class": "PUB_P2_RESULT",
   "canonical_base": "40752b92e50b5000ac53892421336520fc62e518",
-  "purpose": "Validate scientifically comparable paired state extraction before broad E0 solver-admissibility sampling.",
   "scientific_admissibility_claim_allowed": false,
   "predicted_flux_admissibility_claim_allowed": false,
-  "identifiability_note": "Both E0 boundaries are prescribed-flux. Boundary-flux agreement is experimental-control/conservation evidence, not an independent prediction-equivalence result.",
   "case": {
     "case_id": "P2-E0-PILOT-B01-HM101",
     "material_id": "B01",
     "active_nodes": 16,
     "cell_thickness_cm": 10.0,
-    "initial_state": {
-      "pressure_head_cm_uniform": -101.0,
-      "water_content_rule": "derive from the same admitted B01 hydraulic relation used by the production typed-state initializer"
-    },
+    "initial_pressure_head_cm_uniform": -101.0,
+    "initial_water_content_rule": "common B1.10 constitutive provider evaluated at h0",
+    "step_duration": "ROSSFAST_D3R_OUTER_HORIZON_DAY",
     "top_boundary": {
       "type": "PRESCRIBED_FLUX",
       "flux_rule": "0.01 * K(h0)",
-      "head_metadata_cm": -101.0,
-      "scientific_role": "controlled input, not predicted-flux response"
+      "scientific_role": "controlled input"
     },
     "bottom_boundary": {
-      "type": "CURRENT_ADMITTED_PRESCRIBED_FLUX_MODE",
+      "type": "PRESCRIBED_FLUX",
       "flux_rule": "-0.004 * K(h0)",
-      "scientific_role": "controlled input, not predicted-flux response"
+      "scientific_role": "controlled input"
     },
     "inactive_processes": [
       "root_extraction",
@@ -38,82 +34,57 @@
       "hysteresis",
       "tabulated_hydraulics",
       "elasticity"
+    ]
+  },
+  "stage0a_solver_seam": {
+    "status": "PAIRED_EXTRACTION_READY",
+    "comparison_contract": "one identical soil_water_solve_request_t supplied to both concrete soil_water_solver_t implementations",
+    "reference_solver": "reference_richards_legacy_solver_t",
+    "alternative_solver": "rossfast_d3r_soil_water_solver_t",
+    "fallback_allowed": false,
+    "production_source_change_required": false,
+    "discriminating_metrics": [
+      "D_h_inf",
+      "D_h_rms",
+      "D_theta_inf",
+      "D_theta_rms",
+      "D_storage_abs"
     ],
-    "requested_horizon": "ROSSFAST_D3R_OUTER_HORIZON_DAY"
+    "validity_metrics": [
+      "reference_mass_residual",
+      "alternative_mass_residual"
+    ],
+    "control_metrics": [
+      "prescribed_top_flux_identity",
+      "prescribed_bottom_flux_identity"
+    ]
   },
-  "paired_routes": [
-    {
-      "route_id": "REFERENCE",
-      "model_selection": "REFERENCE_RICHARDS",
-      "fallback_allowed": false
-    },
-    {
-      "route_id": "ALTERNATIVE",
-      "model_selection": "ROSSFAST_D3R",
-      "fallback_allowed": false
-    }
-  ],
-  "observation_path": {
-    "endpoint_state": "kernel_committed_state_t.snapshot() clone, selected as fmr_b110_physical_state_t",
-    "solver_diagnostics": "fmr_serialized_physical_observation_t and common runtime diagnostics",
-    "production_observation_abi_change_required": false
+  "stage0b_transaction_level": {
+    "status": "BLOCKED_TEMPORAL_POLICY_ASYMMETRY",
+    "reason": "F-ROSS12 transaction mode requires a model temporal certificate. RossFast publishes its admitted certificate; the simple Reference E0 composition does not expose the same certificate under the same continuation layout.",
+    "methodological_rule": "Do not compare transaction-level results by silently assigning solver-specific temporal acceptance policies and treating solver identity as the only treatment variable."
   },
-  "required_common_observations": [
-    "accepted_endpoint_pressure_head_by_node",
-    "accepted_endpoint_water_content_by_node",
-    "start_profile_storage",
-    "accepted_endpoint_profile_storage",
-    "applied_interval_integrated_top_transfer_common_sign",
-    "applied_interval_integrated_bottom_transfer_common_sign",
-    "independent_mass_residual",
-    "accepted_interval_duration",
-    "commit_status",
-    "final_physical_revision",
-    "solver_route",
-    "retry_or_failure_diagnostics"
-  ],
-  "discriminating_metrics": {
+  "identifiability_note": "Both E0 boundary fluxes are prescribed. Their equality is experimental-control and conservation evidence, not independent predicted-flux equivalence evidence.",
+  "metrics": {
     "D_h_inf": "max_i(abs(h_alt[i]-h_ref[i]))",
     "D_h_rms": "sqrt(mean_i((h_alt[i]-h_ref[i])^2))",
     "D_theta_inf": "max_i(abs(theta_alt[i]-theta_ref[i]))",
     "D_theta_rms": "sqrt(mean_i((theta_alt[i]-theta_ref[i])^2))",
     "D_storage_abs": "abs(storage_alt-storage_ref)"
   },
-  "control_and_validity_metrics": {
-    "top_transfer": "verify identical applied prescribed transfer after public-sign normalization; do not interpret as predicted-flux equivalence",
-    "bottom_transfer": "verify identical applied prescribed transfer after public-sign normalization; do not interpret as predicted-flux equivalence",
-    "mass": "each route independently satisfies its hard conservation requirement"
-  },
   "admissibility_tolerances": {
     "head": "TO_BE_PREDECLARED_BEFORE_STAGE1",
     "water_content": "TO_BE_PREDECLARED_BEFORE_STAGE1",
     "storage": "TO_BE_PREDECLARED_BEFORE_STAGE1",
     "predicted_flux": "NOT_APPLICABLE_WITHIN_PRESCRIBED_FLUX_E0",
-    "mass": "USE_EXISTING_INDEPENDENT_HARD_ROUTE_REQUIREMENT_AFTER_EXACT_AUTHORITY_PIN"
+    "mass": "existing independent hard route requirement"
   },
-  "allowed_stage0_verdicts": [
-    "PAIRED_EXTRACTION_READY",
-    "OBSERVATION_CONTRACT_GAP",
-    "ROUTE_EXECUTION_GAP",
-    "IMPLEMENTATION_DEFECT_CANDIDATE"
-  ],
-  "forbidden_stage0_verdicts": [
+  "forbidden_inferences": [
     "SCIENTIFICALLY_EQUIVALENT",
     "SCIENTIFICALLY_INTERCHANGEABLE",
     "PREDICTED_FLUX_EQUIVALENT",
     "FASTER_AND_PREFERABLE"
   ],
-  "explicit_exclusions": [
-    "root_sink",
-    "distributed_source_sink",
-    "groundwater_head_boundary",
-    "energy_or_soil_temperature",
-    "heterogeneous_profile",
-    "node_count_change",
-    "cell_thickness_change",
-    "mixed_multiswap",
-    "automatic_solver_fallback",
-    "publication_speed_claim"
-  ],
-  "later_scientific_requirement": "A full flux-admissibility claim requires an independently qualified later envelope in which at least one scientifically relevant boundary flux is a model outcome rather than fully prescribed input."
+  "stage1_gate": "Predeclare scientific state/storage tolerances from an independent rationale before broad six-material sampling. Observed Stage 0 discrepancies may not be used to fit those tolerances.",
+  "later_scientific_requirement": "Predicted-flux admissibility requires a later independently qualified envelope in which at least one scientifically relevant boundary flux is a model outcome rather than fully prescribed input."
 }
