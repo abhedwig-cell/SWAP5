@@ -6,7 +6,7 @@ WOFOST is part of the SWAP5 Status-A baseline only through its **bounded qualifi
 
 Within the admitted composition, WOFOST supplies crop-development/production behaviour to the SWAP application through the qualified runtime path. The crop component interacts with the soil-water system through the interfaces and state exchanges admitted by the owning capability records.
 
-F-DOC20 does not alter that scientific coupling. Its purpose here is to make the current boundary readable for reviewers.
+The bounded scientific surface and the SWAP coupling boundaries are described in [WOFOST81 crop state and SWAP coupling](../science/wofost-crop-coupling.md). That page distinguishes the independently qualified crop-owned trajectories from SWAP-owned `RD`/`TRA` interfaces and from the runtime event-delivery contract.
 
 ## Status-A position
 
