@@ -1,16 +1,20 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS13",
   "title": "RossFast D3R 36-material production envelope",
   "branch": "work/f-ross13-36-material-production-envelope",
-  "phase": "ADMIT",
-  "status": "PRODUCTION_WIDENING_QUALIFIED_ADMISSION_READY",
+  "canonical_branch": "integration/f-ci-canonical",
+  "phase": "CLOSED",
+  "status": "CLOSED_AFTER_CANONICAL_ADMISSION_AND_POSTIMAGE_PRESERVATION",
   "purpose": "Expand only the admitted RossFast D3R Staringreeks material catalog from the six F-ROSS12 materials to the full 36-material unimodal Mualem-van Genuchten KSATFIT catalog while preserving solver, geometry, transaction, retry, commit and production routing contracts.",
   "canonical_reconciliation": {
-    "current_canonical": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
-    "latest_canonical_commit": "F-DOC29_DOCUMENTATION_ONLY",
-    "rossfast_relevant_dependency_change_since_qualified_implementation": false
+    "current_canonical": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+    "admission_canonical": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "latest_canonical_commit": "F-DOC31_CONNECTOR_EFFICIENT_RECOVERY_DOCUMENTATION_ONLY",
+    "rossfast_relevant_dependency_change_since_admission": false,
+    "current_model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "current_table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
   },
   "acquire_evidence": {
     "historical_face_table_holdout_run": 34339656739,
@@ -87,6 +91,26 @@
       "o0_o2_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2"
     }
   },
+  "canonical_admission": {
+    "pull_request": 193,
+    "pr_head": "b2fc87dd7af174cc0e69b5de920c8cf8abe44367",
+    "base_at_open": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
+    "merge_commit": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "status": "ADMITTED",
+    "premerge_f_ci_canonical_run": 35278118469,
+    "premerge_f_ci96_run": 35278118461,
+    "premerge_result": "PASS"
+  },
+  "postimage_preservation": {
+    "canonical_head": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "f_ci_canonical_run": 35278487727,
+    "f_ci96_successor_preservation_run": 35278487809,
+    "f_ci51p_moving_preservation_run": 35278487792,
+    "f_ci58p_postimage_reconciliation_run": 35278487753,
+    "result": "PASS",
+    "current_canonical_postimages_still_exact": true,
+    "production_or_reference_mutation_after_admission": false
+  },
   "prior_implementation_attempts": [
     {
       "workflow_run": 35275440205,
@@ -113,7 +137,34 @@
     "NO_RUNTIME_TABLE_GENERATION",
     "NO_CRITERION_RETUNING_TO_FORCE_PASS"
   ],
-  "verdict": "PRODUCTION_36_MATERIAL_IMPLEMENTATION_QUALIFIED_FOR_CANONICAL_ADMISSION",
-  "admission_boundary": "NOT_YET_CANONICAL_ADMITTED",
-  "next_permitted_action": "Open or reuse a pull request from work/f-ross13-36-material-production-envelope to integration/f-ci-canonical, run the relevant canonical admission and postimage preservation gates, and merge only on PASS."
+  "recovery": {
+    "last_reconciled_head": "b2fc87dd7af174cc0e69b5de920c8cf8abe44367",
+    "last_reconciled_upstream": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+    "relevant_paths": [
+      "integration/f-ross/F-ROSS13_STATUS.json",
+      "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "src/solver/mod_rossfast_d3r_table_provider.f90",
+      "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh"
+    ],
+    "dependency_surface": [
+      "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "src/solver/mod_rossfast_d3r_table_provider.f90",
+      "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+      "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/transaction/mod_transaction_reference.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "reference"
+    ]
+  },
+  "verdict": "CLOSED",
+  "admission_boundary": "CANONICAL_ADMITTED_AND_POSTIMAGE_PRESERVED",
+  "close": {
+    "closed_from_canonical_admission": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "verified_against_current_canonical": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+    "open_implementation_or_governance_blockers": [],
+    "production_or_reference_mutation_in_close": false,
+    "next_permitted_action": "NONE_WITHIN_F_ROSS13. Any extension beyond the admitted 36-material 16-cell 10-cm prescribed-flux RossFast envelope requires a separately governed work unit."
+  }
 }
