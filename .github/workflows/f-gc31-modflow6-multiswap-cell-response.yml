@@ -1,0 +1,27 @@
+name: F-GC31 MODFLOW6 MultiSWAP cell response
+
+on:
+  push:
+    branches:
+      - work/f-gc31-multiswap-modflow6-cell-response
+    paths:
+      - 'src/runtime/mod_modflow6_multiswap_cell_response.f90'
+      - 'tests/fgc/test_fgc31_modflow6_multiswap_cell_response.f90'
+      - 'tests/fgc/run_fgc31_modflow6_multiswap_cell_response.sh'
+      - 'docs/integration/F-GC31_MULTISWAP_MODFLOW6_CELL_RESPONSE.md'
+      - 'integration/f-gc/F-GC31_STATUS.json'
+      - '.github/workflows/f-gc31-modflow6-multiswap-cell-response.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-GC31 cell-response gate
+        run: bash tests/fgc/run_fgc31_modflow6_multiswap_cell_response.sh
