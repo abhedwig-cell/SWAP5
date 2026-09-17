@@ -99,7 +99,7 @@ program test_pub_me_d2_retry_accounting
   call require(clean_calls == 6 .and. mutant_calls == 6, 'FCI14 full/two-half retry call pattern')
   call require(mutant_retry_seen, 'mutant retry entry observed')
 
-  if (retry_entry_magnitude == 0.0_real64) then
+  if (same_real(retry_entry_magnitude, 0.0_real64)) then
     write(*,'(A)') 'PUB_ME_D2_CLASSIFICATION=BLOCKED_ZERO_EXCHANGE_CONTEXT'
     error stop 3
   end if
