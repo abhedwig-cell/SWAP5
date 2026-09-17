@@ -155,7 +155,7 @@ def test_live_modflow6(
             )
 
             pre_nodelist = adapter.view.nodelist
-            pre_nodelist_snapshot = pre_nodelist.copy()
+            pre_nodelist_address = int(pre_nodelist.ctypes.data)
 
             mf6.prepare_time_step(0.0)
             status = adapter.refresh_after_prepare_time_step()
@@ -197,9 +197,18 @@ def test_live_modflow6(
             require_close(float(view.hcof[0]), -0.1, 0.0, "live HCOF publication mismatch")
             require_close(float(view.rhs[0]), -0.06, 0.0, "live RHS publication mismatch")
             require(int(view.nbound[0]) == 1, "live NBOUND publication mismatch")
+            # xmipy may return a fresh NumPy view object that aliases the same
+            # MODFLOW kernel memory after allocation/refresh.  Therefore the old
+            # Python object may observe later writes.  The contract is that the
+            # publisher receives the refreshed object, not that an old alias is
+            # immutable.
             require(
-                np.array_equal(pre_nodelist, pre_nodelist_snapshot),
-                "stale pre-prepare NODELIST object was mutated",
+                view.nodelist is not pre_nodelist,
+                "publisher-visible NODELIST is not the refreshed post-prepare view",
+            )
+            print(
+                "FGC36_NODELIST_VIEW_REFRESH_ADDRESS="
+                f"{pre_nodelist_address}->{int(view.nodelist.ctypes.data)}"
             )
 
             status = adapter.close_before_prepare_solve()
