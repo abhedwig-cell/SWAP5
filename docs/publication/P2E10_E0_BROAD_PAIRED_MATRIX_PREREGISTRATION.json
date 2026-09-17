@@ -1,0 +1,156 @@
+{
+  "schema": "swap5.publication.p2e10-e0-broad-paired-matrix.v1",
+  "workunit": "PUB-P2E10",
+  "phase": "PREREGISTERED_BEFORE_BROAD_ROSSFAST_DISCREPANCY_EXECUTION",
+  "canonical_base": "387ec90864e08f43c96a3cc770be8e672b002fbb",
+  "purpose": "Execute the first broad, preregistered Reference-versus-RossFast E0 scientific admissibility matrix after the independent Reference-only threshold freeze.",
+  "authorities": {
+    "p2e09_threshold_result_blob": "1a82511cb13a4c39235292de83dc626478bfb6a6",
+    "p2e01_typed_paired_pilot_blob": "751f033be07fb688cfbe38dd994eca90c63999e4",
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "rossfast_solver_blob": "dbb441f3529be019d64fb57f9c44336d3d20c540",
+    "rossfast_model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "rossfast_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "rossfast_table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+  },
+  "authority_note": "The RossFast solver blob is additionally re-read and locked by CI before execution. If the literal blob lock above does not match current canonical, P2E10 must fail closed rather than silently update the science surface.",
+  "matrix": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "effective_saturation": [0.65, 0.85, 0.98],
+    "forcing": ["DRYING", "NOMINAL", "WETTING"],
+    "case_count": 54,
+    "case_order": "material major, then effective_saturation, then forcing",
+    "grid": "16 homogeneous cells x 10 cm",
+    "initial_state": "uniform Se converted to material-specific pressure head using the admitted Mualem-van Genuchten relation",
+    "step_duration_day": 0.0016,
+    "temporal_protocol": "one fixed solver-seam request of 0.0016 day per route and case; no transaction-level controller comparison",
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.010,
+      "WETTING": 0.025
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004,
+      "WETTING": 0.011
+    },
+    "distributed_sources_and_sinks": "zero",
+    "ponding_initial_cm": 0.0
+  },
+  "common_request_rule": {
+    "same_request_object_semantics": true,
+    "same_material_parameters": true,
+    "same_initial_pressure_head_and_water_content": true,
+    "same_prescribed_top_and_bottom_flux": true,
+    "same_grid_and_step_duration": true,
+    "reference_route": "legacy-reference-bound",
+    "rossfast_route": "rossfast-d3r",
+    "fallback_allowed": false,
+    "reference_max_iterations": 16,
+    "reference_max_backtracking": 8,
+    "reference_compartment_balance_tolerance_cm_per_day": 1e-12,
+    "reference_total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12
+  },
+  "hard_route_validity": {
+    "both_status_must_be_converged_for_pairwise_discrepancy": true,
+    "candidate_state_must_be_finite_and_E0_shape": true,
+    "reference_typed_integrated_mass_residual_must_be_available": true,
+    "rossfast_typed_integrated_mass_residual_must_be_available": true,
+    "reference_native_rate_residual_must_be_available": true,
+    "rossfast_native_rate_residual_must_remain_unavailable": true,
+    "typed_integrated_mass_abs_limit_cm_each_route": 1e-12,
+    "legacy_unrounded_mass_balance_residual_cross_solver_comparison_allowed": false,
+    "prescribed_flux_identity_must_match_request": true,
+    "prescribed_flux_identity_is_independent_scientific_evidence": false
+  },
+  "scientific_discrepancy_metrics": [
+    "D_h_inf_cm",
+    "D_h_rms_cm",
+    "D_theta_inf",
+    "D_theta_rms",
+    "D_storage_abs_cm"
+  ],
+  "frozen_thresholds": {
+    "Se_0.65": {
+      "D_h_inf_cm": 0.002329984405367469,
+      "D_h_rms_cm": 0.0008461192168990192,
+      "D_theta_inf": 0.000014036839159875525,
+      "D_theta_rms": 0.000005088115857112092,
+      "D_storage_abs_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "D_h_inf_cm": 0.024875926496918055,
+      "D_h_rms_cm": 0.008913060711649613,
+      "D_theta_inf": 0.00009940338552821837,
+      "D_theta_rms": 0.00003496499657040913,
+      "D_storage_abs_cm": 2.1316282072803006e-14
+    },
+    "Se_0.98": {
+      "D_h_inf_cm": 1.0304935719866082,
+      "D_h_rms_cm": 0.26027530243065616,
+      "D_theta_inf": 0.0006060020680420108,
+      "D_theta_rms": 0.00017540588521301983,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    }
+  },
+  "case_admissibility": {
+    "rule": "A route-valid paired case is scientifically admissible only if all five discrepancy metrics are <= the frozen threshold for the case's exact Se stratum.",
+    "inclusive_boundary": true,
+    "weighted_compensation_allowed": false,
+    "mass_can_be_compensated_by_state_agreement": false,
+    "performance_can_compensate_for_scientific_failure": false
+  },
+  "classification": [
+    "PAIRED_VALID_ADMISSIBLE",
+    "PAIRED_VALID_DISCREPANCY_FAIL",
+    "REFERENCE_ROUTE_INVALID",
+    "ROSSFAST_ROUTE_INVALID",
+    "BOTH_ROUTES_INVALID"
+  ],
+  "negative_result_policy": {
+    "execute_all_cases_after_scientific_failure": true,
+    "threshold_failure_is_ci_failure": false,
+    "route_invalidity_is_ci_failure": false,
+    "unexpected_contract_or_provenance_drift_is_ci_failure": true,
+    "case_removal_or_replacement_after_result": false
+  },
+  "performance_boundary": {
+    "runtime_speedup_in_scientific_verdict": false,
+    "iteration_and_linear_solve_counts_may_be_recorded_as_diagnostics": true,
+    "controlled_performance_claim_authorized": false
+  },
+  "transaction_boundary": {
+    "layer": "A_FIXED_INTERVAL_SOLVER_SEAM",
+    "transaction_level_pair": "EXCLUDED",
+    "reason": "P2E01 established temporal-policy asymmetry at the production transaction layer; P2E10 isolates solver substitution on one identical fixed request instead of assigning route-specific transaction controllers."
+  },
+  "firewall": {
+    "threshold_retuning_after_execution_allowed": false,
+    "threshold_stratification_change_after_execution_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "solver_api_change_allowed": false,
+    "transaction_or_retry_policy_change_allowed": false,
+    "automatic_fallback_allowed": false,
+    "performance_optimization_allowed": false,
+    "new_physics_allowed": false
+  },
+  "qualification": {
+    "required": [
+      "exactly 54 cases attempted in the preregistered order",
+      "every case retains material, Se, forcing and fixed 0.0016-day provenance",
+      "typed P2E05 residual contract used for route mass validity",
+      "P2E09 thresholds loaded as immutable authority and reproduced exactly",
+      "all threshold failures retained in output",
+      "O0/O2 byte-identical scientific output",
+      "no src/** or reference/** mutation",
+      "full relevant canonical preservation gates on the result-bearing PR head"
+    ],
+    "scientific_outcome_is_not_a_ci_pass_condition": true
+  },
+  "verdict": "PREREGISTERED_BROAD_E0_PAIRED_MATRIX_READY_FOR_IMPLEMENTATION",
+  "next_permitted_action": "Implement only the 54-case solver-seam paired harness and qualification wrapper exactly as preregistered. Do not alter thresholds, source physics, solver contracts, transaction policy or case membership after observing RossFast discrepancies."
+}
