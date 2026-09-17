@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.publication.p2e06-reference-local-balance-scaling.v1",
+  "workunit": "PUB-P2E06",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "canonical_base": "9164ec2218951950c25de03bb3d3bf953d48d635",
+  "trigger": "PUB-P2E04 established 103 RETRY_LOCAL_BAL cases in the immutable 162-case P2E03 Reference matrix, with class counts rising from 3/54 at requested coarse dt=0.0016 day to 46/54 at 0.0004 day and 54/54 at 0.0001 day. The residual-units erratum and PUB-P2E05 establish that HeadCalc compartment residuals and their convergence criteria are rate quantities in cm/day, while vector_F contains a storage-rate term (theta-theta_previous)*dz/dt.",
+  "scientific_question": "Is the counterintuitive increase in Reference local-balance retries at smaller dt consistent with timestep amplification of a local residual/state-resolution floor, or is it primarily an insufficient nonlinear iteration budget under the existing strict Reference criteria?",
+  "scope": {
+    "solver": "Reference only",
+    "domain": "exact immutable P2E03 six-material x three-Se x three-forcing x three-requested-dt matrix",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "effective_saturation": [0.65, 0.85, 0.98],
+    "forcing": ["DRYING", "NOMINAL", "WETTING"],
+    "requested_coarse_dt_day": [0.0016, 0.0004, 0.0001],
+    "baseline_max_iterations": 16,
+    "diagnostic_max_iterations": 64,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12
+  },
+  "firewall": {
+    "rossfast_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "production_tolerance_change_allowed": false,
+    "p2e03_history_rewrite_allowed": false,
+    "case_removal_or_substitution_allowed": false,
+    "new_admissibility_threshold_allowed": false
+  },
+  "stage_A_exact_replay_and_scaling_diagnostics": {
+    "rule": "Reproduce the exact P2E04 first-failure classification at max_iterations=16 and retain every case. For each RETRY_LOCAL_BAL first-failure state, publish diagnostics from the exact failed stage before any diagnostic rerun.",
+    "per_failure_observations": [
+      "material, Se, forcing, requested coarse dt and actual failed-stage dt",
+      "failed stage COARSE/HALF1/HALF2",
+      "number of local-balance flags and index of the maximum-absolute local residual",
+      "maximum absolute local residual rate in cm/day",
+      "actual_dt times maximum absolute local residual in cm",
+      "storage-rate contribution (theta_candidate-theta_base)*dz/dt at the maximum-residual node",
+      "non-storage rate contribution defined algebraically as residual minus storage-rate contribution",
+      "theta representational spacing transformed to a storage-rate scale: spacing(theta_candidate)*dz/dt",
+      "nonlinear iterations and backtracking attempts"
+    ],
+    "summary_observations": [
+      "LOCAL_BAL counts by requested coarse dt and failed stage",
+      "min/max/mean maximum-residual rate by requested coarse dt",
+      "min/max/mean dt-integrated maximum residual by requested coarse dt",
+      "min/max/mean ratio of maximum residual rate to the theta-spacing storage-rate scale where finite and positive"
+    ]
+  },
+  "stage_B_iteration_budget_test": {
+    "rule": "For every baseline first-failure classified RETRY_LOCAL_BAL, rerun only that exact failed-stage request from the identical base state with max_iterations=64 and all other numerical and physical settings unchanged.",
+    "observations": [
+      "status and route at max_iterations=64",
+      "local-balance flag count",
+      "maximum absolute residual rate",
+      "nonlinear iterations and backtracking attempts",
+      "whether the original LOCAL_BAL failure is cleared"
+    ],
+    "decision_rule": "Report the exact number of baseline LOCAL_BAL cases cleared at 64 iterations. Do not infer an iteration-budget cause merely from additional work; resolution requires the local-balance failure itself to clear under otherwise identical settings."
+  },
+  "hypotheses": {
+    "H_rate_scaling": "If a residual/state-resolution floor is amplified by the 1/dt storage-rate formulation, rate residuals should become less favorable as dt decreases while dt-integrated local residual magnitudes remain substantially more stable than the unscaled rate values across the matched domain.",
+    "H_iteration_budget": "If the dominant failure is mainly an iteration-budget limitation, a material fraction of the exact LOCAL_BAL failures should clear when max_iterations alone is increased from 16 to 64.",
+    "H_finite_precision_context": "The theta-spacing-derived storage-rate scale is recorded only as context. Similar scale is evidence consistent with finite representation effects but is not sufficient to label the mechanism floating-point roundoff."
+  },
+  "interpretation_boundaries": [
+    "No diagnostic outcome authorizes a production tolerance change inside PUB-P2E06.",
+    "No diagnostic outcome repairs, deletes or reclassifies immutable PUB-P2E03 results.",
+    "A dt-normalized pattern is not by itself proof of floating-point roundoff because constitutive and flux terms also contribute to the nonlinear residual.",
+    "PUB-P2E06 does not establish a RossFast admissibility threshold or RossFast scientific admissibility.",
+    "Any replacement Reference calibration matrix or numerical-policy change requires a later separately preregistered decision."
+  ],
+  "qualification": [
+    "O0/O2 byte-identical diagnostic output",
+    "exact reproduction of P2E04 counts: ACCEPTED=47, RETRY_TOTAL_ONLY=12, RETRY_LOCAL_BAL=103 and no other retry class",
+    "RossFast solver execution firewall marker",
+    "full F-CI canonical qualification on the PR merge image"
+  ],
+  "next_permitted_action": "Implement the publication-only diagnostic harness exactly as preregistered. Do not alter production/reference source or any numerical tolerance."
+}
