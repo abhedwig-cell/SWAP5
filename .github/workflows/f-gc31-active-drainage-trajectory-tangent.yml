@@ -1,0 +1,35 @@
+name: F-GC31 active drainage trajectory tangent
+
+on:
+  push:
+    branches:
+      - work/f-gc31-active-drainage-derivative-closure
+    paths:
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'src/solver/mod_b110_smooth_freatic_projection.f90'
+      - 'src/runtime/mod_fmr_drainage_qbot_directional_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fgc/test_fgc31_active_drainage_trajectory_tangent.f90'
+      - 'tests/fgc/run_fgc31_active_drainage_trajectory_tangent.sh'
+      - '.github/workflows/f-gc31-active-drainage-trajectory-tangent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  active-drainage-trajectory-tangent:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run active-drainage trajectory tangent gate
+        run: bash tests/fgc/run_fgc31_active_drainage_trajectory_tangent.sh
