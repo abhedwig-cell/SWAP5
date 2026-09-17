@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "title": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "ACQUIRE_CLOSE_BLOCKED",
+  "decision": "BLOCKED_MISSING_EXACT_SOURCE_MATERIALIZATION",
+  "verdict": "FAIL_CLOSED_BEFORE_PRODUCTION_MUTATION",
+  "protocol": ["RECONCILE", "IMPLEMENT", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "preregistration_commit": "391800f60871c8403aab1ef7871267425bccec30",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head_rechecked": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+  "canonical_delta_since_preregistration": "NONE",
+  "preserved_exact_authority": {
+    "f_app03_head": "21508f0d70672d92132c553a344c35f6b7b2296f",
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_member_identity": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90",
+    "exact_hupsel_case": "SWAP_4.3.1/cases/1.hupselbrook",
+    "a12_verdict": "PASS_EXACT_HUPSEL_AUTHORITY_RESTORED_AND_A12_REDERIVED",
+    "a13_verdict": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+    "a13_daily_records": 1096,
+    "a13_tolerance": 1e-12,
+    "a13_mismatches_above_tolerance": 0,
+    "positive_interception_days": 65,
+    "positive_interception_timesteps": 1641
+  },
+  "recovery_attempts": [
+    {
+      "surface": "F-APP03 repository history",
+      "result": "Exact archive/source bytes were not persisted. c1027973 persists identity, hashes, build/trace evidence and explicitly records raw_payload_persisted_in_repository=false."
+    },
+    {
+      "surface": "F-APP03 A13 checkpoint 21508f0d",
+      "result": "Persists source member identity, independent rederivation method and numerical results, but not the Python oracle source nor exact MOD_meteo source bytes/formula listing."
+    },
+    {
+      "surface": "F-APP03 GitHub Actions artifacts",
+      "result": "Available artifact from run 35109516287 is only the SWAP-model Hupsel lineage-recovery artifact and does not contain the official MOD_meteo source used later in the ephemeral qualification environment."
+    },
+    {
+      "surface": "File Library historical A13/A21 search",
+      "result": "Recovered the complete A21 atmospheric forcing profile and A21 dependency audit, but no mod_a13_crop_atmosphere_et.f90, no exact penmon/ETpot implementation patch and no exact MOD_meteo PMdirect source member."
+    },
+    {
+      "surface": "F-EB01A source audit",
+      "result": "Provides source-line references and bounded scientific findings for MOD_meteo, but not the complete penmon/ETpot/ProcessMeteoDT arithmetic/order required for exact implementation."
+    },
+    {
+      "surface": "prior-work context",
+      "result": "Confirms a historical ephemeral A13 source artifact and selected formulas/constants, but the full exact source is not materially accessible now and summary-level recollection is not accepted as implementation authority."
+    }
+  ],
+  "what_is_sufficiently_recovered": [
+    "exact official distribution identity and Hupsel fixture identity",
+    "exact restricted selectors and Hupsel configuration identity",
+    "daily forcing fields and unit conversions from recovered A21 source",
+    "A12 interception/net-rain semantics and exact oracle cardinalities",
+    "A13 scientific role, outputs and exact numerical oracle results",
+    "known no-crop-factor rule for SWDIVIDE=1 PMdirect ptra",
+    "fixed qualification tolerance and cardinalities preregistered before implementation"
+  ],
+  "missing_required_authority": [
+    "exact MOD_meteo.f90 penmon PMdirect arithmetic and operation order for SWETR=0/SWDIVIDE=1",
+    "exact ETpot conversion/wet-dry composition arithmetic and operation order",
+    "exact ProcessMeteoDT wet-fraction composition arithmetic/order beyond the already independently qualified summary contract",
+    "complete exact scalar provenance for every canopy/site parameter consumed by the PMdirect route sufficient to reproduce the 1e-12 oracle without guessed defaults"
+  ],
+  "why_implementation_is_forbidden_now": "F-APP04 preregistration explicitly forbids guessed defaults, inferred units or implementation from summary-level authority. The target qualification tolerance is 1e-12 and may not be widened after results. Reconstructing generic Penman-Monteith equations or using historical remembered formulas would create a new scientific implementation rather than a controlled migration of the exact qualified SWAP 4.3.1 route.",
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_semantics_change": false,
+    "tests_or_tolerances_changed": false,
+    "governance_only": true
+  },
+  "next_permitted_action": "Rematerialize either (a) the exact official SWAP 4.3.1 archive with SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or (b) the exact nested source member tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90 with provenance to that archive. Persist the source identity/hash, extract only the restricted penmon/ETpot/ProcessMeteoDT route and bind every consumed scalar/unit. Only then resume IMPLEMENT from F-APP04_PREREGISTRATION.json.",
+  "resume_rule": "Do not redo F-APP03 A12/A13 qualification or F-APP04 preregistration when the exact source is rematerialized. Verify the supplied archive/member identity, inspect only the required route, persist the scalar/formula binding checkpoint, then implement.",
+  "downstream_effect": {
+    "M1_C3": "PAUSED_DEPENDENT_ON_F_APP04_TYPED_COMPOSITION",
+    "whole_application_swap431_swap5_equivalence": "NOT_YET_ESTABLISHED",
+    "scientific_difference_found": false
+  },
+  "explicit_exclusions": [
+    "Energy Balance",
+    "RossFast",
+    "broad meteorology or IO modernization",
+    "new ET physics",
+    "generic Penman-Monteith reconstruction",
+    "output fitting",
+    "post-hoc tolerance widening",
+    "M1-C3 file adapter implementation before typed composition authority is complete"
+  ]
+}

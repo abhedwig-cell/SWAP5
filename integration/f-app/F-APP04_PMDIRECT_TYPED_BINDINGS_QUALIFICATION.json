@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "QUALIFY_TYPED_BINDINGS",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "qualified_head": "427d740fb78893f6b2fd9258ef0669e3c7de2816",
+  "reconcile_checkpoint": "327689a4e169a03d8bd8b27b45df98794fb81cde",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "4b945b19d0b5f984d10bc750bb403174158a886b",
+    "relevant_dependency_check": "UNCHANGED",
+    "verified_blobs": {
+      "src/process/mod_pmdirect_swetr0_process.f90": "fcf35da81011543bac7cf0c71bcbd7ac34b09b64",
+      "src/crop/mod_crop_root_uptake_input_contract.f90": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+      "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+      "src/runtime/mod_fmr_reference_et_demand_binding.f90": "8c679f911c9a82c498258224d83f5fce3cb09163",
+      "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82"
+    },
+    "note": "Canonical advanced after the original F-APP04 reconcile, but the exact F-APP03 process and the root/surface/reference-ET dependency blobs used by this workunit remain unchanged."
+  },
+  "admitted_dependency": {
+    "F_APP03_canonical_admission": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+    "process_blob": "fcf35da81011543bac7cf0c71bcbd7ac34b09b64"
+  },
+  "production_delta": {
+    "exact_files": [
+      "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90",
+      "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90"
+    ],
+    "root_binding_blob": "89d2d42e85c51d0b174d0382dabd3ec8f7417b68",
+    "surface_binding_blob": "1a67d8a25727c2e821dd11e4853aa925e43cd95b",
+    "root_binding_semantics": "Validate already-resolved crop/root geometry with incoming ptra neutralized, map F-APP03 interval potential_transpiration_cm_per_day exactly for emerged crop, preserve canonical zero for non-emerged crop, revalidate assembled contract.",
+    "surface_binding_semantics": "Map F-APP03 daily potential_soil_evaporation_cm_per_day and potential_pond_evaporation_cm_per_day exactly into the existing surface_evaporation_demand_t contract.",
+    "new_physics": false,
+    "new_runtime": false,
+    "solver_or_transaction_change": false
+  },
+  "remediation": {
+    "cause": "Initial non-finite fail-closed checks combined ieee_is_finite and numeric comparisons inside a single Fortran .or. expression. Fortran does not guarantee short-circuit evaluation; GNU Fortran with -ffpe-trap=invalid evaluated a NaN comparison and raised SIGFPE.",
+    "evidence": "Prior CI owner regression passed exact mapping and inactive-crop-zero cases, then SIGFPE occurred inside fmr_bind_pmdirect_ptra_to_root_input on the NaN test.",
+    "fix_commits": [
+      "5a0c18571b46e7facc417e034fe5153fd6ceadd6",
+      "427d740fb78893f6b2fd9258ef0669e3c7de2816"
+    ],
+    "fix": "Separate finite checks from subsequent nonnegative comparisons in both bindings.",
+    "allowed_domain_semantics_changed": false,
+    "scientific_semantics_changed": false
+  },
+  "qualification": {
+    "workflow": "F-APP04 PMdirect typed bindings",
+    "workflow_run_id": 35274387067,
+    "job_id": 105381311481,
+    "compiler": "GNU Fortran 13.3.0",
+    "strict_flags": "-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+    "production_delta_two_transparent_bindings": "PASS",
+    "fapp03_and_swetr1_protected_blobs": "PASS",
+    "no_parallel_runtime_or_solver_coupling": "PASS",
+    "direct_postimage_mapping_static": "PASS",
+    "owner_regression": {
+      "root_exact_mapping": "PASS",
+      "inactive_crop_canonical_zero": "PASS",
+      "root_nonfinite_fail_closed": "PASS",
+      "root_geometry_fail_closed": "PASS",
+      "root_upstream_fail_closed": "PASS",
+      "surface_exact_mapping": "PASS",
+      "surface_nonfinite_fail_closed": "PASS",
+      "surface_upstream_fail_closed": "PASS"
+    },
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "591a653cbd764beb01797f7789fe01bf7356b34e350b1255cd955761b83c9ceb",
+    "workflow_conclusion": "success"
+  },
+  "net_rain": {
+    "source": "pmdirect_swetr0_interval_result_t%net_rain_cm_per_day",
+    "binding_status": "NOT_BOUND",
+    "reason": "The F-APP04 reconcile did not establish an existing typed receiving seam with explicit sign/unit ownership. No receiving contract is invented in this qualification."
+  },
+  "verdict": "PASS_F_APP04_PMDIRECT_ROOT_AND_SURFACE_TYPED_BINDINGS_QUALIFIED",
+  "runtime_binding_changed": true,
+  "transaction_lifecycle_changed": false,
+  "whole_hupsel_closed": false,
+  "m1_c3_closed": false,
+  "next_permitted_action": "Perform one bounded current-tree inspection for an already-admitted typed dynamic top-boundary/effective-forcing receiving seam that can consume PMdirect net_rain_cm_per_day without changing sign, units, solver ownership, retry semantics, or transaction lifecycle. If no exact seam is demonstrated, close F-APP04 with net-rain explicitly unbound and hand that missing composition surface forward rather than inventing one.",
+  "exclusions": [
+    "SWINTER=3 / Rutter",
+    "SWCF=2",
+    "legacy file-driven M1-C3 adapter",
+    "modification of admitted SWETR=1 reference-ET path",
+    "new transaction/application runtime",
+    "solver, Richards, retry, timestep or tolerance changes",
+    "invented net-rain/top-boundary contract"
+  ]
+}
