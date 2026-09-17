@@ -26,6 +26,8 @@ with constitutive relations such as `theta(h)`, `K(h)` and differential water ca
 
 The equation above expresses the scientific family. It does **not** admit every constitutive model, source/sink option or legacy SWAP switch described in historical manuals.
 
+The exact frozen default-provider branch logic, including its near-saturation/air-entry transitions, timestep-dependent capacity floor and the strict separation between the ordinary value-provider and the F-SI37 smooth directional-derivative capability, is documented in [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md).
+
 ## Conceptual state and exchanges
 
 The soil profile is discretised vertically into compartments. Pressure head is the principal hydraulic-potential state for the reference Richards route; volumetric water content follows from the admitted constitutive relation.
@@ -74,4 +76,4 @@ A scientific/numerical reviewer should be able to trace:
 5. the qualification evidence protecting the reference route;
 6. the separation between tentative solver output and accepted/committed state.
 
-Continue with [Richards discretisation and nonlinear solve](../numerics/richards-solver.md).
+Continue with [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md) and [Richards discretisation and nonlinear solve](../numerics/richards-solver.md).
