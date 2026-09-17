@@ -112,6 +112,106 @@ registered_test_roots:
     kind: performance_test_family
     registration_status: partial
 
+bounded_registration_updates:
+  - work_unit: F-TA04
+    inventory_checked_on:
+      branch: integration/f-ci-canonical
+      implementation_base: e9859b82ffa0d0776c340ef7d550ac8791e28dab
+      reconciled_through: 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33
+    scope: >-
+      Transaction/restart traceability only. Reconcile historical A23BL and
+      pinned F-TB11 preservation locators without changing test semantics,
+      production code, scientific baselines or immutable qualification evidence.
+
+bounded_registrations:
+  - stable_id: TB-TRANSACTION-A23BL-HISTORICAL
+    classes:
+      - contract
+      - regression
+      - transaction-restart
+      - static-process
+    claim_or_invariant: >-
+      Historical A23BL reference-transaction gate checks accepted two-half
+      stepping, retry from committed state, rollback after solver failure,
+      rejection of the gate's synthetic mass defect, generic non-calendar time,
+      exact repeatability, worker independence, and absence of hidden SAVE state
+      or direct file I/O in the transaction reference module.
+    test_locator: tests/transaction/test_transaction_reference.f90
+    fixture_or_input: >-
+      Synthetic test_state_t/test_model_t cases embedded in
+      tests/transaction/test_transaction_reference.f90 against
+      src/transaction/mod_transaction_reference.f90.
+    oracle: >-
+      Embedded expected transaction statuses, accepted routes, counters,
+      endpoints and tolerances in the Fortran test, plus a static forbidden-token
+      check for SAVE/open/read/write in the transaction reference source.
+    acceptance: >-
+      The gate must compile and execute successfully at O0 and O2 with
+      OMP_NUM_THREADS=8, print A23BL_TRANSACTION_GATE PASS for both executions,
+      and finish with A23BL_STATIC_GATE PASS.
+    runner: tests/transaction/run_a23bl_gate.sh
+    baseline_or_provenance: >-
+      Historical A23BL transaction-reference gate. F-TB11 records that A23BL
+      predates the later mandatory mass-completeness contract, so this record
+      does not make A23BL the current transaction/mass preservation oracle.
+    evidence_link: docs/testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md
+    lifecycle_role: historical_not_current_preservation_oracle
+    current_preservation_successor:
+      - FTB11-TXN-001
+      - FTB11-MASS-001
+    registration_status: complete
+
+  - stable_id: TB-PRESERVATION-F-TB11-TXN-RST
+    classes:
+      - regression
+      - conservation
+      - transaction-restart
+      - integration
+      - static-process
+    claim_or_invariant: >-
+      Pinned F-TB11 preservation chain reconstructs the qualified transaction,
+      hard mass-completeness, rejected-publication immutability and Restart-v1
+      checks on its exact canonical source generation by materializing the
+      independent F-VQ65 and F-VQ71 oracles and binding them to F-KT19/F-KT16
+      authority.
+    test_locator: testbank/runners/run_ftb11_current_source_replays.sh
+    fixture_or_input: >-
+      Exact F-TB11 canonical 379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b,
+      F-VQ65 authority b1fd9e15a22d4dd68997ec38c074ce343eec0a70 and
+      F-VQ71 authority f2f410bb74ef40c23fcc16048bb54f9301b989db,
+      as fixed by the F-TB11 manifest and replay runner.
+    oracle: >-
+      FTB11-TXN-001 and FTB11-MASS-001 use the independent F-VQ65 fail-closed
+      transaction/mass attack matrix; FTB11-REJECT-001 uses the independent
+      F-VQ71 atomic accepted-publication oracle; FTB11-RST-001 combines F-KT16
+      authority with the F-VQ65 current-source restart continuation replay.
+    acceptance: >-
+      Exact SHA/source binding must validate; the F-VQ65 transaction, mass,
+      restart and related preservation replays must pass; F-VQ71 stale and
+      cross-lineage candidates must fail before commit/publication with no
+      committed-state mutation; O0/O2 semantic identity must hold where encoded
+      by the pinned oracle.
+    runner:
+      - testbank/runners/validate_ftb11_current_canonical_preservation.py
+      - testbank/runners/run_ftb11_current_source_replays.sh
+      - .github/workflows/f-tb11-current-canonical-permanent-preservation.yml
+    baseline_or_provenance: >-
+      Immutable F-TB11 manifest bound to canonical
+      379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b. Its binding policy explicitly
+      requires rebind and requalification for later canonical heads; this
+      complete catalog record therefore documents a pinned preservation
+      authority, not automatic preservation of e9859b82, 2a6eb532 or later heads.
+    evidence_link:
+      - testbank/manifests/F-TB11_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PRESERVATION.json
+      - docs/testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md
+    lifecycle_role: immutable_pinned_preservation_authority
+    covered_stable_tests:
+      - FTB11-TXN-001
+      - FTB11-MASS-001
+      - FTB11-REJECT-001
+      - FTB11-RST-001
+    registration_status: complete
+
 supporting_surfaces:
   - id: TB-SUPPORT-VQ
     path: tools/vq
