@@ -16,13 +16,7 @@ program test_fgc30_production_predictor_tangent_endpoint
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
-  use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
-  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
-  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
-  use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
-       reference_richards_legacy_workspace_t
-  use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
+  use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
        groundwater_interface_state_t, swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, &
        pair_groundwater_flux_from_swap, GW_INTERFACE_OK
@@ -112,10 +106,10 @@ program test_fgc30_production_predictor_tangent_endpoint
   write(*,'(A)') 'FGC30_PRODUCTION_ACCEPTED_TRAJECTORY_BINDING=PASS'
   write(*,'(A)') 'FGC30_PRODUCTION_TANGENT_ENDPOINT_AUTHORITATIVE=PASS'
 
-  ! Independent centered finite difference of the accepted production two-half
-  ! discrete route. The external full/half temporal comparator is bit-exact, so
-  ! nearby non-equilibrium perturbations are evaluated by replaying the accepted
-  ! two-half solver topology directly rather than weakening transaction policy.
+  ! Independent centered finite difference through the same admitted
+  ! model-certificate production candidate route as the nominal predictor.
+  ! Perturbed trials start from the same immutable origin, disable tangent
+  ! publication, change only native prescribed qbot, and must accept without retry.
   call run_endpoint_value(qeq + fd_eps, plus_face)
   call run_endpoint_value(qeq - fd_eps, minus_face)
   fd_derivative = (plus_face%pressure_head_cm - minus_face%pressure_head_cm) / (2.0_real64 * fd_eps)
