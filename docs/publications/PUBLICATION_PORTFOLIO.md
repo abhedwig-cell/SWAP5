@@ -16,13 +16,13 @@ There is deliberately no `RESULT_FOR_BOTH` category.
 
 | Code | Working topic | Primary research question | Protected primary contribution |
 | --- | --- | --- | --- |
-| `PUB-ME` | Controlled model evolution | How can an established scientific model be modernized while preserving scientific meaning and qualification evidence? | state ownership, transactional execution, migration slices/gates, behavior-preserving evolution and SWAP4.3.1 to SWAP5 equivalence |
-| `PUB-SQ` | Solver qualification | When may an alternative numerical solver replace the reference Richards solver? | solver admissibility domains, accuracy, conservation, robustness and cost trade-offs, including RossFast/reference comparisons |
-| `PUB-GC` | Groundwater coupling | How can independently time-integrating vadose-zone and groundwater models be coupled conservatively and reproducibly over finite coupling windows? | same-origin replay, whole-window exchange, interface conservation and coupled accepted-state semantics |
-| `PUB-RC` | Response-assisted coupling | Can the whole-window response of the vadose zone to groundwater head be used to solve the nonlinear interface problem more efficiently? | response/tangent information, accelerated outer coupling and error-versus-cost behaviour |
-| `PUB-SG` | Subgrid heterogeneity and upscaling | When must heterogeneous vadose-zone columns within a groundwater cell be represented explicitly? | hydrologic consequences of explicit N:1 subgrid heterogeneity versus effective/homogenized representations |
+| `PUB-ME` | Scientific-state authority | Which state-contamination faults escape conventional regression/invariant testing, and what does explicit candidate-to-accepted authority prevent or expose? | causal fault-containment evidence for scientific-state authority under matched functionality |
+| `PUB-SQ` | Solver qualification | Under what operating conditions can a numerically distinct Richards solver be prospectively admitted as scientifically interchangeable? | solver admissibility domains, trajectory/conservation/robustness criteria and matched-error cost |
+| `PUB-GC` | Groundwater coupling | What finite-window coupling contract is sufficient for conservative and convergent composition of independently time-integrating vadose and groundwater models? | accepted-origin replay, whole-window exchange, authoritative exchange ledger, convergence and step-partition invariance |
+| `PUB-RC` | Response-information coupling | What is the lowest-order hydrologically meaningful whole-window response information that improves coupling beyond generic black-box acceleration? | incremental value, cost and safeguards of response information |
+| `PUB-SG` | Transferability and upscaling | When does an equivalent single vadose-zone column cease to be transferable across hydrologic regimes? | cross-regime aggregation error, mechanism and regime boundaries relative to explicit N:1 columns |
 
-`PUB-SG` is conditional. It becomes a paper only if the experiments demonstrate a material, explainable hydrologic effect that is not already needed to establish `PUB-GC` or `PUB-RC`.
+`PUB-RC` and `PUB-SG` are conditional. `PUB-RC` becomes a standalone paper only if response information adds a reproducible advantage beyond strong generic black-box acceleration at matched coupled error. `PUB-SG` becomes a standalone paper only if transferability experiments demonstrate a material and mechanistically interpretable spatial-representation result distinct from `PUB-GC`.
 
 ## Doctoral layer
 
@@ -30,14 +30,17 @@ The publication codes remain owners of primary paper results. Cross-paper conclu
 
 A thesis synthesis may connect results from multiple papers, but it may not reassign or duplicate primary publication ownership.
 
-The intended research arc is:
+The current dependency architecture is:
 
 ```text
-PRESERVE -> REPLACE -> COUPLE -> ACCELERATE -> SCALE
- PUB-ME     PUB-SQ     PUB-GC      PUB-RC      PUB-SG?
+                    -> REPLACE / PUB-SQ
+PRESERVE / PUB-ME --|
+                    -> COUPLE / PUB-GC -> ACCELERATE / PUB-RC?
+                                      \
+                                       -> SCALE / PUB-SG?
 ```
 
-The final step is conditional. The doctoral programme must remain coherent without forcing a fifth paper.
+`REPLACE` and `COUPLE` may proceed in parallel once the required state/transaction authority exists. `ACCELERATE` depends on a stable `COUPLE` problem and may merge into `PUB-GC`. `SCALE` depends on conservative N:1 coupling but not on `ACCELERATE`. The programme must remain coherent without forcing either conditional paper.
 
 ## Hard claim boundaries
 
@@ -165,18 +168,16 @@ This publication layer does not replace SWAP5 capability authority, scientific q
 
 ## Current portfolio dependency order
 
-The scientific dependency is intentionally one-way:
+The scientific dependency is branched rather than a mandatory manuscript sequence:
 
 ```text
-PUB-ME   PUB-SQ
-   \       /
-    shared qualified SWAP5 implementation
-              |
-            PUB-GC
-              |
-            PUB-RC
-              |
-       PUB-SG (conditional)
+                    PUB-SQ
+                   /
+PUB-ME -> shared qualified SWAP5 implementation
+                   \
+                    PUB-GC -> PUB-RC (conditional)
+                      |
+                    PUB-SG (conditional)
 ```
 
 The prospective doctoral synthesis sits above this graph rather than inside it:
