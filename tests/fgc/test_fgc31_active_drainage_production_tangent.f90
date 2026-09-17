@@ -27,6 +27,8 @@ program test_fgc31_active_drainage_production_tangent
 
   real(real64), parameter :: duration = 1.0e-2_real64
   real(real64), parameter :: mass_tolerance = 1.0e-10_real64
+  ! Test-only certificate budget chosen to exercise a deterministic multi-substep
+  ! accepted topology. It is not a production policy or tangent-error tolerance.
   real(real64), parameter :: temporal_head_budget = 1.0_real64
   real(real64), parameter :: qbot0 = 2.0e-3_real64
   real(real64), parameter :: fd_eps = 1.0e-5_real64
@@ -63,8 +65,6 @@ program test_fgc31_active_drainage_production_tangent
   call require(tangent_result%status==CANONICAL_STATUS_COMPLETED .and. tangent_result%completed, &
        'active-drainage tangent production interval completed')
   call require(tangent_candidate%ready(),'active-drainage tangent candidate ready')
-  write(*,'(A,I0)') 'FGC31_CALIB_ACCEPTED_SUBSTEPS=',tangent_diag%accepted_substeps
-  write(*,'(A,1X,ES18.10)') 'FGC31_CALIB_NORMALIZED_INDICATOR=',tangent_diag%max_temporal_indicator
   call require(tangent_diag%accepted_substeps>=2,'active-drainage tangent requires at least two accepted substeps')
   call require(tangent_result%accepted_trajectory_direction%requested .and. &
        tangent_result%accepted_trajectory_direction%available,'accepted trajectory available')
