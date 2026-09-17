@@ -3,8 +3,8 @@
   "capability": "F-GC36",
   "title": "Live MODFLOW6 F-GC34 Bridge Smoke Test",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_LIVE_MODFLOW6_BRIDGE_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE",
   "source_branch": {
     "branch": "work/f-gc35-modflow6-xmi-package-adapter",
     "head": "56237c94272fa110072e06c4bba54ad1eb05d061",
@@ -12,10 +12,16 @@
     "checkpoint_run": 35288150266,
     "checkpoint_conclusion": "success"
   },
+  "work_branch": {
+    "branch": "work/f-gc36-live-modflow6-fgc34-bridge",
+    "design_commit": "6c72a04b015c843ee3a53fafeaa4e180cd6f4b3d",
+    "implementation_commit": "3b66cd043f93f58a2762ce1b2f310de97e106a1a",
+    "qualified_head": "4096970ce9a8c40b9ad118802f366bae2657f59f"
+  },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
-    "head": "1604b89e6bebf6436dcd2718b8e150bf909d8a01",
-    "relevant_delta": "No canonical movement since F-GC35."
+    "head": "d67a96fd576dcd1c5a30eb766c5aa1a503e10cf0",
+    "delta_since_initial_f_gc36_reconciliation": "9 commits. Compare 1604b89e... -> d67a96fd... shows only PUB-ME D5 publication workflow, documentation and test files; no F-GC30 through F-GC36 dependency source changed."
   },
   "external_dependencies": {
     "modflow6": {
@@ -33,13 +39,51 @@
       "commit": "1a783da6582f8203190a8d6b1d7a60659022afdb"
     }
   },
-  "bridge_decision": {
-    "fortran": "C-ABI wrapper reconstructs existing F-GC34 types and directly invokes publish_modflow6_api_terms",
-    "python": "ctypes publisher only marshals arrays and returns the real F-GC34 status",
-    "live_outputs": "real XMI-backed NODELIST/HCOF/RHS/NBOUND NumPy views",
-    "solve_owner": "smoke-test harness only"
+  "qualified_contract": [
+    "the official MODFLOW6 6.8.0 Linux release archive is downloaded and verified against its published SHA-256 before use",
+    "the C-ABI bridge exports fgc34_publish_c and directly invokes the repository's existing publish_modflow6_api_terms implementation",
+    "an invalid package-slot mapping returns the real F-GC34 INVALID_BINDING status and leaves NODELIST/HCOF/RHS/NBOUND unchanged",
+    "a real xmipy XmiWrapper loads libmf6.so and resolves live MODFLOW6 API-package views",
+    "F-GC35 reacquires the API-package view after host prepare_time_step before F-GC34 publication",
+    "fresh NumPy view objects may alias the same underlying MODFLOW kernel address; qualification requires refreshed view acquisition and publisher use, not immutability of an older alias",
+    "the real F-GC34 bridge publishes NODELIST=2, HCOF=-0.1, RHS=-0.06 and NBOUND=1 into the live API package",
+    "the external smoke harness owns prepare_time_step, prepare_solve, solve, finalize_solve and finalize_time_step; production adapters do not",
+    "the real MODFLOW6 solve converges",
+    "the solved middle-cell head closes to the analytical linear-system solution 1.06/2.1 within the configured tolerance",
+    "the live API flux relation HCOF*head-RHS retains the expected positive-infiltration sign"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC36 live MODFLOW6 F-GC34 bridge",
+    "green_run": 35288608495,
+    "green_job": 105426340809,
+    "green_head": "4096970ce9a8c40b9ad118802f366bae2657f59f",
+    "conclusion": "success",
+    "pass_markers": [
+      "FGC36_REAL_FGC34_BRIDGE_SYMBOL",
+      "FGC36_PRODUCTION_ADAPTER_NO_SOLVE_OWNERSHIP",
+      "FGC36_MODFLOW680_ASSET_SHA256",
+      "FGC36_FGC34_SHARED_BRIDGE_BUILD",
+      "FGC36_REAL_FGC34_FAIL_CLOSED",
+      "FGC36_OFFICIAL_MODFLOW680_LOADED",
+      "FGC36_LIVE_XMIPY_POINTERS",
+      "FGC36_REAL_FGC34_LIVE_PUBLICATION",
+      "FGC36_LIVE_MODFLOW_SOLVE_CONVERGED",
+      "FGC36_ANALYTICAL_HEAD_CLOSURE",
+      "FGC36_LIVE_SIGN_CLOSURE",
+      "FGC36_LIVE_MODFLOW6_BRIDGE_GATE"
+    ],
+    "live_pointer_observation": {
+      "marker": "FGC36_NODELIST_VIEW_REFRESH_ADDRESS",
+      "observed": "same underlying address before and after refresh in the qualified run",
+      "interpretation": "xmipy returned a refreshed NumPy view object that aliases the same MODFLOW kernel memory. F-GC35's required semantic is reacquisition and use of the refreshed object, not stale-view memory immutability."
+    },
+    "failed_iteration": {
+      "run": 35288522923,
+      "head": "3b66cd043f93f58a2762ce1b2f310de97e106a1a",
+      "disposition": "All official-release download, checksum, bridge-build and real F-GC34 fail-closed checks passed. The live test then rejected a valid XMI alias behavior because it incorrectly required the pre-prepare NumPy view contents to remain immutable. Only the test assertion was corrected; production bridge, F-GC34 and F-GC35 code were unchanged."
+    }
   },
-  "planned_changes": [
+  "changes": [
     "docs/integration/F-GC36_LIVE_MODFLOW6_FGC34_BRIDGE.md",
     "src/adapter/mod_modflow6_fgc34_c_bridge.f90",
     "src/adapter/modflow6_fgc34_ctypes_publisher.py",
@@ -48,6 +92,29 @@
     ".github/workflows/f-gc36-live-modflow6-bridge.yml",
     "integration/f-gc/F-GC36_STATUS.json"
   ],
+  "mutations": [
+    "6c72a04b015c843ee3a53fafeaa4e180cd6f4b3d",
+    "3b66cd043f93f58a2762ce1b2f310de97e106a1a",
+    "4096970ce9a8c40b9ad118802f366bae2657f59f"
+  ],
+  "evidence_boundary": {
+    "qualified": [
+      "official MODFLOW6 6.8.0 libmf6 shared-library loading",
+      "real xmipy live API-package views",
+      "real Fortran F-GC34 execution through C ABI and ctypes",
+      "real NODELIST/HCOF/RHS/NBOUND mutation",
+      "one bounded real MODFLOW6 solve consuming the published linear boundary terms",
+      "analytical head and sign closure for the minimal 1x3 smoke model"
+    ],
+    "not_yet_qualified": [
+      "production coupled predictor/corrector host",
+      "live SWAP5-generated F-GC30/F-GC31/F-GC33 terms in the same executable run",
+      "multi-cell or N:1 live MODFLOW package execution",
+      "coupled retry/rollback across SWAP5 and MODFLOW6",
+      "Ribasim or irrigation integration",
+      "performance/scaling behavior"
+    ]
+  },
   "exclusions": [
     "production MODFLOW solve driver",
     "SWAP predictor/corrector orchestration",
@@ -57,5 +124,5 @@
     "drainage envelope expansion",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement the C-ABI F-GC34 wrapper, ctypes publisher and one live MODFLOW6 6.8.0 API-package smoke gate."
+  "next_permitted_action": "Independent/admission review of the exact F-GC36 live bridge envelope, or a separately bounded coupled predictor/corrector host workunit that composes existing SWAP transaction services with the now-live MODFLOW package seam. Do not fold Ribasim, irrigation or broader application runtime into F-GC36."
 }
