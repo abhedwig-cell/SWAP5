@@ -156,6 +156,19 @@ contains
     call poison_legacy_bottom_context()
     call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, local_candidate, diagnostics)
+    if (.not. result%completed) then
+      write(*,'(a)') 'PUB_GC_E1_DIAG_LABEL='//trim(label)
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_RESULT_STATUS=', result%status
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_ADMISSION_REJECTIONS=', diagnostics%admission_rejections
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_SOLVER_REJECTIONS=', diagnostics%solver_rejections
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_TEMPORAL_REJECTIONS=', diagnostics%temporal_rejections
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_MASS_REJECTIONS=', diagnostics%mass_rejections
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_RETRIES=', diagnostics%retries
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_ATTEMPTS=', diagnostics%attempts
+      write(*,'(a,i0)') 'PUB_GC_E1_DIAG_INTERNAL_RETRIES=', diagnostics%internal_retries
+      write(*,'(a,es24.16e3)') 'PUB_GC_E1_DIAG_MAX_STEP_MASS_RESIDUAL=', diagnostics%max_abs_step_mass_residual
+      write(*,'(a,es24.16e3)') 'PUB_GC_E1_DIAG_MAX_TEMPORAL_INDICATOR=', diagnostics%max_temporal_indicator
+    end if
     call require(result%completed, trim(label)//' completed')
     call require(local_candidate%ready(), trim(label)//' candidate ready')
     call require(result%bottom_interface_exchange_available, trim(label)//' whole-window exchange unavailable')
