@@ -41,6 +41,7 @@ contains
     type(groundwater_coupling_window_t) :: window
     real(real64) :: accepted_head_before, accepted_time_before
     integer(int64) :: revision_before
+    logical :: origin_time_available
 
     result = pub_gc_e2_comparison_t()
     status = PUB_GC_E2_INVALID_INPUT
@@ -64,7 +65,8 @@ contains
     accepted_time_before = gw%accepted_time_day()
     revision_before = gw%current_revision()
 
-    window%t0 = checkpoint%origin_time()
+    call checkpoint%origin_time(window%t0, origin_time_available)
+    if (.not. origin_time_available) return
     window%t1 = window%t0 + duration_days
     if (.not. window%valid()) return
 
