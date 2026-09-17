@@ -24,9 +24,6 @@ ROSS_ADAPTER_FROSS12=6d6f66273483c19c1d2318dad518c537186a0ae7
 
 fail() { echo "FCI96_P2E05_SEMANTIC_SUCCESSOR_FAIL $*" >&2; exit 1; }
 
-# Historical authorities remain immutable ancestors. This runner qualifies only
-# the explicitly preregistered P2E05 typed-diagnostic successor on the current
-# tree; it does not replace or rewrite the historical F-ROSS12 evidence.
 git merge-base --is-ancestor "$STATUS_A_AUTH" HEAD || fail 'Status-A authority not ancestor'
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
 git merge-base --is-ancestor "$P2E05_BASE" HEAD || fail 'P2E05 base canonical not ancestor'
@@ -35,7 +32,6 @@ test "$(git rev-parse "$FROSS12_AUTH:$BACKEND")" = "$BACKEND_FROSS12" || fail 'h
 test "$(git rev-parse "$FROSS12_AUTH:$SELECTION")" = "$SELECTION_FROSS12" || fail 'historical selection authority mismatch'
 test "$(git rev-parse "$FROSS12_AUTH:$ROSS_ADAPTER")" = "$ROSS_ADAPTER_FROSS12" || fail 'historical adapter authority mismatch'
 
-# Exactly three production/source surfaces may differ for this successor.
 test "$(git rev-parse HEAD:$SW)" = "$SW_P2E05" || fail 'typed solver-contract blob mismatch'
 test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'typed Reference adapter blob mismatch'
 test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'typed RossFast adapter blob mismatch'
@@ -43,7 +39,6 @@ test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FROSS12" || fail 'serialized b
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'selection binding drift outside P2E05 scope'
 test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$P2E05_BASE:reference")" || fail 'reference tree changed in P2E05'
 
-# Fail closed on any file outside the preregistered P2E05 decision surface.
 changed="$({ git diff --name-only "$P2E05_BASE"...HEAD || true; })"
 for required in "$SW" "$REF_ADAPTER" "$ROSS_ADAPTER"; do
   grep -Fxq "$required" <<<"$changed" || fail "required successor delta absent: $required"
@@ -60,7 +55,9 @@ while IFS= read -r path; do
     tests/ross/run_ross12_soil_water_solver_adapter.sh|\
     tests/ross/run_ross12_solver_selection_binding.sh|\
     tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh|\
-    .github/workflows/fci96-fross12-postimage-preservation.yml)
+    tests/fci/run_fci_canonical_p2e05_moving_preservation.sh|\
+    .github/workflows/fci96-fross12-postimage-preservation.yml|\
+    .github/workflows/fci-canonical.yml)
       ;;
     *) fail "out-of-scope P2E05 mutation: $path" ;;
   esac
@@ -72,8 +69,6 @@ BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fci96-p2e05-${GITHUB_RUN_ID:-local}
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
-# Requalify the exact current RossFast seam, production composition and the
-# publication paired extraction against the typed residual contract.
 bash tests/ross/run_ross12_soil_water_solver_adapter.sh > "$BUILD/adapter.txt"
 grep -Fq 'F_ROSS12_SOLVER_ADAPTER=PASS' "$BUILD/adapter.txt" || fail 'adapter semantic replay missing PASS'
 
