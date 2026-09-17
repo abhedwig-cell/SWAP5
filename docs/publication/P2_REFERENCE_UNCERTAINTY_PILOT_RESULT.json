@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.publication.p2-reference-uncertainty-pilot-result.v1",
+  "workunit": "PUB-P2E02",
+  "canonical_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
+  "workflow_run": 35265621536,
+  "job": 105351940419,
+  "experiment_role": "Reference-only method-extraction pilot for numerical self-disagreement; not threshold calibration",
+  "rossfast_executed": false,
+  "threshold_frozen": false,
+  "case": {
+    "case_id": "P2-U0-B01-HM101",
+    "material": "B01",
+    "nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_head_cm": -101.0,
+    "outer_duration_day": 0.0016,
+    "coarse_schedule_day": [0.0016],
+    "refined_schedule_day": [0.0008, 0.0008],
+    "top_boundary": "prescribed flux 0.01*K(h0)",
+    "bottom_boundary": "prescribed flux -0.004*K(h0)"
+  },
+  "observations": {
+    "coarse_mass_residual_cm": -4.73913226370359375e-13,
+    "half1_mass_residual_cm": 7.40393206813405591e-13,
+    "half2_mass_residual_cm": -9.94330269163401503e-13,
+    "U_h_inf_cm": 9.74676858334078133e-6,
+    "U_h_rms_cm": 4.22328932635806825e-6,
+    "U_theta_inf": 1.17382850939318217e-8,
+    "U_theta_rms": 5.08527120364197959e-9,
+    "U_storage_cm": 7.10542735760100186e-15
+  },
+  "optimization_qualification": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "outputs_identical": true,
+    "output_sha256": "29ba80a198abb15cfe3d6ac5b1d90f2301aac6bbd4dd1df0913462c6bb8e2ed1"
+  },
+  "interpretation_limits": {
+    "admissibility_threshold_derived": false,
+    "stage0_rossfast_metrics_used": false,
+    "single_case_generalization_allowed": false,
+    "note": "These values demonstrate that Reference-only coarse-versus-two-half uncertainty extraction is executable and reproducible. They do not define a scientific acceptance threshold and may not be used alone to classify RossFast."
+  },
+  "next_permitted_action": "Freeze exact Reference-only calibration levels across the intended six-material E0 domain before broad calibration execution. Only after that dataset is generated may a threshold formula and any stratification be frozen, still without inspecting new RossFast results."
+}
