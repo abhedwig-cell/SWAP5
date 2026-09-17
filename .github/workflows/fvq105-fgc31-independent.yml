@@ -16,7 +16,6 @@ on:
       - 'tests/qualification/fvq105/test_fvq105_fgc31_independent.f90'
       - 'tests/qualification/fvq105/run_fvq105_fgc31_independent.sh'
       - '.github/workflows/fvq105-fgc31-independent.yml'
-      - 'integration/f-vq/F-VQ105_STATUS.json'
   workflow_dispatch:
 
 permissions:
