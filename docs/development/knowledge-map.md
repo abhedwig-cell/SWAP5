@@ -47,6 +47,7 @@ A document that answers one question does not automatically answer the others. I
 | Safe execution and recovery | `docs/development/workstream-execution-protocol.md` | Persisted/tested/qualified state model and checkpoint discipline |
 | Documentation semantics | `docs/development/documentation.md` | Status labels, architecture-change documentation, and docs validation |
 | Verification policy | `docs/verification/principles.md`, `docs/verification/reference-baselines.md` | What counts as reference and qualification evidence |
+| Test-bank authority and inventory | `docs/verification/test-bank.md`, `docs/verification/test-bank-catalog.yaml` | Permanent test surfaces, registration status, test classes, traceability fields and lifecycle rules |
 | Specific qualification evidence | capability evidence and qualification/integration records on the pinned commit | Scope-specific test and qualification results |
 | Permanent/current-head preservation | `docs/status-a/TRACEABILITY.md` and the named capability/permanent-suite authorities | Which immutable, same-tree, moving-current or exact-head evidence protects an admitted capability |
 | Performance evidence | `docs/performance/`, `benchmarks/` | Measured performance claims and benchmark definitions within their recorded scope |
@@ -114,7 +115,7 @@ Boundary behaviour can touch physics, numerics, transaction semantics, coupling,
 
 ### Verification work
 
-Start with `docs/status-a/TRACEABILITY.md`, `docs/verification/principles.md` and `docs/verification/reference-baselines.md`. Preserve the distinction between legacy reproduction, corrected-reference qualification, hard conservation, restart/transaction correctness, current-head preservation and performance measurement.
+Start with `docs/status-a/TRACEABILITY.md`, `docs/verification/principles.md`, `docs/verification/reference-baselines.md` and `docs/verification/test-bank.md`. Use `docs/verification/test-bank-catalog.yaml` to locate the registered permanent test surfaces and their central traceability status. Preserve the distinction between legacy reproduction, corrected-reference qualification, hard conservation, restart/transaction correctness, current-head preservation and performance measurement.
 
 Do not change production physics while constructing an oracle unless the work unit explicitly transfers ownership to an implementation stream.
 
