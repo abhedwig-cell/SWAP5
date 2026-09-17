@@ -36,7 +36,7 @@ program test_fgc30_production_predictor_tangent_endpoint
   real(real64), parameter :: h0 = -75.0_real64
   real(real64), parameter :: duration = 0.25_real64
   real(real64), parameter :: mass_tolerance = 1.0e-12_real64
-  real(real64), parameter :: fd_eps = 1.0e-6_real64
+  real(real64), parameter :: fd_eps = 1.0e-8_real64
   integer(int64), parameter :: column_id = 530030_int64
 
   type(fmr_b110_physical_parameters_t) :: parameters
