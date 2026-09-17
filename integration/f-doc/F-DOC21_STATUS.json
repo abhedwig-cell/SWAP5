@@ -2,19 +2,20 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC21",
   "title": "SWAP5 Scientific and Numerical Technical Reference Expansion",
-  "phase": "VERIFY",
-  "decision": "RECONCILED_DOCUMENTATION_POSTIMAGE_READY_FOR_PR_GATE",
+  "phase": "CLOSE",
+  "decision": "READY_FOR_CANONICAL_ADMISSION",
+  "verdict": "PASS",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc21-technical-reference",
+  "verified_documentation_head": "b15bd656a2495115279f42b1e78942d6b05a93e2",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
-  "observed_live_canonical_head": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+  "canonical_reconciled_head": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
   "canonical_delta_from_start": {
     "workunit": "F-ROSS12",
     "overlap_with_fdoc21_docs_or_mkdocs": false,
     "disposition": "NON_CONFLICTING_POST_STATUS_A_DELTA_NOT_ADDED_TO_FROZEN_SCIENTIFIC_DENOMINATOR"
   },
-  "last_semantic_head_before_checkpoint": "1f86ddf61708786fa02b474443cacc61f78a70f3",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
@@ -44,6 +45,16 @@
     "docs/numerics/richards-solver.md",
     "mkdocs.yml"
   ],
+  "qualified_documentation_evidence": {
+    "head": "b15bd656a2495115279f42b1e78942d6b05a93e2",
+    "pull_request": 166,
+    "workflow_run": 35182840058,
+    "validate_build_job": 105078544934,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "scope_diff_check": "PASS_DOCUMENTATION_AND_GOVERNANCE_ONLY",
+    "canonical_overlap_check": "PASS_NO_OVERLAP_WITH_F_ROSS12_DELTA"
+  },
   "qualified_claim_boundaries": [
     "reference Richards hydraulic z/q convention may be documented as upward-positive within the bounded reference formulation",
     "VQ normalized accounting uses positive-into-domain signed amounts and must not be conflated with process-local signs",
@@ -69,13 +80,6 @@
     "scientific_denominator_change": false,
     "documentation_only": true
   },
-  "verification": {
-    "scope_diff_check": "PASS_DOCUMENTATION_AND_GOVERNANCE_ONLY",
-    "canonical_overlap_check": "PASS_NO_OVERLAP_WITH_F_ROSS12_DELTA",
-    "documentation_checker": "PENDING_PR_GATE",
-    "mkdocs_strict": "PENDING_PR_GATE",
-    "admission": "NOT_ATTEMPTED"
-  },
   "explicit_nonclaims": [
     "No production physics or numerical semantics changed.",
     "The frozen Status-A review denominator remains unchanged.",
@@ -83,6 +87,11 @@
     "No broad historical ET/root, boundary, drainage or groundwater option set is promoted by prose.",
     "No universal sign, timestep, tolerance or accuracy guarantee is invented."
   ],
-  "next_permitted_action": "Open a draft pull request against current canonical to trigger the documentation workflow; inspect documentation checker and mkdocs strict results before any admission decision.",
-  "verdict": "IN_PROGRESS"
+  "next_permitted_action": "Admit PR #166 to integration/f-ci-canonical if its current head remains mergeable and canonical remains at the reconciled head; this checkpoint-only closeout delta does not require rerunning the documentation build.",
+  "exclusions": [
+    "exhaustive historical boundary catalogues",
+    "unreconciled detailed drainage equations",
+    "new physics or numerical semantics",
+    "post-Status-A RossFast promotion into the frozen scientific denominator"
+  ]
 }
