@@ -22,21 +22,22 @@ This register does not contain scientific results. It is an execution map betwee
 | --- | --- | --- | --- | --- |
 | `PUB-ME-E0` reference lineage | PUB-ME | supporting/foundational | READY_FOR_SCREENING | migration-slice candidate set frozen in `PUB-ME_MIGRATION_SLICES.md`; recover exact historical pre/post authorities for ME-S1/ME-S2/ME-S3 |
 | `PUB-ME-E1` preservation reruns | PUB-ME | primary | DESIGNED | reconstruct exact historical build/input authorities for selected slices and freeze common benchmark set |
-| `PUB-ME-E2` candidate-leak adversarial | PUB-ME | primary | DESIGNED | define qualification-only fault-injection harness; never production |
+| `PUB-ME-E2` candidate-leak adversarial | PUB-ME | primary | DESIGNED | paired B0/B1 causal design frozen in `PUB-ME-CONFIRMATORY-FREEZE-v1.yaml`; materialize research-only bypass/injector harness before any primary run |
 | `PUB-ME-E3` restart sufficiency | PUB-ME | primary | READY_FOR_SCREENING | select benchmark cases with/without prior retry and instantiate manifest |
 | `PUB-ME-E4` semantic-successor evidence | PUB-ME | primary | READY_FOR_SCREENING | ME-S5 frozen as semantic-successor Case B; freeze exact unrelated-change Case A from ME-S6 before detailed extraction |
 | `PUB-ME-E5` qualification-surface analysis | PUB-ME | supporting | DESIGNED | define repository-derived surface metrics; no person-hour claims |
 | `PUB-ME-E6` extensibility cases | PUB-ME | supporting | READY_FOR_SCREENING | extract solver-seam and groundwater-seam dependency evidence |
 | `PUB-SQ-E0` contract/fail-closed | PUB-SQ | prerequisite/supporting | COMPLETE | `PUB-SQ-E0-0001` completed under manifest control; continue with SQ-E1 common-domain/reference design, not additional post-hoc E0 cases |
-| `PUB-SQ-E1` common-domain equivalence | PUB-SQ | primary | DESIGNED | freeze stratified case matrix and build `REF-HIGH` procedure |
-| `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | reconcile exact RossFast envelope and choose paired inside/boundary/outside cases |
+| `PUB-SQ-E1` common-domain equivalence | PUB-SQ | primary | COMPLETE | six-material P2E10 broad E0 matrix executed against independently frozen P2E09 Reference-only thresholds; retain as observed primary evidence |
+| `PUB-SQ-E1X` material-axis extension | PUB-SQ | primary | READY_FOR_REFERENCE_CONSTRUCTION | 30-material extension design frozen in `PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml`; execute Reference-only calibration and freeze extension thresholds before any new RossFast discrepancy run |
+| `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | P2E10 established WETTING as a clean known production-envelope exclusion; separate inside/boundary/outside probing still requires its own preregistration |
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | GW-A scientific contract frozen at `b6800d1...`; implement and independently qualify research-only GW-A plus the diagnostic origin-policy harness before preregistering E1 |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | define fair terminal-flux comparator after qualified GW-A exists |
-| `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A + converged replay method + `GC-REF` construction required |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | COMPLETE | frozen held-out primary executed once at `9363126...`, workflow `35287247968`, immutable artifact retained |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | READY_FOR_SCREENING | terminal-flux comparator qualified at `188c863...`; materialize two new mechanism cases and freeze their inputs/windows before primary execution |
+| `PUB-GC-E3` window convergence | PUB-GC | primary | DESIGNED | GC-REF-A root/reconstruction oracle qualified at `4fc8f6e...`; exact stress-case fingerprints/window ladders and converged replay comparator remain to be frozen |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
 | `PUB-GC-E6` bounded N:1 conservation | PUB-GC | supporting/primary table | READY_FOR_SCREENING | map existing F-GC25 cases into publication manifest without upscaling claims |
@@ -125,6 +126,14 @@ Examples:
 - prerequisite newly satisfied: GW-A scientific equation, signs/units, transactional state semantics, diagnostic history-contamination boundary and minimum component qualification are frozen before implementation or E1 execution;
 - next permitted action: implement and independently qualify the research-only GW-A component and diagnostic origin-policy harness; do not preregister or execute a primary E1 run until those prerequisites are green;
 - cross-publication effect: none; no MODFLOW, production-backend, ME, SQ, RC or SG primary claim is created.
+
+
+### 2026-09-18 — Five-paper manifest reconciliation
+
+- `PUB-ME`: the prior production post-solver rollback result at `7e13915...` is retained as design/harness evidence and is not relabelled as prospective B0/B1 primary evidence. The causal B0/B1 comparison is frozen in `manifests/PUB-ME-CONFIRMATORY-FREEZE-v1.yaml`; primary execution remains blocked on the research-only bypass/injector harness.
+- `PUB-SQ`: P2E09 independently froze Reference-only E0 thresholds before the broad P2E10 candidate matrix. P2E10 then attempted all 54 preregistered cases: 36 paired-valid admissible, 18 RossFast-route invalid, with all and only WETTING cases outside the current production forcing envelope. The next confirmatory material-axis extension is frozen separately over the remaining 30 F-ROSS13 materials and must repeat Reference-only threshold construction before any new RossFast discrepancy execution.
+- `PUB-GC`: held-out E1 primary workflow `35287247968` completed successfully on exact head `936312659522fe4cacfd349b146d173caa07e5ab` with immutable artifact digest `sha256:0370c5a17033d789e60576a4a0253a8edf3c50dba1b4ab4244a468fa05ccfab6`. The E2 terminal comparator subsequently qualified at `188c863...`. GC-REF-A workflow `35288524091` completed successfully at `4fc8f6e...`, artifact digest `sha256:a6caaa3f32b2def358d8760fc86d073e423688ca47b35e09b775e7228a3d6136`. GC-REF-A is reference infrastructure only and does not retroactively create H2/H3 primary evidence.
+- next permitted programme action: materialize the missing ME B0/B1 research harness, execute the SQ 30-material Reference-only extension calibration, and materialize two new GC transient mechanism cases without inspecting comparative method outcomes.
 
 ## Register update rule
 
