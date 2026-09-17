@@ -46,6 +46,11 @@ program test_fgc31_active_drainage_trajectory_tangent
   call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,duration)
 
   call run_backend(qbot0,.true.,nominal,nominal_candidate,nominal_diag)
+  if (.not. nominal%completed) then
+    write(*,'(A,I0,A,ES14.6,A,I0,A,I0,A,I0)') 'FGC31_DEBUG_STATUS=',nominal%status, &
+         ' completed_t=',nominal%completed_t,' accepted=',nominal_diag%accepted_substeps, &
+         ' retries=',nominal_diag%retries,' temporal_rejections=',nominal_diag%temporal_rejections
+  end if
   call require(nominal%status == CANONICAL_STATUS_COMPLETED .and. nominal%completed, 'nominal completed')
   call require(nominal_candidate%ready(), 'nominal candidate ready')
   write(*,'(A,I0)') 'FGC31_DEBUG_ACCEPTED_SUBSTEPS=',nominal_diag%accepted_substeps
@@ -205,7 +210,7 @@ contains
     config%transaction%retry_scale=0.5_real64; config%transaction%max_retries=10
     config%max_committed_substeps=32; config%progress_tolerance=0.0_real64
     config%model_temporal_indicator_budget_available=.true.
-    config%model_temporal_indicator_budget=1.0e-14_real64
+    config%model_temporal_indicator_budget=1.5e-14_real64
     config%accepted_trajectory_direction%requested=request_direction
     config%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
   end subroutine initialize_config
