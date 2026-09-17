@@ -27,6 +27,19 @@
       "fgc31_disposition": "DO_NOT_PULL_FULLY_IMPLICIT_DRAINAGE_INTO_SCOPE",
       "reason": "F-GC31 preserves B1.10 lagged-per-substep drainage semantics. Its needed chain is accepted-state GWL -> next-substep drainage -> Richards tangent, not candidate-state drainage reevaluation within the same Newton solve.",
       "fpm16": "EXCLUDED_FROM_FGC31; existing placeholder branch points to historical canonical and concerns the broader fully-implicit drainage-v1 closure."
+    },
+    "concurrent_fgc31_delta": {
+      "commits": [
+        "83afa40020b6b126c74c27f014e58b8e4d60872e per-step source-sink coverage",
+        "d1526134735350f089ee40d4d7eb7f99d33c3922 carry source-sink coverage through accepted step",
+        "93002154e6c5aec2492dc0ce23230e8ae5de0301 aggregate coverage over accepted trajectory",
+        "e12f95301bdf0cb99ac7744690a5116c8fdef148 publish whole-trajectory coverage",
+        "ea35c36b83c1e0e62cef0b2e6cdc448d1526cf9a bind endpoint drainage coverage to trajectory provenance",
+        "15f23238ee0f0eee14ae53878c22a79b383b7a5b compose qbot GWL and drainage direction",
+        "ecbeec53f721fe2c156db1daadd5012845302ddb wire lagged drainage GWL tangent and candidate refresh"
+      ],
+      "disposition": "RECONCILED_AND_REUSED; no duplicate implementation added",
+      "semantic_boundary": "B1.10 lagged accepted-substep drainage only; not fully implicit Newton/Jacobian drainage"
     }
   },
   "calcgwl_recovery": {
@@ -72,10 +85,15 @@
     "production_source_scope": [
       "src/solver/mod_b110_smooth_freatic_projection.f90",
       "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
-      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90"
+      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+      "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+      "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90"
     ]
   },
-  "verdict": "CALCGWL_AUTHORITY_ACCEPTED_NUMERICAL_SEAMS_QUALIFIED_NOMINAL_AND_DIRECTIONAL_DRAINAGE_COMPOSITION_PERMITTED",
+  "verdict": "NOMINAL_QBOT_DRAINAGE_LIFECYCLE_AND_DIRECTIONAL_SEAMS_QUALIFIED_END_TO_END_MULTI_SUBSTEP_ORACLE_REQUIRED",
   "exclusions": [
     "full calcgwl branch reconstruction",
     "macropore groundwater-table semantics",
@@ -88,7 +106,7 @@
     "Ribasim",
     "groundwater coupling v1 semantic changes"
   ],
-  "next_permitted_action": "IMPLEMENT an explicit opt-in prescribed-qbot drainage projection envelope that recomputes the drainage hydraulic-view groundwater level from each substep start pressure profile, default false and independent of whether tangent publication is requested; preserve lagged B1.10 drainage and all F-PM14 default behavior.",
+  "next_permitted_action": "QUALIFY active-drainage accepted-trajectory tangent end-to-end over at least two accepted substeps against same-backend qbot centered finite differences; require drainage coverage provenance and no extra nonlinear solves.",
   "qualification": {
     "smooth_freatic_projection": {
       "head": "3378c487ef7c585a06ad4f68f981e631e7e366aa",
@@ -151,12 +169,31 @@
         "classification": "BUILD_HARNESS_DEPENDENCY_ORDER_ONLY",
         "cause": "same compile-order dependency in preservation harness"
       }
-    ]
+    ],
+    "qbot_drainage_projection_runtime": {
+      "tested_head": "490697cd12baf73044d579957814f35d052b24cb",
+      "workflow_run": 35287924197,
+      "workflow_job": 105424268632,
+      "conclusion": "success",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_exact_identity": "PASS",
+      "projected_gwl": "PASS",
+      "projected_drainage_response": "PASS",
+      "default_off_preservation": "PASS",
+      "fail_closed_outside_smooth_envelope": "PASS",
+      "accepted_candidate_gwl_refresh": "PASS"
+    }
   },
-  "branch_head_at_checkpoint": "067e2c8d99cadda643b02ef71e182bd50bd92650",
+  "branch_head_at_checkpoint": "979d37e8784450a03e9c9d871805ab50c5e3ed2e",
   "production_blobs": {
     "smooth_freatic_projection": "e83c1013a1d96508740619a71cfa1dbfdd665d61",
     "accepted_step_direction_contract": "9fe8923a8d1e3ac6fa64d7a1baf2f44fcb036d2d",
-    "accepted_step_directional_service": "3c2f643866be7a36c0e38c4883badb1775576785"
+    "accepted_step_directional_service": "3c2f643866be7a36c0e38c4883badb1775576785",
+    "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90": "481dc8cb1af683053614de3a11c4155acb34b413",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "d267a763ceb697557e762c937a99b7f11cb44684",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1be9af9ece045cac1fd17087e6b08bc615bd733",
+    "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90": "2d5342b45a61c9426d2b589b285050b648d141b9"
   }
 }
