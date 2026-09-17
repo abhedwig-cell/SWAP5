@@ -17,11 +17,10 @@ program test_fgc30_production_predictor_tangent_endpoint
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t
-  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
-       groundwater_interface_lineage_t
+  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_modflow6_swap_prescribed_qbot_bottom_face, only: modflow6_prescribed_qbot_bottom_face_t, &
        materialize_modflow6_prescribed_qbot_bottom_face, MODFLOW6_BOTTOM_FACE_OK
-  use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_response_t, &
+  use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, modflow6_swap_predictor_response_t, &
        compose_modflow6_swap_predictor_response, MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, MODFLOW6_PREDICTOR_OK
   use mod_modflow6_swap_predictor_tangent_adapter, only: modflow6_swap_predictor_tangent_endpoint_t, &
        build_modflow6_swap_predictor_tangent_endpoint, MODFLOW6_TANGENT_ENDPOINT_OK, &
@@ -43,7 +42,7 @@ program test_fgc30_production_predictor_tangent_endpoint
   type(soil_water_physical_state_t) :: predictor_state
   type(groundwater_head_datum_t) :: datum
   type(groundwater_coupling_window_t) :: window
-  type(groundwater_interface_lineage_t) :: lineage
+  type(modflow6_swap_predictor_lineage_t) :: lineage
   type(modflow6_prescribed_qbot_bottom_face_t) :: start_face, plus_face, minus_face
   type(modflow6_swap_predictor_tangent_endpoint_t) :: endpoint, blocked_endpoint
   type(modflow6_swap_predictor_response_t) :: response
@@ -119,9 +118,9 @@ program test_fgc30_production_predictor_tangent_endpoint
   lineage%coupling_id = 530030_int64
   lineage%swap_lineage_id = column_id
   lineage%swap_origin_revision = 0_int64
+  lineage%groundwater_service_id = 630031_int64
   lineage%groundwater_lineage_id = 630030_int64
   lineage%groundwater_origin_revision = 0_int64
-  lineage%candidate_revision = 1_int64
   call compose_modflow6_swap_predictor_response(window, lineage, qeq, start_face%hydraulic_head_m, &
        endpoint%bottom_face%hydraulic_head_m, endpoint%bottom_face%dpressure_head_cm_per_qbot_cm_per_day, &
        MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, endpoint%coverage, endpoint%derivative_method, &
