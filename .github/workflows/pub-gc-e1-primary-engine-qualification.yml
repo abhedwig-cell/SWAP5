@@ -1,12 +1,6 @@
 name: PUB-GC E1 primary engine qualification
 
 on:
-  push:
-    branches:
-      - research/pub-gc-e1-primary-engine
-    paths:
-      - 'tests/publication/pub_gc/e1_primary_engine/**'
-      - '.github/workflows/pub-gc-e1-primary-engine-qualification.yml'
   workflow_dispatch:
 
 permissions:
@@ -20,17 +14,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Record compiler and exact head
         shell: bash
         run: |
           gfortran --version
           echo "PUB_GC_E1_PRIMARY_ENGINE_WORKFLOW_HEAD=$(git rev-parse HEAD)"
-      - name: Qualify generic engine on non-primary fixture
+
+      - name: Qualify generic engine on frozen non-primary fixtures
         shell: bash
         run: |
           set -o pipefail
           mkdir -p artifacts/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001
-          bash tests/publication/pub_gc/e1_primary_engine/run_pub_gc_e1_primary_engine_qualification.sh | tee artifacts/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001/ci.log
+          bash tests/publication/pub_gc/e1_primary_engine/run_pub_gc_e1_primary_engine_qualification.sh \
+            | tee artifacts/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001/ci.log
+
       - name: Upload qualification evidence
         if: always()
         uses: actions/upload-artifact@v4
