@@ -3,14 +3,19 @@
   "capability": "F-GC34",
   "title": "MODFLOW6 Typed API Binding",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_TYPED_API_BINDING_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_MODFLOW6_TYPED_API_BINDING",
   "source_branch": {
     "branch": "work/f-gc33-modflow6-linear-response-backend",
     "head": "1eccdf9d7d365bc2449d7070e3beefb5ac419b82",
     "f_gc33_verdict": "OWNER_QUALIFIED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
     "qualification_run": 35287200861,
     "qualification_conclusion": "success"
+  },
+  "work_branch": {
+    "branch": "work/f-gc34-modflow6-api-binding",
+    "design_commit": "0f93e73dd3d6189ecd9f9e5d86281c50e41dfd1d",
+    "implementation_commit": "44396c8d86f79ce0911d49d047021e5740570a72"
   },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
@@ -24,16 +29,41 @@
       "imod_coupler/kernelwrappers/mf6_wrapper.py",
       "imod_coupler/drivers/ribametamod/exchange.py"
     ],
-    "contract": "MODFLOW6 API package exposes NODELIST, RHS, HCOF, MAXBOUND and NBOUND pointers; NODELIST is Fortran/MODFLOW 1-based and API package arrays are updated through these pointers"
+    "contract": "MODFLOW6 API package exposes NODELIST, RHS, HCOF, MAXBOUND and NBOUND pointers; NODELIST uses MODFLOW/Fortran 1-based node ids and the API package arrays are explicitly mutable"
   },
-  "binding_decision": {
-    "binding_key": "groundwater_cell_id",
-    "package_slot": "explicit 1-based active-prefix slot",
-    "modflow_node_id": "explicit 1-based NODELIST value",
-    "publication": "validate complete set first, then atomically write NODELIST/HCOF/RHS and finally NBOUND",
-    "n_to_1_nodes": "allowed only through multiple explicit slots; never silently collapsed"
+  "qualified_contract": [
+    "groundwater_cell_id, package_slot and modflow_node_id are independent explicit identities",
+    "package_slot is 1-based and the active slots must form exactly 1..N so NBOUND cannot activate an unintended gap",
+    "F-GC33 terms are matched to bindings by groundwater_cell_id rather than caller array order",
+    "publication validates the complete binding set before the first write",
+    "successful publication writes NODELIST, HCOF and RHS for active slots and then sets NBOUND",
+    "failed publication leaves NODELIST, HCOF, RHS and NBOUND unchanged",
+    "multiple distinct coupling cells may use distinct package slots that reference the same explicit MODFLOW node id without coefficient collapsing",
+    "inactive package tail beyond NBOUND remains untouched",
+    "the module has no XMI, MODFLOW solve, Ribasim or SWAP commit dependency"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC34 MODFLOW6 typed API binding",
+    "green_run": 35287606742,
+    "green_job": 105423308799,
+    "green_head": "44396c8d86f79ce0911d49d047021e5740570a72",
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FGC34_TYPED_PACKAGE_BINDING",
+      "FGC34_NO_XMI_SOLVE_OR_COMMIT",
+      "FGC34_EXPLICIT_IDENTITY_MAPPING",
+      "FGC34_HCOF_RHS_PUBLICATION",
+      "FGC34_NBOUND_ACTIVE_PREFIX",
+      "FGC34_ORDER_INDEPENDENCE",
+      "FGC34_N_TO_1_NODE_PRESERVATION",
+      "FGC34_UNMAPPED_TAIL_PRESERVED",
+      "FGC34_ATOMIC_FAIL_CLOSED",
+      "FGC34_TYPED_API_BINDING_GATE",
+      "FGC34_O0_O2_OUTPUT_IDENTITY"
+    ]
   },
-  "planned_changes": [
+  "changes": [
     "docs/integration/F-GC34_MODFLOW6_TYPED_API_BINDING.md",
     "src/runtime/mod_modflow6_api_binding.f90",
     "tests/fgc/test_fgc34_modflow6_api_binding.f90",
@@ -41,9 +71,13 @@
     ".github/workflows/f-gc34-modflow6-api-binding.yml",
     "integration/f-gc/F-GC34_STATUS.json"
   ],
+  "mutations": [
+    "0f93e73dd3d6189ecd9f9e5d86281c50e41dfd1d",
+    "44396c8d86f79ce0911d49d047021e5740570a72"
+  ],
   "exclusions": [
     "XMI address discovery or pointer acquisition",
-    "MODFLOW6 initialize/solve/finalize calls",
+    "MODFLOW6 initialize/prepare/solve/finalize calls",
     "predictor/corrector orchestration",
     "SWAP transaction/commit changes",
     "Ribasim",
@@ -51,5 +85,5 @@
     "active-drainage envelope expansion",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement and qualify the typed package-slot/NODELIST mapping and atomic HCOF/RHS/NBOUND publication."
+  "next_permitted_action": "Independent/admission review of the exact F-GC34 typed binding envelope, or a separately bounded XMI pointer/timing adapter that acquires NODELIST/HCOF/RHS/MAXBOUND/NBOUND addresses and invokes this already-qualified publisher without taking over MODFLOW6 solve orchestration."
 }
