@@ -152,36 +152,32 @@ Examples:
 - next permitted action: separately labelled transient screening within the broad bounds frozen in `PUB-GC_E1_ORIGIN_HARNESS_SPEC.md`; after screening freeze exact case, candidate heads, order permutations, metrics, thresholds and null interpretation before primary execution;
 - cross-publication effect: none; no MODFLOW, PUB-ME, PUB-SQ, PUB-RC or PUB-SG primary claim is inherited.
 
-### 2026-09-17T23:09:51Z — PUB-GC E1 transient screening completed
+### 2026-09-17T23:09:51Z — PUB-GC E1 SCREEN-0001 executed after supersession
 
-- preregistration manifest: `5c5d30273437bfc5082d2c91a75d25681cc8d15d`;
-- execution lock: `df134d0da4528964fad4470dcc2a013a26aadb4d`;
-- pre-execution trigger-deviation authority: `f2489a20d40a9c63873a4a9ff02d1e034f416a48`;
-- screening execution head: `research/pub-gc-e1-screening@e34aa5072b8cdf9064865865bade34f2c50d19b8`;
-- result receipt: `docs/publications/results/PUB-GC-E1-SCREEN-0001.yaml`, introduced by commit `4377317335a5d895aef58afab5d46d23f20a6162`;
+- original manifest: `5c5d30273437bfc5082d2c91a75d25681cc8d15d`;
+- superseding disjoint manifest: `bc8dca037912de10dbfce33d1ca7a62b34bc7761`, frozen at 2026-09-17T23:06:56Z, before SCREEN-0001 execution began;
 - execution: GitHub Actions run `35285493995`, job `105416772498`;
-- grid result: 20/20 preregistered rows eligible, 0 failed;
-- predeclared selection rule chose `window=0.05 d`, `B=-60 cm`, with screening-only `|Delta Q|=2.72263006884223523e-02 cm` and endpoint-head difference `2.55457754712986684 cm`;
-- interpretation guard: these magnitudes are screening/case-selection evidence only and are not H1 primary evidence;
-- next permitted action: freeze the primary A/B/C order-permutation experiment, GW-A parameters, exact metrics and null interpretation before implementing or executing the primary run;
-- cross-publication effect: none.
+- corrected receipt: `docs/publications/results/PUB-GC-E1-SCREEN-0001.yaml`;
+- corrected status: `NON_AUTHORITATIVE_SUPERSEDED_BEFORE_EXECUTION`;
+- authority consequence: no numeric result from SCREEN-0001 may be used for stress-class selection, primary numeric-point selection, thresholds or H1 inference;
+- correction authority: `docs/publications/decisions/PUB-GC-E1-SCREENING_PROVENANCE_CORRECTION.md`.
 
-Chronology note: this run remains valid historical supporting evidence, but its case-selection authority was superseded **before the controlling disjoint screen was executed** because its grid reused numeric points already seen during harness qualification. It must not control the primary-case freeze.
+### 2026-09-17T23:12:37Z — PUB-GC E1 disjoint SCREEN-0002 completed
 
-### 2026-09-17T23:12:37Z — PUB-GC E1 disjoint transient screening completed
-
-- controlling preregistration manifest: `bc8dca037912de10dbfce33d1ca7a62b34bc7761`, blob `2aef35c16f1b7c87ebd7ff572adeb24e4e830ee4`;
-- pre-execution trigger-deviation authority: `37e72ae755bce9920db7f157082fa13def3fea22`;
-- screening execution head: `research/pub-gc-e1-screening@13bed3b93330bf403be96e0b7886274206c954b9`;
-- result receipt: `docs/publications/results/PUB-GC-E1-SCREEN-0002.yaml`, introduced by commit `4b8e8065ada1663d0b663a553d90766251e9357c`;
+- controlling manifest: `bc8dca037912de10dbfce33d1ca7a62b34bc7761`, blob `2aef35c16f1b7c87ebd7ff572adeb24e4e830ee4`;
+- pre-execution trigger authority: `37e72ae755bce9920db7f157082fa13def3fea22`;
+- immutable pre-trigger scientific code state: `research/pub-gc-e1-screening@a46acf93ae7918293f88f095c4138f617be1b64e`;
+- execution head: `13bed3b93330bf403be96e0b7886274206c954b9`; its delta from the pre-trigger state changed only the workflow trigger;
 - execution: GitHub Actions run `35285701916`, job `105417414871`;
-- artifact: `10524475781`, digest `sha256:6ff649bbfaca0b8b78eb6a3be8b83bf05624a3a00bf012fd7628dc91c6f3ffd6`;
-- grid result: 21/21 PASS, 0 invalid; three no-perturbation controls gave exactly zero exchange/state difference; 18 noncontrol rows were selection-eligible;
-- predeclared selection rule chose the broad stress class **long + strong + drying-side**; the corresponding screening row was `window=0.04 d`, `B=-100 cm`, with screening-only endpoint-head difference `7.78041462170561715 cm` and `|Delta Q|=3.06609633956691496e-02` native cm;
-- holdout guard: neither that exact row nor any SCREEN-0002 numeric point may be reused in primary E1;
-- prerequisite newly satisfied: a stress class, but not primary numeric values, is now selected prospectively;
-- next permitted action: choose new exact primary window and A/B/C values inside the selected class, bind GW-A composition, freeze order permutations, metrics, materiality/null thresholds and execution authority, then advance to `READY_FOR_PRIMARY_RUN`;
-- cross-publication effect: none; this remains PUB-GC-only supporting case-selection evidence.
+- result receipt: `docs/publications/results/PUB-GC-E1-SCREEN-0002.yaml`;
+- grid result: 21/21 PASS, 0 invalid, 18 noncontrol rows selection-eligible;
+- predeclared class-selection result: `long + strong + drying-side`;
+- selected screening row for class identification only: row 20, `dt=0.04 d`, `B=-100 cm`, endpoint-head diagnostic difference `7.78041462170561715 cm`, `|Delta Q|=3.06609633956691496e-02 cm`;
+- holdout guard: that exact row, every SCREEN-0002 numeric point, every SCREEN-0001 numeric point and qualification-observed points are excluded from primary reuse;
+- provenance note: the manifest's inline code-head placeholder was not populated before execution; the actual pre-trigger scientific code state and workflow-only trigger delta are recorded explicitly in the result/correction decision;
+- interpretation guard: SCREEN-0002 selects only a broad stress class and is not H1 confirmation/falsification or a publication effect estimate;
+- next permitted action: freeze new disjoint primary A/B/C numeric points, at least two order permutations, GW-A composition, primary metrics, thresholds and null interpretation before implementation/execution;
+- cross-publication effect: none.
 
 ## Register update rule
 
