@@ -5,8 +5,8 @@
   "branch": "work/f-gc31-active-drainage-derivative-closure",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "head": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
-    "delta_since_fgc30_closeout": "NONE"
+    "head": "d67a96fd576dcd1c5a30eb766c5aa1a503e10cf0",
+    "delta_since_fgc30_closeout": "PUBLICATION_ONLY_NO_FGC31_PRODUCTION_COLLISION"
   },
   "parent_capability": {
     "workunit": "F-GC30",
@@ -93,7 +93,7 @@
       "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90"
     ]
   },
-  "verdict": "NOMINAL_QBOT_DRAINAGE_LIFECYCLE_AND_DIRECTIONAL_SEAMS_QUALIFIED_END_TO_END_MULTI_SUBSTEP_ORACLE_REQUIRED",
+  "verdict": "OWNER_QUALIFIED_ACTIVE_DRAINAGE_MULTI_SUBSTEP_TANGENT_READY_FOR_INDEPENDENT_VQ",
   "exclusions": [
     "full calcgwl branch reconstruction",
     "macropore groundwater-table semantics",
@@ -106,7 +106,7 @@
     "Ribasim",
     "groundwater coupling v1 semantic changes"
   ],
-  "next_permitted_action": "QUALIFY active-drainage accepted-trajectory tangent end-to-end over at least two accepted substeps against same-backend qbot centered finite differences; require drainage coverage provenance and no extra nonlinear solves.",
+  "next_permitted_action": "OPEN independent qualification workunit against exact owner head fff0a8be74de3240d56a910f1b19eb4fb50146e9; verifier must not change production source and must independently replay smooth-GWL projection, source/sink tangent, active-drainage multi-substep same-backend FD, coverage provenance, physical identity and fail-closed boundaries.",
   "qualification": {
     "smooth_freatic_projection": {
       "head": "3378c487ef7c585a06ad4f68f981e631e7e366aa",
@@ -183,9 +183,28 @@
       "default_off_preservation": "PASS",
       "fail_closed_outside_smooth_envelope": "PASS",
       "accepted_candidate_gwl_refresh": "PASS"
+    },
+    "active_drainage_production_tangent": {
+      "tested_head": "fff0a8be74de3240d56a910f1b19eb4fb50146e9",
+      "workflow_run": 35288724235,
+      "workflow_job": 105426705900,
+      "conclusion": "success",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_exact_identity": "PASS",
+      "accepted_substeps": 2,
+      "retries": 3,
+      "face_fd_error": 0.00002711418,
+      "max_head_fd_error": 0.00002711418,
+      "multi_substep": "PASS",
+      "drainage_coverage_provenance": "PASS",
+      "tangent_physical_identity": "PASS",
+      "same_backend_centered_fd": "PASS",
+      "no_extra_nonlinear_solve": "PASS",
+      "endpoint_authoritative": "PASS"
     }
   },
-  "branch_head_at_checkpoint": "979d37e8784450a03e9c9d871805ab50c5e3ed2e",
+  "branch_head_at_checkpoint": "fff0a8be74de3240d56a910f1b19eb4fb50146e9",
   "production_blobs": {
     "smooth_freatic_projection": "e83c1013a1d96508740619a71cfa1dbfdd665d61",
     "accepted_step_direction_contract": "9fe8923a8d1e3ac6fa64d7a1baf2f44fcb036d2d",
