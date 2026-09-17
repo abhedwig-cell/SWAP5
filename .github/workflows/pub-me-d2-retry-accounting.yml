@@ -1,0 +1,32 @@
+name: PUB-ME D2 retry accounting
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_D2_EXECUTION_CHECKPOINT.md'
+      - 'docs/publications/PUB-ME_D2_RESULT.md'
+      - 'tests/publication/test_pub_me_d2_retry_accounting.f90'
+      - 'tests/publication/run_pub_me_d2_retry_accounting.sh'
+      - '.github/workflows/pub-me-d2-retry-accounting.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d2-retry-accounting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered D2 gate
+        run: bash tests/publication/run_pub_me_d2_retry_accounting.sh
