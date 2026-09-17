@@ -3,11 +3,13 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC27",
   "title": "B1.10 cofgen parameter provenance",
-  "phase": "VERIFY",
-  "decision": "PARTIAL_PROVENANCE_MAPPING_ONLY",
+  "phase": "CLOSE",
+  "decision": "DOCUMENTATION_ADMITTED_AND_CLOSED",
   "branch": "work/f-doc27-cofgen-parameter-provenance",
   "canonical_start": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
   "content_postimage": "4fee60ed5873cab27729667988772def0b8ea5a6",
+  "admitted_canonical": "74051e113fcef19e021d69854f3ab99066eb30cb",
+  "pull_request": 179,
   "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
   "authority": {
@@ -32,7 +34,7 @@
       "change production, reference, test, physics or numerical semantics"
     ]
   },
-  "acquisition_verdict": "The repository proves the corrected B1.10 oracle identity and exact provider behaviour, but does not expose a separate readable original input-name/unit-to-cofgen(1:24) mapping. Additional SWAP-009/SWAP-013 harness and parser evidence corroborates several semantic roles but does not replace the missing direct parser/fill_cofgen row-binding. F-DOC27 therefore retains the partial provenance map and preserves unresolved entries instead of inventing aliases.",
+  "acquisition_verdict": "The repository proves the corrected B1.10 oracle identity and exact provider behaviour, but does not expose a complete direct parser/fill_cofgen input-name/unit-to-cofgen(1:24) mapping. Additional SWAP-009/SWAP-013 evidence corroborates several semantic roles without closing that direct provenance gap. The admitted documentation therefore preserves unresolved entries rather than inventing aliases.",
   "scope_diff": [
     "docs/science/index.md",
     "docs/science/soil-hydraulic-parameter-provenance.md",
@@ -42,14 +44,17 @@
   ],
   "production_reference_test_delta": false,
   "verification": {
-    "pull_request": 179,
-    "qualified_head": "8228711617ed1c0c4b9f06908806d47a05f5b655",
-    "documentation_workflow_run": 35219880812,
-    "documentation_job": 105197114237,
-    "repository_documentation_checks": "PASS",
-    "strict_mkdocs_build": "PASS",
-    "workflow_conclusion": "success"
+    "content_head": "8228711617ed1c0c4b9f06908806d47a05f5b655",
+    "content_run": 35219880812,
+    "content_job": 105197114237,
+    "content_repository_documentation_checks": "PASS",
+    "content_strict_mkdocs_build": "PASS",
+    "checkpoint_head": "34a396440677099e089d3f45cbf0029ea420e478",
+    "checkpoint_run": 35224598968,
+    "checkpoint_job": 105212831580,
+    "checkpoint_repository_documentation_checks": "PASS",
+    "checkpoint_strict_mkdocs_build": "PASS"
   },
-  "verdict": "VERIFY_PASS_PENDING_EXACT_HEAD_RECHECK",
-  "next_permitted_action": "RERUN_DOCUMENTATION_GATE_ON_STATUS_CHECKPOINT_HEAD_THEN_ADMIT_IF_CANONICAL_RELEVANT_DELTA_IS_CLEAN"
+  "verdict": "CLOSED_ADMITTED_DOCUMENTATION_ONLY",
+  "next_permitted_action": "NONE_F_DOC27_CLOSED"
 }
