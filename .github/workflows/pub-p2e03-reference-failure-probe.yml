@@ -1,0 +1,24 @@
+name: PUB-P2E03 Reference failure probe
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/publication/test_pub_p2e03_reference_failure_probe.f90'
+      - 'tests/publication/run_pub_p2e03_reference_failure_probe.sh'
+      - '.github/workflows/pub-p2e03-reference-failure-probe.yml'
+      - 'src/**'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+  workflow_dispatch:
+
+jobs:
+  reference-failure-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Classify representative Reference failures
+        run: bash tests/publication/run_pub_p2e03_reference_failure_probe.sh
