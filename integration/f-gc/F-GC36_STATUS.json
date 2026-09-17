@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC36",
+  "title": "Live MODFLOW6 F-GC34 Bridge Smoke Test",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_LIVE_MODFLOW6_BRIDGE_IMPLEMENTATION",
+  "source_branch": {
+    "branch": "work/f-gc35-modflow6-xmi-package-adapter",
+    "head": "56237c94272fa110072e06c4bba54ad1eb05d061",
+    "f_gc35_verdict": "OWNER_QUALIFIED_XMI_PACKAGE_ADAPTER_CONTRACT",
+    "checkpoint_run": 35288150266,
+    "checkpoint_conclusion": "success"
+  },
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "1604b89e6bebf6436dcd2718b8e150bf909d8a01",
+    "relevant_delta": "No canonical movement since F-GC35."
+  },
+  "external_dependencies": {
+    "modflow6": {
+      "repository": "MODFLOW-ORG/modflow6",
+      "release": "6.8.0",
+      "asset": "mf6.8.0_linux.zip",
+      "sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e"
+    },
+    "xmipy": {
+      "repository": "Deltares/xmipy",
+      "commit": "9769f8cd4bc6153c71bcc360f602a931b102d902"
+    },
+    "flopy": {
+      "repository": "modflowpy/flopy",
+      "commit": "1a783da6582f8203190a8d6b1d7a60659022afdb"
+    }
+  },
+  "bridge_decision": {
+    "fortran": "C-ABI wrapper reconstructs existing F-GC34 types and directly invokes publish_modflow6_api_terms",
+    "python": "ctypes publisher only marshals arrays and returns the real F-GC34 status",
+    "live_outputs": "real XMI-backed NODELIST/HCOF/RHS/NBOUND NumPy views",
+    "solve_owner": "smoke-test harness only"
+  },
+  "planned_changes": [
+    "docs/integration/F-GC36_LIVE_MODFLOW6_FGC34_BRIDGE.md",
+    "src/adapter/mod_modflow6_fgc34_c_bridge.f90",
+    "src/adapter/modflow6_fgc34_ctypes_publisher.py",
+    "tests/fgc/test_fgc36_live_modflow6_bridge.py",
+    "tests/fgc/run_fgc36_live_modflow6_bridge.sh",
+    ".github/workflows/f-gc36-live-modflow6-bridge.yml",
+    "integration/f-gc/F-GC36_STATUS.json"
+  ],
+  "exclusions": [
+    "production MODFLOW solve driver",
+    "SWAP predictor/corrector orchestration",
+    "production head exchange",
+    "Ribasim",
+    "irrigation",
+    "drainage envelope expansion",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement the C-ABI F-GC34 wrapper, ctypes publisher and one live MODFLOW6 6.8.0 API-package smoke gate."
+}
