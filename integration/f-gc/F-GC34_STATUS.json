@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC34",
+  "title": "MODFLOW6 Typed API Binding",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_TYPED_API_BINDING_IMPLEMENTATION",
+  "source_branch": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend",
+    "head": "1eccdf9d7d365bc2449d7070e3beefb5ac419b82",
+    "f_gc33_verdict": "OWNER_QUALIFIED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
+    "qualification_run": 35287200861,
+    "qualification_conclusion": "success"
+  },
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "1604b89e6bebf6436dcd2718b8e150bf909d8a01",
+    "delta_since_f_gc33_reconciliation": "24 commits touching only publication experiment/workflow/evidence files; no F-GC30/F-GC31/F-GC33 dependency source changes"
+  },
+  "external_semantics_evidence": {
+    "repository": "Deltares/imod_coupler",
+    "commit": "3ddeec26ba1a0f1fcb4cf681b3f3202b4a6de6b7",
+    "files": [
+      "imod_coupler/kernelwrappers/mf6_wrapper.py",
+      "imod_coupler/drivers/ribametamod/exchange.py"
+    ],
+    "contract": "MODFLOW6 API package exposes NODELIST, RHS, HCOF, MAXBOUND and NBOUND pointers; NODELIST is Fortran/MODFLOW 1-based and API package arrays are updated through these pointers"
+  },
+  "binding_decision": {
+    "binding_key": "groundwater_cell_id",
+    "package_slot": "explicit 1-based active-prefix slot",
+    "modflow_node_id": "explicit 1-based NODELIST value",
+    "publication": "validate complete set first, then atomically write NODELIST/HCOF/RHS and finally NBOUND",
+    "n_to_1_nodes": "allowed only through multiple explicit slots; never silently collapsed"
+  },
+  "planned_changes": [
+    "docs/integration/F-GC34_MODFLOW6_TYPED_API_BINDING.md",
+    "src/runtime/mod_modflow6_api_binding.f90",
+    "tests/fgc/test_fgc34_modflow6_api_binding.f90",
+    "tests/fgc/run_fgc34_modflow6_api_binding.sh",
+    ".github/workflows/f-gc34-modflow6-api-binding.yml",
+    "integration/f-gc/F-GC34_STATUS.json"
+  ],
+  "exclusions": [
+    "XMI address discovery or pointer acquisition",
+    "MODFLOW6 initialize/solve/finalize calls",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation",
+    "active-drainage envelope expansion",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement and qualify the typed package-slot/NODELIST mapping and atomic HCOF/RHS/NBOUND publication."
+}
