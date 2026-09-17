@@ -35,6 +35,12 @@ The production Reference binding constructs physical candidate state separately 
 
 The field `warm_start_head` is **not** selected for D5 because current production resets it at every solve and no production read/write path establishing meaningful numerical continuation was found. D5 must not manufacture a warm-start mechanism merely to make the experiment work.
 
+## Reference residual-unit guard
+
+P2E05 established before D5 that the Reference HeadCalc compartment/total convergence residual is a **rate residual in cm/day**, whereas the RossFast hard mass bound is an integrated depth in cm. D5 therefore fixes the Reference internal numerical criteria to the existing numeric Reference value `1e-12 cm/day` and must not import or reinterpret a RossFast integrated-mass tolerance as a Reference convergence criterion.
+
+The frozen `full_dt=0.0016 day` and `retry_dt=0.0008 day` are written explicitly in D5 rather than imported from an alternative-solver execution-policy constant. This is a units/authority correction made before the first D5 execution; it does not alter the frozen D5 defect semantics, fixture or B1/B2 classification rules.
+
 ## Frozen fixture
 
 Reuse the pre-existing Reference-only B01 P2E02 physical fixture:
