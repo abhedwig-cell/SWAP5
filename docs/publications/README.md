@@ -10,6 +10,7 @@ This directory contains the prospective publication and doctoral-research layer 
 | --- | --- | --- |
 | `PHD_RESEARCH_PROGRAMME.md` | living hypothesis | overarching doctoral question, thesis, research arc and synthesis claims |
 | `PUBLICATION_PORTFOLIO.md` | working governance contract | ownership/firewall rules across publications |
+| `EVIDENCE_INVENTORY.md` | living evidence map | classifies existing and missing evidence across papers and thesis synthesis without rewriting chronology |
 | `PUB-ME_SCIENTIFIC_CONTRACT.md` | initial contract | RQ1 / PRESERVE: evidence-preserving scientific model evolution |
 | `PUB-SQ_SCIENTIFIC_CONTRACT.md` | initial contract | RQ2 / REPLACE: scientific qualification of alternative Richards solvers |
 | `PUB-GC_SCIENTIFIC_CONTRACT.md` | developed initial contract | RQ3 / COUPLE: finite-window conservative groundwater-vadose coupling |
@@ -46,6 +47,17 @@ This sequence is conceptual rather than a mandatory publication order. `PUB-ME` 
 Primary scientific claims, manuscript figures and tables have one publication owner. Shared model cases, benchmark harnesses, telemetry and software infrastructure may support multiple publications.
 
 Thesis-level synthesis claims use `THESIS-SYNTHESIS` and may combine conclusions from multiple papers without reassigning their primary provenance.
+
+## Evidence classes
+
+`EVIDENCE_INVENTORY.md` uses four explicit classes:
+
+- `FOUNDATIONAL_EXISTING`: already existing capability or qualification evidence needed by a paper;
+- `RETROSPECTIVE_CANDIDATE`: historical evidence that may be publication-usable after re-audit, but was not designed as a publication experiment;
+- `SHARED_INFRASTRUCTURE`: reusable code, cases, telemetry or test surfaces without primary scientific ownership;
+- `PROSPECTIVE_REQUIRED`: publication-grade evidence that still has to be generated under a scientific contract.
+
+This distinction prevents the existence of substantial engineering/qualification work from being mistaken for a completed manuscript result.
 
 ## Current maturity
 
@@ -101,11 +113,11 @@ Negative findings and failed hypotheses are evidence and should remain traceable
 
 ## Next programme-level work
 
-The highest-value next steps are:
+The highest-value next steps are now:
 
 1. perform a systematic novelty/literature review separately for each paper rather than one blended review;
-2. build a common evidence and experiment manifest so raw runs can be reused without duplicating primary inferences;
-3. mark existing historical SWAP5 workunits retrospectively only where provenance is unambiguous, without pretending hypotheses were pre-registered when they were not;
-4. design prospective experiment matrices for `PUB-ME`, `PUB-SQ` and `PUB-GC` first;
+2. convert the `PROSPECTIVE_REQUIRED` gaps in `EVIDENCE_INVENTORY.md` into explicit experiment matrices, starting with `PUB-ME`, `PUB-SQ` and `PUB-GC`;
+3. introduce the publication-evidence metadata/telemetry fields before new publication-relevant runs are generated;
+4. audit selected `RETROSPECTIVE_CANDIDATE` evidence before using it in figures or manuscript claims;
 5. keep `PUB-RC` and `PUB-SG` dependent on evidence rather than predetermined paper count;
 6. mature `PHD_RESEARCH_PROGRAMME.md` into a formal proposal only after supervisor/institutional framing and literature positioning have been added.
