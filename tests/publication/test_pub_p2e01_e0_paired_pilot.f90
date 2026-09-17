@@ -153,10 +153,10 @@ contains
 
     if (trim(model_key) == FMR_ROSSFAST_SOLVER_MODEL_KEY) then
       call require(output%solver_headcalc_calls == 0, 'RossFast route has no HeadCalc execution')
-      call require(output%solver_alternative_calls > 0, 'RossFast route reports alternative solver execution')
+      call require(output%solver_alternative_solver_calls > 0, 'RossFast route reports alternative solver execution')
     else
       call require(output%solver_headcalc_calls > 0, 'Reference route executes HeadCalc')
-      call require(output%solver_alternative_calls == 0, 'Reference route has no alternative solver execution')
+      call require(output%solver_alternative_solver_calls == 0, 'Reference route has no alternative solver execution')
     end if
 
     call committed%snapshot(snapshot, available)
@@ -178,9 +178,9 @@ contains
     endpoint%mass_residual = output%mass%residual
     endpoint%revision = output%final_revision
     endpoint%accepted_substeps = output%accepted_substeps
-    endpoint%retries = output%retries
+    endpoint%retries = output%solver_internal_retries
     endpoint%headcalc_calls = output%solver_headcalc_calls
-    endpoint%alternative_solver_calls = output%solver_alternative_calls
+    endpoint%alternative_solver_calls = output%solver_alternative_solver_calls
     endpoint%solver_route = trim(output%solver_route)
   end subroutine run_route
 
