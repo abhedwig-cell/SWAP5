@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_PRIMARY_FREEZE | preregistered screen `PUB-GC-E1-SCREEN-0001` completed 20/20 eligible and selected window 0.05 d with B=-60 cm; freeze A/B/C sequences, GW-A parameters, metrics and null interpretation before any primary run |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_PRIMARY_FREEZE | controlling disjoint screen `PUB-GC-E1-SCREEN-0002` completed 21/21 PASS, 18 selection-eligible; predeclared rule selected broad class long + strong + drying-side; freeze new held-out A/B/C values, GW-A parameters, metrics and null interpretation before any primary run |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
@@ -165,6 +165,23 @@ Examples:
 - interpretation guard: these magnitudes are screening/case-selection evidence only and are not H1 primary evidence;
 - next permitted action: freeze the primary A/B/C order-permutation experiment, GW-A parameters, exact metrics and null interpretation before implementing or executing the primary run;
 - cross-publication effect: none.
+
+Chronology note: this run remains valid historical supporting evidence, but its case-selection authority was superseded **before the controlling disjoint screen was executed** because its grid reused numeric points already seen during harness qualification. It must not control the primary-case freeze.
+
+### 2026-09-17T23:12:37Z — PUB-GC E1 disjoint transient screening completed
+
+- controlling preregistration manifest: `bc8dca037912de10dbfce33d1ca7a62b34bc7761`, blob `2aef35c16f1b7c87ebd7ff572adeb24e4e830ee4`;
+- pre-execution trigger-deviation authority: `37e72ae755bce9920db7f157082fa13def3fea22`;
+- screening execution head: `research/pub-gc-e1-screening@13bed3b93330bf403be96e0b7886274206c954b9`;
+- result receipt: `docs/publications/results/PUB-GC-E1-SCREEN-0002.yaml`, introduced by commit `4b8e8065ada1663d0b663a553d90766251e9357c`;
+- execution: GitHub Actions run `35285701916`, job `105417414871`;
+- artifact: `10524475781`, digest `sha256:6ff649bbfaca0b8b78eb6a3be8b83bf05624a3a00bf012fd7628dc91c6f3ffd6`;
+- grid result: 21/21 PASS, 0 invalid; three no-perturbation controls gave exactly zero exchange/state difference; 18 noncontrol rows were selection-eligible;
+- predeclared selection rule chose the broad stress class **long + strong + drying-side**; the corresponding screening row was `window=0.04 d`, `B=-100 cm`, with screening-only endpoint-head difference `7.78041462170561715 cm` and `|Delta Q|=3.06609633956691496e-02` native cm;
+- holdout guard: neither that exact row nor any SCREEN-0002 numeric point may be reused in primary E1;
+- prerequisite newly satisfied: a stress class, but not primary numeric values, is now selected prospectively;
+- next permitted action: choose new exact primary window and A/B/C values inside the selected class, bind GW-A composition, freeze order permutations, metrics, materiality/null thresholds and execution authority, then advance to `READY_FOR_PRIMARY_RUN`;
+- cross-publication effect: none; this remains PUB-GC-only supporting case-selection evidence.
 
 ## Register update rule
 
