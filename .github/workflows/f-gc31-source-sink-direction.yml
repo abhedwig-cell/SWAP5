@@ -1,0 +1,31 @@
+name: F-GC31 source-sink directional seam
+
+on:
+  push:
+    branches:
+      - work/f-gc31-active-drainage-derivative-closure
+    paths:
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'tests/fgc/test_fgc31_source_sink_direction.f90'
+      - 'tests/fgc/run_fgc31_source_sink_direction.sh'
+      - '.github/workflows/f-gc31-source-sink-direction.yml'
+      - 'integration/f-gc/F-GC31_CHECKPOINT.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-sink-direction:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-GC31 source-sink direction gate
+        run: bash tests/fgc/run_fgc31_source_sink_direction.sh
