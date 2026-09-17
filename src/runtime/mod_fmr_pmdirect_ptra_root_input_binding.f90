@@ -55,7 +55,11 @@ contains
     diagnostics%upstream_result_accepted = .true.
 
     ptra = pmdirect_result%potential_transpiration_cm_per_day
-    if (.not. ieee_is_finite(ptra) .or. ptra < 0.0_real64) then
+    if (.not. ieee_is_finite(ptra)) then
+      diagnostics%status = FMR_PMDIRECT_PTRA_ROOT_INVALID_PTRA
+      return
+    end if
+    if (ptra < 0.0_real64) then
       diagnostics%status = FMR_PMDIRECT_PTRA_ROOT_INVALID_PTRA
       return
     end if
