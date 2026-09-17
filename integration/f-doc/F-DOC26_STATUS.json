@@ -3,9 +3,9 @@
   "work_unit": "F-DOC26",
   "title": "Soil-Hydraulic Constitutive Technical Reference",
   "branch": "work/f-doc26-soil-hydraulic-constitutive-reference",
-  "phase": "ACQUIRE",
-  "decision": "AUTHORITY_ACQUIRED_READY_FOR_UPDATE",
-  "verdict": "READY_FOR_UPDATE",
+  "phase": "UPDATE",
+  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
+  "verdict": "READY_FOR_VERIFY",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "sha": "5efb2603524145192f80b3472c288c1b6828cf69"
@@ -45,7 +45,7 @@
     "the ordinary provider's dconductivity_dhead output is deliberately zero/reserved because SWKIMPL=1 is not admitted",
     "F-SI37 separately qualifies an analytic fixed-smooth-route direction and fails sensitivity closed at constitutive/regime switches",
     "F-SI37 is owner qualification only and does not broaden frozen Status-A physical admission",
-    "cofgen row meanings will not be renamed unless an accepted source explicitly establishes the semantic mapping; index notation is authoritative where mapping remains unresolved"
+    "cofgen row meanings are not renamed unless an accepted source explicitly establishes the semantic mapping; index notation remains authoritative where mapping is unresolved"
   ],
   "hard_nonclaims": [
     "No admission of SWKIMPL=1 production dK/dh.",
@@ -55,6 +55,27 @@
     "No invented semantic names for unresolved cofgen indices.",
     "No production, reference, scientific-formula or solver-semantics mutation by F-DOC26."
   ],
-  "mutations": [],
-  "next_permitted_action": "UPDATE_DOCUMENTATION_ONLY"
+  "documentation_postimage": {
+    "head_before_checkpoint": "0b9a52c5fd10fcf0ae6f1deb650527051b8fa4a4",
+    "files": [
+      "docs/science/soil-hydraulic-constitutive-relations.md",
+      "docs/science/soil-water-flow.md",
+      "docs/science/index.md",
+      "mkdocs.yml",
+      "integration/f-doc/F-DOC26_AUTHORITY_MATRIX.md",
+      "integration/f-doc/F-DOC26_STATUS.json"
+    ],
+    "scope_diff": "PASS_DOCUMENTATION_AND_GOVERNANCE_ONLY",
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_changed": false,
+    "scientific_denominator_changed": false
+  },
+  "mutations": [
+    "added bounded soil-hydraulic constitutive technical reference",
+    "linked vertical soil-water reference to constitutive owner page",
+    "added constitutive page to scientific read order and MkDocs navigation",
+    "added F-DOC26 authority matrix and resumable checkpoint"
+  ],
+  "next_permitted_action": "VERIFY_DOCUMENTATION_POSTIMAGE"
 }
