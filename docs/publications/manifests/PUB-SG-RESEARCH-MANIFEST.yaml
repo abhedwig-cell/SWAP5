@@ -1,0 +1,155 @@
+manifest:
+  id: PUB-SG-RESEARCH-MANIFEST
+  title: Transferability limits of effective vadose-zone representations under dynamic groundwater feedback
+  publication_owner: PUB-SG
+  doctoral_rq: RQ5
+  role: SCALE
+  status: CONDITIONAL_DRAFT_FREEZE_CANDIDATE
+  source_branch: research/phd-five-paper-manifests-20260918
+  source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  governing_contract: docs/publications/PUB-SG_SCIENTIFIC_CONTRACT.md
+  prerequisite: PUB-GC N-to-1 conservation and strict coupled numerical reference must be established first.
+
+research_question: >-
+  Under which combinations of vadose-zone heterogeneity, atmospheric forcing and groundwater
+  dynamics does an equivalent single-column representation cease to be transferable across
+  hydrological regimes?
+
+novelty_boundary:
+  not_claimed:
+    - Multiple SVAT or vadose columns per groundwater cell.
+    - Area-weighted N-to-1 aggregation.
+    - The general fact that nonlinear upscaling can fail.
+  candidate_contribution: >-
+    A cross-regime transferability test for an equivalent full dynamic vadose-zone column under
+    two-way groundwater feedback, yielding a mechanism-based regime map of when explicit subgrid
+    columns are and are not scientifically necessary.
+  literature_anchors:
+    - doi: 10.2136/vzj2006.0055
+      relevance: Review distinguishing effective/equivalent properties and boundary-condition dependence in vadose-zone upscaling.
+    - doi: 10.2136/vzj2018.10.0191
+      relevance: Review showing grid-scale infiltration upscaling remains theoretically incomplete.
+    - family: MetaSWAP/SIMGRO
+      relevance: Existing subgrid SVAT-to-groundwater mapping means N-to-1 itself is not novel.
+
+truth_and_reduced_models:
+  explicit_truth_system:
+    definition: Q_N(t) = sum_i w_i * Q_i(t)
+    requirement: >-
+      Each subcolumn retains its own accepted state and full dynamic response while sharing the
+      same groundwater-cell head through the qualified PUB-GC contract.
+  reduced_system:
+    definition: One equivalent column E with frozen parameters after calibration.
+    requirement: No recalibration on holdout hydrologic regimes.
+
+hypotheses:
+  H1: >-
+    Cross-regime transferability error grows with nonlinear contrast among subcolumns and with
+    transitions between hydrologic response regimes.
+  H2: >-
+    Shallow and dynamically varying groundwater amplifies the relevance of subgrid heterogeneity
+    when capillary rise, root-zone access or lower-boundary switching becomes important.
+  H3: >-
+    A non-empty weak-feedback or low-contrast domain exists in which one equivalent column remains
+    transferable and explicit subgrid resolution provides little scientific gain.
+  H4: >-
+    Transferability failure is better explained by regime transitions and response contrast than
+    by static parameter variance alone.
+
+design:
+  mechanism_stage:
+    cases:
+      - coarse_vs_fine_soil
+      - shallow_vs_deep_rooting
+      - contrasting_antecedent_state
+      - management_or_forcing_contrast_where_scientifically_justified
+    purpose: Identify interpretable mechanisms before large ensembles.
+  calibration_regime:
+    id: R_A
+    rule: >-
+      Fit the equivalent column only to predeclared metrics under one hydrologic regime or one
+      explicitly bounded calibration family. Freeze parameters and objective weights afterward.
+  holdout_regimes:
+    required:
+      - different_precipitation_or_irrigation_structure
+      - different_evaporative_demand
+      - deeper_or_shallower_groundwater
+      - groundwater_rise_or_fall
+      - drainage_to_capillary_rise_or_reverse_transition
+    prohibition: No refitting, retuning of metric weights or replacement of failed regimes after outcome inspection.
+  realistic_stage:
+    role: supporting_transfer_test
+    rule: Start only after a controlled regime map and error decomposition exist.
+
+comparators:
+  required:
+    - calibrated_equivalent_full_SWAPP_column
+  desirable_where_feasible:
+    - area_weighted_parameter_average
+    - dominant_soil_or_land_use_column
+    - established_reduced_MetaSWAP_like_representation
+  fairness_rule: Do not define only a deliberately poor arithmetic-average comparator.
+
+primary_endpoint:
+  name: cross_regime_transferability_error
+  components:
+    - cumulative_groundwater_exchange_error
+    - groundwater_head_error
+    - vadose_or_root_zone_storage_error
+    - evapotranspiration_or_transpiration_error_where_active
+  definition: >-
+    Evaluate the frozen equivalent column against the explicit N-column system in each holdout
+    regime. Report components separately and classify transferability only against predeclared
+    materiality thresholds.
+  no_single_metric_rule: >-
+    Similar cumulative exchange does not establish equivalence if timing, storage, ET or induced
+    groundwater head differs materially.
+
+error_decomposition:
+  must_separate:
+    - coupling_error
+    - solver_error
+    - spatial_aggregation_error
+    - equivalent_model_parameter_error
+  base_method: Use a strict or converged PUB-GC configuration so coupling error is below the spatial-effect scale being tested.
+
+thresholds:
+  numerical_floor: >-
+    Quantify from PUB-GC coupling refinement and solver/reference uncertainty before defining a
+    spatial-aggregation effect as meaningful.
+  hydrologic_materiality: >-
+    Freeze before confirmatory holdout runs using application-relevant head, exchange, storage and
+    ET scales. Do not use observed explicit-versus-effective differences to choose the threshold.
+  transferability_rule: >-
+    The equivalent column is transferable in a regime only if every primary component passes its
+    materiality threshold without recalibration.
+
+analysis:
+  preferred_output: >-
+    A regime map linking heterogeneity contrast, groundwater feedback and forcing regime to
+    transferability success/failure and error magnitude.
+  predictor_goal: >-
+    Seek interpretable response or contrast measures rather than a case-specific classifier with
+    no hydrologic meaning.
+
+kill_or_redirect:
+  standalone_claim_fails_if:
+    - A credible equivalent column remains transferable across the intended holdout domain.
+    - Differences are below the numerical or parameter/observation uncertainty floor.
+    - Effects occur only under unrealistic parameter contrasts.
+    - No mechanism or transferable regime boundary can be identified.
+    - Coupling-window or solver error dominates the apparent heterogeneity effect.
+  important_negative_result: >-
+    Broad success of the equivalent column is scientifically informative and should be reported,
+    but it may justify merging the result into a coupling/upscaling synthesis rather than forcing
+    a standalone paper.
+
+publication_firewall:
+  inherits_without_reclaiming:
+    - PUB-GC_N_to_1_mapping_and_conservation
+    - PUB-GC_same_origin_and_whole_window_exchange
+    - PUB-RC_acceleration_if_used
+  owns:
+    - cross_regime_transferability
+    - spatial_aggregation_error
+    - mechanism_and_regime_map_for_subgrid_need
