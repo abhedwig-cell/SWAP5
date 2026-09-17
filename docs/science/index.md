@@ -21,18 +21,19 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 1. [Conceptual system and boundaries](conceptual-model.md)
 2. [Water balance, signs and units](water-balance-and-conventions.md)
 3. [Vertical soil-water flow](soil-water-flow.md)
-4. [Hydrological boundary conditions](hydrological-boundary-conditions.md)
-5. [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md)
-6. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
-7. [Surface evaporation](surface-evaporation.md)
-8. [Drainage](drainage.md)
-9. [Drainage-v1 formulations](drainage-formulations.md)
-10. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md)
-11. [Restricted one-call-daily Snow formulation](restricted-snow.md)
-12. [Status-A capability review pages](../capabilities/index.md)
-13. [Numerical formulation](../numerics/index.md)
-14. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-15. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+4. [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md)
+5. [Hydrological boundary conditions](hydrological-boundary-conditions.md)
+6. [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md)
+7. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
+8. [Surface evaporation](surface-evaporation.md)
+9. [Drainage](drainage.md)
+10. [Drainage-v1 formulations](drainage-formulations.md)
+11. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md)
+12. [Restricted one-call-daily Snow formulation](restricted-snow.md)
+13. [Status-A capability review pages](../capabilities/index.md)
+14. [Numerical formulation](../numerics/index.md)
+15. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+16. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
 
 ## Technical-reference discipline
 
@@ -56,6 +57,8 @@ Some Status-A capabilities need a bounded reviewer-facing explanation even thoug
 - Groundwater Coupling v1.
 
 For WOFOST, Snow and Groundwater Coupling v1, the scientific section now also provides dedicated bounded references. [WOFOST81 crop state and SWAP coupling](wofost-crop-coupling.md) separates the independently qualified crop-owned state surface from SWAP-owned hydrological interfaces and runtime event delivery. [Restricted one-call-daily Snow formulation](restricted-snow.md) records the exact admitted daily process, storage partitioning and component mass classification without generalizing to other durations. [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md) records the exact head-datum translation, flux signs and units, whole-window exchange, restricted predictor-corrector route and accepted-state interface ledger without promoting the structural gateway to broad backend admission.
+
+For the reference soil-water route, [Soil-hydraulic constitutive relations](soil-hydraulic-constitutive-relations.md) records the exact bounded default B1.10 MvG value-provider behind `theta(h)`, `C(h)` and `K(h,theta)`, including its near-saturation and modified transition branches. It also keeps the ordinary F-SI09 value-provider distinct from the separately qualified F-SI37 fixed-smooth-route directional derivative capability.
 
 The scientific reference pages can add physical meaning and equations where theory, implementation and qualification have been reconciled. The capability pages remain the controlling source for the admitted review scope.
 
