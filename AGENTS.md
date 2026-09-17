@@ -8,12 +8,13 @@ Use repository state as authority. Chat history, local scratch notes, generated 
 
 When starting material work:
 
-1. Read the exact target branch and HEAD commit.
-2. For current SWAP5 scope, read `docs/status-a/CURRENT_STATUS.md`, `docs/status-a/CURRENT_ARCHITECTURE.md`, and `docs/status-a/TRACEABILITY.md` before relying on older migration/status material.
-3. Read the relevant accepted capability documentation and work-unit evidence.
-4. Identify the owning workstream and interfaces touched.
-5. State which architecture invariants are affected.
-6. Distinguish implemented, persisted, tested, qualified, preserved, and canonically admitted state.
+1. Read the exact target branch and HEAD commit and pin that ref for the current phase.
+2. When resuming an existing work unit, read its versioned status/recovery record first if the path is known. Use it as navigation to the recovery point, relevant paths and dependency surface; it is not a substitute for the owning authority.
+3. Reconcile only the relevant live delta since the recorded checkpoint/reconciliation state. For current SWAP5 scope questions, read `docs/status-a/CURRENT_STATUS.md`, `docs/status-a/CURRENT_ARCHITECTURE.md`, and `docs/status-a/TRACEABILITY.md` before relying on older migration/status material.
+4. Read the relevant accepted capability documentation and work-unit evidence.
+5. Identify the owning workstream and interfaces touched.
+6. State which architecture invariants are affected.
+7. Distinguish implemented, persisted, tested, qualified, preserved, and canonically admitted state.
 
 If repository state and chat context disagree, repository state wins.
 
@@ -28,7 +29,7 @@ For most work, start here:
 - `docs/development/knowledge-map.md` - task-oriented map of repository authority and evidence.
 - `docs/architecture/invariants.md` - normative architecture invariants.
 - `docs/development/workstreams.md` - workstream ownership, integration boundaries, and coordination rules.
-- `docs/development/workstream-execution-protocol.md` - checkpoint, recovery, and qualification discipline.
+- `docs/development/workstream-execution-protocol.md` - checkpoint, recovery, connector-efficient retrieval, and qualification discipline.
 - `docs/development/documentation.md` - documentation status labels and docs-as-code rules.
 - `docs/verification/principles.md` - verification and reference policy.
 - `docs/decisions/` - accepted architecture decisions and rationale.
@@ -59,14 +60,18 @@ For a material work unit, maintain a recoverable Git state before expensive or t
 
 A checkpoint is a recovery boundary, not a default stopping point. After persisting a meaningful checkpoint, continue automatically with the next safe and authorized phase unless a real blocker, explicit review boundary, tool failure, or runtime risk requires stopping.
 
+For connector-mediated repository work, use the retrieval order `status first -> exact ref -> relevant delta -> bounded files -> search only if needed`. Treat a search result as a locator rather than branch authority unless the search is explicitly scoped to the pinned target ref; re-read located paths at the exact target SHA before relying on them. Do not perform broad repository recovery when a valid status record and unchanged dependency surface make it unnecessary.
+
 A useful handoff identifies at least:
 
 ```text
 WORKSTREAM
 WORK UNIT
 BASELINE
+STATUS / RECOVERY RECORD
 SCOPE
 FILES / COMPONENTS TOUCHED
+RELEVANT PATHS / DEPENDENCY SURFACE
 INTERFACES CHANGED
 INVARIANTS AFFECTED
 IMPLEMENTATION STATUS
@@ -86,7 +91,7 @@ Prefer the smallest change that satisfies the accepted contract.
 Before editing code or contracts:
 
 1. Locate the owning authority.
-2. Search for dependent interfaces and tests.
+2. Search for dependent interfaces and tests only after using the work-unit status/recovery paths and exact-ref bounded retrieval where available.
 3. Check current canonical integration state and applicable Status-A/successor scope authority.
 4. Decide whether the change is implementation, documentation, verification, or a design decision.
 5. Preserve existing qualified behaviour unless the work unit explicitly changes it.
