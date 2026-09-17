@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI96",
+  "title": "F-ROSS12 dependency-aware postimage and moving-preservation reconciliation",
+  "phase": "QUALIFICATION_PENDING",
+  "decision": "CANDIDATE_FROSS12_POSTIMAGE_SUCCESSOR_PRESERVATION",
+  "canonical_preimage": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
+  "status_a_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "fross12_production_admission": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+  "triggering_failures": {
+    "fci72": "moving preservation failed before semantic assertions because the serialized Reference backend was pinned to the pre-F-ROSS12 blob",
+    "fci74": "moving preservation failed before semantic assertions because the serialized Reference backend was pinned to the pre-F-ROSS12 blob",
+    "fci79": "moving preservation failed before semantic assertions because the serialized Reference backend was pinned to the pre-F-ROSS12 blob",
+    "broad_fci": "current-restricted-canonical preservation still compared the serialized Reference backend to the frozen Status-A baseline"
+  },
+  "historical_authority_policy": {
+    "retain_status_a_and_eb_historical_authorities": true,
+    "rewrite_historical_evidence": false,
+    "weaken_unrelated_blob_locks": false,
+    "successor_exception_scope": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ]
+  },
+  "fross12_successor_authority": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "19d07cac9285142d14a6e9c53706fb73d016d5ad",
+    "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90": "cca61af52bde3eed12b756547277cc2776589648",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "6d6f66273483c19c1d2318dad518c537186a0ae7"
+  },
+  "reconciliation_scope": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_semantics_change": false,
+    "governance_only": true,
+    "moving_preservation_workflows": [
+      ".github/workflows/fci72-eb-i23-moving-preservation.yml",
+      ".github/workflows/fci74-eb-i24-moving-preservation.yml",
+      ".github/workflows/fci79-eb-i25-moving-preservation.yml",
+      ".github/workflows/fci-canonical.yml"
+    ]
+  },
+  "qualification_plan": {
+    "exact_src_tree_equals_fross12_admission": true,
+    "exact_reference_tree_equals_fross12_admission": true,
+    "rossfast_adapter_o0_o2": true,
+    "rossfast_selection_binding_o0_o2": true,
+    "rossfast_serialized_production_wiring_o0_o2": true,
+    "eb_i23_independent_replay": true,
+    "eb_i24_independent_replay": true,
+    "eb_i25_independent_replay": true,
+    "broad_fci_required": true
+  },
+  "mutations_so_far": [
+    ".github/workflows/fci72-eb-i23-moving-preservation.yml",
+    ".github/workflows/fci74-eb-i24-moving-preservation.yml",
+    ".github/workflows/fci79-eb-i25-moving-preservation.yml",
+    ".github/workflows/fci96-fross12-postimage-preservation.yml",
+    "tests/fci/run_fci96_fross12_postimage_preservation.sh",
+    "integration/f-ci/F-CI96_STATUS.json"
+  ],
+  "next_permitted_action": "Make the broad F-CI current-preservation job successor-aware for the exact admitted F-ROSS12 backend/binding/adapter, then qualify F-CI96 and all affected moving-preservation gates on the same head before promotion.",
+  "final_verdict": "PENDING"
+}
