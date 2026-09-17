@@ -20,7 +20,7 @@ program test_fgc31_active_drainage_trajectory_tangent
   implicit none
 
   integer, parameter :: n = 4
-  real(real64), parameter :: duration = 1.0e-2_real64
+  real(real64), parameter :: duration = 4.0e-4_real64
   real(real64), parameter :: mass_tolerance = 1.0e-10_real64
   real(real64), parameter :: qbot0 = 0.0_real64
   real(real64), parameter :: fd_eps = 2.0e-4_real64
@@ -172,9 +172,9 @@ contains
          value%drainage_response_levels(2)%tabulated%groundwater_depth(2), &
          value%drainage_response_levels(2)%tabulated%signed_exchange_rate(2))
     value%drainage_response_levels(1)%tabulated%groundwater_depth=[0.5_real64,2.5_real64]
-    value%drainage_response_levels(1)%tabulated%signed_exchange_rate=[1.0e-3_real64,1.01e-1_real64]
+    value%drainage_response_levels(1)%tabulated%signed_exchange_rate=[1.0e-3_real64,1.001_real64]
     value%drainage_response_levels(2)%tabulated%groundwater_depth=[0.5_real64,2.5_real64]
-    value%drainage_response_levels(2)%tabulated%signed_exchange_rate=[5.0e-4_real64,5.05e-2_real64]
+    value%drainage_response_levels(2)%tabulated%signed_exchange_rate=[5.0e-4_real64,5.005e-1_real64]
   end subroutine initialize_parameters
 
   subroutine initialize_column_template(c,t)
@@ -192,7 +192,7 @@ contains
   subroutine initialize_forcing(qbot,value)
     real(real64), intent(in) :: qbot
     type(fmr_b110_physical_forcing_t), intent(out) :: value
-    real(real64), parameter :: initial_drainage = 9.15e-2_real64
+    real(real64), parameter :: initial_drainage = 9.015e-1_real64
     value%top_flux=0.0_real64; value%top_head=-999.0_real64
     value%bottom_flux=qbot; value%bottom_head=-999.0_real64
     allocate(value%drainage_response_controls(2),value%subsurface_irrigation_source(n),value%root_extraction_sink(n))
@@ -208,7 +208,7 @@ contains
     config%transaction%temporal_tolerance=0.0_real64
     config%transaction%mass_tolerance=mass_tolerance
     config%transaction%retry_scale=0.5_real64; config%transaction%max_retries=10
-    config%max_committed_substeps=32; config%progress_tolerance=0.0_real64
+    config%max_committed_substeps=64; config%progress_tolerance=0.0_real64
     config%model_temporal_indicator_budget_available=.true.
     config%model_temporal_indicator_budget=1.5e-14_real64
     config%accepted_trajectory_direction%requested=request_direction
