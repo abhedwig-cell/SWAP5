@@ -27,6 +27,65 @@ jobs:
       - name: Record compiler
         run: gfortran --version
 
-      - name: Run F-APP04 qualification gate
+      - name: Prepare diagnostic compile surface
+        run: mkdir -p .fapp04-ci
+
+      - name: Compile PMdirect process
+        run: >-
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror
+          -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0
+          -J .fapp04-ci -I .fapp04-ci -c src/process/mod_pmdirect_swetr0_process.f90
+          -o .fapp04-ci/mod_pmdirect_swetr0_process.o
+
+      - name: Compile crop root-input contract
+        run: >-
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror
+          -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0
+          -J .fapp04-ci -I .fapp04-ci -c src/crop/mod_crop_root_uptake_input_contract.f90
+          -o .fapp04-ci/mod_crop_root_uptake_input_contract.o
+
+      - name: Compile restricted surface evaporation
+        run: >-
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror
+          -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0
+          -J .fapp04-ci -I .fapp04-ci -c src/process/mod_restricted_surface_evaporation.f90
+          -o .fapp04-ci/mod_restricted_surface_evaporation.o
+
+      - name: Compile PMdirect root binding
+        run: >-
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror
+          -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0
+          -J .fapp04-ci -I .fapp04-ci -c src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90
+          -o .fapp04-ci/mod_fmr_pmdirect_ptra_root_input_binding.o
+
+      - name: Compile PMdirect surface binding
+        run: >-
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror
+          -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0
+          -J .fapp04-ci -I .fapp04-ci -c src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90
+          -o .fapp04-ci/mod_fmr_pmdirect_surface_evaporation_binding.o
+
+      - name: Compile F-APP04 owner regression
+        run: >-
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror
+          -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0
+          -J .fapp04-ci -I .fapp04-ci -c tests/fapp/test_fapp04_pmdirect_typed_bindings.f90
+          -o .fapp04-ci/test_fapp04_pmdirect_typed_bindings.o
+
+      - name: Link F-APP04 owner regression
+        run: >-
+          gfortran -O0
+          .fapp04-ci/mod_pmdirect_swetr0_process.o
+          .fapp04-ci/mod_crop_root_uptake_input_contract.o
+          .fapp04-ci/mod_restricted_surface_evaporation.o
+          .fapp04-ci/mod_fmr_pmdirect_ptra_root_input_binding.o
+          .fapp04-ci/mod_fmr_pmdirect_surface_evaporation_binding.o
+          .fapp04-ci/test_fapp04_pmdirect_typed_bindings.o
+          -o .fapp04-ci/test_fapp04_pmdirect_typed_bindings
+
+      - name: Run F-APP04 owner regression
+        run: .fapp04-ci/test_fapp04_pmdirect_typed_bindings
+
+      - name: Run full F-APP04 qualification gate
         shell: bash
         run: bash tests/fapp/run_fapp04_pmdirect_typed_bindings_gate.sh
