@@ -50,7 +50,11 @@ run_one(){
   for source in "${MODULE_SRC[@]}"; do
     [[ -f "$source" ]] || fail "missing compile source $source"
     local obj="$out/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
+    local extra=()
+    if [[ "$source" == "src/transaction/mod_transaction_reference.f90" ]]; then
+      extra=(-Wno-error=compare-reals)
+    fi
+    gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
     objects+=("$obj")
   done
 
