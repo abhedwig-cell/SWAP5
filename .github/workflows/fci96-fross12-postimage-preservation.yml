@@ -1,0 +1,52 @@
+name: F-CI96 F-ROSS12 postimage preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_rossfast_solver_selection_binding.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/**'
+      - 'tests/eb/**'
+      - 'tests/fci/run_fci96_fross12_postimage_preservation.sh'
+      - 'integration/f-ci/F-CI96_STATUS.json'
+      - 'integration/f-ross/F-ROSS12_STATUS.json'
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci72-eb-i23-moving-preservation.yml'
+      - '.github/workflows/fci74-eb-i24-moving-preservation.yml'
+      - '.github/workflows/fci79-eb-i25-moving-preservation.yml'
+      - '.github/workflows/fci96-fross12-postimage-preservation.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_rossfast_solver_selection_binding.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/**'
+      - 'tests/eb/**'
+      - 'tests/fci/run_fci96_fross12_postimage_preservation.sh'
+      - 'integration/f-ci/F-CI96_STATUS.json'
+      - 'integration/f-ross/F-ROSS12_STATUS.json'
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci72-eb-i23-moving-preservation.yml'
+      - '.github/workflows/fci74-eb-i24-moving-preservation.yml'
+      - '.github/workflows/fci79-eb-i25-moving-preservation.yml'
+      - '.github/workflows/fci96-fross12-postimage-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preserve-fross12-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconcile and replay admitted F-ROSS12 successor postimage
+        run: bash tests/fci/run_fci96_fross12_postimage_preservation.sh
