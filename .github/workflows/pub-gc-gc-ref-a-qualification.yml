@@ -1,0 +1,41 @@
+name: PUB-GC GC-REF-A qualification
+
+on:
+  push:
+    branches:
+      - research/pub-gc-gc-ref-a
+    paths:
+      - 'tests/publication/pub_gc/gc_ref/**'
+      - '.github/workflows/pub-gc-gc-ref-a-qualification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-gc-ref-a:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run frozen GC-REF-A qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-GC-REF-A-QUAL-0001
+          bash tests/publication/pub_gc/gc_ref/run_pub_gc_gc_ref_a_qualification.sh \
+            | tee artifacts/PUB-GC-GC-REF-A-QUAL-0001/qualification.log
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-gc-ref-a-${{ github.sha }}
+          path: artifacts/PUB-GC-GC-REF-A-QUAL-0001/qualification.log
+          if-no-files-found: error
+          retention-days: 90
