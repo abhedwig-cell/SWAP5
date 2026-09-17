@@ -1,0 +1,35 @@
+name: PUB-ME D6 rejected side effect
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_D6_EXECUTION_CHECKPOINT.md'
+      - 'docs/publications/PUB-ME_D6_PREREGISTERED_DESIGN.md'
+      - 'docs/publications/PUB-ME_D6_IMPLEMENTATION_CHECKPOINT.md'
+      - 'docs/publications/PUB-ME_D6_RESULT.md'
+      - 'tests/publication/test_pub_me_d6_rejected_side_effect.f90'
+      - 'tests/publication/run_pub_me_d6_rejected_side_effect.sh'
+      - '.github/workflows/pub-me-d6-rejected-side-effect.yml'
+      - 'src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90'
+      - 'src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90'
+      - 'src/runtime/mod_fmr_accepted_commit_receipt.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d6-rejected-side-effect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered D6 gate
+        run: bash tests/publication/run_pub_me_d6_rejected_side_effect.sh
