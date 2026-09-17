@@ -62,6 +62,41 @@ Short structural checks may run before the checkpoint when they are cheap and re
 
 They do not replace the checkpoint. Long or broad gates run only after the useful postimage has been persisted.
 
+## Checkpointing is not a stop condition
+
+A checkpoint is a **recovery boundary**, not a default execution endpoint. Persisting a meaningful state does not require a new user instruction before work continues.
+
+The operational rule is:
+
+```text
+persist frequently, stop rarely
+```
+
+After a checkpoint has been persisted, continue automatically with the next permitted phase while execution remains healthy and the next action is authorized and safe. A normal uninterrupted run may therefore cross several phases, for example:
+
+```text
+RECONCILE -> checkpoint -> IMPLEMENT -> checkpoint -> focused tests -> checkpoint -> QUALIFY -> CLOSE
+```
+
+Do not deliberately fragment work into one-tool-call or one-file steps merely to create more checkpoints. Reading a file, locating a symbol, running one trivial command, or completing another transient action is not by itself a useful stopping boundary.
+
+Prefer checkpoints at **meaningful state boundaries**, such as:
+
+- authority and relevant live state are sufficiently reconciled to resume implementation without reconstructing prior analysis;
+- one atomic implementation decision has been persisted;
+- a coherent focused test group has completed and its evidence is durable;
+- a qualification, admission or blocking decision has been reached and recorded.
+
+Stop after a checkpoint only when at least one of the following applies:
+
+- a real scientific, architectural, governance or dependency blocker has been reached;
+- the next action is not authorized by the current work-unit scope;
+- a tool or execution environment has failed or been interrupted;
+- the remaining runtime appears insufficient to start the next expensive operation safely;
+- the user explicitly requested a stop or review boundary.
+
+When runtime exhaustion appears plausible, prefer an early durable checkpoint and concrete recovery handoff over starting another long or fragile tool chain. This is a runtime-safety decision, not a reason to make the scientific work unit artificially smaller.
+
 ## Remote persistence
 
 When work is being performed in a local or disposable environment, a local commit alone is not the strongest recovery boundary. Before a costly operation, the checkpoint should also be pushed to the workstream branch unless there is a documented reason not to do so.
