@@ -7,14 +7,16 @@ program test_pub_gc_e1_origin_harness
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
   use variables, only: legacy_qrot => qrot, legacy_swbotb => swbotb, legacy_hbot => hbot, legacy_qbot => qbot
-  use mod_transaction_reference, only: transaction_state_t
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t, kernel_executor_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_discard_candidate
-  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state
+       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -26,6 +28,7 @@ program test_pub_gc_e1_origin_harness
   real(real64), parameter :: candidate_head_a = -75.0_real64
   real(real64), parameter :: candidate_head_b = -70.0_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-10_real64
+  real(real64), parameter :: qualification_head_budget = 100.0_real64
   integer(int64), parameter :: origin_lineage = 810001_int64
   integer(int64), parameter :: synthetic_lineage = 819901_int64
 
@@ -46,6 +49,7 @@ program test_pub_gc_e1_origin_harness
   class(transaction_state_t), allocatable :: origin_before, origin_after
   class(transaction_state_t), allocatable :: snap_a1, snap_b, snap_b_clone, snap_a2, snap_history
   real(real64) :: conductivity_reference, synthetic_time
+  real(real64) :: accepted_predecessor_right_derivative(numnod)
   logical :: ok, available
 
   call configure_column(column, template)
@@ -56,7 +60,9 @@ program test_pub_gc_e1_origin_harness
   forcing_b%bottom_head = candidate_head_b
 
   call backend%initialize(top_provider)
-  call fmr_new_b110_committed_state(origin, origin_lineage, initial_state, t0, ok)
+  accepted_predecessor_right_derivative = 0.0_real64
+  call fmr_new_b110_temporal_indicator_committed_state(origin, origin_lineage, initial_state, t0, ok, &
+       accepted_predecessor_right_derivative)
   call require(ok .and. origin%ready(), 'accepted origin initialization')
   call require(origin%current_lineage_id() == origin_lineage, 'accepted origin lineage')
   call origin%snapshot(origin_before, available)
@@ -188,6 +194,7 @@ contains
     tpl%state_layout_id = 810103_int64
     tpl%solver_interface_id = 810104_int64
     tpl%optional_state_layout_id = 0_int64
+    tpl%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     tpl%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     c%column_id = origin_lineage
     c%template_id = tpl%template_id
@@ -199,12 +206,15 @@ contains
 
   subroutine configure_transaction(cfg)
     type(canonical_numerical_config_t), intent(out) :: cfg
-    cfg%transaction%temporal_tolerance = 1.0e6_real64
+    cfg%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    cfg%transaction%temporal_tolerance = 0.0_real64
     cfg%transaction%mass_tolerance = hard_mass_gate
     cfg%transaction%retry_scale = 0.5_real64
     cfg%transaction%max_retries = 4
     cfg%max_committed_substeps = 64
     cfg%progress_tolerance = 0.0_real64
+    cfg%model_temporal_indicator_budget_available = .true.
+    cfg%model_temporal_indicator_budget = qualification_head_budget
   end subroutine configure_transaction
 
   subroutine configure_case(p, state, forcing, conductivity_reference)
@@ -312,9 +322,9 @@ contains
     equal = .false.
     if (.not. allocated(a) .or. .not. allocated(b)) return
     select type (pa => a)
-    type is (fmr_b110_physical_state_t)
+    class is (fmr_b110_physical_state_t)
       select type (pb => b)
-      type is (fmr_b110_physical_state_t)
+      class is (fmr_b110_physical_state_t)
         if (pa%active_nodes /= pb%active_nodes) return
         if (.not. allocated(pa%pressure_head) .or. .not. allocated(pb%pressure_head)) return
         if (.not. allocated(pa%water_content) .or. .not. allocated(pb%water_content)) return
