@@ -12,6 +12,7 @@ This directory contains the prospective publication and doctoral-research layer 
 | `PUBLICATION_PORTFOLIO.md` | working governance contract | ownership/firewall rules across publications |
 | `EVIDENCE_INVENTORY.md` | living evidence map | classifies existing and missing evidence across papers and thesis synthesis without rewriting chronology |
 | `EXPERIMENT_MANIFEST.md` | prospective evidence contract | common metadata, chronology, numerical-reference and artifact rules for publication experiments |
+| `EXPERIMENT_REGISTER.md` | living readiness register | run-family status, blockers and next permitted experiment actions |
 | `PUB-ME_SCIENTIFIC_CONTRACT.md` | initial contract | RQ1 / PRESERVE: evidence-preserving scientific model evolution |
 | `PUB-ME_EXPERIMENT_MATRIX.md` | prospective design | migration-slice, preservation, adversarial-state, restart and evidence-successor experiment programme |
 | `PUB-SQ_SCIENTIFIC_CONTRACT.md` | initial contract | RQ2 / REPLACE: scientific qualification of alternative Richards solvers |
@@ -107,7 +108,7 @@ Largest research gap: show a material hydrologic effect of explicit dynamic subg
 
 Before a new experiment or development unit produces publication-relevant evidence, record at least the publication owner, doctoral question, hypothesis, chronology, exact code/configuration identities, comparator, numerical reference, primary metrics and excluded claim owners.
 
-Use `EXPERIMENT_MANIFEST.md` as the controlling schema.
+Use `EXPERIMENT_MANIFEST.md` as the controlling schema and `EXPERIMENT_REGISTER.md` as the readiness/next-action authority.
 
 Negative findings and failed hypotheses are evidence and should remain traceable.
 
@@ -115,13 +116,14 @@ Negative findings and failed hypotheses are evidence and should remain traceable
 
 The highest-value next steps are now:
 
-1. **freeze experiment prerequisites before running primary evidence**: accuracy criteria, numerical-reference construction, comparator definitions and immutable case IDs;
-2. **build run manifests and telemetry capture** for the first `PUB-SQ` and `PUB-GC` screening/reference-construction runs;
-3. **select and freeze the `PUB-ME` migration-slice set** before detailed historical extraction;
-4. **perform systematic novelty/literature review separately for each paper**, with `PUB-ME`, `PUB-SQ` and `PUB-GC` first;
-5. **audit selected `RETROSPECTIVE_CANDIDATE` evidence** before using it in figures or manuscript claims;
-6. keep `PUB-RC` and `PUB-SG` dependent on evidence rather than predetermined paper count;
-7. mature `PHD_RESEARCH_PROGRAMME.md` into a formal proposal only after supervisor/institutional framing and literature positioning have been added.
+1. execute the `EXPERIMENT_REGISTER.md` **Tranche A** as manifest-backed screening/evidence extraction, not yet final manuscript inference;
+2. define and freeze `PUB-SQ-REF-HIGH`, `PUB-GC-GW-A` and `PUB-GC-GC-REF` before primary numerical comparisons;
+3. select and freeze the `PUB-ME` migration-slice set before detailed historical extraction;
+4. introduce shared publication telemetry serialization before new numerical evidence is generated;
+5. perform systematic novelty/literature review separately for each paper, with `PUB-ME`, `PUB-SQ` and `PUB-GC` first;
+6. audit selected `RETROSPECTIVE_CANDIDATE` evidence before using it in figures or manuscript claims;
+7. keep `PUB-RC` and `PUB-SG` dependent on evidence rather than predetermined paper count;
+8. mature `PHD_RESEARCH_PROGRAMME.md` into a formal proposal only after supervisor/institutional framing and literature positioning have been added.
 
 ## Experiment start gate
 
