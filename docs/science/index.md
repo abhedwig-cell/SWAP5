@@ -1,12 +1,12 @@
 # Scientific model
 
-This section explains the scientific model represented by the frozen SWAP5 Status-A review baseline. It is a **review narrative**, not a replacement for the distributed scientific authorities and capability-specific qualification records.
+This section explains the scientific model represented by the frozen SWAP5 Status-A review baseline. It is being expanded from a review narrative into a bounded technical reference, while keeping the distributed scientific authorities and capability-specific qualification records as the controlling evidence.
 
 The foundation follows the long-standing SWAP scientific lineage while making the modern SWAP5 system boundaries explicit. The historical F-DOC16 conceptual authority qualified the chain
 
 `physical system -> modelling purpose -> spatial/temporal scales -> system boundary -> abstraction -> conceptual model`.
 
-F-DOC18 then qualified a bounded historical RB1 physical-science authority for three restricted capability families: reference matrix soil-water flow, restricted ET/root uptake and restricted surface evaporation. F-DOC17 explicitly classified that F-DOC18 material as a **qualified historical RB1 authority**, not automatically as current-canonical documentation authority. The present review pages therefore reconcile that scientific material with the current Status-A traceability map rather than promoting the historical branch wholesale.
+F-DOC18 then qualified a bounded historical RB1 physical-science authority for three restricted capability families: reference matrix soil-water flow, restricted ET/root uptake and restricted surface evaporation. F-DOC17 explicitly classified that F-DOC18 material as a **qualified historical RB1 authority**, not automatically as current-canonical documentation authority. The present technical-reference pages therefore reconcile that scientific material with the frozen production postimage and current Status-A traceability map rather than promoting the historical branch wholesale.
 
 ## What SWAP represents
 
@@ -19,16 +19,28 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 ## Read this section in this order
 
 1. [Conceptual system and boundaries](conceptual-model.md)
-2. [Vertical soil-water flow](soil-water-flow.md)
-3. [Surface evaporation](surface-evaporation.md)
-4. [Status-A capability review pages](../capabilities/index.md)
-5. [Numerical formulation](../numerics/index.md)
-6. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-7. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+2. [Water balance, signs and units](water-balance-and-conventions.md)
+3. [Vertical soil-water flow](soil-water-flow.md)
+4. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
+5. [Surface evaporation](surface-evaporation.md)
+6. [Status-A capability review pages](../capabilities/index.md)
+7. [Numerical formulation](../numerics/index.md)
+8. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+9. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+
+## Technical-reference discipline
+
+The scientific pages distinguish three types of convention that must not be silently merged:
+
+- process/theory conventions, such as upward-positive hydraulic `q` in the reference Richards formulation;
+- process-local result conventions, such as a nonnegative root-extraction sink magnitude;
+- normalized verification accounting, where positive signed amount means water entering the accounting domain.
+
+Likewise, a historical scientific equation does not by itself prove that every term or option in that equation is active in the frozen SWAP5 baseline. Current implementation statements must be reconciled against the pinned production postimage and Status-A capability evidence.
 
 ## Admitted capability narratives
 
-Some Status-A capabilities need a bounded reviewer-facing explanation even though their primary authority is architectural, runtime or capability-specific rather than one historical master theory document. The [Status-A capability review pages](../capabilities/index.md) now document:
+Some Status-A capabilities need a bounded reviewer-facing explanation even though their primary authority is architectural, runtime or capability-specific rather than one historical master theory document. The [Status-A capability review pages](../capabilities/index.md) document:
 
 - Restart v1;
 - serialized MultiSWAP v1;
@@ -60,10 +72,10 @@ These sources establish scientific lineage. They do not by themselves prove that
 
 For a scientific claim, reviewers should distinguish:
 
-- **scientific lineage** — the theory or physical concept;
-- **SWAP5 formulation** — the bounded formulation actually represented;
-- **production authority** — the admitted implementation;
-- **qualification evidence** — tests/evidence that support the implementation claim;
-- **preservation authority** — the mechanism that protects the admitted behaviour on later heads.
+- **scientific lineage**: the theory or physical concept;
+- **SWAP5 formulation**: the bounded formulation actually represented;
+- **production authority**: the admitted implementation;
+- **qualification evidence**: tests/evidence that support the implementation claim;
+- **preservation authority**: the mechanism that protects the admitted behaviour on later heads.
 
 The current mapping between these layers is maintained in [Status-A traceability](../status-a/TRACEABILITY.md).
