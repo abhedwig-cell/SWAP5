@@ -4,11 +4,17 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: DRAFT_FREEZE_CANDIDATE
+  status: E0_PRIMARY_OBSERVED_EXTENSION_CONFIRMATORY_FREEZE_ACTIVE
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
   experiment_matrix: docs/publications/PUB-SQ_EXPERIMENT_MATRIX.md
+  confirmatory_extension_freeze: docs/publications/manifests/PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml
+  live_evidence_reconciliation:
+    P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
+    P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
+    P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
+    next_confirmatory_surface: remaining_thirty_F_ROSS13_materials
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
