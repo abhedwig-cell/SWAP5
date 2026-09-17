@@ -1,0 +1,182 @@
+{
+  "schema": "swap5.publication.p2e08-reference-valid-calibration-domain-result.v1",
+  "workunit": "PUB-P2E08",
+  "phase": "QUALIFIED_REFERENCE_DOMAIN_PENDING_FINAL_EXACT_HEAD_GATES",
+  "branch": "work/pub-p2e08-reference-valid-calibration-domain",
+  "preregistered_canonical_base": "b142669ddc8c280ef08b31f5af65c120c1cfeaf1",
+  "reconciled_pre_execution_base": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+  "qualified_diagnostic_head": "b985395eb3f2683281f32b801adc671fef7e2d25",
+  "pull_request": 209,
+  "scope": "Reference-only prospective construction of one common coarse-versus-two-half calibration schedule across the complete six-material x three-Se x three-forcing E0 physical domain",
+  "qualification_run": {
+    "workflow_run": 35285678343,
+    "job": 105417344322,
+    "result": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identical": true,
+    "o0_o2_sha256": "900f841d457056680e7b49558e977e81199385395a8e3eb42f3c8e0ce0451866",
+    "documentation_run": 35285678342,
+    "documentation_result": "PASS",
+    "f_ci_canonical_run": 35285678362,
+    "f_ci_canonical_result_at_result_persistence": "IN_PROGRESS"
+  },
+  "stage_A_temporal_feasibility": {
+    "physical_cases_per_level": 54,
+    "temporal_levels": 5,
+    "total_coarse_refined_pairs": 270,
+    "candidate_results": [
+      {
+        "coarse_dt_day": 0.0016,
+        "half_dt_day": 0.0008,
+        "valid": 46,
+        "invalid": 8
+      },
+      {
+        "coarse_dt_day": 0.0032,
+        "half_dt_day": 0.0016,
+        "valid": 53,
+        "invalid": 1
+      },
+      {
+        "coarse_dt_day": 0.0064,
+        "half_dt_day": 0.0032,
+        "valid": 54,
+        "invalid": 0
+      },
+      {
+        "coarse_dt_day": 0.0128,
+        "half_dt_day": 0.0064,
+        "valid": 45,
+        "invalid": 9
+      },
+      {
+        "coarse_dt_day": 0.0256,
+        "half_dt_day": 0.0128,
+        "valid": 45,
+        "invalid": 9
+      }
+    ],
+    "selected_common_coarse_dt_day": 0.0064,
+    "selected_common_half_dt_day": 0.0032,
+    "selection_rule_result": "FIRST_PREREGISTERED_LEVEL_WITH_54_OF_54_VALID",
+    "nonmonotonicity": "SUPPORTED: validity rises from 46/54 to 53/54 to 54/54 and then falls to 45/54 at both coarser tested levels"
+  },
+  "failure_pattern_outside_selected_level": {
+    "0.0016_day": {
+      "invalid_count": 8,
+      "cases": [
+        "B01 Se=0.65 DRYING HALF1",
+        "B01 Se=0.65 WETTING HALF1",
+        "B01 Se=0.98 DRYING HALF1",
+        "O01 Se=0.98 WETTING HALF2",
+        "O18 Se=0.85 NOMINAL HALF2",
+        "O18 Se=0.98 DRYING HALF1",
+        "O18 Se=0.98 NOMINAL HALF1",
+        "O18 Se=0.98 WETTING HALF2"
+      ]
+    },
+    "0.0032_day": {
+      "invalid_count": 1,
+      "case": "B01 Se=0.65 DRYING HALF2"
+    },
+    "0.0128_day": {
+      "invalid_count": 9,
+      "pattern": "All invalid cases are Se=0.98 in B01, O01 or O05; six fail at COARSE and two O01 cases fail at HALF2, with O01 WETTING failing at COARSE.",
+      "cases": [
+        "B01 Se=0.98 DRYING COARSE",
+        "B01 Se=0.98 NOMINAL COARSE",
+        "B01 Se=0.98 WETTING COARSE",
+        "O01 Se=0.98 DRYING HALF2",
+        "O01 Se=0.98 NOMINAL HALF2",
+        "O01 Se=0.98 WETTING COARSE",
+        "O05 Se=0.98 DRYING COARSE",
+        "O05 Se=0.98 NOMINAL COARSE",
+        "O05 Se=0.98 WETTING COARSE"
+      ]
+    },
+    "0.0256_day": {
+      "invalid_count": 9,
+      "pattern": "The same Se=0.98 B01/O01/O05 physical subset is invalid; all nine fail at the COARSE Reference gate."
+    },
+    "interpretation_boundary": "The nonmonotone validity pattern demonstrates a bounded tested temporal window. Fine-end failure mechanisms were adjudicated by P2E04-P2E07. The coarse-end concentration in near-wet states is descriptive evidence only here; P2E08 does not claim a unique nonlinear or physical cause."
+  },
+  "stage_B_reference_self_disagreement_dataset": {
+    "selected_case_count": 54,
+    "complete_physical_domain_retained": true,
+    "metrics": {
+      "U_h_inf_cm": {
+        "min": 6.15909812040627e-9,
+        "mean": 0.17296305334102374,
+        "median": 0.007143187246050786,
+        "p90": 0.8788387390000777,
+        "p95": 0.9472012838235692,
+        "max": 1.0304935719866082,
+        "max_case": "O05 Se=0.98 WETTING"
+      },
+      "U_h_rms_cm": {
+        "min": 3.0614002532473017e-9,
+        "mean": 0.04641303225761129,
+        "median": 0.003155162690419556,
+        "p90": 0.22604160634521117,
+        "p95": 0.24466355038252036,
+        "max": 0.26027530243065616,
+        "max_case": "O05 Se=0.98 WETTING"
+      },
+      "U_theta_inf": {
+        "min": 2.7033930649622562e-14,
+        "mean": 0.00010983818584802469,
+        "median": 0.000011489071876133461,
+        "p90": 0.00043917229079133436,
+        "p95": 0.0005081310986745238,
+        "max": 0.0006060020680420108,
+        "max_case": "B01 Se=0.98 WETTING"
+      },
+      "U_theta_rms": {
+        "min": 1.342698024073773e-14,
+        "mean": 0.000033831834878919404,
+        "median": 0.00000447700820478519,
+        "p90": 0.00013183065116293931,
+        "p95": 0.0001503803930790792,
+        "max": 0.00017540588521301983,
+        "max_case": "B01 Se=0.98 WETTING"
+      },
+      "U_storage_cm": {
+        "min": 0.0,
+        "mean": 8.289665250534503e-15,
+        "median": 7.105427357601002e-15,
+        "p90": 1.4210854715202004e-14,
+        "p95": 2.1316282072803006e-14,
+        "max": 2.842170943040401e-14,
+        "max_case": "O18 Se=0.98 NOMINAL"
+      }
+    },
+    "interpretation": "These are Reference-only coarse-versus-refined self-disagreement statistics at the prospectively selected complete-domain temporal scale. They are calibration evidence, not RossFast discrepancies and not yet scientific pass/fail thresholds."
+  },
+  "typed_residual_contract": {
+    "legacy_unrounded_mass_balance_residual_used_as_cm_gate": false,
+    "integrated_mass_balance_residual_cm_required": true,
+    "native_balance_rate_residual_cm_per_day_required": true,
+    "reference_solver_status_preserves_existing_rate_convergence_criteria": true
+  },
+  "scientific_reconciliation": {
+    "p2e03": "REMAINS_IMMUTABLE_BLOCKED_FIRST_MATRIX_ATTEMPT",
+    "p2e04_p2e07": "USED_ONLY_AS_REFERENCE_NUMERICAL_ADJUDICATION_AUTHORITY",
+    "common_reference_domain": "ESTABLISHED_FOR_ALL_54_PHYSICAL_E0_CASES_AT_COARSE_DT_0.0064_DAY_WITH_TWO_0.0032_DAY_HALF_STEPS",
+    "temporal_validity": "NOT_MONOTONE_OVER_TESTED_LADDER",
+    "rossfast_admissibility": "NOT_EVALUATED"
+  },
+  "firewall_verification": {
+    "rossfast_solver_executed": false,
+    "rossfast_discrepancy_inspected": false,
+    "physical_case_removed": false,
+    "p2e03_repaired_or_reclassified": false,
+    "production_source_changed_by_p2e08": false,
+    "reference_source_changed_by_p2e08": false,
+    "reference_tolerance_changed": false,
+    "threshold_formula_frozen": false,
+    "threshold_factor_frozen": false
+  },
+  "verdict": "QUALIFIED_COMPLETE_REFERENCE_CALIBRATION_DOMAIN_PENDING_FINAL_EXACT_HEAD_GATES",
+  "next_permitted_action": "Run P2E08, documentation and full canonical preservation gates on the result-bearing exact head. After admission, open a separate preregistered threshold workunit that freezes the state/storage tolerance formula, any independent application-resolution floors, safety factor and any permitted predeclared stratification using only the admitted P2E08 Reference dataset before inspecting new RossFast matrix discrepancies."
+}
