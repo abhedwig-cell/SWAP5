@@ -4,7 +4,7 @@
   "work_unit": "F-GC30",
   "title": "MODFLOW6 Tangent Coupling Contract",
   "phase": "QUALIFY",
-  "verdict": "DRAINAGE_FREE_PREDICTOR_PRIMITIVES_QUALIFIED_RUNTIME_CANDIDATE_BINDING_NEXT_ANALYTIC_DRAINAGE_BLOCKED",
+  "verdict": "DRAINAGE_FREE_PREDICTOR_PRIMITIVES_QUALIFIED_CANDIDATE_PROVENANCE_SEAM_CONFIRMED_ANALYTIC_DRAINAGE_BLOCKED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
@@ -13,10 +13,12 @@
   "source": {
     "branch": "work/f-gc30-modflow6-tangent-coupling-contract",
     "qualified_implementation_head": "5f52eef5f5699670c98ed3b952e396c1a71599b1",
+    "checkpoint_parent_head": "8b2e6f0c73f86877910e0ce0a6682bc1c3e5be77",
     "historical_user_checkpoint": "e551fb4980a2e0b0f5a6b1cfffb4459ad7c0b312",
     "historical_checkpoint_resolution": "UNRESOLVED_BY_CONNECTOR_DO_NOT_CLAIM_EXACT_DIFF"
   },
   "dependency_surface": [
+    "src/kernel/mod_kernel_transactions.f90",
     "src/runtime/mod_groundwater_coupling_contract.f90",
     "src/runtime/mod_groundwater_predictor_corrector_window.f90",
     "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
@@ -55,7 +57,8 @@
     "accepted_storage_change is not semantically interchangeable with the historical coupling-storage coefficient.",
     "Centered finite difference remains both fallback and independent qualification oracle.",
     "Predictor provenance must not reuse groundwater_interface_lineage_t because its groundwater candidate_revision does not yet exist when the SWAP predictor response is formed.",
-    "H_bot,start is the previously committed accepted SWAP interface head. It must not be substituted by accepted_h_groundwater_m when a nonzero converged head residual exists."
+    "H_bot,start is the previously committed accepted SWAP interface head. It must not be substituted by accepted_h_groundwater_m when a nonzero converged head residual exists.",
+    "Existing kernel candidate/result APIs are sufficient for the next provenance binding; no new state accessor or parallel runtime is required."
   ],
   "predictor_origin": {
     "lineage_contract": "modflow6_swap_predictor_lineage_t",
@@ -63,6 +66,24 @@
     "head_source": "committed accepted_interface.h_swap_m",
     "groundwater_head_role": "retained provenance only",
     "head_residual_role": "retained explicitly; heads are not silently collapsed"
+  },
+  "candidate_binding_seams": {
+    "kernel_candidate_state_t": [
+      "ready()",
+      "current_lineage_id()",
+      "origin_revision()",
+      "origin_interval()"
+    ],
+    "kernel_result_t": [
+      "requested_t0",
+      "requested_t1",
+      "completed_t",
+      "accepted_trajectory_direction",
+      "bottom_interface_exchange_available",
+      "terminal_bottom_outward_flux_native"
+    ],
+    "qbot_recovery": "native q_bot predictor = -terminal_bottom_outward_flux_native",
+    "decision": "next assembler can validate same lineage/revision/window and accepted trajectory without opening candidate private state"
   },
   "derivative_coverage": {
     "lower_face_head_semantics": "QUALIFIED",
@@ -113,9 +134,10 @@
     "d045b0da1546ca46dda2a864103e2d08bc578660",
     "a6992a85bbbe7485ddda1033c40db6ac0ea0ea7d",
     "656f6d49131bcb215581e50d0badd708926d62ea",
-    "5f52eef5f5699670c98ed3b952e396c1a71599b1"
+    "5f52eef5f5699670c98ed3b952e396c1a71599b1",
+    "8b2e6f0c73f86877910e0ce0a6682bc1c3e5be77"
   ],
-  "next_permitted_action": "Create the smallest runtime candidate-binding/assembler that proves the accepted predictor origin, kernel candidate lineage/revision, requested coupling window and published F-KT21 trajectory belong to the same immutable SWAP checkpoint. Only after those provenance checks may it compose modflow6_swap_predictor_response_t from H_bot,start, qbot predictor, H_bot,end and dH_bot,end/dqbot.",
+  "next_permitted_action": "Implement the smallest runtime candidate-binding/assembler using only existing kernel candidate/result provenance. Require origin.accepted_time == window.t0; candidate lineage/revision == predictor origin SWAP lineage/revision; candidate origin interval and kernel result requested/completed interval == the coupling window; endpoint trajectory provenance == kernel_result.accepted_trajectory_direction; and bottom_interface_exchange_available. Derive native q_bot predictor as -terminal_bottom_outward_flux_native, then compose modflow6_swap_predictor_response_t. No commit or publication action belongs in that adapter.",
   "blocked_actions": [
     "Do not infer candidate lineage from worker/generation alone.",
     "Do not use accepted_h_groundwater_m as H_bot,start when accepted SWAP and groundwater heads differ within tolerance.",
