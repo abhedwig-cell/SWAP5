@@ -2,13 +2,13 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC25",
   "title": "Reference Richards Numerical Technical Reference",
-  "phase": "UPDATE",
-  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
+  "phase": "VERIFY",
+  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc25-reference-richards-numerics",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
-  "documentation_content_head_before_checkpoint": "87dfbf0b4824eb27262c1c510456a839fdd8dc3d",
+  "verified_content_head": "76345e9a3130d2f92abbf4024942996b42136674",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
@@ -19,6 +19,7 @@
     "content_delta_vs_b861122a": "NONE",
     "production_source_changed": false,
     "reference_source_changed": false,
+    "canonical_unchanged_during_verify": true,
     "disposition": "NON_CONFLICTING_POST_STATUS_A_DELTA_NOT_ADDED_TO_FROZEN_SCIENTIFIC_DENOMINATOR"
   },
   "acquired_authorities": {
@@ -36,6 +37,20 @@
     "authority_matrix": "integration/f-doc/F-DOC25_AUTHORITY_MATRIX.md",
     "mkdocs_navigation_change_required": false
   },
+  "verification": {
+    "pull_request": 176,
+    "verified_head": "76345e9a3130d2f92abbf4024942996b42136674",
+    "workflow": "Documentation",
+    "workflow_run": 35189126238,
+    "job": 105097558506,
+    "job_name": "Validate and build",
+    "workflow_conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pages_deploy": "SKIPPED_AS_EXPECTED_ON_PR",
+    "pr_changed_files": 4,
+    "pr_delta_classification": "DOCUMENTATION_AND_F_DOC_GOVERNANCE_ONLY"
+  },
   "documented_semantics": [
     "actual candidate-minus-start water-content storage term",
     "internal hydraulic gradient and residual structure",
@@ -49,7 +64,7 @@
     "restricted temporal indicator as a separate auxiliary fail-closed operator"
   ],
   "scope_delta": {
-    "changed_files_before_checkpoint": 4,
+    "changed_files": 4,
     "production_source_changed": false,
     "reference_source_changed": false,
     "tests_changed": false,
@@ -70,6 +85,6 @@
     "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "Open a pull request to integration/f-ci-canonical, run repository documentation checks and mkdocs build --strict on the exact postimage, then recheck canonical drift before admission.",
-  "verdict": "READY_FOR_VERIFY"
+  "next_permitted_action": "Qualify the status-only checkpoint postimage, recheck live canonical and PR #176 mergeability, then guarded-merge exact head if no relevant numerical/documentation authority dependency changed.",
+  "verdict": "PASS_READY_FOR_ADMISSION"
 }
