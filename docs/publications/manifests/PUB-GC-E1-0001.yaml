@@ -1,0 +1,210 @@
+experiment:
+  experiment_id: PUB-GC-E1-0001
+  run_family_id: PUB-GC-E1
+  title: Primary same-origin replay versus candidate-history contamination
+  evidence_class: PROSPECTIVE_PRIMARY
+
+publication:
+  primary_owner: PUB-GC
+  doctoral_rq: RQ3
+  thesis_synthesis_relevance: [TS3]
+  excluded_primary_owners: [PUB-ME, PUB-SQ, PUB-RC, PUB-SG]
+
+chronology:
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  scientific_contract_commit: f49182c940d2aa161dd2f1ab3beb0344fa547fcf
+  origin_harness_specification_commit: 2d0a9ea26dbb6048e60e67dcf6882a1b03664d61
+  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
+  screening_manifest_commit: 5c5d30273437bfc5082d2c91a75d25681cc8d15d
+  screening_result_receipt: PUB-GC-E1-SCREEN-0001
+  screening_result_receipt_commit: 4377317335a5d895aef58afab5d46d23f20a6162
+  manifest_commit: RESOLVE_FROM_GIT_HISTORY_AT_RUN_TIME
+  primary_implementation_head: FREEZE_AFTER_IMPLEMENTATION_BEFORE_EXECUTION
+  created_utc: 2026-09-17T23:12:00Z
+
+question:
+  hypothesis_id: H1
+  primary_claim_if_supported: >
+    For a fixed accepted vadose-zone and groundwater origin, repeated
+    finite-window candidate evaluation defines an order-independent response
+    operator for a prescribed interface head, whereas deliberately continuing
+    from prior candidate endpoint states can make the response to that same
+    prescribed head depend on candidate history.
+  null_or_falsifying_result: >
+    H1 is not supported as a practical numerical discriminant if the
+    history-contaminated repeated-A responses remain identical to the
+    same-origin A response and to each other in both predeclared sequences.
+    Failure of same-origin exact replay, origin immutability, GW-A analytic
+    closure, or origin-policy isolation invalidates the experiment rather than
+    counting against H1.
+
+system:
+  repository: abhedwig-cell/SWAP5
+  origin_harness_qualified_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  gw_a_qualified_head: 8a090fc9228574525e599817771aadb8ae176047
+  capability_authorities:
+    - PUB-GC-E1-HARNESS-QUAL-0001
+    - PUB-GC-GW-A-QUAL-0001
+    - F-VQ26@9b967d033be7c95690de621b2cb1768ba9224c7f
+  compiler: gfortran-on-github-hosted-ubuntu-24.04
+  build_mode: [O0, O2]
+  platform: github-hosted-ubuntu-24.04
+
+case:
+  case_id: PUB-GC-E1-PRIMARY-UNIFORM-MVG-V1
+  initial_pressure_head_cm: -75.0
+  top_forcing: stationary_reference_flux_at_initial_head
+  coupling_window_days: 0.05
+  bottom_mode: 5
+  soil_hydraulics: B1.10 default MVG fixture from the qualified E1 harness
+  root_extraction_active: false
+  macropore_active: false
+  snow_active: false
+  drainage_response_active: false
+  candidate_heads:
+    A_cm: -75.0
+    B_cm: -60.0
+    C_cm: -90.0
+  selection_provenance:
+    window_and_B: selected exactly by PUB-GC-E1-SCREEN-0001 preregistered rule
+    C_rule: >
+      C=-90 cm is fixed independently of screening response magnitude as the
+      exact pressure-head reflection of B=-60 cm around A=-75 cm:
+      C = 2*A - B.
+    post_screening_response_ranking_used_to_choose_C: false
+
+datum:
+  datum_id: 810001
+  bottom_boundary_elevation_m: 0.0
+  interpretation: >
+    Explicit local research datum with the lower interface defined as zero
+    elevation. Hydraulic candidate heads are therefore H=A/B/C pressure head
+    times 0.01 m/cm. A constant datum shift would leave all head residuals and
+    GW-A storage increments unchanged.
+  hydraulic_heads_m:
+    A: -0.75
+    B: -0.60
+    C: -0.90
+
+groundwater:
+  component: GW-A
+  service_area_m2: 1.0
+  specific_yield: 0.20
+  reference_head_m: 0.0
+  external_source_m_per_s: 0.0
+  accepted_initial_head_m: -0.75
+  accepted_initial_time_day: 4100.125
+  same_origin_rule: >
+    Every GW-A candidate is evaluated from one immutable checkpoint captured
+    at accepted_initial_head_m and accepted_initial_time_day.
+  history_diagnostic_rule: >
+    After each diagnostic candidate, instantiate a new research-only GW-A
+    service/lineage at that candidate groundwater head but with nominal time
+    relabelled to the original t0. Never call production commit to obtain this
+    synthetic next origin.
+  action_reaction_conversion: >
+    Q_swap_out_cm is converted to mean q_swap_m_per_s =
+    Q_swap_out_cm*0.01/(window_days*86400); q_groundwater_out_m_per_s =
+    -q_swap_m_per_s.
+  analytic_check: >
+    With q_ext=0 the expected candidate groundwater head is
+    h_origin_m + (Q_swap_out_cm*0.01)/Sy.
+
+factors:
+  origin_policy:
+    - GC-ORIGIN-SAME
+    - GC-ORIGIN-HISTORY-DIAG
+  sequence:
+    S1: [A, B, A, C]
+    S2: [A, C, A, B]
+  optimization: [O0, O2]
+
+method:
+  candidate_method: REPLAY_BASED_REAL_SWAP_PRESCRIBED_HEAD_WITH_GW_A
+  comparator: DELIBERATE_CANDIDATE_HISTORY_CONTAMINATION_DIAGNOSTIC
+  numerical_reference: NOT_REQUIRED_FOR_H1_OPERATOR_DEFINITION_TEST
+  temporal_acceptance:
+    route: TX_TEMPORAL_MODEL_CERTIFICATE
+    continuation_layout: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    technical_head_budget_cm: 100.0
+    interpretation: harness execution budget only, not coupling or application accuracy tolerance
+  production_publication: NEVER
+  diagnostic_history_production_valid: false
+
+outcomes:
+  primary_metrics:
+    - SWAP_whole_window_exchange_cm_for_each_candidate
+    - SWAP_endpoint_pressure_head_digest_for_each_candidate
+    - SWAP_endpoint_water_content_digest_for_each_candidate
+    - repeated_A_exchange_exact_identity_under_same_origin
+    - repeated_A_endpoint_exact_identity_under_same_origin
+    - repeated_A_exchange_difference_after_B_vs_after_C_under_history_diagnostic
+    - repeated_A_endpoint_head_difference_after_B_vs_after_C_under_history_diagnostic
+    - candidate_order_dependence_under_history_diagnostic
+    - GW_A_candidate_head_m
+    - GW_A_integrated_volume_change_m3
+    - interface_head_residual_m
+    - GW_A_analytic_head_closure_error_m
+  secondary_metrics:
+    - terminal_bottom_outward_flux_native
+    - SWAP_mass_residual
+    - SWAP_solver_rejections
+    - SWAP_temporal_rejections
+    - SWAP_retries
+    - synthetic_SWAG_lineage_id
+    - synthetic_GW_A_lineage_id
+  failure_metrics:
+    - same_origin_A_nonidentity
+    - accepted_origin_mutation
+    - unavailable_or_nonfinite_whole_window_exchange
+    - incomplete_or_nonfinite_mass_accounting
+    - GW_A_analytic_closure_nonzero
+    - action_reaction_mismatch
+    - O0_O2_scientific_oracle_difference
+    - production_commit_detected
+    - synthetic_origin_not_distinct
+
+analysis:
+  predeclared_transform: none
+  repeat_count: 1 deterministic execution per policy x sequence x optimization
+  same_origin_acceptance_rule: >
+    All evaluations of candidate A from the same accepted SWAP/GW-A origin
+    must be bitwise identical in whole-window exchange and physical endpoint
+    state within one build, and the complete scientific oracle must be
+    identical under O0 and O2.
+  history_discriminant_rule: >
+    Compare the A response occurring after B in S1 with the A response occurring
+    after C in S2, and compare each with A from the accepted origin. Preserve
+    signed and absolute differences; do not impose a post-hoc minimum-effect
+    threshold.
+  support_rule: >
+    H1 receives primary support if same-origin replay satisfies its exact
+    repeatability contract and at least one predeclared repeated-A
+    history-diagnostic comparison is non-identical in whole-window exchange or
+    endpoint physical state. Magnitude is reported, not relabelled as
+    'material' without a separately motivated threshold.
+  null_rule: >
+    If all predeclared history-diagnostic repeated-A responses are identical to
+    the same-origin A response and to one another, retain COMPLETE evidence and
+    record H1 practical discrimination as NOT_SUPPORTED for this case.
+  exclusion_rule: >
+    No completed predeclared sequence is excluded. Infrastructure/provenance
+    failure makes the execution INVALID; a scientific null remains COMPLETE.
+  stopping_rule: >
+    Execute exactly S1 and S2 under both origin policies at A=-75 cm, B=-60 cm,
+    C=-90 cm, window=0.05 d. Do not alter heads, order, Sy or window after
+    inspecting primary results.
+
+artifacts:
+  raw_output: artifacts/PUB-GC-E1-0001/primary.log
+  telemetry: artifacts/PUB-GC-E1-0001/primary.tsv
+  logs: artifacts/PUB-GC-E1-0001/primary.log
+  derived_table: artifacts/PUB-GC-E1-0001/primary.tsv
+  candidate_figure: PUB-GC-F01
+
+result:
+  status: NOT_RUN
+  conclusion: null
+  deviations_from_plan: null
