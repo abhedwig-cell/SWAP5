@@ -1,1 +1,34 @@
-{"workstream":"F-DOC","work_unit":"F-DOC31","status":"DOCUMENTATION_ONLY","purpose":"Record connector-efficient recovery protocol refinement.","baseline":"d36207b4207cbb61ccabafb2f6288083abd4c7f2","branch":"docs/connector-efficient-recovery","checkpoint_commit":"d4066dc21441c223acb01c9e16035cbe82c03113","relevant_paths":["AGENTS.md","docs/development/workstream-execution-protocol.md"],"authority_paths":["docs/development/workstream-execution-protocol.md"],"test_paths":["tools/docs/check_docs.py","mkdocs.yml"],"dependency_surface":["AGENTS.md","docs/development/workstream-execution-protocol.md"],"next_action":"Open PR to integration/f-ci-canonical and run documentation validation.","recovery_point":"Resume from branch head and compare only these governance paths plus canonical delta."}
+{
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC31",
+  "phase": "QUALIFY",
+  "status": "PR_OPEN_VALIDATION_PENDING",
+  "purpose": "Record the connector-efficient recovery protocol refinement without introducing a second source of scientific or project authority.",
+  "baseline": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+  "branch": "docs/connector-efficient-recovery",
+  "checkpoint_commit": "d4066dc21441c223acb01c9e16035cbe82c03113",
+  "last_reconciled_head": "d4066dc21441c223acb01c9e16035cbe82c03113",
+  "last_reconciled_upstream": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+  "relevant_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/f-doc/F-DOC31_CONNECTOR_RETRIEVAL_STATUS.json"
+  ],
+  "authority_paths": [
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "test_paths": [
+    "tools/docs/check_docs.py",
+    "mkdocs.yml"
+  ],
+  "evidence_paths": [
+    "integration/f-doc/F-DOC31_CONNECTOR_RETRIEVAL_STATUS.json"
+  ],
+  "dependency_surface": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "pull_request": 196,
+  "next_action": "Run documentation validation and strict MkDocs build on the exact PR head, then admit only on PASS and unchanged relevant canonical dependency surface.",
+  "recovery_point": "Resume from the PR head; compare only the documented dependency surface against branch/canonical deltas before repeating any broader repository reconnaissance."
+}
