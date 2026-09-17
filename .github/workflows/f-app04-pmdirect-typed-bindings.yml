@@ -1,0 +1,32 @@
+name: F-APP04 PMdirect typed bindings
+
+on:
+  push:
+    branches:
+      - work/f-app04-hupsel-swetr0-pmdirect-typed-composition
+    paths:
+      - 'src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90'
+      - 'src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90'
+      - 'tests/fapp/test_fapp04_pmdirect_typed_bindings.f90'
+      - 'tests/fapp/run_fapp04_pmdirect_typed_bindings_gate.sh'
+      - '.github/workflows/f-app04-pmdirect-typed-bindings.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typed-bindings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run F-APP04 qualification gate
+        shell: bash
+        run: bash tests/fapp/run_fapp04_pmdirect_typed_bindings_gate.sh
