@@ -112,7 +112,8 @@ program test_pub_p2e08_reference_valid_calibration_domain
   call report_metric_summary('U_STORAGE',ustorage(:,selected_dt_index))
 
   write(*,'(A)') 'PUB_P2E08_COMMON_DOMAIN_STATUS=QUALIFIED_COMPLETE_REFERENCE_DOMAIN'
-  write(*,'(A)') 'PUB_P2E08_SCIENTIFIC_OUTCOME=QUALIFIED_COMPLETE_DOMAIN'\n  write(*,'(A)') 'PUB_P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_GATE=PASS'
+  write(*,'(A)') 'PUB_P2E08_SCIENTIFIC_OUTCOME=QUALIFIED_COMPLETE_DOMAIN'
+  write(*,'(A)') 'PUB_P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_GATE=PASS'
 
 contains
 
