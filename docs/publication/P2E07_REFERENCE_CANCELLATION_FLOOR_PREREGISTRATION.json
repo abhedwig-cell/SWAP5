@@ -1,0 +1,126 @@
+{
+  "schema": "swap5.publication.p2e07-reference-cancellation-floor.v1",
+  "workunit": "PUB-P2E07",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "canonical_base": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+  "trigger": {
+    "predecessor": "PUB-P2E06",
+    "admitted_pull_request": 190,
+    "admission_merge": "4b945b19d0b5f984d10bc750bb403174158a886b",
+    "predecessor_result": "QUALIFIED_REFERENCE_LOCAL_BALANCE_SCALING_EVIDENCE",
+    "reason": "PUB-P2E06 showed that the 103 Reference RETRY_LOCAL_BAL cases do not clear when max_iterations alone increases from 16 to 64, while dt times the maximum local residual remains near 1e-16 to 1e-15 cm and the residual-rate scale worsens as dt decreases. P2E06 explicitly requires a separate Reference-only decomposition before any replacement calibration matrix or tolerance-policy proposal."
+  },
+  "scientific_question": "For the exact 103 P2E06 Reference local-balance first-failure states, can the failed internal HeadCalc residual be reconstructed from its actual internal storage and flux terms, and is the observed residual scale numerically distinguishable from finite-representation and cancellation effects at the existing strict 1e-12 cm/day criterion?",
+  "scope": {
+    "solver": "Reference only",
+    "domain": "exact immutable P2E03/P2E04/P2E06 six-material x three-Se x three-forcing x three-requested-dt matrix",
+    "case_count": 162,
+    "expected_local_balance_first_failures": 103,
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "effective_saturation": [0.65, 0.85, 0.98],
+    "forcing": ["DRYING", "NOMINAL", "WETTING"],
+    "requested_coarse_dt_day": [0.0016, 0.0004, 0.0001],
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "conductivity_implicit_mode": 0,
+    "uniform_cells": 16,
+    "cell_thickness_cm": 10.0
+  },
+  "dependency_locks": {
+    "reference_tree": "684f1e2889b6992e5aedc88f52bb45f4558bb3e4",
+    "headcalc_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "reference_workspace_blob": "74f99556005ae39614f9df678467b1e19097bae2",
+    "reference_legacy_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "predecessor_result_blob": "198968ce48d61952f976c20beaf595feb8519d9d",
+    "policy": "Lock only dependencies that define the P2E07 Reference experiment. Do not lock the entire src tree, because unrelated admitted successor work must remain composable."
+  },
+  "firewall": {
+    "rossfast_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "production_tolerance_change_allowed": false,
+    "reference_numerical_policy_change_allowed": false,
+    "p2e03_p2e04_p2e06_history_rewrite_allowed": false,
+    "case_removal_or_substitution_allowed": false,
+    "new_production_admissibility_threshold_allowed": false
+  },
+  "diagnostic_design": {
+    "stage_A_exact_replay": {
+      "rule": "Reproduce the exact P2E06 first-failure classification before interpreting any new diagnostic.",
+      "required_counts": {
+        "accepted": 47,
+        "retry_total_only": 12,
+        "retry_local_balance": 103,
+        "other_failure_classes": 0,
+        "local_by_requested_dt": [3, 46, 54]
+      }
+    },
+    "stage_B_internal_residual_reconstruction": {
+      "rule": "For each exact RETRY_LOCAL_BAL first-failure state, use the failed internal Reference workspace rather than the fail-closed public candidate state. Reconstruct the residual at the maximum-absolute-residual node from internal provider_theta, request base theta, fixed explicit source/sink terms, fixed boundary fluxes, the frozen SwKimpl=0 conductivity state, and final HeadCalc face gradients.",
+      "required_components_cm_per_day": [
+        "storage_rate=(theta_internal-theta_base)*dz/dt",
+        "upper_or_top_face_contribution",
+        "lower_or_bottom_face_contribution",
+        "source_sink_root_contribution",
+        "reconstructed_total",
+        "workspace_residual",
+        "reconstruction_closure_error"
+      ],
+      "boundary_rule": "Use the exact HeadCalc vector_F sign convention for top, internal and bottom nodes. Do not infer a physical decomposition from the fail-closed public candidate state."
+    },
+    "stage_C_representation_and_cancellation_floor": {
+      "rule": "Characterize numerical distinguishability without changing the solver. All floor quantities retain cm/day units.",
+      "observations": [
+        "component L1 rate scale, sum of absolute reconstructed algebraic terms",
+        "cancellation ratio component_L1/max(abs(workspace_residual),tiny)",
+        "storage input quantization floor = 0.5*(spacing(theta_internal)+spacing(theta_base))*dz/dt",
+        "real64 versus higher-precision recomposition difference using the same stored component inputs",
+        "spread across all summation orders of the nonzero reconstructed real64 components",
+        "dt times each floor quantity in cm",
+        "existing compartment tolerance divided by the local estimated floor"
+      ],
+      "estimated_local_floor": "max(storage_input_quantization_floor, abs(real64_native_order_sum-higher_precision_component_sum), real64_summation_order_spread)",
+      "interpretation": "The estimated floor is a diagnostic lower-resolution scale for this frozen experiment, not a new solver tolerance and not proof that any one arithmetic operation is the sole cause."
+    },
+    "stage_D_calibration_validity_criterion": {
+      "criterion": "A local strict Reference balance criterion is not numerically distinguishable for calibration at a diagnosed state when estimated_local_floor >= configured_compartment_balance_tolerance. It is numerically distinguishable by this diagnostic only when estimated_local_floor < configured_compartment_balance_tolerance.",
+      "scope_boundary": "This is a calibration-validity diagnostic for the frozen Reference experiment. It does not authorize changing the production or Reference tolerance and it is not a RossFast admissibility criterion.",
+      "report": [
+        "count of LOCAL_BAL states with estimated_floor >= tolerance by requested dt",
+        "distribution of tolerance/floor margins by requested dt",
+        "distribution of residual/floor ratios by requested dt",
+        "whether the P2E06 1/dt pattern is reproduced by the storage quantization component",
+        "whether cancellation/summation effects add a comparable, smaller or larger floor"
+      ]
+    }
+  },
+  "hypotheses": {
+    "H_internal_state": "The failed internal workspace contains a nonzero storage-rate term even where the fail-closed public candidate used by the earlier P2E06 max-node decomposition showed zero candidate-state storage change.",
+    "H_storage_resolution": "The storage input quantization floor increases approximately with 1/dt and is of the same order as a material fraction of the observed LOCAL_BAL residuals.",
+    "H_cancellation": "The residual is formed by cancellation among materially larger storage and flux terms, but the relative contribution of final summation-order rounding is to be measured rather than assumed dominant.",
+    "H_validity": "Some or all strict 1e-12 cm/day LOCAL_BAL classifications may fall at or below the estimated numerical resolution scale; the exact count is an outcome, not a pass condition."
+  },
+  "qualification": {
+    "scientific_hypotheses_need_not_be_confirmed_for_pass": true,
+    "required": [
+      "exact P2E06 classification replay",
+      "all 103 LOCAL_BAL states retained",
+      "finite and dimensionally consistent component diagnostics",
+      "residual reconstruction closure checked and reported",
+      "O0/O2 byte-identical diagnostic output",
+      "RossFast execution firewall marker FALSE",
+      "no production/reference source or tolerance change",
+      "full relevant canonical preservation gates on the resulting PR"
+    ]
+  },
+  "interpretation_boundaries": [
+    "Do not call finite precision the cause solely because residuals are close to an ulp-derived scale.",
+    "Do not treat higher-precision recomposition of already rounded state variables as an exact physical reference solution.",
+    "Do not derive a replacement tolerance by fitting the observed failures.",
+    "Do not remove or relabel immutable P2E03/P2E04/P2E06 cases.",
+    "Do not inspect RossFast discrepancies in this workunit.",
+    "A negative result remains valid evidence and must not be repaired by widening scope."
+  ],
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_DIAGNOSTIC_READY_FOR_IMPLEMENTATION",
+  "next_permitted_action": "Implement only the publication diagnostic harness and its CI wrapper against these frozen dependencies. Persist the observed result before proposing any calibration matrix or numerical-policy workunit."
+}
