@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC23",
+  "title": "WOFOST and Restricted Snow Scientific Reference Expansion",
+  "phase": "RECONCILE",
+  "decision": "START_FROM_F_DOC22_CANONICAL_NO_DRIFT",
+  "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-doc23-wofost-snow-reference",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "scope": [
+    "Acquire exact current/frozen authority for the bounded WOFOST runtime scientific exchanges",
+    "Acquire exact current/frozen authority for the restricted one-call-daily Snow process",
+    "Publish reviewer-facing scientific/state/accounting narratives only within admitted scope",
+    "Preserve all existing Status-A nonclaims on broad WOFOST compatibility and non-daily Snow modes"
+  ],
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "documentation_only": true
+  },
+  "next_permitted_action": "ACQUIRE WOFOST F-CI89/source authority and Snow F-PM02/source authority; define claim ceilings before writing scientific pages.",
+  "verdict": "IN_PROGRESS"
+}
