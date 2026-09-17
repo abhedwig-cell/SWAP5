@@ -198,7 +198,11 @@ contains
     allocate(value%drainage_response_controls(1),value%subsurface_irrigation_source(numnod), &
          value%root_extraction_sink(numnod))
     value%subsurface_irrigation_source=0.0_real64
-    value%subsurface_irrigation_source(numnod)=projected_drainage
+    if (parameters%drainage_qbot_smooth_freatic_projection) then
+      value%subsurface_irrigation_source(numnod)=projected_drainage
+    else
+      value%subsurface_irrigation_source(numnod)=stale_drainage
+    end if
     value%root_extraction_sink=0.0_real64
   end subroutine initialize_forcing
 
