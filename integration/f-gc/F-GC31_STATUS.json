@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC31",
+  "title": "MultiSWAP MODFLOW6 Cell Response",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_TYPED_CELL_RESPONSE_IMPLEMENTATION",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "head": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "f_gc30": "CANONICALLY_ADMITTED_DRAINAGE_FREE_PREDICTOR_RESPONSE"
+  },
+  "scientific_decision": {
+    "tile_local_form": "q_i(H)=q_i_star+(u_i/dt_s)*(H-H_i_star)",
+    "cell_u": "sum(area_fraction_i*u_i)",
+    "cell_reference_exchange": "sum(area_fraction_i*(q_i_star+(u_i/dt_s)*(H_ref-H_i_star)))",
+    "cell_affine_form": "q_cell(H)=q_cell_ref+(u_cell/dt_s)*(H-H_ref)",
+    "raw_weighted_predictor_q_u_role": "DIAGNOSTIC_ONLY_WHEN_TILE_PREDICTOR_HEADS_DIFFER"
+  },
+  "dependencies": [
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_groundwater_multiswap_types.f90",
+    "existing F-GC25 N:1 topology semantics"
+  ],
+  "planned_changes": [
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "tests/fgc/test_fgc31_modflow6_multiswap_cell_response.f90",
+    "tests/fgc/run_fgc31_modflow6_multiswap_cell_response.sh",
+    ".github/workflows/f-gc31-modflow6-multiswap-cell-response.yml"
+  ],
+  "exclusions": [
+    "MODFLOW6/XMI backend",
+    "head-driven corrector runtime",
+    "groundwater execution-service redesign",
+    "Ribasim",
+    "irrigation",
+    "active-drainage tangent",
+    "runtime finite-difference fallback",
+    "publication or commit changes"
+  ],
+  "next_permitted_action": "Implement the non-committing typed affine cell-response composer and focused Q1-Q4 qualification gate."
+}
