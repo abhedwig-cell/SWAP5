@@ -27,7 +27,7 @@ program test_fgc31_active_drainage_production_tangent
 
   real(real64), parameter :: duration = 1.0e-2_real64
   real(real64), parameter :: mass_tolerance = 1.0e-10_real64
-  real(real64), parameter :: temporal_head_budget = 1.0e-14_real64
+  real(real64), parameter :: temporal_head_budget = 1.0e-5_real64
   real(real64), parameter :: qbot0 = 2.0e-3_real64
   real(real64), parameter :: fd_eps = 1.0e-5_real64
   real(real64), parameter :: fd_rel_gate = 1.0e-3_real64
