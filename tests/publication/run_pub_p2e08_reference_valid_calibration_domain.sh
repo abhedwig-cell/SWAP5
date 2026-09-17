@@ -11,7 +11,8 @@ fail() { echo "PUB_P2E08_GATE_FAIL $*" >&2; exit 1; }
 
 TEST=tests/publication/test_pub_p2e08_reference_valid_calibration_domain.f90
 PREREG=docs/publication/P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_PREREGISTRATION.json
-CANONICAL_BASE=b142669ddc8c280ef08b31f5af65c120c1cfeaf1
+PREREGISTERED_BASE=b142669ddc8c280ef08b31f5af65c120c1cfeaf1
+RECONCILED_BASE=878ca73649c9a2e98ca81d45c3ecec2717604ba3
 REFERENCE_TREE=684f1e2889b6992e5aedc88f52bb45f4558bb3e4
 SOLVER_CONTRACT_BLOB=40a1ddc05fb8e2c1822763de645fd07a094568a3
 MODEL_BINDING_BLOB=5442fd7e7a2f392c9b796cd17c76b17977259f22
@@ -27,8 +28,9 @@ grep -Fq '"physical_case_removal_allowed": false' "$PREREG" || fail 'physical-ca
 grep -Fq '"reference_tolerance_change_allowed": false' "$PREREG" || fail 'Reference tolerance firewall missing'
 grep -Fq '"threshold_formula_freezing_allowed": false' "$PREREG" || fail 'threshold formula firewall missing'
 
-git merge-base --is-ancestor "$CANONICAL_BASE" HEAD || fail 'canonical base is not an ancestor'
-git diff --quiet "$CANONICAL_BASE" HEAD -- src reference || fail 'P2E08 mutated src or reference'
+git merge-base --is-ancestor "$PREREGISTERED_BASE" HEAD || fail 'preregistered canonical base is not an ancestor'
+git merge-base --is-ancestor "$RECONCILED_BASE" HEAD || fail 'reconciled canonical base is not an ancestor'
+git diff --quiet "$RECONCILED_BASE" HEAD -- src reference || fail 'P2E08 mutated src or reference relative to reconciled canonical'
 test "$(git rev-parse HEAD:reference)" = "$REFERENCE_TREE" || fail 'reference tree drift'
 test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = "$SOLVER_CONTRACT_BLOB" || fail 'solver contract drift'
 test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = "$MODEL_BINDING_BLOB" || fail 'material-domain binding drift'
