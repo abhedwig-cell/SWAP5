@@ -1,6 +1,11 @@
 name: PUB-GC E1 transient screening
 
 on:
+  push:
+    branches:
+      - research/pub-gc-e1-screening
+    paths:
+      - '.github/workflows/pub-gc-e1-screening.yml'
   workflow_dispatch:
 
 permissions:
