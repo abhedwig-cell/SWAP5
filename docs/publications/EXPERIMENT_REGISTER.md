@@ -20,11 +20,11 @@ This register does not contain scientific results. It is an execution map betwee
 
 | Run family | Owner | Evidence role | Current status | Main blocker / next action |
 | --- | --- | --- | --- | --- |
-| `PUB-ME-E0` reference lineage | PUB-ME | supporting/foundational | READY_FOR_SCREENING | choose/freeze representative migration slices |
-| `PUB-ME-E1` preservation reruns | PUB-ME | primary | DESIGNED | reconstruct exact historical build/input authorities for selected slices |
+| `PUB-ME-E0` reference lineage | PUB-ME | supporting/foundational | READY_FOR_SCREENING | migration-slice candidate set frozen in `PUB-ME_MIGRATION_SLICES.md`; recover exact historical pre/post authorities for ME-S1/ME-S2/ME-S3 |
+| `PUB-ME-E1` preservation reruns | PUB-ME | primary | DESIGNED | reconstruct exact historical build/input authorities for selected slices and freeze common benchmark set |
 | `PUB-ME-E2` candidate-leak adversarial | PUB-ME | primary | DESIGNED | define qualification-only fault-injection harness; never production |
-| `PUB-ME-E3` restart sufficiency | PUB-ME | primary | READY_FOR_SCREENING | select benchmark cases with/without prior retry |
-| `PUB-ME-E4` semantic-successor evidence | PUB-ME | primary | READY_FOR_SCREENING | freeze longitudinal Case A and Case B before detailed extraction |
+| `PUB-ME-E3` restart sufficiency | PUB-ME | primary | READY_FOR_SCREENING | select benchmark cases with/without prior retry and instantiate manifest |
+| `PUB-ME-E4` semantic-successor evidence | PUB-ME | primary | READY_FOR_SCREENING | ME-S5 frozen as semantic-successor Case B; freeze exact unrelated-change Case A from ME-S6 before detailed extraction |
 | `PUB-ME-E5` qualification-surface analysis | PUB-ME | supporting | DESIGNED | define repository-derived surface metrics; no person-hour claims |
 | `PUB-ME-E6` extensibility cases | PUB-ME | supporting | READY_FOR_SCREENING | extract solver-seam and groundwater-seam dependency evidence |
 | `PUB-SQ-E0` contract/fail-closed | PUB-SQ | prerequisite/supporting | READY_FOR_SCREENING | instantiate common manifest and select supported/unsupported Ross cases |
@@ -50,8 +50,8 @@ The following work can begin without inventing new production science:
 
 ### Tranche A — evidence extraction and screening
 
-1. `PUB-ME-E0`: freeze migration-slice candidates and exact authorities;
-2. `PUB-ME-E4`: preselect one unchanged-dependency and one semantic-successor case;
+1. `PUB-ME-E0`: recover exact authorities for the already frozen migration-slice candidate set;
+2. `PUB-ME-E4`: freeze the exact unrelated-change Case A paired with frozen semantic-successor Case B;
 3. `PUB-SQ-E0`: create manifest-backed supported/out-of-domain solver-selection cases;
 4. `PUB-GC-E0`: re-express admitted interface conservation cases under publication manifests;
 5. `PUB-GC-E6`: re-express bounded N:1 conservation cases under publication manifests.
