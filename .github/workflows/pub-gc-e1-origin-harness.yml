@@ -1,0 +1,43 @@
+name: PUB-GC E1 origin harness qualification
+
+on:
+  push:
+    branches:
+      - research/pub-gc-e1-origin-harness
+    paths:
+      - 'tests/publication/pub_gc/gw_a/**'
+      - 'tests/publication/pub_gc/e1_origin/**'
+      - '.github/workflows/pub-gc-e1-origin-harness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gw-a-current-canonical:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch frozen publication authority branch
+        run: git fetch origin work/pub-gc-scientific-contract --no-tags
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Requalify GW-A against current canonical basis
+        run: |
+          bash tests/publication/pub_gc/gw_a/run_pub_gc_gw_a_current_canonical_qualification.sh | tee pub-gc-gw-a-current-canonical.log
+
+      - name: Upload qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-gw-a-current-canonical-${{ github.sha }}
+          path: pub-gc-gw-a-current-canonical.log
+          if-no-files-found: warn
