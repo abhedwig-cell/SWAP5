@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "QUALIFY_OBSERVATION_PRECHECK_PASS",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "9df79b84b8d4500a4100d2b4d554a15dd336ba10",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5efb2603524145192f80b3472c288c1b6828cf69",
+    "relevant_delta_since_frozen_gate_checkpoint": "NONE"
+  },
+  "resume_from": {
+    "checkpoint": "integration/f-app/F-APP03_FROZEN_JUNE10_PRECHECK_AUTHORITY_RECOVERED.json",
+    "commit": "9df79b84b8d4500a4100d2b4d554a15dd336ba10",
+    "verdict": "ACQUIRE_PASS_FROZEN_2002_06_10_PRECHECK_PAYLOAD_AND_COMPARISON_CONTRACT_RECOVERED"
+  },
+  "exact_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_swap_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_meteo_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "official_hupsel_fwind": 1.0,
+    "exact_fwind_operator": "ud = max(win * fwind, 0.0001d0) before wind-height correction"
+  },
+  "qualification_build": {
+    "compiler": "GNU Fortran 14.2.0",
+    "ttutil_source": "official TTUTIL 4.27 source from supplied distribution",
+    "ttutil_objects": 153,
+    "swap_objects": 63,
+    "scientific_source_patches": "NONE",
+    "qualification_only_preprocessing": [
+      "selected standalone Linux side of Intel !DEC$ conditionals",
+      "excluded inactive with_animo, with_sss and multiswap conditional branches",
+      "did not use global SAVE/-fno-automatic",
+      "disposable Hupsel case set SWCSV=0 instead of SWCSV=1 only to bypass the already-qualified GNU CSV portability defect"
+    ]
+  },
+  "unobserved_replay_noninterference": {
+    "result_bal_normalization": "remove only generated '* Generated at:' line",
+    "result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "result_bal_matches_frozen_oracle": true,
+    "result_blc_normalization": "remove only generated '* Generated at:' line",
+    "result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "result_blc_matches_frozen_oracle": true
+  },
+  "observation_method": {
+    "kind": "qualification-only non-interfering write instrumentation in a disposable exact-authority headcalc.f90 copy",
+    "selection": "successful converged calls with t1900 >= 37416.0 and t1900 < 37416.16 and dt >= 0.039 days",
+    "fields": [
+      "t1900",
+      "dt",
+      "NRAIDT",
+      "EMPREVA",
+      "PTRA",
+      "sum(QROT)",
+      "GWL",
+      "sum(QDRA)",
+      "QTOP",
+      "Newton iterations",
+      "backtracks"
+    ],
+    "records_observed": 4,
+    "instrumented_result_bal_still_matches_frozen_oracle": true,
+    "instrumented_result_blc_still_matches_frozen_oracle": true
+  },
+  "observed_trace": [
+    [37416.0, 0.04, 0.40593874294878496, 0.034280794207204313, 0.18067359154599588, 0.18067359154599585, -103.52309844003598, 0.0, -0.37165794874158065, 3, 3],
+    [37416.040000000001, 0.04, 0.40593874294878496, 0.034254515319266376, 0.18067359154599588, 0.18067359154599585, -103.59959940130753, 0.0, -0.37168422762951858, 3, 3],
+    [37416.080000000002, 0.04, 0.40593874294878496, 0.034228296773242135, 0.18067359154599588, 0.18067359154599585, -103.67623320799895, 0.0, -0.37171044617554283, 3, 3],
+    [37416.120000000003, 0.04, 0.40593874294878496, 0.03420213833857267, 0.18067359154599588, 0.18067359154599585, -103.75285116218322, 0.0, -0.3717366046102123, 3, 3]
+  ],
+  "comparison_to_frozen_trace": {
+    "tolerance": 5.0e-12,
+    "max_abs_difference": {
+      "time_days": 0.0,
+      "dt_days": 0.0,
+      "net_rain_cm_d": 5.551115123125783e-17,
+      "reduced_evap_cm_d": 6.938893903907228e-18,
+      "ptra_cm_d": 8.326672684688674e-17,
+      "root_sum_cm_d": 5.551115123125783e-17,
+      "gwl_cm": 1.4210854715202004e-14,
+      "drain_sum_cm_d": 0.0,
+      "qtop_cm_d": 5.551115123125783e-17
+    },
+    "overall_max_abs_difference": 1.4210854715202004e-14,
+    "all_numeric_differences_within_tolerance": true,
+    "newton_routes_identical": true,
+    "backtracking_routes_identical": true,
+    "qtop_within_frozen_tolerance": true
+  },
+  "verdict": "PASS_FROZEN_2002_06_10_OBSERVATION_PRECHECK",
+  "effect": "The later fail-closed FWIND/precheck blocker is closed. Exact SWAP 4.3.1 authority, official Hupsel FWIND=1.0, the executable FWIND operator and the frozen four-step comparison contract now reproduce the historical 10 June 2002 gate without output interference.",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "repository_change": "checkpoint only"
+  },
+  "next_permitted_action": [
+    "Implement the minimum restricted pure typed SWETR=0, SWDIVIDE=1, SWINTER=1, SWCF=1 application composition from the already-qualified A12/A13 scientific contract.",
+    "Keep legacy file parsing and crop development behind adapters; no file/path/parser semantics in the process/kernel module.",
+    "Bind process-ready potential transpiration, potential soil evaporation, potential pond evaporation and net rain only to the existing typed downstream seams whose units/signs are already established.",
+    "Independently qualify the candidate against the existing 1096-day A13 oracle, 384-day/65-day/1641-timestep A12 oracle and the frozen 2002-06-10 four-step gate.",
+    "Do not broaden this first implementation to SWINTER=3/SWCF=2 or claim whole-Hupsel/M1-C3 closure."
+  ],
+  "exclusions": [
+    "no SWETR=1 substitution",
+    "no output fitting",
+    "no tolerance widening",
+    "no solver/timestep/Richards/groundwater change",
+    "no parser redesign",
+    "no SWINTER=3 implementation in this bounded step",
+    "no M1-C3 PASS claim"
+  ]
+}
