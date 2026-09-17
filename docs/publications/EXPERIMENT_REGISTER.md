@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_SCREENING | real-SWAP origin-policy harness qualified by `PUB-GC-E1-HARNESS-QUAL-0001`; perform separately labelled transient screening within the frozen broad bounds, then freeze the exact case/candidate sequence before primary E1 preregistration |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_PRIMARY_FREEZE | preregistered screen `PUB-GC-E1-SCREEN-0001` completed 20/20 eligible and selected window 0.05 d with B=-60 cm; freeze A/B/C sequences, GW-A parameters, metrics and null interpretation before any primary run |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
@@ -151,6 +151,20 @@ Examples:
 - prerequisite newly satisfied: the composed E1 comparison harness is qualified before screening or primary-case selection;
 - next permitted action: separately labelled transient screening within the broad bounds frozen in `PUB-GC_E1_ORIGIN_HARNESS_SPEC.md`; after screening freeze exact case, candidate heads, order permutations, metrics, thresholds and null interpretation before primary execution;
 - cross-publication effect: none; no MODFLOW, PUB-ME, PUB-SQ, PUB-RC or PUB-SG primary claim is inherited.
+
+### 2026-09-17T23:09:51Z — PUB-GC E1 transient screening completed
+
+- preregistration manifest: `5c5d30273437bfc5082d2c91a75d25681cc8d15d`;
+- execution lock: `df134d0da4528964fad4470dcc2a013a26aadb4d`;
+- pre-execution trigger-deviation authority: `f2489a20d40a9c63873a4a9ff02d1e034f416a48`;
+- screening execution head: `research/pub-gc-e1-screening@e34aa5072b8cdf9064865865bade34f2c50d19b8`;
+- result receipt: `docs/publications/results/PUB-GC-E1-SCREEN-0001.yaml`, introduced by commit `4377317335a5d895aef58afab5d46d23f20a6162`;
+- execution: GitHub Actions run `35285493995`, job `105416772498`;
+- grid result: 20/20 preregistered rows eligible, 0 failed;
+- predeclared selection rule chose `window=0.05 d`, `B=-60 cm`, with screening-only `|Delta Q|=2.72263006884223523e-02 cm` and endpoint-head difference `2.55457754712986684 cm`;
+- interpretation guard: these magnitudes are screening/case-selection evidence only and are not H1 primary evidence;
+- next permitted action: freeze the primary A/B/C order-permutation experiment, GW-A parameters, exact metrics and null interpretation before implementing or executing the primary run;
+- cross-publication effect: none.
 
 ## Register update rule
 
