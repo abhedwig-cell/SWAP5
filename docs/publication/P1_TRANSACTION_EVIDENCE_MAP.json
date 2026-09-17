@@ -1,0 +1,104 @@
+{
+  "schema": "swap5.publication.p1-transaction-evidence.v1",
+  "workunit": "PUB-P1E01",
+  "canonical_base": "40752b92e50b5000ac53892421336520fc62e518",
+  "rule": "Count only evidence that exercises current production physics/runtime for production-proven claims. Harness-only and pre-solver fail-closed tests remain separate classes.",
+  "claims": [
+    {
+      "claim_id": "P1-TX01",
+      "claim": "an accepted production interval commits exactly once",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+      "evidence": [
+        "mode2 equilibrium requires final_revision == 1",
+        "positive prescribed-qbot route requires final_revision == 1",
+        "both routes execute the serialized Reference backend with real HeadCalc"
+      ],
+      "limits": "Restricted prescribed-qbot Reference production route; not a universal proof for every optional-process composition."
+    },
+    {
+      "claim_id": "P1-TX02",
+      "claim": "hard mass accounting is closed on accepted production intervals",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90 plus tests/fvq/run_fvq75_prescribed_qbot_temporal_runtime_independent.sh",
+      "evidence": [
+        "accepted route requires mass.complete",
+        "absolute mass residual <= 1e-12",
+        "positive bottom inflow has explicit positive total_in and total_out",
+        "FVQ75 independently replays the production route and checks transfer closure"
+      ],
+      "limits": "This proves accepted-route conservation in the restricted route, not rejected-trial flux exclusion by itself."
+    },
+    {
+      "claim_id": "P1-TX03",
+      "claim": "non-day and non-calendar-aligned physical intervals execute through production physics",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+      "evidence": [
+        "equilibrium duration is 0.25 day",
+        "positive-qbot duration is 1.0e-4 day",
+        "the positive-qbot route executes one principal HeadCalc trajectory and commits"
+      ],
+      "limits": "The fixture starts at numeric t0=0; it proves generic duration semantics, not every calendar adapter interpretation."
+    },
+    {
+      "claim_id": "P1-TX04",
+      "claim": "unsupported requests fail before physical execution and leave revision unchanged",
+      "status": "PRODUCTION_PROVEN_PRE_SOLVER_FAIL_CLOSED",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+      "evidence": [
+        "nearby unowned bottom mode has committed=false",
+        "final_revision == 0",
+        "solver_executed=false"
+      ],
+      "limits": "This is pre-solver rejection. It is not evidence that a physically executed but later rejected trial rolls back correctly."
+    },
+    {
+      "claim_id": "P1-TX05",
+      "claim": "a physically executed but rejected production trial leaves committed physical state unchanged",
+      "status": "TARGETED_PRODUCTION_EVIDENCE_STILL_REQUIRED",
+      "partial_authorities": [
+        "tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90",
+        "F-CI52/F-VQ59 restricted fixed-weir production qualification"
+      ],
+      "partial_evidence": [
+        "F-KT22 executes the serialized Reference backend and proves rejected full-trial tangent work is absent from accepted trajectory publication",
+        "F-CI52 qualification reports rollback and single-commit semantics for the restricted fixed-weir runtime"
+      ],
+      "why_not_closed": "The publication programme still lacks one pinned focused production experiment that snapshots committed water state before and after a post-solver rejected trial and checks exact unchanged state/revision on the selected Paper 1 route."
+    },
+    {
+      "claim_id": "P1-TX06",
+      "claim": "rejected-trial water transfers never enter committed water totals",
+      "status": "TARGETED_PRODUCTION_EVIDENCE_STILL_REQUIRED",
+      "partial_authorities": [
+        "src/transaction/mod_transaction_reference.f90",
+        "tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90"
+      ],
+      "partial_evidence": [
+        "transaction code publishes accepted-route accounting only",
+        "F-KT22 proves rejected full-trial derivative work is excluded from accepted publication"
+      ],
+      "why_not_closed": "A code-path argument plus rejected diagnostic-work test is weaker than a direct production mass-ledger fault-injection test. Paper 1 should add the latter."
+    },
+    {
+      "claim_id": "P1-TX07",
+      "claim": "rerunning the same committed physical state is deterministic within the declared build envelope",
+      "status": "PARTIAL_PRODUCTION_EVIDENCE",
+      "authority": "FMR44R/FVQ75 O0-O2 semantic identity",
+      "evidence": [
+        "FMR44R output is identical between O0 and O2",
+        "FVQ75 independently replays the same production capability"
+      ],
+      "why_not_closed": "Optimization-invariant independent runs are strong reproducibility evidence but are not an explicit same-process checkpoint -> run -> restore -> rerun identity experiment."
+    },
+    {
+      "claim_id": "P1-TX08",
+      "claim": "numerical warm-start variation does not change accepted physical output beyond a declared tolerance",
+      "status": "MISSING_CURRENT_PRODUCTION_EVIDENCE",
+      "historical_evidence": "TX-WARM-01 exists in the old synthetic VQ suite",
+      "why_not_closed": "Historical VQ evidence explicitly did not execute production physics. No current production warm-start perturbation qualification has been pinned for Paper 1."
+    }
+  ],
+  "publication_conclusion": "Current SWAP5 already provides strong restricted-route production evidence for single-commit semantics, hard mass closure and generic-duration execution. The minimum new Paper 1 transaction experiment should target post-solver rollback plus rejected-transfer exclusion; warm-start invariance remains a separate missing experiment."
+}
