@@ -123,11 +123,6 @@ program test_fvq105_fgc31_active_drainage_independent
   scale = max(1.0_real64, abs(fd_face), abs(endpoint%bottom_face%dpressure_head_cm_per_qbot_cm_per_day))
   call require(face_error <= fd_rel_gate*scale, 'five-point fixed-face tangent agreement')
 
-  call evaluate_b110_smooth_freatic_projection(SW_STEP_CONTROL_BOTTOM_FLUX, .false., solver_parameters%z, &
-       solver_parameters%node_distance, tangent_state%pressure_head, &
-       tangent_result%accepted_trajectory_direction%final_pressure_head_direction, &
-       analytic_gwl, analytic_dgwl, projection_status())
-  ! projection_status() only provides storage; recompute with explicit diagnostic for admissibility.
   call terminal_gwl_direction(tangent_state, tangent_result%accepted_trajectory_direction%final_pressure_head_direction, &
        analytic_gwl, analytic_dgwl, ok)
   call require(ok, 'terminal GWL directional projection available')
@@ -162,11 +157,6 @@ program test_fvq105_fgc31_active_drainage_independent
   write(*,'(A)') 'FVQ105_INDEPENDENT_ORACLE=PASS'
 
 contains
-
-  function projection_status() result(d)
-    type(b110_smooth_freatic_projection_diagnostics_t) :: d
-    d = b110_smooth_freatic_projection_diagnostics_t()
-  end function projection_status
 
   subroutine terminal_gwl_direction(state, direction, gwl, dgwl, available)
     type(soil_water_physical_state_t), intent(in) :: state
