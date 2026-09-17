@@ -1,70 +1,72 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS13",
   "title": "RossFast D3R 36-material production envelope",
   "branch": "work/f-ross13-36-material-production-envelope",
-  "phase": "QUALIFY",
-  "status": "TRANSIENT_36_MATERIAL_QUALIFICATION_PASSED_READY_FOR_SURGICAL_PRODUCTION_WIDENING_REVIEW",
-  "canonical_base": "95748d047325e74adf6d06eba978dea61bd51a7d",
+  "phase": "IMPLEMENT",
+  "status": "SURGICAL_PRODUCTION_WIDENING_STAGED_FAIL_CLOSED",
+  "canonical_base": "4b945b19d0b5f984d10bc750bb403174158a886b",
+  "canonical_merge_head": "76b954f304dd781d56e408aebbf805527ee28a3e",
   "qualification_head": "fbaee2199233da46a672a19ee71625632c94317e",
   "production_mutation_started": false,
-  "purpose": "Expand only the admitted RossFast D3R Staringreeks material catalog from the six F-ROSS12 materials to the full 36-material unimodal Mualem-van Genuchten KSATFIT catalog while preserving the existing solver, geometry, transaction, retry, commit and production routing contracts.",
+  "purpose": "Expand only the admitted RossFast D3R Staringreeks material catalog from the six F-ROSS12 materials to the full 36-material unimodal Mualem-van Genuchten KSATFIT catalog while preserving solver, geometry, transaction, retry, commit and production routing contracts.",
   "acquire_evidence": {
-    "f_ross01_36_material_face_table_holdout": {
-      "run": 34339656739,
-      "pinned_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
-      "material_count": 36,
-      "pass_count": 36,
-      "holdout_probe_count": 50436,
-      "representation": "N241_FLOAT32_LOG_MOBILITY",
-      "scope_limit": "Constitutive/face-table representation evidence only; transient admission required the separate F-ROSS13 gate."
-    },
-    "fingerprint_authority": {
-      "path": "integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json",
-      "blob_sha": "01fa631a245f3011b1007b2888b0528b111ee17f"
-    },
-    "f_ross13_asset_materialization": {
-      "run": 35206159810,
-      "conclusion": "success",
-      "asset_commit": "264eb136ad4dffc94035179b98aa518b6a75f2a1",
-      "material_count": 36,
-      "existing_six_assets_byte_identical": true,
-      "production_source_changed": false,
-      "runtime_generation": false
-    }
+    "historical_face_table_holdout_run": 34339656739,
+    "pinned_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "fingerprint_authority_blob": "01fa631a245f3011b1007b2888b0528b111ee17f",
+    "asset_materialization_run": 35206159810,
+    "asset_materialization_result": "PASS_36_OF_36_EXISTING_SIX_BYTE_IDENTICAL"
   },
   "transient_qualification": {
-    "contract_path": "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json",
-    "contract_blob_sha": "382a9f9d153669377e8eba05461594a37d132e4b",
+    "contract_blob": "382a9f9d153669377e8eba05461594a37d132e4b",
+    "result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0",
     "workflow_run": 35213506527,
-    "workflow_head": "fbaee2199233da46a672a19ee71625632c94317e",
-    "workflow_conclusion": "success",
-    "aggregate_job": 105180773761,
-    "aggregate_job_conclusion": "success",
-    "artifact_id": 10494444383,
-    "artifact_zip_sha256": "1ad6d8dd71c2c6bee91363974eb82ccae3d10b80c80d3795270e2ee59f29aa1c",
-    "raw_aggregate_json_sha256": "8cd9afc0fb8bcdadf5bc38b1a033f698276f968c984bf96041816d1eac8143c1",
-    "durable_result_path": "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json",
     "material_count": 36,
     "base_case_count": 288,
     "anchor_material_count": 6,
     "extension_material_count": 30,
-    "extension_geometry": "16 cells x 10 cm",
     "failed_materials": [],
     "fingerprint_failures": [],
     "anchor_semantic_failures": [],
     "inadmissible_transition_route_count": 0,
-    "decision": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING_REVIEW"
+    "decision": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING"
   },
-  "current_production_authority": {
-    "asset_manifest": "assets/rossfast/d3r/manifest.json",
-    "currently_admitted_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
-    "runtime_generation": false,
-    "material_to_asset_mapping_is_fixed": true,
+  "canonical_reconciliation": {
+    "previous_canonical": "9164ec2218951950c25de03bb3d3bf953d48d635",
+    "current_canonical": "4b945b19d0b5f984d10bc750bb403174158a886b",
+    "current_canonical_change": "PUB-P2E06_REFERENCE_ONLY_DIAGNOSTIC_AND_GOVERNANCE",
+    "src_tree_changed_by_p2e06": false,
+    "reference_tree_changed_by_p2e06": false,
+    "rossfast_executed_by_p2e06": false,
+    "f_ci_canonical_result": "PASS",
+    "merge_commit": "76b954f304dd781d56e408aebbf805527ee28a3e",
+    "merge_force_used": false,
+    "merge_diff_outside_f_ross13_overlay": false
+  },
+  "implementation_preimage": {
     "model_binding": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
     "table_provider": "src/solver/mod_rossfast_d3r_table_provider.f90",
-    "production_selection_owner": "F-ROSS12"
+    "table_provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "historical_material_catalog": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+    "historical_material_catalog_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "historical_material_catalog_blob": "76596a00296318b871a9109ed6187bb86ccfae32",
+    "allowed_source_mutations": [
+      "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "src/solver/mod_rossfast_d3r_table_provider.f90"
+    ]
+  },
+  "implementation_transaction": {
+    "strategy": "BLOB_GUARDED_DETERMINISTIC_CATALOG_GENERATION_LOCAL_COMMIT_QUALIFY_BEFORE_PUSH",
+    "catalog_source": "PINNED_HISTORICAL_AUTHORITY_ONLY",
+    "production_test": "tests/ross/run_ross13_36_material_production_envelope.sh",
+    "preservation_tests": [
+      "tests/ross/run_ross12_soil_water_solver_adapter.sh",
+      "tests/ross/run_ross12_solver_selection_binding.sh",
+      "tests/ross/run_ross12_serialized_production_wiring.sh"
+    ],
+    "push_rule": "NO_PRODUCTION_SOURCE_COMMIT_IS_PUSHED_UNLESS_ALL_LOCAL_QUALIFICATION_STEPS_PASS"
   },
   "hard_exclusions": [
     "NO_GRID_OR_CELL_COUNT_GENERALIZATION",
@@ -80,6 +82,6 @@
     "NO_RUNTIME_TABLE_GENERATION",
     "NO_CRITERION_RETUNING_TO_FORCE_PASS"
   ],
-  "verdict": "QUALIFICATION_PASS_PRODUCTION_ALLOWLIST_WIDENING_REVIEW_PERMITTED",
-  "next_permitted_action": "Inspect the current model-binding and table-provider six-material restrictions, then make only the minimal six-to-36 material admission/mapping change. Re-run production/provider/fail-closed/Reference/O0-O2/relevant F-CI qualification before admission."
+  "verdict": "IMPLEMENTATION_TRANSACTION_READY_NO_REMOTE_PRODUCTION_MUTATION_YET",
+  "next_permitted_action": "Run the blob-guarded implementation transaction. If and only if the 36-material production/provider test and all three F-ROSS12 preservation runners pass, push the exact two-file production widening commit; otherwise remain fail-closed at this checkpoint."
 }
