@@ -174,6 +174,7 @@ done
 
 [[ "$row" -eq 20 ]] || fail "screen grid row count $row != 20"
 
+set +e
 python3 - "$INDEX" "$ARTIFACT_DIR/screening.tsv" <<'PY'
 import csv, math, pathlib, re, sys
 
@@ -304,8 +305,8 @@ print('PUB_GC_E1_SCREEN_GRID_COMPLETE=PASS')
 if infra:
     raise SystemExit('PUB_GC_E1_SCREEN_INFRASTRUCTURE_INVALID')
 PY
-
 parser_rc=$?
+set -e
 echo "PUB_GC_E1_SCREEN_RESEARCH_HEAD=$(git rev-parse HEAD)"
 echo "PUB_GC_E1_SCREEN_SOURCE_TREE=$(git rev-parse HEAD:src)"
 echo "PUB_GC_E1_SCREEN_TEST_BLOB=$(git rev-parse HEAD:$TEST)"
