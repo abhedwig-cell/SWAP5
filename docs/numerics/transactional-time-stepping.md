@@ -194,7 +194,7 @@ See [Richards reference solver](richards-solver.md) for the frozen nonlinear sol
 
 [Restart v1](../capabilities/restart-v1.md) reconstructs the admitted committed execution state. It does not turn arbitrary rejected candidates or scratch into persistence authority.
 
-[Serialized MultiSWAP v1](../capabilities/multiswap-v1.md) coordinates multiple qualified column contexts without weakening the committed/candidate boundary. Its frozen Status-A claim remains serialized; this page does not create a parallel real-physics execution claim.
+[Serialized MultiSWAP v1](../capabilities/serialized-multiswap-v1.md) coordinates multiple qualified column contexts without weakening the committed/candidate boundary. Its frozen Status-A claim remains serialized; this page does not create a parallel real-physics execution claim.
 
 [Groundwater Coupling v1](../science/groundwater-coupling.md) obeys accepted-state publication and adds capability-specific coupling contracts. Its staged interface mass-ledger semantics must not be generalized into the generic transaction core unless separately admitted.
 
