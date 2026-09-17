@@ -12,6 +12,8 @@ program test_fgc31_qbot_drainage_projection_runtime
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_BIND_OK
+  use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
+       evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -47,7 +49,7 @@ program test_fgc31_qbot_drainage_projection_runtime
   write(*,'(A)') 'FGC31_QBOT_DRAINAGE_PROJECTED_RESPONSE=PASS'
   write(*,'(A)') 'FGC31_QBOT_DRAINAGE_DEFAULT_OFF_PRESERVED=PASS'
   write(*,'(A)') 'FGC31_QBOT_DRAINAGE_PROJECTION_FAIL_CLOSED=PASS'
-  write(*,'(A)') 'FGC31_QBOT_DRAINAGE_NO_PERSISTENT_GWL_MUTATION=PASS'
+  write(*,'(A)') 'FGC31_QBOT_DRAINAGE_CANDIDATE_GWL_REFRESH=PASS'
 
 contains
 
@@ -57,6 +59,9 @@ contains
     type(kernel_diagnostics_t) :: diagnostics
     type(fmr_serialized_physical_observation_t) :: obs
     type(fmr_b110_physical_state_t) :: state
+    type(b110_smooth_freatic_projection_diagnostics_t) :: projection
+    real(real64), allocatable :: zero_direction(:)
+    real(real64) :: expected_candidate_gwl, ignored_direction
 
     parameters%drainage_qbot_smooth_freatic_projection=.true.
     call run_case(.true.,result,candidate,diagnostics,obs)
@@ -71,8 +76,16 @@ contains
     call require(close(obs%drainage_response%level(1)%signed_soil_to_drain_rate,projected_drainage,1.0e-13_real64), &
          'drainage evaluated at projected GWL')
     call snapshot_candidate(candidate,state)
-    call require(close(state%groundwater_level,stale_gwl,0.0_real64), &
-         'projection is local view only and does not mutate persistent GWL')
+    allocate(zero_direction(state%active_nodes))
+    zero_direction=0.0_real64
+    call evaluate_b110_smooth_freatic_projection(SW_STEP_CONTROL_BOTTOM_FLUX,.false.,parameters%z, &
+         parameters%node_distance,state%pressure_head,zero_direction,expected_candidate_gwl,ignored_direction,projection)
+    call require(projection%status==B110_GWL_PROJECTION_OK .and. projection%value_defined, &
+         'candidate pressure profile remains in smooth projection envelope')
+    call require(close(state%groundwater_level,expected_candidate_gwl,1.0e-13_real64), &
+         'candidate groundwater level refreshed from accepted pressure profile')
+    call require(.not. close(state%groundwater_level,stale_gwl,1.0e-12_real64), &
+         'candidate groundwater level must not remain stale')
   end subroutine verify_projection_enabled
 
   subroutine verify_default_off_uses_stored_gwl()
