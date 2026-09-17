@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.fdoc29_status.v1",
+  "work_unit": "F-DOC29",
+  "title": "Serialized MultiSWAP v1 technical reference",
+  "branch": "work/f-doc29-serialized-multiswap-technical-reference",
+  "phase": "ACQUIRE",
+  "decision": "AUTHORITY_ACQUIRED_READY_FOR_DOCUMENTATION_UPDATE",
+  "canonical_start": "46f7335351393167b92f301c28ed1f235c0892ce",
+  "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "frozen_source_owners": [
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+      "role": "multi-column serialized orchestration, registry preflight, deterministic dispatch, per-column transaction/commit and aggregate diagnostics"
+    },
+    {
+      "path": "src/runtime/mod_fmr_runtime_core.f90",
+      "blob": "43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+      "role": "logical column/template contracts, execution order and aggregate diagnostic types"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+      "role": "qualified per-column reference-physics backend and worker-local solver/workspace ownership"
+    },
+    {
+      "path": "src/runtime/mod_fmr_restart_state_contract.f90",
+      "blob": "872c28bbc345f40073396cce57e4eb43c71de850",
+      "role": "typed physical-state compatibility used by committed-boundary restart"
+    },
+    {
+      "path": "src/kernel/mod_kernel_committed_persistence.f90",
+      "blob": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+      "role": "committed continuation-state persistence dependency"
+    }
+  ],
+  "completion_authority": {
+    "work_unit": "F-MR42",
+    "closeout": "e370f95c2e50c2fef46fe99eac11522046560938",
+    "decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
+    "validated_head": "9e4ae6b872f3aafe51c9312979e7ed88c877ff3d",
+    "workflow_run": 34746257468,
+    "workflow_job": 103694630332,
+    "conclusion": "success"
+  },
+  "qualification_chain": {
+    "serialized_foundation_independent": "F-VQ15/F-MR05@65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "restart_owner": "F-MR19@110440d28ff2b585763ad8fd4eedb88e7d112eeb",
+    "restart_independent": "F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1",
+    "restart_canonical": "F-CI35:CLOSED_CANONICAL_ADMITTED",
+    "typed_optional_state_owner": "F-MR41@e7165e598b035282a2cb7527b2fb2f466f1dbbff",
+    "typed_optional_state_postimage": "F-CI48P@c855d1a012efcd7adda2927e7efe250be5971550",
+    "transaction_composition_postimage": "F-CI49P@938388169d3bb34a3ff9f749c37ff75da05714a6"
+  },
+  "preservation_authority": {
+    "historical_permanent_testbank": "F-TB11@74bef08dedb060417d549c8d8cf0fedb8b73e997",
+    "stable_test_id": "FTB11-MSW-001",
+    "status_a_current_preservation": "same-tree F-GC29 serialized MultiSWAP observable and aggregate-mass replay plus retained mixed-smoke/permanent suites"
+  },
+  "permitted_claims": [
+    "Serialized MultiSWAP v1 executes qualified real-physics logical columns serially through one runtime composition.",
+    "Logical columns carry identities and registry handles while mutable committed state remains per-column and solver/Newton/Jacobian scratch is non-persistent worker/backend state.",
+    "The frozen runtime validates the complete registry structure before physical execution, including uniqueness of state claims.",
+    "Execution order is deterministic under the v1 policy: template_id then column_id.",
+    "Each resolved column uses the existing checkpoint/trial/retry/commit or rollback transaction lifecycle; rejected work does not become committed column state.",
+    "Batch and aggregate diagnostics are composed from per-column results and include aggregate unrounded mass residual; mass conservation remains a hard qualified gate.",
+    "Committed-boundary restart persists continuation authority while excluding solver scratch.",
+    "Typed optional persistent state is conditional on the admitted physical profile rather than forced on every logical column."
+  ],
+  "forbidden_claims": [
+    "No parallel or concurrent real-physics MultiSWAP admission.",
+    "No thread/process safety or shared mutable-state claim for arbitrary concurrency.",
+    "No worker-scaling, SIMD/GPU, 100k-column throughput or general speedup claim.",
+    "No RossFast or mixed Reference/RossFast MultiSWAP claim inside the frozen Status-A denominator.",
+    "No broad MODFLOW or direct-groundwater MultiSWAP claim beyond separately admitted authorities.",
+    "No general filesystem/byte-format or cross-version restart claim.",
+    "No mid-transaction/trial-state restart or persistence of solver scratch.",
+    "No automatic safety inheritance for future process state or execution topologies."
+  ],
+  "mutation_scope": "documentation_and_governance_only",
+  "production_source_changes": [],
+  "reference_source_changes": [],
+  "test_changes": [],
+  "verdict": "READY_FOR_DOCUMENTATION_UPDATE",
+  "next_permitted_action": "Write reviewer-facing Serialized MultiSWAP v1 technical reference without broadening the frozen authority ceiling."
+}
