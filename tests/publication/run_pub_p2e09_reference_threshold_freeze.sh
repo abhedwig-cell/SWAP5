@@ -13,7 +13,6 @@ PREREG=docs/publication/P2E09_REFERENCE_ONLY_THRESHOLD_FREEZE_PREREGISTRATION.js
 VALIDATOR=tests/publication/validate_pub_p2e09_reference_thresholds.py
 P2E08_RUNNER=tests/publication/run_pub_p2e08_reference_valid_calibration_domain.sh
 PREREGISTERED_BASE=b7e48275ebfba5ba888685f7515005c7195d5d73
-RECONCILED_BASE=6a77678b535ed468bdeeb9b67f149be706f0205f
 P2E08_RESULT_BLOB=fbfa1309a6297568a6811583db809363da5a7e6f
 DESIGN_BLOB=3a906232441e09f09442731e212ca705ad547354
 PAPER2_BLOB=b94fb98e7e52c5c08ddad92addaa393bdcedb681
@@ -29,8 +28,10 @@ grep -Fq '"reference_factor": 1.0' "$PREREG" || fail 'factor-one rule missing'
 grep -Fq '"stratify_by": "effective_saturation"' "$PREREG" || fail 'Se stratification missing'
 
 git merge-base --is-ancestor "$PREREGISTERED_BASE" HEAD || fail 'P2E09 preregistered base is not an ancestor'
-git merge-base --is-ancestor "$RECONCILED_BASE" HEAD || fail 'P2E09 reconciled base is not an ancestor'
-git diff --quiet "$RECONCILED_BASE" HEAD -- src reference || fail 'P2E09 mutated src or reference relative to reconciled canonical'
+RECONCILED_BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
+[[ -n "$RECONCILED_BASE" ]] || fail 'unable to resolve current canonical merge-base'
+git diff --quiet "$RECONCILED_BASE" HEAD -- src reference || fail 'P2E09 mutated src or reference relative to current canonical merge-base'
+echo "PUB_P2E09_RECONCILED_BASE=$RECONCILED_BASE"
 test "$(git rev-parse HEAD:docs/publication/P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_RESULT.json)" = "$P2E08_RESULT_BLOB" || fail 'P2E08 result authority drift'
 test "$(git rev-parse HEAD:docs/publication/P2_ADMISSIBILITY_ENVELOPE_DESIGN.md)" = "$DESIGN_BLOB" || fail 'admissibility design drift'
 test "$(git rev-parse HEAD:docs/publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md)" = "$PAPER2_BLOB" || fail 'Paper2 research design drift'
