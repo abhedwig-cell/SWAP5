@@ -1,0 +1,110 @@
+result:
+  result_id: PUB-GC-GC-REF-A-QUAL-0001
+  publication_owner: PUB-GC
+  reference_method: GC-REF-A
+  evidence_role: RESEARCH_NUMERICAL_REFERENCE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  status: PASS
+
+chronology:
+  reference_spec_commit: c95d67c70dc16126797c6613affe641537e3655e
+  qualification_manifest_commit: abb9d7b5a397abef1987ed8b6872064a13788c9b
+  research_branch_base: 188c863f560d8adacf255edb4f6f83edcac798f3
+  qualified_research_head: 4fc8f6e2a7569503594d0ecf91b651431c607df2
+  qualification_precedes_E2_primary: true
+  qualification_precedes_E3_primary: true
+
+implementation:
+  branch: research/pub-gc-gc-ref-a
+  module_path: tests/publication/pub_gc/gc_ref/mod_pub_gc_gc_ref.f90
+  module_blob: c38663341a586d8ab3e068fa0b4bffeb2fb735d4
+  oracle_path: tests/publication/pub_gc/gc_ref/test_pub_gc_gc_ref_a.f90
+  oracle_blob: 28003b2bb64227d4ab09bdbd38b22e5a97d80fd0
+  runner_path: tests/publication/pub_gc/gc_ref/run_pub_gc_gc_ref_a_qualification.sh
+  runner_blob: 660d850a52f22ef2d99f166816ff2cfae387e0c0
+  workflow_path: .github/workflows/pub-gc-gc-ref-a-qualification.yml
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  scope: RESEARCH_ONLY
+  production_src_modified: false
+  qualified_dependency_bytes_modified: false
+  derivative_acceleration_used: false
+  production_commit_route_used: false
+
+execution:
+  github_actions_run_id: 35288524091
+  github_actions_job_id: 105426089799
+  workflow_name: PUB-GC GC-REF-A qualification
+  workflow_conclusion: success
+  runner_os: ubuntu-24.04
+  compiler: GNU Fortran 13.3.0
+  optimization_modes:
+    - O0
+    - O2
+  scientific_output_sha256: 4a10496d717bb46f0c1a02edd523171ca5ed6224a19ea2cd6215a37bacd0b267
+  artifact:
+    id: 10525965011
+    name: pub-gc-gc-ref-a-4fc8f6e2a7569503594d0ecf91b651431c607df2
+    zip_sha256: a6caaa3f32b2def358d8760fc86d073e423688ca47b35e09b775e7228a3d6136
+    expires_at: 2026-12-16T23:49:21Z
+
+qualified_oracles:
+  reference_spec_lock: PASS
+  qualification_manifest_lock: PASS
+  production_source_tree_unchanged: PASS
+  qualified_dependency_bytes_unchanged: PASS
+  derivative_acceleration_absent: PASS
+  production_commit_absent: PASS
+  synthetic_known_root_recovered: PASS
+  invalid_bracket_fails_closed: PASS
+  stable_three_level_fixture_admitted: PASS
+  under_refined_fixture_rejected: PASS
+  repeated_same_head_same_origin_identity: PASS
+  frozen_real_bracket_contains_root: PASS
+  final_reconstruction_from_original_origins: PASS
+  action_reaction_closure: PASS
+  accepted_SWAP_and_GW_origins_unchanged: PASS
+  o0_o2_scientific_output_identity: PASS
+  qualification_oracle: PASS
+
+real_SWAP_GW_A_fixture:
+  role: QUALIFICATION_ONLY
+  primary_effect_estimation_allowed: false
+  initial_SWAPPrescribedHead_cm: -80.0
+  duration_days: 0.03
+  frozen_bracket_prescribed_head_cm:
+    - -80.0
+    - -70.0
+  converged_relative_interface_head_m: 2.12579965591430664e-4
+  converged_absolute_prescribed_head_cm: -7.99787420034408569e1
+  reconstructed_residual_m: 5.64160231581573544e-9
+  reconstructed_Q_whole_cm: 4.25148647981838605e-3
+  bisection_evaluations: 26
+  frozen_tau_R_h_m: 1.0e-8
+  frozen_tau_bracket_h_m: 1.0e-6
+  frozen_tau_Q_cm: 1.0e-8
+  max_evaluations: 64
+
+admitted_scope:
+  - GC-REF-A implements a deterministic derivative-free same-origin bisection oracle for the controlled SWAP plus GW-A research system.
+  - The frozen real qualification bracket contained a root without post-run bracket adjustment.
+  - Repeated real SWAP/GW-A residual evaluation from identical accepted origins is reproducible in the qualification case.
+  - Final reference reconstruction from the original origins satisfies the frozen residual criterion.
+  - The qualification machinery can distinguish a stable from an intentionally under-refined three-level trajectory fixture.
+  - O0 and O2 produce identical scientific-oracle output.
+
+nonclaims:
+  - H2 is not established by this qualification.
+  - H3 is not established by this qualification.
+  - The qualification case is not a primary hydrologic effect estimate.
+  - The qualification proves reference machinery, not a case-specific temporally refined reference trajectory.
+  - No practical coupling-window threshold is established.
+  - No MODFLOW 6 transferability is established.
+  - Bisection is not claimed to be an efficient production coupling algorithm.
+  - GC-REF-A is a numerical comparator, not physical truth.
+
+next_permitted_action:
+  - mark GC-REF-A machinery qualified
+  - freeze publication accuracy thresholds before primary effect inference
+  - construct separately labelled case-specific L0/L1/L2 reference trajectories
+  - require L1-to-L2 stability before designating a finest trajectory as numerical reference
+  - use screening only to choose later held-out E2/E3 primary cases under a new frozen manifest
