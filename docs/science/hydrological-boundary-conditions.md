@@ -2,6 +2,8 @@
 
 This page documents the hydrological boundary semantics that can be supported for the frozen SWAP5 Status-A scientific production baseline `50346642bd565f79134ea17d5462e544b354998c`. It is deliberately not an exhaustive catalogue of every lower- or upper-boundary option in the historical SWAP family.
 
+For the exact admitted groundwater lower-boundary composition, including hydraulic-head datum conversion, flux signs and units, whole-window exchange, predictor-corrector ownership and accepted-state publication, see [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md).
+
 ## Boundary role in the column balance
 
 The one-dimensional soil column exchanges water through an upper and a lower boundary. In the frozen solver contract, each side can carry a requested flux or head representation:
@@ -66,6 +68,8 @@ No broader free-drainage, prescribed-head, seepage, regional-groundwater or MODF
 ## Groundwater Coupling v1 at the lower boundary
 
 Groundwater Coupling v1 is an admitted Status-A capability. Its restricted predictor-corrector runtime is implemented in `src/runtime/mod_groundwater_predictor_corrector_window.f90` and is bounded by the F-GC qualification/admission chain.
+
+The detailed interface contract is documented in [Groundwater coupling and the lower hydrological boundary](groundwater-coupling.md). That page is the reviewer-facing reference for the mandatory head datum, the distinction between native SWAP `qbot` and outward coupling flux, exact action/reaction pairing, governed head convergence and the staged/prepared/committed interface ledger.
 
 The coupling window follows this ownership sequence:
 
