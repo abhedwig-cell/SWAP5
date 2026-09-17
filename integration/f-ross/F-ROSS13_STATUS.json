@@ -1,42 +1,92 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS13",
   "title": "RossFast D3R 36-material production envelope",
   "branch": "work/f-ross13-36-material-production-envelope",
-  "phase": "ACQUIRE",
-  "status": "CHECKPOINT_SCOPE_AND_HISTORICAL_EVIDENCE_RECONCILED",
+  "phase": "QUALIFY",
+  "status": "TRANSIENT_36_MATERIAL_QUALIFICATION_REQUIRED_BEFORE_PRODUCTION_ADMISSION",
   "canonical_base": "95748d047325e74adf6d06eba978dea61bd51a7d",
+  "checkpoint_head_before_status_update": "264eb136ad4dffc94035179b98aa518b6a75f2a1",
   "production_mutation_started": false,
   "purpose": "Expand only the admitted RossFast D3R Staringreeks material catalog from the six F-ROSS12 materials to the full 36-material unimodal Mualem-van Genuchten KSATFIT catalog while preserving the existing solver, geometry, transaction, retry, commit and production routing contracts.",
-  "reused_scientific_evidence": {
-    "f_ross01_holdout_run": 34339656739,
-    "f_ross01_holdout_head": "ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a",
-    "f_ross01_holdout_conclusion": "success",
-    "material_count": 36,
-    "holdout_probe_count": 50436,
-    "pass_count": 36,
-    "representation": "N241_FLOAT32_LOG_MOBILITY",
-    "constitutive_scope": "Staringreeks 2018 unimodal MvG using KSATFIT with KSATEXM disabled; homogeneous unsaturated 10-cm faces; h=[-10000,-1] cm",
-    "max_abs_error_over_ksatfit": 0.00043924621324671555,
-    "max_hybrid_metric": 0.0005836322947071754
+  "acquire_evidence": {
+    "f_ross01_36_material_face_table_holdout": {
+      "run": 34339656739,
+      "run_head": "ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a",
+      "pinned_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+      "material_count": 36,
+      "pass_count": 36,
+      "holdout_probe_count": 50436,
+      "representation": "N241_FLOAT32_LOG_MOBILITY",
+      "max_abs_error_over_ksatfit": 0.00043924621324671555,
+      "max_hybrid_metric": 0.0005836322947071754,
+      "scope_limit": "Constitutive/face-table representation evidence only; it does not qualify full transient D3R behavior for 36 materials."
+    },
+    "fingerprint_authority": {
+      "path": "integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json",
+      "blob_sha": "01fa631a245f3011b1007b2888b0528b111ee17f",
+      "provenance": "Exact table fingerprints copied from immutable successful F-ROSS01 holdout artifacts; not regenerated to establish authority."
+    },
+    "f_ross13_asset_materialization": {
+      "workflow": ".github/workflows/ross13-materialize-36-d3r-table-assets.yml",
+      "run": 35206159810,
+      "conclusion": "success",
+      "asset_commit": "264eb136ad4dffc94035179b98aa518b6a75f2a1",
+      "material_count": 36,
+      "existing_six_assets_byte_identical": true,
+      "production_source_changed": false,
+      "runtime_generation": false
+    }
+  },
+  "transient_evidence_reconciliation": {
+    "gate_d": {
+      "path": "integration/f-ross/F-ROSS01_GATE_D_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_RESULT.json",
+      "material_count": 6,
+      "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+      "scope_limit": "Gate D explicitly does not qualify quantitative timestep accuracy."
+    },
+    "gate_f_initial": {
+      "path": "integration/f-ross/F-ROSS01_GATE_F_TIMESTEP_CONVERGENCE_INITIAL_RESULT.json",
+      "run": 34362472467,
+      "material_count": 6,
+      "material_pass_count": 5,
+      "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+      "failure": "O14 piecewise interpolation seam transition only"
+    },
+    "gate_f_r1": {
+      "path": "integration/f-ross/F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_RESULT.json",
+      "run": 34365245795,
+      "material_count": 6,
+      "material_pass_count": 6,
+      "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+      "decision": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
+      "scope_limit": "The qualified timestep/piecewise transient route is six-material only."
+    },
+    "d2_d3r_adapter_authority": {
+      "path": "experiments/ross/ross01_d2_fsi31_adapter_base.py",
+      "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+      "scope_limit": "Historical D2/D3R transient adapter authority does not include the remaining 30 materials."
+    },
+    "conclusion": "No immutable historical evidence recovered so far qualifies transient/timestep D3R behavior for all 36 materials. Face-table qualification cannot be promoted to transient production admission."
   },
   "current_production_authority": {
     "asset_owner_work_unit": "F-ROSS04",
     "asset_manifest": "assets/rossfast/d3r/manifest.json",
-    "current_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "currently_admitted_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
     "runtime_generation": false,
     "material_to_asset_mapping_is_fixed": true,
     "model_binding": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "table_provider": "src/solver/mod_rossfast_d3r_table_provider.f90",
     "production_selection_owner": "F-ROSS12"
   },
-  "required_before_admission": [
-    "Materialize immutable N241 production table assets for the remaining 30 catalog materials from the pinned qualified research authority.",
-    "Extend the production material catalog and provider mapping without changing constitutive equations or table representation.",
-    "Qualify every added asset against independently regenerated pinned-research oracle data.",
-    "Qualify O0/O2 identity and the existing D3R solver route for all 36 materials inside the unchanged F-ROSS12 execution envelope.",
-    "Re-run fail-closed checks for unknown material, missing/corrupt/mismatched asset and parameter drift.",
-    "Re-run relevant production selection and serialized-host regression evidence proving Reference behavior unchanged and no RossFast fallback."
+  "qualification_required_before_any_production_widening": [
+    "Run a qualification-only transient gate for the full 36-material catalog, with special attention to the 30 materials not covered by historical Gate F/D3R evidence.",
+    "Use pinned research/oracle authority and the exact historical N241 fingerprints already materialized; do not establish authority by production output.",
+    "Keep the existing fixed geometry and physical envelope unchanged: homogeneous 16-cell, 10-cm cells and the established prescribed-flux unsaturated D3R route.",
+    "Exercise the qualified timestep/piecewise route and temporal-certificate semantics rather than only constitutive face evaluations.",
+    "Require finite-state, MvG-domain, head-envelope, storage/mass-ledger and temporal/refinement gates; fail closed per material.",
+    "Do not alter src/runtime/mod_rossfast_d3r_model_binding.f90 or src/solver/mod_rossfast_d3r_table_provider.f90 until this transient qualification passes."
   ],
   "hard_exclusions": [
     "NO_GRID_OR_CELL_COUNT_GENERALIZATION",
@@ -51,6 +101,6 @@
     "NO_TRANSACTION_OR_SOLVER_ABI_CHANGE",
     "NO_RUNTIME_TABLE_GENERATION"
   ],
-  "verdict": "PROCEED_WITH_BOUNDED_ASSET_AND_MATERIAL_CATALOG_ADMISSION_ONLY",
-  "next_permitted_action": "Recover the exact current production table-provider implementation and F-ROSS04 asset-generation/qualification path, then materialize and qualify the remaining 30 assets before widening production admission."
+  "verdict": "BLOCKED_BEFORE_PRODUCTION_ADMISSION_PENDING_36_MATERIAL_TRANSIENT_QUALIFICATION",
+  "next_permitted_action": "Construct and run a qualification-only all-36 transient D3R gate from pinned F-ROSS01/F-ROSS12 scientific authority. Production material allowlists remain unchanged until that gate passes."
 }
