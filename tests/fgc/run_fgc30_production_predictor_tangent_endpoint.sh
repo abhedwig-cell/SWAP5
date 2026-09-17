@@ -69,6 +69,8 @@ MODULE_SRC=(
   src/runtime/mod_modflow6_swap_predictor_response.f90
   src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
   src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90
+  src/runtime/mod_modflow6_swap_predictor_origin.f90
+  src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90
 )
 
 for opt in 0 2; do
@@ -89,7 +91,9 @@ for opt in 0 2; do
     'FGC30_PRODUCTION_TANGENT_ENDPOINT_AUTHORITATIVE=PASS' \
     'FGC30_PRODUCTION_CENTERED_FD_ORACLE=PASS' \
     'FGC30_PRODUCTION_TANGENT_FD_AGREEMENT=PASS' \
+    'FGC30_PRODUCTION_CANDIDATE_ASSEMBLER=PASS' \
     'FGC30_PRODUCTION_TYPED_PREDICTOR_RESPONSE=PASS' \
+    'FGC30_PRODUCTION_PROVENANCE_FAIL_CLOSED=PASS' \
     'FGC30_PRODUCTION_DRAINAGE_TANGENT_FAIL_CLOSED=PASS' \
     'FGC30_PRODUCTION_PREDICTOR_TANGENT_ENDPOINT_GATE=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
@@ -105,6 +109,8 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
 
 git diff --check -- \
   src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90 \
+  src/runtime/mod_modflow6_swap_predictor_origin.f90 \
+  src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90 \
   tests/fgc/test_fgc30_production_predictor_tangent_endpoint.f90 \
   tests/fgc/run_fgc30_production_predictor_tangent_endpoint.sh
 
