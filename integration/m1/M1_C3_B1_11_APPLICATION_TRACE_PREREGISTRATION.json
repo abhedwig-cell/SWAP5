@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.qualification_preregistration.v1",
+  "workunit": "M1-C3",
+  "title": "B1.11 Hupsel executable application-composition observation",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "dependency_checkpoint": "integration/m1/M1_C3_POST_FAPP04_RECONCILE.json",
+  "canonical_subject": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+  "reference": {
+    "snapshot": "B1.11",
+    "status": "CURRENT_QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_11_member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "reconstruction": "tools/vq/b1_11_reconstruct.py"
+  },
+  "case": {
+    "name": "official Hupselbrook",
+    "swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "meteorology_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "frozen_interval_selection": {
+    "dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "selection_rule": "first accepted soil-water interval start >= 12:00 local model time",
+    "selection_must_not_change_after_observation": true
+  },
+  "observation_payload": [
+    "model date/time and accepted interval [t0,t1]",
+    "active SWETR/SWDIVIDE/SWMETDETAIL/SWRAIN/SWINTER/SWCF selectors and crop identity/emergence state",
+    "gross rain, legacy interception, net rain and final dynamic-top precipitation/top-flux contribution with units/sign convention",
+    "daily/final potential soil evaporation, pond evaporation and potential transpiration",
+    "rooted-node count, cumulative root distribution and final nodewise root_extraction_sink(:)",
+    "drainage selectors/configuration, dynamic hydraulic inputs and resulting typed-equivalent control/transfer values",
+    "bottom-boundary selector and resulting bottom flux",
+    "irrigation/SSDI activation and any external-water contribution"
+  ],
+  "comparison_rules": {
+    "restricted_fapp04": "Compare F-APP04 identity mappings only when the observed exact legacy route is inside SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0, SWINTER=1, SWCF=1. Outside that selector set, record UNCOVERED_ROUTE and do not invoke/fallback the restricted adapter.",
+    "current_reference_only": "All executable observations are from reconstructed B1.11; B1.10 snapshots remain historical and are not relabelled.",
+    "observation_only": "Instrumentation may write diagnostics only and must not change state, forcing, equations, solver decisions, timestep/retry policy, tolerances or output semantics.",
+    "noninterference": "Normalized result.bal/result.blc identities must remain equal to the same uninstrumented B1.11 run before observation evidence is accepted.",
+    "numeric_tolerance": "Use exact identity for selector/integer/route fields; use 1e-12 absolute tolerance for transported cm/day process-ready scalar values unless an existing stricter immutable contract applies. Do not tune tolerance after observation."
+  },
+  "pass_conditions": [
+    "B1.11 reconstruction identity closes before execution.",
+    "The exact official Hupsel case runs successfully under the already qualified GNU portability procedure without scientific source change.",
+    "All six frozen interval selections are captured deterministically.",
+    "Every selected interval is classified before candidate comparison by exact active legacy route.",
+    "For every selected interval inside F-APP04 scope, PMdirect ptra, soil/pond evaporation demand and net-rain transport agree with admitted typed bindings at the preregistered tolerance.",
+    "Drainage and irrigation/SSDI observations are sufficient to classify the next remaining M1-C3 application-composition surface.",
+    "Instrumentation preserves normalized legacy output identities."
+  ],
+  "fail_closed_conditions": [
+    "Any B1.11 source identity mismatch.",
+    "Any official Hupsel input identity mismatch.",
+    "A frozen interval cannot be selected unambiguously.",
+    "An unsupported SWINTER=3 or SWCF=2 route would need to be inferred or approximated to compare F-APP04.",
+    "Instrumentation changes accepted intervals, solver/retry behaviour or normalized legacy outputs.",
+    "Drainage or irrigation semantics cannot be observed without changing production/reference physics."
+  ],
+  "explicit_nonclaims": [
+    "This campaign does not by itself implement SWINTER=3/Rutter or SWCF=2.",
+    "This campaign does not close whole-Hupsel equivalence or M1-C3 unless every active legacy application route is already admitted or separately qualified.",
+    "No output fitting or reverse engineering from result files is permitted."
+  ],
+  "next_if_pass": "Persist the B1.11 observation artifact and narrow the next M1-C3 workunit to only the actually active uncovered application routes."
+}
