@@ -24,6 +24,7 @@ module pub_me_d3_fixture
   contains
     procedure :: configure_parameters => d3_configure_parameters
     procedure :: execution_admitted => d3_execution_admitted
+    procedure :: prepare_interval => d3_prepare_interval
     procedure :: advance => d3_advance
     procedure :: storage => d3_storage
     procedure :: storage_accounting_status => d3_storage_status
@@ -68,6 +69,18 @@ contains
     admitted = same_type_as(self,self) .and. same_type_as(parameters,parameters) .and. &
          numerical_config%max_committed_substeps > 0
   end function d3_execution_admitted
+
+  subroutine d3_prepare_interval(self, forcing, interval, config)
+    class(d3_model_t), intent(inout) :: self
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(canonical_interval_t), intent(in) :: interval
+    type(canonical_numerical_config_t), intent(in) :: config
+
+    if (.not. same_type_as(self,self) .or. .not. same_type_as(forcing,forcing)) &
+      error stop 'D3 unreachable prepare types'
+    if (interval%t1 <= interval%t0 .or. config%max_committed_substeps <= 0) &
+      error stop 'D3 invalid prepared interval'
+  end subroutine d3_prepare_interval
 
   subroutine d3_advance(self, state, t0, t1, outcome)
     class(d3_model_t), intent(inout) :: self
