@@ -397,11 +397,13 @@ contains
     type(kernel_candidate_state_t),intent(in)::left,right
     character(len=*),intent(in)::label
     real(real64)::lv,rv,lt0,lt1,rt0,rt1
+    logical::la,ra
     call candidate_value_of(left,lv); call candidate_value_of(right,rv)
     call assert_true(same_real(lv,rv),trim(label)//' physical')
     call assert_true(left%current_lineage_id()==right%current_lineage_id(),trim(label)//' lineage')
     call assert_true(left%origin_revision()==right%origin_revision(),trim(label)//' revision')
-    call left%origin_interval(lt0,lt1); call right%origin_interval(rt0,rt1)
+    call left%origin_interval(lt0,lt1,la); call right%origin_interval(rt0,rt1,ra)
+    call assert_true(la .and. ra,trim(label)//' interval available')
     call assert_true(same_real(lt0,rt0) .and. same_real(lt1,rt1),trim(label)//' interval')
   end subroutine assert_candidates_equal
 
