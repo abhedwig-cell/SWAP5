@@ -65,7 +65,7 @@ for opt in 0 2; do
   gfortran "${DEP_FLAGS[@]}" -c "$TRAJPUB" -o "$O/trajectory_publication.o"
   gfortran "${DEP_FLAGS[@]}" -c "$CONTRACTS" -o "$O/contracts.o"
   gfortran "${DEP_FLAGS[@]}" -c "$WORKER" -o "$O/worker.o"
-  gfortran "${DEP_FLAGS[@]}" -c "$SWCONTRACT" -o "$O/swcontract.o"
+  gfortran "${DEP_FLAGS[@]}" -Wno-error=unused-dummy-argument -c "$SWCONTRACT" -o "$O/swcontract.o"
   gfortran "${DEP_FLAGS[@]}" -c "$SWBRIDGE" -o "$O/swbridge.o"
   gfortran "${DEP_FLAGS[@]}" -c "$TRIAL" -o "$O/trial_mass.o"
   gfortran "${DEP_FLAGS[@]}" -c "$INTERVAL" -o "$O/interval.o"
