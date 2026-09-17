@@ -7,7 +7,7 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-BASE=327689a4e6cf5094590919371edcb7e1c1dd8d48
+BASE=327689a4e169a03d8bd8b27b45df98794fb81cde
 expected_src=$'src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90\nsrc/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90'
 changed_src="$(git diff --name-only "$BASE" -- src | sort)"
 [[ "$changed_src" == "$expected_src" ]] || {
