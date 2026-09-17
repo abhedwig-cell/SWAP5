@@ -1,0 +1,31 @@
+name: F-GC31 qbot drainage derivative chain
+
+on:
+  push:
+    branches:
+      - work/f-gc31-active-drainage-derivative-closure
+    paths:
+      - 'src/solver/mod_b110_smooth_freatic_projection.f90'
+      - 'src/runtime/mod_fmr_drainage_qbot_directional_binding.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'tests/fgc/test_fgc31_qbot_drainage_direction_chain.f90'
+      - 'tests/fgc/run_fgc31_qbot_drainage_direction_chain.sh'
+      - '.github/workflows/f-gc31-qbot-drainage-direction-chain.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qbot-drainage-direction-chain:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-GC31 qbot drainage derivative chain gate
+        run: bash tests/fgc/run_fgc31_qbot_drainage_direction_chain.sh
