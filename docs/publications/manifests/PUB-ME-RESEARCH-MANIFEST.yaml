@@ -4,12 +4,18 @@ manifest:
   publication_owner: PUB-ME
   doctoral_rq: RQ1
   role: PRESERVE
-  status: DRAFT_FREEZE_CANDIDATE
+  status: B0_B1_DESIGN_FROZEN_IMPLEMENTATION_PENDING
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-ME_SCIENTIFIC_CONTRACT.md
   experiment_matrix: docs/publications/PUB-ME_EXPERIMENT_MATRIX.md
   rule: Freeze before any new confirmatory fault-injection campaign. Existing evidence remains foundational or retrospective unless already prospectively registered.
+  confirmatory_freeze: docs/publications/manifests/PUB-ME-CONFIRMATORY-FREEZE-v1.yaml
+  live_evidence_reconciliation:
+    prior_postsolver_fault_branch: work/pub-p1e02-transaction-fault-injection
+    prior_postsolver_fault_head: 7e13915fdc7620ef767af68cd89fcea07d91a2b6
+    classification: DESIGN_AND_HARNESS_QUALIFICATION_ONLY
+    reason: Existing rollback evidence predates the paired B0/B1 causal freeze and is not relabelled as prospective primary evidence.
 
 research_question: >-
   Which scientifically relevant state-contamination faults can escape conventional
