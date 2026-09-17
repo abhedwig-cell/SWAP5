@@ -1,7 +1,9 @@
 {
   "schema": "swap5.publication.p2-reference-uncertainty-pilot-result.v1",
   "workunit": "PUB-P2E02",
-  "canonical_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
+  "research_programme_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
+  "current_admission_base_after_p1e02": "1dc4c3569ae238b1e1be5d6a888664991c80d0a4",
+  "reconciliation_note": "PUB-P1E02 adds publication-only rollback tests/evidence and does not change production/reference source or the P2 Reference solver-seam dependencies. P2E02 must nevertheless re-run its publication and canonical gates against the post-P1E02 merge candidate before admission.",
   "workflow_run": 35265621536,
   "job": 105351940419,
   "experiment_role": "Reference-only method-extraction pilot for numerical self-disagreement; not threshold calibration",
