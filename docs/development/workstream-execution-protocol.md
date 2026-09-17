@@ -112,6 +112,8 @@ integration/f-ci/F-CI07_STATUS.json
 integration/f-mq/F-MQ01_STATUS.json
 ```
 
+Where a workstream already has a deterministic `<WORK_UNIT>_STATUS.json` convention, keep using it. Do not create a separate repository-wide agent index merely to make discovery easier; that would become a second, easily stale source of project state.
+
 The exact serialization may differ, but the record must make the recovery boundary unambiguous. At minimum it must state:
 
 ```text
@@ -127,7 +129,47 @@ recovery_point
 blockers
 ```
 
+For new or materially updated status records, also persist bounded retrieval hints when they are known:
+
+```text
+last_reconciled_head
+last_reconciled_upstream
+relevant_paths
+authority_paths
+test_paths
+evidence_paths
+dependency_surface
+```
+
+These fields are navigation and recovery metadata, not replacement authority. They point to the owning source, contract, tests and evidence. The `dependency_surface` should be conservative enough to identify which later changes can invalidate reuse of prior reconciliation or evidence. If that surface is uncertain, widen the reconciliation rather than claiming unchanged dependencies.
+
+Historical status records do not need to be retrofitted solely for this protocol. Add or improve retrieval hints when a work unit is next materially touched.
+
 A status record must not claim `tested` or `qualified` before the corresponding gate has actually completed.
+
+## Connector-efficient repository retrieval
+
+Repository access through remote connectors is not equivalent to working in a persistent local clone. Repeated broad search and repository reconstruction can consume most of an execution window. Use a bounded retrieval strategy that preserves authority while minimizing unnecessary calls.
+
+The governing retrieval rule is:
+
+```text
+status first -> exact ref -> relevant delta -> bounded files -> search only if needed
+```
+
+Apply it as follows:
+
+1. Resolve the target branch once and pin the exact HEAD SHA for the current phase. Read material files against that exact ref rather than mixing moving branch reads.
+2. If the work-unit status path is known, read it directly first. If it is not known, inspect the exact owning integration/workstream directory tree before attempting repository-wide discovery.
+3. Use `relevant_paths`, `authority_paths`, `test_paths`, `evidence_paths` and `dependency_surface` from the status record when available. Fetch those paths directly at the pinned SHA.
+4. On resume, compare the last persisted/reconciled commit with the current branch HEAD before reconstructing anything. If the work unit also depends on a moving canonical/upstream branch, compare the last reconciled upstream commit with its current HEAD.
+5. If the resulting delta does not intersect the recorded dependency surface, preserve already-valid authority reconstruction and immutable evidence. Re-run only the incomplete action or the checks whose declared dependency surface changed.
+6. If the delta intersects the dependency surface, inspect the intersecting paths and their owning contracts/tests first. Do not automatically repeat unrelated repository reconnaissance.
+7. Prefer exact-ref file reads and small directory-tree traversal over a recursive full-repository tree. Escalate only when the bounded locations are genuinely insufficient.
+8. Treat code-search results as **locators, not branch authority**, unless the search mechanism is explicitly scoped to the exact target ref. A path or symbol found through a default-branch index must be re-read at the pinned target SHA before it supports an implementation or qualification claim.
+9. Persist newly discovered stable retrieval paths in the next meaningful work-unit status checkpoint so a later runtime does not have to rediscover them.
+
+This strategy is an optimization of repository access, not a relaxation of scientific or architectural reconciliation. If a bounded delta cannot establish that relevant dependencies are unchanged, fail open to a wider read scope rather than assuming equivalence.
 
 ## Recovery after interruption
 
@@ -135,13 +177,15 @@ After a timeout, aborted tool call, lost runner or interrupted chat, resume from
 
 Recovery order:
 
-1. Re-read the current workstream branch and exact HEAD commit.
-2. Read the latest work-unit status record and recovery point.
+1. Re-read the current workstream branch and exact HEAD commit and pin it for the recovery phase.
+2. Read the latest work-unit status record and recovery point directly when its path is known; otherwise inspect the exact owning workstream directory to locate it.
 3. Confirm that the referenced checkpoint postimage exists in Git.
-4. Preserve already-persisted source and evidence.
-5. Re-run only the action that was incomplete or whose result was not durably recorded.
-6. Do not repeat source reconstruction or redesign merely because the previous execution session disappeared.
-7. If repository state and chat history disagree, repository state wins.
+4. Compare the checkpoint or last-reconciled commit with current HEAD, and compare the last-reconciled upstream/canonical commit when that dependency is relevant.
+5. Intersect those deltas with the recorded dependency surface and retrieval paths.
+6. Preserve already-persisted source, authority reconstruction and evidence when the relevant dependency surface is unchanged.
+7. Re-read only changed/intersecting dependencies and re-run only the action that was incomplete or whose result was not durably recorded.
+8. Do not repeat broad source reconstruction or redesign merely because the previous execution session disappeared.
+9. If repository state and chat history disagree, repository state wins.
 
 A normal recovery statement should be concrete, for example:
 
@@ -149,6 +193,7 @@ A normal recovery statement should be concrete, for example:
 Work unit: F-CI07
 Recovery commit: <sha>
 Persisted: yes
+Relevant delta since checkpoint: none
 Focused tests: passed
 Qualification gate: incomplete
 Next action: rerun qualification gate from the persisted postimage
