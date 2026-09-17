@@ -4,14 +4,24 @@ manifest:
   publication_owner: PUB-GC
   doctoral_rq: RQ3
   role: COUPLE
-  status: DRAFT_FREEZE_CANDIDATE
+  status: E1_PRIMARY_COMPLETE_GC_REF_A_QUALIFIED_NEXT_CASE_FREEZE_PENDING
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-GC_SCIENTIFIC_CONTRACT.md
   experiment_matrix: docs/publications/PUB-GC_EXPERIMENT_MATRIX.md
+  next_primary_freeze: docs/publications/manifests/PUB-GC-NEXT-PRIMARY-FREEZE-v1.yaml
   current_research_authority:
-    branch: research/pub-gc-e1-primary
-    head: 4384a047e10f78f2b30a713577119a4fd75cbb97
+    E1_frozen_oracle_branch: research/pub-gc-e1-primary
+    E1_frozen_oracle_head: 4384a047e10f78f2b30a713577119a4fd75cbb97
+    E1_primary_execution_branch: research/pub-gc-e1-primary-run
+    E1_primary_execution_head: 936312659522fe4cacfd349b146d173caa07e5ab
+    E1_primary_workflow_run: 35287247968
+    GC_REF_A_branch: research/pub-gc-gc-ref-a
+    GC_REF_A_head: 4fc8f6e2a7569503594d0ecf91b651431c607df2
+    GC_REF_A_workflow_run: 35288524091
+    E2_comparator_branch: research/pub-gc-e2-terminal-comparator
+    E2_comparator_head: 188c863f560d8adacf255edb4f6f83edcac798f3
+    E2_comparator_workflow_run: 35287826254
   current_foundational_capabilities:
     - whole_window_exchange
     - same_origin_replay_harness
