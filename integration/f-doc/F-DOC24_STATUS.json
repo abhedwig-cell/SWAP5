@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC24",
+  "title": "Groundwater Coupling and Lower-Boundary Scientific Reference",
+  "phase": "ACQUIRE",
+  "decision": "AUTHORITIES_ACQUIRED_CLAIM_CEILING_READY_FOR_UPDATE",
+  "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-doc24-groundwater-lower-boundary-reference",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "acquired_authorities": {
+    "status_a_traceability": "docs/status-a/TRACEABILITY.md",
+    "current_lower_boundary_reference": "docs/science/hydrological-boundary-conditions.md",
+    "capability_summary": "docs/capabilities/groundwater-coupling-v1.md",
+    "restricted_direct_groundwater_e2e": "F-GC27 / F-VQ97 / F-CI87",
+    "groundwater_v1_completion": "F-GC28 / F-VQ98 / F-CI88",
+    "preservation": "F-GC29 same-tree targeted groundwater preservation as named by Status-A traceability",
+    "coupling_contract_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "predictor_corrector_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "exchange_service_blob": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "mass_ledger_blob": "a867e04b088f61f686f693d07e470c3e9c33bdec",
+    "head_policy_blob": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+  },
+  "claim_ceiling": {
+    "permitted": [
+      "Explain the admitted restricted predictor-corrector groundwater window and accepted-state publication sequence.",
+      "Document exact frozen head conversion H = z + psi using a mandatory common datum and lower-boundary elevation.",
+      "Document exact flux sign and unit conversion: native SWAP qbot > 0 is into the soil profile; public q_swap > 0 is outward from SWAP; q_groundwater = -q_swap.",
+      "Explain whole-window bottom exchange conversion to mean interface flux and exact action/reaction pairing.",
+      "Explain the staged/prepared/committed interface mass ledger and zero committed exchange change on abort/rejection.",
+      "Explain that interface head convergence uses an externally governed positive tolerance with explicit provenance, not a universal numeric default."
+    ],
+    "forbidden": [
+      "Broad MODFLOW backend admission or backend scientific validity from the adapter boundary alone.",
+      "New groundwater physics or regional groundwater constitutive equations.",
+      "Arbitrary coupling schedules or interpolation policies.",
+      "A universal groundwater head tolerance.",
+      "Concurrent real-physics MultiSWAP coupling.",
+      "Treating predictor candidates as accepted state or published exchange.",
+      "Treating component-local bottom exchange as an external loss from the combined coupled SWAP-groundwater system."
+    ]
+  },
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "documentation_only": true
+  },
+  "next_permitted_action": "Create a bounded groundwater/lower-boundary reference page and authority matrix, then add only minimal cross-links/navigation. Reconcile every equation/sign/unit/publication claim against the frozen contracts above. Do not widen backend or tolerance claims.",
+  "verdict": "READY_FOR_UPDATE"
+}
