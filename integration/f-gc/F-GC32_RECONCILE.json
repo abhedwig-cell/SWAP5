@@ -1,9 +1,9 @@
 {
-  "schema": "swap5.fgc32.checkpoint.v1",
+  "schema": "swap5.fgc32.checkpoint.v2",
   "work_unit": "F-GC32",
   "title": "Active-drainage MODFLOW6 tangent closure",
   "branch": "work/f-gc32-active-drainage-tangent-closure",
-  "phase": "RECONCILE_ACQUIRE",
+  "phase": "RECONCILE_COMPLETE_ACQUIRE_BLOCKED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "sha": "b7e48275ebfba5ba888685f7515005c7195d5d73",
@@ -18,12 +18,27 @@
   },
   "objective": "Close only the active-drainage derivative coverage needed by the already-admitted MODFLOW6 SWAP predictor-response contract, without reopening F-GC30 or changing the frozen Drainage-v1 denominator.",
   "reconcile_findings": {
-    "production_drainage_tangent": "Per-level drainage response already exposes derivative_defined and dq_dgroundwater_level; the missing chain is qbot -> accepted hydraulic state -> groundwater_level -> next-step drainage response -> later hydraulic state.",
+    "production_drainage_tangent": "Per-level drainage response already exposes derivative_defined and dq_dgroundwater_level; the missing process chain is qbot -> accepted hydraulic state -> derived groundwater_level -> next-step drainage response -> later hydraulic state.",
     "serialized_runtime_order": "Active drainage is evaluated from request/base-state groundwater_level before a Richards trial and is held fixed during that solve.",
-    "current_groundwater_level_lifecycle": "The serialized reference state binding seeds solver gwl from the incoming physical state; inspected HeadCalc code does not generally recompute gwl on the prescribed-qbot route, and the candidate state receives the solver gwl value.",
+    "current_groundwater_level_lifecycle": "The serialized reference state binding seeds solver gwl from the incoming physical state; inspected HeadCalc code does not generally recompute gwl on the prescribed-qbot route; the solve result copies state_binding%gwl into candidate_state%groundwater_level; the runtime then copies that candidate value into physical%groundwater_level.",
     "legacy_order": "Legacy SWAP ordering is Drainage -> SoilWater(2) -> accepted/retry resolution -> SoilWater(3); SoilWater(3) calls calcgwl, so the newly derived groundwater level becomes input to the next physical step rather than an implicit within-solve drainage update.",
-    "drainage_v1_governance": "F-PM19/F-TB12 define Drainage-v1 100-percent completion for a frozen eight-variant denominator and explicitly do not require fully implicit drainage-response solver coupling. F-GC32 is a new coupling sensitivity capability, not a reopening of Drainage-v1.",
-    "zero_derivative_disposition": "FORBIDDEN_AS_WORKAROUND: setting d(gwl)/d(qbot)=0 would encode the currently frozen technical state value as scientific truth before the exact calcgwl-derived-state semantics are qualified."
+    "production_lifecycle_gap": "For the inspected serialized prescribed-qbot route, the legacy post-solve derived-state calcgwl update is not presently visible between the accepted hydraulic solution and publication of the next physical state. Therefore a nonzero drainage tangent cannot be added consistently until the physical groundwater-level lifecycle is qualified.",
+    "drainage_v1_governance": "F-PM19/F-TB12 define Drainage-v1 100-percent completion for a frozen eight-variant denominator and explicitly do not require fully implicit drainage-response solver coupling. F-GC32 is a new coupling sensitivity/derived-state capability, not a reopening of Drainage-v1.",
+    "zero_derivative_disposition": "FORBIDDEN_AS_WORKAROUND: setting d(gwl)/d(qbot)=0 would encode the currently frozen technical state value as scientific truth before exact calcgwl-derived-state semantics are qualified."
+  },
+  "directional_seam_findings": {
+    "step_contract": "soil_water_accepted_step_direction_request_t carries incoming pressure-head, water-content and ponding directions plus the direct bottom-control derivative; it carries no groundwater-level direction and no source/sink residual direction.",
+    "tangent_rhs": "F-KT21 reuses the accepted TRIDAG factorization and assembles the directional RHS from incoming storage, conductivity, top-boundary and bottom-control terms. Source/sink derivatives are currently absent because the admitted route assumes those terms are state-independent.",
+    "physical_residual_sign": "B1.10 vector_F contains +sink-source. Therefore an explicit drainage sink direction contributes with positive sign to dF and with negative sign to the TRIDAG right-hand side J*s = -(B*s_prev + r_p).",
+    "trajectory_composer": "The transaction trajectory composer correctly promotes only accepted step directions and discards rejected work, but currently propagates no groundwater-level directional scalar.",
+    "minimal_future_shape": [
+      "Use exact calcgwl semantics to derive groundwater_level and dgroundwater_level/dqbot from the accepted/base pressure-head state and its accepted trajectory direction.",
+      "Evaluate the already-qualified drainage response at the lagged start-of-step groundwater level.",
+      "Multiply each smooth defined dq_dgroundwater_level by the lagged groundwater-level direction and map the resulting drainage sink direction to the existing bottom-lumped node distribution.",
+      "Pass that explicit source/sink residual direction into the same accepted-step tangent backsolve; do not place drainage inside the nonlinear Richards Jacobian.",
+      "After every accepted physical step, derive and publish the physical groundwater_level with the same exact calcgwl semantics so the tangent is a derivative of the actual production trajectory rather than of a different model."
+    ],
+    "architecture_disposition": "SURGICAL_SEAM_EXISTS_BUT_DEPENDS_ON_EXACT_CALCGWL_AND_PHYSICAL_DERIVED_STATE_LIFECYCLE"
   },
   "exact_source_authority": {
     "outer_distribution": {
@@ -51,6 +66,7 @@
       "SWAP_4.3.1(4).zip"
     ],
     "candidate_size_bytes": 8959314,
+    "library_candidate_size_matches_recorded_outer_distribution": true,
     "raw_byte_materialization": "UNAVAILABLE_FROM_CURRENT_LIBRARY_ACCESS_PATH",
     "hash_verification_of_library_candidates": false,
     "external_recovery_sources": [
@@ -65,22 +81,25 @@
   "tests_run": [],
   "mutations": [
     "Created work/f-gc32-active-drainage-tangent-closure from exact current canonical b7e48275ebfba5ba888685f7515005c7195d5d73",
-    "Persisted this reconcile/acquisition checkpoint only"
+    "Persisted and refined the reconcile/acquisition checkpoint only"
   ],
   "next_permitted_action": [
     "Acquire byte-authorized exact SWAP 4.3.1 source material.",
     "Verify outer archive, nested SWAP.ZIP and SWAP/calcgwl.f90 against the recorded SHA-256 identities before reading semantics into production.",
     "Qualify only the smooth calcgwl branch(es) needed by prescribed-qbot active-drainage predictor trajectories; branch changes, clamps, threshold crossings and unsupported macropore/perched-water-table cases must fail closed.",
-    "Determine whether closure can remain a non-mutating directional derived-state service or requires restoration of post-solve groundwater-level derivation in production. Any protected drainage dependency mutation requires fresh current-postimage preservation evidence."
+    "Implement a separately qualified post-solve derived-groundwater-level service only if exact B0 semantics confirm the recovered lifecycle; preserve physical lagging of drainage per accepted step.",
+    "Extend the accepted-step directional request/RHS only with the minimum explicit source/sink direction needed for lagged drainage feedback.",
+    "Requalify the protected drainage dependency surface and current-postimage preservation if production groundwater-level lifecycle behavior changes."
   ],
   "exclusions": [
     "No reopening of F-GC30.",
-    "No change to the F-PM19 frozen Drainage-v1 denominator.",
+    "No change to the F-PM19 frozen Drainage-v1 denominator as a completion claim.",
     "No fully implicit drainage-in-Richards redesign.",
     "No runtime finite-difference fallback.",
     "No MODFLOW6/XMI backend implementation.",
     "No irrigation or Ribasim work.",
     "No accepted_storage_change substitution.",
-    "No assumption that modern or third-party calcgwl source equals exact B0."
+    "No assumption that modern or third-party calcgwl source equals exact B0.",
+    "No tangent implementation that differs from the actual physical production groundwater-level trajectory."
   ]
 }
