@@ -7,7 +7,9 @@ on:
     paths:
       - 'src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90'
       - 'src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90'
+      - 'src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90'
       - 'tests/fapp/test_fapp04_pmdirect_typed_bindings.f90'
+      - 'tests/fapp/test_fapp04_pmdirect_dynamic_top_binding.f90'
       - 'tests/fapp/run_fapp04_pmdirect_typed_bindings_gate.sh'
       - '.github/workflows/f-app04-pmdirect-typed-bindings.yml'
   workflow_dispatch:
