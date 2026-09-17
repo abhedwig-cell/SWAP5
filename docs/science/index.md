@@ -21,12 +21,14 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 1. [Conceptual system and boundaries](conceptual-model.md)
 2. [Water balance, signs and units](water-balance-and-conventions.md)
 3. [Vertical soil-water flow](soil-water-flow.md)
-4. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
-5. [Surface evaporation](surface-evaporation.md)
-6. [Status-A capability review pages](../capabilities/index.md)
-7. [Numerical formulation](../numerics/index.md)
-8. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-9. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+4. [Hydrological boundary conditions](hydrological-boundary-conditions.md)
+5. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
+6. [Surface evaporation](surface-evaporation.md)
+7. [Drainage](drainage.md)
+8. [Status-A capability review pages](../capabilities/index.md)
+9. [Numerical formulation](../numerics/index.md)
+10. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+11. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
 
 ## Technical-reference discipline
 
@@ -48,6 +50,8 @@ Some Status-A capabilities need a bounded reviewer-facing explanation even thoug
 - bounded WOFOST runtime;
 - restricted one-call-daily Snow;
 - Groundwater Coupling v1.
+
+The scientific reference pages can add physical meaning and equations where theory, implementation and qualification have been reconciled. The capability pages remain the controlling source for the admitted review scope.
 
 These pages reconstruct only what can be supported from accepted theory, code, qualification and Status-A evidence. Where authority is insufficient for a broader scientific statement, the boundary or gap is documented rather than filled by assumption.
 
