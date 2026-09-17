@@ -61,10 +61,12 @@
     "canonical_modified": false,
     "new_branch_created": true,
     "production_source_scope": [
-      "src/solver/mod_b110_smooth_freatic_projection.f90"
+      "src/solver/mod_b110_smooth_freatic_projection.f90",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90"
     ]
   },
-  "verdict": "SMOOTH_FREATIC_VALUE_AND_DIRECTION_QUALIFIED_NEXT_SEAM_PERMITTED",
+  "verdict": "GWL_PROJECTION_AND_SOURCE_SINK_DIRECTIONAL_SEAMS_QUALIFIED_ACTIVE_DRAINAGE_COMPOSITION_NOT_YET_ADMISSIBLE",
   "exclusions": [
     "full calcgwl branch reconstruction",
     "macropore groundwater-table semantics",
@@ -77,7 +79,7 @@
     "Ribasim",
     "groundwater coupling v1 semantic changes"
   ],
-  "next_permitted_action": "IMPLEMENT explicit source/sink directional scratch in the accepted-step directional contract and reference tangent RHS; prove exact zero-direction preservation before composing drainage derivatives.",
+  "next_permitted_action": "RECONCILE nominal accepted groundwater-level refresh semantics required before active drainage can be composed across multiple accepted substeps; do not mark drainage coverage complete or wire dq/dgwl until physical GWL ownership is qualified.",
   "qualification": {
     "smooth_freatic_projection": {
       "head": "3378c487ef7c585a06ad4f68f981e631e7e366aa",
@@ -90,6 +92,62 @@
       "output_sha256": "958e4a6cfd8d01d11de232784b4870b150a7a1c3725f8a87f909b374facf49a5",
       "analytic_direction_centered_fd": "PASS",
       "branch_boundaries_fail_closed": "PASS"
-    }
+    },
+    "source_sink_directional_seam": {
+      "production_head": "f9a4b86bf29aa3a740a78c75301529d700d5e47c",
+      "tested_head": "faf75ade2c749ec98904c327453240fa4822ceef",
+      "workflow_run": 35287118712,
+      "workflow_job": 105421819697,
+      "conclusion": "success",
+      "prescribed_qbot_rhs_fd": "PASS",
+      "prescribed_head_qbot_fd": "PASS",
+      "absent_vs_explicit_zero_bit_identity": "PASS",
+      "malformed_direction_fail_closed": "PASS",
+      "additional_tridiagonal_backsolves": 1,
+      "additional_jacobian_builds": 0,
+      "additional_full_nonlinear_solves": 0,
+      "fd_errors": {
+        "flux_control": {
+          "head": 4.3059e-10,
+          "water": 4.3358e-13,
+          "top_flux": 8.6736e-15,
+          "bottom_flux": 2.8912e-15
+        },
+        "head_control": {
+          "head": 1.8016e-10,
+          "water": 2.6361e-13,
+          "top_flux": 8.6736e-15,
+          "bottom_flux": 4.7827e-12
+        }
+      }
+    },
+    "directional_preservation": {
+      "tested_head": "067e2c8d99cadda643b02ef71e182bd50bd92650",
+      "workflow_run": 35287118519,
+      "workflow_job": 105421819240,
+      "conclusion": "success",
+      "fsi37_independent_behavioral_replay": "PASS",
+      "fsi37_O0_O2_signature_identity": "PASS",
+      "fkt21_core_replay": "PASS",
+      "fkt21_O0_O2_marker_identity": "PASS"
+    },
+    "non_scientific_failed_attempts": [
+      {
+        "run": 35287033281,
+        "classification": "BUILD_HARNESS_DEPENDENCY_ORDER_ONLY",
+        "cause": "current worker module requires accepted trajectory directional sensitivity before worker compilation"
+      },
+      {
+        "run": 35287082652,
+        "classification": "BUILD_HARNESS_DEPENDENCY_ORDER_ONLY",
+        "cause": "same compile-order dependency in preservation harness"
+      }
+    ]
+  },
+  "branch_head_at_checkpoint": "067e2c8d99cadda643b02ef71e182bd50bd92650",
+  "production_blobs": {
+    "smooth_freatic_projection": "e83c1013a1d96508740619a71cfa1dbfdd665d61",
+    "accepted_step_direction_contract": "9fe8923a8d1e3ac6fa64d7a1baf2f44fcb036d2d",
+    "accepted_step_directional_service": "3c2f643866be7a36c0e38c4883badb1775576785"
   }
 }
