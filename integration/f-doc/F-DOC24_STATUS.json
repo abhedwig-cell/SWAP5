@@ -2,50 +2,28 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC24",
   "title": "Groundwater Coupling and Lower-Boundary Scientific Reference",
-  "phase": "VERIFY",
-  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
+  "phase": "CLOSE",
+  "decision": "DOCUMENTATION_ADMITTED_AND_CLOSED",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc24-groundwater-lower-boundary-reference",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
-  "verified_content_head": "1dec2a283f05bb6484adba221940f76c952d97ef",
+  "admitted_canonical_head": "aac5ef7f064f050905905d10ce3ef0ad8255b2ab",
+  "pull_request": 173,
+  "qualified_content_head": "1dec2a283f05bb6484adba221940f76c952d97ef",
+  "qualified_checkpoint_head": "60d049cca429153de442bc172375645682811a36",
+  "verification": {
+    "content_run": 35186842035,
+    "content_job": 105090624225,
+    "checkpoint_run": 35186903071,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "exact_head_checkpoint_conclusion": "success"
+  },
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
-  },
-  "acquired_authorities": {
-    "status_a_traceability": "docs/status-a/TRACEABILITY.md",
-    "current_lower_boundary_reference": "docs/science/hydrological-boundary-conditions.md",
-    "capability_summary": "docs/capabilities/groundwater-coupling-v1.md",
-    "restricted_direct_groundwater_e2e": "F-GC27 / F-VQ97 / F-CI87",
-    "groundwater_v1_completion": "F-GC28 / F-VQ98 / F-CI88",
-    "preservation": "Current Status-A traceability records same-tree targeted groundwater preservation and labels the umbrella attribution F-GC29; F-DOC24 does not equate that label with the separate integration/f-gc/F-GC29_* response-sensitivity workunit.",
-    "coupling_contract_blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
-    "predictor_corrector_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
-    "exchange_service_blob": "e99ae052fccd9992b76c12a91422a987dce059e2",
-    "mass_ledger_blob": "a867e04b088f61f686f693d07e470c3e9c33bdec",
-    "head_policy_blob": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976",
-    "swap_forcing_adapter_blob": "f3bf2effebc772b1e3417232d2baabe49ebb8da0"
-  },
-  "claim_ceiling": {
-    "permitted": [
-      "Explain the admitted restricted predictor-corrector groundwater window and accepted-state publication sequence.",
-      "Document exact frozen head conversion H = z + psi using a mandatory common datum and lower-boundary elevation.",
-      "Document exact flux sign and unit conversion: native SWAP qbot > 0 is into the soil profile; public q_swap > 0 is outward from SWAP; q_groundwater = -q_swap.",
-      "Explain whole-window bottom exchange conversion to mean interface flux and exact action/reaction pairing.",
-      "Explain the staged/prepared/committed interface mass ledger and zero committed exchange change on abort/rejection.",
-      "Explain that interface head convergence uses an externally governed positive tolerance with explicit provenance, not a universal numeric default."
-    ],
-    "forbidden": [
-      "Broad MODFLOW backend admission or backend scientific validity from the adapter boundary alone.",
-      "New groundwater physics or regional groundwater constitutive equations.",
-      "Arbitrary coupling schedules or interpolation policies.",
-      "A universal groundwater head tolerance.",
-      "Concurrent real-physics MultiSWAP coupling.",
-      "Treating predictor candidates as accepted state or published exchange.",
-      "Treating component-local bottom exchange as an external loss from the combined coupled SWAP-groundwater system."
-    ]
   },
   "published_reference": {
     "science_page": "docs/science/groundwater-coupling.md",
@@ -55,27 +33,24 @@
     "science_index_updated": true,
     "mkdocs_navigation_updated": true
   },
-  "verification": {
-    "pull_request": 173,
-    "verified_head": "1dec2a283f05bb6484adba221940f76c952d97ef",
-    "workflow": "Documentation",
-    "workflow_run": 35186842035,
-    "job": 105090624225,
-    "job_name": "Validate and build",
-    "conclusion": "success",
-    "repository_documentation_checks": "PASS",
-    "mkdocs_build_strict": "PASS",
-    "pr_changed_files": 7,
-    "pr_delta_classification": "DOCUMENTATION_NAVIGATION_AND_F_DOC_GOVERNANCE_ONLY"
-  },
-  "scope_delta": {
-    "changed_files": 7,
-    "production_source_changed": false,
-    "reference_source_changed": false,
-    "tests_changed": false,
-    "scientific_denominator_changed": false,
-    "documentation_navigation_governance_only": true
-  },
+  "closed_claim_ceiling": [
+    "restricted one-predictor/one-corrector Groundwater Coupling v1 only",
+    "mandatory hydraulic-head datum conversion H = z + psi",
+    "explicit qbot/q_swap/q_groundwater sign and unit translations",
+    "whole-window exchange to mean interface flux",
+    "externally governed provenance-qualified head convergence without a universal numeric tolerance",
+    "staged/prepared/committed exact action-reaction interface mass accounting",
+    "accepted-state publication and bounded restart/MultiSWAP/gateway semantics"
+  ],
+  "explicit_nonclaims": [
+    "no broad MODFLOW backend admission",
+    "no new groundwater physics",
+    "no arbitrary coupling schedule or interpolation policy",
+    "no universal head tolerance",
+    "no concurrent real-physics MultiSWAP coupling",
+    "no predictor publication as accepted state",
+    "no reinterpretation of the separate integration/f-gc/F-GC29_* response-sensitivity workunit as the original Groundwater Coupling v1 preservation/admission authority"
+  ],
   "mutations": {
     "production_source_change": false,
     "reference_source_change": false,
@@ -83,6 +58,6 @@
     "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "Recheck live integration/f-ci-canonical and PR #173. If no relevant groundwater/lower-boundary scientific or documentation-authority dependency changed since 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33, and the status-only checkpoint postimage remains documentation-valid, admit PR #173. A subsequent CLOSE checkpoint does not alter the qualified content.",
-  "verdict": "PASS_READY_FOR_ADMISSION"
+  "next_permitted_action": "Begin a separate documentation workunit for the next scientific or numerical reference gap. Reuse the admitted F-DOC24 page and authority matrix unless a relevant groundwater/lower-boundary dependency changes.",
+  "verdict": "CLOSED_ADMITTED_DOCUMENTATION_ONLY"
 }
