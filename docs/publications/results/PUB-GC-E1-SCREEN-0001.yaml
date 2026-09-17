@@ -1,82 +1,50 @@
 result:
   result_id: PUB-GC-E1-SCREEN-0001
   publication_owner: PUB-GC
-  evidence_role: PROSPECTIVE_SUPPORTING_SCREENING
-  status: COMPLETE
+  evidence_role: NON_AUTHORITATIVE_EXECUTION_RECORD
+  status: NON_AUTHORITATIVE_SUPERSEDED_BEFORE_EXECUTION
   eligible_for_primary_h1_inference: false
+  eligible_for_primary_case_selection: false
 
-chronology:
+authority_correction:
+  correction_decision: docs/publications/decisions/PUB-GC-E1-SCREENING_PROVENANCE_CORRECTION.md
+  superseding_manifest_commit: bc8dca037912de10dbfce33d1ca7a62b34bc7761
+  superseding_manifest: PUB-GC-E1-SCREEN-0002
+  supersession_utc: 2026-09-17T23:06:56Z
+  execution_started_utc: 2026-09-17T23:09:03Z
+  reason: >
+    SCREEN-0002 explicitly superseded SCREEN-0001 before any SCREEN-0001
+    execution began, because SCREEN-0001 reused a qualification-observed
+    numeric pair. The later successful SCREEN-0001 workflow therefore remains
+    an auditable execution record but has no stress-selection authority.
+  previous_misclassification_commit: 4377317335a5d895aef58afab5d46d23f20a6162
+  previous_register_misclassification_commit: 8471425a1fb32a82cd4c94ed05fc4b3bba3cce60
+
+historical_execution:
   preregistration_manifest_commit: 5c5d30273437bfc5082d2c91a75d25681cc8d15d
   preregistration_manifest_blob: 06d781bdf946960b8d08bad913e97ae414d8c726
-  execution_lock_commit: df134d0da4528964fad4470dcc2a013a26aadb4d
-  operational_trigger_deviation_commit: f2489a20d40a9c63873a4a9ff02d1e034f416a48
-  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
-  origin_harness_qualified_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
-  screening_branch: research/pub-gc-e1-screening
   screening_execution_head: e34aa5072b8cdf9064865865bade34f2c50d19b8
-  workflow_started_utc: 2026-09-17T23:09:03Z
-  workflow_completed_utc: 2026-09-17T23:09:51Z
-  completed_before_primary_case_freeze: true
-  completed_before_primary_execution: true
-
-immutable_execution:
-  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
-  screen_case_blob: d992e665c98817c26511631b504616983589c2c2
-  runner_blob: 8389384f549ad3a67d09d6482c45a2bcbea8a03c
-  trigger_enabled_workflow_blob: e87bdb5cb44f7b301db4e2e13d58eae549e71d17
-  locked_dispatch_only_workflow_blob: 951c03901c439338997a512653675385163de2f1
-  production_src_modified: false
-  qualified_origin_harness_modified: false
-  qualified_gw_a_modified: false
-
-execution:
   github_actions_run_id: 35285493995
   github_actions_job_id: 105416772498
-  workflow_name: PUB-GC E1 transient screening
   event: push
-  event_reason: PREDECLARED_CONNECTOR_TRIGGER_DEVIATION
+  technical_conclusion: success
   artifact_id: 10524124393
-  artifact_name: pub-gc-e1-screening-e34aa5072b8cdf9064865865bade34f2c50d19b8
-  artifact_size_bytes: 5318
   artifact_zip_sha256: 8e1471208397b5cf9582d523efc791b4898451b62335b0418a25ef615f40f655
+  note: >
+    Historical telemetry and artifacts are retained for audit only. They must
+    not be used to choose primary heads, windows, sequences, thresholds,
+    effect sizes or publication conclusions.
 
-screening_grid:
-  initial_pressure_head_cm: -75.0
-  prescribed_head_a_cm: -75.0
-  candidate_b_heads_cm: [-90.0, -82.5, -70.0, -60.0]
-  coupling_window_days: [0.0001, 0.001, 0.005, 0.02, 0.05]
-  expected_rows: 20
-  completed_rows: 20
-  eligible_rows: 20
-  failed_rows: 0
-  post_result_grid_extension: false
-
-predeclared_selection_result:
-  selection_available: true
-  selected_window_days: 0.05
-  selected_b_head_cm: -60.0
-  selected_abs_delta_q_native_cm: 2.72263006884223523e-02
-  selected_endpoint_head_delta_cm: 2.55457754712986684
-  selected_endpoint_water_content_delta: 2.47573753255503348e-03
-  selection_rule: MAX_ABS_Q_HISTORY_MINUS_SAME_THEN_ENDPOINT_HEAD_THEN_SHORTER_WINDOW_THEN_B_NUMERIC_ORDER
-
-interpretation:
-  admitted:
-    - All 20 preregistered screening rows were executable under the qualified real-SWAP origin-policy harness.
-    - The preregistered rule selected window 0.05 day and B=-60 cm as the later primary stress regime.
-    - The selected row exhibited a nonzero history-contamination signal in whole-window exchange and endpoint state during screening.
+scientific_interpretation:
+  admitted: []
   not_admitted:
-    - The screening result is not primary H1 evidence.
-    - The selected magnitude is not a publication effect estimate.
-    - No practical-materiality threshold was tested or inferred.
-    - No primary order-permutation result has yet been executed.
-    - No primary GW-A residual result has yet been executed.
-    - No MODFLOW, whole-window-superiority, convergence, robustness, response-acceleration or N:1 hydrologic-value claim follows.
+    - no screening class selection
+    - no H1 evidence
+    - no primary-design input
+    - no effect-size estimate
+    - no practical-materiality inference
+    - no coupling-method comparison
 
-next_permitted_action:
-  - advance PUB-GC-E1 to READY_FOR_PRIMARY_FREEZE
-  - freeze one primary manifest before implementation/execution
-  - use selected window 0.05 day and B=-60 cm without modification
-  - choose any additional candidate C by a rule independent of observed screening magnitudes
-  - include at least two order permutations and repeated A as required by the frozen E1 harness specification
-  - bind GW-A analytically from the same accepted groundwater checkpoint for residual telemetry
+next_permitted_use:
+  - provenance audit only
+  - reproducibility history only
