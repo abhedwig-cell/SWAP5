@@ -77,10 +77,16 @@ This is the frozen `SWETR=1`, `SWMETDETAIL=0`, `SWCFBS=0`, `SWINTER=0` reference
 
 Let `f_i` denote cumulative root fraction at compartment boundary `i`. The frozen root process requires the cumulative fractions over rooted compartments to be monotone, to start at zero and to end at one.
 
-The potential extraction assigned to rooted compartment `i` is
+For rooted compartment `i`, define its root fraction as
 
 ```text
-S_p,i = (f_i+1 - f_i) T_p
+delta_f_i = f_(i+1) - f_i
+```
+
+The potential extraction assigned to that compartment is then
+
+```text
+S_p,i = delta_f_i T_p
 ```
 
 so, apart from representation precision, the sum of potential compartment extraction equals the potential transpiration supplied to the root process.
