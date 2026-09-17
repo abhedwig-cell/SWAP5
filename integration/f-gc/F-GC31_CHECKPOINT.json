@@ -33,8 +33,10 @@
       "older SWAP4 calcgwl source: non-macropore interior water table uses zero-pressure linear interpolation between adjacent nodes",
       "current official SWAP-model/SWAP source: same non-macropore interior zero-pressure interpolation, expressed with node distance"
     ],
-    "admissible_restricted_semantics": "NON_MACROPORE_SMOOTH_INTERIOR_ZERO_PRESSURE_CROSSING_ONLY",
-    "not_claimed": "byte-exact recovery of every B0 calcgwl branch"
+    "admissible_restricted_semantics": "B0_BYTE_IDENTICAL_AUTHORITY_ACCEPTED; F-GC31 STILL LIMITS IMPLEMENTATION TO NON_MACROPORE_SMOOTH_INTERIOR_ZERO_PRESSURE_CROSSING",
+    "not_claimed": "byte-exact recovery of every B0 calcgwl branch",
+    "byte_identity_authority": "USER_CONFIRMED_ASSUME_BYTE_IDENTICAL_FOR_F_GC31",
+    "byte_identity_verification": "DEFERRED_EVIDENCE_HYGIENE_NOT_A_BLOCKER"
   },
   "restricted_smooth_formula": {
     "conditions": [
@@ -66,7 +68,7 @@
       "src/adapter/mod_reference_richards_accepted_step_directional_service.f90"
     ]
   },
-  "verdict": "GWL_PROJECTION_AND_SOURCE_SINK_DIRECTIONAL_SEAMS_QUALIFIED_ACTIVE_DRAINAGE_COMPOSITION_NOT_YET_ADMISSIBLE",
+  "verdict": "CALCGWL_AUTHORITY_ACCEPTED_NUMERICAL_SEAMS_QUALIFIED_NOMINAL_AND_DIRECTIONAL_DRAINAGE_COMPOSITION_PERMITTED",
   "exclusions": [
     "full calcgwl branch reconstruction",
     "macropore groundwater-table semantics",
@@ -79,7 +81,7 @@
     "Ribasim",
     "groundwater coupling v1 semantic changes"
   ],
-  "next_permitted_action": "RECONCILE nominal accepted groundwater-level refresh semantics required before active drainage can be composed across multiple accepted substeps; do not mark drainage coverage complete or wire dq/dgwl until physical GWL ownership is qualified.",
+  "next_permitted_action": "IMPLEMENT nominal smooth-interior GWL refresh in the serialized accepted candidate and compose qualified drainage dq/dgwl with incoming accepted-trajectory dgwl into the source/sink directional scratch; preserve all excluded calcgwl branches fail-closed.",
   "qualification": {
     "smooth_freatic_projection": {
       "head": "3378c487ef7c585a06ad4f68f981e631e7e366aa",
