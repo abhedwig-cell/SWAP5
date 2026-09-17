@@ -1,0 +1,136 @@
+manifest:
+  id: PUB-RC-RESEARCH-MANIFEST
+  title: Minimum response information for accelerated vadose-groundwater coupling
+  publication_owner: PUB-RC
+  doctoral_rq: RQ4
+  role: ACCELERATE
+  status: CONDITIONAL_DRAFT_FREEZE_CANDIDATE
+  source_branch: research/phd-five-paper-manifests-20260918
+  source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  governing_contract: docs/publications/PUB-RC_SCIENTIFIC_CONTRACT.md
+  prerequisite: PUB-GC base coupling contract must be stable enough to serve as an unchanged comparator.
+
+research_question: >-
+  What is the lowest-order hydrologically meaningful whole-window response information that
+  materially improves robust coupling convergence beyond generic black-box acceleration, without
+  exposing or synchronising the internal time integration of either subsystem?
+
+novelty_boundary:
+  not_claimed:
+    - Newton, secant, Aitken, Broyden or quasi-Newton coupling as such.
+    - Multirate waveform iteration as such.
+    - The existence of subsystem tangents.
+  candidate_contribution: >-
+    An information-content study that quantifies how much hydrologically meaningful whole-window
+    response information must cross the SWAP-MODFLOW boundary before its acquisition cost is
+    justified by robust reductions in total coupled-solve cost.
+  literature_anchors:
+    - doi: 10.1002/nme.70063
+      relevance: 2025 time-adaptive multirate quasi-Newton waveform iteration for partitioned black-box solvers.
+    - family: IQN-ILS/Aitken/Broyden partitioned multiphysics literature
+      relevance: Strong generic derivative-free and quasi-Newton baselines already exist.
+
+response_ladder:
+  R0:
+    information: residual_history_only
+    method: plain_fixed_point_or_base_PUB_GC_method
+  R1:
+    information: residual_history_with_generic_relaxation
+    method: Aitken_and_at_least_one_strong_generic_black_box_quasi_Newton_baseline
+  R2:
+    information: local_whole_window_secant
+    quantity: delta_Q_window_over_delta_H
+  R3:
+    information: explicit_local_whole_window_tangent
+    quantity: dQ_window_dH
+  R4:
+    information: richer_time_dependent_or_block_response
+    status: prohibited_until_R2_R3_show_unresolved_benefit
+
+hypotheses:
+  H1: >-
+    R2 or R3 reduces total coupled-solve cost relative to R0/R1 in prospectively defined
+    strong-feedback regimes at matched accepted coupled error.
+  H2: >-
+    The advantage transfers to unseen soil, groundwater-depth or forcing regimes and is not
+    limited to a tuned synthetic case.
+  H3: >-
+    There is a response-information level beyond which additional derivative detail provides
+    insufficient net benefit after response-acquisition cost and safeguards are included.
+
+design:
+  design_set:
+    - GW_A strong-feedback cases used to validate derivative signs, units and safeguard logic.
+    - A small tuning set used only to choose generic algorithm parameters before holdout.
+  holdout_set:
+    - At least one unseen synthetic strong-feedback regime.
+    - At least one minimal MODFLOW 6 regime inherited from PUB-GC but not used to tune response controls.
+    - At least one change in vadose response class or groundwater depth.
+  fairness_rule: >-
+    Every method must solve the same accepted-origin coupling problem and satisfy the same
+    conservation and accuracy gates inherited from PUB-GC. Do not allow a faster method to
+    terminate at a looser scientific error.
+
+primary_endpoint:
+  name: total_cost_at_matched_coupled_error
+  cost_components:
+    - SWAP_subsystem_evaluations
+    - MODFLOW6_subsystem_evaluations
+    - response_evaluations
+    - coupling_overhead
+    - wall_and_CPU_time_when_stable_enough
+  error_authority: PUB-GC GC-REF and frozen coupled-error tolerances.
+  preferred_primary_measure: >-
+    Use expensive subsystem evaluations or calibrated work units as the primary machine-independent
+    cost measure; wall time is secondary unless timing reproducibility is demonstrated.
+
+secondary_endpoints:
+  - convergence_iterations
+  - failed_or_damped_updates
+  - residual_contraction
+  - predicted_versus_observed_residual_slope
+  - derivative_availability_and_nonsmooth_events
+  - memory_and_history_cost
+  - robustness_to_window_duration
+
+thresholds:
+  standalone_materiality: >-
+    Freeze a minimum practically relevant reduction in total cost before confirmatory runs,
+    using the measured cost of one SWAP and one MODFLOW6 evaluation and not the observed winner.
+    Until that calibration exists, no percent speedup threshold is authorized.
+  hard_accuracy_gate: Must satisfy the same accepted coupled-error and conservation criteria as PUB-GC.
+  transfer_rule: >-
+    A standalone claim requires the benefit to persist in both a synthetic holdout and a MODFLOW6
+    holdout. A benefit confined to one tuned case is supporting evidence only.
+
+safeguards:
+  required:
+    - nonfinite_or_unavailable_response
+    - near_singular_interface_slope
+    - implausibly_large_or_sign_reversing_update
+    - residual_increase
+    - departure_from_subsystem_admissibility_domain
+    - provenance_mismatch
+    - retry_or_window_reduction
+  rule: Response information may never override hard PUB-GC mass, domain or accepted-state gates.
+
+kill_or_merge:
+  merge_into_PUB_GC_if:
+    - Generic Aitken or black-box quasi-Newton matches R2/R3 in robustness and total cost.
+    - Response acquisition costs offset saved subsystem evaluations.
+    - Local hydrologic response is too nonsmooth or noisy for reproducible advantage.
+    - Benefit appears only for coupling windows that a scientifically sensible configuration would simply reduce.
+    - The contribution reduces to direct application of standard partitioned quasi-Newton machinery.
+  negative_result_value: >-
+    Preserve the result as a boundary on how much interface information is worth exposing; do not
+    create a standalone paper merely to preserve the five-paper plan.
+
+publication_firewall:
+  inherits_without_reclaiming:
+    - PUB-GC_same_origin
+    - PUB-GC_whole_window_exchange
+    - PUB-GC_conservation
+  owns:
+    - response_information_levels
+    - acceleration_and_safeguards
+    - total_cost_consequences_of_response_information
