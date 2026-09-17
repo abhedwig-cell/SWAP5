@@ -1,0 +1,133 @@
+manifest:
+  id: PUB-ME-RESEARCH-MANIFEST
+  title: Scientific-state authority as fault containment in model modernization
+  publication_owner: PUB-ME
+  doctoral_rq: RQ1
+  role: PRESERVE
+  status: DRAFT_FREEZE_CANDIDATE
+  source_branch: research/phd-five-paper-manifests-20260918
+  source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  governing_contract: docs/publications/PUB-ME_SCIENTIFIC_CONTRACT.md
+  experiment_matrix: docs/publications/PUB-ME_EXPERIMENT_MATRIX.md
+  rule: Freeze before any new confirmatory fault-injection campaign. Existing evidence remains foundational or retrospective unless already prospectively registered.
+
+research_question: >-
+  Which scientifically relevant state-contamination faults can escape conventional
+  regression and invariant testing during staged modernization, and to what extent
+  does explicit candidate-to-accepted scientific-state authority prevent or expose them?
+
+novelty_boundary:
+  not_claimed:
+    - Legacy-code modernization itself.
+    - Regression testing, CI, provenance, version control or mutation/fault testing as such.
+    - Generic rollback/checkpointing.
+  candidate_contribution: >-
+    A causal evaluation of scientific-state authority as a fault-containment mechanism
+    in a long-lived process simulator, using paired architectures with matched scientific
+    functionality and prospectively defined state-contamination fault families.
+  literature_anchors:
+    - doi: 10.5194/gmd-18-5635-2025
+      relevance: WaterGAP legacy-model reprogramming and software sustainability.
+    - url: https://arxiv.org/abs/2608.14527
+      relevance: Differential fault injection for modernized scientific software; preprint as of 2026-09-18.
+    - standard: FMI 3.0.2
+      relevance: State save/restore and repeatable co-simulation steps are established concepts.
+
+hypotheses:
+  H1: >-
+    A strong conventional regression/invariant test architecture still permits a non-empty
+    class of rejected-trial or premature-publication faults to alter accepted scientific history.
+  H2: >-
+    Explicit candidate-to-accepted authority prevents accepted-state contamination for
+    fault families whose causal path crosses the candidate/accepted boundary.
+  H3: >-
+    For faults not structurally prevented, explicit authority reduces detection latency or
+    localizes the first observable contract violation closer to the mutation source.
+
+causal_design:
+  independent_variable:
+    name: state_authority_architecture
+    levels:
+      B0: Matched scientific functionality without enforced candidate-to-accepted authority at the tested boundary.
+      B1: Matched scientific functionality with explicit candidate, assessment, commit and discard authority.
+  pairing_rule: >-
+    B0 and B1 must share equations, forcing, accepted initial state, compiler/build route,
+    test oracle and externally visible acceptance criteria. The authority mechanism is the
+    intended causal difference.
+  fault_families:
+    - rejected_trial_accumulator_mutation
+    - rejected_trial_history_leakage
+    - warm_start_or_workspace_contamination
+    - premature_process_history_update
+    - incomplete_rollback_or_restart_state
+    - premature_external_publication
+  design_set: >-
+    Use non-primary instantiations to validate that every injector mutates the intended
+    state and that each oracle is capable of observing a genuine accepted-state change.
+    These runs may not be used as confirmatory evidence.
+  holdout_set: >-
+    Before result inspection, freeze at least one unseen instantiation per retained fault
+    family across multiple hydrologic regimes and more than one transaction/retry path.
+    At least two mechanistically distinct fault families must target the candidate/accepted
+    boundary rather than the same state variable under different names.
+
+primary_endpoint:
+  name: accepted_state_contamination
+  unit: binary per injected run
+  definition: >-
+    1 when a fault introduced only into non-authoritative candidate/workspace execution
+    causes any accepted scientific state, accepted history, accepted integral, restart
+    state or externally authoritative scientific publication to differ from the matched
+    no-fault authority beyond its declared preservation tolerance; otherwise 0.
+  summary: >-
+    Report paired B0/B1 contamination outcome by fault family and hydrologic regime.
+    Do not average away a B1 contamination failure.
+
+secondary_endpoints:
+  - first_detection_boundary
+  - detection_latency_in_accepted_steps
+  - first_violated_invariant
+  - trajectory_difference_after_first_accept
+  - mass_or_accounting_difference
+  - restart_divergence
+  - externally_visible_output_latency
+
+thresholds:
+  hard_invariant:
+    B1: zero accepted-state contamination for every valid holdout fault whose causal path is claimed to be structurally contained.
+  preservation_tolerance: >-
+    Reuse the frozen authority for the corresponding scientific variable or trajectory.
+    Do not create a looser publication-only tolerance.
+  comparative_support_rule: >-
+    A strong H2 claim requires at least two mechanistically distinct holdout fault families
+    for which B0 permits accepted-state contamination and B1 prevents it, while no-fault B0
+    and B1 remain preservation-equivalent. If this condition is not met, narrow the claim.
+  no_statistical_padding: >-
+    Deterministic fault cases are interpreted as paired causal cases; repeated identical runs
+    are used for reproducibility, not to manufacture a large statistical sample.
+
+exclusions:
+  allowed:
+    - injector_did_not_mutate_intended_target
+    - wrong_code_or_case_authority
+    - corrupted_or_incomplete_telemetry
+  prohibited:
+    - excluding_a_valid_run_because_the_fault_was_not_detected
+    - excluding_a_valid_run_because_B0_and_B1_behaved_the_same
+
+kill_or_redirect:
+  standalone_claim_fails_if:
+    - No prospectively defined fault family shows additional protection or earlier localization from state authority.
+    - B1 permits accepted-state contamination in a fault path the architecture claims to contain.
+    - The paired architectures cannot be made scientifically equivalent in no-fault runs.
+    - The contribution reduces to ordinary refactoring, testing or generic checkpointing.
+  redirect: >-
+    Retain preservation and migration evidence as a model-development or scientific-software
+    case study; remove the causal fault-containment claim.
+
+publication_firewall:
+  excludes_primary_claims_from: [PUB-SQ, PUB-GC, PUB-RC, PUB-SG]
+  may_reuse_as_foundational:
+    - solver_seam_existence
+    - coupling_seam_existence
+    - transaction_and_restart_qualification
