@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.publication.reference-residual-units-erratum.v1",
+  "scope": "Publication evidence only; numeric experiments are unchanged.",
+  "finding": "The shared soil_water_solve_result_t field unrounded_mass_balance_residual currently has solver-dependent dimensional semantics.",
+  "reference_route": {
+    "definition": "sum of the final HeadCalc residual vector",
+    "residual_equation": "(theta - theta_previous) * dz / dt plus source/sink and boundary flux-rate terms",
+    "physical_unit": "cm/day for the current SWAP native unit system",
+    "consequence": "Reference compartment_balance_tolerance and total_balance_tolerance used by HeadCalc are also flux-rate residual criteria in cm/day, not integrated water-depth criteria in cm."
+  },
+  "rossfast_route": {
+    "definition": "(storage_after - storage_before) - dt * (bottom_flux - top_flux)",
+    "physical_unit": "cm",
+    "consequence": "ROSSFAST_D3R_HARD_MASS_TOL_CM=1e-12 is an integrated water-depth mass bound."
+  },
+  "affected_publication_labels": [
+    "P2_REFERENCE_UNCERTAINTY_PILOT_RESULT.json labels Reference coarse/half mass residuals as cm; these numeric Reference values should be read as cm/day.",
+    "P2_REFERENCE_CALIBRATION_MATRIX_PREREGISTRATION.json and P2E03_BLOCKED_REFERENCE_CALIBRATION_CHECKPOINT.json use _cm labels for Reference HeadCalc compartment/total convergence tolerances and final residuals; the numeric settings/results were executed exactly as recorded but their correct unit is cm/day.",
+    "P2E04_REFERENCE_BALANCE_ADJUDICATION_PREREGISTRATION.json, P2E04_STAGE_A_FAILURE_CENSUS_RESULT.json and P2E04_STAGE_BC_RESULT.json similarly use _cm labels for Reference internal convergence tolerances/residual-vector sums; interpret those labels as cm/day."
+  ],
+  "scientific_impact": {
+    "state_disagreement_metrics_invalidated": false,
+    "reference_only_coarse_vs_refined_state_extraction_invalidated": false,
+    "transaction_level_integrated_mass_accounting_invalidated": false,
+    "cross_solver_raw_mass_residual_comparison_invalidated": true,
+    "use_of_ROSSFAST_D3R_HARD_MASS_TOL_CM_directly_on_reference_unrounded_mass_balance_residual_dimensionally_valid": false,
+    "note": "The Reference transaction layer separately constructs integrated storage and flux accounting using step duration; this erratum concerns the solver diagnostic/convergence residual field and publication gates built directly on that field, not a demonstrated defect in accepted transaction mass conservation."
+  },
+  "provenance_rule": "Do not rewrite the preregistered numeric inputs or failed experiment history. Preserve the original files and attach this erratum as the authoritative unit interpretation correction.",
+  "next_permitted_action": "Open a separate solver-contract workunit to decide whether soil_water_solve_result_t must expose distinct rate-residual and integrated-mass-residual quantities, or normalize the existing field to one documented physical dimension. Requalify any publication gate that compared the Reference field directly with the RossFast integrated hard mass bound."
+}
