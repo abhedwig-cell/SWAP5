@@ -1,0 +1,36 @@
+name: PUB-P2E11 material-extension Reference calibration
+
+on:
+  push:
+    branches:
+      - work/pub-p2e11-material-extension-reference-calibration
+    paths:
+      - 'docs/publication/P2E11_MATERIAL_EXTENSION_REFERENCE_CALIBRATION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e11_material_extension_reference_calibration.f90'
+      - 'tests/publication/run_pub_p2e11_material_extension_reference_calibration.sh'
+      - '.github/workflows/pub-p2e11-material-extension-reference-calibration.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/P2E11_MATERIAL_EXTENSION_REFERENCE_CALIBRATION_PREREGISTRATION.json'
+      - 'docs/publication/P2E11_MATERIAL_EXTENSION_REFERENCE_CALIBRATION_RESULT.json'
+      - 'tests/publication/test_pub_p2e11_material_extension_reference_calibration.f90'
+      - 'tests/publication/run_pub_p2e11_material_extension_reference_calibration.sh'
+      - '.github/workflows/pub-p2e11-material-extension-reference-calibration.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  material-extension-reference-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only extension calibration
+        run: bash tests/publication/run_pub_p2e11_material_extension_reference_calibration.sh
