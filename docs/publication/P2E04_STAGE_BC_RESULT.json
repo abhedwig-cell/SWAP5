@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.publication.p2e04-stage-bc-result.v1",
+  "workunit": "PUB-P2E04",
+  "canonical_base": "aa0ac9b0639c50fcfa604201737a9db3d5525821",
+  "workflow_run": 35267831415,
+  "job": 105359327889,
+  "scope": "Exactly the five Stage-B/C targets and ladders frozen before execution; no post-census target additions or substitutions.",
+  "optimization_qualification": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "outputs_identical": true,
+    "output_sha256": "cada86f5e3974d2fea63e2b3279ffe3e904c1c2ab71eb946efd9e3ff81cbf693"
+  },
+  "stage_B_iteration_sweep": {
+    "max_iterations": [8,16,32,64],
+    "strict_total_balance_tolerance_cm": 1e-12,
+    "strict_compartment_balance_tolerance_cm": 1e-12,
+    "failure_archetypes": {
+      "F1_B01_NOMINAL_COARSE": {
+        "status_at_all_iteration_budgets": "SW_SOLVE_RETRY_ADVISED",
+        "residual_sum_cm": 2.681341260135639e-12,
+        "max_abs_compartment_residual_cm": 7.993605777301127e-13,
+        "local_balance_flags": 0,
+        "head_flags": 0,
+        "iteration_resolvable": false
+      },
+      "F2_B01_DRYING_HALF1": {
+        "status_at_all_iteration_budgets": "SW_SOLVE_RETRY_ADVISED",
+        "residual_sum_cm": 1.29356117831158635e-12,
+        "max_abs_compartment_residual_cm": 8.530953721219703e-13,
+        "local_balance_flags": 0,
+        "head_flags": 0,
+        "iteration_resolvable": false
+      },
+      "F3_O18_NOMINAL_HALF2": {
+        "fixed_precursor_mass_residual_cm": -8.575926427334402e-13,
+        "status_at_all_iteration_budgets": "SW_SOLVE_RETRY_ADVISED",
+        "residual_sum_cm": 1.9180759411319137e-12,
+        "max_abs_compartment_residual_cm": 7.37854222165879e-13,
+        "local_balance_flags": 0,
+        "head_flags": 0,
+        "iteration_resolvable": false
+      }
+    },
+    "controls": {
+      "C1_B12_WETTING_COARSE": "accepted at 8,16,32,64; 2 nonlinear iterations in every run",
+      "C2_B01_NOMINAL_COARSE": "accepted at 8,16,32,64; 3 nonlinear iterations in every run"
+    },
+    "conclusion": "The three preregistered TOTAL_ONLY failures are not resolved by increasing the nonlinear iteration budget from 16 to 32 or 64; their final observed residual sums remain unchanged while backtracking work continues to increase."
+  },
+  "stage_C_total_balance_sweep": {
+    "max_iterations": 16,
+    "compartment_balance_tolerance_cm": 1e-12,
+    "tested_total_balance_tolerance_cm": [1e-12,1.25e-12,1.5e-12,2e-12,4e-12,8e-12,1.6e-11],
+    "minimum_tested_accepting_total_tolerance_cm": {
+      "F1_B01_NOMINAL_COARSE": 4e-12,
+      "F2_B01_DRYING_HALF1": 1.5e-12,
+      "F3_O18_NOMINAL_HALF2": 2e-12,
+      "C1_B12_WETTING_COARSE": 1e-12,
+      "C2_B01_NOMINAL_COARSE": 1e-12
+    },
+    "accepted_endpoint_sensitivity": {
+      "F1_B01_NOMINAL_COARSE": "all accepted tested tolerances 4e-12 through 1.6e-11 produced identical endpoint pressure head, water content and storage to reported bit-level output metrics",
+      "F2_B01_DRYING_HALF1": "all accepted tested tolerances 1.5e-12 through 1.6e-11 produced identical endpoint pressure head, water content and storage to reported bit-level output metrics",
+      "F3_O18_NOMINAL_HALF2": "all accepted tested tolerances 2e-12 through 1.6e-11 produced identical endpoint pressure head, water content and storage to reported bit-level output metrics",
+      "controls": "accepted endpoints remained identical across the complete tested tolerance ladder"
+    },
+    "important_F2_detail": "At strict settings the exhausted retry workspace reports residual sum +1.29356117831158635e-12. When total tolerance reaches 1.5e-12, HeadCalc accepts earlier at iteration 3 with published/workspace residual sum -1.48199638325130501e-12. This is an execution-path consequence of earlier stopping and should not be interpreted as a monotonic residual continuation from the exhausted retry state."
+  },
+  "summation_diagnostics": {
+    "forward_reverse_high_precision_material_difference_observed": false,
+    "statement_limit": "For the five tested targets, forward intrinsic real64 sum, reverse-order scalar real64 sum and real128 scalar accumulation round to the same reported values. This does not prove the underlying equation residual floor is not affected by floating-point arithmetic; it only provides no evidence that summation order/accumulation precision of the final 16 residual components explains these TOTAL_ONLY retries."
+  },
+  "combined_interpretation_with_stage_A": {
+    "stage_A_accepted": 47,
+    "stage_A_total_only": 12,
+    "stage_A_local_balance": 103,
+    "stage_A_head_or_unexplained": 0,
+    "main_result": "The original P2E03 blockage is dominated by local compartment-balance retries at shorter timesteps, not by the TOTAL_ONLY mechanism adjudicated in Stages B/C.",
+    "total_only_result": "For the preregistered TOTAL_ONLY archetypes, larger iteration budgets do not recover strict 1e-12 acceptance. Relaxing only the total-balance criterion can recover acceptance, with stable accepted endpoints over the tested looser values, but this is diagnostic evidence and not authority to change the production tolerance.",
+    "production_tolerance_change_justified_here": false,
+    "rossfast_admissibility_threshold_derived": false
+  },
+  "verdict": "PASS_EVIDENCE_LOCAL_BALANCE_FOLLOWUP_REQUIRED",
+  "next_permitted_action": "Close PUB-P2E04 as an evidence/adjudication workunit without changing production numerics. Open a separate preregistered Reference-only workunit for the dominant RETRY_LOCAL_BAL class, explicitly investigating the counterintuitive increase in local-balance failure frequency as dt decreases. PUB-P2E03 remains blocked and must not be repaired post hoc."
+}
