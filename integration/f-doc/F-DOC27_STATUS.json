@@ -3,7 +3,7 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC27",
   "title": "B1.10 cofgen parameter provenance",
-  "phase": "READY_FOR_VERIFY",
+  "phase": "VERIFY",
   "decision": "PARTIAL_PROVENANCE_MAPPING_ONLY",
   "branch": "work/f-doc27-cofgen-parameter-provenance",
   "canonical_start": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
@@ -32,7 +32,7 @@
       "change production, reference, test, physics or numerical semantics"
     ]
   },
-  "acquisition_verdict": "The repository proves the corrected B1.10 oracle identity and exact provider behaviour, but does not expose a separate readable original input-name/unit-to-cofgen(1:24) mapping. F-DOC27 therefore records a partial provenance map and preserves unresolved entries instead of inventing aliases.",
+  "acquisition_verdict": "The repository proves the corrected B1.10 oracle identity and exact provider behaviour, but does not expose a separate readable original input-name/unit-to-cofgen(1:24) mapping. Additional SWAP-009/SWAP-013 harness and parser evidence corroborates several semantic roles but does not replace the missing direct parser/fill_cofgen row-binding. F-DOC27 therefore retains the partial provenance map and preserves unresolved entries instead of inventing aliases.",
   "scope_diff": [
     "docs/science/index.md",
     "docs/science/soil-hydraulic-parameter-provenance.md",
@@ -41,5 +41,15 @@
     "mkdocs.yml"
   ],
   "production_reference_test_delta": false,
-  "next_permitted_action": "VERIFY_DOCUMENTATION_GATE"
+  "verification": {
+    "pull_request": 179,
+    "qualified_head": "8228711617ed1c0c4b9f06908806d47a05f5b655",
+    "documentation_workflow_run": 35219880812,
+    "documentation_job": 105197114237,
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "workflow_conclusion": "success"
+  },
+  "verdict": "VERIFY_PASS_PENDING_EXACT_HEAD_RECHECK",
+  "next_permitted_action": "RERUN_DOCUMENTATION_GATE_ON_STATUS_CHECKPOINT_HEAD_THEN_ADMIT_IF_CANONICAL_RELEVANT_DELTA_IS_CLEAN"
 }
