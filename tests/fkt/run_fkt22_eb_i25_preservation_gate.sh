@@ -24,7 +24,7 @@ grep -Fq 'type(accepted_trajectory_direction_t) :: trajectory_direction' \
 grep -Fq 'call accept_trajectory_step' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
   fail 'F-KT22 accepted-step promotion missing'
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -71,6 +71,13 @@ MODULE_SRC=(
   src/process/mod_snow_process.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
+  src/runtime/mod_fmr_soil_water_application_host.f90
+  src/runtime/mod_rossfast_d3r_execution_policy.f90
+  src/runtime/mod_rossfast_d3r_model_binding.f90
+  src/solver/mod_rossfast_d3r_table_kernel.f90
+  src/solver/mod_rossfast_d3r_table_provider.f90
+  src/solver/mod_rossfast_d3r_soil_water_solver.f90
+  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/process/mod_liquid_water_sensible_enthalpy.f90
@@ -103,7 +110,7 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
     -c tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90 -o "$OUT/test.o" || \
     fail "compile EB-I25 oracle O$opt"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link EB-I25 oracle O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link EB-I25 oracle O$opt"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "EB-I25 runtime O$opt"; }
   for marker in \
     'EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS' \

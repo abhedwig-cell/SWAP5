@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC23",
+  "title": "WOFOST and Restricted Snow Scientific Reference Expansion",
+  "phase": "VERIFY",
+  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
+  "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-doc23-wofost-snow-reference",
+  "verified_content_head": "83513160269a3a7c8989fd50071ecc2b16268f00",
+  "reconciled_merge_commit": "b1c0e7546eb46206b0efe92ad5b4a7ca5217168d",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
+  "canonical_reconciled_head": "e9859b82ffa0d0776c340ef7d550ac8791e28dab",
+  "canonical_drift": {
+    "detected": true,
+    "commits_ahead": 1,
+    "classification": "F-TA01_DOCUMENTATION_AND_TESTBANK_AUTHORITY_ONLY",
+    "relevant_to_wofost_or_snow_scientific_dependencies": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_or_test_semantics_changed": false,
+    "scientific_requalification_required": false,
+    "mechanical_conflict": "mkdocs.yml navigation only",
+    "resolution": "Preserved canonical F-TA01 test-bank navigation and F-DOC23 WOFOST/Snow science navigation in merge commit b1c0e7546eb46206b0efe92ad5b4a7ca5217168d."
+  },
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "acquired_authorities": {
+    "wofost_crop_state_reference": "F-WOF-PP01",
+    "wofost_migration_preservation": "F-WOF-PP02",
+    "wofost_runtime_activation": "F-CI89",
+    "wofost_canopy_provider_claim_ceiling": "F-WOF43A_OWNER_CANDIDATE_NOT_INDEPENDENT_SCIENTIFIC_ADMISSION",
+    "snow_scientific_authority": "F-VQ16",
+    "snow_current_canonical_preservation": "F-PM02",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383"
+  },
+  "published_reference": {
+    "wofost": "docs/science/wofost-crop-coupling.md",
+    "snow": "docs/science/restricted-snow.md",
+    "authority_matrix": "integration/f-doc/F-DOC23_AUTHORITY_MATRIX.md",
+    "navigation_updated": true,
+    "capability_crosslinks_updated": true
+  },
+  "claim_ceilings": {
+    "wofost": "Twelve PP01/PP02-qualified crop-owned trajectories, accepted-daily runtime event semantics, and explicit SWAP coupling contracts only; RD/TRA donor equivalence, full ET science, broad Soil-N policy and full WOFOST ecosystem compatibility remain excluded.",
+    "snow": "Exact B1.10-compatible one-call-daily formulation, component mass terms and preserved restricted runtime composition only; subdaily, multiday, arbitrary-duration and parallel real-physics Snow remain excluded."
+  },
+  "verification": {
+    "pull_request": 170,
+    "verified_head": "83513160269a3a7c8989fd50071ecc2b16268f00",
+    "workflow": "Documentation",
+    "workflow_run": 35184833980,
+    "job": 105084546309,
+    "job_name": "Validate and build",
+    "conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pr_changed_files": 8,
+    "pr_delta_classification": "DOCUMENTATION_NAVIGATION_AND_F_DOC_GOVERNANCE_ONLY"
+  },
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "qualification_tolerance_change": false,
+    "documentation_only": true
+  },
+  "next_permitted_action": "Recheck live integration/f-ci-canonical. If no relevant WOFOST/Snow scientific or documentation-authority dependency changed since e9859b82ffa0d0776c340ef7d550ac8791e28dab, admit PR #170. A subsequent status-only CLOSE checkpoint does not require regeneration of the content qualification evidence.",
+  "verdict": "PASS_READY_FOR_ADMISSION"
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC21",
+  "title": "SWAP5 Scientific and Numerical Technical Reference Expansion",
+  "phase": "CLOSE",
+  "decision": "READY_FOR_CANONICAL_ADMISSION",
+  "verdict": "PASS",
+  "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-doc21-technical-reference",
+  "verified_documentation_head": "b15bd656a2495115279f42b1e78942d6b05a93e2",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+  "canonical_reconciled_head": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+  "canonical_delta_from_start": {
+    "workunit": "F-ROSS12",
+    "overlap_with_fdoc21_docs_or_mkdocs": false,
+    "disposition": "NON_CONFLICTING_POST_STATUS_A_DELTA_NOT_ADDED_TO_FROZEN_SCIENTIFIC_DENOMINATOR"
+  },
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "acquired_authorities": {
+    "historical_physical_science": "F-DOC18@bddb43d821fd757a307aad88528464dd0c89a484",
+    "fdoc18_conceptual_base": "F-DOC16@b0bdf08b5c38771a4ee22c93ed0949f408ceeb2b",
+    "frozen_et_source": "src/process/mod_reference_et_demand_process.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "frozen_root_source": "src/process/mod_root_water_uptake_process.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "frozen_solver_boundary_contract": "src/solver/mod_soil_water_solver_contract.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "frozen_dynamic_top_boundary": "src/solver/mod_b110_dynamic_top_boundary_provider.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "frozen_groundwater_pc_runtime": "src/runtime/mod_groundwater_predictor_corrector_window.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "groundwater_v1_admission": "F-GC28",
+    "frozen_linear_drainage_source": "src/process/mod_drainage_process.f90@50346642bd565f79134ea17d5462e544b354998c",
+    "drainage_v1_completion": "F-PM19_DRAINAGE_V1_FINAL_COMPLETION",
+    "current_status_a_traceability": "docs/status-a/TRACEABILITY.md",
+    "mass_accounting_normalization": "docs/verification/mass-accounting-contract.md"
+  },
+  "persisted_artifacts": [
+    "integration/f-doc/F-DOC21_AUTHORITY_MATRIX.md",
+    "docs/science/water-balance-and-conventions.md",
+    "docs/science/evapotranspiration-root-uptake.md",
+    "docs/science/hydrological-boundary-conditions.md",
+    "docs/science/drainage.md",
+    "docs/science/index.md",
+    "docs/numerics/richards-solver.md",
+    "mkdocs.yml"
+  ],
+  "qualified_documentation_evidence": {
+    "head": "b15bd656a2495115279f42b1e78942d6b05a93e2",
+    "pull_request": 166,
+    "workflow_run": 35182840058,
+    "validate_build_job": 105078544934,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "scope_diff_check": "PASS_DOCUMENTATION_AND_GOVERNANCE_ONLY",
+    "canonical_overlap_check": "PASS_NO_OVERLAP_WITH_F_ROSS12_DELTA"
+  },
+  "qualified_claim_boundaries": [
+    "reference Richards hydraulic z/q convention may be documented as upward-positive within the bounded reference formulation",
+    "VQ normalized accounting uses positive-into-domain signed amounts and must not be conflated with process-local signs",
+    "reference ET restricted route converts mm/day forcing to nonnegative cm/day potential demands",
+    "root-water uptake is drought-only in the frozen admitted profile and uses rooted-compartment fractions plus demand-dependent h3 and h4 cutoff",
+    "actual uptake attribution and root extraction are one physical withdrawal, not duplicate water bookings",
+    "restricted B1.10 top boundary may be documented for atmospheric-head, surface-flux, ponded-head and ponded-head-linear-runoff routes",
+    "lower solver boundary is an explicit flux/head interface, but generic fields do not prove exhaustive historical mode admission",
+    "Groundwater Coupling v1 predictor candidates are non-authoritative and discarded; accepted corrector publication remains transaction-controlled",
+    "Drainage-v1 fixed denominator contains eight qualified variants; the restricted single-level linear response may be stated exactly from frozen production source",
+    "fully implicit drainage-response coupling is not implied by Drainage-v1 completion"
+  ],
+  "deliberately_deferred_scope": [
+    "exhaustive historical upper-boundary option catalogue",
+    "exhaustive historical lower-boundary option catalogue",
+    "detailed equations for the seven non-single-level/nonlinear Drainage-v1 denominator variants until exact scientific/source stitching is performed",
+    "unrestricted MODFLOW or groundwater backend semantics",
+    "post-Status-A ROSS/RossFast scientific promotion into the frozen Status-A denominator"
+  ],
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "documentation_only": true
+  },
+  "explicit_nonclaims": [
+    "No production physics or numerical semantics changed.",
+    "The frozen Status-A review denominator remains unchanged.",
+    "Post-Status-A ROSS/RossFast work is not part of the frozen review denominator.",
+    "No broad historical ET/root, boundary, drainage or groundwater option set is promoted by prose.",
+    "No universal sign, timestep, tolerance or accuracy guarantee is invented."
+  ],
+  "next_permitted_action": "Admit PR #166 to integration/f-ci-canonical if its current head remains mergeable and canonical remains at the reconciled head; this checkpoint-only closeout delta does not require rerunning the documentation build.",
+  "exclusions": [
+    "exhaustive historical boundary catalogues",
+    "unreconciled detailed drainage equations",
+    "new physics or numerical semantics",
+    "post-Status-A RossFast promotion into the frozen scientific denominator"
+  ]
+}

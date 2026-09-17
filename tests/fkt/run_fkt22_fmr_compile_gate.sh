@@ -8,7 +8,7 @@ cd "$ROOT"
 
 fail(){ echo "FKT22_FMR_COMPILE_FAIL $*" >&2; exit 1; }
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -57,6 +57,13 @@ MODULE_SRC=(
   src/process/mod_snow_process.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
+  src/runtime/mod_fmr_soil_water_application_host.f90
+  src/runtime/mod_rossfast_d3r_execution_policy.f90
+  src/runtime/mod_rossfast_d3r_model_binding.f90
+  src/solver/mod_rossfast_d3r_table_kernel.f90
+  src/solver/mod_rossfast_d3r_table_provider.f90
+  src/solver/mod_rossfast_d3r_soil_water_solver.f90
+  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
 
@@ -65,7 +72,9 @@ for opt in 0 2; do
   mkdir -p "$OUT"
   for source in "${MODULE_SRC[@]}"; do
     obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
+    extra=()
+    [[ "$source" == "src/solver/mod_soil_water_solver_contract.f90" ]] && extra=(-Wno-error=unused-dummy-argument)
+    gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
   done
   echo "FKT22_FMR_COMPILE_O${opt}=PASS"
 done

@@ -4,7 +4,9 @@ Snow is admitted in SWAP5 Status-A only for the **restricted one-call-daily path
 
 ## Scientific role
 
-The admitted Snow process represents the qualified daily snow-storage/process behaviour used by the current SWAP5 production path. F-DOC20 does not generalize that process to different temporal semantics or introduce a new melt/snow formulation.
+The admitted Snow process represents the qualified daily snow-storage/process behaviour used by the current SWAP5 production path. It does not generalize that process to different temporal semantics or introduce a new melt/snow formulation.
+
+The exact bounded daily formulation, including sublimation routing, melt, liquid retention, deficit clamping and component mass accounting, is documented in [Restricted one-call-daily Snow formulation](../science/restricted-snow.md).
 
 The current documentation therefore treats Snow as a bounded scientific capability rather than as evidence that every historical or conceivable Snow execution mode is supported.
 
@@ -12,7 +14,7 @@ The current documentation therefore treats Snow as a bounded scientific capabili
 
 Snow storage and process fluxes participate in the admitted interval accounting contract. Candidate Snow effects produced during a tentative attempt become authoritative only through accepted execution, consistent with the SWAP5 transaction model.
 
-The qualification chain also protects the distinction between internal transfers and external gains/losses so process accounting is not silently double counted.
+The qualification chain also protects the distinction between internal transfers and external gains/losses so process accounting is not silently double counted. In particular, Snow melt is an internal transfer to the receiving surface/soil-water component, while retained liquid water belongs to the Snow component storage and must not be counted again as independent whole-system storage.
 
 ## Status-A evidence
 

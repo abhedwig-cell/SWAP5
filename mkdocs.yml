@@ -14,8 +14,17 @@ nav:
 - Scientific model:
   - Overview: science/index.md
   - Conceptual system and boundaries: science/conceptual-model.md
+  - Water balance, signs and units: science/water-balance-and-conventions.md
   - Vertical soil-water flow: science/soil-water-flow.md
+  - Soil-hydraulic constitutive relations: science/soil-hydraulic-constitutive-relations.md
+  - Hydrological boundary conditions: science/hydrological-boundary-conditions.md
+  - Groundwater coupling and lower boundary: science/groundwater-coupling.md
+  - Evapotranspiration and root-water uptake: science/evapotranspiration-root-uptake.md
   - Surface evaporation: science/surface-evaporation.md
+  - Drainage: science/drainage.md
+  - Drainage-v1 formulations: science/drainage-formulations.md
+  - WOFOST81 crop state and SWAP coupling: science/wofost-crop-coupling.md
+  - Restricted one-call-daily Snow: science/restricted-snow.md
 - Status-A capabilities:
   - Overview: capabilities/index.md
   - Restart v1: capabilities/restart-v1.md
@@ -58,6 +67,7 @@ nav:
   - ADR-0005 Reference baseline chain: decisions/ADR-0005-reference-baseline-chain.md
 - Verification:
   - Verification principles: verification/principles.md
+  - Test bank authority: verification/test-bank.md
   - Reference baselines: verification/reference-baselines.md
   - B0 source integrity: verification/b0-source-integrity.md
   - B1 snapshot history: verification/b1-snapshots.md
