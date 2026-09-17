@@ -18,6 +18,9 @@ program test_pub_p2e01_solver_seam_paired_pilot
   implicit none
 
   real(real64), parameter :: initial_head_cm = -101.0_real64
+  ! P2E05 keeps the previously qualified numeric Reference criteria unchanged,
+  ! but names their actual HeadCalc residual-rate dimension explicitly.
+  real(real64), parameter :: reference_internal_balance_rate_tol_cm_per_day = 1.0e-12_real64
   integer, parameter :: n = ROSSFAST_D3R_N_CELLS
 
   type(soil_water_parameter_set_t), target :: parameters
@@ -85,12 +88,34 @@ program test_pub_p2e01_solver_seam_paired_pilot
        all(ieee_is_finite(alternative_result%candidate_state%pressure_head)) .and. &
        all(ieee_is_finite(reference_result%candidate_state%water_content)) .and. &
        all(ieee_is_finite(alternative_result%candidate_state%water_content)), 'paired endpoint state finite')
-  call require(ieee_is_finite(reference_result%unrounded_mass_balance_residual) .and. &
-       ieee_is_finite(alternative_result%unrounded_mass_balance_residual), 'paired mass residuals finite')
-  call require(abs(reference_result%unrounded_mass_balance_residual) <= ROSSFAST_D3R_HARD_MASS_TOL_CM, &
-       'Reference one-step mass residual within declared pilot hard bound')
-  call require(abs(alternative_result%unrounded_mass_balance_residual) <= ROSSFAST_D3R_HARD_MASS_TOL_CM, &
-       'RossFast one-step mass residual within admitted hard bound')
+
+  ! P2E05 supersedes the dimensionally ambiguous raw-field mass gate. Cross-
+  ! solver qualification uses only typed, integrated cm residuals. The exact
+  ! historical compatibility values remain available but are not compared.
+  call require(reference_result%integrated_mass_balance_residual_available .and. &
+       alternative_result%integrated_mass_balance_residual_available, &
+       'paired integrated mass residual diagnostics available')
+  call require(reference_result%native_balance_rate_residual_available, &
+       'Reference native balance-rate residual available')
+  call require(.not. alternative_result%native_balance_rate_residual_available, &
+       'RossFast does not synthesize native balance-rate residual')
+  call require(ieee_is_finite(reference_result%integrated_mass_balance_residual_cm) .and. &
+       ieee_is_finite(alternative_result%integrated_mass_balance_residual_cm) .and. &
+       ieee_is_finite(reference_result%native_balance_rate_residual_cm_per_day), &
+       'typed paired balance residual diagnostics finite')
+  call require(abs(reference_result%integrated_mass_balance_residual_cm) <= ROSSFAST_D3R_HARD_MASS_TOL_CM, &
+       'Reference integrated one-step mass residual within declared pilot hard bound')
+  call require(abs(alternative_result%integrated_mass_balance_residual_cm) <= ROSSFAST_D3R_HARD_MASS_TOL_CM, &
+       'RossFast integrated one-step mass residual within admitted hard bound')
+  call require(reference_result%unrounded_mass_balance_residual == &
+       reference_result%native_balance_rate_residual_cm_per_day, &
+       'Reference compatibility residual preserves native rate value')
+  call require(alternative_result%unrounded_mass_balance_residual == &
+       alternative_result%integrated_mass_balance_residual_cm, &
+       'RossFast compatibility residual preserves integrated value')
+  call require(reference_result%integrated_mass_balance_residual_cm == &
+       request%step_duration * reference_result%native_balance_rate_residual_cm_per_day, &
+       'Reference typed integrated residual is exact step-duration scaling of native rate residual')
 
   storage_reference = sum(parameters%dz * reference_result%candidate_state%water_content) + &
        reference_result%candidate_state%ponding_depth
@@ -120,8 +145,15 @@ program test_pub_p2e01_solver_seam_paired_pilot
   write(*,'(A,I0)') 'PUB_P2E01_REFERENCE_LINEAR_SOLVES=', reference_result%diagnostics%linear_solves
   write(*,'(A,I0)') 'PUB_P2E01_ALTERNATIVE_LINEAR_SOLVES=', alternative_result%diagnostics%linear_solves
   write(*,'(A,I0)') 'PUB_P2E01_ALTERNATIVE_SOLVER_CALLS=', alternative_result%diagnostics%alternative_solver_calls
-  write(*,'(A,ES26.17E3)') 'PUB_P2E01_REFERENCE_MASS_RESIDUAL=', reference_result%unrounded_mass_balance_residual
-  write(*,'(A,ES26.17E3)') 'PUB_P2E01_ALTERNATIVE_MASS_RESIDUAL=', alternative_result%unrounded_mass_balance_residual
+  write(*,'(A,ES26.17E3)') 'PUB_P2E05_REFERENCE_INTEGRATED_MASS_RESIDUAL_CM=', &
+       reference_result%integrated_mass_balance_residual_cm
+  write(*,'(A,ES26.17E3)') 'PUB_P2E05_ALTERNATIVE_INTEGRATED_MASS_RESIDUAL_CM=', &
+       alternative_result%integrated_mass_balance_residual_cm
+  write(*,'(A,ES26.17E3)') 'PUB_P2E05_REFERENCE_NATIVE_BALANCE_RATE_RESIDUAL_CM_PER_DAY=', &
+       reference_result%native_balance_rate_residual_cm_per_day
+  write(*,'(A,ES26.17E3)') 'PUB_P2E05_REFERENCE_LEGACY_RESIDUAL=', reference_result%unrounded_mass_balance_residual
+  write(*,'(A,ES26.17E3)') 'PUB_P2E05_ALTERNATIVE_LEGACY_RESIDUAL=', alternative_result%unrounded_mass_balance_residual
+  write(*,'(A)') 'PUB_P2E05_LEGACY_FIELD_CROSS_SOLVER_GATE_DISABLED=TRUE'
   write(*,'(A,ES26.17E3)') 'PUB_P2E01_D_H_INF_CM=', dh_inf
   write(*,'(A,ES26.17E3)') 'PUB_P2E01_D_H_RMS_CM=', dh_rms
   write(*,'(A,ES26.17E3)') 'PUB_P2E01_D_THETA_INF=', dtheta_inf
@@ -133,6 +165,7 @@ program test_pub_p2e01_solver_seam_paired_pilot
   write(*,'(A)') 'PUB_P2E01_SCIENTIFIC_ADMISSIBILITY_NOT_EVALUATED=TRUE'
   write(*,'(A)') 'PUB_P2E01_TRANSACTION_LEVEL_PAIR_BLOCKED_TEMPORAL_POLICY_ASYMMETRY=TRUE'
   write(*,'(A)') 'PUB_P2E01_SOLVER_SEAM_PAIRED_EXTRACTION_READY=PASS'
+  write(*,'(A)') 'PUB_P2E05_TYPED_RESIDUAL_CONTRACT=PASS'
 
 contains
 
@@ -201,8 +234,8 @@ contains
     req%numerical%conductivity_implicit_mode = 0
     req%numerical%conductivity_mean_method = 1
     req%numerical%min_step_duration = 1.0e-8_real64
-    req%numerical%compartment_balance_tolerance = ROSSFAST_D3R_HARD_MASS_TOL_CM
-    req%numerical%total_balance_tolerance = ROSSFAST_D3R_HARD_MASS_TOL_CM
+    req%numerical%compartment_balance_tolerance = reference_internal_balance_rate_tol_cm_per_day
+    req%numerical%total_balance_tolerance = reference_internal_balance_rate_tol_cm_per_day
     req%numerical%head_abs_tolerance = 1.0e-12_real64
     req%numerical%head_rel_tolerance = 1.0e-12_real64
     req%numerical%ponding_tolerance = 1.0e-12_real64

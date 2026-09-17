@@ -156,7 +156,19 @@ module mod_soil_water_solver_contract
      type(soil_water_physical_state_t) :: candidate_state
      real(real64) :: top_flux = 0.0_real64
      real(real64) :: bottom_flux = 0.0_real64
+     ! Compatibility-only legacy diagnostic. Historical producers assigned
+     ! route-specific physical dimensions to this field, so new code must not
+     ! use it as a solver-independent mass gate.
      real(real64) :: unrounded_mass_balance_residual = 0.0_real64
+     ! Solver-independent typed diagnostic: time-integrated balance/equation
+     ! residual in cm. This is not the canonical transaction mass ledger.
+     logical :: integrated_mass_balance_residual_available = .false.
+     real(real64) :: integrated_mass_balance_residual_cm = 0.0_real64
+     ! Optional solver-native equation-balance rate residual in cm/day. The
+     ! Reference HeadCalc route exposes this directly; other solvers may leave
+     ! it unavailable when no equivalent native rate diagnostic exists.
+     logical :: native_balance_rate_residual_available = .false.
+     real(real64) :: native_balance_rate_residual_cm_per_day = 0.0_real64
      type(soil_water_solver_diagnostics_t) :: diagnostics
      type(soil_water_interface_sensitivity_t) :: interface_sensitivity
   end type soil_water_solve_result_t
