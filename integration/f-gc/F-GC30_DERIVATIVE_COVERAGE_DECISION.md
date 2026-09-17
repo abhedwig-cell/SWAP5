@@ -124,7 +124,7 @@ F-GC30 does not relax that policy. The qualified production tangent/FD oracle in
 - `TX_TEMPORAL_MODEL_CERTIFICATE`;
 - `FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY`;
 - explicit finite head-error budget;
-- accepted predecessor right-derivative history seeded at the committed origin;
+- predecessor right-derivative continuation history seeded at the committed origin, using the already-qualified prescribed-`qbot` temporal-certificate contract;
 - one immutable committed/checkpoint origin for nominal and perturbed trials.
 
 The nominal predictor is a non-committing production candidate with the accepted-trajectory bottom-flux direction requested. The centered-FD points are two additional non-committing production candidates from the same origin with that tangent request disabled and only native prescribed `qbot` changed by `+eps` or `-eps`.
