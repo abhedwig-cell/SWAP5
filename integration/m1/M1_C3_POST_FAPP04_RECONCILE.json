@@ -1,0 +1,125 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "M1 - Typed External Boundary",
+  "subcapability": "Criterion 3 - legacy file runs reproduce reference results through adapters",
+  "phase": "RECONCILE_CLOSE",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "reconcile_merge_commit": "72b9a933937c7bc231bc19939e93da39cc292d48",
+  "reconcile_parents": {
+    "prior_m1_c3_head": "9528d24926d8efe8e8fbfb6a7e4f0e4d6ec8c929",
+    "admitted_canonical": "d223b7ab4ed297194c209f85d6b51bef86b79959"
+  },
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+    "head_change": "F-APP04 restricted PMdirect typed application composition admitted",
+    "post_merge_fci_run": 35277373322,
+    "post_merge_fci_conclusion": "SUCCESS",
+    "moving_preservation_run": 35277373328,
+    "moving_preservation_conclusion": "SUCCESS",
+    "postimage_reconciliation_run": 35277373438,
+    "postimage_reconciliation_conclusion": "SUCCESS"
+  },
+  "branch_reconciliation": {
+    "pre_reconcile_merge_base": "bfbb466678249811afc6a0800fd32a367818660f",
+    "m1_only_commits_preserved": 9,
+    "m1_only_files": [
+      "integration/m1/M1_C3_ACQUIRE_RECOVER_CLOSE.json",
+      "integration/m1/M1_C3_APPLICATION_MAPPING_BLOCKER.json",
+      "integration/m1/M1_C3_FIELD_MAPPING_BLOCKER.json",
+      "integration/m1/M1_C3_POST_FAPP03_AUTHORITY_RECONCILE.json",
+      "integration/m1/M1_C3_POST_FCI95_RECONCILE.json"
+    ],
+    "m1_production_delta_before_reconcile": "NONE",
+    "force_update_used": false
+  },
+  "resolved_since_previous_checkpoint": {
+    "exact_official_distribution": {
+      "status": "RESOLVED",
+      "outer_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+    },
+    "current_reference_source_identity": {
+      "status": "RESOLVED_RECONSTRUCTABLE",
+      "snapshot": "B1.11",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "reconstruction": "tools/vq/b1_11_reconstruct.py",
+      "evidence": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+      "note": "B1.11 is a numerical change from B1.10 and must remain the current-reference authority."
+    },
+    "restricted_pmdirect_science": {
+      "status": "ADMITTED_F_APP03",
+      "scope": "SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0, SWINTER=1, SWCF=1"
+    },
+    "restricted_pmdirect_typed_application_composition": {
+      "status": "ADMITTED_F_APP04",
+      "canonical_commit": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+      "bindings": [
+        "PMdirect interval potential_transpiration_cm_per_day -> crop/root uptake input",
+        "PMdirect daily soil/pond evaporation demands -> restricted surface evaporation demand",
+        "PMdirect interval net_rain_cm_per_day -> dynamic-top precipitation_rate_cm_per_day by identity mapping"
+      ]
+    },
+    "bottom_boundary": "RESOLVED_BY_F_APP02_F_VQ102_F_CI95",
+    "canonical_output_serialization": "AVAILABLE_VIA_M1_C4"
+  },
+  "changed_blocker_assessment": {
+    "previous_verdict": "C3_BLOCKED_NARROWED_MISSING_EXECUTABLE_B1_11_APPLICATION_TRACE_AUTHORITY",
+    "previous_exact_asset_blocker": "CURED",
+    "previous_restricted_pmdirect_composition_blocker": "CURED_FOR_SW_INTER1_SWCF1_ONLY",
+    "remaining_problem_class": "MISSING_B1_11_EXECUTABLE_APPLICATION_TRACE_AND_UNCOVERED_WHOLE_HUPSEL_ROUTES",
+    "reason": "The exact source/input authority and restricted PMdirect typed composition now exist. M1-C3 still requires observation against current B1.11 and cannot promote restricted SWINTER=1/SWCF=1 coverage into a whole-Hupsel claim."
+  },
+  "remaining_authority_and_coverage": {
+    "b1_11_observation_campaign": "NOT_YET_PREREGISTERED_OR_EXECUTED_FOR_M1_C3",
+    "swinter3_rutter": "NOT_COVERED_BY_F_APP03_OR_F_APP04",
+    "swcf2": "NOT_COVERED_BY_F_APP03_OR_F_APP04",
+    "drainage": "NRLEVS=5, SWDRA=2 active; exact legacy file/config + hydraulic state -> admitted typed drainage parameters/control/transfer mapping not yet qualified",
+    "irrigation_ssdi": "whole-run activity status still requires exact executable observation",
+    "root_sink": "F-APP04 binds final ptra into the existing root-input contract, but M1-C3 still needs B1.11 observation of the complete legacy crop/root geometry/stress composition into nodewise root_extraction_sink(:)",
+    "top_boundary": "F-APP04 closes net-rain identity binding for the restricted route only; unsupported interception/crop-factor routes must be classified from B1.11 rather than inferred"
+  },
+  "frozen_observation_design_to_reuse_if_dependency_valid": {
+    "dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "selection": "first accepted soil-water interval start >= 12:00 local model time",
+    "rule": "Do not change dates/selection/tolerances after observing candidate differences. Classify the active legacy route on each selected interval before comparing any restricted F-APP04 mapping."
+  },
+  "verdict": "M1_C3_RECONCILED_EXACT_AUTHORITY_AND_FAPP04_AVAILABLE_B1_11_TRACE_AND_WHOLE_ROUTE_COVERAGE_REMAIN",
+  "m1_c3_pass": false,
+  "whole_hupsel_closed": false,
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_io": "NONE",
+    "repository": "MERGE_RECONCILIATION_PLUS_CHECKPOINT_ONLY"
+  },
+  "next_permitted_action": [
+    "Preregister a B1.11-pinned M1-C3 executable observation campaign using the exact official B0 archive plus the admitted B1.11 reconstruction path.",
+    "Reconstruct B1.11 byte-exact and verify member manifest SHA-256 24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2 before execution.",
+    "Run the exact Hupsel case observation-only at the six frozen interval selections; record active SWINTER/SWCF/crop/irrigation/drainage routes before any candidate comparison.",
+    "Compare admitted F-APP04 transport only on intervals whose exact legacy route is within SWINTER=1/SWCF=1 scope; classify other intervals as explicit uncovered-route blockers, never fallback/infer.",
+    "Observe drainage and irrigation/SSDI activity/configuration from the same exact B1.11 execution so the remaining M1-C3 application surface can be narrowed without another broad recovery."
+  ],
+  "exclusions": [
+    "no relabelling B1.10 evidence as B1.11",
+    "no inferred SWINTER=3/Rutter or SWCF=2 implementation",
+    "no output fitting or reverse engineering",
+    "no raw-rain/ET/crop shortcut around application composition",
+    "no new generic application runtime",
+    "no groundwater/Richards/drainage physics change",
+    "no solver/retry/timestep/tolerance change",
+    "no whole-Hupsel or M1-C3 PASS claim"
+  ]
+}
