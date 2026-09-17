@@ -1,0 +1,98 @@
+{
+  "workunit": "PUB-ME-D1",
+  "publication_owner": "PUB-ME",
+  "doctoral_mapping": "RQ1 / PRESERVE",
+  "status": "QUALIFIED_PENDING_ADMISSION",
+  "design_authority": {
+    "preregistration_branch": "work/pub-me-literature-pass2",
+    "preregistration_head": "b2ebe5825b3c54d9d4eaefe44c33f4c859fa20aa",
+    "design_path": "docs/publications/PUB-ME_D1_D6_PREREGISTERED_EXPERIMENT_MATRIX.md",
+    "design_blob": "61f7133f19cc900971aa454b7bdb16a254468eda",
+    "design_status": "PREREGISTERED_DESIGN_BEFORE_EXECUTION"
+  },
+  "execution_authority": {
+    "branch": "work/pub-me-d1-transition-authority",
+    "execution_base": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+    "reconciled_canonical_during_qualification": "910fbc1c9cab2b11094e6a45606dfcea85621f4d",
+    "canonical_delta_from_execution_base": "documentation_governance_only",
+    "production_reference_test_semantics_changed_in_delta": false,
+    "clean_control": "tests/publication/test_pub_p1e02_postsolver_rollback.f90"
+  },
+  "defect_family": {
+    "id": "D1",
+    "name": "rejected candidate mutates committed physical state",
+    "tested_claim": "whether a consumer of the admitted public transaction/state interface can cause candidate-side mutation to write through into authoritative committed physical state",
+    "classification": "STRUCTURAL_PREVENTION"
+  },
+  "probes": {
+    "P0_real_postsolver_rejection_control": {
+      "result": "PASS",
+      "reference_physical_solver_executed": true,
+      "headcalc_calls_before_rejection": 3,
+      "committed": false,
+      "accepted_transaction_count": 0,
+      "interpretation": "matched physical clean control; its direct committed-state identity assertion is a B2 observation and is not silently counted as B1"
+    },
+    "P1_public_api_compile_negative_write_through": {
+      "result": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "observation": "direct consumer access to kernel_committed_state_t%physical_state is rejected because the component is private",
+      "interpretation": "the preregistered D1 write-through operation is not constructable through the admitted public committed-state API"
+    },
+    "P2_public_snapshot_clone_isolation": {
+      "result": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "extracted_snapshot_mutant_value": -9876.5,
+      "committed_value_after_snapshot_mutation": 12.5,
+      "committed_revision_after_snapshot_mutation": 0,
+      "O0_O2_output_sha256": "0a92d8019934ffd3dd0188cf6d98dd92c424e396708bf2a29b84ce92f88d3409",
+      "interpretation": "public state extraction returns an independently mutable clone rather than an alias to authoritative committed storage"
+    }
+  },
+  "qualification": {
+    "d1_workflow": {
+      "run_id": 35283864926,
+      "job_id": 105411722987,
+      "conclusion": "success"
+    },
+    "documentation_workflow": {
+      "run_id": 35283864921,
+      "conclusion": "success"
+    },
+    "canonical_qualification_workflow": {
+      "run_id": 35283864861,
+      "conclusion": "success",
+      "moving_current_preservation": "success"
+    }
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "For D1 on the admitted public kernel transaction/state interface, authoritative physical storage is structurally isolated from consumer-side candidate mutation by private ownership and clone-based state transfer.",
+      "The matched Reference control performs real physical work before rejection while publishing no accepted commit or accepted mass transaction.",
+      "Mutation of a public committed-state snapshot does not mutate the authoritative carrier, revision, or committed time."
+    ],
+    "not_supported": [
+      "D1 does not establish UNIQUE_DETECTION relative to B1 because the invalid operation is structurally prevented rather than executed as a production-visible mutant.",
+      "D1 does not establish EARLIER_DETECTION relative to B1 for an executable contamination fault.",
+      "D1 does not establish that private state, cloning, rollback, transactions, or accepted-state semantics are novel mechanisms.",
+      "D1 does not prove immunity to arbitrary memory corruption, undefined-language behavior, compiler defects, or changes that deliberately weaken the admitted encapsulation contract.",
+      "D1 alone does not satisfy the preregistered threshold for a standalone PUB-ME paper."
+    ]
+  },
+  "publication_effect": {
+    "counts_as_materially_distinct_positive_authority_mechanism": true,
+    "counts_as_unique_detection_result": false,
+    "counts_as_earlier_detection_result": false,
+    "standalone_pub_me_threshold_satisfied": false,
+    "remaining_primary_need": "At least one additional materially distinct D2-D6 family must be executed, with the full preregistered study requiring at least two materially distinct families showing incremental protection and clean matched controls before strong support for H-ME-TA is claimed."
+  },
+  "mutations": {
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "production_encapsulation_weakened": false,
+    "fault_mutant_admitted": false
+  },
+  "next_permitted_action": "After result-postimage qualification and admission/close of D1, start a separate D2 workunit from then-current canonical. Do not reinterpret D1 as B1-vs-B2 unique detection and do not change the preregistered D1-D6 design in response to this result."
+}
