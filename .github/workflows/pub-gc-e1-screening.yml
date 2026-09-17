@@ -1,11 +1,6 @@
 name: PUB-GC E1 transient screening
 
 on:
-  push:
-    branches:
-      - research/pub-gc-e1-screening
-    paths:
-      - '.github/workflows/pub-gc-e1-screening.yml'
   workflow_dispatch:
 
 permissions:
@@ -19,11 +14,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Record execution authority
-        run: |
-          echo 'PUB_GC_E1_SCREEN_TRIGGER_DECISION=37e72ae755bce9920db7f157082fa13def3fea22'
-          echo 'PUB_GC_E1_SCREEN_TRIGGER_DEVIATION=SINGLE_PUSH_FOR_CONNECTOR_LIMITATION'
 
       - name: Record compiler
         run: gfortran --version
