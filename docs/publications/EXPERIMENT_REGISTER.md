@@ -34,9 +34,9 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | define diagnostic history-contaminated comparator and GW-A |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | define fair terminal-flux comparator and GW-A |
-| `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | GW-A + converged replay method + `GC-REF` construction required |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | GW-A scientific contract frozen at `b6800d1...`; implement and independently qualify research-only GW-A plus the diagnostic origin-policy harness before preregistering E1 |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | define fair terminal-flux comparator after qualified GW-A exists |
+| `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A + converged replay method + `GC-REF` construction required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
 | `PUB-GC-E6` bounded N:1 conservation | PUB-GC | supporting/primary table | READY_FOR_SCREENING | map existing F-GC25 cases into publication manifest without upscaling claims |
@@ -60,14 +60,14 @@ These are primarily screening/foundational tasks. They should not be mistaken fo
 
 ### Tranche B — reference-construction preparation
 
-In parallel, define:
+In parallel:
 
-- `PUB-SQ-REF-HIGH`: refinement procedure and stability criterion;
-- `PUB-GC-GW-A`: transparent groundwater reservoir definition;
-- `PUB-GC-GC-REF`: strict coupling reference procedure;
-- shared publication telemetry serialization.
+- `PUB-SQ-REF-HIGH`: define the refinement procedure and stability criterion;
+- `PUB-GC-GW-A`: specification frozen in `PUB-GC_GW-A_SPECIFICATION.md`; implement and independently qualify the research-only reservoir before E1 preregistration;
+- `PUB-GC-GC-REF`: define the strict coupling reference procedure after the qualified GW-A execution surface exists;
+- shared publication telemetry serialization: define before primary matrices are frozen.
 
-No primary claim run should begin until these definitions are frozen.
+No primary claim run should begin until the relevant definitions and implementation prerequisites are frozen.
 
 ## Blocker policy
 
@@ -115,6 +115,16 @@ Examples:
 - admitted scope: bounded F-GC25 interface conservation, rollback, action/reaction and fail-closed topology/origin screening on the exact qualified postimage;
 - next permitted action: define and freeze GW-A plus the GC-E1 history-contaminated diagnostic comparator and GC-REF reference procedure before primary replay/convergence runs;
 - cross-publication effect: none; no ME, SQ, RC or SG primary claim is inherited, and MODFLOW/window-accuracy claims remain untested.
+
+### 2026-09-17T21:01:45Z — PUB-GC GW-A component decision frozen
+
+- scientific specification commit: `b6800d1337c2101b39d1c07e45ee808a35711926`;
+- decision receipt commit: `9ab529a7d905f73b27513320dfdac537339b90e8`;
+- reviewed historical fixture: `F-GC21@1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f`, source blob `d3cd07965f6fc0d0628557b18d65f3bbc9396888`;
+- decision: the F-GC21 dummy remains a transactional qualification test double and is not admissible as `GW-A`, because its returned head is scripted rather than derived from a physical storage/exchange state;
+- prerequisite newly satisfied: GW-A scientific equation, signs/units, transactional state semantics, diagnostic history-contamination boundary and minimum component qualification are frozen before implementation or E1 execution;
+- next permitted action: implement and independently qualify the research-only GW-A component and diagnostic origin-policy harness; do not preregister or execute a primary E1 run until those prerequisites are green;
+- cross-publication effect: none; no MODFLOW, production-backend, ME, SQ, RC or SG primary claim is created.
 
 ## Register update rule
 
