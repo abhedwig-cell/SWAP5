@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-DOC30",
+  "title": "Transactional Interval Architecture Technical Reference",
+  "branch": "work/f-doc30-transactional-interval-reference",
+  "phase": "VERIFY",
+  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+  "canonical_start": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+  "frozen_status_a": {
+    "authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "live_delta_reconciliation": {
+    "previous_documentation_canonical": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
+    "canonical_at_branch_start": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+    "classification": "F_APP04_RESTRICTED_TYPED_APPLICATION_COMPOSITION_IRRELEVANT_TO_FDOC30_OWNER_SURFACE",
+    "relevant_paths_unchanged": [
+      "src/transaction/**",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "docs/numerics/transactional-time-stepping.md"
+    ]
+  },
+  "primary_frozen_owners": [
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+      "role": "transaction trial, rejection, retry, rollback and accepted-state commit authority"
+    },
+    {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+      "role": "requested canonical interval orchestration and external publication authority"
+    }
+  ],
+  "qualification_chain": {
+    "production_owner": "F-KT15",
+    "owner_branch": "work/f-kt15-task2-solver-service-production-composition",
+    "owner_head": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "owner_final_closeout_run": 34675851064,
+    "canonical_admission": "F-CI49",
+    "first_green_admission_run": 34677619807,
+    "postpromotion_reconciliation": "F-CI49P",
+    "fci49_admission_head": "40e674db6c48f494fb5f49e52951c2a9ae3dfe9d",
+    "fci49_promoted_postimage": "42544af575db522d012db491db801615577048df",
+    "post_reconciliation_broad_run": 34678104111,
+    "status_a_preservation": "docs/status-a/TRACEABILITY.md transaction architecture row plus same-tree F-GC29 and permanent transactional/oracle/mass/numerical suites"
+  },
+  "permitted_claims": [
+    "attempts originate from a clone/checkpoint of committed transaction state and captured attempt context",
+    "solver failure, incomplete or excessive mass residual, and temporal rejection restore checkpoint context and follow bounded retry policy",
+    "the external full-versus-two-half route accepts and commits the two-half candidate only after solver, mass and temporal gates pass",
+    "the qualified model-certificate route follows the same candidate-to-accepted discipline with its own temporal certificate gate",
+    "accepted transaction state is distinct from externally published canonical interval state",
+    "canonical runtime advances accepted internal transactions in a private working state and publishes externally only after the full requested interval completes",
+    "failed transaction, no-progress or substep-limit outcomes do not replace the externally committed canonical state",
+    "interval mass residual is storage_change minus total_in-minus-total_out and completeness is explicit",
+    "retry and rejection diagnostics are accumulated without converting rejected candidate states into committed state"
+  ],
+  "forbidden_claims": [
+    "no new retry scale, retry budget, temporal tolerance or mass tolerance is defined by F-DOC30",
+    "no universal numerical convergence theorem or ACID-database claim",
+    "no claim that every future solver or process automatically satisfies these frozen Status-A semantics",
+    "no post-Status-A RossFast or later application composition is added to the frozen Status-A denominator",
+    "no new concurrent or parallel MultiSWAP semantics",
+    "no groundwater-specific staged mass-ledger semantics are generalized into the generic transaction core",
+    "no production, reference, test or scientific semantics mutation"
+  ],
+  "mutations": [
+    "docs/numerics/transactional-time-stepping.md",
+    "integration/f-doc/F-DOC30_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC30_STATUS.json"
+  ],
+  "scope_check": {
+    "changed_file_count": 3,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "mkdocs_navigation_changed": false,
+    "documentation_links_checked": true
+  },
+  "verification": {
+    "content_head": "c86f17131f4757d35ef33b77d1fd2d7b23050d13",
+    "pull_request": 194,
+    "documentation_workflow_run": 35277790693,
+    "documentation_job": 105392458720,
+    "workflow_conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "status_only_exact_head_rerun": "PENDING"
+  },
+  "next_permitted_action": "VERIFY_STATUS_ONLY_HEAD_THEN_GUARDED_ADMIT_IF_CANONICAL_RELEVANT_DELTA_IS_CLEAN",
+  "verdict": "CONTENT_VERIFIED"
+}
