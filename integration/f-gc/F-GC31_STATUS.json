@@ -3,40 +3,93 @@
   "capability": "F-GC31",
   "title": "MultiSWAP MODFLOW6 Cell Response",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_TYPED_CELL_RESPONSE_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
   "baseline": {
     "branch": "integration/f-ci-canonical",
-    "head": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "implementation_origin_head": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "current_reconciled_head": "6a77678b535ed468bdeeb9b67f149be706f0205f",
+    "relevant_delta": "17 canonical commits inspected since implementation origin. Delta adds publication experiment/workflow/evidence files only; no F-GC30 predictor-response, MultiSWAP topology/type, groundwater coupling contract, or F-GC31 dependency source changed.",
     "f_gc30": "CANONICALLY_ADMITTED_DRAINAGE_FREE_PREDICTOR_RESPONSE"
+  },
+  "work_branch": {
+    "branch": "work/f-gc31-multiswap-modflow6-cell-response",
+    "design_commit": "e2066b92db47ee1f5ee1570b9ace9110e7827c2c",
+    "implementation_commit": "5bfe00f480f71bc22b46e2da4e22cbd2d15e5898",
+    "qualified_head": "428eea765b5af81643dd73c59db99767b6563b80"
   },
   "scientific_decision": {
     "tile_local_form": "q_i(H)=q_i_star+(u_i/dt_s)*(H-H_i_star)",
     "cell_u": "sum(area_fraction_i*u_i)",
     "cell_reference_exchange": "sum(area_fraction_i*(q_i_star+(u_i/dt_s)*(H_ref-H_i_star)))",
     "cell_affine_form": "q_cell(H)=q_cell_ref+(u_cell/dt_s)*(H-H_ref)",
-    "raw_weighted_predictor_q_u_role": "DIAGNOSTIC_ONLY_WHEN_TILE_PREDICTOR_HEADS_DIFFER"
+    "raw_weighted_predictor_q_u_role": "DIAGNOSTIC_ONLY_WHEN_TILE_PREDICTOR_HEADS_DIFFER",
+    "reference_head_decision": "EXPLICIT_COMMON_HEAD_REQUIRED_FOR_HETEROGENEOUS_TILE_PREDICTOR_RESPONSES"
   },
   "dependencies": [
     "src/runtime/mod_modflow6_swap_predictor_response.f90",
     "src/runtime/mod_groundwater_multiswap_types.f90",
+    "src/runtime/mod_groundwater_coupling_contract.f90",
     "existing F-GC25 N:1 topology semantics"
   ],
-  "planned_changes": [
+  "changes": [
+    "docs/integration/F-GC31_MULTISWAP_MODFLOW6_CELL_RESPONSE.md",
     "src/runtime/mod_modflow6_multiswap_cell_response.f90",
     "tests/fgc/test_fgc31_modflow6_multiswap_cell_response.f90",
     "tests/fgc/run_fgc31_modflow6_multiswap_cell_response.sh",
-    ".github/workflows/f-gc31-modflow6-multiswap-cell-response.yml"
+    ".github/workflows/f-gc31-modflow6-multiswap-cell-response.yml",
+    "integration/f-gc/F-GC31_STATUS.json"
+  ],
+  "qualified_contract": [
+    "single-tile response is equivalent to the admitted F-GC30 response when H_ref equals the tile predictor terminal head",
+    "heterogeneous tile-local affine responses are exactly reducible at one explicit common reference head",
+    "u_cell is the area-weighted sum of tile u values for a common coupling window",
+    "the cell slope is u_cell/dt_s",
+    "raw area-weighted predictor q_u is diagnostic rather than the common-head intercept when tile predictor heads differ",
+    "caller tile order does not change aggregate values or canonical output tile provenance",
+    "invalid topology, response, window or common groundwater-origin provenance fails closed"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC31 MODFLOW6 MultiSWAP cell response",
+    "green_run": 35286605413,
+    "green_job": 105420216389,
+    "green_head": "428eea765b5af81643dd73c59db99767b6563b80",
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FGC31_NONCOMMITTING_CELL_COMPOSER",
+      "FGC31_NO_MODFLOW_BACKEND_OR_RIBASIM",
+      "FGC31_SINGLE_TILE_EQUIVALENCE",
+      "FGC31_HETEROGENEOUS_AFFINE_CLOSURE",
+      "FGC31_REFERENCE_HEAD_RECONCILIATION",
+      "FGC31_AREA_WEIGHTED_U",
+      "FGC31_PERMUTATION_DETERMINISM",
+      "FGC31_CANONICAL_TILE_PROVENANCE",
+      "FGC31_PROVENANCE_FAIL_CLOSED",
+      "FGC31_CELL_RESPONSE_CONTRACT_GATE",
+      "FGC31_O0_O2_OUTPUT_IDENTITY"
+    ],
+    "failed_iteration": {
+      "run": 35286487070,
+      "head": "5bfe00f480f71bc22b46e2da4e22cbd2d15e5898",
+      "disposition": "Qualification harness compile dependency omission only. Static non-commit/backend-exclusion checks passed. Restored current kernel directional-publication compile dependencies; no production formula or F-GC31 runtime source changed."
+    }
+  },
+  "mutations": [
+    "e2066b92db47ee1f5ee1570b9ace9110e7827c2c",
+    "5bfe00f480f71bc22b46e2da4e22cbd2d15e5898",
+    "428eea765b5af81643dd73c59db99767b6563b80"
   ],
   "exclusions": [
     "MODFLOW6/XMI backend",
     "head-driven corrector runtime",
     "groundwater execution-service redesign",
-    "Ribasim",
+    "Ribasim coupling",
     "irrigation",
     "active-drainage tangent",
     "runtime finite-difference fallback",
-    "publication or commit changes"
+    "publication or commit changes",
+    "canonical admission"
   ],
-  "next_permitted_action": "Implement the non-committing typed affine cell-response composer and focused Q1-Q4 qualification gate."
+  "next_permitted_action": "Independent/admission review of the exact F-GC31 typed cell-response envelope, or a separately bounded F-GC32 MODFLOW6 response-backend workunit after that review. Do not fold XMI, corrector orchestration, Ribasim or irrigation into F-GC31."
 }
