@@ -1,13 +1,14 @@
 {
   "workstream": "F-DOC",
   "work_unit": "F-DOC31",
-  "phase": "QUALIFY",
-  "status": "PR_OPEN_VALIDATION_PENDING",
+  "phase": "ADMIT",
+  "status": "QUALIFIED_ADMISSION_READY",
   "purpose": "Record the connector-efficient recovery protocol refinement without introducing a second source of scientific or project authority.",
   "baseline": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
   "branch": "docs/connector-efficient-recovery",
   "checkpoint_commit": "d4066dc21441c223acb01c9e16035cbe82c03113",
-  "last_reconciled_head": "d4066dc21441c223acb01c9e16035cbe82c03113",
+  "qualified_content_head": "fa5c944203216f6dc5cde440c60184edd4bfcac4",
+  "last_reconciled_head": "fa5c944203216f6dc5cde440c60184edd4bfcac4",
   "last_reconciled_upstream": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
   "relevant_paths": [
     "AGENTS.md",
@@ -29,6 +30,15 @@
     "docs/development/workstream-execution-protocol.md"
   ],
   "pull_request": 196,
-  "next_action": "Run documentation validation and strict MkDocs build on the exact PR head, then admit only on PASS and unchanged relevant canonical dependency surface.",
+  "validation": {
+    "workflow": "Documentation",
+    "workflow_run": 35279347156,
+    "validated_head": "fa5c944203216f6dc5cde440c60184edd4bfcac4",
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "result": "PASS"
+  },
+  "metadata_only_after_validated_head": true,
+  "next_action": "Merge PR #196 only if the metadata-only status update remains documentation-valid and the relevant canonical dependency surface is unchanged.",
   "recovery_point": "Resume from the PR head; compare only the documented dependency surface against branch/canonical deltas before repeating any broader repository reconnaissance."
 }
