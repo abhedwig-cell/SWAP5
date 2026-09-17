@@ -24,7 +24,7 @@ ASSET_ROOT=assets/rossfast/d3r
 # PUB-P2E05 is a typed diagnostic ABI successor only. Rebind the frozen
 # adapter qualification to the new solver-contract blob; all RossFast policy,
 # model, kernel and provider authorities remain frozen below.
-test "$(git rev-parse HEAD:$SW)" = 40a1ddc52fcb56025515e621024368df6ea6cde4
+test "$(git rev-parse HEAD:$SW)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
 test "$(git rev-parse HEAD:$BINDING)" = 9f29ba7a08844692ba2628c7869d23713409f92b
 test "$(git rev-parse HEAD:$KERNEL)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
