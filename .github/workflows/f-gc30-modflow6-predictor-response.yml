@@ -6,8 +6,11 @@ on:
       - work/f-gc30-modflow6-tangent-coupling-contract
     paths:
       - 'src/runtime/mod_modflow6_swap_predictor_response.f90'
+      - 'src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90'
       - 'tests/fgc/test_fgc30_modflow6_predictor_response_contract.f90'
       - 'tests/fgc/run_fgc30_modflow6_predictor_response_contract.sh'
+      - 'tests/fgc/test_fgc30_prescribed_qbot_bottom_face.f90'
+      - 'tests/fgc/run_fgc30_prescribed_qbot_bottom_face.sh'
       - '.github/workflows/f-gc30-modflow6-predictor-response.yml'
   workflow_dispatch:
 
@@ -23,3 +26,5 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Run F-GC30 predictor-response gate
         run: bash tests/fgc/run_fgc30_modflow6_predictor_response_contract.sh
+      - name: Run F-GC30 prescribed-qbot bottom-face gate
+        run: bash tests/fgc/run_fgc30_prescribed_qbot_bottom_face.sh
