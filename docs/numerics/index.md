@@ -18,9 +18,19 @@ The first two belong primarily to solver/numerical contracts. The third belongs 
 
 ## Reference numerical lineage
 
-The restricted historical reference authority documents an implicit backward finite-difference compartment formulation for the reference Richards route. Storage is evaluated from water-content change and internodal Darcy fluxes connect neighbouring compartments. The nonlinear residual is solved through the qualified Newton/tridiagonal route.
+The restricted historical reference authority documents an implicit backward finite-difference compartment formulation for the reference Richards route. Storage is evaluated from the actual water-content change and internodal Darcy terms connect neighbouring compartments. The nonlinear residual is solved through the qualified Newton/tridiagonal route.
+
+For the frozen Status-A production baseline, the primary nonlinear owner is `src/legacy/b1_10_port/headcalc.f90`, with the typed reference workspace/state binding and the reference linear-solver module providing explicit scratch, state and solve seams around that compatibility owner. The detailed owner/claim map is recorded by F-DOC25.
 
 The current Status-A claim is bounded: it preserves/admit the qualified reference soil-water core and its later transaction architecture. This section does not turn every historical numerical option into a current SWAP5 capability.
+
+## Primary solve versus auxiliary temporal indicator
+
+The production Richards residual/Jacobian/Newton route and the restricted temporal-indicator operator are different numerical objects.
+
+The Richards solver page documents the primary nonlinear residual, Jacobian, Newton update, backtracking, convergence criteria and linear solve. The temporal indicator is only an auxiliary, fail-closed defect/head-bound operator for a restricted provider/boundary envelope. It does not redefine the production residual and it does not establish a universal nonlinear true-error theorem or application-wide head budget.
+
+Where that indicator is relevant to a current capability, follow the exact capability-specific qualification/admission chain rather than inferring a global accuracy guarantee from its existence.
 
 ## Numerical method versus execution policy
 
@@ -48,4 +58,5 @@ The numerical review baseline does not claim:
 - that shorter timesteps always improve every indicator monotonically;
 - that a model-owned temporal indicator overrides mass failure;
 - that rejected candidate state can leak into committed state;
-- that a performance policy may silently select different physics.
+- that a performance policy may silently select different physics;
+- that RossFast or another post-Status-A solver belongs to the frozen Status-A numerical denominator.
