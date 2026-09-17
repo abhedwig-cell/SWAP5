@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
-| `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | GW-A component qualified by `PUB-GC-GW-A-QUAL-0001`; implement and independently qualify the real-SWAP `GC-ORIGIN-SAME` / `GC-ORIGIN-HISTORY-DIAG` research harness, then freeze case and candidate sequence before E1 preregistration |
+| `PUB-GC-E1` same-origin replay | PUB-GC | primary | READY_FOR_SCREENING | real-SWAP origin-policy harness qualified by `PUB-GC-E1-HARNESS-QUAL-0001`; perform separately labelled transient screening within the frozen broad bounds, then freeze the exact case/candidate sequence before primary E1 preregistration |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
@@ -138,6 +138,19 @@ Examples:
 - prerequisite newly satisfied: a transparent, checkpointable, analytically qualified research groundwater component now exists before any E1 primary execution;
 - next permitted action: implement and independently qualify the **real-SWAP** origin-policy research harness; freeze case/candidate sequence and preregister E1 only after that harness is green;
 - cross-publication effect: none; this does not establish H1 or any MODFLOW, production-backend, ME, SQ, RC or SG primary claim.
+
+### 2026-09-17T23:02:17Z — PUB-GC E1 real-SWAP origin harness qualified
+
+- frozen harness specification: `2d0a9ea26dbb6048e60e67dcf6882a1b03664d61`, blob `554ebf5841b533b38f19dce533b2efb978348971`;
+- qualified research branch/head: `research/pub-gc-gw-a@14ee1be3c221c973973a3fb3dcb450ff40d3f96a`;
+- frozen production source tree used by the harness: `d7ef6c045263de821db7800459289efcd8a6420b`;
+- qualification receipt: `docs/publications/results/PUB-GC-E1-HARNESS-QUAL-0001.yaml`, introduced by commit `a8676007e1adebbabd6235d08378ae5828fedb30`;
+- execution: GitHub Actions run `35284904390`, job `105414974936`;
+- qualification result: real B1.10 prescribed-head A/B/A same-origin replay, accepted-origin immutability, whole-window exchange availability, public snapshot+initialize history diagnostic, distinct research lineage, no production commit, fail-closed unsupported route, GW-A requalification and O0/O2 identity all PASS;
+- chronology guard: the observed difference between same-origin and history-diagnostic qualification telemetry is retained for reproducibility only and is **not** H1 evidence;
+- prerequisite newly satisfied: the composed E1 comparison harness is qualified before screening or primary-case selection;
+- next permitted action: separately labelled transient screening within the broad bounds frozen in `PUB-GC_E1_ORIGIN_HARNESS_SPEC.md`; after screening freeze exact case, candidate heads, order permutations, metrics, thresholds and null interpretation before primary execution;
+- cross-publication effect: none; no MODFLOW, PUB-ME, PUB-SQ, PUB-RC or PUB-SG primary claim is inherited.
 
 ## Register update rule
 
