@@ -2,14 +2,14 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC22",
   "title": "Drainage-v1 Formulation Reference Completion",
-  "phase": "UPDATE",
-  "decision": "DRAINAGE_V1_FORMULATION_REFERENCE_READY_TO_VERIFY",
+  "phase": "CLOSE",
+  "decision": "READY_FOR_CANONICAL_ADMISSION",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc22-drainage-formulations",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
-  "observed_live_canonical_head": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
-  "canonical_drift": "NONE",
+  "canonical_reconciled_head_before_admission": "356742cb2a24b3335b0eae48d7d02d6194ce04ef",
+  "canonical_drift": "NONE_AT_VERIFY",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
@@ -31,6 +31,18 @@
     "multilevel_aggregation": ["F-VQ43", "src/process/mod_drainage_multilevel_aggregation.f90@50346642"],
     "fixed_weir": ["F-VQ59", "F-CI52", "F-CI52P", "src/process/mod_restricted_fixed_weir_surface_water.f90@50346642"]
   },
+  "qualified_documentation_evidence": {
+    "verified_head": "8621be384f2e79604597542942176f3280b2acb9",
+    "pull_request": 167,
+    "workflow_run": 35183844042,
+    "workflow_job": 105081554598,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "scope_diff": "PASS_DOCUMENTATION_ONLY",
+    "changed_files_at_verified_head": 6,
+    "production_source_changes": false,
+    "reference_source_changes": false
+  },
   "persisted_artifacts": [
     "integration/f-doc/F-DOC22_AUTHORITY_MATRIX.md",
     "docs/science/drainage-formulations.md",
@@ -48,22 +60,21 @@
     "deterministic multi-level flux aggregation with conservative derivative availability",
     "restricted fixed-weir level-storage mapping, supply rule, rating law, mass-equation discharge and separate numerical residual"
   ],
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "documentation_only": true
+  },
   "explicit_nonclaims": [
-    "No production or reference source changed.",
-    "No scientific denominator changed.",
     "No drainage option outside the fixed eight-variant Drainage-v1 denominator is admitted.",
     "No unrestricted reverse exchange is inferred.",
     "No negative-side empirical DRAMET3 infiltration is admitted.",
     "No fully implicit drainage-response solver coupling is implied.",
     "No fixed-weir surface-water control beyond the restricted admitted contract is inferred.",
-    "Undefined derivatives at branch boundaries remain undefined."
+    "Undefined derivatives at branch boundaries remain undefined.",
+    "The branch-pinned F-PM19 completion artifact is not represented as a current-canonical file."
   ],
-  "verification": {
-    "scope_diff": "PENDING",
-    "documentation_checker": "PENDING",
-    "mkdocs_strict": "PENDING",
-    "admission": "NOT_ATTEMPTED"
-  },
-  "next_permitted_action": "VERIFY exact F-DOC22 postimage through scope diff and pull-request Documentation workflow; admit only if checks are green and canonical remains nonconflicting.",
-  "verdict": "IN_PROGRESS"
+  "next_permitted_action": "Recheck live canonical equals 356742cb2a24b3335b0eae48d7d02d6194ce04ef and PR #167 remains mergeable, then admit exactly this documentation-only closeout head to integration/f-ci-canonical.",
+  "verdict": "PASS"
 }
