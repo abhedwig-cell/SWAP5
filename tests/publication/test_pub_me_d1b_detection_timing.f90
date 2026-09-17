@@ -94,6 +94,17 @@ program test_pub_me_d1b_detection_timing
        same_bits(reject_clean%mass%total_in, reject_mutant%mass%total_in) .and. &
        same_bits(reject_clean%mass%total_out, reject_mutant%mass%total_out) .and. &
        clean_revision == mutant_revision .and. same_bits(clean_time, mutant_time)
+  write(*,'(A,I0,A,I0)') 'PUB_ME_D1B_B1_KERNEL_STATUS clean=', reject_clean%kernel_status, ' mutant=', reject_mutant%kernel_status
+  write(*,'(A,L1,A,L1)') 'PUB_ME_D1B_B1_COMPLETED clean=', reject_clean%completed, ' mutant=', reject_mutant%completed
+  write(*,'(A,L1,A,L1)') 'PUB_ME_D1B_B1_COMMITTED clean=', reject_clean%committed, ' mutant=', reject_mutant%committed
+  write(*,'(A,I0,A,I0)') 'PUB_ME_D1B_B1_ACCEPTED_COUNT clean=', reject_clean%mass%accepted_transaction_count, &
+       ' mutant=', reject_mutant%mass%accepted_transaction_count
+  write(*,'(A,ES26.17E3,A,ES26.17E3)') 'PUB_ME_D1B_B1_TOTAL_IN clean=', reject_clean%mass%total_in, &
+       ' mutant=', reject_mutant%mass%total_in
+  write(*,'(A,ES26.17E3,A,ES26.17E3)') 'PUB_ME_D1B_B1_TOTAL_OUT clean=', reject_clean%mass%total_out, &
+       ' mutant=', reject_mutant%mass%total_out
+  write(*,'(A,I0,A,I0)') 'PUB_ME_D1B_B1_REVISION clean=', clean_revision, ' mutant=', mutant_revision
+  write(*,'(A,ES26.17E3,A,ES26.17E3)') 'PUB_ME_D1B_B1_TIME clean=', clean_time, ' mutant=', mutant_time
   call require(b1_boundary_match, 'frozen B1 boundary observations remain matched')
 
   call clean_committed%snapshot(clean_boundary, clean_boundary_ok)
