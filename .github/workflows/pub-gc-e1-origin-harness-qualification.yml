@@ -1,0 +1,42 @@
+name: PUB-GC E1 origin harness qualification
+
+on:
+  push:
+    branches:
+      - research/pub-gc-gw-a
+    paths:
+      - 'tests/publication/pub_gc/e1_origin/**'
+      - '.github/workflows/pub-gc-e1-origin-harness-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-e1-origin-harness:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run E1 real-SWAP origin harness qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-E1
+          bash tests/publication/pub_gc/e1_origin/run_pub_gc_e1_origin_harness_qualification.sh \
+            | tee artifacts/PUB-GC-E1/qualification.log
+
+      - name: Upload qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e1-origin-harness-${{ github.sha }}
+          path: artifacts/PUB-GC-E1/qualification.log
+          if-no-files-found: error
+          retention-days: 90
