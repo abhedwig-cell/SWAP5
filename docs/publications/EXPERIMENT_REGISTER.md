@@ -35,7 +35,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
 | `PUB-GC-E1` same-origin replay | PUB-GC | primary | COMPLETE | one-shot held-out primary `PUB-GC-E1-PRIMARY-0001` completed validly; both preregistered history discriminants exceeded their numerical floors while same-origin replay remained exact; H1 supported at operator-definition level only, practical materiality/generalization remain open |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | comparator semantics frozen in `PUB-GC_E2_TERMINAL_FLUX_COMPARATOR_SPEC.md`; next implement and independently qualify research-only comparator; primary H2 remains blocked until `GC-REF` construction is frozen |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | research-only comparator qualified by `PUB-GC-E2-COMPARATOR-QUAL-0001`; separately labelled screening may begin, but primary H2 remains blocked until `GC-REF` construction is frozen |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
@@ -65,7 +65,7 @@ In parallel:
 - `PUB-SQ-REF-HIGH`: define the refinement procedure and stability criterion;
 - `PUB-GC-GW-A`: **qualified research component** at research head `8a090fc9228574525e599817771aadb8ae176047`; receipt `PUB-GC-GW-A-QUAL-0001`;
 - `PUB-GC-E1-HARNESS`: reconcile the qualified real-SWAP prescribed-head/checkpoint execution surfaces, then implement the two origin policies in research-only code without modifying production semantics;
-- `PUB-GC-GC-REF`: define the strict coupling reference procedure after the E1 harness boundary is qualified;
+- `PUB-GC-GC-REF`: define and freeze the strict coupling reference procedure; E1 is complete and the E2 comparator is independently qualified, so this is now the controlling blocker for primary H2/H3 work;
 - shared publication telemetry serialization: define before primary matrices are frozen.
 
 No primary claim run should begin until the relevant definitions, implementation prerequisites and run manifest are frozen.
@@ -221,3 +221,17 @@ Whenever a run family changes status, record:
 - whether the change affects another publication line.
 
 The register should describe readiness, not rewrite past chronology.
+
+
+### 2026-09-17T23:39:55Z — PUB-GC E2 terminal comparator qualified
+
+- controlling specification commit: `4e9d891f9a4d1678e5fa4590adae13471597d72e`;
+- controlling qualification manifest commit: `ceb695cbdbf08f5f8c6a97f1af3deac4da69ebc2`;
+- qualification receipt commit: `d2ed6bd028a253e17e8bf48837647189922fd7ed`;
+- research branch/head: `research/pub-gc-e2-terminal-comparator@188c863f560d8adacf255edb4f6f83edcac798f3`;
+- successful execution: GitHub Actions run `35287826254`, job `105423983032`;
+- invalid predecessor: run `35287702976` failed at compile time because the checkpoint origin-time accessor was called with the wrong public API form; it carries no scientific inference;
+- qualification result: comparator authority locks, production-source preservation, no-SWAP-execution, no-groundwater-commit, exact terminal rectangle, synthetic selectivity controls, real frozen E1-B analytic projection, nonfinite fail-closed behavior and O0/O2 identity all PASS;
+- primary H2 inference remains **not executed**; the frozen E1-B row is qualification-only and its near-zero whole-window/terminal difference is not an H2 effect estimate;
+- next permitted action: define and freeze `GC-REF`; separately labelled E2 screening may proceed but cannot become primary evidence;
+- cross-publication effect: none; no PUB-ME, PUB-SQ, PUB-RC or PUB-SG primary claim is inherited.
