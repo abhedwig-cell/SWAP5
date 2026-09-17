@@ -58,7 +58,11 @@ contains
     end if
 
     status = MODFLOW6_LINEAR_BACKEND_INVALID_AREA
-    if (.not. ieee_is_finite(cell_area_m2) .or. cell_area_m2 <= 0.0_real64) then
+    if (.not. ieee_is_finite(cell_area_m2)) then
+      term%status = status
+      return
+    end if
+    if (cell_area_m2 <= 0.0_real64) then
       term%status = status
       return
     end if
