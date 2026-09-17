@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "PREREGISTER_NET_RAIN_BINDING",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "expected_parent": "308f44f95e47661fc64d8902293a4c0be749d560",
+  "canonical_head_observed": "4b945b19d0b5f984d10bc750bb403174158a886b",
+  "upstream_qualified_binding_checkpoint": "integration/f-app/F-APP04_PMDIRECT_TYPED_BINDINGS_QUALIFICATION.json",
+  "authority": {
+    "source_field": "pmdirect_swetr0_interval_result_t%net_rain_cm_per_day",
+    "receiving_type": "b110_dynamic_top_boundary_request_t",
+    "receiving_field": "precipitation_rate_cm_per_day",
+    "receiving_module": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "receiving_blob_on_fapp04": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "solver_adapter": "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "solver_adapter_blob_on_fapp04": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "unit_contract": "cm/day on both source and receiving field",
+    "sign_contract": "positive precipitation enters q0 positively; the dynamic top-boundary provider forms q0 = precipitation + irrigation + snowmelt + runon - bare-soil evaporation - ponded-water evaporation",
+    "adapter_transport": "bind_b110_dynamic_top_boundary_solver_provider stores precipitation_rate unchanged and later assigns it unchanged to b110_request%precipitation_rate_cm_per_day"
+  },
+  "decision": {
+    "binding": "net_rain_cm_per_day -> precipitation_rate_cm_per_day",
+    "conversion": "identity",
+    "new_physics": false,
+    "new_sign_convention": false,
+    "new_unit_convention": false,
+    "solver_change": false,
+    "transaction_change": false
+  },
+  "implementation_surface": {
+    "new_module": "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90",
+    "operation": "Copy an already-populated b110_dynamic_top_boundary_request_t, ignore its incoming precipitation transport field as non-authoritative for this route, then overwrite only precipitation_rate_cm_per_day with the qualified F-APP03 interval net_rain_cm_per_day.",
+    "upstream_acceptance": "Require PMDIRECT_SWETR0_OK and interval_result_produced=true.",
+    "value_acceptance": "Require finite and nonnegative net_rain_cm_per_day using trap-safe sequential validation.",
+    "failure": "Return default request plus explicit diagnostics; do not call solver/provider.",
+    "preservation": "All non-precipitation fields in the accepted base request must remain bit-identical."
+  },
+  "qualification_plan": [
+    "exact positive net-rain identity mapping",
+    "zero net-rain identity mapping",
+    "all non-precipitation request fields preserved",
+    "incoming precipitation field ignored and replaced",
+    "NaN net rain fails closed under -ffpe-trap=invalid",
+    "negative net rain fails closed",
+    "unproduced/upstream-rejected interval fails closed",
+    "O0/O2 output identity",
+    "static assertion that existing dynamic top-boundary provider, solver adapter, F-APP03 process and SWETR=1 files are unchanged"
+  ],
+  "verdict": "PREREGISTERED_IDENTITY_NET_RAIN_TO_EXISTING_DYNAMIC_TOP_PRECIPITATION_SEAM",
+  "next_permitted_action": "Implement only the preregistered transparent request binding and extend the existing F-APP04 owner/gate/workflow qualification. Do not modify the dynamic top-boundary provider, solver adapter, solver, transaction lifecycle, PMdirect process or SWETR=1 route.",
+  "exclusions": [
+    "irrigation, snowmelt or runon ownership changes",
+    "surface evaporation recomputation",
+    "SWINTER=3 / Rutter",
+    "SWCF=2",
+    "legacy file adapter",
+    "whole-Hupsel equivalence claim",
+    "M1-C3 closure"
+  ]
+}

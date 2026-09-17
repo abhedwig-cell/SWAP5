@@ -43,6 +43,17 @@ Use these labels consistently:
 
 Do not document an optimization as physically equivalent unless the qualification evidence supports that statement.
 
+### Completeness and authority rule
+
+Missing documentation is not left unwritten merely because the original design record was incomplete. Apply this rule:
+
+1. if the missing explanation can be reconstructed from accepted theory, production code and qualified evidence, write and version the documentation and link it to those authorities;
+2. if the underlying scientific, numerical or interface authority is itself not established, record the missing authority as a bounded gap and do not invent a definitive statement;
+3. do not promote an internal test harness, historical note or proposal into a supported public contract merely to make the documentation look complete;
+4. when later evidence supersedes historical wording, retain the historical record where useful but make the current authority and scope explicit.
+
+This is the repository form of the F-DOC20 rule: **reconstructable means document it; unproven means record the gap**.
+
 ## Architecture changes
 
 An important architecture change should normally include:
@@ -64,6 +75,6 @@ A later documentation stage can add generated Fortran API reference, for example
 
 ## Online publication
 
-GitHub Pages is the primary publication adapter selected in D2. Pull requests run the documentation gates without deploying. A successful documentation build on `main` is eligible for deployment.
+GitHub Pages is the publication adapter for the first frozen Status-A colleague-review portal. Pull requests run the documentation gates without deploying. The first review portal is deployed only from the dedicated publication surface `publication/status-a-review-20260916`; moving `main` is not the review publication authority.
 
-See [Online publication](publication.md) for the exact workflow and the one-time repository setup.
+See [Online publication](publication.md) and [Frozen review publication authority](../review/PUBLICATION_AUTHORITY.md) for the exact workflow, authority split and acceptance conditions.

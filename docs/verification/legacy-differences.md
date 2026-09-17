@@ -33,6 +33,7 @@ Admission requires exact patch provenance, canonical B0 preimage verification, o
 | `B1.8` | `SWAP-013` | PDI input-domain bug | singular `HA=0` / `HA>=H0` accepted | require `0 < HA < H0` for PDI models 8-11 | 9-case source-bound guard gate |
 | `B1.9` | `SWAP-012` | hydraulic inverse algorithm bug | models 3 and 5-12 fall through to unrelated default-MvG `prhead` inverse | numerically invert the selected retention relation; retain model-4 analytical control | D2 22,240-point gate + isolated actual-source 600-point gate |
 | `B1.10` | `SWAP-002` | tillage control-flow/state-initialization bug | impossible interval test can retain the wrong next-event pointer when a run starts after the first event | choose first event on/after start and load the most recent previous tillage parameter state | historical semantic test + fresh strict compiled 3/6 -> 6/6 gate |
+| `B1.11` | `SWAP-011` | hydraulic Jacobian derivative bug | implicit Richards Jacobian uses the default MvG `dK/dh` for hydraulic models whose implemented `K(h)` differs | differentiate the actual active conductivity relation using the qualified model-specific/lazy-state implementation with bounded fallback | historical E5/E6/E7 + F-PE19 current-B1 qualification + full canonical B0 replay |
 
 Machine-readable scopes are in `docs/verification/expected-differences.json`. An admitted correction permits only its documented difference envelope.
 
@@ -40,44 +41,64 @@ Machine-readable scopes are in `docs/verification/expected-differences.json`. An
 
 B1.5p1 repaired incorrect historical patch/preimage identity metadata discovered by VQ-1c without changing the intended five corrected source results. Historical B1.2-B1.5 remain audit records and are not exact executable oracles.
 
-## B1.5p1 -> B1.9 summary
+## B1.5p1 -> B1.10 summary
 
-B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and explicitly pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference. B1.9 admitted only the isolated SWAP-012 `prhead` inverse repair; historical SWAP-011 `dhconduc` content remained excluded.
+B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and explicitly pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference. B1.9 admitted only the isolated SWAP-012 `prhead` inverse repair. B1.10 admitted SWAP-002 start-state/event-index initialization.
 
-## B1.9 -> B1.10: SWAP-002 admission
+## B1.10 -> B1.11: SWAP-011 admission
 
-`SWAP/tillage.f90` is unchanged by B1.1-B1.9, so canonical B0 and ordered B1.9 preimages are identical:
+SWAP-011 was historically qualified in the E5/E6/E7 audit line and reached `FIX_TESTED / READY_PATCH_UPSTREAM`. F-PE19 recovered the exact E7 package and patch, verified the B0 target identities byte-safely, and then reconciled the correction with the already admitted SWAP-009, SWAP-010 and SWAP-012 changes that overlap the current ordered B1 targets.
+
+The immutable historical E7 patch identity remains separate from the ordered B1.10 admission transform:
 
 ```text
-canonical B0 / ordered B1.9 tillage.f90
-731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486
+historical E7 patch SHA-256
+9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110
 
-stored SWAP-002 patch
-e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b
-
-corrected target
-eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
+ordered B1.10 -> B1.11 patch SHA-256
+1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238
 ```
 
-The legacy interval condition compares `t1900` against `Date_tillage(i-1)` as both lower and upper bound and therefore can never select a run start between events. The corrected semantics are: `iTill` is the next event still to execute; if historical events precede the simulation start, their latest parameter state is loaded for consolidation.
+The ordered transform changes exactly:
 
-A fresh strict GNU Fortran source-bound gate checks before-first, exact-first, between-events, exact-second, after-last and unsorted-date cases. B0 passes 3/6; the isolated candidate passes 6/6 and loads the expected previous event. The patch contains no SWAP-003 `PCLAY` guard and no SWAP-004 tillage type-index changes.
+```text
+SWAP/MOD_MvG_functions.f90
+SWAP/WC_K_models_04_11.f90
+SWAP/MOD_RIA.f90
+```
 
-Deterministic B1.10 identity:
+and leaves `SWAP/headcalc.f90` unchanged.
+
+Ordered B1.10 target identities and B1.11 postimages are:
+
+```text
+MOD_MvG_functions.f90
+  B1.10  4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
+  B1.11  6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104
+
+WC_K_models_04_11.f90
+  B1.10  7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e
+  B1.11  d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126
+
+MOD_RIA.f90
+  B1.10  a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3
+  B1.11  673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a
+```
+
+The complete canonical B0 distribution replay used the distribution SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360` and nested source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. It reproduced B1.10 exactly and then reproduced the frozen B1.11 identity exactly:
 
 ```text
 members          63
-source bytes      1,863,575
-manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+source bytes      1,886,519
+manifest SHA-256  24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2
 ```
 
-The expected difference is limited to tillage start-state/event-index initialization and consequences attributable to that corrected state. No tillage constitutive formula, solver policy or mass tolerance changes. Because B0 supplies no standard complete tillage scenario, this does not claim exhaustive qualification of all tillage interactions.
+The admitted difference is limited to correcting the implicit Richards conductivity derivative/Jacobian consistency for hydraulic models 3 and 5-12. Model 4 remains the standard MvG control. Physical retention/conductivity formulations, forcing, boundary definitions, mass requirements, solver policy and time-step policy are not changed by this admission.
 
 ## Audit findings waiting for B1 admission review
 
 | Audit ID | State | Finding | Qualified correction status | Remaining gate |
 | --- | --- | --- | --- | --- |
-| `SWAP-011` | `PATCH_PAYLOAD_PENDING` | `dhconduc` derivative inconsistent with implemented `K(h)` for several models | E5/E6/E7 `FIX_TESTED` / `READY_PATCH_UPSTREAM` | recover exact final E7 patch and verify exact provenance |
 | `SWAP-003` | `CONFIRMED_UNFIXED` | tillage N-model 2 divides by `PCLAY` although zero is accepted | intended domain/targeted full regression not yet qualified | decide intended physical domain and add targeted/full tillage evidence |
 | `SWAP-004` | `CONFIRMED_UNFIXED` | tillage type codes can index outside arrays allocated by event count | targeted input regression not yet qualified | isolate and test allocation/index validation before admission |
 

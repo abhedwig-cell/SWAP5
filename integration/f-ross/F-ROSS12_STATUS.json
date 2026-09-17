@@ -1,0 +1,167 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS12",
+  "title": "RossFast surgical Richards-solver substitution",
+  "phase": "CLOSED",
+  "decision": "CLOSED_AFTER_PRODUCTION_AND_POSTIMAGE_ADMISSION",
+  "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-ross12-production-solver-selection",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "f0673018df7b2d1a9b3350a7b2387bc486109852",
+  "qualified_source_head": "00766295750aaa759821493a8bb2d3aef527b19f",
+  "cleanup_head_before_checkpoint": "534fb024176a64c826c30ec7fb8cf4f1c8adb37a",
+  "production_admission": {
+    "source_pr": 165,
+    "source_head": "93d50e349528551ff74bce3944e984e582a21b84",
+    "canonical_merge": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+    "status": "ADMITTED"
+  },
+  "reconcile": {
+    "adapter_canonical_merge": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "selection_owner": "mod_fmr_soil_water_application_host",
+    "execution_host": "FMR_BACKEND_SERIALIZED_REFERENCE",
+    "solver_seam": "soil_water_solver_t request/result seam inside fmr_serialized_advance",
+    "old_whole_model_injected_kernel_route": "EXCLUDED_FROM_PRODUCTION_EXECUTION",
+    "post_admission_canonical_delta": "F-DOC23_F-DOC24_AND_GOVERNANCE_ONLY",
+    "post_admission_source_or_reference_delta": false
+  },
+  "production_postimage": {
+    "reference_default": true,
+    "explicit_reference_preserved": true,
+    "explicit_rossfast_selection": "ROSSFAST_D3R",
+    "automatic_fallback": false,
+    "backend_routing_changed": false,
+    "solver_contract_abi_changed": false,
+    "transaction_contract_abi_changed": false,
+    "legacy_input_grammar_changed": false,
+    "rossfast_preflight_before_trial_mutation": true,
+    "rossfast_temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "rossfast_certificate_propagated_to_trial_outcome": true,
+    "reference_directional_and_temporal_history_services_remain_reference_specific": true
+  },
+  "qualified_rossfast_envelope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "active_nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "prescribed_flux_boundaries_only": true,
+    "distributed_source_sink": false,
+    "root_sink": false,
+    "groundwater_boundary": false,
+    "energy_or_soil_temperature": false,
+    "mixed_multiswap": false
+  },
+  "adapter_contract": {
+    "public_top_flux_sign": "positive_out_of_column",
+    "rossfast_top_flux_sign": "positive_into_column",
+    "translation": "rossfast_top=-request_top; rossfast_bottom=request_bottom",
+    "public_mass_transfer": "dt*(qbot-qtop)",
+    "adapter_blob_after_sign_fix": "6d6f66273483c19c1d2318dad518c537186a0ae7"
+  },
+  "qualification": {
+    "rossfast_adapter": {
+      "run_id": 35149461127,
+      "result": "PASS",
+      "optimization_modes": ["O0", "O2"]
+    },
+    "solver_selection_binding": {
+      "run_id": 35149460968,
+      "result": "PASS",
+      "optimization_modes": ["O0", "O2"]
+    },
+    "serialized_production_wiring": {
+      "run_id": 35149461061,
+      "result": "PASS",
+      "optimization_modes": ["O0", "O2"],
+      "proves": [
+        "real RossFast production transaction commits",
+        "mass closure within admitted tolerance",
+        "RossFast execution without Reference HeadCalc fallback",
+        "model temporal certificate propagation",
+        "material drift fails closed without commit",
+        "unsupported root physics fails closed without commit"
+      ]
+    },
+    "f_kt22_current_canonical": {
+      "run_id": 35149461019,
+      "result": "PASS",
+      "jobs": [
+        "current-canonical-tree",
+        "canonical-boundary",
+        "fmr-production-compile",
+        "fmr-production-runtime",
+        "eb-i25-preservation"
+      ],
+      "interpretation": "Existing Reference trajectory runtime and EB-I25 semantics remain green with the RossFast production dependency graph present."
+    },
+    "source_admission_f_ci_canonical": {
+      "run_id": 35149460967,
+      "historical_and_frozen_jobs": "PASS",
+      "current_restricted_canonical_preservation": "EXPECTED_STALE_AUTHORITY_FAILURE",
+      "failure_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "classification": "Intentional production successor changed the moving dependency blob and therefore required the separate post-admission authority reconciliation owned by F-CI96."
+    },
+    "postimage_reconciliation": {
+      "qualified_head": "e73ebd9a132145419b43a970305dce3d7274a217",
+      "fci96_run_id": 35186865767,
+      "fci72_run_id": 35186865727,
+      "fci74_run_id": 35186865728,
+      "fci79_run_id": 35186865854,
+      "broad_fci_run_id": 35186865676,
+      "result": "PASS"
+    }
+  },
+  "post_admission_reconciliation": {
+    "workunit": "F-CI96",
+    "pull_request": 168,
+    "qualified_head": "e73ebd9a132145419b43a970305dce3d7274a217",
+    "canonical_merge": "f0673018df7b2d1a9b3350a7b2387bc486109852",
+    "governance_only": true,
+    "production_source_change": false,
+    "reference_source_change": false,
+    "status": "ADMITTED"
+  },
+  "cleanup": {
+    "temporary_patch_helpers_removed": [
+      "tests/ross/_apply_ross12_serialized_production_candidate.py",
+      "tests/ross/_apply_ross12_serialized_production_wiring_patch.py",
+      "tests/ross/_apply_ross12_serialized_solver_selection_patch.py"
+    ],
+    "permanent_production_runner_compiles_repository_source_directly": true,
+    "workflow_wording_no_longer_marks_wiring_temporary": true
+  },
+  "production_mutation": true,
+  "rossfast_kernel_science_change": false,
+  "reference_semantics_change": false,
+  "solver_route_semantics_change": true,
+  "admission_pattern": {
+    "precedent": "F-CI52/F-CI52P two-step production-source admission then governance-only postimage reconciliation",
+    "source_pr": 165,
+    "source_admission_commit": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+    "post_admission_reconciliation_pr": 168,
+    "post_admission_reconciliation_commit": "f0673018df7b2d1a9b3350a7b2387bc486109852",
+    "governance_rebind_modified_production_source": false
+  },
+  "close": {
+    "verdict": "CLOSED",
+    "closed_from_exact_governance_admission": "f0673018df7b2d1a9b3350a7b2387bc486109852",
+    "open_implementation_or_governance_blockers": [],
+    "production_or_reference_mutation_in_close": false,
+    "next_permitted_action": "NONE_WITHIN_F_ROSS12. Any extension beyond the admitted restricted RossFast envelope requires a new separately governed workunit."
+  },
+  "explicit_exclusions": [
+    "F-ROSS11 whole-model runtime as production execution host",
+    "FMR_BACKEND_SERIALIZED_INJECTED_KERNEL routing for RossFast production selection",
+    "transaction controller redesign",
+    "energy balance RossFast support",
+    "groundwater RossFast support",
+    "root or general source-sink RossFast support",
+    "heterogeneous-profile generalization",
+    "mixed Reference/RossFast MultiSWAP",
+    "automatic solver fallback",
+    "silent model selection",
+    "SW_SOLVE reinterpretation",
+    "legacy .swp grammar redesign",
+    "soil_water_solver_t ABI redesign",
+    "moving-preservation authority loosening on the source admission PR"
+  ]
+}

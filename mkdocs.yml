@@ -1,9 +1,43 @@
-site_name: SWAP Documentation
-site_description: Technical documentation for SWAP5 Status-A, its scientific foundations and retained target/historical architecture
+site_name: SWAP5 Documentation
+site_description: Scientific, numerical, architectural and verification documentation for the SWAP5 rebuild and Status-A review baseline
 site_author: SWAP development team
 docs_dir: docs
 nav:
 - Home: index.md
+- Getting started: getting-started.md
+- Review SWAP5:
+  - Review guide: review/REVIEW_GUIDE.md
+  - Frozen review baseline: review/REVIEW_BASELINE.md
+  - Frozen publication authority: review/PUBLICATION_AUTHORITY.md
+  - Authority reconciliation: review/AUTHORITY_RECONCILIATION.md
+  - SWAP 4.3.1 and SWAP5 equivalence: review/SWAP431_EQUIVALENCE.md
+- Scientific model:
+  - Overview: science/index.md
+  - Conceptual system and boundaries: science/conceptual-model.md
+  - Water balance, signs and units: science/water-balance-and-conventions.md
+  - Vertical soil-water flow: science/soil-water-flow.md
+  - Soil-hydraulic constitutive relations: science/soil-hydraulic-constitutive-relations.md
+  - Soil-hydraulic parameter provenance: science/soil-hydraulic-parameter-provenance.md
+  - Hydrological boundary conditions: science/hydrological-boundary-conditions.md
+  - Groundwater coupling and lower boundary: science/groundwater-coupling.md
+  - Evapotranspiration and root-water uptake: science/evapotranspiration-root-uptake.md
+  - Surface evaporation: science/surface-evaporation.md
+  - Drainage: science/drainage.md
+  - Drainage-v1 formulations: science/drainage-formulations.md
+  - WOFOST81 crop state and SWAP coupling: science/wofost-crop-coupling.md
+  - Restricted one-call-daily Snow: science/restricted-snow.md
+- Status-A capabilities:
+  - Overview: capabilities/index.md
+  - Restart v1: capabilities/restart-v1.md
+  - Serialized MultiSWAP v1: capabilities/serialized-multiswap-v1.md
+  - Drainage: capabilities/drainage.md
+  - WOFOST admitted runtime: capabilities/wofost-runtime.md
+  - Restricted Snow: capabilities/restricted-snow.md
+  - Groundwater Coupling v1: capabilities/groundwater-coupling-v1.md
+- Numerical formulation:
+  - Overview: numerics/index.md
+  - Richards discretisation and nonlinear solve: numerics/richards-solver.md
+  - Transactional time stepping and acceptance: numerics/transactional-time-stepping.md
 - Current Status-A:
   - Current status and scope: status-a/CURRENT_STATUS.md
   - Current architecture: status-a/CURRENT_ARCHITECTURE.md
@@ -34,6 +68,7 @@ nav:
   - ADR-0005 Reference baseline chain: decisions/ADR-0005-reference-baseline-chain.md
 - Verification:
   - Verification principles: verification/principles.md
+  - Test bank authority: verification/test-bank.md
   - Reference baselines: verification/reference-baselines.md
   - B0 source integrity: verification/b0-source-integrity.md
   - B1 snapshot history: verification/b1-snapshots.md
@@ -45,6 +80,7 @@ nav:
   - VQ-1c3 targeted correction qualification: verification/vq-1c3-b1.5p1-targeted-qualification.md
   - VQ-1d B2 entrypoint gate: verification/vq-1d-b2-entrypoint-gate.md
   - Mass-accounting contract: verification/mass-accounting-contract.md
+  - F-AR01 recovered legacy ZIP reconciliation: verification/F-AR01_LEGACY_ZIP_RECONCILIATION.md
   - SWAP-009 B1 candidate: verification/swap-009-b1-candidate.md
   - SWAP-011 B1 candidate: verification/swap-011-b1-candidate.md
 - Performance:

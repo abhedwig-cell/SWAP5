@@ -1,0 +1,25 @@
+name: PUB-P2E04 Reference failure census
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/P2E04_REFERENCE_BALANCE_ADJUDICATION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e04_reference_failure_census.f90'
+      - 'tests/publication/run_pub_p2e04_reference_failure_census.sh'
+      - '.github/workflows/pub-p2e04-reference-failure-census.yml'
+      - 'src/**'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+  workflow_dispatch:
+
+jobs:
+  reference-failure-census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Census exact P2E03 Reference failure classes
+        run: bash tests/publication/run_pub_p2e04_reference_failure_census.sh

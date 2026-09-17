@@ -1,0 +1,134 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "title": "Restricted Hupsel SWETR=0 PMdirect typed application composition - File Library recovery addendum",
+  "phase": "ACQUIRE_RECOVER_CLOSE",
+  "decision": "FILE_LIBRARY_AND_PUBLIC_GITHUB_RECOVERY_ADDED_NO_EXACT_SOURCE_REMATERIALIZED",
+  "verdict": "BLOCKED_PENDING_EXACT_SOURCE_REMATERIALIZATION",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "parent_checkpoint_commit": "7ceb8a67f2292f0848cacb6e6c3bf83fefad9383",
+  "preregistration_commit": "391800f60871c8403aab1ef7871267425bccec30",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head_reconciled": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "tree": "b1b52c8d78d3c2d908b7effde04ffe42c8b1f3a9",
+    "relevant_delta_since_parent_checkpoint": "NONE",
+    "note": "Canonical remains at the unrelated adapter-only F-ROSS12 admission. No F-APP04 dependency, production surface or authority changed."
+  },
+  "controlling_exact_identity": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "required_member": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90",
+    "required_authority_condition": "Exact outer archive bytes or an exact MOD_meteo.f90 member with a verifiable chain to the pinned nested source archive identity."
+  },
+  "recovery_addendum": {
+    "file_library": [
+      {
+        "artifact": "SWAP_4.3.1_documentatie_code_matrix.xlsx",
+        "date": "2026-08-28",
+        "finding": "Records SWAP_4.3.1.zip as the source package with the controlling outer SHA-256 and contains a complete TTUTIL input-identifier inventory with MOD_meteo.f90 line references. It is derived evidence, not source materialization."
+      },
+      {
+        "artifact": "README.md - SWAP 4.3.1 verification framework",
+        "date": "2026-08-29",
+        "finding": "Records the same SWAP_4.3.1.zip SHA-256, development-release provenance and a gfortran executable from the same source. No complete source archive or MOD_meteo.f90 payload is embedded."
+      },
+      {
+        "artifact": "SWAP_4.3.1_proposed_fixes.patch",
+        "date": "2026-08-28",
+        "finding": "Is an exact unified diff against the supplied 4.3.1 source but contains only localized MOD_meteo.f90 hunks. It is insufficient to reconstruct the complete restricted penmon/ETpot/ProcessMeteoDT implementation losslessly."
+      },
+      {
+        "artifact": "SWAP_4.3.1_codeaanpassingen_en_testbank.docx",
+        "date": "2026-08-28",
+        "finding": "Confirms the proposed-fixes patch is against the supplied 4.3.1 source and documents a MOD_meteo loading fix, but does not contain the complete required source body."
+      },
+      {
+        "artifact": "S11_cumulative_from_pristine.patch",
+        "date": "2026-09-04",
+        "finding": "Provides a large cumulative diff from pristine SWAP_4.3.1 to S11. Inspection and semantic search did not expose a complete unchanged MOD_meteo.f90 body or a lossless reverse chain covering the required PMdirect routines. It therefore cannot serve as exact source materialization."
+      },
+      {
+        "artifact": "A23U_to_A23V.patch",
+        "date": "2026-09-04",
+        "finding": "Contains a MOD_meteo astro replacement and reaches context at the penmon routine boundary, but the unchanged penmon body is not present in the patch. It cannot reconstruct the required source implementation."
+      },
+      {
+        "artifact": "A23Y_REPORT.md",
+        "date": "2026-09-05",
+        "finding": "States that the work was reconstructed from official SWAP_4.3.1(6).zip with the controlling outer SHA-256 and that MOD_meteo.f90 was SHA-identical across the referenced A23 boundary. This strengthens provenance that exact source bytes existed in an earlier runtime, but the report is not the source payload."
+      },
+      {
+        "artifact": "F-EB01A_SWAP431_energy_accounting_audit.md",
+        "date": "2026-09-12",
+        "finding": "Contains exact MOD_meteo.f90 line references for PM soil heat flux, Penman-Monteith potential ET and the SWETR=1 branch. It is audit prose and line-level evidence only and is explicitly not sufficient for exact arithmetic reconstruction."
+      }
+    ],
+    "file_library_exact_payload_search": {
+      "queries": [
+        "SWAP_4.3.1.zip",
+        "SWAP_4.3.1(6).zip",
+        "MOD_meteo.f90",
+        "penmon ETpot ProcessMeteoDT"
+      ],
+      "result": "NO_RETRIEVABLE_EXACT_ARCHIVE_OR_STANDALONE_MOD_METEO_SOURCE_OBJECT_FOUND",
+      "interpretation": "Derived reports and patches establish repeated provenance to the same official source identity, but do not satisfy the exact-source gate."
+    },
+    "public_github": {
+      "global_mod_meteo_search": "NO_CREDIBLE_SWAP_4_3_1_SOURCE_MIRROR_FOUND",
+      "repository_name_search": "NO_CREDIBLE_SWAP_4_3_1_SOURCE_REPOSITORY_FOUND",
+      "swap_model_swap_lineage": "PUBLIC_PRE_REFACTOR_PENMON_AND_METEO_LINEAGE_EXISTS_BUT_IS_NOT_CONTROLLING_4_3_1_IDENTITY",
+      "effect": "No public GitHub object can be promoted to the preregistered exact 4.3.1 authority."
+    }
+  },
+  "reused_immutable_evidence": {
+    "f_app03_head": "21508f0d70672d92132c553a344c35f6b7b2296f",
+    "a12_status": "PASS_EXACT_HUPSEL_AUTHORITY_RESTORED_AND_A12_REDERIVED",
+    "a13_status": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+    "a13_daily_records": 1096,
+    "a13_tolerance": 1e-12,
+    "a13_mismatches_above_tolerance": 0,
+    "note": "No A12/A13 replay is required or permitted merely because the raw source payload is currently unavailable; their immutable qualification evidence remains valid."
+  },
+  "qualification": {
+    "new_production_tests": "NONE",
+    "new_scientific_oracle_tests": "NONE",
+    "reason": "Without exact source materialization, implementation and its preregistered qualification cannot begin. Running surrogate-source tests would not satisfy the authority gate."
+  },
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "governance_evidence_only": true
+  },
+  "scientific_interpretation": {
+    "scientific_difference_found": false,
+    "qualification_failure_found": false,
+    "blocker_type": "MISSING_REPRODUCIBLE_EXACT_SOURCE_MATERIALIZATION",
+    "new_information": "File Library evidence substantially strengthens the provenance chain and proves repeated earlier use of the same official source identity, but does not provide the source bytes needed for lossless restricted implementation."
+  },
+  "downstream_state": {
+    "F_APP04": "BLOCKED_PENDING_EXACT_SOURCE_REMATERIALIZATION",
+    "M1_C3": "PAUSED_DEPENDENT_ON_F_APP04_TYPED_COMPOSITION",
+    "whole_application_SWAP431_to_SWAP5_equivalence": "NOT_YET_ESTABLISHED"
+  },
+  "next_permitted_action": [
+    "Materialize the exact official SWAP 4.3.1 outer archive matching SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or the exact MOD_meteo.f90 member with a verifiable chain to nested SWAP.ZIP SHA-256 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151.",
+    "Verify the recovered bytes before inspection or implementation and persist a source-materialization checkpoint.",
+    "Then resume the existing F-APP04 preregistered IMPLEMENT phase using only the restricted penmon/ETpot/ProcessMeteoDT composition surface; do not repeat A12/A13 and do not widen scope."
+  ],
+  "exclusions": [
+    "no implementation from derived reports or partial patches",
+    "no reconstruction from desired outputs or the retained oracle",
+    "no generic Penman-Monteith substitution",
+    "no tolerance change",
+    "no M1-C3 legacy file adapter before F-APP04 admission",
+    "no RossFast or energy-balance scope",
+    "no production mutation while the source gate is blocked"
+  ],
+  "resume_boundary": "Recovery evidence has been persisted. Resume only on arrival of exact source bytes or a newly discovered lossless exact-source object with a verifiable identity chain; otherwise do not repeat repository/File Library searches without a new lead."
+}
