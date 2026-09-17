@@ -2,12 +2,13 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC25",
   "title": "Reference Richards Numerical Technical Reference",
-  "phase": "ACQUIRE",
-  "decision": "NUMERICAL_OWNER_AND_CLAIM_CEILING_ACQUIRED",
+  "phase": "UPDATE",
+  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc25-reference-richards-numerics",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
+  "documentation_content_head_before_checkpoint": "87dfbf0b4824eb27262c1c510456a839fdd8dc3d",
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
@@ -21,54 +22,54 @@
     "disposition": "NON_CONFLICTING_POST_STATUS_A_DELTA_NOT_ADDED_TO_FROZEN_SCIENTIFIC_DENOMINATOR"
   },
   "acquired_authorities": {
-    "primary_nonlinear_owner": {
-      "path": "src/legacy/b1_10_port/headcalc.f90",
-      "blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"
-    },
-    "linear_solver": {
-      "path": "src/solver/mod_reference_linear_solver.f90",
-      "blob": "5b6ecd2341b315967bcfac6b879c3afe227fb245"
-    },
-    "workspace": {
-      "path": "src/solver/mod_reference_richards_workspace.f90",
-      "blob": "74f99556005ae39614f9df678467b1e19097bae2"
-    },
-    "state_binding": {
-      "path": "src/solver/mod_reference_richards_state_binding.f90",
-      "blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
-    },
-    "temporal_indicator": {
-      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
-      "blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f",
-      "authority": "F-SI38 qualified restricted temporal-indicator capability; not primary Richards discretisation authority"
-    },
+    "primary_nonlinear_owner": {"path": "src/legacy/b1_10_port/headcalc.f90", "blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"},
+    "linear_solver": {"path": "src/solver/mod_reference_linear_solver.f90", "blob": "5b6ecd2341b315967bcfac6b879c3afe227fb245"},
+    "workspace": {"path": "src/solver/mod_reference_richards_workspace.f90", "blob": "74f99556005ae39614f9df678467b1e19097bae2"},
+    "state_binding": {"path": "src/solver/mod_reference_richards_state_binding.f90", "blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"},
+    "temporal_indicator": {"path": "src/solver/mod_reference_richards_temporal_indicator.f90", "blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f", "authority": "F-SI38 restricted auxiliary source qualification; not primary Richards discretisation authority"},
     "solver_interface_completion": "F-SI35 / F-VQ68 / F-CI58",
-    "existing_documentation": "docs/numerics/richards-solver.md"
+    "status_a_traceability": "docs/status-a/TRACEABILITY.md"
   },
-  "claim_ceiling": {
-    "permitted": [
-      "Document the frozen reference residual using actual candidate-minus-start water-content storage, vertical Darcy terms, and admitted source/sink and boundary terms.",
-      "Document the frozen tridiagonal Jacobian structure and distinguish SWKIMPL=0 conductivity treatment from the optional SWKIMPL=1 derivative terms without promoting unsupported option combinations.",
-      "Document Newton-Raphson update sign, bounded backtracking by factor/3, residual-objective test, compartment balance/head convergence tests and total-balance test as implemented by the frozen owner.",
-      "Document reference_tridag and the banded fallback as numerical implementation details of the frozen reference route.",
-      "Document state/workspace ownership and separate numerical convergence from transaction-level acceptance/commit.",
-      "Document the restricted temporal-indicator operator separately, including its fail-closed envelope and the distinction between Neumann qbot and Dirichlet bottom-head stiffness."
-    ],
-    "forbidden": [
-      "Treat RossFast or any post-Status-A alternative solver as part of the frozen Status-A reference denominator.",
-      "Present F-SI38 as the primary Richards discretisation or as a universal error theorem.",
-      "Invent universal numerical tolerances, time steps, iteration counts or application accuracy budgets.",
-      "Generalise the frozen residual/Jacobian equations to unsupported macropore, root-sink, dynamic-top or lower-boundary combinations without their own authority.",
-      "Treat convergence of HeadCalc as transaction-level commit authority.",
-      "Claim that every future soil-water solver must use Newton-Raphson, TRIDAG or the same backtracking policy."
-    ]
+  "published_reference": {
+    "numerical_page": "docs/numerics/richards-solver.md",
+    "numerical_index": "docs/numerics/index.md",
+    "authority_matrix": "integration/f-doc/F-DOC25_AUTHORITY_MATRIX.md",
+    "mkdocs_navigation_change_required": false
   },
+  "documented_semantics": [
+    "actual candidate-minus-start water-content storage term",
+    "internal hydraulic gradient and residual structure",
+    "restricted prescribed-flux versus prescribed-head boundary insertion",
+    "SWKIMPL=0 tridiagonal Jacobian structure and bounded SWKIMPL=1 distinction",
+    "Newton solve J*delta_h=F with h_new=h_old-factor*delta_h",
+    "factor-of-three bounded backtracking and residual-objective test",
+    "compartment balance, pressure-head update and total-balance convergence criteria",
+    "reference_tridag failure signalling and banded fallback",
+    "workspace/state-binding ownership and convergence-versus-commit separation",
+    "restricted temporal indicator as a separate auxiliary fail-closed operator"
+  ],
+  "scope_delta": {
+    "changed_files_before_checkpoint": 4,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_changed": false,
+    "scientific_denominator_changed": false,
+    "classification": "DOCUMENTATION_AND_F_DOC_GOVERNANCE_ONLY"
+  },
+  "hard_nonclaims": [
+    "No RossFast or post-Status-A alternative solver is added to the frozen Status-A denominator.",
+    "No universal numerical tolerance, timestep, iteration count or application head budget is introduced.",
+    "The temporal indicator is not promoted to the primary Richards discretisation or a universal nonlinear true-error theorem.",
+    "Unsupported historical macropore, root-sink, dynamic-top, lower-boundary or conductivity-policy combinations are not newly admitted.",
+    "Numerical convergence is not transaction-level commit authority."
+  ],
   "mutations": {
     "production_source_change": false,
     "reference_source_change": false,
     "scientific_denominator_change": false,
+    "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "Create the F-DOC25 authority matrix and update the Richards numerical reference, numerical index and MkDocs navigation only within the acquired claim ceiling; then verify documentation gates before admission.",
-  "verdict": "READY_FOR_UPDATE"
+  "next_permitted_action": "Open a pull request to integration/f-ci-canonical, run repository documentation checks and mkdocs build --strict on the exact postimage, then recheck canonical drift before admission.",
+  "verdict": "READY_FOR_VERIFY"
 }
