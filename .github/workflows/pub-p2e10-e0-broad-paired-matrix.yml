@@ -1,0 +1,36 @@
+name: PUB-P2E10 broad E0 paired matrix
+
+on:
+  push:
+    branches:
+      - work/pub-p2e10-e0-broad-paired-matrix
+    paths:
+      - 'docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e10_e0_broad_paired_matrix.f90'
+      - 'tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh'
+      - '.github/workflows/pub-p2e10-e0-broad-paired-matrix.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_PREREGISTRATION.json'
+      - 'docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_RESULT.json'
+      - 'tests/publication/test_pub_p2e10_e0_broad_paired_matrix.f90'
+      - 'tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh'
+      - '.github/workflows/pub-p2e10-e0-broad-paired-matrix.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  broad-e0-paired-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered broad E0 paired matrix
+        run: bash tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh
