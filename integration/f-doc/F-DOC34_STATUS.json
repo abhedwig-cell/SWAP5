@@ -4,10 +4,11 @@
   "work_unit": "F-DOC34",
   "title": "Status-A reference preservation technical reference",
   "phase": "VERIFY",
-  "decision": "READY_FOR_DOCUMENTATION_VERIFICATION",
+  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
   "branch": "work/f-doc34-reference-preservation-technical-reference",
   "canonical_start": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
   "content_postimage": "3c64d5ef035f1bd089bbf93448b0189686c9ad97",
+  "verified_content_head": "573d3a6a0ff347b087b8f51adef05781fbcf215b",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
   "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
@@ -67,7 +68,17 @@
     "tests_changed": false,
     "scientific_denominator_changed": false
   },
+  "verification": {
+    "pull_request": 201,
+    "content_head": "573d3a6a0ff347b087b8f51adef05781fbcf215b",
+    "content_workflow_run": 35283720886,
+    "content_workflow_job": 105411255464,
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "workflow_conclusion": "success",
+    "status_only_exact_head_rerun": "PENDING"
+  },
   "production_reference_test_delta": false,
-  "verdict": "READY_FOR_VERIFY",
-  "next_permitted_action": "OPEN_PR_AND_REQUIRE_REPOSITORY_DOCUMENTATION_CHECKS_PLUS_STRICT_MKDOCS_BUILD_ON_EXACT_HEAD"
+  "verdict": "CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE",
+  "next_permitted_action": "REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_PR_MERGEABILITY"
 }
