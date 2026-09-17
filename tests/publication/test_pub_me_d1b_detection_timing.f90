@@ -88,8 +88,8 @@ program test_pub_me_d1b_detection_timing
   call require(clean_time_ok .and. mutant_time_ok, 'boundary committed times available')
 
   b1_boundary_match = reject_clean%kernel_status == reject_mutant%kernel_status .and. &
-       reject_clean%completed .eqv. reject_mutant%completed .and. &
-       reject_clean%committed .eqv. reject_mutant%committed .and. &
+       (reject_clean%completed .eqv. reject_mutant%completed) .and. &
+       (reject_clean%committed .eqv. reject_mutant%committed) .and. &
        reject_clean%mass%accepted_transaction_count == reject_mutant%mass%accepted_transaction_count .and. &
        same_bits(reject_clean%mass%total_in, reject_mutant%mass%total_in) .and. &
        same_bits(reject_clean%mass%total_out, reject_mutant%mass%total_out) .and. &
