@@ -12,7 +12,7 @@ MANIFEST_BLOB="06d781bdf946960b8d08bad913e97ae414d8c726"
 QUAL_DIR="tests/publication/pub_gc/e1_origin"
 GW_A_DIR="tests/publication/pub_gc/gw_a"
 SCREEN_DIR="tests/publication/pub_gc/e1_screening"
-TEST="$SCREEN_DIR/pub_gc_e1_screen_case.f90"
+TEST="$SCREEN_DIR/test_pub_gc_e1_screening.f90"
 RUNNER="$SCREEN_DIR/run_pub_gc_e1_screening.sh"
 WORKFLOW=".github/workflows/pub-gc-e1-screening.yml"
 ARTIFACT_DIR="$ROOT/artifacts/PUB-GC-E1-SCREEN-0001"
@@ -50,8 +50,6 @@ cleanup(){
 }
 trap cleanup EXIT
 
-# Re-establish the exact qualification prerequisite at its frozen head before
-# screening. This is a prerequisite replay, not part of the screening result.
 git worktree add --detach "$QUAL_WORKTREE" "$BASE" >/dev/null
 (
   cd "$QUAL_WORKTREE"
@@ -60,7 +58,8 @@ git worktree add --detach "$QUAL_WORKTREE" "$BASE" >/dev/null
   cat "$BUILD/origin-harness-qualification.txt" >&2
   fail "frozen E1 origin harness no longer replays"
 }
-grep -Fq 'PUB_GC_E1_ORIGIN_HARNESS_QUALIFICATION=PASS' "$BUILD/origin-harness-qualification.txt" ||   fail "frozen E1 harness PASS marker missing"
+grep -Fq 'PUB_GC_E1_ORIGIN_HARNESS_QUALIFICATION=PASS' "$BUILD/origin-harness-qualification.txt" || \
+  fail "frozen E1 harness PASS marker missing"
 echo 'PUB_GC_E1_SCREEN_FROZEN_HARNESS_REPLAY=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
@@ -147,42 +146,60 @@ echo 'PUB_GC_E1_SCREEN_BUILD=PASS'
 
 INDEX="$BUILD/cases.index"
 : > "$INDEX"
-for dt in 0.0001 0.001 0.005 0.02 0.05; do
-  for b in -90.0 -82.5 -70.0 -60.0; do
+infra_failures=0
+row=0
+for b in -90.0 -82.5 -70.0 -60.0; do
+  for dt in 0.0001 0.001 0.005 0.02 0.05; do
+    row=$((row+1))
+    row_id=$(printf 'R%02d' "$row")
     safe_dt="${dt//./p}"
     safe_b="${b//-/m}"; safe_b="${safe_b//./p}"
-    log="$BUILD/cases/dt_${safe_dt}_b_${safe_b}.log"
-    if timeout 120s "$OUT/screen" "$dt" "$b" > "$log" 2>&1; then
-      status=PASS
+    log="$BUILD/cases/${row_id}_dt_${safe_dt}_b_${safe_b}.log"
+    set +e
+    timeout 120s "$OUT/screen" "$b" "$dt" > "$log" 2>&1
+    rc=$?
+    set -e
+    if [[ $rc -ne 0 ]]; then
+      infra_failures=$((infra_failures+1))
+      execution_status=INFRA_FAIL
     else
-      status=FAIL
+      execution_status=EXECUTED
     fi
-    printf '%s\t%s\t%s\t%s\n' "$dt" "$b" "$status" "$log" >> "$INDEX"
-    echo "PUB_GC_E1_SCREEN_CASE_BEGIN dt=$dt b=$b status=$status"
+    printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$row_id" "$dt" "$b" "$rc" "$execution_status" "$log" >> "$INDEX"
+    echo "PUB_GC_E1_SCREEN_CASE_BEGIN row=$row_id dt=$dt b=$b rc=$rc status=$execution_status"
     cat "$log"
-    echo "PUB_GC_E1_SCREEN_CASE_END dt=$dt b=$b status=$status"
+    echo "PUB_GC_E1_SCREEN_CASE_END row=$row_id dt=$dt b=$b rc=$rc status=$execution_status"
   done
 done
 
+[[ "$row" -eq 20 ]] || fail "screen grid row count $row != 20"
+
 python3 - "$INDEX" "$ARTIFACT_DIR/screening.tsv" <<'PY'
 import csv, math, pathlib, re, sys
+
 index=pathlib.Path(sys.argv[1])
 out=pathlib.Path(sys.argv[2])
 rows=[]
 
-def tag(text, name, cast=float):
+def tag(text, name, cast=float, required=True):
     m=re.search(rf'^{re.escape(name)}=(.+)$', text, re.M)
     if not m:
-        raise ValueError(name)
-    return cast(m.group(1).strip())
+        if required:
+            raise ValueError(f'missing:{name}')
+        return None
+    value=m.group(1).strip()
+    return cast(value)
 
 for raw in index.read_text().splitlines():
-    dt_s,b_s,status,logpath=raw.split('\t')
+    row_id,dt_s,b_s,rc_s,execution_status,logpath=raw.split('\t')
     text=pathlib.Path(logpath).read_text(errors='replace')
     row={
+        'row_id': row_id,
         'window_days': float(dt_s),
         'candidate_b_head_cm': float(b_s),
-        'status': status,
+        'execution_status': execution_status,
+        'row_status': '',
+        'eligible': 0,
         'q_a_same': '',
         'q_b_same': '',
         'q_a_history': '',
@@ -195,40 +212,58 @@ for raw in index.read_text().splitlines():
         'retries_a_same': '',
         'retries_b_same': '',
         'retries_a_history': '',
+        'failure_stage': '',
         'failure_reason': '',
     }
-    if status == 'PASS':
-        try:
-            row.update(
-                q_a_same=tag(text,'PUB_GC_E1_SCREEN_Q_A_SAME'),
-                q_b_same=tag(text,'PUB_GC_E1_SCREEN_Q_B_SAME'),
-                q_a_history=tag(text,'PUB_GC_E1_SCREEN_Q_A_HISTORY'),
-                abs_delta_q=tag(text,'PUB_GC_E1_SCREEN_ABS_DELTA_Q'),
-                endpoint_head_delta_cm=tag(text,'PUB_GC_E1_SCREEN_ENDPOINT_HEAD_DELTA'),
-                endpoint_water_delta=tag(text,'PUB_GC_E1_SCREEN_ENDPOINT_WATER_DELTA'),
-                mass_a_same=tag(text,'PUB_GC_E1_SCREEN_MASS_A_SAME'),
-                mass_b_same=tag(text,'PUB_GC_E1_SCREEN_MASS_B_SAME'),
-                mass_a_history=tag(text,'PUB_GC_E1_SCREEN_MASS_A_HISTORY'),
-                retries_a_same=tag(text,'PUB_GC_E1_SCREEN_RETRIES_A_SAME',int),
-                retries_b_same=tag(text,'PUB_GC_E1_SCREEN_RETRIES_B_SAME',int),
-                retries_a_history=tag(text,'PUB_GC_E1_SCREEN_RETRIES_A_HISTORY',int),
-            )
-            nums=[row[k] for k in ('q_a_same','q_b_same','q_a_history','abs_delta_q',
-                                    'endpoint_head_delta_cm','endpoint_water_delta',
-                                    'mass_a_same','mass_b_same','mass_a_history')]
-            if not all(math.isfinite(float(x)) for x in nums):
-                raise ValueError('nonfinite parsed metric')
-        except Exception as exc:
-            row['status']='PARSE_FAIL'
-            row['failure_reason']=f'parse:{exc}'
-    else:
-        failures=re.findall(r'^PUB_GC_E1_HARNESS_FAIL=(.+)$', text, re.M)
-        if failures:
-            row['failure_reason']=failures[-1]
-        elif 'timeout' in text.lower():
-            row['failure_reason']='timeout'
+
+    if execution_status == 'INFRA_FAIL':
+        row['row_status']='INFRA_FAIL'
+        m=re.findall(r'^SCREEN_INFRA_FAIL=(.+)$', text, re.M)
+        row['failure_reason']=m[-1] if m else f'exit_{rc_s}'
+        rows.append(row)
+        continue
+
+    status=tag(text,'SCREEN_ROW_STATUS',str)
+    row['row_status']=status
+    if status == 'INVALID':
+        row['failure_stage']=tag(text,'SCREEN_INVALID_STAGE',str,required=False) or ''
+        row['failure_reason']=tag(text,'SCREEN_INVALID_REASON',str,required=False) or 'UNCLASSIFIED_INVALID'
+        rows.append(row)
+        continue
+    if status != 'PASS':
+        row['row_status']='PARSE_FAIL'
+        row['failure_reason']=f'unexpected_row_status:{status}'
+        rows.append(row)
+        continue
+
+    try:
+        b_diff=tag(text,'SCREEN_B_ENDPOINT_DIFFERS',str).upper() == 'T'
+        row.update(
+            q_a_same=tag(text,'SCREEN_A_SAME_Q'),
+            q_b_same=tag(text,'SCREEN_B_SAME_Q'),
+            q_a_history=tag(text,'SCREEN_A_HISTORY_Q'),
+            abs_delta_q=tag(text,'SCREEN_DELTA_Q_ABS'),
+            endpoint_head_delta_cm=tag(text,'SCREEN_DELTA_ENDPOINT_HEAD_MAX'),
+            endpoint_water_delta=tag(text,'SCREEN_DELTA_ENDPOINT_WATER_MAX'),
+            mass_a_same=tag(text,'SCREEN_A_SAME_MASS_RESIDUAL'),
+            mass_b_same=tag(text,'SCREEN_B_SAME_MASS_RESIDUAL'),
+            mass_a_history=tag(text,'SCREEN_A_HISTORY_MASS_RESIDUAL'),
+            retries_a_same=tag(text,'SCREEN_A_SAME_RETRIES',int),
+            retries_b_same=tag(text,'SCREEN_B_SAME_RETRIES',int),
+            retries_a_history=tag(text,'SCREEN_A_HISTORY_RETRIES',int),
+        )
+        nums=[row[k] for k in ('q_a_same','q_b_same','q_a_history','abs_delta_q',
+                                'endpoint_head_delta_cm','endpoint_water_delta',
+                                'mass_a_same','mass_b_same','mass_a_history')]
+        if not all(math.isfinite(float(x)) for x in nums):
+            raise ValueError('nonfinite_metric')
+        if not b_diff:
+            row['failure_reason']='B_ENDPOINT_IDENTICAL_TO_ACCEPTED_ORIGIN'
         else:
-            row['failure_reason']='executable_failed'
+            row['eligible']=1
+    except Exception as exc:
+        row['row_status']='PARSE_FAIL'
+        row['failure_reason']=f'parse:{exc}'
     rows.append(row)
 
 fieldnames=list(rows[0])
@@ -240,10 +275,14 @@ with out.open('w', newline='') as f:
 if len(rows) != 20:
     raise SystemExit(f'PUB_GC_E1_SCREEN_PARSE_FAIL row_count={len(rows)}')
 
-eligible=[r for r in rows if r['status']=='PASS']
+infra=[r for r in rows if r['row_status'] in ('INFRA_FAIL','PARSE_FAIL')]
+eligible=[r for r in rows if r['eligible']==1]
+invalid=[r for r in rows if r['row_status']=='INVALID']
+
 print(f'PUB_GC_E1_SCREEN_GRID_ROWS={len(rows)}')
 print(f'PUB_GC_E1_SCREEN_ELIGIBLE_ROWS={len(eligible)}')
-print(f'PUB_GC_E1_SCREEN_FAILED_ROWS={len(rows)-len(eligible)}')
+print(f'PUB_GC_E1_SCREEN_INVALID_ROWS={len(invalid)}')
+print(f'PUB_GC_E1_SCREEN_INFRA_ROWS={len(infra)}')
 
 if eligible:
     selected=max(
@@ -252,6 +291,7 @@ if eligible:
                       -float(r['window_days']), -float(r['candidate_b_head_cm']))
     )
     print('PUB_GC_E1_SCREEN_SELECTION=AVAILABLE')
+    print(f"PUB_GC_E1_SCREEN_SELECTED_ROW={selected['row_id']}")
     print(f"PUB_GC_E1_SCREEN_SELECTED_WINDOW_DAYS={selected['window_days']:.17e}")
     print(f"PUB_GC_E1_SCREEN_SELECTED_B_HEAD_CM={selected['candidate_b_head_cm']:.17e}")
     print(f"PUB_GC_E1_SCREEN_SELECTED_ABS_DELTA_Q={float(selected['abs_delta_q']):.17e}")
@@ -261,10 +301,17 @@ else:
     print('PUB_GC_E1_SCREEN_SELECTION=NONE')
 
 print('PUB_GC_E1_SCREEN_GRID_COMPLETE=PASS')
+if infra:
+    raise SystemExit('PUB_GC_E1_SCREEN_INFRASTRUCTURE_INVALID')
 PY
 
+parser_rc=$?
 echo "PUB_GC_E1_SCREEN_RESEARCH_HEAD=$(git rev-parse HEAD)"
 echo "PUB_GC_E1_SCREEN_SOURCE_TREE=$(git rev-parse HEAD:src)"
 echo "PUB_GC_E1_SCREEN_TEST_BLOB=$(git rev-parse HEAD:$TEST)"
 echo "PUB_GC_E1_SCREEN_RUNNER_BLOB=$(git rev-parse HEAD:$RUNNER)"
+echo "PUB_GC_E1_SCREEN_TSV_SHA256=$(sha256sum "$ARTIFACT_DIR/screening.tsv" | awk '{print $1}')"
+if [[ $parser_rc -ne 0 || $infra_failures -ne 0 ]]; then
+  fail "screening infrastructure failure"
+fi
 echo 'PUB_GC_E1_SCREENING=PASS'
