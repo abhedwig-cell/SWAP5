@@ -17,6 +17,8 @@ on:
       - 'tests/fgc/run_fgc30_predictor_tangent_adapter.sh'
       - 'tests/fgc/test_fgc30_predictor_origin.f90'
       - 'tests/fgc/run_fgc30_predictor_origin.sh'
+      - 'tests/fgc/test_fgc30_production_predictor_tangent_endpoint.f90'
+      - 'tests/fgc/run_fgc30_production_predictor_tangent_endpoint.sh'
       - '.github/workflows/f-gc30-modflow6-predictor-response.yml'
   workflow_dispatch:
 
@@ -38,3 +40,5 @@ jobs:
         run: bash tests/fgc/run_fgc30_predictor_tangent_adapter.sh
       - name: Run F-GC30 accepted SWAP predictor-origin gate
         run: bash tests/fgc/run_fgc30_predictor_origin.sh
+      - name: Run F-GC30 production predictor tangent endpoint gate
+        run: bash tests/fgc/run_fgc30_production_predictor_tangent_endpoint.sh
