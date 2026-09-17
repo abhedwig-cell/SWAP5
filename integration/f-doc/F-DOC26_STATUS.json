@@ -3,9 +3,9 @@
   "work_unit": "F-DOC26",
   "title": "Soil-Hydraulic Constitutive Technical Reference",
   "branch": "work/f-doc26-soil-hydraulic-constitutive-reference",
-  "phase": "UPDATE",
-  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
-  "verdict": "READY_FOR_VERIFY",
+  "phase": "VERIFY",
+  "decision": "PASS_READY_FOR_CANONICAL_ADMISSION",
+  "verdict": "PASS_READY_FOR_ADMISSION",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "sha": "5efb2603524145192f80b3472c288c1b6828cf69"
@@ -56,7 +56,7 @@
     "No production, reference, scientific-formula or solver-semantics mutation by F-DOC26."
   ],
   "documentation_postimage": {
-    "head_before_checkpoint": "0b9a52c5fd10fcf0ae6f1deb650527051b8fa4a4",
+    "qualified_content_head": "d661da1710f9cc3babbc70a15b86e324f95e2e4a",
     "files": [
       "docs/science/soil-hydraulic-constitutive-relations.md",
       "docs/science/soil-water-flow.md",
@@ -71,11 +71,22 @@
     "tests_changed": false,
     "scientific_denominator_changed": false
   },
+  "verification": {
+    "pull_request": 177,
+    "workflow": "Documentation",
+    "workflow_run_id": 35203997763,
+    "workflow_run_number": 631,
+    "workflow_conclusion": "success",
+    "job_id": 105145229964,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pages_deployment_on_pr": "SKIPPED_AS_EXPECTED"
+  },
   "mutations": [
     "added bounded soil-hydraulic constitutive technical reference",
     "linked vertical soil-water reference to constitutive owner page",
     "added constitutive page to scientific read order and MkDocs navigation",
     "added F-DOC26 authority matrix and resumable checkpoint"
   ],
-  "next_permitted_action": "VERIFY_DOCUMENTATION_POSTIMAGE"
+  "next_permitted_action": "ADMIT_IF_LIVE_CANONICAL_UNCHANGED_OR_NONCONFLICTING_AND_PR_MERGEABLE"
 }
