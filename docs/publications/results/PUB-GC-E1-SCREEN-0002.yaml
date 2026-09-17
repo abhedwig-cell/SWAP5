@@ -22,15 +22,30 @@ chronology:
   completed_before_primary_manifest: true
   completed_before_primary_execution: true
   screen_0001_relation: >
-    SCREEN-0001 was already a valid supporting screen, but it included numeric
-    points previously seen during harness qualification. Before SCREEN-0002
-    execution, a disjoint grid was frozen. SCREEN-0001 remains historical
-    evidence only and is not used to choose the primary stress class.
+    SCREEN-0001 was explicitly superseded before its execution by the
+    SCREEN-0002 manifest because SCREEN-0001 reused a qualification-observed
+    numeric pair. Its later technical execution is non-authoritative and may
+    not contribute to stress-class or primary-case selection.
+
+provenance_deviation:
+  type: MANIFEST_INLINE_CODE_HEAD_PLACEHOLDER_NOT_POPULATED
+  scientific_design_affected: false
+  correction_decision: docs/publications/decisions/PUB-GC-E1-SCREENING_PROVENANCE_CORRECTION.md
+  pretrigger_scientific_code_head: a46acf93ae7918293f88f095c4138f617be1b64e
+  details: >
+    The SCREEN-0002 manifest retained FREEZE_BEFORE_EXECUTION in its inline
+    screening-code/head-lock fields. The scientific code was nevertheless
+    immutable before execution at the pre-trigger Git state above. The
+    trigger commit changed only the workflow trigger. This provenance-format
+    deviation is recorded rather than retrospectively rewriting the manifest.
 
 immutable_execution:
   production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
   screen_test_blob: 7b598d103bf23c19c4dace8e9fdfebd264cd02a5
   runner_blob: 79654bb6901b33f291cf316db7e9cb915ef5e8c7
+  pretrigger_dispatch_workflow_blob: bc58a6f75107446e0ba571c6e1abc3153bae45cc
+  trigger_enabled_workflow_blob: a87f97989e2f3a686bce41b7b4725e288f45989d
+  trigger_commit_changed_workflow_only: true
   production_src_modified: false
   qualified_origin_harness_modified: false
   qualified_gw_a_modified: false
