@@ -1,0 +1,40 @@
+{
+  "checkpoint_id": "FIVE-PAPER-FREEZE-RECONCILIATION-2026-09-18",
+  "phase": "FREEZE_RECONCILIATION_COMPLETE",
+  "branch": "research/phd-five-paper-manifests-20260918",
+  "head_before_checkpoint": "56e4f76ba3545a4b3e1043bcf19e8b35c95520f9",
+  "evidence_reconciled": {
+    "PUB_ME": {
+      "prior_design_evidence_head": "7e13915fdc7620ef767af68cd89fcea07d91a2b6",
+      "freeze": "docs/publications/manifests/PUB-ME-CONFIRMATORY-FREEZE-v1.yaml",
+      "status": "B0_B1_DESIGN_FROZEN_IMPLEMENTATION_PENDING"
+    },
+    "PUB_SQ": {
+      "P2E09_head": "f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf",
+      "P2E10_head": "50c28f16801a0f725e11d70cf7fb1f666e1fcef7",
+      "freeze": "docs/publications/manifests/PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml",
+      "status": "EXTENSION_CONFIRMATORY_FREEZE_ACTIVE",
+      "next_permitted_action": "REFERENCE_ONLY_30_MATERIAL_CALIBRATION"
+    },
+    "PUB_GC": {
+      "E1_primary_head": "936312659522fe4cacfd349b146d173caa07e5ab",
+      "E1_workflow_run": 35287247968,
+      "E1_artifact_sha256": "0370c5a17033d789e60576a4a0253a8edf3c50dba1b4ab4244a468fa05ccfab6",
+      "GC_REF_A_head": "4fc8f6e2a7569503594d0ecf91b651431c607df2",
+      "GC_REF_A_workflow_run": 35288524091,
+      "GC_REF_A_artifact_sha256": "a6caaa3f32b2def358d8760fc86d073e423688ca47b35e09b775e7228a3d6136",
+      "E2_comparator_head": "188c863f560d8adacf255edb4f6f83edcac798f3",
+      "freeze": "docs/publications/manifests/PUB-GC-NEXT-PRIMARY-FREEZE-v1.yaml",
+      "status": "REFERENCE_AND_COMPARATOR_READY_CASE_MATRIX_MATERIALIZATION_PENDING"
+    }
+  },
+  "verdict": "FREEZE_BOUNDARIES_PERSISTED",
+  "exclusions": [
+    "No retrospective evidence relabelled as prospective primary",
+    "No unsupported numeric materiality threshold invented",
+    "No new RossFast discrepancy execution authorized before the extension Reference-only threshold freeze",
+    "No new PUB-ME primary run authorized before matched B0/B1 harness materialization",
+    "No new PUB-GC E2/E3 primary run authorized before exact new stress-case fingerprints and window ladders are frozen"
+  ],
+  "next_permitted_action": "Create a separate PUB-SQ extension-calibration research branch from this checkpoint and implement only the Reference-only calibration/preregistration surface; RossFast execution remains forbidden."
+}
