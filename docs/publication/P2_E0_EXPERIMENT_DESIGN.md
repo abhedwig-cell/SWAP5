@@ -4,7 +4,7 @@
 
 PUB-P2E01 turns the admitted RossFast E0 envelope into a controlled paired-solver experiment without yet broadening solver physics.
 
-The immediate objective is not to prove equivalence. It is to establish a reproducible Reference-versus-RossFast comparison protocol, verify that both routes expose scientifically comparable state and flux observations, and freeze the rules before broad E0 sampling.
+The immediate objective is not to prove equivalence. It is to establish a reproducible Reference-versus-RossFast comparison protocol, verify that both routes expose scientifically comparable state observations, and freeze the rules before broad E0 sampling.
 
 ## Hard experimental principle
 
@@ -59,21 +59,47 @@ Run exactly two model selections:
 
 No automatic fallback is allowed in either paired comparison. A route that cannot execute the declared case is recorded as an exclusion or failure, not silently replaced.
 
+## Existing observation path
+
+The current kernel already provides an observation-safe route to endpoint physical state. `kernel_committed_state_t` owns its physical continuation state privately but exposes `snapshot()`, which returns a clone of the committed physical state. The concrete serialized physical state contains pressure-head and water-content arrays.
+
+Therefore PUB-P2E01 should first use committed-state snapshots after the accepted transaction rather than add a new production observation ABI merely for publication.
+
+The existing `fmr_serialized_physical_observation_t` remains useful for solver route, terminal flux and temporal diagnostics, but it does not by itself expose the full accepted endpoint profile.
+
+## E0 identifiability boundary
+
+The current RossFast E0 envelope admits prescribed-flux boundaries only. This has an important scientific consequence.
+
+When top and bottom water fluxes are prescribed identically to both routes, agreement of those imposed boundary fluxes is not independent evidence that the two solvers predict the same flux response. Within E0, boundary transfer is primarily an experimental input and a conservation/accounting check.
+
+Accordingly:
+
+- endpoint pressure head, water content and profile storage are discriminating solver responses in E0;
+- independent mass closure remains a hard validity requirement for each route;
+- prescribed top/bottom transfer consistency is useful for checking that both runs received and accounted for the same experiment;
+- zero or near-zero difference in imposed boundary transfer must **not** be presented as evidence of flux-prediction equivalence.
+
+A strong Paper 2 claim about solver interchangeability for predicted boundary fluxes will require a later independently qualified expansion in which at least one scientifically relevant boundary flux is an outcome rather than fully prescribed input, for example an admitted head-controlled, groundwater-interacting or dynamic surface boundary.
+
+That later expansion is outside E0 and must not be smuggled into PUB-P2E01.
+
 ## Pilot observations
 
-Before the pilot can yield scientific comparison evidence, both routes must expose a common observation representation sufficient to compare:
+Before the pilot can yield scientific comparison evidence, both routes must expose a common representation sufficient to compare:
 
 - pressure head for every active node at the accepted endpoint;
 - water content for every active node at the accepted endpoint;
 - profile storage at start and accepted endpoint;
-- interval-integrated top water transfer;
-- interval-integrated bottom water transfer;
 - independent water-balance residual for each route;
+- applied interval-integrated prescribed top and bottom transfers in the common public sign convention;
 - accepted interval duration;
 - commit status and final physical revision;
 - route identity and failure/retry diagnostics.
 
-If any required quantity is unavailable from one route, PUB-P2E01 must stop at `OBSERVATION_CONTRACT_GAP`. The missing quantity must not be reconstructed from an inequivalent diagnostic solely to make the comparison complete.
+The first four items are scientific response/validity quantities. Prescribed boundary transfer is experimental-control evidence in E0, not a discriminating solver-output metric.
+
+If a scientifically required quantity cannot be obtained on the same basis from both routes, PUB-P2E01 stops at `OBSERVATION_CONTRACT_GAP`. A missing quantity must not be reconstructed from an inequivalent diagnostic solely to make the comparison complete.
 
 ## Metric definitions
 
@@ -105,14 +131,18 @@ D_storage_abs = |S_A - S_R|
 
 A relative storage measure may be added only with a declared denominator that remains meaningful in dry cases.
 
-### Integrated boundary transfer
+### Prescribed boundary-transfer control
+
+For E0 only, record the applied integrated top and bottom transfers for both routes and verify identical experimental control after sign normalization.
+
+Do not interpret
 
 ```text
-D_qtop_abs = |Qtop_A - Qtop_R|
-D_qbot_abs = |Qbot_A - Qbot_R|
+D_qtop = 0
+D_qbot = 0
 ```
 
-Sign convention must be converted to the common public SWAP convention before comparison.
+as independent solver-equivalence evidence when those quantities were prescribed by construction.
 
 ### Mass
 
@@ -136,13 +166,14 @@ PUB-P2E01 does **not** invent numerical admissibility tolerances merely to compl
 Current status:
 
 ```text
-state admissibility tolerance: TO_BE_PREDECLARED
-flux admissibility tolerance: TO_BE_PREDECLARED
+head admissibility tolerance: TO_BE_PREDECLARED
+water-content admissibility tolerance: TO_BE_PREDECLARED
 storage admissibility tolerance: TO_BE_PREDECLARED
+predicted-flux admissibility tolerance: NOT_APPLICABLE_WITHIN_PRESCRIBED-FLUX E0
 mass acceptance: existing independent hard route requirement, exact authority to be pinned
 ```
 
-Before Stage 1 broad sampling, each scientific tolerance needs a documented basis. Acceptable bases include:
+Before Stage 1 broad sampling, each scientific state/storage tolerance needs a documented basis. Acceptable bases include:
 
 - an existing qualified SWAP numerical tolerance with the same physical meaning;
 - a discretization-derived bound;
@@ -155,16 +186,16 @@ Observed RossFast discrepancies may not be used to choose a tolerance after the 
 
 The pilot can return only one of:
 
-- `PAIRED_EXTRACTION_READY`: both routes executed the same physical case and all required common observations were obtained;
+- `PAIRED_EXTRACTION_READY`: both routes executed the same physical case and all required common state/conservation observations were obtained;
 - `OBSERVATION_CONTRACT_GAP`: one or more scientifically required observations cannot yet be compared on the same basis;
 - `ROUTE_EXECUTION_GAP`: one solver cannot execute the exact paired pilot under its declared current contract;
 - `IMPLEMENTATION_DEFECT_CANDIDATE`: evidence indicates a likely implementation or adapter error requiring separate adjudication.
 
-The pilot must **not** return `SCIENTIFICALLY_EQUIVALENT`, because scientific admissibility tolerances are intentionally not yet set.
+The pilot must **not** return `SCIENTIFICALLY_EQUIVALENT`, because scientific admissibility tolerances are intentionally not yet set and E0 does not test predicted boundary-flux equivalence.
 
 ## Stage 1 E0 design principle
 
-After Stage 0 extraction is qualified and scientific tolerances are predeclared, expand within the existing E0 envelope only.
+After Stage 0 extraction is qualified and scientific state/storage tolerances are predeclared, expand within the existing E0 envelope only.
 
 To compare hydraulic states fairly across materials, prefer a material-normalized initial-state descriptor rather than reusing the same pressure head blindly for every soil. Candidate descriptor:
 
@@ -208,7 +239,7 @@ Do not use an exhaustive full factorial by default.
 Preferred sequence:
 
 1. stratified or space-filling sample over normalized initial state and prescribed forcing for all six materials;
-2. identify regions where discrepancy approaches the predeclared scientific threshold;
+2. identify regions where **state or storage** discrepancy approaches the predeclared scientific threshold;
 3. refine sampling around those transition regions;
 4. retain clearly admissible, borderline and excluded cases in the publication dataset.
 
@@ -228,13 +259,13 @@ Every excluded or divergent pair is retained. Classification must distinguish:
 - implementation or adapter defect candidate;
 - conservation failure;
 - temporal acceptance failure;
-- scientifically material solver discrepancy;
+- scientifically material state/storage discrepancy;
 - comparison-observation gap.
 
 This distinction is required before interpreting an exclusion as a limitation of the numerical method.
 
 ## Next permitted action
 
-Implement or identify the smallest observation-only paired runner for the exact Stage 0 B01 case. It may add publication tooling or tests, but must not modify Reference science, RossFast science, transaction semantics or qualification tolerances.
+Implement the smallest observation-only paired runner for the exact Stage 0 B01 case by reusing the current production host and committed-state `snapshot()` API. It may add publication tooling or tests, but must not modify Reference science, RossFast science, transaction semantics or qualification tolerances.
 
 Only after the paired extraction contract passes may PUB-P2E01 freeze the broad E0 experiment manifest.
