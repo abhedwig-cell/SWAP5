@@ -1,0 +1,180 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel daily meteorological application-semantics recovery",
+  "phase": "RECONCILE_TYPED_TARGET",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404"
+  },
+  "reason": "M1 criterion 3 remains blocked on legacy file-driven application composition. F-CI95 resolved the explicit SWBOTB=6 bottom-boundary mapping. This checkpoint reconciles recovered Hupsel daily meteorological semantics against the current canonical typed ET/application target before any production mapping is permitted.",
+  "authoritative_distribution": {
+    "filename": "SWAP_4.3.1.zip",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "authority": "F-VQ99 exact Hupsel reference materialization",
+    "hupsel_case": "SWAP_4.3.1/cases/1.hupselbrook",
+    "hupsel_meteo_file": "283.met",
+    "hupsel_meteo_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "recovered_historical_authority_candidate": {
+    "name": "A21 authoritative daily atmospheric forcing",
+    "status": "RECOVERED_HISTORICAL_SEMANTIC_AUTHORITY_CANDIDATE_NOT_CURRENT_CANONICAL_AUTHORITY",
+    "recovered_source_name": "mod_a21_atmospheric_forcing_profile.f90",
+    "qualified_hupsel_branch": {
+      "SWETR": 0,
+      "SWDIVIDE": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0
+    },
+    "swp_configuration_fields": [
+      "METFIL",
+      "LAT",
+      "ALT",
+      "ALTW",
+      "ALTH",
+      "ANGSTROMA",
+      "ANGSTROMB",
+      "FWIND",
+      "RSOIL",
+      "SWETR",
+      "SWDIVIDE",
+      "SWMETDETAIL",
+      "SWRAIN"
+    ],
+    "daily_record_fields": [
+      "radiation_j_m2_d",
+      "tmin_c",
+      "tmax_c",
+      "vapour_pressure_kpa",
+      "wind_m_s",
+      "gross_rain_cm_d",
+      "etref_cm_d",
+      "wet_fraction"
+    ],
+    "legacy_conversion_rules": [
+      "radiation: Rad * 1000",
+      "rain: Rain * 0.1"
+    ],
+    "time_semantics": "Resolve immutable daily forcing by model time; no mutable meteorological record pointer is advanced by a trial/retry."
+  },
+  "historical_qualification_evidence": {
+    "full_hupsel_shadow_records": 1096,
+    "shadow_mismatches_at_1e_12": 0,
+    "o0_o2_identity": "PASS_BYTE_IDENTICAL",
+    "full_run_noninterference": [
+      "result.bal",
+      "result.blc",
+      "swap.wrn",
+      "swap.ok",
+      "swap.log including Newton/backtracking statistics"
+    ],
+    "integrated_four_step_observations": {
+      "newton_routes": "IDENTICAL",
+      "backtracking_routes": "IDENTICAL",
+      "max_process_delta_ptra": 1.11e-16,
+      "max_final_h_delta_cm": 3.98e-13,
+      "max_theta_delta": 2.78e-16,
+      "qtop": "IDENTICAL"
+    }
+  },
+  "lineage_reconciliation": {
+    "A21_to_A22": "A22 explicitly consumes the A21-qualified route through a CropSnapshot boundary and reports the integrated four-step trace byte-for-byte identical to A21.",
+    "A23Y_source_provenance": "A23Y was reconstructed from the same official SWAP_4.3.1 distribution SHA-256 and retained legacy MOD_meteo.f90 and MOD_cropdevelopment.f90 unchanged relative to its reconstructed parent.",
+    "A23Y_hupsel_oracle_continuity": {
+      "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "matches_F_VQ99": true
+    }
+  },
+  "current_typed_target_reconciliation": {
+    "canonical_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+    "inspected_authorities": [
+      {
+        "path": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+        "blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+        "finding": "Typed interval forcing span carries only reference_et_mm_per_day and delegates to the restricted reference-ET process."
+      },
+      {
+        "path": "src/process/mod_reference_et_demand_process.f90",
+        "blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+        "finding": "Process contract explicitly states the qualified route is SWETR=1, SWMETDETAIL=0, SWCFBS=0, SWINTER=0. This is not the recovered Hupsel SWETR=0 branch."
+      },
+      {
+        "path": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+        "blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+        "finding": "Consumes only the already-produced ET potential_transpiration result and binds it into typed crop/root input; it does not own meteorological derivation."
+      },
+      {
+        "path": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+        "blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+        "finding": "Composes accepted ET result into root uptake and therefore is downstream of, not authority for, Hupsel meteorological semantics."
+      },
+      {
+        "path": "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+        "blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+        "finding": "Adapts typed crop/root uptake input only; no meteorological or file semantics."
+      },
+      {
+        "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+        "blob": "daca18b77673608436425e81ecd397ef3e35e4b2",
+        "finding": "Owns model selection only; it does not provide scientific execution or meteorological composition."
+      },
+      {
+        "path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+        "blob": "456c87437e83d1d362d41fbf9820e70d96353ff9",
+        "finding": "Provides the admitted F-APP02 SWBOTB=6 to typed zero-flux mapping only and explicitly does not parse files."
+      }
+    ],
+    "process_tree_observation": "The current canonical src/process tree exposes mod_reference_et_demand_process.f90 as the typed reference-ET process; no separate typed SWETR=0 meteorological derivation process was identified in that tree during this reconciliation.",
+    "legacy_tree_observation": "The current canonical src/legacy tree contains bounded B1.10 ports rather than a general retained MOD_meteo authority for the Hupsel SWETR=0 application branch.",
+    "field_mapping": {
+      "etref_cm_d": "A typed reference-ET carrier exists after unit conversion to reference_et_mm_per_day, but semantic equivalence for the recovered Hupsel SWETR=0 route is not established and must not be assumed.",
+      "radiation_j_m2_d": "No carrier in the inspected current typed reference-ET process; required upstream only if authoritative SWETR=0 semantics consume it.",
+      "tmin_c": "No carrier in the inspected current typed reference-ET process; required upstream only if authoritative SWETR=0 semantics consume it.",
+      "tmax_c": "No carrier in the inspected current typed reference-ET process; required upstream only if authoritative SWETR=0 semantics consume it.",
+      "vapour_pressure_kpa": "No carrier in the inspected current typed reference-ET process; required upstream only if authoritative SWETR=0 semantics consume it.",
+      "wind_m_s": "No carrier in the inspected current typed reference-ET process; required upstream only if authoritative SWETR=0 semantics consume it.",
+      "gross_rain_cm_d": "Not reconciled to a current typed Hupsel application meteorology/interception contract in this checkpoint.",
+      "wet_fraction": "Not reconciled to a current typed Hupsel application meteorology/interception contract in this checkpoint.",
+      "static_site_and_meteo_configuration": "LAT, ALT, ALTW, ALTH, ANGSTROMA, ANGSTROMB, FWIND, RSOIL and the SWETR/SWDIVIDE/SWMETDETAIL/SWRAIN selectors are not represented by the inspected restricted reference-ET binding."
+    },
+    "target_sufficient_for_hupsel_swet0": false,
+    "production_gap_identified": "A current-canonical typed semantic authority for the recovered Hupsel SWETR=0 daily meteorological route has not yet been established. This is a semantic admission gap, not permission to implement from inference."
+  },
+  "current_classification": {
+    "historical_semantics_recovered": true,
+    "same_distribution_provenance_supported": true,
+    "current_F_series_independent_requalification": false,
+    "raw_hupsel_fixture_reproducibly_available_in_repository": false,
+    "current_typed_target_sufficient_for_hupsel_swet0": false,
+    "canonical_production_authority": false,
+    "M1_C3_closure": false
+  },
+  "blockers": [
+    "The exact raw Hupsel fixture bytes needed to rerun the 1096-record legacy shadow are not currently committed in GitHub; the F-VQ99 artifact independently records both the exact SWAP_4.3.1 archive and authoritative Hupsel case as absent.",
+    "Current canonical reference-ET semantics are explicitly restricted to SWETR=1, while the recovered qualified Hupsel branch is SWETR=0. No current-canonical typed SWETR=0 meteorological derivation authority was identified. Historical A21 evidence therefore cannot be projected onto the current typed ET process without a separate semantic recovery and qualification decision."
+  ],
+  "mutations": [
+    "Created this evidence-only recovery branch from current canonical.",
+    "Persisted the historical Hupsel meteorological reconciliation checkpoint.",
+    "Reconciled current canonical typed ET/application authorities against recovered A21/Hupsel semantics and persisted the resulting two-blocker classification."
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "exclusions": [
+    "no crop-development migration",
+    "no detailed meteorology/rainfall modes",
+    "no snow",
+    "no irrigation",
+    "no drainage",
+    "no broad ET rewrite",
+    "no new physics",
+    "no broad public API or wholesale IO redesign",
+    "no legacy default-route change",
+    "no synthetic substitute accepted as final Hupsel reference authority",
+    "no inference that the existing SWETR=1 reference-ET process is equivalent to Hupsel SWETR=0"
+  ],
+  "next_permitted_action": "Recover an authoritative source/evidence definition of the Hupsel SWETR=0 daily meteorological derivation, including the role of the A21 record fields and static site/configuration parameters, and recover an exact authoritative Hupsel 283.met/case fixture if available. Only then define the minimum typed SWETR=0 application semantic contract and independent qualification probe. Do not modify production ET or file/parser paths from inference."
+}

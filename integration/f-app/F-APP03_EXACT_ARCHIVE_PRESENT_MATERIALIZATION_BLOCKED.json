@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "RECONCILE_ACQUIRE_CLOSE",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "c6b5e5cf0eec55b7c51dc648da26a8600a88c172",
+  "resume_from": {
+    "checkpoint": "integration/f-app/F-APP03_EXACT_AUTHORITY_RECOVERY_EXHAUSTED_CLOSE.json",
+    "commit": "c6b5e5cf0eec55b7c51dc648da26a8600a88c172",
+    "verdict": "F_APP03_BLOCKED_BOUNDED_AVAILABLE_AUTHORITY_SURFACES_EXHAUSTED_EXTERNAL_EXACT_BYTES_OR_TRACE_REQUIRED"
+  },
+  "reconcile": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "previous_canonical_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "canonical_head": "5efb2603524145192f80b3472c288c1b6828cf69",
+    "canonical_ahead_by": 122,
+    "f_app03_branch_delta_before_checkpoint": "NONE",
+    "relevant_canonical_delta": "NO_APPLICATION_OR_F_APP03_AUTHORITY_CHANGE_DETECTED",
+    "note": "The canonical delta includes RossFast production wiring and documentation work. The newly added evapotranspiration/root-uptake science page documents a restricted SWETR=1 route and explicitly excludes alternative historical ET methods, so it is not authority for the F-APP03 SWETR=0 PMdirect composition."
+  },
+  "new_exact_authority_candidate": {
+    "source_surface": "Project/Library SWAP5 folder",
+    "file_id": "file_00000000bf948243b9ccbd3a8c36a648",
+    "name": "SWAP_4.3.1(3).zip",
+    "path": "/SWAP5/SWAP_4.3.1(3).zip",
+    "size_bytes": 8959314,
+    "created_at_utc": "2026-09-17T06:43:49Z",
+    "expected_official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "sha256_verified": false,
+    "reason_unverified": "The current Project/Library file surface exposes metadata but no authorized raw-byte materialization path for this ZIP. Direct file read returns zero readable lines."
+  },
+  "acquire_attempts": [
+    {
+      "action": "materialize latest project/library ZIP as raw_file",
+      "result": "FAILED_NO_AUTHORIZED_RAW_BYTE_MATERIALIZATION_PATH"
+    },
+    {
+      "action": "materialize older SWAP_4.3.1.zip library copy as raw_file",
+      "result": "FAILED_NO_AUTHORIZED_RAW_BYTE_MATERIALIZATION_PATH"
+    },
+    {
+      "action": "direct file read of SWAP_4.3.1(3).zip",
+      "result": "NO_READABLE_CONTENT_TOTAL_LINES_0"
+    },
+    {
+      "action": "targeted Project/Library index search for MOD_meteo.f90, FWIND operator, Hupsel FWIND value and A21/A22 four-step material",
+      "result": "ONLY_HISTORICAL_DERIVED_MATERIAL_RECOVERED_NO_NEW_EXACT_BYTES"
+    }
+  ],
+  "reconfirmed_from_indexed_historical_material": {
+    "A21_FWND_binding": "mod_a21_atmospheric_forcing_profile.f90 reads FWIND literally from swap.swp into profile%config%wind_factor; this still does not establish the numeric official Hupsel FWIND value.",
+    "FWIND_reader": "if (rdinqr('fwind')) call rdsdor ('fwind',0.5d0,5.d0,fwind)",
+    "June10_gate": "A22 states four consecutive real steps on 2002-06-10 are byte-identical to A21, but the frozen numeric payload/normalization contract is still not present."
+  },
+  "still_missing": [
+    "Byte-verified official SWAP_4.3.1 archive or exact MOD_meteo.f90 matching SHA-256 5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822.",
+    "Exact executable statement applying FWIND in the active SWETR=0, SWDIVIDE=1 PMdirect route.",
+    "Byte-verified official Hupsel swap.swp matching SHA-256 a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b and its exact FWIND value.",
+    "Original frozen numeric four-step 2002-06-10 precheck payload plus normalization/comparison contract."
+  ],
+  "qualification": {
+    "attempted": false,
+    "reason": "The ZIP candidate is present but its bytes cannot currently be accessed or hashed. The preregistered observation-only precheck must not be run until exact authority is byte-verified and all three required surfaces are closed."
+  },
+  "verdict": "F_APP03_BLOCKED_EXACT_ARCHIVE_PRESENT_BUT_RAW_BYTES_NOT_MATERIALIZABLE",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "new_branch": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Make the exact ZIP bytes available as a directly downloadable/current-conversation attachment or other raw-byte-accessible file surface.",
+    "Immediately compute SHA-256 and require exact match to 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360 before using the archive as authority.",
+    "If matched, extract only the relevant exact files first: nested SWAP source archive as needed, SWAP/MOD_meteo.f90, and cases/1.hupselbrook/swap.swp; verify their known SHA-256 values before semantic inspection.",
+    "Persist an ACQUIRE_PASS checkpoint before any numerical qualification.",
+    "Then recover the active FWIND operator and official Hupsel FWIND value from those exact bytes and continue only toward the already preregistered four-step observation gate."
+  ],
+  "do_not_repeat_without_new_byte_access": [
+    "broad repository recovery",
+    "broad File Library semantic search",
+    "public SWAP substitution",
+    "FWIND=1.0 inference from A21 initialization default",
+    "SWETR=1 documentation as authority for SWETR=0 PMdirect",
+    "reconstruction of frozen four-step payload from desired outputs"
+  ]
+}
