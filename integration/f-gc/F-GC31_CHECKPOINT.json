@@ -20,7 +20,14 @@
     "current_serialized_runtime": "Drainage response is evaluated from hydraulic_start%groundwater_level before each Richards advance, but the accepted candidate currently republishes solve_result%candidate_state%groundwater_level from the incoming state; HeadCalc does not recalculate it on the relevant prescribed-flux route.",
     "fpm14_scope": "F-PM14/F-VQ73/F-CI61 qualified drainage response physics, transactionality, mass booking, restart and per-level dq/dgroundwater_level, but did not qualify hydraulic-state-to-groundwater-level refresh semantics.",
     "directional_service_gap": "F-KT21 currently supports incoming pressure/water/ponding direction and direct bottom-control direction only. It assumes b110_source_sink_provider_t is directionally constant and has no source/sink directional term in the tangent RHS.",
-    "scientific_consequence": "Treating dgwl/dqbot as zero would encode the current stale-state implementation rather than the original SWAP state-update semantics and is therefore forbidden for F-GC31 admission."
+    "scientific_consequence": "Treating dgwl/dqbot as zero would encode the current stale-state implementation rather than the original SWAP state-update semantics and is therefore forbidden for F-GC31 admission.",
+    "fpm15_relationship": {
+      "authority": "work/f-pm15-drainage-v1-final-completion-reconciliation@50c933a54e9920735b65e708839b5a8b8aa57ede",
+      "finding": "F-PM15 independently records drainage response as lagged from hydraulic_start and leaves a separate fully-implicit Newton/Jacobian capability open.",
+      "fgc31_disposition": "DO_NOT_PULL_FULLY_IMPLICIT_DRAINAGE_INTO_SCOPE",
+      "reason": "F-GC31 preserves B1.10 lagged-per-substep drainage semantics. Its needed chain is accepted-state GWL -> next-substep drainage -> Richards tangent, not candidate-state drainage reevaluation within the same Newton solve.",
+      "fpm16": "EXCLUDED_FROM_FGC31; existing placeholder branch points to historical canonical and concerns the broader fully-implicit drainage-v1 closure."
+    }
   },
   "calcgwl_recovery": {
     "b0_manifest_member": "SWAP/calcgwl.f90",
@@ -81,7 +88,7 @@
     "Ribasim",
     "groundwater coupling v1 semantic changes"
   ],
-  "next_permitted_action": "IMPLEMENT nominal smooth-interior GWL refresh in the serialized accepted candidate and compose qualified drainage dq/dgwl with incoming accepted-trajectory dgwl into the source/sink directional scratch; preserve all excluded calcgwl branches fail-closed.",
+  "next_permitted_action": "IMPLEMENT an explicit opt-in prescribed-qbot drainage projection envelope that recomputes the drainage hydraulic-view groundwater level from each substep start pressure profile, default false and independent of whether tangent publication is requested; preserve lagged B1.10 drainage and all F-PM14 default behavior.",
   "qualification": {
     "smooth_freatic_projection": {
       "head": "3378c487ef7c585a06ad4f68f981e631e7e366aa",
