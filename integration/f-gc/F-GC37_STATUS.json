@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC37",
+  "title": "Coupled Predictor-Corrector Host Contract",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_TRANSACTIONAL_HOST_CONTRACT_IMPLEMENTATION",
+  "source_branch": {
+    "branch": "work/f-gc36-live-modflow6-fgc34-bridge",
+    "head": "b07d2eb72336e41dc92ed6fc1d0ae072cf9f23b8",
+    "f_gc36_verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE"
+  },
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+    "delta_from_f_gc36_reconciliation": "9 commits, only PUB-P2E10 publication workflow, documentation and publication tests; no F-GC30 through F-GC36 dependency source changed."
+  },
+  "reused_authority": [
+    "existing SWAP immutable accepted-origin trial semantics",
+    "existing groundwater prepare/commit/abort publication pattern",
+    "F-GC30 predictor tangent",
+    "F-GC31 N:1 cell response",
+    "F-GC33 linear MODFLOW response",
+    "F-GC34 typed publication",
+    "F-GC35 XMI lifecycle guard",
+    "F-GC36 live MODFLOW consumption"
+  ],
+  "blocking_discovery": {
+    "fact": "xmipy/MODFLOW6 exposes forward solve lifecycle but no native checkpoint/rollback/restore equivalent to the SWAP transaction contract.",
+    "decision": "F-GC37 qualifies host orchestration against transaction-capable participant contracts. It does not pretend an in-place live MODFLOW kernel can generate same-origin trials until a separate backend qualifies origin restoration."
+  },
+  "scientific_iteration": {
+    "fixed_within_window": "dq_u/dH slope from predictor response",
+    "updated_each_outer_iteration": [
+      "H_ref <- solved groundwater head",
+      "q_ref <- SWAP corrector q_u at that head"
+    ],
+    "residual": "q_swap - q_groundwater_boundary",
+    "convergence": "absolute governed flux tolerance",
+    "candidate_rule": "all non-converged candidates discarded before the next iteration",
+    "max_iterations": "bounded and fail-closed"
+  },
+  "planned_changes": [
+    "docs/integration/F-GC37_COUPLED_PREDICTOR_CORRECTOR_HOST.md",
+    "src/adapter/coupled_predictor_corrector_host.py",
+    "tests/fgc/test_fgc37_coupled_predictor_corrector_host.py",
+    "tests/fgc/run_fgc37_coupled_predictor_corrector_host.sh",
+    ".github/workflows/f-gc37-coupled-predictor-corrector-host.yml",
+    "integration/f-gc/F-GC37_STATUS.json"
+  ],
+  "exclusions": [
+    "live MODFLOW origin restoration",
+    "production MODFLOW solve ownership",
+    "Ribasim",
+    "irrigation",
+    "dynamic tangent updates",
+    "active-drainage envelope expansion",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement and qualify the pure transaction-capable coupled-host contract with deterministic participant doubles. Stop before claiming live MODFLOW same-origin trial capability."
+}
