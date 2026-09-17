@@ -48,14 +48,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Preserve EB-I23 under admitted EB-I25 backend successor
+      - name: Preserve EB-I23 under admitted EB-I25 and F-ROSS12 backend successors
         shell: bash
         run: |
           set -euo pipefail
           I23_ADMISSION=77acdd880bb0613f5a3ab857c4ecdc69aab27149
           I25_ADMISSION=b7c2e510c68e5799a138e881793d27037c482b8a
+          FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
           git merge-base --is-ancestor "$I23_ADMISSION" HEAD
           git merge-base --is-ancestor "$I25_ADMISSION" HEAD
+          git merge-base --is-ancestor "$FROSS12_AUTH" HEAD
           declare -A BLOBS=(
             [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
             [tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90]=e9fde2d51d2c8cb76ae2def4b7e4a3acaf356d4a
@@ -68,11 +70,12 @@ jobs:
             [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
             [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
             [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
-            [src/runtime/mod_fmr_serialized_reference_backend.f90]=960ea116cad81e8c0db8a579982f4999b3d085ed
             [src/runtime/mod_fmr_top_sensible_boundary_carrier.f90]=299717757082ff06e98bd3aaec2c0b8b3013ea21
             [src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90]=fc88731c12c8af5136aad13bda2a7da3d768dc4c
           )
           for path in "${!BLOBS[@]}"; do test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"; done
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = \
+            "$(git rev-parse "$FROSS12_AUTH:src/runtime/mod_fmr_serialized_reference_backend.f90")"
           python3 -m json.tool qualification/F-VQ90_STATUS.json >/dev/null
           python3 -m json.tool qualification/F-VQ93_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI72P_STATUS.json >/dev/null
@@ -88,5 +91,6 @@ jobs:
           ! grep -Fq 'boundary%top_advective_available = .true.' "$MODULE"
           grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79P_STATUS.json
           echo 'FCI72_MOVING_EB_I23_SUCCESSOR_COMPOSITION=PASS'
+          echo 'FCI72_MOVING_FROSS12_BACKEND_SUCCESSOR=PASS'
           echo 'FCI72_MOVING_I23_TOP_ADVECTIVE_FAIL_CLOSED=PASS'
           echo 'FCI72_MOVING_FULL_ENERGY_BALANCE_NONCLAIM=PASS'
