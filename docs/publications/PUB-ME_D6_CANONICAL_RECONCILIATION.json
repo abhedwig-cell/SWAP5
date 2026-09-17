@@ -1,0 +1,27 @@
+{
+  "workunit": "PUB-ME-D6",
+  "phase": "RECONCILE",
+  "original_execution_base": "d67a96fd576dcd1c5a30eb766c5aa1a503e10cf0",
+  "reconciled_canonical": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "canonical_delta": {
+    "owner": "PUB-P2E10",
+    "files": [
+      ".github/workflows/pub-p2e10-e0-broad-paired-matrix.yml",
+      "docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_PREREGISTRATION.json",
+      "docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_RESULT.json",
+      "tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh",
+      "tests/publication/test_pub_p2e10_e0_broad_paired_matrix.f90"
+    ],
+    "src_changed": false,
+    "reference_changed": false,
+    "d6_dependency_surface_changed": false
+  },
+  "d6_branch_before_reconciliation_note": "cc957adb0fc10123c1ae2b69a10cdbb7a8352063",
+  "verdict": "RECONCILED_NO_RELEVANT_DELTA",
+  "next_permitted_action": "Read the first D6 workflow execution. Repair only harness/tooling failures without changing the preregistered candidate sequence, providers, observer semantics, B1/B2 rules or classification criteria.",
+  "exclusions": [
+    "no P2E10 interpretation in PUB-ME D6",
+    "no source/reference rebasing required for scientific semantics",
+    "no D1-D5 rerun"
+  ]
+}
