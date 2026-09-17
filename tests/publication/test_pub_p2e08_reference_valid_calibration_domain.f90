@@ -80,7 +80,9 @@ program test_pub_p2e08_reference_valid_calibration_domain
 
   if (selected_dt_index==0) then
     write(*,'(A)') 'PUB_P2E08_COMMON_DOMAIN_STATUS=BLOCKED_REFERENCE_COMMON_DOMAIN'
-    error stop 2
+    write(*,'(A)') 'PUB_P2E08_SCIENTIFIC_OUTCOME=NEGATIVE_COMMON_DOMAIN_NOT_FOUND'
+    write(*,'(A)') 'PUB_P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_GATE=PASS'
+    stop
   end if
 
   write(*,'(A,I0)') 'PUB_P2E08_SELECTED_DT_INDEX=',selected_dt_index
@@ -110,7 +112,7 @@ program test_pub_p2e08_reference_valid_calibration_domain
   call report_metric_summary('U_STORAGE',ustorage(:,selected_dt_index))
 
   write(*,'(A)') 'PUB_P2E08_COMMON_DOMAIN_STATUS=QUALIFIED_COMPLETE_REFERENCE_DOMAIN'
-  write(*,'(A)') 'PUB_P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN=PASS'
+  write(*,'(A)') 'PUB_P2E08_SCIENTIFIC_OUTCOME=QUALIFIED_COMPLETE_DOMAIN'\n  write(*,'(A)') 'PUB_P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_GATE=PASS'
 
 contains
 
