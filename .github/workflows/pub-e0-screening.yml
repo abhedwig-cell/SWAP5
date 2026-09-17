@@ -27,6 +27,7 @@ jobs:
         with:
           ref: 93d50e349528551ff74bce3944e984e582a21b84
           path: sq-src
+          fetch-depth: 0
       - name: Install compiler
         run: |
           sudo apt-get update
@@ -80,6 +81,7 @@ jobs:
         with:
           ref: 74051e113fcef19e021d69854f3ab99066eb30cb
           path: gc-src
+          fetch-depth: 0
       - name: Install compiler
         run: |
           sudo apt-get update
