@@ -3,9 +3,10 @@
   "work_unit": "F-DOC28",
   "title": "Restart v1 technical reference",
   "branch": "work/f-doc28-restart-technical-reference",
-  "phase": "ACQUIRE_COMPLETE",
-  "decision": "READY_FOR_DOCUMENTATION_UPDATE",
+  "phase": "VERIFY_READY",
+  "decision": "READY_FOR_DOCUMENTATION_VERIFICATION",
   "canonical_start": "74051e113fcef19e021d69854f3ab99066eb30cb",
+  "documentation_content_head": "b96a25686a1ded774ab244170a06c7cc796660d9",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
   "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
   "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
@@ -70,15 +71,15 @@
     "No parallel/concurrent real-physics MultiSWAP restart claim beyond separately admitted authority.",
     "No new production functionality, physics, numerical policy or restart semantics."
   ],
-  "planned_mutations": [
-    "integration/f-doc/F-DOC28_STATUS.json",
+  "verified_scope_delta": [
+    "docs/capabilities/restart-v1.md",
     "integration/f-doc/F-DOC28_AUTHORITY_MATRIX.md",
-    "docs/capabilities/restart-v1.md"
+    "integration/f-doc/F-DOC28_STATUS.json"
   ],
   "current_mutation_scope": "documentation_and_governance_only",
   "production_source_changes": [],
   "reference_source_changes": [],
   "test_changes": [],
-  "verdict": "ACQUIRED_AUTHORITY_READY_FOR_BOUNDED_DOCUMENTATION_UPDATE",
-  "next_permitted_action": "Create authority matrix, expand docs/capabilities/restart-v1.md within the recorded claim ceiling, then verify documentation-only delta."
+  "verdict": "READY_FOR_EXACT_HEAD_DOCUMENTATION_GATE",
+  "next_permitted_action": "Open pull request to integration/f-ci-canonical and require repository documentation checks plus strict MkDocs build before admission."
 }
