@@ -1,0 +1,24 @@
+name: F-VQ104 F-GC30 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq104-fgc30-modflow6-tangent-coupling-independent
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out verifier head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ104 independent qualification
+        run: bash tests/fvq/run_fvq104_fgc30_independent_gate.sh
