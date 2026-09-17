@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.fvq105.status.v1",
+  "work_unit": "F-VQ105",
+  "title": "F-GC31 active-drainage prescribed-qbot tangent independent qualification",
+  "branch": "qualification/f-vq105-fgc31-active-drainage-derivative-independent",
+  "phase": "QUALIFY",
+  "decision": "QUALIFIED_FGC31_ACTIVE_DRAINAGE_TANGENT_INDEPENDENTLY",
+  "owner": {
+    "work_unit": "F-GC31",
+    "qualification_head": "fff0a8be74de3240d56a910f1b19eb4fb50146e9",
+    "checkpoint_head": "7eba772135f461f1299062386e32b149aa664a20",
+    "owner_run": 35288724235,
+    "owner_job": 105426705900
+  },
+  "verifier": {
+    "tested_head": "3dade18dd68eb8d3b453a6a7fb9b718ca95bd43d",
+    "workflow_run": 35289103452,
+    "workflow_job": 105427861282,
+    "conclusion": "success",
+    "production_delta": "NONE",
+    "accepted_substeps": 2,
+    "retries": 6,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_exact_identity": "PASS",
+    "exact_owner_blobs": "PASS",
+    "bounded_analytic_implementation": "PASS",
+    "head_fd_max_error": 0.00003185432,
+    "water_fd_max_error": 1.474832e-8,
+    "groundwater_level_fd_error": 0.00003152669,
+    "bottom_face_fd_error": 0.00003185431
+  },
+  "qualified_claims": [
+    "active drainage over multiple accepted prescribed-qbot substeps is included in the accepted-trajectory tangent",
+    "drainage source/sink direction coverage provenance remains complete across accepted substeps",
+    "whole-window pressure-head and water-content tangents agree with independent same-backend centered finite differences under identical acceptance topology",
+    "terminal smooth freatic groundwater-level direction agrees with independent same-backend finite difference",
+    "terminal fixed bottom-face head tangent agrees with independent same-backend finite difference",
+    "requesting the tangent is observational and does not change the accepted physical state",
+    "default-off PM14-style active drainage remains physically admitted but cannot claim authoritative active-drainage tangent coverage",
+    "the tangent adds no full nonlinear solve and production code contains no finite-difference derivative construction"
+  ],
+  "exact_production_blobs": {
+    "src/solver/mod_b110_smooth_freatic_projection.f90": "e83c1013a1d96508740619a71cfa1dbfdd665d61",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "b5a0276d2f1b2c8ffe581e68dffecdaf55a32768",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "8ca4e08f0297a6b7d0bca1608e9a1ac4d41f4fd7",
+    "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90": "481dc8cb1af683053614de3a11c4155acb34b413",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "d267a763ceb697557e762c937a99b7f11cb44684",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1be9af9ece045cac1fd17087e6b08bc615bd733",
+    "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90": "2d5342b45a61c9426d2b589b285050b648d141b9"
+  },
+  "preserved_limits": [
+    "restricted smooth non-macropore interior freatic projection only",
+    "lagged B1.10 drainage response per accepted substep; no fully implicit drainage Newton/Jacobian claim",
+    "root uptake and other uncovered state-dependent source/sink owners remain fail closed",
+    "centered finite difference is qualification evidence only and not a runtime fallback",
+    "no MODFLOW6/XMI backend implementation",
+    "no irrigation or Ribasim capability",
+    "no accepted_storage_change reinterpretation"
+  ],
+  "next_permitted_action": "Open a separate F-CI admission workunit from the current canonical and admit only the exact eight F-GC31 production blobs after owner and independent replay/preservation gates pass."
+}
