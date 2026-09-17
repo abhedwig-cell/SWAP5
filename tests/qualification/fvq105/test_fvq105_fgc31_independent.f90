@@ -53,7 +53,7 @@ program test_fvq105_fgc31_independent
   type(modflow6_prescribed_qbot_bottom_face_t) :: plus_face, minus_face
   real(real64), allocatable :: fd_head(:), fd_water(:)
   real(real64) :: head_error, water_error, face_fd, face_error, projected_gwl, analytic_dgwl, fd_dgwl
-  real(real64) :: ignored_direction, scale
+  real(real64) :: scale
   logical :: projection_ok
   integer :: status
 
