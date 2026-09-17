@@ -1,0 +1,21 @@
+name: F-ROSS12 solver selection binding
+
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_rossfast_solver_selection_binding.f90'
+      - 'src/runtime/mod_fmr_soil_water_application_host.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/test_ross12_solver_selection_binding.f90'
+      - 'tests/ross/run_ross12_solver_selection_binding.sh'
+      - '.github/workflows/f-ross12-solver-selection-binding.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify explicit RossFast solver selection binding
+        run: bash tests/ross/run_ross12_solver_selection_binding.sh
