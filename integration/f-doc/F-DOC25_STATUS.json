@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC25",
+  "title": "Reference Richards Numerical Formulation and Solver Ownership",
+  "phase": "ACQUIRE",
+  "decision": "AUTHORITIES_ACQUIRED_READY_FOR_BOUNDED_DOCUMENTATION_UPDATE",
+  "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
+  "branch": "work/f-doc25-richards-numerical-reference",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "b861122a2661b42e30455142ceb110c51f22b595",
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "reconciliation": {
+    "live_canonical": "b861122a2661b42e30455142ceb110c51f22b595",
+    "relevant_delta_since_prior_documentation_state": "F-ROSS12 final closeout governance only; commit message explicitly records src/** and reference/** unchanged.",
+    "frozen_scientific_denominator_changed": false
+  },
+  "acquired_authorities": {
+    "current_numerical_reference": "docs/numerics/richards-solver.md",
+    "solver_contract_blob": "276941d76ba951a89c43899e61fd0532418d8230",
+    "reference_workspace_blob": "74f99556005ae39614f9df678467b1e19097bae2",
+    "reference_linear_solver_blob": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+    "reference_state_binding_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "reference_temporal_indicator_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f",
+    "nonlinear_owner_path": "src/legacy/b1_10_port/headcalc.f90",
+    "nonlinear_owner_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"
+  },
+  "claim_ceiling": {
+    "permitted": [
+      "Document the frozen reference residual structure for the one-dimensional compartment balance, including actual theta endpoint storage difference, internodal Darcy terms, and bounded source/sink and boundary contributions.",
+      "Document the frozen SWKIMPL=0 Jacobian structure: storage capacity term on the diagonal plus frozen internodal conductivity contributions, with boundary-specific diagonal terms where present.",
+      "Document that the reference route solves a tridiagonal Newton system and falls back to a general band solver only when TRIDAG reports failure.",
+      "Document exact reference backtracking semantics: full Newton correction first, residual objective 0.5*F^T*F, accept progress when the objective decreases or compartment residual is within tolerance, otherwise reduce the update factor by three.",
+      "Document the bounded convergence checks represented by compartment balance, absolute/relative pressure-head change, total balance and applicable ponding criteria without inventing universal numeric tolerances.",
+      "Document the solver request/result ownership boundary and the fact that a converged solver result remains candidate state until surrounding transaction admission.",
+      "Document the temporal indicator as a separate optional restricted post-solve indicator with an explicit applicability envelope, one additional tridiagonal solve, and no additional full nonlinear solve."
+    ],
+    "forbidden": [
+      "Promote SWKIMPL=1, RossFast, macropore numerics or every historical lower-boundary mode into the frozen Status-A reference denominator.",
+      "Treat the temporal indicator as the primary Richards discretisation, a universal local truncation-error theorem, or a hard acceptance criterion.",
+      "Invent or normalize tolerance values not established by the frozen authority chain.",
+      "Claim that numerical convergence alone authorizes commit or guarantees whole-model mass closure.",
+      "Generalize historical nonconverged-continue behavior into the canonical transaction contract.",
+      "Change production source, reference source, tests, scientific semantics or qualification thresholds."
+    ]
+  },
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "qualification_tolerance_change": false,
+    "documentation_only": true
+  },
+  "next_permitted_action": "Create the F-DOC25 authority matrix and update the Richards numerical reference only within the acquired claim ceiling. Then run documentation qualification before admission.",
+  "verdict": "PASS_ACQUIRE"
+}
