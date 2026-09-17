@@ -1,0 +1,112 @@
+freeze:
+  id: PUB-GC-NEXT-PRIMARY-FREEZE-v1
+  owner: PUB-GC
+  status: REFERENCE_AND_COMPARATOR_READY_CASE_MATRIX_MATERIALIZATION_PENDING
+  purpose: >-
+    Reconcile completed E1 and GC-REF-A evidence and freeze the rules for the next genuinely
+    independent whole-window/coupling-convergence primary tranche without reusing E1 outcomes
+    to choose favorable cases.
+  branch: research/phd-five-paper-manifests-20260918
+
+completed_prospective_evidence:
+  E1_primary:
+    branch: research/pub-gc-e1-primary-run
+    head: 936312659522fe4cacfd349b146d173caa07e5ab
+    workflow_run: 35287247968
+    workflow_job: 105422209812
+    conclusion: success
+    artifact_id: 10524847570
+    artifact_sha256: 0370c5a17033d789e60576a4a0253a8edf3c50dba1b4ab4244a468fa05ccfab6
+    artifact_name: pub-gc-e1-primary-936312659522fe4cacfd349b146d173caa07e5ab
+    role: PROSPECTIVE_PRIMARY_ALREADY_EXECUTED
+    rule: Do not rerun E1 with altered candidates and present the new outcome as the original primary result.
+  GC_REF_A:
+    branch: research/pub-gc-gc-ref-a
+    head: 4fc8f6e2a7569503594d0ecf91b651431c607df2
+    workflow_run: 35288524091
+    workflow_job: 105426089799
+    conclusion: success
+    artifact_id: 10525965011
+    artifact_sha256: a6caaa3f32b2def358d8760fc86d073e423688ca47b35e09b775e7228a3d6136
+    artifact_name: pub-gc-gc-ref-a-4fc8f6e2a7569503594d0ecf91b651431c607df2
+    source_test_blob: 28003b2bb64227d4ab09bdbd38b22e5a97d80fd0
+    role: QUALIFIED_REFERENCE_ORACLE_INFRASTRUCTURE
+    nonclaim: Qualification does not itself establish H2/H3 primary convergence evidence.
+  E2_terminal_comparator:
+    branch: research/pub-gc-e2-terminal-comparator
+    head: 188c863f560d8adacf255edb4f6f83edcac798f3
+    workflow_run: 35287826254
+    conclusion: success
+    role: QUALIFIED_COMPARATOR_INFRASTRUCTURE_ONLY
+
+GW_A_authority:
+  specification_blob: db32ce312f946876954d23964346e371426b141e
+  decision_blob: ba066e2b6b6cfefc77578155ddabbb09e3376430
+  reference_case:
+    duration_day: 0.03
+    base_head_cm: -80.0
+    Sy: 0.2
+    area_m2: 1.0
+  rule: New primary cases must use the same analytic storage law and transaction semantics.
+
+next_primary_tranche:
+  id: GC-E2E3-PRIMARY-A
+  scientific_questions:
+    - Does whole-window integrated exchange outperform a terminal-flux surrogate on new transient stress cases at matched subsystem physics?
+    - Does the accepted coupled solution approach GC-REF as the coupling window is refined?
+  required_new_case_classes:
+    - recharge_or_wetting_pulse_with_intra_window_flux_evolution
+    - capillary_or_drying_transition_with_sign_or_magnitude_change_in_lower_boundary_exchange
+  case_selection_rule: >-
+    Materialize exactly one case from each class using the existing qualified Reference SWAP
+    response surface. Case selection may use forcing shape, groundwater depth and expected
+    qualitative mechanism, but may not use observed M0/M1/M2/M3 ranking or terminal-versus-whole
+    error because those are the primary outcomes.
+  minimum_methods:
+    - GC-M0 loose sequential baseline
+    - GC-M1 terminal-flux exchange comparator
+    - GC-M2 restricted same-origin predictor/corrector
+  add_when_qualified:
+    - GC-M3 converged same-origin fixed point
+    - GC-M4 fair literature-aligned relaxed comparator
+  prohibited:
+    - response_or_tangent_acceleration
+    - RossFast_specific_solver_claim
+    - N_to_1_hydrologic_value_claim
+
+window_design:
+  rule: >-
+    For each newly materialized case, freeze a four-level coupling-window ladder before primary
+    execution. Levels must span one clearly fine/reference-like window, two intermediate windows
+    and one deliberately stressful but still executable window.
+  selection_firewall: >-
+    Screening may establish executability only. It may not inspect comparative primary errors
+    and then move a window level to improve a preferred method.
+
+GC_REF:
+  construction: >-
+    Same accepted origin, analytic GW-A, strict same-origin outer solve and a fine window.
+    Repeat with one further window refinement. Reference is stable only if groundwater head,
+    whole-window exchange and selected SWAP state metrics change below their separately frozen
+    reference-stability limits.
+  current_oracle: GC-REF-A qualifies the root/reconstruction machinery, not the final stress-case references.
+
+primary_endpoints:
+  - groundwater_head_error_vs_GC_REF
+  - cumulative_whole_window_exchange_error_vs_GC_REF
+  - selected_SWAPP_state_or_storage_error_vs_GC_REF
+  - hard_action_reaction_residual
+  - failure_or_window_reduction_count
+  aggregation: Conjunctive accuracy classification; no weighted score may hide a failed component.
+
+current_blockers:
+  - Exact recharge-pulse stress case input/forcing/state fingerprint not yet materialized.
+  - Exact capillary/drying-transition stress case input/forcing/state fingerprint not yet materialized.
+  - Four-level window ladders are not yet frozen for those new cases.
+  - GC-M3 and GC-M4 are not yet both available as fair primary comparators.
+
+next_permitted_action:
+  - Build screening-only case materializer for the two declared mechanism classes.
+  - Persist exact case/input/forcing/state digests without running comparative primary methods.
+  - Freeze each four-level window ladder.
+  - Then create immutable PROSPECTIVE_PRIMARY manifests for GC-E2E3-PRIMARY-A.
