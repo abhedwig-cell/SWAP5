@@ -44,8 +44,19 @@ contains
 
     bare_demand = pmdirect_result%potential_soil_evaporation_cm_per_day
     ponded_demand = pmdirect_result%potential_pond_evaporation_cm_per_day
-    if (.not. ieee_is_finite(bare_demand) .or. .not. ieee_is_finite(ponded_demand) .or. &
-        bare_demand < 0.0_real64 .or. ponded_demand < 0.0_real64) then
+    if (.not. ieee_is_finite(bare_demand)) then
+      diagnostics%status = FMR_PMDIRECT_SURFACE_DEMAND_INVALID_DEMAND
+      return
+    end if
+    if (.not. ieee_is_finite(ponded_demand)) then
+      diagnostics%status = FMR_PMDIRECT_SURFACE_DEMAND_INVALID_DEMAND
+      return
+    end if
+    if (bare_demand < 0.0_real64) then
+      diagnostics%status = FMR_PMDIRECT_SURFACE_DEMAND_INVALID_DEMAND
+      return
+    end if
+    if (ponded_demand < 0.0_real64) then
       diagnostics%status = FMR_PMDIRECT_SURFACE_DEMAND_INVALID_DEMAND
       return
     end if
