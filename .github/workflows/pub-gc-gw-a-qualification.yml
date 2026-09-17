@@ -1,0 +1,42 @@
+name: PUB-GC GW-A qualification
+
+on:
+  push:
+    branches:
+      - research/pub-gc-gw-a
+    paths:
+      - 'tests/publication/pub_gc/gw_a/**'
+      - '.github/workflows/pub-gc-gw-a-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-gw-a:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run analytic GW-A qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-GW-A
+          bash tests/publication/pub_gc/gw_a/run_pub_gc_gw_a_qualification.sh \
+            | tee artifacts/PUB-GC-GW-A/qualification.log
+
+      - name: Upload qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-gw-a-qualification-${{ github.sha }}
+          path: artifacts/PUB-GC-GW-A/qualification.log
+          if-no-files-found: error
+          retention-days: 90
