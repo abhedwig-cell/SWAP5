@@ -87,7 +87,9 @@ for token in ['compose_fmr_qbot_drainage_sink_direction', 'dq_dgroundwater_level
               'lagged-start-gwl-to-bottom-lumped-drainage-direction']:
     assert token in binding, token
 for token in ['sink_direction(i) - source_direction(i)', 'incoming_sink_direction',
-              'source_sink_direction_covered = allocated(direction_request%incoming_source_direction) .or.']:
+              'direction_result%source_sink_direction_covered = &',
+              'allocated(direction_request%incoming_source_direction) .or. &',
+              'allocated(direction_request%incoming_sink_direction)']:
     assert token in service, token
 for token in ['drainage_qbot_smooth_freatic_projection', 'compose_fmr_qbot_drainage_sink_direction',
               'direction_request%incoming_sink_direction', 'project_fmr_qbot_smooth_groundwater_level',
