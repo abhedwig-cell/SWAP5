@@ -120,8 +120,7 @@ program test_pub_gc_e1_primary_engine
        'same cross-sequence C')
 
   do seq = 1, 2
-    call evaluate_history_sequence(seq, seq_heads(seq,:), hist_result(seq,:), hist_diag(seq,:), hist_state(seq,:), &
-         hist_gw_head(seq,:), hist_gw_residual(seq,:), head_a)
+    call evaluate_history_sequence(seq, head_a)
   end do
 
   call origin%snapshot(origin_after, available)
@@ -207,31 +206,31 @@ contains
     call require(.not. candidate%ready(), 'candidate discard')
   end subroutine evaluate_from_committed
 
-  subroutine evaluate_history_sequence(sequence_id, heads, results, diagnostics, states, gw_heads, gw_residuals, base_head)
+  subroutine evaluate_history_sequence(sequence_id, base_head)
     integer, intent(in) :: sequence_id
-    real(real64), intent(in) :: heads(4), base_head
-    type(kernel_result_t), intent(out) :: results(4)
-    type(kernel_diagnostics_t), intent(out) :: diagnostics(4)
-    type(state_holder_t), intent(out) :: states(4)
-    real(real64), intent(out) :: gw_heads(4), gw_residuals(4)
+    real(real64), intent(in) :: base_head
     type(kernel_committed_state_t) :: carriers(3)
     type(kernel_checkpoint_t) :: checkpoints(3)
     integer :: j
     logical :: init_ok
     integer(int64) :: lineage
 
-    call evaluate_from_committed(origin, origin_checkpoint, heads(1), results(1), diagnostics(1), states(1)%state)
-    call evaluate_gw_same_checkpoint(results(1), heads(1), base_head, gw_heads(1), gw_residuals(1))
+    call evaluate_from_committed(origin, origin_checkpoint, seq_heads(sequence_id,1), &
+         hist_result(sequence_id,1), hist_diag(sequence_id,1), hist_state(sequence_id,1)%state)
+    call evaluate_gw_same_checkpoint(hist_result(sequence_id,1), seq_heads(sequence_id,1), base_head, &
+         hist_gw_head(sequence_id,1), hist_gw_residual(sequence_id,1))
     do j = 2, 4
       lineage = 831000_int64 + int(sequence_id*10+j, int64)
-      call carriers(j-1)%initialize(lineage, states(j-1)%state, init_ok, initial_time=t0)
+      call carriers(j-1)%initialize(lineage, hist_state(sequence_id,j-1)%state, init_ok, initial_time=t0)
       call require(init_ok .and. carriers(j-1)%ready(), 'history carrier initialize')
       call require(carriers(j-1)%current_revision() == 0_int64, 'history carrier revision zero')
       call fmr_capture_checkpoint(carriers(j-1), checkpoints(j-1), init_ok)
       call require(init_ok .and. checkpoints(j-1)%ready(), 'history checkpoint')
-      call evaluate_from_committed(carriers(j-1), checkpoints(j-1), heads(j), results(j), diagnostics(j), states(j)%state)
+      call evaluate_from_committed(carriers(j-1), checkpoints(j-1), seq_heads(sequence_id,j), &
+           hist_result(sequence_id,j), hist_diag(sequence_id,j), hist_state(sequence_id,j)%state)
       call require(carriers(j-1)%current_revision() == 0_int64, 'history carrier mutated')
-      call evaluate_gw_same_checkpoint(results(j), heads(j), base_head, gw_heads(j), gw_residuals(j))
+      call evaluate_gw_same_checkpoint(hist_result(sequence_id,j), seq_heads(sequence_id,j), base_head, &
+           hist_gw_head(sequence_id,j), hist_gw_residual(sequence_id,j))
     end do
   end subroutine evaluate_history_sequence
 
