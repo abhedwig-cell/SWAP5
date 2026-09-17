@@ -2,186 +2,119 @@
 
 ## Purpose
 
-PUB-P1E01 freezes the first evidence map for Paper 1 without inventing missing comparisons. The goal is to distinguish evidence that already compares a qualified scientific reference with a migrated successor from evidence that proves only one side of that comparison.
+PUB-P1E01 freezes the first evidence map for Paper 1 without inventing missing comparisons. It distinguishes paired legacy/successor preservation evidence from reference-only evidence, successor-only production evidence and architectural probes.
 
-This is a publication-evidence inventory, not a new scientific qualification layer. Existing canonical qualification remains authoritative.
+This is a publication-evidence inventory. Existing canonical qualification remains authoritative.
 
 ## Inclusion rule
 
-A case may enter the final cross-migration preservation matrix only when all of the following are pinned:
+A result may enter the final cross-migration preservation matrix only when its exact authorities, physical comparison, metric and tolerance or identity rule are pinned. Missing values remain missing; a useful legacy test or a successful current test is not automatically a legacy-versus-successor preservation result.
 
-1. exact reference authority;
-2. exact successor authority;
-3. same physical question or a documented transformation between representations;
-4. machine-readable comparison metric;
-5. declared tolerance or exact-identity rule;
-6. no unresolved expected-difference classification that would invalidate the comparison.
+## P1-Q01: corrected-reference shield
 
-A useful legacy case is not automatically a publication preservation case. Likewise, a successful current SWAP5 test is not automatically a legacy-equivalence result.
+**Status:** `REFERENCE_AUTHORITY_QUALIFIED`
 
-## Evidence classes
+The VQ reference chain supplies the immutable audit baseline and corrected numerical/behavioural oracle. It belongs in the methods/provenance argument, but does not by itself prove current SWAP5 whole-run equivalence.
 
-### P1-Q01: corrected-reference identity and control edges
+Primary authorities include `docs/verification/vq-1-integration.md`, `docs/verification/reference-baselines.md` and `docs/verification/legacy-differences.md`.
 
-**Role:** reference shield evidence.
+## P1-Q02: restricted Hupsel PMdirect process migration
 
-**Current status:** `REFERENCE_AUTHORITY_QUALIFIED`.
+**Status:** `QUALIFIED_REFERENCE_SUCCESSOR_PROCESS_PAIR`
 
-The VQ reference chain establishes an immutable audit baseline and a corrected numerical/behavioural oracle. Broad control edges include the official grass-growth trajectory and Hupsel balance outputs, with explicit caveats about compiler/runtime portability and rounded legacy balance precision.
+F-APP03 is currently the strongest explicit paired migration example. Against the exact legacy source oracle it covers 384 daily and 14,062 interval records, including positive-interception paths, with zero mismatches and reported maximum absolute errors of `5.55e-17` daily and `1.11e-16` at interval level.
 
-**Use in Paper 1:** methods and provenance of the executable reference shield.
+This supports a restricted process-level behaviour-preservation claim. It is not whole-Hupsel equivalence and must not be generalized to application/runtime composition.
 
-**Not sufficient for:** claiming that current SWAP5 reproduces these full trajectories. A current successor comparison must be pinned separately.
+Primary authority: PR #178 and its F-APP03 qualification evidence.
 
-Primary authorities:
+## P1-Q03: transactional state semantics
 
-- `docs/verification/vq-1-integration.md`
-- `docs/verification/reference-baselines.md`
-- `docs/verification/legacy-differences.md`
+**Status:** `PARTIAL_CURRENT_PRODUCTION_EVIDENCE`
 
-### P1-Q02: restricted Hupsel SWETR=0 PMdirect process migration
+Historical TX/TIME verifier work remains useful for method history but is not counted as production evidence where it explicitly did not execute production physics.
 
-**Role:** process-level behaviour-preserving migration evidence.
+Current canonical evidence is stronger and more specific:
 
-**Current status:** `QUALIFIED_REFERENCE_SUCCESSOR_PROCESS_PAIR`.
+- F-KT22 executes the real serialized Reference backend and proves that work from a discarded full trial is absent from accepted trajectory publication. It also proves that requesting accepted-trajectory diagnostics does not change the accepted physical candidate or mass accounting in that fixture.
+- FMR44R executes the real Reference/HeadCalc production route with prescribed bottom flux. Accepted cases require hard mass closure and `final_revision == 1`, giving direct restricted-route evidence for exactly one external commit.
+- The FMR44R positive-qbot case uses a duration of `1.0e-4 day` and commits through production physics, providing direct evidence that the core runtime is not restricted to day-sized steps. Its equilibrium case uses `0.25 day`.
+- FVQ75 independently replays the admitted FMR44R capability and rechecks mass residual, positive transfer closure and the temporal certificate.
+- FMR44R also proves a nearby unsupported bottom mode fails closed with revision unchanged and no solver execution. That is useful pre-solver rejection evidence, but it is not post-solver rollback evidence.
 
-F-APP03 qualified one restricted PMdirect process route against the exact legacy source oracle. Its reported comparison covers 384 daily and 14,062 interval records, including positive-interception routes, with zero mismatches and errors at floating-point roundoff scale.
+The machine-readable claim-by-claim classification is in `docs/publication/P1_TRANSACTION_EVIDENCE_MAP.json`.
 
-This is valid evidence that one scientific process family was extracted into a typed process without changing the qualified process behaviour.
+### Transaction claims already supportable
 
-**Boundary:** this is not whole-Hupsel equivalence and must not be presented as such. Runtime/application composition belongs to later F-APP work.
+Within the exact restricted Reference fixtures, Paper 1 can now support:
 
-Primary authority:
+1. accepted production intervals can commit exactly once;
+2. accepted production intervals satisfy the hard mass gate;
+3. non-day step durations execute through real production physics;
+4. unsupported requests can fail before solver execution without advancing committed revision;
+5. discarded trial diagnostic work can be excluded from accepted publication.
 
-- PR #178 and `integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json` when present on the admitted lineage.
+### Transaction claims still requiring focused evidence
 
-### P1-Q03: transactional state semantics
+Paper 1 should not yet claim generally that:
 
-**Role:** test H2, committed physical state is distinct from rejected trial history.
+1. a physically executed trial that is subsequently rejected leaves the committed water state exactly unchanged;
+2. water transfers from such a rejected physical trial are proven absent from committed totals by a dedicated production fault-injection test;
+3. checkpoint -> run -> restore -> rerun is explicitly identical on the selected production publication fixture;
+4. changing numerical warm-start state leaves accepted physical output unchanged within a preregistered tolerance.
 
-**Current status:** `PARTIAL_CURRENT_PRODUCTION_EVIDENCE`.
+The old `TX-WARM-01` verifier case is synthetic and therefore does not close the warm-start claim.
 
-Canonical verification terminology defines rollback, commit, accounting, rerun, boundary replay, warm-start and generic-time cases. Historical VQ work also records the important distinction between synthetic verifier-harness evidence and production-physics qualification.
+## P1-Q04: prescribed-bottom-flux temporal production route
 
-There is now a stronger current production anchor. The canonical F-KT22 serialized runtime gate executes the real Reference production backend under a full-versus-two-half temporal path. It explicitly checks that work performed for the discarded full trial remains diagnostic-only and is absent from accepted-route publication. It also snapshots the two accepted physical candidates and requires their physical state and mass accounting to remain bit-identical when accepted-trajectory diagnostics are enabled versus disabled. The F-ROSS12 current-canonical qualification replayed this F-KT22 production runtime gate successfully after the alternative-solver dependency graph was present.
+**Status:** `QUALIFIED_SUCCESSOR_ONLY`
 
-This is publication-relevant production evidence for two points:
+FMR44R and FVQ75 supply useful current production evidence for explicit temporal and conservation semantics. FVQ75 independently replays the route and checks hard mass residual, positive transfer closure and a bounded temporal certificate.
 
-1. rejected trial work can exist without contaminating the published accepted trajectory;
-2. adding accepted-route diagnostic/tangent work does not alter the accepted physical candidate or mass accounting in that fixture.
-
-It is **not yet the entire six-property transaction proof** required by Paper 1.
-
-Current publication rule:
-
-- synthetic or harness-only TX/TIME evidence may document method development;
-- current F-KT22 production evidence may support rejected-trial isolation and physical-identity claims within its exact fixture;
-- each remaining Paper 1 TX/TIME property must be rebound to an exact current production route and immutable qualification artifact before being claimed generally.
-
-Evidence still to pin or add:
-
-- rejected terminal/retry trial leaves the committed physical state itself unchanged, not only accepted-route publication;
-- accepted endpoint commits exactly once;
-- rejected-trial water accounting never enters committed totals across a real retry path;
-- same committed state replays consistently through a real retry path;
-- warm-start variation does not alter accepted physical result outside tolerance;
-- selected non-day/non-midnight interval evidence on current production physics.
+This remains successor-only evidence until a matching legacy-side comparison is selected. It therefore cannot populate a legacy-to-successor deviation cell by itself.
 
 Primary current authorities:
 
-- `tests/fkt/run_fkt22_fmr_runtime_gate.sh`
-- `tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90`
-- `integration/f-ross/F-ROSS12_STATUS.json` for the later current-canonical replay context.
+- `tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90`
+- `tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh`
+- `tests/fvq/run_fvq75_prescribed_qbot_temporal_runtime_independent.sh`
 
-### P1-Q04: prescribed-bottom-flux temporal runtime qualification
+## P1-Q05: RossFast surgical substitution
 
-**Role:** current production evidence for explicit temporal/conservation semantics.
+**Status:** `QUALIFIED_ARCHITECTURAL_PROBE`
 
-**Current status:** `QUALIFIED_SUCCESSOR_ONLY`.
+F-ROSS12 shows that an alternative soil-water solver can be selected behind the existing solver seam while the surrounding production transaction architecture remains owner. This is useful for Paper 1 only as evidence of architectural separability.
 
-FVQ75 independently replays the prescribed-qbot production route and checks, among other things, mass residual, positive transfer closure and a bounded temporal certificate. This is useful successor evidence that generic transaction/runtime properties exist in real production code.
+It is `PUB_SHARED_INFRASTRUCTURE` relative to Paper 2. Paper 1 must not use it to claim RossFast accuracy, scientific admissibility, speed or preference.
 
-**Boundary:** FVQ75 is not itself a legacy-versus-successor comparison and therefore cannot populate a cross-migration deviation cell without a matching reference-side experiment.
+## P1-Q06: full legacy application trajectory through typed adapters
 
-Primary authority:
+**Status:** `NOT_YET_FROZEN_FOR_PUBLICATION`
 
-- `tests/fvq/run_fvq75_prescribed_qbot_temporal_runtime_independent.sh` and its admitted qualification lineage.
+Restricted process preservation does not prove complete file-driven application preservation. A Paper 1 end-to-end case must pin both the exact legacy application authority and the exact current typed application composition, then compare the complete trajectory under a declared rule.
 
-### P1-Q05: RossFast surgical substitution
+This remains one of the main empirical gaps.
 
-**Role:** architectural consequence, not scientific solver-comparison result.
+## Frozen evidence set
 
-**Current status:** `QUALIFIED_ARCHITECTURAL_PROBE`.
+| ID | Scope | Current publication role |
+| --- | --- | --- |
+| P1-Q01 | corrected reference shield | methods/provenance |
+| P1-Q02 | restricted Hupsel PMdirect | paired process-preservation evidence |
+| P1-Q03 | transaction semantics | partial production evidence; focused gaps remain |
+| P1-Q04 | prescribed-qbot Reference runtime | successor-only production evidence |
+| P1-Q05 | alternative solver substitution | architectural probe/shared infrastructure |
+| P1-Q06 | full file-driven application trajectory | open end-to-end preservation gap |
 
-F-ROSS12 proves that an alternative soil-water solver can execute through the existing production transaction lifecycle and solver seam without changing the transaction ABI, legacy input grammar or Reference physics. Unsupported conditions fail before commit and there is no silent fallback to Reference.
+The machine-readable preservation matrix is `docs/publication/p1-preservation-matrix.json`. Unavailable measurements remain `null` or explicitly non-comparable and are never converted to zero.
 
-**Use in Paper 1:** evidence for architectural separability, H3.
+## Minimum new Paper 1 executions
 
-**Publication class:** `PUB_SHARED_INFRASTRUCTURE` with respect to Paper 2.
+The evidence inventory now narrows the next empirical work substantially. The minimum targeted additions are:
 
-**Forbidden P1 inference:** no statement about RossFast scientific equivalence, speed, admissibility domain or preferred use.
+1. one production post-solver rejection experiment that snapshots committed state and revision before and after rejection and verifies rejected water transfer is absent from committed mass totals;
+2. one explicit checkpoint -> run -> restore -> rerun production identity experiment if existing immutable evidence cannot be promoted safely;
+3. one production warm-start perturbation experiment;
+4. one exact end-to-end legacy-file versus typed-application trajectory comparison for P1-Q06.
 
-Primary authority:
-
-- `integration/f-ross/F-ROSS12_STATUS.json`
-
-### P1-Q06: full legacy application trajectory through current typed adapters
-
-**Role:** end-to-end evidence for the claim that substantial structural migration preserves a complete file-driven scientific run.
-
-**Current status:** `NOT_YET_FROZEN_FOR_PUBLICATION`.
-
-At the PUB-P1E01 checkpoint, restricted process-level Hupsel evidence exists, but the publication register must not infer whole-Hupsel equivalence from that. A candidate end-to-end case may enter only after the exact current application-composition authority and its reference comparison are admitted and pinned.
-
-This is an important gap because process-level exactness alone does not demonstrate preservation across the complete migrated application boundary.
-
-## Provisional matrix structure
-
-The publication matrix will use the following columns:
-
-```text
-case_id
-scientific_scope
-reference_authority
-successor_authority
-comparison_level
-state_metric
-state_result
-integrated_top_flux_metric
-integrated_top_flux_result
-integrated_bottom_flux_metric
-integrated_bottom_flux_result
-mass_metric
-mass_result
-expected_difference_class
-tolerance_or_identity_rule
-verdict
-limitations
-publication_role
-```
-
-Missing measurements remain null or `NOT_COMPARABLE`. They must never be converted to zero.
-
-## First frozen set
-
-| ID | Scope | Reference | Successor | Current publication status |
-| --- | --- | --- | --- | --- |
-| P1-Q01 | corrected reference shield | qualified | n/a | methods/provenance only |
-| P1-Q02 | restricted Hupsel PMdirect process | exact legacy oracle | typed process | qualified paired process evidence |
-| P1-Q03 | transaction semantics | semantic contract | current F-KT22 proves part of the production semantics | partial production evidence, targeted closure remains |
-| P1-Q04 | prescribed-qbot temporal runtime | no paired legacy result yet | qualified current route | successor-only evidence |
-| P1-Q05 | solver substitution architecture | Reference lifecycle | RossFast through same lifecycle | architectural probe only |
-| P1-Q06 | full legacy application trajectory | candidate legacy case | current typed application path | not yet frozen |
-
-## Why this set is intentionally uneven
-
-A publication qualification set should reflect what is actually proven, not create symmetry by assumption. P1-Q01 and P1-Q04 therefore remain one-sided evidence classes. P1-Q02 is currently the strongest explicit paired scientific migration result. P1-Q03 now has real current production evidence, but only for a subset of the intended transaction claims. P1-Q06 remains open rather than borrowing a process-level result to make an end-to-end claim.
-
-## Next permitted P1E01 actions
-
-1. classify the remaining transaction properties as production-proven, harness-only or missing, using current canonical evidence only;
-2. locate the latest admitted application-composition evidence relevant to P1-Q06;
-3. update the machine-readable matrix without converting absent comparisons into synthetic values;
-4. only after those steps decide the minimum new executions needed for publication.
-
-No production or reference source change is permitted within PUB-P1E01 merely to make the matrix look complete.
+These should be separate publication experiments. Production or reference source must not be modified merely to force a complete-looking matrix.
