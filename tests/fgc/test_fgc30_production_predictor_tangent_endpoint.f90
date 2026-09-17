@@ -2,16 +2,16 @@ program test_fgc30_production_predictor_tangent_endpoint
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_new_b110_committed_state
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -40,8 +40,10 @@ program test_fgc30_production_predictor_tangent_endpoint
   implicit none
 
   real(real64), parameter :: h0 = -75.0_real64
-  real(real64), parameter :: duration = 0.25_real64
+  real(real64), parameter :: duration = 1.0e-4_real64
   real(real64), parameter :: mass_tolerance = 1.0e-12_real64
+  real(real64), parameter :: qualification_head_budget = 1.0e-5_real64
+  real(real64), parameter :: predictor_qbot = 1.0e-6_real64
   real(real64), parameter :: fd_eps = 1.0e-4_real64
   integer(int64), parameter :: column_id = 530030_int64
 
@@ -64,7 +66,7 @@ program test_fgc30_production_predictor_tangent_endpoint
   type(kernel_candidate_state_t) :: predictor_candidate
   type(kernel_diagnostics_t) :: predictor_diagnostics
   type(fixed_flux_top_boundary_provider_t), target :: top
-  real(real64) :: k0, qeq, fd_derivative, derivative_scale
+  real(real64) :: qeq, fd_derivative, derivative_scale
   real(real64) :: q_swap_m_per_s, q_groundwater_m_per_s, comparison_scale
   integer :: status, flux_status
 
@@ -72,8 +74,7 @@ program test_fgc30_production_predictor_tangent_endpoint
   call initialize_column_and_template(column, template)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, parameters%cofgen)
   call bind_b110_default_mvg_provider(constitutive, hydraulic_parameters, duration)
-  call determine_initial_conductivity(constitutive, k0)
-  qeq = -k0
+  qeq = predictor_qbot
 
   call run_production_candidate(qeq, .true., predictor_result, predictor_candidate, predictor_diagnostics)
   call require(predictor_result%status == CANONICAL_STATUS_COMPLETED .and. predictor_result%completed, &
@@ -251,7 +252,7 @@ contains
     template_value%state_layout_id = 530004_int64
     template_value%solver_interface_id = 530005_int64
     template_value%optional_state_layout_id = 0_int64
-    template_value%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
+    template_value%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     template_value%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
 
     column_value%column_id = column_id
@@ -262,17 +263,6 @@ contains
     column_value%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
   end subroutine initialize_column_and_template
 
-  subroutine determine_initial_conductivity(provider, conductivity0)
-    type(b110_default_mvg_provider_t), intent(in) :: provider
-    real(real64), intent(out) :: conductivity0
-    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-
-    heads = h0
-    call provider%evaluate(heads, water, conductivity, capacity, dkdh)
-    conductivity0 = conductivity(numnod)
-    call require(conductivity0 > 0.0_real64 .and. ieee_is_finite(conductivity0), &
-         'initial bottom conductivity finite positive')
-  end subroutine determine_initial_conductivity
 
   subroutine initialize_forcing(value, bottom_flux)
     type(fmr_b110_physical_forcing_t), intent(out) :: value
@@ -293,15 +283,15 @@ contains
     type(canonical_numerical_config_t), intent(out) :: config
     logical, intent(in) :: request_trajectory
 
-    config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
-    config%transaction%temporal_tolerance = 1.0e-6_real64
+    config%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    config%transaction%temporal_tolerance = 0.0_real64
     config%transaction%mass_tolerance = mass_tolerance
     config%transaction%retry_scale = 0.5_real64
     config%transaction%max_retries = 8
     config%max_committed_substeps = 32
     config%progress_tolerance = 0.0_real64
-    config%model_temporal_indicator_budget_available = .false.
-    config%model_temporal_indicator_budget = 0.0_real64
+    config%model_temporal_indicator_budget_available = .true.
+    config%model_temporal_indicator_budget = qualification_head_budget
     config%accepted_trajectory_direction%requested = request_trajectory
     config%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_FLUX
   end subroutine initialize_config
@@ -311,8 +301,13 @@ contains
     logical, intent(out) :: initialized
     type(fmr_b110_physical_state_t) :: state
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+    real(real64) :: accepted_predecessor_right_derivative(numnod)
+    integer :: i
 
-    heads = h0
+    heads(1) = h0
+    do i = 2, numnod
+      heads(i) = heads(i-1) + parameters%node_distance(i)
+    end do
     call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
     state%active_nodes = numnod
     allocate(state%pressure_head(numnod), state%water_content(numnod))
@@ -320,7 +315,9 @@ contains
     state%water_content = water
     state%ponding_depth = 0.0_real64
     state%groundwater_level = -2.0_real64
-    call fmr_new_b110_committed_state(committed, column_id, state, 0.0_real64, initialized)
+    accepted_predecessor_right_derivative = 0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(committed, column_id, state, 0.0_real64, initialized, &
+         accepted_predecessor_right_derivative)
   end subroutine initialize_committed
 
   subroutine run_production_candidate(bottom_flux, request_trajectory, result, candidate, diagnostics)
@@ -365,7 +362,7 @@ contains
     call candidate%snapshot(snapshot, available)
     call require(available .and. allocated(snapshot), 'candidate snapshot available')
     select type (typed => snapshot)
-    type is (fmr_b110_physical_state_t)
+    class is (fmr_b110_physical_state_t)
       state%active_nodes = typed%active_nodes
       allocate(state%pressure_head(typed%active_nodes), state%water_content(typed%active_nodes))
       state%pressure_head = typed%pressure_head
@@ -470,9 +467,12 @@ contains
     real(real64), intent(in) :: bottom_flux
     type(modflow6_prescribed_qbot_bottom_face_t), intent(out) :: face
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), reserved(numnod)
-    integer :: face_status
+    integer :: face_status, i
 
-    heads = h0
+    heads(1) = h0
+    do i = 2, numnod
+      heads(i) = heads(i-1) + parameters%node_distance(i)
+    end do
     call constitutive%evaluate(heads, water, conductivity, capacity, reserved)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod), conductivity(numnod), bottom_flux, &
          0.5_real64*parameters%dz(numnod), datum, face, face_status)
