@@ -59,24 +59,39 @@ Primary authority:
 
 **Role:** test H2, committed physical state is distinct from rejected trial history.
 
-**Current status:** `CONTRACT_STRONG_PRODUCTION_BUNDLE_INCOMPLETE`.
+**Current status:** `PARTIAL_CURRENT_PRODUCTION_EVIDENCE`.
 
-Canonical verification terminology already defines rollback, commit, accounting, rerun, boundary replay, warm-start and generic-time cases. Historical VQ work also records the important distinction between synthetic verifier-harness evidence and production-physics qualification.
+Canonical verification terminology defines rollback, commit, accounting, rerun, boundary replay, warm-start and generic-time cases. Historical VQ work also records the important distinction between synthetic verifier-harness evidence and production-physics qualification.
+
+There is now a stronger current production anchor. The canonical F-KT22 serialized runtime gate executes the real Reference production backend under a full-versus-two-half temporal path. It explicitly checks that work performed for the discarded full trial remains diagnostic-only and is absent from accepted-route publication. It also snapshots the two accepted physical candidates and requires their physical state and mass accounting to remain bit-identical when accepted-trajectory diagnostics are enabled versus disabled. The F-ROSS12 current-canonical qualification replayed this F-KT22 production runtime gate successfully after the alternative-solver dependency graph was present.
+
+This is publication-relevant production evidence for two points:
+
+1. rejected trial work can exist without contaminating the published accepted trajectory;
+2. adding accepted-route diagnostic/tangent work does not alter the accepted physical candidate or mass accounting in that fixture.
+
+It is **not yet the entire six-property transaction proof** required by Paper 1.
 
 Current publication rule:
 
 - synthetic or harness-only TX/TIME evidence may document method development;
-- it may not serve as the primary empirical proof of production transaction semantics;
-- each selected Paper 1 TX/TIME result must be rebound to an exact current production route and immutable qualification artifact.
+- current F-KT22 production evidence may support rejected-trial isolation and physical-identity claims within its exact fixture;
+- each remaining Paper 1 TX/TIME property must be rebound to an exact current production route and immutable qualification artifact before being claimed generally.
 
-Evidence still to pin:
+Evidence still to pin or add:
 
-- rejected real trial leaves committed physical state unchanged;
+- rejected terminal/retry trial leaves the committed physical state itself unchanged, not only accepted-route publication;
 - accepted endpoint commits exactly once;
-- rejected-trial fluxes never enter committed totals;
-- same committed state replays consistently;
+- rejected-trial water accounting never enters committed totals across a real retry path;
+- same committed state replays consistently through a real retry path;
 - warm-start variation does not alter accepted physical result outside tolerance;
-- selected non-day/non-midnight interval evidence on production physics.
+- selected non-day/non-midnight interval evidence on current production physics.
+
+Primary current authorities:
+
+- `tests/fkt/run_fkt22_fmr_runtime_gate.sh`
+- `tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90`
+- `integration/f-ross/F-ROSS12_STATUS.json` for the later current-canonical replay context.
 
 ### P1-Q04: prescribed-bottom-flux temporal runtime qualification
 
@@ -153,20 +168,20 @@ Missing measurements remain null or `NOT_COMPARABLE`. They must never be convert
 | --- | --- | --- | --- | --- |
 | P1-Q01 | corrected reference shield | qualified | n/a | methods/provenance only |
 | P1-Q02 | restricted Hupsel PMdirect process | exact legacy oracle | typed process | qualified paired process evidence |
-| P1-Q03 | transaction semantics | semantic contract | production bundle incomplete | gap, targeted closure required |
+| P1-Q03 | transaction semantics | semantic contract | current F-KT22 proves part of the production semantics | partial production evidence, targeted closure remains |
 | P1-Q04 | prescribed-qbot temporal runtime | no paired legacy result yet | qualified current route | successor-only evidence |
 | P1-Q05 | solver substitution architecture | Reference lifecycle | RossFast through same lifecycle | architectural probe only |
 | P1-Q06 | full legacy application trajectory | candidate legacy case | current typed application path | not yet frozen |
 
 ## Why this set is intentionally uneven
 
-A publication qualification set should reflect what is actually proven, not create symmetry by assumption. P1-Q01 and P1-Q04 therefore remain one-sided evidence classes. P1-Q02 is currently the strongest explicit paired scientific migration result. P1-Q06 remains open rather than borrowing a process-level result to make an end-to-end claim.
+A publication qualification set should reflect what is actually proven, not create symmetry by assumption. P1-Q01 and P1-Q04 therefore remain one-sided evidence classes. P1-Q02 is currently the strongest explicit paired scientific migration result. P1-Q03 now has real current production evidence, but only for a subset of the intended transaction claims. P1-Q06 remains open rather than borrowing a process-level result to make an end-to-end claim.
 
 ## Next permitted P1E01 actions
 
-1. locate the latest admitted current production TX/TIME evidence and classify each of the six transaction properties as production-proven, harness-only or missing;
+1. classify the remaining transaction properties as production-proven, harness-only or missing, using current canonical evidence only;
 2. locate the latest admitted application-composition evidence relevant to P1-Q06;
-3. materialize a machine-readable matrix with nulls for unavailable metrics;
+3. update the machine-readable matrix without converting absent comparisons into synthetic values;
 4. only after those steps decide the minimum new executions needed for publication.
 
 No production or reference source change is permitted within PUB-P1E01 merely to make the matrix look complete.
