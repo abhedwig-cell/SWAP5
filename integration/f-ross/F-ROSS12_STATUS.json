@@ -2,17 +2,17 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS12",
   "title": "RossFast surgical Richards-solver substitution",
-  "phase": "PRODUCTION_ADMITTED_POSTIMAGE_QUALIFIED_ADMISSION_PENDING",
-  "decision": "ADMIT_F_CI96_THEN_CLOSE_F_ROSS12",
+  "phase": "CLOSED",
+  "decision": "CLOSED_AFTER_PRODUCTION_AND_POSTIMAGE_ADMISSION",
   "protocol": ["RECONCILE", "QUALIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-ross12-production-solver-selection",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+  "canonical_head": "f0673018df7b2d1a9b3350a7b2387bc486109852",
   "qualified_source_head": "00766295750aaa759821493a8bb2d3aef527b19f",
   "cleanup_head_before_checkpoint": "534fb024176a64c826c30ec7fb8cf4f1c8adb37a",
   "production_admission": {
     "source_pr": 165,
-    "source_head": "93d50e9ca87df401e8ba544aba4bc2a2463d5cf9",
+    "source_head": "93d50e349528551ff74bce3944e984e582a21b84",
     "canonical_merge": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
     "status": "ADMITTED"
   },
@@ -22,7 +22,7 @@
     "execution_host": "FMR_BACKEND_SERIALIZED_REFERENCE",
     "solver_seam": "soil_water_solver_t request/result seam inside fmr_serialized_advance",
     "old_whole_model_injected_kernel_route": "EXCLUDED_FROM_PRODUCTION_EXECUTION",
-    "post_admission_canonical_delta": "F-DOC23_AND_PRECEDING_DOCUMENTATION_GOVERNANCE_ONLY",
+    "post_admission_canonical_delta": "F-DOC23_F-DOC24_AND_GOVERNANCE_ONLY",
     "post_admission_source_or_reference_delta": false
   },
   "production_postimage": {
@@ -98,26 +98,27 @@
       "historical_and_frozen_jobs": "PASS",
       "current_restricted_canonical_preservation": "EXPECTED_STALE_AUTHORITY_FAILURE",
       "failure_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-      "classification": "Intentional production successor changed the moving dependency blob and therefore required the separate post-admission authority reconciliation now owned by F-CI96."
+      "classification": "Intentional production successor changed the moving dependency blob and therefore required the separate post-admission authority reconciliation owned by F-CI96."
     },
     "postimage_reconciliation": {
-      "qualified_head": "793cbebe71e92bb101325d81029a7447233e31f4",
-      "fci96_run_id": 35186015122,
-      "fci72_run_id": 35186015058,
-      "fci74_run_id": 35186015141,
-      "fci79_run_id": 35186015034,
-      "broad_fci_run_id": 35186015031,
+      "qualified_head": "e73ebd9a132145419b43a970305dce3d7274a217",
+      "fci96_run_id": 35186865767,
+      "fci72_run_id": 35186865727,
+      "fci74_run_id": 35186865728,
+      "fci79_run_id": 35186865854,
+      "broad_fci_run_id": 35186865676,
       "result": "PASS"
     }
   },
   "post_admission_reconciliation": {
     "workunit": "F-CI96",
     "pull_request": 168,
-    "canonical_preimage": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+    "qualified_head": "e73ebd9a132145419b43a970305dce3d7274a217",
+    "canonical_merge": "f0673018df7b2d1a9b3350a7b2387bc486109852",
     "governance_only": true,
     "production_source_change": false,
     "reference_source_change": false,
-    "status": "QUALIFIED_READY_FOR_ADMISSION"
+    "status": "ADMITTED"
   },
   "cleanup": {
     "temporary_patch_helpers_removed": [
@@ -137,9 +138,16 @@
     "source_pr": 165,
     "source_admission_commit": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
     "post_admission_reconciliation_pr": 168,
-    "governance_rebind_must_not_modify_production_source": true
+    "post_admission_reconciliation_commit": "f0673018df7b2d1a9b3350a7b2387bc486109852",
+    "governance_rebind_modified_production_source": false
   },
-  "next_permitted_action": "Re-run the path-triggered gates after this evidence-only checkpoint. If they remain green and canonical has no src/** or reference/** delta, admit PR 168. Then persist a final CLOSED checkpoint from the exact governance admission commit.",
+  "close": {
+    "verdict": "CLOSED",
+    "closed_from_exact_governance_admission": "f0673018df7b2d1a9b3350a7b2387bc486109852",
+    "open_implementation_or_governance_blockers": [],
+    "production_or_reference_mutation_in_close": false,
+    "next_permitted_action": "NONE_WITHIN_F_ROSS12. Any extension beyond the admitted restricted RossFast envelope requires a new separately governed workunit."
+  },
   "explicit_exclusions": [
     "F-ROSS11 whole-model runtime as production execution host",
     "FMR_BACKEND_SERIALIZED_INJECTED_KERNEL routing for RossFast production selection",
