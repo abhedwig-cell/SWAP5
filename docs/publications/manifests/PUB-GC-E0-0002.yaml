@@ -1,0 +1,136 @@
+experiment:
+  experiment_id: PUB-GC-E0-0002
+  run_family_id: PUB-GC-E0
+  title: Independent F-GC25 conservation and rollback screening
+  evidence_class: PROSPECTIVE_SUPPORTING
+
+publication:
+  primary_owner: PUB-GC
+  doctoral_rq: RQ3
+  thesis_synthesis_relevance: [TS1, TS3]
+  excluded_primary_owners: [PUB-ME, PUB-SQ, PUB-RC, PUB-SG]
+
+chronology:
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  predecessor_experiment: PUB-GC-E0-0001
+  predecessor_status: INVALID_EXECUTION
+  predecessor_scientific_result_observed: false
+  replacement_reason: The first experiment never reached its scientific oracle because the historical owner runner was not a valid build harness for the moving current-canonical source graph. This replacement uses the maintained independent F-VQ87 oracle on its exact qualified postimage.
+  contract_commit: f49182c940d2aa161dd2f1ab3beb0344fa547fcf
+  manifest_commit: RESOLVE_FROM_GIT_HISTORY_AT_RUN_TIME
+  created_utc: 2026-09-17T18:20:29Z
+
+question:
+  hypothesis_id: [H1, H2]
+  primary_claim_if_supported: Under the independently qualified F-GC25 postimage, accepted multi-column groundwater coupling preserves area-weighted action/reaction and interface conservation, while preparation failure, nonconvergence, duplicate topology, or stale origin cannot leak candidate state into committed SWAP, groundwater, coupling-origin, or interface-ledger state.
+  null_or_falsifying_result: Any reached scientific-oracle assertion that shows nonzero action/reaction or ledger inconsistency, committed-state mutation after a rejected candidate, acceptance of duplicate/stale topology, or an O0/O2 oracle-output difference falsifies the corresponding screening claim.
+
+system:
+  repository: abhedwig-cell/SWAP5
+  code_commit: 37c02ac3747bfaacdb8b3408b8228f3deb2b9824
+  owner_postimage_commit: 43c9f09110dea83928ef7d58990c37575d8ca223
+  capability_authorities:
+    - F-VQ87@37c02ac3747bfaacdb8b3408b8228f3deb2b9824
+    - F-GC25-owner-postimage@43c9f09110dea83928ef7d58990c37575d8ca223
+    - F-GC21-fixture-owner@1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f
+    - F-GC20@54dc9cc930468d9f376f596fe2c1b6f45938b59b
+    - F-GC22@c50f3770ae8e4bee7c276a080be00156218944f1
+  compiler: gfortran-on-github-hosted-ubuntu
+  build_mode: [O0, O2]
+  platform: github-hosted-ubuntu-latest
+
+case:
+  case_id: PUB-GC-E0-FVQ87-INDEPENDENT-V1
+  input_digest: DERIVED_FROM_PINNED_FVQ87_TEST_AND_FGC25_FIXTURE_BLOBS
+  forcing_digest: null
+  initial_state_digest: DERIVED_FROM_PINNED_FGC21_AND_FGC25_FIXTURES
+  geometry_digest: DERIVED_FROM_FGC25_TWO_TILE_BINDINGS
+  soil_materials: [fixture-defined]
+  boundary_configuration: independently_qualified_restricted_direct_groundwater_multiswap_fixture
+
+factors:
+  adversarial_path:
+    - groundwater_prepare_rejection
+    - duplicate_tile_topology
+    - stale_tile_origin
+    - nonconverged_cell
+    - accepted_weighted_cell
+  optimization: [O0, O2]
+  accepted_case_area_fractions: [0.4, 0.6]
+
+method:
+  candidate_method: GC-M2_RESTRICTED_REPLAY_PC1_WITH_WHOLE_WINDOW_EXCHANGE
+  comparator: exact_interface_action_reaction_and_unchanged_rejected_origin_invariants
+  numerical_reference: NOT_REQUIRED_FOR_INTERFACE_SEMANTICS_SCREENING
+  acceptance_tolerances: exact oracle assertions encoded in the immutable F-VQ87 independent test; O0 and O2 oracle outputs must be byte-identical
+
+outcomes:
+  primary_metrics:
+    - prepare_rejection_atomicity
+    - duplicate_tile_pretrial_rejection
+    - stale_origin_pretrial_rejection
+    - nonconverged_cell_rollback
+    - weighted_mass_action_reaction
+    - independent_oracle_status
+    - O0_O2_output_identity
+  secondary_metrics:
+    - SWAP_revision_unchanged_on_rejection
+    - groundwater_revision_and_commit_count_unchanged_on_rejection
+    - coupling_origin_unchanged_on_rejection
+    - committed_exchange_count_unchanged_on_rejection
+    - no_active_or_prepared_ledger_after_rejection
+    - exact_zero_ledger_conservation_residual_after_rejection
+  failure_metrics:
+    - FVQ87_ASSERT_FAIL
+    - unexpected_committed_state_mutation
+    - action_reaction_mismatch
+    - nonzero_rejected_state_ledger_residual
+    - O0_O2_output_difference
+
+analysis:
+  predeclared_transform: none
+  aggregation_rule: exact boolean/status/invariant assertions from the immutable independent oracle
+  repeat_count: 1
+  exclusion_rule: none; if build/provenance prerequisites fail before the scientific oracle executes, classify the run INVALID_EXECUTION rather than negative evidence
+  stopping_rule: execute the pinned F-VQ87 gate once; do not add or remove adversarial cases after inspecting the result
+
+execution:
+  runner: tests/qualification/fvq87/run_fvq87_fgc25_multiswap_independent_gate.sh
+  runner_blob_sha: 1478b3a880c1d67648182ea2e3afbf9a19c7c93c
+  independent_test: tests/qualification/fvq87/test_fvq87_fgc25_multiswap_independent.f90
+  independent_test_blob_sha: 338416575b1583152acc65cd606c4322a20dd94d
+  expected_scope:
+    - exact owner-postimage preservation checks
+    - replay of exact F-GC25 owner gate as prerequisite evidence
+    - independently defined prepare-rejection atomicity oracle
+    - independently defined duplicate-topology pretrial rejection oracle
+    - independently defined stale-origin pretrial rejection oracle
+    - independently defined nonconvergence whole-cell rollback oracle
+    - independently defined 0.4/0.6 weighted mass/action-reaction oracle
+    - O0/O2 independent-oracle identity
+  explicit_noncoverage:
+    - current-canonical generalized runtime compilation
+    - coupling-window accuracy versus GC-REF
+    - same-origin versus history-contaminated numerical comparison
+    - whole-window versus terminal-flux numerical comparison
+    - MODFLOW 6 transfer
+    - response/tangent acceleration
+    - hydrologic value of N:1 heterogeneity
+
+prior_evidence_context:
+  role: FOUNDATIONAL_QUALIFICATION_NOT_THIS_PROSPECTIVE_RESULT
+  historical_independent_oracle_sha256: de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8
+  note: This previously recorded qualification hash is provenance context only. The prospective result is determined by the new run, not by matching a desired historical outcome.
+
+artifacts:
+  raw_output: artifacts/PUB-GC-E0-0002/fvq87-independent.log
+  telemetry: artifacts/PUB-GC-E0-0002/runner-receipt.txt
+  logs: artifacts/PUB-GC-E0-0002/fvq87-independent.log
+  derived_table: null
+  candidate_figure: null
+
+result:
+  status: NOT_RUN
+  conclusion: null
+  deviations_from_plan: null
