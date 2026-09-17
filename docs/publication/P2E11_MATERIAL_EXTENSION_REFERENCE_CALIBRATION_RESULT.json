@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.publication.p2e11-material-extension-reference-calibration-result.v1",
+  "workunit": "PUB-P2E11",
+  "phase": "REFERENCE_EXTENSION_CALIBRATION_BLOCKED_COMPLETE_DOMAIN",
+  "canonical_base": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "executed_head": "f219c6b090b0c1df22b386cc7272155d35534efa",
+  "preregistration": {
+    "path": "docs/publication/P2E11_MATERIAL_EXTENSION_REFERENCE_CALIBRATION_PREREGISTRATION.json",
+    "blob": "42fa1ac644c2849bbcf56f57c9221395d0f75b07"
+  },
+  "implementation_authority": {
+    "test_blob": "bcd819990e35705bc2c47837ff4a8d1ed1af86a0",
+    "runner_blob": "84abe28ae3cfd184b807acd4288a90b6a1db9dfd",
+    "workflow_blob": "6c981721358b5483f6686673ff65f97e63a2027b"
+  },
+  "execution": {
+    "first_attempt": {
+      "workflow_run": 35289142296,
+      "job": 105427980066,
+      "conclusion": "FAIL_HARNESS_BEFORE_SCIENTIFIC_EXECUTION",
+      "cause": "stale P2E07 runner variable/reference lock left by mechanical derivation from P2E08",
+      "scientific_result_generated": false,
+      "research_design_changed_after_failure": false
+    },
+    "qualified_attempt": {
+      "workflow_run": 35289176760,
+      "job": 105428087062,
+      "conclusion": "PASS",
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_identical": true,
+      "o0_o2_sha256": "cc8dd772f35202e8d14a5db7268c681b74e307c75bef3c90e811be2e0f8e711a"
+    }
+  },
+  "matrix": {
+    "material_count": 30,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 180,
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "valid_reference_pairs": 176,
+    "invalid_reference_pairs": 4
+  },
+  "invalid_cases": [
+    {
+      "case": 5,
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "stage": "HALF2_REFERENCE_GATE"
+    },
+    {
+      "case": 6,
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "stage": "HALF2_REFERENCE_GATE"
+    },
+    {
+      "case": 23,
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "stage": "COARSE_REFERENCE_GATE"
+    },
+    {
+      "case": 24,
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "stage": "COARSE_REFERENCE_GATE"
+    }
+  ],
+  "scientific_interpretation": {
+    "common_reference_domain_at_preregistered_dt": false,
+    "pattern": "All four invalid cases occur at Se=0.98 and are confined to B02 and B05; both forcing classes fail for each affected material.",
+    "candidate_independence_preserved": true,
+    "rossfast_executed": false,
+    "extension_threshold_file_frozen": false,
+    "consequence": "The planned 30-material paired RossFast extension may not execute. A complete candidate-independent Reference calibration domain must first be established or the intended extension domain must be scientifically narrowed under a new preregistration."
+  },
+  "firewalls": {
+    "cases_removed": false,
+    "material_specific_thresholds_created": false,
+    "forcing_specific_thresholds_created": false,
+    "threshold_factor_changed": false,
+    "production_or_reference_source_changed": false,
+    "rossfast_extension_discrepancy_inspected": false
+  },
+  "verdict": "BLOCKED_REFERENCE_COMMON_DOMAIN_AT_0P0064_DAY",
+  "next_permitted_action": "Preregister a Reference-only common-domain recovery using a fixed temporal feasibility ladder and all 180 cases. Do not execute RossFast extension cases and do not remove B02/B05 Se=0.98 failures."
+}
