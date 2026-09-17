@@ -1,0 +1,163 @@
+{
+  "schema": "swap5.publication.p2e10-e0-broad-paired-matrix-result.v1",
+  "workunit": "PUB-P2E10",
+  "phase": "QUALIFIED_BROAD_MATRIX_PENDING_FINAL_EXACT_HEAD_GATES",
+  "branch": "work/pub-p2e10-e0-broad-paired-matrix",
+  "pull_request": 213,
+  "canonical_base_before_execution": "1604b89e6bebf6436dcd2718b8e150bf909d8a01",
+  "executed_head": "5a4183d99530d1a4bb91c4bd1ec7ecf3c38475d7",
+  "qualification_run": {
+    "workflow_run": 35287580140,
+    "job": 105423223544,
+    "result": "PASS",
+    "case_count": 54,
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identical": true,
+    "o0_o2_sha256": "c1ccfa53a9710efc8aae7c88e099b4fa20cd85aa414d7ee512d15f347c811a77"
+  },
+  "scientific_classification": {
+    "PAIRED_VALID_ADMISSIBLE": 36,
+    "PAIRED_VALID_DISCREPANCY_FAIL": 0,
+    "REFERENCE_ROUTE_INVALID": 0,
+    "ROSSFAST_ROUTE_INVALID": 18,
+    "BOTH_ROUTES_INVALID": 0
+  },
+  "classification_structure": {
+    "by_material": {
+      "B01": {"admissible": 6, "rossfast_invalid": 3},
+      "B12": {"admissible": 6, "rossfast_invalid": 3},
+      "O01": {"admissible": 6, "rossfast_invalid": 3},
+      "O05": {"admissible": 6, "rossfast_invalid": 3},
+      "O14": {"admissible": 6, "rossfast_invalid": 3},
+      "O18": {"admissible": 6, "rossfast_invalid": 3}
+    },
+    "by_effective_saturation": {
+      "0.65": {"admissible": 12, "rossfast_invalid": 6},
+      "0.85": {"admissible": 12, "rossfast_invalid": 6},
+      "0.98": {"admissible": 12, "rossfast_invalid": 6}
+    },
+    "by_forcing": {
+      "DRYING": {"admissible": 18, "rossfast_invalid": 0},
+      "NOMINAL": {"admissible": 18, "rossfast_invalid": 0},
+      "WETTING": {"admissible": 0, "rossfast_invalid": 18}
+    }
+  },
+  "rossfast_invalidity_adjudication": {
+    "pattern": "all and only the 18 preregistered WETTING cases are RossFast-route invalid across every material and Se level",
+    "initialization": "RossFast initializes successfully in all 18 invalid cases",
+    "reference_route": "Reference converges and remains typed-mass valid in all 18 invalid cases",
+    "rossfast_typed_mass": "unavailable because the RossFast solve is rejected before a converged route result is published",
+    "mechanism": "existing RossFast state-local top-boundary forcing envelope",
+    "production_constant": {
+      "ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION": 0.02
+    },
+    "internal_sign_mapping": "RossFast forcing.top_flux_cm_per_day = - request.boundary.top_flux",
+    "top_envelope": "q_top_ref = +0.01*K_top; allowed absolute deviation is 0.02*max(abs(q_top_ref),abs(K_top),1e-12), which in this domain yields approximately [-0.01,+0.03]*K_top",
+    "preregistered_internal_top_flux_factors": {
+      "DRYING": 0.005,
+      "NOMINAL": -0.010,
+      "WETTING": -0.025
+    },
+    "adjudication": "DRYING and NOMINAL are inside or on the admitted top-boundary envelope; WETTING is outside it for every material and Se state. The bottom-boundary factors remain inside their corresponding envelope.",
+    "claim_boundary": "P2E10 does not widen the RossFast forcing envelope and does not reinterpret these 18 cases as numerical discrepancy failures. They define an explicit tested exclusion domain under the current production contract."
+  },
+  "paired_valid_scientific_result": {
+    "case_count": 36,
+    "all_five_frozen_metrics_pass_in_every_route_valid_case": true,
+    "threshold_failure_counts": {
+      "D_h_inf_cm": 0,
+      "D_h_rms_cm": 0,
+      "D_theta_inf": 0,
+      "D_theta_rms": 0,
+      "D_storage_abs_cm": 0
+    },
+    "maximum_fraction_of_frozen_threshold": {
+      "D_h_inf_cm": {
+        "ratio": 0.20074302160814075,
+        "case": 26,
+        "material": "O01",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "value": 0.20686439338835783
+      },
+      "D_h_rms_cm": {
+        "ratio": 0.25512191955803154,
+        "case": 26,
+        "material": "O01",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "value": 0.0664019347696562
+      },
+      "D_theta_inf": {
+        "ratio": 0.3121908371945436,
+        "case": 8,
+        "material": "B01",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "value": 0.00018918829296366013
+      },
+      "D_theta_rms": {
+        "ratio": 0.37513528175486127,
+        "case": 26,
+        "material": "O01",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "value": 0.00006580093617084705
+      },
+      "D_storage_abs_cm": {
+        "ratio": 1.0,
+        "case": 5,
+        "material": "B01",
+        "Se": 0.85,
+        "forcing": "NOMINAL",
+        "value": 2.1316282072803006e-14,
+        "note": "inclusive-boundary pass at numerical storage-precision scale"
+      }
+    }
+  },
+  "typed_mass_result": {
+    "reference_max_abs_integrated_mass_residual_cm": {
+      "value": 1.5868124956380792e-15,
+      "case": 16,
+      "material": "B12",
+      "Se": 0.98,
+      "forcing": "DRYING"
+    },
+    "rossfast_max_abs_integrated_mass_residual_cm_among_route_valid_cases": {
+      "value": 3.6841938598182813e-14,
+      "case": 43,
+      "material": "O14",
+      "Se": 0.98,
+      "forcing": "DRYING"
+    },
+    "hard_limit_cm_each_route": 1e-12,
+    "legacy_route_dependent_residual_used_as_cross_solver_gate": false
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "Within the already admitted RossFast forcing envelope represented by the 36 DRYING and NOMINAL cases, every preregistered paired case satisfies all five independently frozen P2E09 state/storage thresholds.",
+      "The first broad E0 result therefore identifies a non-trivial admissible solver-substitution region rather than only isolated successful examples.",
+      "The preregistered WETTING axis exposes a clean contract exclusion boundary common to all tested materials and initial Se levels."
+    ],
+    "not_supported": [
+      "universal RossFast equivalence",
+      "RossFast admissibility for the 18 WETTING cases",
+      "widening the RossFast top-boundary production envelope",
+      "transaction-level solver equivalence",
+      "performance or speedup claims",
+      "generalization beyond the exact E0 materials, states, grid, timestep and prescribed-flux physics"
+    ]
+  },
+  "firewall_verification": {
+    "thresholds_retuned": false,
+    "cases_removed_or_replaced": false,
+    "production_source_changed_by_p2e10": false,
+    "reference_source_changed_by_p2e10": false,
+    "transaction_policy_changed": false,
+    "automatic_fallback_used": false,
+    "performance_claim_evaluated": false
+  },
+  "verdict": "QUALIFIED_BOUNDED_E0_ADMISSIBILITY_WITH_EXPLICIT_WETTING_FORCING_EXCLUSION_PENDING_FINAL_EXACT_HEAD_GATES",
+  "next_permitted_action": "Qualify this exact result-bearing head through PUB-P2E10, Documentation and full canonical preservation. After admission, treat expansion of the WETTING/top-boundary forcing regime as a separate governed RossFast production-envelope workunit; do not widen it inside P2E10."
+}
