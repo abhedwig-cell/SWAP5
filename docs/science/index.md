@@ -25,10 +25,11 @@ A column has no universal fixed horizontal area. Quantities are naturally interp
 5. [Evapotranspiration demand and root-water uptake](evapotranspiration-root-uptake.md)
 6. [Surface evaporation](surface-evaporation.md)
 7. [Drainage](drainage.md)
-8. [Status-A capability review pages](../capabilities/index.md)
-9. [Numerical formulation](../numerics/index.md)
-10. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
-11. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
+8. [Drainage-v1 formulations](drainage-formulations.md)
+9. [Status-A capability review pages](../capabilities/index.md)
+10. [Numerical formulation](../numerics/index.md)
+11. [Current Status-A architecture](../status-a/CURRENT_ARCHITECTURE.md)
+12. [Theory, code and evidence traceability](../status-a/TRACEABILITY.md)
 
 ## Technical-reference discipline
 
