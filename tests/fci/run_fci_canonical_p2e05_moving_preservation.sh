@@ -6,11 +6,16 @@ cd "$ROOT"
 
 AUTH=50346642bd565f79134ea17d5462e544b354998c
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
+FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
 ROSS_ADAPTER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
+FROSS13_MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
+FROSS13_PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
+FROSS13_MODEL_POSTIMAGE=5442fd7e7a2f392c9b796cd17c76b17977259f22
+FROSS13_PROVIDER_POSTIMAGE=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
 SW_P2E05=40a1ddc05fb8e2c1822763de645fd07a094568a3
 REF_ADAPTER_P2E05=4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
 ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
@@ -109,9 +114,17 @@ for path in "${fross12_frozen_surface[@]}"; do
 done
 test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'RossFast adapter is not the qualified P2E05 blob'
 
-# Reuse the stronger exact-scope + semantic-replay gate. This proves the three
-# successor blobs together without weakening any historical authority.
-bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh
+# Route only an exact, independently qualified F-ROSS13 production successor
+# through its stronger preservation gate. Otherwise preserve the historical
+# P2E05 semantic-successor route unchanged.
+if git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD && \
+   [[ "$(git rev-parse HEAD:$FROSS13_MODEL)" == "$FROSS13_MODEL_POSTIMAGE" ]] && \
+   [[ "$(git rev-parse HEAD:$FROSS13_PROVIDER)" == "$FROSS13_PROVIDER_POSTIMAGE" ]]; then
+  bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh
+  echo 'FCI_CANONICAL_FROSS13_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+else
+  bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh
+fi
 
 echo 'FCI34_MOVING_ROOT_ATTRIBUTION_PRESERVATION=PASS'
 echo 'FCI35_MOVING_PARALLEL_RESTART_DEPENDENCY_PRESERVATION=PASS'
