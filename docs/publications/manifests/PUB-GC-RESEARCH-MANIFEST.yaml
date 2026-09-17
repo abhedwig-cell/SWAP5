@@ -1,0 +1,164 @@
+manifest:
+  id: PUB-GC-RESEARCH-MANIFEST
+  title: Conservative finite-window coupling of independently time-integrating vadose and groundwater models
+  publication_owner: PUB-GC
+  doctoral_rq: RQ3
+  role: COUPLE
+  status: DRAFT_FREEZE_CANDIDATE
+  source_branch: research/phd-five-paper-manifests-20260918
+  source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  governing_contract: docs/publications/PUB-GC_SCIENTIFIC_CONTRACT.md
+  experiment_matrix: docs/publications/PUB-GC_EXPERIMENT_MATRIX.md
+  current_research_authority:
+    branch: research/pub-gc-e1-primary
+    head: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  current_foundational_capabilities:
+    - whole_window_exchange
+    - same_origin_replay_harness
+    - bounded_N_to_1_conservation
+    - MODFLOW6_predictor_response_contract_in_development
+
+research_question: >-
+  What coupling contract is sufficient for conservative and convergent partitioned simulation
+  of dynamically interacting Richards-based vadose-zone columns and a groundwater model when
+  both retain independent internal time integration?
+
+novelty_boundary:
+  not_claimed:
+    - SWAP-MODFLOW coupling itself.
+    - Iterative vadose-groundwater feedback itself.
+    - Different internal time steps by themselves.
+    - Generic checkpoint/replay or fixed-point iteration.
+  candidate_contribution: >-
+    A hydrologically explicit finite-window contract combining one accepted origin, independent
+    subsystem integration, whole-window exchange, one authoritative exchange ledger and commit
+    only after coupled acceptance, with controlled evidence for conservation, convergence and
+    time-step-partition invariance.
+  literature_anchors:
+    - doi: 10.1016/j.jhydrol.2011.07.002
+      relevance: Existing SWAP-MODFLOW coupling.
+    - doi: 10.5194/hess-23-637-2019
+      relevance: Iterative HYDRUS-MODFLOW coupling across different temporal and spatial scales.
+    - doi: 10.5194/gmd-19-8233-2026
+      relevance: Recent mass-conservative unsaturated-zone coupling component.
+    - standard: FMI 3.0.2
+      relevance: State restoration and repeated co-simulation steps are established.
+
+hypotheses:
+  H1: >-
+    The contract preserves action-reaction exchange and accepted-state atomicity for every
+    accepted coupling window, independent of subsystem-internal substep partitions.
+  H2: >-
+    As coupling-window duration and outer tolerance are refined, the accepted coupled solution
+    approaches a stable strict numerical reference.
+  H3: >-
+    Within separately qualified subsystem tolerances, changing internal adaptive step sequences
+    does not materially alter the accepted coupled solution.
+  H4: >-
+    In strong-feedback regimes, a strict finite-window replay contract has a measurably different
+    accuracy or robustness domain from loose sequential or established-style relaxed feedback
+    at matched subsystem physics.
+
+methods:
+  M0: scientifically_fair_loose_sequential_baseline
+  M1: terminal_flux_exchange_comparator_where_valid
+  M2: restricted_same_origin_predictor_corrector
+  M3: converged_same_origin_fixed_point_when_qualified
+  M4: literature_aligned_relaxed_head_flux_feedback_where_fair
+  diagnostic_only: candidate_history_contaminated_negative_control
+  excluded_from_primary_method_comparison: response_or_tangent_acceleration
+
+systems:
+  GW_A:
+    role: design_and_mechanism_system
+    description: Transparent dynamic groundwater reservoir with controllable feedback strength.
+  GW_B:
+    role: primary_transfer_holdout
+    description: Minimal auditable MODFLOW 6 configuration.
+  GW_C:
+    role: supporting_relevance_case
+    description: Compact realistic shallow-groundwater demonstration after controlled results exist.
+
+design:
+  calibration_or_design_set:
+    - GW_A weak and intermediate feedback cases for debugging and reference construction.
+    - Publication E0 conservation and same-origin repeatability qualification.
+    - Screening across window lengths to choose a predeclared primary ladder without inspecting final method rankings.
+  primary_holdout_set:
+    - Frozen strong-feedback GW_A cases not used to tune method-specific controls.
+    - Minimal MODFLOW 6 GW_B recharge-dominated and capillary-feedback cases.
+    - At least one forcing-reversal or wetting-to-drying transition.
+    - Multiple coupling-window durations chosen before primary runs.
+  separation_rule: >-
+    GW_B transfer cases may use infrastructure proven on GW_A but may not be used to retune
+    method-specific relaxation, convergence thresholds or primary materiality criteria.
+
+numerical_reference:
+  id: GC-REF
+  construction: >-
+    Very small coupling windows plus strict outer convergence and independently qualified
+    subsystem solvers, followed by at least one further refinement that demonstrates stability
+    of head, whole-window exchange and selected SWAP state metrics.
+  nonclaim: GC-REF is a numerical reference, not physical truth.
+
+primary_endpoint:
+  name: normalized_coupled_error
+  components:
+    - groundwater_head_error
+    - cumulative_interface_exchange_error
+    - selected_vadose_state_or_storage_error
+  definition: >-
+    Evaluate each component against GC-REF using its frozen scale/tolerance. Report components
+    separately and a conjunctive pass/fail classification; do not hide a failed component in a mean.
+  independent_variables:
+    - coupling_window_duration
+    - feedback_strength
+    - hydrologic_forcing_regime
+    - vadose_response_class
+    - groundwater_depth
+    - coupling_method
+
+hard_invariants:
+  exchange_action_reaction: >-
+    Committed SWAP outward exchange plus committed groundwater outward exchange equals zero
+    within the existing arithmetic/conservation authority for every accepted window.
+  rejection_atomicity: Rejected subsystem or coupled candidates commit no interface transfer or accepted scientific state.
+  same_origin_repeatability: Repeating the same interface candidate from the same accepted origin must reproduce the same subsystem response within its deterministic numerical authority.
+
+secondary_endpoints:
+  - subsystem_evaluations_per_window
+  - coupling_iterations
+  - failed_or_reduced_windows
+  - head_residual_trace
+  - mass_residual
+  - internal_step_counts
+  - caller_order_sensitivity_for_N_to_1
+
+thresholds:
+  conservation: Reuse existing coupling and transaction authorities; no paper-specific relaxation.
+  reference_stability: Freeze before primary runs from GC-REF refinement.
+  materiality: >-
+    Freeze an application-independent numerical accuracy threshold for controlled cases and a
+    separate hydrologic materiality threshold for GW-C. Do not derive either from which method wins.
+  method_domain_rule: >-
+    A method is adequate only when both accuracy and hard invariants pass. Mere fixed-point convergence is insufficient.
+
+kill_or_redirect:
+  method_paper_fails_if:
+    - The finite-window contract provides no distinguishable conservation, convergence, time-step-partition or robustness advantage over a fair established comparator in the predefined strong-feedback regimes.
+    - Findings exist only for the intentionally contaminated diagnostic comparator.
+    - MODFLOW 6 transfer fails after success on the conceptual GW_A system.
+    - Apparent gains disappear when compared at matched coupling error.
+  redirect: >-
+    Retain a rigorous SWAP5-MODFLOW6 model-development paper and remove the broader coupling-method claim.
+
+publication_firewall:
+  PUB_GC_owns:
+    - same_origin_and_commit_semantics
+    - whole_window_exchange
+    - conservation_and_window_convergence
+    - bounded_N_to_1_conservation_only
+  excluded:
+    - response_acceleration_owned_by_PUB_RC
+    - hydrologic_value_of_subgrid_heterogeneity_owned_by_PUB_SG
+    - solver_admissibility_owned_by_PUB_SQ
