@@ -1,0 +1,34 @@
+name: PUB-ME D4 speculative restart
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_D4_EXECUTION_CHECKPOINT.md'
+      - 'docs/publications/PUB-ME_D4_RESULT.md'
+      - 'tests/publication/test_pub_me_d4_speculative_restart.f90'
+      - 'tests/publication/run_pub_me_d4_speculative_restart.sh'
+      - '.github/workflows/pub-me-d4-speculative-restart.yml'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d4-speculative-restart:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered D4 gate
+        run: bash tests/publication/run_pub_me_d4_speculative_restart.sh
