@@ -1,0 +1,153 @@
+freeze:
+  id: PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1
+  owner: PUB-SQ
+  status: FROZEN_BEFORE_EXTENSION_REFERENCE_CALIBRATION_AND_PAIRED_EXECUTION
+  purpose: >-
+    Test whether the prospectively defined E0 admission method transfers from the six P2E10
+    anchor materials to the remaining thirty already production-qualified RossFast materials,
+    without changing geometry, physics or forcing class.
+  branch: research/phd-five-paper-manifests-20260918
+
+existing_evidence_boundary:
+  p2e09:
+    branch: work/pub-p2e09-reference-threshold-freeze
+    head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
+    result_blob: 1a82511cb13a4c39235292de83dc626478bfb6a6
+    role: METHOD_PRECEDENT_ONLY
+  p2e10:
+    branch: work/pub-p2e10-e0-broad-paired-matrix
+    head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
+    result_blob: 83864f6379279725fa97d24d57936f590d3c2174
+    observed_scope: six anchor materials x three Se levels x three forcing classes
+    role: ALREADY_OBSERVED_PRIMARY_EVIDENCE_NOT_HOLDOUT
+  f_ross13:
+    branch: work/f-ross13-36-material-production-envelope
+    transient_result_blob: 4be26de45d9fe75825bb482580ce6a9b098dedf0
+    role: MATERIAL_AXIS_PRODUCTION_QUALIFICATION
+    nonclaim: Historical RossFast qualification is not the same as the new E0 paired discrepancy experiment.
+
+research_question_for_this_freeze: >-
+  Does the candidate-independent E0 admission procedure retain a coherent material-axis domain
+  when transferred from the six anchor materials to the thirty additional F-ROSS13 materials?
+
+materials:
+  include:
+    - B02
+    - B03
+    - B04
+    - B05
+    - B06
+    - B07
+    - B08
+    - B09
+    - B10
+    - B11
+    - B13
+    - B14
+    - B15
+    - B16
+    - B17
+    - B18
+    - O02
+    - O03
+    - O04
+    - O06
+    - O07
+    - O08
+    - O09
+    - O10
+    - O11
+    - O12
+    - O13
+    - O15
+    - O16
+    - O17
+  rationale: Exact thirty-material extension set already frozen by F-ROSS13 before this publication experiment.
+
+physical_design:
+  grid: 16 homogeneous cells x 10 cm
+  effective_saturation: [0.65, 0.85, 0.98]
+  forcing_classes:
+    DRYING:
+      top_flux_over_initial_K0: -0.005
+      bottom_flux_over_initial_K0: -0.019
+    NOMINAL:
+      top_flux_over_initial_K0: 0.010
+      bottom_flux_over_initial_K0: -0.004
+  excluded_forcing:
+    WETTING:
+      reason: >-
+        P2E10 already established that its normalized top forcing lies outside the current
+        RossFast state-local production envelope for all six anchors. It is therefore an
+        explicit known exclusion, not a new holdout axis.
+  candidate_step_duration_day: 0.0016
+  source_sink: zero
+  ponding_initial_cm: 0.0
+
+reference_only_calibration:
+  must_run_before_any_new_extension_RossFast_discrepancy: true
+  physical_case_count: 180
+  construction: one Reference solve over 0.0064 day versus two sequential Reference solves over 0.0032 + 0.0032 day
+  stratification: effective_saturation_only
+  cases_per_Se: 60
+  threshold_rule: >-
+    T_metric(Se) = maximum Reference self-disagreement for that metric over all 60 admitted
+    extension-material Reference cases in the exact Se stratum.
+  reference_factor: 1.0
+  application_resolution_floor: 0.0
+  metrics:
+    - U_h_inf_cm
+    - U_h_rms_cm
+    - U_theta_inf
+    - U_theta_rms
+    - U_storage_cm
+  prohibition:
+    - no_RossFast_execution_before_extension_threshold_file_is_committed
+    - no_material_specific_thresholds
+    - no_forcing_specific_thresholds
+    - no_case_removal_after_reference_failure_without_retaining_failure_classification
+    - no_use_of_P2E10_RossFast_discrepancies_to_change_the_rule
+
+paired_extension_matrix:
+  execute_only_after_reference_threshold_freeze: true
+  case_count: 180
+  order: material major, then effective_saturation, then forcing DRYING/NOMINAL
+  routes:
+    - REFERENCE
+    - ROSSFAST_D3R
+  fallback_allowed: false
+  hard_mass_abs_limit_cm_each_route: 1.0e-12
+  discrepancy_metrics:
+    - D_h_inf_cm
+    - D_h_rms_cm
+    - D_theta_inf
+    - D_theta_rms
+    - D_storage_abs_cm
+  admissibility: all five metrics <= frozen threshold for exact Se stratum AND both routes satisfy hard route validity
+
+primary_endpoint:
+  name: material_axis_admission_transfer
+  report:
+    - admissible_case_fraction_by_material
+    - admissible_case_fraction_by_Se
+    - route_invalidity_by_material_and_forcing
+    - maximum_fraction_of_frozen_threshold_for_each_metric
+  no_averaging_rule: Any valid discrepancy failure remains a domain-boundary observation and cannot be averaged away.
+
+interpretation_firewall:
+  supported_if_successful: >-
+    The candidate-independent admission rule transfers across the additional production-qualified
+    material axis for the exact E0 geometry, states, forcing classes and fixed request.
+  never_supported_by_this_freeze:
+    - universal_RossFast_equivalence
+    - wetting_forcing_admission
+    - groundwater_or_dynamic_bottom_boundary_admission
+    - heterogeneous_profile_admission
+    - root_sink_admission
+    - performance_or_speedup
+    - transaction_level_equivalence
+
+kill_or_narrow:
+  - If extension Reference self-disagreement cannot support a stable pre-candidate threshold surface, stop before RossFast execution.
+  - If paired failures are unstructured across the material axis, report the narrower bounded domain rather than retuning.
+  - If the result is indistinguishable from a routine solver benchmark without a meaningful admission boundary, narrow the general methodological claim.
