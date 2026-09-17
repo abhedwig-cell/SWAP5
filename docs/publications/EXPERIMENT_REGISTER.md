@@ -35,7 +35,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases |
 | `PUB-GC-E1` same-origin replay | PUB-GC | primary | COMPLETE | one-shot held-out primary `PUB-GC-E1-PRIMARY-0001` completed validly; both preregistered history discriminants exceeded their numerical floors while same-origin replay remained exact; H1 supported at operator-definition level only, practical materiality/generalization remain open |
-| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | qualified GW-A is available; define and qualify a fair terminal-flux comparator with all non-exchange semantics matched |
+| `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | comparator semantics frozen in `PUB-GC_E2_TERMINAL_FLUX_COMPARATOR_SPEC.md`; next implement and independently qualify research-only comparator; primary H2 remains blocked until `GC-REF` construction is frozen |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | qualified GW-A is available; converged replay method + `GC-REF` construction still required |
 | `PUB-GC-E4` robustness domain | PUB-GC | primary | BLOCKED | predeclared accuracy thresholds and GC-E3 reference required |
 | `PUB-GC-E5` MODFLOW 6 transfer | PUB-GC | primary | BLOCKED | concrete scientifically admitted MODFLOW 6 backend |
