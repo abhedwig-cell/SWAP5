@@ -398,12 +398,46 @@ Evidence:
 
 Classification: `FOUNDATIONAL_EXISTING`.
 
+## GC-E05: prospective held-out same-origin replay experiment
+
+Evidence:
+
+- primary scientific manifest `PUB-GC-E1-PRIMARY-0001`, frozen at commit `c3114e455029ee5dee0d92dbc4814c3fc0923ef6`;
+- independently qualified generic primary engine, receipt `PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001`;
+- primary execution authority `a2fab00d6076933972cee924d7d392ec6bc5024c`;
+- one-shot held-out execution: GitHub Actions run `35287247968`, job `105422209812`;
+- primary result receipt: `docs/publications/results/PUB-GC-E1-PRIMARY-0001.yaml`.
+
+What is prospectively established:
+
+- exact same-origin A/B/C window responses were independent of candidate order under the frozen controlled real-SWAP case;
+- the accepted SWAP origin remained unchanged and every candidate was discarded rather than published;
+- the deliberately history-contaminated diagnostic produced different repeated-A responses after B versus after C;
+- the preregistered exchange discriminant was `3.07959298679549853e-3 cm`, above the frozen `1e-9 cm` numerical floor;
+- the preregistered endpoint-pressure-head discriminant was `1.31893680771767663 cm`, above the frozen `1e-8 cm` numerical floor;
+- analytic GW-A telemetry translated the repeated-A exchange difference into a groundwater-head difference of `1.53979649339774927e-4 m`;
+- all 16 candidate rows had zero reported mass residual and zero transaction retries in this controlled execution.
+
+Classification: `PROSPECTIVE_PRIMARY`.
+
+Admitted interpretation:
+
+- supports H1 at the **operator-definition level** for this held-out controlled case: a subsystem candidate response is reproducible when evaluated from a common accepted origin, whereas deliberate candidate-history contamination makes that response order dependent.
+
+Publication limitations:
+
+- the history-contaminated route is explicitly non-production-valid;
+- E1 does not establish practical hydrologic materiality;
+- E1 does not establish MODFLOW 6 transferability;
+- E1 does not establish coupling-window convergence or whole-window-versus-terminal-flux superiority;
+- generality beyond the held-out case remains to be tested.
+
 ## PUB-GC prospective experiment requirements
 
-`PROSPECTIVE_REQUIRED`:
+The same-origin operator-definition experiment is no longer prospective. The remaining central work is `PROSPECTIVE_REQUIRED`:
 
 1. concrete MODFLOW 6 backend with explicit datum/unit/temporal semantics and qualification;
-2. one-column transparent groundwater-reservoir benchmark for controlled nonlinear coupling study;
+2. a fair whole-window-versus-terminal-flux comparator under matched non-exchange semantics;
 3. one-column MODFLOW 6 benchmark small enough for strict numerical references;
 4. loose sequential, restricted pc1 and converged replay-based coupling comparators;
 5. coupling-window refinement and residual-tolerance refinement;
@@ -413,7 +447,7 @@ Classification: `FOUNDATIONAL_EXISTING`.
 9. a bounded N:1 conservation demonstration using the same publication telemetry;
 10. realistic demonstration case after the controlled experiments are understood.
 
-Current maturity assessment: **method semantics and infrastructure are strong; the central publication experiments and concrete MODFLOW evidence remain prospective**.
+Current maturity assessment: **method semantics and infrastructure are strong and one prospective held-out primary result now supports the same-origin operator-definition hypothesis; practical materiality, convergence behaviour and concrete MODFLOW evidence remain prospective**.
 
 ---
 
@@ -663,7 +697,7 @@ The `hypothesis_precedes_run` field is especially important for the possible PhD
 | --- | --- | --- | --- |
 | `PUB-ME` | strong | partial / retrospective | convert migration history into bounded empirical research cases and literature-grounded evaluation |
 | `PUB-SQ` | strong | partial / qualification-oriented | balanced Reference/RossFast admissibility and equal-error/cost experiment programme |
-| `PUB-GC` | strong method/infrastructure foundation | limited | concrete MODFLOW 6 coupling plus controlled convergence/reference experiments |
+| `PUB-GC` | strong method/infrastructure foundation | one prospective held-out primary result plus supporting conservation evidence | concrete MODFLOW 6 coupling, whole-window comparator and controlled convergence/reference experiments |
 | `PUB-RC` | partial but important groundwater tangent exists | minimal | SWAP-side response, full interface method and comparator experiments |
 | `PUB-SG` | N:1 infrastructure exists | essentially absent | controlled heterogeneity-versus-effective-representation science |
 | `THESIS-SYNTHESIS` | strong historical narrative potential | premature | depends on publication-level results and must remain synthesis rather than duplicate ownership |
