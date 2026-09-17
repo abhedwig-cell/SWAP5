@@ -41,3 +41,32 @@ jobs:
           name: pub-gc-gw-a-current-canonical-${{ github.sha }}
           path: pub-gc-gw-a-current-canonical.log
           if-no-files-found: warn
+
+  e1-origin-real-swap:
+    needs: gw-a-current-canonical
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch frozen publication authority branch
+        run: git fetch origin work/pub-gc-scientific-contract --no-tags
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Qualify real-SWAP E1 origin-policy harness
+        run: |
+          bash tests/publication/pub_gc/e1_origin/run_pub_gc_e1_origin_harness_qualification.sh | tee pub-gc-e1-origin-harness.log
+
+      - name: Upload E1 harness qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e1-origin-harness-${{ github.sha }}
+          path: pub-gc-e1-origin-harness.log
+          if-no-files-found: warn
