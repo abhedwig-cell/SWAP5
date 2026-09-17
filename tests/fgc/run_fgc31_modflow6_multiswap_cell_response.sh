@@ -34,6 +34,9 @@ PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SOURCES=(
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+  src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/transaction/mod_transaction_reference.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
@@ -49,9 +52,13 @@ SOURCES=(
 for opt in 0 2; do
   dir="$BUILD/o$opt"
   mkdir -p "$dir"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" \
-    "${SOURCES[@]}" tests/fgc/test_fgc31_modflow6_multiswap_cell_response.f90 \
-    -o "$dir/test_fgc31" 2>"$dir/compiler.txt"
+  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir" \
+      "${SOURCES[@]}" tests/fgc/test_fgc31_modflow6_multiswap_cell_response.f90 \
+      -o "$dir/test_fgc31" 2>"$dir/compiler.txt"; then
+    echo "FGC31_COMPILE_O${opt}=FAIL" >&2
+    cat "$dir/compiler.txt" >&2
+    exit 30
+  fi
   if grep -E 'Warning:' "$dir/compiler.txt" | grep -v -F '[-Wcompare-reals]'; then
     echo "FGC31_UNEXPECTED_WARNING_O${opt}=FAIL" >&2
     cat "$dir/compiler.txt" >&2
