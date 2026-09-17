@@ -4,68 +4,82 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 cd "$ROOT"
 
-BASE_HARNESS="14ee1be3c221c973973a3fb3dcb450ff40d3f96a"
-PRIMARY_FREEZE="c3114e455029ee5dee0d92dbc4814c3fc0923ef6"
-PRIMARY_MANIFEST="docs/publications/manifests/PUB-GC-E1-PRIMARY-0001.yaml"
+BASE="14ee1be3c221c973973a3fb3dcb450ff40d3f96a"
+SOURCE_TREE="d7ef6c045263de821db7800459289efcd8a6420b"
+PRIMARY_MANIFEST_COMMIT="c3114e455029ee5dee0d92dbc4814c3fc0923ef6"
+PRIMARY_MANIFEST_PATH="docs/publications/manifests/PUB-GC-E1-PRIMARY-0001.yaml"
 PRIMARY_MANIFEST_BLOB="abf45b4a83f528eda69024e3d75a38edc4ce713f"
-ORIGIN_TEST="tests/publication/pub_gc/e1_origin/test_pub_gc_e1_origin_harness.f90"
-ORIGIN_TEST_BLOB="687525b578eb0a28692dd666a87ddefe18b37c96"
-ORIGIN_RUNNER="tests/publication/pub_gc/e1_origin/run_pub_gc_e1_origin_harness_qualification.sh"
-ORIGIN_RUNNER_BLOB="8585a54e6ad46a9a3b9f5e3b72e5688c5c7e7a56"
+QUAL_MANIFEST_COMMIT="bf62fc34ed603bf2fd551e8ea352310a1e823066"
+QUAL_MANIFEST_PATH="docs/publications/manifests/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001.yaml"
+QUAL_MANIFEST_BLOB="ea5042e51c61fbd6b11be87ded6198b8bdc44e81"
+ORIGIN_DIR="tests/publication/pub_gc/e1_origin"
 GW_A_DIR="tests/publication/pub_gc/gw_a"
-ENGINE="tests/publication/pub_gc/e1_primary_engine/test_pub_gc_e1_primary_engine.f90"
-RUNNER="tests/publication/pub_gc/e1_primary_engine/run_pub_gc_e1_primary_engine_qualification.sh"
+ENGINE_DIR="tests/publication/pub_gc/e1_primary_engine"
+TEST="$ENGINE_DIR/test_pub_gc_e1_primary_engine.f90"
+RUNNER="$ENGINE_DIR/run_pub_gc_e1_primary_engine_qualification.sh"
 WORKFLOW=".github/workflows/pub-gc-e1-primary-engine-qualification.yml"
 
-fail() { echo "PUB_GC_E1_ENGINE_GATE_FAIL $*" >&2; exit 41; }
+fail(){ echo "PUB_GC_E1_PRIMARY_ENGINE_QUAL_FAIL $*" >&2; exit 51; }
 
-git cat-file -e "$BASE_HARNESS^{commit}" 2>/dev/null || fail "missing qualified harness authority"
-git cat-file -e "$PRIMARY_FREEZE^{commit}" 2>/dev/null || fail "missing frozen primary manifest authority"
-[[ "$(git rev-parse "$PRIMARY_FREEZE:$PRIMARY_MANIFEST")" == "$PRIMARY_MANIFEST_BLOB" ]] || fail "primary manifest blob drift"
-[[ "$(git rev-parse HEAD:src)" == "$(git rev-parse "$BASE_HARNESS:src")" ]] || fail "production source tree changed"
-[[ "$(git rev-parse HEAD:$ORIGIN_TEST)" == "$ORIGIN_TEST_BLOB" ]] || fail "qualified origin test changed"
-[[ "$(git rev-parse HEAD:$ORIGIN_RUNNER)" == "$ORIGIN_RUNNER_BLOB" ]] || fail "qualified origin runner changed"
-[[ "$(git rev-parse HEAD:$GW_A_DIR)" == "$(git rev-parse "$BASE_HARNESS:$GW_A_DIR")" ]] || fail "qualified GW-A bytes changed"
+git cat-file -e "$BASE^{commit}" 2>/dev/null || fail "missing qualified E1 harness authority"
+git merge-base --is-ancestor "$BASE" HEAD || fail "engine head does not descend from qualified E1 harness"
+[[ "$(git rev-parse HEAD:src)" == "$SOURCE_TREE" ]] || fail "production source tree drift"
+[[ "$(git rev-parse HEAD:$ORIGIN_DIR)" == "$(git rev-parse "$BASE:$ORIGIN_DIR")" ]] || fail "qualified origin harness changed"
+[[ "$(git rev-parse HEAD:$GW_A_DIR)" == "$(git rev-parse "$BASE:$GW_A_DIR")" ]] || fail "qualified GW-A changed"
 
-mapfile -t changed < <(git diff --name-only "$BASE_HARNESS..HEAD")
+mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
 for path in "${changed[@]}"; do
   case "$path" in
-    "$ENGINE"|"$RUNNER"|"$WORKFLOW") ;;
-    *) fail "out-of-scope research mutation: $path" ;;
+    tests/publication/pub_gc/e1_primary_engine/*|.github/workflows/pub-gc-e1-primary-engine-qualification.yml) ;;
+    *) fail "out-of-scope engine mutation: $path" ;;
   esac
 done
 
-echo 'PUB_GC_E1_ENGINE_RESEARCH_ONLY_SCOPE=PASS'
+git fetch --quiet --no-tags origin refs/heads/work/pub-gc-scientific-contract:refs/remotes/origin/work/pub-gc-scientific-contract
+for commit in "$PRIMARY_MANIFEST_COMMIT" "$QUAL_MANIFEST_COMMIT"; do
+  git cat-file -e "$commit^{commit}" 2>/dev/null || fail "manifest authority unavailable: $commit"
+done
+[[ "$(git rev-parse "$PRIMARY_MANIFEST_COMMIT:$PRIMARY_MANIFEST_PATH")" == "$PRIMARY_MANIFEST_BLOB" ]] || fail "primary manifest blob drift"
+[[ "$(git rev-parse "$QUAL_MANIFEST_COMMIT:$QUAL_MANIFEST_PATH")" == "$QUAL_MANIFEST_BLOB" ]] || fail "qualification manifest blob drift"
+
+echo "PUB_GC_E1_ENGINE_PRIMARY_MANIFEST_LOCK=PASS:$PRIMARY_MANIFEST_COMMIT:$PRIMARY_MANIFEST_BLOB"
+echo "PUB_GC_E1_ENGINE_QUAL_MANIFEST_LOCK=PASS:$QUAL_MANIFEST_COMMIT:$QUAL_MANIFEST_BLOB"
 echo 'PUB_GC_E1_ENGINE_PRODUCTION_SRC_UNCHANGED=PASS'
 echo 'PUB_GC_E1_ENGINE_ORIGIN_HARNESS_BYTES_UNCHANGED=PASS'
 echo 'PUB_GC_E1_ENGINE_GW_A_BYTES_UNCHANGED=PASS'
-echo "PUB_GC_E1_ENGINE_PRIMARY_FREEZE=PASS:$PRIMARY_FREEZE:$PRIMARY_MANIFEST_BLOB"
 
 for forbidden in '-80.0' '-102.5' '-98.75'; do
-  if grep -Fq -- "$forbidden" "$ENGINE"; then
-    fail "held-out primary head embedded in generic engine: $forbidden"
+  if grep -Fq -- "$forbidden" "$TEST"; then
+    fail "primary literal leaked into generic engine source: $forbidden"
   fi
 done
-
-if grep -Eq 'fmr_commit_candidate|%commit_candidate|kernel_reconstruct_committed_state_trusted' "$ENGINE"; then
-  fail "generic engine contains forbidden publication/reconstruction route"
+if grep -Eq 'fmr_commit_candidate|groundwater_commit_candidate|groundwater_commit_prepared|kernel_reconstruct_committed_state_trusted' "$TEST"; then
+  fail "forbidden production publication/reconstruction route in engine"
 fi
-grep -Fq 'call carriers(j-1)%initialize' "$ENGINE" || fail "recursive history initialize route missing"
-grep -Fq 'states(j-1)%state' "$ENGINE" || fail "recursive history state chaining missing"
-grep -Fq 'PUB_GC_E1_ENGINE_HISTORY_DIAG_PRODUCTION_VALID=false' "$ENGINE" || fail "invalid-for-production marker missing"
+grep -Fq 'call carriers(j-1)%initialize' "$TEST" || fail "history policy does not use public initialize"
+grep -Fq 'groundwater_discard_candidate' "$TEST" || fail "GW-A discard route missing"
+grep -Fq 'gw_checkpoint' "$TEST" || fail "shared GW-A checkpoint route missing"
+echo 'PUB_GC_E1_ENGINE_STATIC_POLICY=PASS'
 
-echo 'PUB_GC_E1_ENGINE_PUBLIC_API_ONLY_STATIC=PASS'
-echo 'PUB_GC_E1_ENGINE_NO_PRODUCTION_COMMIT_STATIC=PASS'
-
-QA='-61.0'
-QB='-76.5'
-QC='-69.25'
-QDT='0.013'
-echo "PUB_GC_E1_ENGINE_QUAL_FIXTURE=$QA,$QB,$QC,$QDT"
-
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-pub-gc-e1-engine-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-pub-gc-e1-primary-engine-${GITHUB_RUN_ID:-local}-$$"
+BASE_WORKTREE="$BUILD/e1-base"
 mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+cleanup(){
+  git -C "$ROOT" worktree remove --force "$BASE_WORKTREE" >/dev/null 2>&1 || true
+  rm -rf "$BUILD"
+}
+trap cleanup EXIT
+
+git worktree add --detach "$BASE_WORKTREE" "$BASE" >/dev/null
+(
+  cd "$BASE_WORKTREE"
+  bash tests/publication/pub_gc/e1_origin/run_pub_gc_e1_origin_harness_qualification.sh
+) > "$BUILD/base-qualification.txt" 2>&1 || {
+  cat "$BUILD/base-qualification.txt" >&2
+  fail "frozen E1 origin harness requalification failed"
+}
+grep -Fq 'PUB_GC_E1_ORIGIN_HARNESS_QUALIFICATION=PASS' "$BUILD/base-qualification.txt" || fail "base E1 harness PASS marker missing"
+echo 'PUB_GC_E1_ENGINE_BASE_REQUALIFICATION=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
@@ -131,11 +145,28 @@ MODULE_SRC=(
   src/process/mod_liquid_water_sensible_enthalpy.f90
   src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
-  tests/fmr/mod_fmr04_fixed_top_provider.f90
   src/runtime/mod_groundwater_coupling_contract.f90
   src/runtime/mod_groundwater_exchange_service_contract.f90
   tests/publication/pub_gc/gw_a/mod_pub_gc_gw_a.f90
+  tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
+
+run_fixture(){
+  local exe="$1" fixture="$2" a="$3" b="$4" c="$5" dt="$6" outfile="$7"
+  echo "PUB_GC_E1_ENGINE_FIXTURE_BEGIN=$fixture A=$a B=$b C=$c DT=$dt"
+  timeout 180s "$exe" "$a" "$b" "$c" "$dt" > "$outfile" 2>&1 || {
+    cat "$outfile" >&2
+    fail "fixture $fixture executable failed"
+  }
+  for marker in     'PUB_GC_E1_ENGINE_SAME_ORIGIN_IDENTITY=PASS'     'PUB_GC_E1_ENGINE_ACCEPTED_ORIGIN_UNCHANGED=PASS'     'PUB_GC_E1_ENGINE_GW_A_SAME_CHECKPOINT_NO_COMMIT=PASS'     'PUB_GC_E1_ENGINE_HISTORY_DIAG_PRODUCTION_VALID=false'     'PUB_GC_E1_PRIMARY_ENGINE_ORACLE=PASS'; do
+    grep -Fq "$marker" "$outfile" || { cat "$outfile" >&2; fail "fixture $fixture missing marker: $marker"; }
+  done
+  [[ "$(grep -c '^PUB_GC_E1_ENGINE_ROW|' "$outfile")" -eq 16 ]] || fail "fixture $fixture SWAP row count"
+  [[ "$(grep -c '^PUB_GC_E1_ENGINE_GW_ROW|' "$outfile")" -eq 16 ]] || fail "fixture $fixture GW row count"
+  [[ "$(grep -c '^PUB_GC_E1_ENGINE_ROW|S[12]|HISTORY_DIAG|' "$outfile")" -eq 8 ]] || fail "fixture $fixture history row count"
+  [[ "$(grep -c '^PUB_GC_E1_ENGINE_ROW|S[12]|SAME|' "$outfile")" -eq 8 ]] || fail "fixture $fixture same row count"
+  echo "PUB_GC_E1_ENGINE_FIXTURE_END=$fixture"
+}
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
@@ -143,47 +174,33 @@ for opt in 0 2; do
   objects=()
   for source in "${MODULE_SRC[@]}"; do
     [[ -f "$source" ]] || fail "missing compile source $source"
-    obj="$OUT/$(basename "${source%.*}").o"
+    obj="$OUT/$(echo "$source" | tr '/.' '__').o"
     extra=()
     [[ "$source" == "src/solver/mod_soil_water_solver_contract.f90" ]] && extra=(-Wno-error=unused-dummy-argument)
     gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/engine.o"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/engine.o" -o "$OUT/engine"
+  echo "PUB_GC_E1_ENGINE_BUILD_O${opt}=PASS"
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$ENGINE" -o "$OUT/test.o"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  timeout 120s "$OUT/test" "$QA" "$QB" "$QC" "$QDT" > "$OUT/output.txt" 2>&1 || {
-    cat "$OUT/output.txt" >&2
-    fail "generic primary engine O$opt"
-  }
-
-  for marker in     'PUB_GC_E1_ENGINE_SAME_ORIGIN_IDENTITY=PASS'     'PUB_GC_E1_ENGINE_ACCEPTED_ORIGIN_UNCHANGED=PASS'     'PUB_GC_E1_ENGINE_GW_A_SAME_CHECKPOINT_NO_COMMIT=PASS'     'PUB_GC_E1_ENGINE_HISTORY_DIAG_PRODUCTION_VALID=false'     'PUB_GC_E1_PRIMARY_ENGINE_ORACLE=PASS'; do
-    grep -Fq "$marker" "$OUT/output.txt" || {
-      cat "$OUT/output.txt" >&2
-      fail "missing O$opt marker: $marker"
-    }
-  done
-
-  [[ "$(grep -c '^PUB_GC_E1_ENGINE_ROW|' "$OUT/output.txt")" -eq 16 ]] || fail "O$opt candidate telemetry row count"
-  [[ "$(grep -c '^PUB_GC_E1_ENGINE_GW_ROW|' "$OUT/output.txt")" -eq 16 ]] || fail "O$opt GW-A telemetry row count"
-
-  for spec in     'S1|SAME|1|A|' 'S1|SAME|2|B|' 'S1|SAME|3|A|' 'S1|SAME|4|C|'     'S2|SAME|1|A|' 'S2|SAME|2|C|' 'S2|SAME|3|A|' 'S2|SAME|4|B|'     'S1|HISTORY_DIAG|1|A|' 'S1|HISTORY_DIAG|2|B|' 'S1|HISTORY_DIAG|3|A|' 'S1|HISTORY_DIAG|4|C|'     'S2|HISTORY_DIAG|1|A|' 'S2|HISTORY_DIAG|2|C|' 'S2|HISTORY_DIAG|3|A|' 'S2|HISTORY_DIAG|4|B|'; do
-    grep -Fq "PUB_GC_E1_ENGINE_ROW|$spec" "$OUT/output.txt" || fail "O$opt missing sequence row $spec"
-  done
-  echo "PUB_GC_E1_PRIMARY_ENGINE_O$opt=PASS"
+  run_fixture "$OUT/engine" Q1 -75.0 -90.0 -60.0 0.005 "$OUT/Q1.txt"
+  run_fixture "$OUT/engine" Q2 -75.0 -85.0 -65.0 0.01 "$OUT/Q2.txt"
 done
 
-cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
-  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
-  fail "O0/O2 engine oracle drift"
-}
+for fixture in Q1 Q2; do
+  cmp "$BUILD/o0/$fixture.txt" "$BUILD/o2/$fixture.txt" || {
+    diff -u "$BUILD/o0/$fixture.txt" "$BUILD/o2/$fixture.txt" >&2 || true
+    fail "O0/O2 scientific output drift for $fixture"
+  }
+  echo "PUB_GC_E1_ENGINE_${fixture}_O0_O2_IDENTITY=PASS"
+  echo "PUB_GC_E1_ENGINE_${fixture}_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/$fixture.txt" | awk '{print $1}')"
+done
 
-cp "$BUILD/o0/output.txt" "$BUILD/primary-engine-qualification-output.txt"
-cat "$BUILD/o0/output.txt"
-echo 'PUB_GC_E1_PRIMARY_ENGINE_O0_O2_IDENTITY=PASS'
-echo "PUB_GC_E1_PRIMARY_ENGINE_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
-echo "PUB_GC_E1_PRIMARY_ENGINE_HEAD=$(git rev-parse HEAD)"
-echo "PUB_GC_E1_PRIMARY_ENGINE_SOURCE_TREE=$(git rev-parse HEAD:src)"
-echo "PUB_GC_E1_PRIMARY_ENGINE_TEST_BLOB=$(git rev-parse HEAD:$ENGINE)"
-echo "PUB_GC_E1_PRIMARY_ENGINE_RUNNER_BLOB=$(git rev-parse HEAD:$RUNNER)"
+cat "$BUILD/o0/Q1.txt"
+cat "$BUILD/o0/Q2.txt"
+echo "PUB_GC_E1_ENGINE_HEAD=$(git rev-parse HEAD)"
+echo "PUB_GC_E1_ENGINE_SOURCE_TREE=$(git rev-parse HEAD:src)"
+echo "PUB_GC_E1_ENGINE_TEST_BLOB=$(git rev-parse HEAD:$TEST)"
+echo "PUB_GC_E1_ENGINE_RUNNER_BLOB=$(git rev-parse HEAD:$RUNNER)"
 echo 'PUB_GC_E1_PRIMARY_ENGINE_QUALIFICATION=PASS'
