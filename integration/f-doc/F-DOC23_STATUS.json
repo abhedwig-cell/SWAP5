@@ -2,29 +2,64 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC23",
   "title": "WOFOST and Restricted Snow Scientific Reference Expansion",
-  "phase": "RECONCILE",
-  "decision": "START_FROM_F_DOC22_CANONICAL_NO_DRIFT",
+  "phase": "UPDATE",
+  "decision": "DOCUMENTATION_POSTIMAGE_READY_FOR_VERIFY",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc23-wofost-snow-reference",
+  "branch_postimage_before_checkpoint": "6e3f03995aa51f0445639077906228e645d8bc1e",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_start_head": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
+  "canonical_drift_before_verify": false,
   "frozen_scientific_review_authority": {
     "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
     "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
-  "scope": [
-    "Acquire exact current/frozen authority for the bounded WOFOST runtime scientific exchanges",
-    "Acquire exact current/frozen authority for the restricted one-call-daily Snow process",
-    "Publish reviewer-facing scientific/state/accounting narratives only within admitted scope",
-    "Preserve all existing Status-A nonclaims on broad WOFOST compatibility and non-daily Snow modes"
-  ],
+  "acquired_authorities": {
+    "wofost_crop_state_reference": "F-WOF-PP01",
+    "wofost_migration_preservation": "F-WOF-PP02",
+    "wofost_runtime_activation": "F-CI89",
+    "wofost_canopy_provider_claim_ceiling": "F-WOF43A_OWNER_CANDIDATE_NOT_INDEPENDENT_SCIENTIFIC_ADMISSION",
+    "snow_scientific_authority": "F-VQ16",
+    "snow_current_canonical_preservation": "F-PM02",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383"
+  },
+  "published_reference": {
+    "wofost": "docs/science/wofost-crop-coupling.md",
+    "snow": "docs/science/restricted-snow.md",
+    "authority_matrix": "integration/f-doc/F-DOC23_AUTHORITY_MATRIX.md",
+    "navigation_updated": true,
+    "capability_crosslinks_updated": true
+  },
+  "claim_ceilings": {
+    "wofost": "Twelve PP01/PP02-qualified crop-owned trajectories, accepted-daily runtime event semantics, and explicit SWAP coupling contracts only; RD/TRA donor equivalence, full ET science, broad Soil-N policy and full WOFOST ecosystem compatibility remain excluded.",
+    "snow": "Exact B1.10-compatible one-call-daily formulation, component mass terms and preserved restricted runtime composition only; subdaily, multiday, arbitrary-duration and parallel real-physics Snow remain excluded."
+  },
+  "delta_check": {
+    "base": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
+    "head_before_checkpoint": "6e3f03995aa51f0445639077906228e645d8bc1e",
+    "status": "ahead",
+    "ahead_by": 8,
+    "behind_by": 0,
+    "changed_files": 8,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_changed": false,
+    "only_docs_navigation_and_f_doc_governance": true
+  },
   "mutations": {
     "production_source_change": false,
     "reference_source_change": false,
     "scientific_denominator_change": false,
+    "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "ACQUIRE WOFOST F-CI89/source authority and Snow F-PM02/source authority; define claim ceilings before writing scientific pages.",
-  "verdict": "IN_PROGRESS"
+  "verification_required": [
+    "python tools/docs/check_docs.py",
+    "mkdocs build --strict",
+    "confirm PR/file delta remains documentation/governance only",
+    "recheck live canonical before admission"
+  ],
+  "next_permitted_action": "Run the repository documentation gate on this checkpoint postimage. If documentation checks and strict MkDocs build pass, persist VERIFY evidence, recheck canonical for relevant drift, then admit documentation-only F-DOC23.",
+  "verdict": "READY_FOR_VERIFY"
 }
