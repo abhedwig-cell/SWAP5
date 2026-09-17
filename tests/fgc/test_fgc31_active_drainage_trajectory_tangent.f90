@@ -23,7 +23,7 @@ program test_fgc31_active_drainage_trajectory_tangent
   real(real64), parameter :: duration = 4.0e-4_real64
   real(real64), parameter :: mass_tolerance = 1.0e-10_real64
   real(real64), parameter :: qbot0 = 0.0_real64
-  real(real64), parameter :: fd_eps = 2.0e-4_real64
+  real(real64), parameter :: fd_eps = 1.0e-6_real64
   integer(int64), parameter :: column_id = 531032_int64
 
   type(fmr_b110_physical_parameters_t) :: parameters
@@ -72,6 +72,12 @@ program test_fgc31_active_drainage_trajectory_tangent
 
   call run_backend(qbot0+fd_eps,.false.,plus,plus_candidate,plus_diag)
   call run_backend(qbot0-fd_eps,.false.,minus,minus_candidate,minus_diag)
+  if (.not. plus%completed .or. .not. minus%completed) then
+    write(*,'(A,I0,A,ES14.6,A,I0,A,I0)') 'FGC31_DEBUG_PLUS status=',plus%status, &
+         ' completed_t=',plus%completed_t,' accepted=',plus_diag%accepted_substeps,' retries=',plus_diag%retries
+    write(*,'(A,I0,A,ES14.6,A,I0,A,I0)') 'FGC31_DEBUG_MINUS status=',minus%status, &
+         ' completed_t=',minus%completed_t,' accepted=',minus_diag%accepted_substeps,' retries=',minus_diag%retries
+  end if
   call require(plus%status == CANONICAL_STATUS_COMPLETED .and. minus%status == CANONICAL_STATUS_COMPLETED, &
        'FD production paths completed')
   call require(plus_candidate%ready() .and. minus_candidate%ready(), 'FD candidates ready')
