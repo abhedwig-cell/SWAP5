@@ -6,8 +6,13 @@ result:
 
 chronology:
   manifest_commit: 71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe
+  manifest_git_commit_utc: 2026-09-17T18:34:20Z
+  manifest_declared_created_utc: 2026-09-17T18:20:29Z
+  authoritative_preregistration_chronology: git_commit_time
   hypothesis_declared_before_run: true
   design_declared_before_run: true
+  workflow_trigger_commit: b3f33f031bcf642e2cca3ecfb6d6ac1983257aab
+  workflow_trigger_commit_utc: 2026-09-17T18:35:27Z
   first_execution_utc: 2026-09-17T18:35:30Z
   completed_utc: 2026-09-17T18:36:26Z
 
@@ -22,12 +27,14 @@ scope:
     - MODFLOW 6 transfer
     - response/tangent acceleration
     - hydrologic value of N:1 heterogeneity
+    - any general claim beyond the pinned F-GC25/F-VQ87 qualification domain
 
 execution:
   github_run_id: 35259757727
   github_job_id: 105332222414
   research_branch: research/pub-e0-screening
   workflow_control_commit: b3f33f031bcf642e2cca3ecfb6d6ac1983257aab
+  manifest_commit: 71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe
   code_commit: 37c02ac3747bfaacdb8b3408b8228f3deb2b9824
   owner_postimage_commit: 43c9f09110dea83928ef7d58990c37575d8ca223
   conclusion: SUCCESS
@@ -69,8 +76,16 @@ observations:
   warning_classification: NON_SCIENTIFIC_CONTEXT
   note: GitHub Actions emitted Node runtime deprecation warnings for maintained actions. They did not affect the compiled scientific oracle or any preregistered acceptance criterion.
 
+predecessor_context:
+  predecessor_experiment: PUB-GC-E0-0001
+  predecessor_status: INVALID_EXECUTION
+  predecessor_scientific_result_reused: false
+  interpretation: The two predecessor attempts failed before their scientific oracle and contribute no positive or negative scientific evidence to this result.
+
 conclusion:
-  decision: SUPPORTS_H1_H2_INTERFACE_SCREENING_ONLY
+  decision: SUPPORTS_PREREGISTERED_GC_E0_SCREENING_CLAIM_ONLY
   text: The preregistered independent F-VQ87 screening reached every scientific oracle and passed under O0 and O2 with byte-identical oracle output. This supplies prospective supporting evidence for bounded interface conservation, rollback and fail-closed topology/origin semantics on the exact qualified F-GC25 postimage. It does not establish coupling accuracy, general current-canonical execution, MODFLOW 6 transfer, response acceleration or hydrologic upscaling value.
 
-deviations_from_plan: none affecting scientific interpretation
+deviations_from_plan:
+  - The manifest field created_utc was accidentally inherited as 2026-09-17T18:20:29Z. The manifest was not edited after execution. The Git commit timestamp 2026-09-17T18:34:20Z is authoritative for preregistration chronology and still precedes the workflow trigger at 2026-09-17T18:35:27Z and run start at 2026-09-17T18:35:30Z.
+  - No scientific factors, cases, acceptance criteria, runner blobs or oracle-test blobs were changed after preregistration.
