@@ -4,6 +4,8 @@ Status: **working publication-governance contract**
 
 This document separates the main SWAP5 publication lines so that shared software, test infrastructure and model cases can be reused without reusing the same primary scientific inference in multiple papers.
 
+The portfolio is now also treated as the article layer of the prospective doctoral research programme defined in [PHD_RESEARCH_PROGRAMME.md](PHD_RESEARCH_PROGRAMME.md). The PhD layer does not weaken the publication firewalls below. It adds an overarching research question and a separate place for synthesis claims that can only be justified across multiple studies.
+
 The governing rule is:
 
 > Shared infrastructure may support multiple papers. A primary scientific result, figure, table or conclusion has one publication owner.
@@ -21,6 +23,21 @@ There is deliberately no `RESULT_FOR_BOTH` category.
 | `PUB-SG` | Subgrid heterogeneity and upscaling | When must heterogeneous vadose-zone columns within a groundwater cell be represented explicitly? | hydrologic consequences of explicit N:1 subgrid heterogeneity versus effective/homogenized representations |
 
 `PUB-SG` is conditional. It becomes a paper only if the experiments demonstrate a material, explainable hydrologic effect that is not already needed to establish `PUB-GC` or `PUB-RC`.
+
+## Doctoral layer
+
+The publication codes remain owners of primary paper results. Cross-paper conclusions are separately registered as `THESIS-SYNTHESIS` hypotheses in `PHD_RESEARCH_PROGRAMME.md`.
+
+A thesis synthesis may connect results from multiple papers, but it may not reassign or duplicate primary publication ownership.
+
+The intended research arc is:
+
+```text
+PRESERVE -> REPLACE -> COUPLE -> ACCELERATE -> SCALE
+ PUB-ME     PUB-SQ     PUB-GC      PUB-RC      PUB-SG?
+```
+
+The final step is conditional. The doctoral programme must remain coherent without forcing a fifth paper.
 
 ## Hard claim boundaries
 
@@ -87,9 +104,19 @@ publication_relevance:
     - <identifier or null>
   excluded_primary_claims:
     - PUB-...
+
+research_relevance:
+  phd_rq:
+    - RQ...
+  thesis_synthesis_candidates:
+    - TS...
+  hypothesis_status: proposed | tested | supported | weakened | rejected
+  pre_result_design_reference: <commit/document/id or null>
+  negative_evidence:
+    - <reference or null>
 ```
 
-The `primary` field identifies ownership of the scientific inference, not necessarily ownership of the code or test harness.
+The `primary` field identifies ownership of the scientific inference, not necessarily ownership of the code or test harness. The thesis fields preserve cross-study relevance without creating a second owner for the paper result.
 
 ## Reuse rules
 
@@ -107,6 +134,8 @@ must have one primary publication owner.
 
 The same raw simulation may therefore feed multiple publications only when each paper derives a genuinely different, pre-declared inference from it.
 
+A later thesis may synthesize those independently owned results, but the synthesis must cite their individual provenance and distinguish cross-paper inference from the original paper claims.
+
 ## Figure and table firewall
 
 Before a figure or table becomes manuscript evidence, record:
@@ -115,15 +144,24 @@ Before a figure or table becomes manuscript evidence, record:
 2. the claim it supports;
 3. the exact run/evidence identifiers from which it is derived;
 4. whether another publication may reuse only the underlying data or infrastructure;
-5. explicit exclusions.
+5. explicit exclusions;
+6. any thesis-synthesis hypothesis it may later inform.
 
 A figure that is necessary for the primary conclusion of one paper must not be reused as primary evidence for another paper.
+
+## Chronology and negative evidence
+
+Publication tracking must preserve not only successful results but also the chronology of hypotheses and negative findings.
+
+Where practical, record the hypothesis and experiment design before inspecting the decisive result. If a hypothesis is weakened or rejected, preserve that result and its provenance even when it does not enter a journal paper.
+
+This chronology is particularly important for the prospective PhD programme because it allows the final synthesis to distinguish exploratory findings from confirmatory tests.
 
 ## Development rule
 
 Publication tracking must be prospective rather than reconstructed after implementation. When a workunit begins to create data that may become publication evidence, assign publication relevance before or at qualification time.
 
-This publication layer does not replace SWAP5 capability authority, scientific qualification or canonical admission. It is an additional traceability layer from implementation/evidence to manuscript claim.
+This publication layer does not replace SWAP5 capability authority, scientific qualification or canonical admission. It is an additional traceability layer from implementation/evidence to manuscript claim and, where relevant, from manuscript claim to thesis synthesis.
 
 ## Current portfolio dependency order
 
@@ -141,4 +179,13 @@ PUB-ME   PUB-SQ
        PUB-SG (conditional)
 ```
 
-This diagram does not imply manuscript submission order. It means only that later coupling papers may rely on already qualified software and solver capabilities without re-claiming their scientific contributions.
+The prospective doctoral synthesis sits above this graph rather than inside it:
+
+```text
+            PHD SYNTHESIS
+                 ^
+                 |
+   independently owned publication results
+```
+
+These diagrams do not imply manuscript submission order. They mean only that later coupling papers may rely on already qualified software and solver capabilities without re-claiming their scientific contributions, while the final thesis may synthesize the independently owned results without erasing their provenance.
