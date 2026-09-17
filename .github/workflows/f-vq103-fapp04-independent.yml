@@ -1,0 +1,31 @@
+name: F-VQ103 independent F-APP04 composition
+
+on:
+  push:
+    branches:
+      - qualification/f-vq103-fapp04-pmdirect-typed-composition-independent
+    paths:
+      - 'tests/fvq/test_fvq103_fapp04_composition_independent.f90'
+      - 'tests/fvq/run_fvq103_fapp04_composition_independent.sh'
+      - 'integration/f-vq/F-VQ103_FAPP04_INDEPENDENT_PREREGISTRATION.json'
+      - '.github/workflows/f-vq103-fapp04-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-composition:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run F-VQ103 independent qualification
+        shell: bash
+        run: bash tests/fvq/run_fvq103_fapp04_composition_independent.sh
