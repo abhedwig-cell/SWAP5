@@ -50,12 +50,13 @@ done < <(git diff --name-only "$CANONICAL_PREIMAGE"...HEAD)
 
 git diff --check "$CANONICAL_PREIMAGE"...HEAD
 
+# Re-qualify only the F-ROSS12 scientific/production successor here.
+# EB-I23/I24/I25 have their own moving-preservation workflows on this PR.
+# Their historical independent qualification runners intentionally require
+# frozen evidence/preimages and are not valid current-postimage replay entrypoints.
 bash tests/ross/run_ross12_soil_water_solver_adapter.sh
 bash tests/ross/run_ross12_solver_selection_binding.sh
 bash tests/ross/run_ross12_serialized_production_wiring.sh
-bash tests/eb/run_f_vq90_eb_i23_independent_gate.sh
-bash tests/eb/run_f_vq91_eb_i24_independent_gate.sh
-bash tests/eb/run_f_vq93_eb_i25_independent_gate.sh
 
 grep -Fq 'FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d' .github/workflows/fci72-eb-i23-moving-preservation.yml
 grep -Fq 'FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d' .github/workflows/fci74-eb-i24-moving-preservation.yml
@@ -64,5 +65,5 @@ grep -Fq 'FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d' .github/workflo
 echo 'FCI96_FROSS12_EXACT_POSTIMAGE=PASS'
 echo 'FCI96_FROSS12_GOVERNANCE_ONLY_DELTA=PASS'
 echo 'FCI96_FROSS12_SEMANTIC_REPLAY=PASS'
-echo 'FCI96_EB_I23_I24_I25_SUCCESSOR_PRESERVATION=PASS'
+echo 'FCI96_EB_SUCCESSOR_WORKFLOW_OWNERSHIP=PASS'
 echo 'FCI96_FROSS12_POSTIMAGE_PRESERVATION=PASS'
