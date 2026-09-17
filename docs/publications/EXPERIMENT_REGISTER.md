@@ -33,7 +33,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
-| `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | READY_FOR_SCREENING | `PUB-GC-E0-0001` was invalid before its scientific oracle; replacement `PUB-GC-E0-0002` is preregistered against the exact independent F-VQ87 postimage and may now execute |
+| `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
 | `PUB-GC-E1` same-origin replay | PUB-GC | primary | DESIGNED | define diagnostic history-contaminated comparator and GW-A |
 | `PUB-GC-E2` whole-window vs terminal flux | PUB-GC | primary | DESIGNED | define fair terminal-flux comparator and GW-A |
 | `PUB-GC-E3` window convergence | PUB-GC | primary | BLOCKED | GW-A + converged replay method + `GC-REF` construction required |
@@ -52,9 +52,9 @@ The following work can begin without inventing new production science:
 
 1. `PUB-ME-E0`: recover exact authorities for the already frozen migration-slice candidate set;
 2. `PUB-ME-E4`: freeze the exact unrelated-change Case A paired with frozen semantic-successor Case B;
-3. `PUB-GC-E0`: execute only the preregistered replacement `PUB-GC-E0-0002` against its pinned F-VQ87 authority;
+3. `PUB-GC-E0`: complete; no further post-hoc E0 screening cases are added;
 4. `PUB-GC-E6`: re-express bounded N:1 conservation cases under publication manifests;
-5. `PUB-SQ-E0`: no further screening cases are added post hoc; the family is complete and hands off to SQ-E1 reference/common-domain design.
+5. `PUB-SQ-E0`: complete; no further screening cases are added post hoc; the family hands off to SQ-E1 reference/common-domain design.
 
 These are primarily screening/foundational tasks. They should not be mistaken for final primary publication evidence.
 
@@ -104,6 +104,16 @@ Examples:
 - prerequisite satisfied: exact independent F-VQ87 authority, runner blob and oracle-test blob frozen before execution;
 - next permitted action: execute `PUB-GC-E0-0002` unchanged on the pinned F-VQ87 postimage;
 - cross-publication effect: none; this remains PUB-GC supporting evidence and does not establish current-canonical generalized runtime qualification.
+
+### 2026-09-17T18:36Z — PUB-GC-E0 replacement screening completed
+
+- controlling manifest commit: `71b7904a3ddee39c7e3a92c5f1dc23d2feaeaafe`;
+- result receipt commit: `f5f88fa5a77fb2d4fa2dd8b63a32d6fb1b805de0`;
+- execution: GitHub Actions run `35259757727`, job `105332222414`, research head `b3f33f031bcf642e2cca3ecfb6d6ac1983257aab`;
+- prerequisite satisfied: the unchanged independent F-VQ87 scientific oracle reached all preregistered assertions and passed under O0/O2 with byte-identical oracle output;
+- admitted scope: bounded F-GC25 interface conservation, rollback, action/reaction and fail-closed topology/origin screening on the exact qualified postimage;
+- next permitted action: define and freeze GW-A plus the GC-E1 history-contaminated diagnostic comparator before any primary same-origin replay run;
+- cross-publication effect: none; no ME, SQ, RC or SG primary claim is inherited, and MODFLOW/window-accuracy claims remain untested.
 
 ## Register update rule
 
