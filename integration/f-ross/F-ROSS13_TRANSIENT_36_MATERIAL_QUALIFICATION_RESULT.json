@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS13",
+  "gate": "TRANSIENT_36_MATERIAL_D3R_QUALIFICATION_AGGREGATE",
+  "qualification_contract": {
+    "path": "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json",
+    "blob_sha": "382a9f9d153669377e8eba05461594a37d132e4b"
+  },
+  "execution_evidence": {
+    "workflow": ".github/workflows/ross13-transient-36-material-qualification.yml",
+    "workflow_head": "fbaee2199233da46a672a19ee71625632c94317e",
+    "run_id": 35213506527,
+    "run_conclusion": "success",
+    "aggregate_job_id": 105180773761,
+    "aggregate_job_conclusion": "success",
+    "artifact_id": 10494444383,
+    "artifact_name": "f-ross13-transient-36-material-qualification-35213506527",
+    "artifact_zip_sha256": "1ad6d8dd71c2c6bee91363974eb82ccae3d10b80c80d3795270e2ee59f29aa1c",
+    "raw_aggregate_json_sha256": "8cd9afc0fb8bcdadf5bc38b1a033f698276f968c984bf96041816d1eac8143c1",
+    "historical_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "note": "The workflow artifact contained the full 36-material aggregate matrix. This durable repository result records the gate verdict, provenance, failure sets and worst-case diagnostics; the qualification is reproducible from the pinned contract, research head, runner and workflow."
+  },
+  "aggregate": {
+    "pass": true,
+    "decision": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING_REVIEW",
+    "expected_material_count": 36,
+    "observed_material_count": 36,
+    "expected_base_case_total": 288,
+    "observed_base_case_total": 288,
+    "base_case_total_matches_contract": true,
+    "missing_materials": [],
+    "duplicate_materials": [],
+    "unexpected_materials": [],
+    "failed_materials": [],
+    "fingerprint_failures": [],
+    "anchor_semantic_failures": [],
+    "production_implementation": false,
+    "production_allowlist_changed": false
+  },
+  "anchor_replay": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "base_case_count": 108,
+    "all_pass": true,
+    "all_historical_semantic_matches": true,
+    "O14_piecewise_transition_route_count": 8
+  },
+  "extension_qualification": {
+    "material_count": 30,
+    "geometry": "16 cells x 10 cm",
+    "base_case_count": 180,
+    "all_pass": true,
+    "all_table_fingerprints_match_authority": true,
+    "piecewise_transition_materials": [
+      {"material": "B13", "route_count": 8}
+    ],
+    "inadmissible_transition_route_count": 0
+  },
+  "worst_case_diagnostics": {
+    "max_abs_horizon_mass_residual_cm": {"material": "O18", "value": 6.703189029235238e-14, "gate": 1e-12},
+    "max_abs_step_mass_residual_cm": {"material": "B13", "value": 1.1519648082658485e-18, "gate": 1e-12},
+    "max_finest_candidate_state_change_relative_error": {"material": "B13", "value": 1.1123406127500546e-05, "gate": 0.005},
+    "max_finest_candidate_theta_span_normalized_error": {"material": "B13", "value": 2.86165628886085e-08, "gate": 1e-05},
+    "minimum_observed_order": {"material": "B13", "value": 1.9935314323290922, "gate": 1.0},
+    "minimum_median_observed_order": {"material": "B13", "value": 1.996766204429521, "gate": 1.5},
+    "inadmissible_transition_route_count": 0
+  },
+  "admission_boundary": {
+    "qualification_only": true,
+    "production_allowlist_still_six_at_this_result": true,
+    "next_permitted_action": "SURGICAL_PRODUCTION_ALLOWLIST_WIDENING_REVIEW",
+    "nonclaims": [
+      "No grid, cell-thickness, heterogeneous-profile, root/sink, groundwater, energy, ponding, MultiSWAP, fallback, transaction or solver-ABI generalization is qualified.",
+      "This result does not itself change production routing or material admission."
+    ]
+  }
+}
