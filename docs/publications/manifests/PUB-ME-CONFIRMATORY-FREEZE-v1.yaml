@@ -1,0 +1,118 @@
+freeze:
+  id: PUB-ME-CONFIRMATORY-FREEZE-v1
+  owner: PUB-ME
+  status: B0_B1_DESIGN_FROZEN_IMPLEMENTATION_PENDING
+  purpose: Freeze the causal architecture comparison before building the research-only bypass harness.
+  branch: research/phd-five-paper-manifests-20260918
+
+authorities:
+  migration_slice_selection:
+    path: docs/publications/PUB-ME_MIGRATION_SLICES.md
+    blob: 57a9d1dd233129deb77b316ded9b1c4a3400780c
+  prior_postsolver_rollback_evidence:
+    branch: work/pub-p1e02-transaction-fault-injection
+    head: 7e13915fdc7620ef767af68cd89fcea07d91a2b6
+    result_path: docs/publication/P1_POSTSOLVER_ROLLBACK_RESULT.json
+    result_blob: 9f87a9ee449777aaae1cf71efd68a92ccbb318cb
+    role: DESIGN_AND_HARNESS_QUALIFICATION_ONLY
+  production_case_source:
+    path: tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90
+    blob: af34185b6fd1001cacdb5156eaecdd79302add74
+    role: EXACT_BASE_CASE_AUTHORITY
+
+causal_variable:
+  B0:
+    name: authority_bypass_research_variant
+    rule: >-
+      Research-only execution in which the injected mutation is allowed to reach the object
+      or publication surface that represents accepted scientific history. B0 must not alter
+      equations, forcing, solver route, numerical tolerances, initial physical state or the
+      external acceptance criterion.
+  B1:
+    name: explicit_candidate_to_accepted_authority
+    rule: >-
+      Production-equivalent authority semantics: candidate/workspace mutation remains
+      non-authoritative until explicit assessment and commit. Rejected work is discarded.
+  forbidden_difference:
+    - different_physics
+    - different_solver
+    - different_forcing
+    - different_initial_state
+    - different_acceptance_threshold
+    - different_mass_rule
+    - different_time_interval
+
+primary_fault_families:
+  - id: ME-F1
+    mechanism: rejected_trial_integral_or_history_mutation
+    expected_B1_property: rejected trial cannot alter accepted history or accepted mass/flux integral
+  - id: ME-F2
+    mechanism: numerical_continuation_or_warm_start_leakage
+    expected_B1_property: non-authoritative continuation state cannot alter accepted physical state merely by surviving a rejected trial
+  - id: ME-F3
+    mechanism: premature_external_publication
+    expected_B1_property: no externally authoritative scientific publication before successful commit
+
+primary_base_cases:
+  - id: ME-C1-EQUILIBRIUM
+    source: FMR44R verify_equilibrium_mode2
+    initial_head_cm: -75.0
+    duration_day: 0.25
+    bottom_mode: 2
+    role: stable/no-large-physical-change control
+  - id: ME-C2-POSITIVE-QBOT
+    source: FMR44R verify_positive_bottom_inflow
+    initial_head_cm: -75.0
+    duration_day: 0.0001
+    bottom_mode: 2
+    prescribed_bottom_inflow_cm_per_day: 1.0e-10
+    role: nonzero-throughflow dynamic case
+
+design_only_case:
+  id: ME-D0-POSTSOLVER-REJECTION
+  reason_not_primary: Result already observed before this freeze.
+  fixture:
+    initial_pressure_head_cm_uniform: -75.0
+    requested_duration_day: 0.25
+    temporal_mode: TX_TEMPORAL_EXTERNAL_FULL_HALF
+    temporal_tolerance: 0.0
+    max_retries: 0
+    mass_tolerance_cm: 1.0e-12
+  use: Verify injector and B1 rollback oracle before primary B0/B1 cases.
+
+primary_matrix:
+  planned_runs: 12
+  construction: 2 base cases x 3 fault families x 2 authority architectures
+  no_fault_pairing: >-
+    Each base case must additionally demonstrate B0/B1 no-fault preservation equivalence before
+    any injected comparison is interpreted.
+  order: >-
+    Freeze deterministic case/fault order in the executable manifest. Do not reorder or drop a
+    run after observing contamination.
+
+primary_endpoint:
+  accepted_state_contamination: >-
+    Binary per injected run. Contamination exists if accepted state, accepted history, accepted
+    integrated transfer, restart state or externally authoritative publication differs from the
+    matched no-fault authority beyond its existing preservation rule.
+  hard_B1_rule: zero contamination for every valid fault path claimed to cross an enforced authority boundary.
+
+support_rule:
+  strong_H2_support_requires: >-
+    At least two mechanistically distinct fault families contaminate B0 but not B1, with matched
+    no-fault B0/B1 preservation and without changing physics or numerical acceptance criteria.
+  otherwise: Narrow the state-authority claim; do not substitute additional favorable fault cases post hoc.
+
+implementation_gate:
+  required_before_primary_run:
+    - Research-only B0 bypass harness exists outside production semantics.
+    - B0 and B1 no-fault outputs are preservation-equivalent on ME-C1 and ME-C2.
+    - Each injector is independently shown to mutate its intended research target.
+    - Exact executable/test blob and O0/O2 build authority are frozen.
+    - No production or reference source mutation is needed to make a fault visible.
+  current_blocker: RESEARCH_ONLY_B0_BYPASS_AND_INJECTOR_HARNESS_NOT_YET_MATERIALIZED
+
+nonclaims:
+  - Fault injection itself is not novel.
+  - Prior PUB-P1E02 evidence is not relabelled as prospective primary evidence.
+  - A B0 contamination result is not evidence unless B0 and B1 are otherwise matched.
