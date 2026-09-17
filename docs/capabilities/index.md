@@ -6,6 +6,7 @@ Use them when you need to understand **what the capability currently means**, **
 
 ## Capability pages
 
+- [Reference preservation](reference-preservation.md) — frozen scientific/reference identity, qualification inheritance and dependency-aware preservation replay.
 - [Restart v1](restart-v1.md) — committed-state persistence and qualified continuation.
 - [Serialized MultiSWAP v1](serialized-multiswap-v1.md) — serialized composition of qualified real-physics column contexts.
 - [Drainage](drainage.md) — admitted drainage process and accounting/preservation boundary.
