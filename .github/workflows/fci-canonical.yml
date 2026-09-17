@@ -101,7 +101,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-          bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
+          bash tests/fmr/run_fmr23_reference_et_demand_runtime_binding_gate.sh
           bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
           test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
@@ -304,14 +304,16 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Moving-current preservation without historical admission assumptions
+      - name: Moving-current preservation with admitted F-ROSS12 semantic successor
         shell: bash
         run: |
           set -euo pipefail
           AUTH=50346642bd565f79134ea17d5462e544b354998c
+          FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
           TX=src/transaction/mod_transaction_reference.f90
           TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
           git merge-base --is-ancestor "$AUTH" HEAD
+          git merge-base --is-ancestor "$FROSS12_AUTH" HEAD
           test "$(git rev-parse "HEAD:$TX")" = "$TX_BLOB" || {
             echo "FCI_CANONICAL_PRESERVATION_FAIL admitted F-KT18 transaction postimage drift: $TX" >&2
             exit 41
@@ -341,7 +343,6 @@ jobs:
             src/adapter/mod_reference_richards_legacy_binding.f90
             src/adapter/mod_b110_serialized_context_binding.f90
             src/process/mod_snow_process.f90
-            src/runtime/mod_fmr_serialized_reference_backend.f90
             src/runtime/mod_fmr_serialized_multiswap_runtime.f90
             src/process/mod_liquid_water_sensible_enthalpy.f90
             src/runtime/mod_fmr_bottom_thermal_carrier.f90
@@ -392,6 +393,17 @@ jobs:
               exit 40
             }
           done
+          fross12_surface=(
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+            src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
+            src/solver/mod_rossfast_d3r_soil_water_solver.f90
+          )
+          for path in "${fross12_surface[@]}"; do
+            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$FROSS12_AUTH:$path")" || {
+              echo "FCI_CANONICAL_PRESERVATION_FAIL admitted F-ROSS12 successor drift: $path" >&2
+              exit 42
+            }
+          done
           echo 'FCI34_MOVING_ROOT_ATTRIBUTION_PRESERVATION=PASS'
           echo 'FCI35_MOVING_PARALLEL_RESTART_DEPENDENCY_PRESERVATION=PASS'
           echo 'FCI36_MOVING_DIVDRA_ACTIVE_RUNTIME_PRESERVATION=PASS'
@@ -416,5 +428,6 @@ jobs:
           echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'
           echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'
           echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'
+          echo 'FCI96_MOVING_FROSS12_SUCCESSOR_PRESERVATION=PASS'
           echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
