@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-DOC25",
   "title": "Reference Richards Numerical Formulation and Solver Ownership",
-  "phase": "VERIFY",
-  "decision": "QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
+  "phase": "CLOSE",
+  "decision": "READY_FOR_CANONICAL_ADMISSION",
   "protocol": ["RECONCILE", "ACQUIRE", "UPDATE", "VERIFY", "ADMIT", "CLOSE"],
   "branch": "work/f-doc25-richards-numerical-reference",
   "canonical_branch": "integration/f-ci-canonical",
@@ -16,8 +16,8 @@
     "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
   },
   "reconciliation": {
-    "live_canonical_at_verify": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
-    "delta_from_start_to_verify": "Two canonical commits created and reverted an accidental F-DOC25 placeholder; compare b861122a..fc53f675 reports zero changed files and both commits resolve to the same canonical tree e612eee6a619d073e1be225df8dd2c52f12f89c2.",
+    "live_canonical_at_close": "fc53f6753458333fe05a7665d0d1436bc2eb7fef",
+    "delta_from_start_to_close": "Two canonical commits created and reverted an accidental F-DOC25 placeholder; compare b861122a..fc53f675 reports zero changed files and both states resolve to tree e612eee6a619d073e1be225df8dd2c52f12f89c2.",
     "relevant_overlap": false,
     "frozen_scientific_denominator_changed": false
   },
@@ -86,6 +86,6 @@
     "qualification_tolerance_change": false,
     "documentation_only": true
   },
-  "next_permitted_action": "Recheck live integration/f-ci-canonical and PR #175. If no relevant numerical-authority or documentation overlap has appeared since fc53f6753458333fe05a7665d0d1436bc2eb7fef, admit PR #175. The VERIFY checkpoint update itself changes governance only and does not alter the already-qualified user-facing documentation.",
+  "next_permitted_action": "Admit PR #175 with expected head equal to this CLOSE checkpoint commit, provided live canonical remains non-conflicting. No frozen publication-branch movement is authorized by F-DOC25.",
   "verdict": "PASS_READY_FOR_ADMISSION"
 }
