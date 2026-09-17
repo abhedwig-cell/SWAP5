@@ -15,6 +15,7 @@ program test_fvq105_fgc31_independent
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_TABULATED
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
        FMR_QBOT_DRAIN_DIRECTION_OK
+  use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -365,6 +366,7 @@ contains
     type(soil_water_parameter_set_t) :: p
     real(real64) :: gwl
     integer :: i, projection_status
+    type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
 
     p%parameter_set_id=105199_int64
     p%active_nodes=numnod
@@ -378,7 +380,7 @@ contains
       state%pressure_head(i)=-2.0_real64-real(i,real64)
     end do
     state%water_content=0.2_real64
-    call project_fmr_qbot_smooth_groundwater_level(p,state,gwl,projection_status)
+    call project_fmr_qbot_smooth_groundwater_level(p,state,gwl,projection_status,projection_diagnostics)
     call require(projection_status /= FMR_QBOT_DRAIN_DIRECTION_OK, &
          'below-profile GWL branch must fail closed')
   end subroutine verify_projection_fail_closed
