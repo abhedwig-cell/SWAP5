@@ -37,11 +37,14 @@ TRAJ=src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
 TRAJPUB=src/transaction/mod_accepted_trajectory_directional_publication.f90
 CONTRACTS=src/runtime/mod_canonical_contracts.f90
 WORKER=src/runtime/mod_a23bu_worker_execution_context.f90
+SWCONTRACT=src/solver/mod_soil_water_solver_contract.f90
+SWBRIDGE=src/adapter/mod_soil_water_transaction_result_bridge.f90
 TRIAL=src/adapter/mod_b1_10_trial_mass.f90
 INTERVAL=src/adapter/mod_b1_10_interval_seam.f90
 BASE=src/adapter/mod_b1_10_transaction_binding.f90
 MASS=src/adapter/mod_b1_10_mass_seam.f90
 TEMPORAL=src/adapter/mod_b1_10_temporal_characterization.f90
+CAPSULE=src/adapter/mod_b1_10_legacy_trial_capsule.f90
 FCI12_EXEC=src/adapter/mod_b1_10_physical_interval_executor.f90
 FCI12_REF=src/adapter/mod_b1_10_reference_model.f90
 STATUS=src/adapter/mod_b1_10_trial_status.f90
@@ -62,12 +65,15 @@ for opt in 0 2; do
   gfortran "${DEP_FLAGS[@]}" -c "$TRAJPUB" -o "$O/trajectory_publication.o"
   gfortran "${DEP_FLAGS[@]}" -c "$CONTRACTS" -o "$O/contracts.o"
   gfortran "${DEP_FLAGS[@]}" -c "$WORKER" -o "$O/worker.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$SWCONTRACT" -o "$O/swcontract.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$SWBRIDGE" -o "$O/swbridge.o"
   gfortran "${DEP_FLAGS[@]}" -c "$TRIAL" -o "$O/trial_mass.o"
   gfortran "${DEP_FLAGS[@]}" -c "$INTERVAL" -o "$O/interval.o"
   gfortran "${DEP_FLAGS[@]}" -c "$STUBS" -o "$O/stubs.o"
   gfortran "${DEP_FLAGS[@]}" -c "$BASE" -o "$O/base_binding.o"
   gfortran "${DEP_FLAGS[@]}" -c "$MASS" -o "$O/mass_seam.o"
   gfortran "${DEP_FLAGS[@]}" -c "$TEMPORAL" -o "$O/temporal.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$CAPSULE" -o "$O/capsule.o"
   gfortran "${DEP_FLAGS[@]}" -c "$FCI12_EXEC" -o "$O/fci12_executor.o"
   gfortran "${DEP_FLAGS[@]}" -c "$FCI12_REF" -o "$O/fci12_reference.o"
   gfortran "${DEP_FLAGS[@]}" -c "$STATUS" -o "$O/status.o"
@@ -77,7 +83,7 @@ for opt in 0 2; do
   gfortran "${DEP_FLAGS[@]}" -c "$MODEL" -o "$O/model.o"
   gfortran "${TEST_FLAGS[@]}" -c "$TEST" -o "$O/test.o"
 
-  gfortran -O"$opt" -o "$O/test_d2"     "$O/transaction.o" "$O/stepdir.o" "$O/trajectory.o" "$O/trajectory_publication.o" "$O/contracts.o" "$O/worker.o" "$O/trial_mass.o" "$O/interval.o"     "$O/stubs.o" "$O/base_binding.o" "$O/mass_seam.o" "$O/temporal.o"     "$O/fci12_executor.o" "$O/fci12_reference.o" "$O/status.o" "$O/fci13_executor.o"     "$O/fci13_reference.o" "$O/policy.o" "$O/model.o" "$O/test.o"
+  gfortran -O"$opt" -o "$O/test_d2"     "$O/transaction.o" "$O/stepdir.o" "$O/trajectory.o" "$O/trajectory_publication.o" "$O/contracts.o" "$O/worker.o" "$O/swcontract.o" "$O/swbridge.o" "$O/trial_mass.o" "$O/interval.o"     "$O/stubs.o" "$O/base_binding.o" "$O/mass_seam.o" "$O/temporal.o"     "$O/fci12_executor.o" "$O/fci12_reference.o" "$O/status.o" "$O/fci13_executor.o"     "$O/fci13_reference.o" "$O/policy.o" "$O/model.o" "$O/test.o"
 
   if ! "$O/test_d2" > "$O/output.txt" 2>&1; then
     cat "$O/output.txt" >&2
