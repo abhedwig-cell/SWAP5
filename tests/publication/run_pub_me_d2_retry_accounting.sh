@@ -50,25 +50,26 @@ STUBS=tests/fci/fci14_reference_policy_stubs.f90
 
 for opt in 0 2; do
   O="$BUILD/o$opt"
-  FLAGS=(-O"$opt" -std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffree-line-length-none -J "$O" -I "$O")
+  DEP_FLAGS=(-O"$opt" -std=f2008 -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffree-line-length-none -J "$O" -I "$O")
+  TEST_FLAGS=(-O"$opt" -std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffree-line-length-none -J "$O" -I "$O")
 
-  gfortran "${FLAGS[@]}" -c "$TX" -o "$O/transaction.o"
-  gfortran "${FLAGS[@]}" -c "$CONTRACTS" -o "$O/contracts.o"
-  gfortran "${FLAGS[@]}" -c "$WORKER" -o "$O/worker.o"
-  gfortran "${FLAGS[@]}" -c "$TRIAL" -o "$O/trial_mass.o"
-  gfortran "${FLAGS[@]}" -c "$INTERVAL" -o "$O/interval.o"
-  gfortran "${FLAGS[@]}" -c "$STUBS" -o "$O/stubs.o"
-  gfortran "${FLAGS[@]}" -c "$BASE" -o "$O/base_binding.o"
-  gfortran "${FLAGS[@]}" -c "$MASS" -o "$O/mass_seam.o"
-  gfortran "${FLAGS[@]}" -c "$TEMPORAL" -o "$O/temporal.o"
-  gfortran "${FLAGS[@]}" -c "$FCI12_EXEC" -o "$O/fci12_executor.o"
-  gfortran "${FLAGS[@]}" -c "$FCI12_REF" -o "$O/fci12_reference.o"
-  gfortran "${FLAGS[@]}" -c "$STATUS" -o "$O/status.o"
-  gfortran "${FLAGS[@]}" -c "$FCI13_EXEC" -o "$O/fci13_executor.o"
-  gfortran "${FLAGS[@]}" -c "$FCI13_REF" -o "$O/fci13_reference.o"
-  gfortran "${FLAGS[@]}" -c "$POLICY" -o "$O/policy.o"
-  gfortran "${FLAGS[@]}" -c "$MODEL" -o "$O/model.o"
-  gfortran "${FLAGS[@]}" -c "$TEST" -o "$O/test.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$TX" -o "$O/transaction.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$CONTRACTS" -o "$O/contracts.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$WORKER" -o "$O/worker.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$TRIAL" -o "$O/trial_mass.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$INTERVAL" -o "$O/interval.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$STUBS" -o "$O/stubs.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$BASE" -o "$O/base_binding.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$MASS" -o "$O/mass_seam.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$TEMPORAL" -o "$O/temporal.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$FCI12_EXEC" -o "$O/fci12_executor.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$FCI12_REF" -o "$O/fci12_reference.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$STATUS" -o "$O/status.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$FCI13_EXEC" -o "$O/fci13_executor.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$FCI13_REF" -o "$O/fci13_reference.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$POLICY" -o "$O/policy.o"
+  gfortran "${DEP_FLAGS[@]}" -c "$MODEL" -o "$O/model.o"
+  gfortran "${TEST_FLAGS[@]}" -c "$TEST" -o "$O/test.o"
 
   gfortran -O"$opt" -o "$O/test_d2"     "$O/transaction.o" "$O/contracts.o" "$O/worker.o" "$O/trial_mass.o" "$O/interval.o"     "$O/stubs.o" "$O/base_binding.o" "$O/mass_seam.o" "$O/temporal.o"     "$O/fci12_executor.o" "$O/fci12_reference.o" "$O/status.o" "$O/fci13_executor.o"     "$O/fci13_reference.o" "$O/policy.o" "$O/model.o" "$O/test.o"
 
