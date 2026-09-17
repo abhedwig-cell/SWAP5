@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,7 @@ MODULE_PATH = ROOT / "src" / "adapter" / "modflow6_xmi_package_adapter.py"
 SPEC = importlib.util.spec_from_file_location("fgc35_adapter", MODULE_PATH)
 assert SPEC is not None and SPEC.loader is not None
 MOD = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = MOD
 SPEC.loader.exec_module(MOD)
 
 Adapter = MOD.Modflow6XmiPackageAdapter
