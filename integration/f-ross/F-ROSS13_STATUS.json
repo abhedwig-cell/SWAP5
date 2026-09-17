@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS13",
   "title": "RossFast D3R 36-material production envelope",
@@ -123,6 +123,26 @@
       "scientific_or_solver_semantic_failure_observed": false
     }
   ],
+  "closure_cleanup": {
+    "closure_pr": 197,
+    "stale_trigger_run": 35280476683,
+    "stale_trigger_job": 105400962799,
+    "classification": "STALE_ONE_SHOT_IMPLEMENTATION_PREIMAGE_GUARD_AFTER_SUCCESSFUL_ADMISSION",
+    "failed_guard": "The one-shot production-widening workflow still required the pre-widening model/provider blobs after the admitted postimages were already present.",
+    "scientific_or_production_regression_observed": false,
+    "cleanup_removed": [
+      ".github/workflows/ross13-apply-36-material-production-envelope.yml",
+      "tests/ross/apply_ross13_production_widening.py"
+    ],
+    "permanent_preservation_retained": [
+      "tests/ross/test_ross13_36_material_production_envelope.f90",
+      "tests/ross/run_ross13_36_material_production_envelope.sh",
+      "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+      "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json"
+    ],
+    "production_or_reference_mutation": false
+  },
   "hard_exclusions": [
     "NO_GRID_OR_CELL_COUNT_GENERALIZATION",
     "NO_CELL_THICKNESS_GENERALIZATION",
@@ -138,7 +158,7 @@
     "NO_CRITERION_RETUNING_TO_FORCE_PASS"
   ],
   "recovery": {
-    "last_reconciled_head": "b2fc87dd7af174cc0e69b5de920c8cf8abe44367",
+    "last_reconciled_head": "ad8b651daee16b300e75f0bbdb7f6070d7c99af2",
     "last_reconciled_upstream": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
     "relevant_paths": [
       "integration/f-ross/F-ROSS13_STATUS.json",
