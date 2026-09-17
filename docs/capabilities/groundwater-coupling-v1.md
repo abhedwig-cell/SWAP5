@@ -6,6 +6,8 @@ Groundwater Coupling v1 is the bounded Status-A groundwater capability chain. It
 
 The groundwater capability connects the SWAP column to an admitted lower-boundary/coupling context without giving an external model direct ownership of tentative SWAP state. Scientific exchange remains subject to the owning coupling contract and the accepted execution state.
 
+The exact frozen lower-boundary semantics are documented in [Groundwater coupling and the lower hydrological boundary](../science/groundwater-coupling.md), including hydraulic-head datum conversion, flux signs and units, whole-window exchange, the restricted predictor-corrector route, governed head convergence and interface mass publication.
+
 The external groundwater gateway is therefore an adapter boundary, not an assertion that one particular broad groundwater backend has become part of the Status-A scientific core.
 
 ## Accepted-state publication
