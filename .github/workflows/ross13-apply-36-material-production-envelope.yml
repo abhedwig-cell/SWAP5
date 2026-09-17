@@ -9,6 +9,7 @@ on:
       - 'tests/ross/apply_ross13_production_widening.py'
       - 'tests/ross/test_ross13_36_material_production_envelope.f90'
       - 'tests/ross/run_ross13_36_material_production_envelope.sh'
+      - 'tests/ross/run_ross13_ross12_semantic_successor_preservation.sh'
       - 'integration/f-ross/F-ROSS13_STATUS.json'
   workflow_dispatch:
 
@@ -62,7 +63,9 @@ jobs:
           git add -- "${expected[@]}"
           git commit -m 'F-ROSS13: widen production material envelope to 36'
           test -z "$(git status --porcelain)"
-          echo 'F_ROSS13_LOCAL_PRODUCTION_COMMIT=PASS'
+          echo "F_ROSS13_LOCAL_PRODUCTION_COMMIT=$(git rev-parse HEAD)"
+          echo "F_ROSS13_MODEL_POSTIMAGE_BLOB=$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)"
+          echo "F_ROSS13_PROVIDER_POSTIMAGE_BLOB=$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)"
 
       - name: Install gfortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
@@ -70,11 +73,8 @@ jobs:
       - name: Qualify all 36 provider assets and fail-closed admission
         run: bash tests/ross/run_ross13_36_material_production_envelope.sh
 
-      - name: Re-run F-ROSS12 solver-adapter preservation
-        run: bash tests/ross/run_ross12_soil_water_solver_adapter.sh
-
-      - name: Re-run F-ROSS12 selection-binding preservation
-        run: bash tests/ross/run_ross12_solver_selection_binding.sh
+      - name: Re-run F-ROSS12 unit semantics through F-ROSS13 successor boundary
+        run: bash tests/ross/run_ross13_ross12_semantic_successor_preservation.sh
 
       - name: Re-run F-ROSS12 serialized production preservation
         run: bash tests/ross/run_ross12_serialized_production_wiring.sh

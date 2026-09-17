@@ -1,11 +1,11 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS13",
   "title": "RossFast D3R 36-material production envelope",
   "branch": "work/f-ross13-36-material-production-envelope",
   "phase": "IMPLEMENT",
-  "status": "IMPLEMENTATION_TRANSACTION_RETRY_AFTER_HARNESS_DEPENDENCY_FIX",
+  "status": "IMPLEMENTATION_TRANSACTION_RETRY_WITH_SEMANTIC_SUCCESSOR_PRESERVATION",
   "canonical_base": "4b945b19d0b5f984d10bc750bb403174158a886b",
   "canonical_merge_head": "76b954f304dd781d56e408aebbf805527ee28a3e",
   "qualification_head": "fbaee2199233da46a672a19ee71625632c94317e",
@@ -31,15 +31,18 @@
     "decision": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING"
   },
   "canonical_reconciliation": {
-    "current_canonical": "4b945b19d0b5f984d10bc750bb403174158a886b",
-    "current_canonical_change": "PUB-P2E06_REFERENCE_ONLY_DIAGNOSTIC_AND_GOVERNANCE",
-    "src_tree_changed_by_p2e06": false,
-    "reference_tree_changed_by_p2e06": false,
-    "rossfast_executed_by_p2e06": false,
-    "f_ci_canonical_result": "PASS",
+    "current_canonical": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
+    "latest_canonical_commit": "F-DOC29_DOCUMENTATION_ONLY",
+    "latest_commit_declares_no_production_reference_or_test_change": true,
+    "verified_relevant_blobs_unchanged_since_merge_base": {
+      "src/runtime/mod_rossfast_d3r_model_binding.f90": "9f29ba7a08844692ba2628c7869d23713409f92b",
+      "src/solver/mod_rossfast_d3r_table_provider.f90": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+      "src/runtime/mod_fmr_soil_water_application_host.f90": "daca18b77673608436425e81ecd397ef3e35e4b2",
+      "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90": "cca61af52bde3eed12b756547277cc2776589648"
+    },
     "merge_commit": "76b954f304dd781d56e408aebbf805527ee28a3e",
-    "merge_force_used": false,
-    "merge_diff_outside_f_ross13_overlay": false
+    "new_merge_required": false
   },
   "implementation_preimage": {
     "model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
@@ -62,20 +65,43 @@
       "exact_two_file_mutation_guard": "PASS",
       "qualification_result": "FAIL_BEFORE_MATERIAL_RUNTIME_TEST",
       "failure_class": "QUALIFICATION_HARNESS_DEPENDENCY_INCOMPLETE",
-      "failure_detail": "mod_canonical_contracts compile could not find mod_accepted_trajectory_directional_publication.mod because the new minimal runner omitted current canonical transitive module dependencies",
       "scientific_or_provider_failure_observed": false,
-      "remediation": "Add the same canonical directional/publication dependency prefix already used by F-ROSS12 compile runners; do not change production source or acceptance criteria."
+      "remediation": "Add current canonical transitive compile dependencies only; do not change production source or acceptance criteria."
+    },
+    {
+      "workflow_run": 35275590142,
+      "workflow_head": "710cdc6a99c26b5129b6602e2540c9bc787fa9d8",
+      "temporary_local_source_commit": "12d9c410",
+      "remote_source_commit_pushed": false,
+      "preimage_guards": "PASS",
+      "catalog_authority_guard": "PASS",
+      "exact_two_file_mutation_guard": "PASS",
+      "production_provider_gate": {
+        "result": "PASS",
+        "material_count": 36,
+        "o0": "PASS",
+        "o2": "PASS",
+        "o0_o2_output_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311",
+        "unknown_material_fail_closed": true,
+        "parameter_drift_fail_closed": true
+      },
+      "preservation_result": "BLOCKED_BEFORE_EXECUTION_BY_OBSOLETE_F_ROSS12_PREIMAGE_LOCK",
+      "failure_class": "PRESERVATION_HARNESS_HISTORICAL_BLOB_LOCK_EXPECTED_TO_CHANGE_IN_F_ROSS13",
+      "failure_detail": "run_ross12_soil_water_solver_adapter.sh exits on frozen model_binding/provider blob assertions before compiling or running the Ross12 semantic test. The same obsolete locks are present in run_ross12_solver_selection_binding.sh.",
+      "scientific_or_solver_semantic_failure_observed": false,
+      "remediation": "Run the unchanged Ross12 adapter and selection test programs through an F-ROSS13 semantic-successor runner that retains hard locks on all non-authorized transaction/solver/policy/kernel/adapter/routing authorities while allowing only the enclosing transaction-proven model_binding/provider successor blobs."
     }
   ],
   "implementation_transaction": {
     "strategy": "BLOB_GUARDED_DETERMINISTIC_CATALOG_GENERATION_LOCAL_COMMIT_QUALIFY_BEFORE_PUSH",
     "catalog_source": "PINNED_HISTORICAL_AUTHORITY_ONLY",
     "production_test": "tests/ross/run_ross13_36_material_production_envelope.sh",
-    "preservation_tests": [
-      "tests/ross/run_ross12_soil_water_solver_adapter.sh",
-      "tests/ross/run_ross12_solver_selection_binding.sh",
-      "tests/ross/run_ross12_serialized_production_wiring.sh"
+    "unit_preservation_test": "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+    "unit_preservation_oracles": [
+      "tests/ross/test_ross12_soil_water_solver_adapter.f90",
+      "tests/ross/test_ross12_solver_selection_binding.f90"
     ],
+    "serialized_preservation_test": "tests/ross/run_ross12_serialized_production_wiring.sh",
     "push_rule": "NO_PRODUCTION_SOURCE_COMMIT_IS_PUSHED_UNLESS_ALL_LOCAL_QUALIFICATION_STEPS_PASS"
   },
   "hard_exclusions": [
@@ -92,6 +118,6 @@
     "NO_RUNTIME_TABLE_GENERATION",
     "NO_CRITERION_RETUNING_TO_FORCE_PASS"
   ],
-  "verdict": "HARNESS_ONLY_FAILURE_NO_REMOTE_PRODUCTION_MUTATION_RETRY_PERMITTED",
-  "next_permitted_action": "Retry the unchanged blob-guarded implementation transaction with the corrected compile dependency list. Push the exact two-file production widening only if the 36-material production/provider test and all three F-ROSS12 preservation runners pass."
+  "verdict": "SECOND_ATTEMPT_PROVIDER_GATE_PASS_PRESERVATION_HARNESS_ONLY_BLOCK_RETRY_PERMITTED",
+  "next_permitted_action": "Retry the unchanged exact two-file implementation transaction using the semantic-successor preservation runner. Push only if the 36-material provider gate, both unchanged Ross12 unit semantic oracles, and serialized production preservation all pass."
 }
