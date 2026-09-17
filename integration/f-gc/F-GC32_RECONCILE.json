@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.fgc32.checkpoint.v1",
+  "work_unit": "F-GC32",
+  "title": "Active-drainage MODFLOW6 tangent closure",
+  "branch": "work/f-gc32-active-drainage-tangent-closure",
+  "phase": "RECONCILE_ACQUIRE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "b7e48275ebfba5ba888685f7515005c7195d5d73",
+    "f_gc30_closeout_ancestor": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "relevant_delta_since_f_gc30": "NO_SRC_RUNTIME_SOLVER_TRANSACTION_DELTA; only publication P2E08 files in the observed 10-commit advancement"
+  },
+  "predecessor": {
+    "work_unit": "F-GC30",
+    "closeout": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+    "admitted_capability": "DRAINAGE_FREE_MODFLOW6_SWAP_PREDICTOR_TANGENT",
+    "preserved_blocker": "ACTIVE_DRAINAGE_ANALYTIC_TANGENT_FAILS_CLOSED"
+  },
+  "objective": "Close only the active-drainage derivative coverage needed by the already-admitted MODFLOW6 SWAP predictor-response contract, without reopening F-GC30 or changing the frozen Drainage-v1 denominator.",
+  "reconcile_findings": {
+    "production_drainage_tangent": "Per-level drainage response already exposes derivative_defined and dq_dgroundwater_level; the missing chain is qbot -> accepted hydraulic state -> groundwater_level -> next-step drainage response -> later hydraulic state.",
+    "serialized_runtime_order": "Active drainage is evaluated from request/base-state groundwater_level before a Richards trial and is held fixed during that solve.",
+    "current_groundwater_level_lifecycle": "The serialized reference state binding seeds solver gwl from the incoming physical state; inspected HeadCalc code does not generally recompute gwl on the prescribed-qbot route, and the candidate state receives the solver gwl value.",
+    "legacy_order": "Legacy SWAP ordering is Drainage -> SoilWater(2) -> accepted/retry resolution -> SoilWater(3); SoilWater(3) calls calcgwl, so the newly derived groundwater level becomes input to the next physical step rather than an implicit within-solve drainage update.",
+    "drainage_v1_governance": "F-PM19/F-TB12 define Drainage-v1 100-percent completion for a frozen eight-variant denominator and explicitly do not require fully implicit drainage-response solver coupling. F-GC32 is a new coupling sensitivity capability, not a reopening of Drainage-v1.",
+    "zero_derivative_disposition": "FORBIDDEN_AS_WORKAROUND: setting d(gwl)/d(qbot)=0 would encode the currently frozen technical state value as scientific truth before the exact calcgwl-derived-state semantics are qualified."
+  },
+  "exact_source_authority": {
+    "outer_distribution": {
+      "name": "SWAP_4.3.1.zip",
+      "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "size_bytes": 8959314
+    },
+    "nested_source_archive": {
+      "path": "tools/SWAP/source/SWAP.ZIP",
+      "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+    },
+    "calcgwl": {
+      "path": "SWAP/calcgwl.f90",
+      "sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+      "size_bytes": 13602,
+      "materialized_in_repository": false
+    }
+  },
+  "acquisition_evidence": {
+    "library_candidates": [
+      "SWAP_4.3.1.zip",
+      "SWAP_4.3.1(1).zip",
+      "SWAP_4.3.1(2).zip",
+      "SWAP_4.3.1(3).zip",
+      "SWAP_4.3.1(4).zip"
+    ],
+    "candidate_size_bytes": 8959314,
+    "raw_byte_materialization": "UNAVAILABLE_FROM_CURRENT_LIBRARY_ACCESS_PATH",
+    "hash_verification_of_library_candidates": false,
+    "external_recovery_sources": [
+      "SWAP-model/SWAP current calcgwl implementation at c22bd832ddf3e53e330a552f5e31e74f183362d1",
+      "Murilodsv/SWAP-SAMUCA historical src_Swap4/calcgwl.f90 at 5c32d54b6202af097f80cd45939ccefab50437f5"
+    ],
+    "external_sources_authoritative_for_b0": false
+  },
+  "verdict": "BLOCKED_EXACT_B0_CALCGWL_SOURCE_MATERIALIZATION_REQUIRED",
+  "production_changes": [],
+  "reference_changes": [],
+  "tests_run": [],
+  "mutations": [
+    "Created work/f-gc32-active-drainage-tangent-closure from exact current canonical b7e48275ebfba5ba888685f7515005c7195d5d73",
+    "Persisted this reconcile/acquisition checkpoint only"
+  ],
+  "next_permitted_action": [
+    "Acquire byte-authorized exact SWAP 4.3.1 source material.",
+    "Verify outer archive, nested SWAP.ZIP and SWAP/calcgwl.f90 against the recorded SHA-256 identities before reading semantics into production.",
+    "Qualify only the smooth calcgwl branch(es) needed by prescribed-qbot active-drainage predictor trajectories; branch changes, clamps, threshold crossings and unsupported macropore/perched-water-table cases must fail closed.",
+    "Determine whether closure can remain a non-mutating directional derived-state service or requires restoration of post-solve groundwater-level derivation in production. Any protected drainage dependency mutation requires fresh current-postimage preservation evidence."
+  ],
+  "exclusions": [
+    "No reopening of F-GC30.",
+    "No change to the F-PM19 frozen Drainage-v1 denominator.",
+    "No fully implicit drainage-in-Richards redesign.",
+    "No runtime finite-difference fallback.",
+    "No MODFLOW6/XMI backend implementation.",
+    "No irrigation or Ribasim work.",
+    "No accepted_storage_change substitution.",
+    "No assumption that modern or third-party calcgwl source equals exact B0."
+  ]
+}
