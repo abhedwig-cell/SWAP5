@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC32",
+  "title": "B1.10 cofgen legacy alias provenance refinement",
+  "phase": "VERIFY",
+  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+  "branch": "work/f-doc32-cofgen-legacy-alias-provenance",
+  "canonical_start": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+  "content_postimage": "7331395ed883c75a7ae5033024bafdc85dd4088d",
+  "verified_content_head": "bf54bf72258902c42c73917f6a40690754240edc",
+  "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "prior_documentation_authority": {
+    "work_unit": "F-DOC27",
+    "pull_request": 179,
+    "admitted_canonical": "74051e113fcef19e021d69854f3ab99066eb30cb",
+    "decision": "PARTIAL_PROVENANCE_MAPPING_ONLY"
+  },
+  "source_authority": {
+    "path": "reference/swap-4.3.1/patches/SWAP-012/fix.patch",
+    "blob": "77f4b63689a6f72116280cbd019852b3b181e34a",
+    "ref": "50346642bd565f79134ea17d5462e544b354998c",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "direct_alias_bindings": {
+    "13": "alpha2",
+    "14": "npar2",
+    "15": "mpar2",
+    "16": "omega1"
+  },
+  "claim_ceiling": {
+    "allowed": [
+      "record rows 13:16 as source-bound legacy code-local aliases in the SWAP-012 imod==3 inverse-retention branch",
+      "retain unresolved original input names and units",
+      "retain F-DOC27 provider-local role statements"
+    ],
+    "forbidden": [
+      "promote local aliases to proven original input/parser keywords",
+      "infer units from equations or familiar terminology",
+      "generalize the aliases to other model families or every historical use of cofgen",
+      "assign a semantic name to row 18 from its branch use",
+      "change production, reference, test, physics or numerical semantics"
+    ]
+  },
+  "scope_diff": [
+    "docs/science/soil-hydraulic-parameter-provenance.md",
+    "integration/f-doc/F-DOC32_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC32_STATUS.json"
+  ],
+  "scope_check": {
+    "changed_file_count": 3,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "mkdocs_navigation_changed": false
+  },
+  "verification": {
+    "pull_request": 198,
+    "content_workflow_run": 35281044208,
+    "content_workflow_job": 105402794380,
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "workflow_conclusion": "success",
+    "exact_head_rerun": "PENDING"
+  },
+  "production_reference_test_delta": false,
+  "verdict": "CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE",
+  "next_permitted_action": "REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_MERGEABILITY"
+}
