@@ -13,6 +13,12 @@ TEST=tests/publication/test_pub_p2e06_reference_local_balance_scaling.f90
 PREREG=docs/publication/P2E06_REFERENCE_LOCAL_BALANCE_SCALING_PREREGISTRATION.json
 BASE_SRC_TREE=10109695195d3f4c715d532bff07551ff639f0a6
 BASE_REFERENCE_TREE=684f1e2889b6992e5aedc88f52bb45f4558bb3e4
+FROSS13_BASE=fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e
+FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
+FROSS13_MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
+FROSS13_PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
+FROSS13_MODEL_POSTIMAGE=5442fd7e7a2f392c9b796cd17c76b17977259f22
+FROSS13_PROVIDER_POSTIMAGE=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
 
 [[ -f "$PREREG" ]] || fail 'missing preregistration'
 grep -Fq '"phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION"' "$PREREG" || fail 'preregistration phase missing'
@@ -20,10 +26,27 @@ grep -Fq '"rossfast_execution_allowed": false' "$PREREG" || fail 'RossFast execu
 grep -Fq '"production_or_reference_source_change_allowed": false' "$PREREG" || fail 'source-change firewall missing'
 grep -Fq '"production_tolerance_change_allowed": false' "$PREREG" || fail 'production-tolerance firewall missing'
 
-# P2E06 is evidence-only. Refuse to run if either scientific source tree has
-# moved from the exact admitted P2E05 canonical base.
-test "$(git rev-parse HEAD:src)" = "$BASE_SRC_TREE" || fail 'src tree differs from P2E05 canonical base'
-test "$(git rev-parse HEAD:reference)" = "$BASE_REFERENCE_TREE" || fail 'reference tree differs from P2E05 canonical base'
+# P2E06 is evidence-only. Preserve its exact P2E05 scientific denominator.
+# A later semantic successor may run the unchanged diagnostic only when its
+# independent source delta is explicitly bounded and Reference is byte-identical.
+if [[ "$(git rev-parse HEAD:src)" == "$BASE_SRC_TREE" ]] && \
+   [[ "$(git rev-parse HEAD:reference)" == "$BASE_REFERENCE_TREE" ]]; then
+  echo 'PUB_P2E06_EXACT_P2E05_SCIENTIFIC_DENOMINATOR=PASS'
+else
+  git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD || fail 'non-P2E05 source tree without qualified F-ROSS13 production ancestor'
+  test "$(git rev-parse "$FROSS13_BASE:src")" = "$BASE_SRC_TREE" || fail 'F-ROSS13 base src does not preserve P2E05 authority'
+  test "$(git rev-parse "$FROSS13_BASE:reference")" = "$BASE_REFERENCE_TREE" || fail 'F-ROSS13 base Reference does not preserve P2E05 authority'
+  test "$(git rev-parse HEAD:reference)" = "$BASE_REFERENCE_TREE" || fail 'reference tree differs from P2E05 canonical base'
+  test "$(git rev-parse HEAD:$FROSS13_MODEL)" = "$FROSS13_MODEL_POSTIMAGE" || fail 'F-ROSS13 model-binding postimage mismatch'
+  test "$(git rev-parse HEAD:$FROSS13_PROVIDER)" = "$FROSS13_PROVIDER_POSTIMAGE" || fail 'F-ROSS13 provider postimage mismatch'
+
+  mapfile -t src_delta < <(git diff --name-only "$FROSS13_BASE" HEAD -- src | sort)
+  expected=(src/runtime/mod_rossfast_d3r_model_binding.f90 src/solver/mod_rossfast_d3r_table_provider.f90)
+  test "${#src_delta[@]}" -eq 2 || fail 'F-ROSS13 successor src delta is not exactly two files'
+  test "${src_delta[0]}" = "${expected[0]}" || fail 'unexpected first F-ROSS13 successor src delta'
+  test "${src_delta[1]}" = "${expected[1]}" || fail 'unexpected second F-ROSS13 successor src delta'
+  echo 'PUB_P2E06_FROSS13_BOUNDED_SEMANTIC_SUCCESSOR=PASS'
+fi
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
