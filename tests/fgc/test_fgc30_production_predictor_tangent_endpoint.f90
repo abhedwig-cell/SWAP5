@@ -16,7 +16,13 @@ program test_fgc30_production_predictor_tangent_endpoint
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_FLUX
-  use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t
+  use mod_soil_water_solver_contract, only: soil_water_physical_state_t, soil_water_parameter_set_t, &
+       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
+       reference_richards_legacy_workspace_t
+  use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
        groundwater_interface_state_t, swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, &
        pair_groundwater_flux_from_swap, GW_INTERFACE_OK
@@ -36,15 +42,15 @@ program test_fgc30_production_predictor_tangent_endpoint
   real(real64), parameter :: h0 = -75.0_real64
   real(real64), parameter :: duration = 0.25_real64
   real(real64), parameter :: mass_tolerance = 1.0e-12_real64
-  real(real64), parameter :: fd_eps = 1.0e-8_real64
+  real(real64), parameter :: fd_eps = 1.0e-4_real64
   integer(int64), parameter :: column_id = 530030_int64
 
   type(fmr_b110_physical_parameters_t) :: parameters
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
-  type(b110_default_mvg_provider_t) :: constitutive
-  type(soil_water_parameter_set_t) :: solver_parameters
+  type(b110_default_mvg_provider_t), target :: constitutive
+  type(soil_water_parameter_set_t), target :: solver_parameters
   type(soil_water_physical_state_t) :: predictor_state
   type(groundwater_head_datum_t) :: datum
   type(groundwater_coupling_window_t) :: window
@@ -105,9 +111,10 @@ program test_fgc30_production_predictor_tangent_endpoint
   write(*,'(A)') 'FGC30_PRODUCTION_ACCEPTED_TRAJECTORY_BINDING=PASS'
   write(*,'(A)') 'FGC30_PRODUCTION_TANGENT_ENDPOINT_AUTHORITATIVE=PASS'
 
-  ! Independent full-production centered finite difference. Perturbations must
-  ! remain on the same first-attempt transaction acceptance topology; otherwise
-  ! the adaptive controller makes this point unsuitable as a smooth FD oracle.
+  ! Independent centered finite difference of the accepted production two-half
+  ! discrete route. The external full/half temporal comparator is bit-exact, so
+  ! nearby non-equilibrium perturbations are evaluated by replaying the accepted
+  ! two-half solver topology directly rather than weakening transaction policy.
   call run_endpoint_value(qeq + fd_eps, plus_face)
   call run_endpoint_value(qeq - fd_eps, minus_face)
   fd_derivative = (plus_face%pressure_head_cm - minus_face%pressure_head_cm) / (2.0_real64 * fd_eps)
@@ -381,20 +388,81 @@ contains
   subroutine run_endpoint_value(bottom_flux, face)
     real(real64), intent(in) :: bottom_flux
     type(modflow6_prescribed_qbot_bottom_face_t), intent(out) :: face
-    type(kernel_result_t) :: result
-    type(kernel_candidate_state_t) :: candidate
-    type(kernel_diagnostics_t) :: diagnostics
-    type(soil_water_physical_state_t) :: state
-    type(soil_water_parameter_set_t) :: parameter_set
-    real(real64) :: water(numnod), conductivity(numnod), capacity(numnod), reserved(numnod)
+    type(reference_richards_legacy_solver_t) :: solver
+    type(reference_richards_legacy_workspace_t) :: workspace
+    type(soil_water_solve_request_t) :: request
+    type(soil_water_solve_result_t) :: first_half, second_half
+    type(b110_source_sink_provider_t), target :: source_sink
+    type(b110_default_mvg_provider_t), target :: fd_constitutive
+    real(real64), target :: drainage(1,numnod), irrigation(numnod), roots(numnod)
+    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), reserved(numnod)
     integer :: face_status
+    logical :: context_ok
 
-    call run_production_candidate(bottom_flux, .false., result, candidate, diagnostics)
-    call require(diagnostics%retries == 0, 'FD perturbation changed transaction acceptance topology')
-    call materialize_solver_view(candidate, state, parameter_set)
-    call constitutive%evaluate(state%pressure_head, water, conductivity, capacity, reserved)
-    call materialize_modflow6_prescribed_qbot_bottom_face(state%pressure_head(numnod), conductivity(numnod), &
-         bottom_flux, 0.5_real64*parameter_set%dz(numnod), datum, face, face_status)
+    ! The accepted production route for this external-full/half baseline is the
+    ! two-half state. Its temporal comparator is intentionally bit-exact and
+    ! therefore cannot admit any non-trivial nearby qbot perturbation. The FD
+    ! oracle reproduces that accepted discrete route directly: two independent
+    ! half-step B1.10 nonlinear solves from the same origin, with only qbot
+    ! perturbed and with no tangent request or transaction-tolerance relaxation.
+    drainage = 0.0_real64
+    irrigation = 0.0_real64
+    roots = 0.0_real64
+    call bind_b110_source_sink_provider(source_sink, drainage, irrigation, roots)
+    call bind_b110_default_mvg_provider(fd_constitutive, hydraulic_parameters, 0.5_real64*duration)
+
+    heads = h0
+    call fd_constitutive%evaluate(heads, water, conductivity, capacity, reserved)
+    request%parameters => solver_parameters
+    request%step_duration = 0.5_real64*duration
+    request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
+    request%boundary%bottom_mode = SW_STEP_CONTROL_BOTTOM_FLUX
+    request%boundary%top_flux = qeq
+    request%boundary%top_head = h0
+    request%boundary%bottom_flux = bottom_flux
+    request%boundary%bottom_head = -999999.0_real64
+    request%numerical%max_iterations = parameters%max_iterations
+    request%numerical%max_backtracking = parameters%max_backtracking
+    request%numerical%conductivity_implicit_mode = parameters%swkimpl
+    request%numerical%conductivity_mean_method = parameters%swkmean
+    request%numerical%min_step_duration = parameters%min_step_duration
+    request%numerical%compartment_balance_tolerance = parameters%compartment_balance_tolerance
+    request%numerical%total_balance_tolerance = parameters%total_balance_tolerance
+    request%numerical%head_abs_tolerance = parameters%head_abs_tolerance
+    request%numerical%head_rel_tolerance = parameters%head_rel_tolerance
+    request%numerical%ponding_tolerance = parameters%ponding_tolerance
+    request%physical%macropore_active = .false.
+    request%base_state%active_nodes = numnod
+    allocate(request%base_state%pressure_head(numnod), request%base_state%water_content(numnod))
+    request%base_state%pressure_head = heads
+    request%base_state%water_content = water
+    request%base_state%ponding_depth = 0.0_real64
+    request%base_state%groundwater_level = -2.0_real64
+    request%evaluation%constitutive => fd_constitutive
+    request%evaluation%source_sink => source_sink
+    request%evaluation%top_boundary => top
+    request%request_interface_sensitivity = .false.
+
+    call bind_b110_serialized_legacy_context(request, context_ok)
+    call require(context_ok, 'FD first-half legacy context bound')
+    call solver%solve(request, workspace, first_half)
+    call require(first_half%status == SW_SOLVE_CONVERGED .and. .not. first_half%retry_advised, &
+         'FD first-half production solve converged')
+    call require(first_half%diagnostics%internal_retries == 0 .and. &
+         first_half%diagnostics%alternative_solver_calls == 0, 'FD first-half route changed')
+
+    request%base_state = first_half%candidate_state
+    call bind_b110_serialized_legacy_context(request, context_ok)
+    call require(context_ok, 'FD second-half legacy context bound')
+    call solver%solve(request, workspace, second_half)
+    call require(second_half%status == SW_SOLVE_CONVERGED .and. .not. second_half%retry_advised, &
+         'FD second-half production solve converged')
+    call require(second_half%diagnostics%internal_retries == 0 .and. &
+         second_half%diagnostics%alternative_solver_calls == 0, 'FD second-half route changed')
+
+    call fd_constitutive%evaluate(second_half%candidate_state%pressure_head, water, conductivity, capacity, reserved)
+    call materialize_modflow6_prescribed_qbot_bottom_face(second_half%candidate_state%pressure_head(numnod), &
+         conductivity(numnod), bottom_flux, 0.5_real64*solver_parameters%dz(numnod), datum, face, face_status)
     call require(face_status == MODFLOW6_BOTTOM_FACE_OK .and. face%valid, 'FD endpoint face materialized')
   end subroutine run_endpoint_value
 
