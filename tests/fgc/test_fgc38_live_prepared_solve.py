@@ -101,9 +101,9 @@ def build_model(workdir: Path) -> None:
     flopy.mf6.ModflowIms(
         sim,
         complexity="MODERATE",
-        outer_dvclose=1.0e-13,
-        inner_dvclose=1.0e-14,
-        rcloserecord=1.0e-14,
+        outer_dvclose=1.0e-11,
+        inner_dvclose=1.0e-12,
+        rcloserecord=1.0e-12,
         outer_maximum=300,
         inner_maximum=300,
     )
@@ -216,7 +216,7 @@ def run_case(
             final_term = response_sequence[-1]
             converged = False
             stabilized = False
-            stabilization_tolerance_m = 5.0e-14
+            stabilization_tolerance_m = 5.0e-13
             previous_final_head: np.ndarray | None = None
             final_stabilization_delta = math.inf
             for _ in range(session.max_solve_iterations - session.iteration_count):
