@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-APP08",
+  "title": "Rutter typed application identity bindings",
+  "base": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "purpose": "Complete the admitted SWINTER=3/SWCF=2 application mapping without adding physics: bind exact Rutter interval outputs to existing root-uptake and dynamic-top seams.",
+  "dependencies": {
+    "f_app05": "admitted Rutter process on canonical",
+    "rutter_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+    "crop_root_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "dynamic_top_provider_blob": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d"
+  },
+  "mappings": [
+    "rutter.net_rain_cm_per_day -> dynamic_top.precipitation_rate_cm_per_day",
+    "rutter.net_surface_irrigation_cm_per_day -> dynamic_top.irrigation_rate_cm_per_day",
+    "rutter.potential_transpiration_cm_per_day -> crop_root_uptake_input_t.potential_transpiration for emerged crop",
+    "non-emerged crop -> canonical zero potential transpiration"
+  ],
+  "pass_conditions": [
+    "exact identity mappings",
+    "all unrelated dynamic-top fields preserved",
+    "root geometry preserved and validated",
+    "upstream/nonfinite/negative values fail closed",
+    "O0/O2 output identity",
+    "no production mutation outside one new runtime binding module"
+  ],
+  "exclusions": [
+    "Rutter physics",
+    "irrigation selection",
+    "file parsing",
+    "solver",
+    "transaction",
+    "timestep",
+    "retry",
+    "tolerances",
+    "surface evaporation daily demand"
+  ],
+  "m1_c3_closed": false
+}
