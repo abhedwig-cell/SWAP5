@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.f-rom1a-i0.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM1A-I0",
+  "title": "Current-canonical research Reference observation seam",
+  "phase": "PREREGISTERED_BEFORE_SOURCE_MUTATION",
+  "canonical_base": "624400307cf40f2bcdc3176e682e0365ee1025b5",
+  "purpose": "Re-materialize on current canonical the previously qualified F-KT-owned fixed-resolution Reference sample/candidate/commit seam required by ROM-1A accepted-state observation, without changing ordinary production runtime semantics.",
+  "prior_authority": {
+    "kernel_sample_commit": "91487c6102fa95fa1ae44ec429d791fa0f7b1bf2",
+    "fmr_binding_commit": "2b27333d8fee6c410a7a332747373dada5a1eb12",
+    "opaque_candidate_fix_commit": "6e4c2d7b4a0e4dc1c4e8650f7ee7f2ab29e73723",
+    "mode5_admission_commit": "eac7320d5d5d9dc45092b3cafdfec2762a06ab30",
+    "ta4_restart_replay_decision": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+    "ta5_binding_decision": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED"
+  },
+  "allowed_source_files": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "required_semantics": [
+    "SEPARATE_REFERENCE_FLOOR_RESULT_AND_CANDIDATE_TYPES",
+    "EXACTLY_ONE_PRESCRIBED_PHYSICAL_ADVANCE_PER_SAMPLE",
+    "ZERO_AUTOMATIC_TEMPORAL_RETRY_OR_SUBDIVISION",
+    "INDEPENDENT_HARD_TRANSACTION_MASS_GATE",
+    "FAILED_SAMPLE_NEVER_MUTATES_COMMITTED_STATE",
+    "CANDIDATE_COMMIT_REQUIRES_LINEAGE_REVISION_AND_TIME_MATCH",
+    "DISCARD_NEVER_MUTATES_COMMITTED_STATE",
+    "FMR_ADMISSION_RESTRICTED_TO_REFERENCE_BACKEND_BASE_LAYOUT_NO_OPTIONAL_PROCESSES",
+    "BOTTOM_MODE_2_AND_5_ONLY",
+    "ORDINARY_RUN_TRIAL_AND_CANONICAL_INTERVAL_PATH_UNCHANGED"
+  ],
+  "qualification_matrix": {
+    "materials": ["B01","B14"],
+    "bottom_modes": [2,5],
+    "geometry": "16x10 cm",
+    "effective_saturation": 0.85,
+    "sample_dt_day": 0.0008,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "qualification_gates": [
+    "SOURCE_SCOPE_EXACTLY_TWO_FILES",
+    "REFERENCE_TREE_UNCHANGED",
+    "MODE2_AND_MODE5_B01_B14_SAMPLE_PASS",
+    "ONE_PHYSICAL_ADVANCE_EACH",
+    "ZERO_INTERNAL_RETRIES_EACH",
+    "HARD_MASS_GATE_EACH",
+    "COMMIT_REVISION_AND_TIME_PROGRESS_EXACT",
+    "FAILED_SAMPLE_NO_COMMIT",
+    "O0_O2_BYTE_IDENTITY",
+    "ORDINARY_RUNTIME_CORE_DIFF_FREE_OUTSIDE_DECLARED_SEAM"
+  ],
+  "forbidden": [
+    "NO_REFERENCE_RICHARDS_EQUATION_CHANGE",
+    "NO_SOLVER_CONTROL_CHANGE",
+    "NO_PRODUCTION_REFERENCE_FALLBACK",
+    "NO_APPLICATION_TEMPORAL_BUDGET_CHANGE",
+    "NO_NEW_BOTTOM_MODE",
+    "NO_OPTIONAL_PROCESS_ADMISSION",
+    "NO_ROM_TRAJECTORY_GENERATION_BEFORE_I0_PASS"
+  ],
+  "close_decisions": [
+    "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_QUALIFIED",
+    "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_NO_GO"
+  ],
+  "production_application_admission": false
+}
