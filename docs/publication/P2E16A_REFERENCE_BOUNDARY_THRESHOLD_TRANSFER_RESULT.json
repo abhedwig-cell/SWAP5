@@ -1,0 +1,148 @@
+{
+  "schema": "swap5.publication.p2e16a-reference-boundary-threshold-transfer-result.v1",
+  "workunit": "PUB-P2E16A",
+  "phase": "REFERENCE_ONLY_BOUNDARY_THRESHOLD_TRANSFER_COMPLETE",
+  "parent_preregistration": {
+    "path": "docs/publication/P2E16_ADMISSIBILITY_BOUNDARY_PRIMARY_PREREGISTRATION.json",
+    "commit": "50f41a43f7d19fc36be439cb9ed680f53ad55967",
+    "blob": "8c9336594486864d6318e1b52a3e093f774cf2af"
+  },
+  "executed_head": "7c2e7935ae55b001b74d9abb4e71832b1a1d863c",
+  "authorities": {
+    "test_blob": "6e3642cad1b0fb86c8030ca97e6c0fa368ffb0d7",
+    "runner_blob": "c140ed6a3a42e5a12401dadbc893ec6a3955065a",
+    "workflow_blob": "73c99c1a1471cdb0ad769dc89d905a77de357cae",
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "p2e15_result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19"
+  },
+  "execution": {
+    "workflow_run": 35291857224,
+    "job": 105436203062,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "74997f8500837cee22ba836416fadeefe3ced7c89f51d5fac4dab0cb2a08761a"
+  },
+  "matrix": {
+    "physical_case_count": 1296,
+    "materials": 36,
+    "effective_saturation": [0.65, 0.85, 0.96],
+    "boundary_axes": ["TOP_PRESCRIBED_FLUX", "BOTTOM_PRESCRIBED_FLUX"],
+    "rho": [-1.05, -1.0, -0.95, 0.95, 1.0, 1.05],
+    "contract_class_counts": {
+      "INSIDE": 432,
+      "BOUNDARY": 432,
+      "OUTSIDE": 432
+    }
+  },
+  "reference_validity": {
+    "valid": 1296,
+    "invalid": 0,
+    "max_abs_integrated_mass_residual_cm": {
+      "coarse": {"value": 6.38735245250821e-15, "case": 390},
+      "half1": {"value": 3.194274011963927e-15, "case": 1256},
+      "half2": {"value": 3.1960717059020817e-15, "case": 1075}
+    },
+    "hard_limit_cm": 1e-12
+  },
+  "p2e14_threshold_transfer": {
+    "valid": 1269,
+    "failed": 27,
+    "valid_by_contract_class": {
+      "INSIDE": 424,
+      "BOUNDARY": 426,
+      "OUTSIDE": 419
+    },
+    "failed_by_contract_class": {
+      "INSIDE": 8,
+      "BOUNDARY": 6,
+      "OUTSIDE": 13
+    },
+    "failed_by_axis": {
+      "TOP": 9,
+      "BOTTOM": 18
+    },
+    "failed_by_Se": {
+      "0.65": 8,
+      "0.85": 9,
+      "0.96": 10
+    },
+    "failed_by_material": {
+      "B05": 16,
+      "B13": 8,
+      "B16": 1,
+      "B18": 1,
+      "O16": 1
+    },
+    "failure_metric_combinations": {
+      "D_theta_rms_only": 2,
+      "D_theta_inf_and_D_theta_rms": 6,
+      "D_h_inf_and_D_theta_inf": 1,
+      "D_h_rms_and_D_theta_rms": 4,
+      "all_four_state_metrics": 3,
+      "D_h_rms_only": 2,
+      "D_h_inf_and_D_h_rms": 6,
+      "D_storage_only": 3
+    },
+    "maximum_fraction_of_frozen_threshold": {
+      "D_h_inf": 1.0659319982702509,
+      "D_h_rms": 1.0614645077816445,
+      "D_theta_inf": 1.0207791544305997,
+      "D_theta_rms": 1.0186159679902957,
+      "D_storage": 1.5
+    },
+    "interpretation": "The original P2E14 Se-stratified Reference self-disagreement envelope transfers to 1269 of 1296 new boundary-forcing Reference cases, but not to all cases. The 27 failures are retained and the P2E14 thresholds remain immutable. This is a threshold-transfer boundary, not a RossFast discrepancy result."
+  },
+  "failed_cases": [
+    {"case":145,"material":"B05","Se":0.65,"axis":"TOP","rho":-1.05,"class":"OUTSIDE","failed_metrics":["D_theta_rms"]},
+    {"case":154,"material":"B05","Se":0.65,"axis":"BOTTOM","rho":0.95,"class":"INSIDE","failed_metrics":["D_theta_inf","D_theta_rms"]},
+    {"case":155,"material":"B05","Se":0.65,"axis":"BOTTOM","rho":1.0,"class":"BOUNDARY","failed_metrics":["D_theta_inf","D_theta_rms"]},
+    {"case":156,"material":"B05","Se":0.65,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_theta_inf","D_theta_rms"]},
+    {"case":157,"material":"B05","Se":0.85,"axis":"TOP","rho":-1.05,"class":"OUTSIDE","failed_metrics":["D_theta_rms"]},
+    {"case":166,"material":"B05","Se":0.85,"axis":"BOTTOM","rho":0.95,"class":"INSIDE","failed_metrics":["D_theta_inf","D_theta_rms"]},
+    {"case":167,"material":"B05","Se":0.85,"axis":"BOTTOM","rho":1.0,"class":"BOUNDARY","failed_metrics":["D_theta_inf","D_theta_rms"]},
+    {"case":168,"material":"B05","Se":0.85,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_theta_inf","D_theta_rms"]},
+    {"case":169,"material":"B05","Se":0.96,"axis":"TOP","rho":-1.05,"class":"OUTSIDE","failed_metrics":["D_h_inf","D_theta_inf"]},
+    {"case":171,"material":"B05","Se":0.96,"axis":"TOP","rho":-0.95,"class":"INSIDE","failed_metrics":["D_h_rms","D_theta_rms"]},
+    {"case":172,"material":"B05","Se":0.96,"axis":"TOP","rho":0.95,"class":"INSIDE","failed_metrics":["D_h_rms","D_theta_rms"]},
+    {"case":173,"material":"B05","Se":0.96,"axis":"TOP","rho":1.0,"class":"BOUNDARY","failed_metrics":["D_h_rms","D_theta_rms"]},
+    {"case":174,"material":"B05","Se":0.96,"axis":"TOP","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_h_rms","D_theta_rms"]},
+    {"case":178,"material":"B05","Se":0.96,"axis":"BOTTOM","rho":0.95,"class":"INSIDE","failed_metrics":["D_h_inf","D_h_rms","D_theta_inf","D_theta_rms"]},
+    {"case":179,"material":"B05","Se":0.96,"axis":"BOTTOM","rho":1.0,"class":"BOUNDARY","failed_metrics":["D_h_inf","D_h_rms","D_theta_inf","D_theta_rms"]},
+    {"case":180,"material":"B05","Se":0.96,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_h_inf","D_h_rms","D_theta_inf","D_theta_rms"]},
+    {"case":433,"material":"B13","Se":0.65,"axis":"TOP","rho":-1.05,"class":"OUTSIDE","failed_metrics":["D_h_rms"]},
+    {"case":442,"material":"B13","Se":0.65,"axis":"BOTTOM","rho":0.95,"class":"INSIDE","failed_metrics":["D_h_inf","D_h_rms"]},
+    {"case":443,"material":"B13","Se":0.65,"axis":"BOTTOM","rho":1.0,"class":"BOUNDARY","failed_metrics":["D_h_inf","D_h_rms"]},
+    {"case":444,"material":"B13","Se":0.65,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_h_inf","D_h_rms"]},
+    {"case":445,"material":"B13","Se":0.85,"axis":"TOP","rho":-1.05,"class":"OUTSIDE","failed_metrics":["D_h_rms"]},
+    {"case":454,"material":"B13","Se":0.85,"axis":"BOTTOM","rho":0.95,"class":"INSIDE","failed_metrics":["D_h_inf","D_h_rms"]},
+    {"case":455,"material":"B13","Se":0.85,"axis":"BOTTOM","rho":1.0,"class":"BOUNDARY","failed_metrics":["D_h_inf","D_h_rms"]},
+    {"case":456,"material":"B13","Se":0.85,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_h_inf","D_h_rms"]},
+    {"case":576,"material":"B16","Se":0.96,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE","failed_metrics":["D_storage"]},
+    {"case":646,"material":"B18","Se":0.96,"axis":"BOTTOM","rho":0.95,"class":"INSIDE","failed_metrics":["D_storage"]},
+    {"case":1207,"material":"O16","Se":0.85,"axis":"BOTTOM","rho":-1.05,"class":"OUTSIDE","failed_metrics":["D_storage"]}
+  ],
+  "candidate_firewall": {
+    "rossfast_executed": false,
+    "p2e14_threshold_changed": false,
+    "threshold_stratification_changed": false,
+    "case_removed": false,
+    "performance_inspected": false
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "All 1296 predeclared boundary-forcing cases possess a valid Reference coarse-versus-refined comparison under the frozen Reference route.",
+      "The P2E14 threshold surface is broadly but not universally transferable to the new forcing-boundary matrix.",
+      "The non-transfer is structured, dominated by B05 and B13 and more common on the bottom-boundary axis."
+    ],
+    "not_supported": [
+      "universal transfer of P2E14 thresholds to all prescribed-flux boundary states",
+      "any RossFast boundary-admission result",
+      "any threshold widening",
+      "any performance claim"
+    ]
+  },
+  "verdict": "REFERENCE_BOUNDARY_DOMAIN_VALID_THRESHOLD_TRANSFER_PARTIAL_1269_OF_1296",
+  "next_permitted_action": "Preregister P2E16B candidate boundary execution. Route-boundary and fail-closed endpoints may use all 1296 cases because the matched Reference request is valid everywhere. Pairwise scientific-admissibility claims are authorized only for the 1269 P2E16A threshold-transfer-valid cases, with P2E14 thresholds unchanged."
+}
