@@ -1,0 +1,118 @@
+{
+  "schema": "swap5.publication.p2e12-material-extension-reference-common-domain.v1",
+  "workunit": "PUB-P2E12",
+  "phase": "PREREGISTERED_BEFORE_EXTENSION_COMMON_DOMAIN_EXECUTION",
+  "source_result": {
+    "workunit": "PUB-P2E11",
+    "branch": "work/pub-p2e11-material-extension-reference-calibration",
+    "head": "7fc3d6c64f44fd07d6271d71b7d270fbd708977d",
+    "result_blob": "68f6770b3e57929dadbf8460416b58db9b27fbb4",
+    "observed_failure": "176/180 valid at coarse dt 0.0064 day; four invalid cases restricted to B02/B05 at Se=0.98"
+  },
+  "purpose": "Recover, without removing any case or using RossFast, a complete Reference-only temporal calibration domain for the exact 180-case material-extension matrix using the same five-level feasibility ladder previously preregistered for P2E08.",
+  "materials": [
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07",
+    "B08",
+    "B09",
+    "B10",
+    "B11",
+    "B13",
+    "B14",
+    "B15",
+    "B16",
+    "B17",
+    "B18",
+    "O02",
+    "O03",
+    "O04",
+    "O06",
+    "O07",
+    "O08",
+    "O09",
+    "O10",
+    "O11",
+    "O12",
+    "O13",
+    "O15",
+    "O16",
+    "O17"
+  ],
+  "physical_domain": {
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 180,
+    "grid": "16 homogeneous cells x 10 cm",
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "source_sink": "zero",
+    "ponding_initial_cm": 0
+  },
+  "temporal_feasibility_ladder": {
+    "coarse_dt_day": [
+      0.0016,
+      0.0032,
+      0.0064,
+      0.0128,
+      0.0256
+    ],
+    "half_dt_rule": "0.5 * coarse_dt",
+    "ordering": "ascending exactly as listed",
+    "selection_rule": "FIRST_PREREGISTERED_LEVEL_WITH_180_OF_180_VALID_REFERENCE_PAIRS",
+    "provenance": "Same five-level ladder and selection rule as P2E08; not invented from P2E11 failure pattern.",
+    "total_coarse_refined_pairs": 900
+  },
+  "reference_validity": {
+    "route": "legacy-reference-bound",
+    "status": "SW_SOLVE_CONVERGED",
+    "typed_integrated_mass_abs_limit_cm": 1e-12,
+    "native_rate_residual_required": true,
+    "candidate_state_finite": true,
+    "candidate_state_inside_material_domain": true
+  },
+  "stage_B_if_complete_domain_found": {
+    "metrics": [
+      "U_h_inf_cm",
+      "U_h_rms_cm",
+      "U_theta_inf",
+      "U_theta_rms",
+      "U_storage_cm"
+    ],
+    "dataset": "all 180 cases at selected temporal level",
+    "next_step": "separate P2E13 Reference-only threshold freeze",
+    "thresholds_frozen_in_P2E12": false
+  },
+  "firewall": {
+    "rossfast_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "case_removal_allowed": false,
+    "material_removal_allowed": false,
+    "se_stratum_removal_allowed": false,
+    "forcing_removal_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "threshold_formula_freezing_allowed": false
+  },
+  "outcome_policy": {
+    "if_complete_domain_found": "Persist selected temporal level and full Reference self-disagreement dataset. Do not execute RossFast until a separate threshold freeze is admitted.",
+    "if_no_complete_domain_found": "Persist negative result and stop the 30-material extension experiment. Do not rescue by dropping B02/B05 or Se=0.98 without a new, scientifically narrowed research question."
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_COMMON_DOMAIN_RECOVERY_READY"
+}
