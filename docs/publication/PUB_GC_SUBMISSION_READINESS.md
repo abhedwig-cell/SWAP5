@@ -122,3 +122,28 @@ Open blockers:
 - A5 — final Code and data availability statement: depends on A2/A3.
 
 No additional hydrological experiment is required to close these blockers.
+
+
+## Current GMD pre-submission package — 2026-09-19
+
+Repository-controlled preparation is now complete for the current canonical scientific package:
+
+- release/licence authority audit: `PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md`;
+- minimal governance decision request: `PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md`;
+- current prearchive inventory: `PUB_GC_GMD_PREARCHIVE_INVENTORY.json`;
+- figure export plan: `PUB_GC_GMD_FIGURE_EXPORT_PLAN.md` / `.json`;
+- formatting/upload handoff: `PUB_GC_GMD_FORMATTING_HANDOFF.md`;
+- manuscript-preparation audit: `PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md`;
+- pre-submission checklist: `PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md`;
+- cover-letter draft: `PUB_GC_GMD_COVER_LETTER_DRAFT.md`;
+- machine gate: `tools/publication/check_pub_gc_gmd_submission.py`.
+
+The manuscript section heading has been aligned to GMD's required **Code and data availability** wording. No release identifier, SWAP5 publication licence or DOI has been inferred.
+
+Current non-scientific blockers:
+
+1. R1 — governed successor publication release identifier;
+2. L1 — authorized SWAP5 publication-archive licence/redistribution statement;
+3. persistent exact-version archive + DOI/PID after R1/L1;
+4. final author/affiliation/contribution/funding/interest metadata;
+5. final figure PDF exports and upload packaging.
