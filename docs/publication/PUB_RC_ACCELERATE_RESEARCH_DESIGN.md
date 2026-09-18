@@ -2,14 +2,15 @@
 
 ## Status
 
-**MANUSCRIPT PRIORITY HIGH / INDEPENDENT ACCELERATION NOVELTY CONDITIONAL**
+**EXPERIMENT COMPLETED / INDEPENDENT ACCELERATION MANUSCRIPT NOT ADMITTED**
 
 Current programme disposition:
 
-- the broader solver-autonomous SWAP5-MODFLOW6 coupling paper is a **high-priority central manuscript**;
-- ACCELERATE is retained as a named hypothesis and experiment within that central coupling paper unless its information-value result later proves strong enough to justify an independent manuscript;
-- do not treat acceleration as independently novel merely because F-GC30 exposes or uses a coupling response coefficient;
-- see `PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md` for the broader publication assessment;
+- the broader solver-autonomous SWAP5-MODFLOW6 coupling paper remains the **high-priority central manuscript**;
+- the ACCELERATE experiment has now been executed through E4/E5 and is retained as a substantive method/results section of PUB-GC;
+- the current independent ACCELERATE manuscript line is **not admitted** because the zero-cost J_R oracle did not show a sufficiently large or general advantage over cold black-box secant learning;
+- no warm-history E5b study is required for the present standalone gate because the frozen continuation criterion was not passed;
+- the independent line may be reconsidered only if qualitatively new evidence appears, for example higher-dimensional interfaces, regime transitions with stale history, or another setting with reproducible response-information advantage beyond the scalar cold-learning cost;
 - this document records research governance and does not change SWAP5 production code, coupling semantics or F-GC30 admission.
 
 Established from the literature and novelty review completed on 2026-09-18.
@@ -478,7 +479,28 @@ D. Methodologically new outside the application domain:
 
 Current disposition:
 
-> **Use the ACCELERATE experiment inside the high-priority central coupling manuscript. Create a separate acceleration manuscript only if RC-1 through RC-5 reveal a reproducible, generalizable information-value regime in which fresh component-provided finite-window hydrological response outperforms state-of-the-art black-box multisecant learning after acquisition cost is included.**
+> **Integrate ACCELERATE into the high-priority PUB-GC central coupling manuscript. The present independent acceleration-paper hypothesis is closed because E5 did not pass the preregistered information-value continuation gate. Reopen only on qualitatively new evidence beyond the tested scalar cold-learning problem.**
+
+## E5 disposition
+
+PUB-GC E5 directly tested the narrow novelty condition retained after the prior-art review.
+
+In the controlled scalar coupling study:
+
+- plain fixed point became slow or left the admitted SWAP response domain near/above its local stability boundary;
+- Aitken and cold scalar secant remained effective;
+- a perfect zero-cost J_R oracle normally saved only one full-window SWAP evaluation relative to cold secant;
+- the oracle saved two evaluations in one isolated B2/C=2 case and zero in one B4/C=1.5 case;
+- no oracle case enlarged the convergence domain relative to cold secant;
+- the already-available u_A response had the same evaluation-count pattern as the oracle in the comparable admissible controls.
+
+The pre-output quantitative continuation gate required a >=2-evaluation advantage across at least two baselines or a convergence-domain extension. That gate was not passed.
+
+Therefore:
+
+> **ACCELERATE is not continued as a presumptive independent manuscript. Its E4/E5 results are owned by PUB-GC / COUPLE.**
+
+This is a negative decision on the current standalone publication hypothesis, not a claim that derivative information has no implementation value.
 
 ## Candidate journals if the line survives
 
