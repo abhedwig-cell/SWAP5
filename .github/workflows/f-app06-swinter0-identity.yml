@@ -1,0 +1,34 @@
+name: F-APP06 Hupsel SWINTER0 identity
+
+on:
+  push:
+    branches:
+      - work/f-app06-hupsel-swinter0-identity
+    paths:
+      - 'src/process/mod_pmdirect_swetr0_process.f90'
+      - 'src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90'
+      - 'tests/f-app06/**'
+      - 'integration/f-app/F-APP06_*'
+      - '.github/workflows/f-app06-swinter0-identity.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_pmdirect_swetr0_process.f90'
+      - 'src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90'
+      - 'tests/f-app06/**'
+      - 'integration/f-app/F-APP06_*'
+      - '.github/workflows/f-app06-swinter0-identity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/f-app06/run_fapp06_swinter0_identity.sh
