@@ -207,7 +207,12 @@ for h in heads:
     sr=[float(r["storage_change_m"]) for r in reps]
     vnoise=max(vr)-min(vr); snoise=max(sr)-min(sr)
     vfloor=max(vnoise,256*np.finfo(float).eps*max(abs(statistics.median(vr)),1e-20))
-    sfloor=max(snoise,256*np.finfo(float).eps*max(abs(statistics.median(sr)),1e-20))
+    storage_scale_m=max(
+        abs(float(h["reference_trial"]["storage_start_native"]))*0.01,
+        abs(float(h["reference_trial"]["storage_end_native"]))*0.01,
+        1e-20,
+    )
+    sfloor=max(snoise,256*np.finfo(float).eps*storage_scale_m)
 
     hd=[]; first_failed=None; largest_centered=None
     for idx,p in enumerate(h["perturbations"]):
