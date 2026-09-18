@@ -1,9 +1,9 @@
 {
-  "schema": "swap5.f-rom0r.status.v1",
+  "schema": "swap5.f-rom0r.status.v2",
   "workstream": "F-ROM",
   "work_unit": "ROM-0R",
   "title": "Accepted-Domain Construction",
-  "phase": "CLOSED_NO_GO_REFERENCE_AUTHORITY",
+  "phase": "CLOSED_SUCCESSOR_REFERENCE_AUTHORITY_QUALIFIED",
   "branch": "work/f-rom0-close-expand-accepted-domain",
   "predecessor": "ROM-0",
   "authority": "docs/science/F-ROM0R_ACCEPTED_DOMAIN_SEED_CONSTRUCTION.md",
@@ -22,19 +22,28 @@
     "F_ROM0TA4": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
     "F_ROM0TA5": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED"
   },
-  "r3": {
+  "historical_r3": {
     "decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
-    "result": "integration/f-rom/F-ROM0R_R3_RESULT.json",
-    "B01": "BOTH_FROZEN_PRESCRIBED_HEAD_DIRECTIONS_FAIL_REFERENCE_RETRY",
-    "B14": "BOTH_DIRECTIONS_PASS_DIRECTIONAL_SEPARATION_PASS"
+    "B01": "BOTH_FROZEN_PRESCRIBED_HEAD_DIRECTIONS_FAIL_FIXED_TOTAL_RATE_CONTROL",
+    "B14": "BOTH_DIRECTIONS_PASS_DIRECTIONAL_SEPARATION_PASS",
+    "reclassified": false
   },
-  "final_rom0_decision": "NO_GO_REFERENCE_AUTHORITY",
+  "successor_reference_authority": {
+    "R3D1": "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+    "R3D2": "B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND",
+    "R3D3": "R3_POLICY_OVERLAP_NEUTRALITY_FAILED",
+    "R3D4": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "R3Q1": "PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED_SUPPORTING",
+    "R3Q2": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED_SUPPORTING",
+    "governing": "R3D4"
+  },
+  "bidirectional_reachability": "PASS_B01_B14_UNDER_QUALIFIED_RESEARCH_REFERENCE_AUTHORITY",
+  "vertical_reference_floor": "VERTICAL_REFERENCE_FLOOR_MEASURED",
+  "final_rom0_decision": "PROCEED_TO_ROM1A",
   "post_result_retuning_allowed": false,
-  "rom1a_authorized": false,
+  "rom1a_authorized": true,
   "production_solver_authorized": false,
   "production_application_admission": false,
-  "next_action": "NONE_WITHIN_ROM0R. Any continuation requires a new Reference-authority workstream and new preregistration.",
-  "blockers": [
-    "FROZEN_B01_PRESCRIBED_HEAD_REFERENCE_TRAJECTORY_AUTHORITY_NOT_AVAILABLE"
-  ]
+  "next_action": "ROM1A_TRAJECTORY_LIBRARY_AND_DATA_SPLIT_PREREGISTRATION",
+  "blockers": []
 }
