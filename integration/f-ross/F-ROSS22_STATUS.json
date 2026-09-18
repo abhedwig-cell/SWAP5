@@ -2,14 +2,20 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS22",
   "title": "Production K2 K4 K8 RossFast certificate",
-  "phase": "RECONCILE",
-  "status": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "phase": "QUALIFY",
+  "status": "IMPLEMENTED_PENDING_EXECUTION",
   "branch": "work/f-ross22-production-tiered-certificate",
   "source_head": "e0248de1b85574774b1ee5459dda933daaa63664",
-  "production_scope": [
-    "src/solver/mod_rossfast_d3r_table_kernel.f90",
-    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
-  ],
-  "verdict": "READY_TO_IMPLEMENT_EXACT_F_ROSS21_PROMOTION",
-  "next_permitted_action": "Promote exact F-ROSS21 tiered semantics into production files only, then qualify fail-closed."
+  "production_mutation": {
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "qualification": {
+    "provider_preservation": "pending",
+    "all_material_216_case": "pending",
+    "production_research_identity_216": "pending",
+    "shared_host_anchor_performance": "pending"
+  },
+  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
+  "next_permitted_action": "Execute F-ROSS22 qualification; do not change frozen tier thresholds or production scope."
 }
