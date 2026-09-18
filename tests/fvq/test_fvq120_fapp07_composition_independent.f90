@@ -140,4 +140,13 @@ contains
     call require(a%runoff_resistance_day==b%runoff_resistance_day,n)
     call require(a%runoff_exponent==b%runoff_exponent,n)
   end subroutine
+
+  subroutine require(ok,n)
+    logical,intent(in)::ok
+    integer,intent(in)::n
+    if(.not.ok) then
+      write(*,'(A,I0)') 'F_VQ120_COMPOSITION_FAIL=',n
+      error stop 1
+    end if
+  end subroutine
 end program test_fvq120_fapp07_composition_independent
