@@ -129,7 +129,7 @@ contains
       call qualify_step(material_id,case_id,i,parameters,pset,hydraulic_parameters,constitutive,source_sink,top_provider, &
            current_state,forcing,t0,t1,bflux,mass,ok,control_converged_count,control_total_retry_count)
       call require(ok,'R3Q1 candidate step qualified')
-      cumulative_bottom_exchange=cumulative_bottom_exchange+bflux*(t1-t0)
+      cumulative_bottom_exchange=cumulative_bottom_exchange-bflux*(t1-t0)
       max_abs_mass=max(max_abs_mass,abs(mass))
       t0=t1
     end do
