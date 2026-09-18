@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.rom1ar2.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R2",
+  "title": "Unchanged 12-history reachable-state library under frozen discovery-qualified Reference policy",
+  "phase": "PREREGISTERED_BEFORE_HELDOUT_LIBRARY_EXECUTION",
+  "parent_design": {
+    "authority": "integration/f-rom/F-ROM1A_PREREGISTRATION.json",
+    "history_definitions_unchanged": true,
+    "forcing_amplitudes_unchanged": true,
+    "step_dt_unchanged": true,
+    "split_unchanged": true,
+    "output_schema_unchanged": true
+  },
+  "reference_policy_authority": {
+    "work_unit": "ROM-1A-R1-D3",
+    "decision": "ROM1AR1D3_DISCOVERY_LOCAL_PLUS_TOTAL_FALLBACK_QUALIFIED",
+    "frozen_before_heldout_exposure": true,
+    "policy_retuning_from_heldout_allowed": false,
+    "total_only_class": "ROM1AD2/R3D4 strict-first semantics",
+    "local_balance_class": "D3 strict-first semantics with prior 1.6e-15 cm integrated compartment allowance",
+    "all_other_failure_classes": "FAIL_CLOSED"
+  },
+  "library": {
+    "material": "B01",
+    "discovery_histories": ["D01","D02","D03","D04","D05","D06","D07","D08"],
+    "held_out_histories": ["H01","H02","H03","H04"],
+    "steps_per_history": 64,
+    "discovery_state_count": 512,
+    "held_out_state_count": 256,
+    "total_state_count": 768,
+    "heldout_status_before_execution": "UNEXPOSED",
+    "B14_generated": false
+  },
+  "frozen_policy": {
+    "original_attempt": {
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "total_balance_tolerance_cm_per_day": 1e-12,
+      "always_first": true
+    },
+    "total_representation_bound_formula_cm": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "local_integrated_allowance_cm": 1.6e-15,
+    "RETRY_TOTAL_ONLY": {
+      "compartment_tolerance_on_reattempt": "1e-12 unchanged",
+      "total_tolerance_on_reattempt": "max(1e-12,total_representation_bound/dt)"
+    },
+    "RETRY_LOCAL_BALANCE": {
+      "requires_zero_head_flags": true,
+      "requires_max_local_residual_times_dt_le_1p6e15": true,
+      "requires_total_integrated_residual_le_total_representation_bound": true,
+      "compartment_tolerance_on_reattempt": "max(1e-12,1.6e-15/dt)",
+      "total_tolerance_on_reattempt": "max(1e-12,total_representation_bound/dt)"
+    },
+    "fresh_backend_same_interval_one_reattempt": true,
+    "dt_subdivision": false,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12
+  },
+  "qualification": [
+    "ALL_12_HISTORIES_COMPLETE_64_STEPS",
+    "EXACTLY_768_ACCEPTED_STATES",
+    "DISCOVERY_512_HELDOUT_256",
+    "HELDOUT_FIRST_EXPOSED_ONLY_AFTER_POLICY_FREEZE",
+    "EVERY_FALLBACK_CLASS_TOTAL_ONLY_OR_LOCAL_BALANCE_WITH_ZERO_HEAD_FLAGS",
+    "EVERY_FALLBACK_SATISFIES_ITS_FROZEN_PRE_SOLVE_BOUNDS",
+    "EVERY_COMMITTED_STEP_HARD_MASS_PASS",
+    "REVISION_AND_TIME_PROGRESS_EXACT",
+    "FULL_PROFILES_AND_PRIMARY_OUTPUTS_FINITE",
+    "B14_NOT_GENERATED",
+    "O0_O2_STDOUT_BIT_IDENTITY"
+  ],
+  "positive_decision": "ROM1AR2_REACHABLE_STATE_LIBRARY_QUALIFIED",
+  "negative_decision": "ROM1AR2_REACHABLE_STATE_LIBRARY_NO_GO",
+  "heldout_failure_rule": "Any held-out failure outside the frozen D3 policy is a no-go. It may be diagnosed for interpretation but may not cause policy or history retuning within ROM-1A.",
+  "if_positive": "Close ROM-1A under successor research Reference authority and authorize ROM-1B predictive ambiguity analysis. Coordinate proposals may use discovery histories only; H01-H04 remain evaluation-only.",
+  "firewalls": [
+    "NO_HISTORY_CHANGE",
+    "NO_POLICY_RETUNING_FROM_HELDOUT",
+    "NO_B14_GENERATION",
+    "NO_REDUCED_COORDINATE_SELECTION_IN_ROM1A",
+    "NO_POD_OR_MODAL_BASIS",
+    "NO_MEMORY_VARIABLE_SELECTION",
+    "NO_CLOSURE_MODEL_FIT",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "rom1b_authorized_before_result": false
+}
