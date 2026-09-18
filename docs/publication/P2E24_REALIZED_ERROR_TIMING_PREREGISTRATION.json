@@ -2,7 +2,7 @@
   "schema": "swap5.publication.p2e24-realized-error-timing.v1",
   "workunit": "PUB-P2E24",
   "publication_owner": "PUB-SQ",
-  "phase": "PREREGISTERED_BEFORE_ANY_MATCHED_ERROR_TIMING",
+  "phase": "PREREGISTERED_TIMING_PROTOCOL_INFRASTRUCTURE_BLOCKED_BEFORE_ANY_MATCHED_ERROR_TIMING",
   "role": "PRIMARY_STEADY_STATE_REALIZED_ERROR_COST_COMPARISON",
   "branch": "work/pub-p2e24-realized-error-timing",
   "parent_matching_authority": {
@@ -10,7 +10,13 @@
     "head": "d05ed330ad3bf033d9a8542fec78e37839233570",
     "result_path": "docs/publication/P2E23_OBSERVED_ERROR_REFERENCE_MATCHING_RESULT.json",
     "result_blob": "031894dd898581fe473224e02b81cc1129c8e8b6",
-    "verdict": "REALIZED_ERROR_MATCHING_RESOLVED_36_OF_36_34_BRACKETED_2_LEFT_CENSORED_TIMING_CAN_BE_PREREGISTERED"
+    "verdict": "REALIZED_ERROR_MATCHING_RESOLVED_36_OF_36_34_BRACKETED_2_LEFT_CENSORED_TIMING_CAN_BE_PREREGISTERED",
+    "materialized_controls": {
+      "path": "docs/publication/P2E23_MATCHED_CONTROLS.json",
+      "head": "fff93e35c77e396a44499837e8f5fca681ef39fa",
+      "blob": "9f173b0431c775a8459930ab34f4989b8e098491",
+      "role": "exact machine-readable casewise N_lo/N_hi timing controls"
+    }
   },
   "purpose": "Measure steady-state computational cost only after realized-error comparators have been frozen independently of timing. For 34 bracketed cases, time RossFast N1 and both Reference bracket endpoints N_lo/N_hi. For two left-censored B12 cases, time RossFast N1 and Reference N1 and report them separately.",
   "comparator_semantics": {
@@ -365,26 +371,35 @@
     "no_runtime_interpolation": true
   },
   "execution_environment": {
-    "workflow": "single GitHub Actions ubuntu-latest job for the primary exposure",
-    "compiler": "gfortran -O2 for timed executable",
+    "workflow_runner_labels": [
+      "self-hosted",
+      "linux",
+      "x64",
+      "swap5-performance"
+    ],
+    "compiler": "gfortran -O2 for the frozen benchmark executable",
     "openmp_threads": 1,
     "OMP_DYNAMIC": false,
-    "environment_fingerprint": [
-      "uname -a",
-      "lscpu",
-      "nproc",
-      "gfortran --version",
-      "GitHub runner image/version environment variables"
-    ],
-    "rule": "All configurations for a case are timed in the same process and job."
+    "affinity": "must be pinned to the host-admitted CPU set",
+    "cgroup_cpu_quota": "must be unbounded",
+    "smt": "all siblings of the measured CPU must be reserved as required by MP-8",
+    "frequency_policy": "must match the admitted runner attestation",
+    "host_identity": "must match the MP-8 readiness and MP-7 admission evidence used by the timing run",
+    "prohibition": "ubuntu-latest, ordinary shared runners and unadmitted hosts are not publication timing environments"
   },
   "warmup_and_batches": {
-    "warmup_horizons_per_configuration": 5,
-    "measured_batches": 24,
-    "ross_horizons_per_batch": 200,
-    "reference_horizons_per_batch": 20,
-    "normalization": "Every raw batch duration is divided by its fixed horizon repetition count before any ratio is calculated.",
-    "rationale": "Reference bracket controls can contain up to 24 outer segments; solver-specific fixed repetition counts provide measurable batch duration while keeping the physical horizon identical.",
+    "benchmark_unit": "one frozen case and its preregistered configuration; each measured process batch repeats the same 0.0016-day horizon a common number of times for all configurations of that case",
+    "repetition_calibration": {
+      "role": "discarded pre-measurement batching calibration only",
+      "start_horizons": 1,
+      "rule": "Double a common per-case repetition count until the minimum child_cpu_seconds among that case's frozen timed configurations is at least 0.25 s.",
+      "maximum_horizons": 65536,
+      "effect_estimate_used": false,
+      "if_maximum_reached_before_target": "BLOCK_CASE_TIMING_RESOLUTION; do not choose solver-specific repetition counts"
+    },
+    "warmup_batches_per_configuration": 3,
+    "measured_cycles": 24,
+    "common_repetition_count_within_case": true,
     "bracketed_order": [
       [
         "ROSS",
@@ -417,66 +432,101 @@
         "ROSS"
       ]
     ],
-    "order_schedule": "The six bracketed orders above repeat exactly four times, yielding 24 measured batches. Left-censored pairs alternate [ROSS,REF_HI] and [REF_HI,ROSS] for 12 cycles.",
-    "first_timing_exposure_rule": "The first workflow that reaches measured timing is the primary timing exposure. Any later rerun is a reproducibility or infrastructure supplement and cannot be substituted silently."
+    "bracketed_order_schedule": "The six orders repeat exactly four times, yielding 24 measured cycles.",
+    "left_censored_order": [
+      [
+        "ROSS",
+        "REF_HI"
+      ],
+      [
+        "REF_HI",
+        "ROSS"
+      ]
+    ],
+    "left_censored_order_schedule": "Alternate the two orders for 24 measured cycles.",
+    "first_timing_exposure_rule": "The first admitted-host execution that reaches measured timing is the primary timing exposure. A later rerun is reproducibility/infrastructure evidence and cannot silently replace it."
   },
   "clocks": {
-    "primary": "Fortran CPU_TIME around each complete batch",
-    "secondary": "Fortran SYSTEM_CLOCK wall time around the same batch",
-    "no_shell_time_as_primary": true,
-    "timing_scope": "Includes the complete configured solver horizon execution and route/mass/transfer validation. Excludes case construction, REF-HIGH reconstruction, RossFast table initialization, warmup and output formatting."
+    "primary": "operating-system child CPU seconds measured externally around the benchmark process, consistent with MP-6/MP-7 semantics",
+    "secondary": "monotonic wall_elapsed_seconds measured externally with perf_counter_ns around the same process",
+    "forbidden_primary_metrics": [
+      "Fortran CPU_TIME",
+      "Fortran SYSTEM_CLOCK",
+      "shell time"
+    ],
+    "benchmark_executable_timing_calls_allowed": false,
+    "timing_scope": "Includes repeated complete configured-solver horizon execution and route/mass/transfer validation. Excludes case construction, REF-HIGH reconstruction, table/model initialization, repetition calibration, warmup and output formatting."
   },
   "preflight": {
+    "host_gate": [
+      "MP-8 runner_contract_ready=true on the executing runner",
+      "full MP-7 host admission passed on the same runner configuration",
+      "host-admission child-CPU minimum detectable relative effect <= 0.01",
+      "zero cgroup throttling over the host-admission qualification window"
+    ],
     "before_any_measured_batch": [
+      "verify exact P2E23_MATCHED_CONTROLS.json blob",
       "reconstruct casewise P2E21 REF-HIGH untimed",
       "reproduce RossFast N1 endpoint and P2E23 realized error/storage gate untimed",
       "reproduce frozen Reference N_lo/N_hi or N1 endpoint(s) untimed",
-      "verify route, integrated mass, prescribed transfer identity and P2E23 classification"
+      "verify route, integrated mass, prescribed transfer identity and P2E23 classification",
+      "verify benchmark executable produces the frozen variant-specific scientific fingerprint"
     ],
-    "failure_policy": "If preflight does not reproduce the frozen scientific controls, the workflow fails before timing for that run. Do not change N_lo/N_hi or tolerances."
+    "failure_policy": "Any failed host or scientific preflight stops before measured timing. Do not change N_lo/N_hi, tolerance policy, case population or host-resolution target."
   },
   "per_configuration_statistics": {
-    "batch_records": "Emit CPU and wall seconds per horizon for every measured batch.",
-    "primary_estimator": "median of 24 CPU seconds-per-horizon batch values",
-    "secondary_estimator": "median of 24 wall seconds-per-horizon batch values",
-    "variability": "report median absolute deviation divided by median for CPU and wall separately",
-    "noisy_flag": "flag, but do not exclude, a configuration when CPU MAD/median > 0.10",
-    "exclusion_due_to_noise_allowed": false
+    "batch_records": "Emit child CPU and wall seconds per horizon for every measured cycle and configuration.",
+    "paired_primary_quantity": "For each cycle, d_hi = cpu_REF_HI/cpu_ROSS - 1. For bracket sensitivity, d_lo = cpu_REF_LO/cpu_ROSS - 1.",
+    "central_estimates": [
+      "mean paired relative delta",
+      "median paired relative delta",
+      "median absolute deviation of per-horizon CPU time"
+    ],
+    "resolution_rule": "MDE = 2 * stdev(d) / sqrt(24) separately for d_hi and d_lo, following the repository performance-resolution convention.",
+    "publication_resolution_target_relative": 0.05,
+    "resolved_positive_cost_difference": "MDE <= 0.05 and mean(d_hi) > MDE",
+    "resolved_negative_cost_difference": "MDE <= 0.05 and mean(d_hi) < -MDE",
+    "otherwise": "TIMING_EFFECT_UNRESOLVED",
+    "noisy_or_unresolved_exclusion_allowed": false,
+    "post_hoc_pair_extension_allowed": false
   },
   "per_case_primary_analysis": {
     "bracketed": {
-      "ratios": [
-        "R_LO = median_cpu_REF_LO / median_cpu_ROSS",
-        "R_HI = median_cpu_REF_HI / median_cpu_ROSS"
-      ],
-      "cost_classification": [
-        "ROSS_LOWER_COST_THAN_BOTH_REFERENCE_ENDPOINTS if median_cpu_ROSS < min(REF_LO,REF_HI)",
-        "ROSS_COST_BETWEEN_REFERENCE_ENDPOINTS if min(REF_LO,REF_HI) <= median_cpu_ROSS <= max(REF_LO,REF_HI)",
-        "ROSS_HIGHER_COST_THAN_BOTH_REFERENCE_ENDPOINTS if median_cpu_ROSS > max(REF_LO,REF_HI)"
-      ],
-      "scientific_meaning": "Reference N_lo has just worse realized head/theta error than Ross; Reference N_hi has equal-or-better realized error. No runtime interpolation is used to fabricate an exact equal-error point."
+      "primary": "Reference N_hi versus RossFast N1 because N_hi is the least-refined tested Richards configuration with equal-or-better realized scientific error.",
+      "sensitivity": "Reference N_lo versus RossFast N1 brackets the lower-cost side while carrying just-worse scientific error.",
+      "runtime_interpolation": false,
+      "claim_classes": [
+        "ROSS_LOWER_COST_RESOLVED",
+        "ROSS_HIGHER_COST_RESOLVED",
+        "TIMING_EFFECT_UNRESOLVED"
+      ]
     },
     "left_censored": {
       "cases": [
         7,
         8
       ],
-      "ratio": "R_CENSORED = median_cpu_REF_N1 / median_cpu_ROSS_N1",
-      "interpretation": "Descriptive conservative comparison only because Reference N1 is already more accurate than RossFast N1 and no coarser tested Reference comparator exists."
+      "comparator": "Reference N1 versus RossFast N1",
+      "interpretation": "Conservative descriptive comparison because Reference N1 is already more accurate; never label strict equal-error.",
+      "included_in_strict_equal_error_population": false
     }
   },
   "population_analysis": {
     "bracketed_primary_population": 34,
-    "summaries": [
-      "median and geometric mean of R_LO over 34 bracketed cases",
-      "median and geometric mean of R_HI over 34 bracketed cases",
-      "interquartile range and min/max of both ratios",
-      "counts in the three preregistered cost classifications",
-      "count of CPU-noisy configurations/cases"
+    "primary_summaries": [
+      "count of ROSS_LOWER_COST_RESOLVED / ROSS_HIGHER_COST_RESOLVED / TIMING_EFFECT_UNRESOLVED",
+      "median and geometric mean of cpu_REF_HI/cpu_ROSS across 34 bracketed cases",
+      "interquartile range and min/max of cpu_REF_HI/cpu_ROSS",
+      "same descriptive summaries for the N_lo sensitivity bracket"
     ],
-    "censored_population": "Report the two B12 cases separately and do not mix them into bracketed equal-error population summaries.",
+    "stratified_descriptive_summaries": [
+      "material",
+      "Se",
+      "forcing"
+    ],
+    "censored_population": "Report cases 7 and 8 separately and do not mix them into strict matched-error population summaries.",
     "no_weighted_case_average": true,
-    "no_case_specific_posthoc_repetition": true
+    "no_selective_rerun": true
   },
   "setup_cost": {
     "primary_includes_rossfast_initialization": false,
@@ -494,12 +544,45 @@
     "runtime_interpolation_allowed": false,
     "automatic_fallback_allowed": false,
     "production_or_reference_source_change_allowed": false,
-    "speed_claim_before_result": false
+    "speed_claim_before_result": false,
+    "shared_runner_timing_allowed": false,
+    "fortran_internal_timing_as_primary_allowed": false,
+    "host_admission_bypass_allowed": false,
+    "selective_case_rerun_allowed": false,
+    "post_hoc_pair_extension_allowed": false
   },
   "outcome_policy": {
     "timing_noise": "Retain noisy cases with flags; do not rerun selectively.",
     "partial_failure": "If a scientific preflight fails, stop before measured timing in the primary run. If infrastructure fails after timing has begun, persist/identify the exposure and do not relabel a rerun as first exposure.",
     "interpretation": "A timing result may support, refute, or leave unresolved a computational advantage. Scientific admission results remain valid regardless."
   },
-  "verdict": "PREREGISTERED_REALIZED_ERROR_TIMING_READY_FOR_IMPLEMENTATION"
+  "verdict": "PREREGISTERED_REALIZED_ERROR_TIMING_PROTOCOL_FROZEN_EXECUTION_BLOCKED_ON_MP8_MP7_PERFORMANCE_INFRASTRUCTURE",
+  "performance_governance": {
+    "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
+    "isolated_runner_readiness": {
+      "path": "benchmarks/performance/isolated-runner-readiness.json",
+      "blob": "44634b56c14022278938fc53b181b741e29c07aa",
+      "current_status": "INFRASTRUCTURE_PENDING"
+    },
+    "isolated_runner_contract": {
+      "path": "benchmarks/performance/isolated-runner-contract.json",
+      "blob": "05b1e7c26c2135bc34bc10ddf35a8c44da5b9218"
+    },
+    "host_admission_protocol": {
+      "path": "benchmarks/performance/host-admission-protocol.json",
+      "blob": "b4fba05be2d48ea4ef24e3727a44032ced09db30"
+    },
+    "measurement_tooling": {
+      "cpu_baseline_blob": "1857ea02217e9e916fb709cf3167fffe937b8490",
+      "cpu_runner_blob": "a769ba8a44ab949041759920894fac4927960887",
+      "isolated_runner_blob": "8975d3c054d6e5a6be5d47a5287b7cfd15ddfcb0"
+    },
+    "rule": "P2E24 may not reach measured timing until the same runner satisfies the MP-8 isolated-runner contract and the full MP-7 host-admission protocol, including the 1% child-CPU resolution gate and zero full-window throttling."
+  },
+  "infrastructure_status": {
+    "current": "BLOCKED_INFRASTRUCTURE_PENDING",
+    "evidence": "benchmarks/performance/isolated-runner-readiness.json currently records INFRASTRUCTURE_PENDING and cpu_baseline_established=false.",
+    "consequence": "P2E24 protocol may be implemented and benchmark fingerprints may be qualified untimed, but measured timing must not be launched."
+  },
+  "next_permitted_action": "Materialize and qualify the P2E24 benchmark executable and variant-specific scientific fingerprints without timing. In parallel, provision/identify an isolated swap5-performance runner, pass MP-8 readiness, then repeat the full MP-7 host-admission protocol. Only then execute P2E24 measured timing unchanged."
 }
