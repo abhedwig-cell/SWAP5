@@ -1,0 +1,1018 @@
+{
+  "schema": "pub-gc-e6a-raw-cases-v1",
+  "provenance": {
+    "source_branch": "work/pub-gc-e6-state-geometry-stress",
+    "source_head": "97dba8764ca85c7499cbb2402cf5309447621a66",
+    "workflow_run": 35360999577,
+    "workflow_job": 105651945363,
+    "conclusion": "success",
+    "artifact_id": 10554314676,
+    "artifact_name": "pub-gc-e6a-evidence",
+    "artifact_sha256": "79dba0e28c8966ae1b0611d0a94d3bc955eb32f61e5961643c6511e073e76ead"
+  },
+  "record_count": 20,
+  "records": [
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -150,
+      "predictor_hcof_m2_per_day": 0.06415122646543453,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": 0,
+      "predictor_q_u_cm_per_day": -8.966298878967287e-7,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.0939815278061529,
+      "predictor_status": 0,
+      "predictor_storage_change_native": 0,
+      "predictor_u": 0.00006415122646543453,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": 5.4151223222452815e-9,
+          "bottom_outward_exchange_m": 5.415122322245281e-11,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -1.465000844127535,
+          "q_swap_m_per_s": 6.267502687783891e-13,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "bottom_outward_exchange_cm": -7.415122211222979e-9,
+          "bottom_outward_exchange_m": -7.415122211222979e-11,
+          "delta_h_m": 0.000001,
+          "prescribed_head_m": -1.4649988441275352,
+          "q_swap_m_per_s": -8.58231737410067e-13,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "bottom_outward_exchange_cm": 6.487687495507311e-8,
+          "bottom_outward_exchange_m": 6.487687495507312e-10,
+          "delta_h_m": -0.00001,
+          "prescribed_head_m": -1.4650098441275352,
+          "q_swap_m_per_s": 7.508897564244572e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "bottom_outward_exchange_cm": -6.693149581846091e-8,
+          "bottom_outward_exchange_m": -6.693149581846092e-10,
+          "delta_h_m": 0.00001,
+          "prescribed_head_m": -1.464989844127535,
+          "q_swap_m_per_s": -7.746700904914459e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4650998441275351,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4648998441275352,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.465999844127535,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4639998441275353,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -1.4649998441275351,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -150,
+      "predictor_hcof_m2_per_day": 0.06406163502516601,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": 1.1102230246251565e-16,
+      "predictor_q_u_cm_per_day": -0.00008953368148133028,
+      "predictor_qbot_cm_per_day": 0.0001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.09384839999312222,
+      "predictor_status": 0,
+      "predictor_storage_change_native": 1.1102230246251565e-16,
+      "predictor_u": 0.00006406163502516602,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": -9.615355894544423e-8,
+          "bottom_outward_exchange_m": -9.615355894544423e-10,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -1.4649853903151897,
+          "q_swap_m_per_s": -1.1128884137204193e-11,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": 0.000001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4649833903151899,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4649943903151899,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4649743903151897,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4650843903151898,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4648843903151898,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.4659843903151897,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -1.46398439031519,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -1.4649843903151898,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -150,
+      "predictor_qbot_cm_per_day": 0.01,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 5,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 261.93237096665104,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 5,
+        "temporal_rejections": 4,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -150,
+      "predictor_qbot_cm_per_day": 0.1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 1317.6081811451877,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -150,
+      "predictor_qbot_cm_per_day": 1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 13184.158635016038,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -75,
+      "predictor_hcof_m2_per_day": 0.2686106425118591,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": -2.220446049250313e-16,
+      "predictor_q_u_cm_per_day": -7.642189938101982e-7,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.1920565917717727,
+      "predictor_status": 0,
+      "predictor_storage_change_native": -2.220446049250313e-16,
+      "predictor_u": 0.0002686106425118591,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": 2.7163811283121732e-8,
+          "bottom_outward_exchange_m": 2.716381128312173e-10,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -0.7150009628383428,
+          "q_swap_m_per_s": 3.1439596392502003e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "bottom_outward_exchange_cm": -2.8922374190580967e-8,
+          "bottom_outward_exchange_m": -2.892237419058097e-10,
+          "delta_h_m": 0.000001,
+          "prescribed_head_m": -0.7149989628383427,
+          "q_swap_m_per_s": -3.3474970127987228e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7150099628383427,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7149899628383428,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7150999628383428,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7148999628383428,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7159999628383428,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7139999628383428,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -0.7149999628383428,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -75,
+      "predictor_hcof_m2_per_day": 0.26657437094575887,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": -2.220446049250313e-16,
+      "predictor_q_u_cm_per_day": -0.00007573810169146028,
+      "predictor_qbot_cm_per_day": 0.0001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.19059891858528713,
+      "predictor_status": 0,
+      "predictor_storage_change_native": -2.220446049250313e-16,
+      "predictor_u": 0.0002665743709457589,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": -7.808534502041766e-8,
+          "bottom_outward_exchange_m": -7.808534502041766e-10,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -0.7149972514779271,
+          "q_swap_m_per_s": -9.03765567365945e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": 0.000001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7149952514779271,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7150062514779271,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7149862514779272,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7150962514779271,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7148962514779271,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7159962514779271,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.7139962514779271,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -0.7149962514779271,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -75,
+      "predictor_qbot_cm_per_day": 0.01,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 78.03725884379931,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -75,
+      "predictor_qbot_cm_per_day": 0.1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 3,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 197.6267243156979,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 3,
+        "temporal_rejections": 6,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -75,
+      "predictor_qbot_cm_per_day": 1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 3936.0751678959036,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -25,
+      "predictor_hcof_m2_per_day": 0.9019333949359783,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": 0,
+      "predictor_q_u_cm_per_day": -5.307962364530914e-7,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.19391566518263303,
+      "predictor_status": 0,
+      "predictor_storage_change_native": 0,
+      "predictor_u": 0.0009019333949359784,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": 1.0098499111879756e-7,
+          "bottom_outward_exchange_m": 1.0098499111879755e-9,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -0.21500098955506028,
+          "q_swap_m_per_s": 1.1688077675786755e-11,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "bottom_outward_exchange_cm": -1.0315281864844882e-7,
+          "bottom_outward_exchange_m": -1.0315281864844882e-9,
+          "delta_h_m": 0.000001,
+          "prescribed_head_m": -0.21499898955506028,
+          "q_swap_m_per_s": -1.1938983639866762e-11,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.2150099895550603,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21498998955506027,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21509998955506027,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.2148999895550603,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21599998955506028,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21399998955506028,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -0.21499998955506028,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -25,
+      "predictor_hcof_m2_per_day": 0.8673864892015483,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": -2.220446049250313e-16,
+      "predictor_q_u_cm_per_day": -0.000048656462370846075,
+      "predictor_qbot_cm_per_day": 0.0001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.18648664043014437,
+      "predictor_status": 0,
+      "predictor_storage_change_native": -2.220446049250313e-16,
+      "predictor_u": 0.0008673864892015483,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": -1.377672414749612e-8,
+          "bottom_outward_exchange_m": -1.377672414749612e-10,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -0.21499988379220009,
+          "q_swap_m_per_s": -1.5945282578120509e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": 0.000001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21499788379220008,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.2150088837922001,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21498888379220008,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21509888379220007,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.2148988837922001,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21599888379220009,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.21399888379220008,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -0.21499888379220009,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -25,
+      "predictor_qbot_cm_per_day": 0.01,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 62.74159601889004,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -25,
+      "predictor_qbot_cm_per_day": 0.1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 627.4151386818293,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -25,
+      "predictor_qbot_cm_per_day": 1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 6274.06583514359,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -10,
+      "predictor_hcof_m2_per_day": 1.1583362454933817,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": 0,
+      "predictor_q_u_cm_per_day": -5.188705018107506e-7,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.07529184316085168,
+      "predictor_status": 0,
+      "predictor_storage_change_native": 0,
+      "predictor_u": 0.0011583362454933817,
+      "probes": [
+        {
+          "delta_h_m": -0.000001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06500099343237929,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.000001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06499899343237929,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06500999343237929,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.0649899934323793,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.0650999934323793,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06489999343237929,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06599999343237929,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06399999343237929,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -0.06499999343237929,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "authority_state_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "initial_h0_cm": -10,
+      "predictor_hcof_m2_per_day": 1.1043509907351614,
+      "predictor_mass_complete": true,
+      "predictor_mass_residual_native": 0,
+      "predictor_q_u_cm_per_day": -0.00004473777418703034,
+      "predictor_qbot_cm_per_day": 0.0001,
+      "predictor_ready": true,
+      "predictor_rhs_m3_per_day": -0.07178154780798665,
+      "predictor_status": 0,
+      "predictor_storage_change_native": 0,
+      "predictor_u": 0.0011043509907351615,
+      "probes": [
+        {
+          "bottom_outward_exchange_cm": 1.922566200972539e-8,
+          "bottom_outward_exchange_m": 1.9225662009725388e-10,
+          "delta_h_m": -0.000001,
+          "prescribed_head_m": -0.06500025819593241,
+          "q_swap_m_per_s": 2.2251923622367347e-12,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "bottom_outward_exchange_cm": -2.462119076922619e-7,
+          "bottom_outward_exchange_m": -2.462119076922619e-9,
+          "delta_h_m": 0.000001,
+          "prescribed_head_m": -0.06499825819593241,
+          "q_swap_m_per_s": -2.8496748575493277e-11,
+          "ready": true,
+          "status": "READY"
+        },
+        {
+          "delta_h_m": -0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06500925819593241,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.00001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06498925819593242,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06509925819593242,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.0001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06489925819593241,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": -0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06599925819593241,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        },
+        {
+          "delta_h_m": 0.001,
+          "message": "SWAP corrector trial failed: 6",
+          "prescribed_head_m": -0.06399925819593241,
+          "ready": false,
+          "status": "BOUNDED_TRIAL_FAILURE"
+        }
+      ],
+      "reference_head_m": -0.06499925819593241,
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -10,
+      "predictor_qbot_cm_per_day": 0.01,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 3,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 40.52513062552309,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 3,
+        "temporal_rejections": 6,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -10,
+      "predictor_qbot_cm_per_day": 0.1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 5,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 1346.5895252510036,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 5,
+        "temporal_rejections": 4,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    },
+    {
+      "initial_h0_cm": -10,
+      "predictor_qbot_cm_per_day": 1,
+      "predictor_ready": false,
+      "predictor_run_diagnostics": {
+        "accepted_substeps": 0,
+        "attempts": 9,
+        "available": true,
+        "completed": false,
+        "direction_available": false,
+        "internal_retries": 4,
+        "mass_rejections": 0,
+        "max_accepted_substep_duration": 0,
+        "max_temporal_indicator": 7554.559494337761,
+        "min_accepted_substep_duration": 1.7976931348623157e+308,
+        "result_status": 2,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "temporal_unavailable_rejections": 0,
+        "transaction_calls": 1,
+        "trial_rollbacks": 9
+      },
+      "predictor_status": 104,
+      "probes": [],
+      "schema": "pub-gc-e6a-state-case-v1",
+      "window_day": 0.001
+    }
+  ]
+}

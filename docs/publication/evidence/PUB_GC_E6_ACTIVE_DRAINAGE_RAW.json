@@ -1,0 +1,57 @@
+{
+  "schema": "pub-gc-e6-active-drainage-raw-evidence-v1",
+  "provenance": {
+    "source_branch": "work/pub-gc-e6-active-drainage-live-coupling",
+    "source_head": "191f1d8ac0ab0b84eff438023f1d32e00c09b925",
+    "workflow_run": 35360873209,
+    "workflow_job": 105651690323,
+    "conclusion": "success",
+    "artifact_id": 10554144629,
+    "artifact_name": "pub-gc-e6-active-drainage",
+    "artifact_sha256": "00685e242f3dfc85b819900853f5af5bf814291fead48d1e968d3ca74b2cb768"
+  },
+  "predictor": {
+    "h_start_m": 0.013002105263157895,
+    "h_end_m": 0.012932896258566275,
+    "reference_head_m": 0.012932896258566275,
+    "hcof_m2_per_day": 0.05760442426568357,
+    "rhs_m3_per_day": 0.0007689787879260247,
+    "q_bot_predictor_cm_per_day": 0.002,
+    "q_u_cm_per_day": -0.0023986744863501285,
+    "u_A": 0.0005760442426568357,
+    "bottom_outward_exchange_native": -0.00002,
+    "terminal_bottom_outward_flux_native": -0.002,
+    "storage_start_native": 1.268460977508856,
+    "storage_end_native": 1.2684570022677368,
+    "storage_change_native": -0.000003975241119169581,
+    "total_in_native": 0.00002,
+    "total_out_native": 0.00002397524111934321,
+    "mass_residual_native": 1.736282016599755e-16,
+    "mass_complete": true,
+    "drainage_tangent_coverage": true
+  },
+  "reference_corrector": {
+    "participant_status": 6,
+    "participant_status_name": "GW_SWAP_PARTICIPANT_TRIAL_FAILED",
+    "kernel_result_status": 101,
+    "kernel_result_status_name": "KERNEL_STATUS_NOT_ADMITTED",
+    "completed": false,
+    "candidate_ready": false,
+    "transaction_calls": 0,
+    "accepted_substeps": 0,
+    "attempts": 0,
+    "retries": 0,
+    "solver_rejections": 0,
+    "temporal_rejections": 0,
+    "temporal_unavailable_rejections": 0,
+    "mass_rejections": 0,
+    "internal_retries": 0,
+    "mass_complete": false,
+    "authoritative_state_unchanged": true
+  },
+  "exact_markers": [
+    "PUB_GC_E6_REFERENCE_CORRECTOR_BOUNDED_FAILURE=PASS",
+    "PUB_GC_E6_PREREGISTERED_STOP_RULE=PASS",
+    "PUB_GC_E6_LIVE_MATRIX_SKIPPED_REFERENCE_CORRECTOR_UNAVAILABLE=PASS"
+  ]
+}

@@ -2,12 +2,12 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS25",
   "title": "Admitted tiered RossFast serial hydrologic trajectory validation",
-  "phase": "REPAIR",
-  "status": "PRIOR_INTERPRETATION_INVALIDATED_MECHANICAL_PREFLIGHT_SIGN_BUG_PENDING_REPLAY",
-  "branch": "integration/f-ross25-serial-hydrologic-validation-close",
+  "phase": "CLOSE",
+  "status": "ADMITTED_CLOSED_CORRECTED_REPLAY",
+  "branch": "work/f-ross25-corrected-close",
   "original_measurement_branch": "work/f-ross25-serial-hydrologic-validation",
   "canonical_source_at_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
-  "canonical_reconciliation_head": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "canonical_reconciliation_head": "8baaf8f155a4fe606058fd7d226780fb7eaba293",
   "production_or_reference_mutation": false,
   "dependency_reconciliation": {
     "kernel": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
@@ -18,25 +18,33 @@
     "disposition": "Reuse measurement evidence. Later canonical changes are unrelated to the frozen RossFast/Reference dependency closure."
   },
   "measurement": {
-    "workflow_run": 35350469193,
-    "job": 105617121612,
-    "artifact_id": 10549829161,
-    "artifact_digest": "sha256:0a91babdcb3e2ed1eb46b333e92d958e890cd3f5fd46a7eaa918ad9832fb8b48",
+    "workflow_run": 35353877855,
+    "job": 105628333236,
+    "head": "6314ff1d6084489152106fb997a3fe407b53cbda",
+    "artifact_id": 10552015234,
+    "artifact_digest": "sha256:29f771d364c4bca195f2c2170ddcdcfd9a30851f4146bedb3c6cb4f42d69df34",
     "execution_result": "PASS",
-    "scientific_result": "INVALIDATED_PENDING_CORRECTED_REPLAY"
+    "scientific_result": "CORRECTED_CLASSIFIED"
   },
-  "result": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_RESULT.json",
+  "result": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_CORRECTED_RESULT.json",
   "key_findings": {
     "trajectories": 216,
-    "rossfast_valid_all": 173,
+    "intervals_per_trajectory": 32,
+    "rossfast_valid_all": 216,
+    "rossfast_failures": 0,
     "reference_valid_all": 210,
-    "paired_complete": 167,
-    "rossfast_failures": 43,
-    "rossfast_failure_first_interval": 2,
-    "rossfast_failure_policy": "NOMINAL_SHARED",
+    "reference_failures": 6,
+    "paired_complete": 105,
+    "paired_common_envelope_loss": 105,
     "zero_shared_rossfast_valid": "108/108",
-    "nominal_shared_rossfast_valid": "65/108",
-    "envelope_loss": 0
+    "nominal_shared_rossfast_valid": "108/108",
+    "nominal_shared_paired_complete": "3/108",
+    "nominal_shared_envelope_loss": "105/108",
+    "accepted_tiers": {
+      "K2": 3559,
+      "K4": 0,
+      "K8": 0
+    }
   },
   "authority_id_collision": {
     "detected": true,
@@ -44,17 +52,25 @@
     "later_colliding_branch": "work/f-ross25-tiered-wetting-seam-qualification",
     "disposition": "F-ROSS25 remains assigned to the earlier preregistered and measured serial validation. The later WETTING seam qualification must continue as F-ROSS26."
   },
-  "verdict": "INITIAL_NEGATIVE_INTERPRETATION_WITHDRAWN_MECHANICAL_PREFLIGHT_SIGN_BUG",
-  "next_permitted_action": "Replay the exact frozen 216-trajectory preregistration with only the public/top-flux envelope-preflight sign repair. Reclassify solver failure versus envelope loss; do not retune production or the experiment.",
+  "verdict": "CORRECTED_REPLAY_CLOSED_NO_ROSSFAST_ROUTE_FAILURE_SERIAL_COMPOSITION_ENVELOPE_LIMITED",
+  "next_permitted_action": "NONE_WITHIN_F_ROSS25. Do not widen the unchanged state-local production forcing envelope from this result. Any broader forcing admission requires a separate governed workunit.",
   "correction": {
-    "defect": "Serial harness evaluated public soil-water qtop against +0.01*K, while the production RossFast adapter maps internal_top=-public_top before its frozen +0.01*K state-local envelope check. The equivalent public-space envelope centre is -0.01*K.",
-    "consequence": "The reported 43 interval-2 NOMINAL_SHARED STATUS_NOT_CONVERGED cases were not established as solver failures because the harness preflight could label forcing envelope-valid when the production binding would reject it.",
+    "defect": "Serial harness evaluated public soil-water qtop against +0.01*K while production maps internal_top=-public_top before the frozen +0.01*K envelope check.",
+    "consequence": "The prior 43 NOMINAL_SHARED STATUS_NOT_CONVERGED cases were harness preflight misclassification, not established RossFast solver failures.",
     "production_change": false,
     "preregistration_change": false,
     "forcing_change": false,
     "tolerance_change": false,
     "tier_change": false,
+    "domain_change": false,
     "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225",
-    "corrected_replay": "PENDING"
+    "corrected_replay": 35353877855
+  },
+  "closeout": {
+    "prior_scientific_interpretation": "WITHDRAWN_SUPERSEDED",
+    "corrected_result": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_CORRECTED_RESULT.json",
+    "production_admission_effect": "NONE",
+    "broader_envelope_admission": false,
+    "current_rossfast_envelope_can_close": true
   }
 }

@@ -1,0 +1,128 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS26",
+  "title": "Current tiered RossFast WETTING seam-crossing qualification",
+  "phase": "CLOSE",
+  "status": "ADMITTED_CLOSED",
+  "branch": "work/f-ross26-canonical-close",
+  "pull_request": 287,
+  "canonical_source_at_original_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+  "live_canonical_last_reconciled": "31dd5e5af8a29c1d6b09d7a8308af00add859a46",
+  "authority_collision_reconciliation": {
+    "canonical_authority": "integration/f-ross/F-ROSS25_STATUS.json",
+    "disposition": "F-ROSS25 remains assigned to serial hydrologic validation; WETTING seam qualification continues as F-ROSS26.",
+    "scientific_contract_changed_by_renumbering": false
+  },
+  "production_dependency_closure": {
+    "f_ross22_admission": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "relevant_production_drift_since_preregistration": false
+  },
+  "f_ross14d1_dependency": {
+    "status": "CANONICALLY_CLOSED",
+    "merge_commit": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
+    "result": "integration/f-ross/F-ROSS14D1_PIECEWISE_FAILURE_DIAGNOSTIC_RESULT.json",
+    "historical_transition_routes": 343,
+    "historical_f_r1_inadmissible_routes": 146,
+    "production_or_reference_mutation": false
+  },
+  "material_measurement": {
+    "workflow_run": 35353629747,
+    "qualified_head": "41623fa15d5897bedd5893f42aa03281beb32944",
+    "event": "push",
+    "material_jobs": 36,
+    "material_jobs_passed": 36,
+    "material_artifacts": 36,
+    "material_failures": 0,
+    "qualification_surface_byte_identical_to_reconciled_pr": true,
+    "original_aggregate_conclusion": "FAIL_HARNESS_ONLY",
+    "original_aggregate_failure": "B01: expected 3 cases got 6"
+  },
+  "aggregation_repair": {
+    "defect": "Material runner prints each of the three Se case records under both O0 and O2; the stale aggregator expected only three parsed rows.",
+    "scientific_effect": "none",
+    "authorized_repair_commit": "f8af1933e0207058a85244adcea579a4f0da28b7",
+    "restored_live_repair_commit": "4fea6c31ce229f1454ecdff4a104e576151c9e67",
+    "repaired_aggregator_blob": "c6fdad06eaa60c1f31b2b6d43b188b2a8223d31f",
+    "repair": "Require six parsed rows, require exact O0/O2 pair identity for each Se, then reduce to three unique cases.",
+    "aggregate_replay_workflow_restore": "0e87802b2a65dd04145ebeb485be48cab5a21e43",
+    "aggregate_replay_trigger_commit": "73e1849581af156d9511cb1b604343f929077b5a"
+  },
+  "qualification_evidence": {
+    "aggregate_replay_run": 35360842044,
+    "aggregate_replay_job": 105651421446,
+    "aggregate_replay_artifact_id": 10553939278,
+    "aggregate_replay_artifact_digest": "sha256:5fec912fa654417920b7265a87da06522811c187d07dceab59acc40c605f4ee8",
+    "result_sha256": "220f0279ed9249b0085f8368b2ac2e418da4adf50206c200fa87e8df107f34e7",
+    "result": "integration/f-ross/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json",
+    "attempted_cases": 108,
+    "material_count": 36,
+    "tier_distribution": {
+      "K2": 106,
+      "K4": 1,
+      "K8": 1
+    },
+    "maxima": {
+      "temporal_indicator": 0.8786631138376514,
+      "theta_span_normalized_error": 0.000003347041045855608,
+      "state_change_relative_error": 0.0007009366742213624,
+      "abs_mass_residual_cm": 3.96429863457439e-15,
+      "exact_internal_node_endpoint_count": 0
+    },
+    "selected_tier_seam_characterization": {
+      "transition_route_count": 136,
+      "historical_f_r1_inadmissible_route_count": 90,
+      "transition_routes_by_selected_tier": {
+        "K2": 101,
+        "K4": 11,
+        "K8": 24
+      }
+    },
+    "verdict": "QUALIFIED_RESEARCH_EVIDENCE_CURRENT_TIERED_ROSSFAST_WETTING_STATE_SOLVER_VALID_WITH_SEAM_CROSSINGS"
+  },
+  "qualification_firewall": [
+    "NO_MODEL_BINDING_WIDENING",
+    "NO_PRODUCTION_SOURCE_CHANGE",
+    "NO_REFERENCE_MUTATION",
+    "NO_TABLE_ASSET_CHANGE",
+    "NO_TEMPORAL_THRESHOLD_CHANGE",
+    "NO_TIER_SELECTION_CHANGE",
+    "NO_TOLERANCE_RETUNING",
+    "NO_MATERIAL_EXCLUSION",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_PERFORMANCE_CLAIM"
+  ],
+  "production_admission_effect": "NONE",
+  "tangent_nonclaim": "No unique cross-node derivative or seam-crossing interface sensitivity is qualified.",
+  "next_permitted_action": "No further action is required to close the current RossFast production/characterization envelope. If WETTING must become a production-admitted forcing, open a separate governed one-sided WETTING model-binding admission workunit using F-ROSS26 as state-solver evidence and preserve the tangent/sensitivity nonclaim.",
+  "canonical_admission_commit": "31dd5e5af8a29c1d6b09d7a8308af00add859a46",
+  "canonical_admission_pr": 287,
+  "closed_from_qualification_head": "77ee3281ec0e992263d2c94c325ec7317c79985b",
+  "closeout": {
+    "action": "CANONICAL_EVIDENCE_ADMISSION_COMPLETE",
+    "qualification_result": "integration/f-ross/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json",
+    "production_source_changes": [],
+    "reference_changes": [],
+    "model_binding_widened": false,
+    "thresholds_changed": false,
+    "scientific_oracle_changed": false,
+    "production_admission_effect": "NONE",
+    "disposition": "F-ROSS26 closes the WETTING state-solver research qualification only. It does not admit WETTING through the production model-binding guard.",
+    "matrix_workflow_frozen_manual_only": true,
+    "matrix_workflow_blob": "b8b1e85c63f996e6f96bc30968465548477800ae"
+  },
+  "remaining_rossfast_gap": {
+    "mandatory_for_current_closed_envelope": false,
+    "gap": "One-sided WETTING model-binding admission remains a separate optional production capability. Cross-seam tangent/interface sensitivity remains explicitly unqualified.",
+    "tangent_nonclaim": "No unique cross-node derivative or seam-crossing interface sensitivity is qualified."
+  },
+  "matrix_workflow_closeout": {
+    "mode": "WORKFLOW_DISPATCH_ONLY",
+    "blob": "b8b1e85c63f996e6f96bc30968465548477800ae",
+    "reason": "The frozen 108-case measurement is complete and canonically admitted; automatic push/PR reruns are disabled to prevent duplicate evidence generation. Manual replay remains available."
+  }
+}

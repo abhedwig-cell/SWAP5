@@ -1,0 +1,59 @@
+name: F-ROSS26 aggregate replay
+
+on:
+  push:
+    branches:
+      - work/f-ross26-tiered-wetting-seam-qualification-reconciled
+    paths:
+      - 'integration/f-ross/F-ROSS26_AGGREGATE_REPLAY_TRIGGER.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  aggregate-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve frozen measurement run
+        id: authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          RUN_ID="$(tr -d '[:space:]' < integration/f-ross/F-ROSS26_AGGREGATE_REPLAY_TRIGGER.txt)"
+          [[ "$RUN_ID" =~ ^[0-9]+$ ]] || { echo "invalid run id: $RUN_ID" >&2; exit 1; }
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "F_ROSS26_MEASUREMENT_RUN=$RUN_ID"
+
+      - name: Download frozen material evidence
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ steps.authority.outputs.run_id }}
+          pattern: f-ross26-*-${{ steps.authority.outputs.run_id }}
+          path: ${{ runner.temp }}/ross26-all
+          merge-multiple: false
+
+      - name: Aggregate corrected O0/O2 evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tests/ross/aggregate_ross26_wetting_qualification.py \
+            --input-root "$RUNNER_TEMP/ross26-all" \
+            --contract integration/f-ross/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_CONTRACT.json \
+            --output "$RUNNER_TEMP/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json"
+          cat "$RUNNER_TEMP/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json"
+          sha256sum "$RUNNER_TEMP/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json"
+
+      - name: Upload corrected aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross26-aggregate-replay-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json
+          if-no-files-found: error
