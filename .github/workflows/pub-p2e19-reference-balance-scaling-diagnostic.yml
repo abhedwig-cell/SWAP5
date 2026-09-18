@@ -1,0 +1,25 @@
+name: PUB-P2E19 Reference balance-scaling diagnostic
+
+on:
+  push:
+    branches:
+      - work/pub-p2e19-reference-balance-scaling-diagnostic
+    paths:
+      - 'docs/publication/P2E19_REFERENCE_BALANCE_SCALING_DIAGNOSTIC_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e19_reference_balance_scaling_diagnostic.f90'
+      - 'tests/publication/run_pub_p2e19_reference_balance_scaling_diagnostic.sh'
+      - '.github/workflows/pub-p2e19-reference-balance-scaling-diagnostic.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-balance-scaling-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only scaling diagnostic
+        run: bash tests/publication/run_pub_p2e19_reference_balance_scaling_diagnostic.sh
