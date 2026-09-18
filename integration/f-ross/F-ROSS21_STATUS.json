@@ -2,16 +2,27 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS21",
   "title": "Tiered K2 K4 K8 RossFast certificate",
-  "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "phase": "CLOSE",
+  "status": "QUALIFIED_RESEARCH_PROMOTION_CANDIDATE",
   "branch": "work/f-ross21-tiered-k2-k4-k8-certificate",
-  "source_head": "094c113f77fe18df049af51629976a05bccc02ee",
+  "qualified_head": "c01dd2406983a4814551a3754e644003bbfcd5af",
   "production_or_reference_mutation": false,
   "qualification": {
-    "all_material_216": "pending",
-    "anchor_identity_to_f_ross19": "pending",
-    "shared_host_performance": "pending"
+    "all_material": "PASS_216_OF_216",
+    "tier_distribution": "212_K2__2_K4__2_K8",
+    "mean_linear_solves": 6.444444444444445,
+    "anchor_identity_to_f_ross19": "EXACT",
+    "shared_host_solver_cpu_delta": -0.19038094455,
+    "shared_host_reference_over_rossfast_speedup": 1.23519497713,
+    "formal_performance_claim": false
   },
-  "verdict": "READY_FOR_RESEARCH_QUALIFICATION",
-  "next_permitted_action": "Execute exact-head F-ROSS21 workflow; do not alter tier thresholds or add further fallbacks."
+  "verdict": "PROMOTION_CANDIDATE__REQUIRES_SEPARATE_PRODUCTION_WORKUNIT",
+  "next_permitted_action": "Start F-ROSS22 production promotion of the exact tiered ladder.",
+  "exclusions": [
+    "NO_PRODUCTION_ADMISSION_FROM_F_ROSS21",
+    "NO_THRESHOLD_TUNING",
+    "NO_TRAJECTORY_REUSE",
+    "NO_K16_TIER",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST"
+  ]
 }
