@@ -99,3 +99,44 @@ Draft PR:
 `#216 — PUB-ME D6: preregister and execute rejected side-effect authority experiment`
 
 This checkpoint update intentionally triggers the dedicated D6 workflow after the PR was created.
+
+
+## Compile-fixture simplification after three pre-execution failures
+
+The first three D6 workflow attempts did **not** execute the scientific D6 test.
+
+They failed while compiling unrelated current serialized-backend dependencies:
+
+1. missing accepted-trajectory directional sensitivity;
+2. missing accepted-trajectory directional publication;
+3. missing bottom-thermal carrier pulled by the full serialized reference backend.
+
+No D6 observation was available before the following change.
+
+To keep the experiment bounded, the qualification build now uses:
+
+`tests/publication/pub_me_d6_fmr_state_stub.f90`
+
+This test-only module provides only the public hydraulic base carrier required by the exact production:
+
+- process hydraulic-view binding;
+- candidate-bound surface-evaporation materializer;
+- accepted commit receipt;
+- accepted surface-evaporation publication.
+
+The runner fail-closes if the current production `fmr_b110_physical_state_t` declaration drifts in any of:
+
+- active-node field;
+- pressure-head field;
+- water-content field;
+- ponding field;
+- groundwater-level field;
+- clone binding.
+
+The real current-canonical kernel, transaction runtime, materializer, receipt and accepted-publication sources remain compiled unchanged.
+
+Current minimized implementation head before scientific execution:
+
+`f03cd172e58a45fbb51076d9e2c4c47dd1a9e55a`
+
+Scientific design, candidate sequence, rates, B1/B2 comparator and classification rules are unchanged.
