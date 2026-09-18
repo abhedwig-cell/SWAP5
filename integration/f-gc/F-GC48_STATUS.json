@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC48",
+  "title": "Generic groundwater topology composition",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "OPEN_GENERIC_TOPOLOGY_BOUNDARY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
+  },
+  "source": {
+    "branch": "work/f-gc48-generic-groundwater-topology",
+    "base": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
+  },
+  "predecessors": [
+    "F-GC40 deterministic N:1 cell-response reduction",
+    "F-GC45 real N:1 application",
+    "F-GC46 real multi-cell application",
+    "F-GC47 mixed N:1 plus 1:1 application",
+    "F-GC34 MODFLOW API slot binding"
+  ],
+  "goal": "Replace qualification-specific topology wiring with one typed deterministic production topology model that maps admitted SWAP participants to admitted groundwater cells and MODFLOW API slots without changing predictor/corrector, transaction, publication or physics semantics.",
+  "reconcile_findings": [
+    "groundwater_direct_tile_binding_t is cell-local and contains tile id, cell id and area fraction only",
+    "modflow6_api_slot_binding_t is package-local and independently maps cell id to package slot/node",
+    "mod_groundwater_multiswap_topology canonicalizes tiles only inside one cell",
+    "F-GC45-F-GC47 prove N:1, multi-cell and mixed topologies but encode topology in qualification bridges",
+    "no canonical global typed topology authority currently binds tiles, lineages, ledgers, cells and API slots together"
+  ],
+  "invariants": [
+    "each tile id and SWAP lineage id has exactly one topology owner",
+    "each ledger id has exactly one tile owner",
+    "each groundwater cell has exactly one package slot and MODFLOW node",
+    "each tile references an existing groundwater cell",
+    "each groundwater cell has at least one tile",
+    "area fractions close to one independently per groundwater cell",
+    "coupling and groundwater lineage/service metadata are identical for tiles sharing one groundwater cell",
+    "canonical order is groundwater_cell_id then tile_id; API order is package_slot",
+    "validation completes before any downstream composition mutation",
+    "no scientific assertion that N:1 aggregation is physically transferable"
+  ],
+  "exclusions": [
+    "predictor/corrector redesign",
+    "new groundwater physics",
+    "runtime FD tangent fallback",
+    "physics-envelope expansion",
+    "SCALE heterogeneous-transferability policy"
+  ],
+  "next_permitted_action": "Implement typed topology contracts/materialization, qualify F-GC45/46/47-equivalent topologies plus fail-closed invalid cases, independently verify ownership/ordering boundaries, then admit/close if exact-head evidence is green."
+}
