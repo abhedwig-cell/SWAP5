@@ -24,7 +24,7 @@ The strongest current production envelope is:
 - serialized and restricted parallel real-physics MultiSWAP;
 - a generic typed groundwater application service through F-GC49D, including live MODFLOW6 qualification in bounded topologies.
 
-The principal application-level limitation is not the Richards kernel. It is the gap between **admitted typed components** and a **normal application bootstrap/configuration path**. F-GC49D can operate an already existing FMR application context, but F-GC50 confirms there is no admitted production `create_context_from_config`-type owner and the qualification fixture may not be promoted. The same gap limits ordinary standalone use of otherwise admitted physics.
+At audit closure, the principal application-level limitation was not the Richards kernel but the absence of a production config-to-owned-FMR bootstrap. **Post-audit PPA-WU01 closes that absence for two explicitly restricted existing profiles:** an already-qualified serialized Reference standalone profile and an all-`bottom_mode=5` groundwater-owner profile that can materialize F-GC49D. Broad normal-input/application composition remains open, and the qualification fixture remains qualification-only.
 
 No production source was changed by this audit.
 
@@ -97,11 +97,11 @@ B1.11 is also relevant to migration risk. It contains admitted corrections for m
 | Restart | committed-boundary restart | B | yes | no mid-transaction or stable file-format claim |
 | Output | canonical typed result serialization | C | yes, restricted | no legacy output-family equivalence |
 | Output | full legacy output family | F | no | formats and report composition not migrated |
-| Application | normal config -> owned FMR context bootstrap | F | no | central application-envelope blocker |
+| Application | restricted typed config -> owned FMR runtime/context bootstrap | C | yes, restricted | PPA-WU01; no legacy parser or normal meteo/calendar ingestion |
 | MultiSWAP | serialized real-physics runtime | B | yes | only admitted physics families |
 | MultiSWAP | restricted parallel real-physics runtime | C | yes, restricted | unsupported physics fails closed; no speedup claim |
-| External coupling | F-GC49D generic groundwater application service | C | yes from existing context | no production context bootstrap |
-| External coupling | actual iMOD Coupler product integration | F | no | upstream registration + bootstrap blockers |
+| External coupling | F-GC49D generic groundwater application service | C | yes from restricted PPA-WU01 owner or existing context | broader product/input startup remains outside F-GC49D |
+| External coupling | actual iMOD Coupler product integration | F | no | upstream driver registration + product-config mapping remain |
 
 The machine-readable register contains, for every row, the legacy authority, SWAP5 implementation authority, typed config authority, state owner, transaction status, qualification evidence, production admission, restrictions, migration risk, use relevance and dependencies.
 
@@ -119,11 +119,13 @@ The groundwater stack is much further than a structural gateway. F-GC33 through 
 
 ### 1. Production application bootstrap
 
-This is the most consequential gap because it sits above many already-admitted components.
+**Post-audit status: restricted production route qualified by PPA-WU01.**
 
-`mod_fmr_soil_water_application_host` owns generic model selection, but not complete user configuration. F-GC49D exposes an existing registered Fortran application context through a handle. It deliberately does not expose a production context constructor. F-GC50 verified that the test fixture is qualification-only and may not be promoted.
+`mod_fmr_production_application_bootstrap` now owns typed FMR columns/templates, parameters, already-resolved forcing and committed state. For an all-`bottom_mode=5` groundwater profile it additionally owns the production head-forcing materializers, F-GC49B participant registry, participant handles and interface mass ledgers, and can materialize the existing F-GC49D context without the qualification fixture.
 
-Until a production bootstrap exists, SWAP5 has a strong typed runtime but a narrower normal-application envelope than its collection of production modules suggests.
+The admitted standalone profile is deliberately the already-qualified serialized Reference `bottom_mode=7` route. The admitted groundwater bootstrap is deliberately the existing mode-5 participant route. Mixed 5/7 ownership fails closed. PPA-WU01 does not provide legacy input parsing, meteorological/calendar ingestion or a broad application grammar.
+
+Evidence and exact restrictions are in `docs/audits/PPA_WU01_PRODUCTION_APPLICATION_BOOTSTRAP.md` and `integration/audits/PPA_WU01_STATUS.json`.
 
 ### 2. Complete atmospheric/input composition
 
@@ -155,7 +157,7 @@ The audit produced five findings that are easy to miss when reading only the Sta
 2. **Reference-ET to root uptake is already canonically composed.** The current gap is breadth of ET/stress options and application startup, not absence of the basic ptra-to-Feddes chain.
 3. **Sensible soil temperature is production-admitted while frost is not.** Treating “temperature exists” as evidence for frozen-water physics would be incorrect.
 4. **The top boundary already owns real ponding/runoff state and routing logic.** The missing surface-water scope is broader variants, not absence of all runoff/ponding physics.
-5. **The external-coupling blocker is now mainly above the physics runtime.** F-GC50 found two concrete product-startup prerequisites: an authorized iMOD Coupler driver extension route and an admitted SWAP5 context bootstrap.
+5. **The external-coupling blocker remains mainly above the physics runtime, but one prerequisite is now narrower.** PPA-WU01 supplies a restricted internal SWAP5 production owner/context bootstrap. Actual iMOD Coupler product startup still requires an authorized upstream driver-extension route and an explicit product-config mapping into an admitted PPA-WU01 profile.
 
 ## Dependency-aware backlog
 
@@ -167,11 +169,11 @@ The **canonical result serializer** is already admitted and state-free. Wiring i
 
 ### Important missing routes with low scientific uncertainty
 
-Highest value is the **production application bootstrap** for already-admitted profiles. It should create and own FMR state on the Fortran/runtime side, not in Python, and should not expand physics.
+PPA-WU01 has now closed the absence of any production bootstrap for the restricted admitted profiles, with Fortran/FMR ownership and no new physics.
 
-Second is the **outer forcing/config adapter** for common normal applications. This should translate ordinary forcing/configuration to existing typed ET/interception/top-boundary inputs while preserving the current kernel I/O separation.
+The highest remaining application-completeness value is the **outer forcing/config adapter** for common normal applications. This should translate ordinary forcing/configuration to existing typed ET/interception/top-boundary inputs while preserving the current kernel I/O separation.
 
-Third is the **lower-boundary application map**. Recover the exact B1.11 mode catalogue first, then migrate common modes as small independent slices.
+In parallel, the **lower-boundary application map** remains high value. Recover the exact B1.11 mode catalogue first, then migrate common modes as small independent slices.
 
 Fourth is **accepted-result/output composition**. Full legacy output compatibility is useful, but should follow a stable application/result vocabulary rather than drive physics design.
 
@@ -217,7 +219,7 @@ Other work must be serialized because it shares physical state or semantic owner
 
 ## Proposed next bounded workunits
 
-**PPA-WU01, Production application bootstrap for an admitted normal-run profile.** Establish one authoritative config-to-FMR-context owner using only already-admitted physics. Exit when a normal standalone application profile reaches the canonical runtime without qualification fixtures. Do not add a legacy parser or new physics in this unit.
+**PPA-WU01, Production application bootstrap for an admitted normal-run profile. CLOSED / QUALIFIED RESTRICTED PRODUCTION.** The Fortran/FMR owner now reaches the existing serialized Reference standalone runtime without fixtures and materializes F-GC49D for the existing mode-5 groundwater profile. O0/O2 qualification and output identity passed in run 35365440351. Broad input/application composition remains outside WU01.
 
 **PPA-WU02, Source-bound lower-boundary application-envelope inventory.** Recover the exact B1.11 SWBOTB mode catalogue and classify every mode against current typed runtime authority. Exit when common lower-boundary modes no longer sit under H authority ambiguity and later migration slices have frozen scientific authorities.
 
@@ -234,3 +236,14 @@ The requested major SWAP4.3.1 hydrological subsystems have been classified. The 
 The main conclusion is that SWAP5's numerical and transactional core is no longer the dominant production-envelope gap. The dominant gap is **application composition around that core**, followed by a smaller set of scientifically stateful legacy process families: advanced ET/stress, macropores, frost, hysteresis, full management/tillage and the unenumerated lower-boundary remainder.
 
 This audit changes documentation/evidence only. No production source, solver, physics, ROM, reference source or scientific tolerance is modified.
+
+
+## Post-audit update: PPA-WU01
+
+PPA-WU01 was executed after this gap audit and is tracked as a bounded post-audit closure, not as a reinterpretation of the original evidence baseline.
+
+Qualified source head: `92181c96486c7d49ac1d6cd19a7236f1dcf204b7`  
+Qualification workflow run: `35365440351`  
+Qualification job: `105666642389`
+
+The workunit closes the former **absence of any production config-to-owned-FMR owner** for its restricted typed profiles. It does not close the broader normal-application envelope. PPA-WU03 remains required for ordinary atmospheric/input ingestion, while PPA-WU02 remains the authority-recovery route for the broader lower-boundary catalogue.
