@@ -13,7 +13,7 @@ TEST=tests/publication/test_pub_p2e18_ref_high_construction.f90
 PREREG=docs/publication/P2E18_REF_HIGH_CONSTRUCTION_PREREGISTRATION.json
 PARENT_BASE=b61bc4c5730e951655353f7fdccb76618a290fd7
 PREREG_BLOB=8886758ff46878a682a0ab9f57fd58a347b1f49e
-TEST_BLOB=d4e87e02321861241766b6a0b176e63fe79e7d72
+TEST_BLOB=e96caa5a40199af90bcc8ae091c917df64de9a76
 P2E17_RESULT_BLOB=63c92b1e64743d31cb9de8698df16c28e7a54076
 P2E14_RESULT_BLOB=f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351
 REFERENCE_TREE=684f1e2889b6992e5aedc88f52bb45f4558bb3e4
@@ -104,10 +104,17 @@ for opt in 0 2; do
     [[ -f "$source" ]] || fail "missing compile source $source"
     obj="$OUT/$(basename "${source%.*}").o"
     extra=()
-    [[ "$source" == "src/solver/mod_soil_water_solver_contract.f90" ]] && extra=(-Wno-error=unused-dummy-argument)
-    gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
+    if [[ "$source" == "src/solver/mod_soil_water_solver_contract.f90" ]]; then
+      extra=(-Wno-error=unused-dummy-argument)
+    fi
+    echo "PUB_P2E18_MODULE_COMPILE_BEGIN=$source"
+    if ! gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"; then
+      fail "module compile O$opt: $source"
+    fi
+    echo "PUB_P2E18_MODULE_COMPILE_OK=$source"
     objects+=("$obj")
   done
+  echo "PUB_P2E18_TEST_COMPILE_BEGIN=O$opt"
   if ! gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o" 2> "$OUT/test_compile.err"; then
     cat "$OUT/test_compile.err" >&2
     fail "REF-HIGH test compile O$opt"
