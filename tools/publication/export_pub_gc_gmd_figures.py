@@ -9,7 +9,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import zipfile
 from pathlib import Path
 
@@ -32,6 +31,44 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: fh.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
+
+
+def font_embedding_status(reader: PdfReader) -> dict[str, object]:
+    """Report whether any referenced PDF fonts depend on unembedded files."""
+    total = 0
+    embedded = 0
+    missing: list[str] = []
+    for page in reader.pages:
+        resources = page.get("/Resources")
+        if resources is None:
+            continue
+        resources = resources.get_object()
+        fonts = resources.get("/Font")
+        if fonts is None:
+            continue
+        fonts = fonts.get_object()
+        for name, ref in fonts.items():
+            total += 1
+            font = ref.get_object()
+            descriptor = font.get("/FontDescriptor")
+            if descriptor is None:
+                subtype = str(font.get("/Subtype", ""))
+                if subtype == "/Type3":
+                    embedded += 1
+                else:
+                    missing.append(str(name))
+                continue
+            descriptor = descriptor.get_object()
+            if any(k in descriptor for k in ("/FontFile", "/FontFile2", "/FontFile3")):
+                embedded += 1
+            else:
+                missing.append(str(name))
+    return {
+        "font_resources": total,
+        "embedded_font_resources": embedded,
+        "unembedded_font_resources": missing,
+        "pass": not missing,
+    }
 
 
 def main() -> int:
@@ -87,6 +124,13 @@ def main() -> int:
         if width_pt <= 0 or height_pt <= 0:
             raise SystemExit(f"Invalid PDF media box for {expected_target}")
 
+        fonts = font_embedding_status(reader)
+        if not fonts["pass"]:
+            raise SystemExit(
+                f"{expected_target} contains unembedded font resources: "
+                + ",".join(fonts["unembedded_font_resources"])
+            )
+
         exported.append(
             {
                 "id": item["id"],
@@ -97,6 +141,7 @@ def main() -> int:
                 "size_bytes": size,
                 "pages": 1,
                 "media_box_points": [width_pt, height_pt],
+                "font_embedding": fonts,
             }
         )
 
@@ -138,6 +183,7 @@ def main() -> int:
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     print("PUB_GC_GMD_FIGURE_EXPORT=PASS")
+    print("PUB_GC_GMD_FIGURE_FONT_EMBEDDING=PASS")
     print(f"PUB_GC_GMD_FIGURE_COUNT={len(exported)}")
     print(f"PUB_GC_GMD_FIGURE_ZIP_SHA256={manifest['zip']['sha256']}")
     for item in exported:
