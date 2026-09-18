@@ -5,6 +5,8 @@ from pathlib import Path
 class Fgc44RealSwap:
     def __init__(self, library_path: str | Path) -> None:
         self.lib = ctypes.CDLL(str(Path(library_path).resolve()))
+        self.lib.fgc44_set_duration_c.restype = ctypes.c_int
+        self.lib.fgc44_set_duration_c.argtypes = [ctypes.c_double]
         self.lib.fgc44_swap_initialize_c.restype = ctypes.c_int
         self.lib.fgc44_swap_initialize_c.argtypes = [
             ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
@@ -31,6 +33,11 @@ class Fgc44RealSwap:
         self.lib.fgc44_last_trial_diagnostics_c.argtypes=[
             ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
         ]
+
+    def set_duration(self, duration_day: float) -> None:
+        status=self.lib.fgc44_set_duration_c(float(duration_day))
+        if status:
+            raise RuntimeError(f"duration configuration failed: {status}")
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
