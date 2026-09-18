@@ -39,7 +39,7 @@ EXCLUDED_NOVELTY
 | GC-C08 | A finite-window SWAP response can be exposed without exposing the internal Richards Jacobian or timestep controller. | Interface Jacobian/derivative exposure is established in FMI and co-simulation. | F-GC30/F-GC33/F-GC39/F-GC44 plus PUB-GC E4: exposed `u_A` agrees with an independent pure-bottom finite-difference response without exporting the internal Richards Jacobian or timestep sequence. | Black-box learned response is compared separately in E5; it is not required to establish this bounded exposure claim. | SUPPORTED_RESTRICTED |
 | GC-C09 | F-GC30/F-GC44 response information has a clear physical relation to storage response J_S and actual exchange response J_R. | Dynamic storage response is established in MetaSWAP and transient-specific-yield literature. | PUB-GC E4: u_A matches independent pure-bottom u_FD; low-flux J_S≈-J_R≈u_A in magnitude; B3 head-driven response is 8.1% stronger; B5 has no symmetric J_R domain. | Treat u_A as a finite-window flux-driven predictor response, not a universal head-to-exchange Jacobian. A later J_B!=0 case may further separate storage and interface interpretations. | SUPPORTED_RESTRICTED |
 | GC-C10 | Supplied finite-window response can reduce total coupling work beyond strong black-box multisecant learning in identifiable regimes. | IQN/Anderson, history reuse and surrogate-assisted QN are strong prior art. | PUB-GC E5a: zero-cost J_R oracle saves one SWAP evaluation in 16/18 comparable converged cases, two in one case and zero in one; no convergence-domain extension over cold secant; u_A has the same work pattern. | Result supports modest incremental value only. A separately acquired J_R is not justified by observed work reduction; warm-history E5b is not required by the frozen continuation gate. | SUPPORTED_RESTRICTED — MODEST VALUE, NO STANDALONE ACCELERATE GATE |
-| GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary for materially changing groundwater head, even when strict interface closure benefits from iteration. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | PUB-GC E3 plus E3-R: low-flux and 30–100x higher admitted-flux cases achieve strict closure in 2–5 iterations while loose-to-iterative head corrections remain at most 5.55e-9 m in the original fixture and 1.83e-9 m in the zero-gradient refinement. | Generalize beyond the current near-equilibrium state; the next positive case must change admitted hydrological state or groundwater-response geometry rather than relax coupling tolerances. | SUPPORTED_RESTRICTED |
+| GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary for materially changing groundwater head, even when strict interface closure benefits from iteration. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | PUB-GC E3 plus E3-R: low-flux and 30–100x higher admitted-flux cases achieve strict closure in 2–5 iterations while loose-to-iterative head corrections remain at most 5.55e-9 m in the original fixture and 1.83e-9 m in the zero-gradient refinement. E6 then failed, by preregistered rules, to create a stronger valid synthetic case: the active-drainage qbot tangent was outside the prescribed-head corrector envelope and the 20-case state/flux screen yielded zero E6-B candidates. | Generalize with E7 through a realistic already admitted hydrological application; do not relax coupling/component tolerances to manufacture a positive strong-feedback case. | SUPPORTED_RESTRICTED |
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
 | GC-C13 | The same coupling ownership and mass-publication principles can scale to regional execution. | Framework scalability is common in environmental modelling; quantitative evidence required. | Architecture supports composition; F-GC40 gives response reduction | Multi-column live-MODFLOW experiment, scaling curve, deterministic mass closure. | PLANNED_EXPERIMENT |
 | GC-C14 | The integrated coupling contract is a transferable contribution beyond one SWAP5 implementation detail. | HydroCouple, MODFLOW API, SWAT+MODFLOW and ParFlow coupling papers show the publication precedent but raise the generalization burden. | Design documents and current implementation | Discussion must extract principles and demonstrate at least one non-trivial hydrological/operational regime beyond the first restricted case. | HYPOTHESIS |
@@ -163,9 +163,9 @@ However:
 3. **E3 CLOSED AS SUPPORTED_RESTRICTED.** Main matrix, E3-D predictor envelope, E3-D2 failure mechanism and E3-R stronger-flux refinement are complete. The current fixture is a demonstrated weak-feedback control; a non-trivial positive feedback case remains future evidence, not an open E3 bookkeeping item.
 4. **E4 CLOSED — SUPPORTED_RESTRICTED.** The component-supplied `u_A` is identified as a finite-window flux-driven predictor response: it agrees with independent pure-bottom `u_FD`, is not universally interchangeable with head-driven `J_R`, and remains available in B5 where no symmetric local `J_R` is admitted.
 5. **E5 CLOSED — SUPPORTED_RESTRICTED.** Acceleration clearly outperforms plain fixed point near/above the fixed-point stability boundary, but the zero-cost J_R oracle provides only modest incremental value over cold secant and no observed convergence-domain extension. The quantitative gate for a warm-history E5b / standalone ACCELERATE continuation was not passed.
-6. **E6 NEXT — hydrological stress extension / non-trivial state-response case.**
-7. E7 realistic case.
-8. E8 scaling only after the scientific core is secure.
+6. **E6 CLOSED_NEGATIVE_WITH_BOUNDARIES.** Two preregistered stress routes were exhausted without a valid positive live-coupling case. The F-GC31 active-drainage predictor is valid but its smooth qbot projection is not an admitted prescribed-head corrector profile. The separate 20-case accepted-state/flux screen produced eight predictor-ready cases but zero cases with the required symmetric ±1e-4 m corrector domain; no E6-B candidate was admitted.
+7. **E7 NEXT — realistic already admitted hydrological application case.** Use an application/profile that already owns the required process and boundary semantics rather than further synthetic tolerance or parameter escalation.
+8. E8 scaling only after the realistic scientific core is secure.
 
 ## First publication evidence record
 
@@ -299,3 +299,48 @@ The complete E4 perturbation record is retained under `docs/publication/evidence
 - `PUB_GC_E4_DERIVATIVES.csv` — machine-readable derived head and flux response rows.
 
 This closes the persistence gap left by the expiring Actions artifact and does not alter the E4 scientific conclusion or production semantics.
+
+
+## E6 publication evidence
+
+Active-drainage preregistration:
+
+`PUB_GC_E6_ACTIVE_DRAINAGE_PREREGISTRATION.md`
+
+Active-drainage result:
+
+`PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.md`
+
+Machine-readable active-drainage result:
+
+`PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json`
+
+Durable active-drainage raw evidence:
+
+`evidence/PUB_GC_E6_ACTIVE_DRAINAGE_RAW.json`
+
+Accepted-state / predictor-flux screen preregistration:
+
+`PUB_GC_E6A_STATE_SCREEN_PREREGISTRATION.md`
+
+Accepted-state / predictor-flux result:
+
+`PUB_GC_E6A_STATE_SCREEN_RESULT.md`
+
+Machine-readable 20-case result:
+
+`PUB_GC_E6A_STATE_SCREEN_RESULT.json`
+
+Publication summary:
+
+`PUB_GC_E6A_STATE_SCREEN_SUMMARY.csv`
+
+Durable raw 20-case evidence:
+
+`evidence/PUB_GC_E6A_RAW_CASES.json`
+
+Consolidated E6 result:
+
+`PUB_GC_E6_RESULT.md`
+
+E6 closes negatively rather than supplying the previously sought positive strong-feedback synthetic case. This does not make component failure a coupling result; it records that both preregistered routes reached component-admission boundaries before a stronger valid live-coupling experiment was available.
