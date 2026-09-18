@@ -1,0 +1,42 @@
+name: PUB-GC transient screening
+
+on:
+  push:
+    branches:
+      - research/pub-gc-transient-screening
+    paths:
+      - 'tests/publication/pub_gc/transient_screening/**'
+      - '.github/workflows/pub-gc-transient-screening.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transient-screening:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run preregistered transient screening
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-TRANSIENT-SCREEN
+          bash tests/publication/pub_gc/transient_screening/run_pub_gc_transient_screening.sh 2>&1 \
+            | tee artifacts/PUB-GC-TRANSIENT-SCREEN/screening.log
+
+      - name: Upload screening receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-transient-screening-${{ github.sha }}
+          path: artifacts/PUB-GC-TRANSIENT-SCREEN/screening.log
+          if-no-files-found: error
+          retention-days: 90
