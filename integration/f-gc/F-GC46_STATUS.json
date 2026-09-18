@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC46",
+  "title": "Real multi-cell live MODFLOW6 application qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "OPEN_REAL_MULTICELL_BOUNDARY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "c42db098cc246e3da06472a34979bdf24cfa81cb"
+  },
+  "source": {
+    "branch": "work/f-gc46-real-multicell-live-modflow",
+    "base": "c42db098cc246e3da06472a34979bdf24cfa81cb"
+  },
+  "predecessors": [
+    "F-GC44 real one-cell live application",
+    "F-GC45 real N:1 one-cell MultiSWAP application",
+    "F-GC34 multi-slot MODFLOW API binding",
+    "F-GC41 whole-window publication"
+  ],
+  "goal": "Qualify two independently transactional real FMR/SWAP interfaces coupled 1:1 to two distinct live MODFLOW6 cells in one model, one timestep and one prepared solve.",
+  "decisions": [
+    "Keep each groundwater cell 1:1 with one real SWAP column; do not combine multi-cell and N:1 in the same first capability.",
+    "Use two API package slots and two distinct MODFLOW node ids through the admitted F-GC34 multi-slot publisher.",
+    "Each interface has its own SWAP lineage, coupling id, groundwater lineage and ledger identity while sharing one MODFLOW service/timestep.",
+    "Each SWAP corrector uses the head of its own MODFLOW cell and its own immutable accepted checkpoint.",
+    "Coupled convergence requires MODFLOW convergence and both cell-wise flux residuals within tolerance.",
+    "All SWAP and ledger preflights for both cells complete before the single MODFLOW finalize_time_step; then SWAP and ledger publication is deterministic by cell id."
+  ],
+  "exclusions": [
+    "N:1 within a cell",
+    "heterogeneous aggregation science",
+    "active drainage",
+    "root uptake",
+    "macropores",
+    "snow",
+    "soil temperature",
+    "Ribasim",
+    "irrigation",
+    "runtime finite-difference tangent fallback"
+  ],
+  "next_permitted_action": "Implement qualification-only two-interface bridge and live MODFLOW6 multi-slot harness; qualify exact cell-to-slot/node mapping, same-origin correctors, conjunctive two-cell convergence and whole-timestep publication ordering."
+}
