@@ -21,7 +21,8 @@ for token in [
     assert token in low, token
 for forbidden in [
     '7001','7002','fgc47','fgc46','fgc45','fgc44',
-    'hcof_m2_per_day','rhs_m3_per_day',
+    '86400.0','area_fraction','q_u_at_reference_m_per_s','dq_u_dh_per_s',
+    'reference_volume_flux_m3_per_day',
     'compose_modflow6_multiswap_cell_response',
     'compose_modflow6_linear_boundary_term',
     'imod coupler',
