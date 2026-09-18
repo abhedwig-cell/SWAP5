@@ -111,5 +111,5 @@ for marker in   'FGC46_TWO_DISTINCT_LIVE_MODFLOW_CELLS=PASS'   'FGC46_FGC34_TWO_
   grep -Fq "$marker" "$BUILD/e2e.txt" || fail "missing marker $marker"
 done
 
-git diff --check -- tests/fgc/support/mod_fgc46_real_multicell_c_bridge.f90   tests/fgc/support/fgc45_real_multiswap_ctypes.py   tests/fgc/test_fgc46_real_multicell_live_modflow.py
+git diff --check -- tests/fgc/support/mod_fgc46_real_multicell_c_bridge.f90   tests/fgc/support/fgc46_real_multicell_ctypes.py   tests/fgc/test_fgc46_real_multicell_live_modflow.py
 echo 'F-GC46 REAL MULTICELL + MODFLOW6 END-TO-END GATE PASS'
