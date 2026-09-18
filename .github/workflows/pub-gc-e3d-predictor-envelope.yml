@@ -1,0 +1,37 @@
+name: PUB-GC E3D predictor envelope diagnosis
+on:
+  push:
+    branches: [work/pub-gc-e3-coupling-window-feedback-characterization]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/test_pub_gc_e3d_predictor_case.py'
+      - 'tests/publication/run_pub_gc_e3d.sh'
+      - 'docs/publication/PUB_GC_E3D_PREDICTOR_ENVELOPE_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e3d-predictor-envelope.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run preregistered predictor envelope scan
+        env:
+          PUB_GC_EVIDENCE_DIR: ${{ runner.temp }}/pub-gc-e3d
+        run: bash tests/publication/run_pub_gc_e3d.sh
+      - name: Upload E3D evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e3d-evidence
+          path: ${{ runner.temp }}/pub-gc-e3d
+          if-no-files-found: error
