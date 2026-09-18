@@ -1,0 +1,25 @@
+name: PUB-P2E16D Reference iteration budget sensitivity
+
+on:
+  push:
+    branches:
+      - work/pub-p2e16d-reference-iteration-budget-sensitivity
+    paths:
+      - 'docs/publication/P2E16D_REFERENCE_ITERATION_BUDGET_SENSITIVITY_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e16d_reference_iteration_budget_sensitivity.f90'
+      - 'tests/publication/run_pub_p2e16d_reference_iteration_budget_sensitivity.sh'
+      - '.github/workflows/pub-p2e16d-reference-iteration-budget-sensitivity.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-iteration-budget-sensitivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered P2E16D Reference sensitivity
+        run: bash tests/publication/run_pub_p2e16d_reference_iteration_budget_sensitivity.sh
