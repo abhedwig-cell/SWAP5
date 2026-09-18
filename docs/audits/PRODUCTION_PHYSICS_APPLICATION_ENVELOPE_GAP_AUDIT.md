@@ -78,8 +78,8 @@ B1.11 is also relevant to migration risk. It contains admitted corrections for m
 | Root/stress | oxygen, salinity, frost, compensation, MICRO/JvL/macropore | F | no | shared state/physics not migrated |
 | Soil water | Reference Richards production core | B | yes | surrounding process envelope still restricted |
 | Lower boundary | SWBOTB=6 zero flux | C | yes, restricted | only selector 6 mapped |
-| Lower boundary | nonzero prescribed qbot | D | not as normal application route | F-MR44R qualified but not canonically admitted |
-| Lower boundary | other legacy SWBOTB variants | H | no | complete selector/semantic inventory absent |
+| Lower boundary | nonzero prescribed qbot | C | yes, restricted | PPA-WU02-A canonically admits homogeneous typed bottom_mode=2; legacy SWBOTB=2 sine/table and dry continuation remain separate |
+| Lower boundary | remaining legacy SWBOTB variants | F | no for remaining families | PPA-WU02 recovered the B1.11 catalogue; remaining gaps are explicit migration slices rather than authority ambiguity |
 | Groundwater | typed head/exchange/coupling route | C | yes, restricted | bounded forcing/timestep/physics envelope |
 | Drainage | drainage-v1 family | C | yes, restricted | no fully implicit drainage; parallel DIVDRA restrictions |
 | Surface water | fixed-weir storage route | C | yes, restricted | not complete surface-water family |
@@ -221,7 +221,7 @@ Other work must be serialized because it shares physical state or semantic owner
 
 **PPA-WU01, Production application bootstrap for an admitted normal-run profile. CLOSED / QUALIFIED RESTRICTED PRODUCTION.** The Fortran/FMR owner now reaches the existing serialized Reference standalone runtime without fixtures and materializes F-GC49D for the existing mode-5 groundwater profile. O0/O2 qualification and output identity passed in run 35365440351. Broad input/application composition remains outside WU01.
 
-**PPA-WU02, Source-bound lower-boundary application-envelope inventory.** Recover the exact B1.11 SWBOTB mode catalogue and classify every mode against current typed runtime authority. Exit when common lower-boundary modes no longer sit under H authority ambiguity and later migration slices have frozen scientific authorities.
+**PPA-WU02, Source-bound lower-boundary application-envelope inventory. CLOSED / CANONICAL ADMITTED.** The B1.11 SWBOTB catalogue is source-bound, common-mode H authority ambiguity is closed, and PPA-WU02-A canonically admits homogeneous typed prescribed qbot via PR #324 at `013c549686a8f310834ddb3e8d1270166f8283f1`. Legacy SWBOTB=2 sine/table forcing and dry continuation plus selectors 1, 3, 4, standalone 5 and 8 remain explicit follow-on slices.
 
 **PPA-WU03, Atmospheric forcing and normal-input adapter boundary. CLOSED / CANONICAL ADMITTED.** PR #323 merged at `97c4471155001e12133109be5eb6bd95f799eb00`. The admitted slice covers generic-time precipitation, SWETR=1 reference ET, explicit canopy view and no/already-resolved surface irrigation under SWINTER=0, with only pure-flux dynamic-top handoff to PPA-WU01. File/calendar grammar, PMdirect ingestion, Rutter state ownership and broader management ingestion remain outside the workunit.
 
@@ -233,7 +233,7 @@ Other work must be serialized because it shares physical state or semantic owner
 
 The requested major SWAP4.3.1 hydrological subsystems have been classified. The audit does not claim full legacy option enumeration where the repository does not support it; those cases are explicitly marked H or grouped as F rather than inferred from filenames.
 
-The main conclusion is that SWAP5's numerical and transactional core is no longer the dominant production-envelope gap. The dominant gap is **application composition around that core**, followed by a smaller set of scientifically stateful legacy process families: advanced ET/stress, macropores, frost, hysteresis, full management/tillage and the unenumerated lower-boundary remainder.
+The main conclusion is that SWAP5's numerical and transactional core is no longer the dominant production-envelope gap. The dominant gap is **application composition around that core**, followed by a smaller set of scientifically stateful legacy process families: advanced ET/stress, macropores, frost, hysteresis, full management/tillage and the now-enumerated but not-yet-migrated lower-boundary remainder.
 
 This audit changes documentation/evidence only. No production source, solver, physics, ROM, reference source or scientific tolerance is modified.
 
@@ -262,3 +262,10 @@ Preservation job: `105694706721` PASS
 The admitted capability is intentionally narrower than the complete legacy meteorological route. A stateless outer adapter maps generic real-valued interval input for precipitation, SWETR=1 reference ET, explicit canopy view and no/already-resolved surface irrigation under SWINTER=0 into existing typed contracts. A read-only forcing seam lets the existing PPA-WU01 owner execute changing interval forcing without transferring FMR, committed-state, transaction, timestep or retry ownership.
 
 The canonical nonclaims remain: no legacy weather-file grammar or calendar/date ingestion, no PMdirect normal-input derivation, no Rutter canopy-state ownership, no SWINTER=1/2, no irrigation scheduling/management parser, no snow/runon ingestion, and no dynamic-top head/ponding/runoff pre-resolution into the PPA-WU01 fixed-flux route.
+
+
+## Post-audit update: PPA-WU02
+
+PPA-WU02 completed the exact B1.11 lower-boundary selector inventory and removed the prior common-mode H authority ambiguity. After reconciling the shared production-bootstrap surface with canonical PPA-WU03, head `eff8670a2614f72d34016dbfc7eba040c940c245` passed owner and independent qualification in workflow `35374976662`, plus PPA-WU01 preservation. PR #324 merged at `013c549686a8f310834ddb3e8d1270166f8283f1`.
+
+The admitted delta is deliberately narrow: homogeneous typed `bottom_mode=2` with already-resolved prescribed qbot through the existing production application owner. It does not admit the legacy SW2 sine/table materializer, DATE2/QBOT2 parser, oven-dry 2-to--2 continuation, or remaining selector families.

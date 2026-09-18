@@ -2,9 +2,11 @@
 
 Date: 2026-09-18
 
-Status: `SOURCE_INVENTORY_COMPLETE / FIRST_BOUNDED_SLICE_IMPLEMENTED_AND_INDEPENDENTLY_QUALIFIED / CANONICAL_ADMISSION_PENDING`
+Status: `SOURCE_INVENTORY_COMPLETE / PPA-WU02-A CANONICAL_ADMITTED / WORKUNIT_CLOSED`
 
-Canonical authority at reconcile: `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`.
+Initial canonical authority at source reconcile: `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`.
+
+Post-WU03 application-surface reconcile used `0d1798aafbf43417801d75a140e4f4f3cef74bd8`. PPA-WU02-A requalified at `eff8670a2614f72d34016dbfc7eba040c940c245` and was canonically admitted by PR #324 at `013c549686a8f310834ddb3e8d1270166f8283f1`.
 
 ## Authority binding
 
@@ -58,7 +60,7 @@ are not substituted for the frozen B1.11 identity.
 | Legacy selector | Exact application meaning and source staging | Inputs/state | Solver/Jacobian semantics | Current SWAP5 reachability | PPA-WU02 classification |
 |---|---|---|---|---|---|
 | 1 | Prescribed groundwater level. `BoundBottom` interpolates `gwlinp(t+dt)`. If the GWL lies in/above the profile the Richards domain is truncated/continued saturated; if it lies below the profile it is converted to a lower-face `hbot`. | DATE1/GWLEVEL table; `gwlinp`, `gwl`, `fllowgwl`, geometry. Initial `SWINCO=2` also uses the prescribed GWL. | Internal-GWL branch has a saturated lower continuation and GWL-distance Jacobian. Below-profile branch uses the Darcy lower-face head gradient and K/d Jacobian. qbot is an output, not prescribed forcing. | Groundwater/head coupling exists through admitted F-GC contracts, but this legacy selector/state-machine is not the typed application contract. | `PRESERVED_NOT_TYPED_AS_LEGACY_MODE`; migration requires its own groundwater-level boundary/state slice. |
-| 2 | Prescribed regional/native bottom flux. `BoundBottom` supplies a sinusoid or time table. At extremely dry bottom pressure head (< -1e7 cm) legacy application semantics switch temporarily to `-2` free drainage. | SW2; either SINAVE/SINAMP/SINMAX or DATE2/QBOT2; qbot. | `F_N=other_terms-qbot`; no boundary-head stiffness. F-SI27 proves exact B1.10/B1.11-equivalent solver identity. | Typed physics/runtime and temporal route are canonically admitted through F-SI38/F-MR44R/F-CI62. Normal PPA-WU01 application bootstrap still rejects mode 2 at this reconcile point. Legacy SW2 parser/time-law/dry-fallback adapter is not admitted. | `PRODUCTION_ADMITTED_KERNEL_RUNTIME / NORMAL_APPLICATION_GAP`. First bounded slice: typed prescribed-qbot application admission only. |
+| 2 | Prescribed regional/native bottom flux. `BoundBottom` supplies a sinusoid or time table. At extremely dry bottom pressure head (< -1e7 cm) legacy application semantics switch temporarily to `-2` free drainage. | SW2; either SINAVE/SINAMP/SINMAX or DATE2/QBOT2; qbot. | `F_N=other_terms-qbot`; no boundary-head stiffness. F-SI27 proves exact B1.10/B1.11-equivalent solver identity. | Typed physics/runtime and temporal route are canonically admitted through F-SI38/F-MR44R/F-CI62. PPA-WU02-A now canonically admits homogeneous typed `bottom_mode=2` through the normal production application bootstrap. Legacy SW2 parser/time-law/dry-fallback adapter is not admitted. | `RESTRICTED_PRODUCTION_TYPED_APPLICATION_CANONICAL`. Full legacy SWBOTB=2 application semantics remain a separate migration slice. |
 | 3 | Cauchy exchange with deep groundwater/aquifer, optionally plus a time-dependent extra groundwater flux. `BoundBottom` computes aquifer head and saturated-profile resistance. | SWBOTB3RESVERT, SWBOTB3IMPL, SHAPE, HDRAIN, RIMLAY; SW3 with AQAVE/AQAMP/AQTMAX/AQPER or DATE3/HAQUIF; optional SW4 DATE4/QBOT4; `gwl`, `deepgw`. | Explicit form presents qbot to the generic flux row. Implicit form recomputes qbot from bottom hydraulic head and resistance inside HeadCalc; Jacobian adds reciprocal resistance. | Formula remains in legacy port, but no admitted typed boundary contract/application adapter owns the complete semantics. | `PRESERVED_NOT_TYPED`; split explicit/implicit Cauchy migration only after source-bound timing/state contract. |
 | 4 | Flux as a function of profile groundwater level. `BoundBottom` evaluates either `cofqha*exp(cofqhb*abs(gwl)) [+ cofqh c]` or a q(h) table before the Richards solve. | SWQHBOT; COFQHA/COFQHB and optional COFQHC, or HTAB/QTAB; current/profile `gwl`. | HeadCalc receives the resulting qbot through the generic flux row. The application law is state-dependent/lagged and is not semantically equivalent to a user-prescribed time-only qbot. | Generic mode-2 flux row exists, but the q(gwl) law and its staging do not. | `PHYSICS_ROW_REUSABLE / APPLICATION_LAW_NOT_MIGRATED`. |
 | 5 | Prescribed lower-face pressure head as a function of time. | DATE5/HBOT5; `hbot`; lower-face K and geometry. | Darcy gradient `(h(NN)-hbot)/d+1`; K/d Jacobian. Exact authoritative qbot is materialized after accepted HeadCalc through the B1.10/B1.11-equivalent `watstor()+fluxes()` arithmetic. | F-SI16/F-MR11 lineage plus current F-GC/PPA-WU01 groundwater profile: restricted production. It is not a generic legacy DATE5 normal-file adapter. | `RESTRICTED_PRODUCTION`, groundwater-owned application route. |
@@ -113,13 +115,14 @@ mode-7 standalone and mode-5 groundwater profiles. The bootstrap copies the
 already-resolved typed forcing unchanged and creates no groundwater registry or
 ledger for mode 2.
 
-Exact-head qualification on `785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b`:
+Final requalification after reconciling the shared bootstrap surface with canonical PPA-WU03 used exact head `eff8670a2614f72d34016dbfc7eba040c940c245`:
 
-- PPA-WU02 workflow run `35374222568`;
-- owner job `105695000702`: PASS;
-- independent job `105695282455`: PASS;
-- PPA-WU01 preservation run `35374222321`: PASS;
-- Documentation validation/build run `35374222234`: PASS.
+- PPA-WU02 workflow run `35374976662`;
+- owner job `105697423309`: PASS;
+- independent job `105697676084`: PASS;
+- PPA-WU01 preservation run `35374976768`: PASS;
+- Documentation run `35374976742`: PASS;
+- canonical admission: PR #324, merge `013c549686a8f310834ddb3e8d1270166f8283f1`.
 
 The owner gate proves nonzero prescribed qbot reaches the production bootstrap,
 executes and commits through Reference Richards, preserves hard mass closure,
@@ -133,3 +136,8 @@ confirms the SWBOTB=6 zero-flux adapter is byte-unchanged.
 This admission is deliberately narrower than legacy SWBOTB=2. It does not add
 the SW2 sine/table generator, DATE2/QBOT2 parser, oven-dry `2 -> -2`
 continuation, file I/O or any new groundwater semantics.
+
+
+## Closure
+
+PPA-WU02 is closed as an inventory plus one bounded admission. The B1.11 selector catalogue no longer carries a common-mode authority-unclear remainder. PPA-WU02-A is canonical for homogeneous typed prescribed qbot. The frozen follow-on slices remain open and are not implied by this closure: legacy SWBOTB=2 sine/table forcing and its 2-to--2 dry continuation; standalone legacy SWBOTB=5 DATE5/HBOT5 application semantics; SWBOTB=1, 3, 4 and 8.

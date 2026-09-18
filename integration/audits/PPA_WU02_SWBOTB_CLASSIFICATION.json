@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu02.swbotb_classification.v1",
   "work_unit": "PPA-WU02",
-  "canonical_reconciled": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "canonical_reconciled": "0d1798aafbf43417801d75a140e4f4f3cef74bd8",
   "b1_11": {
     "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
@@ -25,18 +25,21 @@
       "meaning": "prescribed_native_qbot",
       "time": "SW2_sinus_or_DATE2_QBOT2_table",
       "typed_contract": "production_admitted",
-      "application": "qualified_homogeneous_typed_production_bootstrap_pending_canonical_merge",
+      "application": "canonical_homogeneous_typed_production_bootstrap",
       "groundwater_relation": "none_intrinsic",
-      "classification": "QUALIFIED_RESTRICTED_PRODUCTION_APPLICATION_PENDING_CANONICAL_ADMISSION",
+      "classification": "RESTRICTED_PRODUCTION_TYPED_APPLICATION_CANONICAL",
       "risk": "low_for_qualified_typed_direct_slice_medium_for_full_legacy_adapter",
       "qualification": {
-        "owner_workflow_run": 35374222568,
-        "owner_job": 105695000702,
-        "independent_job": 105695282455,
+        "owner_workflow_run": 35374976662,
+        "owner_job": 105697423309,
+        "independent_job": 105697676084,
         "owner_result": "PASS",
         "independent_result": "PASS",
-        "ppa_wu01_preservation_run": 35374222321,
-        "exact_qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b"
+        "ppa_wu01_preservation_run": 35374976768,
+        "documentation_run": 35374976742,
+        "exact_qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
+        "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
+        "pull_request": 324
       }
     },
     {
@@ -136,21 +139,25 @@
       "new numerical policy",
       "mixed bottom-mode profiles"
     ],
-    "status": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFIED_CANONICAL_ADMISSION_PENDING",
-    "qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b",
+    "status": "CANONICAL_ADMITTED_CLOSED",
+    "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
     "qualification": {
-      "workflow_run": 35374222568,
-      "owner_job": 105695000702,
-      "independent_job": 105695282455,
-      "ppa_wu01_preservation_run": 35374222321,
-      "documentation_run": 35374222234
+      "workflow_run": 35374976662,
+      "owner_job": 105697423309,
+      "independent_job": 105697676084,
+      "ppa_wu01_preservation_run": 35374976768,
+      "documentation_run": 35374976742
+    },
+    "admission": {
+      "pull_request": 324,
+      "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1"
     }
   },
   "migration_slices": [
     {
       "id": "PPA-WU02-A",
       "priority": 1,
-      "status": "QUALIFIED_CANONICAL_ADMISSION_PENDING",
+      "status": "CANONICAL_ADMITTED_CLOSED",
       "meaning": "homogeneous already-resolved typed prescribed-qbot production bootstrap"
     },
     {
@@ -189,5 +196,11 @@
       "status": "NOT_IMPLEMENTED",
       "meaning": "lysimeter active-set switching boundary"
     }
-  ]
+  ],
+  "canonical_admission": {
+    "pull_request": 324,
+    "merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
+    "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
+    "state": "CANONICAL_ADMITTED_CLOSED"
+  }
 }

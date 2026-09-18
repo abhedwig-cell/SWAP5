@@ -4,7 +4,7 @@
   "title": "Source-bound lower-boundary application envelope inventory",
   "branch": "audit/ppa-wu02-lower-boundary-envelope",
   "reconcile_base": "12beef3e91f90f88b101c13af72cd216bccc63e3",
-  "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "status": "CANONICAL_ADMITTED_CLOSED",
   "inventory": {
     "exact_source_authority": "SWAP 4.3.1 B1.11",
     "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
@@ -32,7 +32,7 @@
   },
   "first_slice": {
     "id": "PPA-WU02-A",
-    "decision": "QUALIFIED_TYPED_PRESCRIBED_QBOT_NORMAL_APPLICATION_ADMISSION",
+    "decision": "CANONICAL_ADMITTED_TYPED_PRESCRIBED_QBOT_NORMAL_APPLICATION",
     "production_delta": [
       "src/runtime/mod_fmr_production_application_bootstrap.f90"
     ],
@@ -64,13 +64,24 @@
     ]
   },
   "qualification": {
-    "workflow_run": 35374222568,
-    "owner_job": 105695000702,
+    "workflow_run": 35374976662,
+    "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
+    "owner_job": 105697423309,
     "owner_conclusion": "success",
-    "independent_job": 105695282455,
+    "independent_job": 105697676084,
     "independent_conclusion": "success",
-    "ppa_wu01_preservation_run": 35374222321,
+    "ppa_wu01_preservation_run": 35374976768,
     "ppa_wu01_preservation_conclusion": "success",
+    "documentation_run": 35374976742,
+    "documentation_conclusion": "success",
+    "inherited_authority": [
+      "F-SI27",
+      "F-SI38",
+      "F-MR44R",
+      "F-VQ75",
+      "F-CI62",
+      "F-CI62P"
+    ],
     "checks": {
       "single_application_production_delta": "PASS",
       "lower_level_science_blob_locks": "PASS",
@@ -83,14 +94,15 @@
       "unsupported_profile_fail_closed": "PASS",
       "mode7_application_preservation": "PASS",
       "mode5_groundwater_preservation": "PASS",
-      "swbotb6_zero_flux_adapter_unchanged": "PASS"
+      "swbotb6_zero_flux_adapter_unchanged": "PASS",
+      "ppa_wu03_shared_surface_reconcile": "PASS"
     }
   },
   "migration_slices": [
     {
       "priority": 1,
       "id": "PPA-WU02-A",
-      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION"
+      "state": "CANONICAL_ADMITTED_CLOSED"
     },
     {
       "priority": 2,
@@ -134,6 +146,34 @@
     "common_modes_no_unnecessary_H_AUTHORITY_UNCLEAR": true,
     "dependency_aware_migration_slices_defined": true,
     "direct_admitable_low_science_risk_slice_executed": true,
-    "canonical_admission_pending": true
+    "canonical_admission_pending": false,
+    "canonical_admission_complete": true,
+    "workunit_closed": true
+  },
+  "post_wu03_reconcile": {
+    "canonical_base": "0d1798aafbf43417801d75a140e4f4f3cef74bd8",
+    "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
+    "classification": "SHARED_BOOTSTRAP_SURFACE_RECONCILED_WITHOUT_PHYSICS_DRIFT",
+    "production_overlap": "PPA-WU03 added read-only run_standalone_with_forcing seam; PPA-WU02-A re-applied only homogeneous bottom_mode=2 admission"
+  },
+  "admission": {
+    "pull_request": 324,
+    "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
+    "admitted_subject_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
+    "canonical_branch": "integration/f-ci-canonical",
+    "state": "CANONICAL_ADMITTED_CLOSED",
+    "scope": "Homogeneous typed bottom_mode=2 prescribed-qbot normal application reachability only",
+    "nonclaims": [
+      "full legacy SWBOTB=2 parser/application semantics",
+      "SW2 sinusoidal forcing materializer",
+      "DATE2/QBOT2 legacy table adapter",
+      "oven-dry SWBOTB=2 to -2 automatic continuation",
+      "SWBOTB=1",
+      "SWBOTB=3",
+      "SWBOTB=4",
+      "SWBOTB=8",
+      "internal mode 9 as a normal application selector",
+      "mixed bottom-mode production profiles"
+    ]
   }
 }
