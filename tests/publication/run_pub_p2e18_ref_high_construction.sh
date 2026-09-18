@@ -115,14 +115,24 @@ for opt in 0 2; do
     objects+=("$obj")
   done
   echo "PUB_P2E18_TEST_COMPILE_BEGIN=O$opt"
-  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o" 2> "$OUT/test_compile.err"; then
-    cat "$OUT/test_compile.err" >&2
-    fail "REF-HIGH test compile O$opt"
-  fi
-  if ! gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" 2> "$OUT/test_link.err"; then
-    cat "$OUT/test_link.err" >&2
-    fail "REF-HIGH test link O$opt"
-  fi
+  set +e
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o" > "$OUT/test_compile.out" 2> "$OUT/test_compile.err"
+  compile_rc=$?
+  set -e
+  echo "PUB_P2E18_TEST_COMPILE_RC=$compile_rc"
+  cat "$OUT/test_compile.out" || true
+  cat "$OUT/test_compile.err" >&2 || true
+  [[ "$compile_rc" = "0" ]] || fail "REF-HIGH test compile O$opt"
+
+  echo "PUB_P2E18_TEST_LINK_BEGIN=O$opt"
+  set +e
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" > "$OUT/test_link.out" 2> "$OUT/test_link.err"
+  link_rc=$?
+  set -e
+  echo "PUB_P2E18_TEST_LINK_RC=$link_rc"
+  cat "$OUT/test_link.out" || true
+  cat "$OUT/test_link.err" >&2 || true
+  [[ "$link_rc" = "0" ]] || fail "REF-HIGH test link O$opt"
 
   if ! "$OUT/test" > "$OUT/output.txt" 2>&1; then
     cat "$OUT/output.txt" >&2
