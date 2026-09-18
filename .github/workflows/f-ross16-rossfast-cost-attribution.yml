@@ -1,0 +1,39 @@
+name: F-ROSS16 RossFast cost attribution
+
+on:
+  push:
+    branches:
+      - work/f-ross16-rossfast-cost-attribution
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-ross/F-ROSS16_*'
+      - 'tests/ross/test_ross16_work_counts.f90'
+      - 'tests/ross/test_ross16_profile.f90'
+      - 'tests/ross/run_ross16_cost_attribution.sh'
+      - 'tools/performance/f_ross16_work_counts.py'
+      - '.github/workflows/f-ross16-rossfast-cost-attribution.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  cost-attribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran and binutils
+        run: sudo apt-get update && sudo apt-get install -y gfortran binutils
+      - name: Execute F-ROSS16 diagnostics
+        run: bash tests/ross/run_ross16_cost_attribution.sh
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross16-cost-attribution-${{ github.run_id }}
+          path: F-ROSS16_EVIDENCE
+          if-no-files-found: warn
