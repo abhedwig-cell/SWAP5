@@ -1,0 +1,162 @@
+{
+  "schema": "swap5.publication.p2e23-observed-error-reference-matching-result.v1",
+  "workunit": "PUB-P2E23",
+  "publication_owner": "PUB-SQ",
+  "phase": "UNTIMED_REALIZED_ERROR_REFERENCE_MATCHING_COMPLETE",
+  "parent_threshold_matched_authority": {
+    "branch": "work/pub-p2e22-equal-error-reference-migration",
+    "head": "dac6e7b7896f44baa8467eb0b34ba119f5bd2631",
+    "result_blob": "60b08f4b953e1f5330d7db9fc2a5729f924de12e"
+  },
+  "ref_high_authority": {
+    "branch": "work/pub-p2e21-ref-high-representation-bound",
+    "head": "dd09a1ef83ff4953cc4445c3116898c6fe118267",
+    "result_blob": "638e2ea4db5a7dcc3c940a9312b660b7ac4e5b78",
+    "policy": "REPRESENTATION_BOUNDED_TOTAL"
+  },
+  "authorities": {
+    "preregistration_blob": "3bba18b556662c44813cbfe0686b0bb9913c24c7",
+    "test_blob": "a80da1aa8d994dbd16129e22a4694528778f05a2",
+    "runner_blob": "92bbf257c0a7fdf54a016eade5690b2d79f862ec",
+    "workflow_blob": "0bc17f1e64a4c4fe4a5bc4dbea9995dd2d3d4dc3"
+  },
+  "execution": {
+    "head": "d8f2ce5b561bcd5d4eba14169c0850bf3592aca7",
+    "workflow_run": 35314767424,
+    "job": 105503952798,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "1a8633e36e76875c454df32b1ca5725af6362c4216ecbefffa6ce136a08fca74",
+    "timing_executed": false
+  },
+  "matrix": {
+    "cases": 36,
+    "ross_anchors": 36,
+    "reference_configurations": 1152,
+    "reference_axis": "all integer N=1..32",
+    "reference_valid": 1152,
+    "reference_invalid": 0,
+    "ref_high_reconstructions": 36
+  },
+  "matching_outcome": {
+    "BRACKETED": 34,
+    "LEFT_CENSORED_AT_N1": 2,
+    "UPPER_ONLY_ROUTE_GAP": 0,
+    "MATCH_ONLY_AT_REF_HIGH_N32": 0,
+    "UNRESOLVED": 0,
+    "nonmonotone_cases": 2,
+    "n_hi_distribution": {
+      "N1": 2,
+      "N7": 4,
+      "N14": 3,
+      "N15": 1,
+      "N17": 8,
+      "N18": 4,
+      "N20": 2,
+      "N21": 4,
+      "N22": 2,
+      "N23": 4,
+      "N24": 2
+    }
+  },
+  "left_censored_cases": [
+    {
+      "case": 7,
+      "material": "B12",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "ross_error": 1.7748573105376071e-7,
+      "reference_N_hi": 1,
+      "E_ref_over_E_ross": 0.4831091919760538,
+      "interpretation": "Reference N1 is already more accurate than RossFast N1; no coarser tested Reference comparator exists."
+    },
+    {
+      "case": 8,
+      "material": "B12",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "ross_error": 1.7748573105376071e-7,
+      "reference_N_hi": 1,
+      "E_ref_over_E_ross": 0.511832089728822,
+      "interpretation": "Reference N1 is already more accurate than RossFast N1; no coarser tested Reference comparator exists."
+    }
+  ],
+  "bracket_quality": {
+    "bracketed_cases": 34,
+    "N_hi_minus_N_lo": {
+      "min": 1,
+      "max": 2
+    },
+    "E_ref_N_hi_over_E_ross": {
+      "min": 0.4831091919760538,
+      "max": 0.9977799275433624
+    },
+    "E_ref_N_lo_over_E_ross": {
+      "min": 1.0007151565968007,
+      "max": 1.1482796376643525
+    },
+    "interpretation": "For 34 cases the dense frozen Reference control axis brackets RossFast realized error tightly without interpolation. The upper comparator is always equal-or-better error; the lower comparator is just worse."
+  },
+  "work_telemetry_untimed": {
+    "RossFast_N1": {
+      "outer_calls": 1,
+      "nonlinear_iterations": 0,
+      "jacobian_builds": 0,
+      "linear_solves": 24,
+      "backtracking": 0,
+      "internal_retries": 0
+    },
+    "Reference_N_hi_bracketed": {
+      "N_hi_range": [
+        7,
+        24
+      ],
+      "nonlinear_iterations_range": [
+        14,
+        96
+      ],
+      "linear_solves_range": [
+        14,
+        96
+      ],
+      "backtracking_range": [
+        14,
+        96
+      ]
+    },
+    "left_censored_Reference_N1": {
+      "nonlinear_iterations": 2,
+      "linear_solves": 2,
+      "backtracking": 2
+    },
+    "caution": "Algorithm-specific counters are not a common cost unit and are not speed evidence."
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "A deterministic equal-or-better realized-error Richards comparator exists for all 36 cases under the P2E21 representation-bounded research policy.",
+      "34 cases are genuinely bracketed on the frozen integer Reference control axis; two are left-censored at N=1 because Reference is already more accurate than RossFast.",
+      "No case requires extrapolation beyond N=32 and no case is unresolved.",
+      "The comparator selection does not use timing, work counters or closest-error optimization."
+    ],
+    "comparator_scope": "The matched Richards comparator uses the P2E21 representation-bounded research balance policy. It is not identical to the current production Reference tolerance policy and must be described as such in any later performance claim.",
+    "not_supported": [
+      "RossFast is faster.",
+      "Any speedup magnitude.",
+      "Strict interpolated equality of realized error.",
+      "Production-Reference versus RossFast timing equivalence.",
+      "Any timing conclusion before a separately frozen protocol."
+    ]
+  },
+  "firewalls": {
+    "timing_executed": false,
+    "control_axis_changed_after_execution": false,
+    "closest_error_ratio_used_for_selection": false,
+    "case_removed": false,
+    "tolerance_retuned": false,
+    "src_or_reference_mutated": false
+  },
+  "verdict": "REALIZED_ERROR_MATCHING_RESOLVED_36_OF_36_34_BRACKETED_2_LEFT_CENSORED_TIMING_CAN_BE_PREREGISTERED",
+  "next_permitted_action": "Preregister timing. Primary timing comparator is RossFast N1 versus casewise Reference N_hi. Keep the two left-censored N1/N1 cases in the population and label them as conservative Reference-more-accurate comparisons. Optionally time N_lo as a bracket sensitivity comparator, but do not interpolate runtime to fabricate strict equal error."
+}
