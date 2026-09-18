@@ -1,0 +1,75 @@
+{
+  "schema": "pub-gc-e7-current-canonical-preservation-v1",
+  "date": "2026-09-19",
+  "canonical_head_at_reconcile": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
+  "e7": {
+    "canonical_admission_pr": 330,
+    "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
+    "stale_cleanup_pr": 332,
+    "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
+    "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+    "result_blob": "12751b77cc2dc9fcccaac4926f15d48e7e849651",
+    "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT"
+  },
+  "current_production_boundary": {
+    "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "bootstrap_blob": "135803e056697a20aa3295721b02c77aba22367a",
+    "groundwater_profile": "homogeneous bottom_mode=5",
+    "prescribed_qbot_profile": "homogeneous bottom_mode=2",
+    "standalone_profile": "homogeneous bottom_mode=7",
+    "active_process_fail_closed": [
+      "drainage_response_active",
+      "root_extraction_active",
+      "macropore_active",
+      "snow_active",
+      "hysteresis_active",
+      "elasticity_active",
+      "frost_active",
+      "soil_temperature_active",
+      "tabulated_hydraulics_active"
+    ],
+    "e7_decisive_guard": "drainage_response_active and root_extraction_active remain rejected before owner-state allocation"
+  },
+  "later_canonical_workunits": {
+    "PPA_WU02": {
+      "status_path": "integration/audits/PPA_WU02_STATUS.json",
+      "status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "production_scope": "homogeneous typed bottom_mode=2 prescribed-qbot normal application only",
+      "e7_effect": "NONE"
+    },
+    "PPA_WU03": {
+      "status_path": "integration/audits/PPA_WU03_STATUS.json",
+      "status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "production_scope": "bounded stateless common-forcing adapter plus read-only owner seam",
+      "e7_effect": "NONE; does not broaden groundwater process profile"
+    },
+    "PPA_WU04": {
+      "status_path": "integration/audits/PPA_WU04_STATUS.json",
+      "status_blob": "e909f92398257389cdbaf095176568bb19202118",
+      "state": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_CLOSED",
+      "production_source_mutation": false,
+      "production_admission": "NONE_REVIEW_ONLY",
+      "e7_effect": "NONE"
+    },
+    "PPA_WU05": {
+      "status_path": "integration/audits/PPA_WU05_STATUS.json",
+      "status_blob": "7ca73ca444a2e080de099db42f74afbb0a6cabfa",
+      "state": "DEPENDENCY_GRAPH_AUTHORITY_FROZEN_CLOSED",
+      "production_source_mutation": false,
+      "e7_effect": "NONE"
+    },
+    "PPA_WU05A": {
+      "status_path": "integration/audits/PPA_WU05A_STATUS.json",
+      "status_blob": "21bfd3838867fc124aa774d902e9cded7bbc74c1",
+      "state": "CANONICAL_ADMITTED_PARTIAL_AUTHORITY_CLOSED_SOURCE_MATERIALIZATION_REQUIRED",
+      "production_source_mutation": false,
+      "production_admission": "NONE_REVIEW_ONLY",
+      "e7_effect": "NONE"
+    }
+  },
+  "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
+  "interpretation": "All canonical work admitted after the E7 closure either preserves the same production groundwater-owner guard or is review-only. No later workunit admits authentic Hupsel active drainage/root extraction under the prescribed-head bottom_mode=5 groundwater owner. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
+  "reopen_rule": "Reopen only as a new prospective experiment if a future canonically admitted production capability actually composes the required active Hupsel processes with prescribed-head groundwater ownership. Review-only authority or unrelated forcing/bottom-mode reachability does not reopen E7."
+}
