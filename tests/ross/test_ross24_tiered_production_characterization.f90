@@ -179,7 +179,7 @@ contains
     character(len=64) :: reference_reason, rossfast_reason
     integer :: provider_status,rep,tier_work
     character(len=2) :: tier_name
-    real(real64) :: t0,t1,case_solver_cpu,temporal_indicator
+    real(real64) :: t0,t1,case_solver_cpu,temporal_indicator,ross_mass_residual
 
     classification='UNCLASSIFIED'
     metrics_available=.false.
@@ -216,9 +216,11 @@ contains
     temporal_indicator=huge(0.0_real64)
     tier_work=-1
     tier_name='NA'
+    ross_mass_residual=huge(0.0_real64)
     if (initialized) then
       call alternative_solver%solve(request,alternative_workspace,alternative_result)
       call alternative_solver%temporal_certificate_snapshot(certificate_available,temporal_indicator)
+      ross_mass_residual=alternative_result%integrated_mass_balance_residual_cm
     end if
 
     reference_valid=reference_route_valid(reference_result,request,material)
@@ -253,7 +255,7 @@ contains
       call require(alternative_result%diagnostics%alternative_solver_calls==0,'zero alternative solver calls')
     end if
     write(*,'(*(g0))') 'F_ROSS24_TIER|ID=',case_id,'|LIN=',tier_work,'|TIER=',trim(tier_name), &
-         '|TEMP=',temporal_indicator,'|MASS=',merge(alternative_result%integrated_mass_balance_residual_cm,huge(0.0_real64),initialized)
+         '|TEMP=',temporal_indicator,'|MASS=',ross_mass_residual
 
     if (.not.reference_valid .and. .not.rossfast_valid) then
       classification='BOTH_ROUTES_INVALID'
