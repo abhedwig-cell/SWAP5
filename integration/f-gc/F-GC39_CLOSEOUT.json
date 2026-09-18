@@ -4,7 +4,7 @@
   "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
   "canonical_admission": {
     "contract_admission_head": "b6211effc4840aec48ff2fe39336bd997df490c3",
     "preimage": "15883938da5777f90f097c8f6938458840ccb75a",
@@ -48,5 +48,11 @@
     "no live real-SWAP plus MODFLOW end-to-end service materialization",
     "no Ribasim or irrigation"
   ],
-  "next_permitted_action": "After closeout qualification, open a separately bounded whole-window acceptance/retry workunit. It must define atomic publication of retained SWAP candidate, MODFLOW timestep state and exchange ledger plus reconstruction for smaller-window retry after an abandoned prepared solve. Predictor/corrector remains below iMOD Coupler."
+  "next_permitted_action": "Open a separately bounded whole-window acceptance/retry workunit. It must define atomic publication of the retained SWAP candidate, MODFLOW timestep state and exchange ledger, plus reconstruction for smaller-window retry after an abandoned prepared solve. Predictor/corrector ownership remains inside the internal SWAP5-MODFLOW coupling service below iMOD Coupler.",
+  "closeout_qualification": {
+    "metadata_head": "de254fb742dfd224a590898cbd43fcb4808ac8c7",
+    "workflow_run": 35316573593,
+    "conclusion": "success",
+    "production_delta": "NONE"
+  }
 }
