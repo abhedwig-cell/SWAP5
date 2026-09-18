@@ -6,7 +6,9 @@ on:
       - qualification/f-vq120-fapp07-hupsel-tcs1-dcs2-independent
     paths:
       - 'tests/fvq/test_fvq120_fapp07_tcs1_dcs2_independent.f90'
+      - 'tests/fvq/test_fvq120_fapp07_composition_independent.f90'
       - 'tests/fvq/run_fvq120_fapp07_tcs1_dcs2_independent.sh'
+      - 'tests/f-app07/fixtures/hupsel_irrigation_active_intervals_b111.csv.gz'
       - '.github/workflows/f-vq120-fapp07-independent.yml'
       - 'integration/f-vq/F-VQ120_*'
   workflow_dispatch:
@@ -17,7 +19,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
