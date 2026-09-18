@@ -22,6 +22,7 @@ This audit checks the consolidated manuscript against `PUB_GC_COUPLE_CLAIM_EVIDE
 | GC-C12 N:1 affine response reduction | 2.13, 3.8 | Kept as numerical composition rule; physical aggregation validity explicitly excluded | PASS_ARCHITECTURE_ONLY |
 | GC-C13 regional scaling | 3.8, 4.7, 5.8, 6 | Manuscript explicitly states quantitative scaling is not established | PASS_NOT_CLAIMED |
 | GC-C14 transferability beyond SWAP5 | 5.8 | Only principles are proposed; benefit in another model pair remains an empirical question | PASS_HYPOTHESIS_BOUNDED |
+| GC-C15 realistic component-domain limit | 3.7, 4.7, 5.7–5.8, 6 | E7 states that authentic selected Hupsel drainage cannot be represented by the current production prescribed-head participant; zero coupled windows are reported explicitly and not misclassified as divergence | PASS_RESTRICTED |
 
 ## Abstract audit
 
@@ -30,12 +31,12 @@ This audit checks the consolidated manuscript against `PUB_GC_COUPLE_CLAIM_EVIDE
 - Response identity and 8.1% separation are supported by E4.
 - `16 of 18` one-evaluation oracle advantage and no convergence-domain extension are supported by E5.
 - E6 is described only as two negative component-envelope stress routes.
-- Hupsel is explicitly future E7 evidence and does not broaden the abstract conclusions.
+- E7 is described as a preregistered realistic component-domain limit: both frozen Hupsel days require drainage, the production prescribed-head owner rejects active drainage before owner allocation, and no loose/strong Hupsel correction is claimed.
 
 ## Known submission caveats
 
-1. RQ5 remains unanswered until E7 executes.
-2. The manuscript must not change `realistic application` into `validation` if the fallback conceptual MODFLOW fixture is used.
+1. RQ5 is answered only in the bounded negative sense of a realistic component-domain limit; no realistic loose/strong correction magnitude is available.
+2. The manuscript must not change `realistic application` into `validation`; the fallback conceptual MODFLOW fixture was never exercised for E7 because SWAP participant admission failed first.
 3. Regional scalability remains outside the empirical result set unless E8 is separately executed.
 4. Post-publication crash durability/restart is not proven by E2 and must remain distinct from pre-publication rollback safety.
 5. The references section should be normalized to the selected journal style and externally rechecked before submission.
@@ -44,4 +45,4 @@ This audit checks the consolidated manuscript against `PUB_GC_COUPLE_CLAIM_EVIDE
 
 **NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED.**
 
-The manuscript is evidence-consistent through E6. The principal remaining scientific gap is E7 realistic transferability, not an unresolved E1–E6 claim.
+The manuscript is evidence-consistent through E7. No preregistered primary scientific gap remains for the current bounded coupling-contract framing; E7 closes negatively at the production component domain.
