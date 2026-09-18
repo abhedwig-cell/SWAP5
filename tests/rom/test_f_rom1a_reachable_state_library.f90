@@ -318,7 +318,7 @@ contains
          symbol==SYM_COMBINED_RISE_PLUS.or.symbol==SYM_COMBINED_FALL_MINUS
   end function is_head_symbol
 
-  pure function history_label(ih) result(label)
+  function history_label(ih) result(label)
     integer,intent(in) :: ih
     character(len=3) :: label
     write(label,'(A1,I2.2)') merge('D','H',ih<=8),merge(ih,ih-8,ih<=8)
