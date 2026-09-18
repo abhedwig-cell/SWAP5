@@ -4,7 +4,7 @@
   "title": "Oxygen-stress source/state/owner authority",
   "branch": "audit/ppa-wu05c-oxygen-stress-authority",
   "reconcile_base": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
-  "status": "REVIEW_QUALIFIED_CANONICAL_ADMISSION_READY",
+  "status": "CANONICAL_RECONCILED_REVIEW_ADMISSION_READY",
   "production_source_mutation": false,
   "reference_mutation": false,
   "authority": {
@@ -52,5 +52,14 @@
     ]
   },
   "verdict": "PARTIAL_AUTHORITY_FROZEN_REVIEW_QUALIFIED_IMPLEMENTATION_HELD",
-  "next_action": "Canonically admit PPA-WU05-C review authority only. Then continue with PPA-WU05-C1 byte-exact B1.11 oxygenstress/rootextraction source materialization; no production oxygen implementation before C1."
+  "next_action": "Require final dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI canonical qualification on the reconciled review head. If all pass and no overlapping canonical drift appears, canonically admit the review authority only; production remains held for C1.",
+  "pre_reconciliation_qualified_head": "e261a1e8fa63ee9ded0db52477017383330d2a34",
+  "canonical_reconciliation": {
+    "prior_base": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
+    "current_canonical": "ee166e8ad158e203c853be85825e438315b4821d",
+    "reconciliation_commit": "3237933a51399c1d2d9a95b44a31e5954e3ff589",
+    "overlap": "NONE",
+    "canonical_delta_scope": "PUB-GC E7 publication/current-canonical reconciliation only",
+    "review_blobs_changed_by_reconciliation": false
+  }
 }
