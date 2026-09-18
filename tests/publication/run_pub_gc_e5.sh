@@ -99,8 +99,7 @@ payload={
     "rows":rows,
     "comparisons":comparisons,
 }
-(out/"PUB_GC_E5_SUMMARY.json").write_text(json.dumps(payload,indent=2,sort_keys=True)+"
-")
+(out/"PUB_GC_E5_SUMMARY.json").write_text(json.dumps(payload,indent=2,sort_keys=True)+"\\n")
 
 fields=[
     "baseline_id","C",
