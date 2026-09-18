@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.f-rom0t1d1-status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1D1",
+  "phase": "CLOSED_NONUNIFORM_RETRY_DIAGNOSIS",
+  "decision": "T1_RETRY_CAUSE_NONUNIFORM",
+  "execution": {
+    "workflow_run": 35376511600,
+    "workflow_job": 105702326783,
+    "artifact_id": 10559864204,
+    "artifact_digest": "sha256:1879aca2ed5d76fb94b020cd4ce838d23ed6e93789ca65c04a79330f267c3ee9"
+  },
+  "B01_failures": "RETRY_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND",
+  "B14_E2_failure": "RETRY_LOCAL_BALANCE_SINGLE_NODE",
+  "R3D4_total_only_policy_sufficient_for_T1": false,
+  "next_permitted_action": "RECONCILE_PRE_EXISTING_LOCAL_BALANCE_REPRESENTATION_AUTHORITY_BEFORE_ANY_SUCCESSOR_POLICY",
+  "remedy_authorized": false,
+  "rom1a_authorized": false
+}
