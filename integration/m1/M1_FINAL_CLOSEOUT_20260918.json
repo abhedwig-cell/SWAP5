@@ -97,5 +97,24 @@
   ],
   "overall_verdict": "M1_CLOSE_CANDIDATE_ALL_FIVE_CRITERIA_PASS",
   "formal_exit": false,
-  "close_gate": "PENDING_DEDICATED_M1_FINAL_CLOSEOUT_GATE"
+  "close_gate": "PASS_CANDIDATE_READY_FOR_CANONICAL_CLOSE",
+  "close_gate_qualification": {
+    "workflow": "M1 final closeout",
+    "run_id": 35370892637,
+    "job_id": 105684323491,
+    "conclusion": "success",
+    "tested_head": "6ae04cc641d1ce33305f813d8da190699deb6139",
+    "markers": [
+      "M1_FINAL_EXACT_CANONICAL_BLOBS=PASS",
+      "M1_FINAL_CRITERIA_1_2_4_5_STATIC_AUTHORITY=PASS",
+      "M1_FINAL_CRITERION_3_EXACT_WHOLE_HUPSEL_AUTHORITY=PASS",
+      "M1_FINAL_CURRENT_SEMANTIC_PRESERVATION=PASS",
+      "M1_FINAL_FIVE_CRITERIA_MATRIX=PASS",
+      "M1_FINAL_CLOSEOUT_GATE=PASS"
+    ]
+  },
+  "incidental_workflow_repair": {
+    "finding": "The M1-C3 owner/independent workflows used tests/m1/** and therefore re-triggered on the unrelated final M1 closeout test.",
+    "disposition": "Narrow path filters to the three M1-C3-specific test surfaces. No qualification criterion or production source changed."
+  }
 }
