@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.rom1b1.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B1",
+  "phase": "CLOSED_COLLISION_CENSUS_COMPLETE",
+  "decision": "ROM1B1_COLLISION_CENSUS_COMPLETE",
+  "execution": {
+    "workflow_run": 35379652400,
+    "workflow_job": 105712536116,
+    "executed_head": "01312dd2e72ff61123c0dcdfe99e1fda91e80861",
+    "artifact_id": 10561507704,
+    "artifact_digest": "sha256:0c6b47ef1bcb5f38155da27427f11b316b6b2c316bec2984fc42b66b4ee2ed54",
+    "conclusion": "success"
+  },
+  "discovery_state_count": 512,
+  "eligible_cross_history_pair_count": 114688,
+  "theta_collision_floor": 0.0005420462931603476,
+  "collision_count_by_coordinate": {
+    "Z1": 61024,
+    "Z16": 0,
+    "Z2": 50626,
+    "Z4": 16799,
+    "Z8": 5617
+  },
+  "first_coordinate_with_zero_discovery_collisions": "Z16",
+  "heldout_used": false,
+  "B14_used": false,
+  "future_probe_outcomes_used": false,
+  "pair_manifests_frozen": true,
+  "next_permitted_action": "PREREGISTER_ROM1B2_FUTURE_PROBE_ADJUDICATION_ON_FROZEN_B1_PAIR_MANIFESTS",
+  "production_rom_authorized": false
+}
