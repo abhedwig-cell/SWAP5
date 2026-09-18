@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.f-ross21.tiered-certificate-result.v1",
+  "workunit": "F-ROSS21",
+  "phase": "QUALIFIED_RESEARCH_ONLY",
+  "branch": "work/f-ross21-tiered-k2-k4-k8-certificate",
+  "qualified_head": "c01dd2406983a4814551a3754e644003bbfcd5af",
+  "workflow_run": 35314401030,
+  "job": 105502866293,
+  "artifact": {
+    "id": 10533988580,
+    "digest": "sha256:ae9495c896dcfad2406ea544c711a1b879ec4c7061fb8aa765165e94749e50d8"
+  },
+  "production_or_reference_mutation": false,
+  "all_material": {
+    "case_count": 216,
+    "route_valid": 216,
+    "temporal_accepted": 216,
+    "K2_final": 212,
+    "K4_final": 2,
+    "K8_final": 2,
+    "mean_linear_solves": 6.444444444444445,
+    "expected_tier_distribution": true,
+    "science_gate": "PASS"
+  },
+  "anchor": {
+    "case_count": 36,
+    "identity_to_f_ross19_adaptive": "EXACT",
+    "implication": "36/36 paired science and temporal acceptance are unchanged from the qualified F-ROSS19 authority; no K8 tier is entered on the anchor domain."
+  },
+  "performance": {
+    "host_class": "GITHUB_HOSTED_SCREENING_ONLY",
+    "pair_count": 12,
+    "rossfast_over_reference_relative_delta_mean": -0.19038094455,
+    "rossfast_over_reference_cpu_ratio_mean": 0.80961905545,
+    "mean_reference_over_rossfast_speedup": 1.23519497713,
+    "mde": 0.00298264314356,
+    "outcome": "SCREENING_ROSSFAST_FASTER",
+    "formal_performance_claim": false
+  },
+  "adjudication": {
+    "research_promotion_candidate": true,
+    "production_admitted": false,
+    "interpretation": "The tiered K2->K4->K8 ladder resolves the two B05 temporal failures that blocked F-ROSS20 while preserving exact F-ROSS19 behavior on the paired anchor domain. It remains faster than Reference in hosted solver-only screening."
+  },
+  "next_permitted_action": "Open a separate production-candidate workunit promoting the exact frozen K2->K4->K8 ladder and requalify provider preservation, 216-case all-material science, research identity and hosted performance."
+}
