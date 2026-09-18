@@ -1,0 +1,33 @@
+name: F-CI105 F-GC39 coupling-service contract admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci105-fgc39-coupling-service-contract-admission
+    paths:
+      - 'tests/fgc/support/fgc39_prepared_solve_service_harness.py'
+      - 'tests/fgc/test_fgc39_prepared_solve_service_contract.py'
+      - 'tests/fgc/run_fgc39_prepared_solve_service_contract.sh'
+      - 'integration/f-gc/F-GC39_STATUS.json'
+      - 'qualification/F-VQ112_STATUS.json'
+      - 'tests/fvq/test_fvq112_fgc39_independent.py'
+      - 'tests/fvq/run_fvq112_fgc39_independent.sh'
+      - 'tests/fci/run_fci105_fgc39_coupling_service_contract_admission.sh'
+      - '.github/workflows/f-ci105-fgc39-coupling-service-contract-admission.yml'
+      - 'integration/f-ci/F-CI105_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: F-CI105 exact contract admission qualification
+        run: bash tests/fci/run_fci105_fgc39_coupling_service_contract_admission.sh

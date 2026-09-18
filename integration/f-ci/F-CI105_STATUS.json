@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI105",
+  "capability": "F-GC39",
+  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "PENDING_ADMISSION_GATE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "15883938da5777f90f097c8f6938458840ccb75a",
+    "dependency_stack": [
+      "F-GC40 closed canonical",
+      "F-GC33 closed canonical",
+      "F-GC34 closed canonical",
+      "F-GC35 closed canonical",
+      "F-GC36 closed canonical",
+      "F-GC38 closed canonical"
+    ]
+  },
+  "owner": {
+    "branch": "work/f-gc39-prepared-solve-coupling-service-reconciled",
+    "checkpoint_head": "d678b5953c64be3f3f2056c369fd8b8eb7deab82",
+    "exact_head_run": 35315802236,
+    "conclusion": "success",
+    "production_delta": "NONE",
+    "harness_blob": "0ab5cd1d5b701389972ddfcdf7f4ebc7dc198aec",
+    "status_blob": "9b335bf14909801c910556252c133c06a0bdedc9"
+  },
+  "independent": {
+    "work_unit": "F-VQ112",
+    "status_head": "087660e2ff9d890fb7c9bc860328f8e573f56bcc",
+    "exact_head_run": 35316040427,
+    "conclusion": "success",
+    "status_blob": "47a8ea46a56acd038903aeb4b832dca52c7e6eea",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_src_delta": "NONE",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "admitted_scope_candidate": [
+    "predictor/corrector ownership inside internal SWAP5-MODFLOW coupling service below iMOD Coupler",
+    "one immutable SWAP origin per coupling window",
+    "one prepared MODFLOW solve session with continuous X and fixed accepted XOLD",
+    "fixed tangent in first contract with H_ref/q_ref updates",
+    "coupled convergence requires both MODFLOW convergence and interface flux convergence",
+    "only rejected SWAP candidates are discarded between iterations",
+    "successful service finalizes solve once but does not finalize timestep",
+    "failure invalidates prepared solve and returns retry without publication"
+  ],
+  "exclusions": [
+    "whole-window MODFLOW reconstruction/retry implementation",
+    "final multi-participant timestep publication",
+    "real SWAP5 plus live MODFLOW end-to-end service implementation",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Run F-CI105 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify exact status head, reconcile live canonical and non-force fast-forward."
+}
