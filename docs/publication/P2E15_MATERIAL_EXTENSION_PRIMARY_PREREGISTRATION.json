@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.publication.p2e15-material-extension-primary.v1",
+  "workunit": "PUB-P2E15",
+  "phase": "PREREGISTERED_BEFORE_EXTENSION_ROSSFAST_DISCREPANCY_EXECUTION",
+  "parent_authority": {
+    "branch": "work/pub-p2e14-reference-common-material-threshold-freeze",
+    "head": "e680334ba1e8352db8d980fa8723ac31a279f636",
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "verdict": "QUALIFIED_REFERENCE_ONLY_36_MATERIAL_THRESHOLD_SURFACE"
+  },
+  "purpose": "Execute the first candidate-exposed material-axis confirmatory holdout after independent construction of the 36-material common state domain and Reference-only threshold surface.",
+  "primary_holdout": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "material_count": 30,
+    "prior_publication_RossFast_discrepancy_status": "UNOBSERVED_BEFORE_THIS_PREREGISTRATION",
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 180,
+    "case_order": "material major, then effective_saturation, then forcing"
+  },
+  "excluded_from_primary_holdout": {
+    "original_anchor_materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "reason": "Their Se=0.65/0.85 publication-oriented RossFast behavior was already observed in P2E10; they may support continuity but are not untouched holdout evidence.",
+    "wetting_reason": "WETTING remains outside the current RossFast production forcing envelope established prospectively in P2E10."
+  },
+  "common_request": {
+    "layer": "A_FIXED_INTERVAL_SOLVER_SEAM",
+    "step_duration_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "initial_ponding_cm": 0,
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "same_request_semantics": true,
+    "fallback_allowed": false
+  },
+  "frozen_thresholds": {
+    "source": "PUB-P2E14 Reference-only threshold freeze",
+    "Se_0.65": {
+      "D_h_inf_cm": 0.009310899886486368,
+      "D_h_rms_cm": 0.004264337561059986,
+      "D_theta_inf": 0.000017908123244203544,
+      "D_theta_rms": 0.000006578609068585418,
+      "D_storage_abs_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "D_h_inf_cm": 0.05684414280500505,
+      "D_h_rms_cm": 0.02309047189054667,
+      "D_theta_inf": 0.00024393588764148877,
+      "D_theta_rms": 0.00008095278187597767,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    },
+    "Se_0.96": {
+      "D_h_inf_cm": 0.7386357920248865,
+      "D_h_rms_cm": 0.19122530959872563,
+      "D_theta_inf": 0.0012274135237608785,
+      "D_theta_rms": 0.00035749599085978164,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    }
+  },
+  "hard_route_validity": {
+    "both_status_must_be_converged_for_pairwise_discrepancy": true,
+    "candidate_state_must_be_finite_and_inside_shared_E0_domain": true,
+    "typed_integrated_mass_abs_limit_cm_each_route": 1e-12,
+    "reference_native_rate_residual_required": true,
+    "rossfast_native_rate_residual_must_remain_unavailable": true,
+    "prescribed_flux_identity_must_match_request": true
+  },
+  "admissibility": {
+    "rule": "A route-valid paired case is admissible only if every one of the five discrepancy metrics is <= its frozen exact-Se threshold.",
+    "inclusive_boundary": true,
+    "weighted_compensation": false,
+    "mass_compensation": false,
+    "performance_compensation": false
+  },
+  "classification": [
+    "PAIRED_VALID_ADMISSIBLE",
+    "PAIRED_VALID_DISCREPANCY_FAIL",
+    "REFERENCE_ROUTE_INVALID",
+    "ROSSFAST_ROUTE_INVALID",
+    "BOTH_ROUTES_INVALID"
+  ],
+  "negative_result_policy": {
+    "execute_all_180_after_first_failure": true,
+    "route_invalidity_is_scientific_outcome_not_ci_failure": true,
+    "discrepancy_failure_is_scientific_outcome_not_ci_failure": true,
+    "case_removal_after_outcome": false
+  },
+  "firewall": {
+    "threshold_retuning_after_execution_allowed": false,
+    "threshold_stratification_change_allowed": false,
+    "case_replacement_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "solver_api_change_allowed": false,
+    "transaction_or_retry_policy_change_allowed": false,
+    "automatic_fallback_allowed": false,
+    "performance_optimization_allowed": false,
+    "new_physics_allowed": false
+  },
+  "primary_claim_if_supported": "Candidate-independent admission transfers from the original six-material study to previously unobserved materials within the separately constructed common state and forcing domain.",
+  "failure_interpretation": "Any structured failure narrows the admissible material/state/forcing domain. Unstructured failures weaken the general transfer claim and may redirect PUB-SQ toward a narrower SWAP-specific solver evaluation.",
+  "verdict": "PREREGISTERED_180_CASE_MATERIAL_EXTENSION_PRIMARY_READY_FOR_IMPLEMENTATION"
+}
