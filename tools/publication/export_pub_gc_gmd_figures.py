@@ -102,7 +102,15 @@ def main() -> int:
             raise SystemExit(f"Governed source is not SVG: {item['source']}")
 
         target = out_dir / expected_target
-        cairosvg.svg2pdf(bytestring=source.read_bytes(), write_to=str(target))
+        svg_text = source.read_text(encoding="utf-8")
+        # GMD production PDF must not depend on non-embedded base/fallback fonts.
+        # Normalize only the export rendering font; governed SVG content/geometry
+        # remains unchanged in the repository.
+        svg_text = svg_text.replace(
+            "font-family:Arial,Helvetica,sans-serif",
+            "font-family:DejaVu Sans,sans-serif",
+        )
+        cairosvg.svg2pdf(bytestring=svg_text.encode("utf-8"), write_to=str(target))
 
         size = target.stat().st_size
         if size <= 0:
@@ -163,6 +171,7 @@ def main() -> int:
         "source_plan": str(PLAN.relative_to(ROOT)),
         "source_rule": plan["source_rule"],
         "presentation_transform_only": True,
+        "export_font_normalization": "Arial/Helvetica/sans-serif -> DejaVu Sans/sans-serif for PDF embedding only",
         "figures": exported,
         "zip": {
             "file": zip_path.name,
