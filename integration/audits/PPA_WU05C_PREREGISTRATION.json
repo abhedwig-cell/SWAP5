@@ -13,10 +13,11 @@
     "production prerequisites for a later typed oxygen-stress slice"
   ],
   "authorities": [
+    "reference/swap-4.3.1/b0/file-manifest.sha256",
     "reference/swap-4.3.1/snapshots/B1.11.yml",
-    "reference/swap-4.3.1/patches/SWAP-007/README.md",
-    "reference/swap-4.3.1/patches/SWAP-007/qualification.md",
+    "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py",
     "reference/swap-4.3.1/patches/SWAP-007/fix.patch",
+    "reference/swap-4.3.1/patches/SWAP-007/README.md (historical metadata only; B0 hash superseded by canonical verifier)",
     "src/process/mod_root_water_uptake_process.f90",
     "integration/f-ci/F-CI31_STATUS.json",
     "integration/f-gc/F-GC30_CLOSEOUT.json",
@@ -44,5 +45,10 @@
     "full B1.11 callsite/integration ordering not present in current Git is explicitly held for source materialization before production",
     "coupling derivative coverage remains fail-closed until oxygen-aware root response sensitivity is qualified",
     "no src/ or reference/ mutation"
-  ]
+  ],
+  "authority_reconciliation": {
+    "canonical_b0_oxygenstress_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+    "b1_11_oxygenstress_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "provenance_rule": "Use canonical B0 manifest + apply_and_verify_canonical_b0.py for source identity. Historical README/qualification/apply_and_verify.py retain superseded pre-VQ-1c B0 metadata and are not current identity authority."
+  }
 }
