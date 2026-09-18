@@ -1,0 +1,26 @@
+name: F-VQ114 F-APP05 independent Rutter qualification
+on:
+  push:
+    branches: [qualification/f-vq114-fapp05-rutter-independent]
+  pull_request:
+    paths:
+      - 'tests/fvq/test_fvq114_fapp05_rutter_independent.f90'
+      - '.github/workflows/f-vq114-fapp05-rutter-independent.yml'
+      - 'src/process/mod_rutter_interception_process.f90'
+jobs:
+  independent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent strict qualification O0
+        run: |
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
+            src/process/mod_rutter_interception_process.f90 tests/fvq/test_fvq114_fapp05_rutter_independent.f90 -o fvq114_o0
+          ./fvq114_o0 | tee o0.txt
+      - name: Independent strict qualification O2
+        run: |
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
+            src/process/mod_rutter_interception_process.f90 tests/fvq/test_fvq114_fapp05_rutter_independent.f90 -o fvq114_o2
+          ./fvq114_o2 | tee o2.txt
+      - name: Require optimization identity
+        run: cmp o0.txt o2.txt
