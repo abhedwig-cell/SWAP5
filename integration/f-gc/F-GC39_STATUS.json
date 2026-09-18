@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC39",
+  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_PREPARED_SOLVE_SERVICE_CONTRACT_QUALIFICATION",
+  "source_branch": {
+    "branch": "work/f-gc38-modflow6-prepared-solve-session",
+    "head": "077876c30177d05096d30d8465155b4dd7e86480",
+    "f_gc38_verdict": "OWNER_QUALIFIED_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND",
+    "checkpoint_run": 35291491123,
+    "checkpoint_job": 105435091104,
+    "checkpoint_conclusion": "success"
+  },
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "relevant_change": "Current tangent adapter admits drainage coverage only when accepted trajectory source/sink directional coverage is complete.",
+    "decision": "F-GC39 consumes admitted authoritative response semantics and owns no derivative-coverage rules."
+  },
+  "supersession": {
+    "prior": "F-GC37 groundwater per-iteration rollback-able candidate abstraction",
+    "retained": [
+      "predictor/corrector ownership below iMOD Coupler",
+      "immutable accepted SWAP origin",
+      "fixed tangent for first contract",
+      "SWAP correctors from same origin",
+      "bounded fail-closed coupling iteration"
+    ],
+    "replaced": [
+      "groundwater trial_from_origin per outer iteration",
+      "groundwater candidate discard per non-converged iteration"
+    ],
+    "replacement": "one F-GC38 prepared-solve session with fixed XOLD and evolving X"
+  },
+  "convergence_contract": "abs(q_swap - q_gw) <= tolerance AND MODFLOW convergence flag",
+  "exclusions": [
+    "iMOD Coupler predictor/corrector ownership",
+    "whole-window MODFLOW reconstruction/retry",
+    "final timestep publication",
+    "real SWAP-MODFLOW end-to-end run",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement a test-only coupling-service harness and qualify same-SWAP-origin correctors against one continuous prepared groundwater solve session."
+}
