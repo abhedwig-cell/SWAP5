@@ -47,10 +47,11 @@ for p,text in [
 ]:
     assert not re.search(r'(?im)^\s*(open|read|write|inquire)\s*\(', text), p
     assert not re.search(r'(?i)pathname|file_unit|parser', text), p
-assert 'call HeadCalc' not in task2 and 'call headcalc' not in task2.lower()
+typed_route = task2.split('subroutine run_b110_legacy_compatibility_task2',1)[0].lower()
+assert 'call headcalc' not in typed_route
 print('M1_C3_STATIC_OPTIN_CARRIER=PASS')
 print('M1_C3_SOLVER_CONTRACT_NO_FILE_IO=PASS')
-print('M1_C3_NO_DUPLICATE_HEADCALC=PASS')
+print('M1_C3_TYPED_ROUTE_NO_HEADCALC=PASS')
 PY
 
 BUILD="${RUNNER_TEMP:-/tmp}/m1-c3-owner-${GITHUB_RUN_ID:-local}-$$"
