@@ -189,7 +189,8 @@ contains
     type(fmr_b110_physical_forcing_t), allocatable :: seed_forcing(:), macro_forcing(:)
     type(kernel_result_t) :: direct_result
     class(transaction_state_t), allocatable :: direct_endpoint, seeded_snapshot
-    real(real64) :: dt(2), derivative(:)
+    real(real64) :: dt(2)
+    real(real64), allocatable :: derivative(:)
     logical :: available
     integer :: status
 
