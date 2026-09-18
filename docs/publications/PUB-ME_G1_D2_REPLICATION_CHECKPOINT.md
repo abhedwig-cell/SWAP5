@@ -121,3 +121,30 @@ Freeze one replication regime and its exact acceptance/rejection criteria before
 Resume from this branch and checkpoint.
 
 Do not reconstruct D1, D3-D6, broad literature or P2 solver-admissibility work unless directly required to identify a pre-existing Reference fixture.
+
+
+## Implementation checkpoint before execution
+
+Current implementation head:
+
+`a2570c3a61b3cac81a7ea48a168882c8f28a4ad6`
+
+Persisted publication-only artifacts:
+
+- `tests/publication/test_pub_me_g1_d2_reverse_flow_replication.f90`
+- `tests/publication/pub_me_g1_d2_fortran_closure.py`
+- `tests/publication/run_pub_me_g1_d2_reverse_flow_replication.sh`
+
+Frozen implementation differences from admitted D2:
+
+- q changed from `+1e-6` to preregistered `-1e-6 cm/day`;
+- historical Binf values changed only to the pre-existing negative-q F-SI38 rows;
+- column id changed to an independent publication fixture id;
+- qualification-only rejected transfer uses `abs(q)*dt` so accepted accounting remains positive-magnitude inflow/outflow under reversed physical direction;
+- output markers identify G1 replication.
+
+No G1 scientific execution has been observed at this checkpoint.
+
+Next permitted action:
+
+add one dedicated workflow, open draft PR, and run the exact G1 gate before broad interpretation.
