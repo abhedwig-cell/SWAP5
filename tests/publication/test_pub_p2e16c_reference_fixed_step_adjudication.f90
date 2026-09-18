@@ -93,6 +93,7 @@ contains
     large_valid=.false.
     dt0016_valid=.false.
     do j=1,ndt
+      call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt_ladder(j))
       call initialize_request(request,parameters,constitutive,source_sink,top_boundary,theta0,h0,qtop,qbot,dt_ladder(j))
       call solver%solve(request,workspace,result)
       valid=reference_result_valid(result,request,material)
@@ -143,6 +144,7 @@ contains
     recovered=.false.
     do j=1,nseq
       subdt=0.0016_real64/real(nsub_values(j),real64)
+      call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,subdt)
       call initialize_request(request,parameters,constitutive,source_sink,top_boundary,theta0,h0,qtop,qbot,subdt)
       seq_valid=.true.
       first_fail=0
