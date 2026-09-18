@@ -29,7 +29,10 @@ class Binding:
 
 @dataclass(frozen=True)
 class Term:
-    label: int
+    groundwater_cell_id: int
+    hcof_m2_per_day: float
+    rhs_m3_per_day: float
+    valid: bool = True
 
 
 class FakeSession:
@@ -118,7 +121,10 @@ class FakeRuntime:
             Binding(101, 1, 2),
             Binding(202, 2, 3),
         )
-        self.terms = (Term(1), Term(2))
+        self.terms = (
+            Term(101, 2.0, 3.0),
+            Term(202, 4.0, 5.0),
+        )
 
     def materialize_plan(self):
         self.events.append("plan")
@@ -150,7 +156,10 @@ class FakeRuntime:
     def reanchor_terms(self, cell_heads_m, cell_q_swap_m_per_s):
         self.reanchor_calls += 1
         self.events.append("reanchor")
-        return (Term(10 + self.reanchor_calls), Term(20 + self.reanchor_calls))
+        return (
+            Term(101, 2.0, 3.0 + self.reanchor_calls),
+            Term(202, 4.0, 5.0 + self.reanchor_calls),
+        )
 
     def swap_preflight(self):
         self.events.append("swap_preflight")
