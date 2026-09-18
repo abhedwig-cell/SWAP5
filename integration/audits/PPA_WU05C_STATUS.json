@@ -4,7 +4,7 @@
   "title": "Oxygen-stress source/state/owner decomposition",
   "branch": "audit/ppa-wu05c-oxygen-authority",
   "reconcile_base": "781c829943c9e5880e5ab83281112e66f439ecf2",
-  "status": "REVIEW_AUTHORITY_CANDIDATE_QUALIFICATION_PENDING",
+  "status": "QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION",
   "scope": {
     "production_source_mutation": false,
     "reference_mutation": false,
@@ -35,9 +35,24 @@
     "micro_C4": "HELD_DEPENDENCY"
   },
   "qualification": {
-    "state": "PENDING"
+    "state": "PASS",
+    "workflow": "PPA-WU05-C oxygen authority",
+    "run_id": 35406174674,
+    "authority_job": 105796281149,
+    "authority_conclusion": "success",
+    "independent_job": 105796280957,
+    "independent_conclusion": "success",
+    "checks": [
+      "B1.11 corrected oxygenstress identity and unchanged member identities",
+      "SWAP-007 corrected-reference numerical guard",
+      "single accepted root-sink water-mass owner",
+      "reproduction-family no-persistent-state boundary",
+      "Feddes/Bartholomeus fail-closed source-materialization holds",
+      "migration slicing C1..C4",
+      "zero production/reference source delta"
+    ]
   },
   "production_admission": "NONE_REVIEW_ONLY",
-  "verdict": "PENDING_REPOSITORY_QUALIFICATION",
-  "next_action": "Run authority and independent contract validation. If green and live canonical drift is disjoint, admit this review-only authority. Production may begin only in a separately preregistered PPA-WU05-C1 slice."
+  "verdict": "OXYGEN_FAMILY_BOUNDARIES_QUALIFIED_C1_DEFINED_C2_C3_SOURCE_HELD",
+  "next_action": "Reconcile live canonical. If drift is disjoint and final authority/documentation/canonical checks remain green, admit this review-only authority. Production remains forbidden except through a separately preregistered PPA-WU05-C1 implementation slice."
 }
