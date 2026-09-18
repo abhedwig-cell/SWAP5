@@ -25,11 +25,11 @@ program test_f_rom0_accepted_reference_laboratory
   character(len=16) :: material_id, experiment_id
   character(len=32) :: arg
   integer :: n, base_intervals, intervals, i, j, bottom_mode, ios
-  real(real64) :: dz_cm, dt_day, t0, t1
+  real(real64) :: dz_cm, dt_day, t0, t1, committed_time
   real(real64) :: theta_r, theta_s, alpha_per_cm, vg_n, ksat, lambda_mvg
   real(real64) :: h0, k0, qtop, qbot, hbot
   real(real64) :: total_s, upper_s, lower_s
-  logical :: ok, did_commit, snapshot_ok
+  logical :: ok, did_commit, snapshot_ok, committed_time_available
   integer :: commit_status
 
   type(fmr_b110_physical_parameters_t) :: parameters
@@ -116,6 +116,8 @@ program test_f_rom0_accepted_reference_laboratory
     call backend%commit_trial_candidate(committed, candidate, diagnostic, did_commit, commit_status)
     call require(did_commit .and. commit_status == KERNEL_COMMIT_STATUS_COMMITTED, 'candidate committed exactly through kernel owner')
 
+    call committed%current_time(committed_time, committed_time_available)
+    call require(committed_time_available, 'committed time available after commit')
     call committed%snapshot(snapshot, snapshot_ok)
     call require(snapshot_ok, 'committed postimage snapshot available')
     select type (physical => snapshot)
@@ -127,7 +129,7 @@ program test_f_rom0_accepted_reference_laboratory
       observation = backend%observation()
 
       write(*,'(*(g0))') 'F_ROM0_ACCEPTED|MATERIAL=',trim(material_id),'|EXPERIMENT=',trim(experiment_id), &
-           '|STEP=',i,'|T=',committed%current_time(),'|REV=',committed%current_revision(), &
+           '|STEP=',i,'|T=',committed_time,'|REV=',committed%current_revision(), &
            '|BOTTOM_MODE=',bottom_mode,'|QTOP=',observation%top_flux,'|QBOT=',observation%bottom_flux, &
            '|TOP_EXCHANGE=',observation%top_flux*(t1-t0), &
            '|BOTTOM_EXCHANGE=',result%bottom_outward_exchange_native,'|BOTTOM_EXCHANGE_AVAILABLE=',result%bottom_interface_exchange_available, &
@@ -152,9 +154,11 @@ program test_f_rom0_accepted_reference_laboratory
   end do
 
   call require(committed%current_revision() == int(intervals,int64), 'one external commit per observation interval')
-  call require(abs(committed%current_time() - real(intervals,real64)*dt_day) <= 1.0e-12_real64, 'final committed time exact')
+  call committed%current_time(committed_time, committed_time_available)
+  call require(committed_time_available, 'final committed time available')
+  call require(abs(committed_time - real(intervals,real64)*dt_day) <= 1.0e-12_real64, 'final committed time exact')
   write(*,'(*(g0))') 'F_ROM0_CASE_PASS|MATERIAL=',trim(material_id),'|EXPERIMENT=',trim(experiment_id), &
-       '|FINAL_REV=',committed%current_revision(),'|FINAL_T=',committed%current_time()
+       '|FINAL_REV=',committed%current_revision(),'|FINAL_T=',committed_time
 
 contains
 
