@@ -4,6 +4,9 @@ Date: 2026-09-16
 
 This page is the current documentation entry point for the SWAP5 Status-A baseline. It summarizes the admitted capability boundary and points readers to the underlying acceptance and preservation authorities. It does not replace capability-specific scientific contracts, qualification records, or historical migration evidence.
 
+!!! info "Later canonical development"
+    This page remains the authority for the **frozen Status-A review denominator**. Later canonically admitted development, including the concrete SWAP5-MODFLOW6 production application chain through F-GC49D, is recorded separately in [Post-Status-A current canonical state](POST_STATUS_A_CURRENT_STATE.md). Those later capabilities do not retroactively change the frozen Status-A claim.
+
 ## Pinned current authority
 
 - canonical branch: `integration/f-ci-canonical`
@@ -67,7 +70,7 @@ The following statements are part of the current documentation contract:
 
 - restricted Snow admission does not imply subdaily, multi-day, arbitrary-duration or advanced Snow semantics;
 - serialized MultiSWAP v1 does not imply parallel or concurrent real-physics admission;
-- Groundwater Coupling v1 and the external gateway do not imply broad MODFLOW backend evolution;
+- inside the frozen Status-A denominator, Groundwater Coupling v1 and the external gateway do not imply broad MODFLOW backend evolution; later post-Status-A canonical work has separately admitted a concrete MODFLOW6 application chain through F-GC49D, as recorded in [Post-Status-A current canonical state](POST_STATUS_A_CURRENT_STATE.md);
 - F-PE11 does not establish a guaranteed whole-model speedup, a general MultiSWAP speedup, a portable speed guarantee, automatic rebatching, execution-class switching, GPU execution or a change in physics;
 - bounded WOFOST runtime admission does not create a broad stable public API;
 - capabilities outside the Status-A denominator are not automatically defects. They are blockers only when an applicable acceptance authority classifies them that way.

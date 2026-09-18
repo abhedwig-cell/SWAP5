@@ -14,11 +14,13 @@ Current authority is `992a5c657bfe10a10100f92e0cb77c4825ae65b6`; the pinned scie
 | ROSS / RossFast | Excluded from the current Status-A denominator. No ROSS/RossFast implementation or scientific admission claim is made here. |
 | Advanced Snow | Snow beyond the qualified restricted one-call-daily path, including arbitrary-duration, subdaily or broader multi-day semantics, requires separate future authority. |
 | Parallel/concurrent real-physics MultiSWAP | Status-A admits serialized MultiSWAP v1 only. Parallel/concurrent real-physics orchestration remains future scope. |
-| Broad MODFLOW/backend evolution | The current external groundwater gateway is a structural boundary, not admission of a broad concrete MODFLOW backend or arbitrary future backend semantics. |
+| Broad MODFLOW/backend evolution | In the frozen Status-A denominator the external groundwater gateway is only a structural boundary. Later post-Status-A canonical work separately admits a concrete MODFLOW6 production application chain through F-GC49D. Still future are integration into the actual iMOD Coupler product lifecycle, broader physics/numerical-envelope expansion and generic backend evolution beyond that admitted MODFLOW6 path. |
 | Wholesale legacy IO modernization | Existing IO needed by the admitted baseline remains usable, but a wholesale modernization/redesign is not part of current Status-A. |
 | Broad stable public API | Bounded runtime/adaptor surfaces do not constitute a general stable public SWAP5 API. Such an API requires its own contract and admission. |
 | Speculative performance optimization | Performance changes beyond separately qualified and admitted work such as the bounded F-PE11 closure remain future work. Status-A does not authorize optimization that changes science, transaction semantics or unqualified execution modes. |
 | Other capability extensions | Any extension not named by current Status-A acceptance remains outside the denominator until it receives an appropriate scientific/architectural contract, qualification and canonical admission. |
+
+Post-Status-A additions are recorded in [Post-Status-A current canonical state](POST_STATUS_A_CURRENT_STATE.md). They must not be used to retroactively widen the frozen Status-A review denominator.
 
 ## Interpretation rule
 

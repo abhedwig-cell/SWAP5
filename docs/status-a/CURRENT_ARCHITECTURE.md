@@ -4,7 +4,9 @@ Date: 2026-09-16
 
 This page describes the architecture that is current for the admitted Status-A baseline. It is deliberately narrower than older target-architecture documents. Target documents remain useful design history, but they do not establish that a future layer, API or execution mode is already admitted.
 
-Current authority is anchored to canonical commit `992a5c657bfe10a10100f92e0cb77c4825ae65b6` and scientific production baseline `50346642bd565f79134ea17d5462e544b354998c`.
+Current authority for the **frozen Status-A review denominator** is anchored to canonical commit `992a5c657bfe10a10100f92e0cb77c4825ae65b6` and scientific production baseline `50346642bd565f79134ea17d5462e544b354998c`.
+
+Later post-Status-A canonical development is not folded back into this frozen architecture description. The later concrete SWAP5-MODFLOW6 production application chain and its ownership boundary are recorded in [Post-Status-A current canonical state](POST_STATUS_A_CURRENT_STATE.md).
 
 ## Architectural principle
 
@@ -82,6 +84,10 @@ No current Status-A claim is made for parallel or concurrent real-physics MultiS
 Groundwater Coupling v1 is admitted as the bounded current groundwater capability chain, including the internal transient coupling contract and accepted-state publication/rollback semantics established by its canonical qualification and closure.
 
 The external groundwater gateway v1 is a structural adapter boundary. It is the place through which a concrete external groundwater implementation can conform to SWAP5 ownership and transaction semantics. Status-A does not turn that boundary into a claim that a broad MODFLOW backend, arbitrary coupling schedule or future backend evolution is already admitted.
+
+### Post-Status-A MODFLOW6 development
+
+After the frozen Status-A closure, later canonical F-GC work admitted a concrete MODFLOW6 production application chain through F-GC49D. That later chain preserves the same transaction/state ownership principles but is **not** part of the frozen Status-A denominator. In particular, SWAP/FMR keeps committed/candidate state and corrector ownership, `Modflow6PreparedSolveSession` keeps the live XMI solve lifecycle, and product-level predictor/corrector orchestration remains above SWAP5 in the iMOD Coupler layer. See [Post-Status-A current canonical state](POST_STATUS_A_CURRENT_STATE.md) for the exact current boundary and evidence.
 
 ## Performance semantics and F-PE11
 
