@@ -7,13 +7,16 @@ module mod_transaction_reference
   integer, parameter, public :: TX_STATUS_ACCEPTED = 0
   integer, parameter, public :: TX_STATUS_RETRY_EXHAUSTED = 1
   integer, parameter, public :: TX_STATUS_INVALID_INTERVAL = 2
+  integer, parameter, public :: TX_STATUS_FIXED_SAMPLE_REJECTED = 3
   integer, parameter, public :: TX_ROUTE_NONE = 0
   integer, parameter, public :: TX_ROUTE_MODEL_CERTIFIED = 1
   integer, parameter, public :: TX_ROUTE_TWO_HALF = 2
+  integer, parameter, public :: TX_ROUTE_REFERENCE_FLOOR_FIXED = 3
 
   integer, parameter, public :: TX_TEMPORAL_NONE = 0
   integer, parameter, public :: TX_TEMPORAL_EXTERNAL_FULL_HALF = 1
   integer, parameter, public :: TX_TEMPORAL_MODEL_CERTIFICATE = 2
+  integer, parameter, public :: TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION = 3
 
   integer, parameter, public :: TX_INTERFACE_SENSITIVITY_NONE = 0
   integer, parameter, public :: TX_INTERFACE_SENSITIVITY_LOCAL_TERMINAL = 1
@@ -237,6 +240,10 @@ contains
 
     if (policy%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE) then
       call execute_model_certificate_interval(model, committed, t0, t1, policy, result)
+      return
+    end if
+    if (policy%temporal_mode == TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION) then
+      call execute_reference_floor_fixed_interval(model, committed, t0, t1, policy, result)
       return
     end if
     result%temporal_acceptance_source = TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -580,6 +587,122 @@ contains
     call model%restore_attempt_context(checkpoint_context)
     result%status = TX_STATUS_RETRY_EXHAUSTED
   end subroutine execute_model_certificate_interval
+
+  subroutine execute_reference_floor_fixed_interval(model, committed, t0, t1, policy, result)
+    class(transaction_model_t), intent(inout) :: model
+    class(transaction_state_t), allocatable, intent(inout) :: committed
+    real(real64), intent(in) :: t0, t1
+    type(transaction_policy_t), intent(in) :: policy
+    type(transaction_result_t), intent(out) :: result
+
+    class(transaction_state_t), allocatable :: checkpoint
+    class(transaction_state_t), allocatable :: candidate_state
+    class(transaction_attempt_context_t), allocatable :: checkpoint_context
+    class(transaction_attempt_context_t), allocatable :: accepted_context
+    type(trial_outcome_t) :: outcome
+    real(real64) :: storage0, storage_candidate, mass_residual, requested_dt
+    logical :: mass_ok, storage_start_complete, storage_end_complete
+    integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
+
+    result = transaction_result_t()
+    result%requested_t0 = t0
+    result%requested_t1 = t1
+    result%accepted_t1 = t0
+    result%temporal_acceptance_source = TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION
+    requested_dt = t1-t0
+
+    call committed%clone(checkpoint)
+    call model%capture_attempt_context(checkpoint_context)
+    storage0 = model%storage(checkpoint)
+    call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+
+    result%attempts = 1
+    call model%restore_attempt_context(checkpoint_context)
+    call checkpoint%clone(candidate_state)
+    call model%advance(candidate_state, t0, t1, outcome)
+    result%full_trials = 1
+    result%nonlinear_iterations = outcome%nonlinear_iterations
+    result%internal_retries = outcome%internal_retries
+    result%headcalc_calls = outcome%headcalc_calls
+    result%jacobian_builds = outcome%jacobian_builds
+    result%linear_solves = outcome%linear_solves
+    result%backtracking_attempts = outcome%backtracking_attempts
+    result%alternative_solver_calls = outcome%alternative_solver_calls
+
+    if (.not. outcome%solver_ok) then
+      result%solver_rejections = 1
+      result%rollbacks = 1
+      call model%restore_attempt_context(checkpoint_context)
+      result%status = TX_STATUS_FIXED_SAMPLE_REJECTED
+      return
+    end if
+
+    call model%capture_attempt_context(accepted_context)
+    storage_candidate = model%storage(candidate_state)
+    call model%storage_accounting_status(candidate_state, storage_end_complete, end_missing_mask)
+    mass_residual = storage_candidate-storage0-(outcome%mass_in-outcome%mass_out)
+    result%full_mass_residual = mass_residual
+    result%accepted_mass_residual = mass_residual
+
+    accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
+    accepted_missing_mask = ior(accepted_missing_mask, outcome%missing_mass_contribution_mask)
+    if (.not. storage_start_complete) accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
+    if (.not. storage_end_complete) accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
+    if (.not. outcome%mass_accounting_complete) accepted_missing_mask = &
+         ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+    if (.not. ieee_is_finite(storage0) .or. .not. ieee_is_finite(storage_candidate) .or. &
+        .not. ieee_is_finite(storage_candidate-storage0) .or. &
+        .not. ieee_is_finite(outcome%mass_in) .or. .not. ieee_is_finite(outcome%mass_out) .or. &
+        .not. ieee_is_finite(mass_residual)) then
+      accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_NONFINITE)
+    end if
+
+    mass_ok = storage_start_complete .and. storage_end_complete .and. outcome%mass_accounting_complete .and. &
+         accepted_missing_mask == TX_MASS_MISSING_NONE
+    if (mass_ok) mass_ok = abs(mass_residual) <= policy%mass_tolerance
+    if (.not. mass_ok) then
+      result%mass_rejections = 1
+      result%rollbacks = 1
+      call model%restore_attempt_context(checkpoint_context)
+      result%status = TX_STATUS_FIXED_SAMPLE_REJECTED
+      return
+    end if
+
+    result%accepted_storage_start = storage0
+    result%accepted_storage_end = storage_candidate
+    result%accepted_storage_change = storage_candidate-storage0
+    result%accepted_total_in = outcome%mass_in
+    result%accepted_total_out = outcome%mass_out
+    result%accepted_missing_contribution_mask = accepted_missing_mask
+    result%accepted_mass_complete = .true.
+    result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
+    if (result%bottom_interface_exchange_available) then
+      result%accepted_bottom_outward_exchange_native = outcome%bottom_outward_exchange_native
+      result%terminal_bottom_outward_flux_native = outcome%terminal_bottom_outward_flux_native
+      if (.not. ieee_is_finite(result%accepted_bottom_outward_exchange_native) .or. &
+          .not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) then
+        result%bottom_interface_exchange_available = .false.
+        result%accepted_bottom_outward_exchange_native = 0.0_real64
+        result%terminal_bottom_outward_flux_native = 0.0_real64
+      end if
+    end if
+
+    call model%restore_attempt_context(accepted_context)
+    call move_alloc(candidate_state, committed)
+    result%status = TX_STATUS_ACCEPTED
+    result%accepted_route = TX_ROUTE_REFERENCE_FLOOR_FIXED
+    result%accepted_t1 = t1
+    result%accepted_dt = requested_dt
+    result%accepted_nonlinear_iterations = outcome%nonlinear_iterations
+    result%accepted_internal_retries = outcome%internal_retries
+    result%accepted_headcalc_calls = outcome%headcalc_calls
+    result%accepted_jacobian_builds = outcome%jacobian_builds
+    result%accepted_linear_solves = outcome%linear_solves
+    result%accepted_backtracking_attempts = outcome%backtracking_attempts
+    result%accepted_alternative_solver_calls = outcome%alternative_solver_calls
+    call publish_local_terminal_sensitivity(outcome%interface_sensitivity, t0, t1, t0, t1, result%interface_sensitivity)
+    result%commits = 1
+  end subroutine execute_reference_floor_fixed_interval
 
   subroutine publish_local_terminal_sensitivity(source, origin_t0, origin_t1, requested_t0, requested_t1, published)
     type(transaction_interface_sensitivity_t), intent(in) :: source
