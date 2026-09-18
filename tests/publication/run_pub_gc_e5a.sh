@@ -115,7 +115,7 @@ mkdir -p "$OUT"
 : > "$OUT/output.txt"
 
 BASELINES=(B1 B3 B4)
-SYS=(0.02 0.15 0.30)
+SYS=(0.001 0.002 0.005 0.02 0.15)
 METHODS=(FP AITKEN IQN_COLD UA_FROZEN JR_ORACLE)
 
 for baseline in "${BASELINES[@]}"; do
@@ -149,12 +149,12 @@ from pathlib import Path
 
 out=Path(sys.argv[1])
 records=[json.loads(x) for x in (out/"cases.jsonl").read_text().splitlines() if x.strip()]
-if len(records)!=45:
-    raise SystemExit(f"expected 45 E5a cases, got {len(records)}")
+if len(records)!=75:
+    raise SystemExit(f"expected 75 E5a cases, got {len(records)}")
 
 methods=("FP","AITKEN","IQN_COLD","UA_FROZEN","JR_ORACLE")
 baselines=("B1","B3","B4")
-sys=(0.02,0.15,0.30)
+sys=(0.001,0.002,0.005,0.02,0.15)
 keys={(r["baseline_id"],float(r["specific_yield"]),r["method"]) for r in records}
 expected={(b,s,m) for b in baselines for s in sys for m in methods}
 if keys!=expected:
@@ -239,9 +239,11 @@ for row in case_summaries:
         wi=int(row["iqn_cold_W_SWAP_upper"])
         absolute=wi-wo
         relative=(wi-wo)/wi if wi>0 else 0.0
-        qualifies=absolute>=2 and relative>=0.25
+        strong_feedback=float(row["specific_yield"]) in (0.001,0.002,0.005)
+        qualifies=strong_feedback and absolute>=2 and relative>=0.25
         work_signals[row["baseline_id"]].append({
             "specific_yield":row["specific_yield"],
+            "strong_feedback_subset":strong_feedback,
             "oracle_work":wo,
             "iqn_work":wi,
             "absolute_reduction":absolute,
@@ -272,7 +274,7 @@ payload={
     "screening_status":screening_status,
     "screening_rule":{
         "domain_expansion":"oracle converges where IQN_COLD does not in B3/B4",
-        "work_signal":"at least 2 fewer full-window SWAP evaluations and >=25% reduction in at least 2 of 3 Sy cases for B3 or B4",
+        "work_signal":"at least 2 fewer full-window SWAP evaluations and >=25% reduction in at least 2 of the 3 strong-feedback Sy cases (0.001, 0.002, 0.005) for B3 or B4",
     },
 }
 (out/"PUB_GC_E5A_RESULT.json").write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n")
