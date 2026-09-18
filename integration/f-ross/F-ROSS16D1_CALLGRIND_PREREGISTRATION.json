@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.f-ross16d1.callgrind-candidate-step-attribution.v1",
+  "workunit": "F-ROSS16D1",
+  "phase": "PREREGISTERED_AFTER_GPROF_REJECTION_BEFORE_CALLGRIND_EXECUTION",
+  "branch": "work/f-ross16-rossfast-cost-attribution",
+  "parent_result_blob": "97293cb50821330f889abe67eb1452f0a2b33f46",
+  "purpose": "Resolve the arithmetic cost composition inside the unchanged RossFast candidate-step path using deterministic instruction counts after gprof function attribution was rejected.",
+  "reason_new_diagnostic": "F-ROSS16 exact work counts are valid, but gprof labels conflict with known semantic call counts and cannot support helper-level cost shares.",
+  "domain": {
+    "cases": 36,
+    "same_as": "F-ROSS15/F-ROSS16 paired-valid E0 domain",
+    "selected_route": "ROSSFAST",
+    "profile_repetitions_per_case": 20,
+    "selected_route_profile_calls": 720,
+    "plus_preflight_rossfast_calls": 36,
+    "expected_total_rossfast_kernel_solves": 756,
+    "expected_total_candidate_steps": 18144
+  },
+  "profile": {
+    "tool": "Valgrind Callgrind",
+    "event": "Ir",
+    "compiler": "GNU Fortran",
+    "production_like_flags": ["-O2","-g"],
+    "production_like_interpretation": "Primary deterministic instruction attribution for the optimized code shape; debug info is metadata only.",
+    "structural_crosscheck_flags": ["-O2","-g","-fno-inline","-fno-inline-functions","-fno-inline-small-functions"],
+    "structural_crosscheck_interpretation": "Secondary only. Helper-level conclusions require call counts consistent with exact production topology."
+  },
+  "primary_questions": [
+    "What fraction of optimized RossFast instruction cost is associated with the 24-step kernel path versus wrapper/contract work?",
+    "Within the candidate-step source lines, how much work is associated with inverse_capacity, table-face interpolation, factor_and_solve and water-content-to-head inversion?",
+    "Does the 16x16 tridiagonal solve itself dominate, or are constitutive/log-exp-power transformations larger?"
+  ],
+  "admission_rules": {
+    "exact_call_count_consistency_required_for_function_level_claims": true,
+    "line_level_instruction_counts_may_be_used_when mapped_to_unchanged_source": true,
+    "wall_time_under_valgrind_is_not_a_performance_metric": true,
+    "instruction_counts_are_diagnostic_cost_evidence_not_production_cpu_time": true,
+    "no_post_hoc_workload_change": true
+  },
+  "firewall": {
+    "src_mutation_allowed": false,
+    "reference_mutation_allowed": false,
+    "algorithm_change_allowed": false,
+    "optimization_change_allowed": false,
+    "formal_speedup_claim_allowed": false
+  },
+  "next_permitted_action": "Implement only the 20-repetition Callgrind harness and deterministic annotation workflow, then execute once on the frozen branch."
+}
