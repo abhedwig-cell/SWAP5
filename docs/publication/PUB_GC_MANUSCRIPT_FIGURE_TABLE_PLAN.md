@@ -48,11 +48,11 @@ Panel A: active-drainage predictor succeeds but prescribed-head profile is `NOT_
 
 | ID | Table | Status |
 | --- | --- | --- |
-| T1 | Coupling quantities, units, sign, temporal support and authority | READY |
-| T2 | E1–E7 experiment design and preregistered decision rules | READY except E7 outcome |
-| T3 | E4 response identity values B1–B5 | READY |
-| T4 | E5 oracle/secant information-value summary | READY |
-| T5 | E6 negative stress-extension summary | READY |
+| T1 | Coupling quantities, units, sign, temporal support and authority | BUILT_AND_LINKED |
+| T2 | E1–E7 experiment design and preregistered decision rules | BUILT_AND_LINKED; E7 outcome intentionally open |
+| T3 | E4 response identity values B1–B5 | BUILT_AND_LINKED |
+| T4 | E5 oracle/secant information-value summary | BUILT_AND_LINKED |
+| T5 | E6 negative stress-extension summary | BUILT_AND_LINKED |
 | T6 | E7 realistic-day metrics and loose/strong results | BLOCKED_M1_C3 |
 
 ## Evidence files
@@ -79,3 +79,10 @@ Numerical regeneration command from the repository root:
 ```text
 python docs/publication/figures/generate_pub_gc_numeric_figures.py
 ```
+
+
+## Built table evidence package
+
+Tables T1–T5 are now linked into `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`. Their journal-neutral evidence map is retained in `PUB_GC_MANUSCRIPT_TABLES.md`.
+
+T6 remains reserved for E7 and must stay absent until the M1-C3 prerequisite closes and the prospectively selected Hupsel experiment executes.
