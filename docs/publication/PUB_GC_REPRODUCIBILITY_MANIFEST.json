@@ -1,0 +1,123 @@
+{
+  "schema": "pub-gc-reproducibility-manifest-v1",
+  "date": "2026-09-18",
+  "canonical_basis": "80e8f757568ca38b40e76566f3d4039b2cd4be57",
+  "scientific_scope": "E1-E6 closed/bounded; E7 preregistered and blocked on M1-C3",
+  "publication_assets": {
+    "manuscript": {
+      "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
+      "blob": "ffb63e6503f673281cf06d66d83071159d73d5dc"
+    },
+    "claim_ledger": {
+      "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
+      "blob": "f8f8092f370594fed14a863fd8989817d61b89e1"
+    },
+    "tables": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
+      "blob": "1aa40d72f925617f263569461bba29ea7386dbfb"
+    },
+    "figure_manifest": {
+      "path": "docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json",
+      "blob": "7a062218977dc4a39a5028f287daf610f6156b8a"
+    },
+    "figure_generator": {
+      "path": "docs/publication/figures/generate_pub_gc_numeric_figures.py",
+      "blob": "e3843f9a5fb96c6f49899b2788539b7941c86119"
+    },
+    "reference_audit": {
+      "path": "docs/publication/PUB_GC_REFERENCE_AUDIT.md",
+      "blob": "5b03ccdd7a876ba45058013c517243d5e5182675"
+    },
+    "submission_readiness": {
+      "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
+      "blob": "62f5d802a30175c8f7dd1521be5a76514c2e2e97"
+    }
+  },
+  "evidence": {
+    "E1_E2": {
+      "status": "PASS_RESTRICTED",
+      "result": {
+        "path": "docs/publication/PUB_GC_E1_E2_RESULT.json",
+        "blob": "1c573c7287323b986ff44173748e6cf90480caf3"
+      },
+      "source_head": "0022e854000afe5a050303d9a0709f72b7dae518",
+      "workflow_run": 35342313248,
+      "first_failed_sign_hypothesis_run": 35342179045
+    },
+    "E3": {
+      "status": "SUPPORTED_RESTRICTED",
+      "result": {
+        "path": "docs/publication/PUB_GC_E3_RESULT.json",
+        "blob": "48b3196dc0c8a67d52c5d3c2c4282c8da4a78787"
+      },
+      "workflow_runs": {
+        "main": 35343426404,
+        "predictor_envelope": 35343968268,
+        "failure_mechanism": 35344946609,
+        "stronger_flux_refinement": 35344946652
+      }
+    },
+    "E4": {
+      "status": "SUPPORTED_RESTRICTED",
+      "result": {
+        "path": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json",
+        "blob": "70e757c70bac9e3d4fe013899c5ba2e95b370486"
+      },
+      "source_head": "c85b1f1ad2a35ad12d917c54e682e8705c508c7e",
+      "workflow_run": 35349233134,
+      "workflow_job": 105613077818
+    },
+    "E5": {
+      "status": "SUPPORTED_RESTRICTED_STOP_INDEPENDENT_ACCELERATE",
+      "result": {
+        "path": "docs/publication/PUB_GC_E5_INFORMATION_VALUE_RESULT.json",
+        "blob": "78a8bce35f370d6c894e8d5e4a26d0b4b1627e38"
+      },
+      "source_head": "41e68a89a52f1f0fac00c8cfe920152ffd4e3fda",
+      "workflow_run": 35351467531,
+      "workflow_job": 105620375280,
+      "artifact_id": 10550095859,
+      "artifact_sha256": "7d19287d89a74848928a566855205ffebd43081ddbb5d19846684f32b265fac4",
+      "workflow_note": "scientific matrix completed; workflow postprocessing summary writer failed afterward"
+    },
+    "E6_active_drainage": {
+      "status": "SUPPORTED_NEGATIVE_COMPONENT_ENVELOPE",
+      "result": {
+        "path": "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json",
+        "blob": "8f420fab688f19b80332850198b4c1ddb1903e4c"
+      },
+      "source_head": "191f1d8ac0ab0b84eff438023f1d32e00c09b925",
+      "workflow_run": 35360873209,
+      "workflow_job": 105651690323,
+      "artifact_id": 10554144629,
+      "artifact_sha256": "00685e242f3dfc85b819900853f5af5bf814291fead48d1e968d3ca74b2cb768"
+    },
+    "E6_state_flux": {
+      "status": "PREDICTOR_ONLY_OR_NO_USEFUL_EXPANSION",
+      "result": {
+        "path": "docs/publication/PUB_GC_E6A_STATE_SCREEN_RESULT.json",
+        "blob": "9c793a785a726da4fc6217e8d3598bb6ed61231b"
+      },
+      "source_head": "97dba8764ca85c7499cbb2402cf5309447621a66",
+      "workflow_run": 35360999577,
+      "workflow_job": 105651945363,
+      "artifact_id": 10554314676,
+      "artifact_sha256": "79dba0e28c8966ae1b0611d0a94d3bc955eb32f61e5961643c6511e073e76ead"
+    }
+  },
+  "E7": {
+    "status": "PREREGISTERED_BLOCKED_EXTERNAL_PREREQUISITE",
+    "preregistration": {
+      "path": "docs/publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md",
+      "blob": "27b73be6988d3308ddafc58a44fb628863d6bd77"
+    },
+    "blocker": {
+      "path": "integration/m1/M1_C3_CURRENT_CANONICAL_EXTERNAL_ASSET_BLOCKER_20260918.json",
+      "blob": "974ff9609d2858ff4a1be575944e8cfb7737b724"
+    },
+    "required_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "required_distribution_size_bytes": 8959314,
+    "remaining_gate": "ONE_FINAL_WHOLE_HUPSEL_FILE_DRIVEN_ADAPTER_EXECUTION",
+    "workaround_policy": "fail closed; no synthetic adapter/parser/physics/tolerance workaround"
+  }
+}
