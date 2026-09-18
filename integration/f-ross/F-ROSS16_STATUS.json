@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS16",
+  "title": "RossFast cost attribution",
+  "phase": "RECONCILE",
+  "status": "PREREGISTERED_PENDING_IMPLEMENTATION",
+  "branch": "work/f-ross16-rossfast-cost-attribution",
+  "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
+  "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
+  "canonical_at_start": "0372b44157747dc90fa690810f57e373e670373b",
+  "dependency_note": "F-ROSS16 is diagnostic successor evidence to F-ROSS15; it does not assume canonical performance admission.",
+  "production_or_reference_mutation": false,
+  "verdict": "READY_TO_IMPLEMENT_DIAGNOSTICS",
+  "next_permitted_action": "Implement work-count audit plus gprof diagnostic workflow only."
+}
