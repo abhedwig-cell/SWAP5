@@ -43,7 +43,7 @@ drainage_response_active = true
 
 or when any other process outside the restricted WU01 groundwater profile is active, including root extraction.
 
-The later PPA-WU03 admission adds a bounded stateless atmospheric/common-forcing layer. It does **not** widen this groundwater-process profile.
+PPA-WU02-A subsequently admits a homogeneous `bottom_mode=2` prescribed-`q_bot` normal application route, but explicitly does not add groundwater semantics or widen the groundwater process profile. The later PPA-WU03 admission adds a bounded stateless atmospheric/common-forcing layer and likewise does **not** widen this groundwater-process profile.
 
 Because authentic Hupsel drainage is active on both frozen dates, disabling the drainage process to make a mode-5 participant would change the application physics. The E7 preregistration expressly forbids that.
 
@@ -64,8 +64,8 @@ E7 now shows that this is not only a synthetic stress-case limitation. It is enc
 Publication qualification:
 
 ```text
-workflow run: 35375181814
-job:          105698080443
+workflow run: 35376148612
+job:          105701181336
 conclusion:   success
 ```
 
@@ -79,6 +79,7 @@ PUB_GC_E7_HUPSEL_DRAINAGE_REQUIRED_ON_HIGH_DAY=PASS
 PUB_GC_E7_PRESCRIBED_HEAD_OWNER_BOTTOM_MODE5=PASS
 PUB_GC_E7_ACTIVE_DRAINAGE_PROFILE_FAILS_BEFORE_OWNER_ALLOCATION=PASS
 PUB_GC_E7_E6_PRECEDENT_PRETRANSACTION_NOT_ADMITTED=PASS
+PUB_GC_E7_NO_WU02_GW_PROCESS_WIDENING=PASS
 PUB_GC_E7_NO_WU03_PROFILE_WIDENING=PASS
 PUB_GC_E7_OUTCOME=REALISTIC_COMPONENT_DOMAIN_LIMIT
 ```
