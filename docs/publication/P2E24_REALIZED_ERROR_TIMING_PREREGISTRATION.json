@@ -559,7 +559,7 @@
     "partial_failure": "If a scientific preflight fails, stop before measured timing in the primary run. If infrastructure fails after timing has begun, persist/identify the exposure and do not relabel a rerun as first exposure.",
     "interpretation": "A timing result may support, refute, or leave unresolved a computational advantage. Scientific admission results remain valid regardless."
   },
-  "verdict": "PREREGISTERED_REALIZED_ERROR_TIMING_PROTOCOL_FROZEN_EXECUTION_BLOCKED_ON_MP8_MP7_PERFORMANCE_INFRASTRUCTURE",
+  "verdict": "PREREGISTERED_REALIZED_ERROR_TIMING_PROTOCOL_AND_BENCHMARK_FROZEN_EXECUTION_BLOCKED_ON_MP8_MP7_PERFORMANCE_INFRASTRUCTURE",
   "performance_governance": {
     "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
     "isolated_runner_readiness": {
@@ -583,9 +583,22 @@
     "rule": "P2E24 may not reach measured timing until the same runner satisfies the MP-8 isolated-runner contract and the full MP-7 host-admission protocol, including the 1% child-CPU resolution gate and zero full-window throttling."
   },
   "infrastructure_status": {
-    "current": "BLOCKED_INFRASTRUCTURE_PENDING",
+    "current": "BLOCKED_INFRASTRUCTURE_PENDING_BENCHMARK_WORKLOAD_QUALIFIED",
     "evidence": "benchmarks/performance/isolated-runner-readiness.json currently records INFRASTRUCTURE_PENDING and cpu_baseline_established=false.",
-    "consequence": "P2E24 protocol may be implemented and benchmark fingerprints may be qualified untimed, but measured timing must not be launched."
+    "consequence": "The exact 106-configuration benchmark workload is qualified and fingerprinted. Measured timing remains forbidden until MP-8 readiness and MP-7 host admission pass on the executing runner."
   },
-  "next_permitted_action": "Materialize and qualify the P2E24 benchmark executable and variant-specific scientific fingerprints without timing. In parallel, provision/identify an isolated swap5-performance runner, pass MP-8 readiness, then repeat the full MP-7 host-admission protocol. Only then execute P2E24 measured timing unchanged."
+  "next_permitted_action": "Provision or identify an isolated swap5-performance runner, reproduce the P2E24A aggregate scientific fingerprint untimed, pass MP-8 readiness and full MP-7 host admission on that same runner configuration, then execute the frozen P2E24 timing protocol exactly once as the primary exposure.",
+  "benchmark_preflight_authority": {
+    "branch": "work/pub-p2e24a-benchmark-fingerprint",
+    "head": "d6dd6594af4f682672a4021985ff80e531bb14c0",
+    "result_path": "docs/publication/P2E24A_BENCHMARK_FINGERPRINT_RESULT.json",
+    "result_blob": "033fa6c0fce0a74ba0c60822aaa52d8b74104333",
+    "benchmark_source_blob": "14979af1e2d9b4f716b66cf660bacbae5d6a82aa",
+    "matched_controls_blob": "9f173b0431c775a8459930ab34f4989b8e098491",
+    "configuration_count": 106,
+    "fingerprint_set_sha256": "1e86b6da40eb61d17fa59bdc995b553bd3d0d447d6d13c2c46f2c715a95d95d3",
+    "O0_O2_identical": true,
+    "timing_executed": false,
+    "rule": "The admitted performance runner must reproduce this complete 106-configuration fingerprint set untimed before any repetition calibration or measured timing."
+  }
 }
