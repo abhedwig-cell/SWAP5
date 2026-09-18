@@ -8,6 +8,13 @@ on:
       - 'tests/ross/diagnose_ross14_piecewise_routes.py'
       - 'tests/ross/aggregate_ross14_piecewise_diagnostics.py'
       - '.github/workflows/ross14-piecewise-failure-diagnostics.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/ross/diagnose_ross14_piecewise_routes.py'
+      - 'tests/ross/aggregate_ross14_piecewise_diagnostics.py'
+      - '.github/workflows/ross14-piecewise-failure-diagnostics.yml'
   workflow_dispatch:
 
 permissions:
