@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC34",
+  "title": "MODFLOW6 Typed API Binding",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "authority_reconciliation": {
+    "canonical_f_gc40": "MultiSWAP MODFLOW6 Cell Response — closed canonical",
+    "canonical_f_gc33": "MODFLOW6 Linear Response Backend — closed canonical",
+    "historical_provisional_multiswap_identity": "F-GC31 — superseded for this dependency",
+    "production_formula_change": "NONE"
+  },
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "0372b44157747dc90fa690810f57e373e670373b",
+    "historical_owner_head": "0840229ab58fbc3525de56797c87f43f22f35891"
+  },
+  "production": {
+    "path": "src/runtime/mod_modflow6_api_binding.f90",
+    "donor_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "rematerialized_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "byte_identical": true
+  },
+  "qualified_contract_candidate": [
+    "groundwater_cell_id, package_slot and modflow_node_id are independent explicit identities",
+    "package_slot is 1-based and active slots form exactly 1..N",
+    "F-GC33 terms match bindings by groundwater_cell_id rather than caller order",
+    "validation completes before the first package-array write",
+    "successful publication writes NODELIST/HCOF/RHS active slots then NBOUND",
+    "failed publication leaves NODELIST/HCOF/RHS/NBOUND unchanged",
+    "distinct coupling cells may explicitly map to the same MODFLOW node without coefficient collapsing",
+    "inactive tail beyond NBOUND remains untouched",
+    "no XMI address discovery, solve sequencing, Ribasim or SWAP commit ownership"
+  ],
+  "external_semantics_evidence": {
+    "historical_pin": "Deltares/imod_coupler@3ddeec26ba1a0f1fcb4cf681b3f3202b4a6de6b7",
+    "contract": "NODELIST/RHS/HCOF/MAXBOUND/NBOUND API package pointers, Fortran-facing 1-based NODELIST"
+  },
+  "historical_evidence": {
+    "owner_head": "0840229ab58fbc3525de56797c87f43f22f35891",
+    "exact_head_run": 35287663672,
+    "exact_head_job": 105423308799,
+    "conclusion": "success",
+    "note": "Reusable only for byte-identical production semantics; current-canonical replay is required."
+  },
+  "exclusions": [
+    "XMI address discovery or pointer acquisition",
+    "MODFLOW6 initialize/prepare/solve/finalize",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head current-canonical F-GC34 qualification. If green, checkpoint owner qualification and perform independent qualification before admission."
+}
