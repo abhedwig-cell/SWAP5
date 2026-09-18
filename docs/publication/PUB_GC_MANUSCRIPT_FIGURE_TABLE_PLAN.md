@@ -14,9 +14,9 @@ This plan maps each proposed publication visual to an already admitted evidence 
 | F4 | Finite-window response identity | `u_A≈u_FD`, B3 separates `|J_R|`, B5 loses symmetric `J_R` | E4 full derivative evidence | BUILT_AND_LINKED |
 | F5 | Information value of response | Aitken/secant beat FP; oracle adds little over cold secant | E5 comparison | BUILT_AND_LINKED |
 | F6 | Component-admission envelope | E6 stronger-response routes terminate at predictor/corrector capability boundaries | E6 active-drainage + 20-case state screen | BUILT_AND_LINKED |
-| F7 | Realistic Hupsel result | standalone-selected control/high-dynamics days, loose versus strong | E7 | BLOCKED_M1_C3 |
+| F7 | realistic Hupsel transferability / application-owner boundary | `PUB_GC_E7_RESULT.json`, PPA-WU01 dynamic gate | BUILT_AND_LINKED |
 
-F1–F6 are now built as version-controlled SVG files under `docs/publication/figures/` and linked from the manuscript. F3–F6 are regenerated from admitted numerical evidence by `figures/generate_pub_gc_numeric_figures.py`; F1/F2 are conceptual schematics whose SVG source is version controlled. F7 remains blocked on E7/M1-C3. If E7 remains blocked at submission decision time, the manuscript must be framed as a bounded coupling-method/qualification paper rather than implying realistic validation.
+F1–F6 are now built as version-controlled SVG files under `docs/publication/figures/` and linked from the manuscript. F3–F6 are regenerated from admitted numerical evidence by `figures/generate_pub_gc_numeric_figures.py`; F1/F2 are conceptual schematics whose SVG source is version controlled. F7 is now built as a capability/domain result; it does not fabricate missing coupled trajectories. If E7 remains blocked at submission decision time, the manuscript must be framed as a bounded coupling-method/qualification paper rather than implying realistic validation.
 
 ## Recommended figure construction
 
@@ -53,7 +53,7 @@ Panel A: active-drainage predictor succeeds but prescribed-head profile is `NOT_
 | T3 | E4 response identity values B1–B5 | BUILT_AND_LINKED |
 | T4 | E5 oracle/secant information-value summary | BUILT_AND_LINKED |
 | T5 | E6 negative stress-extension summary | BUILT_AND_LINKED |
-| T6 | E7 realistic-day metrics and loose/strong results | BLOCKED_M1_C3 |
+| T6 | E7 realistic application disposition | `PUB_GC_E7_RESULT.json` | BUILT_AND_LINKED |
 
 ## Evidence files
 
@@ -86,3 +86,11 @@ python docs/publication/figures/generate_pub_gc_numeric_figures.py
 Tables T1–T5 are now linked into `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`. Their journal-neutral evidence map is retained in `PUB_GC_MANUSCRIPT_TABLES.md`.
 
 T6 remains reserved for E7 and must stay absent until the M1-C3 prerequisite closes and the prospectively selected Hupsel experiment executes.
+
+
+## E7 closure update
+
+- F7: `figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN.svg`;
+- T6: closed in `PUB_GC_MANUSCRIPT_TABLES.md`;
+- E7 result: `PUB_GC_E7_RESULT.json` / `PUB_GC_E7_RESULT.md`;
+- no loose/strong numeric curves are produced because the preregistered production participant gate fails before coupled execution.
