@@ -9,6 +9,7 @@ TEST=tests/rom/test_f_rom0_accepted_reference_laboratory.f90
 COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
 MATERIALIZER=tests/rom/materialize_f_rom0_headcalc_stubs.py
 ANALYZER=tests/rom/analyze_f_rom0_accepted_reference_laboratory.py
+CONTROL_TEST=tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90
 PREREG=integration/f-rom/F-ROM0_PREREGISTRATION.json
 SUPPLEMENT=integration/f-rom/F-ROM0_NUMERICAL_CONTROLS_SUPPLEMENT.json
 PROBE_CORRECTION=integration/f-rom/F-ROM0_BOUNDARY_PROBE_PREFLIGHT_CORRECTION.json
@@ -56,6 +57,34 @@ assert c["corrected_probe"]["terminal_outward_flux_expectation"]["fall"].startsw
 assert c["post_execution_retuning_allowed"] is False
 print("F_ROM0_PREREGISTRATION_LOCK=PASS")
 PY
+
+# Independent admitted-runtime control. This is not part of the ROM-0 scientific
+# matrix and does not tune it. It checks that the current serialized
+# Reference-Richards accepted lifecycle can still commit its pre-existing
+# FMR44R fixture before ROM-0 classifies B01/B14 failures as experiment-domain
+# evidence.
+python3 "$COMPILER" \
+  --root "$ROOT" \
+  --stub tests/fsi/fsi04_real_headcalc_stubs.f90 \
+  --target "$CONTROL_TEST" \
+  --external-source src/legacy/b1_10_port/headcalc.f90 \
+  --build "$BUILD/control_fmr44r" \
+  --opt 2
+"$BUILD/control_fmr44r/rom0_test" >"$EVIDENCE/F-ROM0_ACCEPTED_RUNTIME_CONTROL.txt" 2>&1 || {
+  cat "$EVIDENCE/F-ROM0_ACCEPTED_RUNTIME_CONTROL.txt" >&2
+  fail "independent admitted accepted-runtime control failed"
+}
+for marker in \
+  'FMR44R_MODE2_EQUILIBRIUM_TRANSACTION=PASS' \
+  'FMR44R_POSITIVE_QBOT_ACCEPTED_INFLOW=PASS' \
+  'FMR44R_NEARBY_BOTTOM_MODE_FAIL_CLOSED=PASS' \
+  'FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS'; do
+  grep -Fq "$marker" "$EVIDENCE/F-ROM0_ACCEPTED_RUNTIME_CONTROL.txt" || {
+    cat "$EVIDENCE/F-ROM0_ACCEPTED_RUNTIME_CONTROL.txt" >&2
+    fail "missing accepted-runtime control marker $marker"
+  }
+done
+echo "F_ROM0_ACCEPTED_RUNTIME_CONTROL=PASS"
 
 python3 "$MATERIALIZER" --source tests/fsi/fsi04_real_headcalc_stubs.f90 \
   --output "$BUILD/rom0_stubs_n16.f90" --nodes 16 --dz-cm 10
