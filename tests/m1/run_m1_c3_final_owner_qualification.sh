@@ -137,7 +137,11 @@ MODULES=(
 SOILWATER=src/legacy/b1_10_port/soilwater.f90
 
 run_replay(){
-  local opt="$1" tag="$2" out="$BUILD/$tag"; mkdir -p "$out"; local objs=()
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
+  mkdir -p "$out"
+  local objs=()
   for src in "${MODULES[@]}"; do
     local obj="$out/$(basename "${src%.*}").o"
     gfortran "${FLAGS[@]}" "$opt" -J "$out" -I "$out" -c "$src" -o "$obj"
