@@ -87,15 +87,29 @@ ledger_exchange_m =
     final_bottom_outward_exchange_native_cm * 0.01
 ```
 
-The public corrector rate and native integrated bottom amount use opposite sign conventions in the current adapter chain; therefore the expected cross-convention identity is:
+### Recorded sign-hypothesis erratum after first execution
+
+The first preregistered version incorrectly expected the public corrector rate and the native integrated bottom amount to have opposite signs. The first evidence execution failed exactly this predeclared assertion.
+
+Code-trace adjudication showed that the assumption omitted one sign transformation:
+
+```text
+qbot_mean_cm_per_day =
+    - bottom_outward_exchange_native / DeltaT_day
+
+q_swap_public =
+    - qbot_mean_cm_per_day * 0.01 / 86400
+```
+
+The two minus signs cancel. Therefore the public outward-from-SWAP rate and the ledger's committed SWAP-outward amount have the **same** sign. The scientifically consistent identity is:
 
 ```text
 q_swap_public_m_per_s * DeltaT_s
-    + ledger_exchange_m
+    - ledger_exchange_m
     = 0
 ```
 
-This sign test is intentionally preregistered because a failure would identify a scientifically relevant interface-accounting inconsistency rather than a reason to redefine the expected sign after observing the result.
+This correction is recorded rather than silently rewriting the failed preregistered expectation. The underlying production code is unchanged; only the publication test's expected algebra is corrected before rerun.
 
 ## E1 numerical tolerances
 
