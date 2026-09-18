@@ -3,7 +3,6 @@ name: PPA-LOW02-TIME legacy prescribed-qbot application
 on:
   pull_request:
     paths:
-      - 'src/adapter/mod_b110_legacy_swbotb2_application_control.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fapp/test_ppa_low02_time_application_admission.f90'
       - 'tests/fapp/run_ppa_low02_time_application_admission.sh'
