@@ -1,0 +1,138 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0001
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  macro_window_adjudication_commit: 29f3bf635d69e076926d6cb99cf3f7d058f67a63
+  macro_window_spec_commit: 1b54c6c6acfffd8bd71c368ae36bdf77f788850b
+  frozen_before_qualification_execution: true
+
+authority:
+  branch: research/pub-gc-macro-window-response
+  base: c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/macro_window_response/**
+    - .github/workflows/pub-gc-macro-window-response-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/gw_a/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/e1_primary_engine/**
+    - tests/publication/pub_gc/e2_terminal_comparator/**
+    - tests/publication/pub_gc/gc_ref/**
+    - tests/publication/pub_gc/reference_screening/**
+    - tests/publication/pub_gc/transient_screening/**
+
+common_fixture:
+  initial_time_day: 4200.125
+  initial_head_cm: -80.0
+  bottom_mode: 5
+  temporal_mode: TX_TEMPORAL_MODEL_CERTIFICATE
+  model_temporal_indicator_budget: 100.0
+  mass_tolerance: 1.0e-10
+  candidate_bottom_head_convention: absolute_cm
+  disposable_lineage_minimum: 900001
+  macro_sum_arithmetic_tolerance_day: 1.0e-12
+  no_production_commit: true
+
+fixtures:
+  Q0_one_contribution_reduction:
+    macro_duration_day: 0.01
+    native_dt_day: [0.01]
+    top_flux_factors_relative_to_K0: [-1.0]
+    candidate_bottom_head_cm: -80.0
+    required:
+      - bitwise_Q_identity_with_direct_one_step
+      - bitwise_terminal_flux_identity_with_direct_one_step
+      - endpoint_state_identity
+      - Q_whole_equals_q_terminal_times_macro_duration
+
+  Q1_four_contribution_sequential_equivalence:
+    macro_duration_day: 0.02
+    native_dt_day: [0.005, 0.005, 0.005, 0.005]
+    top_flux_factors_relative_to_K0: [-1.0, -1.0, -1.0, -1.0]
+    candidate_bottom_head_cm: -80.0
+    required:
+      - exact_per_interval_Q_sequence
+      - exact_terminal_flux_sequence
+      - exact_Q_whole_sum
+      - exact_endpoint_state
+      - disposable_final_revision_4
+
+  Q2_aggregate_terminal_selectivity:
+    macro_duration_day: 0.02
+    native_dt_day: [0.005, 0.005, 0.005, 0.005]
+    top_flux_factors_relative_to_K0: [-5.0, -1.0, -1.0, -1.0]
+    candidate_bottom_head_cm: -80.0
+    qualification_only_abs_Q_whole_minus_Q_terminal_floor_cm: 1.0e-12
+    required:
+      - all_four_native_contributions_finite
+      - Q_whole_exact_explicit_sum
+      - q_terminal_exact_final_native_terminal_flux
+      - Q_terminal_exact_terminal_times_macro_duration
+      - abs_Q_whole_minus_Q_terminal_above_frozen_floor
+    primary_reuse_prohibited: true
+
+  Q3_same_origin_ABA:
+    macro_duration_day: 0.02
+    native_dt_day: [0.005, 0.005, 0.005, 0.005]
+    top_flux_factors_relative_to_K0: [-1.0, -1.0, -1.0, -1.0]
+    A_bottom_head_cm: -80.0
+    B_bottom_head_cm: -95.0
+    sequence: [A, B, A]
+    required:
+      - bitwise_A_response_identity
+      - bitwise_A_endpoint_identity
+      - authoritative_origin_unchanged_after_each_response
+    primary_reuse_prohibited: true
+
+  Q5_seeded_temporal_history:
+    seed_native_dt_day: 0.005
+    seed_top_flux_factor_relative_to_K0: -2.0
+    seed_bottom_head_cm: -82.5
+    post_seed_macro_duration_day: 0.01
+    post_seed_native_dt_day: [0.005, 0.005]
+    post_seed_top_flux_factors_relative_to_K0: [-1.0, -1.0]
+    post_seed_candidate_bottom_head_cm: -80.0
+    required:
+      - temporal_history_available_at_seeded_authority
+      - macro_snapshot_initialize_preserves_dynamic_continuation
+      - macro_first_native_response_matches_independent_same_origin_response
+      - authoritative_seeded_origin_unchanged_by_macro_response
+    primary_reuse_prohibited: true
+
+failure_controls:
+  - nonpositive_macro_duration
+  - nonpositive_native_interval
+  - native_interval_sum_mismatch
+  - nonfinite_candidate_head
+
+optimization:
+  modes: [O0, O2]
+  require_exact_scientific_output_identity: true
+
+interpretation:
+  pass_means: >
+    The research-only macro-window SWAP response preserves qualified one-step
+    behavior, composes multiple native contributions without mutating the
+    authoritative macro origin, preserves continuation state through public
+    snapshot/initialize contracts, and exposes whole-window and terminal
+    quantities distinctly when the qualification forcing produces a varying
+    native response.
+  nonclaims:
+    - no H2 support or falsification
+    - no H3 support or falsification
+    - no practical coupling-window threshold
+    - no MODFLOW6 result
+    - no production admission
+    - no response/tangent acceleration result
+    - no reuse of observed Q2 or Q3 values for primary-case tuning
+
+next_permitted_action:
+  - implement research-only macro-window component and independent oracle
+  - execute this exact qualification
+  - persist invalid attempts as invalid rather than retuning frozen fixtures
