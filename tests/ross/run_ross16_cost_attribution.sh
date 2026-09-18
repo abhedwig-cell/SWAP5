@@ -129,6 +129,30 @@ grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/profile_noinline_run.txt" || fail 
 mv gmon.out "$BUILD/profile_noinline/gmon.out"
 gprof -b -p "$BUILD/profile_noinline/test" "$BUILD/profile_noinline/gmon.out" > "$BUILD/F-ROSS16_GPROF_NOINLINE.txt"
 
+
+# F-ROSS16D1 successor: optimized line attribution.
+compile_exe "$BUILD/d1_o2_line" "$PROFILE_TEST" -O2 -g -pg
+rm -f gmon.out
+SWAP5_ROSS16_PROFILE_ROUTE=ROSSFAST OMP_NUM_THREADS=1 "$BUILD/d1_o2_line/test" > "$BUILD/d1_o2_line_run.txt"
+grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/d1_o2_line_run.txt" || fail "D1 O2 line profile harness failed"
+[[ -f gmon.out ]] || fail "D1 O2 line gmon.out missing"
+mv gmon.out "$BUILD/d1_o2_line/gmon.out"
+gprof -b -p -l "$BUILD/d1_o2_line/test" "$BUILD/d1_o2_line/gmon.out" > "$BUILD/F-ROSS16D1_GPROF_O2_LINE.txt"
+
+# F-ROSS16D1 successor: unoptimized structural exposure.
+compile_exe "$BUILD/d1_o0" "$PROFILE_TEST" -O0 -g -pg
+rm -f gmon.out
+SWAP5_ROSS16_PROFILE_ROUTE=ROSSFAST OMP_NUM_THREADS=1 "$BUILD/d1_o0/test" > "$BUILD/d1_o0_run.txt"
+grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/d1_o0_run.txt" || fail "D1 O0 structural profile harness failed"
+[[ -f gmon.out ]] || fail "D1 O0 gmon.out missing"
+mv gmon.out "$BUILD/d1_o0/gmon.out"
+gprof -b -p "$BUILD/d1_o0/test" "$BUILD/d1_o0/gmon.out" > "$BUILD/F-ROSS16D1_GPROF_O0_STRUCTURAL.txt"
+
+echo '--- F-ROSS16D1 O2 line candidate-step regions ---'
+grep -Ei 'candidate_step|inverse_capacity|table_face_linearization|factor_and_solve|head_from_water_content|valid_state|mod_rossfast_d3r_table_kernel' "$BUILD/F-ROSS16D1_GPROF_O2_LINE.txt" || true
+echo '--- F-ROSS16D1 O0 structural buckets ---'
+grep -Ei 'candidate_step|inverse_capacity|table_face_linearization|factor_and_solve|head_from_water_content|valid_state' "$BUILD/F-ROSS16D1_GPROF_O0_STRUCTURAL.txt" || true
+
 echo '--- F-ROSS16 O2 RossFast profile symbols ---'
 grep -Ei 'rossfast|candidate_step|table_face|factor_and_solve|run_window|head_from_water|inverse_capacity' "$BUILD/F-ROSS16_GPROF_O2.txt" || true
 echo '--- F-ROSS16 no-inline RossFast profile symbols ---'
@@ -143,5 +167,10 @@ cp "$BUILD/F-ROSS16_GPROF_O2.txt" "$OUTDIR/"
 cp "$BUILD/F-ROSS16_GPROF_NOINLINE.txt" "$OUTDIR/"
 cp "$BUILD/profile_o2_run.txt" "$OUTDIR/"
 cp "$BUILD/profile_noinline_run.txt" "$OUTDIR/"
+cp "$BUILD/F-ROSS16D1_GPROF_O2_LINE.txt" "$OUTDIR/"
+cp "$BUILD/F-ROSS16D1_GPROF_O0_STRUCTURAL.txt" "$OUTDIR/"
+cp "$BUILD/d1_o2_line_run.txt" "$OUTDIR/"
+cp "$BUILD/d1_o0_run.txt" "$OUTDIR/"
 
+echo 'F_ROSS16D1_CANDIDATE_STEP_DECOMPOSITION_GATE=PASS'
 echo 'F_ROSS16_COST_ATTRIBUTION_GATE=PASS'
