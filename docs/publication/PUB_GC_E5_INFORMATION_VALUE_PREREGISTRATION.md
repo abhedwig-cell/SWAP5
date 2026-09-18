@@ -351,3 +351,18 @@ It provides an early falsification gate:
 
 - **STOP/merge into PUB-GC** if the zero-cost oracle has no material advantage over cold secant/IQN even near/above the fixed-point stability boundary;
 - **CONTINUE to E5b** only if a reproducible oracle or `u_A` advantage appears and is large enough that warm-history IQN could still plausibly change the conclusion.
+
+
+## Quantitative continuation gate provenance
+
+Before the first E5 numerical output was available, the execution PR #271 was updated with the following quantitative continuation rule:
+
+Proceed to E5b only if, in the preregistered difficult range `C >= 0.9`, at least one of these occurs:
+
+1. `ORACLE_JR` converges where `SECANT_COLD` does not; or
+2. `ORACLE_JR` saves at least two full-window SWAP evaluations relative to `SECANT_COLD` in reproducible cases spanning at least two E4 baselines; or
+3. `U_A` shows the same >=2-evaluation or convergence-domain advantage in at least two baselines.
+
+A one-evaluation oracle advantage was explicitly declared reportable but insufficient for continuing the standalone ACCELERATE line, because that advantage is already expected for an exactly linear one-dimensional cold-secant problem and can only be reduced by admissible warm history.
+
+This rule was frozen in PR #271 before workflow run `35351467531` emitted the E5 baseline outputs. It is reproduced here unchanged for durable documentation.
