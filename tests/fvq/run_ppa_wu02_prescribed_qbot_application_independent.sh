@@ -4,7 +4,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 fail(){ echo "PPA_WU02_INDEPENDENT_FAIL $*" >&2; exit 1; }
 
-CANONICAL="0d1798aafbf43417801d75a140e4f4f3cef74bd8"
+CANONICAL="$(git merge-base HEAD origin/integration/f-ci-canonical)"\n[[ -n "$CANONICAL" ]] || fail "cannot resolve current canonical merge base"
 BOOT="src/runtime/mod_fmr_production_application_bootstrap.f90"
 
 changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
