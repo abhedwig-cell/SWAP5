@@ -80,9 +80,9 @@ def new_swap(swaplib:Path, window_day:float)->tuple[Fgc44RealSwap,float,float,fl
     return swap,hcof,rhs,href,diag
 
 def solve_fixed_boundary(
-    libmf6:Path, swaplib:Path, window_day:float, sy:float, mode:str
+    libmf6:Path, swap:Fgc44RealSwap, hcof:float, rhs:float, href:float,
+    diag:dict[str,Any], window_day:float, sy:float, mode:str
 )->dict[str,Any]:
-    swap,hcof,rhs,href,diag=new_swap(swaplib,window_day)
     if mode=="constant":
         qref_m3_per_day=hcof*href-rhs
         term=Term(7001,0.0,-qref_m3_per_day)
@@ -168,8 +168,10 @@ def solve_fixed_boundary(
                 try: raw.finalize()
                 except Exception: pass
 
-def solve_strong(libmf6:Path, swaplib:Path, window_day:float, sy:float)->dict[str,Any]:
-    swap,hcof,rhs,href,diag=new_swap(swaplib,window_day)
+def solve_strong(
+    libmf6:Path, swap:Fgc44RealSwap, hcof:float, rhs:float, href:float,
+    diag:dict[str,Any], window_day:float, sy:float
+)->dict[str,Any]:
     origin_state=swap.state()
     with tempfile.TemporaryDirectory(prefix="pub-gc-e3-strong-") as tmp:
         workdir=Path(tmp)
@@ -292,26 +294,36 @@ def main()->None:
     sy=float(os.environ["E3_SY"])
     result_path=Path(os.environ["E3_RESULT_PATH"])
 
+    treatment=os.environ["E3_TREATMENT"]
     result:dict[str,Any]={
-        "schema":"pub-gc-e3-case-v1",
+        "schema":"pub-gc-e3-treatment-v1",
         "window_day":window,
         "window_seconds":window*DAY_TO_S,
         "specific_yield":sy,
+        "treatment":treatment,
         "flux_tolerance_m_per_s":FLUX_TOL,
     }
     try:
-        result["loose_constant"]=solve_fixed_boundary(libmf6,swaplib,window,sy,"constant")
-        result["predictor_affine"]=solve_fixed_boundary(libmf6,swaplib,window,sy,"affine")
-        result["strong"]=solve_strong(libmf6,swaplib,window,sy)
+        swap,hcof,rhs,href,diag=new_swap(swaplib,window)
+        result["predictor_reference_head_m"]=href
+        result["predictor_hcof_m2_per_day"]=hcof
+        result["predictor_rhs_m3_per_day"]=rhs
+        result["predictor"]=diag
 
-        s=result["strong"]
-        if s.get("status")=="CONVERGED":
-            for key,name in [("loose_constant","loose_constant"),("predictor_affine","predictor_affine")]:
-                base=result[key]
-                if base.get("status")=="OK":
-                    base["head_difference_from_strong_m"]=base["head_m"]-s["head_m"]
-                    base["groundwater_flux_difference_from_strong_m_per_s"]=base["q_gw_m_per_s"]-s["q_gw_m_per_s"]
-                    base["residual_over_coupling_tolerance"]=abs(base["interface_residual_m_per_s"])/FLUX_TOL
+        if treatment=="constant":
+            result["outcome"]=solve_fixed_boundary(
+                libmf6,swap,hcof,rhs,href,diag,window,sy,"constant"
+            )
+        elif treatment=="affine":
+            result["outcome"]=solve_fixed_boundary(
+                libmf6,swap,hcof,rhs,href,diag,window,sy,"affine"
+            )
+        elif treatment=="strong":
+            result["outcome"]=solve_strong(
+                libmf6,swap,hcof,rhs,href,diag,window,sy
+            )
+        else:
+            raise ValueError(f"unknown treatment {treatment}")
         result["harness_status"]="OK"
     except Exception as exc:
         result["harness_status"]="ERROR"
