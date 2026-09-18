@@ -1,0 +1,36 @@
+name: PUB-P2E11R extension Reference common domain
+
+on:
+  push:
+    branches:
+      - work/pub-p2e11r-extension-reference-common-domain
+    paths:
+      - 'docs/publication/P2E11R_EXTENSION_REFERENCE_COMMON_DOMAIN_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e11r_extension_reference_common_domain.f90'
+      - 'tests/publication/run_pub_p2e11r_extension_reference_common_domain.sh'
+      - '.github/workflows/pub-p2e11r-extension-reference-common-domain.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/P2E11R_EXTENSION_REFERENCE_COMMON_DOMAIN_PREREGISTRATION.json'
+      - 'docs/publication/P2E11R_EXTENSION_REFERENCE_COMMON_DOMAIN_RESULT.json'
+      - 'tests/publication/test_pub_p2e11r_extension_reference_common_domain.f90'
+      - 'tests/publication/run_pub_p2e11r_extension_reference_common_domain.sh'
+      - '.github/workflows/pub-p2e11r-extension-reference-common-domain.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  extension-reference-common-domain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only common-domain recovery
+        run: bash tests/publication/run_pub_p2e11r_extension_reference_common_domain.sh
