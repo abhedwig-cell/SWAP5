@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.rom1b4.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B4",
+  "decision": "ROM1B4_HELDOUT_STATE_SEPARATION_QUALIFIED",
+  "execution": {
+    "workflow_run": 35393918598,
+    "workflow_job": 105758281257,
+    "executed_head": "18ac74521e57ee5a9f76a62601550e26646334ad",
+    "artifact_id": 10567371095,
+    "artifact_digest": "sha256:9225d3adc0f09a432c1755362272fbe933bf769578b1df26f4660183da4711ae",
+    "conclusion": "success"
+  },
+  "frozen_coordinate": {
+    "id": "Z8_PLUS_G8",
+    "dimension": 9,
+    "theta_floor": 0.0005420462931603476
+  },
+  "library": {
+    "state_count": 768,
+    "discovery_states": 512,
+    "heldout_states": 256,
+    "finite_theta_profiles": true
+  },
+  "pair_population": {
+    "heldout_inclusive_cross_history_pair_count": 155648,
+    "discovery_heldout_pair_count": 131072,
+    "heldout_heldout_cross_history_pair_count": 24576,
+    "full_theta_distinguishable_pair_count": 136946
+  },
+  "collision_count": 0,
+  "collision_manifest": [],
+  "minimum_candidate_induced_theta_linf_over_full_distinguishable_pairs": 0.0005426494193736531,
+  "minimum_separation_margin_over_theta_floor": 6.031262133054938e-7,
+  "maximum_full_theta_linf": 0.02030000820554395,
+  "repeat_stdout_bitwise_identity": true,
+  "coordinate_changed_from_discovery": false,
+  "theta_floor_changed": false,
+  "future_probe_outcomes_used": false,
+  "heldout_driven_enrichment_allowed": false,
+  "B14_used": false,
+  "production_rom_authorized": false
+}
