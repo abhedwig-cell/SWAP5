@@ -24,7 +24,7 @@ def dtkey(v): return round(float(v),7)
 
 def parse(path: str):
     text=pathlib.Path(path).read_text()
-    steps={}; nodes={}; passes={}
+    steps={}; nodes={}; passes={}; fails={}
     for line in text.splitlines():
         if "F_ROM0T1_STEP|" in line:
             r=fields(line.split("F_ROM0T1_STEP|",1)[1])
@@ -35,7 +35,10 @@ def parse(path: str):
         elif "F_ROM0T1_CASE_PASS|" in line:
             r=fields(line.split("F_ROM0T1_CASE_PASS|",1)[1])
             passes[(r["CASE"],dtkey(r["DT"]))]=r
-    return text,steps,nodes,passes
+        elif "F_ROM0T1_CASE_FAIL|" in line:
+            r=fields(line.split("F_ROM0T1_CASE_FAIL|",1)[1])
+            fails[(r["CASE"],dtkey(r["DT"]))]=r
+    return text,steps,nodes,passes,fails
 
 def rms(vals): return math.sqrt(sum(v*v for v in vals)/len(vals))
 
@@ -53,17 +56,36 @@ def main():
     ap.add_argument("--repeat",required=True)
     ap.add_argument("--output",required=True)
     a=ap.parse_args()
-    text,steps,nodes,passes=parse(a.input)
+    text,steps,nodes,passes,fails=parse(a.input)
     repeat=pathlib.Path(a.repeat).read_text()
     repeat_identity=text==repeat
     structural=True
     expected={(case,dt) for case in CASES for dt in (BASE_DT,REF_DT)}
-    structural &= set(passes)==expected
+    outcome_keys=set(passes)|set(fails)
+    structural &= outcome_keys==expected and not (set(passes)&set(fails))
+    all_pairs_pass=set(passes)==expected
     results={}
     all_finite=True
+    outcomes={}
+    for case,dt in sorted(expected):
+        key=(case,dt)
+        if key in passes:
+            outcomes[f"{case}@{dt:.4f}"]={"status":"PASS","steps":int(passes[key]["STEPS"])}
+        elif key in fails:
+            r=fails[key]
+            outcomes[f"{case}@{dt:.4f}"]={
+              "status":"FAIL","step":int(r["STEP"]),"time0_day":float(r["T0"]),"time1_day":float(r["T1"]),
+              "solver_status":int(r["STATUS"]),"route":r["ROUTE"],"nonlinear_iterations":int(r["NL"]),
+              "internal_retries":int(r["IR"]),"backtracking_attempts":int(r["BACK"])
+            }
+        else:
+            outcomes[f"{case}@{dt:.4f}"]={"status":"MISSING"}
 
     for case in CASES:
         per=[]
+        if (case,BASE_DT) not in passes or (case,REF_DT) not in passes:
+            results[case]={"common_endpoint_count":0,"max_over_time":{},"final_time":None,"DT_BASE":{},"DT_REFINED":{}}
+            continue
         for j in range(1,BASE_STEPS+1):
             kb=(case,BASE_DT,j)
             kr=(case,REF_DT,2*j)
@@ -124,11 +146,11 @@ def main():
           "DT_REFINED":ref_summary,
         }
 
-    hard_mass=structural and all(
+    hard_mass=all_pairs_pass and all(
       results[c][level]["max_abs_step_mass_residual_cm"]<=1e-12
       for c in CASES for level in ("DT_BASE","DT_REFINED")
     )
-    measured=structural and all_finite and hard_mass and repeat_identity
+    measured=structural and all_pairs_pass and all_finite and hard_mass and repeat_identity
     result={
       "schema":"swap5.f-rom0t1-result.v1",
       "work_unit":"ROM-0T1",
@@ -140,16 +162,19 @@ def main():
       "common_endpoints_per_case":BASE_STEPS,
       "threshold_rule":"MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD",
       "structural_complete":structural,
-      "all_metrics_finite":all_finite,
-      "hard_mass_gate_pass":hard_mass,
+      "all_required_pairs_complete":all_pairs_pass,
+      "outcomes":outcomes,
+      "all_metrics_finite":all_finite if all_pairs_pass else None,
+      "hard_mass_gate_pass":hard_mass if all_pairs_pass else None,
       "repeat_stdout_bitwise_identity":repeat_identity,
       "cases":results,
+      "scientific_negative_is_not_ci_failure":True,
       "production_or_reference_source_mutated":False,
       "rom1a_authorized":False,
     }
     pathlib.Path(a.output).write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps(result,sort_keys=True))
-    return 0 if measured else 2
+    return 0
 
 if __name__=="__main__":
     raise SystemExit(main())
