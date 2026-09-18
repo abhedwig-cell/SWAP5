@@ -128,3 +128,12 @@ Do not:
 This preregistration closes the **procedure design** for A1.
 
 The remaining A1 governance input is the exact successor release identifier/authority. After that input and L1 exist, the successor-release workunit is mechanical and qualification-gated.
+
+
+## Current-canonical reconcile note — F-ROM1A
+
+Before admission of this preregistration package, `integration/f-ci-canonical` admitted F-ROM1A-I0 reference-observation seam work through current canonical `5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b`.
+
+The delta touches shared kernel/reference-backend production sources but is owned by the separate ROM workstream and does not alter PUB-GC publication files or the closed E1–E7 evidence.
+
+Because the successor release must freeze the complete repository postimage rather than only PUB-GC-owned files, this F-ROM delta belongs in the future RB1-to-successor release inventory. The PUB-GC PR is therefore requalified against the updated merge postimage; earlier green runs are not used as final admission authority.
