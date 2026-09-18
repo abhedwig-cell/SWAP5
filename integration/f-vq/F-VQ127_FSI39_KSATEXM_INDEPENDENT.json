@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.independent_qualification.v1",
+  "workunit": "F-VQ127",
+  "subject": "F-SI39 B1.11 near-saturated KSATEXM preservation",
+  "qualification_branch": "qualification/f-vq127-fsi39-ksatexm-independent",
+  "subject_production_postimages": {
+    "src/solver/mod_b110_default_mvg_provider.f90": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "556ed83dee4d5b159f1de7ae797af7106a0abe2e"
+  },
+  "run_id": 35353574382,
+  "job_id": 105627327700,
+  "conclusion": "success",
+  "output_sha256": "be1ebff70e9f13f5bab56b81eaa1ea34d4655108f46ee7275868f08fa6c97200",
+  "checks": {
+    "exact_B1_11_oracle": "PASS",
+    "per_node_activation": "PASS",
+    "default_route_preserved": "PASS",
+    "below_threshold_identity": "PASS",
+    "O0_O2_identity": "PASS",
+    "production_mutation": "NONE"
+  },
+  "verdict": "PASS_F_VQ127_INDEPENDENT_F_SI39"
+}
