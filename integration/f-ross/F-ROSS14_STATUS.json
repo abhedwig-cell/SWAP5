@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS14",
+  "title": "RossFast D3R WETTING top-boundary production envelope",
+  "branch": "work/f-ross14-wetting-top-boundary-envelope",
+  "canonical_branch": "integration/f-ci-canonical",
+  "phase": "QUALIFY",
+  "status": "PREREGISTERED_36_MATERIAL_WETTING_QUALIFICATION",
+  "checkpoint_commit": "79a24937ca6168b300bb21ee333d24f68819f3d6",
+  "canonical_reconciliation": {
+    "canonical_at_branch_creation": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "p2e10_admission_merge": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+    "p2e10_postimage_dependency_locks_still_exact": true
+  },
+  "trigger": {
+    "p2e10_result_blob": "83864f6379279725fa97d24d57936f590d3c2174",
+    "paired_valid_admissible": 36,
+    "rossfast_route_invalid": 18,
+    "invalid_pattern": "ALL_AND_ONLY_WETTING",
+    "mechanism": "CURRENT_TOP_BOUNDARY_ENVELOPE_REJECTION"
+  },
+  "qualification_contract": {
+    "path": "integration/f-ross/F-ROSS14_WETTING_TOP_BOUNDARY_QUALIFICATION_CONTRACT.json",
+    "blob_sha": "TO_BE_FILLED_FROM_BRANCH_POSTIMAGE",
+    "production_mutation_allowed": false
+  },
+  "production_preimage": {
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "soil_water_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "solver_selection_blob": "cca61af52bde3eed12b756547277cc2776589648",
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3"
+  },
+  "planned_qualification": {
+    "historical_anchor_materials": 6,
+    "wetting_materials": 36,
+    "wetting_base_cases": 108,
+    "geometry": "16 cells x 10 cm",
+    "profiles": 3,
+    "sources_sinks": "zero",
+    "production_public_wetting_top_factor": 0.025,
+    "production_public_wetting_bottom_factor": 0.011,
+    "historical_harness_top_inflow_factor": -0.025,
+    "historical_harness_bottom_outflow_factor": -0.011
+  },
+  "candidate_production_surface_if_qualified": {
+    "files": ["src/runtime/mod_rossfast_d3r_model_binding.f90"],
+    "top_envelope_fraction": 0.035,
+    "bottom_envelope_fraction": 0.02,
+    "kernel_request_envelope_fraction": 0.02
+  },
+  "verdict": "QUALIFICATION_PENDING",
+  "next_permitted_action": "Add qualification runner, aggregate gate and workflow only; execute them; do not mutate production code before aggregate PASS."
+}
