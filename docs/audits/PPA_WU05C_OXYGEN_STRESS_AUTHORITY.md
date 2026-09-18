@@ -16,9 +16,11 @@ The corrected SWAP 4.3.1 authority is B1.11.
 
 For `SWAP/oxygenstress.f90`:
 
-- B0 SHA-256: `2db206bf28e883a22a1419d4729e03c1bb6b9c6bcf560d2221248f3b12f75`;
+- canonical B0 SHA-256: `2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735`;
 - corrected B1.11 SHA-256: `8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87`;
 - the admitted B0-to-B1 correction is SWAP-007.
+
+The SWAP-007 directory contains historical provenance metadata with an older, incorrect B0 hash ending in `b12f75`. That metadata is not used as current source identity. VQ-1c provenance repair is encoded in the canonical B0 manifest and in `apply_and_verify_canonical_b0.py`, both of which pin the B0 preimage ending in `e5735` and reproduce the corrected B1 hash above. PPA-WU05-C treats those two artifacts as the canonical provenance authority while retaining the README/qualification files as historical audit evidence only.
 
 SWAP-007 changes only the representability guard around the Newton quotient `fi/fi_a`. Representable updates are unchanged. When the quotient is unrepresentable, the correction forces the existing large-`lnew` restart route instead of allowing floating-point overflow. This is a numerical robustness repair, not a new oxygen-stress model.
 
@@ -38,7 +40,7 @@ The final accepted water withdrawal must still appear exactly once through the e
 
 ## Derived oxygen cache is not transactional state
 
-Historical S11/S9 repository-library evidence is useful because it exposes hidden `SAVE` storage in legacy `oxygenstress.f90`.
+Recovered S11/S9 Project-Library evidence is useful because it exposes hidden `SAVE` storage in a source-derived transformation of legacy `oxygenstress.f90`. It is corroborating ownership evidence, not a substitute for byte-exact B1.11 source materialization.
 
 The extracted cache contains:
 
