@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 
-Status: `QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION / PRODUCTION_IMPLEMENTATION_HELD`
+Status: `CANONICAL_ADMITTED_REVIEW_AUTHORITY_CLOSED / PRODUCTION_IMPLEMENTATION_HELD`
 
 Canonical reconcile base: `integration/f-ci-canonical@781c829943c9e5880e5ab83281112e66f439ecf2`.
 
@@ -255,3 +255,16 @@ The review-only authority gate passed on the candidate evidence head:
 The gate independently checks B1.11 identity binding, SWAP-007 preservation, the existing single root-water mass owner, the restricted no-persistent-state conclusion for the reproduction family, fail-closed C2/C3 holds, C1..C4 migration slicing, and absence of any `src/` or `reference/` mutation.
 
 No production admission follows from this qualification.
+
+
+## Canonical closeout
+
+PPA-WU05-C was canonically admitted as review-only authority through PR #354 at `821ac0305d4cb49d1c7c3fe9a2a936e5d4b53bae`.
+
+Final checks on the admission head were green:
+
+- PPA-WU05-C authority workflow `35406217234`;
+- Documentation `35406217184`;
+- F-CI canonical qualification `35406217224`.
+
+No production or corrected-reference source file changed. The production holds in this document remain in force.
