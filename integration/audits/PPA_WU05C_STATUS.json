@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.ppa_wu05c.status.v1",
+  "work_unit": "PPA-WU05-C",
+  "title": "Oxygen-stress source/state/owner decomposition",
+  "branch": "audit/ppa-wu05c-oxygen-authority",
+  "reconcile_base": "781c829943c9e5880e5ab83281112e66f439ecf2",
+  "status": "REVIEW_AUTHORITY_CANDIDATE_QUALIFICATION_PENDING",
+  "scope": {
+    "production_source_mutation": false,
+    "reference_mutation": false,
+    "oxygen_families": [
+      "SWOXYGEN=2/SWOXYGENTYPE=2 reproduction",
+      "SWOXYGEN=1 Feddes wetness/oxygen",
+      "SWOXYGEN=2/SWOXYGENTYPE=1 Bartholomeus"
+    ]
+  },
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "swap_007_required": true,
+    "historical_evidence_class": "CORROBORATING_NOT_PRODUCTION_AUTHORITY"
+  },
+  "frozen_decisions": {
+    "reproduction_C1": {
+      "persistent_physical_state": [],
+      "worker_scratch": [
+        "current theta_s scalar",
+        "cumulative porosity prefix scalar"
+      ],
+      "accepted_mass_owner": "existing root-water-uptake nodewise sink owner",
+      "state": "DEFINED_FOR_SEPARATE_IMPLEMENTATION_AUTHORITY"
+    },
+    "feddes_C2": "HELD_SOURCE_MATERIALIZATION_REQUIRED",
+    "bartholomeus_C3": "HELD_SOURCE_MATERIALIZATION_REQUIRED",
+    "micro_C4": "HELD_DEPENDENCY"
+  },
+  "qualification": {
+    "state": "PENDING"
+  },
+  "production_admission": "NONE_REVIEW_ONLY",
+  "verdict": "PENDING_REPOSITORY_QUALIFICATION",
+  "next_action": "Run authority and independent contract validation. If green and live canonical drift is disjoint, admit this review-only authority. Production may begin only in a separately preregistered PPA-WU05-C1 slice."
+}
