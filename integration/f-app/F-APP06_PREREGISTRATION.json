@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-APP06",
+  "title": "Hupsel SWINTER0/SWCF0 no-interception PMdirect interval route",
+  "protocol": "RECONCILE -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
+  "base": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "scientific_denominator": {
+    "f_app05_admission": "158ef1e704fbc72f293773cc30ae4d6082d3c28f",
+    "pmdirect_preimage_blob": "645d154ac6c7eda19315b0b6a2bc8ecd5536f4ad",
+    "exact_b1_11_trace": "integration/m1/M1_C3_B1_11_APPLICATION_TRACE_QUALIFICATION.json",
+    "exact_route_checkpoint": "integration/m1/M1_C3_SWINTER0_SWCF0_ROUTE_QUALIFICATION.json"
+  },
+  "scope": {
+    "selectors": [
+      "SWETR=0",
+      "SWINTER=0",
+      "SWCF=0"
+    ],
+    "accepted_intervals": 3505,
+    "equations": [
+      "interception_rate = 0",
+      "net_rain = gross_rain",
+      "wet_canopy_fraction = 0",
+      "potential_transpiration = potential_transpiration_dry"
+    ],
+    "surface_irrigation": "not owned here; gross-to-net identity for SWINTER0 belongs to F-APP07 application composition"
+  },
+  "exact_fixture": {
+    "path": "tests/f-app06/fixtures/hupsel_swinter0_b111_oracle.csv.gz",
+    "records": 3505,
+    "columns": [
+      "graidt",
+      "nraidt",
+      "ptra_dry",
+      "ptra",
+      "aintcdt",
+      "wfrac"
+    ],
+    "uncompressed_sha256": "f29d42dd1a32dba8aabedbc6dd91c208577f1ca4f72f0e0665845dbc770bd4f0",
+    "gzip_sha256": "eeda2dff5fae1776833045a4090603961472c12ebce995213808868847900fdf",
+    "provenance": "observation-only exact B1.11 accepted-interval trace with normalized bal/blc identity"
+  },
+  "invariants": [
+    "F-APP03 SWINTER1 route unchanged",
+    "F-APP05 SWCF2 PMdirect daily route unchanged",
+    "F-APP05 Rutter process unchanged",
+    "F-APP04 typed bindings unchanged",
+    "no new state, parser, file IO, solver, transaction, timestep, retry or tolerance policy"
+  ],
+  "admission_requires": [
+    "3505/3505 exact route records PASS",
+    "O0/O2 byte identity",
+    "F-APP03 regression PASS",
+    "F-APP05 PMdirect regression PASS",
+    "independent test-only qualification before merge"
+  ]
+}
