@@ -1,0 +1,123 @@
+{
+  "schema": "pub-gc-gmd-figure-export-admission-result-v1",
+  "date": "2026-09-19",
+  "status": "VALIDATED_GMD_PDF_EXPORT_CANDIDATE",
+  "scientific_source": "Governed repository SVG F1-F7; no scientific-source mutation",
+  "source_head": "1a0f1f1d28f17dbdd341ab977d1f590f2772e74c",
+  "source_plan": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.json",
+  "exporter": "CairoSVG 2.9.1",
+  "qualification": {
+    "workflow": "PUB-GC GMD figure export",
+    "run_id": 35405142243,
+    "job_id": 105793234099,
+    "conclusion": "success",
+    "artifact_id": 10571902714,
+    "artifact_name": "pub-gc-gmd-figure-package",
+    "artifact_size_bytes": 330428,
+    "artifact_digest": "sha256:c15ab068d7d6885533cf022640ae95090492333ca9044c0f9ed089122f6130e7",
+    "internal_submission_zip_sha256": "37ef7daf52ad2892b78b4f926f89983f64c097eba32839e20fce47211e5d43fb",
+    "artifact_expires_at": "2026-10-18T23:18:24Z"
+  },
+  "automated_checks": {
+    "figure_count": 7,
+    "all_one_page": true,
+    "each_pdf_max_bytes": 2097152,
+    "all_within_size_limit": true,
+    "all_detected_fonts_embedded": true,
+    "aspect_ratio_preserved": true,
+    "poppler_render_nonblank": true,
+    "rendered_content_not_touching_page_edge": true,
+    "flat_submission_zip": true
+  },
+  "independent_render_review": {
+    "renderer": "OpenAI PDF skill render_pdf.py at 160 dpi",
+    "reviewed_artifact_id": 10571902714,
+    "verdict": "PASS",
+    "observations": [
+      "all seven figures render legibly",
+      "no clipped text or objects observed",
+      "no overlaps or black-square glyph failures observed",
+      "F7 remains a component-domain boundary figure and does not imply executed Hupsel coupled windows"
+    ]
+  },
+  "figures": [
+    {
+      "figure": "F1",
+      "file": "f01.pdf",
+      "size_bytes": 23995,
+      "sha256": "caffc98c2a46aa72b6cbea02dc80912c154d0c2d39e64f2a456e7b7611dac59b",
+      "font_count": 2,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    },
+    {
+      "figure": "F2",
+      "file": "f02.pdf",
+      "size_bytes": 28593,
+      "sha256": "111f4e57f2f937f7e3500bb22488458cc50c10c9550cc46ebf94e3ad024c36b7",
+      "font_count": 3,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    },
+    {
+      "figure": "F3",
+      "file": "f03.pdf",
+      "size_bytes": 26846,
+      "sha256": "41e9ce848e433684dfa5423df2e527810c86ca186491ff5ad559299e8ae48c76",
+      "font_count": 3,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    },
+    {
+      "figure": "F4",
+      "file": "f04.pdf",
+      "size_bytes": 24370,
+      "sha256": "580963bfc02f52da8f478bd7fbc82c9deb849c9a5373c0297f3b1e7a661be0d7",
+      "font_count": 3,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    },
+    {
+      "figure": "F5",
+      "file": "f05.pdf",
+      "size_bytes": 23483,
+      "sha256": "b0c63e32584ee1fc49c48ffceefb05275aa9eb4827f380bfdd46a9337d4bad69",
+      "font_count": 2,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    },
+    {
+      "figure": "F6",
+      "file": "f06.pdf",
+      "size_bytes": 27703,
+      "sha256": "421ba3979d92a37edadfe844e5caa25059e2dbee3e9501418939c908f9b46875",
+      "font_count": 3,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    },
+    {
+      "figure": "F7",
+      "file": "f07.pdf",
+      "size_bytes": 24652,
+      "sha256": "b1a3a702601e164701c96d85370642abde91494c0efc54c17ddea2fb3659e5ed",
+      "font_count": 2,
+      "fonts_embedded": true,
+      "page_count": 1,
+      "aspect_ratio_preserved": true,
+      "render_check": "PASS"
+    }
+  ],
+  "disposition": "Exporter and validation workflow may be canonically admitted. At final governed publication release, regenerate the PDFs from the same governed SVG sources and bind the release-specific artifact/PID without changing scientific content."
+}
