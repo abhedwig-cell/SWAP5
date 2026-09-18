@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.f-rom0ta3.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA3",
+  "title": "Qualification-only fixed-resolution Reference-floor transaction capability",
+  "phase": "PREREGISTERED_BEFORE_SOURCE_MUTATION",
+  "parent_head": "3a46d186469263a6578f77a386b15e59846490af",
+  "upstream_decision": "TEMPORAL_AUTHORITY_REQUIRES_NEW_REFERENCE_CAPABILITY",
+  "purpose": "Provide a governed way to commit a converged, mass-complete Reference-Richards fixed-resolution sample for numerical floor qualification without asserting application temporal adequacy or requiring an application head-error budget.",
+  "architecture_binding": {
+    "transaction_semantic": "TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION",
+    "accepted_route": "TX_ROUTE_REFERENCE_FLOOR_FIXED",
+    "ordinary_application_entrypoint": "MUST_REJECT_REFERENCE_FLOOR_MODE",
+    "qualification_entrypoint": "DEDICATED_FMR_REFERENCE_FLOOR_TRIAL_ONLY",
+    "solver": "REFERENCE_RICHARDS_ONLY",
+    "automatic_temporal_retry": false,
+    "automatic_dt_reduction": false,
+    "mass_gate_unchanged": true,
+    "physical_state_schema_change": false,
+    "numerical_history_schema_change": false,
+    "temporal_accuracy_claim": false,
+    "production_timestep_policy_claim": false
+  },
+  "fixed_resolution_semantics": {
+    "attempts_per_requested_sample": 1,
+    "requested_interval_must_equal_committed_interval": true,
+    "solver_failure": "TERMINAL_FAILED_SAMPLE",
+    "mass_failure": "TERMINAL_FAILED_SAMPLE",
+    "temporal_certificate_required": false,
+    "temporal_indicator_budget_required": false,
+    "retry_scale_ignored_for_sample_execution": true,
+    "max_retries_forced": 0,
+    "candidate_commit": "EXACTLY_ONCE_AFTER_SOLVER_AND_MASS_PASS"
+  },
+  "qualification_context": {
+    "location": "FMR_SERIALIZED_REFERENCE_BACKEND_DEDICATED_ENTRYPOINT",
+    "ordinary_run_trial_may_select_mode": false,
+    "kernel_transaction_core_sees_explicit_distinct_temporal_source": true,
+    "authority_receipt": "EXTERNAL_RESULT_DIAGNOSTICS_NOT_PHYSICAL_STATE"
+  },
+  "source_allowlist": [
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "tests/rom/**",
+    ".github/workflows/f-rom0ta3-reference-floor-capability.yml",
+    "integration/f-rom/F-ROM0TA3_*",
+    "docs/science/F-ROM0TA3_*"
+  ],
+  "forbidden": [
+    "NO_REFERENCE_PHYSICS_CHANGE",
+    "NO_RICHARDS_SOLVER_CHANGE",
+    "NO_NONLINEAR_CONTROL_RELAXATION",
+    "NO_MASS_TOLERANCE_RELAXATION",
+    "NO_SYNTHETIC_LARGE_HEAD_BUDGET",
+    "NO_FMR44R_BUDGET_REUSE",
+    "NO_AUTOMATIC_RETRY_OR_DT_REDUCTION",
+    "NO_ORDINARY_APPLICATION_ACCESS",
+    "NO_ROSSFAST_ACCESS",
+    "NO_ROM_STATE_OR_CLOSURE_WORK"
+  ],
+  "qualification_matrix": [
+    "transaction fixture accepts one converged mass-complete fixed-resolution sample",
+    "transaction fixture rejects solver failure without retry",
+    "transaction fixture rejects mass failure without retry",
+    "ordinary FMR run_trial rejects the qualification temporal mode",
+    "dedicated FMR reference-floor entrypoint accepts only Reference solver",
+    "requested dt equals accepted dt and exactly one transaction is committed",
+    "result diagnostics identify REFERENCE_FLOOR_FIXED source and route",
+    "existing external-full-half and model-certificate tests remain unchanged",
+    "O0/O2 deterministic identity",
+    "no reference/** mutation"
+  ],
+  "post_capability_experiment": {
+    "materials": ["B01", "B14"],
+    "seed": "F-ROM0R_R1",
+    "forcing": "F-ROM0R_R2_SYMMETRIC_ONE_PERCENT_K0",
+    "dt_ladder_day": [0.0016, 0.0008, 0.0004],
+    "common_horizon_day": 0.0128,
+    "optional_dt_0_0002": false,
+    "outputs": [
+      "pressure_head_profile_diagnostic",
+      "theta_profile_diagnostic",
+      "total_storage",
+      "upper_0_40_cm_storage",
+      "lower_40_160_cm_storage",
+      "top_exchange",
+      "bottom_exchange",
+      "mass_residual",
+      "solver_work",
+      "requested_and_committed_dt",
+      "replay_restart_identity"
+    ]
+  },
+  "implementation_authorized_by_this_preregistration": true,
+  "production_admission_authorized": false,
+  "rom1a_authorized": false
+}
