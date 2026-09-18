@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.rom1ad1.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-D1",
+  "title": "D01 strict mode-2 failure cause and representation-floor diagnostic",
+  "execution": {
+    "workflow_run": 35377391368,
+    "workflow_job": 105705200471,
+    "executed_head": "17b0a8c3ad6d40344480e195264a84e60bed953c",
+    "artifact_id": 10560503563,
+    "artifact_digest": "sha256:b29cf76f609157570de33e22fc2ddf2e06a90b2fda427c642b22a2b1d06e0d86",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "accepted_prefix": {
+    "steps": 20,
+    "revision": 22,
+    "time_day": 0.019200000000000002
+  },
+  "failure": {
+    "classification": "RETRY_TOTAL_ONLY",
+    "local_balance_flag_count": 0,
+    "head_flag_count": 0,
+    "max_abs_local_residual_cm_per_day": 5.591083152012288e-13,
+    "total_residual_cm_per_day": 1.461497589616556e-12,
+    "max_residual_node": 5,
+    "nonlinear_iterations": 16,
+    "backtracking_attempts": 38
+  },
+  "representation": {
+    "bound_cm": 8.881784197001252e-15,
+    "abs_total_residual_integrated_cm": 1.1691980716932429e-15,
+    "residual_over_bound": 0.13163999999999978,
+    "within_bound": true,
+    "formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "observed_residual_used_in_formula": false,
+    "policy_applied_to_solver": false
+  },
+  "invariants": {
+    "controls_changed": false,
+    "history_changed": false,
+    "failed_candidate_committed": false,
+    "committed_predecessor_bit_immutable": true,
+    "direct_and_fmr_failure_work_identity": true,
+    "mode2_fallback_authorized_by_D1": false
+  },
+  "decision": "ROM1AD1_RETRY_TOTAL_ONLY_WITHIN_REPRESENTATION_BOUND",
+  "interpretation": "The first ROM-1A D01 failure is not a pressure-head or local compartment-balance failure. It is a total-column-only Reference retry whose integrated residual lies well inside the independently established pre-solve floating-point representation bound. D1 is diagnostic only and does not itself authorize mode-2 fallback.",
+  "rom1a_parent_reclassified": false
+}
