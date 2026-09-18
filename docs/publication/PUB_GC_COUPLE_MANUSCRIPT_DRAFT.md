@@ -786,15 +786,69 @@ Within this envelope, a computed trial flux is therefore demonstrably not an aut
 
 The experiment does not test recovery from a platform failure after the irreversible publication point; that remains a durability/restart question rather than a rollback-safe scientific retry.
 
-## 4.3 Coupled convergence
+## 4.3 Coupling-window and groundwater-buffering characterization
 
-**Evidence status:** the E1/E2 case demonstrates one bounded two-iteration convergence trace, but broad hydrological regime characterization is still required.
+**Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E3a.
 
-The next experiment varies coupling-window duration and hydrological feedback strength and deliberately includes weak, materially iterative and difficult/non-convergent regimes. Until that experiment is complete, the present result must not be interpreted as evidence that two iterations are generally sufficient.
+A controlled one-window matrix varied coupling-window duration and MODFLOW specific yield while retaining the same real FMR/SWAP column, groundwater conductivity and process configuration. Three treatments were compared: constant-flux loose coupling, a frozen affine predictor response, and the full strong predictor/corrector coupling.
+
+The shortest requested window, `2.5e-5 day` (2.16 s), did not complete the real SWAP predictor trial and therefore lies below the currently qualified FMR response envelope. At all three longer windows strong coupling converged for all three specific-yield values.
+
+The number of strong coupled outer iterations was:
+
+| window | Sy=0.02 | Sy=0.15 | Sy=0.30 |
+| --- | ---: | ---: | ---: |
+| 8.64 s | 3 | 2 | 2 |
+| 34.56 s | 3 | 3 | 2 |
+| 138.24 s | 4 | 3 | 3 |
+
+The final interface residual remained below `1e-15 m s-1` in all nine successful cases. Coupling work increased with longer windows and lower groundwater storage within this restricted matrix.
+
+Constant-flux loose coupling did not satisfy the same interface criterion in any successful case. Its residual exceeded the criterion by factors from approximately 11 to 389. The largest mismatch occurred for the longest window and lowest specific yield.
+
+Despite this interface inconsistency, the absolute groundwater-head difference relative to the strong solution remained extremely small in the current near-equilibrium envelope. The largest value was approximately:
+
+```text
+|H_loose - H_strong| = 1.06e-9 m.
+```
+
+The largest integrated one-window exchange difference was approximately:
+
+```text
+5.33e-11 m water-equivalent depth.
+```
+
+The E3a result therefore separates two questions. Strong coupling is required to satisfy the stated interface-consistency criterion, but this first envelope is too weakly forced to demonstrate a hydrologically material state correction.
+
+### 4.3.1 Frozen affine predictor response
+
+A second and unexpected result is that the frozen affine predictor response did not improve the one-pass solution.
+
+For every successful E3a case:
+
+```text
+|r_affine| > |r_constant-flux|.
+```
+
+The ratio `|r_affine| / |r_constant|` ranged from approximately 1.41 to 1.92. At `DeltaT=138.24 s` and `Sy=0.02` the constant-flux mismatch was approximately `3.89e-13 m s-1`, while the frozen-affine mismatch was approximately `7.47e-13 m s-1`.
+
+This result is evidence against interpreting the current predictor coefficient `u` as if it were automatically the finite-window head-to-exchange Jacobian needed for a one-shot Newton-like correction.
+
+It does not show that `u` is incorrect. It shows that its relation to the actual interface response must be measured directly.
 
 ## 4.4 Response interpretation
 
-**Evidence status:** concept and response infrastructure exist; publication-specific `u_FD` versus `J_S` versus `J_R` study required.
+**Evidence status:** E3a makes this a priority result rather than a theoretical refinement.
+
+The publication-specific study must distinguish:
+
+```text
+u_FD
+J_S = d DeltaS / dH
+J_R = d V_u / dH
+```
+
+from identical accepted SWAP origins. The adverse frozen-affine E3a result means that no acceleration claim may assume these quantities are interchangeable.
 
 ## 4.5 Response information and computational value
 
