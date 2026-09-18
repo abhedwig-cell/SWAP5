@@ -9,6 +9,7 @@ FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 P2E05_QUALIFIED_HEAD=ff89a93bf5b49795db5cb04be0c7325c7b060f5c
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
+FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
 
 SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
@@ -21,6 +22,7 @@ MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
 PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
 BACKEND_FROSS12=19d07cac9285142d14a6e9c53706fb73d016d5ad
 BACKEND_FGC31=4e5491c997ed0752a4db9abd09b5ad3daf394db2
+BACKEND_FGC44=4597c833e7f45beaef04ffcc592ca6a4fcbd0395
 
 fail() { echo "FCI96_FROSS13_SEMANTIC_SUCCESSOR_FAIL $*" >&2; exit 1; }
 
@@ -34,7 +36,10 @@ git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD || fail 'qualified F-ROS
 test "$(git rev-parse HEAD:$SW)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3 || fail 'typed solver-contract drift'
 test "$(git rev-parse HEAD:$REF_ADAPTER)" = 4b545c6fb260e81cd6c8f4d2d65f2beee7281e53 || fail 'typed Reference adapter drift'
 test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = dbb441f3529be179d64fb57f9c44336d3d20c540 || fail 'RossFast adapter drift'
-if git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
+if git merge-base --is-ancestor "$FGC44_PRODUCTION" HEAD; then
+  test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC44" || fail 'F-GC44 serialized backend successor drift'
+  echo 'FCI96_FGC44_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
   test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC31" || fail 'F-GC31 serialized backend successor drift'
   echo 'FCI96_FGC31_BACKEND_SUCCESSOR=PASS'
 else
