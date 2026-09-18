@@ -3,15 +3,15 @@ module mod_fgc44_real_swap_c_bridge
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state
+       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
@@ -43,8 +43,10 @@ module mod_fgc44_real_swap_c_bridge
   private
 
   real(real64), parameter :: H0_CM=-75.0_real64
-  real(real64), parameter :: DURATION_DAY=0.25_real64
+  real(real64), parameter :: DURATION_DAY=1.0e-4_real64
   real(real64), parameter :: TOL=1.0e-12_real64
+  real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
+  real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
   integer(int64), parameter :: COLUMN_ID=540044_int64
   integer(int64), parameter :: COUPLING_ID=440044_int64
   integer(int64), parameter :: GW_CELL_ID=7001_int64
@@ -106,8 +108,7 @@ contains
     initialized=.false.; ledger_prepared=.false.
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
-    call determine_initial_conductivity(predictor_parameters,qeq)
-    qeq=-qeq
+    qeq=PREDICTOR_QBOT
     call initialize_forcing(base_forcing,qeq)
     call initialize_column_template(column,template)
     call initialize_configs(predictor_config,corrector_config)
@@ -315,9 +316,10 @@ contains
 
   subroutine initialize_configs(pred,corr)
     type(canonical_numerical_config_t),intent(out)::pred,corr
-    pred%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF; pred%transaction%temporal_tolerance=1.0e-8_real64
+    pred%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE; pred%transaction%temporal_tolerance=0.0_real64
     pred%transaction%mass_tolerance=TOL; pred%transaction%retry_scale=0.5_real64; pred%transaction%max_retries=8
     pred%max_committed_substeps=32; pred%progress_tolerance=0.0_real64
+    pred%model_temporal_indicator_budget_available=.true.; pred%model_temporal_indicator_budget=HEAD_BUDGET
     pred%accepted_trajectory_direction%requested=.true.
     pred%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX
     corr=pred; corr%accepted_trajectory_direction%requested=.false.
@@ -331,12 +333,19 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    heads=H0_CM
+    real(real64)::accepted_predecessor_right_derivative(numnod)
+    integer :: i
+    heads(1)=H0_CM
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
     call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     physical%active_nodes=numnod; allocate(physical%pressure_head(numnod),physical%water_content(numnod))
     physical%pressure_head=heads; physical%water_content=water; physical%ponding_depth=0.0_real64; physical%groundwater_level=-2.0_real64
-    call fmr_new_b110_committed_state(state,COLUMN_ID,physical,0.0_real64,ok)
+    accepted_predecessor_right_derivative=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(state,COLUMN_ID,physical,0.0_real64,ok, &
+         accepted_predecessor_right_derivative)
   end subroutine initialize_committed_state
 
   subroutine materialize_solver_view(candidate,state,parameter_set,ok)
@@ -369,7 +378,12 @@ contains
     integer,intent(out)::status
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    heads=H0_CM; call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    integer :: i
+    heads(1)=H0_CM
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
+    call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod),conductivity(numnod),qbot, &
          0.5_real64*p%dz(numnod),datum,face,status)
