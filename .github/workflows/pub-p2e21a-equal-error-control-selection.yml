@@ -1,0 +1,25 @@
+name: PUB-P2E21A equal-error control selection
+
+on:
+  push:
+    branches:
+      - work/pub-p2e21a-equal-error-control-selection
+    paths:
+      - 'docs/publication/P2E21A_EQUAL_ERROR_CONTROL_SELECTION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e21a_equal_error_control_selection.f90'
+      - 'tests/publication/run_pub_p2e21a_equal_error_control_selection.sh'
+      - '.github/workflows/pub-p2e21a-equal-error-control-selection.yml'
+  workflow_dispatch:
+
+jobs:
+  equal-error-control-selection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered untimed matched-accuracy matrix
+        run: bash tests/publication/run_pub_p2e21a_equal_error_control_selection.sh
