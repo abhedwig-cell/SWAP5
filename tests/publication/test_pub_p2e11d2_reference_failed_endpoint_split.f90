@@ -2,7 +2,7 @@ program test_pub_p2e11d2_reference_failed_endpoint_split
   use, intrinsic :: iso_fortran_env, only: real64, real128
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED
+       soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
