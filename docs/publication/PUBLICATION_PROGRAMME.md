@@ -47,7 +47,7 @@ Research design:
 
 ### PUB-GC - COUPLE
 
-Status: **active candidate line**.
+Status: **HIGH-PRIORITY CENTRAL COUPLING MANUSCRIPT**.
 
 Primary ownership:
 
@@ -80,15 +80,15 @@ The technical ability to support N:1 coupling is infrastructure, not the intende
 
 ### PUB-RC - ACCELERATE
 
-Status: **conditional publication candidate**.
+Status: **high-priority experiment within PUB-GC; independent-paper status conditional**.
 
 Current research question:
 
 > Under which hydrological and numerical conditions does explicitly provided finite-window response information reduce the total cost or enlarge the convergence domain of partitioned coupling beyond what can be achieved from black-box interface histories alone, while each component retains independent time integration?
 
-Current default disposition:
+Current disposition:
 
-> Integrate the relevant response/acceleration results into PUB-GC unless the PUB-RC novelty gates demonstrate a reproducible information-value regime beyond state-of-the-art black-box multisecant coupling.
+> Develop the response/acceleration study as a major experiment inside the central PUB-GC manuscript. Split it into a separate PUB-RC manuscript only if the novelty gates demonstrate a reproducible, generalizable information-value regime beyond state-of-the-art black-box multisecant coupling.
 
 PUB-RC must not claim novelty from derivative-informed coupling, interface Jacobians, autonomous/multirate component integration, dynamic hydrological storage response, surrogate-assisted quasi-Newton coupling, or hydrological convergence-regime analysis by themselves.
 
@@ -99,6 +99,10 @@ Research design:
 Prior-art register:
 
 `PUB_RC_ACCELERATE_LITERATURE_REGISTER.md`
+
+Broader coupling-method publishability review:
+
+`PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md`
 
 ### Coupling-paper firewall
 
