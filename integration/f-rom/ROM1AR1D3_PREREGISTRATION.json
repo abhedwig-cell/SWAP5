@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.rom1ar1d3.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1-D3",
+  "title": "Discovery-only strict-first local-plus-total fallback qualification",
+  "phase": "PREREGISTERED_BEFORE_POLICY_EXECUTION",
+  "predecessors": {
+    "ROM1AD2": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED",
+    "ROM0_R3D4": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "ROM1AR1D1": "ROM1AR1D1_RETRY_LOCAL_BALANCE",
+    "ROM1AR1D2": "ROM1AR1D2_LOCAL_RESIDUAL_WITHIN_PRIOR_INTEGRATED_ALLOWANCE"
+  },
+  "purpose": "Qualify on the frozen B01 discovery histories a classification-dependent strict-first research Reference policy that preserves existing total-only fallbacks exactly and adds one independently bounded local-balance fallback class.",
+  "policy": {
+    "original_attempt": {
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "total_balance_tolerance_cm_per_day": 1e-12,
+      "always_first": true
+    },
+    "pre_solve": {
+      "total_representation_bound_formula_cm": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+      "local_integrated_allowance_cm": 1.6e-15,
+      "local_allowance_source": "PUB-P2E19/P2E20/P2E21",
+      "failed_residual_used_to_choose_any_bound": false
+    },
+    "after_failed_original": {
+      "committed_state_must_be_bit_immutable": true,
+      "direct_same_state_diagnostic_required": true,
+      "RETRY_TOTAL_ONLY": {
+        "eligibility": [
+          "local_balance_flags == 0",
+          "head_flags == 0",
+          "max_abs_local_residual <= 1e-12 cm/day",
+          "abs(total_residual)*dt <= pre_solve_total_representation_bound"
+        ],
+        "reattempt_compartment_tolerance": "unchanged 1e-12 cm/day",
+        "reattempt_total_tolerance": "max(1e-12, total_representation_bound_cm/dt)",
+        "authority_semantics": "identical to ROM1AD2/R3D4"
+      },
+      "RETRY_LOCAL_BALANCE": {
+        "eligibility": [
+          "local_balance_flags > 0",
+          "head_flags == 0",
+          "max_abs_local_residual*dt <= 1.6e-15 cm",
+          "abs(total_residual)*dt <= pre_solve_total_representation_bound"
+        ],
+        "reattempt_compartment_tolerance": "max(1e-12, 1.6e-15/dt)",
+        "reattempt_total_tolerance": "max(1e-12, total_representation_bound_cm/dt)",
+        "authority_semantics": "new candidate class; no empirical factor"
+      },
+      "all_other_classes": "FAIL_CLOSED"
+    },
+    "reattempt": {
+      "fresh_backend": true,
+      "same_interval": true,
+      "one_attempt_only": true,
+      "dt_subdivision": false,
+      "hard_transaction_mass_gate_cm": 1e-12
+    }
+  },
+  "qualification_population": {
+    "material": "B01",
+    "histories": ["D01","D02","D03","D04","D05","D06","D07","D08"],
+    "steps_per_history": 64,
+    "target_accepted_steps": 512,
+    "held_out_histories_executed": false,
+    "B14_executed": false,
+    "history_definitions_equal_ROM1A_parent": true
+  },
+  "frozen_controls": {
+    "dt_day": 0.0008,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12
+  },
+  "required_evidence": [
+    "ALL_8_DISCOVERY_HISTORIES_COMPLETE_64_STEPS",
+    "EXACTLY_512_ACCEPTED_STATES",
+    "EVERY_ORIGINAL_SUCCESS_COMMITS_UNCHANGED_WITHOUT_FALLBACK",
+    "EVERY_FAILED_ORIGINAL_ATTEMPT_LEAVES_COMMITTED_STATE_BIT_IDENTICAL",
+    "EVERY_FALLBACK_CLASS_IS_TOTAL_ONLY_OR_LOCAL_BALANCE_WITH_ZERO_HEAD_FLAGS",
+    "EVERY_TOTAL_ONLY_TRIGGER_WITHIN_TOTAL_REPRESENTATION_BOUND",
+    "EVERY_LOCAL_TRIGGER_WITHIN_PRIOR_1P6E15_COMPARTMENT_ALLOWANCE",
+    "EVERY_LOCAL_TRIGGER_TOTAL_RESIDUAL_WITHIN_TOTAL_REPRESENTATION_BOUND",
+    "TOTAL_ONLY_REATTEMPT_KEEPS_COMPARTMENT_TOLERANCE_AT_1E12",
+    "LOCAL_REATTEMPT_USES_EXACT_1P6E15_OVER_DT_COMPARTMENT_RATE",
+    "FRESH_BACKEND_SAME_INTERVAL_ONE_REATTEMPT",
+    "ZERO_DT_SUBDIVISION",
+    "HARD_MASS_GATE_EVERY_COMMITTED_STEP",
+    "D08_STEP34_COMPLETES_VIA_LOCAL_CLASS",
+    "HELDOUT_NOT_EXECUTED",
+    "B14_NOT_EXECUTED",
+    "O0_O2_STDOUT_BIT_IDENTITY"
+  ],
+  "positive_decision": "ROM1AR1D3_DISCOVERY_LOCAL_PLUS_TOTAL_FALLBACK_QUALIFIED",
+  "negative_decision": "ROM1AR1D3_DISCOVERY_LOCAL_PLUS_TOTAL_FALLBACK_NO_GO",
+  "if_positive": "Freeze this research Reference policy and preregister ROM-1A-R2 over the unchanged 12-history library. Held-out histories are first exposed only in R2 and cannot trigger policy retuning.",
+  "firewalls": [
+    "NO_HISTORY_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_HEAD_TOLERANCE_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_HELDOUT_EXECUTION",
+    "NO_B14_EXECUTION",
+    "NO_REDUCED_STATE_WORK",
+    "NO_PRODUCTION_REFERENCE_ADMISSION"
+  ]
+}
