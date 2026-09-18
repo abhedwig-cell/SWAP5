@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.publication.p2e11d-extension-reference-failure-diagnostics.v1",
+  "workunit": "PUB-P2E11D",
+  "phase": "PREREGISTERED_REFERENCE_ONLY_FAILURE_DIAGNOSTICS",
+  "canonical_science_base": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "parent_common_domain_result_commit": "b6cc68a8bf4ca89d53da17557deec2cb08a16683",
+  "authorities": {
+    "p2e11r_result_blob": "c0228096a6fb8a65ec7f9f234baa2b866bf2691e",
+    "p2e07_cancellation_floor_result_blob": "be60ba751141545e1534f190e709dc5d2b7b83e6",
+    "reference_tree": "684f1e2889b6992e5aedc88f52bb45f4558bb3e4",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "reference_workspace_blob": "74f99556005ae39614f9df678467b1e19097bae2",
+    "headcalc_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"
+  },
+  "purpose": "Classify the exact Reference validity failures observed in P2E11R and quantify the already-qualified P2E07 local-balance representation/cancellation-floor diagnostics on the unchanged 30-material extension domain.",
+  "matrix": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "temporal_levels_day": [
+      0.0016,
+      0.0032,
+      0.0064,
+      0.0128,
+      0.0256
+    ],
+    "physical_cases_per_level": 180,
+    "total_pairs": 900,
+    "geometry": "16 homogeneous cells x 10 cm"
+  },
+  "failure_classes": [
+    "ACCEPTED",
+    "RETRY_TOTAL_ONLY",
+    "RETRY_LOCAL_BAL",
+    "RETRY_HEAD",
+    "RETRY_MIXED",
+    "RETRY_OTHER",
+    "FAILED_OR_ENDPOINT_INVALID"
+  ],
+  "local_balance_diagnostic": {
+    "method": "P2E07 diagnostic, unchanged in meaning",
+    "configured_reference_compartment_balance_tolerance_cm_per_day": 1e-12,
+    "estimated_floor_formula": "max(storage_input_quantization_floor, abs(real64_native_order_sum-higher_precision_component_sum), real64_summation_order_spread)",
+    "interpretation_boundary": "Diagnostic resolution scale only. It is not a replacement tolerance, true-solution bound or automatic acceptance criterion."
+  },
+  "decision_rule": {
+    "local_floor_case": "If the blocked extension is dominated by local-balance retries whose residual is numerically indistinguishable from the diagnosed floor, do not label those cases physical solver failures and do not change tolerances. A separate methodological decision must define any alternative candidate-independent calibration-validity predicate.",
+    "substantive_failure_case": "If persistent failures are head, mixed, retry-other, endpoint-invalid, or local-balance residuals materially above the diagnosed floor, retain the blocked/narrowed extension domain.",
+    "no_automatic_admission": true
+  },
+  "firewall": {
+    "rossfast_solver_execution_allowed": false,
+    "rossfast_extension_discrepancy_inspection_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "case_removal_allowed": false,
+    "temporal_ladder_change_allowed": false,
+    "admission_rule_change_allowed": false
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_FAILURE_DIAGNOSTICS_READY"
+}
