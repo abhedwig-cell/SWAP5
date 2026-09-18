@@ -26,6 +26,10 @@ SOILWATER=src/legacy/b1_10_port/soilwater.f90
 CONTRACT=src/solver/mod_soil_water_solver_contract.f90
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
+M1C3_RESULT=integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json
+M1C3_TASK2_BLOB=0406d3180262b06a5a393b605cc553a912a26aa0
+M1C3_TOP_ADAPTER_BLOB=8a59211335f44034a93d9ecd0d7a8920ee9baa39
+M1C3_TOP_PROVIDER_BLOB=42fb85a03e6835a839574bf6d4b4c01472a01236
 BUILD="${RUNNER_TEMP:-/tmp}/fci93-${GITHUB_RUN_ID:-local}"
 rm -rf "$BUILD"; mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
@@ -52,15 +56,37 @@ git merge-base --is-ancestor "$FCI75" HEAD || fail 'current head does not descen
 git merge-base --is-ancestor "$STATUS_A" HEAD || fail 'current head does not descend from Status-A scientific baseline'
 echo 'FCI93_SUCCESSOR_LINEAGE=PASS'
 
-# The two F-SI35 composition surfaces changed at F-CI75 and have not changed
-# since. Bind current preservation to those admitted successor blobs, not to the
-# superseded F-CI58P pre-successor blobs.
-for path in "$TASK2" "$SOILWATER"; do
-  [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$FCI75:$path")" ]] || fail "post-FCI75 composition drift: $path"
-  [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$STATUS_A:$path")" ]] || fail "post-Status-A composition drift: $path"
-done
+# F-CI75/Status-A remain the default moving authority. M1-C3 is a later
+# independently qualified semantic successor for the Task2 adapter only.
+# SoilWater and transaction ownership remain byte-identical to the admitted
+# F-CI75/Status-A lineage.
+if [[ -f "$M1C3_RESULT" ]]; then
+  python3 - "$M1C3_RESULT" <<'PY'
+import json,sys
+s=json.load(open(sys.argv[1],encoding='utf-8'))
+assert s['qualification_verdict']=='PASS_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER'
+assert s['m1_c3_scientific_gate_pass'] is True
+assert s['owner_qualification']['conclusion']=='success'
+assert s['independent_qualification']['conclusion']=='success'
+assert s['external_exact_asset_execution']['accepted_interval_identity'] is True
+assert s['external_exact_asset_execution']['result_bal_exact_reference_identity'] is True
+assert s['external_exact_asset_execution']['result_blc_exact_reference_identity'] is True
+print('FCI93_M1C3_QUALIFIED_SUCCESSOR_RECEIPT=PASS')
+PY
+  [[ "$(git rev-parse "HEAD:$TASK2")" == "$M1C3_TASK2_BLOB" ]] || fail 'M1-C3 Task2 successor blob drift'
+  [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" == "$M1C3_TOP_ADAPTER_BLOB" ]] || fail 'M1-C3 dynamic-top adapter blob drift'
+  [[ "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" == "$M1C3_TOP_PROVIDER_BLOB" ]] || fail 'M1-C3 dynamic-top provider blob drift'
+  [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$FCI75:$SOILWATER")" ]] || fail 'M1-C3 changed legacy SoilWater'
+  [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$STATUS_A:$SOILWATER")" ]] || fail 'M1-C3 SoilWater differs from Status-A'
+  echo 'FCI93_CURRENT_M1C3_SEMANTIC_SUCCESSOR_BLOBS=PASS'
+else
+  for path in "$TASK2" "$SOILWATER"; do
+    [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$FCI75:$path")" ]] || fail "post-FCI75 composition drift: $path"
+    [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$STATUS_A:$path")" ]] || fail "post-Status-A composition drift: $path"
+  done
+  echo 'FCI93_CURRENT_FSI35_SUCCESSOR_BLOBS=PASS'
+fi
 [[ "$(git rev-parse "HEAD:$TX")" == "$TX_BLOB" ]] || fail 'transaction-reference dependency drift'
-echo 'FCI93_CURRENT_FSI35_SUCCESSOR_BLOBS=PASS'
 
 # F-CI93 is a semantic preservation gate for F-SI35, not a repository-wide
 # production freeze. Later admitted capabilities may add or change unrelated
@@ -106,6 +132,21 @@ for spec in \
   git show "$ref:$path" > "$out" || fail "cannot materialize semantic oracle $ref:$path"
 done
 
+# The immutable F-KT15 stub predates the later explicit SWSOPHY import used by
+# the M1-C3 profile guard. Add only that interface symbol, with the historical
+# analytical default, without changing any oracle calculation.
+python3 - "$BUILD/fkt15_stubs.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); s=p.read_text()
+needle='module MOD_MvG\n  use MOD_grid, only: numnod\n  implicit none\n'
+assert needle in s
+if 'integer :: swsophy = 0' not in s:
+    s=s.replace(needle,needle+'  integer :: swsophy = 0\n',1)
+p.write_text(s)
+print('FCI93_M1C3_HISTORICAL_STUB_INTERFACE_SHIM=PASS')
+PY
+
 FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -fopenmp)
 MODULES=(
   "$BUILD/fkt15_stubs.f90"
@@ -119,6 +160,7 @@ MODULES=(
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/solver/mod_surface_evaporation_capacity_contract.f90
@@ -127,6 +169,7 @@ MODULES=(
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90

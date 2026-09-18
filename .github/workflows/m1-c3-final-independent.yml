@@ -1,0 +1,27 @@
+name: M1-C3 independent qualification
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/m1/**'
+      - 'integration/m1/M1_C3_FINAL_*'
+      - 'docs/integration/M1_C3_FINAL_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independently qualify M1-C3 adapter
+        run: bash tests/m1/run_m1_c3_final_independent_qualification.sh

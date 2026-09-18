@@ -25,6 +25,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
      real(real64) :: potential_pond_evaporation = 0.0_real64
      real(real64) :: ponding_max = 0.0_real64
      real(real64) :: runoff_resistance = 0.0_real64
+     real(real64) :: fixed_top_node_conductivity = -1.0_real64
      real(real64) :: runoff_exponent = 1.0_real64
    contains
      procedure :: evaluate => b110_dynamic_solver_top_evaluate
@@ -38,7 +39,7 @@ contains
        conductivity_mean_method, previous_ponding_depth, step_duration, &
        precipitation_rate, irrigation_rate, snowmelt_rate, runon_rate, &
        potential_bare_soil_evaporation, potential_pond_evaporation, &
-       ponding_max, runoff_resistance, runoff_exponent)
+       ponding_max, runoff_resistance, runoff_exponent, fixed_top_node_conductivity)
     type(b110_dynamic_top_boundary_solver_provider_t), intent(out) :: provider
     type(soil_water_parameter_set_t), target, intent(in) :: geometry
     type(b110_default_mvg_parameters_t), target, intent(in) :: hydraulics
@@ -47,6 +48,7 @@ contains
     real(real64), intent(in) :: precipitation_rate, irrigation_rate, snowmelt_rate, runon_rate
     real(real64), intent(in) :: potential_bare_soil_evaporation, potential_pond_evaporation
     real(real64), intent(in) :: ponding_max, runoff_resistance, runoff_exponent
+    real(real64), intent(in), optional :: fixed_top_node_conductivity
 
     provider%geometry => geometry
     provider%hydraulics => hydraulics
@@ -62,6 +64,8 @@ contains
     provider%ponding_max = ponding_max
     provider%runoff_resistance = runoff_resistance
     provider%runoff_exponent = runoff_exponent
+    provider%fixed_top_node_conductivity = -1.0_real64
+    if (present(fixed_top_node_conductivity)) provider%fixed_top_node_conductivity = fixed_top_node_conductivity
   end subroutine bind_b110_dynamic_top_boundary_solver_provider
 
   subroutine b110_dynamic_solver_top_evaluate(self, pressure_head_top, water_content_top, &
@@ -95,6 +99,7 @@ contains
     b110_request%ponding_max_cm = self%ponding_max
     b110_request%runoff_resistance_day = self%runoff_resistance
     b110_request%runoff_exponent = self%runoff_exponent
+    b110_request%fixed_top_node_conductivity_cm_per_day = self%fixed_top_node_conductivity
 
     call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)
     if (b110_result%status /= B110_DYN_TOP_AVAILABLE) then

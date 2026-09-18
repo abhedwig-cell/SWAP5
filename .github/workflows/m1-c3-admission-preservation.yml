@@ -1,0 +1,28 @@
+name: M1-C3 admission preservation gates
+
+on:
+  push:
+    branches:
+      - work/m1-c3-final-legacy-file-typed-adapter-v2
+    paths:
+      - '.github/workflows/m1-c3-admission-preservation.yml'
+      - 'tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh'
+      - 'tests/qualification/fci75/run_fci75_fkt21_current_canonical_admission_gate.sh'
+      - 'integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  moving-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-SI35 semantic-successor preservation
+        run: bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
+      - name: F-KT21 current-canonical semantic-successor preservation
+        run: bash tests/qualification/fci75/run_fci75_fkt21_current_canonical_admission_gate.sh
