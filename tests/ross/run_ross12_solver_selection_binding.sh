@@ -28,11 +28,52 @@ test "$(git rev-parse HEAD:$TX)" = d5a71a526efaebd82054580c3186f8e3545db331
 # adapter publishes the new typed integrated diagnostic. Rebind only those two
 # dependencies; all numerical/model/application authorities remain frozen.
 test "$(git rev-parse HEAD:$SW)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
+
+# Exact RossFast successor lineage. Historical F-ROSS12 remains the default;
+# only independently qualified exact postimages are recognized.
+HIST_MODEL=9f29ba7a08844692ba2628c7869d23713409f92b
+HIST_PROVIDER=afc05eb3001d91f66ca542978c3c6795283a7ac0
+HIST_KERNEL=034136c193b287bcf9a953a9b89df2a8fb0c97cc
+HIST_ADAPTER=dbb441f3529be179d64fb57f9c44336d3d20c540
+FROSS13_MODEL=5442fd7e7a2f392c9b796cd17c76b17977259f22
+FROSS13_PROVIDER=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
+FCI107_CACHE_KERNEL=2ad2a680e62744451d6763de48585f1bd45d3067
+FROSS22_TIERED_KERNEL=438ee46e012e9eb183b8f2532437e2fe56aa18ed
+FROSS22_TIERED_ADAPTER=2b134c36097aed2a44a56bfe8e2194b15aa063aa
+EXPECTED_MODEL="$HIST_MODEL"
+EXPECTED_PROVIDER="$HIST_PROVIDER"
+EXPECTED_KERNEL="$HIST_KERNEL"
+EXPECTED_ADAPTER="$HIST_ADAPTER"
+ROSSFAST_TIERED_MODE=0
+
+current_model="$(git rev-parse HEAD:$MODEL_BINDING)"
+current_provider="$(git rev-parse HEAD:$PROVIDER)"
+current_kernel="$(git rev-parse HEAD:$KERNEL)"
+current_adapter="$(git rev-parse HEAD:$ADAPTER)"
+
+if [[ "$current_model" == "$FROSS13_MODEL" && "$current_provider" == "$FROSS13_PROVIDER" ]]; then
+  EXPECTED_MODEL="$FROSS13_MODEL"
+  EXPECTED_PROVIDER="$FROSS13_PROVIDER"
+  if [[ "$current_kernel" == "$FROSS22_TIERED_KERNEL" && "$current_adapter" == "$FROSS22_TIERED_ADAPTER" ]]; then
+    EXPECTED_KERNEL="$FROSS22_TIERED_KERNEL"
+    EXPECTED_ADAPTER="$FROSS22_TIERED_ADAPTER"
+    ROSSFAST_TIERED_MODE=1
+    echo 'F_ROSS12_EXACT_FROSS22_TIERED_SUCCESSOR=PASS'
+  elif [[ "$current_kernel" == "$FCI107_CACHE_KERNEL" && "$current_adapter" == "$HIST_ADAPTER" ]]; then
+    EXPECTED_KERNEL="$FCI107_CACHE_KERNEL"
+    echo 'F_ROSS12_EXACT_FCI107_CACHE_SUCCESSOR=PASS'
+  elif [[ "$current_kernel" == "$HIST_KERNEL" && "$current_adapter" == "$HIST_ADAPTER" ]]; then
+    echo 'F_ROSS12_EXACT_FROSS13_STATIC_SUCCESSOR=PASS'
+  else
+    echo 'F_ROSS12_SUCCESSOR_LINEAGE_FAIL unexpected RossFast kernel/adapter pair' >&2
+    exit 1
+  fi
+fi
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
-test "$(git rev-parse HEAD:$MODEL_BINDING)" = 9f29ba7a08844692ba2628c7869d23713409f92b
-test "$(git rev-parse HEAD:$KERNEL)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
-test "$(git rev-parse HEAD:$PROVIDER)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
-test "$(git rev-parse HEAD:$ADAPTER)" = dbb441f3529be179d64fb57f9c44336d3d20c540
+test "$(git rev-parse HEAD:$MODEL_BINDING)" = "$EXPECTED_MODEL"
+test "$(git rev-parse HEAD:$KERNEL)" = "$EXPECTED_KERNEL"
+test "$(git rev-parse HEAD:$PROVIDER)" = "$EXPECTED_PROVIDER"
+test "$(git rev-parse HEAD:$ADAPTER)" = "$EXPECTED_ADAPTER"
 test "$(git rev-parse HEAD:$APP_HOST)" = daca18b77673608436425e81ecd397ef3e35e4b2
 
 WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
@@ -58,7 +99,7 @@ for opt in o0 o2; do
   gfortran -fopenmp "$m/tx.o" "$m/stepdir.o" "$m/trajsens.o" "$m/trajpub.o" "$m/contracts.o" "$m/sw.o" \
     "$m/refbind.o" "$m/policy.o" "$m/model_binding.o" "$m/kernel.o" "$m/provider.o" "$m/adapter.o" \
     "$m/app_host.o" "$m/selection_binding.o" "$m/test.o" -o "$m/test"
-  if ! "$m/test" "$ASSET_ROOT" > "$m/output.txt"; then
+  if ! SWAP5_ROSSFAST_EXPECT_TIERED_WORK="$ROSSFAST_TIERED_MODE" "$m/test" "$ASSET_ROOT" > "$m/output.txt"; then
     cat "$m/output.txt"
     exit 1
   fi
