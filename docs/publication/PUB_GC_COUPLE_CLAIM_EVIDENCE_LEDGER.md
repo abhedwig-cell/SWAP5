@@ -175,7 +175,7 @@ E1/E2 preregistration:
 
 E1/E2 results:
 
-`PUB_GC_E1_E2_RESULTS.md`
+`PUB_GC_E1_E2_RESULT.md`
 
 Machine-readable result:
 
