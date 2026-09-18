@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - docs/pub-gc-e7-component-domain-closeout
+      - docs/pub-gc-e7-component-domain-closeout-r2
     paths:
       - 'tests/publication/validate_pub_gc_e7_component_domain.py'
       - 'docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json'
       - 'docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json'
       - 'integration/audits/PPA_WU01_STATUS.json'
+      - 'integration/audits/PPA_WU02_STATUS.json'
       - 'integration/audits/PPA_WU03_STATUS.json'
       - 'integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json'
       - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
@@ -21,6 +23,7 @@ on:
       - 'docs/publication/PUB_GC_E7_*'
       - 'docs/publication/PUB_GC_*'
       - 'integration/audits/PPA_WU01_STATUS.json'
+      - 'integration/audits/PPA_WU02_STATUS.json'
       - 'integration/audits/PPA_WU03_STATUS.json'
       - 'integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json'
       - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
