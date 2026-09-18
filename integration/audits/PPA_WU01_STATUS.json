@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "PPA-WU01",
+  "title": "Production application bootstrap for an admitted normal-run profile",
+  "protocol": [
+    "RECONCILE",
+    "IMPLEMENT",
+    "QUALIFY",
+    "ADMIT",
+    "CLOSE"
+  ],
+  "phase": "FINAL_ADMISSION_RECONCILED",
+  "branch": "work/ppa-wu01-production-application-bootstrap",
+  "canonical_base": "f7bd4d470d14bdedcbe60ef2b674fce4f1575e9c",
+  "objective": "Create one authoritative Fortran/FMR-owned typed production bootstrap that can run an admitted standalone Reference Richards profile and materialize F-GC49D contexts from the same persistent owner, without qualification fixtures, new physics or legacy parsing.",
+  "exact_scope": [
+    "typed config to persistent Fortran/FMR owner",
+    "Reference Richards serialized runtime",
+    "explicit already-resolved typed forcing",
+    "prescribed-head groundwater-capable bottom profile (bottom_mode=5)",
+    "persistent committed state, participant registry and mass-ledger ownership",
+    "per-window F-GC49D context materialization from admitted topology/predictor/cell-area inputs"
+  ],
+  "exclusions": [
+    "legacy SWAP input grammar",
+    "meteorological file/calendar ingestion",
+    "new physics",
+    "qualification fixture promotion",
+    "Python ownership of SWAP/FMR state or ledgers",
+    "new predictor/corrector algorithm",
+    "iMOD Coupler upstream driver registration",
+    "ROM"
+  ],
+  "production_mutations": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "qualification_surface": [
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90",
+    "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    ".github/workflows/ppa-wu01-production-application-bootstrap.yml"
+  ],
+  "authority": [
+    "docs/audits/PRODUCTION_PHYSICS_APPLICATION_ENVELOPE_GAP_AUDIT.md",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "integration/f-gc/F-GC49_STATUS.json",
+    "integration/f-gc/F-GC50_STATUS.json",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/runtime/mod_fmr_groundwater_participant_registry.f90",
+    "src/runtime/mod_fmr_groundwater_application_context.f90",
+    "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+  ],
+  "qualification": {
+    "state": "PASS",
+    "workflow": "PPA-WU01 production application bootstrap",
+    "run_id": 35365440351,
+    "job_id": 105666642389,
+    "conclusion": "success",
+    "optimization_levels": [
+      "O0",
+      "O2"
+    ],
+    "output_identity": "PASS",
+    "markers": [
+      "PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS",
+      "PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS",
+      "PPA_WU01_STANDALONE_HARD_MASS=PASS",
+      "PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS",
+      "PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS",
+      "PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS",
+      "PPA_WU01_FGC49D_CONTEXT_FROM_PRODUCTION_OWNER=PASS",
+      "PPA_WU01_NO_QUALIFICATION_FIXTURE_BOOTSTRAP=PASS",
+      "PPA_WU01_UNADMITTED_PROFILE_FAILS_CLOSED=PASS",
+      "PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS",
+      "PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS"
+    ]
+  },
+  "verdict": "QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION",
+  "next_permitted_action": "Require the automatically triggered final checks for this reconciled head. Then perform one live overlap check. Merge PR #306 if WU01 owner, documentation and F-CI canonical qualification pass and any later canonical drift is absent or publication-only/disjoint.",
+  "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
+  "repairs": [
+    {
+      "finding": "An experimental mode-5 standalone trajectory was transactionally rejected despite profile admission.",
+      "disposition": "The qualification was bound back to existing authority: standalone uses the already-qualified serialized Reference bottom_mode=7 profile; mode 5 remains the groundwater participant profile. No solver or physics change."
+    },
+    {
+      "finding": "The first owner implementation unconditionally created the groundwater participant registry, causing standalone mode 7 initialization to fail because the groundwater materializer correctly admits only the mode-5 participant profile.",
+      "disposition": "Groundwater registry, materializers, ledgers and handles became optional profile-bound ownership. The generic FMR owner is independent; all-mode-5 configs get groundwater ownership; mixed 5/7 configs fail closed."
+    }
+  ],
+  "admitted_restricted_profiles": {
+    "standalone": "Serialized Reference Richards, bottom_mode=7, explicit typed effective forcing, no additional WU01 physics.",
+    "groundwater": "Serialized Reference Richards participant bootstrap, bottom_mode=5, typed datum, participant registry, mass ledger and F-GC49D context materialization.",
+    "mixed_profile": "NOT_ADMITTED"
+  },
+  "admission_evidence_head": "6c7d1baa68c6ea48f2da16804e3d1b6320445172",
+  "canonical_reconciliation": {
+    "canonical_head": "fb882329124297e9b21ae1816fbafc9debfed3fa",
+    "reconciliation_commit": "bf91d33c051788c4d65224c77e8b25cc8aea6d9c",
+    "overlap": "NONE",
+    "canonical_delta_scope": "PUB-GC publication manuscript/readiness documents only; no WU01 source, tests, workflow, audit register or F-CI preservation overlap.",
+    "prerequisite_repair": {
+      "pr": 308,
+      "merge_commit": "e7c5662a362455d34b0b43c3a1832bcda31777c2",
+      "canonical_qualification_run": 35367229074,
+      "conclusion": "success",
+      "repaired_gate": "current-restricted-canonical-preservation",
+      "production_mutation": "NONE"
+    },
+    "prior_final_qualification": {
+      "owner_run": 35367638878,
+      "owner_conclusion": "success",
+      "documentation_run": 35367639173,
+      "documentation_conclusion": "success",
+      "canonical_run": 35367638906,
+      "canonical_conclusion": "success",
+      "note": "WU01 production/test blobs are byte-identical after this publication-only canonical reconciliation."
+    },
+    "disposition": "Two-parent reconciliation to latest publication-only canonical. Further publication-only drift is non-semantic for WU01 after explicit no-overlap verification."
+  }
+}

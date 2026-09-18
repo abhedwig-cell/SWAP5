@@ -1,0 +1,28 @@
+name: PPA-WU01 production application bootstrap
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
+      - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
+      - 'integration/audits/PPA_WU01_STATUS.json'
+      - 'docs/audits/PPA_WU01_PRODUCTION_APPLICATION_BOOTSTRAP.md'
+      - 'integration/audits/production_physics_application_envelope_gap_register.json'
+      - 'docs/audits/PRODUCTION_PHYSICS_APPLICATION_ENVELOPE_GAP_AUDIT.md'
+      - '.github/workflows/ppa-wu01-production-application-bootstrap.yml'
+  workflow_dispatch:
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: PPA-WU01 owner qualification
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
