@@ -73,9 +73,9 @@ Current evidence state:
 
 - E1-E5 are closed with restricted claims;
 - E6 hydrological stress extension is closed negatively after two preregistered routes reached component-admission boundaries before a positive stronger-feedback live case was available;
-- the manuscript core is consolidated through E6, with evidence-bounded abstract, Methods, Results, Discussion and provisional Conclusions;
-- M1-C3 and M1 are closed; E7 Hupsel standalone selection is now frozen before coupled output. The selected dates are 2003-06-17 (median dynamics) and 2003-05-20 (high dynamics), with the qualified conceptual F-GC44 MODFLOW fallback frozen and uncalibrated. Coupled loose/strong execution is the next permitted scientific action.
-- manuscript figures F1–F6, tables T1–T5, notation glossary, supplementary evidence package and machine-readable reproducibility manifest are complete through E6; E7 remains the only intended primary scientific gap.
+- the manuscript core is consolidated through E7, with evidence-bounded abstract, Methods, Results, Discussion and Conclusions;
+- E7 selected 2003-06-17 and 2003-05-20 before coupled output and then closed as `REALISTIC_COMPONENT_DOMAIN_LIMIT`: authentic active crop/root and drainage composition is outside the production prescribed-head groundwater-owner profile, confirmed by static and O0/O2 dynamic qualification before MODFLOW execution;
+- manuscript figures F1–F7, tables T1–T6, notation glossary, supplementary evidence package and machine-readable reproducibility manifest cover the complete current E1–E7 claim set. No further primary experiment is required for the bounded coupling-contract/admissibility framing.
 
 First publication evidence block (E1/E2):
 
