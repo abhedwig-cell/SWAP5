@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.publication.p2e19-reference-balance-scaling-diagnostic.v1",
+  "workunit": "PUB-P2E19",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_DIAGNOSTIC_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "role": "REFERENCE_ONLY_CAUSAL_NUMERICAL_DIAGNOSTIC",
+  "parent_authority": {
+    "branch": "work/pub-p2e18-ref-high-construction",
+    "head": "12b8b0294153c88b733b9eccfa8b3c98a14ebf23",
+    "result_blob": "10df8636afc05a46342921f50c2c8b543cf3168e",
+    "verdict": "REF_HIGH_BLOCKED_BEFORE_ENDPOINT_STABILITY_BY_REFERENCE_RETRY_SCALING"
+  },
+  "prior_diagnostic_authority": {
+    "p2e06_result": "QUALIFIED_REFERENCE_LOCAL_BALANCE_SCALING_EVIDENCE_PENDING_ADMISSION",
+    "finding": "Local balance residual rates worsen as dt decreases while dt times residual stays approximately 1e-16 to 1e-15 cm; increasing nonlinear iterations from 16 to 64 cleared none of 103 local-balance failures."
+  },
+  "purpose": "Test whether P2E18 loss of Reference-route validity under timestep refinement is caused by holding a rate-unit balance convergence criterion numerically fixed as dt decreases, by comparing that frozen policy with a dimensionally timestep-invariant integrated-balance policy on the identical 36-case six-level Reference-only matrix.",
+  "scientific_question": "Does preserving one integrated balance allowance per substep, rather than one fixed cm/day tolerance across all substep durations, recover Reference-route refinement usability without materially changing valid Reference endpoints?",
+  "case_matrix": {
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.96],
+    "forcing": ["DRYING","NOMINAL"],
+    "case_count": 36,
+    "total_horizon_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "ponding_initial_cm": 0,
+    "top_flux_over_initial_K0": {"DRYING":-0.005,"NOMINAL":0.01},
+    "bottom_flux_over_initial_K0": {"DRYING":-0.019,"NOMINAL":-0.004}
+  },
+  "refinement_ladder": {
+    "equal_substep_counts": [1,2,4,8,16,32],
+    "substep_dt_day": [0.0016,0.0008,0.0004,0.0002,0.0001,0.00005],
+    "all_levels_executed_for_every_case_under_both_policies": true
+  },
+  "policies": {
+    "FIXED_RATE": {
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "total_balance_tolerance_cm_per_day": 1e-12,
+      "meaning": "Exact P2E18 convergence policy."
+    },
+    "INTEGRATED_INVARIANT": {
+      "anchor_dt_day": 0.0016,
+      "anchor_rate_tolerance_cm_per_day": 1e-12,
+      "integrated_balance_allowance_cm_per_substep": 1.6e-15,
+      "formula": "balance_rate_tolerance(dt) = 1.6e-15 cm / dt_day",
+      "rate_tolerance_by_substep_count_cm_per_day": {
+        "1": 1e-12,
+        "2": 2e-12,
+        "4": 4e-12,
+        "8": 8e-12,
+        "16": 1.6e-11,
+        "32": 3.2e-11
+      },
+      "same_scaling_applied_to": ["compartment_balance_tolerance","total_balance_tolerance"],
+      "meaning": "Keep the maximum allowed integrated balance defect per substep numerically invariant as dt changes. This is a diagnostic numerical policy, not a production tolerance change."
+    }
+  },
+  "controls_held_identical": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "min_step_duration_day": 1e-8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "physical_forcing": "identical",
+    "initial_state": "identical",
+    "constitutive_provider_rebound_at_actual_substep_dt": true
+  },
+  "hard_scientific_gates": {
+    "accepted_step_integrated_mass_abs_limit_cm": 1e-12,
+    "candidate_state_finite": true,
+    "candidate_state_inside_common_head_theta_domain": true,
+    "prescribed_flux_identity": true,
+    "native_rate_residual_required_for_accepted_Reference_step": true,
+    "route_identity": "legacy-reference-bound"
+  },
+  "frozen_p2e18_reproduction": {
+    "FIXED_RATE_expected_valid_by_level": {
+      "1": 36,
+      "2": 29,
+      "4": 7,
+      "8": 0,
+      "16": 0,
+      "32": 0
+    },
+    "rule": "The FIXED_RATE arm must reproduce P2E18 before the INTEGRATED_INVARIANT comparison is interpreted."
+  },
+  "endpoint_neutrality_budget": {
+    "purpose": "Where both policies produce valid endpoints at the same refinement level, quantify whether scaling the convergence criterion materially changes the accepted solution.",
+    "head_theta_budget": "0.10 times the exact-Se P2E14 Reference-only threshold, matching the already frozen P2E18 reference-stability scale.",
+    "storage_budget": "the full exact-Se P2E14 machine-scale storage envelope",
+    "weighted_compensation": false,
+    "interpretation": "A neutrality failure is retained. It prevents describing the scaled policy as a numerically equivalent convergence reformulation at that level."
+  },
+  "scaled_fine_stability_diagnostic": {
+    "performed_only_when_scaled_levels_8_16_32_are_valid": true,
+    "comparisons": ["8_vs_16","16_vs_32"],
+    "budgets": "same P2E18 0.10 x P2E14 head/theta budgets plus P2E14 storage floor",
+    "authority": "diagnostic only",
+    "nonclaim": "Even if all cases pass, P2E19 does not itself create REF-HIGH. A separate preregistered decision/construction workunit is required."
+  },
+  "primary_endpoints": [
+    "Reference route validity by policy and refinement level",
+    "first invalid refinement level per case and policy",
+    "fixed-rate P2E18 reproduction",
+    "endpoint difference between policies where both are valid",
+    "scaled-policy 8-vs-16 and 16-vs-32 endpoint stability where available",
+    "maximum typed integrated mass residual per accepted substep"
+  ],
+  "hypotheses": {
+    "H_scaling_causal": "If fixed rate-unit balance criteria cause the refinement collapse, INTEGRATED_INVARIANT should recover materially more valid fine-level Reference routes than FIXED_RATE while all non-balance controls remain identical.",
+    "H_endpoint_neutrality": "Where both policies converge at the same level, endpoint differences remain inside the frozen P2E18 reference-stability budget.",
+    "H_ref_high_feasibility": "If INTEGRATED_INVARIANT yields valid 8/16/32 levels and both fine endpoint comparisons meet the frozen stability budget for a non-empty case set, a later separately frozen REF-HIGH construction is scientifically feasible on that set."
+  },
+  "firewall": {
+    "rossfast_execution_allowed": false,
+    "rossfast_timing_allowed": false,
+    "equal_error_claim_allowed": false,
+    "production_tolerance_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "p2e18_result_reclassification_allowed": false,
+    "case_removal_or_replacement_allowed": false,
+    "integrated_allowance_retuning_after_execution_allowed": false,
+    "refinement_ladder_change_after_execution_allowed": false
+  },
+  "outcome_policy": {
+    "if_scaled_recovers_fine_levels": "Persist causal diagnostic evidence and require a new preregistered REF-HIGH construction using any proposed scaled policy. Do not reuse P2E19 as the REF-HIGH authority.",
+    "if_scaled_does_not_recover": "Retain P2E18 blockage and investigate another candidate-independent Reference strategy. Do not start RossFast timing.",
+    "if_endpoint_neutrality_fails": "Do not describe scaling as a pure convergence-policy repair; retain the scientific endpoint effect explicitly."
+  },
+  "verdict": "PREREGISTERED_REFERENCE_BALANCE_SCALING_DIAGNOSTIC_READY",
+  "next_permitted_action": "Implement and execute only the two-policy Reference-only six-level diagnostic. RossFast and timing remain forbidden."
+}
