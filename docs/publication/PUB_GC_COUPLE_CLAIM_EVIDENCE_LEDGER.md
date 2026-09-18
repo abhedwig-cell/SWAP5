@@ -184,6 +184,15 @@ Machine-readable result:
 
 ## E3 evidence
 
+Consolidated publication result:
+
+`PUB_GC_E3_RESULT.md`
+
+Machine-readable consolidated summary:
+
+`PUB_GC_E3_RESULT.json`
+
+
 Preregistration:
 
 `PUB_GC_E3_PREREGISTRATION.md`
