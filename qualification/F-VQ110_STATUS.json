@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ110",
+  "capability": "F-GC36",
+  "title": "Independent Live MODFLOW6 F-GC34 Bridge Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "verdict": "PENDING_INDEPENDENT_LIVE_QUALIFICATION",
+  "owner": {
+    "branch": "work/f-gc36-live-modflow6-fgc34-bridge-reconciled",
+    "checkpoint_head": "8d6f723d4de9b3cc47bb5012b67237aa7fc8febb",
+    "exact_head_run": 35295173564,
+    "production_blobs": {
+      "src/adapter/mod_modflow6_fgc34_c_bridge.f90": "5c5577715c9c150f72de7bfccaf966cd72db5add",
+      "src/adapter/modflow6_fgc34_ctypes_publisher.py": "ccf16f446ae9aaab34dae6f432082d70569faad9"
+    }
+  },
+  "independence": {
+    "verifier_branch": "qualification/f-vq110-fgc36-live-bridge-independent",
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "oracle": "distinct 1x4 two-slot live MODFLOW6 API package; shuffled binding/term identities; independent 2x2 analytical groundwater-head matrix; two live API flux signs"
+  },
+  "external_dependencies": {
+    "modflow6": "6.8.0",
+    "modflow6_asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "xmipy": "9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "flopy": "1a783da6582f8203190a8d6b1d7a60659022afdb"
+  },
+  "next_permitted_action": "Run exact-head independent live verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-CI103."
+}
