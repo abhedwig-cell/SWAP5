@@ -1,0 +1,19 @@
+name: F-VQ120 F-GC48 independent qualification
+on:
+  push:
+    branches: [work/f-gc48-generic-groundwater-topology]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_topology_composition.f90'
+      - 'tests/fvq/test_fvq120_fgc48_downstream_compatibility.f90'
+      - 'tests/fvq/run_fvq120_fgc48_independent.sh'
+      - '.github/workflows/f-vq120-fgc48-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fvq/run_fvq120_fgc48_independent.sh

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC48",
+  "title": "Generic groundwater topology composition",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
+  },
+  "source": {
+    "branch": "work/f-gc48-generic-groundwater-topology",
+    "base": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
+  },
+  "predecessors": [
+    "F-GC40 deterministic N:1 cell-response reduction",
+    "F-GC45 real N:1 application",
+    "F-GC46 real multi-cell application",
+    "F-GC47 mixed N:1 plus 1:1 application",
+    "F-GC34 MODFLOW API slot binding"
+  ],
+  "goal": "Replace qualification-specific topology wiring with one typed deterministic production topology model that maps admitted SWAP participants to admitted groundwater cells and MODFLOW API slots without changing predictor/corrector, transaction, publication or physics semantics.",
+  "reconcile_findings": [
+    "groundwater_direct_tile_binding_t is cell-local and contains tile id, cell id and area fraction only",
+    "modflow6_api_slot_binding_t is package-local and independently maps cell id to package slot/node",
+    "mod_groundwater_multiswap_topology canonicalizes tiles only inside one cell",
+    "F-GC45-F-GC47 prove N:1, multi-cell and mixed topologies but encode topology in qualification bridges",
+    "no canonical global typed topology authority currently binds tiles, lineages, ledgers, cells and API slots together"
+  ],
+  "invariants": [
+    "each tile id and SWAP lineage id has exactly one topology owner",
+    "each ledger id has exactly one tile owner",
+    "each groundwater cell has exactly one package slot and MODFLOW node",
+    "each tile references an existing groundwater cell",
+    "each groundwater cell has at least one tile",
+    "area fractions close to one independently per groundwater cell",
+    "coupling and groundwater lineage/service metadata are identical for tiles sharing one groundwater cell",
+    "canonical order is groundwater_cell_id then tile_id; API order is package_slot",
+    "validation completes before any downstream composition mutation",
+    "no scientific assertion that N:1 aggregation is physically transferable"
+  ],
+  "exclusions": [
+    "predictor/corrector redesign",
+    "new groundwater physics",
+    "runtime FD tangent fallback",
+    "physics-envelope expansion",
+    "SCALE heterogeneous-transferability policy"
+  ],
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ120 evidence, repair only scoped failures, reconcile canonical, then admit/close if all criteria pass.",
+  "current_head": "0eee247f9a9271df89cde4ebb2a31305c4ee39ce",
+  "implemented": [
+    "production mod_groundwater_topology_composition with normalized tile and cell contracts",
+    "global uniqueness validation for tile ids, SWAP lineages, ledger ids, cell ids, coupling ids, groundwater lineages, package slots and MODFLOW nodes",
+    "per-cell fraction closure and orphan/missing-cell validation",
+    "canonical cell and cell/tile ordering independent of input permutation",
+    "materialization to admitted groundwater_direct_tile_binding_t for F-GC40",
+    "materialization to admitted modflow6_api_slot_binding_t for F-GC34",
+    "owner regressions for F-GC45 N:1, F-GC46 multi-cell and F-GC47 mixed topology",
+    "F-VQ120 independent executable downstream compatibility qualification"
+  ],
+  "admission_criteria": [
+    "exact-head F-GC48 owner O0/O2 qualification green",
+    "exact-head F-VQ120 downstream compatibility O0/O2 qualification green",
+    "canonical delta reconciled with no conflicting topology/runtime authority",
+    "PR mergeable",
+    "scope remains topology/ownership only and does not claim heterogeneous transferability"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+}
