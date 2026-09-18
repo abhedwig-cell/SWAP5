@@ -266,7 +266,8 @@ program test_fgc43_production_swap_participant
   class default
     call assert_true(.false.,'snapshot type')
   end select
-  call assert_true(.not.participant%has_origin() .and. .not.participant%has_live_candidate(),'participant reset after commit')
+  call assert_true(.not.participant%has_origin(),'participant origin reset after commit')
+  call assert_true(.not.participant%has_live_candidate(),'participant candidate reset after commit')
 
   ! Re-capture at revision 1, create a live participant candidate, then mutate
   ! committed state through the kernel with a competing candidate. Publication
@@ -280,7 +281,8 @@ program test_fgc43_production_swap_participant
   direct_forcing%head_m=5.0_real64
   call executor%advance_interval(parameters,committed,direct_forcing,numerical,1.0_real64,2.0_real64, &
        competing_result,competing_candidate,competing_diag)
-  call assert_true(competing_result%completed .and. competing_candidate%ready(),'competing candidate')
+  call assert_true(competing_result%completed,'competing result completed')
+  call assert_true(competing_candidate%ready(),'competing candidate ready')
   call executor%commit_candidate(committed,competing_candidate,competing_diag,did_commit,commit_status)
   call assert_true(did_commit .and. commit_status==KERNEL_COMMIT_STATUS_COMMITTED,'competing commit')
   call assert_true(.not.participant%publication_ready(committed,window),'stale origin rejected by preflight')
