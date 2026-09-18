@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.f-ross22.production-tiered-certificate-result.v1",
+  "workunit": "F-ROSS22",
+  "phase": "QUALIFIED_FOR_PRODUCTION_ADMISSION_REVIEW",
+  "branch": "work/f-ross22-production-tiered-certificate",
+  "qualified_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+  "workflow_run": 35315107030,
+  "job": 105504972005,
+  "artifact": {
+    "id": 10533894447,
+    "digest": "sha256:c8af583f1ae52448cc279c5788fb54b742162f9b1386ab08239c86be2bc03167"
+  },
+  "production_mutation": {
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "scope": [
+      "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+    ]
+  },
+  "provider_preservation": {
+    "f_ross13_36_material_provider_envelope": "PASS",
+    "o0_o2_semantic_preservation": "PASS"
+  },
+  "all_material": {
+    "case_count": 216,
+    "route_valid_count": 216,
+    "temporal_accepted_count": 216,
+    "mass_pass_count": 216,
+    "work_contract_pass_count": 216,
+    "retry_contract_pass_count": 216,
+    "K2_final_count": 212,
+    "K4_final_count": 2,
+    "K8_final_count": 2,
+    "mean_linear_solves": 6.444444444444445,
+    "escalation_by_material": {
+      "B05": 2,
+      "O01": 2
+    },
+    "worst": {
+      "temporal_indicator": 0.8535759368211358,
+      "mass_residual_abs_cm": 4.8269770215183063e-14
+    },
+    "gate": "PASS"
+  },
+  "production_research_identity": {
+    "case_count": 216,
+    "all_cases_exact": true,
+    "failed_cases": [],
+    "max_head_inf": 0,
+    "max_theta_inf": 0,
+    "max_temporal_indicator_abs_delta": 0,
+    "max_mass_residual_abs_delta_cm": 0,
+    "gate": "PASS"
+  },
+  "performance": {
+    "host_class": "GITHUB_HOSTED_SCREENING_ONLY",
+    "pair_count": 12,
+    "rossfast_over_reference_relative_delta": {
+      "mean": -0.192428800287,
+      "mde": 0.0146064604447,
+      "target_resolution_qualified": true
+    },
+    "rossfast_over_reference_cpu_ratio_mean": 0.807571199713,
+    "mean_reference_over_rossfast_speedup": 1.23942820282,
+    "outcome": "SCREENING_ROSSFAST_FASTER",
+    "formal_performance_claim": false,
+    "admission_dependency": false
+  },
+  "adjudication": {
+    "science_and_preservation_gate": "PASS",
+    "exact_f_ross21_promotion_identity": "PASS",
+    "qualified_for_production_admission_review": true,
+    "production_admitted": false,
+    "formal_performance_claim": false,
+    "interpretation": "The exact F-ROSS21 K2->K4->K8 ladder is reproduced in production source across all 216 production-relevant cases. All science and preservation gates pass, and the production candidate remains faster than Reference Richards in the shared-host solver-only screen."
+  },
+  "next_permitted_action": "Open/qualify the stacked production admission PR. Do not repair unrelated canonical preservation failures inside F-ROSS22; final canonical admission remains subject to parent-chain and repository governance gates."
+}
