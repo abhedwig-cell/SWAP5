@@ -1,0 +1,404 @@
+{
+  "schema": "swap5.f-ross23.static-production-characterization-result.v1",
+  "workunit": "F-ROSS23",
+  "phase": "CLOSED",
+  "title": "Static RossFast versus Reference production characterization",
+  "branch": "work/f-ross23-static-production-characterization",
+  "source_authority": {
+    "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
+    "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
+    "f_ross13_production_widening_commit": "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+    "f_ross13_canonical_admission": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "canonical_at_close": "4d50ca2676cf9404e62b182767686ab677921511",
+    "static_dependency_reconciliation": {
+      "relevant_dependency_change_since_source": false,
+      "blobs": {
+        "src/runtime/mod_rossfast_d3r_model_binding.f90": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+        "src/solver/mod_rossfast_d3r_table_provider.f90": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+        "src/solver/mod_rossfast_d3r_table_kernel.f90": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+        "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "dbb441f3529be179d64fb57f9c44336d3d20c540"
+      }
+    }
+  },
+  "measurement_contract": {
+    "attempted_cases": 216,
+    "materials": 36,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "grid": "16 homogeneous cells x 10 cm",
+    "interval_day": 0.0016,
+    "compiler_optimization": "O2",
+    "warmups_per_variant": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_case": 200,
+    "primary_metric": "Fortran CPU_TIME around selected solve calls only",
+    "pair_order": "alternating",
+    "outlier_deletion": false,
+    "host_boundary": "GitHub-hosted measurements are screening evidence only; no formal performance claim."
+  },
+  "scientific_characterization": {
+    "attempted_case_count": 216,
+    "rossfast_route_valid": 216,
+    "reference_route_valid": 213,
+    "reference_route_invalid": 3,
+    "rossfast_route_invalid": 0,
+    "both_routes_invalid": 0,
+    "paired_valid": 213,
+    "route_invalid_cases": [
+      {
+        "id": 96,
+        "material": "B16",
+        "se": 0.98,
+        "forcing": "NOMINAL",
+        "reference_reason": "STATUS_NOT_CONVERGED",
+        "rossfast_reason": "OK"
+      },
+      {
+        "id": 101,
+        "material": "B17",
+        "se": 0.98,
+        "forcing": "DRYING",
+        "reference_reason": "STATUS_NOT_CONVERGED",
+        "rossfast_reason": "OK"
+      },
+      {
+        "id": 107,
+        "material": "B18",
+        "se": 0.98,
+        "forcing": "DRYING",
+        "reference_reason": "STATUS_NOT_CONVERGED",
+        "rossfast_reason": "OK"
+      }
+    ],
+    "historical_p2e10_threshold_diagnostic": {
+      "authority_boundary": "The thresholds were qualified on the historical six-material P2E10 domain and are descriptive, not admission gates, for the 30 F-ROSS13 extension materials.",
+      "paired_cases_within": 210,
+      "paired_cases_outside": 3,
+      "outside_cases": [
+        {
+          "id": 29,
+          "material": "B05",
+          "se": 0.98,
+          "forcing": "DRYING",
+          "d_h_inf": 0.32682567504650617,
+          "d_h_rms": 0.09233077650179775,
+          "d_theta_inf": 0.0006183910548337446,
+          "d_theta_rms": 0.00020014131498142024,
+          "d_storage": 7.105427357601002e-15,
+          "exceeded": [
+            "D_THETA_INF",
+            "D_THETA_RMS"
+          ]
+        },
+        {
+          "id": 30,
+          "material": "B05",
+          "se": 0.98,
+          "forcing": "NOMINAL",
+          "d_h_inf": 0.3374076567786384,
+          "d_h_rms": 0.09504319287422967,
+          "d_theta_inf": 0.0006295812322271721,
+          "d_theta_rms": 0.00020374673910251347,
+          "d_storage": 7.105427357601002e-15,
+          "exceeded": [
+            "D_THETA_INF",
+            "D_THETA_RMS"
+          ]
+        },
+        {
+          "id": 54,
+          "material": "B09",
+          "se": 0.98,
+          "forcing": "NOMINAL",
+          "d_h_inf": 0.0006029120889259332,
+          "d_h_rms": 0.00026468457201810595,
+          "d_theta_inf": 2.642100349614651e-7,
+          "d_theta_rms": 1.1604708521373599e-7,
+          "d_storage": 4.263256414560601e-14,
+          "exceeded": [
+            "D_STORAGE"
+          ]
+        }
+      ]
+    },
+    "regime_counts": {
+      "by_effective_saturation": {
+        "0.65": {
+          "attempted": 72,
+          "paired_valid": 72,
+          "within_historical_thresholds": 72,
+          "descriptive_discrepancy": 0,
+          "reference_invalid": 0
+        },
+        "0.85": {
+          "attempted": 72,
+          "paired_valid": 72,
+          "within_historical_thresholds": 72,
+          "descriptive_discrepancy": 0,
+          "reference_invalid": 0
+        },
+        "0.98": {
+          "attempted": 72,
+          "paired_valid": 69,
+          "within_historical_thresholds": 66,
+          "descriptive_discrepancy": 3,
+          "reference_invalid": 3
+        }
+      },
+      "by_material_family": {
+        "B": {
+          "attempted": 108,
+          "paired_valid": 105,
+          "within_historical_thresholds": 102,
+          "descriptive_discrepancy": 3,
+          "reference_invalid": 3
+        },
+        "O": {
+          "attempted": 108,
+          "paired_valid": 108,
+          "within_historical_thresholds": 108,
+          "descriptive_discrepancy": 0,
+          "reference_invalid": 0
+        }
+      },
+      "by_forcing": {
+        "DRYING": {
+          "attempted": 108,
+          "paired_valid": 106,
+          "within_historical_thresholds": 105,
+          "descriptive_discrepancy": 1,
+          "reference_invalid": 2
+        },
+        "NOMINAL": {
+          "attempted": 108,
+          "paired_valid": 107,
+          "within_historical_thresholds": 105,
+          "descriptive_discrepancy": 2,
+          "reference_invalid": 1
+        }
+      }
+    },
+    "paired_discrepancy_maxima": {
+      "d_h_inf": {
+        "value": 0.3374076567786384,
+        "case_id": 30
+      },
+      "d_h_rms": {
+        "value": 0.09504319287422967,
+        "case_id": 30
+      },
+      "d_theta_inf": {
+        "value": 0.0006295812322271721,
+        "case_id": 30
+      },
+      "d_theta_rms": {
+        "value": 0.00020374673910251347,
+        "case_id": 30
+      },
+      "d_storage": {
+        "value": 4.263256414560601e-14,
+        "case_id": 54
+      }
+    },
+    "interpretation": [
+      "RossFast remains route-valid in all 216 characterization cases.",
+      "All route-invalid observations are Reference Richards non-convergence cases and occur at Se=0.98 in B materials.",
+      "All Se=0.65 and Se=0.85 cases are paired-valid and inside the historical P2E10 direct-discrepancy thresholds.",
+      "At Se=0.98, direct Richards-versus-RossFast agreement is less uniform: three paired-valid extension-material cases exceed one or two historical six-material thresholds, and three additional cases cannot be paired because Reference does not converge.",
+      "These observations characterize the E0 domain and do not revoke or replace F-ROSS13 qualification, whose independent transient qualification used a different profile/reference authority."
+    ]
+  },
+  "performance": {
+    "primary_preregistered_screening": {
+      "head": "6a8cd3b7933f1c8fb81fdfe53fecab1abab1f2d2",
+      "workflow_run": 35335830136,
+      "artifact_id": 10543402292,
+      "artifact_digest": "sha256:14a032b388c2479408b0366238b5abaffea0b53d1b1b88178ab4240bdd4297d0",
+      "paired_valid_cases": 213,
+      "rossfast_over_reference_cpu_ratio_mean": 3.107197377836018,
+      "rossfast_over_reference_relative_delta_mean": 2.1071973778360182,
+      "minimum_detectable_relative_effect": 0.009419488692252396,
+      "reference_over_rossfast_ratio_mean": 0.3218416686122687,
+      "whole_child_cpu_relative_delta_mean": 0.4998947189102913,
+      "wall_elapsed_relative_delta_mean": 0.49988715653519433,
+      "outcome": "SCREENING_REFERENCE_FASTER",
+      "formal_performance_claim": false
+    },
+    "final_diagnostic_regime_replay": {
+      "head": "07f775028291560280877e3bb8682b9272d9b271",
+      "workflow_run": 35337265876,
+      "artifact_id": 10543715981,
+      "artifact_digest": "sha256:347c198d823a32aa729dea88b891680f03b57e95d8227cba526421349dcf706b",
+      "rossfast_over_reference_cpu_ratio_mean": 3.1313316402009623,
+      "rossfast_over_reference_relative_delta_mean": 2.1313316402009623,
+      "minimum_detectable_relative_effect": 0.010272432556055477,
+      "outcome": "SCREENING_REFERENCE_FASTER",
+      "formal_performance_claim": false,
+      "diagnostic_case_screening": {
+        "paired_valid_cases": 213,
+        "reference_faster": 213,
+        "rossfast_faster": 0,
+        "not_resolved": 0
+      },
+      "best_observed_static_case_for_rossfast": {
+        "case_id": 138,
+        "material": "O05",
+        "se": 0.98,
+        "forcing": "NOMINAL",
+        "rossfast_over_reference_cpu_ratio_mean": 1.0695586364795882,
+        "outcome": "REFERENCE_FASTER"
+      },
+      "highest_observed_ratio_case": {
+        "case_id": 182,
+        "material": "O13",
+        "se": 0.65,
+        "forcing": "NOMINAL",
+        "rossfast_over_reference_cpu_ratio_mean": 4.9980295900969285,
+        "outcome": "REFERENCE_FASTER"
+      },
+      "by_effective_saturation": {
+        "0.65": {
+          "case_count": 72,
+          "ratio_mean": 3.8005704505431144,
+          "mde": 0.011935122933824989,
+          "outcome": "REFERENCE_FASTER"
+        },
+        "0.85": {
+          "case_count": 72,
+          "ratio_mean": 3.2403660535727927,
+          "mde": 0.009402560106118866,
+          "outcome": "REFERENCE_FASTER"
+        },
+        "0.98": {
+          "case_count": 69,
+          "ratio_mean": 2.569558901960567,
+          "mde": 0.011874267132888125,
+          "outcome": "REFERENCE_FASTER"
+        }
+      },
+      "by_material_family": {
+        "B": {
+          "case_count": 105,
+          "ratio_mean": 3.1445753848580655,
+          "mde": 0.009888794730360879,
+          "outcome": "REFERENCE_FASTER"
+        },
+        "O": {
+          "case_count": 108,
+          "ratio_mean": 3.1185717786562974,
+          "mde": 0.010947913004992598,
+          "outcome": "REFERENCE_FASTER"
+        }
+      },
+      "by_forcing": {
+        "DRYING": {
+          "case_count": 106,
+          "ratio_mean": 3.2090945370099777,
+          "mde": 0.009716617530996372,
+          "outcome": "REFERENCE_FASTER"
+        },
+        "NOMINAL": {
+          "case_count": 107,
+          "ratio_mean": 3.0579289967316723,
+          "mde": 0.01091299778259244,
+          "outcome": "REFERENCE_FASTER"
+        }
+      },
+      "by_material_ratio_mean": {
+        "B01": 3.0926612668281077,
+        "B02": 3.094347924265889,
+        "B03": 3.3435508349356424,
+        "B04": 2.3061086563754105,
+        "B05": 2.371759261623445,
+        "B06": 3.0956653268378376,
+        "B07": 3.220742648288979,
+        "B08": 3.341037125383478,
+        "B09": 3.617568577785009,
+        "B10": 3.995288689371531,
+        "B11": 3.7197585254019825,
+        "B12": 3.821848217051176,
+        "B13": 2.5987866148415466,
+        "B14": 3.638404932769706,
+        "B15": 2.87286641368206,
+        "B16": 2.879185222021141,
+        "B17": 3.6428233959051037,
+        "B18": 3.3645171345862344,
+        "O01": 2.867122295038057,
+        "O02": 3.3376893759034343,
+        "O03": 3.3350847545615014,
+        "O04": 3.348492307700686,
+        "O05": 2.304290810083573,
+        "O06": 2.683718524242471,
+        "O07": 2.8772606294934313,
+        "O08": 3.098149387895132,
+        "O09": 3.088764887733248,
+        "O10": 3.6581301898901106,
+        "O11": 3.652247487303835,
+        "O12": 3.2134288737523033,
+        "O13": 3.7373467882891127,
+        "O14": 2.8701564287729204,
+        "O15": 3.2236922126657555,
+        "O16": 3.637554870912506,
+        "O17": 2.979185009180199,
+        "O18": 3.035136298995455
+      },
+      "all_material_group_outcomes": "REFERENCE_FASTER"
+    },
+    "reused_cost_attribution": {
+      "authority": "F-ROSS16",
+      "reference_linear_solves_mean_per_case_on_historical_36_case_subset": 3.888888888888889,
+      "rossfast_linear_solves_per_case": 24,
+      "rossfast_over_reference_linear_solve_ratio": 6.171428571428572,
+      "optimized_candidate_step_fraction_of_solver_instructions": 0.9554209675818706,
+      "interpretation": "The static performance disadvantage is structurally consistent with the fixed 24-candidate-step temporal certificate and repeated state/table transforms; the tridiagonal solve itself was not the dominant cost."
+    },
+    "conclusion": "Within the measured static F-ROSS13 E0 characterization domain, no material, forcing, saturation regime, or paired-valid individual case shows RossFast faster than Reference Richards under the shared-host screening rule. Static RossFast is therefore robust but not performance-competitive here."
+  },
+  "evidence": {
+    "case_matrix_run": {
+      "workflow_run": 35336404039,
+      "head": "616bd04b1cb678e871f1442527300a0ac1236278",
+      "artifact_id": 10543088669,
+      "artifact_digest": "sha256:482357c389a67cd32b38142239db21ebc923f1785e888a927f27703065d2fdf2"
+    },
+    "structured_replay_run": {
+      "workflow_run": 35336604804,
+      "head": "6496b1ff726ad1d66801e6722449ebab437cdb51",
+      "artifact_id": 10543393661,
+      "artifact_digest": "sha256:458598112911a59ae356d60c3768442a3e1ac59c5a92eb7de242aeb43f67b622"
+    },
+    "final_regime_replay_run": {
+      "workflow_run": 35337265876,
+      "head": "07f775028291560280877e3bb8682b9272d9b271",
+      "artifact_id": 10543715981,
+      "artifact_digest": "sha256:347c198d823a32aa729dea88b891680f03b57e95d8227cba526421349dcf706b"
+    }
+  },
+  "mutation_audit": {
+    "production_or_reference_mutation": false,
+    "tolerance_change": false,
+    "adaptive_selection": false,
+    "performance_optimization": false,
+    "branch_changes_relative_to_source": "F-ROSS23 preregistration, status, diagnostic harness/runner/wrapper/workflow and this durable result only."
+  },
+  "verdict": "CLOSED_STATIC_ROSSFAST_ROBUST_BUT_NOT_PERFORMANCE_COMPETITIVE_ON_MEASURED_E0_DOMAIN",
+  "close": {
+    "no_open_f_ross23_implementation_action": true,
+    "formal_static_performance_claim_requires": "Replay the frozen F-ROSS23 contract on an MP-admitted isolated performance host.",
+    "next_product_capability": {
+      "workunit": "F-ROSS22",
+      "branch": "work/f-ross22-production-tiered-certificate",
+      "qualified_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+      "current_branch_head_seen": "9ba02ce1e525ede27f3913f664ff02ac6b5e0f3c",
+      "status": "QUALIFIED_PENDING_STACKED_PRODUCTION_ADMISSION",
+      "next_permitted_action": "Refresh/reconcile the stacked F-ROSS22 production admission against its qualified parent and current canonical, then inspect admission checks. Do not import adaptive/tiered semantics into F-ROSS23."
+    }
+  }
+}

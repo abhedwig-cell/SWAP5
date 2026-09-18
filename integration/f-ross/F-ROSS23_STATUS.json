@@ -2,62 +2,83 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS23",
   "title": "Static RossFast versus Reference production characterization",
-  "phase": "ANALYSE",
-  "status": "PRIMARY_216_CASE_SCREEN_COMPLETE__CASE_MATRIX_REPLAY_RUNNING",
+  "phase": "CLOSE",
+  "status": "CLOSED",
   "branch": "work/f-ross23-static-production-characterization",
+  "closing_parent_head": "07f775028291560280877e3bb8682b9272d9b271",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head_at_close": "4d50ca2676cf9404e62b182767686ab677921511",
   "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
   "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
-  "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head_at_design": "62dfb5a52f665e490830dfb320167786cf67f63e",
-  "measurement_head": "6a8cd3b7933f1c8fb81fdfe53fecab1abab1f2d2",
-  "workflow_run": 35335830136,
-  "artifact_id": 10543402292,
-  "artifact_digest": "sha256:14a032b388c2479408b0366238b5abaffea0b53d1b1b88178ab4240bdd4297d0",
+  "relevant_static_dependency_drift": false,
+  "primary_evidence": {
+    "workflow_run": 35335830136,
+    "head": "6a8cd3b7933f1c8fb81fdfe53fecab1abab1f2d2",
+    "artifact_id": 10543402292,
+    "artifact_digest": "sha256:14a032b388c2479408b0366238b5abaffea0b53d1b1b88178ab4240bdd4297d0"
+  },
+  "final_diagnostic_evidence": {
+    "workflow_run": 35337265876,
+    "head": "07f775028291560280877e3bb8682b9272d9b271",
+    "artifact_id": 10543715981,
+    "artifact_digest": "sha256:347c198d823a32aa729dea88b891680f03b57e95d8227cba526421349dcf706b"
+  },
   "results": {
     "attempted_cases": 216,
+    "rossfast_route_valid": 216,
+    "reference_route_valid": 213,
+    "reference_invalid_nonconverged_cases": [
+      "B16/Se0.98/NOMINAL",
+      "B17/Se0.98/DRYING",
+      "B18/Se0.98/DRYING"
+    ],
     "paired_valid": 213,
-    "reference_invalid": 3,
-    "rossfast_invalid": 0,
-    "both_invalid": 0,
-    "historical_six_material_threshold_diagnostic": {
+    "historical_threshold_diagnostic": {
       "within": 210,
       "outside": 3,
-      "authority_boundary": "descriptive only outside the original six-material P2E10 domain"
+      "outside_cases": [
+        "B05/Se0.98/DRYING",
+        "B05/Se0.98/NOMINAL",
+        "B09/Se0.98/NOMINAL"
+      ]
     },
-    "performance_screening": {
-      "outcome": "SCREENING_REFERENCE_FASTER",
-      "rossfast_over_reference_cpu_ratio_mean": 3.107197377836018,
-      "rossfast_over_reference_relative_delta_mean": 2.1071973778360182,
-      "minimum_detectable_relative_effect": 0.009419488692252396,
-      "reference_over_rossfast_ratio_mean": 0.3218416686122687,
-      "whole_child_cpu_relative_delta_mean": 0.4998947189102913,
-      "wall_elapsed_relative_delta_mean": 0.49988715653519433,
-      "formal_speedup_or_slowness_claim": false
+    "primary_rossfast_over_reference_solver_cpu_ratio_mean": 3.107197377836018,
+    "primary_screening_outcome": "SCREENING_REFERENCE_FASTER",
+    "final_regime_replay_ratio_mean": 3.1313316402009623,
+    "individual_case_screening": {
+      "reference_faster": 213,
+      "rossfast_faster": 0,
+      "not_resolved": 0
+    },
+    "regime_screening": {
+      "all_material_groups": "REFERENCE_FASTER",
+      "B_vs_O": "REFERENCE_FASTER_BOTH",
+      "all_Se_levels": "REFERENCE_FASTER",
+      "both_forcing_classes": "REFERENCE_FASTER"
     }
   },
   "interpretation": [
-    "Static F-ROSS13 RossFast is robust on all 216 attempted cases under its route-validity checks; the three route-invalid cases are Reference-only invalid, not RossFast failures.",
-    "On the 213 paired-valid cases the static RossFast solver consumes about 3.11 times Reference solver CPU on the GitHub-hosted screening runner.",
-    "This independently broadens the negative F-ROSS15 performance finding; it does not supersede F-ROSS13 scientific production qualification.",
-    "Three paired-valid cases exceed historical P2E10 six-material direct-discrepancy thresholds; exact identities require the already-triggered case-matrix replay before closure."
+    "Static RossFast is robust on the full 216-case E0 characterization matrix; no RossFast route failure was observed.",
+    "Direct comparison is complete for 213 cases. The only unpaired cases are three Reference non-convergences at Se=0.98 in B soils.",
+    "Three high-saturation B-material paired cases lie outside one or two historical six-material P2E10 direct-discrepancy thresholds; those thresholds are descriptive here and are not F-ROSS13 extension-material admission gates.",
+    "Static RossFast is materially slower than Reference Richards in the measured solver-only shared-host screen. No paired-valid case or preregistered regime shows a RossFast speed advantage.",
+    "F-ROSS13 scientific qualification remains authoritative; F-ROSS23 adds characterization and does not change production semantics."
   ],
   "mutations": [
-    "diagnostic characterization harness and runner only",
+    "diagnostic/preregistration/evidence files only",
     "no production solver mutation",
     "no Reference mutation",
     "no tolerance change",
-    "no adaptive selection"
+    "no adaptive selection",
+    "no optimization"
   ],
   "production_or_reference_mutation": false,
-  "active_replay": {
-    "head": "616bd04b1cb678e871f1442527300a0ac1236278",
-    "workflow_run": 35336404039,
-    "purpose": "persist exact case-level identities and discrepancy metrics"
-  },
-  "next_permitted_action": "Complete case-matrix replay; identify the 3 Reference-invalid and 3 paired-valid discrepancy cases; persist final F-ROSS23 result and CLOSE. No optimization or adaptive selection in F-ROSS23.",
+  "verdict": "CLOSED_STATIC_ROSSFAST_ROBUST_BUT_NOT_PERFORMANCE_COMPETITIVE_ON_MEASURED_E0_DOMAIN",
+  "durable_result": "integration/f-ross/F-ROSS23_STATIC_CHARACTERIZATION_RESULT.json",
+  "next_permitted_action": "NONE_WITHIN_F_ROSS23. Formal static timing requires MP-host replay. Product-development continuation is the separately governed F-ROSS22 ADMIT path: reconcile/refresh its stacked production admission against the qualified parent and current canonical, then inspect admission checks.",
   "exclusions": [
     "NO_OPTIMIZATION",
-    "NO_ADAPTIVE_SELECTION",
+    "NO_ADAPTIVE_SELECTION_IN_F_ROSS23",
     "NO_ARCHITECTURE_CHANGE",
     "NO_TOLERANCE_CHANGE",
     "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
