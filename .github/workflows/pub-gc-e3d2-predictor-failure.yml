@@ -1,0 +1,42 @@
+name: PUB-GC E3D2 predictor failure mechanism
+on:
+  push:
+    branches: [work/pub-gc-e3-coupling-window-feedback-characterization]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/test_pub_gc_e3d2_case.py'
+      - 'tests/publication/run_pub_gc_e3d2.sh'
+      - 'docs/publication/PUB_GC_E3D2_PREDICTOR_FAILURE_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e3d2-predictor-failure.yml'
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/test_pub_gc_e3d2_case.py'
+      - 'tests/publication/run_pub_gc_e3d2.sh'
+      - 'docs/publication/PUB_GC_E3D2_PREDICTOR_FAILURE_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e3d2-predictor-failure.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered E3-D2 diagnostics
+        env:
+          PUB_GC_EVIDENCE_DIR: ${{ runner.temp }}/pub-gc-e3d2
+        run: bash tests/publication/run_pub_gc_e3d2.sh
+      - name: Upload E3-D2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e3d2-evidence
+          path: ${{ runner.temp }}/pub-gc-e3d2
+          if-no-files-found: error

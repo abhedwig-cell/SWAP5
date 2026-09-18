@@ -9,6 +9,11 @@ class Fgc44RealSwap:
         self.lib.fgc44_swap_initialize_c.argtypes = [
             ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_swap_initialize_configured_c.restype = ctypes.c_int
+        self.lib.fgc44_swap_initialize_configured_c.argtypes = [
+            ctypes.c_double, ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
+        ]
         self.lib.fgc44_swap_trial_c.restype = ctypes.c_int
         self.lib.fgc44_swap_trial_c.argtypes = [ctypes.c_double, ctypes.POINTER(ctypes.c_double)]
         for name in [
@@ -31,12 +36,31 @@ class Fgc44RealSwap:
         self.lib.fgc44_last_trial_diagnostics_c.argtypes=[
             ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_predictor_run_diagnostics_c.restype=ctypes.c_int
+        self.lib.fgc44_predictor_run_diagnostics_c.argtypes=[
+            *([ctypes.POINTER(ctypes.c_int)]*14),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
         status=self.lib.fgc44_swap_initialize_c(ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href))
         if status: raise RuntimeError(f"SWAP initialize failed: {status}")
         return hcof.value,rhs.value,href.value
+
+    def try_initialize_configured(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[int,float,float,float]:
+        hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
+        status=self.lib.fgc44_swap_initialize_configured_c(
+            float(duration_day),float(predictor_qbot_cm_per_day),
+            ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href)
+        )
+        return int(status),hcof.value,rhs.value,href.value
+
+    def initialize_configured(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[float,float,float]:
+        status,hcof,rhs,href=self.try_initialize_configured(duration_day,predictor_qbot_cm_per_day)
+        if status:
+            raise RuntimeError(f"configured SWAP initialize failed: {status}")
+        return hcof,rhs,href
 
     def trial(self, head_m: float) -> float:
         q=ctypes.c_double()
@@ -75,6 +99,30 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_state_c(ctypes.byref(revision),ctypes.byref(time),ctypes.byref(count),ctypes.byref(exchange))
         if status: raise RuntimeError(f"state query failed: {status}")
         return revision.value,time.value,count.value,exchange.value
+
+    def predictor_run_diagnostics(self) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(14)]
+        reals=[ctypes.c_double() for _ in range(3)]
+        status=self.lib.fgc44_predictor_run_diagnostics_c(
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"predictor diagnostics query failed: {status}")
+        names=[
+            "available","result_status","completed","direction_available",
+            "transaction_calls","accepted_substeps","attempts","retries",
+            "trial_rollbacks","solver_rejections","temporal_rejections",
+            "temporal_unavailable_rejections","mass_rejections","internal_retries",
+        ]
+        result={k:v.value for k,v in zip(names,ints)}
+        result["available"]=bool(result["available"])
+        result["completed"]=bool(result["completed"])
+        result["direction_available"]=bool(result["direction_available"])
+        result["max_temporal_indicator"]=reals[0].value
+        result["min_accepted_substep_duration"]=reals[1].value
+        result["max_accepted_substep_duration"]=reals[2].value
+        return result
 
     def e1_diagnostics(self) -> dict[str,float|bool]:
         mass_complete=ctypes.c_int()
