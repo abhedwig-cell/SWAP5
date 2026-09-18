@@ -1,0 +1,192 @@
+{
+  "schema": "swap5.publication.p2e16b-candidate-boundary-primary.v1",
+  "workunit": "PUB-P2E16B",
+  "phase": "PREREGISTERED_AFTER_STAGE_A_BEFORE_ANY_P2E16B_ROSSFAST_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "doctoral_rq": "RQ2_REPLACE",
+  "branch": "work/pub-p2e16b-candidate-boundary-primary",
+  "parent_authority": {
+    "p2e16_master_preregistration_commit": "50f41a43f7d19fc36be439cb9ed680f53ad55967",
+    "p2e16_master_preregistration_blob": "8c9336594486864d6318e1b52a3e093f774cf2af",
+    "p2e16a_result_commit": "409b1047764d8ae4a04b13d55b490af3225e7067",
+    "p2e16a_result_blob": "2c9b856e2d18d5d8e42c098f12b6405e5e15ff58",
+    "p2e16a_verdict": "REFERENCE_BOUNDARY_DOMAIN_VALID_THRESHOLD_TRANSFER_PARTIAL_1269_OF_1296",
+    "p2e14_threshold_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "p2e15_result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19"
+  },
+  "purpose": "Execute the candidate-exposed forcing-boundary primary experiment after Reference-only adjudication, preserving the exact P2E16 rho matrix and P2E14 thresholds while separating route-domain evidence from pairwise scientific-admissibility evidence.",
+  "stage_A_frozen_findings_used_as_design_mask": {
+    "reference_valid_case_count": 1296,
+    "reference_invalid_case_count": 0,
+    "threshold_transfer_valid_case_count": 1269,
+    "threshold_transfer_invalid_case_count": 27,
+    "threshold_transfer_valid_inside_count": 424,
+    "threshold_transfer_valid_boundary_count": 426,
+    "threshold_transfer_valid_outside_count": 419,
+    "threshold_transfer_invalid_inside_count": 8,
+    "threshold_transfer_invalid_boundary_count": 6,
+    "threshold_transfer_invalid_outside_count": 13,
+    "pairwise_scientific_claim_authorized_case_count": 850,
+    "pairwise_scientific_claim_authorized_definition": "P2E16A threshold-transfer-valid AND abs(rho)<=1",
+    "route_boundary_claim_case_count": 1296,
+    "fail_closed_outside_case_count": 432,
+    "threshold_transfer_invalid_case_ids": [145,154,155,156,157,166,167,168,169,171,172,173,174,178,179,180,433,442,443,444,445,454,455,456,576,646,1207],
+    "rule": "The 27 Stage-A failures are retained exactly. They are not removed, replaced or used to alter thresholds. They remain eligible for route-admission/fail-closed endpoints but are excluded prospectively from pairwise scientific-discrepancy admission inference."
+  },
+  "matrix": {
+    "materials": "all 36 D3R materials B01-B18 and O01-O18",
+    "material_count": 36,
+    "effective_saturation": [0.65,0.85,0.96],
+    "boundary_axes": ["TOP_PRESCRIBED_FLUX","BOTTOM_PRESCRIBED_FLUX"],
+    "rho": [-1.05,-1.0,-0.95,0.95,1.0,1.05],
+    "total_case_count": 1296,
+    "case_order": "material major, then effective_saturation, then boundary axis TOP then BOTTOM, then rho ascending",
+    "grid": "16 homogeneous cells x 10 cm",
+    "fixed_step_duration_day": 0.0016,
+    "source_sink": "zero",
+    "initial_ponding_cm": 0.0,
+    "same_request_semantics": true,
+    "transaction_level_pair": "EXCLUDED"
+  },
+  "boundary_construction": {
+    "top_axis": {
+      "q_top_ref_internal": "+0.01*K_top(initial state)",
+      "limit": "0.02*max(abs(q_top_ref_internal),abs(K_top),1e-12)",
+      "public_qtop": "-(q_top_ref_internal + rho*limit)",
+      "fixed_public_qbot": "-0.004*K_bottom(initial state)"
+    },
+    "bottom_axis": {
+      "q_bottom_ref_public": "-0.004*K_bottom(initial state)",
+      "limit": "0.02*max(abs(q_bottom_ref_public),abs(K_bottom),1e-12)",
+      "public_qbot": "q_bottom_ref_public + rho*limit",
+      "fixed_public_qtop": "-0.01*K_top(initial state)"
+    },
+    "expected_route_class": {
+      "abs_rho_less_than_1": "ROSSFAST_ROUTE_VALID",
+      "abs_rho_equal_1": "ROSSFAST_ROUTE_VALID_INCLUSIVE_BOUNDARY",
+      "abs_rho_greater_than_1": "ROSSFAST_ROUTE_INVALID_FAIL_CLOSED"
+    }
+  },
+  "frozen_thresholds": {
+    "source": "PUB-P2E14 Reference-only threshold freeze",
+    "retuning_allowed": false,
+    "Se_0.65": {
+      "D_h_inf_cm": 0.009310899886486368,
+      "D_h_rms_cm": 0.004264337561059986,
+      "D_theta_inf": 0.000017908123244203544,
+      "D_theta_rms": 0.000006578609068585418,
+      "D_storage_abs_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "D_h_inf_cm": 0.05684414280500505,
+      "D_h_rms_cm": 0.02309047189054667,
+      "D_theta_inf": 0.00024393588764148877,
+      "D_theta_rms": 0.00008095278187597767,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    },
+    "Se_0.96": {
+      "D_h_inf_cm": 0.7386357920248865,
+      "D_h_rms_cm": 0.19122530959872563,
+      "D_theta_inf": 0.0012274135237608785,
+      "D_theta_rms": 0.00035749599085978164,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    }
+  },
+  "primary_endpoints": {
+    "H1_route_domain": {
+      "population": "all 1296 cases",
+      "support_rule": "RossFast route-valid for every abs(rho)<=1 case and route-invalid for every abs(rho)>1 case, with Reference fixed-step route valid.",
+      "expected_route_valid_count": 864,
+      "expected_route_invalid_count": 432,
+      "route_mismatch_count_required_for_broad_support": 0
+    },
+    "H2_scientific_admissibility": {
+      "population": "the 850 Stage-A threshold-transfer-valid cases with abs(rho)<=1",
+      "support_rule": "Both routes valid and every one of the five immutable P2E14 discrepancy metrics <= the exact-Se threshold.",
+      "weighted_compensation": false,
+      "mass_compensation": false,
+      "performance_compensation": false,
+      "discrepancy_failure_count_required_for_broad_support": 0
+    },
+    "H3_fail_closed": {
+      "population": "all 432 abs(rho)=1.05 outside cases",
+      "support_rule": "Reference fixed-step route valid; RossFast does not publish a converged candidate; no automatic Reference fallback or alternate accepted solver identity.",
+      "unexpected_candidate_admission_count_required_for_support": 0
+    }
+  },
+  "orthogonal_case_status": {
+    "route_status_values": [
+      "EXPECTED_INSIDE_ADMITTED",
+      "EXPECTED_BOUNDARY_ADMITTED",
+      "EXPECTED_OUTSIDE_REJECTED",
+      "UNEXPECTED_INSIDE_REJECTED",
+      "UNEXPECTED_BOUNDARY_REJECTED",
+      "UNEXPECTED_OUTSIDE_ADMITTED",
+      "REFERENCE_ROUTE_INVALID",
+      "BOTH_ROUTES_INVALID"
+    ],
+    "scientific_status_values": [
+      "PAIRWISE_ADMISSIBLE",
+      "PAIRWISE_DISCREPANCY_FAIL",
+      "NOT_AUTHORIZED_P2E16A_THRESHOLD_TRANSFER_INVALID",
+      "NOT_APPLICABLE_OUTSIDE_ROUTE_EXPECTED_REJECTED",
+      "NOT_APPLICABLE_ROUTE_INVALID"
+    ],
+    "reason": "Route-domain and scientific-discrepancy inferences are deliberately separate so the 27 Stage-A threshold-transfer failures cannot be silently discarded or misclassified as RossFast failures."
+  },
+  "hard_route_validity": {
+    "reference_status_converged_for_interpretable_case": true,
+    "candidate_state_finite_and_inside_shared_E0_domain_when_candidate_converges": true,
+    "typed_integrated_mass_abs_limit_cm_each_converged_route": 1e-12,
+    "reference_native_rate_residual_required": true,
+    "rossfast_native_rate_residual_must_remain_unavailable": true,
+    "prescribed_flux_identity_must_match_request": true,
+    "automatic_fallback_allowed": false,
+    "candidate_diagnostics_route_if_converged": "rossfast-d3r",
+    "candidate_diagnostics_route_if_rejected": "rossfast-d3r-rejected"
+  },
+  "negative_result_policy": {
+    "execute_all_1296_after_first_unfavorable_result": true,
+    "scientific_result_is_not_ci_pass_condition": true,
+    "route_mismatch_retained": true,
+    "pairwise_discrepancy_failure_retained": true,
+    "reference_fixed_step_failure_retained": true,
+    "no_case_replacement": true,
+    "no_threshold_change": true,
+    "no_rho_change": true,
+    "no_stage_A_mask_change": true
+  },
+  "firewall": {
+    "production_or_reference_source_change_allowed": false,
+    "solver_contract_change_allowed": false,
+    "automatic_fallback_allowed": false,
+    "performance_claim_authorized": false,
+    "transaction_level_equivalence_claim_authorized": false,
+    "heterogeneous_profile_claim_authorized": false,
+    "root_sink_claim_authorized": false,
+    "groundwater_coupling_claim_authorized": false,
+    "production_envelope_widening_authorized": false
+  },
+  "hypotheses": {
+    "P2E16_H1": "The exact production forcing envelope predicts RossFast route validity across material and common-state axes.",
+    "P2E16_H2": "Where P2E14 threshold transfer is independently valid, route-valid inside/boundary RossFast cases remain scientifically admissible without threshold widening.",
+    "P2E16_H3": "Just-outside requests fail closed with no silent fallback or converged RossFast publication while the matched Reference request remains valid."
+  },
+  "qualification": {
+    "required": [
+      "exactly 1296 cases attempted in frozen order",
+      "exact Stage-A 27-case invalid mask reproduced",
+      "all 36 materials and three Se anchors retained",
+      "both boundary axes and all six rho levels retained",
+      "P2E14 thresholds reproduced unchanged",
+      "fixed-solver-seam source blobs remain identical to P2E15/P2E16A authority",
+      "O0/O2 byte-identical scientific output",
+      "no src/** or reference/** mutation",
+      "unexpected scientific results do not fail the harness"
+    ]
+  },
+  "primary_claim_if_supported": "The current RossFast state-local prescribed-flux contract defines a reproducible two-sided forcing admission boundary across all 36 materials and common state anchors; within the independently Reference-valid threshold-transfer subset, scientific solver substitution remains admissible through the inclusive boundary, and just-outside requests fail closed.",
+  "failure_interpretation": "Route mismatches falsify or narrow the contract-domain description. Pairwise failures within the 850 authorized cases narrow the scientific substitution domain. The 27 Stage-A threshold-transfer failures remain limitations of threshold transfer and are never counted as RossFast discrepancy failures.",
+  "verdict": "PREREGISTERED_P2E16B_1296_CASE_CANDIDATE_BOUNDARY_PRIMARY_READY_FOR_IMPLEMENTATION",
+  "next_permitted_action": "Implement the fixed 1296-case candidate boundary harness, runner and workflow exactly as frozen. No performance, transaction, groundwater or production-envelope mutation is permitted."
+}
