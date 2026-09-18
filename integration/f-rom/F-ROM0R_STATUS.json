@@ -3,23 +3,38 @@
   "workstream": "F-ROM",
   "work_unit": "ROM-0R",
   "title": "Accepted-Domain Construction",
-  "phase": "R1_CLOSED_R2_PREREGISTERED_IMPLEMENTATION_PENDING",
+  "phase": "CLOSED_NO_GO_REFERENCE_AUTHORITY",
   "branch": "work/f-rom0-close-expand-accepted-domain",
   "predecessor": "ROM-0",
-  "predecessor_decision": "EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
   "authority": "docs/science/F-ROM0R_ACCEPTED_DOMAIN_SEED_CONSTRUCTION.md",
   "r1": {
-    "preregistration": "integration/f-rom/F-ROM0R_R1_PREREGISTRATION.json",
-    "result": "integration/f-rom/F-ROM0R_R1_RESULT.json",
-    "decision": "PROCEED_TO_ROM0R_R2_PERTURBATION_PREREGISTRATION"
+    "decision": "PROCEED_TO_ROM0R_R2_PERTURBATION_PREREGISTRATION",
+    "result": "PASS_B01_B14_GRAVITY_STEADY_SEED"
   },
   "r2": {
-    "preregistration": "integration/f-rom/F-ROM0R_R2_PREREGISTRATION.json",
-    "phase": "PREREGISTERED_BEFORE_EXECUTION"
+    "decision": "TEMPORAL_AUTHORITY_REQUIRED",
+    "result": "CANONICAL_EXTERNAL_FULL_HALF_PERTURBED_TRAJECTORIES_NOT_ADMITTED"
   },
+  "temporal_authority": {
+    "F_ROM0TA1": "MEASURED_LOCAL_CERTIFICATE_CONSERVATISM",
+    "F_ROM0TA2": "APPLICATION_BUDGET_ROUTE_REJECTED_AS_CIRCULAR",
+    "F_ROM0TA3": "REFERENCE_FLOOR_SAMPLE_CAPABILITY_QUALIFIED",
+    "F_ROM0TA4": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+    "F_ROM0TA5": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED"
+  },
+  "r3": {
+    "decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "result": "integration/f-rom/F-ROM0R_R3_RESULT.json",
+    "B01": "BOTH_FROZEN_PRESCRIBED_HEAD_DIRECTIONS_FAIL_REFERENCE_RETRY",
+    "B14": "BOTH_DIRECTIONS_PASS_DIRECTIONAL_SEPARATION_PASS"
+  },
+  "final_rom0_decision": "NO_GO_REFERENCE_AUTHORITY",
+  "post_result_retuning_allowed": false,
   "rom1a_authorized": false,
   "production_solver_authorized": false,
-  "production_source_mutation": "NONE",
-  "next_action": "Implement and execute the frozen symmetric one-percent top-flux perturbations from the accepted R1 seed, including the preregistered dt-refinement cases.",
-  "blockers": []
+  "production_application_admission": false,
+  "next_action": "NONE_WITHIN_ROM0R. Any continuation requires a new Reference-authority workstream and new preregistration.",
+  "blockers": [
+    "FROZEN_B01_PRESCRIBED_HEAD_REFERENCE_TRAJECTORY_AUTHORITY_NOT_AVAILABLE"
+  ]
 }
