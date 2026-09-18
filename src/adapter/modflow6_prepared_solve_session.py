@@ -21,6 +21,9 @@ class PreparedSolveStatus(IntEnum):
     SESSION_INVALID = 10
     ALREADY_FINALIZED = 11
     SOLVE_ITERATION_LIMIT = 12
+    TIMESTEP_NOT_READY = 13
+    TIMESTEP_FINALIZE_FAILED = 14
+    TIMESTEP_ALREADY_FINALIZED = 15
 
 
 @dataclass(frozen=True)
@@ -70,6 +73,7 @@ class Modflow6PreparedSolveSession:
         self.acquired = False
         self.solve_open = False
         self.finalized = False
+        self.timestep_finalized = False
         self.invalid = False
         self.iteration_count = 0
         self.max_solve_iterations = 0
@@ -251,6 +255,43 @@ class Modflow6PreparedSolveSession:
 
         self.solve_open = False
         self.finalized = True
+        return PreparedSolveStatus.OK
+
+    def timestep_ready_for_finalize(self) -> bool:
+        """Non-mutating readiness check for the whole-timestep publication point."""
+        return (
+            not self.invalid
+            and self.acquired
+            and self.finalized
+            and not self.solve_open
+            and not self.timestep_finalized
+            and self.iteration_count > 0
+            and self.accepted_xold is not None
+            and self.xold is not None
+            and np.array_equal(self.xold, self.accepted_xold)
+        )
+
+    def finalize_time_step_once(self) -> PreparedSolveStatus:
+        """Cross the MODFLOW timestep publication point exactly once.
+
+        All scientific/provenance rejection belongs above this call. Failure
+        here is not advertised as rollback-safe.
+        """
+        self.last_error = ""
+        if self.invalid:
+            return PreparedSolveStatus.SESSION_INVALID
+        if self.timestep_finalized:
+            return PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED
+        if not self.timestep_ready_for_finalize():
+            self.last_error = "prepared solve is not ready for timestep finalization"
+            return PreparedSolveStatus.TIMESTEP_NOT_READY
+        try:
+            self.kernel.finalize_time_step()
+        except Exception as exc:
+            self.last_error = str(exc)
+            self._invalidate()
+            return PreparedSolveStatus.TIMESTEP_FINALIZE_FAILED
+        self.timestep_finalized = True
         return PreparedSolveStatus.OK
 
     def invalidate_without_finalize(self) -> None:
