@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.rom1ad1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-D1",
+  "title": "D01 strict mode-2 failure cause and representation-floor diagnostic",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "parent_failure": "ROM1A_D01_TOP_PLUS_STEP21_STRICT_MODE2_NO_GO",
+  "purpose": "Rebuild the exact accepted D01 predecessor through F-KT commit authority, reproduce the failed strict mode-2 interval, classify the final Reference convergence criterion and measure the independently established pre-solve floating-point representation bound without changing any solver control.",
+  "case": {
+    "material": "B01",
+    "history": "D01",
+    "forcing": "TOP_PLUS",
+    "top_flux_expression": "qeq + 0.01*K0",
+    "bottom_mode": 2,
+    "bottom_flux_expression": "qeq",
+    "seed": "R1 gravity-consistent Se=0.85, two 0.0016-day qeq/qeq intervals",
+    "accepted_predecessor_steps": 20,
+    "failed_step": 21,
+    "step_dt_day": 0.0008,
+    "failed_interval_day": [0.0192,0.0200]
+  },
+  "frozen_controls": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "min_step_duration_day": 1e-8,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "classification_method": {
+    "authority": "PUB-P2E11D classification semantics",
+    "RETRY_MIXED": "local_balance_flags > 0 and head_flags > 0",
+    "RETRY_LOCAL_BALANCE": "local_balance_flags > 0 and head_flags == 0",
+    "RETRY_HEAD": "local_balance_flags == 0 and head_flags > 0",
+    "RETRY_TOTAL_ONLY": "no local/head flags, max_abs_local_residual <= 1e-12 and abs(total_residual) > 1e-12",
+    "RETRY_OTHER": "retry-advised not captured above"
+  },
+  "representation_diagnostic": {
+    "authority": "PUB-P2E21 prospective representation formula",
+    "formula_cm": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "computed_from": "accepted predecessor before the failed solve",
+    "failed_residual_used_in_formula": false,
+    "empirical_factor": "none",
+    "policy_applied_to_solver": false,
+    "record": [
+      "representation_bound_cm",
+      "abs_total_residual_times_dt_cm",
+      "residual_over_representation_bound",
+      "within_representation_bound"
+    ]
+  },
+  "required_evidence": [
+    "20_ACCEPTED_PREFIX_STEPS_REBUILT",
+    "FAILED_FMR_SAMPLE_LEAVES_COMMITTED_STATE_BIT_IDENTICAL",
+    "DIRECT_DIAGNOSTIC_REPRODUCES_FMR_RETRY_STATUS_AND_WORK",
+    "FINAL_LOCAL_BALANCE_FLAG_COUNT",
+    "FINAL_HEAD_FLAG_COUNT",
+    "MAX_ABS_LOCAL_RESIDUAL",
+    "TOTAL_RESIDUAL",
+    "PRE_SOLVE_REPRESENTATION_BOUND",
+    "O0_O2_OR_REPEAT_DETERMINISM"
+  ],
+  "decisions": [
+    "ROM1AD1_RETRY_TOTAL_ONLY_WITHIN_REPRESENTATION_BOUND",
+    "ROM1AD1_RETRY_TOTAL_ONLY_EXCEEDS_REPRESENTATION_BOUND",
+    "ROM1AD1_RETRY_LOCAL_BALANCE",
+    "ROM1AD1_RETRY_HEAD",
+    "ROM1AD1_RETRY_MIXED",
+    "ROM1AD1_RETRY_OTHER",
+    "ROM1AD1_DIAGNOSTIC_BLOCKED"
+  ],
+  "firewalls": [
+    "NO_HISTORY_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_FAILED_CANDIDATE_COMMIT",
+    "NO_MODE2_FALLBACK_ADMISSION",
+    "NO_HELDOUT_OR_B14_INSPECTION",
+    "NO_REDUCED_STATE_WORK"
+  ],
+  "rom1a_parent_reclassified": false
+}
