@@ -10,6 +10,7 @@ COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
 ANALYZER=tests/rom/analyze_f_rom0_accepted_reference_laboratory.py
 PREREG=integration/f-rom/F-ROM0_PREREGISTRATION.json
 SUPPLEMENT=integration/f-rom/F-ROM0_NUMERICAL_CONTROLS_SUPPLEMENT.json
+PROBE_CORRECTION=integration/f-rom/F-ROM0_BOUNDARY_PROBE_PREFLIGHT_CORRECTION.json
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-f-rom0-${GITHUB_RUN_ID:-local}-$$"
 EVIDENCE="${F_ROM0_EVIDENCE_DIR:-$ROOT/F-ROM0_EVIDENCE}"
 mkdir -p "$BUILD" "$EVIDENCE/cases"
@@ -31,6 +32,7 @@ python3 - "$PREREG" "$SUPPLEMENT" <<'PY'
 import json,sys
 p=json.load(open(sys.argv[1]))
 s=json.load(open(sys.argv[2]))
+c=json.load(open(sys.argv[3]))
 assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
 assert [x["id"] for x in p["materials"]]==["B01","B14"]
 assert p["observation_interval_day"]["base"]==0.0016
@@ -44,6 +46,11 @@ assert s["transaction"]["retry_scale"]==0.5
 assert s["transaction"]["mass_tolerance_cm"]==1e-12
 assert s["canonical"]["max_committed_substeps"]==128
 assert s["tuning_after_execution_allowed"] is False
+assert c["phase"]=="FROZEN_BEFORE_FIRST_EXECUTION"
+assert c["execution_evidence_seen_before_correction"] is False
+assert c["corrected_probe"]["rise"]=="hbot = h0 + 2 * dz_cm"
+assert c["corrected_probe"]["fall"]=="hbot = h0 - 2 * dz_cm"
+assert c["post_execution_retuning_allowed"] is False
 print("F_ROM0_PREREGISTRATION_LOCK=PASS")
 PY
 
