@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ108",
+  "capability": "F-GC34",
+  "title": "Independent MODFLOW6 Typed API Binding Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "owner": {
+    "branch": "work/f-gc34-modflow6-api-binding-reconciled",
+    "checkpoint_head": "2bc4ccb1cbedde8af60cd8390799373ed4310cb1",
+    "production_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "exact_head_run": 35293513488,
+    "exact_head_job": 105441215673,
+    "exact_head_conclusion": "success"
+  },
+  "independence": {
+    "verifier_branch": "qualification/f-vq108-fgc34-api-binding-independent",
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "oracle": "three-binding independent permutation/shadow publication oracle; explicit identity and N:1 node mapping; active-prefix/tail preservation; atomic rejection for gap, duplicate identity, missing term, nonfinite RHS and undersized package arrays"
+  },
+  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC34 admission postimage."
+}
