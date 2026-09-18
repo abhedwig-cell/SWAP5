@@ -1,0 +1,33 @@
+name: F-CI102 F-GC35 XMI adapter admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci102-fgc35-xmi-adapter-admission
+    paths:
+      - 'src/adapter/modflow6_xmi_package_adapter.py'
+      - 'integration/f-gc/F-GC35_STATUS.json'
+      - 'qualification/F-VQ109_STATUS.json'
+      - 'tests/fgc/test_fgc35_modflow6_xmi_package_adapter.py'
+      - 'tests/fgc/run_fgc35_modflow6_xmi_package_adapter.sh'
+      - 'tests/fvq/test_fvq109_fgc35_xmi_adapter_independent.py'
+      - 'tests/fvq/run_fvq109_fgc35_xmi_adapter_independent.sh'
+      - 'tests/fci/run_fci102_fgc35_xmi_adapter_admission.sh'
+      - '.github/workflows/f-ci102-fgc35-xmi-adapter-admission.yml'
+      - 'integration/f-ci/F-CI102_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: F-CI102 exact-source admission qualification
+        run: bash tests/fci/run_fci102_fgc35_xmi_adapter_admission.sh

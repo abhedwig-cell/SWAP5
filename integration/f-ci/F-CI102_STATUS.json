@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI102",
+  "capability": "F-GC35",
+  "title": "MODFLOW6 XMI Package Adapter Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "PENDING_ADMISSION_GATE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
+    "dependency_authority": "F-GC34 closed canonical typed API binding"
+  },
+  "owner": {
+    "branch": "work/f-gc35-modflow6-xmi-package-adapter-reconciled",
+    "checkpoint_head": "7d64f9e1fd48b512f3dee2c0ea3d645804310812",
+    "exact_head_run": 35294401118,
+    "exact_head_job": 105443849805,
+    "conclusion": "success",
+    "production_blob": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713",
+    "status_blob": "0bead6f34e41ea9b8db5ca35aa8c0981a338d6e7"
+  },
+  "independent": {
+    "work_unit": "F-VQ109",
+    "status_head": "9ecd770f4a8b9ddf639d9f917c567927721cb111",
+    "exact_head_run": 35294523262,
+    "exact_head_job": 105444207215,
+    "conclusion": "success",
+    "status_blob": "80c8ab46cd026a8a9e4fe9a162a6949f69718f12",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/adapter/modflow6_xmi_package_adapter.py"
+    ],
+    "production_blob": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "admitted_scope_candidate": [
+    "XMI address resolution for NODELIST/HCOF/RHS/MAXBOUND/NBOUND",
+    "live pointer acquisition after initialize and full pointer reacquisition after host prepare_time_step",
+    "publication-window generation guard around the canonical F-GC34 publisher seam",
+    "pointer shape/dtype/capacity validation and fail-closed invalid refresh behavior",
+    "no MODFLOW execution lifecycle ownership"
+  ],
+  "evidence_boundary": [
+    "mock-XMI pointer/lifecycle contract only",
+    "not live libmf6/xmipy end-to-end qualification"
+  ],
+  "exclusions": [
+    "MODFLOW execution ownership",
+    "concrete cross-language F-GC34 bridge",
+    "head exchange",
+    "predictor/corrector orchestration",
+    "SWAP commit changes",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Run F-CI102 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify status head, reconcile live canonical and non-force fast-forward."
+}
