@@ -316,8 +316,8 @@
       "scope": "Recover the exact B1.11 oxygenstress/rootextraction call graph, minimal continuation state and external views, preserving the SWAP-007 numerical guard.",
       "reason": "Existing root mass owner is mature and oxygen has exact corrected B1.11 authority, but process separability/state is not yet source-bound.",
       "implementation_admission": "REVIEW_FIRST",
-      "review_state": "AUTHORITY_PROVENANCE_REPAIRED_REQUALIFICATION_PENDING",
-      "qualification": "Prior run 35401688929 invalidated because its validator pinned superseded historical SWAP-007 B0 metadata. Canonical B0 manifest/provenance verifier repair pending requalification.",
+      "review_state": "QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION",
+      "qualification": "Repaired provenance qualification: dedicated 35404659412 PASS; parent WU05 35404659375 PASS; Documentation 35404659345 PASS; F-CI 35404659285 PASS.",
       "next_slice": "PPA-WU05-C1 byte-exact B1.11 oxygenstress/rootextraction source materialization and complete call-graph/input/state census"
     },
     {
@@ -441,6 +441,17 @@
       "state": "AUTHORITY_PROVENANCE_REPAIR_PENDING_REQUALIFICATION",
       "effect": "Replaced superseded historical SWAP-007 B0 metadata with canonical B0 manifest/provenance verifier authority. No production/reference mutation.",
       "canonical_b0_oxygenstress_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735"
+    },
+    {
+      "workunit": "PPA-WU05-C",
+      "state": "QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION",
+      "effect": "Canonical B0 oxygenstress provenance repaired and requalified. Single root-water mass owner and derived-cache classification preserved; production remains held for C1 exact source materialization.",
+      "qualification_runs": [
+        35404659412,
+        35404659375,
+        35404659345,
+        35404659285
+      ]
     }
   ]
 }
