@@ -1,0 +1,30 @@
+name: PUB-GC E7 selected route admission
+
+on:
+  push:
+    branches:
+      - work/pub-gc-e7-selected-route-admission
+    paths:
+      - 'docs/publication/PUB_GC_E7_SELECTED_ROUTE_BINDING.json'
+      - 'tests/publication/run_pub_gc_e7_selected_route_admission.sh'
+      - '.github/workflows/pub-gc-e7-selected-route-admission.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/PUB_GC_E7_SELECTED_ROUTE_BINDING.json'
+      - 'tests/publication/run_pub_gc_e7_selected_route_admission.sh'
+      - '.github/workflows/pub-gc-e7-selected-route-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify selected Hupsel route against current production application envelope
+        run: bash tests/publication/run_pub_gc_e7_selected_route_admission.sh
