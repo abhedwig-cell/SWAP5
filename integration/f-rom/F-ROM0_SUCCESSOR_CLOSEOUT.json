@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.f-rom0.successor-closeout.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "CLOSED_PROCEED_TO_ROM1A_UNDER_SUCCESSOR_RESEARCH_REFERENCE_AUTHORITY",
+  "decision": "PROCEED_TO_ROM1A",
+  "historical_fixed_control_closeout": {
+    "path": "integration/f-rom/F-ROM0_CLOSEOUT.json",
+    "decision": "NO_GO_REFERENCE_AUTHORITY",
+    "status": "IMMUTABLE_HISTORICAL_EVIDENCE",
+    "reclassified": false
+  },
+  "successor_authority": {
+    "policy_reconciliation": "integration/f-rom/F-ROM0_R3_POLICY_AUTHORITY_RECONCILIATION.json",
+    "governing_lower_boundary_authority": "ROM-0R-R3D4",
+    "governing_lower_boundary_decision": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "supporting_policy_authority": "ROM-0R-R3Q1",
+    "supporting_fkt_transfer_authority": "ROM-0R-R3Q2",
+    "vertical_floor_authority": "ROM-0V1",
+    "vertical_floor_decision": "VERTICAL_REFERENCE_FLOOR_MEASURED"
+  },
+  "gate_adjudication": {
+    "Q0_1_ownership": "PASS",
+    "Q0_2_reproducibility": "PASS",
+    "Q0_3_conservation": "PASS",
+    "Q0_4_bidirectional_reachability": "PASS_UNDER_QUALIFIED_RESEARCH_REFERENCE_AUTHORITY",
+    "Q0_5_reference_floor": "PASS_MEASURED_REQUIRED_TEMPORAL_AND_VERTICAL_MATRIX",
+    "Q0_6_non_mutation": "PASS_WITH_RESEARCH_REFERENCE_SCOPE"
+  },
+  "evidence": {
+    "ta4_restart_replay": {
+      "decision": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+      "workflow_run": 35372014491
+    },
+    "ta5_mode5_sample_binding": {
+      "decision": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED",
+      "workflow_run": 35370006629
+    },
+    "r3d4": {
+      "decision": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+      "workflow_run": 35374485859,
+      "artifact_id": 10559343867,
+      "artifact_digest": "sha256:4089f7be90d326539b53bff9bbc03c2c8e20f346f5edefe571c2eee842a18a69",
+      "original_accepted_overlap_bit_identity": "51_OF_51",
+      "B01_fallback_count": 2,
+      "B14_fallback_count": 0,
+      "full_horizon_cases": "4_OF_4",
+      "max_abs_committed_mass_residual_cm": 8.673617379884035e-19
+    },
+    "r3q2": {
+      "decision": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
+      "workflow_run": 35374391172
+    },
+    "v1": {
+      "decision": "VERTICAL_REFERENCE_FLOOR_MEASURED",
+      "workflow_run": 35375404190,
+      "artifact_id": 10559493353,
+      "artifact_digest": "sha256:233596efdc8c2cf1ec85507b6f600ee6a6309bd008d233a3e9ec0884a628c4ed",
+      "required_cases_complete": true,
+      "common_endpoints_per_case": 32,
+      "hard_mass_gate_pass": true
+    }
+  },
+  "reference_floor": {
+    "temporal_0_0016_vs_0_0008": "MEASURED",
+    "vertical_16x10_vs_32x5": "MEASURED",
+    "threshold_rule": "MEASURE_ONLY",
+    "complete_for_ROM1_state_sufficiency_interpretation": true
+  },
+  "source_freeze": {
+    "d4_executed_head": "97abf1f04329f7d19c0bcae863d00579913966f4",
+    "v1_executed_head": "138733e5acd9a0c1342322337feeeec954f51d38",
+    "src_or_reference_delta_to_closeout_head": false
+  },
+  "rom1a_authorized": true,
+  "production_reduced_solver_authorized": false,
+  "production_reference_fallback_admitted": false,
+  "production_application_admission_from_ROM": false,
+  "next_work_unit": "ROM-1A_TRAJECTORY_LIBRARY_AND_DATA_SPLIT_PREREGISTRATION",
+  "forbidden_before_ROM1A_preregistration": [
+    "SELECT_REDUCED_COORDINATE",
+    "FIT_POD_BASIS",
+    "SELECT_MEMORY_VARIABLE",
+    "FIT_REDUCED_CLOSURE",
+    "CLAIM_PRODUCTION_ROM"
+  ]
+}
