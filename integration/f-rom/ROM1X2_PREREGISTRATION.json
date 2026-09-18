@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.rom1x2.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1X2",
+  "title": "B14 frozen-collision future-probe predictive ambiguity adjudication",
+  "phase": "PREREGISTERED_BEFORE_B14_FUTURE_PROBE_EXECUTION",
+  "predecessor": {
+    "work_unit": "ROM-1X1",
+    "decision": "ROM1X1_B14_MATERIAL_TRANSFER_STATE_SEPARATION_NO_GO",
+    "collision_count": 351,
+    "frozen_pair_manifest": "integration/f-rom/ROM1X1_COLLISION_MANIFEST.json",
+    "pair_manifest_blob": "614fcd21dc6e46e5c241757ae1ed16b24c0e5e63"
+  },
+  "purpose": "Determine whether the already frozen B14 hidden-state collision pairs also exhibit future storage-response ambiguity under identical probes, without changing the coordinate, pair selection, probes, horizons, or numerical response scales.",
+  "frozen_pairs": {
+    "pair_count": 8,
+    "material": "B14",
+    "coordinate": "Z8_PLUS_G8",
+    "selection": "exact ROM1X1 manifest",
+    "future_probe_outcomes_used_for_selection": false,
+    "reselection_allowed": false
+  },
+  "future_probes": {
+    "probes": [
+      "HOLD",
+      "TOP_PLUS",
+      "BOTTOM_HEAD_RISE",
+      "BOTTOM_HEAD_FALL"
+    ],
+    "horizons_steps": [
+      4,
+      16,
+      64
+    ],
+    "horizons_day": [
+      0.0032,
+      0.0128,
+      0.0512
+    ],
+    "step_day": 0.0008,
+    "provenance": "same probe set and horizons frozen before B14 in F-ROM1A and used in ROM1B2",
+    "identical_probe_for_both_pair_members": true,
+    "retuning_allowed": false
+  },
+  "starting_state_reconstruction": {
+    "source_histories": "exact X1 B14 history/step identifiers",
+    "reference_policy": "same frozen strict-first B14-qualified X1 policy",
+    "rebase_to_probe_time_zero": true,
+    "solver_worker_scratch_transferred": false
+  },
+  "numerical_reference_scales": {
+    "source": "pre-ROM1 B14 ROM-0V1 and ROM-0T1Q1 only",
+    "single_trajectory": {
+      "total_storage_cm": 3.552713678800501e-14,
+      "upper_0_40cm_storage_cm": 2.4268587139886222e-11,
+      "lower_40_160cm_storage_cm": 2.425082357149222e-11
+    },
+    "pairwise_response": {
+      "rule": "two times single-trajectory scale by triangle inequality",
+      "total_storage_cm": 7.105427357601002e-14,
+      "upper_0_40cm_storage_cm": 4.8537174279772444e-11,
+      "lower_40_160cm_storage_cm": 4.850164714298444e-11
+    },
+    "selected_from_B14_probe_outcomes": false
+  },
+  "response_definition": {
+    "trajectory_response": "Y(t)-Y(0)",
+    "pair_response_difference": "abs((Y_a(t)-Y_a(0))-(Y_b(t)-Y_b(0)))",
+    "formal_outputs": [
+      "total_storage",
+      "upper_0_40cm_storage",
+      "lower_40_160cm_storage"
+    ],
+    "exchange_outputs": "diagnostic only"
+  },
+  "ambiguity_rule": {
+    "record_ambiguous_if": "any formal storage response difference exceeds its frozen B14 pairwise Reference scale",
+    "transfer_predictive_ambiguity_established_if": "at least one frozen pair/probe/horizon record is ambiguous",
+    "no_weighted_compensation": true
+  },
+  "decisions": [
+    "ROM1X2_B14_PREDICTIVE_AMBIGUITY_ESTABLISHED",
+    "ROM1X2_B14_PREDICTIVE_AMBIGUITY_NOT_ESTABLISHED",
+    "ROM1X2_B14_PROBE_REFERENCE_UNRESOLVED",
+    "ROM1X2_EVIDENCE_BLOCKED"
+  ],
+  "next_rule": {
+    "if_ambiguity_established": "close Z8+G8 material transfer as predictive state-sufficiency no-go; no B14-driven coordinate enrichment; a new research cycle requires an independently designed state class and new uncontaminated transfer evaluation",
+    "if_not_established": "retain X1 non-injective state-separation no-go but do not claim predictive insufficiency; further transfer interpretation requires a separately preregistered closure-oriented study",
+    "if_reference_unresolved": "diagnose B14 Reference probe path without changing coordinate/probes"
+  },
+  "firewalls": [
+    "NO_PAIR_RESELECTION",
+    "NO_COORDINATE_OR_FLOOR_CHANGE",
+    "NO_PROBE_OR_HORIZON_CHANGE",
+    "NO_B14_DRIVEN_ENRICHMENT",
+    "NO_POD_MEMORY_OR_CLOSURE_FIT",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
