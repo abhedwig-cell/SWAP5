@@ -13,6 +13,7 @@ from fgc44_real_swap_ctypes import Fgc44RealSwap
 
 def main()->None:
     window=float(os.environ["E4_WINDOW_DAY"])
+    q0=float(os.environ["E4_BASELINE_QBOT_CM_PER_DAY"])
     q=float(os.environ["E4_QBOT_CM_PER_DAY"])
     baseline_id=os.environ["E4_BASELINE_ID"]
     fraction=float(os.environ["E4_FRACTION"])
@@ -20,34 +21,35 @@ def main()->None:
     lib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
 
     swap=Fgc44RealSwap(lib)
-    status,hcof,rhs,href=swap.try_initialize_configured(window,q)
+    point=swap.e4_flux_point(window,q0,q)
     rec={
-        "schema":"pub-gc-e4-flux-point-v1",
+        "schema":"pub-gc-e4-flux-point-v2",
         "baseline_id":baseline_id,
         "window_day":window,
+        "top_flux_fixed_cm_per_day":q0,
         "qbot_cm_per_day":q,
         "fraction":fraction,
         "side":side,
-        "status_code":status,
-        "ready":status==0,
+        "status_code":int(point["status"]),
+        "ready":bool(point["ready"]),
     }
-    if status==0:
-        d=swap.e1_diagnostics()
-        vals=[hcof,rhs,href,float(d["u"]),float(d["h_end_m"]),float(d["h_start_m"])]
+    if bool(point["ready"]):
+        vals=[
+            float(point["h_end_m"]),
+            float(point["dh_end_cm_per_qbot_cm_per_day"]),
+            float(point["u_A_point"]),
+            float(point["mass_residual_native"]),
+        ]
         if not all(math.isfinite(v) for v in vals):
-            raise AssertionError("nonfinite successful E4 flux point")
-        if swap.state()!=(0,0.0,0,0.0):
-            raise AssertionError("E4 flux predictor changed authoritative state")
+            raise AssertionError("nonfinite successful E4 pure-bottom flux point")
+        if not bool(point["mass_complete"]):
+            raise AssertionError("successful E4 pure-bottom flux point has incomplete mass")
         rec.update({
-            "hcof_m2_per_day":hcof,
-            "rhs_m3_per_day":rhs,
-            "reference_head_m":href,
-            "u_A_point":float(d["u"]),
-            "h_start_m":float(d["h_start_m"]),
-            "h_end_m":float(d["h_end_m"]),
-            "q_u_cm_per_day":float(d["q_u_cm_per_day"]),
-            "mass_complete":bool(d["mass_complete"]),
-            "mass_residual_native":float(d["mass_residual_native"]),
+            "h_end_m":float(point["h_end_m"]),
+            "dh_end_cm_per_qbot_cm_per_day":float(point["dh_end_cm_per_qbot_cm_per_day"]),
+            "u_A_point":float(point["u_A_point"]),
+            "mass_complete":bool(point["mass_complete"]),
+            "mass_residual_native":float(point["mass_residual_native"]),
         })
     print("E4_FLUX_JSON="+json.dumps(rec,sort_keys=True,separators=(",",":")))
 
