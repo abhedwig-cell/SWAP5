@@ -125,7 +125,8 @@ contains
     predictor_forcing=base_forcing; predictor_forcing%bottom_flux=qeq
     call predictor_backend%run_trial(column,template,predictor_parameters,committed,predictor_forcing,predictor_config, &
          window%t0,window%t1,checkpoint,result,candidate,diagnostics)
-    if(.not.result%completed .or. .not.candidate%ready())return
+    if(.not.result%completed)return
+    if(.not.candidate%ready())return
     if(.not.result%accepted_trajectory_direction%available)return
 
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
@@ -285,16 +286,6 @@ contains
     p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
     p%soil_temperature_active=.false.; p%drainage_response_active=.false.
   end subroutine initialize_parameters
-
-  subroutine determine_initial_conductivity(p,k0)
-    type(fmr_b110_physical_parameters_t),intent(in)::p
-    real(real64),intent(out)::k0
-    type(b110_default_mvg_parameters_t),target::hp
-    type(b110_default_mvg_provider_t)::provider
-    real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
-    heads=H0_CM; call provider%evaluate(heads,water,conductivity,capacity,dkdh); k0=conductivity(1)
-  end subroutine determine_initial_conductivity
 
   subroutine initialize_forcing(f,q)
     type(fmr_b110_physical_forcing_t),intent(out)::f
