@@ -1,0 +1,25 @@
+name: PUB-P2E20 casewise REF-HIGH construction
+
+on:
+  push:
+    branches:
+      - work/pub-p2e20-ref-high-scaled-construction
+    paths:
+      - 'docs/publication/P2E20_REF_HIGH_SCALED_CONSTRUCTION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e20_ref_high_scaled_construction.f90'
+      - 'tests/publication/run_pub_p2e20_ref_high_scaled_construction.sh'
+      - '.github/workflows/pub-p2e20-ref-high-scaled-construction.yml'
+  workflow_dispatch:
+
+jobs:
+  casewise-ref-high-construction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered casewise REF-HIGH construction
+        run: bash tests/publication/run_pub_p2e20_ref_high_scaled_construction.sh
