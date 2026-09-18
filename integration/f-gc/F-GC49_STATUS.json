@@ -81,5 +81,11 @@
     "no topology-specific branches in application service",
     "independent verifier proves F-GC40/F-GC34 authority is not duplicated"
   ],
-  "next_permitted_action": "Wait only for F-GC48 canonical admission. Then rebase/reconcile this design against the admitted topology API, implement the Fortran application-plan materializer first, qualify it, then add the narrow production participant bridge and generic Python application service."
+  "next_permitted_action": "Do not add F-GC49 production code until F-GC48 is canonical. Once F-GC48 closes, reconcile its admitted API, then implement F-GC49A application-plan materialization first.",
+  "current_head": "77f5f82897e4edc3b134803f1a6dd410c42b59ce",
+  "design_artifacts": [
+    "integration/f-gc/F-GC49_STATUS.json",
+    "docs/integration/F-GC49_GENERIC_APPLICATION_ORCHESTRATION_DESIGN.md"
+  ],
+  "design_verdict": "DESIGN_READY_IMPLEMENTATION_BLOCKED_ON_FGC48"
 }
