@@ -109,6 +109,7 @@ program test_f_rom0_accepted_reference_laboratory
     call require(result%mass%complete, 'accepted candidate mass accounting complete')
     call require(result%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, 'accepted candidate no missing mass')
     call require(abs(result%mass%residual) <= hard_mass_tol, 'accepted candidate hard mass gate')
+    call require(result%bottom_interface_exchange_available, 'accepted bottom exchange available')
 
     call backend%commit_trial_candidate(committed, candidate, diagnostic, did_commit, commit_status)
     call require(did_commit .and. commit_status == KERNEL_COMMIT_STATUS_COMMITTED, 'candidate committed exactly through kernel owner')
@@ -126,7 +127,8 @@ program test_f_rom0_accepted_reference_laboratory
       write(*,'(*(g0))') 'F_ROM0_ACCEPTED|MATERIAL=',trim(material_id),'|EXPERIMENT=',trim(experiment_id), &
            '|STEP=',i,'|T=',committed%current_time(),'|REV=',committed%current_revision(), &
            '|BOTTOM_MODE=',bottom_mode,'|QTOP=',observation%top_flux,'|QBOT=',observation%bottom_flux, &
-           '|BOTTOM_EXCHANGE=',result%bottom_outward_exchange_native, &
+           '|TOP_EXCHANGE=',observation%top_flux*(t1-t0), &
+           '|BOTTOM_EXCHANGE=',result%bottom_outward_exchange_native,'|BOTTOM_EXCHANGE_AVAILABLE=',result%bottom_interface_exchange_available, &
            '|TERMINAL_QBOT=',result%terminal_bottom_outward_flux_native, &
            '|S_TOTAL=',total_s,'|S_UPPER=',upper_s,'|S_LOWER=',lower_s, &
            '|MASS_START=',result%mass%storage_start,'|MASS_END=',result%mass%storage_end, &
