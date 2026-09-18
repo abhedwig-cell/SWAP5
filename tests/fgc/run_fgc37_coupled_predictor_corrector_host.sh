@@ -8,9 +8,13 @@ python3 - <<'PY'
 import ast
 from pathlib import Path
 
-path = Path("src/adapter/coupled_predictor_corrector_host.py")
-source = path.read_text()
+harness_path = Path("tests/fgc/support/fgc37_internal_coupling_service_harness.py")
+source = harness_path.read_text()
 tree = ast.parse(source)
+
+assert not Path("src/adapter/coupled_predictor_corrector_host.py").exists(), (
+    "qualification harness must not remain in production adapter namespace"
+)
 
 for token in [
     "capture_origin",
@@ -49,9 +53,10 @@ for forbidden_call in [
 ]:
     assert forbidden_call not in calls, forbidden_call
 
-print("FGC37_TRANSACTIONAL_PARTICIPANTS_ONLY=PASS")
+print("FGC37_INTERNAL_SERVICE_OWNERSHIP_BOUNDARY=PASS")
+print("FGC37_QUALIFICATION_HARNESS_TEST_ONLY=PASS")
 print("FGC37_NO_XMI_OR_MODFLOW_EXECUTION_OWNERSHIP=PASS")
 PY
 
 python3 tests/fgc/test_fgc37_coupled_predictor_corrector_host.py
-echo 'F-GC37 COUPLED PREDICTOR-CORRECTOR HOST CONTRACT GATE PASS'
+echo 'F-GC37 INTERNAL SWAP5-MODFLOW COUPLING SERVICE CONTRACT GATE PASS'

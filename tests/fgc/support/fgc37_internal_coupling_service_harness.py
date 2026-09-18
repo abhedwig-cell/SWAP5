@@ -6,7 +6,7 @@ import math
 from typing import Any, Protocol
 
 
-class CoupledHostStatus(IntEnum):
+class CoupledServiceStatus(IntEnum):
     OK = 0
     INVALID_REQUEST = 1
     ORIGIN_CAPTURE_FAILED = 2
@@ -57,7 +57,7 @@ class SwapCorrectorTrial:
 
 
 @dataclass(frozen=True)
-class CoupledHostConfig:
+class CoupledServiceConfig:
     flux_tolerance_m_per_s: float
     max_outer_iterations: int
 
@@ -70,8 +70,8 @@ class CoupledHostConfig:
 
 
 @dataclass
-class CoupledHostResult:
-    status: CoupledHostStatus = CoupledHostStatus.INVALID_REQUEST
+class CoupledServiceResult:
+    status: CoupledServiceStatus = CoupledServiceStatus.INVALID_REQUEST
     completed: bool = False
     committed: bool = False
     request_smaller_window: bool = False
@@ -132,22 +132,23 @@ class LedgerParticipant(Protocol):
     def commit_prepared(self, prepared: Any) -> None: ...
 
 
-def run_coupled_predictor_corrector_window(
+def run_internal_coupling_service_window(
     swap: SwapParticipant,
     groundwater: GroundwaterParticipant,
     ledger: LedgerParticipant,
-    config: CoupledHostConfig,
-) -> CoupledHostResult:
-    """Run one bounded tangent-coupled window against transactional participants.
+    config: CoupledServiceConfig,
+) -> CoupledServiceResult:
+    """Qualification harness for the internal SWAP5-MODFLOW coupling service.
 
-    This function deliberately knows nothing about xmipy, XMI pointers or MODFLOW
-    lifecycle calls. A concrete groundwater participant must independently prove
-    that every trial starts from the supplied accepted origin.
+    This test-only implementation exercises the service contract below iMOD Coupler.
+    It is not a production host and does not define production language or placement.
+    A concrete groundwater participant must independently prove that every trial
+    starts from the supplied accepted origin.
     """
 
-    result = CoupledHostResult()
+    result = CoupledServiceResult()
     if not config.valid():
-        return _fail(result, CoupledHostStatus.INVALID_REQUEST, False, "request-contract")
+        return _fail(result, CoupledServiceStatus.INVALID_REQUEST, False, "request-contract")
 
     try:
         swap_origin = swap.capture_origin()
@@ -155,7 +156,7 @@ def run_coupled_predictor_corrector_window(
     except Exception:
         return _fail(
             result,
-            CoupledHostStatus.ORIGIN_CAPTURE_FAILED,
+            CoupledServiceStatus.ORIGIN_CAPTURE_FAILED,
             True,
             "origin-capture",
         )
@@ -163,7 +164,7 @@ def run_coupled_predictor_corrector_window(
     if swap_origin is None or groundwater_origin is None:
         return _fail(
             result,
-            CoupledHostStatus.ORIGIN_CAPTURE_FAILED,
+            CoupledServiceStatus.ORIGIN_CAPTURE_FAILED,
             True,
             "origin-capture",
         )
@@ -171,10 +172,10 @@ def run_coupled_predictor_corrector_window(
     try:
         predictor = swap.build_predictor_response(swap_origin)
     except Exception:
-        return _fail(result, CoupledHostStatus.PREDICTOR_FAILED, True, "predictor")
+        return _fail(result, CoupledServiceStatus.PREDICTOR_FAILED, True, "predictor")
 
     if not isinstance(predictor, AffineCellResponse) or not predictor.valid():
-        return _fail(result, CoupledHostStatus.PREDICTOR_FAILED, True, "predictor")
+        return _fail(result, CoupledServiceStatus.PREDICTOR_FAILED, True, "predictor")
 
     frozen_slope = predictor.dq_u_dh_per_s
     reference_head = predictor.reference_head_m
@@ -195,7 +196,7 @@ def run_coupled_predictor_corrector_window(
         except Exception:
             return _fail(
                 result,
-                CoupledHostStatus.GROUNDWATER_TRIAL_FAILED,
+                CoupledServiceStatus.GROUNDWATER_TRIAL_FAILED,
                 True,
                 "groundwater-trial",
             )
@@ -204,7 +205,7 @@ def run_coupled_predictor_corrector_window(
             _best_effort_discard_groundwater(groundwater, groundwater_trial)
             return _fail(
                 result,
-                CoupledHostStatus.GROUNDWATER_TRIAL_FAILED,
+                CoupledServiceStatus.GROUNDWATER_TRIAL_FAILED,
                 True,
                 "groundwater-trial",
             )
@@ -217,13 +218,13 @@ def run_coupled_predictor_corrector_window(
             if not _discard_groundwater(groundwater, groundwater_trial):
                 return _fail(
                     result,
-                    CoupledHostStatus.CLEANUP_FAILED,
+                    CoupledServiceStatus.CLEANUP_FAILED,
                     True,
                     "swap-trial-groundwater-cleanup",
                 )
             return _fail(
                 result,
-                CoupledHostStatus.SWAP_CORRECTOR_FAILED,
+                CoupledServiceStatus.SWAP_CORRECTOR_FAILED,
                 True,
                 "swap-corrector",
             )
@@ -234,9 +235,9 @@ def run_coupled_predictor_corrector_window(
             )
             return _fail(
                 result,
-                CoupledHostStatus.SWAP_CORRECTOR_FAILED
+                CoupledServiceStatus.SWAP_CORRECTOR_FAILED
                 if cleanup_ok
-                else CoupledHostStatus.CLEANUP_FAILED,
+                else CoupledServiceStatus.CLEANUP_FAILED,
                 True,
                 "swap-corrector" if cleanup_ok else "swap-corrector-cleanup",
             )
@@ -248,9 +249,9 @@ def run_coupled_predictor_corrector_window(
             )
             return _fail(
                 result,
-                CoupledHostStatus.SWAP_CORRECTOR_FAILED
+                CoupledServiceStatus.SWAP_CORRECTOR_FAILED
                 if cleanup_ok
-                else CoupledHostStatus.CLEANUP_FAILED,
+                else CoupledServiceStatus.CLEANUP_FAILED,
                 True,
                 "flux-residual" if cleanup_ok else "flux-residual-cleanup",
             )
@@ -273,7 +274,7 @@ def run_coupled_predictor_corrector_window(
         if not cleanup_ok:
             return _fail(
                 result,
-                CoupledHostStatus.CLEANUP_FAILED,
+                CoupledServiceStatus.CLEANUP_FAILED,
                 True,
                 "nonconverged-discard",
             )
@@ -284,7 +285,7 @@ def run_coupled_predictor_corrector_window(
     if final_groundwater is None or final_swap is None:
         return _fail(
             result,
-            CoupledHostStatus.NOT_CONVERGED,
+            CoupledServiceStatus.NOT_CONVERGED,
             True,
             "max-outer-iterations",
         )
@@ -299,9 +300,9 @@ def run_coupled_predictor_corrector_window(
         cleanup_ok = _discard_pair(swap, final_swap, groundwater, final_groundwater)
         return _fail(
             result,
-            CoupledHostStatus.LEDGER_STAGE_FAILED
+            CoupledServiceStatus.LEDGER_STAGE_FAILED
             if cleanup_ok
-            else CoupledHostStatus.CLEANUP_FAILED,
+            else CoupledServiceStatus.CLEANUP_FAILED,
             True,
             "ledger-stage" if cleanup_ok else "ledger-stage-cleanup",
         )
@@ -318,9 +319,9 @@ def run_coupled_predictor_corrector_window(
             cleanup_ok = False
         return _fail(
             result,
-            CoupledHostStatus.GROUNDWATER_PREPARE_FAILED
+            CoupledServiceStatus.GROUNDWATER_PREPARE_FAILED
             if cleanup_ok
-            else CoupledHostStatus.CLEANUP_FAILED,
+            else CoupledServiceStatus.CLEANUP_FAILED,
             True,
             "groundwater-prepare"
             if cleanup_ok
@@ -346,9 +347,9 @@ def run_coupled_predictor_corrector_window(
             cleanup_ok = False
         return _fail(
             result,
-            CoupledHostStatus.LEDGER_PREPARE_FAILED
+            CoupledServiceStatus.LEDGER_PREPARE_FAILED
             if cleanup_ok
-            else CoupledHostStatus.CLEANUP_FAILED,
+            else CoupledServiceStatus.CLEANUP_FAILED,
             True,
             "ledger-prepare" if cleanup_ok else "ledger-prepare-cleanup",
         )
@@ -376,9 +377,9 @@ def run_coupled_predictor_corrector_window(
             cleanup_ok = False
         return _fail(
             result,
-            CoupledHostStatus.PUBLICATION_PREFLIGHT_FAILED
+            CoupledServiceStatus.PUBLICATION_PREFLIGHT_FAILED
             if cleanup_ok
-            else CoupledHostStatus.CLEANUP_FAILED,
+            else CoupledServiceStatus.CLEANUP_FAILED,
             True,
             "publication-preflight"
             if cleanup_ok
@@ -399,9 +400,9 @@ def run_coupled_predictor_corrector_window(
         )
         return _fail(
             result,
-            CoupledHostStatus.SWAP_COMMIT_FAILED
+            CoupledServiceStatus.SWAP_COMMIT_FAILED
             if cleanup_ok
-            else CoupledHostStatus.CLEANUP_FAILED,
+            else CoupledServiceStatus.CLEANUP_FAILED,
             True,
             "swap-commit" if cleanup_ok else "swap-commit-abort",
         )
@@ -416,7 +417,7 @@ def run_coupled_predictor_corrector_window(
             "F-GC37 atomic publication invariant failed after SWAP commit"
         ) from exc
 
-    result.status = CoupledHostStatus.OK
+    result.status = CoupledServiceStatus.OK
     result.completed = True
     result.committed = True
     result.request_smaller_window = False
@@ -499,11 +500,11 @@ def _abort_prepared_pair(
 
 
 def _fail(
-    result: CoupledHostResult,
-    status: CoupledHostStatus,
+    result: CoupledServiceResult,
+    status: CoupledServiceStatus,
     request_smaller_window: bool,
     stage: str,
-) -> CoupledHostResult:
+) -> CoupledServiceResult:
     result.status = status
     result.completed = False
     result.committed = False

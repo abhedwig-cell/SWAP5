@@ -7,19 +7,19 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
-MODULE_PATH = ROOT / "src" / "adapter" / "coupled_predictor_corrector_host.py"
-SPEC = importlib.util.spec_from_file_location("fgc37_host", MODULE_PATH)
+MODULE_PATH = ROOT / "tests" / "fgc" / "support" / "fgc37_internal_coupling_service_harness.py"
+SPEC = importlib.util.spec_from_file_location("fgc37_service_harness", MODULE_PATH)
 assert SPEC is not None and SPEC.loader is not None
 MOD = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = MOD
 SPEC.loader.exec_module(MOD)
 
 AffineCellResponse = MOD.AffineCellResponse
-CoupledHostConfig = MOD.CoupledHostConfig
-CoupledHostStatus = MOD.CoupledHostStatus
+CoupledServiceConfig = MOD.CoupledServiceConfig
+CoupledServiceStatus = MOD.CoupledServiceStatus
 GroundwaterTrial = MOD.GroundwaterTrial
 SwapCorrectorTrial = MOD.SwapCorrectorTrial
-run_window = MOD.run_coupled_predictor_corrector_window
+run_window = MOD.run_internal_coupling_service_window
 
 
 class SwapDouble:
@@ -211,10 +211,10 @@ def test_multiteration_convergence_and_same_origins() -> None:
         swap,
         gw,
         ledger,
-        CoupledHostConfig(flux_tolerance_m_per_s=1.0e-6, max_outer_iterations=12),
+        CoupledServiceConfig(flux_tolerance_m_per_s=1.0e-6, max_outer_iterations=12),
     )
 
-    require(result.status == CoupledHostStatus.OK, f"unexpected status {result.status}")
+    require(result.status == CoupledServiceStatus.OK, f"unexpected status {result.status}")
     require(result.completed and result.committed, "successful route did not commit")
     require(result.outer_iterations == 9, "unexpected iteration count")
     require(swap.predictor_calls == 1, "predictor/tangent was rebuilt")
@@ -277,10 +277,10 @@ def test_bounded_not_converged() -> None:
         swap,
         gw,
         ledger,
-        CoupledHostConfig(flux_tolerance_m_per_s=1.0e-12, max_outer_iterations=3),
+        CoupledServiceConfig(flux_tolerance_m_per_s=1.0e-12, max_outer_iterations=3),
     )
 
-    require(result.status == CoupledHostStatus.NOT_CONVERGED, "bounded failure status mismatch")
+    require(result.status == CoupledServiceStatus.NOT_CONVERGED, "bounded failure status mismatch")
     require(result.request_smaller_window, "nonconvergence did not request smaller window")
     require(not result.committed, "nonconverged route committed")
     require(len(swap.discarded) == 3, "last SWAP candidate not discarded on max iterations")
@@ -301,10 +301,10 @@ def test_prepare_failure_aborts_and_commits_nothing() -> None:
         swap,
         gw,
         ledger,
-        CoupledHostConfig(flux_tolerance_m_per_s=1.0e-6, max_outer_iterations=12),
+        CoupledServiceConfig(flux_tolerance_m_per_s=1.0e-6, max_outer_iterations=12),
     )
 
-    require(result.status == CoupledHostStatus.LEDGER_PREPARE_FAILED, "prepare failure status mismatch")
+    require(result.status == CoupledServiceStatus.LEDGER_PREPARE_FAILED, "prepare failure status mismatch")
     require(result.request_smaller_window, "prepare failure did not request smaller window")
     require(not result.committed, "prepare failure committed")
     require(gw.prepared == [9], "groundwater not prepared before ledger prepare")
