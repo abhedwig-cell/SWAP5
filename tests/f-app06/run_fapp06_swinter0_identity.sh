@@ -75,8 +75,13 @@ echo 'F_APP06_OWNER_QUALIFICATION=PASS'
 FIX=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz
 test "$(git hash-object "$FIX")" = 344c00d49717374a20772aa006edef720432d387 || fail "exact B1.11 fixture blob drift"
 python3 - "$FIX" "$BUILD/exact.csv" <<'PY'
-import gzip,hashlib,sys
-raw=gzip.open(sys.argv[1],"rb").read()
+import hashlib,sys,zlib
+data=open(sys.argv[1],"rb").read()
+assert data[:3] == b"\x1f\x8b\x08"
+assert data[3] == 0, "unexpected gzip flags"
+# The repository blob's gzip trailer was corrupted during binary transport.
+# Recover only the DEFLATE payload, then authenticate the exact raw oracle.
+raw=zlib.decompress(data[10:-8], -zlib.MAX_WBITS)
 assert hashlib.sha256(raw).hexdigest()=="e802cf68da69075fd91985046d2e52fcecb0ae52ffacd42b437340fc783a86a0"
 open(sys.argv[2],"wb").write(raw)
 PY
