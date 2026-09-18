@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.publication.p2e16-top-boundary-reference-calibration-result.v1",
+  "workunit": "PUB-P2E16",
+  "phase": "QUALIFIED_REFERENCE_ONLY_TOP_BOUNDARY_SURFACE",
+  "parent_primary": {
+    "result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19",
+    "verdict": "PRIMARY_MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_FROZEN_COMMON_DOMAIN_180_OF_180"
+  },
+  "executed_head": "ddf4a535743d3abdb1d1eeb8f787ecd843376984",
+  "authorities": {
+    "preregistration_blob": "444c1a0df1b2bc2b3be6b410a44da9bf02ab7ea7",
+    "test_blob": "6103715af8856eee21e221ebb4eb4ec6eccf3421",
+    "runner_blob": "e1c2a233ec3033101050d27df9fb4589bb212995",
+    "workflow_blob": "72de0b20fde7fdcd4e9b10d5a3325270cfc4527f"
+  },
+  "execution": {
+    "qualified_workflow_run": 35290915120,
+    "qualified_job": 105433341576,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "385ed7ded30022d5fef98927bb9d325499af8d983b4057179503c9ba70d3a96d",
+    "earlier_attempt": "Workflow 35290879051 is non-authoritative; the later commit only aligned the qualified gate marker and did not alter the preregistered scientific matrix or threshold rule."
+  },
+  "boundary_design": {
+    "axis": "request-side upper top-flux boundary only",
+    "factors_over_initial_K0": {
+      "INSIDE": 0.009,
+      "BOUNDARY": 0.01,
+      "OUTSIDE": 0.011
+    },
+    "bottom_flux_over_initial_K0": -0.004,
+    "materials": 36,
+    "Se": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "cases": 324,
+    "reference_valid_cases": 324,
+    "reference_invalid_cases": 0,
+    "exact_contract_note": "For all 36 x 3 tested material-state combinations, initial K exceeds 1e-12 cm/day, so the production max(K,1e-12) scale floor is inactive and 0.010 K is the exact request-side upper boundary."
+  },
+  "threshold_design": {
+    "statistic": "maximum Reference coarse-versus-two-half self-disagreement over all 36 materials x all three probe factors in each Se stratum",
+    "factor": 1,
+    "application_floor": 0,
+    "candidate_used": false,
+    "note": "These are E2 boundary-experiment numerical envelopes. They are not the P2E14 common-domain thresholds and are not universal physical error bounds."
+  },
+  "frozen_thresholds": {
+    "Se_0.65": {
+      "U_h_inf_cm": 0.009310899886486368,
+      "U_h_rms_cm": 0.004266323114394112,
+      "U_theta_inf": 0.000017908123244203544,
+      "U_theta_rms": 0.000006579479242237575,
+      "U_storage_cm": 1.4210854715202004e-14
+    },
+    "Se_0.85": {
+      "U_h_inf_cm": 0.05684414280500505,
+      "U_h_rms_cm": 0.023100142698779337,
+      "U_theta_inf": 0.00024393588764148877,
+      "U_theta_rms": 0.00008095669952969204,
+      "U_storage_cm": 2.842170943040401e-14
+    },
+    "Se_0.96": {
+      "U_h_inf_cm": 0.738635792031854,
+      "U_h_rms_cm": 0.19122535147617015,
+      "U_theta_inf": 0.0012274135237742567,
+      "U_theta_rms": 0.00035749635175526273,
+      "U_storage_cm": 2.842170943040401e-14
+    }
+  },
+  "firewalls": {
+    "rossfast_executed": false,
+    "rossfast_discrepancy_inspected": false,
+    "factors_changed_after_execution": false,
+    "cases_removed": false,
+    "production_or_reference_source_changed": false
+  },
+  "verdict": "QUALIFIED_REFERENCE_ONLY_TOP_BOUNDARY_THRESHOLD_SURFACE",
+  "next_permitted_action": "Preregister the 324-case RossFast top-boundary probe unchanged. INSIDE and BOUNDARY cases may be assessed against these frozen thresholds; OUTSIDE cases are fail-closed probes and must not be converted to discrepancy or performance observations."
+}
