@@ -1,0 +1,36 @@
+name: PUB-GC GMD prearchive gate
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/PUB_GC_GMD_*'
+      - 'docs/publication/PUB_GC_*'
+      - 'docs/publication/figures/PUB_GC_*'
+      - 'tools/publication/check_pub_gc_gmd_submission.py'
+      - '.github/workflows/pub-gc-gmd-prearchive.yml'
+  workflow_dispatch:
+    inputs:
+      enforce_submission_ready:
+        description: 'Fail unless all release/licence/archive fields and submission placeholders are resolved'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  prearchive-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate PUB-GC GMD prearchive package
+        run: python tools/publication/check_pub_gc_gmd_submission.py
+      - name: Enforce final submission readiness when requested
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.enforce_submission_ready }}
+        run: python tools/publication/check_pub_gc_gmd_submission.py --submission-ready
