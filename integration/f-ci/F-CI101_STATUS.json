@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI101",
+  "capability": "F-GC34",
+  "title": "MODFLOW6 Typed API Binding Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "PENDING_ADMISSION_GATE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "0372b44157747dc90fa690810f57e373e670373b",
+    "dependency_authority": "F-GC33 closed canonical linear-response backend"
+  },
+  "owner": {
+    "branch": "work/f-gc34-modflow6-api-binding-reconciled",
+    "checkpoint_head": "2bc4ccb1cbedde8af60cd8390799373ed4310cb1",
+    "exact_head_run": 35293513488,
+    "exact_head_job": 105441215673,
+    "conclusion": "success",
+    "production_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "status_blob": "bde7290db300dd7368fde0e9be07835981886bc0"
+  },
+  "independent": {
+    "work_unit": "F-VQ108",
+    "status_head": "db4d82d28c5e954ff35f396724d751d1d6f00e8e",
+    "exact_head_run": 35293720666,
+    "exact_head_job": 105441814157,
+    "conclusion": "success",
+    "status_blob": "70d808df2694bbcc160f787cc71ef5eb2daca303",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/runtime/mod_modflow6_api_binding.f90"
+    ],
+    "production_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "admitted_scope_candidate": [
+    "typed explicit mapping groundwater_cell_id -> package_slot -> modflow_node_id",
+    "atomic publication of NODELIST/HCOF/RHS active prefix followed by NBOUND",
+    "order-independent matching of canonical F-GC33 terms by groundwater_cell_id",
+    "N:1 explicit node mapping without coefficient collapse",
+    "fail-closed no-write behavior on invalid package/binding/term state"
+  ],
+  "exclusions": [
+    "XMI address discovery or pointer acquisition",
+    "MODFLOW6 initialize/prepare/solve/finalize",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Run F-CI101 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify status head, reconcile live canonical and non-force fast-forward."
+}

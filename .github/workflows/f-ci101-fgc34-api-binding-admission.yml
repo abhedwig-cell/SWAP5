@@ -1,0 +1,35 @@
+name: F-CI101 F-GC34 typed API binding admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci101-fgc34-api-binding-admission
+    paths:
+      - 'src/runtime/mod_modflow6_api_binding.f90'
+      - 'integration/f-gc/F-GC34_STATUS.json'
+      - 'qualification/F-VQ108_STATUS.json'
+      - 'tests/fgc/test_fgc34_modflow6_api_binding.f90'
+      - 'tests/fgc/run_fgc34_modflow6_api_binding.sh'
+      - 'tests/fvq/test_fvq108_fgc34_independent.f90'
+      - 'tests/fvq/run_fvq108_fgc34_independent.sh'
+      - 'tests/fci/run_fci101_fgc34_api_binding_admission.sh'
+      - '.github/workflows/f-ci101-fgc34-api-binding-admission.yml'
+      - 'integration/f-ci/F-CI101_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI101 exact-source admission qualification
+        run: bash tests/fci/run_fci101_fgc34_api_binding_admission.sh
