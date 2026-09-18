@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-APP08",
+  "title": "Rutter output typed application composition for active Hupsel SWINTER3 route",
+  "protocol": "RECONCILE -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
+  "base": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+  "authority": {
+    "fapp05": "158ef1e704fbc72f293773cc30ae4d6082d3c28f",
+    "rutter_process_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+    "m1_trace": "integration/m1/M1_C3_B1_11_APPLICATION_TRACE_QUALIFICATION.json"
+  },
+  "active_route": "SWETR=0 / SWINTER=3 / SWCF=2",
+  "transparent_mappings": [
+    "Rutter net_rain_cm_per_day -> dynamic-top precipitation_rate_cm_per_day",
+    "Rutter net_surface_irrigation_cm_per_day -> dynamic-top irrigation_rate_cm_per_day",
+    "Rutter potential_transpiration_cm_per_day -> crop root-input potential_transpiration, preserving canonical inactive-crop zero semantics"
+  ],
+  "frozen_B1_11_vectors": [
+    {
+      "date": "2003-08-15",
+      "net_rain": 0,
+      "net_irrigation": 0,
+      "potential_transpiration": 0.36989155956560815
+    },
+    {
+      "date": "2004-01-15",
+      "net_rain": 0.54981549748798,
+      "net_irrigation": 0,
+      "potential_transpiration": 0.0047014973566050335
+    },
+    {
+      "date": "2004-10-15",
+      "net_rain": 0.41764215626499124,
+      "net_irrigation": 0,
+      "potential_transpiration": 0.03749398442638522
+    }
+  ],
+  "exclusions": [
+    "Rutter physics",
+    "irrigation selection",
+    "surface evaporation",
+    "solver",
+    "transaction",
+    "timestep",
+    "retry",
+    "tolerances",
+    "legacy parser"
+  ],
+  "pass_conditions": [
+    "strict field identity",
+    "non-surface dynamic-top fields preserved",
+    "root geometry preserved",
+    "inactive crop canonical zero",
+    "upstream/nonfinite/negative fail closed",
+    "O0/O2 identity"
+  ],
+  "m1_c3_closed": false
+}
