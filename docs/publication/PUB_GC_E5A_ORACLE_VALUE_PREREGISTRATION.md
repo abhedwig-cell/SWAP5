@@ -93,10 +93,36 @@ B4  long-window low-flux case
 For each baseline, MODFLOW specific yield is varied:
 
 ```text
+Sy = 0.001
+Sy = 0.002
+Sy = 0.005
 Sy = 0.02
 Sy = 0.15
-Sy = 0.30
 ```
+
+This matrix was revised **before the first E5a execution began**. The initial preregistration draft used only `0.02, 0.15, 0.30`. A pre-execution coupling-strength sanity check showed that this would leave every case in a weak-feedback regime.
+
+For a storage-dominated one-cell estimate:
+
+```text
+dH/dV ~= 1/Sy
+
+C_approx ~= |J_R| / Sy.
+```
+
+For B4, this gives approximately:
+
+```text
+Sy=0.15   -> C_approx ~ 0.008
+Sy=0.02   -> C_approx ~ 0.060
+Sy=0.005  -> C_approx ~ 0.238
+Sy=0.002  -> C_approx ~ 0.595
+Sy=0.001  -> C_approx ~ 1.19
+```
+
+The original matrix would therefore have repeated the already demonstrated weak-coupling null and would have been an inadequate oracle-value falsification test.
+
+The lower `Sy` cases are controlled numerical feedback-strength fixtures. They are not presented as representative regional aquifer parameters. Component/corrector failures reached at these stronger feedback levels remain valid convergence-domain evidence and must not be repaired by relaxing SWAP qualification criteria.
 
 The groundwater fixture otherwise remains fixed:
 
@@ -108,7 +134,7 @@ same 3-cell transient MODFLOW6 fixture
 same MODFLOW6 6.8.0 execution path
 ```
 
-This gives nine physical cases.
+This gives fifteen physical cases.
 
 Specific yield is used as a controlled groundwater-buffering axis. Lower `Sy` is expected to increase head response to the same transferred amount, but no monotonic algorithm ranking is assumed.
 
@@ -532,10 +558,18 @@ The zero-cost oracle converges under the 40-outer budget in a preregistered phys
 
 ### B. material full-window work reduction
 
-For at least one of the B3 or B4 baseline rows, across its three `Sy` cases:
+For at least one of the B3 or B4 baseline rows, consider the preregistered **strong-feedback subset**:
 
-- the oracle uses at least two fewer full-window SWAP evaluations than scalar multisecant in at least two of the three `Sy` cases; **and**
-- the reduction in those cases is at least 25% of the scalar-multisecant work.
+```text
+Sy = 0.001, 0.002, 0.005.
+```
+
+The work gate is met only when:
+
+- the oracle uses at least two fewer full-window SWAP evaluations than scalar multisecant in at least two of these three low-storage cases; **and**
+- the reduction in those qualifying cases is at least 25% of the scalar-multisecant work.
+
+The `Sy=0.02` and `0.15` cases remain weak-feedback controls and do not by themselves satisfy the work gate.
 
 This is a demanding publication-screening threshold chosen before execution. It is not a universal definition of numerical significance.
 
@@ -656,7 +690,7 @@ It would **not** yet establish a standalone ACCELERATE paper.
 This preregistration freezes before execution:
 
 - physical cases;
-- groundwater `Sy` values;
+- revised pre-execution groundwater `Sy` values and the documented reason for the revision;
 - comparator definitions;
 - oracle values;
 - convergence criterion;
@@ -670,3 +704,21 @@ This preregistration freezes before execution:
 Implementation may fix harness defects, but must not change these scientific rules after inspecting E5a rankings.
 
 Any required scientific design change after execution starts must be recorded as a new E5 revision rather than silently editing this preregistration.
+
+
+## 18. Pre-execution revision record
+
+Revision E5a-v1.1 was made before any E5a method result was produced.
+
+Change:
+
+```text
+old Sy set: 0.02, 0.15, 0.30
+new Sy set: 0.001, 0.002, 0.005, 0.02, 0.15
+```
+
+Reason:
+
+The E4 `J_R` values imply that the old matrix would keep the approximate storage-controlled fixed-point factor below about 0.06, even for B4. That matrix was too weak to provide a fair upper-bound test of supplied response information. The revision deliberately adds a feedback-strength range approaching and exceeding unity for B4.
+
+No algorithm result was inspected because the first E5a workflow was still queued and had not begun execution. All comparator definitions, work accounting, convergence criteria and oracle-value thresholds remain unchanged except that the work gate now explicitly uses the three low-storage cases.
