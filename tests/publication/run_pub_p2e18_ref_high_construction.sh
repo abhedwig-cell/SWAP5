@@ -134,10 +134,14 @@ for opt in 0 2; do
   cat "$OUT/test_link.err" >&2 || true
   [[ "$link_rc" = "0" ]] || fail "REF-HIGH test link O$opt"
 
-  if ! "$OUT/test" > "$OUT/output.txt" 2>&1; then
-    cat "$OUT/output.txt" >&2
-    fail "REF-HIGH construction runtime O$opt"
-  fi
+  echo "PUB_P2E18_TEST_RUNTIME_BEGIN=O$opt"
+  set +e
+  "$OUT/test" > "$OUT/output.txt" 2>&1
+  runtime_rc=$?
+  set -e
+  echo "PUB_P2E18_TEST_RUNTIME_RC=$runtime_rc"
+  cat "$OUT/output.txt"
+  [[ "$runtime_rc" = "0" ]] || fail "REF-HIGH construction runtime O$opt"
 
   for marker in     'PUB_P2E18_CASE_COUNT=36'     'PUB_P2E18_MATERIAL_COUNT=6'     'PUB_P2E18_SE_LEVEL_COUNT=3'     'PUB_P2E18_FORCING_COUNT=2'     'PUB_P2E18_REFINEMENT_LEVEL_COUNT=6'     'PUB_P2E18_REF_HIGH_SUBSTEPS=32'     'PUB_P2E18_STABILITY_COMPARISON=8_VS_16_AND_16_VS_32'     'PUB_P2E18_HEAD_THETA_STABILITY_FACTOR=0.10'     'PUB_P2E18_STORAGE_USES_P2E14_RESOLUTION_FLOOR=TRUE'     'PUB_P2E18_ROSSFAST_SOLVER_EXECUTED=FALSE'     'PUB_P2E18_TIMING_EXECUTED=FALSE'     'PUB_P2E18_REF_HIGH_CONSTRUCTION_GATE=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
