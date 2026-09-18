@@ -51,6 +51,8 @@ module mod_fmr_serialized_reference_backend
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
   use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
        evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
+  use mod_b110_legacy_groundwater_level_projection, only: b110_legacy_gwl_diagnostics_t, &
+       evaluate_b110_legacy_swbotb6_groundwater_level, B110_LEGACY_GWL_OK
   use mod_soil_temperature_contract, only: soil_temperature_at_node
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
@@ -142,6 +144,9 @@ module mod_fmr_serialized_reference_backend
     ! drainage hydraulic-view GWL from the current substep-start pressure
     ! profile. Default false preserves every previously admitted PM14 route.
     logical :: drainage_qbot_smooth_freatic_projection = .false.
+    ! F-SI40: explicit post-solver B1.11 calcgwl-equivalent projection for the
+    ! restricted non-macropore SWBOTB=6 legacy-file route.
+    logical :: legacy_gwl_swbotb6_projection_active = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
@@ -242,6 +247,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qdra(:,:) => null()
     logical :: drainage_response_active = .false.
     logical :: drainage_qbot_smooth_freatic_projection = .false.
+    logical :: legacy_gwl_swbotb6_projection_active = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
@@ -1054,7 +1060,12 @@ contains
       end if
       if (parameters%drainage_qbot_smooth_freatic_projection) then
         ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
-             .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
+             .not. parameters%root_extraction_active .and. .not. parameters%macropore_active .and. &
+             .not. parameters%legacy_gwl_swbotb6_projection_active
+      end if
+      if (parameters%legacy_gwl_swbotb6_projection_active) then
+        ok = ok .and. parameters%bottom_mode == 6 .and. .not. parameters%macropore_active .and. &
+             .not. parameters%drainage_qbot_smooth_freatic_projection
       end if
     class default
       ok = .false.
@@ -1099,6 +1110,7 @@ contains
       self%soil_temperature_active = parameters%soil_temperature_active
       self%drainage_response_active = parameters%drainage_response_active
       self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
+      self%legacy_gwl_swbotb6_projection_active = parameters%legacy_gwl_swbotb6_projection_active
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
       if (parameters%drainage_response_active .and. allocated(parameters%drainage_response_levels)) then
         allocate(self%drainage_response_levels(size(parameters%drainage_response_levels)))
@@ -1379,6 +1391,7 @@ contains
     real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
+    type(b110_legacy_gwl_diagnostics_t) :: legacy_gwl_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
@@ -1610,6 +1623,12 @@ contains
       call project_fmr_qbot_smooth_groundwater_level(self%soil_parameters, solve_result%candidate_state, &
            candidate_projected_groundwater_level, candidate_projection_status, projection_diagnostics)
       if (candidate_projection_status /= FMR_QBOT_DRAIN_DIRECTION_OK) return
+      solve_result%candidate_state%groundwater_level = candidate_projected_groundwater_level
+    else if (self%legacy_gwl_swbotb6_projection_active) then
+      call evaluate_b110_legacy_swbotb6_groundwater_level(self%bottom_mode, .false., self%soil_parameters%z, &
+           self%soil_parameters%node_distance, solve_result%candidate_state%pressure_head, &
+           solve_result%candidate_state%ponding_depth, candidate_projected_groundwater_level, legacy_gwl_diagnostics)
+      if (legacy_gwl_diagnostics%status /= B110_LEGACY_GWL_OK .or. .not. legacy_gwl_diagnostics%value_defined) return
       solve_result%candidate_state%groundwater_level = candidate_projected_groundwater_level
     end if
     if (self%soil_water_selection%uses_rossfast()) then
