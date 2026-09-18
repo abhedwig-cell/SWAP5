@@ -36,22 +36,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Resolve workstream head
+      - name: Resolve authority heads
         id: head
         shell: bash
         run: |
           set -euo pipefail
           if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
             CANDIDATE_HEAD="$(git rev-parse "origin/${GITHUB_HEAD_REF}")"
+            BASE_HEAD="$(git rev-parse "origin/${GITHUB_BASE_REF}")"
           else
             CANDIDATE_HEAD="$(git rev-parse HEAD)"
+            BASE_HEAD="0c7a76bafeab1b1e1c57f5615340178d45bec268"
           fi
           echo "candidate=${CANDIDATE_HEAD}" >> "$GITHUB_OUTPUT"
+          echo "base=${BASE_HEAD}" >> "$GITHUB_OUTPUT"
           echo "F_ROM_CANDIDATE_HEAD=${CANDIDATE_HEAD}"
+          echo "F_ROM_VALIDATION_BASE=${BASE_HEAD}"
 
       - name: Validate frozen research authority
         shell: bash
         run: |
           set -euo pipefail
-          python3 tests/rom/validate_f_rom_authority.py \
-            --candidate-head "${{ steps.head.outputs.candidate }}"
+          python3 tests/rom/validate_f_rom_authority.py             --candidate-head "${{ steps.head.outputs.candidate }}"             --base-head "${{ steps.head.outputs.base }}"
