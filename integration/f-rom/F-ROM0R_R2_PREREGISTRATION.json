@@ -36,14 +36,17 @@
         "top_flux_expression": "qeq - 0.01*K0"
       }
     ],
-    "perturbation_intervals": 8,
     "base_interval_day": 0.0016,
     "refined_interval_day": 0.0008,
     "refined_cases": [
       "B01:TOP_PLUS",
       "B14:TOP_PLUS"
     ],
-    "rationale": "A one-percent dimensionless perturbation is fixed before execution as a small local excitation around the independently accepted steady state. Symmetric signs test whether the accepted state can move in both local storage directions without choosing an amplitude from observed failures."
+    "rationale": "A one-percent dimensionless perturbation is fixed before execution as a small local excitation around the independently accepted steady state. Symmetric signs test whether the accepted state can move in both local storage directions without choosing an amplitude from observed failures.",
+    "base_perturbation_intervals": 8,
+    "refined_perturbation_intervals": 16,
+    "physical_horizon_day": 0.0128,
+    "refinement_rule": "Refined cases use 16 x 0.0008 day so they cover the same 0.0128-day perturbation horizon as 8 x 0.0016 day base cases."
   },
   "required_evidence": [
     "ALL_SEED_INTERVALS_COMMITTED",
@@ -68,5 +71,9 @@
     "NO_GO_TRANSIENT_ACCEPTED_DOMAIN"
   ],
   "rom1a_authorized": false,
-  "threshold_retuning_after_execution_allowed": false
+  "threshold_retuning_after_execution_allowed": false,
+  "pre_execution_clarification": {
+    "evidence_seen_before_change": false,
+    "reason": "The initial R2 preregistration named both base/refined interval sizes but only one perturbation interval count. This clarification freezes equal physical horizon before any R2 executable evidence exists."
+  }
 }
