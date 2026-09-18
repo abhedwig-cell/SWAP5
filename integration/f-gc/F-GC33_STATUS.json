@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC33",
+  "title": "MODFLOW6 Linear Response Backend",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "head": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
+    "cell_response_authority": "F-GC40 CLOSED canonical admitted",
+    "f_gc40_production_blob": "288a274612f6c0be0b3ced149028066a066908ca"
+  },
+  "donor": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend",
+    "head": "1eccdf9d7d365bc2449d7070e3beefb5ac419b82",
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "test_blob": "1dec605033de87d5ed2a642b44b0fdbe7937387a",
+    "run_script_blob": "2b9e00ba46ec85666dd2c3b331bfd0cfd32af1f4"
+  },
+  "materialization": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend-current-canonical",
+    "source_path": "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "byte_identical_to_donor": true,
+    "scientific_formula_change": "NONE",
+    "dependency_identity_correction": "historical provisional MultiSWAP F-GC31 -> canonical F-GC40"
+  },
+  "scientific_decision": {
+    "source_form": "q_u(H)=q_ref+s*(H-H_ref)",
+    "volume_form": "Q(H)=A*86400*q_u(H)",
+    "modflow_form": "Q(H)=HCOF*H-RHS",
+    "hcof": "A*86400*s",
+    "rhs": "HCOF*H_ref-A*86400*q_ref",
+    "sign": "positive outward from SWAP maps to positive infiltration into MODFLOW6 without sign inversion",
+    "identity_boundary": "groundwater_cell_id is coupling identity and not NODELIST"
+  },
+  "exclusions": [
+    "XMI pointer access",
+    "API package mutation",
+    "NODELIST mapping",
+    "predictor/corrector orchestration",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head current-canonical F-GC33 qualification. If green, checkpoint owner qualification and proceed to independent/admission review."
+}
