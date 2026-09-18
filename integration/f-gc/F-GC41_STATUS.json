@@ -3,8 +3,8 @@
   "work_unit": "F-GC41",
   "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY",
-  "state": "MODFLOW_PUBLICATION_RETRY_SEMANTICS_QUALIFIED_DESIGN_NEXT",
+  "phase": "IMPLEMENT",
+  "state": "COORDINATOR_AND_MODFLOW_READINESS_SEAM_IMPLEMENTED_QUALIFICATION_PENDING",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
@@ -53,7 +53,7 @@
     "runtime finite-difference tangent fallback"
   ],
   "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
-  "next_permitted_action": "Implement minimal F-GC41 coordinator contract and executable failure-injection harness with deterministic participants. Prove ordering, exact lineage/window binding, zero publication on preflight failure, single publication on success, and fresh-origin smaller-window reconstruction. Do not wire live finalize_time_step until its readiness seam is executable without mutation.",
+  "next_permitted_action": "Obtain exact-head CI evidence. If F-GC41 tests pass, extend qualification to a live MODFLOW6 timestep finalization fixture and an independent verifier before admission. Do not merge while exact-head evidence is absent.",
   "modflow_semantics": {
     "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
     "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
@@ -91,6 +91,20 @@
     "do not reuse candidate revision, ledger generation, XMI pointer views or prepared-solve session identity"
   ],
   "remaining_blocker": "Production implementation must expose or prove non-mutating readiness/preflight seams for retained SWAP candidate and MODFLOW timestep finalization before irreversible call ordering is admitted.",
-  "verdict": "QUALIFIED_FOR_COORDINATOR_DESIGN_NOT_YET_FOR_PRODUCTION_ADMISSION",
-  "mutations": "metadata only"
+  "verdict": "IMPLEMENTED_AWAIT_EXACT_HEAD_CI",
+  "mutations": "metadata only",
+  "production_delta": [
+    "src/adapter/modflow6_prepared_solve_session.py: non-mutating timestep_ready_for_finalize()",
+    "src/adapter/modflow6_prepared_solve_session.py: one-shot finalize_time_step_once()"
+  ],
+  "implementation_head": "0ea0398805c8fed5c7fc450491c5a368df1c52b8",
+  "qualification_surface": [
+    "preflight failures publish nothing and request retry",
+    "all preflights precede first publication",
+    "success publishes MODFLOW then SWAP then ledger exactly once",
+    "post-publication failure is not mislabeled rollback-safe",
+    "retry identities are fresh while accepted SWAP origin is retained",
+    "MODFLOW readiness check is non-mutating and timestep finalization is one-shot"
+  ],
+  "canonical_delta": "branch is 10 ahead / 0 behind canonical 62dfb5a52f665e490830dfb320167786cf67f63e"
 }
