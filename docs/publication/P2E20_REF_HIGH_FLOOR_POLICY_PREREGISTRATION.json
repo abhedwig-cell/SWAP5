@@ -1,0 +1,150 @@
+{
+  "schema": "swap5.publication.p2e20-ref-high-floor-policy.v1",
+  "workunit": "PUB-P2E20",
+  "publication_owner": "PUB-SQ",
+  "phase": "PREREGISTERED_BEFORE_FLOOR_AWARE_REF_HIGH_EXECUTION",
+  "parent_total_floor_authority": {
+    "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+    "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+    "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+    "verdict": "TOTAL_BALANCE_RETRIES_NOT_NUMERICALLY_DISTINGUISHABLE_UNDER_PREREGISTERED_DOMAIN_SUMMED_FLOOR_MODEL"
+  },
+  "supporting_scaling_authority": {
+    "branch": "work/pub-p2e19-reference-balance-scaling-diagnostic",
+    "head": "f2d5cd8d0e69a35436573f6d32dd0916c344ca49",
+    "result_blob": "bbf6b235c81f30b517dee6e3346499f4823b597a",
+    "verdict": "INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36",
+    "role": "external immutable supporting authority; not copied into this branch"
+  },
+  "purpose": "Construct a casewise candidate-blind REF-HIGH authority using a formula-derived total-balance representation floor, while keeping the D1 compartment scaling and the original P2E18 endpoint-stability budgets unchanged.",
+  "case_matrix": {
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 36,
+    "total_horizon_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "ponding_initial_cm": 0,
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    }
+  },
+  "fine_refinement": {
+    "substeps": [
+      8,
+      16,
+      32
+    ],
+    "substep_dt_day": [
+      0.0002,
+      0.0001,
+      0.00005
+    ],
+    "ref_high_endpoint": "32-substep endpoint",
+    "comparisons": [
+      "8_vs_16",
+      "16_vs_32"
+    ]
+  },
+  "policies": {
+    "INTEGRATED_INVARIANT": {
+      "compartment_integrated_allowance_cm": 1.6e-15,
+      "total_integrated_allowance_cm": 1.6e-15,
+      "rate_formula": "allowance_cm / dt_day",
+      "role": "diagnostic continuity comparator from P2E19"
+    },
+    "REPRESENTATION_FLOOR": {
+      "compartment_integrated_allowance_cm": 1.6e-15,
+      "total_integrated_representation_bound_formula": "F_repr_cm = sum_i(dz_i * spacing(theta_s_material))",
+      "total_integrated_allowance_formula": "max(1.6e-15 cm, F_repr_cm)",
+      "total_rate_formula": "max(1.6e-15 cm, F_repr_cm) / dt_day",
+      "safety_factor": 1,
+      "rationale": "For any accepted theta within (theta_r,theta_s), half the sum of pre/post representation spacings per cell is bounded by spacing(theta_s); multiplying by dz and summing yields a prospective integrated storage-representation bound without using observed D3 residual ratios."
+    }
+  },
+  "hard_gates": {
+    "accepted_step_integrated_mass_abs_limit_cm": 1e-12,
+    "reference_route": "legacy-reference-bound",
+    "state_finite": true,
+    "state_inside_common_head_theta_domain": true,
+    "prescribed_flux_identity": true,
+    "native_rate_residual_required": true,
+    "no_weighted_compensation": true
+  },
+  "stability_budgets": {
+    "source": "original frozen P2E18 budgets derived as 0.10 x P2E14 for head/theta and full P2E14 storage floor",
+    "by_Se": {
+      "0.65": {
+        "H_inf_cm": 0.0009310899886486368,
+        "H_rms_cm": 0.0004264337561059986,
+        "Theta_inf": 0.0000017908123244203546,
+        "Theta_rms": 6.578609068585418e-7,
+        "Storage_abs_cm": 2.1316282072803006e-14
+      },
+      "0.85": {
+        "H_inf_cm": 0.005684414280500505,
+        "H_rms_cm": 0.002309047189054667,
+        "Theta_inf": 0.00002439358876414888,
+        "Theta_rms": 0.000008095278187597767,
+        "Storage_abs_cm": 2.842170943040401e-14
+      },
+      "0.96": {
+        "H_inf_cm": 0.07386357920248865,
+        "H_rms_cm": 0.019122530959872566,
+        "Theta_inf": 0.00012274135237608786,
+        "Theta_rms": 0.000035749599085978165,
+        "Storage_abs_cm": 2.842170943040401e-14
+      }
+    },
+    "change_after_execution_allowed": false
+  },
+  "casewise_ref_high_rule": {
+    "required_routes": "REPRESENTATION_FLOOR valid at 8, 16 and 32 substeps",
+    "required_stability": "all five metrics pass for both 8_vs_16 and 16_vs_32",
+    "policy_neutrality": "Where INTEGRATED_INVARIANT and REPRESENTATION_FLOOR are both valid at the same fine level, their endpoints must remain inside the same frozen stability budget. Any neutrality failure blocks that case.",
+    "qualified_endpoint": "32-substep REPRESENTATION_FLOOR endpoint",
+    "unresolved_cases_retained": true,
+    "minimum_for_any_future_E3": "At least one prospectively qualified case; E3 must state the exact qualified case set and may not substitute unresolved cases."
+  },
+  "outcome_policy": {
+    "if_36_qualified": "Persist full 36-case REF-HIGH authority.",
+    "if_nonempty_subset_qualified": "Persist casewise REF-HIGH authority for exactly the qualified cases and list every unresolved case/reason. This is not a failure and does not authorize replacing cases.",
+    "if_zero_qualified": "REF-HIGH remains blocked and E3 cannot proceed."
+  },
+  "firewalls": {
+    "rossfast_execution_allowed": false,
+    "timing_allowed": false,
+    "equal_error_claim_allowed": false,
+    "production_tolerance_change_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "case_removal_or_replacement_allowed": false,
+    "empirical_multiplier_from_D3_residuals_allowed": false,
+    "stability_budget_change_allowed": false
+  },
+  "nonclaims": [
+    "This is a research-only numerical-reference policy, not a proposed production Reference tolerance change.",
+    "A qualified 32-substep endpoint is a numerical reference for the bounded E3 subset, not physical truth.",
+    "No RossFast accuracy, speed or equal-error result is generated here."
+  ],
+  "verdict": "PREREGISTERED_CASEWISE_REF_HIGH_FLOOR_POLICY_READY"
+}
