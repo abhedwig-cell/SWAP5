@@ -1,0 +1,32 @@
+name: M1 final closeout
+
+on:
+  push:
+    branches:
+      - work/m1-final-closeout-20260918
+    paths:
+      - 'integration/m1/M1_CANONICAL_CLOSEOUT_20260918.json'
+      - 'tests/m1/run_m1_final_closeout.sh'
+      - '.github/workflows/m1-final-closeout.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/m1/M1_CANONICAL_CLOSEOUT_20260918.json'
+      - 'tests/m1/run_m1_final_closeout.sh'
+      - '.github/workflows/m1-final-closeout.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify M1 current-canonical closeout
+        run: bash tests/m1/run_m1_final_closeout.sh
