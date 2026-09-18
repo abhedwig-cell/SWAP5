@@ -16,15 +16,15 @@ The manuscript now contains a result-bearing abstract, evidence-bounded introduc
 | RQ2 convergence and hydrological relevance | E3/E3-R | SUPPORTED_RESTRICTED, weak-feedback control |
 | RQ3 response identity and information value | E4/E5 | SUPPORTED_RESTRICTED |
 | RQ4 component-envelope interaction | E3-D2/E6 | SUPPORTED_RESTRICTED, negative stress extension |
-| RQ5 realistic transferability | Hupsel E7 | BLOCKED_M1_C3 |
+| RQ5 realistic transferability | Hupsel E7 | STANDALONE_SELECTION_FROZEN — COUPLED_EXECUTION_PENDING |
 
 ## Submission-critical remaining evidence
 
 Only E7 is currently treated as the missing scientific evidence block for the intended broader coupling-method framing. E8 scaling is not a submission prerequisite unless later journal positioning makes a quantitative scalability claim central.
 
-## E7 prerequisite
+## E7 execution state
 
-M1-C3 still requires the final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 bytes. Until that passes, no coupled Hupsel result belongs in the manuscript.
+M1-C3 and M1 are canonically closed. The standalone Hupsel selection has been completed before coupled output: median-dynamics `2003-06-17`, high-dynamics `2003-05-20`. The qualified conceptual MODFLOW fallback is frozen. The next scientific action is the preregistered coupled execution; no further prerequisite work remains.
 
 ## Work that can proceed independently of E7
 
@@ -54,7 +54,7 @@ The claim audit is rerun after any substantive E7 insertion or journal-positioni
 - current references normalized against publisher/standard metadata;
 - current hydrologic modularity prior art (Trim et al. 2025) incorporated without broadening novelty claims.
 
-F7 remains the only planned primary figure blocked by the E7/M1-C3 prerequisite.
+F7 remains the only planned primary figure awaiting the now-unblocked E7 coupled result.
 
 
 ## Table and submission-readiness package
@@ -73,5 +73,5 @@ F7 remains the only planned primary figure blocked by the E7/M1-C3 prerequisite.
 - notation and authority glossary: `PUB_GC_NOTATION_AND_UNITS.md`;
 - journal-neutral supplementary methods/evidence: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md`;
 - machine-readable frozen provenance: `PUB_GC_REPRODUCIBILITY_MANIFEST.json`;
-- evidence coverage: E1–E6 complete/bounded; E7 preregistration and exact M1-C3 blocker recorded;
+- evidence coverage: E1–E6 complete/bounded; M1-C3 closed; E7 standalone selection frozen and coupled result pending;
 - journal conversion may change formatting, not the evidence identities or failure classifications.
