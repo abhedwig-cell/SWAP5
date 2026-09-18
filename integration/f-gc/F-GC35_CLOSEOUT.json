@@ -4,7 +4,7 @@
   "title": "MODFLOW6 XMI Package Adapter — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_XMI_PACKAGE_ADAPTER",
   "canonical_admission": {
     "production_admission_head": "27a887803205463b8452142202a3358e641db35f",
     "preimage": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
@@ -48,5 +48,11 @@
     "no head exchange/predictor-corrector/SWAP commit ownership",
     "no Ribasim or irrigation"
   ],
-  "next_permitted_action": "After closeout qualification, proceed serially to current-canonical F-GC36 live MODFLOW6/F-GC34 bridge analysis. Keep live-kernel evidence separate from the already-admitted mock-XMI adapter contract."
+  "next_permitted_action": "Proceed serially to current-canonical F-GC36 live MODFLOW6/F-GC34 bridge analysis. Preserve the mock-XMI evidence boundary; live libmf6 qualification must remain separately evidenced.",
+  "closeout_qualification": {
+    "metadata_head": "5a3b856a5cf8926f65969ef7fa0216069c0df78d",
+    "workflow_run": 35294783592,
+    "workflow_job": 105444974591,
+    "conclusion": "success"
+  }
 }

@@ -5,7 +5,7 @@
   "title": "MODFLOW6 XMI Package Adapter Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_F_GC35",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
@@ -58,7 +58,7 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Qualify this metadata-only F-GC35 admission/closeout head with F-CI102. If green, persist final closeout evidence, requalify the final status head, then non-force fast-forward canonical.",
+  "next_permitted_action": "Qualify this exact final closeout status head. If green and canonical is still the admitted production ancestor, non-force fast-forward canonical to this closed metadata state. Then proceed serially to F-GC36 live MODFLOW6/F-GC34 bridge analysis.",
   "admission_gate": {
     "qualified_head": "28fa2382bfa479e9cebfa5a087bb26a20265d0ff",
     "workflow_run": 35294634213,
@@ -82,5 +82,11 @@
     "exact_status_head_run": 35294668665,
     "exact_status_head_job": 105444636351,
     "exact_status_head_conclusion": "success"
+  },
+  "closeout_gate": {
+    "qualified_head": "5a3b856a5cf8926f65969ef7fa0216069c0df78d",
+    "workflow_run": 35294783592,
+    "workflow_job": 105444974591,
+    "conclusion": "success"
   }
 }
