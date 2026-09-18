@@ -1,0 +1,34 @@
+name: F-VQ127 F-SI39 independent
+
+on:
+  push:
+    branches:
+      - qualification/f-vq127-fsi39-ksatexm-independent
+    paths:
+      - 'tests/fvq/test_fvq127_fsi39_ksatexm_independent.f90'
+      - 'tests/fvq/run_fvq127_fsi39_ksatexm_independent.sh'
+      - '.github/workflows/f-vq127-fsi39-independent.yml'
+      - 'integration/f-vq/F-VQ127_*'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/fvq/test_fvq127_fsi39_ksatexm_independent.f90'
+      - 'tests/fvq/run_fvq127_fsi39_ksatexm_independent.sh'
+      - '.github/workflows/f-vq127-fsi39-independent.yml'
+      - 'integration/f-vq/F-VQ127_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fvq/run_fvq127_fsi39_ksatexm_independent.sh
