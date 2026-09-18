@@ -1,0 +1,235 @@
+{
+  "schema": "swap5.publication.p2e21a-equal-error-control-selection-result.v1",
+  "workunit": "PUB-P2E21A",
+  "publication_owner": "PUB-SQ",
+  "phase": "UNTIMED_MATCHED_ACCURACY_CONTROL_SELECTION_COMPLETE_33_CASES",
+  "parent_ref_high": {
+    "branch": "work/pub-p2e20-ref-high-scaled-construction",
+    "head": "a561ff1389af06d4521185b9d0d080785716bf3b",
+    "result_blob": "1657c73e631f4a5e6b9ee65d43669054a65e3008",
+    "population_size": 33,
+    "note": "P2E21A predates migration of the performance reference to the later P2E21 36-case representation-bounded REF-HIGH authority and is therefore retained as the original 33-case control-selection evidence."
+  },
+  "authorities": {
+    "preregistration_blob": "a0ab282f4cc481352b383bfa6dfe0045b03fda43",
+    "test_blob": "fb3b703df9318d5e7519c48d22c9be895ed0589a",
+    "runner_blob": "3425d487668fff4bb18414c4410c98f43523039a",
+    "workflow_blob": "42b9787b1909466c91d0d8c309cea91191fd8f76"
+  },
+  "execution": {
+    "head": "2985358be9bbedf93eda1489ac15995967d46ba5",
+    "workflow_run": 35294176980,
+    "job": 105443164926,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "5c43b70d8fe51d5a7cd231ad4f01d946bc0c001715b4a8b2bf53e6fdb94537b6",
+    "timing_executed": false
+  },
+  "matrix": {
+    "performance_cases": 33,
+    "solvers": [
+      "REF_PROD",
+      "ROSS"
+    ],
+    "outer_segment_ladder": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "production_configurations": 396,
+    "matched_accuracy_targets": [
+      {
+        "label": "A1_ADMISSION",
+        "head_theta_fraction_of_P2E14": 1
+      },
+      {
+        "label": "A2_HALF",
+        "head_theta_fraction_of_P2E14": 0.5
+      },
+      {
+        "label": "A3_QUARTER",
+        "head_theta_fraction_of_P2E14": 0.25
+      }
+    ],
+    "storage_threshold_scaled": false
+  },
+  "route_validity": {
+    "REF_PROD": {
+      "total_valid_configs": 68,
+      "total_invalid_configs": 130,
+      "by_segments": {
+        "1": {
+          "valid": 33,
+          "invalid": 0
+        },
+        "2": {
+          "valid": 28,
+          "invalid": 5
+        },
+        "4": {
+          "valid": 7,
+          "invalid": 26
+        },
+        "8": {
+          "valid": 0,
+          "invalid": 33
+        },
+        "16": {
+          "valid": 0,
+          "invalid": 33
+        },
+        "32": {
+          "valid": 0,
+          "invalid": 33
+        }
+      }
+    },
+    "ROSS": {
+      "total_valid_configs": 121,
+      "total_invalid_configs": 77,
+      "by_segments": {
+        "1": {
+          "valid": 33,
+          "invalid": 0
+        },
+        "2": {
+          "valid": 18,
+          "invalid": 15
+        },
+        "4": {
+          "valid": 18,
+          "invalid": 15
+        },
+        "8": {
+          "valid": 18,
+          "invalid": 15
+        },
+        "16": {
+          "valid": 17,
+          "invalid": 16
+        },
+        "32": {
+          "valid": 17,
+          "invalid": 16
+        }
+      }
+    },
+    "interpretation": "Finer outer segmentation is not monotonically route-valid for either production route under these frozen production controls. Selection therefore uses the preregistered least-refined valid configuration meeting accuracy, not an assumption that finer is always better."
+  },
+  "matched_accuracy_selection": {
+    "paired_cases_by_target": {
+      "A1_ADMISSION": 33,
+      "A2_HALF": 33,
+      "A3_QUARTER": 33
+    },
+    "REF_PROD": {
+      "A1_ADMISSION": {
+        "N1": 31,
+        "N2": 2,
+        "unresolved": 0
+      },
+      "A2_HALF": {
+        "N1": 31,
+        "N2": 2,
+        "unresolved": 0
+      },
+      "A3_QUARTER": {
+        "N1": 31,
+        "N2": 2,
+        "unresolved": 0
+      },
+      "N2_cases": [
+        {
+          "p2e20_case": 4,
+          "material": "B01",
+          "Se": 0.85,
+          "forcing": "NOMINAL"
+        },
+        {
+          "p2e20_case": 18,
+          "material": "O01",
+          "Se": 0.96,
+          "forcing": "NOMINAL"
+        }
+      ],
+      "selected_head_theta_error_norm_range": [
+        8.574498811666153e-8,
+        0.1270305151035969
+      ],
+      "selected_storage_fraction_range": [
+        0,
+        1
+      ]
+    },
+    "ROSS": {
+      "A1_ADMISSION": {
+        "N1": 33,
+        "unresolved": 0
+      },
+      "A2_HALF": {
+        "N1": 33,
+        "unresolved": 0
+      },
+      "A3_QUARTER": {
+        "N1": 33,
+        "unresolved": 0
+      },
+      "selected_head_theta_error_norm_range": [
+        7.355996517135282e-8,
+        0.012719429422620384
+      ],
+      "selected_storage_fraction_range": [
+        0,
+        0.75
+      ]
+    },
+    "target_collapse": "For every solver/case, the selected control is identical at A1, A2 and A3. All selected configurations already satisfy the strictest A3 head/theta target while satisfying the unscaled storage gate.",
+    "unique_selected_solver_case_configurations": 66
+  },
+  "untimed_work_observation": {
+    "REF_PROD_selected": {
+      "nonlinear_iterations_range": [
+        2,
+        10
+      ],
+      "linear_solves_range": [
+        2,
+        10
+      ]
+    },
+    "ROSS_selected": {
+      "nonlinear_iterations": 0,
+      "linear_solves": 24,
+      "outer_segments": 1
+    },
+    "caution": "These algorithm-specific work counters are not converted to a composite work unit and are not runtime evidence."
+  },
+  "epistemic_interpretation": {
+    "supported": [
+      "A non-empty matched-accuracy timing population exists for every preregistered target on all 33 P2E20-qualified cases.",
+      "Accuracy matching does not require target-specific retuning in this population: the same selected controls satisfy all three targets.",
+      "The selected timing controls can be frozen without observing wall-clock or CPU timing."
+    ],
+    "not_supported": [
+      "RossFast is faster.",
+      "Any speedup magnitude.",
+      "The 33-case P2E20 reference remains the preferred final performance reference after P2E21.",
+      "Finer outer segmentation is intrinsically more accurate or more robust."
+    ]
+  },
+  "firewalls": {
+    "timing_calls_executed": false,
+    "timing_used_for_selection": false,
+    "case_replacement": false,
+    "target_changed": false,
+    "solver_control_retuned_after_outcome": false,
+    "production_source_mutated": false
+  },
+  "verdict": "UNTIMED_MATCHED_ACCURACY_CONTROLS_AVAILABLE_FOR_33_CASE_P2E20_REFERENCE",
+  "next_permitted_action": "Do not time yet. First reconcile the later P2E21 36-case REF-HIGH authority. Apply these already frozen segmentation, target and least-refined-selection rules in a separate untimed reference-migration workunit over all 36 cases. Only then freeze the final unique matched-accuracy configurations for timing."
+}
