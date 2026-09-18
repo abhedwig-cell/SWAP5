@@ -164,3 +164,10 @@ Continuous effects are reported. No post-hoc threshold is introduced to label a 
 ## Relation to E8 and SCALE
 
 E7 is sufficient to test realistic transferability of the coupling contract. E8 regional scaling remains optional and follows only after E7. Physical validity of heterogeneous N:1 aggregation is explicitly excluded and belongs to PUB-SG / SCALE.
+
+
+## Execution-prerequisite closure note — 2026-09-18
+
+The hard M1-C3 prerequisite defined above has now passed and is canonically admitted. This note does not alter any preregistered E7 selection, groundwater-model, comparison, interpretation or stop rule.
+
+Authority: PR #313, merge `d91c159c3685d8eedc7c94afc38edf827408c1de`; formal M1 closeout PR #316; `M1_CLOSED_CURRENT_CANONICAL`.
