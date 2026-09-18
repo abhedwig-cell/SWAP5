@@ -264,3 +264,48 @@ The register should describe readiness, not rewrite past chronology.
 - all prospectively frozen stability criteria PASS;
 - this is supporting reference-construction evidence only; the calm case is permanently excluded from held-out E2/E3 primary evidence;
 - next permitted action: preregister a small transient screening matrix, build stable references for those cases, and use a frozen selection rule before held-out primary case freeze.
+
+
+### 2026-09-18T00:13:59Z — PUB-GC transient screening attempt 1 invalidated by reconstruction-forcing defect
+
+- frozen manifest: `6096c24e91d6d9ab8ee8b812b0090123878a6cef`, blob `7aa93be2f6698ad6e655e70bf1024758e7516da4`;
+- execution: `research/pub-gc-transient-screening@848d1414de10d7160841f59874a24ec14025773b`, GitHub Actions run `35290254007`, job `105431334545`;
+- CI infrastructure and O0/O2 identity passed, but scientific execution was invalid because root evaluation applied the frozen transient `current_top_flux()` while accepted-root reconstruction reverted to the baseline forcing template;
+- the four nonbaseline forcing cases therefore failed at `PUB_GC_REF_TRAJECTORY_RECONSTRUCTION_FAILED`;
+- debugging outputs from the two baseline-only cases carry no screening selection authority;
+- invalid-execution receipt: `docs/publications/results/PUB-GC-TRANSIENT-SCREEN-0001-ATTEMPT-0001.yaml`, commit `e7a112a8bdcf3a6962e47b464b4da8f9bba0e710`;
+- no case value, threshold, root control, heldout candidate or promotion rule was changed;
+- permitted repair was restricted to reapplying the already frozen top flux during reconstruction;
+- cross-publication effect: none.
+
+### 2026-09-18T00:16:18Z — PUB-GC transient screening validly completed, zero families promoted
+
+- unchanged frozen manifest: `6096c24e91d6d9ab8ee8b812b0090123878a6cef`, blob `7aa93be2f6698ad6e655e70bf1024758e7516da4`;
+- surgical repair: `4a79ecc202d80f408eca1013b90270e40c316ec8`; only the missing frozen top-flux assignment was added to transient accepted-root reconstruction;
+- execution: GitHub Actions run `35290434715`, job `105431877460`, conclusion `success`;
+- exact O0/O2 scientific-output identity: PASS; output SHA-256 `3cf22738a31c64d4eade47a6d97f4a229e8a094adabc8b45dbda32f985b20be4`;
+- artifact `10525269748`, digest `sha256:d2b5985f35f7d8e322dec2cc5ffc776b93de46543f81399bb511cc94bdc342a3`;
+- classifications:
+  - `TS-WET-5`: `VALID_UNSTABLE`;
+  - `TS-DRY-1`: `VALID_UNSTABLE`;
+  - `TS-REV`: `VALID_UNSTABLE`;
+  - `TS-GW-UP`: `VALID_STABLE_UNRESOLVED`;
+  - `TS-GW-DOWN`: `VALID_STABLE_UNRESOLVED`;
+  - `TS-LOW-SY-WET`: `VALID_UNSTABLE`;
+- every reported whole-window-versus-terminal surrogate mismatch was exactly zero;
+- frozen promotion rule result: zero `VALID_STABLE_RESOLVED` families, therefore no heldout H2/H3 candidate is promoted;
+- valid result receipt: `docs/publications/results/PUB-GC-TRANSIENT-SCREEN-0001.yaml`, commit `b08db7dab78681a60d4df9e589e6db30ba8d9b86`;
+- H2 and H3 remain untested by primary evidence;
+- next permitted action: freeze a separate scientific design decision before adding or reformulating any stress family.
+
+### 2026-09-18T00:16Z — PUB-GC E2/E3 temporal-scale design adjudicated
+
+- decision: `docs/publications/decisions/PUB-GC_E2_E3_MACRO_WINDOW_ADJUDICATION.md`, commit `29f3bf635d69e076926d6cb99cf3f7d058f67a63`;
+- source-semantic finding: a single accepted native SWAP full step reports `Q_step = q_terminal * delta_t` by construction, while the qualified two-half route sums both half-step exchanges and retains the final half-step terminal flux;
+- experimental consequence: the prior one-transaction-per-coupling-window design can make E2 algebraically unidentifiable and makes H3 refinement simultaneously alter coupling-window duration and native SWAP integration interval;
+- scientific decision: future E2/E3 work separates external coupling macro-window `DeltaT_c` from native SWAP integration intervals `delta_t_j`;
+- whole-window response will be the sum of native exchange contributions across a disposable same-origin macro-candidate trajectory; the terminal comparator remains final native terminal rate times the full macro-window duration;
+- principal H3 comparisons must vary coupling-window duration under a separately frozen internal-integration policy;
+- existing screening and reference results are preserved as supporting evidence and are not retroactively promoted;
+- next permitted action: freeze and qualify a research-only macro-window response component before new E2/E3 screening;
+- cross-publication firewall: no response/tangent acceleration claim is introduced; those remain `PUB-RC`.
