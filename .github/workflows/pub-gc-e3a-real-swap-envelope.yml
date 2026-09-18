@@ -1,0 +1,39 @@
+name: PUB-GC E3A real SWAP envelope
+on:
+  push:
+    branches: [work/pub-gc-e3-coupling-window-feedback]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/build_pub_gc_real_swap_bridge.sh'
+      - 'tests/publication/run_pub_gc_e3a.py'
+      - 'tests/publication/run_pub_gc_e3a.sh'
+      - 'docs/publication/PUB_GC_E3A_ENVELOPE_PREREGISTRATION.md'
+      - 'docs/publication/PUB_GC_E3A_RESULT.md'
+      - 'docs/publication/PUB_GC_E3A_RESULT.json'
+      - 'docs/publication/PUB_GC_E3A_TRIALS.csv'
+      - '.github/workflows/pub-gc-e3a-real-swap-envelope.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered E3A envelope characterization
+        env:
+          PUB_GC_EVIDENCE_DIR: ${{ runner.temp }}/pub-gc-e3a
+        run: bash tests/publication/run_pub_gc_e3a.sh
+      - name: Upload E3A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e3a-evidence
+          path: ${{ runner.temp }}/pub-gc-e3a
+          if-no-files-found: error
