@@ -1,0 +1,13 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS17",
+  "title": "RossFast transform-cache optimization",
+  "phase": "RECONCILE",
+  "status": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "branch": "work/f-ross17-rossfast-transform-cache",
+  "source_branch": "work/f-ross16-rossfast-cost-attribution",
+  "source_head": "79d30219d484acfadde0a22484ca6305a541d868",
+  "production_scope": ["src/solver/mod_rossfast_d3r_table_kernel.f90"],
+  "verdict": "READY_TO_IMPLEMENT_BOUNDED_OPTIMIZATION",
+  "next_permitted_action": "Implement node transform caching only; keep 24-step certificate topology and all external contracts unchanged."
+}
