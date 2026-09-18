@@ -4,8 +4,8 @@
   "stage": "B",
   "title": "Generic groundwater application orchestration — FMR participant registry",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY_B",
-  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "phase": "CLOSE_B",
+  "state": "STAGE_B_CLOSED_CANONICAL_ADMITTED_FMR_PARTICIPANT_REGISTRY",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "base": "050947affbb00fc7f00dcfba0e93c6359be2d443"
@@ -34,7 +34,7 @@
     "live MODFLOW coupling loop",
     "physics-envelope expansion"
   ],
-  "next_permitted_action": "Open draft PR, obtain owner and F-VQ122 evidence, repair only scoped failures, then admit/close Stage B. Only after Stage B closes may F-GC49C bind a generic live application context/service.",
+  "next_permitted_action": "Stage B is closed. Open F-GC49C from this canonical head. Bind admitted F-GC49A application plans and F-GC49B participant handles to the existing Modflow6PreparedSolveSession in one generic internal live application service; replay F-GC44 through F-GC47 topologies without topology-specific branches.",
   "production_mutations": [
     "src/runtime/mod_fmr_groundwater_participant_registry.f90"
   ],
@@ -70,5 +70,64 @@
     "PR mergeable",
     "production delta limited to participant registry"
   ],
-  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+  "verdict": "STAGE_B_CLOSED_CANONICAL_ADMITTED",
+  "canonical_admission": {
+    "base": "050947affbb00fc7f00dcfba0e93c6359be2d443",
+    "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
+    "reconciled_head": "23be669cfbef91f32b229b61c6f540bd69e6564f",
+    "canonical_preimage": "9279e0eb4dfc3cbbea205044cd6f43a424b256ed",
+    "merge_head": "4ac6c3f306ee83d1f3948165ffb3cb5348cf4081",
+    "pr": 261,
+    "merge_method": "merge"
+  },
+  "qualification": {
+    "owner": {
+      "run": 35348562854,
+      "job": 105610904815,
+      "conclusion": "success",
+      "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
+      "oracles": [
+        "FGC49B_TWO_REAL_FMR_HANDLES=PASS",
+        "FGC49B_HANDLE_ISOLATION=PASS",
+        "FGC49B_SAME_ORIGIN_TRIAL_DELEGATION=PASS",
+        "FGC49B_RELEASE_BUSY_FAIL_CLOSED=PASS",
+        "FGC49B_STALE_HANDLE_FAIL_CLOSED=PASS",
+        "FGC49B_MONOTONIC_HANDLE_ACROSS_REINITIALIZE=PASS",
+        "FGC49B_KERNEL_REMAINS_COMMIT_OWNER=PASS",
+        "FGC49B_REGISTRY_O0_O2_IDENTITY=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ122",
+      "run": 35348563095,
+      "job": 105610905658,
+      "conclusion": "success",
+      "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
+      "oracles": [
+        "FVQ122_COMMITTED_STATE_REFERENCE_NOT_COPY=PASS",
+        "FVQ122_BACKEND_AND_PARAMETERS_EXTERNALLY_OWNED=PASS",
+        "FVQ122_DELEGATES_TO_ADMITTED_FMR_PARTICIPANT=PASS",
+        "FVQ122_NO_MODFLOW_LEDGER_OR_SOLVER_OWNERSHIP=PASS",
+        "FVQ122_NONRECYCLING_MONOTONIC_HANDLES=PASS",
+        "FVQ122_RELEASE_PREFLIGHT_BEFORE_DEACTIVATION=PASS",
+        "FVQ122_INACTIVE_STALE_HANDLE_CANNOT_RESOLVE=PASS",
+        "FVQ122_REAL_TWO_HANDLE_OWNER_ORACLES_PRESENT=PASS"
+      ]
+    }
+  },
+  "canonical_drift_reconciliation": {
+    "commits_since_stage_a_base": 37,
+    "production_dependency_overlap": [],
+    "overlap_count": 0,
+    "disposition": "Qualified Stage-B artifacts were overlaid unchanged on current canonical; owner and F-VQ122 evidence reused because no production dependency changed."
+  },
+  "stage_b_admitted_capability": [
+    "fixed-capacity generic FMR groundwater participant registry",
+    "opaque monotonically unique nonrecycled handles",
+    "multiple independent real FMR participants in one registry",
+    "external ownership references for backend/parameters/committed state/materializer",
+    "delegated capture/trial/discard/publication-ready/commit lifecycle",
+    "fail-closed busy release, stale handle and active reinitialize behavior",
+    "kernel remains sole committed-state mutation owner"
+  ]
 }
