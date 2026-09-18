@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.f-rom0r.r3d4-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D4",
+  "title": "Fail-closed total-only representation fallback qualification",
+  "phase": "PREREGISTERED_BEFORE_FALLBACK_EXECUTION",
+  "predecessors": {
+    "R3": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "R3D1": "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+    "R3D2": "B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND",
+    "R3D3": "R3_POLICY_OVERLAP_NEUTRALITY_FAILED"
+  },
+  "independent_authority": {
+    "PUB_P2E18D3": "TOTAL_BALANCE_RETRIES_NOT_NUMERICALLY_DISTINGUISHABLE_UNDER_PREREGISTERED_DOMAIN_SUMMED_FLOOR_MODEL",
+    "PUB_P2E21": "REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE",
+    "F_KT_REFERENCE_FLOOR": "failed sample may not mutate or publish committed state",
+    "important_limit": "F-PE04 production fallback remains defined-not-admitted; this workunit is research qualification only"
+  },
+  "policy": {
+    "id": "ORIGINAL_FIRST_FAIL_CLOSED_TOTAL_ONLY_REATTEMPT",
+    "per_interval": [
+      "Compute the prospective representation bound from the accepted pre-solve base state before any solver call.",
+      "Attempt the exact original R3 Reference-floor sample with total balance rate tolerance 1e-12 cm/day.",
+      "If the original attempt succeeds, commit that candidate and forbid fallback.",
+      "If the original attempt fails, require committed lineage/revision/time/state to remain unchanged.",
+      "Reproduce the failed interval diagnostically through the direct Reference solver and require RETRY_TOTAL_ONLY: zero local-balance flags, zero head flags, max local residual <= 1e-12, abs total residual > 1e-12.",
+      "Require abs(total residual)*dt <= the already computed prospective representation bound.",
+      "Only then perform one fresh-backend same-interval reattempt with total tolerance max(1e-12, representation_bound_cm/dt).",
+      "Require the fallback reattempt to satisfy the unchanged hard 1e-12 cm transaction mass gate and commit exactly one physical advance.",
+      "Any other failure class, representation-bound exceedance, direct/FMR mismatch or failed fallback is fail-closed."
+    ],
+    "representation_bound_cm_formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "observed_residual_used_to_choose_tolerance": false,
+    "empirical_factor": "none",
+    "same_interval_only": true,
+    "dt_subdivision": false,
+    "amplitude_change": false
+  },
+  "frozen_controls": {
+    "dt_day": 0.0008,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "original_total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "matrix": {
+    "materials": ["B01","B14"],
+    "cases": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "seed": "R1 gravity-steady Se=0.85; two 0.0016-day prescribed-qeq intervals",
+    "perturbation_intervals": 16,
+    "bottom_head": {
+      "BOTTOM_HEAD_RISE": "0.75*h0",
+      "BOTTOM_HEAD_FALL": "1.25*h0"
+    }
+  },
+  "baseline_provenance": {
+    "paired_original_R3_control_required": true,
+    "B01_BOTTOM_HEAD_RISE": {"accepted_prefix_steps":10,"fail_step":11},
+    "B01_BOTTOM_HEAD_FALL": {"accepted_prefix_steps":9,"fail_step":10},
+    "B14_BOTTOM_HEAD_RISE": {"accepted_prefix_steps":16,"fail_step":0},
+    "B14_BOTTOM_HEAD_FALL": {"accepted_prefix_steps":16,"fail_step":0}
+  },
+  "qualification": [
+    "PAIRED_ORIGINAL_R3_PROVENANCE_REPRODUCED",
+    "ALL_BASELINE_ACCEPTED_OVERLAP_ENDPOINTS_AND_WORK_BIT_IDENTICAL",
+    "NO_FALLBACK_ON_ANY_ORIGINAL_ACCEPTED_OVERLAP_STEP",
+    "B14_FALLBACK_COUNT_ZERO_BOTH_DIRECTIONS",
+    "B01_FALLBACK_COUNT_POSITIVE_BOTH_DIRECTIONS",
+    "EVERY_FALLBACK_TRIGGER_DIRECTLY_CLASSIFIED_RETRY_TOTAL_ONLY",
+    "EVERY_TRIGGER_INTEGRATED_RESIDUAL_WITHIN_PRE_SOLVE_REPRESENTATION_BOUND",
+    "FAILED_FIRST_ATTEMPT_NEVER_MUTATES_COMMITTED_STATE",
+    "ALL_FOUR_FALLBACK_POLICY_TRAJECTORIES_COMPLETE_16_STEPS",
+    "EVERY_COMMITTED_STEP_ONE_PHYSICAL_ADVANCE",
+    "NO_TEMPORAL_SUBDIVISION",
+    "HARD_TRANSACTION_MASS_GATE_EVERY_COMMITTED_STEP",
+    "B01_AND_B14_DIRECTIONAL_REACHABILITY_PASS",
+    "O0_O2_BYTE_IDENTITY",
+    "REPEAT_DETERMINISM"
+  ],
+  "decisions": [
+    "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_NO_GO",
+    "R3_FALLBACK_TRIGGER_CLASSIFICATION_FAILED",
+    "R3_FALLBACK_OVERLAP_NEUTRALITY_FAILED",
+    "R3_FALLBACK_DIRECTIONAL_REACHABILITY_NOT_ESTABLISHED"
+  ],
+  "firewalls": [
+    "ORIGINAL_R3_AND_R3D3_RESULTS_REMAIN_UNCHANGED",
+    "NO_PRODUCTION_DEFAULT_CHANGE",
+    "NO_REFERENCE_SOURCE_CHANGE",
+    "NO_GENERAL_FALLBACK_ADMISSION",
+    "NO_DT_OR_FORCING_RETUNING",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_LOCAL_BALANCE_OR_HEAD_TOLERANCE_CHANGE",
+    "NO_POSTHOC_MULTIPLIER",
+    "NO_CASE_REMOVAL",
+    "NO_ROM1_WORK"
+  ],
+  "production_admission_authorized": false,
+  "vertical_reference_floor_authorized": false,
+  "rom1a_authorized": false
+}
