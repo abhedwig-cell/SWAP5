@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.rom1ad2.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-D2",
+  "title": "Mode-2 strict-first total-only fallback qualification",
+  "phase": "PREREGISTERED_BEFORE_POLICY_EXECUTION",
+  "predecessors": {
+    "ROM1A_parent_run": "D01 strict mode-2 failure at step 21",
+    "ROM1AD1": "ROM1AD1_RETRY_TOTAL_ONLY_WITHIN_REPRESENTATION_BOUND",
+    "ROM0_R3D4_method_pattern": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED"
+  },
+  "purpose": "Qualify a research-only fixed-flux mode-2 strict-first fail-closed representation fallback before any ROM-1A rerun.",
+  "policy": {
+    "id": "MODE2_ORIGINAL_FIRST_FAIL_CLOSED_TOTAL_ONLY_REATTEMPT",
+    "per_interval": [
+      "Compute the prospective representation bound from the accepted pre-solve state before any solver call.",
+      "Attempt the exact original mode-2 Reference-floor sample with total balance rate tolerance 1e-12 cm/day.",
+      "If the original attempt succeeds, commit exactly that candidate and forbid fallback.",
+      "If the original attempt fails, require committed lineage, revision, time and physical state to remain bit-identical.",
+      "Reproduce the same failed interval through the direct Reference solver with bottom_mode=2.",
+      "Require RETRY_TOTAL_ONLY: zero local-balance flags, zero head flags, max local residual <= 1e-12 and abs(total residual) > 1e-12.",
+      "Require abs(total residual)*dt <= the prospective representation bound computed before the failed attempt.",
+      "Only then retry the same interval once on a fresh backend with total tolerance max(1e-12, representation_bound_cm/dt).",
+      "Require the fallback candidate to satisfy the unchanged 1e-12 cm transaction mass gate and commit exactly one physical advance.",
+      "Any other failure class, bound exceedance, diagnostic mismatch or fallback failure is fail-closed."
+    ],
+    "representation_bound_cm_formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "failed_residual_used_to_choose_tolerance": false,
+    "empirical_factor": "none",
+    "dt_subdivision": false
+  },
+  "qualification_matrix": {
+    "material": "B01",
+    "seed": "R1 gravity-consistent Se=0.85; two 0.0016-day qeq/qeq mode-2 intervals",
+    "step_dt_day": 0.0008,
+    "steps_per_trajectory": 64,
+    "trajectories": [
+      {"id":"TOP_PLUS_64","top_flux":"qeq + 0.01*K0","bottom_mode":2,"bottom_flux":"qeq"},
+      {"id":"TOP_MINUS_64","top_flux":"qeq - 0.01*K0","bottom_mode":2,"bottom_flux":"qeq"}
+    ],
+    "held_out_histories_used": false,
+    "B14_used": false
+  },
+  "frozen_controls": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "min_step_duration_day": 1e-8,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "original_total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "required_evidence": [
+    "BOTH_64_STEP_TRAJECTORIES_COMPLETE",
+    "EVERY_ORIGINAL_SUCCESS_COMMITS_WITHOUT_FALLBACK",
+    "EVERY_FAILED_ORIGINAL_ATTEMPT_LEAVES_COMMITTED_STATE_BIT_IDENTICAL",
+    "EVERY_FALLBACK_TRIGGER_CLASSIFIED_RETRY_TOTAL_ONLY",
+    "EVERY_TRIGGER_INTEGRATED_RESIDUAL_WITHIN_PRE_SOLVE_REPRESENTATION_BOUND",
+    "EVERY_FALLBACK_SAME_INTERVAL_FRESH_BACKEND",
+    "EVERY_COMMITTED_STEP_ONE_PHYSICAL_ADVANCE",
+    "ZERO_DT_SUBDIVISION",
+    "HARD_MASS_GATE_EVERY_COMMITTED_STEP",
+    "TOP_PLUS_HAS_AT_LEAST_ONE_FALLBACK",
+    "O0_O2_STDOUT_BIT_IDENTITY"
+  ],
+  "positive_decision": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED",
+  "negative_decision": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_NO_GO",
+  "if_positive": "Rerun ROM-1A under a combined research Reference policy: mode-2 intervals use the D2 strict-first fallback and mode-5 intervals retain ROM-0R-R3D4. History definitions, dt and all non-total solver controls remain frozen.",
+  "firewalls": [
+    "NO_HISTORY_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_LOCAL_BALANCE_OR_HEAD_TOLERANCE_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_HELDOUT_HISTORY_EXECUTION_IN_D2",
+    "NO_B14_EXECUTION_IN_D2",
+    "NO_REDUCED_STATE_WORK",
+    "NO_PRODUCTION_REFERENCE_FALLBACK_ADMISSION"
+  ],
+  "production_admission_authorized": false
+}
