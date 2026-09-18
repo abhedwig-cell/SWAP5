@@ -4,7 +4,7 @@ module mod_pub_gc_e6_active_drainage_bridge
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
@@ -107,7 +107,7 @@ module mod_pub_gc_e6_active_drainage_bridge
   public :: pub_gc_e6_swap_commit_c, pub_gc_e6_ledger_commit_c, pub_gc_e6_abort_prepublication_c
   public :: pub_gc_e6_state_c
   public :: pub_gc_e6_e1_diagnostics_c, pub_gc_e6_last_trial_diagnostics_c
-  public :: pub_gc_e6_predictor_run_diagnostics_c, pub_gc_e6_drainage_coverage_c
+  public :: pub_gc_e6_predictor_run_diagnostics_c, pub_gc_e6_corrector_diagnostics_c, pub_gc_e6_drainage_coverage_c
 
 contains
 
