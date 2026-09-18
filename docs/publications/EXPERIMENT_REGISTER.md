@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | Upper request-side top-flux boundary: P2E16/P2E17 found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed. E2X then prospectively extended the unobserved surface to the lower request-side top boundary and both bottom-boundary sides: 972 cases, 0 route mismatches, 633/633 interpretable Stage-A-authorized pairs admissible, with 2 authorized cases Reference-unresolved. Proceed to E3 REF-HIGH, not more fixed-flux boundary probing. |
-| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | READY_FOR_PREREGISTRATION | P2E19 established the integrated-invariant Reference policy and P2E20 materialized casewise REF-HIGH for 33/36 frozen cases. Freeze those exact 33 cases plus solver-control, equal-error, work-accounting and timing rules before any RossFast performance execution. The 3 unresolved cases remain excluded. |
+| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | MATCHED_ERROR_DESIGN_REQUIRED_BEFORE_TIMING | P2E21 now provides final REF-HIGH for 36/36 cases. P2E22 froze threshold-matched controls for all 36 but A1/A2/A3 collapse to N=1/N=1 and strict observed-error matching is absent. Next run an untimed representation-bounded Reference work-precision/bracketing study; timing remains forbidden. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
@@ -70,6 +70,21 @@ This register does not contain scientific results. It is an execution map betwee
 - P2E20 separately materialized the casewise Reference authority: 33 `REF_HIGH_QUALIFIED`, 2 route-unresolved, 1 stability-unresolved. The qualified endpoint is the 32-substep Reference state under the frozen integrated-invariant policy;
 - RossFast and timing were not executed in P2E18 through P2E20;
 - next permitted action: preregister equal-error solver control and work/timing methodology on exactly the 33 qualified cases. No speedup inference is authorized before that freeze.
+
+### 2026-09-18 — PUB-SQ final 36-case REF-HIGH and threshold-control migration
+
+- P2E21 replaced the provisional 33-case P2E20 performance reference with a final 36/36-case REF-HIGH authority using the prospectively defined `REPRESENTATION_BOUNDED_TOTAL` research policy;
+- the total-column bound is formula-derived from floating-point representation scale before each solve, uses no empirical safety factor and does not change production Reference tolerances;
+- all 36 cases are route-valid at 8, 16 and 32 substeps and pass both unchanged REF-HIGH stability comparisons; the 32-substep endpoint is the final E3 numerical reference;
+- P2E21A had already frozen an untimed segmentation ladder {1,2,4,8,16,32}, accuracy targets A1/A2/A3 and least-refined valid-selection rule on the earlier 33-case reference;
+- P2E22 migrated those unchanged rules to the final 36-case P2E21 reference: 432 production configurations, 216 selection records and 36 REF-HIGH reconstructions, all O0/O2 identical;
+- both REF_PROD and Ross have 36/36 paired availability at all three targets. Under the final reference every solver/case/target selection is N=1;
+- the six changed overlapping selection records are exactly cases 4 and 18 across all three targets, where REF_PROD moves from N=2 to N=1 after the reference migration; Ross remains N=1;
+- the three newly admitted P2E21 cases 1, 2 and 36 all select N=1 for both production solvers;
+- the three accuracy targets therefore collapse completely. A descriptive diagnostic over all route-valid configurations finds only 1/36 cases with any REF_PROD/Ross pair within factor 2 in actual normalized head/theta error;
+- interpretation: P2E22 provides **common-threshold-matched controls**, not strict equal-observed-error controls. Timing N=1/N=1 now would not answer H3 as written;
+- next permitted action: a separate untimed work-precision matching study using the already qualified representation-bounded Reference refinement policy and a deterministic equal-or-better-error/bracketing rule. Retain all 36 cases and explicit unresolved outcomes. Timing remains forbidden.
+
 
 
 ## Immediate executable tranche
