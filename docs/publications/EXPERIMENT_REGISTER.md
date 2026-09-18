@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | Upper request-side top-flux boundary: P2E16/P2E17 found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed. E2X then prospectively extended the unobserved surface to the lower request-side top boundary and both bottom-boundary sides: 972 cases, 0 route mismatches, 633/633 interpretable Stage-A-authorized pairs admissible, with 2 authorized cases Reference-unresolved. Proceed to E3 REF-HIGH, not more fixed-flux boundary probing. |
-| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | MATCHED_ERROR_DESIGN_REQUIRED_BEFORE_TIMING | P2E21 now provides final REF-HIGH for 36/36 cases. P2E22 froze threshold-matched controls for all 36 but A1/A2/A3 collapse to N=1/N=1 and strict observed-error matching is absent. Next run an untimed representation-bounded Reference work-precision/bracketing study; timing remains forbidden. |
+| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | MATCHED_ERROR_CONTROLS_FROZEN_TIMING_INFRASTRUCTURE_BLOCKED | P2E23 resolved the realized-error comparator for all 36 cases: 34 bracketed, 2 left-censored at N=1, 0 unresolved. Primary future timing is RossFast N=1 versus casewise representation-bounded Reference N_hi. Timing remains blocked until MP-8 runner readiness and MP-7 host admission pass. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
@@ -84,6 +84,18 @@ This register does not contain scientific results. It is an execution map betwee
 - the three accuracy targets therefore collapse completely. A descriptive diagnostic over all route-valid configurations finds only 1/36 cases with any REF_PROD/Ross pair within factor 2 in actual normalized head/theta error;
 - interpretation: P2E22 provides **common-threshold-matched controls**, not strict equal-observed-error controls. Timing N=1/N=1 now would not answer H3 as written;
 - next permitted action: a separate untimed work-precision matching study using the already qualified representation-bounded Reference refinement policy and a deterministic equal-or-better-error/bracketing rule. Retain all 36 cases and explicit unresolved outcomes. Timing remains forbidden.
+
+### 2026-09-18 — PUB-SQ realized-error matching resolved before timing
+
+- P2E23 branch: `work/pub-p2e23-observed-error-reference-matching`, result head `d05ed330ad3bf033d9a8542fec78e37839233570`;
+- workflow `35314767424`, job `105503952798`, O0/O2-identical output `sha256:1a8633e36e76875c454df32b1ca5725af6362c4216ecbefffa6ce136a08fca74`;
+- RossFast was frozen at the P2E22 N=1 production route. Representation-bounded Richards was evaluated untimed for every integer N=1..32 in every one of the 36 cases;
+- all 1,152 Reference configurations were valid. Thirty-four cases have a true realized-error bracket, two B12/Se=0.65 cases are left-censored at N=1 because Reference N=1 is already more accurate, and no case is unresolved;
+- for the 34 bracketed cases, the selected Reference N_hi ranges from 7 to 24. Its normalized head/theta error is 0.868 to 0.998 times the RossFast N=1 error; the last coarser N_lo is 1.001 to 1.148 times RossFast error;
+- one case has a two-step bracket because the intermediate N=21 endpoint exceeds the unchanged machine-scale storage gate even though its solver route is valid;
+- the matching algorithm never used timing, work counters or closest-ratio optimization;
+- next permitted action: preregister paired timing of RossFast N=1 versus casewise Reference N_hi. Execution is blocked until the repository's MP-8 isolated-runner readiness and full MP-7 host-admission gates pass. The two left-censored cases must remain labelled conservative, not strict equality.
+
 
 
 
