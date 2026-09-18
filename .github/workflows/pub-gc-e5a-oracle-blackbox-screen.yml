@@ -1,0 +1,36 @@
+name: PUB-GC E5a oracle black-box screen
+on:
+  push:
+    branches: [work/pub-gc-e5-oracle-blackbox-screen]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'docs/publication/PUB_GC_E5A_PREREGISTRATION.md'
+      - 'tests/publication/test_pub_gc_e5a_case.py'
+      - 'tests/publication/run_pub_gc_e5a.sh'
+      - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
+      - '.github/workflows/pub-gc-e5a-oracle-blackbox-screen.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pytest numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run E5a
+        env:
+          PUB_GC_E5_RESULT_DIR: ${{ runner.temp }}/pub-gc-e5a
+        run: bash tests/publication/run_pub_gc_e5a.sh
+      - name: Upload E5a evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e5a-evidence
+          path: ${{ runner.temp }}/pub-gc-e5a
+          if-no-files-found: error
