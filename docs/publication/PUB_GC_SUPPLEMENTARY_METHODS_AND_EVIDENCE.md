@@ -100,6 +100,20 @@ size:
 
 The final M1-C3 whole-Hupsel adapter execution remains the prerequisite.
 
+## S5.1 Current-canonical application-bootstrap reconcile
+
+After this supplement branch was created, canonical admitted PPA-WU01, a restricted production application bootstrap.
+
+That new capability is relevant but does not clear the E7 prerequisite:
+
+- it creates a Fortran/FMR-owned typed production owner for an admitted standalone Reference profile and an all-`bottom_mode=5` groundwater-owner profile;
+- it does not establish complete SWAP 4.3.1 input-file compatibility;
+- it does not own weather-file, calendar or cursor ingestion;
+- it does not establish full legacy application composition;
+- it does not execute the final whole-Hupsel file-driven adapter gate required by M1-C3.
+
+The existing M1-C3 blocker therefore remains controlling for E7. No E7 result or readiness status is changed by PPA-WU01.
+
 ## S6. E7 open supplement slot
 
 When M1-C3 passes, the supplement must add, without changing the preregistered selection rule:
