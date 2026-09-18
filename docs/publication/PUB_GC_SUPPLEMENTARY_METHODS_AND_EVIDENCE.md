@@ -2,7 +2,7 @@
 
 ## Status
 
-**JOURNAL_NEUTRAL_SUPPLEMENT_READY_THROUGH_E6 — E7 SLOT OPEN**
+**JOURNAL_NEUTRAL_SUPPLEMENT READY THROUGH E7 STANDALONE SELECTION — COUPLED SLOT OPEN**
 
 Date: 2026-09-18.
 
@@ -18,7 +18,7 @@ This package collects the reproducibility information that is too detailed for t
 | E5 | incremental value of supplied response information | source `41e68a89a52f1f0fac00c8cfe920152ffd4e3fda` | run/job `35351467531 / 105620375280`; artifact `10550095859` | SUPPORTED_RESTRICTED_STOP_INDEPENDENT_ACCELERATE |
 | E6 active drainage | test stronger response through admitted drainage predictor | source `191f1d8ac0ab0b84eff438023f1d32e00c09b925` | run/job `35360873209 / 105651690323`; artifact `10554144629` | SUPPORTED_NEGATIVE_COMPONENT_ENVELOPE |
 | E6 state/flux screen | test stronger response through accepted-state geometry | source `97dba8764ca85c7499cbb2402cf5309447621a66` | run/job `35360999577 / 105651945363`; artifact `10554314676` | PREDICTOR_ONLY_OR_NO_USEFUL_EXPANSION |
-| E7 | realistic Hupsel transferability | prospectively preregistered only | not executed | BLOCKED_M1_C3 |
+| E7 | realistic Hupsel transferability | M1/M1-C3 closed; standalone selection frozen before coupled output | coupled loose/strong run not yet executed | READY_FOR_COUPLED_EXECUTION |
 
 ## S2. Important execution qualifications
 
@@ -60,7 +60,7 @@ No numerical tolerance, retry budget or physical parameter was changed to conver
 | E5 | `PUB_GC_E5_INFORMATION_VALUE_RESULT.json` and comparison CSV |
 | E6 active drainage | `PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json` |
 | E6 state/flux | `PUB_GC_E6A_STATE_SCREEN_RESULT.json` and summary CSV |
-| E7 | `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md` only until execution |
+| E7 | `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md` + `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json` until coupled execution |
 
 Raw E4 and E6 records are retained under `docs/publication/evidence/` where applicable.
 
@@ -84,11 +84,17 @@ F7 and T6 remain intentionally absent until E7 executes.
 
 ## S5. Reproducibility boundaries
 
-The manuscript can reproduce its publication figures/tables from repository evidence without the historical SWAP 4.3.1 distribution.
+The manuscript can reproduce its publication figures/tables from repository evidence without redistributing the historical SWAP 4.3.1 distribution.
 
-The Hupsel E7 execution cannot proceed until the exact externally governed distribution is available in an authorized execution context. This asset is not replaced by a synthetic copy, alternate parser or repository reconstruction.
+The former M1-C3 external-asset prerequisite is now closed in canonical authority:
 
-Required external distribution authority:
+- M1-C3 whole-Hupsel typed-adapter qualification passed;
+- PR #313 admitted criterion 3;
+- PR #316 formally closed M1;
+- accepted intervals: 32,518;
+- exact normalized BAL/BLC identities retained.
+
+The exact externally governed distribution identity remains:
 
 ```text
 SHA-256:
@@ -98,37 +104,31 @@ size:
 8,959,314 bytes
 ```
 
-The final M1-C3 whole-Hupsel adapter execution remains the prerequisite.
+For E7, the standalone 2002–2004 Hupsel dynamics were observed with a non-interfering daily trace whose normalized BAL/BLC outputs remained exactly equal to the admitted M1-C3 authority. The selection population, scoring rule and two selected dates were then frozen before any coupled output.
 
-## S5.1 Current-canonical application-bootstrap reconcile
+Full-population trace identity:
 
-After this supplement branch was created, canonical admitted PPA-WU01, a restricted production application bootstrap.
+```text
+daily metrics SHA-256:
+d532d07a34ad5bdd98730373330bca4b870439eec6783bf9f25b8d58c1906fb3
 
-That new capability is relevant but does not clear the E7 prerequisite:
-
-- it creates a Fortran/FMR-owned typed production owner for an admitted standalone Reference profile and an all-`bottom_mode=5` groundwater-owner profile;
-- it does not establish complete SWAP 4.3.1 input-file compatibility;
-- it does not own weather-file, calendar or cursor ingestion;
-- it does not establish full legacy application composition;
-- it does not execute the final whole-Hupsel file-driven adapter gate required by M1-C3.
-
-The existing M1-C3 blocker therefore remains controlling for E7. No E7 result or readiness status is changed by PPA-WU01.
+scored-days SHA-256:
+016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e
+```
 
 ## S6. E7 open supplement slot
 
-When M1-C3 passes, the supplement must add, without changing the preregistered selection rule:
+The M1-C3 gate has passed and the standalone selection is frozen. When the coupled E7 run completes, the supplement must add, without changing the selected dates or preregistered comparison:
 
-- full eligible-day standalone metric table;
-- selected median-dynamics and high-dynamics dates;
-- standalone metric percentile ranks and score;
-- groundwater model provenance;
+- frozen selected dates and standalone metrics from `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`;
+- groundwater model provenance and the already-frozen uncalibrated F-GC44 fallback;
 - per-window loose/strong results;
 - daily aggregate head, storage, exchange and work;
 - whole-system interface mass cancellation;
 - component-domain failures, if any;
 - exact source heads, workflow runs and artifact digests.
 
-No E7 result is inferred in advance.
+No coupled E7 result is inferred in advance. The frozen selected dates are 2003-06-17 and 2003-05-20 and may not be replaced.
 
 ## S7. Claim and literature controls
 
