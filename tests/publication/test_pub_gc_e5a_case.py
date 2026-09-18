@@ -273,7 +273,20 @@ def run_method(
                 raise AssertionError("E5a SWAP trial changed authoritative state")
             residual=qswap-qmodel
             if not finite(head,qmodel,qswap,residual,slope):
-                raise AssertionError("nonfinite E5a main-loop quantity")
+                swap.discard()
+                if swap.state()!=origin_state:
+                    raise AssertionError("nonfinite E5a trial changed authoritative state")
+                return {
+                    "status":"NONFINITE_UPDATE","failure_stage":"main-loop-quantity",
+                    "baseline_id":baseline_id,"specific_yield":sy,"method":method,
+                    "N_predictor":1,
+                    "N_corrector_attempted":corrector_attempted,
+                    "N_corrector_successful":corrector_successful,
+                    "N_MODFLOW_iteration_calls":mf_calls,
+                    "W_SWAP_upper":1+corrector_attempted,
+                    "trace":trace,
+                    "elapsed_s":time.perf_counter()-t_start,
+                }
 
             step={
                 "outer":outer,
