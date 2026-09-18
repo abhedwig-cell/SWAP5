@@ -1,0 +1,30 @@
+name: F-CI ROM1A moving-preservation reconcile
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
+      - 'tests/rom/**'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'integration/f-rom/F-ROM1A_I0_*.json'
+      - 'integration/f-ci/FCI_ROM1A_MOVING_PRESERVATION_RECONCILIATION.json'
+      - '.github/workflows/fci-rom1a-moving-preservation-reconcile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  moving-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconcile exact qualified F-ROM1A successor
+        run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
