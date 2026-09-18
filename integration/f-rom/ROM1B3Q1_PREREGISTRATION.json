@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.rom1b3q1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B3Q1",
+  "title": "Coordinate-invariant induced-theta norm reconciliation",
+  "phase": "PREREGISTERED_BEFORE_INDUCED_NORM_CENSUS",
+  "predecessor": {
+    "work_unit": "ROM-1B3",
+    "decision": "ROM1B3_NO_REDUCED_STATE_SEPARATING_ENRICHMENT",
+    "original_result_reclassified": false,
+    "issue": "The full Z8+G1..G8 transform is exactly invertible to Z16 yet retained 2187 collisions under componentwise coordinate L_inf, proving that metric is not invariant under an invertible coordinate transform."
+  },
+  "purpose": "Re-evaluate the exact same frozen 256 candidate family using the quotient norm induced by the original 16-cell theta L_inf norm, without changing the theta floor, candidate components, discovery population, or deterministic subset-selection rule.",
+  "unchanged_authority": {
+    "discovery_population": "D01-D08 exact ROM1B3 frozen discovery states",
+    "candidate_family": "Z8 plus any subset of the same G1..G8 half-contrasts",
+    "subset_count": 256,
+    "theta_floor": 0.0005420462931603476,
+    "full_state_metric": "cellwise theta L_inf",
+    "cross_history_only": true,
+    "heldout_used": false,
+    "B14_used": false,
+    "future_probe_outcomes_used_for_subset_selection": false
+  },
+  "induced_norm": {
+    "definition": "q_S(delta_z) = min ||delta_theta||_inf over all 16-cell delta_theta satisfying the selected Z8 mean and G-contrast coordinate differences",
+    "closed_form_per_20cm_band": {
+      "G_not_selected": "abs(delta_mean)",
+      "G_selected": "max(abs(delta_mean+delta_halfcontrast),abs(delta_mean-delta_halfcontrast)) = abs(delta_mean)+abs(delta_halfcontrast)"
+    },
+    "global": "maximum of the eight bandwise closed-form values",
+    "properties": [
+      "same units as theta",
+      "no empirical scale factor",
+      "Z8-only induced norm equals the original Z8 component L_inf norm",
+      "with all G1..G8 selected the induced norm equals the exact cellwise Z16 theta L_inf norm",
+      "monotone nondecreasing when G components are added"
+    ]
+  },
+  "collision_rule": {
+    "collision_if": "induced_candidate_theta_Linf <= theta_floor AND full_theta_Linf > theta_floor",
+    "theta_floor_changed": false,
+    "post_result_parameter_fit": false
+  },
+  "deterministic_selection": {
+    "primary": "minimum number of added G components among zero-collision candidates",
+    "secondary": "maximum minimum induced_candidate_theta_Linf over all cross-history pairs with full_theta_Linf > theta_floor",
+    "tertiary": "lexicographically smallest ordered G-index tuple",
+    "B2_response_magnitudes_used": false
+  },
+  "qualification_controls": [
+    "Z8_MASK_0_COLLISION_COUNT_MUST_EQUAL_ROM1B1_Z8_COUNT_5617",
+    "FULL_MASK_255_INDUCED_DISTANCE_MUST_EQUAL_Z16_CELLWISE_DISTANCE_FOR_EVERY_PAIR",
+    "FULL_MASK_255_COLLISION_COUNT_MUST_EQUAL_ZERO",
+    "ADDED_COMPONENT_MONOTONICITY_CHECK",
+    "ALL_256_SUBSETS_REPORTED",
+    "REPEAT_DISCOVERY_STDOUT_BIT_IDENTITY",
+    "NO_SRC_OR_REFERENCE_MUTATION"
+  ],
+  "decisions": [
+    "ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+    "ROM1B3Q1_ONLY_FULL_THETA_STATE_SEPARATES",
+    "ROM1B3Q1_INDUCED_NORM_RECONCILIATION_BLOCKED"
+  ],
+  "next_rule": {
+    "if_selected_added_count_lt_8": "freeze the selected candidate and preregister held-out state-separation plus predictive evaluation before exposing H01-H04",
+    "if_selected_added_count_eq_8": "close the physically interpretable water-content-only reduction family as requiring full theta state; a qualitatively new state class requires a separate scientific proposition"
+  },
+  "firewalls": [
+    "ROM1B3_COMPONENTWISE_RESULT_REMAINS_IMMUTABLE",
+    "NO_THETA_FLOOR_CHANGE",
+    "NO_COMPONENT_RESCALE",
+    "NO_HELDOUT_OR_B14",
+    "NO_FUTURE_PROBE_OUTCOME_IN_SELECTION",
+    "NO_POD_OR_MODAL_BASIS",
+    "NO_MEMORY_VARIABLE_SELECTION",
+    "NO_CLOSURE_FIT",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
