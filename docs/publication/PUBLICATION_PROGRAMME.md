@@ -94,7 +94,7 @@ The technical ability to support N:1 coupling is infrastructure, not the intende
 
 ### PUB-RC - ACCELERATE
 
-Status: **high-priority experiment within PUB-GC; independent-paper status conditional**.
+Status: **E4/E5 experiment retained in PUB-GC; independent PUB-RC line currently NOT ADMITTED**.
 
 Current research question:
 
@@ -102,7 +102,7 @@ Current research question:
 
 Current disposition:
 
-> Develop the response/acceleration study as a major experiment inside the central PUB-GC manuscript. Split it into a separate PUB-RC manuscript only if the novelty gates demonstrate a reproducible, generalizable information-value regime beyond state-of-the-art black-box multisecant coupling.
+> E4/E5 are substantive results of the central PUB-GC manuscript. The current independent PUB-RC / ACCELERATE paper line is closed because the preregistered E5 information-value gate was not passed. It may be reopened only if later work produces qualitatively new, reproducible evidence beyond the tested scalar coupling problem.
 
 PUB-RC must not claim novelty from derivative-informed coupling, interface Jacobians, autonomous/multirate component integration, dynamic hydrological storage response, surrogate-assisted quasi-Newton coupling, or hydrological convergence-regime analysis by themselves.
 
@@ -356,7 +356,7 @@ Any new paper that overlaps a primary novelty claim should trigger a review of t
 
 Established: 2026-09-17. Expanded with coupling-related candidate lines PUB-GC, PUB-SG and PUB-RC on 2026-09-18.
 
-PUB-RC is currently conditional, not an assumed standalone paper. Its default disposition is integration into PUB-GC unless the dedicated novelty gates pass.
+PUB-RC is currently not admitted as a standalone paper. E4/E5 are retained in PUB-GC; reopening PUB-RC requires qualitatively new evidence beyond the tested scalar information-value problem.
 
 This programme is documentation and research governance only. It does not change production code, physics, numerical semantics, qualification tolerances or existing canonical evidence.
 
