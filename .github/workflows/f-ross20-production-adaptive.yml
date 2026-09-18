@@ -1,0 +1,39 @@
+name: F-ROSS20 production adaptive certificate qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross20-production-adaptive-certificate
+  pull_request:
+    branches:
+      - work/f-ross19-adaptive-k2-k4-certificate
+    paths:
+      - 'integration/f-ross/F-ROSS20_*'
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/test_ross20_all_material_adaptive.f90'
+      - 'tests/ross/run_ross20_production_adaptive_qualification.sh'
+      - 'tools/performance/f_ross20_all_material_summary.py'
+      - 'tools/performance/f_ross20_research_identity.py'
+      - '.github/workflows/f-ross20-production-adaptive.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute F-ROSS20 production qualification
+        run: bash tests/ross/run_ross20_production_adaptive_qualification.sh
+      - name: Preserve F-ROSS20 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross20-production-adaptive-${{ github.run_id }}
+          path: F-ROSS20_EVIDENCE
+          if-no-files-found: warn
