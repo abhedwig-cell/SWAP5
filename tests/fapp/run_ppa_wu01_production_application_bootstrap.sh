@@ -39,7 +39,10 @@ for forbidden in [
     assert forbidden not in src, forbidden
 
 assert "bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
-assert "any(self%parameters%bottom_mode /= 5)" in src
+assert "production_application_groundwater_ready" in src
+assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
+assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
+assert "if (groundwater_profile) then" in src
 assert "macropore_active" in src
 assert "frost_active" in src
 assert "root_extraction_active" in src
@@ -50,6 +53,7 @@ print("PPA_WU01_NO_QUALIFICATION_FIXTURE_PROMOTION_STATIC=PASS")
 print("PPA_WU01_NO_LEGACY_PARSER_STATIC=PASS")
 print("PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS")
 print("PPA_WU01_GROUNDWATER_MODE5_CONTEXT_GUARD_STATIC=PASS")
+print("PPA_WU01_OPTIONAL_GROUNDWATER_OWNERSHIP_STATIC=PASS")
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
