@@ -20,7 +20,7 @@ from fgc44_real_swap_ctypes import Fgc44RealSwap
 
 DAY_TO_S=86400.0
 AREA_M2=1.0
-WINDOW_DAY=0.25
+WINDOW_DAY=1.0e-4
 FLUX_TOL=2.0e-10
 
 @dataclass(frozen=True)
@@ -52,16 +52,16 @@ class CountingKernel:
 def require(x:bool,msg:str)->None:
     if not x: raise AssertionError(msg)
 
-def build_model(workdir:Path)->None:
+def build_model(workdir:Path, reference_head:float)->None:
     sim=flopy.mf6.MFSimulation(sim_name="FGC44_REAL_E2E",version="mf6",sim_ws=str(workdir))
     flopy.mf6.ModflowTdis(sim,time_units="DAYS",nper=1,perioddata=[(WINDOW_DAY,1,1.0)])
     flopy.mf6.ModflowIms(sim,complexity="MODERATE",outer_dvclose=1e-11,inner_dvclose=1e-12,outer_maximum=100,inner_maximum=100)
     gwf=flopy.mf6.ModflowGwf(sim,modelname="GWF_1",save_flows=True,newtonoptions="NEWTON")
     flopy.mf6.ModflowGwfdis(gwf,nlay=1,nrow=1,ncol=3,delr=1.0,delc=1.0,top=0.0,botm=-2.0)
-    flopy.mf6.ModflowGwfic(gwf,strt=-0.75)
+    flopy.mf6.ModflowGwfic(gwf,strt=reference_head)
     flopy.mf6.ModflowGwfnpf(gwf,icelltype=1,k=1.0,save_flows=True)
     flopy.mf6.ModflowGwfsto(gwf,iconvert=1,ss=0.02,sy=0.15,transient={0:True})
-    flopy.mf6.ModflowGwfchd(gwf,stress_period_data={0:[((0,0,0),-0.70),((0,0,2),-0.80)]},pname="CHD_ENDS")
+    flopy.mf6.ModflowGwfchd(gwf,stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},pname="CHD_ENDS")
     flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api")
     sim.write_simulation(silent=True)
 
@@ -80,7 +80,7 @@ def main()->None:
     require(ledger_exchange==0.0,"ledger nonzero before coupling")
 
     with tempfile.TemporaryDirectory(prefix="fgc44-e2e-") as tmp:
-        workdir=Path(tmp); build_model(workdir)
+        workdir=Path(tmp); build_model(workdir,href)
         raw=XmiWrapper(lib_path=libmf6,working_directory=workdir)
         kernel=CountingKernel(raw)
         publisher=Fgc34CtypesPublisher(swaplib)
