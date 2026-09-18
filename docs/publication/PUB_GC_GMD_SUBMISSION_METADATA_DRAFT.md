@@ -121,6 +121,16 @@ The submission metadata must not imply:
 - generic novelty for partitioned coupling, checkpoint/restore, Aitken/IQN, derivative exposure, MODFLOW API control or modularity;
 - physical validity of heterogeneous N:1 aggregation.
 
+## Prepared submission-support assets
+
+- compliance checklist: `PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md`;
+- figure export plan: `PUB_GC_GMD_FIGURE_EXPORT_PLAN.md` / `.json`;
+- editor-letter draft: `PUB_GC_GMD_EDITOR_LETTER_DRAFT.md`;
+- manuscript-preparation audit: `PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md`;
+- static validation gate: `tests/publication/validate_pub_gc_gmd_pre_submission.py`.
+
+The current 432-character short summary has been re-counted by the static gate. The manuscript now uses the exact GMD section heading `Code and data availability`.
+
 ## Completion gate
 
 This metadata record becomes submission-ready only after:
