@@ -895,7 +895,8 @@ contains
         self%top_sensible_boundary_requested .or. parameters%snow_active .or. &
         parameters%soil_temperature_active .or. parameters%root_extraction_active .or. &
         parameters%macropore_active .or. parameters%drainage_response_active .or. &
-        parameters%drainage_qbot_smooth_freatic_projection .or. parameters%bottom_mode /= 2) then
+        parameters%drainage_qbot_smooth_freatic_projection .or. &
+        (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 5)) then
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
       diagnostics%admission_rejections = 1
       return
