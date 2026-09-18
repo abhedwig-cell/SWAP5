@@ -37,3 +37,9 @@ M1-C3 still requires the final whole-Hupsel file-driven adapter execution agains
 ## Stop rule
 
 Do not add another synthetic strong-feedback search merely because E6 is negative. A new synthetic experiment requires a distinct scientific question not already answered by E3–E6.
+
+## Claim audit
+
+`PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md` checks every governed GC-C01–GC-C14 claim against the consolidated manuscript. Current verdict: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED`.
+
+The claim audit is rerun after any substantive E7 insertion or journal-positioning rewrite.
