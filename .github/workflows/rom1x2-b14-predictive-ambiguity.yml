@@ -1,0 +1,47 @@
+name: ROM1X2 B14 frozen-collision future probes
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1X1_COLLISION_MANIFEST.json'
+      - 'integration/f-rom/ROM1X1_STATUS.json'
+      - 'integration/f-rom/ROM1X2_*'
+      - 'docs/science/ROM1X2_*'
+      - 'tests/rom/test_rom1x2_b14_predictive_ambiguity.f90'
+      - 'tests/rom/analyze_rom1x2_b14_predictive_ambiguity.py'
+      - 'tests/rom/run_rom1x2_b14_predictive_ambiguity.sh'
+      - '.github/workflows/rom1x2-b14-predictive-ambiguity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1x2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen B14 collision future probes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1X2_EVIDENCE
+          ROM1X2_EVIDENCE_DIR="$PWD/ROM1X2_EVIDENCE" \
+            bash tests/rom/run_rom1x2_b14_predictive_ambiguity.sh | tee ROM1X2_EVIDENCE/gate.txt
+      - name: Preserve X2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1x2-${{ github.run_id }}
+          path: ROM1X2_EVIDENCE
+          if-no-files-found: warn
