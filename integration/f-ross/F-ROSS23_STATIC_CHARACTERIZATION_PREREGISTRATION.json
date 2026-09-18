@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.f-ross23.static-production-characterization-preregistration.v1",
+  "workunit": "F-ROSS23",
+  "phase": "DESIGN",
+  "branch": "work/f-ross23-static-production-characterization",
+  "purpose": "Systematically characterize the already admitted static RossFast D3R production solver against Reference Richards without changing solver semantics, tolerances, architecture or selection policy.",
+  "reconciliation": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "62dfb5a52f665e490830dfb320167786cf67f63e",
+    "f_ross13_head": "7427b375c59b79f2793b82fe503642cb6e00b691",
+    "f_ross13_is_ancestor_of_canonical": true,
+    "f_ross15_source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
+    "relevant_delta": "F-ROSS15 already preregistered and measured a 36-case six-material E0 subset. Current canonical has no RossFast production delta relative to the admitted F-ROSS13 static solver. Later F-ROSS17..F-ROSS22 research/optimization branches are explicitly outside this characterization."
+  },
+  "reference": "REFERENCE_RICHARDS",
+  "solver_under_test": "STATIC_ROSSFAST_D3R_AS_ADMITTED_BY_F_ROSS13",
+  "measurement_first_rule": "Persist this contract before any new 36-material timing execution or interpretation.",
+  "domain": {
+    "materials": ["B01","B02","B03","B04","B05","B06","B07","B08","B09","B10","B11","B12","B13","B14","B15","B16","B17","B18","O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11","O12","O13","O14","O15","O16","O17","O18"],
+    "effective_saturation": [0.65,0.85,0.98],
+    "forcing": ["DRYING","NOMINAL"],
+    "case_count": 216,
+    "grid": "16 homogeneous cells x 10 cm",
+    "step_duration_day": 0.0016,
+    "boundary_scope": "same fixed-flux E0 family already used by PUB-P2E10/F-ROSS15, restricted to material/forcing combinations admitted by F-ROSS13",
+    "case_pairing": "Reference and RossFast receive identical initial state, material parameters, forcing, lower boundary, interval and requested outputs."
+  },
+  "science_metrics": [
+    "route convergence/failure",
+    "mass-balance residual per route",
+    "head infinity and RMS difference",
+    "water-content infinity and RMS difference",
+    "storage difference",
+    "temporal-certificate acceptance where exposed",
+    "internal retry/alternative-solver count where exposed"
+  ],
+  "performance_metrics": [
+    "solver-only CPU_TIME",
+    "whole-child CPU time",
+    "wall elapsed time",
+    "linear/nonlinear solve work where exposed",
+    "case-level and material/regime-level ratios"
+  ],
+  "timing_contract": {
+    "compiler_optimization": "O2",
+    "warmup_runs_per_variant": 2,
+    "measured_pairs": 12,
+    "pair_order": "alternate REFERENCE-ROSSFAST then ROSSFAST-REFERENCE",
+    "inner_repetitions_per_case": 200,
+    "timed_region": "solver solve calls only; case construction, constitutive setup and RossFast table initialization excluded",
+    "outlier_deletion_allowed": false,
+    "primary_metric": "Fortran CPU_TIME accumulated around selected solve calls",
+    "formal_host_boundary": "GitHub-hosted timing is screening only; formal production performance claim requires MP-admitted isolated host"
+  },
+  "analysis_rules": {
+    "equivalence_before_speed": true,
+    "no_tolerance_relaxation": true,
+    "report_negative_results": true,
+    "stratify_by": ["material","B_vs_O","effective_saturation","forcing"],
+    "do_not_generalize_beyond_measured_domain": true,
+    "static_selection_only": true
+  },
+  "reused_evidence": {
+    "f_ross15": "Static RossFast was about 2.91-3.00x Reference CPU on the preregistered six-material 36-case solver-seam subset; shared-host screening only.",
+    "f_ross16": "Diagnostic evidence attributes the disadvantage to fixed 24 candidate steps per solve versus 2-12 Reference linear solves, mean 3.89, on the same subset.",
+    "f_ross13": "36-material static production envelope already admitted; do not repeat broad qualification."
+  },
+  "firewall": [
+    "NO_PRODUCTION_OPTIMIZATION",
+    "NO_ADAPTIVE_SOLVER_SELECTION",
+    "NO_NEW_SOLVER_ARCHITECTURE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_REFERENCE_MUTATION",
+    "NO_ROSSFAST_SEMANTIC_MUTATION",
+    "NO_F_ROSS17_OR_LATER_OPTIMIZED_OR_ADAPTIVE_CODE_IN_MEASUREMENT"
+  ],
+  "next_permitted_action": "MEASURE: implement only the locked 216-case static Reference-vs-F-ROSS13 RossFast characterization harness by extending the already qualified F-ROSS15 measurement pattern, then execute the preregistered shared-host screening. Do not optimize or alter solver semantics."
+}
