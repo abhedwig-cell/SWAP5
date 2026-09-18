@@ -1,0 +1,72 @@
+{
+  "schema_version": 3,
+  "capability": "F-GC38",
+  "title": "MODFLOW6 Prepared-Solve Iterative Backend",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_LIVE_REQUALIFICATION",
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
+    "upstream_f_gc34": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_TYPED_API_BINDING",
+    "upstream_f_gc35": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_XMI_PACKAGE_ADAPTER",
+    "upstream_f_gc36": "CLOSED_CANONICAL_ADMITTED_LIVE_MODFLOW6_FGC34_BRIDGE",
+    "historical_owner_head": "077876c30177d05096d30d8465155b4dd7e86480"
+  },
+  "ownership": {
+    "position": "below the internal SWAP5-MODFLOW coupling service",
+    "owns": [
+      "MODFLOW prepare_solve/solve/finalize_solve session lifecycle",
+      "live package pointer acquisition for iterative publication",
+      "fixed accepted XOLD guard",
+      "live MXITER fail-closed enforcement"
+    ],
+    "does_not_own": [
+      "SWAP predictor/corrector science",
+      "coupling residual or convergence decision",
+      "iMOD Coupler orchestration policy",
+      "finalize_time_step or timestep acceptance",
+      "whole-window rollback/reconstruction"
+    ]
+  },
+  "production": {
+    "path": "src/adapter/modflow6_prepared_solve_session.py",
+    "donor_blob": "d26a11b292c114083d4de15c32f0a56fc45db833",
+    "rematerialized_blob": "d26a11b292c114083d4de15c32f0a56fc45db833",
+    "byte_identical": true
+  },
+  "external_dependencies": {
+    "modflow6": "6.8.0",
+    "modflow6_asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "xmipy": "9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "flopy": "1a783da6582f8203190a8d6b1d7a60659022afdb"
+  },
+  "qualified_contract_candidate": [
+    "one prepare_solve per groundwater coupling window",
+    "XOLD captured/fixed as accepted previous-time groundwater origin",
+    "X evolves over repeated externally driven solve iterations",
+    "F-GC34 terms may be republished between solve calls",
+    "live SLN_<solution_id>/MXITER is authoritative and MXITER+1 is blocked before kernel.solve",
+    "one finalize_solve after coupled convergence",
+    "backend never calls finalize_time_step",
+    "abandoned/nonconverged session is invalidated rather than represented as accepted state"
+  ],
+  "historical_evidence": {
+    "owner_head": "077876c30177d05096d30d8465155b4dd7e86480",
+    "exact_head_run": 35291491123,
+    "conclusion": "success",
+    "production_blob": "d26a11b292c114083d4de15c32f0a56fc45db833",
+    "note": "Current-canonical live replay is mandatory because runtime evidence now composes the closed F-GC34/F-GC35/F-GC36 stack."
+  },
+  "exclusions": [
+    "predictor/corrector ownership in iMOD Coupler",
+    "SWAP scientific orchestration",
+    "coupling convergence policy",
+    "whole-window rollback/retry",
+    "MODFLOW ATS as external rollback API",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head current-canonical F-GC38 live prepared-solve qualification. If green, checkpoint owner qualification and run an independent live verifier before admission."
+}
