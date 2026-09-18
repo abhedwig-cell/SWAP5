@@ -69,6 +69,12 @@ Claim-evidence ledger:
 
 `PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md`
 
+First publication evidence block (E1/E2):
+
+- `PUB_GC_E1_E2_PREREGISTRATION.md`
+- `PUB_GC_E1_E2_RESULT.md`
+- `PUB_GC_E1_E2_RESULT.json`
+
 ### PUB-SG - SCALE
 
 Status: **active candidate line under separate literature review**.
