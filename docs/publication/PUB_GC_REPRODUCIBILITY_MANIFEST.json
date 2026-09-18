@@ -1,12 +1,12 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
-  "canonical_basis": "970bc631d78ce1f5db3821ce313d500b1c63b274",
+  "canonical_basis": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
   "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "1ada7e208cf970f971f53e12ba4d11d4ba3e77b2"
+      "blob": "b2065a074c3bc573df08fed0b76d6b36772cacb6"
     },
     "claim_ledger": {
       "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
@@ -30,7 +30,7 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "20356125109d45667034e8d06fd61737ff1d9f74"
+      "blob": "68ed169ea0c23f5682f8080e1d15d32041ea76a8"
     },
     "notation": {
       "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
@@ -54,7 +54,7 @@
     },
     "publication_programme": {
       "path": "docs/publication/PUBLICATION_PROGRAMME.md",
-      "blob": "25eda070f7937db55f896c0a933ba30056cbc494"
+      "blob": "bd77092ec875aac65834009ce098770fe42baece"
     },
     "e7_figure": {
       "path": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
@@ -211,5 +211,44 @@
       "e7_effect": "NONE; prescribed-head groundwater owner remains mode 5 and active drainage/root extraction remain fail-closed"
     }
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package. E7 is a closed preregistered realistic component-domain result; final archival release/DOI remains a later submission task."
+  "manifest_note": "Blob identities bind the E1-E7 scientific package and current GMD pre-submission preparation. Final release/version, licence, archive PID and author metadata remain governed external fields.",
+  "submission_preparation": {
+    "state": "PREPARED_EXCEPT_GOVERNANCE_ARCHIVE_AUTHOR_METADATA",
+    "journal": "Geoscientific Model Development",
+    "manuscript_type": "Development and technical paper",
+    "policy_checked": "2026-09-18",
+    "assets": {
+      "archival_gate": {
+        "path": "docs/publication/PUB_GC_GMD_ARCHIVAL_GATE.md",
+        "blob": "18cca12a228dc33b70034805e0ff9bd1adc59f29"
+      },
+      "checklist": {
+        "path": "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
+        "blob": "52a8fbb54a79166a8d10b5c331c24d3d1cbc35fc"
+      },
+      "figure_export_plan_json": {
+        "path": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.json",
+        "blob": "6dd2afeaaece72ae41a90784ac01499022654d64"
+      },
+      "figure_export_plan_md": {
+        "path": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.md",
+        "blob": "8a4dd68d3bf6b9b88e1e56306d382af12707934b"
+      },
+      "editor_letter": {
+        "path": "docs/publication/PUB_GC_GMD_EDITOR_LETTER_DRAFT.md",
+        "blob": "106341df5d4512768b9e9e7f954435888386cf70"
+      },
+      "manuscript_preparation_audit": {
+        "path": "docs/publication/PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md",
+        "blob": "f1e8a188693b375b74e87dd91c9bcaa5fd7f451e"
+      }
+    },
+    "hard_blockers": [
+      "A1 publication version/release authority",
+      "A2 software licence/redistribution authority",
+      "A3 persistent exact-version archive/PID",
+      "final author/affiliation/declaration metadata"
+    ],
+    "no_new_science_required": true
+  }
 }
