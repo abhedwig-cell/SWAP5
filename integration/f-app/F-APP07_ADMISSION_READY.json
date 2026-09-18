@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP07",
+  "phase": "ADMISSION_READY",
+  "branch": "work/f-app07-hupsel-tcs1-dcs2-irrigation",
+  "qualified_production_head": "f05e73b9631e48d31025715bc1da9a46fdbb030d",
+  "current_branch_head_before_checkpoint": "7cca1c62ed64face640d7a19a1bef27bf5f2b59d",
+  "production_delta": [
+    "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+  ],
+  "owner_qualification": {
+    "run_id": 35344875759,
+    "job_id": 105598994163,
+    "conclusion": "success",
+    "records": 110,
+    "SWINTER0": 18,
+    "SWINTER3": 92,
+    "max_error": 0,
+    "composition_output_sha256": "cf6581cb6f0907352133b4acb9b2743446916315f47e53092f642b106ba8b88c"
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ120",
+    "run_id": 35348357333,
+    "job_id": 105610223602,
+    "conclusion": "success",
+    "composition_output_sha256": "c4abf0377e21ecbc0eee1c63b0d7603472d514a21dc7e4c7c8e7b31685e1c513"
+  },
+  "scope": [
+    "fixed surface irrigation identity",
+    "scheduled TCS1/DCS2 sprinkling with TCSFIX=1",
+    "scheduled gross irrigation into admitted Rutter input",
+    "net irrigation into dynamic-top"
+  ],
+  "protections": [
+    "F-APP05 Rutter physics unchanged",
+    "no TCS7/SSDI proxy",
+    "no solver/transaction/timestep/retry/tolerance change"
+  ],
+  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION"
+}
