@@ -2,9 +2,7 @@
 
 ## Purpose
 
-This reconciliation prevents the successful fixed-resolution sample capability and the retained 0.0008 d trajectory candidate from being mistaken for complete ROM-0 closure.
-
-It binds the current evidence back to the original ROM-0 close gates and to the ROM-0R successor preregistrations.
+This reconciliation binds the live ROM-0 evidence to the original close gates and prevents successful sub-capabilities from being mistaken for ROM-0 closure.
 
 ## Current gate state
 
@@ -12,56 +10,105 @@ It binds the current evidence back to the original ROM-0 close gates and to the 
 
 **PASS_WITH_RESEARCH_SCOPE.**
 
-F-ROM0TA3 uses a separate F-KT-owned Reference-floor candidate/commit type. It does not let research code publish arbitrary solver candidates through the ordinary committed-state API. Lineage, revision and committed time remain F-KT-owned.
+F-ROM0TA3 uses the separate F-KT Reference-floor sample/candidate/commit path. Research does not directly publish arbitrary solver candidates. Lineage, revision and committed time remain kernel-owned.
 
 ### Reproducibility
 
-**PENDING F-ROM0TA4.**
+**PASS.**
 
-F-ROM0TA3 repeated complete executions bit-identically, but ROM-0 requires continuation/replay authority for the retained refined Reference candidate. F-ROM0TA4 is preregistered to compare uninterrupted and Restart-v1 split continuation at 0.0008 d with a fresh backend after restore.
+F-ROM0TA4 qualified the retained 0.0008 d candidate under exact restart/replay:
+- run 35372014491;
+- executed head 0037635443454ce6b7e6d4fe56534874451f8a92;
+- 4/4 B01/B14 TOP_PLUS/TOP_MINUS cases;
+- all 32 post-restart replay points bit-identical;
+- wrong-parameter restore fails closed;
+- no worker/solver scratch persistence required.
 
 ### Conservation
 
-**PASS for retained TA3 samples.**
+**PASS for all retained Reference-floor samples.**
 
-Every successful F-ROM0TA3 sample has complete mass accounting and remains inside the frozen hard mass gate. Failed 0.0004 d samples are not retained as accepted states.
+TA3, TA4, TA5, R3 diagnostics and the R3R1 candidate-policy experiment preserve the independent hard transaction mass gate. The R3R1 candidate full-horizon matrix reached a maximum absolute transaction mass residual of only 8.673617379884035e-19 cm.
+
+### Prescribed-head sample binding
+
+**PASS.**
+
+F-ROM0TA5 qualified mode-5 prescribed-head Reference-floor sampling for B01 and B14 without changing the kernel sample core, canonical interval runtime or Reference solver.
 
 ### Bidirectional reachability
 
-**NOT YET CLOSED.**
+**NOT CLOSED.**
 
-The TA3 TOP_PLUS/TOP_MINUS matrix is a symmetric local top-flux perturbation around the R1 gravity-steady prescribed-qbot state. It proves two local perturbation directions, but it does not replace the ROM-0/ROM-0R requirement for lower-boundary pressure-head influence.
+The original frozen R3 matrix remains PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO.
 
-ROM-0R R2 explicitly states that the Reference floor remains incomplete because pressure-head lower-boundary coverage is unqualified and names R3 pressure-boundary preregistration as the next scientific phase after transient authority is available.
+Under the original 0.0008 d / 16-iteration / 1e-12 convergence controls:
+- B14 rise and fall both complete and show the preregistered directional separation;
+- B01 rise requests legacy-reference-retry at perturbation step 11;
+- B01 fall requests legacy-reference-retry at perturbation step 10.
+
+R3D1 classified both B01 failures as **RETRY_TOTAL_ONLY**:
+- zero local compartment-balance flags;
+- zero head-convergence flags;
+- max absolute local residuals remain below 1e-12 cm/day;
+- only the signed total residual exceeds the fixed 1e-12 cm/day criterion.
+
+R3D2 then showed, without changing any solver control, that both integrated total residuals lie inside the independently derived prospective representation bound:
+- representation bound: 8.881784197001252e-15 cm;
+- B01 rise integrated residual: 8.4821039081362e-16 cm (0.0955 of bound);
+- B01 fall integrated residual: 1.2569500995596178e-15 cm (0.14152 of bound).
+
+This explains the R3 no-go numerically but does not reclassify it.
+
+### Candidate representation-bounded Reference policy
+
+**NO-GO: ENDPOINT NEUTRALITY.**
+
+R3R1 preregistered a separate research candidate policy:
+total_balance_rate_tolerance = max(1e-12, representation_bound_cm / dt_day).
+
+The candidate:
+- completed all 64 perturbation intervals in all four B01/B14 rise/fall cases;
+- reproduced the original B01 failure locations in the control trajectory;
+- preserved the hard mass gate;
+- was O0/O2 and repeat bitwise deterministic;
+- produced the required directional response for both materials.
+
+However, the preregistered endpoint-neutrality gate failed:
+- 51 original-control accepted endpoints required comparison;
+- only 8 remained bit-identical;
+- 43 changed under the candidate policy.
+
+Decision: CANDIDATE_POLICY_ENDPOINT_NEUTRALITY_NO_GO.
+
+The bit-identity gate may not be relaxed after observing this result.
 
 ### Reference floor
 
-**PARTIAL.**
+**PARTIAL / BLOCKED BY PRESCRIBED-HEAD REFERENCE POLICY.**
 
-F-ROM0TA3 supplies a complete 0.0016 versus 0.0008 d comparison for B01/B14 TOP_PLUS/TOP_MINUS over the common 0.0128 d horizon. The 0.0004 d level remains failed evidence and may not be replaced post hoc.
+The temporal fixed-resolution component exists (0.0016 versus 0.0008 d) and restart/replay is qualified. The planned 16x10 cm versus 32x5 cm vertical-resolution diagnostic remains unexecuted.
 
-This does not yet satisfy the full original ROM-0 reference-floor matrix. In particular:
-
-- lower-boundary pressure-head transient coverage is still absent;
-- the preregistered 16x10 cm versus 32x5 cm vertical-resolution comparison has not been measured.
-
-The temporal pair is therefore a bounded numerical-floor component, not complete ROM-0 floor closure.
+It must not be run as if the prescribed-head R3 domain were already admitted. The lower-boundary reachability gate is still open.
 
 ### Production semantic mutation
 
 **PASS_WITH_SCOPE.**
 
-F-ROM0TA3 adds a research Reference-floor sample path in F-KT/FMR while leaving the ordinary canonical temporal transaction modes, Reference Richards solver/physics and canonical interval runtime unchanged. It is not an application runtime policy and has no production admission claim.
+TA5 only widened the research sample admission guard from bottom mode 2 to already-supported bottom mode 5. R3D1, R3D2 and R3R1 are test/evidence work only and mutate no production or Reference source.
 
-## Consequence of a future TA4 PASS
+## Current bounded-execution stop
 
-Even if F-ROM0TA4 proves exact restart/replay identity for the 0.0008 d candidate, ROM-1A remains blocked.
+ROM-0 cannot proceed to ROM-1A.
 
-The evidence-driven continuation is:
+The remaining blocker is now sharply identified as a **Reference numerical-policy governance choice**, not unknown physics or a generic solver instability.
 
-1. return to the already preregistered ROM-0R sequence and define R3 lower-boundary pressure-head perturbations before execution;
-2. qualify accepted upward/capillary and lower-boundary drying reachability using the Reference-floor sample authority;
-3. complete the required vertical-resolution floor diagnostic without changing the frozen material/physical-domain rationale;
-4. only then re-evaluate the six ROM-0 close gates and decide whether `PROCEED_TO_ROM1A` is justified.
+Without new authority, the following are forbidden:
+- relaxing the R3R1 bit-identity neutrality gate;
+- adopting the failed always-on representation-bounded candidate;
+- introducing a conditional second-solve/retry policy;
+- changing dt, iteration limits, tolerances or perturbation amplitudes;
+- treating the vertical-resolution diagnostic as sufficient to bypass R3;
+- proceeding to ROM-1A.
 
-No downstream ROM error threshold is selected by this reconciliation.
+A future continuation therefore requires explicit authority for a new prescribed-head Reference-floor policy, or an explicit decision that the original R3 no-go closes ROM-0 negatively.
