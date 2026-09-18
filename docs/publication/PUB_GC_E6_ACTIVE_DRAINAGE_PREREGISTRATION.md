@@ -166,3 +166,25 @@ This is secondary. Failure to estimate a stable derivative does not invalidate t
 - If the active-drainage predictor cannot produce an authoritative response, E6 stops as a component-envelope result.
 - If the production forcing materializer drops or changes drainage controls, E6 stops; do not bypass it by modifying production semantics.
 - A corrector-domain failure is reported as a participant-domain result, not outer-coupling divergence.
+
+
+## Result adjudication rule
+
+The active-drainage case is not called a positive strong-feedback result merely because drainage is active or because absolute exchange is larger than in E3.
+
+Primary interpretation requires the **difference between loose and strongly converged coupling**:
+
+```text
+DeltaH_coupling = H_strong - H_loose
+
+DeltaV_coupling =
+    (q_SWAP,strong - q_SWAP,loose) * DeltaT
+```
+
+together with the loose interface mismatch, strong residual, outer-iteration count and transaction-authority checks.
+
+A positive E6 hydrological-feedback result requires a clear order-of-magnitude increase in `|DeltaH_coupling|` and/or `|DeltaV_coupling|` relative to the E3/E3-R weak-feedback controls while all existing participant and convergence criteria remain unchanged.
+
+If exchange magnitude increases but the loose-to-strong correction remains of the same nanoscale order as E3, E6 is classified as a **process-active but still weak-coupling result**.
+
+This adjudication text is fixed before numerical E6 output is interpreted.
