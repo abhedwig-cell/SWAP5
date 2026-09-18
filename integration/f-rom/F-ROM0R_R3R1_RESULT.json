@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.f-rom0r.r3r1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3R1",
+  "title": "Representation-bounded total-balance candidate policy qualification",
+  "execution": {
+    "workflow_run": 35373928381,
+    "workflow_job": 105694080764,
+    "executed_head": "45299159600597eb5e8c61105674fb143746fe3a",
+    "artifact_id": 10559637063,
+    "artifact_digest": "sha256:b59b374832e38da19c752f44d9a0f1a93e162af8828897ec1711dd231f566496",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true,
+    "o2_repeat_stdout_bitwise_identity": true
+  },
+  "candidate_policy": {
+    "total_balance_rate_tolerance_formula": "max(1e-12, representation_bound_cm / dt_day)",
+    "representation_bound_cm_formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "observed_failed_residual_used": false,
+    "empirical_safety_factor": "none",
+    "policy_rate_tolerance_range_cm_per_day": [
+      1.110223024625156e-11,
+      1.1102230246251585e-11
+    ],
+    "representation_bound_range_cm": [
+      8.881784197001252e-15,
+      8.881784197001252e-15
+    ]
+  },
+  "original_control_reproduction": {
+    "pass": true,
+    "B01_BOTTOM_HEAD_RISE_failure_step": 11,
+    "B01_BOTTOM_HEAD_FALL_failure_step": 10,
+    "B14_both_cases_full_horizon_pass": true
+  },
+  "candidate_completion": {
+    "pass": true,
+    "case_pass_count": 4,
+    "candidate_step_count": 64,
+    "candidate_fail_count": 0
+  },
+  "neutrality": {
+    "required_original_accepted_endpoints": 51,
+    "bit_identical_endpoint_count": 8,
+    "bit_identity_failure_count": 43,
+    "pass": false,
+    "first_observed_drift_examples": [
+      "B01:BOTTOM_HEAD_RISE step 6",
+      "B01:BOTTOM_HEAD_FALL step 1",
+      "B14:BOTTOM_HEAD_RISE step 4",
+      "B14:BOTTOM_HEAD_FALL step 1"
+    ]
+  },
+  "directional_separation": {
+    "pass": true,
+    "B01": {
+      "rise_lower_storage_cm": 44.02746082292648,
+      "fall_lower_storage_cm": 43.90773804688335,
+      "rise_minus_fall_lower_storage_cm": 0.11972277604312609,
+      "rise_cumulative_bottom_outward_exchange_cm": -0.01284564738676487,
+      "fall_cumulative_bottom_outward_exchange_cm": 0.10687712865634702,
+      "rise_minus_fall_bottom_outward_exchange_cm": -0.11972277604311189
+    },
+    "B14": {
+      "rise_lower_storage_cm": 42.69336964668223,
+      "fall_lower_storage_cm": 42.68854375248657,
+      "rise_minus_fall_lower_storage_cm": 0.004825894195661817,
+      "rise_cumulative_bottom_outward_exchange_cm": -0.0021612472614900877,
+      "fall_cumulative_bottom_outward_exchange_cm": 0.0026646469341575192,
+      "rise_minus_fall_bottom_outward_exchange_cm": -0.0048258941956476065
+    }
+  },
+  "mass": {
+    "hard_gate_cm": 1e-12,
+    "maximum_abs_transaction_mass_residual_cm": 8.673617379884035e-19,
+    "pass": true
+  },
+  "decision": "CANDIDATE_POLICY_ENDPOINT_NEUTRALITY_NO_GO",
+  "interpretation": "The prospective representation-bounded total-balance policy is numerically capable of completing the full prescribed-head R3 matrix and retains mass conservation, deterministic execution, and the preregistered directional response. It is not admissible because applying the looser total-balance criterion on every mode-5 interval changes already admitted Reference endpoints; 43 of 51 overlap endpoints are not bit-identical. The preregistered neutrality gate therefore fails and must not be relaxed post hoc.",
+  "original_R3_reclassified": false,
+  "production_application_admission": false,
+  "vertical_reference_floor_authorized": false,
+  "rom1a_authorized": false
+}
