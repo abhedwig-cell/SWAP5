@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC38",
+  "title": "MODFLOW6 Prepared-Solve Iterative Backend — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "canonical_admission": {
+    "production_admission_head": "ecb92c0ea5217a63626c8d54e2130e2eac284cb4",
+    "preimage": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "prepared-solve backend rematerialized byte-identically on closed canonical F-GC34/F-GC35/F-GC36 stack; ownership retained below internal SWAP5-MODFLOW coupling service"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "9f903a2febb905316fab3d6b577c0d4a6f904a7c",
+      "exact_head_run": 35296389291,
+      "result": "official MODFLOW6 6.8.0 owner live prepared-solve qualification passed"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ111",
+      "final_status_head": "9329d95d2c69ac8cf565e0775952b5ddc36f673e",
+      "exact_head_run": 35313584074,
+      "exact_head_job": 105500410072,
+      "result": "independent two-slot transient prepared-solve A→B→C versus clean C-only path passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI104",
+      "production_admission_head": "ecb92c0ea5217a63626c8d54e2130e2eac284cb4",
+      "initial_gate_run": 35313751143,
+      "exact_status_head_run": 35313853761,
+      "result": "exact one-production-file live postimage replayed owner and independent qualifications and was non-force fast-forwarded to canonical"
+    }
+  },
+  "admitted_capability": [
+    "one prepared MODFLOW solve session per coupling window",
+    "fixed XOLD accepted groundwater origin",
+    "repeated live F-GC34 package publication between solve iterations",
+    "live MXITER fail-closed guard",
+    "one finalize_solve after coupled convergence",
+    "no finalize_time_step ownership"
+  ],
+  "preserved_limits": [
+    "no coupling convergence policy",
+    "no SWAP predictor/corrector science",
+    "no iMOD Coupler inner-loop ownership",
+    "no whole-window MODFLOW rollback/reconstruction",
+    "no Ribasim or irrigation"
+  ],
+  "next_permitted_action": "After closeout qualification, reconcile F-GC39 prepared-solve coupling-service contract against closed canonical F-GC38 and authoritative F-GC37 internal-service ownership. Do not move predictor/corrector into iMOD Coupler."
+}

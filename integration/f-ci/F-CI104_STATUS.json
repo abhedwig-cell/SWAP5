@@ -4,8 +4,8 @@
   "capability": "F-GC38",
   "title": "MODFLOW6 Prepared-Solve Iterative Backend Canonical Admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
@@ -57,7 +57,7 @@
       "whole-window rollback/reconstruction"
     ]
   },
-  "next_permitted_action": "Qualify this exact F-CI104 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "next_permitted_action": "Qualify this metadata-only F-GC38 admission/closeout head with F-CI104. If green, persist final closeout evidence, requalify the final status head, then non-force fast-forward canonical to the closed state.",
   "admission_gate": {
     "qualified_head": "de9ac14dd43fe652ee7c5125f41bdec886a6ecc4",
     "workflow_run": 35313751143,
@@ -76,5 +76,12 @@
       "FCI104_OWNER_LIVE_REPLAY",
       "FCI104_INDEPENDENT_LIVE_REPLAY"
     ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "ecb92c0ea5217a63626c8d54e2130e2eac284cb4",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35313853761,
+    "exact_status_head_job": 105501217871,
+    "exact_status_head_conclusion": "success"
   }
 }
