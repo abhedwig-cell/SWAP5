@@ -33,9 +33,10 @@ jobs:
           set -euo pipefail
           mkdir -p F-CI107_EVIDENCE
           bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh | tee F-CI107_EVIDENCE/cache-successor.txt
-          sha256sum F-CI107_EVIDENCE/cache-successor.txt | tee F-CI107_EVIDENCE/sha256.txt
+          bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh | tee F-CI107_EVIDENCE/canonical-moving.txt
+          sha256sum F-CI107_EVIDENCE/cache-successor.txt F-CI107_EVIDENCE/canonical-moving.txt | tee F-CI107_EVIDENCE/sha256.txt
           echo 'FCI107_OWNER_QUALIFICATION_GATE=PASS'
-          echo 'FCI107_CANONICAL_MOVING_PRESERVATION_DELEGATED_TO_CANONICAL_PR_CHECKS=TRUE'
+          echo 'FCI107_CANONICAL_MOVING_PRESERVATION_GATE=PASS'
       - name: Preserve F-CI107 evidence
         if: always()
         uses: actions/upload-artifact@v4
