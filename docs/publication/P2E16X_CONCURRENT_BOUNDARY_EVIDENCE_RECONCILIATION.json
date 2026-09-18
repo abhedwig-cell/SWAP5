@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.publication.concurrent-boundary-evidence-reconciliation.v1",
+  "governance_alias": "PUB-SQ-E2X-FULL-FLUX-BOUNDARY-EXTENSION",
+  "historical_branch_local_ids": ["PUB-P2E16A","PUB-P2E16B","PUB-P2E16D1"],
+  "reason_for_alias": "The branch-local P2E16 identifier was allocated from a stale governance view while a parallel upper-top-flux P2E16/P2E17 study had already progressed. Historical files and commits are retained unchanged; central governance uses a distinct alias rather than renaming executed evidence.",
+  "chronology": {
+    "prior_upper_top_first_candidate_exposure": {
+      "workunit": "PUB-P2E17",
+      "workflow_run": 35291155719,
+      "head": "dee8023b47708989a8443222343104e44caecbeb",
+      "run_started_utc": "2026-09-18T00:25:53Z"
+    },
+    "broader_boundary_preregistration": {
+      "historical_workunit": "PUB-P2E16",
+      "commit": "50f41a43f7d19fc36be439cb9ed680f53ad55967",
+      "committed_utc": "2026-09-18T00:33:45Z"
+    },
+    "conclusion": "The earlier upper request-side top-flux candidate outcome was already known before the broader matrix was preregistered. The overlapping 324-case surface is therefore supporting replication only."
+  },
+  "surface_mapping": {
+    "scale_floor_active_on_common_state_domain": false,
+    "minimum_initial_top_K_cm_per_day_observed_in_stage_A": 0.0000034117914531581706,
+    "scale_floor_cm_per_day": 1e-12,
+    "overlap": {
+      "axis": "TOP_PRESCRIBED_FLUX",
+      "rho": [-1.05,-1.0,-0.95],
+      "equivalent_public_request_top_flux_over_K0": [0.011,0.010,0.009],
+      "case_count": 324,
+      "epistemic_class": "SUPPORTING_REPLICATION_NOT_NEW_HOLDOUT"
+    },
+    "prospectively_unobserved_extension_at_broader_preregistration": {
+      "lower_request_side_top_boundary": {
+        "axis": "TOP_PRESCRIBED_FLUX",
+        "rho": [0.95,1.0,1.05],
+        "equivalent_public_request_top_flux_over_K0": [-0.029,-0.030,-0.031],
+        "case_count": 324
+      },
+      "bottom_boundary_both_sides": {
+        "axis": "BOTTOM_PRESCRIBED_FLUX",
+        "rho": [-1.05,-1.0,-0.95,0.95,1.0,1.05],
+        "case_count": 648
+      },
+      "total_new_case_count": 972,
+      "epistemic_class": "PROSPECTIVE_BOUNDARY_EXTENSION"
+    }
+  },
+  "stage_A_reference_only_on_new_surface": {
+    "case_count": 972,
+    "reference_valid": 972,
+    "p2e14_threshold_transfer_valid": 951,
+    "p2e14_threshold_transfer_failed": 21,
+    "thresholds_changed": false,
+    "result_authority": {
+      "commit": "409b1047764d8ae4a04b13d55b490af3225e7067",
+      "blob": "2c9b856e2d18d5d8e42c098f12b6405e5e15ff58"
+    }
+  },
+  "candidate_result_on_new_surface": {
+    "case_count": 972,
+    "route_valid_inside_or_boundary": 648,
+    "route_fail_closed_outside": 324,
+    "route_mismatch": 0,
+    "fallback": 0,
+    "stage_A_authorized_route_valid_pair_count": 635,
+    "fixed_step_reference_interpretable_authorized": 633,
+    "authorized_admissible": 633,
+    "authorized_discrepancy_fail": 0,
+    "authorized_reference_unresolved": [1220,1257],
+    "stage_A_unauthorized_but_route_valid": 13,
+    "result_authority": {
+      "commit": "511d4f5250ab9966518abeae99c6bc2cae3f082d",
+      "blob": "faff8f4c961522ebe9ad11902c5cc0d2313734ff"
+    }
+  },
+  "reference_adjudication": {
+    "result_commit": "e484a53f4b207a0a80b793523bf5517aac20552f",
+    "result_blob": "77ab61192e0996a898add9cc57e78380fbc63a6a",
+    "finding": "All five fixed-step Reference-invalid cases, including authorized extension cases 1220 and 1257, fail first at Reference nonconvergence with route legacy-reference-retry; state-domain and flux-identity gates remain valid.",
+    "effect": "No RossFast classification changes. Cases 1220 and 1257 remain Reference-unresolved."
+  },
+  "admitted_claim": "On the prospectively unobserved lower request-side top boundary plus both bottom-boundary sides, the exact state-local production forcing envelope showed 0 route mismatches across 972 cases. All 633 interpretable Stage-A-authorized inside/boundary pairs satisfied unchanged P2E14 thresholds; two authorized cases remained Reference-unresolved. This extends, but does not independently replicate as primary evidence, the already-known upper request-side top boundary.",
+  "not_claimed": [
+    "independent confirmation of the prior upper request-side top boundary",
+    "universal solver equivalence",
+    "performance advantage",
+    "transaction-level equivalence",
+    "trajectory equivalence",
+    "heterogeneous profiles, roots or groundwater coupling"
+  ],
+  "next_permitted_action": "Register this evidence centrally as PUB-SQ-E2X supporting/primary boundary extension and proceed to separately preregistered REF-HIGH construction for PUB-SQ-E3. Do not rerun or relabel the overlapping upper-top surface as a new holdout."
+}
