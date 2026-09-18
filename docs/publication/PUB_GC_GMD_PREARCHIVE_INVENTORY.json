@@ -31,7 +31,7 @@
   "required_publication_assets": [
     {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "f624d1b3f6969fa3d622a8f1fa6e3a76396fba4f",
+      "blob": "5c3bd2404fd8f47b653c90b78a8f635c69aeca46",
       "role": "manuscript"
     },
     {
@@ -156,5 +156,27 @@
     "software_license_authority": null,
     "archive_DOI_or_PID": null,
     "archive_created_at": null
+  },
+  "package_assets": {
+    "release_license_audit": "docs/publication/PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md",
+    "governance_request": "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md",
+    "figure_export_plan": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.json",
+    "formatting_handoff": "docs/publication/PUB_GC_GMD_FORMATTING_HANDOFF.md",
+    "manuscript_preparation_audit": "docs/publication/PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md",
+    "pre_submission_checklist": "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
+    "cover_letter_draft": "docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md",
+    "validator": "tools/publication/check_pub_gc_gmd_submission.py",
+    "workflow": ".github/workflows/pub-gc-gmd-current-presubmission.yml"
+  },
+  "policy_verification": {
+    "journal": "Geoscientific Model Development",
+    "checked_date": "2026-09-19",
+    "model_version_in_title_where_appropriate": true,
+    "persistent_precise_version_archive_required": true,
+    "code_and_data_availability_heading_required": true,
+    "short_summary_max_characters_including_spaces": 500,
+    "individual_pdf_figure_max_mb": 2,
+    "individual_other_figure_max_mb": 5,
+    "overall_non_supplement_max_mb": 30
   }
 }
