@@ -59,6 +59,7 @@ program test_pub_gc_macro_window_response
   call test_q5_seeded_temporal_history()
   call test_q8_temporal_coordinate()
   call test_q9_high_count_envelope()
+  call test_q10_512_envelope()
   call test_failure_controls()
 
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q0=PASS'
@@ -68,6 +69,7 @@ program test_pub_gc_macro_window_response
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q5=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q8=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q9=PASS'
+  write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q10=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_FAILURE_CONTROLS=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_PRIMARY_H2_H3_ELIGIBLE=false'
   write(*,'(a)') 'PUB_GC_MACRO_QUALIFICATION=PASS'
@@ -341,6 +343,66 @@ contains
     write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q9B_MAX_DT_REP_ERROR_DAY=',q9b%max_abs_native_dt_representation_error_day
     write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q9C_MAX_DT_REP_ERROR_DAY=',q9c%max_abs_native_dt_representation_error_day
   end subroutine test_q9_high_count_envelope
+
+  subroutine test_q10_512_envelope()
+    type(pub_gc_macro_window_response_t) :: q10a, q10b, q10c
+    type(fmr_b110_physical_forcing_t), allocatable :: forcings256(:), forcings512(:)
+    type(kernel_committed_state_t) :: shifted_origin
+    real(real64) :: dt256(256), dt512(512), factors256(256), factors512(512)
+    real(real64) :: shifted_time, shifted_predecessor(numnod)
+    logical :: shifted_ok
+    integer :: status
+
+    dt256=0.00015625_real64
+    dt512=0.000078125_real64
+    factors256=-1.0_real64
+    factors512=-1.0_real64
+    call build_forcings(factors256,conductivity_reference,forcings256)
+    call build_forcings(factors512,conductivity_reference,forcings512)
+
+    call pub_gc_run_macro_window_response(column,template,parameters,backend,config,origin,forcings256,dt256, &
+         initial_time_day,initial_time_day+0.04_real64,-80.0_real64,970001_int64,q10a,status)
+    call require(status==PUB_GC_MACRO_OK .and. q10a%completed,'Q10A 256 contribution complete')
+    call require(q10a%native_contribution_count==256,'Q10A count')
+    call require(size(q10a%actual_native_dt_day)==256,'Q10A duration telemetry')
+    call require(all(ieee_is_finite(q10a%actual_native_dt_day)) .and. all(q10a%actual_native_dt_day>0.0_real64), &
+         'Q10A actual durations finite positive')
+    call require(same_bits(q10a%disposable_final_time,initial_time_day+0.04_real64),'Q10A exact final macro time')
+    call require(q10a%authoritative_revision_before==q10a%authoritative_revision_after,'Q10A origin revision isolation')
+    call require(same_bits(q10a%authoritative_time_before,q10a%authoritative_time_after),'Q10A origin time isolation')
+
+    call pub_gc_run_macro_window_response(column,template,parameters,backend,config,origin,forcings512,dt512, &
+         initial_time_day,initial_time_day+0.04_real64,-80.0_real64,970002_int64,q10b,status)
+    call require(status==PUB_GC_MACRO_OK .and. q10b%completed,'Q10B 512 contribution complete')
+    call require(q10b%native_contribution_count==512,'Q10B count')
+    call require(size(q10b%actual_native_dt_day)==512,'Q10B duration telemetry')
+    call require(all(ieee_is_finite(q10b%actual_native_dt_day)) .and. all(q10b%actual_native_dt_day>0.0_real64), &
+         'Q10B actual durations finite positive')
+    call require(same_bits(q10b%disposable_final_time,initial_time_day+0.04_real64),'Q10B exact final macro time')
+    call require(q10b%authoritative_revision_before==q10b%authoritative_revision_after,'Q10B origin revision isolation')
+    call require(same_bits(q10b%authoritative_time_before,q10b%authoritative_time_after),'Q10B origin time isolation')
+
+    shifted_time=initial_time_day+10000.0_real64
+    shifted_predecessor=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(shifted_origin,970003_int64,initial_state,shifted_time, &
+         shifted_ok,shifted_predecessor)
+    call require(shifted_ok .and. shifted_origin%ready(),'Q10C shifted origin init')
+    call pub_gc_run_macro_window_response(column,template,parameters,backend,config,shifted_origin,forcings512,dt512, &
+         shifted_time,shifted_time+0.04_real64,-80.0_real64,970004_int64,q10c,status)
+    call require(status==PUB_GC_MACRO_OK .and. q10c%completed,'Q10C shifted 512 contribution complete')
+    call require(q10c%native_contribution_count==512,'Q10C count')
+    call require(size(q10c%actual_native_dt_day)==512,'Q10C duration telemetry')
+    call require(all(ieee_is_finite(q10c%actual_native_dt_day)) .and. all(q10c%actual_native_dt_day>0.0_real64), &
+         'Q10C actual durations finite positive')
+    call require(same_bits(q10c%disposable_final_time,shifted_time+0.04_real64),'Q10C exact final macro time')
+    call require(q10c%authoritative_revision_before==q10c%authoritative_revision_after,'Q10C origin revision isolation')
+    call require(same_bits(q10c%authoritative_time_before,q10c%authoritative_time_after),'Q10C origin time isolation')
+
+    write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q10A_MAX_DT_REP_ERROR_DAY=',q10a%max_abs_native_dt_representation_error_day
+    write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q10B_MAX_DT_REP_ERROR_DAY=',q10b%max_abs_native_dt_representation_error_day
+    write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q10C_MAX_DT_REP_ERROR_DAY=',q10c%max_abs_native_dt_representation_error_day
+  end subroutine test_q10_512_envelope
+
 
   subroutine test_failure_controls()
     type(pub_gc_macro_window_response_t) :: response
