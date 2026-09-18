@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC37",
+  "title": "Live MODFLOW6 Outer-Iteration Host",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_OUTER_ITERATION_HOST_IMPLEMENTATION",
+  "source_branch": {
+    "branch": "work/f-gc36-live-modflow6-fgc34-bridge",
+    "head": "b07d2eb72336e41dc92ed6fc1d0ae072cf9f23b8",
+    "f_gc36_verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE",
+    "checkpoint_run": 35288709270,
+    "checkpoint_conclusion": "success"
+  },
+  "canonical_at_reconcile": {
+    "branch": "integration/f-ci-canonical",
+    "head": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+    "assessment": "Canonical advanced in unrelated PUB-P2E10 work after F-GC36; F-GC37 is based on the immutable qualified F-GC36 head and will recheck relevant dependency deltas before qualification."
+  },
+  "external_lifecycle_finding": {
+    "modflow6_release": "6.8.0",
+    "modflow6_master_commit": "1c87097e8436ea72b9e2917a6114205b0a194619",
+    "xmipy_commit": "9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "finding": "MODFLOW6 XMI exposes prepare_time_step, prepare_solve, repeated solve, finalize_solve and finalize_time_step, but no qualified timestep checkpoint/rollback/restore API.",
+    "decision": "Do not implement live MODFLOW as groundwater_preparable_exchange_service_t. Use one in-place prepared solve and update F-GC34 terms between solve iterations."
+  },
+  "planned_changes": [
+    "docs/integration/F-GC37_LIVE_MODFLOW6_OUTER_ITERATION_HOST.md",
+    "src/adapter/modflow6_outer_iteration_host.py",
+    "tests/fgc/test_fgc37_live_modflow6_outer_iteration.py",
+    "tests/fgc/run_fgc37_live_modflow6_outer_iteration.sh",
+    ".github/workflows/f-gc37-live-modflow6-outer-iteration.yml",
+    "integration/f-gc/F-GC37_STATUS.json"
+  ],
+  "exclusions": [
+    "real SWAP trial provider",
+    "SWAP commit",
+    "atomic cross-kernel commit",
+    "MODFLOW rollback",
+    "Ribasim",
+    "irrigation",
+    "active-drainage tangent expansion",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement the additive live MODFLOW outer-iteration host and qualify repeated real F-GC34 publication within one prepared MODFLOW6 solve."
+}
