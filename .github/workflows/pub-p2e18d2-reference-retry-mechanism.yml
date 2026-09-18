@@ -1,0 +1,25 @@
+name: PUB-P2E18D2 Reference retry mechanism
+
+on:
+  push:
+    branches:
+      - work/pub-p2e18d2-reference-retry-mechanism
+    paths:
+      - 'docs/publication/P2E18D2_REFERENCE_RETRY_MECHANISM_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e18d2_reference_retry_mechanism.f90'
+      - 'tests/publication/run_pub_p2e18d2_reference_retry_mechanism.sh'
+      - '.github/workflows/pub-p2e18d2-reference-retry-mechanism.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-retry-mechanism:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference retry mechanism diagnostic
+        run: bash tests/publication/run_pub_p2e18d2_reference_retry_mechanism.sh
