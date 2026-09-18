@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.f-rom0ta5.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA5",
+  "title": "Prescribed-head Reference-floor sample binding",
+  "phase": "PREREGISTERED_BEFORE_SOURCE_MUTATION",
+  "predecessor_capability": "F-ROM0TA3_REFERENCE_FLOOR_SAMPLE",
+  "purpose": "Extend only the research Reference-floor sample admission surface from prescribed-qbot bottom_mode=2 to already admitted Reference-Richards prescribed-head bottom_mode=5, without changing the solver, mass accounting, ordinary canonical temporal transactions, or application runtime policy.",
+  "authority": {
+    "reference_solver_mode5": "src/adapter/mod_reference_richards_legacy_binding.f90 already materializes prescribed-head qbot and integrated mass accounting for SWBOTB=5",
+    "fmr_mode5": "src/runtime/mod_fmr_serialized_reference_backend.f90 ordinary execution_admitted already permits bottom_mode=5",
+    "current_reference_floor_restriction": "run_reference_floor_sample currently restricts the first research sample binding to bottom_mode=2"
+  },
+  "source_scope": {
+    "allowed_production_file": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "expected_semantic_change": "REFERENCE_FLOOR_SAMPLE_ADMISSION_ONLY_ALLOW_BOTTOM_MODE_2_OR_5",
+    "kernel_reference_floor_sample_core_change_allowed": false,
+    "transaction_core_change_allowed": false,
+    "canonical_interval_runtime_change_allowed": false,
+    "reference_solver_change_allowed": false,
+    "physics_change_allowed": false,
+    "mass_tolerance_change_allowed": false
+  },
+  "qualification": [
+    "MODE2_REFERENCE_FLOOR_SAMPLE_PRESERVED",
+    "MODE5_REFERENCE_FLOOR_SAMPLE_ACCEPTS_ONLY_ALREADY_ADMITTED_PURE_HYDRAULIC_PROFILE",
+    "MODE5_SAMPLE_EXACTLY_ONE_PHYSICAL_ADVANCE",
+    "MODE5_SAMPLE_NO_AUTOMATIC_RETRY_OR_SUBDIVISION",
+    "MODE5_COMPLETE_HARD_MASS_ACCOUNTING",
+    "MODE5_BOTTOM_EXCHANGE_AVAILABLE_AND_FINITE",
+    "MODE5_REFERENCE_SOLVER_ROUTE_OBSERVED",
+    "MODE5_FAILED_SOLVE_DOES_NOT_MATERIALIZE_OR_COMMIT_CANDIDATE",
+    "ORDINARY_FMR_EXECUTION_SEMANTICS_UNCHANGED",
+    "O0_O2_DETERMINISTIC_IDENTITY"
+  ],
+  "activation_boundary": {
+    "entrypoint": "fmr_serialized_reference_backend_t%run_reference_floor_sample",
+    "ordinary_run_trial": "UNCHANGED",
+    "application_budget": "NOT_USED",
+    "production_admission": false
+  },
+  "execution_dependency": "F-ROM0TA4 may be pending; F-ROM0R-R3 execution additionally requires TA4 restart/replay qualification.",
+  "forbidden": [
+    "NO_NEW_TEMPORAL_TRANSACTION_MODE",
+    "NO_SYNTHETIC_HEAD_BUDGET",
+    "NO_REFERENCE_SOLVER_CONTROL_CHANGE",
+    "NO_RETRY_BUDGET_CHANGE",
+    "NO_BOTTOM_HEAD_AMPLITUDE_TUNING",
+    "NO_ROM_STATE_WORK"
+  ],
+  "rom1a_authorized": false
+}
