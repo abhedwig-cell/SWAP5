@@ -27,6 +27,7 @@ u_A      current accepted-trajectory response coefficient
 u_FD     centred flux-to-terminal-head finite-difference response
 J_S      d(whole-window storage change) / dH
 J_R      d(whole-window accepted-sign interface transfer) / dH
+J_B      d(other whole-window net water balance) / dH
 ```
 
 and over what perturbation range are the head-driven derivatives reproducible?
@@ -60,6 +61,32 @@ J_S = d DeltaS / d H
 ```
 
 where `DeltaS` is converted from the canonical SWAP native column-depth carrier to metres before differentiation.
+
+Define the remaining net whole-window water balance, excluding bottom outward transfer, as:
+
+```text
+B = total_in - total_out + V_u
+```
+
+after consistent conversion to metres. Then:
+
+```text
+DeltaS = B - V_u + residual
+```
+
+and the corresponding derivative is:
+
+```text
+J_B = dB / dH.
+```
+
+For mass-closed trials the response derivatives should satisfy:
+
+```text
+J_S - J_B + J_R = 0
+```
+
+within numerical differentiation error.
 
 ### Current analytic/trajectory response
 
@@ -252,14 +279,16 @@ For every baseline report the plateau estimates, if available, and relative disc
 ```text
 E_AFD = |u_A - u_FD| / max(|u_A|, |u_FD|, eps)
 
-E_AS  = |u_A - J_S| / max(|u_A|, |J_S|, eps)
+E_AS+ = |u_A - J_S| / max(|u_A|, |J_S|, eps)
+
+E_AS- = |u_A + J_S| / max(|u_A|, |J_S|, eps)
 
 E_AR+ = |u_A - J_R| / max(|u_A|, |J_R|, eps)
 
 E_AR- = |u_A + J_R| / max(|u_A|, |J_R|, eps)
 ```
 
-Both `E_AR+` and `E_AR-` are retained because the sign relation between the storage-style response and the outward interface-transfer derivative is a scientific result, not a preregistered assumption.
+Both signs are retained for both storage and outward-transfer response. No sign relation is selected after observing the result.
 
 ## Failure semantics
 
@@ -320,3 +349,10 @@ Only after E4 may E5 fairly compare:
 - practical supplied response.
 
 E5 is not started merely because a response quantity exists.
+
+
+## Pre-execution sign/balance clarification
+
+Added while the first E4 Actions runs were still queued and before any E4 numerical result existed.
+
+Because the canonical mass balance uses an outward-positive bottom transfer, a fixed non-bottom forcing can produce approximately opposite storage and bottom-transfer derivatives. E4 therefore evaluates both sign relations for `J_S` and `J_R`, and records `J_B` plus the derivative balance closure `J_S - J_B + J_R`. This clarification changes no perturbation scale, baseline, tolerance or stop/go rule.
