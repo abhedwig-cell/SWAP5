@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 selection = json.loads((ROOT / "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json").read_text())
 wu01 = json.loads((ROOT / "integration/audits/PPA_WU01_STATUS.json").read_text())
+wu02 = json.loads((ROOT / "integration/audits/PPA_WU02_STATUS.json").read_text())
 wu03 = json.loads((ROOT / "integration/audits/PPA_WU03_STATUS.json").read_text())
 m1 = json.loads((ROOT / "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json").read_text())
 e6 = json.loads((ROOT / "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json").read_text())
@@ -55,11 +56,18 @@ require("tile%parameters%root_extraction_active" in validate,
 require(validate.index("tile%parameters%drainage_response_active") < validate.index("valid = .true."),
         "drainage-response guard occurs after admission")
 require("tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in validate,
-        "WU01 lower-boundary restriction changed")
+        "mode-5/mode-7 lower-boundary authority disappeared")
+require("tile%parameters%bottom_mode /= 2" in validate,
+        "PPA-WU02 typed prescribed-qbot mode-2 admission missing from reconciled source")
 
 profiles = wu01["admitted_restricted_profiles"]
 require("bottom_mode=5" in profiles["groundwater"], "WU01 groundwater profile changed")
 require(wu01["verdict"] == "CANONICAL_ADMITTED_RESTRICTED_PRODUCTION_CLOSED", "WU01 not admitted/closed")
+require(wu02["status"] == "CANONICAL_ADMITTED_CLOSED", "WU02 state unexpected")
+require(wu02["first_slice"]["semantic_delta"].startswith("Admit homogeneous bottom_mode=2"),
+        "WU02 unexpectedly changed from bounded mode-2 admission")
+require("mixed bottom-mode production profiles" in wu02["first_slice"]["explicitly_not_admitted"],
+        "WU02 unexpectedly broadened mixed profile ownership")
 require(wu03["state"] == "CANONICAL_ADMITTED_CLOSED", "WU03 state unexpected")
 require(any("mixed PPA-WU01 bottom_mode=5/7" in x for x in wu03["explicit_nonclaims"]),
         "WU03 unexpectedly broadened WU01 ownership")
@@ -81,5 +89,6 @@ print("PUB_GC_E7_HUPSEL_DRAINAGE_REQUIRED_ON_HIGH_DAY=PASS")
 print("PUB_GC_E7_PRESCRIBED_HEAD_OWNER_BOTTOM_MODE5=PASS")
 print("PUB_GC_E7_ACTIVE_DRAINAGE_PROFILE_FAILS_BEFORE_OWNER_ALLOCATION=PASS")
 print("PUB_GC_E7_E6_PRECEDENT_PRETRANSACTION_NOT_ADMITTED=PASS")
+print("PUB_GC_E7_NO_WU02_PROCESS_PROFILE_WIDENING=PASS")
 print("PUB_GC_E7_NO_WU03_PROFILE_WIDENING=PASS")
 print("PUB_GC_E7_OUTCOME=REALISTIC_COMPONENT_DOMAIN_LIMIT")
