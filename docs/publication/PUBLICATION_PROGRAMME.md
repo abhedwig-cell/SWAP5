@@ -75,6 +75,7 @@ Current evidence state:
 - E6 hydrological stress extension is closed negatively after two preregistered routes reached component-admission boundaries before a positive stronger-feedback live case was available;
 - the manuscript core is consolidated through E6, with evidence-bounded abstract, Methods, Results, Discussion and provisional Conclusions;
 - Hupselbrook is selected and prospectively preregistered for E7 using standalone-only episode selection, but execution remains blocked until the final M1-C3 whole-Hupsel file-driven adapter qualification can run against the exact authorized SWAP 4.3.1 distribution bytes.
+- manuscript figures F1–F6, tables T1–T5, notation glossary, supplementary evidence package and machine-readable reproducibility manifest are complete through E6; E7 remains the only intended primary scientific gap.
 
 First publication evidence block (E1/E2):
 

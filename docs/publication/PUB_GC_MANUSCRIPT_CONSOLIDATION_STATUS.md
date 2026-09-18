@@ -55,3 +55,23 @@ The claim audit is rerun after any substantive E7 insertion or journal-positioni
 - current hydrologic modularity prior art (Trim et al. 2025) incorporated without broadening novelty claims.
 
 F7 remains the only planned primary figure blocked by the E7/M1-C3 prerequisite.
+
+
+## Table and submission-readiness package
+
+- Tables T1–T5: **BUILT_AND_LINKED**;
+- Table T6: **BLOCKED_E7**;
+- table evidence map: `PUB_GC_MANUSCRIPT_TABLES.md`;
+- journal-neutral submission audit: `PUB_GC_SUBMISSION_READINESS.md`;
+- scientific readiness: RQ1–RQ4 evidence-bounded and internally complete;
+- principal planned scientific gap: RQ5 / E7 realistic transferability;
+- E8 remains deferred and is not a current submission prerequisite.
+
+
+## Reproducibility supplement
+
+- notation and authority glossary: `PUB_GC_NOTATION_AND_UNITS.md`;
+- journal-neutral supplementary methods/evidence: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md`;
+- machine-readable frozen provenance: `PUB_GC_REPRODUCIBILITY_MANIFEST.json`;
+- evidence coverage: E1–E6 complete/bounded; E7 preregistration and exact M1-C3 blocker recorded;
+- journal conversion may change formatting, not the evidence identities or failure classifications.

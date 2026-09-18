@@ -1310,8 +1310,8 @@
     {
       "id": "PPA-APP-BOOT",
       "subsystem": "output/application composition",
-      "capability": "Normal production application bootstrap from complete user configuration to owned FMR contexts",
-      "classification": "F_NOT_YET_MIGRATED",
+      "capability": "Restricted typed production application bootstrap from explicit application configuration to owned FMR runtime/context",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
       "legacy_present": true,
       "legacy_authority": {
         "reference": "SWAP4.3.1 B1.11 corrected reference",
@@ -1322,31 +1322,40 @@
         ]
       },
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_soil_water_application_host.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+        "src/runtime/mod_fmr_groundwater_participant_registry.f90",
+        "src/runtime/mod_fmr_groundwater_application_context.f90",
         "src/adapter/mod_fmr_groundwater_application_c_api.f90",
-        "src/adapter/fmr_groundwater_application_runtime.py",
-        "integration/f-gc/F-GC50_STATUS.json"
+        "docs/audits/PPA_WU01_PRODUCTION_APPLICATION_BOOTSTRAP.md",
+        "integration/audits/PPA_WU01_STATUS.json"
       ],
-      "typed_input_config_authority": "Generic soil-water model selection exists, but no admitted create_context_from_config/product bootstrap exists.",
-      "state_ownership": "Production FMR context must remain Fortran/FMR-owned; Python/test fixture may not become owner.",
-      "transaction_status": "F-GC49D can operate an existing context but cannot create one from application config.",
+      "typed_input_config_authority": "fmr_production_application_config_t / fmr_production_application_tile_config_t. Inputs are already-resolved typed runtime values; no legacy file/calendar/parser grammar is claimed.",
+      "state_ownership": "The Fortran/FMR bootstrap owns columns/templates, typed parameter/forcing registries and committed state. Groundwater materializers, participant registry, handles and mass ledgers are additionally owned only for the all-bottom_mode=5 groundwater profile. Python and qualification fixtures do not own production SWAP state.",
+      "transaction_status": "Standalone bottom_mode=7 uses the existing canonical serialized Reference transaction path. The all-bottom_mode=5 groundwater profile materializes the existing F-GC49D per-window application context from the same Fortran-owned participant/state surface.",
       "qualification_evidence": [
-        "F-APP01",
-        "F-GC49D",
-        "F-GC50"
+        "PPA-WU01 workflow run 35365440351 / job 105666642389: O0 and O2 PASS with stable output identity",
+        "docs/audits/PPA_WU01_PRODUCTION_APPLICATION_BOOTSTRAP.md",
+        "integration/audits/PPA_WU01_STATUS.json",
+        "F-GC49D preservation"
       ],
-      "production_admission": "NO end-to-end bootstrap",
-      "production_reachable": "NO_GENERAL_APPLICATION_ENTRY",
+      "production_admission": "CANONICAL_ADMITTED via PR #306 at a95a14d3544ae6f7dc86d04694c9d466518f65b7.",
+      "production_reachable": "YES_RESTRICTED_TYPED_BOOTSTRAP_CANONICAL",
       "restrictions": [
-        "F-GC49D fixture is qualification-only",
-        "No parallel Python-owned SWAP state/config system"
+        "Standalone WU01 profile is the already-qualified serialized Reference bottom_mode=7 route",
+        "Groundwater bootstrap profile is all-bottom_mode=5 with valid typed datum and existing F-GC49D topology/predictor/cell-area inputs",
+        "Mixed bottom_mode=5/bottom_mode=7 ownership is not admitted",
+        "No legacy SWAP input parser, meteorological file/calendar ingestion or broad application grammar",
+        "No new process family is admitted by WU01",
+        "F-GC49D qualification fixture remains qualification-only and is not used by the production bootstrap"
       ],
-      "scientific_risk": "LOW physics; HIGH ownership/governance",
+      "scientific_risk": "LOW physics; ownership/governance risk closed for the restricted WU01 profiles",
       "use_relevance": "VERY_HIGH",
       "dependencies": [
-        "Typed configuration schema for admitted profiles"
+        "PPA-WU03 for normal atmospheric/input ingestion",
+        "Per-process admission for any broader profile"
       ],
-      "priority_band": "P0"
+      "priority_band": "P1"
     },
     {
       "id": "PPA-MSW-SER",
@@ -1438,23 +1447,24 @@
         "src/adapter/fmr_groundwater_application_runtime.py",
         "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
       ],
-      "typed_input_config_authority": "Typed application plan, participant registry and existing opaque FMR application context.",
+      "typed_input_config_authority": "Typed application plan and participant registry remain F-GC49D authority; PPA-WU01 now supplies a restricted production Fortran/FMR owner that can materialize the context for the admitted all-bottom_mode=5 profile.",
       "state_ownership": "SWAP/FMR owns committed/candidate state; service orchestrates bounded windows; ledgers separate.",
       "transaction_status": "Whole-window convergence, retry and publication ordering; mixed 1:1/N:1 live MODFLOW qualification.",
       "qualification_evidence": [
         "F-GC33..F-GC49D, especially F-GC44..47 live MF6 and F-GC49C/D"
       ],
       "production_admission": "F-GC49 closed/canonical production application orchestration.",
-      "production_reachable": "YES_FROM_EXISTING_CONTEXT_RESTRICTED",
+      "production_reachable": "YES_RESTRICTED_FROM_PPA_WU01_OWNER",
       "restrictions": [
-        "Requires pre-existing admitted FMR context",
+        "Requires an admitted PPA-WU01 groundwater owner or equivalent already-owned FMR context",
         "Broader head/timestep/physics envelope not claimed",
+        "Normal meteorological/application ingestion remains outside F-GC49D",
         "Heterogeneous N:1 transferability not claimed"
       ],
       "scientific_risk": "MEDIUM",
       "use_relevance": "VERY_HIGH",
       "dependencies": [
-        "PPA-APP-BOOT for product startup"
+        "PPA-WU03 or product-specific typed config mapping for broader startup"
       ],
       "priority_band": "P0"
     },
@@ -1472,24 +1482,26 @@
         "docs/integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md",
         "integration/f-gc/F-GC50_STATUS.json"
       ],
-      "typed_input_config_authority": "No actual upstream iMOD Coupler SWAP5 driver registration route at pinned upstream commit.",
+      "typed_input_config_authority": "PPA-WU01 supplies a restricted internal SWAP5 typed production bootstrap, but no actual upstream iMOD Coupler SWAP5 driver registration route exists at the pinned upstream commit.",
       "state_ownership": "Must reuse F-GC49/FMR state ownership; product may coordinate but not own SWAP state.",
       "transaction_status": "Target semantics specified, not product-integrated.",
       "qualification_evidence": [
-        "F-GC50 upstream contract reconciliation"
+        "F-GC50 upstream contract reconciliation",
+        "PPA-WU01 restricted SWAP5 bootstrap qualification"
       ],
       "production_admission": "BLOCKED_EXTERNAL_PREREQUISITES_CONFIRMED",
       "production_reachable": "NO_ACTUAL_PRODUCT_ROUTE",
       "restrictions": [
         "Pinned upstream has hard-coded drivers only",
         "No push authority to upstream in audit connection",
-        "F-GC49D has no production context bootstrap"
+        "Product configuration still requires an explicit mapping into an admitted PPA-WU01 profile",
+        "PPA-WU01 does not itself register a SWAP5 driver in iMOD Coupler"
       ],
       "scientific_risk": "LOW physics; MEDIUM integration",
       "use_relevance": "HIGH",
       "dependencies": [
         "External upstream driver extension",
-        "PPA-APP-BOOT"
+        "Product configuration mapping to an admitted PPA-WU01 profile"
       ],
       "priority_band": "P0"
     }
@@ -1508,11 +1520,6 @@
       }
     ],
     "important_low_science_uncertainty": [
-      {
-        "capability_id": "PPA-APP-BOOT",
-        "action": "Create one authoritative production bootstrap for already-admitted typed profiles; no new physics.",
-        "reason": "Unblocks ordinary applications and F-GC50."
-      },
       {
         "capability_id": "PPA-ATM-02",
         "action": "Migrate forcing/config ingestion as an outer application adapter while preserving kernel I/O separation.",
@@ -1578,6 +1585,15 @@
         "capability": "Legacy bug compatibility",
         "reason": "B1 policy forbids recreating confirmed B0 bugs in SWAP5."
       }
+    ],
+    "closed": [
+      {
+        "capability_id": "PPA-APP-BOOT",
+        "workunit": "PPA-WU01",
+        "disposition": "CANONICAL_ADMITTED_CLOSED",
+        "evidence": "PPA-WU01 final owner run 35368123088 PASS; docs 35368123177 PASS; F-CI 35368122940 PASS.",
+        "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7"
+      }
     ]
   },
   "concurrency": {
@@ -1601,7 +1617,12 @@
       "id": "PPA-WU01",
       "title": "Production application bootstrap for admitted normal-run profile",
       "goal": "From explicit typed application config create/own an FMR context and bind only already-admitted physics. No legacy parser expansion and no new physics.",
-      "exit": "One normal standalone application profile reaches canonical runtime without test fixtures; ownership and restart/result surfaces are explicit."
+      "exit": "MET and canonically admitted for restricted typed ownership. Standalone bottom_mode=7 and all-bottom_mode=5 groundwater-owner profiles remain the complete WU01 admission envelope.",
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
+      "qualification": "PPA-WU01 workflow run 35365440351 / job 105666642389; O0 and O2 PASS with output identity.",
+      "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+      "final_qualification": "Owner run 35368123088 PASS; Documentation 35368123177 PASS; F-CI canonical qualification 35368122940 PASS."
     },
     {
       "id": "PPA-WU02",
@@ -1626,6 +1647,21 @@
       "title": "Advanced water-process triage: macropore, frost and root-stress dependency graph",
       "goal": "Separate independent science questions from shared state/mass/restart semantics and choose the first high-use bounded migration target.",
       "exit": "Evidence-backed sequencing and acceptance criteria, without physics migration."
+    }
+  ],
+  "post_audit_updates": [
+    {
+      "workunit": "PPA-WU01",
+      "state": "QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION",
+      "branch": "work/ppa-wu01-production-application-bootstrap",
+      "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
+      "effect": "Closes absence of any production config-to-owned-FMR bootstrap for two explicitly restricted existing profiles. Broad normal-input/application composition remains open."
+    },
+    {
+      "workunit": "PPA-WU01",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+      "effect": "Restricted production config-to-owned-FMR bootstrap is now canonical. Broader normal-input/application composition remains open under PPA-WU03."
     }
   ]
 }
