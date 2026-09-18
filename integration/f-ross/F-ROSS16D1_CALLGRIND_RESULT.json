@@ -40,7 +40,35 @@
     "candidate_step_inclusive_Ir": 406774998,
     "candidate_step_fraction_of_solver_solve": 0.9554209675818706,
     "kernel_fraction_of_solver_solve": 0.9665452996069108,
-    "interpretation": "In the optimized diagnostic binary, about 95.5% of RossFast solve instructions are inside the repeated candidate-step path."
+    "interpretation": "In the optimized diagnostic binary, about 95.5% of RossFast solve instructions are inside the repeated candidate-step path.",
+    "direct_library_attribution": {
+      "pow": {
+        "calls": 1451520,
+        "calls_per_candidate_step": 80,
+        "calls_per_rossfast_solve": 1920,
+        "inclusive_Ir": 188697600,
+        "fraction_of_candidate_step": 0.46388691765170875
+      },
+      "log10": {
+        "calls": 544320,
+        "calls_per_candidate_step": 30,
+        "calls_per_rossfast_solve": 720,
+        "inclusive_Ir": 50807862,
+        "fraction_of_candidate_step": 0.124904092556839
+      },
+      "exp": {
+        "calls": 272160,
+        "calls_per_candidate_step": 15,
+        "calls_per_rossfast_solve": 360,
+        "inclusive_Ir": 15785280,
+        "fraction_of_candidate_step": 0.03880592484201795
+      },
+      "combined_pow_log10_exp": {
+        "inclusive_Ir": 255290742,
+        "fraction_of_candidate_step": 0.6275969350505657
+      },
+      "interpretation": "These counts come from the optimized O2 Callgrind call topology and exactly match the source-implied 1920 pow, 720 log10 and 360 exp calls per RossFast solve."
+    }
   },
   "noinline_structural_crosscheck": {
     "call_counts_match_exact_topology": true,
@@ -92,7 +120,7 @@
     "H4_table_and_state_transformations_are_substantial": "SUPPORTED_BY_NOINLINE_STRUCTURAL_CROSSCHECK",
     "tridiagonal_solve_is_primary_cost_driver": "NOT_SUPPORTED"
   },
-  "scientific_interpretation": "The current RossFast slowdown is not caused primarily by the small 16x16 tridiagonal linear solve. RossFast pays for 24 candidate steps per solver call to construct its coarse-plus-two-half temporal certificate. In the optimized binary those candidate steps account for about 95.5% of solve-path instructions. The structural no-inline decomposition places about 31.9% of candidate-step instructions in inverse-capacity evaluation, 29.8% in table-face linearization, 21.8% in water-content-to-head inversion, and only 5.8% in the tridiagonal factor-and-solve. The first three transformation categories together account for about 83.6% of candidate-step instructions in that structural diagnostic.",
+  "scientific_interpretation": "The current RossFast slowdown is not caused primarily by the small 16x16 tridiagonal linear solve. RossFast pays for 24 candidate steps per solver call to construct its coarse-plus-two-half temporal certificate. In the optimized binary those candidate steps account for about 95.5% of solve-path instructions, and direct pow/log10/exp library execution alone accounts for about 62.8% of candidate-step instructions. The topology-consistent no-inline decomposition places about 31.9% in inverse-capacity evaluation, 29.8% in table-face linearization, 21.8% in water-content-to-head inversion, and only 5.8% in the tridiagonal factor-and-solve. The first three transformation categories together account for about 83.6% of candidate-step instructions in that structural diagnostic.",
   "production_or_reference_mutation": false,
   "formal_performance_claim": false,
   "next_permitted_action": "Use these diagnostics to design a separate optimization study. The highest-value questions are whether the temporal certificate can avoid recomputing three full 8-step trajectories and whether repeated capacity/head/table transforms can be cached or algebraically reduced without changing qualified semantics. No such optimization is admitted by F-ROSS16D1."
