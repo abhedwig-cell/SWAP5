@@ -72,7 +72,7 @@ Claim-evidence ledger:
 First publication evidence block (E1/E2):
 
 - `PUB_GC_E1_E2_PREREGISTRATION.md`
-- `PUB_GC_E1_E2_RESULTS.md`
+- `PUB_GC_E1_E2_RESULT.md`
 - `PUB_GC_E1_E2_RESULT.json`
 
 ### PUB-SG - SCALE
