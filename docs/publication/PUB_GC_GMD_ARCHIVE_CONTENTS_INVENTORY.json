@@ -1,0 +1,93 @@
+{
+  "schema": "pub-gc-gmd-archive-contents-inventory-v1",
+  "date": "2026-09-18",
+  "inventory_basis": "a0ee53c48a80dd443d46f60edf08044aeba98273",
+  "packaging_rule": "Archive the complete governed SWAP5 submission revision; the lists below identify publication-critical subsets, not a replacement partial source distribution.",
+  "repository_counts_at_basis": {
+    "total_blob_files": 2201,
+    "docs_publication_blob_files": 107,
+    "tests_publication_blob_files": 45
+  },
+  "required_publication_surfaces": {
+    "manuscript": [
+      "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
+      "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
+      "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
+      "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md"
+    ],
+    "governance_and_provenance": [
+      "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
+      "docs/publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md",
+      "docs/publication/PUB_GC_REFERENCE_AUDIT.md",
+      "docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json",
+      "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
+      "docs/publication/PUB_GC_JOURNAL_POSITIONING.md",
+      "docs/publication/PUB_GC_GMD_ARCHIVAL_GATE.md",
+      "docs/publication/PUB_GC_GMD_ARCHIVAL_GATE.json",
+      "docs/publication/PUB_GC_GMD_SUBMISSION_METADATA_DRAFT.md",
+      "docs/publication/PUB_GC_GMD_CODE_DATA_AVAILABILITY_TEMPLATE.md"
+    ],
+    "evidence_globs": [
+      "docs/publication/PUB_GC_E1*",
+      "docs/publication/PUB_GC_E3*",
+      "docs/publication/PUB_GC_E4*",
+      "docs/publication/PUB_GC_E5*",
+      "docs/publication/PUB_GC_E6*",
+      "docs/publication/PUB_GC_E7*",
+      "docs/publication/evidence/PUB_GC_*"
+    ],
+    "figures": [
+      "docs/publication/figures/PUB_GC_F1_OWNERSHIP_AUTHORITY.svg",
+      "docs/publication/figures/PUB_GC_F2_TYPED_HYDROLOGICAL_INTERFACE.svg",
+      "docs/publication/figures/PUB_GC_F3_CLOSURE_VS_HEAD_CORRECTION.svg",
+      "docs/publication/figures/PUB_GC_F4_RESPONSE_IDENTITY.svg",
+      "docs/publication/figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg",
+      "docs/publication/figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg",
+      "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
+      "docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json",
+      "docs/publication/figures/generate_pub_gc_numeric_figures.py"
+    ],
+    "publication_tests": [
+      "tests/publication/run_pub_gc_e1_e2.sh",
+      "tests/publication/run_pub_gc_e3.sh",
+      "tests/publication/run_pub_gc_e3d.sh",
+      "tests/publication/run_pub_gc_e3d2.sh",
+      "tests/publication/run_pub_gc_e3r.sh",
+      "tests/publication/test_pub_gc_e3_case.py",
+      "tests/publication/test_pub_gc_e3d_predictor_case.py",
+      "tests/publication/test_pub_gc_e3d2_case.py",
+      "tests/publication/validate_pub_gc_e7_component_domain.py"
+    ],
+    "workflows": [
+      ".github/workflows/pub-gc-e1-e2-interface-transaction-evidence.yml",
+      ".github/workflows/pub-gc-e3-coupling-feedback.yml",
+      ".github/workflows/pub-gc-e3d-predictor-envelope.yml",
+      ".github/workflows/pub-gc-e3d2-predictor-failure.yml",
+      ".github/workflows/pub-gc-e3r-stronger-feedback.yml",
+      ".github/workflows/pub-gc-e7-component-domain.yml",
+      ".github/workflows/f-gc42-live-whole-window-service.yml",
+      ".github/workflows/ppa-wu01-production-application-bootstrap.yml"
+    ]
+  },
+  "external_not_redistributed": [
+    {
+      "asset": "SWAP 4.3.1 distribution",
+      "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "size_bytes": 8959314,
+      "rule": "Do not add distribution bytes to the public SWAP5 archive without explicit controlling redistribution authority."
+    }
+  ],
+  "unresolved_archive_metadata": [
+    "SWAP5 publication version/release identifier",
+    "software licence and redistribution authority",
+    "persistent archive DOI/PID",
+    "final author/affiliation/contributor metadata"
+  ],
+  "validation": [
+    "persistent archive resolves to the exact governed repository revision",
+    "critical PUB-GC files exist at archived revision",
+    "reproducibility manifest is updated to final archive identity",
+    "no external SWAP 4.3.1 distribution bytes are accidentally included",
+    "final title/version/licence/DOI fields are mutually consistent"
+  ]
+}
