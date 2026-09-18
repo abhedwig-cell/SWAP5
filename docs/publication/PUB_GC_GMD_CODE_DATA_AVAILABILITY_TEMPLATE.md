@@ -28,7 +28,9 @@ Source must be the persistent exact-version archive created after the release/ve
 
 ### <<SWAP5_LICENSE_AUTHORITY>>
 
-Source must be an explicit software licence / redistribution authority. Do not infer from repository visibility or from the historical SWAP 4.3.1 distribution.
+The upstream SWAP version-4 authority is now verified: the official SWAP project and the exact SWAP 4.3.1 package state LGPL v3 for SWAP version 4, with TTUTIL427.LIB under LGPL 2.1.
+
+This placeholder remains because an explicit SWAP5 publication-archive redistribution/licence declaration is still required. Do not silently promote the upstream statement into a repository-wide legal declaration without that authority.
 
 ### <<PUBLIC_REPRODUCTION_ARCHIVE_PID_IF_SEPARATE>>
 
@@ -69,3 +71,26 @@ Before submission:
 5. the reproducibility manifest must record the same release/archive identity;
 6. external SWAP 4.3.1 wording must not imply redistribution;
 7. no code/data statement may imply that E7 MODFLOW windows were executed.
+
+
+## Verified upstream licence provenance
+
+Official SWAP project source:
+
+`https://swap.wur.nl/faq.html`
+
+Exact external package:
+
+```text
+SWAP_4.3.1.zip
+SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360
+```
+
+Embedded licence statement:
+
+```text
+SWAP_4.3.1/license/License.txt
+SHA-256 a91468a75fcaf481cc8c214e65574ab9bbcb5e389d3a08d1c651c335214d5a4d
+```
+
+This provenance may be cited in internal archival records even while `<<SWAP5_LICENSE_AUTHORITY>>` remains unresolved.
