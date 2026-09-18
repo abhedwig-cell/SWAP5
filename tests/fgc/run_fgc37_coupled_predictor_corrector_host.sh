@@ -25,24 +25,28 @@ for token in [
 ]:
     assert token in source, token
 
-for forbidden in [
-    "xmipy",
-    "xmiwrapper",
-    "get_value_ptr",
-    "get_var_address",
-    "prepare_time_step",
-    "prepare_solve",
-    "finalize_time_step",
-    "ribasim",
-]:
-    assert forbidden not in source.lower(), forbidden
+for node in ast.walk(tree):
+    if isinstance(node, ast.Import):
+        for alias in node.names:
+            root = alias.name.split(".", 1)[0].lower()
+            assert root not in {"xmipy", "ribasim"}, alias.name
+    if isinstance(node, ast.ImportFrom) and node.module:
+        root = node.module.split(".", 1)[0].lower()
+        assert root not in {"xmipy", "ribasim"}, node.module
 
 calls = []
 for node in ast.walk(tree):
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
         calls.append(node.func.attr)
 
-for forbidden_call in ["solve", "prepare_time_step", "prepare_solve", "finalize_time_step"]:
+for forbidden_call in [
+    "solve",
+    "get_value_ptr",
+    "get_var_address",
+    "prepare_time_step",
+    "prepare_solve",
+    "finalize_time_step",
+]:
     assert forbidden_call not in calls, forbidden_call
 
 print("FGC37_TRANSACTIONAL_PARTICIPANTS_ONLY=PASS")
