@@ -41,6 +41,16 @@
         "PUB_GC_E6A_STATE_SCREEN_SUMMARY.csv",
         "PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json"
       ]
+    },
+    "F7": {
+      "file": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
+      "sources": [
+        "PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+        "PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "integration/audits/PPA_WU01_STATUS.json",
+        "PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json"
+      ]
     }
   },
   "source_blob_sha": {
@@ -51,5 +61,5 @@
     "e6_state": "ef74c956a13157fe9f982456224e344887580b26",
     "e6_drainage": "8f420fab688f19b80332850198b4c1ddb1903e4c"
   },
-  "interpretation_guard": "Figures visualize already admitted publication evidence. They do not expand the scientific claim envelope."
+  "interpretation_guard": "Figures visualize already governed publication evidence. F7 represents a preregistered realistic component-domain limit, not a completed loose-versus-strong Hupsel trajectory or regional validation."
 }
