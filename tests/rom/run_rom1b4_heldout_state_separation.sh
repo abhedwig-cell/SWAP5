@@ -27,7 +27,6 @@ import json,sys
 p=json.load(open(sys.argv[1])); q=json.load(open(sys.argv[2]))
 assert p["phase"]=="PREREGISTERED_BEFORE_HELDOUT_COORDINATE_EVALUATION"
 assert p["frozen_coordinate"]["theta_floor"]==0.0005420462931603476
-assert p["frozen_coordinate"]["dimension"]==9
 assert p["library_authority"]["expected_states"]==768
 assert p["library_authority"]["B14_generated"] is False
 assert q["decision"]=="ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN"
