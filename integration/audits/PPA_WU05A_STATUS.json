@@ -4,7 +4,7 @@
   "title": "Macropore source/state/mass/transaction authority",
   "branch": "audit/ppa-wu05a-macropore-authority",
   "reconcile_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
-  "status": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED_QUALIFIED",
+  "status": "CANONICAL_RECONCILED_PARTIAL_AUTHORITY_FINAL_QUALIFICATION_PENDING",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "exact_authority": {
@@ -65,5 +65,14 @@
   },
   "production_admission": "NONE_REVIEW_ONLY",
   "verdict": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
-  "next_action": "Merge the review-only authority checkpoint if the evidence head remains green and canonical drift is disjoint. Production macropore remains blocked until PPA-WU05-A1 byte-exact source materialization and field/flux census closes."
+  "next_action": "Require final PPA-WU05-A authority review, Documentation and broad F-CI qualification on the reconciled exact head. If green, canonically admit this review-only partial-authority checkpoint. Production macropore remains blocked until PPA-WU05-A1 byte-exact source materialization and census closes.",
+  "canonical_reconciliation": {
+    "prior_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+    "governance_repair_pr": 345,
+    "governance_repair_merge": "48de5d6b6515fc77ffe639768eaaf56aec392ac3",
+    "reconciliation_commit": "b0e6fae7f8dd4a76a2996f5729a0e5571bdb3752",
+    "content_delta_after_prior_qualified_head": "NONE_FOR_WU05A_SEVEN_FILE_REVIEW_SURFACE",
+    "production_overlap": "NONE",
+    "reference_overlap": "NONE"
+  }
 }
