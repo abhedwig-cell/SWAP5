@@ -169,3 +169,10 @@ E6-A can therefore end in three scientifically meaningful outcomes:
 - **NO_USEFUL_EXPANSION** — accepted-state shifting does not create a better strong-coupling test regime.
 
 All are reportable; none may be changed by numerical tolerance relaxation.
+
+
+## Execution provenance checkpoint
+
+Added after preregistration and before interpretation of E6-A output. The screen is executed as an ownership-disjunct component characterization while the separately preregistered active-drainage E6 route is being diagnosed. No result from that route is used to alter this screen, its state/flux matrix or its deterministic E6-B candidate rule.
+
+Current canonical is `integration/f-ci-canonical@71626be59b81d00a3fd6a5d5a561febe9b5023b8`. The post-baseline canonical delta does not alter the E6-A qualification-only state-screen contract or its production physics inputs.
