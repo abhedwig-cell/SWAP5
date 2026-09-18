@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.publication.p2e20-ref-high-scaled-construction.v1",
+  "workunit": "PUB-P2E20",
+  "phase": "PREREGISTERED_BEFORE_REF_HIGH_MATERIALIZATION",
+  "publication_owner": "PUB-SQ",
+  "role": "CANDIDATE_BLIND_NUMERICAL_REFERENCE_CONSTRUCTION",
+  "parent_diagnostic": {
+    "branch": "work/pub-p2e19-reference-balance-scaling-diagnostic",
+    "head": "f2d5cd8d0e69a35436573f6d32dd0916c344ca49",
+    "result_path": "docs/publication/P2E19_REFERENCE_BALANCE_SCALING_DIAGNOSTIC_RESULT.json",
+    "verdict": "INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36"
+  },
+  "purpose": "Materialize a casewise REF-HIGH authority for the later equal-error cost experiment using the independently diagnosed integrated-invariant Reference convergence policy, without executing RossFast or timing.",
+  "epistemic_status": "P2E20 is a formal construction/qualification workunit, not an independent confirmation of P2E19. The scaled-policy behavior was already observed in P2E19 and is used prospectively to define the reference algorithm.",
+  "case_matrix": {
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.96],
+    "forcing": ["DRYING","NOMINAL"],
+    "case_count": 36,
+    "case_order": "material major, then effective_saturation, then forcing",
+    "total_horizon_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "ponding_initial_cm": 0,
+    "top_flux_over_initial_K0": {"DRYING":-0.005,"NOMINAL":0.01},
+    "bottom_flux_over_initial_K0": {"DRYING":-0.019,"NOMINAL":-0.004}
+  },
+  "reference_policy": {
+    "route": "legacy-reference-bound only",
+    "balance_convergence_policy": "INTEGRATED_INVARIANT",
+    "integrated_balance_allowance_cm_per_substep": 1.6e-15,
+    "balance_rate_tolerance_formula": "1.6e-15 / dt_day for both compartment and total balance convergence criteria",
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "hard_typed_integrated_mass_abs_limit_cm_each_accepted_substep": 1e-12
+  },
+  "fine_refinement_levels": {
+    "substeps": [8,16,32],
+    "dt_day": [0.0002,0.0001,0.00005],
+    "ref_high_endpoint": "32-substep endpoint for a case that passes all casewise qualification rules",
+    "comparisons": ["8_vs_16","16_vs_32"]
+  },
+  "stability_budget": {
+    "source": "unchanged P2E18 preregistration",
+    "head_theta_factor_of_P2E14": 0.1,
+    "storage_budget": "full exact-Se P2E14 storage envelope because it is already at machine-scale summation resolution",
+    "conjunctive": true,
+    "weighted_compensation": false
+  },
+  "casewise_qualification": {
+    "route_rule": "all 8, 16 and 32-substep Reference trajectories must complete and every accepted substep must pass hard route validity",
+    "stability_rule": "both 8-vs-16 and 16-vs-32 endpoint comparisons must pass every frozen head, theta and storage budget",
+    "qualified_label": "REF_HIGH_QUALIFIED",
+    "unresolved_labels": [
+      "REF_HIGH_ROUTE_UNRESOLVED",
+      "REF_HIGH_STABILITY_UNRESOLVED"
+    ],
+    "no_case_replacement": true
+  },
+  "expected_reproduction_from_p2e19": {
+    "not_independent_evidence": true,
+    "qualified_count": 33,
+    "route_unresolved_cases": [
+      {"case":1,"material":"B01","Se":0.65,"forcing":"DRYING"},
+      {"case":2,"material":"B01","Se":0.65,"forcing":"NOMINAL"}
+    ],
+    "stability_unresolved_cases": [
+      {"case":36,"material":"O18","Se":0.96,"forcing":"NOMINAL","known_diagnostic_reason":"8-vs-16 storage delta exceeded the machine-scale storage floor in P2E19"}
+    ],
+    "rule": "A mismatch with this expected reproduction is retained as a construction discrepancy and blocks use of the affected case; do not retune the policy."
+  },
+  "future_equal_error_boundary": {
+    "authorized_performance_population_if_reproduced": "exact P2E20 REF_HIGH_QUALIFIED cases only",
+    "reference_reconstruction_in_future_timing": "The same frozen 32-substep Reference policy may be recomputed outside timed regions rather than timing REF-HIGH itself.",
+    "unresolved_cases": "may not enter an equal-error solver-performance claim unless a later independent Reference authority is established"
+  },
+  "firewall": {
+    "rossfast_execution_allowed": false,
+    "rossfast_timing_allowed": false,
+    "equal_error_performance_claim_allowed": false,
+    "production_tolerance_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "integrated_allowance_retuning_allowed": false,
+    "fine_level_change_allowed": false,
+    "stability_budget_change_allowed": false,
+    "case_removal_or_replacement_allowed": false
+  },
+  "outcome_policy": {
+    "if_33_case_reproduction": "Persist the casewise REF-HIGH set and permit a separately preregistered equal-error solver-control/performance experiment on those qualified cases.",
+    "if_fewer_cases_qualify": "Persist the smaller qualified set and reassess whether it remains scientifically representative before timing.",
+    "if_more_cases_qualify": "Persist the observed result but do not automatically add previously unresolved cases to performance; central governance must reconcile why the construction differs from P2E19."
+  },
+  "verdict": "PREREGISTERED_CASEWISE_REF_HIGH_CONSTRUCTION_READY",
+  "next_permitted_action": "Execute only the Reference-only 8/16/32 construction on all 36 cases. RossFast and performance timing remain forbidden."
+}
