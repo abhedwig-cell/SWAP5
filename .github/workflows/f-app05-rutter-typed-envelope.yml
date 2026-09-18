@@ -1,0 +1,35 @@
+name: F-APP05 Rutter typed envelope
+on:
+  push:
+    branches:
+      - work/f-app05-hupsel-rutter-swcf2-typed-envelope
+    paths:
+      - 'src/process/mod_rutter_interception_process.f90'
+      - 'tests/f-app05/**'
+      - 'integration/f-app/F-APP05_PREREGISTRATION.json'
+      - '.github/workflows/f-app05-rutter-typed-envelope.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_rutter_interception_process.f90'
+      - 'tests/f-app05/**'
+      - 'integration/f-app/F-APP05_PREREGISTRATION.json'
+      - '.github/workflows/f-app05-rutter-typed-envelope.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile strict O0
+        run: |
+          mkdir -p build/o0
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
+            src/process/mod_rutter_interception_process.f90 tests/f-app05/test_rutter_interception_process.f90 -o build/o0/test
+          build/o0/test | tee build/o0/out.txt
+      - name: Compile strict O2
+        run: |
+          mkdir -p build/o2
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
+            src/process/mod_rutter_interception_process.f90 tests/f-app05/test_rutter_interception_process.f90 -o build/o2/test
+          build/o2/test | tee build/o2/out.txt
+      - name: Require optimization identity
+        run: cmp build/o0/out.txt build/o2/out.txt
