@@ -1,0 +1,43 @@
+name: ROM1B1 discovery collision census
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1B1_*'
+      - 'docs/science/ROM1B1_*'
+      - 'tests/rom/analyze_rom1b1_collision_census.py'
+      - 'tests/rom/run_rom1b1_collision_census.sh'
+      - '.github/workflows/rom1b1-collision-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1b1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  census:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Regenerate discovery library and compute collision census
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1B1_EVIDENCE
+          ROM1B1_EVIDENCE_DIR="$PWD/ROM1B1_EVIDENCE"             bash tests/rom/run_rom1b1_collision_census.sh | tee ROM1B1_EVIDENCE/gate.txt
+      - name: Preserve collision evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1b1-${{ github.run_id }}
+          path: ROM1B1_EVIDENCE
+          if-no-files-found: warn
