@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.f-rom.program-closeout.v1",
+  "workstream": "F-ROM",
+  "programme": "ROM_RESEARCH_PROPOSITION",
+  "phase": "CLOSED_MATERIAL_SPECIFIC_ONLY",
+  "branch": "work/f-rom0-close-expand-accepted-domain",
+  "governing_authority": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "decision": "MATERIAL_SPECIFIC_ONLY",
+  "decision_meaning": "The preregistered reduced-state proposition produced positive within-material evidence for B01 but did not pass the required contrasting-material transfer gate. The programme therefore stops before ROM2 under the current proposition.",
+  "authority_chain": {
+    "ROM_P": {
+      "decision": "PROCEED_TO_ROM0",
+      "status_path": "integration/f-rom/F-ROMP_STATUS.json"
+    },
+    "ROM_0": {
+      "decision": "PROCEED_TO_ROM1A",
+      "status_path": "integration/f-rom/F-ROM0_STATUS.json",
+      "current_closeout": "integration/f-rom/F-ROM0_SUCCESSOR_CLOSEOUT.json",
+      "historical_fixed_control_closeout": "integration/f-rom/F-ROM0_CLOSEOUT.json",
+      "historical_negative_reclassified": false
+    },
+    "ROM_1A": {
+      "decision": "PROCEED_TO_ROM1B",
+      "closeout_path": "integration/f-rom/F-ROM1A_SUCCESSOR_CLOSEOUT.json",
+      "reachable_state_library": {
+        "material": "B01",
+        "states": 768,
+        "discovery": 512,
+        "held_out": 256
+      }
+    },
+    "ROM_1": {
+      "decision": "MATERIAL_SPECIFIC_ONLY",
+      "status_path": "integration/f-rom/F-ROM1_STATUS.json",
+      "closeout_path": "integration/f-rom/F-ROM1_CLOSEOUT.json"
+    }
+  },
+  "scientific_result": {
+    "B01": {
+      "state_sufficiency": "PASS_WITHIN_MATERIAL_SCOPE",
+      "frozen_coordinate": "Z8_PLUS_G8",
+      "dimension": 9,
+      "discovery_collision_count": 0,
+      "heldout_inclusive_collision_count": 0,
+      "heldout_driven_retuning": false
+    },
+    "B14_transfer": {
+      "state_separation": "NO_GO_351_COLLISIONS",
+      "predictive_probe_pairs": 8,
+      "predictive_probe_records": 192,
+      "storage_predictive_ambiguity_records": 0,
+      "predictive_insufficiency_established": false,
+      "predictive_sufficiency_established": false,
+      "material_transfer_admitted": false
+    },
+    "cross_material_gate": "FAIL_NOT_ADMITTED"
+  },
+  "ROM2": {
+    "authorized": false,
+    "reason": "CROSS_MATERIAL_TRANSFER_GATE_NOT_PASSED",
+    "automatic_B01_only_continuation_allowed": false,
+    "next_permitted_route": "NEW_INDEPENDENTLY_GOVERNED_MATERIAL_SPECIFIC_PROPOSITION_OR_EXPLICIT_CAPABILITY_AMENDMENT"
+  },
+  "production": {
+    "production_ROM_authorized": false,
+    "production_reference_policy_changed": false,
+    "production_solver_selection_changed": false,
+    "production_application_admission_from_ROM": false
+  },
+  "historical_evidence_policy": {
+    "original_ROM0_fixed_control_no_go_retained": true,
+    "original_ROM1A_parent_failures_retained": true,
+    "successor_authorities_do_not_rewrite_historical_failures": true
+  },
+  "stale_workflow_interpretation": {
+    "F_ROM0R_R1_current_branch_replay": "NON_AUTHORITATIVE_FAILURE_SOURCE_FREEZE_EXPECTED_AFTER_LATER_SOURCE_DEVELOPMENT",
+    "F_ROM1A_parent_current_branch_replay": "NON_AUTHORITATIVE_REPRODUCTION_OF_KNOWN_PARENT_FAILURE_SUPERSEDED_BY_ROM1AR2_SUCCESSOR_AUTHORITY"
+  },
+  "forbidden_without_new_authority": [
+    "START_ROM2",
+    "TREAT_B01_ONLY_RESULT_AS_CROSS_MATERIAL_SUCCESS",
+    "ENRICH_COORDINATE_FROM_B14_AFTER_TRANSFER_FAILURE",
+    "RETUNE_USING_B14_HELDOUT_OR_TRANSFER_OUTCOME",
+    "MAKE_PRODUCTION_ROM_CLAIM",
+    "RECLASSIFY_HISTORICAL_NEGATIVE_EVIDENCE"
+  ],
+  "next_action": "STOP_CURRENT_ROM_PROGRAMME_AT_MATERIAL_SPECIFIC_ONLY_UNLESS_A_NEW_PROPOSITION_OR_CAPABILITY_AMENDMENT_IS_EXPLICITLY_OPENED"
+}
