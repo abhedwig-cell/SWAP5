@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-SI40",
+  "title": "Restricted B1.11 post-solver groundwater-level projection for Hupsel SWBOTB=6",
+  "dependency": "F-SI39 B1.11 KSATEXM preservation; admit serially after F-SI39",
+  "base_subject": "9cb8a7b48aced19992eca77f3fffad73ac9a1fda",
+  "legacy_authority": {
+    "source": "calcgwl.f90 / SoilWater(3)",
+    "Hupsel": "swmacro=0, SWBOTB=6, strict interior zero-pressure crossing",
+    "formula": "gwl=z(node+1)+h(node+1)/(h(node+1)-h(node))*disnod(node+1)",
+    "lifecycle": "HeadCalc does not update GWL; SoilWater(3) calls calcgwl after the accepted solve"
+  },
+  "exact_six_snapshot_oracle": [
+    {
+      "year": 2002,
+      "doy": 5,
+      "gwl_cm": -50.01917454363811
+    },
+    {
+      "year": 2002,
+      "doy": 196,
+      "gwl_cm": -137.8192929841194
+    },
+    {
+      "year": 2003,
+      "doy": 135,
+      "gwl_cm": -67.09791696198366
+    },
+    {
+      "year": 2003,
+      "doy": 227,
+      "gwl_cm": -133.56376814621814
+    },
+    {
+      "year": 2004,
+      "doy": 15,
+      "gwl_cm": -42.72137624451503
+    },
+    {
+      "year": 2004,
+      "doy": 289,
+      "gwl_cm": -131.62070126264769
+    }
+  ],
+  "scope": {
+    "supported_bottom_mode": 6,
+    "macropore": false,
+    "routes": [
+      "strict interior crossing",
+      "fully saturated legacy branch"
+    ],
+    "excluded": [
+      "SWBOTB=1 input-GWL behavior",
+      "macropore CritUndSatVol/watertable logic",
+      "perched groundwater table bookkeeping",
+      "warnings/nodgwl diagnostics",
+      "F-GC prescribed-qbot smooth directional projection"
+    ]
+  },
+  "implementation_contract": {
+    "default_disabled": true,
+    "carrier": "explicit flag on fmr_b110_physical_parameters_t and serialized model",
+    "timing": "after converged soil-water solve and before candidate physical state publication",
+    "conflicts": "fail admission if enabled together with drainage_qbot_smooth_freatic_projection"
+  },
+  "pass_conditions": [
+    "all six frozen Hupsel post-head profiles project exact stored B1.11 GWL",
+    "default-disabled runtime retains candidate solver GWL",
+    "unsupported bottom/macropore/no-water-table fail closed",
+    "O0/O2 byte-identical",
+    "independent qualification with no production mutation"
+  ]
+}
