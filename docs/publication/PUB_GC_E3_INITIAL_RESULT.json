@@ -1,0 +1,683 @@
+{
+  "schema": "pub-gc-e3-initial-result-v1",
+  "date": "2026-09-18",
+  "workflow_run": 35343426404,
+  "matrix_case_count": 48,
+  "status_counts": {
+    "CONVERGED": 12,
+    "SWAP_PREDICTOR_UNAVAILABLE": 36
+  },
+  "control": {
+    "window_day": 0.0001,
+    "qbot_cm_per_day": 0.000001,
+    "k_m_per_day": 1,
+    "head_m": -0.7149999677331765,
+    "q_swap_m_per_s": -1.2708557527755854e-13,
+    "residual_m_per_s": 2.3219927791065243e-19
+  },
+  "max_abs_delta_h_m": 5.549886994415942e-9,
+  "max_abs_delta_qswap_m_per_s": 1.924233663354988e-14,
+  "max_loose_relative_flux_mismatch": 1.766532010114289,
+  "cases": [
+    {
+      "delta_h_iter_minus_loose_m": -1.9984014443252818e-15,
+      "delta_qswap_iter_minus_loose_m_per_s": 0,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 2,
+        "failure_stage": "",
+        "head_m": -0.7149999699826464,
+        "q_gw_m_per_s": -1.1822590071282796e-13,
+        "q_swap_m_per_s": -1.182258927426216e-13,
+        "residual_m_per_s": 7.97020637562193e-21,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 0.01,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999699826444,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -1.0930707727840882e-13,
+        "q_swap_m_per_s": -1.182258927426216e-13,
+        "residual_m_per_s": -8.918815464212767e-15,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.07543876605464994,
+      "predictor_hcof_m2_per_day": 0.3402936037279093,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999706136307,
+      "predictor_rhs_m3_per_day": -0.24330990700660954,
+      "status": "CONVERGED",
+      "window_day": 0.0001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -3.774758283725532e-15,
+      "delta_qswap_iter_minus_loose_m_per_s": 0,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 2,
+        "failure_stage": "",
+        "head_m": -0.7149999697778581,
+        "q_gw_m_per_s": -1.1903236144949625e-13,
+        "q_swap_m_per_s": -1.1903234641189792e-13,
+        "residual_m_per_s": 1.5037598326043452e-20,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 0.1,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999697778543,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -1.0850049446860706e-13,
+        "q_swap_m_per_s": -1.1903234641189792e-13,
+        "residual_m_per_s": -1.0531851943290861e-14,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.08847890729505224,
+      "predictor_hcof_m2_per_day": 0.3402936037279093,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999706136307,
+      "predictor_rhs_m3_per_day": -0.24330990700660954,
+      "status": "CONVERGED",
+      "window_day": 0.0001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -5.895284260759581e-14,
+      "delta_qswap_iter_minus_loose_m_per_s": 0,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 2,
+        "failure_stage": "",
+        "head_m": -0.7149999677331765,
+        "q_gw_m_per_s": -1.2708580747683645e-13,
+        "q_swap_m_per_s": -1.2708557527755854e-13,
+        "residual_m_per_s": 2.3219927791065243e-19,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 1,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999677331176,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -1.004471284312938e-13,
+        "q_swap_m_per_s": -1.2708557527755854e-13,
+        "residual_m_per_s": -2.6638446846264738e-14,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.20961031012438355,
+      "predictor_hcof_m2_per_day": 0.3402936037279093,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999706136307,
+      "predictor_rhs_m3_per_day": -0.24330990700660954,
+      "status": "CONVERGED",
+      "window_day": 0.0001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -8.97570906488454e-12,
+      "delta_qswap_iter_minus_loose_m_per_s": 3.5465457731095414e-17,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 2,
+        "failure_stage": "",
+        "head_m": -0.7149999475870601,
+        "q_gw_m_per_s": -2.065034148694843e-13,
+        "q_swap_m_per_s": -2.0643259805694928e-13,
+        "residual_m_per_s": 7.081681253501045e-17,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 10,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999475780844,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -2.1064849967214573e-14,
+        "q_swap_m_per_s": -2.0646806351468037e-13,
+        "residual_m_per_s": -1.854032135474658e-13,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.8979752625726699,
+      "predictor_hcof_m2_per_day": 0.3402936037279093,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999706136307,
+      "predictor_rhs_m3_per_day": -0.24330990700660954,
+      "status": "CONVERGED",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.0001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -2.0416335289041854e-11,
+      "delta_qswap_iter_minus_loose_m_per_s": 6.347802941723567e-17,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 3,
+        "failure_stage": "",
+        "head_m": -0.7149999598320912,
+        "q_gw_m_per_s": -1.2508692641359458e-13,
+        "q_swap_m_per_s": -1.2508691683716274e-13,
+        "residual_m_per_s": 9.576431838405927e-21,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 0.01,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999598116749,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -7.904160575798478e-14,
+        "q_swap_m_per_s": -1.2515039486657998e-13,
+        "residual_m_per_s": -4.61087891085952e-14,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.36842703658866394,
+      "predictor_hcof_m2_per_day": 0.2686106425118591,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999628383428,
+      "predictor_rhs_m3_per_day": -0.1920565917717727,
+      "status": "CONVERGED",
+      "window_day": 0.001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -2.600819559717138e-11,
+      "delta_qswap_iter_minus_loose_m_per_s": 8.085096378405488e-17,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 3,
+        "failure_stage": "",
+        "head_m": -0.7149999577928087,
+        "q_gw_m_per_s": -1.3142692727586136e-13,
+        "q_swap_m_per_s": -1.3142685569912753e-13,
+        "residual_m_per_s": 7.157673382844144e-20,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 0.1,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999577668005,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -7.268425605473279e-14,
+        "q_swap_m_per_s": -1.3150770666291158e-13,
+        "residual_m_per_s": -5.88234506081788e-14,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.4473004061956504,
+      "predictor_hcof_m2_per_day": 0.2686106425118591,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999628383428,
+      "predictor_rhs_m3_per_day": -0.1920565917717727,
+      "status": "CONVERGED",
+      "window_day": 0.001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -8.062706058353797e-11,
+      "delta_qswap_iter_minus_loose_m_per_s": 2.5062256796632176e-16,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 3,
+        "failure_stage": "",
+        "head_m": -0.7149999376914238,
+        "q_gw_m_per_s": -1.939216209808472e-13,
+        "q_swap_m_per_s": -1.9392048736785194e-13,
+        "residual_m_per_s": 1.1336129952506441e-18,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 1,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999376107967,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -1.002086338291402e-14,
+        "q_swap_m_per_s": -1.9417110993581826e-13,
+        "residual_m_per_s": -1.8415024655290425e-13,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.9483915841742557,
+      "predictor_hcof_m2_per_day": 0.2686106425118591,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999628383428,
+      "predictor_rhs_m3_per_day": -0.1920565917717727,
+      "status": "CONVERGED",
+      "window_day": 0.001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -5.425480065213151e-10,
+      "delta_qswap_iter_minus_loose_m_per_s": 1.686742309611683e-15,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 4,
+        "failure_stage": "",
+        "head_m": -0.7149997621251232,
+        "q_gw_m_per_s": -7.397422656425841e-13,
+        "q_swap_m_per_s": -7.397419258262016e-13,
+        "residual_m_per_s": 3.3981638247829797e-19,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 10,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149997615825752,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": 5.372367025269631e-13,
+        "q_swap_m_per_s": -7.414286681358133e-13,
+        "residual_m_per_s": -1.2786653706627764e-12,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 1.7245966140987594,
+      "predictor_hcof_m2_per_day": 0.2686106425118591,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999628383428,
+      "predictor_rhs_m3_per_day": -0.1920565917717727,
+      "status": "CONVERGED",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.001
+    },
+    {
+      "delta_h_iter_minus_loose_m": -2.866721304783937e-10,
+      "delta_qswap_iter_minus_loose_m_per_s": 3.9492586156053593e-16,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 3,
+        "failure_stage": "",
+        "head_m": -0.7149999282881432,
+        "q_gw_m_per_s": -1.196779566201834e-13,
+        "q_swap_m_per_s": -1.1967779204299655e-13,
+        "residual_m_per_s": 1.6457718685136003e-19,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 0.01,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.714999928001471,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -5.565587471342734e-14,
+        "q_swap_m_per_s": -1.2007271790455708e-13,
+        "residual_m_per_s": -6.441684319112975e-14,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.5364819279124934,
+      "predictor_hcof_m2_per_day": 0.119027208545508,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999311459918,
+      "predictor_rhs_m3_per_day": -0.08510444073158673,
+      "status": "CONVERGED",
+      "window_day": 0.01
+    },
+    {
+      "delta_h_iter_minus_loose_m": -5.287326132474846e-10,
+      "delta_qswap_iter_minus_loose_m_per_s": 7.283988227395009e-16,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 3,
+        "failure_stage": "",
+        "head_m": -0.7149999082400603,
+        "q_gw_m_per_s": -1.4729768411293805e-13,
+        "q_swap_m_per_s": -1.4729662261946508e-13,
+        "residual_m_per_s": 1.0614934729662385e-18,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 0.1,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149999077113277,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": -2.7703570051422027e-14,
+        "q_swap_m_per_s": -1.4802502144220458e-13,
+        "residual_m_per_s": -1.2032145139078257e-13,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 0.8128453569436658,
+      "predictor_hcof_m2_per_day": 0.119027208545508,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999311459918,
+      "predictor_rhs_m3_per_day": -0.08510444073158673,
+      "status": "CONVERGED",
+      "window_day": 0.01
+    },
+    {
+      "delta_h_iter_minus_loose_m": -2.5728081887166354e-9,
+      "delta_qswap_iter_minus_loose_m_per_s": 3.5443741563122816e-15,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 4,
+        "failure_stage": "",
+        "head_m": -0.7149997332027349,
+        "q_gw_m_per_s": -3.8843332341118955e-13,
+        "q_swap_m_per_s": -3.8843323175663766e-13,
+        "residual_m_per_s": 9.165455188604947e-20,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 1,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149997306299267,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": 2.1624903240904832e-13,
+        "q_swap_m_per_s": -3.9197760591294995e-13,
+        "residual_m_per_s": -6.082266383219982e-13,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 1.5516872115828797,
+      "predictor_hcof_m2_per_day": 0.119027208545508,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999311459918,
+      "predictor_rhs_m3_per_day": -0.08510444073158673,
+      "status": "CONVERGED",
+      "window_day": 0.01
+    },
+    {
+      "delta_h_iter_minus_loose_m": -5.549886994415942e-9,
+      "delta_qswap_iter_minus_loose_m_per_s": 1.924233663354988e-14,
+      "failure_stage": "",
+      "iterative": {
+        "coupling_outer_iterations": 5,
+        "failure_stage": "",
+        "head_m": -0.7149990101427882,
+        "q_gw_m_per_s": -1.5677223435644935e-12,
+        "q_swap_m_per_s": -1.5677223389673607e-12,
+        "residual_m_per_s": 4.5971327927039195e-21,
+        "status": "CONVERGED"
+      },
+      "k_m_per_day": 10,
+      "loose": {
+        "failure_stage": "",
+        "head_m": -0.7149990045929012,
+        "modflow_iterations": 2,
+        "q_gw_m_per_s": 1.2164592227687366e-12,
+        "q_swap_m_per_s": -1.5869646756009106e-12,
+        "residual_m_per_s": -2.8034238983696472e-12,
+        "status": "OK"
+      },
+      "loose_relative_flux_mismatch": 1.766532010114289,
+      "predictor_hcof_m2_per_day": 0.119027208545508,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "predictor_reference_head_m": -0.7149999311459918,
+      "predictor_rhs_m3_per_day": -0.08510444073158673,
+      "status": "CONVERGED",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.001,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.01,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.01,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 0.1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 1,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    },
+    {
+      "failure_stage": "swap-predictor",
+      "k_m_per_day": 10,
+      "message": "configured SWAP initialize failed: 1",
+      "predictor_qbot_cm_per_day": 0.1,
+      "status": "SWAP_PREDICTOR_UNAVAILABLE",
+      "window_day": 0.01
+    }
+  ]
+}
