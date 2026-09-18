@@ -94,25 +94,36 @@ def main():
 
                 admissible = True
                 if changed:
-                    admissible = (
-                        len(changed) == 1
-                        and abs(changed[0]["displacement"]) == 1
-                        and not changed[0]["exact_node_endpoint"]
-                        and result["domain_ok"]
-                        and result["envelope_ok"]
-                        and result["nonfinite_count"] == 0
-                        and result["abs_global_mass_residual_cm"] <= gate_f.MASS_TOL_CM
-                        and result["max_abs_cell_mass_residual_cm"] <= gate_f.MASS_TOL_CM
-                    )
+                    max_displacement = max(abs(x["displacement"]) for x in changed)
+                    exact_node_count = sum(x["exact_node_endpoint"] for x in changed)
+                    failure_causes = []
+                    if len(changed) != 1:
+                        failure_causes.append("MULTIPLE_COMPONENTS")
+                    if max_displacement > 1:
+                        failure_causes.append("NON_ADJACENT_CELL_DISPLACEMENT")
+                    if exact_node_count > 0:
+                        failure_causes.append("EXACT_NODE_ENDPOINT")
+                    if not result["domain_ok"]:
+                        failure_causes.append("CONSTITUTIVE_DOMAIN")
+                    if not result["envelope_ok"]:
+                        failure_causes.append("HEAD_ENVELOPE")
+                    if result["nonfinite_count"] != 0:
+                        failure_causes.append("NONFINITE")
+                    if result["abs_global_mass_residual_cm"] > gate_f.MASS_TOL_CM:
+                        failure_causes.append("GLOBAL_MASS_RESIDUAL")
+                    if result["max_abs_cell_mass_residual_cm"] > gate_f.MASS_TOL_CM:
+                        failure_causes.append("CELL_MASS_RESIDUAL")
+                    admissible = not failure_causes
                     route_rows.append({
                         "se": se,
                         "step_count": step_count,
                         "dt_day": dt,
                         "step_index": step_index,
                         "component_count": len(changed),
-                        "max_abs_cell_displacement": max(abs(x["displacement"]) for x in changed),
-                        "exact_node_endpoint_count": sum(x["exact_node_endpoint"] for x in changed),
+                        "max_abs_cell_displacement": max_displacement,
+                        "exact_node_endpoint_count": exact_node_count,
                         "admissible": admissible,
+                        "failure_causes": failure_causes,
                         "changes": changed,
                     })
 
@@ -134,7 +145,11 @@ def main():
     by_se = Counter(f"{r['se']:.2f}" for r in inadmissible)
     by_step = Counter(str(r["step_count"]) for r in inadmissible)
     by_pair = Counter(f"Se={r['se']:.2f}|steps={r['step_count']}" for r in inadmissible)
+    by_cause = Counter(cause for r in inadmissible for cause in r["failure_causes"])
     production_relevant = [r for r in inadmissible if r["step_count"] in (8, 16)]
+    production_by_cause = Counter(
+        cause for r in production_relevant for cause in r["failure_causes"]
+    )
 
     result = {
         "schema_version": 1,
@@ -156,7 +171,9 @@ def main():
         "inadmissible_by_Se": dict(sorted(by_se.items())),
         "inadmissible_by_step_count": dict(sorted(by_step.items(), key=lambda kv: int(kv[0]))),
         "inadmissible_by_Se_and_step_count": dict(sorted(by_pair.items())),
+        "inadmissible_by_cause": dict(sorted(by_cause.items())),
         "production_relevant_inadmissible_count": len(production_relevant),
+        "production_relevant_inadmissible_by_cause": dict(sorted(production_by_cause.items())),
         "production_relevant_step_counts": [8, 16],
         "production_relevant_failure": bool(production_relevant),
         "max_transitioning_components": max((r["component_count"] for r in route_rows), default=0),
@@ -184,6 +201,8 @@ def main():
         "production_relevant_inadmissible": len(production_relevant),
         "by_se": result["inadmissible_by_Se"],
         "by_step": result["inadmissible_by_step_count"],
+        "by_cause": result["inadmissible_by_cause"],
+        "production_by_cause": result["production_relevant_inadmissible_by_cause"],
         "max_components": result["max_transitioning_components"],
         "max_displacement": result["max_abs_cell_displacement"],
         "verdict": result["verdict"],
