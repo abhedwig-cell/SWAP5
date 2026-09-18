@@ -19,6 +19,11 @@ grep -Fq 'ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION = 0.02_real64' "$MODEL_BINDING
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   src/transaction/mod_transaction_reference.f90
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+  src/runtime/mod_a23bu_worker_execution_context.f90
+  src/transaction/mod_accepted_trajectory_directional_publication.f90
+  src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
