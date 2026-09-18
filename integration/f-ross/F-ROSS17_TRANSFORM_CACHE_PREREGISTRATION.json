@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.f-ross17.rossfast-transform-cache.v1",
+  "workunit": "F-ROSS17",
+  "phase": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "branch": "work/f-ross17-rossfast-transform-cache",
+  "source_head": "79d30219d484acfadde0a22484ca6305a541d868",
+  "purpose": "Reduce repeated RossFast state/table transformation work while preserving the existing 24-candidate-step coarse-plus-two-half temporal-certificate algorithm.",
+  "motivation": {
+    "f_ross15_current_rossfast_over_reference_cpu_ratio": 2.9962146695714627,
+    "f_ross16_rossfast_over_reference_linear_solve_ratio": 6.171428571428572,
+    "f_ross16d1_candidate_step_fraction_of_solver_instructions": 0.9554209675818706,
+    "f_ross16d1_combined_capacity_table_head_structural_fraction": 0.8356164867326554
+  },
+  "locked_authorities": {
+    "baseline_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "solver_binding_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "f_ross15_result_blob": "8c0224960999ce523fb04c592ddc999c35697862",
+    "f_ross16_result_blob": "94c3f9286220f784f41caa9271cdb3b3166af3ce",
+    "f_ross16d1_result_blob": "426607df7b5542a4e839de57af1c6ade75013297",
+    "f_ross15_harness_blob": "d9e2cb15317f0c8e19ea4a029c6c6a19d98d03b5"
+  },
+  "allowed_production_mutation": [
+    "src/solver/mod_rossfast_d3r_table_kernel.f90"
+  ],
+  "forbidden_mutation": [
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+    "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+    "reference/**",
+    "assets/rossfast/**",
+    "solver tolerances",
+    "CERTIFICATE_INTERNAL_SUBSTEPS",
+    "coarse-plus-two-half certificate topology"
+  ],
+  "optimization_design": {
+    "candidate_steps_per_solver_call": 24,
+    "certificate_internal_substeps": 8,
+    "accepted_candidate": "unchanged refined two-half trajectory",
+    "changes": [
+      "Precompute one table coordinate per node and reuse it across adjacent faces instead of evaluating log10 independently for each face endpoint.",
+      "Fuse theta-to-head inversion with next-state inverse-capacity and table-coordinate materialization so the same inversion intermediates provide head and dh/dtheta for the next candidate step.",
+      "Keep the initial-state cache derived from the existing head-based inverse_capacity implementation; no external ABI/state field is added."
+    ],
+    "mathematical_identity_for_fused_inverse_capacity": "For s=(theta-theta_r)/(theta_s-theta_r), A=s^(-1/m)-1 and B=A^(1/n), h=-B/alpha and dh/dtheta=(B/A)*(s^(-1/m)/s)/(alpha*n*m*(theta_s-theta_r)).",
+    "expected_dynamic_transform_reduction": {
+      "pow_calls_per_solver_baseline_lower_bound": 1920,
+      "pow_calls_per_solver_candidate_approx": 912,
+      "log10_calls_per_solver_baseline": 720,
+      "log10_calls_per_solver_candidate_approx": 432,
+      "linear_solves_per_solver": 24
+    }
+  },
+  "qualification_domain": {
+    "cases": 36,
+    "same_as": "PUB-P2E10 paired-valid E0 domain used by F-ROSS15/F-ROSS16",
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.98],
+    "forcing": ["DRYING","NOMINAL"],
+    "step_duration_day": 0.0016
+  },
+  "scientific_gates": {
+    "all_36_candidate_cases_converged": true,
+    "route": "rossfast-d3r",
+    "linear_solves_exactly_24": true,
+    "internal_retries_zero": true,
+    "alternative_solver_calls_zero": true,
+    "mass_residual": "same hard RossFast mass tolerance",
+    "candidate_vs_reference": "must remain within the existing PUB-P2E10 thresholds for every case",
+    "candidate_vs_baseline": {
+      "head_inf_max": "max(1e-8 cm, 0.01 * corresponding PUB-P2E10 head-inf threshold)",
+      "theta_inf_max": "max(1e-12, 0.01 * corresponding PUB-P2E10 theta-inf threshold)",
+      "storage_abs_max_cm": "1e-11",
+      "temporal_indicator_relative_max": "1e-8"
+    }
+  },
+  "performance_screen": {
+    "compiler": "GNU Fortran -O2",
+    "baseline_source": "extract immutable source_head kernel into a separate build directory",
+    "candidate_source": "branch HEAD kernel",
+    "case_count": 36,
+    "warmup_runs_per_variant": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_case": 200,
+    "pair_order": "alternating baseline-candidate then candidate-baseline",
+    "primary_metric": "Fortran CPU_TIME around RossFast solve calls only",
+    "minimum_resolution_rule": "2 * paired_stdev / sqrt(n)",
+    "target_resolution_relative": 0.05,
+    "screening_success_threshold": "candidate mean paired relative delta < -max(MDE,0.10)",
+    "formal_production_performance_claim": false
+  },
+  "admission_rule": "Do not production-admit from performance alone. Scientific gates must pass first. A resolved hosted-runner improvement is screening evidence; formal performance qualification remains subject to the repository MP host policy.",
+  "negative_result_policy": "If scientific drift exceeds gates or speed gain is unresolved/small, close without broadening scope. Do not change substeps or certificate topology inside F-ROSS17.",
+  "next_permitted_action": "Implement only the declared transform-cache optimization in the table kernel, then run paired scientific and performance qualification."
+}
