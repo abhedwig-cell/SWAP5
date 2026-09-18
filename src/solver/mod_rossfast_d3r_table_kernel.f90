@@ -25,6 +25,13 @@ module mod_rossfast_d3r_table_kernel
     real(real64) :: dq_dtheta_lower = 0.0_real64
   end type face_linearization_t
 
+  type :: node_transform_cache_t
+    real(real64) :: inv_capacity(ROSSFAST_D3R_N_CELLS) = 0.0_real64
+    integer :: table_index(ROSSFAST_D3R_N_CELLS) = 0
+    real(real64) :: table_fraction(ROSSFAST_D3R_N_CELLS) = 0.0_real64
+    logical :: valid = .false.
+  end type node_transform_cache_t
+
   type, extends(rossfast_d3r_trial_kernel_t), public :: rossfast_d3r_table_kernel_t
     private
     type(rossfast_d3r_material_t) :: material
@@ -164,29 +171,36 @@ contains
     logical, intent(out) :: ok
     real(real64) :: dt
     integer :: istep
+    type(node_transform_cache_t) :: cache
+    logical :: refresh_cache
 
     ok = .false.
     linear_solves = 0
     if (.not. valid_state(initial_state)) return
     if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64) return
     terminal_state = initial_state
+    call build_node_cache_from_head(terminal_state, material, cache, ok)
+    if (.not. ok) return
     dt = duration / real(CERTIFICATE_INTERNAL_SUBSTEPS, real64)
     if (.not. ieee_is_finite(dt) .or. dt <= 0.0_real64) return
 
     do istep = 1, CERTIFICATE_INTERNAL_SUBSTEPS
-      call candidate_step(self, material, forcing, terminal_state, dt, ok)
+      refresh_cache = istep < CERTIFICATE_INTERNAL_SUBSTEPS
+      call candidate_step(self, material, forcing, terminal_state, cache, dt, refresh_cache, ok)
       if (.not. ok) return
       linear_solves = linear_solves + 1
     end do
     ok = .true.
   end subroutine run_window
 
-  subroutine candidate_step(self, material, forcing, state, dt, ok)
+  subroutine candidate_step(self, material, forcing, state, cache, dt, refresh_cache, ok)
     class(rossfast_d3r_table_kernel_t), intent(in) :: self
     type(rossfast_d3r_material_t), intent(in) :: material
     type(rossfast_d3r_forcing_t), intent(in) :: forcing
     type(rossfast_d3r_state_t), intent(inout) :: state
+    type(node_transform_cache_t), intent(inout) :: cache
     real(real64), intent(in) :: dt
+    logical, intent(in) :: refresh_cache
     logical, intent(out) :: ok
     type(face_linearization_t) :: faces(ROSSFAST_D3R_N_CELLS - 1)
     real(real64) :: lower(ROSSFAST_D3R_N_CELLS - 1)
@@ -194,22 +208,20 @@ contains
     real(real64) :: upper(ROSSFAST_D3R_N_CELLS - 1)
     real(real64) :: rhs(ROSSFAST_D3R_N_CELLS)
     real(real64) :: delta(ROSSFAST_D3R_N_CELLS)
-    real(real64) :: inv_capacity(ROSSFAST_D3R_N_CELLS)
     real(real64) :: q_top, q_bottom_down, fac, linfac
     integer :: i
     logical :: face_ok, solve_ok
 
     ok = .false.
     if (.not. valid_state(state)) return
+    if (.not. cache%valid) return
     if (.not. ieee_is_finite(dt) .or. dt <= 0.0_real64) return
 
-    do i = 1, ROSSFAST_D3R_N_CELLS
-      inv_capacity(i) = inverse_capacity(state%pressure_head_cm(i), material, face_ok)
-      if (.not. face_ok) return
-    end do
     do i = 1, ROSSFAST_D3R_N_CELLS - 1
-      call table_face_linearization(self, state%pressure_head_cm(i), state%pressure_head_cm(i + 1), &
-           inv_capacity(i), inv_capacity(i + 1), faces(i), face_ok)
+      call table_face_linearization_cached(self, state%pressure_head_cm(i), state%pressure_head_cm(i + 1), &
+           cache%inv_capacity(i), cache%inv_capacity(i + 1), &
+           cache%table_index(i), cache%table_index(i + 1), &
+           cache%table_fraction(i), cache%table_fraction(i + 1), faces(i), face_ok)
       if (.not. face_ok) return
     end do
 
@@ -243,23 +255,130 @@ contains
     if (.not. all(ieee_is_finite(delta))) return
 
     state%water_content = state%water_content + delta
-    do i = 1, ROSSFAST_D3R_N_CELLS
-      state%pressure_head_cm(i) = head_from_water_content(state%water_content(i), material, face_ok)
-      if (.not. face_ok) return
-    end do
+    call update_state_and_cache_from_water_content(state, material, cache, refresh_cache, face_ok)
+    if (.not. face_ok) return
     if (.not. valid_state(state)) return
     ok = .true.
   end subroutine candidate_step
 
-  subroutine table_face_linearization(self, h_upper, h_lower, inv_capacity_upper, inv_capacity_lower, face, ok)
+  subroutine build_node_cache_from_head(state, material, cache, ok)
+    type(rossfast_d3r_state_t), intent(in) :: state
+    type(rossfast_d3r_material_t), intent(in) :: material
+    type(node_transform_cache_t), intent(out) :: cache
+    logical, intent(out) :: ok
+    logical :: node_ok
+    integer :: i
+
+    cache = node_transform_cache_t()
+    ok = .false.
+    if (.not. valid_state(state)) return
+    do i = 1, ROSSFAST_D3R_N_CELLS
+      cache%inv_capacity(i) = inverse_capacity(state%pressure_head_cm(i), material, node_ok)
+      if (.not. node_ok) return
+      call table_coordinate_from_head(state%pressure_head_cm(i), cache%table_index(i), &
+           cache%table_fraction(i), node_ok)
+      if (.not. node_ok) return
+    end do
+    cache%valid = .true.
+    ok = .true.
+  end subroutine build_node_cache_from_head
+
+  subroutine update_state_and_cache_from_water_content(state, material, cache, refresh_cache, ok)
+    type(rossfast_d3r_state_t), intent(inout) :: state
+    type(rossfast_d3r_material_t), intent(in) :: material
+    type(node_transform_cache_t), intent(inout) :: cache
+    logical, intent(in) :: refresh_cache
+    logical, intent(out) :: ok
+    logical :: node_ok
+    integer :: i
+
+    ok = .false.
+    cache%valid = .false.
+    if (.not. allocated(state%pressure_head_cm) .or. .not. allocated(state%water_content)) return
+    do i = 1, ROSSFAST_D3R_N_CELLS
+      if (refresh_cache) then
+        call head_and_cache_from_water_content(state%water_content(i), material, &
+             state%pressure_head_cm(i), cache%inv_capacity(i), cache%table_index(i), &
+             cache%table_fraction(i), node_ok)
+      else
+        state%pressure_head_cm(i) = head_from_water_content(state%water_content(i), material, node_ok)
+      end if
+      if (.not. node_ok) return
+    end do
+    cache%valid = refresh_cache
+    ok = .true.
+  end subroutine update_state_and_cache_from_water_content
+
+  subroutine table_coordinate_from_head(head_cm, table_index, table_fraction, ok)
+    real(real64), intent(in) :: head_cm
+    integer, intent(out) :: table_index
+    real(real64), intent(out) :: table_fraction
+    logical, intent(out) :: ok
+    real(real64) :: u, x
+
+    table_index = 0
+    table_fraction = 0.0_real64
+    ok = .false.
+    if (.not. ieee_is_finite(head_cm)) return
+    if (head_cm <= ROSSFAST_D3R_H_MIN_CM .or. head_cm >= ROSSFAST_D3R_H_MAX_CM) return
+    u = log10(-head_cm)
+    x = TABLE_DXDU * u
+    table_index = floor(x)
+    table_index = min(ROSSFAST_D3R_TABLE_N - 2, max(0, table_index))
+    table_fraction = x - real(table_index, real64)
+    if (table_fraction <= 0.0_real64 .or. table_fraction >= 1.0_real64) return
+    ok = .true.
+  end subroutine table_coordinate_from_head
+
+  subroutine head_and_cache_from_water_content(theta, material, head_cm, inv_capacity_value, &
+                                               table_index, table_fraction, ok)
+    real(real64), intent(in) :: theta
+    type(rossfast_d3r_material_t), intent(in) :: material
+    real(real64), intent(out) :: head_cm, inv_capacity_value
+    integer, intent(out) :: table_index
+    real(real64), intent(out) :: table_fraction
+    logical, intent(out) :: ok
+    real(real64) :: span, s, m, s_power, shape, root
+    logical :: coordinate_ok
+
+    head_cm = 0.0_real64
+    inv_capacity_value = 0.0_real64
+    table_index = 0
+    table_fraction = 0.0_real64
+    ok = .false.
+    span = material%theta_s - material%theta_r
+    if (.not. ieee_is_finite(theta) .or. .not. ieee_is_finite(span) .or. span <= 0.0_real64) return
+    s = (theta - material%theta_r) / span
+    if (s <= 0.0_real64 .or. s >= 1.0_real64) return
+    m = 1.0_real64 - 1.0_real64 / material%n
+    if (.not. ieee_is_finite(m) .or. m <= 0.0_real64) return
+    s_power = s**(-1.0_real64 / m)
+    shape = s_power - 1.0_real64
+    if (.not. ieee_is_finite(shape) .or. shape <= 0.0_real64) return
+    root = shape**(1.0_real64 / material%n)
+    head_cm = -root / material%alpha_per_cm
+    if (.not. ieee_is_finite(head_cm)) return
+    if (head_cm <= ROSSFAST_D3R_H_MIN_CM .or. head_cm >= ROSSFAST_D3R_H_MAX_CM) return
+
+    inv_capacity_value = (root / shape) * (s_power / s) / &
+         (material%alpha_per_cm * material%n * m * span)
+    if (.not. ieee_is_finite(inv_capacity_value) .or. inv_capacity_value <= 0.0_real64) return
+
+    call table_coordinate_from_head(head_cm, table_index, table_fraction, coordinate_ok)
+    if (.not. coordinate_ok) return
+    ok = .true.
+  end subroutine head_and_cache_from_water_content
+
+  subroutine table_face_linearization_cached(self, h_upper, h_lower, inv_capacity_upper, inv_capacity_lower, &
+                                              i_upper, i_lower, f_upper, f_lower, face, ok)
     class(rossfast_d3r_table_kernel_t), intent(in) :: self
     real(real64), intent(in) :: h_upper, h_lower, inv_capacity_upper, inv_capacity_lower
+    integer, intent(in) :: i_upper, i_lower
+    real(real64), intent(in) :: f_upper, f_lower
     type(face_linearization_t), intent(out) :: face
     logical, intent(out) :: ok
-    real(real64) :: u_upper, u_lower, x_upper, x_lower, f_upper, f_lower
     real(real64) :: l00, l10, l01, l11, ell, dell_du_upper, dell_du_lower
     real(real64) :: mobility, driving, dq_dh_upper, dq_dh_lower
-    integer :: i_upper, i_lower
 
     face = face_linearization_t()
     ok = .false.
@@ -267,18 +386,9 @@ contains
     if (h_upper <= ROSSFAST_D3R_H_MIN_CM .or. h_upper >= ROSSFAST_D3R_H_MAX_CM) return
     if (h_lower <= ROSSFAST_D3R_H_MIN_CM .or. h_lower >= ROSSFAST_D3R_H_MAX_CM) return
 
-    u_upper = log10(-h_upper)
-    u_lower = log10(-h_lower)
-    x_upper = TABLE_DXDU * u_upper
-    x_lower = TABLE_DXDU * u_lower
-    i_upper = floor(x_upper)
-    i_lower = floor(x_lower)
-    i_upper = min(ROSSFAST_D3R_TABLE_N - 2, max(0, i_upper))
-    i_lower = min(ROSSFAST_D3R_TABLE_N - 2, max(0, i_lower))
-    f_upper = x_upper - real(i_upper, real64)
-    f_lower = x_lower - real(i_lower, real64)
-
-    ! J1A's admitted analytic face derivative is strict-cell-interior only.
+    ! J1A's admitted analytic face derivative remains strict-cell-interior.
+    if (i_upper < 0 .or. i_upper > ROSSFAST_D3R_TABLE_N - 2) return
+    if (i_lower < 0 .or. i_lower > ROSSFAST_D3R_TABLE_N - 2) return
     if (f_upper <= 0.0_real64 .or. f_upper >= 1.0_real64) return
     if (f_lower <= 0.0_real64 .or. f_lower >= 1.0_real64) return
 
@@ -306,7 +416,7 @@ contains
         .not. ieee_is_finite(face%dq_dtheta_upper) .or. &
         .not. ieee_is_finite(face%dq_dtheta_lower)) return
     ok = .true.
-  end subroutine table_face_linearization
+  end subroutine table_face_linearization_cached
 
   real(real64) function inverse_capacity(head_cm, material, ok) result(value)
     real(real64), intent(in) :: head_cm
