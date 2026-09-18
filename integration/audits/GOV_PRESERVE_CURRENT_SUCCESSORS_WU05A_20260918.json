@@ -30,7 +30,9 @@
     {
       "gate": ".github/workflows/fci51-wof43a-current-canonical-admission.yml",
       "failure": "Closed F-CI51 workflow was triggered by unrelated tests/fvq files through broad tests/fvq/** path filter.",
-      "repair": "Narrow PR trigger to the exact F-VQ37/F-WOF43A test files already named by the F-CI51 gate."
+      "repair": "Narrow PR trigger to the exact F-VQ37/F-WOF43A test files. Additionally make the frozen historical F-CI51 gate lineage-aware: after the separately closed F-CI51P moving authority is an ancestor, preserve only the exact admitted provider/dependency blobs and do not reinterpret later canonical deltas as the original recomposition.",
+      "supporting_gate": "tests/fci/run_fci51_wof43a_current_canonical_gate.sh",
+      "moving_authority_base": "afe253164ddff55ce3a362277a43878d733057d3"
     }
   ],
   "prohibited_changes": {
