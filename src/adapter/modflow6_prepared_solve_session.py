@@ -20,6 +20,7 @@ class PreparedSolveStatus(IntEnum):
     ACCEPTED_ORIGIN_DRIFT = 9
     SESSION_INVALID = 10
     ALREADY_FINALIZED = 11
+    SOLVE_ITERATION_LIMIT = 12
 
 
 @dataclass(frozen=True)
@@ -71,6 +72,7 @@ class Modflow6PreparedSolveSession:
         self.finalized = False
         self.invalid = False
         self.iteration_count = 0
+        self.max_solve_iterations = 0
         self.last_error = ""
         self.last_publisher_status: int | None = None
 
@@ -131,6 +133,14 @@ class Modflow6PreparedSolveSession:
             if self.head.shape != self.xold.shape:
                 raise ValueError("X and XOLD shapes differ")
             self.accepted_xold = self.xold.copy()
+            max_iter_address = self.kernel.get_var_address(
+                "MXITER", f"SLN_{self.solution_id}"
+            )
+            max_iter_view = self.kernel.get_value_ptr(max_iter_address)
+            self._require_array("MXITER", max_iter_view, np.dtype(np.int32), 1)
+            self.max_solve_iterations = int(max_iter_view[0])
+            if self.max_solve_iterations <= 0:
+                raise ValueError("MODFLOW MXITER must be positive")
         except Exception as exc:
             self.last_error = str(exc)
             self._invalidate()
@@ -164,6 +174,14 @@ class Modflow6PreparedSolveSession:
         assert self.head is not None
         assert self.xold is not None
         assert self.accepted_xold is not None
+
+        if self.iteration_count >= self.max_solve_iterations:
+            self.last_error = (
+                "prepared solve reached MODFLOW MXITER="
+                f"{self.max_solve_iterations}; refusing out-of-envelope solve"
+            )
+            self._invalidate()
+            return PreparedSolveStatus.SOLVE_ITERATION_LIMIT, None
 
         try:
             publisher_status = int(
