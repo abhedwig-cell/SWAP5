@@ -4,7 +4,7 @@
   "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "state": "LOCAL_CI_FAILURE_REPAIRED_INDEPENDENT_GREEN_LIVE_RERUN_QUEUED",
+  "state": "FAILED_LIVE_GUARD_RECONCILED_RERUN_AND_INDEPENDENT_QUEUED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
@@ -53,7 +53,7 @@
     "runtime finite-difference tangent fallback"
   ],
   "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
-  "next_permitted_action": "Consume F-GC41 owner rerun and F-VQ113 final result. If both green, create admission authority/gate and promote only after current canonical reconciliation. If owner live job fails, inspect and repair only that job.",
+  "next_permitted_action": "Inspect owner and F-VQ113 exact-head results. If both owner jobs and independent verifier pass, create admission gate/checkpoint and reconcile canonical delta before non-force admission.",
   "modflow_semantics": {
     "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
     "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
@@ -91,7 +91,7 @@
     "do not reuse candidate revision, ledger generation, XMI pointer views or prepared-solve session identity"
   ],
   "remaining_blocker": "Production implementation must expose or prove non-mutating readiness/preflight seams for retained SWAP candidate and MODFLOW timestep finalization before irreversible call ordering is admitted.",
-  "verdict": "QUALIFICATION_IN_PROGRESS_AFTER_SURGICAL_GUARD_REPAIR",
+  "verdict": "QUALIFICATION_RERUN_PENDING",
   "mutations": "metadata only",
   "production_delta": [
     "src/adapter/modflow6_prepared_solve_session.py: non-mutating timestep_ready_for_finalize()",
@@ -140,5 +140,27 @@
       "deterministic": 105572368622
     },
     "state": "queued"
+  },
+  "failure_analysis": {
+    "run": 35335417012,
+    "deterministic": "PASS",
+    "live_modflow": "FAIL before model execution",
+    "cause": "F-GC38 static source guard still forbade finalize_time_step( after F-GC41 deliberately introduced the narrow publication seam",
+    "classification": "qualification guard drift, not MODFLOW numerical/scientific failure",
+    "repair_commit": "b632eb45b0ef5558b75d3e7b3957c4ed03bd2bde"
+  },
+  "current_runs": {
+    "owner": {
+      "id": 35336641796,
+      "deterministic_job": 105572894840,
+      "live_modflow_job": 105572895084,
+      "status": "queued"
+    },
+    "independent": {
+      "name": "F-VQ113 F-GC41 independent qualification",
+      "id": 35336641845,
+      "job": 105572895070,
+      "status": "queued"
+    }
   }
 }
