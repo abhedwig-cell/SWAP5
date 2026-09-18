@@ -173,7 +173,9 @@ contains
          result,candidate,diagnostics)
     observation=backend%observation()
 
-    step_ok=result%status==KERNEL_REFERENCE_FLOOR_STATUS_OK .and. result%sample_valid .and. candidate%ready()
+    step_ok=result%status==KERNEL_REFERENCE_FLOOR_STATUS_OK .and. result%sample_valid .and. candidate%ready() .and. &
+         result%physical_advances==1 .and. result%internal_retries==0 .and. diagnostics%retries==0 .and. &
+         diagnostics%trial_rollbacks==0
     if(.not.step_ok) then
       write(*,'(*(g0))') 'F_ROM0TA3_SAMPLE_REJECT|PHASE=',trim(phase),'|STEP=',local_step,'|T0=',a,'|T1=',b, &
            '|STATUS=',result%status,'|SAMPLE_VALID=',result%sample_valid,'|PHYSICAL_ADVANCES=',result%physical_advances, &
@@ -188,8 +190,6 @@ contains
     call require(result%physical_advances==1,'TA3 exactly one physical advance')
     call require(abs(result%accepted_dt-dt)<=64.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(dt)), &
          'TA3 exact requested dt')
-    call require(result%internal_retries==0,'TA3 no internal solver retries')
-    call require(diagnostics%retries==0 .and. diagnostics%trial_rollbacks==0,'TA3 no transaction retry or rollback')
     call require(result%mass%complete,'TA3 complete sample mass')
     call require(abs(result%mass%residual)<=hard_mass_gate,'TA3 hard mass gate')
     call require(observation%solver_executed,'TA3 Reference solver executed')
