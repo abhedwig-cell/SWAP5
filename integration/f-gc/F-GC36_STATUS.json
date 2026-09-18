@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC36",
+  "title": "Live MODFLOW6 F-GC34 Bridge Smoke Test",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_LIVE_REQUALIFICATION",
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "aadde02fc35e7bdaddb1604c6f8a7284f43db813",
+    "upstream_f_gc34": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_TYPED_API_BINDING",
+    "upstream_f_gc35": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_XMI_PACKAGE_ADAPTER",
+    "historical_owner_head": "b07d2eb72336e41dc92ed6fc1d0ae072cf9f23b8"
+  },
+  "production": {
+    "src/adapter/mod_modflow6_fgc34_c_bridge.f90": {
+      "donor_blob": "5c5577715c9c150f72de7bfccaf966cd72db5add",
+      "rematerialized_blob": "5c5577715c9c150f72de7bfccaf966cd72db5add",
+      "byte_identical": true
+    },
+    "src/adapter/modflow6_fgc34_ctypes_publisher.py": {
+      "donor_blob": "ccf16f446ae9aaab34dae6f432082d70569faad9",
+      "rematerialized_blob": "ccf16f446ae9aaab34dae6f432082d70569faad9",
+      "byte_identical": true
+    }
+  },
+  "external_dependencies": {
+    "modflow6": {
+      "release": "6.8.0",
+      "asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e"
+    },
+    "xmipy": {
+      "commit": "9769f8cd4bc6153c71bcc360f602a931b102d902"
+    },
+    "flopy": {
+      "commit": "1a783da6582f8203190a8d6b1d7a60659022afdb"
+    }
+  },
+  "qualification_plan": [
+    "official MODFLOW6 6.8.0 asset checksum",
+    "real Fortran F-GC34 C ABI symbol and shared bridge build",
+    "real F-GC34 fail-closed invalid binding with no package mutation",
+    "real xmipy XmiWrapper and live API package views",
+    "F-GC35 pointer refresh after prepare_time_step",
+    "live F-GC34 NODELIST/HCOF/RHS/NBOUND mutation",
+    "externally owned MODFLOW prepare/solve/finalize lifecycle",
+    "real MODFLOW solve convergence",
+    "analytical 1x3 head closure",
+    "live sign closure",
+    "production adapters own no solve lifecycle"
+  ],
+  "historical_evidence": {
+    "owner_head": "b07d2eb72336e41dc92ed6fc1d0ae072cf9f23b8",
+    "exact_head_run": 35288709270,
+    "conclusion": "success",
+    "note": "Current-canonical live replay remains mandatory even though production bridge blobs are byte-identical."
+  },
+  "exclusions": [
+    "production MODFLOW solve driver",
+    "SWAP predictor/corrector orchestration",
+    "production head exchange",
+    "prepared-solve iterative coupling",
+    "Ribasim",
+    "irrigation",
+    "performance/scaling",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run the exact current-canonical live MODFLOW6 F-GC36 gate. If green, checkpoint owner qualification and run an independent live F-VQ110 verifier before admission."
+}
