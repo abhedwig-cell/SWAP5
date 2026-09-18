@@ -1,0 +1,31 @@
+name: PPA-WU05 advanced water-process triage
+
+on:
+  pull_request:
+    paths:
+      - 'docs/audits/PPA_WU05_ADVANCED_WATER_PROCESS_TRIAGE.md'
+      - 'integration/audits/PPA_WU05_*.json'
+      - 'integration/audits/production_physics_application_envelope_gap_register.json'
+      - 'tests/fvq/validate_ppa_wu05_advanced_water_triage.py'
+      - '.github/workflows/ppa-wu05-advanced-water-process-triage.yml'
+  workflow_dispatch:
+
+jobs:
+  authority-triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate corrected source authority and zero source delta
+        run: python3 tests/fvq/validate_ppa_wu05_advanced_water_triage.py --mode authority
+
+  independent-triage:
+    needs: authority-triage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independently validate dependency graph and first target
+        run: python3 tests/fvq/validate_ppa_wu05_advanced_water_triage.py --mode independent
