@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.ppa_wu05a.status.v1",
+  "work_unit": "PPA-WU05-A",
+  "title": "Macropore source/state/mass/transaction authority",
+  "branch": "audit/ppa-wu05a-macropore-authority",
+  "reconcile_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+  "status": "CANONICAL_RECONCILED_PARTIAL_AUTHORITY_FINAL_QUALIFICATION_PENDING",
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "exact_authority": {
+    "snapshot": "B1.11",
+    "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "patch_authority": "SWAP-001 only"
+  },
+  "recovered_repository_evidence": {
+    "F_PE16": "f5e2a12fca96559645feb8d8cd591b600f765d8c",
+    "F_PE15": "f475e0e050abdc885c016929c2d528fe1f8f0545",
+    "F_SI15": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
+  },
+  "frozen_findings": {
+    "committed_history_candidate_fields": [
+      "ICpBtDm",
+      "SorpDmCp",
+      "ThtSrpRefDmCp",
+      "TimAbsCumDmCp",
+      "VlMpDmCp",
+      "WaUnMpDmCp",
+      "VlMpDyCp"
+    ],
+    "field_list_authority": "CORROBORATED_PRIOR_EVIDENCE_NOT_FINAL_B1_11_CENSUS",
+    "scratch_rule": "Recomputable macrorate/helper workspace is worker/job scratch, not checkpoint/restart state.",
+    "rollback_rule": "Every source-traced trial-mutable committed/history field must roll back atomically with the Richards interval.",
+    "mass_rule": "Internal matrix/macropore transfers cancel in whole-column mass; external water transfers have one accepted owner; rejected trials publish no accepted macropore mass receipt.",
+    "restart_rule": "Explicit optional macropore state layout required; scratch excluded; final schema held for exact source trace."
+  },
+  "blocker": {
+    "class": "EXACT_SOURCE_MATERIALIZATION_REQUIRED",
+    "description": "Current Git authority pins exact B1.11 identities but does not retain the complete macropore.f90/macrorate.f90 source bytes or original S12 patch payloads needed for a full cross-call mutable-field and mass-transfer census.",
+    "external_scientific_decision_required": false,
+    "production_implementation_permitted": false
+  },
+  "qualification": {
+    "state": "PASS",
+    "authority_workflow": "PPA-WU05-A macropore authority review",
+    "authority_run_id": 35398044562,
+    "authority_job_id": 105771272302,
+    "authority_conclusion": "success",
+    "documentation_run_id": 35398044520,
+    "documentation_conclusion": "success",
+    "canonical_qualification_run_id": 35398044469,
+    "canonical_jobs": "ALL_PASS",
+    "checks": [
+      "no src/ delta",
+      "no reference/ delta",
+      "exact B1.11 identities pinned",
+      "historical evidence remains corroboration rather than source oracle",
+      "seven-field list remains non-final",
+      "mass/rollback/restart invariants present",
+      "production implementation held",
+      "follow-on A1..A5 serialized correctly",
+      "broad frozen canonical authorities preserved"
+    ]
+  },
+  "production_admission": "NONE_REVIEW_ONLY",
+  "verdict": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
+  "next_action": "Require final PPA-WU05-A authority review, Documentation and broad F-CI qualification on the reconciled exact head. If green, canonically admit this review-only partial-authority checkpoint. Production macropore remains blocked until PPA-WU05-A1 byte-exact source materialization and census closes.",
+  "canonical_reconciliation": {
+    "prior_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+    "governance_repair_pr": 345,
+    "governance_repair_merge": "48de5d6b6515fc77ffe639768eaaf56aec392ac3",
+    "reconciliation_commit": "b0e6fae7f8dd4a76a2996f5729a0e5571bdb3752",
+    "content_delta_after_prior_qualified_head": "NONE_FOR_WU05A_SEVEN_FILE_REVIEW_SURFACE",
+    "production_overlap": "NONE",
+    "reference_overlap": "NONE"
+  }
+}
