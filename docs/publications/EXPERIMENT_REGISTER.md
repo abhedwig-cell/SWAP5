@@ -346,3 +346,24 @@ The register should describe readiness, not rewrite past chronology.
 - result receipt: `docs/publications/results/PUB-GC-NATIVE-TIME-0001.yaml`, introduced by commit `a7c89350305efc6019b469896782f4f91b5ba7e6`;
 - H2/H3 remain untested;
 - next permitted action: freeze a separate macro temporal-coordinate decision, requalify the research-only macro response under a new qualification ID, then preregister a new native-time study ID; do not overwrite or rerun NATIVE-TIME-0001 as though it had passed.
+
+
+### 2026-09-18T00:41:53Z — PUB-GC macro temporal coordinate requalified
+
+- triggering evidence: `PUB-GC-NATIVE-TIME-0001` validly returned `NO_POLICY_SELECTED` because the original research macro component rejected 16/32-contribution schedules on absolute-time accumulation closure;
+- frozen adjudication: `PUB-GC_MACRO_TIME_COORDINATE_ADJUDICATION.md`, commit `f81bd41ccb15dfb5567704db24784bd2f41b1280`;
+- frozen extension specification: `PUB-GC_MACRO_TIME_COORDINATE_EXTENSION_SPEC.md`, commit `b345b3e6b60797f82da05d0dd1a5c397a8bd56b9`;
+- frozen qualification manifest: `PUB-GC-MACRO-WINDOW-QUAL-0002`, commit `2f761eb45479fb3f2a837dbe93a068e6ebcdb3c5`;
+- qualified research head: `research/pub-gc-macro-time-coordinate@2fad7bb01f7d7d9b55dfca752efd02c502548389`;
+- execution: GitHub Actions run `35292229003`, job `105437336617`, conclusion `success`;
+- exact O0/O2 scientific-output identity: PASS; output SHA-256 `6fcef7fce1719b34882efec42274ef89ead7c2b48ccffbf2dc2f6aa27026e728`;
+- artifact `10526817119`, digest `sha256:e5ed6c4be318d88ee70fe4c65442e3794f1402d5350bea1dac6a612f615f6785`;
+- qualified blobs: module `0a9461368f536381ca23390b255f8c369cb1e474`, test `413964720df5f165ad680c3a55e7fa5fa6121219`, runner `8b05d857d8767cc1697592f0898789e74f760966`, workflow `823b5ca9d33cf8bdfe8395dd028b02d5d4f63e3e`;
+- existing Q0/Q1/Q2/Q3/Q5/failure-control oracles all remained PASS;
+- new Q8A 16-contribution closure PASS, maximum represented-duration deviation `5.09e-13 d`;
+- new Q8B 32-contribution closure PASS, maximum deviation `6.55e-13 d`;
+- new Q8C 32-contribution fixture shifted +10000 d in absolute time PASS, maximum deviation `1.16e-12 d`;
+- result receipt: `docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0002.yaml`, introduced by commit `fff5e8740e64d3664df32e1176ffefe2f9168a0a`;
+- admitted scope: research-only relative-elapsed scheduling with exact external `macro_t1` closure and explicit actual-duration telemetry;
+- H2/H3 remain untested;
+- next permitted action: freeze `PUB-GC-NATIVE-TIME-0002` with the **unchanged** N0-N3 ladder, five cases, tolerances and coarsest-passing rule from NATIVE-TIME-0001; only the macro-component dependency may change.
