@@ -1,0 +1,25 @@
+name: F-GC37 coupled predictor-corrector host
+
+on:
+  push:
+    branches:
+      - work/f-gc37-coupled-predictor-corrector-host
+    paths:
+      - 'src/adapter/coupled_predictor_corrector_host.py'
+      - 'tests/fgc/test_fgc37_coupled_predictor_corrector_host.py'
+      - 'tests/fgc/run_fgc37_coupled_predictor_corrector_host.sh'
+      - 'docs/integration/F-GC37_COUPLED_PREDICTOR_CORRECTOR_HOST.md'
+      - 'integration/f-gc/F-GC37_STATUS.json'
+      - '.github/workflows/f-gc37-coupled-predictor-corrector-host.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-GC37 coupled-host contract gate
+        run: bash tests/fgc/run_fgc37_coupled_predictor_corrector_host.sh
