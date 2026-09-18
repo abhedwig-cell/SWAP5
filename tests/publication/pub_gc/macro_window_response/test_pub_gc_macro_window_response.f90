@@ -132,8 +132,8 @@ contains
     explicit_sum = sum(macro%q_contribution_cm)
     call require(same_bits(macro%q_whole_cm,explicit_sum), 'Q2 whole explicit sum')
     call require(same_bits(macro%q_terminal_cm_per_day,macro%terminal_flux_cm_per_day(4)), 'Q2 final terminal identity')
-    call require(same_bits(macro%q_terminal_rectangle_cm,macro%q_terminal_cm_per_day*0.02_real64), &
-         'Q2 terminal rectangle identity')
+    call require(same_bits(macro%q_terminal_rectangle_cm, &
+         macro%q_terminal_cm_per_day*macro%macro_duration_day), 'Q2 terminal rectangle identity')
     call require(abs(macro%whole_minus_terminal_cm) > 1.0e-12_real64, 'Q2 frozen discrimination floor')
     call require(all(ieee_is_finite(macro%q_contribution_cm)), 'Q2 finite contributions')
     write(*,'(a,4(es26.17e3,1x))') 'PUB_GC_MACRO_Q2_CONTRIBUTIONS_CM=',macro%q_contribution_cm
