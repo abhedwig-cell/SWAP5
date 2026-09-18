@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.f-rom1.status.v2",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1",
+  "title": "Predictive state sufficiency",
+  "phase": "CLOSED_MATERIAL_SPECIFIC_ONLY",
+  "governing_authority": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "decision": "MATERIAL_SPECIFIC_ONLY",
+  "supersedes_interim_decision": "PROCEED_TO_ROM2_B01_SCOPE_ONLY",
+  "supersession_reason": "The governing ROM proposition requires transfer across the preregistered contrasting-material challenge before transition to ROM-2. No B01-only exception was preregistered.",
+  "B01": {
+    "reachable_state_library": "QUALIFIED_768_STATES_512_DISCOVERY_256_HELDOUT",
+    "nested_reduced_coordinates": "Z1_Z2_Z4_Z8_ALL_DISCOVERY_PREDICTIVELY_AMBIGUOUS",
+    "frozen_coordinate": "Z8_PLUS_G8",
+    "dimension": 9,
+    "discovery_state_separation": "PASS_ZERO_COLLISIONS",
+    "heldout_inclusive_state_separation": "PASS_ZERO_COLLISIONS",
+    "coordinate_retuned_from_heldout": false,
+    "state_sufficiency_gate": "PASS_WITHIN_B01_SCOPE",
+    "interpretation": "POSITIVE_MATERIAL_SPECIFIC_EVIDENCE_NOT_ROM2_TRANSITION_AUTHORITY"
+  },
+  "B14_transfer": {
+    "X1_state_separation": "NO_GO_351_COLLISIONS",
+    "X2_frozen_pair_count": 8,
+    "X2_probe_record_count": 192,
+    "X2_storage_predictive_ambiguity_records": 0,
+    "X2_maximum_ratio_to_frozen_storage_scale": 0.3,
+    "predictive_insufficiency_established": false,
+    "predictive_sufficiency_established": false,
+    "material_transfer_admitted": false,
+    "cross_material_transition_gate_passed": false,
+    "B14_driven_coordinate_enrichment_allowed": false
+  },
+  "ROM2": {
+    "authorized": false,
+    "reason": "CROSS_MATERIAL_TRANSFER_GATE_NOT_PASSED",
+    "B01_only_closure_under_current_proposition_allowed": false,
+    "new_proposition_or_capability_amendment_required_for_material_specific_closure": true
+  },
+  "production_rom_authorized": false,
+  "next_action": "STOP_ROM_TRACK_OR_OPEN_NEW_INDEPENDENTLY_GOVERNED_MATERIAL_SPECIFIC_PROPOSITION_AMENDMENT"
+}
