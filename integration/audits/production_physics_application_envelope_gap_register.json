@@ -575,11 +575,12 @@
       },
       "swap5_implementation_authority": [],
       "typed_input_config_authority": "No admitted typed production route found.",
-      "state_ownership": "Legacy option-specific state/feedback; not mapped into current admitted root owner.",
-      "transaction_status": "Outside qualified transaction envelope.",
+      "state_ownership": "Subfamily-specific and unresolved until source-bound reviews. Existing drought-only nodewise root_extraction_sink remains the single admitted root-water mass owner.",
+      "transaction_status": "Outside qualified transaction envelope for advanced subfamilies. Oxygen, compensation and alternative uptake models require separate source/state reviews; salinity, frost and macropore routes remain dependency-blocked.",
       "qualification_evidence": [
         "F-PM06 and F-CI31 explicit nonclaims",
-        "docs/verification/legacy-differences.md preserves oxygen-stress numerical fix only in B1"
+        "docs/verification/legacy-differences.md preserves oxygen-stress numerical fix only in B1",
+        "PPA-WU05 review run 35379607616: advanced-root subfamily decomposition and single root-sink ownership qualified"
       ],
       "production_admission": "NONE",
       "production_reachable": "NO",
@@ -589,9 +590,12 @@
       "scientific_risk": "HIGH",
       "use_relevance": "HIGH for some applications",
       "dependencies": [
-        "Root uptake ownership",
-        "Soil temperature/frost and solute state where applicable",
-        "Derivative coverage for coupling"
+        "Existing root uptake mass owner",
+        "PPA-WU05-C oxygen source/state/owner review",
+        "Solute state owner before salinity stress",
+        "Frost authority before frost stress",
+        "Macropore owner before macropore-related uptake",
+        "Separate nonlinear/sensitivity authority for SWKIMPL=1"
       ],
       "priority_band": "P2"
     },
@@ -939,11 +943,12 @@
       },
       "swap5_implementation_authority": [],
       "typed_input_config_authority": "No production macropore types/runtime route found in current canonical.",
-      "state_ownership": "Legacy macropore state not mapped into typed production owner.",
-      "transaction_status": "Outside current admitted transaction envelope.",
+      "state_ownership": "Not yet mapped into typed production owner. PPA-WU05 requires exact B1.11 macropore/macrorate lifecycle trace before any persistent-state field list is frozen.",
+      "transaction_status": "Outside current admitted transaction envelope. PPA-WU05-A must freeze persistent/candidate/result/scratch ownership, rollback, restart and internal/external mass transfer semantics before implementation.",
       "qualification_evidence": [
         "B1.11 includes SWAP-001 macropore array-shape correction",
-        "F-CI19/F-CI30 explicitly hold active macropore scope"
+        "F-CI19/F-CI30 explicitly hold active macropore scope",
+        "PPA-WU05 review run 35379607616: corrected B1.11 authority and migration dependency graph qualified"
       ],
       "production_admission": "NONE",
       "production_reachable": "NO",
@@ -953,11 +958,12 @@
       "scientific_risk": "HIGH",
       "use_relevance": "HIGH for structured soils",
       "dependencies": [
-        "State topology",
-        "Mass ledger",
-        "Root uptake interactions",
-        "Restart",
-        "Parallel execution"
+        "PPA-WU05-A exact source/state/mass/transaction authority",
+        "Dynamic top-boundary/infiltration composition as proven by source trace",
+        "Drainage interactions as proven by source trace",
+        "Root uptake interactions only after macropore owner admission",
+        "Restart optional-state topology",
+        "Parallel execution ownership"
       ],
       "priority_band": "P2"
     },
@@ -1053,15 +1059,18 @@
       },
       "swap5_implementation_authority": [],
       "typed_input_config_authority": "No admitted typed production frost/latent-heat route found.",
-      "state_ownership": "Would require coupled water/thermal phase state not present in current envelope.",
-      "transaction_status": "Outside admitted water/thermal transaction profile.",
+      "state_ownership": "Unresolved pending exact B1.11 frozencond/temperature source trace. Current sensible-temperature state does not establish frost persistence, recomputability, latent-heat or phase-change authority.",
+      "transaction_status": "Outside admitted water/thermal transaction profile; PPA-WU05 holds combined frost semantics until a separate source-bound review.",
       "qualification_evidence": [
-        "F-CI43/F-CI45 hard holds explicitly exclude frost and latent heat"
+        "F-CI43/F-CI45 hard holds explicitly exclude frost and latent heat",
+        "PPA-WU05 review run 35379607616: sensible-temperature/frost authority separation qualified"
       ],
       "production_admission": "NONE",
       "production_reachable": "NO",
       "restrictions": [
-        "Sensible temperature must not be mistaken for frost capability"
+        "Sensible temperature must not be mistaken for frost capability",
+        "No latent-heat or explicit phase-change claim follows from legacy frost provenance",
+        "Frost state/recomputability must not be inferred before exact source trace"
       ],
       "scientific_risk": "VERY_HIGH",
       "use_relevance": "MEDIUM",
@@ -1625,15 +1634,15 @@
     "scientific_review_first": [
       {
         "capability_id": "PPA-RWU-ADV",
-        "reason": "Multiple stateful stresses interact with root uptake, thermal/solute state and coupling derivative coverage."
+        "reason": "PPA-WU05 decomposed the family. Oxygen source/state review is the first root-stress authority slice; salinity/frost/macropore routes remain dependency-blocked."
       },
       {
         "capability_id": "PPA-MACRO",
-        "reason": "Large state/mass/restart/parallel surface and historical B1 defect evidence."
+        "reason": "PPA-WU05 closed the broad triage. Next bounded unit is PPA-WU05-A exact B1.11 source/state/mass/transaction authority; production migration remains held."
       },
       {
         "capability_id": "PPA-FROST",
-        "reason": "Requires water/thermal phase ownership and combined acceptance semantics."
+        "reason": "PPA-WU05 preserves strict separation from sensible heat. Exact legacy frost state/recomputability and hydraulic interfaces require a separate source-bound review."
       },
       {
         "capability_id": "PPA-TILL",
@@ -1786,7 +1795,12 @@
       "id": "PPA-WU05",
       "title": "Advanced water-process triage: macropore, frost and root-stress dependency graph",
       "goal": "Separate independent science questions from shared state/mass/restart semantics and choose the first high-use bounded migration target.",
-      "exit": "Evidence-backed sequencing and acceptance criteria, without physics migration."
+      "exit": "MET: repository-authoritative dependencies, source-trace prerequisites, acceptance boundaries and sequencing are frozen without physics migration.",
+      "status": "DEPENDENCY_GRAPH_AUTHORITY_FROZEN_CLOSED",
+      "qualification": "PPA-WU05 run 35379607616 PASS; Documentation 35379607553 PASS; F-CI canonical qualification 35379607550 PASS; zero src/reference mutation.",
+      "dependency_graph": "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+      "selected_first_target": "PPA-WU05-A exact B1.11 macropore source/state/mass/transaction authority review",
+      "production_admission": "NONE_TRIAGE_ONLY"
     }
   ],
   "post_audit_updates": [
@@ -1831,6 +1845,20 @@
       "state": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_CLOSED",
       "qualification": "Workflow 35377826442 authority/independent PASS",
       "effect": "Closes state/event/restart/rollback ambiguity for SWINTER=1/2 and SWREDU=1/2 without production admission. Four bounded implementation slices are frozen."
+    },
+    {
+      "workunit": "PPA-WU05",
+      "state": "DEPENDENCY_GRAPH_AUTHORITY_FROZEN_CLOSED",
+      "pull_request": 337,
+      "qualification": {
+        "owner_run": 35379607616,
+        "documentation_run": 35379607553,
+        "canonical_run": 35379607550
+      },
+      "production_delta": "NONE",
+      "reference_delta": "NONE",
+      "selected_first_target": "PPA-WU05-A macropore source/state/mass/transaction authority review",
+      "effect": "Advanced-water migration sequencing is frozen without production admission. Unsupported historical labels are not decision authority."
     }
   ]
 }
