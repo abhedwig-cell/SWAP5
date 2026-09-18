@@ -2,12 +2,14 @@
 
 ## Status
 
-**CONDITIONAL PUBLICATION CANDIDATE**
+**MANUSCRIPT PRIORITY HIGH / INDEPENDENT ACCELERATION NOVELTY CONDITIONAL**
 
-Default disposition:
+Current programme disposition:
 
-- results belong in **PUB-GC / COUPLE** unless the ACCELERATE-specific novelty gates below are passed;
-- do not treat ACCELERATE as an independently justified manuscript merely because F-GC30 exposes or uses a coupling response coefficient;
+- the broader solver-autonomous SWAP5-MODFLOW6 coupling paper is a **high-priority central manuscript**;
+- ACCELERATE is retained as a named hypothesis and experiment within that central coupling paper unless its information-value result later proves strong enough to justify an independent manuscript;
+- do not treat acceleration as independently novel merely because F-GC30 exposes or uses a coupling response coefficient;
+- see `PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md` for the broader publication assessment;
 - this document records research governance and does not change SWAP5 production code, coupling semantics or F-GC30 admission.
 
 Established from the literature and novelty review completed on 2026-09-18.
@@ -462,7 +464,7 @@ D. Methodologically new outside the application domain:
 
 Current disposition:
 
-> **Default to integration in PUB-GC unless RC-1 through RC-5 reveal a reproducible information-value regime in which fresh component-provided finite-window hydrological response outperforms state-of-the-art black-box multisecant learning after acquisition cost is included.**
+> **Use the ACCELERATE experiment inside the high-priority central coupling manuscript. Create a separate acceleration manuscript only if RC-1 through RC-5 reveal a reproducible, generalizable information-value regime in which fresh component-provided finite-window hydrological response outperforms state-of-the-art black-box multisecant learning after acquisition cost is included.**
 
 ## Candidate journals if the line survives
 
