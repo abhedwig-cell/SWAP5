@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.publication.p2e18d2-reference-retry-mechanism.v1",
+  "workunit": "PUB-P2E18D2",
+  "publication_owner": "PUB-SQ",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_RETRY_MECHANISM_DIAGNOSTIC",
+  "parent_diagnostic": {
+    "branch": "work/pub-p2e18d1-reference-balance-scaling-diagnostic",
+    "head": "2a1f0e23592573a520706758a37c031330a0d56d",
+    "result_path": "docs/publication/P2E18D1_REFERENCE_BALANCE_SCALING_DIAGNOSTIC_RESULT.json",
+    "result_blob": "__RESOLVE_ON_RUNNER__",
+    "verdict": "INVARIANT_BALANCE_SCALING_MATERIALLY_RESTORES_REFERENCE_REFINEMENT_BUT_IS_NOT_SUFFICIENT"
+  },
+  "purpose": "Identify which native HeadCalc convergence predicate remains active in the scaled-policy retry events after D1 materially restored refinement-route validity.",
+  "selection_basis": {
+    "observed_D1_anomalies": [
+      "B01, Se=0.65, DRYING",
+      "O18, Se=0.96, DRYING"
+    ],
+    "diagnostic_cross_controls": [
+      "B01, Se=0.96, DRYING",
+      "O18, Se=0.65, DRYING"
+    ],
+    "note": "This is outcome-informed mechanism diagnosis, not untouched confirmatory evidence."
+  },
+  "matrix": {
+    "materials": [
+      "B01",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.96
+    ],
+    "forcing": [
+      "DRYING"
+    ],
+    "physical_case_count": 4,
+    "equal_substep_counts": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "level_runs": 24,
+    "total_horizon_day": 0.0016
+  },
+  "numerical_policy": {
+    "inherited_from": "PUB-P2E18D1",
+    "invariant_integrated_balance_scale_cm": 1.6e-15,
+    "formula": "CritDevBalCp(dt) = CritDevBalTot(dt) = 1.6e-15 / dt",
+    "resulting_rate_tolerances_cm_per_day": {
+      "nsub_1": 1e-12,
+      "nsub_2": 2e-12,
+      "nsub_4": 4e-12,
+      "nsub_8": 8e-12,
+      "nsub_16": 1.6e-11,
+      "nsub_32": 3.2e-11
+    },
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "min_step_duration_day": 1e-8
+  },
+  "telemetry": {
+    "per_step": [
+      "solve status and route",
+      "nonlinear iterations and backtracking attempts",
+      "count(workspace.richards.nonconverged_balance)",
+      "count(workspace.richards.nonconverged_head)",
+      "max abs internal residual scratch",
+      "abs sum internal residual scratch",
+      "balance rate tolerance"
+    ],
+    "interpretation_rule": "Internal residual scratch and convergence flags are diagnostic implementation state. They are not accepted-state mass evidence when the solve returns retry."
+  },
+  "retry_classification": {
+    "BALANCE_ONLY": "nonconverged_balance_count > 0 and nonconverged_head_count == 0",
+    "HEAD_ONLY": "nonconverged_balance_count == 0 and nonconverged_head_count > 0",
+    "BOTH": "both counts > 0",
+    "OTHER": "retry with both counts == 0"
+  },
+  "hypotheses": {
+    "H_D2A": "If the remaining D1 retries are still balance-limited, at least one retry event has nonconverged_balance_count > 0.",
+    "H_D2B": "If head-change criteria now dominate after balance scaling, at least one retry event has nonconverged_head_count > 0 while nonconverged_balance_count == 0.",
+    "no_sufficiency_claim": "D2 diagnoses residual mechanisms only and cannot itself qualify REF-HIGH."
+  },
+  "forbidden": [
+    "No tolerance changes relative to D1",
+    "No RossFast numerical execution",
+    "No timing",
+    "No REF-HIGH stability qualification",
+    "No production source mutation",
+    "No use of D2 as untouched primary evidence"
+  ],
+  "next_action_rule": "Use the observed retry classification to decide whether a separately preregistered Reference construction can be scientifically justified. Do not relax the remaining criterion solely to obtain 36/36.",
+  "verdict": "PREREGISTERED_REFERENCE_RETRY_MECHANISM_DIAGNOSTIC_READY"
+}
