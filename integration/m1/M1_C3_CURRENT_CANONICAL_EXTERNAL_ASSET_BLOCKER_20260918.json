@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "CURRENT_CANONICAL_RECONCILE_EXTERNAL_ASSET_BLOCKER",
+  "capability": "M1 - Typed External Boundary",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "branch": "work/m1-c3-current-canonical-asset-blocker-20260918",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "71626be59b81d00a3fd6a5d5a561febe9b5023b8",
+    "reconciled_from_m1_c3_checkpoint_branch": "work/m1-c3-final-current-canonical",
+    "reconciled_checkpoint_head": "49cd8e4106e6c4b5b8bf6dd9eb707c97ab6405f1",
+    "controlling_prerequisite_head": "20d34024cfe4b981b6c00d5042bdf366f8aae830"
+  },
+  "dependency_reconcile": {
+    "canonical_commits_since_controlling_prerequisite": 12,
+    "production_src_changes": [],
+    "reference_changes": [],
+    "f_app_changes": [],
+    "f_si_changes": [],
+    "m1_execution_or_test_changes": [],
+    "later_delta_classes": [
+      "F-GC50 iMOD Coupler product-integration blocker evidence",
+      "post-Status-A documentation authority",
+      "PUB-GC E4 publication evidence"
+    ],
+    "verdict": "NO_M1_C3_SCIENTIFIC_OR_APPLICATION_DEPENDENCY_DRIFT"
+  },
+  "inherited_m1_c3_evidence": {
+    "exact_legacy_full_run": "PASS_AND_IMMUTABLE",
+    "accepted_intervals": 32518,
+    "all_active_application_routes": "CANONICALLY_ADMITTED",
+    "drainage_whole_trajectory": "PASS_EXACT",
+    "bottom_boundary": "PASS",
+    "ssdi": "INACTIVE",
+    "six_snapshot_transactional_replay": "PASS_EXACT_ZERO_ERROR_AFTER_F_SI39",
+    "remaining_required_gate": "ONE_FINAL_WHOLE_HUPSEL_FILE_DRIVEN_ADAPTER_EXECUTION"
+  },
+  "exact_asset_authority": {
+    "required_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "required_nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "required_b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "required_distribution_size_bytes": 8959314
+  },
+  "asset_recovery_attempt_20260918": {
+    "authorized_catalog_metadata_found": true,
+    "matching_size_copies_found": true,
+    "example_filename": "SWAP_4.3.1(5).zip",
+    "raw_byte_materialization": "FAILED_EXECUTION_ENVIRONMENT_AUTHORIZATION",
+    "materialization_error": "This Project file does not have an authorized raw-byte materialization path.",
+    "github_actions_worktree_artifact": {
+      "run_id": 35336768311,
+      "artifact_id": 10543074133,
+      "name": "swap5-m1c3-worktree",
+      "status": "AVAILABLE",
+      "contains_exact_distribution": false,
+      "interpretation": "The retained artifact recovers the repository worktree only and cannot substitute for the licensed exact distribution bytes."
+    },
+    "automated_license_or_registration_bypass_attempted": false
+  },
+  "architecture_guards": {
+    "new_application_semantics": "NONE",
+    "new_legacy_parser": "NONE",
+    "parallel_runtime": "NONE",
+    "solver_change": "NONE",
+    "tolerance_change": "NONE",
+    "physics_change": "NONE",
+    "synthetic_snapshot_adapter": "FORBIDDEN_AND_NOT_CREATED"
+  },
+  "mutations": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "tests": "NONE",
+    "governance_evidence_only": true
+  },
+  "verdict": "BLOCKED_FINAL_WHOLE_HUPSEL_ADAPTER_EXECUTION_EXACT_ASSET_RAW_BYTES_UNAVAILABLE",
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "relation_to_f_gc50": "F-GC50 prerequisite B2 remains unresolved. This checkpoint does not create or claim a production F-GC49D application bootstrap.",
+  "next_permitted_action": "When the exact authorized SWAP 4.3.1 distribution bytes are materializable in an execution context, verify the frozen SHA-256 before execution and run only the already-defined final whole-Hupsel adapter qualification. Admit M1-C3 only if that execution passes. Do not invent a second application bootstrap, Python-owned SWAP state, synthetic adapter, alternate parser, new physics or tolerance workaround."
+}
