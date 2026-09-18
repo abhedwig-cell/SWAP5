@@ -31,6 +31,8 @@ module mod_pub_gc_macro_window_response
     real(real64) :: macro_duration_day = 0.0_real64
     integer :: native_contribution_count = 0
     real(real64), allocatable :: native_dt_day(:)
+    real(real64), allocatable :: actual_native_dt_day(:)
+    real(real64) :: max_abs_native_dt_representation_error_day = 0.0_real64
     real(real64), allocatable :: q_contribution_cm(:)
     real(real64), allocatable :: terminal_flux_cm_per_day(:)
     integer, allocatable :: transaction_retries(:)
@@ -48,6 +50,7 @@ module mod_pub_gc_macro_window_response
     real(real64) :: authoritative_time_after = 0.0_real64
     integer(int64) :: disposable_lineage = 0_int64
     integer(int64) :: disposable_final_revision = -1_int64
+    real(real64) :: disposable_final_time = 0.0_real64
     class(transaction_state_t), allocatable :: endpoint_state
   end type pub_gc_macro_window_response_t
 
@@ -80,7 +83,8 @@ contains
     type(fmr_accepted_commit_receipt_t) :: receipt
     type(fmr_b110_physical_forcing_t) :: forcing
     class(transaction_state_t), allocatable :: origin_snapshot
-    real(real64) :: t0, t1, origin_time_before, origin_time_after
+    real(real64) :: t0, t1, origin_time_before, origin_time_after, disposable_time
+    real(real64) :: elapsed, elapsed_previous, compensation, y, temp, nominal_total
     logical :: available, initialized, did_commit
     integer :: i, receipt_status, commit_status
 
@@ -93,7 +97,15 @@ contains
     if (disposable_lineage <= 0_int64 .or. disposable_lineage == authoritative_origin%current_lineage_id()) return
     if (size(native_dt_day) <= 0 .or. size(forcing_by_interval) /= size(native_dt_day)) return
     if (any(.not. ieee_is_finite(native_dt_day)) .or. any(native_dt_day <= 0.0_real64)) return
-    if (abs(sum(native_dt_day) - (macro_t1-macro_t0)) > macro_time_tolerance_day) return
+    nominal_total = 0.0_real64
+    compensation = 0.0_real64
+    do i = 1, size(native_dt_day)
+      y = native_dt_day(i) - compensation
+      temp = nominal_total + y
+      compensation = (temp - nominal_total) - y
+      nominal_total = temp
+    end do
+    if (abs(nominal_total - (macro_t1-macro_t0)) > macro_time_tolerance_day) return
 
     call authoritative_origin%current_time(origin_time_before, available)
     if (.not. available .or. abs(origin_time_before-macro_t0) > macro_time_tolerance_day) return
@@ -108,11 +120,13 @@ contains
     response%authoritative_time_before = origin_time_before
     response%disposable_lineage = disposable_lineage
     allocate(response%native_dt_day(size(native_dt_day)))
+    allocate(response%actual_native_dt_day(size(native_dt_day)))
     allocate(response%q_contribution_cm(size(native_dt_day)))
     allocate(response%terminal_flux_cm_per_day(size(native_dt_day)))
     allocate(response%transaction_retries(size(native_dt_day)))
     allocate(response%accepted_substeps(size(native_dt_day)))
     response%native_dt_day = native_dt_day
+    response%actual_native_dt_day = 0.0_real64
     response%q_contribution_cm = 0.0_real64
     response%terminal_flux_cm_per_day = 0.0_real64
     response%transaction_retries = 0
@@ -131,9 +145,27 @@ contains
       return
     end if
 
-    t0 = macro_t0
+    elapsed = 0.0_real64
+    compensation = 0.0_real64
     do i = 1, size(native_dt_day)
-      t1 = t0 + native_dt_day(i)
+      elapsed_previous = elapsed
+      y = native_dt_day(i) - compensation
+      temp = elapsed + y
+      compensation = (temp - elapsed) - y
+      elapsed = temp
+      t0 = macro_t0 + elapsed_previous
+      if (i == size(native_dt_day)) then
+        t1 = macro_t1
+      else
+        t1 = macro_t0 + elapsed
+      end if
+      response%actual_native_dt_day(i) = t1 - t0
+      if (.not. ieee_is_finite(response%actual_native_dt_day(i)) .or. &
+          response%actual_native_dt_day(i) <= 0.0_real64) then
+        status = PUB_GC_MACRO_INVALID
+        response%status = status
+        return
+      end if
       call fmr_capture_checkpoint(disposable, checkpoint, available)
       if (.not. available .or. .not. checkpoint%ready()) then
         status = PUB_GC_MACRO_SNAPSHOT_FAILED
@@ -179,14 +211,17 @@ contains
         response%status = status
         return
       end if
-      t0 = t1
     end do
 
-    if (abs(t0-macro_t1) > macro_time_tolerance_day) then
+    call disposable%current_time(disposable_time, available)
+    if (.not. available .or. .not. same_real_bits(disposable_time,macro_t1)) then
       status = PUB_GC_MACRO_INVALID
       response%status = status
       return
     end if
+    response%disposable_final_time = disposable_time
+    response%max_abs_native_dt_representation_error_day = &
+         maxval(abs(response%actual_native_dt_day-response%native_dt_day))
 
     call disposable%snapshot(response%endpoint_state, available)
     if (.not. available .or. .not. allocated(response%endpoint_state)) then
@@ -223,5 +258,10 @@ contains
     response%status = PUB_GC_MACRO_OK
     status = PUB_GC_MACRO_OK
   end subroutine pub_gc_run_macro_window_response
+
+  pure logical function same_real_bits(a,b) result(equal)
+    real(real64), intent(in) :: a,b
+    equal = transfer(a,0_int64) == transfer(b,0_int64)
+  end function same_real_bits
 
 end module mod_pub_gc_macro_window_response
