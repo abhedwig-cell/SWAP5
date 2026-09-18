@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.publication.p2e16b-candidate-boundary-primary-result.v1",
+  "workunit": "PUB-P2E16B",
+  "phase": "PRIMARY_CANDIDATE_BOUNDARY_COMPLETE",
+  "branch": "work/pub-p2e16b-candidate-boundary-primary",
+  "parent_authority": {
+    "p2e16b_preregistration_blob": "8d1adf2141c8562941670e13b7719cf39f85421e",
+    "p2e16a_result_blob": "2c9b856e2d18d5d8e42c098f12b6405e5e15ff58",
+    "p2e14_threshold_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "p2e15_result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19"
+  },
+  "executed_head": "7f8e1af2d7e1b5437d5e4485333564ab0dfdaa96",
+  "authorities": {
+    "test_blob": "385e7b57646a80d68a7d1d23c26a7f78581f342b",
+    "runner_blob": "6345c0ad66087a0e95319cec07cbf63fb3bab5d6",
+    "workflow_blob": "888963389df6904f6eff6fd60a519c2f17445e5d"
+  },
+  "execution": {
+    "workflow_run": 35292280724,
+    "job": 105437495054,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "1721c645d0b7c5345a92f57a800d833b471c8cd140b7db8c85cc4f33343ad669",
+    "scientific_result_was_ci_pass_condition": false
+  },
+  "matrix": {
+    "case_count": 1296,
+    "inside_count": 432,
+    "boundary_count": 432,
+    "outside_count": 432,
+    "threshold_transfer_valid_count": 1269,
+    "threshold_transfer_invalid_count": 27,
+    "pairwise_scientific_claim_authorized_count": 850
+  },
+  "route_domain_result": {
+    "expected_route_valid_count": 864,
+    "expected_route_invalid_count": 432,
+    "actual_route_valid_count": 864,
+    "actual_route_invalid_count": 432,
+    "route_mismatch_count": 0,
+    "inside_rejected_count": 0,
+    "boundary_rejected_count": 0,
+    "outside_unexpected_admission_count": 0,
+    "rossfast_initialization_failure_count": 0,
+    "route_identity_violation_count": 0,
+    "interpretation": "RossFast followed the preregistered state-local forcing-envelope route classification exactly for all 1296 cases: every |rho|<=1 request was admitted and every |rho|=1.05 request was rejected."
+  },
+  "reference_fixed_step_result": {
+    "valid_count": 1291,
+    "invalid_count": 5,
+    "invalid_cases": [
+      {"case":576,"material":"B16","Se":0.96,"axis":"BOTTOM","rho":1.05,"stage_A_threshold_transfer_valid":false,"rossfast_valid":false},
+      {"case":612,"material":"B17","Se":0.96,"axis":"BOTTOM","rho":1.05,"stage_A_threshold_transfer_valid":true,"rossfast_valid":false},
+      {"case":1220,"material":"O16","Se":0.96,"axis":"BOTTOM","rho":-1.0,"stage_A_threshold_transfer_valid":true,"rossfast_valid":true},
+      {"case":1248,"material":"O17","Se":0.85,"axis":"BOTTOM","rho":1.05,"stage_A_threshold_transfer_valid":true,"rossfast_valid":false},
+      {"case":1257,"material":"O17","Se":0.96,"axis":"BOTTOM","rho":-0.95,"stage_A_threshold_transfer_valid":true,"rossfast_valid":true}
+    ],
+    "pattern": "All five fixed-step Reference-invalid cases occur on the BOTTOM boundary axis; three are outside-domain cases and two are inside/boundary candidate-admitted cases.",
+    "interpretation": "P2E16A established a valid coarse-versus-refined Reference comparison for all 1296 physical cases, but the P2E16B production-style fixed 0.0016-day Reference request does not publish a valid result in five cases. These cases remain unresolved for matched fixed-step inference and are not converted into RossFast failures."
+  },
+  "pairwise_scientific_admissibility": {
+    "authorized_count": 850,
+    "pairwise_valid_count": 848,
+    "reference_invalid_count_within_authorized_population": 2,
+    "rossfast_route_invalid_count_within_authorized_population": 0,
+    "admissible_count": 848,
+    "discrepancy_fail_count": 0,
+    "metric_fail_counts": {
+      "D_h_inf_cm": 0,
+      "D_h_rms_cm": 0,
+      "D_theta_inf": 0,
+      "D_theta_rms": 0,
+      "D_storage_abs_cm": 0
+    },
+    "maximum_fraction_of_frozen_threshold": {
+      "D_h_inf_cm": {"fraction":0.19742706476083827,"value":0.01122257226283807,"case":446,"material":"B13","Se":0.85,"axis":"TOP","rho":-1.0},
+      "D_h_rms_cm": {"fraction":0.21912017861076086,"value":0.005059588324863339,"case":446,"material":"B13","Se":0.85,"axis":"TOP","rho":-1.0},
+      "D_theta_inf": {"fraction":0.24775809956400627,"value":0.00030410164202615553,"case":170,"material":"B05","Se":0.96,"axis":"TOP","rho":-1.0},
+      "D_theta_rms": {"fraction":0.2846627521411235,"value":0.00010176579263756339,"case":170,"material":"B05","Se":0.96,"axis":"TOP","rho":-1.0},
+      "D_storage_abs_cm": {"fraction":1.0,"value":2.842170943040401e-14,"case":101,"material":"B03","Se":0.96,"axis":"TOP","rho":1.0,"note":"Exact inclusive contact with the frozen machine-scale storage threshold; not evidence of numerical margin."}
+    },
+    "interpretation": "Every scientifically interpretable, Stage-A-threshold-transfer-valid inside/boundary pair passed all five unchanged P2E14 thresholds. The broad 850-case claim remains incomplete because two authorized cases lack a valid fixed-step Reference result."
+  },
+  "outside_fail_closed": {
+    "outside_case_count": 432,
+    "rossfast_rejected_count": 432,
+    "rossfast_unexpected_admission_count": 0,
+    "route_identity_violation_count": 0,
+    "reference_valid_outside_count": 429,
+    "matched_interpretable_fail_closed_count": 429,
+    "reference_invalid_outside_count": 3,
+    "interpretation": "RossFast rejected every just-outside request with no fallback or solver-identity drift. The matched Reference-supported fail-closed inference is 429/429 because three outside cases have no valid fixed-step Reference result."
+  },
+  "hypothesis_adjudication": {
+    "P2E16_H1": {
+      "status": "ROUTE_DOMAIN_SUPPORTED_REFERENCE_MATCHED_SCOPE_INCOMPLETE",
+      "reason": "The RossFast route boundary is exact 1296/1296 with zero mismatches, but five matched fixed-step Reference cases are invalid, so the strongest fully matched formulation is not established for all 1296."
+    },
+    "P2E16_H2": {
+      "status": "SUPPORTED_ON_ALL_848_INTERPRETABLE_OF_850_AUTHORIZED_CASES",
+      "reason": "Zero discrepancy failures among all 848 authorized cases with valid Reference and RossFast routes; two authorized cases are Reference-unresolved at fixed step."
+    },
+    "P2E16_H3": {
+      "status": "ROSSFAST_FAIL_CLOSED_432_OF_432_MATCHED_REFERENCE_SUPPORT_429_OF_429",
+      "reason": "No outside RossFast admission or fallback occurred. Three outside cases are not matched-interpretable because the fixed-step Reference route is invalid."
+    }
+  },
+  "firewall_verification": {
+    "p2e14_threshold_changed": false,
+    "stage_A_mask_changed": false,
+    "case_removed_or_replaced": false,
+    "rho_changed": false,
+    "production_or_reference_source_changed": false,
+    "automatic_fallback_observed": false,
+    "performance_claim_evaluated": false,
+    "transaction_level_pair_executed": false,
+    "groundwater_claim_evaluated": false
+  },
+  "supported_claim": "Across all 36 admitted materials and three common state anchors, the RossFast production forcing envelope predicts route admission exactly. Where the independently frozen P2E14 thresholds remain Reference-valid and a fixed-step Reference comparator is available, every tested inside or exact-boundary RossFast case is scientifically admissible under those unchanged thresholds. Just-outside RossFast requests fail closed without fallback.",
+  "not_supported": [
+    "Universal transfer of the P2E14 threshold surface to every boundary-forcing case.",
+    "A fully matched 1296-case Reference-versus-RossFast boundary claim because five fixed-step Reference cases are unresolved.",
+    "Performance or speedup.",
+    "Transaction-level solver equivalence.",
+    "Groundwater, heterogeneous-profile, root-sink or dynamic-top-boundary equivalence.",
+    "Any widening of the current RossFast production forcing envelope."
+  ],
+  "verdict": "ROUTE_BOUNDARY_EXACT_SCIENTIFIC_ADMISSIBILITY_SUPPORTED_ON_848_OF_850_AUTHORIZED_INTERPRETABLE_REFERENCE_FIXED_STEP_LIMITATION_5_CASES",
+  "next_permitted_action": "Persist a separate Reference-only fixed-step failure adjudication for the five P2E16B Reference-invalid cases. Do not rerun or replace the P2E16B primary cases and do not alter P2E14 thresholds. The adjudication may explain the Reference limitation but may not retroactively convert the original P2E16B primary result into 850/850 or 432/432 matched evidence."
+}
