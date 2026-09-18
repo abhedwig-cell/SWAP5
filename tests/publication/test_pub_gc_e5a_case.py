@@ -395,7 +395,7 @@ def main()->None:
         raise SystemExit("unknown E5a baseline")
     if method not in METHODS:
         raise SystemExit("unknown E5a method")
-    if sy not in (0.02,0.15,0.30):
+    if sy not in (0.001,0.002,0.005,0.02,0.15):
         raise SystemExit("unregistered E5a specific yield")
 
     record=run_method(method,baseline_id,sy,libmf6,swaplib)
