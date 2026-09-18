@@ -873,9 +873,68 @@ The response quantity exposed by the current predictor should therefore not be c
 
 ## 4.5 Response information and computational value
 
-**Evidence status:** not yet established.
+**Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E5a.
 
-This result determines whether ACCELERATE remains only a section of this manuscript or later supports a separate paper.
+E5 separated the value of strong coupling from the value of **component-supplied derivative information**. The SWAP side used the real E4 prescribed-head finite-window response, while an analytic linear groundwater response was used to vary the local coupled strength independently of MODFLOW's own nonlinear solver.
+
+The scan used:
+
+```text
+C = 0.1, 0.5, 0.9, 1.1, 1.5, 2.0
+```
+
+and compared:
+
+```text
+plain fixed point
+dynamic Aitken
+cold scalar secant / IQN analogue
+supplied u_A response
+zero-cost J_R oracle
+```
+
+at one common integrated interface tolerance.
+
+### 4.5.1 Acceleration matters relative to plain fixed point
+
+Plain fixed point reproduced the expected stability pattern. It converged in six SWAP evaluations at `C=0.1`, required 14–15 at `C=0.5`, did not meet the tolerance within 20 evaluations at `C=0.9`, and for several `C>1` cases its diverging iterates eventually left the admitted SWAP response domain.
+
+Aitken and cold secant remained convergent in the corresponding admissible B1, B2 and B4 cases, normally in three to five SWAP evaluations.
+
+Thus iterative acceleration is numerically valuable near and beyond the plain fixed-point stability boundary.
+
+### 4.5.2 A perfect supplied interface derivative adds little beyond black-box learning
+
+The stronger question was whether additional response information is worth exposing.
+
+The zero-cost `J_R` oracle was deliberately given its derivative for free. Across the 18 cases where both the oracle and cold secant converged:
+
+- the oracle saved one SWAP evaluation in 16 cases;
+- it saved two evaluations in one case (B2, `C=2`);
+- it saved no evaluations in one case (B4, `C=1.5`);
+- it never converged in a case where cold secant failed.
+
+The already-available `u_A` response had the same evaluation-count pattern as the oracle in every comparable converged case.
+
+The dominant one-evaluation difference is exactly the advantage expected in the local-linear control: a cold scalar secant method spends one additional black-box evaluation learning the slope that the response-informed method receives explicitly.
+
+### 4.5.3 Response-domain limitation
+
+B3 could not be used to rank the algorithms at the preregistered initial offset. Although E4 had identified a local `J_R` and an 8.1% difference between `|J_R|` and `u_A`, the first E5 prescribed-head trial at `H_ref + 1e-6 m` was outside the admitted SWAP response domain for every algorithm.
+
+This is a common component-domain failure, not an acceleration result. It reinforces the E4 conclusion that response-domain admissibility can become limiting before the quality of the outer coupling algorithm.
+
+### 4.5.4 Information-value conclusion
+
+E5 used a quantitative continuation rule fixed before numerical output. A separate warm-history E5b study would be justified only if the zero-cost oracle enlarged the convergence domain over cold secant or saved at least two SWAP evaluations reproducibly across multiple difficult baselines.
+
+That gate was not passed.
+
+The experiment therefore supports a narrower conclusion:
+
+> In the tested scalar finite-window coupling, strong black-box acceleration recovers almost all of the computational value of a perfect free local interface derivative. The current supplied `u_A` can still be a useful low-cost implementation response, but a more exact separately acquired `J_R` is not justified by the observed work reduction.
+
+Accordingly, ACCELERATE is retained as a result of the central coupling paper rather than progressed as a presumptive independent manuscript.
 
 ## 4.6 Realistic and regional behaviour
 
@@ -933,18 +992,13 @@ That result does not make `u_A` a universal corrector Jacobian. In the low-flux 
 
 This distinction changes the acceleration question. “More derivative information” is too coarse a description. The relevant question is which derivative of which finite-window map is useful to the outer coupling algorithm.
 
-E5 must therefore compare at least:
+E5 then tested the computational consequence of this distinction. In the admissible B1, B2 and B4 controls, Aitken and cold secant learned the scalar coupling response in only three to five SWAP evaluations. A perfect zero-cost `J_R` oracle and the already-available `u_A` response normally reduced that cost by only one evaluation and did not enlarge the observed convergence domain.
 
-```text
-black-box fixed point / relaxation
-IQN or Anderson learned from interface history
-current component-supplied u_A
-zero-cost oracle J_R where identifiable
-```
+This is important methodologically. The relevant design question is not whether a component can expose a derivative, but whether the derivative carries enough **incremental information** to justify the stronger interface contract and its acquisition cost. In the present scalar problem, most of that information is learned almost immediately from black-box coupling history.
 
-at equal physical and coupling tolerances. If the true head-driven oracle provides no material advantage over black-box multisecant learning, the independent ACCELERATE claim should be closed. If `u_A` performs well only where the two maps approximately coincide and degrades in B3-like regimes, E4 supplies the mechanism rather than leaving that behaviour as an implementation anomaly.
+A separately acquired accurate `J_R` is therefore not supported as a computational requirement for this coupling envelope. The lower-cost `u_A` response can remain useful because it is already available from the predictor, but its use should be described as a pragmatic coupling response rather than as a uniquely necessary Jacobian.
 
-A later physical-identity experiment with an admitted head-dependent non-bottom process would be useful because the present simple fixture has `J_B ~= 0`, making storage and signed bottom-transfer response structurally aliased. That extension is not required to begin the computational E5 falsification test because `u_A` and `J_R` are already numerically distinct response objects.
+A later physical-identity experiment with an admitted head-dependent non-bottom process remains scientifically useful because the present simple fixture has `J_B ~= 0`, making storage and signed bottom-transfer response structurally aliased. That extension is independent of the now-closed standalone ACCELERATE gate.
 
 ---
 
