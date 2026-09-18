@@ -1,0 +1,38 @@
+name: F-ROM0TA3 Reference-floor capability
+
+on:
+  push:
+    branches:
+      - work/f-rom0ta3-reference-floor-capability
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/rom/test_f_rom0ta3_reference_floor_transaction.f90'
+      - 'tests/rom/test_f_rom0ta3_reference_floor_fmr_boundary.f90'
+      - 'tests/rom/run_f_rom0ta3_reference_floor_capability.sh'
+      - 'integration/f-rom/F-ROM0TA3_*'
+      - 'docs/science/F-ROM0TA3_*'
+      - '.github/workflows/f-rom0ta3-reference-floor-capability.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0ta3-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify Reference-floor capability
+        shell: bash
+        run: bash tests/rom/run_f_rom0ta3_reference_floor_capability.sh
