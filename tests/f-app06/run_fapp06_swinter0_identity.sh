@@ -71,3 +71,25 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || { diff -u "$BUILD/o0/out
 cat "$BUILD/o0/output.txt"
 echo "F_APP06_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
 echo 'F_APP06_OWNER_QUALIFICATION=PASS'
+
+FIX=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz
+test "$(sha256sum "$FIX" | awk '{print $1}')" = 331d186fa60caf983fd9bac5d97c715d8b61af259661a61ac2c362e90e200ffa || fail "exact B1.11 fixture drift"
+python3 - "$FIX" "$BUILD/exact.csv" <<'PY'
+import gzip,hashlib,sys
+raw=gzip.open(sys.argv[1],"rb").read()
+assert hashlib.sha256(raw).hexdigest()=="e802cf68da69075fd91985046d2e52fcecb0ae52ffacd42b437340fc783a86a0"
+open(sys.argv[2],"wb").write(raw)
+PY
+for opt in 0 2; do
+  OUT="$BUILD/exact-o$opt"; mkdir -p "$OUT"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_pmdirect_swetr0_process.f90 -o "$OUT/pmdirect.o"
+  gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c tests/f-app06/test_swinter0_exact_b111.f90 -o "$OUT/test.o"
+  gfortran -O"$opt" "$OUT/pmdirect.o" "$OUT/test.o" -o "$OUT/test"
+  "$OUT/test" "$BUILD/exact.csv" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "3505-record oracle O$opt"; }
+  grep -Fq 'F_APP06_EXACT_B111_RECORDS=3505' "$OUT/output.txt" || fail "exact record count O$opt"
+  grep -Fq 'F_APP06_EXACT_3505_B111_ROUTE=PASS' "$OUT/output.txt" || fail "exact oracle marker O$opt"
+done
+cmp -s "$BUILD/exact-o0/output.txt" "$BUILD/exact-o2/output.txt" || { diff -u "$BUILD/exact-o0/output.txt" "$BUILD/exact-o2/output.txt" >&2 || true; fail "exact oracle O0/O2 drift"; }
+cat "$BUILD/exact-o0/output.txt"
+echo "F_APP06_EXACT_OUTPUT_SHA256=$(sha256sum "$BUILD/exact-o0/output.txt" | awk '{print $1}')"
+echo 'F_APP06_EXHAUSTIVE_B111_QUALIFICATION=PASS'
