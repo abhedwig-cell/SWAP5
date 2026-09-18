@@ -3,8 +3,8 @@
   "work_unit": "F-GC44",
   "title": "Real SWAP + live MODFLOW6 end-to-end application qualification",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY",
-  "state": "REAL_FMR_AND_LIVE_END_TO_END_EXACT_HEAD_CI_PENDING",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_REAL_SWAP_MODFLOW6_APPLICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "14171f529cbe7e738b2235fa91f67664f6398286"
@@ -46,7 +46,7 @@
     "Kernel commit remains the sole SWAP committed-state mutation.",
     "No N:1 scaling expansion, Ribasim, irrigation or new groundwater physics."
   ],
-  "next_permitted_action": "Run/inspect exact-head real-FMR, live end-to-end and F-VQ116 workflows. Repair only scoped failures. On all-green, reconcile canonical and admit/close F-GC44.",
+  "next_permitted_action": "Open a separately bounded next groundwater capability. Preferred scaling path: qualify a real MultiSWAP/N:1 live MODFLOW6 application by composing the already-admitted F-GC40 cell response with multiple real FMR participants and the F-GC41 publication boundary. Keep numerical-envelope expansion for larger prescribed-head changes separate.",
   "current_head": "ff43c65fb881b5f1328e81da2917089bbf1b4d45",
   "implemented": [
     "encapsulation-safe FMR backend candidate commit/discard delegation",
@@ -84,5 +84,100 @@
     "canonical delta reconciled with no conflicting production ownership change",
     "PR mergeable and admission remains inside restricted one-column/one-cell envelope"
   ],
-  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "canonical_admission": {
+    "preimage": "14171f529cbe7e738b2235fa91f67664f6398286",
+    "production_head": "04e5db63356e48256997fad9daea9e77040c29e6",
+    "merge_head": "4b150d6361861f98bd72476cd4db56ed5bfedc0a",
+    "pr": 236,
+    "merge_method": "merge"
+  },
+  "qualification": {
+    "owner_real_fmr": {
+      "run": 35340751154,
+      "job": 105585854363,
+      "conclusion": "success",
+      "oracles": [
+        "FGC44_REAL_FMR_MODE5_MATERIALIZER=PASS",
+        "FGC44_REAL_FMR_SAME_ORIGIN_CORRECTORS=PASS",
+        "FGC44_REAL_FMR_PREFLIGHT_NONMUTATING=PASS",
+        "FGC44_REAL_FMR_KERNEL_COMMIT=PASS",
+        "FGC44_REAL_FMR_O0_O2_IDENTITY=PASS"
+      ]
+    },
+    "live_end_to_end": {
+      "run": 35340751144,
+      "job": 105585854553,
+      "conclusion": "success",
+      "modflow_version": "6.8.0",
+      "iterations": 2,
+      "final_head_m": -0.7149999677331765,
+      "final_q_swap_m_per_s": -1.2708557527755854e-13,
+      "final_q_gw_m_per_s": -1.2708580747683645e-13,
+      "final_flux_residual_m_per_s": 2.3219927791065243e-19,
+      "flux_tolerance_m_per_s": 1e-15,
+      "ledger_exchange_m": -1.098019370398106e-12,
+      "oracles": [
+        "FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS",
+        "FGC44_REAL_SWAP_CORRECTORS_FROM_ACCEPTED_ORIGIN=PASS",
+        "FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS",
+        "FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS",
+        "FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS",
+        "FGC44_MODFLOW_THEN_SWAP_THEN_LEDGER_PUBLICATION=PASS",
+        "FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ116",
+      "run": 35340751062,
+      "job": 105585854570,
+      "conclusion": "success",
+      "oracles": [
+        "FVQ116_CANONICAL_HEAD_PRESSURE_MAPPING=PASS",
+        "FVQ116_REAL_FMR_BACKEND_BINDING=PASS",
+        "FVQ116_IMMUTABLE_SWAP_ORIGIN=PASS",
+        "FVQ116_LIVE_MODFLOW_XMI_BINDING=PASS",
+        "FVQ116_CONJUNCTIVE_CONVERGENCE=PASS",
+        "FVQ116_PREFLIGHT_BEFORE_PUBLICATION_ORDER=PASS",
+        "FVQ116_MODFLOW_SWAP_LEDGER_PUBLICATION_ORDER=PASS",
+        "FVQ116_SCOPE_AND_OWNERSHIP_BOUNDARY=PASS"
+      ]
+    }
+  },
+  "admitted_envelope": {
+    "topology": "one real FMR/SWAP column to one live MODFLOW6 cell",
+    "numerical_route": "short near-equilibrium F-GC30 production window; Richards temporal-history/model-certificate route",
+    "physics": [
+      "bottom_mode=5 correctors",
+      "drainage off",
+      "root extraction off",
+      "macropore off",
+      "snow off",
+      "soil temperature off"
+    ],
+    "tangent": "accepted-trajectory analytic tangent only; no runtime finite-difference fallback",
+    "publication_order": [
+      "MODFLOW finalize_time_step",
+      "SWAP kernel candidate commit",
+      "prepared groundwater ledger commit"
+    ]
+  },
+  "exclusions": [
+    "arbitrary prescribed-head jumps within one coupling window",
+    "heterogeneous N:1 live application scaling",
+    "multiple live coupled MODFLOW cells",
+    "active drainage",
+    "root uptake",
+    "macropores",
+    "snow",
+    "soil temperature",
+    "Ribasim",
+    "irrigation",
+    "runtime finite-difference tangent fallback"
+  ],
+  "rejected_expansion_evidence": {
+    "observation": "A deliberately larger prescribed-head perturbation in the real FMR route exhausted transaction retries and failed closed.",
+    "disposition": "Not repaired by relaxing tolerances; numerical-envelope expansion requires a separate qualification workunit."
+  },
+  "mutations": "Production: concrete FMR groundwater SWAP participant; narrow FMR candidate commit/discard delegation; corrected canonical groundwater-head-to-bottom-pressure-head symbol binding. Qualification/support/docs added separately."
 }
