@@ -25,10 +25,19 @@
       "meaning": "prescribed_native_qbot",
       "time": "SW2_sinus_or_DATE2_QBOT2_table",
       "typed_contract": "production_admitted",
-      "application": "normal_application_gap_at_reconcile",
+      "application": "qualified_homogeneous_typed_production_bootstrap_pending_canonical_merge",
       "groundwater_relation": "none_intrinsic",
-      "classification": "PRODUCTION_ADMITTED_KERNEL_RUNTIME_NORMAL_APPLICATION_GAP",
-      "risk": "low_for_typed_direct_slice_high_for_full_legacy_adapter"
+      "classification": "QUALIFIED_RESTRICTED_PRODUCTION_APPLICATION_PENDING_CANONICAL_ADMISSION",
+      "risk": "low_for_qualified_typed_direct_slice_medium_for_full_legacy_adapter",
+      "qualification": {
+        "owner_workflow_run": 35374222568,
+        "owner_job": 105695000702,
+        "independent_job": 105695282455,
+        "owner_result": "PASS",
+        "independent_result": "PASS",
+        "ppa_wu01_preservation_run": 35374222321,
+        "exact_qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b"
+      }
     },
     {
       "selector": "3",
@@ -126,6 +135,59 @@
       "new physics",
       "new numerical policy",
       "mixed bottom-mode profiles"
-    ]
-  }
+    ],
+    "status": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+    "qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b",
+    "qualification": {
+      "workflow_run": 35374222568,
+      "owner_job": 105695000702,
+      "independent_job": 105695282455,
+      "ppa_wu01_preservation_run": 35374222321,
+      "documentation_run": 35374222234
+    }
+  },
+  "migration_slices": [
+    {
+      "id": "PPA-WU02-A",
+      "priority": 1,
+      "status": "QUALIFIED_CANONICAL_ADMISSION_PENDING",
+      "meaning": "homogeneous already-resolved typed prescribed-qbot production bootstrap"
+    },
+    {
+      "id": "PPA-LOW02-TIME",
+      "priority": 2,
+      "status": "NOT_IMPLEMENTED",
+      "meaning": "legacy SWBOTB=2 sine/table forcing plus oven-dry 2->-2 continuation"
+    },
+    {
+      "id": "PPA-LOW05-APP",
+      "priority": 3,
+      "status": "NOT_IMPLEMENTED",
+      "meaning": "ordinary non-groundwater-owned prescribed-head application adapter"
+    },
+    {
+      "id": "PPA-LOW04",
+      "priority": 4,
+      "status": "NOT_IMPLEMENTED",
+      "meaning": "state-dependent q(gwl) application law"
+    },
+    {
+      "id": "PPA-LOW01",
+      "priority": 5,
+      "status": "NOT_IMPLEMENTED",
+      "meaning": "prescribed-groundwater-level hybrid boundary/state machine"
+    },
+    {
+      "id": "PPA-LOW03",
+      "priority": 6,
+      "status": "NOT_IMPLEMENTED",
+      "meaning": "deep-aquifer Cauchy explicit/implicit boundary"
+    },
+    {
+      "id": "PPA-LOW08",
+      "priority": 7,
+      "status": "NOT_IMPLEMENTED",
+      "meaning": "lysimeter active-set switching boundary"
+    }
+  ]
 }
