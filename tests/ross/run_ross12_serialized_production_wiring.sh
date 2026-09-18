@@ -32,6 +32,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/solver/mod_b110_smooth_freatic_projection.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
   src/process/mod_drainage_hooghoudt_equivalent_depth.f90
@@ -42,6 +43,7 @@ MODULE_SRC=(
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
+  src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
