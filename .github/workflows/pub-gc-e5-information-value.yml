@@ -1,0 +1,44 @@
+name: PUB-GC E5 information value
+on:
+  push:
+    branches: [work/pub-gc-e5-information-value]
+    paths:
+      - 'docs/publication/PUB_GC_E5_INFORMATION_VALUE_PREREGISTRATION.md'
+      - 'tests/publication/build_pub_gc_swap_bridge.sh'
+      - 'tests/publication/test_pub_gc_e5_information_value.py'
+      - 'tests/publication/run_pub_gc_e5.sh'
+      - '.github/workflows/pub-gc-e5-information-value.yml'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'docs/publication/PUB_GC_E5_INFORMATION_VALUE_PREREGISTRATION.md'
+      - 'tests/publication/build_pub_gc_swap_bridge.sh'
+      - 'tests/publication/test_pub_gc_e5_information_value.py'
+      - 'tests/publication/run_pub_gc_e5.sh'
+      - '.github/workflows/pub-gc-e5-information-value.yml'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  information-value:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run preregistered E5a matrix
+        env:
+          PUB_GC_E5_RESULT_DIR: ${{ runner.temp }}/pub-gc-e5
+        run: bash tests/publication/run_pub_gc_e5.sh
+      - name: Upload E5 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e5-information-value
+          path: ${{ runner.temp }}/pub-gc-e5
+          if-no-files-found: error
