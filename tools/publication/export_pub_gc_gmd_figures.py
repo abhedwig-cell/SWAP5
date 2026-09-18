@@ -38,6 +38,7 @@ def font_embedding_status(reader: PdfReader) -> dict[str, object]:
     total = 0
     embedded = 0
     missing: list[str] = []
+    details: list[dict[str, str]] = []
     for page in reader.pages:
         resources = page.get("/Resources")
         if resources is None:
@@ -51,22 +52,27 @@ def font_embedding_status(reader: PdfReader) -> dict[str, object]:
             total += 1
             font = ref.get_object()
             descriptor = font.get("/FontDescriptor")
+            subtype = str(font.get("/Subtype", ""))
+            basefont = str(font.get("/BaseFont", ""))
             if descriptor is None:
-                subtype = str(font.get("/Subtype", ""))
+                details.append({"name": str(name), "subtype": subtype, "basefont": basefont, "descriptor": "none"})
                 if subtype == "/Type3":
                     embedded += 1
                 else:
-                    missing.append(str(name))
+                    missing.append(f"{name}:{subtype}:{basefont}")
                 continue
             descriptor = descriptor.get_object()
             if any(k in descriptor for k in ("/FontFile", "/FontFile2", "/FontFile3")):
                 embedded += 1
+                details.append({"name": str(name), "subtype": subtype, "basefont": basefont, "descriptor": "embedded"})
             else:
-                missing.append(str(name))
+                details.append({"name": str(name), "subtype": subtype, "basefont": basefont, "descriptor": "unembedded"})
+                missing.append(f"{name}:{subtype}:{basefont}")
     return {
         "font_resources": total,
         "embedded_font_resources": embedded,
         "unembedded_font_resources": missing,
+        "details": details,
         "pass": not missing,
     }
 
