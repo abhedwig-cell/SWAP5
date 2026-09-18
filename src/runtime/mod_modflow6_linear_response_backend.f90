@@ -35,6 +35,8 @@ module mod_modflow6_linear_response_backend
 
   public :: compose_modflow6_linear_boundary_term
   public :: evaluate_modflow6_linear_boundary_flux
+  public :: evaluate_modflow6_linear_boundary_flux_density
+  public :: reanchor_modflow6_linear_boundary_term
 
 contains
 
@@ -127,6 +129,66 @@ contains
 
     status = MODFLOW6_LINEAR_BACKEND_OK
   end subroutine evaluate_modflow6_linear_boundary_flux
+
+  subroutine evaluate_modflow6_linear_boundary_flux_density(term, hydraulic_head_m, flux_m_per_s, status)
+    type(modflow6_linear_boundary_term_t), intent(in) :: term
+    real(real64), intent(in) :: hydraulic_head_m
+    real(real64), intent(out) :: flux_m_per_s
+    integer, intent(out) :: status
+
+    real(real64) :: volume_flux_m3_per_day
+    real(real64) :: area_day_factor
+
+    flux_m_per_s = 0.0_real64
+    call evaluate_modflow6_linear_boundary_flux(term, hydraulic_head_m, volume_flux_m3_per_day, status)
+    if (status /= MODFLOW6_LINEAR_BACKEND_OK) return
+
+    status = MODFLOW6_LINEAR_BACKEND_INVALID_EVALUATION
+    if (.not. ieee_is_finite(term%cell_area_m2) .or. term%cell_area_m2 <= 0.0_real64) return
+    area_day_factor = term%cell_area_m2 * DAY_TO_S
+    if (.not. ieee_is_finite(area_day_factor) .or. area_day_factor <= 0.0_real64) return
+
+    flux_m_per_s = volume_flux_m3_per_day / area_day_factor
+    if (.not. ieee_is_finite(flux_m_per_s)) then
+      flux_m_per_s = 0.0_real64
+      return
+    end if
+    status = MODFLOW6_LINEAR_BACKEND_OK
+  end subroutine evaluate_modflow6_linear_boundary_flux_density
+
+  subroutine reanchor_modflow6_linear_boundary_term(term, hydraulic_head_m, q_u_m_per_s, reanchored, status)
+    type(modflow6_linear_boundary_term_t), intent(in) :: term
+    real(real64), intent(in) :: hydraulic_head_m
+    real(real64), intent(in) :: q_u_m_per_s
+    type(modflow6_linear_boundary_term_t), intent(out) :: reanchored
+    integer, intent(out) :: status
+
+    real(real64) :: area_day_factor
+    real(real64) :: reference_volume_flux
+    real(real64) :: rhs
+
+    reanchored = modflow6_linear_boundary_term_t()
+    status = MODFLOW6_LINEAR_BACKEND_INVALID_EVALUATION
+    if (.not. term%valid .or. term%status /= MODFLOW6_LINEAR_BACKEND_OK) return
+    if (.not. ieee_is_finite(term%cell_area_m2) .or. term%cell_area_m2 <= 0.0_real64) return
+    if (.not. ieee_is_finite(term%hcof_m2_per_day)) return
+    if (.not. ieee_is_finite(hydraulic_head_m) .or. .not. ieee_is_finite(q_u_m_per_s)) return
+
+    area_day_factor = term%cell_area_m2 * DAY_TO_S
+    reference_volume_flux = area_day_factor * q_u_m_per_s
+    rhs = term%hcof_m2_per_day * hydraulic_head_m - reference_volume_flux
+    if (.not. ieee_is_finite(area_day_factor) .or. .not. ieee_is_finite(reference_volume_flux) .or. &
+        .not. ieee_is_finite(rhs)) return
+
+    reanchored = term
+    reanchored%reference_head_m = hydraulic_head_m
+    reanchored%q_u_at_reference_m_per_s = q_u_m_per_s
+    reanchored%reference_volume_flux_m3_per_day = reference_volume_flux
+    reanchored%rhs_m3_per_day = rhs
+    reanchored%status = MODFLOW6_LINEAR_BACKEND_OK
+    reanchored%valid = .true.
+    status = MODFLOW6_LINEAR_BACKEND_OK
+  end subroutine reanchor_modflow6_linear_boundary_term
 
   pure logical function valid_cell_response(cell) result(valid)
     type(modflow6_multiswap_cell_response_t), intent(in) :: cell

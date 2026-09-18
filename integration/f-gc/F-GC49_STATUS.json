@@ -1,89 +1,138 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC49",
-  "stage": "C",
-  "title": "Generic groundwater application orchestration — live application service",
+  "stage": "D",
+  "title": "Generic groundwater application orchestration — production FMR cross-language application context",
   "protocol": "Bounded Execution Protocol",
-  "phase": "CLOSE_C",
-  "state": "CLOSED_CANONICAL_ADMITTED",
+  "phase": "ADMIT_D",
+  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "stage_c_merge_base": "01e133b3da79468618e6c89a74533efff1ccdaaf",
     "reconciled_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b"
   },
   "prerequisite": {
-    "stage_a": "STAGE_A_CLOSED_CANONICAL_ADMITTED_APPLICATION_PLAN",
-    "stage_b": "STAGE_B_CLOSED_CANONICAL_ADMITTED_FMR_PARTICIPANT_REGISTRY",
-    "head": "01e133b3da79468618e6c89a74533efff1ccdaaf"
+    "stage_a": "CLOSED_CANONICAL_ADMITTED_APPLICATION_PLAN",
+    "stage_b": "CLOSED_CANONICAL_ADMITTED_FMR_PARTICIPANT_REGISTRY",
+    "stage_c": "CLOSED_CANONICAL_ADMITTED_GENERIC_LIVE_APPLICATION_SERVICE",
+    "canonical_head": "0c7a76bafeab1b1e1c57f5615340178d45bec268"
   },
-  "goal": "Implement one topology-agnostic internal Python coupling-window service that drives the admitted Modflow6PreparedSolveSession and consumes a narrow SWAP runtime port shaped for F-GC49A plan outputs and F-GC49B participant handles.",
+  "goal": "Materialize the narrow production cross-language application context that exposes admitted F-GC49A plan authority and F-GC49B participant handles to the admitted F-GC49C generic Python service without transferring SWAP state, F-GC40/F-GC33 mathematics, ledger ownership or predictor/corrector ownership into Python.",
   "design": [
-    "service owns coupling-window control flow only and never raw XMI arrays or SWAP state",
-    "Modflow6PreparedSolveSession remains sole owner of prepare_solve/solve/finalize_solve/finalize_time_step",
-    "SWAP runtime port supplies immutable plan bindings/terms, origin capture, cell-head correctors, cell-level realized-groundwater flux evaluation, term reanchoring, candidate/ledger preflight and publication",
-    "service never reimplements F-GC40 reduction, F-GC33 evaluation/reanchoring or F-GC34 publication",
-    "convergence is conjunctive across MODFLOW and every cell residual; no cancelling global residual",
-    "nonfinal SWAP candidates are discarded while MODFLOW X continues from the same prepared solve and XOLD remains fixed",
-    "all reversible preflights precede finalize_time_step",
-    "after successful finalize_time_step any SWAP/ledger publication failure is a hard durability invariant, not retry"
+    "Fortran application context binds externally owned application plan, participant registry, participant handles and ledgers.",
+    "Context validates tile-handle and tile-ledger identity against the admitted plan and topology.",
+    "Corrector routing and aggregation remain Fortran-owned and delegate aggregation to F-GC40.",
+    "Linear-response evaluation and reanchoring remain in the F-GC33 authority; Stage D calls that authority rather than reproducing formulas in Python.",
+    "Opaque cross-language context handles reference Fortran-owned contexts; Python receives only immutable primitive views and operation results.",
+    "Python adapter implements the existing GroundwaterApplicationRuntime protocol by calling the C ABI; it never owns participant state, candidate state or ledger state.",
+    "Publication ordering remains F-GC49C/F-GC41: MODFLOW publication first, then SWAP commits, then ledger commits."
   ],
   "exclusions": [
-    "generic production FMR C ABI materialization",
-    "iMOD Coupler predictor/corrector ownership",
-    "new physics",
-    "runtime finite-difference tangent",
-    "physics-envelope expansion",
-    "heterogeneous N:1 scientific policy"
+    "promotion of F-GC44-F-GC47 qualification bridges",
+    "new SWAP or groundwater physics",
+    "new predictor/corrector algorithm",
+    "Python F-GC40 aggregation",
+    "Python F-GC33 HCOF/RHS evaluation or reanchoring",
+    "Python ledger ownership",
+    "generic distributed atomicity",
+    "heterogeneous N:1 transferability",
+    "SCALE scientific claims"
   ],
-  "next_permitted_action": "Stage C is closed. Inspect canonical for a generic production FMR cross-language ABI that exposes admitted F-GC49A application plans and F-GC49B participant handles to the F-GC49C generic service without transferring SWAP state, groundwater mathematics, ledger ownership or predictor/corrector ownership into Python. If absent, open F-GC49D as a separate bounded capability.",
+  "next_permitted_action": "Reconcile this qualification-evidence checkpoint onto current canonical, mark PR #275 ready, merge with expected head, verify canonical postimage, then close Stage D canonically with merge SHA and final evidence boundary.",
   "production_mutations": [
-    "src/adapter/modflow6_groundwater_application_service.py"
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/runtime/mod_fmr_groundwater_application_context.f90",
+    "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+    "src/adapter/fmr_groundwater_application_runtime.py"
   ],
   "implemented": [
-    "topology-agnostic internal Python groundwater application service",
-    "immutable plan validation with canonical package-slot and node uniqueness",
-    "one prepared MODFLOW solve per coupling window through Modflow6PreparedSolveSession",
-    "cell-head routing by admitted plan bindings",
-    "runtime-owned groundwater flux evaluation and term re-anchoring",
-    "per-cell residual vector with no cross-cell cancellation",
-    "conjunctive MODFLOW plus every-cell flux convergence",
-    "nonfinal SWAP discard with continuous MODFLOW prepared solve",
-    "finalize_solve before whole-window preflight",
-    "SWAP then ledger then MODFLOW readiness preflights before publication",
-    "publication order MODFLOW finalize_time_step then SWAP commits then ledger commits",
-    "post-MODFLOW publication failures classified as hard durability invariants"
+    "Fortran-owned generic application context referencing admitted F-GC49A plan authority, F-GC49B participant registry/handles and externally owned ledgers",
+    "opaque monotonically unique cross-language context handles with stale-handle fail-closed release",
+    "primitive immutable plan/tile views for Python without state ownership",
+    "real corrector routing by admitted topology to F-GC49B participant handles",
+    "F-GC40 area-weighted cell aggregation delegated to aggregate_groundwater_cell_tiles",
+    "F-GC33 groundwater flux evaluation and linear-term reanchoring delegated to the linear-response authority",
+    "existing F-GC49C GroundwaterApplicationRuntime port implemented without hardwiring the generic service to FMR",
+    "one-window application context becomes unusable for a second capture after successful SWAP+ledger publication",
+    "external Fortran ledgers remain sole ledger owners",
+    "F-GC41/F-GC49C publication order remains MODFLOW timestep, SWAP commits, ledger commits"
   ],
   "owner_qualification": {
-    "deterministic": [
-      "opposite cell residuals that sum to zero do not converge",
-      "MODFLOW convergence and all-cell residual convergence both required",
-      "one prepared solve per window",
-      "preflight failure produces zero timestep publication",
-      "post-MODFLOW SWAP publication failure is not retry",
-      "source guard prevents topology-specific IDs and F-GC40/F-GC33 math duplication"
-    ],
-    "live": [
-      "F-GC47 mixed topology replay through one generic production service",
-      "three real FMR/SWAP lineages over two live MODFLOW6 6.8.0 cells",
-      "one prepared solve and one timestep finalization",
-      "per-cell flux convergence",
-      "three SWAP and three ledger commits"
-    ],
-    "live_fixture_boundary": "The F-GC47 bridge is qualification-only; it is not admitted as the generic production FMR ABI."
+    "run": 35352680601,
+    "qualified_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
+    "conclusion": "success",
+    "production_context": {
+      "job": 105624335640,
+      "conclusion": "success",
+      "service_iterations": 2,
+      "oracles": [
+        "FGC49D_NO_TOPOLOGY_SPECIFIC_PRODUCTION_IDS=PASS",
+        "FGC49D_NO_MODFLOW_XMI_OWNERSHIP=PASS",
+        "FGC49D_NO_PYTHON_FGC40_FGC33_MATH=PASS",
+        "FGC49D_OPAQUE_CONTEXT_AND_PARTICIPANT_HANDLES=PASS",
+        "FGC49D_CONTEXT_O0=PASS",
+        "FGC49D_CONTEXT_O2=PASS",
+        "FGC49D_FGC49A_PLAN_EXPOSED=PASS",
+        "FGC49D_FGC49B_OPAQUE_HANDLES_EXPOSED=PASS",
+        "FGC49D_REAL_FMR_MIXED_TOPOLOGY_ROUTING=PASS",
+        "FGC49D_FGC40_AGGREGATION_FORTRAN_OWNED=PASS",
+        "FGC49D_FGC33_EVALUATION_REANCHOR_FORTRAN_OWNED=PASS",
+        "FGC49D_EXTERNALLY_OWNED_LEDGERS=PASS",
+        "FGC49D_ONE_FGC49C_SERVICE_WINDOW=PASS",
+        "FGC49D_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS",
+        "FGC49D_ONE_WINDOW_CONTEXT_REUSE_FAIL_CLOSED=PASS",
+        "FGC49D_STALE_CONTEXT_HANDLE_FAIL_CLOSED=PASS",
+        "FGC49D_CONTEXT_O0_O2_OUTPUT_IDENTITY=PASS",
+        "F-GC49D PRODUCTION APPLICATION CONTEXT ABI GATE PASS"
+      ]
+    },
+    "live_modflow6_6_8_0": {
+      "job": 105624335376,
+      "conclusion": "success",
+      "iterations": 5,
+      "max_cell_residual_m_per_s": 4.3545998521316775e-16,
+      "oracles": [
+        "FGC49D_LIVE_MODFLOW6_6_8_0=PASS",
+        "FGC49D_LIVE_PRODUCTION_FMR_ABI=PASS",
+        "FGC49D_LIVE_MIXED_N1_AND_11_TOPOLOGY=PASS",
+        "FGC49D_LIVE_ONE_PREPARED_SOLVE=PASS",
+        "FGC49D_LIVE_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS",
+        "FGC49D_LIVE_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS",
+        "FGC49D_LIVE_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS",
+        "F-GC49D LIVE PRODUCTION APPLICATION CONTEXT ABI GATE PASS"
+      ]
+    }
   },
   "independent_qualification": {
-    "work_unit": "F-VQ123",
-    "claim": "Independently verifies topology-neutral production source, delegated cell mathematics, per-cell non-cancelling convergence, preflight ordering and post-publication hard-failure semantics."
+    "work_unit": "F-VQ124",
+    "run": 35352680593,
+    "job": 105624335296,
+    "qualified_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
+    "conclusion": "success",
+    "oracles": [
+      "FVQ124_NO_QUALIFICATION_BRIDGE_PROMOTION=PASS",
+      "FVQ124_EXTERNAL_FORTRAN_OWNERSHIP_RETAINED=PASS",
+      "FVQ124_ONE_WINDOW_CONTEXT_REUSE_FAIL_CLOSED=PASS",
+      "FVQ124_FGC40_AGGREGATION_DELEGATED=PASS",
+      "FVQ124_FGC33_EVALUATION_REANCHOR_DELEGATED=PASS",
+      "FVQ124_OPAQUE_CONTEXT_HANDLE_STALE_FAIL_CLOSED=PASS",
+      "FVQ124_PARTICIPANT_HANDLES_EXPOSED_NOT_OWNED=PASS",
+      "FVQ124_NO_MODFLOW_OWNERSHIP_IN_FMR_ABI=PASS",
+      "FVQ124_GENERIC_FGC49C_SERVICE_REMAINS_UNBOUND=PASS",
+      "FVQ124_MODFLOW_SWAP_LEDGER_PUBLICATION_ORDER_RETAINED=PASS",
+      "F-VQ124 F-GC49D INDEPENDENT QUALIFICATION PASS"
+    ]
   },
   "admission_criteria": [
-    "exact-head deterministic F-GC49C owner qualification green",
-    "exact-head live MODFLOW6 6.8.0 F-GC49C replay green",
-    "exact-head F-VQ123 independent qualification green",
-    "canonical delta reconciled without production dependency conflict",
-    "PR mergeable",
-    "production delta limited to generic application service"
+    "F-GC49D production-context owner gate green on qualification surface",
+    "F-GC49D live MODFLOW6 6.8.0 production-ABI gate green on qualification surface",
+    "F-VQ124 independent gate green on qualification surface",
+    "all Stage-D production/workflow/test artifacts byte-identical between qualification surface and reconciled application head before status-only evidence persistence",
+    "canonical drift has zero Stage-D production/runtime/test/workflow dependency overlap",
+    "PR mergeable against current canonical",
+    "F-GC44-F-GC47 qualification bridges remain qualification-only"
   ],
-  "verdict": "ADMITTED_CANONICAL_CLOSED",
+  "verdict": "QUALIFIED_READY_FOR_ADMISSION",
   "canonical_admission": {
     "stage": "C",
     "canonical_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
@@ -174,13 +223,14 @@
     "kernel remains sole committed-state mutation owner"
   ],
   "reconcile_findings": [
-    "No production Fortran MODFLOW/XMI solve surface exists; live prepared-solve ownership is intentionally Python in Modflow6PreparedSolveSession.",
-    "F-GC49A and F-GC49B are production Fortran capabilities but do not yet expose a generic cross-language application ABI.",
-    "F-GC44-F-GC47 C bridges remain qualification-only and must not become production architecture.",
-    "Therefore Stage C admits generic application-service control flow and a narrow runtime protocol; a separate Stage D is required if a generic production FMR C ABI remains absent after Stage C."
+    "Canonical contains F-GC49A plan authority and F-GC49B participant registry as production Fortran capabilities, but no generic cross-language FMR application ABI.",
+    "src/adapter/mod_modflow6_fgc34_c_bridge.f90 is a production MODFLOW package publisher only and does not expose FMR participants.",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90 through mod_fgc47_mixed_topology_c_bridge.f90 are qualification fixtures; they own fixture SWAP state/physics/ledgers and are explicitly ineligible for promotion.",
+    "The admitted F-GC49C Python runtime protocol already defines the required operation boundary: plan, origin capture, cell flux evaluation, corrector trials, discard, reanchoring, preflight, ledger preparation and publication.",
+    "Stage D therefore requires a Fortran-owned application context over externally owned F-GC49A plan, F-GC49B registry/handles and ledgers, plus a narrow opaque-handle C ABI and a Python adapter. The C ABI may expose primitive immutable views but must not own SWAP state or reproduce cell/linear-response mathematics."
   ],
-  "current_branch_head": "4f0626c9490fbd04ef3336e0ae4d7233df8e9960",
-  "qualification_surface_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
+  "current_branch_head": "8b001862e8649185ad610e5e7f6225d985f49524",
+  "qualification_surface_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
   "external_execution_state": {
     "redundant_preservation_head_runs": [
       35349959517,
@@ -240,5 +290,40 @@
     "predictor/corrector ownership remains under iMOD Coupler",
     "no generic distributed atomicity claim is made",
     "N:1 technical support is not evidence of hydrological transferability"
-  ]
+  ],
+  "stage_c_closed": {
+    "canonical_merge_sha": "d913f10ce0aa3053e26eb02722db9b7b37c7fe70",
+    "closure_sha": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+    "pr": 267,
+    "qualification_surface_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6"
+  },
+  "stage_d_source": {
+    "branch": "work/f-gc49d-production-application-context-abi",
+    "base": "0c7a76bafeab1b1e1c57f5615340178d45bec268"
+  },
+  "stage_d_qualification": {
+    "qualification_surface_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
+    "first_reconciled_artifact_head": "8b001862e8649185ad610e5e7f6225d985f49524",
+    "owner_run": 35352680601,
+    "production_context_job": 105624335640,
+    "live_modflow_job": 105624335376,
+    "independent_run": 35352680593,
+    "independent_job": 105624335296
+  },
+  "stage_d_evidence_reuse": {
+    "qualification_surface_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
+    "first_reconciled_head": "8b001862e8649185ad610e5e7f6225d985f49524",
+    "byte_identical_artifact_count": 14,
+    "production_test_workflow_differences": [],
+    "status_before_evidence_checkpoint_identical": true,
+    "disposition": "All Stage-D artifacts were byte-identical after reconciliation; subsequent qualification-evidence persistence changes status authority only."
+  },
+  "stage_d_canonical_drift_reconciliation": {
+    "canonical_preimage": "27a46cb9e4100453c36005d579de9e87623ff1b3",
+    "previous_reconciled_base": "47430b68ed46a24ca05b29b46de2dd4f7e29762b",
+    "canonical_commits_since_previous_reconcile": 71,
+    "changed_file_count": 37,
+    "dependency_overlap": [],
+    "disposition": "No F-GC49D production/runtime/test/workflow dependency overlap; qualified artifact set may be overlaid unchanged."
+  }
 }
