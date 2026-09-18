@@ -1,0 +1,45 @@
+{
+  "schema": "pub-gc-successor-release-preregistration-v1",
+  "date": "2026-09-18",
+  "state": "PREREGISTERED_AWAITING_R1_L1",
+  "predecessor": {
+    "release_id": "SWAP5-RB1-v1",
+    "final_authority_commit": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+    "authority_branch": "release/f-rb02-restricted-production-baseline-v1-final-authority",
+    "authority_file": "release/f-rb02/F-RB02_CLOSEOUT.json",
+    "immutability_rule": "RB1 is immutable; future release must enumerate delta from RB1 and qualify its own candidate"
+  },
+  "unresolved_inputs": {
+    "R1": "exact successor release identifier and approving authority",
+    "L1": "explicit SWAP5 publication-archive licence/redistribution statement"
+  },
+  "candidate_rule": {
+    "source_branch": "integration/f-ci-canonical",
+    "exact_single_postimage_required": true,
+    "release_metadata_may_change_science": false,
+    "tag_may_move": false,
+    "reuse_predecessor_release_id": false
+  },
+  "required_gates": [
+    "F-CI current-canonical qualification",
+    "relevant scientific/reference preservation",
+    "groundwater coupling preservation",
+    "PUB-GC E7 component-domain preservation",
+    "Documentation strict build",
+    "PUB-GC GMD prearchive integrity",
+    "frozen publication asset blob identity"
+  ],
+  "publication_binding": [
+    "GMD title",
+    "persistent archive DOI/PID",
+    "Code/Data Availability",
+    "PUB_GC_REPRODUCIBILITY_MANIFEST.json"
+  ],
+  "nonclaims": [
+    "no inferred semantic-version compatibility",
+    "no complete SWAP 4.3.1 functionality claim",
+    "no universal MODFLOW coupling claim",
+    "no regional Hupsel validation claim",
+    "no Status-AA implication"
+  ]
+}
