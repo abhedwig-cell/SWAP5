@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.publication.p2e14-reference-common-material-threshold-freeze.v1",
+  "workunit": "PUB-P2E14",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_THRESHOLD_EXECUTION",
+  "parent_authority": {
+    "branch": "work/pub-p2e13-reference-common-material-state-domain",
+    "head": "95158d1f362b943c18e193d6d7b638300ebb684e",
+    "result_blob": "a8658b710b5b96b1bea0ee8c61dae80a002efa76",
+    "verdict": "QUALIFIED_REFERENCE_COMMON_MATERIAL_STATE_DOMAIN_SE_0P65_TO_0P96_TESTED_GRID"
+  },
+  "purpose": "Freeze candidate-independent E0 state/storage discrepancy thresholds for the three prospectively selected common 36-material state anchors before any new material-extension RossFast discrepancy is executed.",
+  "matrix": {
+    "materials": "all 36 D3R materials B01-B18 and O01-O18",
+    "material_count": 36,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 216,
+    "cases_per_Se": 72,
+    "grid": "16 homogeneous cells x 10 cm",
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "source_sink": "zero",
+    "ponding_initial_cm": 0
+  },
+  "reference_only_method": {
+    "route": "legacy-reference-bound",
+    "comparison": "one Reference solve over 0.0064 day versus two sequential Reference solves over 0.0032 + 0.0032 day",
+    "metrics": [
+      "U_h_inf_cm",
+      "U_h_rms_cm",
+      "U_theta_inf",
+      "U_theta_rms",
+      "U_storage_cm"
+    ],
+    "hard_integrated_mass_abs_limit_cm_each_solve": 1e-12
+  },
+  "frozen_threshold_rule": {
+    "stratification": "effective_saturation only",
+    "statistic": "maximum Reference self-disagreement across all 72 valid cases in exact Se stratum",
+    "reference_factor": 1,
+    "application_resolution_floor": 0,
+    "threshold_formula": "T_metric(Se) = max_{36 materials x 2 forcing}(U_metric)",
+    "inclusive_comparison_for_future_candidate": "D_metric <= T_metric(Se)",
+    "no_weighted_compensation": true
+  },
+  "firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_new_discrepancy_inspection_allowed": false,
+    "material_specific_threshold_allowed": false,
+    "forcing_specific_threshold_allowed": false,
+    "case_removal_allowed": false,
+    "threshold_factor_change_after_execution_allowed": false,
+    "application_floor_change_after_execution_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false
+  },
+  "outcome_policy": {
+    "if_all_216_reference_pairs_valid": "Persist exactly fifteen frozen thresholds, five metrics x three Se strata. The next workunit may preregister new RossFast extension discrepancies.",
+    "if_any_reference_pair_invalid": "Do not freeze thresholds and do not execute RossFast. Persist the negative Reference-domain result."
+  },
+  "future_candidate_evidence_boundary": {
+    "primary_new_holdout": "30 extension materials B02-B11,B13-B18,O02-O04,O06-O13,O15-O17 at Se={0.65,0.85,0.96} and DRYING/NOMINAL",
+    "anchor_role": "The six original P2E10 materials may be rerun for continuity, but their previously observed Se=0.65/0.85 behavior is not relabelled as untouched holdout evidence.",
+    "wetting": "Remains excluded under current RossFast production forcing envelope unless separately qualified."
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_THRESHOLD_FREEZE_READY"
+}
