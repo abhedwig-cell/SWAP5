@@ -13,7 +13,7 @@ TEST=tests/publication/test_pub_p2e18_ref_high_construction.f90
 PREREG=docs/publication/P2E18_REF_HIGH_CONSTRUCTION_PREREGISTRATION.json
 PARENT_BASE=b61bc4c5730e951655353f7fdccb76618a290fd7
 PREREG_BLOB=8886758ff46878a682a0ab9f57fd58a347b1f49e
-TEST_BLOB=d87c35762e2191cc7d98b99529e2d8113ee887d0
+TEST_BLOB=d4e87e02321861241766b6a0b176e63fe79e7d72
 P2E17_RESULT_BLOB=63c92b1e64743d31cb9de8698df16c28e7a54076
 P2E14_RESULT_BLOB=f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351
 REFERENCE_TREE=684f1e2889b6992e5aedc88f52bb45f4558bb3e4
@@ -116,15 +116,17 @@ for opt in 0 2; do
     fail "REF-HIGH construction runtime O$opt"
   fi
 
-  for marker in     'PUB_P2E18_CASE_COUNT=36'     'PUB_P2E18_MATERIAL_COUNT=6'     'PUB_P2E18_SE_LEVEL_COUNT=3'     'PUB_P2E18_FORCING_COUNT=2'     'PUB_P2E18_REFINEMENT_LEVEL_COUNT=5'     'PUB_P2E18_REF_HIGH_SUBSTEPS=16'     'PUB_P2E18_STABILITY_COMPARISON=8_VS_16'     'PUB_P2E18_HEAD_THETA_STABILITY_FACTOR=0.10'     'PUB_P2E18_STORAGE_USES_P2E14_RESOLUTION_FLOOR=TRUE'     'PUB_P2E18_ROSSFAST_SOLVER_EXECUTED=FALSE'     'PUB_P2E18_TIMING_EXECUTED=FALSE'     'PUB_P2E18_REF_HIGH_CONSTRUCTION_GATE=PASS'; do
+  for marker in     'PUB_P2E18_CASE_COUNT=36'     'PUB_P2E18_MATERIAL_COUNT=6'     'PUB_P2E18_SE_LEVEL_COUNT=3'     'PUB_P2E18_FORCING_COUNT=2'     'PUB_P2E18_REFINEMENT_LEVEL_COUNT=6'     'PUB_P2E18_REF_HIGH_SUBSTEPS=32'     'PUB_P2E18_STABILITY_COMPARISON=8_VS_16_AND_16_VS_32'     'PUB_P2E18_HEAD_THETA_STABILITY_FACTOR=0.10'     'PUB_P2E18_STORAGE_USES_P2E14_RESOLUTION_FLOOR=TRUE'     'PUB_P2E18_ROSSFAST_SOLVER_EXECUTED=FALSE'     'PUB_P2E18_TIMING_EXECUTED=FALSE'     'PUB_P2E18_REF_HIGH_CONSTRUCTION_GATE=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
   done
 
   levels="$(grep -Fc 'PUB_P2E18_LEVEL|' "$OUT/output.txt")"
   stability="$(grep -Fc 'PUB_P2E18_STABILITY|CASE=' "$OUT/output.txt")"
+  deltas="$(grep -Fc 'PUB_P2E18_DELTA|CASE=' "$OUT/output.txt")"
   thresholds="$(grep -Fc 'PUB_P2E18_STABILITY_THRESHOLD|' "$OUT/output.txt")"
-  [[ "$levels" = "180" ]] || fail "expected 180 refinement-level records, got $levels"
+  [[ "$levels" = "216" ]] || fail "expected 216 refinement-level records, got $levels"
   [[ "$stability" = "36" ]] || fail "expected 36 stability records, got $stability"
+  [[ "$deltas" = "72" ]] || fail "expected 72 fine-refinement delta records, got $deltas"
   [[ "$thresholds" = "3" ]] || fail "expected 3 stability threshold strata, got $thresholds"
 
   if grep -Fq 'PUB_P2E18_SCIENTIFIC_OUTCOME=QUALIFIED_REF_HIGH_36_OF_36' "$OUT/output.txt"; then
