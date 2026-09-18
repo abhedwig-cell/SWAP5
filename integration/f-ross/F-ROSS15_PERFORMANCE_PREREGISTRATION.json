@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.f-ross15.reference-vs-rossfast-performance.v1",
+  "workunit": "F-ROSS15",
+  "phase": "PREREGISTERED_BEFORE_TIMING_EXECUTION",
+  "branch": "work/f-ross15-reference-vs-rossfast-performance",
+  "canonical_base": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+  "purpose": "Measure Reference Richards versus RossFast D3R solver-seam execution cost on the already qualified PUB-P2E10 paired-valid E0 domain, without changing either solver or its scientific contract.",
+  "why_f_ross15": "F-ROSS14 is already occupied by the separate WETTING/top-boundary-envelope decision surface.",
+  "scientific_authority": {
+    "p2e10_result_blob": "83864f6379279725fa97d24d57936f590d3c2174",
+    "paired_valid_case_count": 36,
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.98],
+    "forcing": ["DRYING","NOMINAL"],
+    "step_duration_day": 0.0016
+  },
+  "locked_solver_dependencies": {
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "rossfast_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "rossfast_model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "rossfast_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "rossfast_table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+  },
+  "benchmark": {
+    "compiler_optimization": "O2",
+    "route_variants": ["REFERENCE","ROSSFAST"],
+    "warmup_runs_per_variant": 2,
+    "measured_pairs": 12,
+    "pair_order": "alternate REFERENCE-ROSSFAST then ROSSFAST-REFERENCE",
+    "inner_repetitions_per_case": 200,
+    "timed_region": "solver solve calls only; case construction, constitutive setup and RossFast table initialization excluded",
+    "primary_metric": "process CPU_TIME accumulated only around the repeated selected solver calls",
+    "secondary_metric": "whole child-process CPU seconds",
+    "affinity_policy": "pin each child to the lowest CPU visible in the workflow process affinity",
+    "outlier_deletion_allowed": false
+  },
+  "resolution_rule": {
+    "paired_relative_delta": "rossfast_cpu/reference_cpu - 1",
+    "resolution_multiplier": 2.0,
+    "minimum_detectable_relative_effect": "2 * paired_stdev / sqrt(n)",
+    "target_resolution_relative": 0.05,
+    "screening_faster": "mean paired relative delta < -MDE",
+    "screening_slower": "mean paired relative delta > MDE",
+    "otherwise": "NOT_RESOLVED"
+  },
+  "host_boundary": {
+    "isolated_runner_readiness_blob": "44634b56c14022278938fc53b181b741e29c07aa",
+    "isolated_runner_status": "INFRASTRUCTURE_PENDING",
+    "github_hosted_measurement_is": "SCREENING_ONLY",
+    "qualified_speedup_claim_allowed_on_github_hosted_runner": false,
+    "reason": "Existing MP-7/MP-8 governance requires an admitted isolated performance host for a formal CPU baseline."
+  },
+  "firewall": {
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "solver_contract_change_allowed": false,
+    "solver_tolerance_change_allowed": false,
+    "case_membership_change_after_timing_allowed": false,
+    "repetition_count_change_after_timing_allowed": false,
+    "pair_extension_after_timing_allowed": false,
+    "performance_optimization_allowed": false
+  },
+  "permitted_outcomes": [
+    "SCREENING_ROSSFAST_FASTER",
+    "SCREENING_REFERENCE_FASTER",
+    "SCREENING_NOT_RESOLVED",
+    "BLOCKED_CONTRACT_DRIFT",
+    "BLOCKED_EXECUTION_FAILURE"
+  ],
+  "formal_claim_boundary": "Even a resolved hosted-runner screening result is not a qualified production speedup claim until repeated on an MP-admitted isolated host.",
+  "next_permitted_action": "Implement only the locked 36-case paired-valid timing harness and screening runner, then execute exactly the preregistered benchmark."
+}
