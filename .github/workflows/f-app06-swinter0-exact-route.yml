@@ -1,0 +1,30 @@
+name: F-APP06 SWINTER0 exact route
+
+on:
+  push:
+    branches:
+      - work/f-app06-hupsel-swinter0-no-interception
+    paths:
+      - 'src/process/mod_pmdirect_swetr0_process.f90'
+      - 'tests/f-app06/**'
+      - 'integration/f-app/F-APP06_*'
+      - '.github/workflows/f-app06-swinter0-exact-route.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_pmdirect_swetr0_process.f90'
+      - 'tests/f-app06/**'
+      - 'integration/f-app/F-APP06_*'
+      - '.github/workflows/f-app06-swinter0-exact-route.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/f-app06/run_fapp06_swinter0_exact_route.sh
