@@ -21,7 +21,7 @@ from fgc44_real_swap_ctypes import Fgc44RealSwap
 DAY_TO_S=86400.0
 AREA_M2=1.0
 WINDOW_DAY=1.0e-4
-FLUX_TOL=2.0e-10
+FLUX_TOL=1.0e-15
 
 @dataclass(frozen=True)
 class Binding:
