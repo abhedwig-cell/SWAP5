@@ -330,3 +330,19 @@ The register should describe readiness, not rewrite past chronology.
 - H2 and H3 remain untested by primary evidence;
 - next permitted action: freeze and execute `PUB-GC-NATIVE-TIME-0001`, selecting a native SWAP internal-integration policy from endpoint-state and integrated-exchange convergence only; terminal-surrogate mismatch must not be a selection objective;
 - cross-publication firewall: no PUB-RC tangent/acceleration claim, PUB-SQ solver claim, PUB-ME architecture claim or PUB-SG upscaling claim is created.
+
+
+### 2026-09-18T00:36:15Z — PUB-GC native-time study returned NO_POLICY_SELECTED
+
+- frozen specification: `PUB-GC_NATIVE_TIME_SPEC.md`, commit `9d8528af50bfa8450e5ec731bfdd47f7cd6c83d1`, blob `5f563ca26d602a56fdd82419265fa1bfea63399e`;
+- frozen manifest: `PUB-GC-NATIVE-TIME-0001`, commit `e553ca282a31f221a23f9291c5670e73f3455b06`, blob `19c98e4ae7f97d029c9ce2d42d0fe4104a54f0bd`;
+- execution: `research/pub-gc-native-time@6ad2c56c0e75a4b220e88b64510795a12f162285`, GitHub Actions run `35291849037`, job `105436176829`, conclusion `success`;
+- exact O0/O2 scientific-output identity: PASS; output SHA-256 `2335cac984006f397cea843e5d23f909d68acabe109965e08139ff9df0c2259e`;
+- artifact `10526451569`, digest `sha256:1a8234d76fc9924e8dd8fb3de74b4a8e99d03714099345ddf03a951bc393d58d`;
+- N0 (0.01 d) and N1 (0.005 d) executed for all five frozen cases; N2 (0.0025 d) and N3 (0.00125 d) returned `PUB_GC_MACRO_INVALID` for all five cases;
+- mechanical outcome: `NO_POLICY_SELECTED`; all-trajectories-valid = false; fine-level guard = false; no case, threshold or selection rule was changed after execution;
+- root-cause adjudication: the research macro component advances absolute time by repeated `t1=t0+dt` and requires final `abs(t0-macro_t1)<=1e-12 d`; at macro origin 4200.125 d the repeated-addition closure errors are about `-6.37e-12 d` for 16 contributions and `+8.19e-12 d` for 32 contributions, while 4/8 contributions remain within the guard;
+- scientific consequence: this is a time-coordinate/research-infrastructure envelope limit, not a Richards/native-SWAP physics failure; N0/N1 are **not** admitted as adequate simply because they ran;
+- result receipt: `docs/publications/results/PUB-GC-NATIVE-TIME-0001.yaml`, introduced by commit `a7c89350305efc6019b469896782f4f91b5ba7e6`;
+- H2/H3 remain untested;
+- next permitted action: freeze a separate macro temporal-coordinate decision, requalify the research-only macro response under a new qualification ID, then preregister a new native-time study ID; do not overwrite or rerun NATIVE-TIME-0001 as though it had passed.
