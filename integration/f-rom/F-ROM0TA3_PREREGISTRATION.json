@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.f-rom0ta3.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA3",
+  "title": "Qualification-only fixed-resolution Reference-floor sample capability",
+  "phase": "PREREGISTERED_BEFORE_SOURCE_MUTATION",
+  "branch": "work/f-rom0-close-expand-accepted-domain",
+  "predecessor": "F-ROM0TA2",
+  "predecessor_decision": "TEMPORAL_AUTHORITY_REQUIRES_NEW_REFERENCE_CAPABILITY",
+  "architecture_binding": "docs/science/F-ROM0TA3_REFERENCE_FLOOR_SAMPLE_ARCHITECTURE.md",
+  "purpose": "Add the minimum F-KT/FMR capability needed to commit fixed-resolution Reference-Richards samples for cross-resolution ROM-0 Reference-floor qualification without application temporal-accuracy semantics.",
+  "architecture_decision": "SEPARATE_KERNEL_REFERENCE_FLOOR_SAMPLE_PATH_NOT_NEW_TX_TEMPORAL_MODE",
+  "source_mutation_allowlist": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "source_mutation_denylist": [
+    "src/solver/**",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_contracts.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "reference/**"
+  ],
+  "semantic_invariants": [
+    "ORDINARY_CANONICAL_TRANSACTION_PATH_UNCHANGED",
+    "ORDINARY_FMR_RUN_TRIAL_UNCHANGED",
+    "REFERENCE_RICHARDS_PHYSICS_UNCHANGED",
+    "NO_NEW_TX_TEMPORAL_MODE",
+    "NO_APPLICATION_HEAD_BUDGET",
+    "ONE_PRESCRIBED_ADVANCE_PER_SAMPLE",
+    "NO_AUTOMATIC_RETRY_OR_SUBDIVISION",
+    "HARD_MASS_GATE_UNCHANGED",
+    "SEPARATE_REFERENCE_FLOOR_CANDIDATE_TYPE",
+    "DEDICATED_COMMIT_WITH_LINEAGE_REVISION_TIME_GUARDS",
+    "FAILURE_IS_TERMINAL_ROW_EVIDENCE"
+  ],
+  "first_qualification_domain": {
+    "materials": ["B01", "B14"],
+    "geometry": {"nodes": 16, "dz_cm": 10, "depth_cm": 160},
+    "seed": "ROM0R_R1_GRAVITY_STEADY_SE_0_85",
+    "perturbation": {
+      "epsilon_fraction_of_k0": 0.01,
+      "cases": ["TOP_PLUS", "TOP_MINUS"],
+      "bottom_flux": "qeq"
+    },
+    "temporal_resolution_day": [0.0016, 0.0008, 0.0004],
+    "common_perturbation_horizon_day": 0.0128,
+    "seed_intervals_before_perturbation": 2,
+    "seed_interval_day": 0.0016
+  },
+  "required_sample_evidence": [
+    "EXACT_REQUESTED_DT",
+    "ONE_ADVANCE",
+    "NO_RETRY",
+    "NO_SUBDIVISION",
+    "SOLVER_CONVERGED",
+    "COMPLETE_MASS_ACCOUNTING",
+    "HARD_MASS_GATE",
+    "ORIGIN_LINEAGE_REVISION",
+    "EXACTLY_ONE_COMMIT_PER_SUCCESSFUL_INTERVAL",
+    "FINITE_COMMITTED_STATE"
+  ],
+  "required_cross_resolution_outputs": [
+    "pressure_head_profile_diagnostic",
+    "water_content_profile_diagnostic",
+    "total_storage",
+    "upper_0_40cm_storage",
+    "lower_40_160cm_storage",
+    "top_exchange",
+    "bottom_exchange",
+    "mass_residual",
+    "solver_work"
+  ],
+  "failure_rule": "A failed prescribed resolution row remains failed. Do not reduce dt inside that row. Finer preregistered dt values are independent trajectories.",
+  "repair_policy": "Repair only local implementation/build defects. Do not change solver controls, perturbation amplitude, material set, mass tolerance or resolution ladder after first scientific execution.",
+  "close_decisions": [
+    "REFERENCE_FLOOR_SAMPLE_CAPABILITY_QUALIFIED",
+    "REFERENCE_FLOOR_SAMPLE_CAPABILITY_IMPLEMENTATION_BLOCKED",
+    "REFERENCE_FIXED_RESOLUTION_TRAJECTORY_NO_GO"
+  ],
+  "rom1a_authorized": false,
+  "production_application_admission": false
+}
