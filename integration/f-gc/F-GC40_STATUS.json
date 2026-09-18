@@ -3,8 +3,8 @@
   "capability": "F-GC40",
   "title": "MultiSWAP MODFLOW6 Cell Response",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_IMPLEMENT",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
   "authority_correction": {
     "canonical_f_gc31": "Restricted Active-Drainage Lagged Tangent admitted by F-CI98",
     "historical_provisional_identity": "F-GC31 MultiSWAP MODFLOW6 Cell Response",
@@ -50,5 +50,27 @@
     "runtime finite-difference fallback",
     "canonical admission"
   ],
-  "next_permitted_action": "Run exact-head F-GC40 current-canonical qualification. If green, checkpoint owner qualification and proceed to independent/admission review."
+  "next_permitted_action": "Independent qualification/admission review of exact F-GC40 current-canonical envelope. Do not reopen the historical provisional F-GC31 identity.",
+  "qualification": {
+    "head": "7ab1f5567a55385f72c869a9fafc9abaa4b58300",
+    "workflow_run": 35291893022,
+    "workflow_job": 105436313416,
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "current_canonical_dependency_replay": true,
+    "production_blob_identity_preserved": true,
+    "pass_markers": [
+      "FGC40_NONCOMMITTING_CELL_COMPOSER",
+      "FGC40_NO_MODFLOW_BACKEND_OR_RIBASIM",
+      "FGC40_SINGLE_TILE_EQUIVALENCE",
+      "FGC40_HETEROGENEOUS_AFFINE_CLOSURE",
+      "FGC40_REFERENCE_HEAD_RECONCILIATION",
+      "FGC40_AREA_WEIGHTED_U",
+      "FGC40_PERMUTATION_DETERMINISM",
+      "FGC40_CANONICAL_TILE_PROVENANCE",
+      "FGC40_PROVENANCE_FAIL_CLOSED",
+      "FGC40_CELL_RESPONSE_CONTRACT_GATE",
+      "FGC40_O0_O2_OUTPUT_IDENTITY"
+    ]
+  }
 }

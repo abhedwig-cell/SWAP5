@@ -220,3 +220,28 @@ F-GC40 does not:
 ## 9. Next bounded step
 
 Implement the pure typed cell-response composer and a focused O0/O2 qualification gate covering Q1 through Q4. Stop after qualification and persist the evidence before any MODFLOW backend or runtime composition work.
+
+
+## Current-canonical requalification
+
+F-GC40 was materialized from canonical `7b864853ca22baa73141b2dec9ed2f3915ef520d`.
+
+The production module is byte-identical to the historical owner-qualified donor:
+
+```text
+src/runtime/mod_modflow6_multiswap_cell_response.f90
+blob 288a274612f6c0be0b3ced149028066a066908ca
+```
+
+Owner requalification:
+
+```text
+head 7ab1f5567a55385f72c869a9fafc9abaa4b58300
+run  35291893022
+job  105436313416
+conclusion SUCCESS
+```
+
+O0 and O2 outputs are identical. Single-tile equivalence, heterogeneous common-head affine closure, area-weighted `u`, deterministic tile reduction and fail-closed provenance all pass against current canonical dependencies.
+
+**Verdict: OWNER_QUALIFIED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE.**
