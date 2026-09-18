@@ -67,7 +67,7 @@ These items do not require new science:
 - add acknowledgements, funding and conflict/data/code availability declarations required by the journal;
 - freeze an archival repository release/DOI and replace development-revision language with the archived identifier;
 - final language/notation consistency pass on the closed E1–E7 manuscript;
-- prepare journal-resolution raster/PDF exports if the journal does not accept SVG.
+- final-release regeneration/upload of the already validated F1–F7 PDF presentation transforms.
 
 ## Decision boundary
 
@@ -146,4 +146,20 @@ Current non-scientific blockers:
 2. L1 — authorized SWAP5 publication-archive licence/redistribution statement;
 3. persistent exact-version archive + DOI/PID after R1/L1;
 4. final author/affiliation/contribution/funding/interest metadata;
-5. final figure PDF exports and upload packaging.
+5. final-release regeneration/upload of the validated figure package (candidate export already PASS).
+
+
+## Validated GMD figure exports
+
+Candidate F1–F7 PDF exports are now validated.
+
+Controlling evidence:
+
+- `PUB_GC_GMD_FIGURE_EXPORT_RESULT.json`;
+- workflow run 35405142243 / job 105793234099 — SUCCESS;
+- artifact 10571902714;
+- flat figure ZIP SHA-256 `37ef7daf52ad2892b78b4f926f89983f64c097eba32839e20fce47211e5d43fb`.
+
+All seven PDFs are one page, have embedded detected fonts, preserve the governed SVG aspect ratios, render without observed clipping/glyph failures, and are far below GMD's 2 MB PDF-figure limit.
+
+At final release, regenerate/bind the same presentation transforms to the exact governed release revision. No figure redesign or new science is required.
