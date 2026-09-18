@@ -2,26 +2,31 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS20",
   "title": "Production adaptive K2 to K4 RossFast certificate",
-  "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "phase": "CLOSE",
+  "status": "BLOCKED_TEMPORAL_2_OF_216",
   "branch": "work/f-ross20-production-adaptive-certificate",
-  "source_head": "094c113f77fe18df049af51629976a05bccc02ee",
-  "production_mutation": {
-    "kernel_blob": "647afbaab5e792ba4fd51a19a79fe26d44f409b1",
-    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
-  },
-  "preserved_authorities": {
-    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
-    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
-    "f_ross19_result_blob": "6d25bc6a4cdbc9c7f525758fa146893ec035a4b0",
-    "f_ross13_transient_result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0"
-  },
+  "evaluated_head": "0914ab058f2ac3843716ff560fe8bf33cf7a6516",
   "qualification": {
-    "provider_preservation": "pending",
-    "all_material_216_case": "pending",
-    "production_research_identity": "pending",
-    "shared_host_performance": "pending"
+    "provider_preservation": "PASS",
+    "all_material_route": "216/216",
+    "all_material_mass": "216/216",
+    "all_material_work_contract": "216/216",
+    "all_material_retry_contract": "216/216",
+    "all_material_temporal": "214/216",
+    "temporal_failures": [
+      "B05 Se=0.98 DRYING",
+      "B05 Se=0.98 NOMINAL"
+    ],
+    "production_research_identity": "NOT_RUN_AFTER_FAIL_CLOSED_TEMPORAL_GATE",
+    "performance": "NOT_RUN_AFTER_FAIL_CLOSED_TEMPORAL_GATE"
   },
-  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
-  "next_permitted_action": "Execute F-ROSS20 workflow; fix only implementation/harness defects without changing frozen adaptive semantics or gates."
+  "verdict": "BLOCKED_NO_PRODUCTION_ADMISSION",
+  "next_permitted_action": "Start separate research-only K2->K4->K8 ladder from the F-ROSS19 research authority, not by modifying F-ROSS20 semantics in place.",
+  "exclusions": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_GATE_RETUNING",
+    "NO_K4_THRESHOLD_RELAXATION",
+    "NO_IN_PLACE_K8_EXTENSION",
+    "NO_FORMAL_SPEEDUP_CLAIM"
+  ]
 }
