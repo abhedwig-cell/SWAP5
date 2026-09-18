@@ -80,3 +80,34 @@ Only:
 After every meaningful D1-B stage, update this checkpoint before any further tool-heavy action.
 
 A timeout must resume from this file and inspect only PR #220 delta since the recorded head.
+
+
+## D1-B live checkpoint — head fe7aa271
+
+Reconciled PR #220 head:
+
+`fe7aa27124562bc9a4969056a33876d094ca6e5a`
+
+Changed files remain qualification-only:
+
+- `.github/workflows/pub-me-d1-rejected-state-leakage.yml`
+- `docs/publications/PUB-ME_D1_COMPARATOR_AND_MUTATION_FREEZE.md`
+- `tests/publication/mutants/d1_rejected_candidate_write_through.patch`
+- `tests/publication/run_pub_me_d1_rejected_state_leakage.sh`
+- `tests/publication/test_pub_me_d1_rejected_state_leakage.f90`
+
+No `src/**` or `reference/**` delta is present.
+
+Workflow state at this checkpoint:
+
+- Documentation run `35291383008`: **SUCCESS**
+- PUB-ME D1 rejected-state leakage run `35291383247`: **IN_PROGRESS**
+- F-CI canonical qualification run `35291383093`: **IN_PROGRESS**
+
+No immutable D1-B result record is present yet. Therefore no scientific classification from D1-B is authorized at this checkpoint.
+
+Next permitted action:
+
+- re-read only PR #220 head and these two in-progress workflows;
+- if the D1-B gate completes, capture its raw classification markers before consulting downstream interpretation;
+- persist the result before any D2 work.
