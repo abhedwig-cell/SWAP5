@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_HUPSEL_SWINTER0_ROUTE",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "authority": {
+    "exact_b1_11_trace": "integration/m1/M1_C3_B1_11_APPLICATION_TRACE_QUALIFICATION.json",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+  },
+  "exact_population": {
+    "selectors": "SWETR=0 / SWDIVIDE=1 / SWINTER=0 / SWCF=0",
+    "accepted_intervals": 3505,
+    "gross_rain_nonzero_intervals": 1777,
+    "surface_irrigation_nonzero_intervals": 18
+  },
+  "legacy_identity_checks": {
+    "max_abs_interception_rate_cm_per_day": 0,
+    "max_abs_net_rain_minus_gross_rain_cm_per_day": 0,
+    "max_abs_wet_canopy_fraction": 0,
+    "max_abs_ptra_minus_ptra_dry_cm_per_day": 0,
+    "interpretation": "SWINTER=0 is a stateless no-interception interval mapping. Surface irrigation is orthogonal: it is not part of net rain and remains owned by the irrigation composition."
+  },
+  "intended_typed_contract": {
+    "interception_rate_cm_per_day": 0,
+    "net_rain": "gross_rain_cm_per_day identity",
+    "wet_canopy_fraction": 0,
+    "potential_transpiration": "daily PMdirect potential_transpiration_dry_cm_per_day identity",
+    "state": "NONE",
+    "fail_closed": "invalid/nonfinite weather or daily PMdirect result"
+  },
+  "exclusions": [
+    "fixed/scheduled irrigation composition",
+    "SWINTER=1",
+    "SWINTER=3/Rutter",
+    "new PMdirect daily physics",
+    "solver/timestep/tolerance changes"
+  ],
+  "verdict": "PASS_EXACT_STATELESS_SWINTER0_ROUTE_NARROWING",
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "next_permitted_action": "After F-APP05 canonical admission, implement and independently qualify this smallest stateless SWINTER=0 interval mapping serially on the then-current PMdirect postimage; exercise all 3505 exact legacy intervals and preserve irrigation as a separate application owner."
+}
