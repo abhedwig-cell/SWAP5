@@ -1,0 +1,46 @@
+name: ROM1A-R1 successor reachable-state library
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1AR1_*'
+      - 'integration/f-rom/ROM1AD2_STATUS.json'
+      - 'integration/f-rom/F-ROM0R_R3D4_STATUS.json'
+      - 'docs/science/ROM1AR1_*'
+      - 'tests/rom/test_rom1ar1_reachable_state_library.f90'
+      - 'tests/rom/analyze_rom1ar1_reachable_state_library.py'
+      - 'tests/rom/run_rom1ar1_reachable_state_library.sh'
+      - '.github/workflows/rom1ar1-reachable-state-library.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1ar1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Generate unchanged 768-state successor library
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1AR1_EVIDENCE
+          ROM1AR1_EVIDENCE_DIR="$PWD/ROM1AR1_EVIDENCE"             bash tests/rom/run_rom1ar1_reachable_state_library.sh | tee ROM1AR1_EVIDENCE/gate.txt
+      - name: Preserve R1 library and qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1ar1-${{ github.run_id }}
+          path: ROM1AR1_EVIDENCE
+          if-no-files-found: warn
