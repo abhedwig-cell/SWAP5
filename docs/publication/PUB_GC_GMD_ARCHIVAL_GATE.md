@@ -159,6 +159,19 @@ The work that does not depend on A1/A2 has been persisted:
 
 These templates deliberately expose unresolved authority rather than hiding it.
 
+
+## 6.1 Prepared pre-submission package
+
+The following journal-preparation assets are now also persisted and may be completed without altering the scientific claim set:
+
+- `PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md` — exact current GMD compliance checklist;
+- `PUB_GC_GMD_FIGURE_EXPORT_PLAN.md` / `.json` — F1–F7 SVG-to-PDF upload mapping and file-limit guards;
+- `PUB_GC_GMD_EDITOR_LETTER_DRAFT.md` — editor-letter text with unresolved governance placeholders exposed;
+- `PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md` — submission-format audit;
+- `tests/publication/validate_pub_gc_gmd_pre_submission.py` — static repository gate for the prepared package.
+
+The manuscript heading is already aligned to the required **Code and data availability** section title. Final content still requires A1–A3.
+
 ## 7. Permitted work before governance resolution
 
 The publication workstream may continue with:
