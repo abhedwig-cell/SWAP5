@@ -25,11 +25,19 @@ jobs:
           gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
             src/process/mod_rutter_interception_process.f90 tests/f-app05/test_rutter_interception_process.f90 -o build/o0/test
           build/o0/test | tee build/o0/out.txt
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
+            src/process/mod_rutter_interception_process.f90 tests/f-app05/test_hupsel_rutter_observations.f90 -o build/o0/hupsel
+          build/o0/hupsel | tee build/o0/hupsel.txt
       - name: Compile strict O2
         run: |
           mkdir -p build/o2
           gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
             src/process/mod_rutter_interception_process.f90 tests/f-app05/test_rutter_interception_process.f90 -o build/o2/test
           build/o2/test | tee build/o2/out.txt
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
+            src/process/mod_rutter_interception_process.f90 tests/f-app05/test_hupsel_rutter_observations.f90 -o build/o2/hupsel
+          build/o2/hupsel | tee build/o2/hupsel.txt
       - name: Require optimization identity
-        run: cmp build/o0/out.txt build/o2/out.txt
+        run: |
+          cmp build/o0/out.txt build/o2/out.txt
+          cmp build/o0/hupsel.txt build/o2/hupsel.txt
