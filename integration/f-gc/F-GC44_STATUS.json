@@ -3,8 +3,8 @@
   "work_unit": "F-GC44",
   "title": "Real SWAP + live MODFLOW6 end-to-end application qualification",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_REAL_APPLICATION_BOUNDARY",
+  "phase": "QUALIFY",
+  "state": "REAL_FMR_AND_LIVE_END_TO_END_EXACT_HEAD_CI_PENDING",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "14171f529cbe7e738b2235fa91f67664f6398286"
@@ -46,5 +46,43 @@
     "Kernel commit remains the sole SWAP committed-state mutation.",
     "No N:1 scaling expansion, Ribasim, irrigation or new groundwater physics."
   ],
-  "next_permitted_action": "Implement the narrow FMR-to-F-GC43 delegation seam, qualify it with real FMR physics first, then expose only the minimum C ABI needed for a live Python xmipy end-to-end application harness."
+  "next_permitted_action": "Run/inspect exact-head real-FMR, live end-to-end and F-VQ116 workflows. Repair only scoped failures. On all-green, reconcile canonical and admit/close F-GC44.",
+  "current_head": "ff43c65fb881b5f1328e81da2917089bbf1b4d45",
+  "implemented": [
+    "encapsulation-safe FMR backend candidate commit/discard delegation",
+    "concrete fmr_groundwater_swap_participant_t over real FMR run_trial and captured kernel checkpoint",
+    "canonical groundwater-head to lower-face pressure-head materializer binding repaired",
+    "real FMR mode-5 participant O0/O2 gate",
+    "same-process qualification-only real SWAP C bridge",
+    "live xmipy/MODFLOW6 6.8.0 end-to-end coupling gate",
+    "F-VQ116 independent architecture/order verifier"
+  ],
+  "recovered_failures": [
+    {
+      "run": 35338819129,
+      "classification": "qualification dependency closure",
+      "cause": "real FMR runner omitted smooth-freatic/drainage-direction module dependencies",
+      "repair": "added existing production dependencies; no semantic change"
+    },
+    {
+      "run": 35338915493,
+      "classification": "latent production integration symbol defect",
+      "cause": "FMR groundwater-head adapter called nonexistent interface_head_m_to_swap_pressure_head_cm while canonical contract exports interface_head_m_to_swap_bottom_pressure_head_cm",
+      "repair": "bound adapter to canonical lower-face pressure-head conversion; mapping physics unchanged"
+    },
+    {
+      "run": 35339006272,
+      "classification": "partial symbol repair",
+      "cause": "first repair changed import but not call site",
+      "repair": "replaced stale symbol at both import and call sites"
+    }
+  ],
+  "admission_criteria": [
+    "exact-head real FMR participant qualification green at O0 and O2",
+    "exact-head live real-SWAP + MODFLOW6 6.8.0 end-to-end qualification green",
+    "exact-head F-VQ116 independent qualification green",
+    "canonical delta reconciled with no conflicting production ownership change",
+    "PR mergeable and admission remains inside restricted one-column/one-cell envelope"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
 }
