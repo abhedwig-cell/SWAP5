@@ -3,8 +3,8 @@
   "capability": "F-GC36",
   "title": "Live MODFLOW6 F-GC34 Bridge Smoke Test",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_IMPLEMENT",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_LIVE_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE",
   "baseline": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "aadde02fc35e7bdaddb1604c6f8a7284f43db813",
@@ -65,5 +65,33 @@
     "performance/scaling",
     "canonical admission"
   ],
-  "next_permitted_action": "Run the exact current-canonical live MODFLOW6 F-GC36 gate. If green, checkpoint owner qualification and run an independent live F-VQ110 verifier before admission."
+  "next_permitted_action": "Qualify this exact owner status head. If green, run independent live F-VQ110 with production delta NONE and a distinct multi-slot analytical fixture before canonical admission.",
+  "qualification": {
+    "qualified_head": "4b75c6668b8e985bc4a79055e663362ca8273bc6",
+    "workflow_run": 35295086614,
+    "workflow_job": 105445877064,
+    "conclusion": "success",
+    "production_blobs": {
+      "src/adapter/mod_modflow6_fgc34_c_bridge.f90": "5c5577715c9c150f72de7bfccaf966cd72db5add",
+      "src/adapter/modflow6_fgc34_ctypes_publisher.py": "ccf16f446ae9aaab34dae6f432082d70569faad9"
+    },
+    "current_canonical_dependencies": [
+      "F-GC34",
+      "F-GC35"
+    ],
+    "pass_markers": [
+      "FGC36_REAL_FGC34_BRIDGE_SYMBOL",
+      "FGC36_PRODUCTION_ADAPTER_NO_SOLVE_OWNERSHIP",
+      "FGC36_MODFLOW680_ASSET_SHA256",
+      "FGC36_FGC34_SHARED_BRIDGE_BUILD",
+      "FGC36_REAL_FGC34_FAIL_CLOSED",
+      "FGC36_OFFICIAL_MODFLOW680_LOADED",
+      "FGC36_LIVE_XMIPY_POINTERS",
+      "FGC36_REAL_FGC34_LIVE_PUBLICATION",
+      "FGC36_LIVE_MODFLOW_SOLVE_CONVERGED",
+      "FGC36_ANALYTICAL_HEAD_CLOSURE",
+      "FGC36_LIVE_SIGN_CLOSURE",
+      "FGC36_LIVE_MODFLOW6_BRIDGE_GATE"
+    ]
+  }
 }
