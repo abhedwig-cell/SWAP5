@@ -47,6 +47,8 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
+  use mod_b110_legacy_swbotb2_application_control, only: b110_legacy_swbotb2_application_control_t, &
+       B110_SWBOTB2_OK
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
@@ -153,6 +155,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
+    type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
@@ -265,6 +268,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
+    type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
@@ -1226,6 +1230,7 @@ contains
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     if (allocated(self%drainage_response_controls)) deallocate(self%drainage_response_controls)
+    if (allocated(self%legacy_swbotb2_control)) deallocate(self%legacy_swbotb2_control)
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
@@ -1282,6 +1287,12 @@ contains
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
       else
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      end if
+      if (allocated(forcing%legacy_swbotb2_control)) then
+        if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (.not. forcing%legacy_swbotb2_control%ready()) return
+        allocate(self%legacy_swbotb2_control)
+        self%legacy_swbotb2_control = forcing%legacy_swbotb2_control
       end if
       if (self%snow_active) then
         if (.not. self%snow_event_prepared .or. .not. allocated(forcing%snow)) return
@@ -1488,7 +1499,8 @@ contains
     logical :: bottom_temperature_start_available
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
-    real(real64) :: rossfast_temporal_indicator
+    real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
+    integer :: effective_bottom_mode, swbotb2_status
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
@@ -1532,14 +1544,29 @@ contains
                                                            self%fixed_weir_surface_water_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
+    effective_bottom_mode = self%bottom_mode
+    effective_bottom_flux = self%bottom_flux
+    if (allocated(self%legacy_swbotb2_control)) then
+      select type (physical_control => state)
+      class is (fmr_b110_physical_state_t)
+        if (physical_control%active_nodes <= 0 .or. .not. allocated(physical_control%pressure_head)) return
+        if (size(physical_control%pressure_head) < physical_control%active_nodes) return
+        call self%legacy_swbotb2_control%evaluate(t0, t1, &
+             physical_control%pressure_head(physical_control%active_nodes), effective_bottom_mode, &
+             effective_bottom_flux, swbotb2_status)
+        if (swbotb2_status /= B110_SWBOTB2_OK) return
+      class default
+        return
+      end select
+    end if
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
     request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
-    request%boundary%bottom_mode = self%bottom_mode
+    request%boundary%bottom_mode = effective_bottom_mode
     request%boundary%top_flux = self%top_flux
     request%boundary%top_head = self%top_head
-    request%boundary%bottom_flux = self%bottom_flux
+    request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
