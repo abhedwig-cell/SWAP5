@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC38",
+  "title": "MODFLOW6 Prepared-Solve Iterative Backend",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "verdict": "READY_FOR_LIVE_PREPARED_SOLVE_QUALIFICATION",
+  "source_branch": {
+    "branch": "work/f-gc37-coupled-predictor-corrector-host",
+    "head": "8ba49f3c7fa01d5fd21a9c358418e26bfe50da57",
+    "f_gc37_verdict": "OWNER_QUALIFIED_INTERNAL_COUPLING_SERVICE_CONTRACT"
+  },
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "note": "Current canonical includes later active-drainage tangent work; F-GC38 lifecycle qualification is orthogonal to tangent coverage."
+  },
+  "source_evidence": {
+    "modflow6_release": "6.8.0",
+    "mf6xmi": "XMI explicitly supports external nonlinear coupling by exchanging data between repeated solve calls inside one prepare_solve/finalize_solve pair.",
+    "gwf_ad": "Normal prepare_solve copies current X into XOLD once; repeated solve calls do not recopy XOLD.",
+    "storage": "STO uses XOLD as previous-time head and X as current iterate.",
+    "imod_coupler": "MetaSWAP-MODFLOW implementation calls mf6.prepare_solve once, repeatedly solves MetaSWAP/MODFLOW in one loop, and finalizes solve once."
+  },
+  "architecture_decision": {
+    "accepted_groundwater_origin": "prepared timestep state plus fixed XOLD",
+    "outer_groundwater_iterate": "current X within one prepared MODFLOW solve",
+    "per_iteration_rollback": "not required and not the intended XMI coupling model",
+    "whole_window_abort": "not yet externally restorable; separate restart concern"
+  },
+  "planned_changes": [
+    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md",
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "tests/fgc/test_fgc38_live_prepared_solve.py",
+    "tests/fgc/run_fgc38_live_prepared_solve.sh",
+    ".github/workflows/f-gc38-live-prepared-solve.yml",
+    "integration/f-gc/F-GC38_STATUS.json"
+  ],
+  "exclusions": [
+    "iMOD predictor/corrector ownership",
+    "SWAP scientific orchestration",
+    "whole-window MODFLOW rollback",
+    "MODFLOW ATS external retry API",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Implement and live-qualify a prepared-solve session against official MODFLOW6 6.8.0, real xmipy pointers and the real F-GC34 bridge."
+}
