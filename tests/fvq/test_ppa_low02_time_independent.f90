@@ -1,6 +1,6 @@
 program test_ppa_low02_time_independent
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_b110_legacy_swbotb2_application_control, only: b110_legacy_swbotb2_application_control_t, &
+  use mod_fmr_serialized_reference_backend, only: b110_legacy_swbotb2_application_control_t, &
        B110_SWBOTB2_OK, B110_SWBOTB2_INVALID_CONTROL, B110_SWBOTB2_TIME_NOT_COVERED, &
        B110_SWBOTB2_DRY_HEAD_CM
   implicit none
