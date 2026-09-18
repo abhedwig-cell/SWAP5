@@ -31,16 +31,14 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | Methods E1–E7 | READY; E7 executed to preregistered component-domain stop |
 | Results E1–E7 | READY |
 | Discussion / conclusions | READY through E7 and evidence-bounded |
-| Figures F1–F6 | BUILT_AND_LINKED |
-| Figure F7 | BUILT_AND_LINKED |
-| Tables T1–T5 | BUILT_AND_LINKED |
-| Table T6 | BUILT_AND_LINKED |
+| Figures F1–F7 | BUILT_AND_LINKED |
+| Tables T1–T6 | BUILT_AND_LINKED |
 | reference metadata | externally audited / normalized |
 | claim-to-sentence audit | PASS: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED` |
 | code/evidence reproducibility section | READY at repository level; archival DOI/release not yet frozen |
 | notation / units glossary | READY: `PUB_GC_NOTATION_AND_UNITS.md` |
-| supplementary methods/evidence package | READY_THROUGH_E6: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` |
-| machine-readable reproducibility manifest | READY_THROUGH_E6: `PUB_GC_REPRODUCIBILITY_MANIFEST.json` |
+| supplementary methods/evidence package | READY_THROUGH_E7: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` |
+| machine-readable reproducibility manifest | READY_THROUGH_E7: `PUB_GC_REPRODUCIBILITY_MANIFEST.json` |
 
 ## What remains scientific
 
