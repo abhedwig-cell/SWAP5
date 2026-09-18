@@ -15,8 +15,8 @@ program test_pub_p2e18_ref_high_construction
   implicit none
 
   integer, parameter :: n=ROSSFAST_D3R_N_CELLS
-  integer, parameter :: nmat=6, nse=3, nforcing=2, nlevels=5, ncases=nmat*nse*nforcing
-  integer, parameter :: nsub_levels(nlevels)=[1,2,4,8,16]
+  integer, parameter :: nmat=6, nse=3, nforcing=2, nlevels=6, ncases=nmat*nse*nforcing
+  integer, parameter :: nsub_levels(nlevels)=[1,2,4,8,16,32]
   real(real64), parameter :: horizon_day=0.0016_real64
   real(real64), parameter :: reference_balance_rate_tol=1.0e-12_real64
   real(real64), parameter :: hard_mass_tol_cm=1.0e-12_real64
@@ -82,7 +82,7 @@ program test_pub_p2e18_ref_high_construction
   write(*,'(A,I0)') 'PUB_P2E18_REF_HIGH_SUBSTEPS=',nsub_levels(nlevels)
   write(*,'(A,I0)') 'PUB_P2E18_STABLE_COUNT=',stable_count
   write(*,'(A,I0)') 'PUB_P2E18_UNRESOLVED_COUNT=',unresolved_count
-  write(*,'(A)') 'PUB_P2E18_STABILITY_COMPARISON=8_VS_16'
+  write(*,'(A)') 'PUB_P2E18_STABILITY_COMPARISON=8_VS_16_AND_16_VS_32'
   write(*,'(A)') 'PUB_P2E18_HEAD_THETA_STABILITY_FACTOR=0.10'
   write(*,'(A)') 'PUB_P2E18_STORAGE_USES_P2E14_RESOLUTION_FLOOR=TRUE'
   write(*,'(A)') 'PUB_P2E18_ROSSFAST_SOLVER_EXECUTED=FALSE'
@@ -116,8 +116,10 @@ contains
     logical :: level_valid(nlevels),found
     character(len=40) :: level_stage
     real(real64) :: h0,k0,top_flux,bottom_flux
-    real(real64) :: d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage
-    logical :: pass_h_inf,pass_h_rms,pass_theta_inf,pass_theta_rms,pass_storage
+    real(real64) :: d1_h_inf,d1_h_rms,d1_theta_inf,d1_theta_rms,d1_storage
+    real(real64) :: d2_h_inf,d2_h_rms,d2_theta_inf,d2_theta_rms,d2_storage
+    logical :: pass1_h_inf,pass1_h_rms,pass1_theta_inf,pass1_theta_rms,pass1_storage
+    logical :: pass2_h_inf,pass2_h_rms,pass2_theta_inf,pass2_theta_rms,pass2_storage
     integer :: il
 
     stable=.false.
@@ -172,48 +174,83 @@ contains
            '|VALID=',level_valid(il),'|STAGE=',trim(level_stage),'|MAX_MASS_CM=',max_mass(il)
     end do
 
-    if (.not.level_valid(nlevels-1) .or. .not.level_valid(nlevels)) then
+    if (any(.not.level_valid)) then
       failure_stage='REFINEMENT_ROUTE_INVALID'
       call report_unresolved(case_id,material_id,se,forcing_id,failure_stage)
       return
     end if
 
-    d_h_inf=maxval(abs(final_h(:,nlevels)-final_h(:,nlevels-1)))
-    d_h_rms=sqrt(sum((final_h(:,nlevels)-final_h(:,nlevels-1))**2)/real(n,real64))
-    d_theta_inf=maxval(abs(final_theta(:,nlevels)-final_theta(:,nlevels-1)))
-    d_theta_rms=sqrt(sum((final_theta(:,nlevels)-final_theta(:,nlevels-1))**2)/real(n,real64))
-    d_storage=abs(storage(nlevels)-storage(nlevels-1))
+    call endpoint_delta(final_h(:,4),final_theta(:,4),storage(4),final_h(:,5),final_theta(:,5),storage(5), &
+         d1_h_inf,d1_h_rms,d1_theta_inf,d1_theta_rms,d1_storage)
+    call endpoint_delta(final_h(:,5),final_theta(:,5),storage(5),final_h(:,6),final_theta(:,6),storage(6), &
+         d2_h_inf,d2_h_rms,d2_theta_inf,d2_theta_rms,d2_storage)
 
-    if (.not.ieee_is_finite(d_h_inf) .or. .not.ieee_is_finite(d_h_rms) .or. &
-        .not.ieee_is_finite(d_theta_inf) .or. .not.ieee_is_finite(d_theta_rms) .or. &
-        .not.ieee_is_finite(d_storage)) then
+    if (.not.all_finite_delta(d1_h_inf,d1_h_rms,d1_theta_inf,d1_theta_rms,d1_storage) .or. &
+        .not.all_finite_delta(d2_h_inf,d2_h_rms,d2_theta_inf,d2_theta_rms,d2_storage)) then
       failure_stage='STABILITY_METRIC_NONFINITE'
       call report_unresolved(case_id,material_id,se,forcing_id,failure_stage)
       return
     end if
 
-    pass_h_inf=d_h_inf<=stability_factor*p2e14_h_inf(ise)
-    pass_h_rms=d_h_rms<=stability_factor*p2e14_h_rms(ise)
-    pass_theta_inf=d_theta_inf<=stability_factor*p2e14_theta_inf(ise)
-    pass_theta_rms=d_theta_rms<=stability_factor*p2e14_theta_rms(ise)
-    pass_storage=d_storage<=p2e14_storage(ise)
+    pass1_h_inf=d1_h_inf<=stability_factor*p2e14_h_inf(ise)
+    pass1_h_rms=d1_h_rms<=stability_factor*p2e14_h_rms(ise)
+    pass1_theta_inf=d1_theta_inf<=stability_factor*p2e14_theta_inf(ise)
+    pass1_theta_rms=d1_theta_rms<=stability_factor*p2e14_theta_rms(ise)
+    pass1_storage=d1_storage<=p2e14_storage(ise)
 
-    stable=pass_h_inf .and. pass_h_rms .and. pass_theta_inf .and. pass_theta_rms .and. pass_storage
+    pass2_h_inf=d2_h_inf<=stability_factor*p2e14_h_inf(ise)
+    pass2_h_rms=d2_h_rms<=stability_factor*p2e14_h_rms(ise)
+    pass2_theta_inf=d2_theta_inf<=stability_factor*p2e14_theta_inf(ise)
+    pass2_theta_rms=d2_theta_rms<=stability_factor*p2e14_theta_rms(ise)
+    pass2_storage=d2_storage<=p2e14_storage(ise)
+
+    stable=pass1_h_inf .and. pass1_h_rms .and. pass1_theta_inf .and. pass1_theta_rms .and. pass1_storage .and. &
+           pass2_h_inf .and. pass2_h_rms .and. pass2_theta_inf .and. pass2_theta_rms .and. pass2_storage
     if (stable) then
       failure_stage='NONE'
     else
       failure_stage='REF_HIGH_STABILITY_FAIL'
     end if
 
+    call report_delta(case_id,material_id,se,forcing_id,'8_VS_16',d1_h_inf,d1_h_rms,d1_theta_inf,d1_theta_rms,d1_storage, &
+         pass1_h_inf,pass1_h_rms,pass1_theta_inf,pass1_theta_rms,pass1_storage,ise)
+    call report_delta(case_id,material_id,se,forcing_id,'16_VS_32',d2_h_inf,d2_h_rms,d2_theta_inf,d2_theta_rms,d2_storage, &
+         pass2_h_inf,pass2_h_rms,pass2_theta_inf,pass2_theta_rms,pass2_storage,ise)
     write(*,'(*(g0))') 'PUB_P2E18_STABILITY|CASE=',case_id,'|M=',trim(material_id),'|SE=',se,'|F=',trim(forcing_id), &
-         '|STABLE=',stable,'|D_H_INF=',d_h_inf,'|T_H_INF=',stability_factor*p2e14_h_inf(ise), &
+         '|STABLE=',stable,'|STAGE=',trim(failure_stage)
+  end subroutine run_case
+
+  subroutine endpoint_delta(h_a,theta_a,storage_a,h_b,theta_b,storage_b,d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage)
+    real(real64),intent(in) :: h_a(n),theta_a(n),storage_a,h_b(n),theta_b(n),storage_b
+    real(real64),intent(out) :: d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage
+    d_h_inf=maxval(abs(h_b-h_a))
+    d_h_rms=sqrt(sum((h_b-h_a)**2)/real(n,real64))
+    d_theta_inf=maxval(abs(theta_b-theta_a))
+    d_theta_rms=sqrt(sum((theta_b-theta_a)**2)/real(n,real64))
+    d_storage=abs(storage_b-storage_a)
+  end subroutine endpoint_delta
+
+  pure logical function all_finite_delta(d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage) result(ok)
+    real(real64),intent(in) :: d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage
+    ok=ieee_is_finite(d_h_inf) .and. ieee_is_finite(d_h_rms) .and. ieee_is_finite(d_theta_inf) .and. &
+       ieee_is_finite(d_theta_rms) .and. ieee_is_finite(d_storage)
+  end function all_finite_delta
+
+  subroutine report_delta(case_id,material_id,se,forcing_id,pair_label,d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage, &
+       pass_h_inf,pass_h_rms,pass_theta_inf,pass_theta_rms,pass_storage,ise)
+    integer,intent(in) :: case_id,ise
+    character(len=*),intent(in) :: material_id,forcing_id,pair_label
+    real(real64),intent(in) :: se,d_h_inf,d_h_rms,d_theta_inf,d_theta_rms,d_storage
+    logical,intent(in) :: pass_h_inf,pass_h_rms,pass_theta_inf,pass_theta_rms,pass_storage
+    write(*,'(*(g0))') 'PUB_P2E18_DELTA|CASE=',case_id,'|M=',trim(material_id),'|SE=',se,'|F=',trim(forcing_id), &
+         '|PAIR=',trim(pair_label),'|D_H_INF=',d_h_inf,'|T_H_INF=',stability_factor*p2e14_h_inf(ise), &
          '|D_H_RMS=',d_h_rms,'|T_H_RMS=',stability_factor*p2e14_h_rms(ise), &
          '|D_THETA_INF=',d_theta_inf,'|T_THETA_INF=',stability_factor*p2e14_theta_inf(ise), &
          '|D_THETA_RMS=',d_theta_rms,'|T_THETA_RMS=',stability_factor*p2e14_theta_rms(ise), &
          '|D_STORAGE=',d_storage,'|T_STORAGE=',p2e14_storage(ise), &
          '|PASS_H_INF=',pass_h_inf,'|PASS_H_RMS=',pass_h_rms,'|PASS_THETA_INF=',pass_theta_inf, &
-         '|PASS_THETA_RMS=',pass_theta_rms,'|PASS_STORAGE=',pass_storage,'|STAGE=',trim(failure_stage)
-  end subroutine run_case
+         '|PASS_THETA_RMS=',pass_theta_rms,'|PASS_STORAGE=',pass_storage
+  end subroutine report_delta
 
   subroutine run_refinement_level(nsub,parameters,hydraulic_parameters,constitutive,source_sink,top_boundary, &
        material,initial_heads,initial_theta,top_flux,bottom_flux,valid,stage,final_heads,final_theta,final_storage,max_mass)
