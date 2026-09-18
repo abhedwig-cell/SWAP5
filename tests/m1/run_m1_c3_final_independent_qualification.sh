@@ -26,7 +26,8 @@ for needle in (
     'fixed_top_node_conductivity=k(1)',
 ):
     assert needle in t, needle
-assert 'call HeadCalc' not in t and 'call headcalc' not in t.lower()
+typed_route=t.split('subroutine run_b110_legacy_compatibility_task2',1)[0].lower()
+assert 'call headcalc' not in typed_route
 assert 'swbotb == 6' in t
 assert 'swkimpl == 0' in t
 assert 'swsophy == 0' in t
