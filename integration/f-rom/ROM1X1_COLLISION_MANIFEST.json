@@ -1,0 +1,109 @@
+{
+  "schema": "swap5.rom1x1.collision-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1X1",
+  "coordinate": "Z8_PLUS_G8",
+  "material": "B14",
+  "theta_floor": 0.0000016414144244913942,
+  "ranking_rule": "candidate induced distance ascending, full theta distance descending, then history/step lexical",
+  "total_collision_count": 351,
+  "pairs": [
+    {
+      "a": {
+        "history": "D01",
+        "step": 39
+      },
+      "b": {
+        "history": "D02",
+        "step": 64
+      },
+      "candidate_induced_theta_linf": 8.379987506135222e-7,
+      "full_theta_linf": 0.0000016487946105092632
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 64
+      },
+      "b": {
+        "history": "D02",
+        "step": 39
+      },
+      "candidate_induced_theta_linf": 8.379987517237453e-7,
+      "full_theta_linf": 0.0000016487948444332545
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 40
+      },
+      "b": {
+        "history": "D02",
+        "step": 63
+      },
+      "candidate_induced_theta_linf": 8.380022799570064e-7,
+      "full_theta_linf": 0.000001649017418836607
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 63
+      },
+      "b": {
+        "history": "D02",
+        "step": 40
+      },
+      "candidate_induced_theta_linf": 8.380022809562071e-7,
+      "full_theta_linf": 0.0000016490176335537399
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 41
+      },
+      "b": {
+        "history": "D02",
+        "step": 62
+      },
+      "candidate_induced_theta_linf": 8.380055157575228e-7,
+      "full_theta_linf": 0.0000016492216592944864
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 62
+      },
+      "b": {
+        "history": "D02",
+        "step": 41
+      },
+      "candidate_induced_theta_linf": 8.380055165346789e-7,
+      "full_theta_linf": 0.000001649221854804761
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 42
+      },
+      "b": {
+        "history": "D02",
+        "step": 61
+      },
+      "candidate_induced_theta_linf": 8.380084577375158e-7,
+      "full_theta_linf": 0.0000016494073322714797
+    },
+    {
+      "a": {
+        "history": "D01",
+        "step": 61
+      },
+      "b": {
+        "history": "D02",
+        "step": 42
+      },
+      "candidate_induced_theta_linf": 8.380084585146719e-7,
+      "full_theta_linf": 0.0000016494075086859183
+    }
+  ],
+  "future_probe_outcomes_used_for_selection": false
+}
