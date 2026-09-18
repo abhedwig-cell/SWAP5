@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.rom1ar1d1.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1-D1",
+  "title": "D08 step34 mode-5 successor-library failure classification",
+  "execution": {
+    "workflow_run": 35378263993,
+    "workflow_job": 105708056183,
+    "executed_head": "abfbf9c33436e0c54dfbddab8a6b2f9f8068e603",
+    "artifact_id": 10560724771,
+    "artifact_digest": "sha256:d74ba94151453033370adb53bc3416c7e0dc2a96bfcc089d3c31fb88b95ef0eb",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "predecessor": {
+    "history": "D08",
+    "accepted_steps": 33,
+    "qualified_fallbacks_used_while_rebuilding": 2,
+    "revision": 35,
+    "time_day": 0.0296
+  },
+  "failed_interval": {
+    "history": "D08",
+    "step": 34,
+    "symbol": "BOTTOM_HEAD_RISE",
+    "bottom_mode": 5,
+    "t0_day": 0.0296,
+    "t1_day": 0.030400000000000003,
+    "step34_fallback_applied": false,
+    "committed_revision_unchanged": 35
+  },
+  "failure": {
+    "classification": "RETRY_LOCAL_BALANCE",
+    "local_balance_flag_count": 1,
+    "head_flag_count": 0,
+    "max_abs_local_residual_cm_per_day": 1.0320633236915455e-12,
+    "max_residual_node": 10,
+    "total_residual_cm_per_day": 3.043787444312329e-12,
+    "nonlinear_iterations": 16,
+    "backtracking_attempts": 88
+  },
+  "representation": {
+    "total_representation_bound_cm": 8.881784197001252e-15,
+    "abs_total_residual_integrated_cm": 2.4350299554498697e-15,
+    "total_residual_over_bound": 0.27416000000000074,
+    "total_within_bound": true,
+    "total_policy_applied_to_failed_step": false
+  },
+  "decision": "ROM1AR1D1_RETRY_LOCAL_BALANCE",
+  "interpretation": "The existing total-only strict-first fallback correctly fails closed. The D08 step34 blocker is one local compartment-balance flag with no head-convergence failure. A total-column representation bound cannot by itself authorize this state.",
+  "controls_changed": false,
+  "history_changed": false,
+  "B14_inspected": false,
+  "heldout_inspected": false
+}
