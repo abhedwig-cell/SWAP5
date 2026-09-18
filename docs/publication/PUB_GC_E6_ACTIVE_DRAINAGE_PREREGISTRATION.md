@@ -22,6 +22,22 @@ E6 changes the **hydrological state/process configuration**, not the coupling to
 
 The active-drainage state is not invented for PUB-GC. It is taken from the independently qualified F-GC31 production tangent fixture.
 
+## F-GC31 authority provenance
+
+E6 reuses the already admitted restricted active-drainage tangent envelope:
+
+- F-GC31 qualified source head: `fff0a8be74de3240d56a910f1b19eb4fb50146e9`;
+- F-CI98 status: `integration/f-ci/F-CI98_STATUS.json`;
+- F-CI98 admission gate workflow run: `35289371761`, conclusion success;
+- independent F-VQ105 status head: `6451461a20c7e6dee6631f05f825705f62bf413b`;
+- independent qualification accepted-substeps: 2;
+- independent qualification retries: 3;
+- O0/O2 output identity: true;
+- no verifier production delta;
+- fully implicit drainage remains explicitly NOT ADMITTED.
+
+E6 does not alter those semantics.
+
 ## Hydrological source fixture
 
 E6 reuses the F-GC31 admitted configuration:
