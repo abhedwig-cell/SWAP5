@@ -129,4 +129,47 @@ require("fgc49d_fixture_initialize_c" in fixture_text, "fixture initializer chan
 require("tests/fgc/support" in fixture.as_posix(), "fixture unexpectedly left qualification tree")
 print("FGC50_FGC49D_FIXTURE_REMAINS_QUALIFICATION_ONLY=PASS")
 
+# PPA-WU01 is now the admitted production-side owner that F-GC50 was missing.
+# It remains Fortran/FMR-owned: Python still receives only an opaque existing
+# F-GC49D handle and does not create or own SWAP state.
+import json
+ppa_status_path = repo_root / "integration" / "audits" / "PPA_WU01_STATUS.json"
+ppa_source_path = repo_root / "src" / "runtime" / "mod_fmr_production_application_bootstrap.f90"
+require(ppa_status_path.is_file(), "PPA-WU01 canonical status missing")
+require(ppa_source_path.is_file(), "PPA-WU01 production bootstrap source missing")
+ppa = json.loads(ppa_status_path.read_text(encoding="utf-8"))
+require(ppa.get("phase") == "CANONICAL_ADMITTED_CLOSED", "PPA-WU01 not canonically closed")
+require(ppa.get("verdict") == "CANONICAL_ADMITTED_RESTRICTED_PRODUCTION_CLOSED", "PPA-WU01 verdict drift")
+require(ppa.get("canonical_admission", {}).get("pr") == 306, "PPA-WU01 admission PR drift")
+require(
+    ppa.get("canonical_admission", {}).get("merge_commit")
+    == "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+    "PPA-WU01 canonical merge drift",
+)
+markers = set(ppa.get("qualification", {}).get("markers", []))
+for marker in (
+    "PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS",
+    "PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS",
+    "PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS",
+    "PPA_WU01_FGC49D_CONTEXT_FROM_PRODUCTION_OWNER=PASS",
+    "PPA_WU01_NO_QUALIFICATION_FIXTURE_BOOTSTRAP=PASS",
+):
+    require(marker in markers, f"PPA-WU01 ownership evidence missing: {marker}")
+ppa_source = ppa_source_path.read_text(encoding="utf-8")
+for required in (
+    "type, public :: fmr_production_application_bootstrap_t",
+    "procedure, public :: materialize_groundwater_context",
+    "register_fmr_groundwater_application_context",
+    "self%active_context%bind",
+):
+    require(required in ppa_source, f"PPA-WU01 production context ownership drift: {required}")
+require(
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    in ppa.get("production_mutations", []),
+    "PPA-WU01 production bootstrap authority missing",
+)
+print("FGC50_PPA_WU01_CANONICAL_ADMITTED=PASS")
+print("FGC50_PPA_WU01_FGC49D_CONTEXT_OWNER=PASS")
+print("FGC50_B2_INTERNAL_BOOTSTRAP_PREREQUISITE_RESOLVED=PASS")
+
 print("F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS")
