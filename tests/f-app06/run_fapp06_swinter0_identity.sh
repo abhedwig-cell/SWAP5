@@ -7,7 +7,7 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "F_APP06_FAIL $*" >&2; exit 1; }
 
-BASE=0e68a716f655f9bba3a0962cf35ccb724b5184c3
+BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
 expected_src=$'src/process/mod_pmdirect_swetr0_process.f90\nsrc/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90'
 changed_src="$(git diff --name-only "$BASE" -- src | sort)"
 [[ "$changed_src" == "$expected_src" ]] || { echo "$changed_src" >&2; fail "unexpected production delta"; }
