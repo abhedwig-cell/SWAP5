@@ -65,7 +65,7 @@ For the intended broader hydrological-method framing, E7 materially strengthens 
 
 If E7 coupling cannot be completed for a genuine new technical reason, the existing E1–E6 manuscript remains internally coherent but must be framed as a **bounded coupling-method and qualification study**. The former raw-asset/M1-C3 blocker is no longer a valid reason to omit E7.
 
-E8 should not be started merely to delay or compensate for E7; the next scientific action is the already-frozen E7 coupled execution.
+E8 should not be started merely to compensate for the E7 component-domain outcome. No additional primary experiment is required for the current bounded claim set.
 
 
 ## Journal-facing prose state
