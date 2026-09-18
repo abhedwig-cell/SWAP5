@@ -4,7 +4,7 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: MATERIAL_AXIS_PRIMARY_SUPPORTED_BOUNDARY_EXPERIMENT_NEXT
+  status: BOUNDARY_PRIMARY_SUPPORTED_EQUAL_ERROR_REFERENCE_NEXT
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
@@ -14,7 +14,7 @@ manifest:
     P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
-    next_confirmatory_surface: admissibility_boundary_inside_boundary_outside
+    next_confirmatory_surface: equal_error_cost_reference_construction
     P2E11_reference_extension:
       branch: work/pub-p2e11-reference-material-extension-calibration
       head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
@@ -54,6 +54,21 @@ manifest:
       finding: All 180 previously unobserved material-axis cases were paired-valid and admissible under the frozen P2E14 thresholds; no route invalidity or discrepancy failure occurred.
       boundary_observation: D_storage reached exactly 1.0 times its inclusive frozen machine-scale envelope in at least one case; other worst metric fractions were below 0.285.
       next_permitted_action: Preregister the separate admissibility-boundary experiment. Do not extend this result to WETTING, Se=0.98, transaction-level equivalence, heterogeneous profiles, root sinks, groundwater coupling or performance.
+    P2E16_top_boundary_reference_calibration:
+      branch: work/pub-p2e16-top-boundary-reference-calibration
+      head: cf7ea9f12968f0879266166e8c199fb878af84af
+      result_blob: 3a338f7d4db6206be25deed1819195dc9d5486be
+      verdict: QUALIFIED_REFERENCE_ONLY_TOP_BOUNDARY_THRESHOLD_SURFACE
+      finding: Reference remained valid in all 324 candidate-blind inside/boundary/outside calibration cases and froze fifteen exact-Se boundary-experiment thresholds.
+      boundary_axis: request top flux / initial K0 = {0.009 inside, 0.010 exact upper production boundary, 0.011 outside}; bottom flux / initial K0 fixed at -0.004.
+    P2E17_top_boundary_primary:
+      branch: work/pub-p2e17-top-boundary-primary
+      head: b61bc4c5730e951655353f7fdccb76618a290fd7
+      result_blob: 63c92b1e64743d31cb9de8698df16c28e7a54076
+      verdict: QUALIFIED_SHARP_UPPER_TOP_FLUX_BOUNDARY_216_ADMISSIBLE_108_CLEAN_FAIL_CLOSED
+      finding: All 108 INSIDE and 108 exact-BOUNDARY cases were route-valid and admissible; all 108 OUTSIDE cases were rejected cleanly with no candidate state or typed mass publication and no fallback.
+      provenance_note: The first candidate exposure established the route-boundary and inside/boundary accuracy result; the second run on corrected test authority verified fail-closed publication hygiene on the already exposed matrix and is not an independent holdout.
+      next_permitted_action: Begin separately preregistered equal-error REF-HIGH construction within already qualified common-domain cases. Do not infer lower-top-flux, bottom-boundary, transaction-level, trajectory or performance claims from P2E17.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
