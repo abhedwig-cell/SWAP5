@@ -131,10 +131,6 @@ for opt in 0 2; do
   grep -Fq 'PUB_P2E12_DOMAIN_MAP_STATUS=COMPLETE' "$OUT/output.txt" || fail 'domain map not complete'
   grep -Fq 'PUB_P2E12_REFERENCE_COMMON_MATERIAL_DOMAIN_GATE=PASS' "$OUT/output.txt" || fail 'domain-map gate missing'
 
-  cat "$OUT/output.txt" >&2
-    fail "missing qualified or blocked scientific outcome"
-  fi
-
   cat "$OUT/output.txt"
   echo "PUB_P2E12_O${opt}=PASS"
 done
