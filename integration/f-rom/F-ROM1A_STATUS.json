@@ -2,13 +2,22 @@
   "schema": "swap5.f-rom1a.status.v1",
   "workstream": "F-ROM",
   "work_unit": "ROM-1A",
-  "phase": "PREREGISTERED_BLOCKED_ON_CURRENT_CANONICAL_OBSERVATION_SEAM",
-  "decision": "TRAJECTORY_LIBRARY_AND_DATA_SPLIT_FROZEN",
+  "phase": "PREREGISTERED_READY_FOR_TRAJECTORY_LIBRARY_GENERATION",
+  "decision": "TRAJECTORY_LIBRARY_AND_DATA_SPLIT_FROZEN_I0_QUALIFIED",
   "canonical": "624400307cf40f2bcdc3176e682e0365ee1025b5",
   "preregistration": "integration/f-rom/F-ROM1A_PREREGISTRATION.json",
   "observation_seam_prerequisite": "F-ROM1A-I0",
   "trajectory_generation_authorized_after_I0": true,
   "reduced_coordinate_selection_authorized": false,
   "rom1b_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "current_canonical_observation_seam": {
+    "work_unit": "F-ROM1A-I0",
+    "decision": "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_QUALIFIED",
+    "workflow_run": 35380688867,
+    "artifact_id": 10561849286,
+    "artifact_digest": "sha256:c71346a54373cde59bf203ab71f1b50aa38c3e46658325c5bdac149c318e7ba9"
+  },
+  "trajectory_generation_authorized": true,
+  "next_action": "GENERATE_PREREGISTERED_B01_DISCOVERY_AND_SEALED_B01_HOLDOUT_AND_B14_TRANSFER_LIBRARIES_WITHOUT_REDUCED_STATE_ANALYSIS"
 }
