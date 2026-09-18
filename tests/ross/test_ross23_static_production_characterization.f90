@@ -114,7 +114,8 @@ program test_ross15_reference_vs_rossfast_performance
         write(*,'(*(g0))') 'F_ROSS23_CASE|ID=',case_id,'|MATERIAL=',trim(material_ids(imat)), &
              '|SE=',se_levels(ise),'|FORCING=',trim(forcing_ids(iforce)),'|CLASS=',trim(classification), &
              '|METRICS=',metrics_available,'|D_H_INF=',dh_inf,'|D_H_RMS=',dh_rms, &
-             '|D_THETA_INF=',dtheta_inf,'|D_THETA_RMS=',dtheta_rms,'|D_STORAGE=',dstorage
+             '|D_THETA_INF=',dtheta_inf,'|D_THETA_RMS=',dtheta_rms,'|D_STORAGE=',dstorage, &
+             '|REF_REASON=',trim(reference_reason),'|ROSS_REASON=',trim(rossfast_reason)
       end do
     end do
   end do
@@ -176,8 +177,9 @@ contains
     real(real64) :: cofgen(24,n),heads(n),theta0(n),conductivity(n),capacity(n),dkdh(n)
     real(real64) :: h0,k0,storage_reference,storage_alternative
     logical :: found,initialized,reference_valid,rossfast_valid
+    character(len=64) :: reference_reason, rossfast_reason
     integer :: provider_status,rep
-    real(real64) :: t0,t1
+    real(real64) :: t0,t1,case_solver_cpu
 
     classification='UNCLASSIFIED'
     metrics_available=.false.
@@ -215,8 +217,14 @@ contains
     end if
 
     reference_valid=reference_route_valid(reference_result,request,material)
+    reference_reason=reference_route_reason(reference_result,request,material)
     rossfast_valid=initialized
-    if (rossfast_valid) rossfast_valid=rossfast_route_valid(alternative_result,request,material)
+    if (initialized) then
+      rossfast_valid=rossfast_route_valid(alternative_result,request,material)
+      rossfast_reason=rossfast_route_reason(alternative_result,request,material)
+    else
+      rossfast_reason='INITIALIZATION_FAILED'
+    end if
 
     if (.not.reference_valid .and. .not.rossfast_valid) then
       classification='BOTH_ROUTES_INVALID'
@@ -255,6 +263,7 @@ contains
 
     ! Route validity is classified and persisted by the characterization; do not abort before the full 216-case matrix is observed.
 
+    case_solver_cpu=0.0_real64
     if (reference_valid .and. rossfast_valid) then
       select case(trim(selected_route))
       case('REFERENCE')
@@ -277,7 +286,10 @@ contains
         call require(.false.,'unknown selected timing route')
         t0=0.0_real64; t1=0.0_real64
       end select
-      solver_cpu_accum=solver_cpu_accum+(t1-t0)
+      case_solver_cpu=t1-t0
+      solver_cpu_accum=solver_cpu_accum+case_solver_cpu
+      write(*,'(*(g0))') 'F_ROSS23_TIMING_CASE|ID=',case_id,'|MATERIAL=',trim(material_id), &
+           '|SE=',se,'|FORCING=',trim(forcing_id),'|ROUTE=',trim(selected_route),'|CPU=',case_solver_cpu
     end if
   end subroutine run_case
 
@@ -299,6 +311,25 @@ contains
     ok=.true.
   end function reference_route_valid
 
+  function reference_route_reason(result,request,material) result(reason)
+    type(soil_water_solve_result_t),intent(in) :: result
+    type(soil_water_solve_request_t),intent(in) :: request
+    type(rossfast_d3r_material_t),intent(in) :: material
+    character(len=64) :: reason
+    reason='OK'
+    if (result%status/=SW_SOLVE_CONVERGED) then; reason='STATUS_NOT_CONVERGED'; return; end if
+    if (trim(result%diagnostics%route)/='legacy-reference-bound') then; reason='ROUTE_MISMATCH'; return; end if
+    if (.not.result%integrated_mass_balance_residual_available) then; reason='INTEGRATED_MASS_UNAVAILABLE'; return; end if
+    if (.not.result%native_balance_rate_residual_available) then; reason='NATIVE_BALANCE_UNAVAILABLE'; return; end if
+    if (.not.ieee_is_finite(result%integrated_mass_balance_residual_cm)) then; reason='INTEGRATED_MASS_NONFINITE'; return; end if
+    if (.not.ieee_is_finite(result%native_balance_rate_residual_cm_per_day)) then; reason='NATIVE_BALANCE_NONFINITE'; return; end if
+    if (abs(result%integrated_mass_balance_residual_cm)>ROSSFAST_D3R_HARD_MASS_TOL_CM) then; reason='INTEGRATED_MASS_GATE'; return; end if
+    if (.not.state_valid(result,material)) then; reason='STATE_INVALID'; return; end if
+    if (.not.same_real(result%top_flux,request%boundary%top_flux)) then; reason='TOP_FLUX_MISMATCH'; return; end if
+    if (.not.same_real(result%bottom_flux,request%boundary%bottom_flux)) then; reason='BOTTOM_FLUX_MISMATCH'; return; end if
+  end function reference_route_reason
+
+
   logical function rossfast_route_valid(result,request,material) result(ok)
     type(soil_water_solve_result_t),intent(in) :: result
     type(soil_water_solve_request_t),intent(in) :: request
@@ -315,6 +346,24 @@ contains
     if (.not.same_real(result%bottom_flux,request%boundary%bottom_flux)) return
     ok=.true.
   end function rossfast_route_valid
+
+  function rossfast_route_reason(result,request,material) result(reason)
+    type(soil_water_solve_result_t),intent(in) :: result
+    type(soil_water_solve_request_t),intent(in) :: request
+    type(rossfast_d3r_material_t),intent(in) :: material
+    character(len=64) :: reason
+    reason='OK'
+    if (result%status/=SW_SOLVE_CONVERGED) then; reason='STATUS_NOT_CONVERGED'; return; end if
+    if (trim(result%diagnostics%route)/='rossfast-d3r') then; reason='ROUTE_MISMATCH'; return; end if
+    if (.not.result%integrated_mass_balance_residual_available) then; reason='INTEGRATED_MASS_UNAVAILABLE'; return; end if
+    if (result%native_balance_rate_residual_available) then; reason='UNEXPECTED_NATIVE_BALANCE'; return; end if
+    if (.not.ieee_is_finite(result%integrated_mass_balance_residual_cm)) then; reason='INTEGRATED_MASS_NONFINITE'; return; end if
+    if (abs(result%integrated_mass_balance_residual_cm)>ROSSFAST_D3R_HARD_MASS_TOL_CM) then; reason='INTEGRATED_MASS_GATE'; return; end if
+    if (.not.state_valid(result,material)) then; reason='STATE_INVALID'; return; end if
+    if (.not.same_real(result%top_flux,request%boundary%top_flux)) then; reason='TOP_FLUX_MISMATCH'; return; end if
+    if (.not.same_real(result%bottom_flux,request%boundary%bottom_flux)) then; reason='BOTTOM_FLUX_MISMATCH'; return; end if
+  end function rossfast_route_reason
+
 
   logical function state_valid(result,material) result(ok)
     type(soil_water_solve_result_t),intent(in) :: result
