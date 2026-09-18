@@ -102,6 +102,57 @@
       "priority_band": "P0"
     },
     {
+      "id": "PPA-ATM-03",
+      "subsystem": "atmospheric forcing",
+      "capability": "Bounded common normal forcing adapter to admitted reference-ET, SWINTER=0 dynamic-top and resolved surface-irrigation inputs",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference for atmospheric/application semantics; no legacy parser grammar is adopted",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/interface_atmosphere.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "docs/audits/PPA_WU03_ATMOSPHERIC_FORCING_NORMAL_INPUT_ADAPTER.md",
+        "integration/audits/PPA_WU03_STATUS.json"
+      ],
+      "typed_input_config_authority": "Generic real-valued covered interval; nonnegative precipitation and reference ET; explicit admitted canopy view; SWINTER=0; no irrigation or already-resolved nonnegative surface irrigation.",
+      "state_ownership": "Adapter is stateless and ephemeral. PPA-WU01 remains sole FMR, committed-state, transaction, timestep and retry owner.",
+      "transaction_status": "Input is materialized before the PPA-WU01 transaction as immutable typed forcing. Retries reuse the same read-only forcing. Only an AVAILABLE pure-flux dynamic-top result with zero ponding/runoff publication may bind to effective top_flux in this slice.",
+      "qualification_evidence": [
+        "PPA-WU03 workflow run 35374130545 / owner job 105694706631",
+        "PPA-WU03 independent job 105694706401: 54-case O0/O2 matrix",
+        "PPA-WU03 preservation job 105694706721",
+        "PPA-WU01 regression run 35374130276 / job 105694704986"
+      ],
+      "production_admission": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION on PR #323; canonical merge pending.",
+      "production_reachable": "QUALIFIED_CANDIDATE_NOT_YET_CANONICAL",
+      "restrictions": [
+        "SWETR=1 restricted reference-ET route only",
+        "SWINTER=0 only",
+        "No legacy weather-file grammar or calendar/date ingestion",
+        "No PMdirect normal-input derivation",
+        "No Rutter canopy-state ownership or SWINTER=1/2",
+        "No irrigation event scheduling or management parser",
+        "No snow/runon ingestion",
+        "No dynamic-top head, ponding or runoff pre-resolution into PPA-WU01 fixed-flux forcing",
+        "No mixed PPA-WU01 bottom_mode=5/7 admission"
+      ],
+      "scientific_risk": "LOW for this bounded transport/composition slice; broader preprocessing/stateful interception remains separate",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "PPA-WU01 canonical production owner",
+        "F-CI27 reference-ET binding",
+        "F-APP06 SWINTER=0",
+        "admitted dynamic-top boundary"
+      ],
+      "priority_band": "P0"
+    },
+    {
       "id": "PPA-TOP-01",
       "subsystem": "dynamic top boundary",
       "capability": "Atmospheric-head, flux, ponded-head and restricted linear-runoff top-boundary switching",
@@ -1522,8 +1573,8 @@
     "important_low_science_uncertainty": [
       {
         "capability_id": "PPA-ATM-02",
-        "action": "Migrate forcing/config ingestion as an outer application adapter while preserving kernel I/O separation.",
-        "reason": "Normal-run blocker; most risk is semantic mapping rather than new physics."
+        "action": "Complete broader outer forcing/config ingestion only through additional bounded slices. PPA-WU03 covers the common precipitation/reference-ET/SWINTER=0/resolved-surface-irrigation slice but does not migrate legacy file/calendar preprocessing.",
+        "reason": "Common normal-input startup is qualified by PPA-WU03; the remaining gap is breadth of preprocessing and stateful/legacy options rather than the basic typed application boundary."
       },
       {
         "capability_id": "PPA-OUTPUT-LEGACY",
@@ -1637,7 +1688,7 @@
       "exit": "Common precipitation/reference-ET/canopy forcing can drive WU01 end-to-end with no new physics.",
       "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
       "qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
-      "qualification": "PPA-WU03 workflow run 35374130545: owner job 105694706631 PASS, independent job 105694706401 PASS (54 cases), preservation job 105694706721 PASS.",
+      "qualification": "Workflow 35374130545 owner/independent/preservation PASS; canonical admission pending.",
       "production_delta": [
         "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
         "read-only PPA-WU01 run_standalone_with_forcing seam"
@@ -1648,7 +1699,9 @@
         "resolved nonnegative surface irrigation only; no schedule parsing",
         "generic explicit forcing spans; no file/calendar grammar",
         "only pure-flux dynamic-top result may hand off to PPA-WU01"
-      ]
+      ],
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "pull_request": 323
     },
     {
       "id": "PPA-WU04",
