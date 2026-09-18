@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC39",
+  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_QUALIFY",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
+    "closed_backend_authority": {
+      "capability": "F-GC38",
+      "verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND",
+      "production_blob": "d26a11b292c114083d4de15c32f0a56fc45db833"
+    },
+    "ownership_authority": {
+      "capability": "F-GC37",
+      "branch": "work/f-gc37-coupled-predictor-corrector-host",
+      "head": "8ba49f3c7fa01d5fd21a9c358418e26bfe50da57",
+      "verdict": "OWNER_QUALIFIED_INTERNAL_COUPLING_SERVICE_CONTRACT"
+    },
+    "historical_owner_head": "65e96260386a1887b28e878e001e8a29ee76676e"
+  },
+  "materialization": {
+    "production_delta": "NONE",
+    "harness_blob": "0ab5cd1d5b701389972ddfcdf7f4ebc7dc198aec",
+    "test_blob": "165b640b3183f6b28f1b2fb154ac32a33a86dbaa",
+    "runner_blob": "cf08772e46bab176e962d1d8cb13527b4a0cf214",
+    "semantics_change": "NONE"
+  },
+  "supersession": {
+    "retained_from_f_gc37": [
+      "predictor/corrector ownership below iMOD Coupler",
+      "immutable accepted SWAP origin",
+      "fixed tangent for first contract",
+      "SWAP correctors from same origin",
+      "bounded fail-closed coupling iteration"
+    ],
+    "replaced": [
+      "groundwater trial_from_origin per outer iteration",
+      "groundwater candidate discard per non-converged iteration"
+    ],
+    "replacement": "one closed-canonical F-GC38 prepared-solve session with fixed XOLD and evolving X"
+  },
+  "convergence_contract": "abs(q_swap - q_gw) <= tolerance AND MODFLOW convergence flag",
+  "qualified_contract_candidate": [
+    "one immutable SWAP origin for predictor and every corrector",
+    "one prepared groundwater solve session per coupling window",
+    "no groundwater rollback/discard between outer iterations",
+    "only nonconverged SWAP candidates are discarded",
+    "fixed tangent slope with H_ref/q_ref updates",
+    "conjunctive MODFLOW plus interface-flux convergence",
+    "successful coupling retains one final SWAP candidate and finalizes solve exactly once",
+    "coupling-budget or backend-limit failure invalidates the prepared solve and returns retry without publication",
+    "service owns no XMI pointer calls, direct MODFLOW solve calls, or finalize_time_step",
+    "iMOD Coupler remains outside predictor/corrector ownership"
+  ],
+  "exclusions": [
+    "whole-window MODFLOW reconstruction/retry",
+    "final multi-participant timestep publication",
+    "real SWAP5 plus live MODFLOW end-to-end service",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Replay the exact F-GC39 contract gate on current canonical. If green, checkpoint owner qualification and perform independent contract qualification before canonical admission."
+}
