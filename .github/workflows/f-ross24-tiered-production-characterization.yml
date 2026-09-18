@@ -1,0 +1,36 @@
+name: F-ROSS24 Tiered production characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross24-tiered-production-characterization
+    paths:
+      - 'integration/f-ross/F-ROSS24_*'
+      - 'tests/ross/test_ross24_tiered_production_characterization.f90'
+      - 'tests/ross/run_ross24_tiered_production_characterization.sh'
+      - 'tools/performance/f_ross24_paired_screen.py'
+      - '.github/workflows/f-ross24-tiered-production-characterization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-cpu-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered F-ROSS24 216-case tiered characterization
+        run: bash tests/ross/run_ross24_tiered_production_characterization.sh
+      - name: Preserve F-ROSS24 screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross24-tiered-characterization-${{ github.run_id }}
+          path: F-ROSS24_SCREENING_RESULT.json
+          if-no-files-found: warn
