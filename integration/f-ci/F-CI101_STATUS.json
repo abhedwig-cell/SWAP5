@@ -5,7 +5,7 @@
   "title": "MODFLOW6 Typed API Binding Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "ADMIT",
-  "verdict": "PENDING_ADMISSION_GATE",
+  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "0372b44157747dc90fa690810f57e373e670373b",
@@ -53,5 +53,22 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Run F-CI101 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify status head, reconcile live canonical and non-force fast-forward."
+  "next_permitted_action": "Qualify this exact F-CI101 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "admission_gate": {
+    "qualified_head": "9dcbcc284e823f00421c2858223ee57511d472e6",
+    "workflow_run": 35293855850,
+    "workflow_job": 105442212609,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI101_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI101_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI101_EXACT_ONE_PRODUCTION_FILE_DELTA",
+      "FCI101_IMMUTABLE_PRODUCTION_AND_EVIDENCE_BLOBS",
+      "FCI101_OWNER_STATUS_AUTHORITY",
+      "FCI101_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI101_FGC33_DEPENDENCY_RECONCILED",
+      "FCI101_OWNER_REPLAY",
+      "FCI101_INDEPENDENT_REPLAY"
+    ]
+  }
 }
