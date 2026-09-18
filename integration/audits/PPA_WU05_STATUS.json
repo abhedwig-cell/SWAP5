@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.ppa_wu05.status.v1",
+  "work_unit": "PPA-WU05",
+  "title": "Advanced water-process triage",
+  "branch": "qualification/ppa-wu05-advanced-water-process-triage-closeout",
+  "reconcile_base": "ff56b8c1565821cf1d23f980e754905d8920371e",
+  "status": "TRIAGE_AUTHORITY_FREEZE_PENDING_QUALIFICATION",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "macropore_corrected_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "oxygenstress_corrected_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+  },
+  "unsupported_historical_labels_removed": [
+    "S12o",
+    "A23au",
+    "S12r",
+    "F-PM05 readiness",
+    "F-PM07 readiness",
+    "F-PE15/F-PE16 macropore ownership evidence"
+  ],
+  "family_verdicts": {
+    "macropore": "HIGH_USE_HIGH_DEPENDENCY_UNBLOCKING_SOURCE_STATE_TRANSACTION_AUTHORITY_REQUIRED",
+    "advanced_root_stress": "DECOMPOSE_BEFORE_MIGRATION_EXISTING_ROOT_SINK_OWNER_PRESERVED",
+    "frost": "SENSIBLE_TEMPERATURE_EXISTS_FROST_AUTHORITY_REQUIRES_SEPARATE_SOURCE_TRACE"
+  },
+  "first_target": {
+    "id": "PPA-WU05-A",
+    "title": "Macropore source/state/mass/transaction authority",
+    "type": "REVIEW_ONLY_PREREQUISITE",
+    "production_admission": "NONE",
+    "exit": [
+      "exact B1.11 macropore/macrorate source trace",
+      "persistent/candidate/result/scratch classification",
+      "internal/external mass-transfer graph",
+      "restart schema",
+      "rollback contract",
+      "bounded later production slices"
+    ]
+  },
+  "sequencing": [
+    "PPA-WU05-A macropore authority",
+    "PPA-WU05-C oxygen authority",
+    "PPA-WU05-B frost authority"
+  ],
+  "qualification": {
+    "state": "PENDING"
+  },
+  "verdict": "PENDING_QUALIFICATION",
+  "next_action": "Run independent static/repository qualification. If green, persist closed review authority and update the production-envelope register. No production implementation in PPA-WU05."
+}
