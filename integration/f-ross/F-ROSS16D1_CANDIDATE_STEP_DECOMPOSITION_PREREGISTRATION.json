@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.f-ross16d1.candidate-step-decomposition.v1",
+  "workunit": "F-ROSS16D1",
+  "phase": "PREREGISTERED_AFTER_PRIMARY_ATTRIBUTION_BEFORE_D1_EXECUTION",
+  "parent": "F-ROSS16",
+  "purpose": "Resolve the remaining H4 question inside candidate_step after primary O2 gprof localized 88.47% of sampled RossFast time there.",
+  "reason_for_successor": "The original no-inline profile did not produce trustworthy subfunction attribution. This successor is declared after that negative result rather than retroactively changing the original profiling protocol.",
+  "source_authority": {
+    "rossfast_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "parent_result": "integration/f-ross/F-ROSS16_COST_ATTRIBUTION_RESULT.json"
+  },
+  "domain": {
+    "same_profile_harness": true,
+    "case_count": 36,
+    "selected_route": "ROSSFAST",
+    "repetitions_per_case": 5000,
+    "selected_route_calls": 180000
+  },
+  "profiles": [
+    {
+      "id": "O2_LINE",
+      "compile_flags": ["-O2","-g","-pg"],
+      "gprof_mode": ["-b","-p","-l"],
+      "use": "line-level localization within optimized candidate_step; percentages remain diagnostic because profiling and optimized line mapping are approximate"
+    },
+    {
+      "id": "O0_STRUCTURAL",
+      "compile_flags": ["-O0","-g","-pg"],
+      "gprof_mode": ["-b","-p"],
+      "use": "expose private subroutine/function buckets without inlining; percentages are structural diagnostics only and must not be interpreted as production cost shares"
+    }
+  ],
+  "predeclared_buckets": [
+    "candidate_step",
+    "inverse_capacity",
+    "table_face_linearization",
+    "factor_and_solve",
+    "head_from_water_content",
+    "valid_state"
+  ],
+  "exact_algorithmic_counts_per_rossfast_solve": {
+    "candidate_step": 24,
+    "inverse_capacity": 384,
+    "table_face_linearization": 360,
+    "factor_and_solve": 24,
+    "head_from_water_content": 384
+  },
+  "decision_rule": {
+    "primary": "Use O2 line attribution if it resolves identifiable candidate-step source regions.",
+    "secondary": "Use O0 structural profile only to identify expensive routine classes, never to state O2 percentages.",
+    "if_both_unresolved": "CLOSE_WITH_EXACT_WORK_COUNTS_ONLY and do not invent a subfunction winner."
+  },
+  "firewall": {
+    "src_or_reference_mutation": false,
+    "algorithm_change": false,
+    "repetition_change_after_result": false,
+    "optimization_work": false
+  },
+  "next_permitted_action": "Add only the two frozen profiling variants to the existing diagnostic runner and execute."
+}
