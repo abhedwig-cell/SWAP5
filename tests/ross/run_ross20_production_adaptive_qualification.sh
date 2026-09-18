@@ -139,15 +139,24 @@ bash tests/ross/run_ross13_36_material_production_envelope.sh | tee "$BUILD/prov
 grep -Fq 'F_ROSS13_36_MATERIAL_PRODUCTION_ENVELOPE=PASS' "$BUILD/provider-preservation.txt" || fail "F-ROSS13 production envelope preservation failed"
 
 # New production material-axis qualification.
-"$BUILD/prod/all_material" > "$BUILD/prod/all-material.txt"
-grep -Fq 'F_ROSS20_MATRIX_GATE=PASS' "$BUILD/prod/all-material.txt" || fail "all-material harness failed"
+if ! "$BUILD/prod/all_material" > "$BUILD/prod/all-material.txt" 2>&1; then
+  cat "$BUILD/prod/all-material.txt" >&2
+  fail "all-material harness runtime failed"
+fi
+grep -Fq 'F_ROSS20_MATRIX_GATE=PASS' "$BUILD/prod/all-material.txt" || { cat "$BUILD/prod/all-material.txt" >&2; fail "all-material harness marker failed"; }
 python3 "$ALLMAT_SUMMARY" --input "$BUILD/prod/all-material.txt" \
   --output "$BUILD/F-ROSS20_ALL_MATERIAL_RESULT.json" | tee "$BUILD/all-material-summary.txt"
 grep -Fq 'F_ROSS20_ALL_MATERIAL_GATE=PASS' "$BUILD/all-material-summary.txt" || fail "all-material qualification failed"
 
 # Exact production promotion identity on the frozen 36-case research domain.
-"$BUILD/prod/anchor" > "$BUILD/prod/anchor.txt"
-"$BUILD/research/anchor" > "$BUILD/research/anchor.txt"
+if ! "$BUILD/prod/anchor" > "$BUILD/prod/anchor.txt" 2>&1; then
+  cat "$BUILD/prod/anchor.txt" >&2
+  fail "production anchor harness runtime failed"
+fi
+if ! "$BUILD/research/anchor" > "$BUILD/research/anchor.txt" 2>&1; then
+  cat "$BUILD/research/anchor.txt" >&2
+  fail "research anchor harness runtime failed"
+fi
 grep -Fq 'F_ROSS19_MATRIX_GATE=PASS' "$BUILD/prod/anchor.txt" || fail "production anchor harness failed"
 grep -Fq 'F_ROSS19_MATRIX_GATE=PASS' "$BUILD/research/anchor.txt" || fail "research anchor harness failed"
 python3 "$IDENTITY" --production "$BUILD/prod/anchor.txt" --research "$BUILD/research/anchor.txt" \
