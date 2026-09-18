@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "RECONCILE_POST_APPLICATION_AND_KSATEXM_ADMISSION",
+  "capability": "M1 - Typed External Boundary",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "branch": "work/m1-c3-final-current-canonical",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
+    "message": "F-SI39: admit B1.11 KSATEXM preservation\n\nAdmit the exact opt-in near-saturated KSATEXM legacy semantic required by the M1-C3 Hupsel snapshot replay. Owner qualification 35353574323 PASS; independent F-VQ127 qualification 35353574382 PASS. Default route remains unchanged. No tolerance, transaction, retry, timestep, RossFast or legacy-source change."
+  },
+  "exact_B1_11_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "member_count": 63,
+    "source_bytes": 1886519,
+    "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "meteo_283_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "whole_run_observation": {
+    "accepted_intervals": 32518,
+    "routes": {
+      "SWINTER0_SWCF0": 3505,
+      "SWINTER1_SWCF1": 14062,
+      "SWINTER3_SWCF2": 14951
+    },
+    "drainage_nonzero_intervals": 16507,
+    "irrigation_active_intervals": 110,
+    "bottom_flux_nonzero_intervals": 0,
+    "ssdi_active_intervals": 0,
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "source_evidence_commit": "3dc4ebd1e121820faf3e3e6bdbc3acc28c806964",
+    "source_evidence_path": "integration/m1/M1_C3_B1_11_APPLICATION_TRACE_QUALIFICATION.json"
+  },
+  "admitted_application_authority": {
+    "SWINTER0_SWCF0": {
+      "workunit": "F-APP06",
+      "independent": "F-VQ126",
+      "records": 3505,
+      "max_error": 0,
+      "process_blob": "3eb23d075a56ba1158f4758f75a8d94c94e09b39",
+      "binding_blob": "7d76af48cac085d6f4b5653987d75bfc54fb7692",
+      "canonical_admission": "27a46cb9e4100453c36005d579de9e87623ff1b3"
+    },
+    "SWINTER1_SWCF1": {
+      "workunits": [
+        "F-APP03",
+        "F-APP04"
+      ],
+      "exact_legacy_interval_records": 14062,
+      "note": "Restricted PMdirect exact-source oracle plus admitted typed root/surface/net-rain bindings."
+    },
+    "SWINTER3_SWCF2": {
+      "workunits": [
+        "F-APP05",
+        "F-APP07",
+        "F-APP08"
+      ],
+      "independent": [
+        "F-VQ114",
+        "F-VQ115",
+        "F-VQ124",
+        "F-VQ125"
+      ],
+      "rutter_process_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+      "irrigation_process_blob": "6ff53ac9c97b7b4c42fa8043193aa03bb116bd13",
+      "irrigation_binding_blob": "ca5fd1cd5353ba18deae89b7e1178b1b9bb43435",
+      "rutter_output_binding_blob": "1d9c702eee9cdc68f030c6e600b343f3b720ee46",
+      "irrigation_exact_active_records": 110,
+      "irrigation_max_error": 0,
+      "note": "F-APP05 has exact frozen Hupsel Rutter/SWCF2 route evidence; F-APP07 covers all 110 active irrigation intervals; F-APP08 is the typed Rutter output composition."
+    },
+    "drainage": {
+      "records": 32518,
+      "mismatches": 0,
+      "max_abs_error": 0,
+      "status": "COVERED_EXACT_WHOLE_TRAJECTORY"
+    },
+    "bottom": {
+      "authority": [
+        "F-APP02",
+        "F-VQ102",
+        "F-CI95"
+      ],
+      "selector": "SWBOTB=6",
+      "qbot_cm_per_day": 0,
+      "status": "COVERED"
+    },
+    "ssdi": {
+      "active_intervals": 0,
+      "status": "INACTIVE"
+    }
+  },
+  "constitutive_preservation": {
+    "workunit": "F-SI39",
+    "independent": "F-VQ127",
+    "provider_blob": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+    "backend_blob": "556ed83dee4d5b159f1de7ae797af7106a0abe2e",
+    "canonical_admission": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
+    "default_route_preserved": true,
+    "tolerance_change": "NONE"
+  },
+  "six_snapshot_verdict": {
+    "dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "observation_boundary": "post SoilWater(3), pre TimeControl(3)",
+    "snapshot_raw_sha256": "f1c5923b6642db9096913bf1d944b5cc6be6b0c4ee4178fb970786a4139c4c63",
+    "replay_cases": 6,
+    "pressure_head_max_abs_error_cm": 0,
+    "water_content_max_abs_error": 0,
+    "ponding_max_abs_error_cm": 0,
+    "top_flux_max_abs_error_cm_per_day": 0,
+    "bottom_flux_max_abs_error_cm_per_day": 0,
+    "source_evidence_commit": "164cbc0a43c2ac539562d6a3fd1f160912a37a55",
+    "source_evidence_path": "integration/m1/M1_C3_B1_11_TRANSACTIONAL_SNAPSHOT_REPLAY_KSATEXM_DIAGNOSIS.json",
+    "disposition": "PASS_EXACT_SIX_SNAPSHOT_SOLVER_REPLAY"
+  },
+  "architecture_guards": {
+    "alternative_runtime": "NONE",
+    "parallel_transaction_lifecycle": "NONE",
+    "hidden_fallback": "NONE",
+    "tolerance_retuning": "NONE",
+    "solver_architecture_change": "NONE"
+  },
+  "verdict": "ALL_PREREQUISITE_ROUTE_AND_SNAPSHOT_AUTHORITIES_ADMITTED_FINAL_WHOLE_HUPSEL_EXECUTION_STILL_REQUIRED"
+}
