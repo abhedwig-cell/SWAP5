@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.f-rom0.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "title": "Accepted Full-Order Authority",
+  "phase": "DESIGN_AUTHORITY_OPEN_IMPLEMENTATION_PENDING",
+  "branch": "work/f-romp-rom0-proposition-authority",
+  "canonical_baseline": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "authority": "docs/science/F-ROM0_ACCEPTED_FULL_ORDER_AUTHORITY.md",
+  "predecessor": "ROM-P",
+  "required_reference_route": "CANONICAL_ACCEPTED_REFERENCE_RICHARDS_TRAJECTORY",
+  "prohibited_reference_route": "DIRECT_SOLVER_ATTEMPT_AS_TRAJECTORY_AUTHORITY",
+  "required_outputs": [
+    "ACCEPTED_TRAJECTORY_HARNESS",
+    "VERSIONED_RESPONSE_SCHEMA",
+    "REFERENCE_NUMERICAL_FLOOR",
+    "TWO_CONTRASTING_MATERIAL_PREREGISTRATION",
+    "DISCOVERY_HOLDOUT_SPLIT"
+  ],
+  "next_action": "Reconcile the exact canonical accepted Reference-Richards runtime path and observation surface, then preregister the minimal ordinary-trajectory and numerical-refinement matrix before adding executable harness code.",
+  "production_solver_authorized": false,
+  "production_source_mutation": "NONE",
+  "blockers": []
+}
