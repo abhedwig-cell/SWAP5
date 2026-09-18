@@ -1,0 +1,229 @@
+experiment:
+  experiment_id: PUB-GC-TRANSIENT-SCREEN-0001
+  publication_owner: PUB-GC
+  experiment_family: PUB-GC-E2_E3_TRANSIENT_SCREENING
+  evidence_role: PROSPECTIVE_SUPPORTING_SCREENING
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  E2_comparator_spec_commit: 4e9d891f9a4d1678e5fa4590adae13471597d72e
+  E2_comparator_qualification_receipt_commit: d2ed6bd028a253e17e8bf48837647189922fd7ed
+  GC_REF_A_spec_commit: c95d67c70dc16126797c6613affe641537e3655e
+  GC_REF_A_qualification_receipt_commit: 4d028af031bc506b33db9513552070a297ea4409
+  accuracy_adjudication_commit: 2cf85d4236e970fb9cb9556ce2489219b9b6acef
+  first_stable_reference_screen_receipt_commit: 9235d67ae83bfda902eb0fbb0af3712b94078d97
+  screening_precedes_heldout_primary: true
+
+sign_contract:
+  native_top_flux_unit: cm_per_day
+  negative_top_flux: downward_into_soil
+  positive_top_flux: upward_out_of_soil
+  authority:
+    - >
+      src/legacy/b1_10_port/headcalc.f90: the flux-boundary contribution enters
+      the top-compartment residual as +qtop while the Darcy head-boundary
+      expression is -K*((hsurf-h1)/dz+1); the pond balance contains
+      -qtop*dt, so a negative qtop removes water from the surface layer into
+      the soil.
+    - >
+      In the specified-groundwater special case, positive rainfall produces a
+      negative vertical_flux(1), confirming the downward-negative convention.
+  interpretation:
+    baseline_minus_K: unit-gradient downward drainage/infiltration flux
+    wetting_more_negative: stronger downward surface input
+    drying_positive: upward surface extraction
+  note: >
+    These labels describe controlled boundary-flux direction only; they do
+    not claim that the fixed-flux research boundary is a complete atmospheric
+    surface-energy or evaporation model.
+
+research_branch:
+  name: research/pub-gc-transient-screening
+  base: c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+  expected_creation: after_this_manifest
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/transient_screening/**
+    - .github/workflows/pub-gc-transient-screening.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/gw_a/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/e1_primary_engine/**
+    - tests/publication/pub_gc/e2_terminal_comparator/**
+    - tests/publication/pub_gc/gc_ref/**
+    - tests/publication/pub_gc/reference_screening/**
+
+common_case_contract:
+  initial_time_day: 4200.125
+  total_duration_day: 0.24
+  initial_SWAPPrescribedHead_cm: -80.0
+  soil_parameters: same_as_GC_REF_A_qualified_fixture
+  bottom_mode: 5
+  GW_A_area_m2: 1.0
+  GW_A_external_source_m_per_s: 0.0
+  base_top_flux_scale: >
+    K0 is the positive hydraulic conductivity of the uniform -80 cm initial
+    state. Flux schedules below are exact multipliers of K0.
+  segment_boundaries_day_from_start: [0.0, 0.08, 0.16, 0.24]
+  reference_ladder:
+    L0: {coupling_window_day: 0.04, number_of_windows: 6}
+    L1: {coupling_window_day: 0.02, number_of_windows: 12}
+    L2: {coupling_window_day: 0.01, number_of_windows: 24}
+  same_forcing_switch_times_at_all_levels: true
+  root:
+    method: GC-REF-A
+    relative_interface_head_bracket_m: [-0.10, 0.20]
+    tau_R_h_m: 1.0e-8
+    tau_bracket_h_m: 1.0e-6
+    tau_Q_cm: 1.0e-8
+    max_evaluations: 64
+    fail_closed_no_postrun_bracket_retuning: true
+  reference_stability:
+    max_matched_GW_head_difference_m: 1.0e-4
+    cumulative_exchange_difference_cm: 1.0e-4
+    final_max_pressure_head_difference_cm: 1.0e-2
+    final_max_water_content_difference: 1.0e-5
+    final_total_water_storage_difference_cm: 1.0e-4
+
+cases:
+  - case_id: TS-WET-5
+    family: wetting_recharge_transition
+    initial_GW_head_m: 0.0
+    GW_A_specific_yield: 0.20
+    top_flux_factor_by_segment: [-5.0, -1.0, -1.0]
+    heldout_primary_candidate:
+      case_id: HP-WET-4
+      top_flux_factor_by_segment: [-4.0, -1.0, -1.0]
+      initial_GW_head_m: 0.0
+      GW_A_specific_yield: 0.20
+
+  - case_id: TS-DRY-1
+    family: drying_upward_surface_extraction
+    initial_GW_head_m: 0.0
+    GW_A_specific_yield: 0.20
+    top_flux_factor_by_segment: [1.0, -1.0, -1.0]
+    heldout_primary_candidate:
+      case_id: HP-DRY-075
+      top_flux_factor_by_segment: [0.75, -1.0, -1.0]
+      initial_GW_head_m: 0.0
+      GW_A_specific_yield: 0.20
+
+  - case_id: TS-REV
+    family: forcing_reversal
+    initial_GW_head_m: 0.0
+    GW_A_specific_yield: 0.20
+    top_flux_factor_by_segment: [-5.0, 1.0, -1.0]
+    heldout_primary_candidate:
+      case_id: HP-REV
+      top_flux_factor_by_segment: [-4.0, 0.75, -1.0]
+      initial_GW_head_m: 0.0
+      GW_A_specific_yield: 0.20
+
+  - case_id: TS-GW-UP
+    family: raised_groundwater_capillary_transition
+    initial_GW_head_m: 0.05
+    GW_A_specific_yield: 0.20
+    top_flux_factor_by_segment: [-1.0, -1.0, -1.0]
+    heldout_primary_candidate:
+      case_id: HP-GW-UP
+      initial_GW_head_m: 0.04
+      GW_A_specific_yield: 0.20
+      top_flux_factor_by_segment: [-1.0, -1.0, -1.0]
+
+  - case_id: TS-GW-DOWN
+    family: lowered_groundwater_drainage_transition
+    initial_GW_head_m: -0.05
+    GW_A_specific_yield: 0.20
+    top_flux_factor_by_segment: [-1.0, -1.0, -1.0]
+    heldout_primary_candidate:
+      case_id: HP-GW-DOWN
+      initial_GW_head_m: -0.04
+      GW_A_specific_yield: 0.20
+      top_flux_factor_by_segment: [-1.0, -1.0, -1.0]
+
+  - case_id: TS-LOW-SY-WET
+    family: stronger_groundwater_storage_feedback
+    initial_GW_head_m: 0.0
+    GW_A_specific_yield: 0.05
+    top_flux_factor_by_segment: [-5.0, -1.0, -1.0]
+    heldout_primary_candidate:
+      case_id: HP-LOW-SY-WET
+      initial_GW_head_m: 0.0
+      GW_A_specific_yield: 0.08
+      top_flux_factor_by_segment: [-4.0, -1.0, -1.0]
+
+screening_metrics:
+  per_accepted_reference_window:
+    - Q_whole_cm
+    - q_terminal_cm_per_day
+    - Q_terminal_cm
+    - signed_Q_whole_minus_Q_terminal_cm
+    - abs_Q_whole_minus_Q_terminal_cm
+    - GW_A_head_from_Q_whole_m
+    - GW_A_head_from_Q_terminal_m
+    - abs_paired_GW_head_difference_m
+    - reconstructed_reference_residual_m
+    - bisection_evaluations
+  per_level:
+    - cumulative_Q_whole_cm
+    - gross_Q_whole_cm
+    - sum_abs_terminal_surrogate_mismatch_cm
+    - max_abs_terminal_surrogate_mismatch_cm
+    - terminal_GW_head_m
+    - final_SWAPPresureHead_profile
+    - final_water_content_profile
+    - final_total_water_storage_cm
+  reference_refinement:
+    - L1_to_L2_max_matched_GW_head_difference_m
+    - L1_to_L2_cumulative_exchange_difference_cm
+    - L1_to_L2_final_max_pressure_head_difference_cm
+    - L1_to_L2_final_max_water_content_difference
+    - L1_to_L2_final_storage_difference_cm
+
+screening_resolution_floor:
+  abs_terminal_surrogate_mismatch_cm: 1.0e-8
+  meaning: numerical_detectability_only
+  practical_materiality_claim_allowed: false
+
+case_adjudication:
+  VALID_STABLE_RESOLVED:
+    - all three reference levels complete
+    - L1_to_L2_reference_stability_passes
+    - max_abs_terminal_surrogate_mismatch_cm > 1.0e-8
+  VALID_STABLE_UNRESOLVED:
+    - all three reference levels complete
+    - L1_to_L2_reference_stability_passes
+    - max_abs_terminal_surrogate_mismatch_cm <= 1.0e-8
+  VALID_UNSTABLE:
+    - all three levels execute but L1_to_L2 stability fails
+  INVALID:
+    - root bracket failure
+    - subsystem trial failure
+    - accepted publication failure
+    - authority drift
+    - nonfinite required telemetry
+
+heldout_promotion_rule:
+  - Screening cases are permanently ineligible for primary H2/H3 inference.
+  - A family may be considered for held-out primary work only if its screening case is VALID_STABLE_RESOLVED.
+  - The corresponding heldout_primary_candidate values above are already frozen and may not be changed after screening to increase an observed effect.
+  - If more than three families are eligible, retain the three with the largest max_abs_terminal_surrogate_mismatch_cm; ties are resolved by manifest order.
+  - If fewer than three are eligible, do not invent replacement amplitudes from the observed data. Freeze a separate scientific design decision before adding another family.
+  - Eligibility/ranking is a stress-test selection device, not evidence of population frequency or practical importance.
+
+nonclaims:
+  - screening outcomes do not establish H2
+  - screening outcomes do not establish H3
+  - numerical detectability is not practical materiality
+  - fixed-flux wetting/drying labels are controlled boundary experiments, not complete meteorological scenarios
+  - no MODFLOW6 transferability is tested
+  - no selected screening case can later be called held-out
+
+next_permitted_action:
+  - create research/pub-gc-transient-screening from the frozen stable reference-screening head
+  - implement case/schedule parameterization without modifying qualified dependencies
+  - execute all six cases under O0 and O2
+  - persist every valid, invalid, stable, unstable, resolved and unresolved result
+  - apply the frozen heldout promotion rule without post-hoc amplitude tuning
