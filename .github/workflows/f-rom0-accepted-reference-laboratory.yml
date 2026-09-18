@@ -1,0 +1,59 @@
+name: F-ROM0 accepted Reference laboratory
+
+on:
+  push:
+    branches:
+      - work/f-rom0-accepted-reference-laboratory
+    paths:
+      - 'integration/f-rom/F-ROM0_*'
+      - 'tests/rom/test_f_rom0_accepted_reference_laboratory.f90'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - 'tests/rom/analyze_f_rom0_accepted_reference_laboratory.py'
+      - 'tests/rom/run_f_rom0_accepted_reference_laboratory.sh'
+      - '.github/workflows/f-rom0-accepted-reference-laboratory.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROM0_*'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom0-accepted-reference-laboratory.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0-accepted-reference-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rom0:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Execute preregistered ROM-0 laboratory
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0_EVIDENCE
+          F_ROM0_EVIDENCE_DIR="$PWD/F-ROM0_EVIDENCE" \
+            bash tests/rom/run_f_rom0_accepted_reference_laboratory.sh | tee F-ROM0_EVIDENCE/gate.txt
+
+      - name: Preserve ROM-0 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0-accepted-reference-${{ github.run_id }}
+          path: F-ROM0_EVIDENCE
+          if-no-files-found: warn

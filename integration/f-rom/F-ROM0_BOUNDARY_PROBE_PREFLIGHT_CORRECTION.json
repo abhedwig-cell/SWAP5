@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.f-rom0.boundary-probe-preflight-correction.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "FROZEN_BEFORE_FIRST_EXECUTION",
+  "predecessor_preregistration": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
+  "reason": "Analytic preflight of the exact SWBOTB=5 lower-boundary gradient showed that the original multiplicative head probe does not guarantee opposite lower-boundary flow directions for both frozen materials before any ROM-0 trajectory evidence exists. The preflight also fixes the published terminal-outward sign convention before execution.",
+  "exact_reference_relation": {
+    "source": "src/legacy/b1_10_port/headcalc.f90",
+    "relation": "head_gradient_bottom = (h_N - hbot) / disnod_bottom + 1",
+    "initial_profile": "uniform h_N = h0",
+    "reversal_condition": "hbot > h0 + disnod_bottom gives negative initial head_gradient; hbot < h0 + disnod_bottom gives positive initial head_gradient."
+  },
+  "original_probe": {
+    "rise": "hbot = 0.75 * h0",
+    "fall": "hbot = 1.25 * h0",
+    "issue": "For B01 at Se=0.85, h0 is about -29.79 cm. With 10 cm boundary spacing, 0.75*h0 is about -22.35 cm, which remains below the analytic reversal threshold h0+10 about -19.79 cm. The probe therefore cannot guarantee an actual upward/capillary-flow branch for B01."
+  },
+  "corrected_probe": {
+    "rise": "hbot = h0 + 2 * dz_cm",
+    "fall": "hbot = h0 - 2 * dz_cm",
+    "direction_reversal": "first half uses rise; second half uses fall",
+    "rationale": [
+      "For the homogeneous fixed geometry, node spacing equals dz_cm.",
+      "At the uniform initial state, rise gives head_gradient_bottom = -1 and fall gives +3 independent of material h0.",
+      "The correction is geometry-scaled rather than material-head-scaled and is therefore a cleaner cross-material direction probe."
+    ],
+    "terminal_outward_flux_expectation": {
+      "rise": "NEGATIVE (water enters the soil column from the lower boundary)",
+      "fall": "POSITIVE (water leaves the soil column through the lower boundary)",
+      "authority": "fmr_serialized_advance publishes terminal_bottom_outward_flux_native = -solve_result%bottom_flux"
+    }
+  },
+  "unchanged": [
+    "materials B01 and B14",
+    "Se=0.85 initial state",
+    "experiment durations and observation intervals",
+    "E0/E1/E2 flux probes",
+    "numerical controls",
+    "reference-floor matrix",
+    "mass and acceptance gates"
+  ],
+  "execution_evidence_seen_before_correction": false,
+  "post_execution_retuning_allowed": false,
+  "production_source_mutation": "NONE"
+}
