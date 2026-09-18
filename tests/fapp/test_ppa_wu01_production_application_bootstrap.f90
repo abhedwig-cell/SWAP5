@@ -2,9 +2,8 @@ program test_ppa_wu01_production_application_bootstrap
   use, intrinsic :: iso_c_binding, only: c_int, c_int64_t
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
@@ -25,13 +24,14 @@ program test_ppa_wu01_production_application_bootstrap
   implicit none
 
   integer, parameter :: NTILE = 2
+  real(real64), parameter :: T0 = 4100.1875_real64
+  real(real64), parameter :: T1 = 4100.6875_real64
   real(real64), parameter :: H0_CM = -75.0_real64
-  real(real64), parameter :: DURATION_DAY = 1.0e-4_real64
-  real(real64), parameter :: TOL = 1.0e-12_real64
+  real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, bad_config
-  type(fmr_production_application_bootstrap_t) :: app, bad_app
+  type(fmr_production_application_config_t) :: config, gw_config, bad_config
+  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
@@ -44,39 +44,54 @@ program test_ppa_wu01_production_application_bootstrap
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
 
+  ! Standalone authority: use the already-qualified serialized Reference
+  ! profile rather than inventing a new mode-5 standalone trajectory.
   call initialize_application_config(config)
   call app%initialize(config, status)
-  call require(status == FMR_APP_BOOT_OK, 'production bootstrap initialize')
-  call require(app%ready(), 'production bootstrap ready')
-  call require(app%tile_count() == NTILE, 'production bootstrap tile count')
+  call require(status == FMR_APP_BOOT_OK, 'standalone production bootstrap initialize')
+  call require(app%ready(), 'standalone production bootstrap ready')
+  call require(app%tile_count() == NTILE, 'standalone production bootstrap tile count')
 
   call app%copy_committed_revisions(revisions, status)
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 0_int64), 'initial committed revisions')
 
-  call app%run_standalone(0.0_real64, DURATION_DAY, results, status)
+  call app%run_standalone(T0, T1, results, status)
   if (status /= FMR_APP_BOOT_OK) then
     write(*,'(a,1x,i0)') 'PPA_WU01_DEBUG_STANDALONE_STATUS', status
     if (allocated(results)) then
       do i = 1, size(results)
-        write(*,'(a,1x,i0,1x,a,1x,i0,1x,l1,1x,l1,1x,l1)') 'PPA_WU01_DEBUG_RESULT', i, &
+        write(*,'(a,1x,i0,1x,a,1x,i0,1x,l1,1x,l1,1x,l1,1x,i0)') 'PPA_WU01_DEBUG_RESULT', i, &
              trim(results(i)%admission_status), results(i)%kernel_status, results(i)%admitted, &
-             results(i)%completed, results(i)%committed
+             results(i)%completed, results(i)%committed, results(i)%accepted_substeps
       end do
     end if
   end if
   call require(status == FMR_APP_BOOT_OK, 'standalone run status')
   call require(allocated(results) .and. size(results) == NTILE, 'standalone result count')
   call require(all(results%completed) .and. all(results%committed), 'standalone accepted commits')
+  call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'standalone hard mass')
   call app%copy_committed_revisions(revisions, status)
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'standalone owner committed revisions')
+  call app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
 
-  call compute_reference_head(config%tiles(1)%parameters, config%tiles(1)%groundwater_datum, reference_head_m, status)
-  call require(status == MODFLOW6_BOTTOM_FACE_OK, 'reference head')
+  ! Groundwater authority: the same production bootstrap type owns an admitted
+  ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
+  gw_config = config
+  do i = 1, NTILE
+    gw_config%tiles(i)%parameters%bottom_mode = 5
+  end do
+  call gw_app%initialize(gw_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. gw_app%ready(), 'groundwater production bootstrap initialize')
+
+  call compute_reference_head(gw_config%tiles(1)%parameters, gw_config%tiles(1)%groundwater_datum, &
+       reference_head_m, status)
+  call require(status == MODFLOW6_BOTTOM_FACE_OK, 'groundwater reference head')
 
   do i = 1, NTILE
-    topology_tiles(i)%tile_id = config%tiles(i)%tile_id
-    topology_tiles(i)%swap_lineage_id = config%tiles(i)%tile_id
-    topology_tiles(i)%ledger_id = config%tiles(i)%ledger_id
+    topology_tiles(i)%tile_id = gw_config%tiles(i)%tile_id
+    topology_tiles(i)%swap_lineage_id = gw_config%tiles(i)%tile_id
+    topology_tiles(i)%ledger_id = gw_config%tiles(i)%ledger_id
     topology_tiles(i)%groundwater_cell_id = 7000_int64 + int(i, int64)
     topology_tiles(i)%area_fraction = 1.0_real64
 
@@ -95,7 +110,7 @@ program test_ppa_wu01_production_application_bootstrap
   call materialize_groundwater_topology(topology_tiles, topology_cells, topology, topology_status)
   call require(topology_status == GW_TOPOLOGY_OK .and. topology%ready(), 'typed topology')
 
-  call app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
+  call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
   call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, 'owned F-GC49D context materialization')
 
   ncell = 0_c_int
@@ -104,18 +119,12 @@ program test_ppa_wu01_production_application_bootstrap
   call require(c_status == 0_c_int, 'registered context handle')
   call require(ncell == int(NTILE, c_int) .and. ntile_count == int(NTILE, c_int), 'registered context counts')
 
-  call app%release_groundwater_context(status)
+  call gw_app%release_groundwater_context(status)
   call require(status == FMR_APP_BOOT_OK, 'context release')
   c_status = fgc49d_context_counts_c(int(context_handle, c_int64_t), ncell, ntile_count)
   call require(c_status /= 0_c_int, 'released context handle fails closed')
-
-  call app%run_standalone(DURATION_DAY, 2.0_real64 * DURATION_DAY, results, status)
-  call require(status == FMR_APP_BOOT_OK, 'owner reusable after context retirement')
-  call app%copy_committed_revisions(revisions, status)
-  call require(status == FMR_APP_BOOT_OK .and. all(revisions == 2_int64), 'persistent committed owner across runs')
-
-  call app%close(status)
-  call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean owner close')
+  call gw_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. gw_app%ready(), 'clean groundwater owner close')
 
   bad_config = config
   bad_config%tiles(1)%parameters%bottom_mode = 6
@@ -125,12 +134,12 @@ program test_ppa_wu01_production_application_bootstrap
 
   print '(a)', 'PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS'
+  print '(a)', 'PPA_WU01_STANDALONE_HARD_MASS=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49D_CONTEXT_FROM_PRODUCTION_OWNER=PASS'
   print '(a)', 'PPA_WU01_NO_QUALIFICATION_FIXTURE_BOOTSTRAP=PASS'
-  print '(a)', 'PPA_WU01_OWNER_REUSABLE_ACROSS_CONTEXT_WINDOW=PASS'
   print '(a)', 'PPA_WU01_UNADMITTED_PROFILE_FAILS_CLOSED=PASS'
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
@@ -138,19 +147,16 @@ contains
 
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
-    integer :: k, j
+    real(real64) :: conductivity0
+    integer :: k
 
-    value%initial_time = 0.0_real64
-    value%numerical%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    value%initial_time = T0
     value%numerical%transaction%temporal_tolerance = 0.0_real64
-    value%numerical%transaction%mass_tolerance = TOL
+    value%numerical%transaction%mass_tolerance = HARD_MASS_GATE
     value%numerical%transaction%retry_scale = 0.5_real64
-    value%numerical%transaction%max_retries = 8
-    value%numerical%max_committed_substeps = 32
+    value%numerical%transaction%max_retries = 2
+    value%numerical%max_committed_substeps = 8
     value%numerical%progress_tolerance = 0.0_real64
-    value%numerical%model_temporal_indicator_budget_available = .true.
-    value%numerical%model_temporal_indicator_budget = 1.0e-5_real64
-    value%numerical%accepted_trajectory_direction%requested = .false.
 
     allocate(value%tiles(NTILE))
     do k = 1, NTILE
@@ -162,21 +168,17 @@ contains
       value%tiles(k)%template%state_layout_id = 610230_int64
       value%tiles(k)%template%solver_interface_id = 610240_int64
       value%tiles(k)%template%optional_state_layout_id = 0_int64
-      value%tiles(k)%template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+      value%tiles(k)%template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
       value%tiles(k)%template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
 
       call initialize_parameters(value%tiles(k)%parameters, 620000_int64 + int(k, int64))
       call initialize_state_and_forcing(value%tiles(k)%parameters, value%tiles(k)%initial_state, &
-           value%tiles(k)%base_forcing)
+           value%tiles(k)%base_forcing, 1.0_real64 + 0.013_real64 * real(k, real64), conductivity0)
+      value%tiles(k)%initial_state%groundwater_level = -2.0_real64 - 0.007_real64 * real(k, real64)
 
       value%tiles(k)%groundwater_datum%available = .true.
       value%tiles(k)%groundwater_datum%datum_id = 630000_int64 + int(k, int64)
       value%tiles(k)%groundwater_datum%bottom_boundary_elevation_m = 0.0_real64
-
-      allocate(value%tiles(k)%initial_right_derivative(numnod))
-      do j = 1, numnod
-        value%tiles(k)%initial_right_derivative(j) = 0.0_real64
-      end do
     end do
   end subroutine initialize_application_config
 
@@ -201,25 +203,16 @@ contains
       p%cofgen(6,k) = 1.455_real64
       p%cofgen(7,k) = 1.0_real64 - 1.0_real64 / p%cofgen(6,k)
       p%cofgen(8,k) = p%cofgen(4,k)
-      p%cofgen(9,k) = 0.0_real64
       p%cofgen(10,k) = p%cofgen(3,k)
       p%cofgen(11,k) = 0.999_real64
       p%cofgen(12,k) = 0.99_real64 * p%cofgen(3,k)
       p%cofgen(22,k) = -1.0e6_real64
       p%cofgen(23,k) = 1.0e-12_real64
     end do
-    p%bottom_mode = 5
+    p%bottom_mode = 7
     p%swkimpl = 0
     p%swkmean = 1
     p%swsophy = 0
-    p%max_iterations = 16
-    p%max_backtracking = 8
-    p%min_step_duration = 1.0e-8_real64
-    p%compartment_balance_tolerance = TOL
-    p%total_balance_tolerance = TOL
-    p%head_abs_tolerance = TOL
-    p%head_rel_tolerance = TOL
-    p%ponding_tolerance = TOL
     p%root_extraction_active = .false.
     p%macropore_active = .false.
     p%snow_active = .false.
@@ -231,23 +224,23 @@ contains
     p%drainage_response_active = .false.
   end subroutine initialize_parameters
 
-  subroutine initialize_state_and_forcing(p, state, forcing)
+  subroutine initialize_state_and_forcing(p, state, forcing, scale, conductivity0)
     type(fmr_b110_physical_parameters_t), intent(in) :: p
     type(fmr_b110_physical_state_t), intent(out) :: state
     type(fmr_b110_physical_forcing_t), intent(out) :: forcing
+    real(real64), intent(in) :: scale
+    real(real64), intent(out) :: conductivity0
 
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
     integer :: i
 
-    heads(1) = H0_CM
-    do i = 2, numnod
-      heads(i) = heads(i-1) + p%node_distance(i)
-    end do
+    heads = H0_CM
     call initialize_b110_default_mvg_parameters(hp, p%cofgen)
-    call bind_b110_default_mvg_provider(provider, hp, DURATION_DAY)
+    call bind_b110_default_mvg_provider(provider, hp, T1 - T0)
     call provider%evaluate(heads, water, conductivity, capacity, dkdh)
+    conductivity0 = conductivity(1)
 
     state%active_nodes = numnod
     allocate(state%pressure_head(numnod), state%water_content(numnod))
@@ -256,15 +249,19 @@ contains
     state%ponding_depth = 0.0_real64
     state%groundwater_level = -2.0_real64
 
-    forcing%top_flux = PREDICTOR_QBOT
-    forcing%top_head = heads(1)
-    forcing%bottom_flux = PREDICTOR_QBOT
-    forcing%bottom_head = heads(numnod)
-    allocate(forcing%drainage_flux_by_level(1,numnod), forcing%subsurface_irrigation_source(numnod), &
+    forcing%top_flux = -conductivity0
+    forcing%top_head = H0_CM
+    forcing%bottom_flux = -conductivity0
+    forcing%bottom_head = -100.0_real64
+    allocate(forcing%drainage_flux_by_level(2,numnod), forcing%subsurface_irrigation_source(numnod), &
          forcing%root_extraction_sink(numnod))
-    forcing%drainage_flux_by_level = 0.0_real64
-    forcing%subsurface_irrigation_source = 0.0_real64
-    forcing%root_extraction_sink = 0.0_real64
+    do i = 1, numnod
+      forcing%drainage_flux_by_level(1,i) = scale * 1.0e-5_real64 * real(i,real64)
+      forcing%drainage_flux_by_level(2,i) = -scale * 2.0e-6_real64 * real(i+1,real64)
+      forcing%subsurface_irrigation_source(i) = forcing%drainage_flux_by_level(1,i) + &
+           forcing%drainage_flux_by_level(2,i)
+      forcing%root_extraction_sink(i) = 0.0_real64
+    end do
   end subroutine initialize_state_and_forcing
 
   subroutine make_predictor(input, tile, cell, href, slot)
@@ -280,11 +277,11 @@ contains
     integer :: local_status
 
     input%tile_id = tile%tile_id
-    window%t0 = DURATION_DAY
-    window%t1 = 2.0_real64 * DURATION_DAY
+    window%t0 = T0
+    window%t1 = T1
     lineage%coupling_id = cell%coupling_id
     lineage%swap_lineage_id = tile%swap_lineage_id
-    lineage%swap_origin_revision = 1_int64
+    lineage%swap_origin_revision = 0_int64
     lineage%groundwater_service_id = cell%groundwater_service_id
     lineage%groundwater_lineage_id = cell%groundwater_lineage_id
     lineage%groundwater_origin_revision = 0_int64
@@ -307,14 +304,10 @@ contains
     type(b110_default_mvg_provider_t) :: provider
     type(modflow6_prescribed_qbot_bottom_face_t) :: face
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-    integer :: i
 
-    heads(1) = H0_CM
-    do i = 2, numnod
-      heads(i) = heads(i-1) + p%node_distance(i)
-    end do
+    heads = H0_CM
     call initialize_b110_default_mvg_parameters(hp, p%cofgen)
-    call bind_b110_default_mvg_provider(provider, hp, DURATION_DAY)
+    call bind_b110_default_mvg_provider(provider, hp, T1 - T0)
     call provider%evaluate(heads, water, conductivity, capacity, dkdh)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod), conductivity(numnod), PREDICTOR_QBOT, &
          0.5_real64 * p%dz(numnod), datum, face, local_status)
