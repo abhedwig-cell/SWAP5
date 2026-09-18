@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.publication.p2e11d2-reference-failed-endpoint-split-result.v1",
+  "workunit": "PUB-P2E11D2",
+  "phase": "REFERENCE_FAILED_ENDPOINT_SPLIT_COMPLETE",
+  "parent_diagnostic_result_commit": "cefbd79c0c1515458de7457e62c4214993b06632",
+  "executed_head": "b2a977bf27d4312a12f8224e7afac8674b408334",
+  "authorities": {
+    "preregistration_blob": "87526aaa0915b01d83ec252d4728ea3e03ed8114",
+    "test_blob": "c58f473c86b67d327d6c66e5cdb40f3b4c42d537",
+    "runner_blob": "b54a02294f3748cf2a01421fdfd1e66c03f40c4d",
+    "workflow_blob": "a8f659444c4b95cfb7d7ad4512483abf69bf4c51"
+  },
+  "execution": {
+    "first_attempt": {
+      "workflow_run": 35289903033,
+      "job": 105430262810,
+      "conclusion": "FAIL_COMPILE_BEFORE_SCIENTIFIC_EXECUTION",
+      "cause": "SW_SOLVE_FAILED constant omitted from diagnostic test import",
+      "scientific_output_generated": false,
+      "research_design_changed": false
+    },
+    "qualified_attempt": {
+      "workflow_run": 35289944792,
+      "job": 105430394650,
+      "conclusion": "PASS",
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_identical": true,
+      "o0_o2_sha256": "bdfded21d97377eab72d275fa3376cbfad4dc769ff6b565195082442879d62a2"
+    }
+  },
+  "split_result": {
+    "failed_or_endpoint_observations": 36,
+    "raw_solver_failures": 0,
+    "converged_native_residual_gate_failures": 0,
+    "endpoint_head_at_or_above_frozen_upper_bound": 36,
+    "other_endpoint_failures": 0,
+    "frozen_upper_head_bound_cm": -1,
+    "reference_status_for_all_36": "SW_SOLVE_CONVERGED",
+    "reference_route_for_all_36": "legacy-reference-bound"
+  },
+  "central_0p0064_cases": [
+    {
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "stage": "HALF2",
+      "actual_dt_day": 0.0032,
+      "reference_status": "CONVERGED",
+      "hmax_cm": -0.9086948301248,
+      "native_rate_residual_cm_per_day": 9.570400028025006e-13,
+      "integrated_residual_cm": 3.062528008968002e-15
+    },
+    {
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "stage": "HALF2",
+      "actual_dt_day": 0.0032,
+      "reference_status": "CONVERGED",
+      "hmax_cm": -0.7819937497667853,
+      "native_rate_residual_cm_per_day": -2.579603197716551e-13,
+      "integrated_residual_cm": -8.254730232692964e-16
+    },
+    {
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "stage": "COARSE",
+      "actual_dt_day": 0.0064,
+      "reference_status": "CONVERGED",
+      "hmax_cm": 7.603326778576777,
+      "native_rate_residual_cm_per_day": 2.1149748619109232e-13,
+      "integrated_residual_cm": 1.3535839116229909e-15,
+      "theta_max": 0.380881,
+      "theta_s": 0.380881
+    },
+    {
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "stage": "COARSE",
+      "actual_dt_day": 0.0064,
+      "reference_status": "CONVERGED",
+      "hmax_cm": 8.004409752031576,
+      "native_rate_residual_cm_per_day": -3.8891112552619234e-13,
+      "integrated_residual_cm": -2.489031203367631e-15,
+      "theta_max": 0.380881,
+      "theta_s": 0.380881
+    }
+  ],
+  "interpretation": {
+    "reference_solver_failure_at_central_block": false,
+    "common_domain_boundary_at_central_block": true,
+    "statement": "P2E11/P2E11R were correctly fail-closed because their complete-domain rule required every Reference endpoint to remain inside the frozen RossFast E0 head envelope. P2E11D2 shows that the four 0.0064-day exclusions are converged Reference trajectories that leave that common endpoint domain, not Reference nonlinear failures.",
+    "implication_for_admission_design": "The next Reference-only threshold freeze may retain the preselected 0.0064-day schedule and classify the four out-of-common-domain cases explicitly as domain exclusions. Any threshold calibration must use only Reference-valid trajectories that remain inside the already frozen common-domain predicate, while retaining the excluded cases in the reported domain map."
+  },
+  "firewalls": {
+    "rossfast_solver_executed": false,
+    "rossfast_extension_discrepancy_inspected": false,
+    "reference_tolerance_changed": false,
+    "endpoint_predicate_changed": false,
+    "production_or_reference_source_changed": false,
+    "case_removed": false
+  },
+  "verdict": "CENTRAL_BLOCK_IS_FROZEN_COMMON_DOMAIN_ENDPOINT_EXCLUSION_NOT_REFERENCE_SOLVER_FAILURE",
+  "next_permitted_action": "Preregister a Reference-only P2E12 threshold freeze at the already preselected 0.0064-day schedule. Apply the unchanged common-domain predicate first; retain all four exclusions explicitly; compute Se-stratified Reference self-disagreement maxima only from in-domain Reference pairs. Do not execute RossFast until P2E12 is frozen and qualified."
+}
