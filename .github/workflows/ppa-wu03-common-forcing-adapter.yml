@@ -1,0 +1,61 @@
+name: PPA-WU03 common forcing adapter
+
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_ppa_wu03_common_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fapp/test_ppa_wu03_common_forcing_adapter.f90'
+      - 'tests/fapp/test_ppa_wu03_common_forcing_independent.f90'
+      - 'tests/fapp/run_ppa_wu03_common_forcing_adapter.sh'
+      - 'tests/fapp/run_ppa_wu03_independent.sh'
+      - 'tests/fapp/run_ppa_wu03_preservation.sh'
+      - 'integration/audits/PPA_WU03_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU03_STATUS.json'
+      - 'docs/audits/PPA_WU03_ATMOSPHERIC_FORCING_NORMAL_INPUT_ADAPTER.md'
+      - 'integration/audits/production_physics_application_envelope_gap_register.json'
+      - 'docs/audits/PRODUCTION_PHYSICS_APPLICATION_ENVELOPE_GAP_AUDIT.md'
+      - '.github/workflows/ppa-wu03-common-forcing-adapter.yml'
+  workflow_dispatch:
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: PPA-WU03 owner qualification
+        run: bash tests/fapp/run_ppa_wu03_common_forcing_adapter.sh
+
+  independent-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: PPA-WU03 independent qualification
+        run: bash tests/fapp/run_ppa_wu03_independent.sh
+
+  preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Fetch canonical authority branch
+        run: git fetch origin integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical
+      - name: PPA-WU03 PPA/F-APP/M1 preservation
+        run: bash tests/fapp/run_ppa_wu03_preservation.sh
