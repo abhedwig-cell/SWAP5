@@ -10,13 +10,15 @@ STATUS = ROOT / "integration/audits/PPA_WU05C_STATUS.json"
 PREREG = ROOT / "integration/audits/PPA_WU05C_PREREGISTRATION.json"
 DOC = ROOT / "docs/audits/PPA_WU05C_OXYGEN_STRESS_AUTHORITY.md"
 SWAP007 = ROOT / "reference/swap-4.3.1/patches/SWAP-007/fix.patch"
+CANONICAL_VERIFY = ROOT / "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py"
+B0_MANIFEST = ROOT / "reference/swap-4.3.1/b0/file-manifest.sha256"
 ROOT_OWNER = ROOT / "src/process/mod_root_water_uptake_process.f90"
 
 def fail(msg):
     print(f"PPA_WU05C_FAIL {msg}", file=sys.stderr)
     raise SystemExit(1)
 
-for p in (CONTRACT, STATUS, PREREG, DOC, SWAP007, ROOT_OWNER):
+for p in (CONTRACT, STATUS, PREREG, DOC, SWAP007, CANONICAL_VERIFY, B0_MANIFEST, ROOT_OWNER):
     if not p.exists():
         fail(f"missing {p.relative_to(ROOT)}")
 
@@ -25,6 +27,8 @@ status = json.loads(STATUS.read_text())
 prereg = json.loads(PREREG.read_text())
 doc = DOC.read_text()
 swap007 = SWAP007.read_text()
+canonical_verify = CANONICAL_VERIFY.read_text()
+b0_manifest = B0_MANIFEST.read_text()
 root = ROOT_OWNER.read_text()
 
 if contract.get("workunit") != "PPA-WU05-C":
@@ -35,9 +39,17 @@ if prereg.get("workunit") != "PPA-WU05-C":
     fail("wrong prereg workunit")
 
 auth = contract["authority"]["oxygenstress"]
-if auth["b0_sha256"] != "2db206bf28e883a22a1419d4729e03c1bb6b9c6bcf560d2221248f3b12f75":
-    fail("B0 oxygenstress identity drift")
-if auth["b1_11_sha256"] != "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87":
+CANONICAL_B0 = "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735"
+CANONICAL_B1 = "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+if auth["b0_sha256"] != CANONICAL_B0:
+    fail("canonical B0 oxygenstress identity drift")
+if f"{CANONICAL_B0}     63565  SWAP/oxygenstress.f90" not in b0_manifest:
+    fail("canonical B0 manifest oxygenstress identity unavailable")
+if f'B0_SHA256 = "{CANONICAL_B0}"' not in canonical_verify:
+    fail("canonical SWAP-007 verifier B0 identity drift")
+if f'B1_SHA256 = "{CANONICAL_B1}"' not in canonical_verify:
+    fail("canonical SWAP-007 verifier B1 identity drift")
+if auth["b1_11_sha256"] != CANONICAL_B1:
     fail("B1.11 oxygenstress identity drift")
 if auth["only_admitted_b0_to_b1_change"] != "SWAP-007":
     fail("SWAP-007 scope widened")
@@ -84,6 +96,7 @@ if coupling["runtime_finite_difference_fallback_admitted"]:
 required_doc = [
     "PARTIAL_AUTHORITY_FROZEN",
     "SWAP-007",
+    "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
     "root_extraction_sink",
     "shared derived data",
     "PPA-WU05-C1",
@@ -119,6 +132,7 @@ for path in changed:
     if not path.startswith(allowed_prefixes):
         fail(f"out-of-scope review delta: {path}")
 
+print("PPA_WU05C_CANONICAL_B0_PROVENANCE=PASS")
 print("PPA_WU05C_B1_11_OXYGEN_AUTHORITY=PASS")
 print("PPA_WU05C_SWAP007_SCOPE_PRESERVED=PASS")
 print("PPA_WU05C_SINGLE_ROOT_MASS_OWNER=PASS")
