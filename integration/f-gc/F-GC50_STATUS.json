@@ -4,7 +4,7 @@
   "title": "iMOD Coupler product integration",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE_EXTERNAL_BLOCKER",
-  "state": "CLOSED_INTERNAL_PREREQUISITES_READY_EXTERNAL_UPSTREAM_BLOCKED",
+  "state": "CANONICAL_INTERNAL_READY_EXTERNAL_B1_BLOCKED",
   "source": {
     "branch": "work/f-gc50-imod-coupler-product-integration",
     "base": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
@@ -100,19 +100,25 @@
       "evidence_inheritance": "Subsequent status-only commit does not change the tested upstream contract, PPA-WU01 authority or SWAP5 production source."
     }
   },
-  "verdict": "BLOCKED_EXTERNAL_UPSTREAM_MUTATION_ONLY",
+  "verdict": "CANONICAL_BLOCKED_EXTERNAL_UPSTREAM_MUTATION_ONLY",
   "next_permitted_action": "Resume implementation only when a real authorized iMOD Coupler product mutation/extension route is available. Then add the SWAP5 driver/config mapping in the upstream product lifecycle and bind it to the already-admitted PPA-WU01 Fortran/FMR owner plus F-GC49C/F-GC49D services. Do not create a local get_driver imitation, monkeypatch, duplicate coupling loop, Python-owned SWAP state, or qualification-fixture bootstrap.",
   "canonical_reconciliation": {
     "prior_f_gc50_authority": "22e352f331a5e998f3f16e4de6a7260b5a6a9ea1",
-    "current_canonical": "39c6b3db987148d414752319a018abce645dd5c5",
+    "current_canonical": "d2e6d136b6dd5e45066f2861707dc178c0979906",
     "decisive_new_internal_authority": "PPA-WU01 canonical admission PR #306 / a95a14d3544ae6f7dc86d04694c9d466518f65b7",
     "m1_formal_close": "39c6b3db987148d414752319a018abce645dd5c5",
     "upstream_main_rechecked_sha": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
     "upstream_permission_rechecked": "pull=true,push=false",
-    "disposition": "B2 is resolved for the restricted PPA-WU01 groundwater production profile. B1 remains a genuine external blocker and is now the sole blocker."
+    "disposition": "B2 is resolved for the restricted PPA-WU01 groundwater production profile. B1 remains a genuine external blocker and is now the sole blocker.",
+    "post_bootstrap_reconciliation_admission": {
+      "pr": 319,
+      "merge_commit": "d2e6d136b6dd5e45066f2861707dc178c0979906",
+      "qualification_run": 35371440551,
+      "conclusion": "success"
+    }
   },
   "closeout": {
-    "action": "NO_PRODUCT_ADMISSION_EXTERNAL_UPSTREAM_BLOCKER_CHECKPOINT",
+    "action": "CANONICAL_EXTERNAL_B1_BLOCKER_CHECKPOINT",
     "internal_prerequisites_satisfied": true,
     "remaining_blocker_ids": [
       "FGC50-B1"
@@ -121,7 +127,8 @@
     "synthetic_driver_created": false,
     "qualification_fixture_promoted": false,
     "python_state_owner_created": false,
-    "f_gc49_reopened": false
+    "f_gc49_reopened": false,
+    "canonical_merge": "d2e6d136b6dd5e45066f2861707dc178c0979906"
   },
   "resolved_blockers": [
     {
