@@ -1,0 +1,45 @@
+name: F-ROM0R R3R1 representation policy qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0R_R3R1_*'
+      - 'integration/f-rom/F-ROM0R_R3D2_STATUS.json'
+      - 'docs/science/F-ROM0R_R3R1_*'
+      - 'tests/rom/test_f_rom0r_r3r1_representation_policy.f90'
+      - 'tests/rom/analyze_f_rom0r_r3r1_representation_policy.py'
+      - 'tests/rom/run_f_rom0r_r3r1_representation_policy.sh'
+      - '.github/workflows/f-rom0r-r3r1-representation-policy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0r-r3r1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute preregistered R3R1 candidate policy qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0R_R3R1_EVIDENCE
+          F_ROM0R_R3R1_EVIDENCE_DIR="$PWD/F-ROM0R_R3R1_EVIDENCE"             bash tests/rom/run_f_rom0r_r3r1_representation_policy.sh | tee F-ROM0R_R3R1_EVIDENCE/gate.txt
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0r-r3r1-${{ github.run_id }}
+          path: F-ROM0R_R3R1_EVIDENCE
+          if-no-files-found: warn
