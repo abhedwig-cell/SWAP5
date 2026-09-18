@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.independent_qualification.v1",
+  "workunit": "F-VQ120",
+  "subject": "F-APP07 restricted Hupsel TCS1/DCS2 irrigation composition",
+  "subject_head": "f05e73b9631e48d31025715bc1da9a46fdbb030d",
+  "qualification_branch": "qualification/f-vq120-fapp07-hupsel-tcs1-dcs2-independent",
+  "qualification_head": "37e6274b6bfe28f50d11b1dd4de53d3488cdead9",
+  "workflow_run_id": 35348357333,
+  "job_id": 105610223602,
+  "production_mutation": "NONE",
+  "exact_B1_11_composition": {
+    "records": 110,
+    "SWINTER0": 18,
+    "SWINTER3": 92,
+    "max_error": 0
+  },
+  "checks": {
+    "equation_oracle": "PASS",
+    "tcsfix_cadence": "PASS",
+    "split_rollback_replay": "PASS",
+    "A_B_A": "PASS",
+    "fail_closed": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "process_output_sha256": "690ef58e87fee4c5ae7c57b550326e5e92dd76513f57654fb028758b6b14460b",
+  "composition_output_sha256": "c4abf0377e21ecbc0eee1c63b0d7603472d514a21dc7e4c7c8e7b31685e1c513",
+  "verdict": "PASS_F_VQ120_INDEPENDENT_F_APP07_EXACT_HUPSEL_IRRIGATION_COMPOSITION"
+}
