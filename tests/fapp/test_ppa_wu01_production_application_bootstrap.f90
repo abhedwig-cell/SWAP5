@@ -30,8 +30,8 @@ program test_ppa_wu01_production_application_bootstrap
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, gw_config, bad_config
-  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app
+  type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config
+  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
@@ -132,6 +132,24 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED, 'non-WU01 profile fails closed')
   call require(.not. bad_app%ready(), 'failed bootstrap owns no live runtime')
 
+  ! E7 realistic-application boundary: the admitted groundwater owner remains
+  ! intentionally fail-closed when already-admitted application processes
+  ! require active root-extraction or drainage-response composition.  These
+  ! checks qualify the production owner boundary; they do not widen it.
+  root_bad_config = gw_config
+  root_bad_config%tiles(1)%parameters%root_extraction_active = .true.
+  call root_bad_app%initialize(root_bad_config, status)
+  call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
+       'groundwater owner with root extraction fails closed')
+  call require(.not. root_bad_app%ready(), 'root-extraction rejection owns no live runtime')
+
+  drainage_bad_config = gw_config
+  drainage_bad_config%tiles(1)%parameters%drainage_response_active = .true.
+  call drainage_bad_app%initialize(drainage_bad_config, status)
+  call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
+       'groundwater owner with drainage response fails closed')
+  call require(.not. drainage_bad_app%ready(), 'drainage-response rejection owns no live runtime')
+
   print '(a)', 'PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_HARD_MASS=PASS'
@@ -141,6 +159,9 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_FGC49D_CONTEXT_FROM_PRODUCTION_OWNER=PASS'
   print '(a)', 'PPA_WU01_NO_QUALIFICATION_FIXTURE_BOOTSTRAP=PASS'
   print '(a)', 'PPA_WU01_UNADMITTED_PROFILE_FAILS_CLOSED=PASS'
+  print '(a)', 'PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS'
+  print '(a)', 'PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS'
+  print '(a)', 'PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS'
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
 contains
