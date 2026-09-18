@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.rom1b4.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B4",
+  "phase": "CLOSED_HELDOUT_STATE_SEPARATION_QUALIFIED",
+  "decision": "ROM1B4_HELDOUT_STATE_SEPARATION_QUALIFIED",
+  "execution": {
+    "workflow_run": 35393918598,
+    "workflow_job": 105758281257,
+    "executed_head": "18ac74521e57ee5a9f76a62601550e26646334ad",
+    "artifact_id": 10567371095,
+    "artifact_digest": "sha256:9225d3adc0f09a432c1755362272fbe933bf769578b1df26f4660183da4711ae",
+    "conclusion": "success"
+  },
+  "frozen_candidate": "Z8_PLUS_G8",
+  "B01_discovery_state_separation": "PASS",
+  "B01_heldout_inclusive_state_separation": "PASS",
+  "heldout_collision_count": 0,
+  "heldout_driven_retuning": false,
+  "next_permitted_action": "PREREGISTER_B14_MATERIAL_TRANSFER_STATE_SUFFICIENCY_CHALLENGE_WITH_FROZEN_Z8_PLUS_G8",
+  "B14_exposed": false,
+  "production_rom_authorized": false
+}
