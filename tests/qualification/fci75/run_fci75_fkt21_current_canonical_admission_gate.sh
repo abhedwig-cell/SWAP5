@@ -15,6 +15,33 @@ rm -rf "$BUILD"; mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "FCI75_FAIL $*" >&2; exit 75; }
 
+# M1-C3 is a later independently qualified semantic successor of the Task2
+# adapter surface. The historical F-CI75 byte-exact admission remains immutable,
+# while current-canonical preservation is proven by replaying F-KT21 plus F-CI93
+# against the successor postimage.
+M1C3_RESULT=integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json
+if [[ -f "$M1C3_RESULT" ]]; then
+  python3 - "$M1C3_RESULT" <<'PY'
+import json,sys
+s=json.load(open(sys.argv[1],encoding='utf-8'))
+assert s['qualification_verdict']=='PASS_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER'
+assert s['m1_c3_scientific_gate_pass'] is True
+assert s['owner_qualification']['conclusion']=='success'
+assert s['independent_qualification']['conclusion']=='success'
+assert s['external_exact_asset_execution']['accepted_interval_identity'] is True
+assert s['external_exact_asset_execution']['result_bal_exact_reference_identity'] is True
+assert s['external_exact_asset_execution']['result_blc_exact_reference_identity'] is True
+print('FCI75_M1C3_QUALIFIED_SEMANTIC_SUCCESSOR=PASS')
+PY
+  bash tests/fkt/run_fkt21_qualification.sh | tee "$BUILD/m1c3-fkt21.txt"
+  grep -Fq 'FKT21_QUALIFICATION PASS' "$BUILD/m1c3-fkt21.txt" || fail 'M1-C3 successor F-KT21 replay'
+  bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh | tee "$BUILD/m1c3-fci93.txt"
+  grep -Fq 'FCI93_FSI35_SUCCESSOR_PRESERVATION=PASS' "$BUILD/m1c3-fci93.txt" || fail 'M1-C3 successor F-SI35 replay'
+  echo 'FCI75_M1C3_SEMANTIC_SUCCESSOR_REPLAY=PASS'
+  echo 'FCI75_CURRENT_CANONICAL_ADMISSION_GATE=PASS'
+  exit 0
+fi
+
 for object in "$BASE" "$OWNER" "$OWNER_MERGE_BASE" "$OWNER_RECEIPT" "$VQ92" "$FSI35_SOURCE" "$FKT15_DONOR"; do
   git cat-file -e "$object^{commit}" 2>/dev/null || git fetch --no-tags origin "$object" >/dev/null 2>&1 || fail "missing authority $object"
 done
