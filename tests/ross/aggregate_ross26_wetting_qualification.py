@@ -53,7 +53,7 @@ def main():
         m=matches[0].group("material").strip()
         if m in outputs:
             raise SystemExit(f"duplicate fortran output for {m}")
-        cases=[]
+        raw_cases=[]
         for match in matches:
             case={
                 "material":m,
@@ -67,7 +67,20 @@ def main():
                 "mass_residual_cm":float(match.group("mass")),
                 "exact_internal_node_endpoint_count":int(match.group("exact")),
             }
-            cases.append(case)
+            raw_cases.append(case)
+        if len(raw_cases)!=6:
+            raise SystemExit(f"{m}: expected 6 O0/O2 case rows got {len(raw_cases)}")
+        by_se={}
+        for case in raw_cases:
+            by_se.setdefault(case["se"],[]).append(case)
+        if sorted(by_se) != [0.65,0.85,0.98]:
+            raise SystemExit(f"{m}: unexpected Se rows {sorted(by_se)}")
+        cases=[]
+        for se in sorted(by_se):
+            pair=by_se[se]
+            if len(pair)!=2 or pair[0]!=pair[1]:
+                raise SystemExit(f"{m}: O0/O2 parsed case mismatch at Se={se}")
+            cases.append(pair[0])
         outputs[m]=cases
 
     missing_meta=[m for m in MATERIALS if m not in metadata]
