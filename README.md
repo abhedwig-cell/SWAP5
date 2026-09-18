@@ -10,6 +10,7 @@ The first colleague-review package uses a frozen Status-A scientific denominator
 - Scientific, numerical and software review route: [SWAP5 review guide](docs/review/REVIEW_GUIDE.md)
 - Current frozen Status-A scope: [Status-A current status](docs/status-a/CURRENT_STATUS.md)
 - Theory-to-code-to-evidence map: [Status-A traceability](docs/status-a/TRACEABILITY.md)
+- Later admitted development: [Post-Status-A current canonical state](docs/status-a/POST_STATUS_A_CURRENT_STATE.md)
 - Documentation portal source: [SWAP5 technical documentation](docs/index.md)
 
 The repository does not claim one broad stable public SWAP5 CLI/API or a wholesale replacement of all historical SWAP input/output formats unless a separately admitted authority establishes that interface. Internal qualification runners are not end-user commands by default.
@@ -26,7 +27,7 @@ These are the repository documentation checks used for the review portal.
 
 ## Historical and target material
 
-The repository intentionally retains SWAP 4.3.1 reference material, migration history and target-architecture documents. Historical or target pages are evidence of lineage and design intent; present-state claims defer to the current Status-A authority layer and capability-specific admission records.
+The repository intentionally retains SWAP 4.3.1 reference material, migration history and target-architecture documents. Historical or target pages are evidence of lineage and design intent; frozen Status-A claims defer to the Status-A authority layer, while later development claims defer to the [post-Status-A current-state supplement](docs/status-a/POST_STATUS_A_CURRENT_STATE.md) and capability-specific admission records.
 
 ## Licensing
 

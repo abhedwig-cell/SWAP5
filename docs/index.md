@@ -40,11 +40,12 @@ For present-state questions about the admitted Status-A baseline, start here:
 - [Status-A capability review pages](capabilities/index.md)
 - [Deliberate future scope](status-a/FUTURE_SCOPE.md)
 - [Documentation reconciliation matrix](status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md)
+- [Post-Status-A current canonical state](status-a/POST_STATUS_A_CURRENT_STATE.md)
 
 The frozen first-review scientific authority is Status-A commit `992a5c657bfe10a10100f92e0cb77c4825ae65b6`. The pinned scientific production baseline is `50346642bd565f79134ea17d5462e544b354998c` with production tree `3b085d7dea3d3f3fce42ad9d8f259a8350205846`.
 
 !!! warning "Frozen review baseline versus ongoing development"
-    SWAP5 development continues after Status-A. The review portal therefore distinguishes the frozen scientific review denominator from later canonical development. A later documentation snapshot may explain the frozen baseline, but post-Status-A capability work is not silently added to the scientific review claim.
+    SWAP5 development continues after Status-A. The review portal therefore distinguishes the frozen scientific review denominator from later canonical development. A later documentation snapshot may explain the frozen baseline, but post-Status-A capability work is not silently added to the scientific review claim. The [post-Status-A current canonical state](status-a/POST_STATUS_A_CURRENT_STATE.md) records those later admitted capabilities separately.
 
 !!! warning "Current status versus historical target material"
     Several architecture and migration pages were written before the 2026-09-16 Status-A closure. They remain useful design and migration evidence, but older `TARGET`, `PARTIAL`, `IN_PROGRESS` or similar labels must not be used to override the current Status-A acceptance authority. Pages that are target-design or historical snapshots are marked as such.

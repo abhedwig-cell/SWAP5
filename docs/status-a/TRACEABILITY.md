@@ -14,6 +14,9 @@ SWAP5 does not have, and does not need, one artificial master theory file for al
 
 The release-readiness record fixes the Status-A denominator and the current preservation conclusion. Capability-specific records remain the evidence for how an individual scientific or architectural claim was established. [Reference preservation](../capabilities/reference-preservation.md) explains how frozen identity, immutable qualification and dependency-aware replay fit together.
 
+!!! info "Post-Status-A traceability"
+    Later canonically admitted development must be traced without rewriting this frozen Status-A map. The current post-Status-A groundwater chain through F-GC49D is summarized in [Post-Status-A current canonical state](POST_STATUS_A_CURRENT_STATE.md) and remains grounded in its capability-specific `integration/f-gc/F-GC*_STATUS.json` records, owner qualification and independent F-VQ evidence.
+
 ## How to read a capability chain
 
 For a Status-A capability, trace authority in this direction:
@@ -39,6 +42,8 @@ The records at each step may live in different repository locations. That is int
 | F-PE11 current performance closure | Surface-evaporation scientific semantics remain unchanged; the performance contract is bounded to qualified call-local allocation/scaling evidence. | Equivalent production semantics were already admitted by F-CI42/F-CI42P. F-PE11 close commit `f928f309…` performs no canonical production or reference mutation. | Current-head replay records functional preservation, O0/O2 identity, committed-state immutability, A/B/A determinism, dry/ponded identity, local performance non-regression and checksum identity. Admission action is `NO_OP`. | Dependency-aware current-head preservation. No blanket whole-model or MultiSWAP speedup and no portable speed guarantee are implied. |
 
 Where this table names an umbrella reconciliation rather than a file, that is deliberate: it avoids inventing a single source file as the owner of a capability whose implementation/evidence is distributed. To audit an exact implementation path, follow the capability-specific qualification/admission record at the pinned commit.
+
+For later development, F-GC49D is the controlling production-orchestration authority for the concrete SWAP5-MODFLOW6 application path. Its canonical closure is `96f7547b9e618863bc162266137abc872c376734`; its production ABI admission is backed by owner qualification run `35352680601` and independent F-VQ124 run `35352680593`. This is post-Status-A evidence and therefore supplements rather than alters the frozen table above.
 
 The historical release-readiness narrative uses “F-GC29” as an umbrella label for its same-tree residual/preservation reconciliation. That label must not be equated with `integration/f-gc/F-GC29_*`, which is the separate Optional Groundwater Response Sensitivity Service Extension. The controlling preservation authority is the release-readiness record and the exact capability evidence it names.
 
