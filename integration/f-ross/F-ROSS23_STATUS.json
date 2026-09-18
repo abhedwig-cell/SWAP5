@@ -2,19 +2,64 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS23",
   "title": "Static RossFast versus Reference production characterization",
-  "phase": "DESIGN",
-  "status": "PREREGISTERED_READY_TO_MEASURE",
+  "phase": "ANALYSE",
+  "status": "PRIMARY_216_CASE_SCREEN_COMPLETE__CASE_MATRIX_REPLAY_RUNNING",
   "branch": "work/f-ross23-static-production-characterization",
   "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
   "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "62dfb5a52f665e490830dfb320167786cf67f63e",
-  "reused_evidence": ["F-ROSS13 36-material production admission","F-ROSS15 static six-material performance screen","F-ROSS16 static cost attribution"],
-  "new_evidence": ["integration/f-ross/F-ROSS23_STATIC_CHARACTERIZATION_PREREGISTRATION.json"],
-  "tests_executed_this_phase": [],
-  "verdict": "DESIGN_LOCKED__NEW_36_MATERIAL_MEASUREMENT_REQUIRED",
-  "mutations": ["new diagnostic branch","preregistration and checkpoint metadata only"],
+  "canonical_head_at_design": "62dfb5a52f665e490830dfb320167786cf67f63e",
+  "measurement_head": "6a8cd3b7933f1c8fb81fdfe53fecab1abab1f2d2",
+  "workflow_run": 35335830136,
+  "artifact_id": 10543402292,
+  "artifact_digest": "sha256:14a032b388c2479408b0366238b5abaffea0b53d1b1b88178ab4240bdd4297d0",
+  "results": {
+    "attempted_cases": 216,
+    "paired_valid": 213,
+    "reference_invalid": 3,
+    "rossfast_invalid": 0,
+    "both_invalid": 0,
+    "historical_six_material_threshold_diagnostic": {
+      "within": 210,
+      "outside": 3,
+      "authority_boundary": "descriptive only outside the original six-material P2E10 domain"
+    },
+    "performance_screening": {
+      "outcome": "SCREENING_REFERENCE_FASTER",
+      "rossfast_over_reference_cpu_ratio_mean": 3.107197377836018,
+      "rossfast_over_reference_relative_delta_mean": 2.1071973778360182,
+      "minimum_detectable_relative_effect": 0.009419488692252396,
+      "reference_over_rossfast_ratio_mean": 0.3218416686122687,
+      "whole_child_cpu_relative_delta_mean": 0.4998947189102913,
+      "wall_elapsed_relative_delta_mean": 0.49988715653519433,
+      "formal_speedup_or_slowness_claim": false
+    }
+  },
+  "interpretation": [
+    "Static F-ROSS13 RossFast is robust on all 216 attempted cases under its route-validity checks; the three route-invalid cases are Reference-only invalid, not RossFast failures.",
+    "On the 213 paired-valid cases the static RossFast solver consumes about 3.11 times Reference solver CPU on the GitHub-hosted screening runner.",
+    "This independently broadens the negative F-ROSS15 performance finding; it does not supersede F-ROSS13 scientific production qualification.",
+    "Three paired-valid cases exceed historical P2E10 six-material direct-discrepancy thresholds; exact identities require the already-triggered case-matrix replay before closure."
+  ],
+  "mutations": [
+    "diagnostic characterization harness and runner only",
+    "no production solver mutation",
+    "no Reference mutation",
+    "no tolerance change",
+    "no adaptive selection"
+  ],
   "production_or_reference_mutation": false,
-  "next_permitted_action": "MEASURE_ONLY_216_CASE_STATIC_CHARACTERIZATION",
-  "exclusions": ["NO_OPTIMIZATION","NO_ADAPTIVE_SELECTION","NO_ARCHITECTURE_CHANGE","NO_TOLERANCE_CHANGE","NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"]
+  "active_replay": {
+    "head": "616bd04b1cb678e871f1442527300a0ac1236278",
+    "workflow_run": 35336404039,
+    "purpose": "persist exact case-level identities and discrepancy metrics"
+  },
+  "next_permitted_action": "Complete case-matrix replay; identify the 3 Reference-invalid and 3 paired-valid discrepancy cases; persist final F-ROSS23 result and CLOSE. No optimization or adaptive selection in F-ROSS23.",
+  "exclusions": [
+    "NO_OPTIMIZATION",
+    "NO_ADAPTIVE_SELECTION",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
+  ]
 }
