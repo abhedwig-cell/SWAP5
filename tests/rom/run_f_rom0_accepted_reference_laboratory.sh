@@ -123,15 +123,16 @@ for spec in "${cases[@]}"; do
   fi
 done
 
-"$EXE16" B01 16 10 0.0016 E1_NOMINAL_FLUX >"$BUILD/replay.txt" 2>&1 || fail "reproducibility replay runtime"
-cmp -s "$EVIDENCE/cases/B01_E1_NOMINAL_FLUX_n16_dz10_dt0.0016.txt" "$BUILD/replay.txt" || {
-  diff -u "$EVIDENCE/cases/B01_E1_NOMINAL_FLUX_n16_dz10_dt0.0016.txt" "$BUILD/replay.txt" >&2 || true
-  fail "accepted trajectory exact replay drift"
-}
-echo "F_ROM0_EXACT_REPLAY=PASS"
-
-if [[ "$failures" -ne 0 ]]; then
-  printf '{"schema":"swap5.f-rom0.execution-summary.v1","case_failures":%d,"decision":"EXPAND_ACCEPTED_TRAJECTORY_DOMAIN_OR_CLASSIFY"}\n' "$failures" \
+if [[ "$failures" -eq 0 ]]; then
+  "$EXE16" B01 16 10 0.0016 E1_NOMINAL_FLUX >"$BUILD/replay.txt" 2>&1 || fail "reproducibility replay runtime"
+  cmp -s "$EVIDENCE/cases/B01_E1_NOMINAL_FLUX_n16_dz10_dt0.0016.txt" "$BUILD/replay.txt" || {
+    diff -u "$EVIDENCE/cases/B01_E1_NOMINAL_FLUX_n16_dz10_dt0.0016.txt" "$BUILD/replay.txt" >&2 || true
+    fail "accepted trajectory exact replay drift"
+  }
+  echo "F_ROM0_EXACT_REPLAY=PASS"
+else
+  echo "F_ROM0_EXACT_REPLAY=NOT_RUN_PREREGISTERED_CASE_FAILURE"
+  printf '{"schema":"swap5.f-rom0.execution-summary.v1","case_failures":%d,"exact_replay":"NOT_RUN_PREREGISTERED_CASE_FAILURE","decision":"EXPAND_ACCEPTED_TRAJECTORY_DOMAIN_OR_CLASSIFY"}\n' "$failures" \
     >"$EVIDENCE/F-ROM0_EXECUTION_SUMMARY.json"
   fail "$failures preregistered cases failed"
 fi
