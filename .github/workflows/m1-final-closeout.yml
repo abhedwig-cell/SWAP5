@@ -1,0 +1,24 @@
+name: M1 final closeout
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/m1/run_m1_final_closeout.sh'
+      - '.github/workflows/m1-final-closeout.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify all M1 exit criteria on current admitted postimage
+        run: bash tests/m1/run_m1_final_closeout.sh

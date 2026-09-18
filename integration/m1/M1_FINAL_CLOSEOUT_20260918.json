@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.bounded_execution_closeout.v2",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CLOSE_CANDIDATE",
+  "protocol": [
+    "RECONCILE",
+    "QUALIFY",
+    "ADMIT",
+    "CLOSE"
+  ],
+  "branch": "work/m1-final-close-20260918",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "d91c159c3685d8eedc7c94afc38edf827408c1de",
+    "m1_c3_merge_pr": 313,
+    "m1_c3_merge_commit": "d91c159c3685d8eedc7c94afc38edf827408c1de"
+  },
+  "normative_exit_criteria": [
+    "a non-file in-memory invocation path reaches the computational boundary;",
+    "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+    "legacy file runs still reproduce reference results through adapters;",
+    "output serialization does not mutate physical state;",
+    "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files."
+  ],
+  "criteria": [
+    {
+      "number": 1,
+      "verdict": "PASS_CURRENT_CANONICAL_EXACT_AUTHORITY",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee"
+      ]
+    },
+    {
+      "number": 2,
+      "verdict": "PASS_CURRENT_CANONICAL_EXACT_AUTHORITY",
+      "evidence": [
+        "same exact typed runtime blobs as criterion 1",
+        "no path, file-unit or parser authority on those kernel-facing surfaces"
+      ]
+    },
+    {
+      "number": 3,
+      "verdict": "PASS_CANONICAL_ADMITTED_M1_C3",
+      "evidence": {
+        "pr": 313,
+        "merge_commit": "d91c159c3685d8eedc7c94afc38edf827408c1de",
+        "qualification_file": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+        "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+        "accepted_intervals": 32518,
+        "accepted_interval_fallback": false,
+        "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+        "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+        "owner_run": 35368994365,
+        "independent_run": 35368994640,
+        "moving_preservation_run": 35370311611,
+        "moving_preservation_job": 105682456048,
+        "moving_preservation_conclusion": "success",
+        "production_blobs": {
+          "src/adapter/mod_b110_production_soil_water_task2.f90": "0406d3180262b06a5a393b605cc553a912a26aa0",
+          "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "8a59211335f44034a93d9ecd0d7a8920ee9baa39",
+          "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "42fb85a03e6835a839574bf6d4b4c01472a01236"
+        }
+      }
+    },
+    {
+      "number": 4,
+      "verdict": "PASS_CANONICAL_ADMITTED_M1_C4",
+      "evidence": {
+        "pr": 158,
+        "merge_commit": "5eb93542daf297d3aa89bee9552179387a7f2c68",
+        "serializer_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+        "owner_run": 35079209619,
+        "independent_run": 35091439497,
+        "admission_run": 35091664485
+      }
+    },
+    {
+      "number": 5,
+      "verdict": "PASS_CURRENT_CANONICAL_EXACT_AUTHORITY",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+        "typed canonical intervals use real t0/t1 and contain no historical midnight/day rejection authority"
+      ]
+    }
+  ],
+  "m1_c3_repair_classification": "MISSING_TRANSPARENT_LEGACY_ADAPTER_SEMANTIC",
+  "m1_c3_repair_summary": "For SWKIMPL=0, preserve the legacy time-level-t top-node conductivity during Newton iterations through an opt-in adapter carrier on the bounded B1.11 profile.",
+  "mutations_in_closeout": "GOVERNANCE_AND_QUALIFICATION_ONLY",
+  "production_mutation_in_closeout": "NONE",
+  "nonclaims": [
+    "M1 closure is not a claim of a broad stable public API.",
+    "M1 closure is not a claim of complete SWAP 4.3.1 application-envelope migration.",
+    "M1 closure does not add new physics, parser authority, solver policy, tolerance tuning or automatic fallback.",
+    "PPA-WU01 and groundwater product integration remain separate capabilities."
+  ],
+  "overall_verdict": "M1_CLOSE_CANDIDATE_ALL_FIVE_CRITERIA_PASS",
+  "formal_exit": false,
+  "close_gate": "PASS_CANDIDATE_READY_FOR_CANONICAL_CLOSE",
+  "close_gate_qualification": {
+    "workflow": "M1 final closeout",
+    "run_id": 35370892637,
+    "job_id": 105684323491,
+    "conclusion": "success",
+    "tested_head": "6ae04cc641d1ce33305f813d8da190699deb6139",
+    "markers": [
+      "M1_FINAL_EXACT_CANONICAL_BLOBS=PASS",
+      "M1_FINAL_CRITERIA_1_2_4_5_STATIC_AUTHORITY=PASS",
+      "M1_FINAL_CRITERION_3_EXACT_WHOLE_HUPSEL_AUTHORITY=PASS",
+      "M1_FINAL_CURRENT_SEMANTIC_PRESERVATION=PASS",
+      "M1_FINAL_FIVE_CRITERIA_MATRIX=PASS",
+      "M1_FINAL_CLOSEOUT_GATE=PASS"
+    ]
+  },
+  "incidental_workflow_repair": {
+    "finding": "The M1-C3 owner/independent workflows used tests/m1/** and therefore re-triggered on the unrelated final M1 closeout test.",
+    "disposition": "Narrow path filters to the three M1-C3-specific test surfaces. No qualification criterion or production source changed."
+  }
+}
