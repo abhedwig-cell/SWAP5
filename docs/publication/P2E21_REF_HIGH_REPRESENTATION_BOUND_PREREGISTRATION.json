@@ -1,0 +1,185 @@
+{
+  "schema": "swap5.publication.p2e21-ref-high-representation-bound.v1",
+  "workunit": "PUB-P2E21",
+  "publication_owner": "PUB-SQ",
+  "phase": "PREREGISTERED_BEFORE_REPRESENTATION_BOUNDED_REF_HIGH_EXECUTION",
+  "role": "REFERENCE_ONLY_NUMERICAL_POLICY_QUALIFICATION_AND_REF_HIGH_CONSTRUCTION",
+  "parent_ref_high_authority": {
+    "branch": "work/pub-p2e20-ref-high-scaled-construction",
+    "head": "a561ff1389af06d4521185b9d0d080785716bf3b",
+    "result_blob": "1657c73e631f4a5e6b9ee65d43669054a65e3008",
+    "verdict": "REF_HIGH_QUALIFIED_CASEWISE_33_OF_36_EQUAL_ERROR_PERFORMANCE_POPULATION_AVAILABLE"
+  },
+  "causal_diagnostic_authority": {
+    "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+    "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+    "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+    "verdict": "TOTAL_BALANCE_RETRIES_NOT_NUMERICALLY_DISTINGUISHABLE_UNDER_PREREGISTERED_DOMAIN_SUMMED_FLOOR_MODEL",
+    "use": "Motivates a formula-derived total-balance resolution policy. D3 residual magnitudes and residual/tolerance ratios are forbidden inputs to the P2E21 formula."
+  },
+  "methodological_authority": {
+    "workunit": "PUB-P2E07",
+    "result_blob": "be60ba751141545e1534f190e709dc5d2b7b83e6",
+    "method": "representation/cancellation-floor analysis from spacing of internal/base water content, with explicit warning that the estimated floor is not itself a universal tolerance"
+  },
+  "purpose": "Test whether a pre-solve, state- and material-derived upper bound on the total-column water-content representation floor removes the remaining total-balance-only Reference retries while preserving Reference endpoints and the original P2E18 temporal-stability requirements.",
+  "case_matrix": {
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 36,
+    "fine_substeps": [
+      8,
+      16,
+      32
+    ],
+    "fine_level_runs_per_policy": 108,
+    "total_horizon_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "ponding_initial_cm": 0,
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    }
+  },
+  "control_policy": {
+    "id": "INTEGRATED_INVARIANT_CONTROL",
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "total_integrated_allowance_cm": 1.6e-15,
+    "rate_formula": "allowance_cm / dt_day",
+    "provenance": "P2E19/P2E20",
+    "role": "paired endpoint-neutrality control, not a new independent holdout"
+  },
+  "representation_bounded_policy": {
+    "id": "REPRESENTATION_BOUNDED_TOTAL",
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "compartment_rate_tolerance_formula": "1.6e-15 / dt_day",
+    "total_integrated_bound_formula": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
+    "total_rate_tolerance_formula": "total_integrated_bound_cm / dt_day",
+    "pre_solve_inputs_only": [
+      "material theta_s",
+      "accepted request base_state water_content",
+      "cell thickness dz",
+      "real64 spacing()",
+      "current substep duration dt"
+    ],
+    "forbidden_inputs": [
+      "current or prior failed residual magnitude",
+      "D3 residual/tolerance ratio",
+      "RossFast output",
+      "timing result",
+      "candidate endpoint error",
+      "post-solve internal theta when choosing the current tolerance"
+    ],
+    "mathematical_basis": "For positive normal water contents restricted to theta < theta_s, spacing(theta_s) is used as a prospective upper bound on the unknown internal-theta spacing term appearing in the P2E07/D3 representation-floor model.",
+    "runtime_check": "Whenever internal provider_theta is available, verify spacing(provider_theta_i) <= spacing(theta_s_material) for every node; violation blocks policy qualification and does not trigger retuning.",
+    "no_safety_factor": true
+  },
+  "hard_reference_validity": {
+    "route": "legacy-reference-bound",
+    "converged_status_required": true,
+    "typed_integrated_mass_residual_required": true,
+    "typed_integrated_mass_abs_limit_cm": 1e-12,
+    "native_balance_rate_residual_required": true,
+    "finite_endpoint_required": true,
+    "endpoint_within_shared_E0_domain": true,
+    "prescribed_flux_identity_required": true,
+    "automatic_fallback_allowed": false
+  },
+  "policy_endpoint_neutrality": {
+    "population": "Every case/level where both control and representation-bounded policies are route-valid.",
+    "metrics": [
+      "D_h_inf_cm",
+      "D_h_rms_cm",
+      "D_theta_inf",
+      "D_theta_rms",
+      "D_storage_abs_cm"
+    ],
+    "budgets": "exact frozen P2E18 Se-stratified REF-HIGH stability budgets",
+    "all_metrics_must_pass": true,
+    "no_metric_compensation": true,
+    "interpretation": "A representation-bounded policy that changes overlapping accepted endpoints beyond the already frozen numerical-reference budget is not admitted merely because it improves route validity."
+  },
+  "ref_high_qualification": {
+    "policy": "REPRESENTATION_BOUNDED_TOTAL only",
+    "required_route_levels": [
+      8,
+      16,
+      32
+    ],
+    "ref_high_endpoint": "32-substep endpoint",
+    "required_temporal_comparisons": [
+      "8_vs_16",
+      "16_vs_32"
+    ],
+    "budgets_by_Se": {
+      "0.65": {
+        "D_h_inf_cm": 0.0009310899886486368,
+        "D_h_rms_cm": 0.0004264337561059986,
+        "D_theta_inf": 0.0000017908123244203546,
+        "D_theta_rms": 6.578609068585418e-7,
+        "D_storage_abs_cm": 2.1316282072803006e-14
+      },
+      "0.85": {
+        "D_h_inf_cm": 0.005684414280500505,
+        "D_h_rms_cm": 0.002309047189054667,
+        "D_theta_inf": 0.00002439358876414888,
+        "D_theta_rms": 0.000008095278187597767,
+        "D_storage_abs_cm": 2.842170943040401e-14
+      },
+      "0.96": {
+        "D_h_inf_cm": 0.07386357920248865,
+        "D_h_rms_cm": 0.019122530959872566,
+        "D_theta_inf": 0.00012274135237608786,
+        "D_theta_rms": 0.000035749599085978165,
+        "D_storage_abs_cm": 2.842170943040401e-14
+      }
+    },
+    "case_qualified_if": "All three routes are valid; both fine endpoint comparisons pass every frozen metric; representation-bound runtime check passes.",
+    "case_replacement_allowed": false,
+    "stability_budget_change_allowed": false
+  },
+  "outcome_policy": {
+    "execute_all_36_cases": true,
+    "expected_qualified_count_is_not_a_CI_pass_condition": true,
+    "if_policy_restores_routes": "Report exact route restoration and casewise REF-HIGH qualification. Do not describe restored cases as independent holdout evidence.",
+    "if_policy_does_not_restore_routes": "Retain unresolved cases. Do not enlarge the representation bound or add an empirical factor.",
+    "if_policy_neutrality_fails": "Policy is not qualified for REF-HIGH even if route validity improves."
+  },
+  "firewalls": {
+    "rossfast_numerical_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "timing_allowed": false,
+    "production_tolerance_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "P2E20_reclassification_allowed": false,
+    "D3_residual_fitting_allowed": false,
+    "case_removal_allowed": false
+  },
+  "nonclaims": [
+    "P2E21 does not alter production Reference tolerances.",
+    "P2E21 does not establish RossFast speedup or equal-error performance.",
+    "P2E21 is not an independent confirmation of P2E20 because the same Reference cases are reused.",
+    "The representation bound is a research numerical-policy construct for REF-HIGH, not an observational or physical error bound."
+  ],
+  "verdict": "PREREGISTERED_REPRESENTATION_BOUNDED_REF_HIGH_QUALIFICATION_READY"
+}
