@@ -9,7 +9,7 @@
     "ADMIT",
     "CLOSE"
   ],
-  "phase": "CANONICAL_RECONCILED_ADMISSION_READY",
+  "phase": "FINAL_ADMISSION_RECONCILED",
   "branch": "work/ppa-wu01-production-application-bootstrap",
   "canonical_base": "f7bd4d470d14bdedcbe60ef2b674fce4f1575e9c",
   "objective": "Create one authoritative Fortran/FMR-owned typed production bootstrap that can run an admitted standalone Reference Richards profile and materialize F-GC49D contexts from the same persistent owner, without qualification fixtures, new physics or legacy parsing.",
@@ -75,7 +75,7 @@
     ]
   },
   "verdict": "QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION",
-  "next_permitted_action": "Require final PPA-WU01 owner qualification, documentation and canonical qualification on the reconciled admission head, then merge PR #306 if mergeable and no new overlapping canonical drift exists.",
+  "next_permitted_action": "Require final PPA-WU01 owner qualification, documentation and F-CI canonical qualification on the reconciled PR #306 head. If all pass and canonical has no overlapping drift, merge PR #306 and record canonical closure.",
   "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
   "repairs": [
     {
@@ -94,10 +94,18 @@
   },
   "admission_evidence_head": "6c7d1baa68c6ea48f2da16804e3d1b6320445172",
   "canonical_reconciliation": {
-    "canonical_head": "79bc0b03398d762112542791c967646a8dc2c37a",
-    "reconciliation_commit": "b93f2e90fb4ad4525c68ee2b7859c38b8bcecb07",
+    "canonical_head": "e7c5662a362455d34b0b43c3a1832bcda31777c2",
+    "reconciliation_commit": "f30d3f5e05bb9a8cc55740862a33d69ea5c6b208",
     "overlap": "NONE",
-    "canonical_delta_scope": "PUB-GC publication documentation/evidence only",
-    "disposition": "Two-parent reconciliation; WU01 production/test/audit blobs unchanged."
+    "canonical_delta_scope": "Governance-only F-SI39 moving-preservation repair from PR #308; no WU01 production/test/audit overlap.",
+    "prerequisite_repair": {
+      "pr": 308,
+      "merge_commit": "e7c5662a362455d34b0b43c3a1832bcda31777c2",
+      "canonical_qualification_run": 35367229074,
+      "conclusion": "success",
+      "repaired_gate": "current-restricted-canonical-preservation",
+      "production_mutation": "NONE"
+    },
+    "disposition": "Two-parent reconciliation; WU01 production/test/audit blobs preserved exactly."
   }
 }
