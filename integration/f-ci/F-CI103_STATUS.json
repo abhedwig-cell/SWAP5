@@ -4,8 +4,8 @@
   "capability": "F-GC36",
   "title": "Live MODFLOW6 F-GC34 Bridge Canonical Admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "aadde02fc35e7bdaddb1604c6f8a7284f43db813",
@@ -59,7 +59,7 @@
     "irrigation",
     "performance/scaling"
   ],
-  "next_permitted_action": "Qualify this exact F-CI103 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "next_permitted_action": "Qualify this metadata-only F-GC36 admission/closeout head with F-CI103. If green, record final closeout-gate evidence, requalify final status head, then non-force fast-forward canonical to the closed state.",
   "admission_gate": {
     "qualified_head": "2f8a647890bb1b8e154693916153e305aeb43398",
     "workflow_run": 35295615586,
@@ -77,5 +77,12 @@
       "FCI103_OWNER_LIVE_REPLAY",
       "FCI103_INDEPENDENT_LIVE_REPLAY"
     ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "3b28d4424b8089401db34f79ef5cb4246c791e48",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35295711477,
+    "exact_status_head_job": 105447704794,
+    "exact_status_head_conclusion": "success"
   }
 }

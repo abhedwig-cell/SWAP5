@@ -16,6 +16,8 @@ on:
       - 'tests/fci/run_fci103_fgc36_live_bridge_admission.sh'
       - '.github/workflows/f-ci103-fgc36-live-bridge-admission.yml'
       - 'integration/f-ci/F-CI103_STATUS.json'
+      - 'integration/f-gc/F-GC36_CANONICAL_ADMISSION.json'
+      - 'integration/f-gc/F-GC36_CLOSEOUT.json'
   workflow_dispatch:
 
 permissions:

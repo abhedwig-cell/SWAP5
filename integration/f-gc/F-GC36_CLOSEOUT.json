@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC36",
+  "title": "Live MODFLOW6 F-GC34 Bridge — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "canonical_admission": {
+    "production_admission_head": "3b28d4424b8089401db34f79ef5cb4246c791e48",
+    "preimage": "aadde02fc35e7bdaddb1604c6f8a7284f43db813",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "historical F-GC36 production bridge blobs were rematerialized byte-identically from canonical after F-GC34 and F-GC35 closeout"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "8d6f723d4de9b3cc47bb5012b67237aa7fc8febb",
+      "exact_head_run": 35295173564,
+      "exact_head_job": 105446133349,
+      "result": "official MODFLOW6 6.8.0 single-slot live bridge qualification passed"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ110",
+      "final_status_head": "ab2093ba1e2efe70e4bce17e74289f400d0ecfbd",
+      "exact_head_run": 35295373589,
+      "exact_head_job": 105446725154,
+      "result": "independent official MODFLOW6 6.8.0 two-slot 1x4 fixture and 2x2 analytical closure passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI103",
+      "production_admission_head": "3b28d4424b8089401db34f79ef5cb4246c791e48",
+      "initial_gate_run": 35295615586,
+      "exact_status_head_run": 35295711477,
+      "result": "exact two-production-adapter postimage replayed both live qualifications and was non-force fast-forwarded to canonical"
+    }
+  },
+  "admitted_capability": [
+    "real F-GC34 Fortran C-ABI publication bridge",
+    "real ctypes marshalling into live MODFLOW6 API package arrays",
+    "live MODFLOW6 6.8.0 consumption of NODELIST/HCOF/RHS/NBOUND",
+    "F-GC35 pointer reacquisition after prepare_time_step",
+    "externally owned MODFLOW solve lifecycle with analytical head and sign closure"
+  ],
+  "preserved_limits": [
+    "no solve lifecycle ownership in production bridge adapters",
+    "no predictor/corrector ownership",
+    "no prepared-solve iterative coupling",
+    "no Ribasim or irrigation",
+    "no performance/scaling claim"
+  ],
+  "next_permitted_action": "After closeout qualification, rematerialize F-GC38 prepared-solve iterative backend on current canonical. Keep predictor/corrector ownership in the internal SWAP5-MODFLOW coupling service below iMOD Coupler."
+}
