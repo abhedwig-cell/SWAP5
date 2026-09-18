@@ -3,28 +3,93 @@
   "capability": "F-GC37",
   "title": "Live MODFLOW6 Outer-Iteration Host",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_OUTER_ITERATION_HOST_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_OUTER_ITERATION_HOST",
   "source_branch": {
     "branch": "work/f-gc36-live-modflow6-fgc34-bridge",
     "head": "b07d2eb72336e41dc92ed6fc1d0ae072cf9f23b8",
-    "f_gc36_verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE",
-    "checkpoint_run": 35288709270,
-    "checkpoint_conclusion": "success"
+    "f_gc36_verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE"
   },
-  "canonical_at_reconcile": {
+  "work_branch": {
+    "branch": "work/f-gc37-live-modflow6-outer-iteration-host",
+    "design_commit": "1ac6a5a905ea6d27ab7a34f286a01a09d096db98",
+    "implementation_commit": "20fc29ed6a46c49f44e0734870f1087139fe9ac7",
+    "qualified_head_before_checkpoint_metadata": "0c0aa3cebebe387b36853f32beb990000f3a48bc"
+  },
+  "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
-    "head": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
-    "assessment": "Canonical advanced in unrelated PUB-P2E10 work after F-GC36; F-GC37 is based on the immutable qualified F-GC36 head and will recheck relevant dependency deltas before qualification."
+    "head": "d517088cdc1cd82904b37648d6556dc79d57a641",
+    "delta_assessment": "Canonical movement after the initial F-GC37 reconcile contains only PUB-ME D6 workflow, publication documentation and publication tests. No src/ production dependency changed."
   },
-  "external_lifecycle_finding": {
-    "modflow6_release": "6.8.0",
-    "modflow6_master_commit": "1c87097e8436ea72b9e2917a6114205b0a194619",
-    "xmipy_commit": "9769f8cd4bc6153c71bcc360f602a931b102d902",
-    "finding": "MODFLOW6 XMI exposes prepare_time_step, prepare_solve, repeated solve, finalize_solve and finalize_time_step, but no qualified timestep checkpoint/rollback/restore API.",
-    "decision": "Do not implement live MODFLOW as groundwater_preparable_exchange_service_t. Use one in-place prepared solve and update F-GC34 terms between solve iterations."
+  "external_dependencies": {
+    "modflow6": {
+      "release": "6.8.0",
+      "asset": "mf6.8.0_linux.zip",
+      "sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e"
+    },
+    "xmipy": {
+      "repository": "Deltares/xmipy",
+      "commit": "9769f8cd4bc6153c71bcc360f602a931b102d902"
+    },
+    "flopy": {
+      "repository": "modflowpy/flopy",
+      "commit": "1a783da6582f8203190a8d6b1d7a60659022afdb"
+    }
   },
-  "planned_changes": [
+  "qualified_contract": [
+    "live MODFLOW6 6.8.0 may remain inside one prepare_solve/finalize_solve lifecycle while F-GC34 API-package terms are republished between solve calls",
+    "initial live package publication remains owned by the qualified F-GC35 publication window",
+    "outer-iteration republication reuses the same F-GC35 generation and package views and performs no pointer or address reacquisition",
+    "all package writes continue to pass through the real F-GC34 publisher",
+    "coupled convergence requires both MODFLOW solve convergence and bounded monitored-head change",
+    "solve_candidate finalizes the numerical solve but does not finalize the MODFLOW timestep",
+    "commit_candidate alone owns finalize_time_step for the qualified smoke lifecycle",
+    "bounded nonconvergence does not finalize the solve or timestep and permanently marks that host/kernel instance as requiring reinitialization",
+    "live MODFLOW rollback is not claimed or emulated"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC37 live MODFLOW6 outer iteration host",
+    "green_run": 35289635676,
+    "green_job": 105429464324,
+    "green_head": "0c0aa3cebebe387b36853f32beb990000f3a48bc",
+    "conclusion": "success",
+    "successful_case": {
+      "publication_count": 5,
+      "solve_count": 5,
+      "final_head_m": 0.5047673159062819,
+      "analytic_head_m": 0.5047673160243038,
+      "single_prepare_solve": true,
+      "same_xmi_generation": true,
+      "candidate_before_timestep_commit": true,
+      "explicit_timestep_commit": true
+    },
+    "fail_closed_case": {
+      "max_iterations": 1,
+      "verdict": "NOT_CONVERGED",
+      "finalize_solve_calls": 0,
+      "finalize_time_step_calls": 0,
+      "requires_reinitialize": true,
+      "subsequent_commit_rejected": true
+    },
+    "pass_markers": [
+      "FGC37_NO_FAKE_MODFLOW_ROLLBACK",
+      "FGC37_ITERATION_REPUBLISH_NO_POINTER_REACQUISITION",
+      "FGC37_NO_RIBASIM_OR_SWAP_COMMIT_OWNERSHIP",
+      "FGC37_MODFLOW680_ASSET_SHA256",
+      "FGC37_REAL_FGC34_SHARED_BRIDGE",
+      "FGC37_SINGLE_PREPARED_SOLVE_LIFECYCLE",
+      "FGC37_REPEATED_REAL_FGC34_PUBLICATION",
+      "FGC37_SAME_XMI_GENERATION",
+      "FGC37_NONLINEAR_ANALYTICAL_HEAD_CLOSURE",
+      "FGC37_CANDIDATE_BEFORE_TIMESTEP_COMMIT",
+      "FGC37_EXPLICIT_TIMESTEP_COMMIT",
+      "FGC37_NONCONVERGENCE_FAIL_CLOSED",
+      "FGC37_FAILED_PREPARED_SOLVE_REQUIRES_REINITIALIZATION",
+      "FGC37_FAILED_SOLVE_NO_TIMESTEP_PUBLICATION",
+      "FGC37_LIVE_MODFLOW6_OUTER_ITERATION_GATE"
+    ]
+  },
+  "changes": [
     "docs/integration/F-GC37_LIVE_MODFLOW6_OUTER_ITERATION_HOST.md",
     "src/adapter/modflow6_outer_iteration_host.py",
     "tests/fgc/test_fgc37_live_modflow6_outer_iteration.py",
@@ -32,6 +97,27 @@
     ".github/workflows/f-gc37-live-modflow6-outer-iteration.yml",
     "integration/f-gc/F-GC37_STATUS.json"
   ],
+  "evidence_boundary": {
+    "qualified": [
+      "one real MODFLOW6 prepared solve with repeated external F-GC34 package updates",
+      "repeated solve calls after externally changing HCOF/RHS",
+      "same-generation live XMI package use",
+      "nonlinear head convergence against an analytic oracle",
+      "separate MODFLOW candidate and timestep-commit phases",
+      "live bounded nonconvergence fail-closed behavior"
+    ],
+    "not_yet_qualified": [
+      "real SWAP5 response provider bound to the host",
+      "same accepted SWAP origin across live MODFLOW outer iterations",
+      "live F-GC30/F-GC31/F-GC33 production responses generated from real SWAP candidates inside this host",
+      "atomic cross-kernel SWAP5-MODFLOW commit",
+      "MODFLOW rollback after a converged prepared candidate",
+      "multi-cell or N:1 live coupled execution",
+      "Ribasim",
+      "irrigation",
+      "performance/scaling"
+    ]
+  },
   "exclusions": [
     "real SWAP trial provider",
     "SWAP commit",
@@ -42,5 +128,5 @@
     "active-drainage tangent expansion",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement the additive live MODFLOW outer-iteration host and qualify repeated real F-GC34 publication within one prepared MODFLOW6 solve."
+  "next_permitted_action": "Create a separately bounded real SWAP response-provider binding that reruns every predictor/corrector response from one immutable accepted SWAP origin and feeds the qualified F-GC37 host. Preserve the F-GC37 MODFLOW lifecycle unchanged."
 }

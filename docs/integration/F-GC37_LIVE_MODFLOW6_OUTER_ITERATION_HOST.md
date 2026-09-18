@@ -2,7 +2,7 @@
 
 ## Status
 
-**DESIGN / IMPLEMENTATION AUTHORITY NOT YET QUALIFIED**
+**OWNER-QUALIFIED LIVE MODFLOW6 OUTER-ITERATION HOST**
 
 F-GC37 adds the smallest live host layer needed after F-GC36. It does not yet claim a complete coupled SWAP5-MODFLOW6 transaction.
 
@@ -246,3 +246,59 @@ If F-GC37 qualifies, the next workunit may bind a real non-committing SWAP
 candidate/response provider to this host. That workunit must preserve one
 accepted SWAP origin across all MODFLOW outer iterations and must address the
 remaining cross-kernel publication/abort boundary explicitly.
+
+
+## 11. Qualification result
+
+Qualified branch head before checkpoint metadata:
+
+```text
+0c0aa3cebebe387b36853f32beb990000f3a48bc
+```
+
+Owner qualification workflow:
+
+```text
+run 35289635676
+job 105429464324
+conclusion success
+```
+
+The successful live nonlinear case executed:
+
+```text
+F-GC34 publication count = 5
+MODFLOW solve count       = 5
+final head                = 0.5047673159062819 m
+analytic head             = 0.5047673160243038 m
+```
+
+All five publications occurred within one prepared MODFLOW solve and one
+unchanged F-GC35 XMI generation.
+
+The explicit candidate/commit boundary also passed: `solve_candidate`
+performed `finalize_solve` but did not call `finalize_time_step`;
+`commit_candidate` then finalized exactly one timestep.
+
+A second live case deliberately bounded the host to one solve iteration. That
+case returned nonconvergence, performed neither `finalize_solve` nor
+`finalize_time_step`, rejected a subsequent commit request and marked the
+host as requiring full kernel reinitialization.
+
+Canonical reconciliation at qualification:
+
+```text
+integration/f-ci-canonical
+d517088cdc1cd82904b37648d6556dc79d57a641
+```
+
+The canonical movement after the initial F-GC37 reconcile contained only
+PUB-ME D6 workflow, publication documentation and publication tests. No
+F-GC30 through F-GC37 production dependency source changed.
+
+### Qualification boundary
+
+F-GC37 proves the live MODFLOW host lifecycle and iterative package
+republication. It still does not prove that a real SWAP5 candidate provider can
+be invoked from the same accepted SWAP origin for every MODFLOW outer
+iteration. That remains the next bounded workunit.
