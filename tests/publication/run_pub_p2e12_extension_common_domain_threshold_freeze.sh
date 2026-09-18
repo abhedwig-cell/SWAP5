@@ -24,7 +24,7 @@ P2E11D2_RESULT_BLOB=25a5723cd680936821ccbf2e1adf0db31ef1b960
 [[ -f "$PREREG" ]] || fail 'missing preregistration'
 grep -Fq '"phase": "PREREGISTERED_REFERENCE_ONLY_COMMON_DOMAIN_THRESHOLD_FREEZE"' "$PREREG" || fail 'preregistration phase missing'
 grep -Fq '"rossfast_numerical_solver_execution_allowed": false' "$PREREG" || fail 'RossFast execution firewall missing'
-grep -Fq '"physical_case_removal_allowed": false' "$PREREG" || fail 'physical-case retention firewall missing'
+grep -Fq '"case_removal_allowed": false' "$PREREG" || fail 'physical-case retention firewall missing'
 grep -Fq '"reference_tolerance_change_allowed": false' "$PREREG" || fail 'Reference tolerance firewall missing'
 grep -Fq '"rossfast_extension_discrepancy_inspection_allowed": false' "$PREREG" || fail 'RossFast discrepancy firewall missing'
 
