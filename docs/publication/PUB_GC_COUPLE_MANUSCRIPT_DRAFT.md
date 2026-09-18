@@ -800,7 +800,7 @@ The corresponding change in groundwater head was nevertheless extremely small. T
 5.55e-9 m,
 ```
 
-while the largest change in SWAP interface rate was `1.92e-14 m/s`. The current low-flux qualification regime therefore demonstrates a distinction between strict numerical interface consistency and hydrologically material state correction. Strong iteration is effective at enforcing the coupled interface equation, but this particular near-equilibrium fixture is not evidence that the resulting groundwater-head correction is practically important.
+while the largest change in SWAP interface rate was `1.92e-14 m/s`. Even the largest absolute loose residual, `2.80e-12 m/s` over the `1e-2 day` window, corresponds to only about `2.42e-9 m` of unclosed water depth over that window (`2.42e-6 L` for the one-square-metre fixture). The current low-flux qualification regime therefore demonstrates a distinction between strict numerical interface consistency and hydrologically material state correction. Strong iteration is effective at enforcing the coupled interface equation, but this particular near-equilibrium fixture is not evidence that the resulting groundwater-head correction is practically important. The fixed `1e-15 m/s` criterion should consequently be interpreted here as a qualification tolerance rather than an operational hydrological-error threshold.
 
 The conductivity trend should not be generalized as a physical statement that larger aquifer conductivity implies stronger vadose-zone–groundwater coupling. Coupling strength depends on the product of the groundwater and vadose-zone response operators. The derivative structure is examined separately in the response-characterization work.
 
