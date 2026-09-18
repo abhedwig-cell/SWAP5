@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | Upper request-side top-flux boundary: P2E16/P2E17 found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed. E2X then prospectively extended the unobserved surface to the lower request-side top boundary and both bottom-boundary sides: 972 cases, 0 route mismatches, 633/633 interpretable Stage-A-authorized pairs admissible, with 2 authorized cases Reference-unresolved. Proceed to E3 REF-HIGH, not more fixed-flux boundary probing. |
-| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | READY_FOR_REFERENCE_CONSTRUCTION | E1/E2 scientific domain evidence is now available. Next freeze a reduced representative case subset plus a candidate-blind `REF-HIGH` refinement/stability protocol before any timing or equal-error comparison. |
+| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | P2E18 final six-level candidate-blind REF-HIGH construction is blocked before endpoint stability: 0/36 cases remain Reference-route valid at 8/16/32 substeps, all invalid routes returning `legacy-reference-retry`. Next run a separate Reference-only timestep-invariant convergence-scaling diagnostic; RossFast timing remains forbidden. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
@@ -47,6 +47,17 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-GC-E7` realistic demonstration | PUB-GC | supporting | BLOCKED | controlled GC-E1..E5 method evidence must exist first |
 | `PUB-RC` response-assisted matrix | PUB-RC | future primary | BLOCKED | SWAP-side whole-window response / interface derivative method not yet established |
 | `PUB-SG` heterogeneity matrix | PUB-SG | conditional future | BLOCKED | only start after PUB-GC coupling/reference basis is mature |
+
+### 2026-09-18 — PUB-SQ REF-HIGH construction blocked before endpoint stability
+
+- P2E18 branch: `work/pub-p2e18-ref-high-construction`;
+- final preregistration authority: `8886758ff46878a682a0ab9f57fd58a347b1f49e`;
+- qualified workflow: `35292703945`, job `105438767487`, O0/O2-identical output `sha256:fabc9978a010ae242d94a933d14ad87da1039166f5fa7cf9701bfa878f5842b1`;
+- route validity over the frozen refinement ladder: 36/36 at 1 substep, 29/36 at 2, 7/36 at 4, and 0/36 at 8, 16 and 32;
+- all observed invalid routes fail first as `STATUS_NOT_CONVERGED` / `legacy-reference-retry`;
+- no case reaches both preregistered fine endpoint comparisons, so this is not evidence that the 32-substep endpoint itself is temporally unstable;
+- RossFast, performance timing and equal-error comparison remain unexecuted;
+- next permitted action: separate Reference-only diagnostic of timestep-invariant integrated-balance convergence scaling. P2E18 itself is frozen and is not retuned.
 
 ## Immediate executable tranche
 
