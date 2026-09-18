@@ -48,6 +48,16 @@ E7 closes RQ5 negatively but validly: the prospectively selected Hupsel days req
 
 E8 remains deferred and is not required for the current central claims. A future prescribed-head capability that admits active drainage could support a separate prospective follow-up, but it must not retroactively replace E7.
 
+## Journal positioning
+
+Primary target: **Geoscientific Model Development (GMD)** as a **Development and technical paper**.
+
+Secondary target: **Environmental Modelling & Software**.
+
+The target-journal rationale and GMD-specific submission gates are frozen in `PUB_GC_JOURNAL_POSITIONING.md`. Journal positioning does not broaden the E1–E7 claim set.
+
+The main remaining submission blocker is archival rather than scientific: GMD requires a persistent public archive with a unique identifier for the exact SWAP5 version described in the paper. The live GitHub repository remains the development location but is not sufficient by itself for that requirement.
+
 ## What remains editorial / submission-specific
 
 These items do not require new science:
