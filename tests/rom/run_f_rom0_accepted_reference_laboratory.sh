@@ -28,7 +28,7 @@ git merge-base --is-ancestor "$BASE" "$CANDIDATE" || fail "ROM-0 base is not anc
 git diff --quiet "$BASE...$CANDIDATE" -- src reference || fail "ROM-0 branch mutated src/reference"
 echo "F_ROM0_PRODUCTION_REFERENCE_DELTA=NONE"
 
-python3 - "$PREREG" "$SUPPLEMENT" <<'PY'
+python3 - "$PREREG" "$SUPPLEMENT" "$PROBE_CORRECTION" <<'PY'
 import json,sys
 p=json.load(open(sys.argv[1]))
 s=json.load(open(sys.argv[2]))
