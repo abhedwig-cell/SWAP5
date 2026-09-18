@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-SI39",
+  "title": "B1.11 near-saturated KSATEXM constitutive preservation",
+  "protocol": "RECONCILE -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
+  "base": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "trigger": {
+    "source": "M1-C3 exact six-interval Hupsel replay",
+    "finding": "Current typed default-MvG provider reproduces theta but misses the legacy near-saturated KSATEXM conductivity extension. Enabling only the exact B1.11 formula makes all six frozen solver heads/thetas/ponding/top/bottom fluxes exactly equal.",
+    "before_max_head_error_cm": 1.504150813995352,
+    "after_max_head_error_cm": 0
+  },
+  "legacy_authority": {
+    "source_file": "MOD_MvG_functions.f90",
+    "formula": "if fluseksatexm(node) AND relsat > relsatthr(node) AND swmacro==0: term=(relsat-relsatthr)/(1-relsatthr); K=term*ksatexm+(1-term)*ksatthr",
+    "activation": "fluseksatexm(node) is set when cofgen(10,node) > cofgen(3,node)",
+    "Hupsel_nodes": 34,
+    "Hupsel_all_nodes_extension_active": true,
+    "representative_lower_layer": {
+      "ksatfit": 22.76176,
+      "ksatexm": 227.6176,
+      "relsatthr": 0.9981816467911503,
+      "ksatthr": 15.814441314772257
+    }
+  },
+  "implementation_contract": {
+    "default_behavior": "KSATEXM extension remains disabled unless explicitly requested; all previously admitted provider routes therefore retain exact postimages/semantics.",
+    "enabled_behavior": "Per-node legacy activation is still cofgen(10)>cofgen(3); no new parameterization or fitted physics.",
+    "carrier": "Add one explicit boolean capability flag to typed B1.10 hydraulic parameters / serialized FMR physical parameters.",
+    "no_changes": [
+      "transaction",
+      "retry",
+      "timestep",
+      "tolerances",
+      "solver equations outside constitutive K(h)",
+      "RossFast kernel",
+      "legacy source"
+    ]
+  },
+  "pass_conditions": [
+    "default-disabled provider preserves existing K behavior",
+    "enabled positive-head Hupsel node returns exact ksatexm",
+    "enabled near-saturated interpolation matches frozen B1.11 oracle",
+    "below-threshold enabled route equals prior default MvG",
+    "all six M1-C3 frozen HeadCalc solver snapshots replay exactly for h/theta/pond/qtop/qbot",
+    "O0/O2 byte-identical qualification output",
+    "independent qualification with no production mutation"
+  ]
+}
