@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.rom1ar1d3.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1-D3",
+  "title": "Discovery-only strict-first local-plus-total fallback qualification",
+  "execution": {
+    "workflow_run": 35378923886,
+    "workflow_job": 105710184991,
+    "executed_head": "e582c6ca3471388cd90de746f0ff281721690950",
+    "artifact_id": 10561017384,
+    "artifact_digest": "sha256:16e3991893874bd42a8189880befa78242e084542be19fe86a733895cf745e71",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "discovery": {
+    "history_count": 8,
+    "accepted_state_count": 512,
+    "heldout_executed": false,
+    "B14_executed": false
+  },
+  "fallback": {
+    "count": 37,
+    "total_only_count": 36,
+    "local_balance_count": 1,
+    "D08_step34_local_fallback_observed": true,
+    "semantics_pass": true,
+    "count_consistent": true,
+    "total_only_compartment_tolerance_unchanged": true,
+    "local_balance_compartment_allowance_cm": 1.6e-15,
+    "failed_residual_used_to_choose_bounds": false,
+    "dt_subdivision_used": false
+  },
+  "mass": {
+    "hard_gate_cm": 1e-12,
+    "max_abs_committed_mass_residual_cm": 1.492772919164942e-14,
+    "pass": true
+  },
+  "decision": "ROM1AR1D3_DISCOVERY_LOCAL_PLUS_TOTAL_FALLBACK_QUALIFIED",
+  "interpretation": "The classification-dependent strict-first research Reference policy completes all eight frozen discovery histories without exposing held-out histories or B14. Existing total-only fallback semantics remain unchanged; the single local-balance fallback is D08 step34 and uses the independently frozen 1.6e-15 cm integrated compartment allowance.",
+  "production_reference_admitted": false,
+  "rom1b_authorized": false
+}
