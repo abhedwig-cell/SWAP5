@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.f-ross20.production-adaptive-certificate-result.v1",
+  "workunit": "F-ROSS20",
+  "phase": "QUALIFICATION_BLOCKED",
+  "branch": "work/f-ross20-production-adaptive-certificate",
+  "evaluated_head": "0914ab058f2ac3843716ff560fe8bf33cf7a6516",
+  "workflow_run": 35313953706,
+  "production_mutation": {
+    "kernel_blob": "647afbaab5e792ba4fd51a19a79fe26d44f409b1",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "provider_preservation": {
+    "f_ross13_36_material_provider_envelope": "PASS",
+    "o0_o2_semantic_preservation": "PASS",
+    "output_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311"
+  },
+  "all_material_direct_matrix": {
+    "case_count": 216,
+    "route_valid_count": 216,
+    "mass_pass_count": 216,
+    "work_contract_pass_count": 216,
+    "retry_contract_pass_count": 216,
+    "temporal_accepted_count": 214,
+    "fast_accept_count": 212,
+    "fallback_count": 4,
+    "fallback_by_material": {
+      "B05": 2,
+      "O01": 2
+    },
+    "fallback_by_effective_saturation_index": {
+      "3": 4
+    },
+    "fallback_by_forcing": {
+      "DRYING": 2,
+      "NOMINAL": 2
+    },
+    "mean_linear_solves": 6.222222222222222,
+    "worst_temporal_indicator": 1.1742226334153705,
+    "worst_mass_residual_abs_cm": 4.8269770215183063e-14,
+    "temporal_failures": [
+      {
+        "case": 29,
+        "material": "B05",
+        "effective_saturation": 0.98,
+        "forcing": "DRYING",
+        "linear_solves": 18,
+        "temporal_indicator": 1.1742226334153705
+      },
+      {
+        "case": 30,
+        "material": "B05",
+        "effective_saturation": 0.98,
+        "forcing": "NOMINAL",
+        "linear_solves": 18,
+        "temporal_indicator": 1.1198395477869125
+      }
+    ],
+    "gate": "FAIL"
+  },
+  "downstream_gates_not_executed_due_fail_closed_order": [
+    "production_vs_F-ROSS19 research identity replay",
+    "F-ROSS20 shared-host performance replay"
+  ],
+  "adjudication": {
+    "production_admitted": false,
+    "exact_f_ross19_k2_to_k4_promotion_rejected": true,
+    "reason": "The production envelope exposes two B05 Se=0.98 cases whose K4 fallback temporal indicators remain above the transaction acceptance threshold of 1.0.",
+    "no_route_mass_or_retry_defect_observed": true,
+    "no_gate_retuning_permitted": true
+  },
+  "next_permitted_action": "Open a separate research-only workunit for a frozen K2-first, K4-second, K8-final certificate ladder. Each attempt must restart from the original base state; F-ROSS20 must not be repaired in place."
+}
