@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.publication.p2e16d1-reference-fixed-step-adjudication.v1",
+  "workunit": "PUB-P2E16D1",
+  "phase": "POST_PRIMARY_REFERENCE_ONLY_DIAGNOSIS_PREREGISTERED",
+  "publication_owner": "PUB-SQ",
+  "parent_result": {
+    "path": "docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_RESULT.json",
+    "commit": "511d4f5250ab9966518abeae99c6bc2cae3f082d",
+    "blob": "faff8f4c961522ebe9ad11902c5cc0d2313734ff"
+  },
+  "purpose": "Diagnose why five fixed-step Reference requests failed the P2E16B route-validity gate even though their Stage-A coarse/refined Reference comparisons were valid. This is post-primary supporting adjudication and cannot change the RossFast boundary result, P2E14 thresholds, Stage-A authorization or P2E16B classifications.",
+  "cases": [
+    {"case":576,"material":"B16","Se":0.96,"axis":"BOTTOM","rho":1.05,"P2E16B_role":"OUTSIDE_REFERENCE_UNRESOLVED"},
+    {"case":612,"material":"B17","Se":0.96,"axis":"BOTTOM","rho":1.05,"P2E16B_role":"OUTSIDE_REFERENCE_UNRESOLVED"},
+    {"case":1220,"material":"O16","Se":0.96,"axis":"BOTTOM","rho":-1.0,"P2E16B_role":"AUTHORIZED_BOUNDARY_REFERENCE_UNRESOLVED"},
+    {"case":1248,"material":"O17","Se":0.85,"axis":"BOTTOM","rho":1.05,"P2E16B_role":"OUTSIDE_REFERENCE_UNRESOLVED"},
+    {"case":1257,"material":"O17","Se":0.96,"axis":"BOTTOM","rho":-0.95,"P2E16B_role":"AUTHORIZED_INSIDE_REFERENCE_UNRESOLVED"}
+  ],
+  "diagnostic_scope": {
+    "solver": "Reference only",
+    "step_duration_day": 0.0016,
+    "request_construction": "identical to frozen P2E16B request construction",
+    "fields_to_record": [
+      "solver_status",
+      "route",
+      "integrated_mass_residual_availability_and_value",
+      "native_rate_residual_availability_and_value",
+      "candidate_state_allocation_and_size",
+      "candidate_pressure_head_min_max",
+      "candidate_water_content_min_max",
+      "state_domain_gate",
+      "prescribed_flux_identity_gate",
+      "final_reference_route_validity_gate"
+    ]
+  },
+  "forbidden": [
+    "RossFast execution",
+    "threshold widening",
+    "rho change",
+    "alternate case substitution",
+    "production source mutation",
+    "reclassification of the already observed P2E16B route boundary",
+    "retroactive conversion of diagnosis into prospective primary evidence"
+  ],
+  "decision_rule": "Classify each Reference invalidity by the first failed frozen route-validity predicate. If an implementation/harness predicate rather than the Reference numerical solve caused invalidity, record it and do not silently repair the primary result. Any future recovery of cases 1220/1257 requires a separately preregistered Reference-only resolution step.",
+  "next_permitted_action": "Implement and execute one Reference-only diagnostic harness for exactly these five frozen requests."
+}
