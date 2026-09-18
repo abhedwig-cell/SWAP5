@@ -66,6 +66,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_groundwater_coupling_contract.f90
+  src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
   src/runtime/mod_groundwater_swap_transaction_participant.f90
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
