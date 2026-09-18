@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS17",
   "title": "RossFast transform-cache optimization",
-  "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "phase": "CLOSE",
+  "status": "QUALIFIED_BITWISE_NEUTRAL_MATERIAL_IMPROVEMENT__PENDING_PARENT_ADMISSION",
   "branch": "work/f-ross17-rossfast-transform-cache",
   "source_head": "79d30219d484acfadde0a22484ca6305a541d868",
   "production_mutation": {
@@ -11,17 +11,33 @@
     "baseline_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
     "candidate_blob": "2ad2a680e62744451d6763de48585f1bd45d3067"
   },
+  "qualification": {
+    "scientific": "PASS_ZERO_OBSERVED_DRIFT_36_OF_36",
+    "primary_run": 35295019847,
+    "exact_status_head_replay": 35295022624,
+    "baseline_vs_candidate_speedup_mean_primary": 1.2742806095757258,
+    "baseline_vs_candidate_speedup_mean_replay": 1.2801674013,
+    "candidate_vs_reference_cpu_ratio_primary": 2.278151026760164,
+    "candidate_vs_reference_cpu_ratio_replay": 2.27342012972,
+    "formal_performance_claim": false
+  },
   "algorithm_boundaries_preserved": {
     "certificate_internal_substeps": 8,
     "coarse_plus_two_half": true,
     "candidate_steps_per_solve": 24,
     "external_solver_contract": "unchanged"
   },
-  "qualification": {
-    "scientific": "pending",
-    "baseline_vs_candidate_performance": "pending",
-    "candidate_vs_reference_performance": "pending"
+  "parent_chain": {
+    "f_ross15": "qualified screening evidence, canonical admission unresolved",
+    "f_ross16": "qualified diagnostic evidence, canonical admission unresolved",
+    "known_blocker": "pre-existing F-CI96 serialized backend drift on canonical"
   },
-  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
-  "next_permitted_action": "Execute F-ROSS17 workflow; correct only implementation/test defects without changing preregistered scientific or performance thresholds."
+  "verdict": "QUALIFIED_PRODUCTION_CANDIDATE__NOT_YET_FASTER_THAN_REFERENCE",
+  "next_permitted_action": "Open a separate research-only successor for temporal-certificate workload reduction. Do not change F-ROSS17's 24-step semantics in-place.",
+  "exclusions": [
+    "NO_SUBSTEP_REDUCTION_IN_F_ROSS17",
+    "NO_CERTIFICATE_TOPOLOGY_CHANGE_IN_F_ROSS17",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST",
+    "NO_BROAD_SOLVER_REDESIGN"
+  ]
 }
