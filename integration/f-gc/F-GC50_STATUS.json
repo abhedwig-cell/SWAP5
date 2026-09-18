@@ -3,13 +3,13 @@
   "work_unit": "F-GC50",
   "title": "iMOD Coupler product integration",
   "protocol": "Bounded Execution Protocol",
-  "phase": "CLOSE_EXTERNAL_BLOCKER",
-  "state": "CLOSED_RECONCILED_EXTERNAL_BLOCKED",
+  "phase": "CLOSE_SINGLE_EXTERNAL_BLOCKER",
+  "state": "CLOSED_RECONCILED_SINGLE_EXTERNAL_BLOCKER",
   "source": {
-    "branch": "work/f-gc50-imod-coupler-product-integration",
+    "branch": "work/f-gc50-post-ppa-wu01-reconcile-20260918",
     "base": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
     "canonical_preimage": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
-    "reconciled_canonical": "22e352f331a5e998f3f16e4de6a7260b5a6a9ea1"
+    "reconciled_canonical": "39c6b3db987148d414752319a018abce645dd5c5"
   },
   "prerequisite": {
     "f_gc49": "CLOSED_CANONICAL_ADMITTED",
@@ -17,7 +17,13 @@
     "post_status_a_authority_branch": "work/current-state-groundwater-20260918",
     "post_status_a_authority_pr": "295",
     "post_status_a_authority_state": "CANONICAL_ADMITTED",
-    "post_status_a_authority_merge": "22e352f331a5e998f3f16e4de6a7260b5a6a9ea1"
+    "post_status_a_authority_merge": "22e352f331a5e998f3f16e4de6a7260b5a6a9ea1",
+    "ppa_wu01": "CANONICAL_ADMITTED_RESTRICTED_PRODUCTION_CLOSED",
+    "ppa_wu01_pr": 306,
+    "ppa_wu01_merge": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+    "m1": "CANONICAL_FORMAL_EXIT",
+    "m1_close_pr": 318,
+    "m1_close_merge": "39c6b3db987148d414752319a018abce645dd5c5"
   },
   "upstream_product": {
     "repository": "Deltares/imod_coupler",
@@ -30,21 +36,16 @@
     "Upstream DriverType currently contains metamod, ribamod and ribametamod only.",
     "Upstream get_driver is a hard-coded product registry and exposes no external entry-point/plugin mechanism.",
     "The actual MetaMod driver owns the coupled timestep lifecycle; F-GC50 must integrate at this product layer rather than duplicate it inside SWAP5.",
-    "F-GC49D Python runtime consumes a positive pre-existing opaque Fortran context handle.",
-    "F-GC49D production C ABI does not construct an application context from product configuration.",
-    "The F-GC49D fixture can create a test context but remains qualification-only and is ineligible for product bootstrap.",
-    "F-GC50 must reuse an admitted application/bootstrap owner, potentially the active M1-C3/F-APP line or another separately admitted typed bootstrap."
+    "F-GC49D Python runtime still consumes a positive pre-existing opaque Fortran context handle and therefore preserves Fortran/FMR state ownership.",
+    "PPA-WU01 is now canonically admitted and creates/owns the persistent Fortran/FMR application state, participant registry, mass ledgers and a per-window F-GC49D context for the restricted bottom_mode=5 groundwater profile.",
+    "PPA-WU01 does not parse iMOD Coupler product configuration and does not register an upstream product driver; those responsibilities remain product-integration work once an authorized upstream mutation route exists.",
+    "M1 is canonically closed and is not a remaining F-GC50 prerequisite."
   ],
   "blockers": [
     {
       "id": "FGC50-B1",
       "class": "EXTERNAL_UPSTREAM_PRODUCT_MUTATION",
-      "description": "Actual iMOD Coupler product registration requires an upstream source change, but the connected repository permission is read/pull only."
-    },
-    {
-      "id": "FGC50-B2",
-      "class": "MISSING_ADMITTED_SWAP5_PRODUCT_BOOTSTRAP",
-      "description": "No admitted production C/Python bootstrap currently creates the F-GC49D Fortran application context from product configuration; F-GC50 may not promote a qualification fixture or invent a second state owner."
+      "description": "Actual iMOD Coupler product registration requires an upstream source change, while the connected Deltares/imod_coupler repository permission remains read/pull only and upstream exposes no external driver plugin/entry-point route."
     }
   ],
   "exclusions": [
@@ -74,10 +75,12 @@
       "FGC50_FGC49D_REQUIRES_EXISTING_FORTRAN_CONTEXT=PASS",
       "FGC50_FGC49D_FIXTURE_REMAINS_QUALIFICATION_ONLY=PASS",
       "F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS"
-    ]
+    ],
+    "post_ppa_wu01_reconcile": "PENDING_CURRENT_BRANCH_QUALIFICATION",
+    "expected_new_oracle": "FGC50_PPA_WU01_PRODUCTION_BOOTSTRAP_RESOLVES_B2=PASS"
   },
-  "verdict": "BLOCKED_EXTERNAL_PREREQUISITES_CONFIRMED",
-  "next_permitted_action": "Resume product integration only when BOTH prerequisites exist: (1) a real authorized iMOD Coupler product mutation/extension route that can register the SWAP5 driver in the upstream product lifecycle, and (2) an admitted SWAP5 production application bootstrap that creates/owns the F-GC49D context without qualification fixtures or Python-owned SWAP state. Until then, do not implement a local get_driver imitation, monkeypatch, duplicate coupling loop, or F-GC49 Stage E.",
+  "verdict": "BLOCKED_ONLY_EXTERNAL_UPSTREAM_PRODUCT_MUTATION",
+  "next_permitted_action": "Resume F-GC50 implementation only when there is a real authorized iMOD Coupler upstream mutation/extension route. Then register the SWAP5 driver in the actual upstream product registry and map product configuration into the already-admitted PPA-WU01 groundwater bootstrap profile while reusing F-GC49C/F-GC49D and Modflow6PreparedSolveSession. Until upstream mutation authority exists, do not implement a local get_driver imitation, monkeypatch, duplicate coupling loop, Python-owned SWAP state, or F-GC49 Stage E.",
   "canonical_reconciliation": {
     "qualification_base": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
     "canonical_post_authority_refresh": "22e352f331a5e998f3f16e4de6a7260b5a6a9ea1",
@@ -95,10 +98,38 @@
     "disposition": "Post-qualification canonical drift is the admitted documentation-authority refresh only. The F-GC50 upstream contract test, runner, workflow and integration contract are transplanted byte-identically; qualification evidence remains valid."
   },
   "closeout": {
-    "action": "NO_PRODUCT_ADMISSION_EXTERNAL_BLOCKER_CHECKPOINT",
+    "action": "NO_PRODUCT_ADMISSION_SINGLE_EXTERNAL_BLOCKER",
     "production_source_changes": [],
     "synthetic_driver_created": false,
     "qualification_fixture_promoted": false,
-    "f_gc49_reopened": false
+    "python_state_owner_created": false,
+    "f_gc49_reopened": false,
+    "ppa_wu01_reopened": false
+  },
+  "resolved_blockers": [
+    {
+      "id": "FGC50-B2",
+      "class": "ADMITTED_SWAP5_PRODUCT_BOOTSTRAP",
+      "resolution": "RESOLVED_BY_PPA_WU01_CANONICAL_ADMISSION",
+      "authority": {
+        "status": "integration/audits/PPA_WU01_STATUS.json",
+        "production_source": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "pr": 306,
+        "merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+        "qualification_run": 35365440351,
+        "qualification_job": 105666642389
+      },
+      "scope": "Resolved only for the restricted admitted groundwater bootstrap profile: Reference Richards participant, bottom_mode=5, typed groundwater datum, Fortran/FMR-owned registry, ledgers and F-GC49D context materialization."
+    }
+  ],
+  "canonical_reconciliation_post_ppa_wu01": {
+    "canonical_head": "39c6b3db987148d414752319a018abce645dd5c5",
+    "ppa_wu01_canonical": true,
+    "m1_formally_closed": true,
+    "upstream_sha": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "upstream_permissions": "pull=true,push=false",
+    "upstream_driver_plugin_route": false,
+    "product_integration_implementation_permitted": false,
+    "reason": "The internal bootstrap prerequisite is resolved, but the only remaining required product mutation is external and unauthorized from the connected repository."
   }
 }
