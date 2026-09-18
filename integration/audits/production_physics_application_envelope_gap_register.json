@@ -949,7 +949,8 @@
         "B1.11 includes SWAP-001 macropore array-shape correction",
         "F-CI19/F-CI30 explicitly hold active macropore scope",
         "PPA-WU05 review run 35379607616: corrected B1.11 authority and migration dependency graph qualified",
-        "PPA-WU05-A repository recovery: F-PE16@f5e2a12f, F-PE15@f475e0e0 and F-SI15@fe5e55d5 recovered as corroborated ownership/scratch/fail-closed evidence"
+        "PPA-WU05-A repository recovery: F-PE16@f5e2a12f, F-PE15@f475e0e0 and F-SI15@fe5e55d5 recovered as corroborated ownership/scratch/fail-closed evidence",
+        "PPA-WU05-A canonical review-authority admission via PR #343 at 3736703b6a3b41941bfc7c57a336da3a4f3df999; final authority/docs/F-CI gates all PASS."
       ],
       "production_admission": "NONE",
       "production_reachable": "NO",
@@ -957,7 +958,8 @@
         "Corrected-reference preservation is not migration",
         "Exact B1.11 macropore/macrorate source bytes are not retained in the current Git tree",
         "F-PE16 seven-field state set is not final migration authority before exact source materialization",
-        "No production macropore implementation is authorized by PPA-WU05-A"
+        "No production macropore implementation is authorized by PPA-WU05-A",
+        "PPA-WU05-A is review authority only; production remains blocked until A1 exact source materialization/census."
       ],
       "scientific_risk": "HIGH",
       "use_relevance": "HIGH for structured soils",
@@ -1810,11 +1812,12 @@
       "id": "PPA-WU05-A",
       "title": "Macropore source/state/mass/transaction authority",
       "goal": "Freeze repository-authoritative macropore ownership, mass, restart and rollback invariants while distinguishing exact B1.11 identity from corroborated historical evidence.",
-      "status": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
+      "status": "CANONICAL_ADMITTED_PARTIAL_AUTHORITY_CLOSED_SOURCE_MATERIALIZATION_REQUIRED",
       "production_admission": "NONE_REVIEW_ONLY",
-      "exit": "PARTIAL: owner-level invariants and recovered repository evidence are frozen; exact B1.11 field/flux census remains blocked until byte-exact source materialization.",
+      "exit": "CLOSED AS REVIEW AUTHORITY: owner-level state/mass/restart/rollback invariants are canonical; exact field/flux census remains blocked until A1 byte-exact source materialization.",
       "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
-      "qualification": "PPA-WU05-A run 35398044562 PASS; Documentation 35398044520 PASS; F-CI canonical qualification 35398044469 all jobs PASS on the pre-evidence head."
+      "qualification": "Final admission: PPA-WU05-A 35399987601 PASS; parent WU05 35399987594 PASS; Documentation 35399987514 PASS; F-CI canonical 35399987540 PASS.",
+      "canonical_merge_commit": "3736703b6a3b41941bfc7c57a336da3a4f3df999"
     }
   ],
   "post_audit_updates": [
@@ -1896,6 +1899,21 @@
       "production_delta": "NONE",
       "reference_delta": "NONE",
       "effect": "Macropore owner-level state/mass/restart/rollback invariants and recoverable repository evidence are qualified. Exact B1.11 field/flux census and any production migration remain blocked on byte-exact source materialization."
+    },
+    {
+      "workunit": "PPA-WU05-A",
+      "state": "CANONICAL_ADMITTED_PARTIAL_AUTHORITY_CLOSED_SOURCE_MATERIALIZATION_REQUIRED",
+      "pull_request": 343,
+      "canonical_merge_commit": "3736703b6a3b41941bfc7c57a336da3a4f3df999",
+      "final_qualification": {
+        "authority_run": 35399987601,
+        "parent_wu05_run": 35399987594,
+        "documentation_run": 35399987514,
+        "canonical_run": 35399987540
+      },
+      "production_delta": "NONE",
+      "reference_delta": "NONE",
+      "effect": "Macropore owner-level source/state/mass/transaction review authority is canonical. Production macropore remains blocked until PPA-WU05-A1 exact source materialization and complete census."
     }
   ]
 }
