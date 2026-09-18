@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC42",
+  "title": "Live whole-window SWAP5-MODFLOW6 service materialization",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "OPEN_COMPOSITION_BOUNDARY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "4d50ca2676cf9404e62b182767686ab677921511"
+  },
+  "source": {
+    "branch": "work/f-gc42-live-whole-window-service",
+    "base": "4d50ca2676cf9404e62b182767686ab677921511"
+  },
+  "predecessors": [
+    "F-GC39 prepared-solve internal coupling-service contract",
+    "F-GC41 whole-window acceptance/retry"
+  ],
+  "goal": "Materialize one executable service composition that carries an F-GC39 converged window into the F-GC41 publication boundary without changing predictor/corrector ownership or groundwater physics.",
+  "invariants": [
+    "F-GC39 remains owner of coupled nonlinear iteration below iMOD Coupler",
+    "F-GC41 remains owner of whole-window preflight/publication ordering",
+    "retained SWAP candidate identity must be the same candidate preflighted and published",
+    "MODFLOW prepared solve must be finalized before F-GC41 timestep readiness can pass",
+    "ledger token must bind the same coupling/window identity",
+    "no ordinary rejection after first irreversible publication",
+    "no N:1 scaling, Ribasim, irrigation, or new groundwater physics"
+  ],
+  "reconcile_verdict": "New composition surface: canonical has qualified F-GC39 and F-GC41 separately but no live end-to-end service composition authority.",
+  "next_permitted_action": "Implement deterministic composition harness first, then qualify against live MODFLOW prepared-solve/timestep lifecycle and independent verifier."
+}
