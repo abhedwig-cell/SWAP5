@@ -26,6 +26,10 @@
   "implementation_scope": "TEST_RESEARCH_INFRASTRUCTURE_ONLY",
   "production_solver_authorized": false,
   "production_source_mutation": "NONE",
-  "next_action": "Execute the frozen 18-case accepted-trajectory/reference-floor matrix; repair harness/build defects only, without changing preregistered physical or numerical controls.",
-  "blockers": []
+  "next_action": "Execute the frozen 18-case accepted-trajectory/reference-floor matrix with the pre-execution geometry-scaled lower-head direction probes; repair harness/build defects only, without changing physical/numerical controls after first evidence.",
+  "blockers": [],
+  "boundary_probe_preflight_correction": "integration/f-rom/F-ROM0_BOUNDARY_PROBE_PREFLIGHT_CORRECTION.json",
+  "completed_design_gates": [
+    "BOUNDARY_DIRECTION_PROBE_ANALYTIC_PREFLIGHT_CORRECTED_BEFORE_EXECUTION"
+  ]
 }
