@@ -16,21 +16,26 @@ This audit narrows the GMD archival blockers without inventing a publication ver
 
 ### Repository evidence
 
-Current GitHub release list:
+No GitHub release/tag has been published for the current canonical, and no `CITATION.cff`, `.zenodo.json` or root publication licence metadata exists on the audited canonical surface.
+
+However, repository history contains an explicit immutable release authority that must govern any successor release:
 
 ```text
-[]
+release id: SWAP5-RB1-v1
+authority branch: release/f-rb02-restricted-production-baseline-v1-final-authority
+final authority commit: b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0
+workunit: F-RB02
 ```
 
-Current tag namespace:
+`F-RB02_CLOSEOUT.json` states:
 
-```text
-[]
-```
+> SWAP5-RB1-v1 is immutable. Later integration/f-ci-canonical development does not alter RB1. A future release must enumerate its delta from RB1 and qualify its own candidate.
 
-No release/version metadata, `CITATION.cff`, `.zenodo.json`, root `LICENSE` or equivalent publication identifier exists on the audited repository surface.
+It also permits an optional future external tag only on the exact final RB1 metadata-authority commit. Therefore **SWAP5-RB1-v1 cannot be moved, reused or reinterpreted as the PUB-GC publication release**.
 
-The Status-A release-readiness baseline does provide one positive governance fact:
+The current paper uses substantial post-RB1 development, including the completed groundwater-coupling/application and publication evidence. A new exact-head successor release authority is therefore required.
+
+The Status-A release-readiness baseline additionally provides this positive governance fact:
 
 ```text
 READY_FOR_STATUS_A_RELEASE_CANDIDATE_BOUNDARY
@@ -48,11 +53,21 @@ That permission is **not** a naming rule. It does not choose:
 
 ### A1 disposition
 
-**BLOCKED_GOVERNANCE_DECISION.**
+**BLOCKED_SUCCESSOR_RELEASE_AUTHORITY / IDENTIFIER DECISION.**
 
-No existing tag/release convention can be followed mechanically. The publication workstream must not create `v5.0.0`, `v0.x`, `Status-A`, a date tag or any other release identifier without explicit release authority.
+Release governance is no longer unknown: F-RB02 establishes the predecessor rule.
 
-Once authority provides the identifier, the remaining mechanical actions are straightforward:
+The current PUB-GC release must:
+
+1. be a **new successor release**, distinct from immutable `SWAP5-RB1-v1`;
+2. bind exactly one frozen source/repository postimage;
+3. enumerate its delta from RB1;
+4. qualify that exact successor candidate;
+5. make no broader semantic-version or completeness claim unless separately authorized.
+
+What remains unresolved is the exact successor release identifier and the authority approving it. The publication workstream must not invent `v5.0.0`, `v0.x`, a date tag, `Status-A` or another label merely for GMD.
+
+Once that authority provides the identifier, the remaining mechanical actions are straightforward:
 
 1. bind the identifier to the exact submission commit;
 2. create the tag/release;
@@ -138,9 +153,9 @@ Therefore:
 
 A controlled authority needs to provide only two decisions.
 
-### Decision R1 — release identity
+### Decision R1 — successor release identity
 
-Provide the exact publication release identifier/tag label for the submission commit.
+Provide the exact **new successor** publication release identifier/tag label for the submission commit. It must not reuse or move `SWAP5-RB1-v1`, and its release record must enumerate the post-RB1 delta as required by F-RB02.
 
 ### Decision L1 — SWAP5 archive licence
 
@@ -153,7 +168,7 @@ No other scientific or numerical decision is needed to proceed to persistent arc
 
 ## 5. Actions unlocked immediately after R1/L1
 
-After those two authorities exist, the repository work can proceed mechanically:
+After those two authorities exist, the repository work can proceed with a bounded successor-release workunit and then mechanically:
 
 - create root licence/archive metadata consistent with L1;
 - create the governed release/tag consistent with R1;
