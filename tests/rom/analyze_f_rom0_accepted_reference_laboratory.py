@@ -107,6 +107,8 @@ def case_summary(c):
         "solver_rejections":sum(int(x["SOLVER_REJ"]) for x in acc),
         "temporal_rejections":sum(int(x["TEMP_REJ"]) for x in acc),
         "mass_rejections":sum(int(x["MASS_REJ"]) for x in acc),
+        "cumulative_top_exchange_cm":sum(float(x["TOP_EXCHANGE"]) for x in acc),
+        "cumulative_bottom_outward_exchange_cm":sum(float(x["BOTTOM_EXCHANGE"]) for x in acc),
         "final_terminal_qbot_cm_per_day":float(acc[-1]["TERMINAL_QBOT"]),
         "final_total_storage_cm":float(acc[-1]["S_TOTAL"]),
         "final_upper_0_40_storage_cm":float(acc[-1]["S_UPPER"]),
