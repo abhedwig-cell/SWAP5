@@ -3,11 +3,11 @@
   "workunit": "F-ROSS26",
   "title": "Current tiered RossFast WETTING seam-crossing qualification",
   "phase": "QUALIFY",
-  "status": "MEASUREMENT_QUEUED_EXTERNAL_ACTIONS_CAPACITY",
+  "status": "MEASUREMENT_QUEUED_EXTERNAL_ACTIONS_CAPACITY_FROSS14D1_CANONICALLY_CLOSED",
   "branch": "work/f-ross26-tiered-wetting-seam-qualification-reconciled",
   "pull_request": 287,
   "canonical_source_at_original_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
-  "live_canonical_last_reconciled": "addfb931ffe902cb2d15db3f5c4f07353adca256",
+  "live_canonical_last_reconciled": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
   "authority_collision_reconciliation": {
     "canonical_authority": "integration/f-ross/F-ROSS25_STATUS.json",
     "disposition": "F-ROSS25 remains assigned to serial hydrologic validation; WETTING seam qualification continues as F-ROSS26.",
@@ -28,9 +28,24 @@
     "completed_materials_observed": 8,
     "completed_materials_passed": 8,
     "notable_cases": {
-      "B01_Se098": {"tier": "K2", "temporal_indicator": 0.7231231554752261, "theta_span_normalized_error": 2.5480340540717586e-6, "state_change_relative_error": 4.183216626548081e-4},
-      "B04_Se098": {"tier": "K2", "temporal_indicator": 0.25331379407061816, "theta_span_normalized_error": 9.374343068171662e-7, "state_change_relative_error": 2.7300063027736434e-4},
-      "B05_Se098": {"tier": "K8", "temporal_indicator": 0.3480081715296841, "theta_span_normalized_error": 1.1236645486159552e-6, "state_change_relative_error": 7.569957933255145e-5}
+      "B01_Se098": {
+        "tier": "K2",
+        "temporal_indicator": 0.7231231554752261,
+        "theta_span_normalized_error": 0.0000025480340540717586,
+        "state_change_relative_error": 0.0004183216626548081
+      },
+      "B04_Se098": {
+        "tier": "K2",
+        "temporal_indicator": 0.25331379407061816,
+        "theta_span_normalized_error": 9.374343068171662e-7,
+        "state_change_relative_error": 0.00027300063027736434
+      },
+      "B05_Se098": {
+        "tier": "K8",
+        "temporal_indicator": 0.3480081715296841,
+        "theta_span_normalized_error": 0.0000011236645486159552,
+        "state_change_relative_error": 0.00007569957933255145
+      }
     },
     "interpretation": "Useful prequalification only. Authoritative F-ROSS26 measurement must use the renumbered frozen contract."
   },
@@ -70,5 +85,22 @@
     "NO_ARCHITECTURE_CHANGE",
     "NO_PERFORMANCE_CLAIM"
   ],
-  "next_permitted_action": "When either byte-identical F-ROSS26 measurement run has all 36 material artifacts, write that run id to F-ROSS26_AGGREGATE_REPLAY_TRIGGER.txt, execute the prepared artifact-only aggregate replay, persist result plus artifact authority, reconcile current canonical, then ADMIT/CLOSE or classify a hard scientific gate failure."
+  "next_permitted_action": "When either byte-identical F-ROSS26 measurement run has all 36 material artifacts, write that run id to F-ROSS26_AGGREGATE_REPLAY_TRIGGER.txt, execute the prepared artifact-only aggregate replay, persist result plus artifact authority, reconcile current canonical, then ADMIT/CLOSE or classify a hard scientific gate failure.",
+  "f_ross14d1_dependency": {
+    "status": "CANONICALLY_CLOSED",
+    "merge_commit": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
+    "result": "integration/f-ross/F-ROSS14D1_PIECEWISE_FAILURE_DIAGNOSTIC_RESULT.json",
+    "production_or_reference_mutation": false,
+    "relevant_production_dependency_drift": false
+  },
+  "external_blocker": {
+    "class": "GITHUB_ACTIONS_RUNNER_CAPACITY",
+    "f_ross26_runs": [
+      35353641857,
+      35353657313
+    ],
+    "last_observed_completed_material_jobs": 0,
+    "f_ross25_corrected_serial_replay_run": 35353877855,
+    "disposition": "Do not alter scientific contract, thresholds, tier ladder, production source or reference. Resume from first completed byte-identical F-ROSS26 run."
+  }
 }
