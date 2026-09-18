@@ -1,11 +1,34 @@
 {
-  "schema": "swap5.publication.p2e18-ref-high-construction-result.v2",
+  "schema": "swap5.publication.p2e18-ref-high-construction-result.v3",
   "workunit": "PUB-P2E18",
   "publication_owner": "PUB-SQ",
-  "phase": "INVALID_EXECUTION_IMPLEMENTATION_DID_NOT_MATCH_STRENGTHENED_PREREGISTRATION",
-  "strengthened_preregistration": {
-    "blob": "8886758ff46878a682a0ab9f57fd58a347b1f49e",
-    "refinement_levels": [
+  "phase": "BLOCKED_REF_HIGH_BY_REFERENCE_RETRY_ENVELOPE",
+  "authorities": {
+    "preregistration_blob": "8886758ff46878a682a0ab9f57fd58a347b1f49e",
+    "test_blob": "e96caa5a40199af90bcc8ae091c917df64de9a76",
+    "runner_blob": "f7eba7293778aafbfef94706640c3d6894742073",
+    "workflow_blob": "f97c1fd72770f3c733fc35de39f711905171855b"
+  },
+  "final_preregistered_design": {
+    "cases": 36,
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "Se": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "refinement_substeps": [
       1,
       2,
       4,
@@ -18,55 +41,100 @@
       "8_vs_16",
       "16_vs_32"
     ],
-    "rule": "Both fine comparisons plus all-level Reference route validity are required."
+    "head_theta_stability_factor_of_P2E14": 0.1,
+    "storage_budget": "full P2E14 machine-scale storage envelope"
   },
-  "invalid_execution": {
-    "workflow_run": 35291755593,
-    "job": 105435893920,
-    "head": "7299e7dc541967990ddefd29546d5e13aa3cad49",
-    "implemented_refinement_levels": [
-      1,
-      2,
-      4,
-      8,
-      16
-    ],
-    "implemented_ref_high_candidate_substeps": 16,
-    "implemented_fine_comparison": "8_vs_16_only",
-    "harness_conclusion": "PASS",
-    "output_sha256": "f37afd8862f0236bb829a1ce7e4745d42821c59c48f4d04e31e0a84a381f55cb",
-    "authority_status": "NONAUTHORITATIVE_FOR_P2E18",
-    "reason": "The executed test/runner did not implement the already-strengthened preregistered 32-substep endpoint and second 16-vs-32 stability comparison."
-  },
-  "diagnostic_observation_from_invalid_execution": {
-    "allowed_use": "debugging only, not REF-HIGH scientific evidence",
-    "observation": "Many Reference refinement levels returned route-invalid before the old 8-vs-16 comparison; this motivates gate-reason telemetry.",
-    "prohibited_interpretation": "Do not report 0/36 stable as a REF-HIGH result and do not infer failed numerical convergence from this invalid execution."
-  },
-  "subsequent_attempts": [
-    {
-      "workflow_run": 35291763308,
-      "head": "b9884c1641d5599602ddf6408740226f6bfb03e0",
-      "status": "PRE_SCIENTIFIC_RUNNER_AUTHORITY_MISMATCH"
+  "execution_history": {
+    "obsolete_five_level_run": {
+      "workflow_run": 35291755593,
+      "head": "7299e7dc541967990ddefd29546d5e13aa3cad49",
+      "authority_status": "NONAUTHORITATIVE",
+      "reason": "Implementation did not yet match the already-strengthened six-level preregistration."
     },
-    {
-      "workflow_run": 35291784350,
-      "head": "7c47da0698949478fffa718b9d482c429ebbe49e",
-      "status": "PRE_SCIENTIFIC_BUILD_FAILURE"
+    "first_conforming_scientific_exposure": {
+      "workflow_run": 35292262879,
+      "job": 105437440149,
+      "head": "856fff069d49f01d3b89c76339070f987bec3d28",
+      "scope": "O0 scientific output completed; runner stopped afterwards on a zero-match grep/count assumption before O2.",
+      "scientific_outcome": "BLOCKED_REF_HIGH_UNRESOLVED_CASES",
+      "stable_count": 0,
+      "unresolved_count": 36
     },
-    {
-      "workflow_run": 35291889208,
-      "head": "d38d430c1325fc948ee2e497b165f3cd876c4cd4",
-      "status": "PRE_SCIENTIFIC_BUILD_FAILURE"
+    "qualified_reproduction": {
+      "workflow_run": 35292703945,
+      "job": 105438767487,
+      "head": "297b77c383a2b2ba155480164139c1c976aca03b",
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_identical": true,
+      "output_sha256": "fabc9978a010ae242d94a933d14ad87da1039166f5fa7cf9701bfa878f5842b1"
     }
-  ],
+  },
+  "scientific_outcome": {
+    "stable_count": 0,
+    "unresolved_count": 36,
+    "verdict": "BLOCKED_REF_HIGH_UNRESOLVED_CASES",
+    "route_validity_by_refinement": {
+      "1_substep": {
+        "valid": 36,
+        "invalid": 0
+      },
+      "2_substeps": {
+        "valid": 29,
+        "invalid": 7
+      },
+      "4_substeps": {
+        "valid": 7,
+        "invalid": 29
+      },
+      "8_substeps": {
+        "valid": 0,
+        "invalid": 36
+      },
+      "16_substeps": {
+        "valid": 0,
+        "invalid": 36
+      },
+      "32_substeps": {
+        "valid": 0,
+        "invalid": 36
+      }
+    },
+    "first_invalid_refinement_distribution": {
+      "2_substeps": 7,
+      "4_substeps": 22,
+      "8_substeps": 7
+    },
+    "fine_comparison_reached_by_any_case": false,
+    "fine_delta_records": 0
+  },
+  "failure_characterization": {
+    "common_gate_reason": "STATUS_NOT_CONVERGED",
+    "returned_status": 2,
+    "returned_route": "legacy-reference-retry",
+    "candidate_active_nodes_observed": 16,
+    "typed_mass_result_available_on_retry": false,
+    "native_rate_result_available_on_retry": false,
+    "interpretation": "The Reference solver requests timestep reduction before the intended fine endpoint comparisons can be formed. P2E18 therefore does not establish a failed temporal-convergence/stability result; it establishes that the currently frozen Reference convergence contract is not refinement-invariant over this ladder."
+  },
+  "code_basis": {
+    "observation": [
+      "HeadCalc tests compartment and total residuals against CritDevBalCp and CritDevBalTot in rate units.",
+      "The residual contains storage-change terms divided by dt.",
+      "When convergence is not reached and fldtmin is false, HeadCalc resets the trial state and requests dt reduction.",
+      "The explicit Reference adapter exposes that as SW_SOLVE_RETRY_ADVISED with route legacy-reference-retry."
+    ],
+    "inference_to_test_next": "Holding the rate tolerances numerically fixed while reducing dt may shrink the implied integrated balance allowance toward floating-point scale. This is a hypothesis for a separate Reference-only diagnostic, not a post-hoc reinterpretation of P2E18."
+  },
   "candidate_firewall": {
     "rossfast_executed": false,
     "timing_executed": false,
     "equal_error_claim_made": false,
-    "cases_removed": false,
-    "stability_budget_changed_after_scientific_execution": false
+    "cases_removed_or_replaced": false,
+    "P2E18_stability_budget_retuned": false,
+    "production_or_reference_source_changed": false
   },
-  "verdict": "P2E18_NOT_YET_EXECUTED_UNDER_ITS_FINAL_PREREGISTERED_DESIGN",
-  "next_permitted_action": "Repair only the Reference-only build/diagnostic harness, preserving the 36 cases, six-level refinement ladder, 32-substep endpoint, two fine comparisons and frozen stability budgets. Execute P2E18 only on a head that contains all of those authorities."
+  "verdict": "REF_HIGH_BLOCKED_BEFORE_ENDPOINT_STABILITY_BY_REFERENCE_RETRY_SCALING",
+  "next_permitted_action": "Create a separate Reference-only diagnostic workunit that prospectively compares the frozen fixed-rate convergence contract with a timestep-invariant integrated-balance scaling on the same 36-case refinement ladder. Do not modify P2E18 and do not begin RossFast timing."
 }
