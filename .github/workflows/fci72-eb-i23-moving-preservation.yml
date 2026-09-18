@@ -24,6 +24,10 @@ on:
       - 'integration/f-ci/F-CI72P_STATUS.json'
       - 'integration/f-ci/F-CI79_STATUS.json'
       - 'integration/f-ci/F-CI79P_STATUS.json'
+      - 'qualification/F-VQ105_STATUS.json'
+      - 'integration/f-ci/F-CI98_STATUS.json'
+      - 'qualification/F-VQ105_STATUS.json'
+      - 'integration/f-ci/F-CI98_STATUS.json'
       - '.github/workflows/fci72-eb-i23-moving-preservation.yml'
   pull_request:
     paths:
@@ -55,9 +59,11 @@ jobs:
           I23_ADMISSION=77acdd880bb0613f5a3ab857c4ecdc69aab27149
           I25_ADMISSION=b7c2e510c68e5799a138e881793d27037c482b8a
           FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
+          FGC31_ADMISSION=7b864853ca22baa73141b2dec9ed2f3915ef520d
           git merge-base --is-ancestor "$I23_ADMISSION" HEAD
           git merge-base --is-ancestor "$I25_ADMISSION" HEAD
           git merge-base --is-ancestor "$FROSS12_AUTH" HEAD
+          git merge-base --is-ancestor "$FGC31_ADMISSION" HEAD
           declare -A BLOBS=(
             [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
             [tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90]=e9fde2d51d2c8cb76ae2def4b7e4a3acaf356d4a
@@ -75,11 +81,13 @@ jobs:
           )
           for path in "${!BLOBS[@]}"; do test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"; done
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = \
-            "$(git rev-parse "$FROSS12_AUTH:src/runtime/mod_fmr_serialized_reference_backend.f90")"
+            "4e5491c997ed0752a4db9abd09b5ad3daf394db2"
           python3 -m json.tool qualification/F-VQ90_STATUS.json >/dev/null
           python3 -m json.tool qualification/F-VQ93_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI72P_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI79P_STATUS.json >/dev/null
+          python3 -m json.tool qualification/F-VQ105_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI98_STATUS.json >/dev/null
           grep -Fq '"decision": "QUALIFIED_EB_I23_INDEPENDENT"' qualification/F-VQ90_STATUS.json
           grep -Fq '"decision": "QUALIFIED_EB_I25_INDEPENDENT"' qualification/F-VQ93_STATUS.json
           grep -Fq '"decision": "QUALIFIED_F_CI72P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI72P_STATUS.json
@@ -90,6 +98,9 @@ jobs:
           grep -Fq 'boundary%top_advective_available = .false.' "$MODULE"
           ! grep -Fq 'boundary%top_advective_available = .true.' "$MODULE"
           grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79P_STATUS.json
+          grep -Fq '"verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW"' qualification/F-VQ105_STATUS.json
+          grep -Fq '"verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION"' integration/f-ci/F-CI98_STATUS.json
+          echo 'FCI72_MOVING_FGC31_BACKEND_SUCCESSOR=PASS'
           echo 'FCI72_MOVING_EB_I23_SUCCESSOR_COMPOSITION=PASS'
           echo 'FCI72_MOVING_FROSS12_BACKEND_SUCCESSOR=PASS'
           echo 'FCI72_MOVING_I23_TOP_ADVECTIVE_FAIL_CLOSED=PASS'
