@@ -29,7 +29,9 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-ME-E6` extensibility cases | PUB-ME | supporting | READY_FOR_SCREENING | extract solver-seam and groundwater-seam dependency evidence |
 | `PUB-SQ-E0` contract/fail-closed | PUB-SQ | prerequisite/supporting | COMPLETE | `PUB-SQ-E0-0001` completed under manifest control; continue with SQ-E1 common-domain/reference design, not additional post-hoc E0 cases |
 | `PUB-SQ-E1` common-domain equivalence | PUB-SQ | primary | COMPLETE | six-material P2E10 broad E0 matrix executed against independently frozen P2E09 Reference-only thresholds; retain as observed primary evidence |
-| `PUB-SQ-E1X` material-axis extension | PUB-SQ | primary | COMPLETE | P2E11 Reference-only extension executed exactly as frozen: 176/180 valid; four B02/B05 Se=0.98 cases leave the common E0 state domain. No thresholds frozen and no RossFast extension run authorized. |
+| `PUB-SQ-E1X` material-axis extension | PUB-SQ | primary | BLOCKED | P2E11/P2E11R show that the original {0.65,0.85,0.98} extension design has no complete 30-material Reference domain at any preregistered temporal level. Do not execute RossFast on that design. |
+| `PUB-SQ-E1D` common material state domain | PUB-SQ | supporting/domain construction | COMPLETE | P2E13 Reference-only scan across all 36 materials found nine complete tested Se levels, 0.65 through 0.96; frozen rule selected 0.65, 0.85 and 0.96 as future anchors. |
+| `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | READY_FOR_REFERENCE_CONSTRUCTION | freeze Reference-only Se-stratified self-disagreement thresholds at {0.65,0.85,0.96} across 36 materials x two forcing classes before any new RossFast extension discrepancy. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | P2E10 established WETTING as a clean known production-envelope exclusion; separate inside/boundary/outside probing still requires its own preregistration |
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
@@ -145,6 +147,17 @@ Examples:
 - candidate firewall preserved: no new RossFast numerical solver execution occurred and no extension threshold was frozen;
 - interpretation: the six-material E0 calibration domain does not transfer unchanged to the full material axis;
 - next permitted action: a separate Reference-only common-material-domain construction study. It must be labelled exploratory/supporting and cannot retroactively make P2E11 complete.
+
+### 2026-09-18 — PUB-SQ common 36-material state domain constructed
+
+- P2E11R retained all 180 original extension cases across the five preregistered temporal levels and found no complete Reference domain; best level remained 0.0064 day with 176/180 valid;
+- P2E11D1 diagnosed the persistent blocker as shared state-domain transfer, not Reference nonconvergence or hard mass failure;
+- P2E13 was therefore preregistered as a separate Reference-only exploratory/domain-construction study, with all 36 materials, DRYING/NOMINAL forcing, fixed 0.0064 versus 0.0032+0.0032 schedule, and a frozen 13-level Se grid;
+- P2E13 workflow `35289924640`, job `105430331989`, execution head `fb56ccc594d471542c8e06439da31a9c2c43ac1f`, completed successfully with O0/O2-identical output `sha256:6e842ee99ec722678aeaf99143e80eb7340488dc393ab8dae0b31f31ab9b1bce`;
+- complete 36-material x two-forcing levels are Se = {0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.92, 0.94, 0.96}; Se=0.98 remains outside the common tested domain and lower levels 0.50-0.60 are also incomplete under the fixed schedule;
+- the preregistered anchor rule selects Se = {0.65, 0.85, 0.96};
+- candidate firewall preserved: RossFast was not executed and no scientific discrepancy threshold was frozen;
+- next permitted action: a separate Reference-only threshold freeze on those three anchors across all 36 materials and both retained forcing classes.
 
 ## Register update rule
 
