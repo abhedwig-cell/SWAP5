@@ -1,0 +1,28 @@
+name: M1-C3 repository bundle
+
+on:
+  push:
+    branches:
+      - work/m1-c3-legacy-file-to-typed-application-mapping
+    paths:
+      - '.github/workflows/m1-c3-repo-bundle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bundle exact worktree
+        run: |
+          set -euo pipefail
+          tar --exclude=.git -czf /tmp/SWAP5-m1c3-worktree.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: swap5-m1c3-worktree
+          path: /tmp/SWAP5-m1c3-worktree.tar.gz
+          if-no-files-found: error
+          retention-days: 1
