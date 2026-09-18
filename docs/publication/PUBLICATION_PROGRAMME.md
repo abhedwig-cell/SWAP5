@@ -82,6 +82,7 @@ Current evidence state:
 - the manuscript core is consolidated through E6, with evidence-bounded abstract, Methods, Results, Discussion and provisional Conclusions;
 - M1-C3 and M1 are closed; E7 Hupsel standalone selection was frozen before coupled output on 2003-06-17 (median dynamics) and 2003-05-20 (high dynamics). Qualification run 35375181814 then closed E7 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`: both authentic days require drainage, while the current production prescribed-head owner rejects active drainage before owner-state allocation. No loose/strong E7 window was executed and no physics/tolerance/date/window rescue was used.
 - manuscript figures F1–F7, tables T1–T6, notation glossary, supplementary evidence package and machine-readable reproducibility manifest are complete through E7; no preregistered primary scientific gap remains for the current bounded PUB-GC framing.
+- the current GMD pre-submission package is repository-complete apart from governed successor release ID, SWAP5 archive licence/redistribution authority, persistent archive DOI/PID, final author metadata and final figure exports. These are submission/governance blockers, not scientific gaps.
 
 First publication evidence block (E1/E2):
 
