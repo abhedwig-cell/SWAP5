@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.f-rom0.numerical-controls-supplement.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "FROZEN_BEFORE_FIRST_EXECUTION",
+  "canonical_parent": "47430b68ed46a24ca05b29b46de2dd4f7e29762b",
+  "reason": "The primary ROM-0 preregistration froze experiment families and refinement axes but did not enumerate the canonical external-full-half transaction controls. This supplement freezes them before executable ROM-0 trajectory evidence exists.",
+  "transaction": {
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 0.000001,
+    "max_retries": 8,
+    "retry_scale": 0.5,
+    "mass_tolerance_cm": 1e-12
+  },
+  "canonical": {
+    "max_committed_substeps": 128,
+    "progress_tolerance": 0,
+    "model_temporal_indicator_budget_available": false
+  },
+  "reference_solver": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "min_step_duration_day": 1e-8,
+    "swkimpl": 0,
+    "swkmean": 1,
+    "swsophy": 0,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12
+  },
+  "feature_scope": {
+    "root_extraction_active": false,
+    "macropore_active": false,
+    "snow_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "frost_active": false,
+    "soil_temperature_active": false,
+    "drainage_response_active": false
+  },
+  "tuning_after_execution_allowed": false,
+  "interpretation": "Failure under these frozen controls is classified as ROM-0 evidence. Controls are not retuned inside this preregistration."
+}
