@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.fci_rom1a_moving_preservation_reconciliation.v1",
+  "date": "2026-09-18",
+  "work_unit": "FCI-ROM1A-PRESERVATION-RECONCILE",
+  "state": "PREREGISTERED_PENDING_QUALIFICATION",
+  "trigger": {
+    "canonical_head_at_start": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+    "failing_gate": "current-restricted-canonical-preservation",
+    "observed_failure": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/kernel/mod_kernel_transactions.f90",
+    "source_workunit": "F-ROM1A-I0"
+  },
+  "qualified_successor_authority": {
+    "executed_head": "2493c3cd5a7b933593690f13535cc0361d534898",
+    "workflow_run": 35380688867,
+    "workflow_job": 105715867943,
+    "kernel_blob": "c28cb8246aaf087da92538e58b1aa2da5d1b5b11",
+    "backend_blob": "5d63f91b37443952b4a96292925f645aae0b22d1",
+    "result": "integration/f-rom/F-ROM1A_I0_RESULT.json",
+    "ordinary_runtime_semantics_changed": false,
+    "production_rom_authorized": false
+  },
+  "allowed_delta": [
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    ".github/workflows/fci-rom1a-moving-preservation-reconcile.yml",
+    "integration/f-ci/FCI_ROM1A_MOVING_PRESERVATION_RECONCILIATION.json"
+  ],
+  "reconciliation_contract": [
+    "recognize only the exact qualified F-ROM1A kernel blob",
+    "recognize only the exact qualified F-ROM1A serialized-backend blob",
+    "require F-ROM1A qualified head to be an ancestor",
+    "re-run the F-ROM1A-I0 observation-seam qualification on moving current",
+    "retain all pre-existing P2E05/F-ROSS semantic-successor preservation",
+    "fail closed on any further kernel/backend drift"
+  ],
+  "forbidden": [
+    "production source changes",
+    "reference changes",
+    "solver or tolerance changes",
+    "widening ROM production authority",
+    "wildcard hash exceptions",
+    "publication claim changes"
+  ]
+}
