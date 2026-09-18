@@ -1,0 +1,1068 @@
+{
+  "B14_used": false,
+  "all_Z1_Z2_Z4_Z8_discovery_storage_ambiguous": true,
+  "coordinate_results": {
+    "Z1": {
+      "ambiguity_record_count": 48,
+      "ambiguous_pair_count": 8,
+      "comparison_record_count": 96,
+      "discovery_storage_ambiguity_established": true,
+      "maximum_diagnostic_exchange_difference": {
+        "cumulative_bottom_outward_exchange_cm": 0.008426230405071067,
+        "cumulative_top_exchange_cm": 0,
+        "terminal_bottom_flux_cm_per_day": 0.5911584258111464
+      },
+      "maximum_ratio_to_pairwise_reference_scale": {
+        "lower": 11.308084923338638,
+        "total": 118588650351.3,
+        "upper": 0.11575919188284757
+      },
+      "maximum_storage_response_difference_cm": {
+        "lower": 0.008477203041124426,
+        "total": 0.008426230405071067,
+        "upper": 0.00008677987299776646
+      },
+      "pair_count": 8,
+      "top_predictive_ambiguity_examples": [
+        {
+          "a": {
+            "history": "D01",
+            "step": 50
+          },
+          "b": {
+            "history": "D06",
+            "step": 50
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.008426230405071067,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.013010204034102912
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 118588650351.3,
+          "pair_index": 4,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 11.305849738864945,
+            "total": 118588650351.3,
+            "upper": 0.0657592819045898
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.008475527415875206,
+            "total_storage_cm": 0.008426230405071067,
+            "upper_0_40cm_storage_cm": 0.000049297010797033636
+          }
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 51
+          },
+          "b": {
+            "history": "D06",
+            "step": 50
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.008426230405056856,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.013010204025221128
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 118588650351.1,
+          "pair_index": 7,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 11.308084923338638,
+            "total": 118588650351.1,
+            "upper": 0.0679944664042851
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.008477203041124426,
+            "total_storage_cm": 0.008426230405056856,
+            "upper_0_40cm_storage_cm": 0.00005097263606579361
+          }
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 51
+          },
+          "b": {
+            "history": "D06",
+            "step": 50
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.007392190577029119,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0018674864055157059
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 104035833525.5,
+          "pair_index": 7,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 9.928737262001835,
+            "total": 104035833525.5,
+            "upper": 0.0679944664090242
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.007443163213096682,
+            "total_storage_cm": 0.007392190577029112,
+            "upper_0_40cm_storage_cm": 0.00005097263606934632
+          }
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 50
+          },
+          "b": {
+            "history": "D06",
+            "step": 50
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0073921905770078025,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0018674864232792743
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 104035833525.2,
+          "pair_index": 4,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 9.926502077499707,
+            "total": 104035833525.2,
+            "upper": 0.0657592819093289
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0074414875878261455,
+            "total_storage_cm": 0.007392190577007796,
+            "upper_0_40cm_storage_cm": 0.00004929701080058635
+          }
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 63
+          },
+          "b": {
+            "history": "D07",
+            "step": 60
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006595334588048785,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0062599305472588185
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 92821082478.5,
+          "pair_index": 5,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 8.876613157984904,
+            "total": 92821082478.5,
+            "upper": 0.07882888198922737
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006654429336876433,
+            "total_storage_cm": 0.006595334588048729,
+            "upper_0_40cm_storage_cm": 0.000059094748817045684
+          }
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 64
+          },
+          "b": {
+            "history": "D07",
+            "step": 60
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006595334588041679,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.006259930556140603
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 92821082478.4,
+          "pair_index": 6,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 8.879307891721036,
+            "total": 92821082478.4,
+            "upper": 0.08152361570869589
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0066564494671794705,
+            "total_storage_cm": 0.006595334588041624,
+            "upper_0_40cm_storage_cm": 0.00006111487910764879
+          }
+        },
+        {
+          "a": {
+            "history": "D02",
+            "step": 62
+          },
+          "b": {
+            "history": "D08",
+            "step": 44
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006220117014365145,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.002956149627308946
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 87540364587.8,
+          "pair_index": 3,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 8.410354157520858,
+            "total": 87540364587.8,
+            "upper": 0.11308781975686409
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006304894270286354,
+            "total_storage_cm": 0.006220117014365201,
+            "upper_0_40cm_storage_cm": 0.00008477725592648255
+          }
+        },
+        {
+          "a": {
+            "history": "D02",
+            "step": 63
+          },
+          "b": {
+            "history": "D08",
+            "step": 44
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006220117014365145,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0029561496006635934
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 87540364587.8,
+          "pair_index": 8,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 8.413025529611375,
+            "total": 87540364587.8,
+            "upper": 0.11575919185915202
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006306896887330993,
+            "total_storage_cm": 0.006220117014365201,
+            "upper_0_40cm_storage_cm": 0.00008677987298000289
+          }
+        }
+      ]
+    },
+    "Z2": {
+      "ambiguity_record_count": 48,
+      "ambiguous_pair_count": 8,
+      "comparison_record_count": 96,
+      "discovery_storage_ambiguity_established": true,
+      "maximum_diagnostic_exchange_difference": {
+        "cumulative_bottom_outward_exchange_cm": 0.006750925566990362,
+        "cumulative_top_exchange_cm": 0,
+        "terminal_bottom_flux_cm_per_day": 0.48037327364802707
+      },
+      "maximum_ratio_to_pairwise_reference_scale": {
+        "lower": 9.005333381957753,
+        "total": 95010830837.2,
+        "upper": 0.018097819657806758
+      },
+      "maximum_storage_response_difference_cm": {
+        "lower": 0.006750925558961285,
+        "total": 0.006750925566990418,
+        "upper": 0.000013567186034180168
+      },
+      "pair_count": 8,
+      "top_predictive_ambiguity_examples": [
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006750925566990362,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01630815289033194
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 95010830837.2,
+          "pair_index": 3,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 9.005333381957753,
+            "total": 95010830837.2,
+            "upper": 1.0724603335985891e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006750925558961285,
+            "total_storage_cm": 0.006750925566990418,
+            "upper_0_40cm_storage_cm": 8.039791055125534e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006750925566990362,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01630815289033194
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 95010830837.2,
+          "pair_index": 4,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 9.005333381957753,
+            "total": 95010830837.2,
+            "upper": 1.0724603335985891e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006750925558961285,
+            "total_storage_cm": 0.006750925566990418,
+            "upper_0_40cm_storage_cm": 8.039791055125534e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.005863112109210537,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0074558368812205345
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 82515967219.6,
+          "pair_index": 3,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 7.821043005969866,
+            "total": 82515967219.6,
+            "upper": 1.0726972890412755e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.005863112101160084,
+            "total_storage_cm": 0.005863112109210533,
+            "upper_0_40cm_storage_cm": 8.041567411964934e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.005863112109210537,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0074558368812205345
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 82515967219.6,
+          "pair_index": 4,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 7.821043005969866,
+            "total": 82515967219.6,
+            "upper": 1.0726972890412755e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.005863112101160084,
+            "total_storage_cm": 0.005863112109210533,
+            "upper_0_40cm_storage_cm": 8.041567411964934e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.004776279639322922,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.2163958420631218
+          },
+          "horizon_steps": 16,
+          "max_storage_ratio": 67220160012.1,
+          "pair_index": 3,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 6.371273109380553,
+            "total": 67220160012.1,
+            "upper": 5.449975181786909e-11
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.004776279639287395,
+            "total_storage_cm": 0.004776279639322922,
+            "upper_0_40cm_storage_cm": 4.085620730620576e-14
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.004776279639322922,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.2163958420631218
+          },
+          "horizon_steps": 16,
+          "max_storage_ratio": 67220160012.1,
+          "pair_index": 4,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 6.371273109380553,
+            "total": 67220160012.1,
+            "upper": 5.449975181786909e-11
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.004776279639287395,
+            "total_storage_cm": 0.004776279639322922,
+            "upper_0_40cm_storage_cm": 4.085620730620576e-14
+          }
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.003699745223165962,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.013644414735836108
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 52069285026.3,
+          "pair_index": 7,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.917368547927126,
+            "total": 52069285026.3,
+            "upper": 0.01787164573515369
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.003686347590367234,
+            "total_storage_cm": 0.003699745223165962,
+            "upper_0_40cm_storage_cm": 0.00001339763280938655
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.003699745223165962,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.013644414735836108
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 52069285026.3,
+          "pair_index": 8,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.917368547927126,
+            "total": 52069285026.3,
+            "upper": 0.01787164573515369
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.003686347590367234,
+            "total_storage_cm": 0.003699745223165962,
+            "upper_0_40cm_storage_cm": 0.00001339763280938655
+          }
+        }
+      ]
+    },
+    "Z4": {
+      "ambiguity_record_count": 48,
+      "ambiguous_pair_count": 8,
+      "comparison_record_count": 96,
+      "discovery_storage_ambiguity_established": true,
+      "maximum_diagnostic_exchange_difference": {
+        "cumulative_bottom_outward_exchange_cm": 0.006750925566990362,
+        "cumulative_top_exchange_cm": 0,
+        "terminal_bottom_flux_cm_per_day": 0.48037327364802707
+      },
+      "maximum_ratio_to_pairwise_reference_scale": {
+        "lower": 9.005333381957753,
+        "total": 95010830837.2,
+        "upper": 0.018097819657806758
+      },
+      "maximum_storage_response_difference_cm": {
+        "lower": 0.006750925558961285,
+        "total": 0.006750925566990418,
+        "upper": 0.000013567186034180168
+      },
+      "pair_count": 8,
+      "top_predictive_ambiguity_examples": [
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006750925566990362,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01630815289033194
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 95010830837.2,
+          "pair_index": 5,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 9.005333381957753,
+            "total": 95010830837.2,
+            "upper": 1.0724603335985891e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006750925558961285,
+            "total_storage_cm": 0.006750925566990418,
+            "upper_0_40cm_storage_cm": 8.039791055125534e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.006750925566990362,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01630815289033194
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 95010830837.2,
+          "pair_index": 6,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 9.005333381957753,
+            "total": 95010830837.2,
+            "upper": 1.0724603335985891e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.006750925558961285,
+            "total_storage_cm": 0.006750925566990418,
+            "upper_0_40cm_storage_cm": 8.039791055125534e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.005863112109210537,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0074558368812205345
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 82515967219.6,
+          "pair_index": 5,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 7.821043005969866,
+            "total": 82515967219.6,
+            "upper": 1.0726972890412755e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.005863112101160084,
+            "total_storage_cm": 0.005863112109210533,
+            "upper_0_40cm_storage_cm": 8.041567411964934e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.005863112109210537,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0074558368812205345
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 82515967219.6,
+          "pair_index": 6,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 7.821043005969866,
+            "total": 82515967219.6,
+            "upper": 1.0726972890412755e-8
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.005863112101160084,
+            "total_storage_cm": 0.005863112109210533,
+            "upper_0_40cm_storage_cm": 8.041567411964934e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.004776279639322922,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.2163958420631218
+          },
+          "horizon_steps": 16,
+          "max_storage_ratio": 67220160012.1,
+          "pair_index": 5,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 6.371273109380553,
+            "total": 67220160012.1,
+            "upper": 5.449975181786909e-11
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.004776279639287395,
+            "total_storage_cm": 0.004776279639322922,
+            "upper_0_40cm_storage_cm": 4.085620730620576e-14
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.004776279639322922,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.2163958420631218
+          },
+          "horizon_steps": 16,
+          "max_storage_ratio": 67220160012.1,
+          "pair_index": 6,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 6.371273109380553,
+            "total": 67220160012.1,
+            "upper": 5.449975181786909e-11
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.004776279639287395,
+            "total_storage_cm": 0.004776279639322922,
+            "upper_0_40cm_storage_cm": 4.085620730620576e-14
+          }
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.003699745223165962,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.013644414735836108
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 52069285026.3,
+          "pair_index": 7,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.917368547927126,
+            "total": 52069285026.3,
+            "upper": 0.01787164573515369
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.003686347590367234,
+            "total_storage_cm": 0.003699745223165962,
+            "upper_0_40cm_storage_cm": 0.00001339763280938655
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.003699745223165962,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.013644414735836108
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 52069285026.3,
+          "pair_index": 8,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.917368547927126,
+            "total": 52069285026.3,
+            "upper": 0.01787164573515369
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.003686347590367234,
+            "total_storage_cm": 0.003699745223165962,
+            "upper_0_40cm_storage_cm": 0.00001339763280938655
+          }
+        }
+      ]
+    },
+    "Z8": {
+      "ambiguity_record_count": 48,
+      "ambiguous_pair_count": 8,
+      "comparison_record_count": 96,
+      "discovery_storage_ambiguity_established": true,
+      "maximum_diagnostic_exchange_difference": {
+        "cumulative_bottom_outward_exchange_cm": 0.0034221561368851794,
+        "cumulative_top_exchange_cm": 0,
+        "terminal_bottom_flux_cm_per_day": 0.3157071179682447
+      },
+      "maximum_ratio_to_pairwise_reference_scale": {
+        "lower": 4.564952852367729,
+        "total": 48162565946.5,
+        "upper": 0.018097819657806758
+      },
+      "maximum_storage_response_difference_cm": {
+        "lower": 0.0034221561356346797,
+        "total": 0.003422156136885235,
+        "upper": 0.000013567186034180168
+      },
+      "pair_count": 8,
+      "top_predictive_ambiguity_examples": [
+        {
+          "a": {
+            "history": "D03",
+            "step": 22
+          },
+          "b": {
+            "history": "D06",
+            "step": 35
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0034221561368851794,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01823496670994018
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 48162565946.5,
+          "pair_index": 8,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.564952852367729,
+            "total": 48162565946.5,
+            "upper": 1.6942314152076695e-9
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0034221561356346797,
+            "total_storage_cm": 0.003422156136885235,
+            "upper_0_40cm_storage_cm": 1.270095140171179e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0030574383079269296,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01199403178553382
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 43029618825.9,
+          "pair_index": 4,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.060705988390634,
+            "total": 43029618825.9,
+            "upper": 0.017734962712931575
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0030441431407055575,
+            "total_storage_cm": 0.0030574383079269296,
+            "upper_0_40cm_storage_cm": 0.000013295167207161285
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0030574383079269296,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.01199403178553382
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 43029618825.9,
+          "pair_index": 5,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 4.060705988390634,
+            "total": 43029618825.9,
+            "upper": 0.017734962712931575
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0030441431407055575,
+            "total_storage_cm": 0.0030574383079269296,
+            "upper_0_40cm_storage_cm": 0.000013295167207161285
+          }
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 22
+          },
+          "b": {
+            "history": "D06",
+            "step": 35
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0029756750631833168,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.016380952301275897
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 41878903455.4,
+          "pair_index": 8,
+          "probe": "BOTTOM_HEAD_RISE",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 3.9693736414710497,
+            "total": 41878903455.4,
+            "upper": 1.68238364307335e-9
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.002975675061954064,
+            "total_storage_cm": 0.002975675063183303,
+            "upper_0_40cm_storage_cm": 1.2612133559741778e-12
+          }
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 22
+          },
+          "b": {
+            "history": "D06",
+            "step": 35
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.002923029882126116,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.1052376595556126
+          },
+          "horizon_steps": 16,
+          "max_storage_ratio": 41137988399.8,
+          "pair_index": 8,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 3.8991481011496143,
+            "total": 41137988399.8,
+            "upper": 2.3695544268638737e-12
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0029230298821545375,
+            "total_storage_cm": 0.002923029882126116,
+            "upper_0_40cm_storage_cm": 1.7763568394002505e-15
+          }
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0028916365336471017,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.011424338595134031
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 40696166298.2,
+          "pair_index": 1,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 3.8391734207591908,
+            "total": 40696166298.2,
+            "upper": 0.018097819655437202
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.002878069347595158,
+            "total_storage_cm": 0.0028916365336471017,
+            "upper_0_40cm_storage_cm": 0.00001356718603240381
+          }
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0028916365336471017,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.011424338595134031
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 40696166298.2,
+          "pair_index": 2,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 3.8391734207591908,
+            "total": 40696166298.2,
+            "upper": 0.018097819655437202
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.002878069347595158,
+            "total_storage_cm": 0.0028916365336471017,
+            "upper_0_40cm_storage_cm": 0.00001356718603240381
+          }
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 14
+          },
+          "b": {
+            "history": "D08",
+            "step": 33
+          },
+          "diagnostic_exchange_difference": {
+            "cumulative_bottom_outward_exchange_cm": 0.0026896639138769274,
+            "cumulative_top_exchange_cm": 0,
+            "terminal_bottom_flux_cm_per_day": 0.0076779363400447664
+          },
+          "horizon_steps": 64,
+          "max_storage_ratio": 37853654375.9,
+          "pair_index": 3,
+          "probe": "BOTTOM_HEAD_FALL",
+          "ratio_to_pairwise_reference_scale": {
+            "lower": 3.6001163259081195,
+            "total": 37853654375.9,
+            "upper": 0.012264553813609207
+          },
+          "response_difference": {
+            "lower_40_160cm_storage_cm": 0.0026988581420539504,
+            "total_storage_cm": 0.0026896639138769274,
+            "upper_0_40cm_storage_cm": 0.00000919422816458848
+          }
+        }
+      ]
+    }
+  },
+  "coordinate_selected_final": false,
+  "decision": "ROM1B2_DISCOVERY_PREDICTIVE_AMBIGUITY_COMPLETE",
+  "exchange_outputs_formal_ambiguity_role": "DIAGNOSTIC_ONLY",
+  "expected_probe_record_count": 324,
+  "fallback_class_counts": {
+    "RETRY_LOCAL_BALANCE": 31,
+    "RETRY_TOTAL_ONLY": 629
+  },
+  "frozen_pair_manifest_source": "integration/f-rom/ROM1B1_RESULT.json",
+  "future_probe_pair_reselection": false,
+  "hard_mass_gate_pass": true,
+  "heldout_used": false,
+  "max_abs_committed_mass_residual_cm": 2.842170943040401e-14,
+  "pairwise_storage_reference_scales_cm": {
+    "lower": 0.0007496585937047939,
+    "total": 7.105427357601002e-14,
+    "upper": 0.0007496585937261102
+  },
+  "probe_record_count": 324,
+  "probe_structure_complete": true,
+  "production_rom_authorized": false,
+  "reduced_coordinate_storage_survivors": [],
+  "repeat_stdout_bitwise_identity": true,
+  "schema": "swap5.rom1b2.result.v1",
+  "start_identity_failures": [],
+  "start_state_identity_with_B1_discovery": true,
+  "unique_start_state_count": 27,
+  "work_unit": "ROM-1B2",
+  "workstream": "F-ROM",
+  "execution": {
+    "workflow_run": 35392762490,
+    "workflow_job": 105754678208,
+    "executed_head": "da260e0e68a520c4ce7998be2c443d8b9447e54d",
+    "artifact_id": 10565354779,
+    "artifact_digest": "sha256:5cb11dbd45491b956ed8136c1602907c1e11bddfde0e12ac2741fbab0c38993c",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  }
+}
