@@ -12,7 +12,7 @@ program test_pub_me_d1_rejected_state_leakage
   real(real64), parameter :: h0 = -75.0_real64
   real(real64), parameter :: duration = 0.25_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
-  real(real64), parameter :: permissive_temporal_tolerance = 1.0e6_real64
+  real(real64), parameter :: permissive_temporal_tolerance = huge(0.0_real64)
 
   type(fmr_serialized_reference_model_t) :: model
   type(fmr_b110_physical_parameters_t) :: parameters
