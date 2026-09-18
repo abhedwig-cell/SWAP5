@@ -21,6 +21,8 @@ ROSSFAST_SOLVER_BLOB=dbb441f3529be179d64fb57f9c44336d3d20c540
 ROSSFAST_MODEL_BINDING_BLOB=5442fd7e7a2f392c9b796cd17c76b17977259f22
 ROSSFAST_EXECUTION_POLICY_BLOB=a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
 ROSSFAST_TABLE_PROVIDER_BLOB=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
+PREREG_BLOB=ba267cb37166df2a0171d2ced69695730cb0bc5d
+PARENT_BASE=e680334ba1e8352db8d980fa8723ac31a279f636
 
 [[ -f "$PREREG" ]] || fail 'missing P2E15 preregistration'
 [[ -f "$TEST" ]] || fail 'missing P2E15 paired matrix test'
@@ -32,14 +34,14 @@ grep -Fq '"no_threshold_retuning": true' "$PREREG" || fail 'threshold-retuning f
 grep -Fq '"transaction_layer": "EXCLUDED"' "$PREREG" || fail 'transaction-layer firewall missing'
 grep -Fq '"wetting_forcing_added_allowed": false' "$PREREG" || fail 'wetting firewall missing'
 
-CURRENT_BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
-[[ -n "$CURRENT_BASE" ]] || fail 'unable to resolve current canonical merge-base'
-git diff --quiet "$CURRENT_BASE" HEAD -- src reference || fail 'P2E15 mutated src or reference'
-echo "PUB_P2E15_RECONCILED_BASE=$CURRENT_BASE"
+git merge-base --is-ancestor "$PARENT_BASE" HEAD || fail 'P2E14 result-bearing parent is not an ancestor'
+git diff --quiet "$PARENT_BASE" HEAD -- src reference || fail 'P2E15 mutated src or reference'
+echo "PUB_P2E15_RECONCILED_BASE=$PARENT_BASE"
 
 test "$(git rev-parse HEAD:$PREREG)" = "$PREREG_BLOB" || fail 'P2E15 preregistration drift'
-test "$(git rev-parse HEAD:docs/publication/P2E09_REFERENCE_ONLY_THRESHOLD_FREEZE_RESULT.json)" = "$P2E09_RESULT_BLOB" || fail 'P2E09 threshold authority drift'
-test "$(git rev-parse HEAD:tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90)" = "$P2E01_TYPED_PILOT_BLOB" || fail 'typed paired-pilot authority drift'
+test "$(git rev-parse HEAD:docs/publication/P2E14_REFERENCE_COMMON_MATERIAL_THRESHOLD_FREEZE_RESULT.json)" = "$P2E14_RESULT_BLOB" || fail 'P2E14 threshold authority drift'
+test "$(git rev-parse HEAD:docs/publication/P2E13_REFERENCE_COMMON_MATERIAL_STATE_DOMAIN_RESULT.json)" = "$P2E13_RESULT_BLOB" || fail 'P2E13 state-domain authority drift'
+test "$(git rev-parse HEAD:docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_RESULT.json)" = "$P2E10_RESULT_BLOB" || fail 'P2E10 protocol authority drift'
 test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = "$SOLVER_CONTRACT_BLOB" || fail 'solver contract drift'
 test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = "$REFERENCE_BINDING_BLOB" || fail 'Reference binding drift'
 test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_soil_water_solver.f90)" = "$ROSSFAST_SOLVER_BLOB" || fail 'RossFast solver drift'
