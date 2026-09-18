@@ -150,3 +150,22 @@ Do not:
 - merge or shorten windows after a failure;
 - relax solver, temporal, mass or coupling tolerances;
 - reinterpret a component-domain failure as outer-coupling divergence.
+
+
+## Closure addendum
+
+E7 subsequently closed under the preregistered `REALISTIC_COMPONENT_DOMAIN_LIMIT` outcome.
+
+The frozen dates and groundwater fallback above were not changed. Exact Hupsel application evidence requires active crop/root and drainage composition on the selected dates, while the current production prescribed-head groundwater owner fails closed when active root extraction or drainage response is requested.
+
+Governing result:
+
+- `PUB_GC_E7_RESULT.json`;
+- `PUB_GC_E7_RESULT.md`.
+
+Qualification:
+
+- E7 application/domain gate run 35375158694 — SUCCESS;
+- PPA-WU01 O0/O2 owner run 35375158471 — SUCCESS.
+
+No F-GC49D context, MODFLOW timestep or loose/strong Hupsel trajectory was produced after this preregistered stop.
