@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.f-rom0ta3.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA3",
+  "phase": "CLOSED_THREE_LEVEL_LADDER_NO_GO_REFINED_CANDIDATE_RETAINED",
+  "decision": "REFERENCE_FIXED_RESOLUTION_TRAJECTORY_NO_GO_FOR_PREREGISTERED_THREE_LEVEL_LADDER",
+  "execution": {
+    "workflow_run": 35368615413,
+    "workflow_job": 105676981249,
+    "artifact_id": 10557183464,
+    "artifact_digest": "sha256:01e549d2c42c2ee2f0b50c92132ae6b31c26f3a6"
+  },
+  "sample_capability": "IMPLEMENTED_AND_EXECUTABLE",
+  "resolution_results": {
+    "0.0016_day": "4_OF_4_FULL_HORIZON_PASS",
+    "0.0008_day": "4_OF_4_FULL_HORIZON_PASS",
+    "0.0004_day": "0_OF_4_FULL_HORIZON_PASS_NONMONOTONE_REFERENCE_RETRY"
+  },
+  "successful_reference_floor_pair": "0.0016_VS_0.0008",
+  "third_level_failure_retained": true,
+  "third_level_replacement_allowed": false,
+  "refined_candidate_authority": {
+    "dt_day": 0.0008,
+    "basis": [
+      "F-ROM0_PREREGISTRATION observation_interval.refined",
+      "F-ROM0R_R2_PREREGISTRATION refined_interval_day"
+    ],
+    "selected_after_TA3_results": false
+  },
+  "next_work_unit": "F-ROM0TA4_REFINED_CANDIDATE_RESTART_REPLAY",
+  "rom1a_authorized": false,
+  "production_application_admission": false
+}
