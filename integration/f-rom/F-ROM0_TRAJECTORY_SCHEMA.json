@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.f-rom0.trajectory-schema.v1",
+  "record_type": "ACCEPTED_REFERENCE_TRAJECTORY_POINT",
+  "authority_rule": "One record corresponds to a successfully committed canonical observation interval.",
+  "required_identity": [
+    "canonical_commit",
+    "harness_commit",
+    "experiment_id",
+    "material_id",
+    "geometry_id",
+    "numerical_config_id",
+    "trajectory_id",
+    "observation_index",
+    "committed_time",
+    "committed_revision"
+  ],
+  "required_state": [
+    "pressure_head_cm[]",
+    "water_content[]",
+    "total_storage_cm",
+    "upper_0_40cm_storage_cm",
+    "lower_40_160cm_storage_cm"
+  ],
+  "required_boundary": [
+    "top_boundary_mode",
+    "top_boundary_value",
+    "bottom_boundary_mode",
+    "bottom_boundary_value"
+  ],
+  "required_accepted_flux_mass": [
+    "accepted_top_exchange_cm",
+    "accepted_bottom_exchange_cm",
+    "terminal_bottom_flux_cm_per_day_or_null",
+    "storage_start_cm",
+    "storage_end_cm",
+    "total_in_cm",
+    "total_out_cm",
+    "mass_residual_cm",
+    "mass_complete"
+  ],
+  "required_execution_diagnostics": [
+    "accepted_transaction_count",
+    "attempts",
+    "retries",
+    "rollbacks",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "min_accepted_substep_duration_day",
+    "max_accepted_substep_duration_day"
+  ],
+  "rejected_attempt_rule": "Rejected/candidate physical states are never encoded as ACCEPTED_REFERENCE_TRAJECTORY_POINT. Optional rejected-attempt diagnostics require a different record_type.",
+  "units_rule": "Units are explicit in field names or schema metadata. No implicit mixed-unit fields.",
+  "persistence_rule": "Large trajectory data may be stored as CI artifacts; repository evidence persists contract, hashes, summaries and adjudication."
+}
