@@ -21,7 +21,12 @@ grep -Fq '"expected_total_candidate_steps": 18144' "$PREREG" || fail "candidate-
 CURRENT_BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
 [[ -n "$CURRENT_BASE" ]] || fail "cannot resolve canonical merge-base"
 git diff --quiet "$CURRENT_BASE" HEAD -- src reference || fail "F-ROSS16D1 mutated src or reference"
-test "$(git rev-parse HEAD:integration/f-ross/F-ROSS16_COST_ATTRIBUTION_RESULT.json)" = "97293cb50821330f889abe67eb1452f0a2b33f46" || fail "parent result drift"
+# Preserve both authorities explicitly: D1 was preregistered against the
+# immutable pre-D1 parent result, while the current parent result is its
+# post-D1 semantic successor that incorporates the qualified D1 outcome.
+test "$(git rev-parse HEAD:integration/f-ross/F-ROSS16D1_CALLGRIND_PREREGISTRATION.json)" = "920509d8dc86cbe63a105a132e9a2347f71bfdec" || fail "D1 preregistration blob drift"
+grep -Fq '"parent_result_blob": "97293cb50821330f889abe67eb1452f0a2b33f46"' "$PREREG" || fail "historical parent authority drift"
+test "$(git rev-parse HEAD:integration/f-ross/F-ROSS16_COST_ATTRIBUTION_RESULT.json)" = "94c3f9286220f784f41caa9271cdb3b3166af3ce" || fail "post-D1 parent semantic-successor drift"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp)
 MODULE_SRC=(
