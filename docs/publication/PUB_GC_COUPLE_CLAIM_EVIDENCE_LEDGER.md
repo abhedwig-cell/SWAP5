@@ -158,13 +158,13 @@ However:
 
 ## Current next evidence order
 
-1. E1 interface identity and whole-window balance;
-2. E2 consolidated rejection/retry/exactly-once publication evidence;
-3. E3 controlled coupling-window/feedback experiment;
-4. E4 response identity u_FD vs J_S vs J_R;
-5. E5 oracle/IQN information-value test;
-6. E6 hydrological stress extension;
-7. E7 realistic case;
+1. **E1 closed — SUPPORTED_RESTRICTED** for identity/sign/accounting in the near-equilibrium F-GC44 envelope; retain a targeted non-zero-storage extension.
+2. **E2 closed — SUPPORTED_RESTRICTED** for pre-publication rejection/abort and exactly-once successful publication; post-publication durability remains separate.
+3. **E3 NEXT** — controlled coupling-window/feedback experiment.
+4. E4 response identity u_FD vs J_S vs J_R.
+5. E5 oracle/IQN information-value test.
+6. E6 hydrological stress extension.
+7. E7 realistic case.
 8. E8 scaling only after the scientific core is secure.
 
 ## First publication evidence record
