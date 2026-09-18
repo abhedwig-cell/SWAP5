@@ -1,0 +1,427 @@
+{
+  "schema": "swap5.ppa_wu05.advanced_water_dependency_graph.v1",
+  "workunit": "PPA-WU05",
+  "canonical_base": "ff56b8c1565821cf1d23f980e754905d8920371e",
+  "reference": {
+    "family": "SWAP-4.3.1-corrected",
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "patch_target_audit": {
+      "macropore": "SWAP-001 only",
+      "oxygenstress": "SWAP-007 only",
+      "rootextraction": "unchanged from B0",
+      "RWU_micro": "unchanged from B0",
+      "solute": "unchanged from B0",
+      "frozencond": "unchanged from B0",
+      "temperature": "unchanged from B0",
+      "macrorate": "unchanged from B0"
+    }
+  },
+  "current_anchors": {
+    "root_mass_owner": {
+      "authority": "src/process/mod_root_water_uptake_process.f90 + F-CI31",
+      "admitted_scope": "stateless macro Feddes drought-only precomputed root sink",
+      "state": "none",
+      "hydraulic_view": "committed pressure-head view",
+      "mass_rule": "nodewise root_extraction_sink is the single physical root-water sink; stress diagnostics are reconciliation only",
+      "hard_holds": [
+        "oxygen",
+        "salinity",
+        "frost",
+        "compensation",
+        "MICRO/Jong-van-Lier",
+        "macropore uptake",
+        "SWKIMPL=1 dynamic reevaluation"
+      ]
+    },
+    "sensible_temperature_owner": {
+      "authority": "F-CI43/F-CI45P",
+      "admitted_scope": "restricted sensible heat only",
+      "persistent_state": [
+        "temperature_profile"
+      ],
+      "hard_holds": [
+        "frost",
+        "latent heat",
+        "phase change",
+        "snow+temperature combined profile",
+        "combined water+thermal acceptance policy"
+      ]
+    },
+    "restart_owner": {
+      "authority": "src/runtime/mod_fmr_restart_state_contract.f90",
+      "rule": "optional state topology is explicit and fail-closed; new physical state families require explicit layout/reconstruction authority"
+    }
+  },
+  "families": {
+    "macropore": {
+      "legacy_files": [
+        "SWAP/macropore.f90",
+        "SWAP/macrorate.f90",
+        "SWAP/macroporeoutput.f90"
+      ],
+      "corrected_source": {
+        "macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+        "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "correction": "SWAP-001 shape repair is mandatory authority and must not be treated as optional legacy compatibility."
+      },
+      "physical_state_evidence": {
+        "source": "historical S12o recovered evidence, classified as prior design/evidence not current admission",
+        "committed_history_fields": [
+          "ICpBtDm",
+          "SorpDmCp",
+          "ThtSrpRefDmCp",
+          "TimAbsCumDmCp",
+          "VlMpDmCp",
+          "WaUnMpDmCp",
+          "VlMpDyCp"
+        ],
+        "warning": "SorpDmCp and ThtSrpRefDmCp were trial-mutable while historical rollback did not restore all such fields; current migration must close this explicitly.",
+        "active_sized_layout_evidence": "Strong exact-semantics historical evidence against a corrected reference, including full-season output identity and deep-copy probes."
+      },
+      "scratch_evidence": {
+        "S12r": "Broad active-sized MACRORATE/SATFLOW/ABSORPTION/RAPIDDRAIN scratch design recovered but executable qualification incomplete.",
+        "A23au": "Five hidden SATFLOW/ABSORPTION SAVE arrays were explicitly worker/job scratch; local reentrancy and large memory reduction qualified.",
+        "target_rule": "All recomputable rate workspace is worker/job scratch, never restart/checkpoint state."
+      },
+      "mass_dependencies": [
+        "matrix-to-macropore and macropore-to-matrix exchanges are internal transfers and must not be double-booked",
+        "top/bottom/drainage/root-related external fluxes require exactly one accepted mass owner",
+        "macropore storage delta must reconcile with accepted external fluxes and internal transfers"
+      ],
+      "transaction_dependencies": [
+        "complete candidate copy/rollback of every trial-mutable physical/history field",
+        "accepted state publication exactly once",
+        "scratch cleared/reused independently of rollback",
+        "parallel columns must own disjoint physical state and use worker-local scratch"
+      ],
+      "external_dependencies": [
+        "dynamic top-boundary/infiltration composition",
+        "drainage",
+        "root uptake only for macropore-specific uptake routes",
+        "restart optional-state layout",
+        "parallel MultiSWAP ownership"
+      ],
+      "risk": "HIGH",
+      "use_relevance": "HIGH_STRUCTURED_SOILS",
+      "architecture_maturity": "MEDIUM_HIGH_PRIOR_EVIDENCE",
+      "production_status": "NOT_MIGRATED"
+    },
+    "frost_hydraulic_modifier": {
+      "legacy_files": [
+        "SWAP/frozencond.f90",
+        "SWAP/temperature.f90"
+      ],
+      "source_sha256": {
+        "frozencond": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+        "temperature": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+      },
+      "decomposition_authority": "F-PM07 soil-temperature readiness",
+      "legacy_semantics": [
+        "Consumes committed/materialized soil temperature and top temperature.",
+        "Derives hydraulic restriction factor rfcp and frost geometry such as nodfrostbot/zfrosttop/zfrostbot.",
+        "Modifies hydraulic conductivity, drainage and bottom-flux behavior through legacy direct dependencies.",
+        "Legacy water solve consumes the previously materialized temperature profile; temperature advances after accepted water solve."
+      ],
+      "persistent_state": [],
+      "recomputable_fields": [
+        "rfcp",
+        "nodfrostbot",
+        "zfrosttop",
+        "zfrostbot"
+      ],
+      "restart_rule": "Recompute from committed temperature, frost parameters and geometry unless a later exact source qualification demonstrates hidden continuation state.",
+      "prohibited_conflation": "This legacy hydraulic frost modifier is not authority for explicit ice-content storage, latent heat or a new thermodynamic phase-change model.",
+      "target_interfaces": [
+        "read-only committed temperature-field view",
+        "solver-neutral hydraulic conductivity modifier view",
+        "explicit drainage frost modifier/constraint",
+        "explicit bottom-boundary frost modifier where source requires it"
+      ],
+      "option_constraint": "Legacy frost-plus-macropore incompatibility must remain fail-closed until separately qualified.",
+      "risk": "HIGH_BUT_BOUNDED_FOR_LEGACY_MODIFIER; VERY_HIGH_FOR_NEW_PHASE_CHANGE",
+      "use_relevance": "MEDIUM",
+      "architecture_maturity": "MEDIUM_HIGH_TEMPERATURE_OWNER_EXISTS",
+      "production_status": "NOT_MIGRATED"
+    },
+    "advanced_root_stress": {
+      "legacy_files": [
+        "SWAP/rootextraction.f90",
+        "SWAP/oxygenstress.f90",
+        "SWAP/RWU_micro.f90",
+        "SWAP/solute.f90",
+        "SWAP/frozencond.f90"
+      ],
+      "subfamilies": {
+        "oxygen": {
+          "corrected_source_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+          "correction": "SWAP-007 representability guard is mandatory B1.11 numerical authority.",
+          "current_source_trace": "F-PM05 identifies oxygen/root-development memory when enabled; minimal typed state is not yet source-bound.",
+          "dependencies": [
+            "committed hydraulic state/view",
+            "read-only temperature view",
+            "root/crop geometry",
+            "oxygen-specific continuation/root-development memory"
+          ],
+          "composition_target": "Reduction/provider around the existing root sink owner if exact source trace confirms separability; must not become a second root-water mass owner.",
+          "risk": "HIGH",
+          "authority_maturity": "MEDIUM_LOW"
+        },
+        "salinity": {
+          "source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+          "dependencies": [
+            "admitted solute concentration/osmotic-state owner not currently available",
+            "root geometry",
+            "existing root sink owner"
+          ],
+          "composition_target": "Stress modifier only after solute state semantics are production-authoritative.",
+          "risk": "HIGH",
+          "authority_maturity": "LOW_BLOCKED_BY_SOLUTE_OWNER"
+        },
+        "frost_stress": {
+          "dependencies": [
+            "frost hydraulic/temperature owner",
+            "root geometry",
+            "existing root sink owner"
+          ],
+          "composition_target": "Root stress modifier downstream of an admitted frost view.",
+          "risk": "HIGH",
+          "authority_maturity": "LOW_BLOCKED_BY_FROST"
+        },
+        "compensated_uptake": {
+          "dependencies": [
+            "existing root sink owner",
+            "nodewise stress/reduction field",
+            "root distribution"
+          ],
+          "state_question": "Exact legacy compensation state/timing and redistribution ordering remain source-review prerequisites.",
+          "risk": "MEDIUM_HIGH",
+          "authority_maturity": "LOW_SOURCE_TRACE_REQUIRED"
+        },
+        "root_growth_feedback": {
+          "dependencies": [
+            "crop/root-development owner",
+            "stress attribution",
+            "accepted process timing"
+          ],
+          "state_owner": "crop/root-development memory, not root-water sink owner",
+          "risk": "HIGH",
+          "authority_maturity": "LOW"
+        },
+        "micro_jong_van_lier": {
+          "source_sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+          "state": "F-PM05 identifies persistent state when microscopic uptake is enabled.",
+          "semantics": "Alternative microscopic uptake model, not merely an algebraic modifier of Feddes drought.",
+          "dependencies": [
+            "root geometry",
+            "hydraulic state",
+            "model-specific continuation state",
+            "root sink mass owner"
+          ],
+          "risk": "VERY_HIGH",
+          "authority_maturity": "LOW"
+        },
+        "macropore_related_uptake": {
+          "dependencies": [
+            "admitted macropore state/flux owner",
+            "existing root sink owner"
+          ],
+          "risk": "VERY_HIGH",
+          "authority_maturity": "BLOCKED_BY_MACROPORE"
+        },
+        "swkimpl1_dynamic_reevaluation": {
+          "semantics": "Numerical coupling policy where root sink is reevaluated within the nonlinear water solve.",
+          "dependencies": [
+            "solver iteration contract",
+            "root response sensitivity/derivative coverage",
+            "coupling derivative coverage"
+          ],
+          "risk": "VERY_HIGH",
+          "authority_maturity": "SEPARATE_NUMERICAL_WORKUNIT_REQUIRED"
+        }
+      },
+      "mass_rule": "All advanced stress/uptake routes must ultimately publish through one accepted nodewise root-extraction sink owner; stress attribution is diagnostic unless exact source authority defines a separate physical transfer.",
+      "production_status": "NOT_MIGRATED"
+    }
+  },
+  "dependency_edges": [
+    [
+      "sensible_temperature_owner",
+      "frost_hydraulic_modifier",
+      "committed temperature view"
+    ],
+    [
+      "frost_hydraulic_modifier",
+      "advanced_root_stress.frost_stress",
+      "frost view"
+    ],
+    [
+      "solute_owner_future",
+      "advanced_root_stress.salinity",
+      "solute/osmotic view"
+    ],
+    [
+      "macropore",
+      "advanced_root_stress.macropore_related_uptake",
+      "macropore state/flux view"
+    ],
+    [
+      "crop_root_owner",
+      "advanced_root_stress.root_growth_feedback",
+      "accepted crop/root state"
+    ],
+    [
+      "existing_root_mass_owner",
+      "all advanced root stress subfamilies",
+      "single accepted root-water sink"
+    ],
+    [
+      "macropore",
+      "parallel_multiswap",
+      "disjoint column state + worker scratch"
+    ],
+    [
+      "macropore",
+      "restart_owner",
+      "explicit optional-state topology"
+    ],
+    [
+      "frost_hydraulic_modifier",
+      "drainage",
+      "explicit frost modifier"
+    ],
+    [
+      "frost_hydraulic_modifier",
+      "bottom_boundary",
+      "explicit frost modifier"
+    ]
+  ],
+  "ranking_method": {
+    "dimensions": [
+      "use relevance",
+      "dependency unblocking",
+      "scientific risk",
+      "architecture maturity",
+      "reference evidence",
+      "qualification cost"
+    ],
+    "rule": "Prefer a bounded prerequisite slice that increases architecture authority without pretending to admit the entire legacy family."
+  },
+  "ranked_targets": [
+    {
+      "rank": 1,
+      "id": "PPA-WU05-A",
+      "target": "Macropore committed-state and transaction foundation",
+      "scope": "Define typed active-sized macropore physical/history state, complete trial/rollback semantics, restart schema and worker-scratch separation using corrected B1.11 plus S12o/A23au/S12r as prior evidence. Do not yet admit macropore flow equations into normal production.",
+      "reason": [
+        "High application relevance for structured soils.",
+        "Unblocks full macropore flow, macropore-related root uptake and future parallel macropore execution.",
+        "Strongest recovered architecture evidence of the three advanced families.",
+        "Can be bounded to ownership/restart/rollback without changing physics equations.",
+        "Directly addresses the most dangerous historical weakness: incomplete rollback of trial-mutable macropore fields."
+      ],
+      "prerequisite": "Exact B1.11 state-field lifecycle trace from macropore/macrorate plus current transaction/restart type design.",
+      "implementation_admission": "NO_FULL_MACROPORE_PRODUCTION_CLAIM"
+    },
+    {
+      "rank": 2,
+      "id": "PPA-WU05-B",
+      "target": "Legacy frost hydraulic modifier boundary",
+      "scope": "Source-bind recomputable frost fields and clean temperature->hydraulic/drainage/bottom modifier interfaces, preserving lagged legacy ordering and frost+macropore exclusion.",
+      "reason": "Current sensible-temperature owner exists and frost fields appear recomputable, but cross-owner hydraulic/drainage effects need exact source qualification.",
+      "implementation_admission": "NO_LATENT_HEAT_OR_PHASE_CHANGE_CLAIM"
+    },
+    {
+      "rank": 3,
+      "id": "PPA-WU05-C",
+      "target": "Oxygen-stress state and reduction seam review",
+      "scope": "Recover exact minimal oxygen/root-development continuation state and prove whether oxygen can be a reduction provider around the existing root mass owner.",
+      "reason": "High application relevance and corrected B1.11 source exist, but F-PM05 shows hidden persistent memory and no minimal state contract yet.",
+      "implementation_admission": "REVIEW_FIRST"
+    },
+    {
+      "rank": 4,
+      "id": "PPA-WU05-D",
+      "target": "Compensated root uptake source-bound seam",
+      "scope": "Recover exact redistribution ordering/state before any candidate.",
+      "reason": "Potentially narrower than oxygen, but current source authority is not sufficiently decomposed.",
+      "implementation_admission": "REVIEW_FIRST"
+    },
+    {
+      "rank": 5,
+      "id": "PPA-WU05-E",
+      "target": "Salinity root stress",
+      "prerequisite": "typed solute state owner",
+      "implementation_admission": "BLOCKED_BY_SOLUTE"
+    },
+    {
+      "rank": 6,
+      "id": "PPA-WU05-F",
+      "target": "Frost root stress",
+      "prerequisite": "admitted frost hydraulic modifier",
+      "implementation_admission": "BLOCKED_BY_FROST"
+    },
+    {
+      "rank": 7,
+      "id": "PPA-WU05-G",
+      "target": "MICRO/Jong-van-Lier uptake",
+      "prerequisite": "independent state/model authority",
+      "implementation_admission": "HIGH_COMPLEXITY_LATER"
+    },
+    {
+      "rank": 8,
+      "id": "PPA-WU05-H",
+      "target": "SWKIMPL=1 dynamic root-sink reevaluation",
+      "prerequisite": "separate nonlinear solver/sensitivity authority",
+      "implementation_admission": "SEPARATE_NUMERICAL_PROGRAM"
+    },
+    {
+      "rank": 9,
+      "id": "PPA-WU05-I",
+      "target": "Thermodynamic phase-change/latent-heat model",
+      "prerequisite": "explicit new-physics authority",
+      "implementation_admission": "NOT_A_LEGACY_MIGRATION_CLAIM"
+    }
+  ],
+  "safe_parallelism": [
+    [
+      "PPA-WU05-A macropore state lifecycle trace",
+      "PPA-WU05-B frost modifier source trace"
+    ],
+    [
+      "PPA-WU05-C oxygen state review",
+      "PPA-WU05-D compensation source trace"
+    ],
+    [
+      "solute owner work",
+      "macropore owner work"
+    ]
+  ],
+  "must_serialize": [
+    [
+      "macropore state/transaction foundation",
+      "full macropore rate/flow production migration"
+    ],
+    [
+      "legacy frost modifier boundary",
+      "frost-root-stress composition"
+    ],
+    [
+      "solute state owner",
+      "salinity root stress"
+    ],
+    [
+      "oxygen minimal state authority",
+      "oxygen stress production candidate"
+    ],
+    [
+      "macropore production owner",
+      "macropore-related root uptake"
+    ],
+    [
+      "any advanced root modifier",
+      "single root-sink mass booking qualification"
+    ]
+  ],
+  "triage_verdict": "DEPENDENCY_GRAPH_FROZEN_FIRST_TARGET_MACROPORE_STATE_TRANSACTION_FOUNDATION"
+}
