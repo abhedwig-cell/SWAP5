@@ -1,0 +1,38 @@
+name: F-ROSS21 tiered K2 K4 K8 certificate research
+
+on:
+  push:
+    branches:
+      - work/f-ross21-tiered-k2-k4-k8-certificate
+  pull_request:
+    branches:
+      - work/f-ross19-adaptive-k2-k4-certificate
+    paths:
+      - 'integration/f-ross/F-ROSS21_*'
+      - 'tests/ross/research/mod_rossfast_d3r_*_tiered.f90'
+      - 'tests/ross/test_ross21_all_material_tiered.f90'
+      - 'tests/ross/run_ross21_tiered_certificate.sh'
+      - 'tools/performance/f_ross21_all_material_summary.py'
+      - 'tools/performance/f_ross21_anchor_identity.py'
+      - '.github/workflows/f-ross21-tiered-certificate.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute F-ROSS21 research qualification
+        run: bash tests/ross/run_ross21_tiered_certificate.sh
+      - name: Preserve F-ROSS21 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross21-tiered-certificate-${{ github.run_id }}
+          path: F-ROSS21_EVIDENCE
+          if-no-files-found: warn
