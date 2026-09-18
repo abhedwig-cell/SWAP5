@@ -4,7 +4,7 @@
   "title": "MODFLOW6 Linear Response Backend — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
   "canonical_admission": {
     "production_admission_head": "ae15d47dab2a31c5099ce1b4ff8ee01918153405",
     "preimage": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
@@ -48,5 +48,11 @@
     "no predictor/corrector orchestration",
     "no Ribasim or irrigation"
   ],
-  "next_permitted_action": "After closeout qualification, proceed to current-canonical materialization of F-GC34 typed MODFLOW6 API binding/publication. Do not reopen F-GC33 to add pointer/package ownership."
+  "next_permitted_action": "Proceed serially to current-canonical materialization of F-GC34 typed MODFLOW6 API binding/publication. Preserve F-GC33 production blob 1d3c1af6baab71f63749555339d0c89e8aed4ddf and do not add pointer/package ownership to this capability.",
+  "closeout_qualification": {
+    "metadata_head": "903941d7318cdd944b1acc4780581292037a93de",
+    "workflow_run": 35293286028,
+    "workflow_job": 105440524632,
+    "conclusion": "success"
+  }
 }
