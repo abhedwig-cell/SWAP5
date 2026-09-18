@@ -10,7 +10,7 @@ trap 'rm -rf "$BUILD"' EXIT
 
 fail(){ echo "PPA_WU02_GATE_FAIL $*" >&2; exit 1; }
 
-CANONICAL="12beef3e91f90f88b101c13af72cd216bccc63e3"
+CANONICAL="0d1798aafbf43417801d75a140e4f4f3cef74bd8"
 changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
 [[ "$changed_src" == "src/runtime/mod_fmr_production_application_bootstrap.f90" ]] || fail "unexpected production delta: $changed_src"
 for locked in \
