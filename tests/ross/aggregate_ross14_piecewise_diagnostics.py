@@ -48,6 +48,8 @@ def main():
     by_se=Counter()
     by_step=Counter()
     by_pair=Counter()
+    by_cause=Counter()
+    production_by_cause=Counter()
     for m in MATERIALS:
         for k,v in by[m]["inadmissible_by_Se"].items():
             by_se[k]+=int(v)
@@ -55,6 +57,10 @@ def main():
             by_step[k]+=int(v)
         for k,v in by[m]["inadmissible_by_Se_and_step_count"].items():
             by_pair[k]+=int(v)
+        for k,v in by[m].get("inadmissible_by_cause",{}).items():
+            by_cause[k]+=int(v)
+        for k,v in by[m].get("production_relevant_inadmissible_by_cause",{}).items():
+            production_by_cause[k]+=int(v)
 
     max_components=max(by[m]["max_transitioning_components"] for m in MATERIALS)
     max_disp=max(by[m]["max_abs_cell_displacement"] for m in MATERIALS)
@@ -84,6 +90,8 @@ def main():
       "inadmissible_by_Se":dict(sorted(by_se.items())),
       "inadmissible_by_step_count":dict(sorted(by_step.items(),key=lambda kv:int(kv[0]))),
       "inadmissible_by_Se_and_step_count":dict(sorted(by_pair.items())),
+      "inadmissible_by_cause":dict(sorted(by_cause.items())),
+      "production_relevant_inadmissible_by_cause":dict(sorted(production_by_cause.items())),
       "max_transitioning_components":max_components,
       "max_abs_cell_displacement":max_disp,
       "worst_material_by_inadmissible_count":{
@@ -107,6 +115,8 @@ def main():
           "production_relevant_failure":by[m]["production_relevant_failure"],
           "inadmissible_by_Se":by[m]["inadmissible_by_Se"],
           "inadmissible_by_step_count":by[m]["inadmissible_by_step_count"],
+          "inadmissible_by_cause":by[m].get("inadmissible_by_cause",{}),
+          "production_relevant_inadmissible_by_cause":by[m].get("production_relevant_inadmissible_by_cause",{}),
           "max_transitioning_components":by[m]["max_transitioning_components"],
           "max_abs_cell_displacement":by[m]["max_abs_cell_displacement"],
         } for m in MATERIALS
@@ -130,6 +140,8 @@ def main():
       "total_inadmissible":result["total_inadmissible_route_count"],
       "production_relevant_inadmissible":result["total_production_relevant_inadmissible_count"],
       "by_step":result["inadmissible_by_step_count"],
+      "by_cause":result["inadmissible_by_cause"],
+      "production_by_cause":result["production_relevant_inadmissible_by_cause"],
       "verdict":result["verdict"]
     },sort_keys=True))
 
