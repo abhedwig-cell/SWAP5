@@ -1,0 +1,36 @@
+name: F-ROSS25 serial hydrologic validation
+
+on:
+  push:
+    branches:
+      - work/f-ross25-serial-hydrologic-validation
+    paths:
+      - 'integration/f-ross/F-ROSS25_*'
+      - 'tests/ross/test_ross25_serial_hydrologic_validation.f90'
+      - 'tests/ross/run_ross25_serial_hydrologic_validation.sh'
+      - 'tools/performance/f_ross25_serial_validation_summary.py'
+      - '.github/workflows/f-ross25-serial-hydrologic-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered serial hydrologic validation
+        run: bash tests/ross/run_ross25_serial_hydrologic_validation.sh
+      - name: Preserve F-ROSS25 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross25-serial-hydrologic-validation-${{ github.run_id }}
+          path: F-ROSS25_SERIAL_VALIDATION_RESULT.json
+          if-no-files-found: warn
