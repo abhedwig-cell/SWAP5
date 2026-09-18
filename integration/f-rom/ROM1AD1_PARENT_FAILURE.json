@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.rom1ad1.parent-failure.v1",
+  "workstream": "F-ROM",
+  "parent_work_unit": "ROM-1A",
+  "parent_preregistration": "integration/f-rom/F-ROM1A_PREREGISTRATION.json",
+  "execution": {
+    "workflow_run": 35376913714,
+    "workflow_job": 105703635297,
+    "executed_head": "9e5e7f4878aedf1c16c9eedf96fb8861a57575d1",
+    "artifact_id": 10560108138,
+    "artifact_digest": "sha256:638ce6198d81f026ff99d60b873199d62612447e1be3f8605832c3a123cb202a",
+    "conclusion": "failure"
+  },
+  "observed_failure": {
+    "split": "DISCOVERY",
+    "history": "D01",
+    "symbol": "TOP_PLUS",
+    "bottom_mode": 2,
+    "accepted_steps_before_failure": 20,
+    "failed_step": 21,
+    "accepted_predecessor_absolute_time_day": 0.0192,
+    "failed_requested_end_time_day": 0.0200,
+    "last_accepted_revision": 22,
+    "failure_marker": "F_ROM1A_FAIL ROM1A accepted history step"
+  },
+  "classification": "PENDING_ROM1AD1_CAUSE_DIAGNOSTIC",
+  "history_retuning_allowed": false,
+  "solver_control_retuning_allowed": false,
+  "parent_result_reclassified": false
+}
