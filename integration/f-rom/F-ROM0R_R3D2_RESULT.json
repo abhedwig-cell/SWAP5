@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.f-rom0r.r3d2-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D2",
+  "title": "Prospective representation-floor diagnostic for B01 total-only retries",
+  "execution": {
+    "workflow_run": 35373414922,
+    "workflow_job": 105692452544,
+    "executed_head": "b363bcf450fa47ec771982565b291300f9af1438",
+    "artifact_id": 10560005201,
+    "artifact_digest": "sha256:a17033818aa5f75ffc1f7a624142cbda863d9549b30987f4f9b9fab70151e34d",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+  "formula_inputs_are_pre_solve_only": true,
+  "observed_failed_residual_used_in_formula": false,
+  "empirical_safety_factor_used": false,
+  "rows": [
+    {
+      "case": "BOTTOM_HEAD_RISE",
+      "classification": "RETRY_TOTAL_ONLY",
+      "representation_bound_cm": 8.881784197001252e-15,
+      "representation_rate_bound_cm_per_day": 1.110223024625156e-11,
+      "abs_total_residual_integrated_cm": 8.4821039081362e-16,
+      "residual_over_representation_bound": 0.09550000000000004,
+      "within_representation_bound": true
+    },
+    {
+      "case": "BOTTOM_HEAD_FALL",
+      "classification": "RETRY_TOTAL_ONLY",
+      "representation_bound_cm": 8.881784197001252e-15,
+      "representation_rate_bound_cm_per_day": 1.110223024625156e-11,
+      "abs_total_residual_integrated_cm": 1.2569500995596178e-15,
+      "residual_over_representation_bound": 0.14152000000000006,
+      "within_representation_bound": true
+    }
+  ],
+  "decision": "B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND",
+  "interpretation": "Both B01 R3 retry-only total-column residuals are substantially below the independent prospective floating-point representation bound imported from the earlier PUB-P2E21 method. This is explanatory evidence only and does not alter the original R3 controls or authorize a tolerance policy by itself.",
+  "solver_tolerance_changed": false,
+  "production_or_reference_source_mutated": false,
+  "remedy_authorized": false,
+  "rom1a_authorized": false
+}
