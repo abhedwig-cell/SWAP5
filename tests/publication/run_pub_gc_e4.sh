@@ -5,7 +5,7 @@ cd "$ROOT"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-pub-gc-e4-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD/modflow-bin" "$BUILD/downloads" "$BUILD/bridge"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "PUB_GC_E3D_FAIL $*" >&2; exit 1; }
+fail(){ echo "PUB_GC_E4_FAIL $*" >&2; exit 1; }
 
 python3 - <<PY
 from pathlib import Path
@@ -108,6 +108,7 @@ nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_c' || fa
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_configured_c' || fail "missing configurable SWAP C ABI"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_e4_head_trial_c' || fail "missing E4 head-trial C ABI"
+nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_e4_flux_point_c' || fail "missing E4 pure-bottom flux-point C ABI"
 
 OUT="${PUB_GC_EVIDENCE_DIR:-$ROOT/build/pub-gc-e4}"
 mkdir -p "$OUT"
@@ -142,7 +143,8 @@ for i in "${!IDS[@]}"; do
       if [[ "$side" == "minus" ]]; then q="$qminus"; else q="$qplus"; fi
       POINT_OUT="$(
         FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
-        E4_BASELINE_ID="$id" E4_WINDOW_DAY="$window" E4_QBOT_CM_PER_DAY="$q" \
+        E4_BASELINE_ID="$id" E4_WINDOW_DAY="$window" \
+        E4_BASELINE_QBOT_CM_PER_DAY="$q0" E4_QBOT_CM_PER_DAY="$q" \
         E4_FRACTION="$frac" E4_SIDE="$side" \
           python3 tests/publication/test_pub_gc_e4_flux_predictor.py
       )"
@@ -180,7 +182,7 @@ def plateau(records,value_key):
         vals=[float(x[value_key]) for x in triple]
         med=statistics.median(vals)
         denom=max(abs(med),np.finfo(float).tiny)
-        spread=(max(vals)-min(vals))/denom
+        spread=max(abs(v-med) for v in vals)/denom
         if spread<=0.01:
             candidates.append({"start":triple[0]["scale"],"end":triple[-1]["scale"],"median":med,"relative_spread":spread})
     return candidates
