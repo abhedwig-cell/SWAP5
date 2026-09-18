@@ -1,0 +1,33 @@
+name: F-ROSS23 Static production characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross23-static-production-characterization
+    paths:
+      - 'integration/f-ross/F-ROSS23_*'
+      - 'tests/ross/test_ross23_static_production_characterization.f90'
+      - 'tests/ross/run_ross23_static_production_characterization.sh'
+      - 'tools/performance/f_ross23_paired_screen.py'
+      - '.github/workflows/f-ross23-static-production-characterization.yml'
+  workflow_dispatch:
+
+jobs:
+  paired-cpu-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered F-ROSS23 216-case paired CPU screen
+        run: bash tests/ross/run_ross23_static_production_characterization.sh
+      - name: Preserve screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross23-static-characterization-${{ github.run_id }}
+          path: F-ROSS23_SCREENING_RESULT.json
+          if-no-files-found: warn
