@@ -828,45 +828,51 @@ This result determines whether ACCELERATE remains only a section of this manuscr
 
 ---
 
-# 5. Discussion — planned argument
+# 5. Discussion
 
-The discussion should answer four questions rather than repeat the results.
+## 5.1 The contribution is a coupling contract, not a new nonlinear solver
 
-## 5.1 What is actually new?
+The present method should not be interpreted as a new fixed-point, Newton or quasi-Newton algorithm. Partitioned iteration, rollback/checkpointing, MODFLOW external control, dynamic hydrological response and interface acceleration all have established precedents. The contribution pursued here is narrower and more domain-specific: these ideas are assembled into a coupling contract in which independently time-integrating hydrological components retain numerical ownership while the physical meaning, temporal support and publication authority of exchanged water are made explicit.
 
-The paper should explicitly state that:
+The E1/E2 results show why this distinction is not merely software terminology. A real SWAP corrector can compute a physically meaningful bottom exchange while the authoritative SWAP revision and interface ledger both remain unchanged. Only after coupled acceptance and ordered publication does that exchange become model history. In a water-balance model this makes state authority and mass authority part of the scientific coupling definition rather than only an implementation concern.
 
-- partitioned iteration is established;
-- rollback/checkpointing is established;
-- MODFLOW external control is established;
-- dynamic hydrological response is established;
-- interface quasi-Newton acceleration is established.
+## 5.2 Generic orchestration is necessary but not sufficient
 
-The contribution lies in the hydrologically explicit integration and evaluation of these ideas in one coupling contract.
+Generic co-simulation infrastructure can coordinate time, data exchange, iteration and rollback, but it cannot infer the scientific identity of the exchanged quantities. In the present coupling, the distinction between `q_bot`, the effective groundwater-facing exchange, a terminal flux and a whole-window transferred amount is material. The E1 result showed that even in the simple near-equilibrium case the predictor `q_bot` and reconstructed `q_u` are not numerical aliases.
 
-## 5.2 Why not simply use a generic coupler?
+A reusable hydrological coupling therefore requires two layers at once: generic execution discipline and domain-specific interface semantics. Removing the former risks state and retry errors; removing the latter risks a numerically functioning but physically misidentified exchange.
 
-A generic coupler can coordinate time, data and iteration, but it cannot infer the scientific identity of `q_bot`, `q_u`, accepted whole-window mass, head datum or model-specific publication semantics.
+## 5.3 Solver autonomy trades interface complexity for component independence
 
-The coupling therefore requires both generic orchestration principles and domain-specific scientific contracts.
+Embedding SWAP inside MODFLOW, or the reverse, can simplify direct access to internal variables. It also couples the lifecycle of one model to implementation details of the other. The solver-autonomous design instead leaves Richards solution, adaptive SWAP timestepping, groundwater nonlinear solution and component state ownership inside the respective models.
 
-## 5.3 Why not embed SWAP inside MODFLOW or vice versa?
+The cost of that choice is a stricter external contract. The coupling layer must explicitly define checkpoint origin, finite-window response, convergence, datum and sign transformations, and the publication transaction. The present results do not establish that this design is universally superior to embedded coupling. They demonstrate that it can be made explicit and testable while preserving component independence.
 
-Embedding can simplify access to internal variables but transfers ownership across component boundaries and creates stronger maintenance coupling between evolving codebases.
+## 5.4 Numerical interface convergence is not identical to hydrological relevance
 
-The solver-autonomous design deliberately trades some interface complexity for component independence, explicit provenance and upgradeability.
+The first E3 matrix provides an important negative control. Across the twelve valid low-flux cases, a one-pass affine response could violate the fixed `1e-15 m/s` interface criterion by a large factor. The largest relative loose mismatch was 1.77 and the largest absolute loose residual was `2.80e-12 m/s`. Strong iteration reduced the accepted interface residual below the qualification criterion in two to five outer iterations.
 
-This trade-off should be evaluated rather than presented as universally superior.
+The resulting physical correction was nevertheless extremely small. The maximum loose-to-iterative groundwater-head difference was only `5.55e-9 m`, and the largest exchange-rate correction was `1.92e-14 m/s`. Integrated over the longest tested window, the largest loose residual represents only approximately `2.42e-9 m` of water depth.
 
-## 5.4 How much response information should be exposed?
+This result matters for both coupling design and performance assessment. An absolute interface tolerance can be useful as a qualification rule because it gives a reproducible algebraic acceptance condition. It should not automatically be interpreted as a hydrological-error threshold. Likewise, iteration count by itself does not establish that a coupling problem is scientifically difficult. Later convergence policies should therefore be evaluated against state and mass impact in addition to algebraic residual reduction.
 
-The answer may be regime-dependent.
+The result also prevents a misleading positive claim: the current near-equilibrium F-GC44-derived fixture is a weak-feedback control, not evidence that strong coupling is always hydrologically necessary.
 
-If black-box multisecant learning performs as well as supplied response information, the simpler interface should be preferred.
+## 5.5 The component qualification envelope constrains the coupled experiment
 
-If fresh component response has material value after hydrological regime change or in strongly coupled windows, the additional response contract is justified.
+The original E3 matrix attempted substantially larger predictor fluxes, but those cases did not reach MODFLOW. E3-D localized all observed failures to incomplete real-SWAP whole-window predictor execution before tangent construction or groundwater coupling. A denser scan demonstrated a non-trivial valid interval between the original low-flux control and the first failed points.
 
-A negative ACCELERATE result is scientifically useful because it places an upper bound on the value of exposing more internal response information.
+This distinction is important. A failed coupled experiment cannot be interpreted as coupling instability when one component has not produced a valid finite-window response. The admissible coupling domain is bounded first by the scientific/numerical envelopes of the participating components and only then by the convergence properties of the outer coupling algorithm.
+
+The response coefficient also varied strongly with window duration in the E3-D ready cases. That observation is consistent with treating `u` as a finite-window response quantity rather than as a static soil property. Its exact relationship to storage response and to the actual prescribed-head interface derivative remains an E4 question.
+
+## 5.6 How much response information should be exposed?
+
+The current evidence is not yet sufficient to decide whether component-provided response information is computationally preferable to black-box learning. E3 establishes two prerequisites for that later comparison. First, the low-flux control shows that sophisticated acceleration would have little scientific value in a regime where the coupled state correction itself is negligible. Second, E3-D shows that response information has its own qualification envelope and changes with window duration.
+
+E4 therefore first determines what the supplied response actually represents. Only after that identity is established should E5 compare supplied response against IQN/Anderson-style learned interface information. If a strong black-box method performs as well at lower information cost, the simpler interface should be preferred. Conversely, a reproducible advantage of fresh response information after state or regime change would justify the additional response contract.
+
+A negative ACCELERATE result would still strengthen the central coupling paper because it would place an empirical upper bound on how much internal response information this class of coupling needs.
 
 ---
 
