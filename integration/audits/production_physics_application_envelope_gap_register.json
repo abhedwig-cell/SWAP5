@@ -1810,10 +1810,11 @@
       "id": "PPA-WU05-A",
       "title": "Macropore source/state/mass/transaction authority",
       "goal": "Freeze repository-authoritative macropore ownership, mass, restart and rollback invariants while distinguishing exact B1.11 identity from corroborated historical evidence.",
-      "status": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
+      "status": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
       "production_admission": "NONE_REVIEW_ONLY",
       "exit": "PARTIAL: owner-level invariants and recovered repository evidence are frozen; exact B1.11 field/flux census remains blocked until byte-exact source materialization.",
-      "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census"
+      "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
+      "qualification": "PPA-WU05-A run 35398044562 PASS; Documentation 35398044520 PASS; F-CI canonical qualification 35398044469 all jobs PASS on the pre-evidence head."
     }
   ],
   "post_audit_updates": [
@@ -1883,6 +1884,18 @@
         "F-SI15@fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
       ],
       "effect": "Freezes macropore state/mass/transaction/restart invariants without production migration; exact field and flux census remains blocked on byte-exact B1.11 source materialization."
+    },
+    {
+      "workunit": "PPA-WU05-A",
+      "state": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
+      "qualification": {
+        "authority_run": 35398044562,
+        "documentation_run": 35398044520,
+        "canonical_run": 35398044469
+      },
+      "production_delta": "NONE",
+      "reference_delta": "NONE",
+      "effect": "Macropore owner-level state/mass/restart/rollback invariants and recoverable repository evidence are qualified. Exact B1.11 field/flux census and any production migration remain blocked on byte-exact source materialization."
     }
   ]
 }
