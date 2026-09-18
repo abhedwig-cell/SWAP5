@@ -1,0 +1,219 @@
+{
+  "schema": "swap5.f-rom0.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "purpose": "Qualify accepted Reference-Richards trajectory observation and measure the output-specific numerical Reference floor before any reduced-state ambiguity study.",
+  "runtime_authority": "integration/f-rom/F-ROM0_RUNTIME_PATH_RECONCILIATION.json",
+  "production_mutation_allowed": false,
+  "materials": [
+    {
+      "id": "B01",
+      "role": "HIGHER_CONDUCTIVITY_REFERENCE_MATERIAL",
+      "source_commit": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+      "source_path": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "ksatfit_cm_per_day": 31.225016,
+      "lambda": 0.98087
+    },
+    {
+      "id": "B14",
+      "role": "LOW_CONDUCTIVITY_HIGHER_CAPILLARY_CONTRAST",
+      "source_commit": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+      "source_path": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "ksatfit_cm_per_day": 0.895023,
+      "lambda": -0.334926
+    }
+  ],
+  "material_selection_rationale": [
+    "B01 and B14 are existing pinned Staringreeks-derived fixtures with strongly contrasting fitted Ksat and alpha values.",
+    "Both belong to the 36-material F-ROSS24 characterization; the only Reference-invalid F-ROSS24 material cases were B16, B17 and B18, not B01 or B14.",
+    "Selection was made before ROM trajectory results and is not based on reduction favourability."
+  ],
+  "base_geometry": {
+    "nodes": 16,
+    "dz_cm": 10,
+    "depth_cm": 160,
+    "profile": "HOMOGENEOUS_SINGLE_MATERIAL",
+    "rationale": "Reuses the established E0 geometry as a harness/reference-authority starting point; this is not a claim that 16 nodes are scientifically sufficient for ROM."
+  },
+  "refined_geometry": {
+    "nodes": 32,
+    "dz_cm": 5,
+    "depth_cm": 160,
+    "purpose": "REFERENCE_VERTICAL_RESOLUTION_FLOOR_DIAGNOSTIC"
+  },
+  "initial_state": {
+    "effective_saturation": 0.85,
+    "pressure_profile": "UNIFORM_HEAD_FROM_MVG_EFFECTIVE_SATURATION",
+    "sources_sinks": "ZERO_FOR_ROM0_PURE_HYDRAULICS",
+    "rationale": "Mid-range state already paired-valid for both selected materials in the F-ROSS24 E0 characterization."
+  },
+  "observation_interval_day": {
+    "base": 0.0016,
+    "refined": 0.0008,
+    "rule": "Refined experiments preserve the same physical horizon and are compared at common observation times."
+  },
+  "experiment_families": [
+    {
+      "id": "E0_HOLD",
+      "intervals": 16,
+      "top_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": 0
+      },
+      "bottom_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": 0
+      },
+      "purpose": "accepted-lifecycle reproducibility and zero-external-flux accounting diagnostic"
+    },
+    {
+      "id": "E1_NOMINAL_FLUX",
+      "intervals": 32,
+      "top_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": 0.01
+      },
+      "bottom_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": -0.004
+      },
+      "provenance": "F-ROSS24 E0 NOMINAL factors",
+      "purpose": "ordinary accepted wetting/throughflow trajectory"
+    },
+    {
+      "id": "E2_DRYING_FLUX",
+      "intervals": 32,
+      "top_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": -0.005
+      },
+      "bottom_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": -0.019
+      },
+      "provenance": "F-ROSS24 E0 DRYING factors",
+      "purpose": "ordinary accepted drying/drainage trajectory"
+    },
+    {
+      "id": "E3_BOTTOM_HEAD_RISE",
+      "intervals": 32,
+      "top_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": 0
+      },
+      "bottom_boundary": {
+        "mode": "PRESCRIBED_HEAD",
+        "head_expression": "0.75 * initial_h0"
+      },
+      "purpose": "accepted upward/capillary influence trajectory"
+    },
+    {
+      "id": "E4_BOTTOM_HEAD_FALL",
+      "intervals": 32,
+      "top_boundary": {
+        "mode": "EXPLICIT_FLUX",
+        "factor_of_initial_conductivity": 0
+      },
+      "bottom_boundary": {
+        "mode": "PRESCRIBED_HEAD",
+        "head_expression": "1.25 * initial_h0"
+      },
+      "purpose": "accepted lower-boundary drying trajectory"
+    },
+    {
+      "id": "E5_DIRECTION_REVERSAL",
+      "segments": [
+        {
+          "family": "E3_BOTTOM_HEAD_RISE",
+          "intervals": 16
+        },
+        {
+          "family": "E4_BOTTOM_HEAD_FALL",
+          "intervals": 16
+        }
+      ],
+      "purpose": "accepted hydraulic direction-reversal observation"
+    }
+  ],
+  "reference_floor_matrix": {
+    "required": [
+      {
+        "dimension": "OBSERVATION_INTERVAL",
+        "compare": "0.0016 day vs 0.0008 day",
+        "cases": [
+          "B01:E1_NOMINAL_FLUX",
+          "B01:E2_DRYING_FLUX",
+          "B14:E1_NOMINAL_FLUX",
+          "B14:E2_DRYING_FLUX"
+        ]
+      },
+      {
+        "dimension": "VERTICAL_RESOLUTION",
+        "compare": "16x10 cm vs 32x5 cm over same 160 cm profile",
+        "cases": [
+          "B01:E1_NOMINAL_FLUX",
+          "B14:E2_DRYING_FLUX"
+        ]
+      }
+    ],
+    "optional_after_required": "O0/O2 accepted-trajectory replay if build-level variation can affect research observations.",
+    "threshold_rule": "MEASURE_ONLY. No ROM accuracy threshold is derived until these differences are available."
+  },
+  "accepted_observations": [
+    "committed_time",
+    "committed_revision",
+    "pressure_head_profile",
+    "water_content_profile",
+    "total_storage",
+    "fixed_upper_0_40cm_storage",
+    "fixed_lower_40_160cm_storage",
+    "accepted_top_exchange",
+    "accepted_bottom_exchange",
+    "terminal_bottom_flux_if_available",
+    "mass_storage_start",
+    "mass_storage_end",
+    "mass_total_in",
+    "mass_total_out",
+    "mass_residual",
+    "accepted_transaction_count",
+    "attempts",
+    "retries",
+    "rollbacks",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "min_accepted_substep_duration",
+    "max_accepted_substep_duration"
+  ],
+  "acceptance_rules": [
+    "Only successfully committed canonical intervals enter the accepted trajectory dataset.",
+    "Rejected attempts may appear only in diagnostic counters or a separately tagged diagnostic stream.",
+    "No failed experiment is silently dropped; it is classified against the ROM-0 close decisions.",
+    "The experiment definitions above are not retuned after observing results within this preregistration."
+  ],
+  "data_split_reserved_for_rom1": {
+    "discovery_histories": "NOT_GENERATED_IN_ROM0",
+    "held_out_histories": "NOT_GENERATED_IN_ROM0",
+    "rule": "ROM-0 qualifies the measuring instrument only. ROM-1A will preregister discovery/holdout generation after ROM-0 closes."
+  },
+  "close_gate": [
+    "OWNERSHIP_PASS",
+    "REPRODUCIBILITY_PASS",
+    "CONSERVATION_PASS",
+    "BIDIRECTIONAL_REACHABILITY_PASS",
+    "REFERENCE_FLOOR_MEASURED",
+    "NO_PRODUCTION_SEMANTIC_MUTATION"
+  ],
+  "no_go_rule": "Do not proceed to ROM-1A if accepted-state observation requires bypassing commit ownership or if the Reference floor cannot be measured reproducibly.",
+  "threshold_retuning_after_execution_allowed": false
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.f-romp.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-P",
+  "title": "Proposition Qualification",
+  "phase": "CLOSED_PROCEED_TO_ROM0",
+  "branch": "work/f-romp-rom0-proposition-authority",
+  "canonical_baseline": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "authority": "docs/science/F-ROMP_PROPOSITION_QUALIFICATION.md",
+  "research_programme_authority": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "initial_capability": "PURE_ONE_COLUMN_SOIL_WATER_HYDRAULICS",
+  "error_threshold": "DEFERRED_UNTIL_ROM0_REFERENCE_FLOOR",
+  "target_workload": "MUST_BE_FROZEN_BEFORE_PRODUCTION_VALUE_CLAIM",
+  "comparators": [
+    "REFERENCE_RICHARDS",
+    "CURRENT_ADMITTED_ROSSFAST",
+    "SPATIALLY_COARSENED_RICHARDS",
+    "LITERATURE_INTEGRATED_TWO_LAYER_WHERE_COMPARABLE"
+  ],
+  "decision": "PROCEED_TO_ROM0",
+  "production_solver_authorized": false,
+  "production_source_mutation": "NONE",
+  "blockers": []
+}
