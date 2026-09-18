@@ -1,0 +1,59 @@
+name: F-ROM01 Reference Richards history pilot
+
+on:
+  push:
+    branches:
+      - work/f-rom01-minimal-prognostic-representation
+    paths:
+      - 'docs/science/F-ROM01_MINIMAL_PROGNOSTIC_REPRESENTATION.md'
+      - 'integration/f-rom/F-ROM01_STATUS.json'
+      - 'integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom01-reference-history-pilot.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/science/F-ROM01_MINIMAL_PROGNOSTIC_REPRESENTATION.md'
+      - 'integration/f-rom/**'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom01-reference-history-pilot.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom01-reference-history-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reference-history-pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout F-ROM01 candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Execute preregistered Reference Richards history pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM01_EVIDENCE
+          F_ROM01_EVIDENCE_DIR="$PWD/F-ROM01_EVIDENCE" \
+            bash tests/rom/run_f_rom01_reference_histories.sh | tee F-ROM01_EVIDENCE/gate.txt
+
+      - name: Preserve pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom01-reference-history-pilot-${{ github.run_id }}
+          path: F-ROM01_EVIDENCE
+          if-no-files-found: warn
