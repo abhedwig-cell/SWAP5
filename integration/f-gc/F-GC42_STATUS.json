@@ -3,8 +3,8 @@
   "work_unit": "F-GC42",
   "title": "Live whole-window SWAP5-MODFLOW6 service materialization",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_COMPOSITION_BOUNDARY",
+  "phase": "QUALIFY",
+  "state": "OWNER_GREEN_INDEPENDENT_QUEUED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "4d50ca2676cf9404e62b182767686ab677921511"
@@ -28,5 +28,17 @@
     "no N:1 scaling, Ribasim, irrigation, or new groundwater physics"
   ],
   "reconcile_verdict": "New composition surface: canonical has qualified F-GC39 and F-GC41 separately but no live end-to-end service composition authority.",
-  "next_permitted_action": "Implement deterministic composition harness first, then qualify against live MODFLOW prepared-solve/timestep lifecycle and independent verifier."
+  "next_permitted_action": "Obtain F-VQ114 exact-head independent evidence; if green, reconcile canonical delta and admit/close F-GC42. The next later capability is production SWAP participant binding plus a real end-to-end application case.",
+  "owner_qualification": {
+    "head": "395af98768c7e2d5a756a7aa91b692ce9dd89649",
+    "run": 35337095318,
+    "job": 105574324629,
+    "conclusion": "success",
+    "evidence": [
+      "3 passed",
+      "FGC42_WHOLE_WINDOW_SERVICE_GATE=PASS"
+    ]
+  },
+  "current_head": "57898d4476c8a6dadecc087f21a6d4aa97d26be0",
+  "evidence_boundary": "F-GC42 qualifies composition of admitted F-GC39 and F-GC41 contracts. It does not claim a real-SWAP plus real-MODFLOW production application run."
 }
