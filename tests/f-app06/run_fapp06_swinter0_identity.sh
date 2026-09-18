@@ -72,19 +72,13 @@ cat "$BUILD/o0/output.txt"
 echo "F_APP06_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
 echo 'F_APP06_OWNER_QUALIFICATION=PASS'
 
-FIX=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz
-test "$(git hash-object "$FIX")" = 344c00d49717374a20772aa006edef720432d387 || fail "exact B1.11 fixture blob drift"
-python3 - "$FIX" "$BUILD/exact.csv" <<'PY'
-import hashlib,sys,zlib
-data=open(sys.argv[1],"rb").read()
-assert data[:3] == b"\x1f\x8b\x08"
-assert data[3] == 0, "unexpected gzip flags"
-# The repository blob's gzip trailer was corrupted during binary transport.
-# Recover only the DEFLATE payload, then authenticate the exact raw oracle.
-raw=zlib.decompress(data[10:-8], -zlib.MAX_WBITS)
-assert hashlib.sha256(raw).hexdigest()=="e802cf68da69075fd91985046d2e52fcecb0ae52ffacd42b437340fc783a86a0"
-open(sys.argv[2],"wb").write(raw)
-PY
+PART=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.part00.csv
+test "$(git hash-object "$PART")" = 0ed63dd09a9da79d8673a736f60d864f2202a4dc || fail "exact text-oracle drift"
+{
+  printf '%s\n' 'graidt,nraidt,ptra_dry,ptra,aintcdt,wfrac,gird,nird'
+  cat "$PART"
+} > "$BUILD/exact.csv"
+test "$(sha256sum "$BUILD/exact.csv" | awk '{print $1}')" = e802cf68da69075fd91985046d2e52fcecb0ae52ffacd42b437340fc783a86a0 || fail "exact raw oracle SHA mismatch"
 for opt in 0 2; do
   OUT="$BUILD/exact-o$opt"; mkdir -p "$OUT"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_pmdirect_swetr0_process.f90 -o "$OUT/pmdirect.o"
