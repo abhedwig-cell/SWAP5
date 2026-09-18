@@ -7,11 +7,14 @@ cd "$ROOT"
 AUTH=50346642bd565f79134ea17d5462e544b354998c
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
+FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
 ROSS_ADAPTER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
+BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
+SELECTION=src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
 FROSS13_MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
 FROSS13_PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
 FROSS13_MODEL_POSTIMAGE=5442fd7e7a2f392c9b796cd17c76b17977259f22
@@ -19,6 +22,9 @@ FROSS13_PROVIDER_POSTIMAGE=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
 SW_P2E05=40a1ddc05fb8e2c1822763de645fd07a094568a3
 REF_ADAPTER_P2E05=4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
 ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
+BACKEND_FROSS12=19d07cac9285142d14a6e9c53706fb73d016d5ad
+BACKEND_FGC31=4e5491c997ed0752a4db9abd09b5ad3daf394db2
+SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 
@@ -103,15 +109,15 @@ done
 test "$(git rev-parse HEAD:$SW)" = "$SW_P2E05" || fail 'typed solver contract is not the qualified P2E05 blob'
 test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Reference adapter is not the qualified P2E05 blob'
 
-# F-ROSS12 backend and selection stay byte-identical; only its result adapter
-# is the exact P2E05 typed-diagnostic successor.
-fross12_frozen_surface=(
-  src/runtime/mod_fmr_serialized_reference_backend.f90
-  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
-)
-for path in "${fross12_frozen_surface[@]}"; do
-  test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$FROSS12_AUTH:$path")" || fail "admitted F-ROSS12 successor drift: $path"
-done
+# Preserve the F-ROSS12 selection authority. The serialized Reference backend
+# has one later independently qualified canonical successor from F-GC31/F-CI98.
+test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
+if git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
+  test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC31" || fail 'admitted F-GC31 serialized backend successor drift'
+  echo 'FCI_CANONICAL_FGC31_BACKEND_SUCCESSOR=PASS'
+else
+  test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FROSS12" || fail 'admitted F-ROSS12 serialized backend drift'
+fi
 test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'RossFast adapter is not the qualified P2E05 blob'
 
 # Route only an exact, independently qualified F-ROSS13 production successor
