@@ -78,7 +78,6 @@ contains
     end if
 
     allocate(self%slots(capacity))
-    self%next_handle = 1_int64
     self%initialized = .true.
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_initialize
@@ -329,12 +328,12 @@ contains
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_identity
 
-  integer function registry_active_count(self) result(count)
+  integer function registry_active_count(self) result(value)
     class(fmr_groundwater_participant_registry_t), intent(in) :: self
 
-    count = 0
+    value = 0
     if (.not. self%initialized .or. .not. allocated(self%slots)) return
-    count = count(self%slots%active)
+    value = count(self%slots%active)
   end function registry_active_count
 
   integer function registry_capacity(self) result(value)
