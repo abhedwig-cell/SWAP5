@@ -10,7 +10,7 @@ This page is the current development-state supplement to the frozen Status-A rev
 - frozen scientific production baseline: `50346642bd565f79134ea17d5462e544b354998c`
 - F-GC49D canonical merge: `ac3f789c51dad9806020c37db4f7666b9f18e66f`
 - F-GC49D canonical closure: `96f7547b9e618863bc162266137abc872c376734`
-- reconciled canonical preimage for this snapshot: `5d298c221caf4dbb917495f6e6a8718105df7208`
+- reconciled canonical preimage for this snapshot: `20d34024cfe4b981b6c00d5042bdf366f8aae830`
 
 The canonical delta from the F-GC49D closure to the reconciled preimage contains later work but no groundwater production/runtime/test/workflow dependency overlap with F-GC49D. The F-GC49D admission therefore remains the controlling current groundwater authority on this snapshot.
 
