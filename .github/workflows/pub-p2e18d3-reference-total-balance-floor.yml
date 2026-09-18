@@ -1,0 +1,25 @@
+name: PUB-P2E18D3 Reference total-balance floor
+
+on:
+  push:
+    branches:
+      - work/pub-p2e18d3-reference-total-balance-floor
+    paths:
+      - 'docs/publication/P2E18D3_REFERENCE_TOTAL_BALANCE_FLOOR_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e18d3_reference_total_balance_floor.f90'
+      - 'tests/publication/run_pub_p2e18d3_reference_total_balance_floor.sh'
+      - '.github/workflows/pub-p2e18d3-reference-total-balance-floor.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-total-balance-floor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered total-balance floor diagnostic
+        run: bash tests/publication/run_pub_p2e18d3_reference_total_balance_floor.sh
