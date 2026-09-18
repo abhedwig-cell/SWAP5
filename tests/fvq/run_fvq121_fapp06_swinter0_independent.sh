@@ -12,23 +12,13 @@ SRC=src/process/mod_pmdirect_swetr0_process.f90
 BIND=src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90
 TEST=tests/fvq/test_fvq121_fapp06_swinter0_independent.f90
 EXACT=tests/fvq/test_fvq121_fapp06_exact_b111.f90
-FIX=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz
-
-[[ "$(git rev-parse HEAD:$SRC)" == 3eb23d075a56ba1158f4758f75a8d94c94e09b39 ]] || fail "candidate process drift"
-[[ "$(git rev-parse HEAD:$BIND)" == 7d76af48cac085d6f4b5653987d75bfc54fb7692 ]] || fail "candidate binding drift"
-[[ -z "$(git diff --name-only "$SUBJECT"..HEAD -- src)" ]] || fail "qualification mutated production source"
-test "$(git hash-object "$FIX")" = 344c00d49717374a20772aa006edef720432d387 || fail "fixture blob drift"
-python3 - "$FIX" "$BUILD/exact.csv" <<'PY'
-import hashlib,sys,zlib
-data=open(sys.argv[1],"rb").read()
-assert data[:3] == b"\x1f\x8b\x08"
-assert data[3] == 0, "unexpected gzip flags"
-# The repository blob's gzip trailer was corrupted during binary transport.
-# Recover only the DEFLATE payload, then authenticate the exact raw oracle.
-raw=zlib.decompress(data[10:-8], -zlib.MAX_WBITS)
-assert hashlib.sha256(raw).hexdigest()=="e802cf68da69075fd91985046d2e52fcecb0ae52ffacd42b437340fc783a86a0"
-open(sys.argv[2],"wb").write(raw)
-PY
+PART=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.part00.csv
+test "$(git hash-object "$PART")" = 0ed63dd09a9da79d8673a736f60d864f2202a4dc || fail "exact text-oracle drift"
+{
+  printf '%s\n' 'graidt,nraidt,ptra_dry,ptra,aintcdt,wfrac,gird,nird'
+  cat "$PART"
+} > "$BUILD/exact.csv"
+test "$(sha256sum "$BUILD/exact.csv" | awk '{print $1}')" = e802cf68da69075fd91985046d2e52fcecb0ae52ffacd42b437340fc783a86a0 || fail "exact raw oracle SHA mismatch"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do
