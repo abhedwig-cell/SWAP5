@@ -1,0 +1,34 @@
+name: M1-C3 B1.11 Hupsel application trace
+
+on:
+  push:
+    branches:
+      - work/m1-c3-legacy-file-to-typed-application-mapping
+    paths:
+      - '.github/workflows/m1-c3-b1-11-hupsel-application-trace.yml'
+      - 'tools/m1/**'
+      - 'integration/m1/M1_C3_B1_11_APPLICATION_TRACE_PREREGISTRATION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check executable trace prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f integration/m1/M1_C3_B1_11_APPLICATION_TRACE_PREREGISTRATION.json
+          test -f integration/m1/M1_C3_B1_11_IDENTITY_BASELINE_ACQUIRE_PASS.json
+          test -f tools/vq/b1_11_reconstruct.py
+          if [[ -x tools/m1/run_m1_c3_b1_11_hupsel_application_trace.sh ]]; then
+            tools/m1/run_m1_c3_b1_11_hupsel_application_trace.sh
+          else
+            echo 'M1_C3_TRACE_BLOCKED=NO_PERSISTED_EXECUTABLE_TRACE_RUNNER'
+            echo 'The preregistered observation requires an exact B1.11/Hupsel instrumented runner. No such persisted runner exists on this branch; fail closed rather than infer a PASS.'
+            exit 2
+          fi
