@@ -18,7 +18,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | RQ2 coupled convergence and hydrological relevance | E3/E3-R | `SUPPORTED_RESTRICTED` | ready; explicitly a weak-feedback control |
 | RQ3 response identity and information value | E4/E5 | `SUPPORTED_RESTRICTED` | ready; no universal-Jacobian or standalone-ACCELERATE claim |
 | RQ4 component-envelope interaction | E3-D2/E6 | `SUPPORTED_RESTRICTED` / negative stress extension | ready; component-domain failure kept distinct from coupling divergence |
-| RQ5 realistic transferability | E7 Hupsel | `STANDALONE_SELECTION_FROZEN / READY_FOR_COUPLED_EXECUTION` | coupled loose/strong result remains the principal scientific gap |
+| RQ5 realistic transferability | E7 Hupsel | `CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT` | bounded negative result; authentic drainage exceeds current prescribed-head participant envelope before coupled execution |
 | regional scaling | E8 | deferred | not a submission prerequisite unless journal positioning later makes quantitative scaling central |
 | physical N:1 aggregation validity | PUB-SG / SCALE | separate paper | excluded from PUB-GC |
 
@@ -26,11 +26,11 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 
 | Asset | State |
 | --- | --- |
-| result-bearing abstract | READY through E6; must be updated after E7 if executed |
+| result-bearing abstract | READY through E7 |
 | Introduction / novelty boundary | READY; external prior-art audit completed |
-| Methods E1–E7 | READY; E7 explicitly prospective |
-| Results E1–E6 | READY |
-| Discussion / conclusions | READY through E6 and evidence-bounded |
+| Methods E1–E7 | READY; E7 executed to preregistered component-domain stop |
+| Results E1–E7 | READY |
+| Discussion / conclusions | READY through E7 and evidence-bounded |
 | Figures F1–F6 | BUILT_AND_LINKED |
 | Figure F7 | BUILT_AND_LINKED |
 | Tables T1–T5 | BUILT_AND_LINKED |
