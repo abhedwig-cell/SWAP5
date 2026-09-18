@@ -9,8 +9,8 @@ cd "$ROOT"
 
 fail() { echo "F_ROSS23_GATE_FAIL $*" >&2; exit 1; }
 
-PREREG=integration/f-ross/F-ROSS23_PERFORMANCE_PREREGISTRATION.json
-TEST=tests/ross/test_ross23_reference_vs_rossfast_performance.f90
+PREREG=integration/f-ross/F-ROSS23_STATIC_CHARACTERIZATION_PREREGISTRATION.json
+TEST=tests/ross/test_ross23_static_production_characterization.f90
 RUNNER=tools/performance/f_ross23_paired_screen.py
 
 P2E10_RESULT_BLOB=83864f6379279725fa97d24d57936f590d3c2174
@@ -26,12 +26,12 @@ for path in "$PREREG" "$TEST" "$RUNNER"; do
   [[ -f "$path" ]] || fail "missing $path"
 done
 
-grep -Fq '"phase": "PREREGISTERED_BEFORE_TIMING_EXECUTION"' "$PREREG" || fail 'preregistration phase drift'
-grep -Fq '"paired_valid_case_count": 36' "$PREREG" || fail '36-case authority drift'
+grep -Fq '"phase": "DESIGN"' "$PREREG" || fail 'preregistration phase drift'
+grep -Fq '"case_count": 216' "$PREREG" || fail '216-case authority drift'
 grep -Fq '"measured_pairs": 12' "$PREREG" || fail 'pair count drift'
 grep -Fq '"inner_repetitions_per_case": 200' "$PREREG" || fail 'repetition count drift'
-grep -Fq '"target_resolution_relative": 0.05' "$PREREG" || fail 'resolution target drift'
-grep -Fq '"qualified_speedup_claim_allowed_on_github_hosted_runner": false' "$PREREG" || fail 'host claim firewall drift'
+grep -Fq '"formal_host_boundary": "GitHub-hosted timing is screening only; formal production performance claim requires MP-admitted isolated host"' "$PREREG" || fail 'host boundary drift'
+grep -Fq '"NO_ADAPTIVE_SOLVER_SELECTION"' "$PREREG" || fail 'adaptive-selection firewall drift'
 
 CURRENT_BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
 [[ -n "$CURRENT_BASE" ]] || fail 'unable to resolve canonical merge-base'
