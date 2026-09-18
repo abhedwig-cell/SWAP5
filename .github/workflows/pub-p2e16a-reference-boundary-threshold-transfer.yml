@@ -1,0 +1,25 @@
+name: PUB-P2E16A Reference boundary threshold transfer
+
+on:
+  push:
+    branches:
+      - work/pub-p2e16-admissibility-boundary-primary
+    paths:
+      - 'docs/publication/P2E16_ADMISSIBILITY_BOUNDARY_PRIMARY_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e16a_reference_boundary_threshold_transfer.f90'
+      - 'tests/publication/run_pub_p2e16a_reference_boundary_threshold_transfer.sh'
+      - '.github/workflows/pub-p2e16a-reference-boundary-threshold-transfer.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-boundary-threshold-transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered P2E16A Reference-only boundary matrix
+        run: bash tests/publication/run_pub_p2e16a_reference_boundary_threshold_transfer.sh
