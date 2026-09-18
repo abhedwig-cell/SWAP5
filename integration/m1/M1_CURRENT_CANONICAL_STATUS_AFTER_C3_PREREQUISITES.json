@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CURRENT_CANONICAL_STATUS_AFTER_C3_PREREQUISITES",
+  "branch": "work/m1-c3-final-current-canonical",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "20d34024cfe4b981b6c00d5042bdf366f8aae830"
+  },
+  "criteria": [
+    {
+      "number": 1,
+      "text": "a non-file in-memory invocation path reaches the computational boundary;",
+      "verdict": "PASS_EXISTING_ADMITTED_EVIDENCE"
+    },
+    {
+      "number": 2,
+      "text": "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+      "verdict": "PASS_EXISTING_ADMITTED_EVIDENCE"
+    },
+    {
+      "number": 3,
+      "text": "legacy file runs still reproduce reference results through adapters;",
+      "verdict": "BLOCKED_ONLY_FINAL_WHOLE_HUPSEL_EXECUTION"
+    },
+    {
+      "number": 4,
+      "text": "output serialization does not mutate physical state;",
+      "verdict": "PASS_CURRENT_CANONICAL_ADMITTED_M1_C4"
+    },
+    {
+      "number": 5,
+      "text": "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files.",
+      "verdict": "PASS_EXISTING_ADMITTED_EVIDENCE"
+    }
+  ],
+  "criterion_3_progress": {
+    "exact_legacy_authority": "PASS",
+    "all_active_route_discovery": "PASS",
+    "all_active_application_capabilities_admitted": "PASS",
+    "drainage_whole_trajectory": "PASS_EXACT",
+    "bottom": "PASS",
+    "ssdi": "INACTIVE",
+    "six_snapshot_transactional_replay": "PASS_EXACT",
+    "final_whole_hupsel_adapter_execution": "BLOCKED_EXTERNAL_ASSET_BYTES"
+  },
+  "overall_verdict": "M1_NOT_CLOSED_ONLY_CRITERION_3_FINAL_EXECUTION_REMAINS",
+  "formal_exit": false,
+  "next_permitted_action": "Resolve only the external exact-asset materialization blocker and run the preregistered whole-Hupsel adapter replay. No new architecture, science, IO modernization, tolerance work or route discovery is permitted."
+}
