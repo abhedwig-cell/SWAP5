@@ -3,7 +3,7 @@
   "capability": "F-GC37",
   "title": "Internal SWAP5-MODFLOW Coupling Service Contract",
   "protocol": "Bounded Execution Protocol",
-  "phase": "OWNERSHIP_RECONCILIATION",
+  "phase": "QUALIFY",
   "verdict": "OWNER_QUALIFIED_INTERNAL_COUPLING_SERVICE_CONTRACT",
   "ownership_correction": {
     "decision": "Predictor/corrector strategy belongs inside an internal SWAP5-MODFLOW coupling service below iMOD Coupler.",
@@ -28,7 +28,8 @@
   "work_branch": {
     "branch": "work/f-gc37-coupled-predictor-corrector-host",
     "previous_checkpoint": "b93e503a6a4627bbdb8e41e0b36a9ecd9a3d3072",
-    "ownership_correction_commit": "dfc573502e70eb88a6ebee995df7bd2ffa9dbc03"
+    "ownership_correction_commit": "dfc573502e70eb88a6ebee995df7bd2ffa9dbc03",
+    "ownership_reclassified_head": "b933c84bceb44baa004e48359b9aa5e9f93274e0"
   },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
@@ -68,9 +69,26 @@
     "second SWAP transaction lifecycle",
     "canonical admission"
   ],
-  "next_permitted_action": "Qualify a MODFLOW6 transactional-origin backend below the internal coupling-service boundary. Do not move predictor/corrector iteration into iMOD Coupler.",
+  "next_permitted_action": "Qualify a MODFLOW6 transactional-origin backend below the internal SWAP5-MODFLOW coupling-service boundary. iMOD Coupler remains outside predictor/corrector ownership.",
   "requalification": {
-    "state": "PENDING_AFTER_OWNERSHIP_CORRECTION",
-    "reason": "Re-run retained F-GC37 contract evidence after moving the Python implementation out of src/adapter into test-only qualification support."
+    "state": "SUCCESS",
+    "run": 35290107161,
+    "job": 105430885261,
+    "head": "b933c84bceb44baa004e48359b9aa5e9f93274e0",
+    "conclusion": "success",
+    "pass_markers": [
+      "FGC37_INTERNAL_SERVICE_OWNERSHIP_BOUNDARY",
+      "FGC37_QUALIFICATION_HARNESS_TEST_ONLY",
+      "FGC37_NO_XMI_OR_MODFLOW_EXECUTION_OWNERSHIP",
+      "FGC37_SAME_ACCEPTED_ORIGINS",
+      "FGC37_FIXED_TANGENT_WITHIN_WINDOW",
+      "FGC37_MULTITERATION_FLUX_CONVERGENCE",
+      "FGC37_NONCONVERGED_CANDIDATES_DISCARDED",
+      "FGC37_EXISTING_PUBLICATION_ORDER_PRESERVED",
+      "FGC37_EXACTLY_ONCE_FINAL_COMMIT",
+      "FGC37_BOUNDED_NOT_CONVERGED_FAIL_CLOSED",
+      "FGC37_PREPARE_FAILURE_ABORTS_ALL",
+      "FGC37_COUPLED_HOST_CONTRACT_GATE"
+    ]
   }
 }
