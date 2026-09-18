@@ -10,6 +10,27 @@ cd "$ROOT"
 PREIMAGE=eba90d79010b095b6556e93bd8b77a8c28d25560
 PROVIDER_BLOB=1234bcb8e3b47ebe8e67b0bac6af35e09e9056da
 RATE_BLOB=5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5
+FCI51P_MOVING_BASE=afe253164ddff55ce3a362277a43878d733057d3
+
+# F-CI51 is a frozen historical recomposition gate. Once the separately
+# admitted F-CI51P moving-preservation authority is in the lineage, do not
+# reinterpret all later canonical work as part of the original F-CI51
+# recomposition. Preserve only the exact admitted capability blobs here; the
+# dedicated F-CI51P workflow owns broader moving-preservation provenance.
+if git merge-base --is-ancestor "$FCI51P_MOVING_BASE" HEAD; then
+  test "$(git rev-parse HEAD:src/crop/mod_crop_et_canopy_view_provider.f90)" = "$PROVIDER_BLOB" || {
+    echo 'FCI51_POSTADMISSION_PROVIDER_PRESERVATION=FAIL' >&2
+    exit 1
+  }
+  test "$(git rev-parse HEAD:src/crop/mod_wofost_rate_table.f90)" = "$RATE_BLOB" || {
+    echo 'FCI51_POSTADMISSION_DEPENDENCY_PRESERVATION=FAIL' >&2
+    exit 1
+  }
+  echo 'FCI51_POSTADMISSION_PROVIDER_PRESERVATION=PASS'
+  echo 'FCI51_POSTADMISSION_DEPENDENCY_PRESERVATION=PASS'
+  echo 'FCI51_HISTORICAL_RECOMPOSITION_NOT_REOPENED=PASS'
+  exit 0
+fi
 
 git merge-base --is-ancestor "$PREIMAGE" HEAD || {
   echo 'FCI51_PREIMAGE_ANCESTRY=FAIL' >&2
