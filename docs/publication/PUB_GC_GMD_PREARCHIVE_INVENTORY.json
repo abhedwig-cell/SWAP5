@@ -41,7 +41,7 @@
     },
     {
       "path": "docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json",
-      "blob": "771c842b0f7f78ce9d6829e033a1d23a9f9a61e4",
+      "blob": "3fc0cec9ce76f1a7ff9d779684d63d7c2c2a4b35",
       "role": "provenance"
     },
     {
@@ -166,7 +166,10 @@
     "pre_submission_checklist": "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
     "cover_letter_draft": "docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md",
     "validator": "tools/publication/check_pub_gc_gmd_submission.py",
-    "workflow": ".github/workflows/pub-gc-gmd-current-presubmission.yml"
+    "workflow": ".github/workflows/pub-gc-gmd-current-presubmission.yml",
+    "figure_export_result": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_RESULT.json",
+    "figure_exporter": "tools/publication/export_pub_gc_gmd_figures.py",
+    "figure_export_workflow": ".github/workflows/pub-gc-gmd-figure-export.yml"
   },
   "policy_verification": {
     "journal": "Geoscientific Model Development",
@@ -178,5 +181,14 @@
     "individual_pdf_figure_max_mb": 2,
     "individual_other_figure_max_mb": 5,
     "overall_non_supplement_max_mb": 30
+  },
+  "figure_export": {
+    "state": "VALIDATED_CANDIDATE_READY",
+    "workflow_run": 35405142243,
+    "workflow_job": 105793234099,
+    "artifact_id": 10571902714,
+    "artifact_digest": "sha256:c15ab068d7d6885533cf022640ae95090492333ca9044c0f9ed089122f6130e7",
+    "flat_submission_zip_sha256": "37ef7daf52ad2892b78b4f926f89983f64c097eba32839e20fce47211e5d43fb",
+    "release_binding_pending": true
   }
 }
