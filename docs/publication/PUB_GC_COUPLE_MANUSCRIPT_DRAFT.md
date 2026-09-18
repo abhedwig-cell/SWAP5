@@ -983,8 +983,8 @@ The E7 qualification therefore terminates before a loose/sequential or productio
 
 | frozen case | standalone Phi | drainage outflow | prescribed-head production participant | completed loose windows | completed strong windows | E7 outcome |
 | --- | ---: | ---: | --- | ---: | ---: | --- |
-| median dynamics, 2003-06-17 | 0.5067351598 | 0.0225869 cm d⁻¹ integrated over day | NOT_ADMITTED with authentic active drainage | 0 | 0 | REALISTIC_COMPONENT_DOMAIN_LIMIT |
-| high dynamics, 2003-05-20 | 0.8831050228 | 0.906969 cm d⁻¹ integrated over day | NOT_ADMITTED with authentic active drainage | 0 | 0 | REALISTIC_COMPONENT_DOMAIN_LIMIT |
+| median dynamics, 2003-06-17 | 0.5067351598 | 0.0225869 cm | NOT_ADMITTED with authentic active drainage | 0 | 0 | REALISTIC_COMPONENT_DOMAIN_LIMIT |
+| high dynamics, 2003-05-20 | 0.8831050228 | 0.906969 cm | NOT_ADMITTED with authentic active drainage | 0 | 0 | REALISTIC_COMPONENT_DOMAIN_LIMIT |
 
 The result answers the realistic-transferability question in a bounded negative form. The coupling contract remains scientifically interpretable because it exposes the exact point at which the authentic application exceeds the admitted participant domain, but the current production coupling cannot yet execute the complete Hupsel process composition under prescribed-head groundwater trials. Existing multi-participant tests remain architecture evidence only and do not establish regional runtime scaling or heterogeneous spatial aggregation validity.
 
