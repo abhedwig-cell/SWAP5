@@ -2,7 +2,7 @@
 
 ## Status
 
-**DESIGN / QUALIFICATION AUTHORITY NOT YET CLOSED**
+**OWNER-QUALIFIED PREPARED-SOLVE COUPLING-SERVICE CONTRACT, NOT CANONICALLY ADMITTED**
 
 F-GC39 reconciles the F-GC37 internal coupling-service contract with the live MODFLOW6 lifecycle qualified by F-GC38.
 
@@ -264,3 +264,75 @@ It does not qualify:
 - Ribasim or irrigation.
 
 Those remain later bounded capabilities.
+
+
+## 11. Qualified evidence
+
+Green owner qualification:
+
+```text
+run 35291803801
+job 105436039695
+head 26e145dddcae78931124b2d6c9b72b41e28da253
+conclusion success
+```
+
+The executable contract evidence demonstrates:
+
+- one prepared groundwater session per coupling window;
+- one immutable SWAP origin for predictor and all correctors;
+- one fixed affine tangent slope for the first contract;
+- conjunctive convergence: MODFLOW convergence **and** interface-flux convergence;
+- a flux-converged but MODFLOW-unconverged iterate is rejected;
+- a MODFLOW-converged but flux-unconverged iterate is rejected;
+- only non-final SWAP candidates are discarded;
+- no groundwater capture/discard/rollback exists per outer iteration;
+- successful convergence finalizes the groundwater solve exactly once and retains the final SWAP candidate;
+- coupling-budget exhaustion invalidates the prepared solve and requests retry;
+- a groundwater backend iteration-limit failure invalidates the prepared solve before a SWAP corrector is attempted;
+- no iMOD Coupler, direct XMI pointer, MODFLOW solve, or timestep-finalization operation exists in the service harness.
+
+The initial qualification attempt failed only because a raw text check for `solve(` also matched the legitimate service method name `finalize_converged_solve()`. The static ownership gate was changed to syntax-aware call inspection; service semantics were unchanged.
+
+## 12. Supersession statement
+
+For future composition, F-GC39 is authoritative over F-GC37 specifically for groundwater outer-iteration semantics.
+
+F-GC37 remains valid evidence for:
+
+- internal-service ownership below iMOD Coupler;
+- immutable SWAP-origin semantics;
+- transactional SWAP correctors;
+- bounded coupling iteration.
+
+The following F-GC37 concept is superseded:
+
+```text
+groundwater candidate from accepted origin
+discard groundwater candidate
+repeat
+```
+
+The qualified replacement is:
+
+```text
+one prepared MODFLOW solve
+fixed accepted XOLD
+evolving X
+republish response + solve
+republish response + solve
+...
+```
+
+Whole-window abandonment/retry and final timestep publication remain separate capabilities.
+
+## 13. Next bounded step
+
+The next scientific/software boundary is no longer predictor/corrector placement or MODFLOW nonlinear iteration.
+
+It is the **whole-window acceptance and retry boundary**:
+
+- how a converged F-GC39 window is atomically published across SWAP, MODFLOW timestep state and exchange ledger;
+- what exact reconstruction path is used if the whole coupled window must be retried at a smaller timestep after an abandoned prepared solve.
+
+Those concerns should be qualified separately without moving any predictor/corrector logic into iMOD Coupler.
