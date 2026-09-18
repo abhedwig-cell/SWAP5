@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | Upper request-side top-flux boundary: P2E16/P2E17 found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed. E2X then prospectively extended the unobserved surface to the lower request-side top boundary and both bottom-boundary sides: 972 cases, 0 route mismatches, 633/633 interpretable Stage-A-authorized pairs admissible, with 2 authorized cases Reference-unresolved. Proceed to E3 REF-HIGH, not more fixed-flux boundary probing. |
-| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | MATCHED_ERROR_CONTROLS_FROZEN_TIMING_INFRASTRUCTURE_BLOCKED | P2E23 resolved the realized-error comparator for all 36 cases: 34 bracketed, 2 left-censored at N=1, 0 unresolved. Primary future timing is RossFast N=1 versus casewise representation-bounded Reference N_hi. Timing remains blocked until MP-8 runner readiness and MP-7 host admission pass. |
+| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | TIMING_PROTOCOL_AND_BENCHMARK_FROZEN_INFRASTRUCTURE_BLOCKED | P2E23 resolved realized-error matching for all 36 cases; P2E24 froze the admitted-host timing protocol; P2E24A qualified all 106 future timed configurations untimed with O0/O2-identical fingerprint set `sha256:1e86b6da...`. Measured timing is forbidden until MP-8 readiness and full MP-7 host admission pass on the executing runner. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
@@ -95,6 +95,18 @@ This register does not contain scientific results. It is an execution map betwee
 - one case has a two-step bracket because the intermediate N=21 endpoint exceeds the unchanged machine-scale storage gate even though its solver route is valid;
 - the matching algorithm never used timing, work counters or closest-ratio optimization;
 - next permitted action: preregister paired timing of RossFast N=1 versus casewise Reference N_hi. Execution is blocked until the repository's MP-8 isolated-runner readiness and full MP-7 host-admission gates pass. The two left-censored cases must remain labelled conservative, not strict equality.
+
+### 2026-09-18 — PUB-SQ P2E24 timing protocol and workload frozen, execution blocked on infrastructure
+
+- P2E24 timing branch: `work/pub-p2e24-realized-error-timing`, protocol head `cc1dad6f3fd322044657d36361a8e9d74c3e4026`;
+- the initial parallel draft using `ubuntu-latest` and Fortran `CPU_TIME` was corrected **before any timing exposure** because it conflicted with the existing MP performance-governance stack;
+- admissible timing now requires runner labels `[self-hosted, linux, x64, swap5-performance]`, MP-8 contract readiness and full MP-7 host admission on the same runner configuration;
+- primary timing metric is externally measured child CPU seconds; monotonic wall elapsed is secondary. Ordinary shared-runner timing and Fortran internal clocks are not primary publication evidence;
+- primary comparator remains RossFast N=1 versus casewise Reference N_hi. Twenty-four order-balanced measured cycles are frozen per case, with the repository paired-resolution rule and a 5% per-case publication resolution target; no selective reruns or post-hoc pair extension;
+- P2E24A branch `work/pub-p2e24a-benchmark-fingerprint`, result head `d6dd6594af4f682672a4021985ff80e531bb14c0`, qualified the exact benchmark workload without timing;
+- P2E24A workflow `35316717285`, job `105509858009`: all 106 future timed configurations are executable and the full scientific fingerprint set is O0/O2 byte-identical at `sha256:1e86b6da40eb61d17fa59bdc995b553bd3d0d447d6d13c2c46f2c715a95d95d3`;
+- current repository performance readiness remains `INFRASTRUCTURE_PENDING` with `cpu_baseline_established=false`;
+- next permitted action is external infrastructure work only: provision/identify the isolated runner, reproduce the 106-configuration fingerprint untimed, pass MP-8 and MP-7, then execute the frozen P2E24 timing protocol exactly once as the primary exposure.
 
 
 
