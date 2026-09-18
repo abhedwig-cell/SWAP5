@@ -100,7 +100,7 @@ contains
     integer, intent(out) :: status
 
     integer :: i, local_status, n
-    logical :: ok
+    logical :: ok, groundwater_profile, standalone_profile
 
     status = FMR_APP_BOOT_INVALID_CONFIG
     if (self%initialized) return
@@ -109,27 +109,55 @@ contains
     if (n <= 0) return
     if (.not. ieee_is_finite(config%initial_time)) return
 
+    groundwater_profile = .true.
+    standalone_profile = .true.
     do i = 1, n
       if (.not. tile_config_valid(config%tiles(i), n, i)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
-      if (any(config%tiles(1:i-1)%tile_id == config%tiles(i)%tile_id)) return
-      if (any(config%tiles(1:i-1)%ledger_id == config%tiles(i)%ledger_id)) return
+      groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5
+      standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
+      if (i > 1) then
+        if (any(config%tiles(1:i-1)%tile_id == config%tiles(i)%tile_id)) return
+      end if
     end do
+    if (.not. groundwater_profile .and. .not. standalone_profile) then
+      status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+      return
+    end if
+    if (groundwater_profile) then
+      do i = 1, n
+        if (config%tiles(i)%ledger_id <= 0_int64) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (.not. config%tiles(i)%groundwater_datum%valid()) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (i > 1) then
+          if (any(config%tiles(1:i-1)%ledger_id == config%tiles(i)%ledger_id)) return
+        end if
+      end do
+    end if
 
-    allocate(self%columns(n), self%templates(n), self%participant_handles(n))
-    allocate(self%parameters(n), self%base_forcing(n), self%committed(n), self%materializers(n), self%ledgers(n))
-    allocate(self%registry, self%backend, self%top_boundary)
+    allocate(self%columns(n), self%templates(n))
+    allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
+    allocate(self%backend, self%top_boundary)
     self%numerical = config%numerical
-    self%participant_handles = 0_int64
 
     call self%backend%initialize(self%top_boundary)
-    call self%registry%initialize(n, local_status)
-    if (local_status /= FMR_GW_REGISTRY_OK) then
-      status = FMR_APP_BOOT_REGISTRY_FAILED
-      call discard_owner_storage(self)
-      return
+
+    if (groundwater_profile) then
+      allocate(self%participant_handles(n), self%materializers(n), self%ledgers(n), self%registry)
+      self%participant_handles = 0_int64
+      call self%registry%initialize(n, local_status)
+      if (local_status /= FMR_GW_REGISTRY_OK) then
+        status = FMR_APP_BOOT_REGISTRY_FAILED
+        call discard_owner_storage(self)
+        return
+      end if
     end if
 
     do i = 1, n
@@ -143,7 +171,7 @@ contains
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
       self%base_forcing(i) = config%tiles(i)%base_forcing
-      call self%materializers(i)%initialize(self%base_forcing(i))
+      if (groundwater_profile) call self%materializers(i)%initialize(self%base_forcing(i))
 
       select case (self%templates(i)%numerical_continuation_layout_id)
       case (FMR_NUMERICAL_CONTINUATION_NONE)
@@ -166,20 +194,22 @@ contains
         return
       end if
 
-      call self%registry%bind(config%tiles(i)%tile_id, self%backend, self%columns(i), self%templates(i), &
-           self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
-           config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status)
-      if (local_status /= FMR_GW_REGISTRY_OK .or. self%participant_handles(i) <= 0_int64) then
-        status = FMR_APP_BOOT_REGISTRY_FAILED
-        call discard_owner_storage(self)
-        return
-      end if
+      if (groundwater_profile) then
+        call self%registry%bind(config%tiles(i)%tile_id, self%backend, self%columns(i), self%templates(i), &
+             self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
+             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status)
+        if (local_status /= FMR_GW_REGISTRY_OK .or. self%participant_handles(i) <= 0_int64) then
+          status = FMR_APP_BOOT_REGISTRY_FAILED
+          call discard_owner_storage(self)
+          return
+        end if
 
-      call self%ledgers(i)%bind_identity(config%tiles(i)%ledger_id, local_status)
-      if (local_status /= GW_MASS_LEDGER_OK) then
-        status = FMR_APP_BOOT_LEDGER_FAILED
-        call discard_owner_storage(self)
-        return
+        call self%ledgers(i)%bind_identity(config%tiles(i)%ledger_id, local_status)
+        if (local_status /= GW_MASS_LEDGER_OK) then
+          status = FMR_APP_BOOT_LEDGER_FAILED
+          call discard_owner_storage(self)
+          return
+        end if
       end if
     end do
 
@@ -192,19 +222,30 @@ contains
 
     ready = self%initialized
     if (.not. ready) return
-    ready = allocated(self%columns) .and. allocated(self%templates) .and. allocated(self%participant_handles)
+    ready = allocated(self%columns) .and. allocated(self%templates)
     if (.not. ready) return
     ready = associated(self%parameters) .and. associated(self%base_forcing) .and. associated(self%committed) .and. &
-         associated(self%materializers) .and. associated(self%ledgers) .and. associated(self%registry) .and. &
          associated(self%backend) .and. associated(self%top_boundary)
     if (.not. ready) return
     ready = size(self%columns) > 0 .and. size(self%templates) == size(self%columns) .and. &
-         size(self%participant_handles) == size(self%columns) .and. size(self%parameters) == size(self%columns) .and. &
-         size(self%base_forcing) == size(self%columns) .and. size(self%committed) == size(self%columns) .and. &
-         size(self%materializers) == size(self%columns) .and. size(self%ledgers) == size(self%columns)
-    if (.not. ready) return
-    ready = self%registry%active_count() == size(self%columns) .and. all(self%participant_handles > 0_int64)
+         size(self%parameters) == size(self%columns) .and. size(self%base_forcing) == size(self%columns) .and. &
+         size(self%committed) == size(self%columns)
   end function production_application_ready
+
+  logical function production_application_groundwater_ready(self) result(ready)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+
+    ready = self%ready()
+    if (.not. ready) return
+    ready = associated(self%materializers) .and. associated(self%ledgers) .and. associated(self%registry) .and. &
+         allocated(self%participant_handles)
+    if (.not. ready) return
+    ready = size(self%materializers) == size(self%columns) .and. size(self%ledgers) == size(self%columns) .and. &
+         size(self%participant_handles) == size(self%columns)
+    if (.not. ready) return
+    ready = self%registry%active_count() == size(self%columns) .and. all(self%participant_handles > 0_int64) .and. &
+         all(self%parameters%bottom_mode == 5)
+  end function production_application_groundwater_ready
 
   integer function production_application_tile_count(self) result(count)
     class(fmr_production_application_bootstrap_t), intent(in) :: self
@@ -264,7 +305,7 @@ contains
     if (.not. self%ready()) return
 
     status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
-    if (any(self%parameters%bottom_mode /= 5)) return
+    if (.not. production_application_groundwater_ready(self)) return
 
     if (associated(self%active_context)) then
       call retire_active_context(self, local_status)
@@ -315,6 +356,10 @@ contains
 
     if (.not. self%ready()) then
       status = FMR_APP_BOOT_NOT_READY
+      return
+    end if
+    if (.not. production_application_groundwater_ready(self)) then
+      status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
     call retire_active_context(self, status)
@@ -418,7 +463,7 @@ contains
     integer, intent(in) :: ntiles, slot
 
     valid = .false.
-    if (tile%tile_id <= 0_int64 .or. tile%ledger_id <= 0_int64) return
+    if (tile%tile_id <= 0_int64) return
     if (slot <= 0 .or. slot > ntiles) return
     if (tile%template%template_id <= 0_int64) return
     if (tile%template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
@@ -449,7 +494,9 @@ contains
     if (.not. allocated(tile%initial_state%pressure_head) .or. .not. allocated(tile%initial_state%water_content)) return
     if (size(tile%initial_state%pressure_head) /= tile%parameters%active_nodes .or. &
         size(tile%initial_state%water_content) /= tile%parameters%active_nodes) return
-    if (.not. tile%groundwater_datum%valid()) return
+    if (tile%parameters%bottom_mode == 5) then
+      if (tile%ledger_id <= 0_int64 .or. .not. tile%groundwater_datum%valid()) return
+    end if
     if (allocated(tile%initial_right_derivative)) then
       if (size(tile%initial_right_derivative) /= tile%parameters%active_nodes) return
     end if
