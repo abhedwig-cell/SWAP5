@@ -3,15 +3,15 @@
   "workunit": "F-ROSS16",
   "title": "RossFast cost attribution",
   "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "status": "F_ROSS16_WORK_COUNTS_QUALIFIED__F_ROSS16D1_CALLGRIND_PENDING",
   "branch": "work/f-ross16-rossfast-cost-attribution",
   "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
   "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
   "canonical_at_start": "0372b44157747dc90fa690810f57e373e670373b",
   "dependency_note": "F-ROSS16 is diagnostic successor evidence to F-ROSS15; it does not assume canonical performance admission.",
   "production_or_reference_mutation": false,
-  "verdict": "READY_FOR_EXACT_HEAD_DIAGNOSTIC_EXECUTION",
-  "next_permitted_action": "Execute the exact-head F-ROSS16 workflow. Correct only harness/profiling defects; do not change hypotheses, 36-case domain, 5000 profile repetitions or source semantics after seeing results.",
+  "verdict": "PRIMARY_STRUCTURAL_EXPLANATION_QUALIFIED__INNER_ARITHMETIC_ATTRIBUTION_PENDING",
+  "next_permitted_action": "Complete F-ROSS16D1 Callgrind call-count validation and only then interpret inner instruction shares.",
   "implementation": {
     "work_count_harness": "tests/ross/test_ross16_work_counts.f90",
     "profile_harness": "tests/ross/test_ross16_profile.f90",
@@ -19,5 +19,21 @@
     "runner": "tests/ross/run_ross16_cost_attribution.sh",
     "workflow": ".github/workflows/f-ross16-rossfast-cost-attribution.yml",
     "production_or_reference_mutation": false
+  },
+  "qualified_parent": {
+    "result": "integration/f-ross/F-ROSS16_COST_ATTRIBUTION_RESULT.json",
+    "exact_work_count": "PASS",
+    "rossfast_linear_solves_per_case": 24,
+    "reference_linear_solves_mean": 3.888888888888889,
+    "total_linear_solve_ratio_rossfast_over_reference": 6.171428571428572,
+    "gprof_helper_attribution": "REJECTED_CALL_COUNT_INCONSISTENCY"
+  },
+  "successor_diagnostic": {
+    "workunit": "F-ROSS16D1",
+    "preregistration": "integration/f-ross/F-ROSS16D1_CALLGRIND_PREREGISTRATION.json",
+    "harness": "tests/ross/test_ross16d1_callgrind.f90",
+    "runner": "tests/ross/run_ross16d1_callgrind.sh",
+    "workflow": ".github/workflows/f-ross16d1-callgrind.yml",
+    "status": "PENDING_EXECUTION"
   }
 }
