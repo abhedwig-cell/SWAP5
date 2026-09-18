@@ -44,6 +44,7 @@ module mod_fgc44_real_swap_c_bridge
 
   real(real64), parameter :: H0_CM=-75.0_real64
   real(real64), parameter :: DURATION_DAY=1.0e-4_real64
+  real(real64), save :: active_duration_day=DURATION_DAY
   real(real64), parameter :: TOL=1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
@@ -97,8 +98,18 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
+  public :: fgc44_set_duration_c
 
 contains
+
+  integer(c_int) function fgc44_set_duration_c(duration_day) bind(C,name="fgc44_set_duration_c")
+    real(c_double), value, intent(in) :: duration_day
+    fgc44_set_duration_c=1_c_int
+    if(.not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double)return
+    active_duration_day=real(duration_day,real64)
+    fgc44_set_duration_c=0_c_int
+  end function fgc44_set_duration_c
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
@@ -124,7 +135,7 @@ contains
     integer :: status, flux_status
     logical :: ok
 
-    fgc44_swap_initialize_c=1_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
+    fgc44_swap_initialize_c=100_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
     initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
@@ -133,30 +144,30 @@ contains
     call initialize_column_template(column,template)
     call initialize_configs(predictor_config,corrector_config)
     call initialize_committed_state(committed,predictor_parameters,ok)
-    if(.not.ok)return
+    if(.not.ok)then; fgc44_swap_initialize_c=101_c_int; return; end if
 
     datum%available=.true.; datum%datum_id=540044_int64; datum%bottom_boundary_elevation_m=0.0_real64
-    window%t0=0.0_real64; window%t1=DURATION_DAY
+    window%t0=0.0_real64; window%t1=active_duration_day
     call predictor_backend%initialize(top)
     call corrector_backend%initialize(top)
     call materializer%initialize(base_forcing)
 
-    call fmr_capture_checkpoint(committed,checkpoint,ok); if(.not.ok)return
+    call fmr_capture_checkpoint(committed,checkpoint,ok); if(.not.ok)then; fgc44_swap_initialize_c=102_c_int; return; end if
     predictor_forcing=base_forcing; predictor_forcing%bottom_flux=qeq
     call predictor_backend%run_trial(column,template,predictor_parameters,committed,predictor_forcing,predictor_config, &
          window%t0,window%t1,checkpoint,result,candidate,diagnostics)
-    if(.not.result%completed)return
-    if(.not.candidate%ready())return
-    if(.not.result%accepted_trajectory_direction%available)return
+    if(.not.result%completed)then; fgc44_swap_initialize_c=103_c_int; return; end if
+    if(.not.candidate%ready())then; fgc44_swap_initialize_c=104_c_int; return; end if
+    if(.not.result%accepted_trajectory_direction%available)then; fgc44_swap_initialize_c=105_c_int; return; end if
 
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
-    call bind_b110_default_mvg_provider(constitutive,hp,DURATION_DAY)
-    call materialize_solver_view(candidate,predictor_state,solver_parameters,ok); if(.not.ok)return
+    call bind_b110_default_mvg_provider(constitutive,hp,active_duration_day)
+    call materialize_solver_view(candidate,predictor_state,solver_parameters,ok); if(.not.ok)then; fgc44_swap_initialize_c=106_c_int; return; end if
     call build_modflow6_swap_predictor_tangent_endpoint(predictor_state,solver_parameters,constitutive, &
          result%accepted_trajectory_direction,qeq,datum,.false.,.false.,.false.,.false.,endpoint,status)
-    if(status/=MODFLOW6_TANGENT_ENDPOINT_OK .or. .not.endpoint%authoritative)return
+    if(status/=MODFLOW6_TANGENT_ENDPOINT_OK .or. .not.endpoint%authoritative)then; fgc44_swap_initialize_c=107_c_int; return; end if
     call materialize_origin_face(predictor_parameters,hp,qeq,start_face,status)
-    if(status/=MODFLOW6_BOTTOM_FACE_OK .or. .not.start_face%valid)return
+    if(status/=MODFLOW6_BOTTOM_FACE_OK .or. .not.start_face%valid)then; fgc44_swap_initialize_c=108_c_int; return; end if
 
     predictor_lineage%coupling_id=COUPLING_ID
     predictor_lineage%swap_lineage_id=COLUMN_ID
@@ -164,16 +175,16 @@ contains
     predictor_lineage%groundwater_service_id=GW_SERVICE_ID
     predictor_lineage%groundwater_lineage_id=GW_LINEAGE_ID
     predictor_lineage%groundwater_origin_revision=0_int64
-    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qeq,q_swap,flux_status); if(flux_status/=GW_INTERFACE_OK)return
-    call pair_groundwater_flux_from_swap(q_swap,q_groundwater,flux_status); if(flux_status/=GW_INTERFACE_OK)return
+    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qeq,q_swap,flux_status); if(flux_status/=GW_INTERFACE_OK)then; fgc44_swap_initialize_c=109_c_int; return; end if
+    call pair_groundwater_flux_from_swap(q_swap,q_groundwater,flux_status); if(flux_status/=GW_INTERFACE_OK)then; fgc44_swap_initialize_c=110_c_int; return; end if
     accepted_interface%h_swap_m=start_face%hydraulic_head_m
     accepted_interface%h_groundwater_m=start_face%hydraulic_head_m
     accepted_interface%q_swap_m_per_s=q_swap
     accepted_interface%q_groundwater_m_per_s=q_groundwater
     call capture_modflow6_swap_predictor_origin(accepted_interface,window%t0,predictor_lineage,.true.,origin,status)
-    if(status/=MODFLOW6_PREDICTOR_ORIGIN_OK)return
+    if(status/=MODFLOW6_PREDICTOR_ORIGIN_OK)then; fgc44_swap_initialize_c=111_c_int; return; end if
     call assemble_modflow6_swap_predictor_response(origin,window,candidate,result,endpoint,response(1),status)
-    if(status/=MODFLOW6_PREDICTOR_ASSEMBLER_OK .or. .not.response(1)%valid)return
+    if(status/=MODFLOW6_PREDICTOR_ASSEMBLER_OK .or. .not.response(1)%valid)then; fgc44_swap_initialize_c=112_c_int; return; end if
 
     e1_q_bot_predictor_cm_per_day=response(1)%q_bot_predictor_cm_per_day
     e1_q_u_cm_per_day=response(1)%q_u_cm_per_day
@@ -193,14 +204,14 @@ contains
 
     binding(1)%groundwater_cell_id=GW_CELL_ID; binding(1)%tile_id=COLUMN_ID; binding(1)%area_fraction=1.0_real64
     call compose_modflow6_multiswap_cell_response(binding,response,response(1)%h_bot_end_m,cell,status)
-    if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)return
+    if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)then; fgc44_swap_initialize_c=113_c_int; return; end if
     call compose_modflow6_linear_boundary_term(cell,AREA_M2,term,status)
-    if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)return
+    if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)then; fgc44_swap_initialize_c=114_c_int; return; end if
     hcof=term%hcof_m2_per_day; rhs=term%rhs_m3_per_day; reference_head=term%reference_head_m
 
     call predictor_backend%discard_trial_candidate(candidate,diagnostics)
-    call participant%capture_origin(committed,status); if(status/=GW_SWAP_PARTICIPANT_OK)return
-    call ledger%bind_identity(LEDGER_ID,status); if(status/=GW_MASS_LEDGER_OK)return
+    call participant%capture_origin(committed,status); if(status/=GW_SWAP_PARTICIPANT_OK)then; fgc44_swap_initialize_c=115_c_int; return; end if
+    call ledger%bind_identity(LEDGER_ID,status); if(status/=GW_MASS_LEDGER_OK)then; fgc44_swap_initialize_c=116_c_int; return; end if
     initialized=.true.; fgc44_swap_initialize_c=0_c_int
   end function fgc44_swap_initialize_c
 
@@ -408,7 +419,7 @@ contains
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,active_duration_day)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     physical%active_nodes=numnod; allocate(physical%pressure_head(numnod),physical%water_content(numnod))
     physical%pressure_head=heads; physical%water_content=water; physical%ponding_depth=0.0_real64; physical%groundwater_level=-2.0_real64
@@ -452,7 +463,7 @@ contains
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    call bind_b110_default_mvg_provider(provider,hp,active_duration_day)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod),conductivity(numnod),qbot, &
          0.5_real64*p%dz(numnod),datum,face,status)
