@@ -1,0 +1,25 @@
+name: PUB-P2E11D2 Reference failed-endpoint split
+
+on:
+  push:
+    branches:
+      - work/pub-p2e11d2-reference-failed-endpoint-split
+    paths:
+      - 'docs/publication/P2E11D2_REFERENCE_FAILED_ENDPOINT_SPLIT_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e11d2_reference_failed_endpoint_split.f90'
+      - 'tests/publication/run_pub_p2e11d2_reference_failed_endpoint_split.sh'
+      - '.github/workflows/pub-p2e11d2-reference-failed-endpoint-split.yml'
+  workflow_dispatch:
+
+jobs:
+  failed-endpoint-split:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only split diagnostic
+        run: bash tests/publication/run_pub_p2e11d2_reference_failed_endpoint_split.sh
