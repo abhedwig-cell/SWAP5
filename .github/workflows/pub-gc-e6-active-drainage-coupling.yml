@@ -1,0 +1,31 @@
+name: PUB-GC E6 active-drainage coupling
+
+on:
+  push:
+    branches: [work/pub-gc-e6-active-drainage-live-coupling]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_PREREGISTRATION.md'
+      - 'tests/publication/mod_pub_gc_e6_active_drainage_bridge.f90'
+      - 'tests/publication/build_pub_gc_e6_active_drainage.sh'
+      - 'tests/publication/pub_gc_e6_ctypes.py'
+      - 'tests/publication/test_pub_gc_e6_active_drainage_init.py'
+      - '.github/workflows/pub-gc-e6-active-drainage-coupling.yml'
+  workflow_dispatch:
+
+permissions: {contents: read}
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy pytest git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Build and qualify active-drainage participant fixture
+        run: bash tests/publication/build_pub_gc_e6_active_drainage.sh
