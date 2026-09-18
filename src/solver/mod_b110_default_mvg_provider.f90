@@ -12,6 +12,7 @@ module mod_b110_default_mvg_provider
   type, public :: b110_default_mvg_parameters_t
      integer :: active_nodes = 0
      real(real64), allocatable :: cofgen(:,:)
+     logical :: ksatexm_extension_enabled = .false.
   end type b110_default_mvg_parameters_t
 
   type, extends(constitutive_hydraulics_provider_t), public :: b110_default_mvg_provider_t
@@ -27,9 +28,10 @@ module mod_b110_default_mvg_provider
 
 contains
 
-  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input)
+  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension)
     type(b110_default_mvg_parameters_t), intent(out) :: parameters
     real(real64), intent(in) :: cofgen_input(:,:)
+    logical, intent(in), optional :: enable_ksatexm_extension
     integer :: i, n
     real(real64) :: h105, t105, c105, a, b, alfa
 
@@ -37,12 +39,23 @@ contains
     n = size(cofgen_input,2)
     if (n <= 0) error stop 'B1.10 default MvG provider: active_nodes must be positive'
     parameters%active_nodes = n
+    parameters%ksatexm_extension_enabled = .false.
+    if (present(enable_ksatexm_extension)) parameters%ksatexm_extension_enabled = enable_ksatexm_extension
     allocate(parameters%cofgen(B110_MCOF_REQUIRED,n))
     parameters%cofgen = 0.0_real64
     parameters%cofgen(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:) = &
          cofgen_input(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:)
 
     do i = 1, n
+       if (parameters%ksatexm_extension_enabled .and. parameters%cofgen(10,i) > parameters%cofgen(3,i)) then
+          if (.not. ieee_is_finite(parameters%cofgen(10,i)) .or. parameters%cofgen(10,i) <= 0.0_real64) &
+               error stop 'B1.11 KSATEXM provider: invalid ksatexm'
+          if (.not. ieee_is_finite(parameters%cofgen(11,i)) .or. parameters%cofgen(11,i) < 0.0_real64 .or. &
+              parameters%cofgen(11,i) >= 1.0_real64) &
+               error stop 'B1.11 KSATEXM provider: invalid relsat threshold'
+          if (.not. ieee_is_finite(parameters%cofgen(12,i)) .or. parameters%cofgen(12,i) < 0.0_real64) &
+               error stop 'B1.11 KSATEXM provider: invalid threshold conductivity'
+       end if
        alfa = parameters%cofgen(4,i)
        parameters%cofgen(25,i) = parameters%cofgen(2,i) - parameters%cofgen(1,i)
        parameters%cofgen(26,i) = parameters%cofgen(1,i) + parameters%cofgen(25,i) / &
@@ -118,7 +131,8 @@ contains
 
     theta = b110_watcon(parameters%cofgen(:,node_index), pressure_head)
     if (.not. ieee_is_finite(theta)) return
-    conductivity = b110_hconduc(parameters%cofgen(:,node_index), pressure_head, theta)
+    conductivity = b110_hconduc(parameters%cofgen(:,node_index), pressure_head, theta, &
+         parameters%ksatexm_extension_enabled)
     if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
        conductivity = 0.0_real64
        return
@@ -142,7 +156,8 @@ contains
     do i = 1, n
        water_content(i) = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
        capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
-       conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), water_content(i))
+       conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), water_content(i), &
+            self%parameters%ksatexm_extension_enabled)
     end do
     ! swkimpl=1 is deliberately not admitted by F-SI09. The common interface reserves this output.
     dconductivity_dhead = 0.0_real64
@@ -207,11 +222,18 @@ contains
     end if
   end function b110_moiscap
 
-  pure real(real64) function b110_hconduc(c, head, theta) result(hconduc)
+  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension) result(hconduc)
     real(real64), intent(in) :: c(:), head, theta
+    logical, intent(in) :: enable_ksatexm_extension
     real(real64) :: relsat, term1, term2, se
+    logical :: ksatexm_applied
     relsat = (theta-c(1))/c(25)
-    if (c(9) > B110_H_CRIT) then
+    ksatexm_applied = .false.
+    if (enable_ksatexm_extension .and. c(10) > c(3) .and. relsat > c(11)) then
+       term1 = (relsat-c(11))/(1.0_real64-c(11))
+       hconduc = term1*c(10) + (1.0_real64-term1)*c(12)
+       ksatexm_applied = .true.
+    else if (c(9) > B110_H_CRIT) then
        if (head < -1.0e14_real64) then
           hconduc = B110_HCON_VSMALL
        else if (relsat > (1.0_real64-1.0e-6_real64)) then
@@ -234,7 +256,7 @@ contains
           end if
        end if
     end if
-    hconduc = min(hconduc,c(3))
+    if (.not. ksatexm_applied) hconduc = min(hconduc,c(3))
   end function b110_hconduc
 
 end module mod_b110_default_mvg_provider
