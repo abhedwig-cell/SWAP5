@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.rom1ar2.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R2",
+  "title": "Unchanged 12-history reachable-state library under frozen discovery-qualified Reference policy",
+  "execution": {
+    "workflow_run": 35379176697,
+    "workflow_job": 105710994980,
+    "executed_head": "67a6af4922143a618ffd250c3cc4e38e7090850c",
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true,
+    "raw_stdout_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0"
+  },
+  "library": {
+    "material": "B01",
+    "history_count": 12,
+    "accepted_state_count": 768,
+    "discovery_state_count": 512,
+    "held_out_state_count": 256,
+    "node_record_count": 12288,
+    "nodes_per_state": 16,
+    "pressure_head_range_cm": [-33.813489289785984,-25.13481247066326],
+    "water_content_range": [0.35549315754846394,0.37905331947203436]
+  },
+  "fallback": {
+    "count": 57,
+    "discovery_count": 37,
+    "held_out_count": 20,
+    "total_only_count": 56,
+    "local_balance_count": 1,
+    "local_balance_location": "D08 step34 only",
+    "semantics_pass": true,
+    "count_consistent": true,
+    "policy_retuned_from_heldout": false
+  },
+  "mass": {
+    "hard_gate_cm": 1e-12,
+    "max_abs_step_mass_residual_cm": 2.203315654925042e-14,
+    "pass": true
+  },
+  "gates": {
+    "history_structure": true,
+    "split_counts": true,
+    "node_structure": true,
+    "finite_primary_outputs": true,
+    "finite_full_profiles": true,
+    "revision_progression": true,
+    "hard_mass_gate": true,
+    "fallback_semantics": true,
+    "B14_not_generated": true
+  },
+  "decision": "ROM1AR2_REACHABLE_STATE_LIBRARY_QUALIFIED",
+  "scientific_firewalls": {
+    "B14_generated": false,
+    "closure_model_fit": false,
+    "memory_variable_selected": false,
+    "pod_or_modal_basis_fit": false,
+    "policy_retuned_from_heldout": false,
+    "reduced_coordinate_selected": false
+  },
+  "rom1b_authorized": true,
+  "production_solver_authorized": false
+}
