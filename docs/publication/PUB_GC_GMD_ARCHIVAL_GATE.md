@@ -45,13 +45,21 @@ and explicitly permits creation of a Status-A / release-candidate tag or release
 
 That authority establishes that a release-candidate action is allowed. It does **not** define the publication version identifier, release naming scheme or software licence.
 
-### Current version identifier
+### Current version/release authority
 
-No explicit SWAP5 release/version policy or submission version identifier was located on current canonical.
+An immutable predecessor release authority exists outside current canonical:
 
-The current publication manuscript therefore must **not** invent a semantic version number merely to satisfy journal formatting.
+- release id: `SWAP5-RB1-v1`;
+- F-RB02 final authority commit: `b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0`;
+- exact authority file: `release/f-rb02/F-RB02_CLOSEOUT.json` on branch `release/f-rb02-restricted-production-baseline-v1-final-authority`.
 
-A Git commit SHA is a unique repository identifier, but using only a development SHA in the final GMD title is inferior to a governed release/version identity and does not replace the persistent archive requirement.
+F-RB02 explicitly states that RB1 is immutable and that any future release must enumerate its delta from RB1 and qualify its own candidate.
+
+The current PUB-GC manuscript uses post-RB1 capabilities and evidence. It therefore cannot use or move `SWAP5-RB1-v1`; it needs a new successor release authority.
+
+No authorized successor identifier for the current publication postimage has been located. The manuscript must therefore not invent a semantic/date/status version merely to satisfy GMD formatting.
+
+A Git commit SHA remains useful provenance but does not replace the governed successor release identity and persistent archive.
 
 ### Current licence authority
 
@@ -86,13 +94,20 @@ Where legally possible, editor/reviewer access to the external asset should be a
 
 ## 4. Archival blockers
 
-### A1 — release/version authority
+### A1 — successor release/version authority
 
-**BLOCKED_GOVERNANCE_DECISION**
+**BLOCKED_SUCCESSOR_RELEASE_AUTHORITY**
 
-A controlled authority must define the SWAP5 publication release identifier or version label.
+The governing rule already exists through F-RB02. A controlled authority must now define the **new successor release identifier** for the exact PUB-GC submission postimage.
 
-The publication workstream may not invent this value.
+The successor release must:
+
+- remain distinct from immutable `SWAP5-RB1-v1`;
+- enumerate the post-RB1 delta;
+- qualify its own exact candidate;
+- avoid implying broader completeness or semantic-version guarantees unless separately authorized.
+
+The publication workstream may prepare that successor release gate, but may not choose the identifier itself.
 
 ### A2 — software licence authority
 
