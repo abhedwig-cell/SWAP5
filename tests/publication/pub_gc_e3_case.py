@@ -161,7 +161,7 @@ def solve_fixed_boundary(
         finally:
             if initialized:
                 try:
-                    if session is not None and session.prepared_solve_open:
+                    if session is not None and session.solve_open:
                         session.finalize_prepared_solve()
                 except Exception:
                     pass
@@ -278,7 +278,7 @@ def solve_strong(libmf6:Path, swaplib:Path, window_day:float, sy:float)->dict[st
         finally:
             if initialized:
                 try:
-                    if session is not None and session.prepared_solve_open:
+                    if session is not None and session.solve_open:
                         session.finalize_prepared_solve()
                 except Exception:
                     pass
