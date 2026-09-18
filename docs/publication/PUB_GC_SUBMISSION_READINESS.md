@@ -18,7 +18,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | RQ2 coupled convergence and hydrological relevance | E3/E3-R | `SUPPORTED_RESTRICTED` | ready; explicitly a weak-feedback control |
 | RQ3 response identity and information value | E4/E5 | `SUPPORTED_RESTRICTED` | ready; no universal-Jacobian or standalone-ACCELERATE claim |
 | RQ4 component-envelope interaction | E3-D2/E6 | `SUPPORTED_RESTRICTED` / negative stress extension | ready; component-domain failure kept distinct from coupling divergence |
-| RQ5 realistic transferability | E7 Hupsel | `PREREGISTERED / BLOCKED_EXTERNAL_PREREQUISITE` | principal remaining scientific gap |
+| RQ5 realistic transferability | E7 Hupsel | `PREREGISTERED / EXECUTION_READY` | execution is now the remaining scientific work |
 | regional scaling | E8 | deferred | not a submission prerequisite unless journal positioning later makes quantitative scaling central |
 | physical N:1 aggregation validity | PUB-SG / SCALE | separate paper | excluded from PUB-GC |
 
@@ -32,9 +32,9 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | Results E1–E6 | READY |
 | Discussion / conclusions | READY through E6 and evidence-bounded |
 | Figures F1–F6 | BUILT_AND_LINKED |
-| Figure F7 | BLOCKED_E7 |
+| Figure F7 | OPEN_E7_EXECUTION |
 | Tables T1–T5 | BUILT_AND_LINKED |
-| Table T6 | BLOCKED_E7 |
+| Table T6 | OPEN_E7_EXECUTION |
 | reference metadata | externally audited / normalized |
 | claim-to-sentence audit | PASS: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED` |
 | code/evidence reproducibility section | READY at repository level; archival DOI/release not yet frozen |
@@ -44,7 +44,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 
 ## What remains scientific
 
-The only planned primary scientific addition is E7. It requires the existing M1-C3 final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution. Until that prerequisite closes, no coupled Hupsel output, F7 or T6 may be fabricated or inferred.
+The only planned primary scientific addition is E7. The M1-C3 whole-Hupsel prerequisite is now canonically closed through PR #313 and formal M1 closeout PR #316. E7 is therefore execution-ready under its existing preregistration. F7 and T6 remain open until the prospectively selected Hupsel cases are actually coupled.
 
 If E7 eventually returns weak feedback or a component-domain limit, that remains a valid E7 outcome under the frozen preregistration. A positive strong-feedback result is not required for acceptance of the evidence.
 
