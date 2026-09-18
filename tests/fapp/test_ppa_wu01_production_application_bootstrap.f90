@@ -54,6 +54,16 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 0_int64), 'initial committed revisions')
 
   call app%run_standalone(0.0_real64, DURATION_DAY, results, status)
+  if (status /= FMR_APP_BOOT_OK) then
+    write(*,'(a,1x,i0)') 'PPA_WU01_DEBUG_STANDALONE_STATUS', status
+    if (allocated(results)) then
+      do i = 1, size(results)
+        write(*,'(a,1x,i0,1x,a,1x,i0,1x,l1,1x,l1,1x,l1)') 'PPA_WU01_DEBUG_RESULT', i, &
+             trim(results(i)%admission_status), results(i)%kernel_status, results(i)%admitted, &
+             results(i)%completed, results(i)%committed
+      end do
+    end if
+  end if
   call require(status == FMR_APP_BOOT_OK, 'standalone run status')
   call require(allocated(results) .and. size(results) == NTILE, 'standalone result count')
   call require(all(results%completed) .and. all(results%committed), 'standalone accepted commits')
