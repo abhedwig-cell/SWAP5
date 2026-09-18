@@ -69,6 +69,37 @@ manifest:
       finding: All 108 INSIDE and 108 exact-BOUNDARY cases were route-valid and admissible; all 108 OUTSIDE cases were rejected cleanly with no candidate state or typed mass publication and no fallback.
       provenance_note: The first candidate exposure established the route-boundary and inside/boundary accuracy result; the second run on corrected test authority verified fail-closed publication hygiene on the already exposed matrix and is not an independent holdout.
       next_permitted_action: Begin separately preregistered equal-error REF-HIGH construction within already qualified common-domain cases. Do not infer lower-top-flux, bottom-boundary, transaction-level, trajectory or performance claims from P2E17.
+    E2X_full_flux_boundary_extension:
+      branch: work/pub-p2e16-admissibility-boundary-primary
+      reconciliation_head: b6865e518a28fa38a80c117f55da14734e9609f9
+      checkpoint: docs/publications/manifests/PUB-SQ-FULL-FLUX-BOUNDARY-EXTENSION-CHECKPOINT_2026-09-18.json
+      verdict: PROSPECTIVE_FLUX_BOUNDARY_EXTENSION_SUPPORTED_ZERO_ROUTE_MISMATCH_633_OF_633_INTERPRETABLE_AUTHORIZED_ADMISSIBLE_TWO_REFERENCE_UNRESOLVED
+      epistemic_reconciliation: >-
+        A parallel P2E17 upper request-side top-flux candidate exposure preceded the broader
+        branch-local P2E16 preregistration. The 324 overlapping TOP rho={-1.05,-1.0,-0.95}
+        cases are therefore supporting replication only. Central governance assigns this
+        broader work the alias E2X rather than renaming historical evidence files.
+      prospective_extension:
+        case_count: 972
+        surfaces:
+          - lower_request_side_top_flux_boundary
+          - bidirectional_bottom_flux_boundary
+        route_mismatch: 0
+        route_valid_inside_or_boundary: 648
+        fail_closed_outside: 324
+        stage_A_authorized_route_valid_pairs: 635
+        reference_interpretable_authorized_pairs: 633
+        authorized_admissible: 633
+        authorized_discrepancy_fail: 0
+        authorized_reference_unresolved: [1220, 1257]
+      reference_diagnosis: >-
+        The two unresolved authorized cases and three outside cases fail first by Reference
+        nonconvergence on legacy-reference-retry at the 0.0016-day fixed step; state-domain
+        and flux-identity predicates remain valid.
+      next_permitted_action: >-
+        Proceed to PUB-SQ-E3 candidate-blind REF-HIGH construction. Do not spend another
+        confirmatory slot on the already sharp fixed-flux route boundary and do not count
+        the overlapping upper-top surface as an independent holdout.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
