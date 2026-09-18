@@ -108,8 +108,14 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+  if ! gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o" 2> "$OUT/test_compile.err"; then
+    cat "$OUT/test_compile.err" >&2
+    fail "REF-HIGH test compile O$opt"
+  fi
+  if ! gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" 2> "$OUT/test_link.err"; then
+    cat "$OUT/test_link.err" >&2
+    fail "REF-HIGH test link O$opt"
+  fi
 
   if ! "$OUT/test" > "$OUT/output.txt" 2>&1; then
     cat "$OUT/output.txt" >&2
