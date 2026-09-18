@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.publication.p2e18d3-reference-total-balance-floor-result.v1",
+  "workunit": "PUB-P2E18D3",
+  "publication_owner": "PUB-SQ",
+  "phase": "COMPLETE_TOTAL_BALANCE_NUMERICAL_DISTINGUISHABILITY_DIAGNOSTIC",
+  "authorities": {
+    "preregistration_blob": "44420d872bd13c761db98f8598bf2cf596ddcbcd",
+    "test_blob": "740349d682fe5bcff927142ab438e001add22c5f",
+    "runner_blob": "d043289157d0f4a939c13b6e38b07b526fb883b0",
+    "workflow_blob": "7989575ff88e7177b50640e21c3d5a7589e6eded",
+    "parent_D2_result_blob": "599ba330500bc52ac78a6064117cb60f0a7ac665",
+    "method_authority_P2E07_result_blob": "be60ba751141545e1534f190e709dc5d2b7b83e6"
+  },
+  "execution": {
+    "workflow_run": 35293578591,
+    "job": 105441399225,
+    "head": "30e08b0846790bf27bef920ddd70b28141d3230b",
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "4918070c435c71ba933339f02b3c9e137339391d48f0682e54d70403821a87fb"
+  },
+  "diagnosed_retry_states": 4,
+  "counts": {
+    "estimated_total_floor_ge_configured_total_tolerance": 4,
+    "abs_total_residual_le_estimated_total_floor": 4,
+    "reconstruction_supported": 4,
+    "storage_input_quantization_dominant": 4
+  },
+  "states": [
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "nsub": 4,
+      "isub": 1,
+      "dt_day": 0.0004,
+      "configured_total_rate_tolerance_cm_per_day": 4e-12,
+      "abs_total_residual_cm_per_day": 4.257553944814196e-12,
+      "estimated_total_floor_cm_per_day": 2.220446049250313e-11,
+      "integrated_floor_cm": 8.881784197001252e-15,
+      "tolerance_over_floor": 0.18014398509481983,
+      "residual_over_floor": 0.19174318359375,
+      "dominant": "STORAGE_QUANTIZATION",
+      "reconstruction_closure_cm_per_day": 4.336808689942018e-19
+    },
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "nsub": 16,
+      "isub": 16,
+      "dt_day": 0.0001,
+      "configured_total_rate_tolerance_cm_per_day": 1.6e-11,
+      "abs_total_residual_cm_per_day": 2.211024289003327e-11,
+      "estimated_total_floor_cm_per_day": 8.881784197001252e-11,
+      "integrated_floor_cm": 8.881784197001252e-15,
+      "tolerance_over_floor": 0.18014398509481983,
+      "residual_over_floor": 0.2489392041015625,
+      "dominant": "STORAGE_QUANTIZATION",
+      "reconstruction_closure_cm_per_day": 4.336808689942018e-19
+    },
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "nsub": 32,
+      "isub": 7,
+      "dt_day": 0.00005,
+      "configured_total_rate_tolerance_cm_per_day": 3.2e-11,
+      "abs_total_residual_cm_per_day": 3.3400908341224556e-11,
+      "estimated_total_floor_cm_per_day": 1.7763568394002505e-10,
+      "integrated_floor_cm": 8.881784197001252e-15,
+      "tolerance_over_floor": 0.18014398509481983,
+      "residual_over_floor": 0.18803039794921875,
+      "dominant": "STORAGE_QUANTIZATION",
+      "reconstruction_closure_cm_per_day": 4.336808689942018e-19
+    },
+    {
+      "case": 4,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "nsub": 2,
+      "isub": 2,
+      "dt_day": 0.0008,
+      "configured_total_rate_tolerance_cm_per_day": 2e-12,
+      "abs_total_residual_cm_per_day": 2.7525724755061987e-12,
+      "estimated_total_floor_cm_per_day": 2.220446049250313e-11,
+      "integrated_floor_cm": 1.7763568394002505e-14,
+      "tolerance_over_floor": 0.09007199254740991,
+      "residual_over_floor": 0.12396484375,
+      "dominant": "STORAGE_QUANTIZATION",
+      "reconstruction_closure_cm_per_day": 1.779826286352204e-15
+    }
+  ],
+  "adjudication": {
+    "strict_total_balance_discriminator": "NOT_NUMERICALLY_DISTINGUISHABLE_AT_ALL_4_DIAGNOSED_RETRY_STATES_UNDER_PREREGISTERED_TOTAL_FLOOR_MODEL",
+    "residual_scale": "ALL_4_RETRY_RESIDUALS_WITHIN_ESTIMATED_TOTAL_FLOOR",
+    "floor_driver": "STORAGE_INPUT_REPRESENTATION_SCALE_4_OF_4",
+    "interpretation": "D2's remaining total-only retries occur where the configured total-balance criterion is below the preregistered estimate of total-domain numerical resolution. This supports constructing a separate research-only, formula-derived Reference total-balance policy. It does not itself authorize a tolerance change."
+  },
+  "methodological_boundary": {
+    "estimated_floor": "diagnostic numerical-resolution scale, not a rigorous propagated-error bound",
+    "causality": "storage representation is the dominant estimated scale in this frozen diagnostic; a unique arithmetic cause is not claimed",
+    "no_posthoc_fit": "No D3 residual/tolerance exceedance ratio may be used to choose a future multiplicative safety factor."
+  },
+  "firewalls": {
+    "tolerance_changed_in_D3": false,
+    "rossfast_executed": false,
+    "timing_executed": false,
+    "ref_high_stability_qualified": false,
+    "production_or_reference_source_mutated": false
+  },
+  "verdict": "TOTAL_BALANCE_RETRIES_NOT_NUMERICALLY_DISTINGUISHABLE_UNDER_PREREGISTERED_DOMAIN_SUMMED_FLOOR_MODEL",
+  "next_permitted_action": "Preregister a research-only REF-HIGH construction policy whose total-balance tolerance is derived prospectively from an IEEE/base-state representation bound rather than from observed D3 residual ratios. Keep the D1 compartment-balance scaling and original P2E18 six-level stability budgets immutable."
+}
