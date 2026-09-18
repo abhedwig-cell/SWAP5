@@ -1,0 +1,19 @@
+name: F-VQ122 F-GC49B independent qualification
+on:
+  push:
+    branches: [work/f-gc49b-fmr-participant-registry]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'tests/fgc/test_fgc49b_fmr_participant_registry.f90'
+      - 'tests/fvq/test_fvq122_fgc49b_registry_independent.py'
+      - 'tests/fvq/run_fvq122_fgc49b_independent.sh'
+      - '.github/workflows/f-vq122-fgc49b-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq122_fgc49b_independent.sh

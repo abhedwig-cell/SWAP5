@@ -17,7 +17,9 @@ module mod_rossfast_d3r_table_kernel
   integer, parameter, public :: ROSSFAST_D3R_TABLE_N = 241
   real(real64), parameter :: TABLE_DXDU = real(ROSSFAST_D3R_TABLE_N - 1, real64) / 4.0_real64
   real(real64), parameter :: LN10 = log(10.0_real64)
-  integer, parameter :: CERTIFICATE_INTERNAL_SUBSTEPS = 8
+  integer, parameter :: FAST_INTERNAL_SUBSTEPS = 2
+  integer, parameter :: MID_INTERNAL_SUBSTEPS = 4
+  integer, parameter :: FINAL_INTERNAL_SUBSTEPS = 8
 
   type :: face_linearization_t
     real(real64) :: q0 = 0.0_real64
@@ -70,9 +72,9 @@ contains
     class(rossfast_d3r_table_kernel_t), intent(in) :: self
     type(rossfast_d3r_kernel_request_t), intent(in) :: request
     type(rossfast_d3r_kernel_result_t), intent(out) :: result
-    type(rossfast_d3r_state_t) :: coarse, half1, refined
-    real(real64) :: duration, half_duration, span, raw_estimator, bound
-    integer :: coarse_solves, half1_solves, half2_solves
+    type(rossfast_d3r_state_t) :: candidate
+    real(real64) :: indicator
+    integer :: fast_solves, fallback_solves, final_solves, total_solves
     logical :: ok
 
     result = rossfast_d3r_kernel_result_t()
@@ -81,38 +83,83 @@ contains
     if (.not. request_contract_is_admitted(request)) return
     if (.not. valid_state(request%base_state)) return
 
-    call semantic_full_duration(request%t0_day, request%t1_day, duration, ok)
-    if (.not. ok) return
     result%request_admitted = .true.
+    call solve_certificate(self, request, FAST_INTERNAL_SUBSTEPS, candidate, indicator, fast_solves, ok)
+    if (.not. ok) return
+    total_solves = fast_solves
+
+    ! F-ROSS22 production ladder: K2 first, then K4 only after rejection,
+    ! then K8 only after a second rejection. Every tier restarts from the
+    ! original request base state; no prior candidate trajectory is reused.
+    if (indicator > 1.0_real64) then
+      call solve_certificate(self, request, MID_INTERNAL_SUBSTEPS, candidate, indicator, fallback_solves, ok)
+      if (.not. ok) return
+      total_solves = fast_solves + fallback_solves
+      if (indicator > 1.0_real64) then
+        call solve_certificate(self, request, FINAL_INTERNAL_SUBSTEPS, candidate, indicator, final_solves, ok)
+        if (.not. ok) return
+        total_solves = fast_solves + fallback_solves + final_solves
+      end if
+    end if
+
+    result%candidate_state = candidate
+    result%temporal_certificate_available = .true.
+    result%temporal_indicator = indicator
+    if (.not. ieee_is_finite(result%temporal_indicator) .or. result%temporal_indicator < 0.0_real64) then
+      result%temporal_certificate_available = .false.
+      result%temporal_indicator = huge(0.0_real64)
+      return
+    end if
+    result%linear_solves = total_solves
+    result%solver_ok = .true.
+  end subroutine rossfast_d3r_table_kernel_solve
+
+  subroutine solve_certificate(self, request, internal_substeps, candidate, indicator, linear_solves, ok)
+    class(rossfast_d3r_table_kernel_t), intent(in) :: self
+    type(rossfast_d3r_kernel_request_t), intent(in) :: request
+    integer, intent(in) :: internal_substeps
+    type(rossfast_d3r_state_t), intent(out) :: candidate
+    real(real64), intent(out) :: indicator
+    integer, intent(out) :: linear_solves
+    logical, intent(out) :: ok
+    type(rossfast_d3r_state_t) :: coarse, half1, refined
+    real(real64) :: duration, half_duration, span, raw_estimator, bound
+    integer :: coarse_solves, half1_solves, half2_solves
+    logical :: window_ok
+
+    ok = .false.
+    indicator = huge(0.0_real64)
+    linear_solves = 0
+    if (internal_substeps /= FAST_INTERNAL_SUBSTEPS .and. &
+        internal_substeps /= MID_INTERNAL_SUBSTEPS .and. &
+        internal_substeps /= FINAL_INTERNAL_SUBSTEPS) return
+
+    call semantic_full_duration(request%t0_day, request%t1_day, duration, window_ok)
+    if (.not. window_ok) return
     half_duration = 0.5_real64 * duration
 
-    call run_window(self, request%material, request%forcing, request%base_state, duration, &
-         coarse, coarse_solves, ok)
-    if (.not. ok) return
-    call run_window(self, request%material, request%forcing, request%base_state, half_duration, &
-         half1, half1_solves, ok)
-    if (.not. ok) return
-    call run_window(self, request%material, request%forcing, half1, half_duration, &
-         refined, half2_solves, ok)
-    if (.not. ok) return
+    call run_window(self, request%material, request%forcing, request%base_state, duration, internal_substeps, &
+         coarse, coarse_solves, window_ok)
+    if (.not. window_ok) return
+    call run_window(self, request%material, request%forcing, request%base_state, half_duration, internal_substeps, &
+         half1, half1_solves, window_ok)
+    if (.not. window_ok) return
+    call run_window(self, request%material, request%forcing, half1, half_duration, internal_substeps, &
+         refined, half2_solves, window_ok)
+    if (.not. window_ok) return
 
     span = request%material%theta_s - request%material%theta_r
     if (.not. ieee_is_finite(span) .or. span <= 0.0_real64) return
     raw_estimator = maxval(abs(refined%water_content - coarse%water_content)) / span
     if (.not. ieee_is_finite(raw_estimator) .or. raw_estimator < 0.0_real64) return
     bound = max(raw_estimator, ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR)
+    indicator = bound / ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE
+    if (.not. ieee_is_finite(indicator) .or. indicator < 0.0_real64) return
 
-    result%candidate_state = refined
-    result%temporal_certificate_available = .true.
-    result%temporal_indicator = bound / ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE
-    if (.not. ieee_is_finite(result%temporal_indicator) .or. result%temporal_indicator < 0.0_real64) then
-      result%temporal_certificate_available = .false.
-      result%temporal_indicator = huge(0.0_real64)
-      return
-    end if
-    result%linear_solves = coarse_solves + half1_solves + half2_solves
-    result%solver_ok = .true.
-  end subroutine rossfast_d3r_table_kernel_solve
+    candidate = refined
+    linear_solves = coarse_solves + half1_solves + half2_solves
+    ok = .true.
+  end subroutine solve_certificate
 
   logical function request_contract_is_admitted(request)
     type(rossfast_d3r_kernel_request_t), intent(in) :: request
@@ -121,10 +168,9 @@ contains
 
     request_contract_is_admitted = .false.
     if (request%base_state%active_nodes /= ROSSFAST_D3R_N_CELLS) return
-    ! The admitted D3G02R3 certificate matrix used exactly eight internal
-    ! substeps for each coarse/half component trial. Other D2 counts remain
-    ! research-only and are not silently generalized by this production kernel.
-    if (request%equal_internal_substeps /= CERTIFICATE_INTERNAL_SUBSTEPS) return
+    ! F-ROSS22 production ABI advertises K2. K4 and K8 remain internal fallback
+    ! tiers, each recomputed independently from the same request base state.
+    if (request%equal_internal_substeps /= FAST_INTERNAL_SUBSTEPS) return
     if (request%sigma /= ROSSFAST_D3R_SIGMA) return
     if (request%hard_mass_tolerance_cm /= ROSSFAST_D3R_HARD_MASS_TOL_CM) return
     if (request%boundary_envelope_fraction /= ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION) return
@@ -160,12 +206,13 @@ contains
     end do
   end subroutine semantic_full_duration
 
-  subroutine run_window(self, material, forcing, initial_state, duration, terminal_state, linear_solves, ok)
+  subroutine run_window(self, material, forcing, initial_state, duration, internal_substeps, terminal_state, linear_solves, ok)
     class(rossfast_d3r_table_kernel_t), intent(in) :: self
     type(rossfast_d3r_material_t), intent(in) :: material
     type(rossfast_d3r_forcing_t), intent(in) :: forcing
     type(rossfast_d3r_state_t), intent(in) :: initial_state
     real(real64), intent(in) :: duration
+    integer, intent(in) :: internal_substeps
     type(rossfast_d3r_state_t), intent(out) :: terminal_state
     integer, intent(out) :: linear_solves
     logical, intent(out) :: ok
@@ -181,11 +228,14 @@ contains
     terminal_state = initial_state
     call build_node_cache_from_head(terminal_state, material, cache, ok)
     if (.not. ok) return
-    dt = duration / real(CERTIFICATE_INTERNAL_SUBSTEPS, real64)
+    if (internal_substeps /= FAST_INTERNAL_SUBSTEPS .and. &
+        internal_substeps /= MID_INTERNAL_SUBSTEPS .and. &
+        internal_substeps /= FINAL_INTERNAL_SUBSTEPS) return
+    dt = duration / real(internal_substeps, real64)
     if (.not. ieee_is_finite(dt) .or. dt <= 0.0_real64) return
 
-    do istep = 1, CERTIFICATE_INTERNAL_SUBSTEPS
-      refresh_cache = istep < CERTIFICATE_INTERNAL_SUBSTEPS
+    do istep = 1, internal_substeps
+      refresh_cache = istep < internal_substeps
       call candidate_step(self, material, forcing, terminal_state, cache, dt, refresh_cache, ok)
       if (.not. ok) return
       linear_solves = linear_solves + 1
