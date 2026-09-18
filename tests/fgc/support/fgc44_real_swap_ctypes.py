@@ -36,6 +36,13 @@ class Fgc44RealSwap:
         self.lib.fgc44_last_trial_diagnostics_c.argtypes=[
             ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_e4_flux_point_c.restype=ctypes.c_int
+        self.lib.fgc44_e4_flux_point_c.argtypes=[
+            ctypes.c_double,ctypes.c_double,ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_double),
+        ]
         self.lib.fgc44_e4_head_trial_c.restype=ctypes.c_int
         self.lib.fgc44_e4_head_trial_c.argtypes=[
             ctypes.c_double,
@@ -150,6 +157,32 @@ class Fgc44RealSwap:
         result={k:v.value for k,v in zip(keys,values)}
         result["mass_complete"]=bool(mass_complete.value)
         return result
+
+    def e4_flux_point(
+        self,
+        duration_day: float,
+        top_flux_cm_per_day: float,
+        bottom_flux_cm_per_day: float,
+    ) -> dict[str,float|bool|int]:
+        h_end=ctypes.c_double()
+        dhdq=ctypes.c_double()
+        u_point=ctypes.c_double()
+        mass_complete=ctypes.c_int()
+        mass_residual=ctypes.c_double()
+        status=self.lib.fgc44_e4_flux_point_c(
+            float(duration_day),float(top_flux_cm_per_day),float(bottom_flux_cm_per_day),
+            ctypes.byref(h_end),ctypes.byref(dhdq),ctypes.byref(u_point),
+            ctypes.byref(mass_complete),ctypes.byref(mass_residual),
+        )
+        return {
+            "status":int(status),
+            "ready":status==0,
+            "h_end_m":h_end.value,
+            "dh_end_cm_per_qbot_cm_per_day":dhdq.value,
+            "u_A_point":u_point.value,
+            "mass_complete":bool(mass_complete.value),
+            "mass_residual_native":mass_residual.value,
+        }
 
     def e4_head_trial(self, head_m: float) -> dict[str,float|bool|int]:
         q=ctypes.c_double()
