@@ -114,8 +114,7 @@ program test_ross15_reference_vs_rossfast_performance
   end do
 
   call require(case_id==expected_cases,'exact 216-case characterization domain attempted')
-  call require(count_admissible+count_discrepancy_fail==expected_cases,'all 216 cases retain both valid routes')
-  call require(count_discrepancy_fail==0 .and. count_reference_invalid==0 .and. count_rossfast_invalid==0 .and. &
+    call require(count_discrepancy_fail==0 .and. count_reference_invalid==0 .and. count_rossfast_invalid==0 .and. &
        count_both_invalid==0,'no paired-valid authority drift')
   call require(ieee_is_finite(total_solver_cpu_seconds) .and. total_solver_cpu_seconds>0.0_real64,'positive finite solver CPU time')
   call require(ieee_is_finite(checksum),'finite benchmark checksum')
@@ -239,7 +238,7 @@ contains
       end if
     end if
 
-    call require(reference_valid .and. rossfast_valid,'both static production routes must remain valid; discrepancy is characterized, not retuned')
+    ! Route validity is classified and persisted by the characterization; do not abort before the full 216-case matrix is observed.
 
     select case(trim(selected_route))
     case('REFERENCE')
