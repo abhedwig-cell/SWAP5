@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-ross16.cost-attribution-result.v1",
   "workunit": "F-ROSS16",
-  "phase": "QUALIFIED_WORK_COUNTS_PROFILE_ATTRIBUTION_REJECTED",
+  "phase": "QUALIFIED_COST_ATTRIBUTION_WITH_DETERMINISTIC_SUCCESSOR",
   "branch": "work/f-ross16-rossfast-cost-attribution",
   "executed_head": "776a34a1091c94d07ae68f397db12918ca9359fc",
   "workflow_run": 35293681582,
@@ -77,10 +77,30 @@
   "hypothesis_adjudication": {
     "H1_exact_24_linear_solves": "SUPPORTED_EXACTLY",
     "H2_reference_materially_fewer_linear_solves": "SUPPORTED_ALL_36_CASES",
-    "H3_candidate_step_dominates_o2_profile": "NOT_ADMITTED_DUE_TO_GPROF_CALL_COUNT_INCONSISTENCY",
-    "H4_table_interpolation_and_state_inversion_subshare": "UNRESOLVED"
+    "H3_candidate_step_dominates_solve_path": "SUPPORTED_BY_O2_CALLGRIND_WITH_EXACT_TOPOLOGY",
+    "H4_table_and_state_transformations_are_substantial": "SUPPORTED_BY_NOINLINE_STRUCTURAL_CROSSCHECK",
+    "tridiagonal_solve_is_primary_cost_driver": "NOT_SUPPORTED"
   },
-  "interpretation": "The slowdown is structurally consistent with RossFast doing a fixed 24 candidate steps/linear solves per accepted solve for its temporal certificate, versus 2-12 Reference Newton/linear solves and 3.89 on average. This is exact and gives RossFast 6.17 times as many linear solves over the 36-case domain. The attempted gprof inner-function attribution is rejected because reported call counts conflict with known production topology, so it cannot yet identify the dominant arithmetic inside candidate_step.",
+  "interpretation": "F-ROSS15's slowdown is structurally explained by the fixed 24-step coarse+half+half temporal-certificate path, compared with 2-12 Reference Newton/linear solves and 3.89 on average. O2 deterministic instruction attribution places 95.5% of RossFast solve-path instructions in the repeated candidate-step path. A topology-consistent no-inline structural decomposition attributes 31.9% of candidate-step instructions to inverse-capacity evaluation, 29.8% to table-face linearization, 21.8% to water-content-to-head inversion, and only 5.8% to the 16x16 tridiagonal factor-and-solve. These are diagnostic instruction shares, not formal CPU-time shares.",
   "production_or_reference_mutation": false,
-  "next_permitted_action": "Run the already identified separately preregistered F-ROSS16D1 deterministic instruction-attribution diagnostic. Do not use rejected gprof helper percentages as evidence."
+  "next_permitted_action": "Open a separate optimization-study workunit. First test whether temporal certification can avoid recomputing coarse plus two half 8-step trajectories and whether repeated capacity/head/table transformations can be cached or algebraically reduced without changing qualified semantics. Any optimization requires independent scientific and performance requalification.",
+  "callgrind_successor": {
+    "workunit": "F-ROSS16D1",
+    "result": "integration/f-ross/F-ROSS16D1_CALLGRIND_RESULT.json",
+    "primary_run": 35294001306,
+    "status_head_replay": 35294027207,
+    "call_topology_consistent": true,
+    "optimized_candidate_step_fraction_of_solver_instructions": 0.9554209675818706,
+    "structural_breakdown": {
+      "inverse_capacity": 0.3193591533855895,
+      "table_face_linearization": 0.29792687179683375,
+      "head_from_water_content": 0.21833046155023314,
+      "factor_and_solve_16x16_tridiagonal": 0.05805759555974756,
+      "candidate_step_direct_body": 0.06742309090186742,
+      "valid_state": 0.03890282680572866
+    },
+    "combined_capacity_table_head_fraction": 0.8356164867326554,
+    "one_time_initialization_inclusive_Ir": 4798580277,
+    "one_time_initialization_boundary": "outside F-ROSS15 timed solver region"
+  }
 }
