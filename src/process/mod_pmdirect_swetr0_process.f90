@@ -43,6 +43,8 @@ module mod_pmdirect_swetr0_process
 
   type, public :: pmdirect_swetr0_canopy_t
     logical :: crop_emerged = .false.
+    logical :: use_crop_height_for_aerodynamics = .false.
+    real(real64) :: crop_height_cm = 0.0_real64
     real(real64) :: lai = 0.0_real64
     real(real64) :: vegetation_cover_fraction = 0.0_real64
     real(real64) :: cofab_cm = 0.0_real64
@@ -124,6 +126,9 @@ contains
     zm = 100.0_real64 * site%wind_measurement_height_m
     zh = 100.0_real64 * site%humidity_measurement_height_m
     chplant = CHGRASS_CM
+    if (canopy%crop_emerged .and. canopy%use_crop_height_for_aerodynamics) then
+      chplant = max(canopy%crop_height_cm, CHSOIL_CM)
+    end if
 
     palt = 101.3_real64 * ((tavk - 0.0065_real64 * site%altitude_m) / tavk)**5.26_real64
     lambda = 2.501_real64 - 0.002361_real64 * tav
@@ -370,13 +375,15 @@ contains
 
   pure logical function valid_canopy(canopy) result(valid)
     type(pmdirect_swetr0_canopy_t), intent(in) :: canopy
-    valid = ieee_is_finite(canopy%lai) .and. ieee_is_finite(canopy%vegetation_cover_fraction) .and. &
+    valid = ieee_is_finite(canopy%crop_height_cm) .and. ieee_is_finite(canopy%lai) .and. &
+            ieee_is_finite(canopy%vegetation_cover_fraction) .and. &
             ieee_is_finite(canopy%cofab_cm) .and. ieee_is_finite(canopy%albedo) .and. &
             ieee_is_finite(canopy%dry_canopy_resistance_s_m) .and. &
             ieee_is_finite(canopy%wet_canopy_resistance_s_m) .and. &
             ieee_is_finite(canopy%co2_transpiration_factor)
     if (.not. valid) return
-    valid = canopy%lai >= 0.0_real64 .and. canopy%vegetation_cover_fraction >= 0.0_real64 .and. &
+    valid = canopy%crop_height_cm >= 0.0_real64 .and. canopy%lai >= 0.0_real64 .and. &
+            canopy%vegetation_cover_fraction >= 0.0_real64 .and. &
             canopy%vegetation_cover_fraction <= 1.0_real64 .and. canopy%cofab_cm >= 0.0_real64 .and. &
             canopy%albedo >= 0.0_real64 .and. canopy%albedo <= 1.0_real64 .and. &
             canopy%dry_canopy_resistance_s_m >= 0.0_real64 .and. &
