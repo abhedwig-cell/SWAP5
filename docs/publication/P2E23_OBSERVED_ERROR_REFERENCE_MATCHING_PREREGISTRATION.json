@@ -1,0 +1,147 @@
+{
+  "schema":"swap5.publication.p2e23-observed-error-reference-matching.v1",
+  "workunit":"PUB-P2E23",
+  "publication_owner":"PUB-SQ",
+  "phase":"PREREGISTERED_BEFORE_OBSERVED_ERROR_REFERENCE_MATCHING",
+  "role":"UNTIMED_REALIZED_ERROR_MATCHING_FOR_RICHARDS_COMPARATOR",
+  "branch":"work/pub-p2e23-observed-error-reference-matching",
+  "parent_threshold_matched_authority":{
+    "branch":"work/pub-p2e22-equal-error-reference-migration",
+    "head":"dac6e7b7896f44baa8467eb0b34ba119f5bd2631",
+    "result_path":"docs/publication/P2E22_EQUAL_ERROR_REFERENCE_MIGRATION_RESULT.json",
+    "result_blob":"60b08f4b953e1f5330d7db9fc2a5729f924de12e",
+    "verdict":"FINAL_36_CASE_THRESHOLD_MATCHED_CONTROLS_FROZEN_BUT_STRICT_EQUAL_OBSERVED_ERROR_NOT_ACHIEVED"
+  },
+  "ref_high_authority":{
+    "branch":"work/pub-p2e21-ref-high-representation-bound",
+    "head":"dd09a1ef83ff4953cc4445c3116898c6fe118267",
+    "result_blob":"638e2ea4db5a7dcc3c940a9312b660b7ac4e5b78",
+    "policy":"REPRESENTATION_BOUNDED_TOTAL",
+    "endpoint":"32 substeps over 0.0016 day",
+    "population_size":36
+  },
+  "purpose":"Construct a deterministic untimed Richards comparator at equal-or-better realized error relative to the same REF-HIGH endpoint, using RossFast N=1 as the already frozen candidate production anchor. This separates strict realized-error matching from P2E22 threshold-matched timing.",
+  "population":{
+    "cases":36,
+    "materials":["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation":[0.65,0.85,0.96],
+    "forcing":["DRYING","NOMINAL"],
+    "horizon_day":0.0016,
+    "case_replacement_allowed":false
+  },
+  "ross_anchor":{
+    "solver":"ROSS",
+    "outer_segments":1,
+    "internal_substeps_per_outer_call":8,
+    "source":"P2E22 final selected control",
+    "retuning_allowed":false,
+    "fallback_allowed":false,
+    "timed":false,
+    "required_route":"rossfast-d3r"
+  },
+  "richards_matching_policy":{
+    "solver":"Reference Richards",
+    "balance_policy":"P2E21 representation-bounded research policy",
+    "compartment_integrated_allowance_cm":1.6e-15,
+    "compartment_rate_formula":"1.6e-15 / dt",
+    "total_integrated_bound_formula":"max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material)+spacing(theta_base_i))*dz_i))",
+    "total_rate_formula":"total_integrated_bound_cm / dt",
+    "max_iterations":16,
+    "max_backtracking":8,
+    "empirical_safety_factor":"none",
+    "production_tolerance_change_claim":false
+  },
+  "reference_control_axis":{
+    "outer_segments":"all integers 1 through 32 inclusive",
+    "count":32,
+    "segment_duration_formula":"0.0016 / N day",
+    "reason":"A dense, prospectively frozen integer control axis avoids post-hoc insertion of refinement levels after observed candidate/reference errors are known.",
+    "extrapolation_beyond_32":false,
+    "note":"N=32 is the qualified REF-HIGH endpoint under the same representation-bounded policy, so the matching set is guaranteed to contain a zero-reference-error endpoint if its route and representation checks reproduce."
+  },
+  "scientific_error_metric":{
+    "reference":"casewise P2E21 REF-HIGH 32-substep endpoint",
+    "head_theta_components":[
+      "D_h_inf / P2E14_D_h_inf_exact_Se",
+      "D_h_rms / P2E14_D_h_rms_exact_Se",
+      "D_theta_inf / P2E14_D_theta_inf_exact_Se",
+      "D_theta_rms / P2E14_D_theta_rms_exact_Se"
+    ],
+    "scalar_error":"E = max(four normalized head/theta components)",
+    "storage":"hard gate only: D_storage_abs <= exact-Se P2E14 storage envelope; storage is not included in E and is not scaled because the threshold is machine-scale",
+    "mass":"each accepted segment must have absolute typed integrated mass residual <= 1e-12 cm",
+    "flux_identity":"top and bottom prescribed transfers must close over the horizon"
+  },
+  "matching_rule":{
+    "per_case":"Let E_R be RossFast N=1 realized error. Traverse Reference N=1,2,...,32 in ascending order. Select N_hi as the first route-valid, storage-valid Reference configuration with E_ref <= E_R.",
+    "lower_bracket":"Among valid Reference configurations with N < N_hi, retain the largest N whose E_ref > E_R as N_lo. If no such configuration exists, classify the match LEFT_CENSORED_AT_N1.",
+    "matched_classifications":[
+      "BRACKETED",
+      "LEFT_CENSORED_AT_N1",
+      "MATCH_ONLY_AT_REF_HIGH_N32",
+      "UNRESOLVED"
+    ],
+    "work_or_timing_used_for_selection":false,
+    "closest_error_ratio_used_for_selection":false,
+    "monotonic_error_assumption":false,
+    "if_nonmonotone":"The first valid crossing in ascending N remains authoritative. All later levels are still retained in output."
+  },
+  "untimed_work_telemetry":{
+    "timing_calls_allowed":false,
+    "reported_vector":[
+      "outer_solver_calls",
+      "nonlinear_iterations",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "internal_retries",
+      "alternative_solver_calls"
+    ],
+    "no_composite_work_unit":true
+  },
+  "primary_endpoints":{
+    "E1":"N_hi distribution over 36 cases",
+    "E2":"bracket width N_hi-N_lo where BRACKETED",
+    "E3":"realized error ratio E_ref(N_hi)/E_R and E_ref(N_lo)/E_R",
+    "E4":"Reference work-counter vector at N_hi versus frozen RossFast N=1 vector",
+    "E5":"route validity over all 1152 Reference matching configurations"
+  },
+  "secondary_endpoints":[
+    "nonmonotonic Reference error trajectories across N",
+    "cases whose first crossing occurs only at N=32",
+    "cases left-censored because Reference N=1 is already at least as accurate as RossFast",
+    "distance between threshold-matched P2E22 N=1 and realized-error N_hi"
+  ],
+  "negative_result_policy":{
+    "execute_all_36_cases_all_32_reference_levels":true,
+    "reference_configuration_count":1152,
+    "ross_anchor_count":36,
+    "ref_high_reconstruction_count":36,
+    "do_not_stop_after_unfavorable_case":true,
+    "no_case_replacement":true,
+    "no_control_level_insertion":true,
+    "no_error_metric_change":true,
+    "no_tolerance_retuning":true,
+    "no_timing_inspection":true,
+    "scientific_outcome_is_not_ci_failure":true
+  },
+  "qualification":{
+    "required":[
+      "36 REF-HIGH reconstructions under exact P2E21 representation-bounded policy",
+      "36 RossFast N=1 anchors",
+      "1152 Reference matching configurations attempted",
+      "same P2E14 thresholds and storage gates as P2E22",
+      "no src/** or reference/** mutation",
+      "no timing calls",
+      "O0/O2 byte-identical scientific output"
+    ]
+  },
+  "future_timing_boundary":{
+    "authorized_now":false,
+    "if_P2E23_resolves_all_cases":"A later timing workunit may time RossFast N=1 and Reference N_hi as the primary equal-or-better-error comparison, with N_lo optionally timed as a lower-cost error bracket.",
+    "claim_wording_if_timed":"Cost of RossFast N=1 versus the least-refined tested Richards configuration that achieves equal-or-better realized error to REF-HIGH.",
+    "strict_equal_error_interpolation":"not authorized unless separately preregistered"
+  },
+  "verdict":"PREREGISTERED_UNTIMED_REALIZED_ERROR_REFERENCE_MATCHING_READY",
+  "next_permitted_action":"Implement and execute the frozen 36-case, N=1..32 Reference matching matrix plus RossFast N=1 anchors. Do not perform timing."
+}
