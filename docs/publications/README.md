@@ -9,6 +9,8 @@ This directory contains the prospective publication and doctoral-research layer 
 | Document | Status | Role |
 | --- | --- | --- |
 | `PHD_RESEARCH_PROGRAMME.md` | living hypothesis | overarching doctoral question, thesis, research arc and synthesis claims |
+| `NOVELTY_STRESS_TEST_2026-09-18.md` | adversarial literature checkpoint | strongest prior-art collision and surviving novelty boundary for all five papers |
+| `PHD_MASTER_RESEARCH_MATRIX_V2_2026-09-18.md` | prospective research-design authority | binds each RQ to hypotheses, experiments, comparators, primary endpoints and falsification criteria for future work |
 | `PUBLICATION_PORTFOLIO.md` | working governance contract | ownership/firewall rules across publications |
 | `EVIDENCE_INVENTORY.md` | living evidence map | classifies existing and missing evidence across papers and thesis synthesis without rewriting chronology |
 | `EXPERIMENT_MANIFEST.md` | prospective evidence contract | common metadata, chronology, numerical-reference and artifact rules for publication experiments |
@@ -67,19 +69,19 @@ Largest remaining gap: construct the paired B0/B1 authority experiment, freeze m
 
 ### PUB-SQ
 
-Already has a real reference solver authority, typed solver seam and admitted restricted RossFast production-selection route.
+The candidate-independent material-axis sequence has advanced materially. P2E13 constructed a complete tested 36-material Reference-only common state domain on Se=0.65 through 0.96; P2E14 froze thresholds at prospectively selected anchors 0.65, 0.85 and 0.96 before new RossFast outcomes; P2E15 then admitted all 180 previously unobserved material-axis candidate cases under those frozen thresholds.
 
-The experiment matrix now separates contract/fail-closed qualification, common-domain equivalence, admissibility-boundary probing, equal-error cost and whole-trajectory accumulation.
+This supports transfer within the frozen common fixed-request domain, not universal solver equivalence, transaction-level equivalence or a speedup claim.
 
-Largest remaining gap: freeze scientifically justified accuracy thresholds and the primary stratified case matrix, then construct `REF-HIGH` numerical references.
+Largest remaining gap: preregister and execute the separate inside/boundary/outside admissibility experiment while keeping the P2E14 thresholds immutable. Equal-error performance follows only after that boundary is interpretable.
 
 ### PUB-GC
 
-Already has a bounded admitted Groundwater Coupling v1 basis.
+Interface conservation screening, held-out same-origin E1 primary evidence and GC-REF-A reference infrastructure now exist. The novelty stress test shows that coupling SWAP-like vadose models to MODFLOW, iterative feedback, N:1 mapping and multirate time integration are all insufficient novelty claims by themselves.
 
-The experiment matrix now separates interface conservation, same-origin replay, whole-window exchange, coupling-window convergence, robustness, minimal MODFLOW 6 transfer and bounded N:1 conservation.
+The future primary question is therefore discriminating: which finite-window exchange and acceptance semantics measurably change conservation, convergence, time-partition consistency or robustness at matched subsystem physics and error?
 
-Largest remaining gap: freeze fair comparator definitions, implement/qualify any missing converged replay method and concrete MODFLOW 6 backend, then construct `GC-REF`.
+Largest remaining gap: execute E2 whole-window versus terminal exchange on new frozen mechanism cases, E3 refinement to GC-REF, E4 against fair prior-practice comparators, and E5 transfer to an admitted minimal MODFLOW 6 backend.
 
 ### PUB-RC
 
@@ -91,11 +93,11 @@ Largest research gap: freeze the response ladder, strong generic baselines, matc
 
 ### PUB-SG
 
-Has MultiSWAP/N:1 structural groundwork but remains intentionally conditional. N:1 mapping itself is established prior art and is not a novelty claim.
+Has MultiSWAP/N:1 structural groundwork but remains intentionally conditional. The novelty stress test showed that generic cross-regime failure of equivalent vadose representations is already too well established to support the paper by itself.
 
-The sharpened question is cross-regime transferability: calibrate one equivalent full dynamic column under a declared regime, freeze it, and test whether it remains representative when forcing and groundwater dynamics change.
+The prospective v2 question now isolates the incremental role of two-way dynamic shared-groundwater feedback: does that feedback alter transferability beyond an otherwise comparable prescribed-head or one-way groundwater treatment, and are the resulting errors tied to interpretable response transitions?
 
-Largest research gap: define a fair equivalent-column calibration, holdout regimes and hydrologic materiality thresholds above the solver/coupling numerical floor.
+Largest research gap: revise the SG manifest to this narrower question, specify the prescribed-head/one-way control, freeze calibration and holdout regimes, and establish a numerical floor from SQ/GC before any large ensemble.
 
 ## Prospective evidence rule
 
@@ -107,17 +109,14 @@ Negative findings and failed hypotheses are evidence and should remain traceable
 
 ## Immediate programme-level next work
 
-The highest-value next steps are now:
+The current next-action authority is the v2 master matrix:
 
-1. execute the `EXPERIMENT_REGISTER.md` **Tranche A** as manifest-backed screening/evidence extraction, not yet final manuscript inference;
-2. define and freeze `PUB-SQ-REF-HIGH`, `PUB-GC-GW-A` and `PUB-GC-GC-REF` before primary numerical comparisons;
-3. select and freeze the `PUB-ME` migration-slice set before detailed historical extraction;
-4. introduce shared publication telemetry serialization before new numerical evidence is generated;
-5. perform systematic novelty/literature review separately for each paper, with `PUB-ME`, `PUB-SQ` and `PUB-GC` first;
-6. audit selected `RETROSPECTIVE_CANDIDATE` evidence before using it in figures or manuscript claims;
-7. freeze the five paper-level research manifests before any new confirmatory campaign, including immutable holdout fingerprints and materiality-threshold authority;
-8. keep `PUB-RC` and `PUB-SG` dependent on evidence rather than predetermined paper count;
-9. mature `PHD_RESEARCH_PROGRAMME.md` into a formal proposal only after supervisor/institutional framing and literature positioning have been added.
+1. `PUB-ME`: materialize and qualify the matched B0/B1 research-only harness before confirmatory fault injection;
+2. `PUB-SQ`: preregister the inside/boundary/outside admissibility experiment with P2E14 thresholds unchanged;
+3. `PUB-GC`: prioritize E2/E3/E4 discriminating coupling experiments, followed by E5 MODFLOW 6 transfer;
+4. `PUB-RC`: define a genuinely strong R1 black-box baseline and machine-independent work accounting before R2/R3 primary comparisons;
+5. `PUB-SG`: revise the research manifest around dynamic shared-groundwater feedback and add the prescribed-head/one-way causal control before scaling up;
+6. preserve negative results and chronology; do not turn exploratory evidence into prospective primary evidence after the fact.
 
 ## Experiment start gate
 
