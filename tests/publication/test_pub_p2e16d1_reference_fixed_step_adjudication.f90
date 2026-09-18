@@ -79,6 +79,7 @@ contains
     call setup_case(icase,parameters,hydraulic_parameters,constitutive,source_sink,top_boundary, &
          drainage,irrigation,root_sink,cofgen,material,h0,theta0,conductivity,qtop,qbot,found)
     call require(found,'direct material found')
+    call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt)
     call initialize_request(request,parameters,constitutive,source_sink,top_boundary,theta0,spread(h0,1,n),qtop,qbot,dt)
     call execute_reference(request,result)
     valid=reference_route_valid(result,request,material)
@@ -123,6 +124,7 @@ contains
     complete=.true.
 
     do istep=1,nsub
+      call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt)
       call initialize_request(request,parameters,constitutive,source_sink,top_boundary,current_theta,current_h,qtop,qbot,dt)
       call execute_reference(request,result)
       valid=reference_route_valid(result,request,material)
