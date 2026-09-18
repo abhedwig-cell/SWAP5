@@ -19,8 +19,10 @@ fail() { echo "F_ROM01_GATE_FAIL $*" >&2; exit 1; }
 [[ -f "$TEST" ]] || fail "missing pilot test"
 [[ -f "$ANALYZER" ]] || fail "missing pilot analyzer"
 
-git merge-base --is-ancestor "$BASELINE" HEAD || fail "canonical pilot baseline is not an ancestor"
-git diff --quiet "$BASELINE"...HEAD -- src reference || fail "F-ROM01 mutated production/reference source"
+CANDIDATE_HEAD="${GITHUB_HEAD_SHA:-${GITHUB_SHA:-HEAD}}"
+git merge-base --is-ancestor "$BASELINE" "$CANDIDATE_HEAD" || fail "canonical pilot baseline is not an ancestor of the workstream head"
+git diff --quiet "$BASELINE"... "$CANDIDATE_HEAD" -- src reference || fail "F-ROM01 workstream mutated production/reference source"
+echo "F_ROM01_CANDIDATE_HEAD=$CANDIDATE_HEAD"
 echo "F_ROM01_PRODUCTION_REFERENCE_DELTA=NONE"
 
 python3 - "$CONTRACT" "$BASELINE" "$TEST" <<'PY'
