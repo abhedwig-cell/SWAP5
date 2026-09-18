@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.f-ross25.serial-hydrologic-validation-corrected-result.v1",
+  "workunit": "F-ROSS25",
+  "phase": "CLOSED_CORRECTED_REPLAY",
+  "title": "Admitted tiered RossFast serial hydrologic trajectory validation",
+  "preregistration": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_PREREGISTRATION.json",
+  "correction_authority": "integration/f-ross/F-ROSS25_SERIAL_ENVELOPE_PREFLIGHT_CORRECTION.json",
+  "supersedes_scientific_interpretation_in": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_RESULT.json",
+  "measurement_authority": {
+    "head": "6314ff1d6084489152106fb997a3fe407b53cbda",
+    "workflow_run": 35353877855,
+    "job": 105628333236,
+    "artifact_id": 10552015234,
+    "artifact_digest": "sha256:29f771d364c4bca195f2c2170ddcdcfd9a30851f4146bedb3c6cb4f42d69df34",
+    "artifact_file": "F-ROSS25_SERIAL_VALIDATION_RESULT.json",
+    "execution_conclusion": "PASS"
+  },
+  "production_authority": {
+    "f_ross22_admission": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "canonical_reconciled": "8baaf8f155a4fe606058fd7d226780fb7eaba293",
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "relevant_dependency_drift": false,
+    "production_or_reference_mutation": false
+  },
+  "repair_scope": {
+    "defect": "Serial harness preflight used +0.01*K in public top-flux space while production maps internal_top=-public_top before applying the frozen +0.01*K envelope centre.",
+    "corrected_public_space_top_reference": "-0.01*K",
+    "production_mutation": false,
+    "forcing_change": false,
+    "tolerance_change": false,
+    "tier_change": false,
+    "domain_change": false
+  },
+  "domain": {
+    "trajectories": 216,
+    "intervals_per_trajectory": 32,
+    "total_duration_day": 0.0512,
+    "materials": "B01..B18 and O01..O18",
+    "profiles": [
+      "WET_GRADIENT",
+      "MID_GRADIENT",
+      "DRY_GRADIENT"
+    ],
+    "forcing_policies": [
+      "ZERO_SHARED",
+      "NOMINAL_SHARED"
+    ]
+  },
+  "corrected_results": {
+    "rossfast_route_valid_all_32_intervals": 216,
+    "rossfast_route_failures": 0,
+    "reference_valid_all_32_intervals": 210,
+    "reference_failures": 6,
+    "reference_failure_ids": [
+      91,
+      97,
+      103,
+      199,
+      205,
+      211
+    ],
+    "paired_complete_32_intervals": 105,
+    "paired_common_envelope_loss": 105,
+    "accepted_rossfast_intervals_by_tier": {
+      "K2": 3559,
+      "K4": 0,
+      "K8": 0
+    },
+    "by_policy": {
+      "ZERO_SHARED": {
+        "trajectories": 108,
+        "rossfast_valid_all": 108,
+        "reference_valid_all": 102,
+        "paired_complete": 102,
+        "envelope_loss": 0
+      },
+      "NOMINAL_SHARED": {
+        "trajectories": 108,
+        "rossfast_valid_all": 108,
+        "reference_valid_all": 108,
+        "paired_complete": 3,
+        "envelope_loss": 105,
+        "envelope_loss_first_interval_counts": {
+          "2": 101,
+          "3": 2,
+          "4": 2
+        },
+        "complete_trajectory_ids": [
+          12,
+          114,
+          138
+        ]
+      }
+    },
+    "envelope_loss_by_profile": {
+      "WET_GRADIENT": 36,
+      "MID_GRADIENT": 36,
+      "DRY_GRADIENT": 33
+    },
+    "discrepancy_on_complete_trajectories": {
+      "max_final_head_inf_cm": 0.09484979175972796,
+      "max_final_theta_inf": 0.00008354831330278922,
+      "max_final_storage_diff_cm": 2.842170943040401e-14
+    }
+  },
+  "interpretation": [
+    "The corrected replay removes the prior apparent RossFast solver-failure class: no RossFast route failure is observed across any of the 216 frozen trajectories.",
+    "The dominant limitation is instead the unchanged state-local production forcing envelope. Under NOMINAL_SHARED, 105 of 108 trajectories leave the paired common envelope before 32 intervals, predominantly at interval 2.",
+    "ZERO_SHARED remains RossFast-valid for all 108 trajectories over all 32 intervals; six paired completions are lost only because the Reference route does not converge.",
+    "F-ROSS25 therefore supports serial RossFast composition where the unchanged production envelope remains satisfied, but it does not widen that envelope and does not establish universal 32-interval paired transferability for NOMINAL_SHARED forcing."
+  ],
+  "scientific_verdict": "CLOSED_NO_ROSSFAST_ROUTE_FAILURE_OBSERVED_SERIAL_COMPOSITION_ENVELOPE_LIMITED",
+  "production_admission_effect": "NONE",
+  "firewall": [
+    "NO_PRODUCTION_MUTATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_FORCING_RETUNING",
+    "NO_TOLERANCE_CHANGE",
+    "NO_CERTIFICATE_THRESHOLD_CHANGE",
+    "NO_TIER_LADDER_CHANGE",
+    "NO_MATERIAL_OR_GEOMETRY_WIDENING",
+    "NO_NEW_BOUNDARY_MODE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_DOMAIN_RETUNING_AFTER_RESULTS"
+  ],
+  "next_permitted_action": "NONE_WITHIN_F_ROSS25. Do not widen the production forcing envelope from this result. Any broader forcing admission requires a separately governed capability with its own preregistration and evidence."
+}
