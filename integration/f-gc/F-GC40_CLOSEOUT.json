@@ -4,7 +4,7 @@
   "title": "MultiSWAP MODFLOW6 Cell Response — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
   "canonical_admission": {
     "production_admission_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
     "preimage": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
@@ -46,5 +46,11 @@
     "no Ribasim or irrigation",
     "historical provisional MultiSWAP F-GC31 identity remains superseded"
   ],
-  "next_permitted_action": "After metadata closeout qualification, proceed to current-canonical materialization of the next MODFLOW integration dependency. Do not reopen F-GC40 to add execution-backend semantics."
+  "next_permitted_action": "Proceed serially to current-canonical materialization of the next MODFLOW integration dependency. Preserve F-GC40 production blob 288a274612f6c0be0b3ced149028066a066908ca and do not add backend/orchestration semantics to this capability.",
+  "closeout_qualification": {
+    "metadata_head": "64bb145b8f55dcf56b3d90f692430ef6fa75e5ad",
+    "workflow_run": 35292572819,
+    "workflow_job": 105438369676,
+    "conclusion": "success"
+  }
 }
