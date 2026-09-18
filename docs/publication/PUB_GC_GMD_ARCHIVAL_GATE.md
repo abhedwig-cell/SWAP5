@@ -202,3 +202,22 @@ The GMD journal-positioning merge `a0ee53c48a80dd443d46f60edf08044aeba98273` com
 - F-CI58P reconciliation/preservation run 35377931486 — SUCCESS.
 
 The archival gate therefore does not represent an unresolved scientific or canonical-qualification failure.
+
+
+## Current pre-submission refinement — 2026-09-19
+
+The current canonical publication package has been reconciled again against live GMD policy.
+
+Additional controlling preparation records:
+
+- `PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md`;
+- `PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md`;
+- `PUB_GC_GMD_PREARCHIVE_INVENTORY.json`;
+- `PUB_GC_GMD_FIGURE_EXPORT_PLAN.json`;
+- `PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md`.
+
+The current figure-export plan uses the stricter GMD production guidance for preferred PDF figures: **2 MB per PDF figure**, while other supported figure formats remain **5 MB per figure** and the total non-supplement submission remains **30 MB**.
+
+The archival blocker remains unchanged in substance. F-RB02 gives an immutable predecessor release `SWAP5-RB1-v1` and requires future releases to enumerate their delta and qualify their own candidate. It does not authorize reusing RB1 as the paper release. The Status-A baseline permits a successor release-candidate boundary but does not choose its identifier or licence.
+
+Accordingly this gate remains **BLOCKED_GOVERNANCE_METADATA_NOT_SCIENCE**.

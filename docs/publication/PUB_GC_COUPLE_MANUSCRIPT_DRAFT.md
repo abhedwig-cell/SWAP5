@@ -1095,7 +1095,7 @@ Sixth, the same limitation can arise under authentic application forcing and pro
 Together, these findings support a coupling philosophy in which solver autonomy is paired with stronger external semantics rather than weaker scientific control. The coupler should know exactly what is exchanged, which state is authoritative, which finite-window map a response belongs to, and whether each participant can return a valid candidate for the requested trial.
 
 The conclusions remain bounded by the admitted component envelope. E7 establishes that authentic Hupsel process composition presently exceeds the production prescribed-head participant domain; it does not establish regional Hupsel groundwater validation or realistic loose-versus-strong correction magnitudes. Regional hydrological validity, scaling performance and heterogeneous aggregation validity therefore remain outside the present claims.
-# 7. Code, evidence and reproducibility
+# 7. Code and data availability
 
 The coupling implementation, coupling contracts, preregistrations and machine-readable publication evidence are version controlled in the public `abhedwig-cell/SWAP5` repository. Publication-specific evidence for E1–E7 is retained under `docs/publication/` and `docs/publication/evidence/`, including the raw perturbation records used for the response-identity and E6 state-domain analyses and the governed E7 standalone-selection/component-domain result.
 
