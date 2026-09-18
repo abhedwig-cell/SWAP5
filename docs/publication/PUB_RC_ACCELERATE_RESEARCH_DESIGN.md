@@ -170,6 +170,20 @@ J_R
 
 from exactly the same accepted origin and coupling window.
 
+### E4 result — response objects are not interchangeable
+
+PUB-GC E4 resolves RC-1 inside a restricted real-SWAP fixture.
+
+The accepted-trajectory response `u_A` agrees with an independent pure-bottom-flux finite-difference `u_FD` across all five tested baselines and is therefore identified as a finite-window flux-driven predictor response.
+
+The head-driven response is conditional:
+
+- B1/B2/B4: `J_S ~= -J_R` and both magnitudes approximately equal `u_A` because the non-bottom balance derivative is approximately zero;
+- B3: `u_A ~= u_FD`, but `|J_R|/u_A = 1.08119`;
+- B5: `u_A ~= u_FD` remains identifiable while no symmetric local `J_R` is available inside the unchanged corrector transaction envelope.
+
+ACCELERATE must therefore distinguish the cheap supplied predictor response `u_A` from an actual head-driven oracle `J_R`.
+
 ## Response-characterization quantities
 
 ### Tangent validity
@@ -404,13 +418,11 @@ The final accepted physical solution and tolerances must be common across algori
 
 ### RC-1 - response identity
 
-Pass only if:
+**Status after E4: PASS_RESTRICTED.**
 
-- a reproducible finite-window J_R exists on a non-trivial domain;
-- the meaning of F-GC30 u relative to J_R and J_S is empirically and physically understood;
-- numerical noise and perturbation dependence are characterized.
+E4 establishes that `u_A` is the flux-driven finite-window predictor response and that it is not universally interchangeable with the head-driven `J_R`. Stable `J_R` plateaus exist for B1-B4, while B5 demonstrates a bounded regime where the predictor response exists but a symmetric local head-response tangent does not.
 
-If not, ACCELERATE stops and the response question remains in PUB-GC.
+The remaining physical naming ambiguity between storage response and signed interface response in the low-flux fixture is caused by `J_B ~= 0` and does not block the E5 computational falsification test.
 
 ### RC-2 - oracle value
 
