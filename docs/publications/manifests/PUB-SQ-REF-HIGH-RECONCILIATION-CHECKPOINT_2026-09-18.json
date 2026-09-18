@@ -1,0 +1,82 @@
+{
+  "checkpoint_id":"PUB-SQ-REF-HIGH-RECONCILIATION-2026-09-18",
+  "capability":"PUB-SQ solver admission and equal-error performance preparation",
+  "phase":"CLOSE_REF_HIGH_OPEN_EQUAL_ERROR_DESIGN",
+  "governance_branch":"research/phd-five-paper-manifests-20260918",
+  "governance_parent_head":"0a1756ce531b58c5fd0684779d3acd4c8766aa87",
+  "manifest_update_commit":"9a1b552b613cce482ffdd894acd905fde876e698",
+  "experiment_register_update_commit":"bce9f92fe815e83692e6037799ba3b9cca6522aa",
+  "evidence":{
+    "P2E16C":{
+      "branch":"work/pub-p2e16c-reference-fixed-step-adjudication",
+      "head":"7751ad0c37857dd4bbe8f79b0113bd3da6c87c9f",
+      "result_blob":"fd7f51df015c141e3eca488f391cd095e98a57a4",
+      "verdict":"REFERENCE_FIXED_STEP_FAILURES_ADJUDICATED_AS_NON_MONOTONE_MAX_ITERATION_RETRY_LIMITATIONS_PRIMARY_COUNTS_UNCHANGED"
+    },
+    "P2E16D":{
+      "branch":"work/pub-p2e16d-reference-iteration-budget-sensitivity",
+      "head":"0153c8d548c94f5701ac2d2d8afa9efca800d4cb",
+      "result_blob":"0f5bd4c0c84f11b1e28c3a02ba8dd381dd86537c",
+      "verdict":"REFERENCE_ITERATION_BUDGET_RECOVERS_2_OF_5_THREE_CASES_REMAIN_UNRESOLVED_THROUGH_64_ITERATIONS"
+    },
+    "P2E18":{
+      "branch":"work/pub-p2e18-ref-high-construction",
+      "head":"12b8b0294153c88b733b9eccfa8b3c98a14ebf23",
+      "result_blob":"10df8636afc05a46342921f50c2c8b543cf3168e",
+      "verdict":"BLOCKED_REF_HIGH_0_OF_36_STABLE_BECAUSE_REQUIRED_FINE_REFERENCE_ROUTES_ARE_UNRESOLVED"
+    },
+    "P2E18D1":{
+      "branch":"work/pub-p2e18d1-reference-balance-scaling-diagnostic",
+      "head":"2a1f0e23592573a520706758a37c031330a0d56d",
+      "result_blob":"5f6ebdcff315f23dd2c8c54666b8f413bc2dbcea",
+      "verdict":"INVARIANT_BALANCE_SCALING_MATERIALLY_RESTORES_REFERENCE_REFINEMENT_BUT_IS_NOT_SUFFICIENT"
+    },
+    "P2E18D2":{
+      "branch":"work/pub-p2e18d2-reference-retry-mechanism",
+      "result_blob":"599ba330500bc52ac78a6064117cb60f0a7ac665",
+      "workflow_run":35293209835,
+      "job":105440295679,
+      "verdict":"REMAINING_SCALED_REFERENCE_RETRIES_ARE_TOTAL_BALANCE_ONLY"
+    },
+    "P2E19":{
+      "branch":"work/pub-p2e19-reference-balance-scaling-diagnostic",
+      "head":"f2d5cd8d0e69a35436573f6d32dd0916c344ca49",
+      "result_blob":"bbf6b235c81f30b517dee6e3346499f4823b597a",
+      "workflow_run":35293169718,
+      "job":105440179074,
+      "verdict":"INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36"
+    },
+    "P2E20":{
+      "branch":"work/pub-p2e20-ref-high-scaled-construction",
+      "result_head":"a561ff1389af06d4521185b9d0d080785716bf3b",
+      "result_blob":"1657c73e631f4a5e6b9ee65d43669054a65e3008",
+      "workflow_run":35293573725,
+      "job":105441384692,
+      "output_sha256":"5f1e7bfa2fcfb10414f4bd90f0f1dfab0736d4c2ec941cde59a4a7871822dd30",
+      "verdict":"REF_HIGH_QUALIFIED_CASEWISE_33_OF_36_EQUAL_ERROR_PERFORMANCE_POPULATION_AVAILABLE"
+    }
+  },
+  "ref_high_authority":{
+    "policy":"Reference legacy route with integrated-invariant 1.6e-15 cm balance allowance per substep",
+    "fine_levels":[8,16,32],
+    "qualified_endpoint":"32-substep endpoint after valid 8/16/32 routes and both frozen stability comparisons",
+    "qualified_case_count":33,
+    "route_unresolved_case_count":2,
+    "stability_unresolved_case_count":1,
+    "unresolved_cases":[
+      "B01 Se=0.65 DRYING",
+      "B01 Se=0.65 NOMINAL",
+      "O18 Se=0.96 NOMINAL"
+    ]
+  },
+  "verdict":"REF_HIGH_AVAILABLE_CASEWISE_EQUAL_ERROR_PERFORMANCE_NOT_YET_PREREGISTERED",
+  "next_permitted_action":"Freeze exactly the 33 P2E20-qualified cases and preregister candidate-independent equal-error solver controls, work accounting and timing hygiene. RossFast performance execution remains forbidden until that preregistration is persisted.",
+  "exclusions":[
+    "Do not reclassify P2E18 as a successful REF-HIGH construction.",
+    "Do not retune the integrated balance allowance to recover the three unresolved cases.",
+    "Do not include unresolved cases in equal-error performance.",
+    "Do not infer RossFast speedup from earlier production or qualification timings.",
+    "Do not time REF-HIGH itself as the competing production solver; use it as scientific reference.",
+    "Do not replace scientific work counters with wall-clock timing alone."
+  ]
+}
