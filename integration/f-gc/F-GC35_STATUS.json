@@ -3,8 +3,8 @@
   "capability": "F-GC35",
   "title": "MODFLOW6 XMI Package Adapter",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_IMPLEMENT",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_XMI_PACKAGE_ADAPTER_CONTRACT",
   "authority_reconciliation": {
     "canonical_f_gc34": "MODFLOW6 Typed API Binding — closed canonical",
     "canonical_f_gc33": "MODFLOW6 Linear Response Backend — closed canonical",
@@ -63,5 +63,25 @@
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Run exact-head current-canonical F-GC35 qualification. If green, checkpoint owner qualification and perform independent qualification before admission."
+  "next_permitted_action": "Run independent qualification of the exact F-GC35 production blob. Verifier must have no production delta and must not reuse the owner test.",
+  "qualification": {
+    "qualified_head": "e6f3d7f4ed58da3ed64b0f79bdde9622fd3219ac",
+    "workflow_run": 35294342792,
+    "workflow_job": 105443677857,
+    "conclusion": "success",
+    "production_blob": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713",
+    "upstream_authority": "F-GC34 closed canonical",
+    "pass_markers": [
+      "FGC35_XMI_POINTER_API_ONLY",
+      "FGC35_NO_MODFLOW_EXECUTION_OWNERSHIP",
+      "FGC35_EXACT_XMI_ADDRESS_ACQUISITION",
+      "FGC35_STALE_PRETIMESTEP_NODELIST_EXCLUDED",
+      "FGC35_FGC34_PUBLISHER_PASSTHROUGH",
+      "FGC35_PUBLICATION_WINDOW_GUARD",
+      "FGC35_PER_TIMESTEP_PUBLICATION_REQUIRED",
+      "FGC35_POINTER_VALIDATION_FAIL_CLOSED",
+      "FGC35_FAILED_PUBLISHER_NOT_ADMITTED",
+      "FGC35_XMI_PACKAGE_ADAPTER_GATE"
+    ]
+  }
 }
