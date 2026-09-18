@@ -1,0 +1,129 @@
+{
+  "schema": "swap5.publication.p2e18-ref-high-construction.v1",
+  "workunit": "PUB-P2E18",
+  "phase": "PREREGISTERED_BEFORE_REF_HIGH_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "parent_boundary_authority": {
+    "branch": "work/pub-p2e17-top-boundary-primary",
+    "head": "b61bc4c5730e951655353f7fdccb76618a290fd7",
+    "result_blob": "63c92b1e64743d31cb9de8698df16c28e7a54076",
+    "verdict": "QUALIFIED_SHARP_UPPER_TOP_FLUX_BOUNDARY_216_ADMISSIBLE_108_CLEAN_FAIL_CLOSED"
+  },
+  "tolerance_authority": {
+    "source": "PUB-P2E14 candidate-blind common-domain Reference threshold surface",
+    "result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "use": "reference-stability scale only; not retuned from RossFast outcomes"
+  },
+  "purpose": "Construct a stricter candidate-blind numerical Reference for the later equal-error cost experiment without inspecting timing or new RossFast configurations.",
+  "case_selection": {
+    "rule": "Use the six original SQ material identities already fixed in the publication experiment design, crossed with all three qualified common Se anchors and both retained forcing classes.",
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 36,
+    "note": "This is a prospectively frozen performance/reference subset, not an untouched solver-accuracy holdout. Selection is independent of runtime or speed outcomes."
+  },
+  "common_request": {
+    "total_horizon_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "ponding_initial_cm": 0,
+    "request_top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "physics": "same fixed solver-seam prescribed-flux E0 domain as P2E10/P2E15"
+  },
+  "refinement": {
+    "route": "legacy-reference-bound only",
+    "equal_substep_counts": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "corresponding_substep_dt_day": [
+      0.0016,
+      0.0008,
+      0.0004,
+      0.0002,
+      0.0001
+    ],
+    "ref_high_candidate": "16-substep endpoint",
+    "stability_comparison": "16-substep endpoint versus 8-substep endpoint",
+    "all_levels_executed_for_every_case": true,
+    "adaptive_post_result_level_selection": false
+  },
+  "stability_rule": {
+    "head_theta_factor_of_P2E14": 0.1,
+    "rationale": "Cap numerical-reference endpoint uncertainty at one tenth of the already frozen candidate-independent common-domain admission envelope.",
+    "metrics": {
+      "D_h_inf_cm": "<= 0.10 * P2E14 exact-Se U_h_inf_cm",
+      "D_h_rms_cm": "<= 0.10 * P2E14 exact-Se U_h_rms_cm",
+      "D_theta_inf": "<= 0.10 * P2E14 exact-Se U_theta_inf",
+      "D_theta_rms": "<= 0.10 * P2E14 exact-Se U_theta_rms",
+      "D_storage_abs_cm": "<= P2E14 exact-Se U_storage_cm"
+    },
+    "storage_resolution_exception": "P2E14 storage envelopes are already at floating-point summation scale. Multiplying them by 0.10 would demand sub-resolution agreement, so the exact P2E14 storage envelope is retained as the preregistered numerical-resolution floor.",
+    "hard_integrated_mass_abs_limit_cm_each_substep": 1e-12,
+    "conjunction": true,
+    "weighted_compensation": false
+  },
+  "p2e14_thresholds": {
+    "Se_0.65": {
+      "U_h_inf_cm": 0.009310899886486368,
+      "U_h_rms_cm": 0.004264337561059986,
+      "U_theta_inf": 0.000017908123244203544,
+      "U_theta_rms": 0.000006578609068585418,
+      "U_storage_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "U_h_inf_cm": 0.05684414280500505,
+      "U_h_rms_cm": 0.02309047189054667,
+      "U_theta_inf": 0.00024393588764148877,
+      "U_theta_rms": 0.00008095278187597767,
+      "U_storage_cm": 2.842170943040401e-14
+    },
+    "Se_0.96": {
+      "U_h_inf_cm": 0.7386357920248865,
+      "U_h_rms_cm": 0.19122530959872563,
+      "U_theta_inf": 0.0012274135237608785,
+      "U_theta_rms": 0.00035749599085978164,
+      "U_storage_cm": 2.842170943040401e-14
+    }
+  },
+  "candidate_firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_timing_allowed": false,
+    "wall_or_cpu_speed_comparison_allowed": false,
+    "equal_error_claim_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "case_removal_allowed": false,
+    "refinement_ladder_change_after_execution_allowed": false,
+    "stability_factor_change_after_execution_allowed": false
+  },
+  "outcome_policy": {
+    "if_all_36_stable": "Persist casewise REF-HIGH authority and permit a separately preregistered equal-error solver-control/timing experiment.",
+    "if_any_unstable_or_invalid": "Persist unresolved cases and restrict or block E3. Do not loosen stability criteria after observing the result."
+  },
+  "verdict": "PREREGISTERED_REF_HIGH_CONSTRUCTION_READY"
+}
