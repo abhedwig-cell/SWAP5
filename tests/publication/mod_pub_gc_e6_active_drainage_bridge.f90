@@ -274,6 +274,62 @@ contains
     pub_gc_e6_swap_trial_c=0_c_int
   end function pub_gc_e6_swap_trial_c
 
+  integer(c_int) function pub_gc_e6_corrector_diagnostics_c(head_m,result_status,completed,candidate_ready, &
+       transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections,temporal_rejections, &
+       temporal_unavailable_rejections,mass_rejections,internal_retries,mass_complete,mass_residual,max_temporal_indicator, &
+       min_substep,max_substep) bind(C,name="pub_gc_e6_corrector_diagnostics_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries
+    integer(c_int), intent(out) :: trial_rollbacks,solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries,mass_complete
+    real(c_double), intent(out) :: mass_residual,max_temporal_indicator,min_substep,max_substep
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    logical :: ok
+    integer :: forcing_status
+
+    pub_gc_e6_corrector_diagnostics_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int; trial_rollbacks=0_c_int
+    solver_rejections=0_c_int; temporal_rejections=0_c_int; temporal_unavailable_rejections=0_c_int
+    mass_rejections=0_c_int; internal_retries=0_c_int; mass_complete=0_c_int
+    mass_residual=0.0_c_double; max_temporal_indicator=0.0_c_double; min_substep=0.0_c_double; max_substep=0.0_c_double
+    if(.not.initialized)return
+    call fmr_capture_checkpoint(committed,checkpoint,ok); if(.not.ok)return
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))return
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      return
+    end select
+    result_status=int(result%status,c_int)
+    if(result%completed)completed=1_c_int
+    if(candidate%ready())candidate_ready=1_c_int
+    transaction_calls=int(diagnostics%transaction_calls,c_int)
+    accepted_substeps=int(diagnostics%accepted_substeps,c_int)
+    attempts=int(diagnostics%attempts,c_int)
+    retries=int(diagnostics%retries,c_int)
+    trial_rollbacks=int(diagnostics%trial_rollbacks,c_int)
+    solver_rejections=int(diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(diagnostics%mass_rejections,c_int)
+    internal_retries=int(diagnostics%internal_retries,c_int)
+    if(result%mass%complete)mass_complete=1_c_int
+    mass_residual=result%mass%residual
+    max_temporal_indicator=diagnostics%max_temporal_indicator
+    min_substep=diagnostics%min_accepted_substep_duration
+    max_substep=diagnostics%max_accepted_substep_duration
+    if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+    pub_gc_e6_corrector_diagnostics_c=0_c_int
+  end function pub_gc_e6_corrector_diagnostics_c
+
   integer(c_int) function pub_gc_e6_swap_discard_c() bind(C,name="pub_gc_e6_swap_discard_c")
     pub_gc_e6_swap_discard_c=1_c_int
     if(.not.initialized)return
