@@ -114,6 +114,7 @@ contains
       nl_min=min(nl_min,nl);nl_max=max(nl_max,nl)
       back_min=min(back_min,back);back_max=max(back_max,back)
 
+      call verify_commit_progress(committed,i,t1)
       call state_metrics(committed,total_storage,upper_storage,lower_storage,ok)
       call require(ok,'state metrics')
       write(*,'(*(g0))') 'F_ROM0V1_STEP|GEOM_N=',numnod,'|CASE=',trim(case_id),'|STEP=',i,'|T=',t1, &
@@ -200,6 +201,20 @@ contains
     end select
     if(allocated(snap))deallocate(snap)
   end subroutine prospective_bound
+
+  subroutine verify_commit_progress(state,step,expected_time)
+    type(kernel_committed_state_t),intent(in) :: state
+    integer,intent(in) :: step
+    real(real64),intent(in) :: expected_time
+    real(real64) :: committed_time
+    logical :: time_ok
+    integer(int64) :: a,b
+    call require(state%current_revision()==int(step,int64),'committed revision progression')
+    call state%current_time(committed_time,time_ok)
+    call require(time_ok,'committed time available')
+    a=transfer(committed_time,a);b=transfer(expected_time,b)
+    call require(a==b,'committed time bit identity')
+  end subroutine verify_commit_progress
 
   subroutine state_metrics(state,total,upper,lower,ok)
     type(kernel_committed_state_t),intent(in) :: state
