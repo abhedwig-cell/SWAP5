@@ -1,0 +1,91 @@
+{
+  "schema": "pub-gc-e4-response-identity-result-v1",
+  "date": "2026-09-18",
+  "primary_evidence": {
+    "source_head": "c85b1f1ad2a35ad12d917c54e682e8705c508c7e",
+    "workflow_run": 35349233134,
+    "job": 105613077818,
+    "conclusion": "success"
+  },
+  "status": "SUPPORTED_RESTRICTED",
+  "baselines": [
+    {
+      "id": "B1",
+      "window_day": 0.0001,
+      "qbot_cm_per_day": 0.000001,
+      "u_A": 0.00003402936037279093,
+      "u_FD": 0.00003402945321129254,
+      "J_S": 0.00003402833570476105,
+      "J_R": -0.00003402833570476105,
+      "ratio_abs_JR_over_uA": 0.9999698887073205,
+      "E_AFD": 0.000002728180821270941,
+      "max_abs_JB": 2.0194839173657902e-21,
+      "max_abs_balance_closure": 1.6263032587282567e-19,
+      "head_tangent": "available"
+    },
+    {
+      "id": "B2",
+      "window_day": 0.001,
+      "qbot_cm_per_day": 0.000001,
+      "u_A": 0.0002686106425118591,
+      "u_FD": 0.0002686070215829681,
+      "J_S": 0.0002686095790238596,
+      "J_R": -0.0002686095790238594,
+      "ratio_abs_JR_over_uA": 0.9999960407823393,
+      "E_AFD": 0.000013480213803791703,
+      "max_abs_JB": 1.3463226115771936e-20,
+      "max_abs_balance_closure": 2.6020852139652106e-18,
+      "head_tangent": "available"
+    },
+    {
+      "id": "B3",
+      "window_day": 0.001,
+      "qbot_cm_per_day": 0.0001,
+      "u_A": 0.0002665743709457589,
+      "u_FD": 0.00026657437310767025,
+      "J_S": 0.00028821767195097463,
+      "J_R": -0.00028821767195098304,
+      "ratio_abs_JR_over_uA": 1.081190479521484,
+      "E_AFD": 8.109974353526223e-9,
+      "max_abs_JB": 3.446585885637615e-20,
+      "max_abs_balance_closure": 1.938553484404082e-16,
+      "head_tangent": "available_with_nonmonotonic_validity"
+    },
+    {
+      "id": "B4",
+      "window_day": 0.01,
+      "qbot_cm_per_day": 0.000001,
+      "u_A": 0.00119027208545508,
+      "u_FD": 0.0011902765077107917,
+      "J_S": 0.0011902723251466796,
+      "J_R": -0.001190272325146675,
+      "ratio_abs_JR_over_uA": 1.0000002013754654,
+      "E_AFD": 0.000003715317981282415,
+      "max_abs_JB": 8.831876331946389e-20,
+      "max_abs_balance_closure": 3.903127820947816e-17,
+      "head_tangent": "available"
+    },
+    {
+      "id": "B5",
+      "window_day": 0.01,
+      "qbot_cm_per_day": 0.0001,
+      "u_A": 0.0011201581181034964,
+      "u_FD": 0.0011201580234874043,
+      "J_S": null,
+      "J_R": null,
+      "ratio_abs_JR_over_uA": null,
+      "E_AFD": 8.446672890081806e-8,
+      "max_abs_JB": null,
+      "max_abs_balance_closure": null,
+      "head_tangent": "not_symmetrically_identifiable"
+    }
+  ],
+  "conclusions": [
+    "u_A agrees with independent pure-bottom flux-driven u_FD in all five baselines",
+    "in low-flux B1/B2/B4, J_B is approximately zero and J_S is approximately -J_R with magnitude approximately u_A",
+    "in B3, the head-driven response magnitude is 1.08119 times u_A while u_A still agrees with u_FD",
+    "in B5, u_A and u_FD remain identifiable while no symmetric head-driven J_R/J_S plateau exists",
+    "u_A is therefore a finite-window flux-driven predictor response, not a universal head-to-exchange coupling Jacobian"
+  ],
+  "e5_gate": "PROCEED_WITH_DISTINCT_uA_AND_ORACLE_JR"
+}

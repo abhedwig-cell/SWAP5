@@ -4,7 +4,7 @@ module mod_fgc44_real_swap_c_bridge
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
@@ -106,6 +106,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
+  public :: fgc44_e4_head_trial_c, fgc44_e4_flux_point_c
 
 contains
 
@@ -428,6 +429,212 @@ contains
     bottom_exchange_cm=last_trial%bottom_outward_exchange_cm
     fgc44_last_trial_diagnostics_c=0_c_int
   end function fgc44_last_trial_diagnostics_c
+
+  integer(c_int) function fgc44_e4_flux_point_c(duration_day,top_flux_cm_per_day,bottom_flux_cm_per_day, &
+       h_end_m,dh_end_cm_per_qbot,u_point,mass_complete,mass_residual) &
+       bind(C,name="fgc44_e4_flux_point_c")
+    real(c_double), value, intent(in) :: duration_day,top_flux_cm_per_day,bottom_flux_cm_per_day
+    real(c_double), intent(out) :: h_end_m,dh_end_cm_per_qbot,u_point,mass_residual
+    integer(c_int), intent(out) :: mass_complete
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    type(fmr_b110_physical_forcing_t) :: predictor_forcing
+    type(soil_water_physical_state_t) :: predictor_state
+    type(soil_water_parameter_set_t) :: solver_parameters
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t) :: constitutive
+    type(modflow6_swap_predictor_tangent_endpoint_t) :: endpoint
+    type(groundwater_head_datum_t) :: local_datum
+    real(real64) :: dt,top_q,bottom_q,derivative
+    integer :: status
+    logical :: ok
+
+    fgc44_e4_flux_point_c=301_c_int
+    h_end_m=0.0_c_double
+    dh_end_cm_per_qbot=0.0_c_double
+    u_point=0.0_c_double
+    mass_complete=0_c_int
+    mass_residual=0.0_c_double
+
+    dt=real(duration_day,real64)
+    top_q=real(top_flux_cm_per_day,real64)
+    bottom_q=real(bottom_flux_cm_per_day,real64)
+    if(.not.ieee_is_finite(dt) .or. dt<=0.0_real64)return
+    if(.not.ieee_is_finite(top_q) .or. .not.ieee_is_finite(bottom_q))return
+
+    ! Qualification-only Neumann response point. Keep atmospheric/top forcing
+    ! fixed at the unperturbed baseline while varying only the prescribed
+    ! lower-boundary flux. Existing production/configured initialization is
+    ! deliberately not reused because that route varies top and bottom flux
+    ! together for the E3 forcing experiments.
+    active_duration_day=dt
+    active_predictor_qbot=bottom_q
+    call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
+    call initialize_column_template(column,template)
+    call initialize_configs(predictor_config,corrector_config)
+
+    fgc44_e4_flux_point_c=302_c_int
+    call initialize_committed_state(committed,predictor_parameters,ok)
+    if(.not.ok)return
+
+    local_datum%available=.true.
+    local_datum%datum_id=540044_int64
+    local_datum%bottom_boundary_elevation_m=0.0_real64
+
+    call predictor_backend%initialize(top)
+
+    fgc44_e4_flux_point_c=303_c_int
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())return
+
+    call initialize_forcing(predictor_forcing,top_q)
+    predictor_forcing%bottom_flux=bottom_q
+
+    fgc44_e4_flux_point_c=304_c_int
+    call predictor_backend%run_trial(column,template,predictor_parameters,committed,predictor_forcing,predictor_config, &
+         0.0_real64,dt,checkpoint,result,candidate,diagnostics)
+    if(.not.result%completed)then
+      if(candidate%ready())call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    fgc44_e4_flux_point_c=305_c_int
+    if(.not.candidate%ready())return
+    if(.not.result%accepted_trajectory_direction%available)then
+      call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
+    call bind_b110_default_mvg_provider(constitutive,hp,dt)
+
+    fgc44_e4_flux_point_c=306_c_int
+    call materialize_solver_view(candidate,predictor_state,solver_parameters,ok)
+    if(.not.ok)then
+      call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    fgc44_e4_flux_point_c=307_c_int
+    call build_modflow6_swap_predictor_tangent_endpoint(predictor_state,solver_parameters,constitutive, &
+         result%accepted_trajectory_direction,bottom_q,local_datum,.false.,.false.,.false.,.false.,endpoint,status)
+    if(status/=MODFLOW6_TANGENT_ENDPOINT_OK .or. .not.endpoint%authoritative)then
+      call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    derivative=endpoint%bottom_face%dpressure_head_cm_per_qbot_cm_per_day
+    if(.not.ieee_is_finite(derivative) .or. abs(derivative)<=tiny(1.0_real64))then
+      call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    h_end_m=real(endpoint%bottom_face%hydraulic_head_m,c_double)
+    dh_end_cm_per_qbot=real(derivative,c_double)
+    u_point=real(dt/derivative,c_double)
+    if(result%mass%complete)mass_complete=1_c_int
+    mass_residual=real(result%mass%residual,c_double)
+
+    call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+    fgc44_e4_flux_point_c=0_c_int
+  end function fgc44_e4_flux_point_c
+
+  integer(c_int) function fgc44_e4_head_trial_c(head_m,q_swap_m_per_s,bottom_exchange_cm,terminal_flux_native, &
+       mass_complete,storage_start,storage_end,storage_change,total_in,total_out,mass_residual) &
+       bind(C,name="fgc44_e4_head_trial_c")
+    real(c_double), value, intent(in) :: head_m
+    real(c_double), intent(out) :: q_swap_m_per_s,bottom_exchange_cm,terminal_flux_native
+    integer(c_int), intent(out) :: mass_complete
+    real(c_double), intent(out) :: storage_start,storage_end,storage_change,total_in,total_out,mass_residual
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    class(canonical_forcing_t), allocatable :: forcing
+    real(real64) :: duration_day,qbot_mean_cm_per_day,q_swap_interface_m_per_s
+    integer :: status,interface_status
+    logical :: ok
+
+    fgc44_e4_head_trial_c=201_c_int
+    q_swap_m_per_s=0.0_c_double
+    bottom_exchange_cm=0.0_c_double
+    terminal_flux_native=0.0_c_double
+    mass_complete=0_c_int
+    storage_start=0.0_c_double
+    storage_end=0.0_c_double
+    storage_change=0.0_c_double
+    total_in=0.0_c_double
+    total_out=0.0_c_double
+    mass_residual=0.0_c_double
+
+    if(.not.initialized)return
+    fgc44_e4_head_trial_c=202_c_int
+    if(.not.ieee_is_finite(real(head_m,real64)))return
+
+    fgc44_e4_head_trial_c=203_c_int
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())return
+
+    fgc44_e4_head_trial_c=204_c_int
+    call materializer%materialize(real(head_m,real64),datum,forcing,status)
+    if(.not.allocated(forcing))return
+
+    fgc44_e4_head_trial_c=205_c_int
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      return
+    end select
+
+    if(.not.result%completed)then
+      if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+    fgc44_e4_head_trial_c=206_c_int
+    if(.not.candidate%ready())return
+    if(.not.result%bottom_interface_exchange_available)then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    fgc44_e4_head_trial_c=207_c_int
+    if(.not.result%mass%complete)then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    duration_day=window%t1-window%t0
+    if(duration_day<=0.0_real64)then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+    qbot_mean_cm_per_day=-result%bottom_outward_exchange_native/duration_day
+
+    fgc44_e4_head_trial_c=208_c_int
+    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean_cm_per_day,q_swap_interface_m_per_s,interface_status)
+    if(interface_status/=GW_INTERFACE_OK)then
+      call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+      return
+    end if
+
+    q_swap_m_per_s=real(q_swap_interface_m_per_s,c_double)
+    bottom_exchange_cm=real(result%bottom_outward_exchange_native,c_double)
+    terminal_flux_native=real(result%terminal_bottom_outward_flux_native,c_double)
+    mass_complete=1_c_int
+    storage_start=real(result%mass%storage_start,c_double)
+    storage_end=real(result%mass%storage_end,c_double)
+    storage_change=real(result%mass%storage_change,c_double)
+    total_in=real(result%mass%total_in,c_double)
+    total_out=real(result%mass%total_out,c_double)
+    mass_residual=real(result%mass%residual,c_double)
+
+    call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+    fgc44_e4_head_trial_c=0_c_int
+  end function fgc44_e4_head_trial_c
 
   subroutine initialize_parameters(p,bottom_mode)
     type(fmr_b110_physical_parameters_t),intent(out)::p

@@ -821,9 +821,55 @@ The long-window, higher-flux cases reached a different boundary. At `10^-2 day, 
 
 Taken together, E3, E3-D, E3-D2 and E3-R provide a bounded answer to RQ3. Strong iteration demonstrably improves finite-window interface closure whenever valid component candidates remain available, but the physical groundwater-head correction is negligible in the current near-equilibrium fixture. Attempts to create a stronger response through longer windows and larger fluxes encounter the SWAP predictor/corrector execution envelope before they produce a materially large head response. A positive strong-feedback case therefore requires a different admitted hydrological state or groundwater-response geometry rather than looser numerical tolerances.
 
-## 4.4 Response interpretation
+## 4.4 Finite-window response identity
 
-**Evidence status:** concept and response infrastructure exist; publication-specific `u_FD` versus `J_S` versus `J_R` study required.
+**Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E4.
+
+E4 evaluated the current component-provided response against two independently constructed finite-window maps from identical accepted SWAP origins. The accepted-trajectory response `u_A` was compared with a centred finite difference of the prescribed-bottom-flux predictor map, `u_FD`, while prescribed-head corrector trials provided the storage derivative `J_S` and the accepted-sign whole-window exchange derivative `J_R`.
+
+The corrected flux experiment perturbed only the lower-boundary flux while holding atmospheric/top flux fixed. Across all five baselines, `u_A` agreed closely with this independent `u_FD`. Relative discrepancies ranged from approximately `8.1e-9` to `1.35e-5`. The present response is therefore well identified as a finite-window **flux-driven predictor response**:
+
+```text
+u_A ~= DeltaT (dH_end/dq_bot)^(-1).
+```
+
+The corresponding head-driven response was not universally identical.
+
+| case | window | q_bot | u_A | u_FD | J_S | J_R |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| B1 | 1e-4 d | 1e-6 cm/d | 3.40294e-5 | 3.40295e-5 | 3.40283e-5 | -3.40283e-5 |
+| B2 | 1e-3 d | 1e-6 cm/d | 2.68611e-4 | 2.68607e-4 | 2.68610e-4 | -2.68610e-4 |
+| B3 | 1e-3 d | 1e-4 cm/d | 2.66574e-4 | 2.66574e-4 | 2.88218e-4 | -2.88218e-4 |
+| B4 | 1e-2 d | 1e-6 cm/d | 1.19027e-3 | 1.19028e-3 | 1.19027e-3 | -1.19027e-3 |
+| B5 | 1e-2 d | 1e-4 cm/d | 1.12016e-3 | 1.12016e-3 | unavailable | unavailable |
+
+For B1, B2 and B4, the non-bottom balance derivative was numerically negligible and the differentiated mass balance gave:
+
+```text
+J_S ~= -J_R,
+```
+
+with both magnitudes essentially equal to `u_A`. This simple fixture therefore aliases storage response and signed interface response.
+
+B3 separates the two maps. The flux-driven estimates remain essentially identical:
+
+```text
+u_A  = 2.665743709e-4
+u_FD = 2.665743731e-4,
+```
+
+whereas the head-driven response is:
+
+```text
+J_R = -2.882176720e-4
+J_S = +2.882176720e-4.
+```
+
+Thus `|J_R|/u_A = 1.08119`: the actual prescribed-head whole-window response is about 8.1% larger than the predictor response.
+
+B5 provides an even stronger distinction. A stable flux-driven response remains measurable and `u_A` agrees with `u_FD` to approximately `8.4e-8` relative discrepancy, but no symmetric local prescribed-head derivative is available within the unchanged transaction envelope, even at the smallest tested head perturbations.
+
+The response quantity exposed by the current predictor should therefore not be called a universal head-to-exchange coupling Jacobian. It is a well-defined response of the flux-driven finite-window predictor map whose suitability as a corrector linearization is regime-dependent.
 
 ## 4.5 Response information and computational value
 
@@ -879,13 +925,26 @@ This distinction is important. A failed coupled experiment cannot be interpreted
 
 The response coefficient also varied strongly with window duration in the E3-D ready cases. That observation is consistent with treating `u` as a finite-window response quantity rather than as a static soil property. Its exact relationship to storage response and to the actual prescribed-head interface derivative remains an E4 question.
 
-## 5.6 How much response information should be exposed?
+## 5.6 Response information must be typed by the map it differentiates
 
-The current evidence is not yet sufficient to decide whether component-provided response information is computationally preferable to black-box learning. E3 establishes two prerequisites for that later comparison. First, the low-flux control shows that sophisticated acceleration would have little scientific value in a regime where the coupled state correction itself is negligible. Second, E3-D shows that response information has its own qualification envelope and changes with window duration.
+E4 resolves a central ambiguity in the coupling design. The current component-provided response is not an undefined “coupling tangent”: it is a reproducible derivative of the flux-driven finite-window predictor map. An independent pure-bottom-flux finite difference reproduces `u_A` over all five tested baselines.
 
-E4 therefore first determines what the supplied response actually represents. Only after that identity is established should E5 compare supplied response against IQN/Anderson-style learned interface information. If a strong black-box method performs as well at lower information cost, the simpler interface should be preferred. Conversely, a reproducible advantage of fresh response information after state or regime change would justify the additional response contract.
+That result does not make `u_A` a universal corrector Jacobian. In the low-flux controls, the non-bottom balance is effectively head-independent, so mass conservation forces `J_S ~= -J_R` and both happen to match the magnitude of `u_A`. The stronger B3 case breaks this coincidence: the head-driven exchange response is approximately 8.1% larger in magnitude while `u_A` continues to match its own Neumann finite-difference oracle. In B5, the Neumann response remains well defined while no symmetric prescribed-head tangent is available within the admitted component envelope.
 
-A negative ACCELERATE result would still strengthen the central coupling paper because it would place an empirical upper bound on how much internal response information this class of coupling needs.
+This distinction changes the acceleration question. “More derivative information” is too coarse a description. The relevant question is which derivative of which finite-window map is useful to the outer coupling algorithm.
+
+E5 must therefore compare at least:
+
+```text
+black-box fixed point / relaxation
+IQN or Anderson learned from interface history
+current component-supplied u_A
+zero-cost oracle J_R where identifiable
+```
+
+at equal physical and coupling tolerances. If the true head-driven oracle provides no material advantage over black-box multisecant learning, the independent ACCELERATE claim should be closed. If `u_A` performs well only where the two maps approximately coincide and degrades in B3-like regimes, E4 supplies the mechanism rather than leaving that behaviour as an implementation anomaly.
+
+A later physical-identity experiment with an admitted head-dependent non-bottom process would be useful because the present simple fixture has `J_B ~= 0`, making storage and signed bottom-transfer response structurally aliased. That extension is not required to begin the computational E5 falsification test because `u_A` and `J_R` are already numerically distinct response objects.
 
 ---
 

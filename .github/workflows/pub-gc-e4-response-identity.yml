@@ -1,0 +1,49 @@
+name: PUB-GC E4 response identity
+on:
+  push:
+    branches: [work/pub-gc-e4-response-identity]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/test_pub_gc_e4_head_response.py'
+      - 'tests/publication/test_pub_gc_e4_flux_predictor.py'
+      - 'tests/publication/run_pub_gc_e4.sh'
+      - 'docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e4-response-identity.yml'
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/test_pub_gc_e4_head_response.py'
+      - 'tests/publication/test_pub_gc_e4_flux_predictor.py'
+      - 'tests/publication/run_pub_gc_e4.sh'
+      - 'docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e4-response-identity.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+concurrency:
+  group: pub-gc-e4-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  response-identity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run preregistered E4 response identity study
+        env:
+          PUB_GC_EVIDENCE_DIR: ${{ runner.temp }}/pub-gc-e4
+        run: bash tests/publication/run_pub_gc_e4.sh
+      - name: Upload E4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e4-evidence
+          path: ${{ runner.temp }}/pub-gc-e4
+          if-no-files-found: error

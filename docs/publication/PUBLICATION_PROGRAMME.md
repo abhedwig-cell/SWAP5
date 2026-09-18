@@ -69,6 +69,10 @@ Claim-evidence ledger:
 
 `PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md`
 
+Latest response-identity evidence:
+
+`PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md`
+
 First publication evidence block (E1/E2):
 
 - `PUB_GC_E1_E2_PREREGISTRATION.md`
