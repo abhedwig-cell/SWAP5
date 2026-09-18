@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.rom1x2.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1X2",
+  "title": "B14 frozen-collision future-probe predictive ambiguity adjudication",
+  "execution": {
+    "workflow_run": 35397838516,
+    "workflow_job": 105770631832,
+    "executed_head": "2338f31a6a44f040b4d711d1c2518621e9ef6f7c",
+    "artifact_id": 10569585461,
+    "artifact_digest": "sha256:d32aaa2b0020618d98d939b6eb49b2afac8c3282c88b2d1e650664c97f3c5efa",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "frozen_pair_authority": {
+    "source": "integration/f-rom/ROM1X1_COLLISION_MANIFEST.json",
+    "pair_count": 8,
+    "unique_start_state_count": 16,
+    "pair_reselection": false,
+    "coordinate_retuned": false
+  },
+  "start_state_provenance": {
+    "regenerated_X1_identity": true,
+    "identity_failures": []
+  },
+  "probe_population": {
+    "probes": ["HOLD","TOP_PLUS","BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "horizons_steps": [4,16,64],
+    "probe_record_count": 192,
+    "expected_probe_record_count": 192,
+    "structure_complete": true
+  },
+  "numerical_reference_scales_cm": {
+    "total_storage": 7.105427357601002e-14,
+    "upper_0_40cm_storage": 4.8537174279772444e-11,
+    "lower_40_160cm_storage": 4.850164714298444e-11
+  },
+  "formal_storage_ambiguity": {
+    "ambiguity_record_count": 0,
+    "ambiguous_pair_count": 0,
+    "maximum_response_difference_cm": {
+      "total": 2.1316282072803006e-14,
+      "upper": 7.554845637969265e-12,
+      "lower": 7.567280135845067e-12
+    },
+    "maximum_ratio_to_pairwise_reference_scale": {
+      "total": 0.3,
+      "upper": 0.15565070999853609,
+      "lower": 0.1560210958101377
+    },
+    "top_predictive_ambiguity_examples": []
+  },
+  "exchange_diagnostics": {
+    "formal_ambiguity_role": "DIAGNOSTIC_ONLY",
+    "maximum_cumulative_top_exchange_difference_cm": 0.0,
+    "maximum_cumulative_bottom_outward_exchange_difference_cm": 2.1316282072803006e-14,
+    "maximum_terminal_bottom_flux_difference_cm_per_day": 3.552713678800501e-11
+  },
+  "reference_execution": {
+    "fallback_class_counts": {
+      "RETRY_LOCAL_BALANCE": 16,
+      "RETRY_TOTAL_ONLY": 90
+    },
+    "max_abs_committed_mass_residual_cm": 9.081866931669874e-15,
+    "hard_mass_gate_cm": 1e-12,
+    "hard_mass_gate_pass": true
+  },
+  "decision": "ROM1X2_B14_PREDICTIVE_AMBIGUITY_NOT_ESTABLISHED",
+  "interpretation": "The frozen eight-pair X1 B14 challenge subset remains non-injective in the full-state sense established by X1, but no tested pair/probe/horizon storage response exceeds the independently frozen B14 pairwise Reference scales. Therefore X1's material-transfer state-separation no-go remains, while predictive insufficiency is not established by this frozen challenge subset.",
+  "B14_driven_enrichment": false,
+  "production_rom_authorized": false
+}
