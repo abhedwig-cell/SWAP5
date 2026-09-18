@@ -31,7 +31,8 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1` common-domain equivalence | PUB-SQ | primary | COMPLETE | six-material P2E10 broad E0 matrix executed against independently frozen P2E09 Reference-only thresholds; retain as observed primary evidence |
 | `PUB-SQ-E1X` material-axis extension | PUB-SQ | primary | BLOCKED | P2E11/P2E11R show that the original {0.65,0.85,0.98} extension design has no complete 30-material Reference domain at any preregistered temporal level. Do not execute RossFast on that design. |
 | `PUB-SQ-E1D` common material state domain | PUB-SQ | supporting/domain construction | COMPLETE | P2E13 Reference-only scan across all 36 materials found nine complete tested Se levels, 0.65 through 0.96; frozen rule selected 0.65, 0.85 and 0.96 as future anchors. |
-| `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | READY_FOR_REFERENCE_CONSTRUCTION | freeze Reference-only Se-stratified self-disagreement thresholds at {0.65,0.85,0.96} across 36 materials x two forcing classes before any new RossFast extension discrepancy. |
+| `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
+| `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | P2E10 established WETTING as a clean known production-envelope exclusion; separate inside/boundary/outside probing still requires its own preregistration |
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
@@ -158,6 +159,26 @@ Examples:
 - the preregistered anchor rule selects Se = {0.65, 0.85, 0.96};
 - candidate firewall preserved: RossFast was not executed and no scientific discrepancy threshold was frozen;
 - next permitted action: a separate Reference-only threshold freeze on those three anchors across all 36 materials and both retained forcing classes.
+
+### 2026-09-18 — PUB-SQ 36-material Reference threshold surface frozen
+
+- P2E14 branch: `work/pub-p2e14-reference-common-material-threshold-freeze`, result head `e680334ba1e8352db8d980fa8723ac31a279f636`;
+- workflow `35290229184`, job `105431262138`, O0/O2-identical output `sha256:6bbef0ef88b97624f798d8d4da2d14417783465f125f4983830cd6adbacc4d94`;
+- all 216 Reference pairs were valid at Se={0.65,0.85,0.96};
+- exactly fifteen thresholds were frozen as the per-Se maximum Reference coarse-versus-two-half self-disagreement across all 36 materials and both retained forcing classes, with factor 1.0 and no application floor;
+- candidate firewall preserved: no new RossFast extension discrepancy was inspected before the threshold authority was persisted;
+- next permitted action: execute only the separately preregistered 30-material confirmatory holdout.
+
+### 2026-09-18 — PUB-SQ material-axis confirmatory holdout completed
+
+- P2E15 preregistration froze 30 previously unobserved extension materials x Se={0.65,0.85,0.96} x {DRYING,NOMINAL}, exactly 180 cases, against immutable P2E14 thresholds;
+- the first workflow attempt `35290429228` stopped before scientific execution because of an obsolete authority-variable name; no case ran and no threshold or matrix changed;
+- corrected authority-only run `35290525541`, job `105432153537`, execution head `171e6f824899b68403d5eb293672b68f79ee1700`, completed with O0/O2-identical output `sha256:db02085fed1c85504de16fb285a396f52cb163589e91f8b578ad17997ae8f8c8`;
+- scientific outcome: 180/180 paired-valid admissible; 0 discrepancy failures; 0 Reference invalid; 0 RossFast invalid; 0 both-invalid;
+- each Se stratum was 60/60 admissible and every material was 6/6 admissible;
+- worst non-storage threshold fractions were 0.197 for D_h_inf, 0.219 for D_h_rms, 0.248 for D_theta_inf and 0.285 for D_theta_rms; D_storage touched exactly 1.0 times its inclusive frozen machine-scale envelope in one retained boundary observation;
+- admitted scope is only the fixed 0.0016-day solver-seam common domain. WETTING, Se=0.98, transaction-level equivalence, heterogeneous profiles, root sinks, groundwater coupling and performance remain outside this result;
+- next permitted action: preregister PUB-SQ-E2 admissibility-boundary probing. No retuning of E1 thresholds is permitted.
 
 ## Register update rule
 
