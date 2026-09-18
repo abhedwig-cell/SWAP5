@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.rom1x1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1X1",
+  "title": "B14 material-transfer challenge for frozen Z8+G8 state coordinate",
+  "phase": "PREREGISTERED_BEFORE_B14_OUTCOME_EXPOSURE",
+  "predecessors": {
+    "ROM1B3Q1": "ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+    "ROM1B4": "ROM1B4_HELDOUT_STATE_SEPARATION_QUALIFIED"
+  },
+  "purpose": "Test whether the B01-designed and B01-heldout-qualified Z8+G8 coordinate remains state-separating on the declared B14 material-transfer challenge without changing coordinate structure, history design, or forcing amplitudes.",
+  "frozen_coordinate": {
+    "id": "Z8_PLUS_G8",
+    "dimension": 9,
+    "components": "eight 20-cm theta means plus G8=0.5*(theta15-theta16)",
+    "material_specific_adaptation_allowed": false,
+    "induced_norm": "same quotient norm as ROM1B3Q1/ROM1B4"
+  },
+  "B14_numerical_authority": {
+    "theta_floor": 0.0000016414144244913942,
+    "source": "max pre-ROM1 B14 theta Reference floor: ROM-0V1 vertical B14_E2_DRYING_FLUX; ROM-0T1Q1 temporal B14 floors are smaller",
+    "threshold_selected_from_B14_transfer_outcomes": false
+  },
+  "material": {
+    "id": "B14",
+    "theta_r": 0.01,
+    "theta_s": 0.416774,
+    "alpha_per_cm": 0.00541,
+    "n": 1.301528,
+    "ksatfit_cm_per_day": 0.895023,
+    "lambda": -0.334926,
+    "effective_saturation_seed": 0.85
+  },
+  "history_transfer": {
+    "history_count": 12,
+    "steps_per_history": 64,
+    "step_day": 0.0008,
+    "sequence_identity": "exact D01-D08/H01-H04 symbol sequences from frozen ROM1AR2 generator",
+    "top_flux_perturbation": "same +/-0.01*K0",
+    "bottom_head_perturbation": "same 0.75*h0 and 1.25*h0",
+    "history_or_amplitude_retuning": false
+  },
+  "research_reference_policy": {
+    "rule": "apply the already frozen ROM1AR2 strict-first total/local fallback algorithm unchanged, with material-aware pre-solve representation bound and fixed 1.6e-15 cm local integrated allowance",
+    "original_attempt_always_first": true,
+    "automatic_dt_subdivision": false,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "any_head_mixed_or_other_failure": "FAIL_CLOSED",
+    "policy_retuning_from_B14": false,
+    "production_policy_admitted": false
+  },
+  "state_separation": {
+    "population": "all B14 states from all 12 transferred histories",
+    "cross_history_only": true,
+    "same_history_pairs_excluded": true,
+    "full_state_distinguishable_if": "full_theta_Linf > B14 theta floor",
+    "collision_if": "frozen Z8+G8 induced_theta_Linf <= B14 theta floor AND full_theta_Linf > B14 theta floor"
+  },
+  "decisions": [
+    "ROM1X1_B14_MATERIAL_TRANSFER_STATE_SEPARATION_QUALIFIED",
+    "ROM1X1_B14_MATERIAL_TRANSFER_STATE_SEPARATION_NO_GO",
+    "ROM1X1_B14_REFERENCE_LIBRARY_UNRESOLVED"
+  ],
+  "next_rule": {
+    "if_qualified": "close ROM-1 state-coordinate sufficiency evidence for B01 within-material plus B14 transfer; proceed to state-to-output closure work only under a new preregistration",
+    "if_collision": "reject material transfer of Z8+G8; no B14-driven enrichment is permitted",
+    "if_reference_library_unresolved": "diagnose Reference transfer before interpreting coordinate sufficiency"
+  },
+  "qualification": [
+    "12_HISTORIES_X_64_ACCEPTED_STATES",
+    "O0_O2_BYTE_IDENTITY",
+    "HARD_MASS_GATE",
+    "FROZEN_REFERENCE_POLICY_ONLY",
+    "NO_COORDINATE_CHANGE",
+    "B14_SPECIFIC_PREEXISTING_THETA_FLOOR",
+    "ALL_CROSS_HISTORY_PAIR_CENSUS",
+    "NO_SRC_REFERENCE_MUTATION"
+  ],
+  "firewalls": [
+    "NO_B14_DRIVEN_COORDINATE_ENRICHMENT",
+    "NO_B14_DRIVEN_THRESHOLD_CHANGE",
+    "NO_HISTORY_OR_FORCING_RETUNING",
+    "NO_POD_MEMORY_OR_CLOSURE_FIT",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
