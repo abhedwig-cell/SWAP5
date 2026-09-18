@@ -116,7 +116,6 @@ RQ1–RQ4 are addressed by E1–E6. RQ5 is reserved for the prospectively select
 
 ---
 # 2. Coupling method
-# 2. Coupling method
 
 ## 2.1 Ownership model
 
@@ -514,34 +513,30 @@ The acceleration experiment compares the net value of supplied response informat
 
 ## 2.15 Current qualified envelope
 
-The present end-to-end application evidence is intentionally restricted.
+The coupling evidence is deliberately bounded by capability profile rather than by a blanket statement that a process is either present or absent from SWAP5.
 
-Current canonical qualification includes:
+Current canonical coupling qualification includes:
 
-- one real SWAP/FMR soil column coupled 1:1 to one live MODFLOW6 6.8.0 cell (F-GC44);
-- two independently transactional real SWAP columns composed N:1 to one live MODFLOW cell, using identical physical parameterization to isolate runtime composition (F-GC45);
-- two independently transactional real SWAP interfaces coupled 1:1 to two distinct cells in one live MODFLOW model and one prepared solve (F-GC46);
-- the internal predictor/corrector coupling lifecycle;
-- prescribed groundwater-head SWAP correctors;
-- an admitted analytic accepted-trajectory response;
-- whole-window publication boundaries;
-- exactly-once SWAP and ledger publication.
+- one real SWAP/FMR Reference-Richards column coupled 1:1 to one live MODFLOW6 6.8.0 cell (F-GC44);
+- two independently transactional real SWAP columns composed N:1 to one live MODFLOW cell with identical physical parameterization to isolate runtime composition (F-GC45);
+- two independently transactional real SWAP interfaces coupled 1:1 to distinct cells in one live MODFLOW model and prepared solve (F-GC46);
+- immutable-origin predictor/corrector replay;
+- the production prescribed-head corrector profile used by the F-GC44-derived experiments;
+- accepted-trajectory finite-window response exposure;
+- whole-window publication preflight and exactly-once SWAP/interface-ledger publication.
 
-The first scientific E1/E2 evidence envelope remains the one-column/one-cell near-equilibrium F-GC44 configuration. Current runtime qualification still excludes, among other claims/processes:
+Other production capabilities can exist without belonging to that same corrector profile. E6 provides the clearest example: the F-GC31 smooth active-drainage tangent is independently admitted for a prescribed-`q_bot`, `bottom_mode=2` capability, while the production groundwater-head forcing adapter admits `bottom_mode=5`. The two capabilities must not be silently combined into one assumed profile.
 
-- heterogeneous N:1 aggregation science;
-- active drainage;
-- root extraction;
-- macropores;
-- snow;
-- soil temperature;
-- Ribasim coupling;
-- irrigation allocation.
+Accordingly, process coverage in this manuscript is stated per executed coupling profile. Root extraction, drainage variants, macropores, snow, soil temperature, irrigation allocation and other application processes are not claimed as coupled simply because they exist elsewhere in the production model.
 
-A larger prescribed-head perturbation has already exposed a boundedness issue by exhausting transaction retries in the real SWAP route. This is treated as evidence that the scientific/numerical envelope must be expanded through explicit qualification rather than by relaxing convergence rules.
+A larger head perturbation or stronger flux can also exhaust the unchanged transaction/retry envelope. Such outcomes are treated as component-domain evidence. The scientific envelope is expanded only through explicit qualification, not by weakening solver, temporal, mass or coupled-convergence requirements.
 
-The manuscript will therefore distinguish **method architecture**, **current qualified implementation**, and **future experimental envelope** throughout.
+The manuscript therefore distinguishes **method architecture**, **qualified coupling profiles** and **realistic application evidence** throughout.
 
+
+---
+
+# 3. Experimental design
 ---
 
 # 3. Experimental design
@@ -649,7 +644,6 @@ After that prerequisite closes, episode selection will use standalone Hupsel dyn
 Existing F-GC45 and F-GC46 qualification demonstrates that the coupling contract can compose multiple real SWAP participants with live MODFLOW cells. These tests are treated as architecture evidence. Quantitative regional scaling is deferred until the realistic E7 scientific core is available, and no physical validity of heterogeneous N:1 aggregation is inferred from software composition alone.
 
 ---
-# 4. Results
 # 4. Results
 
 ## 4.1 Interface identity and conservation in the first real coupled window
@@ -1012,8 +1006,17 @@ Fifth, component admissibility can limit a coupled experiment before outer coupl
 Together, these findings support a coupling philosophy in which solver autonomy is paired with stronger external semantics rather than weaker scientific control. The coupler should know exactly what is exchanged, which state is authoritative, which finite-window map a response belongs to, and whether each participant is admitted for the requested trial.
 
 The present conclusions remain bounded by the controlled application envelope. Hupselbrook has been prospectively selected as the next realistic test and will determine how much of the contract's behaviour transfers to authentic forcing and process composition. Until that evidence is available, regional hydrological validity and scaling performance are not claimed.
-# Working references
-# Working references
+# 7. Code, evidence and reproducibility
+
+The coupling implementation, qualification contracts, preregistrations and machine-readable publication evidence are version controlled in the public `abhedwig-cell/SWAP5` repository. Publication-specific evidence for E1–E6 is retained under `docs/publication/` and `docs/publication/evidence/`, including the raw perturbation records used for the response-identity and E6 state-domain analyses.
+
+Each reported experiment is tied to a frozen repository state and, where applicable, a recorded GitHub Actions run. Diagnostic publication experiments do not alter production physics or numerical tolerances. Exact repository revision, archival release and long-term DOI should be fixed at manuscript submission.
+
+MODFLOW6 version 6.8.0 is used in the live groundwater qualification experiments described here. The historical Hupselbrook SWAP 4.3.1 distribution is governed as an external reference asset and is not redistributed through this manuscript repository.
+
+---
+
+# References
 
 - Abbaszadeh, P. et al. (2025). Coupling the ParFlow Integrated Hydrology Model within the NASA Land Information System: a case study over the Upper Colorado River Basin. *Hydrology and Earth System Sciences*, 29, 5429–5452. https://doi.org/10.5194/hess-29-5429-2025
 - Bailey, R. T., Abbas, S., Arnold, J. G., & White, M. J. (2025). SWAT+MODFLOW: a new hydrologic model for simulating surface–subsurface flow in managed watersheds. *Geoscientific Model Development*, 18, 5681–5697. https://doi.org/10.5194/gmd-18-5681-2025
