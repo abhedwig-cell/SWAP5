@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC40",
+  "title": "MultiSWAP MODFLOW6 Cell Response",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "authority_correction": {
+    "canonical_f_gc31": "Restricted Active-Drainage Lagged Tangent admitted by F-CI98",
+    "historical_provisional_identity": "F-GC31 MultiSWAP MODFLOW6 Cell Response",
+    "corrected_identity": "F-GC40",
+    "production_formula_change": "NONE"
+  },
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "admitted_tangent_authority": "F-GC30 plus canonical F-GC31 active-drainage coverage",
+    "donor_owner_head": "158560dd0f7962cfdf386ce1d1a6dfde3109fa32"
+  },
+  "production": {
+    "path": "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "donor_blob": "288a274612f6c0be0b3ced149028066a066908ca",
+    "reidentified_blob": "288a274612f6c0be0b3ced149028066a066908ca",
+    "byte_identical": true
+  },
+  "scientific_decision": {
+    "tile_local_form": "q_i(H)=q_i_star+(u_i/dt_s)*(H-H_i_star)",
+    "cell_u": "sum(area_fraction_i*u_i)",
+    "cell_reference_exchange": "sum(area_fraction_i*(q_i_star+(u_i/dt_s)*(H_ref-H_i_star)))",
+    "cell_affine_form": "q_cell(H)=q_cell_ref+(u_cell/dt_s)*(H-H_ref)",
+    "raw_weighted_predictor_q_u_role": "DIAGNOSTIC_ONLY_WHEN_TILE_PREDICTOR_HEADS_DIFFER",
+    "reference_head_decision": "EXPLICIT_COMMON_HEAD_REQUIRED_FOR_HETEROGENEOUS_TILE_PREDICTOR_RESPONSES"
+  },
+  "qualification_plan": [
+    "compile current-canonical dependency surface at O0 and O2",
+    "single-tile equivalence",
+    "heterogeneous common-reference-head affine closure",
+    "area-weighted u and slope",
+    "permutation determinism",
+    "canonical tile provenance",
+    "fail-closed topology/window/origin provenance",
+    "O0/O2 output identity"
+  ],
+  "exclusions": [
+    "MODFLOW6/XMI backend",
+    "head-driven corrector runtime",
+    "groundwater execution-service redesign",
+    "Ribasim",
+    "irrigation",
+    "runtime finite-difference fallback",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head F-GC40 current-canonical qualification. If green, checkpoint owner qualification and proceed to independent/admission review."
+}
