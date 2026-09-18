@@ -5,7 +5,7 @@ cd "$ROOT"
 
 PREREG_COMMIT=3c36bd45b4d1681ab20d4ca20b5e1d4d72ef41a6
 PREREG=integration/f-rom/F-ROM0TA4_PREREGISTRATION.json
-TEST=tests/rom/test_f_rom0ta4_restart_replay.f90
+TEST=tests/rom/test_f_rom0ta4_refined_restart_replay.f90
 ANALYZER=tests/rom/analyze_f_rom0ta4_restart_replay.py
 COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
 MATERIALIZER=tests/rom/materialize_f_rom0_headcalc_stubs.py
