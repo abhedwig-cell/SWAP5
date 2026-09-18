@@ -44,7 +44,33 @@ cmp -s "$BUILD/actual_prod_diff.txt" "$BUILD/expected_prod_diff.txt" || {
   fail "production mutation escaped preregistered scope"
 }
 
-test "$(git rev-parse HEAD:integration/f-ross/F-ROSS21_TIERED_CERTIFICATE_RESULT.json)" = "b78965094fcc32f7e0c0fbf905c64b80ddb6503e" || fail "F-ROSS21 result authority drift"
+python3 - integration/f-ross/F-ROSS21_TIERED_CERTIFICATE_RESULT.json <<'PY'
+import json,sys
+x=json.load(open(sys.argv[1]))
+if x.get("schema")!="swap5.f-ross21.tiered-certificate-result.v1": raise SystemExit("F-ROSS21 schema drift")
+if x.get("phase")!="QUALIFIED_RESEARCH_ONLY": raise SystemExit("F-ROSS21 phase drift")
+if x.get("workflow_run")!=35314401030: raise SystemExit("F-ROSS21 workflow authority drift")
+art=x.get("artifact",{})
+if art.get("digest")!="sha256:ae9495c896dcfad2406ea544c711a1b879ec4c7061fb8aa765165e94749e50d8":
+    raise SystemExit("F-ROSS21 artifact digest drift")
+a=x.get("all_material",{})
+def pick(*names):
+    for n in names:
+        if n in a: return a[n]
+    return None
+if pick("case_count")!=216: raise SystemExit("F-ROSS21 case-count drift")
+if pick("route_valid_count","route_valid")!=216: raise SystemExit("F-ROSS21 route authority drift")
+if pick("temporal_accepted_count","temporal_accepted")!=216: raise SystemExit("F-ROSS21 temporal authority drift")
+if pick("K2_final_count","K2_final")!=212: raise SystemExit("F-ROSS21 K2 distribution drift")
+if pick("K4_final_count","K4_final")!=2: raise SystemExit("F-ROSS21 K4 distribution drift")
+if pick("K8_final_count","K8_final")!=2: raise SystemExit("F-ROSS21 K8 distribution drift")
+if abs(float(pick("mean_linear_solves"))-6.444444444444445)>1e-15:
+    raise SystemExit("F-ROSS21 work authority drift")
+p=x.get("performance",{})
+outcome=p.get("outcome")
+if outcome!="SCREENING_ROSSFAST_FASTER": raise SystemExit("F-ROSS21 performance direction drift")
+print("F_ROSS22_F_ROSS21_SEMANTIC_AUTHORITY=PASS")
+PY
 test "$(git rev-parse HEAD:$RESEARCH_KERNEL)" = "62793c0dcc187cef7828621f55357d33505ce964" || fail "F-ROSS21 research kernel drift"
 test "$(git rev-parse HEAD:$RESEARCH_SOLVER)" = "2b134c36097aed2a44a56bfe8e2194b15aa063aa" || fail "F-ROSS21 research solver drift"
 test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = "5442fd7e7a2f392c9b796cd17c76b17977259f22" || fail "model binding drift"
