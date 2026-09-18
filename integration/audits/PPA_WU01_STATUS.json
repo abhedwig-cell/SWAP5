@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "PPA-WU01",
+  "title": "Production application bootstrap for an admitted normal-run profile",
+  "protocol": [
+    "RECONCILE",
+    "IMPLEMENT",
+    "QUALIFY",
+    "ADMIT",
+    "CLOSE"
+  ],
+  "phase": "IMPLEMENTED_QUALIFICATION_PENDING",
+  "branch": "work/ppa-wu01-production-application-bootstrap",
+  "canonical_base": "f7bd4d470d14bdedcbe60ef2b674fce4f1575e9c",
+  "objective": "Create one authoritative Fortran/FMR-owned typed production bootstrap that can run an admitted standalone Reference Richards profile and materialize F-GC49D contexts from the same persistent owner, without qualification fixtures, new physics or legacy parsing.",
+  "exact_scope": [
+    "typed config to persistent Fortran/FMR owner",
+    "Reference Richards serialized runtime",
+    "explicit already-resolved typed forcing",
+    "prescribed-head groundwater-capable bottom profile (bottom_mode=5)",
+    "persistent committed state, participant registry and mass-ledger ownership",
+    "per-window F-GC49D context materialization from admitted topology/predictor/cell-area inputs"
+  ],
+  "exclusions": [
+    "legacy SWAP input grammar",
+    "meteorological file/calendar ingestion",
+    "new physics",
+    "qualification fixture promotion",
+    "Python ownership of SWAP/FMR state or ledgers",
+    "new predictor/corrector algorithm",
+    "iMOD Coupler upstream driver registration",
+    "ROM"
+  ],
+  "production_mutations": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "qualification_surface": [
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90",
+    "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    ".github/workflows/ppa-wu01-production-application-bootstrap.yml"
+  ],
+  "authority": [
+    "docs/audits/PRODUCTION_PHYSICS_APPLICATION_ENVELOPE_GAP_AUDIT.md",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "integration/f-gc/F-GC49_STATUS.json",
+    "integration/f-gc/F-GC50_STATUS.json",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/runtime/mod_fmr_groundwater_participant_registry.f90",
+    "src/runtime/mod_fmr_groundwater_application_context.f90",
+    "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+  ],
+  "qualification": {
+    "state": "PENDING"
+  },
+  "verdict": "IMPLEMENTED_AWAITING_OWNER_QUALIFICATION",
+  "next_permitted_action": "Run the bounded owner gate at O0 and O2, repair only WU01-local defects, then reconcile live canonical and admit only if the typed owner, standalone runtime, context materialization, fail-closed profile boundary and ownership invariants all pass."
+}
