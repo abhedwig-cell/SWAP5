@@ -55,20 +55,30 @@ cases=(
   'B01|TOP_PLUS|0.0008'
   'B14|TOP_PLUS|0.0008'
 )
+failures=0
 for spec in "${cases[@]}"; do
   IFS='|' read -r material cid dt <<<"$spec"
   out="$EVIDENCE/cases/${material}_${cid}_dt${dt}.txt"
   echo "F_ROM0R_R2_RUN_CASE=${material}_${cid}_dt${dt}"
   if ! "$EXE" "$material" "$cid" "$dt" >"$out" 2>&1; then
     cat "$out" >&2
-    fail "R2 case failed: $spec"
+    failures=$((failures+1))
+    continue
   fi
-  grep -Fq "F_ROM0R_R2_PASS|MATERIAL=$material|CASE=$cid" "$out" || {
+  if ! grep -Fq "F_ROM0R_R2_PASS|MATERIAL=$material|CASE=$cid" "$out"; then
     cat "$out" >&2
-    fail "missing R2 pass marker $spec"
-  }
+    failures=$((failures+1))
+    continue
+  fi
   cat "$out"
 done
+
+if [[ "$failures" -ne 0 ]]; then
+  printf '{"schema":"swap5.f-rom0r.r2-execution-summary.v1","case_count":6,"case_failures":%d,"decision":"EXPAND_LOCAL_PERTURBATION_DOMAIN"}\n' "$failures" >"$EVIDENCE/F-ROM0R_R2_EXECUTION_SUMMARY.json"
+  sha256sum "$EVIDENCE"/cases/*.txt "$EVIDENCE/F-ROM0R_R2_EXECUTION_SUMMARY.json" >"$EVIDENCE/sha256.txt"
+  cat "$EVIDENCE/F-ROM0R_R2_EXECUTION_SUMMARY.json"
+  fail "$failures preregistered R2 cases failed"
+fi
 
 python3 "$ANALYZER" --cases "$EVIDENCE/cases" --output "$EVIDENCE/F-ROM0R_R2_RESULT.json"
 sha256sum "$EVIDENCE"/cases/*.txt "$EVIDENCE/F-ROM0R_R2_RESULT.json" >"$EVIDENCE/sha256.txt"
