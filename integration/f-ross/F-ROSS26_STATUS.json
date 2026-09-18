@@ -4,7 +4,7 @@
   "title": "Current tiered RossFast WETTING seam-crossing qualification",
   "phase": "CLOSE",
   "status": "ADMITTED_CLOSED",
-  "branch": "work/f-ross26-tiered-wetting-seam-qualification-reconciled",
+  "branch": "work/f-ross26-canonical-close",
   "pull_request": 287,
   "canonical_source_at_original_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
   "live_canonical_last_reconciled": "31dd5e5af8a29c1d6b09d7a8308af00add859a46",
@@ -111,11 +111,18 @@
     "thresholds_changed": false,
     "scientific_oracle_changed": false,
     "production_admission_effect": "NONE",
-    "disposition": "F-ROSS26 closes the WETTING state-solver research qualification only. It does not admit WETTING through the production model-binding guard."
+    "disposition": "F-ROSS26 closes the WETTING state-solver research qualification only. It does not admit WETTING through the production model-binding guard.",
+    "matrix_workflow_frozen_manual_only": true,
+    "matrix_workflow_blob": "b8b1e85c63f996e6f96bc30968465548477800ae"
   },
   "remaining_rossfast_gap": {
     "mandatory_for_current_closed_envelope": false,
     "gap": "One-sided WETTING model-binding admission remains a separate optional production capability. Cross-seam tangent/interface sensitivity remains explicitly unqualified.",
     "tangent_nonclaim": "No unique cross-node derivative or seam-crossing interface sensitivity is qualified."
+  },
+  "matrix_workflow_closeout": {
+    "mode": "WORKFLOW_DISPATCH_ONLY",
+    "blob": "b8b1e85c63f996e6f96bc30968465548477800ae",
+    "reason": "The frozen 108-case measurement is complete and canonically admitted; automatic push/PR reruns are disabled to prevent duplicate evidence generation. Manual replay remains available."
   }
 }
