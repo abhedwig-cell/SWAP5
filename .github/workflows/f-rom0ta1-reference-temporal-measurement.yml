@@ -1,0 +1,59 @@
+name: F-ROM0TA1 Reference temporal measurement
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0TA1_*'
+      - 'docs/science/F-ROM0TA1_*'
+      - 'tests/rom/test_f_rom0ta1_reference_temporal_measurement.f90'
+      - 'tests/rom/analyze_f_rom0ta1_reference_temporal_measurement.py'
+      - 'tests/rom/run_f_rom0ta1_reference_temporal_measurement.sh'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - 'tests/rom/materialize_f_rom0_headcalc_stubs.py'
+      - '.github/workflows/f-rom0ta1-reference-temporal-measurement.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROM0TA1_*'
+      - 'docs/science/F-ROM0TA1_*'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom0ta1-reference-temporal-measurement.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0ta1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered temporal measurement
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0TA1_EVIDENCE
+          F_ROM0TA1_EVIDENCE_DIR="$PWD/F-ROM0TA1_EVIDENCE" \
+            bash tests/rom/run_f_rom0ta1_reference_temporal_measurement.sh | tee F-ROM0TA1_EVIDENCE/gate.txt
+      - name: Preserve temporal measurement evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0ta1-${{ github.run_id }}
+          path: F-ROM0TA1_EVIDENCE
+          if-no-files-found: warn
