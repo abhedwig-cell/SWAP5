@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC47",
+  "title": "Mixed-topology real SWAP live MODFLOW6 application qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "06e585cc16710da00267deed878567ca1936fe7e"
+  },
+  "source": {
+    "branch": "work/f-gc47-mixed-topology-live-modflow",
+    "base": "06e585cc16710da00267deed878567ca1936fe7e"
+  },
+  "predecessors": [
+    "F-GC45 real N:1 one-cell application",
+    "F-GC46 real two-cell 1:1 application",
+    "F-GC40 typed N:1 cell response",
+    "F-GC34 multi-slot MODFLOW API binding",
+    "F-GC41 whole-window publication"
+  ],
+  "goal": "Qualify one mixed live topology in which two real SWAP columns are aggregated N:1 into groundwater cell 7001 while a third real SWAP column couples 1:1 to groundwater cell 7002, all inside one MODFLOW6 6.8.0 prepared solve and one timestep.",
+  "decisions": [
+    "Use three unique SWAP lineages and three independent interface ledgers.",
+    "Cell 7001 reuses the F-GC45 homogeneous two-tile N:1 envelope with fractions 0.35/0.65.",
+    "Cell 7002 reuses the F-GC44/F-GC46 one-column 1:1 envelope.",
+    "Use one F-GC40 cell response per groundwater cell and F-GC34 package slots 1/2 mapped to distinct MODFLOW nodes.",
+    "Correctors for the two cell-7001 tiles receive the same cell-7001 head; the cell-7002 tile receives only the cell-7002 head.",
+    "Coupled convergence requires MODFLOW convergence plus both cell-level flux residuals within tolerance.",
+    "All three SWAP candidates and ledgers preflight before the single MODFLOW finalize_time_step; publication is MODFLOW then SWAPs then ledgers in canonical cell/tile order."
+  ],
+  "exclusions": [
+    "heterogeneous N:1 physical transferability claim",
+    "new production physics",
+    "larger prescribed-head envelope",
+    "active drainage",
+    "root uptake",
+    "macropores",
+    "snow",
+    "soil temperature",
+    "Ribasim",
+    "irrigation",
+    "runtime finite-difference tangent fallback"
+  ],
+  "production_delta": "NONE",
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ119 evidence, repair only scoped failures, then reconcile canonical and admit/close if all criteria pass.",
+  "implemented": [
+    "three-participant qualification-only real FMR/SWAP bridge",
+    "cell 7001 F-GC40 two-tile N:1 response with 0.35/0.65 fractions",
+    "cell 7002 F-GC40 single-tile-equivalent response",
+    "F-GC34 two-slot/two-node live MODFLOW mapping",
+    "cell-specific corrector routing with common head only inside the N:1 cell",
+    "three prepared interface ledgers and all-participant preflight before publication",
+    "live MODFLOW6 6.8.0 mixed-topology owner workflow",
+    "F-VQ119 independent architecture/order verifier"
+  ],
+  "admission_criteria": [
+    "exact-head mixed-topology live owner qualification green",
+    "exact-head F-VQ119 independent qualification green",
+    "canonical delta remains non-conflicting",
+    "production source delta remains NONE",
+    "PR mergeable and scope remains homogeneous N:1 plus 1:1 composition only"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+}
