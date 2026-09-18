@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.independent_qualification.v1",
+  "workunit": "F-VQ123",
+  "subject": "F-APP06 exact Hupsel SWINTER0/SWCF0 identity route",
+  "subject_head": "ebcefbbf3d6476fead6aab08db239a7043f47ac7",
+  "qualification_branch": "qualification/f-vq123-fapp06-swinter0-independent",
+  "workflow_run_id": 35350178658,
+  "job_id": 105616169263,
+  "production_mutation": "NONE",
+  "qualification": {
+    "generic_identity_sweep": "PASS",
+    "dynamic_top_preservation": "PASS",
+    "fail_closed": "PASS",
+    "exact_B1_11_records": 3505,
+    "max_error": 0,
+    "generic_sha256": "81ab1faccd2b148db56866e02aef74e1d51356167cd95ab9e7444d46cc02270d",
+    "exact_sha256": "9c5cae06f3ce342154ec26d3731fcc5379b26ef7dff91a950615cfea477327ef"
+  },
+  "supersedes_application_qualification_id": "F-VQ121 application branch only; F-VQ121 canonical authority belongs to F-GC49A",
+  "verdict": "PASS_F_VQ123_INDEPENDENT_F_APP06"
+}
