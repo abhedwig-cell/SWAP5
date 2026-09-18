@@ -135,4 +135,4 @@ Prepared on 2026-09-18:
 
 A2 is no longer treated as one undifferentiated unknown: upstream SWAP version-4 licence authority is verified, while the explicit SWAP5 archive declaration remains governance-bound.
 
-No existing release or tag naming convention was found, so A1 remains a genuine release-governance decision.
+A historical immutable release authority was found: `SWAP5-RB1-v1` at F-RB02 commit `b52e4dc5...`. Its governance rule requires any future release to enumerate the RB1 delta and qualify a new exact candidate. A1 therefore remains open only for the **new successor release identifier/authority**; RB1 itself cannot be reused or moved.
