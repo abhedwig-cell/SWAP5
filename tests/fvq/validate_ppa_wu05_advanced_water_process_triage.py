@@ -80,6 +80,13 @@ allowed_prefixes = (
     "docs/audits/PPA_WU05_",
     "tests/fvq/validate_ppa_wu05_",
     ".github/workflows/ppa-wu05-",
+    # PPA-WU05 explicitly freezes PPA-WU05-A as its first review-only child.
+    # Admit only that named descendant's review/evidence surface here; the
+    # no-src/no-reference checks above remain authoritative.
+    "integration/audits/PPA_WU05A_",
+    "docs/audits/PPA_WU05A_",
+    "tests/fvq/validate_ppa_wu05a_",
+    ".github/workflows/ppa-wu05a-",
 )
 allowed_exact = {
     "integration/audits/production_physics_application_envelope_gap_register.json",
