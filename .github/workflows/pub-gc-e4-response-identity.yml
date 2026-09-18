@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 permissions: {contents: read}
 concurrency:
-  group: pub-gc-e4-${{ github.ref }}
+  group: pub-gc-e4-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
   response-identity:
