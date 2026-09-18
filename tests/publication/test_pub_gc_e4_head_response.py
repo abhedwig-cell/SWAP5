@@ -89,6 +89,8 @@ def main()->None:
     predictor=swap.e1_diagnostics()
     origin=swap.state()
     require(origin==(0,0.0,0,0.0),"E4 baseline not at immutable accepted origin")
+    rec.update({
+    })
 
     # Exact production-participant parity at H0. A bounded production
     # corrector failure is retained as baseline-local evidence rather than
