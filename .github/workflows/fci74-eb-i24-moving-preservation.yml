@@ -26,6 +26,10 @@ on:
       - 'integration/f-ci/F-CI74P_STATUS.json'
       - 'integration/f-ci/F-CI79_STATUS.json'
       - 'integration/f-ci/F-CI79P_STATUS.json'
+      - 'qualification/F-VQ105_STATUS.json'
+      - 'integration/f-ci/F-CI98_STATUS.json'
+      - 'qualification/F-VQ105_STATUS.json'
+      - 'integration/f-ci/F-CI98_STATUS.json'
       - '.github/workflows/fci74-eb-i24-moving-preservation.yml'
   pull_request:
     paths:
@@ -58,9 +62,11 @@ jobs:
           I24_ADMISSION=e189b141b6efa695197de1e59a41b4800ef3d5a2
           I25_ADMISSION=b7c2e510c68e5799a138e881793d27037c482b8a
           FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
+          FGC31_ADMISSION=7b864853ca22baa73141b2dec9ed2f3915ef520d
           git merge-base --is-ancestor "$I24_ADMISSION" HEAD
           git merge-base --is-ancestor "$I25_ADMISSION" HEAD
           git merge-base --is-ancestor "$FROSS12_AUTH" HEAD
+          git merge-base --is-ancestor "$FGC31_ADMISSION" HEAD
           declare -A BLOBS=(
             [src/process/mod_external_liquid_water_temperature.f90]=64b85363e764d2c6e2777f5f1258abb3ac9e5abf
             [src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90]=5f27ff7a4fa67a3991c622d960a7133857dab1c2
@@ -80,11 +86,13 @@ jobs:
           )
           for path in "${!BLOBS[@]}"; do test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"; done
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = \
-            "$(git rev-parse "$FROSS12_AUTH:src/runtime/mod_fmr_serialized_reference_backend.f90")"
+            "4e5491c997ed0752a4db9abd09b5ad3daf394db2"
           python3 -m json.tool qualification/F-VQ91_STATUS.json >/dev/null
           python3 -m json.tool qualification/F-VQ93_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI74P_STATUS.json >/dev/null
           python3 -m json.tool integration/f-ci/F-CI79P_STATUS.json >/dev/null
+          python3 -m json.tool qualification/F-VQ105_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI98_STATUS.json >/dev/null
           grep -Fq '"decision": "QUALIFIED_EB_I24_INDEPENDENT"' qualification/F-VQ91_STATUS.json
           grep -Fq '"decision": "QUALIFIED_EB_I25_INDEPENDENT"' qualification/F-VQ93_STATUS.json
           grep -Fq '"decision": "QUALIFIED_F_CI74P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI74P_STATUS.json
@@ -96,6 +104,9 @@ jobs:
           grep -Fq '"accepted_external_full_half_top_liquid_outflow": false' qualification/F-VQ93_STATUS.json
           grep -Fq '"snow_or_melt_thermal_provenance": false' qualification/F-VQ93_STATUS.json
           grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79P_STATUS.json
+          grep -Fq '"verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW"' qualification/F-VQ105_STATUS.json
+          grep -Fq '"verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION"' integration/f-ci/F-CI98_STATUS.json
+          echo 'FCI74_MOVING_FGC31_BACKEND_SUCCESSOR=PASS'
           echo 'FCI74_MOVING_EB_I24_SUCCESSOR_COMPOSITION=PASS'
           echo 'FCI74_MOVING_FROSS12_BACKEND_SUCCESSOR=PASS'
           echo 'FCI74_MOVING_I25_BOUNDED_MULTISUBSTEP_EXTENSION=PASS'
