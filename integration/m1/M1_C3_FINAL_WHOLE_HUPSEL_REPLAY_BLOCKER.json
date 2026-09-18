@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_WHOLE_HUPSEL_REPLAY_BLOCKED_EXTERNAL_ASSET",
+  "capability": "M1 - Typed External Boundary",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "branch": "work/m1-c3-final-current-canonical",
+  "canonical_subject": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
+  "required_final_qualification": [
+    "materialize exact official SWAP_4.3.1 distribution bytes",
+    "verify SHA256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360 before execution",
+    "reconstruct exact B1.11 and verify 63 members / 1886519 bytes / manifest 24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "construct admitted typed application inputs from the exact Hupsel file authority",
+    "run the existing SWAP5 transaction/solver lifecycle without fallback for the whole accepted trajectory",
+    "require all active selectors to resolve only to admitted F-APP03/04/05/06/07/08 plus admitted drainage/bottom authority",
+    "require six frozen accepted SoilWater snapshots to remain exact",
+    "require full completion and compare legacy result.bal/result.blc or the admitted M1-C4 equivalent output payload"
+  ],
+  "recovered_evidence": {
+    "exact_legacy_full_run": "PASS_AND_IMMUTABLE",
+    "accepted_intervals": 32518,
+    "route_trace_sha256": "b41871001e617a9bda31f039aec30525a156bdde40dff47189fc8f5ea04f629c",
+    "six_snapshot_replay_after_F_SI39_semantics": "PASS_EXACT_ZERO_ERROR",
+    "all_active_application_capabilities": "CANONICALLY_ADMITTED"
+  },
+  "current_execution_blocker": {
+    "class": "EXTERNAL_EXACT_ASSET_BYTES_NOT_MATERIALIZABLE_IN_CURRENT_RUNNER",
+    "project_file_known_present": true,
+    "project_filename_example": "SWAP_4.3.1(5).zip",
+    "project_file_size_bytes": 8959314,
+    "files_materialization_result": "NO_AUTHORIZED_RAW_BYTE_PATH",
+    "local_container_mount": "ABSENT",
+    "git_repository_copy": "ABSENT_BY_DESIGN",
+    "retained_actions_copy": "ABSENT",
+    "official_download_page": "SWAP 4.3.1 development release is available only after registration/license acceptance; no automated acceptance was performed.",
+    "scientific_difference_observed": false
+  },
+  "why_existing_evidence_is_not_promoted_to_PASS": "The explicit M1-C3 closure rule requires one final whole-Hupsel adapter execution. Exact route-level qualifications plus the six exact solver snapshots are necessary but are not substituted for that execution.",
+  "mutations": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "tolerances": "NONE",
+    "governance_evidence_only": true
+  },
+  "verdict": "BLOCKED_FINAL_WHOLE_HUPSEL_ADAPTER_EXECUTION_EXACT_ASSET_BYTES_REQUIRED",
+  "m1_c3_closed": false,
+  "next_permitted_action": "Make the exact official SWAP_4.3.1 ZIP bytes available to the current execution context without changing them. Verify the frozen SHA-256, rerun only the already-defined final whole-Hupsel adapter qualification, then admit M1-C3 if and only if every closure condition passes."
+}
