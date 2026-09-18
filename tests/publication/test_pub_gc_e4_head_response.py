@@ -52,6 +52,18 @@ def normalize_trial(head:float,raw:dict[str,float|bool|int])->dict[str,float|boo
         require(abs(mass_identity)<=tol,"E4 mass identity failed")
         out["V_u_m"]=float(out["bottom_outward_exchange_cm"])*0.01
         out["storage_change_m"]=float(out["storage_change_native"])*0.01
+        out["other_net_m"]=(
+            float(out["total_in_native"])
+            -float(out["total_out_native"])
+            +float(out["bottom_outward_exchange_cm"])
+        )*0.01
+        response_balance=(
+            float(out["storage_change_m"])
+            -float(out["other_net_m"])
+            +float(out["V_u_m"])
+            -float(out["mass_residual_native"])*0.01
+        )
+        require(abs(response_balance)<=tol*0.01,"E4 response balance identity failed")
     return out
 
 def main()->None:
