@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS25",
   "title": "Admitted tiered RossFast serial hydrologic trajectory validation",
-  "phase": "CLOSE",
-  "status": "CLOSED_NEGATIVE_SCIENTIFIC_RESULT",
+  "phase": "REPAIR",
+  "status": "PRIOR_INTERPRETATION_INVALIDATED_MECHANICAL_PREFLIGHT_SIGN_BUG_PENDING_REPLAY",
   "branch": "integration/f-ross25-serial-hydrologic-validation-close",
   "original_measurement_branch": "work/f-ross25-serial-hydrologic-validation",
   "canonical_source_at_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
@@ -23,7 +23,7 @@
     "artifact_id": 10549829161,
     "artifact_digest": "sha256:0a91babdcb3e2ed1eb46b333e92d958e890cd3f5fd46a7eaa918ad9832fb8b48",
     "execution_result": "PASS",
-    "scientific_result": "NEGATIVE"
+    "scientific_result": "INVALIDATED_PENDING_CORRECTED_REPLAY"
   },
   "result": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_RESULT.json",
   "key_findings": {
@@ -44,6 +44,17 @@
     "later_colliding_branch": "work/f-ross25-tiered-wetting-seam-qualification",
     "disposition": "F-ROSS25 remains assigned to the earlier preregistered and measured serial validation. The later WETTING seam qualification must continue as F-ROSS26."
   },
-  "verdict": "CLOSED_WITH_NEGATIVE_SERIAL_VALIDATION_RESULT_NO_PRODUCTION_CHANGE",
-  "next_permitted_action": "Continue the already-started tiered WETTING seam qualification only after renumbering it to F-ROSS26. Any repair of the 43 serial failures requires a separate preregistered diagnostic/science workunit; do not retune F-ROSS25."
+  "verdict": "INITIAL_NEGATIVE_INTERPRETATION_WITHDRAWN_MECHANICAL_PREFLIGHT_SIGN_BUG",
+  "next_permitted_action": "Replay the exact frozen 216-trajectory preregistration with only the public/top-flux envelope-preflight sign repair. Reclassify solver failure versus envelope loss; do not retune production or the experiment.",
+  "correction": {
+    "defect": "Serial harness evaluated public soil-water qtop against +0.01*K, while the production RossFast adapter maps internal_top=-public_top before its frozen +0.01*K state-local envelope check. The equivalent public-space envelope centre is -0.01*K.",
+    "consequence": "The reported 43 interval-2 NOMINAL_SHARED STATUS_NOT_CONVERGED cases were not established as solver failures because the harness preflight could label forcing envelope-valid when the production binding would reject it.",
+    "production_change": false,
+    "preregistration_change": false,
+    "forcing_change": false,
+    "tolerance_change": false,
+    "tier_change": false,
+    "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225",
+    "corrected_replay": "PENDING"
+  }
 }

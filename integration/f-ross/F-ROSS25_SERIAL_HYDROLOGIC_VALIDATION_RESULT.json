@@ -155,13 +155,11 @@
     "max_final_storage_diff_cm": 2.842170943040401e-14
   },
   "interpretation": [
-    "The preregistered serial-composition hypothesis is not universally supported: RossFast fails on 43 of 216 otherwise envelope-valid trajectories.",
-    "All RossFast failures occur at interval 2 under NOMINAL_SHARED forcing, after the first interval has been accepted; ZERO_SHARED is 108/108 RossFast-valid.",
-    "No common-forcing envelope loss was observed, so the negative result cannot be dismissed as the harness stepping outside its preregistered forcing envelope.",
-    "No K4 or K8 fallback was reached on accepted intervals; the observed serial failures are not evidence for retuning the frozen tier ladder.",
-    "The result is diagnostic qualification evidence only and does not mutate or revoke the already admitted single-interval F-ROSS22 production envelope."
+    "The numerical records from workflow 35350469193 are retained as historical measurement evidence, but the scientific classification is withdrawn.",
+    "The serial harness checked the public top-flux envelope with the wrong sign relative to the production RossFast adapter. Therefore the 43 interval-2 NOMINAL_SHARED rejections cannot be classified as intrinsic RossFast solver failures from this run.",
+    "A corrected replay must distinguish true route failure from production-envelope loss without changing the preregistered states, forcing values, tolerances or tier ladder."
   ],
-  "scientific_verdict": "NEGATIVE_SERIAL_COMPOSITION_NOT_UNIVERSALLY_VALID_IN_PREREGISTERED_DOMAIN",
+  "scientific_verdict": "WITHDRAWN_PENDING_CORRECTED_REPLAY",
   "firewall": [
     "NO_PRODUCTION_MUTATION",
     "NO_REFERENCE_MUTATION",
@@ -172,5 +170,15 @@
     "NO_NEW_BOUNDARY_MODE",
     "NO_PERFORMANCE_CLAIM",
     "NO_DOMAIN_RETUNING_AFTER_RESULTS"
-  ]
+  ],
+  "interpretation_status": "SUPERSEDED_INVALID_PREFLIGHT_CLASSIFICATION",
+  "initial_reported_scientific_verdict": "NEGATIVE_SERIAL_COMPOSITION_NOT_UNIVERSALLY_VALID_IN_PREREGISTERED_DOMAIN",
+  "correction": {
+    "defect_class": "MECHANICAL_HARNESS_PREFLIGHT_SIGN_BUG",
+    "prior_measurement_retained": true,
+    "prior_solver_failure_interpretation_valid": false,
+    "prior_envelope_loss_count_valid": false,
+    "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225",
+    "corrected_replay": "PENDING"
+  }
 }
