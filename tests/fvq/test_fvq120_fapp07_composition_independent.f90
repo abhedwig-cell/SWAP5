@@ -125,19 +125,19 @@ contains
   subroutine preserve_non_irrigation(a,b,n)
     type(b110_dynamic_top_boundary_request_t),intent(in)::a,b
     integer,intent(in)::n
-    if(a%conductivity_mean_method/=b%conductivity_mean_method) error stop n
-    if(a%pressure_head_top_cm/=b%pressure_head_top_cm) error stop n
-    if(a%water_content_top/=b%water_content_top) error stop n
-    if(a%candidate_ponding_depth_cm/=b%candidate_ponding_depth_cm) error stop n
-    if(a%previous_ponding_depth_cm/=b%previous_ponding_depth_cm) error stop n
-    if(a%step_duration_day/=b%step_duration_day) error stop n
-    if(a%precipitation_rate_cm_per_day/=b%precipitation_rate_cm_per_day) error stop n
-    if(a%snowmelt_rate_cm_per_day/=b%snowmelt_rate_cm_per_day) error stop n
-    if(a%runon_rate_cm_per_day/=b%runon_rate_cm_per_day) error stop n
-    if(a%potential_bare_soil_evaporation_cm_per_day/=b%potential_bare_soil_evaporation_cm_per_day) error stop n
-    if(a%potential_pond_evaporation_cm_per_day/=b%potential_pond_evaporation_cm_per_day) error stop n
-    if(a%ponding_max_cm/=b%ponding_max_cm) error stop n
-    if(a%runoff_resistance_day/=b%runoff_resistance_day) error stop n
-    if(a%runoff_exponent/=b%runoff_exponent) error stop n
+    call require(a%conductivity_mean_method==b%conductivity_mean_method,n)
+    call require(a%pressure_head_top_cm==b%pressure_head_top_cm,n)
+    call require(a%water_content_top==b%water_content_top,n)
+    call require(a%candidate_ponding_depth_cm==b%candidate_ponding_depth_cm,n)
+    call require(a%previous_ponding_depth_cm==b%previous_ponding_depth_cm,n)
+    call require(a%step_duration_day==b%step_duration_day,n)
+    call require(a%precipitation_rate_cm_per_day==b%precipitation_rate_cm_per_day,n)
+    call require(a%snowmelt_rate_cm_per_day==b%snowmelt_rate_cm_per_day,n)
+    call require(a%runon_rate_cm_per_day==b%runon_rate_cm_per_day,n)
+    call require(a%potential_bare_soil_evaporation_cm_per_day==b%potential_bare_soil_evaporation_cm_per_day,n)
+    call require(a%potential_pond_evaporation_cm_per_day==b%potential_pond_evaporation_cm_per_day,n)
+    call require(a%ponding_max_cm==b%ponding_max_cm,n)
+    call require(a%runoff_resistance_day==b%runoff_resistance_day,n)
+    call require(a%runoff_exponent==b%runoff_exponent,n)
   end subroutine
 end program test_fvq120_fapp07_composition_independent
