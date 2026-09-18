@@ -65,5 +65,23 @@
   ],
   "exit": "Canonical admission only if the complete typed legacy SWBOTB=2 time-law plus dry-continuation route passes owner and independent qualification without weakening inherited gates.",
   "canonical_base_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
-  "preregistered_commit": "549eac02de069995448eb54fa020c756f3c087eb"
+  "preregistered_commit": "549eac02de069995448eb54fa020c756f3c087eb",
+  "implementation_adjustment": {
+    "trigger": "Broad preservation CI compiles mod_fmr_serialized_reference_backend.f90 directly through established source lists; a new module dependency caused missing .mod failures in F-ROSS12 and F-GC44 despite the PPA-LOW02 owner and independent gates passing.",
+    "evidence": {
+      "initial_qualification_run": 35406517730,
+      "initial_owner_job": 105797289526,
+      "initial_independent_job": 105797515526,
+      "compile_graph_failures": [
+        "F-ROSS12 run 35406517671 job 105797289106: missing mod_b110_legacy_swbotb2_application_control.mod",
+        "F-GC44 run 35406517646 job 105797290780: missing mod_b110_legacy_swbotb2_application_control.mod"
+      ]
+    },
+    "disposition": "Co-locate the immutable SWBOTB=2 application-control type and pure evaluation law with fmr_b110_physical_forcing_t in mod_fmr_serialized_reference_backend. Semantics and transaction ownership are unchanged; the separate adapter module is removed.",
+    "final_production_delta": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "architecture_impact": "none_beyond_dependency_locality",
+    "science_impact": "none"
+  }
 }
