@@ -606,7 +606,7 @@
       "id": "PPA-LOW-QBOT",
       "subsystem": "lower boundary",
       "capability": "Nonzero prescribed qbot as ordinary typed lower boundary",
-      "classification": "D_QUALIFICATION_ONLY",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
       "legacy_present": true,
       "legacy_authority": {
         "reference": "SWAP4.3.1 B1.11 corrected reference",
@@ -616,59 +616,85 @@
       },
       "swap5_implementation_authority": [
         "src/solver/mod_reference_richards_temporal_indicator.f90",
-        "integration/f-si/F-SI38_STATUS.json",
-        "integration/f-mr/F-MR44R_STATUS.json"
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "integration/f-ci/F-CI62P_STATUS.json",
+        "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
       ],
-      "typed_input_config_authority": "Typed bottom_mode=2 exists; ordinary application mapping beyond SWBOTB6 is not admitted.",
-      "state_ownership": "No process state.",
-      "transaction_status": "Qualified source/runtime candidate under restricted reference route.",
+      "typed_input_config_authority": "Typed bottom_mode=2 plus already-resolved bottom_flux [cm d-1]. PPA-WU02-A admits the homogeneous mode-2 profile through the production application bootstrap. Legacy SW2 sine/table forcing and the oven-dry 2->-2 continuation remain outside this slice.",
+      "state_ownership": "No new qbot process state. The production bootstrap owns the persistent FMR committed state; resolved bottom_flux is typed interval forcing. The legacy SWBOTB=2 time-law/continuation state is not claimed.",
+      "transaction_status": "Canonical serialized transaction path; F-SI38/F-MR44R/F-VQ75/F-CI62 authority is inherited unchanged. PPA-WU02 owner qualification proves nonzero qbot reaches an accepted committed trajectory with hard mass closure and generic time.",
       "qualification_evidence": [
-        "F-SI38",
-        "F-MR44R"
+        "F-SI27 exact B1.10/B1.11-equivalent prescribed-qbot source oracle",
+        "F-SI38 temporal certificate",
+        "F-MR44R serialized runtime",
+        "F-VQ75 independent qualification",
+        "F-CI62/F-CI62P canonical production admission",
+        "PPA-WU02 owner run 35374222568 job 105695000702 PASS",
+        "PPA-WU02 independent job 105695282455 PASS"
       ],
-      "production_admission": "NOT canonical-admitted as F-MR44R capability.",
-      "production_reachable": "NO_NORMAL_APPLICATION_ROUTE",
+      "production_admission": "Lower-level mode-2 physics/runtime is canonical via F-CI62/F-CI62P. PPA-WU02-A application admission is qualified on PR #324 and pending canonical merge.",
+      "production_reachable": "YES_RESTRICTED_TYPED_APPLICATION_ON_QUALIFIED_PPA_WU02_HEAD",
       "restrictions": [
-        "F-MR44R explicitly QUALIFIED_SOURCE_CAPABILITY_NOT_CANONICAL_ADMITTED"
+        "Homogeneous bottom_mode=2 typed application profile only",
+        "Caller supplies already-resolved bottom_flux",
+        "No legacy SW2 parser/file I/O",
+        "No sinusoidal or DATE2/QBOT2 materializer",
+        "No automatic oven-dry 2->-2 legacy continuation in PPA-WU02-A",
+        "No mixed lower-boundary profile admission",
+        "No groundwater-coupling semantic change"
       ],
-      "scientific_risk": "LOW",
+      "scientific_risk": "LOW for the qualified already-resolved typed application slice; MEDIUM for later full legacy SWBOTB=2 forcing/continuation adapter",
       "use_relevance": "MEDIUM_HIGH",
       "dependencies": [
-        "Canonical admission",
-        "Application mapping"
+        "Canonical merge of PPA-WU02-A for normal application reachability",
+        "Separate source-bound legacy SWBOTB=2 forcing/continuation adapter for file-level equivalence"
       ],
       "priority_band": "P1"
     },
     {
       "id": "PPA-LOW-OTHER",
       "subsystem": "lower boundary",
-      "capability": "Other historical SWBOTB variants beyond zero-flux and the currently admitted groundwater/coupling route",
-      "classification": "H_AUTHORITY_UNCLEAR",
+      "capability": "Remaining source-resolved legacy SWBOTB variants requiring distinct migrations: 1, 3, 4 and 8",
+      "classification": "F_NOT_YET_MIGRATED",
       "legacy_present": true,
       "legacy_authority": {
-        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "reference": "SWAP4.3.1 B1.11 corrected reference; PPA-WU02 exact source inventory",
         "files": [
+          "SWAP/readswap.f90",
           "SWAP/boundbottom.f90",
+          "SWAP/headcalc.f90",
           "SWAP/calcgwl.f90"
         ]
       },
-      "swap5_implementation_authority": [],
-      "typed_input_config_authority": "No complete selector-to-typed application map found in current canonical.",
-      "state_ownership": "Variant-dependent.",
-      "transaction_status": "Not established for the complete legacy family.",
+      "swap5_implementation_authority": [
+        "src/legacy/b1_10_port/headcalc.f90",
+        "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+        "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+      ],
+      "typed_input_config_authority": "No common selector-to-typed adapter is appropriate. PPA-WU02 resolved the semantics separately: mode 1 prescribed-groundwater-level state machine; mode 3 deep-aquifer Cauchy relation; mode 4 q(gwl) application law; mode 8 lysimeter active-set boundary.",
+      "state_ownership": "Mode-specific and now source-resolved. Modes 1, 3, 4 and 8 depend on evolving hydraulic/groundwater or switching state and require explicit candidate/accepted ownership before migration.",
+      "transaction_status": "No broad production admission. Future slices must preserve the single existing transaction/mass owner and fail closed until mode-specific continuation semantics are qualified.",
       "qualification_evidence": [
-        "F-CI95 explicitly excludes mappings for SWBOTB != 6"
+        "PPA-WU02 source-bound selector inventory",
+        "F-SI13/F-SI16/F-SI27 historical source qualifications distinguish the existing typed free-drainage, head and qbot primitives from the remaining application laws"
       ],
-      "production_admission": "NO broad family admission",
-      "production_reachable": "NO",
+      "production_admission": "NONE for SWBOTB 1, 3, 4 and 8 as normal typed application modes.",
+      "production_reachable": "NO_FOR_REMAINING_MODES_1_3_4_8",
       "restrictions": [
-        "Exact legacy variant inventory/semantics must be recovered from pinned source before backlog slicing"
+        "Mode 1 must not be aliased to F-GC prescribed-head coupling",
+        "Mode 3 explicit/implicit Cauchy semantics require separate qualification",
+        "Mode 4 q(gwl) is state-dependent and is not equivalent to time-prescribed qbot",
+        "Mode 8 requires explicit active-set/continuation ownership",
+        "Internal -2 and 9 are not normal 1..8 application selectors"
       ],
-      "scientific_risk": "MEDIUM",
+      "scientific_risk": "MEDIUM_HIGH to HIGH depending on mode",
       "use_relevance": "HIGH",
       "dependencies": [
-        "Source-bound lower-boundary inventory",
-        "Groundwater route separation"
+        "PPA-LOW01 hybrid groundwater-level boundary contract",
+        "PPA-LOW03 Cauchy boundary contract",
+        "PPA-LOW04 q(gwl) state/timing contract",
+        "PPA-LOW08 lysimeter switching continuation contract"
       ],
       "priority_band": "P1"
     },
@@ -1509,11 +1535,6 @@
   "backlog": {
     "almost_free": [
       {
-        "capability_id": "PPA-LOW-QBOT",
-        "action": "Canonical-admit the already qualified F-MR44R prescribed-qbot runtime capability, then separately bind only an evidenced application selector.",
-        "reason": "Qualified source/runtime candidate exists; science delta is low."
-      },
-      {
         "capability_id": "PPA-OUTPUT-CANON",
         "action": "Expose the admitted canonical result serializer through the future application bootstrap without adding output-file semantics.",
         "reason": "Serializer is already admitted and state-free."
@@ -1593,6 +1614,13 @@
         "disposition": "CANONICAL_ADMITTED_CLOSED",
         "evidence": "PPA-WU01 final owner run 35368123088 PASS; docs 35368123177 PASS; F-CI 35368122940 PASS.",
         "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7"
+      },
+      {
+        "capability_id": "PPA-LOW-QBOT",
+        "workunit": "PPA-WU02-A",
+        "disposition": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+        "evidence": "Owner run 35374222568 / job 105695000702 PASS; independent job 105695282455 PASS. F-CI62P lower-level production admission inherited unchanged.",
+        "canonical_merge_commit": null
       }
     ]
   },
@@ -1628,7 +1656,11 @@
       "id": "PPA-WU02",
       "title": "Source-bound lower-boundary application envelope inventory",
       "goal": "Recover the exact B1.11 SWBOTB mode catalogue and map each mode to current typed capability, D/E/F/H gap or explicit exclusion.",
-      "exit": "No H_AUTHORITY_UNCLEAR remains for common lower-boundary modes; dependency-aware migration slices fixed."
+      "exit": "MET at qualification level: B1.11 selector catalogue is source-bound; common modes no longer remain H_AUTHORITY_UNCLEAR; dependency-aware slices are fixed; directly-admittable prescribed-qbot application slice is implemented and independently qualified.",
+      "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b",
+      "qualification": "PPA-WU02 run 35374222568: owner job 105695000702 PASS; independent job 105695282455 PASS. PPA-WU01 preservation run 35374222321 PASS.",
+      "canonical_merge_commit": null
     },
     {
       "id": "PPA-WU03",
@@ -1662,6 +1694,13 @@
       "state": "CANONICAL_ADMITTED_CLOSED",
       "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
       "effect": "Restricted production config-to-owned-FMR bootstrap is now canonical. Broader normal-input/application composition remains open under PPA-WU03."
+    },
+    {
+      "workunit": "PPA-WU02",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "branch": "audit/ppa-wu02-lower-boundary-envelope",
+      "qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b",
+      "effect": "Resolves the lower-boundary selector authority inventory and qualifies normal homogeneous typed bottom_mode=2 prescribed-qbot application reachability without admitting the full legacy SWBOTB=2 parser/time-law/continuation semantics."
     }
   ]
 }
