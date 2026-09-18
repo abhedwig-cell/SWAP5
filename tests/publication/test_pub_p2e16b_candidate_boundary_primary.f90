@@ -158,6 +158,7 @@ contains
     real(real64) :: storage_reference,storage_alternative
     real(real64) :: dh_inf,dh_rms,dtheta_inf,dtheta_rms,dstorage
     logical :: found,initialized,reference_valid,rossfast_valid,transfer_valid,authorized
+    integer :: provider_status
     logical :: pass_h_inf,pass_h_rms,pass_theta_inf,pass_theta_rms,pass_storage,all_pass
     logical :: expected_valid,outside_case,boundary_case,route_identity_ok
     character(len=48) :: route_status,science_status
@@ -200,7 +201,7 @@ contains
     call initialize_common_request(request,parameters,constitutive,source_sink,top_boundary,theta0,h0,qtop,qbot)
 
     call reference_solver%solve(request,reference_workspace,reference_result)
-    call alternative_solver%initialize('assets/rossfast/d3r',material_id,initialized)
+    call alternative_solver%initialize('assets/rossfast/d3r',material_id,initialized,provider_status)
     if (.not.initialized) then
       rossfast_init_failure_count=rossfast_init_failure_count+1
     else
