@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f-rom0ta2.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA2",
+  "title": "Temporal budget authority reconciliation",
+  "phase": "CLOSED_NEW_REFERENCE_CAPABILITY_REQUIRED",
+  "branch": "work/f-rom0-close-expand-accepted-domain",
+  "predecessor": "F-ROM0TA1",
+  "decision": "TEMPORAL_AUTHORITY_REQUIRES_NEW_REFERENCE_CAPABILITY",
+  "authority_reconciliation": {
+    "ROM_P_error_envelope_rule": "ERROR_ENVELOPE_AFTER_REFERENCE_FLOOR",
+    "F_GC07": "NUMERICAL_CHARACTERIZATION_DOES_NOT_SELECT_APPLICATION_ACCURACY",
+    "F_GC08": "NUMERICAL_ERROR_MAGNITUDE_MAY_NOT_SELECT_H_APP_OR_A_TEMPORAL",
+    "F_GC09": "H_TEMPORAL_BUDGET_EQUALS_SEPARATELY_QUALIFIED_H_APP_TIMES_A_TEMPORAL",
+    "F_GC10": "REFERENCE_RICHARDS_BINFINITY_NORMALIZED_BY_NATIVE_HEAD_BUDGET",
+    "F_CI44": "APPLICATION_ACCURACY_CONTRACT_CANONICALLY_ADMITTED_NO_NUMERIC_DEFAULT"
+  },
+  "F_ROM0TA1_evidence": {
+    "workflow_run": 35365703235,
+    "workflow_job": 105667526406,
+    "artifact_id": 10556023143,
+    "artifact_digest": "sha256:74e9a7b0d1f5c6509c288a2bce1c40d214539032505201e5e5c275ba35461b95",
+    "rows": 8,
+    "empirically_conservative_rows": 8,
+    "empirically_underestimating_rows": 0,
+    "B_inf_to_actual_head_ratio_range": [138.28806557544843, 3619.5196515225134]
+  },
+  "finding": "The existing model-certificate mechanism is suitable only after an independently governed native head-domain accuracy budget exists. ROM-0 must measure its Reference floor before its downstream error envelope is selected, so instantiating that budget from ROM-0 numerical evidence would be circular and would violate existing provenance governance.",
+  "required_successor": "REFERENCE_FLOOR_QUALIFICATION_CAPABILITY",
+  "successor_minimum_semantics": [
+    "QUALIFICATION_ONLY_NOT_APPLICATION_TEMPORAL_ACCEPTANCE",
+    "REFERENCE_RICHARDS_UNCHANGED",
+    "EXISTING_TRANSACTIONAL_STATE_OWNERSHIP",
+    "CONVERGED_AND_MASS_COMPLETE_STEPS_ONLY",
+    "PREREGISTERED_FIXED_TEMPORAL_RESOLUTION_LADDER",
+    "COMMON_PHYSICAL_HORIZONS",
+    "RESOLUTION_SPECIFIC_TRAJECTORIES_SEPARATE",
+    "NO_REJECTED_CANDIDATE_PROMOTION",
+    "REPLAY_AND_RESTART_QUALIFICATION",
+    "OUTPUT_SPECIFIC_REFERENCE_FLOOR",
+    "NO_IMPLICIT_PRODUCTION_TIMESTEP_POLICY"
+  ],
+  "preferred_design_direction": "INVESTIGATE_EXPLICIT_QUALIFICATION_ONLY_FIXED_RESOLUTION_TRANSACTION_MODE_FIRST",
+  "implementation_authorized": false,
+  "rom1a_authorized": false,
+  "production_source_mutation": "NONE",
+  "reference_source_mutation": "NONE",
+  "natural_boundary": "NEW_TRANSACTION_OR_REFERENCE_SERVICE_ARCHITECTURE_AUTHORITY_REQUIRED"
+}
