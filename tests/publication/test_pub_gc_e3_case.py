@@ -43,7 +43,7 @@ def emit(record:dict)->None:
 def finite(*values:float)->bool:
     return all(math.isfinite(float(v)) for v in values)
 
-def build_model(workdir:Path, href:float, window_day:float, k_m_per_day:float)->None:
+def build_model(workdir:Path, href:float, window_day:float, k_m_per_day:float, chd_offset_m:float)->None:
     sim=flopy.mf6.MFSimulation(sim_name="PUB_GC_E3",version="mf6",sim_ws=str(workdir))
     flopy.mf6.ModflowTdis(sim,time_units="DAYS",nper=1,perioddata=[(window_day,1,1.0)])
     flopy.mf6.ModflowIms(
@@ -62,18 +62,18 @@ def build_model(workdir:Path, href:float, window_day:float, k_m_per_day:float)->
     flopy.mf6.ModflowGwfchd(
         gwf,
         stress_period_data={0:[
-            ((0,0,0),href+0.002),
-            ((0,0,2),href-0.002),
+            ((0,0,0),href+chd_offset_m),
+            ((0,0,2),href-chd_offset_m),
         ]},
         pname="CHD_ENDS",
     )
     flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api")
     sim.write_simulation(silent=True)
 
-def make_session(libmf6:Path, publisher:Fgc34CtypesPublisher, href:float, window_day:float, k:float):
+def make_session(libmf6:Path, publisher:Fgc34CtypesPublisher, href:float, window_day:float, k:float, chd_offset_m:float):
     tmp=tempfile.TemporaryDirectory(prefix="pub-gc-e3-")
     workdir=Path(tmp.name)
-    build_model(workdir,href,window_day,k)
+    build_model(workdir,href,window_day,k,chd_offset_m)
     raw=XmiWrapper(lib_path=libmf6,working_directory=workdir)
     raw.initialize()
     if "6.8.0" not in raw.get_version():
@@ -93,10 +93,10 @@ def qgw_from_term(hcof:float,rhs:float,head:float)->float:
     return (hcof*head-rhs)/(AREA_M2*DAY_TO_S)
 
 def loose_run(libmf6:Path,publisher:Fgc34CtypesPublisher,swap:Fgc44RealSwap,
-              href:float,window_day:float,k:float,hcof:float,rhs:float,origin_state):
+              href:float,window_day:float,k:float,chd_offset_m:float,hcof:float,rhs:float,origin_state):
     tmp=raw=session=None
     try:
-        tmp,raw,session=make_session(libmf6,publisher,href,window_day,k)
+        tmp,raw,session=make_session(libmf6,publisher,href,window_day,k,chd_offset_m)
         binding=[Binding(7001,1,2)]
         term=Term(7001,hcof,rhs)
         final_it=None
@@ -147,10 +147,10 @@ def loose_run(libmf6:Path,publisher:Fgc34CtypesPublisher,swap:Fgc44RealSwap,
             tmp.cleanup()
 
 def iterative_run(libmf6:Path,publisher:Fgc34CtypesPublisher,swap:Fgc44RealSwap,
-                  href:float,window_day:float,k:float,hcof:float,rhs:float,origin_state):
+                  href:float,window_day:float,k:float,chd_offset_m:float,hcof:float,rhs:float,origin_state):
     tmp=raw=session=None
     try:
-        tmp,raw,session=make_session(libmf6,publisher,href,window_day,k)
+        tmp,raw,session=make_session(libmf6,publisher,href,window_day,k,chd_offset_m)
         binding=[Binding(7001,1,2)]
         current_hcof=hcof
         current_rhs=rhs
@@ -234,6 +234,7 @@ def main()->None:
     window_day=float(os.environ["E3_WINDOW_DAY"])
     qbot=float(os.environ["E3_QBOT_CM_PER_DAY"])
     k=float(os.environ["E3_K_M_PER_DAY"])
+    chd_offset_m=float(os.environ.get("E3_CHD_OFFSET_M","0.002"))
     libmf6=Path(os.environ["LIBMF6"]).resolve()
     swaplib=Path(os.environ["FGC44_SWAP_LIB"]).resolve()
 
@@ -241,6 +242,7 @@ def main()->None:
         "window_day":window_day,
         "predictor_qbot_cm_per_day":qbot,
         "k_m_per_day":k,
+        "chd_offset_m":chd_offset_m,
     }
 
     swap=Fgc44RealSwap(swaplib)
@@ -268,7 +270,7 @@ def main()->None:
         "predictor_reference_head_m":href,
     })
 
-    loose=loose_run(libmf6,publisher,swap,href,window_day,k,hcof,rhs,origin_state)
+    loose=loose_run(libmf6,publisher,swap,href,window_day,k,chd_offset_m,hcof,rhs,origin_state)
     record["loose"]=loose
     if loose["status"]!="OK":
         record["status"]=loose["status"]
@@ -278,7 +280,7 @@ def main()->None:
         emit(record)
         return
 
-    iterative=iterative_run(libmf6,publisher,swap,href,window_day,k,hcof,rhs,origin_state)
+    iterative=iterative_run(libmf6,publisher,swap,href,window_day,k,chd_offset_m,hcof,rhs,origin_state)
     record["iterative"]=iterative
     record["status"]=iterative["status"]
     record["failure_stage"]=iterative.get("failure_stage","")
@@ -289,6 +291,8 @@ def main()->None:
         qscale=max(abs(float(loose["q_swap_m_per_s"])),abs(float(loose["q_gw_m_per_s"])),1e-20)
         record["delta_h_iter_minus_loose_m"]=delta_h
         record["delta_qswap_iter_minus_loose_m_per_s"]=delta_q
+        record["delta_h_from_origin_loose_m"]=float(loose["head_m"])-href
+        record["delta_h_from_origin_iterative_m"]=float(iterative["head_m"])-href
         record["loose_relative_flux_mismatch"]=abs(float(loose["residual_m_per_s"]))/qscale
         if abs(float(iterative["residual_m_per_s"]))>FLUX_TOL:
             raise AssertionError("case labeled converged above flux tolerance")
