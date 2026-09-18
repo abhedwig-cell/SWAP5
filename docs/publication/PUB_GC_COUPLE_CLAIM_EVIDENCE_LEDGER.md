@@ -43,6 +43,7 @@ EXCLUDED_NOVELTY
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
 | GC-C13 | The same coupling ownership and mass-publication principles can scale to regional execution. | Framework scalability is common in environmental modelling; quantitative evidence required. | Architecture supports composition; F-GC40 gives response reduction | Multi-column live-MODFLOW experiment, scaling curve, deterministic mass closure. | PLANNED_EXPERIMENT |
 | GC-C14 | The integrated coupling contract is a transferable contribution beyond one SWAP5 implementation detail. | HydroCouple, MODFLOW API, SWAT+MODFLOW and ParFlow coupling papers show the publication precedent but raise the generalization burden. | Design documents and current implementation | Discussion must extract principles and demonstrate at least one non-trivial hydrological/operational regime beyond the first restricted case. | HYPOTHESIS |
+| GC-C15 | In an independently selected realistic Hupsel application, process-complete groundwater coupling can be bounded by application-owner admission before outer coupling is reached. | Component applicability limits are not novel by themselves; the claim is the observed placement of the boundary in the governed coupling contract. | E7 frozen selection; exact Hupsel SWCROP/SWDRA authority; PPA-WU01 O0/O2 active-root and active-drainage fail-closed qualification; E7 static gate. | No positive loose/strong Hupsel trajectory is required for this negative claim; manuscript must state that MODFLOW coupling did not execute. | SUPPORTED_RESTRICTED |
 
 ## Explicit non-novelty guard
 
@@ -139,11 +140,11 @@ practical supplied response
 
 using total equivalent SWAP work and failure/convergence domain.
 
-### Figure F7 — regional/scaling result
+### Figure F7 — realistic application-domain boundary
 
-Supports: GC-C12, C13.
+Supports: GC-C11, C15.
 
-Only include if the execution evidence is ready. Do not let this figure imply physical aggregation validity.
+Show the exact-Hupsel standalone authority, frozen day selection, authentic active crop/root and drainage requirements, PPA-WU01 fail-closed production-owner boundary and the preregistered stop before MODFLOW execution. It must not imply a successful Hupsel loose/strong comparison or regional validation.
 
 ## Manuscript stop rules
 
@@ -164,8 +165,8 @@ However:
 4. **E4 CLOSED — SUPPORTED_RESTRICTED.** The component-supplied `u_A` is identified as a finite-window flux-driven predictor response: it agrees with independent pure-bottom `u_FD`, is not universally interchangeable with head-driven `J_R`, and remains available in B5 where no symmetric local `J_R` is admitted.
 5. **E5 CLOSED — SUPPORTED_RESTRICTED.** Acceleration clearly outperforms plain fixed point near/above the fixed-point stability boundary, but the zero-cost J_R oracle provides only modest incremental value over cold secant and no observed convergence-domain extension. The quantitative gate for a warm-history E5b / standalone ACCELERATE continuation was not passed.
 6. **E6 CLOSED_NEGATIVE_WITH_BOUNDARIES.** Two preregistered stress routes were exhausted without a valid positive live-coupling case. The F-GC31 active-drainage predictor is valid but its smooth qbot projection is not an admitted prescribed-head corrector profile. The separate 20-case accepted-state/flux screen produced eight predictor-ready cases but zero cases with the required symmetric ±1e-4 m corrector domain; no E6-B candidate was admitted.
-7. **E7 STANDALONE_SELECTION_FROZEN / COUPLED_EXECUTION_PENDING.** M1-C3 and M1 are canonically closed. The preregistered standalone-only metric selected 2003-06-17 as the median-dynamics control and 2003-05-20 as the high-dynamics day before any coupled output. The uncalibrated F-GC44 conceptual MODFLOW fallback is frozen. Execute only the preregistered loose/strong comparison for these dates.
-8. E8 remains deferred until E7 supplies the realistic scientific core.
+7. **E7 CLOSED — REALISTIC_COMPONENT_DOMAIN_LIMIT.** The standalone-only metric selected 2003-06-17 and 2003-05-20 before coupled output. Exact Hupsel authority requires active crop/root and drainage composition. The production mode-5 groundwater owner dynamically fails closed for active root extraction and active drainage response at O0/O2. By the preregistered stop rule no F-GC49D context, MODFLOW timestep or interface-mass publication was executed. This is a component-domain result, not outer-coupling divergence.
+8. **E8 remains deferred and is not required for the current core claim set.** A future process-complete groundwater owner could motivate a new realistic loose/strong extension, but does not reopen E7.
 
 ## First publication evidence record
 
@@ -355,7 +356,7 @@ Prospective execution preregistration:
 
 `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`
 
-The E7 preregistration froze episode selection on standalone Hupsel water-balance dynamics before any coupled result. M1-C3 is now closed and the selected dates are durably frozen in `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`. The remaining E7 evidence is the coupled loose/strong execution only.
+The E7 preregistration froze episode selection on standalone Hupsel water-balance dynamics before any coupled result. The selected dates are durably frozen in `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`. E7 is closed by `PUB_GC_E7_RESULT.json` as `REALISTIC_COMPONENT_DOMAIN_LIMIT` after static application evidence and dynamic PPA-WU01 O0/O2 qualification showed that the authentic active root/drainage composition is outside the production prescribed-head groundwater-owner profile. No synthetic loose/strong substitute was executed.
 
 ## Manuscript consolidation
 
@@ -379,3 +380,12 @@ Standalone selection result:
 Machine-readable selection:
 
 `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`
+
+
+E7 consolidated result:
+
+`PUB_GC_E7_RESULT.md`
+
+Machine-readable E7 result:
+
+`PUB_GC_E7_RESULT.json`
