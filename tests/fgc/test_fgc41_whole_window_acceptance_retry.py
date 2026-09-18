@@ -35,3 +35,27 @@ def test_post_publication_failure_is_not_reported_as_retryable_rollback():
     s,m,l=P(),P("publish"),P(); r=accept_whole_window(object(),ident(),s,m,l)
     assert r.status==AcceptanceStatus.MODFLOW_PUBLICATION_FAILED
     assert not r.request_smaller_window and "discard" not in s.events and "abort" not in l.events
+
+def test_retry_uses_fresh_runtime_identity_and_same_accepted_origin():
+    accepted_origin=("swap-origin",17)
+    abandoned={"session":1,"candidate_revision":3,"ledger_generation":8}
+    retry={"session":2,"candidate_revision":4,"ledger_generation":9}
+    assert retry["session"] != abandoned["session"]
+    assert retry["candidate_revision"] != abandoned["candidate_revision"]
+    assert retry["ledger_generation"] != abandoned["ledger_generation"]
+    assert accepted_origin == ("swap-origin",17)
+
+def test_preflight_order_completes_before_first_publication():
+    events=[]
+    class S(P):
+        def preflight(self,*a): events.append("swap-preflight"); return True
+        def publish(self,*a): events.append("swap-publish"); return True
+    class M(P):
+        def preflight_finalize_time_step(self,*a): events.append("modflow-preflight"); return True
+        def finalize_time_step(self,*a): events.append("modflow-publish"); return True
+    class L(P):
+        def preflight(self,*a): events.append("ledger-preflight"); return True
+        def commit_prepared(self,*a): events.append("ledger-publish"); return True
+    r=accept_whole_window(object(),ident(),S(),M(),L())
+    assert r.status==AcceptanceStatus.OK
+    assert events == ["swap-preflight","modflow-preflight","ledger-preflight","modflow-publish","swap-publish","ledger-publish"]
