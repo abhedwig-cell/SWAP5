@@ -62,14 +62,14 @@ contains
     type(fmr_template_t) :: templates(1)
     type(fmr_committed_restart_bundle_t) :: bundle
     real(real64) :: h0,k0,qeq,qtop,t0,t1
-    real(real64) :: continuous_h(numnod,restart_split+1:perturb_intervals)
-    real(real64) :: continuous_theta(numnod,restart_split+1:perturb_intervals)
-    real(real64) :: continuous_pond(restart_split+1:perturb_intervals)
-    real(real64) :: continuous_gwl(restart_split+1:perturb_intervals)
-    real(real64) :: continuous_mass(restart_split+1:perturb_intervals)
-    real(real64) :: continuous_time(restart_split:perturb_intervals)
-    integer(int64) :: continuous_revision(restart_split:perturb_intervals)
-    integer(int64) :: continuous_lineage(restart_split:perturb_intervals)
+    real(real64) :: continuous_h(numnod,perturb_intervals)
+    real(real64) :: continuous_theta(numnod,perturb_intervals)
+    real(real64) :: continuous_pond(perturb_intervals)
+    real(real64) :: continuous_gwl(perturb_intervals)
+    real(real64) :: continuous_mass(perturb_intervals)
+    real(real64) :: continuous_time(perturb_intervals)
+    integer(int64) :: continuous_revision(perturb_intervals)
+    integer(int64) :: continuous_lineage(perturb_intervals)
     integer :: i,status
     logical :: ok,exported,restored
     real(real64) :: restored_time
@@ -135,9 +135,9 @@ contains
     call require(split_states(1)%current_revision()==continuous_revision(restart_split),'split revision identity')
     call split_states(1)%current_time(restored_time,time_available)
     call require(time_available.and.same_bits(restored_time,continuous_time(restart_split)),'split time bit identity')
-    call compare_committed_to_reference(split_states(1),continuous_h(:,restart_split+1-1), &
-         continuous_theta(:,restart_split+1-1),continuous_pond(restart_split+1-1), &
-         continuous_gwl(restart_split+1-1),'split endpoint state identity')
+    call compare_committed_to_reference(split_states(1),continuous_h(:,restart_split), &
+         continuous_theta(:,restart_split),continuous_pond(restart_split), &
+         continuous_gwl(restart_split),'split endpoint state identity')
 
     call fmr_export_committed_restart(columns,templates,split_states,parameter_set_identity,bundle,exported,status)
     call require(exported.and.status==FMR_RESTART_OK,'restart export')
