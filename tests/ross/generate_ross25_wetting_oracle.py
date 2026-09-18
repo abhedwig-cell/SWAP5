@@ -313,7 +313,8 @@ def main():
     fingerprints = json.loads(a.fingerprint_authority.read_text())
     if contract["work_unit"] != "F-ROSS25":
         raise SystemExit("unexpected F-ROSS25 contract")
-    if a.material not in contract["qualification_domain"]["materials"]:
+    materials = [f"B{i:02d}" for i in range(1,19)] + [f"O{i:02d}" for i in range(1,19)]
+    if a.material not in materials:
         raise SystemExit(f"material outside F-ROSS25 domain: {a.material}")
 
     gate_f, _d3r = import_research(a.research_root.resolve())
@@ -377,7 +378,7 @@ def main():
         "work_unit": "F-ROSS25",
         "gate": "TIERED_WETTING_SEAM_MATERIAL_QUALIFICATION",
         "material": a.material,
-        "research_head": contract["pinned_research_authority"]["head"],
+        "research_head": contract["independent_reference"]["research_head"],
         "generated_table_fingerprint": generated_fingerprint,
         "expected_table_fingerprint": expected_fingerprint,
         "table_fingerprint_matches_authority": fingerprint_match,
