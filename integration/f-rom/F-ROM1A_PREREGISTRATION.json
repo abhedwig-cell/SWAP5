@@ -1,0 +1,182 @@
+{
+  "schema": "swap5.f-rom1a.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A",
+  "title": "Reachable-state library and discovery/holdout split",
+  "phase": "PREREGISTERED_BEFORE_REACHABLE_STATE_GENERATION",
+  "predecessor": {
+    "work_unit": "ROM-0",
+    "decision": "PROCEED_TO_ROM1A",
+    "current_closeout": "integration/f-rom/F-ROM0_SUCCESSOR_CLOSEOUT.json"
+  },
+  "purpose": "Generate a governed accepted-state library for later predictive-state ambiguity tests without selecting a reduced coordinate, fitting a basis, introducing memory state, or fitting closure dynamics.",
+  "capability": {
+    "scope": "PURE_ONE_COLUMN_SOIL_WATER_HYDRAULICS",
+    "primary_outputs": [
+      "accepted_total_water_storage",
+      "accepted_fixed_upper_0_40cm_storage",
+      "accepted_fixed_lower_40_160cm_storage",
+      "accepted_top_exchange",
+      "accepted_bottom_exchange",
+      "accepted_water_balance_diagnostics"
+    ],
+    "diagnostic_full_order_fields": [
+      "pressure_head_profile",
+      "water_content_profile"
+    ]
+  },
+  "reference_authority": {
+    "sample_ownership": "F-ROM0TA3_FKT_REFERENCE_FLOOR_SAMPLE_CANDIDATE_COMMIT",
+    "mode5_binding": "F-ROM0TA5_PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED",
+    "lower_boundary_policy": "ROM-0R-R3D4_ORIGINAL_FIRST_FAIL_CLOSED_TOTAL_ONLY_REATTEMPT",
+    "observation_step_day": 0.0008,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "production_fallback_admitted": false
+  },
+  "materials": {
+    "discovery_and_within_material_holdout": "B01",
+    "material_transfer_challenge": "B14",
+    "B14_visibility_rule": "B14 trajectory/probe outcomes are not used to select, enrich or reject any candidate reduced coordinate before the ROM-1X transfer gate.",
+    "new_material_substitution_allowed": false
+  },
+  "initial_anchor": {
+    "effective_saturation": 0.85,
+    "construction": "R1_GRAVITY_CONSISTENT_STEADY_SEED",
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "top_flux": "qeq=-K(h0)",
+    "bottom_mode": 2,
+    "bottom_flux": "qeq=-K(h0)"
+  },
+  "forcing_alphabet": {
+    "HOLD": {
+      "top_flux": "qeq",
+      "bottom_mode": 2,
+      "bottom_flux": "qeq"
+    },
+    "TOP_PLUS": {
+      "top_flux": "qeq + 0.01*K0",
+      "bottom_mode": 2,
+      "bottom_flux": "qeq"
+    },
+    "TOP_MINUS": {
+      "top_flux": "qeq - 0.01*K0",
+      "bottom_mode": 2,
+      "bottom_flux": "qeq"
+    },
+    "BOTTOM_HEAD_RISE": {
+      "top_flux": "qeq",
+      "bottom_mode": 5,
+      "bottom_head": "0.75*h0"
+    },
+    "BOTTOM_HEAD_FALL": {
+      "top_flux": "qeq",
+      "bottom_mode": 5,
+      "bottom_head": "1.25*h0"
+    },
+    "COMBINED_RISE_PLUS": {
+      "top_flux": "qeq + 0.01*K0",
+      "bottom_mode": 5,
+      "bottom_head": "0.75*h0"
+    },
+    "COMBINED_FALL_MINUS": {
+      "top_flux": "qeq - 0.01*K0",
+      "bottom_mode": 5,
+      "bottom_head": "1.25*h0"
+    },
+    "amplitude_provenance": "Only ROM-0/TA3/R3 pre-result amplitudes; no ROM-1 outcome-tuned amplitude is introduced."
+  },
+  "history_design": {
+    "step_day": 0.0008,
+    "history_length_steps": 64,
+    "history_horizon_day": 0.0512,
+    "discovery_histories": [
+      {"id":"D01","segments":[["TOP_PLUS",64]]},
+      {"id":"D02","segments":[["TOP_MINUS",64]]},
+      {"id":"D03","segments":[["BOTTOM_HEAD_RISE",64]]},
+      {"id":"D04","segments":[["BOTTOM_HEAD_FALL",64]]},
+      {"id":"D05","segments":[["TOP_PLUS",32],["TOP_MINUS",32]]},
+      {"id":"D06","segments":[["BOTTOM_HEAD_RISE",32],["BOTTOM_HEAD_FALL",32]]},
+      {"id":"D07","segments":[["TOP_PLUS",16],["BOTTOM_HEAD_RISE",16],["TOP_MINUS",16],["BOTTOM_HEAD_FALL",16]]},
+      {"id":"D08","segments":[["BOTTOM_HEAD_FALL",16],["TOP_PLUS",16],["BOTTOM_HEAD_RISE",16],["TOP_MINUS",16]]}
+    ],
+    "held_out_histories": [
+      {"id":"H01","segments":[["TOP_MINUS",8],["TOP_PLUS",24],["TOP_MINUS",32]]},
+      {"id":"H02","segments":[["BOTTOM_HEAD_FALL",24],["BOTTOM_HEAD_RISE",40]]},
+      {"id":"H03","segments":[["HOLD",8],["BOTTOM_HEAD_RISE",16],["TOP_MINUS",16],["BOTTOM_HEAD_FALL",16],["TOP_PLUS",8]]},
+      {"id":"H04","segments":[["COMBINED_RISE_PLUS",32],["COMBINED_FALL_MINUS",32]]}
+    ],
+    "history_outcomes_used_for_coordinate_selection": "D01-D08 only",
+    "held_out_outcomes_used_for_coordinate_selection": false
+  },
+  "future_probe_design_for_ROM1B": {
+    "probe_horizons_steps": [4,16,64],
+    "probe_horizons_day": [0.0032,0.0128,0.0512],
+    "discovery_probes": ["HOLD","TOP_PLUS","BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "held_out_probes": [
+      "TOP_MINUS",
+      "BOTTOM_HEAD_RISE_THEN_BOTTOM_HEAD_FALL",
+      "COMBINED_RISE_PLUS_THEN_COMBINED_FALL_MINUS"
+    ],
+    "rule": "Candidate starting-state pairs receive identical future probes. Probe outcomes are not generated in ROM-1A except for library qualification controls.",
+    "probe_change_after_collision_inspection_allowed": false
+  },
+  "data_schema": {
+    "per_state": [
+      "split_id",
+      "history_id",
+      "material_id",
+      "accepted_step_index",
+      "committed_time_day",
+      "committed_revision",
+      "active_boundary_symbol",
+      "pressure_head_profile_cm",
+      "water_content_profile",
+      "total_storage_cm",
+      "upper_0_40cm_storage_cm",
+      "lower_40_160cm_storage_cm",
+      "accepted_top_exchange_cm",
+      "accepted_bottom_outward_exchange_cm",
+      "terminal_bottom_flux_cm_per_day",
+      "step_mass_residual_cm",
+      "nonlinear_iterations",
+      "backtracking_attempts",
+      "fallback_used",
+      "reference_policy_id"
+    ],
+    "full_profile_payload_role": "scientific diagnostic and future candidate projection source",
+    "repository_persistence": "manifest, schema, hashes and summaries",
+    "large_payload_persistence": "CI artifact"
+  },
+  "qualification": [
+    "12_B01_HISTORIES_COMPLETE_64_ACCEPTED_STEPS",
+    "768_ACCEPTED_B01_LIBRARY_STATES",
+    "DISCOVERY_COUNT_512",
+    "HELD_OUT_COUNT_256",
+    "EVERY_RETAINED_STATE_FROM_FKT_COMMIT_AUTHORITY",
+    "EVERY_COMMITTED_STEP_ONE_PHYSICAL_ADVANCE",
+    "NO_DT_SUBDIVISION",
+    "HARD_MASS_GATE_EVERY_STEP",
+    "FAILED_FIRST_ATTEMPT_NEVER_MUTATES_COMMITTED_STATE",
+    "FALLBACK_ONLY_UNDER_R3D4_TOTAL_ONLY_RULE",
+    "COMMITTED_TIME_AND_REVISION_MONOTONIC_EXACT",
+    "ALL_PRIMARY_OUTPUTS_FINITE",
+    "FULL_PROFILES_FINITE",
+    "O0_O2_OR_REPEAT_DETERMINISM_FOR_LIBRARY_MANIFEST"
+  ],
+  "scientific_firewalls": [
+    "NO_REDUCED_COORDINATE_SELECTION_IN_ROM1A",
+    "NO_POD_OR_MODAL_BASIS_FIT",
+    "NO_MEMORY_VARIABLE_SELECTION",
+    "NO_CLOSURE_MODEL_FIT",
+    "NO_B14_OUTCOME_INSPECTION_FOR_STATE_DESIGN",
+    "NO_HELD_OUT_HISTORY_USE_FOR_COORDINATE_ENRICHMENT",
+    "NO_POST_RESULT_HISTORY_OR_PROBE_RETUNING",
+    "NO_ROM_ACCURACY_THRESHOLD_DERIVED_FROM_LIBRARY",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "positive_decision": "ROM1A_REACHABLE_STATE_LIBRARY_QUALIFIED",
+  "negative_decision": "ROM1A_REACHABLE_STATE_LIBRARY_NO_GO",
+  "if_positive": "Proceed to ROM-1B predictive ambiguity tests using only preregistered discovery histories for coordinate proposal and preserve held-out histories/probes and B14 for their declared later gates.",
+  "production_solver_authorized": false
+}
