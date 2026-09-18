@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC49",
+  "stage": "A",
+  "title": "Generic groundwater application orchestration — application-plan materialization",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY_A",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "base": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e"
+  },
+  "source": {
+    "branch": "work/f-gc49a-application-plan-materialization"
+  },
+  "prerequisite": {
+    "capability": "F-GC48",
+    "state": "CLOSED_CANONICAL_ADMITTED_GENERIC_GROUNDWATER_TOPOLOGY",
+    "head": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e"
+  },
+  "goal": "Materialize one immutable generic per-window application plan from admitted F-GC48 topology, tile predictor responses and cell areas, reusing F-GC40/F-GC33/F-GC34 without solver or transaction ownership.",
+  "production_mutations": [
+    "src/runtime/mod_groundwater_application_plan.f90"
+  ],
+  "implemented": [
+    "tile predictor inputs keyed by topology tile id",
+    "explicit cell-area inputs keyed by groundwater cell id",
+    "predictor SWAP/coupling/service/groundwater-lineage validation against F-GC48 topology",
+    "single common coupling-window validation",
+    "single groundwater-service validation for one prepared-solve plan",
+    "compensated area-weighted predictor reference head per cell",
+    "delegation to admitted F-GC40 cell response",
+    "delegation to admitted F-GC33 linear term",
+    "reuse of admitted F-GC48/F-GC34 API bindings",
+    "canonical contiguous tile ranges per cell",
+    "copy-only immutable plan outputs"
+  ],
+  "owner_qualification": [
+    "F-GC44 one-to-one plan regression",
+    "F-GC45 N-to-one plan regression",
+    "F-GC46 multi-cell plan regression",
+    "F-GC47 mixed plan regression",
+    "input-order invariance",
+    "fail-closed provenance/window/service/area matrix",
+    "O0/O2 output identity",
+    "source guard: no solver/transaction/publication ownership"
+  ],
+  "independent_qualification": {
+    "work_unit": "F-VQ121",
+    "claim": "Plan outputs equal direct F-GC40/F-GC33 composition and publish through F-GC34 with identical slot/node/term values."
+  },
+  "exclusions": [
+    "production participant ABI",
+    "live MODFLOW coupling loop",
+    "predictor/corrector redesign",
+    "new transaction owner",
+    "new groundwater physics",
+    "physics-envelope expansion",
+    "heterogeneous N:1 transferability policy"
+  ],
+  "admission_criteria": [
+    "exact-head F-GC49A owner O0/O2 qualification green",
+    "exact-head F-VQ121 independent O0/O2 qualification green",
+    "canonical delta reconciled with no dependency conflict",
+    "PR mergeable",
+    "production delta limited to application-plan materializer"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING",
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ121 evidence, repair only scoped failures, then admit/close stage A. Only after stage A closes may F-GC49B production participant bridge implementation begin."
+}
