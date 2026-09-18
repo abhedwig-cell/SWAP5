@@ -2,7 +2,7 @@
 
 Date: 2026-09-18
 
-Status: `DEPENDENCY_GRAPH_FROZEN / IMPLEMENTATION_HELD`
+Status: `DEPENDENCY_GRAPH_FROZEN_CLOSED / IMPLEMENTATION_HELD`
 
 Canonical reconcile base: `integration/f-ci-canonical@ff56b8c1565821cf1d23f980e754905d8920371e`.
 
@@ -401,3 +401,21 @@ PPA-WU05 does not admit macropore, frost or advanced root-stress physics. It
 turns a broad “advanced water processes” backlog into independently owned,
 dependency-aware migration slices and selects a first bounded target without
 overstating current production capability.
+
+
+## Qualification and closeout
+
+PPA-WU05 triage qualification completed successfully:
+
+- workflow run `35379433308`;
+- authority job `105711822191`: PASS;
+- independent job `105711886766`: PASS;
+- production `src/` delta: none;
+- reference delta: none.
+
+The workunit is closed as dependency/sequencing authority only. It does not
+admit any of the advanced-water process families to production.
+
+The selected first bounded follow-on target is
+**PPA-WU05-A Macropore committed-state and transaction foundation**. That
+follow-on must remain separate from full macropore flow admission.
