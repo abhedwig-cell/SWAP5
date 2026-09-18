@@ -213,6 +213,10 @@ def run_case(
 
             final_term = response_sequence[-1]
             converged = False
+            stabilized = False
+            stabilization_tolerance_m = 5.0e-13
+            previous_final_head: np.ndarray | None = None
+            final_stabilization_delta = math.inf
             for _ in range(100):
                 status, iteration = session.publish_and_solve_iteration(
                     bindings, [final_term]
@@ -226,10 +230,25 @@ def run_case(
                     "XOLD drifted while final response was held",
                 )
                 heads.append(iteration.head_m)
-                if iteration.modflow_converged:
-                    converged = True
-                    break
-            require(converged, "MODFLOW did not converge under final response")
+                converged = converged or iteration.modflow_converged
+                if previous_final_head is not None:
+                    final_stabilization_delta = float(
+                        np.max(np.abs(iteration.head_m - previous_final_head))
+                    )
+                    if converged and final_stabilization_delta <= stabilization_tolerance_m:
+                        stabilized = True
+                        break
+                previous_final_head = iteration.head_m.copy()
+            require(converged, "MODFLOW did not report convergence under final response")
+            require(
+                stabilized,
+                "final response did not stabilize after MODFLOW convergence; "
+                f"last head delta={final_stabilization_delta:.17g}",
+            )
+            print(
+                "FGC38_FINAL_RESPONSE_STABILIZATION_DELTA="
+                f"{final_stabilization_delta:.17g}"
+            )
 
             status = session.finalize_prepared_solve()
             require(status == PreparedSolveStatus.OK, session.last_error)
@@ -318,8 +337,8 @@ def main() -> None:
     require_allclose(
         iterative_head,
         clean_head,
-        2.0e-10,
-        "A->B->C path does not close to clean C-only converged solution",
+        2.0e-12,
+        "A->B->C path does not close to clean C-only stabilized solution",
     )
 
     require(
