@@ -1,0 +1,29 @@
+name: F-VQ107 F-GC33 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq107-fgc33-linear-response-independent
+    paths:
+      - 'tests/fvq/test_fvq107_fgc33_independent.f90'
+      - 'tests/fvq/run_fvq107_fgc33_independent.sh'
+      - 'qualification/F-VQ107_STATUS.json'
+      - '.github/workflows/f-vq107-fgc33-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Independent F-GC33 qualification
+        run: bash tests/fvq/run_fvq107_fgc33_independent.sh

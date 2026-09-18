@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ107",
+  "capability": "F-GC33",
+  "title": "Independent MODFLOW6 Linear Response Backend Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "owner": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend-reconciled",
+    "checkpoint_head": "3d01e4301ef0613b8e5440b1f74b0b9b62123f3d",
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "exact_head_run": 35292855536,
+    "exact_head_job": 105439233696,
+    "exact_head_conclusion": "success"
+  },
+  "independence": {
+    "verifier_branch": "qualification/f-vq107-fgc33-linear-response-independent",
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "oracle": "manual typed F-GC40 cell response; direct HCOF/RHS coefficient algebra; four-head direct volume-flux oracle; equivalent-reference invariance; area/sign; negative inputs"
+  },
+  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC33 admission postimage."
+}
