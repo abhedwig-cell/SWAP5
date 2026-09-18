@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.f-rom0.closeout.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "title": "Accepted Full-Order Authority closeout",
+  "decision": "NO_GO_REFERENCE_AUTHORITY",
+  "scope": "PREREGISTERED_TWO_MATERIAL_B01_B14_ROM_P_PURE_HYDRAULICS_DOMAIN",
+  "basis": {
+    "Q0_1_ownership": "PASS_WITH_RESEARCH_REFERENCE_FLOOR_SAMPLE_SCOPE",
+    "Q0_2_reproducibility": "PASS_FOR_RETAINED_0_0008_REFERENCE_CANDIDATE",
+    "Q0_3_conservation": "PASS_FOR_RETAINED_ACCEPTED_SAMPLES",
+    "Q0_4_bidirectional_reachability": "FAIL_FOR_DECLARED_TWO_MATERIAL_DOMAIN",
+    "Q0_5_reference_floor": "INCOMPLETE_AND_BLOCKED_BY_Q0_4_NO_GO",
+    "Q0_6_non_mutation": "PASS_WITH_RESEARCH_ONLY_TA5_SAMPLE_ADMISSION_EXTENSION"
+  },
+  "evidence_chain": [
+    "F-ROM0 initial laboratory -> EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
+    "ROM-0R-R1 -> gravity-consistent accepted B01/B14 steady seeds",
+    "ROM-0R-R2 -> canonical temporal authority bottleneck isolated",
+    "F-ROM0TA1 -> local temporal indicator empirically conservative but non-tight",
+    "F-ROM0TA2 -> application head-budget route rejected as circular for Reference-floor construction",
+    "F-ROM0TA3 -> fixed-resolution Reference-floor sample capability qualified; 0.0016/0.0008 trajectories retained; 0.0004 no-go retained",
+    "F-ROM0TA4 -> 0.0008 refined candidate restart/replay qualified bit-identically",
+    "F-ROM0TA5 -> prescribed-head Reference-floor sample binding qualified",
+    "ROM-0R-R3 -> B14 pressure-head rise/fall full-horizon pass; B01 rise/fall genuine Reference retry-advised no-go under frozen controls"
+  ],
+  "r3": {
+    "decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "B01_bottom_head_rise": "FAIL_REFERENCE_RETRY_ADVISED_STEP_11",
+    "B01_bottom_head_fall": "FAIL_REFERENCE_RETRY_ADVISED_STEP_10",
+    "B14_bottom_head_rise": "PASS_FULL_HORIZON",
+    "B14_bottom_head_fall": "PASS_FULL_HORIZON",
+    "B14_directional_separation": "PASS",
+    "post_result_retuning_allowed": false
+  },
+  "reference_floor": {
+    "temporal_component_0_0016_vs_0_0008": "MEASURED_ON_LOCAL_TOP_FLUX_DOMAIN",
+    "failed_0_0004_level": "RETAINED_FAILED_EVIDENCE",
+    "vertical_16x10_vs_32x5": "NOT_EXECUTED_BECAUSE_R3_NEXT_IF_QUALIFIED_PREREQUISITE_FAILED",
+    "complete_for_ROM1_claims": false
+  },
+  "why_not_expand_again": [
+    "R3 forbids post-result bottom-head amplitude tuning, dt tuning, iteration/backtracking relaxation, automatic transaction retry and material substitution.",
+    "The ROM-0 material challenge requires at least two contrasting fixtures selected independently of reduction favourability.",
+    "A B14-only envelope would therefore be a new scientific scope, not completion of the current preregistration.",
+    "An alternative independently qualified Reference numerical policy would also be a new authority decision rather than a repair inside ROM-0."
+  ],
+  "rom1a_authorized": false,
+  "vertical_reference_floor_execution_authorized": false,
+  "production_reduced_solver_authorized": false,
+  "production_application_admission_from_ROM": false,
+  "valid_future_options_requiring_new_authority": [
+    "NEW_MATERIAL_OR_APPLICATION_ENVELOPE_PROPOSITION",
+    "B14_ONLY_OR_OTHER_NARROW_DOMAIN_RESEARCH_PROPOSITION",
+    "INDEPENDENTLY_QUALIFIED_ALTERNATIVE_REFERENCE_NUMERICAL_POLICY",
+    "CLOSE_ROM_TRACK_WITH_NEGATIVE_REFERENCE_AUTHORITY_RESULT"
+  ]
+}
