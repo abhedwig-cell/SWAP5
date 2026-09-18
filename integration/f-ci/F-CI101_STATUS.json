@@ -5,7 +5,7 @@
   "title": "MODFLOW6 Typed API Binding Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_F_GC34",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "0372b44157747dc90fa690810f57e373e670373b",
@@ -53,7 +53,7 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Qualify this metadata-only F-GC34 admission/closeout head with F-CI101. If green, persist final closeout-gate evidence, requalify the final status head, then non-force fast-forward canonical to the closed metadata state.",
+  "next_permitted_action": "Qualify this exact final closeout status head. If green and canonical is still the admitted production ancestor, non-force fast-forward canonical to this closed metadata state. Then proceed to a separate current-canonical XMI pointer/timing adapter workunit.",
   "admission_gate": {
     "qualified_head": "9dcbcc284e823f00421c2858223ee57511d472e6",
     "workflow_run": 35293855850,
@@ -77,5 +77,11 @@
     "exact_status_head_run": 35293917435,
     "exact_status_head_job": 105442385771,
     "exact_status_head_conclusion": "success"
+  },
+  "closeout_gate": {
+    "qualified_head": "0c966a2a54cf0ddf072e5a49657e9e8a66a04a9b",
+    "workflow_run": 35294050700,
+    "workflow_job": 105442778535,
+    "conclusion": "success"
   }
 }

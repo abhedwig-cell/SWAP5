@@ -4,7 +4,7 @@
   "title": "MODFLOW6 Typed API Binding — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_TYPED_API_BINDING",
   "canonical_admission": {
     "production_admission_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
     "preimage": "0372b44157747dc90fa690810f57e373e670373b",
@@ -49,5 +49,11 @@
     "no SWAP commit ownership",
     "no Ribasim or irrigation"
   ],
-  "next_permitted_action": "After closeout qualification, proceed to a separate current-canonical XMI pointer/timing adapter workunit. Do not reopen F-GC34 to take MODFLOW solve orchestration ownership."
+  "next_permitted_action": "Proceed to a separately bounded current-canonical XMI pointer/timing adapter workunit. Preserve F-GC34 production blob 780ed4bf3a8bdf067db40f4aedd800832144eca6 and do not add MODFLOW solve-lifecycle ownership to this capability.",
+  "closeout_qualification": {
+    "metadata_head": "0c966a2a54cf0ddf072e5a49657e9e8a66a04a9b",
+    "workflow_run": 35294050700,
+    "workflow_job": 105442778535,
+    "conclusion": "success"
+  }
 }
