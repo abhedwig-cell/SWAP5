@@ -1,0 +1,175 @@
+{
+  "schema": "swap5.publication.p2e17-top-boundary-primary-result.v1",
+  "workunit": "PUB-P2E17",
+  "publication_owner": "PUB-SQ",
+  "phase": "QUALIFIED_SHARP_UPPER_TOP_BOUNDARY_PRIMARY",
+  "preregistration": {
+    "blob": "144d089dc7e174cdf0273f1acdc613663e380cd9",
+    "phase": "PREREGISTERED_BEFORE_TOP_BOUNDARY_ROSSFAST_EXECUTION"
+  },
+  "parent_reference_authority": {
+    "p2e16_result_blob": "3a338f7d4db6206be25deed1819195dc9d5486be",
+    "verdict": "QUALIFIED_REFERENCE_ONLY_TOP_BOUNDARY_THRESHOLD_SURFACE"
+  },
+  "execution": {
+    "head": "00fd77bf9a335fb1b458d203e9ea2a868b5eafc0",
+    "workflow_run": 35291155719,
+    "job": 105434062781,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "raw_case_records": 648,
+    "unique_case_count": 324,
+    "every_case_exactly_twice_and_scientifically_identical": true,
+    "O0_O2_output_sha256": "554bbdb7b6b215e92871b87e26dbc8e1443311f9f26d1f251cb8a1b31c4594c5"
+  },
+  "authorities": {
+    "test_blob": "9e02f74b8e0b65060e28b760d1e635ab88acf95c",
+    "runner_blob": "f50d53b1f8a6667431505092cc4409792a5447b5",
+    "workflow_blob": "2e3609f181bb41952ca164b8efe387cba22a9aff"
+  },
+  "matrix": {
+    "material_count": 36,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "boundary_labels": {
+      "INSIDE": {
+        "request_top_flux_over_initial_K0": 0.009,
+        "cases": 108
+      },
+      "BOUNDARY": {
+        "request_top_flux_over_initial_K0": 0.01,
+        "cases": 108
+      },
+      "OUTSIDE": {
+        "request_top_flux_over_initial_K0": 0.011,
+        "cases": 108
+      }
+    },
+    "bottom_flux_over_initial_K0": -0.004,
+    "fixed_step_duration_day": 0.0016,
+    "layer": "A_FIXED_INTERVAL_SOLVER_SEAM"
+  },
+  "classification": {
+    "PAIRED_VALID_ADMISSIBLE": 216,
+    "PAIRED_VALID_DISCREPANCY_FAIL": 0,
+    "REFERENCE_ROUTE_INVALID": 0,
+    "ROSSFAST_ROUTE_INVALID": 108,
+    "BOTH_ROUTES_INVALID": 0,
+    "route_expectation_match": 324,
+    "route_expectation_mismatch": 0
+  },
+  "classification_by_label": {
+    "INSIDE": {
+      "admissible": 108,
+      "discrepancy_fail": 0,
+      "reference_invalid": 0,
+      "rossfast_invalid": 0,
+      "both_invalid": 0
+    },
+    "BOUNDARY": {
+      "admissible": 108,
+      "discrepancy_fail": 0,
+      "reference_invalid": 0,
+      "rossfast_invalid": 0,
+      "both_invalid": 0
+    },
+    "OUTSIDE": {
+      "admissible": 0,
+      "discrepancy_fail": 0,
+      "reference_invalid": 0,
+      "rossfast_invalid": 108,
+      "both_invalid": 0
+    }
+  },
+  "maximum_fraction_of_frozen_boundary_threshold": {
+    "D_h_inf": {
+      "ratio": 0.19742706476083827,
+      "case": 112,
+      "material": "B13",
+      "Se": 0.85,
+      "label": "INSIDE",
+      "value_cm": 0.01122257226283807,
+      "threshold_cm": 0.05684414280500505
+    },
+    "D_h_rms": {
+      "ratio": 0.21902844457885962,
+      "case": 113,
+      "material": "B13",
+      "Se": 0.85,
+      "label": "BOUNDARY",
+      "value_cm": 0.005059588324863339,
+      "threshold_cm": 0.023100142698779337
+    },
+    "D_theta_inf": {
+      "ratio": 0.24775809956130584,
+      "case": 43,
+      "material": "B05",
+      "Se": 0.96,
+      "label": "INSIDE",
+      "value": 0.00030410164202615553,
+      "threshold": 0.0012274135237742567
+    },
+    "D_theta_rms": {
+      "ratio": 0.28466246477175494,
+      "case": 44,
+      "material": "B05",
+      "Se": 0.96,
+      "label": "BOUNDARY",
+      "value": 0.00010176579263756339,
+      "threshold": 0.00035749635175526273
+    },
+    "D_storage_abs_cm": {
+      "ratio": 1,
+      "case": 10,
+      "material": "B02",
+      "Se": 0.65,
+      "label": "INSIDE",
+      "value_cm": 1.4210854715202004e-14,
+      "threshold_cm": 1.4210854715202004e-14,
+      "note": "Inclusive-boundary pass at floating-point storage precision scale."
+    }
+  },
+  "mass": {
+    "maximum_absolute_reference_integrated_residual_cm": {
+      "case": 21,
+      "value": 1.5943697750930853e-15
+    },
+    "maximum_absolute_rossfast_integrated_residual_cm_among_route_valid_cases": {
+      "case": 302,
+      "value": -4.8269770215183063e-14
+    },
+    "hard_limit_cm_each_route": 1e-12,
+    "route_valid_cases_pass": true,
+    "outside_rossfast_mass_unavailable_all_108": true
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "For the tested request-side upper top-flux boundary, the production admission boundary is sharp at the preregistered resolution: all 108 just-inside and all 108 exact-boundary cases are route-valid and scientifically admissible, while all 108 just-outside cases fail closed.",
+      "No route-valid inside or exact-boundary case exceeds any candidate-independent P2E16 discrepancy threshold."
+    ],
+    "margin_note": "For non-storage state metrics, the largest observed candidate discrepancy uses less than 29% of the frozen boundary-experiment Reference envelope.",
+    "nonclaims": [
+      "This does not qualify the lower request-side top-flux boundary.",
+      "This does not qualify the bottom-flux boundary.",
+      "This does not qualify dynamic groundwater or prescribed-head boundaries.",
+      "This does not establish transaction-controller equivalence.",
+      "This does not establish long-horizon trajectory equivalence.",
+      "This does not establish a performance or speed advantage.",
+      "The P2E16 threshold surface is a candidate-blind boundary-experiment numerical envelope, not a universal physical error tolerance."
+    ]
+  },
+  "firewalls": {
+    "thresholds_retuned": false,
+    "boundary_moved": false,
+    "fallback_used": false,
+    "transaction_level_pair_executed": false,
+    "performance_claim_evaluated": false,
+    "production_or_reference_source_changed": false
+  },
+  "verdict": "QUALIFIED_SHARP_UPPER_TOP_FLUX_BOUNDARY_216_ADMISSIBLE_108_FAIL_CLOSED",
+  "next_permitted_action": "Advance PUB-SQ to a separately preregistered equal-error computational-cost experiment restricted to the already qualified common state/forcing domain. Keep trajectory-level qualification separate and do not broaden RossFast production physics from this boundary result."
+}
