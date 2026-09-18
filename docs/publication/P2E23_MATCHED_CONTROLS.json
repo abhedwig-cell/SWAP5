@@ -1,0 +1,1539 @@
+{
+  "schema": "swap5.publication.p2e23-matched-controls.v1",
+  "role": "DERIVED_MACHINE_READABLE_CONTROL_FREEZE_FROM_IMMUTABLE_P2E23_OUTPUT",
+  "source": {
+    "branch": "work/pub-p2e23-observed-error-reference-matching",
+    "result_head": "d05ed330ad3bf033d9a8542fec78e37839233570",
+    "result_blob": "031894dd898581fe473224e02b81cc1129c8e8b6",
+    "workflow_run": 35314767424,
+    "job": 105503952798,
+    "output_sha256": "1a8633e36e76875c454df32b1ca5725af6362c4216ecbefffa6ce136a08fca74"
+  },
+  "ross_control": {
+    "outer_segments": 1,
+    "route": "rossfast-d3r"
+  },
+  "reference_policy": "P2E21 REPRESENTATION_BOUNDED_TOTAL",
+  "selection_rule": "smallest valid integer N in 1..32 with E_ref <= E_ross, retaining the last valid coarser N with E_ref > E_ross as N_lo",
+  "cases": [
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.00032411491717534725,
+      "reference_n_lo": 20,
+      "reference_n_hi": 21,
+      "lo_over_ross": 1.0910401533332692,
+      "hi_over_ross": 0.9525147400210505,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 20,
+          "nli": 60,
+          "jac": 60,
+          "linear_solves": 60,
+          "backtracking": 60,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 21,
+          "nli": 63,
+          "jac": 63,
+          "linear_solves": 63,
+          "backtracking": 63,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 2,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.00032294711727268686,
+      "reference_n_lo": 20,
+      "reference_n_hi": 21,
+      "lo_over_ross": 1.1116644331377052,
+      "hi_over_ross": 0.9705204195905457,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 20,
+          "nli": 60,
+          "jac": 60,
+          "linear_solves": 60,
+          "backtracking": 60,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 21,
+          "nli": 63,
+          "jac": 63,
+          "linear_solves": 63,
+          "backtracking": 63,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 3,
+      "material": "B01",
+      "Se": 0.85,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0012046716481523057,
+      "reference_n_lo": 19,
+      "reference_n_hi": 20,
+      "lo_over_ross": 1.0277575913490078,
+      "hi_over_ross": 0.9013363087829961,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 19,
+          "nli": 57,
+          "jac": 57,
+          "linear_solves": 57,
+          "backtracking": 57,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 20,
+          "nli": 60,
+          "jac": 60,
+          "linear_solves": 60,
+          "backtracking": 60,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 4,
+      "material": "B01",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0012109493353261822,
+      "reference_n_lo": 19,
+      "reference_n_hi": 20,
+      "lo_over_ross": 1.038075402655028,
+      "hi_over_ross": 0.9103851164444831,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 19,
+          "nli": 57,
+          "jac": 57,
+          "linear_solves": 57,
+          "backtracking": 57,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 20,
+          "nli": 60,
+          "jac": 60,
+          "linear_solves": 60,
+          "backtracking": 60,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 5,
+      "material": "B01",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0014074493635911137,
+      "reference_n_lo": 22,
+      "reference_n_hi": 23,
+      "lo_over_ross": 1.0784020419663216,
+      "hi_over_ross": 0.9286154976103091,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 22,
+          "nli": 88,
+          "jac": 88,
+          "linear_solves": 88,
+          "backtracking": 88,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 23,
+          "nli": 92,
+          "jac": 92,
+          "linear_solves": 92,
+          "backtracking": 92,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 6,
+      "material": "B01",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.001424719625238448,
+      "reference_n_lo": 22,
+      "reference_n_hi": 23,
+      "lo_over_ross": 1.081941520378302,
+      "hi_over_ross": 0.9316637312604336,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 22,
+          "nli": 88,
+          "jac": 88,
+          "linear_solves": 88,
+          "backtracking": 88,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 23,
+          "nli": 92,
+          "jac": 92,
+          "linear_solves": 92,
+          "backtracking": 92,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 7,
+      "material": "B12",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "classification": "LEFT_CENSORED_AT_N1",
+      "ross_error": 1.7748573105376071e-7,
+      "reference_n_lo": 0,
+      "reference_n_hi": 1,
+      "lo_over_ross": 0,
+      "hi_over_ross": 0.4831091919760538,
+      "nonmonotone": true,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 0,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 0,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 1,
+          "nli": 2,
+          "jac": 2,
+          "linear_solves": 2,
+          "backtracking": 2,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 8,
+      "material": "B12",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "classification": "LEFT_CENSORED_AT_N1",
+      "ross_error": 1.7748573105376071e-7,
+      "reference_n_lo": 0,
+      "reference_n_hi": 1,
+      "lo_over_ross": 0,
+      "hi_over_ross": 0.511832089728822,
+      "nonmonotone": true,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 0,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 0,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 1,
+          "nli": 2,
+          "jac": 2,
+          "linear_solves": 2,
+          "backtracking": 2,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 9,
+      "material": "B12",
+      "Se": 0.85,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 1.518150665195966e-7,
+      "reference_n_lo": 6,
+      "reference_n_hi": 7,
+      "lo_over_ross": 1.1274185897821367,
+      "hi_over_ross": 0.929200947199527,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 6,
+          "nli": 12,
+          "jac": 12,
+          "linear_solves": 12,
+          "backtracking": 12,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 7,
+          "nli": 14,
+          "jac": 14,
+          "linear_solves": 14,
+          "backtracking": 14,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 10,
+      "material": "B12",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 1.51305073014752e-7,
+      "reference_n_lo": 6,
+      "reference_n_hi": 7,
+      "lo_over_ross": 1.1482796376643525,
+      "hi_over_ross": 0.946311010831958,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 6,
+          "nli": 12,
+          "jac": 12,
+          "linear_solves": 12,
+          "backtracking": 12,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 7,
+          "nli": 14,
+          "jac": 14,
+          "linear_solves": 14,
+          "backtracking": 14,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 11,
+      "material": "B12",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 7.356048973232967e-8,
+      "reference_n_lo": 20,
+      "reference_n_hi": 21,
+      "lo_over_ross": 1.040873105532534,
+      "hi_over_ross": 0.908697250968236,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 20,
+          "nli": 60,
+          "jac": 60,
+          "linear_solves": 60,
+          "backtracking": 60,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 21,
+          "nli": 63,
+          "jac": 63,
+          "linear_solves": 63,
+          "backtracking": 63,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 12,
+      "material": "B12",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 7.421727844335654e-8,
+      "reference_n_lo": 20,
+      "reference_n_hi": 21,
+      "lo_over_ross": 1.0473626693247808,
+      "hi_over_ross": 0.9143851730935635,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 20,
+          "nli": 60,
+          "jac": 60,
+          "linear_solves": 60,
+          "backtracking": 60,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 21,
+          "nli": 63,
+          "jac": 63,
+          "linear_solves": 63,
+          "backtracking": 63,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 13,
+      "material": "O01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0004466699988952332,
+      "reference_n_lo": 13,
+      "reference_n_hi": 14,
+      "lo_over_ross": 1.1269543907748913,
+      "hi_over_ross": 0.991414835776632,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 13,
+          "nli": 39,
+          "jac": 39,
+          "linear_solves": 39,
+          "backtracking": 39,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 14,
+          "nli": 42,
+          "jac": 42,
+          "linear_solves": 42,
+          "backtracking": 42,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 14,
+      "material": "O01",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0004486318386903528,
+      "reference_n_lo": 14,
+      "reference_n_hi": 15,
+      "lo_over_ross": 1.002133127204184,
+      "hi_over_ross": 0.8833880264516273,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 14,
+          "nli": 42,
+          "jac": 42,
+          "linear_solves": 42,
+          "backtracking": 42,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 15,
+          "nli": 45,
+          "jac": 45,
+          "linear_solves": 45,
+          "backtracking": 45,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 15,
+      "material": "O01",
+      "Se": 0.85,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0019153641111304526,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.1204212422456328,
+      "hi_over_ross": 0.988725198597337,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 16,
+      "material": "O01",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0019271203285310776,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.1306817530562565,
+      "hi_over_ross": 0.9977799275433624,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 17,
+      "material": "O01",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.00199975357671937,
+      "reference_n_lo": 22,
+      "reference_n_hi": 23,
+      "lo_over_ross": 1.073821391457933,
+      "hi_over_ross": 0.924724747779198,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 22,
+          "nli": 88,
+          "jac": 88,
+          "linear_solves": 88,
+          "backtracking": 88,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 23,
+          "nli": 92,
+          "jac": 92,
+          "linear_solves": 92,
+          "backtracking": 92,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 18,
+      "material": "O01",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0020361609277428387,
+      "reference_n_lo": 22,
+      "reference_n_hi": 23,
+      "lo_over_ross": 1.0714267979906302,
+      "hi_over_ross": 0.9226629025502694,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 22,
+          "nli": 88,
+          "jac": 88,
+          "linear_solves": 88,
+          "backtracking": 88,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 23,
+          "nli": 92,
+          "jac": 92,
+          "linear_solves": 92,
+          "backtracking": 92,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 19,
+      "material": "O05",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.012649104502066933,
+      "reference_n_lo": 6,
+      "reference_n_hi": 7,
+      "lo_over_ross": 1.1057700967637154,
+      "hi_over_ross": 0.9115974878577264,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 6,
+          "nli": 18,
+          "jac": 18,
+          "linear_solves": 18,
+          "backtracking": 18,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 7,
+          "nli": 21,
+          "jac": 21,
+          "linear_solves": 21,
+          "backtracking": 21,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 20,
+      "material": "O05",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.012719429422620384,
+      "reference_n_lo": 6,
+      "reference_n_hi": 7,
+      "lo_over_ross": 1.1164588566836695,
+      "hi_over_ross": 0.9204097336052011,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 6,
+          "nli": 18,
+          "jac": 18,
+          "linear_solves": 18,
+          "backtracking": 18,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 7,
+          "nli": 21,
+          "jac": 21,
+          "linear_solves": 21,
+          "backtracking": 21,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 21,
+      "material": "O05",
+      "Se": 0.85,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0028735702927927685,
+      "reference_n_lo": 13,
+      "reference_n_hi": 14,
+      "lo_over_ross": 1.0943977023532694,
+      "hi_over_ross": 0.9629200154398547,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 13,
+          "nli": 39,
+          "jac": 39,
+          "linear_solves": 39,
+          "backtracking": 39,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 14,
+          "nli": 42,
+          "jac": 42,
+          "linear_solves": 42,
+          "backtracking": 42,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 22,
+      "material": "O05",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0028937957808906297,
+      "reference_n_lo": 13,
+      "reference_n_hi": 14,
+      "lo_over_ross": 1.1034055684758817,
+      "hi_over_ross": 0.9708459215747942,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 13,
+          "nli": 39,
+          "jac": 39,
+          "linear_solves": 39,
+          "backtracking": 39,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 14,
+          "nli": 42,
+          "jac": 42,
+          "linear_solves": 42,
+          "backtracking": 42,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 23,
+      "material": "O05",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0010148374188381625,
+      "reference_n_lo": 23,
+      "reference_n_hi": 24,
+      "lo_over_ross": 1.0225110623934648,
+      "hi_over_ross": 0.8711931760625253,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 23,
+          "nli": 92,
+          "jac": 92,
+          "linear_solves": 92,
+          "backtracking": 92,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 24,
+          "nli": 96,
+          "jac": 96,
+          "linear_solves": 96,
+          "backtracking": 96,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 24,
+      "material": "O05",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0010346743704927066,
+      "reference_n_lo": 23,
+      "reference_n_hi": 24,
+      "lo_over_ross": 1.0186233058798133,
+      "hi_over_ross": 0.8678808377367212,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 23,
+          "nli": 92,
+          "jac": 92,
+          "linear_solves": 92,
+          "backtracking": 92,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 24,
+          "nli": 96,
+          "jac": 96,
+          "linear_solves": 96,
+          "backtracking": 96,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 25,
+      "material": "O14",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0001329221238323503,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.0795159197340916,
+      "hi_over_ross": 0.9525305912533012,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 26,
+      "material": "O14",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.00013495311810788382,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.0794186782096287,
+      "hi_over_ross": 0.9524451067647624,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 27,
+      "material": "O14",
+      "Se": 0.85,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.00037993032679816123,
+      "reference_n_lo": 17,
+      "reference_n_hi": 18,
+      "lo_over_ross": 1.0735133082151422,
+      "hi_over_ross": 0.9463423582515771,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 18,
+          "nli": 54,
+          "jac": 54,
+          "linear_solves": 54,
+          "backtracking": 54,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 28,
+      "material": "O14",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.00038572132104544257,
+      "reference_n_lo": 17,
+      "reference_n_hi": 18,
+      "lo_over_ross": 1.073459034326598,
+      "hi_over_ross": 0.9462945270232935,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 18,
+          "nli": 54,
+          "jac": 54,
+          "linear_solves": 54,
+          "backtracking": 54,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 29,
+      "material": "O14",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.000688604612481986,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.0723990571047695,
+      "hi_over_ross": 0.9464766346514927,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 30,
+      "material": "O14",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0006996107237380944,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.0715728768899917,
+      "hi_over_ross": 0.9457474705002006,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 31,
+      "material": "O18",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0002746855486847496,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.0761475030633996,
+      "hi_over_ross": 0.9495653553564938,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 32,
+      "material": "O18",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0002788829103990109,
+      "reference_n_lo": 16,
+      "reference_n_hi": 17,
+      "lo_over_ross": 1.0760516748278712,
+      "hi_over_ross": 0.9494808662975429,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 16,
+          "nli": 48,
+          "jac": 48,
+          "linear_solves": 48,
+          "backtracking": 48,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 33,
+      "material": "O18",
+      "Se": 0.85,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0006974324079175392,
+      "reference_n_lo": 17,
+      "reference_n_hi": 18,
+      "lo_over_ross": 1.097975362769557,
+      "hi_over_ross": 0.9679294132011702,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 18,
+          "nli": 54,
+          "jac": 54,
+          "linear_solves": 54,
+          "backtracking": 54,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 34,
+      "material": "O18",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0007080744066335869,
+      "reference_n_lo": 17,
+      "reference_n_hi": 18,
+      "lo_over_ross": 1.0979168668215955,
+      "hi_over_ross": 0.9678778514303241,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 17,
+          "nli": 51,
+          "jac": 51,
+          "linear_solves": 51,
+          "backtracking": 51,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 18,
+          "nli": 54,
+          "jac": 54,
+          "linear_solves": 54,
+          "backtracking": 54,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 35,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "classification": "BRACKETED",
+      "ross_error": 0.0007215951212739745,
+      "reference_n_lo": 21,
+      "reference_n_hi": 22,
+      "lo_over_ross": 1.0007151565968007,
+      "hi_over_ross": 0.868568308227718,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 21,
+          "nli": 65,
+          "jac": 65,
+          "linear_solves": 65,
+          "backtracking": 70,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 22,
+          "nli": 70,
+          "jac": 70,
+          "linear_solves": 70,
+          "backtracking": 81,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    },
+    {
+      "case": 36,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "classification": "BRACKETED",
+      "ross_error": 0.0007328986283969533,
+      "reference_n_lo": 20,
+      "reference_n_hi": 22,
+      "lo_over_ross": 1.145601938166154,
+      "hi_over_ross": 0.8682563801254413,
+      "nonmonotone": false,
+      "work": {
+        "ross": {
+          "outer_calls": 1,
+          "nli": 0,
+          "jac": 0,
+          "linear_solves": 24,
+          "backtracking": 0,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_lo": {
+          "outer_calls": 20,
+          "nli": 62,
+          "jac": 62,
+          "linear_solves": 62,
+          "backtracking": 74,
+          "retries": 0,
+          "alternative_calls": 0
+        },
+        "reference_hi": {
+          "outer_calls": 22,
+          "nli": 69,
+          "jac": 69,
+          "linear_solves": 69,
+          "backtracking": 75,
+          "retries": 0,
+          "alternative_calls": 0
+        }
+      }
+    }
+  ],
+  "counts": {
+    "bracketed": 34,
+    "left_censored_at_n1": 2,
+    "unresolved": 0
+  },
+  "timing_status": "NOT_EXECUTED",
+  "verdict": "CASEWISE_MATCHED_CONTROLS_MATERIALIZED_FOR_FUTURE_TIMING"
+}
