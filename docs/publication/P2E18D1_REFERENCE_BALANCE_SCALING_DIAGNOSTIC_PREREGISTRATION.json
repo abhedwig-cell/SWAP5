@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.publication.p2e18d1-reference-balance-scaling-diagnostic.v1",
+  "workunit": "PUB-P2E18D1",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_BALANCE_SCALING_DIAGNOSTIC",
+  "parent_blocked_ref_high": {
+    "branch": "work/pub-p2e18-ref-high-construction",
+    "head": "8ee5f064dc0f9dae8cccd82c5d0786f58987666a",
+    "result_path": "docs/publication/P2E18_REF_HIGH_CONSTRUCTION_RESULT.json",
+    "verdict": "BLOCKED_NON_INVARIANT_REFERENCE_CONVERGENCE_SCALING"
+  },
+  "purpose": "Test the specific mechanistic hypothesis that P2E18's systematic Reference retry advice at refined substeps is caused by holding a balance-rate convergence tolerance fixed while dt decreases, which shrinks the implied integrated balance convergence scale toward floating-point resolution.",
+  "matrix": {
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 36,
+    "equal_substep_counts": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "total_horizon_day": 0.0016
+  },
+  "diagnostic_policy": {
+    "baseline_rate_tolerance_cm_per_day": 1e-12,
+    "baseline_dt_day": 0.0016,
+    "invariant_integrated_balance_scale_cm": 1.6e-15,
+    "formula": "CritDevBalCp(dt) = CritDevBalTot(dt) = 1.6e-15 / dt",
+    "resulting_rate_tolerances_cm_per_day": {
+      "nsub_1": 1e-12,
+      "nsub_2": 2e-12,
+      "nsub_4": 4e-12,
+      "nsub_8": 8e-12,
+      "nsub_16": 1.6e-11
+    },
+    "unchanged": {
+      "head_abs_tolerance_cm": 1e-12,
+      "head_rel_tolerance": 1e-12,
+      "ponding_tolerance_cm": 1e-12,
+      "min_step_duration_day": 1e-8,
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "conductivity_implicit_mode": 0,
+      "conductivity_mean_method": 1,
+      "physics": true,
+      "fluxes": true,
+      "case_membership": true
+    }
+  },
+  "falsification": {
+    "hypothesis_supported_if": "The invariant-integrated policy materially restores route validity at refined levels, in particular the 8- and 16-substep levels needed by REF-HIGH, without changing any physical request.",
+    "hypothesis_rejected_if": "8- and 16-substep Reference routes remain systematically retry-advised or otherwise invalid under the invariant-integrated policy."
+  },
+  "output_scope": [
+    "route validity by substep count",
+    "status/route/retry diagnostics",
+    "nonlinear iteration and backtracking counts",
+    "typed integrated mass residual when available"
+  ],
+  "forbidden": [
+    "No RossFast numerical execution",
+    "No timing",
+    "No REF-HIGH stability qualification",
+    "No adjustment of the 10 percent P2E14 stability rule",
+    "No production source mutation"
+  ],
+  "next_if_supported": "Preregister a separate P2E19 corrected REF-HIGH qualification using this unit-invariant balance-rate rule and the already frozen 8-versus-16 stability criteria.",
+  "verdict": "PREREGISTERED_REFERENCE_BALANCE_SCALING_DIAGNOSTIC_READY"
+}
