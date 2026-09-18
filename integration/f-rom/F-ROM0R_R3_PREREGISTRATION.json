@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.f-rom0r.r3-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3",
+  "title": "Prescribed-head lower-boundary reachability from accepted steady seed",
+  "phase": "PREREGISTERED_EXECUTION_BLOCKED_ON_TA4_AND_TA5",
+  "predecessors": {
+    "R1": "integration/f-rom/F-ROM0R_R1_RESULT.json",
+    "R2": "integration/f-rom/F-ROM0R_R2_PREREGISTRATION.json",
+    "temporal_authority": ["F-ROM0TA1","F-ROM0TA2","F-ROM0TA3","F-ROM0TA4"],
+    "sample_mode5_binding": "F-ROM0TA5"
+  },
+  "execution_prerequisites": [
+    "F-ROM0TA4_REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+    "F-ROM0TA5_PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_QUALIFIED"
+  ],
+  "materials": ["B01","B14"],
+  "geometry": {"nodes":16,"dz_cm":10,"depth_cm":160},
+  "initial_seed": {
+    "effective_saturation": 0.85,
+    "pressure_head_profile": "UNIFORM_MVG_HEAD_AT_SE_0_85",
+    "qeq_expression": "-K(h0)",
+    "seed_intervals_before_perturbation": 2,
+    "seed_interval_day": 0.0016,
+    "seed_top_flux": "qeq",
+    "seed_bottom_mode": 2,
+    "seed_bottom_flux": "qeq"
+  },
+  "pressure_boundary_perturbation": {
+    "top_flux_after_seed": "qeq",
+    "bottom_mode_after_seed": 5,
+    "cases": [
+      {
+        "id": "BOTTOM_HEAD_RISE",
+        "bottom_head_expression": "0.75*h0",
+        "authority": "original ROM-0 E3_BOTTOM_HEAD_RISE preregistration",
+        "intended_direction": "UPWARD_OR_MORE_CAPILLARY_BOTTOM_INFLUENCE"
+      },
+      {
+        "id": "BOTTOM_HEAD_FALL",
+        "bottom_head_expression": "1.25*h0",
+        "authority": "original ROM-0 E4_BOTTOM_HEAD_FALL preregistration",
+        "intended_direction": "LOWER_BOUNDARY_DRYING"
+      }
+    ],
+    "amplitude_selected_after_ROM_results": false
+  },
+  "temporal_control": {
+    "perturbation_dt_day": 0.0008,
+    "selection_authority": [
+      "original ROM-0 observation_interval.refined",
+      "ROM-0R-R2 refined_interval_day",
+      "F-ROM0TA3 retained refined candidate"
+    ],
+    "selected_after_R3_results": false,
+    "perturbation_intervals": 16,
+    "physical_horizon_day": 0.0128,
+    "automatic_retry_or_subdivision": false
+  },
+  "frozen_reference_controls": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "mass_tolerance_cm": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12
+  },
+  "required_observations": [
+    "PRESSURE_HEAD_PROFILE",
+    "WATER_CONTENT_PROFILE",
+    "TOTAL_STORAGE",
+    "UPPER_0_40CM_STORAGE",
+    "LOWER_40_160CM_STORAGE",
+    "TOP_EXCHANGE",
+    "BOTTOM_OUTWARD_EXCHANGE",
+    "TERMINAL_BOTTOM_FLUX",
+    "MASS_RESIDUAL",
+    "REFERENCE_SOLVER_WORK",
+    "COMMITTED_REVISION_AND_TIME"
+  ],
+  "reachability_adjudication": {
+    "both_cases_must_complete_full_horizon_for_both_materials": true,
+    "head_rise_must_produce_lower_band_storage_greater_than_head_fall_at_common_final_time": true,
+    "head_rise_bottom_exchange_must_shift_toward_inflow_relative_to_head_fall": true,
+    "absolute_flux_sign_reversal_required": false,
+    "if_directional_separation_is_not_observed": "BIDIRECTIONAL_REACHABILITY_NOT_ESTABLISHED_NO_AMPLITUDE_RETUNING"
+  },
+  "forbidden": [
+    "NO_POST_RESULT_BOTTOM_HEAD_RETUNING",
+    "NO_DT_RETUNING",
+    "NO_ITERATION_OR_BACKTRACKING_RELAXATION",
+    "NO_AUTOMATIC_TRANSACTION_RETRY",
+    "NO_MASS_GATE_RELAXATION",
+    "NO_MATERIAL_SUBSTITUTION",
+    "NO_PRODUCTION_APPLICATION_ADMISSION",
+    "NO_ROM_STATE_CLAIM"
+  ],
+  "close_decisions": [
+    "PRESSURE_BOUNDARY_REACHABILITY_QUALIFIED",
+    "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "BIDIRECTIONAL_REACHABILITY_NOT_ESTABLISHED"
+  ],
+  "next_if_qualified": "COMPLETE_VERTICAL_RESOLUTION_REFERENCE_FLOOR_DIAGNOSTIC_BEFORE_ROM0_CLOSE_REEVALUATION",
+  "rom1a_authorized": false
+}
