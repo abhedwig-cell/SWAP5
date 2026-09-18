@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.publication.p2e16b-candidate-boundary-primary-result.v1",
+  "workunit": "PUB-P2E16B",
+  "phase": "CANDIDATE_BOUNDARY_PRIMARY_COMPLETE",
+  "parent_preregistration": {
+    "path": "docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_PREREGISTRATION.json",
+    "commit": "29e652cbd5d2bcb239658d269f6110e0bdfefb99",
+    "blob": "5e0d1722d9f99e2bef32b461e259b69434ae5d3b"
+  },
+  "stage_A_authority": {
+    "path": "docs/publication/P2E16A_REFERENCE_BOUNDARY_THRESHOLD_TRANSFER_RESULT.json",
+    "commit": "409b1047764d8ae4a04b13d55b490af3225e7067",
+    "blob": "2c9b856e2d18d5d8e42c098f12b6405e5e15ff58"
+  },
+  "executed_head": "5cb018e397e2a33acdecdbf2e3c790225959d193",
+  "authorities": {
+    "test_blob": "77e3b027119a7d1bfe8d4745a45ec3174118424a",
+    "runner_blob": "0974be59f4286358d1cac04f5c0bd1d48560d6a8",
+    "workflow_blob": "85176912261281c8d2fab5109c1d4f8a4608a6ca",
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351"
+  },
+  "execution": {
+    "workflow_run": 35292177734,
+    "job": 105437177768,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "3c2e770231f8c41cd067f58c34bcefaaf70de85b16d9aa6793e4cb240fab78dd"
+  },
+  "matrix": {
+    "case_count": 1296,
+    "inside": 432,
+    "boundary": 432,
+    "outside": 432,
+    "materials": 36,
+    "effective_saturation": [0.65, 0.85, 0.96],
+    "boundary_axes": ["TOP_PRESCRIBED_FLUX", "BOTTOM_PRESCRIBED_FLUX"],
+    "rho": [-1.05, -1.0, -0.95, 0.95, 1.0, 1.05]
+  },
+  "rossfast_route_boundary": {
+    "inside_valid": 432,
+    "inside_invalid": 0,
+    "boundary_valid": 432,
+    "boundary_invalid": 0,
+    "outside_valid": 0,
+    "outside_invalid": 432,
+    "route_mismatch_inside": 0,
+    "route_mismatch_boundary": 0,
+    "route_mismatch_outside": 0,
+    "silent_fallback_count": 0,
+    "interpretation": "The preregistered contract-normalized rho surface exactly predicts RossFast route admission on all 1296 cases: every inside and inclusive-boundary case is admitted and every just-outside case fails closed."
+  },
+  "reference_fixed_step": {
+    "valid": 1291,
+    "invalid": 5,
+    "invalid_cases": [
+      {"case":576,"material":"B16","Se":0.96,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE"},
+      {"case":612,"material":"B17","Se":0.96,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE"},
+      {"case":1220,"material":"O16","Se":0.96,"axis":"BOTTOM","rho":-1.0,"class":"BOUNDARY","stage_A_pairwise_authorized":true},
+      {"case":1248,"material":"O17","Se":0.85,"axis":"BOTTOM","rho":1.05,"class":"OUTSIDE"},
+      {"case":1257,"material":"O17","Se":0.96,"axis":"BOTTOM","rho":-0.95,"class":"INSIDE","stage_A_pairwise_authorized":true}
+    ],
+    "max_abs_integrated_mass_residual_cm_among_valid": 1.5992540625120455e-15,
+    "hard_limit_cm": 1e-12,
+    "interpretation": "These five cases were valid in the Stage-A 0.0064 versus 0.0032+0.0032 Reference study but did not satisfy the fixed-0.0016 Reference route-validity gate in Stage B. They are retained as Reference-unresolved for the fixed-step pairwise endpoint pending diagnosis."
+  },
+  "authorized_pairwise_scientific_admission": {
+    "stage_A_authorized_inside": 424,
+    "stage_A_authorized_boundary": 426,
+    "stage_A_authorized_total": 850,
+    "reference_interpretable_inside": 423,
+    "reference_interpretable_boundary": 425,
+    "reference_interpretable_total": 848,
+    "admissible_inside": 423,
+    "discrepancy_fail_inside": 0,
+    "admissible_boundary": 425,
+    "discrepancy_fail_boundary": 0,
+    "reference_unresolved_authorized_cases": [1220,1257],
+    "max_fraction_of_frozen_threshold_among_interpretable_authorized_cases": {
+      "D_h_inf": 0.19742706476083827,
+      "D_h_rms": 0.21912017861076086,
+      "D_theta_inf": 0.24775809956400627,
+      "D_theta_rms": 0.28466275214112352,
+      "D_storage": 1.0
+    },
+    "interpretation": "All 848 Stage-A-authorized cases that retained a valid fixed-step Reference route are scientifically admissible under the unchanged P2E14 thresholds. Two of the 850 preregistered authorized cases are not pairwise adjudicated because the fixed-step Reference route is unresolved; they are not RossFast discrepancy failures."
+  },
+  "stage_A_unauthorized_but_route_valid": {
+    "inside": 8,
+    "boundary": 6,
+    "total": 14,
+    "scientific_admissibility_claim_made": false
+  },
+  "outside_fail_closed": {
+    "all_outside_cases": 432,
+    "rossfast_rejected": 432,
+    "rossfast_unexpected_admission": 0,
+    "fallback": 0,
+    "matched_reference_valid": 429,
+    "matched_reference_invalid": 3,
+    "formal_H3_interpretable_cases": 429,
+    "additional_operational_fail_closed_cases_with_reference_unresolved": 3
+  },
+  "mass": {
+    "max_abs_reference_integrated_residual_cm_among_valid": 1.5992540625120455e-15,
+    "max_abs_rossfast_integrated_residual_cm_among_converged": 5.417928170719285e-14,
+    "hard_limit_cm": 1e-12
+  },
+  "hypothesis_status": {
+    "P2E16_H1": {
+      "status": "SUPPORTED_ON_FULL_PREREGISTERED_1296_CASE_ROUTE_MATRIX",
+      "evidence": "zero route-class mismatches on inside, exact inclusive boundary, or just-outside classes"
+    },
+    "P2E16_H2": {
+      "status": "SUPPORTED_ON_848_OF_850_INTERPRETABLE_AUTHORIZED_CASES_WITH_2_REFERENCE_UNRESOLVED",
+      "evidence": "848/848 interpretable Stage-A-authorized inside/boundary pairs satisfy all unchanged P2E14 thresholds; cases 1220 and 1257 cannot receive a pairwise verdict because the fixed-step Reference route is invalid"
+    },
+    "P2E16_H3": {
+      "status": "SUPPORTED_ON_429_MATCHED_REFERENCE_VALID_OUTSIDE_CASES_AND_OPERATIONALLY_ON_ALL_432_ROSSFAST_REQUESTS",
+      "evidence": "all 432 just-outside requests reject RossFast with zero fallback; 429 have valid matched fixed-step Reference, while 3 Reference requests are unresolved"
+    }
+  },
+  "firewall": {
+    "p2e14_thresholds_changed": false,
+    "stage_A_authorization_changed": false,
+    "rho_changed": false,
+    "case_removed": false,
+    "automatic_fallback": false,
+    "performance_claim_evaluated": false,
+    "transaction_level_equivalence_claimed": false
+  },
+  "verdict": "ROSSFAST_FORCING_ROUTE_BOUNDARY_EXACT_ON_1296_CASES_PAIRWISE_ADMISSION_848_OF_848_INTERPRETABLE_AUTHORIZED_TWO_REFERENCE_UNRESOLVED",
+  "next_permitted_action": "Diagnose the five fixed-step Reference-invalid cases without changing the P2E16 boundary result. In particular adjudicate authorized cases 1220 and 1257 before closing SQ-H2 at the planned 850-case surface. Do not widen P2E14 thresholds or alter the RossFast boundary."
+}
