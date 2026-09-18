@@ -191,17 +191,55 @@ flux_by=defaultdict(dict)
 for r in flux:
     flux_by[(r["baseline_id"],float(r["fraction"]))][r["side"]]=r
 
+def estimate(candidates):
+    return candidates[0]["median"] if candidates else None
+
 summaries=[]
 derivative_rows=[]
 for h in heads:
     if not h.get("ready"):
-        raise SystemExit(f"preregistered baseline unavailable: {h}")
-    if h["production_parity"]["status"]!="PASS":
-        raise SystemExit(f"E4 production parity failed: {h['baseline_id']}")
-    if tuple(h["authority_state_after"])!=(0,0.0,0,0.0):
-        raise SystemExit(f"E4 authority drift: {h['baseline_id']}")
+        raise SystemExit(f"preregistered predictor baseline unavailable: {h}")
 
     bid=h["baseline_id"]; href=float(h["reference_head_m"]); uA=float(h["u_A"])
+
+    # The pure-bottom flux scan remains interpretable even when the prescribed-
+    # head corrector at H0 is outside the participant envelope.
+    uf=[]
+    for idx,frac in enumerate((1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1)):
+        pair=flux_by[(bid,frac)]
+        minus=pair.get("minus"); plus=pair.get("plus")
+        rec={"sequence_index":idx,"scale":frac,"fraction":frac,"u_FD":None,"signal":0.0,"signal_floor":0.0}
+        if minus and plus and minus.get("ready") and plus.get("ready"):
+            hm=float(minus["h_end_m"]); hp=float(plus["h_end_m"])
+            qm=float(minus["qbot_cm_per_day"]); qp=float(plus["qbot_cm_per_day"])
+            dh=hp-hm
+            floor=256*np.finfo(float).eps*max(abs(href),1.0)
+            rec["signal"]=abs(dh); rec["signal_floor"]=floor
+            if abs(dh)>floor:
+                rec["u_FD"]=((qp-qm)*float(h["window_day"]))/(100.0*dh)
+        uf.append(rec)
+    ufd_plateau=plateau(uf,"u_FD")
+    ufd=estimate(ufd_plateau)
+
+    head_status=h.get("head_response_status","NOT_REACHED")
+    if head_status!="READY":
+        if tuple(h.get("authority_state_after",(0,0.0,0,0.0)))!=(0,0.0,0,0.0):
+            raise SystemExit(f"E4 authority drift on unavailable head baseline: {bid}")
+        summaries.append({
+            "baseline_id":bid,"window_day":float(h["window_day"]),"qbot_cm_per_day":float(h["qbot_cm_per_day"]),
+            "reference_head_m":href,"u_A":uA,"head_response_status":head_status,
+            "head_response_message":h.get("message"),
+            "u_FD_plateau_candidates":ufd_plateau,"u_FD_estimate":ufd,
+            "E_AFD":None if ufd is None else abs(uA-ufd)/max(abs(uA),abs(ufd),np.finfo(float).tiny),
+            "J_R_estimate":None,"J_S_estimate":None,"J_B_median":None,
+            "head_derivatives":[],"u_FD_sequence":uf,
+        })
+        continue
+
+    if h["production_parity"]["status"]!="PASS":
+        raise SystemExit(f"E4 production parity failed after READY status: {bid}")
+    if tuple(h["authority_state_after"])!=(0,0.0,0,0.0):
+        raise SystemExit(f"E4 authority drift: {bid}")
     reps=h["repeats"]
     vr=[float(r["V_u_m"]) for r in reps]
     sr=[float(r["storage_change_m"]) for r in reps]
@@ -237,25 +275,7 @@ for h in heads:
     jr_plateau=plateau(jr_records,"J_R")
     js_plateau=plateau(js_records,"J_S")
 
-    uf=[]
-    for idx,frac in enumerate((1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1)):
-        pair=flux_by[(bid,frac)]
-        minus=pair.get("minus"); plus=pair.get("plus")
-        rec={"sequence_index":idx,"scale":frac,"fraction":frac,"u_FD":None,"signal":0.0,"signal_floor":0.0}
-        if minus and plus and minus.get("ready") and plus.get("ready"):
-            hm=float(minus["h_end_m"]); hp=float(plus["h_end_m"])
-            qm=float(minus["qbot_cm_per_day"]); qp=float(plus["qbot_cm_per_day"])
-            dh=hp-hm
-            floor=256*np.finfo(float).eps*max(abs(href),1.0)
-            rec["signal"]=abs(dh); rec["signal_floor"]=floor
-            if abs(dh)>floor:
-                rec["u_FD"]=((qp-qm)*float(h["window_day"]))/(100.0*dh)
-        uf.append(rec)
-    ufd_plateau=plateau(uf,"u_FD")
-
-    def est(cands):
-        return cands[0]["median"] if cands else None
-    jr=est(jr_plateau); js=est(js_plateau); ufd=est(ufd_plateau)
+    jr=estimate(jr_plateau); js=estimate(js_plateau)
     valid_jb=[r["J_B"] for r in hd if r.get("J_B") is not None]
     jb=statistics.median(valid_jb) if valid_jb else None
     def discrepancy(a,b,opposite=False):
@@ -265,7 +285,7 @@ for h in heads:
 
     summaries.append({
         "baseline_id":bid,"window_day":float(h["window_day"]),"qbot_cm_per_day":float(h["qbot_cm_per_day"]),
-        "reference_head_m":href,"u_A":uA,
+        "reference_head_m":href,"u_A":uA,"head_response_status":"READY",
         "repeatability_V_range_m":vnoise,"repeatability_storage_range_m":snoise,
         "largest_centered_head_delta_m":largest_centered,"first_failed_head_delta_m":first_failed,
         "J_R_plateau_candidates":jr_plateau,"J_S_plateau_candidates":js_plateau,"u_FD_plateau_candidates":ufd_plateau,
