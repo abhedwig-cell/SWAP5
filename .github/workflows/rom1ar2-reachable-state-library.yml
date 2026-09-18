@@ -1,0 +1,45 @@
+name: ROM1A-R2 frozen-policy reachable-state library
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1AR2_*'
+      - 'integration/f-rom/ROM1AR1D3_STATUS.json'
+      - 'docs/science/ROM1AR2_*'
+      - 'tests/rom/test_rom1ar2_reachable_state_library.f90'
+      - 'tests/rom/analyze_rom1ar2_reachable_state_library.py'
+      - 'tests/rom/run_rom1ar2_reachable_state_library.sh'
+      - '.github/workflows/rom1ar2-reachable-state-library.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1ar2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen-policy discovery plus held-out library
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1AR2_EVIDENCE
+          ROM1AR2_EVIDENCE_DIR="$PWD/ROM1AR2_EVIDENCE"             bash tests/rom/run_rom1ar2_reachable_state_library.sh | tee ROM1AR2_EVIDENCE/gate.txt
+      - name: Preserve R2 library evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1ar2-${{ github.run_id }}
+          path: ROM1AR2_EVIDENCE
+          if-no-files-found: warn
