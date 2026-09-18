@@ -17,6 +17,16 @@ class Fgc44RealSwap:
         self.lib.pub_gc_e3_begin_next_window_c.argtypes=[ctypes.c_double]
         self.lib.pub_gc_e3_committed_storage_c.restype=ctypes.c_int
         self.lib.pub_gc_e3_committed_storage_c.argtypes=[ctypes.POINTER(ctypes.c_double)]
+        self.lib.pub_gc_e3_init_stage_c.restype=ctypes.c_int
+        self.lib.pub_gc_e3_init_stage_c.argtypes=[ctypes.POINTER(ctypes.c_int)]
+        self.lib.pub_gc_e3_diagnostic_trial_c.restype=ctypes.c_int
+        self.lib.pub_gc_e3_diagnostic_trial_c.argtypes=[
+            ctypes.c_double,
+            ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_double),
+        ]
         for name in [
             "fgc44_swap_discard_c","fgc44_swap_preflight_c","fgc44_ledger_prepare_c",
             "fgc44_ledger_preflight_c","fgc44_swap_commit_c","fgc44_ledger_commit_c",
@@ -44,10 +54,19 @@ class Fgc44RealSwap:
         if status: raise RuntimeError(f"SWAP initialize failed: {status}")
         return hcof.value,rhs.value,href.value
 
+    def init_stage(self) -> int:
+        stage=ctypes.c_int()
+        status=self.lib.pub_gc_e3_init_stage_c(ctypes.byref(stage))
+        if status: raise RuntimeError(f"E3 init-stage query failed: {status}")
+        return stage.value
+
     def initialize_window(self, duration_day: float) -> tuple[float,float,float]:
         status=self.lib.pub_gc_e3_set_duration_c(float(duration_day))
         if status: raise RuntimeError(f"E3 duration setup failed: {status}")
-        return self.initialize()
+        try:
+            return self.initialize()
+        except RuntimeError as exc:
+            raise RuntimeError(f"{exc}; init_stage={self.init_stage()}") from exc
 
     def begin_next_window(self, duration_day: float) -> None:
         status=self.lib.pub_gc_e3_begin_next_window_c(float(duration_day))
@@ -58,6 +77,27 @@ class Fgc44RealSwap:
         status=self.lib.pub_gc_e3_committed_storage_c(ctypes.byref(value))
         if status: raise RuntimeError(f"E3 committed-storage query failed: {status}")
         return value.value
+
+    def diagnostic_trial(self, head_m: float) -> dict[str,int|float|bool]:
+        kernel_status=ctypes.c_int(); completed=ctypes.c_int(); retries=ctypes.c_int()
+        solver=ctypes.c_int(); temporal=ctypes.c_int(); mass=ctypes.c_int(); substeps=ctypes.c_int()
+        exchange=ctypes.c_double()
+        status=self.lib.pub_gc_e3_diagnostic_trial_c(
+            float(head_m),ctypes.byref(kernel_status),ctypes.byref(completed),
+            ctypes.byref(retries),ctypes.byref(solver),ctypes.byref(temporal),
+            ctypes.byref(mass),ctypes.byref(substeps),ctypes.byref(exchange)
+        )
+        if status: raise RuntimeError(f"E3 diagnostic trial call failed: {status}")
+        return {
+            "kernel_status":kernel_status.value,
+            "completed":bool(completed.value),
+            "retries":retries.value,
+            "solver_rejections":solver.value,
+            "temporal_rejections":temporal.value,
+            "mass_rejections":mass.value,
+            "accepted_substeps":substeps.value,
+            "bottom_exchange_cm":exchange.value,
+        }
 
     def trial_status(self, head_m: float) -> tuple[int,float]:
         q=ctypes.c_double()
