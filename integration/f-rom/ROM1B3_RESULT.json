@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.rom1b3.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B3",
+  "decision": "ROM1B3_NO_REDUCED_STATE_SEPARATING_ENRICHMENT",
+  "execution": {
+    "workflow_run": 35393272663,
+    "workflow_job": 105756250352,
+    "executed_head": "0ea5cbb3b0dc63121b44f42f1615959901cf2182",
+    "artifact_id": 10566436804,
+    "artifact_digest": "sha256:3b42cb0ba288cd262440a4d4b05fc50fba967dce9536c6fa13839c2148c24c61",
+    "conclusion": "success"
+  },
+  "discovery_state_count": 512,
+  "eligible_cross_history_pair_count": 114688,
+  "full_state_distinguishable_pair_count": 97696,
+  "theta_collision_floor": 0.0005420462931603476,
+  "candidate_family_size": 256,
+  "summary_by_added_count": [
+    {
+      "added_count": 0,
+      "candidate_count": 1,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 5617,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 1,
+      "candidate_count": 8,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 2,
+      "candidate_count": 28,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 3,
+      "candidate_count": 56,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 4,
+      "candidate_count": 70,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 5,
+      "candidate_count": 56,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 6,
+      "candidate_count": 28,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 7,
+      "candidate_count": 8,
+      "maximum_collision_count": 5617,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    },
+    {
+      "added_count": 8,
+      "candidate_count": 1,
+      "maximum_collision_count": 2187,
+      "minimum_collision_count": 2187,
+      "zero_collision_candidate_count": 0
+    }
+  ],
+  "selected_candidate": null,
+  "full_G1_to_G8_equivalence_control": {
+    "mask": 255,
+    "dimension": 16,
+    "exactly_invertible_parameterization": true,
+    "maximum_theta_reconstruction_abs_error": 5.551115123125783e-17,
+    "collision_count_under_preregistered_coordinate_metric": 2187,
+    "minimum_candidate_linf_over_full_distinguishable_pairs": 0.0002838951792240585,
+    "interpretation": "The complete mean-plus-half-contrast transform is information-equivalent to Z16 but the componentwise L_inf collision metric is not invariant under that invertible transform."
+  },
+  "repeat_stdout_bitwise_identity": true,
+  "heldout_used": false,
+  "B14_used": false,
+  "future_probe_outcomes_used_for_subset_selection": false,
+  "coordinate_metric_reconciliation_required": true,
+  "production_rom_authorized": false
+}
