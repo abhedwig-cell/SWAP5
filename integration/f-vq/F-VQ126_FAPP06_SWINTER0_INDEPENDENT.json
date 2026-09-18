@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.independent_qualification.v1",
+  "workunit": "F-VQ126",
+  "subject": "F-APP06 exact Hupsel SWINTER0/SWCF0 identity route",
+  "subject_head": "7c69ec2f06c557eaa8d9ffc0f6bd347806b94000",
+  "qualification_branch": "qualification/f-vq126-fapp06-swinter0-independent",
+  "production_mutation": "NONE",
+  "namespace_reconciliation": {
+    "superseded_id": "F-VQ123",
+    "collision_reason": "F-VQ123 is canonically owned by F-GC49C and must not be reused for the application authority.",
+    "immutable_green_run_reused": 35350178658,
+    "immutable_green_job_reused": 105616169263,
+    "verifier_equivalence": "F-VQ126 run script and both verifier programs are byte-equivalent to the green F-VQ123 verifier after identifier and subject-SHA normalization.",
+    "subject_postimages_identical": {
+      "src/process/mod_pmdirect_swetr0_process.f90": "3eb23d075a56ba1158f4758f75a8d94c94e09b39",
+      "src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90": "7d76af48cac085d6f4b5653987d75bfc54fb7692"
+    }
+  },
+  "qualification": {
+    "generic_identity_sweep": "PASS",
+    "dynamic_top_preservation": "PASS",
+    "fail_closed": "PASS",
+    "exact_B1_11_records": 3505,
+    "max_error": 0,
+    "generic_sha256": "81ab1faccd2b148db56866e02aef74e1d51356167cd95ab9e7444d46cc02270d",
+    "exact_sha256": "9c5cae06f3ce342154ec26d3731fcc5379b26ef7dff91a950615cfea477327ef",
+    "evidence_disposition": "IMMUTABLE_GREEN_RUN_REUSED_UNDER_COLLISION_FREE_AUTHORITY_ID"
+  },
+  "redundant_current_run": 35353054858,
+  "verdict": "PASS_F_VQ126_INDEPENDENT_F_APP06"
+}
