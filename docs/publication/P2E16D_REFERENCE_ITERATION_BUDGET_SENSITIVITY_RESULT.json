@@ -1,0 +1,66 @@
+{
+  "schema":"swap5.publication.p2e16d-reference-iteration-budget-sensitivity-result.v1",
+  "workunit":"PUB-P2E16D",
+  "phase":"REFERENCE_ITERATION_BUDGET_SENSITIVITY_COMPLETE",
+  "branch":"work/pub-p2e16d-reference-iteration-budget-sensitivity",
+  "parent_adjudication":{"commit":"7751ad0c37857dd4bbe8f79b0113bd3da6c87c9f","path":"docs/publication/P2E16C_REFERENCE_FIXED_STEP_ADJUDICATION_RESULT.json"},
+  "preregistration_blob":"4e027f5417b67e2285dfbe76f0142814e122efc8",
+  "executed_head":"775a41abab4c777e36eacc9bc6e829ae4356b5f9",
+  "authorities":{
+    "test_blob":"c14014debcf23aba894e6f4ea950e188f8f9c480",
+    "runner_blob":"72a54815e9f8f39ad201d499721bee806b29b118",
+    "workflow_blob":"8e5236db83a53e82a929a43afe682da54860b4b1"
+  },
+  "execution":{
+    "workflow_run":35293089790,
+    "job":105439933649,
+    "conclusion":"PASS",
+    "O0_O2_identical":true,
+    "output_sha256":"088ae91c167f695fa3f482357b591d23c0d6257a1af308e046a01d98c8f88df4",
+    "diagnostic_result_was_ci_pass_condition":false
+  },
+  "matrix":{"cases":5,"iteration_budgets":[16,24,32,48,64],"solve_count":25,"fixed_dt_day":0.0016,"max_backtracking":8},
+  "results":{
+    "valid_solve_count":7,
+    "retry_or_invalid_count":18,
+    "first_recovery_budget":{
+      "576_B16_Se0.96_rho1.05":null,
+      "612_B17_Se0.96_rho1.05":32,
+      "1220_O16_Se0.96_rho-1.0":null,
+      "1248_O17_Se0.85_rho1.05":null,
+      "1257_O17_Se0.96_rho-0.95":24
+    },
+    "recovered_case_count":2,
+    "not_recovered_through_64_count":3
+  },
+  "case_detail":[
+    {"case":576,"budgets_16_24_32_48_64":["RETRY","RETRY","RETRY","RETRY","RETRY"],"max_observed_nonlinear_iterations":64},
+    {"case":612,"budgets_16_24_32_48_64":["RETRY","RETRY","VALID","VALID","VALID"],"converged_iterations_when_recovered":26},
+    {"case":1220,"budgets_16_24_32_48_64":["RETRY","RETRY","RETRY","RETRY","RETRY"],"max_observed_nonlinear_iterations":64},
+    {"case":1248,"budgets_16_24_32_48_64":["RETRY","RETRY","RETRY","RETRY","RETRY"],"max_observed_nonlinear_iterations":64},
+    {"case":1257,"budgets_16_24_32_48_64":["RETRY","VALID","VALID","VALID","VALID"],"converged_iterations_when_recovered":19}
+  ],
+  "interpretation":{
+    "simple_iteration_budget_explanation_supported":false,
+    "partial_iteration_budget_recovery_supported":true,
+    "reason":"Two cases are ordinary iteration-budget limitations, but three remain in the same retry path even after quadrupling max_iterations from 16 to 64.",
+    "ref_high_consequence":"REF-HIGH cannot be defined merely as the baseline Reference route with a larger nonlinear-iteration budget. A future high-reference construction requires an independently qualified numerical strategy or must explicitly exclude regimes where the Reference route lacks a stable refinement path."
+  },
+  "effect_on_primary":{
+    "p2e16b_authorized_pairwise":850,
+    "p2e16b_interpretable_pairwise":848,
+    "p2e16b_admissible_pairwise":848,
+    "counts_changed":false,
+    "reason":"P2E16D is post-primary Reference-only sensitivity."
+  },
+  "firewall_verified":{
+    "rossfast_executed":false,
+    "dt_changed":false,
+    "backtracking_changed":false,
+    "threshold_changed":false,
+    "src_or_reference_mutated":false,
+    "primary_result_changed":false
+  },
+  "verdict":"REFERENCE_ITERATION_BUDGET_RECOVERS_2_OF_5_THREE_CASES_REMAIN_UNRESOLVED_THROUGH_64_ITERATIONS",
+  "next_permitted_action":"Close the P2E16 boundary workunit with the Reference limitation explicit. Return PUB-SQ to research-design level and define REF-HIGH separately before any equal-error performance experiment."
+}
