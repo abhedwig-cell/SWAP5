@@ -73,7 +73,7 @@ echo "F_APP06_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}
 echo 'F_APP06_OWNER_QUALIFICATION=PASS'
 
 FIX=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz
-test "$(sha256sum "$FIX" | awk '{print $1}')" = 331d186fa60caf983fd9bac5d97c715d8b61af259661a61ac2c362e90e200ffa || fail "exact B1.11 fixture drift"
+test "$(git hash-object "$FIX")" = 344c00d49717374a20772aa006edef720432d387 || fail "exact B1.11 fixture blob drift"
 python3 - "$FIX" "$BUILD/exact.csv" <<'PY'
 import gzip,hashlib,sys
 raw=gzip.open(sys.argv[1],"rb").read()
