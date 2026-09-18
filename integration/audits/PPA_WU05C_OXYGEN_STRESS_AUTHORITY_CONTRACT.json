@@ -6,11 +6,18 @@
     "reference_snapshot": "B1.11",
     "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "oxygenstress": {
-      "b0_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b9c6bcf560d2221248f3b12f75",
+      "b0_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
       "b1_11_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
       "only_admitted_b0_to_b1_change": "SWAP-007",
       "correction": "Representability guard around fi/fi_a; unrepresentable quotient routes into the pre-existing large-lnew restart path.",
-      "physics_model_change": false
+      "physics_model_change": false,
+      "provenance_authority": {
+        "canonical_b0_manifest": "reference/swap-4.3.1/b0/file-manifest.sha256",
+        "canonical_provenance_verifier": "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py",
+        "canonical_b0_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+        "corrected_b1_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+        "historical_metadata_discrepancy": "README.md, qualification.md and historical apply_and_verify.py retain the pre-VQ-1c incorrect B0 identity ending b12f75. They are historical evidence only. The canonical B0 manifest and apply_and_verify_canonical_b0.py supersede that metadata."
+      }
     },
     "current_root_owner": {
       "process": "src/process/mod_root_water_uptake_process.f90",
@@ -92,7 +99,7 @@
     "state": "BLOCKED_BY_FULL_B1_11_OXYGEN_ROOT_CALLSITE_SOURCE_MATERIALIZATION",
     "required_before_production": [
       "materialize byte-exact B1.11 oxygenstress.f90 and rootextraction.f90 source bytes",
-      "verify B1.11 hashes and SWAP-007 as the only oxygenstress correction",
+      "verify the canonical B0 manifest identity, B1.11 corrected hash and SWAP-007 as the only oxygenstress correction",
       "recover complete call graph and exact composition order",
       "classify all dynamic inputs and any caller-side continuation state",
       "freeze typed oxygen request/result interface around the existing single root sink owner",
