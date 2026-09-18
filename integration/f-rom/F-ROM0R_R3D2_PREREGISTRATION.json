@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.f-rom0r.r3d2-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D2",
+  "title": "Prospective representation-floor diagnostic for B01 total-only retries",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "predecessor": {
+    "work_unit": "ROM-0R-R3D1",
+    "decision": "B01_RETRY_TOTAL_ONLY_CLASSIFIED"
+  },
+  "independent_method_authority": {
+    "work_unit": "PUB-P2E21",
+    "verdict": "REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE",
+    "imported_component_only": "prospective representation-floor formula",
+    "formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "failed_residual_used_in_formula": false,
+    "empirical_safety_factor": "none",
+    "important_nonimport": [
+      "P2E21 population-level admission is not imported",
+      "P2E21 tolerance policy is not applied to the R3 solve",
+      "P2E21 endpoint qualification is not treated as R3 evidence"
+    ]
+  },
+  "cases": [
+    "B01:BOTTOM_HEAD_RISE predecessor before failed step 11",
+    "B01:BOTTOM_HEAD_FALL predecessor before failed step 10"
+  ],
+  "diagnostic": {
+    "rebuild_accepted_predecessor": true,
+    "compute_bound_before_failed_solve": true,
+    "run_failed_solve_with_original_controls": true,
+    "record_abs_total_residual_times_dt_cm": true,
+    "record_representation_bound_cm": true,
+    "record_residual_over_bound": true,
+    "solver_tolerance_changed": false,
+    "failed_candidate_commit_allowed": false
+  },
+  "positive_decision": "B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND",
+  "negative_decision": "B01_TOTAL_ONLY_EXCEEDS_PRIOR_REPRESENTATION_BOUND",
+  "mixed_decision": "B01_REPRESENTATION_BOUND_DIAGNOSTIC_NONUNIFORM",
+  "firewalls": [
+    "NO_TOLERANCE_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_ITERATION_CHANGE",
+    "NO_AMPLITUDE_CHANGE",
+    "NO_REFERENCE_OR_PRODUCTION_SOURCE_MUTATION",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_R3_RECLASSIFICATION",
+    "NO_ROM1_WORK"
+  ],
+  "remedy_authorized": false,
+  "rom1a_authorized": false
+}
