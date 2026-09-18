@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-C",
+  "title": "Oxygen-stress source/state/owner decomposition",
+  "protocol": "RECONCILE -> SOURCE AUTHORITY -> HISTORICAL EVIDENCE BINDING -> OWNER/STATE CLASSIFICATION -> MIGRATION SLICING -> QUALIFY -> CLOSE",
+  "branch": "audit/ppa-wu05c-oxygen-authority",
+  "canonical_base": "781c829943c9e5880e5ab83281112e66f439ecf2",
+  "parent_authority": [
+    "integration/audits/PPA_WU05_STATUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+    "integration/audits/production_physics_application_envelope_gap_register.json"
+  ],
+  "corrected_reference": {
+    "snapshot": "B1.11",
+    "oxygenstress_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "rwu_micro_sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+    "swap_007": "reference/swap-4.3.1/patches/SWAP-007"
+  },
+  "recovered_historical_evidence": [
+    "A23AP_ROOTEXTRACTION_OXYGEN_CONTRACT.md",
+    "A23AP_REPORT.md",
+    "S9_from_S8.patch",
+    "S11_cumulative_from_pristine.patch",
+    "memory_classification_inventory.csv"
+  ],
+  "scope": [
+    "SWOXYGEN=1 Feddes oxygen family authority classification",
+    "SWOXYGEN=2/SWOXYGENTYPE=2 reproduction-family authority classification",
+    "SWOXYGEN=2/SWOXYGENTYPE=1 Bartholomeus-family authority classification",
+    "root-sink mass-owner boundary",
+    "hydraulic/thermal/shared-derived-data ownership",
+    "coupling derivative fail-closed implications"
+  ],
+  "non_goals": [
+    "production implementation",
+    "new oxygen equations",
+    "root uptake redesign",
+    "MICRO migration",
+    "salinity or frost stress migration",
+    "solver/tolerance/timestep change",
+    "mass-policy change",
+    "ROM"
+  ],
+  "pass_conditions": [
+    "B1.11 identities and SWAP-007 correction are explicit",
+    "reproduction family is separated from Feddes and Bartholomeus families",
+    "no persistent-state claim is generalized beyond recovered evidence",
+    "one accepted root-sink mass owner is preserved",
+    "thermal and hydraulic inputs are read-only external views",
+    "unknown Feddes/Bartholomeus state semantics fail closed pending exact source materialization",
+    "production src/ and reference/ trees are unchanged"
+  ]
+}
