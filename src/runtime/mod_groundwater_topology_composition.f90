@@ -198,21 +198,21 @@ contains
     status = GW_TOPOLOGY_OK
   end subroutine materialize_groundwater_topology
 
-  logical function groundwater_topology_ready(self) result(ready)
+  pure logical function groundwater_topology_ready(self) result(ready)
     class(groundwater_topology_t), intent(in) :: self
     ready = self%materialized .and. allocated(self%tiles) .and. allocated(self%cells)
     if (.not. ready) return
     ready = size(self%tiles) > 0 .and. size(self%cells) > 0
   end function groundwater_topology_ready
 
-  integer function groundwater_topology_tile_count(self) result(count)
+  pure integer function groundwater_topology_tile_count(self) result(count)
     class(groundwater_topology_t), intent(in) :: self
     count = 0
     if (.not. self%ready()) return
     count = size(self%tiles)
   end function groundwater_topology_tile_count
 
-  integer function groundwater_topology_cell_count(self) result(count)
+  pure integer function groundwater_topology_cell_count(self) result(count)
     class(groundwater_topology_t), intent(in) :: self
     count = 0
     if (.not. self%ready()) return
