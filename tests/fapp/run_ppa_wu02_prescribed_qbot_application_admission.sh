@@ -4,17 +4,35 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ppa-wu01-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ppa-wu02-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
-fail(){ echo "PPA_WU01_GATE_FAIL $*" >&2; exit 1; }
+fail(){ echo "PPA_WU02_GATE_FAIL $*" >&2; exit 1; }
+
+CANONICAL="12beef3e91f90f88b101c13af72cd216bccc63e3"
+changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
+[[ "$changed_src" == "src/runtime/mod_fmr_production_application_bootstrap.f90" ]] || fail "unexpected production delta: $changed_src"
+for locked in \
+  src/adapter/mod_b110_serialized_context_binding.f90 \
+  src/runtime/mod_fmr_serialized_reference_backend.f90 \
+  src/solver/mod_reference_richards_temporal_indicator.f90 \
+  src/solver/mod_soil_water_solver_contract.f90 \
+  src/legacy/b1_10_port/headcalc.f90 \
+  src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90; do
+  [[ "$(git rev-parse "HEAD:$locked")" == "$(git rev-parse "$CANONICAL:$locked")" ]] || fail "inherited authority drift: $locked"
+done
+grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI62P_STATUS.json || fail 'F-CI62 prescribed-qbot canonical authority missing'
+grep -Fq '"decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW"' qualification/F-VQ75_STATUS.json || fail 'F-VQ75 independent authority missing'
+echo 'PPA_WU02_SINGLE_APPLICATION_PRODUCTION_DELTA=PASS'
+echo 'PPA_WU02_LOWER_LEVEL_AUTHORITY_BLOB_LOCKS=PASS'
+echo 'PPA_WU02_FVQ75_FCI62_AUTHORITY_INHERITED=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
 
 src = Path("src/runtime/mod_fmr_production_application_bootstrap.f90").read_text().lower()
-test = Path("tests/fapp/test_ppa_wu01_production_application_bootstrap.f90").read_text().lower()
+test = Path("tests/fapp/test_ppa_wu02_prescribed_qbot_application_admission.f90").read_text().lower()
 
 required = [
     "fmr_production_application_bootstrap_t",
@@ -40,6 +58,8 @@ for forbidden in [
 
 assert "tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
 assert "tile%parameters%bottom_mode /= 2" in src
+assert "prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2" in src
+assert ".not. prescribed_qbot_profile" in src
 assert "production_application_groundwater_ready" in src
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
 assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
@@ -47,14 +67,14 @@ assert "if (groundwater_profile) then" in src
 assert "macropore_active" in src
 assert "frost_active" in src
 assert "root_extraction_active" in src
-assert "ppa-wu01 production application bootstrap gate pass" in test
+assert "ppa-wu02 production application bootstrap gate pass" in test
 
-print("PPA_WU01_FORTRAN_FMR_OWNERSHIP_STATIC=PASS")
-print("PPA_WU01_NO_QUALIFICATION_FIXTURE_PROMOTION_STATIC=PASS")
-print("PPA_WU01_NO_LEGACY_PARSER_STATIC=PASS")
-print("PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS")
-print("PPA_WU01_GROUNDWATER_MODE5_CONTEXT_GUARD_STATIC=PASS")
-print("PPA_WU01_OPTIONAL_GROUNDWATER_OWNERSHIP_STATIC=PASS")
+print("PPA_WU02_FORTRAN_FMR_OWNERSHIP_STATIC=PASS")
+print("PPA_WU02_NO_QUALIFICATION_FIXTURE_PROMOTION_STATIC=PASS")
+print("PPA_WU02_NO_LEGACY_PARSER_STATIC=PASS")
+print("PPA_WU02_PROFILE_FAIL_CLOSED_STATIC=PASS")
+print("PPA_WU02_GROUNDWATER_MODE5_CONTEXT_GUARD_STATIC=PASS")
+print("PPA_WU02_OPTIONAL_GROUNDWATER_OWNERSHIP_STATIC=PASS")
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -153,22 +173,22 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 -o "$OUT/test.o" || fail "compile test O$opt"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test_ppa_wu01" || fail "link O$opt"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu02_prescribed_qbot_application_admission.f90 -o "$OUT/test.o" || fail "compile test O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test_ppa_wu02" || fail "link O$opt"
 
-  "$OUT/test_ppa_wu01" > "$OUT/output.txt" 2>&1 || {
+  "$OUT/test_ppa_wu02" > "$OUT/output.txt" 2>&1 || {
     cat "$OUT/output.txt" >&2
     fail "runtime O$opt"
   }
-  grep '^PPA_WU01_' "$OUT/output.txt" > "$OUT/stable.txt"
-  grep -Fq 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
-  echo "PPA_WU01_O${opt}=PASS"
+  grep '^PPA_WU02_' "$OUT/output.txt" > "$OUT/stable.txt"
+  grep -Fq 'PPA-WU02 PRODUCTION APPLICATION BOOTSTRAP GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
+  echo "PPA_WU02_O${opt}=PASS"
 done
 
 diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
 cat "$BUILD/o0/output.txt"
 
-git diff --check --   src/runtime/mod_fmr_production_application_bootstrap.f90   tests/fapp/test_ppa_wu01_production_application_bootstrap.f90   tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+git diff --check --   src/runtime/mod_fmr_production_application_bootstrap.f90   tests/fapp/test_ppa_wu02_prescribed_qbot_application_admission.f90   tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
 
-echo 'PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS'
-echo 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS'
+echo 'PPA_WU02_O0_O2_OUTPUT_IDENTITY=PASS'
+echo 'PPA-WU02 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS'

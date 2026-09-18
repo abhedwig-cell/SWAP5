@@ -1,0 +1,139 @@
+{
+  "schema": "swap5.ppa_wu02.status.v1",
+  "work_unit": "PPA-WU02",
+  "title": "Source-bound lower-boundary application envelope inventory",
+  "branch": "audit/ppa-wu02-lower-boundary-envelope",
+  "reconcile_base": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "inventory": {
+    "exact_source_authority": "SWAP 4.3.1 B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "normal_legacy_selectors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "internal_special_states": [
+      "-2",
+      "9"
+    ],
+    "authority_unclear_remaining_for_normal_selectors": [],
+    "narrative_files": [
+      "docs/audits/PPA_WU02_LOWER_BOUNDARY_ENVELOPE.md",
+      "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md"
+    ],
+    "machine_matrix": "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+  },
+  "first_slice": {
+    "id": "PPA-WU02-A",
+    "decision": "QUALIFIED_TYPED_PRESCRIBED_QBOT_NORMAL_APPLICATION_ADMISSION",
+    "production_delta": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "semantic_delta": "Admit homogeneous bottom_mode=2 in the existing normal production application bootstrap.",
+    "inherited_science": [
+      "F-SI27",
+      "F-SI38",
+      "F-MR44R",
+      "F-VQ75",
+      "F-CI62",
+      "F-CI62P"
+    ],
+    "preserved_application_authority": [
+      "PPA-WU01 mode7 standalone",
+      "PPA-WU01/F-GC mode5 groundwater",
+      "F-APP02/F-CI95 SWBOTB=6 zero flux"
+    ],
+    "explicitly_not_admitted": [
+      "full legacy SWBOTB=2 parser/application semantics",
+      "SW2 sinusoidal forcing materializer",
+      "DATE2/QBOT2 legacy table adapter",
+      "oven-dry SWBOTB=2 to -2 automatic continuation",
+      "SWBOTB=1",
+      "SWBOTB=3",
+      "SWBOTB=4",
+      "SWBOTB=8",
+      "internal mode 9 as a normal application selector",
+      "mixed bottom-mode production profiles"
+    ]
+  },
+  "qualification": {
+    "workflow_run": 35374222568,
+    "owner_job": 105695000702,
+    "owner_conclusion": "success",
+    "independent_job": 105695282455,
+    "independent_conclusion": "success",
+    "ppa_wu01_preservation_run": 35374222321,
+    "ppa_wu01_preservation_conclusion": "success",
+    "checks": {
+      "single_application_production_delta": "PASS",
+      "lower_level_science_blob_locks": "PASS",
+      "nonzero_prescribed_qbot_reached_through_application": "PASS",
+      "hard_mass": "PASS",
+      "generic_time_exact_endpoint": "PASS",
+      "O0_O2_identity": "PASS",
+      "inherited_positive_zero_negative_sign_oracle": "PASS_FVQ75",
+      "inherited_rollback_retry_transaction_authority": "PASS_FMR44R_FVQ75",
+      "unsupported_profile_fail_closed": "PASS",
+      "mode7_application_preservation": "PASS",
+      "mode5_groundwater_preservation": "PASS",
+      "swbotb6_zero_flux_adapter_unchanged": "PASS"
+    }
+  },
+  "migration_slices": [
+    {
+      "priority": 1,
+      "id": "PPA-WU02-A",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION"
+    },
+    {
+      "priority": 2,
+      "id": "PPA-WU02-B",
+      "scope": "legacy SWBOTB=2 sinus/table forcing plus exact 2-to--2 dry continuation",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "priority": 3,
+      "id": "PPA-WU02-C",
+      "scope": "ordinary prescribed-head mode5 application adapter outside groundwater ownership",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "priority": 4,
+      "id": "PPA-WU02-D",
+      "scope": "SWBOTB=1 prescribed-groundwater-level hybrid state contract",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "priority": 5,
+      "id": "PPA-WU02-E",
+      "scope": "SWBOTB=3 Cauchy explicit/implicit contract",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "priority": 6,
+      "id": "PPA-WU02-F",
+      "scope": "SWBOTB=4 q(gwl) state/timing boundary law",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "priority": 7,
+      "id": "PPA-WU02-G",
+      "scope": "SWBOTB=8 lysimeter active-set continuation",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    }
+  ],
+  "exit_assessment": {
+    "catalogue_evidence_based": true,
+    "common_modes_no_unnecessary_H_AUTHORITY_UNCLEAR": true,
+    "dependency_aware_migration_slices_defined": true,
+    "direct_admitable_low_science_risk_slice_executed": true,
+    "canonical_admission_pending": true
+  }
+}
