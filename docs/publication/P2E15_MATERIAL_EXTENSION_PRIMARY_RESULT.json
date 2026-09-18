@@ -1,0 +1,191 @@
+{
+  "schema": "swap5.publication.p2e15-material-extension-primary-result.v1",
+  "workunit": "PUB-P2E15",
+  "phase": "PRIMARY_HOLDOUT_COMPLETE",
+  "parent_authority": {
+    "head": "e680334ba1e8352db8d980fa8723ac31a279f636",
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "verdict": "QUALIFIED_REFERENCE_ONLY_36_MATERIAL_THRESHOLD_SURFACE"
+  },
+  "executed_head": "171e6f824899b68403d5eb293672b68f79ee1700",
+  "authorities": {
+    "preregistration_blob": "930e2dd0af83c28544718aed08e7a88598cd3fe5",
+    "test_blob": "9b5a94d4fc0ae6933e01bdf44a38d65369d21c72",
+    "runner_blob": "acd2ef48f2777efedd0cbe69f548f4e7a661bfba",
+    "workflow_blob": "55a1897a9987c33c6aa5ff631ab257ba82e5b4c8"
+  },
+  "execution": {
+    "first_attempt": {
+      "workflow_run": 35290429228,
+      "job": 105431859699,
+      "conclusion": "FAIL_PRE_SCIENTIFIC_AUTHORITY_VARIABLE",
+      "cause": "runner retained obsolete P2E09_RESULT_BLOB variable name in the threshold-authority check",
+      "cases_executed": 0,
+      "scientific_result_generated": false,
+      "matrix_or_threshold_changed_after_failure": false
+    },
+    "qualified_attempt": {
+      "workflow_run": 35290525541,
+      "job": 105432153537,
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_identical": true,
+      "output_sha256": "db02085fed1c85504de16fb285a396f52cb163589e91f8b578ad17997ae8f8c8"
+    }
+  },
+  "primary_holdout": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "material_count": 30,
+    "Se": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 180,
+    "admissible_count": 180,
+    "discrepancy_fail_count": 0,
+    "reference_invalid_count": 0,
+    "rossfast_invalid_count": 0,
+    "both_invalid_count": 0,
+    "admissible_fraction": 1,
+    "by_Se": {
+      "0.65": {
+        "cases": 60,
+        "admissible": 60,
+        "fraction": 1
+      },
+      "0.85": {
+        "cases": 60,
+        "admissible": 60,
+        "fraction": 1
+      },
+      "0.96": {
+        "cases": 60,
+        "admissible": 60,
+        "fraction": 1
+      }
+    },
+    "by_material": "All 30 materials were 6/6 admissible."
+  },
+  "metric_fail_counts": {
+    "D_h_inf_cm": 0,
+    "D_h_rms_cm": 0,
+    "D_theta_inf": 0,
+    "D_theta_rms": 0,
+    "D_storage_abs_cm": 0
+  },
+  "maximum_fraction_of_frozen_threshold": {
+    "D_h_inf_cm": {
+      "fraction": 0.19742706476083827,
+      "value": 0.01122257226283807,
+      "threshold": 0.05684414280500505,
+      "case": 64,
+      "material": "B13",
+      "Se": 0.85,
+      "forcing": "NOMINAL"
+    },
+    "D_h_rms_cm": {
+      "fraction": 0.21912017861076086,
+      "value": 0.005059588324863339,
+      "threshold": 0.02309047189054667,
+      "case": 64,
+      "material": "B13",
+      "Se": 0.85,
+      "forcing": "NOMINAL"
+    },
+    "D_theta_inf": {
+      "fraction": 0.24775809956400627,
+      "value": 0.00030410164202615553,
+      "threshold": 0.0012274135237608785,
+      "case": 24,
+      "material": "B05",
+      "Se": 0.96,
+      "forcing": "NOMINAL"
+    },
+    "D_theta_rms": {
+      "fraction": 0.2846627521411235,
+      "value": 0.00010176579263756339,
+      "threshold": 0.00035749599085978164,
+      "case": 24,
+      "material": "B05",
+      "Se": 0.96,
+      "forcing": "NOMINAL"
+    },
+    "D_storage_abs_cm": {
+      "fraction": 1,
+      "value": 2.842170943040401e-14,
+      "threshold": 2.842170943040401e-14,
+      "case": 47,
+      "material": "B09",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "note": "Exact inclusive-boundary contact at the frozen machine-scale storage envelope; classified admissible by the preregistered <= rule."
+    }
+  },
+  "hard_route_diagnostics": {
+    "max_abs_reference_integrated_mass_residual_cm": {
+      "value": 1.5840134759415038e-15,
+      "case": 123
+    },
+    "max_abs_rossfast_integrated_mass_residual_cm": {
+      "value": 4.8269770215183063e-14,
+      "case": 172
+    },
+    "hard_limit_cm": 1e-12,
+    "fallback_observed": false
+  },
+  "interpretation": {
+    "primary": "Within the separately constructed common E0 state domain and the two retained forcing classes, the prospectively frozen candidate-independent admission rule transferred to all 180 previously unobserved material-axis cases.",
+    "strongest_supported_scope": "30 previously unobserved extension materials, Se={0.65,0.85,0.96}, DRYING/NOMINAL, one fixed 0.0016-day solver-seam request, homogeneous 16 x 10 cm grid, zero distributed sources/sinks.",
+    "boundary_note": "The result does not restore Se=0.98 to the common domain and does not admit WETTING, transaction-level controller equivalence, heterogeneous profiles, root sinks, groundwater coupling, or performance claims.",
+    "storage_note": "The largest storage discrepancy exactly equals the inclusive frozen storage threshold. This is retained as a boundary observation rather than described as margin."
+  },
+  "firewalls": {
+    "threshold_retuned": false,
+    "threshold_stratification_changed": false,
+    "case_removed_or_replaced": false,
+    "source_or_reference_changed": false,
+    "solver_api_changed": false,
+    "automatic_fallback": false,
+    "performance_claim_evaluated": false,
+    "transaction_level_pair_executed": false
+  },
+  "verdict": "PRIMARY_MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_FROZEN_COMMON_DOMAIN_180_OF_180",
+  "next_permitted_action": "Update PUB-SQ governance to close the material-axis extension result. The next independent primary question is the admissibility-boundary experiment, which requires its own preregistration and must not use performance or transaction-level outcomes as compensating evidence."
+}
