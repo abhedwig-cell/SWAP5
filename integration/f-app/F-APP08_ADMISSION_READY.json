@@ -14,11 +14,14 @@
     "output_sha256": "7895914455af07fb906b6ae6efadd9f420427b129d0120049abde56a8b858c56"
   },
   "independent_qualification": {
-    "workunit": "F-VQ122",
-    "run_id": 35346574098,
-    "job_id": 105604438820,
+    "workunit": "F-VQ125",
+    "branch": "qualification/f-vq125-fapp08-rutter-output-independent",
+    "subject_head": "3000730b402eb17726b6bdcb1f9f63adb9f6b68a",
+    "run_id": 35350233516,
+    "job_id": 105616351269,
     "conclusion": "success",
-    "output_sha256": "cec45889fb96c12268106d44a45d924878fb196a02a22356aa8a2466a932393b"
+    "output_sha256": "ca3e02f6b57711505e519aa2b1ab65ea774788047059c3193a56be5763d58628",
+    "production_mutation": "NONE"
   },
   "semantic_scope": [
     "Rutter net rain -> dynamic-top precipitation",
@@ -31,5 +34,6 @@
     "inactive crop canonical zero",
     "no solver/transaction/timestep/retry/tolerance change"
   ],
-  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION"
+  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION",
+  "qualification_authority_correction": "F-VQ122 application identifier superseded because F-VQ122 canonical authority belongs to F-GC49B."
 }
