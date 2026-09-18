@@ -385,3 +385,18 @@ The register should describe readiness, not rewrite past chronology.
 - scientific consequence: the earlier time-coordinate defect is resolved, but the strongest frozen prescribed-head transition still shows unresolved native integration refinement; N3 is not admitted as converged;
 - H2/H3 remain untested;
 - next permitted action: freeze a new refinement decision retaining NT-H60 and all existing adequacy tolerances; qualify the macro response for the finer contribution counts before executing a new native-time refinement study.
+
+
+### 2026-09-18T00:49:21Z — PUB-GC macro envelope qualified through 128 contributions
+
+- frozen refinement decision: `PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0002.md`, commit `f55b87322a04977b342e00057b3bd47375580233`;
+- frozen high-count spec: `PUB-GC_MACRO_HIGH_COUNT_EXTENSION_SPEC.md`, commit `e6cfc6f23e169e6941c3bae405f2ac92c71cc392`;
+- frozen qualification manifest: `PUB-GC-MACRO-WINDOW-QUAL-0003`, commit `0f896ab1fb41af8fe8bd8971fe2fc5873dc07748`;
+- unchanged macro module blob: `0a9461368f536381ca23390b255f8c369cb1e474`;
+- controlling execution: `research/pub-gc-macro-high-count@2189109de15df92d6712b5a3f5b27c1a922edd42`, run `35292747628`, job `105438904261`, PASS;
+- Q0-Q8 remain PASS; Q9A 64-contribution closure PASS; Q9B 128-contribution closure PASS; Q9C shifted +10000 d 128-contribution closure PASS;
+- exact O0/O2 scientific-output identity PASS, SHA-256 `454868e0bd6ae5576212ded5bcd9866cab34196c98b3334b2b0fb98d7fcf73f4`;
+- artifact `10526527496`, digest `sha256:21ef3f7f6ad109c35a12664abc2b239971020f7d1a39ea31dbedbcdf2b90114e`;
+- first run `35292701637` is retained as `INVALID_QUALIFICATION_RUNNER_BASE`; no scientific oracle was reached and no criterion changed;
+- result receipt: `docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0003.yaml`, commit `c60a91c6749c00300f75a6f21d8a95c17d2c970f`;
+- next permitted action: preregister and execute NATIVE-TIME-0003 with unchanged cases/tolerances, extended dyadic ladder N0-N5, N4→N5 fine guard and mechanical coarsest-passing selection.
