@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.f-rom1.closeout.v2",
+  "workstream": "F-ROM",
+  "capability": "ROM1_PREDICTIVE_STATE_SUFFICIENCY",
+  "governing_authority": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "decision": "MATERIAL_SPECIFIC_ONLY",
+  "interim_decision_corrected_before_ROM2_execution": "PROCEED_TO_ROM2_B01_SCOPE_ONLY",
+  "evidence": {
+    "ROM1A": {
+      "decision": "PROCEED_TO_ROM1B",
+      "library_states": 768,
+      "discovery_states": 512,
+      "heldout_states": 256
+    },
+    "ROM1B2": {
+      "decision": "ROM1B2_DISCOVERY_PREDICTIVE_AMBIGUITY_COMPLETE",
+      "Z1_ambiguous_pairs": 8,
+      "Z2_ambiguous_pairs": 8,
+      "Z4_ambiguous_pairs": 8,
+      "Z8_ambiguous_pairs": 8,
+      "reduced_survivors": 0
+    },
+    "ROM1B3Q1": {
+      "decision": "ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+      "coordinate": "Z8_PLUS_G8",
+      "dimension": 9,
+      "discovery_collision_count": 0,
+      "minimum_separation_margin_over_B01_theta_floor": 6.031262132499826e-7
+    },
+    "ROM1B4": {
+      "decision": "ROM1B4_HELDOUT_STATE_SEPARATION_QUALIFIED",
+      "heldout_inclusive_collision_count": 0,
+      "heldout_driven_retuning": false
+    },
+    "ROM1X1": {
+      "decision": "ROM1X1_B14_MATERIAL_TRANSFER_STATE_SEPARATION_NO_GO",
+      "B14_collision_count": 351
+    },
+    "ROM1X2": {
+      "decision": "ROM1X2_B14_PREDICTIVE_AMBIGUITY_NOT_ESTABLISHED",
+      "frozen_pair_count": 8,
+      "probe_record_count": 192,
+      "ambiguity_record_count": 0,
+      "maximum_ratio_to_pairwise_storage_scale": 0.3,
+      "artifact_id": 10569585461,
+      "artifact_digest": "sha256:d32aaa2b0020618d98d939b6eb49b2afac8c3282c88b2d1e650664c97f3c5efa"
+    }
+  },
+  "gate_adjudication": {
+    "B01_discovery_state_sufficiency": "PASS",
+    "B01_heldout_state_separation": "PASS",
+    "B14_cross_material_transfer": "FAIL_NOT_ADMITTED",
+    "ROM2_transition_under_current_proposition": "FAIL"
+  },
+  "scope": {
+    "positive_state_sufficiency": "B01_WITHIN_MATERIAL_ONLY",
+    "B14_material_transfer": "NOT_ADMITTED",
+    "ROM2": "NOT_AUTHORIZED_UNDER_CURRENT_PROPOSITION",
+    "production_ROM": "NOT_AUTHORIZED"
+  },
+  "valid_negative_outcome": "MATERIAL_SPECIFIC_ONLY",
+  "next": "NO_AUTOMATIC_ROM2_CONTINUATION"
+}

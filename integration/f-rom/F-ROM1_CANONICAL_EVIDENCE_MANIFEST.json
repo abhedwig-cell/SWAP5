@@ -1,0 +1,165 @@
+{
+  "schema": "swap5.f-rom1.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "purpose": "Minimal canonical evidence index for the terminal ROM-1 MATERIAL_SPECIFIC_ONLY adjudication. It preserves immutable research provenance without importing research-only solver seams, tests or workflows into canonical.",
+  "canonical_base": "de656fa2b22433c335a878a69be1eaa0840ba37c",
+  "research_source": {
+    "branch": "work/f-rom0-close-expand-accepted-domain",
+    "head": "2d31cec3189879927a6e264400c8b76063121a18",
+    "checkpoint_pr": 344
+  },
+  "governing_authority": {
+    "path": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+    "already_on_canonical": true,
+    "transition_rule": "ROM-2 requires a small practical state that survives held-out histories/probes and transfers across the preregistered contrasting-material challenge."
+  },
+  "canonicalized_files": [
+    "docs/science/F-ROM1_FINAL_STATE_SUFFICIENCY_RECONCILIATION.md",
+    "integration/f-rom/F-ROM1A_SUCCESSOR_CLOSEOUT.json",
+    "integration/f-rom/F-ROM1_CLOSEOUT.json",
+    "integration/f-rom/F-ROM1_STATUS.json"
+  ],
+  "evidence_index": {
+    "integration/f-rom/ROM1AR2_PREREGISTRATION.json": {
+      "blob_sha": "8828e2131c8b7ecc05d0f1c24f41582eda98b10a"
+    },
+    "integration/f-rom/ROM1AR2_RESULT.json": {
+      "blob_sha": "a73d514c5e63d420572db3ca0958c11c06ecf158"
+    },
+    "integration/f-rom/ROM1AR2_STATUS.json": {
+      "blob_sha": "9e26851e71e541594f48c4973679c94cd71027e4"
+    },
+    "integration/f-rom/ROM1B1_PREREGISTRATION.json": {
+      "blob_sha": "023f703b4efd6f6f87af866737ac6d61144bb40e"
+    },
+    "integration/f-rom/ROM1B1_PAIR_MANIFEST.json": {
+      "blob_sha": "225fdaff18ae0119d3995f6ca950d4453d67fc75"
+    },
+    "integration/f-rom/ROM1B1_RESULT.json": {
+      "blob_sha": "a38702e1ea3c55e18bf2bf251fdbf1627aaaedba"
+    },
+    "integration/f-rom/ROM1B1_STATUS.json": {
+      "blob_sha": "845691410b654aeafdcfd31146c391d33a4000f9"
+    },
+    "integration/f-rom/ROM1B2_PREREGISTRATION.json": {
+      "blob_sha": "8e4ec4225f766757c6c8dc9dd47cd95bbd83898a"
+    },
+    "integration/f-rom/ROM1B2_RESULT.json": {
+      "blob_sha": "8174f473a97c695bc42144050760ea00fd60dc8b"
+    },
+    "integration/f-rom/ROM1B2_STATUS.json": {
+      "blob_sha": "e18477197d17ff974010f6edb40a15207ff68a40"
+    },
+    "integration/f-rom/ROM1B3Q1_PREREGISTRATION.json": {
+      "blob_sha": "2329d4c91f86b030a0224b5fc922c858423c8694"
+    },
+    "integration/f-rom/ROM1B3Q1_RESULT.json": {
+      "blob_sha": "c590f967f41629480566f3188c9cbf2311899473"
+    },
+    "integration/f-rom/ROM1B3Q1_STATUS.json": {
+      "blob_sha": "7155a4a8f85b99f960aa3758d1a41f294521c6d1"
+    },
+    "integration/f-rom/ROM1B4_PREREGISTRATION.json": {
+      "blob_sha": "17862cae3ee8a2f618b9b63a6dfb6569a90407c8"
+    },
+    "integration/f-rom/ROM1B4_RESULT.json": {
+      "blob_sha": "977413df00424ed6c19e0e90bf83e751ac4eeed6"
+    },
+    "integration/f-rom/ROM1B4_STATUS.json": {
+      "blob_sha": "f8b4f1efa21a84ac160f50d0ad18f45c69bea99a"
+    },
+    "integration/f-rom/ROM1X1_PREREGISTRATION.json": {
+      "blob_sha": "f9577f4bb43da7b0cdc310d21fdd7e104da37fab"
+    },
+    "integration/f-rom/ROM1X1_COLLISION_MANIFEST.json": {
+      "blob_sha": "614fcd21dc6e46e5c241757ae1ed16b24c0e5e63"
+    },
+    "integration/f-rom/ROM1X1_RESULT.json": {
+      "blob_sha": "938a9c1f70b5de5dc1917c0d3d984316044c1345"
+    },
+    "integration/f-rom/ROM1X1_STATUS.json": {
+      "blob_sha": "e167a6218c9679c8f1d47af1697f834f401d59c4"
+    },
+    "integration/f-rom/ROM1X2_PREREGISTRATION.json": {
+      "blob_sha": "66dbb9515b3ffdc71c34553aa520f6a2dbc19769"
+    },
+    "integration/f-rom/ROM1X2_RESULT.json": {
+      "blob_sha": "c35e873f6e0adcb2fca4e332abe3676c736a1bbf"
+    },
+    "integration/f-rom/ROM1X2_STATUS.json": {
+      "blob_sha": "ec992b153670feaf4d60d70c46051a461f12ed98"
+    }
+  },
+  "terminal_evidence": {
+    "ROM1AR2": {
+      "decision": "ROM1AR2_REACHABLE_STATE_LIBRARY_QUALIFIED",
+      "workflow_run": 35379176697,
+      "artifact_id": 10561841507,
+      "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+      "states": 768,
+      "discovery": 512,
+      "heldout": 256
+    },
+    "ROM1B1": {
+      "decision": "ROM1B1_COLLISION_CENSUS_COMPLETE",
+      "workflow_run": 35379652400,
+      "artifact_id": 10561507704,
+      "artifact_digest": "sha256:0c6b47ef1bcb5f38155da27427f11b316b6b2c316bec2984fc42b66b4ee2ed54"
+    },
+    "ROM1B2": {
+      "decision": "ROM1B2_DISCOVERY_PREDICTIVE_AMBIGUITY_COMPLETE",
+      "workflow_run": 35392762490,
+      "artifact_id": 10565354779,
+      "artifact_digest": "sha256:5cb11dbd45491b956ed8136c1602907c1e11bddfde0e12ac2741fbab0c38993c"
+    },
+    "ROM1B3Q1": {
+      "decision": "ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+      "coordinate": "Z8_PLUS_G8",
+      "dimension": 9,
+      "workflow_run": 35393534446,
+      "artifact_id": 10566791914,
+      "artifact_digest": "sha256:9c437ebcd9dc4953a59a823c5f46894bc1939b76e97a629113d294ca9ca72d41"
+    },
+    "ROM1B4": {
+      "decision": "ROM1B4_HELDOUT_STATE_SEPARATION_QUALIFIED",
+      "workflow_run": 35393918598,
+      "artifact_id": 10567371095,
+      "artifact_digest": "sha256:9225d3adc0f09a432c1755362272fbe933bf769578b1df26f4660183da4711ae"
+    },
+    "ROM1X1": {
+      "decision": "ROM1X1_B14_MATERIAL_TRANSFER_STATE_SEPARATION_NO_GO",
+      "collision_count": 351,
+      "workflow_run": 35394206017,
+      "artifact_id": 10566892886,
+      "artifact_digest": "sha256:12ebef87ead22cac3cda4ed832a4f7e230faf4238936cc760ce3a67e3b7202d9"
+    },
+    "ROM1X2": {
+      "decision": "ROM1X2_B14_PREDICTIVE_AMBIGUITY_NOT_ESTABLISHED",
+      "frozen_pair_count": 8,
+      "probe_record_count": 192,
+      "ambiguity_record_count": 0,
+      "workflow_run": 35397838516,
+      "artifact_id": 10569585461,
+      "artifact_digest": "sha256:d32aaa2b0020618d98d939b6eb49b2afac8c3282c88b2d1e650664c97f3c5efa"
+    }
+  },
+  "final_adjudication": {
+    "decision": "MATERIAL_SPECIFIC_ONLY",
+    "B01_state_sufficiency": "PASS_WITHIN_MATERIAL_SCOPE",
+    "B14_cross_material_transfer": "NOT_ADMITTED",
+    "ROM2_authorized": false,
+    "production_ROM_authorized": false,
+    "next": "STOP_ROM_TRACK_OR_OPEN_NEW_INDEPENDENTLY_GOVERNED_MATERIAL_SPECIFIC_PROPOSITION_AMENDMENT"
+  },
+  "non_imported_surfaces": [
+    "src/**",
+    "reference/**",
+    "tests/**",
+    ".github/workflows/**"
+  ],
+  "nonclaims": [
+    "No research Reference fallback is admitted to production.",
+    "ROM-2 is not authorized under the current proposition.",
+    "Historical ROM-0 and ROM-1 evidence is not reclassified."
+  ]
+}
