@@ -62,7 +62,11 @@ def font_embedding(pdf: Path) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     lines = p.stdout.splitlines()
     for line in lines:
-        if not line.strip() or line.startswith("name") or set(line.strip()) == {"-"}:
+        stripped = line.strip()
+        if not stripped or stripped.startswith("name"):
+            continue
+        # pdffonts prints a column separator containing dashes and spaces.
+        if stripped.replace("-", "").replace(" ", "") == "":
             continue
         parts = line.split()
         if len(parts) < 7:
