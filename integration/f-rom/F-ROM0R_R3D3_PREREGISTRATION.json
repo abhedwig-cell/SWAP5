@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.f-rom0r.r3d3-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D3",
+  "title": "R3 representation-bounded total-balance candidate-policy qualification",
+  "phase": "PREREGISTERED_BEFORE_CANDIDATE_POLICY_EXECUTION",
+  "predecessors": {
+    "R3": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "R3D1": "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+    "R3D2": "B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND"
+  },
+  "purpose": "Qualify, on the exact frozen R3 four-case domain, a research-only Reference candidate policy that changes only the total-column nonlinear convergence criterion using the independently established pre-solve floating-point representation formula.",
+  "candidate_policy": {
+    "name": "R3_REPRESENTATION_BOUNDED_TOTAL",
+    "representation_bound_cm_formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "total_balance_rate_tolerance_formula": "max(1.0e-12, representation_bound_cm / dt_day)",
+    "formula_inputs": [
+      "material theta_s",
+      "accepted pre-solve base-state water_content",
+      "cell thickness dz",
+      "current prescribed dt"
+    ],
+    "failed_or_current_residual_used": false,
+    "empirical_safety_factor": "none",
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "automatic_retry_or_subdivision": false
+  },
+  "physical_matrix": {
+    "materials": ["B01","B14"],
+    "geometry": {"nodes":16,"dz_cm":10,"depth_cm":160},
+    "seed": "R1 gravity-steady Se=0.85, two 0.0016-day qeq/qeq intervals",
+    "perturbation_dt_day": 0.0008,
+    "perturbation_intervals": 16,
+    "cases": [
+      {"id":"BOTTOM_HEAD_RISE","bottom_mode":5,"bottom_head_expression":"0.75*h0","top_flux":"qeq"},
+      {"id":"BOTTOM_HEAD_FALL","bottom_mode":5,"bottom_head_expression":"1.25*h0","top_flux":"qeq"}
+    ]
+  },
+  "paired_control": {
+    "id": "ORIGINAL_R3_FIXED_TOTAL_CONTROL",
+    "total_balance_tolerance_cm_per_day": 1e-12,
+    "rule": "Reproduce the original R3 control trajectory independently for every case. Do not reinterpret its B01 failures.",
+    "expected": {
+      "B01_BOTTOM_HEAD_RISE": "FAIL_AT_STEP_11_RETRY_TOTAL_ONLY",
+      "B01_BOTTOM_HEAD_FALL": "FAIL_AT_STEP_10_RETRY_TOTAL_ONLY",
+      "B14_BOTTOM_HEAD_RISE": "PASS_16",
+      "B14_BOTTOM_HEAD_FALL": "PASS_16"
+    }
+  },
+  "overlap_neutrality": {
+    "scope": "Every endpoint accepted by both original control and candidate policy before the control terminates.",
+    "required": [
+      "PRESSURE_HEAD_PROFILE_BIT_IDENTITY",
+      "WATER_CONTENT_PROFILE_BIT_IDENTITY",
+      "PONDING_BIT_IDENTITY",
+      "GROUNDWATER_LEVEL_BIT_IDENTITY",
+      "BOTTOM_EXCHANGE_BIT_IDENTITY",
+      "TERMINAL_BOTTOM_FLUX_BIT_IDENTITY",
+      "MASS_RESIDUAL_BIT_IDENTITY",
+      "NONLINEAR_ITERATION_IDENTITY",
+      "BACKTRACKING_IDENTITY"
+    ],
+    "reason": "The candidate total criterion must not alter already valid original-R3 endpoints; it may only admit a state at or beyond a proven total-only control failure."
+  },
+  "candidate_qualification": [
+    "ALL_FOUR_CANDIDATE_TRAJECTORIES_COMPLETE_16_PERTURBATION_STEPS",
+    "EVERY_CANDIDATE_STEP_EXACTLY_ONE_PHYSICAL_ADVANCE",
+    "ZERO_AUTOMATIC_RETRY_OR_SUBDIVISION",
+    "HARD_TRANSACTION_MASS_GATE_EVERY_STEP",
+    "REPRESENTATION_BOUND_COMPUTED_PRE_SOLVE_EVERY_STEP",
+    "REPRESENTATION_FORMULA_FINITE_POSITIVE",
+    "NO_OBSERVED_RESIDUAL_IN_POLICY_FORMULA",
+    "OVERLAP_NEUTRALITY_PASS",
+    "B14_DIRECTIONAL_SEPARATION_PRESERVED",
+    "B01_DIRECTIONAL_SEPARATION_ESTABLISHED_ON_FULL_HORIZON",
+    "REPEAT_STDOUT_BITWISE_IDENTITY",
+    "O0_O2_BYTE_IDENTITY"
+  ],
+  "directional_reachability": {
+    "head_rise_lower_storage_greater_than_head_fall": true,
+    "head_rise_bottom_outward_exchange_less_than_head_fall": true,
+    "absolute_flux_sign_reversal_required": false
+  },
+  "decisions": [
+    "R3_REPRESENTATION_BOUNDED_TOTAL_POLICY_QUALIFIED",
+    "R3_REPRESENTATION_BOUNDED_TOTAL_POLICY_NO_GO",
+    "R3_POLICY_OVERLAP_NEUTRALITY_FAILED",
+    "R3_POLICY_DIRECTIONAL_REACHABILITY_NOT_ESTABLISHED"
+  ],
+  "firewalls": [
+    "ORIGINAL_R3_NO_GO_REMAINS_UNCHANGED",
+    "NO_PRODUCTION_DEFAULT_CHANGE",
+    "NO_REFERENCE_SOURCE_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_FORCING_OR_BOTTOM_HEAD_CHANGE",
+    "NO_COMPARTMENT_TOLERANCE_CHANGE",
+    "NO_HEAD_TOLERANCE_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_CASE_REMOVAL",
+    "NO_ROM1_WORK"
+  ],
+  "production_admission_authorized": false,
+  "rom1a_authorized": false
+}
