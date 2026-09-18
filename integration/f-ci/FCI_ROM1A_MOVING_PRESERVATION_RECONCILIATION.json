@@ -2,7 +2,7 @@
   "schema": "swap5.fci_rom1a_moving_preservation_reconciliation.v1",
   "date": "2026-09-18",
   "work_unit": "FCI-ROM1A-PRESERVATION-RECONCILE",
-  "state": "REPAIRED_PENDING_REQUALIFICATION",
+  "state": "REPAIRED_POST_ADMISSION_REPLAY_PENDING_REQUALIFICATION",
   "trigger": {
     "canonical_head_at_start": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
     "failing_gate": "current-restricted-canonical-preservation",
@@ -23,7 +23,8 @@
   "allowed_delta": [
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
     ".github/workflows/fci-rom1a-moving-preservation-reconcile.yml",
-    "integration/f-ci/FCI_ROM1A_MOVING_PRESERVATION_RECONCILIATION.json"
+    "integration/f-ci/FCI_ROM1A_MOVING_PRESERVATION_RECONCILIATION.json",
+    "tests/rom/run_f_rom1a_i0_reference_observation_seam.sh"
   ],
   "reconciliation_contract": [
     "require the canonical F-ROM1A admission commit to be an ancestor",
@@ -44,6 +45,7 @@
   "repair": {
     "reason": "The original reconcile incorrectly required the detached qualification head itself to be an ancestor of canonical. Admission preserved the qualified two-file postimage on canonical but not that detached branch commit lineage.",
     "authority_rule": "Canonical admission ancestry plus exact qualified production blobs plus replayed observation-seam qualification.",
-    "production_source_changed": false
+    "production_source_changed": false,
+    "post_admission_replay": "Original preregistration-mode source-delta checks remain unchanged. Moving preservation explicitly requests a second mode that requires canonical admission ancestry, exact qualified kernel/backend blobs, and reruns the same scientific matrix."
   }
 }
