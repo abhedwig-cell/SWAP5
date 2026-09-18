@@ -1,0 +1,74 @@
+{
+  "schema": "pub-gc-gmd-archival-gate-v1",
+  "date": "2026-09-18",
+  "canonical_basis": "a0ee53c48a80dd443d46f60edf08044aeba98273",
+  "journal": {
+    "primary": "Geoscientific Model Development",
+    "manuscript_type": "Development and technical paper"
+  },
+  "scientific_state": {
+    "rq1_to_rq5_closed_bounded": true,
+    "e7_status": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "new_science_required_for_current_claim_set": false
+  },
+  "repository_observation": {
+    "status_a_release_candidate_permitted": true,
+    "release_version_policy_found": false,
+    "publication_version_identifier_found": false,
+    "root_license_file_found": false,
+    "citation_cff_found": false,
+    "zenodo_metadata_found": false,
+    "readme_license_statement": "Licence files originate from SWAP 4.3.1; repository documentation does not create a separate licensing decision."
+  },
+  "blockers": [
+    {
+      "id": "A1",
+      "state": "BLOCKED_GOVERNANCE_DECISION",
+      "subject": "SWAP5 publication release/version identifier"
+    },
+    {
+      "id": "A2",
+      "state": "BLOCKED_GOVERNANCE_OR_LEGAL_DECISION",
+      "subject": "software licence and redistribution authority"
+    },
+    {
+      "id": "A3",
+      "state": "BLOCKED_EXTERNAL_ARCHIVE_ACTION",
+      "subject": "persistent exact-version archive and DOI",
+      "depends_on": [
+        "A1",
+        "A2"
+      ]
+    },
+    {
+      "id": "A4",
+      "state": "BLOCKED_BY_A1",
+      "subject": "version-bound GMD title"
+    },
+    {
+      "id": "A5",
+      "state": "BLOCKED_BY_A2_A3",
+      "subject": "final Code and data availability statement"
+    }
+  ],
+  "external_reference_asset": {
+    "name": "SWAP 4.3.1 distribution",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "size_bytes": 8959314,
+    "redistributed_in_swap5": false
+  },
+  "forbidden_inference": [
+    "do not invent a SWAP5 semantic version",
+    "do not infer or select a licence from repository visibility",
+    "do not claim a DOI/archive before it exists",
+    "do not redistribute the external SWAP 4.3.1 asset"
+  ],
+  "closure_rule": [
+    "governed SWAP5 publication identifier exists",
+    "applicable software licence/redistribution authority is explicit",
+    "exact submission revision and public assets are persistently archived",
+    "archive has a unique persistent identifier/DOI",
+    "manuscript title and Code/data availability section bind to that archive",
+    "final archive identity is recorded in PUB-GC reproducibility manifest"
+  ]
+}
