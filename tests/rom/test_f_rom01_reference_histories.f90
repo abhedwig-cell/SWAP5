@@ -171,6 +171,8 @@ program test_f_rom01_reference_histories
        '|RETRY_ATTEMPTS_A=',retry_attempts_a,'|ACCEPTED_SUBSTEPS_B=',accepted_substeps_b, &
        '|RETRY_ATTEMPTS_B=',retry_attempts_b
   write(*,'(A)') 'F_ROM01_PRODUCTION_SOURCE_MUTATION=NONE'
+  write(*,'(A)') 'F_ROM01_REJECTED_RETRY_COMMIT=NONE'
+  write(*,'(A)') 'F_ROM01_V2_EXECUTION_POLICY=BOUNDED_BISECTION'
   write(*,'(A)') 'F_ROM01_SCIENTIFIC_SUFFICIENCY_VERDICT=NOT_SET_IN_PILOT'
   write(*,'(A)') 'F_ROM01_REFERENCE_HISTORY_PILOT=PASS'
 
