@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.f-rom0r.r3d3-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D3",
+  "title": "R3 representation-bounded total-balance candidate-policy qualification",
+  "execution": {
+    "workflow_run": 35373839115,
+    "workflow_job": 105693819062,
+    "executed_head": "b73eac5f168f501ca3e3da034e6d90f0a8e57178",
+    "artifact_id": 10559910871,
+    "artifact_digest": "sha256:826f6c05ae54c55624c6d1905f1f522f3810eb88b7495992368a7e4ebe997102",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "baseline_provenance": {
+    "B01_BOTTOM_HEAD_RISE": {"pass_steps":10,"fail_step":11},
+    "B01_BOTTOM_HEAD_FALL": {"pass_steps":9,"fail_step":10},
+    "B14_BOTTOM_HEAD_RISE": {"pass_steps":16,"fail_step":0},
+    "B14_BOTTOM_HEAD_FALL": {"pass_steps":16,"fail_step":0},
+    "reproduced": true
+  },
+  "candidate_policy": {
+    "formula": "max(1e-12 cm/day, 0.5*sum((spacing(theta_s)+spacing(theta_base_i))*dz_i)/dt)",
+    "representation_bound_cm": 8.881784197001252e-15,
+    "total_balance_rate_tolerance_range_cm_per_day": [
+      1.110223024625156e-11,
+      1.1102230246251585e-11
+    ],
+    "candidate_step_count": 64,
+    "candidate_case_pass_count": 4,
+    "candidate_case_fail_count": 0,
+    "max_abs_transaction_mass_residual_cm": 8.673617379884035e-19
+  },
+  "overlap_neutrality": {
+    "overlap_step_count": 51,
+    "expected_overlap_step_count": 51,
+    "all_bit_neutral": false,
+    "case_neutrality_all": false,
+    "observed_first_non_neutral_examples": [
+      {"material":"B01","case":"BOTTOM_HEAD_RISE","step":6},
+      {"material":"B01","case":"BOTTOM_HEAD_FALL","step":1},
+      {"material":"B14","case":"BOTTOM_HEAD_RISE","step":4},
+      {"material":"B14","case":"BOTTOM_HEAD_FALL","step":1}
+    ],
+    "interpretation": "Activating the larger prospective total-balance criterion from the first perturbation step can change the Newton stopping point before the original control encounters its total-only failure. The policy therefore does not preserve already valid R3 endpoints/work bitwise."
+  },
+  "directional_reachability": {
+    "B01": {
+      "head_rise_lower_storage_cm": 44.02746082292648,
+      "head_fall_lower_storage_cm": 43.90773804688335,
+      "head_rise_cumulative_bottom_outward_exchange_cm": -0.01284564738676487,
+      "head_fall_cumulative_bottom_outward_exchange_cm": 0.10687712865634702,
+      "directional_order_pass": true
+    },
+    "B14": {
+      "head_rise_lower_storage_cm": 42.69336964668223,
+      "head_fall_lower_storage_cm": 42.68854375248657,
+      "head_rise_cumulative_bottom_outward_exchange_cm": -0.0021612472614900877,
+      "head_fall_cumulative_bottom_outward_exchange_cm": 0.0026646469341575192,
+      "directional_order_pass": true
+    }
+  },
+  "decision": "R3_POLICY_OVERLAP_NEUTRALITY_FAILED",
+  "important_nonclaims": [
+    "The original R3 no-go is not reclassified.",
+    "Completion of all four candidate trajectories does not qualify the policy because overlap neutrality was preregistered as mandatory.",
+    "No production Reference default is changed.",
+    "No ROM-1 work is authorized."
+  ],
+  "production_default_changed": false,
+  "production_or_reference_source_mutated": false,
+  "rom1a_authorized": false
+}
