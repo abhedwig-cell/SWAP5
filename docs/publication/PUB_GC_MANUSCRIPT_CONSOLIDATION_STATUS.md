@@ -66,3 +66,12 @@ F7 remains the only planned primary figure blocked by the E7/M1-C3 prerequisite.
 - scientific readiness: RQ1–RQ4 evidence-bounded and internally complete;
 - principal planned scientific gap: RQ5 / E7 realistic transferability;
 - E8 remains deferred and is not a current submission prerequisite.
+
+
+## Reproducibility supplement
+
+- notation and authority glossary: `PUB_GC_NOTATION_AND_UNITS.md`;
+- journal-neutral supplementary methods/evidence: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md`;
+- machine-readable frozen provenance: `PUB_GC_REPRODUCIBILITY_MANIFEST.json`;
+- evidence coverage: E1–E6 complete/bounded; E7 preregistration and exact M1-C3 blocker recorded;
+- journal conversion may change formatting, not the evidence identities or failure classifications.
