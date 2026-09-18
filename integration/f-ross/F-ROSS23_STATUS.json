@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS23",
+  "title": "Static RossFast versus Reference production characterization",
+  "phase": "DESIGN",
+  "status": "PREREGISTERED_READY_TO_MEASURE",
+  "branch": "work/f-ross23-static-production-characterization",
+  "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
+  "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "62dfb5a52f665e490830dfb320167786cf67f63e",
+  "reused_evidence": ["F-ROSS13 36-material production admission","F-ROSS15 static six-material performance screen","F-ROSS16 static cost attribution"],
+  "new_evidence": ["integration/f-ross/F-ROSS23_STATIC_CHARACTERIZATION_PREREGISTRATION.json"],
+  "tests_executed_this_phase": [],
+  "verdict": "DESIGN_LOCKED__NEW_36_MATERIAL_MEASUREMENT_REQUIRED",
+  "mutations": ["new diagnostic branch","preregistration and checkpoint metadata only"],
+  "production_or_reference_mutation": false,
+  "next_permitted_action": "MEASURE_ONLY_216_CASE_STATIC_CHARACTERIZATION",
+  "exclusions": ["NO_OPTIMIZATION","NO_ADAPTIVE_SELECTION","NO_ARCHITECTURE_CHANGE","NO_TOLERANCE_CHANGE","NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"]
+}
