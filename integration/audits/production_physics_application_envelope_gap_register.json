@@ -1,0 +1,1625 @@
+{
+  "schema_version": 1,
+  "title": "SWAP5 Production Physics & Application Envelope Gap Register",
+  "audit_date": "2026-09-18",
+  "canonical_basis": {
+    "branch": "integration/f-ci-canonical",
+    "head": "71626be59b81d00a3fd6a5d5a561febe9b5023b8",
+    "initial_head": "73bd6571de1c7f17a34417d407b14075d58b8798",
+    "reconciliation": "Seven later commits changed publication E4 evidence only; no production/reference overlap with this audit."
+  },
+  "reference_authority": {
+    "family": "SWAP-4.3.1-corrected",
+    "snapshot": "B1.11",
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "classification_legend": {
+    "A_LEGACY_PRESENT": "Legacy capability established, but no stronger SWAP5 disposition can be made.",
+    "B_SW5_TYPED_PRODUCTION": "Typed production route is admitted in its stated capability scope.",
+    "C_SW5_RESTRICTED_PRODUCTION": "Typed production route is admitted only for an explicit restricted profile/composition.",
+    "D_QUALIFICATION_ONLY": "Implemented/qualified evidence exists but canonical production admission or normal application reachability is absent.",
+    "E_PRESERVED_BUT_NOT_TYPED": "Preserved through legacy/reference execution but not owned by a typed production route.",
+    "F_NOT_YET_MIGRATED": "Relevant legacy/product capability lacks a complete typed production route.",
+    "G_INTENTIONALLY_EXCLUDED": "Capability is explicitly out of SWAP5 target scope.",
+    "H_AUTHORITY_UNCLEAR": "Current repository evidence cannot resolve the exact authority or complete legacy semantics without overclaiming."
+  },
+  "production_reachability_rule": "Code presence is insufficient. A capability is production-reachable only when typed configuration/application ownership, runtime execution, state/transaction ownership, qualification and production admission form an evidenced path. A restricted caller-supplied typed path is classified C rather than B when a normal broad application bootstrap/config route is absent.",
+  "capabilities": [
+    {
+      "id": "PPA-ATM-01",
+      "subsystem": "atmospheric forcing",
+      "capability": "Resolved effective atmospheric forcing passed as typed, read-only interval forcing",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/interface_atmosphere.f90",
+          "SWAP/swap.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+        "integration/f-ci/F-CI40_STATUS.json"
+      ],
+      "typed_input_config_authority": "Explicit caller-supplied typed effective forcing for a contained numeric interval; no weather-file grammar authority.",
+      "state_ownership": "Forcing is ephemeral/read-only; no persistent forcing state in the executor.",
+      "transaction_status": "Consumed by serialized transactional column execution; only accepted physical transfers enter mass accounting.",
+      "qualification_evidence": [
+        "F-MR38",
+        "F-VQ55",
+        "F-CI40"
+      ],
+      "production_admission": "Canonical source admitted in the restricted explicit-effective-forcing envelope.",
+      "production_reachable": "RESTRICTED_TYPED_CALLER_ROUTE",
+      "restrictions": [
+        "No meteorological file parser",
+        "No forcing-registry deep copy",
+        "No generic normal-run bootstrap"
+      ],
+      "scientific_risk": "LOW for transport; MEDIUM for broad preprocessing semantics",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Production application bootstrap for ordinary SWAP runs"
+      ],
+      "priority_band": "P0"
+    },
+    {
+      "id": "PPA-ATM-02",
+      "subsystem": "atmospheric forcing",
+      "capability": "Legacy meteorological preprocessing, file/calendar scanning and complete weather-to-process derivation",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/readswap.f90",
+          "SWAP/timecontrol.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No complete typed production authority found for the legacy weather-file/preprocessing envelope.",
+      "state_ownership": "Legacy source owns file/cursor/update semantics; target ownership intentionally must remain outside kernel.",
+      "transaction_status": "Not established as a typed production route.",
+      "qualification_evidence": [
+        "integration/f-pm/F-PM06_STATUS.json documents forcing/I-O separation and migration boundaries"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Do not infer migration from individual ET/interception process modules"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "PPA-ATM-01",
+        "Application bootstrap/config authority"
+      ],
+      "priority_band": "P0"
+    },
+    {
+      "id": "PPA-TOP-01",
+      "subsystem": "dynamic top boundary",
+      "capability": "Atmospheric-head, flux, ponded-head and restricted linear-runoff top-boundary switching",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundtop.f90",
+          "SWAP/soilwater.f90",
+          "SWAP/surfacewater.f90",
+          "SWAP/MOD_runon.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+        "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+        "integration/f-kt/F-KT15_LINEAGE_RECONCILIATION.json",
+        "integration/f-si/F-SI35_FINAL_COMPLETION.json"
+      ],
+      "typed_input_config_authority": "b110_dynamic_top_boundary_request_t plus F-APP application bindings.",
+      "state_ownership": "Ponding is candidate/committed physical state; forcing rates are ephemeral.",
+      "transaction_status": "Inside mandatory production solver/transaction seam; rejected trial cannot publish ponding/runoff.",
+      "qualification_evidence": [
+        "F-KT15",
+        "F-CI58/F-SI35",
+        "F-APP04/F-APP06/F-APP08"
+      ],
+      "production_admission": "Canonical within bounded profile.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Active runoff supports the admitted linear profile; nonlinear runoff exponent route fails closed",
+        "No claim for every legacy surface-water option"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Resolved forcing",
+        "Surface evaporation demand"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-INT-00",
+      "subsystem": "interception",
+      "capability": "SWINTER=0 identity/no-interception route",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90",
+        "integration/f-app/F-APP06_ADMISSION_READY.json"
+      ],
+      "typed_input_config_authority": "Explicit typed SWINTER0 application composition for the qualified Hupsel envelope.",
+      "state_ownership": "No interception state.",
+      "transaction_status": "Stateless binding feeding transactional dynamic top boundary.",
+      "qualification_evidence": [
+        "F-APP06 exact B1.11 Hupsel identity"
+      ],
+      "production_admission": "Admitted typed application composition.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Hupsel-qualified composition; not a generic legacy parser"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "ET demand",
+        "Dynamic top boundary"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-INT-03",
+      "subsystem": "interception",
+      "capability": "SWINTER=3 Rutter dynamic canopy reservoir",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/swap.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_rutter_interception_process.f90",
+        "src/runtime/mod_fmr_rutter_output_application_binding.f90",
+        "integration/f-app/F-APP05_ADMISSION_READY.json",
+        "integration/f-app/F-APP08_ADMISSION_READY.json"
+      ],
+      "typed_input_config_authority": "Typed Rutter state/input/result and Hupsel application binding; no generic file bootstrap.",
+      "state_ownership": "Canopy liquid storage is explicit committed/candidate process state.",
+      "transaction_status": "Candidate reservoir state only commits with accepted outer transaction; output binding is fail-closed.",
+      "qualification_evidence": [
+        "F-APP05",
+        "F-APP08"
+      ],
+      "production_admission": "Admitted within qualified Hupsel/Rutter envelope.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Capacity-loss legacy semantics frozen; broader application composition not inferred"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Crop canopy view",
+        "PMdirect/reference ET demand",
+        "Dynamic top boundary"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-INT-12",
+      "subsystem": "interception",
+      "capability": "SWINTER=1/2 daily aggregate interception methods",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "None found in canonical production surface.",
+      "state_ownership": "Legacy source-window aggregate semantics; target state/event ownership mapped by F-PM06 but not implemented.",
+      "transaction_status": "Not production bound.",
+      "qualification_evidence": [
+        "integration/f-pm/F-PM06_STATUS.json",
+        "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "F-PM06 explicitly says SWINTER1/2 production providers are not qualified"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "MEDIUM",
+      "dependencies": [
+        "Atmospheric preprocessing",
+        "ET ownership",
+        "Application bootstrap"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-ET-01",
+      "subsystem": "reference ET",
+      "capability": "Restricted SWETR=1 reference-ET demand to potential transpiration/soil/pond evaporation",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_reference_et_demand_process.f90",
+        "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+        "integration/f-ci/F-CI27_STATUS.json"
+      ],
+      "typed_input_config_authority": "reference_et_demand_forcing_t + canopy view + explicit forcing validity span.",
+      "state_ownership": "Stateless demand producer.",
+      "transaction_status": "Stateless recomputation; potential demands are not mass withdrawals.",
+      "qualification_evidence": [
+        "F-PM06A",
+        "F-VQ36 13,824 cases",
+        "F-CI27"
+      ],
+      "production_admission": "Canonical admitted restricted runtime binding.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "SWETR=1, SWMETDETAIL=0, SWDIVIDE=0, SWINTER=0, SWEVAP=1, SWREDU=0, SWCFBS=0"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Typed canopy view",
+        "Resolved reference ET forcing"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-ET-00",
+      "subsystem": "reference ET",
+      "capability": "SWETR=0 PMdirect/Penman-Monteith Hupsel route",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_pmdirect_swetr0_process.f90",
+        "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90",
+        "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90",
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+        "integration/f-app/F-APP04_ADMISSION_READY_CLOSE.json"
+      ],
+      "typed_input_config_authority": "Typed already-resolved weather/site/canopy values in F-APP restricted composition.",
+      "state_ownership": "PMdirect process is current-result/stateless in admitted profile.",
+      "transaction_status": "Bound to typed top/root paths; physical sinks commit downstream.",
+      "qualification_evidence": [
+        "F-APP03",
+        "F-APP04",
+        "F-APP06/F-APP08 preservation"
+      ],
+      "production_admission": "Admitted restricted application composition.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Not a generic meteorological file route",
+        "No claim for detailed-meteo variants outside admitted profile"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Application bootstrap",
+        "Canopy inputs",
+        "Dynamic top/root binding"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-ET-REDU",
+      "subsystem": "surface evaporation",
+      "capability": "SWREDU=1 Black and SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/swapoutput.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No typed production state/config route found.",
+      "state_ownership": "Legacy continuation states LDWET or SPEV/SAEV; F-PM06 identifies them as true restart/transaction state.",
+      "transaction_status": "Not migrated; legacy pre-retry mutation pattern explicitly must not be copied.",
+      "qualification_evidence": [
+        "F-PM06 readiness only"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "SWREDU1/2 explicitly held by F-PM06"
+      ],
+      "scientific_risk": "MEDIUM_HIGH",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "ET state ownership",
+        "Restart schema",
+        "Dynamic top boundary"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-EVAP-ACT",
+      "subsystem": "surface evaporation",
+      "capability": "Hydraulically limited bare-soil and ponded-water actual evaporation",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundtop.f90",
+          "SWAP/MOD_meteo.f90",
+          "SWAP/soilwater.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+        "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+        "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90"
+      ],
+      "typed_input_config_authority": "Typed potential demand and hydraulic capacity inputs.",
+      "state_ownership": "No independent persistent evaporation state in admitted route; publication belongs to accepted transaction.",
+      "transaction_status": "Atomic accepted publication qualified; rejected trial cannot leak.",
+      "qualification_evidence": [
+        "F-CI59 line plus dynamic-top qualification"
+      ],
+      "production_admission": "Canonical source present; accepted publication line admitted/preserved.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Does not include SWREDU persistent empirical states"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "ET demand",
+        "Dynamic top boundary"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-CROP-81",
+      "subsystem": "crop",
+      "capability": "WOFOST81 bounded daily crop-event runtime",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/wofost.f90",
+          "SWAP/wofostnut.f90",
+          "SWAP/MOD_cropdevelopment.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/crop/mod_wofost81_*",
+        "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
+        "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90",
+        "integration/f-ci/F-CI89_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed WOFOST81 owner state, daily parameter/event contracts.",
+      "state_ownership": "Crop owner plus consumed-event receipt; state commits atomically after accepted daily event.",
+      "transaction_status": "Atomic crop transaction with rollback and duplicate-event fail-closed.",
+      "qualification_evidence": [
+        "F-WOF-PP03",
+        "F-CI89"
+      ],
+      "production_admission": "Canonically closed bounded WOFOST81 runtime.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "N-unlimited request=supply route; no RD migration, TRA migration, Soil-N coupling policy or alternative duration"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Crop-event source/application configuration",
+        "ET/root demand"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-RWU-FEDDES",
+      "subsystem": "root water uptake",
+      "capability": "Macro Feddes drought-only root water uptake with precomputed QROT",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/rootextraction.f90",
+          "SWAP/interface_plant.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_root_water_uptake_process.f90",
+        "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+        "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+        "integration/f-ci/F-CI31_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed root geometry, potential transpiration and committed hydraulic process view.",
+      "state_ownership": "No persistent root-uptake process state in qualified profile.",
+      "transaction_status": "Root sink evaluated from committed view and consumed through transactional soil-water route.",
+      "qualification_evidence": [
+        "F-VQ22",
+        "F-CI29",
+        "F-CI31"
+      ],
+      "production_admission": "Canonical restricted composition.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "No oxygen/salinity/frost/compensation/MICRO/Jong-van-Lier/macropore uptake",
+        "SWKIMPL=1 dynamic root-sink reevaluation excluded"
+      ],
+      "scientific_risk": "LOW within profile; HIGH to broaden",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "ET ptra authority",
+        "Root geometry"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-RWU-ADV",
+      "subsystem": "drought/stress routes",
+      "capability": "Oxygen, salinity, frost, compensated, MICRO/Jong-van-Lier and macropore-related uptake/stress routes",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/oxygenstress.f90",
+          "SWAP/RWU_micro.f90",
+          "SWAP/rootextraction.f90",
+          "SWAP/solute.f90",
+          "SWAP/frozencond.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No admitted typed production route found.",
+      "state_ownership": "Legacy option-specific state/feedback; not mapped into current admitted root owner.",
+      "transaction_status": "Outside qualified transaction envelope.",
+      "qualification_evidence": [
+        "F-PM06 and F-CI31 explicit nonclaims",
+        "docs/verification/legacy-differences.md preserves oxygen-stress numerical fix only in B1"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Presence in corrected reference is not SWAP5 production admission"
+      ],
+      "scientific_risk": "HIGH",
+      "use_relevance": "HIGH for some applications",
+      "dependencies": [
+        "Root uptake ownership",
+        "Soil temperature/frost and solute state where applicable",
+        "Derivative coverage for coupling"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-SW-RICH",
+      "subsystem": "soil-water flow",
+      "capability": "Reference Richards soil-water flow behind mandatory typed solver seam",
+      "classification": "B_SW5_TYPED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/soilwater.f90",
+          "SWAP/headcalc.f90",
+          "SWAP/MOD_MvG_functions.f90",
+          "SWAP/MOD_RIA.f90",
+          "SWAP/WC_K_models_04_11.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/adapter/mod_b110_production_soil_water_task2.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "integration/f-si/F-SI35_FINAL_COMPLETION.json"
+      ],
+      "typed_input_config_authority": "Typed hydraulic geometry/state, boundary requests and numerical config at solver service seam.",
+      "state_ownership": "Committed hydraulic state is canonical; Newton/Jacobian/workspace scratch is worker/backend-local.",
+      "transaction_status": "Mandatory checkpoint/trial/retry/commit/rollback seam for production Task2.",
+      "qualification_evidence": [
+        "F-SI35",
+        "F-CI58",
+        "B1.11 corrected reference"
+      ],
+      "production_admission": "Canonical and mandatory for frozen production Task2 paths.",
+      "production_reachable": "YES",
+      "restrictions": [
+        "Capability breadth still constrained by process/boundary options around the core"
+      ],
+      "scientific_risk": "LOW for preserved core",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [],
+      "priority_band": "P0"
+    },
+    {
+      "id": "PPA-LOW-06",
+      "subsystem": "lower boundary",
+      "capability": "Legacy SWBOTB=6 zero bottom flux mapped to typed prescribed-qbot=0",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundbottom.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+        "integration/f-ci/F-CI95_STATUS.json"
+      ],
+      "typed_input_config_authority": "Legacy selector 6 -> typed bottom_mode=2, qbot=0.",
+      "state_ownership": "No new persistent state.",
+      "transaction_status": "Uses admitted soil-water transaction route.",
+      "qualification_evidence": [
+        "F-APP02",
+        "F-VQ102",
+        "F-CI95"
+      ],
+      "production_admission": "Canonical application binding admitted by merged PR #160.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "No mapping for any SWBOTB other than 6"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Soil-water core"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-LOW-QBOT",
+      "subsystem": "lower boundary",
+      "capability": "Nonzero prescribed qbot as ordinary typed lower boundary",
+      "classification": "D_QUALIFICATION_ONLY",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundbottom.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/solver/mod_reference_richards_temporal_indicator.f90",
+        "integration/f-si/F-SI38_STATUS.json",
+        "integration/f-mr/F-MR44R_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed bottom_mode=2 exists; ordinary application mapping beyond SWBOTB6 is not admitted.",
+      "state_ownership": "No process state.",
+      "transaction_status": "Qualified source/runtime candidate under restricted reference route.",
+      "qualification_evidence": [
+        "F-SI38",
+        "F-MR44R"
+      ],
+      "production_admission": "NOT canonical-admitted as F-MR44R capability.",
+      "production_reachable": "NO_NORMAL_APPLICATION_ROUTE",
+      "restrictions": [
+        "F-MR44R explicitly QUALIFIED_SOURCE_CAPABILITY_NOT_CANONICAL_ADMITTED"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "MEDIUM_HIGH",
+      "dependencies": [
+        "Canonical admission",
+        "Application mapping"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-LOW-OTHER",
+      "subsystem": "lower boundary",
+      "capability": "Other historical SWBOTB variants beyond zero-flux and the currently admitted groundwater/coupling route",
+      "classification": "H_AUTHORITY_UNCLEAR",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundbottom.f90",
+          "SWAP/calcgwl.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No complete selector-to-typed application map found in current canonical.",
+      "state_ownership": "Variant-dependent.",
+      "transaction_status": "Not established for the complete legacy family.",
+      "qualification_evidence": [
+        "F-CI95 explicitly excludes mappings for SWBOTB != 6"
+      ],
+      "production_admission": "NO broad family admission",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Exact legacy variant inventory/semantics must be recovered from pinned source before backlog slicing"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Source-bound lower-boundary inventory",
+        "Groundwater route separation"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-GW-01",
+      "subsystem": "groundwater interaction",
+      "capability": "Typed groundwater head forcing, accepted bottom exchange and transaction-safe external gateway",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundbottom.f90",
+          "SWAP/calcgwl.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+        "src/adapter/mod_groundwater_external_gateway.f90",
+        "src/runtime/mod_groundwater_exchange_service_contract.f90",
+        "docs/capabilities/groundwater-coupling-v1.md"
+      ],
+      "typed_input_config_authority": "Typed external groundwater forcing/exchange contracts.",
+      "state_ownership": "SWAP committed state remains FMR-owned; coupling candidate/ledger state separate.",
+      "transaction_status": "Accepted-state publication, rollback-safe exchange and interface mass ledger.",
+      "qualification_evidence": [
+        "F-CI53/F-CI54/F-CI55",
+        "F-GC v1 line"
+      ],
+      "production_admission": "Admitted bounded groundwater-coupling v1 and later F-GC chain.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Envelope is explicit and bounded; derivative-dependent predictor paths fail closed when coverage incomplete"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Lower boundary",
+        "Mass ledger"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-DRA-01",
+      "subsystem": "drainage",
+      "capability": "Drainage v1 family: linear, DIVDRA, tabulated, Hooghoudt, Ernst, empirical interflow, multilevel aggregation, fixed-weir composition",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/drainage.f90",
+          "SWAP/divdra.f90",
+          "SWAP/MOD_drainage.f90",
+          "SWAP/surfacewater.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_drainage_process.f90",
+        "src/process/mod_drainage_*",
+        "src/runtime/mod_fmr_drainage_response_binding.f90",
+        "docs/science/drainage.md"
+      ],
+      "typed_input_config_authority": "Typed drainage process parameters/response plus runtime bindings; broad legacy file parser absent.",
+      "state_ownership": "Most response routes stateless; fixed-weir has explicit storage state.",
+      "transaction_status": "Drainage transfer booked once on accepted transaction; rollback/restart/MultiSWAP preservation qualified.",
+      "qualification_evidence": [
+        "F-PM19 completion evidence",
+        "F-PM14/F-VQ73/F-CI61 line",
+        "fixed-weir F-CI52"
+      ],
+      "production_admission": "Drainage v1 documented as admitted; current canonical contains the production modules.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Fully implicit drainage coupling not part of v1",
+        "Parallel active DIVDRA held in F-CI40 profile",
+        "Application config remains bounded"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Hydraulic state view",
+        "Surface-water state for fixed weir"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-SURF-WEIR",
+      "subsystem": "ponding/runoff/surface storage",
+      "capability": "Restricted fixed-weir surface-water storage, supply/discharge and transaction/restart",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/surfacewater.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_fixed_weir_surface_water.f90",
+        "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+        "integration/f-ci/F-CI52P_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed 22-knot level/storage relation, weir and rating parameters.",
+      "state_ownership": "Surface-water storage is explicit optional committed state.",
+      "transaction_status": "Transactional candidate state with restart and hard mass closure.",
+      "qualification_evidence": [
+        "F-VQ59",
+        "F-CI52/F-CI52P"
+      ],
+      "production_admission": "Canonically finalized restricted fixed-weir route.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Not the full legacy surface-water family"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "MEDIUM",
+      "dependencies": [
+        "Drainage aggregation"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-SURF-RUNOFF",
+      "subsystem": "ponding/runoff/surface storage",
+      "capability": "Top-surface ponding and runoff/runon response",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/boundtop.f90",
+          "SWAP/MOD_runon.f90",
+          "SWAP/surfacewater.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+      ],
+      "typed_input_config_authority": "Typed runon rate, ponding limit, runoff resistance/exponent request fields.",
+      "state_ownership": "Ponding is candidate/committed hydraulic-surface state.",
+      "transaction_status": "Trial-local calculation, publication through accepted soil-water transaction.",
+      "qualification_evidence": [
+        "F-KT15/F-SI35 dynamic top route"
+      ],
+      "production_admission": "Bounded dynamic-top production route.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Active runoff outside admitted linear exponent profile fails closed",
+        "No general runon routing model"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Dynamic top"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-MACRO",
+      "subsystem": "macropore flow",
+      "capability": "Legacy macropore flow and macrorate execution",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/macropore.f90",
+          "SWAP/macrorate.f90",
+          "SWAP/macroporeoutput.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No production macropore types/runtime route found in current canonical.",
+      "state_ownership": "Legacy macropore state not mapped into typed production owner.",
+      "transaction_status": "Outside current admitted transaction envelope.",
+      "qualification_evidence": [
+        "B1.11 includes SWAP-001 macropore array-shape correction",
+        "F-CI19/F-CI30 explicitly hold active macropore scope"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Corrected-reference preservation is not migration"
+      ],
+      "scientific_risk": "HIGH",
+      "use_relevance": "HIGH for structured soils",
+      "dependencies": [
+        "State topology",
+        "Mass ledger",
+        "Root uptake interactions",
+        "Restart",
+        "Parallel execution"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-SNOW",
+      "subsystem": "snow",
+      "capability": "Restricted one-call-per-day snow storage/melt/sublimation route",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/snow.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_snow_process.f90",
+        "docs/capabilities/restricted-snow.md"
+      ],
+      "typed_input_config_authority": "snow_parameters_t, snow_state_t, snow_forcing_t with exact one-day interval guard.",
+      "state_ownership": "Snow water/liquid storage is explicit optional committed/candidate state.",
+      "transaction_status": "Mass contribution and candidate state are explicit; accepted composition only.",
+      "qualification_evidence": [
+        "restricted Snow Status-A admission and preservation"
+      ],
+      "production_admission": "Admitted restricted Snow.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Exactly one legacy day per call",
+        "No subdaily/multiday active snow",
+        "No combined snow+soil-temperature profile"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "MEDIUM_HIGH",
+      "dependencies": [
+        "Atmospheric forcing",
+        "Dynamic top snowmelt input"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-THERM-SENS",
+      "subsystem": "frost/heat interactions",
+      "capability": "Restricted sensible soil-temperature conduction driven by water-content views",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/temperature.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_soil_temperature_contract.f90",
+        "src/process/mod_restricted_soil_temperature.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "integration/f-ci/F-CI45P_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed soil thermal parameters, prescribed surface temperature and optional thermal committed state.",
+      "state_ownership": "Optional committed active-node temperature profile; workspace is backend-local.",
+      "transaction_status": "Richards plus sensible thermal update is one atomic outer transaction in admitted serialized profile.",
+      "qualification_evidence": [
+        "F-VQ58",
+        "F-CI43/F-CI45/F-CI45P"
+      ],
+      "production_admission": "Restricted soil-temperature runtime promoted/reconciled.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "No frost/phase change/latent heat",
+        "Zero bottom heat flux",
+        "No snow+temperature combined profile",
+        "No parallel thermal qualification"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "MEDIUM",
+      "dependencies": [
+        "Hydraulic water-content view"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-FROST",
+      "subsystem": "frost/heat interactions",
+      "capability": "Frozen-water conductivity, phase change and hydraulic frost feedback",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/frozencond.f90",
+          "SWAP/temperature.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No admitted typed production frost/latent-heat route found.",
+      "state_ownership": "Would require coupled water/thermal phase state not present in current envelope.",
+      "transaction_status": "Outside admitted water/thermal transaction profile.",
+      "qualification_evidence": [
+        "F-CI43/F-CI45 hard holds explicitly exclude frost and latent heat"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Sensible temperature must not be mistaken for frost capability"
+      ],
+      "scientific_risk": "VERY_HIGH",
+      "use_relevance": "MEDIUM",
+      "dependencies": [
+        "Soil temperature",
+        "Snow",
+        "Hydraulic constitutive state",
+        "Timestep acceptance"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-HYST",
+      "subsystem": "hysteresis",
+      "capability": "Legacy soil-hydraulic hysteresis",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/hysteresis.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No typed production hysteresis authority found.",
+      "state_ownership": "Legacy branch/history state would need explicit committed ownership.",
+      "transaction_status": "Not admitted.",
+      "qualification_evidence": [
+        "B0/B1 manifest confirms legacy source; no canonical production path found"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Do not infer from generic hydraulic provider"
+      ],
+      "scientific_risk": "HIGH",
+      "use_relevance": "MEDIUM",
+      "dependencies": [
+        "Hydraulic state/restart",
+        "Richards solver seam"
+      ],
+      "priority_band": "P3"
+    },
+    {
+      "id": "PPA-SOL-HYD",
+      "subsystem": "solute-related hydraulic dependencies",
+      "capability": "Solute/salinity-related state that changes water execution or root stress",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/solute.f90",
+          "SWAP/rootextraction.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No production solute-state/root-stress composition found.",
+      "state_ownership": "Not mapped to current water/root committed state.",
+      "transaction_status": "Outside admitted production water execution.",
+      "qualification_evidence": [
+        "F-CI31 explicitly excludes salinity stress"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Hydraulic constitutive PDI corrections in B1 are not solute capability"
+      ],
+      "scientific_risk": "HIGH",
+      "use_relevance": "MEDIUM_HIGH",
+      "dependencies": [
+        "Root uptake",
+        "Mass/state ownership",
+        "Restart"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-IRR-HUPSEL",
+      "subsystem": "management/irrigation",
+      "capability": "Fixed surface irrigation identity plus scheduled TCS1/DCS2 sprinkling (TCSFIX=1) through interception/top boundary",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/irrigation.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "integration/f-app/F-APP07_ADMISSION_READY.json"
+      ],
+      "typed_input_config_authority": "Typed scheduled/fixed irrigation event and application binding.",
+      "state_ownership": "Irrigation schedule/event inputs are explicit; Rutter storage belongs interception owner.",
+      "transaction_status": "Gross/net irrigation routed into accepted hydrological transaction via Rutter/dynamic top.",
+      "qualification_evidence": [
+        "F-APP07 owner/process composition qualification"
+      ],
+      "production_admission": "Admitted exact Hupsel irrigation composition.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "No TCS7",
+        "No SSDI",
+        "No generic management-file parser"
+      ],
+      "scientific_risk": "LOW_MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Rutter or identity interception",
+        "Dynamic top"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-IRR-OTHER",
+      "subsystem": "management/irrigation",
+      "capability": "Other legacy irrigation scheduling/application modes",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/irrigation.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90"
+      ],
+      "typed_input_config_authority": "Some typed process constants/types exist, but no complete admitted application route beyond F-APP07 scope.",
+      "state_ownership": "Mode-dependent.",
+      "transaction_status": "Not established end-to-end.",
+      "qualification_evidence": [
+        "F-APP07 exclusions"
+      ],
+      "production_admission": "NO broad irrigation-family admission",
+      "production_reachable": "NO",
+      "restrictions": [
+        "TCS7/SSDI explicitly excluded in F-APP07"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "MEDIUM",
+      "dependencies": [
+        "Management configuration",
+        "Interception/top boundary"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-TILL",
+      "subsystem": "management/tillage",
+      "capability": "Legacy tillage event/state route",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/tillage.f90",
+          "SWAP/management_soil.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No typed production tillage route found.",
+      "state_ownership": "Legacy event pointer plus parameter/history state; not mapped into SWAP5 production state.",
+      "transaction_status": "Not admitted.",
+      "qualification_evidence": [
+        "SWAP-002 admitted B1 start-state fix",
+        "SWAP-003 and SWAP-004 remain CONFIRMED_UNFIXED outside B1"
+      ],
+      "production_admission": "NONE",
+      "production_reachable": "NO",
+      "restrictions": [
+        "Two unresolved legacy tillage findings prevent treating migration as low-risk transcription"
+      ],
+      "scientific_risk": "VERY_HIGH",
+      "use_relevance": "LOW_MEDIUM",
+      "dependencies": [
+        "Reference decision on SWAP-003/SWAP-004",
+        "Management event state",
+        "Restart"
+      ],
+      "priority_band": "P3"
+    },
+    {
+      "id": "PPA-MGMT",
+      "subsystem": "management",
+      "capability": "Complete legacy management/crop-calendar/soil-management application route",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/management_soil.f90",
+          "SWAP/MOD_cropdevelopment.f90",
+          "SWAP/readswap.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90"
+      ],
+      "typed_input_config_authority": "Bounded WOFOST event lifecycle exists; no complete normal legacy management grammar/dispatcher.",
+      "state_ownership": "Crop event state typed only in bounded WOFOST route; broader management state absent.",
+      "transaction_status": "Partial/bounded only.",
+      "qualification_evidence": [
+        "F-CI89 bounded WOFOST81 route"
+      ],
+      "production_admission": "NO complete management route",
+      "production_reachable": "NO_BROAD_ROUTE",
+      "restrictions": [
+        "Do not equate WOFOST event lifecycle with full legacy management"
+      ],
+      "scientific_risk": "MEDIUM_HIGH",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Application bootstrap",
+        "Irrigation/tillage/crop config"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-RESTART",
+      "subsystem": "restart",
+      "capability": "Committed-boundary transactional restart of admitted physical/process state",
+      "classification": "B_SW5_TYPED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/swapoutput.f90",
+          "SWAP/initialize.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_committed_restart.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "docs/capabilities/restart-v1.md",
+        "integration/f-ci/F-CI28_STATUS.json",
+        "integration/f-ci/F-CI35_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed committed restart payload/state contracts; not a promised legacy restart-file format.",
+      "state_ownership": "Only committed physical/process state is persistent; trial/scratch/worker state excluded.",
+      "transaction_status": "Restore is atomic at committed boundary; serialized and restricted parallel continuation qualified.",
+      "qualification_evidence": [
+        "F-CI28",
+        "F-CI35",
+        "Status-A Restart v1"
+      ],
+      "production_admission": "Canonical typed restart capability.",
+      "production_reachable": "YES",
+      "restrictions": [
+        "No mid-transaction restart",
+        "No trial/scratch persistence",
+        "No stable filesystem/byte-format claim",
+        "Only states in admitted topology can restart"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Each optional process must define restart payload before its migration"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-OUTPUT-CANON",
+      "subsystem": "output/application composition",
+      "capability": "Canonical typed result snapshot and text serialization",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/swapoutput.f90",
+          "SWAP/swap_csv_output.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_canonical_contracts.f90",
+        "src/adapter/mod_canonical_result_text_adapter.f90",
+        "integration/m1/M1_C4_CANONICAL_ADMISSION.json"
+      ],
+      "typed_input_config_authority": "Serializer consumes only canonical_result_t; no file/path/unit ownership.",
+      "state_ownership": "Read-only accepted result.",
+      "transaction_status": "Serializes already-published accepted result only.",
+      "qualification_evidence": [
+        "M1-C4 canonical admission"
+      ],
+      "production_admission": "Admitted canonical result serializer.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Not legacy BAL/BLC/CSV output equivalence",
+        "No output-file management"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Canonical runtime result"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-OUTPUT-LEGACY",
+      "subsystem": "output/application composition",
+      "capability": "Full legacy output family and application output composition",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/swapoutput.f90",
+          "SWAP/swap_csv_output.f90",
+          "SWAP/macroporeoutput.f90",
+          "SWAP/MOD_out_PEARL_ANIMO.f90"
+        ]
+      },
+      "swap5_implementation_authority": [],
+      "typed_input_config_authority": "No complete typed production output-family mapping found.",
+      "state_ownership": "Should consume accepted state/results only.",
+      "transaction_status": "Not established.",
+      "qualification_evidence": [
+        "M1-C4 explicitly only canonical result snapshot"
+      ],
+      "production_admission": "NONE broad",
+      "production_reachable": "NO",
+      "restrictions": [
+        "File formats/units/legacy report composition not covered"
+      ],
+      "scientific_risk": "LOW_MEDIUM",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "Application bootstrap",
+        "Result vocabulary"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-APP-BOOT",
+      "subsystem": "output/application composition",
+      "capability": "Normal production application bootstrap from complete user configuration to owned FMR contexts",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/readswap.f90",
+          "SWAP/swap_main.f90",
+          "SWAP/swap.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_soil_water_application_host.f90",
+        "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+        "src/adapter/fmr_groundwater_application_runtime.py",
+        "integration/f-gc/F-GC50_STATUS.json"
+      ],
+      "typed_input_config_authority": "Generic soil-water model selection exists, but no admitted create_context_from_config/product bootstrap exists.",
+      "state_ownership": "Production FMR context must remain Fortran/FMR-owned; Python/test fixture may not become owner.",
+      "transaction_status": "F-GC49D can operate an existing context but cannot create one from application config.",
+      "qualification_evidence": [
+        "F-APP01",
+        "F-GC49D",
+        "F-GC50"
+      ],
+      "production_admission": "NO end-to-end bootstrap",
+      "production_reachable": "NO_GENERAL_APPLICATION_ENTRY",
+      "restrictions": [
+        "F-GC49D fixture is qualification-only",
+        "No parallel Python-owned SWAP state/config system"
+      ],
+      "scientific_risk": "LOW physics; HIGH ownership/governance",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Typed configuration schema for admitted profiles"
+      ],
+      "priority_band": "P0"
+    },
+    {
+      "id": "PPA-MSW-SER",
+      "subsystem": "MultiSWAP",
+      "capability": "Serialized real-physics MultiSWAP",
+      "classification": "B_SW5_TYPED_PRODUCTION",
+      "legacy_present": false,
+      "legacy_authority": {
+        "reference": "SWAP5 application architecture capability",
+        "files": []
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+        "docs/capabilities/serialized-multiswap-v1.md"
+      ],
+      "typed_input_config_authority": "Typed logical columns/templates/state/forcing handles.",
+      "state_ownership": "Committed state per column; heavy scratch outside column state.",
+      "transaction_status": "Per-column transactional execution and deterministic canonical publication.",
+      "qualification_evidence": [
+        "Status-A Serialized MultiSWAP v1",
+        "F-CI28 preservation"
+      ],
+      "production_admission": "Admitted.",
+      "production_reachable": "YES",
+      "restrictions": [
+        "Process-specific restrictions remain; no claim of all legacy physics"
+      ],
+      "scientific_risk": "LOW",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Per-process production admission"
+      ],
+      "priority_band": "P0"
+    },
+    {
+      "id": "PPA-MSW-PAR",
+      "subsystem": "MultiSWAP",
+      "capability": "Restricted parallel real-physics MultiSWAP",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": false,
+      "legacy_authority": {
+        "reference": "SWAP5 application architecture capability",
+        "files": []
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+        "src/runtime/mod_fmr_parallel_worker_pool.f90",
+        "src/runtime/mod_fmr_parallel_root_uptake_pool.f90",
+        "integration/f-ci/F-CI30_STATUS.json",
+        "integration/f-ci/F-CI37_STATUS.json"
+      ],
+      "typed_input_config_authority": "Typed worker-pool/scheduler profile with fail-closed unsupported families.",
+      "state_ownership": "Persistent column state separate from worker-owned heavy scratch.",
+      "transaction_status": "Deterministic publication, rejection isolation and hard mass gates in admitted profiles.",
+      "qualification_evidence": [
+        "F-MQ28/F-CI30",
+        "F-MQ30/F-CI37",
+        "F-CI35 parallel restart"
+      ],
+      "production_admission": "Restricted parallel source admitted; some later root-active governance closeout records retain final-head bookkeeping debt.",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "No general macropore/snow/bottom-mode5/thermal profile",
+        "No performance speedup admission",
+        "Root-active restart remains separately bounded"
+      ],
+      "scientific_risk": "LOW architecture; capability-specific physics risk",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "Each physics family must be admitted for parallel execution"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-EXT-GC",
+      "subsystem": "external coupling",
+      "capability": "Generic typed SWAP5 groundwater application service through F-GC49D",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": false,
+      "legacy_authority": {
+        "reference": "Post-Status-A SWAP5 coupling capability",
+        "files": []
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_groundwater_application_context.f90",
+        "src/runtime/mod_groundwater_application_plan.f90",
+        "src/runtime/mod_groundwater_participant_registry.f90",
+        "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+        "src/adapter/fmr_groundwater_application_runtime.py",
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+      ],
+      "typed_input_config_authority": "Typed application plan, participant registry and existing opaque FMR application context.",
+      "state_ownership": "SWAP/FMR owns committed/candidate state; service orchestrates bounded windows; ledgers separate.",
+      "transaction_status": "Whole-window convergence, retry and publication ordering; mixed 1:1/N:1 live MODFLOW qualification.",
+      "qualification_evidence": [
+        "F-GC33..F-GC49D, especially F-GC44..47 live MF6 and F-GC49C/D"
+      ],
+      "production_admission": "F-GC49 closed/canonical production application orchestration.",
+      "production_reachable": "YES_FROM_EXISTING_CONTEXT_RESTRICTED",
+      "restrictions": [
+        "Requires pre-existing admitted FMR context",
+        "Broader head/timestep/physics envelope not claimed",
+        "Heterogeneous N:1 transferability not claimed"
+      ],
+      "scientific_risk": "MEDIUM",
+      "use_relevance": "VERY_HIGH",
+      "dependencies": [
+        "PPA-APP-BOOT for product startup"
+      ],
+      "priority_band": "P0"
+    },
+    {
+      "id": "PPA-EXT-IMOD",
+      "subsystem": "external coupling",
+      "capability": "Actual iMOD Coupler product-driver integration",
+      "classification": "F_NOT_YET_MIGRATED",
+      "legacy_present": false,
+      "legacy_authority": {
+        "reference": "External product integration target",
+        "files": []
+      },
+      "swap5_implementation_authority": [
+        "docs/integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md",
+        "integration/f-gc/F-GC50_STATUS.json"
+      ],
+      "typed_input_config_authority": "No actual upstream iMOD Coupler SWAP5 driver registration route at pinned upstream commit.",
+      "state_ownership": "Must reuse F-GC49/FMR state ownership; product may coordinate but not own SWAP state.",
+      "transaction_status": "Target semantics specified, not product-integrated.",
+      "qualification_evidence": [
+        "F-GC50 upstream contract reconciliation"
+      ],
+      "production_admission": "BLOCKED_EXTERNAL_PREREQUISITES_CONFIRMED",
+      "production_reachable": "NO_ACTUAL_PRODUCT_ROUTE",
+      "restrictions": [
+        "Pinned upstream has hard-coded drivers only",
+        "No push authority to upstream in audit connection",
+        "F-GC49D has no production context bootstrap"
+      ],
+      "scientific_risk": "LOW physics; MEDIUM integration",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "External upstream driver extension",
+        "PPA-APP-BOOT"
+      ],
+      "priority_band": "P0"
+    }
+  ],
+  "backlog": {
+    "almost_free": [
+      {
+        "capability_id": "PPA-LOW-QBOT",
+        "action": "Canonical-admit the already qualified F-MR44R prescribed-qbot runtime capability, then separately bind only an evidenced application selector.",
+        "reason": "Qualified source/runtime candidate exists; science delta is low."
+      },
+      {
+        "capability_id": "PPA-OUTPUT-CANON",
+        "action": "Expose the admitted canonical result serializer through the future application bootstrap without adding output-file semantics.",
+        "reason": "Serializer is already admitted and state-free."
+      }
+    ],
+    "important_low_science_uncertainty": [
+      {
+        "capability_id": "PPA-APP-BOOT",
+        "action": "Create one authoritative production bootstrap for already-admitted typed profiles; no new physics.",
+        "reason": "Unblocks ordinary applications and F-GC50."
+      },
+      {
+        "capability_id": "PPA-ATM-02",
+        "action": "Migrate forcing/config ingestion as an outer application adapter while preserving kernel I/O separation.",
+        "reason": "Normal-run blocker; most risk is semantic mapping rather than new physics."
+      },
+      {
+        "capability_id": "PPA-OUTPUT-LEGACY",
+        "action": "Define accepted-result-to-user-output mapping after bootstrap/result vocabulary stabilizes.",
+        "reason": "High usability, low physics risk."
+      },
+      {
+        "capability_id": "PPA-LOW-OTHER",
+        "action": "Build source-bound SWBOTB inventory and migrate common low-risk modes one by one.",
+        "reason": "Normal SWAP use depends on lower-boundary choice."
+      }
+    ],
+    "scientific_review_first": [
+      {
+        "capability_id": "PPA-ET-REDU",
+        "reason": "Persistent empirical ET state and legacy pre-retry mutation must be redesigned transactionally without changing equations."
+      },
+      {
+        "capability_id": "PPA-RWU-ADV",
+        "reason": "Multiple stateful stresses interact with root uptake, thermal/solute state and coupling derivative coverage."
+      },
+      {
+        "capability_id": "PPA-MACRO",
+        "reason": "Large state/mass/restart/parallel surface and historical B1 defect evidence."
+      },
+      {
+        "capability_id": "PPA-FROST",
+        "reason": "Requires water/thermal phase ownership and combined acceptance semantics."
+      },
+      {
+        "capability_id": "PPA-TILL",
+        "reason": "Two unresolved corrected-reference decisions SWAP-003/004 remain."
+      }
+    ],
+    "rare_or_wait": [
+      {
+        "capability_id": "PPA-HYST",
+        "reason": "Stateful hydraulic-history feature; lower immediate use relevance than bootstrap/forcing/root/management gaps."
+      },
+      {
+        "capability_id": "PPA-INT-12",
+        "reason": "Can wait behind common forcing and ET ownership closure if usage evidence is limited."
+      },
+      {
+        "capability_id": "PPA-IRR-OTHER",
+        "reason": "Extend only from concrete application demand after F-APP07 profile."
+      }
+    ],
+    "intentionally_excluded": [
+      {
+        "capability": "ROM",
+        "reason": "Explicitly outside this audit and backlog."
+      },
+      {
+        "capability": "Qualification fixtures as production bootstrap",
+        "reason": "F-GC50 explicitly forbids promotion of test fixtures or Python-owned SWAP state."
+      },
+      {
+        "capability": "Legacy bug compatibility",
+        "reason": "B1 policy forbids recreating confirmed B0 bugs in SWAP5."
+      }
+    ]
+  },
+  "concurrency": {
+    "safe_parallel_review_or_work": [
+      "Lower-boundary inventory vs output mapping",
+      "Macropore scientific review vs tillage reference review",
+      "Hysteresis review vs irrigation-mode inventory",
+      "Application bootstrap contract can proceed in parallel with external iMOD upstream extension work once ownership boundary remains fixed"
+    ],
+    "serialize_due_shared_semantics": [
+      "Application bootstrap and any broad legacy configuration parser",
+      "SWINTER1/2 and SWREDU1/2 with ET/interception state ownership",
+      "Frost/phase-change with snow plus soil-temperature composition",
+      "Advanced root stress with solute/frost state and coupling derivative coverage",
+      "Macropore implementation with mass/restart/parallel state-topology changes",
+      "Any broad lower-boundary migration with groundwater application mapping when selector semantics overlap"
+    ]
+  },
+  "proposed_bounded_workunits": [
+    {
+      "id": "PPA-WU01",
+      "title": "Production application bootstrap for admitted normal-run profile",
+      "goal": "From explicit typed application config create/own an FMR context and bind only already-admitted physics. No legacy parser expansion and no new physics.",
+      "exit": "One normal standalone application profile reaches canonical runtime without test fixtures; ownership and restart/result surfaces are explicit."
+    },
+    {
+      "id": "PPA-WU02",
+      "title": "Source-bound lower-boundary application envelope inventory",
+      "goal": "Recover the exact B1.11 SWBOTB mode catalogue and map each mode to current typed capability, D/E/F/H gap or explicit exclusion.",
+      "exit": "No H_AUTHORITY_UNCLEAR remains for common lower-boundary modes; dependency-aware migration slices fixed."
+    },
+    {
+      "id": "PPA-WU03",
+      "title": "Atmospheric forcing and normal-input adapter boundary",
+      "goal": "Define and qualify outer application ingestion from normal forcing/config inputs to already-admitted typed ET/interception/top-boundary forcing while keeping file I/O outside kernel.",
+      "exit": "Common precipitation/reference-ET/canopy forcing can drive WU01 end-to-end with no new physics."
+    },
+    {
+      "id": "PPA-WU04",
+      "title": "Stateful ET/interception scientific review",
+      "goal": "Re-derive SWINTER1/2 and SWREDU1/2 state/event/restart/rollback semantics from B1.11 and freeze a migration contract before implementation.",
+      "exit": "Scientific/transaction authority exists for later implementation; no production source change in this review unit."
+    },
+    {
+      "id": "PPA-WU05",
+      "title": "Advanced water-process triage: macropore, frost and root-stress dependency graph",
+      "goal": "Separate independent science questions from shared state/mass/restart semantics and choose the first high-use bounded migration target.",
+      "exit": "Evidence-backed sequencing and acceptance criteria, without physics migration."
+    }
+  ]
+}
