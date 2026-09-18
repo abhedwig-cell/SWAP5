@@ -10,7 +10,8 @@ FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
 FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
 FSI39_PRODUCTION=20d34024cfe4b981b6c00d5042bdf366f8aae830
-FROM1A_I0_AUTH=2493c3cd5a7b933593690f13535cc0361d534898
+FROM1A_I0_QUALIFIED=2493c3cd5a7b933593690f13535cc0361d534898
+FROM1A_I0_ADMISSION=5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b
 FROM1A_KERNEL=c28cb8246aaf087da92538e58b1aa2da5d1b5b11
 FROM1A_BACKEND=5d63f91b37443952b4a96292925f645aae0b22d1
 TX=src/transaction/mod_transaction_reference.f90
@@ -113,7 +114,7 @@ dependency_surface=(
   src/runtime/mod_groundwater_coupled_restart.f90
 )
 for path in "${dependency_surface[@]}"; do
-  if [[ "$path" == "src/kernel/mod_kernel_transactions.f90" ]] && git merge-base --is-ancestor "$FROM1A_I0_AUTH" HEAD; then
+  if [[ "$path" == "src/kernel/mod_kernel_transactions.f90" ]] && git merge-base --is-ancestor "$FROM1A_I0_ADMISSION" HEAD; then
     test "$(git rev-parse "HEAD:$path")" = "$FROM1A_KERNEL" || fail "admitted F-ROM1A-I0 kernel successor drift: $path"
     echo 'FCI_CANONICAL_FROM1A_KERNEL_SUCCESSOR=PASS'
   else
@@ -131,7 +132,7 @@ test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Refere
 # current canonical, keeps its new KSATEXM path opt-in by default, and its
 # production postimages are pinned exactly here.
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
-if git merge-base --is-ancestor "$FROM1A_I0_AUTH" HEAD; then
+if git merge-base --is-ancestor "$FROM1A_I0_ADMISSION" HEAD; then
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" || \
     fail 'F-ROM1A successor lost admitted F-SI39 default-MvG provider'
   test "$(git rev-parse HEAD:$BACKEND)" = "$FROM1A_BACKEND" || \
@@ -207,7 +208,7 @@ echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'
 echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'
 echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'
 echo 'FCI96_MOVING_FROSS12_SUCCESSOR_PRESERVATION=PASS'
-if git merge-base --is-ancestor "$FROM1A_I0_AUTH" HEAD; then
+if git merge-base --is-ancestor "$FROM1A_I0_ADMISSION" HEAD; then
   echo 'FCI_CANONICAL_FROM1A_EXACT_SEMANTIC_SUCCESSOR_PRESERVATION=PASS'
 elif git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
   echo 'FCI_CANONICAL_FSI39_EXACT_SEMANTIC_SUCCESSOR_PRESERVATION=PASS'
