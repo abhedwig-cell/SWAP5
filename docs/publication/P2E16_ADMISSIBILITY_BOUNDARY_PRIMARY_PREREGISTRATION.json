@@ -1,0 +1,178 @@
+{
+  "schema": "swap5.publication.p2e16-admissibility-boundary-primary.v1",
+  "workunit": "PUB-P2E16",
+  "phase": "PREREGISTERED_BEFORE_BOUNDARY_REFERENCE_OR_CANDIDATE_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "doctoral_rq": "RQ2_REPLACE",
+  "master_matrix_authority": {
+    "path": "docs/publications/PHD_MASTER_RESEARCH_MATRIX_V2_2026-09-18.md",
+    "commit": "8091fa7ddd43c8814685c1401aa32f4c8688dd8a",
+    "hypotheses": ["SQ-H1", "SQ-H2", "SQ-H4"]
+  },
+  "parent_scientific_authority": {
+    "p2e14_threshold_branch": "work/pub-p2e14-reference-common-material-threshold-freeze",
+    "p2e14_head": "e680334ba1e8352db8d980fa8723ac31a279f636",
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "p2e15_material_holdout_branch": "work/pub-p2e15-material-extension-primary",
+    "p2e15_head": "fe5e34652e5da69c6e97977ca64c82db571e7441",
+    "p2e15_result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19",
+    "p2e15_verdict": "PRIMARY_MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_FROZEN_COMMON_DOMAIN_180_OF_180"
+  },
+  "canonical_reconciliation": {
+    "live_canonical_at_preregistration": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "relevant_fixed_solver_seam_source_blobs_match_p2e15": true,
+    "locked_blobs": {
+      "soil_water_solver_contract": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+      "reference_richards_legacy_binding": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+      "reference_richards_state_binding": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+      "b110_default_mvg_provider": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+      "fixed_flux_top_boundary_provider": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "b110_source_sink_provider": "d6c57add72387e5c0022a44319fff08046194aac",
+      "rossfast_d3r_soil_water_solver": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+      "rossfast_d3r_model_binding": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+      "rossfast_d3r_table_provider": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+      "rossfast_d3r_table_kernel": "034136c193b287bcf9a953a9b89df2a8fb0c97cc"
+    },
+    "known_unrelated_delta": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "p2e15_blob": "19d07cac9285142d14a6e9c53706fb73d016d5ad",
+      "live_canonical_blob": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+      "classification": "EXCLUDED_FROM_P2E16_FIXED_SOLVER_SEAM_HARNESS",
+      "reason": "P2E16 calls the reference_richards_legacy_solver_t and RossFast soil-water solver directly behind the common soil-water solver request; the serialized application backend is not linked into the scientific comparison."
+    }
+  },
+  "purpose": "Prospectively probe the exact state-local RossFast prescribed-flux forcing boundary from both sides on both top and bottom faces, while retaining the P2E14 candidate-independent discrepancy thresholds and separating Reference threshold-transfer validity from RossFast route admission.",
+  "scientific_question": "Does the predeclared RossFast production forcing contract produce a reproducible inside/boundary/outside admission surface across all 36 materials and three independently selected common-state anchors, and do route-valid boundary cases remain scientifically admissible under the unchanged candidate-independent P2E14 discrepancy thresholds where those thresholds remain Reference-valid?",
+  "matrix": {
+    "materials": "all 36 D3R materials B01-B18 and O01-O18",
+    "material_count": 36,
+    "effective_saturation": [0.65, 0.85, 0.96],
+    "state_anchor_source": "P2E13 prospectively selected complete 36-material common Reference domain",
+    "boundary_axes": ["TOP_PRESCRIBED_FLUX", "BOTTOM_PRESCRIBED_FLUX"],
+    "rho": [-1.05, -1.0, -0.95, 0.95, 1.0, 1.05],
+    "rho_definition": "signed distance from the state-local reference flux divided by the exact production envelope limit; |rho|<1 is inside, |rho|=1 is exact inclusive boundary, |rho|>1 is outside",
+    "cases_per_material_state_axis": 6,
+    "case_count_per_axis": 648,
+    "total_physical_case_count": 1296,
+    "expected_contract_classes_if_reference_request_is_valid": {
+      "INSIDE": 432,
+      "BOUNDARY": 432,
+      "OUTSIDE": 432
+    },
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "initial_ponding_cm": 0.0
+  },
+  "boundary_construction": {
+    "production_constants": {
+      "boundary_envelope_fraction": 0.02,
+      "head_min_cm": -10000.0,
+      "head_max_cm": -1.0
+    },
+    "top_axis": {
+      "rossfast_internal_reference": "q_top_ref_internal = +0.01 * K_top(initial state)",
+      "scale": "max(abs(q_top_ref_internal), abs(K_top), 1e-12)",
+      "limit": "0.02 * scale",
+      "public_solver_request": "qtop_request = -(q_top_ref_internal + rho * limit)",
+      "fixed_other_face": "qbot_request = -0.004 * K_bottom(initial state)"
+    },
+    "bottom_axis": {
+      "reference": "q_bottom_ref = -0.004 * K_bottom(initial state)",
+      "scale": "max(abs(q_bottom_ref), abs(K_bottom), 1e-12)",
+      "limit": "0.02 * scale",
+      "public_solver_request": "qbot_request = q_bottom_ref + rho * limit",
+      "fixed_other_face": "qtop_request = -(+0.01 * K_top(initial state))"
+    },
+    "expected_rossfast_route_semantics": {
+      "abs_rho_0.95": "ROUTE_VALID",
+      "abs_rho_1.00": "ROUTE_VALID_INCLUSIVE_BOUNDARY",
+      "abs_rho_1.05": "ROUTE_INVALID_FAIL_CLOSED"
+    },
+    "reason_for_rho_design": "The production envelope uses a state-local max(...,1e-12) scale. Defining cases by rho probes the actual contract boundary for every material/state instead of assuming that a fixed flux/K factor is equivalent in all states."
+  },
+  "stage_A_reference_only_threshold_transfer": {
+    "candidate_execution_allowed": false,
+    "purpose": "Before new boundary RossFast discrepancy is inspected, test whether the immutable P2E14 Se-stratified threshold remains at least as large as Reference temporal self-disagreement for each new boundary forcing request.",
+    "temporal_schedule": {
+      "coarse_dt_day": 0.0064,
+      "refined_dt_day": [0.0032, 0.0032]
+    },
+    "metrics": ["U_h_inf_cm", "U_h_rms_cm", "U_theta_inf", "U_theta_rms", "U_storage_cm"],
+    "hard_integrated_mass_abs_limit_cm_each_reference_solve": 1e-12,
+    "thresholds": {
+      "source": "P2E14 exact-Se immutable thresholds",
+      "retuning_allowed": false,
+      "new_stratification_allowed": false,
+      "transfer_rule": "REFERENCE_THRESHOLD_TRANSFER_VALID only if all five U metrics are <= the exact-Se P2E14 threshold and all Reference route-validity gates pass."
+    },
+    "negative_policy": "A Reference threshold-transfer failure is retained as a scientific boundary result. No threshold is widened. The corresponding P2E16B case may still test RossFast route fail-closed semantics, but no pairwise scientific-discrepancy admission claim is authorized for that case."
+  },
+  "stage_B_candidate_boundary_primary": {
+    "authorization": "Only after Stage A result is persisted unchanged.",
+    "fixed_step_duration_day": 0.0016,
+    "same_request_semantics": true,
+    "fallback_allowed": false,
+    "reference_route": "legacy-reference-bound",
+    "candidate_route": "rossfast-d3r",
+    "hard_route_validity": {
+      "reference_status_converged_for_interpretable_case": true,
+      "candidate_state_finite_and_inside_shared_E0_state_domain_when_candidate_converges": true,
+      "typed_integrated_mass_abs_limit_cm_each_converged_route": 1e-12,
+      "reference_native_rate_residual_required": true,
+      "rossfast_native_rate_residual_must_remain_unavailable": true,
+      "prescribed_flux_identity_must_match_request": true,
+      "silent_fallback_forbidden": true
+    },
+    "primary_endpoints": {
+      "route_boundary": "Observed RossFast route admission/rejection versus the preregistered |rho| class on every attempted case.",
+      "inside_boundary_scientific_admissibility": "For Stage-A-transfer-valid cases with |rho|<=1 and both routes valid, all five Reference-versus-RossFast discrepancies must be <= the unchanged exact-Se P2E14 thresholds.",
+      "outside_fail_closed": "For |rho|=1.05 cases whose Reference fixed-step request is valid, RossFast must reject before publishing a converged candidate and must not fall back."
+    },
+    "pairwise_metrics": ["D_h_inf_cm", "D_h_rms_cm", "D_theta_inf", "D_theta_rms", "D_storage_abs_cm"],
+    "classification": [
+      "INSIDE_PAIRED_VALID_ADMISSIBLE",
+      "INSIDE_PAIRED_VALID_DISCREPANCY_FAIL",
+      "BOUNDARY_PAIRED_VALID_ADMISSIBLE",
+      "BOUNDARY_PAIRED_VALID_DISCREPANCY_FAIL",
+      "OUTSIDE_ROSSFAST_FAIL_CLOSED",
+      "OUTSIDE_UNEXPECTED_ROSSFAST_ADMISSION",
+      "REFERENCE_ROUTE_INVALID",
+      "REFERENCE_THRESHOLD_TRANSFER_INVALID",
+      "BOTH_ROUTES_INVALID"
+    ]
+  },
+  "hypotheses": {
+    "P2E16_H1": "The exact production forcing envelope predicts RossFast route validity across material and common-state axes: |rho|<1 and |rho|=1 are admitted, |rho|>1 is rejected.",
+    "P2E16_H2": "Where the unchanged P2E14 threshold remains Reference-valid under the new boundary forcing, route-valid |rho|<=1 cases remain scientifically admissible without threshold widening.",
+    "P2E16_H3": "Just-outside |rho|=1.05 requests fail closed with no silent Reference fallback or accepted candidate publication while the matched Reference request remains valid."
+  },
+  "falsification_and_narrowing": {
+    "H1": "Any reproducible mismatch between preregistered rho class and RossFast route admission narrows or falsifies the claimed forcing-domain description; no case may be deleted.",
+    "H2": "Any valid pairwise discrepancy failure narrows the scientific substitution domain. Reference-threshold-transfer failures are not attributed to RossFast and instead narrow the threshold-transfer domain.",
+    "H3": "Any just-outside RossFast admission, silent fallback, or authoritative candidate publication falsifies the fail-closed boundary claim for that case."
+  },
+  "firewall": {
+    "p2e14_threshold_change_allowed": false,
+    "rho_change_after_stage_A_or_B_outcome_allowed": false,
+    "material_or_state_case_removal_allowed": false,
+    "case_replacement_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "solver_api_change_allowed": false,
+    "transaction_or_retry_policy_change_allowed": false,
+    "automatic_fallback_allowed": false,
+    "performance_claim_authorized": false,
+    "heterogeneous_profile_claim_authorized": false,
+    "root_sink_claim_authorized": false,
+    "groundwater_claim_authorized": false,
+    "transaction_level_equivalence_claim_authorized": false
+  },
+  "negative_result_policy": {
+    "execute_all_stage_A_cases_after_first_scientific_failure": true,
+    "execute_all_stage_B_cases_after_first_scientific_failure": true,
+    "scientific_failure_is_not_ci_failure": true,
+    "unexpected_provenance_or_source_drift_is_ci_failure": true,
+    "retain_reference_invalid_and_threshold_transfer_invalid_cases": true
+  },
+  "verdict": "PREREGISTERED_TWO_STAGE_36_MATERIAL_FORCING_BOUNDARY_PRIMARY_READY_FOR_STAGE_A_IMPLEMENTATION",
+  "next_permitted_action": "Implement Stage A Reference-only 1296-case threshold-transfer harness exactly as frozen. Do not execute any new P2E16 RossFast candidate case until the Stage A result is persisted."
+}
