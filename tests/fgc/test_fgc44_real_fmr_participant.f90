@@ -77,12 +77,6 @@ program test_fgc44_real_fmr_participant
 
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
        origin_head_m,trial2,status)
-  if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. trial2%valid) then
-    write(*,'(A,I0,A,L1,A,I0,A,L1,A,I0,A,I0,A,I0)') 'FGC44_SECOND_TRIAL_DIAG status=',status, &
-         ' valid=',trial2%valid,' kernel=',participant%last_kernel_status(),' completed=',participant%last_completed(), &
-         ' retries=',participant%last_retries(),' temporal=',participant%last_temporal_rejections(), &
-         ' solver=',participant%last_solver_rejections()
-  end if
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'second real FMR prescribed-head trial')
   call require(ieee_is_finite(trial2%q_swap_m_per_s),'second real FMR exchange finite')
   call require(participant%publication_ready(committed,window),'real FMR candidate publication ready')
@@ -133,18 +127,6 @@ contains
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
     p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
   end subroutine initialize_parameters
-
-  subroutine determine_initial_conductivity(p,k0)
-    type(fmr_b110_physical_parameters_t),intent(in)::p
-    real(real64),intent(out)::k0
-    type(b110_default_mvg_parameters_t),target::hp
-    type(b110_default_mvg_provider_t)::provider
-    real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
-    call bind_b110_default_mvg_provider(provider,hp,duration)
-    heads=h0_cm; call provider%evaluate(heads,water,conductivity,capacity,dkdh)
-    k0=conductivity(1); call require(k0>0.0_real64 .and. ieee_is_finite(k0),'initial conductivity')
-  end subroutine determine_initial_conductivity
 
   subroutine initialize_forcing(f,q)
     type(fmr_b110_physical_forcing_t),intent(out)::f
