@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS15",
   "title": "Reference Richards versus RossFast solver-seam performance",
-  "phase": "ADMIT",
-  "status": "QUALIFIED_SCREENING_RESULT_PENDING_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "status": "QUALIFIED_SCREENING_RESULT__CANONICAL_ADMISSION_BLOCKED_BY_PREEXISTING_FCI96_AUTHORITY_DRIFT",
   "branch": "work/f-ross15-reference-vs-rossfast-performance",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_head_at_result_review": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
@@ -21,7 +21,7 @@
     "primary_artifact_id": 10526848201,
     "primary_artifact_digest": "sha256:8994dd5ed81cc6c5c2067f8082b584b6c5d20019edc3c3c0c3180fed557b6855",
     "primary_outcome": "SCREENING_REFERENCE_FASTER",
-    "primary_rossfast_over_reference_cpu_ratio_mean": 2.9962146695714627,
+    "primary_rossfast_over_reference_cpu_ratio_mean": 2.996214669571463,
     "primary_mde": 0.007667329937940216,
     "primary_target_resolution": 0.05,
     "effect_resolved": true,
@@ -48,8 +48,8 @@
     "formal_claim_blocker": "MP-admitted isolated performance host not yet available"
   },
   "production_or_reference_mutation": false,
-  "verdict": "QUALIFIED_SCREENING_REFERENCE_FASTER",
-  "next_permitted_action": "Admit this screening evidence only. Then investigate RossFast cost composition in a separate workunit before considering optimization; formal performance qualification requires an MP-admitted isolated host.",
+  "verdict": "QUALIFIED_SCREENING_REFERENCE_FASTER__ADMISSION_BLOCKED_UNRELATED_GOVERNANCE_GATE",
+  "next_permitted_action": "Resolve/reconcile the pre-existing F-CI96 serialized-backend preservation authority in its owning governance workunit. Then replay PR #221 gates without changing F-ROSS15 benchmark design or result interpretation. Separately, a new diagnostic workunit may attribute RossFast cost composition; do not optimize inside F-ROSS15.",
   "exclusions": [
     "NO_SOLVER_OPTIMIZATION",
     "NO_TOLERANCE_CHANGE",
@@ -57,5 +57,18 @@
     "NO_FORMAL_SPEEDUP_OR_SLOWNESS_CLAIM_FROM_UNADMITTED_SHARED_HOST",
     "NO_WETTING_CASES",
     "NO_TRANSACTION_LEVEL_OR_WHOLE_MODEL_PERFORMANCE_CLAIM"
-  ]
+  ],
+  "admission": {
+    "pull_request": 221,
+    "mergeable": true,
+    "f_ross15_scientific_gate": "PASS",
+    "performance_tools_gate": "PASS_on_prior_exact_head",
+    "blocking_gate": "F-CI96 F-ROSS12 postimage preservation",
+    "blocking_run": 35293074636,
+    "blocking_job": 105439886808,
+    "failure": "FCI96_FROSS13_SEMANTIC_SUCCESSOR_FAIL serialized backend drift",
+    "classification": "PREEXISTING_MOVING_PRESERVATION_AUTHORITY_DRIFT_NOT_CAUSED_BY_F_ROSS15",
+    "canonical_precedent_run": 35289782697,
+    "rule": "Do not modify F-CI96 or serialized backend inside F-ROSS15 merely to obtain a green admission."
+  }
 }
