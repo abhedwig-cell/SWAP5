@@ -162,7 +162,7 @@ Working candidate:
 
 > Vadose-zone and groundwater models often exchange water while keeping separate numerical solvers. We developed a coupling contract for SWAP5 and MODFLOW6 that separates trial calculations from accepted state and water balance. Controlled tests show reliable but weak feedback, while a realistic Hupsel case reaches a process-domain boundary before coupling, showing that component admissibility is part of the coupled-model problem.
 
-Recheck the exact character count before submission.
+Current character count: **432 including spaces**. Recheck after any wording change.
 
 ### G7 — Select a key figure
 
