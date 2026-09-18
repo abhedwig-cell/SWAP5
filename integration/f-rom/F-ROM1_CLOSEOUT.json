@@ -1,8 +1,10 @@
 {
-  "schema": "swap5.f-rom1.closeout.v1",
+  "schema": "swap5.f-rom1.closeout.v2",
   "workstream": "F-ROM",
   "capability": "ROM1_PREDICTIVE_STATE_SUFFICIENCY",
-  "decision": "PROCEED_TO_ROM2_B01_SCOPE_ONLY",
+  "governing_authority": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "decision": "MATERIAL_SPECIFIC_ONLY",
+  "interim_decision_corrected_before_ROM2_execution": "PROCEED_TO_ROM2_B01_SCOPE_ONLY",
   "evidence": {
     "ROM1A": {
       "decision": "PROCEED_TO_ROM1B",
@@ -44,10 +46,18 @@
       "artifact_digest": "sha256:d32aaa2b0020618d98d939b6eb49b2afac8c3282c88b2d1e650664c97f3c5efa"
     }
   },
+  "gate_adjudication": {
+    "B01_discovery_state_sufficiency": "PASS",
+    "B01_heldout_state_separation": "PASS",
+    "B14_cross_material_transfer": "FAIL_NOT_ADMITTED",
+    "ROM2_transition_under_current_proposition": "FAIL"
+  },
   "scope": {
     "positive_state_sufficiency": "B01_WITHIN_MATERIAL_ONLY",
     "B14_material_transfer": "NOT_ADMITTED",
+    "ROM2": "NOT_AUTHORIZED_UNDER_CURRENT_PROPOSITION",
     "production_ROM": "NOT_AUTHORIZED"
   },
-  "next": "ROM2_B01_STATE_TO_OUTPUT_CLOSURE_PREREGISTRATION"
+  "valid_negative_outcome": "MATERIAL_SPECIFIC_ONLY",
+  "next": "NO_AUTOMATIC_ROM2_CONTINUATION"
 }
