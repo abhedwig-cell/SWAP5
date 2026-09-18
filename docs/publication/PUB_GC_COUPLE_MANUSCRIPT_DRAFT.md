@@ -287,6 +287,19 @@ This distinction is required for consistent mass accounting across retries and a
 | `J_R` | prescribed-head whole-window exchange derivative | `dV_u/dH` where a symmetric local response is admitted | unavailable outside the admitted head-response neighbourhood |
 | `V_u` | integrated accepted interface transfer | complete coupling-window water amount after sign/unit normalization | authoritative only after ordered publication and ledger commit |
 
+**Table 1. Hydrological coupling quantities and authority.**
+
+| Quantity | Meaning | Native/public unit | Temporal support | Authority rule |
+| --- | --- | --- | --- | --- |
+| `H_interface` | hydraulic head at the fixed coupling plane | m | boundary state for one trial/window | candidate until coupled acceptance |
+| `q_bot` | native SWAP lower-boundary hydraulic flux | cm d⁻¹ internally | instantaneous/boundary forcing within SWAP trial | never used as an alias for accepted groundwater transfer |
+| `q_u` | groundwater-facing exchange rate reconstructed from the SWAP window response | normalized to public coupling units | finite-window response quantity | trial quantity until final candidate is accepted |
+| `u_A` | accepted-trajectory response of the prescribed-bottom-flux predictor map | response coefficient after explicit unit conversion | specific accepted origin and coupling window | optional component information; not a universal Jacobian |
+| `J_R` | local derivative of accepted whole-window exchange with respect to prescribed head | m m⁻¹ in the E4 normalized form | local head-driven corrector map | diagnostic unless explicitly supplied by a qualified component route |
+| `V_u` | accepted water transfer integrated over the whole coupling window | m water depth in publication evidence | complete coupling window | authoritative only after ordered publication |
+| SWAP revision/time | committed vadose-zone history | model state | accepted model history | unchanged by discarded trials |
+| interface ledger | committed cross-component transfer | m water depth | accepted window | exactly one commit after component publication preflights pass |
+
 ## 2.5 Accepted origin and SWAP trial semantics
 
 At the beginning of a coupling window, the coupling service captures one immutable accepted SWAP origin.
@@ -670,6 +683,18 @@ Existing F-GC45 and F-GC46 qualification demonstrates that the coupling contract
 | E6 | active-drainage route and 20-case state/flux screen | no production tolerance, retry or physics relaxation; deterministic E6-B rule | negative stress extension; zero E6-B candidates |
 | E7 | prospectively selected realistic Hupsel application | M1-C3 prerequisite; standalone-only day selection; no post-hoc date/window rescue | preregistered but externally blocked |
 
+**Table 2. Publication experiments and preregistered decision roles.**
+
+| Experiment | Primary question | Frozen comparison / perturbation | Predeclared interpretation role | Current status |
+| --- | --- | --- | --- | --- |
+| E1 | Are interface quantities and mass identities internally consistent? | real SWAP + live MODFLOW6, 1e-4 d qualified control | identity/conservation gate | SUPPORTED_RESTRICTED |
+| E2 | Do rejected trials have zero state and mass authority? | real trials plus deterministic publication failures | transaction-authority gate | SUPPORTED_RESTRICTED |
+| E3 / E3-R | When does strong iteration change the physical coupled state? | loose versus iterative coupling across window/flux/groundwater-response axes | continuous residual/head/exchange characterization | SUPPORTED_RESTRICTED; weak-feedback control |
+| E4 | What finite-window map does the supplied response represent? | independent flux-driven and head-driven perturbation sequences | distinguish `u_A`, `u_FD`, `J_S`, `J_R` | SUPPORTED_RESTRICTED |
+| E5 | Does supplied response materially outperform black-box learning? | FP, Aitken, cold secant, supplied `u_A`, zero-cost `J_R` oracle | continuation gate for separate acceleration claim | SUPPORTED_RESTRICTED; independent ACCELERATE stopped |
+| E6 | Can a stronger valid hydrological-feedback case be created without numerical-policy changes? | active drainage route + 20-case accepted-state/flux screen | positive or negative component-envelope result | CLOSED_NEGATIVE_WITH_BOUNDARIES |
+| E7 | Does the contract transfer to a realistic Hupsel application? | standalone-selected median/high-dynamics days; loose versus strong | external-validity test | PREREGISTERED; BLOCKED_M1_C3 |
+
 ---
 # 4. Results
 
@@ -818,13 +843,15 @@ The corresponding head-driven response was not universally identical.
 
 **Table 3. Finite-window response identity across the five E4 baselines.** B5 reports unavailable head-driven derivatives rather than replacing a failed symmetric response with a one-sided estimate.
 
-| case | window | q_bot | u_A | u_FD | J_S | J_R |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| B1 | 1e-4 d | 1e-6 cm/d | 3.40294e-5 | 3.40295e-5 | 3.40283e-5 | -3.40283e-5 |
-| B2 | 1e-3 d | 1e-6 cm/d | 2.68611e-4 | 2.68607e-4 | 2.68610e-4 | -2.68610e-4 |
-| B3 | 1e-3 d | 1e-4 cm/d | 2.66574e-4 | 2.66574e-4 | 2.88218e-4 | -2.88218e-4 |
-| B4 | 1e-2 d | 1e-6 cm/d | 1.19027e-3 | 1.19028e-3 | 1.19027e-3 | -1.19027e-3 |
-| B5 | 1e-2 d | 1e-4 cm/d | 1.12016e-3 | 1.12016e-3 | unavailable | unavailable |
+**Table 3. Finite-window response identity across E4 baselines.**
+
+| case | window | q_bot | u_A | u_FD | J_S | J_R | |J_R|/u_A |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| B1 | 1e-4 d | 1e-6 cm/d | 3.40294e-5 | 3.40295e-5 | 3.40283e-5 | -3.40283e-5 | 0.99997 |
+| B2 | 1e-3 d | 1e-6 cm/d | 2.68611e-4 | 2.68607e-4 | 2.68610e-4 | -2.68610e-4 | 1.00000 |
+| B3 | 1e-3 d | 1e-4 cm/d | 2.66574e-4 | 2.66574e-4 | 2.88218e-4 | -2.88218e-4 | 1.08119 |
+| B4 | 1e-2 d | 1e-6 cm/d | 1.19027e-3 | 1.19028e-3 | 1.19027e-3 | -1.19027e-3 | 1.00000 |
+| B5 | 1e-2 d | 1e-4 cm/d | 1.12016e-3 | 1.12016e-3 | unavailable | unavailable | unavailable |
 
 For B1, B2 and B4, the non-bottom balance derivative was numerically negligible and the differentiated mass balance gave:
 
@@ -935,6 +962,18 @@ Accordingly, ACCELERATE is retained as a result of the central coupling paper ra
 | supplied `u_A` and oracle have identical work count in comparable converged cases | 18 / 18 |
 | B3 tested coupling strengths with common first-trial SWAP-domain failure | 6 / 6 |
 
+**Table 4. Incremental information value in the 18 comparable E5 cases.**
+
+| Comparison | Result |
+| --- | --- |
+| cold secant and zero-cost `J_R` oracle both converged | 18 cases |
+| oracle saved exactly 1 full-window SWAP evaluation | 16 / 18 |
+| oracle saved exactly 2 evaluations | 1 / 18 |
+| oracle saved 0 evaluations | 1 / 18 |
+| oracle enlarged convergence domain relative to cold secant | 0 cases |
+| supplied `u_A` work count differed from oracle | 0 of the 18 comparable cases |
+| B3 algorithm ranking | unavailable; all methods failed at the same preregistered first head trial |
+
 ![Figure F5 — information value of supplied response](figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg)
 
 **Figure 5. Computational value of supplied response information.** Full-window SWAP evaluations are shown across controlled coupling strength for the three baselines with comparable response domains. Aitken and cold secant strongly improve on plain fixed point; the supplied response and zero-cost exact local derivative generally save only one additional SWAP evaluation over cold secant.
@@ -959,6 +998,14 @@ The negative result is important for interpreting the earlier convergence experi
 | --- | --- | --- | --- |
 | active drainage | `q_bot=0.002 cm d⁻¹`; `u_A=5.76044×10⁻4`; mass residual `1.74×10⁻16` | prescribed-head reference corrector is `KERNEL_STATUS_NOT_ADMITTED` before any transaction call | live-MODFLOW matrix skipped by preregistered stop rule |
 | accepted-state / flux screen | 20 cases; 8 predictor-ready; wetter low-flux states increase `u_A` | 12 higher-flux predictors fail; symmetric corrector pairs: 4 at ±10⁻6 m, 1 at ±10⁻5 m, 0 at ±10⁻4 m and ±10⁻3 m | deterministic E6-B candidate count = 0 |
+
+**Table 5. E6 stress-extension outcomes.**
+
+| Route | Valid component evidence | Boundary encountered | Consequence |
+| --- | --- | --- | --- |
+| active drainage | predictor mass complete; `u_A=5.76044e-4`; drainage tangent covered | prescribed-head corrector returned `KERNEL_STATUS_NOT_ADMITTED` before any transaction call | live-MODFLOW stress matrix not executed by preregistered stop rule |
+| accepted-state/flux screen | 8 / 20 predictors ready; all discarded probes preserved zero authority | 12 higher-flux predictors failed after unchanged retry sequence; only 4 cases admitted ±1e-6 m, 1 admitted ±1e-5 m, 0 admitted ±1e-4 m symmetric correctors | E6-B candidate count = 0 |
+| production-policy response | no physics/tolerance/retry changes made | component envelope retained as observed | E6 closed as negative evidence rather than tuned to a positive case |
 
 ![Figure F6 — component-admission envelope](figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg)
 
