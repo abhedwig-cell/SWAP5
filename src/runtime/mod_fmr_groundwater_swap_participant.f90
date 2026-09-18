@@ -43,6 +43,11 @@ module mod_fmr_groundwater_swap_participant
     procedure, public :: has_live_candidate => fmr_swap_has_live_candidate
     procedure, public :: captured_lineage_id => fmr_swap_lineage_id
     procedure, public :: captured_revision => fmr_swap_revision
+    procedure, public :: last_kernel_status => fmr_swap_last_kernel_status
+    procedure, public :: last_completed => fmr_swap_last_completed
+    procedure, public :: last_retries => fmr_swap_last_retries
+    procedure, public :: last_temporal_rejections => fmr_swap_last_temporal_rejections
+    procedure, public :: last_solver_rejections => fmr_swap_last_solver_rejections
   end type fmr_groundwater_swap_participant_t
 
 contains
@@ -272,6 +277,31 @@ contains
     class(fmr_groundwater_swap_participant_t), intent(in) :: self
     value = self%origin_revision
   end function fmr_swap_revision
+
+  integer function fmr_swap_last_kernel_status(self) result(value)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    value = self%trial_result%status
+  end function fmr_swap_last_kernel_status
+
+  logical function fmr_swap_last_completed(self) result(value)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    value = self%trial_result%completed
+  end function fmr_swap_last_completed
+
+  integer function fmr_swap_last_retries(self) result(value)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    value = self%diagnostics%retries
+  end function fmr_swap_last_retries
+
+  integer function fmr_swap_last_temporal_rejections(self) result(value)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    value = self%diagnostics%temporal_rejections
+  end function fmr_swap_last_temporal_rejections
+
+  integer function fmr_swap_last_solver_rejections(self) result(value)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    value = self%diagnostics%solver_rejections
+  end function fmr_swap_last_solver_rejections
 
   pure logical function same_time(a, b) result(matches)
     real(real64), intent(in) :: a, b
