@@ -5,10 +5,10 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 BASELINE=0e68a716f655f9bba3a0962cf35ccb724b5184c3
-CONTRACT=integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json
+CONTRACT=integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_V2_CONTRACT.json
 TEST=tests/rom/test_f_rom01_reference_histories.f90
 VALIDATOR=tests/rom/validate_f_rom01_contract.py
-ANALYZER=tests/rom/analyze_f_rom01_reference_histories.py
+ANALYZER=tests/rom/analyze_f_rom01_reference_histories_v2.py
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-f-rom01-${GITHUB_RUN_ID:-local}-$$"
 EVIDENCE_DIR="${F_ROM01_EVIDENCE_DIR:-$ROOT/F-ROM01_EVIDENCE}"
 mkdir -p "$BUILD/o0" "$BUILD/o2" "$EVIDENCE_DIR"
@@ -104,6 +104,8 @@ compile_and_run() {
 
   grep -Fq 'F_ROM01_REFERENCE_HISTORY_PILOT=PASS' "$out/output.txt" || fail "missing O$opt pilot PASS"
   grep -Fq 'F_ROM01_PRODUCTION_SOURCE_MUTATION=NONE' "$out/output.txt" || fail "missing O$opt mutation marker"
+  grep -Fq 'F_ROM01_REJECTED_RETRY_COMMIT=NONE' "$out/output.txt" || fail "missing O$opt rejected-retry state marker"
+  grep -Fq 'F_ROM01_V2_EXECUTION_POLICY=BOUNDED_BISECTION' "$out/output.txt" || fail "missing O$opt V2 retry policy marker"
   grep -Fq 'F_ROM01_SCIENTIFIC_SUFFICIENCY_VERDICT=NOT_SET_IN_PILOT' "$out/output.txt" || fail "missing O$opt interpretation boundary"
   [[ "$(grep -Fc 'F_ROM01_CONTINUATION|' "$out/output.txt")" = "3" ]] ||     fail "expected three O$opt continuation checkpoints"
 
