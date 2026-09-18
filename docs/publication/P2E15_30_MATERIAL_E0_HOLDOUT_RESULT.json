@@ -1,0 +1,213 @@
+{
+  "schema": "swap5.publication.p2e15-30-material-e0-holdout-result.v1",
+  "workunit": "PUB-P2E15",
+  "publication_owner": "PUB-SQ",
+  "phase": "QUALIFIED_CONFIRMATORY_MATERIAL_AXIS_HOLDOUT",
+  "preregistration": {
+    "blob": "ba267cb37166df2a0171d2ced69695730cb0bc5d",
+    "phase": "PREREGISTERED_BEFORE_NEW_EXTENSION_ROSSFAST_DISCREPANCY_EXECUTION"
+  },
+  "parent_authority": {
+    "p2e14_head": "e680334ba1e8352db8d980fa8723ac31a279f636",
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "p2e13_result_blob": "a8658b710b5b96b1bea0ee8c61dae80a002efa76"
+  },
+  "execution": {
+    "first_attempt": {
+      "workflow_run": 35290459283,
+      "job": 105431953924,
+      "conclusion": "FAIL_PROVENANCE_WRAPPER_BEFORE_SCIENTIFIC_EXECUTION",
+      "cause": "PREREG_BLOB was not defined in the copied runner",
+      "candidate_scientific_execution_reached": false,
+      "research_design_changed_after_failure": false
+    },
+    "qualified_attempt": {
+      "head": "e18956764207d4b060290ed37270f243dd878452",
+      "workflow_run": 35290504889,
+      "job": 105432092702,
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "unique_case_count": 180,
+      "raw_case_records_across_O0_O2": 360,
+      "every_case_exactly_twice_and_scientifically_identical": true,
+      "O0_O2_output_sha256": "c1b3f4a65a1becb7f3d48e0d9cbf38475d8820a874031ad75c7e1c462fb08ad5"
+    }
+  },
+  "authorities": {
+    "test_blob": "873b26cb6fe9c7dad1d41ad995d2cffca362bc82",
+    "runner_blob": "214599b46cb67a130e291d6b52fbdbc3a3860a32",
+    "workflow_blob": "3e978a6d7661a1b567eb6045e773defe4242a41d"
+  },
+  "matrix": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "material_count": 30,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "unique_case_count": 180,
+    "fixed_step_duration_day": 0.0016,
+    "layer": "A_FIXED_INTERVAL_SOLVER_SEAM"
+  },
+  "classification": {
+    "PAIRED_VALID_ADMISSIBLE": 180,
+    "PAIRED_VALID_DISCREPANCY_FAIL": 0,
+    "REFERENCE_ROUTE_INVALID": 0,
+    "ROSSFAST_ROUTE_INVALID": 0,
+    "BOTH_ROUTES_INVALID": 0
+  },
+  "classification_structure": {
+    "by_Se": {
+      "0.65": {
+        "admissible": 60,
+        "other": 0
+      },
+      "0.85": {
+        "admissible": 60,
+        "other": 0
+      },
+      "0.96": {
+        "admissible": 60,
+        "other": 0
+      }
+    },
+    "by_forcing": {
+      "DRYING": {
+        "admissible": 90,
+        "other": 0
+      },
+      "NOMINAL": {
+        "admissible": 90,
+        "other": 0
+      }
+    },
+    "by_material": "All thirty materials have 6/6 admissible cases."
+  },
+  "threshold_failures": {
+    "D_h_inf_cm": 0,
+    "D_h_rms_cm": 0,
+    "D_theta_inf": 0,
+    "D_theta_rms": 0,
+    "D_storage_abs_cm": 0
+  },
+  "maximum_fraction_of_frozen_threshold": {
+    "D_h_inf_cm": {
+      "ratio": 0.19742706476083827,
+      "case": 64,
+      "material": "B13",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "value_cm": 0.01122257226283807,
+      "threshold_cm": 0.05684414280500505
+    },
+    "D_h_rms_cm": {
+      "ratio": 0.21912017861076086,
+      "case": 64,
+      "material": "B13",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "value_cm": 0.005059588324863339,
+      "threshold_cm": 0.02309047189054667
+    },
+    "D_theta_inf": {
+      "ratio": 0.24775809956400627,
+      "case": 24,
+      "material": "B05",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "value": 0.00030410164202615553,
+      "threshold": 0.0012274135237608785
+    },
+    "D_theta_rms": {
+      "ratio": 0.2846627521411235,
+      "case": 24,
+      "material": "B05",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "value": 0.00010176579263756339,
+      "threshold": 0.00035749599085978164
+    },
+    "D_storage_abs_cm": {
+      "ratio": 1,
+      "case": 47,
+      "material": "B09",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "value_cm": 2.842170943040401e-14,
+      "threshold_cm": 2.842170943040401e-14,
+      "note": "Inclusive-boundary pass at floating-point storage precision scale."
+    }
+  },
+  "mass": {
+    "maximum_absolute_reference_integrated_residual_cm": {
+      "case": 123,
+      "value": 1.5840134759415038e-15
+    },
+    "maximum_absolute_rossfast_integrated_residual_cm": {
+      "case": 172,
+      "value": 4.8269770215183063e-14
+    },
+    "hard_limit_cm_each_route": 1e-12,
+    "all_routes_pass": true
+  },
+  "firewalls": {
+    "thresholds_retuned": false,
+    "transaction_level_pair_executed": false,
+    "performance_claim_evaluated": false,
+    "fallback_used": false,
+    "case_removed_or_replaced": false,
+    "production_or_reference_source_changed": false
+  },
+  "scientific_interpretation": {
+    "supported": "Within the independently constructed common E0 state domain Se={0.65,0.85,0.96}, the retained DRYING/NOMINAL forcing domain, the admitted 30-material extension set and the fixed 0.0016-day solver-seam request, the candidate-independent admission rule transferred to all 180 previously unobserved confirmatory pairs.",
+    "margin_note": "For head and water-content metrics the worst observed discrepancies used less than 29% of their frozen Reference-only threshold. Storage reached the inclusive numerical-precision threshold in one case.",
+    "not_supported": [
+      "Universal RossFast equivalence.",
+      "WETTING forcing admissibility.",
+      "Se=0.98 common-domain admissibility across all materials.",
+      "Dynamic groundwater-boundary or heterogeneous-profile admissibility.",
+      "Transaction-controller equivalence.",
+      "Trajectory-level long-horizon equivalence.",
+      "RossFast performance or speed advantage."
+    ]
+  },
+  "verdict": "QUALIFIED_30_MATERIAL_E0_HOLDOUT_ALL_180_ADMISSIBLE",
+  "next_permitted_action": "Treat material-axis transfer at the fixed solver seam as qualified within the exact bounded domain. Do not broaden the domain. Proceed to a separately preregistered trajectory-level holdout and, only after trajectory admissibility, an equal-error computational-cost comparison."
+}
