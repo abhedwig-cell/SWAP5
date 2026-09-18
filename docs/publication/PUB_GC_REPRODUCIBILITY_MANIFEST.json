@@ -1,7 +1,7 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
-  "canonical_basis": "80e8f757568ca38b40e76566f3d4039b2cd4be57",
+  "canonical_basis": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
   "scientific_scope": "E1-E6 closed/bounded; E7 preregistered and blocked on M1-C3",
   "publication_assets": {
     "manuscript": {
@@ -38,7 +38,7 @@
     },
     "supplement": {
       "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
-      "blob": "29eff2723e7d15892acbc3fe9eeb7c8b369c0398"
+      "blob": "1cc4e895b93fca00c95507db01ad6b21eda84c41"
     }
   },
   "evidence": {
@@ -128,5 +128,12 @@
     "remaining_gate": "ONE_FINAL_WHOLE_HUPSEL_FILE_DRIVEN_ADAPTER_EXECUTION",
     "workaround_policy": "fail closed; no synthetic adapter/parser/physics/tolerance workaround"
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task."
+  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task.",
+  "canonical_reconcile": {
+    "delta": "PPA-WU01 restricted production application bootstrap admitted after supplement branch creation",
+    "relevance": "Does not close M1-C3 whole-Hupsel file-driven adapter gate or provide complete legacy-file/weather ingestion",
+    "e7_disposition": "UNCHANGED_BLOCKED_EXTERNAL_PREREQUISITE",
+    "ppa_wu01_workflow_run": 35365440351,
+    "ppa_wu01_qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7"
+  }
 }
