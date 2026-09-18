@@ -4,7 +4,7 @@
   "title": "Macropore source/state/mass/transaction authority",
   "branch": "audit/ppa-wu05a-macropore-authority",
   "reconcile_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
-  "status": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
+  "status": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED_QUALIFIED",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "exact_authority": {
@@ -42,19 +42,28 @@
     "production_implementation_permitted": false
   },
   "qualification": {
-    "state": "PENDING",
-    "required_checks": [
+    "state": "PASS",
+    "authority_workflow": "PPA-WU05-A macropore authority review",
+    "authority_run_id": 35398044562,
+    "authority_job_id": 105771272302,
+    "authority_conclusion": "success",
+    "documentation_run_id": 35398044520,
+    "documentation_conclusion": "success",
+    "canonical_qualification_run_id": 35398044469,
+    "canonical_jobs": "ALL_PASS",
+    "checks": [
       "no src/ delta",
       "no reference/ delta",
       "exact B1.11 identities pinned",
-      "historical evidence is labeled corroboration rather than source oracle",
+      "historical evidence remains corroboration rather than source oracle",
       "seven-field list remains non-final",
       "mass/rollback/restart invariants present",
       "production implementation held",
-      "follow-on A1..A5 serialized correctly"
+      "follow-on A1..A5 serialized correctly",
+      "broad frozen canonical authorities preserved"
     ]
   },
   "production_admission": "NONE_REVIEW_ONLY",
-  "verdict": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
-  "next_action": "Close PPA-WU05-A as an authority-review checkpoint if validation passes. Resume as PPA-WU05-A1 only when byte-exact B0/B1.11 macropore and macrorate source bytes are materializable; do not implement macropore physics before that."
+  "verdict": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
+  "next_action": "Merge the review-only authority checkpoint if the evidence head remains green and canonical drift is disjoint. Production macropore remains blocked until PPA-WU05-A1 byte-exact source materialization and field/flux census closes."
 }
