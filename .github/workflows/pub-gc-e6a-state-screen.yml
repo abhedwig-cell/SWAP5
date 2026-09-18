@@ -1,0 +1,38 @@
+name: PUB-GC E6A accepted-state response screen
+on:
+  push:
+    branches: [work/pub-gc-e6-state-geometry-stress]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
+      - 'tests/publication/test_pub_gc_e6a_state_case.py'
+      - 'tests/publication/run_pub_gc_e6a.sh'
+      - 'docs/publication/PUB_GC_E6A_STATE_SCREEN_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e6a-state-screen.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pytest numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run preregistered E6-A state screen
+        env:
+          PUB_GC_E6A_RESULT_DIR: ${{ runner.temp }}/pub-gc-e6a
+        run: bash tests/publication/run_pub_gc_e6a.sh
+      - name: Upload E6-A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e6a-evidence
+          path: ${{ runner.temp }}/pub-gc-e6a
+          if-no-files-found: error
