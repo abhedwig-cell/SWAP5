@@ -78,13 +78,15 @@
     "matched_classifications":[
       "BRACKETED",
       "LEFT_CENSORED_AT_N1",
+      "UPPER_ONLY_ROUTE_GAP",
       "MATCH_ONLY_AT_REF_HIGH_N32",
       "UNRESOLVED"
     ],
     "work_or_timing_used_for_selection":false,
     "closest_error_ratio_used_for_selection":false,
     "monotonic_error_assumption":false,
-    "if_nonmonotone":"The first valid crossing in ascending N remains authoritative. All later levels are still retained in output."
+    "if_nonmonotone":"The first valid crossing in ascending N remains authoritative. All later levels are still retained in output.",
+    "upper_only_route_gap":"If N_hi>1 but no valid, storage-valid N<N_hi has E_ref>E_R, classify UPPER_ONLY_ROUTE_GAP rather than claiming a bracket."
   },
   "untimed_work_telemetry":{
     "timing_calls_allowed":false,
