@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.publication.p2e16-top-boundary-reference-calibration.v1",
+  "workunit": "PUB-P2E16",
+  "phase": "PREREGISTERED_BEFORE_TOP_BOUNDARY_REFERENCE_CALIBRATION",
+  "parent_primary": {
+    "branch": "work/pub-p2e15-material-extension-primary",
+    "head": "fe5e34652e5da69c6e97977ca64c82db571e7441",
+    "result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19",
+    "verdict": "PRIMARY_MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_FROZEN_COMMON_DOMAIN_180_OF_180"
+  },
+  "purpose": "Construct a candidate-independent Reference numerical self-disagreement envelope for the prospectively selected upper top-flux admissibility-boundary probe before any new RossFast execution at the inside/outside boundary offsets.",
+  "contract_derived_boundary": {
+    "source": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "production_boundary_envelope_fraction": 0.02,
+    "internal_top_reference_factor": 0.01,
+    "request_to_internal_top_sign": "internal RossFast top flux = - request.boundary.top_flux",
+    "derived_request_upper_boundary_factor_over_initial_K0": 0.01,
+    "probe_factors_over_initial_K0": [
+      0.009,
+      0.01,
+      0.011
+    ],
+    "labels": [
+      "INSIDE",
+      "BOUNDARY",
+      "OUTSIDE"
+    ],
+    "rationale": "0.009 is 0.001 inside, 0.010 is the exact request-side upper production boundary, and 0.011 is 0.001 outside. These values are derived from the frozen production contract rather than from candidate outcomes."
+  },
+  "matrix": {
+    "materials": "all 36 D3R materials B01-B18 and O01-O18",
+    "material_count": 36,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "top_flux_over_initial_K0": [
+      0.009,
+      0.01,
+      0.011
+    ],
+    "bottom_flux_over_initial_K0": -0.004,
+    "physical_case_count": 324,
+    "cases_per_Se": 108,
+    "grid": "16 homogeneous cells x 10 cm",
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "source_sink": "zero",
+    "ponding_initial_cm": 0
+  },
+  "reference_only_method": {
+    "route": "legacy-reference-bound",
+    "comparison": "one Reference solve over 0.0064 day versus two sequential Reference solves over 0.0032 + 0.0032 day",
+    "metrics": [
+      "U_h_inf_cm",
+      "U_h_rms_cm",
+      "U_theta_inf",
+      "U_theta_rms",
+      "U_storage_cm"
+    ],
+    "hard_integrated_mass_abs_limit_cm_each_solve": 1e-12
+  },
+  "threshold_rule": {
+    "stratification": "effective_saturation only",
+    "statistic": "maximum Reference self-disagreement over all 36 materials x all three contract-derived top-flux probe factors in the exact Se stratum",
+    "cases_per_threshold": 108,
+    "reference_factor": 1,
+    "application_resolution_floor": 0,
+    "formula": "T_E2_metric(Se) = max_{36 materials x {0.009,0.010,0.011}} U_metric",
+    "forcing_specific_thresholds": false,
+    "material_specific_thresholds": false
+  },
+  "candidate_firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "threshold_change_after_execution_allowed": false,
+    "probe_factor_change_after_execution_allowed": false,
+    "case_removal_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false
+  },
+  "known_candidate_information_boundary": {
+    "exact_boundary_0p010": "Previously observed in P2E10/P2E15 continuity cases and is not untreated holdout.",
+    "inside_0p009": "No publication-oriented RossFast outcome inspected before this preregistration.",
+    "outside_0p011": "No publication-oriented RossFast outcome inspected before this preregistration.",
+    "implication": "The later E2 candidate experiment must distinguish continuity evidence at 0.010 from new boundary evidence at 0.009 and 0.011."
+  },
+  "outcome_policy": {
+    "if_all_324_reference_pairs_valid": "Persist fifteen E2 Reference thresholds and authorize a separate RossFast boundary probe.",
+    "if_any_reference_pair_invalid": "Persist blocked Reference-domain result and do not execute the new RossFast boundary probe."
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_TOP_BOUNDARY_CALIBRATION_READY"
+}
