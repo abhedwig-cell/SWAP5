@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC42",
+  "title": "Live whole-window SWAP5-MODFLOW6 service materialization",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "state": "OWNER_GREEN_INDEPENDENT_QUEUED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "4d50ca2676cf9404e62b182767686ab677921511"
+  },
+  "source": {
+    "branch": "work/f-gc42-live-whole-window-service",
+    "base": "4d50ca2676cf9404e62b182767686ab677921511"
+  },
+  "predecessors": [
+    "F-GC39 prepared-solve internal coupling-service contract",
+    "F-GC41 whole-window acceptance/retry"
+  ],
+  "goal": "Materialize one executable service composition that carries an F-GC39 converged window into the F-GC41 publication boundary without changing predictor/corrector ownership or groundwater physics.",
+  "invariants": [
+    "F-GC39 remains owner of coupled nonlinear iteration below iMOD Coupler",
+    "F-GC41 remains owner of whole-window preflight/publication ordering",
+    "retained SWAP candidate identity must be the same candidate preflighted and published",
+    "MODFLOW prepared solve must be finalized before F-GC41 timestep readiness can pass",
+    "ledger token must bind the same coupling/window identity",
+    "no ordinary rejection after first irreversible publication",
+    "no N:1 scaling, Ribasim, irrigation, or new groundwater physics"
+  ],
+  "reconcile_verdict": "New composition surface: canonical has qualified F-GC39 and F-GC41 separately but no live end-to-end service composition authority.",
+  "next_permitted_action": "Obtain F-VQ114 exact-head independent evidence; if green, reconcile canonical delta and admit/close F-GC42. The next later capability is production SWAP participant binding plus a real end-to-end application case.",
+  "owner_qualification": {
+    "head": "395af98768c7e2d5a756a7aa91b692ce9dd89649",
+    "run": 35337095318,
+    "job": 105574324629,
+    "conclusion": "success",
+    "evidence": [
+      "3 passed",
+      "FGC42_WHOLE_WINDOW_SERVICE_GATE=PASS"
+    ]
+  },
+  "current_head": "57898d4476c8a6dadecc087f21a6d4aa97d26be0",
+  "evidence_boundary": "F-GC42 qualifies composition of admitted F-GC39 and F-GC41 contracts. It does not claim a real-SWAP plus real-MODFLOW production application run."
+}
