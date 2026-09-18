@@ -1,0 +1,133 @@
+{
+  "schema": "swap5.publication.p2e13-reference-common-material-state-domain.v1",
+  "workunit": "PUB-P2E13",
+  "phase": "PREREGISTERED_BEFORE_COMMON_MATERIAL_STATE_DOMAIN_EXECUTION",
+  "parent_diagnosis": {
+    "branch": "work/pub-p2e11d1-reference-extension-failure-adjudication",
+    "head": "f66d496799b52aee4c19fe0da5e4005160c60824",
+    "result_blob": "1be7d63e82eac9d1f846c9715fabf80a5700bdf8",
+    "verdict": "DIAGNOSED_SHARED_STATE_DOMAIN_TRANSFER_FAILURE"
+  },
+  "purpose": "Construct, using Reference only, a material-independent E0 state domain that remains inside the shared production state bounds across all 36 D3R materials before any new RossFast material-extension discrepancies are generated.",
+  "materials": {
+    "ids": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O14",
+      "O15",
+      "O16",
+      "O17",
+      "O18"
+    ],
+    "count": 36
+  },
+  "state_scan": {
+    "effective_saturation": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.92,
+      0.94,
+      0.96,
+      0.98
+    ],
+    "rationale": "0.50-0.90 uses a regular 0.05 grid retaining the prior 0.65 and 0.85 anchors; 0.92-0.98 resolves the near-wet boundary implicated prospectively by P2E11D1.",
+    "levels": 13
+  },
+  "forcing": {
+    "ids": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    }
+  },
+  "temporal_schedule": {
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "rationale": "Retains the P2E08 anchor schedule and the P2E11 best-tested extension level so this workunit changes the state axis rather than simultaneously changing state and temporal design."
+  },
+  "matrix": {
+    "physical_cases": 936,
+    "reference_solves_per_case": "one coarse plus two sequential half steps",
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "initial_ponding_cm": 0
+  },
+  "common_state_definition": {
+    "per_Se_complete_count": 72,
+    "requirement": "All 36 materials x both forcing classes pass Reference convergence, typed integrated mass, finite state, pressure-head domain and theta-domain checks on coarse and both half trajectories.",
+    "pressure_head_domain_cm": {
+      "min_exclusive": -10000,
+      "max_exclusive": -1
+    },
+    "theta_domain": "theta_r < theta < theta_s for each material"
+  },
+  "future_anchor_selection_rule": {
+    "only_if_at_least_three_common_Se_levels": true,
+    "dry_anchor": "Common Se closest to 0.65; ties choose the lower Se.",
+    "intermediate_anchor": "Common Se closest to 0.85 excluding the dry anchor; ties choose the lower Se.",
+    "wet_anchor": "Highest remaining common Se.",
+    "interpretation": "These become candidates for a later separately frozen calibration/admissibility experiment. P2E13 itself does not freeze solver-discrepancy thresholds."
+  },
+  "firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_new_discrepancy_inspection_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "material_removal_allowed": false,
+    "post_execution_Se_grid_change_allowed": false,
+    "threshold_creation_allowed": false
+  },
+  "known_prior_information": {
+    "six_anchor_candidate_results_exist": true,
+    "rule": "They are not inputs to the state-domain algorithm. All 36 materials are evaluated only through the Reference route in P2E13.",
+    "thirty_extension_candidate_results_exist": false
+  },
+  "outcome_policy": {
+    "if_three_or_more_common_levels": "Persist complete common-state set and the three rule-selected future anchors; next step is a separate Reference temporal/calibration freeze on those anchors.",
+    "if_fewer_than_three_common_levels": "Persist the negative state-domain result and stop broad 36-material paired extension design pending a narrower scientific question."
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_STATE_DOMAIN_CONSTRUCTION_READY"
+}
