@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.f-rom0r.r3d1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D1",
+  "title": "B01 prescribed-head retry cause decomposition",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "predecessor": "ROM-0R-R3",
+  "predecessor_decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+  "purpose": "Classify the exact final-iteration convergence criterion responsible for the two frozen B01 prescribed-head Reference retry-advised outcomes, without changing timestep, tolerances, solver controls, physics, or commit ownership.",
+  "method_authority": {
+    "source_workunit": "PUB-P2E11D",
+    "classification_only": true,
+    "classification": {
+      "RETRY_MIXED": "nonconverged_balance_count > 0 and nonconverged_head_count > 0",
+      "RETRY_LOCAL_BALANCE": "nonconverged_balance_count > 0 and nonconverged_head_count == 0",
+      "RETRY_HEAD": "nonconverged_balance_count == 0 and nonconverged_head_count > 0",
+      "RETRY_TOTAL_ONLY": "no local/head flags, max_abs_local_residual <= total_tolerance, abs(sum_residual) > total_tolerance",
+      "RETRY_OTHER": "retry-advised not captured above"
+    },
+    "important_boundary": "PUB-P2E11D classification semantics are reused; its physical population and any later tolerance-policy conclusions are not imported."
+  },
+  "cases": [
+    {
+      "material": "B01",
+      "case": "BOTTOM_HEAD_RISE",
+      "accepted_predecessor_through_perturbation_step": 10,
+      "diagnostic_failed_step": 11,
+      "expected_interval_day": [0.0112,0.0120],
+      "bottom_head_expression": "0.75*h0"
+    },
+    {
+      "material": "B01",
+      "case": "BOTTOM_HEAD_FALL",
+      "accepted_predecessor_through_perturbation_step": 9,
+      "diagnostic_failed_step": 10,
+      "expected_interval_day": [0.0104,0.0112],
+      "bottom_head_expression": "1.25*h0"
+    }
+  ],
+  "trajectory_construction": {
+    "seed": "R1 gravity-steady Se=0.85",
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "perturbation_dt_day": 0.0008,
+    "accepted_predecessor_route": "F-ROM0TA3/TA5 Reference-floor sample commit",
+    "diagnostic_attempt_route": "direct Reference solver call from snapshot of accepted predecessor",
+    "diagnostic_attempt_commit_allowed": false,
+    "fmr_failure_reproduction_after_diagnostic_required": true
+  },
+  "frozen_controls": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "min_step_duration_day": 1e-8,
+    "compartment_balance_tolerance": 1e-12,
+    "total_balance_tolerance": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12
+  },
+  "required_evidence": [
+    "ACCEPTED_PREDECESSOR_LINEAGE_REVISION_TIME_CAPTURED",
+    "DIRECT_DIAGNOSTIC_STATUS_RETRY_ADVISED",
+    "DIRECT_DIAGNOSTIC_ROUTE_LEGACY_REFERENCE_RETRY",
+    "DIRECT_DIAGNOSTIC_16_NONLINEAR_ITERATIONS",
+    "FINAL_WORKSPACE_LOCAL_BALANCE_FLAG_COUNT",
+    "FINAL_WORKSPACE_HEAD_FLAG_COUNT",
+    "FINAL_WORKSPACE_MAX_ABS_LOCAL_RESIDUAL",
+    "FINAL_WORKSPACE_TOTAL_RESIDUAL",
+    "CLASSIFICATION",
+    "FMR_FAILURE_REPRODUCES_SAME_INTERVAL_WITH_NO_COMMIT",
+    "DIRECT_DIAGNOSTIC_DOES_NOT_CHANGE_COMMITTED_PREDECESSOR",
+    "REPEAT_STDOUT_BITWISE_IDENTITY"
+  ],
+  "forbidden": [
+    "NO_TOLERANCE_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_MAX_ITERATION_CHANGE",
+    "NO_BACKTRACKING_CHANGE",
+    "NO_P2E21_POLICY_IMPORT",
+    "NO_AMPLITUDE_CHANGE",
+    "NO_PRODUCTION_OR_REFERENCE_SOURCE_MUTATION",
+    "NO_FAILED_CANDIDATE_COMMIT",
+    "NO_ROM1_WORK"
+  ],
+  "close_decisions": [
+    "B01_RETRY_LOCAL_BALANCE_CLASSIFIED",
+    "B01_RETRY_HEAD_CLASSIFIED",
+    "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+    "B01_RETRY_MIXED_CLASSIFIED",
+    "B01_RETRY_OTHER_CLASSIFIED",
+    "B01_RETRY_CAUSE_NONUNIFORM"
+  ],
+  "rom1a_authorized": false
+}
