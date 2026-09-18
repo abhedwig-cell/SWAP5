@@ -6,14 +6,14 @@ on:
       - work/m1-final-closeout-20260918
     paths:
       - 'integration/m1/M1_CANONICAL_CLOSEOUT_20260918.json'
-      - 'tests/m1/run_m1_final_closeout.sh'
+      - 'tests/qualification/m1/run_m1_final_closeout.sh'
       - '.github/workflows/m1-final-closeout.yml'
   pull_request:
     branches:
       - integration/f-ci-canonical
     paths:
       - 'integration/m1/M1_CANONICAL_CLOSEOUT_20260918.json'
-      - 'tests/m1/run_m1_final_closeout.sh'
+      - 'tests/qualification/m1/run_m1_final_closeout.sh'
       - '.github/workflows/m1-final-closeout.yml'
   workflow_dispatch:
 
@@ -29,4 +29,4 @@ jobs:
         with:
           fetch-depth: 0
       - name: Verify M1 current-canonical closeout
-        run: bash tests/m1/run_m1_final_closeout.sh
+        run: bash tests/qualification/m1/run_m1_final_closeout.sh
