@@ -41,6 +41,10 @@ module mod_b110_dynamic_top_boundary_provider
     real(real64) :: ponding_max_cm = 0.0_real64
     real(real64) :: runoff_resistance_day = 0.0_real64
     real(real64) :: runoff_exponent = 1.0_real64
+    ! Legacy explicit-conductivity (SWKIMPL=0) keeps the time-level-t top-node
+    ! conductivity fixed during Newton iterations. The override is opt-in so
+    ! existing dynamic-top callers retain their current semantics.
+    real(real64) :: fixed_top_node_conductivity_cm_per_day = -1.0_real64
   end type b110_dynamic_top_boundary_request_t
 
   type, public :: b110_dynamic_top_boundary_result_t
@@ -95,7 +99,12 @@ contains
       result%route = 'invalid-atmospheric-k'
       return
     end if
-    call evaluate_b110_default_mvg_conductivity(hydraulics, 1, request%pressure_head_top_cm, k_top, ok)
+    if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+      k_top = request%fixed_top_node_conductivity_cm_per_day
+      ok = ieee_is_finite(k_top) .and. k_top >= 0.0_real64
+    else
+      call evaluate_b110_default_mvg_conductivity(hydraulics, 1, request%pressure_head_top_cm, k_top, ok)
+    end if
     if (.not. ok) then
       result%status = B110_DYN_TOP_INVALID_INPUT
       result%route = 'invalid-top-k'
@@ -262,6 +271,10 @@ contains
     if (request%potential_pond_evaporation_cm_per_day < 0.0_real64) return
     if (request%ponding_max_cm < 0.0_real64) return
     if (request%runoff_resistance_day < 0.0_real64) return
+    if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+      if (.not. ieee_is_finite(request%fixed_top_node_conductivity_cm_per_day)) return
+      if (request%fixed_top_node_conductivity_cm_per_day < 0.0_real64) return
+    end if
     ok = .true.
   end subroutine validate_request
 
