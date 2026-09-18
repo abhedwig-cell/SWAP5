@@ -274,7 +274,6 @@ contains
     self%entries(index)%datum = datum
     self%entries(index)%predictor_lineage = lineage
     self%entries(index)%last_trial = groundwater_swap_trial_t()
-    self%entries(index)%prepared_ledger = groundwater_interface_mass_prepared_t()
     self%entries(index)%window_active = .true.
     self%entries(index)%ledger_prepared = .false.
     self%entries(index)%swap_committed = .false.
@@ -459,7 +458,6 @@ contains
     self%entries(index)%ledger_prepared = .false.
     self%entries(index)%window_active = .false.
     self%entries(index)%last_trial = groundwater_swap_trial_t()
-    self%entries(index)%prepared_ledger = groundwater_interface_mass_prepared_t()
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_commit_ledger
 
@@ -491,7 +489,6 @@ contains
     end if
 
     self%entries(index)%last_trial = groundwater_swap_trial_t()
-    self%entries(index)%prepared_ledger = groundwater_interface_mass_prepared_t()
     self%entries(index)%ledger_prepared = .false.
     self%entries(index)%window_active = .false.
     status = FMR_GW_REGISTRY_OK
