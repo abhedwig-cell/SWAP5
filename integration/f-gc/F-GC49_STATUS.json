@@ -1,133 +1,74 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC49",
-  "stage": "A",
-  "title": "Generic groundwater application orchestration — application-plan materialization",
+  "stage": "B",
+  "title": "Generic groundwater application orchestration — FMR participant registry",
   "protocol": "Bounded Execution Protocol",
-  "phase": "CLOSE_A",
-  "state": "STAGE_A_CLOSED_CANONICAL_ADMITTED_APPLICATION_PLAN",
+  "phase": "QUALIFY_B",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "base": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e"
-  },
-  "source": {
-    "branch": "work/f-gc49a-application-plan-materialization"
+    "base": "050947affbb00fc7f00dcfba0e93c6359be2d443"
   },
   "prerequisite": {
-    "capability": "F-GC48",
-    "state": "CLOSED_CANONICAL_ADMITTED_GENERIC_GROUNDWATER_TOPOLOGY",
-    "head": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e"
+    "stage_a": "STAGE_A_CLOSED_CANONICAL_ADMITTED_APPLICATION_PLAN",
+    "head": "050947affbb00fc7f00dcfba0e93c6359be2d443"
   },
-  "goal": "Materialize one immutable generic per-window application plan from admitted F-GC48 topology, tile predictor responses and cell areas, reusing F-GC40/F-GC33/F-GC34 without solver or transaction ownership.",
+  "goal": "Provide a production handle-based registry over admitted fmr_groundwater_swap_participant_t so a later generic application service can address multiple real SWAP participants without exposing kernel internals, committed-state storage, backend internals or topology-specific bridges.",
+  "design": [
+    "registry stores no copy of committed SWAP state",
+    "each active slot holds an opaque monotonically unique handle plus tile identity and Fortran pointers to production-owned FMR objects",
+    "all capture/trial/discard/preflight/commit operations delegate to fmr_groundwater_swap_participant_t",
+    "stale/released handles fail closed and cannot target a reused slot",
+    "tile ids are unique among active registrations",
+    "release is forbidden while a candidate is live",
+    "registry itself owns no predictor/corrector algorithm, ledger, MODFLOW, XMI or timestep lifecycle",
+    "first Stage-B envelope binds the concrete admitted fmr_groundwater_head_forcing_materializer_t"
+  ],
+  "exclusions": [
+    "copying or owning kernel_committed_state_t",
+    "raw kernel_executor_t exposure",
+    "C ABI/global singleton before application context ownership is fixed",
+    "predictor/tangent computation",
+    "ledger ownership",
+    "live MODFLOW coupling loop",
+    "physics-envelope expansion"
+  ],
+  "next_permitted_action": "Open draft PR, obtain owner and F-VQ122 evidence, repair only scoped failures, then admit/close Stage B. Only after Stage B closes may F-GC49C bind a generic live application context/service.",
   "production_mutations": [
-    "src/runtime/mod_groundwater_application_plan.f90"
+    "src/runtime/mod_fmr_groundwater_participant_registry.f90"
   ],
   "implemented": [
-    "tile predictor inputs keyed by topology tile id",
-    "explicit cell-area inputs keyed by groundwater cell id",
-    "predictor SWAP/coupling/service/groundwater-lineage validation against F-GC48 topology",
-    "single common coupling-window validation",
-    "single groundwater-service validation for one prepared-solve plan",
-    "compensated area-weighted predictor reference head per cell",
-    "delegation to admitted F-GC40 cell response",
-    "delegation to admitted F-GC33 linear term",
-    "reuse of admitted F-GC48/F-GC34 API bindings",
-    "canonical contiguous tile ranges per cell",
-    "copy-only immutable plan outputs"
+    "fixed-capacity production registry sized by application context",
+    "opaque monotonic 64-bit participant handles",
+    "non-recycling used slots and stale-handle rejection",
+    "external ownership pointers for backend, parameters, committed state and forcing materializer",
+    "immutable copied binding metadata for column, template, numerical configuration and datum",
+    "delegation to admitted fmr_groundwater_swap_participant_t for capture/trial/discard/preflight/commit",
+    "release fails closed while candidate is live",
+    "reinitialize fails while registrations remain active",
+    "handle counter survives quiescent reinitialization"
   ],
   "owner_qualification": [
-    "F-GC44 one-to-one plan regression",
-    "F-GC45 N-to-one plan regression",
-    "F-GC46 multi-cell plan regression",
-    "F-GC47 mixed plan regression",
-    "input-order invariance",
-    "fail-closed provenance/window/service/area matrix",
-    "O0/O2 output identity",
-    "source guard: no solver/transaction/publication ownership"
+    "two real FMR handles over independent committed lineages",
+    "same-origin real prescribed-head trials",
+    "candidate isolation and nonmutating trial behavior",
+    "release-busy fail closed",
+    "released handle stale",
+    "monotonic handle after full reinitialization",
+    "kernel remains sole commit owner",
+    "O0/O2 stable-output identity"
   ],
   "independent_qualification": {
-    "work_unit": "F-VQ121",
-    "claim": "Plan outputs equal direct F-GC40/F-GC33 composition and publish through F-GC34 with identical slot/node/term values."
+    "work_unit": "F-VQ122",
+    "claim": "Source/ownership verifier proves committed state is referenced not copied, participant lifecycle is delegated, handles are nonrecycling/monotonic, and MODFLOW/ledger/solver ownership does not leak into registry."
   },
-  "exclusions": [
-    "production participant ABI",
-    "live MODFLOW coupling loop",
-    "predictor/corrector redesign",
-    "new transaction owner",
-    "new groundwater physics",
-    "physics-envelope expansion",
-    "heterogeneous N:1 transferability policy"
-  ],
   "admission_criteria": [
-    "exact-head F-GC49A owner O0/O2 qualification green",
-    "exact-head F-VQ121 independent O0/O2 qualification green",
-    "canonical delta reconciled with no dependency conflict",
+    "exact-head F-GC49B owner real-FMR qualification green",
+    "exact-head F-VQ122 independent qualification green",
+    "canonical delta reconciled without dependency conflict",
     "PR mergeable",
-    "production delta limited to application-plan materializer"
+    "production delta limited to participant registry"
   ],
-  "verdict": "STAGE_A_CLOSED_CANONICAL_ADMITTED",
-  "next_permitted_action": "Stage A is closed. Open F-GC49B from this canonical head. Reconcile the production predictor/tangent seam and implement a handle-based FMR groundwater participant registry without exposing kernel internals or using qualification-specific topology bridges.",
-  "canonical_admission": {
-    "base": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e",
-    "head": "2405b4082fcb2f7e0a94469f76438b7e69df49e6",
-    "pr": 256,
-    "merge_method": "merge"
-  },
-  "qualification": {
-    "owner": {
-      "run": 35347224628,
-      "job": 105606537537,
-      "conclusion": "success",
-      "qualified_head": "0d2f6e93227edc4060ff49798c4fe78849c96bfe",
-      "preservation_to_stage_head": [
-        ".github/workflows/f-vq121-fgc49a-independent.yml",
-        "tests/fvq/run_fvq121_fgc49a_independent.sh",
-        "tests/fvq/test_fvq121_fgc49a_application_plan_independent.f90",
-        "docs/integration/F-GC49A_APPLICATION_PLAN_MATERIALIZATION.md",
-        "integration/f-gc/F-GC49_STATUS.json"
-      ],
-      "oracles": [
-        "FGC49A_PLAN_COMPOSITION_ONLY=PASS",
-        "FGC49A_NO_SOLVER_TRANSACTION_OR_PUBLICATION_OWNERSHIP=PASS",
-        "FGC49A_FGC44_ONE_TO_ONE_PLAN=PASS",
-        "FGC49A_FGC45_N_TO_ONE_PLAN=PASS",
-        "FGC49A_FGC46_MULTICELL_PLAN=PASS",
-        "FGC49A_FGC47_MIXED_PLAN=PASS",
-        "FGC49A_INPUT_ORDER_INVARIANCE=PASS",
-        "FGC49A_FAIL_CLOSED_PROVENANCE_AND_AREA=PASS",
-        "FGC49A_O0_O2_OUTPUT_IDENTITY=PASS"
-      ]
-    },
-    "independent": {
-      "work_unit": "F-VQ121",
-      "run": 35347308279,
-      "job": 105606783904,
-      "conclusion": "success",
-      "qualified_head": "9a934570427d555f352eed64c564d74d5b642a45",
-      "preservation_to_stage_head": [
-        "docs/integration/F-GC49A_APPLICATION_PLAN_MATERIALIZATION.md",
-        "integration/f-gc/F-GC49_STATUS.json"
-      ],
-      "oracles": [
-        "FVQ121_PLAN_EQUALS_DIRECT_FGC40_FGC33=PASS",
-        "FVQ121_MIXED_CELL1_N1_EQUIVALENCE=PASS",
-        "FVQ121_MIXED_CELL2_1TO1_EQUIVALENCE=PASS",
-        "FVQ121_PLAN_TO_FGC34_PUBLICATION=PASS",
-        "FVQ121_API_SLOT_NODE_AND_TERM_IDENTITY=PASS",
-        "FVQ121_UNMAPPED_API_TAIL_PRESERVED=PASS",
-        "FVQ121_O0_O2_OUTPUT_IDENTITY=PASS"
-      ]
-    }
-  },
-  "stage_a_admitted_capability": [
-    "immutable application plan from admitted F-GC48 topology",
-    "tile predictor provenance validation",
-    "single-window and single-groundwater-service validation",
-    "area-weighted cell reference heads",
-    "delegation to F-GC40 cell responses",
-    "delegation to F-GC33 linear terms",
-    "F-GC34 API bindings",
-    "canonical per-cell contiguous tile routing",
-    "copy-only plan outputs"
-  ]
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
 }
