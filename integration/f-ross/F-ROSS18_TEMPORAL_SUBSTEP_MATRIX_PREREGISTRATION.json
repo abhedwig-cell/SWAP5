@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.f-ross18.temporal-substep-matrix.v1",
+  "workunit": "F-ROSS18",
+  "phase": "PREREGISTERED_RESEARCH_ONLY",
+  "branch": "work/f-ross18-temporal-substep-matrix",
+  "source_head": "405ad30e823ea44deedf73edc67c68e01564c617",
+  "purpose": "Determine whether reducing RossFast certificate substeps can close or reverse the remaining performance gap to Reference Richards, without mutating production source in this workunit.",
+  "authority": {
+    "f_ross17_result_blob": "60da54c9957a455723b7f12b833fc80a415533c7",
+    "cached_table_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+    "solver_binding_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22"
+  },
+  "production_mutation_allowed": false,
+  "research_method": {
+    "temporary_build_only": true,
+    "variants": [
+      {
+        "id": "K8",
+        "component_internal_substeps": 8,
+        "total_candidate_steps_per_solve": 24,
+        "accepted_refined_steps_over_full_interval": 16,
+        "role": "qualified F-ROSS17 authority"
+      },
+      {
+        "id": "K4",
+        "component_internal_substeps": 4,
+        "total_candidate_steps_per_solve": 12,
+        "accepted_refined_steps_over_full_interval": 8,
+        "role": "research-only"
+      },
+      {
+        "id": "K2",
+        "component_internal_substeps": 2,
+        "total_candidate_steps_per_solve": 6,
+        "accepted_refined_steps_over_full_interval": 4,
+        "role": "research-only"
+      }
+    ],
+    "topology": "coarse + first-half + second-half retained for every variant",
+    "temporary_patch_targets": [
+      "CERTIFICATE_INTERNAL_SUBSTEPS in a build-directory copy of mod_rossfast_d3r_table_kernel.f90",
+      "ROSSFAST_INTERNAL_SUBSTEPS in a build-directory copy of mod_rossfast_d3r_soil_water_solver.f90"
+    ],
+    "repository_src_reference_diff_required": "none"
+  },
+  "domain": {
+    "cases": 36,
+    "same_as": "PUB-P2E10 paired-valid E0 domain",
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.98],
+    "forcing": ["DRYING","NOMINAL"],
+    "step_duration_day": 0.0016
+  },
+  "science_questions": [
+    "How many of the 36 cases remain P2E10 paired-valid for K4 and K2?",
+    "Do all route-valid cases retain mass tolerance and zero retries/alternative solver calls?",
+    "How many cases have temporal_indicator <= 1.0, the actual model-certificate acceptance threshold?",
+    "What is the worst Reference discrepancy and temporal indicator for each variant?"
+  ],
+  "performance_questions": [
+    "For scientifically admissible variants, what is the paired solver CPU ratio versus Reference?",
+    "At which fixed candidate-step budget, if any, does RossFast become faster than Reference on the shared-host screen?"
+  ],
+  "performance_protocol": {
+    "compiler": "GNU Fortran -O2",
+    "warmups_per_variant": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_case": 200,
+    "outlier_deletion": false,
+    "target_resolution_relative": 0.05,
+    "formal_production_speedup_claim": false
+  },
+  "adjudication": {
+    "production_candidate_requires": [
+      "36/36 P2E10 paired-valid",
+      "36/36 temporal_indicator <= 1.0 on the fixed full interval",
+      "zero route failures",
+      "zero internal retries and alternative solver calls in direct solver qualification"
+    ],
+    "research_performance_may_be_reported_for_failed_science_variant": true,
+    "failed_science_variant_cannot_be_promoted": true,
+    "no_variant_is_production_admitted_by_F_ROSS18": true
+  },
+  "next_permitted_action": "Implement temporary-build matrix harness and execute K8/K4/K2 without changing repository production source."
+}
