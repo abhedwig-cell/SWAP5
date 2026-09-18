@@ -27,7 +27,8 @@ def require(x,msg):
 
 for forbidden in (
     "7001","7002","fgc44","fgc45","fgc46","fgc47",
-    "hcof_m2_per_day","rhs_m3_per_day",
+    "86400.0","area_fraction","q_u_at_reference_m_per_s","dq_u_dh_per_s",
+    "reference_volume_flux_m3_per_day",
     "compose_modflow6_multiswap_cell_response",
     "compose_modflow6_linear_boundary_term",
 ):
@@ -57,6 +58,13 @@ class B:
     package_slot:int
     modflow_node_id:int
 
+@dataclass(frozen=True)
+class T:
+    groundwater_cell_id:int
+    hcof_m2_per_day:float
+    rhs_m3_per_day:float
+    valid:bool=True
+
 class R:
     def __init__(self,events):
         self.events=events
@@ -65,7 +73,7 @@ class R:
     def materialize_plan(self):
         return GroundwaterApplicationPlanView(
             bindings=(B(11,1,1),B(22,2,2)),
-            terms=("a","b"),
+            terms=(T(11,1.0,2.0),T(22,1.0,2.0)),
             cell_ids=(11,22),
         )
     def capture_origins(self): return True
@@ -78,7 +86,7 @@ class R:
     def discard_candidates(self):
         self.discards+=1
         return True
-    def reanchor_terms(self,heads,q): return ("c","d")
+    def reanchor_terms(self,heads,q): return (T(11,1.0,3.0),T(22,1.0,3.0))
     def swap_preflight(self):
         self.events.append("swap_preflight"); return True
     def prepare_ledgers(self):
