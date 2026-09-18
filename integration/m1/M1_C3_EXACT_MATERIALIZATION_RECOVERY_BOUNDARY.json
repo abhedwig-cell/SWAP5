@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "Legacy Hupsel file run to typed application mapping",
+  "phase": "ACQUIRE_EXACT_MATERIALIZATION",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "finding": "EXACT_B0_BYTES_NOT_DURABLY_REACHABLE_FROM_CURRENT_REPOSITORY_OR_RETAINED_ACTIONS_ARTIFACTS",
+  "recovered_authority": {
+    "f_pe19_branch": "work/f-pe19-swap011-b1-admission",
+    "f_pe19_full_replay": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+    "full_replay_verdict": "PASS",
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "historical_filename_clue": "SWAP_4.3.1(6).zip",
+    "historical_recovery_commit": "e6c32a911d1cc526138c5dc3338e7e7dc659c9fb"
+  },
+  "connector_checks": {
+    "releases": "NONE",
+    "f_pe19_vq_run_id": 35097622099,
+    "f_pe19_vq_run_artifacts": "NONE",
+    "current_repository_state": "identity/manifests/transforms retained; raw controlling B0 distribution bytes absent"
+  },
+  "decision": "FAIL_CLOSED_NO_SUBSTITUTE_MATERIALIZATION",
+  "rationale": "The exact replay is scientifically admitted and reusable as evidence, but an observation-only executable trace requires source/input bytes. Hashes and manifests cannot regenerate missing bytes, and public/approximate substitutes are outside the preregistered authority.",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "governance_evidence_only": true
+  },
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "next_permitted_action": "Recover or provide the exact raw distribution object whose SHA-256 is 2b48353d... (historical filename SWAP_4.3.1(6).zip is a known clue), then persist it or an immutable artifact handoff reachable by CI; verify raw SHA before use; only then execute the preregistered six-interval trace."
+}
