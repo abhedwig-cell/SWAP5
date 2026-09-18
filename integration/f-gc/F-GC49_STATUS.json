@@ -4,8 +4,8 @@
   "stage": "D",
   "title": "Generic groundwater application orchestration — production FMR cross-language application context",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT_D",
-  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE_D",
+  "state": "CLOSED_CANONICAL_ADMITTED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "stage_c_merge_base": "01e133b3da79468618e6c89a74533efff1ccdaaf",
@@ -38,7 +38,7 @@
     "heterogeneous N:1 transferability",
     "SCALE scientific claims"
   ],
-  "next_permitted_action": "Reconcile this qualification-evidence checkpoint onto current canonical, mark PR #275 ready, merge with expected head, verify canonical postimage, then close Stage D canonically with merge SHA and final evidence boundary.",
+  "next_permitted_action": "F-GC49 is closed through Stage D. No further F-GC49 expansion is authorized by this workunit. Any broader iMOD Coupler product integration, physics-envelope expansion, or heterogeneous N:1 transferability work requires a separately bounded capability; SCALE remains a separate scientific line.",
   "production_mutations": [
     "src/runtime/mod_modflow6_linear_response_backend.f90",
     "src/runtime/mod_fmr_groundwater_application_context.f90",
@@ -132,7 +132,7 @@
     "PR mergeable against current canonical",
     "F-GC44-F-GC47 qualification bridges remain qualification-only"
   ],
-  "verdict": "QUALIFIED_READY_FOR_ADMISSION",
+  "verdict": "ADMITTED_CANONICAL_CLOSED",
   "canonical_admission": {
     "stage": "C",
     "canonical_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
@@ -229,7 +229,7 @@
     "The admitted F-GC49C Python runtime protocol already defines the required operation boundary: plan, origin capture, cell flux evaluation, corrector trials, discard, reanchoring, preflight, ledger preparation and publication.",
     "Stage D therefore requires a Fortran-owned application context over externally owned F-GC49A plan, F-GC49B registry/handles and ledgers, plus a narrow opaque-handle C ABI and a Python adapter. The C ABI may expose primitive immutable views but must not own SWAP state or reproduce cell/linear-response mathematics."
   ],
-  "current_branch_head": "8b001862e8649185ad610e5e7f6225d985f49524",
+  "current_branch_head": "5015b10b69472589efd9d3414142577f4c69c856",
   "qualification_surface_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
   "external_execution_state": {
     "redundant_preservation_head_runs": [
@@ -325,5 +325,45 @@
     "changed_file_count": 37,
     "dependency_overlap": [],
     "disposition": "No F-GC49D production/runtime/test/workflow dependency overlap; qualified artifact set may be overlaid unchanged."
+  },
+  "stage_d_canonical_admission": {
+    "stage": "D",
+    "canonical_preimage": "27a46cb9e4100453c36005d579de9e87623ff1b3",
+    "qualification_surface_head": "cd498b76778f4ecde8f9fed17aeb2b3c3ef4990b",
+    "first_reconciled_artifact_head": "8b001862e8649185ad610e5e7f6225d985f49524",
+    "qualification_evidence_head": "5015b10b69472589efd9d3414142577f4c69c856",
+    "pr": 275,
+    "merge_method": "merge",
+    "merge_sha": "ac3f789c51dad9806020c37db4f7666b9f18e66f",
+    "merged_at": "2026-09-18T14:08:25Z"
+  },
+  "stage_d_exact_admitted_capability": [
+    "one generic production FMR cross-language application context backed by admitted F-GC49A plans and F-GC49B participant handles",
+    "Fortran remains owner of SWAP/FMR committed state, candidate state, corrector execution and external groundwater mass ledgers",
+    "opaque nonrecycled context handles expose only primitive immutable views and delegated operations to Python",
+    "F-GC40 remains the authority for N:1 cell aggregation",
+    "F-GC33 remains the authority for groundwater flux evaluation and linear-term reanchoring",
+    "the existing generic F-GC49C service consumes the production runtime adapter without becoming FMR-specific",
+    "mixed topology is production-supported in one service window: two real FMR participants N:1 to one groundwater cell plus one real participant 1:1 to a second cell",
+    "one live MODFLOW6 6.8.0 prepared solve jointly converges all cells",
+    "one-window contexts fail closed against reuse after successful publication",
+    "publication order remains MODFLOW finalize_time_step, then SWAP commits, then ledger commits",
+    "post-MODFLOW-publication failures remain durability/restart class rather than rollback-safe retry"
+  ],
+  "stage_d_evidence_boundary": [
+    "F-GC44-F-GC47 C bridges remain qualification-only and are not production FMR ABIs",
+    "Stage D does not move SWAP state, FMR physics, F-GC40 aggregation, F-GC33 linear-response mathematics or ledger ownership into Python",
+    "Stage D does not move predictor/corrector ownership out of the iMOD Coupler layer",
+    "Stage D does not introduce a second transaction architecture",
+    "Stage D makes no generic distributed atomicity claim",
+    "Stage D mixed-topology qualification does not establish heterogeneous N:1 hydrological transferability",
+    "N:1 technical support remains separate from SCALE scientific validity"
+  ],
+  "stage_d_postimage": {
+    "canonical_merge_sha": "ac3f789c51dad9806020c37db4f7666b9f18e66f",
+    "status_closure_parent": "ac3f789c51dad9806020c37db4f7666b9f18e66f",
+    "merged_head": "5015b10b69472589efd9d3414142577f4c69c856",
+    "production_test_workflow_changes_after_qualification": [],
+    "status_only_evidence_persistence_after_qualification": true
   }
 }
