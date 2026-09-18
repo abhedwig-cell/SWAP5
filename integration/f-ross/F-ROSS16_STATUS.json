@@ -51,7 +51,11 @@
       "valid_state_inside_candidate": 0.03890282680572866
     },
     "combined_capacity_table_head_fraction": 0.8356164867326554,
-    "production_or_reference_mutation": false
+    "production_or_reference_mutation": false,
+    "optimized_pow_log10_exp_fraction_of_candidate_step": 0.6275969350505657,
+    "optimized_pow_calls_per_rossfast_solve": 1920,
+    "optimized_log10_calls_per_rossfast_solve": 720,
+    "optimized_exp_calls_per_rossfast_solve": 360
   },
   "scientific_interpretation": {
     "primary": "RossFast's current performance disadvantage is structurally driven by its fixed 24-step coarse+half+half temporal-certificate path and the repeated constitutive/table transformations inside those steps.",
@@ -59,7 +63,9 @@
     "rossfast_linear_solves_per_call": 24,
     "rossfast_over_reference_total_linear_solve_ratio": 6.171428571428572,
     "tridiagonal_solver_is_primary_cost_driver": false,
-    "formal_production_timing_claim": false
+    "formal_production_timing_claim": false,
+    "optimized_transcendental_fraction_of_candidate_step": 0.6275969350505657,
+    "note": "O2 deterministic instruction counts and no-inline structural counts agree that repeated transformations, not the small tridiagonal solve, dominate the current candidate-step workload."
   },
   "reconcile_at_close": {
     "current_canonical": "aa9567513e4ff014fa696a402127d5e4b208aa94",
