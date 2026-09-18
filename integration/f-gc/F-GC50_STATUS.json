@@ -80,12 +80,24 @@
       "F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS"
     ],
     "post_bootstrap_reconcile": {
-      "expected_oracles": [
+      "workflow": "F-GC50 iMOD Coupler product integration reconcile",
+      "run_id": 35371365615,
+      "job_id": 105685856684,
+      "qualified_head": "b3bd4b89912f511237f04a033106e74e636d8807",
+      "conclusion": "success",
+      "oracles": [
+        "FGC50_UPSTREAM_DRIVER_TYPES_EXCLUDE_SWAP5=PASS",
+        "FGC50_UPSTREAM_GET_DRIVER_HARDCODED_NO_PLUGIN=PASS",
+        "FGC50_UPSTREAM_DRIVER_EXECUTE_LIFECYCLE=PASS",
+        "FGC50_UPSTREAM_PRODUCT_OWNS_COUPLED_TIMESTEP_LIFECYCLE=PASS",
+        "FGC50_FGC49D_REQUIRES_EXISTING_FORTRAN_CONTEXT=PASS",
+        "FGC50_FGC49D_FIXTURE_REMAINS_QUALIFICATION_ONLY=PASS",
         "FGC50_PPA_WU01_CANONICAL_ADMITTED=PASS",
         "FGC50_PPA_WU01_FGC49D_CONTEXT_OWNER=PASS",
-        "FGC50_B2_INTERNAL_BOOTSTRAP_PREREQUISITE_RESOLVED=PASS"
+        "FGC50_B2_INTERNAL_BOOTSTRAP_PREREQUISITE_RESOLVED=PASS",
+        "F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS"
       ],
-      "status": "PENDING_CURRENT_RECONCILIATION_RUN"
+      "evidence_inheritance": "Subsequent status-only commit does not change the tested upstream contract, PPA-WU01 authority or SWAP5 production source."
     }
   },
   "verdict": "BLOCKED_EXTERNAL_UPSTREAM_MUTATION_ONLY",
