@@ -17,7 +17,7 @@ FIX=tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz
 [[ "$(git rev-parse HEAD:$SRC)" == 3eb23d075a56ba1158f4758f75a8d94c94e09b39 ]] || fail "candidate process drift"
 [[ "$(git rev-parse HEAD:$BIND)" == 7d76af48cac085d6f4b5653987d75bfc54fb7692 ]] || fail "candidate binding drift"
 [[ -z "$(git diff --name-only "$SUBJECT"..HEAD -- src)" ]] || fail "qualification mutated production source"
-test "$(sha256sum "$FIX" | awk '{print $1}')" = 331d186fa60caf983fd9bac5d97c715d8b61af259661a61ac2c362e90e200ffa || fail "fixture archive drift"
+test "$(git hash-object "$FIX")" = 344c00d49717374a20772aa006edef720432d387 || fail "fixture blob drift"
 python3 - "$FIX" "$BUILD/exact.csv" <<'PY'
 import gzip,hashlib,sys
 raw=gzip.open(sys.argv[1],"rb").read()
