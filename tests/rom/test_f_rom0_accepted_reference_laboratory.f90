@@ -22,7 +22,8 @@ program test_f_rom0_accepted_reference_laboratory
   real(real64), parameter :: hard_mass_tol = 1.0e-12_real64
   integer(int64), parameter :: lineage_id = 910001_int64
 
-  character(len=16) :: material_id, experiment_id
+  character(len=16) :: material_id
+  character(len=32) :: experiment_id
   character(len=32) :: arg
   integer :: n, base_intervals, intervals, i, j, bottom_mode, ios
   real(real64) :: dz_cm, dt_day, t0, t1, committed_time
@@ -101,11 +102,19 @@ program test_f_rom0_accepted_reference_laboratory
          result, candidate, diagnostic)
 
     if (.not. result%completed .or. .not. candidate%ready()) then
+      observation = backend%observation()
       write(*,'(*(g0))') 'F_ROM0_REJECT|MATERIAL=',trim(material_id),'|EXPERIMENT=',trim(experiment_id), &
            '|STEP=',i,'|STATUS=',result%status,'|COMPLETED=',result%completed, &
            '|ATTEMPTS=',diagnostic%attempts,'|RETRIES=',diagnostic%retries, &
            '|SOLVER_REJECTIONS=',diagnostic%solver_rejections,'|TEMPORAL_REJECTIONS=',diagnostic%temporal_rejections, &
-           '|MASS_REJECTIONS=',diagnostic%mass_rejections
+           '|MASS_REJECTIONS=',diagnostic%mass_rejections, &
+           '|LAST_SOLVER_STATUS=',observation%solver_status, &
+           '|LAST_SOLVER_ROUTE=',trim(observation%solver_diagnostics%route), &
+           '|LAST_NONLINEAR_ITERS=',observation%solver_diagnostics%nonlinear_iterations, &
+           '|LAST_INTERNAL_RETRIES=',observation%solver_diagnostics%internal_retries, &
+           '|LAST_JACOBIAN_BUILDS=',observation%solver_diagnostics%jacobian_builds, &
+           '|LAST_LINEAR_SOLVES=',observation%solver_diagnostics%linear_solves, &
+           '|LAST_BACKTRACK=',observation%solver_diagnostics%backtracking_attempts
       error stop 1
     end if
     call require(result%mass%complete, 'accepted candidate mass accounting complete')
@@ -178,182 +187,3 @@ contains
       tr=0.0_real64; ts=0.0_real64; alpha=0.0_real64; nn=0.0_real64; ks=0.0_real64; lam=0.0_real64
       found=.false.
     end select
-  end subroutine material_parameters
-
-  subroutine initialize_parameters(p, nodes, cell_dz, tr, ts, alpha, nn, ks, lam)
-    type(fmr_b110_physical_parameters_t), intent(out) :: p
-    integer, intent(in) :: nodes
-    real(real64), intent(in) :: cell_dz, tr, ts, alpha, nn, ks, lam
-    real(real64) :: mm
-    integer :: k
-    mm = 1.0_real64 - 1.0_real64/nn
-    p%parameter_set_id = 910001_int64
-    p%active_nodes = nodes
-    allocate(p%z(nodes), p%dz(nodes), p%node_distance(nodes), p%cofgen(24,nodes))
-    do k=1,nodes
-      p%z(k) = -cell_dz*(real(k,real64)-0.5_real64)
-    end do
-    p%dz = cell_dz
-    p%node_distance = cell_dz
-    p%cofgen = 0.0_real64
-    do k=1,nodes
-      p%cofgen(1,k)=tr; p%cofgen(2,k)=ts; p%cofgen(3,k)=ks
-      p%cofgen(4,k)=alpha; p%cofgen(5,k)=lam; p%cofgen(6,k)=nn
-      p%cofgen(7,k)=mm; p%cofgen(8,k)=alpha; p%cofgen(9,k)=0.0_real64
-      p%cofgen(10,k)=ks; p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*ks
-      p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
-    end do
-    p%bottom_mode=2
-    p%swkimpl=0; p%swkmean=1; p%swsophy=0
-    p%max_iterations=16; p%max_backtracking=8
-    p%min_step_duration=1.0e-8_real64
-    p%compartment_balance_tolerance=1.0e-12_real64
-    p%total_balance_tolerance=1.0e-12_real64
-    p%head_abs_tolerance=1.0e-12_real64
-    p%head_rel_tolerance=1.0e-12_real64
-    p%ponding_tolerance=1.0e-12_real64
-    p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
-    p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
-    p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
-    p%drainage_qbot_smooth_freatic_projection=.false.
-  end subroutine initialize_parameters
-
-  subroutine initial_head_and_conductivity(p, step_dt, head0, conductivity0, state)
-    type(fmr_b110_physical_parameters_t), intent(in) :: p
-    real(real64), intent(in) :: step_dt
-    real(real64), intent(out) :: head0, conductivity0
-    type(fmr_b110_physical_state_t), intent(out) :: state
-    type(b110_default_mvg_parameters_t), target :: hp
-    type(b110_default_mvg_provider_t) :: provider
-    real(real64), allocatable :: heads(:), water(:), conductivity(:), capacity(:), dkdh(:)
-    real(real64) :: m
-    integer :: nodes
-    nodes=p%active_nodes
-    allocate(heads(nodes),water(nodes),conductivity(nodes),capacity(nodes),dkdh(nodes))
-    m=1.0_real64-1.0_real64/p%cofgen(6,1)
-    head0=-(se0**(-1.0_real64/m)-1.0_real64)**(1.0_real64/p%cofgen(6,1))/p%cofgen(4,1)
-    heads=head0
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
-    call bind_b110_default_mvg_provider(provider,hp,step_dt)
-    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
-    call require(all(ieee_is_finite(water)) .and. all(ieee_is_finite(conductivity)), 'initial constitutive state finite')
-    conductivity0=conductivity(1)
-    call require(conductivity0 > 0.0_real64, 'initial conductivity positive')
-    state%active_nodes=nodes
-    allocate(state%pressure_head(nodes),state%water_content(nodes))
-    state%pressure_head=heads
-    state%water_content=water
-    state%ponding_depth=0.0_real64
-    state%groundwater_level=-999.0_real64
-  end subroutine initial_head_and_conductivity
-
-  subroutine initialize_forcing(f, nodes)
-    type(fmr_b110_physical_forcing_t), intent(out) :: f
-    integer, intent(in) :: nodes
-    allocate(f%drainage_flux_by_level(1,nodes),f%subsurface_irrigation_source(nodes),f%root_extraction_sink(nodes))
-    f%drainage_flux_by_level=0.0_real64
-    f%subsurface_irrigation_source=0.0_real64
-    f%root_extraction_sink=0.0_real64
-  end subroutine initialize_forcing
-
-  subroutine initialize_runtime_identity(col, tmpl)
-    type(fmr_logical_column_t), intent(out) :: col
-    type(fmr_template_t), intent(out) :: tmpl
-    tmpl%template_id=910001_int64
-    tmpl%physics_topology_id=910002_int64
-    tmpl%vertical_layout_id=910003_int64
-    tmpl%state_layout_id=910004_int64
-    tmpl%solver_interface_id=910005_int64
-    tmpl%optional_state_layout_id=0_int64
-    tmpl%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
-    tmpl%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
-    col%column_id=lineage_id
-    col%template_id=tmpl%template_id
-    col%parameter_ref=1_int64
-    col%state_handle=1_int64
-    col%forcing_handle=1_int64
-    col%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
-  end subroutine initialize_runtime_identity
-
-  subroutine initialize_numerics(cfg)
-    type(canonical_numerical_config_t), intent(out) :: cfg
-    cfg%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    cfg%transaction%temporal_tolerance=1.0e-6_real64
-    cfg%transaction%max_retries=8
-    cfg%transaction%mass_tolerance=hard_mass_tol
-    cfg%transaction%retry_scale=0.5_real64
-    cfg%max_committed_substeps=128
-    cfg%progress_tolerance=0.0_real64
-    cfg%model_temporal_indicator_budget_available=.false.
-    cfg%model_temporal_indicator_budget=0.0_real64
-  end subroutine initialize_numerics
-
-  integer function experiment_base_intervals(id) result(count)
-    character(len=*), intent(in) :: id
-    select case(trim(id))
-    case('E0_HOLD'); count=16
-    case('E1_NOMINAL_FLUX','E2_DRYING_FLUX','E3_BOTTOM_HEAD_RISE','E4_BOTTOM_HEAD_FALL','E5_DIRECTION_REVERSAL')
-      count=32
-    case default; count=0
-    end select
-  end function experiment_base_intervals
-
-  subroutine forcing_for_step(id, step, steps, head0, conductivity0, cell_dz, mode, qt, qb, hb)
-    character(len=*), intent(in) :: id
-    integer, intent(in) :: step, steps
-    real(real64), intent(in) :: head0, conductivity0, cell_dz
-    integer, intent(out) :: mode
-    real(real64), intent(out) :: qt, qb, hb
-    qt=0.0_real64; qb=0.0_real64; hb=head0
-    select case(trim(id))
-    case('E0_HOLD')
-      mode=2
-    case('E1_NOMINAL_FLUX')
-      mode=2; qt=0.010_real64*conductivity0; qb=-0.004_real64*conductivity0
-    case('E2_DRYING_FLUX')
-      mode=2; qt=-0.005_real64*conductivity0; qb=-0.019_real64*conductivity0
-    case('E3_BOTTOM_HEAD_RISE')
-      mode=5; hb=head0+2.0_real64*cell_dz
-    case('E4_BOTTOM_HEAD_FALL')
-      mode=5; hb=head0-2.0_real64*cell_dz
-    case('E5_DIRECTION_REVERSAL')
-      mode=5
-      if (step <= steps/2) then
-        hb=head0+2.0_real64*cell_dz
-      else
-        hb=head0-2.0_real64*cell_dz
-      end if
-    case default
-      mode=-999
-    end select
-  end subroutine forcing_for_step
-
-  subroutine storage_bands(state,p,total,upper,lower)
-    type(fmr_b110_physical_state_t), intent(in) :: state
-    type(fmr_b110_physical_parameters_t), intent(in) :: p
-    real(real64), intent(out) :: total,upper,lower
-    integer :: k
-    real(real64) :: depth
-    total=state%ponding_depth
-    upper=0.0_real64; lower=0.0_real64
-    do k=1,p%active_nodes
-      total=total+p%dz(k)*state%water_content(k)
-      depth=-p%z(k)
-      if (depth < 40.0_real64) then
-        upper=upper+p%dz(k)*state%water_content(k)
-      else
-        lower=lower+p%dz(k)*state%water_content(k)
-      end if
-    end do
-  end subroutine storage_bands
-
-  subroutine require(condition,label)
-    logical,intent(in) :: condition
-    character(len=*),intent(in) :: label
-    if(.not.condition) then
-      write(*,'(A,1X,A)') 'F_ROM0_FAIL',trim(label)
-      error stop 1
-    end if
-  end subroutine require
-
-end program test_f_rom0_accepted_reference_laboratory
