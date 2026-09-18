@@ -55,9 +55,9 @@ The review portal is being organized around the following layers:
 
 1. **Getting started** records only build/run/input/output paths that are actually supported by repository authority, and records gaps instead of inventing a public interface.
 2. **Review baseline** identifies exactly what colleagues are being asked to review and gives role-specific reading routes.
-3. **Scientific model** explains the conceptual model, physical assumptions, state variables, process equations, boundaries and balances. This narrative layer is being expanded in F-DOC20 from existing theory/code/evidence authorities.
+3. **Scientific model** explains the conceptual model, physical assumptions, state variables, process equations, boundaries and balances. The current technical-reference pages are reconstructed from accepted theory, code and qualification evidence without broadening the frozen scientific denominator.
 4. **Status-A capability pages** explain the admitted boundaries of Restart, serialized MultiSWAP, Drainage, WOFOST runtime, restricted Snow and Groundwater Coupling v1.
-5. **Numerical formulation** explains discretisation, nonlinear solution, timestep control, retry/rollback and numerical acceptance. This narrative layer is being expanded in F-DOC20 without changing numerical semantics.
+5. **Numerical formulation** explains discretisation, nonlinear solution, timestep control, retry/rollback and numerical acceptance. The current pages document admitted numerical semantics without introducing a new solver or timestep policy.
 6. **Current Status-A** records the admitted capability boundary, actual ownership model, distributed authority map and deliberate future scope.
 7. **Architecture** contains current ownership/invariant material plus explicitly identified historical target-design material.
 8. **Verification** records correctness, conservation, numerical, restart, MultiSWAP and preservation evidence.

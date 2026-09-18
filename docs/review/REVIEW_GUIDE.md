@@ -58,14 +58,15 @@ Focus on committed/candidate state separation, retry and rollback, exactly-once 
 
 Start with:
 
-1. [Current Status-A scope](../status-a/CURRENT_STATUS.md)
-2. [Scientific model](../science/index.md)
-3. [Legacy SWAP 4.3.1 baseline](../legacy/swap-4.3.1-baseline.md)
-4. [SWAP 4.3.1 and SWAP5 equivalence evidence](SWAP431_EQUIVALENCE.md)
-5. [Current architecture](../status-a/CURRENT_ARCHITECTURE.md)
-6. [Deliberate future scope](../status-a/FUTURE_SCOPE.md)
+1. [Getting started: build, run, input and output](../getting-started.md)
+2. [Current Status-A scope](../status-a/CURRENT_STATUS.md)
+3. [Scientific model](../science/index.md)
+4. [Legacy SWAP 4.3.1 baseline](../legacy/swap-4.3.1-baseline.md)
+5. [SWAP 4.3.1 and SWAP5 equivalence evidence](SWAP431_EQUIVALENCE.md)
+6. [Current architecture](../status-a/CURRENT_ARCHITECTURE.md)
+7. [Deliberate future scope](../status-a/FUTURE_SCOPE.md)
 
-A dedicated build/run/input/output user section is a later F-DOC20 slice; scientific and review authority does not depend on inventing user guidance before it is ready.
+The getting-started page is deliberately bounded: it documents the supported documentation build and admitted practical repository entry points, while recording where no broad stable end-user SWAP5 CLI/API or replacement input/output grammar is yet claimed.
 
 ### Full technical review
 
