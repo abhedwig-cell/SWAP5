@@ -3,8 +3,8 @@
   "work_unit": "F-GC41",
   "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_DESIGN_BOUNDARY",
+  "phase": "QUALIFY",
+  "state": "MODFLOW_PUBLICATION_RETRY_SEMANTICS_QUALIFIED_DESIGN_NEXT",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
@@ -53,5 +53,44 @@
     "runtime finite-difference tangent fallback"
   ],
   "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
-  "next_permitted_action": "QUALIFY the MODFLOW6 whole-timestep publication and smaller-window reconstruction semantics against the live F-GC38/F-GC39 backend. Do not implement the atomic coordinator until the first-irreversible-operation and retry-origin contracts are explicit."
+  "next_permitted_action": "Implement minimal F-GC41 coordinator contract and executable failure-injection harness with deterministic participants. Prove ordering, exact lineage/window binding, zero publication on preflight failure, single publication on success, and fresh-origin smaller-window reconstruction. Do not wire live finalize_time_step until its readiness seam is executable without mutation.",
+  "modflow_semantics": {
+    "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
+    "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
+    "solve": "updates X while XOLD remains accepted previous-time origin",
+    "finalize_solve": "closes converged solve; F-GC39 crosses this only after coupled convergence",
+    "finalize_time_step": "finishes the MODFLOW timestep; F-GC39 deliberately stops before this boundary",
+    "abort_primitive": "No admitted XMI abort_solve/rollback primitive. Abandoned prepared solve is invalidated, not reused."
+  },
+  "scientific_architectural_decision": [
+    "Last accepted MODFLOW timestep, not abandoned X/XOLD working state, is the retry origin.",
+    "Smaller-window retry requires a fresh MODFLOW timestep lifecycle reconstructed from the last accepted model state with the smaller dt.",
+    "All reversible SWAP and ledger preparation must complete before MODFLOW finalize_time_step.",
+    "F-GC41 must not claim generic distributed atomicity across failures after an irreversible external publication call.",
+    "Use fail-before-publication: ordinary validation and physics rejection must be exhausted before the publication sequence.",
+    "Crash durability/restart during irreversible publication is a separate concern, not rollback."
+  ],
+  "required_coordinator_order": [
+    "retain converged F-GC39 SWAP candidate",
+    "stage and prepare exact-window ledger token",
+    "non-mutating preflight of SWAP candidate/provenance",
+    "non-mutating preflight of MODFLOW timestep-finalization readiness",
+    "preflight ledger token plus exact lineage/window identity",
+    "cross publication point only after all preflights pass",
+    "finalize MODFLOW timestep exactly once",
+    "commit retained SWAP candidate using preflighted identity",
+    "commit prepared ledger token",
+    "advance accepted coupling origin only after publication completes"
+  ],
+  "retry_contract": [
+    "before publication, abort/discard prepared SWAP and ledger state on failure",
+    "invalidate abandoned MODFLOW runtime",
+    "reconstruct MODFLOW from last accepted timestep state",
+    "prepare fresh smaller timestep and prepared solve",
+    "re-enter F-GC39 from immutable accepted SWAP origin",
+    "do not reuse candidate revision, ledger generation, XMI pointer views or prepared-solve session identity"
+  ],
+  "remaining_blocker": "Production implementation must expose or prove non-mutating readiness/preflight seams for retained SWAP candidate and MODFLOW timestep finalization before irreversible call ordering is admitted.",
+  "verdict": "QUALIFIED_FOR_COORDINATOR_DESIGN_NOT_YET_FOR_PRODUCTION_ADMISSION",
+  "mutations": "metadata only"
 }
