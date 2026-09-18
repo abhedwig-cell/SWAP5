@@ -2,93 +2,151 @@
 
 ## Status
 
-**CASE_SELECTED — BLOCKED_EXTERNAL_PREREQUISITE**
+**STANDALONE_SELECTION_FROZEN — READY_FOR_COUPLED_EXECUTION**
 
 Date: 2026-09-18.
 
-Canonical basis for this readiness reconciliation:
+Canonical basis for the frozen standalone selection:
 
-`integration/f-ci-canonical@ee3a93ce3f89d3503e4e4e2cd1f24b24ec6b6b93`
+`integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`
 
-## Selected application
+No E7 coupled output was calculated or inspected before the dates and groundwater fixture below were frozen.
 
-Hupselbrook remains the preferred E7 case.
+## M1 prerequisite is closed
 
-This is not a post-hoc choice based on coupling output. No E7 coupling output has been calculated. Hupsel is selected because the repository already contains independent historical application authority:
+The former external-asset blocker is superseded by canonical evidence.
 
-- exact SWAP 4.3.1 distribution identity and required hashes are known;
-- the official Hupsel case and fixture-member identities are recorded;
-- the legacy three-year run and normalized BAL/BLC reference have been rebuilt;
-- daily and timestep application traces exist;
-- all active Hupsel application routes are now canonically admitted;
-- drainage whole-trajectory evidence is exact;
-- lower-boundary behaviour is qualified;
-- six-snapshot transactional replay is exact after F-SI39.
+- exact whole-Hupsel typed-adapter qualification: **PASS**;
+- M1-C3 canonical admission: PR #313;
+- M1 formal closeout: PR #316;
+- current M1 verdict: `M1_CLOSED_CURRENT_CANONICAL`;
+- accepted historical intervals: **32,518**;
+- accepted-interval fallback: **none**;
+- exact distribution SHA-256: `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
+- exact nested source SHA-256: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
 
-The latest M1-C3 checkpoint records `32518` accepted historical intervals and identifies only one remaining gate.
+The exact raw distribution was also recovered from the existing Library. No new user upload is required.
 
-## Remaining prerequisite
+## Standalone Hupsel gate
 
-The required final gate is:
+The official 2002–2004 Hupsel run was rebuilt using GNU Fortran 14.2.0 and the already admitted F-APP03 standalone GNU preprocessing method.
 
-> one final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution.
-
-Frozen distribution authority:
+The daily observation trace is accepted only because the run remained scientifically identical to the admitted whole-Hupsel authority:
 
 ```text
-distribution SHA-256:
-2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360
+normalized result.bal:
+a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7
 
-nested source SHA-256:
-1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151
-
-distribution size:
-8,959,314 bytes
+normalized result.blc:
+1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c
 ```
 
-The file catalog currently contains multiple SWAP 4.3.1 zip copies with the required size, including the previously identified `SWAP_4.3.1(5).zip`. A fresh materialization attempt in the current publication session still returns:
+The trace contains **1,096** complete civil days from 2002-01-01 through 2004-12-31. No controlling Hupsel authority documents a spin-up interval, so the preregistered rule removes no days.
+
+## Frozen selection metric
+
+For every eligible day:
 
 ```text
-This Project file does not have an authorized raw-byte materialization path.
+I = precipitation + irrigation
+E = actual root uptake + soil evaporation + pond evaporation + interception evaporation
+D = drainage outflow magnitude
+S = |storage_end - storage_start|
+
+Phi = 0.25 * (R_I + R_E + R_D + R_S)
 ```
 
-Because the bytes cannot be read, their SHA-256 cannot be reverified in the execution environment and the frozen final M1-C3 qualification cannot honestly be run.
+Ranks use mean zero-based rank divided by `N-1`; ties receive the mean rank.
 
-## Why this blocks E7
+Population median `Phi = 0.5067922374429223`.
 
-E7 requires a realistic typed production participant, not merely historical reference output.
+## Frozen dates
 
-Until M1-C3 closes, the manuscript may not claim that the complete Hupsel application is available as one production SWAP5 participant whose lower boundary can simply be replaced by the PUB-GC groundwater coupling contract.
+### Median-dynamics control
 
-No substitute synthetic case is authorized as “realistic”.
+**2003-06-17**
 
-## Prospective E7 period selection
+```text
+I       = 0.20000000000000007 cm
+E       = 0.17917240345831503 cm
+D       = 0.022586870162615704 cm
+|dS|    = 0.001759267628429484 cm
+R_I     = 0.7374429223744292
+R_E     = 0.6831050228310502
+R_D     = 0.6018264840182649
+R_S     = 0.0045662100456621
+Phi     = 0.5067351598173516
+```
 
-After M1-C3 closure, select the publication periods using standalone Hupsel dynamics only, before coupled results are inspected.
+### High-dynamics day
 
-The existing selection principle remains:
+**2003-05-20**
 
-1. exclude documented spin-up;
-2. partition the authoritative standalone trace into fixed-duration windows;
-3. characterize windows from standalone quantities such as storage change, lower-boundary exchange, rainfall/irrigation pulse and groundwater/head excursion;
-4. freeze one median-dynamics control window and one high-dynamics window using a preregistered scalar metric;
-5. only then construct and run the coupled MODFLOW case.
+```text
+I       = 2.2300000000000177 cm
+E       = 0.11468910769777912 cm
+D       = 0.9069694038599311 cm
+|dS|    = 1.2083413574577264 cm
+R_I     = 0.9917808219178083
+R_E     = 0.5762557077625571
+R_D     = 0.9954337899543378
+R_S     = 0.9689497716894977
+Phi     = 0.8831050228310502
+```
 
-This prevents selection on a favourable loose-versus-strong coupling difference.
+The dates are immutable for E7 and cannot be replaced after observing coupled behaviour.
 
-## Relation to E6
+## Frozen groundwater fixture
 
-E6 is now closed negatively. Two preregistered synthetic stress routes reached component-admission boundaries before a positive strong-feedback live case was available.
+A targeted canonical search before the first E7 coupled run found no independently authoritative Hupsel MODFLOW/aquifer model.
 
-That increases the scientific importance of E7 but does not lower its admission standard. The realistic case must use an application whose process and boundary semantics are already authoritative rather than expanding production physics for the paper.
+The preregistered fallback therefore applies: reuse the already-qualified F-GC44 conceptual MODFLOW6 fixture without calibration against E7 output.
+
+```text
+grid:       1 layer × 1 row × 3 columns
+delr/delc:  1 m / 1 m
+top:        0 m
+bottom:    -2 m
+SWAP cell:  central cell (0,0,1)
+K:          1 m/day
+ss:         0.02 1/m
+sy:         0.15
+icelltype:  1
+initial H:  H_ref
+left CHD:   H_ref + 0.002 m
+right CHD:  H_ref - 0.002 m
+area:       1 m²
+```
+
+The official Hupsel profile is exactly 200 cm deep, so its lower coupling plane is `z_bottom=-2.00 m` relative to the surface datum. The F-GC44 vertical datum therefore requires no artificial depth shift.
+
+MODFLOW6 uses the already-qualified Newton formulation and IMS settings; they are not retuned for E7.
+
+Because the groundwater component is conceptual rather than a calibrated Hupsel aquifer, E7 is described as a **real-forcing hydrological demonstration**, not regional Hupsel groundwater validation.
+
+## Durable selection evidence
+
+- `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`
+- `PUB_GC_E7_SELECTED_DAYS.csv`
+
+Local full-population evidence is identified by:
+
+```text
+daily metrics SHA-256:
+d532d07a34ad5bdd98730373330bca4b870439eec6783bf9f25b8d58c1906fb3
+
+scored 1096-day table SHA-256:
+016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e
+```
 
 ## Next permitted action
 
-When the exact distribution bytes become materializable:
+Execute the already-preregistered loose/sequential and production-strong comparisons for **only** these two dates, preserving exact event-aligned Hupsel application intervals.
 
-1. verify the frozen distribution SHA-256;
-2. execute only the already-defined final whole-Hupsel M1-C3 adapter qualification;
-3. admit M1-C3 if and only if that gate passes;
-4. then create the E7 period-selection preregistration from the admitted standalone Hupsel trace.
+Do not:
 
-Until then, E7 is externally blocked. No coupling-result selection or synthetic fallback is justified.
+- replace either date;
+- calibrate groundwater parameters to the observed coupling difference;
+- merge or shorten windows after a failure;
+- relax solver, temporal, mass or coupling tolerances;
+- reinterpret a component-domain failure as outer-coupling divergence.
