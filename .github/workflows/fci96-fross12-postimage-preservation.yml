@@ -18,6 +18,7 @@ on:
       - 'tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh'
       - 'tests/fci/run_fci96_fross13_semantic_successor_preservation.sh'
       - 'tests/fci/run_fci107_fross17_cache_successor_preservation.sh'
+      - 'tests/fci/run_fci_fross22_tiered_successor_preservation.sh'
       - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_PREREGISTRATION.json'
       - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_RESULT.json'
       - 'integration/f-ci/F-CI96_STATUS.json'
@@ -42,6 +43,7 @@ on:
       - 'tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh'
       - 'tests/fci/run_fci96_fross13_semantic_successor_preservation.sh'
       - 'tests/fci/run_fci107_fross17_cache_successor_preservation.sh'
+      - 'tests/fci/run_fci_fross22_tiered_successor_preservation.sh'
       - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_PREREGISTRATION.json'
       - 'docs/publication/P2E05_SOLVER_RESIDUAL_CONTRACT_RESULT.json'
       - 'integration/f-ci/F-CI96_STATUS.json'
@@ -73,9 +75,12 @@ jobs:
           MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
           PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
           KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
+          SOLVER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
           FROSS13_MODEL=5442fd7e7a2f392c9b796cd17c76b17977259f22
           FROSS13_PROVIDER=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
           FROSS17_CACHE_KERNEL=2ad2a680e62744451d6763de48585f1bd45d3067
+          FROSS22_TIERED_KERNEL=438ee46e012e9eb183b8f2532437e2fe56aa18ed
+          FROSS22_TIERED_SOLVER=2b134c36097aed2a44a56bfe8e2194b15aa063aa
 
           if [[ "$(git rev-parse HEAD:src)" == "$(git rev-parse "$FROSS12_AUTH:src")" ]] && \
              [[ "$(git rev-parse HEAD:reference)" == "$(git rev-parse "$FROSS12_AUTH:reference")" ]]; then
@@ -83,7 +88,9 @@ jobs:
           elif git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD && \
                [[ "$(git rev-parse HEAD:$MODEL)" == "$FROSS13_MODEL" ]] && \
                [[ "$(git rev-parse HEAD:$PROVIDER)" == "$FROSS13_PROVIDER" ]]; then
-            if [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
+            if [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$SOLVER)" == "$FROSS22_TIERED_SOLVER" ]]; then
+              bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+            elif [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
               bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh
             else
               bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh

@@ -16,4 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Qualify surgical RossFast solver adapter
-        run: tests/ross/run_ross12_soil_water_solver_adapter.sh
+        shell: bash
+        run: |
+          KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
+          SOLVER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
+          TIERED_KERNEL=438ee46e012e9eb183b8f2532437e2fe56aa18ed
+          TIERED_SOLVER=2b134c36097aed2a44a56bfe8e2194b15aa063aa
+          if [[ "$(git rev-parse HEAD:$KERNEL)" == "$TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$SOLVER)" == "$TIERED_SOLVER" ]]; then
+            SWAP5_ROSSFAST_EXPECT_TIERED_WORK=1 EXPECTED_ROSSFAST_KERNEL_BLOB="$TIERED_KERNEL" EXPECTED_ROSSFAST_ADAPTER_BLOB="$TIERED_SOLVER" \
+              bash tests/ross/run_ross13_ross12_semantic_successor_preservation.sh
+          else
+            tests/ross/run_ross12_soil_water_solver_adapter.sh
+          fi

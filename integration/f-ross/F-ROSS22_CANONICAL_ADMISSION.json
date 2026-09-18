@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.f-ross22.canonical-admission.v1",
+  "workunit": "F-ROSS22",
+  "phase": "FINAL_CANONICAL_ADMISSION_REPLAY",
+  "branch": "integration/f-ross22-tiered-production-admission",
+  "parent_cache_admission": {
+    "branch": "integration/f-ci-canonical",
+    "head": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+    "authority": "F-CI107",
+    "required_before_canonical_merge": false
+  },
+  "immutable_qualification": {
+    "qualified_science_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+    "result_blob": "2f83ae1fd15e6242f54942b5b8487798d18b6764",
+    "workflow_run": 35315107030,
+    "artifact_id": 10533894447,
+    "artifact_digest": "sha256:c8af583f1ae52448cc279c5788fb54b742162f9b1386ab08239c86be2bc03167"
+  },
+  "production_delta": {
+    "allowed": [
+      "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+    ],
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "admission_gate": "Replay exact 216-case production matrix on final postimage plus provider, route semantics, serialized-production and solver-seam preservation.",
+  "exclusions": [
+    "NO_THRESHOLD_RETUNING",
+    "NO_TRAJECTORY_REUSE",
+    "NO_K16_FALLBACK",
+    "NO_REFERENCE_MUTATION",
+    "NO_MODEL_OR_PROVIDER_WIDENING",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST",
+    "NO_UNRELATED_CANONICAL_PRESERVATION_REPAIR"
+  ],
+  "next_permitted_action": "Qualify exact recomposed head and current moving preservation; admit only after PASS and compatible live-canonical reconciliation.",
+  "qualification": {
+    "exact_head": "7a897ebb097e96e4ace7ea820ad4b9073f35809a",
+    "workflow_run": 35342943213,
+    "artifact_id": 10545781027,
+    "artifact_digest": "sha256:af2aab34b5c96632cb011e69d2bdddcfe217d7662a2c0bc3b9fefd6eb54350c9",
+    "conclusion": "PASS"
+  },
+  "reconciliation": {
+    "fci106": "ADMITTED",
+    "cache_authority": "F-CI107",
+    "prior_misnumbered_parent": "F-CI105 RossFast cache branch superseded due canonical authority-ID collision"
+  }
+}
