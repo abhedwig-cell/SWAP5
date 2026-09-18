@@ -3,8 +3,8 @@
   "work_unit": "F-GC46",
   "title": "Real multi-cell live MODFLOW6 application qualification",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY",
-  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_REAL_MULTICELL_APPLICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "c42db098cc246e3da06472a34979bdf24cfa81cb"
@@ -40,7 +40,7 @@
     "irrigation",
     "runtime finite-difference tangent fallback"
   ],
-  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ118 evidence, repair only scoped failures, then reconcile canonical and admit/close if all criteria pass.",
+  "next_permitted_action": "F-GC46 is closed. Any combined multi-cell+N:1 topology or expansion of the prescribed-head/physics envelope is a separate bounded capability and is not implicitly admitted by F-GC46.",
   "production_delta": "NONE",
   "implemented": [
     "two-interface qualification-only Fortran bridge over admitted real FMR/SWAP production participants",
@@ -58,5 +58,80 @@
     "production source delta remains NONE",
     "PR mergeable and scope remains two 1:1 cells without N:1 or physics expansion"
   ],
-  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "canonical_admission": {
+    "preimage": "c42db098cc246e3da06472a34979bdf24cfa81cb",
+    "qualification_head": "f45ed2de5cf972b3945701f96e22a3e473716314",
+    "merge_head": "ef8fb8317deb72b53850759f61374173a9c9d31f",
+    "pr": 243,
+    "merge_method": "merge",
+    "production_delta": "NONE",
+    "canonical_postimage_compare": "identical"
+  },
+  "qualification": {
+    "live_multicell": {
+      "run": 35342356388,
+      "job": 105590947049,
+      "conclusion": "success",
+      "modflow_version": "6.8.0",
+      "iterations": 4,
+      "final_head1_m": -0.7149985084998219,
+      "final_head2_m": -0.715001429238993,
+      "final_q1_m_per_s": -5.874397666540247e-12,
+      "final_q2_m_per_s": 5.62917717512903e-12,
+      "final_qgw1_m_per_s": -5.87443966092223e-12,
+      "final_qgw2_m_per_s": 5.629218583681813e-12,
+      "final_residual1_m_per_s": 4.1994381982353534e-17,
+      "final_residual2_m_per_s": -4.1408552783050275e-17,
+      "ledger1_m": -5.075479583890774e-11,
+      "ledger2_m": 4.8636090793114825e-11,
+      "oracles": [
+        "FGC46_TWO_DISTINCT_LIVE_MODFLOW_CELLS=PASS",
+        "FGC46_FGC34_TWO_SLOT_NODE_BINDING=PASS",
+        "FGC46_TWO_REAL_SWAP_SAME_ORIGIN_CORRECTORS=PASS",
+        "FGC46_ONE_PREPARED_SOLVE_TWO_INTERFACES=PASS",
+        "FGC46_CONJUNCTIVE_TWO_CELL_CONVERGENCE=PASS",
+        "FGC46_ALL_INTERFACE_PREFLIGHTS_BEFORE_PUBLICATION=PASS",
+        "FGC46_SINGLE_MODFLOW_THEN_ALL_SWAP_THEN_ALL_LEDGER_PUBLICATION=PASS",
+        "FGC46_PER_CELL_LEDGER_CLOSURE=PASS",
+        "FGC46_REAL_MULTICELL_END_TO_END=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ118",
+      "run": 35342356376,
+      "job": 105590946966,
+      "conclusion": "success",
+      "oracles": [
+        "FVQ118_TWO_DISTINCT_GROUNDWATER_CELLS=PASS",
+        "FVQ118_FGC34_TWO_SLOT_NODE_MAPPING=PASS",
+        "FVQ118_CELL_SPECIFIC_REAL_SWAP_CORRECTORS=PASS",
+        "FVQ118_CONJUNCTIVE_TWO_CELL_CONVERGENCE=PASS",
+        "FVQ118_ALL_INTERFACES_PREFLIGHT_BEFORE_PUBLICATION=PASS",
+        "FVQ118_SINGLE_MODFLOW_THEN_SWAP_LEDGER_ORDER=PASS",
+        "FVQ118_LIVE_XMI_NO_FAKE_GROUNDWATER=PASS",
+        "FVQ118_SCOPE_AND_OWNERSHIP_BOUNDARY=PASS"
+      ]
+    }
+  },
+  "admitted_capability": [
+    "two independently transactional real FMR/SWAP interfaces coupled 1:1 to two distinct live MODFLOW6 6.8.0 cells",
+    "two F-GC34 API package slots mapped to distinct MODFLOW node ids inside one prepared solve",
+    "cell-specific real SWAP correctors from immutable accepted checkpoints",
+    "conjunctive MODFLOW plus two-cell interface-flux convergence",
+    "all-interface SWAP and ledger readiness before one irreversible MODFLOW timestep publication",
+    "single MODFLOW timestep publication followed by all SWAP commits and all ledger commits",
+    "per-cell committed ledger closure against accepted whole-window SWAP exchange"
+  ],
+  "evidence_boundary": {
+    "statement": "Multi-cell runtime/composition qualification only; production source delta NONE.",
+    "topology": "two 1:1 SWAP-to-MODFLOW interfaces in one groundwater model",
+    "not_claimed": [
+      "N:1 aggregation within either cell",
+      "heterogeneous spatial aggregation or equivalent-column science",
+      "larger prescribed-head numerical envelope",
+      "active drainage, root uptake, macropores, snow or soil temperature",
+      "Ribasim or irrigation"
+    ]
+  }
 }
