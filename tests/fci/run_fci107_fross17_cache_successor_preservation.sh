@@ -44,12 +44,17 @@ test "$(git rev-parse "HEAD:$MODEL")" = "$MODEL_BLOB" || fail 'RossFast model bi
 test "$(git rev-parse "HEAD:$PROVIDER")" = "$PROVIDER_BLOB" || fail 'RossFast table provider drift'
 test "$(git rev-parse "HEAD:$POLICY")" = "$POLICY_BLOB" || fail 'RossFast execution policy drift'
 
-source_delta="$(git diff --name-only "$SOURCE"...HEAD -- src reference)"
-test "$source_delta" = "$KERNEL" || {
-  printf 'FCI107_UNEXPECTED_SOURCE_DELTA=\n%s\n' "$source_delta" >&2
-  fail 'production/reference delta is not exact cache-only kernel mutation'
+# F-CI107's admission delta was exactly one RossFast kernel file at the
+# admission point. Moving preservation must not reject later independently
+# admitted, unrelated production capabilities. Preserve the exact RossFast
+# owner surface instead of reasserting a repository-global src/reference diff.
+rossfast_owner_delta="$(git diff --name-only "$SOURCE"...HEAD -- \
+  "$KERNEL" "$SOLVER" "$MODEL" "$PROVIDER" "$POLICY" assets/rossfast/d3r | sort)"
+test "$rossfast_owner_delta" = "$KERNEL" || {
+  printf 'FCI107_UNEXPECTED_ROSSFAST_OWNER_DELTA=\n%s\n' "$rossfast_owner_delta" >&2
+  fail 'RossFast owner surface is not the exact admitted cache successor'
 }
-echo 'FCI107_EXACT_ONE_FILE_PRODUCTION_DELTA=PASS'
+echo 'FCI107_EXACT_ONE_FILE_ROSSFAST_OWNER_DELTA=PASS'
 
 if ! git cat-file -e "$FROSS17_HEAD^{commit}" 2>/dev/null; then
   git fetch --no-tags origin "$FROSS17_HEAD"

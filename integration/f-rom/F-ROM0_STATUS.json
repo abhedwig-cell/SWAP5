@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.f-rom0.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "title": "Accepted Full-Order Authority",
+  "phase": "PREREGISTERED_IMPLEMENTATION_PENDING",
+  "branch": "work/f-romp-rom0-proposition-authority",
+  "canonical_baseline": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "authority": "docs/science/F-ROM0_ACCEPTED_FULL_ORDER_AUTHORITY.md",
+  "predecessor": "ROM-P",
+  "runtime_path_reconciliation": "integration/f-rom/F-ROM0_RUNTIME_PATH_RECONCILIATION.json",
+  "preregistration": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
+  "trajectory_schema": "integration/f-rom/F-ROM0_TRAJECTORY_SCHEMA.json",
+  "required_reference_route": "CANONICAL_ACCEPTED_REFERENCE_RICHARDS_TRAJECTORY",
+  "prohibited_reference_route": "DIRECT_SOLVER_ATTEMPT_AS_TRAJECTORY_AUTHORITY",
+  "materials": ["B01", "B14"],
+  "base_geometry": "16x10cm",
+  "refined_geometry": "32x5cm",
+  "completed_design_gates": [
+    "RESEARCH_PROPOSITION_FROZEN",
+    "ROMP_PROCEED_TO_ROM0",
+    "EARLY_DIRECT_SOLVER_PILOT_SUPERSEDED",
+    "ACCEPTED_RUNTIME_PATH_RECONCILED",
+    "TWO_MATERIAL_CONTRAST_FROZEN",
+    "TRAJECTORY_SCHEMA_FROZEN",
+    "REFERENCE_FLOOR_MATRIX_FROZEN"
+  ],
+  "next_action": "Implement the research-only ROM-0 harness on the reconciled accepted path, then execute the preregistered B01/B14 trajectories and reference-floor matrix.",
+  "production_solver_authorized": false,
+  "production_source_mutation": "NONE",
+  "blockers": []
+}

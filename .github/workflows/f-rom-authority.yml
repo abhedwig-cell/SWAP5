@@ -1,0 +1,57 @@
+name: F-ROM research authority
+
+on:
+  push:
+    branches:
+      - work/f-romp-rom0-proposition-authority
+    paths:
+      - 'docs/science/F-ROM*'
+      - 'integration/f-rom/F-ROM*'
+      - 'tests/rom/validate_f_rom_authority.py'
+      - '.github/workflows/f-rom-authority.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/science/F-ROM*'
+      - 'integration/f-rom/F-ROM*'
+      - 'tests/rom/validate_f_rom_authority.py'
+      - '.github/workflows/f-rom-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom-authority-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve workstream head
+        id: head
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            CANDIDATE_HEAD="$(git rev-parse "origin/${GITHUB_HEAD_REF}")"
+          else
+            CANDIDATE_HEAD="$(git rev-parse HEAD)"
+          fi
+          echo "candidate=${CANDIDATE_HEAD}" >> "$GITHUB_OUTPUT"
+          echo "F_ROM_CANDIDATE_HEAD=${CANDIDATE_HEAD}"
+
+      - name: Validate frozen research authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tests/rom/validate_f_rom_authority.py \
+            --candidate-head "${{ steps.head.outputs.candidate }}"
