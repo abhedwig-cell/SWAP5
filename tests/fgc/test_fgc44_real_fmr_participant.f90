@@ -2,13 +2,13 @@ program test_fgc44_real_fmr_participant
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state
+       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
@@ -19,8 +19,10 @@ program test_fgc44_real_fmr_participant
   implicit none
 
   real(real64), parameter :: h0_cm=-75.0_real64
-  real(real64), parameter :: duration=0.01_real64
+  real(real64), parameter :: duration=1.0e-4_real64
   real(real64), parameter :: tol=1.0e-12_real64
+  real(real64), parameter :: predictor_qbot=1.0e-6_real64
+  real(real64), parameter :: head_budget=1.0e-5_real64
   integer(int64), parameter :: column_id=540044_int64
 
   type(fmr_b110_physical_parameters_t) :: parameters
@@ -42,8 +44,7 @@ program test_fgc44_real_fmr_participant
   real(real64) :: qeq, committed_time
 
   call initialize_parameters(parameters)
-  call determine_initial_conductivity(parameters,qeq)
-  qeq=-qeq
+  qeq=predictor_qbot
   call initialize_forcing(base_forcing,qeq)
   call initialize_column_template(column,template)
   call initialize_config(config)
@@ -64,14 +65,14 @@ program test_fgc44_real_fmr_participant
   call require(participant%captured_revision()==0_int64,'FMR revision retained')
 
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
-       -0.75_real64,trial1,status)
+       -0.715_real64,trial1,status)
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial1%valid,'first real FMR prescribed-head trial')
   call require(ieee_is_finite(trial1%q_swap_m_per_s),'first real FMR exchange finite')
   call require(committed%current_revision()==0_int64,'trial does not mutate real FMR committed state')
   call participant%discard_candidate(backend)
 
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
-       -0.74_real64,trial2,status)
+       -0.7149_real64,trial2,status)
   if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. trial2%valid) write(*,'(A,I0,A,L1)') 'FGC44_SECOND_TRIAL_DIAG status=',status,' valid=',trial2%valid
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'second real FMR prescribed-head trial')
   call require(ieee_is_finite(trial2%q_swap_m_per_s),'second real FMR exchange finite')
@@ -157,10 +158,11 @@ contains
 
   subroutine initialize_config(c)
     type(canonical_numerical_config_t),intent(out)::c
-    c%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF; c%transaction%temporal_tolerance=1.0e-6_real64
+    c%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE; c%transaction%temporal_tolerance=0.0_real64
     c%transaction%mass_tolerance=tol; c%transaction%retry_scale=0.5_real64; c%transaction%max_retries=8
     c%max_committed_substeps=32; c%progress_tolerance=0.0_real64
-    c%model_temporal_indicator_budget_available=.false.; c%accepted_trajectory_direction%requested=.false.
+    c%model_temporal_indicator_budget_available=.true.; c%model_temporal_indicator_budget=head_budget
+    c%accepted_trajectory_direction%requested=.false.
   end subroutine initialize_config
 
   subroutine initialize_committed(committed,p,initialized)
@@ -171,12 +173,19 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    heads=h0_cm
+    real(real64)::accepted_predecessor_right_derivative(numnod)
+    integer :: i
+    heads(1)=h0_cm
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
     call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,duration)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     state%active_nodes=numnod; allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=heads; state%water_content=water; state%ponding_depth=0.0_real64; state%groundwater_level=-2.0_real64
-    call fmr_new_b110_committed_state(committed,column_id,state,0.0_real64,initialized)
+    accepted_predecessor_right_derivative=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(committed,column_id,state,0.0_real64,initialized, &
+         accepted_predecessor_right_derivative)
   end subroutine initialize_committed
 
   subroutine require(x,msg)
