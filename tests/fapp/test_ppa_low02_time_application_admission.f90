@@ -1,12 +1,10 @@
 program test_ppa_low02_time_application_admission
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_b110_legacy_swbotb2_application_control, only: b110_legacy_swbotb2_application_control_t, &
-       B110_SWBOTB2_OK, B110_SWBOTB2_INVALID_CONTROL, B110_SWBOTB2_SINE, B110_SWBOTB2_TABLE, &
-       B110_SWBOTB2_DRY_HEAD_CM
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
+       fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, b110_legacy_swbotb2_application_control_t, &
+       B110_SWBOTB2_OK, B110_SWBOTB2_INVALID_CONTROL, B110_SWBOTB2_DRY_HEAD_CM
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_RUNTIME_FAILED
