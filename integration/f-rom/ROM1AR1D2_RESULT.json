@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.rom1ar1d2.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1-D2",
+  "title": "D08 local integrated-invariant allowance diagnostic",
+  "execution": {
+    "workflow_run": 35378505252,
+    "workflow_job": 105708838356,
+    "executed_head": "ffa90d7db9d95411187b43cb4625a5e55b9312aa",
+    "artifact_id": 10561845472,
+    "artifact_digest": "sha256:2d94b0c1a97ae529a668e7e026f14f3b4a286790b6e87e660d89331ed09b8e94",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "case": {
+    "history": "D08",
+    "step": 34,
+    "symbol": "BOTTOM_HEAD_RISE",
+    "bottom_mode": 5,
+    "dt_day": 0.0008
+  },
+  "failure": {
+    "classification": "RETRY_LOCAL_BALANCE",
+    "local_balance_flag_count": 1,
+    "head_flag_count": 0,
+    "max_abs_local_residual_cm_per_day": 1.0320633236915455e-12,
+    "max_abs_local_residual_integrated_cm": 8.256506589532365e-16
+  },
+  "prior_independent_allowance": {
+    "source": "PUB-P2E19/P2E20/P2E21",
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "local_residual_over_allowance": 0.5160316618457729,
+    "within_allowance": true,
+    "failed_D08_residual_used_to_choose_allowance": false,
+    "empirical_safety_factor": null
+  },
+  "total_context": {
+    "abs_total_residual_integrated_cm": 2.4350299554498697e-15,
+    "total_representation_bound_cm": 8.881784197001252e-15,
+    "total_within_representation_bound": true
+  },
+  "decision": "ROM1AR1D2_LOCAL_RESIDUAL_WITHIN_PRIOR_INTEGRATED_ALLOWANCE",
+  "policy_applied_to_solver": false,
+  "controls_changed": false,
+  "heldout_inspected": false,
+  "B14_inspected": false
+}
