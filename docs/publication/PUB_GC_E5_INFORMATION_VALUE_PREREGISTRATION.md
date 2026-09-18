@@ -1,0 +1,353 @@
+# PUB-GC E5 preregistration — response information value
+
+## Status
+
+**PREREGISTERED BEFORE E5 EXECUTION**
+
+Date: 2026-09-18.
+
+Dependency baseline:
+
+- E4 branch head at E5 branch creation: `f4412156a74d8fd6d47e9b5fa80bc1845de17700`;
+- E4 numerical response definitions are frozen by `PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md`;
+- E5 consumes the E4 response identity and does not redefine it.
+
+Publication line: PUB-GC / COUPLE.
+
+## Purpose
+
+E5 asks whether component-provided finite-window response information has computational value beyond black-box learning.
+
+The first E5 block is deliberately a controlled scalar coupling experiment. The SWAP response is real and is evaluated through the same qualification-only prescribed-head trial used in E4. The groundwater component is represented by an analytic linear whole-window response so that coupling strength can be varied independently of MODFLOW's internal nonlinear solver.
+
+This isolates **information value** from groundwater-solver implementation.
+
+A later live-MODFLOW confirmation may be added for selected regimes. It is not required to interpret this controlled falsification experiment.
+
+## Response objects
+
+For each E4 baseline with an identified head-driven response:
+
+```text
+V(H)    real SWAP whole-window bottom transfer [m]
+u_A     component-provided flux-driven predictor response [m/m]
+J_R     E4 head-driven whole-window interface derivative [m/m]
+```
+
+The current supplied response is converted to the E4 outward-transfer sign convention as:
+
+```text
+J_u = -u_A.
+```
+
+This sign relation is fixed from E4 before E5 execution.
+
+The zero-cost oracle uses the E4 plateau estimate `J_R`.
+
+E5 does **not** treat `u_A` as the oracle.
+
+## Baselines
+
+Primary E5a uses E4 baselines:
+
+| ID | window day | q predictor cm/day | role |
+| --- | ---: | ---: | --- |
+| B1 | 1e-4 | 1e-6 | short low-flux control |
+| B2 | 1e-3 | 1e-6 | intermediate low-flux control |
+| B3 | 1e-3 | 1e-4 | response-mismatch case; `|J_R|/u_A ~= 1.081` |
+| B4 | 1e-2 | 1e-6 | long low-flux control |
+
+B5 is excluded from the primary coupling-strength scan because E4 found no symmetric local `J_R` oracle. B5 is retained as a separate response-domain limitation in the manuscript.
+
+## Controlled groundwater map
+
+For each baseline, evaluate SWAP once at the predictor reference head:
+
+```text
+H_ref
+V_ref = V(H_ref).
+```
+
+Define a linear groundwater response to whole-window exchange:
+
+```text
+G(V) = H_ref + gamma (V - V_ref).
+```
+
+The exact coupled solution of this constructed problem is therefore known:
+
+```text
+H* = H_ref.
+```
+
+For target coupling strength `C`:
+
+```text
+gamma = C / |J_R|.
+```
+
+Because E4 has `J_R < 0` for B1-B4 and `gamma > 0`, the local fixed-point derivative is:
+
+```text
+lambda = gamma J_R ~= -C.
+```
+
+Thus the scan deliberately includes contractive, near-critical and non-contractive plain fixed-point regimes.
+
+## Coupling-strength scan
+
+Frozen values:
+
+```text
+C =
+  0.1
+  0.5
+  0.9
+  1.1
+  1.5
+  2.0
+```
+
+Initial head displacement:
+
+```text
+H_0 = H_ref + 1e-6 m.
+```
+
+This initial displacement is within the demonstrated E4 local-response domain for B1-B4. If an individual SWAP trial nevertheless fails, the failure is retained as a bounded-domain outcome.
+
+## Common residual and convergence tolerance
+
+For any candidate head:
+
+```text
+V_gw(H) = V_ref + (H - H_ref) / gamma
+
+F(H) = V(H) - V_gw(H).
+```
+
+All algorithms use the same whole-window transfer criterion:
+
+```text
+|F(H)| <= V_tol
+```
+
+where:
+
+```text
+V_tol = 1e-15 m/s * DeltaT_s.
+```
+
+This is the existing coupling flux tolerance integrated over the coupling window.
+
+The known-root head error `|H-H_ref|` is recorded but is not an alternative stopping rule.
+
+Maximum black-box SWAP head-response evaluations per algorithm/case:
+
+```text
+20.
+```
+
+No method receives a relaxed tolerance after failure.
+
+## Algorithms
+
+### FP — black-box fixed point
+
+One black-box SWAP evaluation gives `V(H_k)`, followed by:
+
+```text
+H_{k+1} = G(V(H_k)).
+```
+
+No response derivative is supplied.
+
+### AITKEN — dynamically relaxed black-box fixed point
+
+Define the raw fixed-point head residual:
+
+```text
+r_k = G(V(H_k)) - H_k.
+```
+
+Initialize:
+
+```text
+omega_0 = 1.
+```
+
+For subsequent residuals use scalar dynamic Aitken relaxation:
+
+```text
+omega_k =
+  -omega_(k-1) r_(k-1) / (r_k - r_(k-1)).
+```
+
+Then:
+
+```text
+H_{k+1} = H_k + omega_k r_k.
+```
+
+No empirical clamp is applied. A zero/ill-conditioned denominator, non-finite update, or departure from the admitted SWAP trial domain is recorded as a bounded algorithmic failure rather than repaired by tuning after observation.
+
+### SECANT_COLD — scalar black-box IQN/Anderson analogue
+
+In a one-dimensional interface, multisecant/IQN information collapses to a scalar secant approximation.
+
+Solve:
+
+```text
+F(H) = 0
+```
+
+without component derivatives.
+
+The second point is generated by one plain fixed-point update from `H_0`. Thereafter:
+
+```text
+H_(k+1) =
+  H_k - F_k (H_k - H_(k-1)) / (F_k - F_(k-1)).
+```
+
+Degenerate secant denominators are reported as breakdown; they are not replaced by a supplied derivative.
+
+This is the primary cold-history black-box comparator.
+
+### U_A — supplied-response Newton step
+
+Use the component-provided E4 response approximation:
+
+```text
+J_u = -u_A.
+```
+
+For:
+
+```text
+F(H) = V(H) - V_gw(H)
+```
+
+the fixed approximate derivative is:
+
+```text
+F'_u = J_u - 1/gamma.
+```
+
+Update:
+
+```text
+H_(k+1) = H_k - F(H_k) / F'_u.
+```
+
+`u_A` is treated as already available from the common predictor and has zero **incremental** acquisition cost in E5a.
+
+### ORACLE_JR — zero-cost local oracle
+
+Use the E4 plateau response:
+
+```text
+F'_oracle = J_R - 1/gamma
+```
+
+with the same Newton update.
+
+The oracle response acquisition cost is set to zero by design. This is an upper-bound information-value test, not a practical cost claim.
+
+If this zero-cost oracle does not improve materially on black-box secant coupling, an independently acquired practical `J_R` cannot justify an acceleration claim on computational work.
+
+## Work accounting
+
+The common predictor/setup cost is excluded from method-to-method **incremental** work because it is identical across all methods and supplies the reference state required to define the coupling problem.
+
+Primary work metric:
+
+```text
+W = number of real SWAP prescribed-head full-window evaluations
+```
+
+performed by the coupling algorithm after the common setup.
+
+For E5a:
+
+```text
+kappa(u_A) = 0 incremental evaluations
+kappa(oracle J_R) = 0 by upper-bound assumption
+kappa(FP/Aitken/Secant) = 0 beyond their black-box evaluations
+```
+
+A later practical-response accounting may add explicit derivative acquisition cost. It is not mixed into the zero-cost oracle gate.
+
+## Primary outputs
+
+For every baseline, coupling strength and algorithm:
+
+- convergence status;
+- SWAP evaluation count;
+- final transfer residual;
+- final head error;
+- sequence of heads;
+- sequence of transfer residuals;
+- response-domain failure if any;
+- algorithmic breakdown if any.
+
+For every baseline/C pair compute:
+
+```text
+DeltaW_oracle =
+    W_SECANT_COLD - W_ORACLE_JR
+
+DeltaW_uA =
+    W_SECANT_COLD - W_U_A
+```
+
+only when both compared methods converge.
+
+## Predeclared interpretation
+
+### Oracle gate
+
+If zero-cost `ORACLE_JR` has no meaningful evaluation-count or convergence-domain advantage over `SECANT_COLD` across the difficult cases, the standalone ACCELERATE claim is weakened substantially.
+
+### u_A value
+
+E4 predicts that B1/B2/B4 should make `u_A` behave similarly to the oracle because `|J_R| ~= u_A`.
+
+B3 is the mechanism test: `|J_R|/u_A ~= 1.081`. E5 asks whether that 8.1% derivative mismatch changes work or robustness as coupling strength increases.
+
+No performance ordering is assumed in advance.
+
+### Plain fixed-point null
+
+For the local linearized problem:
+
+```text
+C < 1
+```
+
+is expected to be contractive and:
+
+```text
+C > 1
+```
+
+non-contractive.
+
+The real SWAP map may depart from that linear prediction. Agreement or disagreement is recorded rather than enforced.
+
+## Warm-history limitation
+
+E5a uses a cold-history secant/IQN analogue.
+
+A credible warm-history comparison requires prior accepted-window interface history and is therefore a distinct E5b experiment. It will be performed only after E5a establishes whether any supplied-response information advantage remains even against the cold black-box comparator.
+
+This ordering is deliberately conservative: a weak or absent oracle advantage against `SECANT_COLD` is sufficient to stop before constructing a more favorable warm-history baseline.
+
+## Stop/go rule
+
+E5a does not by itself establish a standalone acceleration paper.
+
+It provides an early falsification gate:
+
+- **STOP/merge into PUB-GC** if the zero-cost oracle has no material advantage over cold secant/IQN even near/above the fixed-point stability boundary;
+- **CONTINUE to E5b** only if a reproducible oracle or `u_A` advantage appears and is large enough that warm-history IQN could still plausibly change the conclusion.
