@@ -80,6 +80,31 @@ J_S - J_B + J_R = 0
 
 within numerical differentiation error.
 
+### Structural identifiability limitation of the E4 fixture
+
+This limitation is recorded before the first authoritatively interpreted E4 execution.
+
+The current F-GC44-derived E4 baselines deliberately disable root uptake, drainage and other state-dependent source/sink processes, while the top boundary is a prescribed flux. Therefore the non-bottom whole-window balance `B` is expected to be approximately head-independent in this fixture:
+
+```text
+J_B ~= 0.
+```
+
+If that expectation is confirmed, mass closure itself implies:
+
+```text
+J_S ~= -J_R.
+```
+
+Consequently, agreement of `u_A` with both `J_S` and `-J_R` cannot by itself distinguish whether the more useful scientific interpretation is “storage response” or “interface response”; those two views are structurally aliased in this restricted fixture.
+
+E4 can still answer two important questions robustly:
+
+1. whether the accepted-trajectory `u_A` agrees with an independent pure-bottom-flux finite difference `u_FD`;
+2. whether the local head-driven storage/exchange derivatives are numerically reproducible and satisfy the expected balance identity.
+
+If `J_B ~= 0` is confirmed, a later disambiguation experiment must activate an admitted head-dependent non-bottom process or forcing pathway before a stronger physical identity claim is made.
+
 ### Current analytic/trajectory response
 
 The current F-GC44/F-GC30 route exposes:
