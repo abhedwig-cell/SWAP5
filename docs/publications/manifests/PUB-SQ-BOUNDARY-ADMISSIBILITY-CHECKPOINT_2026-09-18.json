@@ -1,0 +1,71 @@
+{
+  "checkpoint_id": "PUB-SQ-UPPER-TOP-FLUX-BOUNDARY-2026-09-18",
+  "capability": "PUB-SQ E2 upper request-side top-flux admissibility boundary",
+  "phase": "CLOSE",
+  "governance_branch": "research/phd-five-paper-manifests-20260918",
+  "source_evidence": [
+    {
+      "workunit": "PUB-P2E16",
+      "role": "candidate-blind Reference boundary calibration",
+      "branch": "work/pub-p2e16-top-boundary-reference-calibration",
+      "result_head": "cf7ea9f12968f0879266166e8c199fb878af84af",
+      "result_blob": "3a338f7d4db6206be25deed1819195dc9d5486be",
+      "workflow_run": 35290915120,
+      "job": 105433341576,
+      "output_sha256": "385ed7ded30022d5fef98927bb9d325499af8d983b4057179503c9ba70d3a96d",
+      "result": "324/324 Reference calibration cases valid; exact-Se thresholds frozen candidate-blind."
+    },
+    {
+      "workunit": "PUB-P2E17",
+      "role": "first candidate exposure for route-boundary and inside/boundary accuracy",
+      "branch": "work/pub-p2e17-top-boundary-primary",
+      "workflow_run": 35291155719,
+      "head": "dee8023b47708989a8443222343104e44caecbeb",
+      "result": "108/108 INSIDE and 108/108 BOUNDARY admissible; 108/108 OUTSIDE route-invalid; no inside/boundary discrepancy failure.",
+      "limitation": "Old harness classified OUTSIDE generically and did not verify publication hygiene. Do not use it as fail-closed hygiene authority."
+    },
+    {
+      "workunit": "PUB-P2E17",
+      "role": "supplemental fail-closed hygiene verification",
+      "branch": "work/pub-p2e17-top-boundary-primary",
+      "result_head": "b61bc4c5730e951655353f7fdccb76618a290fd7",
+      "result_blob": "63c92b1e64743d31cb9de8698df16c28e7a54076",
+      "workflow_run": 35291213606,
+      "job": 105434242429,
+      "exact_execution_head": "00fd77bf9a335fb1b458d203e9ea2a868b5eafc0",
+      "test_blob": "9e02f74b8e0b65060e28b760d1e635ab88acf95c",
+      "output_sha256": "0c70a32f3743a407f7e9e503cf225ec1804b76ccf132afb05fc76980cbf39910",
+      "result": "108/108 OUTSIDE rejected cleanly; 0 dirty; 0 unexpected acceptance; 0 Reference invalid."
+    }
+  ],
+  "tested_surface": {
+    "materials": "all 36 D3R materials",
+    "Se": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "request_top_flux_over_initial_K0": {
+      "INSIDE": 0.009,
+      "BOUNDARY": 0.01,
+      "OUTSIDE": 0.011
+    },
+    "bottom_flux_over_initial_K0": -0.004,
+    "fixed_step_duration_day": 0.0016,
+    "geometry": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero"
+  },
+  "verdict": "UPPER_TOP_FLUX_BOUNDARY_SHARP_AT_TESTED_RESOLUTION_WITH_216_ADMISSIBLE_AND_108_CLEAN_FAIL_CLOSED",
+  "exclusions": [
+    "No lower request-side top-flux boundary qualification",
+    "No bottom-flux boundary qualification",
+    "No state-edge qualification beyond common Se={0.65,0.85,0.96}",
+    "No dynamic groundwater or prescribed-head boundary qualification",
+    "No transaction-controller equivalence",
+    "No long-horizon trajectory equivalence",
+    "No performance or speed advantage",
+    "No universal RossFast equivalence"
+  ],
+  "provenance_rule": "The first P2E17 run remains first candidate exposure for the primary route/accuracy result. The second corrected run is supplemental hygiene verification on an already exposed matrix, not an independent holdout or replicate.",
+  "next_permitted_action": "PUB-SQ-E3 reference construction only: freeze a reduced representative case subset and candidate-blind REF-HIGH refinement/stability protocol before any RossFast equal-error or timing execution."
+}
