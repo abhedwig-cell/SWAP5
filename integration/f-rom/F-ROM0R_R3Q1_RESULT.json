@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.f-rom0r.r3q1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3Q1",
+  "title": "Prescribed-head representation-bounded total policy qualification",
+  "execution": {
+    "workflow_run": 35373996985,
+    "workflow_job": 105694292453,
+    "executed_head": "408336fc3c5d594202a51c643f70c0d7c67e2455",
+    "artifact_id": 10559312800,
+    "artifact_digest": "sha256:1cd9420e3be483cc0f88b76ac7e8218a30feda6d54ddc6049c694b362289b309",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "matrix": {
+    "step_count": 64,
+    "case_pass_count": 4,
+    "control_converged_step_count": 61,
+    "control_total_only_retry_step_count": 3
+  },
+  "gates": {
+    "complete_matrix": true,
+    "all_paired_endpoint_neutrality_gates_pass": true,
+    "all_candidate_integrated_mass_residuals_within_1e_12_cm": true,
+    "all_pre_solve_representation_bounds_positive_finite": true,
+    "only_control_converged_or_total_only": true,
+    "both_materials_directional_reachability": true,
+    "repeat_stdout_bitwise_identity": true
+  },
+  "directional_reachability": {
+    "B01": {
+      "rise_lower_storage_cm": 44.02746082292648,
+      "fall_lower_storage_cm": 43.90773804688335,
+      "rise_minus_fall_lower_storage_cm": 0.11972277604312609,
+      "rise_cumulative_bottom_outward_exchange_cm": -0.01284564738676487,
+      "fall_cumulative_bottom_outward_exchange_cm": 0.10687712865634702,
+      "rise_minus_fall_bottom_outward_exchange_cm": -0.11972277604311189,
+      "storage_direction_pass": true,
+      "bottom_exchange_direction_pass": true
+    },
+    "B14": {
+      "rise_lower_storage_cm": 42.69336964668223,
+      "fall_lower_storage_cm": 42.68854375248657,
+      "rise_minus_fall_lower_storage_cm": 0.004825894195661817,
+      "rise_cumulative_bottom_outward_exchange_cm": -0.0021612472614900877,
+      "fall_cumulative_bottom_outward_exchange_cm": 0.0026646469341575192,
+      "rise_minus_fall_bottom_outward_exchange_cm": -0.0048258941956476065,
+      "storage_direction_pass": true,
+      "bottom_exchange_direction_pass": true
+    }
+  },
+  "case_summaries": [
+    {
+      "material": "B01",
+      "case": "BOTTOM_HEAD_RISE",
+      "max_abs_integrated_mass_residual_cm": 1.3153922395758861e-15,
+      "control_converged_steps": 16,
+      "control_total_only_retry_steps": 0
+    },
+    {
+      "material": "B01",
+      "case": "BOTTOM_HEAD_FALL",
+      "max_abs_integrated_mass_residual_cm": 1.9760193481488395e-15,
+      "control_converged_steps": 13,
+      "control_total_only_retry_steps": 3
+    },
+    {
+      "material": "B14",
+      "case": "BOTTOM_HEAD_RISE",
+      "max_abs_integrated_mass_residual_cm": 1.2629175483169766e-15,
+      "control_converged_steps": 16,
+      "control_total_only_retry_steps": 0
+    },
+    {
+      "material": "B14",
+      "case": "BOTTOM_HEAD_FALL",
+      "max_abs_integrated_mass_residual_cm": 1.3607809323801241e-15,
+      "control_converged_steps": 16,
+      "control_total_only_retry_steps": 0
+    }
+  ],
+  "decision": "PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED",
+  "interpretation": "The independently derived representation-bounded total criterion is qualified on the full four-case prescribed-head R3 matrix. Every candidate step converged without automatic subdivision, remained inside the hard 1e-12 cm integrated mass limit, and remained endpoint-neutral relative to the original control wherever that control converged. The only control failures encountered on the candidate path were three total-balance-only retries already below the pre-solve representation bound. Both B01 and B14 satisfy the preregistered directional reachability criteria.",
+  "original_r3_decision_changed": false,
+  "production_or_reference_source_mutated": false,
+  "production_application_admission": false,
+  "rom1a_authorized": false
+}
