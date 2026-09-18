@@ -5,7 +5,7 @@
   "title": "MODFLOW6 XMI Package Adapter Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "ADMIT",
-  "verdict": "PENDING_ADMISSION_GATE",
+  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
@@ -58,5 +58,22 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Run F-CI102 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify status head, reconcile live canonical and non-force fast-forward."
+  "next_permitted_action": "Qualify this exact F-CI102 status head. If green and canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head.",
+  "admission_gate": {
+    "qualified_head": "28fa2382bfa479e9cebfa5a087bb26a20265d0ff",
+    "workflow_run": 35294634213,
+    "workflow_job": 105444531723,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI102_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI102_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI102_EXACT_ONE_PRODUCTION_FILE_DELTA",
+      "FCI102_IMMUTABLE_PRODUCTION_AND_EVIDENCE_BLOBS",
+      "FCI102_OWNER_STATUS_AUTHORITY",
+      "FCI102_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI102_FGC34_DEPENDENCY_RECONCILED",
+      "FCI102_OWNER_REPLAY",
+      "FCI102_INDEPENDENT_REPLAY"
+    ]
+  }
 }
