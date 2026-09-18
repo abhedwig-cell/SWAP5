@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS14",
+  "gate": "WETTING_TOP_BOUNDARY_36_MATERIAL_TRANSIENT_QUALIFICATION",
+  "status": "CONTRACT_FROZEN_BEFORE_WETTING_QUALIFICATION_TOOLING",
+  "production_implementation": false,
+  "title": "RossFast D3R WETTING top-boundary production-envelope qualification",
+  "purpose": "Qualify the exact P2E10 WETTING prescribed-flux regime across the full 36-material RossFast production catalog before any production top-boundary envelope widening. Preserve the existing bottom-boundary envelope and all solver, table, geometry, transaction, retry, commit and routing contracts.",
+  "canonical_base": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+  "trigger_evidence": {
+    "p2e10_result_path": "docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_RESULT.json",
+    "p2e10_result_blob": "83864f6379279725fa97d24d57936f590d3c2174",
+    "p2e10_scientific_classification": {
+      "paired_valid_admissible": 36,
+      "paired_valid_discrepancy_fail": 0,
+      "rossfast_route_invalid": 18
+    },
+    "p2e10_invalidity_pattern": "All and only WETTING cases were RossFast-route invalid because the current state-local top-boundary production envelope rejects the internal top flux -0.025*K_top."
+  },
+  "production_preimage": {
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "soil_water_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "solver_selection_blob": "cca61af52bde3eed12b756547277cc2776589648",
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3"
+  },
+  "historical_authority": {
+    "research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "fross13_transient_contract_path": "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json",
+    "fross13_transient_contract_blob": "382a9f9d153669377e8eba05461594a37d132e4b",
+    "fross13_transient_result_path": "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json",
+    "fross13_transient_result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0",
+    "fingerprint_authority_path": "integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json",
+    "fingerprint_authority_blob": "01fa631a245f3011b1007b2888b0528b111ee17f",
+    "historical_gate_f_runner_blob": "bafda0fb4ed6da606c3a1837208200dbcdb05c65",
+    "historical_r1_runner_blob": "29b006e051492b7540f0c5c17ca469cfabc6f2c5"
+  },
+  "harness_anchor_replay": {
+    "rule": "Before WETTING evidence is interpreted, replay the unchanged F-ROSS13 six-material historical anchor gate with the frozen F-ROSS13 contract and require all six anchors to pass.",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "expected_base_case_total": 108
+  },
+  "wetting_qualification": {
+    "materials": [
+      "B01","B02","B03","B04","B05","B06","B07","B08","B09","B10","B11","B12","B13","B14","B15","B16","B17","B18",
+      "O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11","O12","O13","O14","O15","O16","O17","O18"
+    ],
+    "material_count": 36,
+    "cell_counts": [16],
+    "cell_thickness_cm": 10.0,
+    "profiles": ["wet_gradient", "mid_gradient", "dry_gradient"],
+    "source_sink_patterns": ["zero"],
+    "expected_base_case_count_per_material": 3,
+    "expected_total_base_cases": 108,
+    "horizon_day": 0.0016,
+    "step_counts": [2,4,8,16],
+    "dt_days": [0.0008,0.0004,0.0002,0.0001],
+    "sigma": 0.5,
+    "forcing_mapping": {
+      "production_public_top_flux_over_initial_K_top": 0.025,
+      "production_public_bottom_flux_over_initial_K_bottom": 0.011,
+      "rossfast_internal_top_flux_over_initial_K_top": -0.025,
+      "rossfast_internal_bottom_upward_flux_over_initial_K_bottom": 0.011,
+      "historical_harness_top_inflow_over_K_top": -0.025,
+      "historical_harness_bottom_downward_outflow_over_K_bottom": -0.011
+    },
+    "reference_solver": "DOP853",
+    "reference_rtol": 1e-11,
+    "reference_atol_theta": 1e-13,
+    "reference_max_step_coarse_day": 0.000025,
+    "reference_max_step_fine_day": 0.0000125
+  },
+  "hard_temporal_gates": {
+    "max_reference_coarse_vs_fine_theta_span_normalized": 1e-9,
+    "max_finest_candidate_theta_span_normalized_error": 1e-5,
+    "max_finest_candidate_state_change_relative_error": 0.005,
+    "refinement_errors_nonincreasing": true,
+    "minimum_observed_order_in_informative_cases": 1.0,
+    "median_observed_order_in_informative_cases": 1.5
+  },
+  "hard_physical_and_numerical_gates": {
+    "max_abs_step_mass_residual_cm": 1e-12,
+    "max_abs_horizon_mass_residual_cm": 1e-12,
+    "candidate_domain_failure_count": 0,
+    "candidate_head_envelope_failure_count": 0,
+    "candidate_nonfinite_count": 0,
+    "candidate_input_mutation_count": 0,
+    "reference_nonfinite_count": 0,
+    "table_bitwise_unchanged": true,
+    "initial_state_bitwise_unchanged_outside_trial_sequences": true,
+    "inadmissible_transition_route_count": 0,
+    "all_36_table_fingerprints_match_authority": true,
+    "exact_wetting_forcing_mapping_observed": true
+  },
+  "candidate_production_change_if_and_only_if_qualified": {
+    "mutation_surface": ["src/runtime/mod_rossfast_d3r_model_binding.f90"],
+    "top_boundary": {
+      "current_reference_factor": 0.01,
+      "current_envelope_fraction": 0.02,
+      "qualified_candidate_envelope_fraction": 0.035,
+      "reason": "Minimal state-local deviation needed to include internal q_top=-0.025*K_top around q_top_ref=+0.01*K_top."
+    },
+    "bottom_boundary": {
+      "reference_factor": -0.004,
+      "envelope_fraction": 0.02,
+      "must_remain_exactly_unchanged": true
+    },
+    "legacy_kernel_request_boundary_envelope_fraction": {
+      "value": 0.02,
+      "must_remain_exactly_unchanged": true,
+      "reason": "The table kernel only verifies this frozen request-contract scalar; F-ROSS14 does not change kernel physics or ABI."
+    }
+  },
+  "required_negative_production_tests_after_qualification": {
+    "top_just_outside_new_envelope_must_fail_closed": true,
+    "bottom_outside_existing_envelope_must_fail_closed": true,
+    "old_drying_and_nominal_routes_must_preserve": true,
+    "wetting_route_must_converge_without_reference_fallback": true
+  },
+  "hard_exclusions": [
+    "NO_PRODUCTION_SOURCE_MUTATION_BEFORE_36_MATERIAL_WETTING_QUALIFICATION_PASS",
+    "NO_BOTTOM_BOUNDARY_ENVELOPE_WIDENING",
+    "NO_TABLE_KERNEL_OR_PROVIDER_CHANGE",
+    "NO_SOLVER_OR_TRANSACTION_ABI_CHANGE",
+    "NO_GRID_OR_CELL_THICKNESS_GENERALIZATION",
+    "NO_HETEROGENEOUS_MATERIAL_PROFILE_GENERALIZATION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_PRODUCTION_ADMISSION",
+    "NO_GROUNDWATER_OR_BOTTOM_MODE_GENERALIZATION",
+    "NO_PONDING_OR_DYNAMIC_TOP_BOUNDARY_GENERALIZATION",
+    "NO_AUTOMATIC_REFERENCE_FALLBACK",
+    "NO_CRITERION_RETUNING_TO_FORCE_PASS"
+  ],
+  "exit": {
+    "pass": "WETTING_36_MATERIAL_TRANSIENT_QUALIFIED_FOR_TOP_ONLY_PRODUCTION_ENVELOPE_REVIEW",
+    "fail": "WETTING_PRODUCTION_ENVELOPE_REMAINS_BLOCKED_CLASSIFY_TEMPORAL_MASS_ROUTE_REFERENCE_OR_HARNESS_FAILURE"
+  },
+  "next_permitted_action": "Implement qualification tooling only. Production mutation is forbidden until the aggregate 36-material WETTING gate passes."
+}
