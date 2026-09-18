@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+
+BUILD="${TMPDIR:-/tmp}/swap5-fvq120-$$"
+mkdir -p "$BUILD"
+trap 'rm -rf "$BUILD"' EXIT
+
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+SOURCES=(
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+  src/transaction/mod_accepted_trajectory_directional_publication.f90
+  src/transaction/mod_transaction_reference.f90
+  src/runtime/mod_canonical_contracts.f90
+  src/runtime/mod_canonical_interval_runtime.f90
+  src/kernel/mod_kernel_transactions.f90
+  src/runtime/mod_groundwater_coupling_contract.f90
+  src/runtime/mod_groundwater_interface_mass_ledger.f90
+  src/runtime/mod_groundwater_tile_aggregation.f90
+  src/runtime/mod_groundwater_multiswap_types.f90
+  src/runtime/mod_modflow6_swap_predictor_response.f90
+  src/runtime/mod_modflow6_multiswap_cell_response.f90
+  src/runtime/mod_modflow6_linear_response_backend.f90
+  src/runtime/mod_modflow6_api_binding.f90
+  src/runtime/mod_groundwater_topology_composition.f90
+)
+
+for opt in 0 2; do
+  dir="$BUILD/o$opt"
+  mkdir -p "$dir"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$dir" -I "$dir"     "${SOURCES[@]}" tests/fvq/test_fvq120_fgc48_downstream_compatibility.f90     -o "$dir/test_fvq120"
+  "$dir/test_fvq120" > "$dir/output.txt"
+done
+
+diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
+cat "$BUILD/o0/output.txt"
+for marker in   FVQ120_GENERIC_TO_FGC40_N1_BINDING   FVQ120_GENERIC_TO_FGC40_1TO1_BINDING   FVQ120_GENERIC_TO_FGC34_API_BINDING   FVQ120_CANONICAL_SLOT_NODE_PUBLICATION   FVQ120_UNMAPPED_API_TAIL_PRESERVED; do
+  grep -q "^${marker}=PASS$" "$BUILD/o0/output.txt"
+done
+
+echo 'FVQ120_O0_O2_OUTPUT_IDENTITY=PASS'
+echo 'F-VQ120 F-GC48 INDEPENDENT QUALIFICATION PASS'
