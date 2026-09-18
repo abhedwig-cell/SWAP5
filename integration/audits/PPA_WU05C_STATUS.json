@@ -4,7 +4,7 @@
   "title": "Oxygen-stress source/state/owner authority",
   "branch": "audit/ppa-wu05c-oxygen-stress-authority",
   "reconcile_base": "faf33c1fb023a164a6456da160422685c32a88c4",
-  "status": "AUTHORITY_PROVENANCE_REPAIRED_REQUALIFICATION_PENDING",
+  "status": "QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION",
   "production_source_mutation": false,
   "reference_mutation": false,
   "authority": {
@@ -37,22 +37,39 @@
   ],
   "next_slice": "PPA-WU05-C1 byte-exact B1.11 oxygenstress/rootextraction source materialization and call-graph/input/state census",
   "qualification": {
-    "state": "PENDING_REQUALIFICATION",
-    "required_checks": [
+    "state": "PASS_AFTER_CANONICAL_PROVENANCE_REPAIR",
+    "dedicated": {
+      "run_id": 35404659412,
+      "job_id": 105791803983,
+      "conclusion": "success"
+    },
+    "parent_wu05": {
+      "run_id": 35404659375,
+      "conclusion": "success"
+    },
+    "documentation": {
+      "run_id": 35404659345,
+      "conclusion": "success"
+    },
+    "canonical_qualification": {
+      "run_id": 35404659285,
+      "conclusion": "success"
+    },
+    "checks": [
       "canonical B0 oxygenstress identity from B0 manifest",
       "canonical apply_and_verify_canonical_b0.py B0/B1 identities",
       "B1.11 corrected oxygenstress identity and SWAP-007 scope",
-      "single root-water mass owner preserved",
+      "single root-water mass owner preserved including frozen F-CI31 replay",
       "derived oxygen cache kept outside restart/rollback",
-      "production implementation remains held for C1 full source materialization",
+      "production implementation held for C1 source materialization",
       "zero src/reference mutation",
-      "parent WU05 preservation",
-      "Documentation",
-      "F-CI canonical qualification"
+      "parent PPA-WU05 preserved",
+      "Documentation strict build",
+      "broad frozen/current canonical authorities preserved"
     ]
   },
-  "verdict": "PARTIAL_AUTHORITY_REPAIR_PENDING_REQUALIFICATION_IMPLEMENTATION_HELD",
-  "next_action": "Reconcile this repaired review branch to current canonical, rerun dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI. Canonically admit review authority only after all green; production remains held for C1.",
+  "verdict": "PARTIAL_AUTHORITY_FROZEN_REVIEW_QUALIFIED_IMPLEMENTATION_HELD",
+  "next_action": "Require final dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI success on this evidence head. If green and live canonical drift is non-overlapping, canonically admit review authority only. Production remains held for C1.",
   "pre_reconciliation_qualified_head": "e261a1e8fa63ee9ded0db52477017383330d2a34",
   "canonical_reconciliation": {
     "prior_base": "ee166e8ad158e203c853be85825e438315b4821d",
