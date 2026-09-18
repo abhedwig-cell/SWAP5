@@ -3,8 +3,8 @@
   "work_unit": "F-GC45",
   "title": "Real MultiSWAP N:1 + live MODFLOW6 end-to-end application qualification",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_REAL_MULTISWAP_APPLICATION_BOUNDARY",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_REAL_MULTISWAP_N1_APPLICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f"
@@ -63,7 +63,75 @@
     "runtime finite-difference tangent fallback",
     "arbitrary large prescribed-head jumps"
   ],
-  "verdict": "OPEN_RECONCILED_FOR_QUALIFICATION_DESIGN",
-  "mutations": "metadata only",
-  "next_permitted_action": "Implement a qualification-only same-process two-real-FMR/one-live-MODFLOW harness reusing F-GC40 and F-GC44 production surfaces. Add no production code unless the harness exposes a concrete missing reusable seam."
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "mutations": "Qualification, workflow, documentation and status only; production source delta NONE.",
+  "next_permitted_action": "Do not silently turn F-GC45 into a heterogeneous-aggregation claim. If software coverage is the goal, open a separate multi-cell live MODFLOW workunit. If heterogeneous N:1 physical transferability is the goal, keep it in the SCALE scientific workstream with explicitly designed experiments and hypotheses.",
+  "canonical_admission": {
+    "preimage": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f",
+    "qualification_head": "a2c7a208fc4484dee69055287dd4c7126584d056",
+    "merge_head": "6349969aeb6d0d8c22e5eb835b420cda6d20d4ff",
+    "pr": 239,
+    "merge_method": "merge",
+    "production_delta": "NONE"
+  },
+  "qualification": {
+    "live_n1": {
+      "run": 35341574070,
+      "job": 105588435093,
+      "conclusion": "success",
+      "modflow_version": "6.8.0",
+      "iterations": 2,
+      "final_head_m": -0.7149999677331765,
+      "final_q1_m_per_s": -1.2708557527755854e-13,
+      "final_q2_m_per_s": -1.2708557527755854e-13,
+      "final_weighted_q_m_per_s": -1.2708557527755854e-13,
+      "final_q_gw_m_per_s": -1.2708580747683645e-13,
+      "final_flux_residual_m_per_s": 2.3219927791065243e-19,
+      "ledger1_m": -3.8430677963933704e-13,
+      "ledger2_m": -7.137125907587689e-13,
+      "oracles": [
+        "FGC45_TWO_REAL_SWAP_LINEAGES=PASS",
+        "FGC45_FGC40_N1_AFFINE_RESPONSE=PASS",
+        "FGC45_AREA_WEIGHTED_REAL_CORRECTORS=PASS",
+        "FGC45_LIVE_MODFLOW680_PREPARED_SOLVE=PASS",
+        "FGC45_CONJUNCTIVE_N1_CONVERGENCE=PASS",
+        "FGC45_ALL_TILE_PREFLIGHTS_BEFORE_PUBLICATION=PASS",
+        "FGC45_MODFLOW_THEN_ALL_SWAP_THEN_ALL_LEDGER_PUBLICATION=PASS",
+        "FGC45_REAL_MULTISWAP_MODFLOW_END_TO_END=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ117",
+      "run": 35341574087,
+      "job": 105588435192,
+      "conclusion": "success",
+      "oracles": [
+        "FVQ117_TWO_DISTINCT_REAL_SWAP_LINEAGES=PASS",
+        "FVQ117_FGC40_N1_COMPOSER_REUSED=PASS",
+        "FVQ117_AREA_WEIGHTED_CORRECTOR_ORACLE=PASS",
+        "FVQ117_ALL_TILE_PREFLIGHT_BEFORE_PUBLICATION=PASS",
+        "FVQ117_MODFLOW_SWAP_LEDGER_PUBLICATION_ORDER=PASS",
+        "FVQ117_LIVE_MODFLOW_BINDING=PASS",
+        "FVQ117_RUNTIME_NOT_SCIENTIFIC_AGGREGATION_CLAIM=PASS",
+        "FVQ117_PRODUCTION_DELTA_NONE=PASS"
+      ]
+    }
+  },
+  "admitted_capability": [
+    "two independently transactional real FMR/SWAP lineages coupled N:1 to one live MODFLOW6 cell",
+    "F-GC40 common-reference-head affine aggregation used in the live coupling path",
+    "area-weighted real corrector flux closure",
+    "all-tile SWAP and ledger readiness before the irreversible MODFLOW timestep publication point",
+    "MODFLOW timestep then all SWAP candidates then all prepared ledgers publication ordering"
+  ],
+  "evidence_boundary": {
+    "statement": "Runtime/composition qualification only.",
+    "homogeneous_first_envelope": "Both real SWAP columns use the same physical parameterization; lineages and ledgers are distinct.",
+    "not_claimed": [
+      "physical validity of replacing heterogeneous columns by an equivalent column",
+      "heterogeneous forcing/soil aggregation",
+      "parameter upscaling",
+      "multiple live MODFLOW cells"
+    ]
+  }
 }
