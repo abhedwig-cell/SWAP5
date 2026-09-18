@@ -76,8 +76,23 @@
       "FGC50_FGC49D_FIXTURE_REMAINS_QUALIFICATION_ONLY=PASS",
       "F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS"
     ],
-    "post_ppa_wu01_reconcile": "PENDING_CURRENT_BRANCH_QUALIFICATION",
-    "expected_new_oracle": "FGC50_PPA_WU01_PRODUCTION_BOOTSTRAP_RESOLVES_B2=PASS"
+    "post_ppa_wu01_reconcile": {
+      "run_id": 35371393871,
+      "job_id": 105685954286,
+      "qualified_head": "4755180722ee549c594920d338c26b8fa4add3c3",
+      "conclusion": "success",
+      "upstream_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "oracles": [
+        "FGC50_UPSTREAM_DRIVER_TYPES_EXCLUDE_SWAP5=PASS",
+        "FGC50_UPSTREAM_GET_DRIVER_HARDCODED_NO_PLUGIN=PASS",
+        "FGC50_UPSTREAM_DRIVER_EXECUTE_LIFECYCLE=PASS",
+        "FGC50_UPSTREAM_PRODUCT_OWNS_COUPLED_TIMESTEP_LIFECYCLE=PASS",
+        "FGC50_FGC49D_REQUIRES_EXISTING_FORTRAN_CONTEXT=PASS",
+        "FGC50_FGC49D_FIXTURE_REMAINS_QUALIFICATION_ONLY=PASS",
+        "FGC50_PPA_WU01_PRODUCTION_BOOTSTRAP_RESOLVES_B2=PASS",
+        "F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS"
+      ]
+    }
   },
   "verdict": "BLOCKED_ONLY_EXTERNAL_UPSTREAM_PRODUCT_MUTATION",
   "next_permitted_action": "Resume F-GC50 implementation only when there is a real authorized iMOD Coupler upstream mutation/extension route. Then register the SWAP5 driver in the actual upstream product registry and map product configuration into the already-admitted PPA-WU01 groundwater bootstrap profile while reusing F-GC49C/F-GC49D and Modflow6PreparedSolveSession. Until upstream mutation authority exists, do not implement a local get_driver imitation, monkeypatch, duplicate coupling loop, Python-owned SWAP state, or F-GC49 Stage E.",
