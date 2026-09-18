@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.publication.p2e24a-benchmark-fingerprint-result.v1",
+  "workunit": "PUB-P2E24A",
+  "publication_owner": "PUB-SQ",
+  "phase": "UNTIMED_TIMING_WORKLOAD_QUALIFIED",
+  "branch": "work/pub-p2e24a-benchmark-fingerprint",
+  "execution": {
+    "head": "512d84c8063cecebea001e50d19a67f4f0f5728f",
+    "workflow_run": 35316717285,
+    "job": 105509858009,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "fingerprint_set_sha256": "1e86b6da40eb61d17fa59bdc995b553bd3d0d447d6d13c2c46f2c715a95d95d3",
+    "timing_executed": false
+  },
+  "authorities": {
+    "preregistration_blob": "c9ed8b184b542e645a3c3c8fc56909e397c0012b",
+    "timing_preregistration_blob": "4a7ecd1737c9f66077f3bc28843027ded325cb4f",
+    "matched_controls_blob": "9f173b0431c775a8459930ab34f4989b8e098491",
+    "benchmark_source_blob": "14979af1e2d9b4f716b66cf660bacbae5d6a82aa",
+    "runner_blob": "2b2d6e4dd7bb07c4bab42e7bf6583d62098d00ed",
+    "workflow_blob": "f932ea4b2119be891479822217ed123c667880c7"
+  },
+  "qualified_surface": {
+    "cases": 36,
+    "ross_configurations": 36,
+    "reference_hi_configurations": 36,
+    "reference_lo_configurations": 34,
+    "total_configurations": 106,
+    "repetitions_per_configuration": 1,
+    "scientific_record_count_per_configuration": 3,
+    "output_set": "106 RUN records plus 106 FINGERPRINT, 106 HEAD and 106 THETA records"
+  },
+  "fingerprint_semantics": {
+    "aggregate_authority": "SHA-256 of the complete deterministic 106-configuration output set in frozen execution order",
+    "performance_host_preflight": "Before measured P2E24 timing, rebuild the same source, execute all 106 configurations untimed with repetitions=1 and require the same aggregate fingerprint-set SHA-256.",
+    "reason": "This verifies the exact timed workload and scientific endpoints without requiring variant outputs to be identical to each other."
+  },
+  "supported": [
+    "The exact future timing workload is executable for all 106 frozen configurations.",
+    "The benchmark source reproduces identical scientific outputs under gfortran O0 and O2 on ordinary CI.",
+    "The hardcoded N_lo/N_hi controls exactly match the machine-readable P2E23 matched-control authority.",
+    "No timing intrinsic or performance endpoint was used in workload qualification."
+  ],
+  "not_supported": [
+    "Any CPU or wall-time result.",
+    "Any RossFast speedup claim.",
+    "Suitability of ubuntu-latest for performance measurement.",
+    "Host readiness or CPU-baseline admission."
+  ],
+  "infrastructure_blocker": {
+    "isolated_runner_readiness_status": "INFRASTRUCTURE_PENDING",
+    "cpu_baseline_established": false,
+    "next_external_gate": "MP-8 isolated-runner readiness followed by full MP-7 host admission on the same runner configuration"
+  },
+  "verdict": "P2E24_BENCHMARK_WORKLOAD_QUALIFIED_106_OF_106_TIMING_REMAINS_INFRASTRUCTURE_BLOCKED",
+  "next_permitted_action": "Amend the still-unexecuted P2E24 timing protocol to lock this benchmark fingerprint authority. Do not launch measured timing until MP-8 and MP-7 gates pass."
+}
