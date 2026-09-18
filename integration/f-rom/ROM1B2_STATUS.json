@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.rom1b2.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B2",
+  "phase": "CLOSED_DISCOVERY_PREDICTIVE_AMBIGUITY",
+  "decision": "ROM1B2_DISCOVERY_PREDICTIVE_AMBIGUITY_COMPLETE",
+  "execution": {
+    "workflow_run": 35392762490,
+    "workflow_job": 105754678208,
+    "executed_head": "da260e0e68a520c4ce7998be2c443d8b9447e54d",
+    "artifact_id": 10565354779,
+    "artifact_digest": "sha256:5cb11dbd45491b956ed8136c1602907c1e11bddfde0e12ac2741fbab0c38993c",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "all_reduced_nested_coordinates_discovery_storage_ambiguous": true,
+  "coordinate_ambiguity": {
+    "Z1": {
+      "ambiguous_pair_count": 8,
+      "pair_count": 8,
+      "ambiguity_record_count": 48,
+      "comparison_record_count": 96
+    },
+    "Z2": {
+      "ambiguous_pair_count": 8,
+      "pair_count": 8,
+      "ambiguity_record_count": 48,
+      "comparison_record_count": 96
+    },
+    "Z4": {
+      "ambiguous_pair_count": 8,
+      "pair_count": 8,
+      "ambiguity_record_count": 48,
+      "comparison_record_count": 96
+    },
+    "Z8": {
+      "ambiguous_pair_count": 8,
+      "pair_count": 8,
+      "ambiguity_record_count": 48,
+      "comparison_record_count": 96
+    }
+  },
+  "reduced_coordinate_storage_survivors": [],
+  "heldout_exposed": false,
+  "B14_exposed": false,
+  "pair_manifests_reselected": false,
+  "next_permitted_action": "PREREGISTER_DISCOVERY_ONLY_PHYSICALLY_INTERPRETABLE_COORDINATE_ENRICHMENT_BEFORE_HELDOUT_EXPOSURE",
+  "production_rom_authorized": false
+}
