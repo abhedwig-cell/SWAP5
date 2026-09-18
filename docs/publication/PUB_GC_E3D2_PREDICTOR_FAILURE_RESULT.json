@@ -1,0 +1,21 @@
+{
+  "schema": "pub-gc-e3d2-result-summary-v1",
+  "date": "2026-09-18",
+  "source_head": "775554022f565e722dbc40dc6e01ecda6c3777b2",
+  "workflow_run": 35344946609,
+  "artifact_id": 10546833007,
+  "artifact_digest": "sha256:411618899c4a2f5075f423e1a03b658e6b6c14e509fff1d6c75a9df7b7ee6ba3",
+  "case_count": 6,
+  "failure_status": "CANONICAL_STATUS_TRANSACTION_FAILED",
+  "mass_rejections_total": 0,
+  "temporal_unavailable_rejections_total": 0,
+  "records": [
+    {"window_day":0.0001,"qbot_cm_per_day":0.00003,"ready":true,"attempts":1,"retries":0,"solver_rejections":0,"temporal_rejections":0,"accepted_substeps":1,"max_temporal_indicator":0.370912748419248},
+    {"window_day":0.0001,"qbot_cm_per_day":0.0001,"ready":false,"attempts":11,"retries":9,"solver_rejections":9,"temporal_rejections":1,"accepted_substeps":1,"result_status":"TRANSACTION_FAILED"},
+    {"window_day":0.001,"qbot_cm_per_day":0.0001,"ready":true,"attempts":8,"retries":5,"solver_rejections":0,"temporal_rejections":5,"accepted_substeps":3,"max_temporal_indicator":0.8032060748773575},
+    {"window_day":0.001,"qbot_cm_per_day":0.0003,"ready":false,"attempts":9,"retries":8,"solver_rejections":4,"temporal_rejections":5,"accepted_substeps":0,"result_status":"TRANSACTION_FAILED"},
+    {"window_day":0.01,"qbot_cm_per_day":0.0001,"ready":true,"attempts":59,"retries":45,"solver_rejections":0,"temporal_rejections":45,"accepted_substeps":14,"max_temporal_indicator":0.9873992111970171},
+    {"window_day":0.01,"qbot_cm_per_day":0.0003,"ready":false,"attempts":9,"retries":8,"solver_rejections":1,"temporal_rejections":8,"accepted_substeps":0,"result_status":"TRANSACTION_FAILED"}
+  ],
+  "decision": "COMPONENT_TRANSACTION_ENVELOPE_CONFIRMED"
+}
