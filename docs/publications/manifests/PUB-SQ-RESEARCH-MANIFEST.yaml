@@ -4,7 +4,7 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: REALIZED_ERROR_MATCHING_36_OF_36_FROZEN_TIMING_INFRASTRUCTURE_BLOCKED
+  status: REALIZED_ERROR_MATCHING_AND_BENCHMARK_FROZEN_TIMING_INFRASTRUCTURE_BLOCKED
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 9c1d87222b9ca7dc60fb75490b54ddc5a0230847
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
@@ -286,6 +286,49 @@ manifest:
         Preregister the timing protocol against the repository performance-governance stack.
         Execution remains forbidden until an isolated runner satisfies MP-8 readiness and the
         full MP-7 host-admission protocol.
+    P2E24_realized_error_timing_protocol:
+      branch: work/pub-p2e24-realized-error-timing
+      head: cc1dad6f3fd322044657d36361a8e9d74c3e4026
+      preregistration_blob: 8d6378340f01cee6af856c40f80d762214306214
+      verdict: PREREGISTERED_REALIZED_ERROR_TIMING_PROTOCOL_AND_BENCHMARK_FROZEN_EXECUTION_BLOCKED_ON_MP8_MP7_PERFORMANCE_INFRASTRUCTURE
+      primary_comparator: >-
+        RossFast N=1 versus casewise P2E23 Reference N_hi. For the 34 bracketed cases
+        N_hi is the least-refined tested Richards control with equal-or-better realized error.
+        Cases 7 and 8 are conservative left-censored N1/N1 comparisons and are not strict
+        equal-error cases.
+      performance_protocol: >-
+        Publication timing must run only on a self-hosted linux x64 swap5-performance runner
+        that first passes MP-8 isolated-runner readiness and the full MP-7 host-admission
+        protocol. Primary metric is externally measured child CPU seconds; monotonic wall
+        time is secondary. Ordinary ubuntu-latest timing and Fortran CPU_TIME/SYSTEM_CLOCK
+        are not admissible primary evidence.
+      resolution_rule: >-
+        Twenty-four order-balanced measured cycles are frozen per case. The paired
+        Reference-N_hi/Ross relative delta uses the repository MDE rule
+        2*stdev(d)/sqrt(24) with a 5% publication-resolution target; no selective reruns or
+        post-hoc pair extension are allowed.
+      current_blocker: benchmarks/performance/isolated-runner-readiness.json reports INFRASTRUCTURE_PENDING and cpu_baseline_established=false.
+    P2E24A_untimed_benchmark_fingerprint:
+      branch: work/pub-p2e24a-benchmark-fingerprint
+      head: d6dd6594af4f682672a4021985ff80e531bb14c0
+      result_blob: 033fa6c0fce0a74ba0c60822aaa52d8b74104333
+      workflow_run: 35316717285
+      job: 105509858009
+      fingerprint_set_sha256: 1e86b6da40eb61d17fa59bdc995b553bd3d0d447d6d13c2c46f2c715a95d95d3
+      verdict: P2E24_BENCHMARK_WORKLOAD_QUALIFIED_106_OF_106_TIMING_REMAINS_INFRASTRUCTURE_BLOCKED
+      finding: >-
+        The exact 106 future timing configurations were executed untimed at repetitions=1:
+        36 RossFast N1, 36 Reference N_hi and 34 Reference N_lo. The complete scientific
+        fingerprint set is byte-identical under gfortran O0 and O2. No timing endpoint was
+        observed.
+      performance_host_preflight: >-
+        Before any P2E24 repetition calibration or measured timing, the admitted runner must
+        rebuild the frozen benchmark source and reproduce the complete 106-configuration
+        fingerprint-set SHA exactly.
+      next_permitted_action: >-
+        Provision or identify the isolated performance runner, reproduce the untimed
+        fingerprint, pass MP-8 readiness and full MP-7 host admission on that same runner,
+        then execute P2E24 exactly once as the primary timing exposure.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
