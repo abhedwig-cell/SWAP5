@@ -66,12 +66,14 @@ python3 "$COMPILER" \
   --root "$ROOT" \
   --stub "$BUILD/rom0_stubs_n16.f90" \
   --target "$TEST" \
+  --external-source src/legacy/b1_10_port/headcalc.f90 \
   --build "$BUILD/o2_n16" \
   --opt 2
 python3 "$COMPILER" \
   --root "$ROOT" \
   --stub "$BUILD/rom0_stubs_n32.f90" \
   --target "$TEST" \
+  --external-source src/legacy/b1_10_port/headcalc.f90 \
   --build "$BUILD/o2_n32" \
   --opt 2
 
