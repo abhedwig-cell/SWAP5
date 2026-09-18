@@ -856,7 +856,6 @@ contains
     result = kernel_reference_floor_result_t()
     result%requested_t0 = t0
     result%requested_t1 = t1
-    candidate = kernel_reference_floor_candidate_t()
     diagnostics = kernel_diagnostics_t()
 
     call self%bottom_thermal_candidate%clear()
