@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-CI108",
   "title": "RossFast moving-preservation reconciliation",
-  "phase": "ADMIT",
-  "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "status": "ADMITTED_CLOSED",
   "branch": "work/f-ci108-fross17-moving-preservation-reconciliation",
   "canonical_source": "160bc10f5ed697ee67897af603ddfbc574b1d4cf",
   "reconciliation": {
@@ -26,7 +26,7 @@
     "workflow_run": 35351630380,
     "classification": "MOVING_PRESERVATION_SCOPE_STALE_NOT_SCIENTIFIC_REGRESSION"
   },
-  "next_permitted_action": "Merge PR #280 to integration/f-ci-canonical with expected-head protection. Verify repaired moving-preservation blobs on canonical, then close F-CI108.",
+  "next_permitted_action": "NONE_WITHIN_F_CI108. Use the repaired moving-preservation surface for later RossFast research/preservation PRs.",
   "canonical_live_reconciliation": {
     "live_head": "47430b68ed46a24ca05b29b46de2dd4f7e29762b",
     "delta_since_qualification_base": [
@@ -73,5 +73,10 @@
     ],
     "disposition": "Redundant current-head replays do not invalidate immutable qualified repair evidence because candidate repair blobs and the complete relevant dependency closure are byte-identical."
   },
-  "verdict": "QUALIFIED_READY_FOR_ADMISSION"
+  "verdict": "ADMITTED_TO_CANONICAL_AND_CLOSED",
+  "canonical_admission": {
+    "pr": 280,
+    "merge_sha": "d714b4df85be75d06474108f44495b139a173da5",
+    "repair_blobs_verified_on_canonical": true
+  }
 }
