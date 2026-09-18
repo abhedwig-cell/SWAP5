@@ -90,6 +90,11 @@ def main()->None:
     origin=swap.state()
     require(origin==(0,0.0,0,0.0),"E4 baseline not at immutable accepted origin")
     rec.update({
+        "predictor_hcof_m2_per_day":hcof,
+        "predictor_rhs_m3_per_day":rhs,
+        "reference_head_m":href,
+        "u_A":float(predictor["u"]),
+        "predictor":predictor,
     })
 
     # Exact production-participant parity at H0. A bounded production
