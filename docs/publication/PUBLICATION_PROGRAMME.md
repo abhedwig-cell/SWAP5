@@ -82,7 +82,7 @@ Current evidence state:
 - the manuscript core is consolidated through E7, with evidence-bounded abstract, Methods, Results, Discussion and Conclusions;
 - M1-C3 and M1 are closed; E7 Hupsel standalone selection was frozen before coupled output on 2003-06-17 (median dynamics) and 2003-05-20 (high dynamics). Qualification run 35375181814 then closed E7 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`: both authentic days require drainage, while the current production prescribed-head owner rejects active drainage before owner-state allocation. No loose/strong E7 window was executed and no physics/tolerance/date/window rescue was used.
 - manuscript figures F1–F7, tables T1–T6, notation glossary, supplementary evidence package and machine-readable reproducibility manifest are complete through E7; no preregistered primary scientific gap remains for the current bounded PUB-GC framing.
-- GMD prearchive preparation is complete except for governed release identifier (A1), explicit SWAP5 archive licence/redistribution declaration (A2b) and downstream persistent archive/PID (A3). Upstream SWAP version-4 licence authority is independently verified.
+- GMD prearchive preparation is complete except for a governed **successor** release identifier/authority (A1), explicit SWAP5 archive licence/redistribution declaration (A2b) and downstream persistent archive/PID (A3). Immutable predecessor release `SWAP5-RB1-v1` is preserved and may not be reused; F-RB02 requires the next release to enumerate its RB1 delta and qualify its own candidate. Upstream SWAP version-4 licence authority is independently verified.
 
 First publication evidence block (E1/E2):
 
