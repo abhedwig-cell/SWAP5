@@ -1,6 +1,6 @@
 {
   "workunit": "PUB-P2E15-DUPLICATE",
-  "status": "CLOSED_REDUNDANT_NONAUTHORITATIVE",
+  "status": "SUPERSEDED_BY_P2E15_AUTHORITY_RECONCILIATION",
   "branch": "work/pub-p2e15-material-extension-primary",
   "reason": "A parallel preregistered P2E15 workunit, work/pub-p2e15-30-material-e0-holdout, defines the same 30-material x 3-state x 2-forcing confirmatory question more precisely and has completed the authoritative scientific execution.",
   "this_branch_execution": {
@@ -15,5 +15,8 @@
     "result_path": "docs/publication/P2E15_30_MATERIAL_E0_HOLDOUT_RESULT.json",
     "verdict": "QUALIFIED_30_MATERIAL_E0_HOLDOUT_ALL_180_ADMISSIBLE"
   },
-  "evidence_rule": "Do not treat this duplicate branch as an independent replicate, additional sample or supporting scientific execution."
+  "evidence_rule": "Do not treat this duplicate branch as an independent replicate, additional sample or supporting scientific execution.",
+  "correction": "This file was written before the later successful scientific execution on this branch became visible. It is not the current authority classification.",
+  "superseded_by": "docs/publication/P2E15_AUTHORITY_RECONCILIATION.json",
+  "current_primary_result": "docs/publication/P2E15_MATERIAL_EXTENSION_PRIMARY_RESULT.json"
 }
