@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.publication.p2e12-reference-common-material-domain-result.v1",
+  "workunit": "PUB-P2E12",
+  "evidence_class": "PROSPECTIVE_SUPPORTING",
+  "phase": "COMPLETE_QUALIFIED_DOMAIN_MAP",
+  "execution_head": "c2d22960c6dc8da3b729d69598b714183d6ece68",
+  "qualified_workflow": {
+    "run": 35290038843,
+    "job": 105430680631,
+    "conclusion": "success"
+  },
+  "harness_chronology": [
+    {
+      "run": 35289924865,
+      "head": "9dfd58b187935b813fb1ae983da4100928871ac2",
+      "classification": "INVALID_HARNESS_SYNTAX",
+      "scientific_use": false
+    },
+    {
+      "run": 35289982448,
+      "head": "24ea0967f14961f65615e027946194867fb99bc7",
+      "classification": "INVALID_OBSOLETE_RUNNER_MARKER",
+      "scientific_use": false
+    },
+    {
+      "run": 35290038843,
+      "head": "c2d22960c6dc8da3b729d69598b714183d6ece68",
+      "classification": "QUALIFIED_EXECUTION",
+      "scientific_use": true
+    }
+  ],
+  "design": {
+    "material_count": 30,
+    "forcing_count": 2,
+    "cases_per_Se": 60,
+    "effective_saturation_scan": [
+      0.9,
+      0.92,
+      0.94,
+      0.96,
+      0.98
+    ],
+    "physical_case_count": 300,
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "solver": "Reference only"
+  },
+  "feasibility": [
+    {
+      "Se": 0.9,
+      "valid": 60,
+      "invalid": 0
+    },
+    {
+      "Se": 0.92,
+      "valid": 60,
+      "invalid": 0
+    },
+    {
+      "Se": 0.94,
+      "valid": 60,
+      "invalid": 0
+    },
+    {
+      "Se": 0.96,
+      "valid": 60,
+      "invalid": 0
+    },
+    {
+      "Se": 0.98,
+      "valid": 56,
+      "invalid": 4
+    }
+  ],
+  "highest_preregistered_global_common_Se": 0.96,
+  "invalid_cases_at_Se_0_98": [
+    {
+      "material": "B02",
+      "forcing": "DRYING",
+      "failure_stage": "HALF2_REFERENCE_GATE"
+    },
+    {
+      "material": "B02",
+      "forcing": "NOMINAL",
+      "failure_stage": "HALF2_REFERENCE_GATE"
+    },
+    {
+      "material": "B05",
+      "forcing": "DRYING",
+      "failure_stage": "COARSE_REFERENCE_GATE"
+    },
+    {
+      "material": "B05",
+      "forcing": "NOMINAL",
+      "failure_stage": "COARSE_REFERENCE_GATE"
+    }
+  ],
+  "reproducibility": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "byte_identical_output": true,
+    "output_sha256": "f295835dfe042385af0571579542f82883d7f5fd41c7deb1c4004a8806bef08b"
+  },
+  "firewall": {
+    "rossfast_numerical_solver_executed": false,
+    "threshold_frozen": false,
+    "reference_tolerance_changed": false,
+    "timestep_search_performed": false,
+    "scan_level_inserted_after_result": false,
+    "production_or_reference_source_changed": false
+  },
+  "interpretation": {
+    "supported": "Within the preregistered scan, Se=0.96 is the highest globally common wet-state level for which all 30 extension materials and both frozen forcing classes remain valid under the fixed Reference coarse/refined trajectories.",
+    "consistency": "The only Se=0.98 failures reproduce the same B02/B05 pattern diagnosed in P2E11/P2E11D1.",
+    "nonclaim": "This does not establish RossFast admissibility at Se=0.96 or any other level."
+  },
+  "verdict": "QUALIFIED_SUPPORTING_COMMON_MATERIAL_DOMAIN_SE_LE_0_96_ON_PREREGISTERED_SCAN",
+  "next_permitted_action": "Freeze a new Reference-only threshold dataset and later paired extension design on a common state surface that excludes Se=0.98 prospectively. Candidate execution remains prohibited until that threshold freeze is complete."
+}
