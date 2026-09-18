@@ -42,7 +42,7 @@ program test_ross15_reference_vs_rossfast_performance
        2.1316282072803006e-14_real64, 2.1316282072803006e-14_real64, 2.842170943040401e-14_real64 ]
 
   integer :: imat, ise, iforce, case_id
-  integer :: count_admissible, count_discrepancy_fail, count_reference_invalid, count_rossfast_invalid, count_both_invalid
+  integer :: count_admissible, count_discrepancy_fail, count_reference_invalid, count_rossfast_invalid, count_both_invalid, count_paired_valid
   integer :: fail_h_inf, fail_h_rms, fail_theta_inf, fail_theta_rms, fail_storage
   character(len=40) :: classification
   real(real64) :: dh_inf, dh_rms, dtheta_inf, dtheta_rms, dstorage
@@ -57,6 +57,7 @@ program test_ross15_reference_vs_rossfast_performance
   count_reference_invalid=0
   count_rossfast_invalid=0
   count_both_invalid=0
+  count_paired_valid=0
   fail_h_inf=0
   fail_h_rms=0
   fail_theta_inf=0
@@ -103,17 +104,23 @@ program test_ross15_reference_vs_rossfast_performance
         end select
 
         if (metrics_available) then
+          count_paired_valid=count_paired_valid+1
           if (.not.pass_h_inf) fail_h_inf=fail_h_inf+1
           if (.not.pass_h_rms) fail_h_rms=fail_h_rms+1
           if (.not.pass_theta_inf) fail_theta_inf=fail_theta_inf+1
           if (.not.pass_theta_rms) fail_theta_rms=fail_theta_rms+1
           if (.not.pass_storage) fail_storage=fail_storage+1
         end if
+        write(*,'(*(g0))') 'F_ROSS23_CASE|ID=',case_id,'|MATERIAL=',trim(material_ids(imat)), &
+             '|SE=',se_levels(ise),'|FORCING=',trim(forcing_ids(iforce)),'|CLASS=',trim(classification), &
+             '|METRICS=',metrics_available,'|D_H_INF=',dh_inf,'|D_H_RMS=',dh_rms, &
+             '|D_THETA_INF=',dtheta_inf,'|D_THETA_RMS=',dtheta_rms,'|D_STORAGE=',dstorage
       end do
     end do
   end do
 
   call require(case_id==expected_cases,'exact 216-case characterization domain attempted')
+  write(*,'(A,I0)') 'F_ROSS23_PAIRED_VALID=',count_paired_valid
   write(*,'(A,I0)') 'F_ROSS23_PAIRED_VALID_ADMISSIBLE=',count_admissible
   write(*,'(A,I0)') 'F_ROSS23_PAIRED_VALID_DISCREPANCY_FAIL=',count_discrepancy_fail
   write(*,'(A,I0)') 'F_ROSS23_REFERENCE_ROUTE_INVALID=',count_reference_invalid
@@ -130,7 +137,7 @@ program test_ross15_reference_vs_rossfast_performance
   write(*,'(A,A)') 'F_ROSS23_ROUTE=',trim(selected_route)
   write(*,'(A,I0)') 'F_ROSS23_CASE_COUNT=',case_id
   write(*,'(A,I0)') 'F_ROSS23_INNER_REPETITIONS=',inner_repetitions
-  write(*,'(A,I0)') 'F_ROSS23_TIMED_SOLVE_COUNT=',case_id*inner_repetitions
+  write(*,'(A,I0)') 'F_ROSS23_TIMED_SOLVE_COUNT=',count_paired_valid*inner_repetitions
   write(*,'(A,ES24.16E3)') 'F_ROSS23_SOLVER_CPU_SECONDS=',total_solver_cpu_seconds
   write(*,'(A,ES24.16E3)') 'F_ROSS23_CHECKSUM=',checksum
   write(*,'(A)') 'F_ROSS23_LAYER=A_FIXED_INTERVAL_SOLVER_SEAM'
@@ -248,30 +255,30 @@ contains
 
     ! Route validity is classified and persisted by the characterization; do not abort before the full 216-case matrix is observed.
 
-    select case(trim(selected_route))
-    case('REFERENCE')
-      call cpu_time(t0)
-      do rep=1,inner_repetitions
-        call reference_solver%solve(request,reference_workspace,reference_result)
-      end do
-      call cpu_time(t1)
-      checksum_accum=checksum_accum+reference_result%candidate_state%pressure_head(1)+ &
-           reference_result%candidate_state%water_content(n)
-      if (.not.reference_valid) solver_cpu_accum=solver_cpu_accum-(t1-t0)
-    case('ROSSFAST')
-      call cpu_time(t0)
-      do rep=1,inner_repetitions
-        call alternative_solver%solve(request,alternative_workspace,alternative_result)
-      end do
-      call cpu_time(t1)
-      checksum_accum=checksum_accum+alternative_result%candidate_state%pressure_head(1)+ &
-           alternative_result%candidate_state%water_content(n)
-      if (.not.rossfast_valid) solver_cpu_accum=solver_cpu_accum-(t1-t0)
-    case default
-      call require(.false.,'unknown selected timing route')
-      t0=0.0_real64; t1=0.0_real64
-    end select
-    solver_cpu_accum=solver_cpu_accum+(t1-t0)
+    if (reference_valid .and. rossfast_valid) then
+      select case(trim(selected_route))
+      case('REFERENCE')
+        call cpu_time(t0)
+        do rep=1,inner_repetitions
+          call reference_solver%solve(request,reference_workspace,reference_result)
+        end do
+        call cpu_time(t1)
+        checksum_accum=checksum_accum+reference_result%candidate_state%pressure_head(1)+ &
+             reference_result%candidate_state%water_content(n)
+      case('ROSSFAST')
+        call cpu_time(t0)
+        do rep=1,inner_repetitions
+          call alternative_solver%solve(request,alternative_workspace,alternative_result)
+        end do
+        call cpu_time(t1)
+        checksum_accum=checksum_accum+alternative_result%candidate_state%pressure_head(1)+ &
+             alternative_result%candidate_state%water_content(n)
+      case default
+        call require(.false.,'unknown selected timing route')
+        t0=0.0_real64; t1=0.0_real64
+      end select
+      solver_cpu_accum=solver_cpu_accum+(t1-t0)
+    end if
   end subroutine run_case
 
   logical function reference_route_valid(result,request,material) result(ok)
