@@ -69,16 +69,18 @@ def font_embedding(pdf: Path) -> list[dict[str, str]]:
         if stripped.replace("-", "").replace(" ", "") == "":
             continue
         parts = line.split()
-        if len(parts) < 7:
+        # pdffonts allows a multi-token font type such as "CID TrueType".
+        # The final columns are stable: encoding, emb, sub, uni, object ID.
+        if len(parts) < 8:
             continue
         rows.append(
             {
                 "name": parts[0],
-                "type": parts[1],
-                "encoding": parts[2],
-                "embedded": parts[3],
-                "subset": parts[4],
-                "unicode": parts[5],
+                "type": " ".join(parts[1:-6]),
+                "encoding": parts[-6],
+                "embedded": parts[-5],
+                "subset": parts[-4],
+                "unicode": parts[-3],
             }
         )
     return rows
