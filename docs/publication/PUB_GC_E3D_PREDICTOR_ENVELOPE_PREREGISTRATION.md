@@ -64,7 +64,7 @@ The qualification-only bridge shall expose distinct non-zero initialization stat
 104 predictor whole-window trial incomplete
 105 predictor candidate unavailable
 106 accepted-trajectory direction unavailable
-107 tangent endpoint invalid/not authoritative
+107 tangent endpoint prerequisites/materialization invalid, or tangent endpoint invalid/not authoritative
 108 origin bottom-face mapping invalid
 109 SWAP interface-flux conversion failed
 110 groundwater action/reaction pairing failed
