@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_TRANSACTIONAL_SNAPSHOT_REPLAY_FAIL_CLOSED",
+  "capability": "M1 - Typed External Boundary",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "authority": {
+    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "frozen_dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "observation_boundary": "post SoilWater(3), pre TimeControl(3)"
+  },
+  "corrected_snapshot_campaign": {
+    "snapshots": 6,
+    "snapshot_text_sha256": "f1c5923b6642db9096913bf1d944b5cc6be6b0c4ee4178fb970786a4139c4c63",
+    "prepared_replay_fixture_sha256": "654ec3f807498664583a7ac8d7f24f69cc5a3c8312c2e8b7f8747ead8b103465",
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "noninterference": "PASS",
+    "note": "An earlier disposable instrumentation placement before SoilWater(3) was rejected; this checkpoint uses the corrected post-SoilWater accepted-interval boundary only."
+  },
+  "replay_subject": {
+    "canonical_observed": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+    "exact_current_blobs": {
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+      "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+      "src/solver/mod_b110_root_sink_provider.f90": "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+    },
+    "attempted_mapping": [
+      "exact pre-SoilWater pressure head/water content/ponding/GWL",
+      "exact B1.11 hydraulic parameter/cofgen materialization",
+      "observed qdra/qssdi/qrot as typed source/sink inputs",
+      "observed effective qtop as fixed-flux top forcing",
+      "SWBOTB=6 observed qbot=0 mapped only through already admitted F-APP02 zero-flux bottom contract"
+    ]
+  },
+  "result": {
+    "first_frozen_interval": "2002-01-05",
+    "solver_status": "CONVERGED",
+    "solver_route": "legacy-reference-bound",
+    "nonlinear_iterations": 2,
+    "max_abs_head_error_cm": 1.504523851035657,
+    "max_abs_water_content_error": 0.00001611513197979919,
+    "ponding_error_cm": 0,
+    "groundwater_level_error_cm": 0.19329833830274623,
+    "top_flux_error_cm_per_day": 0,
+    "bottom_flux_error_cm_per_day": 0,
+    "replay_output_sha256": "86b25ff84709e7f3edd2f795e4a45975261fe6f8cceab8a087025b1c2906b0c5",
+    "verdict": "FAIL_CLOSED_CONTEXT_MAPPING_INCOMPLETE"
+  },
+  "interpretation": [
+    "This is not classified as a Class-V hydrological discrepancy because semantic equivalence of the prepared typed interval context has not been established.",
+    "The exact application routes may be individually admitted, but criterion 3 cannot close merely from field-identity tests while a full legacy-file-to-typed computational replay remains semantically incomplete.",
+    "No tolerance widening, output fitting, solver-policy change or new physics is permitted to remove this mismatch."
+  ],
+  "mutations": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "timestep": "NONE",
+    "tolerances": "NONE",
+    "qualification_evidence_only": true
+  },
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "next_permitted_action": "After F-APP06/F-APP07/F-APP08 admission, reconcile the exact legacy interval context against existing admitted typed context/boundary adapters (including serialized context and dynamic-top ownership). Identify the missing semantic carrier(s), add only transparent adapter composition if already represented by legacy semantics, and rerun the same six frozen snapshots. Keep M1-C3 fail-closed until a real legacy-file adapter path reproduces the reference result."
+}
