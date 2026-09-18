@@ -1076,9 +1076,6 @@ Transferability beyond SWAP5–MODFLOW6 rests on principles rather than identica
 
 # 6. Conclusions
 
----
-# 6. Conclusions
-
 We developed and tested a solver-autonomous finite-window coupling contract in which SWAP5 and MODFLOW6 retain their own numerical solvers while sharing an explicit hydrological interface and one coupled acceptance decision.
 
 Six conclusions follow from the current evidence.
