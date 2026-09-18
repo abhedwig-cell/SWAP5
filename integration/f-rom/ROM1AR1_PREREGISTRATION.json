@@ -1,0 +1,86 @@
+{
+  "schema": "swap5.rom1ar1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1",
+  "title": "Reachable-state library successor rerun under qualified mode-2 and mode-5 research Reference fallbacks",
+  "phase": "PREREGISTERED_BEFORE_SUCCESSOR_LIBRARY_EXECUTION",
+  "parent": {
+    "work_unit": "ROM-1A",
+    "preregistration": "integration/f-rom/F-ROM1A_PREREGISTRATION.json",
+    "first_run": 35376913714,
+    "status": "FAILED_AT_D01_STEP21_BEFORE_PARENT_RESULT",
+    "history_or_split_reclassification": false
+  },
+  "new_authority": {
+    "mode2": {
+      "work_unit": "ROM-1A-D2",
+      "decision": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED"
+    },
+    "mode5": {
+      "work_unit": "ROM-0R-R3D4",
+      "decision": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED"
+    },
+    "common_semantics": "Original strict sample first; same-interval fresh-backend fallback only after immutable RETRY_TOTAL_ONLY classification inside a pre-solve prospective representation bound."
+  },
+  "history_design": {
+    "must_equal_parent_preregistration": true,
+    "discovery_histories": ["D01","D02","D03","D04","D05","D06","D07","D08"],
+    "held_out_histories": ["H01","H02","H03","H04"],
+    "steps_per_history": 64,
+    "discovery_state_count": 512,
+    "held_out_state_count": 256,
+    "total_state_count": 768,
+    "history_definition_change_allowed": false,
+    "amplitude_change_allowed": false,
+    "step_dt_day": 0.0008
+  },
+  "material_firewall": {
+    "generated_material": "B01",
+    "B14_generated": false,
+    "B14_outcome_inspection_for_state_design": false
+  },
+  "fallback_contract": {
+    "prospective_bound_formula_cm": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "bound_computed_before_original_attempt": true,
+    "original_total_balance_tolerance_cm_per_day": 1e-12,
+    "fallback_total_tolerance_formula": "max(1e-12, representation_bound_cm/dt)",
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "dt_subdivision": false,
+    "failed_residual_used_to_choose_tolerance": false
+  },
+  "qualification": [
+    "ALL_12_HISTORIES_COMPLETE_64_STEPS",
+    "EXACTLY_768_ACCEPTED_LIBRARY_STATES",
+    "DISCOVERY_512_AND_HELDOUT_256",
+    "EVERY_ORIGINAL_SUCCESS_COMMITS_WITHOUT_FALLBACK",
+    "EVERY_FALLBACK_TRIGGER_RETRY_TOTAL_ONLY_WITHIN_PRE_SOLVE_BOUND",
+    "FAILED_FIRST_ATTEMPTS_NEVER_MUTATE_COMMITTED_STATE",
+    "MODE2_FALLBACKS_USE_ROM1AD2_SEMANTICS",
+    "MODE5_FALLBACKS_USE_R3D4_SEMANTICS",
+    "EVERY_COMMITTED_STEP_ONE_PHYSICAL_ADVANCE",
+    "NO_DT_SUBDIVISION",
+    "HARD_MASS_GATE_EVERY_STEP",
+    "ALL_PRIMARY_OUTPUTS_AND_PROFILES_FINITE",
+    "COMMITTED_REVISION_AND_TIME_PROGRESS_EXACT",
+    "B14_NOT_GENERATED",
+    "O0_O2_OR_REPEAT_DETERMINISM_FOR_MANIFEST"
+  ],
+  "positive_decision": "ROM1AR1_REACHABLE_STATE_LIBRARY_QUALIFIED",
+  "negative_decision": "ROM1AR1_REACHABLE_STATE_LIBRARY_NO_GO",
+  "if_positive": "Close ROM-1A capability under successor Reference authority and proceed to ROM-1B predictive ambiguity tests with discovery histories only for coordinate proposal.",
+  "scientific_firewalls": [
+    "NO_REDUCED_COORDINATE_SELECTION",
+    "NO_POD_BASIS",
+    "NO_MEMORY_VARIABLE_SELECTION",
+    "NO_CLOSURE_MODEL_FIT",
+    "NO_HELDOUT_USE_FOR_COORDINATE_ENRICHMENT",
+    "NO_B14_USE_FOR_STATE_DESIGN",
+    "NO_POST_RESULT_HISTORY_RETUNING",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ]
+}
