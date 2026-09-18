@@ -2,9 +2,9 @@
 
 Date: 2026-09-18
 
-Status: `SOURCE_INVENTORY_COMPLETE / FIRST_BOUNDED_SLICE_IMPLEMENTED_AND_INDEPENDENTLY_QUALIFIED / CANONICAL_ADMISSION_PENDING`
+Status: `CANONICAL_ADMITTED_CLOSED`
 
-Canonical authority at reconcile: `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`.
+Initial canonical authority at reconcile: `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`. Before admission the workunit was reconciled onto the PPA-WU03 canonical preimage `0d1798aafbf43417801d75a140e4f4f3cef74bd8`.
 
 ## Authority binding
 
@@ -133,3 +133,40 @@ confirms the SWBOTB=6 zero-flux adapter is byte-unchanged.
 This admission is deliberately narrower than legacy SWBOTB=2. It does not add
 the SW2 sine/table generator, DATE2/QBOT2 parser, oven-dry `2 -> -2`
 continuation, file I/O or any new groundwater semantics.
+
+
+## Canonical admission and closure
+
+PPA-WU02-A was canonically admitted through PR #324 at merge commit
+`013c549686a8f310834ddb3e8d1270166f8283f1`.
+
+The merge is a two-parent admission:
+
+- first parent, live canonical preimage: `0d1798aafbf43417801d75a140e4f4f3cef74bd8`;
+- second parent, reconciled WU02 admission head: `eff8670a2614f72d34016dbfc7eba040c940c245`.
+
+The admitted production blob for
+`src/runtime/mod_fmr_production_application_bootstrap.f90` is
+`135803e056697a20aa3295721b02c77aba22367a`, byte-identical between the
+reconciled admission head and the canonical merge postimage. The lower-level
+prescribed-qbot science owners remained byte-identical, including serialized
+context binding, Reference backend, temporal indicator, and the F-APP02
+SWBOTB=6 binding.
+
+Final premerge evidence on the reconciled head:
+
+- PPA-WU02 run `35374976662`: owner and independent qualification PASS;
+- PPA-WU01 preservation run `35374976768`: PASS;
+- PPA-WU03 preservation run `35374976722`: PASS;
+- Documentation run `35374976742`: PASS;
+- F-CI canonical qualification run `35374976715`: PASS.
+
+The closure changes one application-reachability fact only: a homogeneous
+explicit typed `bottom_mode=2` profile with already-resolved prescribed qbot
+is now a normal restricted production application profile. It does not admit
+the legacy SWBOTB=2 sine/table grammar, the oven-dry `2 -> -2` continuation,
+standalone DATE5 prescribed-head ingestion, or selectors 1, 3, 4, and 8.
+
+PPA-WU02 is therefore **CLOSED**. The remaining modes are separate migration
+slices recorded in the machine-readable classification matrix and audit
+register.
