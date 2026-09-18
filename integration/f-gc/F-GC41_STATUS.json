@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC41",
+  "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "OPEN_DESIGN_BOUNDARY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
+  },
+  "source": {
+    "branch": "work/f-gc41-whole-window-acceptance-retry",
+    "base": "62dfb5a52f665e490830dfb320167786cf67f63e"
+  },
+  "authority": {
+    "predecessor": "F-GC39",
+    "predecessor_verdict": "CLOSED_CANONICAL_ADMITTED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
+    "ownership": "predictor/corrector remains inside the internal SWAP5-MODFLOW coupling service below iMOD Coupler"
+  },
+  "capability_goal": "Define and qualify one atomic whole-window acceptance boundary spanning the retained SWAP candidate, finalized MODFLOW timestep state, and groundwater exchange ledger, with fail-closed reconstruction for a smaller-window retry after an abandoned prepared solve.",
+  "required_invariants": [
+    "SWAP retains ownership of trial, retry and commit semantics.",
+    "MODFLOW prepared-solve nonlinear iteration remains the F-GC38/F-GC39 backend lifecycle.",
+    "No participant is published as accepted unless all three publication participants are ready for the same window and provenance.",
+    "A failed publication preflight must leave SWAP committed state, MODFLOW accepted timestep state and committed exchange ledger unchanged.",
+    "An abandoned prepared solve is never reused as accepted MODFLOW state.",
+    "Retry reconstructs a fresh MODFLOW window from the last accepted timestep state and reruns SWAP from the same accepted origin over the smaller requested window.",
+    "Exchange ledger publication is bound to the exact accepted coupling lineage/window and cannot be committed independently.",
+    "iMOD Coupler does not acquire predictor/corrector or participant commit ownership."
+  ],
+  "qualification_questions": [
+    "What exact MODFLOW6/XMI operation constitutes irreversible timestep publication after finalize_solve?",
+    "Can all participant readiness be proven before the first irreversible publication operation?",
+    "What accepted MODFLOW state must be retained or reconstructed before prepare_time_step so an abandoned prepared solve can be retried at a smaller window?",
+    "What ordering or compensation contract is required if MODFLOW timestep publication cannot be rolled back after SWAP or ledger publication failure?",
+    "How is one coupling lineage/window identity carried across retained SWAP candidate, MODFLOW timestep and prepared ledger token?"
+  ],
+  "existing_reusable_surfaces": [
+    "F-GC39 retained final SWAP candidate and finalized prepared solve contract",
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90 prepare/commit/abort surface",
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90 existing publication preflight pattern",
+    "kernel committed-state checkpoint/candidate transaction seams"
+  ],
+  "explicit_exclusions": [
+    "new groundwater physics",
+    "new predictor/corrector algorithm",
+    "moving predictor/corrector into iMOD Coupler",
+    "N:1 scaling changes",
+    "Ribasim coupling",
+    "irrigation",
+    "runtime finite-difference tangent fallback"
+  ],
+  "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
+  "next_permitted_action": "QUALIFY the MODFLOW6 whole-timestep publication and smaller-window reconstruction semantics against the live F-GC38/F-GC39 backend. Do not implement the atomic coordinator until the first-irreversible-operation and retry-origin contracts are explicit."
+}
