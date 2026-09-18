@@ -243,3 +243,10 @@ A targeted compare found **no changes** across the E6-relevant production surfac
 - accepted-step directional service/publication.
 
 The intervening canonical work is therefore disjoint from the E6 scientific path. E6 branch evidence remains interpretable against current production semantics without changing the preregistered experiment.
+
+
+## Execution retry provenance checkpoint
+
+Added after preregistration and before interpreted E6 numerical output. Current canonical is `integration/f-ci-canonical@71626be59b81d00a3fd6a5d5a561febe9b5023b8`. The delta since the earlier pre-output reconciliation is the docs-only E4 raw-evidence persistence admission (PR #299); it does not overlap E6 production, fixture, coupling, solver, drainage or MODFLOW surfaces.
+
+This checkpoint exists only to obtain a fresh branch-only Actions execution after an earlier run was cancelled/queued by repository concurrency. It changes no physical case, parameter, tolerance, comparator, gate or interpretation rule.
