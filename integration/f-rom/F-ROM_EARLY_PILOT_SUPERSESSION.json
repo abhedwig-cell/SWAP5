@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.f-rom.supersession.v1",
+  "programme": "F-ROM",
+  "decision": "SUPERSEDE_EARLY_F_ROM01_DIRECT_SOLVER_PILOT",
+  "authority_baseline": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "superseded_work": {
+    "branch": "work/f-rom01-minimal-prognostic-representation",
+    "pull_request": 252,
+    "design_commit": "5636c3e626b9ee1a61c769ea4746b877e5da88e2",
+    "pilot_contract": "integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json",
+    "status": "HISTORICAL_ONLY_NOT_SCIENTIFIC_AUTHORITY"
+  },
+  "observed_pilot_sequence": {
+    "ci_repairs": [
+      "PR merge-checkout source-delta attribution bug",
+      "qualification runner heredoc/truncation defect"
+    ],
+    "repaired_to_runtime": true,
+    "runtime_observation": "Direct Reference solver attempt failed during A_DRY before any scientific collision result was established.",
+    "scientific_interpretation": "NONE",
+    "reason": "The pilot exercised individual solver attempts and required direct convergence instead of using the accepted retry/timestep/commit lifecycle required for ROM reference trajectories."
+  },
+  "prohibitions": [
+    "Do not tune the superseded wet/dry forcing, timestep or tolerance values to make the pilot pass.",
+    "Do not use the A_DRY failure as evidence for or against reduced-order hydrological state.",
+    "Do not treat a direct solver attempt as accepted trajectory authority."
+  ],
+  "successor_authority": [
+    "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+    "docs/science/F-ROMP_PROPOSITION_QUALIFICATION.md",
+    "docs/science/F-ROM0_ACCEPTED_FULL_ORDER_AUTHORITY.md"
+  ],
+  "production_source_mutation": "NONE"
+}
