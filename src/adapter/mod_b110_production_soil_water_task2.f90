@@ -19,11 +19,14 @@ module mod_b110_production_soil_water_task2
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
-  use MOD_swap_base, only: swmacro, swdra, swpondmx, swfrost, swrunon
+  use mod_fmr_legacy_bottom_boundary_application_binding, only: fmr_legacy_bottom_boundary_binding_t, &
+       fmr_resolve_legacy_bottom_boundary, FMR_LEGACY_BOTTOM_BINDING_OK
+  use MOD_swap_base, only: swmacro, swdra, swpondmx, swfrost, swrunon, swsolve
   use MOD_grid, only: numnod, z, dz, disnod
-  use MOD_MvG, only: cofgen
+  use MOD_MvG, only: cofgen, swsophy
   use MOD_meteo, only: nraidt, epond, peva, empreva
   use MOD_irrigation, only: nird, qssdi
   use MOD_snow, only: melt
@@ -33,7 +36,7 @@ module mod_b110_production_soil_water_task2
   use variables, only: h, theta, pond, pondm1, gwl, qtop, qbot, hbot, runon, epd, reva, runots, qrot, &
        dt, swbotb, swkimpl, swkmean, dtmin, maxit, maxbacktr, CritDevBalCp, CritDevBalTot, &
        critdevh2cp, critdevh1cp, critdevponddt, fldtmin, fldecdt, pondmx, rsro, rsroexp, swredu, &
-       kmean, numbit, itnumb
+       k, kmean, numbit, itnumb
   implicit none
   private
 
@@ -56,6 +59,7 @@ module mod_b110_production_soil_water_task2
 
   public :: try_b110_production_task2
   public :: run_b110_production_task2
+  public :: m1_b111_legacy_application_profile_active
 
   interface
     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
@@ -109,6 +113,7 @@ contains
     type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
     type(b110_default_mvg_provider_t), target :: constitutive
     type(b110_source_sink_provider_t), target :: source_sink
+    type(b110_root_sink_provider_t), target :: root_sink
     type(b110_dynamic_top_boundary_solver_provider_t), target :: dynamic_top
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
@@ -118,14 +123,17 @@ contains
     type(soil_water_accepted_step_direction_request_t) :: direction_request
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
-    real(real64), allocatable, target :: drainage_copy(:,:), subsurface_copy(:), root_copy(:)
-    real(real64) :: potential_bare_evaporation, direction_t0, direction_t1
+    real(real64), allocatable, target :: drainage_copy(:,:), subsurface_copy(:), root_copy(:), source_sink_root_zero(:)
+    type(fmr_legacy_bottom_boundary_binding_t) :: legacy_bottom
+    real(real64) :: potential_bare_evaporation, direction_t0, direction_t1, typed_bottom_flux
     logical :: sensitivity_route_admitted, trajectory_requested, trajectory_step_built, trajectory_stage_ok
-    integer :: n, stat_index
+    logical :: m1_profile, root_provider_active
+    integer :: n, stat_index, typed_bottom_mode, bottom_status
 
     handled = .false.
     call a23bu_reset_soil_water_trial_result(worker)
     if (.not. production_route_admitted()) return
+    m1_profile = m1_b111_legacy_application_profile_active()
 
     ! From this point the explicit production route is the sole hydraulic
     ! authority for this trial. A started solve never falls through to the
@@ -142,23 +150,37 @@ contains
     parameters%dz = dz(1:n)
     parameters%node_distance = disnod(1:n)
 
-    call initialize_b110_default_mvg_parameters(hydraulic_parameters, cofgen(:,1:n))
+    call initialize_b110_default_mvg_parameters(hydraulic_parameters, cofgen(:,1:n), &
+         enable_ksatexm_extension=m1_profile)
     call bind_b110_default_mvg_provider(constitutive, hydraulic_parameters, dt)
 
-    allocate(drainage_copy(nrlevs,n), subsurface_copy(n), root_copy(n))
+    allocate(drainage_copy(nrlevs,n), subsurface_copy(n), root_copy(n), source_sink_root_zero(n))
     drainage_copy = qdra(1:nrlevs,1:n)
     subsurface_copy = qssdi(1:n)
     root_copy = qrot(1:n)
-    call bind_b110_source_sink_provider(source_sink, drainage_copy, subsurface_copy, root_copy)
+    source_sink_root_zero = 0.0_real64
+    root_provider_active = m1_profile .and. any(abs(root_copy) > 0.0_real64)
+    if (root_provider_active) then
+      call bind_b110_source_sink_provider(source_sink, drainage_copy, subsurface_copy, source_sink_root_zero)
+      call bind_b110_root_sink_provider(root_sink, root_copy)
+    else
+      call bind_b110_source_sink_provider(source_sink, drainage_copy, subsurface_copy, root_copy)
+    end if
 
     if (swredu == 0) then
       potential_bare_evaporation = peva
     else
       potential_bare_evaporation = empreva
     end if
-    call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
-         swkmean, pondm1, dt, nraidt, nird, melt, 0.0_real64, potential_bare_evaporation, epond, &
-         pondmx, rsro, rsroexp)
+    if (m1_profile) then
+      call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
+           swkmean, pondm1, dt, nraidt, nird, melt, 0.0_real64, potential_bare_evaporation, epond, &
+           pondmx, rsro, rsroexp, fixed_top_node_conductivity=k(1))
+    else
+      call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
+           swkmean, pondm1, dt, nraidt, nird, melt, 0.0_real64, potential_bare_evaporation, epond, &
+           pondmx, rsro, rsroexp)
+    end if
 
     request = soil_water_solve_request_t()
     request%parameters => parameters
@@ -170,9 +192,18 @@ contains
     request%base_state%groundwater_level = gwl
     request%step_duration = dt
     request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
-    request%boundary%bottom_mode = swbotb
+    typed_bottom_mode = swbotb
+    typed_bottom_flux = qbot
+    if (m1_profile .and. swbotb == 6) then
+      call fmr_resolve_legacy_bottom_boundary(swbotb, legacy_bottom, bottom_status)
+      if (bottom_status /= FMR_LEGACY_BOTTOM_BINDING_OK .or. .not. legacy_bottom%available) &
+           error stop 'M1-C3: admitted SWBOTB=6 binding unavailable'
+      typed_bottom_mode = legacy_bottom%typed_bottom_mode
+      typed_bottom_flux = legacy_bottom%typed_bottom_flux
+    end if
+    request%boundary%bottom_mode = typed_bottom_mode
     request%boundary%top_flux = qtop
-    request%boundary%bottom_flux = qbot
+    request%boundary%bottom_flux = typed_bottom_flux
     request%boundary%bottom_head = hbot
     request%physical%macropore_active = .false.
     request%numerical%max_iterations = maxit
@@ -187,6 +218,7 @@ contains
     request%numerical%ponding_tolerance = critdevponddt
     request%evaluation%constitutive => constitutive
     request%evaluation%source_sink => source_sink
+    if (root_provider_active) request%evaluation%root_sink => root_sink
     request%evaluation%dynamic_top_boundary => dynamic_top
 
     ! F-SI28/F-SI30 qualify the local qbot tangent only on the smooth dynamic
@@ -195,7 +227,7 @@ contains
     call dynamic_top%evaluate(h(1), theta(1), pond, request%boundary, initial_surface)
     if (initial_surface%status /= SW_TOP_BOUNDARY_AVAILABLE) &
          error stop 'F-KT15: initial dynamic surface route unavailable'
-    sensitivity_route_admitted = swbotb == 2 .and. &
+    sensitivity_route_admitted = typed_bottom_mode == 2 .and. &
          initial_surface%regime == SW_TOP_BOUNDARY_REGIME_FLUX .and. &
          trim(initial_surface%route) == 'surface-flux'
 
@@ -308,12 +340,13 @@ contains
     if (swkimpl /= 0) return
     if (fldtmin) return
     if (swkmean < 1 .or. swkmean > 6) return
-    if (swbotb /= 7 .and. swbotb /= -2 .and. swbotb /= 5 .and. swbotb /= 2) return
+    if (swbotb /= 7 .and. swbotb /= -2 .and. swbotb /= 5 .and. swbotb /= 2 .and. &
+        .not. (swbotb == 6 .and. m1_b111_legacy_application_profile_active())) return
     if (dt <= 0.0_real64 .or. dtmin < 0.0_real64) return
     if (maxit <= 0 .or. maxbacktr <= 0) return
     if (rsro < 0.0_real64 .or. rsroexp /= 1.0_real64 .or. pondmx < 0.0_real64) return
     if (any(rfcp(1:numnod) /= 1.0_real64)) return
-    if (any(abs(qrot(1:numnod)) > 0.0_real64)) return
+    if (any(abs(qrot(1:numnod)) > 0.0_real64) .and. .not. m1_b111_legacy_application_profile_active()) return
 
     if (swredu == 0) then
       potential_bare_evaporation = peva
@@ -336,6 +369,25 @@ contains
 
     admitted = .true.
   end function production_route_admitted
+
+  logical function m1_b111_legacy_application_profile_active() result(active)
+    ! M1-C3 bounded legacy-file adapter profile. This is intentionally narrower
+    ! than the generic Task2 route: it admits only the already qualified B1.11
+    ! Hupsel process envelope required to prove the legacy-file-to-typed seam.
+    ! It does not parse files and it does not alter pre-existing default routes.
+    active = swsolve == 1 .and. swmacro == 0 .and. swfrost == 0 .and. swdra == 1 .and. &
+         swpondmx == 0 .and. swrunon == 0 .and. swbotb == 6 .and. swkimpl == 0 .and. &
+         swsophy == 0 .and. numnod > 0 .and. nrlevs > 0
+    if (.not. active) return
+    if (size(cofgen,2) < numnod .or. size(cofgen,1) < 12) then
+      active = .false.
+      return
+    end if
+    ! F-SI39 is opt-in. The M1 B1.11 profile enables it only where the exact
+    ! legacy parameterization actually declares a KSATEXM extension.
+    active = any(cofgen(10,1:numnod) > cofgen(3,1:numnod))
+  end function m1_b111_legacy_application_profile_active
+
 
   subroutine run_b110_legacy_compatibility_task2(worker)
     type(a23bu_worker_context_t), target, intent(inout) :: worker
