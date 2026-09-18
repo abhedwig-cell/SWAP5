@@ -33,7 +33,7 @@ assert s['external_exact_asset_execution']['result_bal_exact_reference_identity'
 assert s['external_exact_asset_execution']['result_blc_exact_reference_identity'] is True
 print('FCI75_M1C3_QUALIFIED_SEMANTIC_SUCCESSOR=PASS')
 PY
-  bash tests/fkt/run_fkt21_qualification.sh | tee "$BUILD/m1c3-fkt21.txt"
+  env FKT21_ALLOW_FCI98_SUCCESSOR=1 bash tests/fkt/run_fkt21_qualification.sh | tee "$BUILD/m1c3-fkt21.txt"
   grep -Fq 'FKT21_QUALIFICATION PASS' "$BUILD/m1c3-fkt21.txt" || fail 'M1-C3 successor F-KT21 replay'
   bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh | tee "$BUILD/m1c3-fci93.txt"
   grep -Fq 'FCI93_FSI35_SUCCESSOR_PRESERVATION=PASS' "$BUILD/m1c3-fci93.txt" || fail 'M1-C3 successor F-SI35 replay'
