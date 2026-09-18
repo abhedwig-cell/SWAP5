@@ -5,7 +5,7 @@
   "title": "MODFLOW6 Prepared-Solve Iterative Backend Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "ADMIT",
-  "verdict": "PENDING_ADMISSION_GATE",
+  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
@@ -57,5 +57,24 @@
       "whole-window rollback/reconstruction"
     ]
   },
-  "next_permitted_action": "Run F-CI104 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify status head, reconcile live canonical and non-force fast-forward."
+  "next_permitted_action": "Qualify this exact F-CI104 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "admission_gate": {
+    "qualified_head": "de9ac14dd43fe652ee7c5125f41bdec886a6ecc4",
+    "workflow_run": 35313751143,
+    "workflow_job": 105500908859,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI104_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI104_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI104_EXACT_ONE_PRODUCTION_FILE_DELTA",
+      "FCI104_IMMUTABLE_PRODUCTION_AND_LIVE_EVIDENCE_BLOBS",
+      "FCI104_OWNER_STATUS_AUTHORITY",
+      "FCI104_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI104_PINNED_LIVE_DEPENDENCIES",
+      "FCI104_FGC34_FGC35_FGC36_DEPENDENCIES_RECONCILED",
+      "FCI104_INTERNAL_SERVICE_OWNERSHIP_BOUNDARY",
+      "FCI104_OWNER_LIVE_REPLAY",
+      "FCI104_INDEPENDENT_LIVE_REPLAY"
+    ]
+  }
 }
