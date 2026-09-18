@@ -66,3 +66,14 @@ F7 remains the only planned primary figure blocked by the E7/M1-C3 prerequisite.
 - scientific readiness: RQ1–RQ4 evidence-bounded and internally complete;
 - principal planned scientific gap: RQ5 / E7 realistic transferability;
 - E8 remains deferred and is not a current submission prerequisite.
+
+
+## Tables and submission-readiness
+
+- T1–T5: **BUILT_AND_LINKED**;
+- table evidence map: `PUB_GC_TABLE_EVIDENCE_MAP.md`;
+- T6: blocked on E7;
+- submission-readiness audit: `PUB_GC_SUBMISSION_READINESS_AUDIT.md`;
+- current intended-framing verdict: `MANUSCRIPT_PACKAGE_READY_EXCEPT_E7_REALISTIC_TRANSFERABILITY`.
+
+For the intended broader coupling-method paper, E7 is now the only scientific evidence gap. Journal selection, reference style, author metadata, archival DOI and cover-letter production are editorial/submission tasks rather than scientific blockers.
