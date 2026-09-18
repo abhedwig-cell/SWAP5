@@ -6,7 +6,7 @@
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "ffb63e6503f673281cf06d66d83071159d73d5dc"
+      "blob": "640cf6a9aaf939b1180dee29388a9ae005d5932b"
     },
     "claim_ledger": {
       "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
@@ -30,7 +30,15 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "62f5d802a30175c8f7dd1521be5a76514c2e2e97"
+      "blob": "568e0c5d34366708bac0f19a9f2e0cfaaf4c2d14"
+    },
+    "notation": {
+      "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
+      "blob": "547659962f31272e1f7a1800891f85d45ee2511a"
+    },
+    "supplement": {
+      "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
+      "blob": "29eff2723e7d15892acbc3fe9eeb7c8b369c0398"
     }
   },
   "evidence": {
@@ -119,5 +127,6 @@
     "required_distribution_size_bytes": 8959314,
     "remaining_gate": "ONE_FINAL_WHOLE_HUPSEL_FILE_DRIVEN_ADAPTER_EXECUTION",
     "workaround_policy": "fail closed; no synthetic adapter/parser/physics/tolerance workaround"
-  }
+  },
+  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task."
 }
