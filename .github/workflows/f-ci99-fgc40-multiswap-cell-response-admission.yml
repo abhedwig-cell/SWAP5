@@ -1,0 +1,35 @@
+name: F-CI99 F-GC40 MultiSWAP cell-response admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci99-fgc40-multiswap-cell-response-admission
+    paths:
+      - 'src/runtime/mod_modflow6_multiswap_cell_response.f90'
+      - 'integration/f-gc/F-GC40_STATUS.json'
+      - 'qualification/F-VQ106_STATUS.json'
+      - 'tests/fgc/test_fgc40_modflow6_multiswap_cell_response.f90'
+      - 'tests/fgc/run_fgc40_modflow6_multiswap_cell_response.sh'
+      - 'tests/fvq/test_fvq106_fgc40_independent.f90'
+      - 'tests/fvq/run_fvq106_fgc40_independent.sh'
+      - 'tests/fci/run_fci99_fgc40_multiswap_cell_response_admission.sh'
+      - '.github/workflows/f-ci99-fgc40-multiswap-cell-response-admission.yml'
+      - 'integration/f-ci/F-CI99_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI99 exact-source admission qualification
+        run: bash tests/fci/run_fci99_fgc40_multiswap_cell_response_admission.sh

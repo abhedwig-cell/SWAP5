@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI99",
+  "capability": "F-GC40",
+  "title": "MultiSWAP MODFLOW6 Cell Response Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "PENDING_ADMISSION_GATE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "authority_note": "Canonical F-GC31 remains Restricted Active-Drainage Lagged Tangent. F-GC40 is the corrected unique identity for the MultiSWAP cell response."
+  },
+  "owner": {
+    "branch": "work/f-gc40-multiswap-modflow6-cell-response",
+    "checkpoint_head": "7993c143eaa1cf8d6580fdd7bde0ae05b07b5b4d",
+    "exact_head_run": 35291954717,
+    "exact_head_job": 105436502540,
+    "conclusion": "success",
+    "production_blob": "288a274612f6c0be0b3ced149028066a066908ca",
+    "status_blob": "4ff6dfa168d82ffffd351a6acad2dea2c3bc3ae1"
+  },
+  "independent": {
+    "work_unit": "F-VQ106",
+    "status_head": "29829ebb674bd02019c643cc3b2ad21e1c8cfe03",
+    "exact_head_run": 35292192331,
+    "exact_head_job": 105437219235,
+    "conclusion": "success",
+    "status_blob": "b9d5c19e8c936ff2ea28ca83ffaf7e59a0af4bdc",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/runtime/mod_modflow6_multiswap_cell_response.f90"
+    ],
+    "production_blob": "288a274612f6c0be0b3ced149028066a066908ca",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "exclusions": [
+    "MODFLOW6/XMI backend",
+    "prepared-solve orchestration",
+    "Ribasim",
+    "irrigation",
+    "historical provisional F-GC31 MultiSWAP identity"
+  ],
+  "next_permitted_action": "Run F-CI99 on the exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, rerun the exact status head, reconcile live canonical, then non-force fast-forward canonical."
+}
