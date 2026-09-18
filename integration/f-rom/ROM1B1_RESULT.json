@@ -1,0 +1,909 @@
+{
+  "B14_used": false,
+  "Z16_full_state_control_pass": true,
+  "coordinate_results": {
+    "Z1": {
+      "collision_count": 61024,
+      "dimension": 1,
+      "maximum_full_theta_linf_among_collisions": 0.009389261380016167,
+      "minimum_cross_history_coordinate_linf": 0,
+      "top_collision_pairs": [
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 0,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 0,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D02",
+            "step": 62
+          },
+          "b": {
+            "history": "D08",
+            "step": 44
+          },
+          "coordinate_linf": 1.1490353057919123e-8,
+          "full_head_linf_cm": 0.39125142027888415,
+          "full_theta_linf": 0.0010653343788650238
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 50
+          },
+          "b": {
+            "history": "D06",
+            "step": 50
+          },
+          "coordinate_linf": 4.044247980949933e-8,
+          "full_head_linf_cm": 0.5641992739660324,
+          "full_theta_linf": 0.0015349260227225936
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 63
+          },
+          "b": {
+            "history": "D07",
+            "step": 60
+          },
+          "coordinate_linf": 6.563663113023921e-8,
+          "full_head_linf_cm": 0.4296032140736834,
+          "full_theta_linf": 0.0011689154364225574
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 64
+          },
+          "b": {
+            "history": "D07",
+            "step": 60
+          },
+          "coordinate_linf": 1.3056327335947415e-7,
+          "full_head_linf_cm": 0.4296032140736834,
+          "full_theta_linf": 0.0011689154364225574
+        },
+        {
+          "a": {
+            "history": "D01",
+            "step": 51
+          },
+          "b": {
+            "history": "D06",
+            "step": 50
+          },
+          "coordinate_linf": 1.5575742468021403e-7,
+          "full_head_linf_cm": 0.5641992739660324,
+          "full_theta_linf": 0.0015349260227225936
+        },
+        {
+          "a": {
+            "history": "D02",
+            "step": 63
+          },
+          "b": {
+            "history": "D08",
+            "step": 44
+          },
+          "coordinate_linf": 1.847095513762831e-7,
+          "full_head_linf_cm": 0.39125142027888415,
+          "full_theta_linf": 0.0010653343788650238
+        }
+      ]
+    },
+    "Z16": {
+      "collision_count": 0,
+      "dimension": 16,
+      "maximum_full_theta_linf_among_collisions": 0,
+      "minimum_cross_history_coordinate_linf": 0,
+      "top_collision_pairs": []
+    },
+    "Z2": {
+      "collision_count": 50626,
+      "dimension": 2,
+      "maximum_full_theta_linf_among_collisions": 0.007935673167533408,
+      "minimum_cross_history_coordinate_linf": 0,
+      "top_collision_pairs": [
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 3.750589327999876e-8,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 3.750589327999876e-8,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "coordinate_linf": 5.219758018037979e-7,
+          "full_head_linf_cm": 0.47505393995950485,
+          "full_theta_linf": 0.001291162916383537
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "coordinate_linf": 5.219758018037979e-7,
+          "full_head_linf_cm": 0.47505393995950485,
+          "full_theta_linf": 0.001291162916383537
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "coordinate_linf": 7.500948934202611e-7,
+          "full_head_linf_cm": 0.20263469999746064,
+          "full_theta_linf": 0.0005523443257761662
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "coordinate_linf": 7.500948934202611e-7,
+          "full_head_linf_cm": 0.20263469999746064,
+          "full_theta_linf": 0.0005523443257761662
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "coordinate_linf": 8.605572262565531e-7,
+          "full_head_linf_cm": 0.25792716080746203,
+          "full_theta_linf": 0.0007031148587593461
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "coordinate_linf": 8.605572262565531e-7,
+          "full_head_linf_cm": 0.25792716080746203,
+          "full_theta_linf": 0.0007031148587593461
+        }
+      ]
+    },
+    "Z4": {
+      "collision_count": 16799,
+      "dimension": 4,
+      "maximum_full_theta_linf_among_collisions": 0.004185945176976125,
+      "minimum_cross_history_coordinate_linf": 0,
+      "top_collision_pairs": [
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 1.0482437245995513e-7,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 1.0482437245995513e-7,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "coordinate_linf": 7.500948934202611e-7,
+          "full_head_linf_cm": 0.20263469999746064,
+          "full_theta_linf": 0.0005523443257761662
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "coordinate_linf": 7.500948934202611e-7,
+          "full_head_linf_cm": 0.20263469999746064,
+          "full_theta_linf": 0.0005523443257761662
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 3
+          },
+          "b": {
+            "history": "D06",
+            "step": 53
+          },
+          "coordinate_linf": 8.044894874159603e-7,
+          "full_head_linf_cm": 0.47505393995950485,
+          "full_theta_linf": 0.001291162916383537
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 53
+          },
+          "b": {
+            "history": "D08",
+            "step": 3
+          },
+          "coordinate_linf": 8.044894874159603e-7,
+          "full_head_linf_cm": 0.47505393995950485,
+          "full_theta_linf": 0.001291162916383537
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "coordinate_linf": 0.0000026629641457498465,
+          "full_head_linf_cm": 0.25792716080746203,
+          "full_theta_linf": 0.0007031148587593461
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 14
+          },
+          "b": {
+            "history": "D07",
+            "step": 49
+          },
+          "coordinate_linf": 0.0000026629641457498465,
+          "full_head_linf_cm": 0.25792716080746203,
+          "full_theta_linf": 0.0007031148587593461
+        }
+      ]
+    },
+    "Z8": {
+      "collision_count": 5617,
+      "dimension": 8,
+      "maximum_full_theta_linf_among_collisions": 0.0027904278877120547,
+      "minimum_cross_history_coordinate_linf": 0,
+      "top_collision_pairs": [
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "coordinate_linf": 0.00003615055968408942,
+          "full_head_linf_cm": 0.20263469999746064,
+          "full_theta_linf": 0.0005523443257761662
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 47
+          },
+          "coordinate_linf": 0.00003615055968408942,
+          "full_head_linf_cm": 0.20263469999746064,
+          "full_theta_linf": 0.0005523443257761662
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 14
+          },
+          "b": {
+            "history": "D08",
+            "step": 33
+          },
+          "coordinate_linf": 0.000036876769894500505,
+          "full_head_linf_cm": 0.20107898566293514,
+          "full_theta_linf": 0.0005450209495118652
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 0.00003918611521652737,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D06",
+            "step": 16
+          },
+          "b": {
+            "history": "D07",
+            "step": 48
+          },
+          "coordinate_linf": 0.00003918611521652737,
+          "full_head_linf_cm": 0.21393907959936698,
+          "full_theta_linf": 0.0005831593217386355
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 12
+          },
+          "b": {
+            "history": "D08",
+            "step": 34
+          },
+          "coordinate_linf": 0.00004139341645448269,
+          "full_head_linf_cm": 0.20865719875387612,
+          "full_theta_linf": 0.0005659209023298195
+        },
+        {
+          "a": {
+            "history": "D04",
+            "step": 10
+          },
+          "b": {
+            "history": "D08",
+            "step": 35
+          },
+          "coordinate_linf": 0.000045462649082339546,
+          "full_head_linf_cm": 0.228110886829608,
+          "full_theta_linf": 0.0006207222840752258
+        },
+        {
+          "a": {
+            "history": "D03",
+            "step": 22
+          },
+          "b": {
+            "history": "D06",
+            "step": 35
+          },
+          "coordinate_linf": 0.00004784019829229269,
+          "full_head_linf_cm": 0.25091943484943613,
+          "full_theta_linf": 0.0006836659982223381
+        }
+      ]
+    }
+  },
+  "coordinate_selected_final": false,
+  "decision": "ROM1B1_COLLISION_CENSUS_COMPLETE",
+  "discovery_state_count": 512,
+  "eligible_cross_history_pair_count": 114688,
+  "first_coordinate_with_zero_discovery_collisions": "Z16",
+  "future_probe_outcomes_used": false,
+  "heldout_used": false,
+  "pair_manifests": {
+    "Z1": [
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 0,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 0,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D02",
+          "step": 62
+        },
+        "b": {
+          "history": "D08",
+          "step": 44
+        },
+        "coordinate_linf": 1.1490353057919123e-8,
+        "full_head_linf_cm": 0.39125142027888415,
+        "full_theta_linf": 0.0010653343788650238
+      },
+      {
+        "a": {
+          "history": "D01",
+          "step": 50
+        },
+        "b": {
+          "history": "D06",
+          "step": 50
+        },
+        "coordinate_linf": 4.044247980949933e-8,
+        "full_head_linf_cm": 0.5641992739660324,
+        "full_theta_linf": 0.0015349260227225936
+      },
+      {
+        "a": {
+          "history": "D01",
+          "step": 63
+        },
+        "b": {
+          "history": "D07",
+          "step": 60
+        },
+        "coordinate_linf": 6.563663113023921e-8,
+        "full_head_linf_cm": 0.4296032140736834,
+        "full_theta_linf": 0.0011689154364225574
+      },
+      {
+        "a": {
+          "history": "D01",
+          "step": 64
+        },
+        "b": {
+          "history": "D07",
+          "step": 60
+        },
+        "coordinate_linf": 1.3056327335947415e-7,
+        "full_head_linf_cm": 0.4296032140736834,
+        "full_theta_linf": 0.0011689154364225574
+      },
+      {
+        "a": {
+          "history": "D01",
+          "step": 51
+        },
+        "b": {
+          "history": "D06",
+          "step": 50
+        },
+        "coordinate_linf": 1.5575742468021403e-7,
+        "full_head_linf_cm": 0.5641992739660324,
+        "full_theta_linf": 0.0015349260227225936
+      },
+      {
+        "a": {
+          "history": "D02",
+          "step": 63
+        },
+        "b": {
+          "history": "D08",
+          "step": 44
+        },
+        "coordinate_linf": 1.847095513762831e-7,
+        "full_head_linf_cm": 0.39125142027888415,
+        "full_theta_linf": 0.0010653343788650238
+      }
+    ],
+    "Z16": [],
+    "Z2": [
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 3.750589327999876e-8,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 3.750589327999876e-8,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D04",
+          "step": 3
+        },
+        "b": {
+          "history": "D06",
+          "step": 53
+        },
+        "coordinate_linf": 5.219758018037979e-7,
+        "full_head_linf_cm": 0.47505393995950485,
+        "full_theta_linf": 0.001291162916383537
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 53
+        },
+        "b": {
+          "history": "D08",
+          "step": 3
+        },
+        "coordinate_linf": 5.219758018037979e-7,
+        "full_head_linf_cm": 0.47505393995950485,
+        "full_theta_linf": 0.001291162916383537
+      },
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 47
+        },
+        "coordinate_linf": 7.500948934202611e-7,
+        "full_head_linf_cm": 0.20263469999746064,
+        "full_theta_linf": 0.0005523443257761662
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 47
+        },
+        "coordinate_linf": 7.500948934202611e-7,
+        "full_head_linf_cm": 0.20263469999746064,
+        "full_theta_linf": 0.0005523443257761662
+      },
+      {
+        "a": {
+          "history": "D03",
+          "step": 14
+        },
+        "b": {
+          "history": "D07",
+          "step": 49
+        },
+        "coordinate_linf": 8.605572262565531e-7,
+        "full_head_linf_cm": 0.25792716080746203,
+        "full_theta_linf": 0.0007031148587593461
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 14
+        },
+        "b": {
+          "history": "D07",
+          "step": 49
+        },
+        "coordinate_linf": 8.605572262565531e-7,
+        "full_head_linf_cm": 0.25792716080746203,
+        "full_theta_linf": 0.0007031148587593461
+      }
+    ],
+    "Z4": [
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 1.0482437245995513e-7,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 1.0482437245995513e-7,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 47
+        },
+        "coordinate_linf": 7.500948934202611e-7,
+        "full_head_linf_cm": 0.20263469999746064,
+        "full_theta_linf": 0.0005523443257761662
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 47
+        },
+        "coordinate_linf": 7.500948934202611e-7,
+        "full_head_linf_cm": 0.20263469999746064,
+        "full_theta_linf": 0.0005523443257761662
+      },
+      {
+        "a": {
+          "history": "D04",
+          "step": 3
+        },
+        "b": {
+          "history": "D06",
+          "step": 53
+        },
+        "coordinate_linf": 8.044894874159603e-7,
+        "full_head_linf_cm": 0.47505393995950485,
+        "full_theta_linf": 0.001291162916383537
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 53
+        },
+        "b": {
+          "history": "D08",
+          "step": 3
+        },
+        "coordinate_linf": 8.044894874159603e-7,
+        "full_head_linf_cm": 0.47505393995950485,
+        "full_theta_linf": 0.001291162916383537
+      },
+      {
+        "a": {
+          "history": "D03",
+          "step": 14
+        },
+        "b": {
+          "history": "D07",
+          "step": 49
+        },
+        "coordinate_linf": 0.0000026629641457498465,
+        "full_head_linf_cm": 0.25792716080746203,
+        "full_theta_linf": 0.0007031148587593461
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 14
+        },
+        "b": {
+          "history": "D07",
+          "step": 49
+        },
+        "coordinate_linf": 0.0000026629641457498465,
+        "full_head_linf_cm": 0.25792716080746203,
+        "full_theta_linf": 0.0007031148587593461
+      }
+    ],
+    "Z8": [
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 47
+        },
+        "coordinate_linf": 0.00003615055968408942,
+        "full_head_linf_cm": 0.20263469999746064,
+        "full_theta_linf": 0.0005523443257761662
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 47
+        },
+        "coordinate_linf": 0.00003615055968408942,
+        "full_head_linf_cm": 0.20263469999746064,
+        "full_theta_linf": 0.0005523443257761662
+      },
+      {
+        "a": {
+          "history": "D04",
+          "step": 14
+        },
+        "b": {
+          "history": "D08",
+          "step": 33
+        },
+        "coordinate_linf": 0.000036876769894500505,
+        "full_head_linf_cm": 0.20107898566293514,
+        "full_theta_linf": 0.0005450209495118652
+      },
+      {
+        "a": {
+          "history": "D03",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 0.00003918611521652737,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D06",
+          "step": 16
+        },
+        "b": {
+          "history": "D07",
+          "step": 48
+        },
+        "coordinate_linf": 0.00003918611521652737,
+        "full_head_linf_cm": 0.21393907959936698,
+        "full_theta_linf": 0.0005831593217386355
+      },
+      {
+        "a": {
+          "history": "D04",
+          "step": 12
+        },
+        "b": {
+          "history": "D08",
+          "step": 34
+        },
+        "coordinate_linf": 0.00004139341645448269,
+        "full_head_linf_cm": 0.20865719875387612,
+        "full_theta_linf": 0.0005659209023298195
+      },
+      {
+        "a": {
+          "history": "D04",
+          "step": 10
+        },
+        "b": {
+          "history": "D08",
+          "step": 35
+        },
+        "coordinate_linf": 0.000045462649082339546,
+        "full_head_linf_cm": 0.228110886829608,
+        "full_theta_linf": 0.0006207222840752258
+      },
+      {
+        "a": {
+          "history": "D03",
+          "step": 22
+        },
+        "b": {
+          "history": "D06",
+          "step": 35
+        },
+        "coordinate_linf": 0.00004784019829229269,
+        "full_head_linf_cm": 0.25091943484943613,
+        "full_theta_linf": 0.0006836659982223381
+      }
+    ]
+  },
+  "raw_discovery_sha256": "b22e1a7764265aa0165e9232d6c146fffcc0ad2a784dbce9ba756f897b21abcf",
+  "repeat_stdout_bitwise_identity": true,
+  "schema": "swap5.rom1b1.result.v1",
+  "theta_collision_floor": 0.0005420462931603476,
+  "work_unit": "ROM-1B1",
+  "execution": {
+    "workflow_run": 35379652400,
+    "workflow_job": 105712536116,
+    "executed_head": "01312dd2e72ff61123c0dcdfe99e1fda91e80861",
+    "artifact_id": 10561507704,
+    "artifact_digest": "sha256:0c6b47ef1bcb5f38155da27427f11b316b6b2c316bec2984fc42b66b4ee2ed54",
+    "conclusion": "success"
+  },
+  "production_rom_authorized": false
+}
