@@ -65,9 +65,15 @@ program test_ross18_route_timing
   total_solver_cpu_seconds=0.0_real64
   checksum=0.0_real64
   selected_route=''
-  call get_environment_variable('SWAP5_ROSS15_ROUTE',selected_route,status=env_status)
-  call require(env_status==0,'SWAP5_ROSS15_ROUTE must be present')
+  call get_environment_variable('SWAP5_ROSS18_ROUTE',selected_route,status=env_status)
+  call require(env_status==0,'SWAP5_ROSS18_ROUTE must be present')
   call require(trim(selected_route)=='REFERENCE' .or. trim(selected_route)=='ROSSFAST','unknown benchmark route')
+  expected_linear_solves=0
+  expected_linear_solves_text=''
+  call get_environment_variable('SWAP5_ROSS18_EXPECTED_LINEAR_SOLVES',expected_linear_solves_text,status=env_status)
+  call require(env_status==0,'SWAP5_ROSS18_EXPECTED_LINEAR_SOLVES must be present')
+  read(expected_linear_solves_text,*,iostat=env_status) expected_linear_solves
+  call require(env_status==0 .and. expected_linear_solves>0,'valid expected RossFast linear solve count')
 
   do ise=1,nse
     write(*,'(*(g0))') 'PUB_P2E10_THRESHOLD|SE=',se_levels(ise), &
