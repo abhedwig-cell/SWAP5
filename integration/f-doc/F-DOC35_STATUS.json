@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC35",
+  "title": "Documentation entry-point reconciliation",
+  "phase": "ACQUIRE",
+  "decision": "ENTRYPOINT_RECONCILIATION_SUPPORTED",
+  "branch": "work/f-doc35-entrypoint-reconciliation",
+  "canonical_start": "62dfb5a52f665e490830dfb320167786cf67f63e",
+  "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "findings": [
+    "docs/getting-started.md already contains the qualified bounded build/run/input/output entry point from F-DOC20.",
+    "docs/review/REVIEW_GUIDE.md still describes that section as future work.",
+    "README.md still describes the repository as a seed and references missing README_DOCS.md.",
+    "docs/index.md still describes scientific/numerical reference expansion as ongoing F-DOC20 work despite later admitted F-DOC slices."
+  ],
+  "scope": [
+    "README.md",
+    "docs/index.md",
+    "docs/review/REVIEW_GUIDE.md",
+    "integration/f-doc/F-DOC35_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC35_STATUS.json"
+  ],
+  "production_reference_test_delta": false,
+  "next_permitted_action": "UPDATE_DOCUMENTATION_ENTRYPOINTS_ONLY"
+}
