@@ -2,7 +2,7 @@
 
 ## Status
 
-**JOURNAL_NEUTRAL_SUPPLEMENT READY THROUGH E7 STANDALONE SELECTION — COUPLED SLOT OPEN**
+**JOURNAL_NEUTRAL SUPPLEMENT READY THROUGH CLOSED E7 COMPONENT-DOMAIN RESULT**
 
 Date: 2026-09-18.
 
@@ -18,7 +18,7 @@ This package collects the reproducibility information that is too detailed for t
 | E5 | incremental value of supplied response information | source `41e68a89a52f1f0fac00c8cfe920152ffd4e3fda` | run/job `35351467531 / 105620375280`; artifact `10550095859` | SUPPORTED_RESTRICTED_STOP_INDEPENDENT_ACCELERATE |
 | E6 active drainage | test stronger response through admitted drainage predictor | source `191f1d8ac0ab0b84eff438023f1d32e00c09b925` | run/job `35360873209 / 105651690323`; artifact `10554144629` | SUPPORTED_NEGATIVE_COMPONENT_ENVELOPE |
 | E6 state/flux screen | test stronger response through accepted-state geometry | source `97dba8764ca85c7499cbb2402cf5309447621a66` | run/job `35360999577 / 105651945363`; artifact `10554314676` | PREDICTOR_ONLY_OR_NO_USEFUL_EXPANSION |
-| E7 | realistic Hupsel transferability | M1/M1-C3 closed; standalone selection frozen before coupled output | coupled loose/strong run not yet executed | READY_FOR_COUPLED_EXECUTION |
+| E7 | realistic Hupsel transferability | M1/M1-C3 closed; standalone selection frozen before coupled output | static gate `35375158694`; PPA-WU01 O0/O2 gate `35375158471` | CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT |
 
 ## S2. Important execution qualifications
 
@@ -60,13 +60,13 @@ No numerical tolerance, retry budget or physical parameter was changed to conver
 | E5 | `PUB_GC_E5_INFORMATION_VALUE_RESULT.json` and comparison CSV |
 | E6 active drainage | `PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json` |
 | E6 state/flux | `PUB_GC_E6A_STATE_SCREEN_RESULT.json` and summary CSV |
-| E7 | `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md` + `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json` until coupled execution |
+| E7 | `PUB_GC_E7_RESULT.json` + frozen selection/application-requirement records |
 
 Raw E4 and E6 records are retained under `docs/publication/evidence/` where applicable.
 
 ## S4. Figures and tables
 
-Figures F1–F6 are version-controlled SVG assets. F3–F6 are regenerated from governed numerical evidence with:
+Figures F1–F7 are version-controlled SVG assets. F3–F6 are regenerated from governed numerical evidence with:
 
 ```text
 python docs/publication/figures/generate_pub_gc_numeric_figures.py
@@ -76,11 +76,11 @@ The figure-to-evidence binding is frozen in:
 
 `docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json`
 
-Tables T1–T5 and their evidence notes are frozen in:
+Tables T1–T6 and their evidence notes are frozen in:
 
 `docs/publication/PUB_GC_MANUSCRIPT_TABLES.md`
 
-F7 and T6 remain intentionally absent until E7 executes.
+F7 and T6 are now present as application-domain evidence. They intentionally contain no fabricated loose/strong Hupsel trajectories.
 
 ## S5. Reproducibility boundaries
 
@@ -116,19 +116,43 @@ scored-days SHA-256:
 016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e
 ```
 
-## S6. E7 open supplement slot
+## S6. E7 closed realistic component-domain result
 
-The M1-C3 gate has passed and the standalone selection is frozen. When the coupled E7 run completes, the supplement must add, without changing the selected dates or preregistered comparison:
+The standalone selection remained frozen at 2003-06-17 and 2003-05-20.
 
-- frozen selected dates and standalone metrics from `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`;
-- groundwater model provenance and the already-frozen uncalibrated F-GC44 fallback;
-- per-window loose/strong results;
-- daily aggregate head, storage, exchange and work;
-- whole-system interface mass cancellation;
-- component-domain failures, if any;
-- exact source heads, workflow runs and artifact digests.
+Exact Hupsel application authority establishes active crop/root and drainage requirements on those dates. The current production prescribed-head groundwater owner is PPA-WU01, which deliberately rejects active root extraction and drainage response.
 
-No coupled E7 result is inferred in advance. The frozen selected dates are 2003-06-17 and 2003-05-20 and may not be replaced.
+Dynamic owner qualification:
+
+```text
+workflow run 35375158471
+job 105698009081
+
+PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS
+PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS
+PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS
+PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS
+```
+
+Independent E7 static gate:
+
+```text
+workflow run 35375158694
+job 105698010382
+
+PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_LIMIT_STATIC_GATE=PASS
+```
+
+The preregistered stop therefore occurs before a process-complete F-GC49D context exists. No MODFLOW timestep, SWAP prescribed-head coupling trial, loose/strong comparison or interface-mass publication is reported for E7.
+
+This absence is part of the result. Producing such values would require changing or freezing authentic application-process semantics and would violate the frozen experiment.
+
+Primary result files:
+
+- `PUB_GC_E7_RESULT.json`;
+- `PUB_GC_E7_RESULT.md`;
+- `PUB_GC_E7_APPLICATION_REQUIREMENTS.json`;
+- `figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN.svg`.
 
 ## S7. Claim and literature controls
 
