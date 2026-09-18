@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.ppa_wu05c.status.v1",
+  "work_unit": "PPA-WU05-C",
+  "title": "Oxygen-stress source/state/owner decomposition",
+  "branch": "audit/ppa-wu05c-oxygen-authority",
+  "reconcile_base": "781c829943c9e5880e5ab83281112e66f439ecf2",
+  "status": "QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION",
+  "scope": {
+    "production_source_mutation": false,
+    "reference_mutation": false,
+    "oxygen_families": [
+      "SWOXYGEN=2/SWOXYGENTYPE=2 reproduction",
+      "SWOXYGEN=1 Feddes wetness/oxygen",
+      "SWOXYGEN=2/SWOXYGENTYPE=1 Bartholomeus"
+    ]
+  },
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "swap_007_required": true,
+    "historical_evidence_class": "CORROBORATING_NOT_PRODUCTION_AUTHORITY"
+  },
+  "frozen_decisions": {
+    "reproduction_C1": {
+      "persistent_physical_state": [],
+      "worker_scratch": [
+        "current theta_s scalar",
+        "cumulative porosity prefix scalar"
+      ],
+      "accepted_mass_owner": "existing root-water-uptake nodewise sink owner",
+      "state": "DEFINED_FOR_SEPARATE_IMPLEMENTATION_AUTHORITY"
+    },
+    "feddes_C2": "HELD_SOURCE_MATERIALIZATION_REQUIRED",
+    "bartholomeus_C3": "HELD_SOURCE_MATERIALIZATION_REQUIRED",
+    "micro_C4": "HELD_DEPENDENCY"
+  },
+  "qualification": {
+    "state": "PASS",
+    "workflow": "PPA-WU05-C oxygen authority",
+    "run_id": 35406174674,
+    "authority_job": 105796281149,
+    "authority_conclusion": "success",
+    "independent_job": 105796280957,
+    "independent_conclusion": "success",
+    "checks": [
+      "B1.11 corrected oxygenstress identity and unchanged member identities",
+      "SWAP-007 corrected-reference numerical guard",
+      "single accepted root-sink water-mass owner",
+      "reproduction-family no-persistent-state boundary",
+      "Feddes/Bartholomeus fail-closed source-materialization holds",
+      "migration slicing C1..C4",
+      "zero production/reference source delta"
+    ]
+  },
+  "production_admission": "NONE_REVIEW_ONLY",
+  "verdict": "OXYGEN_FAMILY_BOUNDARIES_QUALIFIED_C1_DEFINED_C2_C3_SOURCE_HELD",
+  "next_action": "Reconcile live canonical. If drift is disjoint and final authority/documentation/canonical checks remain green, admit this review-only authority. Production remains forbidden except through a separately preregistered PPA-WU05-C1 implementation slice."
+}
