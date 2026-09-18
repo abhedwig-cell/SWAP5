@@ -9,7 +9,8 @@ module mod_fmr_serialized_reference_backend
        canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
-       KERNEL_STATUS_NOT_ADMITTED
+       kernel_reference_floor_result_t, kernel_reference_floor_candidate_t, &
+       KERNEL_STATUS_NOT_ADMITTED, KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
   use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
@@ -331,6 +332,9 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
+    procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
+    procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
+    procedure, public :: discard_reference_floor_candidate => fmr_serialized_backend_discard_reference_floor_candidate
     procedure, public :: observation => fmr_serialized_backend_observation
     procedure, public :: set_bottom_thermal_carrier_enabled => fmr_serialized_backend_set_bottom_thermal_carrier_enabled
     procedure, public :: bottom_thermal_snapshot => fmr_serialized_backend_bottom_thermal_snapshot
@@ -788,6 +792,30 @@ contains
     ok = .true.
   end function fmr_serialized_rossfast_preflight
 
+  subroutine fmr_serialized_backend_commit_reference_floor_candidate(self, committed, candidate, diagnostics, &
+                                                                       did_commit, status)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(kernel_committed_state_t), intent(inout) :: committed
+    type(kernel_reference_floor_candidate_t), intent(inout) :: candidate
+    type(kernel_diagnostics_t), intent(inout) :: diagnostics
+    logical, intent(out) :: did_commit
+    integer, intent(out) :: status
+
+    did_commit = .false.
+    status = KERNEL_STATUS_NOT_ADMITTED
+    if (.not. self%initialized) return
+    call self%kernel%commit_reference_floor_candidate(committed, candidate, diagnostics, did_commit, status)
+  end subroutine fmr_serialized_backend_commit_reference_floor_candidate
+
+  subroutine fmr_serialized_backend_discard_reference_floor_candidate(self, candidate, diagnostics)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(kernel_reference_floor_candidate_t), intent(inout) :: candidate
+    type(kernel_diagnostics_t), intent(inout) :: diagnostics
+
+    if (.not. self%initialized) return
+    call self%kernel%discard_reference_floor_candidate(candidate, diagnostics)
+  end subroutine fmr_serialized_backend_discard_reference_floor_candidate
+
   subroutine fmr_serialized_backend_commit_trial_candidate(self, committed, candidate, diagnostics, did_commit, status)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(kernel_committed_state_t), intent(inout) :: committed
@@ -810,6 +838,80 @@ contains
     if (.not. self%initialized) return
     call fmr_discard_candidate(self%kernel, candidate, diagnostics)
   end subroutine fmr_serialized_backend_discard_trial_candidate
+
+  subroutine fmr_serialized_backend_run_reference_floor_sample(self, column, template, parameters, committed, &
+                                                                 forcing, t0, t1, mass_tolerance, result, candidate, &
+                                                                 diagnostics)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1, mass_tolerance
+    type(kernel_reference_floor_result_t), intent(out) :: result
+    type(kernel_reference_floor_candidate_t), intent(out) :: candidate
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+
+    result = kernel_reference_floor_result_t()
+    result%requested_t0 = t0
+    result%requested_t1 = t1
+    diagnostics = kernel_diagnostics_t()
+
+    call self%bottom_thermal_candidate%clear()
+    call self%model%bottom_thermal_carrier%clear()
+    self%model%bottom_thermal_carrier_active = .false.
+    self%model%bottom_thermal_carrier_valid = .true.
+    call self%top_sensible_boundary_candidate%clear()
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
+    self%model%temporal_indicator_history_enabled = .false.
+    self%model%temporal_indicator_budget_supplied = .false.
+    self%model%temporal_indicator_budget_valid = .false.
+    self%model%temporal_indicator_budget = 0.0_real64
+    call configure_trajectory_direction(self%model%trajectory_direction, .false.)
+    self%model%trajectory_direction_requested = .false.
+    self%model%trajectory_provenance_valid = .false.
+    self%model%trajectory_worker_id = -1
+
+    if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
+        template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
+        column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+      diagnostics%admission_rejections = 1
+      return
+    end if
+
+    if (.not. self%model%soil_water_selection%uses_reference()) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+      diagnostics%admission_rejections = 1
+      return
+    end if
+
+    if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .or. &
+        template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+        self%model%fixed_weir_surface_water_active .or. self%bottom_thermal_requested .or. &
+        self%top_sensible_boundary_requested .or. parameters%snow_active .or. &
+        parameters%soil_temperature_active .or. parameters%root_extraction_active .or. &
+        parameters%macropore_active .or. parameters%drainage_response_active .or. &
+        parameters%drainage_qbot_smooth_freatic_projection .or. &
+        (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 5)) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+      diagnostics%admission_rejections = 1
+      return
+    end if
+
+    call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
+    if (.not. self%model%state_profile_admitted) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+      diagnostics%admission_rejections = 1
+      return
+    end if
+
+    call self%kernel%sample_reference_floor_interval(parameters, committed, forcing, t0, t1, mass_tolerance, &
+         result, candidate, diagnostics)
+  end subroutine fmr_serialized_backend_run_reference_floor_sample
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics)
