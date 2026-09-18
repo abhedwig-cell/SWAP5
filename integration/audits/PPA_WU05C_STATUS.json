@@ -4,14 +4,20 @@
   "title": "Oxygen-stress source/state/owner authority",
   "branch": "audit/ppa-wu05c-oxygen-stress-authority",
   "reconcile_base": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
-  "status": "CANONICAL_RECONCILED_REVIEW_ADMISSION_READY",
+  "status": "AUTHORITY_PROVENANCE_REPAIRED_REQUALIFICATION_PENDING",
   "production_source_mutation": false,
   "reference_mutation": false,
   "authority": {
     "reference_snapshot": "B1.11",
     "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "oxygenstress_corrected_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
-    "correction": "SWAP-007"
+    "correction": "SWAP-007",
+    "b0_oxygenstress_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+    "provenance_authority": [
+      "reference/swap-4.3.1/b0/file-manifest.sha256",
+      "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py"
+    ],
+    "historical_metadata_discrepancy": "SWAP-007 README.md, qualification.md and historical apply_and_verify.py retain a superseded pre-VQ-1c B0 SHA ending b12f75; not current identity authority."
   },
   "frozen_findings": [
     "existing nodewise root_extraction_sink remains the single accepted root-water mass owner",
@@ -31,28 +37,22 @@
   ],
   "next_slice": "PPA-WU05-C1 byte-exact B1.11 oxygenstress/rootextraction source materialization and call-graph/input/state census",
   "qualification": {
-    "state": "PASS",
-    "workflow": "PPA-WU05-C oxygen-stress authority review",
-    "run_id": 35401688929,
-    "job_id": 105782768645,
-    "conclusion": "success",
-    "documentation_run_id": 35401688912,
-    "documentation_conclusion": "success",
-    "canonical_qualification_run_id": 35401688891,
-    "canonical_qualification_conclusion": "success",
-    "checks": [
-      "exact B1.11 oxygenstress identity and SWAP-007 scope pinned",
+    "state": "PENDING_REQUALIFICATION",
+    "required_checks": [
+      "canonical B0 oxygenstress identity from B0 manifest",
+      "canonical apply_and_verify_canonical_b0.py B0/B1 identities",
+      "B1.11 corrected oxygenstress identity and SWAP-007 scope",
       "single root-water mass owner preserved",
-      "oxygen cache classified as shared derived data, not restart/rollback state",
-      "oxygen-active coupling derivative coverage remains fail-closed",
-      "production implementation held for C1 source materialization",
+      "derived oxygen cache kept outside restart/rollback",
+      "production implementation remains held for C1 full source materialization",
       "zero src/reference mutation",
-      "documentation strict build",
-      "broad frozen canonical authorities preserved"
+      "parent WU05 preservation",
+      "Documentation",
+      "F-CI canonical qualification"
     ]
   },
-  "verdict": "PARTIAL_AUTHORITY_FROZEN_REVIEW_QUALIFIED_IMPLEMENTATION_HELD",
-  "next_action": "Require final dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI canonical qualification on the reconciled review head. If all pass and no overlapping canonical drift appears, canonically admit the review authority only; production remains held for C1.",
+  "verdict": "PARTIAL_AUTHORITY_REPAIR_PENDING_REQUALIFICATION_IMPLEMENTATION_HELD",
+  "next_action": "Reconcile this repaired review branch to current canonical, rerun dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI. Canonically admit review authority only after all green; production remains held for C1.",
   "pre_reconciliation_qualified_head": "e261a1e8fa63ee9ded0db52477017383330d2a34",
   "canonical_reconciliation": {
     "prior_base": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
@@ -61,5 +61,11 @@
     "overlap": "NONE",
     "canonical_delta_scope": "PUB-GC E7 publication/current-canonical reconciliation only",
     "review_blobs_changed_by_reconciliation": false
+  },
+  "prior_qualification": {
+    "state": "INVALIDATED_BY_AUTHORITY_REPAIR",
+    "reason": "Previous PPA-WU05-C validator pinned the superseded historical SWAP-007 B0 identity instead of the canonical B0 manifest/provenance verifier.",
+    "prior_run_id": 35401688929,
+    "prior_job_id": 105782768645
   }
 }
