@@ -4,11 +4,12 @@
   "stage": "C",
   "title": "Generic groundwater application orchestration — live application service",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY_C",
-  "state": "QUALIFICATION_QUEUED_EXTERNAL_RUNNER_CONGESTION",
+  "phase": "ADMIT_C",
+  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
-    "base": "01e133b3da79468618e6c89a74533efff1ccdaaf"
+    "stage_c_merge_base": "01e133b3da79468618e6c89a74533efff1ccdaaf",
+    "reconciled_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b"
   },
   "prerequisite": {
     "stage_a": "STAGE_A_CLOSED_CANONICAL_ADMITTED_APPLICATION_PLAN",
@@ -34,7 +35,7 @@
     "physics-envelope expansion",
     "heterogeneous N:1 scientific policy"
   ],
-  "next_permitted_action": "Resume by reading the exact-surface owner run 35349527435 and F-VQ123 run 35349527351. If deterministic, live MODFLOW6 and independent jobs are green, reuse them across the documentation/status-only preservation commits, reconcile canonical dependencies, admit PR #267, close Stage C, then inspect/open F-GC49D only for the still-missing generic production FMR cross-language ABI.",
+  "next_permitted_action": "Mark PR #267 ready for review and merge with expected head after this qualification-evidence checkpoint. Then verify canonical postimage and close Stage C on canonical. After closure inspect whether a generic production FMR cross-language ABI exists; if absent, open F-GC49D as the separately bounded next capability.",
   "production_mutations": [
     "src/adapter/modflow6_groundwater_application_service.py"
   ],
@@ -82,7 +83,7 @@
     "PR mergeable",
     "production delta limited to generic application service"
   ],
-  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING_EXTERNAL_RUNNER",
+  "verdict": "QUALIFIED_READY_FOR_ADMISSION",
   "canonical_admission": {
     "base": "050947affbb00fc7f00dcfba0e93c6359be2d443",
     "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
@@ -93,45 +94,74 @@
     "merge_method": "merge"
   },
   "qualification": {
-    "owner": {
-      "run": 35348562854,
-      "job": 105610904815,
+    "owner_run": 35349527435,
+    "qualified_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
+    "conclusion": "success",
+    "deterministic": {
+      "job": 105614050991,
       "conclusion": "success",
-      "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
       "oracles": [
-        "FGC49B_TWO_REAL_FMR_HANDLES=PASS",
-        "FGC49B_HANDLE_ISOLATION=PASS",
-        "FGC49B_SAME_ORIGIN_TRIAL_DELEGATION=PASS",
-        "FGC49B_RELEASE_BUSY_FAIL_CLOSED=PASS",
-        "FGC49B_STALE_HANDLE_FAIL_CLOSED=PASS",
-        "FGC49B_MONOTONIC_HANDLE_ACROSS_REINITIALIZE=PASS",
-        "FGC49B_KERNEL_REMAINS_COMMIT_OWNER=PASS",
-        "FGC49B_REGISTRY_O0_O2_IDENTITY=PASS"
+        "FGC49C_GENERIC_SERVICE_NO_TOPOLOGY_HARDCODING=PASS",
+        "FGC49C_NO_CELL_MATH_DUPLICATION=PASS",
+        "FGC49C_NO_IMOD_COUPLER_OWNERSHIP=PASS",
+        "FGC49C_PER_CELL_NO_CANCELLATION_CONVERGENCE=PASS",
+        "FGC49C_MODFLOW_AND_ALL_CELL_CONJUNCTIVE_CONVERGENCE=PASS",
+        "FGC49C_ONE_PREPARED_SOLVE_PER_WINDOW=PASS",
+        "FGC49C_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS",
+        "FGC49C_MODFLOW_THEN_SWAP_THEN_LEDGER_PUBLICATION=PASS",
+        "FGC49C_PREFLIGHT_FAILURE_ZERO_TIMESTEP_PUBLICATION=PASS",
+        "FGC49C_POST_MODFLOW_FAILURE_NOT_ROLLBACK_RETRY=PASS",
+        "F-GC49C DETERMINISTIC GENERIC APPLICATION SERVICE GATE PASS"
+      ]
+    },
+    "live_modflow6_6_8_0": {
+      "job": 105614051258,
+      "conclusion": "success",
+      "iterations": 4,
+      "max_cell_residual_m_per_s": 4.1994381982353534e-17,
+      "oracles": [
+        "FGC49C_LIVE_FGC47_MIXED_TOPOLOGY_REPLAY=PASS",
+        "FGC49C_ONE_GENERIC_SERVICE_TWO_CELLS=PASS",
+        "FGC49C_ONE_PREPARED_MODFLOW_SOLVE=PASS",
+        "FGC49C_CELL_SPECIFIC_REAL_SWAP_CORRECTORS=PASS",
+        "FGC49C_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS",
+        "FGC49C_PREFLIGHT_BEFORE_PUBLICATION=PASS",
+        "FGC49C_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS",
+        "FGC49C_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS",
+        "F-GC49C LIVE GENERIC APPLICATION SERVICE GATE PASS"
       ]
     },
     "independent": {
-      "work_unit": "F-VQ122",
-      "run": 35348563095,
-      "job": 105610905658,
+      "work_unit": "F-VQ123",
+      "run": 35349527351,
+      "job": 105614050731,
       "conclusion": "success",
-      "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
+      "qualified_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
       "oracles": [
-        "FVQ122_COMMITTED_STATE_REFERENCE_NOT_COPY=PASS",
-        "FVQ122_BACKEND_AND_PARAMETERS_EXTERNALLY_OWNED=PASS",
-        "FVQ122_DELEGATES_TO_ADMITTED_FMR_PARTICIPANT=PASS",
-        "FVQ122_NO_MODFLOW_LEDGER_OR_SOLVER_OWNERSHIP=PASS",
-        "FVQ122_NONRECYCLING_MONOTONIC_HANDLES=PASS",
-        "FVQ122_RELEASE_PREFLIGHT_BEFORE_DEACTIVATION=PASS",
-        "FVQ122_INACTIVE_STALE_HANDLE_CANNOT_RESOLVE=PASS",
-        "FVQ122_REAL_TWO_HANDLE_OWNER_ORACLES_PRESENT=PASS"
+        "FVQ123_NO_TOPOLOGY_SPECIFIC_BRANCHES=PASS",
+        "FVQ123_NO_FGC40_FGC33_MATH_DUPLICATION=PASS",
+        "FVQ123_RUNTIME_PORT_OWNS_EVALUATION_AND_REANCHOR=PASS",
+        "FVQ123_OPPOSITE_CELL_RESIDUALS_DO_NOT_CANCEL=PASS",
+        "FVQ123_CONJUNCTIVE_ALL_CELL_CONVERGENCE=PASS",
+        "FVQ123_PREFLIGHT_BEFORE_PUBLICATION=PASS",
+        "FVQ123_MODFLOW_THEN_SWAP_THEN_LEDGER_ORDER=PASS",
+        "FVQ123_POST_PUBLICATION_HARD_FAILURE_CONTRACT=PASS",
+        "F-VQ123 F-GC49C INDEPENDENT QUALIFICATION PASS"
       ]
     }
   },
   "canonical_drift_reconciliation": {
-    "commits_since_stage_a_base": 37,
+    "canonical_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+    "merge_base": "01e133b3da79468618e6c89a74533efff1ccdaaf",
+    "canonical_commits_since_stage_c_base": 4,
+    "canonical_changed_files": [
+      "integration/f-ross/F-ROSS24_STATUS.json",
+      "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_PREREGISTRATION.json",
+      "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_RESULT.json"
+    ],
     "production_dependency_overlap": [],
     "overlap_count": 0,
-    "disposition": "Qualified Stage-B artifacts were overlaid unchanged on current canonical; owner and F-VQ122 evidence reused because no production dependency changed."
+    "disposition": "No F-GC49C production/runtime/test/workflow dependency overlap. Qualification evidence remains valid."
   },
   "stage_b_admitted_capability": [
     "fixed-capacity generic FMR groundwater participant registry",
@@ -151,18 +181,26 @@
   "current_branch_head": "af480333c7a6c2b2fcde1677a6d318f26609de26",
   "qualification_surface_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
   "external_execution_state": {
-    "owner_pr_run": 35349527435,
-    "owner_jobs": {
-      "deterministic": 105614050991,
-      "live_modflow": 105614051258
-    },
-    "independent_pr_run": 35349527351,
-    "independent_job": 105614050731,
+    "current_head_owner_push_run": 35349959517,
+    "current_head_owner_pr_run": 35349966232,
+    "current_head_independent_push_run": 35349959558,
+    "current_head_independent_pr_run": 35349966453,
     "observed_state": "queued",
-    "disposition": "External GitHub-hosted runner congestion only. No production/test mutation is permitted while these exact-surface jobs are pending."
+    "disposition": "Redundant preservation-head reruns are runner-congested. They do not invalidate the completed qualification-surface evidence because no production/test/workflow dependency changed."
   },
   "preservation_after_qualification_surface": [
     "docs/integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md line-break normalization only",
     "integration/f-gc/F-GC49_STATUS.json resumability metadata only"
-  ]
+  ],
+  "reconciled_application_head": "ed9ac46e78fd82c9ec075ec73ee5aad6d3403380",
+  "evidence_reuse": {
+    "qualified_surface_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
+    "preserved_through_head": "ed9ac46e78fd82c9ec075ec73ee5aad6d3403380",
+    "files_changed_after_qualification": [
+      "docs/integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md",
+      "integration/f-gc/F-GC49_STATUS.json"
+    ],
+    "production_test_workflow_overlap": [],
+    "disposition": "Reuse admitted by the existing Stage-C status authority because post-qualification changes are documentation/status preservation only."
+  }
 }
