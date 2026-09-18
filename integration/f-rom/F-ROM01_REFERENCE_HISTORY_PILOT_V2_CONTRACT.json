@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.f-rom01.reference-history-pilot-v2-contract.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM01",
+  "experiment": "REFERENCE_HISTORY_PILOT_V2",
+  "phase": "PREREGISTERED_BEFORE_V2_EXECUTION",
+  "predecessor_contract": "integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json",
+  "predecessor_adjudication": "integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_V1_ADJUDICATION.json",
+  "canonical_baseline": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "scientific_change_from_v1": "EXECUTION_POLICY_ONLY",
+  "physical_design_unchanged": true,
+  "production_mutation_allowed": false,
+  "frozen_physical_design": {
+    "material_id": "B01",
+    "active_nodes": 16,
+    "dz_cm": 10,
+    "root_zone_nodes": 4,
+    "initial_effective_saturation": 0.85,
+    "outer_interval_duration_day": 0.0016,
+    "phase_steps": 48,
+    "history_A": [
+      "WET",
+      "DRY"
+    ],
+    "history_B": [
+      "DRY",
+      "WET"
+    ],
+    "wet_top_factor": 0.025,
+    "dry_top_factor": -0.005,
+    "history_bottom_factor": -0.004,
+    "continuation_top_factor": 0.01,
+    "continuation_steps": 24,
+    "continuation_observation_steps": [
+      1,
+      8,
+      24
+    ],
+    "continuation_bottom_mode": 5,
+    "continuation_bottom_head": "INITIAL_UNIFORM_PRESSURE_HEAD_H0",
+    "collision_projection": "Z1_TOTAL_STORAGE",
+    "collision_abs_storage_tolerance_cm": 1e-8,
+    "minimum_full_profile_theta_rms_for_distinct_histories": 1e-10
+  },
+  "reference_execution_policy": {
+    "outer_interval_semantics": "Each 0.0016-day research interval must be completed under one unchanged forcing/boundary tuple.",
+    "initial_attempt_duration_day": 0.0016,
+    "retry_trigger": "SW_SOLVE_RETRY_ADVISED",
+    "retry_action": "REJECT_CANDIDATE_AND_BISECT_CURRENT_REMAINING_INTERVAL",
+    "split_factor": 0.5,
+    "max_retry_depth": 8,
+    "minimum_internal_duration_day": 0.00000625,
+    "commit_rule": "Only SW_SOLVE_CONVERGED candidate states become the research trajectory state.",
+    "forcing_during_subdivision": "UNCHANGED_WITHIN_OUTER_INTERVAL",
+    "accounting": "Every accepted internal substep must expose finite integrated mass residual within 1e-12 cm.",
+    "failure_rule": "If depth 8 is exhausted, V2 fails. Do not retune the bound inside V2."
+  },
+  "evidence_required": [
+    "production/reference source delta NONE",
+    "preregistration and source locks PASS",
+    "all 192 history outer intervals complete",
+    "all 48 continuation outer intervals complete across both histories",
+    "rejected retry candidates never become accepted trajectory state",
+    "accepted substep count and retry count reported separately for A and B",
+    "mass residual bound satisfied for every accepted substep",
+    "O0/O2 scientific text identity",
+    "Z1 collision tolerance satisfied",
+    "collision full profiles remain distinct",
+    "three identical-future continuation checkpoints recorded"
+  ],
+  "scientific_sufficiency_threshold": "NOT_SET_IN_V2",
+  "threshold_retuning_after_execution_allowed": false,
+  "purpose": "Reach the originally preregistered history-collision observation surface while respecting the Reference Richards retry semantics, without changing the physical experiment."
+}
