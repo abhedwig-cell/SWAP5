@@ -29,7 +29,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-ME-E6` extensibility cases | PUB-ME | supporting | READY_FOR_SCREENING | extract solver-seam and groundwater-seam dependency evidence |
 | `PUB-SQ-E0` contract/fail-closed | PUB-SQ | prerequisite/supporting | COMPLETE | `PUB-SQ-E0-0001` completed under manifest control; continue with SQ-E1 common-domain/reference design, not additional post-hoc E0 cases |
 | `PUB-SQ-E1` common-domain equivalence | PUB-SQ | primary | COMPLETE | six-material P2E10 broad E0 matrix executed against independently frozen P2E09 Reference-only thresholds; retain as observed primary evidence |
-| `PUB-SQ-E1X` material-axis extension | PUB-SQ | primary | READY_FOR_REFERENCE_CONSTRUCTION | 30-material extension design frozen in `PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml`; execute Reference-only calibration and freeze extension thresholds before any new RossFast discrepancy run |
+| `PUB-SQ-E1X` material-axis extension | PUB-SQ | primary | COMPLETE | P2E11 Reference-only extension executed exactly as frozen: 176/180 valid; four B02/B05 Se=0.98 cases leave the common E0 state domain. No thresholds frozen and no RossFast extension run authorized. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | P2E10 established WETTING as a clean known production-envelope exclusion; separate inside/boundary/outside probing still requires its own preregistration |
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
@@ -134,6 +134,17 @@ Examples:
 - `PUB-SQ`: P2E09 independently froze Reference-only E0 thresholds before the broad P2E10 candidate matrix. P2E10 then attempted all 54 preregistered cases: 36 paired-valid admissible, 18 RossFast-route invalid, with all and only WETTING cases outside the current production forcing envelope. The next confirmatory material-axis extension is frozen separately over the remaining 30 F-ROSS13 materials and must repeat Reference-only threshold construction before any new RossFast discrepancy execution.
 - `PUB-GC`: held-out E1 primary workflow `35287247968` completed successfully on exact head `936312659522fe4cacfd349b146d173caa07e5ab` with immutable artifact digest `sha256:0370c5a17033d789e60576a4a0253a8edf3c50dba1b4ab4244a468fa05ccfab6`. The E2 terminal comparator subsequently qualified at `188c863...`. GC-REF-A workflow `35288524091` completed successfully at `4fc8f6e...`, artifact digest `sha256:a6caaa3f32b2def358d8760fc86d073e423688ca47b35e09b775e7228a3d6136`. GC-REF-A is reference infrastructure only and does not retroactively create H2/H3 primary evidence.
 - next permitted programme action: materialize the missing ME B0/B1 research harness, execute the SQ 30-material Reference-only extension calibration, and materialize two new GC transient mechanism cases without inspecting comparative method outcomes.
+
+### 2026-09-18 — PUB-SQ material-axis extension blocked before candidate execution
+
+- P2E11 execution branch: `work/pub-p2e11-reference-material-extension-calibration`, result head `e8cd1f363798e5c0a0df586a5f509cd5667bf956`;
+- frozen schedule: 0.0064 day coarse versus 0.0032 + 0.0032 day refined Reference;
+- outcome: 176/180 Reference pairs valid, four invalid;
+- invalid cases: B02/Se=0.98 and B05/Se=0.98 under both DRYING and NOMINAL;
+- P2E11D1 fixed-schedule diagnosis: all four solver trajectories converged and passed the hard integrated-mass gate; the blocking predicate was the declared common pressure-head domain, with B05 also outside the strict theta domain;
+- candidate firewall preserved: no new RossFast numerical solver execution occurred and no extension threshold was frozen;
+- interpretation: the six-material E0 calibration domain does not transfer unchanged to the full material axis;
+- next permitted action: a separate Reference-only common-material-domain construction study. It must be labelled exploratory/supporting and cannot retroactively make P2E11 complete.
 
 ## Register update rule
 
