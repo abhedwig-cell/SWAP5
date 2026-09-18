@@ -11,7 +11,7 @@
   "dependency_note": "F-ROSS16 is diagnostic successor evidence to F-ROSS15; it does not assume canonical performance admission.",
   "production_or_reference_mutation": false,
   "verdict": "CLOSED_DIAGNOSTICALLY__STRUCTURAL_SLOWDOWN_MECHANISM_IDENTIFIED",
-  "next_permitted_action": "Open a separate optimization-study workunit. First test semantics-preserving reductions of duplicate temporal-certificate work and repeated capacity/head/table transformations. Any production optimization must be independently qualified against F-ROSS13/PUB-P2E10/F-ROSS15 scientific and performance boundaries.",
+  "next_permitted_action": "Open a separate optimization-study workunit. Prioritize reducing the fixed coarse+half+half temporal-certificate work and repeated inverse-capacity/table/head transforms. Do not optimize inside F-ROSS16; any production change must requalify scientific equivalence and performance.",
   "implementation": {
     "work_count_harness": "tests/ross/test_ross16_work_counts.f90",
     "profile_harness": "tests/ross/test_ross16_profile.f90",
@@ -34,7 +34,7 @@
     "harness": "tests/ross/test_ross16d1_callgrind.f90",
     "runner": "tests/ross/run_ross16d1_callgrind.sh",
     "workflow": ".github/workflows/f-ross16d1-callgrind.yml",
-    "status": "PENDING_EXECUTION"
+    "status": "QUALIFIED"
   },
   "f_ross16d1": {
     "result": "integration/f-ross/F-ROSS16D1_CALLGRIND_RESULT.json",
@@ -60,5 +60,10 @@
     "rossfast_over_reference_total_linear_solve_ratio": 6.171428571428572,
     "tridiagonal_solver_is_primary_cost_driver": false,
     "formal_production_timing_claim": false
+  },
+  "reconcile_at_close": {
+    "current_canonical": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+    "canonical_delta_note": "Only unrelated MODFLOW/API admission changes since F-ROSS16 start; no RossFast, Reference, PUB-P2E10 or performance dependency drift observed.",
+    "production_or_reference_mutation": false
   }
 }
