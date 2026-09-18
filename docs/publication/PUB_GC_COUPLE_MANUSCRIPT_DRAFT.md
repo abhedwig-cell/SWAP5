@@ -823,11 +823,48 @@ Taken together, E3, E3-D, E3-D2 and E3-R provide a bounded answer to RQ3. Strong
 
 ## 4.4 Response interpretation
 
-**Evidence status:** concept and response infrastructure exist; publication-specific `u_FD` versus `J_S` versus `J_R` study required.
+**Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E4.
+
+E4 distinguishes the response objects that had previously been grouped under the generic term `u`.
+
+Across five real-SWAP baselines, the accepted-trajectory response `u_A` agrees closely with an independent centred pure-bottom-flux finite-difference estimate `u_FD`. The relative discrepancies range from approximately `8e-9` to `1.35e-5`. This identifies `u_A` as a reproducible finite-window **flux-driven predictor response**:
+
+```text
+u_A ~= DeltaT / (dH_end/dq_bot).
+```
+
+The same quantity is not, however, a universal head-to-exchange Jacobian.
+
+At the low-flux B1, B2 and B4 controls, the non-bottom balance derivative is approximately zero and:
+
+```text
+J_S ~= -J_R
+|J_R| ~= u_A.
+```
+
+In the stronger-flux B3 case, `u_A` remains essentially identical to `u_FD`, while the actual head-driven exchange response is about 8.1% larger in magnitude:
+
+```text
+|J_R| / u_A = 1.08119048.
+```
+
+In B5 the flux-driven predictor response remains stable and reproducible, but no symmetric local prescribed-head `J_R` can be identified within the unchanged corrector transaction envelope.
+
+These results demonstrate that response information is **map-dependent**. A finite-window Neumann-like predictor response can exist and remain accurate even where the corresponding local Dirichlet-like interface response differs or is unavailable.
+
+Consequently, the manuscript uses the following terminology:
+
+- `u_A`: finite-window flux-driven predictor response;
+- `J_S`: head-driven storage response;
+- `J_R`: head-driven accepted-sign whole-window interface response.
+
+The terms are no longer used interchangeably.
 
 ## 4.5 Response information and computational value
 
-**Evidence status:** not yet established.
+**Evidence status:** E4 identity resolved; E5 computational value test in progress.
+
+E4 removes a major ambiguity from the ACCELERATE experiment. The current supplied response `u_A` must be compared separately from a direct head-driven oracle `J_R` and from black-box response learning. The next screen therefore compares fixed point, Aitken, scalar IQN/secant, current `u_A)-informed coupling and a zero-cost `J_R` oracle using total equivalent SWAP work at the same coupled tolerance.
 
 This result determines whether ACCELERATE remains only a section of this manuscript or later supports a separate paper.
 
