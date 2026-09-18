@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS22",
+  "title": "Tiered K2 K4 K8 RossFast canonical admission",
+  "phase": "CLOSE",
+  "status": "ADMITTED_CLOSED",
+  "branch": "integration/f-ross22-tiered-production-admission",
+  "canonical_admission_commit": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+  "admitted_at": "2026-09-18T12:39:49Z",
+  "parent_cache_admission_workunit": "F-CI107",
+  "parent_cache_admission_commit": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "qualified_science_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+  "production_postimages": {
+    "kernel": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "final_admission_evidence": {
+    "canonical_candidate_head": "4d5ecba3530893a4a9937b3df6620189d9472bc7",
+    "owner_gate": {
+      "workflow_run": 35344459815,
+      "artifact_id": 10546693713,
+      "artifact_digest": "sha256:30f40135b9cddb4f95d20796a34a03fd7f1f6963eac21dc9bc4b38eb22757d16",
+      "result": "PASS"
+    },
+    "fci96_postimage_preservation": {
+      "workflow_run": 35344459834,
+      "result": "PASS"
+    },
+    "p2e01_solver_seam": {
+      "workflow_run": 35344459904,
+      "result": "PASS"
+    },
+    "serialized_production": {
+      "workflow_run": 35344460016,
+      "result": "PASS"
+    },
+    "adapter_wrapper": {
+      "workflow_run": 35344576378,
+      "result": "PASS"
+    },
+    "selection_wrapper": {
+      "workflow_run": 35344580975,
+      "result": "PASS"
+    }
+  },
+  "scientific_result": {
+    "cases": 216,
+    "route_valid": 216,
+    "temporal_accepted": 216,
+    "mass_work_retry_pass": 216,
+    "tier_distribution": {
+      "K2": 212,
+      "K4": 2,
+      "K8": 2
+    },
+    "exact_research_production_identity": true
+  },
+  "performance_screening": {
+    "rossfast_over_reference_solver_cpu_ratio": 0.8076,
+    "reference_over_rossfast_speedup": 1.239,
+    "formal_claim": false,
+    "note": "Shared-host screening only."
+  },
+  "mutation_surface": [
+    "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+  ],
+  "exclusions": [
+    "NO_THRESHOLD_RETUNING",
+    "NO_TRAJECTORY_REUSE",
+    "NO_K16_FALLBACK",
+    "NO_REFERENCE_MUTATION",
+    "NO_MODEL_OR_PROVIDER_WIDENING",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST"
+  ],
+  "verdict": "ADMITTED_TO_CANONICAL_AND_CLOSED",
+  "next_permitted_action": "No further F-ROSS22 implementation action. Optional formal performance qualification is a separate MP-admitted isolated-host replay."
+}

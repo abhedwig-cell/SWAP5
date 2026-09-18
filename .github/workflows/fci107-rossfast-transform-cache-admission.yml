@@ -1,0 +1,56 @@
+name: F-CI107 RossFast transform cache admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci107-rossfast-transform-cache-admission
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/run_ross13_ross12_semantic_successor_preservation.sh'
+      - 'tests/fci/run_fci107_fross17_cache_successor_preservation.sh'
+      - 'tests/fci/run_fci_fross22_tiered_successor_preservation.sh'
+      - 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
+      - '.github/workflows/fci96-fross12-postimage-preservation.yml'
+      - '.github/workflows/fci107-rossfast-transform-cache-admission.yml'
+      - 'integration/f-ci/F-CI107_*'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute F-CI107 cache successor qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-CI107_EVIDENCE
+          KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
+          SOLVER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
+          TIERED_KERNEL=438ee46e012e9eb183b8f2532437e2fe56aa18ed
+          TIERED_SOLVER=2b134c36097aed2a44a56bfe8e2194b15aa063aa
+          if [[ "$(git rev-parse HEAD:$KERNEL)" == "$TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$SOLVER)" == "$TIERED_SOLVER" ]]; then
+            bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh | tee F-CI107_EVIDENCE/tiered-successor.txt
+            sha256sum F-CI107_EVIDENCE/tiered-successor.txt | tee F-CI107_EVIDENCE/sha256.txt
+            echo 'FCI107_FROSS22_TIERED_SUCCESSOR_PRESERVATION=PASS'
+          else
+            bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh | tee F-CI107_EVIDENCE/cache-successor.txt
+            sha256sum F-CI107_EVIDENCE/cache-successor.txt | tee F-CI107_EVIDENCE/sha256.txt
+            echo 'FCI107_OWNER_QUALIFICATION_GATE=PASS'
+          fi
+      - name: Preserve F-CI107 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci107-rossfast-transform-cache-${{ github.run_id }}
+          path: F-CI107_EVIDENCE
+          if-no-files-found: warn

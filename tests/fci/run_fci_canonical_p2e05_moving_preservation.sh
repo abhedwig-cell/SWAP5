@@ -18,8 +18,12 @@ BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
 SELECTION=src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
 FROSS13_MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
 FROSS13_PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
+FROSS17_KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
 FROSS13_MODEL_POSTIMAGE=5442fd7e7a2f392c9b796cd17c76b17977259f22
 FROSS13_PROVIDER_POSTIMAGE=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
+FROSS17_CACHE_KERNEL=2ad2a680e62744451d6763de48585f1bd45d3067
+FROSS22_TIERED_KERNEL=438ee46e012e9eb183b8f2532437e2fe56aa18ed
+FROSS22_TIERED_SOLVER=2b134c36097aed2a44a56bfe8e2194b15aa063aa
 SW_P2E05=40a1ddc05fb8e2c1822763de645fd07a094568a3
 REF_ADAPTER_P2E05=4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
 ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
@@ -123,7 +127,11 @@ elif git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
 else
   test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FROSS12" || fail 'admitted F-ROSS12 serialized backend drift'
 fi
-test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'RossFast adapter is not the qualified P2E05 blob'
+if [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$ROSS_ADAPTER)" == "$FROSS22_TIERED_SOLVER" ]]; then
+  echo 'FCI_CANONICAL_FROSS22_TIERED_SOLVER_POSTIMAGE=PASS'
+else
+  test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'RossFast adapter is not the qualified P2E05 or F-ROSS22 tiered successor blob'
+fi
 
 # Route only an exact, independently qualified F-ROSS13 production successor
 # through its stronger preservation gate. Otherwise preserve the historical
@@ -131,8 +139,16 @@ test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'Ross
 if git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD && \
    [[ "$(git rev-parse HEAD:$FROSS13_MODEL)" == "$FROSS13_MODEL_POSTIMAGE" ]] && \
    [[ "$(git rev-parse HEAD:$FROSS13_PROVIDER)" == "$FROSS13_PROVIDER_POSTIMAGE" ]]; then
-  bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh
-  echo 'FCI_CANONICAL_FROSS13_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  if [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$ROSS_ADAPTER)" == "$FROSS22_TIERED_SOLVER" ]]; then
+    bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+    echo 'FCI_CANONICAL_FROSS22_TIERED_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  elif [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
+    bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh
+    echo 'FCI_CANONICAL_FROSS17_CACHE_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  else
+    bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh
+    echo 'FCI_CANONICAL_FROSS13_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  fi
 else
   bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh
 fi
