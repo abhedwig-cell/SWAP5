@@ -1,0 +1,25 @@
+name: PUB-P2E11D1 Reference extension failure adjudication
+
+on:
+  push:
+    branches:
+      - work/pub-p2e11d1-reference-extension-failure-adjudication
+    paths:
+      - 'docs/publication/P2E11D1_REFERENCE_EXTENSION_FAILURE_ADJUDICATION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e11d1_reference_extension_failure_adjudication.f90'
+      - 'tests/publication/run_pub_p2e11d1_reference_extension_failure_adjudication.sh'
+      - '.github/workflows/pub-p2e11d1-reference-extension-failure-adjudication.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-extension-failure-adjudication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute fixed-schedule four-case Reference adjudication
+        run: bash tests/publication/run_pub_p2e11d1_reference_extension_failure_adjudication.sh
