@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC43",
+  "title": "Production SWAP participant binding for whole-window coupling",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "OPEN_PRODUCTION_BINDING_BOUNDARY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "e2e75ed3361e88148060b615f67684ecada51ca1"
+  },
+  "source": {
+    "branch": "work/f-gc43-production-swap-participant",
+    "base": "e2e75ed3361e88148060b615f67684ecada51ca1"
+  },
+  "predecessors": [
+    "F-GC39 prepared-solve internal coupling service",
+    "F-GC41 whole-window acceptance/retry",
+    "F-GC42 service composition"
+  ],
+  "goal": "Bind the real SWAP kernel checkpoint/candidate/rollback/commit lifecycle to the admitted F-GC39/F-GC41 composition without introducing a second transaction owner.",
+  "existing_authority": [
+    "kernel_committed_state_t.capture_checkpoint",
+    "kernel_executor_t.advance_interval(checkpoint=...)",
+    "kernel_candidate_state_t provenance accessors",
+    "kernel_executor_t.rollback_candidate",
+    "kernel_executor_t.commit_candidate",
+    "groundwater_swap_forcing_materializer_t"
+  ],
+  "decisions": [
+    "The new participant is a thin adapter over kernel transactions, not a new SWAP transaction system.",
+    "Corrector trials must originate from one captured kernel_checkpoint_t for the whole coupling window.",
+    "Publication preflight must duplicate the exact candidate/committed provenance and interval predicates used by kernel commit so ordinary post-publication rejection is exhausted before commit.",
+    "The underlying kernel commit remains the sole SWAP committed-state mutation.",
+    "F-GC39 predictor/corrector ownership stays below iMOD Coupler; F-GC41 publication order remains MODFLOW timestep then SWAP then ledger."
+  ],
+  "exclusions": [
+    "new groundwater physics",
+    "new solver algorithm",
+    "new transaction semantics",
+    "N:1 scaling expansion",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Implement a production Fortran SWAP participant adapter exposing capture-origin, trial-from-origin, discard, non-mutating publication readiness and commit through kernel transactions; qualify provenance and same-origin behavior before application-level end-to-end wiring."
+}
