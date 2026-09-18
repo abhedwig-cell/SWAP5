@@ -17,7 +17,8 @@ module mod_rossfast_d3r_table_kernel
   integer, parameter, public :: ROSSFAST_D3R_TABLE_N = 241
   real(real64), parameter :: TABLE_DXDU = real(ROSSFAST_D3R_TABLE_N - 1, real64) / 4.0_real64
   real(real64), parameter :: LN10 = log(10.0_real64)
-  integer, parameter :: FAST_INTERNAL_SUBSTEPS = 2\n  integer, parameter :: FALLBACK_INTERNAL_SUBSTEPS = 4
+  integer, parameter :: FAST_INTERNAL_SUBSTEPS = 2
+  integer, parameter :: FALLBACK_INTERNAL_SUBSTEPS = 4
 
   type :: face_linearization_t
     real(real64) :: q0 = 0.0_real64
