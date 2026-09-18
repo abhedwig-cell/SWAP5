@@ -45,8 +45,9 @@ program test_pub_p2e17_top_boundary_primary
   integer :: fail_h_inf, fail_h_rms, fail_theta_inf, fail_theta_rms, fail_storage
   integer :: label_admissible(nforcing), label_discrepancy_fail(nforcing)
   integer :: label_reference_invalid(nforcing), label_rossfast_invalid(nforcing), label_both_invalid(nforcing)
-  integer :: route_expectation_match, route_expectation_mismatch
-  character(len=40) :: classification
+  integer :: route_expectation_match, route_expectation_mismatch, classified_total
+  integer :: outside_rejected_clean, outside_rejected_dirty, outside_unexpected_accept, outside_reference_invalid
+  character(len=48) :: classification
   real(real64) :: dh_inf, dh_rms, dtheta_inf, dtheta_rms, dstorage
   logical :: metrics_available
   logical :: pass_h_inf, pass_h_rms, pass_theta_inf, pass_theta_rms, pass_storage
@@ -64,6 +65,9 @@ program test_pub_p2e17_top_boundary_primary
   label_admissible=0; label_discrepancy_fail=0
   label_reference_invalid=0; label_rossfast_invalid=0; label_both_invalid=0
   route_expectation_match=0; route_expectation_mismatch=0
+  classified_total=0
+  outside_rejected_clean=0; outside_rejected_dirty=0
+  outside_unexpected_accept=0; outside_reference_invalid=0
   case_id=0
 
   do ise=1,nse
@@ -98,9 +102,24 @@ program test_pub_p2e17_top_boundary_primary
         case('BOTH_ROUTES_INVALID')
           count_both_invalid=count_both_invalid+1
           label_both_invalid(iforce)=label_both_invalid(iforce)+1
+        case('OUTSIDE_REJECTED_CLEAN')
+          outside_rejected_clean=outside_rejected_clean+1
+          count_rossfast_invalid=count_rossfast_invalid+1
+          label_rossfast_invalid(iforce)=label_rossfast_invalid(iforce)+1
+        case('OUTSIDE_REJECTED_DIRTY')
+          outside_rejected_dirty=outside_rejected_dirty+1
+          count_rossfast_invalid=count_rossfast_invalid+1
+          label_rossfast_invalid(iforce)=label_rossfast_invalid(iforce)+1
+        case('OUTSIDE_UNEXPECTED_ROSSFAST_ACCEPTANCE')
+          outside_unexpected_accept=outside_unexpected_accept+1
+        case('OUTSIDE_REFERENCE_INVALID')
+          outside_reference_invalid=outside_reference_invalid+1
+          count_reference_invalid=count_reference_invalid+1
+          label_reference_invalid(iforce)=label_reference_invalid(iforce)+1
         case default
           call require(.false.,'unknown scientific classification')
         end select
+        classified_total=classified_total+1
 
         if (iforce <= 2) then
           if (trim(classification)=='PAIRED_VALID_ADMISSIBLE' .or. &
@@ -110,7 +129,7 @@ program test_pub_p2e17_top_boundary_primary
             route_expectation_mismatch=route_expectation_mismatch+1
           end if
         else
-          if (trim(classification)=='ROSSFAST_ROUTE_INVALID') then
+          if (trim(classification)=='OUTSIDE_REJECTED_CLEAN') then
             route_expectation_match=route_expectation_match+1
           else
             route_expectation_mismatch=route_expectation_mismatch+1
@@ -129,8 +148,7 @@ program test_pub_p2e17_top_boundary_primary
   end do
 
   call require(case_id==expected_cases,'exact 324-case top-boundary matrix attempted')
-  call require(count_admissible+count_discrepancy_fail+count_reference_invalid+count_rossfast_invalid+count_both_invalid == &
-       expected_cases,'every broad case classified exactly once')
+  call require(classified_total==expected_cases,'every top-boundary case classified exactly once')
 
   write(*,'(A,I0)') 'PUB_P2E17_CASE_COUNT=',case_id
   write(*,'(A,I0)') 'PUB_P2E17_ADMISSIBLE_COUNT=',count_admissible
@@ -145,6 +163,10 @@ program test_pub_p2e17_top_boundary_primary
   write(*,'(A,I0)') 'PUB_P2E17_FAIL_D_STORAGE_COUNT=',fail_storage
   write(*,'(A,I0)') 'PUB_P2E17_ROUTE_EXPECTATION_MATCH_COUNT=',route_expectation_match
   write(*,'(A,I0)') 'PUB_P2E17_ROUTE_EXPECTATION_MISMATCH_COUNT=',route_expectation_mismatch
+  write(*,'(A,I0)') 'PUB_P2E17_OUTSIDE_REJECTED_CLEAN_COUNT=',outside_rejected_clean
+  write(*,'(A,I0)') 'PUB_P2E17_OUTSIDE_REJECTED_DIRTY_COUNT=',outside_rejected_dirty
+  write(*,'(A,I0)') 'PUB_P2E17_OUTSIDE_UNEXPECTED_ACCEPT_COUNT=',outside_unexpected_accept
+  write(*,'(A,I0)') 'PUB_P2E17_OUTSIDE_REFERENCE_INVALID_COUNT=',outside_reference_invalid
   do iforce=1,nforcing
     write(*,'(*(g0))') 'PUB_P2E17_LABEL_SUMMARY|LABEL=',trim(forcing_ids(iforce)), &
          '|ADMISSIBLE=',label_admissible(iforce),'|DISCREPANCY_FAIL=',label_discrepancy_fail(iforce), &
@@ -228,7 +250,19 @@ contains
     rossfast_valid=initialized
     if (rossfast_valid) rossfast_valid=rossfast_route_valid(alternative_result,request,material)
 
-    if (.not.reference_valid .and. .not.rossfast_valid) then
+    if (trim(forcing_id)=='OUTSIDE') then
+      ! OUTSIDE is a fail-closed contract probe. Never turn an out-of-contract
+      ! RossFast result into discrepancy or performance evidence.
+      if (.not.reference_valid) then
+        classification='OUTSIDE_REFERENCE_INVALID'
+      else if (rossfast_valid) then
+        classification='OUTSIDE_UNEXPECTED_ROSSFAST_ACCEPTANCE'
+      else if (outside_rejection_clean(initialized,alternative_result)) then
+        classification='OUTSIDE_REJECTED_CLEAN'
+      else
+        classification='OUTSIDE_REJECTED_DIRTY'
+      end if
+    else if (.not.reference_valid .and. .not.rossfast_valid) then
       classification='BOTH_ROUTES_INVALID'
     else if (.not.reference_valid) then
       classification='REFERENCE_ROUTE_INVALID'
@@ -270,6 +304,17 @@ contains
          '|D_STORAGE=',dstorage,'|PASS_H_INF=',pass_h_inf,'|PASS_H_RMS=',pass_h_rms, &
          '|PASS_THETA_INF=',pass_theta_inf,'|PASS_THETA_RMS=',pass_theta_rms,'|PASS_STORAGE=',pass_storage
 
+    if (trim(forcing_id)=='OUTSIDE') then
+      write(*,'(*(g0))') 'PUB_P2E17_OUTSIDE_REJECTION|CASE=',case_id, &
+           '|INITIALIZED=',initialized,'|STATUS=',alternative_result%status, &
+           '|ROUTE=',trim(alternative_result%diagnostics%route), &
+           '|ACTIVE_NODES=',alternative_result%candidate_state%active_nodes, &
+           '|H_ALLOC=',allocated(alternative_result%candidate_state%pressure_head), &
+           '|THETA_ALLOC=',allocated(alternative_result%candidate_state%water_content), &
+           '|MASS_AVAILABLE=',alternative_result%integrated_mass_balance_residual_available, &
+           '|CLEAN=',outside_rejection_clean(initialized,alternative_result)
+    end if
+
     if (reference_result%integrated_mass_balance_residual_available) then
       write(*,'(*(g0))') 'PUB_P2E17_REFERENCE_MASS|CASE=',case_id,'|CM=',reference_result%integrated_mass_balance_residual_cm, &
            '|RATE_AVAILABLE=',reference_result%native_balance_rate_residual_available, &
@@ -285,6 +330,20 @@ contains
       write(*,'(*(g0))') 'PUB_P2E17_ROSSFAST_MASS|CASE=',case_id,'|AVAILABLE=FALSE'
     end if
   end subroutine run_case
+
+  logical function outside_rejection_clean(initialized,result) result(clean)
+    logical,intent(in) :: initialized
+    type(soil_water_solve_result_t),intent(in) :: result
+    clean=.false.
+    if (.not.initialized) return
+    if (result%status==SW_SOLVE_CONVERGED) return
+    if (trim(result%diagnostics%route)/='rossfast-d3r-rejected') return
+    if (result%candidate_state%active_nodes/=0) return
+    if (allocated(result%candidate_state%pressure_head)) return
+    if (allocated(result%candidate_state%water_content)) return
+    if (result%integrated_mass_balance_residual_available) return
+    clean=.true.
+  end function outside_rejection_clean
 
   logical function reference_route_valid(result,request,material) result(ok)
     type(soil_water_solve_result_t),intent(in) :: result
