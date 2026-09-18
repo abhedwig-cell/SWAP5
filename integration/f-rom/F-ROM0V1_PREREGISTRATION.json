@@ -1,21 +1,28 @@
 {
-  "schema": "swap5.f-rom0v1-preregistration.v1",
+  "schema": "swap5.f-rom0v1-preregistration.v2",
   "workstream": "F-ROM",
   "work_unit": "ROM-0V1",
   "title": "Required vertical-resolution Reference-floor diagnostic",
   "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "pre_execution_correction": {
+    "reason": "The first V1 draft incorrectly coupled the vertical comparison to the 0.0008-day temporal-refinement level and imported a representation-bounded total policy. Reconciliation with the original ROM-0 runner and analyzer shows that both vertical pairs were explicitly frozen at dt=0.0016 day. No V1 execution occurred before this correction.",
+    "superseded_draft_dt_day": 0.0008,
+    "corrected_dt_day": 0.0016,
+    "execution_evidence_seen_before_correction": false,
+    "policy_correction": "Use the original strict fixed-flux Reference sample controls; do not mix prescribed-head successor policy into this mode-2 vertical measurement."
+  },
   "authority": {
     "original_ROM0": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
     "required_dimension": "VERTICAL_RESOLUTION",
     "required_compare": "16x10 cm vs 32x5 cm over same 160 cm profile",
-    "required_cases": [
-      "B01:E1_NOMINAL_FLUX",
-      "B14:E2_DRYING_FLUX"
-    ],
-    "lower_boundary_blocker_resolution": "ROM-0R-R3D4 R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
-    "governing_lower_boundary_reconciliation": "docs/science/F-ROM0_CLOSE_GATE_RECONCILIATION_AFTER_TA3.md",
-    "fixed_flux_representation_policy_authority": "PUB-P2E21 REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE",
-    "fixed_flux_policy_scope_note": "Only the independently derived prospective total-column representation formula and already-qualified fixed-flux research Reference semantics are used for E1/E2. R3Q1/R3Q2 budget-neutrality is not required for V1.",
+    "required_cases": ["B01:E1_NOMINAL_FLUX","B14:E2_DRYING_FLUX"],
+    "original_matrix_proof": {
+      "runner_head": "14374d1be123c0f522bd63f63afd987a2375736f",
+      "runner_path": "tests/rom/run_f_rom0_accepted_reference_laboratory.sh",
+      "analyzer_path": "tests/rom/analyze_f_rom0_accepted_reference_laboratory.py",
+      "vertical_pair_binding": "B01:E1 and B14:E2 each compare 16x10 and 32x5 at dt=0.0016 day"
+    },
+    "lower_boundary_blocker_resolution": "ROM-0R-R3Q2 FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED and ROM-0R-R3D4 R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
     "sample_authority": "F-ROM0TA3 F-KT Reference-floor sample/candidate/commit",
     "bottom_mode2_binding": "already admitted F-KT/Reference-floor prescribed-flux route"
   },
@@ -41,34 +48,25 @@
     "effective_saturation": 0.85,
     "pressure_profile": "UNIFORM_HEAD_FROM_MVG_EFFECTIVE_SATURATION",
     "sources_sinks": "ZERO",
-    "ponding_cm": 0
+    "ponding_cm": 0.0,
+    "r1_seed_substitution_allowed": false
   },
   "geometries": [
-    {
-      "id": "G16",
-      "nodes": 16,
-      "dz_cm": 10,
-      "depth_cm": 160
-    },
-    {
-      "id": "G32",
-      "nodes": 32,
-      "dz_cm": 5,
-      "depth_cm": 160
-    }
+    {"id":"G16","nodes":16,"dz_cm":10,"depth_cm":160},
+    {"id":"G32","nodes":32,"dz_cm":5,"depth_cm":160}
   ],
   "temporal_control": {
-    "dt_day": 0.0008,
+    "dt_day": 0.0016,
     "common_horizon_day": 0.0512,
-    "steps": 64,
-    "authority": "original ROM-0 refined observation interval preserving E1/E2 physical horizon",
+    "steps": 32,
+    "authority": "original ROM-0 vertical matrix uses the base 0.0016-day observation interval on both grids so the comparison isolates vertical resolution",
     "dt_retuning_allowed": false,
     "automatic_temporal_subdivision_allowed": false
   },
-  "research_reference_policy": {
+  "reference_sample_controls": {
+    "policy_id": "ORIGINAL_STRICT_FIXED_FLUX_REFERENCE_SAMPLE",
     "local_compartment_balance_rate_tolerance_cm_per_day": 1e-12,
-    "total_integrated_bound_formula_cm": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
-    "total_rate_tolerance_formula_cm_per_day": "total_integrated_bound_cm / dt_day",
+    "total_balance_rate_tolerance_cm_per_day": 1e-12,
     "head_abs_tolerance_cm": 1e-12,
     "head_rel_tolerance": 1e-12,
     "ponding_tolerance_cm": 1e-12,
@@ -77,15 +75,16 @@
     "conductivity_implicit_mode": 0,
     "conductivity_mean_method": 1,
     "hard_transaction_mass_gate_cm": 1e-12,
-    "failed_residual_used_in_policy": false,
+    "representation_bounded_total_policy_used": false,
+    "failed_residual_used_in_control": false,
     "empirical_factor": "none"
   },
   "cross_grid_mapping": {
-    "pressure_head": "For coarse cell i, compare h16_i with 0.5*(h32_(2i-1)+h32_(2i)); this is linear interpolation to the 10-cm cell centre for uniform 5-cm fine cells.",
-    "water_content": "For coarse cell i, compare theta16_i with 0.5*(theta32_(2i-1)+theta32_(2i)); equal fine dz makes this exactly storage-conservative within each coarse 10-cm layer.",
+    "pressure_head": "For coarse cell i compare h16_i with 0.5*(h32_(2i-1)+h32_(2i)); on the nested uniform grids this is linear interpolation to the coarse 10-cm cell centre.",
+    "water_content": "For coarse cell i compare theta16_i with 0.5*(theta32_(2i-1)+theta32_(2i)); equal fine-cell thickness makes this exactly storage-conservative within each coarse layer.",
     "fixed_upper_band": "0-40 cm",
     "fixed_lower_band": "40-160 cm",
-    "comparison_times": "all 64 common committed endpoints"
+    "comparison_times": "all 32 common committed endpoints"
   },
   "measured_outputs": [
     "max_over_time_D_h_inf_cm",
@@ -99,34 +98,35 @@
     "max_over_time_abs_terminal_bottom_flux_difference_cm_per_day",
     "final_time_all_above_differences",
     "max_abs_step_mass_residual_each_geometry",
-    "representation_bound_range_each_geometry",
     "solver_work_range_each_geometry"
   ],
   "top_exchange": {
     "status": "PRESCRIBED_FIXED_FLUX_INPUT",
     "per_step_expression": "top_flux*dt",
-    "expected_cross_grid_difference": 0,
-    "not_used_as_solver-derived_discrepancy": true
+    "expected_cross_grid_difference": 0.0,
+    "not_used_as_solver_derived_discrepancy": true
   },
   "qualification": [
-    "BOTH_REQUIRED_CASES_COMPLETE_64_STEPS_ON_BOTH_GEOMETRIES",
+    "BOTH_REQUIRED_CASES_COMPLETE_32_STEPS_ON_BOTH_GEOMETRIES",
     "EVERY_SAMPLE_ONE_PHYSICAL_ADVANCE",
     "ZERO_INTERNAL_OR_KERNEL_RETRIES",
     "HARD_MASS_GATE_EVERY_STEP",
-    "REPRESENTATION_BOUND_FINITE_POSITIVE_PRE_SOLVE",
+    "STRICT_FIXED_FLUX_REFERENCE_CONTROLS_UNCHANGED",
     "COMMITTED_REVISION_AND_TIME_PROGRESS_EXACTLY",
     "ALL_CROSS_GRID_METRICS_FINITE",
-    "O0_O2_STDOUT_BITWISE_IDENTITY_PER_GEOMETRY"
+    "O0_O2_STDOUT_BITWISE_IDENTITY_PER_GEOMETRY_CASE",
+    "REPEAT_STDOUT_BITWISE_IDENTITY"
   ],
   "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD",
   "positive_decision": "VERTICAL_REFERENCE_FLOOR_MEASURED",
-  "negative_decision": "VERTICAL_REFERENCE_FLOOR_NOT_MEASURABLE",
+  "negative_decision": "VERTICAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
   "if_positive": "Reevaluate complete ROM-0 Q0.1-Q0.6 close gate. Do not authorize ROM-1A before that reconciliation.",
   "firewalls": [
     "NO_SRC_OR_REFERENCE_MUTATION",
     "NO_CASE_SUBSTITUTION",
     "NO_DT_RETUNING",
-    "NO_POLICY_RETUNING",
+    "NO_REPRESENTATION_POLICY_IMPORT_AFTER_FAILURE",
+    "NO_TOLERANCE_OR_ITERATION_RETUNING",
     "NO_THRESHOLD_DERIVATION_FROM_OBSERVED_DIFFERENCES",
     "NO_PRODUCTION_APPLICATION_ADMISSION",
     "NO_ROM1_WORK"
