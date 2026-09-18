@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.f-rom0r.r3q2-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3Q2",
+  "title": "F-KT Reference-floor trajectory under qualified prescribed-head representation policy",
+  "phase": "PREREGISTERED_BEFORE_FKT_TRAJECTORY_EXECUTION",
+  "authority": {
+    "policy_work_unit": "ROM-0R-R3Q1",
+    "policy_decision": "PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED",
+    "sample_authority": "F-ROM0TA3 separate F-KT Reference-floor sample/candidate/commit",
+    "mode5_binding_authority": "F-ROM0TA5 PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED"
+  },
+  "purpose": "Transfer the R3Q1-qualified prescribed-head representation-bounded total policy into the existing F-KT Reference-floor sample/candidate/commit ownership path without adding a new runtime mode or mutating solver physics.",
+  "matrix": {
+    "materials": ["B01","B14"],
+    "cases": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "geometry": {"nodes":16,"dz_cm":10,"depth_cm":160},
+    "seed_effective_saturation": 0.85,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "perturbation_intervals": 16,
+    "perturbation_dt_day": 0.0008,
+    "bottom_head": {
+      "BOTTOM_HEAD_RISE": "0.75*h0",
+      "BOTTOM_HEAD_FALL": "1.25*h0"
+    }
+  },
+  "policy_materialization": {
+    "performed_before_each_perturbation_sample": true,
+    "base_state_source": "current F-KT committed state snapshot",
+    "total_integrated_bound_formula_cm": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
+    "total_rate_tolerance_formula_cm_per_day": "total_integrated_bound_cm / dt_day",
+    "only_parameter_changed_per_step": "total_balance_tolerance",
+    "local_compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "timestep_changed": false,
+    "boundary_amplitude_changed": false
+  },
+  "paired_solver_equivalence": {
+    "direct_reference_candidate_from_same_committed_base": true,
+    "same_policy_parameters": true,
+    "required_candidate_state_identity": "bitwise pressure-head, water-content, ponding and groundwater-level identity",
+    "required_solver_diagnostics_identity": ["nonlinear_iterations","backtracking_attempts"],
+    "required_bottom_exchange_identity": "F-KT bottom_outward_exchange_native bits == -direct_solver_bottom_flux * dt bits",
+    "direct_candidate_commit_allowed": false
+  },
+  "fkt_gates_per_step": [
+    "sample status OK",
+    "sample_valid",
+    "one physical advance",
+    "zero internal retries",
+    "zero kernel retries",
+    "hard mass complete",
+    "abs canonical step mass residual <= 1e-12 cm",
+    "candidate ready",
+    "candidate lineage == committed lineage",
+    "candidate origin revision == committed revision",
+    "candidate origin interval bit-identical to requested interval",
+    "candidate state bit-identical to direct Reference candidate",
+    "commit status COMMITTED",
+    "committed revision increments exactly one",
+    "committed time bits equal t1",
+    "committed state bits equal direct Reference candidate"
+  ],
+  "final_directional_gate": {
+    "per_material": [
+      "head-rise final lower-band storage > head-fall final lower-band storage",
+      "head-rise cumulative bottom outward exchange < head-fall cumulative bottom outward exchange"
+    ],
+    "absolute_flux_sign_reversal_required": false
+  },
+  "positive_decision": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
+  "negative_decision": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_NOT_QUALIFIED",
+  "firewalls": [
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_NEW_RUNTIME_MODE",
+    "NO_SOLVER_PHYSICS_CHANGE",
+    "NO_DT_OR_AMPLITUDE_CHANGE",
+    "NO_LOCAL_OR_HEAD_TOLERANCE_CHANGE",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_PRODUCTION_APPLICATION_ADMISSION",
+    "ORIGINAL_R3_DECISION_REMAINS_RECORDED"
+  ],
+  "if_qualified": "ROM-0 bidirectional lower-boundary reachability is established under the separately qualified research Reference policy and F-KT ownership path. Proceed to the still-required 16x10 versus 32x5 vertical-resolution Reference-floor diagnostic before ROM-0 close reevaluation.",
+  "rom1a_authorized": false
+}
