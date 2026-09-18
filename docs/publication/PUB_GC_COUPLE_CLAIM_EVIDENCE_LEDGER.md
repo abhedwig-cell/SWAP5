@@ -32,14 +32,14 @@ EXCLUDED_NOVELTY
 | GC-C01 | SWAP5 and MODFLOW6 can participate in strong coupling while retaining independent solver/state ownership. | Solver autonomy and partitioned coupling are established in FMI/preCICE/IQN literature; novelty cannot be claimed from autonomy alone. | F-GC39, F-GC42, F-GC43, F-GC44 | Demonstrate beyond the restricted F-GC44 case and document exact ownership in manuscript figure. | SUPPORTED_RESTRICTED |
 | GC-C02 | Every SWAP corrector in one coupling window can be recomputed from the same immutable accepted origin. | Checkpoint/restore is established generic co-simulation practice. | F-GC39, F-GC43, F-GC44; PUB-GC E1/E2 real rejected-trial probes | Expand beyond the near-equilibrium F-GC44 envelope. | SUPPORTED_RESTRICTED |
 | GC-C03 | MODFLOW6 can remain in one prepared nonlinear solve while SWAP replays complete finite-window correctors. | MODFLOW API/XMI and iterative co-simulation are prior art. | F-GC38/F-GC39/F-GC44 | Publication trace of XOLD, X iterates, SWAP trials and convergence over representative cases. | SUPPORTED_RESTRICTED |
-| GC-C04 | Coupled convergence requires both groundwater nonlinear convergence and SWAP-groundwater exchange consistency. | Generic coupled-residual criteria are established; hydrological specialization requires evidence. | F-GC39/F-GC44 plus PUB-GC E3: 12 real low-flux cases show large loose interface mismatch and 2–5-iteration restoration of the coupled flux criterion | Extend to an admitted non-trivial hydrological-feedback case; current maximum head correction is only 5.55e-9 m and 36 higher-flux cases fail before MODFLOW coupling. | SUPPORTED_RESTRICTED |
+| GC-C04 | Coupled convergence requires both groundwater nonlinear convergence and SWAP-groundwater exchange consistency. | Generic coupled-residual criteria are established; hydrological specialization requires evidence. | F-GC39/F-GC44 plus E3/E3-R: valid cases show large loose interface mismatch and 2–5-iteration restoration of the coupled flux criterion; E3-D2 proves higher-flux predictor failure is a bounded SWAP transaction/retry envelope rather than outer-coupling failure. | Still requires an admitted non-trivial hydrological-feedback case; even the 100x-flux E3-R refinement produced at most 1.83e-9 m loose-to-iterative head correction before the long-window corrector envelope became limiting. | SUPPORTED_RESTRICTED |
 | GC-C05 | q_bot, q_u and accepted whole-window transfer are physically distinct quantities that must not be silently aliased. | MetaSWAP/HYDRUS-MODFLOW provide strong hydrological prior art; distinction itself must be physically demonstrated for SWAP. | F-GC30/F-GC44 plus PUB-GC E1: q_bot=1e-6 cm/day, q_u=-9.65885e-7 cm/day; accepted rate/ledger amount identity closes in the restricted real case | Repeat under contrasting non-equilibrium states and active-process envelopes. | SUPPORTED_RESTRICTED |
 | GC-C06 | Rejected predictor/corrector calculations contribute zero authoritative interface mass. | Rollback exists generically; explicit hydrological mass-authority semantics are candidate contribution. | F-GC41 deterministic failure injection plus PUB-GC E2 real trial/discard/prepublication-abort probes | Add restart/durability evidence and broader process envelopes. | SUPPORTED_RESTRICTED |
 | GC-C07 | Accepted interface mass is published exactly once after all preflights pass. | Exactly-once scientific exchange is not a new generic transaction concept; hydrological application requires evidence. | F-GC41–F-GC44 plus PUB-GC E2 publication-order trace and accepted ledger identity | Add restart/durability evidence and combined-system closure in broader cases. | SUPPORTED_RESTRICTED |
 | GC-C08 | A finite-window SWAP response can be exposed without exposing the internal Richards Jacobian or timestep controller. | Interface Jacobian/derivative exposure is established in FMI and co-simulation. | F-GC30/F-GC33/F-GC39/F-GC44 | Compare finite-difference, analytic and black-box response variants on the same accepted origins. | SUPPORTED_ARCHITECTURE |
 | GC-C09 | F-GC30/F-GC44 response information has a clear physical relation to storage response J_S and actual exchange response J_R. | Dynamic storage response is established in MetaSWAP and transient-specific-yield literature. | Response infrastructure exists | Direct u_FD vs J_S vs J_R characterization; derivative plateau, linearity radius and balance closure. | HYPOTHESIS |
 | GC-C10 | Supplied finite-window response can reduce total coupling work beyond strong black-box multisecant learning in identifiable regimes. | IQN/Anderson, history reuse and surrogate-assisted QN are strong prior art. | No decisive publication result yet | Oracle vs IQN cold/warm, acquisition-cost accounting, regime/generalization tests. | HYPOTHESIS |
-| GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary for materially changing groundwater head, even when strict interface closure benefits from iteration. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | PUB-GC E3: 12 real low-flux cases converged in 2–5 outer iterations; loose residuals reached 2.80e-12 m/s while the maximum loose-to-iterative head correction remained only 5.55e-9 m. | Generalize beyond the near-equilibrium/low-flux fixture; E3-R targets the largest currently admitted predictor fluxes. | SUPPORTED_RESTRICTED |
+| GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary for materially changing groundwater head, even when strict interface closure benefits from iteration. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | PUB-GC E3 plus E3-R: low-flux and 30–100x higher admitted-flux cases achieve strict closure in 2–5 iterations while loose-to-iterative head corrections remain at most 5.55e-9 m in the original fixture and 1.83e-9 m in the zero-gradient refinement. | Generalize beyond the current near-equilibrium state; the next positive case must change admitted hydrological state or groundwater-response geometry rather than relax coupling tolerances. | SUPPORTED_RESTRICTED |
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
 | GC-C13 | The same coupling ownership and mass-publication principles can scale to regional execution. | Framework scalability is common in environmental modelling; quantitative evidence required. | Architecture supports composition; F-GC40 gives response reduction | Multi-column live-MODFLOW experiment, scaling curve, deterministic mass closure. | PLANNED_EXPERIMENT |
 | GC-C14 | The integrated coupling contract is a transferable contribution beyond one SWAP5 implementation detail. | HydroCouple, MODFLOW API, SWAT+MODFLOW and ParFlow coupling papers show the publication precedent but raise the generalization burden. | Design documents and current implementation | Discussion must extract principles and demonstrate at least one non-trivial hydrological/operational regime beyond the first restricted case. | HYPOTHESIS |
@@ -160,7 +160,7 @@ However:
 
 1. **E1 closed — SUPPORTED_RESTRICTED** for identity/sign/accounting in the near-equilibrium F-GC44 envelope; retain a targeted non-zero-storage extension.
 2. **E2 closed — SUPPORTED_RESTRICTED** for pre-publication rejection/abort and exactly-once successful publication; post-publication durability remains separate.
-3. **E3 main matrix completed — SUPPORTED_RESTRICTED for interface-convergence behaviour and a weak-feedback control.** E3-D predictor-envelope diagnosis is complete; E3-D2 mechanism diagnosis and E3-R stronger-feedback refinement are active.
+3. **E3 CLOSED AS SUPPORTED_RESTRICTED.** Main matrix, E3-D predictor envelope, E3-D2 failure mechanism and E3-R stronger-flux refinement are complete. The current fixture is a demonstrated weak-feedback control; a non-trivial positive feedback case remains future evidence, not an open E3 bookkeeping item.
 4. E4 response identity u_FD vs J_S vs J_R.
 5. E5 oracle/IQN information-value test.
 6. E6 hydrological stress extension.
@@ -216,3 +216,19 @@ E3-D2 failure-mechanism preregistration:
 E3-R stronger-feedback preregistration:
 
 `PUB_GC_E3R_STRONGER_FEEDBACK_PREREGISTRATION.md`
+
+E3-D2 predictor-failure result:
+
+`PUB_GC_E3D2_PREDICTOR_FAILURE_RESULT.md`
+
+E3-D2 machine-readable result summary:
+
+`PUB_GC_E3D2_PREDICTOR_FAILURE_RESULT.json`
+
+E3-R stronger-feedback result:
+
+`PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.md`
+
+E3-R machine-readable result summary:
+
+`PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.json`
