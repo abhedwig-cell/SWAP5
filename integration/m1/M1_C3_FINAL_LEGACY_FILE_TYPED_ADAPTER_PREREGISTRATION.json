@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "PREREGISTER_FINAL_LEGACY_FILE_TYPED_ADAPTER",
+  "branch": "work/m1-c3-final-legacy-file-typed-adapter",
+  "canonical_preimage": "bcfd670503f0fbc9e4b05fe4f3b772aa6d8e1c40",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "exact_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "distribution_size_bytes": 8959314,
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "b1_11_members": 63,
+    "b1_11_source_bytes": 1886519,
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "production_subject": "src/adapter/mod_b110_production_soil_water_task2.f90",
+  "permitted_delta": [
+    "bounded M1 B1.11 legacy-application profile detection at the existing Task2 adapter seam",
+    "route active root extraction through the already admitted separate root-sink provider",
+    "route SWBOTB=6 through the already admitted F-APP02 typed qbot=0 binding",
+    "enable the already admitted F-SI39 KSATEXM provider only inside the bounded profile"
+  ],
+  "preserved_defaults": [
+    "generic Task2 KSATEXM remains opt-in/default false outside the M1 profile",
+    "active root extraction remains outside the pre-existing generic Task2 profile",
+    "legacy bottom modes outside the bounded profile retain existing behavior",
+    "no file/path/parser semantics enter solver-facing contracts"
+  ],
+  "final_gates": [
+    "exact uploaded archive hash PASS",
+    "exact B1.11 reconstruction PASS",
+    "exact legacy Hupsel full run PASS",
+    "whole Hupsel typed Task2 run normal completion",
+    "32518 accepted intervals through typed profile and retries separately accounted",
+    "historical route census retained",
+    "six exact snapshot evidence inherited",
+    "result.bal normalized identity",
+    "result.blc normalized identity or explicit blocker if any post-timestamp difference remains",
+    "generic Task2 preservation",
+    "independent no-parser/no-physics-duplication oracle"
+  ],
+  "signed_zero_policy": "NOT_PREAUTHORIZED_AS_PASS",
+  "nonclaims": [
+    "no new physics",
+    "no new parser",
+    "no tolerance retuning",
+    "no solver policy change",
+    "no F-GC49D context factory",
+    "no iMOD Coupler product admission"
+  ],
+  "status": "PREREGISTERED_IMPLEMENTATION_PERMITTED"
+}
