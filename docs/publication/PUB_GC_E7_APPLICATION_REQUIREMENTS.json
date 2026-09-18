@@ -1,0 +1,59 @@
+{
+  "schema": "pub-gc-e7-application-requirements-v1",
+  "date": "2026-09-18",
+  "status": "FROZEN_BEFORE_E7_COUPLED_TRIAL",
+  "exact_application_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "hupsel_swap_swp_path": "SWAP_4.3.1/cases/1.hupselbrook/swap.swp",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "extracted_configuration": {
+      "SWCROP": 1,
+      "SWETR": 0,
+      "SWDRA": 1,
+      "maximum_rooting_depth_cm": 200,
+      "crop_2003": {
+        "start": "2003-05-10",
+        "end": "2003-09-29",
+        "crop_file": "potato",
+        "crop_type": 2
+      }
+    },
+    "source_excerpt_control": "Only configuration values and hashes are retained here; the externally governed distribution is not redistributed."
+  },
+  "selected_days": [
+    {
+      "role": "high_dynamics_day",
+      "date": "2003-05-20",
+      "inside_2003_crop_period": true,
+      "standalone_drainage_out_cm": 0.9069694038599311,
+      "standalone_actual_et_cm": 0.11468910769777912
+    },
+    {
+      "role": "median_dynamics_control",
+      "date": "2003-06-17",
+      "inside_2003_crop_period": true,
+      "standalone_drainage_out_cm": 0.022586870162615704,
+      "standalone_actual_et_cm": 0.17917240345831503
+    }
+  ],
+  "typed_application_authority": {
+    "f_app04_file": "integration/f-app/F-APP04_TYPED_APPLICATION_COMPOSITION_QUALIFICATION.json",
+    "root_mapping": "PMdirect interval potential_transpiration_cm_per_day -> crop_root_uptake_input_t%potential_transpiration for emerged crop",
+    "whole_hupsel_file": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+    "whole_hupsel_drainage_nonzero_intervals": 16507,
+    "whole_hupsel_accepted_intervals": 32518
+  },
+  "production_groundwater_owner": {
+    "file": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "profile": "PPA-WU01 restricted groundwater application-owner",
+    "required_bottom_mode": 5,
+    "explicit_fail_closed_flags": [
+      "root_extraction_active",
+      "drainage_response_active"
+    ],
+    "wider_process_composition_owner_found_in_canonical": false,
+    "ppa_wu03_found_in_canonical": false
+  },
+  "preregistered_interpretation": "If the process-complete selected Hupsel windows cannot be materialized as prescribed-head groundwater participants without disabling/freezing active application processes, classify E7 as REALISTIC_COMPONENT_DOMAIN_LIMIT and do not execute a synthetic loose/strong substitute."
+}
