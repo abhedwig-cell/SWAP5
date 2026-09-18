@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.f-ross20.production-adaptive-certificate.v1",
+  "workunit": "F-ROSS20",
+  "phase": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "branch": "work/f-ross20-production-adaptive-certificate",
+  "source_head": "094c113f77fe18df049af51629976a05bccc02ee",
+  "purpose": "Promote the exact F-ROSS19 K2-first/K4-fallback certificate into the production RossFast D3R solver without changing the qualified physical envelope, table assets, solver seam or transaction semantics.",
+  "locked_authorities": {
+    "f_ross19_result_blob": "6d25bc6a4cdbc9c7f525758fa146893ec035a4b0",
+    "f_ross13_transient_36_material_result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0",
+    "baseline_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+    "baseline_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+  },
+  "allowed_production_mutation": [
+    "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+    "src/solver/mod_rossfast_d3r_table_provider.f90",
+    "assets/rossfast/**",
+    "reference/**",
+    "solver tolerances",
+    "transaction temporal acceptance rule",
+    "RossFast physical/material envelope"
+  ],
+  "exact_algorithm": {
+    "fast_attempt_component_internal_substeps": 2,
+    "fast_attempt_total_candidate_steps": 6,
+    "fast_accept_rule": "temporal_indicator <= 1.0",
+    "fallback_component_internal_substeps": 4,
+    "fallback_total_candidate_steps": 12,
+    "fallback_trigger": "fast temporal_indicator > 1.0",
+    "fallback_restart": "same original request base state",
+    "trajectory_reuse": false,
+    "total_candidate_steps_if_fast_accepts": 6,
+    "total_candidate_steps_if_fallback_used": 18,
+    "additional_fallbacks": "forbidden"
+  },
+  "evidence_reuse": {
+    "reused_without_replay": [
+      "F-ROSS13 historical transient 36-material material/table/physics qualification because material catalog, table assets and candidate-step algebra are unchanged",
+      "F-ROSS17 transform-cache scientific neutrality because its cached candidate-step implementation is retained"
+    ],
+    "must_requalify": [
+      "production adaptive certificate route",
+      "all-36-material direct production solver behavior",
+      "36-case Reference-paired E0 science",
+      "production-vs-F-ROSS19 research identity on paired domain",
+      "shared-host performance screening",
+      "provider and O0/O2 preservation"
+    ]
+  },
+  "qualification": {
+    "all_material_direct_matrix": {
+      "materials": 36,
+      "effective_saturation": [
+        0.65,
+        0.85,
+        0.98
+      ],
+      "forcings": [
+        "DRYING",
+        "NOMINAL"
+      ],
+      "expected_cases": 216,
+      "required": [
+        "216/216 RossFast converged on rossfast-d3r route",
+        "216/216 final temporal indicator <= 1.0",
+        "216/216 mass residual within existing hard tolerance",
+        "linear solves exactly 6 or 18",
+        "zero internal retries and zero alternative solver calls"
+      ]
+    },
+    "paired_reference_matrix": {
+      "authority": "same 36 PUB-P2E10 paired-valid E0 cases",
+      "required": [
+        "36/36 paired-valid admissible",
+        "36/36 final temporal indicator <= 1.0",
+        "fallback cases remain 17 and 18 unless production/research identity proves a harness-only numbering difference",
+        "production result exactly matches F-ROSS19 research adaptive result at dumped real64 state and temporal indicator"
+      ]
+    },
+    "preservation": [
+      "F-ROSS13 36-material production provider envelope O0/O2 PASS",
+      "no src/reference mutation outside the two allowed files"
+    ],
+    "performance": {
+      "host_class": "GITHUB_HOSTED_SCREENING_ONLY",
+      "protocol": "same 12-pair F-ROSS19 solver-only protocol",
+      "formal_speedup_claim": false,
+      "admission_dependency": "science and preservation only; hosted speed result is corroborating screening evidence"
+    }
+  },
+  "fail_closed": "Any all-material route/temporal/mass failure, research identity drift, unexpected production mutation, or paired science regression blocks admission.",
+  "next_permitted_action": "Implement the exact F-ROSS19 adaptive kernel/solver semantics in the two allowed production files, then execute F-ROSS20 qualification."
+}
