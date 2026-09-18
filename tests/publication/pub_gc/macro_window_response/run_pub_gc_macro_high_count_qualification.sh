@@ -3,7 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 cd "$ROOT"
 
-BASE="32d1e9ae1bb3f0cda7a26e114eca0fe5fd900d12"
+BASE="2fad7bb01f7d7d9b55dfca752efd02c502548389"
 SOURCE_TREE="d7ef6c045263de821db7800459289efcd8a6420b"
 DECISION_COMMIT="f55b87322a04977b342e00057b3bd47375580233"
 DECISION_PATH="docs/publications/decisions/PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0002.md"
