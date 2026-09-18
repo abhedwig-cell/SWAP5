@@ -98,6 +98,12 @@
     "SKIP_REQUIRED_VERTICAL_REFERENCE_FLOOR",
     "PROCEED_TO_ROM1A_BEFORE_VERTICAL_FLOOR_AND_FINAL_GATE_REEVALUATION"
   ],
-  "vertical_reference_floor_policy_authority": "PUB-P2E21 fixed-flux representation-bounded Reference policy; R3D4 resolves the prescribed-head blocker but is not imported as the fixed-flux V1 policy",
-  "reconciliation_note": "R3D4 is preferred for ROM-0 lower-boundary governance because it preserves all original accepted overlap states bit-for-bit. R3Q1/Q2 remain immutable supporting evidence and are not deleted or reclassified as failures."
+  "vertical_reference_floor_policy_authority": "Original ROM-0 strict mode-2 fixed-flux Reference sample controls at dt=0.0016 day on both 16x10 cm and 32x5 cm grids; neither the prescribed-head R3D4 fallback nor the P2E21 representation-bounded total policy is imported into V1.",
+  "reconciliation_note": "R3D4 is preferred for ROM-0 lower-boundary governance because it preserves all original accepted overlap states bit-for-bit. R3Q1/Q2 remain immutable supporting evidence and are not deleted or reclassified as failures.",
+  "vertical_reference_floor_preexecution_correction": {
+    "status": "BOUND_BEFORE_VALID_V1_EXECUTION",
+    "preregistration_schema": "swap5.f-rom0v1-preregistration.v2",
+    "corrected_authority_commit": "41dee198f21064f1f644065ea7e1413e95ab62d0",
+    "reason": "Reinspection of the original ROM-0 runner/analyzer proved both required vertical pairs were frozen at dt=0.0016 day under the original strict fixed-flux controls. The earlier V1 draft had mixed temporal refinement and later representation-policy semantics and was corrected before valid V1 execution."
+  }
 }
