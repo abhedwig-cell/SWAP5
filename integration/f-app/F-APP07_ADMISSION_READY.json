@@ -20,11 +20,14 @@
     "composition_output_sha256": "cf6581cb6f0907352133b4acb9b2743446916315f47e53092f642b106ba8b88c"
   },
   "independent_qualification": {
-    "workunit": "F-VQ120",
-    "run_id": 35348357333,
-    "job_id": 105610223602,
+    "workunit": "F-VQ124",
+    "branch": "qualification/f-vq124-fapp07-hupsel-irrigation-independent",
+    "subject_head": "5b70bed7a3758b052e3d22ba0b771ed123c96954",
+    "run_id": 35350203747,
+    "job_id": 105616252988,
     "conclusion": "success",
-    "composition_output_sha256": "c4abf0377e21ecbc0eee1c63b0d7603472d514a21dc7e4c7c8e7b31685e1c513"
+    "output_sha256": "ed77d20d04c10f9916647a606c4b0fff2f05f4303f9f5679a88f4c4a79055e4f",
+    "production_mutation": "NONE"
   },
   "scope": [
     "fixed surface irrigation identity",
@@ -37,5 +40,6 @@
     "no TCS7/SSDI proxy",
     "no solver/transaction/timestep/retry/tolerance change"
   ],
-  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION"
+  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION",
+  "qualification_authority_correction": "F-VQ120 application identifier superseded because F-VQ120 canonical authority belongs to F-GC48."
 }
