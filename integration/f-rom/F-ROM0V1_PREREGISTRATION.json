@@ -8,12 +8,16 @@
     "original_ROM0": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
     "required_dimension": "VERTICAL_RESOLUTION",
     "required_compare": "16x10 cm vs 32x5 cm over same 160 cm profile",
-    "required_cases": ["B01:E1_NOMINAL_FLUX","B14:E2_DRYING_FLUX"],
-    "R3_policy_reconciliation": "integration/f-rom/F-ROM0_R3_POLICY_AUTHORITY_RECONCILIATION.json",
-    "research_reference_policy": "ROM-0R-R3Q1 PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED",
-    "fkt_ownership": "ROM-0R-R3Q2 FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
-    "fixed_flux_representation_method": "PUB-P2E21 prospective representation-bounded total Reference policy",
-    "sample_authority": "F-ROM0TA3 F-KT Reference-floor sample/candidate/commit"
+    "required_cases": [
+      "B01:E1_NOMINAL_FLUX",
+      "B14:E2_DRYING_FLUX"
+    ],
+    "lower_boundary_blocker_resolution": "ROM-0R-R3D4 R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "governing_lower_boundary_reconciliation": "docs/science/F-ROM0_CLOSE_GATE_RECONCILIATION_AFTER_TA3.md",
+    "fixed_flux_representation_policy_authority": "PUB-P2E21 REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE",
+    "fixed_flux_policy_scope_note": "Only the independently derived prospective total-column representation formula and already-qualified fixed-flux research Reference semantics are used for E1/E2. R3Q1/R3Q2 budget-neutrality is not required for V1.",
+    "sample_authority": "F-ROM0TA3 F-KT Reference-floor sample/candidate/commit",
+    "bottom_mode2_binding": "already admitted F-KT/Reference-floor prescribed-flux route"
   },
   "cases": [
     {
@@ -37,11 +41,21 @@
     "effective_saturation": 0.85,
     "pressure_profile": "UNIFORM_HEAD_FROM_MVG_EFFECTIVE_SATURATION",
     "sources_sinks": "ZERO",
-    "ponding_cm": 0.0
+    "ponding_cm": 0
   },
   "geometries": [
-    {"id":"G16","nodes":16,"dz_cm":10,"depth_cm":160},
-    {"id":"G32","nodes":32,"dz_cm":5,"depth_cm":160}
+    {
+      "id": "G16",
+      "nodes": 16,
+      "dz_cm": 10,
+      "depth_cm": 160
+    },
+    {
+      "id": "G32",
+      "nodes": 32,
+      "dz_cm": 5,
+      "depth_cm": 160
+    }
   ],
   "temporal_control": {
     "dt_day": 0.0008,
@@ -91,7 +105,7 @@
   "top_exchange": {
     "status": "PRESCRIBED_FIXED_FLUX_INPUT",
     "per_step_expression": "top_flux*dt",
-    "expected_cross_grid_difference": 0.0,
+    "expected_cross_grid_difference": 0,
     "not_used_as_solver-derived_discrepancy": true
   },
   "qualification": [
