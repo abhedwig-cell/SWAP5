@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.f-ross15.performance-screening-adjudication.v1",
+  "workunit": "F-ROSS15",
+  "phase": "QUALIFIED_SCREENING_RESULT",
+  "branch": "work/f-ross15-reference-vs-rossfast-performance",
+  "scientific_domain": {
+    "authority": "PUB-P2E10 paired-valid E0 subset",
+    "case_count": 36,
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.98],
+    "forcing": ["DRYING","NOMINAL"],
+    "grid": "16 homogeneous cells x 10 cm",
+    "step_duration_day": 0.0016,
+    "timed_layer": "A_FIXED_INTERVAL_SOLVER_SEAM"
+  },
+  "measurement_contract": {
+    "optimization": "O2",
+    "warmups_per_variant": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_case": 200,
+    "timed_solve_calls_per_sample": 7200,
+    "pair_order": "alternating",
+    "outlier_deletion": false,
+    "primary_metric": "Fortran CPU_TIME around selected solve calls only",
+    "target_resolution_relative": 0.05,
+    "resolution_multiplier": 2.0
+  },
+  "primary_chronological_result": {
+    "selection_rule": "first successful push-triggered run after the checksum-outside-timed-region harness correction; no later run selected for a more favorable outcome",
+    "head": "2ef6b8843061ea816d3b2492d71563e5dcab1193",
+    "workflow_run": 35292973486,
+    "job": 105439594531,
+    "result": "PASS",
+    "artifact_id": 10526848201,
+    "artifact_digest": "sha256:8994dd5ed81cc6c5c2067f8082b584b6c5d20019edc3c3c0c3180fed557b6855",
+    "screening_outcome": "SCREENING_REFERENCE_FASTER",
+    "rossfast_over_reference_relative_delta": {
+      "mean": 1.9962146695714627,
+      "median": 2.002246201108428,
+      "stdev": 0.01328020501090638,
+      "min": 1.9703523941247818,
+      "max": 2.014599541941513,
+      "minimum_detectable_relative_effect": 0.007667329937940216,
+      "effect_resolved": true,
+      "target_resolution_qualified": true
+    },
+    "rossfast_over_reference_cpu_ratio_mean": 2.9962146695714627,
+    "reference_over_rossfast_ratio_mean_of_pairs": 0.33376048665488084,
+    "interpretation": "On the preregistered solver-only CPU metric, RossFast consumes about 3.0 times the Reference solver CPU time in this bounded 36-case E0 domain."
+  },
+  "exact_current_head_replication": {
+    "head": "93eaa955754af5980229082d3a7adf7fb65f8ed0",
+    "workflow_run": 35293070576,
+    "job": 105439875175,
+    "result": "PASS",
+    "screening_outcome": "SCREENING_REFERENCE_FASTER",
+    "rossfast_over_reference_relative_delta_mean": 1.91123166733,
+    "rossfast_over_reference_cpu_ratio_mean": 2.91123166733,
+    "minimum_detectable_relative_effect": 0.0121432589884,
+    "mean_reference_over_rossfast_ratio": 0.343513401345,
+    "interpretation": "Independent repeat after removal of an unused duplicate runner preserves the same direction and a similar effect magnitude."
+  },
+  "secondary_metric_boundary": {
+    "primary_run_whole_child_cpu_relative_delta_mean": 0.5306426968014551,
+    "primary_run_wall_elapsed_relative_delta_mean": 0.5299241251183632,
+    "warning": "Whole-process metrics include common untimed setup, both-route admissibility checks, RossFast initialization and process overhead. They are not the primary solver-seam metric."
+  },
+  "adjudication": {
+    "screening_result": "REFERENCE_RICHARDS_CLEARLY_FASTER_IN_THIS_BOUNDED_SOLVER_SEAM_BENCHMARK",
+    "rossfast_faster_hypothesis_supported": false,
+    "formal_production_speedup_claim": false,
+    "reason_formal_claim_withheld": "The repository performance authority still records isolated performance infrastructure as pending; GitHub-hosted shared-runner evidence is screening-only.",
+    "whole_model_runtime_claim": false,
+    "transaction_level_performance_claim": false,
+    "generalization_beyond_exact_domain": false
+  },
+  "reconciliation": {
+    "canonical_at_final_review": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
+    "canonical_delta_since_branch_base": "two commits, no src/**, reference/**, RossFast, P2E10 or performance dependency changes",
+    "production_or_reference_mutation": false
+  },
+  "next_permitted_action": "Investigate the measured solver-cost composition without optimizing or changing semantics: attribute RossFast time across table/kernel/substepping/linear solve and compare solve-work counts. Any optimization is a separate governed workunit. Formal speedup/slowness admission requires replay on an MP-admitted isolated host."
+}
