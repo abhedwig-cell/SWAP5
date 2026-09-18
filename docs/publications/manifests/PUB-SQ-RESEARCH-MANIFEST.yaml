@@ -4,7 +4,7 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: REF_HIGH_36_OF_36_THRESHOLD_MATCHED_CONTROLS_FROZEN_STRICT_EQUAL_ERROR_MATCHING_NEXT
+  status: REALIZED_ERROR_MATCHING_36_OF_36_FROZEN_TIMING_INFRASTRUCTURE_BLOCKED
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 9c1d87222b9ca7dc60fb75490b54ddc5a0230847
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
@@ -14,7 +14,7 @@ manifest:
     P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
-    next_confirmatory_surface: untimed_representation_bounded_reference_work_precision_matching_on_final_36_case_population
+    next_confirmatory_surface: preregistered_realized_error_timing_on_isolated_host_only
     P2E11_reference_extension:
       branch: work/pub-p2e11-reference-material-extension-calibration
       head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
@@ -256,6 +256,36 @@ manifest:
         qualified representation-bounded Reference refinement policy and a deterministic
         equal-or-better-error or bracketing rule. Retain all 36 cases and explicit unresolved
         outcomes. Timing remains forbidden.
+    P2E23_realized_error_reference_matching:
+      branch: work/pub-p2e23-observed-error-reference-matching
+      head: d05ed330ad3bf033d9a8542fec78e37839233570
+      result_blob: 031894dd898581fe473224e02b81cc1129c8e8b6
+      workflow_run: 35314767424
+      job: 105503952798
+      output_sha256: 1a8633e36e76875c454df32b1ca5725af6362c4216ecbefffa6ce136a08fca74
+      verdict: REALIZED_ERROR_MATCHING_RESOLVED_36_OF_36_34_BRACKETED_2_LEFT_CENSORED_TIMING_CAN_BE_PREREGISTERED
+      finding: >-
+        RossFast is frozen at its P2E22 N=1 production route. For each of all 36 cases,
+        representation-bounded Richards was evaluated untimed over every integer N=1..32 and
+        compared with the same final REF-HIGH. All 1152 Reference configurations were route-valid.
+        Thirty-four cases have a true realized-error bracket and two B12/Se=0.65 cases are
+        left-censored at N=1 because Reference N=1 is already more accurate than RossFast N=1.
+        No case is unresolved and no case requires N=32 as its first match.
+      matched_reference_control: >-
+        For each case, N_hi is the smallest tested Reference N with valid storage/mass/route
+        gates and normalized head/theta error <= RossFast N=1. For the 34 bracketed cases
+        N_hi lies between 7 and 24; N_lo is the last valid coarser Reference configuration
+        with error > RossFast. The N_hi error is 0.868 to 0.998 times RossFast error for
+        the genuinely bracketed cases, while N_lo is 1.001 to 1.148 times RossFast error.
+      timing_boundary: >-
+        Timing has not been executed. A future primary timing comparison may use RossFast N=1
+        versus casewise Reference N_hi. The two left-censored N1/N1 cases must be labelled
+        conservative Reference-more-accurate comparisons. N_lo may be a bracket sensitivity
+        comparator; runtime interpolation is not authorized.
+      next_permitted_action: >-
+        Preregister the timing protocol against the repository performance-governance stack.
+        Execution remains forbidden until an isolated runner satisfies MP-8 readiness and the
+        full MP-7 host-admission protocol.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
@@ -365,12 +395,20 @@ secondary_endpoints:
 
 equal_error_cost_endpoint:
   definition: >-
-    Compare total computational cost only between configurations whose primary scientific
-    error lies within the same predeclared error band relative to REF-HIGH.
+    Primary realized-error comparator is frozen by P2E23. RossFast uses N=1. Reference uses
+    the casewise N_hi, defined prospectively as the smallest representation-bounded integer
+    refinement N in 1..32 whose realized normalized head/theta error is less than or equal to
+    RossFast N=1 against the same REF-HIGH endpoint, with unchanged storage, mass and route
+    gates. Thirty-four cases are bracketed by N_lo/N_hi; two are left-censored at N=1.
   timing_rule: >-
-    Use repeated balanced/randomized execution order, report median and dispersion, and retain
-    solver work counters so conclusions do not depend on runner noise.
-  speed_claim_rule: No speedup claim is permitted outside the common admissible domain.
+    Timing must reuse the admitted SWAP5 performance-measurement architecture, execute on an
+    MP-8 contract-ready and MP-7 host-admitted isolated runner, use repeated paired
+    order-balanced measurements, preserve exact scientific outputs, and report CPU and wall
+    metrics separately together with solver work counters.
+  speed_claim_rule: >-
+    No speedup claim is permitted before the host-resolution gate passes, and no claim may
+    extend outside the frozen 36-case common admissible domain or reinterpret the two
+    left-censored cases as strict equality.
 
 thresholds:
   scientific_tolerances:
