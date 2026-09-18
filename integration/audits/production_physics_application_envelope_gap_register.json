@@ -275,7 +275,7 @@
       "id": "PPA-INT-12",
       "subsystem": "interception",
       "capability": "SWINTER=1/2 daily aggregate interception methods",
-      "classification": "F_NOT_YET_MIGRATED",
+      "classification": "E_PRESERVED_BUT_NOT_TYPED",
       "legacy_present": true,
       "legacy_authority": {
         "reference": "SWAP4.3.1 B1.11 corrected reference",
@@ -283,25 +283,32 @@
           "SWAP/MOD_meteo.f90"
         ]
       },
-      "swap5_implementation_authority": [],
-      "typed_input_config_authority": "None found in canonical production surface.",
-      "state_ownership": "Legacy source-window aggregate semantics; target state/event ownership mapped by F-PM06 but not implemented.",
-      "transaction_status": "Not production bound.",
-      "qualification_evidence": [
-        "integration/f-pm/F-PM06_STATUS.json",
-        "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md"
+      "swap5_implementation_authority": [
+        "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+        "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+        "integration/audits/PPA_WU04_STATUS.json"
       ],
-      "production_admission": "NONE",
+      "typed_input_config_authority": "Scientific/transaction contract frozen by PPA-WU04; no typed production provider exists yet.",
+      "state_ownership": "No persistent physical canopy-water state for SWINTER=1/2. Source-window aggregate AINTC plus accepted apportionment progress belongs to forcing/runtime provenance, not hidden process state.",
+      "transaction_status": "Review authority frozen: rejected trials may not advance accepted aggregate progress; smaller hydraulic retries must apportion the same source-window aggregate rather than re-evaluate the nonlinear daily/window formula per retry subspan.",
+      "qualification_evidence": [
+        "F-PM06 source-bound readiness",
+        "PPA-WU04 workflow 35377826442: authority job 105706628104 PASS; independent job 105706684721 PASS"
+      ],
+      "production_admission": "NONE_REVIEW_ONLY",
       "production_reachable": "NO",
       "restrictions": [
-        "F-PM06 explicitly says SWINTER1/2 production providers are not qualified"
+        "No production SWINTER=1/2 provider",
+        "No independent nonlinear interception-formula evaluation on numerical retry subspans",
+        "Mid-source-window restart requires explicit source-window provenance and accepted aggregate progress",
+        "No legacy weather-file/calendar parser migration"
       ],
-      "scientific_risk": "MEDIUM",
+      "scientific_risk": "MEDIUM science formula qualification remains per method; state/restart/rollback ownership ambiguity is closed",
       "use_relevance": "MEDIUM",
       "dependencies": [
-        "Atmospheric preprocessing",
-        "ET ownership",
-        "Application bootstrap"
+        "PPA-WU03 forcing/application boundary",
+        "PPA-WU04-C/D production slices",
+        "Accepted mass-ledger composition"
       ],
       "priority_band": "P2"
     },
@@ -389,7 +396,7 @@
       "id": "PPA-ET-REDU",
       "subsystem": "surface evaporation",
       "capability": "SWREDU=1 Black and SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
-      "classification": "F_NOT_YET_MIGRATED",
+      "classification": "E_PRESERVED_BUT_NOT_TYPED",
       "legacy_present": true,
       "legacy_authority": {
         "reference": "SWAP4.3.1 B1.11 corrected reference",
@@ -398,24 +405,34 @@
           "SWAP/swapoutput.f90"
         ]
       },
-      "swap5_implementation_authority": [],
-      "typed_input_config_authority": "No typed production state/config route found.",
-      "state_ownership": "Legacy continuation states LDWET or SPEV/SAEV; F-PM06 identifies them as true restart/transaction state.",
-      "transaction_status": "Not migrated; legacy pre-retry mutation pattern explicitly must not be copied.",
-      "qualification_evidence": [
-        "F-PM06 readiness only"
+      "swap5_implementation_authority": [
+        "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+        "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+        "integration/audits/PPA_WU04_STATUS.json"
       ],
-      "production_admission": "NONE",
+      "typed_input_config_authority": "Scientific/transaction contract frozen by PPA-WU04; no typed production state/config route exists yet.",
+      "state_ownership": "SWREDU=1 owns exactly LDWET. SWREDU=2 owns exactly the atomic SPEV/SAEV pair. State is option-specific accepted continuation state and may not be reconstructed from the hydraulic profile.",
+      "transaction_status": "Review authority frozen: all reduction-state updates are trial-local; rejected hydraulic trials leave committed reduction state unchanged; retries recompute from the same committed checkpoint. Legacy pre-retry mutation order is explicitly not target semantics.",
+      "qualification_evidence": [
+        "F-PM06 source-bound readiness",
+        "PPA-WU04 workflow 35377826442: authority job 105706628104 PASS; independent job 105706684721 PASS"
+      ],
+      "production_admission": "NONE_REVIEW_ONLY",
       "production_reachable": "NO",
       "restrictions": [
-        "SWREDU1/2 explicitly held by F-PM06"
+        "SWREDU=1/2 equations not implemented in production",
+        "LDWET or SPEV/SAEV must commit only with the accepted outer physical transaction",
+        "EMPREVA remains demand, not authoritative water-mass removal",
+        "Runtime option switching is not admitted by PPA-WU04"
       ],
-      "scientific_risk": "MEDIUM_HIGH",
+      "scientific_risk": "MEDIUM equation/oracle qualification remains; state/restart/rollback architecture risk is now bounded",
       "use_relevance": "HIGH",
       "dependencies": [
-        "ET state ownership",
-        "Restart schema",
-        "Dynamic top boundary"
+        "PPA-WU04-A/B implementation slices",
+        "PPA-WU01 transaction owner",
+        "PPA-WU03 forcing boundary",
+        "surface hydraulic evaporation owner",
+        "restart schema"
       ],
       "priority_band": "P2"
     },
@@ -1607,10 +1624,6 @@
     ],
     "scientific_review_first": [
       {
-        "capability_id": "PPA-ET-REDU",
-        "reason": "Persistent empirical ET state and legacy pre-retry mutation must be redesigned transactionally without changing equations."
-      },
-      {
         "capability_id": "PPA-RWU-ADV",
         "reason": "Multiple stateful stresses interact with root uptake, thermal/solute state and coupling derivative coverage."
       },
@@ -1631,10 +1644,6 @@
       {
         "capability_id": "PPA-HYST",
         "reason": "Stateful hydraulic-history feature; lower immediate use relevance than bootstrap/forcing/root/management gaps."
-      },
-      {
-        "capability_id": "PPA-INT-12",
-        "reason": "Can wait behind common forcing and ET ownership closure if usage evidence is limited."
       },
       {
         "capability_id": "PPA-IRR-OTHER",
@@ -1676,6 +1685,20 @@
         "disposition": "CANONICAL_ADMITTED_CLOSED",
         "evidence": "PPA-WU02 workflow 35374976662 owner/independent PASS; PPA-WU01 preservation 35374976768 PASS; PR #324 merged.",
         "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1"
+      }
+    ],
+    "review_closed_implementation_held": [
+      {
+        "capability_id": "PPA-ET-REDU",
+        "workunit": "PPA-WU04",
+        "disposition": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN",
+        "next": "Implement only through PPA-WU04-A/B with independent equation, retry, restart and mass qualification."
+      },
+      {
+        "capability_id": "PPA-INT-12",
+        "workunit": "PPA-WU04",
+        "disposition": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN",
+        "next": "Implement only through PPA-WU04-C/D with explicit source-window aggregate provenance and mid-window restart qualification."
       }
     ]
   },
@@ -1747,7 +1770,17 @@
       "id": "PPA-WU04",
       "title": "Stateful ET/interception scientific review",
       "goal": "Re-derive SWINTER1/2 and SWREDU1/2 state/event/restart/rollback semantics from B1.11 and freeze a migration contract before implementation.",
-      "exit": "Scientific/transaction authority exists for later implementation; no production source change in this review unit."
+      "exit": "MET for scientific/transaction authority: state, source-window aggregate provenance, retry/rollback, restart and mass-owner contracts are frozen. No production migration is claimed.",
+      "status": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_CLOSED",
+      "qualification": "PPA-WU04 workflow 35377826442: authority 105706628104 PASS; independent 105706684721 PASS; zero production source delta.",
+      "production_admission": "NONE_REVIEW_ONLY",
+      "contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+      "follow_on_slices": [
+        "PPA-WU04-A SWREDU=1 Black",
+        "PPA-WU04-B SWREDU=2 Boesten-Stroosnijder",
+        "PPA-WU04-C SWINTER=1 VonHHBraden",
+        "PPA-WU04-D SWINTER=2 Gash"
+      ]
     },
     {
       "id": "PPA-WU05",
@@ -1792,6 +1825,12 @@
       "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
       "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
       "effect": "Closes H authority ambiguity for the B1.11 lower-boundary catalogue and canonically admits only the bounded homogeneous typed prescribed-qbot application slice. Full legacy SWBOTB=2 input semantics and remaining selectors stay as explicit migration slices."
+    },
+    {
+      "workunit": "PPA-WU04",
+      "state": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_CLOSED",
+      "qualification": "Workflow 35377826442 authority/independent PASS",
+      "effect": "Closes state/event/restart/rollback ambiguity for SWINTER=1/2 and SWREDU=1/2 without production admission. Four bounded implementation slices are frozen."
     }
   ]
 }
