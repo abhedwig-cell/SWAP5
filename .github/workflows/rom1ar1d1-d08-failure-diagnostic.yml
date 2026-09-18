@@ -1,0 +1,44 @@
+name: ROM1A-R1-D1 D08 step34 diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1AR1D1_*'
+      - 'docs/science/ROM1AR1D1_*'
+      - 'tests/rom/test_rom1ar1d1_d08_failure_diagnostic.f90'
+      - 'tests/rom/analyze_rom1ar1d1_d08_failure_diagnostic.py'
+      - 'tests/rom/run_rom1ar1d1_d08_failure_diagnostic.sh'
+      - '.github/workflows/rom1ar1d1-d08-failure-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1ar1d1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen D08 step34 diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1AR1D1_EVIDENCE
+          ROM1AR1D1_EVIDENCE_DIR="$PWD/ROM1AR1D1_EVIDENCE"             bash tests/rom/run_rom1ar1d1_d08_failure_diagnostic.sh | tee ROM1AR1D1_EVIDENCE/gate.txt
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1ar1d1-${{ github.run_id }}
+          path: ROM1AR1D1_EVIDENCE
+          if-no-files-found: warn
