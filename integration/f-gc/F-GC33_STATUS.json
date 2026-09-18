@@ -3,8 +3,8 @@
   "capability": "F-GC33",
   "title": "MODFLOW6 Linear Response Backend",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_IMPLEMENT",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
   "authority_reconciliation": {
     "canonical_f_gc31": "Restricted Active-Drainage Lagged Tangent",
     "canonical_f_gc40": "MultiSWAP MODFLOW6 Cell Response",
@@ -61,5 +61,28 @@
     "active-drainage envelope expansion",
     "canonical admission"
   ],
-  "next_permitted_action": "Run exact-head F-GC33 current-canonical qualification. If green, checkpoint owner qualification and proceed to independent qualification before admission."
+  "next_permitted_action": "Run independent qualification of the exact F-GC33 production blob against canonical F-GC40. Verifier must have no production delta and must not reuse the owner test.",
+  "qualification": {
+    "qualified_head": "04733460f5101ddf6d01c5e50c7af755689006f5",
+    "workflow_run": 35292805618,
+    "workflow_job": 105439081875,
+    "conclusion": "success",
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "current_canonical_dependency": "F-GC40",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FGC33_PURE_LINEAR_BACKEND",
+      "FGC33_NO_XMI_NODELIST_OR_COMMIT",
+      "FGC33_EXACT_HCOF_RHS_TRANSFORM",
+      "FGC33_REFERENCE_HEAD_CLOSURE",
+      "FGC33_SECOND_HEAD_CLOSURE",
+      "FGC33_REFERENCE_REPRESENTATION_INVARIANCE",
+      "FGC33_AREA_SCALING",
+      "FGC33_SIGN_PRESERVATION",
+      "FGC33_IDENTITY_NOT_NODE_INDEX",
+      "FGC33_FAIL_CLOSED",
+      "FGC33_LINEAR_RESPONSE_BACKEND_GATE",
+      "FGC33_O0_O2_OUTPUT_IDENTITY"
+    ]
+  }
 }
