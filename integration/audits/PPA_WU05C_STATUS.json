@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ppa_wu05c.status.v1",
+  "work_unit": "PPA-WU05-C",
+  "title": "Oxygen-stress source/state/owner authority",
+  "branch": "audit/ppa-wu05c-oxygen-stress-authority",
+  "reconcile_base": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
+  "status": "REVIEW_IMPLEMENTED_QUALIFICATION_PENDING",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "oxygenstress_corrected_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "correction": "SWAP-007"
+  },
+  "frozen_findings": [
+    "existing nodewise root_extraction_sink remains the single accepted root-water mass owner",
+    "oxygen stress is a reduction/modifier result, not an independent water-mass transfer owner",
+    "historically extracted d_soil_term1/d_soil_term2/gfp100/capac_term/nmin1/mplus1 form immutable-after-construction derived cache",
+    "derived oxygen cache is excluded from checkpoint/rollback/restart authority",
+    "SWAP-007 representability guard is mandatory and may not be replaced by a new tolerance/fallback",
+    "oxygen-active groundwater derivative coverage remains fail-closed"
+  ],
+  "held": [
+    "complete B1.11 oxygenstress/rootextraction call graph",
+    "complete dynamic input list and exact stress-composition ordering",
+    "final proof whether any caller-side continuation state exists",
+    "production DTO and source oracle",
+    "production oxygen implementation",
+    "oxygen-active coupling and parallel claims"
+  ],
+  "next_slice": "PPA-WU05-C1 byte-exact B1.11 oxygenstress/rootextraction source materialization and call-graph/input/state census",
+  "qualification": {
+    "state": "PENDING"
+  },
+  "verdict": "PARTIAL_AUTHORITY_FROZEN_AWAITING_REVIEW_QUALIFICATION"
+}
