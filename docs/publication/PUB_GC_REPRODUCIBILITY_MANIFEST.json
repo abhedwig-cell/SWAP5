@@ -1,12 +1,12 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
-  "canonical_basis": "970bc631d78ce1f5db3821ce313d500b1c63b274",
+  "canonical_basis": "faf33c1fb023a164a6456da160422685c32a88c4",
   "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "1ada7e208cf970f971f53e12ba4d11d4ba3e77b2"
+      "blob": "5c3bd2404fd8f47b653c90b78a8f635c69aeca46"
     },
     "claim_ledger": {
       "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
@@ -30,7 +30,7 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "20356125109d45667034e8d06fd61737ff1d9f74"
+      "blob": "6b0106d5d1cd0be24acbdf2b5f52e901f93c1442"
     },
     "notation": {
       "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
@@ -54,11 +54,15 @@
     },
     "publication_programme": {
       "path": "docs/publication/PUBLICATION_PROGRAMME.md",
-      "blob": "25eda070f7937db55f896c0a933ba30056cbc494"
+      "blob": "c135eaf24ca8401268b990c530d077dbae531249"
     },
     "e7_figure": {
       "path": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
       "blob": "b1c78a79feb817527e015a500a35478d6c6ab5a5"
+    },
+    "gmd_archival_gate": {
+      "path": "docs/publication/PUB_GC_GMD_ARCHIVAL_GATE.md",
+      "blob": "86280b9380553066842ea5e2da0be296dece1da7"
     }
   },
   "evidence": {
@@ -211,5 +215,28 @@
       "e7_effect": "NONE; prescribed-head groundwater owner remains mode 5 and active drainage/root extraction remain fail-closed"
     }
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package. E7 is a closed preregistered realistic component-domain result; final archival release/DOI remains a later submission task."
+  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package and current GMD preparation layer. E7 remains closed; unresolved submission items are governance/archive/author/formatting metadata only.",
+  "gmd_presubmission": {
+    "status": "REPOSITORY_PREPARATION_COMPLETE_EXTERNAL_GOVERNANCE_ARCHIVE_AUTHOR_FIELDS_OPEN",
+    "policy_checked": "2026-09-19",
+    "package": [
+      "docs/publication/PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md",
+      "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md",
+      "docs/publication/PUB_GC_GMD_PREARCHIVE_INVENTORY.json",
+      "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.json",
+      "docs/publication/PUB_GC_GMD_FORMATTING_HANDOFF.md",
+      "docs/publication/PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md",
+      "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
+      "docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md",
+      "tools/publication/check_pub_gc_gmd_submission.py"
+    ],
+    "unresolved": [
+      "governed successor publication release identifier",
+      "authorized SWAP5 publication-archive licence/redistribution statement",
+      "persistent exact-version archive DOI/PID",
+      "final author/affiliation/contribution/funding/interest metadata",
+      "final figure export binaries"
+    ],
+    "scientific_experiment_required": false
+  }
 }
