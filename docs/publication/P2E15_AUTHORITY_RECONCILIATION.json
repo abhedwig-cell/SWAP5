@@ -1,0 +1,34 @@
+{
+  "workunit": "PUB-P2E15",
+  "status": "PRIMARY_AUTHORITY_RECONCILED_WITH_EXACT_PARALLEL_REPLICATION",
+  "primary_authority": {
+    "branch": "work/pub-p2e15-material-extension-primary",
+    "result_path": "docs/publication/P2E15_MATERIAL_EXTENSION_PRIMARY_RESULT.json",
+    "result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19",
+    "execution_head": "171e6f824899b68403d5eb293672b68f79ee1700",
+    "workflow_run": 35290525541,
+    "job": 105432153537,
+    "output_sha256": "db02085fed1c85504de16fb285a396f52cb163589e91f8b578ad17997ae8f8c8",
+    "verdict": "PRIMARY_MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_FROZEN_COMMON_DOMAIN_180_OF_180"
+  },
+  "parallel_replication": {
+    "branch": "work/pub-p2e15-30-material-e0-holdout",
+    "result_path": "docs/publication/P2E15_30_MATERIAL_E0_HOLDOUT_RESULT.json",
+    "result_blob": "38406e9a547fbac4b9ee7c751e15d8f2778e0f0c",
+    "execution_head": "e18956764207d4b060290ed37270f243dd878452",
+    "workflow_run": 35290504889,
+    "job": 105432092702,
+    "output_sha256": "c1b3f4a65a1becb7f3d48e0d9cbf38475d8820a874031ad75c7e1c462fb08ad5"
+  },
+  "equivalence_check": {
+    "unique_scientific_cases_each": 180,
+    "raw_case_records_each_across_O0_O2": 360,
+    "case_markers_byte_identical_across_successful_runs": true,
+    "difference_count": 0,
+    "summary_counts_identical": true,
+    "maximum_threshold_fraction_locations_and_values_identical": true
+  },
+  "evidence_rule": "Count the 180-case matrix once. The parallel run demonstrates execution reproducibility only and must not increase sample size or evidentiary weight.",
+  "supersedes": "docs/publication/P2E15_DUPLICATE_CLOSE.json",
+  "next_permitted_action": "Use the primary authority for PUB-SQ governance and design the separately preregistered admissibility-boundary experiment."
+}
