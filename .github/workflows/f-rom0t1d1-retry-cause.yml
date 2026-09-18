@@ -1,0 +1,45 @@
+name: F-ROM0T1D1 refined retry diagnosis
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0T1D1_*'
+      - 'integration/f-rom/F-ROM0T1_STATUS.json'
+      - 'docs/science/F-ROM0T1D1_*'
+      - 'tests/rom/test_f_rom0t1d1_retry_cause.f90'
+      - 'tests/rom/analyze_f_rom0t1d1_retry_cause.py'
+      - 'tests/rom/run_f_rom0t1d1_retry_cause.sh'
+      - '.github/workflows/f-rom0t1d1-retry-cause.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0t1d1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen T1 refined retry diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0T1D1_EVIDENCE
+          F_ROM0T1D1_EVIDENCE_DIR="$PWD/F-ROM0T1D1_EVIDENCE"             bash tests/rom/run_f_rom0t1d1_retry_cause.sh | tee F-ROM0T1D1_EVIDENCE/gate.txt
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0t1d1-${{ github.run_id }}
+          path: F-ROM0T1D1_EVIDENCE
+          if-no-files-found: warn
