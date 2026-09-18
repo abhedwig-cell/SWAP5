@@ -110,9 +110,10 @@ For each probe record:
 - READY / bounded failure;
 - q_SWAP;
 - integrated bottom exchange;
-- storage change if available from qualification diagnostics;
-- mass-accounting completeness/residual;
+- storage change only if available without changing the production participant API;
 - authoritative revision/time/ledger tuple before and after discard.
+
+The canonical production participant does not expose the full corrector trial mass carrier. E6-A therefore does **not** add such a production API solely for publication diagnostics. Corrector admissibility is the existing accepted-whole-window transaction result; predictor mass completeness/residual remains the explicit mass diagnostic used in the E6-A selection screen.
 
 No asymmetric pair is converted into a centred derivative.
 
@@ -144,8 +145,8 @@ A state/flux pair becomes an E6-B candidate only if:
 
 1. predictor initialization is READY;
 2. both signs of the `1e-4 m` head probe are READY;
-3. all successful diagnostic trials preserve mass-accounting completeness;
-4. all discarded trials preserve zero authoritative state/mass.
+3. predictor mass accounting is complete and its residual is finite;
+4. all discarded corrector trials preserve zero authoritative state/mass.
 
 Among qualifying cases, select the **largest predictor flux**.
 
