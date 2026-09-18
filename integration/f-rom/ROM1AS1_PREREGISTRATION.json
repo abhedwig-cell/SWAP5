@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.rom1as1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-S1",
+  "title": "Successor reachable-state library under qualified strict-first research Reference policies",
+  "phase": "PREREGISTERED_BEFORE_SUCCESSOR_LIBRARY_EXECUTION",
+  "parents": {
+    "original_ROM1A_preregistration": "integration/f-rom/F-ROM1A_PREREGISTRATION.json",
+    "original_ROM1A_run": {
+      "workflow_run": 35376913714,
+      "result": "FAILED_D01_STEP21_UNDER_STRICT_MODE2_CONTROL",
+      "reclassified": false
+    },
+    "ROM1AD1": "ROM1AD1_RETRY_TOTAL_ONLY_WITHIN_REPRESENTATION_BOUND",
+    "ROM1AD2": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED",
+    "ROM0_R3D4": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED"
+  },
+  "scientific_design_lock": {
+    "history_definitions": "EXACT_F_ROM1A_PREREGISTRATION",
+    "history_count": 12,
+    "steps_per_history": 64,
+    "discovery_histories": 8,
+    "held_out_histories": 4,
+    "discovery_state_target": 512,
+    "held_out_state_target": 256,
+    "total_state_target": 768,
+    "material": "B01",
+    "material_transfer_challenge": "B14_REMAINS_UNOPENED",
+    "future_probe_design": "UNCHANGED_F_ROM1A_PREREGISTRATION",
+    "amplitude_change_allowed": false,
+    "history_change_allowed": false,
+    "split_change_allowed": false
+  },
+  "reference_policy": {
+    "common": {
+      "step_dt_day": 0.0008,
+      "hard_transaction_mass_gate_cm": 1e-12,
+      "strict_attempt_always_first": true,
+      "failed_strict_attempt_must_leave_committed_state_bit_immutable": true,
+      "dt_subdivision": false
+    },
+    "mode2": {
+      "authority": "ROM1A-D2",
+      "policy": "MODE2_ORIGINAL_FIRST_FAIL_CLOSED_TOTAL_ONLY_REATTEMPT",
+      "allowed_symbols": ["HOLD","TOP_PLUS","TOP_MINUS"],
+      "fallback_rule": "only RETRY_TOTAL_ONLY within pre-solve representation bound"
+    },
+    "mode5": {
+      "authority": "ROM-0R-R3D4",
+      "allowed_fallback_symbols": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+      "combined_symbols": ["COMBINED_RISE_PLUS","COMBINED_FALL_MINUS"],
+      "combined_symbol_fallback_authorized": false,
+      "combined_symbol_rule": "strict attempt must succeed; any strict failure is successor no-go"
+    },
+    "unchanged_solver_controls": {
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "conductivity_implicit_mode": 0,
+      "conductivity_mean_method": 1,
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "strict_total_balance_tolerance_cm_per_day": 1e-12,
+      "head_abs_tolerance_cm": 1e-12,
+      "head_rel_tolerance": 1e-12,
+      "ponding_tolerance_cm": 1e-12
+    }
+  },
+  "per_state_schema": "EXACT_F_ROM1A_PREREGISTRATION_PLUS_REFERENCE_POLICY_ID",
+  "qualification": [
+    "12_HISTORIES_COMPLETE_64_ACCEPTED_STEPS",
+    "768_ACCEPTED_B01_LIBRARY_STATES",
+    "512_DISCOVERY_AND_256_HELDOUT_STATES",
+    "EVERY_RETAINED_STATE_FROM_FKT_COMMIT_AUTHORITY",
+    "EVERY_COMMITTED_STEP_EXACTLY_ONE_PHYSICAL_ADVANCE",
+    "NO_DT_SUBDIVISION",
+    "HARD_MASS_GATE_EVERY_STEP",
+    "MODE2_FALLBACK_ONLY_UNDER_D2_RULE",
+    "MODE5_PURE_FALLBACK_ONLY_UNDER_D4_RULE",
+    "NO_COMBINED_MODE5_FALLBACK",
+    "FAILED_STRICT_ATTEMPT_NEVER_MUTATES_COMMITTED_STATE",
+    "COMMITTED_REVISION_AND_TIME_PROGRESS_EXACTLY",
+    "ALL_PRIMARY_OUTPUTS_AND_FULL_PROFILES_FINITE",
+    "FULL_LIBRARY_REPEAT_STDOUT_BITWISE_IDENTITY",
+    "B14_NOT_EXECUTED",
+    "NO_SRC_OR_REFERENCE_MUTATION"
+  ],
+  "positive_decision": "ROM1AS1_REACHABLE_STATE_LIBRARY_QUALIFIED",
+  "negative_decision": "ROM1AS1_REACHABLE_STATE_LIBRARY_NO_GO",
+  "if_positive": "Authorize ROM-1B predictive-state ambiguity analysis on the frozen discovery/holdout library. Coordinate selection remains forbidden until ROM-1B preregistration.",
+  "firewalls": [
+    "ORIGINAL_ROM1A_FAILURE_REMAINS_IMMUTABLE",
+    "NO_HISTORY_OR_PROBE_RETUNING",
+    "NO_B14_EXECUTION_OR_INSPECTION",
+    "NO_HELDOUT_USE_FOR_COORDINATE_ENRICHMENT",
+    "NO_REDUCED_COORDINATE_SELECTION_IN_S1",
+    "NO_POD_OR_MODAL_FIT",
+    "NO_MEMORY_VARIABLE_SELECTION",
+    "NO_CLOSURE_FIT",
+    "NO_PRODUCTION_ROM_OR_REFERENCE_FALLBACK_ADMISSION"
+  ]
+}
