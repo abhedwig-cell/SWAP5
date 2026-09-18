@@ -74,8 +74,10 @@ def main():
             ok=common and bal==0 and rmax<=1e-12 and abs(rsum)>1e-12 and cp_tol==1e-12
             total_only_count+=1
         elif cls=="RETRY_LOCAL_BALANCE":
-            ok=(common and bal>0 and local_int<=1.6e-15
-                and cp_tol==max(1e-12,1.6e-15/0.0008))
+            dt=float(f["T1"])-float(f["HISTORY_STEP_T0"])
+            expected_cp=max(1e-12,1.6e-15/dt)
+            cp_formula_identity=abs(cp_tol-expected_cp)<=4.0*math.ulp(expected_cp)
+            ok=(common and bal>0 and local_int<=1.6e-15 and cp_formula_identity)
             local_count+=1
             if f.get("_history_context")=="D08" and int(f.get("_step_context",0))==34:
                 d08_step34_local=True
