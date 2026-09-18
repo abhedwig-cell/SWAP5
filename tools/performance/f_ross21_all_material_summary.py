@@ -10,7 +10,7 @@ from pathlib import Path
 CASE_RE = re.compile(
     r"^F_ROSS21_CASE\|CASE=(?P<case>\d+)\|ISE=(?P<ise>\d+)\|M=(?P<material>[^|]+)\|F=(?P<forcing>[^|]+)"
     r"\|CLASS=(?P<classification>[^|]+)\|LIN=(?P<lin>-?\d+)\|RETRY=(?P<retry>-?\d+)\|ALT=(?P<alt>-?\d+)"
-    r"\|FALLBACK=(?P<fallback>-?\d+)\|MASS=(?P<mass>[^|]+)\|TEMP=(?P<temp>[^|]+)"
+    r"\|LEVEL=(?P<level>-?\d+)\|MASS=(?P<mass>[^|]+)\|TEMP=(?P<temp>[^|]+)"
     r"\|HINF=(?P<h_inf>[^|]+)\|HRMS=(?P<h_rms>[^|]+)"
     r"\|TINF=(?P<t_inf>[^|]+)\|TRMS=(?P<t_rms>[^|]+)\|STORAGE=(?P<storage>[^|]+)$"
 )
@@ -74,7 +74,7 @@ def main() -> int:
     by_ise=Counter(str(r["ise"]) for r in mid+final)
     by_forcing=Counter(r["forcing"] for r in mid+final)
     result={
-        "schema":"swap5.f-ross21.all-material-production-matrix.v1",
+        "schema":"swap5.f-ross21.all-material-research-matrix.v1",
         "case_count":216,
         "route_valid_count":len(route_valid),
         "temporal_accepted_count":len(temporal_ok),
