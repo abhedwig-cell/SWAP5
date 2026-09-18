@@ -39,7 +39,7 @@ EXCLUDED_NOVELTY
 | GC-C08 | A finite-window SWAP response can be exposed without exposing the internal Richards Jacobian or timestep controller. | Interface Jacobian/derivative exposure is established in FMI and co-simulation. | F-GC30/F-GC33/F-GC39/F-GC44 | Compare finite-difference, analytic and black-box response variants on the same accepted origins. | SUPPORTED_ARCHITECTURE |
 | GC-C09 | F-GC30/F-GC44 response information has a clear physical relation to storage response J_S and actual exchange response J_R. | Dynamic storage response is established in MetaSWAP and transient-specific-yield literature. | Response infrastructure exists | Direct u_FD vs J_S vs J_R characterization; derivative plateau, linearity radius and balance closure. | HYPOTHESIS |
 | GC-C10 | Supplied finite-window response can reduce total coupling work beyond strong black-box multisecant learning in identifiable regimes. | IQN/Anderson, history reuse and surrogate-assisted QN are strong prior art. | No decisive publication result yet | Oracle vs IQN cold/warm, acquisition-cost accounting, regime/generalization tests. | HYPOTHESIS |
-| GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | Restricted near-equilibrium F-GC44 case suggests bounded easy regime | Deliberately map weak versus stronger feedback cases. | HYPOTHESIS |
+| GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary for materially changing groundwater head, even when strict interface closure benefits from iteration. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | PUB-GC E3: 12 real low-flux cases converged in 2–5 outer iterations; loose residuals reached 2.80e-12 m/s while the maximum loose-to-iterative head correction remained only 5.55e-9 m. | Generalize beyond the near-equilibrium/low-flux fixture; E3-R targets the largest currently admitted predictor fluxes. | SUPPORTED_RESTRICTED |
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
 | GC-C13 | The same coupling ownership and mass-publication principles can scale to regional execution. | Framework scalability is common in environmental modelling; quantitative evidence required. | Architecture supports composition; F-GC40 gives response reduction | Multi-column live-MODFLOW experiment, scaling curve, deterministic mass closure. | PLANNED_EXPERIMENT |
 | GC-C14 | The integrated coupling contract is a transferable contribution beyond one SWAP5 implementation detail. | HydroCouple, MODFLOW API, SWAT+MODFLOW and ParFlow coupling papers show the publication precedent but raise the generalization burden. | Design documents and current implementation | Discussion must extract principles and demonstrate at least one non-trivial hydrological/operational regime beyond the first restricted case. | HYPOTHESIS |
@@ -160,7 +160,7 @@ However:
 
 1. **E1 closed — SUPPORTED_RESTRICTED** for identity/sign/accounting in the near-equilibrium F-GC44 envelope; retain a targeted non-zero-storage extension.
 2. **E2 closed — SUPPORTED_RESTRICTED** for pre-publication rejection/abort and exactly-once successful publication; post-publication durability remains separate.
-3. **E3 main matrix completed — SUPPORTED_RESTRICTED for interface-convergence behaviour**, but not yet for hydrologically material feedback; E3-D predictor-envelope diagnosis is active.
+3. **E3 main matrix completed — SUPPORTED_RESTRICTED for interface-convergence behaviour and a weak-feedback control.** E3-D predictor-envelope diagnosis is complete; E3-D2 mechanism diagnosis and E3-R stronger-feedback refinement are active.
 4. E4 response identity u_FD vs J_S vs J_R.
 5. E5 oracle/IQN information-value test.
 6. E6 hydrological stress extension.
@@ -199,3 +199,20 @@ Machine-readable result:
 Post-hoc but separately preregistered predictor-envelope diagnosis:
 
 `PUB_GC_E3D_PREDICTOR_ENVELOPE_PREREGISTRATION.md`
+
+
+E3-D predictor-envelope result:
+
+`PUB_GC_E3D_PREDICTOR_ENVELOPE_RESULT.md`
+
+E3-D machine-readable result:
+
+`PUB_GC_E3D_PREDICTOR_ENVELOPE_RESULT.json`
+
+E3-D2 failure-mechanism preregistration:
+
+`PUB_GC_E3D2_PREDICTOR_FAILURE_PREREGISTRATION.md`
+
+E3-R stronger-feedback preregistration:
+
+`PUB_GC_E3R_STRONGER_FEEDBACK_PREREGISTRATION.md`
