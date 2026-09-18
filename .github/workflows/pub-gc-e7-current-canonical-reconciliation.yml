@@ -1,0 +1,32 @@
+name: PUB-GC E7 current-canonical preservation
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.*'
+      - 'tests/publication/validate_pub_gc_e7_current_canonical_reconciliation.py'
+      - '.github/workflows/pub-gc-e7-current-canonical-reconciliation.yml'
+      - 'docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'integration/audits/PPA_WU02_STATUS.json'
+      - 'integration/audits/PPA_WU03_STATUS.json'
+      - 'integration/audits/PPA_WU04_STATUS.json'
+      - 'integration/audits/PPA_WU05_STATUS.json'
+      - 'integration/audits/PPA_WU05A_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate E7 against current canonical application envelope
+        run: python tests/publication/validate_pub_gc_e7_current_canonical_reconciliation.py
