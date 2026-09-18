@@ -1,0 +1,25 @@
+name: PUB-P2E15 30-material E0 holdout
+
+on:
+  push:
+    branches:
+      - work/pub-p2e15-30-material-e0-holdout
+    paths:
+      - 'docs/publication/P2E15_30_MATERIAL_E0_HOLDOUT_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e15_30_material_e0_holdout.f90'
+      - 'tests/publication/run_pub_p2e15_30_material_e0_holdout.sh'
+      - '.github/workflows/pub-p2e15-30-material-e0-holdout.yml'
+  workflow_dispatch:
+
+jobs:
+  holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered 30-material E0 holdout
+        run: bash tests/publication/run_pub_p2e15_30_material_e0_holdout.sh
