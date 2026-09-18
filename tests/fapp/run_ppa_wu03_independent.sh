@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ppa-wu03-independent-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ppa-wu03-independent-${GITHUB_RUN_ID:-local}-$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
@@ -14,7 +14,7 @@ python3 - <<'PY'
 from pathlib import Path
 
 adapter = Path("src/adapter/mod_ppa_wu03_common_forcing_adapter.f90").read_text().lower()
-test = Path("tests/fapp/test_ppa_wu03_independent_common_forcing_independent.f90").read_text().lower()
+test = Path("tests/fapp/test_ppa_wu03_common_forcing_independent.f90").read_text().lower()
 
 for token in [
     "materialize_ppa_wu03_common_forcing",
@@ -34,7 +34,8 @@ assert "stream_cursor" not in adapter
 
 print("PPA_WU03_INDEPENDENT_ORACLE_SEPARATION_STATIC=PASS")
 print("PPA_WU03_INDEPENDENT_NO_OWNER_ORACLE_STATIC=PASS")
-PYCOMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+PY
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -133,7 +134,7 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu03_independent_common_forcing_independent.f90 -o "$OUT/test.o" || fail "compile test O$opt"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu03_common_forcing_independent.f90 -o "$OUT/test.o" || fail "compile test O$opt"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test_ppa_wu03_independent" || fail "link O$opt"
 
   "$OUT/test_ppa_wu03_independent" > "$OUT/output.txt" 2>&1 || {
@@ -150,9 +151,8 @@ cat "$BUILD/o0/output.txt"
 
 git diff --check -- \
   src/adapter/mod_ppa_wu03_common_forcing_adapter.f90 \
-  src/runtime/mod_fmr_production_application_bootstrap.f90 \
-  tests/fapp/test_ppa_wu03_independent_common_forcing_independent.f90 \
-  tests/fapp/run_ppa_wu03_common_forcing_adapter.sh
+  tests/fapp/test_ppa_wu03_common_forcing_independent.f90 \
+  tests/fapp/run_ppa_wu03_independent.sh
 
 echo 'PPA_WU03_O0_O2_OUTPUT_IDENTITY=PASS'
 echo 'PPA-WU03 INDEPENDENT O0 O2 QUALIFICATION PASS'
