@@ -2,11 +2,20 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS19",
   "title": "Adaptive K2 to K4 RossFast certificate",
-  "phase": "RECONCILE",
-  "status": "PREREGISTERED_RESEARCH_ONLY",
+  "phase": "QUALIFY",
+  "status": "IMPLEMENTED_PENDING_EXECUTION",
   "branch": "work/f-ross19-adaptive-k2-k4-certificate",
   "source_head": "2f70264cb90eb9e5ed7b743399b0c4a331014868",
   "production_or_reference_mutation": false,
-  "verdict": "READY_TO_IMPLEMENT_TEST_ONLY_ADAPTIVE_CERTIFICATE",
-  "next_permitted_action": "Implement research-only adaptive modules under tests and qualify on frozen 36-case domain."
+  "research_modules": [
+    "tests/ross/research/mod_rossfast_d3r_table_kernel_adaptive.f90",
+    "tests/ross/research/mod_rossfast_d3r_soil_water_solver_adaptive.f90"
+  ],
+  "qualification": {
+    "science": "pending",
+    "fallback_identity_to_K4": "pending",
+    "performance_vs_reference": "pending"
+  },
+  "verdict": "READY_FOR_RESEARCH_QUALIFICATION",
+  "next_permitted_action": "Execute exact-head adaptive science and paired performance workflow; do not tune trigger or fallback after results."
 }
