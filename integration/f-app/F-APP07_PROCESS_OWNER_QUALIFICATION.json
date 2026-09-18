@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP07",
+  "phase": "QUALIFY_PROCESS_OWNER",
+  "branch": "work/f-app07-hupsel-tcs1-dcs2-irrigation",
+  "qualified_head": "dfe8709faa3cdcd7e4f1adaaeb1b05c4d772acc5",
+  "authority": {
+    "exact_irrigation_source_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "m1_route_qualification": "integration/m1/M1_C3_HUPSEL_IRRIGATION_ROUTE_QUALIFICATION.json"
+  },
+  "scope": "restricted TCS1+DCS2, TCSFIX=1, ISUAS=0 Hupsel scheduled sprinkling process",
+  "qualification": {
+    "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
+    "run_id": 35344081322,
+    "job_id": 105596472230,
+    "compiler": "GNU Fortran 13.3.0",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_stable": "PASS",
+    "output_sha256": "8c8bb9f7d6a7b9084ce1aed1708916db99b3b4f677311c8c98c5d916a0c38b98",
+    "frozen_Hupsel_events": "PASS",
+    "tcsfix_dayfix": "PASS",
+    "split_replay": "PASS",
+    "fixed_event_precedence": "PASS",
+    "partial_table_fail_closed": "PASS"
+  },
+  "mutations": {
+    "production_process": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+    "runtime": "NONE",
+    "solver": "NONE",
+    "transaction": "NONE",
+    "timestep": "NONE",
+    "retry": "NONE",
+    "tolerance": "NONE"
+  },
+  "verdict": "PASS_RESTRICTED_TCS1_DCS2_PROCESS_OWNER_QUALIFICATION",
+  "admission_status": "NOT_READY_COMPOSITION_AND_INDEPENDENT_QUALIFICATION_REQUIRED",
+  "next_permitted_action": "Reconcile onto canonical containing admitted F-APP05. Compose gross scheduled/fixed surface irrigation through the existing Rutter and dynamic-top seams, qualify exact Hupsel active intervals, then run independent qualification."
+}

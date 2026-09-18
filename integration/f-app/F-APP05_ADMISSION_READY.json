@@ -1,0 +1,39 @@
+{
+  "schema":"swap5.bounded_execution_checkpoint.v1",
+  "workunit":"F-APP05",
+  "phase":"ADMISSION_READY_PENDING_CANONICAL_GATE",
+  "branch":"work/f-app05-hupsel-rutter-swcf2-typed-envelope",
+  "head":"cf3a5b9dd8bfabae0c47513f97540162f538d066",
+  "pr":231,
+  "production_delta":{
+    "new":"src/process/mod_rutter_interception_process.f90",
+    "modified":"src/process/mod_pmdirect_swetr0_process.f90",
+    "pmdirect_change":"append backward-compatible crop-height fields to canopy contract and select legacy SWCF=2 aerodynamic crop height only when explicitly enabled; existing positional constructor order preserved"
+  },
+  "owner_qualification":{
+    "workflow_run_id":35337428712,
+    "job_id":105575423010,
+    "result":"PASS",
+    "rutter_O0_O2":"PASS",
+    "frozen_Hupsel_Rutter_observations":"PASS",
+    "frozen_Hupsel_SWCF2_daily_PMdirect":"PASS",
+    "F_APP03_regression":"PASS",
+    "O0_O2_identity":"PASS"
+  },
+  "independent_qualification":[
+    {"workunit":"F-VQ114","verdict":"PASS_RUTTER_ALGEBRA","run":35337100777},
+    {"workunit":"F-VQ115","verdict":"PASS_COMBINED_HUPSEL_SWCF2_RUTTER_ENVELOPE","run":35337508782,"job":105575669481}
+  ],
+  "legacy_observation_provenance":{
+    "distribution_sha256":"2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "instrumented_disposable_source":"exact B0 with mechanical GNU portability transform only",
+    "whole_run_normalized_bal_sha256":"a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "whole_run_normalized_blc_sha256":"1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "matches_qualified_B1_11_baseline":true,
+    "claim_limit":"Does not substitute for the exact-B1.11 six-interval M1-C3 closure campaign."
+  },
+  "canonical_gate":{"run_id":35337428823,"status":"IN_PROGRESS"},
+  "admission_verdict":"READY_WHEN_CANONICAL_GATE_PASSES",
+  "m1_c3_closed":false,
+  "next_permitted_action":"On canonical gate PASS, admit F-APP05 through PR 231. Then resume M1-C3 exact-B1.11 trace/file-adapter composition using the newly covered SWINTER=3/SWCF=2 route."
+}
