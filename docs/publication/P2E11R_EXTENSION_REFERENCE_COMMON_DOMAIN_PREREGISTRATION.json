@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.publication.p2e11r-extension-reference-common-domain.v1",
+  "workunit": "PUB-P2E11R",
+  "phase": "PREREGISTERED_REFERENCE_ONLY_COMMON_DOMAIN_RECOVERY",
+  "parent_result_commit": "7fc3d6c64f44fd07d6271d71b7d270fbd708977d",
+  "parent_result_path": "docs/publication/P2E11_MATERIAL_EXTENSION_REFERENCE_CALIBRATION_RESULT.json",
+  "purpose": "Resolve the blocked 30-material Reference calibration domain without candidate information by applying the pre-existing five-level P2E08 temporal feasibility ladder to all 180 extension physical cases.",
+  "scientific_reason": "PUB-P2E11 found 176/180 valid Reference pairs at coarse dt 0.0064 day; four failures at B02/B05, Se=0.98 prevent threshold construction. RossFast extension cases have not been executed.",
+  "matrix": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 180,
+    "temporal_levels_day": [
+      0.0016,
+      0.0032,
+      0.0064,
+      0.0128,
+      0.0256
+    ],
+    "trial_pair_count": 900,
+    "comparison_at_each_level": "one Reference coarse solve versus two sequential Reference half-step solves to same final physical time"
+  },
+  "selection_rule": {
+    "ordering": "exact listed temporal_levels_day order",
+    "selected_level": "first level at which all 180 Reference pairs satisfy the unchanged hard Reference validity gates",
+    "no_complete_level": "BLOCKED_REFERENCE_COMMON_DOMAIN",
+    "after_selection": "Only selected-level Reference metrics may feed the next independent Se-stratified threshold freeze."
+  },
+  "threshold_rule_reserved_for_next_workunit": {
+    "stratification": "effective_saturation only",
+    "cases_per_Se_at_selected_level": 60,
+    "statistic": "empirical maximum per metric over all 60 valid cases in exact Se stratum",
+    "factor": 1,
+    "application_floor": 0,
+    "note": "P2E11R identifies the common Reference level and emits the dataset. It does not execute RossFast."
+  },
+  "firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_extension_discrepancy_inspection_allowed": false,
+    "physical_case_removal_allowed": false,
+    "temporal_level_removal_or_reordering_after_execution_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "material_specific_threshold_allowed": false,
+    "forcing_specific_threshold_allowed": false
+  },
+  "negative_result_policy": "If no listed temporal level is valid for all 180 cases, retain all failures and keep the extension experiment blocked. Do not drop B02/B05 or create route-specific calibration schedules.",
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_COMMON_DOMAIN_RECOVERY_READY"
+}
