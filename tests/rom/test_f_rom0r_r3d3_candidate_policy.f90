@@ -116,7 +116,7 @@ contains
     call initialize_forcing(forcing,qeq,qeq,h0)
 
     ! Original R3 control trajectory.
-    call fmr_new_b110_committed_state(base_state,column_id+int(100*imat+icase,int64),initial_state,0.0_real64,ok)
+    call fmr_new_b110_committed_state(base_state,column_id,initial_state,0.0_real64,ok)
     call require(ok,'base initial state')
     call base_backend%initialize(base_top)
     base_parameters%bottom_mode=2
@@ -151,7 +151,7 @@ contains
          '|PASS_STEPS=',base_pass_steps,'|FAIL_STEP=',base_fail_step
 
     ! Candidate policy trajectory, fresh state/backend, same seed.
-    call fmr_new_b110_committed_state(policy_state,column_id+int(1000+100*imat+icase,int64),initial_state,0.0_real64,ok)
+    call fmr_new_b110_committed_state(policy_state,column_id,initial_state,0.0_real64,ok)
     call require(ok,'policy initial state')
     call policy_backend%initialize(policy_top)
     policy_parameters%bottom_mode=2
