@@ -1,15 +1,13 @@
 {
-  "schema": "swap5.f-rom0.status.v2",
+  "schema": "swap5.f-rom0.status.v3",
   "workstream": "F-ROM",
   "work_unit": "ROM-0",
   "title": "Accepted Full-Order Authority",
   "phase": "CLOSED_PROCEED_TO_ROM1A_UNDER_SUCCESSOR_RESEARCH_REFERENCE_AUTHORITY",
   "branch": "work/f-rom0-close-expand-accepted-domain",
-  "authority": "docs/science/F-ROM0_ACCEPTED_FULL_ORDER_AUTHORITY.md",
-  "historical_fixed_control_adjudication": "docs/science/F-ROM0_FINAL_AUTHORITY_ADJUDICATION.md",
-  "current_final_reconciliation": "docs/science/F-ROM0_FINAL_GATE_RECONCILIATION_AFTER_V1.md",
   "historical_closeout": "integration/f-rom/F-ROM0_CLOSEOUT.json",
   "current_closeout": "integration/f-rom/F-ROM0_SUCCESSOR_CLOSEOUT.json",
+  "current_final_reconciliation": "docs/science/F-ROM0_FINAL_GATE_RECONCILIATION_AFTER_V1.md",
   "decision": "PROCEED_TO_ROM1A",
   "historical_fixed_control_decision": "NO_GO_REFERENCE_AUTHORITY",
   "historical_decision_reclassified": false,
@@ -18,29 +16,24 @@
     "Q0_2_reproducibility": "PASS",
     "Q0_3_conservation": "PASS",
     "Q0_4_bidirectional_reachability": "PASS_UNDER_QUALIFIED_RESEARCH_REFERENCE_AUTHORITY",
-    "Q0_5_reference_floor": "PASS_MEASURED_REQUIRED_TEMPORAL_AND_VERTICAL_MATRIX",
+    "Q0_5_reference_floor": "PASS_MEASURED_EXACT_ORIGINAL_TEMPORAL_AND_VERTICAL_MATRIX",
     "Q0_6_non_mutation": "PASS_WITH_RESEARCH_REFERENCE_SCOPE"
   },
-  "evidence": {
-    "ta3_sample_capability": "QUALIFIED",
-    "ta3_temporal_floor_pair": "0.0016_VS_0.0008_DAY_MEASURED",
-    "ta3_0_0004_level": "RETAINED_FAILED_REFERENCE_RETRY_EVIDENCE",
-    "ta4_restart_replay": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
-    "ta4_workflow_run": 35372014491,
-    "ta5_prescribed_head_binding": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED",
-    "ta5_workflow_run": 35370006629,
-    "original_r3": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
-    "r3d4": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
-    "r3d4_workflow_run": 35374485859,
-    "r3d4_overlap_neutrality": "PASS_51_OF_51",
-    "r3q2": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
-    "r3q2_workflow_run": 35374391172,
-    "v1_vertical_floor": "VERTICAL_REFERENCE_FLOOR_MEASURED",
-    "v1_workflow_run": 35375404190
+  "governing_evidence": {
+    "lower_boundary": "ROM-0R-R3D4_R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "temporal_floor": "ROM-0T1Q1_T1_SUCCESSOR_REFERENCE_POLICY_QUALIFIED_AND_TEMPORAL_FLOOR_MEASURED",
+    "vertical_floor": "ROM-0V1_VERTICAL_REFERENCE_FLOOR_MEASURED",
+    "restart_replay": "F-ROM0TA4_REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+    "fkt_transfer_support": "ROM-0R-R3Q2_FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED"
+  },
+  "historical_negative_evidence": {
+    "original_R3": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "original_T1": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+    "R3D3": "R3_POLICY_OVERLAP_NEUTRALITY_FAILED"
   },
   "reference_floor": {
-    "temporal": "MEASURED",
-    "vertical": "MEASURED",
+    "temporal": "MEASURED_EXACT_ORIGINAL_FOUR_CASE_MATRIX",
+    "vertical": "MEASURED_REQUIRED_TWO_CASE_MATRIX",
     "complete_for_ROM1_state_sufficiency_interpretation": true,
     "threshold_rule": "MEASURE_ONLY"
   },
@@ -55,6 +48,6 @@
   "rom1a_authorized": true,
   "production_solver_authorized": false,
   "production_application_admission": false,
-  "next_action": "PREREGISTER_ROM1A_TRAJECTORY_LIBRARY_AND_DATA_SPLIT_BEFORE_GENERATING_REACHABLE_STATE_EVIDENCE",
+  "next_action": "ROM1A_SUCCESSOR_AUTHORITY_ALREADY_EXECUTED_RECONCILE_BEFORE_ROM1B",
   "blockers": []
 }
