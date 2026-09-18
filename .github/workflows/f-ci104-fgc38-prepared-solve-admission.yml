@@ -1,0 +1,39 @@
+name: F-CI104 F-GC38 prepared-solve backend admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci104-fgc38-prepared-solve-admission
+    paths:
+      - 'src/adapter/modflow6_prepared_solve_session.py'
+      - 'integration/f-gc/F-GC38_STATUS.json'
+      - 'qualification/F-VQ111_STATUS.json'
+      - 'tests/fgc/test_fgc38_live_prepared_solve.py'
+      - 'tests/fgc/run_fgc38_live_prepared_solve.sh'
+      - 'tests/fvq/test_fvq111_fgc38_prepared_solve_independent.py'
+      - 'tests/fvq/run_fvq111_fgc38_prepared_solve_independent.sh'
+      - 'tests/fci/run_fci104_fgc38_prepared_solve_admission.sh'
+      - '.github/workflows/f-ci104-fgc38-prepared-solve-admission.yml'
+      - 'integration/f-ci/F-CI104_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Install compiler and pinned Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install             git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902             git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: F-CI104 exact-source live admission qualification
+        run: bash tests/fci/run_fci104_fgc38_prepared_solve_admission.sh
