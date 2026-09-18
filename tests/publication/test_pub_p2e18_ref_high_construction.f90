@@ -269,6 +269,7 @@ contains
     type(soil_water_solve_result_t) :: result
     real(real64) :: current_heads(n),current_theta(n),ponding,dt
     logical :: step_valid
+    character(len=64) :: step_reason
     integer :: isub
 
     valid=.false.; stage='LEVEL_INITIALIZATION'
@@ -281,8 +282,21 @@ contains
     do isub=1,nsub
       call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt)
       call run_reference_step(parameters,constitutive,source_sink,top_boundary,material,current_heads,current_theta, &
-           ponding,top_flux,bottom_flux,dt,result,step_valid)
+           ponding,top_flux,bottom_flux,dt,result,step_valid,step_reason)
       if (.not.step_valid) then
+        write(*,'(*(g0))') 'PUB_P2E18_REFERENCE_GATE|NSUB=',nsub,'|ISUB=',isub,'|REASON=',trim(step_reason), &
+             '|STATUS=',result%status,'|ROUTE=',trim(result%diagnostics%route), &
+             '|MASS_AVAILABLE=',result%integrated_mass_balance_residual_available, &
+             '|RATE_AVAILABLE=',result%native_balance_rate_residual_available, &
+             '|ACTIVE_NODES=',result%candidate_state%active_nodes
+        if (result%integrated_mass_balance_residual_available) then
+          write(*,'(*(g0))') 'PUB_P2E18_REFERENCE_GATE_MASS|NSUB=',nsub,'|ISUB=',isub, &
+               '|CM=',result%integrated_mass_balance_residual_cm
+        end if
+        if (result%native_balance_rate_residual_available) then
+          write(*,'(*(g0))') 'PUB_P2E18_REFERENCE_GATE_RATE|NSUB=',nsub,'|ISUB=',isub, &
+               '|CM_PER_DAY=',result%native_balance_rate_residual_cm_per_day
+        end if
         write(stage,'(A,I0)') 'SUBSTEP_REFERENCE_GATE_',isub
         return
       end if
@@ -299,7 +313,7 @@ contains
   end subroutine run_refinement_level
 
   subroutine run_reference_step(parameters,constitutive,source_sink,top_boundary,material,heads,theta,ponding, &
-       top_flux,bottom_flux,dt,result,valid)
+       top_flux,bottom_flux,dt,result,valid,failure_reason)
     type(soil_water_parameter_set_t),target,intent(in) :: parameters
     type(b110_default_mvg_provider_t),target,intent(in) :: constitutive
     type(b110_source_sink_provider_t),target,intent(in) :: source_sink
@@ -308,6 +322,7 @@ contains
     real(real64),intent(in) :: heads(n),theta(n),ponding,top_flux,bottom_flux,dt
     type(soil_water_solve_result_t),intent(out) :: result
     logical,intent(out) :: valid
+    character(len=*),intent(out) :: failure_reason
 
     type(soil_water_solve_request_t) :: request
     type(reference_richards_legacy_solver_t) :: solver
@@ -316,34 +331,37 @@ contains
     call initialize_request(request,parameters,constitutive,source_sink,top_boundary,theta,heads,ponding, &
          top_flux,bottom_flux,dt)
     call solver%solve(request,workspace,result)
-    valid=reference_result_valid(result,request,material)
+    valid=reference_result_valid(result,request,material,failure_reason)
   end subroutine run_reference_step
 
-  logical function reference_result_valid(result,request,material) result(ok)
+  logical function reference_result_valid(result,request,material,reason) result(ok)
     type(soil_water_solve_result_t),intent(in) :: result
     type(soil_water_solve_request_t),intent(in) :: request
     type(rossfast_d3r_material_t),intent(in) :: material
-    ok=.false.
-    if (result%status/=SW_SOLVE_CONVERGED) return
-    if (trim(result%diagnostics%route)/='legacy-reference-bound') return
-    if (.not.result%integrated_mass_balance_residual_available) return
-    if (.not.ieee_is_finite(result%integrated_mass_balance_residual_cm)) return
-    if (abs(result%integrated_mass_balance_residual_cm)>hard_mass_tol_cm) return
-    if (.not.result%native_balance_rate_residual_available) return
-    if (.not.ieee_is_finite(result%native_balance_rate_residual_cm_per_day)) return
-    if (result%candidate_state%active_nodes/=n) return
-    if (.not.allocated(result%candidate_state%pressure_head) .or. .not.allocated(result%candidate_state%water_content)) return
-    if (size(result%candidate_state%pressure_head)/=n .or. size(result%candidate_state%water_content)/=n) return
-    if (any(.not.ieee_is_finite(result%candidate_state%pressure_head)) .or. &
-        any(.not.ieee_is_finite(result%candidate_state%water_content))) return
+    character(len=*),intent(out) :: reason
+    ok=.false.; reason='UNKNOWN'
+    if (result%status/=SW_SOLVE_CONVERGED) then; reason='STATUS_NOT_CONVERGED'; return; end if
+    if (trim(result%diagnostics%route)/='legacy-reference-bound') then; reason='ROUTE_MISMATCH'; return; end if
+    if (.not.result%integrated_mass_balance_residual_available) then; reason='MASS_UNAVAILABLE'; return; end if
+    if (.not.ieee_is_finite(result%integrated_mass_balance_residual_cm)) then; reason='MASS_NONFINITE'; return; end if
+    if (abs(result%integrated_mass_balance_residual_cm)>hard_mass_tol_cm) then; reason='MASS_LIMIT'; return; end if
+    if (.not.result%native_balance_rate_residual_available) then; reason='RATE_UNAVAILABLE'; return; end if
+    if (.not.ieee_is_finite(result%native_balance_rate_residual_cm_per_day)) then; reason='RATE_NONFINITE'; return; end if
+    if (result%candidate_state%active_nodes/=n) then; reason='ACTIVE_NODE_COUNT'; return; end if
+    if (.not.allocated(result%candidate_state%pressure_head)) then; reason='HEAD_UNALLOCATED'; return; end if
+    if (.not.allocated(result%candidate_state%water_content)) then; reason='THETA_UNALLOCATED'; return; end if
+    if (size(result%candidate_state%pressure_head)/=n) then; reason='HEAD_SIZE'; return; end if
+    if (size(result%candidate_state%water_content)/=n) then; reason='THETA_SIZE'; return; end if
+    if (any(.not.ieee_is_finite(result%candidate_state%pressure_head))) then; reason='HEAD_NONFINITE'; return; end if
+    if (any(.not.ieee_is_finite(result%candidate_state%water_content))) then; reason='THETA_NONFINITE'; return; end if
     if (any(result%candidate_state%pressure_head<=ROSSFAST_D3R_H_MIN_CM) .or. &
-        any(result%candidate_state%pressure_head>=ROSSFAST_D3R_H_MAX_CM)) return
+        any(result%candidate_state%pressure_head>=ROSSFAST_D3R_H_MAX_CM)) then; reason='HEAD_DOMAIN'; return; end if
     if (any(result%candidate_state%water_content<=material%theta_r) .or. &
-        any(result%candidate_state%water_content>=material%theta_s)) return
-    if (.not.ieee_is_finite(result%candidate_state%ponding_depth)) return
-    if (.not.same_real(result%top_flux,request%boundary%top_flux)) return
-    if (.not.same_real(result%bottom_flux,request%boundary%bottom_flux)) return
-    ok=.true.
+        any(result%candidate_state%water_content>=material%theta_s)) then; reason='THETA_DOMAIN'; return; end if
+    if (.not.ieee_is_finite(result%candidate_state%ponding_depth)) then; reason='PONDING_NONFINITE'; return; end if
+    if (.not.same_real(result%top_flux,request%boundary%top_flux)) then; reason='TOP_FLUX_IDENTITY'; return; end if
+    if (.not.same_real(result%bottom_flux,request%boundary%bottom_flux)) then; reason='BOTTOM_FLUX_IDENTITY'; return; end if
+    ok=.true.; reason='NONE'
   end function reference_result_valid
 
   subroutine report_unresolved(case_id,material_id,se,forcing_id,stage)
