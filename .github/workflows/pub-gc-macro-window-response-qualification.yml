@@ -1,0 +1,42 @@
+name: PUB-GC macro-window response qualification
+
+on:
+  push:
+    branches:
+      - research/pub-gc-macro-window-response
+    paths:
+      - 'tests/publication/pub_gc/macro_window_response/**'
+      - '.github/workflows/pub-gc-macro-window-response-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macro-window-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record compiler
+        run: gfortran --version
+
+      - name: Run macro-window response qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-MACRO-WINDOW
+          bash tests/publication/pub_gc/macro_window_response/run_pub_gc_macro_window_response_qualification.sh 2>&1 \
+            | tee artifacts/PUB-GC-MACRO-WINDOW/qualification.log
+
+      - name: Upload qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-macro-window-qualification-${{ github.sha }}
+          path: artifacts/PUB-GC-MACRO-WINDOW/qualification.log
+          if-no-files-found: error
+          retention-days: 90
