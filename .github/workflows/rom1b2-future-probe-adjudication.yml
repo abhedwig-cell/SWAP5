@@ -1,0 +1,48 @@
+name: ROM1B2 frozen-pair future probes
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1B1_RESULT.json'
+      - 'integration/f-rom/ROM1B1_STATUS.json'
+      - 'integration/f-rom/ROM1B1_PAIR_MANIFEST.json'
+      - 'integration/f-rom/ROM1B2_*'
+      - 'docs/science/ROM1B2_*'
+      - 'tests/rom/test_rom1b2_future_probe_adjudication.f90'
+      - 'tests/rom/analyze_rom1b2_future_probe_adjudication.py'
+      - 'tests/rom/run_rom1b2_future_probe_adjudication.sh'
+      - '.github/workflows/rom1b2-future-probe-adjudication.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1b2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen-pair future probes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1B2_EVIDENCE
+          ROM1B2_EVIDENCE_DIR="$PWD/ROM1B2_EVIDENCE" \
+            bash tests/rom/run_rom1b2_future_probe_adjudication.sh | tee ROM1B2_EVIDENCE/gate.txt
+      - name: Preserve B2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1b2-${{ github.run_id }}
+          path: ROM1B2_EVIDENCE
+          if-no-files-found: warn
