@@ -74,6 +74,7 @@ module mod_fgc44_real_swap_c_bridge
   logical, save :: ledger_prepared=.false.
   real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), save :: active_predictor_qbot=DEFAULT_PREDICTOR_QBOT
+  real(real64), save :: active_h0_cm=H0_CM
 
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by F-GC44. They are test/qualification evidence,
@@ -100,7 +101,8 @@ module mod_fgc44_real_swap_c_bridge
   type(kernel_result_t), save :: e3d2_predictor_result
   type(kernel_diagnostics_t), save :: e3d2_predictor_diagnostics
 
-  public :: fgc44_swap_initialize_c, fgc44_swap_initialize_configured_c, fgc44_swap_trial_c, fgc44_swap_discard_c
+  public :: fgc44_swap_initialize_c, fgc44_swap_initialize_configured_c, fgc44_swap_initialize_state_configured_c, &
+       fgc44_swap_trial_c, fgc44_swap_discard_c
   public :: fgc44_swap_preflight_c, fgc44_ledger_prepare_c, fgc44_ledger_preflight_c
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
@@ -111,19 +113,28 @@ contains
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
-    call fgc44_initialize_impl(DEFAULT_DURATION_DAY,DEFAULT_PREDICTOR_QBOT,hcof,rhs,reference_head,fgc44_swap_initialize_c)
+    call fgc44_initialize_impl(DEFAULT_DURATION_DAY,DEFAULT_PREDICTOR_QBOT,H0_CM,hcof,rhs,reference_head, &
+         fgc44_swap_initialize_c)
   end function fgc44_swap_initialize_c
 
   integer(c_int) function fgc44_swap_initialize_configured_c(duration_day,predictor_qbot,hcof,rhs,reference_head) &
        bind(C,name="fgc44_swap_initialize_configured_c")
     real(c_double), value, intent(in) :: duration_day,predictor_qbot
     real(c_double), intent(out) :: hcof,rhs,reference_head
-    call fgc44_initialize_impl(real(duration_day,real64),real(predictor_qbot,real64),hcof,rhs,reference_head, &
+    call fgc44_initialize_impl(real(duration_day,real64),real(predictor_qbot,real64),H0_CM,hcof,rhs,reference_head, &
          fgc44_swap_initialize_configured_c)
   end function fgc44_swap_initialize_configured_c
 
-  subroutine fgc44_initialize_impl(duration_day,predictor_qbot,hcof,rhs,reference_head,c_status)
-    real(real64), intent(in) :: duration_day,predictor_qbot
+  integer(c_int) function fgc44_swap_initialize_state_configured_c(duration_day,predictor_qbot,initial_h0_cm, &
+       hcof,rhs,reference_head) bind(C,name="fgc44_swap_initialize_state_configured_c")
+    real(c_double), value, intent(in) :: duration_day,predictor_qbot,initial_h0_cm
+    real(c_double), intent(out) :: hcof,rhs,reference_head
+    call fgc44_initialize_impl(real(duration_day,real64),real(predictor_qbot,real64),real(initial_h0_cm,real64), &
+         hcof,rhs,reference_head,fgc44_swap_initialize_state_configured_c)
+  end function fgc44_swap_initialize_state_configured_c
+
+  subroutine fgc44_initialize_impl(duration_day,predictor_qbot,initial_h0_cm,hcof,rhs,reference_head,c_status)
+    real(real64), intent(in) :: duration_day,predictor_qbot,initial_h0_cm
     real(c_double), intent(out) :: hcof,rhs,reference_head
     integer(c_int), intent(out) :: c_status
     type(kernel_checkpoint_t) :: checkpoint
@@ -157,6 +168,7 @@ contains
     if(.not.ieee_is_finite(predictor_qbot))return
     active_duration_day=duration_day
     active_predictor_qbot=predictor_qbot
+    active_h0_cm=initial_h0_cm
 
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
@@ -455,7 +467,7 @@ contains
   subroutine initialize_forcing(f,q)
     type(fmr_b110_physical_forcing_t),intent(out)::f
     real(real64),intent(in)::q
-    f%top_flux=q; f%top_head=H0_CM; f%bottom_flux=q; f%bottom_head=H0_CM
+    f%top_flux=q; f%top_head=active_h0_cm; f%bottom_flux=q; f%bottom_head=active_h0_cm
     allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
     f%drainage_flux_by_level=0.0_real64; f%subsurface_irrigation_source=0.0_real64; f%root_extraction_sink=0.0_real64
   end subroutine initialize_forcing
@@ -491,7 +503,7 @@ contains
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
     real(real64)::accepted_predecessor_right_derivative(numnod)
     integer :: i
-    heads(1)=H0_CM
+    heads(1)=active_h0_cm
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
@@ -535,7 +547,7 @@ contains
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
     integer :: i
-    heads(1)=H0_CM
+    heads(1)=active_h0_cm
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
