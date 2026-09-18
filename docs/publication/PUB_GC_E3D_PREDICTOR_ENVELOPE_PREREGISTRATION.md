@@ -118,3 +118,10 @@ If all levels above `1e-6` fail at the same stage, the next workunit must diagno
 If a transition is found, the largest successful and smallest failed levels define the bounded interval for a later hydrological coupling case.
 
 No success threshold is moved after observing the scan.
+
+
+## Diagnostic implementation note
+
+The stage code is returned only by the qualification-only configurable F-GC44 initializer used by this publication harness. The ordinary zero/non-zero F-GC44 interface remains compatible, and no production SWAP5 or MODFLOW6 API is changed.
+
+The scan values, stop rule and interpretation rules above were fixed before this diagnostic workflow was executed.
