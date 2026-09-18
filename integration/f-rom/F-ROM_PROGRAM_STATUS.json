@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.f-rom.program-status.v1",
+  "workstream": "F-ROM",
+  "phase": "CLOSED_MATERIAL_SPECIFIC_ONLY",
+  "decision": "MATERIAL_SPECIFIC_ONLY",
+  "governing_proposition": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "programme_closeout": "integration/f-rom/F-ROM_PROGRAM_CLOSEOUT.json",
+  "programme_closeout_document": "docs/science/F-ROM_PROGRAM_CLOSEOUT_MATERIAL_SPECIFIC_ONLY.md",
+  "scientific_scope": {
+    "B01_within_material_state_sufficiency": "POSITIVE",
+    "B14_cross_material_transfer": "NOT_ADMITTED",
+    "ROM2_transition_gate": "FAIL",
+    "production_ROM": "NOT_AUTHORIZED"
+  },
+  "current_authority": {
+    "ROM0": "PROCEED_TO_ROM1A",
+    "ROM1A": "PROCEED_TO_ROM1B",
+    "ROM1": "MATERIAL_SPECIFIC_ONLY"
+  },
+  "next_permitted_action": "NONE_UNDER_CURRENT_PROPOSITION",
+  "continuation_requires": "NEW_INDEPENDENTLY_GOVERNED_MATERIAL_SPECIFIC_PROPOSITION_OR_EXPLICIT_CAPABILITY_AMENDMENT",
+  "rom2_authorized": false,
+  "production_rom_authorized": false,
+  "blockers": [
+    "CROSS_MATERIAL_TRANSFER_GATE_NOT_PASSED"
+  ]
+}
