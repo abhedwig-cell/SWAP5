@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.f-rom0r.r3r1-status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3R1",
+  "phase": "CLOSED_NO_GO",
+  "decision": "CANDIDATE_POLICY_ENDPOINT_NEUTRALITY_NO_GO",
+  "execution": {
+    "workflow_run": 35373928381,
+    "workflow_job": 105694080764,
+    "artifact_id": 10559637063,
+    "artifact_digest": "sha256:b59b374832e38da19c752f44d9a0f1a93e162af8828897ec1711dd231f566496"
+  },
+  "candidate_full_horizon_completion": true,
+  "candidate_directional_reachability": true,
+  "candidate_hard_mass_gate": true,
+  "candidate_determinism": true,
+  "endpoint_neutrality": false,
+  "original_R3_decision_unchanged": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+  "policy_qualified": false,
+  "vertical_reference_floor_authorized": false,
+  "next_state": "REFERENCE_NUMERICAL_POLICY_GOVERNANCE_CHOICE_REQUIRED",
+  "forbidden_without_new_authority": [
+    "RELAX_BIT_IDENTITY_NEUTRALITY_GATE",
+    "ADOPT_CANDIDATE_POLICY_AS_ROM_REFERENCE",
+    "INTRODUCE_CONDITIONAL_SECOND_SOLVE_OR_RETRY_POLICY",
+    "RETUNE_DT_TOLERANCE_ITERATIONS_OR_AMPLITUDE",
+    "PROCEED_TO_VERTICAL_REFERENCE_FLOOR_AS_IF_R3_CLOSED",
+    "PROCEED_TO_ROM1A"
+  ],
+  "rom1a_authorized": false
+}
