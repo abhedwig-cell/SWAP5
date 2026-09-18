@@ -34,17 +34,18 @@
     }
   },
   "current_authority": [
+    "integration/audits/production_physics_application_envelope_gap_register.json",
     "src/process/mod_root_water_uptake_process.f90",
-    "src/runtime/mod_fmr_root_uptake_process_binding.f90",
     "integration/f-ci/F-CI31_STATUS.json",
+    "integration/f-ci/F-CI37_STATUS.json",
     "src/process/mod_soil_temperature_contract.f90",
     "src/process/mod_restricted_soil_temperature.f90",
-    "integration/f-ci/F-CI43_STATUS.json",
+    "integration/f-ci/F-CI45_STATUS.json",
     "integration/f-ci/F-CI45P_STATUS.json",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/runtime/mod_fmr_restart_state_contract.f90",
-    "historical F-PM05 readiness/candidate branches",
-    "historical F-PE15/F-PE16 macropore ownership evidence",
-    "historical F-PM07 soil-temperature readiness"
+    "docs/verification/legacy-differences.md",
+    "docs/verification/expected-differences.json"
   ],
   "no_production_mutation": true,
   "required_decisions": [
@@ -72,5 +73,17 @@
     "macropore production admission",
     "advanced root-stress production admission",
     "ROM"
-  ]
+  ],
+  "authority_policy": {
+    "rule": "Only current canonical files, exact B1.11 identities and explicitly admitted historical corrections are decision authority.",
+    "unsupported_historical_labels": [
+      "S12o",
+      "A23au",
+      "S12r",
+      "F-PM05 readiness",
+      "F-PM07 readiness",
+      "F-PE15/F-PE16 macropore ownership evidence"
+    ],
+    "disposition": "Do not use these labels or inferred field/state lists in WU05 unless a concrete repository path/commit is independently recovered in a later workunit."
+  }
 }
