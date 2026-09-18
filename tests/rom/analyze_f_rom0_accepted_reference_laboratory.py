@@ -148,8 +148,17 @@ def main():
         rise=by[(mat,"E3_BOTTOM_HEAD_RISE",16,10.0,0.0016)]["accepted"][-1]
         fall=by[(mat,"E4_BOTTOM_HEAD_FALL",16,10.0,0.0016)]["accepted"][-1]
         qr=float(rise["TERMINAL_QBOT"]); qf=float(fall["TERMINAL_QBOT"])
-        ok=(qr>0.0 and qf<0.0)
-        direction[mat]={"rise_final_qbot":qr,"fall_final_qbot":qf,"opposite_expected_directions":ok}
+        # TERMINAL_QBOT is the runtime's outward-positive publication:
+        # terminal_bottom_outward_flux_native = -solve_result%bottom_flux.
+        # A raised lower head drives water into the soil (negative outward);
+        # a lowered lower head drives drainage out (positive outward).
+        ok=(qr<0.0 and qf>0.0)
+        direction[mat]={
+            "rise_final_outward_qbot":qr,
+            "fall_final_outward_qbot":qf,
+            "expected_outward_signs":"rise_negative_fall_positive",
+            "opposite_expected_directions":ok,
+        }
         bidirectional &= ok
 
     finite_floor=all(
