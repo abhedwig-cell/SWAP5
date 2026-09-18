@@ -943,26 +943,30 @@
       },
       "swap5_implementation_authority": [],
       "typed_input_config_authority": "No production macropore types/runtime route found in current canonical.",
-      "state_ownership": "Not yet mapped into typed production owner. PPA-WU05 requires exact B1.11 macropore/macrorate lifecycle trace before any persistent-state field list is frozen.",
-      "transaction_status": "Outside current admitted transaction envelope. PPA-WU05-A must freeze persistent/candidate/result/scratch ownership, rollback, restart and internal/external mass transfer semantics before implementation.",
+      "state_ownership": "PPA-WU05-A partially freezes ownership: explicit optional macropore physical state is required; worker/rate scratch is not checkpoint/restart state; F-PE16's seven-field set is corroborated prior evidence only, not the final B1.11 field census until exact source bytes are materialized.",
+      "transaction_status": "PPA-WU05-A freezes atomic matrix+macropore checkpoint/candidate/rollback/commit invariants and exactly-once accepted mass ownership. Exact flux-name/sign mapping remains held for byte-exact B1.11 source trace.",
       "qualification_evidence": [
         "B1.11 includes SWAP-001 macropore array-shape correction",
         "F-CI19/F-CI30 explicitly hold active macropore scope",
-        "PPA-WU05 review run 35379607616: corrected B1.11 authority and migration dependency graph qualified"
+        "PPA-WU05 review run 35379607616: corrected B1.11 authority and migration dependency graph qualified",
+        "PPA-WU05-A repository recovery: F-PE16@f5e2a12f, F-PE15@f475e0e0 and F-SI15@fe5e55d5 recovered as corroborated ownership/scratch/fail-closed evidence"
       ],
       "production_admission": "NONE",
       "production_reachable": "NO",
       "restrictions": [
-        "Corrected-reference preservation is not migration"
+        "Corrected-reference preservation is not migration",
+        "Exact B1.11 macropore/macrorate source bytes are not retained in the current Git tree",
+        "F-PE16 seven-field state set is not final migration authority before exact source materialization",
+        "No production macropore implementation is authorized by PPA-WU05-A"
       ],
       "scientific_risk": "HIGH",
       "use_relevance": "HIGH for structured soils",
       "dependencies": [
-        "PPA-WU05-A exact source/state/mass/transaction authority",
+        "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
+        "Explicit optional macropore restart-state topology",
         "Dynamic top-boundary/infiltration composition as proven by source trace",
         "Drainage interactions as proven by source trace",
         "Root uptake interactions only after macropore owner admission",
-        "Restart optional-state topology",
         "Parallel execution ownership"
       ],
       "priority_band": "P2"
@@ -1801,6 +1805,15 @@
       "dependency_graph": "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
       "selected_first_target": "PPA-WU05-A exact B1.11 macropore source/state/mass/transaction authority review",
       "production_admission": "NONE_TRIAGE_ONLY"
+    },
+    {
+      "id": "PPA-WU05-A",
+      "title": "Macropore source/state/mass/transaction authority",
+      "goal": "Freeze repository-authoritative macropore ownership, mass, restart and rollback invariants while distinguishing exact B1.11 identity from corroborated historical evidence.",
+      "status": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
+      "production_admission": "NONE_REVIEW_ONLY",
+      "exit": "PARTIAL: owner-level invariants and recovered repository evidence are frozen; exact B1.11 field/flux census remains blocked until byte-exact source materialization.",
+      "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census"
     }
   ],
   "post_audit_updates": [
@@ -1859,6 +1872,17 @@
       "reference_delta": "NONE",
       "selected_first_target": "PPA-WU05-A macropore source/state/mass/transaction authority review",
       "effect": "Advanced-water migration sequencing is frozen without production admission. Unsupported historical labels are not decision authority."
+    },
+    {
+      "workunit": "PPA-WU05-A",
+      "state": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
+      "branch": "audit/ppa-wu05a-macropore-authority",
+      "recovered_repository_evidence": [
+        "F-PE16@f5e2a12fca96559645feb8d8cd591b600f765d8c",
+        "F-PE15@f475e0e050abdc885c016929c2d528fe1f8f0545",
+        "F-SI15@fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
+      ],
+      "effect": "Freezes macropore state/mass/transaction/restart invariants without production migration; exact field and flux census remains blocked on byte-exact B1.11 source materialization."
     }
   ]
 }
