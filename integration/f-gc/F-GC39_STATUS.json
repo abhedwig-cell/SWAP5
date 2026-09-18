@@ -3,8 +3,8 @@
   "capability": "F-GC39",
   "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_QUALIFY",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
   "baseline": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
@@ -63,5 +63,13 @@
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Replay the exact F-GC39 contract gate on current canonical. If green, checkpoint owner qualification and perform independent contract qualification before canonical admission."
+  "next_permitted_action": "Qualify this exact owner status head. If green, run F-VQ112 independent contract verification with production delta NONE and no owner-test reuse before canonical contract admission.",
+  "qualification": {
+    "qualified_head": "8762412d59782fa04f9eed10154402631397e618",
+    "workflow_run": 35314405172,
+    "conclusion": "success",
+    "production_delta": "NONE",
+    "current_canonical_backend": "F-GC38 closed canonical",
+    "ownership_authority": "F-GC37 internal SWAP5-MODFLOW coupling service below iMOD Coupler"
+  }
 }
