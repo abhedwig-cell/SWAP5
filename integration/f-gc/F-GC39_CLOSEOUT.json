@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC39",
+  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "canonical_admission": {
+    "contract_admission_head": "b6211effc4840aec48ff2fe39336bd997df490c3",
+    "preimage": "15883938da5777f90f097c8f6938458840ccb75a",
+    "promoted_non_force_fast_forward": true,
+    "production_delta": "NONE"
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "F-GC39 was rematerialized from current canonical after F-GC34/F-GC35/F-GC36/F-GC38 closeout; qualification harness remained byte-identical and no production code changed"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "d678b5953c64be3f3f2056c369fd8b8eb7deab82",
+      "exact_head_run": 35315802236,
+      "result": "prepared-solve internal coupling-service contract passed on current canonical stack"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ112",
+      "final_status_head": "087660e2ff9d890fb7c9bc860328f8e573f56bcc",
+      "exact_head_run": 35316040427,
+      "result": "independent reference-update, convergence-ordering, ownership and failure-cleanup oracles passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI105",
+      "contract_admission_head": "b6211effc4840aec48ff2fe39336bd997df490c3",
+      "initial_gate_run": 35316231973,
+      "exact_status_head_run": 35316311432,
+      "result": "zero-production-delta postimage replayed owner and independent qualification and was non-force fast-forwarded to canonical"
+    }
+  },
+  "closed_contract": [
+    "internal SWAP5-MODFLOW service owns predictor/corrector iteration",
+    "iMOD Coupler remains outside predictor/corrector ownership",
+    "prepared MODFLOW solve is continuous across coupling iterations",
+    "SWAP trials remain same-origin transactional correctors",
+    "convergence is conjunctive MODFLOW plus interface flux",
+    "solver finalization is separate from timestep publication"
+  ],
+  "preserved_limits": [
+    "no whole-window MODFLOW reconstruction/retry",
+    "no final atomic SWAP/MODFLOW/ledger timestep publication",
+    "no live real-SWAP plus MODFLOW end-to-end service materialization",
+    "no Ribasim or irrigation"
+  ],
+  "next_permitted_action": "After closeout qualification, open a separately bounded whole-window acceptance/retry workunit. It must define atomic publication of retained SWAP candidate, MODFLOW timestep state and exchange ledger plus reconstruction for smaller-window retry after an abandoned prepared solve. Predictor/corrector remains below iMOD Coupler."
+}

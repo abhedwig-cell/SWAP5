@@ -4,8 +4,8 @@
   "capability": "F-GC39",
   "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract Admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "15883938da5777f90f097c8f6938458840ccb75a",
@@ -58,7 +58,7 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Qualify this exact F-CI105 status head. If green and canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this contract-only admission head.",
+  "next_permitted_action": "Qualify this metadata-only F-GC39 admission/closeout head with F-CI105. If green, persist final closeout evidence, requalify the final status head, then non-force fast-forward canonical to the closed contract state.",
   "admission_gate": {
     "qualified_head": "b3ba307539322cd2433252694d33bb59556e07d6",
     "workflow_run": 35316231973,
@@ -76,5 +76,12 @@
       "FCI105_OWNER_REPLAY",
       "FCI105_INDEPENDENT_REPLAY"
     ]
+  },
+  "canonical_admission": {
+    "contract_admission_head": "b6211effc4840aec48ff2fe39336bd997df490c3",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35316311432,
+    "exact_status_head_conclusion": "success",
+    "production_delta": "NONE"
   }
 }

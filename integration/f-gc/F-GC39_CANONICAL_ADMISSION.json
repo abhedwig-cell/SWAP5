@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC39",
+  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "15883938da5777f90f097c8f6938458840ccb75a"
+  },
+  "canonical_contract_admission": {
+    "promoted_head": "b6211effc4840aec48ff2fe39336bd997df490c3",
+    "non_force_fast_forward": true,
+    "production_delta": "NONE",
+    "admission_gate": "F-CI105",
+    "initial_gate_head": "b3ba307539322cd2433252694d33bb59556e07d6",
+    "initial_gate_run": 35316231973,
+    "initial_gate_job": 105508359135,
+    "status_head_run": 35316311432,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ112",
+    "status_head": "087660e2ff9d890fb7c9bc860328f8e573f56bcc",
+    "final_green_run": 35316040427,
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "dependency_authority": [
+    "F-GC40 closed canonical",
+    "F-GC33 closed canonical",
+    "F-GC34 closed canonical",
+    "F-GC35 closed canonical",
+    "F-GC36 closed canonical",
+    "F-GC38 closed canonical"
+  ],
+  "admitted_contract": [
+    "predictor/corrector ownership remains in the internal SWAP5-MODFLOW coupling service below iMOD Coupler",
+    "one immutable SWAP origin per coupling window",
+    "one prepared MODFLOW solve session with fixed XOLD and continuously evolving X",
+    "fixed tangent slope in the first contract; H_ref and q_ref may update",
+    "coupled convergence requires both MODFLOW convergence and interface flux convergence",
+    "only rejected SWAP corrector candidates are discarded between coupling iterations",
+    "successful service finalizes the MODFLOW solve exactly once and retains the final SWAP candidate",
+    "the service does not finalize the MODFLOW timestep",
+    "failure invalidates the prepared solve and returns retry without publication"
+  ],
+  "ownership_boundary": {
+    "imod_coupler": "coarse orchestration only",
+    "internal_service": "predictor/corrector and coupling convergence owner",
+    "modflow_backend": "prepared-solve/XMI lifecycle owner"
+  },
+  "exclusions": [
+    "whole-window MODFLOW reconstruction/retry implementation",
+    "final multi-participant timestep publication",
+    "real SWAP5 plus live MODFLOW end-to-end service implementation",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Close F-GC39 metadata-only. Then open a separate bounded workunit for whole-window acceptance/retry and final publication; do not move predictor/corrector ownership into iMOD Coupler."
+}
