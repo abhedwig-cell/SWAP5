@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.f-rom0r.r3d1-status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D1",
+  "phase": "CLOSED_DIAGNOSTIC",
+  "decision": "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+  "execution": {
+    "workflow_run": 35373123415,
+    "workflow_job": 105691534581,
+    "artifact_id": 10558089797,
+    "artifact_digest": "sha256:213593aa67fed83a254aa3d2bb56338e1774a6590754e9f7966486843b1d035b"
+  },
+  "head_or_local_balance_instability_supported": false,
+  "total_balance_only_failure_supported": true,
+  "next_permitted_action": "PREREGISTER_REFERENCE_REPRESENTATION_FLOOR_DIAGNOSTIC_ONLY",
+  "tolerance_change_authorized": false,
+  "r3_reclassification_authorized": false,
+  "vertical_reference_floor_authorized": false,
+  "rom1a_authorized": false
+}
