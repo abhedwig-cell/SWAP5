@@ -66,6 +66,8 @@ For every window at which the real SWAP predictor initialized successfully, stro
 
 The final strong-coupling residual remained below the frozen `1e-15 m s-1` criterion in all nine successful cases.
 
+The strong iteration was also sharply contractive in this restricted envelope. Across all observed iteration-to-iteration residual ratios, the largest was approximately `0.08603`; most were below `5e-3`. The slowest observed step occurred for the longest window and lowest specific yield. This confirms that E3a is a numerically easy/contractive regime despite the one-pass interface mismatch.
+
 The observed pattern is consistent with increasing coupling work for longer windows and lower groundwater storage, but the matrix is too small and too close to equilibrium to elevate that pattern to a general scaling law.
 
 ## Loose coupling versus strong coupling
