@@ -1,0 +1,19 @@
+{
+  "schema":"swap5.bounded_execution_checkpoint.v1",
+  "workunit":"F-APP05",
+  "phase":"QUALIFY_OWNER",
+  "branch":"work/f-app05-hupsel-rutter-swcf2-typed-envelope",
+  "qualified_head":"911848d9687deee8d8398af61901dee3ff9877ef",
+  "canonical_at_pr_reconcile":"4d50ca2676cf9404e62b182767686ab677921511",
+  "canonical_delta_since_branch_base":{"commits":23,"overlap_with_F_APP05_files":false,"dominant_scope":"F-GC41 groundwater coupling plus unrelated publication qualification"},
+  "production_delta":["src/process/mod_rutter_interception_process.f90"],
+  "test_delta":["tests/f-app05/test_rutter_interception_process.f90",".github/workflows/f-app05-rutter-typed-envelope.yml"],
+  "qualification":{"workflow_run_id":35337000697,"job_id":105574025680,"strict_O0":"PASS","strict_O2":"PASS","O0_O2_output_identity":"PASS","fail_closed_negative_input":"PASS","accepted_state_immutability":"PASS","fill_full_empty_semidry_branches":"PASS"},
+  "scientific_contract":"Direct transcription of legacy Rutter reservoir flux branching, interception partition, wet-canopy transpiration mixture, and post-interval canopy-storage candidate update. Accepted state is input-only; candidate state is explicit.",
+  "legacy_Hupsel_exact_B1_11_observation_match":"PENDING",
+  "SWCF2_legacy_canopy_materialization":"PENDING_ADAPTER_SURFACE",
+  "owner_verdict":"PASS_F_APP05_RUTTER_PROCESS_OWNER_QUALIFICATION",
+  "admission_status":"BLOCKED_PENDING_INDEPENDENT_AND_EXACT_LEGACY_QUALIFICATION",
+  "mutations":{"solver":"NONE","transaction":"NONE","timestep_policy":"NONE","retry":"NONE","tolerances":"NONE","F_APP04":"UNCHANGED"},
+  "next_permitted_action":"Run independent test-only Rutter qualification against this exact production postimage, then qualify exact Hupsel SWINTER=3/SWCF=2 legacy observations and typed canopy materialization before admission."
+}
