@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_TRANSACTIONAL_SNAPSHOT_REPLAY_DIAGNOSIS",
+  "capability": "M1 - Typed External Boundary",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "observation_boundary": "post SoilWater(3), pre TimeControl(3)",
+    "frozen_dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ]
+  },
+  "snapshot_noninterference": {
+    "postsoil_snapshot_gzip_sha256": "1b099d86265e9ed5d15e3d583362005e670f68ddefa73d35c43af90de01c9c17",
+    "postsoil_snapshot_raw_sha256": "f1c5923b6642db9096913bf1d944b5cc6be6b0c4ee4178fb970786a4139c4c63",
+    "preinstrument_snapshot_gzip_sha256": "17ab488290140987f317a3f3c8370c61e39bfc2dcb272f76a756efe64b6bf8be",
+    "preinstrument_snapshot_raw_sha256": "19d93cf16b4dd51d399ac03b380983f29e92032584e60cb828f7cd6e6a9e7035",
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "verdict": "PASS_EXACT_B1_11_OUTPUT_NONINTERFERENCE"
+  },
+  "corrected_replay_diagnosis": {
+    "prepared_fixture_sha256": "dff9fcbaac4614b1ccc2e185eca229eed11fe18fa0a5f58ff61e2310734c5d9c",
+    "missing_semantic": "legacy default-MvG near-saturated KSATEXM conductivity extension",
+    "exact_legacy_rule": "when cofgen(10)>cofgen(3) and relsat>cofgen(11) and SWMACRO=0: term=(relsat-cofgen(11))/(1-cofgen(11)); K=term*cofgen(10)+(1-term)*cofgen(12); do not clamp that branch to KSATFIT",
+    "typed_precondition": "current default provider clamps to KSATFIT and does not consume cofgen(10:12)",
+    "local_exact_optin_replay": {
+      "cases": 6,
+      "pressure_head_max_abs_error_cm": 0,
+      "water_content_max_abs_error": 0,
+      "ponding_max_abs_error_cm": 0,
+      "top_flux_max_abs_error_cm_per_day": 0,
+      "bottom_flux_max_abs_error_cm_per_day": 0,
+      "O0_O2_output_sha256": "d330a25c82b7134bc2989628797245bbbcf661e9aac270fbb40f7be546f7658c",
+      "groundwater_level_note": "not used as solver-state acceptance criterion in this direct HeadCalc replay because legacy GWL is projected after SoilWater(3); separate projection ownership remains with the admitted groundwater/drainage contracts"
+    },
+    "bounded_capability": "F-SI39 B1.11 KSATEXM preservation",
+    "owner_branch": "work/f-si39-b110-ksatexm-preservation",
+    "independent_branch": "qualification/f-vq127-fsi39-ksatexm-independent",
+    "classification": "MISSING_ACTIVE_LEGACY_CONSTITUTIVE_SEMANTIC_NOT_TOLERANCE_OR_SOLVER_POLICY"
+  },
+  "supersedes": "integration/m1/M1_C3_B1_11_TRANSACTIONAL_SNAPSHOT_REPLAY_BLOCKER.json interpretation that the remaining mismatch was an unspecified context-mapping gap",
+  "mutations": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep": "NONE",
+    "tolerances": "NONE",
+    "qualification_evidence_only": true
+  },
+  "verdict": "PASS_DIAGNOSIS_FSI39_REQUIRED_BEFORE_M1_C3_CLOSE",
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "next_permitted_action": "Qualify and admit F-SI39 with explicit opt-in/default-preservation evidence, then rerun the same six snapshots on the admitted canonical together with admitted F-APP06/F-APP07/F-APP08 composition. Close M1-C3 only after the file-driven adapter path is demonstrated on canonical."
+}
