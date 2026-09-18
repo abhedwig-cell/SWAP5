@@ -1,0 +1,55 @@
+{
+  "schema": "pub-gc-figure-evidence-manifest-v1",
+  "date": "2026-09-18",
+  "figures": {
+    "F1": {
+      "file": "docs/publication/figures/PUB_GC_F1_OWNERSHIP_AUTHORITY.svg",
+      "sources": [
+        "F-GC39–F-GC44 contracts",
+        "PUB_GC_E1_E2_RESULT.json"
+      ]
+    },
+    "F2": {
+      "file": "docs/publication/figures/PUB_GC_F2_TYPED_HYDROLOGICAL_INTERFACE.svg",
+      "sources": [
+        "PUB_GC_E1_E2_RESULT.json",
+        "coupling method contracts"
+      ]
+    },
+    "F3": {
+      "file": "docs/publication/figures/PUB_GC_F3_CLOSURE_VS_HEAD_CORRECTION.svg",
+      "sources": [
+        "PUB_GC_E3_INITIAL_RESULT.json",
+        "PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.json"
+      ]
+    },
+    "F4": {
+      "file": "docs/publication/figures/PUB_GC_F4_RESPONSE_IDENTITY.svg",
+      "sources": [
+        "PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json"
+      ]
+    },
+    "F5": {
+      "file": "docs/publication/figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg",
+      "sources": [
+        "PUB_GC_E5_INFORMATION_VALUE_RESULT.json"
+      ]
+    },
+    "F6": {
+      "file": "docs/publication/figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg",
+      "sources": [
+        "PUB_GC_E6A_STATE_SCREEN_SUMMARY.csv",
+        "PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json"
+      ]
+    }
+  },
+  "source_blob_sha": {
+    "e1": "1c573c7287323b986ff44173748e6cf90480caf3",
+    "e3": "f01a69b55b02c8d40939b0b7be775f4ae18ff634",
+    "e4": "70e757c70bac9e3d4fe013899c5ba2e95b370486",
+    "e5": "78a8bce35f370d6c894e8d5e4a26d0b4b1627e38",
+    "e6_state": "ef74c956a13157fe9f982456224e344887580b26",
+    "e6_drainage": "8f420fab688f19b80332850198b4c1ddb1903e4c"
+  },
+  "interpretation_guard": "Figures visualize already admitted publication evidence. They do not expand the scientific claim envelope."
+}
