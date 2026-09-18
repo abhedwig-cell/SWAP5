@@ -10,6 +10,7 @@ module mod_pmdirect_swetr0_process
   integer, parameter, public :: PMDIRECT_SWETR0_INVALID_SITE = 3
   integer, parameter, public :: PMDIRECT_SWETR0_INVALID_CANOPY = 4
   integer, parameter, public :: PMDIRECT_SWETR0_INVALID_RESULT = 5
+  integer, parameter, public :: PMDIRECT_SWETR0_INVALID_SURFACE_IRRIGATION = 6
 
   real(real64), parameter :: PI = 3.141592653589793238462643383279502884197_real64
   real(real64), parameter :: RADIAL = PI / 180.0_real64
@@ -81,6 +82,7 @@ module mod_pmdirect_swetr0_process
 
   public :: evaluate_pmdirect_swetr0_daily
   public :: apply_swinter1_daily_interval
+  public :: apply_swinter0_identity_interval
 
 contains
 
@@ -241,6 +243,49 @@ contains
 
     diagnostics%daily_result_produced = .true.
   end subroutine evaluate_pmdirect_swetr0_daily
+
+  pure subroutine apply_swinter0_identity_interval(weather, daily_result, gross_surface_irrigation_cm_per_day, &
+                                                    interval_result, net_surface_irrigation_cm_per_day, diagnostics)
+    type(pmdirect_swetr0_weather_t), intent(in) :: weather
+    type(pmdirect_swetr0_daily_result_t), intent(in) :: daily_result
+    real(real64), intent(in) :: gross_surface_irrigation_cm_per_day
+    type(pmdirect_swetr0_interval_result_t), intent(out) :: interval_result
+    real(real64), intent(out) :: net_surface_irrigation_cm_per_day
+    type(pmdirect_swetr0_diagnostics_t), intent(inout) :: diagnostics
+
+    interval_result = pmdirect_swetr0_interval_result_t()
+    net_surface_irrigation_cm_per_day = 0.0_real64
+    diagnostics%interval_result_produced = .false.
+
+    if (diagnostics%status /= PMDIRECT_SWETR0_OK .or. .not. diagnostics%daily_result_produced) return
+    if (.not. valid_weather(weather)) then
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_WEATHER
+      return
+    end if
+    if (.not. valid_daily_result(daily_result)) then
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_RESULT
+      return
+    end if
+    if (.not. ieee_is_finite(gross_surface_irrigation_cm_per_day) .or. &
+        gross_surface_irrigation_cm_per_day < 0.0_real64) then
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_SURFACE_IRRIGATION
+      return
+    end if
+
+    interval_result%net_rain_cm_per_day = weather%gross_rain_cm_d
+    interval_result%wet_canopy_fraction = 0.0_real64
+    interval_result%potential_transpiration_cm_per_day = daily_result%potential_transpiration_dry_cm_per_day
+    interval_result%interception_rate_cm_per_day = 0.0_real64
+    net_surface_irrigation_cm_per_day = gross_surface_irrigation_cm_per_day
+
+    if (.not. valid_interval_result(interval_result)) then
+      interval_result = pmdirect_swetr0_interval_result_t()
+      net_surface_irrigation_cm_per_day = 0.0_real64
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_RESULT
+      return
+    end if
+    diagnostics%interval_result_produced = .true.
+  end subroutine apply_swinter0_identity_interval
 
   pure subroutine apply_swinter1_daily_interval(weather, canopy, daily_result, interval_result, diagnostics)
     type(pmdirect_swetr0_weather_t), intent(in) :: weather
