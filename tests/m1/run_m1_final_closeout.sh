@@ -37,7 +37,7 @@ assert all(x['verdict'].startswith('PASS_') for x in c['criteria'])
 assert q['qualification_verdict']=='PASS_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER'
 assert q['m1_c3_scientific_gate_pass'] is True
 e=q['external_exact_asset_execution']
-assert e['accepted_intervals']==32518
+assert e['typed_accepted_intervals']==32518
 assert e['accepted_interval_identity'] is True
 assert e['result_bal_exact_reference_identity'] is True
 assert e['result_blc_exact_reference_identity'] is True
