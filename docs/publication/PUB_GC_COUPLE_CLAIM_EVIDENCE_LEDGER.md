@@ -32,7 +32,7 @@ EXCLUDED_NOVELTY
 | GC-C01 | SWAP5 and MODFLOW6 can participate in strong coupling while retaining independent solver/state ownership. | Solver autonomy and partitioned coupling are established in FMI/preCICE/IQN literature; novelty cannot be claimed from autonomy alone. | F-GC39, F-GC42, F-GC43, F-GC44 | Demonstrate beyond the restricted F-GC44 case and document exact ownership in manuscript figure. | SUPPORTED_RESTRICTED |
 | GC-C02 | Every SWAP corrector in one coupling window can be recomputed from the same immutable accepted origin. | Checkpoint/restore is established generic co-simulation practice. | F-GC39, F-GC43, F-GC44; PUB-GC E1/E2 real rejected-trial probes | Expand beyond the near-equilibrium F-GC44 envelope. | SUPPORTED_RESTRICTED |
 | GC-C03 | MODFLOW6 can remain in one prepared nonlinear solve while SWAP replays complete finite-window correctors. | MODFLOW API/XMI and iterative co-simulation are prior art. | F-GC38/F-GC39/F-GC44 | Publication trace of XOLD, X iterates, SWAP trials and convergence over representative cases. | SUPPORTED_RESTRICTED |
-| GC-C04 | Coupled convergence requires both groundwater nonlinear convergence and SWAP-groundwater exchange consistency. | Generic coupled-residual criteria are established; hydrological specialization requires evidence. | F-GC39, F-GC44 | Sensitivity study for residual tolerance and coupling-window length; show failure of component-only convergence criterion where relevant. | SUPPORTED_ARCHITECTURE |
+| GC-C04 | Coupled convergence requires both groundwater nonlinear convergence and SWAP-groundwater exchange consistency. | Generic coupled-residual criteria are established; hydrological specialization requires evidence. | F-GC39/F-GC44 plus PUB-GC E3: 12 real low-flux cases show large loose interface mismatch and 2–5-iteration restoration of the coupled flux criterion | Extend to an admitted non-trivial hydrological-feedback case; current maximum head correction is only 5.55e-9 m and 36 higher-flux cases fail before MODFLOW coupling. | SUPPORTED_RESTRICTED |
 | GC-C05 | q_bot, q_u and accepted whole-window transfer are physically distinct quantities that must not be silently aliased. | MetaSWAP/HYDRUS-MODFLOW provide strong hydrological prior art; distinction itself must be physically demonstrated for SWAP. | F-GC30/F-GC44 plus PUB-GC E1: q_bot=1e-6 cm/day, q_u=-9.65885e-7 cm/day; accepted rate/ledger amount identity closes in the restricted real case | Repeat under contrasting non-equilibrium states and active-process envelopes. | SUPPORTED_RESTRICTED |
 | GC-C06 | Rejected predictor/corrector calculations contribute zero authoritative interface mass. | Rollback exists generically; explicit hydrological mass-authority semantics are candidate contribution. | F-GC41 deterministic failure injection plus PUB-GC E2 real trial/discard/prepublication-abort probes | Add restart/durability evidence and broader process envelopes. | SUPPORTED_RESTRICTED |
 | GC-C07 | Accepted interface mass is published exactly once after all preflights pass. | Exactly-once scientific exchange is not a new generic transaction concept; hydrological application requires evidence. | F-GC41–F-GC44 plus PUB-GC E2 publication-order trace and accepted ledger identity | Add restart/durability evidence and combined-system closure in broader cases. | SUPPORTED_RESTRICTED |
@@ -160,7 +160,7 @@ However:
 
 1. **E1 closed — SUPPORTED_RESTRICTED** for identity/sign/accounting in the near-equilibrium F-GC44 envelope; retain a targeted non-zero-storage extension.
 2. **E2 closed — SUPPORTED_RESTRICTED** for pre-publication rejection/abort and exactly-once successful publication; post-publication durability remains separate.
-3. **E3 NEXT** — controlled coupling-window/feedback experiment.
+3. **E3 main matrix completed — SUPPORTED_RESTRICTED for interface-convergence behaviour**, but not yet for hydrologically material feedback; E3-D predictor-envelope diagnosis is active.
 4. E4 response identity u_FD vs J_S vs J_R.
 5. E5 oracle/IQN information-value test.
 6. E6 hydrological stress extension.
@@ -180,3 +180,22 @@ E1/E2 results:
 Machine-readable result:
 
 `PUB_GC_E1_E2_RESULT.json`
+
+
+## E3 evidence
+
+Preregistration:
+
+`PUB_GC_E3_PREREGISTRATION.md`
+
+Initial 48-case result:
+
+`PUB_GC_E3_INITIAL_RESULT.md`
+
+Machine-readable result:
+
+`PUB_GC_E3_INITIAL_RESULT.json`
+
+Post-hoc but separately preregistered predictor-envelope diagnosis:
+
+`PUB_GC_E3D_PREDICTOR_ENVELOPE_PREREGISTRATION.md`
