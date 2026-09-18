@@ -43,7 +43,8 @@ module mod_fgc44_real_swap_c_bridge
   private
 
   real(real64), parameter :: H0_CM=-75.0_real64
-  real(real64), parameter :: DURATION_DAY=1.0e-4_real64
+  real(real64), parameter :: DEFAULT_DURATION_DAY=1.0e-4_real64
+  real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), parameter :: TOL=1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
@@ -97,8 +98,19 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
+  public :: pub_gc_e3_set_duration_c, pub_gc_e3_begin_next_window_c, pub_gc_e3_committed_storage_c
 
 contains
+
+  integer(c_int) function pub_gc_e3_set_duration_c(duration_day) bind(C,name="pub_gc_e3_set_duration_c")
+    real(c_double), value, intent(in) :: duration_day
+    pub_gc_e3_set_duration_c=1_c_int
+    if(.not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double)return
+    active_duration_day=real(duration_day,real64)
+    pub_gc_e3_set_duration_c=0_c_int
+  end function pub_gc_e3_set_duration_c
+
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
@@ -136,7 +148,7 @@ contains
     if(.not.ok)return
 
     datum%available=.true.; datum%datum_id=540044_int64; datum%bottom_boundary_elevation_m=0.0_real64
-    window%t0=0.0_real64; window%t1=DURATION_DAY
+    window%t0=0.0_real64; window%t1=active_duration_day
     call predictor_backend%initialize(top)
     call corrector_backend%initialize(top)
     call materializer%initialize(base_forcing)
@@ -150,7 +162,7 @@ contains
     if(.not.result%accepted_trajectory_direction%available)return
 
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
-    call bind_b110_default_mvg_provider(constitutive,hp,DURATION_DAY)
+    call bind_b110_default_mvg_provider(constitutive,hp,active_duration_day)
     call materialize_solver_view(candidate,predictor_state,solver_parameters,ok); if(.not.ok)return
     call build_modflow6_swap_predictor_tangent_endpoint(predictor_state,solver_parameters,constitutive, &
          result%accepted_trajectory_direction,qeq,datum,.false.,.false.,.false.,.false.,endpoint,status)
@@ -300,6 +312,52 @@ contains
     fgc44_state_c=0_c_int
   end function fgc44_state_c
 
+  integer(c_int) function pub_gc_e3_begin_next_window_c(duration_day) bind(C,name="pub_gc_e3_begin_next_window_c")
+    real(c_double), value, intent(in) :: duration_day
+    real(real64) :: t
+    logical :: available
+    integer :: status
+    pub_gc_e3_begin_next_window_c=1_c_int
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
+    if(participant%has_live_candidate())return
+    if(ledger_prepared)return
+    call committed%current_time(t,available); if(.not.available)return
+    active_duration_day=real(duration_day,real64)
+    window%t0=t
+    window%t1=t+active_duration_day
+    if(.not.window%valid())return
+    call participant%capture_origin(committed,status)
+    if(status/=GW_SWAP_PARTICIPANT_OK)return
+    pub_gc_e3_begin_next_window_c=0_c_int
+  end function pub_gc_e3_begin_next_window_c
+
+  integer(c_int) function pub_gc_e3_committed_storage_c(storage_native) bind(C,name="pub_gc_e3_committed_storage_c")
+    real(c_double), intent(out) :: storage_native
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: available
+    integer :: n
+    storage_native=0.0_c_double
+    pub_gc_e3_committed_storage_c=1_c_int
+    if(.not.initialized)return
+    call committed%snapshot(snapshot,available)
+    if(.not.available .or. .not.allocated(snapshot))return
+    select type(physical=>snapshot)
+    class is(fmr_b110_physical_state_t)
+      n=physical%active_nodes
+      if(n<=0 .or. .not.allocated(physical%water_content))return
+      if(size(physical%water_content)<n .or. size(corrector_parameters%dz)<n)return
+      storage_native=sum(corrector_parameters%dz(1:n)*physical%water_content(1:n))+physical%ponding_depth
+      if(.not.ieee_is_finite(real(storage_native,real64)))then
+        storage_native=0.0_c_double
+        return
+      end if
+    class default
+      return
+    end select
+    pub_gc_e3_committed_storage_c=0_c_int
+  end function pub_gc_e3_committed_storage_c
+
   integer(c_int) function fgc44_e1_diagnostics_c(mass_complete,q_bot,q_u,u,h_start,h_end, &
        bottom_exchange,terminal_flux,storage_start,storage_end,storage_change,total_in,total_out,residual) &
        bind(C,name="fgc44_e1_diagnostics_c")
@@ -408,7 +466,7 @@ contains
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,active_duration_day)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     physical%active_nodes=numnod; allocate(physical%pressure_head(numnod),physical%water_content(numnod))
     physical%pressure_head=heads; physical%water_content=water; physical%ponding_depth=0.0_real64; physical%groundwater_level=-2.0_real64
@@ -452,7 +510,7 @@ contains
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    call bind_b110_default_mvg_provider(provider,hp,active_duration_day)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod),conductivity(numnod),qbot, &
          0.5_real64*p%dz(numnod),datum,face,status)
