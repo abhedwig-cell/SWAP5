@@ -1,0 +1,38 @@
+name: F-ROSS15 Reference vs RossFast performance screening
+
+on:
+  push:
+    branches:
+      - work/f-ross15-reference-vs-rossfast-performance
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-ross/F-ROSS15_*'
+      - 'tests/ross/test_ross15_reference_vs_rossfast_performance.f90'
+      - 'tests/ross/run_ross15_reference_vs_rossfast_performance.sh'
+      - 'tools/performance/f_ross15_paired_screen.py'
+      - '.github/workflows/f-ross15-reference-vs-rossfast-performance.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  paired-cpu-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute frozen F-ROSS15 paired CPU screen
+        run: bash tests/ross/run_ross15_reference_vs_rossfast_performance.sh
+      - name: Preserve screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross15-performance-screening-${{ github.run_id }}
+          path: F-ROSS15_SCREENING_RESULT.json
+          if-no-files-found: warn
