@@ -1634,7 +1634,21 @@
       "id": "PPA-WU03",
       "title": "Atmospheric forcing and normal-input adapter boundary",
       "goal": "Define and qualify outer application ingestion from normal forcing/config inputs to already-admitted typed ET/interception/top-boundary forcing while keeping file I/O outside kernel.",
-      "exit": "Common precipitation/reference-ET/canopy forcing can drive WU01 end-to-end with no new physics."
+      "exit": "Common precipitation/reference-ET/canopy forcing can drive WU01 end-to-end with no new physics.",
+      "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
+      "qualification": "PPA-WU03 workflow run 35374130545: owner job 105694706631 PASS, independent job 105694706401 PASS (54 cases), preservation job 105694706721 PASS.",
+      "production_delta": [
+        "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
+        "read-only PPA-WU01 run_standalone_with_forcing seam"
+      ],
+      "restrictions": [
+        "SWETR=1 reference ET only",
+        "SWINTER=0 only",
+        "resolved nonnegative surface irrigation only; no schedule parsing",
+        "generic explicit forcing spans; no file/calendar grammar",
+        "only pure-flux dynamic-top result may hand off to PPA-WU01"
+      ]
     },
     {
       "id": "PPA-WU04",
@@ -1662,6 +1676,14 @@
       "state": "CANONICAL_ADMITTED_CLOSED",
       "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
       "effect": "Restricted production config-to-owned-FMR bootstrap is now canonical. Broader normal-input/application composition remains open under PPA-WU03."
+    },
+    {
+      "workunit": "PPA-WU03",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "branch": "work/ppa-wu03-common-forcing-adapter",
+      "qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
+      "qualification": "Workflow run 35374130545: owner, independent and preservation jobs PASS.",
+      "effect": "Adds a bounded stateless normal/common forcing boundary above PPA-WU01 without parser/calendar leakage or ownership drift; canonical admission still pending."
     }
   ]
 }
