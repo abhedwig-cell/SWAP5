@@ -12,21 +12,26 @@
     "max_error": 0
   },
   "independent_qualification": {
-    "workunit": "F-VQ123",
-    "branch": "qualification/f-vq123-fapp06-swinter0-independent",
-    "subject_head": "ebcefbbf3d6476fead6aab08db239a7043f47ac7",
-    "run_id": 35350178658,
-    "job_id": 105616169263,
+    "workunit": "F-VQ126",
+    "branch": "qualification/f-vq126-fapp06-swinter0-independent",
+    "authority_evidence": "integration/f-vq/F-VQ126_FAPP06_SWINTER0_INDEPENDENT.json",
+    "source_green_run_id": 35350178658,
+    "source_green_job_id": 105616169263,
     "conclusion": "success",
     "exact_B1_11_records": 3505,
     "max_error": 0,
     "exact_sha256": "9c5cae06f3ce342154ec26d3731fcc5379b26ef7dff91a950615cfea477327ef",
-    "production_mutation": "NONE"
+    "namespace_reconciliation": "F-VQ123 superseded for this application because canonical F-GC49C owns that identifier; VQ126 reuses the identical verifier/postimages under a collision-free authority."
   },
   "production_postimages": {
     "src/process/mod_pmdirect_swetr0_process.f90": "3eb23d075a56ba1158f4758f75a8d94c94e09b39",
     "src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90": "7d76af48cac085d6f4b5653987d75bfc54fb7692"
   },
-  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION",
-  "next_permitted_action": "Require current-canonical broad gate/no-overlap reconciliation, then admit without changing the qualified production postimages."
+  "verdict": "READY_FOR_CANONICAL_ADMISSION_WITH_F_VQ126",
+  "next_permitted_action": "Require current-canonical broad gate/no-overlap reconciliation, then admit without changing the qualified production postimages.",
+  "canonical_reconciliation": {
+    "head": "24362dfd4e844e6dda5e3d8e34b67be37e479574",
+    "production_overlap": false,
+    "note": "Current canonical drift since the qualified subject is governance/research evidence plus F-APP07/F-APP08 admissions; F-APP06 production postimages remain exact."
+  }
 }
