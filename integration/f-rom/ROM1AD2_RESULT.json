@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.rom1ad2.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-D2",
+  "title": "Mode-2 strict-first total-only fallback qualification",
+  "execution": {
+    "workflow_run": 35377673681,
+    "workflow_job": 105706133349,
+    "executed_head": "88429f0899728328e3e71a874dc1733af7fce617",
+    "artifact_id": 10560708894,
+    "artifact_digest": "sha256:9689b67ec651ec2f022a3b47fca061b194ba2174847aaa2d48f55b1a7dcd6313",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "matrix": {
+    "material": "B01",
+    "trajectories": ["TOP_PLUS_64","TOP_MINUS_64"],
+    "committed_step_count": 128,
+    "TOP_PLUS_fallback_count": 1,
+    "TOP_MINUS_fallback_count": 3,
+    "fallback_count": 4,
+    "heldout_executed": false,
+    "B14_executed": false
+  },
+  "fallback": {
+    "all_triggers_classified_retry_total_only": true,
+    "all_local_balance_flag_counts_zero": true,
+    "all_head_flag_counts_zero": true,
+    "all_integrated_residuals_within_pre_solve_representation_bound": true,
+    "representation_bound_cm": 8.881784197001252e-15,
+    "residual_over_bound_range": [0.1181600000000003,0.13192000000000034],
+    "failed_residual_used_to_choose_tolerance": false,
+    "dt_subdivision_used": false
+  },
+  "mass": {
+    "hard_gate_cm": 1e-12,
+    "max_abs_committed_mass_residual_cm": 1.492772919164942e-14,
+    "hard_gate_pass": true
+  },
+  "decision": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED",
+  "interpretation": "The strict-first mode-2 sibling policy completes both frozen fixed-flux directions. Fallback is used only after an immutable original failure is independently classified as total-only within the prospective representation bound. No held-out trajectory or B14 result was used.",
+  "production_fallback_admitted": false
+}
