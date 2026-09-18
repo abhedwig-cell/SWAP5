@@ -374,5 +374,9 @@ Persistent evidence:
 - `PUB_GC_E3D_PREDICTOR_ENVELOPE_RESULT.md`
 - `PUB_GC_E3D2_PREDICTOR_FAILURE_RESULT.md`
 - `PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.md`
+- `PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md`
+- `PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md`
+- `PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json`
+- `PUB_GC_E4_RESPONSE_IDENTITY_TABLE.csv`
 
 E3 is closed as **SUPPORTED_RESTRICTED**. The main matrix and stronger-flux refinement establish a weak-feedback control in which iterative coupling restores strict interface closure but changes groundwater head only at nanometre scale. Predictor and long-window corrector failures were localized to the bounded SWAP transaction/retry envelope rather than the outer coupling algorithm. A materially strong positive-feedback case remains future evidence and must come from a different admitted hydrological state or groundwater-response geometry rather than relaxed tolerances.
