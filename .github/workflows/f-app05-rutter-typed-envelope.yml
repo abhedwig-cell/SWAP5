@@ -37,7 +37,19 @@ jobs:
           gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
             src/process/mod_rutter_interception_process.f90 tests/f-app05/test_hupsel_rutter_observations.f90 -o build/o2/hupsel
           build/o2/hupsel | tee build/o2/hupsel.txt
+      - name: Qualify SWCF2 PMdirect extension and F-APP03 regression
+        run: |
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
+            src/process/mod_pmdirect_swetr0_process.f90 tests/f-app05/test_hupsel_swcf2_pmdirect_daily.f90 -o build/o0/swcf2
+          build/o0/swcf2 | tee build/o0/swcf2.txt
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
+            src/process/mod_pmdirect_swetr0_process.f90 tests/f-app05/test_hupsel_swcf2_pmdirect_daily.f90 -o build/o2/swcf2
+          build/o2/swcf2 | tee build/o2/swcf2.txt
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
+            src/process/mod_pmdirect_swetr0_process.f90 tests/fapp/test_fapp03_pmdirect_swetr0_process.f90 -o build/o0/fapp03
+          build/o0/fapp03 | tee build/o0/fapp03.txt
       - name: Require optimization identity
         run: |
           cmp build/o0/out.txt build/o2/out.txt
           cmp build/o0/hupsel.txt build/o2/hupsel.txt
+          cmp build/o0/swcf2.txt build/o2/swcf2.txt
