@@ -1,0 +1,141 @@
+{
+  "schema": "swap5.ppa_wu05c.oxygen_stress_authority_contract.v1",
+  "workunit": "PPA-WU05-C",
+  "status": "PARTIAL_AUTHORITY_FREEZE_FULL_CALLSITE_SOURCE_REQUIRED",
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "oxygenstress": {
+      "b0_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b9c6bcf560d2221248f3b12f75",
+      "b1_11_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+      "only_admitted_b0_to_b1_change": "SWAP-007",
+      "correction": "Representability guard around fi/fi_a; unrepresentable quotient routes into the pre-existing large-lnew restart path.",
+      "physics_model_change": false
+    },
+    "current_root_owner": {
+      "process": "src/process/mod_root_water_uptake_process.f90",
+      "admission": "F-CI31",
+      "scope": "macro Feddes drought-only root extraction",
+      "mass_owner": "root_extraction_sink",
+      "current_oxygen_support": false
+    }
+  },
+  "owner_classification": {
+    "oxygen_process_role": "stress/reduction producer feeding root-water uptake; not an independent water-mass transfer owner",
+    "authoritative_root_water_mass_owner": "existing nodewise root_extraction_sink owner",
+    "oxygen_diagnostics_mass_role": "diagnostic/reconciliation only unless a later source-bound contract proves a distinct transfer",
+    "crop_state_owner": "crop/root owner remains external",
+    "hydraulic_state_owner": "soil-water owner remains external",
+    "thermal_state_owner": "soil-temperature/frost owners remain external"
+  },
+  "state_classification": {
+    "physical_continuation_state": {
+      "status": "NO_SOURCE_BOUND_EVIDENCE_OF_OXYGEN_LOCAL_PHYSICAL_CONTINUATION_STATE_IN_CURRENT_REVIEW",
+      "rule": "Do not invent oxygen restart state. Production implementation must materialize the complete B1.11 oxygen/root callsite before final state schema is admitted."
+    },
+    "shared_derived_cache": {
+      "classification": "IMMUTABLE_AFTER_CONSTRUCTION_SHARED_DERIVED_DATA",
+      "corroborated_fields": [
+        "d_soil_term1",
+        "d_soil_term2",
+        "gfp100",
+        "capac_term",
+        "nmin1",
+        "mplus1"
+      ],
+      "basis": "Historical S11 ownership extraction shows these are initialized from grid/hydraulic configuration and then reused; S9 removes them from transactional snapshots and places them in shared data.",
+      "restart": false,
+      "rollback": false,
+      "key_rule": "Construction key must include every source input used to derive the cache; historical evidence specifically warns that initial hysteresis wetting/drying branch belongs in the key when hysteresis affects watcon()."
+    },
+    "evaluation_scratch": {
+      "classification": "WORKER_LOCAL_RECOMPUTABLE",
+      "examples": [
+        "Newton/bracketing locals",
+        "water-film intermediates",
+        "gas-diffusion algebra",
+        "temporary convergence values"
+      ],
+      "persistence": false
+    }
+  },
+  "transaction_contract": {
+    "checkpoint": "Existing hydraulic/root/crop owners only; no derived oxygen cache is checkpoint state.",
+    "trial": "Evaluate oxygen reduction against explicit read-only views and worker-local scratch.",
+    "reject": "No committed root sink or diagnostic receipt from the rejected oxygen/root trial.",
+    "retry": "Re-evaluate from the same committed external state. SWAP-007 representability guard remains mandatory; do not replace it with a new tolerance or fallback.",
+    "commit": "Publish exactly one accepted nodewise root sink through the existing root-water mass owner.",
+    "numerical_policy": "Oxygen process does not own Richards timestep/retry policy."
+  },
+  "input_authority": {
+    "source_bound_from_current_evidence": [
+      "node index and grid/layer geometry",
+      "atmospheric temperature input used by OxygenStress",
+      "plant maximum respiration factor",
+      "hydraulic/retention quantities needed for gas-filled porosity and water-film calculations"
+    ],
+    "held_for_complete_b1_11_callsite_trace": [
+      "complete rootextraction integration ordering",
+      "complete list of plant/soil/atmospheric inputs",
+      "exact nodewise composition order with drought and any other enabled stress factors",
+      "whether any caller-side continuation/provenance must survive accepted boundaries"
+    ],
+    "prohibition": "No production DTO is frozen from the partial input list."
+  },
+  "coupling_contract": {
+    "existing_authority": "F-GC30",
+    "rule": "Any oxygen-active root response remains outside analytic coupling derivative coverage until the accepted root sink sensitivity to groundwater/head perturbation is explicitly qualified.",
+    "fail_closed": true,
+    "runtime_finite_difference_fallback_admitted": false
+  },
+  "implementation_hold": {
+    "state": "BLOCKED_BY_FULL_B1_11_OXYGEN_ROOT_CALLSITE_SOURCE_MATERIALIZATION",
+    "required_before_production": [
+      "materialize byte-exact B1.11 oxygenstress.f90 and rootextraction.f90 source bytes",
+      "verify B1.11 hashes and SWAP-007 as the only oxygenstress correction",
+      "recover complete call graph and exact composition order",
+      "classify all dynamic inputs and any caller-side continuation state",
+      "freeze typed oxygen request/result interface around the existing single root sink owner",
+      "derive exact source oracle cases including the SWAP-007 pathological guard case",
+      "define derivative-coverage disposition for groundwater coupling"
+    ],
+    "forbidden_until_met": [
+      "production oxygen-stress module",
+      "oxygen-aware root production admission",
+      "oxygen-active MODFLOW tangent claim",
+      "parallel oxygen claim",
+      "restart claim for oxygen route"
+    ]
+  },
+  "later_slices": [
+    {
+      "id": "PPA-WU05-C1",
+      "scope": "byte-exact oxygenstress/rootextraction source materialization and call-graph/input census",
+      "type": "AUTHORITY"
+    },
+    {
+      "id": "PPA-WU05-C2",
+      "scope": "typed oxygen stress evaluator plus exact source oracle, no runtime composition",
+      "type": "SCIENCE_IMPLEMENTATION"
+    },
+    {
+      "id": "PPA-WU05-C3",
+      "scope": "composition with existing root sink owner, transaction/mass/restart qualification",
+      "type": "PRODUCTION_QUALIFICATION"
+    },
+    {
+      "id": "PPA-WU05-C4",
+      "scope": "oxygen-active coupling derivative coverage and parallel execution",
+      "type": "COUPLING_PARALLEL_QUALIFICATION"
+    }
+  ],
+  "nonclaims": [
+    "salinity stress",
+    "frost stress",
+    "compensated uptake",
+    "MICRO/Jong-van-Lier",
+    "macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "new oxygen model or parameterization"
+  ]
+}
