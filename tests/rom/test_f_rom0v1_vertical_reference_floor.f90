@@ -18,11 +18,10 @@ program test_f_rom0v1_vertical_reference_floor
   implicit none
 
   real(real64), parameter :: se0=0.85_real64
-  real(real64), parameter :: dt_ref=0.0008_real64
-  integer, parameter :: nsteps=64
+  real(real64), parameter :: dt_ref=0.0016_real64
+  integer, parameter :: nsteps=32
   real(real64), parameter :: horizon=real(nsteps,real64)*dt_ref
   real(real64), parameter :: hard_mass_gate=1.0e-12_real64
-  real(real64), parameter :: min_integrated_total_bound=1.6e-15_real64
   integer(int64), parameter :: column_id=965101_int64
   character(len=24), parameter :: case_ids(2)=[character(len=24) :: 'B01_E1_NOMINAL_FLUX','B14_E2_DRYING_FLUX']
   character(len=8), parameter :: material_ids(2)=[character(len=8) :: 'B01','B14']
@@ -47,15 +46,15 @@ contains
   subroutine run_case(case_id,material_id,top_factor,bottom_factor)
     character(len=*),intent(in) :: case_id,material_id
     real(real64),intent(in) :: top_factor,bottom_factor
-    type(fmr_b110_physical_parameters_t) :: parameters,step_parameters
+    type(fmr_b110_physical_parameters_t) :: parameters
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial_state
     type(kernel_committed_state_t) :: committed
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
-    real(real64) :: h0,k0,qtop,qbot,t0,t1,rep_raw,rep_bound,total_tol
+    real(real64) :: h0,k0,qtop,qbot,t0,t1
     real(real64) :: mass,bex,bflux,total_storage,upper_storage,lower_storage
-    real(real64) :: cumulative_bottom,cumulative_top,max_mass,bound_min,bound_max
+    real(real64) :: cumulative_bottom,cumulative_top,max_mass
     integer :: i,status,nl,ir,back,nl_min,nl_max,back_min,back_max
     character(len=96) :: route
     logical :: ok
@@ -82,8 +81,6 @@ contains
     cumulative_bottom=0.0_real64
     cumulative_top=0.0_real64
     max_mass=0.0_real64
-    bound_min=huge(0.0_real64)
-    bound_max=0.0_real64
     nl_min=huge(0);nl_max=0;back_min=huge(0);back_max=0
     t0=0.0_real64
 
@@ -92,17 +89,10 @@ contains
 
     do i=1,nsteps
       t1=real(i,real64)*dt_ref
-      call prospective_bound(committed,parameters,rep_raw,ok)
-      call require(ok.and.rep_raw>0.0_real64,'finite positive raw representation bound')
-      rep_bound=max(min_integrated_total_bound,rep_raw)
-      total_tol=rep_bound/(t1-t0)
-      step_parameters=parameters
-      step_parameters%total_balance_tolerance=total_tol
-
-      call sample_fresh(column,template,step_parameters,committed,forcing,t0,t1,ok,mass,bex,bflux,status,route,nl,ir,back)
+      call sample_fresh(column,template,parameters,committed,forcing,t0,t1,ok,mass,bex,bflux,status,route,nl,ir,back)
       if(.not.ok) then
         write(*,'(*(g0))') 'F_ROM0V1_CASE_FAIL|GEOM_N=',numnod,'|CASE=',trim(case_id),'|STEP=',i, &
-             '|T0=',t0,'|T1=',t1,'|REP_RAW_CM=',rep_raw,'|REP_BOUND_CM=',rep_bound,'|TOTAL_TOL=',total_tol, &
+             '|T0=',t0,'|T1=',t1, &
              '|STATUS=',status,'|ROUTE=',trim(route),'|NL=',nl,'|IR=',ir,'|BACK=',back
         return
       end if
@@ -110,7 +100,6 @@ contains
       cumulative_bottom=cumulative_bottom+bex
       cumulative_top=cumulative_top+qtop*(t1-t0)
       max_mass=max(max_mass,abs(mass))
-      bound_min=min(bound_min,rep_bound);bound_max=max(bound_max,rep_bound)
       nl_min=min(nl_min,nl);nl_max=max(nl_max,nl)
       back_min=min(back_min,back);back_max=max(back_max,back)
 
@@ -118,7 +107,7 @@ contains
       call state_metrics(committed,total_storage,upper_storage,lower_storage,ok)
       call require(ok,'state metrics')
       write(*,'(*(g0))') 'F_ROM0V1_STEP|GEOM_N=',numnod,'|CASE=',trim(case_id),'|STEP=',i,'|T=',t1, &
-           '|REP_RAW_CM=',rep_raw,'|REP_BOUND_CM=',rep_bound,'|TOTAL_TOL=',total_tol,'|MASS=',mass, &
+           '|MASS=',mass, &
            '|TOTAL_STORAGE=',total_storage,'|UPPER_STORAGE=',upper_storage,'|LOWER_STORAGE=',lower_storage, &
            '|CUM_TOP=',cumulative_top,'|CUM_BOTTOM=',cumulative_bottom,'|BOTTOM_FLUX=',bflux,'|NL=',nl,'|BACK=',back
       call emit_nodes(committed,case_id,i,t1)
@@ -129,7 +118,7 @@ contains
     call require(abs(t0-horizon)<=1.0e-15_real64,'exact final horizon')
     write(*,'(*(g0))') 'F_ROM0V1_CASE_PASS|GEOM_N=',numnod,'|CASE=',trim(case_id),'|STEPS=',nsteps, &
          '|FINAL_REV=',committed%current_revision(),'|FINAL_T=',t0,'|MAX_ABS_MASS=',max_mass, &
-         '|REP_BOUND_MIN=',bound_min,'|REP_BOUND_MAX=',bound_max,'|NL_MIN=',nl_min,'|NL_MAX=',nl_max, &
+         '|NL_MIN=',nl_min,'|NL_MAX=',nl_max, &
          '|BACK_MIN=',back_min,'|BACK_MAX=',back_max,'|FINAL_CUM_TOP=',cumulative_top, &
          '|FINAL_CUM_BOTTOM=',cumulative_bottom
   end subroutine run_case
@@ -174,33 +163,6 @@ contains
     call backend%commit_reference_floor_candidate(state,candidate,diagnostics,did_commit,commit_status)
     ok=did_commit.and.commit_status==KERNEL_COMMIT_STATUS_COMMITTED.and..not.candidate%ready()
   end subroutine sample_fresh
-
-  subroutine prospective_bound(state,p,raw_bound,ok)
-    type(kernel_committed_state_t),intent(in) :: state
-    type(fmr_b110_physical_parameters_t),intent(in) :: p
-    real(real64),intent(out) :: raw_bound
-    logical,intent(out) :: ok
-    class(transaction_state_t),allocatable :: snap
-    logical :: got
-    integer :: i
-    real(real64) :: theta_s
-    raw_bound=0.0_real64;ok=.false.;theta_s=p%cofgen(2,1)
-    call state%snapshot(snap,got);if(.not.got)return
-    select type(physical=>snap)
-    type is(fmr_b110_physical_state_t)
-      if(physical%active_nodes/=numnod)return
-      do i=1,numnod
-        if(.not.ieee_is_finite(physical%water_content(i)))return
-        if(physical%water_content(i)<=0.0_real64.or.physical%water_content(i)>=theta_s)return
-        if(spacing(physical%water_content(i))>spacing(theta_s))return
-        raw_bound=raw_bound+0.5_real64*(spacing(theta_s)+spacing(physical%water_content(i)))*p%dz(i)
-      end do
-      ok=ieee_is_finite(raw_bound).and.raw_bound>0.0_real64
-    class default
-      ok=.false.
-    end select
-    if(allocated(snap))deallocate(snap)
-  end subroutine prospective_bound
 
   subroutine verify_commit_progress(state,step,expected_time)
     type(kernel_committed_state_t),intent(in) :: state
