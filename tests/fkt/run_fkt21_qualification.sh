@@ -7,11 +7,36 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 fail(){ echo "FKT21_QUALIFICATION_FAIL $*" >&2; exit 1; }
 
-# Exact F-SI37 owner-qualified primitive dependency.
-[[ "$(git rev-parse HEAD:src/solver/mod_soil_water_accepted_step_direction_contract.f90)" == 52698b1ad2350bf787862a053a49c7c73c3358f0 ]] || fail 'F-SI37 direction contract drift'
-[[ "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_directional_provider.f90)" == b1e794d2f0e661a2abb14280a59175e1cf1d5724 ]] || fail 'F-SI37 constitutive directional provider drift'
-[[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90)" == 0a957376b9a9fdea00ab6009f129803fb5341e4a ]] || fail 'F-SI37 dynamic-top directional adapter drift'
-[[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" == ef395ac3fb0cf6f347031bf2081a74b74b5167ae ]] || fail 'F-SI37 accepted-step service drift'
+# Exact F-SI37 owner-qualified primitive dependency by default.
+# F-CI98 is an admitted backward-compatible semantic successor that extends
+# the accepted-step tangent with optional source/sink directional scratch.
+# Only explicit preservation callers may opt into that successor lineage.
+if [[ "${FKT21_ALLOW_FCI98_SUCCESSOR:-0}" == "1" ]]; then
+  python3 - <<'PY'
+import json
+from pathlib import Path
+s=json.loads(Path('integration/f-ci/F-CI98_STATUS.json').read_text())
+assert s['capability']=='F-GC31'
+assert s['admission_gate']['conclusion']=='success'
+assert s['owner']['production_modules']['src/solver/mod_soil_water_accepted_step_direction_contract.f90']=='b5a0276d2f1b2c8ffe581e68dffecdaf55a32768'
+assert s['owner']['production_modules']['src/adapter/mod_reference_richards_accepted_step_directional_service.f90']=='8ca4e08f0297a6b7d0bca1608e9a1ac4d41f4fd7'
+assert s['owner']['production_modules']['src/transaction/mod_accepted_trajectory_directional_publication.f90']=='b1be9af9ece045cac1fd17087e6b08bc615bd733'
+assert s['owner']['production_modules']['src/transaction/mod_accepted_trajectory_directional_sensitivity.f90']=='d267a763ceb697557e762c937a99b7f11cb44684'
+print('FKT21_FCI98_SUCCESSOR_AUTHORITY=PASS')
+PY
+  [[ "$(git rev-parse HEAD:src/solver/mod_soil_water_accepted_step_direction_contract.f90)" == b5a0276d2f1b2c8ffe581e68dffecdaf55a32768 ]] || fail 'F-CI98 direction contract drift'
+  [[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" == 8ca4e08f0297a6b7d0bca1608e9a1ac4d41f4fd7 ]] || fail 'F-CI98 accepted-step service drift'
+  [[ "$(git rev-parse HEAD:src/transaction/mod_accepted_trajectory_directional_publication.f90)" == b1be9af9ece045cac1fd17087e6b08bc615bd733 ]] || fail 'F-CI98 directional publication drift'
+  [[ "$(git rev-parse HEAD:src/transaction/mod_accepted_trajectory_directional_sensitivity.f90)" == d267a763ceb697557e762c937a99b7f11cb44684 ]] || fail 'F-CI98 trajectory sensitivity drift'
+  [[ "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_directional_provider.f90)" == b1e794d2f0e661a2abb14280a59175e1cf1d5724 ]] || fail 'F-SI37 constitutive directional provider drift'
+  [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90)" == 0a957376b9a9fdea00ab6009f129803fb5341e4a ]] || fail 'F-SI37 dynamic-top directional adapter drift'
+  echo 'FKT21_FCI98_SUCCESSOR_BLOBS=PASS'
+else
+  [[ "$(git rev-parse HEAD:src/solver/mod_soil_water_accepted_step_direction_contract.f90)" == 52698b1ad2350bf787862a053a49c7c73c3358f0 ]] || fail 'F-SI37 direction contract drift'
+  [[ "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_directional_provider.f90)" == b1e794d2f0e661a2abb14280a59175e1cf1d5724 ]] || fail 'F-SI37 constitutive directional provider drift'
+  [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90)" == 0a957376b9a9fdea00ab6009f129803fb5341e4a ]] || fail 'F-SI37 dynamic-top directional adapter drift'
+  [[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_accepted_step_directional_service.f90)" == ef395ac3fb0cf6f347031bf2081a74b74b5167ae ]] || fail 'F-SI37 accepted-step service drift'
+fi
 
 # F-KT21 composes around the canonical transaction engine; it does not replace
 # or silently alter generic transaction acceptance semantics.
