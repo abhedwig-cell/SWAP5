@@ -10,9 +10,10 @@ LIVE="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print
 git merge-base --is-ancestor "$BASE" HEAD || fail 'closeout branch does not descend from M1-C3 canonical admission'
 
 mapfile -t changed < <(git diff --name-only "$BASE"..HEAD)
-[[ "${#changed[@]}" -eq 2 ]] || { printf '%s\n' "${changed[@]}" >&2; fail 'unexpected closeout delta count'; }
+[[ "${#changed[@]}" -eq 3 ]] || { printf '%s\n' "${changed[@]}" >&2; fail 'unexpected closeout delta count'; }
 printf '%s\n' "${changed[@]}" | grep -Fxq 'integration/m1/M1_CANONICAL_CLOSEOUT_20260918.json' || fail 'missing closeout record'
-printf '%s\n' "${changed[@]}" | grep -Fxq 'tests/m1/run_m1_final_closeout.sh' || fail 'unexpected closeout delta'
+printf '%s\n' "${changed[@]}" | grep -Fxq 'tests/m1/run_m1_final_closeout.sh' || fail 'missing closeout gate'
+printf '%s\n' "${changed[@]}" | grep -Fxq '.github/workflows/m1-final-closeout.yml' || fail 'missing closeout workflow'
 echo 'M1_FINAL_CLOSEOUT_GOVERNANCE_ONLY_DELTA=PASS'
 
 [[ "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" == 3962c270a7579b7403764674302445fe15ef5f72 ]] || fail 'canonical contracts drift'
