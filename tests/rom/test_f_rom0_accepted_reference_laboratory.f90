@@ -95,9 +95,6 @@ program test_f_rom0_accepted_reference_laboratory
     call fmr_capture_checkpoint(committed, checkpoint, ok)
     call require(ok .and. checkpoint%ready(), 'checkpoint captured from committed authority')
 
-    result = kernel_result_t()
-    candidate = kernel_candidate_state_t()
-    diagnostic = kernel_diagnostics_t()
     call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostic)
 
