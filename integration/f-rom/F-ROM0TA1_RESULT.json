@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.f-rom0ta1.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA1",
+  "title": "Reference-Richards temporal-certificate measurement against direct refinement",
+  "execution": {
+    "workflow_run": 35365703235,
+    "workflow_job": 105667526406,
+    "candidate_head": "e8b97f6dc1817db0c458c4cdeb23afe7edf2ef9f",
+    "artifact_id": 10556023143,
+    "artifact_digest": "sha256:74e9a7b0d1f5c6509c288a2bce1c40d214539032505201e5e5c275ba35461b95",
+    "conclusion": "success"
+  },
+  "preregistration": "integration/f-rom/F-ROM0TA1_PREREGISTRATION.json",
+  "matrix": {
+    "expected_rows": 8,
+    "observed_rows": 8,
+    "complete": true,
+    "materials": ["B01", "B14"],
+    "perturbations": ["TOP_PLUS", "TOP_MINUS"],
+    "full_step_days": [0.0016, 0.0008],
+    "half_step_days": [0.0008, 0.0004]
+  },
+  "direct_reference_measurement": {
+    "all_principal_full_steps_converged": true,
+    "all_refined_half_steps_converged": true,
+    "all_temporal_indicators_available": true,
+    "all_rows_within_hard_mass_gate_1e_12_cm": true,
+    "terminal_top_flux_difference_full_vs_refined": 0.0,
+    "terminal_bottom_flux_difference_full_vs_refined": 0.0
+  },
+  "head_difference_cm": {
+    "maximum": 8.157577067180455e-06,
+    "B01_TOP_PLUS": {
+      "dt_0_0016": 8.157577067180455e-06,
+      "dt_0_0008": 2.164579306906944e-06,
+      "observed_refinement_order": 1.914054052292986
+    },
+    "B01_TOP_MINUS": {
+      "dt_0_0016": 8.155361840067599e-06,
+      "dt_0_0008": 2.1642936332000318e-06,
+      "observed_refinement_order": 1.913852643175375
+    },
+    "B14_TOP_PLUS": {
+      "dt_0_0016": 3.1937588573782705e-08,
+      "dt_0_0008": 8.00361021902063e-09,
+      "observed_refinement_order": 1.9965325732510797
+    },
+    "B14_TOP_MINUS": {
+      "dt_0_0016": 3.1937588573782705e-08,
+      "dt_0_0008": 8.003411267054616e-09,
+      "observed_refinement_order": 1.9965684358898605
+    }
+  },
+  "B_inf_cm": {
+    "maximum": 0.001128095552403025,
+    "B01_TOP_PLUS": {
+      "dt_0_0016": 0.001128095552403025,
+      "dt_0_0008": 0.0005701650670132037,
+      "observed_refinement_order": 0.9844377168783859
+    },
+    "B01_TOP_MINUS": {
+      "dt_0_0016": 0.0011280934173300648,
+      "dt_0_0008": 0.0005701645098143463,
+      "observed_refinement_order": 0.9844363962680697
+    },
+    "B14_TOP_PLUS": {
+      "dt_0_0016": 5.790355746122057e-05,
+      "dt_0_0008": 2.8968506722041e-05,
+      "observed_refinement_order": 0.999166668784053
+    },
+    "B14_TOP_MINUS": {
+      "dt_0_0016": 5.790354825949975e-05,
+      "dt_0_0008": 2.8968504360320883e-05,
+      "observed_refinement_order": 0.9991665571375618
+    }
+  },
+  "B_inf_vs_actual_head_difference": {
+    "empirically_conservative_rows": 8,
+    "empirically_underestimating_rows": 0,
+    "minimum_ratio": 138.28806557544843,
+    "maximum_ratio": 3619.5196515225134,
+    "relationship": "B_inf is locally conservative but strongly non-tight on the preregistered matrix. Under dt halving the observed full-versus-two-half head difference is approximately second order, while B_inf is approximately first order, so B_inf/actual_difference increases under refinement.",
+    "formal_upper_bound_claim": false
+  },
+  "theta_and_storage": {
+    "maximum_actual_theta_difference": 2.2205042971013e-08,
+    "maximum_abs_full_minus_two_half_storage_cm": 7.105427357601002e-15
+  },
+  "decision": "CERTIFICATE_EMPIRICALLY_CONSERVATIVE_LOCAL",
+  "head_budget_selected": false,
+  "accepted_transient_trajectory_authority_qualified": false,
+  "numerical_reference_floor_authoritative": false,
+  "rom1a_authorized": false,
+  "interpretation": [
+    "The admitted F-SI38 certificate is informative for these local B01/B14 perturbations and does not underestimate the directly observed temporal-refinement head difference in this finite matrix.",
+    "The certificate is not calibrated to the actual refinement error: its overestimate spans roughly 1.4e2 to 3.6e3 and grows under refinement.",
+    "The execution therefore does not supply an application/scientific head-error budget and does not by itself authorize model-certificate trajectory acceptance.",
+    "The direct refinement differences are diagnostic evidence only until an accepted canonical transient trajectory authority exists."
+  ]
+}
