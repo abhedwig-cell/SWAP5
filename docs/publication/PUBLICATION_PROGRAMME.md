@@ -61,6 +61,14 @@ Primary ownership:
 
 PUB-GC owns the scientific interpretation and qualification of the F-GC30 response/storage quantity `u`. The existence of `u` or of a tangent contract is not by itself a PUB-RC result.
 
+Living manuscript:
+
+`PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`
+
+Claim-evidence ledger:
+
+`PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md`
+
 ### PUB-SG - SCALE
 
 Status: **active candidate line under separate literature review**.
