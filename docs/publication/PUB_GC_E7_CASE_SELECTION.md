@@ -92,3 +92,24 @@ When the exact distribution bytes become materializable:
 4. then create the E7 period-selection preregistration from the admitted standalone Hupsel trace.
 
 Until then, E7 is externally blocked. No coupling-result selection or synthetic fallback is justified.
+
+
+## M1-C3 prerequisite closure — 2026-09-18
+
+The previously recorded E7 blocker is closed.
+
+Controlling canonical authority:
+
+- M1-C3 admission PR: **#313**;
+- M1-C3 merge commit: `d91c159c3685d8eedc7c94afc38edf827408c1de`;
+- exact SWAP 4.3.1 distribution SHA-256: `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
+- whole-Hupsel typed-adapter accepted intervals: **32,518**;
+- normalized `result.bal` identity: PASS;
+- normalized `result.blc` identity: PASS;
+- moving-preservation run `35370311611`: SUCCESS;
+- formal M1 closeout PR: **#316**;
+- overall verdict: `M1_CLOSED_CURRENT_CANONICAL`.
+
+The same exact distribution is also available to the present E7 execution context from the existing Library file `/SWAP_4.3.1.zip`; raw-byte verification reproduced the frozen outer and nested-source hashes.
+
+E7 may now proceed under the already frozen standalone-only episode-selection and coupling rules. No new case-selection freedom is created by this closure.
