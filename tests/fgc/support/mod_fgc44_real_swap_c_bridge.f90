@@ -442,7 +442,7 @@ contains
     type(kernel_candidate_state_t) :: candidate
     type(kernel_diagnostics_t) :: diagnostics
     class(canonical_forcing_t), allocatable :: forcing
-    real(real64) :: duration_day,qbot_mean_cm_per_day
+    real(real64) :: duration_day,qbot_mean_cm_per_day,q_swap_interface_m_per_s
     integer :: status,interface_status
     logical :: ok
 
@@ -504,13 +504,13 @@ contains
     qbot_mean_cm_per_day=-result%bottom_outward_exchange_native/duration_day
 
     fgc44_e4_head_trial_c=208_c_int
-    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean_cm_per_day,qbot_mean_cm_per_day,interface_status)
+    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qbot_mean_cm_per_day,q_swap_interface_m_per_s,interface_status)
     if(interface_status/=GW_INTERFACE_OK)then
       call corrector_backend%discard_trial_candidate(candidate,diagnostics)
       return
     end if
 
-    q_swap_m_per_s=real(qbot_mean_cm_per_day,c_double)
+    q_swap_m_per_s=real(q_swap_interface_m_per_s,c_double)
     bottom_exchange_cm=real(result%bottom_outward_exchange_native,c_double)
     terminal_flux_native=real(result%terminal_bottom_outward_flux_native,c_double)
     mass_complete=1_c_int
