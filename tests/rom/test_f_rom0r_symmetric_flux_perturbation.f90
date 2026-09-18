@@ -28,7 +28,7 @@ program test_f_rom0r_symmetric_flux_perturbation
   character(len=16) :: material_id, case_id, arg
   real(real64) :: perturb_dt,tr,ts,alpha,nn,ks,lam,h0,k0,qeq,qtop
   real(real64) :: storage_seed,storage_now,t0,t1
-  integer :: ios,i,j,npert
+  integer :: ios,i,j,npert,active_physical_calls
   logical :: ok,snapshot_ok
 
   type(fmr_b110_physical_parameters_t) :: parameters
@@ -141,8 +141,9 @@ contains
     output%column_id=column_id; output%requested_t0=a; output%requested_t1=b
     diagnostic=fmr_column_diagnostics_t(); diagnostic%column_id=column_id
     runtime=fmr_serialized_batch_diagnostics_t()
+    active_physical_calls=0
     call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
-         forcing,committed,config,a,b,output,diagnostic,runtime,active_physical_calls=ios)
+         forcing,committed,config,a,b,output,diagnostic,runtime,active_physical_calls)
     observation=backend%observation()
     if(.not.output%completed .or. .not.output%committed) then
       write(*,'(*(g0))') 'F_ROM0R_R2_REJECT|MATERIAL=',trim(material_id),'|CASE=',trim(case_id), &
