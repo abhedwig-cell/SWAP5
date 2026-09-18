@@ -104,8 +104,8 @@ def build_model(workdir: Path) -> None:
         outer_dvclose=1.0e-13,
         inner_dvclose=1.0e-14,
         rcloserecord=1.0e-14,
-        outer_maximum=100,
-        inner_maximum=100,
+        outer_maximum=300,
+        inner_maximum=300,
     )
     gwf = flopy.mf6.ModflowGwf(
         sim,
@@ -192,6 +192,7 @@ def run_case(
             require(status == PreparedSolveStatus.OK, session.last_error)
 
             require(kernel.prepare_solve_calls == 1, "prepare_solve count mismatch")
+            require(session.max_solve_iterations == 300, "MXITER acquisition mismatch")
             accepted_xold = session.accepted_xold.copy()
             heads: list[np.ndarray] = []
 
@@ -218,7 +219,7 @@ def run_case(
             stabilization_tolerance_m = 5.0e-14
             previous_final_head: np.ndarray | None = None
             final_stabilization_delta = math.inf
-            for _ in range(100):
+            for _ in range(session.max_solve_iterations - session.iteration_count):
                 status, iteration = session.publish_and_solve_iteration(
                     bindings, [final_term]
                 )
