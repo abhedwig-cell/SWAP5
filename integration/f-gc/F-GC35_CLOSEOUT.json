@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC35",
+  "title": "MODFLOW6 XMI Package Adapter — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "canonical_admission": {
+    "production_admission_head": "27a887803205463b8452142202a3358e641db35f",
+    "preimage": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "historical F-GC35 was rematerialized on closed canonical F-GC34; production adapter blob remained byte-identical"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "7d64f9e1fd48b512f3dee2c0ea3d645804310812",
+      "exact_head_run": 35294401118,
+      "exact_head_job": 105443849805,
+      "result": "current-canonical owner XMI pointer/lifecycle gate passed"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ109",
+      "final_status_head": "9ecd770f4a8b9ddf639d9f917c567927721cb111",
+      "exact_head_run": 35294523262,
+      "exact_head_job": 105444207215,
+      "result": "independent generation isolation, live-pointer identity, address reuse, failed-publication and invalid-refresh oracles passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI102",
+      "production_admission_head": "27a887803205463b8452142202a3358e641db35f",
+      "initial_gate_run": 35294634213,
+      "exact_status_head_run": 35294668665,
+      "result": "exact one-production-file postimage replayed owner and independent evidence and was non-force fast-forwarded to canonical"
+    }
+  },
+  "admitted_capability": [
+    "host-side XMI address/pointer acquisition for one MODFLOW6 API package",
+    "per-timestep pointer refresh",
+    "publication-window generation guard around F-GC34",
+    "pointer validation/fail-closed lifecycle behavior"
+  ],
+  "preserved_limits": [
+    "no MODFLOW solve lifecycle ownership",
+    "no live libmf6 qualification",
+    "no cross-language F-GC34 bridge qualification",
+    "no head exchange/predictor-corrector/SWAP commit ownership",
+    "no Ribasim or irrigation"
+  ],
+  "next_permitted_action": "After closeout qualification, proceed serially to current-canonical F-GC36 live MODFLOW6/F-GC34 bridge analysis. Keep live-kernel evidence separate from the already-admitted mock-XMI adapter contract."
+}

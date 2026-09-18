@@ -15,6 +15,8 @@ on:
       - 'tests/fci/run_fci102_fgc35_xmi_adapter_admission.sh'
       - '.github/workflows/f-ci102-fgc35-xmi-adapter-admission.yml'
       - 'integration/f-ci/F-CI102_STATUS.json'
+      - 'integration/f-gc/F-GC35_CANONICAL_ADMISSION.json'
+      - 'integration/f-gc/F-GC35_CLOSEOUT.json'
   workflow_dispatch:
 
 permissions:

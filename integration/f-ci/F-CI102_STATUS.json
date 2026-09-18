@@ -4,8 +4,8 @@
   "capability": "F-GC35",
   "title": "MODFLOW6 XMI Package Adapter Canonical Admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
@@ -58,7 +58,7 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Qualify this exact F-CI102 status head. If green and canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head.",
+  "next_permitted_action": "Qualify this metadata-only F-GC35 admission/closeout head with F-CI102. If green, persist final closeout evidence, requalify the final status head, then non-force fast-forward canonical.",
   "admission_gate": {
     "qualified_head": "28fa2382bfa479e9cebfa5a087bb26a20265d0ff",
     "workflow_run": 35294634213,
@@ -75,5 +75,12 @@
       "FCI102_OWNER_REPLAY",
       "FCI102_INDEPENDENT_REPLAY"
     ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "27a887803205463b8452142202a3358e641db35f",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35294668665,
+    "exact_status_head_job": 105444636351,
+    "exact_status_head_conclusion": "success"
   }
 }
