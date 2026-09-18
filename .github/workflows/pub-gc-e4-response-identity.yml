@@ -2,6 +2,14 @@ name: PUB-GC E4 response identity
 on:
   push:
     branches: [work/pub-gc-e4-response-identity]
+    paths:
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/publication/test_pub_gc_e4_head_response.py'
+      - 'tests/publication/test_pub_gc_e4_flux_predictor.py'
+      - 'tests/publication/run_pub_gc_e4.sh'
+      - 'docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md'
+      - '.github/workflows/pub-gc-e4-response-identity.yml'
   pull_request:
     branches: [integration/f-ci-canonical]
     paths:
