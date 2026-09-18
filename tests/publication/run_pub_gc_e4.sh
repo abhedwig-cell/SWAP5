@@ -211,13 +211,15 @@ for h in heads:
     for idx,p in enumerate(h["perturbations"]):
         d=float(p["delta_h_m"])
         row={"baseline_id":bid,"sequence_index":idx,"scale":d,"delta_h_m":d,
-             "centered_available":bool(p["centered_available"]),"J_R":None,"J_S":None,
-             "V_signal":0.0,"S_signal":0.0}
+             "centered_available":bool(p["centered_available"]),"J_R":None,"J_S":None,"J_B":None,
+             "response_balance_closure":None,"V_signal":0.0,"S_signal":0.0,"B_signal":0.0}
         if p["centered_available"]:
             vm=float(p["minus"]["V_u_m"]); vp=float(p["plus"]["V_u_m"])
             sm=float(p["minus"]["storage_change_m"]); sp=float(p["plus"]["storage_change_m"])
-            row["V_signal"]=abs(vp-vm); row["S_signal"]=abs(sp-sm)
-            row["J_R"]=(vp-vm)/(2*d); row["J_S"]=(sp-sm)/(2*d)
+            bm=float(p["minus"]["other_net_m"]); bp=float(p["plus"]["other_net_m"])
+            row["V_signal"]=abs(vp-vm); row["S_signal"]=abs(sp-sm); row["B_signal"]=abs(bp-bm)
+            row["J_R"]=(vp-vm)/(2*d); row["J_S"]=(sp-sm)/(2*d); row["J_B"]=(bp-bm)/(2*d)
+            row["response_balance_closure"]=row["J_S"]-row["J_B"]+row["J_R"]
             largest_centered=d
         elif first_failed is None:
             first_failed=d
@@ -247,6 +249,8 @@ for h in heads:
     def est(cands):
         return cands[0]["median"] if cands else None
     jr=est(jr_plateau); js=est(js_plateau); ufd=est(ufd_plateau)
+    valid_jb=[r["J_B"] for r in hd if r.get("J_B") is not None]
+    jb=statistics.median(valid_jb) if valid_jb else None
     def discrepancy(a,b,opposite=False):
         if a is None or b is None: return None
         num=abs(a+b) if opposite else abs(a-b)
@@ -258,8 +262,9 @@ for h in heads:
         "repeatability_V_range_m":vnoise,"repeatability_storage_range_m":snoise,
         "largest_centered_head_delta_m":largest_centered,"first_failed_head_delta_m":first_failed,
         "J_R_plateau_candidates":jr_plateau,"J_S_plateau_candidates":js_plateau,"u_FD_plateau_candidates":ufd_plateau,
-        "J_R_estimate":jr,"J_S_estimate":js,"u_FD_estimate":ufd,
-        "E_AFD":discrepancy(uA,ufd),"E_AS":discrepancy(uA,js),
+        "J_R_estimate":jr,"J_S_estimate":js,"J_B_median":jb,"u_FD_estimate":ufd,
+        "E_AFD":discrepancy(uA,ufd),
+        "E_AS_plus":discrepancy(uA,js),"E_AS_minus":discrepancy(uA,js,opposite=True),
         "E_AR_plus":discrepancy(uA,jr),"E_AR_minus":discrepancy(uA,jr,opposite=True),
         "J_R_over_u_A":None if jr is None else jr/uA,
         "J_S_over_u_A":None if js is None else js/uA,
@@ -271,7 +276,7 @@ payload={"schema":"pub-gc-e4-response-identity-v1","baseline_count":len(summarie
 (out/"PUB_GC_E4_RESULT.json").write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n")
 
 with (out/"PUB_GC_E4_DERIVATIVES.csv").open("w",newline="") as fh:
-    fields=["baseline_id","delta_h_m","centered_available","J_R","J_S","V_signal","S_signal"]
+    fields=["baseline_id","delta_h_m","centered_available","J_R","J_S","J_B","response_balance_closure","V_signal","S_signal","B_signal"]
     w=csv.DictWriter(fh,fieldnames=fields); w.writeheader()
     for r in derivative_rows: w.writerow({k:r.get(k) for k in fields})
 
