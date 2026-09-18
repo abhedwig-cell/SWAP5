@@ -69,14 +69,14 @@
     ]
   },
   "verdict": "PARTIAL_AUTHORITY_FROZEN_REVIEW_QUALIFIED_IMPLEMENTATION_HELD",
-  "next_action": "Require final dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI success on this evidence head. If green and live canonical drift is non-overlapping, canonically admit review authority only. Production remains held for C1.",
+  "next_action": "Require final dedicated PPA-WU05-C, parent PPA-WU05, Documentation and F-CI success on this exact evidence/reconciliation head. If green and no overlapping live canonical drift appears, canonically admit review authority only. Production remains held for C1.",
   "pre_reconciliation_qualified_head": "e261a1e8fa63ee9ded0db52477017383330d2a34",
   "canonical_reconciliation": {
-    "prior_base": "ee166e8ad158e203c853be85825e438315b4821d",
-    "current_canonical": "faf33c1fb023a164a6456da160422685c32a88c4",
-    "reconciliation_commit": "23dec1fb1037bb2d89d4a742cb01b880b23701b0",
+    "prior_base": "faf33c1fb023a164a6456da160422685c32a88c4",
+    "current_canonical": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "reconciliation_commit": "da155eb1e82672c1f54c99f2aaa6a9cbe3274d38",
     "overlap": "NONE",
-    "canonical_delta_scope": "PPA-WU05-A closeout/governance and F-ROM1 terminal evidence; no overlap with repaired WU05-C review files",
+    "canonical_delta_scope": "PUB-GC/GMD publication and submission-readiness files only",
     "review_blobs_changed_by_reconciliation": false
   },
   "prior_qualification": {
