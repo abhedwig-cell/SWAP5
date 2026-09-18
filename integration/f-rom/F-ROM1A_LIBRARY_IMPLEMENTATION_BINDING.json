@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.f-rom1a.library-implementation-binding.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-LIB",
+  "phase": "BOUND_BEFORE_TRAJECTORY_EXECUTION",
+  "canonical_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+  "preregistration": "integration/f-rom/F-ROM1A_PREREGISTRATION.json",
+  "initialization": {
+    "state": "ROM-0 R1 uniform Se=0.85 gravity-steady state",
+    "qualification_seed": "two accepted mode-2 qtop=qbottom=-K(h0) intervals of 0.0016 day",
+    "seed_records_retained_in_library": false,
+    "history_time_origin": "first post-seed history interval",
+    "reason": "Use the already qualified ROM-0 accepted seed domain before every independent history."
+  },
+  "family_binding": {
+    "E1_NOMINAL_FLUX": {"bottom_mode":2,"dt_day":0.0016,"qtop_over_K0":0.01,"qbottom_over_K0":-0.004},
+    "E2_DRYING_FLUX": {"bottom_mode":2,"dt_day":0.0016,"qtop_over_K0":-0.005,"qbottom_over_K0":-0.019},
+    "E0_HOLD": {"bottom_mode":2,"dt_day":0.0016,"qtop_over_K0":0.0,"qbottom_over_K0":-0.004},
+    "E3_BOTTOM_HEAD_RISE": {"bottom_mode":5,"dt_day":0.0008,"qtop":"-K(h0)","qbottom_seed_value":"-K(h0)","hbottom":"0.75*h0"},
+    "E4_BOTTOM_HEAD_FALL": {"bottom_mode":5,"dt_day":0.0008,"qtop":"-K(h0)","qbottom_seed_value":"-K(h0)","hbottom":"1.25*h0"}
+  },
+  "E0_binding_rationale": "The preregistration includes top-flux factor 0.0 and bottom-flux factor -0.004 in the allowed domain. E0_HOLD is bound prospectively to zero top flux with the nominal mild prescribed bottom flux; no zero-bottom-flux case is introduced outside the frozen domain.",
+  "reference_policy_by_boundary_family": {
+    "mode2": {
+      "strict_first": true,
+      "allowed_fallback_classes": ["RETRY_TOTAL_ONLY","RETRY_LOCAL_BALANCE"],
+      "local_integrated_allowance_cm": 1.6e-15,
+      "total_integrated_bound": "max(1.6e-15, P2E21 prospective representation bound)",
+      "head_failure_fallback": false
+    },
+    "mode5": {
+      "strict_first": true,
+      "allowed_fallback_classes": ["RETRY_TOTAL_ONLY"],
+      "compartment_tolerance_change_on_fallback": false,
+      "total_integrated_bound": "P2E21 prospective representation bound",
+      "head_or_local_failure_fallback": false
+    }
+  },
+  "partition_generation": {
+    "B01_DISCOVERY": {
+      "histories": ["D01_NOMINAL","D02_DRYING","D03_HEAD_RISE","D04_HEAD_FALL","D05_HEAD_REVERSAL","D06_FLUX_REVERSAL","D07_PULSE"],
+      "expected_history_count": 7,
+      "expected_point_count": 176,
+      "payload_visibility": "VISIBLE_AFTER_GENERATION"
+    },
+    "B01_HOLDOUT": {
+      "histories": ["H01_REVERSED_FLUX_ORDER","H02_REVERSED_HEAD_ORDER","H03_SHORT_FLUX_CYCLES","H04_HOLD_THEN_HEAD_RISE"],
+      "expected_history_count": 4,
+      "expected_point_count": 80,
+      "payload_visibility": "SEALED_UNTIL_REPRESENTATION_CANDIDATE_LOCK"
+    },
+    "B14_TRANSFER": {
+      "histories": ["D01_NOMINAL","D02_DRYING","D03_HEAD_RISE","D04_HEAD_FALL","D05_HEAD_REVERSAL","D06_FLUX_REVERSAL","D07_PULSE","H01_REVERSED_FLUX_ORDER","H02_REVERSED_HEAD_ORDER","H03_SHORT_FLUX_CYCLES","H04_HOLD_THEN_HEAD_RISE"],
+      "expected_history_count": 11,
+      "expected_point_count": 256,
+      "payload_visibility": "SEALED_UNTIL_MATERIAL_TRANSFER_GATE"
+    }
+  },
+  "recording": {
+    "one_point_record_per_accepted_post_seed_interval": true,
+    "one_node_record_per_point_per_node": true,
+    "expected_nodes_per_point": 16,
+    "raw_payload_format": "deterministic pipe-delimited UTF-8 text",
+    "sealed_payload_content_may_be_uploaded_as_actions_artifact": true,
+    "sealed_payload_may_be_opened_before_unblinding": false,
+    "repository_persists_only_hash_count_and_completion_metadata_for_sealed_payloads": true
+  },
+  "optimization_reproducibility": {
+    "O0_and_O2_execute_full_matrix": true,
+    "raw_partition_outputs_must_be_byte_identical": true
+  },
+  "forbidden": [
+    "NO_REDUCED_STATE_ANALYSIS",
+    "NO_HOLDOUT_PAYLOAD_INSPECTION",
+    "NO_B14_PAYLOAD_INSPECTION",
+    "NO_HISTORY_REPLACEMENT_AFTER_RESULT",
+    "NO_FORCING_RETUNING",
+    "NO_POST_RESULT_FALLBACK_EXPANSION"
+  ]
+}
