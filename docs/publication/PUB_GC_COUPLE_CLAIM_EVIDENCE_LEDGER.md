@@ -30,12 +30,12 @@ EXCLUDED_NOVELTY
 | ID | Manuscript claim | Literature boundary | Repository evidence | Publication evidence still required | Status |
 | --- | --- | --- | --- | --- | --- |
 | GC-C01 | SWAP5 and MODFLOW6 can participate in strong coupling while retaining independent solver/state ownership. | Solver autonomy and partitioned coupling are established in FMI/preCICE/IQN literature; novelty cannot be claimed from autonomy alone. | F-GC39, F-GC42, F-GC43, F-GC44 | Demonstrate beyond the restricted F-GC44 case and document exact ownership in manuscript figure. | SUPPORTED_RESTRICTED |
-| GC-C02 | Every SWAP corrector in one coupling window can be recomputed from the same immutable accepted origin. | Checkpoint/restore is established generic co-simulation practice. | F-GC39, F-GC43, F-GC44 | Consolidated fault-injection dataset showing repeated real-SWAP correctors leave committed state unchanged. | SUPPORTED_RESTRICTED |
+| GC-C02 | Every SWAP corrector in one coupling window can be recomputed from the same immutable accepted origin. | Checkpoint/restore is established generic co-simulation practice. | F-GC39, F-GC43, F-GC44; PUB-GC E1/E2 real rejected-trial probes | Expand beyond the near-equilibrium F-GC44 envelope. | SUPPORTED_RESTRICTED |
 | GC-C03 | MODFLOW6 can remain in one prepared nonlinear solve while SWAP replays complete finite-window correctors. | MODFLOW API/XMI and iterative co-simulation are prior art. | F-GC38/F-GC39/F-GC44 | Publication trace of XOLD, X iterates, SWAP trials and convergence over representative cases. | SUPPORTED_RESTRICTED |
 | GC-C04 | Coupled convergence requires both groundwater nonlinear convergence and SWAP-groundwater exchange consistency. | Generic coupled-residual criteria are established; hydrological specialization requires evidence. | F-GC39, F-GC44 | Sensitivity study for residual tolerance and coupling-window length; show failure of component-only convergence criterion where relevant. | SUPPORTED_ARCHITECTURE |
-| GC-C05 | q_bot, q_u and accepted whole-window transfer are physically distinct quantities that must not be silently aliased. | MetaSWAP/HYDRUS-MODFLOW provide strong hydrological prior art; distinction itself must be physically demonstrated for SWAP. | F-GC30 science proposal; F-GC40; F-GC44 path | Publication balance experiment resolving q_bot, q_u, storage change and whole-window transfer under contrasting states. | PLANNED_EXPERIMENT |
-| GC-C06 | Rejected predictor/corrector calculations contribute zero authoritative interface mass. | Rollback exists generically; explicit hydrological mass-authority semantics are candidate contribution. | F-GC41, F-GC42, F-GC43, F-GC44 | Consolidated retry/restart/mass ledger experiment with deliberate rejection at each reversible boundary. | SUPPORTED_RESTRICTED |
-| GC-C07 | Accepted interface mass is published exactly once after all preflights pass. | Exactly-once scientific exchange is not a new generic transaction concept; hydrological application requires evidence. | F-GC41–F-GC44 | Publication-grade event trace and combined-system mass closure across success/retry/restart. | SUPPORTED_RESTRICTED |
+| GC-C05 | q_bot, q_u and accepted whole-window transfer are physically distinct quantities that must not be silently aliased. | MetaSWAP/HYDRUS-MODFLOW provide strong hydrological prior art; distinction itself must be physically demonstrated for SWAP. | F-GC30/F-GC44 plus PUB-GC E1: q_bot=1e-6 cm/day, q_u=-9.65885e-7 cm/day; accepted rate/ledger amount identity closes in the restricted real case | Repeat under contrasting non-equilibrium states and active-process envelopes. | SUPPORTED_RESTRICTED |
+| GC-C06 | Rejected predictor/corrector calculations contribute zero authoritative interface mass. | Rollback exists generically; explicit hydrological mass-authority semantics are candidate contribution. | F-GC41 deterministic failure injection plus PUB-GC E2 real trial/discard/prepublication-abort probes | Add restart/durability evidence and broader process envelopes. | SUPPORTED_RESTRICTED |
+| GC-C07 | Accepted interface mass is published exactly once after all preflights pass. | Exactly-once scientific exchange is not a new generic transaction concept; hydrological application requires evidence. | F-GC41–F-GC44 plus PUB-GC E2 publication-order trace and accepted ledger identity | Add restart/durability evidence and combined-system closure in broader cases. | SUPPORTED_RESTRICTED |
 | GC-C08 | A finite-window SWAP response can be exposed without exposing the internal Richards Jacobian or timestep controller. | Interface Jacobian/derivative exposure is established in FMI and co-simulation. | F-GC30/F-GC33/F-GC39/F-GC44 | Compare finite-difference, analytic and black-box response variants on the same accepted origins. | SUPPORTED_ARCHITECTURE |
 | GC-C09 | F-GC30/F-GC44 response information has a clear physical relation to storage response J_S and actual exchange response J_R. | Dynamic storage response is established in MetaSWAP and transient-specific-yield literature. | Response infrastructure exists | Direct u_FD vs J_S vs J_R characterization; derivative plateau, linearity radius and balance closure. | HYPOTHESIS |
 | GC-C10 | Supplied finite-window response can reduce total coupling work beyond strong black-box multisecant learning in identifiable regimes. | IQN/Anderson, history reuse and surrogate-assisted QN are strong prior art. | No decisive publication result yet | Oracle vs IQN cold/warm, acquisition-cost accounting, regime/generalization tests. | HYPOTHESIS |
@@ -166,3 +166,17 @@ However:
 6. E6 hydrological stress extension;
 7. E7 realistic case;
 8. E8 scaling only after the scientific core is secure.
+
+## First publication evidence record
+
+E1/E2 preregistration:
+
+`PUB_GC_E1_E2_PREREGISTRATION.md`
+
+E1/E2 results:
+
+`PUB_GC_E1_E2_RESULTS.md`
+
+Machine-readable result:
+
+`PUB_GC_E1_E2_RESULT.json`
