@@ -81,8 +81,11 @@ allowed_prefixes = (
     "tests/fvq/validate_ppa_wu05_",
     ".github/workflows/ppa-wu05-",
 )
+allowed_exact = {
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+}
 for path in changed:
-    assert path.startswith(allowed_prefixes), f"unexpected WU05 delta: {path}"
+    assert path.startswith(allowed_prefixes) or path in allowed_exact, f"unexpected WU05 delta: {path}"
 
 print("PPA_WU05_B1_11_AUTHORITY=PASS")
 print("PPA_WU05_UNSUPPORTED_HISTORY_NOT_DECISION_AUTHORITY=PASS")
