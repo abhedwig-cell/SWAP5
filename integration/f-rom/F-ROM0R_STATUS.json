@@ -1,25 +1,25 @@
 {
   "schema": "swap5.f-rom0r.status.v1",
   "workstream": "F-ROM",
-  "work_unit": "ROM-0R-R1",
-  "title": "Accepted-Domain Seed Construction",
-  "phase": "PREREGISTERED_IMPLEMENTATION_PENDING",
+  "work_unit": "ROM-0R",
+  "title": "Accepted-Domain Construction",
+  "phase": "R1_CLOSED_R2_PREREGISTERED_IMPLEMENTATION_PENDING",
   "branch": "work/f-rom0-close-expand-accepted-domain",
   "predecessor": "ROM-0",
   "predecessor_decision": "EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
   "authority": "docs/science/F-ROM0R_ACCEPTED_DOMAIN_SEED_CONSTRUCTION.md",
-  "preregistration": "integration/f-rom/F-ROM0R_R1_PREREGISTRATION.json",
-  "materials": [
-    "B01",
-    "B14"
-  ],
-  "seed": "UNIFORM_HEAD_GRAVITY_STEADY_QTOP_QBOT_MINUS_K",
-  "intervals": 8,
-  "observation_interval_day": 0.0016,
-  "r2_authorized": false,
+  "r1": {
+    "preregistration": "integration/f-rom/F-ROM0R_R1_PREREGISTRATION.json",
+    "result": "integration/f-rom/F-ROM0R_R1_RESULT.json",
+    "decision": "PROCEED_TO_ROM0R_R2_PERTURBATION_PREREGISTRATION"
+  },
+  "r2": {
+    "preregistration": "integration/f-rom/F-ROM0R_R2_PREREGISTRATION.json",
+    "phase": "PREREGISTERED_BEFORE_EXECUTION"
+  },
   "rom1a_authorized": false,
   "production_solver_authorized": false,
   "production_source_mutation": "NONE",
-  "next_action": "Implement and execute R1 through the canonical accepted Reference lifecycle plus the unchanged FMR44R accepted-runtime control.",
+  "next_action": "Implement and execute the frozen symmetric one-percent top-flux perturbations from the accepted R1 seed, including the preregistered dt-refinement cases.",
   "blockers": []
 }
