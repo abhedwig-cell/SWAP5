@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.independent_qualification.v1",
+  "workunit": "F-VQ124",
+  "subject": "F-APP07 exact Hupsel fixed plus TCS1/DCS2 irrigation composition",
+  "subject_head": "5b70bed7a3758b052e3d22ba0b771ed123c96954",
+  "qualification_branch": "qualification/f-vq124-fapp07-hupsel-irrigation-independent",
+  "workflow_run_id": 35350203747,
+  "job_id": 105616252988,
+  "production_mutation": "NONE",
+  "qualification": {
+    "equation_oracle": "PASS",
+    "tcsfix_cadence": "PASS",
+    "split_rollback_replay": "PASS",
+    "aba_determinism": "PASS",
+    "fail_closed": "PASS",
+    "exact_composition_records": 110,
+    "swinter0_records": 18,
+    "swinter3_records": 92,
+    "max_composition_error": 0,
+    "process_output_sha256": "bcb597485fb6f2d348689aa3c68af76b7fac847f3b8f30436ac4c22d1a413244",
+    "composition_output_sha256": "ed77d20d04c10f9916647a606c4b0fff2f05f4303f9f5679a88f4c4a79055e4f"
+  },
+  "supersedes_application_qualification_id": "F-VQ120 application branch only; F-VQ120 canonical authority belongs to F-GC48",
+  "verdict": "PASS_F_VQ124_INDEPENDENT_F_APP07"
+}
