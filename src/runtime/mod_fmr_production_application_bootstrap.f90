@@ -100,7 +100,7 @@ contains
     integer, intent(out) :: status
 
     integer :: i, local_status, n
-    logical :: ok, groundwater_profile, standalone_profile
+    logical :: ok, groundwater_profile, standalone_profile, prescribed_qbot_profile
 
     status = FMR_APP_BOOT_INVALID_CONFIG
     if (self%initialized) return
@@ -111,6 +111,7 @@ contains
 
     groundwater_profile = .true.
     standalone_profile = .true.
+    prescribed_qbot_profile = .true.
     do i = 1, n
       if (.not. tile_config_valid(config%tiles(i), n, i)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
@@ -118,11 +119,12 @@ contains
       end if
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
+      prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
       if (i > 1) then
         if (any(config%tiles(1:i-1)%tile_id == config%tiles(i)%tile_id)) return
       end if
     end do
-    if (.not. groundwater_profile .and. .not. standalone_profile) then
+    if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
@@ -472,11 +474,12 @@ contains
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
-    if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7) return
+    if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
+        tile%parameters%bottom_mode /= 2) return
 
-    ! WU01 is intentionally a no-new-physics owner. Broader already-admitted
-    ! process composition is layered later, rather than silently widening this
-    ! bootstrap's profile.
+    ! WU01 established the no-new-physics production owner. PPA-WU02-A only
+    ! widens normal application reachability to the already admitted typed
+    ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. tile%parameters%elasticity_active .or. &
         tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
