@@ -1,0 +1,39 @@
+name: F-ROSS19 adaptive K2 K4 certificate research
+
+on:
+  push:
+    branches:
+      - work/f-ross19-adaptive-k2-k4-certificate
+  pull_request:
+    branches:
+      - work/f-ross18-temporal-substep-matrix
+    paths:
+      - 'integration/f-ross/F-ROSS19_*'
+      - 'tests/ross/research/mod_rossfast_d3r_*_adaptive.f90'
+      - 'tests/ross/test_ross19_adaptive_science.f90'
+      - 'tests/ross/test_ross19_adaptive_timing.f90'
+      - 'tests/ross/run_ross19_adaptive_certificate.sh'
+      - 'tools/performance/f_ross19_science_compare.py'
+      - 'tools/performance/f_ross19_paired_screen.py'
+      - '.github/workflows/f-ross19-adaptive-certificate.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute F-ROSS19 research qualification
+        run: bash tests/ross/run_ross19_adaptive_certificate.sh
+      - name: Preserve F-ROSS19 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross19-adaptive-certificate-${{ github.run_id }}
+          path: F-ROSS19_EVIDENCE
+          if-no-files-found: warn
