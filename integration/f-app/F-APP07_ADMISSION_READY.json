@@ -1,17 +1,17 @@
 {
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-APP07",
-  "phase": "ADMISSION_READY",
+  "phase": "ADMISSION_READY_CURRENT_CANONICAL_RECONCILIATION",
   "branch": "work/f-app07-hupsel-tcs1-dcs2-irrigation",
   "qualified_production_head": "f05e73b9631e48d31025715bc1da9a46fdbb030d",
-  "current_branch_head_before_checkpoint": "7cca1c62ed64face640d7a19a1bef27bf5f2b59d",
+  "current_branch_head_before_checkpoint": "8b505de78b2c8b95bb107a462c02ba7b0cf516c3",
   "production_delta": [
     "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
     "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
   ],
   "owner_qualification": {
-    "run_id": 35344875759,
-    "job_id": 105598994163,
+    "run_id": 35351345252,
+    "job_id": 105619966412,
     "conclusion": "success",
     "records": 110,
     "SWINTER0": 18,
@@ -22,12 +22,14 @@
   "independent_qualification": {
     "workunit": "F-VQ124",
     "branch": "qualification/f-vq124-fapp07-hupsel-irrigation-independent",
-    "subject_head": "5b70bed7a3758b052e3d22ba0b771ed123c96954",
+    "authority_head": "573e8cdb4a6d7d9ba07b0c9cf7edb35f77961c70",
     "run_id": 35350203747,
     "job_id": 105616252988,
     "conclusion": "success",
-    "output_sha256": "ed77d20d04c10f9916647a606c4b0fff2f05f4303f9f5679a88f4c4a79055e4f",
-    "production_mutation": "NONE"
+    "records": 110,
+    "SWINTER0": 18,
+    "SWINTER3": 92,
+    "max_error": 0
   },
   "scope": [
     "fixed surface irrigation identity",
@@ -40,6 +42,14 @@
     "no TCS7/SSDI proxy",
     "no solver/transaction/timestep/retry/tolerance change"
   ],
-  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION",
-  "qualification_authority_correction": "F-VQ120 application identifier superseded because F-VQ120 canonical authority belongs to F-GC48."
+  "verdict": "READY_FOR_CURRENT_CANONICAL_BROAD_CI_AND_ADMISSION",
+  "qualification_authority_correction": "F-VQ120 application identifier superseded because F-VQ120 canonical authority belongs to F-GC48.",
+  "vq_namespace_note": "Prior application label F-VQ120 is superseded and must not be admitted because canonical F-GC48 owns F-VQ120. F-VQ124 is the collision-free immutable application authority.",
+  "canonical_reconciliation": {
+    "head": "4d7e5dcfef59279be3ca8ef5d71161f3a2c6dcfa",
+    "relevant_delta_since_app_reconcile": "F-ROM/F-ROSS25 evidence plus F-CI108 moving-preservation repair; no overlap with F-APP07 production owner files.",
+    "prior_broad_ci_failure": "classified stale F-ROSS22 repository-global preservation gate",
+    "repair_authority": "F-CI108 canonical moving-preservation reconciliation",
+    "disposition": "rerun broad F-CI on current PR merge; no science requalification required"
+  }
 }
