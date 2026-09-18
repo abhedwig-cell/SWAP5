@@ -1,0 +1,25 @@
+name: PUB-P2E11D extension Reference failure diagnostics
+
+on:
+  push:
+    branches:
+      - work/pub-p2e11d-extension-reference-failure-diagnostics
+    paths:
+      - 'docs/publication/P2E11D_EXTENSION_REFERENCE_FAILURE_DIAGNOSTICS_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e11d_extension_reference_failure_diagnostics.f90'
+      - 'tests/publication/run_pub_p2e11d_extension_reference_failure_diagnostics.sh'
+      - '.github/workflows/pub-p2e11d-extension-reference-failure-diagnostics.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-failure-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only failure diagnostics
+        run: bash tests/publication/run_pub_p2e11d_extension_reference_failure_diagnostics.sh
