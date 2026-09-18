@@ -46,14 +46,22 @@
       "tabulated_hydraulics_active"
     ],
     "failure_stage": "tile_config_valid before owner-state allocation",
-    "failure_status": "FMR_APP_BOOT_PROFILE_NOT_ADMITTED"
+    "failure_status": "FMR_APP_BOOT_PROFILE_NOT_ADMITTED",
+    "source_blob_current_canonical": "135803e056697a20aa3295721b02c77aba22367a"
   },
   "later_application_composition": {
     "ppa_wu03_status": "CANONICAL_ADMITTED_CLOSED",
     "source": "integration/audits/PPA_WU03_STATUS.json",
     "source_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
     "broadens_groundwater_process_profile": false,
-    "note": "PPA-WU03 adds bounded stateless common forcing only and explicitly does not broaden mixed/profile ownership."
+    "note": "PPA-WU03 adds bounded stateless common forcing only and explicitly does not broaden mixed/profile ownership.",
+    "ppa_wu02": {
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "source": "integration/audits/PPA_WU02_STATUS.json",
+      "source_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "scope": "homogeneous typed bottom_mode=2 prescribed-qbot normal application only",
+      "broadens_groundwater_process_profile": false
+    }
   },
   "active_drainage_precedent": {
     "source": "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json",
@@ -82,7 +90,8 @@
       "PUB_GC_E7_E6_PRECEDENT_PRETRANSACTION_NOT_ADMITTED=PASS",
       "PUB_GC_E7_NO_WU03_PROFILE_WIDENING=PASS",
       "PUB_GC_E7_OUTCOME=REALISTIC_COMPONENT_DOMAIN_LIMIT"
-    ]
+    ],
+    "current_pr_requalification_note": "Pull-request qualification reruns this gate against the latest canonical merge ref after PPA-WU02 reconciliation."
   },
   "coupled_execution": {
     "loose_completed_windows": 0,
@@ -104,5 +113,13 @@
     "not evidence that strong coupling is unnecessary in realistic Hupsel",
     "not regional Hupsel groundwater validation"
   ],
-  "disposition": "Close E7 as the preregistered realistic component-domain outcome. Do not widen production physics, disable drainage, replace dates, retune tolerances or launch another synthetic search merely to obtain a positive loose-versus-strong trajectory."
+  "disposition": "Close E7 as the preregistered realistic component-domain outcome. Do not widen production physics, disable drainage, replace dates, retune tolerances or launch another synthetic search merely to obtain a positive loose-versus-strong trajectory.",
+  "canonical_reconciliation": {
+    "current_canonical": "970bc631d78ce1f5db3821ce313d500b1c63b274",
+    "change": "PPA-WU02-A canonically admitted homogeneous typed bottom_mode=2 prescribed-qbot application reachability",
+    "production_bootstrap_blob": "135803e056697a20aa3295721b02c77aba22367a",
+    "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+    "effect_on_e7": "NONE",
+    "reason": "PPA-WU02-A adds mode 2 prescribed-qbot reachability only. The groundwater owner remains bottom_mode=5 and tile_config_valid still rejects drainage_response_active/root_extraction_active before owner-state allocation."
+  }
 }
