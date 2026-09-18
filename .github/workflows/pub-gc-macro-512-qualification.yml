@@ -1,0 +1,36 @@
+name: PUB-GC macro 512-contribution qualification
+
+on:
+  push:
+    branches:
+      - research/pub-gc-macro-512-envelope
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macro-512-envelope:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record compiler
+        run: gfortran --version
+      - name: Run frozen 512-contribution qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-MACRO-512
+          bash tests/publication/pub_gc/macro_window_response/run_pub_gc_macro_512_qualification.sh 2>&1 | tee artifacts/PUB-GC-MACRO-512/qualification.log
+      - name: Upload qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-macro-512-${{ github.sha }}
+          path: artifacts/PUB-GC-MACRO-512/qualification.log
+          if-no-files-found: error
+          retention-days: 90
