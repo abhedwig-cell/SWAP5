@@ -14,6 +14,7 @@ program test_f_rom0ta3_reference_floor_sample
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_soil_water_solver_contract, only: SW_SOLVE_CONVERGED
   implicit none
 
   real(real64), parameter :: se0=0.85_real64
@@ -193,7 +194,7 @@ contains
     call require(result%mass%complete,'TA3 complete sample mass')
     call require(abs(result%mass%residual)<=hard_mass_gate,'TA3 hard mass gate')
     call require(observation%solver_executed,'TA3 Reference solver executed')
-    call require(observation%solver_status==0,'TA3 Reference solver converged')
+    call require(observation%solver_status==SW_SOLVE_CONVERGED,'TA3 Reference solver converged')
     call require(abs(observation%top_flux-forcing%top_flux)<= &
          64.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(forcing%top_flux)),'TA3 top flux identity')
     call require(abs(observation%bottom_flux-forcing%bottom_flux)<= &
