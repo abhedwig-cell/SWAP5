@@ -78,8 +78,8 @@ def main() -> None:
 
     gate_f.gate_d.boundary_fluxes = wetting_boundary_fluxes
 
-    catalog_path = args.research_root / contract["historical_authority"]["fross13_transient_contract_path"]
-    fross13_contract = json.loads(catalog_path.read_text())
+    fross13_contract_path = args.contract.parent / "F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json"
+    fross13_contract = json.loads(fross13_contract_path.read_text())
     material_catalog_path = args.research_root / fross13_contract["immutable_authority"]["material_catalog"]["path"]
     catalog = json.loads(material_catalog_path.read_text())
     by_name = {row["sfu"]: row for row in catalog["rows"]}
