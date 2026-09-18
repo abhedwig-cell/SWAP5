@@ -4,8 +4,8 @@
   "stage": "A",
   "title": "Generic groundwater application orchestration — application-plan materialization",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY_A",
-  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "phase": "CLOSE_A",
+  "state": "STAGE_A_CLOSED_CANONICAL_ADMITTED_APPLICATION_PLAN",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "base": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e"
@@ -65,6 +65,69 @@
     "PR mergeable",
     "production delta limited to application-plan materializer"
   ],
-  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING",
-  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ121 evidence, repair only scoped failures, then admit/close stage A. Only after stage A closes may F-GC49B production participant bridge implementation begin."
+  "verdict": "STAGE_A_CLOSED_CANONICAL_ADMITTED",
+  "next_permitted_action": "Stage A is closed. Open F-GC49B from this canonical head. Reconcile the production predictor/tangent seam and implement a handle-based FMR groundwater participant registry without exposing kernel internals or using qualification-specific topology bridges.",
+  "canonical_admission": {
+    "base": "fcd2cb93852a7eca87d0f0322eb5cc3c23acf98e",
+    "head": "2405b4082fcb2f7e0a94469f76438b7e69df49e6",
+    "pr": 256,
+    "merge_method": "merge"
+  },
+  "qualification": {
+    "owner": {
+      "run": 35347224628,
+      "job": 105606537537,
+      "conclusion": "success",
+      "qualified_head": "0d2f6e93227edc4060ff49798c4fe78849c96bfe",
+      "preservation_to_stage_head": [
+        ".github/workflows/f-vq121-fgc49a-independent.yml",
+        "tests/fvq/run_fvq121_fgc49a_independent.sh",
+        "tests/fvq/test_fvq121_fgc49a_application_plan_independent.f90",
+        "docs/integration/F-GC49A_APPLICATION_PLAN_MATERIALIZATION.md",
+        "integration/f-gc/F-GC49_STATUS.json"
+      ],
+      "oracles": [
+        "FGC49A_PLAN_COMPOSITION_ONLY=PASS",
+        "FGC49A_NO_SOLVER_TRANSACTION_OR_PUBLICATION_OWNERSHIP=PASS",
+        "FGC49A_FGC44_ONE_TO_ONE_PLAN=PASS",
+        "FGC49A_FGC45_N_TO_ONE_PLAN=PASS",
+        "FGC49A_FGC46_MULTICELL_PLAN=PASS",
+        "FGC49A_FGC47_MIXED_PLAN=PASS",
+        "FGC49A_INPUT_ORDER_INVARIANCE=PASS",
+        "FGC49A_FAIL_CLOSED_PROVENANCE_AND_AREA=PASS",
+        "FGC49A_O0_O2_OUTPUT_IDENTITY=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ121",
+      "run": 35347308279,
+      "job": 105606783904,
+      "conclusion": "success",
+      "qualified_head": "9a934570427d555f352eed64c564d74d5b642a45",
+      "preservation_to_stage_head": [
+        "docs/integration/F-GC49A_APPLICATION_PLAN_MATERIALIZATION.md",
+        "integration/f-gc/F-GC49_STATUS.json"
+      ],
+      "oracles": [
+        "FVQ121_PLAN_EQUALS_DIRECT_FGC40_FGC33=PASS",
+        "FVQ121_MIXED_CELL1_N1_EQUIVALENCE=PASS",
+        "FVQ121_MIXED_CELL2_1TO1_EQUIVALENCE=PASS",
+        "FVQ121_PLAN_TO_FGC34_PUBLICATION=PASS",
+        "FVQ121_API_SLOT_NODE_AND_TERM_IDENTITY=PASS",
+        "FVQ121_UNMAPPED_API_TAIL_PRESERVED=PASS",
+        "FVQ121_O0_O2_OUTPUT_IDENTITY=PASS"
+      ]
+    }
+  },
+  "stage_a_admitted_capability": [
+    "immutable application plan from admitted F-GC48 topology",
+    "tile predictor provenance validation",
+    "single-window and single-groundwater-service validation",
+    "area-weighted cell reference heads",
+    "delegation to F-GC40 cell responses",
+    "delegation to F-GC33 linear terms",
+    "F-GC34 API bindings",
+    "canonical per-cell contiguous tile routing",
+    "copy-only plan outputs"
+  ]
 }
