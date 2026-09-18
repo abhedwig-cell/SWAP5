@@ -1,0 +1,26 @@
+name: F-VQ121 F-APP06 independent
+
+on:
+  push:
+    branches:
+      - qualification/f-vq121-fapp06-swinter0-independent
+    paths:
+      - 'tests/fvq/test_fvq121_fapp06_swinter0_independent.f90'
+      - 'tests/fvq/run_fvq121_fapp06_swinter0_independent.sh'
+      - '.github/workflows/f-vq121-fapp06-independent.yml'
+      - 'integration/f-vq/F-VQ121_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fvq/run_fvq121_fapp06_swinter0_independent.sh
