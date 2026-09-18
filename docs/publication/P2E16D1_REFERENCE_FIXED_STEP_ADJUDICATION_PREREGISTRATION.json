@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.publication.p2e16d1-reference-fixed-step-adjudication.v1",
+  "workunit": "PUB-P2E16D1",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_DIAGNOSTIC_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "role": "REFERENCE_ONLY_DIAGNOSTIC_SUPPORTING",
+  "parent_primary_result": {
+    "branch": "work/pub-p2e16b-candidate-boundary-primary",
+    "head": "5bbd6d9c6d2849550d7121098413fa3f135c2f1e",
+    "result_path": "docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_RESULT.json",
+    "verdict": "ROUTE_BOUNDARY_EXACT_SCIENTIFIC_ADMISSIBILITY_SUPPORTED_ON_848_OF_850_AUTHORIZED_INTERPRETABLE_REFERENCE_FIXED_STEP_LIMITATION_5_CASES"
+  },
+  "purpose": "Diagnose the five P2E16B fixed-step Reference-invalid cases without executing RossFast and without modifying or retroactively upgrading the P2E16B primary result.",
+  "cases": [
+    {"case":576,"material":"B16","Se":0.96,"axis":"BOTTOM","rho":1.05},
+    {"case":612,"material":"B17","Se":0.96,"axis":"BOTTOM","rho":1.05},
+    {"case":1220,"material":"O16","Se":0.96,"axis":"BOTTOM","rho":-1.0},
+    {"case":1248,"material":"O17","Se":0.85,"axis":"BOTTOM","rho":1.05},
+    {"case":1257,"material":"O17","Se":0.96,"axis":"BOTTOM","rho":-0.95}
+  ],
+  "diagnostic_A_direct_duration_ladder": {
+    "construction": "Each solve starts from the same original P2E16B initial state and exact boundary forcing.",
+    "step_duration_day": [0.0064,0.0032,0.0016,0.0008,0.0004,0.0002,0.0001],
+    "numerical_controls": "unchanged from P2E16B Reference route",
+    "endpoint": "status, integrated-mass availability/residual, native-rate availability/residual, candidate-state validity, nonlinear iterations, Jacobian builds, linear solves and backtracking attempts",
+    "interpretation": "Used only to classify direct-step convergence/non-monotonicity. No duration is promoted into the P2E16B primary comparator."
+  },
+  "diagnostic_B_same_horizon_refinement": {
+    "physical_horizon_day": 0.0016,
+    "levels": [
+      {"substeps":1,"dt_day":0.0016},
+      {"substeps":2,"dt_day":0.0008},
+      {"substeps":4,"dt_day":0.0004},
+      {"substeps":8,"dt_day":0.0002},
+      {"substeps":16,"dt_day":0.0001}
+    ],
+    "construction": "Sequential Reference solves, each next substep starting from the preceding converged candidate state.",
+    "endpoint": "whether the full 0.0016-day horizon can be completed; final state/storage and total integrated mass residual where complete",
+    "interpretation": "A refined successful trajectory may explain the P2E16B Reference limitation and inform future REF-HIGH construction, but does not replace the failed fixed 0.0016-day primary Reference request."
+  },
+  "boundary_construction": {
+    "same_as_p2e16": true,
+    "boundary_envelope_fraction": 0.02,
+    "top_axis_formula": "qtop=-(0.01*K_top + rho*0.02*max(abs(0.01*K_top),abs(K_top),1e-12))",
+    "bottom_axis_formula": "qbot=-0.004*K_bottom + rho*0.02*max(abs(-0.004*K_bottom),abs(K_bottom),1e-12)",
+    "fixed_top_for_bottom_axis": "qtop=-0.01*K_top"
+  },
+  "hard_firewall": {
+    "rossfast_execution_allowed": false,
+    "p2e14_threshold_change_allowed": false,
+    "p2e16b_case_reclassification_allowed": false,
+    "p2e16b_primary_counts_change_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_solver_tolerance_retuning_allowed": false,
+    "duration_ladder_change_after_execution_allowed": false
+  },
+  "possible_diagnostic_outcomes": [
+    "MONOTONIC_RECOVERY_WITH_REFINEMENT",
+    "NONMONOTONIC_DIRECT_STEP_CONVERGENCE",
+    "PERSISTENT_REFERENCE_FAILURE",
+    "CASE_SPECIFIC_MIXED_BEHAVIOR"
+  ],
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_FIVE_CASE_FIXED_STEP_ADJUDICATION_READY",
+  "next_permitted_action": "Implement and execute only the frozen five-case Reference-only diagnostic ladder. Do not execute RossFast in this workunit."
+}
