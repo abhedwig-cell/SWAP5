@@ -16,7 +16,7 @@ This plan maps each proposed publication visual to an already admitted evidence 
 | F6 | Component-admission envelope | E6 stronger-response routes terminate at predictor/corrector capability boundaries | E6 active-drainage + 20-case state screen | BUILT_AND_LINKED |
 | F7 | realistic Hupsel transferability / application-owner boundary | `PUB_GC_E7_RESULT.json`, PPA-WU01 dynamic gate | BUILT_AND_LINKED |
 
-F1–F6 are now built as version-controlled SVG files under `docs/publication/figures/` and linked from the manuscript. F3–F6 are regenerated from admitted numerical evidence by `figures/generate_pub_gc_numeric_figures.py`; F1/F2 are conceptual schematics whose SVG source is version controlled. F7 is now built as a capability/domain result; it does not fabricate missing coupled trajectories. If E7 remains blocked at submission decision time, the manuscript must be framed as a bounded coupling-method/qualification paper rather than implying realistic validation.
+F1–F6 are now built as version-controlled SVG files under `docs/publication/figures/` and linked from the manuscript. F3–F6 are regenerated from admitted numerical evidence by `figures/generate_pub_gc_numeric_figures.py`; F1/F2 are conceptual schematics whose SVG source is version controlled. F7 is now built as a capability/domain result; it does not fabricate missing coupled trajectories. E7 is now closed as a realistic component-domain result. The manuscript must remain framed as a bounded coupling-contract/admissibility study and must not imply successful regional Hupsel groundwater validation.
 
 ## Recommended figure construction
 
@@ -85,7 +85,7 @@ python docs/publication/figures/generate_pub_gc_numeric_figures.py
 
 Tables T1–T5 are now linked into `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`. Their journal-neutral evidence map is retained in `PUB_GC_MANUSCRIPT_TABLES.md`.
 
-T6 remains reserved for E7 and must stay absent until the M1-C3 prerequisite closes and the prospectively selected Hupsel experiment executes.
+T6 is now closed as the E7 application-domain disposition. It intentionally contains no loose/strong head or exchange values because the preregistered participant-admission stop occurred before coupled execution.
 
 
 ## E7 closure update
