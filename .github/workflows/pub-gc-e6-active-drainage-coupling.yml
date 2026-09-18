@@ -11,6 +11,8 @@ on:
       - 'tests/publication/build_pub_gc_e6_active_drainage.sh'
       - 'tests/publication/pub_gc_e6_ctypes.py'
       - 'tests/publication/test_pub_gc_e6_active_drainage_init.py'
+      - 'tests/publication/test_pub_gc_e6_live_case.py'
+      - 'tests/publication/run_pub_gc_e6.sh'
       - '.github/workflows/pub-gc-e6-active-drainage-coupling.yml'
   workflow_dispatch:
 
@@ -27,5 +29,14 @@ jobs:
           sudo apt-get install -y gfortran
           python3 -m pip install --upgrade pip
           python3 -m pip install numpy pytest git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
-      - name: Build and qualify active-drainage participant fixture
-        run: bash tests/publication/build_pub_gc_e6_active_drainage.sh
+      - name: Run preregistered active-drainage live coupling matrix
+        env:
+          PUB_GC_E6_RESULT_DIR: ${{ runner.temp }}/pub-gc-e6-results
+        run: bash tests/publication/run_pub_gc_e6.sh
+      - name: Upload E6 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-e6-active-drainage
+          path: ${{ runner.temp }}/pub-gc-e6-results
+          if-no-files-found: error
