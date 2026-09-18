@@ -61,7 +61,7 @@ contains
 
     status = GW_SWAP_FORCING_INVALID_HEAD
     if (.not. ieee_is_finite(interface_head_m) .or. .not. datum%valid()) return
-    call interface_head_m_to_swap_pressure_head_cm(interface_head_m, datum, pressure_head_cm, mapping_status)
+    call interface_head_m_to_swap_bottom_pressure_head_cm(interface_head_m, datum, pressure_head_cm, mapping_status)
     if (mapping_status /= GW_INTERFACE_OK .or. .not. ieee_is_finite(pressure_head_cm)) return
 
     allocate(fmr_b110_physical_forcing_t :: forcing)
