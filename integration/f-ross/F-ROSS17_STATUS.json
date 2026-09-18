@@ -2,12 +2,26 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS17",
   "title": "RossFast transform-cache optimization",
-  "phase": "RECONCILE",
-  "status": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "phase": "QUALIFY",
+  "status": "IMPLEMENTED_PENDING_EXECUTION",
   "branch": "work/f-ross17-rossfast-transform-cache",
-  "source_branch": "work/f-ross16-rossfast-cost-attribution",
   "source_head": "79d30219d484acfadde0a22484ca6305a541d868",
-  "production_scope": ["src/solver/mod_rossfast_d3r_table_kernel.f90"],
-  "verdict": "READY_TO_IMPLEMENT_BOUNDED_OPTIMIZATION",
-  "next_permitted_action": "Implement node transform caching only; keep 24-step certificate topology and all external contracts unchanged."
+  "production_mutation": {
+    "path": "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "baseline_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "candidate_blob": "2ad2a680e62744451d6763de48585f1bd45d3067"
+  },
+  "algorithm_boundaries_preserved": {
+    "certificate_internal_substeps": 8,
+    "coarse_plus_two_half": true,
+    "candidate_steps_per_solve": 24,
+    "external_solver_contract": "unchanged"
+  },
+  "qualification": {
+    "scientific": "pending",
+    "baseline_vs_candidate_performance": "pending",
+    "candidate_vs_reference_performance": "pending"
+  },
+  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
+  "next_permitted_action": "Execute F-ROSS17 workflow; correct only implementation/test defects without changing preregistered scientific or performance thresholds."
 }
