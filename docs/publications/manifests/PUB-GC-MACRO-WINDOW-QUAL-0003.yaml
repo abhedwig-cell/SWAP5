@@ -1,0 +1,77 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0003
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_ENVELOPE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  native_time_0002_result_commit: ec36883372c0870319ade7574e206459671a23bc
+  refinement_decision_commit: f55b87322a04977b342e00057b3bd47375580233
+  refinement_decision_blob: 9e74a021185befcbcd89b98bb26228777b0d5ea0
+  high_count_spec_commit: e6cfc6f23e169e6941c3bae405f2ac92c71cc392
+  high_count_spec_blob: b23448e53365a7cae2239b7519439169963d476c
+  previous_macro_qualification_receipt_commit: fff5e8740e64d3664df32e1176ffefe2f9168a0a
+  frozen_before_execution: true
+
+authority:
+  research_branch: research/pub-gc-macro-high-count
+  base: 2fad7bb01f7d7d9b55dfca752efd02c502548389
+  qualified_macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  macro_module_must_remain_unchanged: true
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/macro_window_response/**
+    - .github/workflows/pub-gc-macro-high-count-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - qualified_macro_module
+    - all_other_qualified_publication_components
+
+qualification:
+  rerun_Q0_through_Q8_unchanged: true
+  Q9A:
+    macro_t0_day: 4200.125
+    macro_duration_day: 0.04
+    native_interval_count: 64
+    native_dt_day: 0.000625
+    prescribed_bottom_head_cm: -80.0
+    top_flux_factor_relative_to_K0: -1.0
+  Q9B:
+    macro_t0_day: 4200.125
+    macro_duration_day: 0.04
+    native_interval_count: 128
+    native_dt_day: 0.0003125
+    prescribed_bottom_head_cm: -80.0
+    top_flux_factor_relative_to_K0: -1.0
+  Q9C:
+    macro_t0_day: 14200.125
+    macro_duration_day: 0.04
+    native_interval_count: 128
+    native_dt_day: 0.0003125
+    prescribed_bottom_head_cm: -80.0
+    top_flux_factor_relative_to_K0: -1.0
+  Q9_required:
+    - completed
+    - exact_contribution_count
+    - finite_positive_actual_intervals
+    - exact_final_macro_t1
+    - authoritative_origin_unchanged
+    - finite_duration_representation_telemetry
+
+optimization:
+  modes: [O0, O2]
+  require_exact_scientific_output_identity: true
+
+nonclaims:
+  - no H2 or H3 inference
+  - no native integration policy
+  - no universal SWAP timestep recommendation
+  - no production admission
+
+next_permitted_action:
+  - create the frozen research branch
+  - keep the macro module byte-identical
+  - extend only the qualification oracle to Q9A-Q9C
+  - execute Q0-Q9 under O0/O2
+  - only after PASS preregister NATIVE-TIME-0003
