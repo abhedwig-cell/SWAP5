@@ -128,7 +128,33 @@ def run_one(executable: Path, route: str, target_cpu: int, cycle: int, measured:
         raise RuntimeError(f"{route} benchmark failed with {completed.returncode}\n{completed.stdout}")
     parsed = parse_output(completed.stdout, route)
     case_lines = [line for line in completed.stdout.splitlines() if line.startswith("F_ROSS23_CASE|")]
+    if len(case_lines) != 216:
+        raise RuntimeError(f"expected 216 case rows, got {len(case_lines)}")
+    route_reasons = {}
+    for match in REASON_PATTERN.finditer(completed.stdout):
+        route_reasons[str(int(match.group("id")))] = {
+            "reference_reason": match.group("ref_reason").strip(),
+            "rossfast_reason": match.group("ross_reason").strip(),
+        }
+    if len(route_reasons) != 216:
+        raise RuntimeError(f"expected 216 route-reason rows, got {len(route_reasons)}")
+    case_timings = []
+    for match in TIMING_PATTERN.finditer(completed.stdout):
+        case_timings.append({
+            "id": int(match.group("id")),
+            "material": match.group("material").strip(),
+            "se": float(match.group("se")),
+            "forcing": match.group("forcing").strip(),
+            "route": match.group("route"),
+            "cpu_seconds": float(match.group("cpu")),
+        })
+    if len(case_timings) != int(parsed["diagnostic_counts"]["paired_valid"]):
+        raise RuntimeError(
+            f"expected {parsed['diagnostic_counts']['paired_valid']} paired-valid timing rows, got {len(case_timings)}"
+        )
     parsed["case_matrix"] = case_lines
+    parsed["route_reasons"] = route_reasons
+    parsed["case_timings"] = case_timings
     parsed.update({
         "cycle": cycle,
         "measured": measured,
@@ -254,7 +280,11 @@ def main() -> int:
         "claim_boundary": "Shared GitHub-hosted result is screening evidence only. Formal speedup requires replay on an MP-admitted isolated performance host.",
         "diagnostic_counts": samples[0]["diagnostic_counts"],
         "case_matrix": samples[0]["case_matrix"],
-        "samples": [{k:v for k,v in row.items() if k != "case_matrix"} for row in samples],
+        "route_reasons": samples[0]["route_reasons"],
+        "samples": [
+            {k:v for k,v in row.items() if k not in ("case_matrix", "route_reasons")}
+            for row in samples
+        ],
     }
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2, sort_keys=True))
