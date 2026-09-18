@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.f-ross19.adaptive-k2-k4-certificate.v1",
+  "workunit": "F-ROSS19",
+  "phase": "PREREGISTERED_RESEARCH_ONLY",
+  "branch": "work/f-ross19-adaptive-k2-k4-certificate",
+  "source_head": "2f70264cb90eb9e5ed7b743399b0c4a331014868",
+  "purpose": "Test an adaptive RossFast certificate that runs K2 first and recomputes from the original base state with K4 only when the K2 temporal indicator exceeds 1.0.",
+  "authority": {
+    "f_ross18_result": "integration/f-ross/F-ROSS18_TEMPORAL_SUBSTEP_MATRIX_RESULT.json",
+    "production_candidate_kernel_source": "F-ROSS17 cached kernel as inherited through F-ROSS18",
+    "production_source_mutation_allowed": false
+  },
+  "algorithm": {
+    "fast_attempt": {
+      "component_internal_substeps": 2,
+      "candidate_steps": 6,
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "fallback": {
+      "trigger": "fast temporal_indicator > 1.0",
+      "component_internal_substeps": 4,
+      "candidate_steps": 12,
+      "restart_state": "same original request base state; do not continue from K2 candidate",
+      "accept_if": "fallback temporal_indicator <= 1.0"
+    },
+    "total_work_if_fast_accepts": 6,
+    "total_work_if_fallback_used": 18,
+    "trajectory_reuse_between_K2_and_K4": false,
+    "coarse_plus_two_half_topology_per_attempt": true
+  },
+  "frozen_36_case_expectation_from_f_ross18": {
+    "K2_temporal_accepts": 34,
+    "K2_temporal_rejects": 2,
+    "known_rejects": [
+      {"case":17,"material":"O01","effective_saturation":0.98,"forcing":"DRYING"},
+      {"case":18,"material":"O01","effective_saturation":0.98,"forcing":"NOMINAL"}
+    ],
+    "projected_candidate_step_mean_if_only_these_fallback": 6.666666666666667
+  },
+  "scientific_gates": {
+    "paired_valid_admissible": "36/36",
+    "final_temporal_indicator_le_1": "36/36",
+    "route_valid": "36/36",
+    "mass_tolerance": "existing RossFast hard mass tolerance",
+    "allowed_linear_solves_per_case": [6,18],
+    "fallback_count_expected_from_f_ross18": 2,
+    "final_fallback_state_must_match_standalone_K4": "within 1e-12 head/theta dump tolerance on fallback cases"
+  },
+  "performance_protocol": {
+    "same_36_cases": true,
+    "compiler": "GNU Fortran -O2",
+    "warmups_per_variant": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_case": 200,
+    "paired_against": "Reference Richards",
+    "outlier_deletion": false,
+    "target_resolution_relative": 0.05,
+    "formal_performance_claim": false
+  },
+  "promotion_boundary": "Even if science passes and shared-host screening is faster than Reference, F-ROSS19 remains research-only. Any production implementation requires a separate workunit, independent requalification and existing performance-host policy.",
+  "negative_result_policy": "Do not tune thresholds, change fallback trigger, reuse K2 trajectories, or add K8 fallback after seeing results.",
+  "next_permitted_action": "Create an inspectable test-only adaptive kernel/solver pair, then run science and paired performance qualification without modifying src/** or reference/**."
+}
