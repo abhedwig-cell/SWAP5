@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.publication.p2e16c-reference-fixed-step-adjudication.v1",
+  "workunit": "PUB-P2E16C",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_ADJUDICATION_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "branch": "work/pub-p2e16c-reference-fixed-step-adjudication",
+  "parent_primary": {
+    "p2e16b_result_commit": "5bbd6d9c6d2849550d7121098413fa3f135c2f1e",
+    "p2e16b_result_path": "docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_RESULT.json",
+    "primary_result_is_immutable": true,
+    "retroactive_upgrade_of_848_of_850_forbidden": true,
+    "retroactive_upgrade_of_429_of_429_matched_outside_forbidden": true
+  },
+  "purpose": "Explain the five P2E16B fixed-step Reference-invalid cases without changing the primary candidate-boundary result, P2E14 thresholds, production code, Reference code or scientific case membership.",
+  "cases": [
+    {"case":576,"material":"B16","Se":0.96,"axis":"BOTTOM","rho":1.05,"p2e16a_threshold_transfer_valid":false,"p2e16b_rossfast_valid":false},
+    {"case":612,"material":"B17","Se":0.96,"axis":"BOTTOM","rho":1.05,"p2e16a_threshold_transfer_valid":true,"p2e16b_rossfast_valid":false},
+    {"case":1220,"material":"O16","Se":0.96,"axis":"BOTTOM","rho":-1.0,"p2e16a_threshold_transfer_valid":true,"p2e16b_rossfast_valid":true},
+    {"case":1248,"material":"O17","Se":0.85,"axis":"BOTTOM","rho":1.05,"p2e16a_threshold_transfer_valid":true,"p2e16b_rossfast_valid":false},
+    {"case":1257,"material":"O17","Se":0.96,"axis":"BOTTOM","rho":-0.95,"p2e16a_threshold_transfer_valid":true,"p2e16b_rossfast_valid":true}
+  ],
+  "fixed_physics": {
+    "grid": "16 homogeneous cells x 10 cm",
+    "source_sink": "zero",
+    "ponding_initial_cm": 0.0,
+    "top_flux_and_bottom_flux": "exactly reconstructed from the P2E16 state-local rho definition using the initial constitutive conductivity; forcing held fixed during every diagnostic sequence",
+    "solver": "reference_richards_legacy_solver_t only",
+    "rossfast_execution_allowed": false,
+    "numerical_controls": {
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "conductivity_implicit_mode": 0,
+      "conductivity_mean_method": 1,
+      "min_step_duration_day": 1e-8,
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "total_balance_tolerance_cm_per_day": 1e-12,
+      "head_abs_tolerance": 1e-12,
+      "head_rel_tolerance": 1e-12,
+      "ponding_tolerance": 1e-12
+    },
+    "control_retuning_allowed": false
+  },
+  "diagnostic_A_single_step_ladder": {
+    "definition": "Each solve starts independently from the original P2E16 initial state and uses the same fixed boundary fluxes; only step_duration changes.",
+    "step_duration_day": [0.0064,0.0032,0.0016,0.0008,0.0004,0.0002,0.0001],
+    "case_solve_count": 35,
+    "primary_observables": [
+      "solver status",
+      "retry_advised",
+      "diagnostics route",
+      "nonlinear_iterations",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "alternative_solver_calls",
+      "integrated mass residual availability and value",
+      "native rate residual availability and value",
+      "candidate-state validity"
+    ],
+    "interpretation": "This diagnostic identifies whether the fixed-step failure is monotone with dt, confined to a band of dt, or associated with a particular solver retry/status path."
+  },
+  "diagnostic_B_same_horizon_substepping": {
+    "target_horizon_day": 0.0016,
+    "substep_counts": [1,2,4,8,16],
+    "substep_duration_day": [0.0016,0.0008,0.0004,0.0002,0.0001],
+    "sequence_count": 25,
+    "rule": "Each sequence starts from the original P2E16 initial state. A sequence advances the accepted Reference candidate state only after a valid converged substep. On first invalid substep the sequence stops and is classified invalid. Boundary fluxes remain those frozen from the original initial state for the full horizon.",
+    "primary_observables": [
+      "sequence valid/invalid",
+      "first failing substep index",
+      "status and route at failure",
+      "terminal state if valid",
+      "maximum absolute integrated mass residual over accepted substeps",
+      "cumulative prescribed external transfer"
+    ],
+    "interpretation": "A valid N>1 sequence with an invalid N=1 solve shows that the physical 0.0016-day horizon is representable by the Reference solver and isolates the limitation to single-step numerical execution rather than the physical request itself."
+  },
+  "adjudication_questions": {
+    "Q1": "Are the five P2E16B invalid cases true Reference physical-domain failures or numerical single-step/retry limitations?",
+    "Q2": "Is the surprising validity pattern non-monotone in dt?",
+    "Q3": "Can the identical 0.0016-day forcing horizon be traversed by smaller accepted Reference substeps without changing physics or tolerances?"
+  },
+  "validity_rule": {
+    "status": "SW_SOLVE_CONVERGED",
+    "route": "legacy-reference-bound",
+    "integrated_mass_residual_available": true,
+    "absolute_integrated_mass_residual_limit_cm": 1e-12,
+    "native_rate_residual_available": true,
+    "candidate_state_finite": true,
+    "candidate_state_inside_shared_P2E16_state_bounds": true,
+    "published_fluxes_equal_requested_fluxes": true
+  },
+  "negative_result_policy": {
+    "execute_all_five_cases_and_all_frozen_dt_values": true,
+    "do_not_stop_after_explanation_is_found": true,
+    "no_case_replacement": true,
+    "no_numerical_control_change": true,
+    "no_threshold_change": true,
+    "no_candidate_execution": true,
+    "scientific_or_diagnostic_failure_is_not_ci_failure": true
+  },
+  "claim_firewall": {
+    "may_explain_primary_reference_limitation": true,
+    "may_not_change_p2e16b_primary_counts": true,
+    "may_not_add_pairwise_scientific_admissibility_cases": true,
+    "may_not_add_matched_outside_fail_closed_cases": true,
+    "may_not_widen_rossfast_production_domain": true,
+    "may_not_support_performance_claim": true
+  },
+  "qualification": {
+    "required": [
+      "all 35 independent single-step solves attempted",
+      "all 25 same-horizon substep sequences attempted",
+      "same five physical cases and same initial-state-derived fluxes as P2E16B",
+      "no src/** or reference/** mutation",
+      "Reference-only build contains no RossFast numerical solver implementation",
+      "O0/O2 byte-identical adjudication output",
+      "unfavorable diagnostic result does not fail CI"
+    ]
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_FIXED_STEP_ADJUDICATION_READY",
+  "next_permitted_action": "Implement and execute the frozen Reference-only adjudication harness. Do not modify P2E16B primary evidence."
+}
