@@ -127,10 +127,11 @@
         "PPA-WU03 workflow run 35374130545 / owner job 105694706631",
         "PPA-WU03 independent job 105694706401: 54-case O0/O2 matrix",
         "PPA-WU03 preservation job 105694706721",
-        "PPA-WU01 regression run 35374130276 / job 105694704986"
+        "PPA-WU01 regression run 35374130276 / job 105694704986",
+        "Canonical admission PR #323 / merge 97c4471155001e12133109be5eb6bd95f799eb00"
       ],
-      "production_admission": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION on PR #323; canonical merge pending.",
-      "production_reachable": "QUALIFIED_CANDIDATE_NOT_YET_CANONICAL",
+      "production_admission": "CANONICAL_ADMITTED via PR #323 at 97c4471155001e12133109be5eb6bd95f799eb00.",
+      "production_reachable": "YES_RESTRICTED_TYPED_APPLICATION_BOUNDARY_CANONICAL",
       "restrictions": [
         "SWETR=1 restricted reference-ET route only",
         "SWINTER=0 only",
@@ -1403,7 +1404,7 @@
       "scientific_risk": "LOW physics; ownership/governance risk closed for the restricted WU01 profiles",
       "use_relevance": "VERY_HIGH",
       "dependencies": [
-        "PPA-WU03 for normal atmospheric/input ingestion",
+        "PPA-WU03 canonically admitted for the bounded common forcing slice",
         "Per-process admission for any broader profile"
       ],
       "priority_band": "P1"
@@ -1644,6 +1645,13 @@
         "disposition": "CANONICAL_ADMITTED_CLOSED",
         "evidence": "PPA-WU01 final owner run 35368123088 PASS; docs 35368123177 PASS; F-CI 35368122940 PASS.",
         "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7"
+      },
+      {
+        "capability_id": "PPA-ATM-03",
+        "workunit": "PPA-WU03",
+        "disposition": "CANONICAL_ADMITTED_CLOSED",
+        "evidence": "PPA-WU03 workflow 35374130545 owner/independent/preservation PASS; 54-case independent matrix; PPA-WU01/F-APP/M1 preservation PASS.",
+        "canonical_merge_commit": "97c4471155001e12133109be5eb6bd95f799eb00"
       }
     ]
   },
@@ -1686,9 +1694,9 @@
       "title": "Atmospheric forcing and normal-input adapter boundary",
       "goal": "Define and qualify outer application ingestion from normal forcing/config inputs to already-admitted typed ET/interception/top-boundary forcing while keeping file I/O outside kernel.",
       "exit": "Common precipitation/reference-ET/canopy forcing can drive WU01 end-to-end with no new physics.",
-      "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "status": "CANONICAL_ADMITTED_CLOSED",
       "qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
-      "qualification": "Workflow 35374130545 owner/independent/preservation PASS; canonical admission pending.",
+      "qualification": "Workflow 35374130545 owner/independent/preservation PASS; canonical admission PR #323 merged at 97c4471155001e12133109be5eb6bd95f799eb00.",
       "production_delta": [
         "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
         "read-only PPA-WU01 run_standalone_with_forcing seam"
@@ -1700,8 +1708,9 @@
         "generic explicit forcing spans; no file/calendar grammar",
         "only pure-flux dynamic-top result may hand off to PPA-WU01"
       ],
-      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
-      "pull_request": 323
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "pull_request": 323,
+      "canonical_merge_commit": "97c4471155001e12133109be5eb6bd95f799eb00"
     },
     {
       "id": "PPA-WU04",
@@ -1737,6 +1746,13 @@
       "qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
       "qualification": "Workflow run 35374130545: owner, independent and preservation jobs PASS.",
       "effect": "Adds a bounded stateless normal/common forcing boundary above PPA-WU01 without parser/calendar leakage or ownership drift; canonical admission still pending."
+    },
+    {
+      "workunit": "PPA-WU03",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "pull_request": 323,
+      "canonical_merge_commit": "97c4471155001e12133109be5eb6bd95f799eb00",
+      "effect": "Bounded common precipitation/reference-ET/canopy/SWINTER=0/resolved-surface-irrigation input can now drive the admitted PPA-WU01 standalone profile through a stateless outer adapter and read-only forcing seam. Full legacy meteorological file/calendar preprocessing remains open."
     }
   ]
 }

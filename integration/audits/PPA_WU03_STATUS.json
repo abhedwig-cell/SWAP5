@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "workunit": "PPA-WU03",
   "title": "Atmospheric forcing and normal-input adapter boundary",
-  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "state": "CANONICAL_ADMITTED_CLOSED",
   "canonical_basis": {
     "branch": "integration/f-ci-canonical",
     "commit": "12beef3e91f90f88b101c13af72cd216bccc63e3"
@@ -85,8 +85,23 @@
     "new physics or tolerance changes"
   ],
   "admission": {
-    "canonical_state": "NOT_YET_MERGED",
-    "canonical_merge_commit": null,
-    "closeout_state": "PENDING_CANONICAL_ADMISSION"
+    "canonical_state": "CANONICAL_ADMITTED",
+    "canonical_merge_commit": "97c4471155001e12133109be5eb6bd95f799eb00",
+    "pull_request": 323,
+    "closeout_state": "CLOSED",
+    "production_admission": "Bounded PPA-WU03 common-forcing slice admitted on integration/f-ci-canonical"
+  },
+  "canonical_closeout": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "observed_head": "080c24be1fd352d390647c832d215833e1ae3df2",
+    "production_subject_qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
+    "post_qualification_delta": "documentation/status/register only",
+    "closure_rule": "No broad legacy meteorological preprocessing claim; explicit nonclaims remain open.",
+    "live_delta_since_admission": {
+      "commit_count": 12,
+      "classification": "OWNERSHIP_DISJOINT_PUBLICATION_ONLY",
+      "changed_surface": "docs/publication/PUB_GC_* only",
+      "production_overlap": "NONE"
+    }
   }
 }

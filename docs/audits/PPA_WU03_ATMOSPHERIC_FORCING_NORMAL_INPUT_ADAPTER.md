@@ -1,6 +1,6 @@
 # PPA-WU03 atmospheric forcing and normal-input adapter boundary
 
-**State:** QUALIFIED_READY_FOR_CANONICAL_ADMISSION  
+**State:** CANONICAL_ADMITTED_CLOSED  
 **Canonical basis:** `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`  
 **Workunit:** PPA-WU03  
 **Production owner:** PPA-WU01 / `mod_fmr_production_application_bootstrap`
@@ -79,6 +79,14 @@ This seam is required so a normal forcing adapter can supply a new interval with
 8. **O0/O2 preservation.** Owner qualification passes at O0 and O2 with stable output identity.
 9. **Regression.** Existing PPA-WU01 owner qualification and affected F-APP/M1 preservation gates remain green.
 10. **Independent qualification.** A separate test harness re-derives the expected typed mapping over a forcing/canopy/subdaily matrix and verifies fail-closed behavior without using the owner test oracle.
+
+## Canonical admission
+
+PR #323 was merged into `integration/f-ci-canonical` at `97c4471155001e12133109be5eb6bd95f799eb00`.
+
+The canonical capability is intentionally narrow. A normal/common interval input can supply precipitation, SWETR=1 reference ET, an explicit canopy view and an already-resolved surface-irrigation rate under SWINTER=0. The adapter remains stateless and parser/calendar free. PPA-WU01 remains the only FMR and committed-state owner.
+
+This admission does not convert the full legacy meteorological preprocessing family into SWAP5 production functionality. File/calendar ingestion, PMdirect normal-input derivation, Rutter canopy-state ownership, SWINTER=1/2, irrigation scheduling, snow/runon ingestion and dynamic-top head/ponding/runoff pre-resolution remain outside this workunit.
 
 ## Qualification evidence
 
