@@ -4,7 +4,7 @@
   "title": "Live MODFLOW6 F-GC34 Bridge — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_LIVE_MODFLOW6_FGC34_BRIDGE",
   "canonical_admission": {
     "production_admission_head": "3b28d4424b8089401db34f79ef5cb4246c791e48",
     "preimage": "aadde02fc35e7bdaddb1604c6f8a7284f43db813",
@@ -49,5 +49,11 @@
     "no Ribasim or irrigation",
     "no performance/scaling claim"
   ],
-  "next_permitted_action": "After closeout qualification, rematerialize F-GC38 prepared-solve iterative backend on current canonical. Keep predictor/corrector ownership in the internal SWAP5-MODFLOW coupling service below iMOD Coupler."
+  "next_permitted_action": "Rematerialize F-GC38 prepared-solve iterative backend on current canonical. Keep MODFLOW solve-session ownership below the internal SWAP5-MODFLOW coupling service and keep predictor/corrector outside iMOD Coupler.",
+  "closeout_qualification": {
+    "metadata_head": "b85868eb99c1aad434b78fdd221351b133f571eb",
+    "workflow_run": 35295900237,
+    "workflow_job": 105448245904,
+    "conclusion": "success"
+  }
 }
