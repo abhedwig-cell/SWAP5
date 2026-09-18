@@ -38,6 +38,9 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | reference metadata | externally audited / normalized |
 | claim-to-sentence audit | PASS: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED` |
 | code/evidence reproducibility section | READY at repository level; archival DOI/release not yet frozen |
+| notation / units glossary | READY: `PUB_GC_NOTATION_AND_UNITS.md` |
+| supplementary methods/evidence package | READY_THROUGH_E6: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` |
+| machine-readable reproducibility manifest | READY_THROUGH_E6: `PUB_GC_REPRODUCIBILITY_MANIFEST.json` |
 
 ## What remains scientific
 
