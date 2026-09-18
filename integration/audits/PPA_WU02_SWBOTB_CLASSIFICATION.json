@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu02.swbotb_classification.v1",
   "work_unit": "PPA-WU02",
-  "canonical_reconciled": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "canonical_reconciled": "013c549686a8f310834ddb3e8d1270166f8283f1",
   "b1_11": {
     "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
@@ -18,26 +18,31 @@
       "application": "not_migrated",
       "groundwater_relation": "direct_gwl_state_semantics",
       "classification": "PRESERVED_NOT_TYPED_AS_LEGACY_MODE",
-      "risk": "high_state_machine"
+      "risk": "high_state_machine",
+      "legacy_selector_adapter": "NOT_ADMITTED"
     },
     {
       "selector": "2",
       "meaning": "prescribed_native_qbot",
       "time": "SW2_sinus_or_DATE2_QBOT2_table",
       "typed_contract": "production_admitted",
-      "application": "qualified_homogeneous_typed_production_bootstrap_pending_canonical_merge",
+      "application": "PPA_WU02_A_homogeneous_typed_production_bootstrap",
       "groundwater_relation": "none_intrinsic",
-      "classification": "QUALIFIED_RESTRICTED_PRODUCTION_APPLICATION_PENDING_CANONICAL_ADMISSION",
-      "risk": "low_for_qualified_typed_direct_slice_medium_for_full_legacy_adapter",
+      "classification": "RESTRICTED_PRODUCTION_TYPED_APPLICATION",
+      "risk": "low_for_admitted_typed_direct_slice_medium_for_full_legacy_adapter",
       "qualification": {
-        "owner_workflow_run": 35374222568,
-        "owner_job": 105695000702,
-        "independent_job": 105695282455,
+        "owner_workflow_run": 35374976662,
+        "owner_job": 105697423309,
+        "independent_job": 105697676084,
         "owner_result": "PASS",
         "independent_result": "PASS",
-        "ppa_wu01_preservation_run": 35374222321,
-        "exact_qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b"
-      }
+        "ppa_wu01_preservation_run": 35374976768,
+        "ppa_wu03_preservation_run": 35374976722,
+        "canonical_qualification_run": 35374976715,
+        "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
+        "admitted_production_blob": "135803e056697a20aa3295721b02c77aba22367a"
+      },
+      "legacy_selector_adapter": "NO_FULL_SWBOTB2_ADAPTER"
     },
     {
       "selector": "3",
@@ -47,7 +52,8 @@
       "application": "not_migrated",
       "groundwater_relation": "deep_aquifer_head_and_resistance",
       "classification": "PRESERVED_NOT_TYPED",
-      "risk": "high_nonlinear_and_timing"
+      "risk": "high_nonlinear_and_timing",
+      "legacy_selector_adapter": "NOT_ADMITTED"
     },
     {
       "selector": "4",
@@ -57,7 +63,8 @@
       "application": "not_migrated",
       "groundwater_relation": "profile_gwl_dependency",
       "classification": "PHYSICS_ROW_REUSABLE_APPLICATION_LAW_NOT_MIGRATED",
-      "risk": "medium_timing_semantics"
+      "risk": "medium_timing_semantics",
+      "legacy_selector_adapter": "NOT_ADMITTED"
     },
     {
       "selector": "5",
@@ -67,7 +74,8 @@
       "application": "restricted_groundwater_profile",
       "groundwater_relation": "used_by_F_GC_head_coupling_but_not_identical_to_legacy_DATE5_adapter",
       "classification": "RESTRICTED_PRODUCTION",
-      "risk": "low_existing_restricted_route"
+      "risk": "low_existing_restricted_route",
+      "legacy_selector_adapter": "NO_GENERIC_DATE5_NORMAL_APPLICATION_ADAPTER"
     },
     {
       "selector": "6",
@@ -77,7 +85,8 @@
       "application": "F_APP02_F_CI95_restricted_legacy_mapping",
       "groundwater_relation": "none",
       "classification": "RESTRICTED_PRODUCTION",
-      "risk": "low_closed"
+      "risk": "low_closed",
+      "legacy_selector_adapter": "F_APP02_F_CI95_CANONICAL"
     },
     {
       "selector": "7",
@@ -87,7 +96,8 @@
       "application": "PPA_WU01_normal_standalone",
       "groundwater_relation": "none",
       "classification": "PRODUCTION_ADMITTED",
-      "risk": "low_closed"
+      "risk": "low_closed",
+      "legacy_selector_adapter": "NO_EXPLICIT_LEGACY_SELECTOR_TRANSLATOR; DIRECT_TYPED_MODE7_APPLICATION_IS_ADMITTED"
     },
     {
       "selector": "8",
@@ -97,7 +107,8 @@
       "application": "not_migrated",
       "groundwater_relation": "none",
       "classification": "PRESERVED_NOT_TYPED",
-      "risk": "high_active_set_continuation"
+      "risk": "high_active_set_continuation",
+      "legacy_selector_adapter": "NOT_ADMITTED"
     },
     {
       "selector": "-2",
@@ -136,21 +147,24 @@
       "new numerical policy",
       "mixed bottom-mode profiles"
     ],
-    "status": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFIED_CANONICAL_ADMISSION_PENDING",
-    "qualified_head": "785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b",
+    "status": "CANONICAL_ADMITTED_CLOSED",
+    "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
     "qualification": {
-      "workflow_run": 35374222568,
-      "owner_job": 105695000702,
-      "independent_job": 105695282455,
-      "ppa_wu01_preservation_run": 35374222321,
-      "documentation_run": 35374222234
-    }
+      "workflow_run": 35374976662,
+      "owner_job": 105697423309,
+      "independent_job": 105697676084,
+      "ppa_wu01_preservation_run": 35374976768,
+      "ppa_wu03_preservation_run": 35374976722,
+      "documentation_run": 35374976742,
+      "canonical_qualification_run": 35374976715
+    },
+    "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1"
   },
   "migration_slices": [
     {
       "id": "PPA-WU02-A",
       "priority": 1,
-      "status": "QUALIFIED_CANONICAL_ADMISSION_PENDING",
+      "status": "CANONICAL_ADMITTED_CLOSED",
       "meaning": "homogeneous already-resolved typed prescribed-qbot production bootstrap"
     },
     {
@@ -189,5 +203,9 @@
       "status": "NOT_IMPLEMENTED",
       "meaning": "lysimeter active-set switching boundary"
     }
+  ],
+  "workunit_status": "CANONICAL_ADMITTED_CLOSED",
+  "hard_nonclaims": [
+    "legacy selector 7 does not yet have a dedicated selector-translation adapter despite typed mode 7 normal application admission"
   ]
 }
