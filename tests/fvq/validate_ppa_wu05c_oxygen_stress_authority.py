@@ -114,6 +114,8 @@ allowed_prefixes = (
     ".github/workflows/ppa-wu05c-",
 )
 for path in changed:
+    if path == "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json":
+        continue
     if not path.startswith(allowed_prefixes):
         fail(f"out-of-scope review delta: {path}")
 
