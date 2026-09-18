@@ -68,6 +68,7 @@ build_and_run() {
     src/process/mod_drainage_empirical_interflow_response.f90
     src/process/mod_drainage_multilevel_aggregation.f90
     src/runtime/mod_fmr_drainage_response_binding.f90
+    src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
     src/process/mod_soil_temperature_contract.f90
     src/process/mod_restricted_soil_temperature.f90
     src/solver/mod_reference_richards_workspace.f90
@@ -88,6 +89,7 @@ build_and_run() {
     src/adapter/mod_b110_serialized_context_binding.f90
     src/process/mod_snow_process.f90
     src/solver/mod_b110_root_sink_provider.f90
+    src/solver/mod_b110_smooth_freatic_projection.f90
     src/process/mod_restricted_fixed_weir_surface_water.f90
     src/runtime/mod_fmr_soil_water_application_host.f90
     src/runtime/mod_rossfast_d3r_execution_policy.f90
