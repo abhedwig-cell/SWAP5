@@ -1,0 +1,22 @@
+name: PPA-WU05-C oxygen-stress authority review
+
+on:
+  pull_request:
+    paths:
+      - 'integration/audits/PPA_WU05C_*.json'
+      - 'docs/audits/PPA_WU05C_*.md'
+      - 'tests/fvq/validate_ppa_wu05c_oxygen_stress_authority.py'
+      - '.github/workflows/ppa-wu05c-oxygen-stress-authority.yml'
+      - 'reference/swap-4.3.1/patches/SWAP-007/**'
+      - 'src/process/mod_root_water_uptake_process.f90'
+  workflow_dispatch:
+
+jobs:
+  oxygen-authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate PPA-WU05-C authority boundary
+        run: python3 tests/fvq/validate_ppa_wu05c_oxygen_stress_authority.py
