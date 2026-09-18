@@ -1,0 +1,46 @@
+name: ROM1B3 local-contrast enrichment census
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1B2_RESULT.json'
+      - 'integration/f-rom/ROM1B2_STATUS.json'
+      - 'integration/f-rom/ROM1B3_*'
+      - 'docs/science/ROM1B3_*'
+      - 'tests/rom/analyze_rom1b3_local_contrast_enrichment.py'
+      - 'tests/rom/run_rom1b3_local_contrast_enrichment.sh'
+      - '.github/workflows/rom1b3-local-contrast-enrichment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1b3-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  census:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute discovery-only enrichment census
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1B3_EVIDENCE
+          ROM1B3_EVIDENCE_DIR="$PWD/ROM1B3_EVIDENCE" \
+            bash tests/rom/run_rom1b3_local_contrast_enrichment.sh | tee ROM1B3_EVIDENCE/gate.txt
+      - name: Preserve B3 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1b3-${{ github.run_id }}
+          path: ROM1B3_EVIDENCE
+          if-no-files-found: warn
