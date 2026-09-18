@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS25",
+  "title": "Current tiered RossFast WETTING seam-crossing qualification",
+  "phase": "PREREGISTER",
+  "status": "FROZEN_BEFORE_MEASUREMENT",
+  "branch": "work/f-ross25-tiered-wetting-seam-qualification",
+  "canonical_source": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+  "purpose": "Test whether the canonically admitted tiered RossFast production kernel remains scientifically valid under the exact PUB-P2E10 WETTING forcing that historically exceeded the F-R1 adjacent-cell route qualification, without widening production input admission or changing solver semantics.",
+  "production_authority": {
+    "f_ross22_admission_commit": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "table_kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "soil_water_solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "tier_ladder": ["K2","K4","K8"],
+    "production_binding_wetting_admitted": false
+  },
+  "historical_trigger": {
+    "parent_work_unit": "F-ROSS14",
+    "workflow_run": 35289689550,
+    "historical_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "material_count": 36,
+    "historical_science_pass_materials": 19,
+    "historical_piecewise_policy_fail_materials": 17,
+    "historical_transition_routes": 343,
+    "historical_inadmissible_transition_routes": 146,
+    "historical_non_route_science_failures": 0,
+    "interpretation": "The historical blocker is the frozen F-R1 seam-route qualification boundary. It is not itself a production runtime rejection rule and does not by itself establish state-solver invalidity."
+  },
+  "domain": {
+    "materials": "B01..B18 and O01..O18",
+    "material_count": 36,
+    "effective_saturation": [0.65,0.85,0.98],
+    "case_count": 108,
+    "grid": "16 homogeneous cells x 10 cm",
+    "distributed_sources_sinks": false,
+    "root_sink": false,
+    "ponding": false,
+    "groundwater": false,
+    "outer_interval_day": 0.0016,
+    "public_top_flux_over_initial_K": 0.025,
+    "internal_top_flux_over_initial_K": -0.025,
+    "public_bottom_flux_upward_over_initial_K": 0.011,
+    "forcing_name": "WETTING"
+  },
+  "candidate": {
+    "route": "current admitted F-ROSS22 tiered production table kernel called directly behind the qualified provider, bypassing only the model-binding forcing admission guard",
+    "production_source_mutation": false,
+    "tier_semantics": {
+      "K2": "6 candidate steps total",
+      "K4": "18 cumulative candidate steps after independent recompute from base",
+      "K8": "42 cumulative candidate steps after independent recompute from base",
+      "trajectory_reuse_between_tiers": false
+    }
+  },
+  "independent_reference": {
+    "primary": "pinned F-ROSS01 Gate-F DOP853 reference over the identical table-law forcing/state problem",
+    "research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "rtol": 1e-11,
+    "atol_theta": 1e-13,
+    "max_step_coarse_day": 0.000025,
+    "max_step_fine_day": 0.0000125,
+    "reference_self_tolerance_theta_span": 1e-9
+  },
+  "hard_scientific_gates": {
+    "all_108_cases_executed": true,
+    "rossfast_route_valid": 108,
+    "final_temporal_indicator_max": 1.0,
+    "reference_self_theta_span_normalized_max": 1e-9,
+    "candidate_theta_span_normalized_error_max": 1e-5,
+    "candidate_state_change_relative_error_max": 0.005,
+    "max_abs_step_mass_residual_cm": 1e-12,
+    "max_abs_horizon_mass_residual_cm": 1e-12,
+    "candidate_domain_failure_count": 0,
+    "candidate_head_envelope_failure_count": 0,
+    "candidate_nonfinite_count": 0,
+    "reference_nonfinite_count": 0,
+    "exact_internal_table_node_endpoint_count": 0,
+    "table_fingerprints_match_f_ross13_authority": true
+  },
+  "seam_crossing_policy": {
+    "predeclared_role": "diagnostic, not an automatic fail gate",
+    "record": [
+      "transitioning component count per internal step",
+      "maximum absolute table-cell displacement per component",
+      "crossing counts by material, Se and final tier",
+      "whether a crossing occurs in coarse or refined certificate trajectories"
+    ],
+    "reason": "F-R1 qualified one conservative adjacent-cell route so that no cross-node derivative semantics had to be claimed. Current production already reassembles from the new cell at the next internal step and does not implement the one-component/one-cell limit as runtime policy. F-ROSS25 tests state-solver validity independently; it does not claim a unique derivative at a table node or tangent validity across seams.",
+    "still_fail_closed": [
+      "exact endpoint on an internal table node",
+      "nonfinite state",
+      "constitutive-domain failure",
+      "head-envelope failure",
+      "mass-balance failure",
+      "temporal-certificate failure",
+      "independent-reference error above preregistered limits"
+    ]
+  },
+  "qualification_layers": [
+    "A: reproduce historical F-ROSS14 WETTING authority and classify seam topology",
+    "B: execute current admitted tiered production kernel directly for all 108 cases",
+    "C: compare current candidate state and mass evidence with the independent DOP853 reference",
+    "D: stratify outcome by K2/K4/K8 and seam-crossing class",
+    "E: O0/O2 identity for the qualification harness"
+  ],
+  "firewall": [
+    "NO_MODEL_BINDING_WIDENING",
+    "NO_PRODUCTION_SOURCE_CHANGE",
+    "NO_REFERENCE_MUTATION",
+    "NO_TABLE_ASSET_CHANGE",
+    "NO_TEMPORAL_THRESHOLD_CHANGE",
+    "NO_TIER_SELECTION_CHANGE",
+    "NO_TOLERANCE_RETUNING",
+    "NO_MATERIAL_EXCLUSION",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_PERFORMANCE_CLAIM"
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_RESEARCH_EVIDENCE_CURRENT_TIERED_ROSSFAST_WETTING_STATE_SOLVER_VALID_WITH_SEAM_CROSSINGS",
+    "fail": "CURRENT_TIERED_ROSSFAST_WETTING_REMAINS_SCIENTIFICALLY_UNQUALIFIED",
+    "production_admission_effect": "none",
+    "next_if_pass": "A separate explicitly governed workunit may consider one-sided WETTING model-binding admission while preserving tangent/sensitivity nonclaims.",
+    "next_if_fail": "Classify the failing scientific gate. Do not repair by threshold relaxation."
+  }
+}
