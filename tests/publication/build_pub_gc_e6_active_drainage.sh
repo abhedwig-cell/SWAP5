@@ -121,10 +121,13 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" PUB_GC_E6_SWAP_LIB="$BUILD/bridge/libpub_g
 for marker in \
   'PUB_GC_E6_ACTIVE_DRAINAGE_INITIALIZE=PASS' \
   'PUB_GC_E6_ACTIVE_DRAINAGE_TANGENT_COVERAGE=PASS' \
-  'PUB_GC_E6_PARTICIPANT_REFERENCE_TRIAL=PASS' \
-  'PUB_GC_E6_ZERO_AUTHORITY_AFTER_DISCARD=PASS'; do
+  'PUB_GC_E6_ZERO_AUTHORITY_AFTER_REFERENCE_PROBE=PASS'; do
   grep -Fq "$marker" "$BUILD/e6-init.txt" || fail "missing marker $marker"
 done
+if ! grep -Fq 'PUB_GC_E6_REFERENCE_CORRECTOR_AVAILABLE=PASS' "$BUILD/e6-init.txt" && \
+   ! grep -Fq 'PUB_GC_E6_REFERENCE_CORRECTOR_BOUNDED_FAILURE=PASS' "$BUILD/e6-init.txt"; then
+  fail "missing reference-corrector disposition"
+fi
 
 echo "PUB_GC_E6_LIBMF6=$BUILD/modflow-bin/libmf6.so"
 echo "PUB_GC_E6_SWAPLIB=$BUILD/bridge/libpub_gc_e6_swap.so"
