@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP07",
+  "phase": "QUALIFY_OWNER_COMPOSITION",
+  "branch": "work/f-app07-hupsel-tcs1-dcs2-irrigation",
+  "qualified_head": "f05e73b9631e48d31025715bc1da9a46fdbb030d",
+  "production_delta": [
+    "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+  ],
+  "qualification": {
+    "workflow_run_id": 35344875759,
+    "job_id": 105598994163,
+    "conclusion": "success",
+    "exact_active_intervals": 110,
+    "SWINTER0_intervals": 18,
+    "SWINTER3_intervals": 92,
+    "max_composition_error": 0,
+    "composition_output_sha256": "cf6581cb6f0907352133b4acb9b2743446916315f47e53092f642b106ba8b88c",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "scope": [
+    "fixed surface irrigation identity application",
+    "scheduled TCS1/DCS2/TCSFIX=1 sprinkling",
+    "scheduled gross irrigation -> admitted Rutter input on SWINTER3",
+    "net surface irrigation -> existing dynamic-top irrigation"
+  ],
+  "exclusions": [
+    "TCS2-TCS4",
+    "TCS6-TCS8",
+    "TCS7 SSDI",
+    "DCS1",
+    "MultiSWAP scaling",
+    "new irrigation physics",
+    "solver/transaction/timestep/retry/tolerances"
+  ],
+  "verdict": "PASS_F_APP07_OWNER_EXACT_110_INTERVAL_COMPOSITION",
+  "admission_status": "PENDING_CURRENT_F_VQ120_INDEPENDENT_PASS_AND_CANONICAL_RECONCILIATION"
+}
