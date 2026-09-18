@@ -6,6 +6,8 @@
 
 Date: 2026-09-18.
 
+Canonical baseline at workunit start: `integration/f-ci-canonical` @ `c42db098cc246e3da06472a34979bdf24cfa81cb`.
+
 Publication line: PUB-GC / COUPLE.
 
 This workunit adds no production physics and changes no coupling semantics. It consolidates publication evidence from the admitted F-GC41/F-GC44 route and adds qualification-only diagnostics to the existing F-GC44 support bridge.
