@@ -10,7 +10,9 @@
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
     "prior_fvq105_baseline": "d67a96fd576dcd1c5a30eb766c5aa1a503e10cf0",
-    "delta_since_fvq105_baseline": "publication-only PUB-P2E10 files; no src/** changes"
+    "delta_since_fvq105_baseline": "publication-only PUB-P2E10 files; no src/** changes",
+    "live_reconciliation_head": "d517088cdc1cd82904b37648d6556dc79d57a641",
+    "delta_since_pre_admission_head": "PUB-ME D6 publication-only; no src/** changes"
   },
   "owner": {
     "work_unit": "F-GC31",
@@ -61,7 +63,14 @@
     "tangent_physical_identity": "PASS",
     "same_backend_centered_fd": "PASS",
     "no_extra_full_nonlinear_solve": "PASS",
-    "fully_implicit_drainage": "NOT_ADMITTED"
+    "fully_implicit_drainage": "NOT_ADMITTED",
+    "status_head": "42de6b6127beea7f7a10895fd23181ed41fbc253",
+    "status_head_workflow_run": 35289537318,
+    "status_head_workflow_job": 105429173875,
+    "status_head_conclusion": "success",
+    "moving_current_reconciliation_head": "49a4685474a2d8df53c77c45e87a6c243316a97c",
+    "moving_current_first_parent": "d517088cdc1cd82904b37648d6556dc79d57a641",
+    "moving_current_second_parent": "42de6b6127beea7f7a10895fd23181ed41fbc253"
   },
   "admitted_contract": [
     "restricted non-macropore smooth interior zero-pressure groundwater-level projection for prescribed-qbot coupling",
@@ -92,5 +101,5 @@
     "new groundwater physics"
   ],
   "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
-  "next_permitted_action": "Reconcile live integration/f-ci-canonical against f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8. If no relevant src/** dependency collision exists, rebase/reconcile this exact admission postimage onto the live canonical if needed, re-run F-CI98, then non-force fast-forward canonical and persist F-GC31 admission/closeout metadata."
+  "next_permitted_action": "Qualify this moving-current reconciliation status head. If green and live canonical is still the first-parent authority or has only non-conflicting publication-only successors, reconcile once more if necessary, then non-force fast-forward integration/f-ci-canonical."
 }
