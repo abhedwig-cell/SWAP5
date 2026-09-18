@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.f-ross16.cost-attribution-result.v1",
+  "workunit": "F-ROSS16",
+  "phase": "PRIMARY_DIAGNOSTIC_QUALIFIED",
+  "branch": "work/f-ross16-rossfast-cost-attribution",
+  "executed_head": "776a34a1091c94d07ae68f397db12918ca9359fc",
+  "workflow_run": 35293681582,
+  "job": 105441698077,
+  "artifact": {
+    "id": 10526498713,
+    "digest": "sha256:152be0c1a90a1a1144341779d225023af749ddefc7c309dd860d467ec1314e7c"
+  },
+  "domain": "same 36 PUB-P2E10 paired-valid E0 cases as F-ROSS15",
+  "exact_work_counts": {
+    "reference": {
+      "linear_solves_total": 140,
+      "linear_solves_mean_per_case": 3.888888888888889,
+      "linear_solves_median_per_case": 3.5,
+      "linear_solves_min_per_case": 2,
+      "linear_solves_max_per_case": 12,
+      "nonlinear_iterations_total": 140,
+      "jacobian_builds_total": 140,
+      "backtracking_attempts_total": 141,
+      "internal_retries_total": 0,
+      "alternative_solver_calls_total": 0
+    },
+    "rossfast": {
+      "linear_solves_total": 864,
+      "linear_solves_mean_per_case": 24.0,
+      "linear_solves_min_per_case": 24,
+      "linear_solves_max_per_case": 24,
+      "internal_retries_total": 0,
+      "alternative_solver_calls_total": 0
+    },
+    "rossfast_over_reference_total_linear_solve_ratio": 6.171428571428572,
+    "reference_linear_solves_less_than_rossfast_in_all_36_cases": true
+  },
+  "production_algorithm_structure": {
+    "rossfast_temporal_certificate": "one 8-substep coarse window plus two 8-substep half windows",
+    "candidate_steps_per_successful_solver_call": 24,
+    "per_candidate_step": {
+      "inverse_capacity_evaluations": 16,
+      "table_face_linearizations": 15,
+      "tridiagonal_factor_and_solves": 1,
+      "head_from_water_content_evaluations": 16
+    },
+    "per_successful_rossfast_solver_call": {
+      "inverse_capacity_evaluations": 384,
+      "table_face_linearizations": 360,
+      "tridiagonal_factor_and_solves": 24,
+      "head_from_water_content_evaluations": 384
+    }
+  },
+  "gprof_o2": {
+    "total_sampled_seconds": 4.77,
+    "candidate_step_percent": 88.47,
+    "candidate_step_seconds": 4.22,
+    "candidate_step_calls_reported": 540108,
+    "derived_expected_profiled_candidate_steps_for_selected_repetitions": 4320000,
+    "note": "gprof call counts are not treated as exact algorithmic counts under optimization; exact work-count authority is the production diagnostic plus source structure.",
+    "derived_type_finalization_percent": 8.60,
+    "rossfast_solver_wrapper_percent": 1.26,
+    "rossfast_model_advance_percent": 0.63,
+    "kernel_solve_percent": 0.21
+  },
+  "gprof_noinline": {
+    "status": "ATTRIBUTION_UNRELIABLE_FOR_SUBFUNCTION_PERCENTAGES",
+    "observation": "Compiler/profile attribution moved dominant samples to request_contract_is_admitted and same_material and did not expose a trustworthy candidate-step subfunction decomposition.",
+    "policy": "Do not use the no-inline percentages as production cost shares."
+  },
+  "hypothesis_adjudication": {
+    "H1_exact_24_linear_solves": "SUPPORTED",
+    "H2_reference_materially_fewer_linear_solves": "SUPPORTED",
+    "H3_candidate_step_dominates_o2_profile": "SUPPORTED",
+    "H4_table_interpolation_and_state_inversion_subshare": "NOT_YET_RESOLVED"
+  },
+  "interpretation": "The F-ROSS15 slowdown is structurally consistent with RossFast doing a fixed 24 candidate steps per accepted solve to obtain its temporal certificate, versus 2-12 Reference Newton/linear solves and 3.89 on average in this domain. O2 profiling places most RossFast sampled time inside candidate_step, but does not yet separate interpolation, constitutive inversion and tridiagonal solve cost reliably.",
+  "production_or_reference_mutation": false,
+  "next_permitted_action": "Run a separately preregistered F-ROSS16D1 line-level/function-preservation diagnostic to decompose candidate_step without changing production semantics."
+}
