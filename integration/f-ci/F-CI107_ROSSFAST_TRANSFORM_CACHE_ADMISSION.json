@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-ci107.rossfast-transform-cache-admission.v1",
   "workunit": "F-CI107",
-  "phase": "PREREGISTERED_ADMISSION",
+  "phase": "QUALIFIED_CANONICAL_ADMISSION",
   "branch": "integration/f-ci107-rossfast-transform-cache-admission",
   "canonical_source": "585a8719242bf58e4c37c6283298dfad7b20a0ae",
   "purpose": "Admit the exact F-ROSS17 RossFast node-transform cache onto the current canonical without changing solver semantics, material envelope, table assets, execution policy, transaction semantics or certificate workload.",
@@ -44,12 +44,30 @@
     "NO_TRANSACTION_CHANGE",
     "NO_FORMAL_PERFORMANCE_CLAIM"
   ],
-  "next_permitted_action": "Qualify F-CI107 exact-head and, only after PASS with current moving preservation, admit cache-only postimage before F-ROSS22 tiered certificate admission.",
+  "next_permitted_action": "Qualify this evidence-only status head. If F-CI107 owner/F-CI96 preservation remain green and current canonical retains the same RossFast dependency closure, admit PR 247. Then recompose F-ROSS22 on the admitted canonical.",
   "reconciliation": {
     "previous_misnumbered_workunit": "F-CI105 RossFast cache admission",
     "collision": "Canonical F-CI105 already belongs to F-GC39; RossFast cache admission is renumbered to first free authority F-CI107.",
     "current_canonical": "585a8719242bf58e4c37c6283298dfad7b20a0ae",
     "fci106_backend_successor_preservation": "ADMITTED",
+    "relevant_rossfast_dependency_drift": false
+  },
+  "qualification": {
+    "exact_head": "a843aceb07d827258a40a37f4c1e47129fedfa14",
+    "owner_workflow_run": 35343913219,
+    "owner_result": "PASS",
+    "artifact_id": 10545922192,
+    "artifact_digest": "sha256:d392b8fef129dacb0605b4b61825f342c11c2c3a09d25246199ed3314a5ab328",
+    "fci96_workflow_run": 35343913139,
+    "fci96_result": "PASS",
+    "one_file_production_delta": "PASS",
+    "immutable_fross17_neutrality": "PASS",
+    "provider_successor": "PASS",
+    "route_semantics": "PASS",
+    "solver_seam_preservation": "PASS"
+  },
+  "current_canonical_reconcile": {
+    "head": "158ef1e704fbc72f293773cc30ae4d6082d3c28f",
     "relevant_rossfast_dependency_drift": false
   }
 }
