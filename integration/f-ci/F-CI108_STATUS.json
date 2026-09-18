@@ -3,7 +3,7 @@
   "workunit": "F-CI108",
   "title": "RossFast moving-preservation reconciliation",
   "phase": "QUALIFY",
-  "status": "RECOMPOSED_ON_CURRENT_CANONICAL_PENDING_EXACT_HEAD_QUALIFICATION",
+  "status": "READY_FOR_PR_QUALIFICATION_WITH_ZERO_OVERLAP_CANONICAL_DRIFT",
   "branch": "work/f-ci108-fross17-moving-preservation-reconciliation",
   "canonical_source": "160bc10f5ed697ee67897af603ddfbc574b1d4cf",
   "reconciliation": {
@@ -26,5 +26,15 @@
     "workflow_run": 35351630380,
     "classification": "MOVING_PRESERVATION_SCOPE_STALE_NOT_SCIENTIFIC_REGRESSION"
   },
-  "next_permitted_action": "Run F-CI96 and relevant canonical qualification on this exact head. If green, admit F-CI108 and close."
+  "next_permitted_action": "Run F-CI96 and relevant canonical qualification on this exact head. If green, admit F-CI108 and close.",
+  "canonical_live_reconciliation": {
+    "live_head": "47430b68ed46a24ca05b29b46de2dd4f7e29762b",
+    "delta_since_qualification_base": [
+      "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_PREREGISTRATION.json",
+      "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_RESULT.json",
+      "integration/f-ross/F-ROSS25_STATUS.json"
+    ],
+    "rossfast_or_preservation_dependency_overlap": false,
+    "disposition": "Reuse exact-head repair qualification surface; canonical drift is F-ROSS25 evidence-only."
+  }
 }
