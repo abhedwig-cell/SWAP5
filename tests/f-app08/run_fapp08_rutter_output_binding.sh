@@ -7,7 +7,7 @@ mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "F_APP08_FAIL $*" >&2; exit 1; }
 
-BASE=86969f502015ae259a536a57cc7125c38a3e42e6
+BASE=b1f23b069f733f1d711699b9d3cd4b8acaec968b
 expected_src='src/runtime/mod_fmr_rutter_output_application_binding.f90'
 [[ "$(git diff --name-only "$BASE" -- src | sort)" == "$expected_src" ]] || fail "unexpected production delta"
 [[ "$(git hash-object src/process/mod_rutter_interception_process.f90)" == fd6ba136e02c13add1933ca6d63f25b2e7c5d822 ]] || fail "Rutter owner drift"
