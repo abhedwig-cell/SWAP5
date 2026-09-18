@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.f-rom0.successor-closeout.v2",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "CLOSED_PROCEED_TO_ROM1A_UNDER_SUCCESSOR_RESEARCH_REFERENCE_AUTHORITY",
+  "decision": "PROCEED_TO_ROM1A",
+  "historical_fixed_control_closeout": {
+    "path": "integration/f-rom/F-ROM0_CLOSEOUT.json",
+    "decision": "NO_GO_REFERENCE_AUTHORITY",
+    "status": "IMMUTABLE_HISTORICAL_EVIDENCE",
+    "reclassified": false
+  },
+  "current_reconciliation": "docs/science/F-ROM0_FINAL_GATE_RECONCILIATION_AFTER_T1Q1.md",
+  "governing_successor_authority": {
+    "lower_boundary": {
+      "work_unit": "ROM-0R-R3D4",
+      "decision": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+      "overlap_bit_identity": "PASS_51_OF_51",
+      "full_horizon_cases": "PASS_4_OF_4",
+      "production_fallback_admitted": false
+    },
+    "fkt_transfer": {
+      "work_unit": "ROM-0R-R3Q2",
+      "decision": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED"
+    },
+    "temporal_floor": {
+      "historical_work_unit": "ROM-0T1",
+      "historical_decision": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+      "successor_work_unit": "ROM-0T1Q1",
+      "successor_decision": "T1_SUCCESSOR_REFERENCE_POLICY_QUALIFIED_AND_TEMPORAL_FLOOR_MEASURED",
+      "strict_overlap_bit_identity": "PASS_87_OF_87",
+      "required_original_matrix_complete": true
+    },
+    "vertical_floor": {
+      "work_unit": "ROM-0V1",
+      "decision": "VERTICAL_REFERENCE_FLOOR_MEASURED",
+      "required_original_matrix_complete": true
+    }
+  },
+  "gate_adjudication": {
+    "Q0_1_ownership": "PASS",
+    "Q0_2_reproducibility": "PASS",
+    "Q0_3_conservation": "PASS",
+    "Q0_4_bidirectional_reachability": "PASS_UNDER_SUCCESSOR_RESEARCH_REFERENCE_AUTHORITY",
+    "Q0_5_reference_floor": "PASS_MEASURED_EXACT_ORIGINAL_TEMPORAL_AND_VERTICAL_MATRIX",
+    "Q0_6_non_mutation": "PASS_EVIDENCE_ONLY_CANONICAL_CLOSEOUT"
+  },
+  "canonical_admission_scope": {
+    "kind": "EVIDENCE_AND_RESEARCH_AUTHORITY_ONLY",
+    "src_changes": 0,
+    "reference_changes": 0,
+    "production_reference_fallback_admitted": false,
+    "production_application_admission": false
+  },
+  "rom1a_authorized": true,
+  "production_reduced_solver_authorized": false,
+  "next_work_unit": "ROM-1A_TRAJECTORY_LIBRARY_AND_DATA_SPLIT_PREREGISTRATION",
+  "pre_rom1a_restrictions": [
+    "NO_REDUCED_COORDINATE_SELECTION",
+    "NO_POD_BASIS_FIT",
+    "NO_MEMORY_VARIABLE_SELECTION",
+    "NO_REDUCED_CLOSURE_FIT",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ]
+}
