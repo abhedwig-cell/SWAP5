@@ -114,8 +114,7 @@ program test_ross15_reference_vs_rossfast_performance
         write(*,'(*(g0))') 'F_ROSS23_CASE|ID=',case_id,'|MATERIAL=',trim(material_ids(imat)), &
              '|SE=',se_levels(ise),'|FORCING=',trim(forcing_ids(iforce)),'|CLASS=',trim(classification), &
              '|METRICS=',metrics_available,'|D_H_INF=',dh_inf,'|D_H_RMS=',dh_rms, &
-             '|D_THETA_INF=',dtheta_inf,'|D_THETA_RMS=',dtheta_rms,'|D_STORAGE=',dstorage, &
-             '|REF_REASON=',trim(reference_reason),'|ROSS_REASON=',trim(rossfast_reason)
+             '|D_THETA_INF=',dtheta_inf,'|D_THETA_RMS=',dtheta_rms,'|D_STORAGE=',dstorage
       end do
     end do
   end do
@@ -225,6 +224,9 @@ contains
     else
       rossfast_reason='INITIALIZATION_FAILED'
     end if
+
+    write(*,'(*(g0))') 'F_ROSS23_ROUTE_REASON|ID=',case_id,'|REF_REASON=',trim(reference_reason), &
+         '|ROSS_REASON=',trim(rossfast_reason)
 
     if (.not.reference_valid .and. .not.rossfast_valid) then
       classification='BOTH_ROUTES_INVALID'
