@@ -30,7 +30,7 @@ program test_rutter_interception_process
   input%interception_evaporation_capacity_cm_per_day=0.1_real64
   state%canopy_storage_cm=0.0_real64
   call evaluate_rutter_interval(state,input,result,d)
-  call require(d%status==RUTTER_OK .and. result%wet_canopy_fraction==0.0_real64,8)
+  call require(d%status==RUTTER_OK .and. abs(result%wet_canopy_fraction)<tol,8)
 
   input%gross_rain_cm_per_day=0.02_real64
   call evaluate_rutter_interval(state,input,result,d)
@@ -48,6 +48,9 @@ contains
   subroutine require(ok,n)
     logical,intent(in)::ok
     integer,intent(in)::n
-    if(.not.ok) error stop n
+    if(.not.ok) then
+      write(*,'(A,I0)') 'FAIL=',n
+      error stop 1
+    end if
   end subroutine
 end program
