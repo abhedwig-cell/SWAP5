@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.publication.p2e18d3-reference-total-balance-floor.v1",
+  "workunit": "PUB-P2E18D3",
+  "publication_owner": "PUB-SQ",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_TOTAL_BALANCE_FLOOR_DIAGNOSTIC",
+  "parent_diagnostic": {
+    "branch": "work/pub-p2e18d2-reference-retry-mechanism",
+    "head": "b76dbfc259d1ffea86d3fedd31815cd88a12ad5d",
+    "result_blob": "599ba330500bc52ac78a6064117cb60f0a7ac665",
+    "verdict": "REMAINING_SCALED_REFERENCE_RETRIES_ARE_TOTAL_BALANCE_ONLY"
+  },
+  "methodological_authority": {
+    "workunit": "PUB-P2E07",
+    "result_blob": "be60ba751141545e1534f190e709dc5d2b7b83e6",
+    "method_reused": "dimensionally explicit representation/cancellation-floor diagnosis from internal failed Reference state",
+    "important_difference": "P2E07 diagnosed a local compartment residual. D3 prospectively extends the same logic to the domain-summed total residual; no local floor is promoted directly to a total tolerance."
+  },
+  "purpose": "Determine whether the remaining D1/D2 total-balance-only retries are numerically distinguishable from a prospectively defined total-domain representation/cancellation floor, without changing any solver tolerance.",
+  "matrix": {
+    "materials": [
+      "B01",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.96
+    ],
+    "forcing": [
+      "DRYING"
+    ],
+    "physical_case_count": 4,
+    "equal_substep_counts": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "level_runs": 24,
+    "total_horizon_day": 0.0016,
+    "policy": "same invariant-integrated balance-rate scaling as D1/D2"
+  },
+  "total_residual_reconstruction": {
+    "internal_state": "workspace.richards.provider_theta after HeadCalc",
+    "base_state": "request.base_state.water_content",
+    "components_cm_per_day": [
+      "storage_total = sum((theta_internal-theta_base)*dz)/dt",
+      "top_boundary = request.boundary.top_flux",
+      "bottom_boundary = -request.boundary.bottom_flux",
+      "source_sink_root_total = sum(workspace.sink-workspace.source+workspace.provider_root_sink)"
+    ],
+    "reconstructed_total": "storage_total + top_boundary + bottom_boundary + source_sink_root_total",
+    "target": "sum(workspace.richards.residual)",
+    "closure_requirement": "Report absolute closure. A diagnostic state is floor-interpretable only when closure <= estimated_total_floor."
+  },
+  "total_floor_definition": {
+    "storage_input_quantization_floor_cm_per_day": "0.5 * sum((spacing(theta_internal)+spacing(theta_base))*dz) / dt",
+    "higher_precision_recomposition_difference": "abs(real64 native-order four-component sum - real128 four-component sum)",
+    "real64_summation_order_spread": "max-min across all 24 permutations of the four total-domain components",
+    "estimated_total_floor": "max(storage_input_quantization_floor, higher_precision_recomposition_difference, real64_summation_order_spread)",
+    "rationale": "This is the direct domain-summed analogue of the preregistered P2E07 floor construction and is defined before D3 execution.",
+    "boundary": "The estimated total floor is a diagnostic numerical-resolution scale, not a rigorous propagated-error bound and not a new convergence tolerance."
+  },
+  "distinguishability_rule": {
+    "configured_total_balance_tolerance": "D1/D2 invariant-integrated rate tolerance = 1.6e-15/dt",
+    "strict_total_criterion_not_numerically_distinguishable_if": "estimated_total_floor >= configured_total_balance_tolerance",
+    "observed_retry_residual_within_floor_if": "abs(total_workspace_residual) <= estimated_total_floor",
+    "report": [
+      "tolerance / estimated_total_floor",
+      "abs(total residual) / estimated_total_floor",
+      "dt * estimated_total_floor in cm",
+      "reconstruction closure",
+      "dominant floor component"
+    ]
+  },
+  "hypotheses": {
+    "H_total_validity": "Some or all D2 total-only retry states have estimated_total_floor >= the configured total-balance tolerance.",
+    "H_total_residual_scale": "Some or all D2 retry residuals are at or below the estimated_total_floor.",
+    "H_storage_resolution": "The storage-input representation term is a material contributor to the total-domain floor; dominance is an outcome, not an assumption."
+  },
+  "outcome_policy": {
+    "positive": "If the strict total criterion is not numerically distinguishable and the retry residual lies within the estimated floor, record this as support for a later separately preregistered research-only Reference convergence-policy proposal.",
+    "negative": "If retry residuals remain numerically distinguishable above the estimated floor, REF-HIGH remains blocked; do not widen the floor or fit a tolerance to the failures."
+  },
+  "forbidden": [
+    "No tolerance change in D3",
+    "No RossFast numerical execution",
+    "No timing",
+    "No REF-HIGH stability qualification",
+    "No production/reference source mutation",
+    "No direct promotion of P2E07 local floor into a total tolerance",
+    "No use as untouched primary solver-admission evidence"
+  ],
+  "next_action_rule": "Persist the total-balance floor result. Only a later preregistered workunit may propose a research-only REF-HIGH convergence policy, and that policy must be formula-derived rather than fitted to D3 exceedance ratios.",
+  "verdict": "PREREGISTERED_REFERENCE_TOTAL_BALANCE_FLOOR_DIAGNOSTIC_READY"
+}
