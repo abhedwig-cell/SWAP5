@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "PPA-WU02",
+  "phase": "PREREGISTER",
+  "title": "Source-bound lower-boundary application envelope inventory and first bounded admissions",
+  "canonical_base": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "reference": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "boundbottom_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "readswap_sha256": "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c",
+    "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "swap013_readswap_scope": "PDI validation only; lower-boundary parser block unchanged by B1.11 corrections"
+  },
+  "admission_slices": [
+    {
+      "id": "PPA-WU02-A",
+      "capability": "explicit typed nonzero prescribed qbot through the normal Fortran/FMR production application bootstrap",
+      "legacy_nonclaim": "does not by itself admit legacy SWBOTB=2 forcing grammar or its oven-dry selector transition",
+      "production_delta": [
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "authority": [
+        "F-SI38",
+        "F-MR44R",
+        "F-VQ75",
+        "F-CI62/F-CI62P",
+        "PPA-WU01"
+      ],
+      "science_delta": "NONE",
+      "architecture_delta": "bounded application reachability only",
+      "required_profile": "all tiles bottom_mode=2; mixed 2/5/7 fails closed",
+      "qualification": [
+        "nonzero positive qbot reaches the admitted serialized Reference runtime",
+        "hard mass closure",
+        "accepted transactional commit and revision",
+        "generic non-day duration",
+        "O0/O2 identity",
+        "existing FMR44R/FVQ75 prescribed-qbot authority replay",
+        "PPA-WU01 mode5/mode7 preservation",
+        "unsupported mixed profiles fail closed"
+      ]
+    },
+    {
+      "id": "PPA-WU02-B",
+      "capability": "legacy SWBOTB=7 free-drainage selector binding to already-admitted typed bottom_mode=7",
+      "legacy_nonclaim": "does not map SWBOTB=1,2,3,4,5 or 8",
+      "production_delta": [
+        "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90"
+      ],
+      "authority": [
+        "B1.11 boundbottom free-drainage equation qbot=-Kbottom",
+        "canonical serialized bottom_mode=7",
+        "PPA-WU01 standalone bottom_mode=7"
+      ],
+      "science_delta": "NONE",
+      "architecture_delta": "one additional selector image in the existing unique legacy lower-boundary binding owner",
+      "qualification": [
+        "exact selector 7 to typed mode 7",
+        "selector 6 exact positive-zero preservation",
+        "unsupported selectors fail closed",
+        "no parser or solver ownership",
+        "O0/O2 identity",
+        "independent qualification"
+      ]
+    }
+  ],
+  "explicitly_deferred": [
+    "legacy SWBOTB=2 time-series/sine ingestion and candidate-safe oven-dry transition to internal -2",
+    "SWBOTB=1 prescribed groundwater-level boundary",
+    "SWBOTB=3 Cauchy/deep-aquifer boundary",
+    "SWBOTB=4 q(gwl) boundary",
+    "standalone legacy SWBOTB=5 application semantics",
+    "SWBOTB=8 state-dependent lysimeter plate switching"
+  ],
+  "guards": {
+    "new_groundwater_architecture": false,
+    "new_solver": false,
+    "new_predictor_corrector": false,
+    "new_physics": false,
+    "tolerance_tuning": false,
+    "parser_semantics_in_kernel_contracts": false,
+    "duplicate_lower_boundary_owner": false,
+    "rom": false
+  },
+  "decision": "IMPLEMENT_TWO_LOW_SCIENCE_RISK_SLICES_AFTER_SOURCE_INVENTORY",
+  "canonical_admission": false
+}
