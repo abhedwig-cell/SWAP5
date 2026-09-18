@@ -5,7 +5,7 @@
   "title": "Independent MODFLOW6 Typed API Binding Qualification",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
   "owner": {
     "branch": "work/f-gc34-modflow6-api-binding-reconciled",
     "checkpoint_head": "2bc4ccb1cbedde8af60cd8390799373ed4310cb1",
@@ -20,5 +20,25 @@
     "owner_test_reused": false,
     "oracle": "three-binding independent permutation/shadow publication oracle; explicit identity and N:1 node mapping; active-prefix/tail preservation; atomic rejection for gap, duplicate identity, missing term, nonfinite RHS and undersized package arrays"
   },
-  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC34 admission postimage."
+  "next_permitted_action": "Qualify this exact verifier status head. If green, create F-CI101 current-canonical admission postimage from immutable F-GC34/F-VQ108 evidence.",
+  "verifier_evidence": {
+    "qualified_head": "eeb03812b5abfe4f2a155479d80365a45fa4427a",
+    "workflow_run": 35293668432,
+    "workflow_job": 105441662038,
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FVQ108_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ108_OWNER_PRODUCTION_BLOB_LOCK",
+      "FVQ108_OWNER_TEST_NOT_REUSED",
+      "FVQ108_INDEPENDENT_ORACLE_STRUCTURE",
+      "FVQ108_THREE_BINDING_PERMUTATION_ORACLE",
+      "FVQ108_EXPLICIT_IDENTITY_SHADOW_ORACLE",
+      "FVQ108_N_TO_1_NODE_PRESERVATION",
+      "FVQ108_ACTIVE_PREFIX_AND_TAIL_ORACLE",
+      "FVQ108_ATOMIC_REJECTION_ORACLE",
+      "FVQ108_INDEPENDENT_API_BINDING_GATE",
+      "FVQ108_INDEPENDENT_O0_O2_IDENTITY"
+    ]
+  }
 }
