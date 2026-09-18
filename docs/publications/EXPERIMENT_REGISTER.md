@@ -309,3 +309,24 @@ The register should describe readiness, not rewrite past chronology.
 - existing screening and reference results are preserved as supporting evidence and are not retroactively promoted;
 - next permitted action: freeze and qualify a research-only macro-window response component before new E2/E3 screening;
 - cross-publication firewall: no response/tangent acceleration claim is introduced; those remain `PUB-RC`.
+
+
+### 2026-09-18T00:30:40Z — PUB-GC macro-window SWAP response qualified
+
+- frozen design decision: `docs/publications/decisions/PUB-GC_E2_E3_MACRO_WINDOW_ADJUDICATION.md`, commit `29f3bf635d69e076926d6cb99cf3f7d058f67a63`;
+- frozen specification: `PUB-GC_MACRO_WINDOW_RESPONSE_SPEC.md`, commit `1b54c6c6acfffd8bd71c368ae36bdf77f788850b`, blob `e7b042300c67e06163cbb27a603dc1ab70fa1834`;
+- frozen qualification manifest: `PUB-GC-MACRO-WINDOW-QUAL-0001`, commit `8a688bf44addd8afee3977cce625c4ebaf1aa81b`, blob `09987670ad420e021fad5cb5e3b486b44c85f326`;
+- qualified research head: `research/pub-gc-macro-window-response@32d1e9ae1bb3f0cda7a26e114eca0fe5fd900d12`;
+- controlling PASS execution: GitHub Actions run `35291452130`, job `105434979678`, GNU Fortran 13.3.0;
+- exact O0/O2 scientific-output identity: PASS; output SHA-256 `fcd7e241ba5495deed98e007d4547fc4f40be0b93f4988f0cbd4c2fa68d1373f`;
+- artifact `10526361147`, digest `sha256:09758165fa673021dbb2d881abef4f1851c41caf0b9af500a1ef9c25dd07c1a1`;
+- immutable qualified blobs: module `920b93b943ead1187887e683c50a84e0f4cb3a46`, test `5045dc35c253b6063229f8843452c21c2c8178c1`, runner `4114e5624480ad056aa25e298e75fa3f2e58d654`, workflow `233819d9f74ddd914f7b6a0effe6d2bb7f7ddba9`;
+- frozen production source tree remained `d7ef6c045263de821db7800459289efcd8a6420b`; all previously qualified publication dependencies remained unchanged;
+- Q0 one-step reduction, Q1 sequential equivalence, Q2 aggregate/terminal selectivity, Q3 A/B/A same-origin replay, Q5 continuation-history preservation, failure controls and O0/O2 identity all PASS;
+- Q2 qualification-only telemetry demonstrated a nonzero distinction between `Q_whole` and `q_terminal*DeltaT_c`, but its magnitude is permanently excluded from H2/H3 primary estimation and case tuning;
+- invalid predecessor run `35291116752` never compiled due a qualification-test declaration defect; invalid predecessor run `35291389064` used a literal-duration bitwise oracle inconsistent with the already frozen macro-duration definition; neither carries scientific inference and neither changed a fixture, threshold or scientific criterion;
+- result receipt: `docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0001.yaml`, introduced by commit `2b20b016a9512676f66f20c134521a381d3d13c7`;
+- prerequisite newly satisfied: native SWAP responses can now be composed inside a disposable external coupling macro-window with independently observable integrated and terminal interface quantities;
+- H2 and H3 remain untested by primary evidence;
+- next permitted action: freeze and execute `PUB-GC-NATIVE-TIME-0001`, selecting a native SWAP internal-integration policy from endpoint-state and integrated-exchange convergence only; terminal-surrogate mismatch must not be a selection objective;
+- cross-publication firewall: no PUB-RC tangent/acceleration claim, PUB-SQ solver claim, PUB-ME architecture claim or PUB-SG upscaling claim is created.
