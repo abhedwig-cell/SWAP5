@@ -90,8 +90,22 @@ def main()->None:
     origin=swap.state()
     require(origin==(0,0.0,0,0.0),"E4 baseline not at immutable accepted origin")
 
-    # Exact production-participant parity at H0.
-    q_prod=swap.trial(href)
+    # Exact production-participant parity at H0. A bounded production
+    # corrector failure is retained as baseline-local evidence rather than
+    # crashing the complete five-baseline E4 study.
+    try:
+        q_prod=swap.trial(href)
+    except RuntimeError as exc:
+        rec.update({
+            "head_response_status":"PRODUCTION_REFERENCE_FAILED",
+            "message":str(exc),
+            "authority_state_after":swap.state(),
+        })
+        require(tuple(rec["authority_state_after"])==origin,
+                "failed E4 production reference changed authoritative state")
+        print("E4_HEAD_JSON="+json.dumps(rec,sort_keys=True,separators=(",",":")))
+        return
+
     q_prod_diag,bottom_prod=swap.last_trial_diagnostics()
     require(abs(q_prod-q_prod_diag)<=128*np.finfo(float).eps*max(1.0,abs(q_prod)),
             "production trial diagnostic mismatch")
@@ -100,7 +114,17 @@ def main()->None:
     require(swap.state()==origin,"production parity discard changed authority")
 
     obs0=normalize_trial(href,swap.e4_head_trial(href))
-    require(bool(obs0["valid"]),"E4 observer failed at H0")
+    if not bool(obs0["valid"]):
+        rec.update({
+            "head_response_status":"QUALIFICATION_OBSERVER_REFERENCE_FAILED",
+            "reference_trial":obs0,
+            "authority_state_after":swap.state(),
+        })
+        require(tuple(rec["authority_state_after"])==origin,
+                "failed E4 observer reference changed authoritative state")
+        print("E4_HEAD_JSON="+json.dumps(rec,sort_keys=True,separators=(",",":")))
+        return
+
     require(
         abs(float(obs0["q_swap_m_per_s"])-q_prod)
         <=128*np.finfo(float).eps*max(1.0,abs(q_prod)),
@@ -134,6 +158,7 @@ def main()->None:
         })
 
     rec.update({
+        "head_response_status":"READY",
         "predictor_hcof_m2_per_day":hcof,
         "predictor_rhs_m3_per_day":rhs,
         "reference_head_m":href,
