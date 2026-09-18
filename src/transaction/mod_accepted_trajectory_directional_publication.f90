@@ -22,6 +22,7 @@ module mod_accepted_trajectory_directional_publication
     real(real64), allocatable :: final_water_content_direction(:)
     real(real64) :: final_ponding_direction = 0.0_real64
     real(real64) :: accepted_bottom_exchange_derivative = 0.0_real64
+    logical :: source_sink_direction_coverage_complete = .false.
     character(len=48) :: method = 'not-available'
     character(len=64) :: route = 'not-available'
     integer :: additional_tridiagonal_backsolves = 0
@@ -45,6 +46,7 @@ contains
     result%accepted_steps = state%accepted_steps
     result%origin_t0 = state%origin_t0
     result%accepted_t1 = state%current_t1
+    result%source_sink_direction_coverage_complete = state%source_sink_direction_coverage_complete
     result%method = state%method
     result%route = state%route
     result%additional_tridiagonal_backsolves = state%additional_tridiagonal_backsolves
