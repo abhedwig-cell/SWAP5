@@ -34,7 +34,7 @@ This checklist follows current GMD requirements verified on 2026-09-18.
 ## GMD manuscript/upload requirements
 
 - [x] GMD selected as primary target, Development and technical paper.
-- [x] Short summary candidate <500 characters.
+- [x] Short summary candidate = **432 characters including spaces**, below the 500-character limit.
 - [x] Key figure candidate selected: F1.
 - [x] Journal-facing abstract and conclusions already evidence-bounded.
 - [ ] Final author names and full affiliations.
@@ -45,7 +45,8 @@ This checklist follows current GMD requirements verified on 2026-09-18.
 - [ ] Competing-interests declaration.
 - [ ] AI-tool-use statement if required by final submission policy.
 - [ ] Convert final source to current Copernicus/GMD Word or LaTeX format.
-- [ ] Export individual figures in accepted production formats and check each <5 MB.
+- [x] Current F1–F7 SVG sources are individually far below 5 MB (largest current SVG source: F5, ~13 kB-equivalent text size).
+- [ ] Export final individual figures to accepted production formats (prefer vector PDF where faithful) and recheck each exported file <5 MB.
 - [ ] Final reference-format pass.
 - [ ] Final title/version/archive identity cross-check.
 
@@ -66,3 +67,16 @@ python tools/publication/check_pub_gc_gmd_submission.py --submission-ready
 ```
 
 The second command must return PASS before submission.
+
+
+## Mechanical evidence recorded
+
+Current frozen short summary:
+
+```text
+characters including spaces: 432
+limit: 500
+result: PASS
+```
+
+Current SVG source sizes are all orders of magnitude below the GMD individual-figure 5 MB limit. Final exported PDF/raster sizes must still be checked after conversion because the source-SVG size does not guarantee the exported-file size.
