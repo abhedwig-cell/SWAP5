@@ -69,6 +69,12 @@ Claim-evidence ledger:
 
 `PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md`
 
+Current evidence state:
+
+- E1-E5 are closed with restricted claims;
+- E6 hydrological stress extension is closed negatively after two preregistered routes reached component-admission boundaries before a positive stronger-feedback live case was available;
+- Hupselbrook is selected for E7, but execution is blocked until the final M1-C3 whole-Hupsel file-driven adapter qualification can run against the exact authorized SWAP 4.3.1 distribution bytes.
+
 First publication evidence block (E1/E2):
 
 - `PUB_GC_E1_E2_PREREGISTRATION.md`
