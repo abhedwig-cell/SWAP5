@@ -1,0 +1,25 @@
+name: PUB-P2E14 Reference common-material threshold freeze
+
+on:
+  push:
+    branches:
+      - work/pub-p2e14-reference-common-material-threshold-freeze
+    paths:
+      - 'docs/publication/P2E14_REFERENCE_COMMON_MATERIAL_THRESHOLD_FREEZE_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e14_reference_common_material_threshold_freeze.f90'
+      - 'tests/publication/run_pub_p2e14_reference_common_material_threshold_freeze.sh'
+      - '.github/workflows/pub-p2e14-reference-common-material-threshold-freeze.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-common-material-threshold-freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only threshold freeze
+        run: bash tests/publication/run_pub_p2e14_reference_common_material_threshold_freeze.sh
