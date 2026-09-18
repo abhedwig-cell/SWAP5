@@ -217,3 +217,10 @@ while the strong solve satisfies the unchanged `1e-15 m/s` interface criterion a
 The integrated whole-window transfer difference is still reported, but it is not used for the order-of-magnitude gate because E6 uses a 0.01-day window and the strongest converged E3-R case used a shorter window. The rate-based gate avoids classifying a case as stronger merely because the integration interval is longer.
 
 This numerical gate is fixed before any E6 active-drainage workflow output is interpreted.
+
+
+## Execution provenance note
+
+To prevent unrelated repository-wide pull-request workflows from blocking the preregistered E6 experiment during a saturated Actions period, the design PR was closed before numerical output. The experiment is executed by the branch-only E6 workflow. Result admission will occur later through a separate result-only/current-canonical PR.
+
+This operational change does not alter the frozen physical cases, tolerances, comparators or interpretation gates.
