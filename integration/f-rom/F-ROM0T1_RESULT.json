@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.f-rom0t1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1",
+  "title": "Exact original observation-interval Reference-floor diagnostic",
+  "execution": {
+    "workflow_run": 35376066591,
+    "workflow_job": 105701009681,
+    "executed_head": "627ff0a36a3b5df86790e2e2e2272bc6d7f873c1",
+    "artifact_id": 10560591375,
+    "artifact_digest": "sha256:bc1b773b1dedf897f682b81aa6dfe0ac9a89c23b09f3227619fc45ba87a74403",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true,
+    "repeat_stdout_bitwise_identity": true
+  },
+  "authority": {
+    "original_reference_floor_dimension": "OBSERVATION_INTERVAL",
+    "base_dt_day": 0.0016,
+    "refined_dt_day": 0.0008,
+    "horizon_day": 0.0512,
+    "geometry": "16x10 cm over 160 cm",
+    "initial_state": "original uniform Se=0.85 state",
+    "policy": "ORIGINAL_STRICT_FIXED_FLUX_REFERENCE_SAMPLE",
+    "representation_bounded_total_policy_used": false,
+    "production_or_reference_source_mutated": false,
+    "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD"
+  },
+  "outcomes": {
+    "B01_E1_NOMINAL_FLUX": {
+      "dt_0_0016": "PASS_32_OF_32",
+      "dt_0_0008": {
+        "status": "FAIL_REFERENCE_RETRY_ADVISED",
+        "failed_step": 18,
+        "t0_day": 0.0136,
+        "t1_day": 0.0144,
+        "solver_status": 2,
+        "route": "legacy-reference-retry",
+        "nonlinear_iterations": 16,
+        "internal_retries": 1,
+        "backtracking_attempts": 42
+      }
+    },
+    "B01_E2_DRYING_FLUX": {
+      "dt_0_0016": "PASS_32_OF_32",
+      "dt_0_0008": {
+        "status": "FAIL_REFERENCE_RETRY_ADVISED",
+        "failed_step": 4,
+        "t0_day": 0.0024,
+        "t1_day": 0.0032,
+        "solver_status": 2,
+        "route": "legacy-reference-retry",
+        "nonlinear_iterations": 16,
+        "internal_retries": 1,
+        "backtracking_attempts": 40
+      }
+    },
+    "B14_E1_NOMINAL_FLUX": {
+      "dt_0_0016": "PASS_32_OF_32",
+      "dt_0_0008": "PASS_64_OF_64",
+      "common_endpoint_count": 32,
+      "max_over_time": {
+        "D_h_inf_cm": 0.00010395926022965796,
+        "D_h_rms_cm": 0.000049101287785674485,
+        "D_theta_inf": 2.9214742514049874e-08,
+        "D_theta_rms": 1.378548327232308e-08,
+        "D_total_storage_abs_cm": 2.842170943040401e-14,
+        "D_upper_0_40cm_storage_abs_cm": 3.0393465522138285e-12,
+        "D_lower_40_160cm_storage_abs_cm": 3.0269120543380268e-12,
+        "D_cumulative_top_exchange_abs_cm": 5.082197683525802e-21,
+        "D_cumulative_bottom_exchange_abs_cm": 3.3881317890172014e-21,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0
+      },
+      "base_max_abs_step_mass_residual_cm": 2.9993109760496694e-14,
+      "refined_max_abs_step_mass_residual_cm": 1.8549268056123036e-14
+    },
+    "B14_E2_DRYING_FLUX": {
+      "dt_0_0016": "PASS_32_OF_32",
+      "dt_0_0008": {
+        "status": "FAIL_REFERENCE_RETRY_ADVISED",
+        "failed_step": 4,
+        "t0_day": 0.0024,
+        "t1_day": 0.0032,
+        "solver_status": 2,
+        "route": "legacy-reference-retry",
+        "nonlinear_iterations": 16,
+        "internal_retries": 1,
+        "backtracking_attempts": 95
+      }
+    }
+  },
+  "counts": {
+    "required_trajectories": 8,
+    "passed_trajectories": 5,
+    "failed_trajectories": 3,
+    "complete_temporal_pairs": 1
+  },
+  "decision": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+  "interpretation": "The exact original ROM-0 observation-interval matrix cannot be completed under the frozen strict fixed-flux Reference controls because three of four 0.0008-day trajectories return genuine retry-advised outcomes after accepted predecessors. This is an immutable scientific negative for the original T1 proposition; no case, timestep, tolerance or iteration control was retuned.",
+  "scientific_negative_is_not_ci_failure": true,
+  "rom1a_authorized": false
+}
