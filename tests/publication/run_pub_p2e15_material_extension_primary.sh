@@ -37,7 +37,7 @@ git diff --quiet "$PARENT_BASE" HEAD -- src reference || fail 'P2E15 mutated src
 echo "PUB_P2E15_RECONCILED_BASE=$PARENT_BASE"
 
 test "$(git rev-parse HEAD:$PREREG)" = "$PREREG_BLOB" || fail 'P2E15 preregistration drift'
-test "$(git rev-parse HEAD:docs/publication/P2E09_REFERENCE_ONLY_THRESHOLD_FREEZE_RESULT.json)" = "$P2E09_RESULT_BLOB" || fail 'P2E09 threshold authority drift'
+test "$(git rev-parse HEAD:docs/publication/P2E14_REFERENCE_COMMON_MATERIAL_THRESHOLD_FREEZE_RESULT.json)" = "$P2E14_RESULT_BLOB" || fail 'P2E14 threshold authority drift'
 test "$(git rev-parse HEAD:tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90)" = "$P2E01_TYPED_PILOT_BLOB" || fail 'typed paired-pilot authority drift'
 test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = "$SOLVER_CONTRACT_BLOB" || fail 'solver contract drift'
 test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = "$REFERENCE_BINDING_BLOB" || fail 'Reference binding drift'
