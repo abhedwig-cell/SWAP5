@@ -2,9 +2,17 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-e2e-${GITHUB_RUN_ID:-local}-$$"
+if [[ -n "${PUB_GC_E6_BUILD_DIR:-}" ]]; then
+  BUILD="$PUB_GC_E6_BUILD_DIR"
+  CLEAN_BUILD=0
+else
+  BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-pub-gc-e6-${GITHUB_RUN_ID:-local}-$"
+  CLEAN_BUILD=1
+fi
 mkdir -p "$BUILD/modflow-bin" "$BUILD/downloads" "$BUILD/bridge"
-trap 'rm -rf "$BUILD"' EXIT
+if [[ "$CLEAN_BUILD" == "1" ]]; then
+  trap 'rm -rf "$BUILD"' EXIT
+fi
 fail(){ echo "PUB_GC_E6_BUILD_FAIL $*" >&2; exit 1; }
 
 python3 - <<PY
