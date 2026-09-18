@@ -24,8 +24,8 @@
       "route": "rossfast-d3r",
       "outer_segments": 1,
       "internal_substeps_per_outer_call": 8,
-      "initialization": "Material tables and solver binding are initialized once per case before warmup and excluded from primary timed regions.",
-      "interpretation": "steady-state configured-solver cost per 0.0016-day horizon"
+      "initialization": "RossFast table/model initialization occurs once per benchmark process batch and is included in measured child CPU/wall time, then amortized over the common per-case horizon repetition count.",
+      "interpretation": "amortized complete benchmark-process cost per 0.0016-day horizon at the frozen RossFast N1 control"
     },
     "reference": {
       "route": "legacy-reference-bound",
@@ -392,7 +392,7 @@
     "repetition_calibration": {
       "role": "discarded pre-measurement batching calibration only",
       "start_horizons": 1,
-      "rule": "Double a common per-case repetition count until the minimum child_cpu_seconds among that case's frozen timed configurations is at least 0.25 s.",
+      "rule": "Double a common per-case repetition count until the minimum complete-process child_cpu_seconds among that case's frozen timed configurations is at least 0.25 s. Calibration processes include the same setup/fingerprint path as measured processes.",
       "maximum_horizons": 65536,
       "effect_estimate_used": false,
       "if_maximum_reached_before_target": "BLOCK_CASE_TIMING_RESOLUTION; do not choose solver-specific repetition counts"
@@ -455,7 +455,7 @@
       "shell time"
     ],
     "benchmark_executable_timing_calls_allowed": false,
-    "timing_scope": "Includes repeated complete configured-solver horizon execution and route/mass/transfer validation. Excludes case construction, REF-HIGH reconstruction, table/model initialization, repetition calibration, warmup and output formatting."
+    "timing_scope": "External process timing includes process startup, one solver/material setup per batch, all repeated configured-solver horizons, route/mass/transfer validation, and one final scientific fingerprint emission. Reported seconds-per-horizon divide this complete batch cost by the common per-case repetition count."
   },
   "preflight": {
     "host_gate": [
@@ -470,7 +470,7 @@
       "reproduce RossFast N1 endpoint and P2E23 realized error/storage gate untimed",
       "reproduce frozen Reference N_lo/N_hi or N1 endpoint(s) untimed",
       "verify route, integrated mass, prescribed transfer identity and P2E23 classification",
-      "verify benchmark executable produces the frozen variant-specific scientific fingerprint"
+      "verify benchmark executable with one horizon produces the frozen variant-specific scientific fingerprint for every timed configuration"
     ],
     "failure_policy": "Any failed host or scientific preflight stops before measured timing. Do not change N_lo/N_hi, tolerance policy, case population or host-resolution target."
   },
@@ -529,9 +529,11 @@
     "no_selective_rerun": true
   },
   "setup_cost": {
-    "primary_includes_rossfast_initialization": false,
-    "reason": "The publication question is steady-state production solve cost over repeated model time windows; RossFast table/model initialization is a startup cost amortized across a simulation.",
-    "optional_secondary": "A later separately labeled setup-cost measurement may be reported, but cannot alter the primary timing result."
+    "primary_includes_one_setup_per_batch": true,
+    "normalization": "The same common horizon repetition count is used for RossFast and Reference configurations within each case. One setup and one final fingerprint emission are therefore amortized over that common count.",
+    "rationale": "This makes the primary measurement exactly compatible with external OS child-CPU timing and avoids an unqualified internal timing seam.",
+    "interpretation": "The resulting endpoint is amortized steady-state benchmark-process cost, not isolated kernel-only solver time.",
+    "optional_secondary": "A future separately preregistered decomposition may isolate setup/kernel cost, but cannot replace the P2E24 primary result."
   },
   "firewalls": {
     "timing_seen_before_this_preregistration": false,
@@ -549,7 +551,8 @@
     "fortran_internal_timing_as_primary_allowed": false,
     "host_admission_bypass_allowed": false,
     "selective_case_rerun_allowed": false,
-    "post_hoc_pair_extension_allowed": false
+    "post_hoc_pair_extension_allowed": false,
+    "internal_kernel_only_timing_substituted_for_primary": false
   },
   "outcome_policy": {
     "timing_noise": "Retain noisy cases with flags; do not rerun selectively.",
