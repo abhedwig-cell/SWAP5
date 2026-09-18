@@ -1,0 +1,106 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0002
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_REQUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  triggering_native_time_result_commit: a7c89350305efc6019b469896782f4f91b5ba7e6
+  temporal_coordinate_decision_commit: f81bd41ccb15dfb5567704db24784bd2f41b1280
+  temporal_coordinate_decision_blob: 406e1b886923b91c884b340b27d5b0fc6c3794f6
+  extension_spec_commit: b345b3e6b60797f82da05d0dd1a5c397a8bd56b9
+  extension_spec_blob: d29e4a672c7e3c6d15fdf40c3a20c0d82b10c24a
+  original_macro_qualification_receipt_commit: 2b20b016a9512676f66f20c134521a381d3d13c7
+  frozen_before_corrective_implementation: true
+
+authority:
+  research_branch: research/pub-gc-macro-time-coordinate
+  base_qualified_head: 32d1e9ae1bb3f0cda7a26e114eca0fe5fd900d12
+  base_macro_module_blob: 920b93b943ead1187887e683c50a84e0f4cb3a46
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/macro_window_response/**
+    - .github/workflows/pub-gc-macro-time-coordinate-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/gw_a/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/e1_primary_engine/**
+    - tests/publication/pub_gc/e2_terminal_comparator/**
+    - tests/publication/pub_gc/gc_ref/**
+    - tests/publication/pub_gc/reference_screening/**
+    - tests/publication/pub_gc/transient_screening/**
+
+temporal_contract:
+  schedule_coordinate: relative_elapsed_time
+  relative_sum_algorithm: compensated
+  nonfinal_boundary: macro_t0_plus_compensated_elapsed
+  final_boundary: exact_supplied_macro_t1
+  nominal_duration_closure_tolerance_day: 1.0e-12
+  each_actual_interval_must_be_finite_positive: true
+  final_disposable_time_must_be_bitwise_macro_t1: true
+  telemetry:
+    - native_dt_day
+    - actual_native_dt_day
+    - max_abs_native_dt_representation_error_day
+
+legacy_qualification:
+  rerun_Q0_through_Q7_without_weakened_criteria: true
+
+extended_fixtures:
+  Q8A:
+    macro_t0_day: 4200.125
+    macro_duration_day: 0.04
+    native_dt_day: 0.0025
+    native_interval_count: 16
+    top_flux_factor_relative_to_K0: -1.0
+    prescribed_bottom_head_cm: -80.0
+  Q8B:
+    macro_t0_day: 4200.125
+    macro_duration_day: 0.04
+    native_dt_day: 0.00125
+    native_interval_count: 32
+    top_flux_factor_relative_to_K0: -1.0
+    prescribed_bottom_head_cm: -80.0
+  Q8C:
+    macro_t0_day: 14200.125
+    macro_duration_day: 0.04
+    native_dt_day: 0.00125
+    native_interval_count: 32
+    top_flux_factor_relative_to_K0: -1.0
+    prescribed_bottom_head_cm: -80.0
+
+Q8_required:
+  - completed_response
+  - expected_contribution_count
+  - all_actual_intervals_finite_positive
+  - final_disposable_time_bitwise_macro_t1
+  - authoritative_origin_unchanged
+  - duration_representation_telemetry_available
+  - production_source_unchanged
+  - qualification_values_not_reused_for_H2_H3_or_native_policy_tuning
+
+optimization:
+  modes: [O0, O2]
+  require_exact_scientific_output_identity: true
+
+interpretation:
+  pass_means: >-
+    The research-only macro-window response has been requalified with relative
+    elapsed-time boundary construction, exact external endpoint closure, explicit
+    represented-duration telemetry, all original Q0-Q7 invariants, and 16/32
+    contribution temporal-coordinate stress fixtures.
+  nonclaims:
+    - no H2 support or falsification
+    - no H3 support or falsification
+    - no production admission
+    - no MODFLOW6 result
+    - no universal timestep recommendation
+    - no PUB-RC acceleration inference
+
+next_permitted_action:
+  - implement only the frozen temporal-coordinate correction on the new research branch
+  - execute Q0-Q8 under O0/O2
+  - persist all invalid attempts
+  - only after PASS freeze PUB-GC-NATIVE-TIME-0002 with unchanged ladder, cases, thresholds and selection rule
