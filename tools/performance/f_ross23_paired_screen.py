@@ -18,6 +18,11 @@ TARGET_RESOLUTION = 0.05
 RESOLUTION_MULTIPLIER = 2.0
 ROUTES = ("REFERENCE", "ROSSFAST")
 
+CASE_PATTERN = re.compile(
+    r"^F_ROSS23_CASE\|ID=(?P<id>\d+)\|MATERIAL=(?P<material>[^|]+)\|SE=(?P<se>[^|]+)\|FORCING=(?P<forcing>[^|]+)\|CLASS=(?P<classification>[^|]+)\|METRICS=(?P<metrics>[^|]+)\|D_H_INF=(?P<dh_inf>[^|]+)\|D_H_RMS=(?P<dh_rms>[^|]+)\|D_THETA_INF=(?P<dtheta_inf>[^|]+)\|D_THETA_RMS=(?P<dtheta_rms>[^|]+)\|D_STORAGE=(?P<dstorage>[^|]+)$",
+    re.MULTILINE,
+)
+
 MARKERS = {
     "route": re.compile(r"^F_ROSS23_ROUTE=(REFERENCE|ROSSFAST)$", re.MULTILINE),
     "cases": re.compile(r"^F_ROSS23_CASE_COUNT=(\d+)$", re.MULTILINE),
