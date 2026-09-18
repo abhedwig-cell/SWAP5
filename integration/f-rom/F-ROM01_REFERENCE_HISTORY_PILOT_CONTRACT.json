@@ -1,0 +1,146 @@
+{
+  "schema": "swap5.f-rom01.reference-history-pilot-contract.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM01",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_HISTORY_EXECUTION",
+  "purpose": "First falsification-oriented pilot for minimal prognostic-state identification using the typed Reference Richards solver only.",
+  "canonical_baseline": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "design_authority": "5636c3e626b9ee1a61c769ea4746b877e5da88e2",
+  "production_mutation_allowed": false,
+  "source_locks": {
+    "src/solver/mod_soil_water_solver_contract.f90": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+    "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf",
+    "src/legacy/b1_10_port/headcalc.f90": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"
+  },
+  "full_order_route": {
+    "solver_type": "reference_richards_legacy_solver_t",
+    "success_route": "legacy-reference-bound",
+    "top_boundary": "FSI_TOP_MODE_EXPLICIT_FLUX",
+    "history_bottom_mode": 2,
+    "continuation_bottom_mode": 5,
+    "required_mass_diagnostic": "integrated_mass_balance_residual_cm"
+  },
+  "research_fixture": {
+    "material_id": "B01",
+    "provenance": {
+      "catalog_commit": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+      "catalog_path": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+      "original_source": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+      "original_source_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+      "note": "Values are copied as a research fixture from the pinned historical soil catalog. F-ROM01 does not depend on RossFast runtime code or tables."
+    },
+    "constitutive_scope": "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED",
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "ksatfit_cm_per_day": 31.225016,
+    "ksatexm_cm_per_day": 312.25016,
+    "lambda": 0.98087,
+    "h_enpr_cm": 0
+  },
+  "geometry": {
+    "active_nodes": 16,
+    "dz_cm": 10,
+    "column_depth_cm": 160,
+    "root_zone_nodes": 4,
+    "root_zone_depth_cm": 40,
+    "root_zone_role": "EXPERIMENTAL_PROJECTION_ONLY_NOT_CROP_ROOT_SEMANTICS"
+  },
+  "initial_state": {
+    "effective_saturation": 0.85,
+    "vertical_profile": "UNIFORM_PRESSURE_HEAD_DERIVED_FROM_MVG_EFFECTIVE_SATURATION",
+    "ponding_depth_cm": 0,
+    "groundwater_level_cm": -999
+  },
+  "numerical": {
+    "step_duration_day": 0.0016,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "min_step_duration_day": 1e-8,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "retained_step_mass_residual_abs_max_cm": 1e-12
+  },
+  "histories": {
+    "phase_steps": 48,
+    "history_A": [
+      "WET",
+      "DRY"
+    ],
+    "history_B": [
+      "DRY",
+      "WET"
+    ],
+    "forcing_scale": "INITIAL_STATE_CONDUCTIVITY_K0",
+    "regimes": {
+      "WET": {
+        "top_flux_factor": 0.025,
+        "bottom_flux_factor": -0.004
+      },
+      "DRY": {
+        "top_flux_factor": -0.005,
+        "bottom_flux_factor": -0.004
+      }
+    },
+    "deliberate_collision_candidate": "Z1_TOTAL_STORAGE",
+    "collision_abs_storage_tolerance_cm": 1e-8,
+    "minimum_full_profile_theta_rms_for_distinct_histories": 1e-10
+  },
+  "continuation": {
+    "steps": 24,
+    "observation_steps": [
+      1,
+      8,
+      24
+    ],
+    "top_flux_factor": 0.01,
+    "bottom_mode": 5,
+    "bottom_head": "INITIAL_UNIFORM_PRESSURE_HEAD_H0",
+    "identical_future_forcing": true,
+    "scientific_sufficiency_threshold": "NOT_SET_IN_PILOT",
+    "rationale": "Pilot records whether a deliberate Z1 storage collision produces divergent future hydraulic/process-relevant states. It does not tune or declare a production accuracy threshold."
+  },
+  "observations": [
+    "pressure_head_profile",
+    "water_content_profile",
+    "total_storage_cm",
+    "root_zone_storage_cm",
+    "first_water_content_depth_moment_cm2",
+    "top_flux_cm_per_day",
+    "bottom_flux_cm_per_day",
+    "integrated_mass_balance_residual_cm",
+    "solver_route",
+    "continuation_step"
+  ],
+  "gates": {
+    "source_and_reference_delta_must_be_empty": true,
+    "reference_steps_must_converge": true,
+    "reference_mass_diagnostic_required": true,
+    "o0_o2_text_identity_required": true,
+    "history_order_must_differ": true,
+    "z1_collision_must_meet_preregistered_storage_tolerance": true,
+    "collision_profiles_must_be_distinct": true,
+    "continuation_divergence_is_recorded_not_threshold_tuned": true
+  },
+  "exclusions": [
+    "MetaSWAP source code",
+    "existing SSS source code",
+    "RossFast runtime or tables as solver dependencies",
+    "MODFLOW6",
+    "MultiSWAP scaling",
+    "regional tuning",
+    "production ROM admission"
+  ],
+  "threshold_retuning_after_execution_allowed": false
+}
