@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse, json, subprocess
 from pathlib import Path
 
-BASELINE="0c7a76bafeab1b1e1c57f5615340178d45bec268"
+BASELINE="47430b68ed46a24ca05b29b46de2dd4f7e29762b"
 ALLOWED_PREFIXES=(
     "docs/science/F-ROM",
     "integration/f-rom/F-ROM",
