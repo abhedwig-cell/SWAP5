@@ -5,7 +5,7 @@
   "title": "Independent MODFLOW6 Prepared-Solve Iterative Backend Qualification",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
   "owner": {
     "branch": "work/f-gc38-modflow6-prepared-solve-session-reconciled",
     "checkpoint_head": "9f903a2febb905316fab3d6b577c0d4a6f904a7c",
@@ -26,5 +26,35 @@
     "finalize_time_step ownership",
     "whole-window rollback/reconstruction"
   ],
-  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC38 admission postimage."
+  "next_permitted_action": "Qualify this exact verifier status head. If green, create F-CI104 admission postimage from current canonical and immutable F-GC38/F-VQ111 evidence.",
+  "verifier_evidence": {
+    "qualified_head": "d582b3107726c74941cdaffc5c7b8b95edbcd3f2",
+    "workflow_run": 35313472182,
+    "workflow_job": 105500063601,
+    "conclusion": "success",
+    "measured": {
+      "max_path_difference_m": 2.3120538816812086e-10,
+      "path_equivalence_tolerance_m": 1.4901161193847656e-8,
+      "iterative_solve_count": 14,
+      "clean_solve_count": 11
+    },
+    "pass_markers": [
+      "FVQ111_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ111_OWNER_PRODUCTION_BLOB_LOCK",
+      "FVQ111_OWNER_TEST_NOT_REUSED",
+      "FVQ111_DISTINCT_TWO_SLOT_ITERATIVE_ORACLE",
+      "FVQ111_MODFLOW680_ASSET_SHA256",
+      "FVQ111_REAL_FGC34_BRIDGE_BUILD",
+      "FVQ111_OFFICIAL_MODFLOW680_LOADED",
+      "FVQ111_TWO_SLOT_PREPARED_SOLVE",
+      "FVQ111_SHUFFLED_BINDING_PUBLICATION",
+      "FVQ111_XOLD_ACCEPTED_ORIGIN_FIXED",
+      "FVQ111_X_EVOLVES_WITHIN_PREPARED_SOLVE",
+      "FVQ111_MULTI_SLOT_REPUBLISH_BETWEEN_SOLVES",
+      "FVQ111_CLEAN_FINAL_RESPONSE_EQUIVALENCE",
+      "FVQ111_FINALIZE_SOLVE_EXACTLY_ONCE",
+      "FVQ111_BACKEND_DOES_NOT_FINALIZE_TIMESTEP",
+      "FVQ111_INDEPENDENT_PREPARED_SOLVE_GATE"
+    ]
+  }
 }
