@@ -5,7 +5,7 @@
   "title": "Independent Prepared-Solve Internal Coupling Service Contract Qualification",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
   "owner": {
     "branch": "work/f-gc39-prepared-solve-coupling-service-reconciled",
     "checkpoint_head": "d678b5953c64be3f3f2056c369fd8b8eb7deab82",
@@ -19,5 +19,26 @@
     "owner_test_reused": false,
     "oracle": "independent reference-update sequence; both convergence orderings; one prepared session and immutable SWAP origin; finalize-failure cleanup; corrector-failure invalidation; static no-XMI/iMOD ownership check"
   },
-  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to zero-production-delta F-GC39 contract admission."
+  "next_permitted_action": "Qualify this exact verifier status head. If green, create F-CI105 zero-production-delta admission postimage for the F-GC39 contract.",
+  "verifier_evidence": {
+    "qualified_head": "9643236f8527db3066b13f71001d34c840d413dd",
+    "workflow_run": 35315942207,
+    "workflow_job": 105507490020,
+    "conclusion": "success",
+    "pass_markers": [
+      "FVQ112_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ112_OWNER_HARNESS_BLOB_LOCK",
+      "FVQ112_OWNER_TEST_NOT_REUSED",
+      "FVQ112_INDEPENDENT_ORACLE_STRUCTURE",
+      "FVQ112_INTERNAL_SERVICE_OWNERSHIP_STATIC_ORACLE",
+      "FVQ112_REFERENCE_UPDATE_ORACLE",
+      "FVQ112_CONJUNCTIVE_CONVERGENCE_ORDERING",
+      "FVQ112_ONE_PREPARED_SESSION_AND_SAME_SWAP_ORIGIN",
+      "FVQ112_FIXED_TANGENT_ORACLE",
+      "FVQ112_FLUX_ONLY_CONVERGENCE_REJECTED",
+      "FVQ112_FINALIZE_FAILURE_FAIL_CLOSED",
+      "FVQ112_CORRECTOR_FAILURE_INVALIDATES_SESSION",
+      "FVQ112_INDEPENDENT_COUPLING_SERVICE_CONTRACT_GATE"
+    ]
+  }
 }
