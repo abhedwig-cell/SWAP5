@@ -178,3 +178,19 @@ WU05-A removes ambiguity about ownership, transaction and mass invariants and re
 It does **not** claim that the exact B1.11 persistent-state field list or flux map has been recovered.
 
 Production macropore implementation remains held until PPA-WU05-A1 closes.
+
+
+## Canonical closeout
+
+PPA-WU05-A was canonically admitted as **review authority only** through PR #343 at `3736703b6a3b41941bfc7c57a336da3a4f3df999`.
+
+Final admission-head qualification:
+
+- PPA-WU05-A authority review run `35399987601`: PASS;
+- parent PPA-WU05 preservation run `35399987594`: PASS;
+- Documentation run `35399987514`: PASS;
+- F-CI canonical qualification run `35399987540`: PASS.
+
+The prerequisite governance repair was admitted separately through PR #345 at `48de5d6b6515fc77ffe639768eaaf56aec392ac3` with no production or reference mutation.
+
+This closeout does **not** change the blocker or production envelope. PPA-WU05-A1 remains mandatory before any typed macropore state DTO, equation migration, restart admission, runtime composition or parallel macropore claim. The exact B1.11 source bytes for `macropore.f90` and `macrorate.f90` are still required for the complete mutable-field and mass-transfer census.
