@@ -5,7 +5,7 @@
   "title": "MultiSWAP MODFLOW6 Cell Response Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "ADMIT",
-  "verdict": "PENDING_ADMISSION_GATE",
+  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
@@ -45,5 +45,22 @@
     "irrigation",
     "historical provisional F-GC31 MultiSWAP identity"
   ],
-  "next_permitted_action": "Run F-CI99 on the exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, rerun the exact status head, reconcile live canonical, then non-force fast-forward canonical."
+  "next_permitted_action": "Qualify this exact F-CI99 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "admission_gate": {
+    "qualified_head": "9ccdb287fa29fb1ed697ad255fda56cd153c99f0",
+    "workflow_run": 35292387556,
+    "workflow_job": 105437813921,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI99_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI99_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI99_EXACT_ONE_PRODUCTION_FILE_DELTA",
+      "FCI99_IMMUTABLE_PRODUCTION_AND_EVIDENCE_BLOBS",
+      "FCI99_OWNER_STATUS_AUTHORITY",
+      "FCI99_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI99_IDENTITY_COLLISION_CORRECTED",
+      "FCI99_OWNER_REPLAY",
+      "FCI99_INDEPENDENT_REPLAY"
+    ]
+  }
 }
