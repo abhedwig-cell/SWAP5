@@ -224,3 +224,22 @@ This numerical gate is fixed before any E6 active-drainage workflow output is in
 To prevent unrelated repository-wide pull-request workflows from blocking the preregistered E6 experiment during a saturated Actions period, the design PR was closed before numerical output. The experiment is executed by the branch-only E6 workflow. Result admission will occur later through a separate result-only/current-canonical PR.
 
 This operational change does not alter the frozen physical cases, tolerances, comparators or interpretation gates.
+
+
+## Pre-output canonical reconciliation
+
+Before E6 numerical output was available, live canonical had advanced from the branch's PR base `20d34024...` to `73bd6571...`.
+
+A targeted compare found **no changes** across the E6-relevant production surfaces:
+
+- serialized FMR reference backend;
+- groundwater-head forcing materializer;
+- production FMR groundwater participant;
+- groundwater transaction/coupling contracts;
+- predictor response/tangent/assembler;
+- MultiSWAP/linear-response backend;
+- drainage response and drainage q_bot directional binding;
+- smooth freatic projection;
+- accepted-step directional service/publication.
+
+The intervening canonical work is therefore disjoint from the E6 scientific path. E6 branch evidence remains interpretable against current production semantics without changing the preregistered experiment.
