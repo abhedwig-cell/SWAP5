@@ -51,6 +51,8 @@ assert c["phase"]=="FROZEN_BEFORE_FIRST_EXECUTION"
 assert c["execution_evidence_seen_before_correction"] is False
 assert c["corrected_probe"]["rise"]=="hbot = h0 + 2 * dz_cm"
 assert c["corrected_probe"]["fall"]=="hbot = h0 - 2 * dz_cm"
+assert c["corrected_probe"]["terminal_outward_flux_expectation"]["rise"].startswith("NEGATIVE")
+assert c["corrected_probe"]["terminal_outward_flux_expectation"]["fall"].startswith("POSITIVE")
 assert c["post_execution_retuning_allowed"] is False
 print("F_ROM0_PREREGISTRATION_LOCK=PASS")
 PY
