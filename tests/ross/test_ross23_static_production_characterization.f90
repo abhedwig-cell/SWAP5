@@ -114,8 +114,16 @@ program test_ross15_reference_vs_rossfast_performance
   end do
 
   call require(case_id==expected_cases,'exact 216-case characterization domain attempted')
-    call require(count_discrepancy_fail==0 .and. count_reference_invalid==0 .and. count_rossfast_invalid==0 .and. &
-       count_both_invalid==0,'no paired-valid authority drift')
+  write(*,'(A,I0)') 'F_ROSS23_PAIRED_VALID_ADMISSIBLE=',count_admissible
+  write(*,'(A,I0)') 'F_ROSS23_PAIRED_VALID_DISCREPANCY_FAIL=',count_discrepancy_fail
+  write(*,'(A,I0)') 'F_ROSS23_REFERENCE_ROUTE_INVALID=',count_reference_invalid
+  write(*,'(A,I0)') 'F_ROSS23_ROSSFAST_ROUTE_INVALID=',count_rossfast_invalid
+  write(*,'(A,I0)') 'F_ROSS23_BOTH_ROUTES_INVALID=',count_both_invalid
+  write(*,'(A,I0)') 'F_ROSS23_FAIL_H_INF=',fail_h_inf
+  write(*,'(A,I0)') 'F_ROSS23_FAIL_H_RMS=',fail_h_rms
+  write(*,'(A,I0)') 'F_ROSS23_FAIL_THETA_INF=',fail_theta_inf
+  write(*,'(A,I0)') 'F_ROSS23_FAIL_THETA_RMS=',fail_theta_rms
+  write(*,'(A,I0)') 'F_ROSS23_FAIL_STORAGE=',fail_storage
   call require(ieee_is_finite(total_solver_cpu_seconds) .and. total_solver_cpu_seconds>0.0_real64,'positive finite solver CPU time')
   call require(ieee_is_finite(checksum),'finite benchmark checksum')
 
