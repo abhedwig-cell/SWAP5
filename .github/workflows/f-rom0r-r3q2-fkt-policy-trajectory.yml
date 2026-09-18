@@ -1,0 +1,45 @@
+name: F-ROM0R R3Q2 F-KT representation trajectory
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0R_R3Q2_*'
+      - 'integration/f-rom/F-ROM0R_R3Q1_STATUS.json'
+      - 'docs/science/F-ROM0R_R3Q2_*'
+      - 'tests/rom/test_f_rom0r_r3q2_fkt_policy_trajectory.f90'
+      - 'tests/rom/analyze_f_rom0r_r3q2_fkt_policy_trajectory.py'
+      - 'tests/rom/run_f_rom0r_r3q2_fkt_policy_trajectory.sh'
+      - '.github/workflows/f-rom0r-r3q2-fkt-policy-trajectory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0r-r3q2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute F-KT representation-policy trajectory
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0R_R3Q2_EVIDENCE
+          F_ROM0R_R3Q2_EVIDENCE_DIR="$PWD/F-ROM0R_R3Q2_EVIDENCE"             bash tests/rom/run_f_rom0r_r3q2_fkt_policy_trajectory.sh | tee F-ROM0R_R3Q2_EVIDENCE/gate.txt
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0r-r3q2-${{ github.run_id }}
+          path: F-ROM0R_R3Q2_EVIDENCE
+          if-no-files-found: warn
