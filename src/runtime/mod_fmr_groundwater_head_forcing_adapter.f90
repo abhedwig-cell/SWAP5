@@ -4,7 +4,7 @@ module mod_fmr_groundwater_head_forcing_adapter
   use mod_canonical_contracts, only: canonical_forcing_t
   use mod_kernel_transactions, only: kernel_parameters_t
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, &
-       interface_head_m_to_swap_pressure_head_cm, GW_INTERFACE_OK
+       interface_head_m_to_swap_bottom_pressure_head_cm, GW_INTERFACE_OK
   use mod_groundwater_swap_forcing_adapter, only: groundwater_swap_forcing_materializer_t, &
        GW_SWAP_FORCING_OK, GW_SWAP_FORCING_PROFILE_NOT_ADMITTED, GW_SWAP_FORCING_INVALID_HEAD, &
        GW_SWAP_FORCING_NOT_READY
