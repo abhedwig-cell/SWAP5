@@ -1,0 +1,25 @@
+name: PUB-P2E16 top-boundary Reference calibration
+
+on:
+  push:
+    branches:
+      - work/pub-p2e16-top-boundary-reference-calibration
+    paths:
+      - 'docs/publication/P2E16_TOP_BOUNDARY_REFERENCE_CALIBRATION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e16_top_boundary_reference_calibration.f90'
+      - 'tests/publication/run_pub_p2e16_top_boundary_reference_calibration.sh'
+      - '.github/workflows/pub-p2e16-top-boundary-reference-calibration.yml'
+  workflow_dispatch:
+
+jobs:
+  top-boundary-reference-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered top-boundary Reference calibration
+        run: bash tests/publication/run_pub_p2e16_top_boundary_reference_calibration.sh
