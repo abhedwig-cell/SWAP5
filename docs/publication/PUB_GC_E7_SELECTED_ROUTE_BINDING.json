@@ -1,0 +1,36 @@
+{
+  "schema": "pub-gc-e7-selected-route-binding-v1",
+  "status": "FROZEN_BEFORE_COMPONENT_ADMISSION_PROBE",
+  "canonical_basis": "0d1798aafbf43417801d75a140e4f4f3cef74bd8",
+  "exact_distribution": {
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "potato_crp_sha256": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707"
+  },
+  "selected_dates": [
+    "2003-06-17",
+    "2003-05-20"
+  ],
+  "application_route": {
+    "crop": "potato",
+    "crop_start": "2003-05-10",
+    "crop_end": "2003-09-29",
+    "crop_type": 2,
+    "global_SWETR": 0,
+    "SWDIVIDE": 1,
+    "potato_SWCF": 2,
+    "potato_SWINTER": 3,
+    "interpretation": "Both preregistered E7 dates are inside the exact potato crop period and therefore require the Hupsel SWETR=0 PMdirect + SWCF=2 + SWINTER=3 Rutter application route."
+  },
+  "current_production_boundary": {
+    "authority": "PPA-WU03",
+    "admitted_et": "SWETR=1 restricted reference-ET authority only",
+    "admitted_interception": "SWINTER=0 only",
+    "excluded": [
+      "SWETR=0 PMdirect normal-input derivation",
+      "SWINTER=3 Rutter canopy-state ownership"
+    ],
+    "production_owner": "PPA-WU01"
+  },
+  "preregistered_stop_rule": "If the production participant cannot expose a prescribed-head coupling trial on an authoritative selected interval, record a component-domain failure; do not retune or replace the selected date."
+}
