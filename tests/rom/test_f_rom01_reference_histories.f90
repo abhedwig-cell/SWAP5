@@ -275,6 +275,18 @@ contains
 
     call solver%solve(req, workspace, result)
 
+    if (result%status /= SW_SOLVE_CONVERGED) then
+       write(*,'(*(g0))') 'F_ROM01_SOLVER_FAILURE|LABEL=',trim(label), &
+            '|STATUS=',result%status,'|RETRY=',result%retry_advised, &
+            '|ROUTE=',trim(result%diagnostics%route), &
+            '|NONLINEAR_ITERS=',result%diagnostics%nonlinear_iterations, &
+            '|JACOBIAN_BUILDS=',result%diagnostics%jacobian_builds, &
+            '|LINEAR_SOLVES=',result%diagnostics%linear_solves, &
+            '|BACKTRACK=',result%diagnostics%backtracking_attempts, &
+            '|INTERNAL_RETRIES=',result%diagnostics%internal_retries, &
+            '|MASS_AVAILABLE=',result%integrated_mass_balance_residual_available
+    end if
+
     call require(result%status == SW_SOLVE_CONVERGED, trim(label)//' converged')
     call require(trim(result%diagnostics%route) == 'legacy-reference-bound', trim(label)//' reference route')
     call require(result%integrated_mass_balance_residual_available, trim(label)//' mass diagnostic available')
