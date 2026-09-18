@@ -1,64 +1,82 @@
 # PUB-ME D1 execution checkpoint
 
-Status: **D1_EXECUTION_NOT_YET_STARTED__DESIGN_FROZEN**
+Status: **D1_A_ADMITTED__D1_B_ACTIVE_ON_SEPARATE_PR**
 
 Checkpoint date: 2026-09-18
 
-## Authority
+## Publication authority
 
 - publication PR: #199
 - publication branch: `work/pub-me-literature-pass2`
-- publication head before this checkpoint: `b2ebe5825b3c54d9d4eaefe44c33f4c859fa20aa`
-- stacked base: `work/pub-gc-scientific-contract@2d0a9ea26dbb6048e60e67dcf6882a1b03664d61`
+- frozen preregistration head: `b2ebe5825b3c54d9d4eaefe44c33f4c859fa20aa`
+- D1-D6 design blob: `61f7133f19cc900971aa454b7bdb16a254468eda`
 
-## Frozen design already available
+The preregistered D1-D6 design, B0/B1/B2 comparator hierarchy, interpretation classes and falsification rule remain frozen.
 
-- `PUB-ME_D1_D6_PREREGISTERED_EXPERIMENT_MATRIX.md`
-- primary comparison: strong conventional scientific-software baseline B1 versus B1 + explicit transition-authority oracles B2
-- D1 defect family: rejected candidate mutates committed physical state
-- required rejection point: after real physical solver execution
-- production/reference physics must not be modified to create the fault
-- fault injection must remain qualification-only and must never become production authority
+## Reconciled live repository state
 
-## Execution objective
+Current canonical at this checkpoint:
 
-Build the smallest reproducible D1 prospective experiment around an already-qualified post-solver rejection route.
+`integration/f-ci-canonical@7b864853ca22baa73141b2dec9ed2f3915ef520d`
 
-The experiment must provide:
+### D1-A — admitted result
 
-1. matched clean control;
-2. test-only faulty route that leaks one candidate-state mutation into committed state before a later rejection;
-3. identical physical initial state, forcing, solver route and rejection condition between control and mutant except for the injected leak;
-4. B1 observation set recorded without consulting B2-only transition-authority assertions;
-5. B2 direct committed-state immutability oracle;
-6. downstream continuation check only after the immediate detection comparison has been frozen.
+PR #202 — `PUB-ME D1: test candidate-to-accepted structural authority`
 
-## Bounded execution plan
+- state: merged
+- qualified head: `26901ff09ec2825fb7d8941d4720b3b9b56b196d`
+- merge commit: `dba238b4b20551dcc36e9121ffe25f19a5b1ac0e`
+- classification: **STRUCTURAL_PREVENTION**
 
-### D1-A RECONCILE
-Identify the currently admitted post-solver rejection test/harness and exact production dependencies. Do not recover the whole repository.
+Preregistered probes established:
 
-### D1-B DESIGN BINDING
-Freeze the exact clean fixture, mutation location, observation points and B1/B2 oracle partition before compiling the mutant.
+1. the real P1E02 Reference route executed full and two-half physical trajectories before temporal rejection;
+2. public-API direct write-through to authoritative committed physical storage is structurally unavailable because that storage is private;
+3. public state snapshots are clone-isolated; mutating the snapshot does not mutate authoritative committed state;
+4. revision/time and accepted publication remained unchanged in the bounded rejection control.
 
-### D1-C IMPLEMENT
-Add qualification-only test/harness code and a dedicated workflow. No `src/**` or `reference/**` mutation is permitted unless a separate scientific decision explicitly reopens scope.
+Important boundary:
 
-### D1-D QUALIFY
-Run matched control and mutant under O0/O2. Persist raw markers and classify detection as:
-- NO_INCREMENTAL_VALUE
-- EARLIER_DETECTION
-- UNIQUE_DETECTION
-- STRUCTURAL_PREVENTION
-- INVALID_EXPERIMENT
+D1-A does **not** establish B2 `UNIQUE_DETECTION` or `EARLIER_DETECTION` against B1 because the invalid write-through operation is structurally unrepresentable through the admitted interface.
 
-### D1-E CLOSE
-Freeze result and nonclaims before any D2 work begins.
+## D1-B — active prospective mutant study
 
-## Timeout recovery rule
+PR #220 — `PUB-ME D1: rejected-state leakage prospective experiment`
 
-After every completed substage above, update this checkpoint before starting the next tool-heavy step. A timeout must resume from the latest recorded substage and only reconcile relevant delta.
+- state: open draft
+- base: `integration/f-ci-canonical@7b864853ca22baa73141b2dec9ed2f3915ef520d`
+- active head at reconciliation: `f174dca6c1e9d0729901fafd5933146f7635dc4f`
+- purpose: execute an explicit qualification-only rejected-state contamination mutant while preserving production/reference authority
+- production/reference changes: none intended
 
-## Current next permitted action
+The D1-B runner is designed to compare:
 
-Search only for the admitted post-solver rejection route and its exact test/runner dependencies, then update this checkpoint with the chosen fixture.
+- matched clean transaction execution;
+- a qualification-only mutant that makes the rejected transaction state differ;
+- B1 observations such as accepted ledger/mass and downstream continuation;
+- B2 immediate rejection-boundary state-authority detection;
+- replay of the same mutant through the existing full-stack P1E02 route to test whether the admitted production architecture structurally contains the fault.
+
+The runner predeclares classification as:
+- `EARLIER_DETECTION` if downstream accepted endpoint later diverges while B2 detects contamination immediately;
+- `UNIQUE_DETECTION_WITHIN_BOUNDED_CONTINUATION` if the immediate B2 oracle detects contamination but the bounded downstream B1 observation remains indistinguishable;
+- plus full-stack structural-prevention evidence from the admitted production route.
+
+No D1-B scientific result is frozen in this checkpoint. The open PR must be read from its CI/result records before interpretation.
+
+## Timeout-safe next action
+
+Do **not** rebuild D1.
+
+Only:
+
+1. inspect PR #220 current head and workflow/result state;
+2. if a stable result already exists, persist a short D1-B result checkpoint on this publication branch;
+3. if the PR is still running or blocked, record that exact state and stop at that boundary;
+4. do not begin D2 until D1-B has an immutable result/nonclaim record.
+
+## Recovery rule
+
+After every meaningful D1-B stage, update this checkpoint before any further tool-heavy action.
+
+A timeout must resume from this file and inspect only PR #220 delta since the recorded head.
