@@ -4,7 +4,7 @@
   "work_unit": "ROM-0",
   "phase": "FROZEN_BEFORE_FIRST_EXECUTION",
   "predecessor_preregistration": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
-  "reason": "Analytic preflight of the exact SWBOTB=5 lower-boundary gradient showed that the original multiplicative head probe does not guarantee opposite lower-boundary flow directions for both frozen materials before any ROM-0 trajectory evidence exists.",
+  "reason": "Analytic preflight of the exact SWBOTB=5 lower-boundary gradient showed that the original multiplicative head probe does not guarantee opposite lower-boundary flow directions for both frozen materials before any ROM-0 trajectory evidence exists. The preflight also fixes the published terminal-outward sign convention before execution.",
   "exact_reference_relation": {
     "source": "src/legacy/b1_10_port/headcalc.f90",
     "relation": "head_gradient_bottom = (h_N - hbot) / disnod_bottom + 1",
@@ -24,7 +24,12 @@
       "For the homogeneous fixed geometry, node spacing equals dz_cm.",
       "At the uniform initial state, rise gives head_gradient_bottom = -1 and fall gives +3 independent of material h0.",
       "The correction is geometry-scaled rather than material-head-scaled and is therefore a cleaner cross-material direction probe."
-    ]
+    ],
+    "terminal_outward_flux_expectation": {
+      "rise": "NEGATIVE (water enters the soil column from the lower boundary)",
+      "fall": "POSITIVE (water leaves the soil column through the lower boundary)",
+      "authority": "fmr_serialized_advance publishes terminal_bottom_outward_flux_native = -solve_result%bottom_flux"
+    }
   },
   "unchanged": [
     "materials B01 and B14",
