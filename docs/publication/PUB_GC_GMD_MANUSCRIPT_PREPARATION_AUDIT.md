@@ -18,7 +18,7 @@ Checks:
 - explicit SWAP5 publication-archive licence: BLOCKED_L1;
 - persistent exact-version archive/PID: BLOCKED_AFTER_R1_L1;
 - author/affiliation/correspondence/contribution metadata: BLOCKED_AUTHOR_METADATA;
-- F1–F7 export mapping: PASS_PLAN;
+- F1–F7 export mapping: PASS; validated PDF candidate artifact run 35405142243 / artifact 10571902714;
 - direct SVG production upload avoided: PASS;
 - no claim that E7 executed MODFLOW coupling windows: PASS.
 
