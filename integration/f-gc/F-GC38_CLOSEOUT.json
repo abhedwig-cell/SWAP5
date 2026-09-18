@@ -4,7 +4,7 @@
   "title": "MODFLOW6 Prepared-Solve Iterative Backend — Closeout",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND",
   "canonical_admission": {
     "production_admission_head": "ecb92c0ea5217a63626c8d54e2130e2eac284cb4",
     "preimage": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
@@ -49,5 +49,11 @@
     "no whole-window MODFLOW rollback/reconstruction",
     "no Ribasim or irrigation"
   ],
-  "next_permitted_action": "After closeout qualification, reconcile F-GC39 prepared-solve coupling-service contract against closed canonical F-GC38 and authoritative F-GC37 internal-service ownership. Do not move predictor/corrector into iMOD Coupler."
+  "next_permitted_action": "Reconcile F-GC39 prepared-solve coupling-service contract against closed canonical F-GC38 and authoritative F-GC37 internal SWAP5-MODFLOW coupling-service ownership. Predictor/corrector remains below iMOD Coupler.",
+  "closeout_qualification": {
+    "metadata_head": "5fff255b879851b31b58f9e7f40499c7733bedd0",
+    "workflow_run": 35314018112,
+    "workflow_job": 105501708253,
+    "conclusion": "success"
+  }
 }

@@ -5,7 +5,7 @@
   "title": "MODFLOW6 Prepared-Solve Iterative Backend Canonical Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "CLOSE",
-  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_F_GC38",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
@@ -57,7 +57,7 @@
       "whole-window rollback/reconstruction"
     ]
   },
-  "next_permitted_action": "Qualify this metadata-only F-GC38 admission/closeout head with F-CI104. If green, persist final closeout evidence, requalify the final status head, then non-force fast-forward canonical to the closed state.",
+  "next_permitted_action": "Qualify this exact final closeout status head. If green and canonical remains at the F-GC38 production-admission ancestor, non-force fast-forward canonical to this closed metadata state. Then reconcile F-GC39 against closed canonical F-GC38 and authoritative F-GC37 internal-service ownership.",
   "admission_gate": {
     "qualified_head": "de9ac14dd43fe652ee7c5125f41bdec886a6ecc4",
     "workflow_run": 35313751143,
@@ -83,5 +83,11 @@
     "exact_status_head_run": 35313853761,
     "exact_status_head_job": 105501217871,
     "exact_status_head_conclusion": "success"
+  },
+  "closeout_gate": {
+    "qualified_head": "5fff255b879851b31b58f9e7f40499c7733bedd0",
+    "workflow_run": 35314018112,
+    "workflow_job": 105501708253,
+    "conclusion": "success"
   }
 }
