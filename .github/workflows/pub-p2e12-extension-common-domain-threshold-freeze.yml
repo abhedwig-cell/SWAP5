@@ -1,0 +1,25 @@
+name: PUB-P2E12 extension common-domain threshold freeze
+
+on:
+  push:
+    branches:
+      - work/pub-p2e12-extension-common-domain-threshold-freeze
+    paths:
+      - 'docs/publication/P2E12_EXTENSION_COMMON_DOMAIN_THRESHOLD_FREEZE_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e12_extension_common_domain_threshold_freeze.f90'
+      - 'tests/publication/run_pub_p2e12_extension_common_domain_threshold_freeze.sh'
+      - '.github/workflows/pub-p2e12-extension-common-domain-threshold-freeze.yml'
+  workflow_dispatch:
+
+jobs:
+  threshold-freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute Reference-only common-domain threshold freeze
+        run: bash tests/publication/run_pub_p2e12_extension_common_domain_threshold_freeze.sh
