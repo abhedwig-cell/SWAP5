@@ -2,14 +2,26 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS20",
   "title": "Production adaptive K2 to K4 RossFast certificate",
-  "phase": "RECONCILE",
-  "status": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "phase": "QUALIFY",
+  "status": "IMPLEMENTED_PENDING_EXECUTION",
   "branch": "work/f-ross20-production-adaptive-certificate",
   "source_head": "094c113f77fe18df049af51629976a05bccc02ee",
-  "production_scope": [
-    "src/solver/mod_rossfast_d3r_table_kernel.f90",
-    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
-  ],
-  "verdict": "READY_TO_IMPLEMENT_EXACT_RESEARCH_PROMOTION",
-  "next_permitted_action": "Transplant exact F-ROSS19 adaptive semantics into production files only; then qualify before any admission."
+  "production_mutation": {
+    "kernel_blob": "647afbaab5e792ba4fd51a19a79fe26d44f409b1",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "preserved_authorities": {
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "f_ross19_result_blob": "6d25bc6a4cdbc9c7f525758fa146893ec035a4b0",
+    "f_ross13_transient_result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0"
+  },
+  "qualification": {
+    "provider_preservation": "pending",
+    "all_material_216_case": "pending",
+    "production_research_identity": "pending",
+    "shared_host_performance": "pending"
+  },
+  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
+  "next_permitted_action": "Execute F-ROSS20 workflow; fix only implementation/harness defects without changing frozen adaptive semantics or gates."
 }
