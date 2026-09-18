@@ -1,0 +1,25 @@
+name: F-VQ112 F-GC39 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq112-fgc39-coupling-service-independent
+    paths:
+      - 'tests/fvq/test_fvq112_fgc39_independent.py'
+      - 'tests/fvq/run_fvq112_fgc39_independent.sh'
+      - 'qualification/F-VQ112_STATUS.json'
+      - '.github/workflows/f-vq112-fgc39-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independent F-GC39 contract qualification
+        run: bash tests/fvq/run_fvq112_fgc39_independent.sh
