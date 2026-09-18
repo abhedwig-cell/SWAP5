@@ -1,0 +1,31 @@
+name: PUB-GC E7 canonical worktree bundle
+
+on:
+  push:
+    branches:
+      - work/pub-gc-e7-hupsel-realistic
+    paths:
+      - ".github/workflows/pub-gc-e7-worktree-bundle.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bundle exact E7 worktree
+        run: |
+          set -euo pipefail
+          tar --exclude=.git -czf /tmp/SWAP5-pub-gc-e7-worktree.tar.gz .
+          sha256sum /tmp/SWAP5-pub-gc-e7-worktree.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: swap5-pub-gc-e7-worktree
+          path: /tmp/SWAP5-pub-gc-e7-worktree.tar.gz
+          if-no-files-found: error
+          retention-days: 1
