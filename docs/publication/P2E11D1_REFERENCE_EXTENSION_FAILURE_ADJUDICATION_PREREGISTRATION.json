@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.publication.p2e11d1-reference-extension-failure-adjudication.v1",
+  "workunit": "PUB-P2E11D1",
+  "phase": "PREREGISTERED_DIAGNOSTIC_AFTER_FROZEN_NEGATIVE_PRIMARY_RESULT",
+  "publication_owner": "PUB-SQ",
+  "parent_result": {
+    "path": "docs/publication/P2E11_REFERENCE_MATERIAL_EXTENSION_CALIBRATION_RESULT.json",
+    "blob": "0d186a17c5b48f8287fde0d01c8a668aab064c1d",
+    "verdict": "BLOCKED_EXTENSION_REFERENCE_DOMAIN_176_OF_180_VALID"
+  },
+  "purpose": "Identify which already-predeclared Reference validity predicate failed in the four P2E11 invalid cases, without changing schedule, tolerances, physics, case membership or candidate exposure.",
+  "cases": [
+    {
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "trajectory_to_inspect": "HALF2"
+    },
+    {
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "trajectory_to_inspect": "HALF2"
+    },
+    {
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "trajectory_to_inspect": "COARSE"
+    },
+    {
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "trajectory_to_inspect": "COARSE"
+    }
+  ],
+  "fixed_schedule": {
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032
+  },
+  "fixed_forcing": {
+    "DRYING": {
+      "top_flux_over_initial_K0": -0.005,
+      "bottom_flux_over_initial_K0": -0.019
+    },
+    "NOMINAL": {
+      "top_flux_over_initial_K0": 0.01,
+      "bottom_flux_over_initial_K0": -0.004
+    }
+  },
+  "predicates_to_report": [
+    "solver_status_is_converged",
+    "route_is_legacy_reference_bound",
+    "integrated_mass_available_and_finite",
+    "absolute_integrated_mass_residual_le_1e-12_cm",
+    "native_balance_rate_available_and_finite",
+    "candidate_shape_valid",
+    "candidate_state_finite",
+    "pressure_head_inside_declared_E0_domain",
+    "water_content_inside_material_theta_bounds"
+  ],
+  "firewall": {
+    "alternative_timestep_execution_allowed": false,
+    "threshold_change_allowed": false,
+    "case_removal_allowed": false,
+    "reference_source_change_allowed": false,
+    "production_source_change_allowed": false,
+    "rossfast_numerical_solver_compilation_allowed": false,
+    "rossfast_numerical_solver_execution_allowed": false,
+    "repair_attempt_allowed": false
+  },
+  "interpretation": "Diagnostic evidence may classify the Reference-domain blocker. It cannot make P2E11 complete, create thresholds, or authorize RossFast.",
+  "next_permitted_action": "Implement and execute only the four-case fixed-schedule Reference diagnostic."
+}
