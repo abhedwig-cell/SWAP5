@@ -1,0 +1,45 @@
+name: F-ROM1A reachable-state library
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM1A_*'
+      - 'integration/f-rom/F-ROM0_STATUS.json'
+      - 'docs/science/F-ROM1A_*'
+      - 'tests/rom/test_f_rom1a_reachable_state_library.f90'
+      - 'tests/rom/analyze_f_rom1a_reachable_state_library.py'
+      - 'tests/rom/run_f_rom1a_reachable_state_library.sh'
+      - '.github/workflows/f-rom1a-reachable-state-library.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom1a-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Generate and repeat full preregistered B01 library
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM1A_EVIDENCE
+          F_ROM1A_EVIDENCE_DIR="$PWD/F-ROM1A_EVIDENCE"             bash tests/rom/run_f_rom1a_reachable_state_library.sh | tee F-ROM1A_EVIDENCE/gate.txt
+      - name: Preserve ROM1A library and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom1a-${{ github.run_id }}
+          path: F-ROM1A_EVIDENCE
+          if-no-files-found: warn
