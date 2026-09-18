@@ -3,7 +3,7 @@ module mod_fmr_serialized_reference_backend
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
-       TX_TEMPORAL_MODEL_CERTIFICATE
+       TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
@@ -305,6 +305,7 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    logical :: reference_floor_qualification_active = .false.
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
@@ -331,6 +332,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
+    procedure, public :: run_reference_floor_trial => fmr_serialized_backend_run_reference_floor_trial
     procedure, public :: observation => fmr_serialized_backend_observation
     procedure, public :: set_bottom_thermal_carrier_enabled => fmr_serialized_backend_set_bottom_thermal_carrier_enabled
     procedure, public :: bottom_thermal_snapshot => fmr_serialized_backend_bottom_thermal_snapshot
@@ -579,6 +581,7 @@ contains
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
+    self%model%reference_floor_qualification_active = .false.
     self%model%bottom_thermal_carrier_active = .false.
     self%model%bottom_thermal_carrier_valid = .true.
     self%bottom_thermal_requested = .false.
@@ -620,6 +623,7 @@ contains
       call self%model%soil_water_selection%configure(requested_model_key, ok, status)
     end if
     self%initialized = ok
+    self%model%reference_floor_qualification_active = .false.
   end subroutine fmr_serialized_backend_configure_soil_water_model
 
   subroutine fmr_serialized_backend_set_bottom_thermal_carrier_enabled(self, enabled)
@@ -811,6 +815,36 @@ contains
     call fmr_discard_candidate(self%kernel, candidate, diagnostics)
   end subroutine fmr_serialized_backend_discard_trial_candidate
 
+  subroutine fmr_serialized_backend_run_reference_floor_trial(self, column, template, parameters, committed, forcing, &
+                                                               config, t0, t1, checkpoint, result, candidate, diagnostics)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    type(canonical_numerical_config_t), intent(in) :: config
+    real(real64), intent(in) :: t0, t1
+    type(kernel_checkpoint_t), intent(in) :: checkpoint
+    type(kernel_result_t), intent(out) :: result
+    type(kernel_candidate_state_t), intent(out) :: candidate
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+    type(canonical_numerical_config_t) :: floor_config
+
+    if (.not. self%initialized .or. config%transaction%temporal_mode /= &
+        TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+
+    floor_config = config
+    floor_config%transaction%max_retries = 0
+    self%model%reference_floor_qualification_active = .true.
+    call fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, floor_config, &
+         t0, t1, checkpoint, result, candidate, diagnostics)
+    self%model%reference_floor_qualification_active = .false.
+  end subroutine fmr_serialized_backend_run_reference_floor_trial
+
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -841,6 +875,21 @@ contains
     self%model%temporal_indicator_budget = 0.0_real64
     self%model%trajectory_worker_id = -1
     self%model%trajectory_provenance_valid = .false.
+    if (config%transaction%temporal_mode == TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION) then
+      if (.not. self%model%reference_floor_qualification_active .or. &
+          .not. self%model%soil_water_selection%uses_reference() .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          parameters%bottom_mode /= 2 .or. parameters%root_extraction_active .or. &
+          parameters%drainage_response_active .or. parameters%macropore_active .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    else if (self%model%reference_floor_qualification_active) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
     if (column%column_id > 0_int64 .and. column%column_id <= int(huge(0), int64)) then
       self%model%trajectory_worker_id = int(column%column_id)
       self%model%trajectory_provenance_valid = self%model%trajectory_worker_id > 0
@@ -1012,6 +1061,11 @@ contains
     logical :: ok
     ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
          self%state_profile_admitted
+    if (numerical_config%transaction%temporal_mode == TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION) then
+      ok = ok .and. self%reference_floor_qualification_active .and. self%soil_water_selection%uses_reference()
+    else
+      ok = ok .and. .not. self%reference_floor_qualification_active
+    end if
     if (self%fixed_weir_surface_water_active) then
       ok = ok .and. self%fixed_weir_surface_water_configured .and. .not. self%temporal_indicator_history_enabled .and. &
            numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF
