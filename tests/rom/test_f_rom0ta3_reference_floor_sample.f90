@@ -95,7 +95,7 @@ contains
       t1=real(i,real64)*seed_dt
       forcing%top_flux=qeq
       forcing%bottom_flux=qeq
-      call sample_and_commit('SEED',i,t0,t1,parameters,forcing,column,template,backend,committed,step_ok, &
+      call sample_and_commit(material_id,case_id,'SEED',i,t0,t1,parameters,forcing,column,template,backend,committed,step_ok, &
            cumulative_top_exchange,cumulative_bottom_exchange,reset_exchange=(i==1))
       if(.not.step_ok) then
         failures=failures+1
@@ -112,7 +112,7 @@ contains
     forcing%bottom_flux=qeq
     do i=1,npert
       t1=real(seed_intervals,real64)*seed_dt+real(i,real64)*perturb_dt
-      call sample_and_commit('PERT',i,t0,t1,parameters,forcing,column,template,backend,committed,step_ok, &
+      call sample_and_commit(material_id,case_id,'PERT',i,t0,t1,parameters,forcing,column,template,backend,committed,step_ok, &
            cumulative_top_exchange,cumulative_bottom_exchange)
       if(.not.step_ok) then
         failures=failures+1
@@ -138,9 +138,9 @@ contains
          '|DT=',perturb_dt,'|FINAL_REV=',committed%current_revision(),'|FINAL_T=',t0
   end subroutine run_trajectory
 
-  subroutine sample_and_commit(phase,local_step,a,b,parameters,forcing,column,template,backend,committed,step_ok, &
+  subroutine sample_and_commit(material_id,case_id,phase,local_step,a,b,parameters,forcing,column,template,backend,committed,step_ok, &
                                cumulative_top_exchange,cumulative_bottom_exchange,reset_exchange)
-    character(len=*),intent(in) :: phase
+    character(len=*),intent(in) :: material_id,case_id,phase
     integer,intent(in) :: local_step
     real(real64),intent(in) :: a,b
     type(fmr_b110_physical_parameters_t),intent(in) :: parameters
@@ -213,9 +213,9 @@ contains
       call require(all(ieee_is_finite(physical%pressure_head)),'TA3 finite candidate heads')
       call require(all(ieee_is_finite(physical%water_content)),'TA3 finite candidate theta')
       if(trim(phase)=='PERT') then
-        call emit_state_summary('POINT', '', '', dt, local_step, b-real(seed_intervals,real64)*seed_dt, physical,parameters, &
+        call emit_state_summary('POINT',material_id,case_id,dt,local_step,b-real(seed_intervals,real64)*seed_dt,physical,parameters, &
              cumulative_top_exchange,cumulative_bottom_exchange,committed%current_revision()+1_int64)
-        call emit_node_state(local_step,b-real(seed_intervals,real64)*seed_dt,dt,physical)
+        call emit_node_state(material_id,case_id,local_step,b-real(seed_intervals,real64)*seed_dt,dt,physical)
       end if
     class default
       error stop 'F_ROM0TA3_FAIL unexpected candidate state type'
@@ -251,14 +251,15 @@ contains
          '|TOP_EXCHANGE=',top_exchange,'|BOTTOM_OUTWARD_EXCHANGE=',bottom_exchange
   end subroutine emit_state_summary
 
-  subroutine emit_node_state(step,trel,dt,physical)
+  subroutine emit_node_state(material_id,case_id,step,trel,dt,physical)
+    character(len=*),intent(in) :: material_id,case_id
     integer,intent(in) :: step
     real(real64),intent(in) :: trel,dt
     type(fmr_b110_physical_state_t),intent(in) :: physical
     integer :: k
     do k=1,physical%active_nodes
-      write(*,'(*(g0))') 'F_ROM0TA3_NODE|DT=',dt,'|STEP=',step,'|TREL=',trel,'|NODE=',k, &
-           '|H=',physical%pressure_head(k),'|THETA=',physical%water_content(k)
+      write(*,'(*(g0))') 'F_ROM0TA3_NODE|MATERIAL=',trim(material_id),'|CASE=',trim(case_id), &
+           '|DT=',dt,'|STEP=',step,'|TREL=',trel,'|NODE=',k,'|H=',physical%pressure_head(k),'|THETA=',physical%water_content(k)
     end do
   end subroutine emit_node_state
 
