@@ -1,0 +1,55 @@
+name: F-ROM0R accepted-domain seed
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'docs/science/F-ROM0*'
+      - 'integration/f-rom/F-ROM0*'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom0r-accepted-domain-seed.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/science/F-ROM0*'
+      - 'integration/f-rom/F-ROM0*'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom0r-accepted-domain-seed.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0r-r1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  r1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered R1 accepted seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0R_EVIDENCE
+          F_ROM0R_EVIDENCE_DIR="$PWD/F-ROM0R_EVIDENCE" \
+            bash tests/rom/run_f_rom0r_gravity_steady_seed.sh | tee F-ROM0R_EVIDENCE/gate.txt
+      - name: Preserve R1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0r-r1-${{ github.run_id }}
+          path: F-ROM0R_EVIDENCE
+          if-no-files-found: warn
