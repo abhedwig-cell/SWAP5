@@ -174,7 +174,10 @@ contains
     if(.not.initialized)return
     call participant%trial_from_origin(corrector_backend,column,template,corrector_parameters,committed,materializer, &
          corrector_config,datum,window,real(head_m,real64),last_trial,status)
-    if(status/=GW_SWAP_PARTICIPANT_OK .or. .not.last_trial%valid)return
+    if(status/=GW_SWAP_PARTICIPANT_OK .or. .not.last_trial%valid)then
+      fgc44_swap_trial_c=int(status,c_int)
+      return
+    end if
     q_swap_m_per_s=last_trial%q_swap_m_per_s
     fgc44_swap_trial_c=0_c_int
   end function fgc44_swap_trial_c
