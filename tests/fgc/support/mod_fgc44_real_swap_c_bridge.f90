@@ -44,6 +44,7 @@ module mod_fgc44_real_swap_c_bridge
 
   real(real64), parameter :: H0_CM=-75.0_real64
   real(real64), parameter :: DURATION_DAY=1.0e-4_real64
+  real(real64), save :: active_duration_day=DURATION_DAY
   real(real64), parameter :: TOL=1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
@@ -97,8 +98,18 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
+  public :: fgc44_set_duration_c
 
 contains
+
+  integer(c_int) function fgc44_set_duration_c(duration_day) bind(C,name="fgc44_set_duration_c")
+    real(c_double), value, intent(in) :: duration_day
+    fgc44_set_duration_c=1_c_int
+    if(.not.ieee_is_finite(real(duration_day,real64)))return
+    if(duration_day<=0.0_c_double)return
+    active_duration_day=real(duration_day,real64)
+    fgc44_set_duration_c=0_c_int
+  end function fgc44_set_duration_c
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
@@ -136,7 +147,7 @@ contains
     if(.not.ok)return
 
     datum%available=.true.; datum%datum_id=540044_int64; datum%bottom_boundary_elevation_m=0.0_real64
-    window%t0=0.0_real64; window%t1=DURATION_DAY
+    window%t0=0.0_real64; window%t1=active_duration_day
     call predictor_backend%initialize(top)
     call corrector_backend%initialize(top)
     call materializer%initialize(base_forcing)
@@ -150,7 +161,7 @@ contains
     if(.not.result%accepted_trajectory_direction%available)return
 
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
-    call bind_b110_default_mvg_provider(constitutive,hp,DURATION_DAY)
+    call bind_b110_default_mvg_provider(constitutive,hp,active_duration_day)
     call materialize_solver_view(candidate,predictor_state,solver_parameters,ok); if(.not.ok)return
     call build_modflow6_swap_predictor_tangent_endpoint(predictor_state,solver_parameters,constitutive, &
          result%accepted_trajectory_direction,qeq,datum,.false.,.false.,.false.,.false.,endpoint,status)
@@ -408,7 +419,7 @@ contains
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,active_duration_day)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     physical%active_nodes=numnod; allocate(physical%pressure_head(numnod),physical%water_content(numnod))
     physical%pressure_head=heads; physical%water_content=water; physical%ponding_depth=0.0_real64; physical%groundwater_level=-2.0_real64
@@ -452,7 +463,7 @@ contains
     do i=2,numnod
       heads(i)=heads(i-1)+p%node_distance(i)
     end do
-    call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
+    call bind_b110_default_mvg_provider(provider,hp,active_duration_day)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod),conductivity(numnod),qbot, &
          0.5_real64*p%dz(numnod),datum,face,status)
