@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.publication.p2e11-reference-material-extension-calibration-result.v1",
+  "workunit": "PUB-P2E11",
+  "phase": "COMPLETE_BLOCKED_EXTENSION_REFERENCE_DOMAIN",
+  "branch": "work/pub-p2e11-reference-material-extension-calibration",
+  "preregistration_head": "82a7cfebd434ce9e29d0dc1ddb4b4504430bb3d3",
+  "execution_head": "cd7449dbd4e1c4805bccc582f52e5998fdeb7989",
+  "canonical_base": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "workflow": {
+    "run": 35289302000,
+    "job": 105428462774,
+    "conclusion": "success",
+    "note": "Workflow success means the preregistered harness executed correctly; the scientific outcome is independently BLOCKED."
+  },
+  "frozen_design": {
+    "material_count": 30,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 180,
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "grid": "16 homogeneous cells x 10 cm",
+    "solver": "Reference only"
+  },
+  "execution": {
+    "attempted_case_count": 180,
+    "valid_case_count": 176,
+    "invalid_case_count": 4,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_scientific_output_identical": true,
+    "O0_O2_output_sha256": "821615bcc925d0e239cd61aa4ea4418b2e56cd414fb92edeac583ad05e6b6d45",
+    "rossfast_numerical_solver_executed": false,
+    "threshold_frozen": false,
+    "reference_tolerance_changed": false
+  },
+  "invalid_cases": [
+    {
+      "case": 5,
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "failure_stage": "HALF2_REFERENCE_GATE"
+    },
+    {
+      "case": 6,
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "failure_stage": "HALF2_REFERENCE_GATE"
+    },
+    {
+      "case": 23,
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "failure_stage": "COARSE_REFERENCE_GATE"
+    },
+    {
+      "case": 24,
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "failure_stage": "COARSE_REFERENCE_GATE"
+    }
+  ],
+  "pattern": {
+    "affected_materials": [
+      "B02",
+      "B05"
+    ],
+    "affected_Se": [
+      0.98
+    ],
+    "affected_forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "forcing_specific": false,
+    "optimization_specific": false,
+    "interpretation": "The fixed six-material P2E09 calibration schedule does not yield a complete Reference-valid domain when transferred unchanged to all thirty extension materials."
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "The prospective material-axis extension did not reproduce a complete 180-case Reference calibration domain at the frozen 0.0064 versus 0.0032+0.0032 day schedule.",
+      "The failure is structured: only B02 and B05 at Se=0.98 fail, and both forcing classes fail for each affected material.",
+      "The negative result is reproducible across O0 and O2."
+    ],
+    "not_supported": [
+      "No extension-material admissibility thresholds may be frozen from this incomplete dataset.",
+      "No Reference-versus-RossFast 30-material extension matrix is authorized.",
+      "The result does not show RossFast failure or success in any of these 180 cases.",
+      "The result does not justify removing B02/B05 or Se=0.98, changing the timestep, or relaxing Reference tolerances."
+    ]
+  },
+  "firewall": {
+    "rossfast_executed": false,
+    "case_removed": false,
+    "timestep_reselected": false,
+    "reference_tolerance_relaxed": false,
+    "production_or_reference_source_changed": false,
+    "posthoc_threshold_created": false
+  },
+  "verdict": "BLOCKED_EXTENSION_REFERENCE_DOMAIN_176_OF_180_VALID",
+  "next_permitted_action": "Run a diagnostic-only fixed-schedule adjudication of the four invalid Reference cases to identify which predeclared validity predicate fails. Do not search alternative timesteps, remove cases, freeze thresholds or execute RossFast."
+}
