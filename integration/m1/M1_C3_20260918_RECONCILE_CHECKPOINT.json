@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "capability": "Legacy Hupsel file run to typed application mapping",
+  "phase": "RECONCILE",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "subject_head_before_checkpoint": "88acc291ba06d15af8f3eb19480f64eca06c6a36",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "62dfb5a52f665e490830dfb320167786cf67f63e",
+    "fapp04_admission_commit": "d223b7ab4ed297194c209f85d6b51bef86b79959",
+    "relevant_delta_assessment": "NO_INVALIDATING_FAPP04_OR_B1_11_AUTHORITY_DELTA_DETECTED"
+  },
+  "reused_immutable_evidence": [
+    "integration/m1/M1_C3_B1_11_APPLICATION_TRACE_PREREGISTRATION.json",
+    "integration/m1/M1_C3_B1_11_IDENTITY_BASELINE_ACQUIRE_PASS.json",
+    "integration/m1/M1_C3_POST_FAPP04_RECONCILE.json",
+    "F-APP04 owner qualification run 35275345029",
+    "F-VQ103 independent qualification run 35275737534",
+    "F-APP04 canonical admission PR #192 / merge d223b7ab4ed297194c209f85d6b51bef86b79959"
+  ],
+  "dependency_checks": {
+    "fapp04_dynamic_top_binding_blob": "a6e1ed43bb9ee7cb13d088668c3874a11877980a",
+    "fapp04_root_binding_blob": "89d2d42e85c51d0b174d0382dabd3ec8f7417b68",
+    "fapp04_surface_binding_blob": "1a67d8a25727c2e821dd11e4853aa925e43cd95b",
+    "all_three_match_admission_ready_evidence": true,
+    "b1_11_reconstruction_contract_present_on_canonical": true,
+    "b1_11_manifest_pin": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "qualification": {
+    "new_execution_attempted": false,
+    "reason": "The next preregistered step requires executing an instrumented disposable exact-B1.11/Hupsel reconstruction. The GitHub connector can inspect and mutate repository state but does not provide a repository runner or shell for this exact external archive-backed execution.",
+    "existing_baseline_verdict": "PASS_B1_11_IDENTITY_AND_UNINSTRUMENTED_HUPSEL_BASELINE"
+  },
+  "verdict": "RECONCILED_READY_FOR_PREREGISTERED_B1_11_APPLICATION_TRACE_EXECUTION",
+  "m1_c3_pass": false,
+  "m1_overall_pass": false,
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "governance_evidence_only": true
+  },
+  "next_permitted_action": "Execute the already-preregistered observation-only B1.11 Hupsel trace at the six frozen intervals, preserving normalized result.bal/result.blc identity. Persist the observation artifact. Only then narrow and qualify any actually active uncovered application routes before implementing/admitting the legacy file adapter and claiming M1-C3.",
+  "exclusions": [
+    "no repeated broad source recovery",
+    "no inferred SWINTER=3/Rutter or SWCF=2 behavior",
+    "no whole-Hupsel equivalence claim without executable trace",
+    "no M1-C3 or M1 PASS claim before process-by-process application mapping closes"
+  ]
+}
