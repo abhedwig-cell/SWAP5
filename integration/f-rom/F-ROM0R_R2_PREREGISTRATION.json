@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.f-rom0r.r2-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R2",
+  "title": "Symmetric transient flux perturbation from accepted steady seed",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "predecessor": "ROM-0R-R1",
+  "predecessor_result": "integration/f-rom/F-ROM0R_R1_RESULT.json",
+  "purpose": "Demonstrate reproducible accepted transient trajectories by perturbing only one boundary away from the analytically accepted gravity-steady seed, without tuning against results.",
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "geometry": {
+    "nodes": 16,
+    "dz_cm": 10,
+    "depth_cm": 160
+  },
+  "initial_seed": {
+    "effective_saturation": 0.85,
+    "pressure_head_profile": "UNIFORM_MVG_HEAD_AT_SE_0_85",
+    "qeq_expression": "-K(h0)",
+    "seed_intervals_before_perturbation": 2,
+    "seed_interval_day": 0.0016
+  },
+  "perturbation": {
+    "epsilon_fraction_of_k0": 0.01,
+    "fixed_bottom_flux_expression": "qeq",
+    "cases": [
+      {
+        "id": "TOP_PLUS",
+        "top_flux_expression": "qeq + 0.01*K0"
+      },
+      {
+        "id": "TOP_MINUS",
+        "top_flux_expression": "qeq - 0.01*K0"
+      }
+    ],
+    "perturbation_intervals": 8,
+    "base_interval_day": 0.0016,
+    "refined_interval_day": 0.0008,
+    "refined_cases": [
+      "B01:TOP_PLUS",
+      "B14:TOP_PLUS"
+    ],
+    "rationale": "A one-percent dimensionless perturbation is fixed before execution as a small local excitation around the independently accepted steady state. Symmetric signs test whether the accepted state can move in both local storage directions without choosing an amplitude from observed failures."
+  },
+  "required_evidence": [
+    "ALL_SEED_INTERVALS_COMMITTED",
+    "ALL_PERTURBATION_INTERVALS_COMMITTED",
+    "COMPLETE_MASS_ACCOUNTING",
+    "FINITE_ACCEPTED_STATE",
+    "OPPOSITE_SIGN_FINAL_STORAGE_CHANGE_FOR_TOP_PLUS_AND_TOP_MINUS_PER_MATERIAL",
+    "BASE_VS_REFINED_COMMON_TIME_DIFFERENCES_RECORDED"
+  ],
+  "reference_floor_rule": "R2 records temporal-resolution differences for the refined TOP_PLUS cases but does not yet declare the full ROM-0 Reference floor because pressure-head lower-boundary coverage remains unqualified.",
+  "forbidden": [
+    "NO_POST_RESULT_EPSILON_CHANGE",
+    "NO_NUMERICAL_TOLERANCE_CHANGE",
+    "NO_RETRY_BUDGET_CHANGE",
+    "NO_MATERIAL_SUBSTITUTION",
+    "NO_PRODUCTION_SOURCE_MUTATION",
+    "NO_ROM_STATE_CLAIM"
+  ],
+  "close_decisions": [
+    "PROCEED_TO_ROM0R_R3_PRESSURE_BOUNDARY_PREREGISTRATION",
+    "EXPAND_LOCAL_PERTURBATION_DOMAIN",
+    "NO_GO_TRANSIENT_ACCEPTED_DOMAIN"
+  ],
+  "rom1a_authorized": false,
+  "threshold_retuning_after_execution_allowed": false
+}
