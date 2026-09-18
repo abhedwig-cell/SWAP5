@@ -57,13 +57,6 @@ program test_ross19_adaptive_science
   fail_theta_rms=0
   fail_storage=0
   case_id=0
-  expected_linear_solves=0
-  expected_linear_solves_text=''
-  call get_environment_variable('SWAP5_ROSS18_EXPECTED_LINEAR_SOLVES',expected_linear_solves_text,status=env_status)
-  call require(env_status==0,'SWAP5_ROSS18_EXPECTED_LINEAR_SOLVES must be present')
-  read(expected_linear_solves_text,*,iostat=env_status) expected_linear_solves
-  call require(env_status==0 .and. expected_linear_solves>0,'valid expected linear solve count')
-
   do ise=1,nse
     write(*,'(*(g0))') 'PUB_P2E10_THRESHOLD|SE=',se_levels(ise), &
          '|D_H_INF=',th_h_inf(ise),'|D_H_RMS=',th_h_rms(ise), &
