@@ -163,7 +163,7 @@ contains
   end subroutine qualify_input_order_invariance
 
   subroutine qualify_fail_closed_validation()
-    type(groundwater_topology_tile_t) :: tiles(3), bad_tiles(3)
+    type(groundwater_topology_tile_t) :: tiles(3), bad_tiles(3), two_tiles(2)
     type(groundwater_topology_cell_t) :: cells(2), bad_cells(2)
     type(groundwater_topology_t) :: topology
     type(groundwater_direct_tile_binding_t), allocatable :: bindings(:)
@@ -211,8 +211,8 @@ contains
     bad_tiles=tiles; bad_tiles(3)%groundwater_cell_id=99_int64
     call expect_status(bad_tiles,cells,GW_TOPOLOGY_TILE_CELL_MISSING,'tile missing cell')
 
-    bad_tiles=tiles(1:2)
-    call expect_status_two(bad_tiles,cells,GW_TOPOLOGY_CELL_WITHOUT_TILE,'orphan cell')
+    two_tiles=tiles(1:2)
+    call expect_status_two(two_tiles,cells,GW_TOPOLOGY_CELL_WITHOUT_TILE,'orphan cell')
 
     bad_tiles=tiles; bad_tiles(2)%area_fraction=0.70_real64
     call expect_status(bad_tiles,cells,GW_TOPOLOGY_FRACTION_SUM,'fraction sum')
