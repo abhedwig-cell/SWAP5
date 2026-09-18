@@ -1,0 +1,165 @@
+{
+  "schema": "swap5.publication.p2e18d2-reference-retry-mechanism-result.v1",
+  "workunit": "PUB-P2E18D2",
+  "publication_owner": "PUB-SQ",
+  "phase": "COMPLETE_TOTAL_BALANCE_ONLY_RETRY_DIAGNOSIS",
+  "authorities": {
+    "preregistration_blob": "3b032963224a159acadbefb953be887f426297ce",
+    "test_blob": "9dac4d004388dceeb157168b0665c4ace9351065",
+    "runner_blob": "3128525f0c4df85bf2a95686d402d5b38d781e0b",
+    "workflow_blob": "972e8652e46956dd14ffe767b0ca1dc14e4038ad",
+    "parent_D1_result_blob": "5f6ebdcff315f23dd2c8c54666b8f413bc2dbcea"
+  },
+  "execution": {
+    "workflow_run": 35293209835,
+    "job": 105440295679,
+    "head": "016190043f1d0440d277e84602cfc56bef3410e4",
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "a95bfcdfb2f47901cdaf1b136e23851ed0ef954aefebda4138ba74324cf1c10a"
+  },
+  "diagnostic_matrix": {
+    "cases": [
+      "B01 Se=0.65 DRYING",
+      "B01 Se=0.96 DRYING",
+      "O18 Se=0.65 DRYING",
+      "O18 Se=0.96 DRYING"
+    ],
+    "substeps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "level_runs": 24,
+    "policy": "same D1 invariant integrated balance scale; no numerical-control changes"
+  },
+  "route_validity_by_substeps": {
+    "1": {
+      "valid": 4,
+      "invalid": 0
+    },
+    "2": {
+      "valid": 3,
+      "invalid": 1
+    },
+    "4": {
+      "valid": 3,
+      "invalid": 1
+    },
+    "8": {
+      "valid": 4,
+      "invalid": 0
+    },
+    "16": {
+      "valid": 3,
+      "invalid": 1
+    },
+    "32": {
+      "valid": 3,
+      "invalid": 1
+    }
+  },
+  "retry_mechanism_counts": {
+    "BALANCE_ONLY": 0,
+    "HEAD_ONLY": 0,
+    "BOTH": 0,
+    "OTHER": 4
+  },
+  "retry_events": [
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "nsub": 4,
+      "isub": 1,
+      "dt_day": 0.0004,
+      "rate_tolerance_cm_per_day": 4e-12,
+      "max_abs_compartment_residual_cm_per_day": 2.0284884882926235e-12,
+      "abs_total_residual_cm_per_day": 4.257553944814196e-12,
+      "total_residual_over_total_tolerance": 1.064388486203549,
+      "local_balance_flags": 0,
+      "head_change_flags": 0,
+      "route": "legacy-reference-retry",
+      "status": 2
+    },
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "nsub": 16,
+      "isub": 16,
+      "dt_day": 0.0001,
+      "rate_tolerance_cm_per_day": 1.6e-11,
+      "max_abs_compartment_residual_cm_per_day": 9.051204230559051e-12,
+      "abs_total_residual_cm_per_day": 2.211024289003327e-11,
+      "total_residual_over_total_tolerance": 1.3818901806270794,
+      "local_balance_flags": 0,
+      "head_change_flags": 0,
+      "route": "legacy-reference-retry",
+      "status": 2
+    },
+    {
+      "case": 1,
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "nsub": 32,
+      "isub": 7,
+      "dt_day": 0.00005,
+      "rate_tolerance_cm_per_day": 3.2e-11,
+      "max_abs_compartment_residual_cm_per_day": 9.46553946334916e-12,
+      "abs_total_residual_cm_per_day": 3.3400908341224556e-11,
+      "total_residual_over_total_tolerance": 1.0437783856632672,
+      "local_balance_flags": 0,
+      "head_change_flags": 0,
+      "route": "legacy-reference-retry",
+      "status": 2
+    },
+    {
+      "case": 4,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "nsub": 2,
+      "isub": 2,
+      "dt_day": 0.0008,
+      "rate_tolerance_cm_per_day": 2e-12,
+      "max_abs_compartment_residual_cm_per_day": 7.727152251391089e-13,
+      "abs_total_residual_cm_per_day": 2.7525724755061987e-12,
+      "total_residual_over_total_tolerance": 1.3762862377530993,
+      "local_balance_flags": 0,
+      "head_change_flags": 0,
+      "route": "legacy-reference-retry",
+      "status": 2
+    }
+  ],
+  "adjudication": {
+    "remaining_mechanism": "TOTAL_BALANCE_ONLY",
+    "basis": [
+      "Every retry has zero nonconverged_balance flags.",
+      "Every retry has zero nonconverged_head flags.",
+      "Every retry has max absolute compartment residual below the scaled compartment-balance tolerance.",
+      "Every retry has absolute summed residual above the scaled total-balance tolerance.",
+      "The observed summed-residual excess is 1.044 to 1.382 times the configured total-balance rate tolerance."
+    ],
+    "implication": "D1's remaining retries are not explained by unresolved local balance or pressure-head convergence. The active gate is CritDevBalTot.",
+    "caution": "D2 does not establish whether those total residuals are numerically distinguishable from a total-domain representation/cancellation floor."
+  },
+  "firewalls": {
+    "tolerance_changed_from_D1": false,
+    "rossfast_executed": false,
+    "timing_executed": false,
+    "ref_high_stability_qualified": false,
+    "production_source_mutated": false,
+    "use_as_untouched_primary_evidence": false
+  },
+  "verdict": "REMAINING_SCALED_REFERENCE_RETRIES_ARE_TOTAL_BALANCE_ONLY",
+  "next_permitted_action": "Preregister a Reference-only total-balance numerical-distinguishability diagnostic by extending the already qualified P2E07 floor methodology to the domain-summed residual. Do not derive a replacement total-balance tolerance from these four observed exceedances."
+}
