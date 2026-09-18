@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.f-ross25.serial-envelope-preflight-correction.v1",
+  "workunit": "F-ROSS25",
+  "phase": "REPAIR",
+  "status": "PERSISTED_BEFORE_CORRECTED_REPLAY",
+  "initial_canonical_close": "47430b68ed46a24ca05b29b46de2dd4f7e29762b",
+  "initial_measurement": {
+    "workflow_run": 35350469193,
+    "job": 105617121612,
+    "artifact_id": 10549829161,
+    "artifact_digest": "sha256:0a91babdcb3e2ed1eb46b333e92d958e890cd3f5fd46a7eaa918ad9832fb8b48"
+  },
+  "defect": {
+    "location": "tests/ross/test_ross25_serial_hydrologic_validation.f90::forcing_admitted",
+    "old_public_space_top_reference": "+0.01*K",
+    "production_adapter_mapping": "internal_top = -public_top",
+    "frozen_internal_envelope_centre": "+0.01*K",
+    "correct_public_space_top_reference": "-0.01*K",
+    "consequence": "The preflight did not exactly reproduce the production binding envelope. NOMINAL_SHARED could pass the harness preflight yet be rejected by production RossFast at the next interval."
+  },
+  "authority_check": {
+    "production_solver": "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+    "model_binding": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "f_ross22_nominal_public_top_factor": 0.01,
+    "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225"
+  },
+  "disposition": {
+    "prior_negative_scientific_verdict": "INVALIDATED",
+    "f_ross22_single_interval_admission": "UNCHANGED",
+    "production_mutation": false,
+    "rerun_scope": "exact preregistered 216 trajectories; mechanical preflight repair only"
+  },
+  "firewall": [
+    "NO_PRODUCTION_MUTATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_FORCING_RETUNING",
+    "NO_TOLERANCE_CHANGE",
+    "NO_TIER_LADDER_CHANGE",
+    "NO_DOMAIN_CHANGE"
+  ],
+  "next_permitted_action": "Execute corrected replay and persist corrected classification."
+}
