@@ -89,6 +89,7 @@ Start with:
 - [Paper 2: solver admissibility research design](publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md)
 - [PUB-RC / ACCELERATE research design](publication/PUB_RC_ACCELERATE_RESEARCH_DESIGN.md)
 - [PUB-RC / ACCELERATE literature and prior-art register](publication/PUB_RC_ACCELERATE_LITERATURE_REGISTER.md)
+- [PUB-GC/PUB-RC broader publishability review](publication/PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md)
 
 The publication programme records the current firewall between PUB-GC / COUPLE, PUB-SG / SCALE and the conditional PUB-RC / ACCELERATE line.
 
