@@ -9,7 +9,7 @@
     "ADMIT",
     "CLOSE"
   ],
-  "phase": "FINAL_ADMISSION_RECONCILED",
+  "phase": "CANONICAL_ADMITTED_CLOSED",
   "branch": "work/ppa-wu01-production-application-bootstrap",
   "canonical_base": "f7bd4d470d14bdedcbe60ef2b674fce4f1575e9c",
   "objective": "Create one authoritative Fortran/FMR-owned typed production bootstrap that can run an admitted standalone Reference Richards profile and materialize F-GC49D contexts from the same persistent owner, without qualification fixtures, new physics or legacy parsing.",
@@ -74,8 +74,8 @@
       "PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS"
     ]
   },
-  "verdict": "QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION",
-  "next_permitted_action": "Require the automatically triggered final checks for this reconciled head. Then perform one live overlap check. Merge PR #306 if WU01 owner, documentation and F-CI canonical qualification pass and any later canonical drift is absent or publication-only/disjoint.",
+  "verdict": "CANONICAL_ADMITTED_RESTRICTED_PRODUCTION_CLOSED",
+  "next_permitted_action": "PPA-WU01 is closed. Continue with PPA-WU02 and/or PPA-WU03 under their own bounded workunits; do not widen WU01 physics or parser scope.",
   "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
   "repairs": [
     {
@@ -116,5 +116,38 @@
       "note": "WU01 production/test blobs are byte-identical after this publication-only canonical reconciliation."
     },
     "disposition": "Two-parent reconciliation to latest publication-only canonical. Further publication-only drift is non-semantic for WU01 after explicit no-overlap verification."
-  }
+  },
+  "canonical_admission": {
+    "pr": 306,
+    "merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+    "canonical_branch": "integration/f-ci-canonical",
+    "final_admission_head": "41bf5e82a4fc624079b3da34d063234faa294eab",
+    "final_checks": {
+      "owner": {
+        "run_id": 35368123088,
+        "conclusion": "success"
+      },
+      "documentation": {
+        "run_id": 35368123177,
+        "conclusion": "success"
+      },
+      "canonical_qualification": {
+        "run_id": 35368122940,
+        "conclusion": "success"
+      }
+    },
+    "final_live_delta": {
+      "from_reconciled_base": "fb882329124297e9b21ae1816fbafc9debfed3fa",
+      "to_premerge_canonical": "80e8f757568ca38b40e76566f3d4039b2cd4be57",
+      "overlap": "NONE",
+      "scope": "PUB-GC manuscript/submission-readiness documentation only"
+    },
+    "prerequisite_governance_repair": {
+      "pr": 308,
+      "merge_commit": "e7c5662a362455d34b0b43c3a1832bcda31777c2",
+      "canonical_qualification_run": 35367229074,
+      "conclusion": "success"
+    }
+  },
+  "closeout_note": "Canonical admission changes application reachability only for the explicitly restricted WU01 profiles. All non-claims and fail-closed boundaries remain in force."
 }
