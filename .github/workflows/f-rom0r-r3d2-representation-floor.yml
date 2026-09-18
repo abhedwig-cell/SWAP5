@@ -1,0 +1,45 @@
+name: F-ROM0R R3D2 representation-floor diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0R_R3D2_*'
+      - 'integration/f-rom/F-ROM0R_R3D1_STATUS.json'
+      - 'docs/science/F-ROM0R_R3D2_*'
+      - 'tests/rom/test_f_rom0r_r3d2_representation_floor.f90'
+      - 'tests/rom/analyze_f_rom0r_r3d2_representation_floor.py'
+      - 'tests/rom/run_f_rom0r_r3d2_representation_floor.sh'
+      - '.github/workflows/f-rom0r-r3d2-representation-floor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0r-r3d2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen R3D2 representation-floor diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0R_R3D2_EVIDENCE
+          F_ROM0R_R3D2_EVIDENCE_DIR="$PWD/F-ROM0R_R3D2_EVIDENCE"             bash tests/rom/run_f_rom0r_r3d2_representation_floor.sh | tee F-ROM0R_R3D2_EVIDENCE/gate.txt
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0r-r3d2-${{ github.run_id }}
+          path: F-ROM0R_R3D2_EVIDENCE
+          if-no-files-found: warn
