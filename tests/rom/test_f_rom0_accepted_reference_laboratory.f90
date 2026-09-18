@@ -85,7 +85,7 @@ program test_f_rom0_accepted_reference_laboratory
   t0 = 0.0_real64
   do i = 1, intervals
     t1 = real(i,real64) * dt_day
-    call forcing_for_step(trim(experiment_id), i, intervals, h0, k0, bottom_mode, qtop, qbot, hbot)
+    call forcing_for_step(trim(experiment_id), i, intervals, h0, k0, dz_cm, bottom_mode, qtop, qbot, hbot)
     parameters%bottom_mode = bottom_mode
     forcing%top_flux = qtop
     forcing%top_head = h0
@@ -292,10 +292,10 @@ contains
     end select
   end function experiment_base_intervals
 
-  subroutine forcing_for_step(id, step, steps, head0, conductivity0, mode, qt, qb, hb)
+  subroutine forcing_for_step(id, step, steps, head0, conductivity0, cell_dz, mode, qt, qb, hb)
     character(len=*), intent(in) :: id
     integer, intent(in) :: step, steps
-    real(real64), intent(in) :: head0, conductivity0
+    real(real64), intent(in) :: head0, conductivity0, cell_dz
     integer, intent(out) :: mode
     real(real64), intent(out) :: qt, qb, hb
     qt=0.0_real64; qb=0.0_real64; hb=head0
@@ -307,15 +307,15 @@ contains
     case('E2_DRYING_FLUX')
       mode=2; qt=-0.005_real64*conductivity0; qb=-0.019_real64*conductivity0
     case('E3_BOTTOM_HEAD_RISE')
-      mode=5; hb=0.75_real64*head0
+      mode=5; hb=head0+2.0_real64*cell_dz
     case('E4_BOTTOM_HEAD_FALL')
-      mode=5; hb=1.25_real64*head0
+      mode=5; hb=head0-2.0_real64*cell_dz
     case('E5_DIRECTION_REVERSAL')
       mode=5
       if (step <= steps/2) then
-        hb=0.75_real64*head0
+        hb=head0+2.0_real64*cell_dz
       else
-        hb=1.25_real64*head0
+        hb=head0-2.0_real64*cell_dz
       end if
     case default
       mode=-999
