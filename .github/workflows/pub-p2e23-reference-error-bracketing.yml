@@ -1,0 +1,25 @@
+name: PUB-P2E23 strict observed-error bracketing
+
+on:
+  push:
+    branches:
+      - work/pub-p2e23-reference-error-bracketing
+    paths:
+      - 'docs/publication/P2E23_REFERENCE_ERROR_BRACKETING_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e23_reference_error_bracketing.f90'
+      - 'tests/publication/run_pub_p2e23_reference_error_bracketing.sh'
+      - '.github/workflows/pub-p2e23-reference-error-bracketing.yml'
+  workflow_dispatch:
+
+jobs:
+  strict-error-bracketing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered untimed strict-error bracketing
+        run: bash tests/publication/run_pub_p2e23_reference_error_bracketing.sh
